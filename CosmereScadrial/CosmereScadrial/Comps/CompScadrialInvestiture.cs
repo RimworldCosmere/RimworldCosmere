@@ -2,41 +2,38 @@
 using System.Linq;
 using Verse;
 
-namespace CosmereScadrial.Comps
-{
+namespace CosmereScadrial.Comps {
     /**
  * @todo Should these reserves decay?
  */
-    public class CompScadrialInvestiture : ThingComp
-    {
+    public class CompScadrialInvestiture : ThingComp {
         public Dictionary<string, float> metalReserves = new();
 
-        public override void PostExposeData()
-        {
+        public override void PostExposeData() {
             base.PostExposeData();
             Scribe_Collections.Look(ref metalReserves, "metalReserves", LookMode.Value, LookMode.Value);
         }
 
-        public void SetReserve(string metal, float amount)
-        {
+        public void SetReserve(string metal, float amount) {
             metalReserves[metal] = amount;
         }
 
-        public void RemoveReserve(string metal, bool delete)
-        {
+        public void AddReserve(string metal, float amount) {
+            metalReserves[metal] += amount;
+        }
+
+        public void RemoveReserve(string metal, bool delete) {
             if (delete)
                 metalReserves.Remove(metal);
             else
                 SetReserve(metal, 0);
         }
 
-        public float GetReserve(string metal)
-        {
+        public float GetReserve(string metal) {
             return metalReserves.TryGetValue(metal, out var value) ? value : 0f;
         }
 
-        public bool AnyInvestiture()
-        {
+        public bool AnyInvestiture() {
             return metalReserves.Values.Any(v => v > 0);
         }
     }

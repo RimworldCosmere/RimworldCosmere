@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Defs>
-	<ThingCategoryDef>
-		<defName>Cosmere_AllomancyVials</defName>
-		<label>allomantic vials</label>
-		<parent>Items</parent>
-	</ThingCategoryDef>
-</Defs>

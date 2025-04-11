@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereScadrial", "Scadrial\CosmereScadrial\CosmereScadrial.csproj", "{6FB30E55-8B7A-4E51-99D6-D110854999AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereScadrial", "CosmereScadrial\CosmereScadrial\CosmereScadrial.csproj", "{6FB30E55-8B7A-4E51-99D6-D110854999AB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5F1D8C6D-E127-4001-A575-E56D99DF271F} = {5F1D8C6D-E127-4001-A575-E56D99DF271F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereCore", "Core\CosmereCore\CosmereCore.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereCore", "CosmereCore\CosmereCore\CosmereCore.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -22,11 +22,6 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
-
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <OutputPath>bin\Debug\</OutputPath>
-    </PropertyGroup>
-
     <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
         <Reference Include="0Harmony">
             <HintPath>..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
@@ -88,7 +83,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="Comps\CompProperties_ScadrialInvestiture.cs"/>
+        <Compile Include="CompProperties\CompProperties_AllomanticVial.cs" />
+        <Compile Include="CompProperties\CompProperties_ScadrialInvestiture.cs" />
+        <Compile Include="Comps\CompAllomanticVial.cs" />
         <Compile Include="Comps\CompScadrialInvestiture.cs"/>
         <Compile Include="DefModExtensions\MetalLinked.cs"/>
         <Compile Include="Defs\Gene_Metalborn.cs"/>
@@ -97,15 +94,19 @@
         <Compile Include="Initializer.cs"/>
         <Compile Include="Inspector\InvestitureTab_Scadrial.cs"/>
         <Compile Include="MetalInfo.cs"/>
+        <Compile Include="Patches\Patch_GenRecipe_PostProcessProduct.cs" />
         <Compile Include="Patches\Patch_LockShardSelection.cs"/>
         <Compile Include="Patches\Patch_PawnGeneGeneration.cs"/>
         <Compile Include="Patches\Patch_PawnGenerator.cs"/>
         <Compile Include="Patches\Patch_PawnRelationWorker_Child.cs"/>
         <Compile Include="Patches\Patch_Pawn_IdeoTracker_SkaaAgnostic.cs"/>
+        <Compile Include="Patches\Patch_TraitDef_GetGenderSpecificCommonality.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Registry\MetalRegistry.cs"/>
+        <Compile Include="Startup\DefGenerator\DefGenerators.cs" />
         <Compile Include="Startup\DefGenerator\GeneDefGenerator.cs"/>
         <Compile Include="Startup\DefGenerator\TraitDefGenerator.cs"/>
+        <Compile Include="Utils\AllomancyUtility.cs" />
         <Compile Include="Utils\MetalbornUtility.cs"/>
     </ItemGroup>
 

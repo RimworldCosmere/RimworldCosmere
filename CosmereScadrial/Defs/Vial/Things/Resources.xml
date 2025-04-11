@@ -1,240 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>	
-	<!-- Abstract VialBase (Base Metal) -->
-	<ThingDef Name="Cosmere_VialBase" ParentName="ResourceBase" Abstract="True">
-		<defName>Cosmere_Vial_Base</defName>
-		<label>vial</label>
-		<description>A vial of allomantic metal in an alcohol solution for an allomancer. Provides Investiture, assuming the metal is compatible with the allomancer.</description>
-		<stackLimit>8</stackLimit>
-		<tickerType>Normal</tickerType>
-		<thingCategories>
-			<li>Cosmere_AllomancyVials</li>
-		</thingCategories>
-		<statBases>
-			<Mass>0.016</Mass>
-		</statBases>
-		<tradeability>All</tradeability>
-		<selectable>true</selectable>
-		<alwaysHaulable>true</alwaysHaulable>
+	<ThingDef ParentName="DrugBase">
+		<defName>Cosmere_AllomanticVial</defName>
+		<label>allomantic vial</label>
+		<description>A vial of metal shavings suspended in alcohol, used by allomancers to ingest and burn metals.</description>
+		<thingClass>ThingWithComps</thingClass>
 		<graphicData>
-			<texPath>Things/Item/Vial/Vial</texPath>
-			<drawSize>0.6</drawSize>
+			<texPath>Things/Item/Vial/AllomanticVial</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
-			<shaderType>CutoutComplex</shaderType>
+			<drawSize>(1,1)</drawSize>
 		</graphicData>
 		<ingestible>
-			<foodType>Processed, Fluid</foodType>
-			<preferability>NeverForNutrition</preferability>
-			<baseIngestTicks>20</baseIngestTicks>
-			<ingestSound>Ingest_Inject</ingestSound>
-			<ingestCommandString>Ingest {0}</ingestCommandString>
-			<ingestReportString>Ingesting {0}.</ingestReportString>
-			<ingestHoldOffsetStanding>
-				<northDefault>
-					<offset>(0.18,0,0)</offset>
-				</northDefault>  
-			</ingestHoldOffsetStanding>
-			<useEatingSpeedStat>false</useEatingSpeedStat>
-			<chairSearchRadius>0</chairSearchRadius>
-			<outcomeDoers>
-				<li Class="IngestionOutcomeDoer_OffsetNeed">
-					<need>Cosmere_Investiture</need>
-					<offset>0.1</offset>
-				</li>
-			</outcomeDoers>
+			<foodType>Fluid</foodType>
+			<ingestSound>Ingest_Drink</ingestSound>
+			<ingestCommandString>Drink vial</ingestCommandString>
+			<ingestReportString>drinks an allomantic vial</ingestReportString>
+			<ingestEffect>EatMeat</ingestEffect> <!-- Replace if you have custom FX -->
+			<baseIngestTicks>60</baseIngestTicks>
+			<drugCategory>None</drugCategory>
 		</ingestible>
+		<comps>
+			<li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial" />
+		</comps>
+		<statBases>
+			<Mass>0.1</Mass>
+			<MarketValue>8</MarketValue>
+		</statBases>
+		<stackLimit>10</stackLimit>
+		<tradeTags>
+			<li>Drug</li>
+		</tradeTags>
 	</ThingDef>
-	
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialSteel</defName>
-		<label>allomantic vial: steel</label>
-		<description>A vial containing steel flakes suspended in an alcohol solution. Provides Investiture for Coinshots.</description>
-		<graphicData>
-			<color>(92, 116, 136)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest steel</ingestCommandString>
-			<ingestReportString>Ingesting steel.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialIron</defName>
-		<label>allomantic vial: iron</label>
-		<description>A vial containing iron flakes suspended in an alcohol solution. Provides Investiture for Lurchers.</description>
-		<graphicData>
-			<color>(85, 93, 103)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest iron</ingestCommandString>
-			<ingestReportString>Ingesting iron.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialPewter</defName>
-		<label>allomantic vial: pewter</label>
-		<description>A vial containing pewter flakes suspended in an alcohol solution. Provides Investiture for Thugs.</description>
-		<graphicData>
-			<color>(121, 113, 122)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest pewter</ingestCommandString>
-			<ingestReportString>Ingesting pewter.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialTin</defName>
-		<label>allomantic vial: tin</label>
-		<description>A vial containing tin flakes suspended in an alcohol solution. Provides Investiture for Tineyes.</description>
-		<graphicData>
-			<color>(121, 113, 122)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest tin</ingestCommandString>
-			<ingestReportString>Ingesting tin.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialZinc</defName>
-		<label>allomantic vial: zinc</label>
-		<description>A vial containing zinc flakes suspended in an alcohol solution. Provides Investiture for Rioters.</description>
-		<graphicData>
-			<color>(199, 145, 83)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest zinc</ingestCommandString>
-			<ingestReportString>Ingesting zinc.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialBrass</defName>
-		<label>allomantic vial: brass</label>
-		<description>A vial containing brass flakes suspended in an alcohol solution. Provides Investiture for Soothers.</description>
-		<graphicData>
-			<color>(181, 138, 62)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest brass</ingestCommandString>
-			<ingestReportString>Ingesting brass.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialCopper</defName>
-		<label>allomantic vial: copper</label>
-		<description>A vial containing copper flakes suspended in an alcohol solution. Provides Investiture for Smokers.</description>
-		<graphicData>
-			<color>(166, 94, 46)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest copper</ingestCommandString>
-			<ingestReportString>Ingesting copper.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialBronze</defName>
-		<label>allomantic vial: bronze</label>
-		<description>A vial containing bronze flakes suspended in an alcohol solution. Provides Investiture for Seekers.</description>
-		<graphicData>
-			<color>(150, 104, 65)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest bronze</ingestCommandString>
-			<ingestReportString>Ingesting bronze.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialDuralumin</defName>
-		<label>allomantic vial: duralumin</label>
-		<description>A vial containing duralumin flakes suspended in an alcohol solution. Provides Investiture for Duralumin Gnats.</description>
-		<graphicData>
-			<color>(198, 203, 210)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest duralumin</ingestCommandString>
-			<ingestReportString>Ingesting duralumin.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialAluminum</defName>
-		<label>allomantic vial: aluminum</label>
-		<description>A vial containing aluminum flakes suspended in an alcohol solution. Provides Investiture for Aluminum Gnats.</description>
-		<graphicData>
-			<color>(215, 218, 221)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest aluminum</ingestCommandString>
-			<ingestReportString>Ingesting aluminum.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialNicrosil</defName>
-		<label>allomantic vial: nicrosil</label>
-		<description>A vial containing nicrosil flakes suspended in an alcohol solution. Provides Investiture for Nicrobursts.</description>
-		<graphicData>
-			<color>(148, 148, 176)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest nicrosil</ingestCommandString>
-			<ingestReportString>Ingesting nicrosil.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialChromium</defName>
-		<label>allomantic vial: chromium</label>
-		<description>A vial containing chromium flakes suspended in an alcohol solution. Provides Investiture for Leecher.</description>
-		<graphicData>
-			<color>(192, 192, 192)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest chromium</ingestCommandString>
-			<ingestReportString>Ingesting chromium.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialGold</defName>
-		<label>allomantic vial: gold</label>
-		<description>A vial containing gold flakes suspended in an alcohol solution. Provides Investiture for Augurs.</description>
-		<graphicData>
-			<color>(230, 190, 64)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest gold</ingestCommandString>
-			<ingestReportString>Ingesting gold.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialElectrum</defName>
-		<label>allomantic vial: electrum</label>
-		<description>A vial containing electrum flakes suspended in an alcohol solution. Provides Investiture for Oracle.</description>
-		<graphicData>
-			<color>(204, 182, 101)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest electrum</ingestCommandString>
-			<ingestReportString>Ingesting electrum.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialCadmium</defName>
-		<label>allomantic vial: cadmium</label>
-		<description>A vial containing cadmium flakes suspended in an alcohol solution. Provides Investiture for Pulser.</description>
-		<graphicData>
-			<color>(122, 187, 177)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest cadmium</ingestCommandString>
-			<ingestReportString>Ingesting cadmium.</ingestReportString>
-		</ingestible>
-	</ThingDef>
-	<ThingDef ParentName="Cosmere_VialBase">
-		<defName>Cosmere_VialBendalloy</defName>
-		<label>allomantic vial: bendalloy</label>
-		<description>A vial containing bendalloy flakes suspended in an alcohol solution. Provides Investiture for Slider.</description>
-		<graphicData>
-			<color>(189, 158, 224)</color>
-		</graphicData>
-		<ingestible>
-			<ingestCommandString>Ingest bendalloy</ingestCommandString>
-			<ingestReportString>Ingesting bendalloy.</ingestReportString>
-		</ingestible>
-	</ThingDef>-->
 </Defs>	

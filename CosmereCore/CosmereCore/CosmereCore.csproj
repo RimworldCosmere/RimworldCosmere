@@ -24,10 +24,6 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <OutputPath>bin\Debug\</OutputPath>
-    </PropertyGroup>
-
     <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
         <Reference Include="0Harmony">
             <HintPath>..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>

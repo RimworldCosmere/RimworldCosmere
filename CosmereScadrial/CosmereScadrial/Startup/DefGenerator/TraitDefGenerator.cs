@@ -7,9 +7,8 @@ using RimWorld;
 using Verse;
 
 namespace Cosmere.Scadrial.Startup.DefGenerator {
-    [StaticConstructorOnStartup]
     public static class TraitDefGenerator {
-        static TraitDefGenerator() {
+        public static void Generate() {
             Log.Message("[CosmereScadrial] Starting TraitDefGenerator");
 
             var order = 3;
@@ -75,7 +74,7 @@ namespace Cosmere.Scadrial.Startup.DefGenerator {
                         label = "Mistborn",
                         description = "A rare individual who can burn all Allomantic metals.",
                         degree = 0,
-                        commonality = 0,
+                        commonality = 0f,
                     },
                 },
             };
@@ -99,7 +98,7 @@ namespace Cosmere.Scadrial.Startup.DefGenerator {
                         label = "Full Feruchemist",
                         description = "A rare individual who can use all Feruchemical metals.",
                         degree = 0,
-                        commonality = 0,
+                        commonality = 0f,
                     },
                 },
             };
@@ -107,14 +106,23 @@ namespace Cosmere.Scadrial.Startup.DefGenerator {
 
         private static TraitDegreeData CreateTrateDegreeData(MetalInfo metal, bool isAllomancy) =>
             new TraitDegreeData {
-                label = isAllomancy ? metal.Allomancy.UserName : metal.Feruchemy.UserName,
+                label = isAllomancy ? $"Misting: {metal.Allomancy.UserName.CapitalizeFirst()}" : $"Ferring: {metal.Feruchemy.UserName.CapitalizeFirst()}",
                 description = isAllomancy ? metal.Allomancy.Description : metal.Feruchemy.Description,
                 degree = 0,
-                commonality = 0,
+                commonality = 0f,
             };
     }
 
     public class InvestitureBaseTrait : TraitDef {
-        public InvestitureBaseTrait() => allowOnHostileSpawn = false;
+        private float commonality = 1f;
+
+        public InvestitureBaseTrait() {
+            allowOnHostileSpawn = false;
+            commonality = 0f;
+        }
+
+        public new float GetGenderSpecificCommonality(Gender gender) {
+            return commonality;
+        }
     }
 }

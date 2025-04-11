@@ -2,13 +2,13 @@
 <Defs>
     <ThingDef ParentName="BenchBase">
         <defName>Cosmere_TableAllomancyForge</defName>
-        <label>smith's bench</label>
+        <label>Allomancy Forge</label>
         <description>A work bench for metalworkers to work on the allomantic metals</description>
         <thingClass>Building_WorkTable_HeatPush</thingClass>
         <graphicData>
             <texPath>Things/Building/Production/AllomancyForge/AllomancyForge</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
-            <drawSize>(3.5,1.5)</drawSize>
+            <drawSize>(4,5)</drawSize>
             <shaderType>CutoutComplex</shaderType>
             <damageData>
                 <cornerTL>Damage/Corner</cornerTL>
@@ -20,10 +20,7 @@
 
         <castEdgeShadows>true</castEdgeShadows>
         <staticSunShadowHeight>0.20</staticSunShadowHeight>
-        <costStuffCount>75</costStuffCount>
-        <costList>
-            <Steel>30</Steel>
-        </costList>
+        <costList/>
         <stuffCategories>
             <li>Metallic</li>
             <li>Woody</li>
@@ -37,7 +34,7 @@
             <Flammability>1.0</Flammability>
             <Cleanliness>-5</Cleanliness>
         </statBases>
-        <size>(3,1)</size>
+        <size>(2, 3)</size>
         <designationCategory>Production</designationCategory>
         <uiOrder>2300</uiOrder>
         <passability>PassThroughOnly</passability>

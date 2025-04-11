@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ResearchProjectDef>
+		<defName>Cosmere_Investiture</defName>
+		<label>Investiture</label>
+		<description>The fabric of the Cosmere is shaped by unseen forces—mysterious energies scholars call Investiture. Through careful study of ancient texts and firsthand experimentation, your colonists begin to grasp the fundamental principles of this power. Unlocking Investiture opens the path to understanding Shards, magic systems, and the subtle threads connecting all life to the Spiritual Realm. This is the first step toward wielding powers once thought to be the domain of gods.</description>
+		<tab>Cosmere</tab>
+		<baseCost>600</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>0.00</researchViewX>
+		<researchViewY>0.00</researchViewY>
+	</ResearchProjectDef>
+</Defs>

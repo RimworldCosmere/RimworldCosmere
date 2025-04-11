@@ -1,0 +1,69 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<Defs>
+  <GeneDef Name="Cosmere_SkaaGeneBase" ParentName="Cosmere_ScadrialGeneBase" Abstract="True">
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <biostatArc>-1</biostatArc>
+  </GeneDef>
+  <GeneDef ParentName="Cosmere_SkaaGeneBase">
+    <defName>Cosmere_Skaa_Heritage</defName>
+    <label>skaa heritage</label>
+    <randomChosen>true</randomChosen>
+    <description>This pawn descends from a pure Skaa bloodline.</description>
+  </GeneDef>
+  <GeneDef ParentName="Cosmere_SkaaGeneBase">
+    <defName>Cosmere_Skaa_LowSocial</defName>
+    <label>socially stunted</label>
+    <description>This pawn has difficulty communicating effectively. Their social impact is reduced.</description>
+    <statOffsets>
+      <SocialImpact>-0.2</SocialImpact>
+    </statOffsets>
+  </GeneDef>
+  <GeneDef ParentName="Cosmere_SkaaGeneBase">
+    <defName>Cosmere_Skaa_LowLearning</defName>
+    <label>slow learner</label>
+    <description>This pawn has reduced learning speed and lower mental adaptability.</description>
+    <statOffsets>
+      <GlobalLearningFactor>-0.2</GlobalLearningFactor>
+      <MentalBreakThreshold>0.05</MentalBreakThreshold>
+    </statOffsets>
+  </GeneDef>
+  <GeneDef ParentName="Cosmere_SkaaGeneBase">
+    <defName>Cosmere_Skaa_HighFertility</defName>
+    <label>fertile</label>
+    <description>This pawn is unusually fertile.</description>
+    <statOffsets>
+      <Fertility>0.3</Fertility>
+    </statOffsets>
+  </GeneDef>
+  <GeneDef ParentName="Cosmere_SkaaGeneBase">
+    <defName>Cosmere_Skaa_Endurance</defName>
+    <label>enduring</label>
+    <description>This pawn is resilient to hunger and disease.</description>
+    <statOffsets>
+      <MaxNutrition>-0.1</MaxNutrition>
+      <RestFallRateFactor>-0.1</RestFallRateFactor>
+      <ImmunityGainSpeed>0.1</ImmunityGainSpeed>
+      <ToxicResistance>0.1</ToxicResistance>
+      <ToxicEnvironmentResistance>0.1</ToxicEnvironmentResistance>
+      <RestRateMultiplier>0.1</RestRateMultiplier>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <PainShockThreshold>.1</PainShockThreshold>
+      <LifespanFactor>.1</LifespanFactor>
+    </statOffsets>
+  </GeneDef>
+  <GeneDef ParentName="Cosmere_SkaaGeneBase">
+    <defName>Cosmere_Skaa_Purity</defName>
+    <label>skaa bloodline</label>
+    <description>This pawn comes from a pure Skaa bloodline and cannot be born with Metalborn powers.</description>
+    <exclusionTags>
+      <li>Metalborn</li>
+    </exclusionTags>
+  </GeneDef>
+  <GeneDef ParentName="Cosmere_SkaaGeneBase">
+    <defName>Cosmere_Skaa_Agnostic</defName>
+    <label>agnostic</label>
+    <description>Skaa are forbidden from following or adopting ideoligions.</description>
+  </GeneDef>
+</Defs>

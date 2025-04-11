@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="395.24899" height="500.00101" id="svg3071">
+  <defs id="defs3073"/>
+  <metadata id="metadata3076">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g transform="translate(692.72257,600.23468)" id="layer1">
+    <path d="m -297.47357,-362.44168 c -0.342,1.298 -11.715,42.869 -62.225,81.693 -4.561,3.506 -9.178,6.869 -13.779,10.09 v 170.425 h -159.623 v -39.904 h 120.672 v -106.165 c -19.1,10.731 -32.779,16.861 -32.779,16.861 l -25.254,-28.504 c 0,0 28.189,-8.054 58.033,-20.168 v -54.627 c -25.211,15.022 -45.137,22.532 -45.137,22.532 l -17.104,-25.653 c 0,0 31.783,-10.404 62.238,-24.941 v -128.979 l -280.291,389.547 162.471,-500 h 35.631 c 0,0 -11.26,14.51 -13.967,19.953 l -110.025,339.194 245.133,-359.147 v 216.957 c 34.191,-23.928 68.879,-58.049 68.879,-58.049 0,0 -5.885,30.215 -68.879,81.321 v 63.394 c 1.795,-1.041 3.551,-2.094 5.23,-3.147 35.19,-22.037 69.906,-61.699 70.776,-62.683 z" id="Atium"/>
+  </g>
+</svg>

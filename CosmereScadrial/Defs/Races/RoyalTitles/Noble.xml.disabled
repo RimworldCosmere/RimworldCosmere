@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RoyalTitleDef>
+        <defName>Cosmere_LordOfLuthadel</defName>
+        <label>lord of Luthadel</label>
+        <labelFemale>lady of Luthadel</labelFemale>
+        <seniority>55</seniority> <!-- Between Baron and Count -->
+        <description>The bearer of this title is recognized by the Final Empire as a noble of high status, entrusted with influence over the city of Luthadel. Nobles of this rank are expected to maintain refined quarters, wield influence, and never appear without proper dress.</description>
+        
+        <requiredMinimumApparelQuality>Normal</requiredMinimumApparelQuality>
+        <decreeMtbDays>-1</decreeMtbDays> <!-- disabled -->
+        <commonality>0.01</commonality>
+
+        <favorCost>0</favorCost>
+        <minExpectation>High</minExpectation>
+
+        <bedroomRequirements>
+            <li Class="RoomRequirement_Area">
+                <area>30</area>
+            </li>
+            <li Class="RoomRequirement_Impressiveness">
+                <impressiveness>80</impressiveness>
+            </li>
+            <li Class="RoomRequirement_Thing">
+                <thingDef>EndTable</thingDef>
+            </li>
+            <li Class="RoomRequirement_Thing">
+                <thingDef>Dresser</thingDef>
+            </li>
+            <li Class="RoomRequirement_ForbiddenBuildings">
+                <labelKey>RoomRequirementNoProductionFacilities</labelKey>
+                <buildingTags><li>Production</li></buildingTags>
+            </li>
+            <li Class="RoomRequirement_ForbiddenBuildings" MayRequire="Ludeon.RimWorld.Biotech">
+                <labelKey>RoomRequirementNoBiotechBuildings</labelKey>
+                <buildingTags><li>Biotech</li></buildingTags>
+            </li>
+            <li Class="RoomRequirement_ForbiddenBuildings" MayRequire="Ludeon.RimWorld.Anomaly">
+                <labelKey>RoomRequirementNoAnomalyBuildings</labelKey>
+                <buildingTags><li>Anomaly</li></buildingTags>
+            </li>
+        </bedroomRequirements>
+        <throneRoomRequirements />
+        <foodRequirement>
+            <minQuality>MealFine</minQuality>
+            <allowedTypes>Processed, Liquor</allowedTypes>
+        </foodRequirement>
+        <grantedAbilities><li>Speech</li></grantedAbilities>
+        <speechCooldown>600000</speechCooldown>
+    </RoyalTitleDef>
+    
+</Defs>

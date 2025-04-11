@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<MetalRegistry>
+	<metals>
+		<li>
+			<name>iron</name>
+			<godMetal>false</godMetal>
+			<color>(85, 93, 93)</color>
+			<allomancy>
+				<userName>lurcher</userName>
+				<description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
+				<group>physical</group>
+				<axis>external</axis>
+				<polarity>pulling</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>skimmer</userName>
+				<group>physical</group>
+				<description>Stores weight, allowing the user to become lighter or heavier.</description>
+			</feruchemy>
+		</li>
+		<li>
+			<name>steel</name>
+			<godMetal>false</godMetal>
+			<color>(92, 116, 116)</color>
+			<allomancy>
+				<userName>coinshot</userName>
+				<description>Can push on metals, allowing rapid movement or throwing metal objects.</description>
+				<group>physical</group>
+				<axis>external</axis>
+				<polarity>pushing</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>steelrunner</userName>
+				<description>Stores physical speed, allowing for bursts of superhuman speed.</description>
+				<group>physical</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>tin</name>
+			<godMetal>false</godMetal>
+			<color>(121, 113, 113)</color>
+			<allomancy>
+				<userName>tineye</userName>
+				<description>Enhances senses like sight, hearing, and smell.</description>
+				<group>physical</group>
+				<axis>internal</axis>
+				<polarity>pulling</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>windwhisper</userName>
+				<description>Stores senses, dulling them while storing and enhancing while tapping.</description>
+				<group>physical</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>pewter</name>
+			<godMetal>false</godMetal>
+			<color>(121, 113, 113)</color>
+			<allomancy>
+				<userName>thug</userName>
+				<description>Enhances physical strength and durability, useful in combat.</description>
+				<group>physical</group>
+				<axis>internal</axis>
+				<polarity>pushing</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>brute</userName>
+				<description>Stores physical strength, tapping grants bursts of power.</description>
+				<group>physical</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>zinc</name>
+			<godMetal>false</godMetal>
+			<color>(199, 145, 145)</color>
+			<allomancy>
+				<userName>rioter</userName>
+				<description>Can riot emotions, pushing others to feel stronger emotions.</description>
+				<group>mental</group>
+				<axis>external</axis>
+				<polarity>pushing</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>sparker</userName>
+				<description>Stores mental speed, allowing faster thought processes.</description>
+				<group>cognitive</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>brass</name>
+			<godMetal>false</godMetal>
+			<color>(181, 138, 138)</color>
+			<allomancy>
+				<userName>soother</userName>
+				<description>Can soothe emotions, calming people or manipulating moods.</description>
+				<group>mental</group>
+				<axis>external</axis>
+				<polarity>pulling</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>firesoul</userName>
+				<description>Stores warmth, useful for surviving cold environments or heating up.</description>
+				<group>cognitive</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>copper</name>
+			<godMetal>false</godMetal>
+			<color>(166, 94, 94)</color>
+			<allomancy>
+				<userName>smoker</userName>
+				<description>Creates a 'coppercloud' that hides Allomantic activity.</description>
+				<group>mental</group>
+				<axis>internal</axis>
+				<polarity>pulling</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>archivist</userName>
+				<description>Stores memories, allowing perfect recall of stored knowledge.</description>
+				<group>cognitive</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>bronze</name>
+			<godMetal>false</godMetal>
+			<color>(150, 104, 104)</color>
+			<allomancy>
+				<userName>seeker</userName>
+				<description>Detects other Allomancers using powers.</description>
+				<group>mental</group>
+				<axis>internal</axis>
+				<polarity>pushing</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>sentry</userName>
+				<description>Stores wakefulness, useful for staying awake or skipping sleep.</description>
+				<group>cognitive</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>aluminum</name>
+			<godMetal>false</godMetal>
+			<color>(215, 218, 218)</color>
+			<allomancy>
+				<userName>gnat (aluminum)</userName>
+				<description>Wipes away all other metal reserves.</description>
+				<group>enhancement</group>
+				<axis>internal</axis>
+				<polarity>pulling</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>trueself</userName>
+				<description>Stores identity, allowing anonymous interactions or forgery.</description>
+				<group>spiritual</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>duralumin</name>
+			<godMetal>false</godMetal>
+			<color>(198, 203, 203)</color>
+			<allomancy>
+				<userName>gnat (duralumin)</userName>
+				<description>Enhances the next Allomantic metal used drastically, but is consumed entirely.</description>
+				<group>enhancement</group>
+				<axis>internal</axis>
+				<polarity>pushing</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>connector</userName>
+				<description>Stores connection, useful for adjusting social ties or affiliations.</description>
+				<group>spiritual</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>chromium</name>
+			<godMetal>false</godMetal>
+			<color>(192, 192, 192)</color>
+			<allomancy>
+				<userName>leecher</userName>
+				<description>Wipes away another Allomancer's metal reserves.</description>
+				<group>enhancement</group>
+				<axis>external</axis>
+				<polarity>pulling</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>spinner</userName>
+				<description>Stores fortune, influencing luck subtly.</description>
+				<group>spiritual</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>nicrosil</name>
+			<godMetal>false</godMetal>
+			<color>(148, 148, 148)</color>
+			<allomancy>
+				<userName>nicroburst</userName>
+				<description>Boosts another Allomancer's power drastically.</description>
+				<group>enhancement</group>
+				<axis>external</axis>
+				<polarity>pushing</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>soulbearer</userName>
+				<description>Stores Investiture, enabling storage of magical energy.</description>
+				<group>spiritual</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>cadmium</name>
+			<godMetal>false</godMetal>
+			<color>(122, 187, 187)</color>
+			<allomancy>
+				<userName>pulser</userName>
+				<description>Slows down time in a bubble, creating a temporal distortion.</description>
+				<group>temporal</group>
+				<axis>external</axis>
+				<polarity>pulling</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>gaspers</userName>
+				<description>Stores breath, useful for surviving in low-oxygen environments.</description>
+				<group>hybrid</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>bendalloy</name>
+			<godMetal>false</godMetal>
+			<color>(189, 158, 158)</color>
+			<allomancy>
+				<userName>slider</userName>
+				<description>Speeds up time in a bubble around the user.</description>
+				<group>temporal</group>
+				<axis>external</axis>
+				<polarity>pushing</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>subsumer</userName>
+				<description>Stores nutrition, allowing users to go without food.</description>
+				<group>hybrid</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>gold</name>
+			<godMetal>false</godMetal>
+			<color>(230, 190, 190)</color>
+			<allomancy>
+				<userName>augur</userName>
+				<description>Shows alternate versions of oneself, based on different pasts.</description>
+				<group>temporal</group>
+				<axis>internal</axis>
+				<polarity>pulling</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>bloodmaker</userName>
+				<description>Stores health, allowing fast healing when tapped.</description>
+				<group>hybrid</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>electrum</name>
+			<godMetal>false</godMetal>
+			<color>(204, 182, 182)</color>
+			<allomancy>
+				<userName>oracle</userName>
+				<description>Shows one's own possible futures, useful for avoiding danger.</description>
+				<group>temporal</group>
+				<axis>internal</axis>
+				<polarity>pushing</polarity>
+			</allomancy>
+			<feruchemy>
+				<userName>pinnacle</userName>
+				<description>Stores determination or willpower.</description>
+				<group>hybrid</group>
+			</feruchemy>
+		</li>
+		<li>
+			<name>lerasium</name>
+			<godMetal>true</godMetal>
+			<color>(0, 0, 0)</color>
+			<allomancy>
+				<userName />
+				<description>Turns a person into a Mistborn when consumed.</description>
+				<group />
+				<axis />
+				<polarity />
+			</allomancy>
+			<feruchemy>
+				<userName />
+				<description>Unknown</description>
+				<group />
+			</feruchemy>
+		</li>
+		<li>
+			<name>atium</name>
+			<godMetal>true</godMetal>
+			<color>(255, 255, 255)</color>
+			<allomancy>
+				<userName>seer</userName>
+				<description>Allows a glimpse into the immediate future of others.</description>
+				<group />
+				<axis />
+				<polarity />
+			</allomancy>
+			<feruchemy>
+				<userName />
+				<description>Stores age, granting youth or aging when tapped.</description>
+				<group />
+			</feruchemy>
+		</li>
+		<li>
+			<name>harmonium</name>
+			<godMetal>true</godMetal>
+			<color>(255, 245, 245)</color>
+			<allomancy>
+				<userName />
+				<description>Explosive and unstable; function is not fully known.</description>
+				<group />
+				<axis />
+				<polarity />
+			</allomancy>
+			<feruchemy>
+				<userName />
+				<description>Possibly stores unknown attribute related to Harmony.</description>
+				<group />
+			</feruchemy>
+		</li>
+	</metals>
+</MetalRegistry>

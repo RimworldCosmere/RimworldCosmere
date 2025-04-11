@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereCore.Defs.ShardDef>
+        <defName>Ruin</defName>
+        <label>ruin</label>
+        <planet>Scadrial</planet>
+        <description>Ruin is the embodiment of entropy and decay; it seeks change, so that all may age and pass.</description>
+        <mutuallyExclusiveWith>
+            <li>Harmony</li>
+        </mutuallyExclusiveWith>
+    </CosmereCore.Defs.ShardDef>
+    <CosmereCore.Defs.ShardDef>
+        <defName>Preservation</defName>
+        <label>preservation</label>
+        <planet>Scadrial</planet>
+        <description>Preservation seeks to provide stability and preserve the world and its inhabitants in their current state. It values the status quo, regardless of whether or not the people living underneath it are happy, and supports those who seek to keep it.</description>
+        <mutuallyExclusiveWith>
+            <li>Harmony</li>
+        </mutuallyExclusiveWith>
+    </CosmereCore.Defs.ShardDef>
+    <CosmereCore.Defs.ShardDef>
+        <defName>Harmony</defName>
+        <label>harmony</label>
+        <planet>Scadrial</planet>
+        <description>Harmony's Intent relates to giving as many people as possible the ability to make their own decisions and choices.</description>
+        <mutuallyExclusiveWith>
+            <li>Ruin</li>
+            <li>Preservation</li>
+        </mutuallyExclusiveWith>
+    </CosmereCore.Defs.ShardDef>
+</Defs>

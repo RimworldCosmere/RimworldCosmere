@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef Name="Cosmere_PostCatacendre">
+    <defName>Cosmere_Scadrial_PostCatacendre</defName>
+    <label>Cosmere - Scadrial: Post-Catacendre</label>
+    <description>After the Catacendre, the old world has ended. Harmony watches over a new Scadrial. You are Scadrian settlers and Terris scholars forging a fresh future among the stars and storms.</description>
+    <scenario>
+      <summary>Rebuilders of a new world shaped by Harmony.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>PlayerColony</factionDef>
+      </playerFaction>
+      <parts>
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
+          <def>ConfigurePawnsXenotypes</def>
+          <pawnChoiceCount>4</pawnChoiceCount>
+          <customSummary>Start with four colonists: a mix of Scadrians and Terris, each reflecting the resilience and legacy of post-Catacendre Scadrial.</customSummary>
+          <overrideKinds>
+            <li>
+              <xenotype>Cosmere_Scadrian</xenotype>
+              <pawnKind>Cosmere_ScadrianPerson</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Terris</xenotype>
+              <pawnKind>Cosmere_TerrisPerson</pawnKind>
+            </li>
+          </overrideKinds>
+          <xenotypeCounts>
+            <li>
+              <xenotype>Cosmere_Scadrian</xenotype>
+              <count>2</count>
+            </li>
+            <li>
+              <xenotype>Cosmere_Terris</xenotype>
+              <count>2</count>
+            </li>
+          </xenotypeCounts>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealFine</thingDef>
+          <count>40</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_Revolver</thingDef>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>400</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>250</count>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>
+            The world has changed. Harmony guides the new Scadrial. As settlers in this age of peace, your survival — and what you build — will define the next era.
+          </text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+  </ScenarioDef>
+</Defs>

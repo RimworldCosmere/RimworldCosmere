@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <XenotypeDef>
+        <defName>Cosmere_Scadrian</defName>
+        <label>Scadrian</label>
+        <description>Scadrians are the unified descendants of both Skaa and Nobility following the Catacendre. Strong, capable, and socially adaptive.</description>
+        <displayPriority>4999</displayPriority>
+        <iconPath>UI/Icons/Xenotype/Noble</iconPath>
+        <genes>
+            <li>Cosmere_Scadrian_Heritage</li>
+            <li>Cosmere_Skaa_HighFertility</li>
+            <li>Cosmere_Skaa_Endurance</li>
+            <li>Cosmere_Noble_HighSocial</li>
+            <li>Cosmere_Noble_FastLearner</li>
+        </genes>
+    </XenotypeDef>
+
+</Defs>

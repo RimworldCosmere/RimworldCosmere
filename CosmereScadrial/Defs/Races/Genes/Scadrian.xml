@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+    <GeneDef Name="Cosmere_ScadrianGeneBase" ParentName="Cosmere_ScadrialGeneBase" Abstract="True">
+        <biostatCpx>1</biostatCpx>
+        <biostatMet>0</biostatMet>
+        <biostatArc>-1</biostatArc>
+    </GeneDef>
+    <GeneDef ParentName="Cosmere_ScadrianGeneBase">
+        <defName>Cosmere_Scadrian_Heritage</defName>
+        <label>scadrian bloodline</label>
+        <description>This pawn descends from both Skaa and Noble lines, bearing their combined legacy.</description>
+    </GeneDef>
+</Defs>

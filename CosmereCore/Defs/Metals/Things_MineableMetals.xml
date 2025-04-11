@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Raw Iron Definition -->
+    <!--<ThingDef ParentName="RockBase">
+        <defName>MineableIron</defName>
+        <label>iron ore</label>
+        <description>Unrefined iron ore mined directly from the earth.</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(139, 109, 92)</color>
+            <colorTwo>(169, 169, 169)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>250</MaxHitPoints>
+        </statBases>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <mineableThing>Iron</mineableThing>
+            <veinMineable>true</veinMineable>
+            <mineableYield>40</mineableYield>
+            <mineableScatterCommonality>0.8</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>35~65</mineableScatterLumpSizeRange>
+        </building>
+    </ThingDef>-->
+
+    <!-- Raw Tin Definition -->
+    <ThingDef ParentName="RockBase">
+        <defName>MineableTin</defName>
+        <label>tin ore</label>
+        <description>Unrefined tin ore mined directly from the earth.</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(245, 224, 183)</color>
+            <colorTwo>(192, 192, 192)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>200</MaxHitPoints>
+        </statBases>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <mineableThing>Tin</mineableThing>
+            <veinMineable>true</veinMineable>
+            <mineableYield>40</mineableYield>
+            <mineableScatterCommonality>0.8</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>35~65</mineableScatterLumpSizeRange>
+        </building>
+    </ThingDef>
+
+    <!-- Raw Chromium Definition (unchanged) -->
+    <ThingDef ParentName="RockBase">
+        <defName>MineableChromium</defName>
+        <label>chromium ore</label>
+        <description>Unrefined chromium ore mined directly from the earth.</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(224, 224, 224)</color>
+            <colorTwo>(144, 144, 144)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>300</MaxHitPoints>
+        </statBases>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <mineableThing>Chromium</mineableThing>
+            <veinMineable>true</veinMineable>
+            <mineableYield>30</mineableYield>
+            <mineableScatterCommonality>0.6</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>25~45</mineableScatterLumpSizeRange>
+        </building>
+    </ThingDef>
+
+    <!-- Raw Zinc Definition -->
+    <ThingDef ParentName="RockBase">
+        <defName>MineableZinc</defName>
+        <label>zinc ore</label>
+        <description>Unrefined zinc ore mined directly from the earth.</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(255, 255, 255)</color>
+            <colorTwo>(0, 0, 0)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>180</MaxHitPoints>
+        </statBases>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <mineableThing>Zinc</mineableThing>
+            <veinMineable>true</veinMineable>
+            <mineableYield>40</mineableYield>
+            <mineableScatterCommonality>0.7</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>30~55</mineableScatterLumpSizeRange>
+        </building>
+    </ThingDef>
+
+    <!-- Raw Copper Definition ->
+    <ThingDef ParentName="RockBase">
+        <defName>MineableCopper</defName>
+        <label>copper ore</label>
+        <description>Unrefined copper ore mined directly from the earth.</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(160, 82, 45)</color>
+            <colorTwo>(85, 107, 47)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>220</MaxHitPoints>
+        </statBases>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <mineableThing>MineableCopper</mineableThing>
+            <veinMineable>true</veinMineable>
+            <mineableYield>50</mineableYield>
+            <mineableScatterCommonality>0.9</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>40~70</mineableScatterLumpSizeRange>
+        </building>
+    </ThingDef>-->
+
+    <!-- Raw Cadmium Definition -->
+    <ThingDef ParentName="RockBase">
+        <defName>MineableCadmium</defName>
+        <label>cadmium ore</label>
+        <description>Unrefined cadmium ore mined directly from the earth.</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(139, 126, 102)</color>
+            <colorTwo>(255, 215, 0)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>150</MaxHitPoints>
+        </statBases>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <mineableThing>Cadmium</mineableThing>
+            <veinMineable>true</veinMineable>
+            <mineableYield>20</mineableYield>
+            <mineableScatterCommonality>0.4</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>15~35</mineableScatterLumpSizeRange>
+        </building>
+    </ThingDef>
+
+    <ThingDef ParentName="RockBase">
+        <defName>MineableNickel</defName>
+        <label>nickel ore</label>
+        <description>Unrefined nickel ore mined directly from the earth.</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(85, 107, 47)</color>
+            <colorTwo>(100, 100, 100)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>240</MaxHitPoints>
+        </statBases>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <mineableThing>Nickel</mineableThing>
+            <veinMineable>true</veinMineable>
+            <mineableYield>30</mineableYield>
+            <mineableScatterCommonality>0.5</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>20~40</mineableScatterLumpSizeRange>
+        </building>
+    </ThingDef>
+</Defs>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef parentName="AddictionBase">
+        <defName>InvestitureAddiction</defName>
+        <label>invested</label>
+        <description>This pawn is invested</description>
+        <causesNeed>Investiture</causesNeed>
+        <hediffClass>Hediff_Addiction</hediffClass>
+        <stages>
+            <li>
+                <label>invested</label>
+                <minSeverity>0</minSeverity>
+                <capMods />
+            </li>
+        </stages>
+    </HediffDef>
+    
+    <ChemicalDef>
+        <defName>Investiture</defName>
+        <label>investiture</label>
+        <addictionHediff>InvestitureAddiction</addictionHediff>
+        <generateAddictionGenes>false</generateAddictionGenes>
+        <canBinge>false</canBinge>
+    </ChemicalDef>
+</Defs>

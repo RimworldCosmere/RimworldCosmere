@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="352.84204" height="658.52399" id="svg3071" version="1.1" inkscape:version="0.48.4 r9939" sodipodi:docname="Copper (Feruchemy).svg">
+  <defs id="defs3073"/>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="0.49497475" inkscape:cx="242.00505" inkscape:cy="275.88262" inkscape:document-units="px" inkscape:current-layer="layer1" showgrid="false" fit-margin-top="0" fit-margin-left="0" fit-margin-right="0" fit-margin-bottom="0" inkscape:window-width="476" inkscape:window-height="516" inkscape:window-x="1104" inkscape:window-y="344" inkscape:window-maximized="0"/>
+  <metadata id="metadata3076">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(207.50501,291.10343)">
+    <path id="Brass" d="M 7.2610282,-24.40243 C 134.71603,99.51157 145.33703,208.66657 145.33703,208.66657 v -499.77 l -149.7270018,213.348 h -0.033 c -33.5660002,-22.517 -75.6930002,-47.548 -75.6930002,-47.548 h -53.643038 c 0,0 65.674038,42.238 109.863038,75.344 l -183.574038,261.566 c -0.035,0.036 -0.035,0.036 -0.035,0.036 h 37.74 l 0.035,-0.037 c 1.877,-1.593 61.64105,-52.75 83.766038,-67.232 24.324,-15.897 98.072,-51.303 108.586,-41.315 11.969,11.397 -56.646,114.321 -81.43,148.695 -21.311,29.531 -88.510038,115.667 -88.510038,115.667 h 47.19104 c 0,0 71.198998,-86.988 90.1409982,-119.206 20.9609998,-35.688 64.5469998,-146.186 56.1879998,-155.779 -11.787,-13.561 -112.553,15.081 -145.158,33.035 -4.921998,2.723 -11.151988,6.831 -18.055038,11.786 L 1.4520282,-29.70943 c 2.16,1.876 4.106,3.645 5.809,5.307 z m 104.7240018,-161.088 v 225.242 c -26.482002,-32.2870003 -62.279002,-74.599 -82.279002,-92.477 -2.088,-1.878 -4.602,-3.932 -7.51,-6.196 l 89.789002,-126.569 z" inkscape:connector-curvature="0"/>
+  </g>
+</svg>

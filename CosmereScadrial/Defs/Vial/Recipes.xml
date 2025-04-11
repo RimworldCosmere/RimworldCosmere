@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<Defs>
+    <RecipeDef>
+        <defName>Cosmere_CraftAllomanticVial</defName>
+        <label>craft allomantic vial</label>
+        <description>Infuse vodka with a small amount of allomantic metal to create a vial usable by Mistborn or
+            Mistings.
+        </description>
+        <workAmount>1600</workAmount>
+        <workSpeedStat>DrugCookingSpeed</workSpeedStat>
+        <effectWorking>CutStone</effectWorking>
+        <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+        <workSkill>Crafting</workSkill>
+        <workSkillLearnFactor>0</workSkillLearnFactor>
+        <skillRequirements>
+            <Crafting>4</Crafting>
+        </skillRequirements>
+        <recipeUsers>
+            <li>Cosmere_TableAllomancyForge</li>
+        </recipeUsers>
+        <defaultIngredientFilter>
+            <thingDefs>
+                <li>WoodLog</li>
+                <li>Cosmere_Vodka</li>
+            </thingDefs>
+            <categories>
+                <li>Cosmere_AllomancyVials</li>
+            </categories>
+        </defaultIngredientFilter>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>WoodLog</li>
+                <li>Cosmere_Vodka</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <researchPrerequisites>
+            <li>Cosmere_Allomancy</li>
+        </researchPrerequisites>
+    </RecipeDef>
+</Defs>

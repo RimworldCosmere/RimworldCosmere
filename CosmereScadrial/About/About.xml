@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--The above line is the start of every XML file. Just ignore it-->
+<ModMetaData>
+    <name>Cosmere - Scadrial</name>
+    <description>This mod adds the magic system from Brandon Sanderson's Mistborn series into RimWorld</description>
+    <author>CryptikLemur</author>
+    <supportedVersions>
+        <li>1.5</li>
+    </supportedVersions>
+    <packageId>cryptiklemur.cosmere.scadrial</packageId>
+    <modDependencies>
+        <li>
+            <packageId>cryptiklemur.cosmere.core</packageId>
+            <displayName>Cosmere - Core</displayName>
+        </li>
+    </modDependencies>
+    <forceLoadAfter>
+        <li>cryptiklemur.cosmere.core</li>
+    </forceLoadAfter>
+</ModMetaData>

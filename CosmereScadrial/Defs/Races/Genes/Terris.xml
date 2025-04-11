@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <GeneDef Name="Cosmere_TerrisGeneBase" ParentName="Cosmere_ScadrialGeneBase" Abstract="True">
+        <biostatCpx>1</biostatCpx>
+        <biostatMet>0</biostatMet>
+        <biostatArc>-1</biostatArc>
+    </GeneDef>
+    <GeneDef ParentName="Cosmere_TerrisGeneBase">
+        <defName>Cosmere_Terris_Heritage</defName>
+        <label>terris heritage</label>
+        <randomChosen>true</randomChosen>
+        <description>This pawn descends from a Terris bloodline. Their Feruchemical potential is increased.</description>
+    </GeneDef>
+    <GeneDef ParentName="Cosmere_TerrisGeneBase">
+        <defName>Cosmere_Terris_DeepMemory</defName>
+        <label>deep memory</label>
+        <description>This pawn was raised in a culture of oral tradition and scholarship. They learn more quickly than most.</description>
+        <statOffsets>
+            <GlobalLearningFactor>0.25</GlobalLearningFactor>
+        </statOffsets>
+    </GeneDef>
+    <GeneDef ParentName="Cosmere_TerrisGeneBase">
+        <defName>Cosmere_Terris_Peaceful</defName>
+        <label>nonviolent</label>
+        <description>This pawn comes from a tradition of peacekeeping and cultural preservation. Their combat ability is reduced.</description>
+        <statFactors>
+            <MeleeHitChance>0.85</MeleeHitChance>
+            <ShootingAccuracyPawn>0.85</ShootingAccuracyPawn>
+            <AimingDelayFactor>1.1</AimingDelayFactor>
+        </statFactors>
+    </GeneDef>
+    <GeneDef ParentName="Cosmere_TerrisGeneBase">
+        <defName>Cosmere_Terris_Stability</defName>
+        <label>mentally disciplined</label>
+        <description>This pawn has a stoic, composed mind. Mental breaks are slightly less likely.</description>
+        <statOffsets>
+            <MentalBreakThreshold>-0.05</MentalBreakThreshold>
+        </statOffsets>
+    </GeneDef>
+</Defs>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" ?>
+<Defs>
+  <GeneCategoryDef>
+    <defName>Cosmere_Scadrial</defName>
+    <label>Cosmere - Scadrial</label>
+    <displayPriorityInXenotype>5001</displayPriorityInXenotype>
+    <displayPriorityInGenepack>5001</displayPriorityInGenepack>
+  </GeneCategoryDef>
+  <GeneCategoryDef>
+    <defName>Cosmere_Scadrial_Allomancy</defName>
+    <label>Cosmere - Scadrial - Allomancy</label>
+    <displayPriorityInXenotype>5000</displayPriorityInXenotype>
+    <displayPriorityInGenepack>5000</displayPriorityInGenepack>
+  </GeneCategoryDef>
+  <GeneCategoryDef>
+    <defName>Cosmere_Scadrial_Feruchemy</defName>
+    <label>Cosmere - Scadrial - Feruchemy</label>
+    <displayPriorityInXenotype>4999</displayPriorityInXenotype>
+    <displayPriorityInGenepack>4999</displayPriorityInGenepack>
+  </GeneCategoryDef>
+</Defs>

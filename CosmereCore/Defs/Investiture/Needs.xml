@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NeedDef>
+		<defName>Cosmere_Investiture</defName>
+		<label>investiture</label>
+		<needClass>CosmereCore.Needs.Need_Investiture</needClass>
+		<major>true</major>
+		<fallPerDay>0</fallPerDay>
+		<baseLevel>0</baseLevel>
+		<minIntelligence>Humanlike</minIntelligence>
+		<listPriority>9999</listPriority>
+		<description>Represents this pawn’s connection to the spirit web of the Cosmere</description>
+	</NeedDef>
+</Defs>

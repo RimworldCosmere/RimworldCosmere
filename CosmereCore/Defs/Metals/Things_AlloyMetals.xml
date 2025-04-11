@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- Pewter (Alloy) -->
+	<ThingDef ParentName="BaseMetalBase">
+		<defName>Pewter</defName>
+		<label>pewter</label>
+		<description>Pewter is a refined alloy formed by blending Tin with Copper. Known for its soft, workable nature and a muted, classic luster, pewter has been a favored material for decorative and utilitarian objects since ancient times.</description>
+		<graphicData>
+			<texPath>Item/Resource/Pewter</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>1.0</MarketValue>
+			<Mass>0.9</Mass>
+			<StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>
+			<StuffPower_Armor_Blunt>0.45</StuffPower_Armor_Blunt>
+			<StuffPower_Armor_Heat>0.35</StuffPower_Armor_Heat>
+			<StuffPower_Insulation_Cold>0</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>0</StuffPower_Insulation_Heat>
+			<SharpDamageMultiplier>0.85</SharpDamageMultiplier>
+			<BluntDamageMultiplier>0.95</BluntDamageMultiplier>
+		</statBases>
+		<deepCommonality>2</deepCommonality>
+		<deepCountPerPortion>50</deepCountPerPortion>
+		<deepLumpSizeRange>5~10</deepLumpSizeRange>
+		<stuffProps>
+			<commonality>0.6</commonality>
+			<color>(150,150,150)</color>
+			<statFactors>
+				<MaxHitPoints>0.6</MaxHitPoints>
+				<Beauty>3</Beauty>
+				<Flammability>0.3</Flammability>
+				<MeleeWeapon_CooldownMultiplier>1.2</MeleeWeapon_CooldownMultiplier>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+	<!-- Duralumin (Alloy) -->
+	<ThingDef ParentName="BaseMetalBase">
+		<defName>Duralumin</defName>
+		<label>duralumin</label>
+		<description>Duralumin is a lightweight yet remarkably strong alloy made by combining Aluminium with Copper. Its excellent strength-to-weight ratio makes it indispensable in advanced engineering and high-performance designs.</description>
+		<graphicData>
+			<texPath>Item/Resource/Duralumin</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>1.0</MarketValue>
+			<Mass>0.9</Mass>
+			<StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>
+			<StuffPower_Armor_Blunt>0.45</StuffPower_Armor_Blunt>
+			<StuffPower_Armor_Heat>0.35</StuffPower_Armor_Heat>
+			<StuffPower_Insulation_Cold>0</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>0</StuffPower_Insulation_Heat>
+			<SharpDamageMultiplier>0.85</SharpDamageMultiplier>
+			<BluntDamageMultiplier>0.95</BluntDamageMultiplier>
+		</statBases>
+		<deepCommonality>2</deepCommonality>
+		<deepCountPerPortion>50</deepCountPerPortion>
+		<deepLumpSizeRange>5~10</deepLumpSizeRange>
+		<stuffProps>
+			<commonality>0.6</commonality>
+			<color>(215,215,220)</color>
+			<statFactors>
+				<MaxHitPoints>0.6</MaxHitPoints>
+				<Beauty>1</Beauty>
+				<Flammability>0.3</Flammability>
+				<MeleeWeapon_CooldownMultiplier>1.2</MeleeWeapon_CooldownMultiplier>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+	<!-- Nicrosil (Alloy) -->
+	<ThingDef ParentName="BaseMetalBase">
+		<defName>Nicrosil</defName>
+		<label>nicrosil</label>
+		<description>Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.</description>
+		<graphicData>
+			<texPath>Item/Resource/Nicrosil</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>1.0</MarketValue>
+			<Mass>0.9</Mass>
+			<StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>
+			<StuffPower_Armor_Blunt>0.45</StuffPower_Armor_Blunt>
+			<StuffPower_Armor_Heat>0.35</StuffPower_Armor_Heat>
+			<StuffPower_Insulation_Cold>0</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>0</StuffPower_Insulation_Heat>
+			<SharpDamageMultiplier>0.85</SharpDamageMultiplier>
+			<BluntDamageMultiplier>0.95</BluntDamageMultiplier>
+		</statBases>
+		<deepCommonality>2</deepCommonality>
+		<deepCountPerPortion>50</deepCountPerPortion>
+		<deepLumpSizeRange>5~10</deepLumpSizeRange>
+		<stuffProps>
+			<commonality>0.6</commonality>
+			<color>(190,190,200)</color>
+			<statFactors>
+				<MaxHitPoints>0.6</MaxHitPoints>
+				<Beauty>1</Beauty>
+				<Flammability>0.3</Flammability>
+				<MeleeWeapon_CooldownMultiplier>1.2</MeleeWeapon_CooldownMultiplier>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+	<!-- Brass (Alloy) -->
+	<ThingDef ParentName="BaseMetalBase">
+		<defName>Brass</defName>
+		<label>brass</label>
+		<description>Brass is a warm, golden alloy produced by blending Ind_Copper with zinc. Praised for its attractive appearance and excellent workability, brass finds extensive use in both decorative applications and practical components.</description>
+		<graphicData>
+			<texPath>Item/Resource/Brass</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>1.0</MarketValue>
+			<Mass>0.9</Mass>
+			<StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>
+			<StuffPower_Armor_Blunt>0.45</StuffPower_Armor_Blunt>
+			<StuffPower_Armor_Heat>0.35</StuffPower_Armor_Heat>
+			<StuffPower_Insulation_Cold>0</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>0</StuffPower_Insulation_Heat>
+			<SharpDamageMultiplier>0.85</SharpDamageMultiplier>
+			<BluntDamageMultiplier>0.95</BluntDamageMultiplier>
+		</statBases>
+		<deepCommonality>2</deepCommonality>
+		<deepCountPerPortion>50</deepCountPerPortion>
+		<deepLumpSizeRange>5~10</deepLumpSizeRange>
+		<stuffProps>
+			<commonality>0.6</commonality>
+			<color>(210,180,140)</color>
+			<statFactors>
+				<MaxHitPoints>0.6</MaxHitPoints>
+				<Beauty>1</Beauty>
+				<Flammability>0.3</Flammability>
+				<MeleeWeapon_CooldownMultiplier>1.2</MeleeWeapon_CooldownMultiplier>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+	<!-- Bronze (Alloy) -->
+	<ThingDef ParentName="BaseMetalBase">
+		<defName>Bronze</defName>
+		<label>bronze</label>
+		<description>Bronze is a time-honored alloy, resulting from the fusion of Ind_Copper and tin. Its rich, reddish-brown hue and enduring strength have made bronze a cornerstone of art, architecture, and historical craftsmanship.</description>
+		<graphicData>
+			<texPath>Item/Resource/Bronze</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>1.0</MarketValue>
+			<Mass>0.9</Mass>
+			<StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>
+			<StuffPower_Armor_Blunt>0.45</StuffPower_Armor_Blunt>
+			<StuffPower_Armor_Heat>0.35</StuffPower_Armor_Heat>
+			<StuffPower_Insulation_Cold>0</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>0</StuffPower_Insulation_Heat>
+			<SharpDamageMultiplier>0.85</SharpDamageMultiplier>
+			<BluntDamageMultiplier>0.95</BluntDamageMultiplier>
+		</statBases>
+		<deepCommonality>2</deepCommonality>
+		<deepCountPerPortion>50</deepCountPerPortion>
+		<deepLumpSizeRange>5~10</deepLumpSizeRange>
+		<stuffProps>
+			<commonality>0.6</commonality>
+			<color>(150,100,70)</color>
+			<statFactors>
+				<MaxHitPoints>0.6</MaxHitPoints>
+				<Beauty>1</Beauty>
+				<Flammability>0.3</Flammability>
+				<MeleeWeapon_CooldownMultiplier>1.2</MeleeWeapon_CooldownMultiplier>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+	<!-- Bendalloy (Alloy) -->
+	<ThingDef ParentName="BaseMetalBase">
+		<defName>Bendalloy</defName>
+		<label>bendalloy</label>
+		<description>Bendalloy is a mysterious and dynamic alloy created by precisely combining cadmium, zinc, and silver. Its shifting hues and volatile properties make it a material of both scientific intrigue and advanced technological potential.</description>
+		<graphicData>
+			<texPath>Item/Resource/Bendalloy</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>4.0</MarketValue>
+			<Mass>0.9</Mass>
+		</statBases>
+		<deepCommonality>2</deepCommonality>
+		<deepCountPerPortion>50</deepCountPerPortion>
+		<deepLumpSizeRange>5~10</deepLumpSizeRange>
+	</ThingDef>
+
+	<!-- Electrum (Alloy) -->
+	<ThingDef ParentName="BaseMetalBase">
+		<defName>Electrum</defName>
+		<label>electrum</label>
+		<description>Electrum is an alloy of gold and silver, characterized by its soft, pale, and luminous hue. This unique blend of precious metals has captivated civilizations for millennia with its subtle brilliance and inherent value.</description>
+		<graphicData>
+			<texPath>Item/Resource/Electrum</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>3.0</MarketValue>
+			<Mass>0.9</Mass>
+		</statBases>
+		<deepCommonality>2</deepCommonality>
+		<deepCountPerPortion>50</deepCountPerPortion>
+		<deepLumpSizeRange>5~10</deepLumpSizeRange>
+	</ThingDef>
+</Defs>

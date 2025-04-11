@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <XenotypeDef>
+        <defName>Cosmere_Terris</defName>
+        <label>Terris</label>
+        <description>A reclusive people known for their cultural memory and Feruchemical potential.</description>
+        <displayPriority>5000</displayPriority>
+        <inheritable>true</inheritable>
+        <iconPath>UI/Icons/Xenotype/Terris</iconPath>
+        <genes>
+            <li>Cosmere_Terris_Heritage</li>
+            <li>Cosmere_Terris_DeepMemory</li>
+            <li>Cosmere_Terris_Peaceful</li>
+            <li>Cosmere_Terris_Stability</li>
+        </genes>
+    </XenotypeDef>
+</Defs>

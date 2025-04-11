@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <TraitDef>
+    <defName>Cosmere_Invested</defName>
+    <label>invested</label>
+    <description>This pawn has formed a connection to the spiritual energy of the Cosmere and holds Biochromatic Equivalent Units (BEUs), representing their level of innate investiture.</description>
+    <commonality>0.0</commonality> <!-- Never assigned randomly -->
+    <degreeDatas>
+      <li>
+        <label>invested</label>
+        <description>This pawn is invested. They are capable of holding units of investiture (BEU).</description>
+        <degree>0</degree>
+      </li>
+      <li>
+        <label>First Heightening</label>
+        <description>Perfect pitch. This pawn has a heightened sense of tone and resonance.</description>
+        <degree>1</degree>
+      </li>
+      <li>
+        <label>Second Heightening</label>
+        <description>Perfect color recognition. This pawn perceives even the most subtle shifts in color.</description>
+        <degree>2</degree>
+      </li>
+      <li>
+        <label>Third Heightening</label>
+        <description>Perfect life sense. This pawn can sense nearby living beings without visual cues.</description>
+        <degree>3</degree>
+      </li>
+      <li>
+        <label>Fourth Heightening</label>
+        <description>Agelessness. The pawn ceases to physically age and is resistant to age-related decay.</description>
+        <degree>4</degree>
+      </li>
+      <li>
+        <label>Fifth Heightening</label>
+        <description>Enhanced bioinvestiture. The pawn's spiritual connection becomes vastly more efficient.</description>
+        <degree>5</degree>
+      </li>
+      <li>
+        <label>Sixth Heightening</label>
+        <description>Innate investiture control. The pawn can manipulate spiritual energy without effort.</description>
+        <degree>6</degree>
+      </li>
+      <li>
+        <label>Seventh Heightening</label>
+        <description>Command breaking. The pawn can disrupt existing investiture patterns with ease.</description>
+        <degree>7</degree>
+      </li>
+      <li>
+        <label>Eighth Heightening</label>
+        <description>Subconscious investiture shaping. The pawn influences the spiritual realm through intent alone.</description>
+        <degree>8</degree>
+      </li>
+      <li>
+        <label>Ninth Heightening</label>
+        <description>Investiture independence. The pawn no longer requires physical conduits to utilize spiritual energy.</description>
+        <degree>9</degree>
+      </li>
+      <li>
+        <label>Tenth Heightening</label>
+        <description>This pawn holds over 50,000 BEUs. Their spiritual aura is overwhelming.</description>
+        <degree>10</degree>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+</Defs>

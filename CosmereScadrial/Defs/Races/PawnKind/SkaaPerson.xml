@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <PawnKindDef>
+        <defName>Cosmere_SkaaPerson</defName>
+        <label>Skaa person</label>
+        <race>Human</race>
+        <xenotypeSet>
+            <xenotypeChances>
+              <Cosmere_Skaa>1</Cosmere_Skaa>
+            </xenotypeChances>
+          </xenotypeSet>
+        <combatPower>45</combatPower>
+        <gearHealthRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </gearHealthRange>
+        <initialResistanceRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </initialResistanceRange>
+        <initialWillRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </initialWillRange>
+        <inventoryOptions>
+            <skipChance>1</skipChance>
+        </inventoryOptions>
+    </PawnKindDef>
+</Defs>

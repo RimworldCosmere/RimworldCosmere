@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ResearchTabDef>
+		<defName>Cosmere_Scadrial</defName>
+		<label>Cosmere - Scadrial</label>
+	</ResearchTabDef>
+
+	<ResearchProjectDef>
+		<defName>Cosmere_Allomancy</defName>
+		<label>Allomancy</label>
+		<tab>Cosmere_Scadrial</tab>
+		<description>Do strange but awesome things with metals. You might have to eat them first...</description>
+		<baseCost>600</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>0.00</researchViewX>
+		<researchViewY>0.00</researchViewY>
+	</ResearchProjectDef>
+</Defs>

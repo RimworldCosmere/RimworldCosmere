@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ResearchProjectDef>
+		<defName>Cosmere_Alloys</defName>
+		<label>Metal Alloys</label>
+		<description>Combine metals in unique combinations to make new alloys.</description>
+		<baseCost>600</baseCost>
+		<techLevel>Medieval</techLevel>
+		<researchViewX>2.00</researchViewX>
+		<researchViewY>1.00</researchViewY>
+	</ResearchProjectDef>
+</Defs>

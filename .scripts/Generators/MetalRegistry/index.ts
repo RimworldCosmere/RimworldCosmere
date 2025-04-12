@@ -18,12 +18,8 @@ mods.forEach(({dir, templateName}) => {
   const defTemplate = readFileSync(resolve(__dirname, `${templateName}.xml.template`), 'utf8');
   const template = Handlebars.compile(defTemplate);
   const outputDir = resolve(dir, 'Resources', 'Generated');
-
+  
   rimrafSync(resolve(outputDir, 'MetalRegistry.xml'));
   mkdirSync(outputDir, {recursive: true});
   writeFileSync(resolve(outputDir, 'MetalRegistry.xml'), template({metals}))
-})
-
-metals.forEach(metal => {
-  console.log(`${metal.name} - [rgb(${metal.color.join(', ')})](https://rgb.to/rgb/${metal.color.join(',')})`);
 })

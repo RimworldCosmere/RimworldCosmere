@@ -2,7 +2,7 @@
   {
     "name": "iron",
     "godMetal": false,
-    "colors": [85, 93, 93],
+    "color": [85, 93, 93],
     "allomancy": {
       "userName": "lurcher",
       "description": "Can pull on metals, useful for drawing weapons or leaping through cities.",
@@ -14,6 +14,10 @@
       "userName": "skimmer",
       "group": "physical",
       "description": "Stores weight, allowing the user to become lighter or heavier."
+    },
+    "buildable": {
+      "buildings": true,
+      "items": true
     }
   },
   {
@@ -31,6 +35,10 @@
       "userName": "steelrunner",
       "description": "Stores physical speed, allowing for bursts of superhuman speed.",
       "group": "physical"
+    },
+    "buildable": {
+      "buildings": true,
+      "items": true
     }
   },
   {
@@ -48,6 +56,10 @@
       "userName": "windwhisper",
       "description": "Stores senses, dulling them while storing and enhancing while tapping.",
       "group": "physical"
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -65,6 +77,10 @@
       "userName": "brute",
       "description": "Stores physical strength, tapping grants bursts of power.",
       "group": "physical"
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -82,6 +98,10 @@
       "userName": "sparker",
       "description": "Stores mental speed, allowing faster thought processes.",
       "group": "cognitive"
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -99,6 +119,10 @@
       "userName": "firesoul",
       "description": "Stores warmth, useful for surviving cold environments or heating up.",
       "group": "cognitive"
+    },
+    "buildable": {
+      "buildings": true,
+      "items": true
     }
   },
   {
@@ -117,6 +141,10 @@
       "userName": "archivist",
       "description": "Stores memories, allowing perfect recall of stored knowledge.",
       "group": "cognitive"
+    },
+    "buildable": {
+      "buildings": true,
+      "items": true
     }
   },
   {
@@ -134,6 +162,10 @@
       "userName": "sentry",
       "description": "Stores wakefulness, useful for staying awake or skipping sleep.",
       "group": "cognitive"
+    },
+    "buildable": {
+      "buildings": true,
+      "items": true
     }
   },
   {
@@ -152,6 +184,10 @@
       "userName": "trueself",
       "description": "Stores identity, allowing anonymous interactions or forgery.",
       "group": "spiritual"
+    },
+    "buildable": {
+      "buildings": true,
+      "items": true
     }
   },
   {
@@ -169,6 +205,10 @@
       "userName": "connector",
       "description": "Stores connection, useful for adjusting social ties or affiliations.",
       "group": "spiritual"
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -186,6 +226,10 @@
       "userName": "spinner",
       "description": "Stores fortune, influencing luck subtly.",
       "group": "spiritual"
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -203,6 +247,10 @@
       "userName": "soulbearer",
       "description": "Stores Investiture, enabling storage of magical energy.",
       "group": "spiritual"
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -220,6 +268,10 @@
       "userName": "gaspers",
       "description": "Stores breath, useful for surviving in low-oxygen environments.",
       "group": "hybrid"
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -237,6 +289,10 @@
       "userName": "subsumer",
       "description": "Stores nutrition, allowing users to go without food.",
       "group": "hybrid"
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -254,6 +310,21 @@
       "userName": "bloodmaker",
       "description": "Stores health, allowing fast healing when tapped.",
       "group": "hybrid"
+    },
+    "buildable": {
+      "buildings": true,
+      "items": true
+    }
+  },
+  {
+    "name": "silver",
+    "godMetal": false,
+    "color": [192, 192, 192],
+    "allomancy": null,
+    "feruchemy": null,
+    "buildable": {
+      "buildings": true,
+      "items": true
     }
   },
   {
@@ -271,6 +342,10 @@
       "userName": "pinnacle",
       "description": "Stores determination or willpower.",
       "group": "hybrid"
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -288,6 +363,10 @@
       "userName": null,
       "description": "Unknown",
       "group": null
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -305,6 +384,10 @@
       "userName": null,
       "description": "Stores age, granting youth or aging when tapped.",
       "group": null
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   },
   {
@@ -322,6 +405,10 @@
       "userName": null,
       "description": "Possibly stores unknown attribute related to Harmony.",
       "group": null
+    },
+    "buildable": {
+      "buildings": false,
+      "items": false
     }
   }
 ]

@@ -7,6 +7,7 @@
 			<defName>{{#if defName}}{{defName}}{{else}}{{capitalize name}}{{/if}}</defName>
 			<godMetal>{{godMetal}}</godMetal>
 			<color>({{join color ", "}})</color>
+			{{#if allomancy}}
 			<allomancy>
 				{{#if allomancy.userName}}<userName>{{allomancy.userName}}</userName>{{else}}<userName />{{/if}}
 				{{#if allomancy.description}}<description>{{allomancy.description}}</description>{{else}}<description />{{/if}}
@@ -14,11 +15,14 @@
 				{{#if allomancy.axis}}<axis>{{allomancy.axis}}</axis>{{else}}<axis />{{/if}}
 				{{#if allomancy.polarity}}<polarity>{{allomancy.polarity}}</polarity>{{else}}<polarity />{{/if}}
 			</allomancy>
+			{{/if}}
+			{{#if feruchemy}}
 			<feruchemy>
 				{{#if feruchemy.userName}}<userName>{{feruchemy.userName}}</userName>{{else}}<userName />{{/if}}
 				{{#if feruchemy.description}}<description>{{feruchemy.description}}</description>{{else}}<description />{{/if}}
 				{{#if feruchemy.group}}<group>{{feruchemy.group}}</group>{{else}}<group />{{/if}}
 			</feruchemy>
+			{{/if}}
 		</li>
         {{/each}}
     </metals>

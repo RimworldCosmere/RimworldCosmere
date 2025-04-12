@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: Bendalloy -->
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_Misting_Bendalloy</defName>
+        <label>Bendalloy Misting</label>
+        <labelShortAdj>Slider</labelShortAdj>
+        <description>Speeds up time in a bubble around the user.</description>
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>15</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Misting_Bendalloy</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>bendalloy</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Bendalloy</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_Misting_Bendalloy</defName>
+        <label>Slider</label>
+        <description>Speeds up time in a bubble around the user.</description>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>bendalloy</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>Misting: Slider</label>
+                <description>Speeds up time in a bubble around the user.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+    
+    <!-- Ferring: Bendalloy -->
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_Ferring_Bendalloy</defName>
+        <label>Bendalloy Ferring</label>
+        <labelShortAdj>Subsumer</labelShortAdj>
+        <description>Stores nutrition, allowing users to go without food.</description>
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>15</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Ferring_Bendalloy</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>bendalloy</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Bendalloy</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_Ferring_Bendalloy</defName>
+        <label>Subsumer</label>
+        <description>Stores nutrition, allowing users to go without food.</description>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>bendalloy</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>Ferring: Subsumer</label>
+                <description>Stores nutrition, allowing users to go without food.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

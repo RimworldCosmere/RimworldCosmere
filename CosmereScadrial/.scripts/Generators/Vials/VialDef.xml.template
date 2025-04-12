@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_{{capitalize metal.Name}}</defName>
+    <label>{{capitalize metal.Name}} Vial</label>
+    <description>A vial containing {{capitalize metal.Name}} suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>{{metal.Name}}</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_{{capitalize metal.Name}}</defName>
+    <label>Craft Allomantic Vial ({{capitalize metal.Name}})</label>
+    <description>Create a vial of {{capitalize metal.Name}} infused alcohol for use by Mistborns and {{metal.Allomancy.UserName}}s.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>{{defName}}</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_{{capitalize metal.Name}}>1</Cosmere_AllomanticVial_{{capitalize metal.Name}}>
+    </products>
+  </RecipeDef>
+</Defs>

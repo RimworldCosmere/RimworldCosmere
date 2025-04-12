@@ -1,19 +1,12 @@
-﻿using CosmereCore.Tabs;
-using CosmereScadrial.Inspector;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Verse;
 
-namespace CosmereScadrial
-{
+namespace CosmereScadrial {
     [StaticConstructorOnStartup]
-    public static class Initializer
-    {
-        static Initializer()
-        {
-            var harmony = new Harmony("cryptiklemur.cosmere.scadrial");
-            harmony.PatchAll();
+    public static class Initializer {
+        static Initializer() {
+            new Harmony("cryptiklemur.cosmere.scadrial").PatchAll();
             Log.Message("[Cosmere] Harmony patches applied.");
-            InvestitureTabRegistry.Register(InvestitureTab_Scadrial.Draw);
         }
     }
 }

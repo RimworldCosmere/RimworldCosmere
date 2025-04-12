@@ -85,7 +85,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="CosmereUtils.cs"/>
+        <Compile Include="CosmereCore.cs"/>
         <Compile Include="GameComponent\GameComponent_CosmereShards.cs"/>
         <Compile Include="Initializer.cs"/>
         <Compile Include="Defs\ShardDef.cs"/>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="AbstractAllomanticVial" ParentName="DrugBase" Abstract="True">
+        <thingClass>ThingWithComps</thingClass>
+        <graphicData>
+            <texPath>Things/Item/AllomanticVial</texPath>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>(1,1)</drawSize>
+        </graphicData>
+        <thingCategories>
+            <li>Cosmere_Allomancy</li>
+        </thingCategories>
+        <ingestible>
+            <preferability>NeverForNutrition</preferability>
+            <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+            <defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce>
+            <chairSearchRadius>0</chairSearchRadius>
+            <ingestSound>Ingest_Drink</ingestSound>
+            <baseIngestTicks>10</baseIngestTicks>
+            <drugCategory>None</drugCategory>
+            <foodType>Fluid</foodType>
+            <ingestCommandString>Drink vial</ingestCommandString>
+            <ingestReportString>drinks an allomantic vial</ingestReportString>
+        </ingestible>
+        <statBases>
+            <Mass>0.1</Mass>
+            <MarketValue>8</MarketValue>
+        </statBases>
+        <stackLimit>10</stackLimit>
+        <tradeTags>
+            <li>Allomancy</li>
+            <li>Drugs</li>
+        </tradeTags>
+    </ThingDef>
+</Defs>	

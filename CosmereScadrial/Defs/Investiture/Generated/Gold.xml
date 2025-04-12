@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: Gold -->
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_Misting_Gold</defName>
+        <label>Gold Misting</label>
+        <labelShortAdj>Augur</labelShortAdj>
+        <description>Shows alternate versions of oneself, based on different pasts.</description>
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>16</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Misting_Gold</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>gold</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Gold</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_Misting_Gold</defName>
+        <label>Augur</label>
+        <description>Shows alternate versions of oneself, based on different pasts.</description>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>gold</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>Misting: Augur</label>
+                <description>Shows alternate versions of oneself, based on different pasts.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+    
+    <!-- Ferring: Gold -->
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_Ferring_Gold</defName>
+        <label>Gold Ferring</label>
+        <labelShortAdj>Bloodmaker</labelShortAdj>
+        <description>Stores health, allowing fast healing when tapped.</description>
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>16</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Ferring_Gold</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>gold</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Gold</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_Ferring_Gold</defName>
+        <label>Bloodmaker</label>
+        <description>Stores health, allowing fast healing when tapped.</description>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>gold</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>Ferring: Bloodmaker</label>
+                <description>Stores health, allowing fast healing when tapped.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

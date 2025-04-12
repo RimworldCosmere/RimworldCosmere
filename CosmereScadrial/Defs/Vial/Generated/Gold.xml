@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_Gold</defName>
+    <label>Gold Vial</label>
+    <description>A vial containing Gold suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>gold</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_Gold</defName>
+    <label>Craft Allomantic Vial (Gold)</label>
+    <description>Create a vial of Gold infused alcohol for use by Mistborns and augurs.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Gold</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_Gold>1</Cosmere_AllomanticVial_Gold>
+    </products>
+  </RecipeDef>
+</Defs>

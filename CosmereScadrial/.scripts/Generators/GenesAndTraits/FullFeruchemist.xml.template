@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_FullFeruchemist</defName>
+        <label>Full Feruchemist</label>
+        <description>A rare individual who can use all Feruchemical metals.</description>
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/FullFeruchemist</iconPath>
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>1</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_FullFeruchemist</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    {{#each metals}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </metals>
+            </li>
+        </modExtensions>
+    </GeneDef>
+  <TraitDef ParentName="AbstractInvestitureTrait">
+    <defName>Cosmere_FullFeruchemist</defName>
+    <label>Full Feruchemist</label>
+    <description>A rare individual who can use all Feruchemical metals.</description>
+    <modExtensions>
+        <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <metals>
+                {{#each metals}}
+                <li>{{this}}</li>
+                {{/each}}
+            </metals>
+        </li>
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>Full Feruchemist</label>
+        <description>A rare individual who can use all Feruchemical metals.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+</Defs>

@@ -1,13 +1,10 @@
 <?xml version="1.0" ?>
 <Defs>
-    <RecipeDef>
-        <defName>Cosmere_CraftAllomanticVial</defName>
-        <label>craft allomantic vial</label>
-        <description>Infuse vodka with a small amount of allomantic metal to create a vial usable by Mistborn or Mistings.</description>
-        <workAmount>1600</workAmount>
+    <RecipeDef Name="AbstractCraftAllomanticVial" Abstract="True">
+        <workAmount>600</workAmount>
         <workSpeedStat>DrugCookingSpeed</workSpeedStat>
-        <effectWorking>CutStone</effectWorking>
-        <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+        <effectWorking>Cook</effectWorking>
+        <soundWorking>Recipe_CookMeal</soundWorking>
         <workSkill>Crafting</workSkill>
         <workSkillLearnFactor>0</workSkillLearnFactor>
         <skillRequirements>
@@ -18,29 +15,6 @@
         </recipeUsers>
         
         <ingredients>
-            <li>
-                <filter>
-                    <thingDefs>
-                        <li>Steel</li>
-                        <li>Iron</li>
-                        <li>Pewter</li>
-                        <li>Tin</li>
-                        <li>Zinc</li>
-                        <li>Brass</li>
-                        <li>Ind_Copper</li>
-                        <li>Bronze</li>
-                        <li>Duralumin</li>
-                        <li>Ind_Aluminium</li>
-                        <li>Nicrosil</li>
-                        <li>Chromium</li>
-                        <li>Gold</li>
-                        <li>Electrum</li>
-                        <li>Cadmium</li>
-                        <li>Bendalloy</li>
-                    </thingDefs>
-                </filter>
-                <count>2</count>
-            </li>
             <li>
                 <filter>
                     <thingDefs>
@@ -58,9 +32,6 @@
                 <count>1</count>
             </li>
         </ingredients>
-        <products>
-            <Cosmere_AllomanticVial>8</Cosmere_AllomanticVial>
-        </products>
         <researchPrerequisites>
             <li>Cosmere_Allomancy</li>
         </researchPrerequisites>

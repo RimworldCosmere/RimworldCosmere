@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_Brass</defName>
+    <label>Brass Vial</label>
+    <description>A vial containing Brass suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>brass</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_Brass</defName>
+    <label>Craft Allomantic Vial (Brass)</label>
+    <description>Create a vial of Brass infused alcohol for use by Mistborns and soothers.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Brass</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_Brass>1</Cosmere_AllomanticVial_Brass>
+    </products>
+  </RecipeDef>
+</Defs>

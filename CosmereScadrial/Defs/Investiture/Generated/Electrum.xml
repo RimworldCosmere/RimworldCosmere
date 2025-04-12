@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: Electrum -->
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_Misting_Electrum</defName>
+        <label>Electrum Misting</label>
+        <labelShortAdj>Oracle</labelShortAdj>
+        <description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>17</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Misting_Electrum</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>electrum</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Electrum</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_Misting_Electrum</defName>
+        <label>Oracle</label>
+        <description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>electrum</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>Misting: Oracle</label>
+                <description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+    
+    <!-- Ferring: Electrum -->
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_Ferring_Electrum</defName>
+        <label>Electrum Ferring</label>
+        <labelShortAdj>Pinnacle</labelShortAdj>
+        <description>Stores determination or willpower.</description>
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>17</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Ferring_Electrum</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>electrum</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Electrum</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_Ferring_Electrum</defName>
+        <label>Pinnacle</label>
+        <description>Stores determination or willpower.</description>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>electrum</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>Ferring: Pinnacle</label>
+                <description>Stores determination or willpower.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

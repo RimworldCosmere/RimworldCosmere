@@ -18,4 +18,12 @@
     <displayPriorityInXenotype>4999</displayPriorityInXenotype>
     <displayPriorityInGenepack>4999</displayPriorityInGenepack>
   </GeneCategoryDef>
+  <Gene Name="AbstractInvestitureGene" Abstract="True">
+    <geneClass>CosmereScadrial.Defs.Gene_Metalborn</geneClass>
+    <passOnDirectly>false</passOnDirectly>
+    <biostatCpx>5</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <biostatArc>1</biostatArc>
+    <randomChosen>false</randomChosen>
+  </Gene>
 </Defs>

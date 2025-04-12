@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_Pewter</defName>
+    <label>Pewter Vial</label>
+    <description>A vial containing Pewter suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>pewter</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_Pewter</defName>
+    <label>Craft Allomantic Vial (Pewter)</label>
+    <description>Create a vial of Pewter infused alcohol for use by Mistborns and thugs.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Pewter</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_Pewter>1</Cosmere_AllomanticVial_Pewter>
+    </products>
+  </RecipeDef>
+</Defs>

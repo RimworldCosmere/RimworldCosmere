@@ -84,6 +84,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="Abilities\CompProperties_AbilityBurnMetal.cs"/>
         <Compile Include="CompProperties\CompProperties_AllomanticVial.cs"/>
         <Compile Include="CompProperties\CompProperties_ScadrialInvestiture.cs"/>
         <Compile Include="Comps\CompAllomanticVial.cs"/>
@@ -93,6 +94,7 @@
         <Compile Include="Dev\DevFillInvestitureUtility.cs"/>
         <Compile Include="Genes\GeneInheritanceUtility.cs"/>
         <Compile Include="Genes\Gene_Metalborn.cs"/>
+        <Compile Include="Hediffs\HediffCompProperties_BurnMetal.cs"/>
         <Compile Include="Initializer.cs"/>
         <Compile Include="Inspector\InvestitureTab_Scadrial.cs"/>
         <Compile Include="MetalInfo.cs"/>

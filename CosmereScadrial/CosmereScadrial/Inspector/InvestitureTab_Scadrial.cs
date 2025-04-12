@@ -37,7 +37,8 @@ namespace CosmereScadrial.Inspector {
 
         private static void DrawAllomanticMetalTable(Pawn pawn, Rect outerRect, Listing_Standard listing) {
             var comp = pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompScadrialInvestiture");
-            if (comp?.GetType().GetField("metalReserves")?.GetValue(comp) is not Dictionary<string, float> reserves) return;
+            var reserves = comp?.GetType().GetField("metalReserves")?.GetValue(comp) as Dictionary<string, float>;
+            if (reserves == null) return;
 
             var groups = new[] { "Physical", "Mental", "Enhancement", "Temporal" };
             var axes = new[] { "External", "Internal" };
@@ -66,10 +67,10 @@ namespace CosmereScadrial.Inspector {
                     for (var col = 0; col < groups.Length; col++) {
                         var group = groups[col];
 
-                        var metal = MetalRegistry.Metals.Values.FirstOrDefault(m =>
-                            m.Allomancy.Group.EqualsIgnoreCase(group)
-                            && m.Allomancy.Axis.EqualsIgnoreCase(axis)
-                            && m.Allomancy.Polarity.EqualsIgnoreCase(polarity));
+                        var metal = MetalRegistry.Metals.Values.FirstOrDefault(m => m.Allomancy != null &&
+                                                                                    m.Allomancy.Group.EqualsIgnoreCase(group)
+                                                                                    && m.Allomancy.Axis.EqualsIgnoreCase(axis)
+                                                                                    && m.Allomancy.Polarity.EqualsIgnoreCase(polarity));
 
                         var cellRect = new Rect(
                             outerRect.x + cellWidth * (col + 1),
@@ -79,7 +80,7 @@ namespace CosmereScadrial.Inspector {
                         );
 
                         if (metal != null) {
-                            var value = reserves.TryGetValue(metal.Name, out var amt) ? amt : 0f;
+                            var value = reserves.TryGetValue(metal.Name.ToLower(), out var amt) ? amt : 0f;
 
                             // Prep bar space in Listing
                             listing.Gap(2f);

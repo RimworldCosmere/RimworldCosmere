@@ -20,6 +20,13 @@
                 </metals>
             </li>
         </modExtensions>
+        {{#if metal.Allomancy.Abilities}}
+        <abilities>
+            {{#each metal.Allomancy.Abilities}}
+            <li>{{this}}</li>
+            {{/each}}
+        </abilities>
+        {{/if}}
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/{{capitalize metal.Name}}</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">

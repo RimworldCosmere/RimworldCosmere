@@ -34,6 +34,8 @@
                 </metals>
             </li>
         </modExtensions>
+        <abilities>
+        </abilities>
     </GeneDef>
   <TraitDef ParentName="AbstractInvestitureTrait">
     <defName>Cosmere_FullFeruchemist</defName>

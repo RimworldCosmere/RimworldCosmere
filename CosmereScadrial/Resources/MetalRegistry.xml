@@ -105,6 +105,7 @@
 		</li>
 		<li>
 			<name>copper</name>
+			<defName>Ind_Copper</defName>
 			<godMetal>false</godMetal>
 			<color>(166, 94, 94)</color>
 			<allomancy>
@@ -139,6 +140,7 @@
 		</li>
 		<li>
 			<name>aluminum</name>
+			<defName>Ind_Aluminium</defName>
 			<godMetal>false</godMetal>
 			<color>(215, 218, 218)</color>
 			<allomancy>
@@ -278,16 +280,16 @@
 			<godMetal>true</godMetal>
 			<color>(0, 0, 0)</color>
 			<allomancy>
-				<userName />
+				<userName/>
 				<description>Turns a person into a Mistborn when consumed.</description>
-				<group />
-				<axis />
-				<polarity />
+				<group/>
+				<axis/>
+				<polarity/>
 			</allomancy>
 			<feruchemy>
-				<userName />
+				<userName/>
 				<description>Unknown</description>
-				<group />
+				<group/>
 			</feruchemy>
 		</li>
 		<li>
@@ -297,14 +299,14 @@
 			<allomancy>
 				<userName>seer</userName>
 				<description>Allows a glimpse into the immediate future of others.</description>
-				<group />
-				<axis />
-				<polarity />
+				<group/>
+				<axis/>
+				<polarity/>
 			</allomancy>
 			<feruchemy>
-				<userName />
+				<userName/>
 				<description>Stores age, granting youth or aging when tapped.</description>
-				<group />
+				<group/>
 			</feruchemy>
 		</li>
 		<li>
@@ -312,16 +314,16 @@
 			<godMetal>true</godMetal>
 			<color>(255, 245, 245)</color>
 			<allomancy>
-				<userName />
+				<userName/>
 				<description>Explosive and unstable; function is not fully known.</description>
-				<group />
-				<axis />
-				<polarity />
+				<group/>
+				<axis/>
+				<polarity/>
 			</allomancy>
 			<feruchemy>
-				<userName />
+				<userName/>
 				<description>Possibly stores unknown attribute related to Harmony.</description>
-				<group />
+				<group/>
 			</feruchemy>
 		</li>
 	</metals>

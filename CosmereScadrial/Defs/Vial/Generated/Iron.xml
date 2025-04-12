@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_Iron</defName>
+    <label>Iron Vial</label>
+    <description>A vial containing Iron suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>iron</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_Iron</defName>
+    <label>Craft Allomantic Vial (Iron)</label>
+    <description>Create a vial of Iron infused alcohol for use by Mistborns and lurchers.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Iron</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_Iron>1</Cosmere_AllomanticVial_Iron>
+    </products>
+  </RecipeDef>
+</Defs>

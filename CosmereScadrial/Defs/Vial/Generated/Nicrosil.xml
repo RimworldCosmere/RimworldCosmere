@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_Nicrosil</defName>
+    <label>Nicrosil Vial</label>
+    <description>A vial containing Nicrosil suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>nicrosil</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_Nicrosil</defName>
+    <label>Craft Allomantic Vial (Nicrosil)</label>
+    <description>Create a vial of Nicrosil infused alcohol for use by Mistborns and nicrobursts.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Nicrosil</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_Nicrosil>1</Cosmere_AllomanticVial_Nicrosil>
+    </products>
+  </RecipeDef>
+</Defs>

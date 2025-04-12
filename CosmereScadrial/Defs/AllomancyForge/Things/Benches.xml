@@ -40,7 +40,7 @@
         <passability>PassThroughOnly</passability>
         <pathCost>50</pathCost>
         <hasInteractionCell>True</hasInteractionCell>
-        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+        <interactionCellOffset>(0,0,-2)</interactionCellOffset>
         <surfaceType>Item</surfaceType>
         <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
         <inspectorTabs>
@@ -55,6 +55,31 @@
                 <linkableFacilities>
                     <li>ToolCabinet</li>
                 </linkableFacilities>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Glower">
+                <glowRadius>4</glowRadius>
+                <glowColor>(255,120,60,0)</glowColor>
+                <overlightRadius>2</overlightRadius>
+            </li>
+            <li Class="CompProperties_Refuelable">
+                <fuelFilter>
+                    <thingDefs>
+                        <li>WoodLog</li>
+                        <li>Coal</li>
+                        <li>Charcoal</li>
+                    </thingDefs>
+                </fuelFilter>
+                <fuelCapacity>100</fuelCapacity>
+                <fuelConsumptionRate>1.0</fuelConsumptionRate> <!-- per tick while active -->
+                <initialFuelPercent>0</initialFuelPercent>
+                <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+                <autoRefuelPercent>0.2</autoRefuelPercent>
+                <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+            </li>
+            <li Class="CompProperties_HeatPusher">
+                <heatPerSecond>6</heatPerSecond>
+                <heatPushMaxTemperature>50</heatPushMaxTemperature>
             </li>
         </comps>
         <researchPrerequisites>

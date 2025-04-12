@@ -1,15 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <TraitDef>
+  <TraidDef Name="AbstractInvestitureTrait" Abstract="True">
+    <commonality>0</commonality>
+  </TraidDef>
+  <TraitDef ParentName="AbstractInvestitureTrait">
     <defName>Cosmere_Metalborn</defName>
     <label>Metalborn</label>
     <description>This person was born with one or more of the Metallic Arts.</description>
-    <commonality>0</commonality> <!-- Prevents random assignment -->
     <degreeDatas>
       <li>
         <label>Metalborn</label>
         <description>This person is a user of the Metallic Arts.</description>
         <degree>0</degree>
+        <commonality>0</commonality>
       </li>
     </degreeDatas>
   </TraitDef>

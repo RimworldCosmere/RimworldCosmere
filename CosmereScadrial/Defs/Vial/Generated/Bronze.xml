@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_Bronze</defName>
+    <label>Bronze Vial</label>
+    <description>A vial containing Bronze suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>bronze</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_Bronze</defName>
+    <label>Craft Allomantic Vial (Bronze)</label>
+    <description>Create a vial of Bronze infused alcohol for use by Mistborns and seekers.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Bronze</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_Bronze>1</Cosmere_AllomanticVial_Bronze>
+    </products>
+  </RecipeDef>
+</Defs>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: {{capitalize metal.Name}} -->
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_Misting_{{capitalize metal.Name}}</defName>
+        <label>{{capitalize metal.Name}} Misting</label>
+        <labelShortAdj>{{capitalize metal.Allomancy.UserName}}</labelShortAdj>
+        <description>{{metal.Allomancy.Description}}</description>
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>{{order}}</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Misting_{{capitalize metal.Name}}</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>{{metal.Name}}</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/{{capitalize metal.Name}}</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_Misting_{{capitalize metal.Name}}</defName>
+        <label>{{capitalize metal.Allomancy.UserName}}</label>
+        <description>{{metal.Allomancy.Description}}</description>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>{{metal.Name}}</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>Misting: {{capitalize metal.Allomancy.UserName}}</label>
+                <description>{{metal.Allomancy.Description}}</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+    
+    <!-- Ferring: {{capitalize metal.Name}} -->
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_Ferring_{{capitalize metal.Name}}</defName>
+        <label>{{capitalize metal.Name}} Ferring</label>
+        <labelShortAdj>{{capitalize metal.Feruchemy.UserName}}</labelShortAdj>
+        <description>{{metal.Feruchemy.Description}}</description>
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>{{order}}</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Ferring_{{capitalize metal.Name}}</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>{{metal.Name}}</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/{{capitalize metal.Name}}</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_Ferring_{{capitalize metal.Name}}</defName>
+        <label>{{capitalize metal.Feruchemy.UserName}}</label>
+        <description>{{metal.Feruchemy.Description}}</description>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>{{metal.Name}}</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>Ferring: {{capitalize metal.Feruchemy.UserName}}</label>
+                <description>{{metal.Feruchemy.Description}}</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

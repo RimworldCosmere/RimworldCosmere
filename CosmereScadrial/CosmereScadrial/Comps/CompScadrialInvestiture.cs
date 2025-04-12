@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using CosmereScadrial.Registry;
 using Verse;
 
 namespace CosmereScadrial.Comps {
@@ -7,7 +9,7 @@ namespace CosmereScadrial.Comps {
  * @todo Should these reserves decay?
  */
     public class CompScadrialInvestiture : ThingComp {
-        public Dictionary<string, float> metalReserves = new();
+        public Dictionary<string, float> metalReserves = new Dictionary<string, float>();
 
         public override void PostExposeData() {
             base.PostExposeData();
@@ -19,14 +21,21 @@ namespace CosmereScadrial.Comps {
         }
 
         public void AddReserve(string metal, float amount) {
-            metalReserves[metal] += amount;
+            if (!metalReserves.ContainsKey(metal)) {
+                metalReserves[metal] = 0;
+            }
+
+            var max = MetalRegistry.Metals[metal.ToLower()].MaxAmount;
+            SetReserve(metal, Math.Max(metalReserves[metal] + amount, max));
         }
 
         public void RemoveReserve(string metal, bool delete) {
-            if (delete)
+            if (delete) {
                 metalReserves.Remove(metal);
-            else
+            }
+            else {
                 SetReserve(metal, 0);
+            }
         }
 
         public float GetReserve(string metal) {

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: Pewter -->
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_Misting_Pewter</defName>
+        <label>Pewter Misting</label>
+        <labelShortAdj>Thug</labelShortAdj>
+        <description>Enhances physical strength and durability, useful in combat.</description>
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>5</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Misting_Pewter</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>pewter</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Pewter</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_Misting_Pewter</defName>
+        <label>Thug</label>
+        <description>Enhances physical strength and durability, useful in combat.</description>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>pewter</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>Misting: Thug</label>
+                <description>Enhances physical strength and durability, useful in combat.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+    
+    <!-- Ferring: Pewter -->
+    <GeneDef ParentName="AbstractInvestitureGene">
+        <defName>Cosmere_Ferring_Pewter</defName>
+        <label>Pewter Ferring</label>
+        <labelShortAdj>Brute</labelShortAdj>
+        <description>Stores physical strength, tapping grants bursts of power.</description>
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>5</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Ferring_Pewter</def>
+            </li>
+        </forcedTraits>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>pewter</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Pewter</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_Ferring_Pewter</defName>
+        <label>Brute</label>
+        <description>Stores physical strength, tapping grants bursts of power.</description>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metals>
+                    <li>pewter</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>Ferring: Brute</label>
+                <description>Stores physical strength, tapping grants bursts of power.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

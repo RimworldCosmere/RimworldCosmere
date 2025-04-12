@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_Chromium</defName>
+    <label>Chromium Vial</label>
+    <description>A vial containing Chromium suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>chromium</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_Chromium</defName>
+    <label>Craft Allomantic Vial (Chromium)</label>
+    <description>Create a vial of Chromium infused alcohol for use by Mistborns and leechers.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Chromium</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_Chromium>1</Cosmere_AllomanticVial_Chromium>
+    </products>
+  </RecipeDef>
+</Defs>

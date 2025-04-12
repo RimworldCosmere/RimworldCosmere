@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "generate:vials": "tsx ./Generators/Vials && echo \"Done!\"",
+    "generate:genesAndTraits": "tsx ./Generators/GenesAndTraits && echo \"Done!\""
+  },
+  "private": true,
+  "dependencies": {
+    "fast-xml-parser": "^5.2.0",
+    "handlebars": "^4.7.8",
+    "lodash": "^4.17.21",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/lodash": "~4.17.16",
+    "@types/node": "^22.14.1"
+  }
+}

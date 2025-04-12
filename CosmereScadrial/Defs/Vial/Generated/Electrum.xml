@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_Electrum</defName>
+    <label>Electrum Vial</label>
+    <description>A vial containing Electrum suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>electrum</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_Electrum</defName>
+    <label>Craft Allomantic Vial (Electrum)</label>
+    <description>Create a vial of Electrum infused alcohol for use by Mistborns and oracles.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Electrum</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_Electrum>1</Cosmere_AllomanticVial_Electrum>
+    </products>
+  </RecipeDef>
+</Defs>

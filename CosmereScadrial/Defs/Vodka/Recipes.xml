@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<RecipeDef>
-		<defName>Cosmere_MakeVodkaMash</defName>
-		<label>make vodka mash</label>
-		<description>Make mash from potatoes.</description>
-		<jobString>Making mash.</jobString>
-		<workSpeedStat>DrugCookingSpeed</workSpeedStat>
-		<workSkill>Cooking</workSkill>
-		<effectWorking>Cook</effectWorking>
-		<soundWorking>Recipe_Brewing</soundWorking>
-		<allowMixingIngredients>true</allowMixingIngredients>
-		<workAmount>1000</workAmount>
-		<targetCountAdjustment>1</targetCountAdjustment>
-		<ingredients>
-			<li>
-				<filter>
-					<thingDefs>
-						<li>RawPotatoes</li>
-					</thingDefs>
-				</filter>
-				<count>25</count>
-			</li>
-		</ingredients>
-		<fixedIngredientFilter>
-			<thingDefs>
-				<li>RawPotatoes</li>
-			</thingDefs>
-		</fixedIngredientFilter>
-		<products>
-			<Cosmere_PotatoMash>5</Cosmere_PotatoMash>
-		</products>
-		<recipeUsers>
-			<li>Brewery</li>
-		</recipeUsers>
-	</RecipeDef>
+    <RecipeDef>
+        <defName>Cosmere_MakeVodkaMash</defName>
+        <label>make potato mash</label>
+        <description>Make mash from potatoes.</description>
+        <jobString>Making mash.</jobString>
+        <workSpeedStat>DrugCookingSpeed</workSpeedStat>
+        <workSkill>Cooking</workSkill>
+        <effectWorking>Cook</effectWorking>
+        <soundWorking>Recipe_Brewing</soundWorking>
+        <allowMixingIngredients>true</allowMixingIngredients>
+        <workAmount>1000</workAmount>
+        <targetCountAdjustment>1</targetCountAdjustment>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>RawPotatoes</li>
+                    </thingDefs>
+                </filter>
+                <count>25</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>RawPotatoes</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <Cosmere_PotatoMash>5</Cosmere_PotatoMash>
+        </products>
+        <recipeUsers>
+            <li>Brewery</li>
+        </recipeUsers>
+    </RecipeDef>
 
-	<RecipeDef>
-		<defName>Cosmere_DistillVodka</defName>
-		<label>distill vodka</label>
-		<description>Distill vodka from potato mash</description>
-		<jobString>Distilling vodka.</jobString>
-		<workSpeedStat>DrugCookingSpeed</workSpeedStat>
-		<workSkill>Cooking</workSkill>
-		<effectWorking>Cook</effectWorking>
-		<soundWorking>Recipe_Brewing</soundWorking>
-		<allowMixingIngredients>true</allowMixingIngredients>
-		<workAmount>1000</workAmount>
-		<targetCountAdjustment>1</targetCountAdjustment>
-		<ingredients>
-			<li>
-				<filter>
-					<thingDefs>
-						<li>Cosmere_PotatoMash</li>
-					</thingDefs>
-				</filter>
-				<count>10</count>
-			</li>
-		</ingredients>
-		<fixedIngredientFilter>
-			<thingDefs>
-				<li>Cosmere_PotatoMash</li>
-			</thingDefs>
-		</fixedIngredientFilter>
-		<products>
-			<Cosmere_Vodka>5</Cosmere_Vodka>
-		</products>
-		<recipeUsers>
-			<li>Cosmere_TableFueledStill</li>
-		</recipeUsers>
-	</RecipeDef>
+    <RecipeDef>
+        <defName>Cosmere_DistillVodka</defName>
+        <label>distill vodka</label>
+        <description>Distill vodka from potato mash</description>
+        <jobString>Distilling vodka.</jobString>
+        <workSpeedStat>DrugCookingSpeed</workSpeedStat>
+        <workSkill>Cooking</workSkill>
+        <effectWorking>Cook</effectWorking>
+        <soundWorking>Recipe_Brewing</soundWorking>
+        <allowMixingIngredients>true</allowMixingIngredients>
+        <workAmount>1000</workAmount>
+        <targetCountAdjustment>1</targetCountAdjustment>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Cosmere_PotatoMash</li>
+                    </thingDefs>
+                </filter>
+                <count>10</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Cosmere_PotatoMash</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <Cosmere_Vodka>5</Cosmere_Vodka>
+        </products>
+        <recipeUsers>
+            <li>Cosmere_TableFueledStill</li>
+        </recipeUsers>
+    </RecipeDef>
 </Defs>

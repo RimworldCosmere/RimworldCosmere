@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_Pushing</defName>
+    <label>Mistborn Vial: Pushing</label>
+    <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>steel</li>
+          <li>pewter</li>
+          <li>zinc</li>
+          <li>bronze</li>
+          <li>duralumin</li>
+          <li>nicrosil</li>
+          <li>bendalloy</li>
+          <li>electrum</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_Pushing</defName>
+    <label>Craft Mistborn Vial: Pushing</label>
+    <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Steel</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Pewter</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Zinc</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Bronze</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Duralumin</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Nicrosil</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Electrum</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_Pushing>8</Cosmere_AllomanticVial_Pushing>
+    </products>
+  </RecipeDef>
+</Defs>

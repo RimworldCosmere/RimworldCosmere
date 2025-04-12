@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_EnhancementTemporal</defName>
+    <label>Mistborn Vial: Enhancement + Temporal</label>
+    <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>aluminum</li>
+          <li>duralumin</li>
+          <li>chromium</li>
+          <li>nicrosil</li>
+          <li>cadmium</li>
+          <li>bendalloy</li>
+          <li>gold</li>
+          <li>electrum</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_EnhancementTemporal</defName>
+    <label>Craft Mistborn Vial: Enhancement + Temporal</label>
+    <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Ind_Aluminium</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Duralumin</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Chromium</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Nicrosil</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Gold</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Electrum</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_EnhancementTemporal>8</Cosmere_AllomanticVial_EnhancementTemporal>
+    </products>
+  </RecipeDef>
+</Defs>

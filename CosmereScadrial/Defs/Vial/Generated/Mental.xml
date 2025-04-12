@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="AbstractAllomanticVial">
+    <defName>Cosmere_AllomanticVial_Mental</defName>
+    <label>Mistborn Vial: Mental</label>
+    <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+    <comps>
+      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+        <metalNames>
+          <li>zinc</li>
+          <li>brass</li>
+          <li>copper</li>
+          <li>bronze</li>
+        </metalNames>
+      </li>
+    </comps>
+  </ThingDef>
+  <RecipeDef ParentName="AbstractCraftAllomanticVial">
+    <defName>Cosmere_CraftAllomanticVial_Mental</defName>
+    <label>Craft Mistborn Vial: Mental</label>
+    <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Zinc</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Brass</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Ind_Copper</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Bronze</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Cosmere_AllomanticVial_Mental>8</Cosmere_AllomanticVial_Mental>
+    </products>
+  </RecipeDef>
+</Defs>

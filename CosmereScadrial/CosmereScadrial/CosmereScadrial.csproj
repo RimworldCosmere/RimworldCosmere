@@ -90,9 +90,9 @@
         <Compile Include="Comps\CompScadrialInvestiture.cs"/>
         <Compile Include="CosmereScadrial.cs"/>
         <Compile Include="DefModExtensions\MetalLinked.cs"/>
-        <Compile Include="Defs\Gene_Metalborn.cs"/>
         <Compile Include="Dev\DevFillInvestitureUtility.cs"/>
         <Compile Include="Genes\GeneInheritanceUtility.cs"/>
+        <Compile Include="Genes\Gene_Metalborn.cs"/>
         <Compile Include="Initializer.cs"/>
         <Compile Include="Inspector\InvestitureTab_Scadrial.cs"/>
         <Compile Include="MetalInfo.cs"/>
@@ -103,6 +103,7 @@
         <Compile Include="Patches\Patch_Pawn_IdeoTracker_SkaaAgnostic.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Registry\MetalRegistry.cs"/>
+        <Compile Include="Things\AllomanticVial.cs"/>
         <Compile Include="Utils\AllomancyUtility.cs"/>
         <Compile Include="Utils\MetalbornUtility.cs"/>
     </ItemGroup>

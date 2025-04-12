@@ -19,7 +19,7 @@
     <displayPriorityInGenepack>4999</displayPriorityInGenepack>
   </GeneCategoryDef>
   <Gene Name="AbstractInvestitureGene" Abstract="True">
-    <geneClass>CosmereScadrial.Defs.Gene_Metalborn</geneClass>
+    <geneClass>CosmereScadrial.Genes.Gene_Metalborn</geneClass>
     <passOnDirectly>false</passOnDirectly>
     <biostatCpx>5</biostatCpx>
     <biostatMet>0</biostatMet>

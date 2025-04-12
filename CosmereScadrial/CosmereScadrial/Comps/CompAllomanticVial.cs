@@ -15,13 +15,22 @@ namespace CosmereScadrial.Comps {
         }
 
         public override void PostIngested(Pawn ingester) {
-            base.PostIngested(ingester);
+            if (Props.metalNames.Count > 1) {
+                if (!AllomancyUtility.IsMistborn(ingester) || !Props.metalNames.Any(metal => AllomancyUtility.GetReservePercent(ingester, metal) < 0.8f)) {
+                    return;
+                }
+            }
 
-            foreach (var metal in Props.metalNames) {
-                // Example hook to your investiture system
+            var metal = Props.metalNames[0];
+            if (!AllomancyUtility.CanUseMetal(ingester, metal) || AllomancyUtility.GetReservePercent(ingester, metal) > 0.8f) {
+                return;
+            }
+
+            Props.metalNames.ForEach(metal => {
+                // Todo, add Investiture
                 AllomancyUtility.AddMetalReserve(ingester, metal, 100f); // or adjust amount
                 Messages.Message($"{ingester.LabelShortCap} absorbed {metal}.", ingester, MessageTypeDefOf.PositiveEvent);
-            }
+            });
         }
 
         public override string CompInspectStringExtra() {

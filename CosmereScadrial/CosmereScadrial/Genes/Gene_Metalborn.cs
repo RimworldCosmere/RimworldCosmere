@@ -7,7 +7,7 @@ using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Defs {
+namespace CosmereScadrial.Genes {
     public class Gene_Metalborn : Gene {
         public override void PostAdd() {
             base.PostAdd();

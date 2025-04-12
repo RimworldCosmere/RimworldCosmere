@@ -1,25 +1,18 @@
-import {resolve} from 'node:path';
 import {MetalAllomancyInfo, MetalFeruchemyInfo, MetalInfo} from "./MetalInfo";
-import {readFileSync} from "fs";
-import {XMLParser} from "fast-xml-parser";
 import {upperFirst} from 'lodash';
+import * as metals from '../Resources/MetalRegistry.json';
 
 export class MetalRegistry {
   static Metals: Record<string, MetalInfo> = {};
 
   public static LoadMetalRegistry() {
-    const filename = resolve('..', 'Resources', 'MetalRegistry.xml');
-    const xml = readFileSync(filename, 'utf-8');
-    const parser = new XMLParser();
-    const result = parser.parse(xml, false);
-
-    MetalRegistry.Metals = result.MetalRegistry.metals.li.reduce((curr: any, metal: Record<string, any>) => {
+    MetalRegistry.Metals = metals.reduce((curr: any, metal: Record<string, any>) => {
       const metalInfo = new MetalInfo({
         Name: metal.name,
         DefName: metal.defName,
         GodMetal: metal.godMetal ?? false,
         MaxAmount: metal.maxAmount ?? 100,
-        Color: metal.color.replace('(', '').replace(')', '').replaceAll(' ', '').split(','),
+        Color: metal.color,
         Allomancy: new MetalAllomancyInfo({
           Axis: metal.allomancy.axis,
           Description: metal.allomancy.description,
@@ -35,7 +28,7 @@ export class MetalRegistry {
       });
 
       curr[upperFirst(metal.name)] = metalInfo;
-      
+
       return curr;
     }, MetalRegistry.Metals);
   }

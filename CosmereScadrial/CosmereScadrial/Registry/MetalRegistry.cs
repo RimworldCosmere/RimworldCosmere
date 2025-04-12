@@ -23,7 +23,7 @@ namespace CosmereScadrial.Registry {
                 return;
             }
 
-            var path = Path.Combine(mod.RootDir, "Resources", "MetalRegistry.xml");
+            var path = Path.Combine(mod.RootDir, "Resources", "Generated", "MetalRegistry.xml");
             if (!File.Exists(path)) {
                 Log.Error("[CosmereScadrial] MetalRegistry.xml not found at: " + path);
                 return;
@@ -36,8 +36,8 @@ namespace CosmereScadrial.Registry {
                 foreach (XmlNode metalNode in doc.SelectNodes("//metals/li")) {
                     var parsedColor = ParseColor(metalNode["color"]);
                     var metal = new MetalInfo {
-                        Name = metalNode["name"]?.InnerText ?? "",
-                        DefName = metalNode["defName"]?.InnerText,
+                        Name = metalNode["name"]!.InnerText,
+                        DefName = metalNode["defName"]!.InnerText,
                         GodMetal = bool.TryParse(metalNode["godMetal"]?.InnerText, out var gm) && gm,
                         Color = new Color(parsedColor[0] / 255f, parsedColor[1] / 255f, parsedColor[2] / 255f),
                         Allomancy = ParseAllomancyInfo(metalNode["allomancy"]),
@@ -54,7 +54,9 @@ namespace CosmereScadrial.Registry {
             }
         }
 
-        private static List<int> ParseColor(XmlNode node) => node?.InnerText.Replace(")", "").Replace("(", "").Split(',').Select(int.Parse).ToList();
+        private static List<int> ParseColor(XmlNode node) {
+            return node?.InnerText.Replace(")", "").Replace("(", "").Split(',').Select(int.Parse).ToList();
+        }
 
         private static MetalAllomancyInfo ParseAllomancyInfo(XmlNode node) {
             if (node == null) return null;

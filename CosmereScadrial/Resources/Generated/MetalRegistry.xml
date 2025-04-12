@@ -1,8 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <MetalRegistry>
 	<metals>
-		<li>
+        <li>
 			<name>iron</name>
+			<defName>Iron</defName>
 			<godMetal>false</godMetal>
 			<color>(85, 93, 93)</color>
 			<allomancy>
@@ -14,12 +15,13 @@
 			</allomancy>
 			<feruchemy>
 				<userName>skimmer</userName>
-				<group>physical</group>
 				<description>Stores weight, allowing the user to become lighter or heavier.</description>
+				<group>physical</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>steel</name>
+			<defName>Steel</defName>
 			<godMetal>false</godMetal>
 			<color>(92, 116, 116)</color>
 			<allomancy>
@@ -35,8 +37,9 @@
 				<group>physical</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>tin</name>
+			<defName>Tin</defName>
 			<godMetal>false</godMetal>
 			<color>(121, 113, 113)</color>
 			<allomancy>
@@ -52,8 +55,9 @@
 				<group>physical</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>pewter</name>
+			<defName>Pewter</defName>
 			<godMetal>false</godMetal>
 			<color>(121, 113, 113)</color>
 			<allomancy>
@@ -69,8 +73,9 @@
 				<group>physical</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>zinc</name>
+			<defName>Zinc</defName>
 			<godMetal>false</godMetal>
 			<color>(199, 145, 145)</color>
 			<allomancy>
@@ -86,8 +91,9 @@
 				<group>cognitive</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>brass</name>
+			<defName>Brass</defName>
 			<godMetal>false</godMetal>
 			<color>(181, 138, 138)</color>
 			<allomancy>
@@ -103,14 +109,14 @@
 				<group>cognitive</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>copper</name>
 			<defName>Ind_Copper</defName>
 			<godMetal>false</godMetal>
 			<color>(166, 94, 94)</color>
 			<allomancy>
 				<userName>smoker</userName>
-				<description>Creates a 'coppercloud' that hides Allomantic activity.</description>
+				<description>Creates a &#x27;coppercloud&#x27; that hides Allomantic activity.</description>
 				<group>mental</group>
 				<axis>internal</axis>
 				<polarity>pulling</polarity>
@@ -121,8 +127,9 @@
 				<group>cognitive</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>bronze</name>
+			<defName>Bronze</defName>
 			<godMetal>false</godMetal>
 			<color>(150, 104, 104)</color>
 			<allomancy>
@@ -138,7 +145,7 @@
 				<group>cognitive</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>aluminum</name>
 			<defName>Ind_Aluminium</defName>
 			<godMetal>false</godMetal>
@@ -156,8 +163,9 @@
 				<group>spiritual</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>duralumin</name>
+			<defName>Duralumin</defName>
 			<godMetal>false</godMetal>
 			<color>(198, 203, 203)</color>
 			<allomancy>
@@ -173,13 +181,14 @@
 				<group>spiritual</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>chromium</name>
+			<defName>Chromium</defName>
 			<godMetal>false</godMetal>
 			<color>(192, 192, 192)</color>
 			<allomancy>
 				<userName>leecher</userName>
-				<description>Wipes away another Allomancer's metal reserves.</description>
+				<description>Wipes away another Allomancer&#x27;s metal reserves.</description>
 				<group>enhancement</group>
 				<axis>external</axis>
 				<polarity>pulling</polarity>
@@ -190,13 +199,14 @@
 				<group>spiritual</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>nicrosil</name>
+			<defName>Nicrosil</defName>
 			<godMetal>false</godMetal>
 			<color>(148, 148, 148)</color>
 			<allomancy>
 				<userName>nicroburst</userName>
-				<description>Boosts another Allomancer's power drastically.</description>
+				<description>Boosts another Allomancer&#x27;s power drastically.</description>
 				<group>enhancement</group>
 				<axis>external</axis>
 				<polarity>pushing</polarity>
@@ -207,8 +217,9 @@
 				<group>spiritual</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>cadmium</name>
+			<defName>Cadmium</defName>
 			<godMetal>false</godMetal>
 			<color>(122, 187, 187)</color>
 			<allomancy>
@@ -224,8 +235,9 @@
 				<group>hybrid</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>bendalloy</name>
+			<defName>Bendalloy</defName>
 			<godMetal>false</godMetal>
 			<color>(189, 158, 158)</color>
 			<allomancy>
@@ -241,8 +253,9 @@
 				<group>hybrid</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>gold</name>
+			<defName>Gold</defName>
 			<godMetal>false</godMetal>
 			<color>(230, 190, 190)</color>
 			<allomancy>
@@ -258,13 +271,14 @@
 				<group>hybrid</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>electrum</name>
+			<defName>Electrum</defName>
 			<godMetal>false</godMetal>
 			<color>(204, 182, 182)</color>
 			<allomancy>
 				<userName>oracle</userName>
-				<description>Shows one's own possible futures, useful for avoiding danger.</description>
+				<description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
 				<group>temporal</group>
 				<axis>internal</axis>
 				<polarity>pushing</polarity>
@@ -275,56 +289,59 @@
 				<group>hybrid</group>
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>lerasium</name>
+			<defName>Lerasium</defName>
 			<godMetal>true</godMetal>
 			<color>(0, 0, 0)</color>
 			<allomancy>
-				<userName/>
+				<userName />
 				<description>Turns a person into a Mistborn when consumed.</description>
-				<group/>
-				<axis/>
-				<polarity/>
+				<group />
+				<axis />
+				<polarity />
 			</allomancy>
 			<feruchemy>
-				<userName/>
+				<userName />
 				<description>Unknown</description>
-				<group/>
+				<group />
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>atium</name>
+			<defName>Atium</defName>
 			<godMetal>true</godMetal>
 			<color>(255, 255, 255)</color>
 			<allomancy>
 				<userName>seer</userName>
 				<description>Allows a glimpse into the immediate future of others.</description>
-				<group/>
-				<axis/>
-				<polarity/>
+				<group />
+				<axis />
+				<polarity />
 			</allomancy>
 			<feruchemy>
-				<userName/>
+				<userName />
 				<description>Stores age, granting youth or aging when tapped.</description>
-				<group/>
+				<group />
 			</feruchemy>
 		</li>
-		<li>
+        <li>
 			<name>harmonium</name>
+			<defName>Harmonium</defName>
 			<godMetal>true</godMetal>
 			<color>(255, 245, 245)</color>
 			<allomancy>
-				<userName/>
+				<userName />
 				<description>Explosive and unstable; function is not fully known.</description>
-				<group/>
-				<axis/>
-				<polarity/>
+				<group />
+				<axis />
+				<polarity />
 			</allomancy>
 			<feruchemy>
-				<userName/>
+				<userName />
 				<description>Possibly stores unknown attribute related to Harmony.</description>
-				<group/>
+				<group />
 			</feruchemy>
 		</li>
-	</metals>
+    </metals>
 </MetalRegistry>

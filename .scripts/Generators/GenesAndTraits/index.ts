@@ -4,7 +4,7 @@ import {resolve} from 'node:path';
 import {rimrafSync} from 'rimraf';
 
 import {MetalRegistry} from '../../Metals/MetalRegistry';
-import {bootstrap, MOD_DIR} from '../../bootstrap';
+import {bootstrap, SCADRIAL_MOD_DIR} from '../../bootstrap';
 import {mkdirSync} from "fs";
 import {upperFirst} from "lodash";
 
@@ -12,7 +12,7 @@ bootstrap()
 
 const geneAndTraitDefTemplate = readFileSync(resolve(__dirname, 'GeneAndTraitDef.xml.template'), 'utf8');
 const template = Handlebars.compile(geneAndTraitDefTemplate);
-const outputDir = resolve(MOD_DIR, 'Defs', 'Investiture', 'Generated');
+const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Investiture', 'Generated');
 
 rimrafSync(outputDir);
 mkdirSync(outputDir, {recursive: true});

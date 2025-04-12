@@ -7,7 +7,7 @@ namespace CosmereCore.Tabs
     {
         public delegate void InvestitureTabDrawer(Pawn pawn, Listing_Standard listing);
 
-        public static readonly List<InvestitureTabDrawer> Drawers = new();
+        public static readonly List<InvestitureTabDrawer> Drawers = new List<InvestitureTabDrawer>();
 
         public static void Register(InvestitureTabDrawer drawer)
         {

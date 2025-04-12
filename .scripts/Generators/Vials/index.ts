@@ -4,7 +4,7 @@ import {resolve} from 'node:path';
 import {rimrafSync} from 'rimraf';
 
 import {MetalRegistry} from '../../Metals/MetalRegistry';
-import {bootstrap, MOD_DIR} from '../../bootstrap';
+import {bootstrap, MOD_DIR, SCADRIAL_MOD_DIR} from '../../bootstrap';
 import {mkdirSync} from "fs";
 import {upperFirst} from "lodash";
 
@@ -12,7 +12,7 @@ bootstrap()
 
 const defTemplate = readFileSync(resolve(__dirname, 'VialDef.xml.template'), 'utf8');
 const template = Handlebars.compile(defTemplate);
-const outputDir = resolve(MOD_DIR, 'Defs', 'Vial', 'Generated');
+const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Vial', 'Generated');
 
 rimrafSync(outputDir);
 mkdirSync(outputDir, {recursive: true});

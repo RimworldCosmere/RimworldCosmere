@@ -10,6 +10,10 @@
     <packageId>cryptiklemur.cosmere.core</packageId>
     <modDependencies>
         <li>
+            <packageId>cryptiklemur.cosmere.framework</packageId>
+            <displayName>Cosmere - Framework</displayName>
+        </li>
+        <li>
             <packageId>brrainz.harmony</packageId>
             <displayName>Harmony</displayName>
             <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
@@ -31,6 +35,7 @@
         </li>
     </modDependencies>
     <forceLoadAfter>
+        <li>cryptiklemur.cosmere.framework</li>
         <li>brrainz.harmony</li>
         <li>mlie.coalexpanded</li>
         <li>dizzyioeuy.simplechains.steel</li>

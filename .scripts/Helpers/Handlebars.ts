@@ -9,6 +9,6 @@ Handlebars.registerHelper('lower', (string: string) => {
 Handlebars.registerHelper('capitalize', (string: string) => {
   return upperFirst(string);
 });
-Handlebars.registerHelper('join', (strings: string[], character: string) => {
+Handlebars.registerHelper('join', (strings: (number|string)[], character: string) => {
   return strings.join(character);
 });

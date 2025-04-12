@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <name>Cosmere - Framework</name>
+    <description>This mod contains helpers and utilities for development the Cosmere mods for Rimworld</description>
+    <author>CryptikLemur</author>
+    <supportedVersions>
+        <li>1.5</li>
+    </supportedVersions>
+    <packageId>cryptiklemur.cosmere.framework</packageId>
+    <modDependencies />
+</ModMetaData>

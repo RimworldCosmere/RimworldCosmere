@@ -125,6 +125,10 @@
             <Project>{5f1d8c6d-e127-4001-a575-e56d99df271f}</Project>
             <Name>CosmereCore</Name>
         </ProjectReference>
+        <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj">
+          <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
+          <Name>CosmereFramework</Name>
+        </ProjectReference>
     </ItemGroup>
 
     <ItemGroup>
@@ -152,12 +156,16 @@
     </ItemDefinitionGroup>
     
     <Target Name="PostBuild" AfterTargets="Build" Outputs="Never">
+        <Exec Command="npm run generate:metalRegistry"
+              WorkingDirectory="$(ProjectDir)..\..\.scripts"
+              StandardOutputImportance="High"
+        />
         <Exec Command="npm run generate:vials"
-              WorkingDirectory="$(ProjectDir)..\.scripts"
+              WorkingDirectory="$(ProjectDir)..\..\.scripts"
               StandardOutputImportance="High"
         />
         <Exec Command="npm run generate:genesAndTraits"
-              WorkingDirectory="$(ProjectDir)..\.scripts"
+              WorkingDirectory="$(ProjectDir)..\..\.scripts"
               StandardOutputImportance="High"
         />
     </Target>

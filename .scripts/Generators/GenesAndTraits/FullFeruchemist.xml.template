@@ -21,6 +21,11 @@
                 </metals>
             </li>
         </modExtensions>
+        <abilities>
+            {{#each abilities}}
+            <li>{{this}}</li>
+            {{/each}}
+        </abilities>
     </GeneDef>
   <TraitDef ParentName="AbstractInvestitureTrait">
     <defName>Cosmere_FullFeruchemist</defName>

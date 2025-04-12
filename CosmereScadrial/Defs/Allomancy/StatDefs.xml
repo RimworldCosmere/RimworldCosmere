@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <StatDef>
+        <defName>AllomanticPower</defName>
+        <label>allomantic strength</label>
+        <description>Affects potency and range of allomantic abilities.</description>
+        <category>Ability</category>
+        <defaultBaseValue>1</defaultBaseValue>
+        <toStringStyle>PercentZero</toStringStyle>
+    </StatDef>
+</Defs>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef>
+        <defName>Cosmere_Hediff_PewterBuff</defName>
+        <hediffClass>HediffWithComps</hediffClass>
+        <label>burning pewter</label>
+        <description>Empowered strength, endurance, and resilience from burning pewter.</description>
+        <isBad>false</isBad>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>60000</disappearsAfterTicks> <!-- 1 in-game hour -->
+            </li>
+            <li Class="CosmereScadrial.Hediffs.HediffCompProperties_BurnMetal">
+                <metal>Pewter</metal>
+                <metalUnitsPerHour>10</metalUnitsPerHour>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <statOffsets>
+                    <MoveSpeed>0.5</MoveSpeed>
+                    <MeleeDamageFactor>0.5</MeleeDamageFactor>
+                    <PainShockThreshold>0.2</PainShockThreshold>
+                    <IncomingDamageFactor>-0.15</IncomingDamageFactor>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+
+</Defs>

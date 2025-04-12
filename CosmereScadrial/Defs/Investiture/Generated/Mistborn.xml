@@ -34,6 +34,9 @@
                 </metals>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_BurnPewter</li>
+        </abilities>
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Mistborn</defName>

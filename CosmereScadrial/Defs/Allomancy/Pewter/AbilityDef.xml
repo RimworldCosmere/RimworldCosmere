@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <AbilityDef>
+        <defName>Cosmere_Ability_BurnPewter</defName>
+        <label>Burn Pewter</label>
+        <description>Burn pewter to enhance physical power and resilience for a short duration.</description>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Pewter</iconPath>
+        <targetRequired>false</targetRequired>
+        <targetWorldCell>false</targetWorldCell>
+        <aiCanUse>true</aiCanUse>
+        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+        <hostile>false</hostile>
+        <verbProperties>
+            <verbClass>Verb_CastAbilityTouch</verbClass>
+            <warmupTime>0</warmupTime>
+            <range>1</range>
+        </verbProperties>
+        <comps>
+            <li Class="CosmereScadrial.Abilities.CompProperties_AbilityBurnMetal">
+                <metal>Pewter</metal>
+                <beuCost>0.03125</beuCost> <!-- 10 units of pewter -->
+                <applyHediff>Cosmere_Hediff_PewterBuff</applyHediff>
+                <hediffSeverity>1.0</hediffSeverity>
+            </li>
+        </comps>
+        <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    </AbilityDef>
+</Defs>

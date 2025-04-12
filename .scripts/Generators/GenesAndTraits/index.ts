@@ -33,6 +33,14 @@ for (const metal of Object.keys(MetalRegistry.Metals)) {
   const templateString = readFileSync(resolve(__dirname, type + '.xml.template'), 'utf8');
   const template = Handlebars.compile(templateString);
   const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && !!x.Allomancy).map((metal) => metal.Name);
+  const abilities = Object.values(MetalRegistry.Metals).reduce((acc, metal) => {
+    const typeData = metal[type === 'Mistborn' ? 'Allomancy' : 'Feruchemy'];
+    if (typeData?.Abilities) {
+      acc.push(...typeData.Abilities);
+    }
+    
+    return acc;
+  }, [] as string[]);
 
-  writeFileSync(resolve(outputDir, type + '.xml'), template({metals}), 'utf8');
+  writeFileSync(resolve(outputDir, type + '.xml'), template({metals, abilities}), 'utf8');
 })

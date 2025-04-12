@@ -71,7 +71,10 @@
       "description": "Enhances physical strength and durability, useful in combat.",
       "group": "physical",
       "axis": "internal",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_BurnPewter"
+      ]
     },
     "feruchemy": {
       "userName": "brute",

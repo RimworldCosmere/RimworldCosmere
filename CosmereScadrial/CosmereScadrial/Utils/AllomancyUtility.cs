@@ -31,7 +31,7 @@ namespace CosmereScadrial.Utils {
 
         public static float GetReservePercent(Pawn pawn, string metal) {
             var tracker = pawn.GetComp<CompScadrialInvestiture>();
-            if (tracker == null || !tracker.metalReserves.TryGetValue(metal, out var value)) {
+            if (tracker == null || !tracker.metalReserves.TryGetValue(metal.ToLower(), out var value)) {
                 return 0f;
             }
 

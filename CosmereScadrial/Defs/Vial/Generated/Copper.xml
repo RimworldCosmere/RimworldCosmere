@@ -2,7 +2,7 @@
 <Defs>
   <ThingDef ParentName="AbstractAllomanticVial">
     <defName>Cosmere_AllomanticVial_Copper</defName>
-    <label>Copper Vial</label>
+    <label>Misting Vial: Smoker</label>
     <description>A vial containing Copper suspended in alcohol, used in allomancy.</description>
     <comps>
       <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
@@ -14,7 +14,7 @@
   </ThingDef>
   <RecipeDef ParentName="AbstractCraftAllomanticVial">
     <defName>Cosmere_CraftAllomanticVial_Copper</defName>
-    <label>Craft Allomantic Vial (Copper)</label>
+    <label>Craft Misting Vial: Smoker</label>
     <description>Create a vial of Copper infused alcohol for use by Mistborns and smokers.</description>
     <ingredients>
       <li>

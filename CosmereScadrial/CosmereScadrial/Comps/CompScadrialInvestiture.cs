@@ -25,7 +25,7 @@ namespace CosmereScadrial.Comps {
                 metalReserves[metal] = 0;
             }
 
-            var max = MetalRegistry.Metals[metal.ToLower()].MaxAmount;
+            var max = MetalRegistry.Metals[metal].MaxAmount;
             SetReserve(metal, Math.Max(metalReserves[metal] + amount, max));
         }
 

@@ -2,7 +2,7 @@
 <Defs>
   <ThingDef ParentName="AbstractAllomanticVial">
     <defName>Cosmere_AllomanticVial_Pewter</defName>
-    <label>Pewter Vial</label>
+    <label>Misting Vial: Thug</label>
     <description>A vial containing Pewter suspended in alcohol, used in allomancy.</description>
     <comps>
       <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
@@ -14,7 +14,7 @@
   </ThingDef>
   <RecipeDef ParentName="AbstractCraftAllomanticVial">
     <defName>Cosmere_CraftAllomanticVial_Pewter</defName>
-    <label>Craft Allomantic Vial (Pewter)</label>
+    <label>Craft Misting Vial: Thug</label>
     <description>Create a vial of Pewter infused alcohol for use by Mistborns and thugs.</description>
     <ingredients>
       <li>

@@ -2,7 +2,7 @@
 <Defs>
   <ThingDef ParentName="AbstractAllomanticVial">
     <defName>Cosmere_AllomanticVial_Bronze</defName>
-    <label>Bronze Vial</label>
+    <label>Misting Vial: Seeker</label>
     <description>A vial containing Bronze suspended in alcohol, used in allomancy.</description>
     <comps>
       <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
@@ -14,7 +14,7 @@
   </ThingDef>
   <RecipeDef ParentName="AbstractCraftAllomanticVial">
     <defName>Cosmere_CraftAllomanticVial_Bronze</defName>
-    <label>Craft Allomantic Vial (Bronze)</label>
+    <label>Craft Misting Vial: Seeker</label>
     <description>Create a vial of Bronze infused alcohol for use by Mistborns and seekers.</description>
     <ingredients>
       <li>

@@ -9,11 +9,40 @@
 		<recipeUsers>
 			<li>ElectricSmelter</li>
 			<li MayRequire="mlie.coalexpanded">CoalSmelter</li>
+			<li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_TableAllomancyForge</li>
 		</recipeUsers>
 		<researchPrerequisites>
 			<li>Cosmere_Alloys</li>
 		</researchPrerequisites>
 	</RecipeDef>
+	
+    <!-- Pewter Alloy Recipe (80% Tin, 20% Copper) -->
+    <RecipeDef ParentName="AlloyBase">
+        <defName>MakePewter</defName>
+        <label>create alloy: pewter</label>
+        <jobString>alloying pewter</jobString>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Tin</li>
+                    </thingDefs>
+                </filter>
+                <count>8</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Ind_Copper</li>
+                    </thingDefs>
+                </filter>
+                <count>2</count>
+            </li>
+        </ingredients>
+        <products>
+            <Pewter>10</Pewter>
+        </products>
+    </RecipeDef>
 	
     <!-- Pewter Alloy Recipe (80% Tin, 20% Copper) -->
     <RecipeDef ParentName="AlloyBase">

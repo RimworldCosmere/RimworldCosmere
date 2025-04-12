@@ -8,7 +8,7 @@
         <graphicData>
             <texPath>Things/Building/Production/AllomancyForge/AllomancyForge</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
-            <drawSize>(4,5)</drawSize>
+            <drawSize>(4,3)</drawSize>
             <shaderType>CutoutComplex</shaderType>
             <damageData>
                 <cornerTL>Damage/Corner</cornerTL>
@@ -19,7 +19,10 @@
         </graphicData>
 
         <castEdgeShadows>true</castEdgeShadows>
-        <staticSunShadowHeight>0.20</staticSunShadowHeight>
+        <!--
+        <staticSunShadowHeight>0.20</staticSunShadowHeight>-->
+        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+        <size>(3, 2)</size>
         <costList/>
         <stuffCategories>
             <li>Metallic</li>
@@ -34,13 +37,11 @@
             <Flammability>1.0</Flammability>
             <Cleanliness>-5</Cleanliness>
         </statBases>
-        <size>(2, 3)</size>
         <designationCategory>Production</designationCategory>
         <uiOrder>2300</uiOrder>
         <passability>PassThroughOnly</passability>
         <pathCost>50</pathCost>
         <hasInteractionCell>True</hasInteractionCell>
-        <interactionCellOffset>(0,0,-2)</interactionCellOffset>
         <surfaceType>Item</surfaceType>
         <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
         <inspectorTabs>

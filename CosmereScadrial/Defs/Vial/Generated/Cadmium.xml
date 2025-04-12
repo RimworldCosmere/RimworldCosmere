@@ -2,7 +2,7 @@
 <Defs>
   <ThingDef ParentName="AbstractAllomanticVial">
     <defName>Cosmere_AllomanticVial_Cadmium</defName>
-    <label>Cadmium Vial</label>
+    <label>Misting Vial: Pulser</label>
     <description>A vial containing Cadmium suspended in alcohol, used in allomancy.</description>
     <comps>
       <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
@@ -14,7 +14,7 @@
   </ThingDef>
   <RecipeDef ParentName="AbstractCraftAllomanticVial">
     <defName>Cosmere_CraftAllomanticVial_Cadmium</defName>
-    <label>Craft Allomantic Vial (Cadmium)</label>
+    <label>Craft Misting Vial: Pulser</label>
     <description>Create a vial of Cadmium infused alcohol for use by Mistborns and pulsers.</description>
     <ingredients>
       <li>

@@ -2,7 +2,7 @@
 <Defs>
   <ThingDef ParentName="AbstractAllomanticVial">
     <defName>Cosmere_AllomanticVial_Iron</defName>
-    <label>Iron Vial</label>
+    <label>Misting Vial: Lurcher</label>
     <description>A vial containing Iron suspended in alcohol, used in allomancy.</description>
     <comps>
       <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
@@ -14,7 +14,7 @@
   </ThingDef>
   <RecipeDef ParentName="AbstractCraftAllomanticVial">
     <defName>Cosmere_CraftAllomanticVial_Iron</defName>
-    <label>Craft Allomantic Vial (Iron)</label>
+    <label>Craft Misting Vial: Lurcher</label>
     <description>Create a vial of Iron infused alcohol for use by Mistborns and lurchers.</description>
     <ingredients>
       <li>

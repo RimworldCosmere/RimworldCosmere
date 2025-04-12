@@ -2,7 +2,7 @@
 <Defs>
   <ThingDef ParentName="AbstractAllomanticVial">
     <defName>Cosmere_AllomanticVial_Bendalloy</defName>
-    <label>Bendalloy Vial</label>
+    <label>Misting Vial: Slider</label>
     <description>A vial containing Bendalloy suspended in alcohol, used in allomancy.</description>
     <comps>
       <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
@@ -14,7 +14,7 @@
   </ThingDef>
   <RecipeDef ParentName="AbstractCraftAllomanticVial">
     <defName>Cosmere_CraftAllomanticVial_Bendalloy</defName>
-    <label>Craft Allomantic Vial (Bendalloy)</label>
+    <label>Craft Misting Vial: Slider</label>
     <description>Create a vial of Bendalloy infused alcohol for use by Mistborns and sliders.</description>
     <ingredients>
       <li>

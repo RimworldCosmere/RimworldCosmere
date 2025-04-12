@@ -1,3 +1,4 @@
+using System.Linq;
 using CosmereScadrial.CompProperties;
 using CosmereScadrial.Utils;
 using RimWorld;
@@ -15,26 +16,16 @@ namespace CosmereScadrial.Comps {
         }
 
         public override void PostIngested(Pawn ingester) {
-            if (Props.metalNames.Count > 1) {
-                if (!AllomancyUtility.IsMistborn(ingester) || !Props.metalNames.Any(metal => AllomancyUtility.GetReservePercent(ingester, metal) < 0.8f)) {
-                    return;
-                }
-            }
-
-            var metal = Props.metalNames[0];
-            if (!AllomancyUtility.CanUseMetal(ingester, metal) || AllomancyUtility.GetReservePercent(ingester, metal) > 0.8f) {
-                return;
-            }
-
             Props.metalNames.ForEach(metal => {
                 // Todo, add Investiture
-                AllomancyUtility.AddMetalReserve(ingester, metal, 100f); // or adjust amount
-                Messages.Message($"{ingester.LabelShortCap} absorbed {metal}.", ingester, MessageTypeDefOf.PositiveEvent);
+                Log.Message($"{ingester.LabelShortCap} ingesting: {metal}");
+                AllomancyUtility.AddMetalReserve(ingester, metal.ToLower(), 100f); // or adjust amount
             });
+            Messages.Message($"{ingester.LabelShortCap} absorbed: {string.Join(", ", Props.metalNames)}.", ingester, MessageTypeDefOf.PositiveEvent);
         }
 
         public override string CompInspectStringExtra() {
-            return $"Contains: {string.Join(", ", Props.metalNames)}";
+            return $"Contains: {string.Join(", ", Props.metalNames.Select(metal => metal.CapitalizeFirst()))}";
         }
     }
 }

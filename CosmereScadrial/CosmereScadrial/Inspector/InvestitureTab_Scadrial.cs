@@ -8,6 +8,17 @@ using Verse;
 
 namespace CosmereScadrial.Inspector {
     public class InvestitureTab_Scadrial {
+        private static readonly Dictionary<Color, Texture2D> _colorCache = new Dictionary<Color, Texture2D>();
+
+        private static Texture2D GetColorTexture(Color color) {
+            if (_colorCache.TryGetValue(color, out var tex)) return tex;
+
+            tex = SolidColorMaterials.NewSolidColorTexture(color);
+            _colorCache[color] = tex;
+
+            return tex;
+        }
+
         public static void Draw(Pawn pawn, Listing_Standard listing) {
             var comp = pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompScadrialInvestiture");
             if (comp == null) return;
@@ -81,12 +92,12 @@ namespace CosmereScadrial.Inspector {
                             $"{label}\n\n{metal.Allomancy.Description}\n\n{value:N0} / {max:N0}";
 
                         // Faint cell border
-                        // Widgets.DrawBoxSolid(cellRect, new Color(0.15f, 0.15f, 0.15f)); // background
+                        Widgets.DrawBoxSolid(cellRect, new Color(0.15f, 0.15f, 0.15f)); // background
                         Widgets.DrawBox(cellRect); // faint outline
 
                         var barRect = cellRect.ContractedBy(2f);
                         // Fillable bar
-                        Widgets.FillableBar(barRect, fillPct, SolidColorMaterials.NewSolidColorTexture(metal.Color));
+                        Widgets.FillableBar(barRect, fillPct, GetColorTexture(metal.Color));
 
                         // Label
                         UIUtil.DrawContrastLabel(barRect, label, metal.Color);

@@ -2,7 +2,7 @@
 <Defs>
   <ThingDef ParentName="AbstractAllomanticVial">
     <defName>Cosmere_AllomanticVial_Chromium</defName>
-    <label>Chromium Vial</label>
+    <label>Misting Vial: Leecher</label>
     <description>A vial containing Chromium suspended in alcohol, used in allomancy.</description>
     <comps>
       <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
@@ -14,7 +14,7 @@
   </ThingDef>
   <RecipeDef ParentName="AbstractCraftAllomanticVial">
     <defName>Cosmere_CraftAllomanticVial_Chromium</defName>
-    <label>Craft Allomantic Vial (Chromium)</label>
+    <label>Craft Misting Vial: Leecher</label>
     <description>Create a vial of Chromium infused alcohol for use by Mistborns and leechers.</description>
     <ingredients>
       <li>

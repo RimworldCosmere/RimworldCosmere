@@ -10,5 +10,5 @@ Handlebars.registerHelper('capitalize', (string: string) => {
   return upperFirst(string);
 });
 Handlebars.registerHelper('join', (strings: (number|string)[], character: string) => {
-  return strings.join(character);
+  return strings?.join(character);
 });

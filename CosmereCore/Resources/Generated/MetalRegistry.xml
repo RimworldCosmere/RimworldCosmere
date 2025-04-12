@@ -92,6 +92,12 @@
 			<color>(230, 190, 190)</color>
 		</li>
         <li>
+			<name>silver</name>
+			<defName>Silver</defName>
+			<godMetal>false</godMetal>
+			<color>(192, 192, 192)</color>
+		</li>
+        <li>
 			<name>electrum</name>
 			<defName>Electrum</defName>
 			<godMetal>false</godMetal>
@@ -101,19 +107,19 @@
 			<name>lerasium</name>
 			<defName>Lerasium</defName>
 			<godMetal>true</godMetal>
-			<color>(0, 0, 0)</color>
+			<color>(255, 255, 255)</color>
 		</li>
         <li>
 			<name>atium</name>
 			<defName>Atium</defName>
 			<godMetal>true</godMetal>
-			<color>(255, 255, 255)</color>
+			<color>(0, 0, 0)</color>
 		</li>
         <li>
 			<name>harmonium</name>
 			<defName>Harmonium</defName>
 			<godMetal>true</godMetal>
-			<color>(255, 245, 245)</color>
+			<color>(242, 255, 140)</color>
 		</li>
     </metals>
 </MetalRegistry>

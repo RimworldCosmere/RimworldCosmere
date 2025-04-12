@@ -13,18 +13,18 @@ export class MetalRegistry {
         GodMetal: metal.godMetal ?? false,
         MaxAmount: metal.maxAmount ?? 100,
         Color: metal.color,
-        Allomancy: new MetalAllomancyInfo({
+        Allomancy: metal.allomancy ? new MetalAllomancyInfo({
           Axis: metal.allomancy.axis,
           Description: metal.allomancy.description,
           Group: metal.allomancy.group,
           Polarity: metal.allomancy.polarity,
           UserName: metal.allomancy.userName,
-        }),
-        Feruchemy: new MetalFeruchemyInfo({
+        }) : undefined,
+        Feruchemy: metal.feruchemy ? new MetalFeruchemyInfo({
           Description: metal.feruchemy.description,
           Group: metal.feruchemy.group,
           UserName: metal.feruchemy.userName,
-        }),
+        }) : undefined,
       });
 
       curr[upperFirst(metal.name)] = metalInfo;

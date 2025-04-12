@@ -20,7 +20,7 @@ mkdirSync(outputDir, {recursive: true});
 let order = 2
 for (const metal of Object.keys(MetalRegistry.Metals)) {
   const metalInfo = MetalRegistry.Metals[metal];
-  if (metalInfo.GodMetal) continue;
+  if (metalInfo.GodMetal || !metalInfo.Allomancy) continue;
 
   writeFileSync(resolve(outputDir, upperFirst(metalInfo.Name) + '.xml'), template({
     metal: metalInfo,
@@ -32,7 +32,7 @@ for (const metal of Object.keys(MetalRegistry.Metals)) {
 ['Mistborn', 'FullFeruchemist'].forEach(type => {
   const templateString = readFileSync(resolve(__dirname, type + '.xml.template'), 'utf8');
   const template = Handlebars.compile(templateString);
-  const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal).map((metal) => metal.Name);
+  const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && !!x.Allomancy).map((metal) => metal.Name);
 
   writeFileSync(resolve(outputDir, type + '.xml'), template({metals}), 'utf8');
 })

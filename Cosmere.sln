@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereScadrial", "CosmereS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereCore", "CosmereCore\CosmereCore\CosmereCore.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereFramework", "CosmereFramework\CosmereFramework\CosmereFramework.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -5,11 +5,11 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{5F1D8C6D-E127-4001-A575-E56D99DF271F}</ProjectGuid>
+        <ProjectGuid>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>CosmereCore</RootNamespace>
-        <AssemblyName>CosmereCore</AssemblyName>
+        <RootNamespace>CosmereFramework</RootNamespace>
+        <AssemblyName>CosmereFramework</AssemblyName>
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <PlatformTarget>x64</PlatformTarget>
@@ -85,32 +85,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="CosmereCore.cs"/>
-        <Compile Include="GameComponent\GameComponent_CosmereShards.cs"/>
-        <Compile Include="Initializer.cs"/>
-        <Compile Include="Defs\ShardDef.cs"/>
-        <Compile Include="Page\Page_SelectShards.cs"/>
-        <Compile Include="Needs\Need_Investiture.cs"/>
-        <Compile Include="Patches\Patch_InsertShardSelection.cs"/>
+        <Compile Include="CosmereFramework.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="Tabs\InvestitureTabRegistry.cs"/>
-        <Compile Include="Tabs\InvestitureTabUI.cs"/>
-        <Compile Include="Tabs\ITab_Pawn_Investiture.cs"/>
-        <Compile Include="Utils\InvestitureUtility.cs"/>
-        <Compile Include="Utils\ShardUtility.cs"/>
+        <Compile Include="Utils\UIUtil.cs"/>
     </ItemGroup>
 
     <ItemGroup>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data.Linq"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj">
-        <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
-        <Name>CosmereFramework</Name>
-      </ProjectReference>
     </ItemGroup>
 
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>

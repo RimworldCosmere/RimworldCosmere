@@ -1,27 +1,27 @@
 ﻿using System.Linq;
 using CosmereCore.Defs;
 using CosmereCore.Utils;
+using CosmereFramework.Utils;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereCore.Pages
-{
-    public class Page_SelectShards : Page
-    {
+namespace CosmereCore.Pages {
+    public class Page_SelectShards : Page {
         private Vector2 scrollPos = Vector2.zero;
 
-        public override string PageTitle => "Select Shards";
+        public override string PageTitle {
+            get => "Select Shards";
+        }
 
-        public override void DoWindowContents(Rect inRect)
-        {
+        public override void DoWindowContents(Rect inRect) {
             DefDatabase<ShardDef>.AddAllInMods();
 
-            var topMargin = 40f;
-            var bottomMargin = 60f;
-            var rowHeight = 70f;
-            var planetHeaderHeight = 40f;
-            var checkTextPadding = 12f;
+            const float topMargin = 40f;
+            const float bottomMargin = 60f;
+            const float rowHeight = 70f;
+            const float planetHeaderHeight = 40f;
+            const float checkTextPadding = 12f;
 
             UIUtil.WithFont(GameFont.Medium,
                 () => Widgets.Label(inRect.TopPartPixels(topMargin), "Choose which Shards are active in this game:"));
@@ -39,16 +39,14 @@ namespace CosmereCore.Pages
             Widgets.BeginScrollView(scrollArea, ref scrollPos, viewRect);
             var y = 0f;
 
-            foreach (var group in grouped)
-            {
+            foreach (var group in grouped) {
                 var planetLabelRect = new Rect(0f, y, viewRect.width, planetHeaderHeight);
                 UIUtil.WithFont(GameFont.Medium, () => Widgets.Label(planetLabelRect, group.Key));
                 y += planetHeaderHeight;
 
                 Widgets.DrawLineHorizontal(0f, y - 6f, viewRect.width);
 
-                foreach (var shard in group)
-                {
+                foreach (var shard in group) {
                     var rowRect = new Rect(0f, y, viewRect.width, rowHeight);
                     var checkRect = new Rect(8f, y + 10f, 24f, 24f);
 
@@ -63,16 +61,13 @@ namespace CosmereCore.Pages
                     var toggled = isEnabled;
                     Widgets.CheckboxLabeled(labelRect, shard.label.CapitalizeFirst(), ref toggled, isBlockedByOther);
 
-                    if (toggled != isEnabled)
-                    {
-                        if (toggled)
-                        {
+                    if (toggled != isEnabled) {
+                        if (toggled) {
                             ShardUtility.Enable(shard);
                             Messages.Message($"Enabled shard: {shard.label.CapitalizeFirst()}",
                                 MessageTypeDefOf.PositiveEvent);
                         }
-                        else
-                        {
+                        else {
                             ShardUtility.Shards.enabledShardDefs.Remove(shard);
                             Messages.Message($"Disabled shard: {shard.label.CapitalizeFirst()}",
                                 MessageTypeDefOf.NeutralEvent);

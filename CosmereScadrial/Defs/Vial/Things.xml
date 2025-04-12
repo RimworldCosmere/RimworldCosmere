@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef Name="AbstractAllomanticVial" ParentName="DrugBase" Abstract="True">
-        <thingClass>ThingWithComps</thingClass>
+        <thingClass>CosmereScadrial.Things.AllomanticVial</thingClass>
         <graphicData>
             <texPath>Things/Item/AllomanticVial</texPath>
             <graphicClass>Graphic_StackCount</graphicClass>

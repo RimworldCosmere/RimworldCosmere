@@ -23,7 +23,7 @@
       </li>
     </ingredients>
     <products>
-      <Cosmere_AllomanticVial_{{capitalize metal.Name}}>1</Cosmere_AllomanticVial_{{capitalize metal.Name}}>
+      <Cosmere_AllomanticVial_{{capitalize metal.Name}}>8</Cosmere_AllomanticVial_{{capitalize metal.Name}}>
     </products>
   </RecipeDef>
 </Defs>

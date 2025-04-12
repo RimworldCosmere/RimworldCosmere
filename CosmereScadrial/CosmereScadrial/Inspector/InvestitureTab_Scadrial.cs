@@ -6,28 +6,25 @@ using CosmereScadrial.Registry;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Inspector
-{
-    public class InvestitureTab_Scadrial
-    {
-        public static void Draw(Pawn pawn, Listing_Standard listing)
-        {
+namespace CosmereScadrial.Inspector {
+    public class InvestitureTab_Scadrial {
+        public static void Draw(Pawn pawn, Listing_Standard listing) {
             var comp = pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompScadrialInvestiture");
             if (comp == null) return;
 
             var reserves = comp.GetType().GetField("metalReserves")?.GetValue(comp) as Dictionary<string, float>;
             if (reserves == null || reserves.Count == 0) return;
 
-            if (!InvestitureTabUI.DrawCollapsibleHeader("Allomantic Reserves", "Scadrial_Allomancy", listing))
+            if (!InvestitureTabUI.DrawCollapsibleHeader("Allomantic Reserves", "Scadrial_Allomancy", listing)) {
                 return;
+            }
 
             var tableRect = listing.GetRect(4 * 26f + 32f); // room for headers + rows
             DrawAllomanticMetalTable(pawn, tableRect, listing);
             listing.Gap(10f);
         }
 
-        private static void DrawAllomanticMetalTable(Pawn pawn, Rect outerRect, Listing_Standard listing)
-        {
+        private static void DrawAllomanticMetalTable(Pawn pawn, Rect outerRect, Listing_Standard listing) {
             var comp = pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompScadrialInvestiture");
             var reserves = comp?.GetType().GetField("metalReserves")?.GetValue(comp) as Dictionary<string, float>;
             if (reserves == null) return;
@@ -42,15 +39,13 @@ namespace CosmereScadrial.Inspector
             Text.Font = GameFont.Small;
 
             // Draw column headers
-            for (var col = 0; col < groups.Length; col++)
-            {
+            for (var col = 0; col < groups.Length; col++) {
                 var headerRect = new Rect(outerRect.x + cellWidth * (col + 1), outerRect.y, cellWidth, cellHeight);
                 UIUtil.WithAnchor(TextAnchor.MiddleCenter, () => Widgets.Label(headerRect, groups[col]));
             }
 
             // Draw rows
-            for (var row = 0; row < axes.Length * polarities.Length; row++)
-            {
+            for (var row = 0; row < axes.Length * polarities.Length; row++) {
                 var axis = axes[row / 2];
                 var polarity = polarities[row % 2];
 
@@ -59,8 +54,7 @@ namespace CosmereScadrial.Inspector
                     cellWidth, cellHeight);
                 UIUtil.WithAnchor(TextAnchor.MiddleCenter, () => Widgets.Label(rowHeaderRect, polarity));
 
-                for (var col = 0; col < groups.Length; col++)
-                {
+                for (var col = 0; col < groups.Length; col++) {
                     var group = groups[col];
 
                     var metal = MetalRegistry.Metals.Values.FirstOrDefault(m =>
@@ -75,8 +69,7 @@ namespace CosmereScadrial.Inspector
                         cellHeight
                     );
 
-                    if (metal != null)
-                    {
+                    if (metal != null) {
                         var value = reserves.TryGetValue(metal.Name, out var amt) ? amt : 0f;
 
                         // Prep bar space in Listing
@@ -88,7 +81,7 @@ namespace CosmereScadrial.Inspector
                             $"{label}\n\n{metal.Allomancy.Description}\n\n{value:N0} / {max:N0}";
 
                         // Faint cell border
-                        Widgets.DrawBoxSolid(cellRect, new Color(0.15f, 0.15f, 0.15f)); // background
+                        // Widgets.DrawBoxSolid(cellRect, new Color(0.15f, 0.15f, 0.15f)); // background
                         Widgets.DrawBox(cellRect); // faint outline
 
                         var barRect = cellRect.ContractedBy(2f);
@@ -100,8 +93,7 @@ namespace CosmereScadrial.Inspector
 
                         TooltipHandler.TipRegion(cellRect, tooltip);
                     }
-                    else
-                    {
+                    else {
                         Widgets.DrawBoxSolid(cellRect, new Color(0.1f, 0.1f, 0.1f, 0.5f)); // Empty cell
                     }
                 }

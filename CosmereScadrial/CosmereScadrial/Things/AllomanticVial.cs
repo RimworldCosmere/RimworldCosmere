@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CosmereScadrial.Utils;
+using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Things {
@@ -36,8 +37,13 @@ namespace CosmereScadrial.Things {
         }
 
         public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn pawn) {
+            if (!pawn.story.traits.HasTrait(DefDatabase<TraitDef>.GetNamed("Cosmere_Metalborn"))) {
+                yield return new FloatMenuOption("Cannot ingest: Not Metalborn", null);
+                yield break;
+            }
+
             var comp = GetComp<Comps.AllomanticVial>();
-            if (pawn == null || comp?.Props.metalNames == null) {
+            if (comp?.Props.metalNames == null) {
                 yield return null;
                 yield break;
             }

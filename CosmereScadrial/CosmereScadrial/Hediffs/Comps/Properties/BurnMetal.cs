@@ -3,7 +3,7 @@ using Verse;
 namespace CosmereScadrial.Hediffs.Comps.Properties {
     public class BurnMetal : HediffCompProperties {
         public string metal;
-        public int metalUnitsPerHour = 10;
+        public int unitsPerBurn = 1;
 
         public BurnMetal() {
             compClass = typeof(Comps.BurnMetal);

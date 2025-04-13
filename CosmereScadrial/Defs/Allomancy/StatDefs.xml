@@ -2,10 +2,15 @@
 <Defs>
     <StatDef>
         <defName>AllomanticPower</defName>
-        <label>allomantic strength</label>
+        <label>Allomantic Strength</label>
         <description>Affects potency and range of allomantic abilities.</description>
-        <category>Ability</category>
+        <category>Basics</category>
+        <minValue>0</minValue>
         <defaultBaseValue>1</defaultBaseValue>
         <toStringStyle>PercentZero</toStringStyle>
+        <showOnAnimals>false</showOnAnimals>
+        <hideAtValue>0</hideAtValue>
+        <displayPriorityInCategory>5000</displayPriorityInCategory>
+        <scenarioRandomizable>false</scenarioRandomizable>
     </StatDef>
 </Defs>

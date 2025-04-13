@@ -97,6 +97,7 @@
         <Compile Include="Dev\DevFillInvestitureUtility.cs"/>
         <Compile Include="Genes\GeneInheritanceUtility.cs"/>
         <Compile Include="Genes\Gene_Metalborn.cs"/>
+        <Compile Include="Hediffs\BurningMetal.cs"/>
         <Compile Include="Hediffs\Comps\BurnMetal.cs"/>
         <Compile Include="Hediffs\Comps\Properties\BurnMetal.cs"/>
         <Compile Include="Initializer.cs"/>

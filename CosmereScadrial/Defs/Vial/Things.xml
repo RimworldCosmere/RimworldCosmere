@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef Name="AbstractAllomanticVial" ParentName="DrugBase" Abstract="True">
+    <ThingDef Name="AbstractAllomanticVial" ParentName="ResourceBase" Abstract="True">
         <thingClass>CosmereScadrial.Things.AllomanticVial</thingClass>
         <graphicData>
             <texPath>Things/Item/AllomanticVial</texPath>
             <graphicClass>Graphic_StackCount</graphicClass>
             <drawSize>(1,1)</drawSize>
         </graphicData>
+        <statBases>
+            <MaxHitPoints>50</MaxHitPoints>
+            <Flammability>1.0</Flammability>
+            <DeteriorationRate>2</DeteriorationRate>
+            <Mass>0.005</Mass>
+            <MarketValue>8</MarketValue>
+        </statBases>
+        <stackLimit>10</stackLimit>
         <thingCategories>
             <li>Cosmere_Allomancy</li>
         </thingCategories>
+        <tradeTags>
+            <li>Allomancy</li>
+        </tradeTags>
         <ingestible>
             <preferability>NeverForNutrition</preferability>
             <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
@@ -22,14 +33,6 @@
             <ingestCommandString>Drink vial</ingestCommandString>
             <ingestReportString>drinks an allomantic vial</ingestReportString>
         </ingestible>
-        <statBases>
-            <Mass>0.1</Mass>
-            <MarketValue>8</MarketValue>
-        </statBases>
-        <stackLimit>10</stackLimit>
-        <tradeTags>
-            <li>Allomancy</li>
-            <li>Drugs</li>
-        </tradeTags>
+        <orderedTakeGroup>AllomanticVial</orderedTakeGroup>
     </ThingDef>
 </Defs>	

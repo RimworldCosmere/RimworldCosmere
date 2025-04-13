@@ -2,24 +2,47 @@
 <Defs>
     <HediffDef>
         <defName>Cosmere_Hediff_PewterBuff</defName>
-        <hediffClass>HediffWithComps</hediffClass>
-        <label>burning pewter</label>
+        <hediffClass>CosmereScadrial.Hediffs.BurningMetal</hediffClass>
+        <label>Burning Pewter</label>
         <description>Empowered strength, endurance, and resilience from burning pewter.</description>
         <isBad>false</isBad>
+        <tendable>false</tendable>
+        <displayWound>false</displayWound>
+        <everCurableByItem>false</everCurableByItem>
+        <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
         <comps>
             <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal">
                 <metal>pewter</metal>
-                <metalUnitsPerHour>10</metalUnitsPerHour>
             </li>
         </comps>
         <stages>
             <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statOffsets>
-                    <MoveSpeed>500</MoveSpeed>
-                    <MeleeDamageFactor>2.0</MeleeDamageFactor>
-                    <PainShockThreshold>0.2</PainShockThreshold>
+                    <MeleeDamageFactor>4.0</MeleeDamageFactor>
+                    <MeleeCooldownFactor>2.0</MeleeCooldownFactor>
+                    <PainShockThreshold>0.4</PainShockThreshold>
                     <IncomingDamageFactor>-0.5</IncomingDamageFactor>
+                    <StaggerDurationFactor>-0.5</StaggerDurationFactor>
+                    <ImmunityGainSpeed>.25</ImmunityGainSpeed>
+                    <InjuryHealingFactor>4</InjuryHealingFactor>
+                    <ToxicEnvironmentResistance>.5</ToxicEnvironmentResistance>
+                    <RestFallRateFactor>-.5</RestFallRateFactor>
                 </statOffsets>
+                <statFactors>
+                    <MiningSpeed>2</MiningSpeed>
+                    <DeepDrillingSpeed>2</DeepDrillingSpeed>
+                    <SmoothingSpeed>2</SmoothingSpeed>
+                    <ConstructionSpeed>2</ConstructionSpeed>
+                    <ArrestSuccessChance>2</ArrestSuccessChance>
+                    <MeleeHitChance>2</MeleeHitChance>
+                    <MeleeDodgeChance>2</MeleeDodgeChance>
+                    <MoveSpeed>4</MoveSpeed>
+                    <ComfyTemperatureMin>-1.5</ComfyTemperatureMin>
+                    <ComfyTemperatureMax>2</ComfyTemperatureMax>
+                    <ImmunityGainSpeed>2</ImmunityGainSpeed>
+                    <CarryingCapacity>3</CarryingCapacity>
+                </statFactors>
             </li>
         </stages>
     </HediffDef>

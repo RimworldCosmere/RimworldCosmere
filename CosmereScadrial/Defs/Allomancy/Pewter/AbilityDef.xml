@@ -11,7 +11,6 @@
         <stunTargetWhileCasting>True</stunTargetWhileCasting>
         <targetRequired>false</targetRequired>
         <targetWorldCell>false</targetWorldCell>
-        <cooldownTicksRange>1</cooldownTicksRange>
         <aiCanUse>true</aiCanUse>
         <ai_IsOffensive>true</ai_IsOffensive>
         <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>

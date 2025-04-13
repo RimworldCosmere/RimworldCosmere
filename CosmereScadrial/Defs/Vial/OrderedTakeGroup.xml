@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial</defName>
+        <label>Allomantic Vial</label>
+        <max>10</max>
+    </OrderedTakeGroupDef>
+</Defs>

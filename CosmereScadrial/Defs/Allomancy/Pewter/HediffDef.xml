@@ -17,14 +17,18 @@
         </comps>
         <stages>
             <li>
+                <naturalHealingFactor>0.5</naturalHealingFactor>
+                <regeneration>0.5</regeneration>
+                <totalBleedFactor>-0.5</totalBleedFactor> <!-- Stops 50% of blood loss -->
+                <painOffset>-0.5</painOffset>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statOffsets>
                     <MeleeDamageFactor>4.0</MeleeDamageFactor>
-                    <MeleeCooldownFactor>2.0</MeleeCooldownFactor>
+                    <MeleeCooldownFactor>0.5</MeleeCooldownFactor>
                     <PainShockThreshold>0.4</PainShockThreshold>
+                    <MentalBreakThreshold>0.4</MentalBreakThreshold>
                     <IncomingDamageFactor>-0.5</IncomingDamageFactor>
                     <StaggerDurationFactor>-0.5</StaggerDurationFactor>
-                    <ImmunityGainSpeed>.25</ImmunityGainSpeed>
                     <InjuryHealingFactor>4</InjuryHealingFactor>
                     <ToxicEnvironmentResistance>.5</ToxicEnvironmentResistance>
                     <RestFallRateFactor>-.5</RestFallRateFactor>
@@ -37,7 +41,7 @@
                     <ArrestSuccessChance>2</ArrestSuccessChance>
                     <MeleeHitChance>2</MeleeHitChance>
                     <MeleeDodgeChance>2</MeleeDodgeChance>
-                    <MoveSpeed>4</MoveSpeed>
+                    <MoveSpeed>2</MoveSpeed>
                     <ComfyTemperatureMin>-1.5</ComfyTemperatureMin>
                     <ComfyTemperatureMax>2</ComfyTemperatureMax>
                     <ImmunityGainSpeed>2</ImmunityGainSpeed>
@@ -46,5 +50,47 @@
             </li>
         </stages>
     </HediffDef>
-
+    
+    <HediffDef>
+        <defName>Cosmere_Hediff_PewterDrag</defName>
+        <label>pewter drag</label>
+        <description>The aftereffects of pushing the body beyond its limits using pewter. The body is crashing.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <isBad>true</isBad>
+        <tendable>false</tendable>
+        <comps>
+            <li Class="CosmereScadrial.Hediffs.Comps.Properties.DisappearsScaled">
+                <baseTicks>10000</baseTicks> <!-- 10 minutes IRL -->
+            </li>
+            <li Class="Verse.HediffCompProperties_ThoughtSetter">
+                <thought>Cosmere_Thought_PewterDrag</thought>
+                <moodOffset>-10</moodOffset>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <MoveSpeed>0.5</MoveSpeed>
+                    <WorkSpeedGlobal>0.6</WorkSpeedGlobal>
+                    <RestFallRateFactor>.5</RestFallRateFactor>
+                    <MentalBreakThreshold>-0.2</MentalBreakThreshold>
+                </statFactors>
+                <statOffsets>
+                    <PainShockThreshold>-0.15</PainShockThreshold>
+                </statOffsets>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.2</offset>
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.15</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
 </Defs>

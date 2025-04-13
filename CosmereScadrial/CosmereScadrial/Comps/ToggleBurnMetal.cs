@@ -33,7 +33,7 @@ namespace CosmereScadrial.Comps {
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
             base.Apply(target, dest);
 
-            Log.Warning($"{target.Pawn.NameFullColored} using ToggleBurnMetal, hediff={Props.hediff} burning={burning}");
+            Log.Warning($"{target.Pawn.NameFullColored} using ToggleBurnMetal, hediff={Props.hediff} currentBurning={burning}");
 
             if (burning) {
                 hediff = parent.pawn.health.hediffSet.GetFirstHediffOfDef(Props.hediff);

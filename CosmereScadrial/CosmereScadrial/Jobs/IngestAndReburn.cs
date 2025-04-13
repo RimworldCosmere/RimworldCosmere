@@ -24,7 +24,7 @@ namespace CosmereScadrial.Jobs {
                         .FirstOrDefault(c => c.Props.metal == metal);
 
                     if (burnComp == null) return;
-                    Log.Message($"[Allomancy] {pawn.LabelShort} auto-burning {metal} after ingestion.");
+                    Log.Message($"[CosmereScadrial]  {pawn.LabelShort} auto-burning {metal} after ingestion.");
                     burnComp.TryBurn();
                 },
                 defaultCompleteMode = ToilCompleteMode.Instant,

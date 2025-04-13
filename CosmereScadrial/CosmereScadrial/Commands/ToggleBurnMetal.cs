@@ -24,7 +24,7 @@ namespace CosmereScadrial.Commands {
         }
 
         public override string DescPostfix {
-            get => "\n(Ctrl-click to flare)";
+            get => "\n\n(Ctrl-click to flare)";
         }
 
         public override void ProcessInput(Event ev) {
@@ -36,7 +36,7 @@ namespace CosmereScadrial.Commands {
             }
 
             comp.ToggleFlaring();
-            Log.Message($"[Cosmere] Toggled flaring: {(comp.flaring ? "Flare" : "Normal")}");
+            Log.Message($"[CosmereScadrial] Toggled flaring: {(comp.flaring ? "Flare" : "Normal")}");
         }
     }
 }

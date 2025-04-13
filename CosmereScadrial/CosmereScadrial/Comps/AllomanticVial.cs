@@ -16,8 +16,6 @@ namespace CosmereScadrial.Comps {
 
         public override void PostIngested(Pawn ingester) {
             Props.metalNames.ForEach(metal => {
-                // Todo, add Investiture
-                Log.Message($"{ingester.LabelShortCap} ingesting: {metal}");
                 AllomancyUtility.AddMetalReserve(ingester, metal.ToLower(), 100f); // or adjust amount
             });
             Messages.Message($"{ingester.LabelShortCap} absorbed: {string.Join(", ", Props.metalNames)}.", ingester, MessageTypeDefOf.PositiveEvent);

@@ -13,7 +13,7 @@ namespace CosmereScadrial.Utils {
         public const float BEU_PER_METAL_UNIT = 0.003125f;
 
         public static void AddMetalReserve(Pawn pawn, string metal, float amount) {
-            var tracker = pawn.GetComp<CompScadrialInvestiture>();
+            var tracker = pawn.GetComp<ScadrialInvestiture>();
             if (tracker == null) {
                 Log.Warning($"{pawn.NameShortColored} has no InvestitureTracker. Skipping {metal} absorption.");
                 return;
@@ -38,7 +38,7 @@ namespace CosmereScadrial.Utils {
         }
 
         public static float GetReservePercent(Pawn pawn, string metal) {
-            var tracker = pawn.GetComp<CompScadrialInvestiture>();
+            var tracker = pawn.GetComp<ScadrialInvestiture>();
             if (tracker == null || !tracker.metalReserves.TryGetValue(metal.ToLower(), out var value)) {
                 return 0f;
             }
@@ -57,7 +57,7 @@ namespace CosmereScadrial.Utils {
         public static bool TryBurnMetalForInvestiture(Pawn pawn, string metal, float requiredBEU) {
             var metalNeeded = requiredBEU / BEU_PER_METAL_UNIT;
 
-            if (!pawn.TryGetComp<CompScadrialInvestiture>(out var comp) ||
+            if (!pawn.TryGetComp<ScadrialInvestiture>(out var comp) ||
                 !comp.metalReserves.TryGetValue(metal, out var available) ||
                 !(available >= metalNeeded)) {
                 return false;

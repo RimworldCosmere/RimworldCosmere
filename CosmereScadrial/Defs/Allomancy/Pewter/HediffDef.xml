@@ -7,21 +7,18 @@
         <description>Empowered strength, endurance, and resilience from burning pewter.</description>
         <isBad>false</isBad>
         <comps>
-            <li Class="HediffCompProperties_Disappears">
-                <disappearsAfterTicks>60000</disappearsAfterTicks> <!-- 1 in-game hour -->
-            </li>
-            <li Class="CosmereScadrial.Hediffs.HediffCompProperties_BurnMetal">
-                <metal>Pewter</metal>
+            <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal">
+                <metal>pewter</metal>
                 <metalUnitsPerHour>10</metalUnitsPerHour>
             </li>
         </comps>
         <stages>
             <li>
                 <statOffsets>
-                    <MoveSpeed>0.5</MoveSpeed>
-                    <MeleeDamageFactor>0.5</MeleeDamageFactor>
+                    <MoveSpeed>500</MoveSpeed>
+                    <MeleeDamageFactor>2.0</MeleeDamageFactor>
                     <PainShockThreshold>0.2</PainShockThreshold>
-                    <IncomingDamageFactor>-0.15</IncomingDamageFactor>
+                    <IncomingDamageFactor>-0.5</IncomingDamageFactor>
                 </statOffsets>
             </li>
         </stages>

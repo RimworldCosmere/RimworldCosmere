@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using CosmereScadrial.Comps;
 using CosmereScadrial.Utils;
 using Verse;
 
@@ -11,7 +10,7 @@ namespace CosmereScadrial.Things {
                     return false;
                 }
 
-                var comp = GetComp<CompAllomanticVial>();
+                var comp = GetComp<Comps.AllomanticVial>();
                 var pawn = Find.Selector?.SingleSelectedThing as Pawn; // not reliable for ingestion, fallback in ingest jobs
 
                 // Safeguard — if being evaluated during actual ingestion
@@ -37,7 +36,7 @@ namespace CosmereScadrial.Things {
         }
 
         public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn pawn) {
-            var comp = GetComp<CompAllomanticVial>();
+            var comp = GetComp<Comps.AllomanticVial>();
             if (pawn == null || comp?.Props.metalNames == null) {
                 yield return null;
                 yield break;

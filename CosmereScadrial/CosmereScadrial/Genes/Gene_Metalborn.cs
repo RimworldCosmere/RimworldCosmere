@@ -21,7 +21,7 @@ namespace CosmereScadrial.Genes {
             InvestitureUtility.AssignHeighteningFromBEUs(pawn);
 
             // Initialize metal reserves
-            if (pawn.GetComp<CompScadrialInvestiture>() is not { } comp) return;
+            if (pawn.GetComp<ScadrialInvestiture>() is not { } comp) return;
             if (def.GetModExtension<MetalLinked>() is not { } ext) return;
 
             foreach (var metal in ext.metals?.Where(metal => MetalRegistry.Metals.ContainsKey(metal))!) {
@@ -40,7 +40,7 @@ namespace CosmereScadrial.Genes {
             }
 
             // Initialize metal reserves
-            if (pawn.GetComp<CompScadrialInvestiture>() is not { } comp) return;
+            if (pawn.GetComp<ScadrialInvestiture>() is not { } comp) return;
             if (def.GetModExtension<MetalLinked>() is not { } ext) return;
 
             foreach (var metal in ext.metals?.Where(metal => MetalRegistry.Metals.ContainsKey(metal))!) {

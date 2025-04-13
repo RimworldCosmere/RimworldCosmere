@@ -5,7 +5,7 @@
     <label>Misting Vial: Soother</label>
     <description>A vial containing Brass suspended in alcohol, used in allomancy.</description>
     <comps>
-      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
         <metalNames>
           <li>brass</li>
         </metalNames>

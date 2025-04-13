@@ -1,13 +1,12 @@
 using System.Linq;
-using CosmereScadrial.CompProperties;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Comps {
-    public class CompAllomanticVial : ThingComp {
-        public CompProperties_AllomanticVial Props {
-            get => (CompProperties_AllomanticVial)props;
+    public class AllomanticVial : ThingComp {
+        public Properties.AllomanticVial Props {
+            get => (Properties.AllomanticVial)props;
         }
 
         public override void PostExposeData() {

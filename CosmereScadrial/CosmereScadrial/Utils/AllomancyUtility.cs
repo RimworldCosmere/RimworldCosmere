@@ -1,8 +1,10 @@
 using CosmereCore.Needs;
+using CosmereFramework;
 using CosmereScadrial.Comps;
 using CosmereScadrial.Registry;
 using UnityEngine;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Utils {
     public static class AllomancyUtility {
@@ -15,7 +17,7 @@ namespace CosmereScadrial.Utils {
         public static void AddMetalReserve(Pawn pawn, string metal, float amount) {
             var tracker = pawn.GetComp<ScadrialInvestiture>();
             if (tracker == null) {
-                Log.Warning($"{pawn.NameShortColored} has no InvestitureTracker. Skipping {metal} absorption.");
+                Log.Message($"{pawn.NameShortColored} has no InvestitureTracker. Skipping {metal} absorption.", LogLevel.Warning);
                 return;
             }
 

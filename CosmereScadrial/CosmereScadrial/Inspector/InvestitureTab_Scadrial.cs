@@ -54,6 +54,7 @@ namespace CosmereScadrial.Inspector {
                 }
 
                 // Draw rows
+                var key = 0;
                 for (var row = 0; row < axes.Length * polarities.Length; row++) {
                     var axis = axes[row / 2];
                     var polarity = polarities[row % 2];
@@ -100,7 +101,7 @@ namespace CosmereScadrial.Inspector {
                             // Label
                             UIUtil.DrawContrastLabel(barRect, label, metal.Color);
 
-                            TooltipHandler.TipRegion(cellRect, tooltip);
+                            TooltipHandler.TipRegion(cellRect, () => tooltip, key++);
                         }
                         else {
                             Widgets.DrawBoxSolid(cellRect, new Color(0.1f, 0.1f, 0.1f, 0.5f)); // Empty cell

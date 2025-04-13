@@ -2,6 +2,7 @@ using CosmereScadrial.Comps;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Commands {
     public class ToggleBurnMetal(Ability ability, Pawn pawn) : Command_Ability(ability, pawn) {
@@ -36,7 +37,7 @@ namespace CosmereScadrial.Commands {
             }
 
             comp.ToggleFlaring();
-            Log.Message($"[CosmereScadrial] Toggled flaring: {(comp.flaring ? "Flare" : "Normal")}");
+            Log.Verbose($"Toggled flaring: {(comp.flaring ? "Flare" : "Normal")}");
         }
     }
 }

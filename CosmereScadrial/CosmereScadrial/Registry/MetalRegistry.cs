@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using UnityEngine;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Registry {
     [StaticConstructorOnStartup]
@@ -47,10 +48,10 @@ namespace CosmereScadrial.Registry {
                     if (!string.IsNullOrEmpty(metal.Name)) Metals[metal.Name] = metal;
                 }
 
-                Log.Message($"[CosmereScadrial] Loaded {Metals.Count} metals from MetalRegistry.xml.");
+                Log.Verbose($"Loaded {Metals.Count} metals from MetalRegistry.xml.");
             }
             catch (Exception ex) {
-                Log.Error("[CosmereScadrial] Error loading MetalRegistry.xml: " + ex);
+                Log.Error("Error loading MetalRegistry.xml: " + ex);
             }
         }
 

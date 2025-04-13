@@ -5,10 +5,11 @@ using CosmereScadrial.Utils;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Hediffs.Comps {
     public class BurnMetal : HediffComp {
-        private const int TICKS_PER_BURN = 60 * 3;
+        private const int TICKS_PER_BURN = 60;
 
         private int flareStartTick = -1;
         private int lastBurnTick = -1;
@@ -84,7 +85,7 @@ namespace CosmereScadrial.Hediffs.Comps {
 
             MetalRegistry.Metals.TryGetValue(Props.metal, out var metal);
             if (metal == null) {
-                Log.Error($"[CosmereScadrial] Could not find metal with ID {Props.metal} ({string.Join(", ", MetalRegistry.Metals.Keys.ToArray())})");
+                Log.Error($"Could not find metal with ID {Props.metal} ({string.Join(", ", MetalRegistry.Metals.Keys.ToArray())})");
                 return;
             }
 
@@ -101,7 +102,7 @@ namespace CosmereScadrial.Hediffs.Comps {
             }
 
             if (shouldStop) {
-                Log.Message($"[CosmereScadrial] Pawn {parent.pawn} has stopped burning {Props.metal}");
+                Log.Verbose($"Pawn {parent.pawn} has stopped burning {Props.metal}");
 
                 // Remove the hediff
                 parent.pawn.health.RemoveHediff(parent);
@@ -109,7 +110,8 @@ namespace CosmereScadrial.Hediffs.Comps {
             }
 
             var beuRequired = AllomancyUtility.BEU_PER_METAL_UNIT * Props.unitsPerBurn * parent.Severity;
-            Log.Message($"[CosmereScadrial] Pawn {parent.pawn} is burning {Props.metal} Severity={parent.Severity} BEUs={beuRequired} metalRequired={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT} PewterDragSeverity={flareDuration / 6000f}");
+            Log.Verbose(
+                $"Pawn {parent.pawn} is burning {Props.metal} Severity={parent.Severity} BEUs={beuRequired} metalRequired={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT} PewterDragSeverity={flareDuration / 6000f}");
 
             if (AllomancyUtility.TryBurnMetalForInvestiture(parent.pawn, Props.metal, beuRequired)) {
                 lastBurnTick = Find.TickManager.TicksGame;
@@ -141,7 +143,7 @@ namespace CosmereScadrial.Hediffs.Comps {
                 .FirstOrDefault(t => t.def.defName == $"Cosmere_AllomanticVial_{Props.metal.CapitalizeFirst()}");
 
             if (vial == null || parent.pawn.jobs == null) {
-                Log.Warning($"[CosmereScadrial] {parent.pawn.NameFullColored} cannot auto-ingest Cosmere_AllomanticVial_{Props.metal.CapitalizeFirst()}. Doesn't have one.");
+                Log.Warning($"{parent.pawn.NameFullColored} cannot auto-ingest Cosmere_AllomanticVial_{Props.metal.CapitalizeFirst()}. Doesn't have one.");
                 return false;
             }
 
@@ -150,12 +152,12 @@ namespace CosmereScadrial.Hediffs.Comps {
 
             tryingToRefuel = true;
             parent.pawn.jobs.TryTakeOrderedJob(job);
-            Log.Message($"[CosmereScadrial] {parent.pawn.NameShortColored} is auto-ingesting {vial.LabelShort} for {Props.metal}.");
+            Log.Warning($"{parent.pawn.NameShortColored} is auto-ingesting {vial.LabelShort} for {Props.metal}.");
             return true;
         }
 
         private void ApplyPewterDrag(float severity) {
-            Log.Message($"[CosmereScadrial] Applying Pewter Drag to {parent.pawn.NameFullColored} with Severity={severity}");
+            Log.Warning($"Applying Pewter Drag to {parent.pawn.NameFullColored} with Severity={severity}");
             if (severity <= 0f) return;
 
             var burnoutDef = HediffDef.Named("Cosmere_Hediff_PewterDrag");

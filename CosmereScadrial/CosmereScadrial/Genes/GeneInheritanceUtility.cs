@@ -1,19 +1,27 @@
 ﻿using System.Linq;
 using CosmereCore.Utils;
+using CosmereFramework;
 using CosmereScadrial.Registry;
 using RimWorld;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereCore.Genes {
     public static class GeneInheritanceUtility {
-        private static bool IsHarmony => ShardUtility.IsEnabled("Harmony");
+        private static bool IsHarmony {
+            get => ShardUtility.IsEnabled("Harmony");
+        }
 
-        private static bool IsRuin => ShardUtility.IsEnabled("Ruin");
+        private static bool IsRuin {
+            get => ShardUtility.IsEnabled("Ruin");
+        }
 
-        private static bool IsPreservation => ShardUtility.IsEnabled("Preservation");
+        private static bool IsPreservation {
+            get => ShardUtility.IsEnabled("Preservation");
+        }
 
         public static void TryAssignScadrialGenes(Pawn pawn) {
-            Log.Warning($"[CosmereScadrial] TryAssignScadrialGenes on: {pawn.NameFullColored}");
+            Log.Message($"[CosmereScadrial] TryAssignScadrialGenes on: {pawn.NameFullColored}", LogLevel.Warning);
             if (pawn?.genes == null || !pawn.RaceProps.Humanlike) {
                 return;
             }
@@ -37,7 +45,7 @@ namespace CosmereCore.Genes {
             var isSkaa = IsSkaa(pawn);
             var isMetalbornBlocked = IsMetalbornBlocked(pawn);
 
-            Log.Warning(
+            Verse.Log.Warning(
                 $"[CosmereScadrial][{pawn.NameFullColored}] Shards: ${string.Join(", ", ShardUtility.Shards.enabledShardDefs.Select(x => x.defName))} isTerris: {isTerris} isNoble: {isNoble} isSkaa: {isSkaa} IsMetalbornBlocked: {isMetalbornBlocked}");
             if (isMetalbornBlocked) {
                 return;
@@ -46,12 +54,12 @@ namespace CosmereCore.Genes {
             // Preservation logic
             if (IsPreservation) {
                 if (isNoble) {
-                    Log.Warning($"[CosmereScadrial][{pawn.NameFullColored}] Trying for Mistborn");
+                    Log.Message($"[CosmereScadrial][{pawn.NameFullColored}] Trying for Mistborn", LogLevel.Warning);
                     if (RollChance(128)) {
                         AddGene(pawn, "Cosmere_Mistborn");
                     }
                     else {
-                        Log.Warning($"[CosmereScadrial][{pawn.NameFullColored}] Trying for Misting");
+                        Log.Message($"[CosmereScadrial][{pawn.NameFullColored}] Trying for Misting", LogLevel.Warning);
                         if (RollChance(64)) TryAddRandomAllomanticGene(pawn);
                     }
                 }
@@ -61,12 +69,12 @@ namespace CosmereCore.Genes {
                     if (isTerris) {
                         // Full Feruchemists were way more common, from what I can tell
                         // Most Terris were Full, or nothing. There was a small chance for Ferrings, but it was rare.
-                        Log.Warning($"[CosmereScadrial][{pawn.NameFullColored}] Trying for full feruchemist");
+                        Log.Message($"[CosmereScadrial][{pawn.NameFullColored}] Trying for full feruchemist", LogLevel.Warning);
                         if (RollChance(16)) {
                             AddGene(pawn, "Cosmere_FullFeruchemist");
                         }
                         else {
-                            Log.Warning($"[CosmereScadrial][{pawn.NameFullColored}] Trying for Ferring");
+                            Log.Message($"[CosmereScadrial][{pawn.NameFullColored}] Trying for Ferring", LogLevel.Warning);
                             if (RollChance(64)) TryAddRandomFeruchemicalGene(pawn);
                         }
                     }
@@ -75,12 +83,12 @@ namespace CosmereCore.Genes {
 
             // Harmony system: no nobles, no block, no mistborn/full feruchemists
             if (IsHarmony) {
-                Log.Warning($"[CosmereScadrial][{pawn.NameFullColored}] Trying for random misting");
+                Log.Message($"[CosmereScadrial][{pawn.NameFullColored}] Trying for random misting", LogLevel.Warning);
                 if (RollChance(16)) {
                     TryAddRandomAllomanticGene(pawn);
                 }
 
-                if (isTerris) Log.Warning($"[CosmereScadrial][{pawn.NameFullColored}] Trying for random ferring");
+                if (isTerris) Log.Message($"[CosmereScadrial][{pawn.NameFullColored}] Trying for random ferring", LogLevel.Warning);
                 if (isTerris && RollChance(16)) {
                     TryAddRandomFeruchemicalGene(pawn);
                 }
@@ -108,7 +116,7 @@ namespace CosmereCore.Genes {
             var geneDef = DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Purity");
             var gene = generated.genes.GetGene(geneDef);
             generated.genes.RemoveGene(gene);
-            Log.Message(
+            Verse.Log.Message(
                 $"[Cosmere] Removed Cosmere_Skaa_Purity from {generated.NameFullColored} (only one parent had it)");
         }
 
@@ -123,29 +131,34 @@ namespace CosmereCore.Genes {
         }
 
         private static void AddGene(Pawn pawn, string defName) {
-            Log.Error($"[CosmereScadrial][{pawn.NameFullColored}] Adding {defName}");
             var gene = DefDatabase<GeneDef>.GetNamedSilentFail(defName);
             if (gene == null || pawn.genes.HasActiveGene(gene)) return;
 
             pawn.genes.AddGene(gene, false);
-            Log.Error($"[CosmereScadrial][{pawn.NameFullColored}] Added {defName}");
+            Log.Info($"[{pawn.NameFullColored}] Added {defName}");
         }
 
-        private static bool IsTerris(Pawn pawn) =>
-            pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Terris_Heritage")) ==
-            true;
+        private static bool IsTerris(Pawn pawn) {
+            return pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Terris_Heritage")) ==
+                   true;
+        }
 
-        private static bool IsNoble(Pawn pawn) => pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Noble_Heritage")) == true;
+        private static bool IsNoble(Pawn pawn) {
+            return pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Noble_Heritage")) == true;
+        }
 
-        private static bool IsSkaa(Pawn pawn) => pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Heritage")) == true;
+        private static bool IsSkaa(Pawn pawn) {
+            return pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Heritage")) == true;
+        }
 
-        private static bool IsMetalbornBlocked(Pawn pawn) =>
-            !IsHarmony &&
-            pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Purity")) == true;
+        private static bool IsMetalbornBlocked(Pawn pawn) {
+            return !IsHarmony &&
+                   pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Purity")) == true;
+        }
 
         private static bool RollChance(int oneIn) {
             var roll = Rand.RangeInclusive(1, oneIn);
-            Log.Message($"[CosmereScadrial] Rolling {roll}/{oneIn}");
+            Log.Verbose($"Rolling {roll}/{oneIn}");
 
             return roll == 1;
         }

@@ -59,9 +59,7 @@
         <isBad>true</isBad>
         <tendable>false</tendable>
         <comps>
-            <li Class="CosmereScadrial.Hediffs.Comps.Properties.DisappearsScaled">
-                <baseTicks>10000</baseTicks> <!-- 10 minutes IRL -->
-            </li>
+            <li Class="CosmereScadrial.Hediffs.Comps.Properties.DisappearsScaled" />
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_PewterDrag</thought>
                 <moodOffset>-10</moodOffset>
@@ -74,7 +72,7 @@
                 <statFactors>
                     <MoveSpeed>0.5</MoveSpeed>
                     <WorkSpeedGlobal>0.6</WorkSpeedGlobal>
-                    <RestFallRateFactor>.5</RestFallRateFactor>
+                    <RestFallRateFactor>4</RestFallRateFactor>
                     <MentalBreakThreshold>-0.2</MentalBreakThreshold>
                 </statFactors>
                 <statOffsets>
@@ -83,7 +81,7 @@
                 <capMods>
                     <li>
                         <capacity>Consciousness</capacity>
-                        <offset>-0.2</offset>
+                        <offset>-0.8</offset>
                     </li>
                     <li>
                         <capacity>Manipulation</capacity>

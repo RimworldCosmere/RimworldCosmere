@@ -3,6 +3,7 @@ using CosmereScadrial.Comps.Properties;
 using CosmereScadrial.Hediffs.Comps;
 using RimWorld;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Comps {
     public class CompToggleBurnMetal : CompAbilityEffect {

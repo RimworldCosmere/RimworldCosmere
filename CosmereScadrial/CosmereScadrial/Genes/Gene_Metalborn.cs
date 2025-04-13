@@ -6,6 +6,7 @@ using CosmereScadrial.Registry;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Genes {
     public class Gene_Metalborn : Gene {
@@ -25,7 +26,7 @@ namespace CosmereScadrial.Genes {
             if (def.GetModExtension<MetalLinked>() is not { } ext) return;
 
             foreach (var metal in ext.metals?.Where(metal => MetalRegistry.Metals.ContainsKey(metal))!) {
-                Log.Message($"[Cosmere] {pawn.Name} has access to metal: {metal}");
+                Log.Info($"{pawn.Name} has access to metal: {metal}");
                 comp.SetReserve(metal, 0);
             }
         }
@@ -44,7 +45,7 @@ namespace CosmereScadrial.Genes {
             if (def.GetModExtension<MetalLinked>() is not { } ext) return;
 
             foreach (var metal in ext.metals?.Where(metal => MetalRegistry.Metals.ContainsKey(metal))!) {
-                Log.Message($"[Cosmere] {pawn.Name} no longer has access to metal: {metal}");
+                Log.Info($"{pawn.Name} no longer has access to metal: {metal}");
                 comp.RemoveReserve(metal, true);
             }
         }

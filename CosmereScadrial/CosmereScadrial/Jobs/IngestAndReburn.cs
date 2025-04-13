@@ -5,6 +5,7 @@ using CosmereScadrial.Hediffs.Comps;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Jobs {
     public class IngestAndReburn : JobDriver_Ingest {
@@ -24,7 +25,7 @@ namespace CosmereScadrial.Jobs {
                         .FirstOrDefault(c => c.Props.metal == metal);
 
                     if (burnComp == null) return;
-                    Log.Message($"[CosmereScadrial]  {pawn.LabelShort} auto-burning {metal} after ingestion.");
+                    Log.Info($"{pawn.LabelShort} auto-burning {metal} after ingestion.");
                     burnComp.TryBurn();
                 },
                 defaultCompleteMode = ToilCompleteMode.Instant,

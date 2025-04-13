@@ -1,7 +1,9 @@
 ﻿using System;
+using CosmereFramework;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereCore.Tabs {
     public class ITab_Pawn_Investiture : ITab {
@@ -38,7 +40,7 @@ namespace CosmereCore.Tabs {
                     drawer(SelPawn, listing);
                 }
                 catch (Exception ex) {
-                    Log.Error($"[InvestitureTab] Error in registered drawer: {ex}");
+                    Log.Message($"[InvestitureTab] Error in registered drawer: {ex}", LogLevel.Error);
                 }
             }
 

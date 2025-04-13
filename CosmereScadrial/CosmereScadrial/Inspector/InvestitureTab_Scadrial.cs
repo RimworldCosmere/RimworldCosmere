@@ -2,6 +2,7 @@
 using System.Linq;
 using CosmereCore.Tabs;
 using CosmereFramework.Utils;
+using CosmereScadrial.Comps;
 using CosmereScadrial.Registry;
 using UnityEngine;
 using Verse;
@@ -20,10 +21,8 @@ namespace CosmereScadrial.Inspector {
         }
 
         public static void Draw(Pawn pawn, Listing_Standard listing) {
-            var comp = pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompScadrialInvestiture");
-            if (comp == null) return;
-
-            var reserves = comp.GetType().GetField("metalReserves")?.GetValue(comp) as Dictionary<string, float>;
+            var comp = pawn.GetComp<ScadrialInvestiture>();
+            var reserves = comp?.metalReserves;
             if (reserves == null || reserves.Count == 0) return;
 
             if (!InvestitureTabUI.DrawCollapsibleHeader("Allomantic Reserves", "Scadrial_Allomancy", listing)) {
@@ -36,9 +35,9 @@ namespace CosmereScadrial.Inspector {
         }
 
         private static void DrawAllomanticMetalTable(Pawn pawn, Rect outerRect, Listing_Standard listing) {
-            var comp = pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompScadrialInvestiture");
-            var reserves = comp?.GetType().GetField("metalReserves")?.GetValue(comp) as Dictionary<string, float>;
-            if (reserves == null) return;
+            var comp = pawn.GetComp<ScadrialInvestiture>();
+            var reserves = comp?.metalReserves;
+            if (reserves == null || reserves.Count == 0) return;
 
             var groups = new[] { "Physical", "Mental", "Enhancement", "Temporal" };
             var axes = new[] { "External", "Internal" };

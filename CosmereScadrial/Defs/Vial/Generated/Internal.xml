@@ -5,7 +5,7 @@
     <label>Mistborn Vial: Internal</label>
     <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
     <comps>
-      <li Class="CosmereScadrial.CompProperties.CompProperties_AllomanticVial">
+      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
         <metalNames>
           <li>tin</li>
           <li>pewter</li>

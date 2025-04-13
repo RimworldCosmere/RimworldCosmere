@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>Cosmere_IngestAndReburn</defName>
+        <driverClass>CosmereScadrial.Jobs.IngestAndReburn</driverClass>
+        <reportString>ingesting and reigniting reserves</reportString>
+        <joyKind>Gluttonous</joyKind>
+        <playerInterruptible>true</playerInterruptible>
+        <casualInterruptible>true</casualInterruptible>
+        <alwaysShowWeapon>false</alwaysShowWeapon>
+        <collideWithPawns>true</collideWithPawns>
+    </JobDef>
+</Defs>

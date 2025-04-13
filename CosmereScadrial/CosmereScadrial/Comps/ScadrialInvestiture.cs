@@ -8,7 +8,7 @@ namespace CosmereScadrial.Comps {
     /**
  * @todo Should these reserves decay?
  */
-    public class CompScadrialInvestiture : ThingComp {
+    public class ScadrialInvestiture : ThingComp {
         public Dictionary<string, float> metalReserves = new Dictionary<string, float>();
 
         public override void PostExposeData() {

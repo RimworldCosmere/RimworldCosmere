@@ -84,19 +84,24 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="Abilities\CompProperties_AbilityBurnMetal.cs"/>
-        <Compile Include="CompProperties\CompProperties_AllomanticVial.cs"/>
-        <Compile Include="CompProperties\CompProperties_ScadrialInvestiture.cs"/>
-        <Compile Include="Comps\CompAllomanticVial.cs"/>
-        <Compile Include="Comps\CompScadrialInvestiture.cs"/>
+        <Compile Include="Commands\ToggleBurnMetal.cs"/>
+        <Compile Include="Comps\AllomanticVial.cs"/>
+        <Compile Include="Comps\ToggleBurnMetal.cs"/>
+        <Compile Include="Comps\ScadrialInvestiture.cs"/>
+        <Compile Include="Comps\Properties\AllomanticVial.cs"/>
+        <Compile Include="Comps\Properties\ScadrialInvestiture.cs"/>
+        <Compile Include="Comps\Properties\ToggleBurnMetal.cs"/>
+        <Compile Include="CosmereJobDefOf.cs"/>
         <Compile Include="CosmereScadrial.cs"/>
         <Compile Include="DefModExtensions\MetalLinked.cs"/>
         <Compile Include="Dev\DevFillInvestitureUtility.cs"/>
         <Compile Include="Genes\GeneInheritanceUtility.cs"/>
         <Compile Include="Genes\Gene_Metalborn.cs"/>
-        <Compile Include="Hediffs\HediffCompProperties_BurnMetal.cs"/>
+        <Compile Include="Hediffs\Comps\BurnMetal.cs"/>
+        <Compile Include="Hediffs\Comps\Properties\BurnMetal.cs"/>
         <Compile Include="Initializer.cs"/>
         <Compile Include="Inspector\InvestitureTab_Scadrial.cs"/>
+        <Compile Include="Jobs\IngestAndReburn.cs"/>
         <Compile Include="MetalInfo.cs"/>
         <Compile Include="Patches\Patch_LockShardSelection.cs"/>
         <Compile Include="Patches\Patch_PawnGeneGeneration.cs"/>

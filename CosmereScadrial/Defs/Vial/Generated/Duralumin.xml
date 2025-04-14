@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="AbstractAllomanticVial">
-    <defName>Cosmere_AllomanticVial_Duralumin</defName>
-    <label>Misting Vial: Gnat (duralumin)</label>
-    <description>A vial containing Duralumin suspended in alcohol, used in allomancy.</description>
-    <comps>
-      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-        <metalNames>
-          <li>duralumin</li>
-        </metalNames>
-      </li>
-    </comps>
-  </ThingDef>
-  <RecipeDef ParentName="AbstractCraftAllomanticVial">
-    <defName>Cosmere_CraftAllomanticVial_Duralumin</defName>
-    <label>Craft Misting Vial: Gnat (duralumin)</label>
-    <description>Create a vial of Duralumin infused alcohol for use by Mistborns and gnat (duralumin)s.</description>
-    <ingredients>
-      <li>
-        <filter><thingDefs><li>Duralumin</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <products>
-      <Cosmere_AllomanticVial_Duralumin>8</Cosmere_AllomanticVial_Duralumin>
-    </products>
-  </RecipeDef>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Duralumin</defName>
+        <label>Misting Vial: Gnat (duralumin)</label>
+        <description>A vial containing Duralumin suspended in alcohol, used in allomancy.</description>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
+                <metalNames>
+                    <li>duralumin</li>
+                </metalNames>
+            </li>
+        </comps>
+        <orderedTakeGroup>AllomanticVial_Duralumin</orderedTakeGroup>
+    </ThingDef>
+    
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Duralumin</defName>
+        <label>Craft Misting Vial: Gnat (duralumin)</label>
+        <description>Create a vial of Duralumin infused alcohol for use by Mistborns and gnat (duralumin)s.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Duralumin</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Duralumin>8</Cosmere_AllomanticVial_Duralumin>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Duralumin</defName>
+        <label>Allomantic Vial: Duralumin</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

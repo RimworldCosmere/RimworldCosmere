@@ -1,64 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="AbstractAllomanticVial">
-    <defName>Cosmere_AllomanticVial_Pulling</defName>
-    <label>Mistborn Vial: Pulling</label>
-    <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
-    <comps>
-      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-        <metalNames>
-          <li>iron</li>
-          <li>tin</li>
-          <li>brass</li>
-          <li>copper</li>
-          <li>aluminum</li>
-          <li>chromium</li>
-          <li>cadmium</li>
-          <li>gold</li>
-        </metalNames>
-      </li>
-    </comps>
-  </ThingDef>
-  <RecipeDef ParentName="AbstractCraftAllomanticVial">
-    <defName>Cosmere_CraftAllomanticVial_Pulling</defName>
-    <label>Craft Mistborn Vial: Pulling</label>
-    <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
-    <ingredients>
-      <li>
-        <filter><thingDefs><li>Iron</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Tin</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Brass</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Ind_Copper</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Ind_Aluminium</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Chromium</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Gold</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <products>
-      <Cosmere_AllomanticVial_Pulling>8</Cosmere_AllomanticVial_Pulling>
-    </products>
-  </RecipeDef>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Pulling</defName>
+        <label>Mistborn Vial: Pulling</label>
+        <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
+                <metalNames>
+                    <li>iron</li>
+                    <li>tin</li>
+                    <li>brass</li>
+                    <li>copper</li>
+                    <li>aluminum</li>
+                    <li>chromium</li>
+                    <li>cadmium</li>
+                    <li>gold</li>
+                </metalNames>
+            </li>
+        </comps>
+    </ThingDef>
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Pulling</defName>
+        <label>Craft Mistborn Vial: Pulling</label>
+        <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Iron</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Tin</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Brass</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Ind_Copper</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Ind_Aluminium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Chromium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Gold</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Pulling>8</Cosmere_AllomanticVial_Pulling>
+        </products>
+    </RecipeDef>
 </Defs>

@@ -22,6 +22,7 @@ namespace CosmereFramework {
         public static void Message(string message, LogLevel level = LogLevel.Info) {
             if (level > CosmereSettings.logLevel || level == LogLevel.None) return;
             if (level == LogLevel.Error && DebugSettings.pauseOnError && Current.ProgramState == ProgramState.Playing) Find.TickManager.Pause();
+            if (level < LogLevel.Error && Prefs.OpenLogOnWarnings) Verse.Log.TryOpenLogWindow();
 
             var ns = "None";
             var stack = "";

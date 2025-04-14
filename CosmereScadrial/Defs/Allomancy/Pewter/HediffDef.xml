@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef>
+    <HediffDef ParentName="AbstractSelfBurnMetal">
         <defName>Cosmere_Hediff_PewterBuff</defName>
-        <hediffClass>CosmereScadrial.Hediffs.BurningMetal</hediffClass>
         <label>Burning Pewter</label>
-        <description>Empowered strength, endurance, and resilience from burning pewter.</description>
-        <isBad>false</isBad>
-        <tendable>false</tendable>
-        <displayWound>false</displayWound>
-        <everCurableByItem>false</everCurableByItem>
-        <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
+        <description>Empowered strength, endurance, and resilience from burning Pewter.</description>
         <comps>
             <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal">
                 <metal>pewter</metal>

@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="AbstractAllomanticVial">
-    <defName>Cosmere_AllomanticVial_Bendalloy</defName>
-    <label>Misting Vial: Slider</label>
-    <description>A vial containing Bendalloy suspended in alcohol, used in allomancy.</description>
-    <comps>
-      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-        <metalNames>
-          <li>bendalloy</li>
-        </metalNames>
-      </li>
-    </comps>
-  </ThingDef>
-  <RecipeDef ParentName="AbstractCraftAllomanticVial">
-    <defName>Cosmere_CraftAllomanticVial_Bendalloy</defName>
-    <label>Craft Misting Vial: Slider</label>
-    <description>Create a vial of Bendalloy infused alcohol for use by Mistborns and sliders.</description>
-    <ingredients>
-      <li>
-        <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <products>
-      <Cosmere_AllomanticVial_Bendalloy>8</Cosmere_AllomanticVial_Bendalloy>
-    </products>
-  </RecipeDef>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Bendalloy</defName>
+        <label>Misting Vial: Slider</label>
+        <description>A vial containing Bendalloy suspended in alcohol, used in allomancy.</description>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
+                <metalNames>
+                    <li>bendalloy</li>
+                </metalNames>
+            </li>
+        </comps>
+        <orderedTakeGroup>AllomanticVial_Bendalloy</orderedTakeGroup>
+    </ThingDef>
+    
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Bendalloy</defName>
+        <label>Craft Misting Vial: Slider</label>
+        <description>Create a vial of Bendalloy infused alcohol for use by Mistborns and sliders.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Bendalloy>8</Cosmere_AllomanticVial_Bendalloy>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Bendalloy</defName>
+        <label>Allomantic Vial: Bendalloy</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

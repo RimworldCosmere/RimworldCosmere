@@ -116,7 +116,10 @@
       "description": "Can soothe emotions, calming people or manipulating moods.",
       "group": "mental",
       "axis": "external",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_BurnBrass_Aura"
+      ]
     },
     "feruchemy": {
       "userName": "firesoul",

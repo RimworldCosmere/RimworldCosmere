@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <AbilityDef Name="AbstractBurn" Abstract="True">
+        <jobDef>CastAbilityOnThing</jobDef>
+        <stunTargetWhileCasting>False</stunTargetWhileCasting>
+        <aiCanUse>true</aiCanUse>
+        <ai_IsOffensive>true</ai_IsOffensive>
+        <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+        <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    </AbilityDef>
+    
+    <Abstract Name="AbstractSelfBurn" ParentName="AbstractBurn" Abstract="True">
+        <canUseAoeToGetTargets>False</canUseAoeToGetTargets>
+        <targetRequired>false</targetRequired>
+        <targetWorldCell>false</targetWorldCell>
+        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+        <hostile>false</hostile>
+        <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+        <verbProperties>
+            <verbClass>Verb_CastAbility</verbClass>
+            <targetable>false</targetable>
+            <warmupTime>0</warmupTime>
+            <range>0</range>
+            <drawAimPie>false</drawAimPie>
+            <requireLineOfSight>false</requireLineOfSight>
+            <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>true</canTargetSelf>
+            </targetParams>
+        </verbProperties>
+    </Abstract>
+    
+    <Abstract Name="AbstractTargetBurn" ParentName="AbstractBurn" Abstract="True">
+        
+    </Abstract>
+    
+    <AbilityDef Name="AbstractToggleBurn" ParentName="AbstractBurn" Abstract="True">
+        <gizmoClass>CosmereScadrial.Commands.ToggleBurnMetal</gizmoClass>
+
+    </AbilityDef>
+    
+    <Abstract Name="AbstractToggleSelfBurn" ParentName="AbstractToggleBurn" Abstract="True">
+        <canUseAoeToGetTargets>False</canUseAoeToGetTargets>
+        <targetRequired>false</targetRequired>
+        <targetWorldCell>false</targetWorldCell>
+        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+        <hostile>false</hostile>
+        <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+        <verbProperties>
+            <verbClass>Verb_CastAbility</verbClass>
+            <targetable>false</targetable>
+            <warmupTime>0</warmupTime>
+            <range>0</range>
+            <drawAimPie>false</drawAimPie>
+            <requireLineOfSight>false</requireLineOfSight>
+            <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>true</canTargetSelf>
+            </targetParams>
+        </verbProperties>
+    </Abstract>
+    
+    <Abstract Name="AbstractToggleTargetBurn" ParentName="AbstractToggleBurn" Abstract="True">
+        
+    </Abstract>
+</Defs>

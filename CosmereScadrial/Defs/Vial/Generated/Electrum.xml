@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="AbstractAllomanticVial">
-    <defName>Cosmere_AllomanticVial_Electrum</defName>
-    <label>Misting Vial: Oracle</label>
-    <description>A vial containing Electrum suspended in alcohol, used in allomancy.</description>
-    <comps>
-      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-        <metalNames>
-          <li>electrum</li>
-        </metalNames>
-      </li>
-    </comps>
-  </ThingDef>
-  <RecipeDef ParentName="AbstractCraftAllomanticVial">
-    <defName>Cosmere_CraftAllomanticVial_Electrum</defName>
-    <label>Craft Misting Vial: Oracle</label>
-    <description>Create a vial of Electrum infused alcohol for use by Mistborns and oracles.</description>
-    <ingredients>
-      <li>
-        <filter><thingDefs><li>Electrum</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <products>
-      <Cosmere_AllomanticVial_Electrum>8</Cosmere_AllomanticVial_Electrum>
-    </products>
-  </RecipeDef>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Electrum</defName>
+        <label>Misting Vial: Oracle</label>
+        <description>A vial containing Electrum suspended in alcohol, used in allomancy.</description>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
+                <metalNames>
+                    <li>electrum</li>
+                </metalNames>
+            </li>
+        </comps>
+        <orderedTakeGroup>AllomanticVial_Electrum</orderedTakeGroup>
+    </ThingDef>
+    
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Electrum</defName>
+        <label>Craft Misting Vial: Oracle</label>
+        <description>Create a vial of Electrum infused alcohol for use by Mistborns and oracles.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Electrum</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Electrum>8</Cosmere_AllomanticVial_Electrum>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Electrum</defName>
+        <label>Allomantic Vial: Electrum</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

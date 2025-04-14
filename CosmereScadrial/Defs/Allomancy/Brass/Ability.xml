@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <AbilityDef ParentName="AbstractToggleSelfBurn">
+        <defName>Cosmere_Ability_BurnBrass_Aura</defName>
+        <label>Toggle Burn:
+Soothing Aura</label>
+        <description>Suppress emotional outbursts and calm the minds of others using Brass.</description>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Brass</iconPath>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.ToggleBurnMetal">
+                <hediff>Cosmere_Hediff_BrassAura</hediff>
+            </li>
+        </comps>
+    </AbilityDef>
+</Defs>

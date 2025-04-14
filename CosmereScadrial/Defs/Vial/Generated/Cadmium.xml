@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="AbstractAllomanticVial">
-    <defName>Cosmere_AllomanticVial_Cadmium</defName>
-    <label>Misting Vial: Pulser</label>
-    <description>A vial containing Cadmium suspended in alcohol, used in allomancy.</description>
-    <comps>
-      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-        <metalNames>
-          <li>cadmium</li>
-        </metalNames>
-      </li>
-    </comps>
-  </ThingDef>
-  <RecipeDef ParentName="AbstractCraftAllomanticVial">
-    <defName>Cosmere_CraftAllomanticVial_Cadmium</defName>
-    <label>Craft Misting Vial: Pulser</label>
-    <description>Create a vial of Cadmium infused alcohol for use by Mistborns and pulsers.</description>
-    <ingredients>
-      <li>
-        <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <products>
-      <Cosmere_AllomanticVial_Cadmium>8</Cosmere_AllomanticVial_Cadmium>
-    </products>
-  </RecipeDef>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Cadmium</defName>
+        <label>Misting Vial: Pulser</label>
+        <description>A vial containing Cadmium suspended in alcohol, used in allomancy.</description>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
+                <metalNames>
+                    <li>cadmium</li>
+                </metalNames>
+            </li>
+        </comps>
+        <orderedTakeGroup>AllomanticVial_Cadmium</orderedTakeGroup>
+    </ThingDef>
+    
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Cadmium</defName>
+        <label>Craft Misting Vial: Pulser</label>
+        <description>Create a vial of Cadmium infused alcohol for use by Mistborns and pulsers.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Cadmium>8</Cosmere_AllomanticVial_Cadmium>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Cadmium</defName>
+        <label>Allomantic Vial: Cadmium</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

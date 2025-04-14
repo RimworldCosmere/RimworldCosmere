@@ -38,6 +38,9 @@ namespace CosmereScadrial.Commands {
 
             comp.ToggleFlaring();
             Log.Verbose($"Toggled flaring: {(comp.flaring ? "Flare" : "Normal")}");
+            if (!comp.burning) {
+                base.ProcessInput(ev);
+            }
         }
     }
 }

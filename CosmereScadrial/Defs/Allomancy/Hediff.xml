@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef Name="AbstractSelfBurnMetal" Abstract="True">
+        <hediffClass>CosmereScadrial.Hediffs.BurningMetal</hediffClass>
+        <isBad>false</isBad>
+        <tendable>false</tendable>
+        <displayWound>false</displayWound>
+        <everCurableByItem>false</everCurableByItem>
+        <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
+    </HediffDef>
+</Defs>

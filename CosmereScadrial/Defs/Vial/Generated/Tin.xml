@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="AbstractAllomanticVial">
-    <defName>Cosmere_AllomanticVial_Tin</defName>
-    <label>Misting Vial: Tineye</label>
-    <description>A vial containing Tin suspended in alcohol, used in allomancy.</description>
-    <comps>
-      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-        <metalNames>
-          <li>tin</li>
-        </metalNames>
-      </li>
-    </comps>
-  </ThingDef>
-  <RecipeDef ParentName="AbstractCraftAllomanticVial">
-    <defName>Cosmere_CraftAllomanticVial_Tin</defName>
-    <label>Craft Misting Vial: Tineye</label>
-    <description>Create a vial of Tin infused alcohol for use by Mistborns and tineyes.</description>
-    <ingredients>
-      <li>
-        <filter><thingDefs><li>Tin</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <products>
-      <Cosmere_AllomanticVial_Tin>8</Cosmere_AllomanticVial_Tin>
-    </products>
-  </RecipeDef>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Tin</defName>
+        <label>Misting Vial: Tineye</label>
+        <description>A vial containing Tin suspended in alcohol, used in allomancy.</description>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
+                <metalNames>
+                    <li>tin</li>
+                </metalNames>
+            </li>
+        </comps>
+        <orderedTakeGroup>AllomanticVial_Tin</orderedTakeGroup>
+    </ThingDef>
+    
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Tin</defName>
+        <label>Craft Misting Vial: Tineye</label>
+        <description>Create a vial of Tin infused alcohol for use by Mistborns and tineyes.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Tin</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Tin>8</Cosmere_AllomanticVial_Tin>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Tin</defName>
+        <label>Allomantic Vial: Tin</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

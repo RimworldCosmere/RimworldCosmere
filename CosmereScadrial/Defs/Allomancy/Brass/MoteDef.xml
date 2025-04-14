@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="MoteBase">
+        <defName>Cosmere_Mote_SootheAura</defName>
+        <label>Soothe Aura</label>
+        <graphicData>
+            <texPath>Effects/SootheAura</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>2.5</drawSize> <!-- base size, scaled later -->
+        </graphicData>
+        <mote>
+            <solidTime>100000</solidTime> <!-- long duration, maintained manually -->
+            <fadeInTime>0.5</fadeInTime>
+            <fadeOutTime>0.5</fadeOutTime>
+            <growthRate>0.02</growthRate> <!-- for pulsing size -->
+            <needsMaintenance>true</needsMaintenance>
+        </mote>
+    </ThingDef>
+</Defs>

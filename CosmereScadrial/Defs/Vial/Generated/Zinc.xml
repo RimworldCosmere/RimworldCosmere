@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="AbstractAllomanticVial">
-    <defName>Cosmere_AllomanticVial_Zinc</defName>
-    <label>Misting Vial: Rioter</label>
-    <description>A vial containing Zinc suspended in alcohol, used in allomancy.</description>
-    <comps>
-      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-        <metalNames>
-          <li>zinc</li>
-        </metalNames>
-      </li>
-    </comps>
-  </ThingDef>
-  <RecipeDef ParentName="AbstractCraftAllomanticVial">
-    <defName>Cosmere_CraftAllomanticVial_Zinc</defName>
-    <label>Craft Misting Vial: Rioter</label>
-    <description>Create a vial of Zinc infused alcohol for use by Mistborns and rioters.</description>
-    <ingredients>
-      <li>
-        <filter><thingDefs><li>Zinc</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <products>
-      <Cosmere_AllomanticVial_Zinc>8</Cosmere_AllomanticVial_Zinc>
-    </products>
-  </RecipeDef>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Zinc</defName>
+        <label>Misting Vial: Rioter</label>
+        <description>A vial containing Zinc suspended in alcohol, used in allomancy.</description>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
+                <metalNames>
+                    <li>zinc</li>
+                </metalNames>
+            </li>
+        </comps>
+        <orderedTakeGroup>AllomanticVial_Zinc</orderedTakeGroup>
+    </ThingDef>
+    
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Zinc</defName>
+        <label>Craft Misting Vial: Rioter</label>
+        <description>Create a vial of Zinc infused alcohol for use by Mistborns and rioters.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Zinc</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Zinc>8</Cosmere_AllomanticVial_Zinc>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Zinc</defName>
+        <label>Allomantic Vial: Zinc</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

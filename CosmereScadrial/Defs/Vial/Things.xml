@@ -14,7 +14,7 @@
             <Mass>0.005</Mass>
             <MarketValue>8</MarketValue>
         </statBases>
-        <stackLimit>10</stackLimit>
+        <stackLimit>150</stackLimit>
         <thingCategories>
             <li>Cosmere_Allomancy</li>
         </thingCategories>
@@ -33,6 +33,5 @@
             <ingestCommandString>Drink vial</ingestCommandString>
             <ingestReportString>drinks an allomantic vial</ingestReportString>
         </ingestible>
-        <orderedTakeGroup>AllomanticVial</orderedTakeGroup>
     </ThingDef>
 </Defs>	

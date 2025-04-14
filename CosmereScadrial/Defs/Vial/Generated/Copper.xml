@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="AbstractAllomanticVial">
-    <defName>Cosmere_AllomanticVial_Copper</defName>
-    <label>Misting Vial: Smoker</label>
-    <description>A vial containing Copper suspended in alcohol, used in allomancy.</description>
-    <comps>
-      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-        <metalNames>
-          <li>copper</li>
-        </metalNames>
-      </li>
-    </comps>
-  </ThingDef>
-  <RecipeDef ParentName="AbstractCraftAllomanticVial">
-    <defName>Cosmere_CraftAllomanticVial_Copper</defName>
-    <label>Craft Misting Vial: Smoker</label>
-    <description>Create a vial of Copper infused alcohol for use by Mistborns and smokers.</description>
-    <ingredients>
-      <li>
-        <filter><thingDefs><li>Ind_Copper</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <products>
-      <Cosmere_AllomanticVial_Copper>8</Cosmere_AllomanticVial_Copper>
-    </products>
-  </RecipeDef>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Copper</defName>
+        <label>Misting Vial: Smoker</label>
+        <description>A vial containing Copper suspended in alcohol, used in allomancy.</description>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
+                <metalNames>
+                    <li>copper</li>
+                </metalNames>
+            </li>
+        </comps>
+        <orderedTakeGroup>AllomanticVial_Copper</orderedTakeGroup>
+    </ThingDef>
+    
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Copper</defName>
+        <label>Craft Misting Vial: Smoker</label>
+        <description>Create a vial of Copper infused alcohol for use by Mistborns and smokers.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Ind_Copper</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Copper>8</Cosmere_AllomanticVial_Copper>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Copper</defName>
+        <label>Allomantic Vial: Copper</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

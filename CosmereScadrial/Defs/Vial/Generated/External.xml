@@ -1,64 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="AbstractAllomanticVial">
-    <defName>Cosmere_AllomanticVial_External</defName>
-    <label>Mistborn Vial: External</label>
-    <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
-    <comps>
-      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-        <metalNames>
-          <li>iron</li>
-          <li>steel</li>
-          <li>zinc</li>
-          <li>brass</li>
-          <li>chromium</li>
-          <li>nicrosil</li>
-          <li>cadmium</li>
-          <li>bendalloy</li>
-        </metalNames>
-      </li>
-    </comps>
-  </ThingDef>
-  <RecipeDef ParentName="AbstractCraftAllomanticVial">
-    <defName>Cosmere_CraftAllomanticVial_External</defName>
-    <label>Craft Mistborn Vial: External</label>
-    <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
-    <ingredients>
-      <li>
-        <filter><thingDefs><li>Iron</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Steel</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Zinc</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Brass</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Chromium</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Nicrosil</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <products>
-      <Cosmere_AllomanticVial_External>8</Cosmere_AllomanticVial_External>
-    </products>
-  </RecipeDef>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_External</defName>
+        <label>Mistborn Vial: External</label>
+        <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
+                <metalNames>
+                    <li>iron</li>
+                    <li>steel</li>
+                    <li>zinc</li>
+                    <li>brass</li>
+                    <li>chromium</li>
+                    <li>nicrosil</li>
+                    <li>cadmium</li>
+                    <li>bendalloy</li>
+                </metalNames>
+            </li>
+        </comps>
+    </ThingDef>
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_External</defName>
+        <label>Craft Mistborn Vial: External</label>
+        <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Iron</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Steel</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Zinc</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Brass</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Chromium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Nicrosil</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_External>8</Cosmere_AllomanticVial_External>
+        </products>
+    </RecipeDef>
 </Defs>

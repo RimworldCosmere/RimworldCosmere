@@ -36,6 +36,7 @@
         </modExtensions>
         <abilities>
             <li>Cosmere_Ability_BurnPewter</li>
+            <li>Cosmere_Ability_BurnBrass_Aura</li>
         </abilities>
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">

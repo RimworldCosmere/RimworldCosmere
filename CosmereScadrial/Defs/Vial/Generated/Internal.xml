@@ -1,64 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="AbstractAllomanticVial">
-    <defName>Cosmere_AllomanticVial_Internal</defName>
-    <label>Mistborn Vial: Internal</label>
-    <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
-    <comps>
-      <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-        <metalNames>
-          <li>tin</li>
-          <li>pewter</li>
-          <li>copper</li>
-          <li>bronze</li>
-          <li>aluminum</li>
-          <li>duralumin</li>
-          <li>gold</li>
-          <li>electrum</li>
-        </metalNames>
-      </li>
-    </comps>
-  </ThingDef>
-  <RecipeDef ParentName="AbstractCraftAllomanticVial">
-    <defName>Cosmere_CraftAllomanticVial_Internal</defName>
-    <label>Craft Mistborn Vial: Internal</label>
-    <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
-    <ingredients>
-      <li>
-        <filter><thingDefs><li>Tin</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Pewter</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Ind_Copper</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Bronze</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Ind_Aluminium</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Duralumin</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Gold</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter><thingDefs><li>Electrum</li></thingDefs></filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <products>
-      <Cosmere_AllomanticVial_Internal>8</Cosmere_AllomanticVial_Internal>
-    </products>
-  </RecipeDef>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Internal</defName>
+        <label>Mistborn Vial: Internal</label>
+        <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
+                <metalNames>
+                    <li>tin</li>
+                    <li>pewter</li>
+                    <li>copper</li>
+                    <li>bronze</li>
+                    <li>aluminum</li>
+                    <li>duralumin</li>
+                    <li>gold</li>
+                    <li>electrum</li>
+                </metalNames>
+            </li>
+        </comps>
+    </ThingDef>
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Internal</defName>
+        <label>Craft Mistborn Vial: Internal</label>
+        <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Tin</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Pewter</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Ind_Copper</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Bronze</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Ind_Aluminium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Duralumin</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Gold</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Electrum</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Internal>8</Cosmere_AllomanticVial_Internal>
+        </products>
+    </RecipeDef>
 </Defs>

@@ -1,34 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <AbilityDef>
-        <gizmoClass>CosmereScadrial.Commands.ToggleBurnMetal</gizmoClass>
+    <AbilityDef ParentName="AbstractToggleSelfBurn">
         <defName>Cosmere_Ability_BurnPewter</defName>
-        <label>Toggle Burn: Pewter</label>
+        <label>Toggle Burn:
+Pewter</label>
         <description>Burn pewter to enhance physical power and resilience for a short duration.</description>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Pewter</iconPath>
-        <jobDef>CastAbilityOnThing</jobDef>
-        <canUseAoeToGetTargets>False</canUseAoeToGetTargets>
-        <stunTargetWhileCasting>True</stunTargetWhileCasting>
-        <targetRequired>false</targetRequired>
-        <targetWorldCell>false</targetWorldCell>
-        <aiCanUse>true</aiCanUse>
-        <ai_IsOffensive>true</ai_IsOffensive>
-        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
-        <hostile>false</hostile>
-        <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
-        <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
-        <verbProperties>
-            <verbClass>Verb_CastAbility</verbClass>
-            <targetable>false</targetable>
-            <warmupTime>0</warmupTime>
-            <range>0</range>
-            <drawAimPie>false</drawAimPie>
-            <requireLineOfSight>false</requireLineOfSight>
-            <violent>false</violent>
-            <targetParams>
-                <canTargetSelf>true</canTargetSelf>
-            </targetParams>
-        </verbProperties>
         <comps>
             <li Class="CosmereScadrial.Comps.Properties.ToggleBurnMetal">
                 <hediff>Cosmere_Hediff_PewterBuff</hediff>

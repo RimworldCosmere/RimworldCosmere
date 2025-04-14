@@ -1,5 +1,7 @@
 using System.Linq;
 using System.Text;
+using CosmereFramework.Utils;
+using CosmereScadrial.Comps;
 using CosmereScadrial.Registry;
 using CosmereScadrial.Utils;
 using RimWorld;
@@ -9,8 +11,6 @@ using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Hediffs.Comps {
     public class BurnMetal : HediffComp {
-        private const int TICKS_PER_BURN = 60;
-
         private int flareStartTick = -1;
         private int lastBurnTick = -1;
         private float? nextSeverity;
@@ -40,15 +40,15 @@ namespace CosmereScadrial.Hediffs.Comps {
         public override void CompPostTick(ref float severityAdjustment) {
             base.CompPostTick(ref severityAdjustment);
 
-            if (parent.pawn.IsHashIntervalTick(TICKS_PER_BURN)) {
+            if (parent.pawn.IsHashIntervalTick(Props.tickInterval)) {
                 // Initial burn or re-burn if it's been an hour
-                if (lastBurnTick == -1 || Find.TickManager.TicksGame - lastBurnTick >= TICKS_PER_BURN) {
+                if (lastBurnTick == -1 || Find.TickManager.TicksGame - lastBurnTick >= Props.burnInterval) {
                     TryBurn();
                 }
             }
 
             // every second
-            if (parent.pawn.IsHashIntervalTick(60)) {
+            if (parent.pawn.IsHashIntervalTick((int)TickUtility.Seconds(3))) {
                 TryEmitEffect();
             }
 
@@ -59,7 +59,7 @@ namespace CosmereScadrial.Hediffs.Comps {
             }
             else if (flareStartTick > 0 && !shouldStop) {
                 // Flare ended, throw on a half-strength drag
-                ApplyPewterDrag(flareDuration / 6000f / 2);
+                ApplyDrag(flareDuration / 6000f / 2);
                 flareStartTick = -1;
             }
         }
@@ -67,7 +67,7 @@ namespace CosmereScadrial.Hediffs.Comps {
         public override void CompPostPostRemoved() {
             if (flareStartTick <= 0) return;
 
-            ApplyPewterDrag(flareDuration / 6000f);
+            ApplyDrag(flareDuration / 6000f);
             flareStartTick = -1;
         }
 
@@ -80,8 +80,7 @@ namespace CosmereScadrial.Hediffs.Comps {
                 parent.pawn,
                 DefDatabase<ThingDef>.GetNamed("Mote_ToxicDamage"),
                 Vector3.zero
-            ); // scale
-            mote.exactRotation = Rand.Range(0f, 1f);
+            );
 
             MetalRegistry.Metals.TryGetValue(Props.metal, out var metal);
             if (metal == null) {
@@ -89,10 +88,8 @@ namespace CosmereScadrial.Hediffs.Comps {
                 return;
             }
 
-            mote.instanceColor = Color.red;
-            if (mote.def.mote.needsMaintenance) {
-                mote.Maintain();
-            }
+            mote.instanceColor = metal.Color;
+            mote.exactRotation = Rand.Range(0f, 1f);
         }
 
         public void TryBurn() {
@@ -106,12 +103,22 @@ namespace CosmereScadrial.Hediffs.Comps {
 
                 // Remove the hediff
                 parent.pawn.health.RemoveHediff(parent);
+
+                // Toggle Ability off
+                var ability = parent.pawn.abilities.abilities.FirstOrDefault(x =>
+                    x.def.defName.StartsWith($"Cosmere_Ability_Burn{Props.metal.CapitalizeFirst()}") &&
+                    (x.CompOfType<CompToggleBurnMetal>()?.burning ?? false)
+                );
+                if (ability != null) {
+                    ability.CompOfType<CompToggleBurnMetal>().burning = false;
+                }
+
                 return;
             }
 
             var beuRequired = AllomancyUtility.BEU_PER_METAL_UNIT * Props.unitsPerBurn * parent.Severity;
             Log.Verbose(
-                $"Pawn {parent.pawn} is burning {Props.metal} Severity={parent.Severity} BEUs={beuRequired} metalRequired={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT} PewterDragSeverity={flareDuration / 6000f}");
+                $"Pawn {parent.pawn} is burning {Props.metal} Severity={parent.Severity} BEUs={beuRequired} metalRequired={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT} DragSeverity={flareDuration / 6000f}");
 
             if (AllomancyUtility.TryBurnMetalForInvestiture(parent.pawn, Props.metal, beuRequired)) {
                 lastBurnTick = Find.TickManager.TicksGame;
@@ -131,7 +138,7 @@ namespace CosmereScadrial.Hediffs.Comps {
             var beuRequired = AllomancyUtility.BEU_PER_METAL_UNIT * Props.unitsPerBurn * parent.Severity;
 
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"Pewter Drag Severity={flareDuration / 6000f}");
+            stringBuilder.AppendLine($"Drag Severity={flareDuration / 6000f}");
             stringBuilder.AppendLine($"BEUs Required={beuRequired}");
             stringBuilder.AppendLine($"Metal Required={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT}");
 
@@ -156,12 +163,13 @@ namespace CosmereScadrial.Hediffs.Comps {
             return true;
         }
 
-        private void ApplyPewterDrag(float severity) {
-            Log.Warning($"Applying Pewter Drag to {parent.pawn.NameFullColored} with Severity={severity}");
+        private void ApplyDrag(float severity) {
             if (severity <= 0f) return;
 
-            var burnoutDef = HediffDef.Named("Cosmere_Hediff_PewterDrag");
+            var burnoutDef = DefDatabase<HediffDef>.GetNamedSilentFail($"Cosmere_Hediff_{Props.metal.CapitalizeFirst()}Drag");
+            if (burnoutDef == null) return;
 
+            Log.Warning($"Applying Drag to {parent.pawn.NameFullColored} with Severity={severity}");
             var drag = parent.pawn.health.GetOrAddHediff(burnoutDef);
             drag.Severity = severity;
         }

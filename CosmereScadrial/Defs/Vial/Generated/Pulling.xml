@@ -37,11 +37,11 @@
                 <count>1</count>
             </li>
             <li>
-                <filter><thingDefs><li>Ind_Copper</li></thingDefs></filter>
+                <filter><thingDefs><li>Copper</li></thingDefs></filter>
                 <count>1</count>
             </li>
             <li>
-                <filter><thingDefs><li>Ind_Aluminium</li></thingDefs></filter>
+                <filter><thingDefs><li>Aluminum</li></thingDefs></filter>
                 <count>1</count>
             </li>
             <li>

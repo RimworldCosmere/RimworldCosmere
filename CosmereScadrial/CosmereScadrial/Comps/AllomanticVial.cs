@@ -5,9 +5,7 @@ using Verse;
 
 namespace CosmereScadrial.Comps {
     public class AllomanticVial : ThingComp {
-        public Properties.AllomanticVial Props {
-            get => (Properties.AllomanticVial)props;
-        }
+        public Properties.AllomanticVial Props => (Properties.AllomanticVial)props;
 
         public override void PostExposeData() {
             base.PostExposeData();

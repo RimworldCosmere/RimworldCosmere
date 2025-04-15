@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractBuildableMetal">
+        <defName>Copper</defName>
+        <label>Copper</label>
+        <description>Copper is a soft, reddish metal prized for its conductivity and malleability. It has been a staple in crafting and electrical applications across civilizations for centuries.</description>
+        <graphicData>
+            <texPath>Item/Resource/Copper</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.8</commonality>
+            <color>(185, 129, 80)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>0.5</MarketValue>
+        </statBases>
+    </ThingDef>
+</Defs>

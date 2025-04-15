@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "generate:metalRegistry": "tsx ./Generators/MetalRegistry && echo \"Done!\"",
-    "generate:vials": "tsx ./Generators/Vials && echo \"Done!\"",
-    "generate:genesAndTraits": "tsx ./Generators/GenesAndTraits && echo \"Done!\""
+    "generate:metalRegistry": "tsx ./index.ts MetalRegistry",
+    "generate:metals": "tsx ./index.ts Metals",
+    "generate:vials": "tsx ./index.ts Vials",
+    "generate:genesAndTraits": "tsx ./index.ts GenesAndTraits"
   },
   "private": true,
   "dependencies": {

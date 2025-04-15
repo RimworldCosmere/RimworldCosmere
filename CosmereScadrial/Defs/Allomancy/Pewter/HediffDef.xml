@@ -6,9 +6,14 @@
         <description>Empowered strength, endurance, and resilience from burning Pewter.</description>
         <comps>
             <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal">
-                <metal>pewter</metal>
+                <dragHediff>Cosmere_Hediff_PewterDrag</dragHediff>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metal>pewter</metal>
+            </li>
+        </modExtensions>
         <stages>
             <li>
                 <naturalHealingFactor>0.5</naturalHealingFactor>
@@ -61,7 +66,6 @@
         </comps>
         <stages>
             <li>
-                
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
                     <MoveSpeed>0.5</MoveSpeed>
@@ -75,7 +79,7 @@
                 <capMods>
                     <li>
                         <capacity>Consciousness</capacity>
-                        <offset>-0.8</offset>
+                        <offset>-0.6</offset>
                     </li>
                     <li>
                         <capacity>Manipulation</capacity>

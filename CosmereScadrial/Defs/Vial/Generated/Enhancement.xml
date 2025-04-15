@@ -21,7 +21,7 @@
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Ind_Aluminium</li></thingDefs></filter>
+                <filter><thingDefs><li>Aluminum</li></thingDefs></filter>
                 <count>1</count>
             </li>
             <li>

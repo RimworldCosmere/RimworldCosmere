@@ -5,103 +5,109 @@
 			<name>iron</name>
 			<defName>Iron</defName>
 			<godMetal>false</godMetal>
-			<color>(85, 93, 93)</color>
+			<color>(121, 113, 111)</color>
 		</li>
         <li>
 			<name>steel</name>
 			<defName>Steel</defName>
 			<godMetal>false</godMetal>
-			<color>(92, 116, 116)</color>
+			<color>(109, 108, 108)</color>
 		</li>
         <li>
 			<name>tin</name>
 			<defName>Tin</defName>
 			<godMetal>false</godMetal>
-			<color>(121, 113, 113)</color>
+			<color>(197, 202, 201)</color>
 		</li>
         <li>
 			<name>pewter</name>
 			<defName>Pewter</defName>
 			<godMetal>false</godMetal>
-			<color>(121, 113, 113)</color>
+			<color>(141, 151, 166)</color>
 		</li>
         <li>
 			<name>zinc</name>
 			<defName>Zinc</defName>
 			<godMetal>false</godMetal>
-			<color>(199, 145, 145)</color>
+			<color>(128, 142, 129)</color>
 		</li>
         <li>
 			<name>brass</name>
 			<defName>Brass</defName>
 			<godMetal>false</godMetal>
-			<color>(181, 138, 138)</color>
+			<color>(175, 148, 91)</color>
 		</li>
         <li>
 			<name>copper</name>
-			<defName>Ind_Copper</defName>
+			<defName>Copper</defName>
 			<godMetal>false</godMetal>
-			<color>(166, 94, 94)</color>
+			<color>(185, 129, 80)</color>
 		</li>
         <li>
 			<name>bronze</name>
 			<defName>Bronze</defName>
 			<godMetal>false</godMetal>
-			<color>(150, 104, 104)</color>
+			<color>(191, 160, 138)</color>
 		</li>
         <li>
 			<name>aluminum</name>
-			<defName>Ind_Aluminium</defName>
+			<defName>Aluminum</defName>
 			<godMetal>false</godMetal>
-			<color>(215, 218, 218)</color>
+			<color>(163, 163, 163)</color>
 		</li>
         <li>
 			<name>duralumin</name>
 			<defName>Duralumin</defName>
 			<godMetal>false</godMetal>
-			<color>(198, 203, 203)</color>
+			<color>(127, 113, 115)</color>
 		</li>
         <li>
 			<name>chromium</name>
 			<defName>Chromium</defName>
 			<godMetal>false</godMetal>
-			<color>(192, 192, 192)</color>
+			<color>(132, 134, 139)</color>
 		</li>
         <li>
 			<name>nicrosil</name>
 			<defName>Nicrosil</defName>
 			<godMetal>false</godMetal>
-			<color>(148, 148, 148)</color>
+			<color>(141, 139, 135)</color>
 		</li>
         <li>
 			<name>cadmium</name>
 			<defName>Cadmium</defName>
 			<godMetal>false</godMetal>
-			<color>(122, 187, 187)</color>
+			<color>(170, 132, 121)</color>
 		</li>
         <li>
 			<name>bendalloy</name>
 			<defName>Bendalloy</defName>
 			<godMetal>false</godMetal>
-			<color>(189, 158, 158)</color>
+			<color>(117, 144, 108)</color>
 		</li>
         <li>
 			<name>gold</name>
 			<defName>Gold</defName>
 			<godMetal>false</godMetal>
-			<color>(230, 190, 190)</color>
+			<color>(206, 172, 55)</color>
 		</li>
         <li>
 			<name>silver</name>
 			<defName>Silver</defName>
 			<godMetal>false</godMetal>
-			<color>(192, 192, 192)</color>
+			<color>(204, 195, 173)</color>
+		</li>
+        <li>
+			<name>nickel</name>
+			<defName>Nickel</defName>
+			<godMetal>false</godMetal>
+			<color>(85, 107, 47)</color>
 		</li>
         <li>
 			<name>electrum</name>
 			<defName>Electrum</defName>
 			<godMetal>false</godMetal>
-			<color>(204, 182, 182)</color>
+			<color>(182, 156, 82)</color>
 		</li>
         <li>
 			<name>lerasium</name>
@@ -120,6 +126,18 @@
 			<defName>Harmonium</defName>
 			<godMetal>true</godMetal>
 			<color>(242, 255, 140)</color>
+		</li>
+        <li>
+			<name>Coal</name>
+			<defName>Coal</defName>
+			<godMetal>false</godMetal>
+			<color>(60, 60, 60)</color>
+		</li>
+        <li>
+			<name>Charcoal</name>
+			<defName>Charcoal</defName>
+			<godMetal>false</godMetal>
+			<color>(60, 60, 60)</color>
 		</li>
     </metals>
 </MetalRegistry>

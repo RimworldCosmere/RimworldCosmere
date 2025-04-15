@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Pewter Alloy Recipe-->
+    <RecipeDef ParentName="AlloyBase">
+        <defName>Cosmere_Make_Alloy_Pewter</defName>
+        <label>Create Alloy: Pewter</label>
+        <jobString>Creating alloy: Pewter</jobString>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Tin</li>
+                    </thingDefs>
+                </filter>
+                <count>8</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Copper</li>
+                    </thingDefs>
+                </filter>
+                <count>2</count>
+            </li>
+        </ingredients>
+        <products>
+            <Pewter>10</Pewter>
+        </products>
+    </RecipeDef>
+</Defs>

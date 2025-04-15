@@ -5,6 +5,9 @@
         <graphicData>
             <texPath>Things/Item/AllomanticVial</texPath>
             <graphicClass>Graphic_StackCount</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(0, 0, 0)</color>
+            <colorTwo>(255, 255, 255)</colorTwo>
             <drawSize>(1,1)</drawSize>
         </graphicData>
         <statBases>

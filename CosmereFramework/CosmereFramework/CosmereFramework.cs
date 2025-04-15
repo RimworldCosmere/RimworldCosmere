@@ -15,9 +15,7 @@ namespace CosmereFramework {
     public class CosmereFramework : Mod {
         public CosmereFramework(ModContentPack content) : base(content) { }
 
-        public CosmereSettings Settings {
-            get => GetSettings<CosmereSettings>();
-        }
+        public CosmereSettings Settings => GetSettings<CosmereSettings>();
 
         public override void DoSettingsWindowContents(Rect inRect) {
             var listingStandard = new Listing_Standard();

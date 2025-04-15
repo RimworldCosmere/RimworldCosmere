@@ -5,7 +5,7 @@
 			<name>iron</name>
 			<defName>Iron</defName>
 			<godMetal>false</godMetal>
-			<color>(85, 93, 93)</color>
+			<color>(121, 113, 111)</color>
 			<allomancy>
 				<userName>lurcher</userName>
 				<description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
@@ -23,7 +23,7 @@
 			<name>steel</name>
 			<defName>Steel</defName>
 			<godMetal>false</godMetal>
-			<color>(92, 116, 116)</color>
+			<color>(109, 108, 108)</color>
 			<allomancy>
 				<userName>coinshot</userName>
 				<description>Can push on metals, allowing rapid movement or throwing metal objects.</description>
@@ -41,7 +41,7 @@
 			<name>tin</name>
 			<defName>Tin</defName>
 			<godMetal>false</godMetal>
-			<color>(121, 113, 113)</color>
+			<color>(197, 202, 201)</color>
 			<allomancy>
 				<userName>tineye</userName>
 				<description>Enhances senses like sight, hearing, and smell.</description>
@@ -59,7 +59,7 @@
 			<name>pewter</name>
 			<defName>Pewter</defName>
 			<godMetal>false</godMetal>
-			<color>(121, 113, 113)</color>
+			<color>(141, 151, 166)</color>
 			<allomancy>
 				<userName>thug</userName>
 				<description>Enhances physical strength and durability, useful in combat.</description>
@@ -77,7 +77,7 @@
 			<name>zinc</name>
 			<defName>Zinc</defName>
 			<godMetal>false</godMetal>
-			<color>(199, 145, 145)</color>
+			<color>(128, 142, 129)</color>
 			<allomancy>
 				<userName>rioter</userName>
 				<description>Can riot emotions, pushing others to feel stronger emotions.</description>
@@ -95,7 +95,7 @@
 			<name>brass</name>
 			<defName>Brass</defName>
 			<godMetal>false</godMetal>
-			<color>(181, 138, 138)</color>
+			<color>(175, 148, 91)</color>
 			<allomancy>
 				<userName>soother</userName>
 				<description>Can soothe emotions, calming people or manipulating moods.</description>
@@ -111,9 +111,9 @@
 		</li>
         <li>
 			<name>copper</name>
-			<defName>Ind_Copper</defName>
+			<defName>Copper</defName>
 			<godMetal>false</godMetal>
-			<color>(166, 94, 94)</color>
+			<color>(185, 129, 80)</color>
 			<allomancy>
 				<userName>smoker</userName>
 				<description>Creates a &#x27;coppercloud&#x27; that hides Allomantic activity.</description>
@@ -131,7 +131,7 @@
 			<name>bronze</name>
 			<defName>Bronze</defName>
 			<godMetal>false</godMetal>
-			<color>(150, 104, 104)</color>
+			<color>(191, 160, 138)</color>
 			<allomancy>
 				<userName>seeker</userName>
 				<description>Detects other Allomancers using powers.</description>
@@ -147,9 +147,9 @@
 		</li>
         <li>
 			<name>aluminum</name>
-			<defName>Ind_Aluminium</defName>
+			<defName>Aluminum</defName>
 			<godMetal>false</godMetal>
-			<color>(215, 218, 218)</color>
+			<color>(163, 163, 163)</color>
 			<allomancy>
 				<userName>gnat (aluminum)</userName>
 				<description>Wipes away all other metal reserves.</description>
@@ -167,7 +167,7 @@
 			<name>duralumin</name>
 			<defName>Duralumin</defName>
 			<godMetal>false</godMetal>
-			<color>(198, 203, 203)</color>
+			<color>(127, 113, 115)</color>
 			<allomancy>
 				<userName>gnat (duralumin)</userName>
 				<description>Enhances the next Allomantic metal used drastically, but is consumed entirely.</description>
@@ -185,7 +185,7 @@
 			<name>chromium</name>
 			<defName>Chromium</defName>
 			<godMetal>false</godMetal>
-			<color>(192, 192, 192)</color>
+			<color>(132, 134, 139)</color>
 			<allomancy>
 				<userName>leecher</userName>
 				<description>Wipes away another Allomancer&#x27;s metal reserves.</description>
@@ -203,7 +203,7 @@
 			<name>nicrosil</name>
 			<defName>Nicrosil</defName>
 			<godMetal>false</godMetal>
-			<color>(148, 148, 148)</color>
+			<color>(141, 139, 135)</color>
 			<allomancy>
 				<userName>nicroburst</userName>
 				<description>Boosts another Allomancer&#x27;s power drastically.</description>
@@ -221,7 +221,7 @@
 			<name>cadmium</name>
 			<defName>Cadmium</defName>
 			<godMetal>false</godMetal>
-			<color>(122, 187, 187)</color>
+			<color>(170, 132, 121)</color>
 			<allomancy>
 				<userName>pulser</userName>
 				<description>Slows down time in a bubble, creating a temporal distortion.</description>
@@ -239,7 +239,7 @@
 			<name>bendalloy</name>
 			<defName>Bendalloy</defName>
 			<godMetal>false</godMetal>
-			<color>(189, 158, 158)</color>
+			<color>(117, 144, 108)</color>
 			<allomancy>
 				<userName>slider</userName>
 				<description>Speeds up time in a bubble around the user.</description>
@@ -257,7 +257,7 @@
 			<name>gold</name>
 			<defName>Gold</defName>
 			<godMetal>false</godMetal>
-			<color>(230, 190, 190)</color>
+			<color>(206, 172, 55)</color>
 			<allomancy>
 				<userName>augur</userName>
 				<description>Shows alternate versions of oneself, based on different pasts.</description>
@@ -275,13 +275,19 @@
 			<name>silver</name>
 			<defName>Silver</defName>
 			<godMetal>false</godMetal>
-			<color>(192, 192, 192)</color>
+			<color>(204, 195, 173)</color>
+		</li>
+        <li>
+			<name>nickel</name>
+			<defName>Nickel</defName>
+			<godMetal>false</godMetal>
+			<color>(85, 107, 47)</color>
 		</li>
         <li>
 			<name>electrum</name>
 			<defName>Electrum</defName>
 			<godMetal>false</godMetal>
-			<color>(204, 182, 182)</color>
+			<color>(182, 156, 82)</color>
 			<allomancy>
 				<userName>oracle</userName>
 				<description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
@@ -348,6 +354,18 @@
 				<description>Possibly stores unknown attribute related to Harmony.</description>
 				<group />
 			</feruchemy>
+		</li>
+        <li>
+			<name>Coal</name>
+			<defName>Coal</defName>
+			<godMetal>false</godMetal>
+			<color>(60, 60, 60)</color>
+		</li>
+        <li>
+			<name>Charcoal</name>
+			<defName>Charcoal</defName>
+			<godMetal>false</godMetal>
+			<color>(60, 60, 60)</color>
 		</li>
     </metals>
 </MetalRegistry>

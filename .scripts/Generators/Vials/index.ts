@@ -4,28 +4,13 @@ import {resolve} from 'node:path';
 import {rimrafSync} from 'rimraf';
 
 import {MetalRegistry} from '../../Metals/MetalRegistry';
-import {bootstrap, MOD_DIR, SCADRIAL_MOD_DIR} from '../../bootstrap';
+import {SCADRIAL_MOD_DIR} from '../../constants';
 import {mkdirSync} from "fs";
 import {upperFirst} from "lodash";
-
-bootstrap()
 
 const defTemplate = readFileSync(resolve(__dirname, 'VialDef.xml.template'), 'utf8');
 const template = Handlebars.compile(defTemplate);
 const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Vial', 'Generated');
-
-rimrafSync(outputDir);
-mkdirSync(outputDir, {recursive: true});
-
-for (const metal of Object.keys(MetalRegistry.Metals)) {
-  const metalInfo = MetalRegistry.Metals[metal];
-  if (metalInfo.GodMetal || !metalInfo.Allomancy) continue;
-
-  writeFileSync(resolve(outputDir, upperFirst(metalInfo.Name) + '.xml'), template({
-    metal: metalInfo,
-    defName: metalInfo.DefName ?? upperFirst(metalInfo.Name)
-  }), 'utf8');
-}
 
 // Multi-Metal vials
 const multiVialDefTemplate = readFileSync(resolve(__dirname, 'multiVialDef.xml.template'), 'utf8');
@@ -92,6 +77,23 @@ const multiVialGroups = [
     defNames: Object.values(MetalRegistry.Metals).filter(x => ['enhancement', 'temporal'].includes(x.Allomancy?.Group ?? '')).map(x => x.DefName ?? upperFirst(x.Name)),
   },
 ];
-for (const group of multiVialGroups) {
-  writeFileSync(resolve(outputDir, group.defName + '.xml'), multiVialTemplate(group))
+
+export default function () {
+  rimrafSync(outputDir);
+  mkdirSync(outputDir, {recursive: true});
+
+  for (const metal of Object.keys(MetalRegistry.Metals)) {
+    const metalInfo = MetalRegistry.Metals[metal];
+    if (metalInfo.GodMetal || !metalInfo.Allomancy) continue;
+
+    writeFileSync(resolve(outputDir, upperFirst(metalInfo.Name) + '.xml'), template({
+      metal: metalInfo,
+      defName: metalInfo.DefName ?? upperFirst(metalInfo.Name)
+    }), 'utf8');
+  }
+  
+  for (const group of multiVialGroups) {
+    writeFileSync(resolve(outputDir, group.defName + '.xml'), multiVialTemplate(group))
+  }
 }
+

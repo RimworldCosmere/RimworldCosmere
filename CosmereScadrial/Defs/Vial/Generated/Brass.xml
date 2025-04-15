@@ -4,6 +4,10 @@
         <defName>Cosmere_AllomanticVial_Brass</defName>
         <label>Misting Vial: Soother</label>
         <description>A vial containing Brass suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(175, 148, 91)</color>
+            <colorTwo>(175, 148, 91)</colorTwo>
+        </graphicData>
         <comps>
             <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
                 <metalNames>

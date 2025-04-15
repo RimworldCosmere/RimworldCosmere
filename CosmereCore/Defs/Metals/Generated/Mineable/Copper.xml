@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMineable">
+        <defName>MineableCopper</defName>
+        <label>Copper Ore</label>
+        <description>Unrefined Copper ore mined directly from the earth.</description>
+        <graphicData>
+            <color>(185, 129, 80)</color>
+            <colorTwo>(90, 58, 43)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>440</MaxHitPoints>
+        </statBases>
+        <building>
+            <mineableThing>Copper</mineableThing>
+            <mineableYield>50</mineableYield>
+            <mineableScatterCommonality>0.9</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>40~70</mineableScatterLumpSizeRange>
+        </building>
+    </ThingDef>
+</Defs>

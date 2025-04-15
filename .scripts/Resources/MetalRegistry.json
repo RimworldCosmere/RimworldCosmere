@@ -1,8 +1,18 @@
 [
   {
     "name": "iron",
+    "description": "Iron is a robust elemental metal, celebrated for its exceptional strength and versatility. Essential in construction, tool-making, and weaponry, iron forms the backbone of many modern and ancient applications.",
     "godMetal": false,
-    "color": [85, 93, 93],
+    "color": [
+      121,
+      113,
+      111
+    ],
+    "colorTwo": [
+      94,
+      77,
+      76
+    ],
     "allomancy": {
       "userName": "lurcher",
       "description": "Can pull on metals, useful for drawing weapons or leaping through cities.",
@@ -18,12 +28,26 @@
     "buildable": {
       "buildings": true,
       "items": true
+    },
+    "mining": {
+      "hitPoints": 500,
+      "yield": 40,
+      "commonality": 0.8,
+      "sizeRange": [
+        35,
+        65
+      ]
     }
   },
   {
     "name": "steel",
+    "description": "Steel is a durable alloy of iron and carbon, valued for its strength, rigidity, and versatility. Ubiquitous across weaponry, construction, and tools, it forms the foundation of advanced metallurgy.",
     "godMetal": false,
-    "color": [92, 116, 116],
+    "color": [
+      109,
+      108,
+      108
+    ],
     "allomancy": {
       "userName": "coinshot",
       "description": "Can push on metals, allowing rapid movement or throwing metal objects.",
@@ -39,12 +63,39 @@
     "buildable": {
       "buildings": true,
       "items": true
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": [
+            "iron"
+          ],
+          "count": 8
+        },
+        {
+          "item": [
+            "coal",
+            "charcoal"
+          ],
+          "count": 2
+        }
+      ]
     }
   },
   {
     "name": "tin",
+    "description": "Tin is a soft and malleable metal, prized for its natural resistance to corrosion. Its gentle sheen and ease of alloying make it a vital component in crafting a variety of decorative and functional metal blends.",
     "godMetal": false,
-    "color": [121, 113, 113],
+    "color": [
+      197,
+      202,
+      201
+    ],
+    "colorTwo": [
+      128,
+      137,
+      137
+    ],
     "allomancy": {
       "userName": "tineye",
       "description": "Enhances senses like sight, hearing, and smell.",
@@ -60,12 +111,26 @@
     "buildable": {
       "buildings": false,
       "items": false
+    },
+    "mining": {
+      "hitPoints": 400,
+      "yield": 40,
+      "commonality": 0.8,
+      "sizeRange": [
+        35,
+        65
+      ]
     }
   },
   {
     "name": "pewter",
+    "description": "Pewter is a refined alloy formed by blending Tin with Copper. Known for its soft, workable nature and a muted, classic luster, pewter has been a favored material for decorative and utilitarian objects since ancient times.",
     "godMetal": false,
-    "color": [121, 113, 113],
+    "color": [
+      141,
+      151,
+      166
+    ],
     "allomancy": {
       "userName": "thug",
       "description": "Enhances physical strength and durability, useful in combat.",
@@ -84,12 +149,34 @@
     "buildable": {
       "buildings": false,
       "items": false
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": "tin",
+          "count": 8
+        },
+        {
+          "item": "copper",
+          "count": 2
+        }
+      ]
     }
   },
   {
     "name": "zinc",
+    "description": "Zinc is a cool, bluish-silver metal with a distinctive character. It not only protects other metals from corrosion through galvanization but also plays a crucial role in modern alloy production.",
     "godMetal": false,
-    "color": [199, 145, 145],
+    "color": [
+      128,
+      142,
+      129
+    ],
+    "colorTwo": [
+      187,
+      189,
+      187
+    ],
     "allomancy": {
       "userName": "rioter",
       "description": "Can riot emotions, pushing others to feel stronger emotions.",
@@ -105,12 +192,26 @@
     "buildable": {
       "buildings": false,
       "items": false
+    },
+    "mining": {
+      "hitPoints": 360,
+      "yield": 40,
+      "commonality": 0.7,
+      "sizeRange": [
+        30,
+        55
+      ]
     }
   },
   {
     "name": "brass",
+    "description": "Brass is a warm, golden alloy produced by blending Ind_Copper with zinc. Praised for its attractive appearance and excellent workability, brass finds extensive use in both decorative applications and practical components.",
     "godMetal": false,
-    "color": [181, 138, 138],
+    "color": [
+      175,
+      148,
+      91
+    ],
     "allomancy": {
       "userName": "soother",
       "description": "Can soothe emotions, calming people or manipulating moods.",
@@ -129,13 +230,34 @@
     "buildable": {
       "buildings": true,
       "items": true
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": "copper",
+          "count": 5
+        },
+        {
+          "item": "zinc",
+          "count": 5
+        }
+      ]
     }
   },
   {
     "name": "copper",
-    "defName": "Ind_Copper",
+    "description": "Copper is a soft, reddish metal prized for its conductivity and malleability. It has been a staple in crafting and electrical applications across civilizations for centuries.",
     "godMetal": false,
-    "color": [166, 94, 94],
+    "color": [
+      185,
+      129,
+      80
+    ],
+    "colorTwo": [
+      90,
+      58,
+      43
+    ],
     "allomancy": {
       "userName": "smoker",
       "description": "Creates a 'coppercloud' that hides Allomantic activity.",
@@ -151,12 +273,26 @@
     "buildable": {
       "buildings": true,
       "items": true
+    },
+    "mining": {
+      "hitPoints": 440,
+      "yield": 50,
+      "commonality": 0.9,
+      "sizeRange": [
+        40,
+        70
+      ]
     }
   },
   {
     "name": "bronze",
+    "description": "Bronze is a time-honored alloy, resulting from the fusion of Ind_Copper and tin. Its rich, reddish-brown hue and enduring strength have made bronze a cornerstone of art, architecture, and historical craftsmanship.",
     "godMetal": false,
-    "color": [150, 104, 104],
+    "color": [
+      191,
+      160,
+      138
+    ],
     "allomancy": {
       "userName": "seeker",
       "description": "Detects other Allomancers using powers.",
@@ -172,13 +308,34 @@
     "buildable": {
       "buildings": true,
       "items": true
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": "copper",
+          "count": 9
+        },
+        {
+          "item": "tin",
+          "count": 1
+        }
+      ]
     }
   },
   {
     "name": "aluminum",
-    "defName": "Ind_Aluminium",
+    "description": "Aluminum is a lightweight, silvery-white metal known for its corrosion resistance and flexibility. Its low density and high strength-to-weight ratio make it ideal for structural and high-tech uses.",
     "godMetal": false,
-    "color": [215, 218, 218],
+    "color": [
+      163,
+      163,
+      163
+    ],
+    "colorTwo": [
+      194,
+      194,
+      194
+    ],
     "allomancy": {
       "userName": "gnat (aluminum)",
       "description": "Wipes away all other metal reserves.",
@@ -198,8 +355,13 @@
   },
   {
     "name": "duralumin",
+    "description": "Duralumin is a lightweight yet remarkably strong alloy made by combining Aluminium with Copper. Its excellent strength-to-weight ratio makes it indispensable in advanced engineering and high-performance designs.",
     "godMetal": false,
-    "color": [198, 203, 203],
+    "color": [
+      127,
+      113,
+      115
+    ],
     "allomancy": {
       "userName": "gnat (duralumin)",
       "description": "Enhances the next Allomantic metal used drastically, but is consumed entirely.",
@@ -215,12 +377,34 @@
     "buildable": {
       "buildings": false,
       "items": false
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": "aluminum",
+          "count": 9
+        },
+        {
+          "item": "copper",
+          "count": 1
+        }
+      ]
     }
   },
   {
     "name": "chromium",
+    "description": "Chromium is a hard, lustrous metal renowned for its brilliant shine and outstanding resistance to tarnish. It enhances the durability and appearance of alloys and is often used to create sleek, modern finishes.",
     "godMetal": false,
-    "color": [192, 192, 192],
+    "color": [
+      132,
+      134,
+      139
+    ],
+    "colorTwo": [
+      159,
+      171,
+      196
+    ],
     "allomancy": {
       "userName": "leecher",
       "description": "Wipes away another Allomancer's metal reserves.",
@@ -236,12 +420,26 @@
     "buildable": {
       "buildings": false,
       "items": false
+    },
+    "mining": {
+      "hitPoints": 600,
+      "yield": 30,
+      "commonality": 0.6,
+      "sizeRange": [
+        25,
+        45
+      ]
     }
   },
   {
     "name": "nicrosil",
+    "description": "Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.",
     "godMetal": false,
-    "color": [148, 148, 148],
+    "color": [
+      141,
+      139,
+      135
+    ],
     "allomancy": {
       "userName": "nicroburst",
       "description": "Boosts another Allomancer's power drastically.",
@@ -257,12 +455,34 @@
     "buildable": {
       "buildings": false,
       "items": false
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": "nickel",
+          "count": 8
+        },
+        {
+          "item": "chromium",
+          "count": 2
+        }
+      ]
     }
   },
   {
     "name": "cadmium",
+    "description": "Cadmium is a soft, subtly reflective metal known for its unique properties and low melting point. Often used in specialized applications, it brings distinct qualities when blended into advanced alloys.",
     "godMetal": false,
-    "color": [122, 187, 187],
+    "color": [
+      170,
+      132,
+      121
+    ],
+    "colorTwo": [
+      201,
+      207,
+      206
+    ],
     "allomancy": {
       "userName": "pulser",
       "description": "Slows down time in a bubble, creating a temporal distortion.",
@@ -278,12 +498,26 @@
     "buildable": {
       "buildings": false,
       "items": false
+    },
+    "mining": {
+      "hitPoints": 300,
+      "yield": 20,
+      "commonality": 0.4,
+      "sizeRange": [
+        15,
+        35
+      ]
     }
   },
   {
     "name": "bendalloy",
+    "description": "Bendalloy is a mysterious and dynamic alloy created by precisely combining cadmium, zinc, and silver. Its shifting hues and volatile properties make it a material of both scientific intrigue and advanced technological potential.",
     "godMetal": false,
-    "color": [189, 158, 158],
+    "color": [
+      117,
+      144,
+      108
+    ],
     "allomancy": {
       "userName": "slider",
       "description": "Speeds up time in a bubble around the user.",
@@ -299,12 +533,38 @@
     "buildable": {
       "buildings": false,
       "items": false
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": "cadmium",
+          "count": 5
+        },
+        {
+          "item": "zinc",
+          "count": 2
+        },
+        {
+          "item": "silver",
+          "count": 3
+        }
+      ]
     }
   },
   {
     "name": "gold",
+    "description": "Gold is a dense, soft, and radiant metal long valued for its rarity and beauty. Resistant to tarnish and corrosion, it has held significance in both trade and symbolism throughout history.",
     "godMetal": false,
-    "color": [230, 190, 190],
+    "color": [
+      206,
+      172,
+      55
+    ],
+    "colorTwo": [
+      136,
+      101,
+      23
+    ],
     "allomancy": {
       "userName": "augur",
       "description": "Shows alternate versions of oneself, based on different pasts.",
@@ -324,8 +584,18 @@
   },
   {
     "name": "silver",
+    "description": "Silver is a bright, lustrous metal renowned for its conductivity, beauty, and symbolic purity. While soft and malleable, it remains a staple in crafting, electronics, and currency.",
     "godMetal": false,
-    "color": [192, 192, 192],
+    "color": [
+      204,
+      195,
+      173
+    ],
+    "colorTwo": [
+      110,
+      103,
+      93
+    ],
     "allomancy": null,
     "feruchemy": null,
     "buildable": {
@@ -334,9 +604,44 @@
     }
   },
   {
-    "name": "electrum",
+    "name": "nickel",
+    "description": "Nickel is a resilient, corrosion-resistant metal that enhances the strength and longevity of its alloy counterparts. Its steadfast durability makes it a critical element in high-performance industrial applications.",
     "godMetal": false,
-    "color": [204, 182, 182],
+    "color": [
+      85,
+      107,
+      47
+    ],
+    "colorTwo": [
+      100,
+      100,
+      100
+    ],
+    "allomancy": null,
+    "feruchemy": null,
+    "buildable": {
+      "buildings": true,
+      "items": true
+    },
+    "mining": {
+      "hitPoints": 480,
+      "yield": 30,
+      "commonality": 0.5,
+      "sizeRange": [
+        20,
+        40
+      ]
+    }
+  },
+  {
+    "name": "electrum",
+    "description": "Electrum is an alloy of gold and silver, characterized by its soft, pale, and luminous hue. This unique blend of precious metals has captivated civilizations for millennia with its subtle brilliance and inherent value.",
+    "godMetal": false,
+    "color": [
+      182,
+      156,
+      82
+    ],
     "allomancy": {
       "userName": "oracle",
       "description": "Shows one's own possible futures, useful for avoiding danger.",
@@ -352,12 +657,29 @@
     "buildable": {
       "buildings": false,
       "items": false
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": "gold",
+          "count": 5
+        },
+        {
+          "item": "silver",
+          "count": 5
+        }
+      ]
     }
   },
   {
     "name": "lerasium",
+    "description": "Lerasium is an exceptionally rare god metal tied to the Shard Preservation. When ingested, it transforms the user into a Mistborn, granting access to all Allomantic powers.",
     "godMetal": true,
-    "color": [255, 255, 255],
+    "color": [
+      255,
+      255,
+      255
+    ],
     "allomancy": {
       "userName": null,
       "description": "Turns a person into a Mistborn when consumed.",
@@ -377,8 +699,13 @@
   },
   {
     "name": "atium",
+    "description": "Atium is the god metal of the Shard Ruin. It grants its user visions of others' immediate futures, offering immense strategic advantage in combat and prediction.",
     "godMetal": true,
-    "color": [0, 0, 0],
+    "color": [
+      0,
+      0,
+      0
+    ],
     "allomancy": {
       "userName": "seer",
       "description": "Allows a glimpse into the immediate future of others.",
@@ -398,8 +725,13 @@
   },
   {
     "name": "harmonium",
+    "description": "Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.",
     "godMetal": true,
-    "color": [242, 255, 140],
+    "color": [
+      242,
+      255,
+      140
+    ],
     "allomancy": {
       "userName": null,
       "description": "Explosive and unstable; function is not fully known.",
@@ -415,6 +747,23 @@
     "buildable": {
       "buildings": false,
       "items": false
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": "lerasium",
+          "count": 1
+        },
+        {
+          "item": "atium",
+          "count": 1
+        }
+      ],
+      "products": [
+        {
+          "count": 1
+        }
+      ]
     }
   }
 ]

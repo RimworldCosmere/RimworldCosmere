@@ -9,7 +9,7 @@
             <colorTwo>(159, 171, 196)</colorTwo>
         </graphicData>
         <statBases>
-            <MaxHitPoints>600</MaxHitPoints>
+            <MaxHitPoints>1600</MaxHitPoints>
         </statBases>
         <building>
             <mineableThing>Chromium</mineableThing>

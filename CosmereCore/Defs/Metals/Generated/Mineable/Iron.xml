@@ -9,7 +9,7 @@
             <colorTwo>(94, 77, 76)</colorTwo>
         </graphicData>
         <statBases>
-            <MaxHitPoints>500</MaxHitPoints>
+            <MaxHitPoints>1500</MaxHitPoints>
         </statBases>
         <building>
             <mineableThing>Iron</mineableThing>

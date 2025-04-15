@@ -13,6 +13,7 @@
                 </metalNames>
             </li>
         </comps>
+        <orderedTakeGroup>AllomanticVial_{{defName}}</orderedTakeGroup>
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_{{defName}}</defName>
@@ -30,4 +31,10 @@
             <Cosmere_AllomanticVial_{{defName}}>8</Cosmere_AllomanticVial_{{defName}}>
         </products>
     </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_{{defName}}</defName>
+        <label>Mistborn Vial: {{capitalize name}}</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

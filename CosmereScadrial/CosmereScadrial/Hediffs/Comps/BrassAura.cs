@@ -5,7 +5,6 @@ using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Hediffs.Comps {
     public class BrassAura : HediffComp {
@@ -69,7 +68,6 @@ namespace CosmereScadrial.Hediffs.Comps {
             );
             mote.instanceColor = MetalRegistry.Metals["brass"].Color;
 
-            Log.Message($"Mote successfully created: {mote}, map={parent.pawn.Map} color={mote.instanceColor}, scale={moteScale}, radius={Props.radius * parent.Severity}");
             return mote;
         }
 
@@ -98,7 +96,6 @@ namespace CosmereScadrial.Hediffs.Comps {
             if (soothed.ageTicks >= Props.tickInterval) return;
 
             // Just been soothed
-            Log.Info($"Soothing {target.LabelShort}");
             MoteMaker.ThrowText(target.DrawPos, target.Map, "Soothed", Color.cyan);
         }
     }

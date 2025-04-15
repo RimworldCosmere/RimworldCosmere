@@ -18,6 +18,7 @@
                 </metalNames>
             </li>
         </comps>
+        <orderedTakeGroup>AllomanticVial_EnhancementTemporal</orderedTakeGroup>
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_EnhancementTemporal</defName>
@@ -61,4 +62,10 @@
             <Cosmere_AllomanticVial_EnhancementTemporal>8</Cosmere_AllomanticVial_EnhancementTemporal>
         </products>
     </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_EnhancementTemporal</defName>
+        <label>Mistborn Vial: Enhancement + Temporal</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

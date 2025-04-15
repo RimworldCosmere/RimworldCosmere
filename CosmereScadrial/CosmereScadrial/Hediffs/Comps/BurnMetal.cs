@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text;
 using CosmereFramework.Utils;
+using CosmereScadrial.Comps;
 using CosmereScadrial.DefModExtensions;
 using CosmereScadrial.Registry;
 using CosmereScadrial.Utils;
@@ -14,6 +15,13 @@ namespace CosmereScadrial.Hediffs.Comps {
         private int flareStartTick = -1;
         private bool tryingToRefuel;
 
+        public ToggleBurnMetalStatus Status => Parent.Severity switch {
+            <= 0f => ToggleBurnMetalStatus.Off,
+            <= 0.5f => ToggleBurnMetalStatus.Passive,
+            <= 1f => ToggleBurnMetalStatus.Burning,
+            _ => ToggleBurnMetalStatus.Flaring,
+        };
+
         public BurningMetal Parent => parent as BurningMetal;
 
         public string Metal => Parent.def.GetModExtension<MetalLinked>().metal;
@@ -25,6 +33,8 @@ namespace CosmereScadrial.Hediffs.Comps {
         private float FlareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
         public Properties.BurnMetal Props => (Properties.BurnMetal)props;
+
+        public override string CompLabelInBracketsExtra => $"{Status}";
 
         public void ToggleBurn() {
             ToggleBurn(Parent.Severity >= 1.0f);
@@ -65,11 +75,17 @@ namespace CosmereScadrial.Hediffs.Comps {
                 }
 
                 if (IsFlared) {
-                    if (flareStartTick < 0) {
-                        flareStartTick = Find.TickManager.TicksGame;
-                    }
+                    if (flareStartTick >= 0) return;
 
-                    // Dont want to apply the drag below, if we are still flared.
+                    flareStartTick = Find.TickManager.TicksGame;
+                    var drag = Pawn.health.hediffSet.GetFirstHediffOfDef(Props.dragHediff);
+                    if (drag == null) return;
+
+                    var existingSeverity = drag.Severity;
+                    Pawn.health.RemoveHediff(drag);
+                    flareStartTick -= (int)(existingSeverity * 3000f);
+
+                    // Don't want to apply the drag below, if we are still flared.
                     return;
                 }
             }
@@ -96,9 +112,7 @@ namespace CosmereScadrial.Hediffs.Comps {
             }
 
             // If we are sleeping, and the severity is less than 1, we are at the Sleeping severity, and we are good.
-            if (severity <= 1.0f) return;
-
-            Log.Verbose($"GetSleepSeverity called for {pawn}:{Metal} currentSeverity={severity}");
+            if (severity < 1.0f) return;
 
             // If the pawn is sleeping, and is not flaring, and is not at the Sleeping severity, reduce severity
             UpdateSeverity(0.5f);

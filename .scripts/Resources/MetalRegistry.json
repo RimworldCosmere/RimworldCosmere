@@ -30,7 +30,7 @@
       "items": true
     },
     "mining": {
-      "hitPoints": 500,
+      "hitPoints": 1500,
       "yield": 40,
       "commonality": 0.8,
       "sizeRange": [
@@ -113,7 +113,7 @@
       "items": false
     },
     "mining": {
-      "hitPoints": 400,
+      "hitPoints": 1400,
       "yield": 40,
       "commonality": 0.8,
       "sizeRange": [
@@ -194,7 +194,7 @@
       "items": false
     },
     "mining": {
-      "hitPoints": 360,
+      "hitPoints": 1360,
       "yield": 40,
       "commonality": 0.7,
       "sizeRange": [
@@ -275,7 +275,7 @@
       "items": true
     },
     "mining": {
-      "hitPoints": 440,
+      "hitPoints": 1440,
       "yield": 50,
       "commonality": 0.9,
       "sizeRange": [
@@ -422,7 +422,7 @@
       "items": false
     },
     "mining": {
-      "hitPoints": 600,
+      "hitPoints": 1600,
       "yield": 30,
       "commonality": 0.6,
       "sizeRange": [
@@ -500,7 +500,7 @@
       "items": false
     },
     "mining": {
-      "hitPoints": 300,
+      "hitPoints": 1300,
       "yield": 20,
       "commonality": 0.4,
       "sizeRange": [
@@ -624,7 +624,7 @@
       "items": true
     },
     "mining": {
-      "hitPoints": 480,
+      "hitPoints": 1480,
       "yield": 30,
       "commonality": 0.5,
       "sizeRange": [

@@ -31,7 +31,7 @@ namespace CosmereScadrial.Commands {
             }
 
             // If they are not asleep, and ctrl is held, and they are not Burning OR Flaring, turn on burning
-            if (!Comp.AtLeastPassive) {
+            if (Comp.Status < ToggleBurnMetalStatus.Passive) {
                 base.ProcessInput(ev);
             }
 

@@ -6,7 +6,7 @@ namespace CosmereScadrial.Comps.Properties {
         public HediffDef hediff;
 
         public ToggleBurnMetal() {
-            compClass = typeof(CompToggleBurnMetal);
+            compClass = typeof(Comps.ToggleBurnMetal);
         }
     }
 }

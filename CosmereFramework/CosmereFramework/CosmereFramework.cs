@@ -12,9 +12,7 @@ namespace CosmereFramework {
         Verbose,
     }
 
-    public class CosmereFramework : Mod {
-        public CosmereFramework(ModContentPack content) : base(content) { }
-
+    public class CosmereFramework(ModContentPack content) : Mod(content) {
         public CosmereSettings Settings => GetSettings<CosmereSettings>();
 
         public override void DoSettingsWindowContents(Rect inRect) {
@@ -22,6 +20,7 @@ namespace CosmereFramework {
             listingStandard.Begin(inRect);
             listingStandard.Label($"Log Level - {Settings.logLevel.ToString()}");
             Settings.logLevel = (LogLevel)(int)listingStandard.Slider((float)Settings.logLevel, (float)LogLevel.None, (float)LogLevel.Verbose);
+            listingStandard.CheckboxLabeled("Debug Mode", ref Settings.debugMode, "Opens the logs.");
             listingStandard.End();
             base.DoSettingsWindowContents(inRect);
         }
@@ -32,11 +31,13 @@ namespace CosmereFramework {
     }
 
     public class CosmereSettings : ModSettings {
+        public bool debugMode;
         public LogLevel logLevel = LogLevel.Verbose;
 
         public override void ExposeData() {
-            base.ExposeData();
             Scribe_Values.Look(ref logLevel, "logLevel", LogLevel.Verbose);
+            Scribe_Values.Look(ref debugMode, "debugMode");
+            base.ExposeData();
         }
     }
 }

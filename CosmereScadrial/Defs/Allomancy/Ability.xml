@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <AbilityCategoryDef>
+        <defName>Allomancy</defName>
+        <label>Allomancy</label>
+        <displayOrder>1</displayOrder>
+    </AbilityCategoryDef>
+    
     <AbilityDef Name="AbstractBurn" Abstract="True">
         <jobDef>CastAbilityOnThing</jobDef>
         <stunTargetWhileCasting>False</stunTargetWhileCasting>
@@ -7,6 +13,7 @@
         <ai_IsOffensive>true</ai_IsOffensive>
         <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
         <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+        <category>Allomancy</category>
     </AbilityDef>
     
     <Abstract Name="AbstractSelfBurn" ParentName="AbstractBurn" Abstract="True">

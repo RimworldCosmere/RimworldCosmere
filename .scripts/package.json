@@ -3,7 +3,9 @@
     "generate:metalRegistry": "tsx ./index.ts MetalRegistry",
     "generate:metals": "tsx ./index.ts Metals",
     "generate:vials": "tsx ./index.ts Vials",
-    "generate:genesAndTraits": "tsx ./index.ts GenesAndTraits"
+    "generate:genesAndTraits": "tsx ./index.ts GenesAndTraits",
+    "generate:core": "concurrently \"npm run generate:metals\"",
+    "generate:scadrial": "concurrently \"npm run generate:metalRegistry\" \"npm run generate:vials\" \"npm run generate:genesAndTraits\""
   },
   "private": true,
   "dependencies": {

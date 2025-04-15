@@ -85,6 +85,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="BuildInfo.cs"/>
         <Compile Include="CosmereFramework.cs"/>
         <Compile Include="Log.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
@@ -112,4 +113,47 @@
             <ExcludeAssets>runtime</ExcludeAssets>
         </PackageReference>
     </ItemDefinitionGroup>
+    
+    <UsingTask TaskName="WriteBuildInfo" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+        <ParameterGroup>
+            <OutputPath ParameterType="System.String" Required="true"/>
+            <Revision ParameterType="System.String" Required="true"/>
+            <BuildTime ParameterType="System.String" Required="true"/>
+        </ParameterGroup>
+        <Task>
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+        System.IO.File.WriteAllText(OutputPath,
+@"namespace CosmereFramework {
+    public static class BuildInfo {
+        public const string Revision = """+Revision+@""";
+        
+        public const string BuildTime = """+BuildTime+@""";
+    }
+}
+");
+      ]]>
+            </Code>
+        </Task>
+    </UsingTask>
+
+    <Target Name="InjectBuildInfo" BeforeTargets="BeforeBuild">
+        <Exec Command="git rev-parse --short HEAD > $(ProjectDir)..\..\BuildMetadata.tmp" ContinueOnError="true"/>
+        <ReadLinesFromFile File="$(ProjectDir)..\..\BuildMetadata.tmp">
+            <Output TaskParameter="Lines" PropertyName="GitRevision"/>
+        </ReadLinesFromFile>
+        <Delete Files="$(ProjectDir)..\..\BuildMetadata.tmp"/>
+
+        <PropertyGroup>
+            <GitRevision Condition="'$(GitRevision)' == ''">DEV</GitRevision>
+            <BuildDateTime>$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))</BuildDateTime>
+            <BuildInfoPath>$(ProjectDir)..\CosmereFramework\BuildInfo.cs</BuildInfoPath>
+        </PropertyGroup>
+
+        <WriteBuildInfo
+            OutputPath="$(BuildInfoPath)"
+            Revision="$(GitRevision)"
+            BuildTime="$(BuildDateTime)"/>
+    </Target>
+
 </Project>

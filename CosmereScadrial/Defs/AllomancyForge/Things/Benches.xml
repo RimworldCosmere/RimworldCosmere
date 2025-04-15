@@ -52,6 +52,11 @@
             <paintable>true</paintable>
         </building>
         <comps>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <shortCircuitInRain>true</shortCircuitInRain>
+                <basePowerConsumption>300</basePowerConsumption>
+            </li>
             <li Class="CompProperties_AffectedByFacilities">
                 <linkableFacilities>
                     <li>ToolCabinet</li>
@@ -63,7 +68,7 @@
                 <glowColor>(255,120,60,0)</glowColor>
                 <overlightRadius>2</overlightRadius>
             </li>
-            <li Class="CompProperties_Refuelable">
+            <li Class="CosmereScadrial.Comps.Properties.RefuelableSuspendWhenPowered">
                 <fuelFilter>
                     <thingDefs>
                         <li>WoodLog</li>
@@ -71,10 +76,10 @@
                         <li>Charcoal</li>
                     </thingDefs>
                 </fuelFilter>
-                <fuelCapacity>100</fuelCapacity>
-                <fuelConsumptionRate>1.0</fuelConsumptionRate> <!-- per tick while active -->
-                <initialFuelPercent>0</initialFuelPercent>
+                <fuelCapacity>200</fuelCapacity>
+                <fuelConsumptionRate>2</fuelConsumptionRate>
                 <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+                <initialFuelPercent>1</initialFuelPercent>
                 <autoRefuelPercent>0.2</autoRefuelPercent>
                 <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
             </li>
@@ -83,6 +88,9 @@
                 <heatPushMaxTemperature>50</heatPushMaxTemperature>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.PoweredOrFueled" />
+        </modExtensions>
         <researchPrerequisites>
             <li>Cosmere_Allomancy</li>
         </researchPrerequisites>

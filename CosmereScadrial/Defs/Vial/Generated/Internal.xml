@@ -18,6 +18,7 @@
                 </metalNames>
             </li>
         </comps>
+        <orderedTakeGroup>AllomanticVial_Internal</orderedTakeGroup>
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Internal</defName>
@@ -61,4 +62,10 @@
             <Cosmere_AllomanticVial_Internal>8</Cosmere_AllomanticVial_Internal>
         </products>
     </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Internal</defName>
+        <label>Mistborn Vial: Internal</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

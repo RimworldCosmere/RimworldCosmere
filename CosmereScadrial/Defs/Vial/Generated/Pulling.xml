@@ -18,6 +18,7 @@
                 </metalNames>
             </li>
         </comps>
+        <orderedTakeGroup>AllomanticVial_Pulling</orderedTakeGroup>
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Pulling</defName>
@@ -61,4 +62,10 @@
             <Cosmere_AllomanticVial_Pulling>8</Cosmere_AllomanticVial_Pulling>
         </products>
     </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Pulling</defName>
+        <label>Mistborn Vial: Pulling</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

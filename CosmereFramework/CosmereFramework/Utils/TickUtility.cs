@@ -1,7 +1,7 @@
 namespace CosmereFramework.Utils {
     public static class TickUtility {
-        public const float TicksPerMillisecond = .06f;
-        public const float TicksPerSecond = TicksPerMillisecond * 1000;
+        public const float TicksPerMillisecond = TicksPerSecond / 1000;
+        public const float TicksPerSecond = 60f;
         public const float TicksPerMinute = TicksPerSecond * 60;
         public const float TicksPerHour = TicksPerMinute * 60;
         public const float TicksPerDay = 60000; // RimWorld defines 1 day = 60,000 ticks

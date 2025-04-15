@@ -1,10 +1,10 @@
 {
-  "./Resources/MetalRegistry.json": "9ca944874c16f3eb943106c8fe1df2cc0534ef1fdd822da34bf5d23d9c13af21",
+  "./Resources/MetalRegistry.json": "83fb4a7cf5a432861112128766bbeb04c496d6c1dc234866264c9f1cf45d6727",
   "Generators\\Metals\\MetalDef.xml.template": "ad3d1abd815500ec07695b7678d40873d69351e32cef87bd19d74c5f2b7689f5",
   "Generators\\Metals\\MineableMetalDef.xml.template": "c8821f7242f56b34b776e88e70cbd297ebab8daefb6d46a7fbced7fc5363138b",
   "Generators\\MetalRegistry\\CoreMetalRegistry.xml.template": "6e06b80c898a0626bb1700eeac863aa9e2acedd5afec59a8d28b29117169aaa3",
   "Generators\\MetalRegistry\\ScadrialMetalRegistry.xml.template": "e9559c5ea80742e37f2b45a2c1c48793541fcbeec6bf24e521f1d407c6145f23",
-  "Generators\\Vials\\MultiVialDef.xml.template": "02a79aee15ac1ea23c2778c5813f0c9e41e89e22ea7154f7fc0e01e720754407",
+  "Generators\\Vials\\MultiVialDef.xml.template": "8a594e2f86e3466d3df34a85f4496e66d2d1bc6266c80aa750a9f2df03c147cd",
   "Generators\\Vials\\VialDef.xml.template": "5abc7b0b6e0cd0aa4e5c3dcdea712903acd32929e262ae51f7da225ff4605ffc",
   "Generators\\GenesAndTraits\\FullFeruchemist.xml.template": "68dc2f974846fc8125f0abb26d7073a41dc379b83d2a214844db85a2cd31b448",
   "Generators\\GenesAndTraits\\GeneAndTraitDef.xml.template": "2c0abfcedee51091a066e3e5bbdfcf3c32341d3eb26a457e8cb50d83d0f152ab",

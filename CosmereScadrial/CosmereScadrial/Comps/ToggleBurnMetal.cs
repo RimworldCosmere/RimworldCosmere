@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using CosmereScadrial.DefModExtensions;
 using CosmereScadrial.Hediffs;
 using CosmereScadrial.Hediffs.Comps;
@@ -19,30 +18,17 @@ namespace CosmereScadrial.Comps {
 
         private BurnMetal Comp => Hediff.TryGetComp<BurnMetal>();
 
-        public string Metal => parent.def.GetModExtension<MetalLinked>().metal;
+        protected string Metal => parent.def.GetModExtension<MetalLinked>().metal;
 
-        public bool AtLeastPassive => Status > ToggleBurnMetalStatus.Passive;
+        protected bool AtLeastPassive => Comp.Status > ToggleBurnMetalStatus.Passive;
 
-        public bool Burning => Status == ToggleBurnMetalStatus.Burning;
+        protected bool Burning => Comp.Status == ToggleBurnMetalStatus.Burning;
 
-        public bool Flaring => Status == ToggleBurnMetalStatus.Flaring;
+        protected bool Flaring => Comp.Status == ToggleBurnMetalStatus.Flaring;
 
-        public ToggleBurnMetalStatus Status => Hediff.Severity switch {
-            <= 0f => ToggleBurnMetalStatus.Off,
-            <= 0.5f => ToggleBurnMetalStatus.Passive,
-            <= 1f => ToggleBurnMetalStatus.Burning,
-            _ => ToggleBurnMetalStatus.Flaring,
-        };
+        public ToggleBurnMetalStatus Status => Comp.Status;
 
         public new Properties.ToggleBurnMetal Props => (Properties.ToggleBurnMetal)props;
-
-        public override IEnumerable<Gizmo> CompGetGizmosExtra() {
-            foreach (var command in parent.GetGizmos()) {
-                // yield return Activator.CreateInstance(command.GetType(), parent, parent.pawn) as Gizmo;
-            }
-
-            yield break;
-        }
 
         public override void Initialize(AbilityCompProperties props) {
             base.Initialize(props);
@@ -70,7 +56,6 @@ namespace CosmereScadrial.Comps {
 
         public void ToggleFlaring(bool nextFlaring) {
             Comp.UpdateSeverity(nextFlaring ? 2f : 1f);
-            Log.Verbose($"Toggled flaring on {Metal}: {(nextFlaring ? "Flare" : "Normal")} hediff={Hediff.def.defName} comp={Comp}");
         }
     }
 }

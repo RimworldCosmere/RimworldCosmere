@@ -18,6 +18,7 @@
                 </metalNames>
             </li>
         </comps>
+        <orderedTakeGroup>AllomanticVial_PhysicalMental</orderedTakeGroup>
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_PhysicalMental</defName>
@@ -61,4 +62,10 @@
             <Cosmere_AllomanticVial_PhysicalMental>8</Cosmere_AllomanticVial_PhysicalMental>
         </products>
     </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_PhysicalMental</defName>
+        <label>Mistborn Vial: Physical + Mental</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
 </Defs>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <StatDef>
+        <defName>WorkTableWorkSpeedFactor</defName>
+        <label>work speed factor</label>
+        <description>Work speed is multiplied by this value.</description>
+        <category>Building</category>
+        <defaultBaseValue>1</defaultBaseValue>
+        <minValue>0.1</minValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <showOnNonWorkTables>false</showOnNonWorkTables>
+        <parts>
+            <li Class="CosmereScadrial.Stats.Parts.PoweredOrFueled" />
+            <li Class="StatPart_WorkTableTemperature" />
+            <li Class="StatPart_WorkTableOutdoors" />
+        </parts>
+        <displayPriorityInCategory>3000</displayPriorityInCategory>
+    </StatDef>
+</Defs>

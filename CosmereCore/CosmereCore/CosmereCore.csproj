@@ -128,7 +128,7 @@
     </ItemDefinitionGroup>
     
     <Target Name="PostBuild" AfterTargets="Build" Outputs="Never">
-        <Exec Command="npm run generate:metals"
+        <Exec Command="npm run generate:core"
               WorkingDirectory="$(ProjectDir)..\..\.scripts"
               StandardOutputImportance="High"
         />

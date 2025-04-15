@@ -1,3 +1,4 @@
+using CosmereFramework.Utils;
 using Verse;
 
 namespace CosmereScadrial.Hediffs.Comps {
@@ -6,7 +7,7 @@ namespace CosmereScadrial.Hediffs.Comps {
 
         public Properties.DisappearsScaled Props => (Properties.DisappearsScaled)props;
 
-        public override string CompLabelInBracketsExtra => $"{ticksLeft / 250f:0.0}h left";
+        public override string CompLabelInBracketsExtra => $"{ticksLeft / TickUtility.TicksPerHour:0.0}h left";
 
         public override void CompPostMake() {
             base.CompPostMake();

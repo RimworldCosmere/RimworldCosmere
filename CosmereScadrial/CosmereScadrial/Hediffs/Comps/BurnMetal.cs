@@ -14,58 +14,81 @@ namespace CosmereScadrial.Hediffs.Comps {
         private int flareStartTick = -1;
         private bool tryingToRefuel;
 
-        public string Metal => parent.def.GetModExtension<MetalLinked>().metal;
+        public BurningMetal Parent => parent as BurningMetal;
 
-        public bool IsFlared => parent.Severity >= 2.0f;
+        public string Metal => Parent.def.GetModExtension<MetalLinked>().metal;
+
+        public bool IsAtLeastPassive => Parent.Severity >= 0.5f;
+
+        public bool IsFlared => Parent.Severity >= 2.0f;
 
         private float FlareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
         public Properties.BurnMetal Props => (Properties.BurnMetal)props;
 
-        public void Stop() {
-            Log.Verbose($"Pawn {parent.pawn} has stopped burning {Metal}");
+        public void ToggleBurn() {
+            ToggleBurn(Parent.Severity >= 1.0f);
+        }
 
-            // Remove the hediff
-            parent.pawn.health.RemoveHediff(parent);
+        public void ToggleBurn(bool nextBurning) {
+            switch (nextBurning) {
+                case true when Parent.Severity >= 1.0f:
+                    return;
+                case false when Mathf.Approximately(Parent.Severity, 0f):
+                    break;
+            }
+
+            UpdateSeverity(nextBurning ? 1f : 0f);
         }
 
         public void UpdateSeverity(float severity) {
-            Log.Info($"Severity updated for {Pawn.NameFullColored}:{Metal} {parent.Severity} -> {severity}");
-            parent.Severity = severity;
+            if (Mathf.Approximately(severity, 1f) && !Mathf.Approximately(Parent.Severity, severity)) {
+                Log.Info($"Pawn {Parent.pawn} has started burning {Metal}");
+            }
 
-            PortraitsCache.SetDirty(parent.pawn);
-            SelectionDrawer.Notify_Selected(parent.pawn);
+            if (Mathf.Approximately(severity, 0f) && !Mathf.Approximately(Parent.Severity, severity)) {
+                Log.Info($"Pawn {Parent.pawn} has stopped burning {Metal}");
+                CompPostPostRemoved();
+            }
+
+            Log.Verbose($"Severity updated for {Pawn.NameFullColored}:{Metal} {Parent.Severity} -> {severity}");
+            Parent.Severity = severity;
         }
 
         public override void CompPostTick(ref float severityAdjustment) {
-            base.CompPostTick(ref severityAdjustment);
+            if (IsAtLeastPassive) {
+                GetSleepSeverity();
+                TryBurn();
 
-            GetSleepSeverity();
-            TryBurn();
+                if (Parent.pawn.IsHashIntervalTick((int)TickUtility.Seconds(3))) {
+                    TryEmitEffect();
+                }
 
-            if (parent.pawn.IsHashIntervalTick((int)TickUtility.Seconds(3))) {
-                TryEmitEffect();
-            }
+                if (IsFlared) {
+                    if (flareStartTick < 0) {
+                        flareStartTick = Find.TickManager.TicksGame;
+                    }
 
-            if (IsFlared) {
-                if (flareStartTick < 0) {
-                    flareStartTick = Find.TickManager.TicksGame;
+                    // Dont want to apply the drag below, if we are still flared.
+                    return;
                 }
             }
-            else if (flareStartTick > 0) {
-                // Flare ended, throw on a half-strength drag
-                ApplyDrag(FlareDuration / 6000f / 2);
-                flareStartTick = -1;
-            }
+
+            if (flareStartTick <= 0) return;
+
+            // Flare ended, throw on a half-strength drag
+            ApplyDrag(FlareDuration / 3000f / 2);
+            flareStartTick = -1;
         }
 
         private void GetSleepSeverity() {
-            var pawn = parent.pawn;
+            var severity = Parent.Severity;
+            var pawn = Parent.pawn;
             var sleeping = pawn.CurJob?.def == JobDefOf.LayDown && pawn.jobs.curDriver is JobDriver_LayDown driver && driver.asleep;
 
             // If the pawn isn't sleeping, check if we are at the Sleeping severity, and then update it
             if (!sleeping) {
-                if (Mathf.Approximately(parent.Severity, 0.5f)) {
+                if (Mathf.Approximately(severity, 0.5f)) {
                     UpdateSeverity(1.0f);
                 }
 
@@ -73,9 +96,9 @@ namespace CosmereScadrial.Hediffs.Comps {
             }
 
             // If we are sleeping, and the severity is less than 1, we are at the Sleeping severity, and we are good.
-            if (parent.Severity <= 1.0f) return;
+            if (severity <= 1.0f) return;
 
-            Log.Verbose($"GetSleepSeverity called for {parent.pawn}:{Metal} currentSeverity={parent.Severity}");
+            Log.Verbose($"GetSleepSeverity called for {pawn}:{Metal} currentSeverity={severity}");
 
             // If the pawn is sleeping, and is not flaring, and is not at the Sleeping severity, reduce severity
             UpdateSeverity(0.5f);
@@ -84,17 +107,17 @@ namespace CosmereScadrial.Hediffs.Comps {
         public override void CompPostPostRemoved() {
             if (flareStartTick <= 0) return;
 
-            ApplyDrag(FlareDuration / 6000f);
+            ApplyDrag(FlareDuration / 3000f);
             flareStartTick = -1;
         }
 
         private void TryEmitEffect() {
-            if (!parent.pawn.Spawned || parent.pawn.Map == null) {
+            if (!Parent.pawn.Spawned || Parent.pawn.Map == null) {
                 return;
             }
 
             var mote = MoteMaker.MakeAttachedOverlay(
-                parent.pawn,
+                Parent.pawn,
                 DefDatabase<ThingDef>.GetNamed("Mote_ToxicDamage"),
                 Vector3.zero
             );
@@ -110,10 +133,10 @@ namespace CosmereScadrial.Hediffs.Comps {
         }
 
         public void TryBurn() {
-            var beuRequired = AllomancyUtility.BEU_PER_METAL_UNIT * Props.unitsPerBurn * parent.Severity;
-            // Log.Verbose($"Pawn {parent.pawn} is burning {Metal} Severity={parent.Severity} BEUs={beuRequired} metalRequired={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT} DragSeverity={flareDuration / 6000f}");
+            var beuRequired = AllomancyUtility.BEU_PER_METAL_UNIT * Props.unitsPerBurn * Parent.Severity;
+            // Log.Verbose($"Pawn {Parent.pawn} is burning {Metal} Severity={Parent.Severity} BEUs={beuRequired} metalRequired={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT} DragSeverity={flareDuration / 6000f}");
 
-            if (AllomancyUtility.TryBurnMetalForInvestiture(parent.pawn, Metal, beuRequired)) {
+            if (AllomancyUtility.TryBurnMetalForInvestiture(Parent.pawn, Metal, beuRequired)) {
                 tryingToRefuel = false;
                 return;
             }
@@ -122,26 +145,27 @@ namespace CosmereScadrial.Hediffs.Comps {
                 return;
             }
 
-            Stop();
+            ToggleBurn(false);
         }
 
         public override string CompDebugString() {
-            var beuRequired = AllomancyUtility.BEU_PER_METAL_UNIT * Props.unitsPerBurn * parent.Severity;
+            var beuRequired = AllomancyUtility.BEU_PER_METAL_UNIT * Props.unitsPerBurn * Parent.Severity;
 
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"Drag Severity={FlareDuration / 6000f}");
-            stringBuilder.AppendLine($"BEUs Required={beuRequired}");
-            stringBuilder.AppendLine($"Metal Required={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT}");
+            stringBuilder.AppendLine($"Drag Severity={FlareDuration / 3000f:0.000}");
+            stringBuilder.AppendLine($"BEUs Required={beuRequired:0.000}");
+            stringBuilder.AppendLine($"Metal Required={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT:0.000}");
+            stringBuilder.AppendLine($"Hidden={!Parent.Visible}");
 
             return stringBuilder.ToString();
         }
 
         private bool TryAutoRefuel() {
-            var vial = parent.pawn.inventory?.innerContainer?
+            var vial = Parent.pawn.inventory?.innerContainer?
                 .FirstOrDefault(t => t.def.defName == $"Cosmere_AllomanticVial_{Metal.CapitalizeFirst()}");
 
-            if (vial == null || parent.pawn.jobs == null) {
-                Log.Warning($"{parent.pawn.NameFullColored} cannot auto-ingest Cosmere_AllomanticVial_{Metal.CapitalizeFirst()}. Doesn't have one.");
+            if (vial == null || Parent.pawn.jobs == null) {
+                Log.Warning($"{Parent.pawn.NameFullColored} cannot auto-ingest Cosmere_AllomanticVial_{Metal.CapitalizeFirst()}. Doesn't have one.");
                 return false;
             }
 
@@ -149,16 +173,16 @@ namespace CosmereScadrial.Hediffs.Comps {
             job.count = 1;
 
             tryingToRefuel = true;
-            parent.pawn.jobs.TryTakeOrderedJob(job);
-            Log.Warning($"{parent.pawn.NameShortColored} is auto-ingesting {vial.LabelShort} for {Metal}.");
+            Parent.pawn.jobs.TryTakeOrderedJob(job);
+            Log.Warning($"{Parent.pawn.NameShortColored} is auto-ingesting {vial.LabelShort} for {Metal}.");
             return true;
         }
 
         private void ApplyDrag(float severity) {
             if (Props.dragHediff == null || severity <= 1f) return;
 
-            Log.Warning($"Applying {Props.dragHediff.defName} Drag to {parent.pawn.NameFullColored} with Severity={severity}");
-            var drag = parent.pawn.health.GetOrAddHediff(Props.dragHediff);
+            Log.Warning($"Applying {Props.dragHediff.defName} Drag to {Parent.pawn.NameFullColored} with Severity={severity}");
+            var drag = Parent.pawn.health.GetOrAddHediff(Props.dragHediff);
             drag.Severity = severity;
         }
     }

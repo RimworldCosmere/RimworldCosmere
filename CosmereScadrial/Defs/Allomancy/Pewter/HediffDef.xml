@@ -69,9 +69,9 @@
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
                     <MoveSpeed>0.5</MoveSpeed>
-                    <WorkSpeedGlobal>0.6</WorkSpeedGlobal>
-                    <RestFallRateFactor>4</RestFallRateFactor>
-                    <MentalBreakThreshold>-0.2</MentalBreakThreshold>
+                    <WorkSpeedGlobal>0.5</WorkSpeedGlobal>
+                    <RestFallRateFactor>6</RestFallRateFactor>
+                    <MentalBreakThreshold>-2</MentalBreakThreshold>
                 </statFactors>
                 <statOffsets>
                     <PainShockThreshold>-0.15</PainShockThreshold>

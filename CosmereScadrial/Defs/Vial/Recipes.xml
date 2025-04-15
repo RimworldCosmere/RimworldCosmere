@@ -5,6 +5,7 @@
         <workSpeedStat>DrugCookingSpeed</workSpeedStat>
         <effectWorking>Cook</effectWorking>
         <soundWorking>Recipe_CookMeal</soundWorking>
+        <jobString>Preparing Allomantic vial.</jobString>
         <workSkill>Crafting</workSkill>
         <workSkillLearnFactor>0</workSkillLearnFactor>
         <skillRequirements>

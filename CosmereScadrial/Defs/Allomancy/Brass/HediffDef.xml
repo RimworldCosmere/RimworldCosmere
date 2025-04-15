@@ -7,11 +7,14 @@
         <isBad>false</isBad>
         <tendable>false</tendable>
         <comps>
-            <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal">
-                <metal>brass</metal>
-            </li>
+            <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal" />
             <li Class="CosmereScadrial.Hediffs.Comps.Properties.BrassAura" />
         </comps>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metal>brass</metal>
+            </li>
+        </modExtensions>
     </HediffDef>
     
     <HediffDef>

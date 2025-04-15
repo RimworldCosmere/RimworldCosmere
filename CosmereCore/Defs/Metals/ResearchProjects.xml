@@ -9,4 +9,13 @@
 		<researchViewX>2.00</researchViewX>
 		<researchViewY>1.00</researchViewY>
 	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_God_Metals</defName>
+		<label>God Metals</label>
+		<description>Learn about the God Metals</description>
+		<baseCost>3600</baseCost>
+		<techLevel>Industrial</techLevel>
+		<researchViewX>2.00</researchViewX>
+		<researchViewY>2.00</researchViewY>
+	</ResearchProjectDef>
 </Defs>

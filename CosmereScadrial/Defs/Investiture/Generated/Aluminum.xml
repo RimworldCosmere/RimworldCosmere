@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>aluminum</li>
                 </metals>
@@ -27,7 +27,7 @@
         <label>Gnat (aluminum)</label>
         <description>Wipes away all other metal reserves.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>aluminum</li>
                 </metals>
@@ -57,7 +57,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>aluminum</li>
                 </metals>
@@ -70,7 +70,7 @@
         <label>Trueself</label>
         <description>Stores identity, allowing anonymous interactions or forgery.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>aluminum</li>
                 </metals>

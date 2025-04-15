@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>iron</li>
                 </metals>
@@ -27,7 +27,7 @@
         <label>Lurcher</label>
         <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>iron</li>
                 </metals>
@@ -57,7 +57,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>iron</li>
                 </metals>
@@ -70,7 +70,7 @@
         <label>Skimmer</label>
         <description>Stores weight, allowing the user to become lighter or heavier.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>iron</li>
                 </metals>

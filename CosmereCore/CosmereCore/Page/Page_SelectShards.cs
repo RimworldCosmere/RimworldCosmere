@@ -10,9 +10,7 @@ namespace CosmereCore.Pages {
     public class Page_SelectShards : Page {
         private Vector2 scrollPos = Vector2.zero;
 
-        public override string PageTitle {
-            get => "Select Shards";
-        }
+        public override string PageTitle => "Select Shards";
 
         public override void DoWindowContents(Rect inRect) {
             DefDatabase<ShardDef>.AddAllInMods();

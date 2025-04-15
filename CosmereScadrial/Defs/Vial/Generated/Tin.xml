@@ -4,6 +4,10 @@
         <defName>Cosmere_AllomanticVial_Tin</defName>
         <label>Misting Vial: Tineye</label>
         <description>A vial containing Tin suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(197, 202, 201)</color>
+            <colorTwo>(197, 202, 201)</colorTwo>
+        </graphicData>
         <comps>
             <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
                 <metalNames>

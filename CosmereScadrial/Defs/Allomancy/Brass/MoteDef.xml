@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="MoteBase">
+    <ThingDef ParentName="MoteGlowDistorted">
         <defName>Cosmere_Mote_SootheAura</defName>
+        <thingClass>MoteAttached</thingClass>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
         <label>Soothe Aura</label>
         <graphicData>
             <texPath>Effects/SootheAura</texPath>
-            <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>2.5</drawSize> <!-- base size, scaled later -->
+            <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>
+            <shaderType>PsyfocusMeditationPulse</shaderType>
+            <!--<texPath>Things/Mote/Transparent</texPath>-->
+            <shaderParameters>
+                <_distortionIntensity>0.0055</_distortionIntensity>
+                <_brightnessMultiplier>1.15</_brightnessMultiplier>
+                <_pulseSpeed>0.75</_pulseSpeed>
+            </shaderParameters>
+            <drawSize>2.35</drawSize>
         </graphicData>
         <mote>
-            <solidTime>100000</solidTime> <!-- long duration, maintained manually -->
-            <fadeInTime>0.5</fadeInTime>
-            <fadeOutTime>0.5</fadeOutTime>
             <growthRate>0.02</growthRate> <!-- for pulsing size -->
-            <needsMaintenance>true</needsMaintenance>
+            <fadeInTime>0.2</fadeInTime>
+            <fadeOutTime>0.5</fadeOutTime>
+            <solidTime>999999</solidTime>
+            <needsMaintenance>True</needsMaintenance>
         </mote>
     </ThingDef>
 </Defs>

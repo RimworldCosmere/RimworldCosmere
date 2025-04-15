@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractBuildableMetal">
+        <defName>Gold</defName>
+        <label>Gold</label>
+        <description>Gold is a dense, soft, and radiant metal long valued for its rarity and beauty. Resistant to tarnish and corrosion, it has held significance in both trade and symbolism throughout history.</description>
+        <graphicData>
+            <texPath>Item/Resource/Gold</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.8</commonality>
+            <color>(206, 172, 55)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>0.5</MarketValue>
+        </statBases>
+    </ThingDef>
+</Defs>

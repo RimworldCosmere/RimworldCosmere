@@ -4,6 +4,10 @@
         <defName>Cosmere_AllomanticVial_Zinc</defName>
         <label>Misting Vial: Rioter</label>
         <description>A vial containing Zinc suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(128, 142, 129)</color>
+            <colorTwo>(128, 142, 129)</colorTwo>
+        </graphicData>
         <comps>
             <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
                 <metalNames>

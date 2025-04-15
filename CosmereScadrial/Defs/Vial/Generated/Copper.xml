@@ -4,6 +4,10 @@
         <defName>Cosmere_AllomanticVial_Copper</defName>
         <label>Misting Vial: Smoker</label>
         <description>A vial containing Copper suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(185, 129, 80)</color>
+            <colorTwo>(185, 129, 80)</colorTwo>
+        </graphicData>
         <comps>
             <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
                 <metalNames>
@@ -20,7 +24,7 @@
         <description>Create a vial of Copper infused alcohol for use by Mistborns and smokers.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Ind_Copper</li></thingDefs></filter>
+                <filter><thingDefs><li>Copper</li></thingDefs></filter>
                 <count>1</count>
             </li>
         </ingredients>

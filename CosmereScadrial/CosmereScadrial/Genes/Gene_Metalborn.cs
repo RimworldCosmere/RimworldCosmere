@@ -6,7 +6,6 @@ using CosmereScadrial.Registry;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
-using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Genes {
     public class Gene_Metalborn : Gene {
@@ -23,10 +22,9 @@ namespace CosmereScadrial.Genes {
 
             // Initialize metal reserves
             if (pawn.GetComp<ScadrialInvestiture>() is not { } comp) return;
-            if (def.GetModExtension<MetalLinked>() is not { } ext) return;
+            if (def.GetModExtension<MetalsLinked>() is not { } ext) return;
 
             foreach (var metal in ext.metals?.Where(metal => MetalRegistry.Metals.ContainsKey(metal))!) {
-                Log.Info($"{pawn.Name} has access to metal: {metal}");
                 comp.SetReserve(metal, 0);
             }
         }
@@ -35,17 +33,12 @@ namespace CosmereScadrial.Genes {
             base.PostRemove();
 
             MetalbornUtility.HandleMetalbornTrait(pawn);
-            var trait = DefDatabase<TraitDef>.GetNamedSilentFail(def.defName);
-            if (trait != null) {
-                // pawn.story.traits.RemoveTrait(new Trait(trait));
-            }
 
             // Initialize metal reserves
             if (pawn.GetComp<ScadrialInvestiture>() is not { } comp) return;
-            if (def.GetModExtension<MetalLinked>() is not { } ext) return;
+            if (def.GetModExtension<MetalsLinked>() is not { } ext) return;
 
             foreach (var metal in ext.metals?.Where(metal => MetalRegistry.Metals.ContainsKey(metal))!) {
-                Log.Info($"{pawn.Name} no longer has access to metal: {metal}");
                 comp.RemoveReserve(metal, true);
             }
         }

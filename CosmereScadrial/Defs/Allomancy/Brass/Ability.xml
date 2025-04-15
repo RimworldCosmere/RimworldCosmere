@@ -11,5 +11,10 @@ Soothing Aura</label>
                 <hediff>Cosmere_Hediff_BrassAura</hediff>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metal>brass</metal>
+            </li>
+        </modExtensions>
     </AbilityDef>
 </Defs>

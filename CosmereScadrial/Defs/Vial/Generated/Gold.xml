@@ -4,6 +4,10 @@
         <defName>Cosmere_AllomanticVial_Gold</defName>
         <label>Misting Vial: Augur</label>
         <description>A vial containing Gold suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(206, 172, 55)</color>
+            <colorTwo>(206, 172, 55)</colorTwo>
+        </graphicData>
         <comps>
             <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
                 <metalNames>

@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>duralumin</li>
                 </metals>
@@ -27,7 +27,7 @@
         <label>Gnat (duralumin)</label>
         <description>Enhances the next Allomantic metal used drastically, but is consumed entirely.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>duralumin</li>
                 </metals>
@@ -57,7 +57,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>duralumin</li>
                 </metals>
@@ -70,7 +70,7 @@
         <label>Connector</label>
         <description>Stores connection, useful for adjusting social ties or affiliations.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>duralumin</li>
                 </metals>

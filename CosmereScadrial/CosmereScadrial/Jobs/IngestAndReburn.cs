@@ -22,7 +22,7 @@ namespace CosmereScadrial.Jobs {
                     var burnComp = pawn.health.hediffSet.hediffs
                         .OfType<HediffWithComps>()
                         .SelectMany(h => h.comps.OfType<BurnMetal>())
-                        .FirstOrDefault(c => c.Props.metal == metal);
+                        .FirstOrDefault(c => c.Metal == metal);
 
                     if (burnComp == null) return;
                     Log.Info($"{pawn.LabelShort} auto-burning {metal} after ingestion.");

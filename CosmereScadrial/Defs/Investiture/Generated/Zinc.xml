@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>zinc</li>
                 </metals>
@@ -27,7 +27,7 @@
         <label>Rioter</label>
         <description>Can riot emotions, pushing others to feel stronger emotions.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>zinc</li>
                 </metals>
@@ -57,7 +57,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>zinc</li>
                 </metals>
@@ -70,7 +70,7 @@
         <label>Sparker</label>
         <description>Stores mental speed, allowing faster thought processes.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     <li>zinc</li>
                 </metals>

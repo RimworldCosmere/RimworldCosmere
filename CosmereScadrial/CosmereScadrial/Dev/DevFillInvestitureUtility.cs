@@ -39,7 +39,7 @@ namespace CosmereScadrial.Dev {
             if (comp == null) return;
 
             var metals = pawn.genes?.GenesListForReading
-                .SelectMany(g => g.def?.GetModExtension<MetalLinked>()?.metals ?? Enumerable.Empty<string>())
+                .SelectMany(g => g.def?.GetModExtension<MetalsLinked>()?.metals ?? Enumerable.Empty<string>())
                 .Distinct()
                 .ToList();
 

@@ -94,6 +94,7 @@
         <Compile Include="CosmereJobDefOf.cs"/>
         <Compile Include="CosmereScadrial.cs"/>
         <Compile Include="DefModExtensions\MetalLinked.cs"/>
+        <Compile Include="DefModExtensions\MetalsLinked.cs"/>
         <Compile Include="Dev\DevFillInvestitureUtility.cs"/>
         <Compile Include="Genes\GeneInheritanceUtility.cs"/>
         <Compile Include="Genes\Gene_Metalborn.cs"/>
@@ -108,6 +109,7 @@
         <Compile Include="Inspector\InvestitureTab_Scadrial.cs"/>
         <Compile Include="Jobs\IngestAndReburn.cs"/>
         <Compile Include="MetalInfo.cs"/>
+        <Compile Include="Patches\Patch_Ability_GetGizmo.cs"/>
         <Compile Include="Patches\Patch_LockShardSelection.cs"/>
         <Compile Include="Patches\Patch_PawnGeneGeneration.cs"/>
         <Compile Include="Patches\Patch_PawnGenerator.cs"/>

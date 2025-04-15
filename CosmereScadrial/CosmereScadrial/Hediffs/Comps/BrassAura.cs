@@ -1,6 +1,7 @@
 using System.Linq;
 using CosmereFramework.Utils;
 using CosmereScadrial.Registry;
+using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -10,22 +11,38 @@ namespace CosmereScadrial.Hediffs.Comps {
     public class BrassAura : HediffComp {
         private Mote mote;
 
-        private Properties.BrassAura Props {
-            get => (Properties.BrassAura)props;
+        private Properties.BrassAura Props => (Properties.BrassAura)props;
+
+        private float moteScale {
+            get {
+                var moteDef = DefDatabase<ThingDef>.GetNamed("Cosmere_Mote_SootheAura");
+                var desiredRadius = Props.radius * parent.Severity; // includes flare doubling if needed
+                var drawSize = moteDef.graphicData.drawSize.magnitude; // assume square; use magnitude if not
+                var scale = desiredRadius * 2f / drawSize; // times 2 since radius = diameter / 2
+
+                return scale;
+            }
+        }
+
+        public override void CompPostMake() {
+            base.CompPostMake();
+            CreateMote();
         }
 
         public override void CompPostTick(ref float severityAdjustment) {
             base.CompPostTick(ref severityAdjustment);
-
-            if (!parent.pawn.IsHashIntervalTick(Props.tickInterval)) {
-                return;
-            }
-
             var radius = Props.radius * parent.Severity;
             var center = parent.pawn.Position;
             var map = parent.pawn.Map;
 
             if (map == null || !center.IsValid) {
+                return;
+            }
+
+            CreateMote()?.Maintain();
+            mote.Scale = moteScale;
+
+            if (!parent.pawn.IsHashIntervalTick(Props.tickInterval)) {
                 return;
             }
 
@@ -36,42 +53,24 @@ namespace CosmereScadrial.Hediffs.Comps {
             foreach (var pawn in nearbyPawns) {
                 TrySoothe(pawn);
             }
-
-            // every second
-            if (parent.pawn.IsHashIntervalTick((int)TickUtility.Seconds(3))) {
-                if (mote == null || mote.Destroyed) {
-                    TryEmitEffect();
-                }
-                else {
-                    mote.Maintain();
-                    // mote.Scale = 1.0f + Mathf.Sin(Find.TickManager.TicksGame * 0.05f) * 0.2f;
-                }
-            }
         }
 
-        private void TryEmitEffect() {
-            if (!parent.pawn.Spawned || parent.pawn.Map == null) {
-                return;
+        [CanBeNull]
+        private Mote CreateMote() {
+            if (mote?.Destroyed == false) {
+                return mote;
             }
-
-            var moteDef = DefDatabase<ThingDef>.GetNamed("Mote_ActivatorProximityGlow");
-            var desiredRadius = Props.radius * parent.Severity; // includes flare doubling if needed
-            var drawSize = moteDef.graphicData.drawSize.magnitude; // assume square; use magnitude if not
-            var scale = desiredRadius * 2f / drawSize; // times 2 since radius = diameter / 2
 
             mote = MoteMaker.MakeAttachedOverlay(
                 parent.pawn,
-                moteDef,
+                DefDatabase<ThingDef>.GetNamed("Cosmere_Mote_SootheAura"),
                 Vector3.zero,
-                scale
+                moteScale
             );
+            mote.instanceColor = MetalRegistry.Metals["brass"].Color;
 
-            var baseColor = MetalRegistry.Metals["brass"].Color;
-            // Scale alpha based on severity (clamp between 0.1 and 1.0 for visibility)
-            baseColor.a = Mathf.Clamp01(parent.Severity);
-
-            mote.instanceColor = baseColor;
-            Log.Warning($"Emitting mote: {moteDef.defName} on Map: {parent.pawn.Map} at pawn: {parent.pawn.Position} with scale: {scale}");
+            Log.Message($"Mote successfully created: {mote}, map={parent.pawn.Map} color={mote.instanceColor}, scale={moteScale}, radius={Props.radius * parent.Severity}");
+            return mote;
         }
 
         private void TrySoothe(Pawn target) {
@@ -94,13 +93,12 @@ namespace CosmereScadrial.Hediffs.Comps {
             // Update the mood offset
             var thoughtComp = soothed.TryGetComp<HediffComp_ThoughtSetter>();
             var newOffset = Mathf.RoundToInt(Mathf.Clamp(offset, 2f, 10f));
-            Log.Verbose($"Updating moodOffset to {newOffset} on {target.LabelShort} offset={offset} Severity={parent.Severity}");
             thoughtComp?.OverrideMoodOffset(newOffset);
 
             if (soothed.ageTicks >= Props.tickInterval) return;
 
             // Just been soothed
-            Log.Verbose($"Soothing {target.LabelShort}");
+            Log.Info($"Soothing {target.LabelShort}");
             MoteMaker.ThrowText(target.DrawPos, target.Map, "Soothed", Color.cyan);
         }
     }

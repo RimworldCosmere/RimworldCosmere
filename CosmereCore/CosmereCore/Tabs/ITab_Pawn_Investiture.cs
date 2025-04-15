@@ -16,9 +16,7 @@ namespace CosmereCore.Tabs {
             size = new Vector2(600f, 500f); // adjust as needed
         }
 
-        public override bool IsVisible {
-            get => SelPawn?.story?.traits?.HasTrait(DefDatabase<TraitDef>.GetNamed("Cosmere_Invested")) == true;
-        }
+        public override bool IsVisible => SelPawn?.story?.traits?.HasTrait(DefDatabase<TraitDef>.GetNamed("Cosmere_Invested")) == true;
 
         protected override void FillTab() {
             var pawn = SelPawn;

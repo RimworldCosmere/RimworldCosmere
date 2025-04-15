@@ -4,6 +4,10 @@
         <defName>Cosmere_AllomanticVial_Chromium</defName>
         <label>Misting Vial: Leecher</label>
         <description>A vial containing Chromium suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(132, 134, 139)</color>
+            <colorTwo>(132, 134, 139)</colorTwo>
+        </graphicData>
         <comps>
             <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
                 <metalNames>

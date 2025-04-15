@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMetal">
+        <defName>Pewter</defName>
+        <label>Pewter</label>
+        <description>Pewter is a refined alloy formed by blending Tin with Copper. Known for its soft, workable nature and a muted, classic luster, pewter has been a favored material for decorative and utilitarian objects since ancient times.</description>
+        <graphicData>
+            <texPath>Item/Resource/Pewter</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.3</commonality>
+            <color>(141, 151, 166)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>2</MarketValue>
+        </statBases>
+    </ThingDef>
+</Defs>

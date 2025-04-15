@@ -11,5 +11,10 @@ Pewter</label>
                 <hediff>Cosmere_Hediff_PewterBuff</hediff>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metal>pewter</metal>
+            </li>
+        </modExtensions>
     </AbilityDef>
 </Defs>

@@ -126,4 +126,11 @@
             <ExcludeAssets>runtime</ExcludeAssets>
         </PackageReference>
     </ItemDefinitionGroup>
+    
+    <Target Name="PostBuild" AfterTargets="Build" Outputs="Never">
+        <Exec Command="npm run generate:metals"
+              WorkingDirectory="$(ProjectDir)..\..\.scripts"
+              StandardOutputImportance="High"
+        />
+    </Target>
 </Project>

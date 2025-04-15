@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMineable">
+        <defName>MineableNickel</defName>
+        <label>Nickel Ore</label>
+        <description>Unrefined Nickel ore mined directly from the earth.</description>
+        <graphicData>
+            <color>(85, 107, 47)</color>
+            <colorTwo>(100, 100, 100)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>480</MaxHitPoints>
+        </statBases>
+        <building>
+            <mineableThing>Nickel</mineableThing>
+            <mineableYield>30</mineableYield>
+            <mineableScatterCommonality>0.5</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>20~40</mineableScatterLumpSizeRange>
+        </building>
+    </ThingDef>
+</Defs>

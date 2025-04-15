@@ -4,6 +4,10 @@
         <defName>Cosmere_AllomanticVial_Duralumin</defName>
         <label>Misting Vial: Gnat (duralumin)</label>
         <description>A vial containing Duralumin suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(127, 113, 115)</color>
+            <colorTwo>(127, 113, 115)</colorTwo>
+        </graphicData>
         <comps>
             <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
                 <metalNames>

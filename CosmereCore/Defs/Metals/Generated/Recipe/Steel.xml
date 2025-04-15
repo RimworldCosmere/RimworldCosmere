@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Steel Alloy Recipe-->
+    <RecipeDef ParentName="AlloyBase">
+        <defName>Cosmere_Make_Alloy_Steel</defName>
+        <label>Create Alloy: Steel</label>
+        <jobString>Creating alloy: Steel</jobString>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Iron</li>
+                    </thingDefs>
+                </filter>
+                <count>8</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Coal</li>
+                        <li>Charcoal</li>
+                    </thingDefs>
+                </filter>
+                <count>2</count>
+            </li>
+        </ingredients>
+        <products>
+            <Steel>10</Steel>
+        </products>
+    </RecipeDef>
+</Defs>

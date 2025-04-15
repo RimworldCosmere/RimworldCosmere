@@ -4,6 +4,10 @@
         <defName>Cosmere_AllomanticVial_Steel</defName>
         <label>Misting Vial: Coinshot</label>
         <description>A vial containing Steel suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(109, 108, 108)</color>
+            <colorTwo>(109, 108, 108)</colorTwo>
+        </graphicData>
         <comps>
             <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
                 <metalNames>

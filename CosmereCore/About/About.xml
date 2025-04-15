@@ -18,27 +18,9 @@
             <displayName>Harmony</displayName>
             <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
         </li>
-        <li>
-            <packageId>mlie.coalexpanded</packageId>
-            <displayName>Coal Expanded (Continued)</displayName>
-            <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2560551007</steamWorkshopUrl>
-        </li>
-        <li>
-            <packageId>dizzyioeuy.simplechains.steel</packageId>
-            <displayName>Simple Chains: Steel</displayName>
-            <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3282002320</steamWorkshopUrl>
-        </li>
-        <li>
-            <packageId>mlie.industrialisation</packageId>
-            <displayName>Industrialisation (Continued)</displayName>
-            <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3272401115</steamWorkshopUrl>
-        </li>
     </modDependencies>
     <forceLoadAfter>
         <li>cryptiklemur.cosmere.framework</li>
         <li>brrainz.harmony</li>
-        <li>mlie.coalexpanded</li>
-        <li>dizzyioeuy.simplechains.steel</li>
-        <li>mlie.industrialisation</li>
     </forceLoadAfter>
 </ModMetaData>

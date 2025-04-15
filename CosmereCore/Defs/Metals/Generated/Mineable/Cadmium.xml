@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMineable">
+        <defName>MineableCadmium</defName>
+        <label>Cadmium Ore</label>
+        <description>Unrefined Cadmium ore mined directly from the earth.</description>
+        <graphicData>
+            <color>(170, 132, 121)</color>
+            <colorTwo>(201, 207, 206)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>300</MaxHitPoints>
+        </statBases>
+        <building>
+            <mineableThing>Cadmium</mineableThing>
+            <mineableYield>20</mineableYield>
+            <mineableScatterCommonality>0.4</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>15~35</mineableScatterLumpSizeRange>
+        </building>
+    </ThingDef>
+</Defs>

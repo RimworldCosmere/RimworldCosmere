@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractBuildableMetal">
+        <defName>Aluminum</defName>
+        <label>Aluminum</label>
+        <description>Aluminum is a lightweight, silvery-white metal known for its corrosion resistance and flexibility. Its low density and high strength-to-weight ratio make it ideal for structural and high-tech uses.</description>
+        <graphicData>
+            <texPath>Item/Resource/Aluminum</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.8</commonality>
+            <color>(163, 163, 163)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>0.5</MarketValue>
+        </statBases>
+    </ThingDef>
+</Defs>

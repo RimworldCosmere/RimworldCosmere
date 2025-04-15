@@ -15,9 +15,7 @@ namespace CosmereFramework {
             { LogLevel.Verbose, Color.gray },
         };
 
-        private static CosmereSettings CosmereSettings {
-            get => LoadedModManager.GetMod<CosmereFramework>().Settings;
-        }
+        private static CosmereSettings CosmereSettings => LoadedModManager.GetMod<CosmereFramework>().Settings;
 
         public static void Message(string message, LogLevel level = LogLevel.Info) {
             if (level > CosmereSettings.logLevel || level == LogLevel.None) return;
@@ -42,9 +40,15 @@ namespace CosmereFramework {
                 break;
             }
 
-            var prefix = string.Format("<color=#{0}>{1}</color>", ColorUtility.ToHtmlStringRGBA(logColors[level]), $"[Cosmere - {ns}]{stack}[{level.ToString()}]");
+            Verse.Log.Message($"{ColoredMessage(logColors[level], $"[Cosmere - {ns}]{stack}[{level.ToString()}]")} {message}");
+        }
 
-            Verse.Log.Message($"{prefix} {message}");
+        public static string ColoredBoolean(Color color, bool boolean) {
+            return string.Format("<color=#{0}>{1}</color>", ColorUtility.ToHtmlStringRGBA(color), boolean);
+        }
+
+        public static string ColoredMessage(Color color, string message) {
+            return string.Format("<color=#{0}>{1}</color>", ColorUtility.ToHtmlStringRGBA(color), message);
         }
 
         public static void Message(FormattableString message, LogLevel level = LogLevel.Info) {

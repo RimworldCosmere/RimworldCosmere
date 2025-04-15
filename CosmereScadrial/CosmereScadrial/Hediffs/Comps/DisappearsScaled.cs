@@ -4,13 +4,9 @@ namespace CosmereScadrial.Hediffs.Comps {
     public class DisappearsScaled : HediffComp {
         private int ticksLeft = -1;
 
-        public Properties.DisappearsScaled Props {
-            get => (Properties.DisappearsScaled)props;
-        }
+        public Properties.DisappearsScaled Props => (Properties.DisappearsScaled)props;
 
-        public override string CompLabelInBracketsExtra {
-            get => $"{ticksLeft / 250f:0.0}h left";
-        }
+        public override string CompLabelInBracketsExtra => $"{ticksLeft / 250f:0.0}h left";
 
         public override void CompPostMake() {
             base.CompPostMake();

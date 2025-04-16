@@ -13,6 +13,24 @@ namespace CosmereScadrial.Commands {
 
         public override string DescPostfix => "\n\n(Ctrl-click to flare)";
 
+        /*
+        public override Texture2D BGTexture {
+            get {
+                var tex = new Texture2D(128, 128, TextureFormat.ARGB32, false);
+                tex.SetPixels([BGTextureColor]);
+
+                return tex;
+            }
+        }
+
+        private Color BGTextureColor => Comp.Status switch {
+            ToggleBurnMetalStatus.Off => Color.red,
+            ToggleBurnMetalStatus.Passive => Color.yellow,
+            ToggleBurnMetalStatus.Burning => Color.green,
+            ToggleBurnMetalStatus.Flaring => Color.cyan,
+            _ => Color.red,
+        };*/
+
         public override void ProcessInput(Event ev) {
             var ctrlHeld = ev.control;
             if (!ctrlHeld) {

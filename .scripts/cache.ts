@@ -1,8 +1,9 @@
-import fs from 'fs';
+import fs, {mkdirSync} from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 
-const CACHE_FILE = './.generator_cache.json';
+const CACHE_FILE = (generator: string) => path.resolve(__dirname, '.cache', `${generator}.json`);
+mkdirSync(path.resolve(__dirname, '.cache'), {recursive: true});
 
 type CacheRecord = { [filePath: string]: string };
 
@@ -12,16 +13,16 @@ function getFileHash(filePath: string): string {
 }
 
 function getTemplateFilesFor(generator: string): string[] {
-  const baseDir = path.join('./Generators', generator);
+  const baseDir = path.resolve(__dirname, 'Generators', generator);
   if (!fs.existsSync(baseDir)) return [];
 
   const walk = (dir: string): string[] => {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     return entries.flatMap(entry =>
       entry.isDirectory()
-        ? walk(path.join(dir, entry.name))
+        ? walk(path.resolve(dir, entry.name))
         : entry.name.endsWith('.template')
-          ? [path.join(dir, entry.name)]
+          ? [path.resolve(dir, entry.name)]
           : []
     );
   };
@@ -29,26 +30,26 @@ function getTemplateFilesFor(generator: string): string[] {
   return walk(baseDir);
 }
 
-function loadCache(): CacheRecord {
+function loadCache(generator: string): CacheRecord {
   try {
-    return JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'));
+    return JSON.parse(fs.readFileSync(CACHE_FILE(generator), 'utf8'));
   } catch {
     return {};
   }
 }
 
-function saveCache(cache: CacheRecord) {
-  fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
+function saveCache(generator: string, cache: CacheRecord) {
+  fs.writeFileSync(CACHE_FILE(generator), JSON.stringify(cache, null, 2));
 }
 
 export function shouldSkipGeneration(generator: string): boolean {
   const files = [
-    './Resources/MetalRegistry.json',
-    `./Generators/${generator}/index.ts`,
+    path.resolve(__dirname, 'Resources', 'MetalRegistry.json'),
+    path.resolve(__dirname, 'Generators', generator, 'index.ts'),
     ...getTemplateFilesFor(generator)
   ];
 
-  const prevCache = loadCache();
+  const prevCache = loadCache(generator);
   const newCache: CacheRecord = {};
 
   let changed = false;
@@ -64,6 +65,6 @@ export function shouldSkipGeneration(generator: string): boolean {
     return true;
   }
 
-  saveCache({ ...prevCache, ...newCache });
+  saveCache(generator, { ...prevCache, ...newCache });
   return false;
 }

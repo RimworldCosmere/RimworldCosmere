@@ -355,17 +355,5 @@
 				<group />
 			</feruchemy>
 		</li>
-        <li>
-			<name>Coal</name>
-			<defName>Coal</defName>
-			<godMetal>false</godMetal>
-			<color>(60, 60, 60)</color>
-		</li>
-        <li>
-			<name>Charcoal</name>
-			<defName>Charcoal</defName>
-			<godMetal>false</godMetal>
-			<color>(60, 60, 60)</color>
-		</li>
     </metals>
 </MetalRegistry>

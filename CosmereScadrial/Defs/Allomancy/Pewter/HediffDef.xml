@@ -17,20 +17,18 @@
         <stages>
             <li>
                 <naturalHealingFactor>0.5</naturalHealingFactor>
-                <regeneration>0.5</regeneration>
+                <regeneration>5</regeneration>
                 <totalBleedFactor>-0.5</totalBleedFactor> <!-- Stops 50% of blood loss -->
-                <painOffset>-0.5</painOffset>
+                <painFactor>-0.5</painFactor>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statOffsets>
-                    <MeleeDamageFactor>4.0</MeleeDamageFactor>
-                    <MeleeCooldownFactor>0.5</MeleeCooldownFactor>
-                    <PainShockThreshold>0.4</PainShockThreshold>
-                    <MentalBreakThreshold>0.4</MentalBreakThreshold>
-                    <IncomingDamageFactor>-0.5</IncomingDamageFactor>
-                    <StaggerDurationFactor>-0.5</StaggerDurationFactor>
-                    <ToxicEnvironmentResistance>.5</ToxicEnvironmentResistance>
+                    <ComfyTemperatureMin>-8</ComfyTemperatureMin>
+                    <ComfyTemperatureMax>8</ComfyTemperatureMax>
                 </statOffsets>
                 <statFactors>
+                    <ToxicEnvironmentResistance>2</ToxicEnvironmentResistance>
+                    <StaggerDurationFactor>0.5</StaggerDurationFactor>
+                    <PainShockThreshold>2</PainShockThreshold>
                     <InjuryHealingFactor>4</InjuryHealingFactor>
                     <RestFallRateFactor>0.5</RestFallRateFactor>
                     <MiningSpeed>2</MiningSpeed>
@@ -38,11 +36,11 @@
                     <SmoothingSpeed>2</SmoothingSpeed>
                     <ConstructionSpeed>2</ConstructionSpeed>
                     <ArrestSuccessChance>2</ArrestSuccessChance>
+                    <MeleeDamageFactor>2</MeleeDamageFactor>
                     <MeleeHitChance>2</MeleeHitChance>
                     <MeleeDodgeChance>2</MeleeDodgeChance>
+                    <MeleeCooldownFactor>0.5</MeleeCooldownFactor>
                     <MoveSpeed>2</MoveSpeed>
-                    <ComfyTemperatureMin>-1.5</ComfyTemperatureMin>
-                    <ComfyTemperatureMax>2</ComfyTemperatureMax>
                     <ImmunityGainSpeed>2</ImmunityGainSpeed>
                     <CarryingCapacity>3</CarryingCapacity>
                 </statFactors>
@@ -52,8 +50,8 @@
     
     <HediffDef>
         <defName>Cosmere_Hediff_PewterDrag</defName>
-        <label>pewter drag</label>
-        <description>The aftereffects of pushing the body beyond its limits using pewter. The body is crashing.</description>
+        <label>Pewter Drag</label>
+        <description>The aftereffects of pushing the body beyond its limits using Pewter. The body is crashing.</description>
         <hediffClass>HediffWithComps</hediffClass>
         <isBad>true</isBad>
         <tendable>false</tendable>
@@ -71,9 +69,9 @@
                     <MoveSpeed>0.5</MoveSpeed>
                     <WorkSpeedGlobal>0.5</WorkSpeedGlobal>
                     <RestFallRateFactor>6</RestFallRateFactor>
-                    <MentalBreakThreshold>-2</MentalBreakThreshold>
                 </statFactors>
                 <statOffsets>
+                    <MentalBreakThreshold>.25</MentalBreakThreshold>
                     <PainShockThreshold>-0.15</PainShockThreshold>
                 </statOffsets>
                 <capMods>

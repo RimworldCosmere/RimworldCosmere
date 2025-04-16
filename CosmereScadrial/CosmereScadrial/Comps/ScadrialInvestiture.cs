@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using CosmereScadrial.Registry;
 using Verse;
 
@@ -42,8 +41,14 @@ namespace CosmereScadrial.Comps {
             return metalReserves.TryGetValue(metal, out var value) ? value : 0f;
         }
 
-        public bool AnyInvestiture() {
-            return metalReserves.Values.Any(v => v > 0);
+        public bool TryGetReserve(string metal, out float value) {
+            return metalReserves.TryGetValue(metal, out value);
+        }
+
+        public void EnsureReserveExists(string metal) {
+            if (!metalReserves.ContainsKey(metal)) {
+                SetReserve(metal, 0);
+            }
         }
     }
 }

@@ -12,8 +12,8 @@
         </graphicData>
         <statBases>
             <MaxHitPoints>50</MaxHitPoints>
-            <Flammability>1.0</Flammability>
-            <DeteriorationRate>2</DeteriorationRate>
+            <Flammability>0.2</Flammability>
+            <DeteriorationRate>1</DeteriorationRate>
             <Mass>0.005</Mass>
             <MarketValue>8</MarketValue>
         </statBases>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="AbstractSelfBurnMetal">
+        <defName>Cosmere_Hediff_TinBuff</defName>
+        <label>Burning Tin</label>
+        <description>Empowered senses from burning Pewter.</description>
+        <comps>
+            <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal">
+                <dragHediff>Cosmere_Hediff_TinDrag</dragHediff>
+                <unitsPerBurn>.0004</unitsPerBurn>
+            </li>
+        </comps>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metal>tin</metal>
+            </li>
+        </modExtensions>
+        <stages>
+            <li>
+                <painFactor>1.25</painFactor>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <offset>0.5</offset>
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <offset>0.5</offset>
+                    </li>
+                </capMods>
+                <statOffsets>
+                    <MentalBreakThreshold>-.10</MentalBreakThreshold>
+                    <PainShockThreshold>-.25</PainShockThreshold>
+                    <ComfyTemperatureMin>2</ComfyTemperatureMin>
+                    <ComfyTemperatureMax>-2</ComfyTemperatureMax>
+                </statOffsets>
+                <statFactors>
+                    <AimingDelayFactor>0.5</AimingDelayFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+    
+    <HediffDef>
+        <defName>Cosmere_Hediff_TinDrag</defName>
+        <label>Tin Overstim</label>
+        <description>The aftereffects of pushing the senses beyond its limits using tin. The mind is crashing.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <isBad>true</isBad>
+        <tendable>false</tendable>
+        <comps>
+            <li Class="CosmereScadrial.Hediffs.Comps.Properties.DisappearsScaled" />
+            <li Class="Verse.HediffCompProperties_ThoughtSetter">
+                <thought>Cosmere_Thought_TinDrag</thought>
+                <moodOffset>-2</moodOffset>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <painFactor>.75</painFactor>
+                <statFactors>
+                </statFactors>
+                <statOffsets>
+                    <MentalBreakThreshold>0.10</MentalBreakThreshold>
+                    <PainShockThreshold>0.25</PainShockThreshold>
+                    <ComfyTemperatureMin>-2</ComfyTemperatureMin>
+                    <ComfyTemperatureMax>2</ComfyTemperatureMax>
+                </statOffsets>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.2</offset>
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <offset>-0.2</offset>
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <offset>-0.2</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

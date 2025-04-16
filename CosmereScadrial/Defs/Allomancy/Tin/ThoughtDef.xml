@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThoughtDef>
-        <defName>Cosmere_Thought_PewterDrag</defName>
+        <defName>Cosmere_Thought_TinDrag</defName>
         <thoughtClass>Thought_Memory</thoughtClass>
         <validWhileDespawned>true</validWhileDespawned>
         <stages>
             <li>
-                <label>Crashing from Pewter</label>
-                <description>They pushed themselves too hard while burning Pewter. Now they’re crashing.</description>
+                <label>Crashing from Tin</label>
+                <description>They pushed themselves too hard while burning Tin. Now they’re crashing.</description>
             </li>
         </stages>
     </ThoughtDef>

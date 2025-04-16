@@ -15,6 +15,20 @@
                 <metal>brass</metal>
             </li>
         </modExtensions>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <SocialImpact>2</SocialImpact>
+                    <NegotiationAbility>2</NegotiationAbility>
+                    <PawnBeauty>2</PawnBeauty>
+                    <TradePriceImprovement>1.5</TradePriceImprovement>
+                    <TameAnimalChance>2</TameAnimalChance>
+                    <TrainAnimalChance>2</TrainAnimalChance>
+                    <BondAnimalChanceFactor>2</BondAnimalChanceFactor>
+                </statFactors>
+            </li>
+        </stages>
     </HediffDef>
     
     <HediffDef>
@@ -36,5 +50,17 @@
                 <moodOffset>2</moodOffset>
             </li>
         </comps>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <PainShockThreshold>2</PainShockThreshold>
+                    <MentalBreakThreshold>2</MentalBreakThreshold>
+                    <RestRateMultiplier>1.1</RestRateMultiplier>
+                    <RestFallRateFactor>0.9</RestFallRateFactor>
+                    <JoyFallRateFactor>0.75</JoyFallRateFactor>
+                </statFactors>
+            </li>
+        </stages>
     </HediffDef>
 </Defs>

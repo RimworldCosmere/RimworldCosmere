@@ -28,11 +28,11 @@
                     <MentalBreakThreshold>0.4</MentalBreakThreshold>
                     <IncomingDamageFactor>-0.5</IncomingDamageFactor>
                     <StaggerDurationFactor>-0.5</StaggerDurationFactor>
-                    <InjuryHealingFactor>4</InjuryHealingFactor>
                     <ToxicEnvironmentResistance>.5</ToxicEnvironmentResistance>
-                    <RestFallRateFactor>-.5</RestFallRateFactor>
                 </statOffsets>
                 <statFactors>
+                    <InjuryHealingFactor>4</InjuryHealingFactor>
+                    <RestFallRateFactor>0.5</RestFallRateFactor>
                     <MiningSpeed>2</MiningSpeed>
                     <DeepDrillingSpeed>2</DeepDrillingSpeed>
                     <SmoothingSpeed>2</SmoothingSpeed>

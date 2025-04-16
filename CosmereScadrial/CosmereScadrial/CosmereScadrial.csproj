@@ -84,7 +84,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="Commands\ToggleBurnMetal.cs"/>
+        <Compile Include="Gizmos\ToggleBurnMetal.cs"/>
         <Compile Include="Comps\AllomanticVial.cs"/>
         <Compile Include="Comps\Properties\RefuelableSuspendWhenPowered.cs"/>
         <Compile Include="Comps\RefuelableSuspendWhenPowered.cs"/>
@@ -102,10 +102,12 @@
         <Compile Include="Genes\GeneInheritanceUtility.cs"/>
         <Compile Include="Genes\Gene_Metalborn.cs"/>
         <Compile Include="Hediffs\BurningMetal.cs"/>
-        <Compile Include="Hediffs\Comps\BrassAura.cs"/>
+        <Compile Include="Hediffs\Comps\AllomancyAura.cs"/>
+        <Compile Include="Hediffs\Comps\AllomancyTarget.cs"/>
         <Compile Include="Hediffs\Comps\BurnMetal.cs"/>
         <Compile Include="Hediffs\Comps\DisappearsScaled.cs"/>
-        <Compile Include="Hediffs\Comps\Properties\BrassAura.cs"/>
+        <Compile Include="Hediffs\Comps\Properties\AllomancyAura.cs"/>
+        <Compile Include="Hediffs\Comps\Properties\AllomancyTarget.cs"/>
         <Compile Include="Hediffs\Comps\Properties\BurnMetal.cs"/>
         <Compile Include="Hediffs\Comps\Properties\DisappearsScaled.cs"/>
         <Compile Include="Initializer.cs"/>

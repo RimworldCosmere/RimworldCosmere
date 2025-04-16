@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="MoteGlowDistorted">
-        <defName>Cosmere_Mote_SootheAura</defName>
+        <defName>Cosmere_Mote_Allomancy_Aura</defName>
         <thingClass>MoteAttached</thingClass>
         <altitudeLayer>MoteOverhead</altitudeLayer>
-        <label>Soothe Aura</label>
+        <label>Allomancy Aura</label>
         <graphicData>
-            <texPath>Effects/SootheAura</texPath>
+            <texPath>Effects/AllomancyAura</texPath>
             <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>
             <shaderType>PsyfocusMeditationPulse</shaderType>
             <!--<texPath>Things/Mote/Transparent</texPath>-->

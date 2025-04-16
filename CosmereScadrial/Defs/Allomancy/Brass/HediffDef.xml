@@ -2,13 +2,14 @@
 <Defs>
     <HediffDef ParentName="AbstractSelfBurnMetal">
         <defName>Cosmere_Hediff_BrassAura</defName>
-        <label>Burning Brass</label>
+        <label>Burning Brass: Aura</label>
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
-        <isBad>false</isBad>
-        <tendable>false</tendable>
         <comps>
             <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal" />
-            <li Class="CosmereScadrial.Hediffs.Comps.Properties.BrassAura" />
+            <li Class="CosmereScadrial.Hediffs.Comps.Properties.AllomancyAura">
+                <actHediff>Cosmere_Hediff_Soothed</actHediff>
+                <actVerb>Soothed</actVerb>
+            </li>
         </comps>
         <modExtensions>
             <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
@@ -29,6 +30,24 @@
                 </statFactors>
             </li>
         </stages>
+    </HediffDef>
+    <HediffDef ParentName="AbstractTargetBurnMetal">
+        <defName>Cosmere_Hediff_BrassTarget</defName>
+        <label>Burning Brass: Target</label>
+        <description>Suppress emotional outburst and calm the mind of a target Brass.</description>
+        <comps>
+            <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal" />
+            <li Class="CosmereScadrial.Hediffs.Comps.Properties.AllomancyTarget">
+                <actHediff>Cosmere_Hediff_Soothed</actHediff>
+                <actVerb>Soothed</actVerb>
+                <severityMultiplier>2</severityMultiplier>
+            </li>
+        </comps>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metal>brass</metal>
+            </li>
+        </modExtensions>
     </HediffDef>
     
     <HediffDef>

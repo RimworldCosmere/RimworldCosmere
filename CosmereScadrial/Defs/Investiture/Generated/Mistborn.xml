@@ -38,6 +38,7 @@
             <li>Cosmere_Ability_BurnTin</li>
             <li>Cosmere_Ability_BurnPewter</li>
             <li>Cosmere_Ability_BurnBrass_Aura</li>
+            <li>Cosmere_Ability_BurnBrass_Target</li>
         </abilities>
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">

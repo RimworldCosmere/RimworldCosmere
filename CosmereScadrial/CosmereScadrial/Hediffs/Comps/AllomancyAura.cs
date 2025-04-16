@@ -7,14 +7,14 @@ using UnityEngine;
 using Verse;
 
 namespace CosmereScadrial.Hediffs.Comps {
-    public class BrassAura : HediffComp {
+    public class AllomancyAura : HediffComp {
         private Mote mote;
 
-        private Properties.BrassAura Props => (Properties.BrassAura)props;
+        private Properties.AllomancyAura Props => (Properties.AllomancyAura)props;
 
         private float moteScale {
             get {
-                var moteDef = DefDatabase<ThingDef>.GetNamed("Cosmere_Mote_SootheAura");
+                var moteDef = DefDatabase<ThingDef>.GetNamed("Cosmere_Mote_Allomancy_Aura");
                 var desiredRadius = Props.radius * parent.Severity; // includes flare doubling if needed
                 var drawSize = moteDef.graphicData.drawSize.magnitude; // assume square; use magnitude if not
                 var scale = desiredRadius * 2f / drawSize; // times 2 since radius = diameter / 2
@@ -50,7 +50,7 @@ namespace CosmereScadrial.Hediffs.Comps {
                 .Where(p => p != null && p != parent.pawn);
 
             foreach (var pawn in nearbyPawns) {
-                TrySoothe(pawn);
+                TryAct(pawn);
             }
         }
 
@@ -62,7 +62,7 @@ namespace CosmereScadrial.Hediffs.Comps {
 
             mote = MoteMaker.MakeAttachedOverlay(
                 parent.pawn,
-                DefDatabase<ThingDef>.GetNamed("Cosmere_Mote_SootheAura"),
+                DefDatabase<ThingDef>.GetNamed("Cosmere_Mote_Allomancy_Aura"),
                 Vector3.zero,
                 moteScale
             );
@@ -71,32 +71,27 @@ namespace CosmereScadrial.Hediffs.Comps {
             return mote;
         }
 
-        private void TrySoothe(Pawn target) {
+        private void TryAct(Pawn target) {
             if (target?.mindState == null || target.Dead) {
                 return;
             }
 
-            // Lower mental break threshold indirectly
-            // You could apply a Hediff, Thought, or just reduce mood pressure
-
-            // Optional: apply a custom soothing Hediff
-            var soothed = target.health.GetOrAddHediff(HediffDef.Named("Cosmere_Hediff_Soothed"));
-            soothed.Severity = parent.Severity;
-            var offset = soothed.ageTicks / TickUtility.Minutes(5) * soothed.Severity; // Jumps for every hour
+            var hediff = target.health.GetOrAddHediff(Props.actHediff);
+            hediff.Severity = parent.Severity;
+            var offset = hediff.ageTicks / TickUtility.Minutes(5) * hediff.Severity; // Jumps for every hour
 
             // Reset the Disappears timer
-            var disappearsComp = soothed.TryGetComp<DisappearsScaled>();
+            var disappearsComp = hediff.TryGetComp<DisappearsScaled>();
             disappearsComp?.CompPostMake();
 
             // Update the mood offset
-            var thoughtComp = soothed.TryGetComp<HediffComp_ThoughtSetter>();
+            var thoughtComp = hediff.TryGetComp<HediffComp_ThoughtSetter>();
             var newOffset = Mathf.RoundToInt(Mathf.Clamp(offset, 2f, 10f));
             thoughtComp?.OverrideMoodOffset(newOffset);
 
-            if (soothed.ageTicks >= Props.tickInterval) return;
+            if (hediff.ageTicks >= Props.tickInterval) return;
 
-            // Just been soothed
-            MoteMaker.ThrowText(target.DrawPos, target.Map, "Soothed", Color.cyan);
+            MoteMaker.ThrowText(target.DrawPos, target.Map, Props.actVerb, Color.cyan);
         }
     }
 }

@@ -40,8 +40,9 @@ namespace CosmereScadrial.Comps {
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
             base.Apply(target, dest);
 
-            Log.Info($"{target.Pawn.NameFullColored} using ToggleBurnMetal, hediff={Props.hediff} currentStatus={Status.ToString()}");
+            Log.Info($"{parent.pawn.NameFullColored} using ToggleBurnMetal against {target.Pawn.NameFullColored}, hediff={Props.hediff} currentStatus={Status.ToString()}");
 
+            Comp.Target = target;
             if (AtLeastPassive) {
                 Comp.ToggleBurn(false);
                 return;

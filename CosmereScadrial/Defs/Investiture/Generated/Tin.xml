@@ -20,6 +20,9 @@
                 </metals>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_BurnTin</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Tin</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">

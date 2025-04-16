@@ -148,7 +148,7 @@ namespace CosmereScadrial.Hediffs.Comps {
 
         public void TryBurn() {
             var beuRequired = AllomancyUtility.BEU_PER_METAL_UNIT * Props.unitsPerBurn * Parent.Severity;
-            // Log.Verbose($"Pawn {Parent.pawn} is burning {Metal} Severity={Parent.Severity} BEUs={beuRequired} metalRequired={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT} DragSeverity={flareDuration / 6000f}");
+            Log.Verbose($"Pawn {Parent.pawn} is burning {Metal} Severity={Parent.Severity} BEUs={beuRequired} metalRequired={beuRequired / AllomancyUtility.BEU_PER_METAL_UNIT} DragSeverity={FlareDuration / 6000f}");
 
             if (AllomancyUtility.TryBurnMetalForInvestiture(Parent.pawn, Metal, beuRequired)) {
                 tryingToRefuel = false;

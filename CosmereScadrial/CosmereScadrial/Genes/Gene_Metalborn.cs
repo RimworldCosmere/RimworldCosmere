@@ -25,7 +25,7 @@ namespace CosmereScadrial.Genes {
             if (def.GetModExtension<MetalsLinked>() is not { } ext) return;
 
             foreach (var metal in ext.metals?.Where(metal => MetalRegistry.Metals.ContainsKey(metal))!) {
-                comp.SetReserve(metal, 0);
+                comp.EnsureReserveExists(metal);
             }
         }
 

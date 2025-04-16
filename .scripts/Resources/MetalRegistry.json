@@ -101,7 +101,10 @@
       "description": "Enhances senses like sight, hearing, and smell.",
       "group": "physical",
       "axis": "internal",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_BurnTin"
+      ]
     },
     "feruchemy": {
       "userName": "windwhisper",

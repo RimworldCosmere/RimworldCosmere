@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <AbilityDef ParentName="AbstractToggleSelfBurn">
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurn">
         <defName>Cosmere_Ability_BurnPewter</defName>
-        <label>Toggle Burn:
-Pewter</label>
+        <label>Toggle Pewter</label>
         <description>Burn pewter to enhance physical power and resilience for a short duration.</description>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Pewter</iconPath>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Properties.ToggleBurnMetal">
-                <hediff>Cosmere_Hediff_PewterBuff</hediff>
-            </li>
-        </comps>
-        <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
-                <metal>pewter</metal>
-            </li>
-        </modExtensions>
-    </AbilityDef>
+        <metal>Pewter</metal>
+        <hediff>Cosmere_Hediff_PewterBuff</hediff>
+        <dragHediff>Cosmere_Hediff_PewterDrag</dragHediff>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

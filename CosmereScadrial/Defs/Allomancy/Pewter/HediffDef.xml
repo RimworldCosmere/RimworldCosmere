@@ -4,16 +4,6 @@
         <defName>Cosmere_Hediff_PewterBuff</defName>
         <label>Burning Pewter</label>
         <description>Empowered strength, endurance, and resilience from burning Pewter.</description>
-        <comps>
-            <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal">
-                <dragHediff>Cosmere_Hediff_PewterDrag</dragHediff>
-            </li>
-        </comps>
-        <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
-                <metal>pewter</metal>
-            </li>
-        </modExtensions>
         <stages>
             <li>
                 <naturalHealingFactor>0.5</naturalHealingFactor>
@@ -56,7 +46,7 @@
         <isBad>true</isBad>
         <tendable>false</tendable>
         <comps>
-            <li Class="CosmereScadrial.Hediffs.Comps.Properties.DisappearsScaled" />
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.DisappearsScaled" />
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_PewterDrag</thought>
                 <moodOffset>-10</moodOffset>

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using CosmereScadrial.Comps;
-using CosmereScadrial.DefModExtensions;
-using CosmereScadrial.Registry;
+using CosmereScadrial.Comps.Things;
+using CosmereScadrial.Defs;
 using LudeonTK;
 using RimWorld;
 using Verse;
@@ -13,10 +11,10 @@ namespace CosmereScadrial.Dev {
         [DebugAction("Cosmere/Scadrial", "Fill allomantic reserves (all metals)",
             actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         public static void FillAllReserves(Pawn pawn) {
-            var comp = pawn.GetComp<ScadrialInvestiture>();
-            if (comp == null) return;
-
-            foreach (var metal in MetalRegistry.Metals.Values) comp.SetReserve(metal.Name, metal.MaxAmount);
+            var comp = pawn.GetComp<MetalReserves>();
+            foreach (var metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
+                comp.SetReserve(metal, MetalReserves.MAX_AMOUNT);
+            }
 
             Messages.Message($"Filled all reserves for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
         }
@@ -24,33 +22,10 @@ namespace CosmereScadrial.Dev {
         [DebugAction("Cosmere/Scadrial", "Wipe allomantic reserves (all metals)",
             actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         public static void WipeAllReserves(Pawn pawn) {
-            var comp = pawn.GetComp<ScadrialInvestiture>();
-            if (comp == null) return;
-
-            foreach (var metal in MetalRegistry.Metals.Values) comp.SetReserve(metal.Name, 0);
+            var comp = pawn.GetComp<MetalReserves>();
+            foreach (var metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) comp.RemoveReserve(metal);
 
             Messages.Message($"Wiped all reserves for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
-        }
-
-        [DebugAction("Cosmere/Scadrial", "Fill reserves based on genes",
-            actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        public static void FillReservesFromGenes(Pawn pawn) {
-            var comp = pawn.GetComp<ScadrialInvestiture>();
-            if (comp == null) return;
-
-            var metals = pawn.genes?.GenesListForReading
-                .SelectMany(g => g.def?.GetModExtension<MetalsLinked>()?.metals ?? Enumerable.Empty<string>())
-                .Distinct()
-                .ToList();
-
-            foreach (var metalName in metals) {
-                if (MetalRegistry.Metals.TryGetValue(metalName, out var metal)) {
-                    comp.SetReserve(metal.Name, metal.MaxAmount);
-                }
-            }
-
-            Messages.Message($"Filled {metals.Count} reserves for {pawn.LabelShort}", pawn,
-                MessageTypeDefOf.PositiveEvent);
         }
 
         [DebugAction("Cosmere/Scadrial", "Fill specific metal reserve", actionType = DebugActionType.ToolMapForPawns,
@@ -58,14 +33,12 @@ namespace CosmereScadrial.Dev {
         public static void FillSpecificMetal(Pawn pawn) {
             var options = new List<DebugMenuOption>();
 
-            foreach (var metal in MetalRegistry.Metals.Values.OrderBy(m => m.Name)) {
-                var label = metal.Name.CapitalizeFirst();
+            var comp = pawn.GetComp<MetalReserves>();
+            foreach (var metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
+                var label = metal.label.CapitalizeFirst();
                 options.Add(new DebugMenuOption(label, DebugMenuOptionMode.Action, () => {
-                    var comp = pawn.GetComp<ScadrialInvestiture>();
-                    if (comp != null) {
-                        comp.SetReserve(metal.Name, metal.MaxAmount);
-                        Messages.Message($"Filled {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
-                    }
+                    comp.SetReserve(metal, MetalReserves.MAX_AMOUNT);
+                    Messages.Message($"Filled {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
                 }));
             }
 
@@ -77,14 +50,12 @@ namespace CosmereScadrial.Dev {
         public static void WipeSpecificMetal(Pawn pawn) {
             var options = new List<DebugMenuOption>();
 
-            foreach (var metal in MetalRegistry.Metals.Values.OrderBy(m => m.Name)) {
-                var label = metal.Name.CapitalizeFirst();
+            var comp = pawn.GetComp<MetalReserves>();
+            foreach (var metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
+                var label = metal.label.CapitalizeFirst();
                 options.Add(new DebugMenuOption(label, DebugMenuOptionMode.Action, () => {
-                    var comp = pawn.GetComp<ScadrialInvestiture>();
-                    if (comp != null) {
-                        comp.SetReserve(metal.Name, 0);
-                        Messages.Message($"Wiped {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
-                    }
+                    comp.SetReserve(metal, 0);
+                    Messages.Message($"Wiped {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
                 }));
             }
 

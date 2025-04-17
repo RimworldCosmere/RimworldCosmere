@@ -3,7 +3,7 @@
 	<NeedDef>
 		<defName>Cosmere_Investiture</defName>
 		<label>investiture</label>
-		<needClass>CosmereCore.Needs.Need_Investiture</needClass>
+		<needClass>CosmereCore.Needs.Investiture</needClass>
 		<major>true</major>
 		<fallPerDay>0</fallPerDay>
 		<baseLevel>0</baseLevel>

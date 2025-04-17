@@ -2,6 +2,6 @@
 <Defs>
     <GameComponentDef>
         <defName>GameComponent_CosmereShards</defName>
-        <class>CosmereCore.GameComponent.GameComponent_CosmereShards</class>
+        <class>CosmereCore.GameComponent.Shards</class>
     </GameComponentDef>
 </Defs>

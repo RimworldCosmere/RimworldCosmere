@@ -15,22 +15,22 @@
         <modExtensions>
             <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
-                    <li>iron</li>
-                    <li>steel</li>
-                    <li>tin</li>
-                    <li>pewter</li>
-                    <li>zinc</li>
-                    <li>brass</li>
-                    <li>copper</li>
-                    <li>bronze</li>
-                    <li>aluminum</li>
-                    <li>duralumin</li>
-                    <li>chromium</li>
-                    <li>nicrosil</li>
-                    <li>cadmium</li>
-                    <li>bendalloy</li>
-                    <li>gold</li>
-                    <li>electrum</li>
+                    <li>Iron</li>
+                    <li>Steel</li>
+                    <li>Tin</li>
+                    <li>Pewter</li>
+                    <li>Zinc</li>
+                    <li>Brass</li>
+                    <li>Copper</li>
+                    <li>Bronze</li>
+                    <li>Aluminum</li>
+                    <li>Duralumin</li>
+                    <li>Chromium</li>
+                    <li>Nicrosil</li>
+                    <li>Cadmium</li>
+                    <li>Bendalloy</li>
+                    <li>Gold</li>
+                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>
@@ -44,22 +44,22 @@
     <modExtensions>
         <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
             <metals>
-                <li>iron</li>
-                <li>steel</li>
-                <li>tin</li>
-                <li>pewter</li>
-                <li>zinc</li>
-                <li>brass</li>
-                <li>copper</li>
-                <li>bronze</li>
-                <li>aluminum</li>
-                <li>duralumin</li>
-                <li>chromium</li>
-                <li>nicrosil</li>
-                <li>cadmium</li>
-                <li>bendalloy</li>
-                <li>gold</li>
-                <li>electrum</li>
+                <li>Iron</li>
+                <li>Steel</li>
+                <li>Tin</li>
+                <li>Pewter</li>
+                <li>Zinc</li>
+                <li>Brass</li>
+                <li>Copper</li>
+                <li>Bronze</li>
+                <li>Aluminum</li>
+                <li>Duralumin</li>
+                <li>Chromium</li>
+                <li>Nicrosil</li>
+                <li>Cadmium</li>
+                <li>Bendalloy</li>
+                <li>Gold</li>
+                <li>Electrum</li>
             </metals>
         </li>
     </modExtensions>

@@ -11,7 +11,7 @@ namespace CosmereScadrial.Things {
                     return false;
                 }
 
-                var comp = GetComp<Comps.AllomanticVial>();
+                var comp = GetComp<Comps.Things.AllomanticVial>();
                 var pawn = Find.Selector?.SingleSelectedThing as Pawn; // not reliable for ingestion, fallback in ingest jobs
 
                 // Safeguard — if being evaluated during actual ingestion
@@ -19,15 +19,15 @@ namespace CosmereScadrial.Things {
                     pawn = standingPawn;
                 }
 
-                if (pawn == null || comp?.Props.metalNames == null) {
+                if (pawn == null || comp?.props.metals == null) {
                     return false;
                 }
 
-                if (comp.Props.metalNames.Count > 1) {
-                    return AllomancyUtility.IsMistborn(pawn) && comp.Props.metalNames.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f);
+                if (comp.props.metals.Count > 1) {
+                    return AllomancyUtility.IsMistborn(pawn) && comp.props.metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f);
                 }
 
-                var metal = comp.Props.metalNames[0];
+                var metal = comp.props.metals[0];
                 if (!AllomancyUtility.CanUseMetal(pawn, metal)) {
                     return false;
                 }
@@ -42,14 +42,14 @@ namespace CosmereScadrial.Things {
                 yield break;
             }
 
-            var comp = GetComp<Comps.AllomanticVial>();
-            if (comp?.Props.metalNames == null) {
+            var comp = GetComp<Comps.Things.AllomanticVial>();
+            if (comp?.props.metals == null) {
                 yield return null;
                 yield break;
             }
 
-            if (comp.Props.metalNames.Count > 1) {
-                if (AllomancyUtility.IsMistborn(pawn) && comp.Props.metalNames.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f)) {
+            if (comp.props.metals.Count > 1) {
+                if (AllomancyUtility.IsMistborn(pawn) && comp.props.metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f)) {
                     foreach (var option in base.GetFloatMenuOptions(pawn)) {
                         yield return option;
                     }
@@ -58,7 +58,7 @@ namespace CosmereScadrial.Things {
                 }
             }
 
-            var metal = comp.Props.metalNames[0];
+            var metal = comp.props.metals[0];
             if (!AllomancyUtility.CanUseMetal(pawn, metal)) {
                 yield return new FloatMenuOption("Cannot ingest: wrong metal", null);
                 yield break;

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="AbstractSelfBurnMetal">
+        <defName>Cosmere_Hediff_BrassAura</defName>
+        <label>Burning Brass: Aura</label>
+        <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
+        <comps>
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.BurnMetal" />
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.AllomancyAura">
+                <actHediff>Cosmere_Hediff_Soothed</actHediff>
+                <actVerb>Soothed</actVerb>
+            </li>
+        </comps>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <SocialImpact>2</SocialImpact>
+                    <NegotiationAbility>2</NegotiationAbility>
+                    <PawnBeauty>2</PawnBeauty>
+                    <TradePriceImprovement>1.5</TradePriceImprovement>
+                    <TameAnimalChance>2</TameAnimalChance>
+                    <TrainAnimalChance>2</TrainAnimalChance>
+                    <BondAnimalChanceFactor>2</BondAnimalChanceFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef ParentName="AbstractTargetBurnMetal">
+        <defName>Cosmere_Hediff_BrassTarget</defName>
+        <label>Burning Brass: Target</label>
+        <description>Suppress emotional outburst and calm the mind of a target Brass.</description>
+        <comps>
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.BurnMetal" />
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.AllomancyTarget">
+                <actHediff>Cosmere_Hediff_Soothed</actHediff>
+                <actVerb>Soothed</actVerb>
+                <severityMultiplier>2</severityMultiplier>
+            </li>
+        </comps>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+    
+    <HediffDef>
+        <defName>Cosmere_Hediff_Soothed</defName>
+        <label>Soothed</label>
+        <description>This pawn has been soothed by a nearby Allomancer burning brass. Their emotions feel more stable and calm.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <isBad>false</isBad>
+        <tendable>false</tendable>
+        <displayWound>false</displayWound>
+        <scenarioCanAdd>true</scenarioCanAdd>
+        <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
+        <comps>
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.DisappearsScaled">
+                <baseTicks>600</baseTicks> <!-- 10 seconds -->
+            </li>
+            <li Class="Verse.HediffCompProperties_ThoughtSetter">
+                <thought>Cosmere_Thought_Soothed</thought>
+                <moodOffset>2</moodOffset>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <PainShockThreshold>2</PainShockThreshold>
+                    <MentalBreakThreshold>2</MentalBreakThreshold>
+                    <RestRateMultiplier>1.1</RestRateMultiplier>
+                    <RestFallRateFactor>0.9</RestFallRateFactor>
+                    <JoyFallRateFactor>0.75</JoyFallRateFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

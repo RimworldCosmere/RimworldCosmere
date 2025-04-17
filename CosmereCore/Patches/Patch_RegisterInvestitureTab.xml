@@ -4,7 +4,7 @@
     <Operation Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[@Name="BasePawn"]/inspectorTabs</xpath>
         <value>
-            <li>CosmereCore.Tabs.ITab_Pawn_Investiture</li>
+            <li>CosmereCore.Tabs.PawnInvestiture</li>
         </value>
     </Operation>
 </Patch>

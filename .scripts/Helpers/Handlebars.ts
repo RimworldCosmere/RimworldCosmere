@@ -1,4 +1,4 @@
-import Handlebars from 'handlebars';
+import Handlebars, { HelperOptions } from 'handlebars';
 import {toLower, upperFirst} from "lodash";
 
 Handlebars.registerHelper('lower', (string: string) => {
@@ -31,4 +31,7 @@ Handlebars.registerHelper('log', function (value: any) {
 Handlebars.registerHelper('fallback', function (value: any, fallback: any) {
   console.log('Fallback: ', {value, fallback});
   return value === undefined ? fallback : value;
+});
+Handlebars.registerHelper('ifEquals', function(arg1: any, arg2: any, options: HelperOptions) {
+  return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
 });

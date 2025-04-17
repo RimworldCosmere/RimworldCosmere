@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace CosmereFramework.Utils {
     public static class UIUtil {
+        private static readonly Dictionary<string, bool> collapsedStates = new Dictionary<string, bool>();
+
         public static void WithAnchor(TextAnchor anchor, Action draw) {
             var prev = Text.Anchor;
             Text.Anchor = anchor;
@@ -46,6 +51,27 @@ namespace CosmereFramework.Utils {
 
             GUI.color = originalColor;
             Text.Anchor = TextAnchor.UpperLeft;
+        }
+
+        public static bool DrawCollapsibleHeader(string label, string key, Listing_Standard listing) {
+            if (!collapsedStates.TryGetValue(key, out var expanded)) {
+                expanded = true;
+            }
+
+            var headerRect = listing.GetRect(Text.LineHeight);
+
+            var prefix = expanded ? "▼ " : "▶ ";
+            WithAnchor(TextAnchor.MiddleLeft, () => Widgets.Label(headerRect, prefix + label));
+
+            if (Widgets.ButtonInvisible(headerRect)) {
+                expanded = !expanded;
+                collapsedStates[key] = expanded;
+                SoundDefOf.Tick_High.PlayOneShotOnCamera();
+            }
+
+            listing.Gap(2f);
+
+            return expanded;
         }
     }
 }

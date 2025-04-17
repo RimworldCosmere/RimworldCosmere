@@ -313,11 +313,6 @@
 				<axis />
 				<polarity />
 			</allomancy>
-			<feruchemy>
-				<userName />
-				<description>Unknown</description>
-				<group />
-			</feruchemy>
 		</li>
         <li>
 			<name>atium</name>

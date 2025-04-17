@@ -16,7 +16,7 @@
             <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
                     {{#each metals}}
-                    <li>{{this}}</li>
+                    <li>{{capitalize this.Name}}</li>
                     {{/each}}
                 </metals>
             </li>
@@ -35,7 +35,7 @@
         <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
             <metals>
                 {{#each metals}}
-                <li>{{this}}</li>
+                <li>{{capitalize this.Name}}</li>
                 {{/each}}
             </metals>
         </li>

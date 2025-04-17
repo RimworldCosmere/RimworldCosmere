@@ -2,30 +2,30 @@
 
 namespace CosmereScadrial {
     public class MetalRegistryData {
-        public MetalInfo[] Metals;
+        public MetalInfo[] metals;
     }
 
     public class MetalInfo {
-        public MetalAllomancyInfo Allomancy;
-        public Color Color;
-        public string DefName;
-        public MetalFeruchemyInfo Feruchemy;
-        public bool GodMetal;
-        public float MaxAmount = 100f;
-        public string Name;
+        public MetalAllomancyInfo allomancy;
+        public Color color;
+        public string defName;
+        public MetalFeruchemyInfo feruchemy;
+        public bool godMetal;
+        public float maxAmount = 100f;
+        public string name;
     }
 
     public class MetalAllomancyInfo {
-        public string Axis;
-        public string Description;
-        public string Group;
-        public string Polarity;
-        public string UserName;
+        public string axis;
+        public string description;
+        public string group;
+        public string polarity;
+        public string userName;
     }
 
     public class MetalFeruchemyInfo {
-        public string Description;
-        public string Group;
-        public string UserName;
+        public string description;
+        public string group;
+        public string userName;
     }
 }

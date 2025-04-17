@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="{{#if metal.Buildable.Buildings}}AbstractBuildableMetal{{else}}AbstractMetal{{/if}}">
+    <CosmereCore.Defs.MetalDef Name="Cosmere_Metal_{{capitalize metal.Name}}">
         <defName>{{capitalize metal.Name}}</defName>
-        <label>{{capitalize metal.Name}}</label>
+        <label>{{metal.Name}}</label>
         <description>{{metal.Description}}</description>
-        <graphicData>
-            <texPath>Item/Resource/{{capitalize metal.Name}}</texPath>
-        </graphicData>
-        <stuffProps>
-            <commonality>{{#if metal.Alloy}}0.3{{else}}0.8{{/if}}</commonality>
-            <color>{{rgb metal.Color}}</color>
-        </stuffProps>
-        <statBases>
-            <MarketValue>{{#if metal.Alloy}}2{{else}}0.5{{/if}}</MarketValue>
-        </statBases>
-    </ThingDef>
+        <color>{{rgb metal.Color}}</color>{{#if metal.ColorTwo}}
+        <colorTwo>{{rgb metal.ColorTwo}}</colorTwo>{{/if}}{{#if metal.GodMetal}}
+        <godMetal>{{metal.GodMetal}}</godMetal>{{/if}}
+    </CosmereCore.Defs.MetalDef>
 </Defs>

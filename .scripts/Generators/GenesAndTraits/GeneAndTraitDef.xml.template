@@ -16,7 +16,7 @@
         <modExtensions>
             <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
-                    <li>{{metal.Name}}</li>
+                    <li>{{capitalize metal.Name}}</li>
                 </metals>
             </li>
         </modExtensions>
@@ -36,7 +36,7 @@
         <modExtensions>
             <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
-                    <li>{{metal.Name}}</li>
+                    <li>{{capitalize metal.Name}}</li>
                 </metals>
             </li>
         </modExtensions>
@@ -66,7 +66,7 @@
         <modExtensions>
             <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
-                    <li>{{metal.Name}}</li>
+                    <li>{{capitalize metal.Name}}</li>
                 </metals>
             </li>
         </modExtensions>
@@ -79,7 +79,7 @@
         <modExtensions>
             <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
-                    <li>{{metal.Name}}</li>
+                    <li>{{capitalize metal.Name}}</li>
                 </metals>
             </li>
         </modExtensions>

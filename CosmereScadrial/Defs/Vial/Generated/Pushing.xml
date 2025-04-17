@@ -5,17 +5,17 @@
         <label>Mistborn Vial: Pushing</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <comps>
-            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-                <metalNames>
-                    <li>steel</li>
-                    <li>pewter</li>
-                    <li>zinc</li>
-                    <li>bronze</li>
-                    <li>duralumin</li>
-                    <li>nicrosil</li>
-                    <li>bendalloy</li>
-                    <li>electrum</li>
-                </metalNames>
+            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
+                <metals>
+                    <li>Steel</li>
+                    <li>Pewter</li>
+                    <li>Zinc</li>
+                    <li>Bronze</li>
+                    <li>Duralumin</li>
+                    <li>Nicrosil</li>
+                    <li>Bendalloy</li>
+                    <li>Electrum</li>
+                </metals>
             </li>
         </comps>
         <orderedTakeGroup>AllomanticVial_Pushing</orderedTakeGroup>

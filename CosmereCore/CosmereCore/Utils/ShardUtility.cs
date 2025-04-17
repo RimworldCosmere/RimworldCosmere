@@ -1,30 +1,25 @@
 ﻿using CosmereCore.Defs;
+using CosmereCore.GameComponent;
 using Verse;
 
-namespace CosmereCore.Utils
-{
-    public static class ShardUtility
-    {
-        public static GameComponent_CosmereShards Shards => Current.Game.GetComponent<GameComponent_CosmereShards>();
+namespace CosmereCore.Utils {
+    public static class ShardUtility {
+        public static Shards shards => Current.Game.GetComponent<Shards>();
 
-        public static bool IsEnabled(string shard)
-        {
-            return Shards.IsEnabled(shard);
+        public static bool IsEnabled(string shard) {
+            return shards.IsEnabled(shard);
         }
 
-        public static bool IsEnabled(ShardDef shard)
-        {
-            return Shards.IsEnabled(shard);
+        public static bool IsEnabled(ShardDef shard) {
+            return shards.IsEnabled(shard);
         }
 
-        public static void Enable(string shard)
-        {
-            Shards.EnableShard(shard);
+        public static void Enable(string shard) {
+            shards.EnableShard(shard);
         }
 
-        public static void Enable(ShardDef shard)
-        {
-            Shards.EnableShard(shard);
+        public static void Enable(ShardDef shard) {
+            shards.EnableShard(shard);
         }
     }
 }

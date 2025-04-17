@@ -5,17 +5,17 @@
         <label>Mistborn Vial: Internal</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <comps>
-            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-                <metalNames>
-                    <li>tin</li>
-                    <li>pewter</li>
-                    <li>copper</li>
-                    <li>bronze</li>
-                    <li>aluminum</li>
-                    <li>duralumin</li>
-                    <li>gold</li>
-                    <li>electrum</li>
-                </metalNames>
+            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
+                <metals>
+                    <li>Tin</li>
+                    <li>Pewter</li>
+                    <li>Copper</li>
+                    <li>Bronze</li>
+                    <li>Aluminum</li>
+                    <li>Duralumin</li>
+                    <li>Gold</li>
+                    <li>Electrum</li>
+                </metals>
             </li>
         </comps>
         <orderedTakeGroup>AllomanticVial_Internal</orderedTakeGroup>

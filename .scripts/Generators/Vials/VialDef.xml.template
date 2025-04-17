@@ -9,10 +9,10 @@
             <colorTwo>{{rgb metal.Color}}</colorTwo>
         </graphicData>
         <comps>
-            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-                <metalNames>
-                    <li>{{metal.Name}}</li>
-                </metalNames>
+            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
+                <metals>
+                    <li>{{capitalize metal.Name}}</li>
+                </metals>
             </li>
         </comps>
         <orderedTakeGroup>AllomanticVial_{{capitalize metal.Name}}</orderedTakeGroup>

@@ -9,10 +9,10 @@
             <colorTwo>(206, 172, 55)</colorTwo>
         </graphicData>
         <comps>
-            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-                <metalNames>
-                    <li>gold</li>
-                </metalNames>
+            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
+                <metals>
+                    <li>Gold</li>
+                </metals>
             </li>
         </comps>
         <orderedTakeGroup>AllomanticVial_Gold</orderedTakeGroup>

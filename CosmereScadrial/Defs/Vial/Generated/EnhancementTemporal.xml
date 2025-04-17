@@ -5,17 +5,17 @@
         <label>Mistborn Vial: Enhancement + Temporal</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <comps>
-            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-                <metalNames>
-                    <li>aluminum</li>
-                    <li>duralumin</li>
-                    <li>chromium</li>
-                    <li>nicrosil</li>
-                    <li>cadmium</li>
-                    <li>bendalloy</li>
-                    <li>gold</li>
-                    <li>electrum</li>
-                </metalNames>
+            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
+                <metals>
+                    <li>Aluminum</li>
+                    <li>Duralumin</li>
+                    <li>Chromium</li>
+                    <li>Nicrosil</li>
+                    <li>Cadmium</li>
+                    <li>Bendalloy</li>
+                    <li>Gold</li>
+                    <li>Electrum</li>
+                </metals>
             </li>
         </comps>
         <orderedTakeGroup>AllomanticVial_EnhancementTemporal</orderedTakeGroup>

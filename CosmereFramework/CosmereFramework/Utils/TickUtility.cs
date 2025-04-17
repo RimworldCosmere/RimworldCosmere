@@ -1,17 +1,17 @@
 namespace CosmereFramework.Utils {
     public static class TickUtility {
-        public const float TicksPerMillisecond = TicksPerSecond / 1000;
-        public const float TicksPerSecond = 60f;
-        public const float TicksPerMinute = TicksPerSecond * 60;
-        public const float TicksPerHour = TicksPerMinute * 60;
-        public const float TicksPerDay = 60000; // RimWorld defines 1 day = 60,000 ticks
+        public const float TICKS_PER_MILLISECOND = TICKS_PER_SECOND / 1000;
+        public const float TICKS_PER_SECOND = 60f;
+        public const float TICKS_PER_MINUTE = TICKS_PER_SECOND * 60;
+        public const float TICKS_PER_HOUR = TICKS_PER_MINUTE * 60;
+        public const float TICKS_PER_DAY = 60000; // RimWorld defines 1 day = 60,000 ticks
 
         public static float Milliseconds(int milliseconds) {
             return Milliseconds((float)milliseconds);
         }
 
         public static float Milliseconds(float milliseconds) {
-            return milliseconds * TicksPerMillisecond;
+            return milliseconds * TICKS_PER_MILLISECOND;
         }
 
         public static float Seconds(int seconds) {
@@ -19,7 +19,7 @@ namespace CosmereFramework.Utils {
         }
 
         public static float Seconds(float seconds) {
-            return seconds * TicksPerSecond;
+            return seconds * TICKS_PER_SECOND;
         }
 
         public static float Minutes(int minutes) {
@@ -27,11 +27,11 @@ namespace CosmereFramework.Utils {
         }
 
         public static float Minutes(float minutes) {
-            return minutes * TicksPerMinute;
+            return minutes * TICKS_PER_MINUTE;
         }
 
         public static float Hours(float hours) {
-            return hours * TicksPerHour;
+            return hours * TICKS_PER_HOUR;
         }
 
         public static float Days(int days) {
@@ -39,27 +39,27 @@ namespace CosmereFramework.Utils {
         }
 
         public static float Days(float days) {
-            return days * TicksPerDay;
+            return days * TICKS_PER_DAY;
         }
 
         public static float ToSeconds(int ticks) {
-            return ticks / TicksPerSecond;
+            return ticks / TICKS_PER_SECOND;
         }
 
         public static float ToMinutes(int ticks) {
-            return ticks / TicksPerMinute;
+            return ticks / TICKS_PER_MINUTE;
         }
 
         public static float ToHours(int ticks) {
-            return ticks / TicksPerHour;
+            return ticks / TICKS_PER_HOUR;
         }
 
         public static float ToDays(int ticks) {
-            return ticks / TicksPerDay;
+            return ticks / TICKS_PER_DAY;
         }
 
         public static string FormatTicksAsTime(int ticks) {
-            var totalSeconds = ticks / TicksPerSecond;
+            var totalSeconds = ticks / TICKS_PER_SECOND;
             var minutes = totalSeconds / 60;
             var seconds = totalSeconds % 60;
             return $"{minutes:D2}:{seconds:D2}";

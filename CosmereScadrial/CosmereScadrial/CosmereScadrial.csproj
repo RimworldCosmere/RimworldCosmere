@@ -84,51 +84,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="Gizmos\ToggleBurnMetal.cs"/>
-        <Compile Include="Comps\AllomanticVial.cs"/>
-        <Compile Include="Comps\Properties\RefuelableSuspendWhenPowered.cs"/>
-        <Compile Include="Comps\RefuelableSuspendWhenPowered.cs"/>
-        <Compile Include="Comps\ToggleBurnMetal.cs"/>
-        <Compile Include="Comps\ScadrialInvestiture.cs"/>
-        <Compile Include="Comps\Properties\AllomanticVial.cs"/>
-        <Compile Include="Comps\Properties\ScadrialInvestiture.cs"/>
-        <Compile Include="Comps\Properties\ToggleBurnMetal.cs"/>
-        <Compile Include="CosmereJobDefOf.cs"/>
-        <Compile Include="CosmereScadrial.cs"/>
-        <Compile Include="DefModExtensions\MetalLinked.cs"/>
-        <Compile Include="DefModExtensions\MetalsLinked.cs"/>
-        <Compile Include="DefModExtensions\PoweredOrFueled.cs"/>
-        <Compile Include="Dev\DevFillInvestitureUtility.cs"/>
-        <Compile Include="Genes\GeneInheritanceUtility.cs"/>
-        <Compile Include="Genes\Gene_Metalborn.cs"/>
-        <Compile Include="Hediffs\BurningMetal.cs"/>
-        <Compile Include="Hediffs\Comps\AllomancyAura.cs"/>
-        <Compile Include="Hediffs\Comps\AllomancyTarget.cs"/>
-        <Compile Include="Hediffs\Comps\BurnMetal.cs"/>
-        <Compile Include="Hediffs\Comps\DisappearsScaled.cs"/>
-        <Compile Include="Hediffs\Comps\Properties\AllomancyAura.cs"/>
-        <Compile Include="Hediffs\Comps\Properties\AllomancyTarget.cs"/>
-        <Compile Include="Hediffs\Comps\Properties\BurnMetal.cs"/>
-        <Compile Include="Hediffs\Comps\Properties\DisappearsScaled.cs"/>
-        <Compile Include="Initializer.cs"/>
-        <Compile Include="Inspector\InvestitureTab_Scadrial.cs"/>
-        <Compile Include="Jobs\IngestAndReburn.cs"/>
-        <Compile Include="MetalInfo.cs"/>
-        <Compile Include="Patches\Patch_Ability_GetGizmo.cs"/>
-        <Compile Include="Patches\Patch_LockShardSelection.cs"/>
-        <Compile Include="Patches\Patch_PawnGeneGeneration.cs"/>
-        <Compile Include="Patches\Patch_PawnGenerator.cs"/>
-        <Compile Include="Patches\Patch_PawnRelationWorker_Child.cs"/>
-        <Compile Include="Patches\Patch_Pawn_IdeoTracker_SkaaAgnostic.cs"/>
-        <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="Registry\MetalRegistry.cs"/>
-        <Compile Include="Stats\Parts\PoweredOrFueled.cs"/>
-        <Compile Include="Things\AllomanticVial.cs"/>
-        <Compile Include="Utils\AllomancyUtility.cs"/>
-        <Compile Include="Utils\MetalbornUtility.cs"/>
+        <Compile Include="**\*.cs" Exclude="obj\**\*.cs"/>
     </ItemGroup>
 
     <ItemGroup>
+        <Reference Include="HugsLib">
+          <HintPath>..\..\..\..\..\workshop\content\294100\818773962\Assemblies\HugsLib.dll</HintPath>
+        </Reference>
         <Reference Include="Microsoft.CSharp"/>
         <Reference Include="System"/>
         <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">

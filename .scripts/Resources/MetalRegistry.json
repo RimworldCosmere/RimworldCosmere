@@ -222,8 +222,6 @@
       "axis": "external",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_BurnBrass_Aura",
-        "Cosmere_Ability_BurnBrass_Target"
       ]
     },
     "feruchemy": {
@@ -685,16 +683,7 @@
       255
     ],
     "allomancy": {
-      "userName": null,
-      "description": "Turns a person into a Mistborn when consumed.",
-      "group": null,
-      "axis": null,
-      "polarity": null
-    },
-    "feruchemy": {
-      "userName": null,
-      "description": "Unknown",
-      "group": null
+      "description": "Turns a person into a Mistborn when consumed."
     },
     "buildable": {
       "buildings": false,
@@ -712,15 +701,10 @@
     ],
     "allomancy": {
       "userName": "seer",
-      "description": "Allows a glimpse into the immediate future of others.",
-      "group": null,
-      "axis": null,
-      "polarity": null
+      "description": "Allows a glimpse into the immediate future of others."
     },
     "feruchemy": {
-      "userName": null,
-      "description": "Stores age, granting youth or aging when tapped.",
-      "group": null
+      "description": "Stores age, granting youth or aging when tapped."
     },
     "buildable": {
       "buildings": false,
@@ -736,18 +720,6 @@
       255,
       140
     ],
-    "allomancy": {
-      "userName": null,
-      "description": "Explosive and unstable; function is not fully known.",
-      "group": null,
-      "axis": null,
-      "polarity": null
-    },
-    "feruchemy": {
-      "userName": null,
-      "description": "Possibly stores unknown attribute related to Harmony.",
-      "group": null
-    },
     "buildable": {
       "buildings": false,
       "items": false

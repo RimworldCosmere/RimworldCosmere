@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using CosmereScadrial.Defs;
 using Verse;
 
 namespace CosmereScadrial.DefModExtensions {
     public class MetalsLinked : DefModExtension {
-        public List<string> metals;
+        public List<MetallicArtsMetalDef> metals;
     }
 }

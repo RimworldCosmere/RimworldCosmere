@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Gold">
+        <defName>Gold</defName>
+        <allomancy>
+            <description>Shows alternate versions of oneself, based on different pasts.</description>
+            <group>Temporal</group>
+            <axis>Internal</axis>
+            <polarity>Pulling</polarity>
+        </allomancy>
+        <feruchemy>
+            <userName>bloodmaker</userName>
+            <description>Stores health, allowing fast healing when tapped.</description>
+            <group>Hybrid</group>
+        </feruchemy>
+    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+</Defs>

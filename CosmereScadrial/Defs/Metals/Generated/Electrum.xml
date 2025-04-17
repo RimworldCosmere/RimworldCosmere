@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Electrum">
+        <defName>Electrum</defName>
+        <allomancy>
+            <description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
+            <group>Temporal</group>
+            <axis>Internal</axis>
+            <polarity>Pushing</polarity>
+        </allomancy>
+        <feruchemy>
+            <userName>pinnacle</userName>
+            <description>Stores determination or willpower.</description>
+            <group>Hybrid</group>
+        </feruchemy>
+    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+</Defs>

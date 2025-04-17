@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Pewter">
+        <defName>Pewter</defName>
+        <allomancy>
+            <description>Enhances physical strength and durability, useful in combat.</description>
+            <group>Physical</group>
+            <axis>Internal</axis>
+            <polarity>Pushing</polarity>
+        </allomancy>
+        <feruchemy>
+            <userName>brute</userName>
+            <description>Stores physical strength, tapping grants bursts of power.</description>
+            <group>Physical</group>
+        </feruchemy>
+    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+</Defs>

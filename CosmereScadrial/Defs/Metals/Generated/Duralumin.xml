@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Duralumin">
+        <defName>Duralumin</defName>
+        <allomancy>
+            <description>Enhances the next Allomantic metal used drastically, but is consumed entirely.</description>
+            <group>Enhancement</group>
+            <axis>Internal</axis>
+            <polarity>Pushing</polarity>
+        </allomancy>
+        <feruchemy>
+            <userName>connector</userName>
+            <description>Stores connection, useful for adjusting social ties or affiliations.</description>
+            <group>Spiritual</group>
+        </feruchemy>
+    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+</Defs>

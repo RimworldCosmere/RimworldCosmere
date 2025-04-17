@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Iron">
+        <defName>Iron</defName>
+        <allomancy>
+            <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
+            <group>Physical</group>
+            <axis>External</axis>
+            <polarity>Pulling</polarity>
+        </allomancy>
+        <feruchemy>
+            <userName>skimmer</userName>
+            <description>Stores weight, allowing the user to become lighter or heavier.</description>
+            <group>Physical</group>
+        </feruchemy>
+    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+</Defs>

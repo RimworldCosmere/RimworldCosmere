@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereCore.Defs.MetalDef Name="Cosmere_Metal_Pewter">
+        <defName>Pewter</defName>
+        <label>pewter</label>
+        <description>Pewter is a refined alloy formed by blending Tin with Copper. Known for its soft, workable nature and a muted, classic luster, pewter has been a favored material for decorative and utilitarian objects since ancient times.</description>
+        <color>(141, 151, 166)</color>
+    </CosmereCore.Defs.MetalDef>
+</Defs>

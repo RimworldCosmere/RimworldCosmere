@@ -222,6 +222,7 @@
       "axis": "external",
       "polarity": "pulling",
       "abilities": [
+        "Cosmere_Ability_BurnBrass_Aura"
       ]
     },
     "feruchemy": {
@@ -234,7 +235,7 @@
       "items": true
     },
     "alloy": {
-      "ingredients": [
+      "ingredients": [z
         {
           "item": "copper",
           "count": 5

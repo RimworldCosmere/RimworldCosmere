@@ -20,6 +20,9 @@
                 </metals>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_BurnBrass_Aura</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Brass</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">

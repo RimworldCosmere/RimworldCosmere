@@ -19,11 +19,6 @@ namespace CosmereScadrial.Abilities.Hediffs {
             _ => throw new ArgumentOutOfRangeException(),
         };
 
-        public override void PreRemoved() {
-            Log.Message("BurningMetal.PreRemoved");
-            base.PreRemoved();
-        }
-
         public override string DebugString() {
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(base.DebugString());

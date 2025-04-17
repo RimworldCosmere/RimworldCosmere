@@ -114,7 +114,6 @@ namespace CosmereScadrial.Comps.Things {
                     ability?.UpdateStatus(BurningStatus.Off);
                 }
 
-                // @todo Tell the thing that added the source (An ability?) to turn off.
                 burnSourceMap.Remove(key);
             }
 

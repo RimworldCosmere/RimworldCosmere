@@ -166,7 +166,7 @@ namespace CosmereScadrial.Abilities {
         protected virtual void ApplyDrag(float severity) {
             if (def.dragHediff == null || severity < def.minSeverityForDrag) return;
 
-            Verse.Log.Warning($"Applying {def.dragHediff.defName} drag to {pawn.NameFullColored} with Severity={severity}");
+            Log.Warning($"Applying {def.dragHediff.defName} drag to {pawn.NameFullColored} with Severity={severity}");
             var drag = pawn.health.GetOrAddHediff(def.dragHediff);
             drag.Severity = severity;
         }

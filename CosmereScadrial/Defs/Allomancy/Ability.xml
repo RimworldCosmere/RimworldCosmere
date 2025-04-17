@@ -6,23 +6,18 @@
         <displayOrder>1</displayOrder>
     </AbilityCategoryDef>
     
-    <AbilityDef Name="AbstractBurn" Abstract="True">
-        <jobDef>CastAbilityOnThing</jobDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractSelfBurn" Abstract="True">
         <stunTargetWhileCasting>False</stunTargetWhileCasting>
         <aiCanUse>true</aiCanUse>
         <ai_IsOffensive>true</ai_IsOffensive>
         <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
         <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
         <category>Allomancy</category>
-    </AbilityDef>
-    
-    <AbilityDef Name="AbstractSelfBurn" ParentName="AbstractBurn" Abstract="True">
         <canUseAoeToGetTargets>False</canUseAoeToGetTargets>
         <targetRequired>false</targetRequired>
         <targetWorldCell>false</targetWorldCell>
         <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
         <hostile>false</hostile>
-        <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
         <verbProperties>
             <verbClass>Verb_CastAbility</verbClass>
             <targetable>false</targetable>
@@ -35,64 +30,9 @@
                 <canTargetSelf>true</canTargetSelf>
             </targetParams>
         </verbProperties>
-    </AbilityDef>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
     
-    <AbilityDef Name="AbstractTargetBurn" ParentName="AbstractBurn" Abstract="True">
-        <targetRequired>True</targetRequired>
-        <canUseAoeToGetTargets>True</canUseAoeToGetTargets>
-        <verbProperties>
-            <verbClass>Verb_CastAbility</verbClass>
-            <targetable>true</targetable>
-            <warmupTime>0</warmupTime>
-            <range>10</range>
-            <drawAimPie>true</drawAimPie>
-            <requireLineOfSight>false</requireLineOfSight>
-            <violent>false</violent>
-            <targetParams>
-                <canTargetSelf>false</canTargetSelf>
-            </targetParams>
-        </verbProperties>
-    </AbilityDef>
-    
-    <AbilityDef Name="AbstractToggleBurn" ParentName="AbstractBurn" Abstract="True">
-        <gizmoClass>CosmereScadrial.Gizmos.ToggleBurnMetal</gizmoClass>
-    </AbilityDef>
-    
-    <AbilityDef Name="AbstractToggleSelfBurn" ParentName="AbstractToggleBurn" Abstract="True">
-        <canUseAoeToGetTargets>False</canUseAoeToGetTargets>
-        <targetRequired>false</targetRequired>
-        <targetWorldCell>false</targetWorldCell>
-        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
-        <hostile>false</hostile>
-        <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
-        <verbProperties>
-            <verbClass>Verb_CastAbility</verbClass>
-            <targetable>false</targetable>
-            <warmupTime>0</warmupTime>
-            <range>0</range>
-            <drawAimPie>false</drawAimPie>
-            <requireLineOfSight>false</requireLineOfSight>
-            <violent>false</violent>
-            <targetParams>
-                <canTargetSelf>true</canTargetSelf>
-            </targetParams>
-        </verbProperties>
-    </AbilityDef>
-    
-    <AbilityDef Name="AbstractToggleTargetBurn" ParentName="AbstractToggleBurn" Abstract="True">
-        <targetRequired>True</targetRequired>
-        <canUseAoeToGetTargets>True</canUseAoeToGetTargets>
-        <verbProperties>
-            <verbClass>Verb_CastAbility</verbClass>
-            <targetable>true</targetable>
-            <warmupTime>0</warmupTime>
-            <range>10</range>
-            <drawAimPie>true</drawAimPie>
-            <requireLineOfSight>false</requireLineOfSight>
-            <violent>false</violent>
-            <targetParams>
-                <canTargetSelf>false</canTargetSelf>
-            </targetParams>
-        </verbProperties>
-    </AbilityDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractToggleSelfBurn" ParentName="AbstractSelfBurn" Abstract="True">
+        <toggleable>true</toggleable>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

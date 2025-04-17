@@ -12,6 +12,7 @@
         <li>
             <packageId>cryptiklemur.cosmere.core</packageId>
             <displayName>Cosmere - Core</displayName>
+            <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
         </li>
     </modDependencies>
     <forceLoadAfter>

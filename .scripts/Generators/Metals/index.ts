@@ -8,39 +8,53 @@ import {CORE_MOD_DIR} from '../../constants';
 import {mkdirSync} from "fs";
 import {upperFirst} from "lodash";
 
-const mineableMetalDefTemplate = readFileSync(resolve(__dirname, 'MineableMetalDef.xml.template'), 'utf8');
-const mineableTemplate = Handlebars.compile(mineableMetalDefTemplate);
+const metalDefTemplate= Handlebars.compile(readFileSync(resolve(__dirname, 'MetalDef.xml.template'), 'utf8'));
+const metalDefOutputDir = resolve(CORE_MOD_DIR, 'Defs', 'Metals', 'Generated', 'Metal');
+
+const metalDefOfTemplate = Handlebars.compile(readFileSync(resolve(__dirname, 'MetalDefOf.cs.template'), 'utf8'));
+const metalDefOfOutputDir = resolve(CORE_MOD_DIR, 'CosmereCore');
+
+const mineableTemplate = Handlebars.compile(readFileSync(resolve(__dirname, 'MineableMetalDef.xml.template'), 'utf8'));
 const mineableOutputDir = resolve(CORE_MOD_DIR, 'Defs', 'Metals', 'Generated', 'Mineable');
-const metalDefTemplate = readFileSync(resolve(__dirname, 'MetalDef.xml.template'), 'utf8');
-const metalTemplate = Handlebars.compile(metalDefTemplate);
-const metalOutputDir = resolve(CORE_MOD_DIR, 'Defs', 'Metals', 'Generated', 'Item');
-const alloyRecipeDefTemplate = readFileSync(resolve(__dirname, 'AlloyRecipeDef.xml.template'), 'utf8');
-const alloyRecipeTemplate = Handlebars.compile(alloyRecipeDefTemplate);
+
+const itemTemplate = Handlebars.compile(readFileSync(resolve(__dirname, 'ItemMetalDef.xml.template'), 'utf8'));
+const itemOutputDir = resolve(CORE_MOD_DIR, 'Defs', 'Metals', 'Generated', 'Item');
+
+const alloyRecipeTemplate = Handlebars.compile(readFileSync(resolve(__dirname, 'AlloyRecipeDef.xml.template'), 'utf8'));
 const alloyRecipeOutputDir = resolve(CORE_MOD_DIR, 'Defs', 'Metals', 'Generated', 'Recipe');
 
 export default function() {
-  rimrafSync(mineableOutputDir);
-  mkdirSync(mineableOutputDir, {recursive: true});
-  rimrafSync(metalOutputDir);
-  mkdirSync(metalOutputDir, {recursive: true});
-  rimrafSync(alloyRecipeOutputDir);
-  mkdirSync(alloyRecipeOutputDir, {recursive: true});
-  
-  console.log("Generating Mineable Metals");
-  const mineable = Object.values(MetalRegistry.Metals).filter((x) => x.Mining !== undefined);
-  for (const metalInfo of mineable) {
-    writeFileSync(resolve(mineableOutputDir, upperFirst(metalInfo.Name) + '.xml'), mineableTemplate({metal: metalInfo}), 'utf8');
+  [metalDefOutputDir, mineableOutputDir, itemOutputDir, alloyRecipeOutputDir].forEach(x => {
+    rimrafSync(x);
+    mkdirSync(x, {recursive: true});
+  });
+
+  console.log("Generating MetalDefs");
+  const metals = Object.values(MetalRegistry.Metals);
+  for (const metal of metals) {
+    writeFileSync(resolve(metalDefOutputDir, upperFirst(metal.Name) + '.xml'), metalDefTemplate({metal}), 'utf8');
   }
-  console.log("Generating All Metals");
-  const metals = Object.values(MetalRegistry.Metals).filter((x) => !x.GodMetal);
-  for (const metalInfo of metals) {
-    writeFileSync(resolve(metalOutputDir, upperFirst(metalInfo.Name) + '.xml'), metalTemplate({metal: metalInfo}), 'utf8');
+
+  console.log("Generating MetalDefOf");
+  writeFileSync(resolve(metalDefOfOutputDir, 'MetalDefOf.cs'), metalDefOfTemplate({metals}), 'utf8');
+  
+  
+  console.log("Generating Mineable Metal ThingDefs");
+  const mineable = Object.values(MetalRegistry.Metals).filter((x) => x.Mining !== undefined);
+  for (const metal of mineable) {
+    writeFileSync(resolve(mineableOutputDir, upperFirst(metal.Name) + '.xml'), mineableTemplate({metal}), 'utf8');
+  }
+  console.log("Generating Metal Item ThingDefs");
+  const items = Object.values(MetalRegistry.Metals).filter((x) => !x.GodMetal);
+  for (const metal of items) {
+    writeFileSync(resolve(itemOutputDir, upperFirst(metal.Name) + '.xml'), itemTemplate({metal}), 'utf8');
   }
   
   // @todo Implement the god metals
+  console.log("Generating Alloy Item ThingDefs");
   const alloys = Object.values(MetalRegistry.Metals).filter((x) => x.Alloy !== undefined && !x.GodMetal);
-  for (const metalInfo of alloys) {
-    writeFileSync(resolve(alloyRecipeOutputDir, upperFirst(metalInfo.Name) + '.xml'), alloyRecipeTemplate({metal: metalInfo}), 'utf8');
+  for (const metal of alloys) {
+    writeFileSync(resolve(alloyRecipeOutputDir, upperFirst(metal.Name) + '.xml'), alloyRecipeTemplate({metal}), 'utf8');
   }
 }
 

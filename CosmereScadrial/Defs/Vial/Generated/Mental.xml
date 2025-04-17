@@ -5,13 +5,13 @@
         <label>Mistborn Vial: Mental</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <comps>
-            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-                <metalNames>
-                    <li>zinc</li>
-                    <li>brass</li>
-                    <li>copper</li>
-                    <li>bronze</li>
-                </metalNames>
+            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
+                <metals>
+                    <li>Zinc</li>
+                    <li>Brass</li>
+                    <li>Copper</li>
+                    <li>Bronze</li>
+                </metals>
             </li>
         </comps>
         <orderedTakeGroup>AllomanticVial_Mental</orderedTakeGroup>

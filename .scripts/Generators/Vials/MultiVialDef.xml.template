@@ -5,12 +5,12 @@
         <label>Mistborn Vial: {{capitalize name}}</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <comps>
-            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-                <metalNames>
+            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
+                <metals>
                     {{#each metals}}
-                    <li>{{lower this}}</li>
+                    <li>{{capitalize this}}</li>
                     {{/each}}
-                </metalNames>
+                </metals>
             </li>
         </comps>
         <orderedTakeGroup>AllomanticVial_{{defName}}</orderedTakeGroup>

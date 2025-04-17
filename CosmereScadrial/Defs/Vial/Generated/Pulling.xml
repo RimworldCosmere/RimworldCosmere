@@ -5,17 +5,17 @@
         <label>Mistborn Vial: Pulling</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <comps>
-            <li Class="CosmereScadrial.Comps.Properties.AllomanticVial">
-                <metalNames>
-                    <li>iron</li>
-                    <li>tin</li>
-                    <li>brass</li>
-                    <li>copper</li>
-                    <li>aluminum</li>
-                    <li>chromium</li>
-                    <li>cadmium</li>
-                    <li>gold</li>
-                </metalNames>
+            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
+                <metals>
+                    <li>Iron</li>
+                    <li>Tin</li>
+                    <li>Brass</li>
+                    <li>Copper</li>
+                    <li>Aluminum</li>
+                    <li>Chromium</li>
+                    <li>Cadmium</li>
+                    <li>Gold</li>
+                </metals>
             </li>
         </comps>
         <orderedTakeGroup>AllomanticVial_Pulling</orderedTakeGroup>

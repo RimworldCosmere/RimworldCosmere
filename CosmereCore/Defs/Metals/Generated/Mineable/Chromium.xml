@@ -17,5 +17,12 @@
             <mineableScatterCommonality>0.6</mineableScatterCommonality>
             <mineableScatterLumpSizeRange>25~45</mineableScatterLumpSizeRange>
         </building>
+        <modExtensions>
+            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+                <metals>
+                    <li>Chromium</li>
+                </metals>
+            </li>
+        </modExtensions>
     </ThingDef>
 </Defs>

@@ -16,14 +16,10 @@
         <modExtensions>
             <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
-                    <li>brass</li>
+                    <li>Brass</li>
                 </metals>
             </li>
         </modExtensions>
-        <abilities>
-            <li>Cosmere_Ability_BurnBrass_Aura</li>
-            <li>Cosmere_Ability_BurnBrass_Target</li>
-        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Brass</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
@@ -33,7 +29,7 @@
         <modExtensions>
             <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
-                    <li>brass</li>
+                    <li>Brass</li>
                 </metals>
             </li>
         </modExtensions>
@@ -63,7 +59,7 @@
         <modExtensions>
             <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
-                    <li>brass</li>
+                    <li>Brass</li>
                 </metals>
             </li>
         </modExtensions>
@@ -76,7 +72,7 @@
         <modExtensions>
             <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
                 <metals>
-                    <li>brass</li>
+                    <li>Brass</li>
                 </metals>
             </li>
         </modExtensions>

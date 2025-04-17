@@ -4,17 +4,6 @@
         <defName>Cosmere_Hediff_TinBuff</defName>
         <label>Burning Tin</label>
         <description>Empowered senses from burning Pewter.</description>
-        <comps>
-            <li Class="CosmereScadrial.Hediffs.Comps.Properties.BurnMetal">
-                <dragHediff>Cosmere_Hediff_TinDrag</dragHediff>
-                <unitsPerBurn>.0004</unitsPerBurn>
-            </li>
-        </comps>
-        <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
-                <metal>tin</metal>
-            </li>
-        </modExtensions>
         <stages>
             <li>
                 <painFactor>1.25</painFactor>
@@ -50,7 +39,7 @@
         <isBad>true</isBad>
         <tendable>false</tendable>
         <comps>
-            <li Class="CosmereScadrial.Hediffs.Comps.Properties.DisappearsScaled" />
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.DisappearsScaled" />
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_TinDrag</thought>
                 <moodOffset>-2</moodOffset>

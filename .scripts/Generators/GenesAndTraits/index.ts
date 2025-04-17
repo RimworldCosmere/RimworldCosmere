@@ -8,20 +8,20 @@ import {SCADRIAL_MOD_DIR} from '../../constants';
 import {mkdirSync} from "fs";
 import {upperFirst} from "lodash";
 
-
-const geneAndTraitDefTemplate = readFileSync(resolve(__dirname, 'GeneAndTraitDef.xml.template'), 'utf8');
-const template = Handlebars.compile(geneAndTraitDefTemplate);
+const template = Handlebars.compile(readFileSync(resolve(__dirname, 'GeneAndTraitDef.xml.template'), 'utf8'));
 const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Investiture', 'Generated');
+
+
+const defOfTemplate = Handlebars.compile(readFileSync(resolve(__dirname, 'DefOf.cs.template'), 'utf8'));
+const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
 
 export default function () {
   rimrafSync(outputDir);
   mkdirSync(outputDir, {recursive: true});
 
   let order = 2
-  for (const metal of Object.keys(MetalRegistry.Metals)) {
-    const metalInfo = MetalRegistry.Metals[metal];
-    if (metalInfo.GodMetal || !metalInfo.Allomancy) continue;
-
+  const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && (!!x.Allomancy || !!x.Feruchemy));
+  for (const metalInfo of metals) {
     writeFileSync(resolve(outputDir, upperFirst(metalInfo.Name) + '.xml'), template({
       metal: metalInfo,
       defName: metalInfo.DefName ?? upperFirst(metalInfo.Name),
@@ -29,10 +29,13 @@ export default function () {
     }), 'utf8');
   }
 
+  ['Gene', 'Trait'].forEach(type => {
+    writeFileSync(resolve(defOfOutputDir, type + 'DefOf.cs'), defOfTemplate({type, metals}), 'utf8');
+  });
+
   ['Mistborn', 'FullFeruchemist'].forEach(type => {
     const templateString = readFileSync(resolve(__dirname, type + '.xml.template'), 'utf8');
     const template = Handlebars.compile(templateString);
-    const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && !!x.Allomancy).map((metal) => metal.Name);
     const abilities = Object.values(MetalRegistry.Metals).reduce((acc, metal) => {
       const typeData = metal[type === 'Mistborn' ? 'Allomancy' : 'Feruchemy'];
       if (typeData?.Abilities) {

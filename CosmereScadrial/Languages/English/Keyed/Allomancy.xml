@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CannotBurn>{0_labelShort} doesn't have enough {1_label} to burn, and no vial to replenish {0_possessive} reserves.</CannotBurn>
+</LanguageData>

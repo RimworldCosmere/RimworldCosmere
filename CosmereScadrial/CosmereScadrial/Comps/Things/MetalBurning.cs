@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CosmereScadrial.Abilities;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
 using RimWorld;
@@ -11,7 +12,7 @@ namespace CosmereScadrial.Comps.Things {
         private const int SECONDS_INTERVAL = 1;
 
         // Tracks all active burn rates per metal and source
-        private readonly Dictionary<(MetallicArtsMetalDef metal, string defName), float> burnSourceMap = new Dictionary<(MetallicArtsMetalDef metal, string defName), float>();
+        private readonly Dictionary<(MetallicArtsMetalDef metal, Def def), float> burnSourceMap = new Dictionary<(MetallicArtsMetalDef metal, Def def), float>();
         private readonly Dictionary<MetallicArtsMetalDef, List<float>> burnSources = new Dictionary<MetallicArtsMetalDef, List<float>>();
         private readonly List<MetallicArtsMetalDef> refueling = new List<MetallicArtsMetalDef>();
 
@@ -52,6 +53,7 @@ namespace CosmereScadrial.Comps.Things {
                     if (!TryAutoRefuel(metal)) {
                         // Auto-stop all sources if out of reserve
                         RemoveAllBurnSourcesForMetal(metal);
+                        return;
                     }
                 }
 
@@ -81,31 +83,37 @@ namespace CosmereScadrial.Comps.Things {
             return true;
         }
 
-        public void UpdateBurnSource(MetallicArtsMetalDef metal, float rate, string defName) {
+        public void UpdateBurnSource(MetallicArtsMetalDef metal, float rate, Def def) {
             if (rate <= 0f) {
-                UnregisterBurnSource(metal, defName);
+                UnregisterBurnSource(metal, def);
             }
             else {
-                RegisterBurnSource(metal, rate, defName);
+                RegisterBurnSource(metal, rate, def);
             }
         }
 
-        public void RegisterBurnSource(MetallicArtsMetalDef metal, float rate, string defName) {
-            var key = (metal, defName);
+        public void RegisterBurnSource(MetallicArtsMetalDef metal, float rate, Def def) {
+            var key = (metal, defName: def);
             burnSourceMap[key] = rate;
             RebuildSourceList(metal);
         }
 
-        public void UnregisterBurnSource(MetallicArtsMetalDef metal, string defName) {
-            var key = (metal, defName);
+        public void UnregisterBurnSource(MetallicArtsMetalDef metal, Def def) {
+            var key = (metal, defName: def);
             if (burnSourceMap.Remove(key)) {
                 RebuildSourceList(metal);
             }
         }
 
         public void RemoveAllBurnSourcesForMetal(MetallicArtsMetalDef metal) {
+            CosmereFramework.Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
             var keysToRemove = burnSourceMap.Keys.Where(k => k.metal == metal).ToList();
             foreach (var key in keysToRemove) {
+                if (key.def is AllomanticAbilityDef def) {
+                    var ability = (AllomanticAbility)pawn.abilities.GetAbility(def);
+                    ability?.UpdateStatus(BurningStatus.Off);
+                }
+
                 // @todo Tell the thing that added the source (An ability?) to turn off.
                 burnSourceMap.Remove(key);
             }
@@ -136,28 +144,28 @@ namespace CosmereScadrial.Comps.Things {
             base.PostExposeData();
 
             var metalDefs = new List<MetallicArtsMetalDef>();
-            var defNames = new List<string>();
+            var defs = new List<Def>();
             var burnRates = new List<float>();
 
             if (Scribe.mode == LoadSaveMode.Saving) {
-                foreach (var ((metal, defName), rate) in burnSourceMap) {
+                foreach (var ((metal, def), rate) in burnSourceMap) {
                     metalDefs.Add(metal);
-                    defNames.Add(defName);
+                    defs.Add(def);
                     burnRates.Add(rate);
                 }
             }
 
             Scribe_Collections.Look(ref metalDefs, "burnSourceMetals", LookMode.Def);
-            Scribe_Collections.Look(ref defNames, "burndefNames", LookMode.Value);
+            Scribe_Collections.Look(ref defs, "burndefs", LookMode.Def);
             Scribe_Collections.Look(ref burnRates, "burnSourceRates", LookMode.Value);
 
             if (Scribe.mode != LoadSaveMode.PostLoadInit) return;
             {
                 burnSourceMap.Clear();
-                if (metalDefs == null || defNames == null || burnRates == null) return;
-                var count = Mathf.Min(metalDefs.Count, defNames.Count, burnRates.Count);
+                if (metalDefs == null || defs == null || burnRates == null) return;
+                var count = Mathf.Min(metalDefs.Count, defs.Count, burnRates.Count);
                 for (var i = 0; i < count; i++) {
-                    burnSourceMap[(metalDefs[i], defNames[i])] = burnRates[i];
+                    burnSourceMap[(metalDefs[i], defs[i])] = burnRates[i];
                 }
 
                 burnSources.Clear();

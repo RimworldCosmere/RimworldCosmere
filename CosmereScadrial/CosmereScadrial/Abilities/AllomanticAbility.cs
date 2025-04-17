@@ -34,7 +34,7 @@ namespace CosmereScadrial.Abilities {
             }
         }
 
-        private float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
+        public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
         public new AllomanticAbilityDef def => (AllomanticAbilityDef)base.def;
 
@@ -85,7 +85,7 @@ namespace CosmereScadrial.Abilities {
                 BurningStatus.Burning => def.beuPerTick,
                 BurningStatus.Flaring => def.beuPerTick * 2,
                 _ => throw new ArgumentOutOfRangeException(),
-            }, def.defName);
+            }, def);
 
             switch (this.status) {
                 // When Disabling (and possibly deflaring)

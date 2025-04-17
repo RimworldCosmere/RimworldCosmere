@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_{{capitalize metal.Name}}">
+        <defName>{{capitalize metal.Name}}</defName>{{#with metal.Allomancy}}
+        <allomancy>{{#if Username}}
+            <userName>{{UserName}}</userName>{{/if}}{{#if Description}}
+            <description>{{Description}}</description>{{/if}}{{#if Group}}
+            <group>{{capitalize Group}}</group>{{/if}}{{#if Axis}}
+            <axis>{{capitalize Axis}}</axis>{{/if}}{{#if Polarity}}
+            <polarity>{{capitalize Polarity}}</polarity>{{/if}}
+        </allomancy>{{else}}{{/with}}{{#with metal.Feruchemy}}
+        <feruchemy>{{#if UserName}}
+            <userName>{{UserName}}</userName>{{/if}}{{#if Description}}
+            <description>{{Description}}</description>{{/if}}{{#if Group}}
+            <group>{{capitalize Group}}</group>{{/if}}
+        </feruchemy>{{else}}{{/with}}
+    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+</Defs>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Bronze">
+        <defName>Bronze</defName>
+        <allomancy>
+            <description>Detects other Allomancers using powers.</description>
+            <group>Mental</group>
+            <axis>Internal</axis>
+            <polarity>Pushing</polarity>
+        </allomancy>
+        <feruchemy>
+            <userName>sentry</userName>
+            <description>Stores wakefulness, useful for staying awake or skipping sleep.</description>
+            <group>Cognitive</group>
+        </feruchemy>
+    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+</Defs>

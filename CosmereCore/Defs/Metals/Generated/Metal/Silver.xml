@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereCore.Defs.MetalDef Name="Cosmere_Metal_Silver">
+        <defName>Silver</defName>
+        <label>silver</label>
+        <description>Silver is a bright, lustrous metal renowned for its conductivity, beauty, and symbolic purity. While soft and malleable, it remains a staple in crafting, electronics, and currency.</description>
+        <color>(204, 195, 173)</color>
+        <colorTwo>(110, 103, 93)</colorTwo>
+    </CosmereCore.Defs.MetalDef>
+</Defs>

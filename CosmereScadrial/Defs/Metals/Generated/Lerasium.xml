@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Lerasium">
+        <defName>Lerasium</defName>
+        <allomancy>
+            <description>Turns a person into a Mistborn when consumed.</description>
+        </allomancy>
+    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+</Defs>

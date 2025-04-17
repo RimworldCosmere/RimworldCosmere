@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Chromium">
+        <defName>Chromium</defName>
+        <allomancy>
+            <description>Wipes away another Allomancer&#x27;s metal reserves.</description>
+            <group>Enhancement</group>
+            <axis>External</axis>
+            <polarity>Pulling</polarity>
+        </allomancy>
+        <feruchemy>
+            <userName>spinner</userName>
+            <description>Stores fortune, influencing luck subtly.</description>
+            <group>Spiritual</group>
+        </feruchemy>
+    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+</Defs>

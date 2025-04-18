@@ -1,21 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CosmereFramework.Utils;
 using CosmereScadrial.Defs;
 using Verse;
 
 namespace CosmereScadrial.Comps.Things {
-    /**
-     * @todo Should these reserves decay?
-     */
     public class MetalReserves : ThingComp {
         public const float MAX_AMOUNT = 100f;
+        private const float SLEEP_DECAY_AMOUNT = 2.5f;
+
         private Dictionary<MetallicArtsMetalDef, float> reserves = new Dictionary<MetallicArtsMetalDef, float>();
 
         public MetalReserves() {
             var allomanticMetals = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => !x.godMetal && x.allomancy != null);
             foreach (var metal in allomanticMetals) {
                 reserves.Add(metal, 0);
+            }
+        }
+
+        public override void CompTickRare() {
+            base.CompTickRare();
+            if (parent is not Pawn pawn) return;
+            if (!PawnUtility.IsAsleep(pawn)) return;
+
+            var keys = reserves.Keys.Where(metal => reserves[metal] > 0).ToArray();
+            foreach (var metal in keys) {
+                LowerReserve(metal, SLEEP_DECAY_AMOUNT);
             }
         }
 

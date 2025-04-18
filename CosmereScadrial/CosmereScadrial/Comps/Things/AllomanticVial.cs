@@ -9,7 +9,7 @@ namespace CosmereScadrial.Comps.Things {
 
         public override void PostExposeData() {
             base.PostExposeData();
-            Scribe_Collections.Look(ref props.metals, "metals", LookMode.Value);
+            Scribe_Collections.Look(ref props.metals, "metals", LookMode.Def);
         }
 
         public override void PostIngested(Pawn ingester) {

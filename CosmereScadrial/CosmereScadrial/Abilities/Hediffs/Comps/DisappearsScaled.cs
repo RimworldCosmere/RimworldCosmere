@@ -3,16 +3,18 @@ using Verse;
 
 namespace CosmereScadrial.Abilities.Hediffs.Comps {
     public class DisappearsScaled : HediffComp {
+        private float initialSeverity;
         private int ticksLeft = -1;
+        private int totalTicks = -1;
 
-        public new Properties.DisappearsScaled props => (Properties.DisappearsScaled)base.props;
+        private new Properties.DisappearsScaled props => (Properties.DisappearsScaled)base.props;
 
         public override string CompLabelInBracketsExtra => $"{ticksLeft.ToStringTicksToPeriod()} left";
 
         public override void CompPostMake() {
             base.CompPostMake();
-            var severity = parent.Severity;
-            ticksLeft = (int)(props.baseTicks * severity); // Scale duration
+            initialSeverity = parent.Severity;
+            totalTicks = ticksLeft = (int)(props.baseTicks * initialSeverity); // Scale duration
         }
 
         public override void CompPostTick(ref float severityAdjustment) {
@@ -21,7 +23,15 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
             ticksLeft--;
             if (ticksLeft <= 0) {
                 parent.pawn.health.RemoveHediff(parent);
+                return;
             }
+
+            if (!props.scaleSeverity) return;
+
+            // Linear severity reduction based on initial severity and total duration
+            var targetSeverity = props.minSeverity;
+            var decayAmount = (initialSeverity - targetSeverity) / totalTicks;
+            severityAdjustment -= decayAmount;
         }
     }
 }

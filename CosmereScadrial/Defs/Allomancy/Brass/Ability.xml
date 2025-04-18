@@ -9,20 +9,18 @@ Aura</label>
         <metal>Brass</metal>
         <hediff>Cosmere_Hediff_BrassAura</hediff>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
-    <!--<CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurn">
+    <CosmereScadrial.Defs.RightClickAbilityDef>
         <defName>Cosmere_Ability_BurnBrass_Target</defName>
         <label>Soothing Target</label>
         <description>Suppress emotional outburst and calm the mind of a target Brass.</description>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Brass</iconPath>
-        <comps>
-            <li Class="CosmereScadrial.Abilities.Comps.Properties.ToggleBurnMetal">
-                <hediff>Cosmere_Hediff_BrassTarget</hediff>
-            </li>
-        </comps>
-        <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
-                <metal>Brass</metal>
-            </li>
-        </modExtensions>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>-->
+        <metal>Brass</metal>
+        <abilityClass>CosmereScadrial.Abilities.RightClick.SootheTarget</abilityClass>
+        <range>15</range>
+        <cooldownTicks>630</cooldownTicks>
+        <canTargetHumans>true</canTargetHumans>
+        <canTargetAnimals>true</canTargetAnimals>
+        <canTargetSelf>false</canTargetSelf>
+        <requiresLineOfSight>false</requiresLineOfSight>
+    </CosmereScadrial.Defs.RightClickAbilityDef>
 </Defs>

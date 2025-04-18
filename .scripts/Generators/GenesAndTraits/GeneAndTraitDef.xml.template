@@ -18,7 +18,14 @@
                 <metals>
                     <li>{{capitalize metal.Name}}</li>
                 </metals>
-            </li>
+            </li>{{#if metal.Allomancy.RightClickAbilities}}
+            <li Class="CosmereScadrial.DefModExtensions.RightClickAbilities">
+                <abilities>
+                    {{#each metal.Allomancy.RightClickAbilities}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </abilities>
+            </li>{{/if}}
         </modExtensions>
         {{#if metal.Allomancy.Abilities}}
         <abilities>

@@ -64,6 +64,13 @@ namespace CosmereScadrial.Abilities {
         public override void AbilityTick() {
             base.AbilityTick();
 
+            if (PawnUtility.IsAsleep(pawn) && status > BurningStatus.Passive) {
+                UpdateStatus(BurningStatus.Passive);
+            }
+            else if (!PawnUtility.IsAsleep(pawn) && status == BurningStatus.Passive) {
+                UpdateStatus(BurningStatus.Burning);
+            }
+
             if (!pawn.IsHashIntervalTick(GenTicks.SecondsToTicks(5)) || !pawn.Spawned || pawn.Map == null) return;
 
             var mote = MoteMaker.MakeAttachedOverlay(

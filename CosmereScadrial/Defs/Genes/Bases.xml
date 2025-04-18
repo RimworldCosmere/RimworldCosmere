@@ -26,4 +26,21 @@
     <biostatArc>1</biostatArc>
     <randomChosen>false</randomChosen>
   </Gene>
+  
+  <TraidDef Name="AbstractInvestitureTrait" Abstract="True">
+    <commonality>0</commonality>
+  </TraidDef>
+  <TraitDef ParentName="AbstractInvestitureTrait">
+    <defName>Cosmere_Metalborn</defName>
+    <label>Metalborn</label>
+    <description>This person was born with one or more of the Metallic Arts.</description>
+    <degreeDatas>
+      <li>
+        <label>Metalborn</label>
+        <description>This person is a user of the Metallic Arts.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+      </li>
+    </degreeDatas>
+  </TraitDef>
 </Defs>

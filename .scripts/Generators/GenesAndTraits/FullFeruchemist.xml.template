@@ -19,7 +19,14 @@
                     <li>{{capitalize this.Name}}</li>
                     {{/each}}
                 </metals>
-            </li>
+            </li>{{#if rightClickAbilities}}
+            <li Class="CosmereScadrial.DefModExtensions.RightClickAbilities">
+                <abilities>
+                    {{#each rightClickAbilities}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </abilities>
+            </li>{{/if}}
         </modExtensions>
         <abilities>
             {{#each abilities}}

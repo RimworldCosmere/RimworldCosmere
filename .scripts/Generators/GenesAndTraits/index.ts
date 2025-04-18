@@ -9,7 +9,7 @@ import {mkdirSync} from "fs";
 import {upperFirst} from "lodash";
 
 const template = Handlebars.compile(readFileSync(resolve(__dirname, 'GeneAndTraitDef.xml.template'), 'utf8'));
-const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Investiture', 'Generated');
+const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Genes', 'Generated');
 
 
 const defOfTemplate = Handlebars.compile(readFileSync(resolve(__dirname, 'DefOf.cs.template'), 'utf8'));
@@ -36,15 +36,19 @@ export default function () {
   ['Mistborn', 'FullFeruchemist'].forEach(type => {
     const templateString = readFileSync(resolve(__dirname, type + '.xml.template'), 'utf8');
     const template = Handlebars.compile(templateString);
-    const abilities = Object.values(MetalRegistry.Metals).reduce((acc, metal) => {
+    const {abilities, rightClickAbilities} = Object.values(MetalRegistry.Metals).reduce((acc, metal) => {
       const typeData = metal[type === 'Mistborn' ? 'Allomancy' : 'Feruchemy'];
       if (typeData?.Abilities) {
-        acc.push(...typeData.Abilities);
+        acc.abilities.push(...typeData.Abilities);
+      }
+      if (typeData?.RightClickAbilities) {
+        acc.rightClickAbilities.push(...typeData.RightClickAbilities);
       }
 
-      return acc;
-    }, [] as string[]);
 
-    writeFileSync(resolve(outputDir, type + '.xml'), template({metals, abilities}), 'utf8');
+      return acc;
+    }, {abilities: [] as string[], rightClickAbilities: [] as string[]});
+
+    writeFileSync(resolve(outputDir, type + '.xml'), template({metals, abilities, rightClickAbilities}), 'utf8');
   })
 }

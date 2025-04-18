@@ -1,6 +1,5 @@
 ﻿using CosmereCore.Utils;
 using CosmereScadrial.Utils;
-using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Genes {
@@ -8,12 +7,8 @@ namespace CosmereScadrial.Genes {
         public override void PostAdd() {
             base.PostAdd();
 
-            var trait = DefDatabase<TraitDef>.GetNamedSilentFail(def.defName);
-            if (trait != null) {
-                // pawn.story.traits.GainTrait(new Trait(trait));
-            }
-
             MetalbornUtility.HandleMetalbornTrait(pawn);
+            MetalbornUtility.HandleRightClickAbilities(pawn, def);
             InvestitureUtility.AssignHeighteningFromBeUs(pawn);
         }
 
@@ -21,6 +16,7 @@ namespace CosmereScadrial.Genes {
             base.PostRemove();
 
             MetalbornUtility.HandleMetalbornTrait(pawn);
+            MetalbornUtility.HandleRightClickAbilities(pawn, def);
         }
     }
 }

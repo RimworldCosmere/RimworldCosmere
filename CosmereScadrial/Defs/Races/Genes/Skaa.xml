@@ -47,8 +47,8 @@
       <ToxicResistance>0.1</ToxicResistance>
       <ToxicEnvironmentResistance>0.1</ToxicEnvironmentResistance>
       <RestRateMultiplier>0.1</RestRateMultiplier>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
-      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <ComfyTemperatureMin>-50</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
       <PainShockThreshold>.1</PainShockThreshold>
       <LifespanFactor>.1</LifespanFactor>
     </statOffsets>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CosmereScadrial.Defs;
@@ -7,6 +8,7 @@ using Verse;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Abilities.Gizmos {
+    [Obsolete("Removing soon", true)]
     public class BurnGizmo : Command_Ability {
         private static readonly Dictionary<Color, Texture2D> cachedTextures = new Dictionary<Color, Texture2D>();
 

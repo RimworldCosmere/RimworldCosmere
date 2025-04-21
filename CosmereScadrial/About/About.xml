@@ -14,8 +14,14 @@
             <displayName>Cosmere - Core</displayName>
             <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
         </li>
+        <li>
+            <packageId>spoden.justglass</packageId>
+            <displayName>Just Glass</displayName>
+            <downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2045368641</downloadUrl>
+        </li>
     </modDependencies>
     <forceLoadAfter>
         <li>cryptiklemur.cosmere.core</li>
+        <li>spoden.justglass</li>
     </forceLoadAfter>
 </ModMetaData>

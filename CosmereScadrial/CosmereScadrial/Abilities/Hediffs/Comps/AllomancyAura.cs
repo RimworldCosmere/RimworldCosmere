@@ -11,7 +11,7 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
 
         private new Properties.AllomancyAura props => (Properties.AllomancyAura)base.props;
 
-        public new BurningMetal parent => base.parent as BurningMetal;
+        public new AllomanticHediff parent => base.parent as AllomanticHediff;
 
         public bool isAtLeastPassive => parent.Severity >= 0.5f;
 

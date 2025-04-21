@@ -22,14 +22,12 @@ export class MetalRegistry {
           Polarity: metal.allomancy.polarity,
           UserName: metal.allomancy.userName,
           Abilities: metal.allomancy.abilities ?? [],
-          RightClickAbilities: metal.allomancy.rightClickAbilities ?? [],
         }) : undefined,
         Feruchemy: metal.feruchemy ? new MetalFeruchemyInfo({
           Description: metal.feruchemy.description,
           Group: metal.feruchemy.group,
           UserName: metal.feruchemy.userName,
           Abilities: metal.feruchemy.abilities ?? [],
-          RightClickAbilities: metal.feruchemy.rightClickAbilities ?? [],
         }) : undefined,
         Buildable: metal.buildable ? new MetalBuildableInfo({
           Buildings: metal.buildable.buildings,

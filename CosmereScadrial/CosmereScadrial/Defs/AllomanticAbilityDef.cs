@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using CosmereScadrial.Abilities;
-using CosmereScadrial.Abilities.Gizmos;
 using CosmereScadrial.Abilities.Hediffs;
 using RimWorld;
 using Verse;
@@ -9,14 +8,17 @@ namespace CosmereScadrial.Defs {
     public class AllomanticAbilityDef : AbilityDef {
         public float beuPerTick = 0.1f / GenTicks.TicksPerRealSecond;
         public HediffDef dragHediff;
+        public bool followTarget = true;
         public HediffDef hediff;
+        public float hediffSeverityFactor = 1f;
         public MetallicArtsMetalDef metal;
+        public float minFollowDistance = 5f;
         public float minSeverityForDrag = 1f;
         public bool toggleable;
 
         public AllomanticAbilityDef() {
             abilityClass = typeof(AllomanticAbility);
-            gizmoClass = typeof(BurnGizmo);
+            // gizmoClass = typeof(BurnGizmo);
         }
 
         public override IEnumerable<string> ConfigErrors() {
@@ -28,7 +30,7 @@ namespace CosmereScadrial.Defs {
                 yield return "hediff is null";
             }
 
-            if (hediff.hediffClass != typeof(BurningMetal)) {
+            if (hediff?.hediffClass != typeof(AllomanticHediff)) {
                 yield return "hediffClass is not BurningMetal";
             }
 

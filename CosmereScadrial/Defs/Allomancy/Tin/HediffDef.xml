@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractSelfBurnMetal">
+    <HediffDef ParentName="AbstractSelfBurnHediff">
         <defName>Cosmere_Hediff_TinBuff</defName>
         <label>Burning Tin</label>
         <description>Empowered senses from burning Pewter.</description>

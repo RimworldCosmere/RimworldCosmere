@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using RimWorld;
 using Verse;
@@ -33,8 +32,8 @@ namespace CosmereScadrial.Utils {
             if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Metalborn)) pawn.story.traits.GainTrait(new Trait(TraitDefOf.Cosmere_Metalborn));
         }
 
-        public static void HandleRightClickAbilities(Pawn pawn, GeneDef def) {
-            pawn.TryGetComp<RightClickAbilities>()?.TryAddAbilities(def);
+        public static void HandleAbilities(Pawn pawn, GeneDef def) {
+            //pawn.TryGetComp<RightClickAbilities>()?.TryAddAllomanticAbilities(def);
         }
     }
 }

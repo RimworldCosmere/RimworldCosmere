@@ -6,33 +6,76 @@
         <displayOrder>1</displayOrder>
     </AbilityCategoryDef>
     
-    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractSelfBurn" Abstract="True">
+    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractBurnAbility" Abstract="True">
         <stunTargetWhileCasting>False</stunTargetWhileCasting>
         <aiCanUse>true</aiCanUse>
         <ai_IsOffensive>true</ai_IsOffensive>
         <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
         <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
         <category>Allomancy</category>
+        <verbProperties>
+            <verbClass>Verb_CastAbility</verbClass>
+            <warmupTime>0</warmupTime>
+            <drawAimPie>false</drawAimPie>
+            <requireLineOfSight>false</requireLineOfSight>
+        </verbProperties>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    
+    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractSelfBurnAbility" ParentName="AbstractBurnAbility" Abstract="True">
         <canUseAoeToGetTargets>False</canUseAoeToGetTargets>
         <targetRequired>false</targetRequired>
         <targetWorldCell>false</targetWorldCell>
         <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
         <hostile>false</hostile>
         <verbProperties>
-            <verbClass>Verb_CastAbility</verbClass>
             <targetable>false</targetable>
-            <warmupTime>0</warmupTime>
             <range>0</range>
             <drawAimPie>false</drawAimPie>
             <requireLineOfSight>false</requireLineOfSight>
             <violent>false</violent>
+        </verbProperties>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    
+    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractTargetBurnAbility" ParentName="AbstractBurnAbility" Abstract="True">
+        <canUseAoeToGetTargets>False</canUseAoeToGetTargets>
+        <targetRequired>true</targetRequired>
+        <targetWorldCell>false</targetWorldCell>
+        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+        <hostile>false</hostile>
+        <verbProperties>
+            <verbClass>Verb_CastAbility</verbClass>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>12</range>
+            <requireLineOfSight>true</requireLineOfSight>
+            <violent>false</violent>
+            <noiseRadius>0</noiseRadius>
             <targetParams>
-                <canTargetSelf>true</canTargetSelf>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetBuildings>false</canTargetBuildings>
             </targetParams>
         </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     
-    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractToggleSelfBurn" ParentName="AbstractSelfBurn" Abstract="True">
+    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractTargetHostileBurnAbility" ParentName="AbstractTargetBurnAbility" Abstract="True">
+        <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
+        <hostile>true</hostile>
+        <verbProperties>
+            <verbClass>Verb_CastAbility</verbClass>
+            <targetable>false</targetable>
+            <warmupTime>0</warmupTime>
+            <range>0</range>
+            <violent>true</violent>
+        </verbProperties>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    
+    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractToggleSelfBurnAbility" ParentName="AbstractSelfBurnAbility" Abstract="True">
+        <toggleable>true</toggleable>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractToggleTargetBurnAbility" ParentName="AbstractTargetBurnAbility" Abstract="True">
+        <toggleable>true</toggleable>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractToggleTargetHostileBurnAbility" ParentName="AbstractTargetHostileBurnAbility" Abstract="True">
         <toggleable>true</toggleable>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

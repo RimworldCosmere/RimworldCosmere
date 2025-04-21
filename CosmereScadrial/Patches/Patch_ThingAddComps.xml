@@ -5,7 +5,6 @@
         <xpath>/Defs/ThingDef[defName="Human"]/comps</xpath>
         <value>
             <li Class="CosmereScadrial.Comps.Things.Properties.MetalReserves" />
-            <li Class="CosmereScadrial.Comps.Things.Properties.RightClickAbilities" />
             <li Class="CosmereScadrial.Comps.Things.Properties.MetalBurning" />
         </value>
     </Operation>

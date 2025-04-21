@@ -27,13 +27,14 @@
             <li>
                 <filter>
                     <thingDefs>
-                        <li>WoodLog</li>
+                        <li>Glass</li>
                     </thingDefs>
                 </filter>
                 <count>1</count>
             </li>
         </ingredients>
         <researchPrerequisites>
+            <li>Smithing</li>
             <li>Cosmere_Allomancy</li>
         </researchPrerequisites>
     </RecipeDef>

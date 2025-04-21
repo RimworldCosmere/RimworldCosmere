@@ -1,21 +1,24 @@
 using System;
 using System.Text;
 using CosmereScadrial.Utils;
+using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Abilities.Hediffs {
-    public class BurningMetal : HediffWithComps {
+    public class AllomanticHediff : HediffWithComps {
         public AllomanticAbility sourceAbility;
+
+        private float allomanticPower => sourceAbility?.pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power) ?? .25f;
 
         /// <summary>
         ///     Severity is based on the BurningStatus of the source ability's ToggleableBurn comp
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public override float Severity => sourceAbility.status switch {
-            BurningStatus.Off => 0f,
-            BurningStatus.Passive => 0.5f,
-            BurningStatus.Burning => 1f,
-            BurningStatus.Flaring => 2f,
+            BurningStatus.Off => sourceAbility.def.hediffSeverityFactor * allomanticPower * 4 * 0f,
+            BurningStatus.Passive => sourceAbility.def.hediffSeverityFactor * allomanticPower * 4 * 0.5f,
+            BurningStatus.Burning => sourceAbility.def.hediffSeverityFactor * allomanticPower * 4 * 1f,
+            BurningStatus.Flaring => sourceAbility.def.hediffSeverityFactor * allomanticPower * 4 * 2f,
             _ => throw new ArgumentOutOfRangeException(),
         };
 

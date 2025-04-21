@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <StatDef>
-        <defName>AllomanticPower</defName>
+        <defName>Cosmere_Allomantic_Power</defName>
         <label>Allomantic Strength</label>
         <description>Affects potency and range of allomantic abilities.</description>
         <category>Basics</category>
         <minValue>0</minValue>
-        <defaultBaseValue>1</defaultBaseValue>
+        <defaultBaseValue>.25</defaultBaseValue>
         <toStringStyle>PercentZero</toStringStyle>
         <showOnAnimals>false</showOnAnimals>
         <hideAtValue>0</hideAtValue>

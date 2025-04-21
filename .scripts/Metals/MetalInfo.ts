@@ -28,7 +28,6 @@ export class MetalAllomancyInfo {
   public Axis: Axis;
   public Polarity: Polarity;
   public Abilities: string[];
-  public RightClickAbilities: string[];
   constructor(self: Partial<MetalAllomancyInfo>) {
     Object.assign(this, self);
   }
@@ -39,7 +38,6 @@ export class MetalFeruchemyInfo {
   public Description: string;
   public Group: FeruchemyGroup;
   public Abilities: string[];
-  public RightClickAbilities: string[];
   constructor(self: Partial<MetalFeruchemyInfo>) {
     Object.assign(this, self);
   }

@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef Name="AbstractBurnMetal" Abstract="True">
+    <HediffDef Name="AbstractBurnHediff" Abstract="True">
         <isBad>false</isBad>
         <tendable>false</tendable>
         <displayWound>false</displayWound>
         <everCurableByItem>false</everCurableByItem>
         <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
     </HediffDef>
-    <HediffDef ParentName="AbstractBurnMetal" Name="AbstractSelfBurnMetal" Abstract="True">
-        <hediffClass>CosmereScadrial.Abilities.Hediffs.BurningMetal</hediffClass>
+    <HediffDef ParentName="AbstractBurnHediff" Name="AbstractSelfBurnHediff" Abstract="True">
+        <hediffClass>CosmereScadrial.Abilities.Hediffs.AllomanticHediff</hediffClass>
+    </HediffDef>
+    <HediffDef ParentName="AbstractBurnHediff" Name="AbstractTargetBurnHediff" Abstract="True">
+        <hediffClass>CosmereScadrial.Abilities.Hediffs.AllomanticHediff</hediffClass>
+    </HediffDef>
+    <HediffDef ParentName="AbstractBurnHediff" Name="AbstractTargetHostileBurnHediff" Abstract="True">
+        <isBad>true</isBad>
     </HediffDef>
 </Defs>

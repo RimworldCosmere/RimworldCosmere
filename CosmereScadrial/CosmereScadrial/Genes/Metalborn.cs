@@ -8,7 +8,7 @@ namespace CosmereScadrial.Genes {
             base.PostAdd();
 
             MetalbornUtility.HandleMetalbornTrait(pawn);
-            MetalbornUtility.HandleRightClickAbilities(pawn, def);
+            MetalbornUtility.HandleAbilities(pawn, def);
             InvestitureUtility.AssignHeighteningFromBeUs(pawn);
         }
 
@@ -16,7 +16,7 @@ namespace CosmereScadrial.Genes {
             base.PostRemove();
 
             MetalbornUtility.HandleMetalbornTrait(pawn);
-            MetalbornUtility.HandleRightClickAbilities(pawn, def);
+            MetalbornUtility.HandleAbilities(pawn, def);
         }
     }
 }

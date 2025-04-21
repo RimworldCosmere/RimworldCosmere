@@ -19,9 +19,15 @@
             <downloadUrl>https://github.com/UnlimitedHugs/RimworldHugsLib/releases/latest</downloadUrl>
             <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
         </li>
+        <li>
+            <packageId>kathanon.floatsubmenu</packageId>
+            <displayName>Float Sub-Menus</displayName>
+            <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2864015430</steamWorkshopUrl>
+        </li>
     </modDependencies>
     <loadAfter>
         <li>brrainz.harmony</li>
         <li>UnlimitedHugs.HugsLib</li>
+        <li>kathanon.floatsubmenu</li>
     </loadAfter>
 </ModMetaData>

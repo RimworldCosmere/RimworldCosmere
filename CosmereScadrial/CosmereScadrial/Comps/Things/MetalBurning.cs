@@ -6,6 +6,7 @@ using CosmereScadrial.Utils;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Comps.Things {
     public class MetalBurning : ThingComp {
@@ -52,6 +53,7 @@ namespace CosmereScadrial.Comps.Things {
                 if (!AllomancyUtility.TryBurnMetalForInvestiture(pawn, metal, totalRate * SECONDS_INTERVAL)) {
                     if (!TryAutoRefuel(metal)) {
                         // Auto-stop all sources if out of reserve
+                        Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
                         RemoveAllBurnSourcesForMetal(metal);
                         return;
                     }
@@ -79,15 +81,14 @@ namespace CosmereScadrial.Comps.Things {
             if (!pawn.jobs.TryTakeOrderedJob(job)) return false;
 
             refueling.Add(metal);
-            Log.Warning($"{pawn.NameShortColored} is auto-ingesting {vial.LabelShort} for {metal}.");
+            Verse.Log.Warning($"{pawn.NameShortColored} is auto-ingesting {vial.LabelShort} for {metal}.");
             return true;
         }
 
         public void UpdateBurnSource(MetallicArtsMetalDef metal, float rate, Def def) {
             if (rate <= 0f) {
                 UnregisterBurnSource(metal, def);
-            }
-            else {
+            } else {
                 RegisterBurnSource(metal, rate, def);
             }
         }
@@ -105,8 +106,14 @@ namespace CosmereScadrial.Comps.Things {
             }
         }
 
+        public void RemoveAllBurnSources() {
+            var metalsToRemove = burnSources.Keys.ToArray();
+            foreach (var metal in metalsToRemove) {
+                RemoveAllBurnSourcesForMetal(metal);
+            }
+        }
+
         public void RemoveAllBurnSourcesForMetal(MetallicArtsMetalDef metal) {
-            CosmereFramework.Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
             var keysToRemove = burnSourceMap.Keys.Where(k => k.metal == metal).ToList();
             foreach (var key in keysToRemove) {
                 if (key.def is AllomanticAbilityDef def) {
@@ -120,11 +127,13 @@ namespace CosmereScadrial.Comps.Things {
             burnSources[metal].Clear();
         }
 
-        public float GetTotalBurnRate(MetallicArtsMetalDef metal) {
-            return burnSources.TryGetValue(metal, out var list) ? list.Sum() : 0f;
+        public float GetTotalBurnRate(MetallicArtsMetalDef metal = null) {
+            var metals = metal == null ? burnSources.Keys.ToArray() : [metal];
+
+            return metals.Sum(x => burnSources.TryGetValue(x, out var list) ? list.Sum() : 0f);
         }
 
-        public bool IsBurning(MetallicArtsMetalDef metal) {
+        public bool IsBurning(MetallicArtsMetalDef metal = null) {
             return GetTotalBurnRate(metal) > 0f;
         }
 

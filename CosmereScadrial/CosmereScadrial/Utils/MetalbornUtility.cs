@@ -32,8 +32,15 @@ namespace CosmereScadrial.Utils {
             if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Metalborn)) pawn.story.traits.GainTrait(new Trait(TraitDefOf.Cosmere_Metalborn));
         }
 
-        public static void HandleAbilities(Pawn pawn, GeneDef def) {
-            //pawn.TryGetComp<RightClickAbilities>()?.TryAddAllomanticAbilities(def);
+        public static void HandleBurningMetalHediff(Pawn pawn) {
+            var hediffDef = DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Burning_Metals");
+            if (!HasAnyMetalbornGene(pawn)) {
+                var hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef);
+                if (hediff != null) pawn.health.RemoveHediff(hediff);
+                return;
+            }
+
+            pawn.health.GetOrAddHediff(hediffDef);
         }
     }
 }

@@ -5,9 +5,7 @@ using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Flags;
 using RimWorld;
-using UnityEngine;
 using Verse;
-using Verse.AI;
 using Log = CosmereFramework.Log;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
@@ -19,29 +17,26 @@ namespace CosmereScadrial.Abilities {
         Flaring,
     }
 
-    public class AllomanticAbility : Ability {
-        private readonly TargetFlags targetFlags;
-        private int flareStartTick = -1;
+    public abstract class AbstractAllomanticAbility : Ability {
+        protected readonly TargetFlags targetFlags;
+        protected int flareStartTick = -1;
         public BurningStatus? status;
+        public LocalTargetInfo target;
 
-        private Pawn targetPawn;
-
-        public AllomanticAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
+        public AbstractAllomanticAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
             if (toggleable) {
                 status = BurningStatus.Off;
             }
 
             targetFlags = targetFlags.FromAbilityDef(def);
-            Log.Verbose($"{def.defName} flags={targetFlags}");
         }
 
-        public AllomanticAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
+        public AbstractAllomanticAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
             if (toggleable) {
                 status = BurningStatus.Off;
             }
 
             targetFlags = targetFlags.FromAbilityDef(def);
-            Log.Verbose($"{def.defName} flags={targetFlags}");
         }
 
         public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
@@ -52,36 +47,26 @@ namespace CosmereScadrial.Abilities {
 
         public MetallicArtsMetalDef metal => def.metal;
 
-        private bool toggleable => def.toggleable;
+        protected bool toggleable => def.toggleable;
 
-        private MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
+        protected MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 
         public override bool CanCast => metalBurning.CanBurn(metal, def.beuPerTick);
 
         public TaggedString GetRightClickLabel(LocalTargetInfo target, BurningStatus burningStatus, string disableReason = null) {
             var hasDisableReason = !string.IsNullOrEmpty(disableReason);
 
+            var label = def.LabelCap.Replace("Target", target.Label);
+            if (burningStatus.Equals(BurningStatus.Off)) {
+                return def.label == metal.LabelCap ? $"Stop Burning {metal.LabelCap}" : $"Stop {label}";
+            }
+
             if (def.label == metal.label.CapitalizeFirst()) {
                 return burningStatus.Equals(BurningStatus.Burning) ? $"Burn {metal.label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}" : $"Flare {metal.label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}";
             }
 
-            var label = def.label.Replace("Target", target.Label);
+            if (status == BurningStatus.Flaring && burningStatus.Equals(BurningStatus.Burning)) label = $"De-Flare: {label}";
             return burningStatus.Equals(BurningStatus.Burning) ? $"{label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}" : $"Flare {label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}";
-        }
-
-        public virtual bool CanActivate(BurningStatus activationStatus, out string reason) {
-            if (!metalBurning.CanBurn(metal, def.beuPerTick)) {
-                reason = "MenuNoReserves".Translate(metal.LabelCap);
-                return false;
-            }
-
-            if (activationStatus == BurningStatus.Flaring && PawnUtility.IsAsleep(pawn)) {
-                reason = "MenuCannotFlareAsleep".Translate();
-                return false;
-            }
-
-            reason = null;
-            return true;
         }
 
         public override bool CanApplyOn(LocalTargetInfo target) {
@@ -101,10 +86,6 @@ namespace CosmereScadrial.Abilities {
             // 3. Self targeting
             if (targetFlags.IsOnlySelf()) {
                 return targetPawn != null && targetPawn == pawn;
-            }
-
-            if (def.verbProperties.range > 0f) {
-                if (pawn.Position.DistanceTo(target.CenterVector3.ToIntVec3()) > def.verbProperties.range) return false;
             }
 
             // 4. Object-only logic (non-pawn, has a thing)
@@ -159,93 +140,48 @@ namespace CosmereScadrial.Abilities {
             return false;
         }
 
+        public virtual bool CanActivate(BurningStatus activationStatus, out string reason) {
+            if (!metalBurning.CanBurn(metal, def.beuPerTick)) {
+                reason = "MenuNoReserves".Translate(metal.LabelCap);
+                return false;
+            }
+
+            if (activationStatus == BurningStatus.Flaring && PawnUtility.IsAsleep(pawn)) {
+                reason = "MenuCannotFlareAsleep".Translate();
+                return false;
+            }
+
+            reason = null;
+            return true;
+        }
+
         public override IEnumerable<Command> GetGizmos() {
             yield break;
         }
 
-        public override void AbilityTick() {
-            base.AbilityTick();
-
-            if (!atLeastPassive) {
-                return;
-            }
-
-            if (targetPawn == null || targetPawn.Equals(pawn)) {
-                if (PawnUtility.IsAsleep(pawn) && status > BurningStatus.Passive) {
-                    UpdateStatus(BurningStatus.Passive);
-                } else if (!PawnUtility.IsAsleep(pawn) && status == BurningStatus.Passive) {
-                    UpdateStatus(BurningStatus.Burning);
-                }
-
-                if (!pawn.IsHashIntervalTick(GenTicks.SecondsToTicks(5)) || !pawn.Spawned || pawn.Map == null) return;
-                var mote = MoteMaker.MakeAttachedOverlay(
-                    pawn,
-                    DefDatabase<ThingDef>.GetNamed("Mote_ToxicDamage"),
-                    Vector3.zero
-                );
-
-                mote.instanceColor = metal.color;
-                return;
-            }
-
-            TargetTick();
+        public virtual float GetDesiredBurnRateForStatus() {
+            return GetDesiredBurnRateForStatus(status ?? BurningStatus.Off);
         }
 
-        protected virtual void TargetTick() {
-            var distanceToTarget = pawn.Position.DistanceTo(targetPawn.Position);
-            if (PawnUtility.IsAsleep(pawn) || distanceToTarget > def.verbProperties.range || !targetPawn.Spawned || targetPawn.Dead) {
-                UpdateStatus(BurningStatus.Off);
-                return;
-            }
-
-            if (def.followTarget && pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond) && !TryFollowTarget(targetPawn, def.minFollowDistance)) {
-                UpdateStatus(BurningStatus.Off);
-            }
-        }
-
-        private bool TryFollowTarget(Pawn target, float minFollowDistance) {
-            if (!pawn.Spawned || !target.Spawned) {
-                return false;
-            }
-
-            if (!pawn.CanReach(targetPawn, PathEndMode.InteractionCell, Danger.None)) {
-                return false;
-            }
-
-            var curJob = pawn.CurJob;
-
-            if (curJob?.def == JobDefOf.Follow &&
-                curJob.targetA.Thing == target &&
-                Math.Abs(curJob.followRadius - minFollowDistance) < 0.01f) {
-                // Already following the right target at the right distance
-                return true;
-            }
-
-            // Too far? Assign new follow job
-            var currentDistance = pawn.Position.DistanceTo(target.Position);
-
-            if (!(currentDistance > minFollowDistance)) return true;
-            var followJob = JobMaker.MakeJob(JobDefOf.Follow, target);
-            followJob.followRadius = minFollowDistance;
-            followJob.playerForced = true;
-
-            pawn.jobs.TryTakeOrderedJob(followJob);
-            return true;
-        }
-
-        public void UpdateStatus(BurningStatus status) {
-            Log.Verbose($"Updating {pawn.NameFullColored}'s {def.defName} to {status} from {this.status}");
-            var oldStatus = this.status;
-            this.status = status;
-            metalBurning.UpdateBurnSource(metal, this.status switch {
+        public virtual float GetDesiredBurnRateForStatus(BurningStatus burningStatus) {
+            return burningStatus switch {
                 BurningStatus.Off => 0,
                 BurningStatus.Passive => def.beuPerTick / 2,
                 BurningStatus.Burning => def.beuPerTick,
                 BurningStatus.Flaring => def.beuPerTick * 2,
                 _ => throw new ArgumentOutOfRangeException(),
-            }, def);
+            };
+        }
 
-            switch (this.status) {
+        public virtual void UpdateStatus(BurningStatus newStatus) {
+            if (status == newStatus) return;
+
+            Log.Verbose($"Updating {pawn.NameFullColored}'s {def.defName} from {status} -> {newStatus}");
+            var oldStatus = status;
+            status = newStatus;
+            metalBurning.UpdateBurnSource(metal, GetDesiredBurnRateForStatus(newStatus), def);
+
+            switch (status) {
                 // When Disabling (and possibly deflaring)
                 case BurningStatus.Off when oldStatus > BurningStatus.Off:
                     OnDisable();
@@ -266,66 +202,30 @@ namespace CosmereScadrial.Abilities {
         }
 
         public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-            return Activate(target, dest, false);
+            return Activate(target, dest);
         }
 
-        public bool Activate(LocalTargetInfo target, LocalTargetInfo dest, bool flare) {
-            if (target.Pawn is { } pawnTarget) {
-                targetPawn = pawnTarget;
-            }
-
-            var baseActivate = base.Activate(target, dest);
-            if (!toggleable || !baseActivate) {
-                return baseActivate;
-            }
-
-            if (flare) {
-                UpdateStatus(status == BurningStatus.Flaring ? BurningStatus.Off : BurningStatus.Flaring);
-            } else {
-                UpdateStatus(PawnUtility.IsAsleep(pawn) ? BurningStatus.Passive : atLeastPassive ? BurningStatus.Off : BurningStatus.Burning);
-            }
-
-            return true;
+        public virtual bool Activate(LocalTargetInfo target, LocalTargetInfo dest, bool flare = false) {
+            return base.Activate(target, dest);
         }
 
-        protected virtual AllomanticHediff GetOrAddHediff() {
+        public virtual AllomanticHediff GetOrAddHediff(Pawn targetPawn) {
             if (targetPawn.health.hediffSet.TryGetHediff(def.hediff, out var ret)) return ret as AllomanticHediff;
 
             var hediff = (AllomanticHediff)Activator.CreateInstance(def.hediff.hediffClass);
             hediff.def = def.hediff;
-            hediff.pawn = pawn;
+            hediff.pawn = targetPawn;
             hediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
             hediff.sourceAbility = this;
             hediff.PostMake();
 
-            Log.Warning($"Applying {def.hediff.defName} drag to {targetPawn.NameFullColored} with Severity={hediff.Severity}");
+            Log.Warning($"{pawn.NameFullColored} applying {def.hediff.defName} hediff to {targetPawn.NameFullColored} with Severity={hediff.Severity}");
             targetPawn.health.AddHediff(hediff);
 
             return hediff;
         }
 
-        protected virtual void OnEnable() {
-            GetOrAddHediff();
-        }
-
-        protected virtual void OnDisable() {
-            targetPawn = null;
-            ApplyDrag(flareDuration / 3000f);
-            flareStartTick = -1;
-        }
-
-        protected virtual void OnFlare() {
-            flareStartTick = Find.TickManager.TicksGame;
-            GetOrAddHediff();
-            RemoveDrag();
-        }
-
-        protected virtual void OnDeFlare() {
-            ApplyDrag(flareDuration / 3000f / 2);
-            flareStartTick = -1;
-        }
-
-        protected virtual void ApplyDrag(float severity) {
+        protected virtual void ApplyDrag(Pawn targetPawn, float severity) {
             if (def.dragHediff == null || severity < def.minSeverityForDrag) return;
 
             Log.Warning($"Applying {def.dragHediff.defName} drag to {targetPawn.NameFullColored} with Severity={severity}");
@@ -333,21 +233,28 @@ namespace CosmereScadrial.Abilities {
             drag.Severity = severity;
         }
 
-        protected virtual void RemoveDrag() {
-            var drag = pawn.health.hediffSet.GetFirstHediffOfDef(def.dragHediff);
+        protected virtual void RemoveDrag(Pawn targetPawn) {
+            var drag = targetPawn.health.hediffSet.GetFirstHediffOfDef(def.dragHediff);
             if (drag == null) return;
 
             var existingSeverity = drag.Severity;
-            pawn.health.RemoveHediff(drag);
+            targetPawn.health.RemoveHediff(drag);
             flareStartTick -= (int)(existingSeverity * 3000f);
         }
+
+        protected virtual void OnEnable() { }
+
+        protected virtual void OnDisable() { }
+
+        protected virtual void OnFlare() { }
+
+        protected virtual void OnDeFlare() { }
 
         public override void ExposeData() {
             base.ExposeData();
 
             Scribe_Values.Look(ref flareStartTick, "flareStartTick", -1);
             Scribe_Values.Look(ref status, "status");
-            Scribe_References.Look(ref targetPawn, "targetPawn");
         }
     }
 }

@@ -1,0 +1,115 @@
+using System.Collections.Generic;
+using CosmereScadrial.Abilities;
+using CosmereScadrial.Abilities.Hediffs.Comps;
+using CosmereScadrial.Comps.Things;
+using UnityEngine;
+using Verse;
+using Verse.AI;
+using PawnUtility = CosmereFramework.Utils.PawnUtility;
+
+namespace CosmereScadrial.Jobs {
+    public class MaintainAllomanticTarget : JobDriver {
+        protected Pawn targetPawn => TargetA.Pawn;
+
+        protected AbstractAllomanticAbility ability => pawn.abilities.GetAbility(job.ability.def) as AbstractAllomanticAbility;
+
+        protected MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
+
+        protected bool targetIsPawn => targetPawn != null;
+
+        protected void MaintainEffectOnTarget() {
+            var hediff = ability.GetOrAddHediff(targetPawn);
+            // hediff.Severity *= ability.def.hediffSeverityFactor;
+
+            var disappearComp = hediff.TryGetComp<DisappearsScaled>();
+            disappearComp?.CompPostMake();
+        }
+
+        public override bool TryMakePreToilReservations(bool errorOnFailed) {
+            return pawn.Reserve(targetPawn, job, errorOnFailed: errorOnFailed);
+        }
+
+        protected override IEnumerable<Toil> MakeNewToils() {
+            this.FailOnDespawnedNullOrForbidden(TargetIndex.A)
+                .FailOnDowned(TargetIndex.A)
+                .AddFinishAction(UpdateStatusToOff);
+
+            var gotoThing = Toils_Goto.GotoThing(TargetIndex.A, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell);
+            yield return gotoThing.FailOnDestroyedNullOrForbidden(TargetIndex.A);
+
+            yield return Toils_General.DoAtomic(() => { ability.UpdateStatus((BurningStatus)job.count); });
+
+            var toil = new Toil {
+                defaultCompleteMode = ToilCompleteMode.Never,
+                tickAction = () => {
+                    if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
+
+                    if (ShouldStopJob()) {
+                        EndJobWith(JobCondition.Incompletable);
+                        return;
+                    }
+
+                    // Maintain proximity
+                    MaintainProximity();
+
+                    // Ensure the burn rate is set properly
+                    MaintainBurnRate();
+
+                    // Apply and maintain effect
+                    MaintainEffectOnTarget();
+                },
+            };
+            toil.AddFinishAction(UpdateStatusToOff);
+
+            yield return toil;
+        }
+
+        private void MaintainBurnRate() {
+            // If we arent close enough to the pawn, update burnrate to 0, and get closer
+            if (PawnUtility.DistanceBetween(pawn, targetPawn) > ability.def.verbProperties.range) {
+                UpdateBurnRate(0f);
+                return;
+            }
+
+            // If we are close enough, get the desired burn rate based on the status.
+            UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
+        }
+
+        private void UpdateStatusToOff() {
+            ability.UpdateStatus(BurningStatus.Off);
+        }
+
+        protected virtual void UpdateStatusToOff(JobCondition jobCondition) {
+            if (ability.status != BurningStatus.Off) {
+                UpdateStatusToOff();
+            }
+        }
+
+        protected virtual void UpdateBurnRate(float desiredBurnRate) {
+            if (!Mathf.Approximately(metalBurning.GetBurnRateForMetalDef(ability.metal, ability.def), desiredBurnRate)) {
+                metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
+            }
+        }
+
+        protected virtual void MaintainProximity() {
+            var followRadius = ability.def.maintenance.followRadius;
+            var distance = pawn.Position.DistanceTo(TargetA.Cell);
+
+            if (distance > followRadius && pawn.pather.MovingNow == false) {
+                // Only re-path if not already moving, avoids constant path spam
+                pawn.pather.StartPath(TargetA, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell);
+            } else if (distance <= followRadius && pawn.pather.MovingNow) {
+                // Stop if already within desired range
+                pawn.pather.StopDead();
+            }
+        }
+
+        protected virtual bool ShouldStopJob() {
+            if (targetIsPawn && pawn.Downed || pawn.Dead || targetPawn.Dead || targetPawn.Downed) {
+                return false;
+            }
+
+            return !pawn.CanReach(TargetA, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell, Danger.None);
+        }
+    }
+}

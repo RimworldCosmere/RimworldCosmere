@@ -12,7 +12,7 @@ namespace CosmereScadrial.Things {
                 }
 
                 var comp = GetComp<Comps.Things.AllomanticVial>();
-                var pawn = Find.Selector?.SingleSelectedThing as Pawn; // not reliable for ingestion, fallback in ingest jobs
+                var pawn = holdingOwner.Owner as Pawn ?? Find.Selector?.SingleSelectedThing as Pawn; // not reliable for ingestion, fallback in ingest jobs
 
                 // Safeguard — if being evaluated during actual ingestion
                 if (Spawned && Position.GetFirstPawn(Map) is { } standingPawn) {

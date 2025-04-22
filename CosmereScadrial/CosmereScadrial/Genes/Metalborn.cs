@@ -8,15 +8,15 @@ namespace CosmereScadrial.Genes {
             base.PostAdd();
 
             MetalbornUtility.HandleMetalbornTrait(pawn);
-            MetalbornUtility.HandleAbilities(pawn, def);
             InvestitureUtility.AssignHeighteningFromBeUs(pawn);
+            MetalbornUtility.HandleBurningMetalHediff(pawn);
         }
 
         public override void PostRemove() {
             base.PostRemove();
 
             MetalbornUtility.HandleMetalbornTrait(pawn);
-            MetalbornUtility.HandleAbilities(pawn, def);
+            MetalbornUtility.HandleBurningMetalHediff(pawn);
         }
     }
 }

@@ -24,25 +24,7 @@
                 </statFactors>
             </li>
         </stages>
-    </HediffDef><!--
-    <HediffDef ParentName="AbstractTargetBurnMetal">
-        <defName>Cosmere_Hediff_BrassTarget</defName>
-        <label>Burning Brass: Target</label>
-        <description>Suppress emotional outburst and calm the mind of a target Brass.</description>
-        <comps>
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.BurnMetal" />
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.AllomancyTarget">
-                <actHediff>Cosmere_Hediff_Soothed</actHediff>
-                <actVerb>Soothed</actVerb>
-                <severityMultiplier>2</severityMultiplier>
-            </li>
-        </comps>
-        <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
-                <metal>Brass</metal>
-            </li>
-        </modExtensions>
-    </HediffDef>-->
+    </HediffDef>
     
     <HediffDef ParentName="AbstractTargetBurnHediff">
         <defName>Cosmere_Hediff_Soothed</defName>

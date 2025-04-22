@@ -4,6 +4,7 @@ using CosmereScadrial.Defs;
 using UnityEngine;
 using Verse;
 using AllomanticVial = CosmereScadrial.Comps.Things.AllomanticVial;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Utils {
     public static class AllomancyUtility {
@@ -71,6 +72,26 @@ namespace CosmereScadrial.Utils {
 
         public static float GetMetalNeededForBeu(float requiredBeu) {
             return requiredBeu / BEU_PER_METAL_UNIT;
+        }
+
+        public static bool PawnConsumeVialWithMetal(Pawn pawn, MetallicArtsMetalDef metal, bool allowMultiVial = false) {
+            if (pawn?.inventory?.innerContainer == null) return false;
+
+            foreach (var vial in pawn.inventory.innerContainer) {
+                var comp = vial.TryGetComp<AllomanticVial>();
+                if (comp == null) continue;
+                var metals = comp.props.metals;
+
+                if (metals.Count > 1 && !allowMultiVial) continue;
+
+                if (!metals.Contains(metal) || vial.stackCount <= 0) continue;
+
+                vial.Ingested(pawn, 1f);
+                Log.Warning($"{pawn.NameShortColored} is auto-ingesting {vial.LabelShort} for {metal}.");
+                return true;
+            }
+
+            return false;
         }
 
         public static bool PawnHasVialForMetal(Pawn pawn, MetallicArtsMetalDef metal, bool allowMultiVial = false) {

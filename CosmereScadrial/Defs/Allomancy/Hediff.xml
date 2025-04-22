@@ -13,7 +13,15 @@
     <HediffDef ParentName="AbstractBurnHediff" Name="AbstractTargetBurnHediff" Abstract="True">
         <hediffClass>CosmereScadrial.Abilities.Hediffs.AllomanticHediff</hediffClass>
     </HediffDef>
-    <HediffDef ParentName="AbstractBurnHediff" Name="AbstractTargetHostileBurnHediff" Abstract="True">
+    <HediffDef ParentName="AbstractTargetBurnHediff" Name="AbstractTargetHostileBurnHediff" Abstract="True">
         <isBad>true</isBad>
+    </HediffDef>
+    
+    <HediffDef ParentName="AbstractBurnHediff">
+        <defName>Cosmere_Scadrial_Burning_Metals</defName>
+        <label>Allomancy</label>
+        <description>Currently burning or flaring the following metals:</description>
+        <countsAsAddedPartOrImplant>false</countsAsAddedPartOrImplant>
+        <hediffClass>CosmereScadrial.Abilities.Hediffs.BurningMetals</hediffClass>
     </HediffDef>
 </Defs>

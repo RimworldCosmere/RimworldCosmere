@@ -6,24 +6,24 @@ using Verse;
 
 namespace CosmereScadrial.Defs {
     public class AllomanticAbilityDef : AbilityDef {
+        public bool applyDragOnTarget = false;
+        public float auraRadius = -1;
         public float beuPerTick = 0.1f / GenTicks.TicksPerRealSecond;
         public HediffDef dragHediff;
-        public bool followTarget = true;
         public HediffDef hediff;
         public float hediffSeverityFactor = 1f;
+        public MaintenanceDef maintenance;
         public MetallicArtsMetalDef metal;
-        public float minFollowDistance = 5f;
         public float minSeverityForDrag = 1f;
         public bool toggleable;
-
-        public AllomanticAbilityDef() {
-            abilityClass = typeof(AllomanticAbility);
-            // gizmoClass = typeof(BurnGizmo);
-        }
 
         public override IEnumerable<string> ConfigErrors() {
             foreach (var error in base.ConfigErrors()) {
                 yield return error;
+            }
+
+            if (abilityClass.IsAssignableFrom(typeof(AbstractAllomanticAbility))) {
+                yield return $"Invalid ability class {abilityClass}. Must inherit from {typeof(AbstractAllomanticAbility)}.";
             }
 
             if (hediff == null) {
@@ -38,5 +38,10 @@ namespace CosmereScadrial.Defs {
                 yield return "metal is null";
             }
         }
+    }
+
+    public class MaintenanceDef {
+        public float followRadius = 10f;
+        public JobDef jobDef = JobDefOf.Cosmere_Job_MaintainAllomanticTarget;
     }
 }

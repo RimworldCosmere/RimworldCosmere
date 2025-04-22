@@ -12,9 +12,9 @@ namespace CosmereScadrial.Abilities.Gizmos {
     public class BurnGizmo : Command_Ability {
         private static readonly Dictionary<Color, Texture2D> cachedTextures = new Dictionary<Color, Texture2D>();
 
-        private new readonly AllomanticAbility ability;
+        private new readonly AbstractAllomanticAbility ability;
 
-        public BurnGizmo(AllomanticAbility ability) : base(ability, ability.pawn) {
+        public BurnGizmo(AbstractAllomanticAbility ability) : base(ability, ability.pawn) {
             this.ability = ability;
         }
 

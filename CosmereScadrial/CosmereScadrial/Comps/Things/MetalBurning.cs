@@ -3,7 +3,6 @@ using System.Linq;
 using CosmereScadrial.Abilities;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
-using RimWorld;
 using UnityEngine;
 using Verse;
 using Log = CosmereFramework.Log;
@@ -14,8 +13,7 @@ namespace CosmereScadrial.Comps.Things {
 
         // Tracks all active burn rates per metal and source
         private readonly Dictionary<(MetallicArtsMetalDef metal, Def def), float> burnSourceMap = new Dictionary<(MetallicArtsMetalDef metal, Def def), float>();
-        private readonly Dictionary<MetallicArtsMetalDef, List<float>> burnSources = new Dictionary<MetallicArtsMetalDef, List<float>>();
-        private readonly List<MetallicArtsMetalDef> refueling = new List<MetallicArtsMetalDef>();
+        public readonly Dictionary<MetallicArtsMetalDef, List<float>> burnSources = new Dictionary<MetallicArtsMetalDef, List<float>>();
 
         public MetalBurning() {
             var allomanticMetals = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => !x.godMetal && x.allomancy != null);
@@ -51,38 +49,14 @@ namespace CosmereScadrial.Comps.Things {
                 }
 
                 if (!AllomancyUtility.TryBurnMetalForInvestiture(pawn, metal, totalRate * SECONDS_INTERVAL)) {
-                    if (!TryAutoRefuel(metal)) {
+                    if (!AllomancyUtility.PawnConsumeVialWithMetal(pawn, metal)) {
                         // Auto-stop all sources if out of reserve
                         Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
                         RemoveAllBurnSourcesForMetal(metal);
                         return;
                     }
                 }
-
-                refueling.Remove(metal);
             }
-        }
-
-        private bool TryAutoRefuel(MetallicArtsMetalDef metal) {
-            if (refueling.Contains(metal)) return true;
-
-            if (parent is not Pawn pawn || pawn.DeadOrDowned || pawn.jobs == null || pawn.inventory == null) {
-                return false;
-            }
-
-            var vial = pawn.inventory.innerContainer.FirstOrDefault(t => t.def.defName == $"Cosmere_AllomanticVial_{metal.defName}");
-            if (vial == null) {
-                return false;
-            }
-
-            var job = JobMaker.MakeJob(JobDefOf.Ingest, vial);
-            job.count = 1;
-
-            if (!pawn.jobs.TryTakeOrderedJob(job)) return false;
-
-            refueling.Add(metal);
-            Verse.Log.Warning($"{pawn.NameShortColored} is auto-ingesting {vial.LabelShort} for {metal}.");
-            return true;
         }
 
         public void UpdateBurnSource(MetallicArtsMetalDef metal, float rate, Def def) {
@@ -117,7 +91,7 @@ namespace CosmereScadrial.Comps.Things {
             var keysToRemove = burnSourceMap.Keys.Where(k => k.metal == metal).ToList();
             foreach (var key in keysToRemove) {
                 if (key.def is AllomanticAbilityDef def) {
-                    var ability = (AllomanticAbility)pawn.abilities.GetAbility(def);
+                    var ability = (AbstractAllomanticAbility)pawn.abilities.GetAbility(def);
                     ability?.UpdateStatus(BurningStatus.Off);
                 }
 
@@ -125,6 +99,10 @@ namespace CosmereScadrial.Comps.Things {
             }
 
             burnSources[metal].Clear();
+        }
+
+        public float GetBurnRateForMetalDef(MetallicArtsMetalDef metal, Def def) {
+            return (from kv in burnSourceMap where kv.Key.metal == metal && kv.Key.def == def select kv.Value).FirstOrDefault();
         }
 
         public float GetTotalBurnRate(MetallicArtsMetalDef metal = null) {

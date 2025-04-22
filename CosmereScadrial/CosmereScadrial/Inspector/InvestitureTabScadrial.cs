@@ -98,7 +98,7 @@ namespace CosmereScadrial.Inspector {
                             var fillPct = Mathf.Clamp01(value / MetalReserves.MAX_AMOUNT);
                             var tooltip = $"{metal.label.CapitalizeFirst()}\n\n{metal.allomancy.description}\n\n{value:N0} / {MetalReserves.MAX_AMOUNT:N0}";
                             if (burning.IsBurning(metal)) {
-                                tooltip += $" ({rate:0.00}/sec)";
+                                tooltip += $" ({rate:0.000}/sec)";
                             }
 
                             Widgets.DrawBoxSolidWithOutline(cellRect, new Color(0.66f, 0.66f, 0.66f), rate > 0 ? Color.green : new Color(0.1f, 0.1f, 0.1f));
@@ -107,8 +107,7 @@ namespace CosmereScadrial.Inspector {
                             Widgets.FillableBar(barRect, fillPct, GetColorTexture(metal.color));
                             UIUtil.DrawContrastLabel(barRect, metal.label.CapitalizeFirst(), metal.color);
                             TooltipHandler.TipRegion(cellRect, () => tooltip, key++);
-                        }
-                        else {
+                        } else {
                             Widgets.DrawBoxSolid(cellRect, new Color(0.1f, 0.1f, 0.1f, 0.5f)); // Empty cell
                         }
                     }

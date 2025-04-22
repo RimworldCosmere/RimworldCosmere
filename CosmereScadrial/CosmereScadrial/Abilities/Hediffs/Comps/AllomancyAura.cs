@@ -1,9 +1,11 @@
+using System;
 using System.Linq;
 using CosmereFramework.Utils;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Abilities.Hediffs.Comps {
     public class AllomancyAura : HediffComp {
@@ -48,7 +50,7 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
             CreateMote()?.Maintain();
             mote.Scale = moteScale;
 
-            if (!base.parent.pawn.IsHashIntervalTick(props.tickInterval)) {
+            if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) {
                 return;
             }
 
@@ -83,8 +85,7 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
                 return;
             }
 
-            var hediff = target.health.GetOrAddHediff(props.actHediff);
-            hediff.Severity = base.parent.Severity;
+            var hediff = GetOrAddHediff(target);
             var offset = hediff.ageTicks / TickUtility.Minutes(5) * hediff.Severity; // Jumps for every hour
 
             // Reset the Disappears timer
@@ -96,9 +97,25 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
             var newOffset = Mathf.RoundToInt(Mathf.Clamp(offset, 2f, 10f));
             thoughtComp?.OverrideMoodOffset(newOffset);
 
-            if (hediff.ageTicks >= props.tickInterval) return;
+            if (hediff.ageTicks >= GenTicks.TicksPerRealSecond) return;
 
             MoteMaker.ThrowText(target.DrawPos, target.Map, props.actVerb, Color.cyan);
+        }
+
+        public virtual AllomanticHediff GetOrAddHediff(Pawn targetPawn) {
+            if (targetPawn.health.hediffSet.TryGetHediff(props.actHediff, out var ret)) return ret as AllomanticHediff;
+
+            var hediff = (AllomanticHediff)Activator.CreateInstance(props.actHediff.hediffClass);
+            hediff.def = props.actHediff;
+            hediff.pawn = targetPawn;
+            hediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
+            hediff.sourceAbility = parent.sourceAbility;
+            hediff.PostMake();
+
+            Log.Warning($"{parent.pawn.NameFullColored} applying {props.actHediff.defName} hediff to {targetPawn.NameFullColored} with Severity={hediff.Severity}");
+            targetPawn.health.AddHediff(hediff);
+
+            return hediff;
         }
     }
 }

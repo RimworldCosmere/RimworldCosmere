@@ -15,16 +15,16 @@ namespace CosmereFramework {
             { LogLevel.Verbose, Color.gray },
         };
 
-        private static CosmereFramework mod => LoadedModManager.GetMod<CosmereFramework>();
+        private static CosmereFramework frameworkMod => LoadedModManager.GetMod<CosmereFramework>();
 
-        private static CosmereSettings cosmereSettings => mod.settings;
+        private static CosmereSettings cosmereSettings => frameworkMod.settings;
 
         public static void Message(string message, LogLevel level = LogLevel.Info) {
             if (level > cosmereSettings.logLevel || level == LogLevel.None) return;
             if (level == LogLevel.Error && DebugSettings.pauseOnError && Current.ProgramState == ProgramState.Playing) Find.TickManager.Pause();
             if (level < LogLevel.Error && Prefs.OpenLogOnWarnings) Verse.Log.TryOpenLogWindow();
 
-            var modsDir = mod.Content.RootDir.Replace("CosmereFramework", "");
+            var modsDir = frameworkMod.Content.RootDir.Replace("CosmereFramework", "");
             var ns = "None";
             var stack = "";
             var stackTrace = new StackTrace(1, true);
@@ -37,8 +37,8 @@ namespace CosmereFramework {
 
                 var mod = method.DeclaringType?.Namespace;
                 ns = mod?.Split('.')[0].Replace("Cosmere", "");
-                if (frame.GetFileName() != null) {
-                    var filename = frame.GetFileName()!.Replace(modsDir, "").Replace($"{mod}\\", "");
+                if (frame.GetFileName() != null && mod != null) {
+                    var filename = frame.GetFileName()!.Replace(modsDir, "").Replace(mod, "");
                     stack = $"[{filename}:{frame.GetFileLineNumber()}]";
                 }
 

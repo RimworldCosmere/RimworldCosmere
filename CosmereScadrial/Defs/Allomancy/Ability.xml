@@ -48,7 +48,7 @@
             <verbClass>Verb_CastAbility</verbClass>
             <targetable>true</targetable>
             <warmupTime>0</warmupTime>
-            <range>12</range>
+            <range>18</range>
             <requireLineOfSight>true</requireLineOfSight>
             <violent>false</violent>
             <noiseRadius>0</noiseRadius>

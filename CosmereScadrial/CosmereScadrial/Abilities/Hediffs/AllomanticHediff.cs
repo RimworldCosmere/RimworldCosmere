@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using CosmereScadrial.Utils;
 using RimWorld;
@@ -6,17 +5,30 @@ using Verse;
 
 namespace CosmereScadrial.Abilities.Hediffs {
     public class AllomanticHediff : HediffWithComps {
+        private float rawPower = .25f;
         public AbstractAllomanticAbility sourceAbility;
 
-        private float allomanticPower => sourceAbility?.pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power) ?? .25f;
+        public override void PostAdd(DamageInfo? dinfo) {
+            base.PostAdd(dinfo);
+            rawPower = sourceAbility.pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
+            Severity = CalculateSeverity();
+        }
 
-        public override float Severity => sourceAbility?.status switch {
-            BurningStatus.Off => sourceAbility.def.hediffSeverityFactor * allomanticPower * 4 * 0f,
-            BurningStatus.Passive => sourceAbility.def.hediffSeverityFactor * allomanticPower * 4 * 0.5f,
-            BurningStatus.Burning => sourceAbility.def.hediffSeverityFactor * allomanticPower * 4 * 1f,
-            BurningStatus.Flaring => sourceAbility.def.hediffSeverityFactor * allomanticPower * 4 * 2f,
-            _ => throw new ArgumentOutOfRangeException(),
-        };
+        public override void Tick() {
+            rawPower = sourceAbility.pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
+            Severity = CalculateSeverity();
+            base.Tick();
+        }
+
+        protected virtual float CalculateSeverity() {
+            return (sourceAbility.status ?? BurningStatus.Burning) switch {
+                BurningStatus.Off => sourceAbility.def.hediffSeverityFactor * rawPower * 4 * 0f,
+                BurningStatus.Passive => sourceAbility.def.hediffSeverityFactor * rawPower * 4 * 0.5f,
+                BurningStatus.Burning => sourceAbility.def.hediffSeverityFactor * rawPower * 4 * 1f,
+                BurningStatus.Flaring => sourceAbility.def.hediffSeverityFactor * rawPower * 4 * 2f,
+                _ => 0f,
+            };
+        }
 
         public override string DebugString() {
             var stringBuilder = new StringBuilder();

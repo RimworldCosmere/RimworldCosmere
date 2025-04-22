@@ -14,13 +14,13 @@
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <SocialImpact>2</SocialImpact>
-                    <NegotiationAbility>2</NegotiationAbility>
-                    <PawnBeauty>2</PawnBeauty>
-                    <TradePriceImprovement>1.5</TradePriceImprovement>
-                    <TameAnimalChance>2</TameAnimalChance>
-                    <TrainAnimalChance>2</TrainAnimalChance>
-                    <BondAnimalChanceFactor>2</BondAnimalChanceFactor>
+                    <SocialImpact>1.2</SocialImpact>
+                    <NegotiationAbility>1.2</NegotiationAbility>
+                    <PawnBeauty>1.2</PawnBeauty>
+                    <TradePriceImprovement>1.2</TradePriceImprovement>
+                    <TameAnimalChance>1.2</TameAnimalChance>
+                    <TrainAnimalChance>1.2</TrainAnimalChance>
+                    <BondAnimalChanceFactor>1.2</BondAnimalChanceFactor>
                 </statFactors>
             </li>
         </stages>
@@ -43,6 +43,20 @@
         <stages>
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <PainShockThreshold>2</PainShockThreshold>
+                    <MentalBreakThreshold>2</MentalBreakThreshold>
+                    <RestRateMultiplier>1.1</RestRateMultiplier>
+                    <RestFallRateFactor>0.9</RestFallRateFactor>
+                    <JoyFallRateFactor>0.75</JoyFallRateFactor>
+                </statFactors>
+            </li>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <minSeverity>2</minSeverity>
+                <statOffsets>
+                    <CosmereCore_MentalBreakRemoveFactor>0.05</CosmereCore_MentalBreakRemoveFactor>
+                </statOffsets>
                 <statFactors>
                     <PainShockThreshold>2</PainShockThreshold>
                     <MentalBreakThreshold>2</MentalBreakThreshold>

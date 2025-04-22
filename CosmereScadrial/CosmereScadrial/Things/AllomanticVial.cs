@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
+using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Things {
     public class AllomanticVial : ThingWithComps {
@@ -12,16 +13,18 @@ namespace CosmereScadrial.Things {
                 }
 
                 var comp = GetComp<Comps.Things.AllomanticVial>();
-                var pawn = holdingOwner.Owner as Pawn ?? Find.Selector?.SingleSelectedThing as Pawn; // not reliable for ingestion, fallback in ingest jobs
-
-                // Safeguard — if being evaluated during actual ingestion
-                if (Spawned && Position.GetFirstPawn(Map) is { } standingPawn) {
+                Pawn pawn;
+                if (holdingOwner.Owner is Pawn_InventoryTracker tracker) {
+                    pawn = tracker?.pawn;
+                } else if (Find.Selector?.SingleSelectedThing is Pawn selectedThing) {
+                    pawn = selectedThing;
+                } else if (Spawned && Position.GetFirstPawn(Map) is { } standingPawn) {
                     pawn = standingPawn;
-                }
-
-                if (pawn == null || comp?.props.metals == null) {
+                } else {
                     return false;
                 }
+
+                if (PawnUtility.IsAsleep(pawn)) return false;
 
                 if (comp.props.metals.Count > 1) {
                     return AllomancyUtility.IsMistborn(pawn) && comp.props.metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f);

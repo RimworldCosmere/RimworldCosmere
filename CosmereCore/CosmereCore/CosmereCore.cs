@@ -1,15 +1,19 @@
 ﻿using CosmereFramework;
+using HarmonyLib;
 using Verse;
 using Log = CosmereFramework.Log;
 
 namespace CosmereCore {
-    public class CosmereCore : Mod {
-        public CosmereCore(ModContentPack content) : base(content) {
+    public class CosmereCore(ModContentPack content) : Mod(content);
+
+    [StaticConstructorOnStartup]
+    public static class ModStartup {
+        static ModStartup() {
             Log.Important($"Build Rev: {BuildInfo.REVISION} @ {BuildInfo.BUILD_TIME}. DebugMode={cosmereSettings.debugMode} LogLevel={cosmereSettings.logLevel}");
-            if (!cosmereSettings.debugMode) return;
-            LongEventHandler.QueueLongEvent(Verse.Log.TryOpenLogWindow, "CosmereCoreInit", false, null);
+            new Harmony("cryptiklemur.cosmere.core").PatchAll();
+            Log.Verbose("Harmony patches applied.");
         }
 
-        public static CosmereSettings cosmereSettings => LoadedModManager.GetMod<CosmereFramework.CosmereFramework>().settings;
+        private static CosmereSettings cosmereSettings => LoadedModManager.GetMod<CosmereFramework.CosmereFramework>().cosmereSettings;
     }
 }

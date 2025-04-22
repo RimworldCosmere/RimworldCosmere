@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <StatDef>
+        <defName>CosmereCore_MentalBreakAddFactor</defName>
+        <label>mental break induction chance</label>
+        <description>A multiplier that affects the chance to cause a pawn to experiencing a mental break.</description>
+        <category>PawnMisc</category>
+        <defaultBaseValue>0</defaultBaseValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>1000</displayPriorityInCategory>
+    </StatDef>
+    <StatDef>
+        <defName>CosmereCore_MentalBreakRemoveFactor</defName>
+        <label>mental break recovery chance</label>
+        <description>A multiplier that affects the chance to calm a pawn experiencing a mental break.</description>
+        <category>PawnMisc</category>
+        <defaultBaseValue>0</defaultBaseValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>1001</displayPriorityInCategory>
+    </StatDef>
+</Defs>

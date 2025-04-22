@@ -6,7 +6,7 @@
     <supportedVersions>
         <li>1.5</li>
     </supportedVersions>
-    <packageId>cryptiklemur.cosmere.framework</packageId>
+    <packageId>CryptikLemur.Cosmere.Framework</packageId>
     <modDependencies>
         <li>
             <packageId>brrainz.harmony</packageId>

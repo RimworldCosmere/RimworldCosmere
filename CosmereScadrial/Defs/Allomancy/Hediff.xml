@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef Name="AbstractBurnHediff" Abstract="True">
+    <HediffDef Name="AbstractBurnHediff" ParentName="AbstractCosmereHediff" Abstract="True">
         <isBad>false</isBad>
         <tendable>false</tendable>
         <displayWound>false</displayWound>
         <everCurableByItem>false</everCurableByItem>
         <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
     </HediffDef>
-    <HediffDef ParentName="AbstractBurnHediff" Name="AbstractSelfBurnHediff" Abstract="True">
+    <HediffDef Name="AbstractAllomanticBurnHediff" ParentName="AbstractBurnHediff" Abstract="True">
         <hediffClass>CosmereScadrial.Abilities.Hediffs.AllomanticHediff</hediffClass>
     </HediffDef>
-    <HediffDef ParentName="AbstractBurnHediff" Name="AbstractTargetBurnHediff" Abstract="True">
-        <hediffClass>CosmereScadrial.Abilities.Hediffs.AllomanticHediff</hediffClass>
-    </HediffDef>
-    <HediffDef ParentName="AbstractTargetBurnHediff" Name="AbstractTargetHostileBurnHediff" Abstract="True">
+    <HediffDef Name="AbstractSelfBurnHediff" ParentName="AbstractAllomanticBurnHediff" Abstract="True" />
+    <HediffDef Name="AbstractTargetBurnHediff" ParentName="AbstractAllomanticBurnHediff" Abstract="True" />
+    <HediffDef Name="AbstractTargetHostileBurnHediff" ParentName="AbstractTargetBurnHediff" Abstract="True">
         <isBad>true</isBad>
     </HediffDef>
     
-    <HediffDef ParentName="AbstractBurnHediff">
+    <HediffDef>
         <defName>Cosmere_Scadrial_Burning_Metals</defName>
         <label>Allomancy</label>
         <description>Currently burning or flaring the following metals:</description>
         <countsAsAddedPartOrImplant>false</countsAsAddedPartOrImplant>
         <hediffClass>CosmereScadrial.Abilities.Hediffs.BurningMetals</hediffClass>
+        <isBad>false</isBad>
+        <tendable>false</tendable>
+        <displayWound>false</displayWound>
+        <everCurableByItem>false</everCurableByItem>
     </HediffDef>
 </Defs>

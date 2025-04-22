@@ -34,16 +34,14 @@ namespace CosmereScadrial.Jobs {
                 .FailOnDowned(TargetIndex.A)
                 .AddFinishAction(UpdateStatusToOff);
 
-            var gotoThing = Toils_Goto.GotoThing(TargetIndex.A, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell);
-            yield return gotoThing.FailOnDestroyedNullOrForbidden(TargetIndex.A);
+            var gotoThing = Toils_General.Do(MaintainProximity);
+            gotoThing.defaultCompleteMode = ToilCompleteMode.PatherArrival;
 
             yield return Toils_General.DoAtomic(() => { ability.UpdateStatus((BurningStatus)job.count); });
 
             var toil = new Toil {
                 defaultCompleteMode = ToilCompleteMode.Never,
                 tickAction = () => {
-                    if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
-
                     if (ShouldStopJob()) {
                         EndJobWith(JobCondition.Incompletable);
                         return;
@@ -101,11 +99,12 @@ namespace CosmereScadrial.Jobs {
             } else if (distance <= followRadius && pawn.pather.MovingNow) {
                 // Stop if already within desired range
                 pawn.pather.StopDead();
+                pawn.jobs.curDriver.Notify_PatherArrived();
             }
         }
 
         protected virtual bool ShouldStopJob() {
-            if (targetIsPawn && pawn.Downed || pawn.Dead || targetPawn.Dead || targetPawn.Downed) {
+            if (pawn.Downed || pawn.Dead || targetIsPawn && (targetPawn.Dead || targetPawn.Downed)) {
                 return false;
             }
 

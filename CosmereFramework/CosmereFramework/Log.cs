@@ -17,7 +17,7 @@ namespace CosmereFramework {
 
         private static CosmereFramework frameworkMod => LoadedModManager.GetMod<CosmereFramework>();
 
-        private static CosmereSettings cosmereSettings => frameworkMod.settings;
+        private static CosmereSettings cosmereSettings => frameworkMod.cosmereSettings;
 
         public static void Message(string message, LogLevel level = LogLevel.Info) {
             if (level > cosmereSettings.logLevel || level == LogLevel.None) return;
@@ -39,6 +39,8 @@ namespace CosmereFramework {
                 ns = mod?.Split('.')[0].Replace("Cosmere", "");
                 if (frame.GetFileName() != null && mod != null) {
                     var filename = frame.GetFileName()!.Replace(modsDir, "").Replace(mod, "");
+                    if (filename == @"\\.cs") filename = $"{mod}.cs";
+
                     stack = $"[{filename}:{frame.GetFileLineNumber()}]";
                 }
 

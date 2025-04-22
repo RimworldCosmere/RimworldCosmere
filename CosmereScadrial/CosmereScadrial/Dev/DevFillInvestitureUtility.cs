@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using LudeonTK;
@@ -8,6 +9,22 @@ using Verse;
 namespace CosmereScadrial.Dev {
     [StaticConstructorOnStartup]
     public static class DevFillInvestitureUtility {
+        [DebugAction("Cosmere/Scadrial", "Prepare Dev Character",
+            actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void PrepareDevCharacter(Pawn pawn) {
+            pawn.genes.AddGene(GeneDefOf.Cosmere_Mistborn, true);
+
+            var comp = pawn.GetComp<MetalReserves>();
+            foreach (var metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => !x.godMetal && x.allomancy != null)) {
+                comp.SetReserve(metal, MetalReserves.MAX_AMOUNT);
+                var vial = ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed($"Cosmere_AllomanticVial_{metal.LabelCap}"));
+                vial.stackCount = 20;
+                pawn.inventory.innerContainer.TryAdd(vial);
+            }
+
+            Messages.Message($"Made {pawn.NameFullColored} a mistborn, filled reserves and gave 20 vials of each metal.", pawn, MessageTypeDefOf.PositiveEvent);
+        }
+
         [DebugAction("Cosmere/Scadrial", "Fill allomantic reserves (all metals)",
             actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         public static void FillAllReserves(Pawn pawn) {

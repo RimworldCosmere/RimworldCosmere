@@ -48,14 +48,13 @@ namespace CosmereScadrial.Comps.Things {
                     continue;
                 }
 
-                if (!AllomancyUtility.TryBurnMetalForInvestiture(pawn, metal, totalRate * SECONDS_INTERVAL)) {
-                    if (!AllomancyUtility.PawnConsumeVialWithMetal(pawn, metal)) {
-                        // Auto-stop all sources if out of reserve
-                        Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
-                        RemoveAllBurnSourcesForMetal(metal);
-                        return;
-                    }
-                }
+                if (AllomancyUtility.TryBurnMetalForInvestiture(pawn, metal, totalRate * SECONDS_INTERVAL)) continue;
+                if (AllomancyUtility.PawnConsumeVialWithMetal(pawn, metal)) continue;
+
+                // Auto-stop all sources if out of reserve
+                Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
+                RemoveAllBurnSourcesForMetal(metal);
+                return;
             }
         }
 

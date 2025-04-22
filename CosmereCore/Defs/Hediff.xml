@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef Name="AbstractCosmereHediff" Abstract="True">
+        <comps>
+            <li Class="CosmereCore.Comps.Hediffs.Properties.CustomStatDef" />
+        </comps>
+    </HediffDef>
+</Defs>

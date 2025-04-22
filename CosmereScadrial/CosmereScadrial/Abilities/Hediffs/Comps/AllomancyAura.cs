@@ -54,7 +54,7 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
                 return;
             }
 
-            var nearbyPawns = GenRadial.RadialCellsAround(center, radius, true)
+            var nearbyPawns = GenRadial.RadialCellsAround(center, Math.Min(radius, GenRadial.MaxRadialPatternRadius), true)
                 .Select(cell => cell.GetFirstPawn(map))
                 .Where(p => p != null && p != base.parent.pawn);
 

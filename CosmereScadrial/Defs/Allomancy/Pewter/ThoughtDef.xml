@@ -6,8 +6,10 @@
         <validWhileDespawned>true</validWhileDespawned>
         <stages>
             <li>
-                <label>Crashing from Pewter</label>
-                <description>They pushed themselves too hard while burning Pewter. Now they’re crashing.</description>
+                <label>Burned Too Long</label>
+                <description>My strength held out longer than it should’ve — but now the weight of every wound crashes down at once.
+
+Muscles scream. Bones ache. The power's gone... and I'm left paying for it.</description>
             </li>
         </stages>
     </ThoughtDef>

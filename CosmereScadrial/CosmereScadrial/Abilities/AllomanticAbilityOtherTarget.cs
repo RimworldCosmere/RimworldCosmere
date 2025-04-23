@@ -7,6 +7,12 @@ namespace CosmereScadrial.Abilities {
     public class AllomanticAbilityOtherTarget : AbstractAllomanticAbility {
         private Job job;
 
+        public AllomanticAbilityOtherTarget() { }
+
+        public AllomanticAbilityOtherTarget(Pawn pawn) : base(pawn) { }
+
+        public AllomanticAbilityOtherTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
+
         public AllomanticAbilityOtherTarget(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
         public AllomanticAbilityOtherTarget(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) { }
@@ -43,6 +49,7 @@ namespace CosmereScadrial.Abilities {
         }
 
         protected override void OnDisable() {
+            RemoveHediff(target.Pawn);
             target = null;
             if (job != null) {
                 pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
@@ -61,20 +68,6 @@ namespace CosmereScadrial.Abilities {
         protected override void OnDeFlare() {
             ApplyDrag(def.applyDragOnTarget ? target.Pawn : pawn, flareDuration / 3000f / 2);
             flareStartTick = -1;
-        }
-
-        public override void ExposeData() {
-            base.ExposeData();
-
-            var targetThing = target.Thing;
-            var targetCell = target.Cell;
-
-            Scribe_References.Look(ref targetThing, "targetThing");
-            Scribe_Values.Look(ref targetCell, "targetCell");
-
-            if (Scribe.mode == LoadSaveMode.PostLoadInit) {
-                target = targetThing != null ? (LocalTargetInfo)targetThing : targetCell;
-            }
         }
     }
 }

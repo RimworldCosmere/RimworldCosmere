@@ -185,7 +185,11 @@
       "description": "Can riot emotions, pushing others to feel stronger emotions.",
       "group": "mental",
       "axis": "external",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_BurnZinc_Aura",
+        "Cosmere_Ability_BurnZinc_Target"
+      ]
     },
     "feruchemy": {
       "userName": "sparker",

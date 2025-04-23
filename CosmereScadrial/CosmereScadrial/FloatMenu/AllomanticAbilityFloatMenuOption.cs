@@ -1,4 +1,3 @@
-using System;
 using CosmereScadrial.Abilities;
 using UnityEngine;
 using Verse;
@@ -44,6 +43,8 @@ namespace CosmereScadrial.FloatMenu {
         }
 
         private void UpdateDisplay() {
+            // If we are already flaring the target of the given ability
+            // Update the action to deflare on control, or turn off on click.
             if (ability.status == BurningStatus.Flaring && target == ability.target) {
                 action = () => ability.UpdateStatus(Event.current.control ? BurningStatus.Burning : BurningStatus.Off);
                 tooltip = $"{ability.def.description}\n\n(Ctrl-click to de-flare)";
@@ -51,6 +52,9 @@ namespace CosmereScadrial.FloatMenu {
                 return;
             }
 
+            // If we are already burning/flaring/passing on the target of the given ability
+            // And we arent holding control
+            // Update the action to turn off the ability
             if (ability.atLeastPassive && !Event.current.control && target == ability.target) {
                 action = () => ability.UpdateStatus(BurningStatus.Off);
                 tooltip = $"{ability.def.description}\n\n(Ctrl-click to flare)";
@@ -58,18 +62,22 @@ namespace CosmereScadrial.FloatMenu {
                 return;
             }
 
-            Action act = () => ability.Activate(target, target, Event.current.control);
+            // By default, we are turning on the ability, on the target at the cell, flaring if control is held
+            var disabled = !ability.CanActivate(Event.current.control ? BurningStatus.Flaring : BurningStatus.Burning, out var reason);
+            action = disabled ? null : () => ability.Activate(target, target.Cell, Event.current.control);
+
+            // If we are already using this ability on one target, that isnt this one, turn off the ability, and activate it on the new one
+            // This may not be necessary
+            /*
             if (ability.atLeastPassive && target != ability.target) {
-                act = () => {
+                action = disabled ? null : () => {
                     ability.UpdateStatus(BurningStatus.Off);
                     ability.Activate(target, target, Event.current.control);
                 };
-            }
+            }*/
 
-            var disabled = !ability.CanActivate(Event.current.control ? BurningStatus.Flaring : BurningStatus.Burning, out var reason);
             Label = ability.GetRightClickLabel(target, Event.current.control ? BurningStatus.Flaring : BurningStatus.Burning, reason);
             tooltip = $"{ability.def.description}\n\n(Ctrl-click to flare)";
-            action = disabled ? null : act;
         }
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractSelfBurnHediff">
+    <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_PewterBuff</defName>
         <label>Burning Pewter</label>
         <description>Empowered strength, endurance, and resilience from burning Pewter.</description>

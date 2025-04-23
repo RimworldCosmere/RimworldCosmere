@@ -5,28 +5,21 @@ using CosmereScadrial.Comps.Things;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Jobs {
     public class MaintainAllomanticTarget : JobDriver {
-        protected Pawn targetPawn => TargetA.Pawn;
+        protected virtual Pawn targetPawn => TargetA.Pawn;
 
-        protected AbstractAllomanticAbility ability => pawn.abilities.GetAbility(job.ability.def) as AbstractAllomanticAbility;
+        protected virtual AbstractAllomanticAbility ability => pawn.abilities.GetAbility(job.ability.def) as AbstractAllomanticAbility;
 
-        protected MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
+        protected virtual MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 
-        protected bool targetIsPawn => targetPawn != null;
-
-        protected void MaintainEffectOnTarget() {
-            var hediff = ability.GetOrAddHediff(targetPawn);
-            // hediff.Severity *= ability.def.hediffSeverityFactor;
-
-            var disappearComp = hediff.TryGetComp<DisappearsScaled>();
-            disappearComp?.CompPostMake();
-        }
+        protected virtual bool targetIsPawn => targetPawn != null;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed) {
-            return pawn.Reserve(targetPawn, job, errorOnFailed: errorOnFailed);
+            return pawn.Reserve(targetPawn, job, errorOnFailed: errorOnFailed, maxPawns: int.MaxValue, stackCount: 1, ignoreOtherReservations: true);
         }
 
         protected override IEnumerable<Toil> MakeNewToils() {
@@ -62,31 +55,12 @@ namespace CosmereScadrial.Jobs {
             yield return toil;
         }
 
-        private void MaintainBurnRate() {
-            // If we arent close enough to the pawn, update burnrate to 0, and get closer
-            if (PawnUtility.DistanceBetween(pawn, targetPawn) > ability.def.verbProperties.range) {
-                UpdateBurnRate(0f);
-                return;
+        protected virtual bool ShouldStopJob() {
+            if (pawn.Downed || pawn.Dead || targetIsPawn && (targetPawn.Dead || targetPawn.Downed)) {
+                return false;
             }
 
-            // If we are close enough, get the desired burn rate based on the status.
-            UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
-        }
-
-        private void UpdateStatusToOff() {
-            ability.UpdateStatus(BurningStatus.Off);
-        }
-
-        protected virtual void UpdateStatusToOff(JobCondition jobCondition) {
-            if (ability.status != BurningStatus.Off) {
-                UpdateStatusToOff();
-            }
-        }
-
-        protected virtual void UpdateBurnRate(float desiredBurnRate) {
-            if (!Mathf.Approximately(metalBurning.GetBurnRateForMetalDef(ability.metal, ability.def), desiredBurnRate)) {
-                metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
-            }
+            return !pawn.CanReach(TargetA, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell, Danger.None);
         }
 
         protected virtual void MaintainProximity() {
@@ -103,12 +77,37 @@ namespace CosmereScadrial.Jobs {
             }
         }
 
-        protected virtual bool ShouldStopJob() {
-            if (pawn.Downed || pawn.Dead || targetIsPawn && (targetPawn.Dead || targetPawn.Downed)) {
-                return false;
+        protected virtual void MaintainBurnRate() {
+            // If we arent close enough to the pawn, update burnrate to 0, and get closer
+            if (PawnUtility.DistanceBetween(pawn, targetPawn) > ability.def.verbProperties.range) {
+                UpdateBurnRate(0f);
+                return;
             }
 
-            return !pawn.CanReach(TargetA, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell, Danger.None);
+            // If we are close enough, get the desired burn rate based on the status.
+            UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
+        }
+
+        protected virtual void MaintainEffectOnTarget() {
+            var hediff = HediffUtility.GetOrAddHediff(pawn, targetPawn, ability, ability.def);
+
+            hediff.TryGetComp<DisappearsScaled>()?.CompPostMake();
+        }
+
+        protected virtual void UpdateStatusToOff() {
+            ability.UpdateStatus(BurningStatus.Off);
+        }
+
+        protected virtual void UpdateStatusToOff(JobCondition jobCondition) {
+            if (ability.status != BurningStatus.Off) {
+                UpdateStatusToOff();
+            }
+        }
+
+        protected virtual void UpdateBurnRate(float desiredBurnRate) {
+            if (!Mathf.Approximately(metalBurning.GetBurnRateForMetalDef(ability.metal, ability.def), desiredBurnRate)) {
+                metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
+            }
         }
     }
 }

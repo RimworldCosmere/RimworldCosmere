@@ -7,12 +7,10 @@
         <everCurableByItem>false</everCurableByItem>
         <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
     </HediffDef>
-    <HediffDef Name="AbstractAllomanticBurnHediff" ParentName="AbstractBurnHediff" Abstract="True">
+    <HediffDef Name="AbstractAllomanticHediff" ParentName="AbstractBurnHediff" Abstract="True">
         <hediffClass>CosmereScadrial.Abilities.Hediffs.AllomanticHediff</hediffClass>
     </HediffDef>
-    <HediffDef Name="AbstractSelfBurnHediff" ParentName="AbstractAllomanticBurnHediff" Abstract="True" />
-    <HediffDef Name="AbstractTargetBurnHediff" ParentName="AbstractAllomanticBurnHediff" Abstract="True" />
-    <HediffDef Name="AbstractTargetHostileBurnHediff" ParentName="AbstractTargetBurnHediff" Abstract="True">
+    <HediffDef Name="AbstractTargetHostileBurnHediff" ParentName="AbstractAllomanticHediff" Abstract="True">
         <isBad>true</isBad>
     </HediffDef>
     

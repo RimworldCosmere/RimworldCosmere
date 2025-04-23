@@ -5,6 +5,12 @@ using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Abilities {
     public class AllomanticAbilitySelfTarget : AbstractAllomanticAbility {
+        public AllomanticAbilitySelfTarget() { }
+
+        public AllomanticAbilitySelfTarget(Pawn pawn) : base(pawn) { }
+
+        public AllomanticAbilitySelfTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
+
         public AllomanticAbilitySelfTarget(Pawn pawn, AbilityDef def) : base(pawn, def) {
             target = pawn;
         }

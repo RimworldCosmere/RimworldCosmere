@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractSelfBurnHediff">
+    <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_BrassAura</defName>
         <label>Burning Brass: Aura</label>
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
         <comps>
             <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.AllomancyAura">
-                <actHediff>Cosmere_Hediff_Soothed</actHediff>
-                <actVerb>Soothed</actVerb>
+                <hediff>Cosmere_Hediff_Soothed</hediff>
+                <verb>Soothed</verb>
             </li>
         </comps>
         <stages>
@@ -26,7 +26,7 @@
         </stages>
     </HediffDef>
     
-    <HediffDef ParentName="AbstractTargetBurnHediff">
+    <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_Soothed</defName>
         <label>Soothed</label>
         <description>This pawn has been soothed by a nearby Allomancer burning brass. Their emotions feel more stable and calm.</description>
@@ -44,11 +44,11 @@
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <PainShockThreshold>2</PainShockThreshold>
-                    <MentalBreakThreshold>2</MentalBreakThreshold>
-                    <RestRateMultiplier>1.1</RestRateMultiplier>
-                    <RestFallRateFactor>0.9</RestFallRateFactor>
-                    <JoyFallRateFactor>0.75</JoyFallRateFactor>
+                    <PainShockThreshold>1.15</PainShockThreshold>
+                    <MentalBreakThreshold>1.15</MentalBreakThreshold>
+                    <RestRateMultiplier>1.15</RestRateMultiplier>
+                    <RestFallRateFactor>0.85</RestFallRateFactor>
+                    <JoyFallRateFactor>0.85</JoyFallRateFactor>
                 </statFactors>
             </li>
             <li>
@@ -58,11 +58,11 @@
                     <CosmereCore_MentalBreakRemoveFactor>0.05</CosmereCore_MentalBreakRemoveFactor>
                 </statOffsets>
                 <statFactors>
-                    <PainShockThreshold>2</PainShockThreshold>
-                    <MentalBreakThreshold>2</MentalBreakThreshold>
-                    <RestRateMultiplier>1.1</RestRateMultiplier>
-                    <RestFallRateFactor>0.9</RestFallRateFactor>
-                    <JoyFallRateFactor>0.75</JoyFallRateFactor>
+                    <PainShockThreshold>1.15</PainShockThreshold>
+                    <MentalBreakThreshold>1.15</MentalBreakThreshold>
+                    <RestRateMultiplier>1.15</RestRateMultiplier>
+                    <RestFallRateFactor>0.85</RestFallRateFactor>
+                    <JoyFallRateFactor>0.85</JoyFallRateFactor>
                 </statFactors>
             </li>
         </stages>

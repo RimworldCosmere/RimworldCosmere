@@ -6,6 +6,7 @@ using CosmereScadrial.Defs;
 using CosmereScadrial.Flags;
 using RimWorld;
 using Verse;
+using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 using Log = CosmereFramework.Log;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
@@ -18,26 +19,29 @@ namespace CosmereScadrial.Abilities {
     }
 
     public abstract class AbstractAllomanticAbility : Ability {
-        protected readonly TargetFlags targetFlags;
         protected int flareStartTick = -1;
         public BurningStatus? status;
         public LocalTargetInfo target;
 
-        public AbstractAllomanticAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
+        protected AbstractAllomanticAbility() { }
+
+        protected AbstractAllomanticAbility(Pawn pawn) : base(pawn) { }
+
+        protected AbstractAllomanticAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
+
+        protected AbstractAllomanticAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
             if (toggleable) {
                 status = BurningStatus.Off;
             }
-
-            targetFlags = targetFlags.FromAbilityDef(def);
         }
 
-        public AbstractAllomanticAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
+        protected AbstractAllomanticAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
             if (toggleable) {
                 status = BurningStatus.Off;
             }
-
-            targetFlags = targetFlags.FromAbilityDef(def);
         }
+
+        protected TargetFlags targetFlags => TargetFlagsExtensions.FromAbilityDef(def);
 
         public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
@@ -209,20 +213,12 @@ namespace CosmereScadrial.Abilities {
             return base.Activate(target, dest);
         }
 
-        public virtual AllomanticHediff GetOrAddHediff(Pawn targetPawn) {
-            if (targetPawn.health.hediffSet.TryGetHediff(def.hediff, out var ret)) return ret as AllomanticHediff;
+        protected virtual AllomanticHediff GetOrAddHediff(Pawn targetPawn) {
+            return HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def);
+        }
 
-            var hediff = (AllomanticHediff)Activator.CreateInstance(def.hediff.hediffClass);
-            hediff.def = def.hediff;
-            hediff.pawn = targetPawn;
-            hediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
-            hediff.sourceAbility = this;
-            hediff.PostMake();
-
-            Log.Warning($"{pawn.NameFullColored} applying {def.hediff.defName} hediff to {targetPawn.NameFullColored} with Severity={hediff.Severity}");
-            targetPawn.health.AddHediff(hediff);
-
-            return hediff;
+        protected virtual void RemoveHediff(Pawn targetPawn) {
+            HediffUtility.RemoveHediff(pawn, targetPawn, this);
         }
 
         protected virtual void ApplyDrag(Pawn targetPawn, float severity) {
@@ -255,6 +251,7 @@ namespace CosmereScadrial.Abilities {
 
             Scribe_Values.Look(ref flareStartTick, "flareStartTick", -1);
             Scribe_Values.Look(ref status, "status");
+            Scribe_TargetInfo.Look(ref target, "target");
         }
     }
 }

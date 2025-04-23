@@ -39,10 +39,6 @@ namespace CosmereCore.Comps.Hediffs {
             if (!breakDef.Worker.BreakCanOccur(parent.pawn)) return;
             parent.pawn.jobs?.EndCurrentJob(JobCondition.InterruptForced);
             breakDef.Worker.TryStart(parent.pawn, "StatTrigger", true);
-
-            if (LoadedModManager.RunningMods.Any(x => x.PackageId.Equals("cryptiklemur.cosmere.scadrial"))) {
-                Pawn.skills.Learn(DefDatabase<SkillDef>.GetNamed("Cosmere_Allomantic_Power"), 100f);
-            }
         }
 
         protected virtual void HandleMentalBreakRemoveFactor(float mentalBreakRemoveFactor) {
@@ -53,10 +49,6 @@ namespace CosmereCore.Comps.Hediffs {
             if (parent.pawn.InMentalState) return;
             parent.pawn.jobs?.EndCurrentJob(JobCondition.InterruptForced);
             MoteMaker.ThrowText(parent.pawn.DrawPos, parent.pawn.Map, "Calmed", Color.green);
-
-            if (LoadedModManager.RunningMods.Any(x => x.PackageId.Equals("cryptiklemur.cosmere.scadrial"))) {
-                Pawn.skills.Learn(DefDatabase<SkillDef>.GetNamed("Cosmere_Allomantic_Power"), 100f);
-            }
         }
     }
 }

@@ -6,8 +6,10 @@
         <validWhileDespawned>true</validWhileDespawned>
         <stages>
             <li>
-                <label>Crashing from Tin</label>
-                <description>They pushed themselves too hard while burning Tin. Now they’re crashing.</description>
+                <label>Overwhelmed by the World</label>
+                <description>Every sound pierced. Every light burned. I could feel my heartbeat — too clearly.
+
+Tin turned the world into a blade, and I was the edge.</description>
             </li>
         </stages>
     </ThoughtDef>

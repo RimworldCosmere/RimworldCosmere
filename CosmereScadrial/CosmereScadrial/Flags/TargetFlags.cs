@@ -112,7 +112,8 @@ namespace CosmereScadrial.Flags {
             return !flags.IsEmpty();
         }
 
-        public static TargetFlags FromAbilityDef(this TargetFlags flags, AbilityDef def) {
+        public static TargetFlags FromAbilityDef(AbilityDef def) {
+            var flags = TargetFlags.None;
             var verbProps = def.verbProperties;
             var param = verbProps.targetParams;
             if (!verbProps.targetable) {

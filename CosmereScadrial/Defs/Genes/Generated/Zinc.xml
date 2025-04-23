@@ -20,6 +20,10 @@
                 </metals>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_BurnZinc_Aura</li>
+            <li>Cosmere_Ability_BurnZinc_Target</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Zinc</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">

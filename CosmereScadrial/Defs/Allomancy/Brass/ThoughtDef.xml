@@ -6,8 +6,11 @@
         <validWhileDespawned>true</validWhileDespawned>
         <stages>
             <li>
-                <label>soothed</label>
-                <description>This pawn's emotions are being gently calmed by a nearby Allomancer.</description>
+                <label>Calm Without Cause</label>
+                <description>The anger faded before it ever found words.
+I should’ve felt more — but instead, there was only quiet.
+
+It wasn’t natural. Someone smothered the spark.</description>
             </li>
         </stages>
     </ThoughtDef>

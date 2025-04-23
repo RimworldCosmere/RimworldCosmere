@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThoughtDef>
+        <defName>Cosmere_Thought_Rioted</defName>
+        <thoughtClass>Thought_Memory</thoughtClass>
+        <validWhileDespawned>true</validWhileDespawned>
+        <stages>
+            <li>
+                <label>Emotions Felt Strange</label>
+                <description>I felt a surge of emotion — sharper, louder than it should’ve been. Like someone lit a fire inside me, and I don't know why.
+
+Something was off. I wasn’t entirely myself.</description>
+            </li>
+        </stages>
+    </ThoughtDef>
+</Defs>

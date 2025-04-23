@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Log = CosmereFramework.Log;
+using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 
 namespace CosmereScadrial.Abilities.Hediffs.Comps {
     public class AllomancyAura : HediffComp {
@@ -13,9 +13,11 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
 
         private new Properties.AllomancyAura props => (Properties.AllomancyAura)base.props;
 
-        public new AllomanticHediff parent => base.parent as AllomanticHediff;
+        private new AllomanticHediff parent => base.parent as AllomanticHediff;
 
-        public bool isAtLeastPassive => parent.Severity >= 0.5f;
+        private bool isAtLeastPassive => parent.Severity >= 0.5f;
+
+        private AbstractAllomanticAbility ability => parent.sourceAbilities.First(_ => true);
 
         private float moteScale {
             get {
@@ -85,37 +87,23 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
                 return;
             }
 
-            var hediff = GetOrAddHediff(target);
-            var offset = hediff.ageTicks / TickUtility.Minutes(5) * hediff.Severity; // Jumps for every hour
+            var hediff = HediffUtility.GetOrAddHediff(Pawn, target, ability, props);
 
             // Reset the Disappears timer
-            var disappearsComp = hediff.TryGetComp<DisappearsScaled>();
-            disappearsComp?.CompPostMake();
+            if (hediff.TryGetComp<DisappearsScaled>(out var disappearsComp)) {
+                disappearsComp.CompPostMake();
+            }
 
             // Update the mood offset
-            var thoughtComp = hediff.TryGetComp<HediffComp_ThoughtSetter>();
-            var newOffset = Mathf.RoundToInt(Mathf.Clamp(offset, 2f, 10f));
-            thoughtComp?.OverrideMoodOffset(newOffset);
+            if (hediff.TryGetComp<HediffComp_ThoughtSetter>(out var thoughtComp)) {
+                var offset = hediff.ageTicks / TickUtility.Minutes(5) * hediff.Severity; // Jumps for every hour
+                var newOffset = Mathf.RoundToInt(Mathf.Clamp(offset, 2f, 10f));
+                thoughtComp.OverrideMoodOffset(newOffset);
+            }
 
             if (hediff.ageTicks >= GenTicks.TicksPerRealSecond) return;
 
-            MoteMaker.ThrowText(target.DrawPos, target.Map, props.actVerb, Color.cyan);
-        }
-
-        public virtual AllomanticHediff GetOrAddHediff(Pawn targetPawn) {
-            if (targetPawn.health.hediffSet.TryGetHediff(props.actHediff, out var ret)) return ret as AllomanticHediff;
-
-            var hediff = (AllomanticHediff)Activator.CreateInstance(props.actHediff.hediffClass);
-            hediff.def = props.actHediff;
-            hediff.pawn = targetPawn;
-            hediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
-            hediff.sourceAbility = parent.sourceAbility;
-            hediff.PostMake();
-
-            Log.Warning($"{parent.pawn.NameFullColored} applying {props.actHediff.defName} hediff to {targetPawn.NameFullColored} with Severity={hediff.Severity}");
-            targetPawn.health.AddHediff(hediff);
-
-            return hediff;
+            MoteMaker.ThrowText(target.DrawPos, target.Map, props.verb, Color.cyan);
         }
     }
 }

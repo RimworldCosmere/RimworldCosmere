@@ -12,7 +12,7 @@
             </li>
         </comps>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereCore.ModExtensions.MetalLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
@@ -44,7 +44,7 @@
             </li>
         </comps>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalLinked">
+            <li Class="CosmereCore.ModExtensions.MetalLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>

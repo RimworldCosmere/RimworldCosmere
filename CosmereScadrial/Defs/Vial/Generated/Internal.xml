@@ -18,6 +18,20 @@
                 </metals>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+                <metals>
+                    <li>Tin</li>
+                    <li>Pewter</li>
+                    <li>Copper</li>
+                    <li>Bronze</li>
+                    <li>Aluminum</li>
+                    <li>Duralumin</li>
+                    <li>Gold</li>
+                    <li>Electrum</li>
+                </metals>
+            </li>
+        </modExtensions>
         <orderedTakeGroup>AllomanticVial_Internal</orderedTakeGroup>
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">

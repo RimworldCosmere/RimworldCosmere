@@ -13,7 +13,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     {{#each metals}}
                     <li>{{capitalize this.Name}}</li>
@@ -39,7 +39,7 @@
         <label>Mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     {{#each metals}}
                     <li>{{capitalize this.Name}}</li>

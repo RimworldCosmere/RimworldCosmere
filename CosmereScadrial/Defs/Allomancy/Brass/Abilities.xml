@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
-        <defName>Cosmere_Ability_BurnBrass_Aura</defName>
+        <defName>Cosmere_Ability_Brass_Aura</defName>
         <label>Soothing Aura</label>
         <description>Suppress emotional outbursts and calm the minds of others using Brass. Has a chance to break mental states when flaring.</description>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Brass</iconPath>
@@ -9,7 +9,7 @@
         <hediff>Cosmere_Hediff_BrassAura</hediff>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
-        <defName>Cosmere_Ability_BurnBrass_Target</defName>
+        <defName>Cosmere_Ability_Brass_Target</defName>
         <label>Soothe Target</label>
         <description>Suppress emotional outburst and calm the mind of a target Brass. Has a chance to break mental states.</description>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Brass</iconPath>

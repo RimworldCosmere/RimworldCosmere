@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Nicrosil</li>
                 </metals>
@@ -27,7 +27,7 @@
         <label>Nicroburst</label>
         <description>Boosts another Allomancer&#x27;s power drastically.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Nicrosil</li>
                 </metals>
@@ -57,7 +57,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Nicrosil</li>
                 </metals>
@@ -70,7 +70,7 @@
         <label>Soulbearer</label>
         <description>Stores Investiture, enabling storage of magical energy.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Nicrosil</li>
                 </metals>

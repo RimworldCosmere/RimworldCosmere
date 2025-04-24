@@ -14,15 +14,15 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Brass</li>
                 </metals>
             </li>
         </modExtensions>
         <abilities>
-            <li>Cosmere_Ability_BurnBrass_Aura</li>
-            <li>Cosmere_Ability_BurnBrass_Target</li>
+            <li>Cosmere_Ability_Brass_Aura</li>
+            <li>Cosmere_Ability_Brass_Target</li>
         </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Brass</iconPath>
     </GeneDef>
@@ -31,7 +31,7 @@
         <label>Soother</label>
         <description>Can soothe emotions, calming people or manipulating moods.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Brass</li>
                 </metals>
@@ -61,7 +61,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Brass</li>
                 </metals>
@@ -74,7 +74,7 @@
         <label>Firesoul</label>
         <description>Stores warmth, useful for surviving cold environments or heating up.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Brass</li>
                 </metals>

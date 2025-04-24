@@ -39,7 +39,7 @@
         <isBad>true</isBad>
         <tendable>false</tendable>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.DisappearsScaled" />
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.DisappearsScaledProperties" />
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_TinDrag</thought>
                 <moodOffset>-2</moodOffset>

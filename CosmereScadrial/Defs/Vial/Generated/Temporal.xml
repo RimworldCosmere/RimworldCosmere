@@ -14,6 +14,16 @@
                 </metals>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+                <metals>
+                    <li>Cadmium</li>
+                    <li>Bendalloy</li>
+                    <li>Gold</li>
+                    <li>Electrum</li>
+                </metals>
+            </li>
+        </modExtensions>
         <orderedTakeGroup>AllomanticVial_Temporal</orderedTakeGroup>
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">

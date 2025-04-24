@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="AbstractAllomanticHediff">
+        <defName>Cosmere_Hediff_IronAura</defName>
+        <label>Burning Iron: Aura</label>
+        <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
+Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
+These lines shimmer with the tension of potential force, visible only to those burning Iron.</description>
+        <comps>
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.PhysicalExternalAuraProperties" />
+        </comps>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <MeleeCooldownFactor>1.2</MeleeCooldownFactor>
+                    <MeleeHitChance>1.2</MeleeHitChance>
+                    <MeleeDodgeChance>1.2</MeleeDodgeChance>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

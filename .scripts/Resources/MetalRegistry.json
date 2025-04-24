@@ -18,7 +18,10 @@
       "description": "Can pull on metals, useful for drawing weapons or leaping through cities.",
       "group": "physical",
       "axis": "external",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Iron_Aura"
+      ]
     },
     "feruchemy": {
       "userName": "skimmer",
@@ -53,7 +56,10 @@
       "description": "Can push on metals, allowing rapid movement or throwing metal objects.",
       "group": "physical",
       "axis": "external",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Steel_Aura"
+      ]
     },
     "feruchemy": {
       "userName": "steelrunner",
@@ -103,7 +109,7 @@
       "axis": "internal",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_BurnTin"
+        "Cosmere_Ability_Tin"
       ]
     },
     "feruchemy": {
@@ -141,7 +147,7 @@
       "axis": "internal",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_BurnPewter"
+        "Cosmere_Ability_Pewter"
       ]
     },
     "feruchemy": {
@@ -187,8 +193,8 @@
       "axis": "external",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_BurnZinc_Aura",
-        "Cosmere_Ability_BurnZinc_Target"
+        "Cosmere_Ability_Zinc_Aura",
+        "Cosmere_Ability_Zinc_Target"
       ]
     },
     "feruchemy": {
@@ -226,8 +232,8 @@
       "axis": "external",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_BurnBrass_Aura",
-        "Cosmere_Ability_BurnBrass_Target"
+        "Cosmere_Ability_Brass_Aura",
+        "Cosmere_Ability_Brass_Target"
       ]
     },
     "feruchemy": {
@@ -359,6 +365,15 @@
     "buildable": {
       "buildings": true,
       "items": true
+    },
+    "mining": {
+      "hitPoints": 1700,
+      "yield": 25,
+      "commonality": 0.2,
+      "sizeRange": [
+        20,
+        30
+      ]
     }
   },
   {

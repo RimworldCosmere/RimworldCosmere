@@ -8,10 +8,34 @@ using Verse;
 using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 
 namespace CosmereScadrial.Abilities.Hediffs.Comps {
-    public class AllomancyAura : HediffComp {
+    public class AllomancyAuraHediffGiverProperties : HediffCompProperties, MultiTypeHediff {
+        public HediffDef hediff;
+        public HediffDef hediffFriendly;
+        public HediffDef hediffHostile;
+        public float radius = 18f;
+        public string verb;
+
+        public AllomancyAuraHediffGiverProperties() {
+            compClass = typeof(AllomancyAuraHediffGiver);
+        }
+
+        public HediffDef getHediff() {
+            return hediff;
+        }
+
+        public HediffDef getFriendlyHediff() {
+            return hediffFriendly;
+        }
+
+        public HediffDef getHostileHediff() {
+            return hediffHostile;
+        }
+    }
+
+    public class AllomancyAuraHediffGiver : HediffComp {
         private Mote mote;
 
-        private new Properties.AllomancyAura props => (Properties.AllomancyAura)base.props;
+        private new AllomancyAuraHediffGiverProperties props => (AllomancyAuraHediffGiverProperties)base.props;
 
         private new AllomanticHediff parent => base.parent as AllomanticHediff;
 

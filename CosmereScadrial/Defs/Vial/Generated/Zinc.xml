@@ -15,6 +15,13 @@
                 </metals>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+                <metals>
+                    <li>Zinc</li>
+                </metals>
+            </li>
+        </modExtensions>
         <orderedTakeGroup>AllomanticVial_Zinc</orderedTakeGroup>
     </ThingDef>
     

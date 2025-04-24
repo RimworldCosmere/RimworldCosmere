@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Copper</li>
                 </metals>
@@ -27,7 +27,7 @@
         <label>Smoker</label>
         <description>Creates a &#x27;coppercloud&#x27; that hides Allomantic activity.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Copper</li>
                 </metals>
@@ -57,7 +57,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Copper</li>
                 </metals>
@@ -70,7 +70,7 @@
         <label>Archivist</label>
         <description>Stores memories, allowing perfect recall of stored knowledge.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Copper</li>
                 </metals>

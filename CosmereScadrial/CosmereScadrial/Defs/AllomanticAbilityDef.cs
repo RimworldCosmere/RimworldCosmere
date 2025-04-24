@@ -7,7 +7,6 @@ using Verse;
 namespace CosmereScadrial.Defs {
     public class AllomanticAbilityDef : AbilityDef, MultiTypeHediff {
         public bool applyDragOnTarget = false;
-        public float auraRadius = -1;
         public float beuPerTick = 0.1f / GenTicks.TicksPerRealSecond;
         public HediffDef dragHediff;
 

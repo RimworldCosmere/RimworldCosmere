@@ -15,10 +15,8 @@
             <MarketValue>0.5</MarketValue>
         </statBases>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
-                <metals>
-                    <li>Aluminum</li>
-                </metals>
+            <li Class="CosmereCore.ModExtensions.MetalLinked">
+                <metal>Aluminum</metal>
             </li>
         </modExtensions>
     </ThingDef>

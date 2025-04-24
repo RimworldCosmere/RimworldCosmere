@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Defs>
-    <GameComponentDef>
-        <defName>GameComponent_CosmereShards</defName>
-        <class>CosmereCore.GameComponent.Shards</class>
-    </GameComponentDef>
-</Defs>

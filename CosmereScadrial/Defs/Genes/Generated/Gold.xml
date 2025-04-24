@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Gold</li>
                 </metals>
@@ -27,7 +27,7 @@
         <label>Augur</label>
         <description>Shows alternate versions of oneself, based on different pasts.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Gold</li>
                 </metals>
@@ -57,7 +57,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Gold</li>
                 </metals>
@@ -70,7 +70,7 @@
         <label>Bloodmaker</label>
         <description>Stores health, allowing fast healing when tapped.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Gold</li>
                 </metals>

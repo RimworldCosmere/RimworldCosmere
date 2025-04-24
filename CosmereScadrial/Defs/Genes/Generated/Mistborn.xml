@@ -13,7 +13,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Iron</li>
                     <li>Steel</li>
@@ -35,12 +35,14 @@
             </li>
         </modExtensions>
         <abilities>
-            <li>Cosmere_Ability_BurnTin</li>
-            <li>Cosmere_Ability_BurnPewter</li>
-            <li>Cosmere_Ability_BurnZinc_Aura</li>
-            <li>Cosmere_Ability_BurnZinc_Target</li>
-            <li>Cosmere_Ability_BurnBrass_Aura</li>
-            <li>Cosmere_Ability_BurnBrass_Target</li>
+            <li>Cosmere_Ability_Iron_Aura</li>
+            <li>Cosmere_Ability_Steel_Aura</li>
+            <li>Cosmere_Ability_Tin</li>
+            <li>Cosmere_Ability_Pewter</li>
+            <li>Cosmere_Ability_Zinc_Aura</li>
+            <li>Cosmere_Ability_Zinc_Target</li>
+            <li>Cosmere_Ability_Brass_Aura</li>
+            <li>Cosmere_Ability_Brass_Target</li>
         </abilities>
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
@@ -48,7 +50,7 @@
         <label>Mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Iron</li>
                     <li>Steel</li>

@@ -13,6 +13,15 @@
                 </metals>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+                <metals>
+                    {{#each metals}}
+                    <li>{{capitalize this}}</li>
+                    {{/each}}
+                </metals>
+            </li>
+        </modExtensions>
         <orderedTakeGroup>AllomanticVial_{{defName}}</orderedTakeGroup>
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">

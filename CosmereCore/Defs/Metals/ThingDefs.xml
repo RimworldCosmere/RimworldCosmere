@@ -39,6 +39,7 @@
         <stuffProps>
             <categories>
                 <li>Cosmere_Metals</li>
+                <li>Metallic</li>
             </categories>
             <appearance>Metal</appearance>
         </stuffProps>
@@ -51,10 +52,6 @@
     <ThingDef Name="AbstractBuildableMetal" ParentName="AbstractMetal" Abstract="True">
         <stuffProps>
             <commonality>0.5</commonality>
-            <categories>
-                <li>Cosmere_Metals</li>
-                <li>Metallic</li>
-            </categories>
             <constructEffect>ConstructMetal</constructEffect>
             <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
             <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>

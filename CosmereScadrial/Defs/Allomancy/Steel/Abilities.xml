@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <defName>Cosmere_Ability_Steel_Aura</defName>
+        <label>Steel Aura</label>
+        <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
+Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
+These lines shimmer with the tension of potential force, visible only to those burning Steel.</description>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Steel</iconPath>
+        <metal>Steel</metal>
+        <hediff>Cosmere_Hediff_SteelAura</hediff>
+        <beuPerTick>0.0004</beuPerTick>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

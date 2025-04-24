@@ -18,10 +18,8 @@
             <mineableScatterLumpSizeRange>35~65</mineableScatterLumpSizeRange>
         </building>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
-                <metals>
-                    <li>Iron</li>
-                </metals>
+            <li Class="CosmereCore.ModExtensions.MetalLinked">
+                <metal>Iron</metal>
             </li>
         </modExtensions>
     </ThingDef>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
-        <defName>Cosmere_Ability_BurnPewter</defName>
+        <defName>Cosmere_Ability_Pewter</defName>
         <label>Pewter</label>
         <description>Burn pewter to enhance physical power and resilience for a short duration.</description>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Pewter</iconPath>

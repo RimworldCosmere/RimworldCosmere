@@ -5,7 +5,7 @@
         <label>Burning Zinc: Aura</label>
         <description>Subtly fanning the emotional flames of all nearby minds by burning Zinc.</description>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.AllomancyAura">
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
                 <hediffFriendly>Cosmere_Hediff_Rioted_Buff</hediffFriendly>
                 <hediffHostile>Cosmere_Hediff_Rioted_Debuff</hediffHostile>
                 <verb>Rioted</verb>
@@ -31,7 +31,7 @@
         <description>This pawn has been rioted by a nearby Allomancer burning Zinc. Their emotions feel more erratic and displaced.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.DisappearsScaled">
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.DisappearsScaledProperties">
                 <baseTicks>600</baseTicks> <!-- 10 seconds -->
             </li>
         </comps>

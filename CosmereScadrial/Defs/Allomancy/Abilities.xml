@@ -63,10 +63,6 @@
         <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
         <hostile>true</hostile>
         <verbProperties>
-            <verbClass>Verb_CastAbility</verbClass>
-            <targetable>false</targetable>
-            <warmupTime>0</warmupTime>
-            <range>0</range>
             <violent>true</violent>
         </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>

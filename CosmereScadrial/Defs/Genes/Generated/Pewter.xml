@@ -14,14 +14,14 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Pewter</li>
                 </metals>
             </li>
         </modExtensions>
         <abilities>
-            <li>Cosmere_Ability_BurnPewter</li>
+            <li>Cosmere_Ability_Pewter</li>
         </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Pewter</iconPath>
     </GeneDef>
@@ -30,7 +30,7 @@
         <label>Thug</label>
         <description>Enhances physical strength and durability, useful in combat.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Pewter</li>
                 </metals>
@@ -60,7 +60,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Pewter</li>
                 </metals>
@@ -73,7 +73,7 @@
         <label>Brute</label>
         <description>Stores physical strength, tapping grants bursts of power.</description>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.MetalsLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Pewter</li>
                 </metals>

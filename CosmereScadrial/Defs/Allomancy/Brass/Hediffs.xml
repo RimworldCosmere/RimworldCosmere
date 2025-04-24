@@ -5,7 +5,7 @@
         <label>Burning Brass: Aura</label>
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.AllomancyAura">
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
                 <hediff>Cosmere_Hediff_Soothed</hediff>
                 <verb>Soothed</verb>
             </li>
@@ -32,7 +32,7 @@
         <description>This pawn has been soothed by a nearby Allomancer burning brass. Their emotions feel more stable and calm.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.Properties.DisappearsScaled">
+            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.DisappearsScaledProperties">
                 <baseTicks>600</baseTicks> <!-- 10 seconds -->
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">

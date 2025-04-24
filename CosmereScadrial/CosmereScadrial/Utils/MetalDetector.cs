@@ -17,10 +17,7 @@ namespace CosmereScadrial.Utils {
         public static List<MetalDef> GetLinkedMetals(ThingDef thingDef, bool allowAluminum = false) {
             if (thingDef == null) return [];
 
-            var metalsLinked = thingDef.GetModExtension<MetalsLinked>();
-            var metalLinked = thingDef.GetModExtension<MetalLinked>();
-
-            var metals = metalsLinked != null ? metalsLinked.metals : metalLinked != null ? [metalLinked.metal] : [];
+            var metals = thingDef.GetModExtension<MetalsLinked>()?.Metals ?? [];
 
             return allowAluminum ? metals : metals.Where(x => !x.Equals(MetalDefOf.Aluminum)).ToList();
         }

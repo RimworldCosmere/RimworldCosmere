@@ -18,7 +18,7 @@
             <mineableScatterLumpSizeRange>35~65</mineableScatterLumpSizeRange>
         </building>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metal>Tin</metal>
             </li>
         </modExtensions>

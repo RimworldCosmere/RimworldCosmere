@@ -31,9 +31,16 @@ namespace CosmereScadrial.Utils {
             var metals = GetLinkedMetals(thing.def, allowAluminum);
             if (metals.Count > 0) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
             if (thing.def.IsMetal) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
-            if (thing.Stuff != null && (thing.Stuff.IsMetal || GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0)) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
+            //if (thing.Stuff != null && (thing.Stuff.IsMetal || GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0)) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
             if (thing.def.defName is "ChunkSlagSteel" or "ChunkMechanoidSlag") return thing.GetStatValue(RimWorld.StatDefOf.Mass);
-            //if (thing.def.stuffCategories?.Contains(StuffCategoryDefOf.Metallic) == true) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
+
+            if (thing.Stuff != null) {
+                if (thing.Stuff.IsMetal || GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0) {
+                    var mass = thing.Stuff.GetStatValueAbstract(RimWorld.StatDefOf.Mass);
+
+                    return mass * thing.def.CostStuffCount;
+                }
+            }
 
             if (thing.def.defName.Contains("Ancient")) {
                 if (thing.def.defName != "AncientFence") return thing.GetStatValue(RimWorld.StatDefOf.Mass);

@@ -42,7 +42,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
         }
 
         private IntVec3 GetDirectionBehind(Thing target, Thing source) {
-            var directionToSource = (source.DrawPos - target.DrawPos).normalized;
+            var directionToSource = (source.Position.ToVector3() - target.Position.ToVector3()).normalized;
             var positionBehindTarget = new IntVec3(
                 (int)Math.Round(directionToSource.x, MidpointRounding.AwayFromZero),
                 0,
@@ -56,12 +56,33 @@ namespace CosmereScadrial.Abilities.Allomancy {
             var massStat = thing.GetStatValue(RimWorld.StatDefOf.Mass);
             switch (thing?.def?.category) {
                 case ThingCategory.Pawn:
-                    return massStat * ((Pawn)thing).BodySize + MetalDetector.GetMetal(thing);
+                    var pawn = (Pawn)thing;
+                    var bodyType = pawn.story.bodyType;
+                    var size = 1f;
+                    if (bodyType.Equals(BodyTypeDefOf.Thin)) {
+                        size = 0.8f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Baby)) {
+                        size = 0.2f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Child)) {
+                        size = 0.5f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Fat)) {
+                        size = 1.3f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Hulk)) {
+                        size = 1.5f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Female)) {
+                        size = 0.9f;
+                    }
+
+                    return massStat * size + MetalDetector.GetMetal(thing);
                 case ThingCategory.Item:
                     return massStat * thing.stackCount;
                 case ThingCategory.Building: {
                     var building = (Building)thing;
+                    if (massStat <= 1f) {
+                        massStat = 100;
+                    }
 
+                    // Add a 100x multiplier to this stat. For some reason, buildings dont have a mass.
                     return massStat * building.def.Size.x * building.def.Size.z * MetalDetector.GetMetal(building);
                 }
                 case null: return float.MaxValue;
@@ -94,7 +115,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
                 break;
             }
 
-            Current.Game.GetComponent<GradualMoverManager>().StartMovement(things.Item2, things.Item1, finalPos, Mathf.Max(10, Mathf.RoundToInt(60f / forceMultiplier)), lineMaterial);
+            Current.Game.GetComponent<GradualMoverManager>().StartMovement(things.Item2, things.Item1, finalPos, Mathf.Max(5, Mathf.RoundToInt(30f / forceMultiplier)), lineMaterial);
             Log.Verbose($"Pushed {pawn} mass={mass} forceMultiplier={forceMultiplier} distance={distance} direction={direction}");
         }
 

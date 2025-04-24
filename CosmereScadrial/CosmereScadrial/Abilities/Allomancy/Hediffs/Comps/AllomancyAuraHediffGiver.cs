@@ -1,13 +1,14 @@
 using System;
 using System.Linq;
 using CosmereFramework.Utils;
+using CosmereScadrial.Abilities.Hediffs.Comps;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 
-namespace CosmereScadrial.Abilities.Hediffs.Comps {
+namespace CosmereScadrial.Abilities.Allomancy.Hediffs.Comps {
     public class AllomancyAuraHediffGiverProperties : HediffCompProperties, MultiTypeHediff {
         public HediffDef hediff;
         public HediffDef hediffFriendly;
@@ -41,7 +42,7 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
 
         private bool isAtLeastPassive => parent.Severity >= 0.5f;
 
-        private AbstractAllomanticAbility ability => parent.sourceAbilities.First(_ => true);
+        private AbstractAbility ability => parent.sourceAbilities.First(_ => true);
 
         private float moteScale {
             get {

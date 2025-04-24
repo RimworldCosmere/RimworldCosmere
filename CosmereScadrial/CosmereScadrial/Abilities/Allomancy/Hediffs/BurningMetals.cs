@@ -3,7 +3,7 @@ using System.Text;
 using CosmereScadrial.Comps.Things;
 using Verse;
 
-namespace CosmereScadrial.Abilities.Hediffs {
+namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
     public class BurningMetals : Hediff {
         public override string GetTooltip(Pawn pawn, bool showHediffsDebugInfo) {
             var comp = pawn.GetComp<MetalBurning>();

@@ -15,9 +15,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Chromium</li>
-                </metals>
+                <metal>Chromium</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Chromium</iconPath>
@@ -28,9 +26,7 @@
         <description>Wipes away another Allomancer&#x27;s metal reserves.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Chromium</li>
-                </metals>
+                <metal>Chromium</metal>
             </li>
         </modExtensions>
         <degreeDatas>
@@ -58,9 +54,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Chromium</li>
-                </metals>
+                <metal>Chromium</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Chromium</iconPath>
@@ -71,9 +65,7 @@
         <description>Stores fortune, influencing luck subtly.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Chromium</li>
-                </metals>
+                <metal>Chromium</metal>
             </li>
         </modExtensions>
         <degreeDatas>

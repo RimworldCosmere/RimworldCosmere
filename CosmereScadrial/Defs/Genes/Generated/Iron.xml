@@ -15,9 +15,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Iron</li>
-                </metals>
+                <metal>Iron</metal>
             </li>
         </modExtensions>
         <abilities>
@@ -31,9 +29,7 @@
         <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Iron</li>
-                </metals>
+                <metal>Iron</metal>
             </li>
         </modExtensions>
         <degreeDatas>
@@ -61,9 +57,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Iron</li>
-                </metals>
+                <metal>Iron</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Iron</iconPath>
@@ -74,9 +68,7 @@
         <description>Stores weight, allowing the user to become lighter or heavier.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Iron</li>
-                </metals>
+                <metal>Iron</metal>
             </li>
         </modExtensions>
         <degreeDatas>

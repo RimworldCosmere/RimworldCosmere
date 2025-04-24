@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Abilities;
+using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
 using UnityEngine;
@@ -8,6 +8,12 @@ using Verse;
 using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Comps.Things {
+    public class MetalBurningProperties : CompProperties {
+        public MetalBurningProperties() {
+            compClass = typeof(MetalBurning);
+        }
+    }
+
     public class MetalBurning : ThingComp {
         private const int SECONDS_INTERVAL = 1;
 
@@ -89,7 +95,7 @@ namespace CosmereScadrial.Comps.Things {
         public void RemoveAllBurnSourcesForMetal(MetallicArtsMetalDef metal) {
             var keysToRemove = burnSourceMap.Keys.Where(k => k.metal == metal).ToList();
             foreach (var key in keysToRemove) {
-                var ability = (AbstractAllomanticAbility)pawn.abilities.GetAbility(key.def);
+                var ability = (AbstractAbility)pawn.abilities.GetAbility(key.def);
                 ability?.UpdateStatus(BurningStatus.Off);
 
                 burnSourceMap.Remove(key);

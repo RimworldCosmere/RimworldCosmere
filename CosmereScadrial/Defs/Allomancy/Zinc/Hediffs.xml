@@ -5,7 +5,7 @@
         <label>Burning Zinc: Aura</label>
         <description>Subtly fanning the emotional flames of all nearby minds by burning Zinc.</description>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
+            <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
                 <hediffFriendly>Cosmere_Hediff_Rioted_Buff</hediffFriendly>
                 <hediffHostile>Cosmere_Hediff_Rioted_Debuff</hediffHostile>
                 <verb>Rioted</verb>

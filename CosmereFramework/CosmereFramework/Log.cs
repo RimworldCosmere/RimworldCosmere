@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using Verse;
+using static CosmereFramework.CosmereFramework;
 
 namespace CosmereFramework {
     public static class Log {
@@ -15,16 +16,13 @@ namespace CosmereFramework {
             { LogLevel.Verbose, Color.gray },
         };
 
-        private static CosmereFramework frameworkMod => LoadedModManager.GetMod<CosmereFramework>();
-
-        private static CosmereSettings cosmereSettings => frameworkMod.cosmereSettings;
 
         public static void Message(string message, LogLevel level = LogLevel.Info) {
-            if (level > cosmereSettings.logLevel || level == LogLevel.None) return;
+            if (level > CosmereSettings.logLevel || level == LogLevel.None) return;
             if (level == LogLevel.Error && DebugSettings.pauseOnError && Current.ProgramState == ProgramState.Playing) Find.TickManager.Pause();
             if (level < LogLevel.Error && Prefs.OpenLogOnWarnings) Verse.Log.TryOpenLogWindow();
 
-            var modsDir = frameworkMod.Content.RootDir.Replace("CosmereFramework", "");
+            var modsDir = CosmereFrameworkMod.Content.RootDir.Replace("CosmereFramework", "");
             var ns = "None";
             var stack = "";
             var stackTrace = new StackTrace(1, true);

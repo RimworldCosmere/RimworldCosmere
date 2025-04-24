@@ -1,14 +1,14 @@
-using CosmereScadrial.Abilities;
+using CosmereScadrial.Abilities.Allomancy;
 using UnityEngine;
 using Verse;
 
 namespace CosmereScadrial.FloatMenu {
     public class AllomanticAbilityFloatMenuOption : FloatMenuOption {
-        private readonly AbstractAllomanticAbility ability;
+        private readonly AbstractAbility ability;
         private readonly LocalTargetInfo target;
         private bool? lastCtrlState;
 
-        public AllomanticAbilityFloatMenuOption(AbstractAllomanticAbility ability, LocalTargetInfo target) : base(
+        public AllomanticAbilityFloatMenuOption(AbstractAbility ability, LocalTargetInfo target) : base(
             null,
             null,
             ability.def.uiIcon,

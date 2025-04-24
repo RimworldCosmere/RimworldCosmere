@@ -58,7 +58,8 @@
       "axis": "external",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_Steel_Aura"
+        "Cosmere_Ability_Steel_Aura",
+        "Cosmere_Ability_Steel_Push"
       ]
     },
     "feruchemy": {

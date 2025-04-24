@@ -15,9 +15,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Bronze</li>
-                </metals>
+                <metal>Bronze</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Bronze</iconPath>
@@ -28,9 +26,7 @@
         <description>Detects other Allomancers using powers.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Bronze</li>
-                </metals>
+                <metal>Bronze</metal>
             </li>
         </modExtensions>
         <degreeDatas>
@@ -58,9 +54,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Bronze</li>
-                </metals>
+                <metal>Bronze</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Bronze</iconPath>
@@ -71,9 +65,7 @@
         <description>Stores wakefulness, useful for staying awake or skipping sleep.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Bronze</li>
-                </metals>
+                <metal>Bronze</metal>
             </li>
         </modExtensions>
         <degreeDatas>

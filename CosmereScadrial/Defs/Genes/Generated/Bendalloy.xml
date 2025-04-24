@@ -15,9 +15,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Bendalloy</li>
-                </metals>
+                <metal>Bendalloy</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Bendalloy</iconPath>
@@ -28,9 +26,7 @@
         <description>Speeds up time in a bubble around the user.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Bendalloy</li>
-                </metals>
+                <metal>Bendalloy</metal>
             </li>
         </modExtensions>
         <degreeDatas>
@@ -58,9 +54,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Bendalloy</li>
-                </metals>
+                <metal>Bendalloy</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Bendalloy</iconPath>
@@ -71,9 +65,7 @@
         <description>Stores nutrition, allowing users to go without food.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Bendalloy</li>
-                </metals>
+                <metal>Bendalloy</metal>
             </li>
         </modExtensions>
         <degreeDatas>

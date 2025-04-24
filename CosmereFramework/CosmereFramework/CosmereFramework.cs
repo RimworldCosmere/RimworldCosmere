@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using CosmereFramework.Settings;
+using HarmonyLib;
 using UnityEngine;
 using Verse;
 
@@ -14,14 +15,18 @@ namespace CosmereFramework {
     }
 
     public class CosmereFramework(ModContentPack content) : Mod(content) {
-        public CosmereSettings cosmereSettings => GetSettings<CosmereSettings>();
+        public static CosmereFramework CosmereFrameworkMod => LoadedModManager.GetMod<CosmereFramework>();
+
+        public static CosmereSettings CosmereSettings => CosmereFrameworkMod.settings;
+
+        public CosmereSettings settings => GetSettings<CosmereSettings>();
 
         public override void DoSettingsWindowContents(Rect inRect) {
             var listingStandard = new Listing_Standard();
             listingStandard.Begin(inRect);
-            listingStandard.Label($"Log Level - {cosmereSettings.logLevel.ToString()}");
-            cosmereSettings.logLevel = (LogLevel)(int)listingStandard.Slider((float)cosmereSettings.logLevel, (float)LogLevel.None, (float)LogLevel.Verbose);
-            listingStandard.CheckboxLabeled("Debug Mode", ref cosmereSettings.debugMode, "Opens the logs.");
+            listingStandard.Label($"Log Level - {settings.logLevel.ToString()}");
+            settings.logLevel = (LogLevel)(int)listingStandard.Slider((float)settings.logLevel, (float)LogLevel.None, (float)LogLevel.Verbose);
+            listingStandard.CheckboxLabeled("Debug Mode", ref settings.debugMode, "Opens the logs.");
             listingStandard.End();
             base.DoSettingsWindowContents(inRect);
         }
@@ -31,23 +36,11 @@ namespace CosmereFramework {
         }
     }
 
-    public class CosmereSettings : ModSettings {
-        public bool debugMode;
-        public LogLevel logLevel = LogLevel.Verbose;
-
-        public override void ExposeData() {
-            Scribe_Values.Look(ref logLevel, "logLevel", LogLevel.Verbose);
-            Scribe_Values.Look(ref debugMode, "debugMode");
-        }
-    }
-
     [StaticConstructorOnStartup]
     public static class ModStartup {
         static ModStartup() {
-            Log.Important($"Build Rev: {BuildInfo.REVISION} @ {BuildInfo.BUILD_TIME}. DebugMode={cosmereSettings.debugMode} LogLevel={cosmereSettings.logLevel}");
+            Log.Important($"Build Rev: {BuildInfo.REVISION} @ {BuildInfo.BUILD_TIME}. DebugMode={CosmereFramework.CosmereSettings.debugMode} LogLevel={CosmereFramework.CosmereSettings.logLevel}");
             new Harmony("cryptiklemur.cosmere.core").PatchAll();
         }
-
-        private static CosmereSettings cosmereSettings => LoadedModManager.GetMod<CosmereFramework>().cosmereSettings;
     }
 }

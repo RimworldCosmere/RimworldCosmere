@@ -1,6 +1,6 @@
 using System;
-using CosmereScadrial.Abilities;
-using CosmereScadrial.Abilities.Hediffs;
+using CosmereScadrial.Abilities.Allomancy;
+using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using Verse;
 
 namespace CosmereScadrial.Utils {
@@ -17,7 +17,7 @@ namespace CosmereScadrial.Utils {
             return hediff.getHediff();
         }
 
-        public static AllomanticHediff GetOrAddHediff(Pawn caster, Pawn target, AbstractAllomanticAbility ability, MultiTypeHediff def) {
+        public static AllomanticHediff GetOrAddHediff(Pawn caster, Pawn target, AbstractAbility ability, MultiTypeHediff def) {
             var hediffDef = GetHediffDefForPawn(caster, target, def);
             if (TryGetHediff(target, hediffDef, out var hediff)) {
                 hediff.AddSource(ability);
@@ -36,7 +36,7 @@ namespace CosmereScadrial.Utils {
             return newHediff;
         }
 
-        public static void RemoveHediff(Pawn caster, Pawn target, AbstractAllomanticAbility ability) {
+        public static void RemoveHediff(Pawn caster, Pawn target, AbstractAbility ability) {
             var hediffDef = GetHediffDefForPawn(caster, target, ability.def);
             if (!TryGetHediff(target, hediffDef, out var hediff)) {
                 return;

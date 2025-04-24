@@ -6,6 +6,12 @@ using CosmereScadrial.Defs;
 using Verse;
 
 namespace CosmereScadrial.Comps.Things {
+    public class MetalReservesProperties : CompProperties {
+        public MetalReservesProperties() {
+            compClass = typeof(MetalReserves);
+        }
+    }
+
     public class MetalReserves : ThingComp {
         public const float MAX_AMOUNT = 100f;
         private const float SLEEP_DECAY_AMOUNT = 2.5f;

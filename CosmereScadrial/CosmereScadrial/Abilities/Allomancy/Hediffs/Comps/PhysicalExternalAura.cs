@@ -5,7 +5,7 @@ using CosmereScadrial.Utils;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Abilities.Hediffs.Comps {
+namespace CosmereScadrial.Abilities.Allomancy.Hediffs.Comps {
     public class PhysicalExternalAuraProperties : HediffCompProperties {
         public Color lineColor = new Color(0.3f, 0.6f, 1f, 1f);
         public float radius = 15f;
@@ -32,12 +32,12 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
             var map = parent.pawn.Map;
             var center = parent.pawn.Position;
             var radius = props.radius * parent.Severity;
-            if (map == null || !center.IsValid) {
+            if (map == null || !center.IsValid || !Find.Selector.IsSelected(parent.pawn)) {
                 return;
             }
 
             thingsToDraw.Clear();
-            foreach (var cell in GenRadial.RadialCellsAround(center, Math.Min(GenRadial.MaxRadialPatternRadius, radius), false)) {
+            foreach (var cell in GenRadial.RadialCellsAround(center, (float)Math.Round(Math.Min(GenRadial.MaxRadialPatternRadius, radius)), false)) {
                 foreach (var thing in cell.GetThingList(map).Where(thing => MetalDetector.IsCapableOfHavingMetal(thing.def) && !thingsToDraw.ContainsKey(thing))) {
                     thingsToDraw[thing] = MetalDetector.GetMetal(thing);
                 }

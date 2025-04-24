@@ -4,16 +4,6 @@
         <defName>Cosmere_AllomanticVial_Physical</defName>
         <label>Mistborn Vial: Physical</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
-                <metals>
-                    <li>Iron</li>
-                    <li>Steel</li>
-                    <li>Tin</li>
-                    <li>Pewter</li>
-                </metals>
-            </li>
-        </comps>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>

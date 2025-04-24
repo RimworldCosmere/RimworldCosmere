@@ -68,7 +68,7 @@
                 <glowColor>(255,120,60,0)</glowColor>
                 <overlightRadius>2</overlightRadius>
             </li>
-            <li Class="CosmereScadrial.Comps.Things.Properties.RefuelableSuspendWhenPowered">
+            <li Class="CosmereScadrial.Comps.Things.RefuelableSuspendWhenPoweredProperties">
                 <fuelFilter>
                     <thingDefs>
                         <li>WoodLog</li>

@@ -2,6 +2,12 @@ using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Comps.Things {
+    public class RefuelableSuspendWhenPoweredProperties : CompProperties_Refuelable {
+        public RefuelableSuspendWhenPoweredProperties() {
+            compClass = typeof(RefuelableSuspendWhenPowered);
+        }
+    }
+
     public class RefuelableSuspendWhenPowered : CompRefuelable {
         public override void CompTick() {
             if (parent.TryGetComp<CompPowerTrader>()?.PowerOn == true) {

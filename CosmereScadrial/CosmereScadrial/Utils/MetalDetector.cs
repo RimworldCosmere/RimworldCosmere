@@ -33,28 +33,18 @@ namespace CosmereScadrial.Utils {
             if (thing.def.IsMetal) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
             if (thing.Stuff != null && (thing.Stuff.IsMetal || GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0)) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
             if (thing.def.defName is "ChunkSlagSteel" or "ChunkMechanoidSlag") return thing.GetStatValue(RimWorld.StatDefOf.Mass);
-            if (thing.def.stuffCategories?.Contains(StuffCategoryDefOf.Metallic) == true) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
+            //if (thing.def.stuffCategories?.Contains(StuffCategoryDefOf.Metallic) == true) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
 
-            foreach (var recipe in RecipesThatMake(thing.def)) {
-                if (RecipeUsesMetalIngredient(recipe, depth + 1, allowAluminum)) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
+            if (thing.def.defName.Contains("Ancient")) {
+                if (thing.def.defName != "AncientFence") return thing.GetStatValue(RimWorld.StatDefOf.Mass);
             }
 
+            if (RecipesThatMake(thing.def).Any(recipe => RecipeUsesMetalIngredient(recipe, depth + 1, allowAluminum))) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
+
             if (thing.def.category == ThingCategory.Pawn && thing is Pawn pawn) {
-                var combinedMass = 0f;
-                foreach (var item in pawn.inventory?.innerContainer ?? []) {
-                    var metalMass = GetMetal(item, depth + 1);
-                    if (metalMass > 0) combinedMass += metalMass * item.stackCount;
-                }
-
-                foreach (var item in pawn.apparel?.WornApparel ?? Enumerable.Empty<Apparel>()) {
-                    var metalMass = GetMetal(item, depth + 1);
-                    if (metalMass > 0) combinedMass += metalMass * item.stackCount;
-                }
-
-                foreach (var item in pawn.equipment?.AllEquipmentListForReading ?? []) {
-                    var metalMass = GetMetal(item, depth + 1);
-                    if (metalMass > 0) combinedMass += metalMass * item.stackCount;
-                }
+                var combinedMass = (pawn.inventory?.innerContainer ?? []).Sum(item => GetMetal(item, depth + 1) * item.stackCount);
+                combinedMass += (pawn.apparel?.WornApparel ?? []).Sum(item => GetMetal(item, depth + 1) * item.stackCount);
+                combinedMass += (pawn.equipment?.AllEquipmentListForReading ?? []).Sum(item => GetMetal(item, depth + 1) * item.stackCount);
 
                 if (combinedMass > 0f) return combinedMass;
             }

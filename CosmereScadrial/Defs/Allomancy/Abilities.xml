@@ -22,7 +22,7 @@
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     
     <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractSelfBurnAbility" ParentName="AbstractBurnAbility" Abstract="True">
-        <abilityClass>CosmereScadrial.Abilities.AllomanticAbilitySelfTarget</abilityClass>
+        <abilityClass>CosmereScadrial.Abilities.Allomancy.AbilitySelfTarget</abilityClass>
         <canUseAoeToGetTargets>False</canUseAoeToGetTargets>
         <targetRequired>false</targetRequired>
         <targetWorldCell>false</targetWorldCell>
@@ -38,7 +38,7 @@
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     
     <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractTargetBurnAbility" ParentName="AbstractBurnAbility" Abstract="True">
-        <abilityClass>CosmereScadrial.Abilities.AllomanticAbilityOtherTarget</abilityClass>
+        <abilityClass>CosmereScadrial.Abilities.Allomancy.AbilityOtherTarget</abilityClass>
         <canUseAoeToGetTargets>False</canUseAoeToGetTargets>
         <targetRequired>true</targetRequired>
         <targetWorldCell>false</targetWorldCell>

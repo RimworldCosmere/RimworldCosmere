@@ -4,15 +4,6 @@
         <defName>Cosmere_AllomanticVial_{{defName}}</defName>
         <label>Mistborn Vial: {{capitalize name}}</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
-                <metals>
-                    {{#each metals}}
-                    <li>{{capitalize this}}</li>
-                    {{/each}}
-                </metals>
-            </li>
-        </comps>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>

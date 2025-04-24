@@ -4,15 +4,15 @@ using System.Text;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Abilities.Hediffs {
+namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
     public class AllomanticHediff : HediffWithComps {
-        public List<AbstractAllomanticAbility> sourceAbilities = [];
+        public List<AbstractAbility> sourceAbilities = [];
 
         public override bool ShouldRemove => sourceAbilities.Count == 0 || base.ShouldRemove;
 
         public override string LabelBase => base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");
 
-        public void AddSource(AbstractAllomanticAbility sourceAbility) {
+        public void AddSource(AbstractAbility sourceAbility) {
             if (sourceAbilities.Contains(sourceAbility)) return;
 
             Log.Warning($"{sourceAbility.pawn.NameFullColored} applying {def.defName} hediff to {pawn.NameFullColored} with Status={sourceAbility.status}");
@@ -20,7 +20,7 @@ namespace CosmereScadrial.Abilities.Hediffs {
             Severity = CalculateSeverity();
         }
 
-        public void RemoveSource(AbstractAllomanticAbility sourceAbility, bool recalculate = true) {
+        public void RemoveSource(AbstractAbility sourceAbility, bool recalculate = true) {
             if (!sourceAbilities.Contains(sourceAbility)) return;
 
             Log.Warning($"{sourceAbility.pawn.NameFullColored} removing {def.defName} hediff from {pawn.NameFullColored}");
@@ -59,7 +59,7 @@ namespace CosmereScadrial.Abilities.Hediffs {
             if (sourcePawns == null) return;
             foreach (var localPawn in sourcePawns) {
                 foreach (var ability in localPawn?.abilities?.abilities ?? []) {
-                    if (ability is not AbstractAllomanticAbility aa) continue;
+                    if (ability is not AbstractAbility aa) continue;
                     // If this pawn has any Allomantic ability, we re-attach it
                     sourceAbilities.Add(aa);
                     // Optional: maybe only add one matching ability type, if you can correlate them
@@ -80,7 +80,7 @@ namespace CosmereScadrial.Abilities.Hediffs {
             return stringBuilder.ToString();
         }
 
-        private float GetContribution(AbstractAllomanticAbility ability) {
+        private float GetContribution(AbstractAbility ability) {
             const int multiplier = 12;
             var rawPower = ability.pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
             var statusValue = (ability.status ?? BurningStatus.Burning) switch {

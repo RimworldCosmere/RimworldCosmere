@@ -8,18 +8,9 @@
             <color>(132, 134, 139)</color>
             <colorTwo>(132, 134, 139)</colorTwo>
         </graphicData>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
-                <metals>
-                    <li>Chromium</li>
-                </metals>
-            </li>
-        </comps>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Chromium</li>
-                </metals>
+                <metal>Chromium</metal>
             </li>
         </modExtensions>
         <orderedTakeGroup>AllomanticVial_Chromium</orderedTakeGroup>

@@ -8,18 +8,9 @@
             <color>(121, 113, 111)</color>
             <colorTwo>(121, 113, 111)</colorTwo>
         </graphicData>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
-                <metals>
-                    <li>Iron</li>
-                </metals>
-            </li>
-        </comps>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Iron</li>
-                </metals>
+                <metal>Iron</metal>
             </li>
         </modExtensions>
         <orderedTakeGroup>AllomanticVial_Iron</orderedTakeGroup>

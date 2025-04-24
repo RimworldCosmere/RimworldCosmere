@@ -15,7 +15,7 @@
             <MarketValue>{{#if metal.Alloy}}2{{else}}0.5{{/if}}</MarketValue>
         </statBases>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
             </li>
         </modExtensions>

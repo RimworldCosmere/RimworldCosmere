@@ -15,7 +15,7 @@
             <MarketValue>0.5</MarketValue>
         </statBases>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalLinked">
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metal>Chromium</metal>
             </li>
         </modExtensions>

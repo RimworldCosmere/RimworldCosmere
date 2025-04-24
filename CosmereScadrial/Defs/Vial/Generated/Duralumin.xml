@@ -8,18 +8,9 @@
             <color>(127, 113, 115)</color>
             <colorTwo>(127, 113, 115)</colorTwo>
         </graphicData>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
-                <metals>
-                    <li>Duralumin</li>
-                </metals>
-            </li>
-        </comps>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Duralumin</li>
-                </metals>
+                <metal>Duralumin</metal>
             </li>
         </modExtensions>
         <orderedTakeGroup>AllomanticVial_Duralumin</orderedTakeGroup>

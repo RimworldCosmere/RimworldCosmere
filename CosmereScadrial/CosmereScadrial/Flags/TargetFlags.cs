@@ -3,7 +3,7 @@ using RimWorld;
 
 namespace CosmereScadrial.Flags {
     [Flags]
-    public enum TargetFlags {
+    public enum TargetFlags : ushort {
         None = 0,
         Locations = 1 << 0,
         Self = 1 << 1,
@@ -120,6 +120,7 @@ namespace CosmereScadrial.Flags {
                 return TargetFlags.Self;
             }
 
+            if (def.targetWorldCell) flags |= TargetFlags.WorldCell;
             if (param.canTargetLocations) flags |= TargetFlags.Locations;
             if (param.canTargetSelf) flags |= TargetFlags.Self;
             if (param.canTargetPawns) flags |= TargetFlags.Pawns;

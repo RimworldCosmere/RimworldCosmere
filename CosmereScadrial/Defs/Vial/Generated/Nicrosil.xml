@@ -8,18 +8,9 @@
             <color>(141, 139, 135)</color>
             <colorTwo>(141, 139, 135)</colorTwo>
         </graphicData>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
-                <metals>
-                    <li>Nicrosil</li>
-                </metals>
-            </li>
-        </comps>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Nicrosil</li>
-                </metals>
+                <metal>Nicrosil</metal>
             </li>
         </modExtensions>
         <orderedTakeGroup>AllomanticVial_Nicrosil</orderedTakeGroup>

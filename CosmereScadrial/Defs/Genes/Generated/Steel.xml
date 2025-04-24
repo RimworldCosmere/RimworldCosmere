@@ -15,13 +15,12 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Steel</li>
-                </metals>
+                <metal>Steel</metal>
             </li>
         </modExtensions>
         <abilities>
             <li>Cosmere_Ability_Steel_Aura</li>
+            <li>Cosmere_Ability_Steel_Push</li>
         </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Steel</iconPath>
     </GeneDef>
@@ -31,9 +30,7 @@
         <description>Can push on metals, allowing rapid movement or throwing metal objects.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Steel</li>
-                </metals>
+                <metal>Steel</metal>
             </li>
         </modExtensions>
         <degreeDatas>
@@ -61,9 +58,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Steel</li>
-                </metals>
+                <metal>Steel</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Steel</iconPath>
@@ -74,9 +69,7 @@
         <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Steel</li>
-                </metals>
+                <metal>Steel</metal>
             </li>
         </modExtensions>
         <degreeDatas>

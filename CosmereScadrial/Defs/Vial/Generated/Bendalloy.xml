@@ -8,18 +8,9 @@
             <color>(117, 144, 108)</color>
             <colorTwo>(117, 144, 108)</colorTwo>
         </graphicData>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
-                <metals>
-                    <li>Bendalloy</li>
-                </metals>
-            </li>
-        </comps>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Bendalloy</li>
-                </metals>
+                <metal>Bendalloy</metal>
             </li>
         </modExtensions>
         <orderedTakeGroup>AllomanticVial_Bendalloy</orderedTakeGroup>

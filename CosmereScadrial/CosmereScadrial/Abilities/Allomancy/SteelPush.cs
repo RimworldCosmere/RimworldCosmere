@@ -1,0 +1,108 @@
+using System;
+using CosmereScadrial.Comps.Game;
+using CosmereScadrial.Utils;
+using RimWorld;
+using UnityEngine;
+using Verse;
+using Log = CosmereFramework.Log;
+
+namespace CosmereScadrial.Abilities.Allomancy {
+    public class SteelPush : AbilityOtherTarget {
+        public SteelPush() { }
+
+        public SteelPush(Pawn pawn) : base(pawn) { }
+
+        public SteelPush(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
+
+        public SteelPush(Pawn pawn, AbilityDef def) : base(pawn, def) { }
+
+        public SteelPush(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) { }
+
+        private Material lineMaterial => MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind, new Color(0.3f, 0.6f, 1f, .3f));
+
+        protected override bool toggleable => false;
+
+        public override bool CanApplyOn(LocalTargetInfo target) {
+            if (!base.CanApplyOn(target) || !target.HasThing || !MetalDetector.IsCapableOfHavingMetal(target.Thing.def)) return false;
+
+            return MetalDetector.GetMetal(target.Thing) > 0f;
+        }
+
+        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest, bool flare) {
+            target = targetInfo;
+
+            var baseActivate = base.Activate(target, dest, flare);
+            if (!baseActivate || !target.HasThing) {
+                return false;
+            }
+
+            MoveThing(pawn, target.Thing, flare);
+
+            return true;
+        }
+
+        private IntVec3 GetDirectionBehind(Thing target, Thing source) {
+            var directionToSource = (source.DrawPos - target.DrawPos).normalized;
+            var positionBehindTarget = new IntVec3(
+                (int)Math.Round(directionToSource.x, MidpointRounding.AwayFromZero),
+                0,
+                (int)Math.Round(directionToSource.z, MidpointRounding.AwayFromZero)
+            );
+
+            return positionBehindTarget;
+        }
+
+        private float GetMass(Thing thing) {
+            var massStat = thing.GetStatValue(RimWorld.StatDefOf.Mass);
+            switch (thing?.def?.category) {
+                case ThingCategory.Pawn:
+                    return massStat * ((Pawn)thing).BodySize + MetalDetector.GetMetal(thing);
+                case ThingCategory.Item:
+                    return massStat * thing.stackCount;
+                case ThingCategory.Building: {
+                    var building = (Building)thing;
+
+                    return massStat * building.def.Size.x * building.def.Size.z * MetalDetector.GetMetal(building);
+                }
+                case null: return float.MaxValue;
+                default:
+                    return massStat;
+            }
+        }
+
+        /// <summary>
+        ///     Right now, if thing hits a cell that isnt walkable, it stops.
+        ///     Instead, it should add the mass of the thing in the way, and recalculate, the previous call, pushing both if the
+        ///     math still works out, otherwise it should flip,
+        ///     and start pushing the opposite way for the remainder of the distance
+        /// </summary>
+        private void MoveThing(Thing pawn, Thing thing, bool flare) {
+            var mass = GetMass(thing);
+            var pawnMass = GetMass(pawn);
+            var things = mass > pawnMass ? (pawn, thing) : (thing, pawn);
+            var direction = GetDirectionBehind(things.Item2, things.Item1);
+            var forceMultiplier = GetForceMultiplier(flare);
+            var distance = Mathf.Clamp(20f / mass, 1f, 8f) * forceMultiplier * 2;
+            var destination = things.Item1.Position + direction * (int)distance;
+            var finalPos = destination;
+
+            for (var i = 1; i <= distance; i++) {
+                var cell = things.Item1.Position + direction * i;
+                if (cell.InBounds(pawn.Map) && cell.Walkable(pawn.Map)) continue;
+
+                finalPos = things.Item1.Position + direction * (i - 1); // Stop before the obstacle
+                break;
+            }
+
+            Current.Game.GetComponent<GradualMoverManager>().StartMovement(things.Item2, things.Item1, finalPos, Mathf.Max(10, Mathf.RoundToInt(60f / forceMultiplier)), lineMaterial);
+            Log.Verbose($"Pushed {pawn} mass={mass} forceMultiplier={forceMultiplier} distance={distance} direction={direction}");
+        }
+
+        private float GetForceMultiplier(bool flare) {
+            const int multiplier = 12;
+            var rawPower = pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
+
+            return multiplier * rawPower * (flare ? 2f : 1f);
+        }
+    }
+}

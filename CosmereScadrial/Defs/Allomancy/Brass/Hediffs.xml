@@ -5,7 +5,7 @@
         <label>Burning Brass: Aura</label>
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
+            <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
                 <hediff>Cosmere_Hediff_Soothed</hediff>
                 <verb>Soothed</verb>
             </li>

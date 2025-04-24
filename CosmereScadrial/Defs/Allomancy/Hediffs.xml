@@ -8,7 +8,7 @@
         <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
     </HediffDef>
     <HediffDef Name="AbstractAllomanticHediff" ParentName="AbstractBurnHediff" Abstract="True">
-        <hediffClass>CosmereScadrial.Abilities.Hediffs.AllomanticHediff</hediffClass>
+        <hediffClass>CosmereScadrial.Abilities.Allomancy.Hediffs.AllomanticHediff</hediffClass>
     </HediffDef>
     <HediffDef Name="AbstractTargetHostileBurnHediff" ParentName="AbstractAllomanticHediff" Abstract="True">
         <isBad>true</isBad>
@@ -19,7 +19,7 @@
         <label>Allomancy</label>
         <description>Currently burning or flaring the following metals:</description>
         <countsAsAddedPartOrImplant>false</countsAsAddedPartOrImplant>
-        <hediffClass>CosmereScadrial.Abilities.Hediffs.BurningMetals</hediffClass>
+        <hediffClass>CosmereScadrial.Abilities.Allomancy.Hediffs.BurningMetals</hediffClass>
         <isBad>false</isBad>
         <tendable>false</tendable>
         <displayWound>false</displayWound>

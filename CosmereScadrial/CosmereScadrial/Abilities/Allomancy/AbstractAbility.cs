@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using CosmereScadrial.Abilities.Hediffs;
+using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Flags;
@@ -10,32 +10,25 @@ using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 using Log = CosmereFramework.Log;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
-namespace CosmereScadrial.Abilities {
-    public enum BurningStatus {
-        Off,
-        Passive,
-        Burning,
-        Flaring,
-    }
-
-    public abstract class AbstractAllomanticAbility : Ability {
+namespace CosmereScadrial.Abilities.Allomancy {
+    public abstract class AbstractAbility : Ability {
         protected int flareStartTick = -1;
         public BurningStatus? status;
         public LocalTargetInfo target;
 
-        protected AbstractAllomanticAbility() { }
+        protected AbstractAbility() { }
 
-        protected AbstractAllomanticAbility(Pawn pawn) : base(pawn) { }
+        protected AbstractAbility(Pawn pawn) : base(pawn) { }
 
-        protected AbstractAllomanticAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
+        protected AbstractAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
 
-        protected AbstractAllomanticAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
+        protected AbstractAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
             if (toggleable) {
                 status = BurningStatus.Off;
             }
         }
 
-        protected AbstractAllomanticAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
+        protected AbstractAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
             if (toggleable) {
                 status = BurningStatus.Off;
             }
@@ -51,7 +44,7 @@ namespace CosmereScadrial.Abilities {
 
         public MetallicArtsMetalDef metal => def.metal;
 
-        protected bool toggleable => def.toggleable;
+        protected virtual bool toggleable => def.toggleable;
 
         protected MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 
@@ -206,10 +199,12 @@ namespace CosmereScadrial.Abilities {
         }
 
         public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-            return Activate(target, dest);
+            return Activate(target, dest, false);
         }
 
-        public virtual bool Activate(LocalTargetInfo target, LocalTargetInfo dest, bool flare = false) {
+        public virtual bool Activate(LocalTargetInfo target, LocalTargetInfo dest, bool flare) {
+            if (!pawn.Spawned || pawn.Map == null) return false;
+
             return base.Activate(target, dest);
         }
 

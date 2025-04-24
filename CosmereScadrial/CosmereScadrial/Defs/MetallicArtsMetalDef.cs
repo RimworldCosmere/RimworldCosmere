@@ -1,5 +1,6 @@
 using CosmereCore.Defs;
 using JetBrains.Annotations;
+using Verse;
 
 namespace CosmereScadrial.Defs {
     public enum AllomancyAxis {
@@ -29,6 +30,10 @@ namespace CosmereScadrial.Defs {
     public class MetallicArtsMetalDef : MetalDef {
         public MetalAllomancyDef allomancy;
         public MetalFeruchemyDef feruchemy;
+
+        public static MetallicArtsMetalDef GetFromMetalDef(MetalDef def) {
+            return DefDatabase<MetallicArtsMetalDef>.GetNamed(def.defName);
+        }
     }
 
     public class MetalAllomancyDef {

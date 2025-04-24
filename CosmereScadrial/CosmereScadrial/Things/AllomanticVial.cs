@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
+using CosmereCore.ModExtensions;
+using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
@@ -6,13 +9,14 @@ using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Things {
     public class AllomanticVial : ThingWithComps {
+        private List<MetallicArtsMetalDef> metals => def.GetModExtension<MetalsLinked>().metals.Select(MetallicArtsMetalDef.GetFromMetalDef).ToList();
+
         public override bool IngestibleNow {
             get {
                 if (!base.IngestibleNow) {
                     return false;
                 }
 
-                var comp = GetComp<Comps.Things.AllomanticVial>();
                 Pawn pawn;
                 if (holdingOwner.Owner is Pawn_InventoryTracker tracker) {
                     pawn = tracker?.pawn;
@@ -26,11 +30,11 @@ namespace CosmereScadrial.Things {
 
                 if (PawnUtility.IsAsleep(pawn)) return false;
 
-                if (comp.props.metals.Count > 1) {
-                    return AllomancyUtility.IsMistborn(pawn) && comp.props.metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f);
+                if (metals.Count > 1) {
+                    return AllomancyUtility.IsMistborn(pawn) && metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f);
                 }
 
-                var metal = comp.props.metals[0];
+                var metal = metals.First();
                 if (!AllomancyUtility.CanUseMetal(pawn, metal)) {
                     return false;
                 }
@@ -45,14 +49,8 @@ namespace CosmereScadrial.Things {
                 yield break;
             }
 
-            var comp = GetComp<Comps.Things.AllomanticVial>();
-            if (comp?.props.metals == null) {
-                yield return null;
-                yield break;
-            }
-
-            if (comp.props.metals.Count > 1) {
-                if (AllomancyUtility.IsMistborn(pawn) && comp.props.metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f)) {
+            if (metals.Count > 1) {
+                if (AllomancyUtility.IsMistborn(pawn) && metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f)) {
                     foreach (var option in base.GetFloatMenuOptions(pawn)) {
                         yield return option;
                     }
@@ -61,7 +59,7 @@ namespace CosmereScadrial.Things {
                 }
             }
 
-            var metal = comp.props.metals[0];
+            var metal = metals.First();
             if (!AllomancyUtility.CanUseMetal(pawn, metal)) {
                 yield return new FloatMenuOption("Cannot ingest: wrong metal", null);
                 yield break;
@@ -76,6 +74,19 @@ namespace CosmereScadrial.Things {
             foreach (var option in base.GetFloatMenuOptions(pawn)) {
                 yield return option;
             }
+        }
+
+        protected override void PostIngested(Pawn ingester) {
+            base.PostIngested(ingester);
+
+            metals.ForEach(metal => {
+                AllomancyUtility.AddMetalReserve(ingester, metal, 100f); // or adjust amount
+            });
+            Messages.Message($"{ingester.LabelShortCap} downed a vial containing: {string.Join(", ", metals.Select(x => x.LabelCap))}.", ingester, MessageTypeDefOf.PositiveEvent);
+        }
+
+        public override string GetInspectString() {
+            return base.GetInspectString() + $"\nContains: {string.Join(", ", metals.Select(metal => metal.LabelCap))}";
         }
     }
 }

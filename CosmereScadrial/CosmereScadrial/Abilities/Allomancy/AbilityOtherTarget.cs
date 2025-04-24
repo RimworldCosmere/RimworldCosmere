@@ -3,19 +3,19 @@ using Verse;
 using Verse.AI;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
-namespace CosmereScadrial.Abilities {
-    public class AllomanticAbilityOtherTarget : AbstractAllomanticAbility {
+namespace CosmereScadrial.Abilities.Allomancy {
+    public class AbilityOtherTarget : AbstractAbility {
         private Job job;
 
-        public AllomanticAbilityOtherTarget() { }
+        public AbilityOtherTarget() { }
 
-        public AllomanticAbilityOtherTarget(Pawn pawn) : base(pawn) { }
+        public AbilityOtherTarget(Pawn pawn) : base(pawn) { }
 
-        public AllomanticAbilityOtherTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
+        public AbilityOtherTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
 
-        public AllomanticAbilityOtherTarget(Pawn pawn, AbilityDef def) : base(pawn, def) { }
+        public AbilityOtherTarget(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-        public AllomanticAbilityOtherTarget(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) { }
+        public AbilityOtherTarget(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) { }
 
         public override void AbilityTick() {
             base.AbilityTick();
@@ -29,10 +29,10 @@ namespace CosmereScadrial.Abilities {
             }
         }
 
-        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest, bool flare = false) {
+        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest, bool flare) {
             target = targetInfo;
 
-            var baseActivate = base.Activate(target, dest);
+            var baseActivate = base.Activate(target, dest, flare);
             if (!toggleable || !baseActivate) {
                 return baseActivate;
             }

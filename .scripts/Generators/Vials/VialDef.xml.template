@@ -8,18 +8,9 @@
             <color>{{rgb metal.Color}}</color>
             <colorTwo>{{rgb metal.Color}}</colorTwo>
         </graphicData>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
-                <metals>
-                    <li>{{capitalize metal.Name}}</li>
-                </metals>
-            </li>
-        </comps>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>{{capitalize metal.Name}}</li>
-                </metals>
+                <metal>{{capitalize metal.Name}}</metal>
             </li>
         </modExtensions>
         <orderedTakeGroup>AllomanticVial_{{capitalize metal.Name}}</orderedTakeGroup>

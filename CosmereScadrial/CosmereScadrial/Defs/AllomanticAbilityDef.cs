@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using CosmereScadrial.Abilities;
-using CosmereScadrial.Abilities.Hediffs;
+using CosmereScadrial.Abilities.Allomancy;
+using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using RimWorld;
 using Verse;
 
@@ -37,14 +37,8 @@ namespace CosmereScadrial.Defs {
                 yield return error;
             }
 
-            if (abilityClass.IsAssignableFrom(typeof(AbstractAllomanticAbility))) {
-                yield return $"Invalid ability class {abilityClass}. Must inherit from {typeof(AbstractAllomanticAbility)}.";
-            }
-
-            if (hediff == null) {
-                if (hediffFriendly == null || hediffHostile == null) {
-                    yield return "if hediffFriendly and hediffHostile are null, hediff must be defined";
-                }
+            if (abilityClass.IsAssignableFrom(typeof(AbstractAbility))) {
+                yield return $"Invalid ability class {abilityClass}. Must inherit from {typeof(AbstractAbility)}.";
             }
 
             if (hediff != null && hediff.hediffClass != typeof(AllomanticHediff)) {

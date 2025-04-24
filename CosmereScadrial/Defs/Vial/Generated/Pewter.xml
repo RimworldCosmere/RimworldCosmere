@@ -8,18 +8,9 @@
             <color>(141, 151, 166)</color>
             <colorTwo>(141, 151, 166)</colorTwo>
         </graphicData>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
-                <metals>
-                    <li>Pewter</li>
-                </metals>
-            </li>
-        </comps>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Pewter</li>
-                </metals>
+                <metal>Pewter</metal>
             </li>
         </modExtensions>
         <orderedTakeGroup>AllomanticVial_Pewter</orderedTakeGroup>

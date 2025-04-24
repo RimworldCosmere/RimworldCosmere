@@ -8,18 +8,9 @@
             <color>(182, 156, 82)</color>
             <colorTwo>(182, 156, 82)</colorTwo>
         </graphicData>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Things.Properties.AllomanticVial">
-                <metals>
-                    <li>Electrum</li>
-                </metals>
-            </li>
-        </comps>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Electrum</li>
-                </metals>
+                <metal>Electrum</metal>
             </li>
         </modExtensions>
         <orderedTakeGroup>AllomanticVial_Electrum</orderedTakeGroup>

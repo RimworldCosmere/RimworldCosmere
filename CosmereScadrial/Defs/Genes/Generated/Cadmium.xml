@@ -15,9 +15,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Cadmium</li>
-                </metals>
+                <metal>Cadmium</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Cadmium</iconPath>
@@ -28,9 +26,7 @@
         <description>Slows down time in a bubble, creating a temporal distortion.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Cadmium</li>
-                </metals>
+                <metal>Cadmium</metal>
             </li>
         </modExtensions>
         <degreeDatas>
@@ -58,9 +54,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Cadmium</li>
-                </metals>
+                <metal>Cadmium</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Cadmium</iconPath>
@@ -71,9 +65,7 @@
         <description>Stores breath, useful for surviving in low-oxygen environments.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Cadmium</li>
-                </metals>
+                <metal>Cadmium</metal>
             </li>
         </modExtensions>
         <degreeDatas>

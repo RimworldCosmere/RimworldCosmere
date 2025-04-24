@@ -3,19 +3,19 @@ using UnityEngine;
 using Verse;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
-namespace CosmereScadrial.Abilities {
-    public class AllomanticAbilitySelfTarget : AbstractAllomanticAbility {
-        public AllomanticAbilitySelfTarget() { }
+namespace CosmereScadrial.Abilities.Allomancy {
+    public class AbilitySelfTarget : AbstractAbility {
+        public AbilitySelfTarget() { }
 
-        public AllomanticAbilitySelfTarget(Pawn pawn) : base(pawn) { }
+        public AbilitySelfTarget(Pawn pawn) : base(pawn) { }
 
-        public AllomanticAbilitySelfTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
+        public AbilitySelfTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
 
-        public AllomanticAbilitySelfTarget(Pawn pawn, AbilityDef def) : base(pawn, def) {
+        public AbilitySelfTarget(Pawn pawn, AbilityDef def) : base(pawn, def) {
             target = pawn;
         }
 
-        public AllomanticAbilitySelfTarget(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
+        public AbilitySelfTarget(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
             target = pawn;
         }
 
@@ -42,7 +42,7 @@ namespace CosmereScadrial.Abilities {
             mote.instanceColor = metal.color;
         }
 
-        public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest, bool flare = false) {
+        public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest, bool flare) {
             var baseActivate = base.Activate(target, dest, flare);
             if (!toggleable || !baseActivate) {
                 return baseActivate;

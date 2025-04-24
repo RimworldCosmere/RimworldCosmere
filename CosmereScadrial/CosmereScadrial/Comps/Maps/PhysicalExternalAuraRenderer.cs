@@ -1,14 +1,15 @@
 using System;
 using System.Linq;
-using CosmereScadrial.Abilities.Hediffs;
-using CosmereScadrial.Abilities.Hediffs.Comps;
+using CosmereScadrial.Abilities.Allomancy.Hediffs;
+using CosmereScadrial.Abilities.Allomancy.Hediffs.Comps;
 using UnityEngine;
 using Verse;
+using static CosmereFramework.CosmereFramework;
 
 namespace CosmereScadrial.Comps.Maps {
     public class PhysicalExternalAuraRenderer(Map map) : MapComponent(map) {
         public override void MapComponentUpdate() {
-            foreach (var pawn in map.mapPawns.AllPawnsSpawned) {
+            foreach (var pawn in Find.Selector.SelectedPawns) {
                 if (!pawn.Spawned || pawn.Dead) continue;
 
                 var hediff = pawn.health?.hediffSet.hediffs?.OfType<AllomanticHediff>()
@@ -17,14 +18,16 @@ namespace CosmereScadrial.Comps.Maps {
                 var comp = hediff.TryGetComp<PhysicalExternalAura>();
 
 
-                GenDraw.DrawCircleOutline(pawn.DrawPos, comp.props.radius * hediff.Severity, SimpleColor.Blue);
+                if (CosmereSettings.debugMode) {
+                    GenDraw.DrawCircleOutline(pawn.DrawPos, comp.props.radius * hediff.Severity, SimpleColor.Blue);
+                }
+
                 foreach (var (thing, mass) in comp.thingsToDraw.Where(x => x.Value > 0f)) {
                     DrawLine(pawn, thing, mass, comp.props.lineMaterial, comp.props.radius * hediff.Severity);
                 }
             }
         }
 
-        // Fade isnt working
         private static void DrawLine(Pawn pawn, Thing thing, float mass, Material lineMaterial, float radius) {
             var distance = (thing.Position - pawn.Position).LengthHorizontal;
             var clampedMass = Mathf.Clamp(mass, 1f, radius);

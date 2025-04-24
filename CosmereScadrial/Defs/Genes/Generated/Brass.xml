@@ -15,9 +15,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Brass</li>
-                </metals>
+                <metal>Brass</metal>
             </li>
         </modExtensions>
         <abilities>
@@ -32,9 +30,7 @@
         <description>Can soothe emotions, calming people or manipulating moods.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Brass</li>
-                </metals>
+                <metal>Brass</metal>
             </li>
         </modExtensions>
         <degreeDatas>
@@ -62,9 +58,7 @@
         </forcedTraits>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Brass</li>
-                </metals>
+                <metal>Brass</metal>
             </li>
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Brass</iconPath>
@@ -75,9 +69,7 @@
         <description>Stores warmth, useful for surviving cold environments or heating up.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
-                <metals>
-                    <li>Brass</li>
-                </metals>
+                <metal>Brass</metal>
             </li>
         </modExtensions>
         <degreeDatas>

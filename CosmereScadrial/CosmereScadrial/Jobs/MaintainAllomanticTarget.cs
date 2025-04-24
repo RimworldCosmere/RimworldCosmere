@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using CosmereScadrial.Abilities;
+using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Abilities.Hediffs.Comps;
 using CosmereScadrial.Comps.Things;
 using UnityEngine;
@@ -12,7 +12,7 @@ namespace CosmereScadrial.Jobs {
     public class MaintainAllomanticTarget : JobDriver {
         protected virtual Pawn targetPawn => TargetA.Pawn;
 
-        protected virtual AbstractAllomanticAbility ability => pawn.abilities.GetAbility(job.ability.def) as AbstractAllomanticAbility;
+        protected virtual AbstractAbility ability => pawn.abilities.GetAbility(job.ability.def) as AbstractAbility;
 
         protected virtual MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 

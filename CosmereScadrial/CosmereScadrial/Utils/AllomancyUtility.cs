@@ -1,9 +1,9 @@
+using CosmereCore.ModExtensions;
 using CosmereCore.Needs;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using UnityEngine;
 using Verse;
-using AllomanticVial = CosmereScadrial.Comps.Things.AllomanticVial;
 using Log = CosmereFramework.Log;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
@@ -80,9 +80,7 @@ namespace CosmereScadrial.Utils {
             if (pawn?.inventory?.innerContainer == null) return false;
 
             foreach (var vial in pawn.inventory.innerContainer) {
-                var comp = vial.TryGetComp<AllomanticVial>();
-                if (comp == null) continue;
-                var metals = comp.props.metals;
+                var metals = vial.def.GetModExtension<MetalsLinked>().metals;
 
                 if (metals.Count > 1 && !allowMultiVial) continue;
 
@@ -100,9 +98,7 @@ namespace CosmereScadrial.Utils {
             if (pawn?.inventory?.innerContainer == null) return false;
 
             foreach (var vial in pawn.inventory.innerContainer) {
-                var comp = vial.TryGetComp<AllomanticVial>();
-                if (comp == null) continue;
-                var metals = comp.props.metals;
+                var metals = vial.def.GetModExtension<MetalsLinked>().metals;
 
                 if (metals.Count > 1 && !allowMultiVial) continue;
 

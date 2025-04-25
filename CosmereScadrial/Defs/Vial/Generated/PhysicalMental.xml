@@ -4,6 +4,9 @@
         <defName>Cosmere_AllomanticVial_PhysicalMental</defName>
         <label>Mistborn Vial: Physical + Mental</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(255, 255, 255)</color>
+        </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>

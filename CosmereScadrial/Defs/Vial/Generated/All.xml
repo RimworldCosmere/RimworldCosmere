@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
-        <defName>Cosmere_AllomanticVial_External</defName>
-        <label>Mistborn Vial: External</label>
+        <defName>Cosmere_AllomanticVial_All</defName>
+        <label>Mistborn Vial: All</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(255, 255, 255)</color>
@@ -12,20 +12,27 @@
                 <metals>
                     <li>Iron</li>
                     <li>Steel</li>
+                    <li>Tin</li>
+                    <li>Pewter</li>
                     <li>Zinc</li>
                     <li>Brass</li>
+                    <li>Copper</li>
+                    <li>Bronze</li>
+                    <li>Duralumin</li>
                     <li>Chromium</li>
                     <li>Nicrosil</li>
                     <li>Cadmium</li>
                     <li>Bendalloy</li>
+                    <li>Gold</li>
+                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>
-        <orderedTakeGroup>AllomanticVial_External</orderedTakeGroup>
+        <orderedTakeGroup>AllomanticVial_All</orderedTakeGroup>
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
-        <defName>Cosmere_CraftAllomanticVial_External</defName>
-        <label>Craft Mistborn Vial: External</label>
+        <defName>Cosmere_CraftAllomanticVial_All</defName>
+        <label>Craft Mistborn Vial: All</label>
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
             <li>
@@ -37,11 +44,31 @@
                 <count>1</count>
             </li>
             <li>
+                <filter><thingDefs><li>Tin</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Pewter</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
                 <filter><thingDefs><li>Zinc</li></thingDefs></filter>
                 <count>1</count>
             </li>
             <li>
                 <filter><thingDefs><li>Brass</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Copper</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Bronze</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Duralumin</li></thingDefs></filter>
                 <count>1</count>
             </li>
             <li>
@@ -60,15 +87,23 @@
                 <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
                 <count>1</count>
             </li>
+            <li>
+                <filter><thingDefs><li>Gold</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Electrum</li></thingDefs></filter>
+                <count>1</count>
+            </li>
         </ingredients>
         <products>
-            <Cosmere_AllomanticVial_External>8</Cosmere_AllomanticVial_External>
+            <Cosmere_AllomanticVial_All>8</Cosmere_AllomanticVial_All>
         </products>
     </RecipeDef>
 
     <OrderedTakeGroupDef>
-        <defName>AllomanticVial_External</defName>
-        <label>Mistborn Vial: External</label>
+        <defName>AllomanticVial_All</defName>
+        <label>Mistborn Vial: All</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

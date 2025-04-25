@@ -97,5 +97,45 @@ namespace CosmereScadrial.Utils {
             metalRecipeCache[recipe] = true;
             return true;
         }
+
+
+        public static float GetMass(Thing thing) {
+            var massStat = thing.GetStatValue(RimWorld.StatDefOf.Mass);
+            switch (thing?.def?.category) {
+                case ThingCategory.Pawn:
+                    var pawn = (Pawn)thing;
+                    var bodyType = pawn.story.bodyType;
+                    var size = 1f;
+                    if (bodyType.Equals(BodyTypeDefOf.Thin)) {
+                        size = 0.8f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Baby)) {
+                        size = 0.2f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Child)) {
+                        size = 0.5f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Fat)) {
+                        size = 1.3f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Hulk)) {
+                        size = 1.5f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Female)) {
+                        size = 0.9f;
+                    }
+
+                    return massStat * size + GetMetal(thing);
+                case ThingCategory.Item:
+                    return massStat * thing.stackCount;
+                case ThingCategory.Building: {
+                    var building = (Building)thing;
+                    if (massStat <= 1f) {
+                        massStat = 100;
+                    }
+
+                    // Add a 100x multiplier to this stat. For some reason, buildings dont have a mass.
+                    return massStat * building.def.Size.x * building.def.Size.z * GetMetal(building);
+                }
+                case null: return float.MaxValue;
+                default:
+                    return massStat;
+            }
+        }
     }
 }

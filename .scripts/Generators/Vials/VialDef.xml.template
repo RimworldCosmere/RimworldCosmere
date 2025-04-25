@@ -6,7 +6,6 @@
         <description>A vial containing {{capitalize metal.Name}} suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>{{rgb metal.Color}}</color>
-            <colorTwo>{{rgb metal.Color}}</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

@@ -6,7 +6,6 @@
         <description>A vial containing Chromium suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(132, 134, 139)</color>
-            <colorTwo>(132, 134, 139)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

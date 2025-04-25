@@ -6,7 +6,6 @@
         <description>A vial containing Cadmium suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(170, 132, 121)</color>
-            <colorTwo>(170, 132, 121)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

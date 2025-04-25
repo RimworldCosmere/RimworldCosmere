@@ -6,7 +6,6 @@
         <description>A vial containing Iron suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(121, 113, 111)</color>
-            <colorTwo>(121, 113, 111)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

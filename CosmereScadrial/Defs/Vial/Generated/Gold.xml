@@ -6,7 +6,6 @@
         <description>A vial containing Gold suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(206, 172, 55)</color>
-            <colorTwo>(206, 172, 55)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

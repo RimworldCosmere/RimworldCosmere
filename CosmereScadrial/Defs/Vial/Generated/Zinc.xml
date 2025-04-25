@@ -6,7 +6,6 @@
         <description>A vial containing Zinc suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(128, 142, 129)</color>
-            <colorTwo>(128, 142, 129)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

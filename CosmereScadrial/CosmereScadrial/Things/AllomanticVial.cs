@@ -86,9 +86,7 @@ namespace CosmereScadrial.Things {
         }
 
         public override string GetInspectString() {
-            var metalStrings = metals.Select(metal => metal.LabelCap);
-
-            return base.GetInspectString() + $"\nContains: {string.Join(", ", metalStrings)}";
+            return base.GetInspectString() + $"Contains: {string.Join(", ", metals.Select(metal => metal.LabelCap))}";
         }
     }
 }

@@ -6,7 +6,6 @@
         <description>A vial containing Bendalloy suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(117, 144, 108)</color>
-            <colorTwo>(117, 144, 108)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

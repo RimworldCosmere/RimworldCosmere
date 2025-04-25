@@ -4,6 +4,9 @@
         <defName>Cosmere_AllomanticVial_Internal</defName>
         <label>Mistborn Vial: Internal</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(255, 255, 255)</color>
+        </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
@@ -11,7 +14,6 @@
                     <li>Pewter</li>
                     <li>Copper</li>
                     <li>Bronze</li>
-                    <li>Aluminum</li>
                     <li>Duralumin</li>
                     <li>Gold</li>
                     <li>Electrum</li>
@@ -39,10 +41,6 @@
             </li>
             <li>
                 <filter><thingDefs><li>Bronze</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Aluminum</li></thingDefs></filter>
                 <count>1</count>
             </li>
             <li>

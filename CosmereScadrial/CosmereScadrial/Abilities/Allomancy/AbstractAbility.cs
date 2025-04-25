@@ -53,7 +53,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
         public TaggedString GetRightClickLabel(LocalTargetInfo target, BurningStatus burningStatus, string disableReason = null) {
             var hasDisableReason = !string.IsNullOrEmpty(disableReason);
 
-            var label = def.LabelCap.Replace("Target", target.Label);
+            var label = def.LabelCap.Replace("Target", target.Thing.LabelNoParenthesisCap);
             if (burningStatus.Equals(BurningStatus.Off)) {
                 return def.label == metal.LabelCap ? $"Stop Burning {metal.LabelCap}" : $"Stop {label}";
             }
@@ -81,58 +81,20 @@ namespace CosmereScadrial.Abilities.Allomancy {
             var targetPawn = target.Pawn;
 
             // 3. Self targeting
-            if (targetFlags.IsOnlySelf()) {
-                return targetPawn != null && targetPawn == pawn;
-            }
-
-            // 4. Object-only logic (non-pawn, has a thing)
-            if (targetFlags.IsOnlyObject()) {
-                return targetPawn == null && target.HasThing;
-            }
-
-            // 5. Other-only targeting
-            if (targetFlags.IsOnlyOther()) {
-                return targetPawn != null && targetPawn != pawn;
-            }
-
-            // 6. Self or other pawn
-            if (targetFlags.IsSelfOrOtherPawn()) {
-                return targetPawn != null;
-            }
-
-            // 7. World cell targeting
-            if (targetFlags.CanTargetWorldCell()) {
-                return targetPawn == null;
-            }
-
-            // 8. Target is not world cell — pawn must not be null now
-            if (targetPawn == null) {
-                return false;
-            }
-
-            // 9. Animal targeting
-            if (targetFlags.CanTargetAnimals()) {
-                if (targetPawn.IsNonMutantAnimal) {
-                    return true;
-                }
-            } else if (targetPawn.IsNonMutantAnimal) {
-                return false;
-            }
-
-            // 10. Humanlike or self
-            if (targetFlags.IsSelfOrOtherHumanlike()) {
-                return targetPawn == pawn || targetPawn.RaceProps?.Humanlike == true;
-            }
-
-            // 11. Humanlike or animal or self
-            if (targetFlags.IsSelfOrOtherHumanlikeOrAnimal()) {
-                return targetPawn == pawn || targetPawn.RaceProps?.Humanlike == true || targetPawn.IsNonMutantAnimal;
-            }
-
-            // 12. General self-or-other fallback
-            if (targetFlags.IsSelfOrOther()) {
-                return true;
-            }
+            if (targetFlags.Has(TargetFlags.Locations) && !target.HasThing && !target.TryGetPawn(out _)) return true;
+            if (targetFlags.Has(TargetFlags.Self) && targetPawn == pawn) return true;
+            if (targetFlags.Has(TargetFlags.Pawns) && targetPawn != null) return true;
+            if (targetFlags.Has(TargetFlags.Fires) && targetPawn != null && targetPawn.IsBurning()) return true;
+            if (targetFlags.Has(TargetFlags.Fires) && target.HasThing && target.Thing.IsBurning()) return true;
+            if (targetFlags.Has(TargetFlags.Fires) && !target.HasThing && target.Cell.ContainsStaticFire(pawn.Map)) return true;
+            if (targetFlags.Has(TargetFlags.Buildings) && targetPawn == null && target.HasThing && target.Thing.def.category == ThingCategory.Building) return true;
+            if (targetFlags.Has(TargetFlags.Items) && targetPawn == null && target.HasThing && target.Thing.def.category == ThingCategory.Item) return true;
+            if (targetFlags.Has(TargetFlags.Animals) && targetPawn != null && target.Thing.def.race.Animal) return true;
+            if (targetFlags.Has(TargetFlags.Humans) && targetPawn != null && target.Thing.def.race.Humanlike) return true;
+            if (targetFlags.Has(TargetFlags.Mechs) && targetPawn != null && target.Thing.def.race.IsMechanoid) return true;
+            if (targetFlags.Has(TargetFlags.Plants) && targetPawn == null && target.HasThing && target.Thing.def.plant != null) return true;
+            if (targetFlags.Has(TargetFlags.Mutants) && targetPawn is { IsMutant: true }) return true;
+            if (targetFlags.Has(TargetFlags.WorldCell) && !target.HasThing && !target.TryGetPawn(out _)) return true;
 
             return false;
         }

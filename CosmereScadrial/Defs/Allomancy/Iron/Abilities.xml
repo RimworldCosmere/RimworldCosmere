@@ -14,7 +14,7 @@ These lines shimmer with the tension of potential force, visible only to those b
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
         <defName>Cosmere_Ability_Iron_Pull</defName>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
-        <label>Iron Pull</label>
+        <label>Iron Pull Target</label>
         <description>Burning iron allows the Allomancer to pull on nearby sources of metal, drawing them—or themselves—closer. The lighter object moves, unless anchored by greater mass.</description>
         <cooldownTicksRange>
             <min>20</min>

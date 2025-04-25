@@ -20,15 +20,11 @@ namespace CosmereScadrial.Flags {
         Humanlike = Humans | Mechs | Mutants,
         HumanlikeOrAnimal = Humanlike | Animals,
         Objects = Buildings | Items | Plants,
+        OtherTargets = Fires | Buildings | Items | Plants | WorldCell,
     }
 
     public static class TargetFlagsExtensions {
-        private const TargetFlags OtherTargets =
-            TargetFlags.Pawns | TargetFlags.Fires | TargetFlags.Buildings |
-            TargetFlags.Items | TargetFlags.Animals | TargetFlags.Humans |
-            TargetFlags.Mechs | TargetFlags.Plants | TargetFlags.Mutants | TargetFlags.WorldCell;
-
-        public static bool HasAny(this TargetFlags flags, TargetFlags mask) {
+        public static bool Has(this TargetFlags flags, TargetFlags mask) {
             return (flags & mask) != 0;
         }
 
@@ -37,39 +33,39 @@ namespace CosmereScadrial.Flags {
         }
 
         public static bool IsOnlyOther(this TargetFlags flags) {
-            return !flags.HasFlag(TargetFlags.Self) && flags.HasAny(OtherTargets);
+            return !flags.HasFlag(TargetFlags.Self) && flags.Has(TargetFlags.OtherTargets);
         }
 
         public static bool IsOnlyOtherHumanlike(this TargetFlags flags) {
-            return !flags.HasFlag(TargetFlags.Self) && flags.HasAny(TargetFlags.Humanlike);
+            return !flags.HasFlag(TargetFlags.Self) && flags.Has(TargetFlags.Humanlike);
         }
 
         public static bool IsOnlyOtherAnimal(this TargetFlags flags) {
-            return !flags.HasFlag(TargetFlags.Self) && flags.HasAny(TargetFlags.Animals);
+            return !flags.HasFlag(TargetFlags.Self) && flags.Has(TargetFlags.Animals);
         }
 
         public static bool IsOnlyOtherHumanlikeOrAnimal(this TargetFlags flags) {
-            return !flags.HasFlag(TargetFlags.Self) && flags.HasAny(TargetFlags.HumanlikeOrAnimal);
+            return !flags.HasFlag(TargetFlags.Self) && flags.Has(TargetFlags.HumanlikeOrAnimal);
         }
 
         public static bool IsOnlyObject(this TargetFlags flags) {
-            return !flags.HasFlag(TargetFlags.Self) && flags.HasAny(TargetFlags.Objects);
+            return !flags.HasFlag(TargetFlags.Self) && flags.Has(TargetFlags.Objects) && !flags.CanTargetPawns();
         }
 
         public static bool IsSelfOrOther(this TargetFlags flags) {
-            return flags.HasFlag(TargetFlags.Self) && flags.HasAny(OtherTargets);
+            return flags.HasFlag(TargetFlags.Self) && flags.Has(TargetFlags.OtherTargets);
         }
 
         public static bool IsSelfOrOtherPawn(this TargetFlags flags) {
-            return flags.HasFlag(TargetFlags.Self) && flags.HasAny(TargetFlags.Pawns);
+            return flags.HasFlag(TargetFlags.Self) && flags.Has(TargetFlags.Pawns);
         }
 
         public static bool IsSelfOrOtherHumanlike(this TargetFlags flags) {
-            return flags.HasFlag(TargetFlags.Self) && flags.HasAny(TargetFlags.Humanlike);
+            return flags.HasFlag(TargetFlags.Self) && flags.Has(TargetFlags.Humanlike);
         }
 
         public static bool IsSelfOrOtherHumanlikeOrAnimal(this TargetFlags flags) {
-            return flags.HasFlag(TargetFlags.Self) && flags.HasAny(TargetFlags.HumanlikeOrAnimal);
+            return flags.HasFlag(TargetFlags.Self) && flags.Has(TargetFlags.HumanlikeOrAnimal);
         }
 
         public static bool IsEmpty(this TargetFlags flags) {
@@ -81,7 +77,7 @@ namespace CosmereScadrial.Flags {
         }
 
         public static TargetFlags OnlyOther() {
-            return OtherTargets;
+            return TargetFlags.OtherTargets;
         }
 
         public static TargetFlags OnlyOtherHumanlike() {
@@ -89,7 +85,7 @@ namespace CosmereScadrial.Flags {
         }
 
         public static TargetFlags SelfAndOther() {
-            return TargetFlags.Self | OtherTargets;
+            return TargetFlags.Self | TargetFlags.OtherTargets;
         }
 
         public static TargetFlags SelfAndOtherHumanlike() {
@@ -127,11 +123,11 @@ namespace CosmereScadrial.Flags {
             if (param.canTargetFires) flags |= TargetFlags.Fires;
             if (param.canTargetBuildings) flags |= TargetFlags.Buildings;
             if (param.canTargetItems) flags |= TargetFlags.Items;
-            if (param.canTargetAnimals) flags |= TargetFlags.Animals;
-            if (param.canTargetHumans) flags |= TargetFlags.Humans;
-            if (param.canTargetMechs) flags |= TargetFlags.Mechs;
+            if (param.canTargetAnimals) flags |= TargetFlags.Animals | TargetFlags.Pawns;
+            if (param.canTargetHumans) flags |= TargetFlags.Humans | TargetFlags.Pawns;
+            if (param.canTargetMechs) flags |= TargetFlags.Mechs | TargetFlags.Pawns;
             if (param.canTargetPlants) flags |= TargetFlags.Plants;
-            if (param.canTargetMutants) flags |= TargetFlags.Mutants;
+            if (param.canTargetMutants) flags |= TargetFlags.Mutants | TargetFlags.Pawns;
 
             return flags;
         }

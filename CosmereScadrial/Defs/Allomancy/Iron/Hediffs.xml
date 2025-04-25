@@ -20,30 +20,4 @@ These lines shimmer with the tension of potential force, visible only to those b
             </li>
         </stages>
     </HediffDef>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
-        <defName>Cosmere_Ability_IronPull</defName>
-        <abilityClass>CosmereScadrial.Abilities.Allomancy.IronPull</abilityClass>
-        <label>Iron Pull</label>
-        <description>By burning iron, the Allomancer projects invisible lines of force toward nearby sources of metal, pulling on them with immense power. A skilled practitioner can hurl weapons from foes’ hands, send enemies tumbling, or launch themselves through the air when braced properly.</description>
-        <cooldownTicksRange>
-            <min>20</min>
-            <max>60</max>
-        </cooldownTicksRange>
-        <targetWorldCell>true</targetWorldCell>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Iron</iconPath>
-        <metal>Iron</metal>
-        <verbProperties>
-            <requireLineOfSight>false</requireLineOfSight>
-            <violent>true</violent>
-            <noiseRadius>0</noiseRadius>
-            <drawAimPie>true</drawAimPie>
-            <targetParams>
-                <canTargetSelf>false</canTargetSelf>
-                <canTargetPawns>false</canTargetPawns>
-                <canTargetBuildings>true</canTargetBuildings>
-                <canTargetItems>true</canTargetItems>
-                <canTargetPlants>false</canTargetPlants>
-            </targetParams>
-        </verbProperties>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

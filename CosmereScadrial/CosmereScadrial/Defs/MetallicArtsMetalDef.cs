@@ -32,6 +32,8 @@ namespace CosmereScadrial.Defs {
         public MetalFeruchemyDef feruchemy;
 
         public static MetallicArtsMetalDef GetFromMetalDef(MetalDef def) {
+            if (def is MetallicArtsMetalDef metallicArtsMetalDef) return metallicArtsMetalDef;
+
             return DefDatabase<MetallicArtsMetalDef>.GetNamed(def.defName);
         }
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CosmereScadrial.Defs;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -26,15 +27,23 @@ namespace CosmereScadrial.Comps.Game {
                 if (m.ticksElapsed >= m.ticksTotal) {
                     m.thing.Position = m.end.ToIntVec3(); // finalize position
                     activeMovements.RemoveAt(i);
+                    if (m.polarity != AllomancyPolarity.Pulling || !m.thing.Position.Equals(m.source.Position)) continue;
+                    if (m.source is not Pawn pawn) continue;
+                    if (!m.thing.def.EverHaulable || pawn.inventory == null) continue;
+
+                    var job = JobMaker.MakeJob(RimWorld.JobDefOf.TakeCountToInventory, m.thing);
+                    job.count = Mathf.Min(m.thing.stackCount, m.thing.def.stackLimit);
+                    pawn.jobs.TryTakeOrderedJob(job);
                 } else {
                     activeMovements[i] = m; // update struct
                 }
             }
         }
 
-        public void StartMovement(Thing source, Thing thing, IntVec3 destination, int duration, Material material) {
-            Log.Verbose($"{source.LabelCap} pushed {thing.LabelCap} to {destination} (from {thing.Position}) for {duration} ticks");
+        public void StartMovement(AllomancyPolarity polarity, Thing source, Thing thing, IntVec3 destination, int duration, Material material) {
+            Log.Verbose($"{source.LabelCap} {polarity} {thing.LabelCap} to {destination} (from {thing.Position}) for {duration} ticks");
             activeMovements.Add(new MovementData {
+                polarity = polarity,
                 source = source,
                 thing = thing,
                 start = thing.DrawPos,
@@ -46,6 +55,7 @@ namespace CosmereScadrial.Comps.Game {
         }
 
         private struct MovementData {
+            public AllomancyPolarity polarity;
             public Thing source;
             public Thing thing;
             public Material material;

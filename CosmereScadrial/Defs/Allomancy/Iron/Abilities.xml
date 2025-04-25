@@ -11,4 +11,30 @@ These lines shimmer with the tension of potential force, visible only to those b
         <hediff>Cosmere_Hediff_IronAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
+        <defName>Cosmere_Ability_Iron_Pull</defName>
+        <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
+        <label>Iron Pull</label>
+        <description>Burning iron allows the Allomancer to pull on nearby sources of metal, drawing them—or themselves—closer. The lighter object moves, unless anchored by greater mass.</description>
+        <cooldownTicksRange>
+            <min>20</min>
+            <max>60</max>
+        </cooldownTicksRange>
+        <targetWorldCell>true</targetWorldCell>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Iron</iconPath>
+        <metal>Iron</metal>
+        <verbProperties>
+            <requireLineOfSight>false</requireLineOfSight>
+            <violent>true</violent>
+            <noiseRadius>0</noiseRadius>
+            <drawAimPie>true</drawAimPie>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>false</canTargetPawns>
+                <canTargetBuildings>true</canTargetBuildings>
+                <canTargetItems>true</canTargetItems>
+                <canTargetPlants>false</canTargetPlants>
+            </targetParams>
+        </verbProperties>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

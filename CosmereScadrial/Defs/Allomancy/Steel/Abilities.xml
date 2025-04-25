@@ -14,7 +14,7 @@ These lines shimmer with the tension of potential force, visible only to those b
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
         <defName>Cosmere_Ability_Steel_Push</defName>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
-        <label>Steel Push</label>
+        <label>Steel Push Target</label>
         <description>By burning steel, the Allomancer projects invisible lines of force toward nearby sources of metal, pushing against them with immense power. A skilled practitioner can hurl weapons from foes’ hands, send enemies tumbling, or launch themselves through the air when braced properly.</description>
         <cooldownTicksRange>
             <min>20</min>

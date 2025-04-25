@@ -6,7 +6,6 @@
         <description>A vial containing Bronze suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(191, 160, 138)</color>
-            <colorTwo>(191, 160, 138)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

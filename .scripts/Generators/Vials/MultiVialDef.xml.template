@@ -4,6 +4,9 @@
         <defName>Cosmere_AllomanticVial_{{defName}}</defName>
         <label>Mistborn Vial: {{capitalize name}}</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(255, 255, 255)</color>
+        </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
@@ -20,7 +23,7 @@
         <label>Craft Mistborn Vial: {{capitalize name}}</label>
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
-            {{#each defNames}}
+            {{#each metals}}
             <li>
                 <filter><thingDefs><li>{{this}}</li></thingDefs></filter>
                 <count>1</count>

@@ -6,7 +6,6 @@
         <description>A vial containing Pewter suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(141, 151, 166)</color>
-            <colorTwo>(141, 151, 166)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

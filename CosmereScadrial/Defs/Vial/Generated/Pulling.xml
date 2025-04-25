@@ -4,6 +4,9 @@
         <defName>Cosmere_AllomanticVial_Pulling</defName>
         <label>Mistborn Vial: Pulling</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(255, 255, 255)</color>
+        </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
@@ -11,7 +14,6 @@
                     <li>Tin</li>
                     <li>Brass</li>
                     <li>Copper</li>
-                    <li>Aluminum</li>
                     <li>Chromium</li>
                     <li>Cadmium</li>
                     <li>Gold</li>
@@ -39,10 +41,6 @@
             </li>
             <li>
                 <filter><thingDefs><li>Copper</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Aluminum</li></thingDefs></filter>
                 <count>1</count>
             </li>
             <li>

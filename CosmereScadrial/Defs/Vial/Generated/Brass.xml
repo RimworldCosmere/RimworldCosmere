@@ -6,7 +6,6 @@
         <description>A vial containing Brass suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(175, 148, 91)</color>
-            <colorTwo>(175, 148, 91)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

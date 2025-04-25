@@ -4,10 +4,12 @@
         <defName>Cosmere_AllomanticVial_Enhancement</defName>
         <label>Mistborn Vial: Enhancement</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(255, 255, 255)</color>
+        </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
-                    <li>Aluminum</li>
                     <li>Duralumin</li>
                     <li>Chromium</li>
                     <li>Nicrosil</li>
@@ -21,10 +23,6 @@
         <label>Craft Mistborn Vial: Enhancement</label>
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
-            <li>
-                <filter><thingDefs><li>Aluminum</li></thingDefs></filter>
-                <count>1</count>
-            </li>
             <li>
                 <filter><thingDefs><li>Duralumin</li></thingDefs></filter>
                 <count>1</count>

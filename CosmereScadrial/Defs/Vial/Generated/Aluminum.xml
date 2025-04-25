@@ -6,7 +6,6 @@
         <description>A vial containing Aluminum suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(163, 163, 163)</color>
-            <colorTwo>(163, 163, 163)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

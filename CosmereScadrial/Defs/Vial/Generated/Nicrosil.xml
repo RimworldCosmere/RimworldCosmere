@@ -6,7 +6,6 @@
         <description>A vial containing Nicrosil suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(141, 139, 135)</color>
-            <colorTwo>(141, 139, 135)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

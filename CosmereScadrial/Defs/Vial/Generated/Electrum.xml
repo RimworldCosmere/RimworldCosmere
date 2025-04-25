@@ -6,7 +6,6 @@
         <description>A vial containing Electrum suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(182, 156, 82)</color>
-            <colorTwo>(182, 156, 82)</colorTwo>
         </graphicData>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">

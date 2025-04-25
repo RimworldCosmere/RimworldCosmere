@@ -9,7 +9,7 @@ using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Things {
     public class AllomanticVial : ThingWithComps {
-        private List<MetallicArtsMetalDef> metals => def.GetModExtension<MetalsLinked>().metals.Select(MetallicArtsMetalDef.GetFromMetalDef).ToList();
+        private List<MetallicArtsMetalDef> metals => def.GetModExtension<MetalsLinked>().Metals.Select(MetallicArtsMetalDef.GetFromMetalDef).ToList();
 
         public override bool IngestibleNow {
             get {
@@ -86,7 +86,9 @@ namespace CosmereScadrial.Things {
         }
 
         public override string GetInspectString() {
-            return base.GetInspectString() + $"\nContains: {string.Join(", ", metals.Select(metal => metal.LabelCap))}";
+            var metalStrings = metals.Select(metal => metal.LabelCap);
+
+            return base.GetInspectString() + $"\nContains: {string.Join(", ", metalStrings)}";
         }
     }
 }

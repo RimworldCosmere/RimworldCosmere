@@ -2,13 +2,13 @@
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_ZincAura</defName>
-        <label>Burning Zinc: Aura</label>
+        <label>burning zinc: aura</label>
         <description>Subtly fanning the emotional flames of all nearby minds by burning Zinc.</description>
         <comps>
             <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
                 <hediffFriendly>Cosmere_Hediff_Rioted_Buff</hediffFriendly>
                 <hediffHostile>Cosmere_Hediff_Rioted_Debuff</hediffHostile>
-                <verb>Rioted</verb>
+                <verb>rioted</verb>
             </li>
         </comps>
         <stages>
@@ -27,7 +27,7 @@
     </HediffDef>
     
     <HediffDef Name="AbstractZincHediff" ParentName="AbstractAllomanticHediff" Abstract="True">
-        <label>Rioted</label>
+        <label>rioted</label>
         <description>This pawn has been rioted by a nearby Allomancer burning Zinc. Their emotions feel more erratic and displaced.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps>
@@ -38,7 +38,6 @@
     </HediffDef>
     <HediffDef ParentName="AbstractZincHediff">
         <defName>Cosmere_Hediff_Rioted_Buff</defName>
-        <label>Rioted</label>
         <comps>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_Rioted</thought>
@@ -62,7 +61,6 @@
     </HediffDef>
     <HediffDef ParentName="AbstractZincHediff">
         <defName>Cosmere_Hediff_Rioted_Debuff</defName>
-        <label>Rioted</label>
         <comps>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_Rioted</thought>

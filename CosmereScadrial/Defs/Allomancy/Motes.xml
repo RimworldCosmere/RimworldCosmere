@@ -4,7 +4,7 @@
         <defName>Cosmere_Mote_Allomancy_Aura</defName>
         <thingClass>MoteAttached</thingClass>
         <altitudeLayer>MoteOverhead</altitudeLayer>
-        <label>Allomancy Aura</label>
+        <label>allomancy aura</label>
         <graphicData>
             <texPath>Effects/AllomancyAura</texPath>
             <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>

@@ -8,7 +8,7 @@
             <texPath>Item/Resource/{{capitalize metal.Name}}</texPath>
         </graphicData>
         <stuffProps>
-            <commonality>{{#if metal.Alloy}}0.3{{else}}0.8{{/if}}</commonality>
+            <commonality>{{#if metal.Buildable.Commonality}}{{metal.Buildable.Commonality}}{{else}}0.0{{/if}}</commonality>
             <color>{{rgb metal.Color}}</color>
         </stuffProps>
         <statBases>

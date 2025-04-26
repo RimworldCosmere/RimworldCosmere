@@ -8,7 +8,7 @@
             <texPath>Item/Resource/Steel</texPath>
         </graphicData>
         <stuffProps>
-            <commonality>0.3</commonality>
+            <commonality>0.8</commonality>
             <color>(109, 108, 108)</color>
         </stuffProps>
         <statBases>

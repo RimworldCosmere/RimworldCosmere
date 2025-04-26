@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- Figure out how to replace Silver as a currency, with Boxings/Clips -->
+    <!--<Operation Class="PatchOperationAttributeSet">
+        <xpath>/Defs/TraderKindDef/stockGenerators/li[@Class="StockGenerator_SingleDef" and thingDef="Silver"]</xpath>
+        <attribute>Class</attribute>
+        <value>StockGenerator_Tag</value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>/Defs/TraderKindDef/stockGenerators/li[@Class="StockGenerator_Tag" and thingDef="Silver"]/thingDef</xpath>
+        <value>
+            <tradeTag>Cosmere_Currency</tradeTag>
+        </value>
+    </Operation>-->
+    <Operation Class="PatchOperationInsert">
+        <xpath>/Defs/TraderKindDef/stockGenerators/li[@Class="StockGenerator_SingleDef" and thingDef="Silver"]</xpath>
+        <value>
+            <li Class="StockGenerator_SingleDef">
+                <thingDef>Cosmere_Clip</thingDef>
+                <countRange>200~3000</countRange>
+            </li>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationInsert">
+        <xpath>/Defs/TraderKindDef/stockGenerators/li[@Class="StockGenerator_SingleDef" and thingDef="Silver"]</xpath>
+        <value>
+            <li Class="StockGenerator_SingleDef">
+                <thingDef>Cosmere_Boxing</thingDef>
+                <countRange>50~200</countRange>
+            </li>
+        </value>
+    </Operation>
+</Patch>

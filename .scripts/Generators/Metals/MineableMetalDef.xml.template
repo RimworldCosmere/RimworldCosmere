@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractMineable">
         <defName>Mineable{{capitalize metal.Name}}</defName>
-        <label>{{capitalize metal.Name}} Ore</label>
+        <label>{{metal.Name}} Ore</label>
         <description>{{#if metal.Mining.Description}}{{metal.Mining.Description}}{{else}}Unrefined {{capitalize metal.Name}} ore mined directly from the earth.{{/if}}</description>
         <graphicData>
             <color>{{rgb metal.Color}}</color>
@@ -11,6 +11,9 @@
         <statBases>
             <MaxHitPoints>{{metal.Mining.HitPoints}}</MaxHitPoints>
         </statBases>
+        <deepCommonality>{{metal.Mining.Commonality}}</deepCommonality>
+        <deepCountPerPortion>{{metal.Mining.Yield}}</deepCountPerPortion>
+        <deepLumpSizeRange>{{range metal.Mining.SizeRange}}</deepLumpSizeRange>
         <building>
             <mineableThing>{{capitalize metal.Name}}</mineableThing>
             <mineableYield>{{metal.Mining.Yield}}</mineableYield>

@@ -2,9 +2,8 @@
 <Defs>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Ability_Tin</defName>
-        <label>Tin</label>
+        <label>tin</label>
         <description>Burn tin to enhance senses.</description>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Tin</iconPath>
         <metal>Tin</metal>
         <hediff>Cosmere_Hediff_TinBuff</hediff>
         <dragHediff>Cosmere_Hediff_TinDrag</dragHediff>

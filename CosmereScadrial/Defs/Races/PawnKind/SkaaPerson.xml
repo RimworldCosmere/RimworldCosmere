@@ -2,7 +2,7 @@
 <Defs>
     <PawnKindDef>
         <defName>Cosmere_SkaaPerson</defName>
-        <label>Skaa person</label>
+        <label>skaa person</label>
         <race>Human</race>
         <xenotypeSet>
             <xenotypeChances>

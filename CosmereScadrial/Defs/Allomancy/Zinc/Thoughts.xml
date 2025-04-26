@@ -6,10 +6,14 @@
         <validWhileDespawned>true</validWhileDespawned>
         <stages>
             <li>
-                <label>Emotions Felt Strange</label>
+                <label>emotions felt strange</label>
                 <description>I felt a surge of emotion — sharper, louder than it should’ve been. Like someone lit a fire inside me, and I don't know why.
 
 Something was off. I wasn’t entirely myself.</description>
+            </li>
+            <li>
+                <label>consumed by frenzy</label>
+                <description>Emotion overtakes reason. Every thought ignites into action without pause or reflection.</description>
             </li>
         </stages>
     </ThoughtDef>

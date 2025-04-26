@@ -2,7 +2,7 @@
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_TinBuff</defName>
-        <label>Burning Tin</label>
+        <label>burning tin</label>
         <description>Empowered senses from burning Pewter.</description>
         <stages>
             <li>
@@ -33,7 +33,7 @@
     
     <HediffDef>
         <defName>Cosmere_Hediff_TinDrag</defName>
-        <label>Tin Overstim</label>
+        <label>tin overstim</label>
         <description>The aftereffects of pushing the senses beyond its limits using tin. The mind is crashing.</description>
         <hediffClass>HediffWithComps</hediffClass>
         <isBad>true</isBad>

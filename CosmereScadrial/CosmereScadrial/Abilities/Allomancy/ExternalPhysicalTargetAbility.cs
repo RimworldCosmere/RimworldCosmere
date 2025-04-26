@@ -1,3 +1,4 @@
+using System;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
@@ -32,7 +33,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
 
             var job = JobMaker.MakeJob(JobDefOf.Cosmere_Job_CastAllomanticAbilityAtTarget, target);
             job.ability = this;
-            job.verbToUse = new Verb_CastAbility();
+            job.verbToUse = (Verb)Activator.CreateInstance(def.verbProperties.verbClass);
             job.verbToUse.caster = pawn;
             job.playerForced = true;
             job.verbToUse.verbProps = def.verbProperties;

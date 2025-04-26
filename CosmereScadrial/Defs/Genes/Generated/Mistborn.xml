@@ -2,7 +2,7 @@
 <Defs>
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Mistborn</defName>
-        <label>Mistborn</label>
+        <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Mistborn</iconPath>
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
@@ -25,12 +25,7 @@
                     <li>Bronze</li>
                     <li>Aluminum</li>
                     <li>Duralumin</li>
-                    <li>Chromium</li>
-                    <li>Nicrosil</li>
-                    <li>Cadmium</li>
-                    <li>Bendalloy</li>
                     <li>Gold</li>
-                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>
@@ -39,6 +34,7 @@
             <li>Cosmere_Ability_Iron_Pull</li>
             <li>Cosmere_Ability_Steel_Aura</li>
             <li>Cosmere_Ability_Steel_Push</li>
+            <li>Cosmere_Ability_Steel_Coinshot</li>
             <li>Cosmere_Ability_Tin</li>
             <li>Cosmere_Ability_Pewter</li>
             <li>Cosmere_Ability_Zinc_Aura</li>
@@ -49,7 +45,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Mistborn</defName>
-        <label>Mistborn</label>
+        <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -64,22 +60,17 @@
                     <li>Bronze</li>
                     <li>Aluminum</li>
                     <li>Duralumin</li>
-                    <li>Chromium</li>
-                    <li>Nicrosil</li>
-                    <li>Cadmium</li>
-                    <li>Bendalloy</li>
                     <li>Gold</li>
-                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>
         <degreeDatas>
-          <li>
-            <label>Mistborn</label>
-            <description>A rare individual who can burn all Allomantic metals.</description>
-            <degree>0</degree>
-            <commonality>0</commonality>
-          </li>
+            <li>
+                <label>Mistborn</label>
+                <description>A rare individual who can burn all Allomantic metals.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
         </degreeDatas>
     </TraitDef>
 </Defs>

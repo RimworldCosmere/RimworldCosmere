@@ -2,7 +2,7 @@
 <Defs>
     <PawnKindDef>
         <defName>Cosmere_NoblePerson</defName>
-        <label>Scadrial Noble</label>
+        <label>scadrian noble</label>
         <race>Human</race>
         <xenotypeSet>
             <xenotypeChances>

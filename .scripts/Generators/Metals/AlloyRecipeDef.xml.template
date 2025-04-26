@@ -3,7 +3,7 @@
     <!-- {{capitalize metal.Name}} Alloy Recipe-->
     <RecipeDef ParentName="AlloyBase">
         <defName>Cosmere_Make_Alloy_{{capitalize metal.Name}}</defName>
-        <label>Create Alloy: {{capitalize metal.Name}}</label>
+        <label>create alloy: {{metal.Name}}</label>
         <jobString>Creating alloy: {{capitalize metal.Name}}</jobString>
         <ingredients>
             {{#each metal.Alloy.Ingredients}}

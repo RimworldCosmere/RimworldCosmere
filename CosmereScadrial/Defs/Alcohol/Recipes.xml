@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RecipeDef>
+        <defName>Cosmere_DistillAlcohol</defName>
+        <label>distill alcohol</label>
+        <description>Distill alcohol from potatoes</description>
+        <jobString>Distilling alcohol.</jobString>
+        <workSpeedStat>DrugCookingSpeed</workSpeedStat>
+        <workSkill>Cooking</workSkill>
+        <effectWorking>Cook</effectWorking>
+        <soundWorking>Recipe_Brewing</soundWorking>
+        <allowMixingIngredients>true</allowMixingIngredients>
+        <workAmount>1000</workAmount>
+        <targetCountAdjustment>1</targetCountAdjustment>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>RawPotatoes</li>
+                    </thingDefs>
+                </filter>
+                <count>25</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Glass</li>
+                    </thingDefs>
+                </filter>
+                <count>4</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>RawPotatoes</li>
+                <li>Glass</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <Cosmere_Alcohol>5</Cosmere_Alcohol>
+        </products>
+        <recipeUsers>
+            <li>Brewery</li>
+        </recipeUsers>
+    </RecipeDef>
+</Defs>

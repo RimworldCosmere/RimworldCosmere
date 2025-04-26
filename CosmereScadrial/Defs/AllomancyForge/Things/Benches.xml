@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="BenchBase">
         <defName>Cosmere_TableAllomancyForge</defName>
-        <label>Allomancy Forge</label>
+        <label>allomantic forge</label>
         <description>A work bench for metalworkers to work on the allomantic metals</description>
         <thingClass>Building_WorkTable_HeatPush</thingClass>
         <graphicData>
@@ -23,11 +23,15 @@
         <staticSunShadowHeight>0.20</staticSunShadowHeight>-->
         <interactionCellOffset>(0,0,-1)</interactionCellOffset>
         <size>(3, 2)</size>
-        <costList/>
         <stuffCategories>
             <li>Metallic</li>
             <li>Woody</li>
         </stuffCategories>
+        <costList>
+            <WoodLog>50</WoodLog>
+            <ComponentIndustrial>1</ComponentIndustrial>
+        </costList>
+        <costStuffCount>75</costStuffCount>
         <altitudeLayer>Building</altitudeLayer>
         <fillPercent>0.5</fillPercent>
         <useHitPoints>True</useHitPoints>

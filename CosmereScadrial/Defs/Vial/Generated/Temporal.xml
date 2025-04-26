@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_Temporal</defName>
-        <label>Mistborn Vial: Temporal</label>
+        <label>mistborn vial: Temporal</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(255, 255, 255)</color>
@@ -10,10 +10,7 @@
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
-                    <li>Cadmium</li>
-                    <li>Bendalloy</li>
                     <li>Gold</li>
-                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>
@@ -21,23 +18,11 @@
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Temporal</defName>
-        <label>Craft Mistborn Vial: Temporal</label>
+        <label>craft mistborn vial: Temporal</label>
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
                 <filter><thingDefs><li>Gold</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Electrum</li></thingDefs></filter>
                 <count>1</count>
             </li>
         </ingredients>
@@ -48,7 +33,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_Temporal</defName>
-        <label>Mistborn Vial: Temporal</label>
+        <label>mistborn vial: Temporal</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

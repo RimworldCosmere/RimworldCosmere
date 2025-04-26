@@ -2,7 +2,7 @@
 <Defs>
   <ScenarioDef Name="Cosmere_PreCatacendre">
     <defName>Cosmere_Scadrial_PreCatacendre</defName>
-    <label>Cosmere - Scadrial: Pre-Catacendre</label>
+    <label>Cosmere - Scadrial: Pre-catacendre</label>
     <description>You are escaped Skaa, Terris stewards, or disillusioned nobles from the oppressive rule of the Lord Ruler. Fleeing from Inquisitors and ash-choked cities, you must forge a life in the wilderness.</description>
     <scenario>
       <summary>Survivors of the Final Empire's tyranny, now hiding on the fringe of civilization.</summary>

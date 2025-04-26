@@ -8,7 +8,7 @@
             <texPath>Item/Resource/Duralumin</texPath>
         </graphicData>
         <stuffProps>
-            <commonality>0.3</commonality>
+            <commonality>0.0</commonality>
             <color>(127, 113, 115)</color>
         </stuffProps>
         <statBases>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThoughtDef>
+        <defName>Cosmere_Thought_Clouded</defName>
+        <thoughtClass>Thought_Memory</thoughtClass>
+        <validWhileDespawned>true</validWhileDespawned>
+        <stages>
+            <li>
+                <label>enshrouded in copper</label>
+                <description>A gentle stillness settles over you. External forces seem muted, as if the world’s noise has been wrapped in a cloak of silence. You feel unseen and safe.</description>
+            </li>
+            <li>
+                <label>wrapped in perfect stillness</label>
+                <description>Within the heart of the coppercloud, all noise and turmoil fall away. I am unseen, untouched—a sanctuary of silence.</description>
+            </li>
+        </stages>
+    </ThoughtDef>
+</Defs>

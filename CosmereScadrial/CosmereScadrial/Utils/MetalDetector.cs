@@ -104,9 +104,12 @@ namespace CosmereScadrial.Utils {
             switch (thing?.def?.category) {
                 case ThingCategory.Pawn:
                     var pawn = (Pawn)thing;
-                    var bodyType = pawn.story.bodyType;
+                    var bodyType = pawn.story?.bodyType;
                     var size = 1f;
-                    if (bodyType.Equals(BodyTypeDefOf.Thin)) {
+
+                    if (bodyType == null) {
+                        size = 0.7f;
+                    } else if (bodyType.Equals(BodyTypeDefOf.Thin)) {
                         size = 0.8f;
                     } else if (bodyType.Equals(BodyTypeDefOf.Baby)) {
                         size = 0.2f;

@@ -1,12 +1,22 @@
 import {MetalAllomancyInfo, MetalAlloyInfo, MetalBuildableInfo, MetalFeruchemyInfo, MetalInfo, MetalMiningInfo} from "./MetalInfo";
 import {upperFirst} from 'lodash';
-import * as metals from '../Resources/MetalRegistry.json';
+import {validate, ValidationError} from "jsonschema";
+import metals from '../Resources/MetalRegistry.json';
+import schema from '../Resources/MetalRegistry.schema.json';
 
 export class MetalRegistry {
   public static Metals: Record<string, MetalInfo> = {};
 
   public static LoadMetalRegistry() {
+    var result = validate(metals, schema);
+    if (!result.valid) {
+      console.error(result.errors);
+      throw new ValidationError("Failed to validate");
+    }
+    
     MetalRegistry.Metals = metals.reduce((curr: any, metal: Record<string, any>) => {
+      if (metal.disabled) return curr;
+      
       const metalInfo = new MetalInfo({
         Name: metal.name,
         Description: metal.description,
@@ -32,6 +42,7 @@ export class MetalRegistry {
         Buildable: metal.buildable ? new MetalBuildableInfo({
           Buildings: metal.buildable.buildings,
           Items: metal.buildable.items,
+          Commonality: metal.buildable.commonality,
         }) : undefined,
         Alloy: metal.alloy ? new MetalAlloyInfo(metal.alloy.ingredients, metal.alloy.products) : undefined,
         Mining: metal.mining ? new MetalMiningInfo({

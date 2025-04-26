@@ -46,6 +46,7 @@ export class MetalFeruchemyInfo {
 export class MetalBuildableInfo {
   public Buildings: boolean;
   public Items: boolean;
+  public Commonality: number;
   constructor(self: Partial<MetalBuildableInfo>) {
     Object.assign(this, self);
   }

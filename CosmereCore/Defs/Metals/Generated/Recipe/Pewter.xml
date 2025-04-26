@@ -3,7 +3,7 @@
     <!-- Pewter Alloy Recipe-->
     <RecipeDef ParentName="AlloyBase">
         <defName>Cosmere_Make_Alloy_Pewter</defName>
-        <label>Create Alloy: Pewter</label>
+        <label>create alloy: pewter</label>
         <jobString>Creating alloy: Pewter</jobString>
         <ingredients>
             <li>

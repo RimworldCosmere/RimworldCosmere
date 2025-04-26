@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_{{defName}}</defName>
-        <label>Mistborn Vial: {{capitalize name}}</label>
+        <label>mistborn vial: {{name}}</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(255, 255, 255)</color>
@@ -20,7 +20,7 @@
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_{{defName}}</defName>
-        <label>Craft Mistborn Vial: {{capitalize name}}</label>
+        <label>craft mistborn vial: {{name}}</label>
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
             {{#each metals}}
@@ -37,7 +37,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_{{defName}}</defName>
-        <label>Mistborn Vial: {{capitalize name}}</label>
+        <label>mistborn vial: {{name}}</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

@@ -3,8 +3,8 @@
     <!-- Misting: Steel -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Misting_Steel</defName>
-        <label>Steel Misting</label>
-        <labelShortAdj>Coinshot</labelShortAdj>
+        <label>steel misting</label>
+        <labelShortAdj>coinshot</labelShortAdj>
         <description>Can push on metals, allowing rapid movement or throwing metal objects.</description>
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>3</displayOrderInCategory>
@@ -21,12 +21,13 @@
         <abilities>
             <li>Cosmere_Ability_Steel_Aura</li>
             <li>Cosmere_Ability_Steel_Push</li>
+            <li>Cosmere_Ability_Steel_Coinshot</li>
         </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Steel</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Misting_Steel</defName>
-        <label>Coinshot</label>
+        <label>coinshot</label>
         <description>Can push on metals, allowing rapid movement or throwing metal objects.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -35,7 +36,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Misting: Coinshot</label>
+                <label>misting: coinshot</label>
                 <description>Can push on metals, allowing rapid movement or throwing metal objects.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
@@ -46,8 +47,8 @@
     <!-- Ferring: Steel -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Ferring_Steel</defName>
-        <label>Steel Ferring</label>
-        <labelShortAdj>Steelrunner</labelShortAdj>
+        <label>steel ferring</label>
+        <labelShortAdj>steelrunner</labelShortAdj>
         <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>3</displayOrderInCategory>
@@ -65,7 +66,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Ferring_Steel</defName>
-        <label>Steelrunner</label>
+        <label>steelrunner</label>
         <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -74,7 +75,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Ferring: Steelrunner</label>
+                <label>ferring: steelrunner</label>
                 <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>

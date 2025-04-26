@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_All</defName>
-        <label>Mistborn Vial: All</label>
+        <label>mistborn vial: All</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(255, 255, 255)</color>
@@ -19,12 +19,7 @@
                     <li>Copper</li>
                     <li>Bronze</li>
                     <li>Duralumin</li>
-                    <li>Chromium</li>
-                    <li>Nicrosil</li>
-                    <li>Cadmium</li>
-                    <li>Bendalloy</li>
                     <li>Gold</li>
-                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>
@@ -32,7 +27,7 @@
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_All</defName>
-        <label>Craft Mistborn Vial: All</label>
+        <label>craft mistborn vial: All</label>
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
             <li>
@@ -72,27 +67,7 @@
                 <count>1</count>
             </li>
             <li>
-                <filter><thingDefs><li>Chromium</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Nicrosil</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
                 <filter><thingDefs><li>Gold</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Electrum</li></thingDefs></filter>
                 <count>1</count>
             </li>
         </ingredients>
@@ -103,7 +78,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_All</defName>
-        <label>Mistborn Vial: All</label>
+        <label>mistborn vial: All</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

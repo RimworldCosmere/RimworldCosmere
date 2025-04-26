@@ -8,7 +8,7 @@
             <texPath>Item/Resource/Zinc</texPath>
         </graphicData>
         <stuffProps>
-            <commonality>0.8</commonality>
+            <commonality>0.0</commonality>
             <color>(128, 142, 129)</color>
         </stuffProps>
         <statBases>

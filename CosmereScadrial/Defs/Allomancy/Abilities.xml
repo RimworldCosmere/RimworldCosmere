@@ -2,7 +2,7 @@
 <Defs>
     <AbilityCategoryDef>
         <defName>Allomancy</defName>
-        <label>Allomancy</label>
+        <label>allomancy</label>
         <displayOrder>1</displayOrder>
     </AbilityCategoryDef>
     
@@ -39,7 +39,7 @@
     
     <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractTargetBurnAbility" ParentName="AbstractBurnAbility" Abstract="True">
         <abilityClass>CosmereScadrial.Abilities.Allomancy.AbilityOtherTarget</abilityClass>
-        <canUseAoeToGetTargets>False</canUseAoeToGetTargets>
+        <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
         <targetRequired>true</targetRequired>
         <targetWorldCell>false</targetWorldCell>
         <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>

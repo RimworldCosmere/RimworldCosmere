@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_Brass</defName>
-        <label>Misting Vial: Soother</label>
+        <label>misting vial: soother</label>
         <description>A vial containing Brass suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(175, 148, 91)</color>
@@ -17,7 +17,7 @@
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Brass</defName>
-        <label>Craft Misting Vial: Soother</label>
+        <label>craft misting vial: soother</label>
         <description>Create a vial of Brass infused alcohol for use by Mistborns and soothers.</description>
         <ingredients>
             <li>
@@ -32,7 +32,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_Brass</defName>
-        <label>Allomantic Vial: Brass</label>
+        <label>allomantic vial: brass</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

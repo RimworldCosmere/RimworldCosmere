@@ -3,8 +3,8 @@
     <!-- Misting: Brass -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Misting_Brass</defName>
-        <label>Brass Misting</label>
-        <labelShortAdj>Soother</labelShortAdj>
+        <label>brass misting</label>
+        <labelShortAdj>soother</labelShortAdj>
         <description>Can soothe emotions, calming people or manipulating moods.</description>
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>7</displayOrderInCategory>
@@ -26,7 +26,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Misting_Brass</defName>
-        <label>Soother</label>
+        <label>soother</label>
         <description>Can soothe emotions, calming people or manipulating moods.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -35,7 +35,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Misting: Soother</label>
+                <label>misting: soother</label>
                 <description>Can soothe emotions, calming people or manipulating moods.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
@@ -46,8 +46,8 @@
     <!-- Ferring: Brass -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Ferring_Brass</defName>
-        <label>Brass Ferring</label>
-        <labelShortAdj>Firesoul</labelShortAdj>
+        <label>brass ferring</label>
+        <labelShortAdj>firesoul</labelShortAdj>
         <description>Stores warmth, useful for surviving cold environments or heating up.</description>
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>7</displayOrderInCategory>
@@ -65,7 +65,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Ferring_Brass</defName>
-        <label>Firesoul</label>
+        <label>firesoul</label>
         <description>Stores warmth, useful for surviving cold environments or heating up.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -74,7 +74,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Ferring: Firesoul</label>
+                <label>ferring: firesoul</label>
                 <description>Stores warmth, useful for surviving cold environments or heating up.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>

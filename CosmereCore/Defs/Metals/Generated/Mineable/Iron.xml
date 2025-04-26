@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractMineable">
         <defName>MineableIron</defName>
-        <label>Iron Ore</label>
+        <label>iron Ore</label>
         <description>Unrefined Iron ore mined directly from the earth.</description>
         <graphicData>
             <color>(121, 113, 111)</color>
@@ -11,6 +11,9 @@
         <statBases>
             <MaxHitPoints>1500</MaxHitPoints>
         </statBases>
+        <deepCommonality>0.8</deepCommonality>
+        <deepCountPerPortion>40</deepCountPerPortion>
+        <deepLumpSizeRange>35~65</deepLumpSizeRange>
         <building>
             <mineableThing>Iron</mineableThing>
             <mineableYield>40</mineableYield>

@@ -80,7 +80,7 @@ namespace CosmereScadrial.Utils {
             if (pawn?.inventory?.innerContainer == null) return false;
 
             foreach (var vial in pawn.inventory.innerContainer) {
-                var metals = vial.def.GetModExtension<MetalsLinked>().Metals;
+                var metals = vial.def.GetModExtension<MetalsLinked>()?.Metals ?? [];
 
                 if (metals.Count > 1 && !allowMultiVial) continue;
 
@@ -98,7 +98,7 @@ namespace CosmereScadrial.Utils {
             if (pawn?.inventory?.innerContainer == null) return false;
 
             foreach (var vial in pawn.inventory.innerContainer) {
-                var metals = vial.def.GetModExtension<MetalsLinked>().Metals;
+                var metals = vial.def.GetModExtension<MetalsLinked>()?.Metals ?? [];
 
                 if (metals.Count > 1 && !allowMultiVial) continue;
 

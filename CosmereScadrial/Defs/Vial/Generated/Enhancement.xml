@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_Enhancement</defName>
-        <label>Mistborn Vial: Enhancement</label>
+        <label>mistborn vial: Enhancement</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(255, 255, 255)</color>
@@ -11,8 +11,6 @@
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Duralumin</li>
-                    <li>Chromium</li>
-                    <li>Nicrosil</li>
                 </metals>
             </li>
         </modExtensions>
@@ -20,19 +18,11 @@
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Enhancement</defName>
-        <label>Craft Mistborn Vial: Enhancement</label>
+        <label>craft mistborn vial: Enhancement</label>
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
             <li>
                 <filter><thingDefs><li>Duralumin</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Chromium</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Nicrosil</li></thingDefs></filter>
                 <count>1</count>
             </li>
         </ingredients>
@@ -43,7 +33,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_Enhancement</defName>
-        <label>Mistborn Vial: Enhancement</label>
+        <label>mistborn vial: Enhancement</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

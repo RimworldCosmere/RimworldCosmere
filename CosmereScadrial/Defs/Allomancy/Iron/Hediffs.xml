@@ -2,7 +2,7 @@
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_IronAura</defName>
-        <label>Burning Iron: Aura</label>
+        <label>burning iron: aura</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
 Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
 These lines shimmer with the tension of potential force, visible only to those burning Iron.</description>

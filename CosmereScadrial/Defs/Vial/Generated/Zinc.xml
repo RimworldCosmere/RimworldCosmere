@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_Zinc</defName>
-        <label>Misting Vial: Rioter</label>
+        <label>misting vial: rioter</label>
         <description>A vial containing Zinc suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(128, 142, 129)</color>
@@ -17,7 +17,7 @@
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Zinc</defName>
-        <label>Craft Misting Vial: Rioter</label>
+        <label>craft misting vial: rioter</label>
         <description>Create a vial of Zinc infused alcohol for use by Mistborns and rioters.</description>
         <ingredients>
             <li>
@@ -32,7 +32,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_Zinc</defName>
-        <label>Allomantic Vial: Zinc</label>
+        <label>allomantic vial: zinc</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

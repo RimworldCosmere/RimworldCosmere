@@ -26,6 +26,7 @@
         <useHitPoints>false</useHitPoints>
         <healthAffectsPrice>false</healthAffectsPrice>
         <tradeability>All</tradeability>
+        <stackLimit>150</stackLimit>
         <thingCategories>
             <li>ResourcesRaw</li>
         </thingCategories>
@@ -33,9 +34,6 @@
         <smeltable>true</smeltable>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
-        <deepCommonality>4</deepCommonality>
-        <deepCountPerPortion>75</deepCountPerPortion>
-        <deepLumpSizeRange>10~15</deepLumpSizeRange>
         <stuffProps>
             <categories>
                 <li>Cosmere_Metals</li>
@@ -51,7 +49,6 @@
     
     <ThingDef Name="AbstractBuildableMetal" ParentName="AbstractMetal" Abstract="True">
         <stuffProps>
-            <commonality>0.5</commonality>
             <constructEffect>ConstructMetal</constructEffect>
             <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
             <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>

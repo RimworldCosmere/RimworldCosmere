@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_Bronze</defName>
-        <label>Misting Vial: Seeker</label>
+        <label>misting vial: seeker</label>
         <description>A vial containing Bronze suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(191, 160, 138)</color>
@@ -17,7 +17,7 @@
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Bronze</defName>
-        <label>Craft Misting Vial: Seeker</label>
+        <label>craft misting vial: seeker</label>
         <description>Create a vial of Bronze infused alcohol for use by Mistborns and seekers.</description>
         <ingredients>
             <li>
@@ -32,7 +32,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_Bronze</defName>
-        <label>Allomantic Vial: Bronze</label>
+        <label>allomantic vial: bronze</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

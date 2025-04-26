@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_Internal</defName>
-        <label>Mistborn Vial: Internal</label>
+        <label>mistborn vial: Internal</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(255, 255, 255)</color>
@@ -16,7 +16,6 @@
                     <li>Bronze</li>
                     <li>Duralumin</li>
                     <li>Gold</li>
-                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>
@@ -24,7 +23,7 @@
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Internal</defName>
-        <label>Craft Mistborn Vial: Internal</label>
+        <label>craft mistborn vial: Internal</label>
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
             <li>
@@ -51,10 +50,6 @@
                 <filter><thingDefs><li>Gold</li></thingDefs></filter>
                 <count>1</count>
             </li>
-            <li>
-                <filter><thingDefs><li>Electrum</li></thingDefs></filter>
-                <count>1</count>
-            </li>
         </ingredients>
         <products>
             <Cosmere_AllomanticVial_Internal>8</Cosmere_AllomanticVial_Internal>
@@ -63,7 +58,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_Internal</defName>
-        <label>Mistborn Vial: Internal</label>
+        <label>mistborn vial: Internal</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

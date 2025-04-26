@@ -2,7 +2,7 @@
 <Defs>
     <PawnKindDef>
         <defName>Cosmere_TerrisPerson</defName>
-        <label>Terris person</label>
+        <label>terris person</label>
         <race>Human</race>
         <xenotypeSet>
             <xenotypeChances>

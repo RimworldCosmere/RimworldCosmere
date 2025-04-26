@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractMineable">
         <defName>MineableZinc</defName>
-        <label>Zinc Ore</label>
+        <label>zinc Ore</label>
         <description>Unrefined Zinc ore mined directly from the earth.</description>
         <graphicData>
             <color>(128, 142, 129)</color>
@@ -11,10 +11,13 @@
         <statBases>
             <MaxHitPoints>1360</MaxHitPoints>
         </statBases>
+        <deepCommonality>0.6</deepCommonality>
+        <deepCountPerPortion>40</deepCountPerPortion>
+        <deepLumpSizeRange>30~55</deepLumpSizeRange>
         <building>
             <mineableThing>Zinc</mineableThing>
             <mineableYield>40</mineableYield>
-            <mineableScatterCommonality>0.7</mineableScatterCommonality>
+            <mineableScatterCommonality>0.6</mineableScatterCommonality>
             <mineableScatterLumpSizeRange>30~55</mineableScatterLumpSizeRange>
         </building>
         <modExtensions>

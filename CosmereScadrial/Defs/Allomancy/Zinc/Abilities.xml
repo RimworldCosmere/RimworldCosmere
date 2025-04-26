@@ -2,23 +2,21 @@
 <Defs>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Ability_Zinc_Aura</defName>
-        <label>Rioting Aura</label>
+        <label>rioting aura</label>
         <description>The Rioter subtly fans the emotional flames of all nearby minds.
 
 Friendly individuals feel surges of courage and determination, sharpening their reflexes and fueling their will to fight.
 Hostile or neutral targets grow tense, anxious, or unstable — their emotions stretched toward breaking.</description>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Zinc</iconPath>
         <metal>Zinc</metal>
         <hediff>Cosmere_Hediff_ZincAura</hediff>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
         <defName>Cosmere_Ability_Zinc_Target</defName>
-        <label>Riot Target</label>
+        <label>riot target</label>
         <description>The Rioter channels Zinc to incite emotion in a single target.
 
 Allies are emboldened, gaining heightened clarity and resolve.
 A carefully timed burst against an enemy may stoke fear, anger, or confusion — pushing unstable minds toward a break.</description>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Zinc</iconPath>
         <metal>Zinc</metal>
         <hediffFriendly>Cosmere_Hediff_Rioted_Buff</hediffFriendly>
         <hediffHostile>Cosmere_Hediff_Rioted_Debuff</hediffHostile>

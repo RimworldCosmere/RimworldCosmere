@@ -29,18 +29,8 @@ namespace CosmereScadrial {
         public static GeneDef Cosmere_Ferring_Aluminum;
         public static GeneDef Cosmere_Misting_Duralumin;
         public static GeneDef Cosmere_Ferring_Duralumin;
-        public static GeneDef Cosmere_Misting_Chromium;
-        public static GeneDef Cosmere_Ferring_Chromium;
-        public static GeneDef Cosmere_Misting_Nicrosil;
-        public static GeneDef Cosmere_Ferring_Nicrosil;
-        public static GeneDef Cosmere_Misting_Cadmium;
-        public static GeneDef Cosmere_Ferring_Cadmium;
-        public static GeneDef Cosmere_Misting_Bendalloy;
-        public static GeneDef Cosmere_Ferring_Bendalloy;
         public static GeneDef Cosmere_Misting_Gold;
         public static GeneDef Cosmere_Ferring_Gold;
-        public static GeneDef Cosmere_Misting_Electrum;
-        public static GeneDef Cosmere_Ferring_Electrum;
 
         public static GeneDef Cosmere_Mistborn;
         public static GeneDef Cosmere_FullFeruchemist;

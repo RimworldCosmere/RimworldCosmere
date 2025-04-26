@@ -31,7 +31,8 @@
     },
     "buildable": {
       "buildings": true,
-      "items": true
+      "items": true,
+      "commonality": 0.4
     },
     "mining": {
       "hitPoints": 1500,
@@ -60,7 +61,8 @@
       "polarity": "pushing",
       "abilities": [
         "Cosmere_Ability_Steel_Aura",
-        "Cosmere_Ability_Steel_Push"
+        "Cosmere_Ability_Steel_Push",
+        "Cosmere_Ability_Steel_Coinshot"
       ]
     },
     "feruchemy": {
@@ -70,7 +72,8 @@
     },
     "buildable": {
       "buildings": true,
-      "items": true
+      "items": true,
+      "commonality": 0.8
     },
     "alloy": {
       "ingredients": [
@@ -126,7 +129,7 @@
     "mining": {
       "hitPoints": 1400,
       "yield": 40,
-      "commonality": 0.8,
+      "commonality": 0.6,
       "sizeRange": [
         35,
         65
@@ -211,7 +214,7 @@
     "mining": {
       "hitPoints": 1360,
       "yield": 40,
-      "commonality": 0.7,
+      "commonality": 0.6,
       "sizeRange": [
         30,
         55
@@ -245,7 +248,8 @@
     },
     "buildable": {
       "buildings": true,
-      "items": true
+      "items": true,
+      "commonality": 0.2
     },
     "alloy": {
       "ingredients": [
@@ -288,7 +292,8 @@
     },
     "buildable": {
       "buildings": true,
-      "items": true
+      "items": true,
+      "commonality": 0.2
     },
     "mining": {
       "hitPoints": 1440,
@@ -323,7 +328,8 @@
     },
     "buildable": {
       "buildings": true,
-      "items": true
+      "items": true,
+      "commonality": 0.2
     },
     "alloy": {
       "ingredients": [
@@ -366,7 +372,8 @@
     },
     "buildable": {
       "buildings": true,
-      "items": true
+      "items": true,
+      "commonality": 0.3
     },
     "mining": {
       "hitPoints": 1700,
@@ -417,6 +424,7 @@
     }
   },
   {
+    "disabled": true,
     "name": "chromium",
     "description": "Chromium is a hard, lustrous metal renowned for its brilliant shine and outstanding resistance to tarnish. It enhances the durability and appearance of alloys and is often used to create sleek, modern finishes.",
     "godMetal": false,
@@ -449,7 +457,7 @@
     "mining": {
       "hitPoints": 1600,
       "yield": 30,
-      "commonality": 0.6,
+      "commonality": 0.3,
       "sizeRange": [
         25,
         45
@@ -457,6 +465,7 @@
     }
   },
   {
+    "disabled": true,
     "name": "nicrosil",
     "description": "Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.",
     "godMetal": false,
@@ -495,6 +504,7 @@
     }
   },
   {
+    "disabled": true,
     "name": "cadmium",
     "description": "Cadmium is a soft, subtly reflective metal known for its unique properties and low melting point. Often used in specialized applications, it brings distinct qualities when blended into advanced alloys.",
     "godMetal": false,
@@ -527,7 +537,7 @@
     "mining": {
       "hitPoints": 1300,
       "yield": 20,
-      "commonality": 0.4,
+      "commonality": 0.3,
       "sizeRange": [
         15,
         35
@@ -535,6 +545,7 @@
     }
   },
   {
+    "disabled": true,
     "name": "bendalloy",
     "description": "Bendalloy is a mysterious and dynamic alloy created by precisely combining cadmium, zinc, and silver. Its shifting hues and volatile properties make it a material of both scientific intrigue and advanced technological potential.",
     "godMetal": false,
@@ -604,7 +615,17 @@
     },
     "buildable": {
       "buildings": true,
-      "items": true
+      "items": true,
+      "commonality": 0.01
+    },
+    "mining": {
+      "hitPoints": 1500,
+      "yield": 40,
+      "commonality": 0.3,
+      "sizeRange": [
+        2,
+        8
+      ]
     }
   },
   {
@@ -625,7 +646,17 @@
     "feruchemy": null,
     "buildable": {
       "buildings": true,
-      "items": true
+      "items": true,
+      "commonality": 0.01
+    },
+    "mining": {
+      "hitPoints": 1500,
+      "yield": 40,
+      "commonality": 0.3,
+      "sizeRange": [
+        4,
+        12
+      ]
     }
   },
   {
@@ -645,13 +676,13 @@
     "allomancy": null,
     "feruchemy": null,
     "buildable": {
-      "buildings": true,
-      "items": true
+      "buildings": false,
+      "items": false
     },
     "mining": {
       "hitPoints": 1480,
       "yield": 30,
-      "commonality": 0.5,
+      "commonality": 0.2,
       "sizeRange": [
         20,
         40
@@ -659,6 +690,7 @@
     }
   },
   {
+    "disabled": true,
     "name": "electrum",
     "description": "Electrum is an alloy of gold and silver, characterized by its soft, pale, and luminous hue. This unique blend of precious metals has captivated civilizations for millennia with its subtle brilliance and inherent value.",
     "godMetal": false,
@@ -697,6 +729,7 @@
     }
   },
   {
+    "disabled": true,
     "name": "lerasium",
     "description": "Lerasium is an exceptionally rare god metal tied to the Shard Preservation. When ingested, it transforms the user into a Mistborn, granting access to all Allomantic powers.",
     "godMetal": true,
@@ -714,6 +747,7 @@
     }
   },
   {
+    "disabled": true,
     "name": "atium",
     "description": "Atium is the god metal of the Shard Ruin. It grants its user visions of others' immediate futures, offering immense strategic advantage in combat and prediction.",
     "godMetal": true,
@@ -735,6 +769,7 @@
     }
   },
   {
+    "disabled": true,
     "name": "harmonium",
     "description": "Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.",
     "godMetal": true,

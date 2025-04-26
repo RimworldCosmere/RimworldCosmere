@@ -6,6 +6,7 @@
         <order>Prepend</order>
         <xpath>/Defs/ThingDef/comps/li[contains(@Class,'CompProperties_Refuelable')]/fuelFilter[contains(thingDefs, "WoodLog")]/thingDefs</xpath>
         <value>
+          <li>WoodLog</li>
           <li>Coal</li>
           <li>Charcoal</li>
         </value>

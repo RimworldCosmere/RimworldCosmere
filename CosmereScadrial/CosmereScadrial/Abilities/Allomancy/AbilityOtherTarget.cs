@@ -29,10 +29,10 @@ namespace CosmereScadrial.Abilities.Allomancy {
             }
         }
 
-        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest, bool flare) {
+        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
             target = targetInfo;
 
-            var baseActivate = base.Activate(target, dest, flare);
+            var baseActivate = base.Activate(target, dest);
             if (!toggleable || !baseActivate) {
                 return baseActivate;
             }
@@ -42,7 +42,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
             job = JobMaker.MakeJob(def.maintenance.jobDef, target);
             job.followRadius = def.maintenance.followRadius;
             job.ability = this;
-            job.count = (int)(flare ? BurningStatus.Flaring : BurningStatus.Burning);
+            job.count = (int)(status ?? BurningStatus.Burning);
             pawn.jobs.TryTakeOrderedJob(job);
 
             return true;

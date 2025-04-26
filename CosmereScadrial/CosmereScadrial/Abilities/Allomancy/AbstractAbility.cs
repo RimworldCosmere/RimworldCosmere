@@ -13,6 +13,7 @@ using PawnUtility = CosmereFramework.Utils.PawnUtility;
 namespace CosmereScadrial.Abilities.Allomancy {
     public abstract class AbstractAbility : Ability {
         protected int flareStartTick = -1;
+        protected bool shouldFlare;
         public BurningStatus? status;
         public LocalTargetInfo target;
 
@@ -53,12 +54,12 @@ namespace CosmereScadrial.Abilities.Allomancy {
         public TaggedString GetRightClickLabel(LocalTargetInfo target, BurningStatus burningStatus, string disableReason = null) {
             var hasDisableReason = !string.IsNullOrEmpty(disableReason);
 
-            var label = def.LabelCap.Replace("Target", target.Thing.LabelNoParenthesisCap);
+            var label = def.LabelCap.Replace("Target", target.Pawn != null ? target.Pawn.LabelShort : target.Thing.LabelNoParenthesisCap);
             if (burningStatus.Equals(BurningStatus.Off)) {
                 return def.label == metal.LabelCap ? $"Stop Burning {metal.LabelCap}" : $"Stop {label}";
             }
 
-            if (def.label == metal.label.CapitalizeFirst()) {
+            if (def.LabelCap == metal.LabelCap) {
                 return burningStatus.Equals(BurningStatus.Burning) ? $"Burn {metal.label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}" : $"Flare {metal.label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}";
             }
 
@@ -115,7 +116,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
         }
 
         public override IEnumerable<Command> GetGizmos() {
-            yield break;
+            return base.GetGizmos();
         }
 
         public virtual float GetDesiredBurnRateForStatus() {
@@ -160,14 +161,30 @@ namespace CosmereScadrial.Abilities.Allomancy {
             }
         }
 
-        public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-            return Activate(target, dest, false);
+        public override void QueueCastingJob(LocalTargetInfo target, LocalTargetInfo dest) {
+            QueueCastingJob(target, dest, false);
         }
 
-        public virtual bool Activate(LocalTargetInfo target, LocalTargetInfo dest, bool flare) {
-            if (!pawn.Spawned || pawn.Map == null) return false;
+        public virtual void QueueCastingJob(LocalTargetInfo target, LocalTargetInfo destination, bool flare) {
+            shouldFlare = flare;
+            base.QueueCastingJob(target, destination);
+        }
 
-            return base.Activate(target, dest);
+        protected override void PreActivate(LocalTargetInfo? target) {
+            if (shouldFlare) {
+                UpdateStatus(status == BurningStatus.Flaring ? BurningStatus.Off : BurningStatus.Flaring);
+            } else {
+                UpdateStatus(PawnUtility.IsAsleep(pawn) ? BurningStatus.Passive : atLeastPassive ? BurningStatus.Off : BurningStatus.Burning);
+            }
+
+            base.PreActivate(target);
+        }
+
+        public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
+            var result = base.Activate(target, dest);
+            shouldFlare = false;
+
+            return result;
         }
 
         protected virtual AllomanticHediff GetOrAddHediff(Pawn targetPawn) {

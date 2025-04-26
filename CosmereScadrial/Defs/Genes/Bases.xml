@@ -2,19 +2,19 @@
 <Defs>
   <GeneCategoryDef>
     <defName>Cosmere_Scadrial</defName>
-    <label>Cosmere - Scadrial</label>
+    <label>cosmere - scadrial</label>
     <displayPriorityInXenotype>5001</displayPriorityInXenotype>
     <displayPriorityInGenepack>5001</displayPriorityInGenepack>
   </GeneCategoryDef>
   <GeneCategoryDef>
     <defName>Cosmere_Scadrial_Allomancy</defName>
-    <label>Cosmere - Scadrial - Allomancy</label>
+    <label>cosmere - scadrial - allomancy</label>
     <displayPriorityInXenotype>5000</displayPriorityInXenotype>
     <displayPriorityInGenepack>5000</displayPriorityInGenepack>
   </GeneCategoryDef>
   <GeneCategoryDef>
     <defName>Cosmere_Scadrial_Feruchemy</defName>
-    <label>Cosmere - Scadrial - Feruchemy</label>
+    <label>cosmere - scadrial - feruchemy</label>
     <displayPriorityInXenotype>4999</displayPriorityInXenotype>
     <displayPriorityInGenepack>4999</displayPriorityInGenepack>
   </GeneCategoryDef>
@@ -32,11 +32,11 @@
   </TraidDef>
   <TraitDef ParentName="AbstractInvestitureTrait">
     <defName>Cosmere_Metalborn</defName>
-    <label>Metalborn</label>
+    <label>metalborn</label>
     <description>This person was born with one or more of the Metallic Arts.</description>
     <degreeDatas>
       <li>
-        <label>Metalborn</label>
+        <label>metalborn</label>
         <description>This person is a user of the Metallic Arts.</description>
         <degree>0</degree>
         <commonality>0</commonality>

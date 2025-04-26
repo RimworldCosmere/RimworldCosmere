@@ -3,7 +3,7 @@
     <!-- Bronze Alloy Recipe-->
     <RecipeDef ParentName="AlloyBase">
         <defName>Cosmere_Make_Alloy_Bronze</defName>
-        <label>Create Alloy: Bronze</label>
+        <label>create alloy: bronze</label>
         <jobString>Creating alloy: Bronze</jobString>
         <ingredients>
             <li>

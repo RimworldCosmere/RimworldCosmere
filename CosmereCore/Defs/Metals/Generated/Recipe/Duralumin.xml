@@ -3,7 +3,7 @@
     <!-- Duralumin Alloy Recipe-->
     <RecipeDef ParentName="AlloyBase">
         <defName>Cosmere_Make_Alloy_Duralumin</defName>
-        <label>Create Alloy: Duralumin</label>
+        <label>create alloy: duralumin</label>
         <jobString>Creating alloy: Duralumin</jobString>
         <ingredients>
             <li>

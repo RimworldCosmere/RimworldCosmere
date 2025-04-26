@@ -2,7 +2,7 @@
 <Defs>
     <PawnKindDef>
         <defName>Cosmere_ScadrianPerson</defName>
-        <label>Scadrian person</label>
+        <label>scadrian person</label>
         <race>Human</race>
         <xenotypeSet>
             <xenotypeChances>

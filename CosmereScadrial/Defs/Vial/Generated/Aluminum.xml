@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_Aluminum</defName>
-        <label>Misting Vial: Gnat (aluminum)</label>
+        <label>misting vial: gnat (aluminum)</label>
         <description>A vial containing Aluminum suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(163, 163, 163)</color>
@@ -17,7 +17,7 @@
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Aluminum</defName>
-        <label>Craft Misting Vial: Gnat (aluminum)</label>
+        <label>craft misting vial: gnat (aluminum)</label>
         <description>Create a vial of Aluminum infused alcohol for use by Mistborns and gnat (aluminum)s.</description>
         <ingredients>
             <li>
@@ -32,7 +32,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_Aluminum</defName>
-        <label>Allomantic Vial: Aluminum</label>
+        <label>allomantic vial: aluminum</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

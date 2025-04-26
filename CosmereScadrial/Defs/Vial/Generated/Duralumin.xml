@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_Duralumin</defName>
-        <label>Misting Vial: Gnat (duralumin)</label>
+        <label>misting vial: gnat (duralumin)</label>
         <description>A vial containing Duralumin suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(127, 113, 115)</color>
@@ -17,7 +17,7 @@
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Duralumin</defName>
-        <label>Craft Misting Vial: Gnat (duralumin)</label>
+        <label>craft misting vial: gnat (duralumin)</label>
         <description>Create a vial of Duralumin infused alcohol for use by Mistborns and gnat (duralumin)s.</description>
         <ingredients>
             <li>
@@ -32,7 +32,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_Duralumin</defName>
-        <label>Allomantic Vial: Duralumin</label>
+        <label>allomantic vial: duralumin</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

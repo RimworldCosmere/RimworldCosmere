@@ -2,7 +2,7 @@
 <Defs>
     <XenotypeDef>
         <defName>Cosmere_Terris</defName>
-        <label>Terris</label>
+        <label>terris</label>
         <description>A reclusive people known for their cultural memory and Feruchemical potential.</description>
         <displayPriority>5000</displayPriority>
         <inheritable>true</inheritable>

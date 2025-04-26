@@ -2,12 +2,12 @@
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_BrassAura</defName>
-        <label>Burning Brass: Aura</label>
+        <label>burning brass: aura</label>
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
         <comps>
             <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
                 <hediff>Cosmere_Hediff_Soothed</hediff>
-                <verb>Soothed</verb>
+                <verb>soothed</verb>
             </li>
         </comps>
         <stages>
@@ -28,7 +28,7 @@
     
     <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_Soothed</defName>
-        <label>Soothed</label>
+        <label>soothed</label>
         <description>This pawn has been soothed by a nearby Allomancer burning brass. Their emotions feel more stable and calm.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps>

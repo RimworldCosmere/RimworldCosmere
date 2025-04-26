@@ -3,8 +3,8 @@
     <!-- Misting: Zinc -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Misting_Zinc</defName>
-        <label>Zinc Misting</label>
-        <labelShortAdj>Rioter</labelShortAdj>
+        <label>zinc misting</label>
+        <labelShortAdj>rioter</labelShortAdj>
         <description>Can riot emotions, pushing others to feel stronger emotions.</description>
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>6</displayOrderInCategory>
@@ -26,7 +26,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Misting_Zinc</defName>
-        <label>Rioter</label>
+        <label>rioter</label>
         <description>Can riot emotions, pushing others to feel stronger emotions.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -35,7 +35,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Misting: Rioter</label>
+                <label>misting: rioter</label>
                 <description>Can riot emotions, pushing others to feel stronger emotions.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
@@ -46,8 +46,8 @@
     <!-- Ferring: Zinc -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Ferring_Zinc</defName>
-        <label>Zinc Ferring</label>
-        <labelShortAdj>Sparker</labelShortAdj>
+        <label>zinc ferring</label>
+        <labelShortAdj>sparker</labelShortAdj>
         <description>Stores mental speed, allowing faster thought processes.</description>
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>6</displayOrderInCategory>
@@ -65,7 +65,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Ferring_Zinc</defName>
-        <label>Sparker</label>
+        <label>sparker</label>
         <description>Stores mental speed, allowing faster thought processes.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -74,7 +74,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Ferring: Sparker</label>
+                <label>ferring: sparker</label>
                 <description>Stores mental speed, allowing faster thought processes.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>

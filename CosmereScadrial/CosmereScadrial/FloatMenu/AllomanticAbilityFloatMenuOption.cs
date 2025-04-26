@@ -64,7 +64,7 @@ namespace CosmereScadrial.FloatMenu {
 
             // By default, we are turning on the ability, on the target at the cell, flaring if control is held
             var disabled = !ability.CanActivate(Event.current.control ? BurningStatus.Flaring : BurningStatus.Burning, out var reason);
-            action = disabled ? null : () => ability.Activate(target, target.Cell, Event.current.control);
+            action = disabled ? null : () => ability.QueueCastingJob(target, target.Cell, Event.current.control);
 
             // If we are already using this ability on one target, that isnt this one, turn off the ability, and activate it on the new one
             // This may not be necessary

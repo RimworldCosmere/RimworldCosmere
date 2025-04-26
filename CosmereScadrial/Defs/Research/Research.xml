@@ -2,12 +2,12 @@
 <Defs>
 	<ResearchTabDef>
 		<defName>Cosmere_Scadrial</defName>
-		<label>Cosmere - Scadrial</label>
+		<label>cosmere - scadrial</label>
 	</ResearchTabDef>
 
 	<ResearchProjectDef>
 		<defName>Cosmere_Allomancy</defName>
-		<label>Allomancy</label>
+		<label>allomancy</label>
 		<tab>Cosmere_Scadrial</tab>
 		<description>Do strange but awesome things with metals. You might have to eat them first...</description>
 		<baseCost>600</baseCost>

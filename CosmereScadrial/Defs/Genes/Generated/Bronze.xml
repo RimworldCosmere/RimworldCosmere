@@ -3,8 +3,8 @@
     <!-- Misting: Bronze -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Misting_Bronze</defName>
-        <label>Bronze Misting</label>
-        <labelShortAdj>Seeker</labelShortAdj>
+        <label>bronze misting</label>
+        <labelShortAdj>seeker</labelShortAdj>
         <description>Detects other Allomancers using powers.</description>
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>9</displayOrderInCategory>
@@ -22,7 +22,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Misting_Bronze</defName>
-        <label>Seeker</label>
+        <label>seeker</label>
         <description>Detects other Allomancers using powers.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -31,7 +31,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Misting: Seeker</label>
+                <label>misting: seeker</label>
                 <description>Detects other Allomancers using powers.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
@@ -42,8 +42,8 @@
     <!-- Ferring: Bronze -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Ferring_Bronze</defName>
-        <label>Bronze Ferring</label>
-        <labelShortAdj>Sentry</labelShortAdj>
+        <label>bronze ferring</label>
+        <labelShortAdj>sentry</labelShortAdj>
         <description>Stores wakefulness, useful for staying awake or skipping sleep.</description>
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>9</displayOrderInCategory>
@@ -61,7 +61,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Ferring_Bronze</defName>
-        <label>Sentry</label>
+        <label>sentry</label>
         <description>Stores wakefulness, useful for staying awake or skipping sleep.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -70,7 +70,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Ferring: Sentry</label>
+                <label>ferring: sentry</label>
                 <description>Stores wakefulness, useful for staying awake or skipping sleep.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>

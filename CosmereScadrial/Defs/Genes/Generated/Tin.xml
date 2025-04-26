@@ -3,8 +3,8 @@
     <!-- Misting: Tin -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Misting_Tin</defName>
-        <label>Tin Misting</label>
-        <labelShortAdj>Tineye</labelShortAdj>
+        <label>tin misting</label>
+        <labelShortAdj>tineye</labelShortAdj>
         <description>Enhances senses like sight, hearing, and smell.</description>
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>4</displayOrderInCategory>
@@ -25,7 +25,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Misting_Tin</defName>
-        <label>Tineye</label>
+        <label>tineye</label>
         <description>Enhances senses like sight, hearing, and smell.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -34,7 +34,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Misting: Tineye</label>
+                <label>misting: tineye</label>
                 <description>Enhances senses like sight, hearing, and smell.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
@@ -45,8 +45,8 @@
     <!-- Ferring: Tin -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Ferring_Tin</defName>
-        <label>Tin Ferring</label>
-        <labelShortAdj>Windwhisper</labelShortAdj>
+        <label>tin ferring</label>
+        <labelShortAdj>windwhisper</labelShortAdj>
         <description>Stores senses, dulling them while storing and enhancing while tapping.</description>
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>4</displayOrderInCategory>
@@ -64,7 +64,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Ferring_Tin</defName>
-        <label>Windwhisper</label>
+        <label>windwhisper</label>
         <description>Stores senses, dulling them while storing and enhancing while tapping.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -73,7 +73,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Ferring: Windwhisper</label>
+                <label>ferring: windwhisper</label>
                 <description>Stores senses, dulling them while storing and enhancing while tapping.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>

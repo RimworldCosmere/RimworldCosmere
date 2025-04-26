@@ -6,11 +6,15 @@
         <validWhileDespawned>true</validWhileDespawned>
         <stages>
             <li>
-                <label>Calm Without Cause</label>
+                <label>calm without cause</label>
                 <description>The anger faded before it ever found words.
 I should’ve felt more — but instead, there was only quiet.
 
 It wasn’t natural. Someone smothered the spark.</description>
+            </li>
+            <li>
+                <label>drowned in tranquility</label>
+                <description>The calm becomes overwhelming, a heavy stillness that suppresses every emotion.</description>
             </li>
         </stages>
     </ThoughtDef>

@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractMineable">
         <defName>MineableAluminum</defName>
-        <label>Aluminum Ore</label>
+        <label>aluminum Ore</label>
         <description>Unrefined Aluminum ore mined directly from the earth.</description>
         <graphicData>
             <color>(163, 163, 163)</color>
@@ -11,6 +11,9 @@
         <statBases>
             <MaxHitPoints>1700</MaxHitPoints>
         </statBases>
+        <deepCommonality>0.2</deepCommonality>
+        <deepCountPerPortion>25</deepCountPerPortion>
+        <deepLumpSizeRange>20~30</deepLumpSizeRange>
         <building>
             <mineableThing>Aluminum</mineableThing>
             <mineableYield>25</mineableYield>

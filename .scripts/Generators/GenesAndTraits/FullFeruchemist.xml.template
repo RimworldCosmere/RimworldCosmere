@@ -2,7 +2,7 @@
 <Defs>
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_FullFeruchemist</defName>
-        <label>Full Feruchemist</label>
+        <label>full feruchemist</label>
         <description>A rare individual who can use all Feruchemical metals.</description>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/FullFeruchemist</iconPath>
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
@@ -34,26 +34,26 @@
             {{/each}}
         </abilities>
     </GeneDef>
-  <TraitDef ParentName="AbstractInvestitureTrait">
-    <defName>Cosmere_FullFeruchemist</defName>
-    <label>Full Feruchemist</label>
-    <description>A rare individual who can use all Feruchemical metals.</description>
-    <modExtensions>
-        <li Class="CosmereCore.ModExtensions.MetalsLinked">
-            <metals>
-                {{#each metals}}
-                <li>{{capitalize this.Name}}</li>
-                {{/each}}
-            </metals>
-        </li>
-    </modExtensions>
-    <degreeDatas>
-      <li>
-        <label>Full Feruchemist</label>
+    <TraitDef ParentName="AbstractInvestitureTrait">
+        <defName>Cosmere_FullFeruchemist</defName>
+        <label>full feruchemist</label>
         <description>A rare individual who can use all Feruchemical metals.</description>
-        <degree>0</degree>
-        <commonality>0</commonality>
-      </li>
-    </degreeDatas>
-  </TraitDef>
+        <modExtensions>
+            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+                <metals>
+                    {{#each metals}}
+                    <li>{{capitalize this.Name}}</li>
+                    {{/each}}
+                </metals>
+            </li>
+        </modExtensions>
+        <degreeDatas>
+            <li>
+                <label>full feruchemist</label>
+                <description>A rare individual who can use all Feruchemical metals.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
 </Defs>

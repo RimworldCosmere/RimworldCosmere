@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_External</defName>
-        <label>Mistborn Vial: External</label>
+        <label>mistborn vial: External</label>
         <description>A vial containing multiple metals suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(255, 255, 255)</color>
@@ -14,10 +14,6 @@
                     <li>Steel</li>
                     <li>Zinc</li>
                     <li>Brass</li>
-                    <li>Chromium</li>
-                    <li>Nicrosil</li>
-                    <li>Cadmium</li>
-                    <li>Bendalloy</li>
                 </metals>
             </li>
         </modExtensions>
@@ -25,7 +21,7 @@
     </ThingDef>
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_External</defName>
-        <label>Craft Mistborn Vial: External</label>
+        <label>craft mistborn vial: External</label>
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
             <li>
@@ -44,22 +40,6 @@
                 <filter><thingDefs><li>Brass</li></thingDefs></filter>
                 <count>1</count>
             </li>
-            <li>
-                <filter><thingDefs><li>Chromium</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Nicrosil</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
-                <count>1</count>
-            </li>
-            <li>
-                <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
-                <count>1</count>
-            </li>
         </ingredients>
         <products>
             <Cosmere_AllomanticVial_External>8</Cosmere_AllomanticVial_External>
@@ -68,7 +48,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_External</defName>
-        <label>Mistborn Vial: External</label>
+        <label>mistborn vial: External</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

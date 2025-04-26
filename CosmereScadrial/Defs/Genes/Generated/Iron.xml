@@ -3,8 +3,8 @@
     <!-- Misting: Iron -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Misting_Iron</defName>
-        <label>Iron Misting</label>
-        <labelShortAdj>Lurcher</labelShortAdj>
+        <label>iron misting</label>
+        <labelShortAdj>lurcher</labelShortAdj>
         <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>2</displayOrderInCategory>
@@ -26,7 +26,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Misting_Iron</defName>
-        <label>Lurcher</label>
+        <label>lurcher</label>
         <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -35,7 +35,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Misting: Lurcher</label>
+                <label>misting: lurcher</label>
                 <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
@@ -46,8 +46,8 @@
     <!-- Ferring: Iron -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Ferring_Iron</defName>
-        <label>Iron Ferring</label>
-        <labelShortAdj>Skimmer</labelShortAdj>
+        <label>iron ferring</label>
+        <labelShortAdj>skimmer</labelShortAdj>
         <description>Stores weight, allowing the user to become lighter or heavier.</description>
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>2</displayOrderInCategory>
@@ -65,7 +65,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Ferring_Iron</defName>
-        <label>Skimmer</label>
+        <label>skimmer</label>
         <description>Stores weight, allowing the user to become lighter or heavier.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -74,7 +74,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Ferring: Skimmer</label>
+                <label>ferring: skimmer</label>
                 <description>Stores weight, allowing the user to become lighter or heavier.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>

@@ -2,7 +2,7 @@
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_PewterBuff</defName>
-        <label>Burning Pewter</label>
+        <label>burning pewter</label>
         <description>Empowered strength, endurance, and resilience from burning Pewter.</description>
         <stages>
             <li>
@@ -40,7 +40,7 @@
     
     <HediffDef>
         <defName>Cosmere_Hediff_PewterDrag</defName>
-        <label>Pewter Drag</label>
+        <label>pewter drag</label>
         <description>The aftereffects of pushing the body beyond its limits using Pewter. The body is crashing.</description>
         <hediffClass>HediffWithComps</hediffClass>
         <isBad>true</isBad>

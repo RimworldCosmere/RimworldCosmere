@@ -42,21 +42,6 @@ namespace CosmereScadrial.Abilities.Allomancy {
             mote.instanceColor = metal.color;
         }
 
-        public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest, bool flare) {
-            var baseActivate = base.Activate(target, dest, flare);
-            if (!toggleable || !baseActivate) {
-                return baseActivate;
-            }
-
-            if (flare) {
-                UpdateStatus(status == BurningStatus.Flaring ? BurningStatus.Off : BurningStatus.Flaring);
-            } else {
-                UpdateStatus(PawnUtility.IsAsleep(pawn) ? BurningStatus.Passive : atLeastPassive ? BurningStatus.Off : BurningStatus.Burning);
-            }
-
-            return true;
-        }
-
         protected override void OnEnable() {
             GetOrAddHediff(pawn);
         }

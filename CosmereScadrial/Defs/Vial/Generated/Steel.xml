@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_Steel</defName>
-        <label>Misting Vial: Coinshot</label>
+        <label>misting vial: coinshot</label>
         <description>A vial containing Steel suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(109, 108, 108)</color>
@@ -17,7 +17,7 @@
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Steel</defName>
-        <label>Craft Misting Vial: Coinshot</label>
+        <label>craft misting vial: coinshot</label>
         <description>Create a vial of Steel infused alcohol for use by Mistborns and coinshots.</description>
         <ingredients>
             <li>
@@ -32,7 +32,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_Steel</defName>
-        <label>Allomantic Vial: Steel</label>
+        <label>allomantic vial: steel</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

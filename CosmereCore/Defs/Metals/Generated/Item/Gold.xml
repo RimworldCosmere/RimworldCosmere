@@ -8,7 +8,7 @@
             <texPath>Item/Resource/Gold</texPath>
         </graphicData>
         <stuffProps>
-            <commonality>0.8</commonality>
+            <commonality>0.01</commonality>
             <color>(206, 172, 55)</color>
         </stuffProps>
         <statBases>

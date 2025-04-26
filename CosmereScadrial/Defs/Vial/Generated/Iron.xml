@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
         <defName>Cosmere_AllomanticVial_Iron</defName>
-        <label>Misting Vial: Lurcher</label>
+        <label>misting vial: lurcher</label>
         <description>A vial containing Iron suspended in alcohol, used in allomancy.</description>
         <graphicData>
             <color>(121, 113, 111)</color>
@@ -17,7 +17,7 @@
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_CraftAllomanticVial_Iron</defName>
-        <label>Craft Misting Vial: Lurcher</label>
+        <label>craft misting vial: lurcher</label>
         <description>Create a vial of Iron infused alcohol for use by Mistborns and lurchers.</description>
         <ingredients>
             <li>
@@ -32,7 +32,7 @@
 
     <OrderedTakeGroupDef>
         <defName>AllomanticVial_Iron</defName>
-        <label>Allomantic Vial: Iron</label>
+        <label>allomantic vial: iron</label>
         <max>20</max>
     </OrderedTakeGroupDef>
 </Defs>

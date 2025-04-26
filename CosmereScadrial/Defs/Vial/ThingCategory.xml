@@ -2,7 +2,7 @@
 <Defs>
     <ThingCategoryDef>
         <defName>Cosmere_Allomancy</defName>
-        <label>Allomancy</label>
+        <label>allomancy</label>
         <parent>Manufactured</parent>
         <resourceReadoutRoot>true</resourceReadoutRoot>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Mistborn</iconPath>

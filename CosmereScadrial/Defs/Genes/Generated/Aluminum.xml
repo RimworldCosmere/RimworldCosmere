@@ -3,8 +3,8 @@
     <!-- Misting: Aluminum -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Misting_Aluminum</defName>
-        <label>Aluminum Misting</label>
-        <labelShortAdj>Gnat (aluminum)</labelShortAdj>
+        <label>aluminum misting</label>
+        <labelShortAdj>gnat (aluminum)</labelShortAdj>
         <description>Wipes away all other metal reserves.</description>
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>10</displayOrderInCategory>
@@ -22,7 +22,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Misting_Aluminum</defName>
-        <label>Gnat (aluminum)</label>
+        <label>gnat (aluminum)</label>
         <description>Wipes away all other metal reserves.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -31,7 +31,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Misting: Gnat (aluminum)</label>
+                <label>misting: gnat (aluminum)</label>
                 <description>Wipes away all other metal reserves.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
@@ -42,8 +42,8 @@
     <!-- Ferring: Aluminum -->
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Ferring_Aluminum</defName>
-        <label>Aluminum Ferring</label>
-        <labelShortAdj>Trueself</labelShortAdj>
+        <label>aluminum ferring</label>
+        <labelShortAdj>trueself</labelShortAdj>
         <description>Stores identity, allowing anonymous interactions or forgery.</description>
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>10</displayOrderInCategory>
@@ -61,7 +61,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Ferring_Aluminum</defName>
-        <label>Trueself</label>
+        <label>trueself</label>
         <description>Stores identity, allowing anonymous interactions or forgery.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -70,7 +70,7 @@
         </modExtensions>
         <degreeDatas>
             <li>
-                <label>Ferring: Trueself</label>
+                <label>ferring: trueself</label>
                 <description>Stores identity, allowing anonymous interactions or forgery.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>

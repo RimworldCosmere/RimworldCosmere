@@ -2,11 +2,10 @@
 <Defs>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Ability_Iron_Aura</defName>
-        <label>Iron Aura</label>
+        <label>iron aura</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
 Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
 These lines shimmer with the tension of potential force, visible only to those burning Iron.</description>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Iron</iconPath>
         <metal>Iron</metal>
         <hediff>Cosmere_Hediff_IronAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
@@ -14,14 +13,13 @@ These lines shimmer with the tension of potential force, visible only to those b
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
         <defName>Cosmere_Ability_Iron_Pull</defName>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
-        <label>Iron Pull Target</label>
+        <label>iron pull target</label>
         <description>Burning iron allows the Allomancer to pull on nearby sources of metal, drawing them—or themselves—closer. The lighter object moves, unless anchored by greater mass.</description>
         <cooldownTicksRange>
             <min>20</min>
             <max>60</max>
         </cooldownTicksRange>
         <targetWorldCell>true</targetWorldCell>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Iron</iconPath>
         <metal>Iron</metal>
         <verbProperties>
             <requireLineOfSight>false</requireLineOfSight>

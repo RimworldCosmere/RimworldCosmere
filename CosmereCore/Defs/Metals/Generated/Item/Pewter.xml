@@ -8,7 +8,7 @@
             <texPath>Item/Resource/Pewter</texPath>
         </graphicData>
         <stuffProps>
-            <commonality>0.3</commonality>
+            <commonality>0.0</commonality>
             <color>(141, 151, 166)</color>
         </stuffProps>
         <statBases>

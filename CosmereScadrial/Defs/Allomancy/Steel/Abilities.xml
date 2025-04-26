@@ -2,11 +2,10 @@
 <Defs>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Ability_Steel_Aura</defName>
-        <label>Steel Aura</label>
+        <label>steel aura</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
 Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
 These lines shimmer with the tension of potential force, visible only to those burning Steel.</description>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Steel</iconPath>
         <metal>Steel</metal>
         <hediff>Cosmere_Hediff_SteelAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
@@ -14,23 +13,50 @@ These lines shimmer with the tension of potential force, visible only to those b
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
         <defName>Cosmere_Ability_Steel_Push</defName>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
-        <label>Steel Push Target</label>
+        <label>steel push target</label>
         <description>By burning steel, the Allomancer projects invisible lines of force toward nearby sources of metal, pushing against them with immense power. A skilled practitioner can hurl weapons from foes’ hands, send enemies tumbling, or launch themselves through the air when braced properly.</description>
         <cooldownTicksRange>
             <min>20</min>
             <max>60</max>
         </cooldownTicksRange>
         <targetWorldCell>true</targetWorldCell>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Steel</iconPath>
         <metal>Steel</metal>
         <verbProperties>
             <requireLineOfSight>false</requireLineOfSight>
+            <defaultCooldownTime>.5</defaultCooldownTime>
             <violent>true</violent>
             <noiseRadius>0</noiseRadius>
             <drawAimPie>true</drawAimPie>
             <targetParams>
                 <canTargetSelf>false</canTargetSelf>
                 <canTargetPawns>false</canTargetPawns>
+                <canTargetBuildings>true</canTargetBuildings>
+                <canTargetItems>true</canTargetItems>
+                <canTargetPlants>false</canTargetPlants>
+            </targetParams>
+        </verbProperties>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
+        <defName>Cosmere_Ability_Steel_Coinshot</defName>
+        <abilityClass>CosmereScadrial.Abilities.Allomancy.CoinshotAbility</abilityClass>
+        <label>push coin at target</label>
+        <description>Pushes a Clip at incredible speed toward the target.</description>
+        <cooldownTicksRange>
+            <min>20</min>
+            <max>60</max>
+        </cooldownTicksRange>
+        <targetWorldCell>false</targetWorldCell>
+        <metal>Steel</metal>
+        <verbProperties>
+            <verbClass>CosmereScadrial.Abilities.Allomancy.Verbs.Coinshot</verbClass>
+            <requireLineOfSight>true</requireLineOfSight>
+            <defaultCooldownTime>.5</defaultCooldownTime>
+            <violent>true</violent>
+            <noiseRadius>0</noiseRadius>
+            <drawAimPie>true</drawAimPie>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>true</canTargetPawns>
                 <canTargetBuildings>true</canTargetBuildings>
                 <canTargetItems>true</canTargetItems>
                 <canTargetPlants>false</canTargetPlants>

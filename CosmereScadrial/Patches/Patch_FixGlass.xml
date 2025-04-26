@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- Give the ability to get Scadrian Investiture to every pawn -->
+    <Operation Class="PatchOperationRemove">
+        <xpath>/Defs/ThingDef[defName="Glass"]/stuffProps/soundImpactStuff</xpath>
+    </Operation>
+</Patch>

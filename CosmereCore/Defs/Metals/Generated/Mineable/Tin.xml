@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="AbstractMineable">
         <defName>MineableTin</defName>
-        <label>Tin Ore</label>
+        <label>tin Ore</label>
         <description>Unrefined Tin ore mined directly from the earth.</description>
         <graphicData>
             <color>(197, 202, 201)</color>
@@ -11,10 +11,13 @@
         <statBases>
             <MaxHitPoints>1400</MaxHitPoints>
         </statBases>
+        <deepCommonality>0.6</deepCommonality>
+        <deepCountPerPortion>40</deepCountPerPortion>
+        <deepLumpSizeRange>35~65</deepLumpSizeRange>
         <building>
             <mineableThing>Tin</mineableThing>
             <mineableYield>40</mineableYield>
-            <mineableScatterCommonality>0.8</mineableScatterCommonality>
+            <mineableScatterCommonality>0.6</mineableScatterCommonality>
             <mineableScatterLumpSizeRange>35~65</mineableScatterLumpSizeRange>
         </building>
         <modExtensions>

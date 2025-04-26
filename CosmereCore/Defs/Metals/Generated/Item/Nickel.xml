@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractBuildableMetal">
+    <ThingDef ParentName="AbstractMetal">
         <defName>Nickel</defName>
         <label>Nickel</label>
         <description>Nickel is a resilient, corrosion-resistant metal that enhances the strength and longevity of its alloy counterparts. Its steadfast durability makes it a critical element in high-performance industrial applications.</description>
@@ -8,7 +8,7 @@
             <texPath>Item/Resource/Nickel</texPath>
         </graphicData>
         <stuffProps>
-            <commonality>0.8</commonality>
+            <commonality>0.0</commonality>
             <color>(85, 107, 47)</color>
         </stuffProps>
         <statBases>

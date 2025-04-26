@@ -2,7 +2,7 @@
 <Defs>
     <GeneDef ParentName="AbstractInvestitureGene">
         <defName>Cosmere_Mistborn</defName>
-        <label>Mistborn</label>
+        <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Mistborn</iconPath>
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
@@ -36,7 +36,7 @@
     </GeneDef>
     <TraitDef ParentName="AbstractInvestitureTrait">
         <defName>Cosmere_Mistborn</defName>
-        <label>Mistborn</label>
+        <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
         <modExtensions>
             <li Class="CosmereCore.ModExtensions.MetalsLinked">
@@ -48,12 +48,12 @@
             </li>
         </modExtensions>
         <degreeDatas>
-          <li>
-            <label>Mistborn</label>
-            <description>A rare individual who can burn all Allomantic metals.</description>
-            <degree>0</degree>
-            <commonality>0</commonality>
-          </li>
+            <li>
+                <label>Mistborn</label>
+                <description>A rare individual who can burn all Allomantic metals.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
         </degreeDatas>
     </TraitDef>
 </Defs>

@@ -16,7 +16,7 @@
     
     <HediffDef>
         <defName>Cosmere_Scadrial_Burning_Metals</defName>
-        <label>Allomancy</label>
+        <label>allomancy</label>
         <description>Currently burning or flaring the following metals:</description>
         <countsAsAddedPartOrImplant>false</countsAsAddedPartOrImplant>
         <hediffClass>CosmereScadrial.Abilities.Allomancy.Hediffs.BurningMetals</hediffClass>

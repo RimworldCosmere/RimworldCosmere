@@ -104,4 +104,4 @@ jobs:
               --password "$STEAM_PASSWORD" \
               --secret "$STEAM_TFA_SEED" \
               # --args "+workshop_build_item '${{ steps.prepare.outputs.vdfpath }}' +quit"
-              #--args "+quit"
+              --args "+quit"

@@ -51,11 +51,6 @@ jobs:
           mkdir -p ~/steamcmd
           curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
 
-      - name: Restore Steam config (bypass Steam Guard)
-        run: |
-          mkdir -p ~/steamcmd/config
-          echo "${{ secrets.STEAM_CONFIG_VDF }}" | base64 -d > ~/steamcmd/config/config.vdf
-
       - name: Prepare upload directory
         id: prepare
         run: |

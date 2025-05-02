@@ -98,7 +98,7 @@ jobs:
       - name: Upload with SteamCMD + 2FA
         run: |
             steamcmd-2fa \
-              --path /home/steamcmd/steamcmd.sh \
+              --path ~/steamcmd/steamcmd.sh \
               --username "$STEAM_USERNAME" \
               --password "$STEAM_PASSWORD" \
               --secret "$STEAM_SHARED_SECRET" \

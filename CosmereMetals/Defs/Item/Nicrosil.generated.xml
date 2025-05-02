@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMetal">
+        <defName>Nicrosil</defName>
+        <label>Nicrosil</label>
+        <description>Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.</description>
+        <graphicData>
+            <texPath>Item/Resource/Nicrosil</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.0</commonality>
+            <color>(141, 139, 135)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>2</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+                <metal>Nicrosil</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

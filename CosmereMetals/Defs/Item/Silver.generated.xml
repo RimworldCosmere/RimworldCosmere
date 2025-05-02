@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractBuildableMetal">
+        <defName>Silver</defName>
+        <label>Silver</label>
+        <description>Silver is a bright, lustrous metal renowned for its conductivity, beauty, and symbolic purity. While soft and malleable, it remains a staple in crafting, electronics, and currency.</description>
+        <graphicData>
+            <texPath>Item/Resource/Silver</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.01</commonality>
+            <color>(204, 195, 173)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>0.5</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+                <metal>Silver</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

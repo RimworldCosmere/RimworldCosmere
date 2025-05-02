@@ -8,9 +8,11 @@
             <color>(255, 255, 255)</color>
         </graphicData>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Duralumin</li>
+                    <li>Chromium</li>
+                    <li>Nicrosil</li>
                 </metals>
             </li>
         </modExtensions>
@@ -23,6 +25,14 @@
         <ingredients>
             <li>
                 <filter><thingDefs><li>Duralumin</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Chromium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Nicrosil</li></thingDefs></filter>
                 <count>1</count>
             </li>
         </ingredients>

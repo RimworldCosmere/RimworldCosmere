@@ -18,6 +18,15 @@
             <warmupTime>0</warmupTime>
             <drawAimPie>false</drawAimPie>
             <requireLineOfSight>false</requireLineOfSight>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>false</canTargetPawns>
+                <canTargetBuildings>false</canTargetBuildings>
+                <canTargetAnimals>false</canTargetAnimals>
+                <canTargetHumans>false</canTargetHumans>
+                <canTargetMechs>false</canTargetMechs>
+                <canTargetMutants>false</canTargetMutants>
+            </targetParams>
         </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     
@@ -33,12 +42,17 @@
             <range>0</range>
             <drawAimPie>false</drawAimPie>
             <requireLineOfSight>false</requireLineOfSight>
+            <nonInterruptingSelfCast>true</nonInterruptingSelfCast>
             <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>true</canTargetSelf>
+            </targetParams>
         </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     
     <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractTargetBurnAbility" ParentName="AbstractBurnAbility" Abstract="True">
         <abilityClass>CosmereScadrial.Abilities.Allomancy.AbilityOtherTarget</abilityClass>
+        <jobDef>Cosmere_Job_CastAllomanticAbilityAtTarget</jobDef>
         <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
         <targetRequired>true</targetRequired>
         <targetWorldCell>false</targetWorldCell>
@@ -72,14 +86,10 @@
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractToggleTargetBurnAbility" ParentName="AbstractTargetBurnAbility" Abstract="True">
         <toggleable>true</toggleable>
-        <maintenance>
-            <jobDef>Cosmere_Job_MaintainAllomanticTarget</jobDef>
-        </maintenance>
+        <jobDef>Cosmere_Job_MaintainAllomanticTarget</jobDef>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractToggleTargetHostileBurnAbility" ParentName="AbstractTargetHostileBurnAbility" Abstract="True">
         <toggleable>true</toggleable>
-        <maintenance>
-            <jobDef>Cosmere_Job_MaintainAllomanticTarget</jobDef>
-        </maintenance>
+        <jobDef>Cosmere_Job_MaintainAllomanticTarget</jobDef>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

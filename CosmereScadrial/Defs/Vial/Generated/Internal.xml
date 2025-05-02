@@ -8,7 +8,7 @@
             <color>(255, 255, 255)</color>
         </graphicData>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Tin</li>
                     <li>Pewter</li>
@@ -16,6 +16,7 @@
                     <li>Bronze</li>
                     <li>Duralumin</li>
                     <li>Gold</li>
+                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>
@@ -48,6 +49,10 @@
             </li>
             <li>
                 <filter><thingDefs><li>Gold</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Electrum</li></thingDefs></filter>
                 <count>1</count>
             </li>
         </ingredients>

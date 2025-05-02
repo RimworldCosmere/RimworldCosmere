@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereCore.Defs.MetalDef Name="Cosmere_Metal_Chromium">
+        <defName>Chromium</defName>
+        <label>chromium</label>
+        <description>Chromium is a hard, lustrous metal renowned for its brilliant shine and outstanding resistance to tarnish. It enhances the durability and appearance of alloys and is often used to create sleek, modern finishes.</description>
+        <color>(132, 134, 139)</color>
+        <colorTwo>(159, 171, 196)</colorTwo>
+    </CosmereCore.Defs.MetalDef>
+</Defs>

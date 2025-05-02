@@ -86,6 +86,12 @@
           <count>200</count>
         </li>
 
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Cosmere_Clip</thingDef>
+          <count>500</count>
+        </li>
+
         <li Class="ScenPart_GameStartDialog">
           <def>GameStartDialog</def>
           <text>

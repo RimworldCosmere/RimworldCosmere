@@ -113,6 +113,10 @@
         <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
         <Name>CosmereFramework</Name>
       </ProjectReference>
+      <ProjectReference Include="..\..\CosmereMetals\CosmereMetals\CosmereMetals.csproj">
+        <Project>{69b78f0c-63e1-47a1-9fd4-b5cce63d727f}</Project>
+        <Name>CosmereMetals</Name>
+      </ProjectReference>
     </ItemGroup>
 
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
@@ -130,7 +134,7 @@
     </ItemDefinitionGroup>
     
     <Target Name="PostBuild" AfterTargets="Build" Outputs="Never">
-        <Exec Command="npm run generate:core"
+        <Exec Command="npm run generate:mod:core"
               WorkingDirectory="$(ProjectDir)..\..\.scripts"
               StandardOutputImportance="High"
         />

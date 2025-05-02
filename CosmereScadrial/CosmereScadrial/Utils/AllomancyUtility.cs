@@ -1,5 +1,5 @@
-using CosmereCore.ModExtensions;
 using CosmereCore.Needs;
+using CosmereMetals.ModExtensions;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using UnityEngine;

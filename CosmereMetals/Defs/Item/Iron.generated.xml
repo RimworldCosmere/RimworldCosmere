@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractBuildableMetal">
+        <defName>Iron</defName>
+        <label>Iron</label>
+        <description>Iron is a robust elemental metal, celebrated for its exceptional strength and versatility. Essential in construction, tool-making, and weaponry, iron forms the backbone of many modern and ancient applications.</description>
+        <graphicData>
+            <texPath>Item/Resource/Iron</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.4</commonality>
+            <color>(121, 113, 111)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>0.5</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+                <metal>Iron</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

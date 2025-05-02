@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMetal">
+        <defName>Duralumin</defName>
+        <label>Duralumin</label>
+        <description>Duralumin is a lightweight yet remarkably strong alloy made by combining Aluminium with Copper. Its excellent strength-to-weight ratio makes it indispensable in advanced engineering and high-performance designs.</description>
+        <graphicData>
+            <texPath>Item/Resource/Duralumin</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.0</commonality>
+            <color>(127, 113, 115)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>2</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+                <metal>Duralumin</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

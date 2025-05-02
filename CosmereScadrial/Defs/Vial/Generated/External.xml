@@ -8,12 +8,16 @@
             <color>(255, 255, 255)</color>
         </graphicData>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Iron</li>
                     <li>Steel</li>
                     <li>Zinc</li>
                     <li>Brass</li>
+                    <li>Chromium</li>
+                    <li>Nicrosil</li>
+                    <li>Cadmium</li>
+                    <li>Bendalloy</li>
                 </metals>
             </li>
         </modExtensions>
@@ -38,6 +42,22 @@
             </li>
             <li>
                 <filter><thingDefs><li>Brass</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Chromium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Nicrosil</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
                 <count>1</count>
             </li>
         </ingredients>

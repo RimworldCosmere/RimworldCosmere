@@ -16,7 +16,6 @@ namespace CosmereScadrial.Defs {
         public HediffDef hediffFriendly;
         public HediffDef hediffHostile;
         public float hediffSeverityFactor = 1f;
-        public MaintenanceDef maintenance;
         public MetallicArtsMetalDef metal;
         public float minSeverityForDrag = 1f;
         public bool toggleable;
@@ -71,10 +70,5 @@ namespace CosmereScadrial.Defs {
         public override void PostLoad() {
             LongEventHandler.ExecuteWhenFinished(() => uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Allomancy/{metal.defName}"));
         }
-    }
-
-    public class MaintenanceDef {
-        public float followRadius = 10f;
-        public JobDef jobDef = JobDefOf.Cosmere_Job_MaintainAllomanticTarget;
     }
 }

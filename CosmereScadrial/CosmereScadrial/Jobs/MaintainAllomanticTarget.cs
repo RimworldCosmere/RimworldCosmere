@@ -64,13 +64,12 @@ namespace CosmereScadrial.Jobs {
         }
 
         protected virtual void MaintainProximity() {
-            var followRadius = ability.def.maintenance.followRadius;
             var distance = pawn.Position.DistanceTo(TargetA.Cell);
 
-            if (distance > followRadius && pawn.pather.MovingNow == false) {
+            if (distance > job.followRadius && pawn.pather.MovingNow == false) {
                 // Only re-path if not already moving, avoids constant path spam
                 pawn.pather.StartPath(TargetA, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell);
-            } else if (distance <= followRadius && pawn.pather.MovingNow) {
+            } else if (distance <= job.followRadius && pawn.pather.MovingNow) {
                 // Stop if already within desired range
                 pawn.pather.StopDead();
                 pawn.jobs.curDriver.Notify_PatherArrived();

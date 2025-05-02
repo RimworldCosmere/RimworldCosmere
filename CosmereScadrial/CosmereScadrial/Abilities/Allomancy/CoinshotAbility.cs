@@ -31,11 +31,11 @@ namespace CosmereScadrial.Abilities.Allomancy {
             return pawn.inventory?.innerContainer.Contains(CoinThingDefOf.Cosmere_Clip) ?? false;
         }
 
-        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest, bool flare) {
+        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
             target = targetInfo;
-            UpdateStatus(flare ? BurningStatus.Flaring : BurningStatus.Burning);
+            UpdateStatus(shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
 
-            return base.Activate(target, dest, flare);
+            return base.Activate(target, dest);
         }
     }
 }

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--The above line is the start of every XML file. Just ignore it-->
 <ModMetaData>
     <name>Cosmere - Core</name>
     <description>This mod adds the core magic system from Brandon Sanderson's Cosmere Universe into Rimworld (Investiture &amp; Connection)</description>
@@ -14,8 +13,14 @@
             <displayName>Cosmere - Framework</displayName>
             <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
         </li>
+        <li>
+            <packageId>CryptikLemur.Cosmere.Metals</packageId>
+            <displayName>Cosmere - Metals</displayName>
+            <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
+        </li>
     </modDependencies>
     <forceLoadAfter>
         <li>CryptikLemur.Cosmere.Framework</li>
+        <li>CryptikLemur.Cosmere.Metals</li>
     </forceLoadAfter>
 </ModMetaData>

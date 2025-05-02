@@ -8,9 +8,12 @@
             <color>(255, 255, 255)</color>
         </graphicData>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metals>
+                    <li>Cadmium</li>
+                    <li>Bendalloy</li>
                     <li>Gold</li>
+                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>
@@ -22,7 +25,19 @@
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
             <li>
+                <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
                 <filter><thingDefs><li>Gold</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter><thingDefs><li>Electrum</li></thingDefs></filter>
                 <count>1</count>
             </li>
         </ingredients>

@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Duralumin</metal>
             </li>
         </modExtensions>
@@ -25,7 +25,7 @@
         <label>gnat (duralumin)</label>
         <description>Enhances the next Allomantic metal used drastically, but is consumed entirely.</description>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Duralumin</metal>
             </li>
         </modExtensions>
@@ -53,7 +53,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Duralumin</metal>
             </li>
         </modExtensions>
@@ -64,7 +64,7 @@
         <label>connector</label>
         <description>Stores connection, useful for adjusting social ties or affiliations.</description>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Duralumin</metal>
             </li>
         </modExtensions>

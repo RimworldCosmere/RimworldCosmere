@@ -90,6 +90,9 @@ jobs:
             echo '}'
           } > "$TEMP_DIR/workshop.vdf"
 
+          echo "✅ Generated workshop.vdf:"
+          cat "$TEMP_DIR/workshop.vdf"
+          
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
       - name: Upload with SteamCMD + 2FA

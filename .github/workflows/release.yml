@@ -13,11 +13,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Find all Cosmere mods
+      - name: Determine changed Cosmere mods
         id: set-mods
         run: |
-          mods=$(find . -maxdepth 1 -type d -name "Cosmere*" -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          # Get list of changed files in the last commit (or use git diff HEAD~N)
+          changed=$(git diff --name-only HEAD~1)
+          
+          # Extract top-level Cosmere directories touched
+          mods=$(echo "$changed" | grep '^Cosmere[^/]\+/' | cut -d/ -f1 | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          
+          echo "Detected changed mods: $mods"
           echo "mods=$mods" >> "$GITHUB_OUTPUT"
 
   publish:

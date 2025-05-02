@@ -7,7 +7,7 @@
 ## 🌌 What's Included
 
 - Adds/Replaces all **16 base metals** from Scadrial as *stuffable materials* with balanced stat modifiers.
-- Also adds Nickel (for alloying), and Coal/Charcoal
+- Also adds Nickel (for alloying), Coal/Charcoal, and retextures silver.
 - All new/replaced metals and materials have a fresh new texture
 - Removes mine-able Steel. Now must come from alloying Coal/Charcoal with Iron 
 - (Coming Soon) Introduces rare >!**Godmetals** like Atium and Lerasium!< — powerful and lore-rich, when each dependent mod is added

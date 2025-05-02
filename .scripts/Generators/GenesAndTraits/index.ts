@@ -9,20 +9,17 @@ import {mkdirSync} from "fs";
 import {upperFirst} from "lodash";
 
 const template = Handlebars.compile(readFileSync(resolve(__dirname, 'GeneAndTraitDef.xml.template'), 'utf8'));
-const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Genes', 'Generated');
+const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Genes');
 
 
 const defOfTemplate = Handlebars.compile(readFileSync(resolve(__dirname, 'DefOf.cs.template'), 'utf8'));
 const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
 
 export default function () {
-  rimrafSync(outputDir);
-  mkdirSync(outputDir, {recursive: true});
-
   let order = 2
   const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && (!!x.Allomancy || !!x.Feruchemy));
   for (const metalInfo of metals) {
-    writeFileSync(resolve(outputDir, upperFirst(metalInfo.Name) + '.xml'), template({
+    writeFileSync(resolve(outputDir, upperFirst(metalInfo.Name) + '.generated.xml'), template({
       metal: metalInfo,
       defName: metalInfo.DefName ?? upperFirst(metalInfo.Name),
       order: order++,
@@ -30,7 +27,7 @@ export default function () {
   }
 
   ['Gene', 'Trait'].forEach(type => {
-    writeFileSync(resolve(defOfOutputDir, type + 'DefOf.cs'), defOfTemplate({type, metals}), 'utf8');
+    writeFileSync(resolve(defOfOutputDir, type + 'DefOf.generated.cs'), defOfTemplate({type, metals}), 'utf8');
   });
 
   ['Mistborn', 'FullFeruchemist'].forEach(type => {
@@ -40,9 +37,6 @@ export default function () {
       const typeData = metal[type === 'Mistborn' ? 'Allomancy' : 'Feruchemy'];
       if (typeData?.Abilities) {
         acc.abilities.push(...typeData.Abilities);
-      }
-      if (typeData?.RightClickAbilities) {
-        acc.rightClickAbilities.push(...typeData.RightClickAbilities);
       }
 
 

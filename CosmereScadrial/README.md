@@ -26,7 +26,7 @@
     - Supports player reproduction, pawn generation, and custom xenotypes
 
 - 🌫️ **Snapping & Awakening - Coming Soon**
-    - Pawns can "snap" under stress, unlocking latent Metalborn potential
+    - Pawns can 'snap' under stress, unlocking latent Metalborn potential
     - Includes chance-based awakenings during trauma or atmospheric events
 
 - 💎 **New Traits, Thoughts, and Needs**

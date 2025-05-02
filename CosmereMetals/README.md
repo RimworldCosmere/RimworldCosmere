@@ -10,7 +10,7 @@
 - Also adds Nickel (for alloying), and Coal/Charcoal
 - All new/replaced metals and materials have a fresh new texture
 - Removes mine-able Steel. Now must come from alloying Coal/Charcoal with Iron 
-- Introduces rare >!**Godmetals** like Atium and Lerasium!< — powerful and lore-rich, when each dependent mod is added
+- (Coming Soon) Introduces rare >!**Godmetals** like Atium and Lerasium!< — powerful and lore-rich, when each dependent mod is added
 - Integrated into **world generation**, with custom ores appearing across biomes.
 - Each metal includes:
     - Damage multipliers (sharp/blunt)

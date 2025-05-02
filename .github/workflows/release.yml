@@ -75,6 +75,7 @@ jobs:
           fi
 
           CHANGE_NOTE=$(git log -1 --pretty=%B | sed 's/"/\\"/g')
+          ESCAPED_DESCRIPTION=$(sed ':a;N;$!ba;s/\n/\\n/g' "$DESCRIPTION_FILE" | sed 's/"/\\"/g')
 
           {
             echo '"workshopitem"'
@@ -83,10 +84,7 @@ jobs:
             echo "  \"publishedfileid\" \"$FILE_ID\""
             echo "  \"contentfolder\" \"$TEMP_DIR\""
             echo "  \"changenote\" \"$CHANGE_NOTE\""
-            echo '  "description"'
-            echo '  {'
-            sed 's/^/    /' "$DESCRIPTION_FILE"
-            echo '  }'
+            echo "  \"description\" \"$ESCAPED_DESCRIPTION\""
             echo '}'
           } > "$TEMP_DIR/workshop.vdf"
 

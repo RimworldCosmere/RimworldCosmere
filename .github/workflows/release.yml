@@ -97,5 +97,4 @@ jobs:
 
       - name: Upload with SteamCMD + 2FA
         run: |
-          CODE=$(steamcmd-2fa code "$STEAM_SHARED_SECRET")
-          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" "$CODE" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
+          steamcmd-2fa --path /home/steamcmd/steamcmd.sh --username "$STEAM_USERNAME" --password "$STEAM_PASSWORD" --secret "$STEAM_SHARED_SECRET" --args +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit

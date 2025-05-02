@@ -31,7 +31,7 @@ jobs:
     env:
       STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
       STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
-      STEAM_SHARED_SECRET: ${{ secrets.STEAM_SHARED_SECRET }}
+      STEAM_TFA_SEED: ${{ secrets.STEAM_TFA_SEED }}
 
     steps:
       - name: Checkout
@@ -102,5 +102,5 @@ jobs:
               --path ~/steamcmd/steamcmd.sh \
               --username "$STEAM_USERNAME" \
               --password "$STEAM_PASSWORD" \
-              --secret "$STEAM_SHARED_SECRET" \
+              --secret "$STEAM_TFA_SEED" \
               --args "+workshop_build_item '${{ steps.prepare.outputs.vdfpath }}' +quit"

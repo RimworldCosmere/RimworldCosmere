@@ -75,7 +75,7 @@ jobs:
           fi
 
           CHANGE_NOTE=$(git log -1 --pretty=%B | sed 's/"/\\"/g')
-          ESCAPED_DESCRIPTION=$(sed ':a;N;$!ba;s/\n/\\n/g' "$DESCRIPTION_FILE" | sed 's/"/\\"/g')
+          ESCAPED_DESCRIPTION=$(sed 's/"/\\"/g' "$DESCRIPTION_FILE")
 
           {
             echo '"workshopitem"'

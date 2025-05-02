@@ -26,12 +26,11 @@ jobs:
     strategy:
       matrix:
         mod: ${{ fromJson(needs.prepare.outputs.mods) }}
-      max-parallel: 1
 
     env:
       STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
       STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
-      STEAM_TFA_SEED: ${{ secrets.STEAM_TFA_SEED }}
+      STEAM_SHARED_SECRET: ${{ secrets.STEAM_SHARED_SECRET }}
 
     steps:
       - name: Checkout
@@ -42,14 +41,10 @@ jobs:
         with:
           node-version: 20
           
-      - name: Download and install steamcmd-2fa
+      - name: Install steamdown + steam-totp
         run: |
-          curl -L https://github.com/Weilbyte/steamcmd-2fa/releases/download/1.0.0/steamcmd-2fa -o /usr/local/bin/steamcmd-2fa
-          chmod +x /usr/local/bin/steamcmd-2fa
-
-      - name: Install steamdown
-        run: |
-          npm install -g @steamdown/cli
+          npm install -g @steamdown/cli tsx
+          cd .scripts && npm i
 
       - name: Install SteamCMD
         run: |
@@ -98,10 +93,5 @@ jobs:
 
       - name: Upload with SteamCMD + 2FA
         run: |
-            steamcmd-2fa \
-              --path ~/steamcmd/steamcmd.sh \
-              --username "$STEAM_USERNAME" \
-              --password "$STEAM_PASSWORD" \
-              --secret "$STEAM_TFA_SEED" \
-              --args "+quit"
-              # --args "+workshop_build_item '${{ steps.prepare.outputs.vdfpath }}' +quit"
+          CODE=$(cd .scripts && tsx getSteam2FA.ts $STEAM_SHARED_SECRET)
+          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" "$CODE" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit

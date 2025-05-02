@@ -18,11 +18,13 @@
     "jsonschema": "^1.5.0",
     "lodash": "^4.17.21",
     "rimraf": "^6.0.1",
+    "steam-totp": "^2.1.2",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   },
   "devDependencies": {
     "@types/lodash": "~4.17.16",
-    "@types/node": "^22.14.1"
+    "@types/node": "^22.14.1",
+    "@types/steam-totp": "~2.1.2"
   }
 }

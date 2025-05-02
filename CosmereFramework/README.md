@@ -21,17 +21,8 @@ If you’re seeing this listed as a requirement, it’s because another mod depe
 
 ---
 
-## 🛠️ Part of the RimWorld: Cosmere Project
-
-Required by mods such as:
-
-- Cosmere - Scadrial *(Coming Soon)*
-- Cosmere - Roshar *(WIP)*
-- Cosmere - Nalthis *(WIP)*
-
----
-
 ## 🧪 For Modders
 
 Feel free to use it as a dependency in your own Cosmere-compatible mods.
 
+---

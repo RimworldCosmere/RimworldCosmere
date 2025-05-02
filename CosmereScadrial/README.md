@@ -56,6 +56,6 @@
 - Right click to use Allomantic Abilities
 - Shift-click to flare an ability
 - Mistborn and Full Feruchemists are **extremely rare** by default
-- > !Burning Lerasium can change everything...!<
+- >!Burning Lerasium can change everything...!<
 
 ---

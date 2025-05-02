@@ -29,18 +29,3 @@
 - Compatible with Biotech, Ideology, Royalty, and Anomaly.
 
 ---
-
-## 🛠️ Part of the RimWorld: Cosmere Project
-
-Want to >!burn Steel or tap a pewtermind!<?
-
-~~**Check out:** [Cosmere - Scadrial](https://steamcommunity.com/sharedfiles/filedetails/?id=XXXXXXXXX)~~ (Coming Soon)
-
----
-
-## 🌟 Support & Feedback
-
-Leave a comment or suggestion on the Workshop page — your feedback helps improve the experience for everyone in the
-Cosmere.
-
-Discord and Github Links coming soon

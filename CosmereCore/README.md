@@ -41,18 +41,9 @@ Included features:
 
 ---
 
-## 🛠️ Part of the RimWorld: Cosmere Project
-
-Used by:
-
-- Cosmere - Scadrial *(Coming Soon)*
-- Cosmere - Roshar *(WIP)*
-- Cosmere - Nalthis *(WIP)*
-
----
-
 ## 🧪 For Modders
 
 Cosmere Core defines shared traits, needs, tabs, and stats to ensure consistency across Shardworlds.  
 Mods can register new Shards via the provided game component and hook into the Investiture system.
 
+---

@@ -40,10 +40,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-
-      - name: Install steamdown + steamcmd-2fa
+          
+      - name: Install steamcmd-22FA
         run: |
-          npm install -g @steamdown/cli steamcmd-2fa
+          wget https://github.com/Weilbyte/steamcmd-2fa/releases/download/1.0.0/steamcmd-2fa -O /usr/bin/steamcmd-2fa
+
+      - name: Install steamdown
+        run: |
+          npm install -g @steamdown/cli
 
       - name: Install SteamCMD
         run: |

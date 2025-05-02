@@ -30,7 +30,7 @@ jobs:
     env:
       STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
       STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
-      STEAM_SHARED_SECRET: ${{ secrets.STEAM_SHARED_SECRET }}
+      STEAM_TFA_SEED: ${{ secrets.STEAM_TFA_SEED }}
 
     steps:
       - name: Checkout
@@ -93,5 +93,5 @@ jobs:
 
       - name: Upload with SteamCMD + 2FA
         run: |
-          CODE=$(cd .scripts && tsx getSteam2FA.ts $STEAM_SHARED_SECRET)
+          CODE=$(tsx .scripts/getSteam2FA.ts $STEAM_TFA_SEED)
           ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" "$CODE" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit

@@ -41,9 +41,10 @@ jobs:
         with:
           node-version: 20
           
-      - name: Install steamcmd-22FA
+      - name: Download and install steamcmd-2fa
         run: |
-          wget https://github.com/Weilbyte/steamcmd-2fa/releases/download/1.0.0/steamcmd-2fa -O /usr/bin/steamcmd-2fa
+          curl -L https://github.com/Weilbyte/steamcmd-2fa/releases/download/1.0.0/steamcmd-2fa -o /usr/local/bin/steamcmd-2fa
+          chmod +x /usr/local/bin/steamcmd-2fa
 
       - name: Install steamdown
         run: |

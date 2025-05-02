@@ -28,8 +28,18 @@ namespace CosmereScadrial {
         public static TraitDef Cosmere_Ferring_Aluminum;
         public static TraitDef Cosmere_Misting_Duralumin;
         public static TraitDef Cosmere_Ferring_Duralumin;
+        public static TraitDef Cosmere_Misting_Chromium;
+        public static TraitDef Cosmere_Ferring_Chromium;
+        public static TraitDef Cosmere_Misting_Nicrosil;
+        public static TraitDef Cosmere_Ferring_Nicrosil;
+        public static TraitDef Cosmere_Misting_Cadmium;
+        public static TraitDef Cosmere_Ferring_Cadmium;
+        public static TraitDef Cosmere_Misting_Bendalloy;
+        public static TraitDef Cosmere_Ferring_Bendalloy;
         public static TraitDef Cosmere_Misting_Gold;
         public static TraitDef Cosmere_Ferring_Gold;
+        public static TraitDef Cosmere_Misting_Electrum;
+        public static TraitDef Cosmere_Ferring_Electrum;
 
         public static TraitDef Cosmere_Mistborn;
         public static TraitDef Cosmere_FullFeruchemist;

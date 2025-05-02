@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
@@ -28,7 +28,7 @@
         <label>thug</label>
         <description>Enhances physical strength and durability, useful in combat.</description>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
@@ -56,7 +56,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
@@ -67,7 +67,7 @@
         <label>brute</label>
         <description>Stores physical strength, tapping grants bursts of power.</description>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>

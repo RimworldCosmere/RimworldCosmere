@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMetal">
+        <defName>Cadmium</defName>
+        <label>Cadmium</label>
+        <description>Cadmium is a soft, subtly reflective metal known for its unique properties and low melting point. Often used in specialized applications, it brings distinct qualities when blended into advanced alloys.</description>
+        <graphicData>
+            <texPath>Item/Resource/Cadmium</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.0</commonality>
+            <color>(170, 132, 121)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>0.5</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+                <metal>Cadmium</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

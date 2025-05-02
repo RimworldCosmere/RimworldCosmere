@@ -10,7 +10,7 @@ These lines shimmer with the tension of potential force, visible only to those b
         <hediff>Cosmere_Hediff_IronAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <defName>Cosmere_Ability_Iron_Pull</defName>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
         <label>iron pull target</label>
@@ -19,19 +19,23 @@ These lines shimmer with the tension of potential force, visible only to those b
             <min>20</min>
             <max>60</max>
         </cooldownTicksRange>
-        <targetWorldCell>true</targetWorldCell>
         <metal>Iron</metal>
         <verbProperties>
             <requireLineOfSight>false</requireLineOfSight>
-            <violent>true</violent>
+            <violent>false</violent>
             <noiseRadius>0</noiseRadius>
-            <drawAimPie>true</drawAimPie>
+            <drawAimPie>false</drawAimPie>
             <targetParams>
                 <canTargetSelf>false</canTargetSelf>
-                <canTargetPawns>false</canTargetPawns>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetAnimals>true</canTargetAnimals>
+                <canTargetHumans>true</canTargetHumans>
+                <canTargetMechs>true</canTargetMechs>
+                <canTargetMutants>true</canTargetMutants>
                 <canTargetBuildings>true</canTargetBuildings>
                 <canTargetItems>true</canTargetItems>
                 <canTargetPlants>false</canTargetPlants>
+                <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>

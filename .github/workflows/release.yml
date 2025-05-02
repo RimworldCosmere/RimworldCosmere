@@ -1,0 +1,95 @@
+name: Publish Cosmere Mods
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      mods: ${{ steps.set-mods.outputs.mods }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Find all Cosmere mods
+        id: set-mods
+        run: |
+          mods=$(find . -maxdepth 1 -type d -name "Cosmere*" -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "mods=$mods" >> "$GITHUB_OUTPUT"
+
+  publish:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mod: ${{ fromJson(needs.prepare.outputs.mods) }}
+
+    env:
+      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install @steamdown/cli
+        run: npm install -g @steamdown/cli
+
+      - name: Install SteamCMD
+        run: |
+          sudo apt update
+          sudo apt install -y lib32gcc-s1
+          mkdir -p ~/steamcmd
+          curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
+
+      - name: Prepare upload directory
+        id: prepare
+        run: |
+          MOD="${{ matrix.mod }}"
+          FILE_ID=$(cat "$MOD/About/PublishedFileId.txt")
+          DESCRIPTION_FILE="$MOD/steam_description.txt"
+          TEMP_DIR="/tmp/${MOD}_upload"
+
+          mkdir -p "$TEMP_DIR"
+
+          echo "📄 Generating description..."
+          cat "$MOD/README.md" .github/README.shared.md | steamdown > "$DESCRIPTION_FILE"
+
+          echo "🚫 Respecting .steamignore..."
+          if [ -f "$MOD/.steamignore" ]; then
+            rsync -av --exclude-from="$MOD/.steamignore" --exclude=".steamignore" "$MOD/" "$TEMP_DIR"
+          else
+            rsync -av "$MOD/" "$TEMP_DIR"
+          fi
+
+          echo "📝 Generating workshop.vdf..."
+          CHANGE_NOTE=$(git log -1 --pretty=%B | sed 's/"/\\"/g')
+
+          # Escape description content and indent it for VDF block
+          {
+            echo '"workshopitem"'
+            echo '{'
+            echo '  "appid" "294100"'
+            echo "  \"publishedfileid\" \"$FILE_ID\""
+            echo "  \"contentfolder\" \"$TEMP_DIR\""
+            echo "  \"changenote\" \"$CHANGE_NOTE\""
+            echo '  "description"'
+            echo '  {'
+            sed 's/^/    /' "$DESCRIPTION_FILE"
+            echo '  }'
+            echo '}'
+          } > "$TEMP_DIR/workshop.vdf"
+
+          echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to Steam Workshop
+        run: |
+          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit

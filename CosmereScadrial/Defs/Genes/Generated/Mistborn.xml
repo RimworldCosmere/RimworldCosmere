@@ -13,7 +13,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Iron</li>
                     <li>Steel</li>
@@ -25,7 +25,12 @@
                     <li>Bronze</li>
                     <li>Aluminum</li>
                     <li>Duralumin</li>
+                    <li>Chromium</li>
+                    <li>Nicrosil</li>
+                    <li>Cadmium</li>
+                    <li>Bendalloy</li>
                     <li>Gold</li>
+                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>
@@ -48,7 +53,7 @@
         <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Iron</li>
                     <li>Steel</li>
@@ -60,7 +65,12 @@
                     <li>Bronze</li>
                     <li>Aluminum</li>
                     <li>Duralumin</li>
+                    <li>Chromium</li>
+                    <li>Nicrosil</li>
+                    <li>Cadmium</li>
+                    <li>Bendalloy</li>
                     <li>Gold</li>
+                    <li>Electrum</li>
                 </metals>
             </li>
         </modExtensions>

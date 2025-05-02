@@ -21,7 +21,7 @@
             <mineableScatterLumpSizeRange>{{range metal.Mining.SizeRange}}</mineableScatterLumpSizeRange>
         </building>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
             </li>
         </modExtensions>

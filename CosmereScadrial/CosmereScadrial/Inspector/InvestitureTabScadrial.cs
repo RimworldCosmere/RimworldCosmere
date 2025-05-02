@@ -10,17 +10,17 @@ namespace CosmereScadrial.Inspector {
     public class InvestitureTabScadrial {
         private static readonly Dictionary<Color, Texture2D> colorCache = new Dictionary<Color, Texture2D>();
 #if DEBUG
-        [TweakValue("AAACosmereScadrial", 10f, 300f)]
+        [TweakValue("AAA_CosmereScadrial", 10f, 300f)]
 #endif
         private static readonly float tableHeight = 4 * 26f + 32f;
 #if DEBUG
-        [TweakValue("AAACosmereScadrial", 0f, 10f)]
+        [TweakValue("AAA_CosmereScadrial", 0f, 10f)]
 #endif
         private static readonly float tableWidthPct = 1f;
 #if DEBUG
-        [TweakValue("AAACosmereScadrial", 10f)]
+        [TweakValue("AAA_CosmereScadrial", 10f)]
 #endif
-        private static readonly float cellHeight = 26f;
+        private static readonly float cellHeight = 36f;
 
         private static Texture2D GetColorTexture(Color color) {
             if (colorCache.TryGetValue(color, out var tex)) return tex;
@@ -44,6 +44,7 @@ namespace CosmereScadrial.Inspector {
         }
 
         private static void DrawAllomanticMetalTable(Pawn pawn, Rect outerRect, Listing_Standard listing) {
+            var metals = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading;
             var comp = pawn.GetComp<MetalReserves>();
             var burning = pawn.GetComp<MetalBurning>();
 
@@ -74,13 +75,11 @@ namespace CosmereScadrial.Inspector {
                     for (var col = 0; col < groups.Length; col++) {
                         var group = groups[col];
 
-                        var metal = DefDatabase<MetallicArtsMetalDef>
-                            .AllDefsListForReading
-                            .FirstOrDefault(m =>
-                                m.allomancy != null &&
-                                m.allomancy.group.Equals(group)
-                                && m.allomancy.axis.Equals(axis)
-                                && m.allomancy.polarity.Equals(polarity));
+                        var metal = metals.FirstOrDefault(m =>
+                            m.allomancy != null &&
+                            m.allomancy.group.Equals(group)
+                            && m.allomancy.axis.Equals(axis)
+                            && m.allomancy.polarity.Equals(polarity));
 
                         var cellRect = new Rect(
                             outerRect.x + cellWidth * (col + 1),

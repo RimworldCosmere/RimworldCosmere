@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereCore.Defs.MetalDef Name="Cosmere_Metal_Nicrosil">
+        <defName>Nicrosil</defName>
+        <label>nicrosil</label>
+        <description>Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.</description>
+        <color>(141, 139, 135)</color>
+    </CosmereCore.Defs.MetalDef>
+</Defs>

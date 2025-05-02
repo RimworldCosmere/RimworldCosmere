@@ -424,7 +424,6 @@
     }
   },
   {
-    "disabled": true,
     "name": "chromium",
     "description": "Chromium is a hard, lustrous metal renowned for its brilliant shine and outstanding resistance to tarnish. It enhances the durability and appearance of alloys and is often used to create sleek, modern finishes.",
     "godMetal": false,
@@ -465,7 +464,6 @@
     }
   },
   {
-    "disabled": true,
     "name": "nicrosil",
     "description": "Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.",
     "godMetal": false,
@@ -504,7 +502,6 @@
     }
   },
   {
-    "disabled": true,
     "name": "cadmium",
     "description": "Cadmium is a soft, subtly reflective metal known for its unique properties and low melting point. Often used in specialized applications, it brings distinct qualities when blended into advanced alloys.",
     "godMetal": false,
@@ -545,7 +542,6 @@
     }
   },
   {
-    "disabled": true,
     "name": "bendalloy",
     "description": "Bendalloy is a mysterious and dynamic alloy created by precisely combining cadmium, zinc, and silver. Its shifting hues and volatile properties make it a material of both scientific intrigue and advanced technological potential.",
     "godMetal": false,
@@ -690,7 +686,6 @@
     }
   },
   {
-    "disabled": true,
     "name": "electrum",
     "description": "Electrum is an alloy of gold and silver, characterized by its soft, pale, and luminous hue. This unique blend of precious metals has captivated civilizations for millennia with its subtle brilliance and inherent value.",
     "godMetal": false,

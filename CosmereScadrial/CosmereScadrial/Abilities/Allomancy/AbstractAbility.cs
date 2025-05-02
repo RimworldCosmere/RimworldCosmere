@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
-using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Flags;
 using RimWorld;
 using Verse;
+using Verse.AI;
 using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 using Log = CosmereFramework.Log;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
@@ -68,20 +67,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
         }
 
         public override bool CanApplyOn(LocalTargetInfo target) {
-            // 1. Handle null EffectComps or targetable fallback
-            if (EffectComps == null) {
-                return def.verbProperties.targetable || !def.verbProperties.targetParams.canTargetSelf || target.Thing == pawn;
-            }
-
-            // 2. Verify all EffectComps agree this can apply
-            if (EffectComps.Any(comp => !comp.CanApplyOn(target, null))) {
-                return false;
-            }
-
-            // Null check up front for any target.Pawn use
             var targetPawn = target.Pawn;
-
-            // 3. Self targeting
             if (targetFlags.Has(TargetFlags.Locations) && !target.HasThing && !target.TryGetPawn(out _)) return true;
             if (targetFlags.Has(TargetFlags.Self) && targetPawn == pawn) return true;
             if (targetFlags.Has(TargetFlags.Pawns) && targetPawn != null) return true;
@@ -97,7 +83,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
             if (targetFlags.Has(TargetFlags.Mutants) && targetPawn is { IsMutant: true }) return true;
             if (targetFlags.Has(TargetFlags.WorldCell) && !target.HasThing && !target.TryGetPawn(out _)) return true;
 
-            return false;
+            return base.CanApplyOn(target);
         }
 
         public virtual bool CanActivate(BurningStatus activationStatus, out string reason) {
@@ -115,15 +101,11 @@ namespace CosmereScadrial.Abilities.Allomancy {
             return true;
         }
 
-        public override IEnumerable<Command> GetGizmos() {
-            return base.GetGizmos();
-        }
-
-        public virtual float GetDesiredBurnRateForStatus() {
+        public float GetDesiredBurnRateForStatus() {
             return GetDesiredBurnRateForStatus(status ?? BurningStatus.Off);
         }
 
-        public virtual float GetDesiredBurnRateForStatus(BurningStatus burningStatus) {
+        public float GetDesiredBurnRateForStatus(BurningStatus burningStatus) {
             return burningStatus switch {
                 BurningStatus.Off => 0,
                 BurningStatus.Passive => def.beuPerTick / 2,
@@ -133,7 +115,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
             };
         }
 
-        public virtual void UpdateStatus(BurningStatus newStatus) {
+        public void UpdateStatus(BurningStatus newStatus) {
             if (status == newStatus) return;
 
             Log.Verbose($"Updating {pawn.NameFullColored}'s {def.defName} from {status} -> {newStatus}");
@@ -165,9 +147,21 @@ namespace CosmereScadrial.Abilities.Allomancy {
             QueueCastingJob(target, dest, false);
         }
 
-        public virtual void QueueCastingJob(LocalTargetInfo target, LocalTargetInfo destination, bool flare) {
+        public void QueueCastingJob(LocalTargetInfo target, LocalTargetInfo destination, bool flare) {
             shouldFlare = flare;
             base.QueueCastingJob(target, destination);
+        }
+
+        public override Job GetJob(LocalTargetInfo target, LocalTargetInfo destination) {
+            var job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, target);
+            job.ability = this;
+            job.verbToUse = verb;
+            job.playerForced = true;
+            job.targetA = target;
+            job.targetB = destination;
+            job.count = (int)(shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
+
+            return job;
         }
 
         protected override void PreActivate(LocalTargetInfo? target) {
@@ -187,15 +181,15 @@ namespace CosmereScadrial.Abilities.Allomancy {
             return result;
         }
 
-        protected virtual AllomanticHediff GetOrAddHediff(Pawn targetPawn) {
-            return HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def);
+        protected void GetOrAddHediff(Pawn targetPawn) {
+            HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def);
         }
 
-        protected virtual void RemoveHediff(Pawn targetPawn) {
+        protected void RemoveHediff(Pawn targetPawn) {
             HediffUtility.RemoveHediff(pawn, targetPawn, this);
         }
 
-        protected virtual void ApplyDrag(Pawn targetPawn, float severity) {
+        protected void ApplyDrag(Pawn targetPawn, float severity) {
             if (def.dragHediff == null || severity < def.minSeverityForDrag) return;
 
             Log.Warning($"Applying {def.dragHediff.defName} drag to {targetPawn.NameFullColored} with Severity={severity}");
@@ -203,7 +197,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
             drag.Severity = severity;
         }
 
-        protected virtual void RemoveDrag(Pawn targetPawn) {
+        protected void RemoveDrag(Pawn targetPawn) {
             var drag = targetPawn.health.hediffSet.GetFirstHediffOfDef(def.dragHediff);
             if (drag == null) return;
 

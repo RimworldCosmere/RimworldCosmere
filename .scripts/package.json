@@ -1,16 +1,18 @@
 {
   "scripts": {
     "start": "npm run generate",
-    "generate": "concurrently \"npm run generate:core\" \"npm run generate:scadrial\"",
-    "generate:core": "concurrently \"npm run generate:metals\"",
-    "generate:scadrial": "concurrently \"npm run generate:metallicArtsMetals\" \"npm run generate:vials\" \"npm run generate:genesAndTraits\"",
-    "generate:metals": "tsx ./index.ts Metals",
-    "generate:metallicArtsMetals": "tsx ./index.ts MetallicArtsMetals",
-    "generate:vials": "tsx ./index.ts Vials",
-    "generate:genesAndTraits": "tsx ./index.ts GenesAndTraits"
+    "generate": "concurrently \"npm run generate:mod:core\" \"npm run generate:mod:metals\" \"npm run generate:mod:scadrial\"",
+    "generate:mod:core": "exit 0",
+    "generate:mod:metals": "find . -type f -name \"*.generated.xml\" -delete && concurrently \"npm run generator:metals\"",
+    "generate:mod:scadrial": "find . -type f -name \"*.generated.xml\" -delete && concurrently \"npm run generator:metallicArtsMetals\" \"npm run generator:vials\" \"npm run generator:genesAndTraits\"",
+    "generator:metals": "tsx ./index.ts Metals",
+    "generator:metallicArtsMetals": "tsx ./index.ts MetallicArtsMetals",
+    "generator:vials": "tsx ./index.ts Vials",
+    "generator:genesAndTraits": "tsx ./index.ts GenesAndTraits"
   },
   "private": true,
   "dependencies": {
+    "@steamdown/cli": "^1.0.0-beta.2",
     "concurrently": "^9.1.2",
     "handlebars": "^4.7.8",
     "jsonschema": "^1.5.0",

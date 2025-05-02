@@ -1,4 +1,3 @@
-using System;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
@@ -23,24 +22,10 @@ namespace CosmereScadrial.Abilities.Allomancy {
             return MetalDetector.GetMetal(target.Thing) > 0f;
         }
 
-        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest, bool flare) {
+        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
             target = targetInfo;
 
-            var baseActivate = base.Activate(target, dest, flare);
-            if (!baseActivate || !target.HasThing) {
-                return false;
-            }
-
-            var job = JobMaker.MakeJob(JobDefOf.Cosmere_Job_CastAllomanticAbilityAtTarget, target);
-            job.ability = this;
-            job.verbToUse = (Verb)Activator.CreateInstance(def.verbProperties.verbClass);
-            job.verbToUse.caster = pawn;
-            job.playerForced = true;
-            job.verbToUse.verbProps = def.verbProperties;
-            job.count = (int)(flare ? BurningStatus.Flaring : BurningStatus.Burning);
-            pawn.jobs.TryTakeOrderedJob(job);
-
-            return true;
+            return !target.HasThing && base.Activate(target, dest);
         }
     }
 }

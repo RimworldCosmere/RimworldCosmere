@@ -7,14 +7,14 @@
         <labelShortAdj>augur</labelShortAdj>
         <description>Shows alternate versions of oneself, based on different pasts.</description>
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>12</displayOrderInCategory>
+        <displayOrderInCategory>16</displayOrderInCategory>
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_Gold</def>
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>
@@ -25,7 +25,7 @@
         <label>augur</label>
         <description>Shows alternate versions of oneself, based on different pasts.</description>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>
@@ -46,14 +46,14 @@
         <labelShortAdj>bloodmaker</labelShortAdj>
         <description>Stores health, allowing fast healing when tapped.</description>
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>12</displayOrderInCategory>
+        <displayOrderInCategory>16</displayOrderInCategory>
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_Gold</def>
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>
@@ -64,7 +64,7 @@
         <label>bloodmaker</label>
         <description>Stores health, allowing fast healing when tapped.</description>
         <modExtensions>
-            <li Class="CosmereCore.ModExtensions.MetalsLinked">
+            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>

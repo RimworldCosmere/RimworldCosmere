@@ -106,7 +106,11 @@ jobs:
           
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
-      - name: Upload with SteamCMD + 2FA
+#      - name: Upload with SteamCMD + 2FA
+#        run: |
+#          CODE=$(tsx .scripts/getSteam2FA.ts $STEAM_TFA_SEED)
+#          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" "$CODE" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
+
+      - name: Upload with SteamCMD
         run: |
-          CODE=$(tsx .scripts/getSteam2FA.ts $STEAM_TFA_SEED)
-          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" "$CODE" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
+          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit

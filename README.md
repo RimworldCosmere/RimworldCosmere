@@ -12,15 +12,15 @@ This is a modular monorepo. Each component exists as its own loadable mod:
 
 ### Core Mods
 
-- **[Cosmere Framework]** – Shared C# utilities and base helpers (no content)
-- **[Cosmere Core]** – Shared stats, traits, needs, and the Investiture system
-- **[Cosmere Metals]** – Defines all base metals, alloys, and godmetals used across the Cosmere
+- **[Cosmere Framework](./CosmereFramework)** – Shared C# utilities and base helpers (no content)
+- **[Cosmere Core](./CosmereCore)** – Shared stats, traits, needs, and the Investiture system
+- **[Cosmere Metals](./CosmereMetals)** – Defines all base metals, alloys, and godmetals used across the Cosmere
 
-### Shardworld Modules
+### Shard World Modules
 
-- **[Cosmere - Scadrial]** – Allomancy, Feruchemy, >!Hemalurgy!<, Mistborn genes, vial systems, snapping, and more
-- **[Cosmere - Roshar]** *(Coming Soon)* – Surgebinding, spren bonding, stormlight, and Ideals
-- **[Cosmere - Nalthis]** *(Coming Soon)* – Awakening, Breath economy, Commands, and Divine Breaths
+- **[Cosmere - Scadrial](CosmereScadrial)** – Allomancy, Feruchemy, >!Hemalurgy!<, Mistborn genes, vial systems, snapping, and more
+- **Cosmere - Roshar** *(Coming Soon)* – Surgebinding, spren bonding, stormlight, and Ideals
+- **Cosmere - Nalthis** *(Coming Soon)* – Awakening, Breath economy, Commands, and Divine Breaths
 
 Each module is optional, but relies on the shared foundation laid by the **Core**, **Framework**, and **Metals** mods.
 

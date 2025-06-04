@@ -86,6 +86,3 @@ This project is open-source but may is definitely subject to **Cosmere IP restri
 Please do not redistribute standalone modules without credit and attribution.  
 This is a fan project not affiliated with Brandon Sanderson or Dragonsteel Entertainment.
 
----
-
-_Survive the Rim. Ascend the Shards._

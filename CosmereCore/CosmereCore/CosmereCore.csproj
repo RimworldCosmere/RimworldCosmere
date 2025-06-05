@@ -11,7 +11,7 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>CosmereCore</RootNamespace>
         <AssemblyName>CosmereCore</AssemblyName>
-        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <PlatformTarget>x64</PlatformTarget>
         <DebugSymbols>true</DebugSymbols>
@@ -31,7 +31,7 @@
         <DefineConstants>TRACE</DefineConstants>
         <OutputPath>..\Assemblies\</OutputPath>
     </PropertyGroup>
-    
+
     <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
         <Reference Include="0Harmony">
             <HintPath>..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
@@ -95,13 +95,13 @@
     <ItemGroup>
         <Compile Include="**\*.cs" Exclude="obj\**\*.cs"/>
     </ItemGroup>
-    
+
     <ItemGroup>
         <Reference Include="FloatSubMenu">
-          <HintPath>..\..\..\..\..\workshop\content\294100\2864015430\1.5\Assemblies\FloatSubMenu.dll</HintPath>
+            <HintPath>..\..\..\..\..\workshop\content\294100\2864015430\1.5\Assemblies\FloatSubMenu.dll</HintPath>
         </Reference>
         <Reference Include="HugsLib">
-          <HintPath>..\..\..\..\..\workshop\content\294100\818773962\Assemblies\HugsLib.dll</HintPath>
+            <HintPath>..\..\..\..\..\workshop\content\294100\818773962\Assemblies\HugsLib.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
@@ -109,14 +109,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj">
-        <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
-        <Name>CosmereFramework</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\..\CosmereMetals\CosmereMetals\CosmereMetals.csproj">
-        <Project>{69b78f0c-63e1-47a1-9fd4-b5cce63d727f}</Project>
-        <Name>CosmereMetals</Name>
-      </ProjectReference>
+        <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj">
+            <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
+            <Name>CosmereFramework</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\CosmereMetals\CosmereMetals\CosmereMetals.csproj">
+            <Project>{69b78f0c-63e1-47a1-9fd4-b5cce63d727f}</Project>
+            <Name>CosmereMetals</Name>
+        </ProjectReference>
     </ItemGroup>
 
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
@@ -132,7 +132,7 @@
             <ExcludeAssets>runtime</ExcludeAssets>
         </PackageReference>
     </ItemDefinitionGroup>
-    
+
     <Target Name="PostBuild" AfterTargets="Build" Outputs="Never">
         <Exec Command="npm run generate:mod:core"
               WorkingDirectory="$(ProjectDir)..\..\.scripts"

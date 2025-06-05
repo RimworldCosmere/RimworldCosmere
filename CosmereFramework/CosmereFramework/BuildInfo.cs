@@ -1,7 +1,7 @@
 namespace CosmereFramework {
     public static class BuildInfo {
-        public const string REVISION = "e0f0db4";
+        public const string REVISION = "45617ae";
 
-        public const string BUILD_TIME = "2025-05-02T06:16:55Z";
+        public const string BUILD_TIME = "2025-06-05T17:22:12Z";
     }
 }

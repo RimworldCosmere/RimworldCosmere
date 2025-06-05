@@ -11,7 +11,7 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>CosmereScadrial</RootNamespace>
         <AssemblyName>CosmereScadrial</AssemblyName>
-        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <PlatformTarget>x64</PlatformTarget>
         <DebugSymbols>true</DebugSymbols>

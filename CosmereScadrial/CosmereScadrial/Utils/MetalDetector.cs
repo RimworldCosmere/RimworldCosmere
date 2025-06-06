@@ -132,7 +132,7 @@ namespace CosmereScadrial.Utils {
                         massStat = 100;
                     }
 
-                    // Add a 100x multiplier to this stat. For some reason, buildings dont have a mass.
+                    // Add a 100x multiplier to this stat. For some reason, buildings don't have a mass.
                     return massStat * building.def.Size.x * building.def.Size.z * GetMetal(building);
                 }
                 case null: return float.MaxValue;

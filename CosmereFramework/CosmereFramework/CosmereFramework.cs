@@ -39,8 +39,7 @@ namespace CosmereFramework {
     [StaticConstructorOnStartup]
     public static class ModStartup {
         static ModStartup() {
-            Log.Important($"Build Rev: {BuildInfo.REVISION} @ {BuildInfo.BUILD_TIME}. DebugMode={CosmereFramework.CosmereSettings.debugMode} LogLevel={CosmereFramework.CosmereSettings.logLevel}");
-            new Harmony("cryptiklemur.cosmere.core").PatchAll();
+            Startup.Initialize("cryptiklemur.cosmere.core");
         }
     }
 }

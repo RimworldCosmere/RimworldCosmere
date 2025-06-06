@@ -12,8 +12,7 @@ namespace CosmereMetals {
     [StaticConstructorOnStartup]
     public static class ModStartup {
         static ModStartup() {
-            Log.Important($"Build Rev: {BuildInfo.REVISION} @ {BuildInfo.BUILD_TIME}. DebugMode={CosmereSettings.debugMode} LogLevel={CosmereSettings.logLevel}");
-            new Harmony("Cryptiklemur.Cosmere.Metals").PatchAll();
+            Startup.Initialize("Cryptiklemur.Cosmere.Metals");
         }
     }
 }

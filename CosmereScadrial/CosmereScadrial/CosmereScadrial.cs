@@ -18,8 +18,7 @@ namespace CosmereScadrial {
     [StaticConstructorOnStartup]
     public static class ModStartup {
         static ModStartup() {
-            Log.Important($"Build Rev: {BuildInfo.REVISION} @ {BuildInfo.BUILD_TIME}. DebugMode={CosmereSettings.debugMode} LogLevel={CosmereSettings.logLevel}");
-            new Harmony("cryptiklemur.cosmere.scadrial").PatchAll();
+            Startup.Initialize("cryptiklemur.cosmere.scadrial");
         }
     }
 }

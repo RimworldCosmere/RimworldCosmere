@@ -122,7 +122,7 @@
         </PackageReference>
     </ItemDefinitionGroup>
 
-    <UsingTask TaskName="WriteBuildInfo" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <UsingTask TaskName="WriteBuildInfo" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
         <ParameterGroup>
             <OutputPath ParameterType="System.String" Required="true"/>
             <Revision ParameterType="System.String" Required="true"/>

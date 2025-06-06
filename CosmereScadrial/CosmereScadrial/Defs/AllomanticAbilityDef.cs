@@ -46,7 +46,7 @@ namespace CosmereScadrial.Defs {
                 yield return error;
             }
 
-            if (abilityClass.IsAssignableFrom(typeof(AbstractAbility))) {
+            if (!typeof(AbstractAbility).IsAssignableFrom(abilityClass)) {
                 yield return $"Invalid ability class {abilityClass}. Must inherit from {typeof(AbstractAbility)}.";
             }
 

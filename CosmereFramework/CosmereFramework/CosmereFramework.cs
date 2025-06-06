@@ -1,5 +1,4 @@
 ﻿using CosmereFramework.Settings;
-using HarmonyLib;
 using UnityEngine;
 using Verse;
 
@@ -25,7 +24,8 @@ namespace CosmereFramework {
             var listingStandard = new Listing_Standard();
             listingStandard.Begin(inRect);
             listingStandard.Label($"Log Level - {settings.logLevel.ToString()}");
-            settings.logLevel = (LogLevel)(int)listingStandard.Slider((float)settings.logLevel, (float)LogLevel.None, (float)LogLevel.Verbose);
+            settings.logLevel = (LogLevel)(int)listingStandard.Slider((float)settings.logLevel, (float)LogLevel.None,
+                (float)LogLevel.Verbose);
             listingStandard.CheckboxLabeled("Debug Mode", ref settings.debugMode, "Opens the logs.");
             listingStandard.End();
             base.DoSettingsWindowContents(inRect);
@@ -39,8 +39,7 @@ namespace CosmereFramework {
     [StaticConstructorOnStartup]
     public static class ModStartup {
         static ModStartup() {
-            Log.Important($"Build Rev: {BuildInfo.REVISION} @ {BuildInfo.BUILD_TIME}. DebugMode={CosmereFramework.CosmereSettings.debugMode} LogLevel={CosmereFramework.CosmereSettings.logLevel}");
-            new Harmony("cryptiklemur.cosmere.core").PatchAll();
+            Startup.Initialize("Cryptiklemur.Cosmere.Framework");
         }
     }
 }

@@ -11,16 +11,16 @@
           </xenotypeSet>
         <combatPower>45</combatPower>
         <gearHealthRange>
-            <min>0.5</min>
-            <max>0.1</max>
+            <min>0.2</min>
+            <max>0.8</max>
         </gearHealthRange>
         <initialResistanceRange>
-            <min>0.5</min>
-            <max>0.1</max>
+            <min>0.2</min>
+            <max>0.8</max>
         </initialResistanceRange>
         <initialWillRange>
-            <min>0.5</min>
-            <max>0.1</max>
+            <min>0.2</min>
+            <max>0.8</max>
         </initialWillRange>
         <inventoryOptions>
             <skipChance>1</skipChance>

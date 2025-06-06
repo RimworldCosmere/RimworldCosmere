@@ -82,7 +82,7 @@ If you’d like to contribute:
 
 ## ⚖️ License
 
-This project is open-source but may is definitely subject to **Cosmere IP restrictions**. Thank you Brandon Sanderson, and Dragonsteel for all of your work!  
+This project is open-source but is definitely subject to **Cosmere IP restrictions**. Thank you Brandon Sanderson, and Dragonsteel for all of your work!
 Please do not redistribute standalone modules without credit and attribution.  
 This is a fan project not affiliated with Brandon Sanderson or Dragonsteel Entertainment.
 

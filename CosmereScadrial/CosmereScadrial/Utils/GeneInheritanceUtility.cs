@@ -125,7 +125,8 @@ namespace CosmereScadrial.Utils {
         }
 
         private static void TryAddRandomFeruchemicalGene(Pawn pawn) {
-            var metal = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => x.allomancy != null).RandomElement();
+            // Pick a metal that actually supports feruchemy
+            var metal = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => x.feruchemy != null).RandomElement();
             AddGene(pawn, $"Cosmere_Ferring_{metal.defName}");
         }
 

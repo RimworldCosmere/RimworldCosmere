@@ -4,97 +4,13 @@
             Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
 
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <ProjectGuid>{5F1D8C6D-E127-4001-A575-E56D99DF271F}</ProjectGuid>
-        <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>CosmereCore</RootNamespace>
         <AssemblyName>CosmereCore</AssemblyName>
-        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
-        <PlatformTarget>x64</PlatformTarget>
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>..\Assemblies\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <LangVersion>latest</LangVersion>
-        <RunPostBuildEvent>Always</RunPostBuildEvent>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <DebugSymbols>false</DebugSymbols>
-        <DebugType>none</DebugType>
-        <Optimize>true</Optimize>
-        <DefineConstants>TRACE</DefineConstants>
-        <OutputPath>..\Assemblies\</OutputPath>
+        <ModScript>generate:mod:core</ModScript>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
-        <Reference Include="0Harmony">
-            <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
-        </Reference>
-        <Reference Include="Assembly-CSharp">
-            <HintPath>$(RimWorldManagedPath)\Assembly-CSharp.dll</HintPath>
-        </Reference>
-        <Reference Include="HarmonyMod">
-            <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\HarmonyMod.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.CoreModule">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.CoreModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.IMGUIModule">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.IMGUIModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.TextCoreModule">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.TextCoreModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.TextRenderingModule">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.TextRenderingModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UIElementsModule">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.UIElementsModule.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(OS)' != 'Windows_NT'">
-        <Reference Include="0Harmony">
-            <HintPath>$(WorkshopDir)/2009463077/Current/Assemblies/0Harmony.dll</HintPath>
-        </Reference>
-        <Reference Include="Assembly-CSharp">
-            <HintPath>$(RimWorldManagedPath)/Assembly-CSharp.dll</HintPath>
-        </Reference>
-        <Reference Include="HarmonyMod">
-            <HintPath>$(WorkshopDir)/2009463077/Current/Assemblies/HarmonyMod.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine">
-            <HintPath>$(RimWorldManagedPath)/UnityEngine.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.CoreModule">
-            <HintPath>$(RimWorldManagedPath)/UnityEngine.CoreModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.IMGUIModule">
-            <HintPath>$(RimWorldManagedPath)/UnityEngine.IMGUIModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.TextCoreModule">
-            <HintPath>$(RimWorldManagedPath)/UnityEngine.TextCoreModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.TextRenderingModule">
-            <HintPath>$(RimWorldManagedPath)/UnityEngine.TextRenderingModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UIElementsModule">
-            <HintPath>$(RimWorldManagedPath)/UnityEngine.UIElementsModule.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Include="**\*.cs" Exclude="obj\**\*.cs"/>
-    </ItemGroup>
 
     <ItemGroup>
         <Reference Include="FloatSubMenu">
@@ -121,22 +37,4 @@
 
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 
-    <ItemDefinitionGroup>
-        <Reference>
-            <Private>False</Private>
-        </Reference>
-        <ProjectReference>
-            <Private>False</Private>
-        </ProjectReference>
-        <PackageReference>
-            <ExcludeAssets>runtime</ExcludeAssets>
-        </PackageReference>
-    </ItemDefinitionGroup>
-
-    <Target Name="PostBuild" AfterTargets="Build" Outputs="Never">
-        <Exec Command="npm run generate:mod:core"
-              WorkingDirectory="$(ProjectDir)..\..\.scripts"
-              StandardOutputImportance="High"
-        />
-    </Target>
 </Project>

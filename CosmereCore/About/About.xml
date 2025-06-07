@@ -11,11 +11,13 @@
         <li>
             <packageId>CryptikLemur.Cosmere.Framework</packageId>
             <displayName>Cosmere - Framework</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/3474206890</steamWorkshopUrl>
             <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
         </li>
         <li>
             <packageId>CryptikLemur.Cosmere.Metals</packageId>
             <displayName>Cosmere - Metals</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/3474207432</steamWorkshopUrl>
             <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
         </li>
     </modDependencies>

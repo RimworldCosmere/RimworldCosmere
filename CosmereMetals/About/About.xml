@@ -11,6 +11,7 @@
         <li>
             <packageId>CryptikLemur.Cosmere.Framework</packageId>
             <displayName>Cosmere - Framework</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/3474206890</steamWorkshopUrl>
             <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
         </li>
     </modDependencies>

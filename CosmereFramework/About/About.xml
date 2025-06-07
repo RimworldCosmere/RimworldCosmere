@@ -22,7 +22,7 @@
         <li>
             <packageId>kathanon.floatsubmenu</packageId>
             <displayName>Float Sub-Menus</displayName>
-            <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2864015430</steamWorkshopUrl>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2864015430</steamWorkshopUrl>
         </li>
     </modDependencies>
     <loadAfter>

@@ -6,9 +6,110 @@
         <WorkshopDir Condition="'$(WorkshopDir)' == ''">..\..\..\..\..\workshop\content\294100</WorkshopDir>
     </PropertyGroup>
     <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+        <OutputPath>..\Assemblies\</OutputPath>
         <RimWorldManagedPath>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+        <OutputPath>../Assemblies/</OutputPath>
         <RimWorldManagedPath>$(RimWorldDir)/Contents/Resources/Data/Managed</RimWorldManagedPath>
     </PropertyGroup>
+
+    <!-- Common settings for legacy project files -->
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <OutputType>Library</OutputType>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+        <PlatformTarget>x64</PlatformTarget>
+        <FileAlignment>512</FileAlignment>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <WarningLevel>4</WarningLevel>
+        <LangVersion>latest</LangVersion>
+        <RunPostBuildEvent>Always</RunPostBuildEvent>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugSymbols>false</DebugSymbols>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <DefineConstants>TRACE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="**\*.cs" Exclude="obj\**\*.cs"/>
+    </ItemGroup>
+
+    <ItemDefinitionGroup>
+        <Reference>
+            <Private>False</Private>
+        </Reference>
+        <ProjectReference>
+            <Private>False</Private>
+        </ProjectReference>
+        <PackageReference>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+    </ItemDefinitionGroup>
+
+    <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+        <Reference Include="0Harmony">
+            <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(RimWorldManagedPath)\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="HarmonyMod">
+            <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\HarmonyMod.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.IMGUIModule">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.IMGUIModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextCoreModule">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.TextCoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.TextRenderingModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UIElementsModule">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.UIElementsModule.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(OS)' != 'Windows_NT'">
+        <Reference Include="0Harmony">
+            <HintPath>$(WorkshopDir)/2009463077/Current/Assemblies/0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(RimWorldManagedPath)/Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="HarmonyMod">
+            <HintPath>$(WorkshopDir)/2009463077/Current/Assemblies/HarmonyMod.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.IMGUIModule">
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.IMGUIModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextCoreModule">
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.TextCoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.TextRenderingModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UIElementsModule">
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.UIElementsModule.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 </Project>

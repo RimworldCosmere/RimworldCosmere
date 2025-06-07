@@ -60,8 +60,8 @@ namespace CosmereFramework.Utils {
 
         public static string FormatTicksAsTime(int ticks) {
             var totalSeconds = ticks / TICKS_PER_SECOND;
-            var minutes = totalSeconds / 60;
-            var seconds = totalSeconds % 60;
+            var minutes = (int)(totalSeconds / 60);
+            var seconds = (int)(totalSeconds % 60);
             return $"{minutes:D2}:{seconds:D2}";
         }
     }

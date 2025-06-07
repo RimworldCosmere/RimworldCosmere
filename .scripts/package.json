@@ -9,6 +9,9 @@
     "generator:metallicArtsMetals": "tsx ./index.ts MetallicArtsMetals",
     "generator:vials": "tsx ./index.ts Vials",
     "generator:genesAndTraits": "tsx ./index.ts GenesAndTraits"
+  ,
+    "lint": "eslint \"**/*.ts\"",
+    "typecheck": "tsc --noEmit"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +28,7 @@
   "devDependencies": {
     "@types/lodash": "~4.17.16",
     "@types/node": "^22.14.1",
-    "@types/steam-totp": "~2.1.2"
+    "@types/steam-totp": "~2.1.2",
+    "eslint": "^8.57.0"
   }
 }

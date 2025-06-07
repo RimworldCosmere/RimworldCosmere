@@ -34,61 +34,61 @@
     
     <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
         <Reference Include="0Harmony">
-            <HintPath>..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
+            <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-            <HintPath>..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="HarmonyMod">
-            <HintPath>..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\HarmonyMod.dll</HintPath>
+            <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\HarmonyMod.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine">
-            <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-            <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.IMGUIModule">
-            <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.IMGUIModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.TextCoreModule">
-            <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextCoreModule.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.TextCoreModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.TextRenderingModule">
-            <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.TextRenderingModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UIElementsModule">
-            <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.UIElementsModule.dll</HintPath>
         </Reference>
     </ItemGroup>
 
     <ItemGroup Condition="'$(OS)' != 'Windows_NT'">
         <Reference Include="0Harmony">
-            <HintPath>../../../../../../workshop/content/294100/2009463077/Current/Assemblies/0Harmony.dll</HintPath>
+            <HintPath>$(WorkshopDir)/2009463077/Current/Assemblies/0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-            <HintPath>../../../Contents/Resources/Data/Managed/Assembly-CSharp.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)/Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="HarmonyMod">
-            <HintPath>../../../../../../workshop/content/294100/2009463077/Current/Assemblies/HarmonyMod.dll</HintPath>
+            <HintPath>$(WorkshopDir)/2009463077/Current/Assemblies/HarmonyMod.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine">
-            <HintPath>../../../Contents/Resources/Data/Managed/UnityEngine.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-            <HintPath>../../../Contents/Resources/Data/Managed/UnityEngine.CoreModule.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.CoreModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.IMGUIModule">
-            <HintPath>../../../Contents/Resources/Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.IMGUIModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.TextCoreModule">
-            <HintPath>../../../Contents/Resources/Data/Managed/UnityEngine.TextCoreModule.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.TextCoreModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.TextRenderingModule">
-            <HintPath>../../../Contents/Resources/Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.TextRenderingModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UIElementsModule">
-            <HintPath>../../../Contents/Resources/Data/Managed/UnityEngine.UIElementsModule.dll</HintPath>
+            <HintPath>$(RimWorldManagedPath)/UnityEngine.UIElementsModule.dll</HintPath>
         </Reference>
     </ItemGroup>
 
@@ -98,10 +98,10 @@
     
     <ItemGroup>
         <Reference Include="FloatSubMenu">
-          <HintPath>..\..\..\..\..\workshop\content\294100\2864015430\1.5\Assemblies\FloatSubMenu.dll</HintPath>
+            <HintPath>$(WorkshopDir)/2864015430/1.5/Assemblies/FloatSubMenu.dll</HintPath>
         </Reference>
         <Reference Include="HugsLib">
-          <HintPath>..\..\..\..\..\workshop\content\294100\818773962\Assemblies\HugsLib.dll</HintPath>
+            <HintPath>$(WorkshopDir)/818773962/Assemblies/HugsLib.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>

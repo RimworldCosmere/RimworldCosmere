@@ -1,0 +1,14 @@
+<Project>
+    <PropertyGroup>
+        <RimWorldDir Condition="'$(RimWorldDir)' == ''">$([System.Environment]::GetEnvironmentVariable('RIMWORLD_DIR'))</RimWorldDir>
+        <WorkshopDir Condition="'$(WorkshopDir)' == ''">$([System.Environment]::GetEnvironmentVariable('WORKSHOP_DIR'))</WorkshopDir>
+        <RimWorldDir Condition="'$(RimWorldDir)' == ''">..\..\..\</RimWorldDir>
+        <WorkshopDir Condition="'$(WorkshopDir)' == ''">..\..\..\..\..\workshop\content\294100</WorkshopDir>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+        <RimWorldManagedPath>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+        <RimWorldManagedPath>$(RimWorldDir)/Contents/Resources/Data/Managed</RimWorldManagedPath>
+    </PropertyGroup>
+</Project>

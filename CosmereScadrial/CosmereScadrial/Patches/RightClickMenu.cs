@@ -15,7 +15,8 @@ namespace CosmereScadrial.Patches {
     public static class RightClickMenu {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(FloatMenuMakerMap), nameof(FloatMenuMakerMap.ChoicesAtFor))]
-        public static void PostfixFloatMenuMakerMapChoicesAtFor(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> __result) {
+        public static void PostfixFloatMenuMakerMapChoicesAtFor(Vector3 clickPos, Pawn pawn,
+            ref List<FloatMenuOption> __result) {
             var metalBurning = pawn.GetComp<MetalBurning>();
             var targetParams = TargetingParameters.ForAttackAny();
             targetParams.canTargetSelf = true;
@@ -23,6 +24,7 @@ namespace CosmereScadrial.Patches {
             targetParams.canTargetItems = true;
             targetParams.canTargetPlants = true;
             targetParams.mapObjectTargetsMustBeAutoAttackable = false;
+            targetParams.mustBeSelectable = true;
 
             var subOptions = new List<FloatMenuOption>();
             var allomancyMenu = new FloatSubMenu("Allomancy", subOptions);
@@ -48,10 +50,13 @@ namespace CosmereScadrial.Patches {
             __result.Add(allomancyMenu);
         }
 
-        private static List<FloatMenuOption> GetSubTargetOptions(Pawn pawn, MetalBurning metalBurning, LocalTargetInfo target) {
+        private static List<FloatMenuOption> GetSubTargetOptions(Pawn pawn, MetalBurning metalBurning,
+            LocalTargetInfo target) {
             if (!target.IsValid) return null;
 
-            var allomanticAbilities = pawn.abilities.AllAbilitiesForReading.Where(x => x.def is AllomanticAbilityDef && x.CanApplyOn(target)).Select(x => x as AbstractAbility).ToArray();
+            var allomanticAbilities = pawn.abilities.AllAbilitiesForReading
+                .Where(x => x.def is AllomanticAbilityDef && x.CanApplyOn(target)).Select(x => x as AbstractAbility)
+                .ToArray();
             if (allomanticAbilities.Length == 0) return null;
             var metals = allomanticAbilities.GroupBy(x => x.metal);
 
@@ -59,7 +64,8 @@ namespace CosmereScadrial.Patches {
                 new FloatMenuSearch(true),
             };
             if (pawn.Equals(target.Pawn)) {
-                options.Add(new FloatMenuOption("Stop Burning All Metals", metalBurning.IsBurning() ? () => metalBurning.RemoveAllBurnSources() : null));
+                options.Add(new FloatMenuOption("Stop Burning All Metals",
+                    metalBurning.IsBurning() ? () => metalBurning.RemoveAllBurnSources() : null));
             }
 
             foreach (var metal in metals) {

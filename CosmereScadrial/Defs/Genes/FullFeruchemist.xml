@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_FullFeruchemist</defName>
         <label>full feruchemist</label>
         <description>A rare individual who can use all Feruchemical metals.</description>
@@ -37,7 +37,7 @@
         <abilities>
         </abilities>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_FullFeruchemist</defName>
         <label>full feruchemist</label>
         <description>A rare individual who can use all Feruchemical metals.</description>

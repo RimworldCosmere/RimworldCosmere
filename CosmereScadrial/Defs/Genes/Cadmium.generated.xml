@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Cadmium -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Cadmium</defName>
         <label>cadmium misting</label>
         <labelShortAdj>pulser</labelShortAdj>
@@ -20,7 +20,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Cadmium</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Cadmium</defName>
         <label>pulser</label>
         <description>Slows down time in a bubble, creating a temporal distortion.</description>
@@ -40,7 +40,7 @@
     </TraitDef>
     
     <!-- Ferring: Cadmium -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Cadmium</defName>
         <label>cadmium ferring</label>
         <labelShortAdj>gaspers</labelShortAdj>
@@ -59,7 +59,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Cadmium</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Cadmium</defName>
         <label>gaspers</label>
         <description>Stores breath, useful for surviving in low-oxygen environments.</description>

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using CosmereCore.Utils;
 using CosmereScadrial.Defs;
+using CosmereScadrial.Genes;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -50,9 +51,9 @@ namespace CosmereScadrial.Utils {
                     Log.Warning(
                         $"Trying for Mistborn. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
                     if (success) {
-                        AddGene(pawn, "Cosmere_Mistborn");
+                        AddGene(pawn, "Cosmere_Mistborn", true);
                     } else {
-                        success = RollChance(64, out roll);
+                        success = RollChance(16, out roll);
                         Log.Warning(
                             $"Trying for Misting. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
                         if (success) TryAddRandomAllomanticGene(pawn);
@@ -69,7 +70,7 @@ namespace CosmereScadrial.Utils {
                 Log.Warning(
                     $"Trying for full feruchemist. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
                 if (success) {
-                    AddGene(pawn, "Cosmere_FullFeruchemist");
+                    AddGene(pawn, "Cosmere_FullFeruchemist", true);
                 } else {
                     success = RollChance(64, out roll);
                     Log.Warning(
@@ -125,23 +126,39 @@ namespace CosmereScadrial.Utils {
                 $"[Cosmere] Removed Cosmere_Skaa_Purity from {generated.NameFullColored} (only one parent had it)");
         }
 
-        private static void TryAddRandomAllomanticGene(Pawn pawn) {
+        public static void TryAddRandomAllomanticGene(Pawn pawn, bool canSnap = true) {
             var metal = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => x.allomancy != null)
                 .RandomElement();
-            AddGene(pawn, $"Cosmere_Misting_{metal.defName}");
+            AddGene(pawn, $"Cosmere_Misting_{metal.defName}", canSnap);
         }
 
-        private static void TryAddRandomFeruchemicalGene(Pawn pawn) {
+        public static void TryAddRandomFeruchemicalGene(Pawn pawn, bool canSnap = true) {
             var metal = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => x.feruchemy != null)
                 .RandomElement();
-            AddGene(pawn, $"Cosmere_Ferring_{metal.defName}");
+            AddGene(pawn, $"Cosmere_Ferring_{metal.defName}", canSnap);
         }
 
-        private static void AddGene(Pawn pawn, string defName) {
+        public static void AddGene(Pawn pawn, string defName, bool canSnap) {
             var gene = DefDatabase<GeneDef>.GetNamedSilentFail(defName);
             if (gene == null || pawn.genes.HasActiveGene(gene)) return;
 
-            pawn.genes.AddGene(gene, false);
+            var snapped = false;
+            if (canSnap && Rand.Chance(1f / 16f)) {
+                SnapUtility.TrySnap(pawn);
+                snapped = true;
+            }
+
+            if (snapped) {
+                pawn.genes.AddGene(gene, false);
+            } else {
+                var geneWrapperDef = DefDatabase<GeneDef>.GetNamedSilentFail("Cosmere_Scadrial_DormantMetalborn");
+                if (geneWrapperDef == null) return;
+                if (pawn.genes.GetGene(geneWrapperDef) is not DormantMetalborn geneWrapper) {
+                    geneWrapper = (DormantMetalborn)pawn.genes.AddGene(geneWrapperDef, false);
+                }
+
+                geneWrapper.genesToAdd.Add(gene);
+            }
         }
 
         private static bool IsTerris(Pawn pawn) {

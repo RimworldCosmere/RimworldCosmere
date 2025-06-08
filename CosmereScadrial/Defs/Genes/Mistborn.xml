@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Mistborn</defName>
         <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
@@ -48,7 +48,7 @@
             <li>Cosmere_Ability_Brass_Target</li>
         </abilities>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Mistborn</defName>
         <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>

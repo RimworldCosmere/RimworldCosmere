@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <IncidentDef>
+        <defName>FindLerasium</defName>
+        <workerClass>Cosmere.Incidents.IncidentWorker_FindLerasium</workerClass>
+        <category>Special</category>
+        <baseChance>0.00001</baseChance> <!-- Very low chance -->
+        <targetTags>
+            <li>Map_PlayerHome</li>
+        </targetTags>
+        <requireColonistsPresent>true</requireColonistsPresent>
+        <storytellerTags>
+            <li>Misc</li>
+        </storytellerTags>
+    </IncidentDef>
+</Defs>

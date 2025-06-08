@@ -27,6 +27,7 @@ namespace CosmereMetals {
         public static MetalDef Silver;
         public static MetalDef Nickel;
         public static MetalDef Electrum;
+        public static MetalDef Lerasium;
 
         static MetalDefOf() {
             DefOfHelper.EnsureInitializedInCtor(typeof(MetalDefOf));

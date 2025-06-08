@@ -724,7 +724,6 @@
     }
   },
   {
-    "disabled": true,
     "name": "lerasium",
     "description": "Lerasium is an exceptionally rare god metal tied to the Shard Preservation. When ingested, it transforms the user into a Mistborn, granting access to all Allomantic powers.",
     "godMetal": true,
@@ -772,6 +771,36 @@
       242,
       255,
       140
+    ],
+    "buildable": {
+      "buildings": false,
+      "items": false
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": "lerasium",
+          "count": 1
+        },
+        {
+          "item": "atium",
+          "count": 1
+        }
+      ],
+      "products": [
+        {
+          "count": 1
+        }
+      ]
+    }
+  },
+  {
+    "disabled": true,
+    "name": "trellium",
+    "description": "An alien, corrupted metal aligned with Trell's influence. It resists typical Investiture detection and interferes with other magic systems. Often associated with Hemalurgic constructs, Trellium's strange red hue and unique properties hint at a Shardic power foreign to Scadrial.",
+    "godMetal": true,
+    "color": [
+      148, 0, 37
     ],
     "buildable": {
       "buildings": false,

@@ -4,11 +4,10 @@ using RimWorld;
 using Verse;
 
 namespace CosmereScadrial {
-    [DefOf]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("ReSharper", "UnusedType.Global")]
-    public static class GeneDefOf {
+    public static partial class GeneDefOf {
         public static GeneDef Cosmere_Misting_Iron;
         public static GeneDef Cosmere_Ferring_Iron;
         public static GeneDef Cosmere_Misting_Steel;
@@ -41,12 +40,5 @@ namespace CosmereScadrial {
         public static GeneDef Cosmere_Ferring_Gold;
         public static GeneDef Cosmere_Misting_Electrum;
         public static GeneDef Cosmere_Ferring_Electrum;
-
-        public static GeneDef Cosmere_Mistborn;
-        public static GeneDef Cosmere_FullFeruchemist;
-
-        static GeneDefOf() {
-            DefOfHelper.EnsureInitializedInCtor(typeof(GeneDefOf));
-        }
     }
 }

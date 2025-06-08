@@ -29,6 +29,8 @@ namespace CosmereScadrial.Comps.Maps {
                 foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p =>
                              p.RaceProps.Humanlike && !p.Dead && !p.Position.Roofed(map))) {
                     if (SnapUtility.IsSnapped(pawn)) continue;
+                    if (!pawn.genes.HasActiveGene(GeneDefOf.Cosmere_Scadrial_DormantMetalborn)) continue;
+                    // Check if the pawn has DormantConnection
 
                     SnapUtility.TrySnap(pawn, "the mists");
                     pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_MistComa).Severity = 1.0f;
@@ -51,7 +53,7 @@ namespace CosmereScadrial.Comps.Maps {
             Find.LetterStack.ReceiveLetter(
                 "The mists arrive",
                 "As night falls, a dense, ethereal mist blankets the land. At 21:00, they will settle. Pawns outside during the night may never be the same.",
-                LetterDefOf.NegativeEvent,
+                LetterDefOf.ThreatSmall,
                 new TargetInfo(map.Center, map)
             );
         }

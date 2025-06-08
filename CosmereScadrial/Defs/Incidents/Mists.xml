@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <IncidentDef>
+    <!--IncidentDef>
         <defName>Cosmere_Scadrial_Mists</defName>
-        <workerClass>CosmereScadrial.Incidents.IncidentWorker_Mists</workerClass>
+        <workerClass>CosmereScadrial.Incidents.Worker.Mists</workerClass>
         <category>Misc</category>
         <letterLabel>The Mists Come</letterLabel>
         <letterText>As darkness falls, the mists swirl across the land. They are not just weather... they are watching.</letterText>
@@ -10,7 +10,7 @@
         <targetTags>
             <li>Map_Misc</li>
         </targetTags>
-    </IncidentDef>
+    </IncidentDef-->
     
     <HediffDef>
         <defName>Cosmere_Scadrial_MistComa</defName>
@@ -47,14 +47,50 @@
     <WeatherDef>
         <defName>Cosmere_Scadrial_MistsWeather</defName>
         <label>dense mists</label>
+        <isBad>true</isBad>
         <repeatable>true</repeatable>
         <windSpeedFactor>0.5</windSpeedFactor>
+        <accuracyMultiplier>0.5</accuracyMultiplier>
+        <favorability>Neutral</favorability>
+        <perceivePriority>1</perceivePriority>
         <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
         <ambientSounds>
-            <li>Ambience_Fog</li>
+            <li>Ambient_Wind_Fog</li>
         </ambientSounds>
         <overlayClasses>
             <li>WeatherOverlay_Fog</li>
         </overlayClasses>
+        <commonalityRainfallFactor>
+            <points>
+                <li>(0, 0)</li>
+                <li>(1300, 1)</li>
+            </points>
+        </commonalityRainfallFactor>  
+        
+        <skyColorsDay>
+            <sky>(0.8,0.8,0.8)</sky>
+            <shadow>(0.92,0.92,0.92)</shadow>
+            <overlay>(0.7,0.7,0.7)</overlay>
+            <saturation>0.9</saturation>
+        </skyColorsDay>
+        <skyColorsDusk>
+            <sky>(1,1,1)</sky>
+            <shadow>(0.92,0.92,0.92)</shadow>
+            <overlay>(0.6,0.6,0.6)</overlay>
+            <saturation>0.9</saturation>
+        </skyColorsDusk>
+        <skyColorsNightEdge>
+            <sky>(0.35,0.40,0.45)</sky>
+            <shadow>(0.92,0.92,0.92)</shadow>
+            <overlay>(0.5,0.5,0.5)</overlay>
+            <saturation>0.9</saturation>
+        </skyColorsNightEdge>
+        <skyColorsNightMid>
+            <sky>(0.35,0.40,0.45)</sky>
+            <shadow>(0.92,0.92,0.92)</shadow>
+            <overlay>(0.5,0.5,0.5)</overlay>
+            <saturation>0.9</saturation>
+        </skyColorsNightMid>
+        <!-- @TODO Add weatherThough for making pawns scared of the mists, unless they have a particular "Not afraid of mists" trait -->
     </WeatherDef>
 </Defs>

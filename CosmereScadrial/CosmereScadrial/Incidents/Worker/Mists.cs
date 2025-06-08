@@ -4,6 +4,7 @@ using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
 
+// @todo Delete
 namespace CosmereScadrial.Incidents.Worker {
     public class Mists : IncidentWorker {
         protected override bool CanFireNowSub(IncidentParms parms) {
@@ -21,11 +22,11 @@ namespace CosmereScadrial.Incidents.Worker {
 
                 foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p =>
                              p.RaceProps.Humanlike && !p.Dead && !p.Position.Roofed(map))) {
-                    if (!SnapUtility.IsSnapped(pawn)) {
-                        SnapUtility.TrySnap(pawn);
-                        pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_MistComa).Severity = 1.0f;
-                        snappedCount++;
-                    }
+                    if (SnapUtility.IsSnapped(pawn)) continue;
+                    // Check if the pawn has DormantConnection
+                    SnapUtility.TrySnap(pawn);
+                    pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_MistComa).Severity = 1.0f;
+                    snappedCount++;
                 }
 
                 Find.LetterStack.ReceiveLetter(

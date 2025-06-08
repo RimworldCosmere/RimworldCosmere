@@ -6,7 +6,7 @@ namespace CosmereScadrial.Utils {
         public static ThoughtDef SnappedThought = ThoughtDefOf.Cosmere_Scadrial_Snapped;
 
         public static void TrySnap(Pawn pawn, string cause = "") {
-            if (!IsSnapped(pawn)) return;
+            if (IsSnapped(pawn)) return;
 
             pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(SnappedThought);
             var firstMemoryOfDef = pawn.needs?.mood?.thoughts?.memories?.GetFirstMemoryOfDef(SnappedThought);

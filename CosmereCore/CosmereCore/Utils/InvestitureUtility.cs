@@ -18,7 +18,8 @@ namespace CosmereCore.Utils {
             50000, // 10th
         };
 
-        public static void AssignHeighteningFromBeUs(Pawn pawn) {
+        // ReSharper disable once InconsistentNaming
+        public static void AssignHeighteningFromBEUs(Pawn pawn) {
             if (pawn?.story?.traits == null) {
                 return;
             }

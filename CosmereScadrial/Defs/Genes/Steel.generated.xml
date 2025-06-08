@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Steel -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Steel</defName>
         <label>steel misting</label>
         <labelShortAdj>coinshot</labelShortAdj>
@@ -25,7 +25,7 @@
         </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Steel</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Steel</defName>
         <label>coinshot</label>
         <description>Can push on metals, allowing rapid movement or throwing metal objects.</description>
@@ -45,7 +45,7 @@
     </TraitDef>
     
     <!-- Ferring: Steel -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Steel</defName>
         <label>steel ferring</label>
         <labelShortAdj>steelrunner</labelShortAdj>
@@ -64,7 +64,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Steel</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Steel</defName>
         <label>steelrunner</label>
         <description>Stores physical speed, allowing for bursts of superhuman speed.</description>

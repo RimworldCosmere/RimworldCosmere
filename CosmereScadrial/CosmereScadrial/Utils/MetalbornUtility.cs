@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CosmereScadrial.Defs;
+using CosmereScadrial.Genes;
 using RimWorld;
 using Verse;
 
@@ -8,18 +9,14 @@ namespace CosmereScadrial.Utils {
         public static bool HasAnyMetalbornGene(Pawn pawn) {
             if (pawn?.genes == null) return false;
 
-            var allAllomancyGeneDefs = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => x.allomancy != null)
+            var allAllomancyGeneDefs = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading
+                .Where(x => x.allomancy != null)
                 .Select(metal => $"Cosmere_Misting_{metal.defName}");
-            var allFeruchemyGeneDefs = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => x.feruchemy != null)
+            var allFeruchemyGeneDefs = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading
+                .Where(x => x.feruchemy != null)
                 .Select(metal => $"Cosmere_Ferring_{metal.defName}");
 
-            return pawn.genes.GenesListForReading
-                .Any(gene =>
-                    allAllomancyGeneDefs.Contains(gene.def.defName)
-                    || allFeruchemyGeneDefs.Contains(gene.def.defName)
-                    || gene.def.Equals(GeneDefOf.Cosmere_Mistborn)
-                    || gene.def.Equals(GeneDefOf.Cosmere_FullFeruchemist)
-                );
+            return pawn.genes.GenesListForReading.Any(gene => gene is Metalborn && gene.Active);
         }
 
         public static void HandleMetalbornTrait(Pawn pawn) {
@@ -29,7 +26,9 @@ namespace CosmereScadrial.Utils {
                 return;
             }
 
-            if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Metalborn)) pawn.story.traits.GainTrait(new Trait(TraitDefOf.Cosmere_Metalborn));
+            if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Metalborn)) {
+                pawn.story.traits.GainTrait(new Trait(TraitDefOf.Cosmere_Metalborn));
+            }
         }
 
         public static void HandleBurningMetalHediff(Pawn pawn) {

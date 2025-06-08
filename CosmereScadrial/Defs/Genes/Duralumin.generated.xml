@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Duralumin -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Duralumin</defName>
         <label>duralumin misting</label>
         <labelShortAdj>gnat (duralumin)</labelShortAdj>
@@ -20,7 +20,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Duralumin</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Duralumin</defName>
         <label>gnat (duralumin)</label>
         <description>Enhances the next Allomantic metal used drastically, but is consumed entirely.</description>
@@ -40,7 +40,7 @@
     </TraitDef>
     
     <!-- Ferring: Duralumin -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Duralumin</defName>
         <label>duralumin ferring</label>
         <labelShortAdj>connector</labelShortAdj>
@@ -59,7 +59,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Duralumin</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Duralumin</defName>
         <label>connector</label>
         <description>Stores connection, useful for adjusting social ties or affiliations.</description>

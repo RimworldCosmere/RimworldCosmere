@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Nicrosil -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Nicrosil</defName>
         <label>nicrosil misting</label>
         <labelShortAdj>nicroburst</labelShortAdj>
@@ -20,7 +20,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Nicrosil</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Nicrosil</defName>
         <label>nicroburst</label>
         <description>Boosts another Allomancer&#x27;s power drastically.</description>
@@ -40,7 +40,7 @@
     </TraitDef>
     
     <!-- Ferring: Nicrosil -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Nicrosil</defName>
         <label>nicrosil ferring</label>
         <labelShortAdj>soulbearer</labelShortAdj>
@@ -59,7 +59,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Nicrosil</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Nicrosil</defName>
         <label>soulbearer</label>
         <description>Stores Investiture, enabling storage of magical energy.</description>

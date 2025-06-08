@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Gold -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Gold</defName>
         <label>gold misting</label>
         <labelShortAdj>augur</labelShortAdj>
@@ -20,7 +20,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Gold</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Gold</defName>
         <label>augur</label>
         <description>Shows alternate versions of oneself, based on different pasts.</description>
@@ -40,7 +40,7 @@
     </TraitDef>
     
     <!-- Ferring: Gold -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Gold</defName>
         <label>gold ferring</label>
         <labelShortAdj>bloodmaker</labelShortAdj>
@@ -59,7 +59,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Gold</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Gold</defName>
         <label>bloodmaker</label>
         <description>Stores health, allowing fast healing when tapped.</description>

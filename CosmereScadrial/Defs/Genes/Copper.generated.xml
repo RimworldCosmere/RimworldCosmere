@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Copper -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Copper</defName>
         <label>copper misting</label>
         <labelShortAdj>smoker</labelShortAdj>
@@ -20,7 +20,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Copper</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Copper</defName>
         <label>smoker</label>
         <description>Creates a &#x27;coppercloud&#x27; that hides Allomantic activity.</description>
@@ -40,7 +40,7 @@
     </TraitDef>
     
     <!-- Ferring: Copper -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Copper</defName>
         <label>copper ferring</label>
         <labelShortAdj>archivist</labelShortAdj>
@@ -59,7 +59,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Copper</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Copper</defName>
         <label>archivist</label>
         <description>Stores memories, allowing perfect recall of stored knowledge.</description>

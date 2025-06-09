@@ -2,11 +2,11 @@
 using CosmereCore.Defs;
 using Verse;
 
-namespace CosmereCore.GameComponent {
-    public class Shards : Verse.GameComponent {
+namespace CosmereCore.Comps.Game {
+    public class Shards : GameComponent {
         public HashSet<ShardDef> enabledShardDefs = new HashSet<ShardDef>();
 
-        public Shards(Game game) { }
+        public Shards(Verse.Game game) { }
 
         public override void ExposeData() {
             Scribe_Collections.Look(ref enabledShardDefs, "enabledShardDefs", LookMode.Def);

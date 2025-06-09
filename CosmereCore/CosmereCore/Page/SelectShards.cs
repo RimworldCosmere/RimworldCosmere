@@ -24,8 +24,7 @@ namespace CosmereCore.Pages {
             UIUtil.WithFont(GameFont.Medium,
                 () => Widgets.Label(inRect.TopPartPixels(topMargin), "Choose which Shards are active in this game:"));
 
-            var grouped = DefDatabase<ShardDef>.AllDefsListForReading
-                .GroupBy(s => s.planet)
+            var grouped = DefDatabase<ShardDef>.AllDefsListForReading.GroupBy(s => s.planet)
                 .OrderBy(g => g.Key == "N/A" ? 0 : 1)
                 .ThenBy(g => g.Key)
                 .ToList();
@@ -48,8 +47,9 @@ namespace CosmereCore.Pages {
                     var rowRect = new Rect(0f, y, viewRect.width, rowHeight);
                     var checkRect = new Rect(8f, y + 10f, 24f, 24f);
 
-                    var isEnabled = ShardUtility.IsEnabled(shard);
-                    var isBlockedByOther = !isEnabled && shard.mutuallyExclusiveWith?.Any(ShardUtility.IsEnabled) == true;
+                    var isEnabled = ShardUtility.AreAnyEnabled(shard);
+                    var isBlockedByOther =
+                        !isEnabled && shard.mutuallyExclusiveWith?.Any(ShardUtility.IsEnabled) == true;
 
                     var originalGUIState = GUI.enabled;
                     GUI.enabled = !isBlockedByOther;
@@ -64,8 +64,7 @@ namespace CosmereCore.Pages {
                             ShardUtility.Enable(shard);
                             Messages.Message($"Enabled shard: {shard.label.CapitalizeFirst()}",
                                 MessageTypeDefOf.PositiveEvent);
-                        }
-                        else {
+                        } else {
                             ShardUtility.shards.enabledShardDefs.Remove(shard);
                             Messages.Message($"Disabled shard: {shard.label.CapitalizeFirst()}",
                                 MessageTypeDefOf.NeutralEvent);

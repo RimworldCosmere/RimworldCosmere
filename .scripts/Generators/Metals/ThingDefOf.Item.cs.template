@@ -1,0 +1,16 @@
+#nullable disable
+using System.Diagnostics.CodeAnalysis;
+using CosmereMetals.Defs;
+using RimWorld;
+using Verse;
+
+namespace CosmereMetals {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [SuppressMessage("ReSharper", "UnusedType.Global")]
+    public static partial class ThingDefOf {        
+        {{#each metals as | metal |}}
+        public static ThingDef {{capitalize metal.Name}};
+        {{/each}}
+    }
+}

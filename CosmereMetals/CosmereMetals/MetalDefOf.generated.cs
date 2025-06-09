@@ -28,6 +28,9 @@ namespace CosmereMetals {
         public static MetalDef Nickel;
         public static MetalDef Electrum;
         public static MetalDef Lerasium;
+        public static MetalDef Atium;
+        public static MetalDef Harmonium;
+        public static MetalDef Trellium;
 
         static MetalDefOf() {
             DefOfHelper.EnsureInitializedInCtor(typeof(MetalDefOf));

@@ -22,7 +22,9 @@ export class MetalRegistry {
         Description: metal.description,
         DefName: metal.defName,
         GodMetal: metal.godMetal ?? false,
+        Stackable: metal.stackable ?? true,
         MaxAmount: metal.maxAmount ?? 100,
+        MarketValue: metal.marketValue ?? (metal.alloy ? 2 : 0.5),
         Color: metal.color,
         ColorTwo: metal.colorTwo,
         Allomancy: metal.allomancy ? new MetalAllomancyInfo({

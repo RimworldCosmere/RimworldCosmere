@@ -5,6 +5,7 @@
         <label>Steel</label>
         <description>Steel is a durable alloy of iron and carbon, valued for its strength, rigidity, and versatility. Ubiquitous across weaponry, construction, and tools, it forms the foundation of advanced metallurgy.</description>
         <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Steel</texPath>
         </graphicData>
         <stuffProps>

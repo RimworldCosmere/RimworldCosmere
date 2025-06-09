@@ -9,11 +9,11 @@ using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Utils {
     public static class GeneInheritanceUtility {
-        private static bool isHarmony => ShardUtility.IsEnabled("Harmony");
+        private static bool isHarmony => ShardUtility.AreAnyEnabled(ShardDefOf.Harmony);
 
-        private static bool isRuin => ShardUtility.IsEnabled("Ruin");
+        private static bool isRuin => ShardUtility.AreAnyEnabled(ShardDefOf.Ruin);
 
-        private static bool isPreservation => ShardUtility.IsEnabled("Preservation");
+        private static bool isPreservation => ShardUtility.AreAnyEnabled(ShardDefOf.Preservation);
 
         public static void TryAssignScadrialGenes(Pawn pawn) {
             if (pawn?.genes == null || !pawn.RaceProps.Humanlike) {

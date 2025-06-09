@@ -101,5 +101,14 @@
         </li>
       </parts>
     </scenario>
+    <modExtensions>
+      <li Class="CosmereCore.ModExtensions.Shards">
+        <shards>
+          <li>Ruin</li>
+          <li>Preservation</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
   </ScenarioDef>
 </Defs>

@@ -27,9 +27,9 @@
     - Allomantic and Feruchemical powers are inheritable via genes
     - Supports player reproduction, pawn generation, and custom xenotypes
 
-- 🌫️ **Snapping & Awakening - Coming Soon**
+- 🌫️ **Snapping**
     - Pawns can 'snap' under stress, unlocking latent Metalborn potential
-    - Includes chance-based awakenings during trauma or atmospheric events
+    - Includes chance-based snaps during trauma or atmospheric events
 
 - 💎 **New Traits, Thoughts, and Needs**
     - Investiture is gained by burning metals
@@ -48,7 +48,7 @@
 - Compatible with Biotech, Ideology, Royalty, and Anomaly
 - Designed for RimWorld 1.5
 - Safe to add at game start
-- Mid-save support is partial — best used in a new colony
+- Mid-save support is partial — best used in a new colony (you wont get all the metals)
 
 ---
 

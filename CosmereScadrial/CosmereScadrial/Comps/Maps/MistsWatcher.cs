@@ -54,6 +54,7 @@ namespace CosmereScadrial.Comps.Maps {
             mistsEndTick = mistsStartTick + GenDate.TicksPerHour * 12; // Lasts until 06:00
 
             map.weatherManager.TransitionTo(WeatherDefOf.Cosmere_Scadrial_MistsWeather);
+
             Find.LetterStack.ReceiveLetter(
                 "The mists arrive",
                 "As night falls, a dense, ethereal mist blankets the land. At 20:00, they will settle. Pawns outside during the night may never be the same.",

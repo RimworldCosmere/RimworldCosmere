@@ -5,6 +5,7 @@
         <label>Nicrosil</label>
         <description>Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.</description>
         <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Nicrosil</texPath>
         </graphicData>
         <stuffProps>

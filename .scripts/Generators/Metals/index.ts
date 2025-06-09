@@ -9,7 +9,9 @@ const metalDefTemplate= compileTemplate(__dirname, 'MetalDef.xml.template');
 const metalDefOutputDir = resolve(METALS_MOD_DIR, 'Defs', 'Metal');
 
 const metalDefOfTemplate = compileTemplate(__dirname, 'MetalDefOf.cs.template');
-const metalDefOfOutputDir = resolve(METALS_MOD_DIR, 'CosmereMetals');
+const thingDefOfMineableTemplate = compileTemplate(__dirname, 'ThingDefOf.Mineable.cs.template');
+const thingDefOfItemTemplate = compileTemplate(__dirname, 'ThingDefOf.Item.cs.template');
+const cosmereMetals = resolve(METALS_MOD_DIR, 'CosmereMetals');
 
 const mineableTemplate = compileTemplate(__dirname, 'MineableMetalDef.xml.template');
 const mineableOutputDir = resolve(METALS_MOD_DIR, 'Defs', 'Mineable');
@@ -28,7 +30,7 @@ export default function() {
   }
 
   console.log("Generating MetalDefOf");
-  writeGeneratedFile(metalDefOfOutputDir, 'MetalDefOf.generated.cs', metalDefOfTemplate({metals}));
+  writeGeneratedFile(cosmereMetals, 'MetalDefOf.generated.cs', metalDefOfTemplate({metals}));
   
   
   console.log("Generating Mineable Metal ThingDefs");
@@ -36,11 +38,16 @@ export default function() {
   for (const metal of mineable) {
     writeGeneratedFile(mineableOutputDir, upperFirst(metal.Name) + '.generated.xml', mineableTemplate({metal}));
   }
+  console.log("Generating ThingDefOf.Mineable");
+  writeGeneratedFile(cosmereMetals, 'ThingDefOf.Mineable.generated.cs', thingDefOfMineableTemplate({metals: mineable}));
+  
   console.log("Generating Metal Item ThingDefs");
-  const items = Object.values(MetalRegistry.Metals).filter((x) => !x.GodMetal);
+  const items = Object.values(MetalRegistry.Metals);
   for (const metal of items) {
     writeGeneratedFile(itemOutputDir, upperFirst(metal.Name) + '.generated.xml', itemTemplate({metal}));
   }
+  console.log("Generating ThingDefOf.Items");
+  writeGeneratedFile(cosmereMetals, 'ThingDefOf.Items.generated.cs', thingDefOfItemTemplate({metals: items}));
   
   // @todo Implement the god metals
   console.log("Generating Alloy Item ThingDefs");

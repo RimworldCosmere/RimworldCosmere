@@ -57,7 +57,7 @@
         </stuffProps>
     </ThingDef>
     
-    <!-- COal and Charcoal -->
+    <!-- Coal and Charcoal -->
     <ThingDef ParentName="AbstractMineable">
         <defName>MineableCoal</defName>
         <label>Coal Ore</label>

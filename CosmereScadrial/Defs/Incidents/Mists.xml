@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <!--IncidentDef>
-        <defName>Cosmere_Scadrial_Mists</defName>
-        <workerClass>CosmereScadrial.Incidents.Worker.Mists</workerClass>
-        <category>Misc</category>
-        <letterLabel>The Mists Come</letterLabel>
-        <letterText>As darkness falls, the mists swirl across the land. They are not just weather... they are watching.</letterText>
-        <letterDef>PositiveEvent</letterDef>
-        <targetTags>
-            <li>Map_Misc</li>
-        </targetTags>
-    </IncidentDef-->
-    
     <HediffDef>
         <defName>Cosmere_Scadrial_MistComa</defName>
         <label>Mist Coma</label>

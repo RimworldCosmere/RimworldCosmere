@@ -2,15 +2,12 @@
 <Defs>
     <IncidentDef>
         <defName>FindLerasium</defName>
-        <workerClass>Cosmere.Incidents.IncidentWorker_FindLerasium</workerClass>
+        <workerClass>CosmereScadrial.Incidents.Worker.FindLerasium</workerClass>
         <category>Special</category>
-        <baseChance>0.00001</baseChance> <!-- Very low chance -->
+        <baseChance>0.00001</baseChance>
         <targetTags>
             <li>Map_PlayerHome</li>
         </targetTags>
         <requireColonistsPresent>true</requireColonistsPresent>
-        <storytellerTags>
-            <li>Misc</li>
-        </storytellerTags>
     </IncidentDef>
 </Defs>

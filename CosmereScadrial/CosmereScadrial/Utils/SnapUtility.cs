@@ -5,7 +5,7 @@ namespace CosmereScadrial.Utils {
     public class SnapUtility {
         public static ThoughtDef SnappedThought = ThoughtDefOf.Cosmere_Scadrial_Snapped;
 
-        public static void TrySnap(Pawn pawn, string cause = "") {
+        public static void TrySnap(Pawn pawn, string cause = "", bool withMessage = true) {
             if (IsSnapped(pawn)) return;
 
             pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(SnappedThought);
@@ -14,11 +14,14 @@ namespace CosmereScadrial.Utils {
             firstMemoryOfDef.moodOffset = 1;
             firstMemoryOfDef.moodPowerFactor = 0f;
 
+            if (!withMessage || !pawn.Faction.IsPlayer) return;
             Find.LetterStack.ReceiveLetter(
-                "A pawn has snapped!",
-                $"{pawn.NameFullColored} has snapped and gained access to some new Investiture related powers!",
-                LetterDefOf.PositiveEvent,
-                pawn
+                LetterMaker.MakeLetter(
+                    "Pawn Snapped!",
+                    $"{pawn.NameFullColored} has snapped and gained access to some new Investiture related powers!",
+                    LetterDefOf.PositiveEvent,
+                    pawn
+                )
             );
         }
 

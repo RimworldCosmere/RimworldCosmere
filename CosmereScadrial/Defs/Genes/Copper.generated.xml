@@ -18,6 +18,9 @@
                 <metal>Copper</metal>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_Copper_Aura</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Copper</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">

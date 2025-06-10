@@ -46,6 +46,8 @@
             <li>Cosmere_Ability_Zinc_Target</li>
             <li>Cosmere_Ability_Brass_Aura</li>
             <li>Cosmere_Ability_Brass_Target</li>
+            <li>Cosmere_Ability_Copper_Aura</li>
+            <li>Cosmere_Ability_Bronze_Aura</li>
         </abilities>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">

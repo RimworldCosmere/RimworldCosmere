@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <defName>Cosmere_Ability_Bronze_Aura</defName>
+        <label>bronze aura</label>
+        <description>Allows the user to detect the rhythmic pulses of nearby Allomantic powers.</description>
+        <metal>Bronze</metal>
+        <hediff>Cosmere_Hediff_BronzeAura</hediff>
+        <beuPerTick>0.0004</beuPerTick>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

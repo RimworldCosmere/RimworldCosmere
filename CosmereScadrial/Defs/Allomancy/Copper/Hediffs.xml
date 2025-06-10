@@ -2,18 +2,18 @@
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_CopperAura</defName>
-        <label>cmitting coppercloud</label>
+        <label>emitting coppercloud</label>
         <description>The Allomancer is burning copper, generating a Coppercloud that conceals Allomantic pulses within its radius.</description>
         <comps>
             <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
-                <hediff>Cosmere_Hediff_Clouded</hediff>
+                <hediff>Cosmere_Hediff_CopperClouded</hediff>
                 <verb>enshrouded</verb>
             </li>
         </comps>
     </HediffDef>
     
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_Clouded</defName>
+        <defName>Cosmere_Hediff_CopperClouded</defName>
         <label>enshroud in copper</label>
         <description>This pawn has been enshrouded by a nearby Allomancer burning copper. They are more resilient to source of investiture.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
@@ -22,7 +22,7 @@
                 <baseTicks>600</baseTicks> <!-- 10 seconds -->
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
-                <thought>Cosmere_Thought_Clouded</thought>
+                <thought>Cosmere_Thought_CopperClouded</thought>
                 <moodOffset>1</moodOffset>
             </li>
         </comps>

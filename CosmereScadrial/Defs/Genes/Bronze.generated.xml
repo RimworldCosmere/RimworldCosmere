@@ -18,6 +18,9 @@
                 <metal>Bronze</metal>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_Bronze_Aura</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Bronze</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">

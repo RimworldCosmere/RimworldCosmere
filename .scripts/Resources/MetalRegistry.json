@@ -283,7 +283,10 @@
       "description": "Creates a 'coppercloud' that hides Allomantic activity.",
       "group": "mental",
       "axis": "internal",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Copper_Aura"
+      ]
     },
     "feruchemy": {
       "userName": "archivist",
@@ -319,7 +322,10 @@
       "description": "Detects other Allomancers using powers.",
       "group": "mental",
       "axis": "internal",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Bronze_Aura"
+      ]
     },
     "feruchemy": {
       "userName": "sentry",

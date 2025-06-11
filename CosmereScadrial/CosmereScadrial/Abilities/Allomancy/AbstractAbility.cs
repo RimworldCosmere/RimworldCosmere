@@ -9,6 +9,7 @@ using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Abilities.Allomancy {
     public abstract partial class AbstractAbility : Ability {
+        private TargetFlags? cachedTargetFlags;
         protected int flareStartTick = -1;
         protected internal bool shouldFlare;
         public BurningStatus? status;
@@ -32,7 +33,13 @@ namespace CosmereScadrial.Abilities.Allomancy {
             }
         }
 
-        protected TargetFlags targetFlags => TargetFlagsExtensions.FromAbilityDef(def);
+        protected TargetFlags targetFlags {
+            get {
+                cachedTargetFlags ??= TargetFlagsExtensions.FromAbilityDef(def);
+
+                return (TargetFlags)cachedTargetFlags;
+            }
+        }
 
         public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 

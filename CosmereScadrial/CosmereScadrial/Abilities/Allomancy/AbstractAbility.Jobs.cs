@@ -19,6 +19,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
             }
 
             if (targetFlags.Has(TargetFlags.Self) && targetPawn == pawn) return true;
+            if (!targetFlags.Has(TargetFlags.Self) && targetPawn == pawn) return false;
             if (targetFlags.Has(TargetFlags.Pawns) && targetPawn != null) return true;
             if (targetFlags.Has(TargetFlags.Fires) && targetPawn != null && targetPawn.IsBurning()) return true;
             if (targetFlags.Has(TargetFlags.Fires) && targetInfo.HasThing && targetInfo.Thing.IsBurning()) return true;
@@ -61,7 +62,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
                 return true;
             }
 
-            return base.CanApplyOn(targetInfo);
+            return false;
         }
 
         public virtual bool CanActivate(BurningStatus activationStatus, out string reason) {

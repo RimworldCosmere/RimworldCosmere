@@ -23,10 +23,10 @@ namespace CosmereScadrial.Abilities.Allomancy {
             status = BurningStatus.Off;
         }
 
-        protected override sealed bool toggleable => false;
+        protected sealed override bool toggleable => false;
 
-        public override bool CanApplyOn(LocalTargetInfo target) {
-            if (!base.CanApplyOn(target)) return false;
+        public override bool CanApplyOn(LocalTargetInfo targetInfo) {
+            if (!base.CanApplyOn(targetInfo)) return false;
 
             return pawn.inventory?.innerContainer.Contains(CoinThingDefOf.Cosmere_Clip) ?? false;
         }

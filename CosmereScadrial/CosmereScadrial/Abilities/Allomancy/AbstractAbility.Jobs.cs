@@ -11,46 +11,57 @@ namespace CosmereScadrial.Abilities.Allomancy {
             yield break;
         }
 
-        public override bool CanApplyOn(LocalTargetInfo target) {
-            var targetPawn = target.Pawn;
-            if (targetFlags.Has(TargetFlags.Locations) && !target.HasThing && !target.TryGetPawn(out _)) return true;
+        public override bool CanApplyOn(LocalTargetInfo targetInfo) {
+            var targetPawn = targetInfo.Pawn;
+            if (targetFlags.Has(TargetFlags.Locations) && !targetInfo.HasThing &&
+                !targetInfo.TryGetPawn(out _)) {
+                return true;
+            }
+
             if (targetFlags.Has(TargetFlags.Self) && targetPawn == pawn) return true;
             if (targetFlags.Has(TargetFlags.Pawns) && targetPawn != null) return true;
             if (targetFlags.Has(TargetFlags.Fires) && targetPawn != null && targetPawn.IsBurning()) return true;
-            if (targetFlags.Has(TargetFlags.Fires) && target.HasThing && target.Thing.IsBurning()) return true;
-            if (targetFlags.Has(TargetFlags.Fires) && !target.HasThing &&
-                target.Cell.ContainsStaticFire(pawn.Map)) {
+            if (targetFlags.Has(TargetFlags.Fires) && targetInfo.HasThing && targetInfo.Thing.IsBurning()) return true;
+            if (targetFlags.Has(TargetFlags.Fires) && !targetInfo.HasThing &&
+                targetInfo.Cell.ContainsStaticFire(pawn.Map)) {
                 return true;
             }
 
-            if (targetFlags.Has(TargetFlags.Buildings) && targetPawn == null && target.HasThing &&
-                target.Thing.def.category == ThingCategory.Building) {
+            if (targetFlags.Has(TargetFlags.Buildings) && targetPawn == null && targetInfo.HasThing &&
+                targetInfo.Thing.def.category == ThingCategory.Building) {
                 return true;
             }
 
-            if (targetFlags.Has(TargetFlags.Items) && targetPawn == null && target.HasThing &&
-                target.Thing.def.category == ThingCategory.Item) {
+            if (targetFlags.Has(TargetFlags.Items) && targetPawn == null && targetInfo.HasThing &&
+                targetInfo.Thing.def.category == ThingCategory.Item) {
                 return true;
             }
 
-            if (targetFlags.Has(TargetFlags.Animals) && targetPawn != null && target.Thing.def.race.Animal) return true;
-            if (targetFlags.Has(TargetFlags.Humans) && targetPawn != null && target.Thing.def.race.Humanlike) {
+            if (targetFlags.Has(TargetFlags.Animals) && targetPawn != null &&
+                targetInfo.Thing.def.race.Animal) {
                 return true;
             }
 
-            if (targetFlags.Has(TargetFlags.Mechs) && targetPawn != null && target.Thing.def.race.IsMechanoid) {
+            if (targetFlags.Has(TargetFlags.Humans) && targetPawn != null && targetInfo.Thing.def.race.Humanlike) {
                 return true;
             }
 
-            if (targetFlags.Has(TargetFlags.Plants) && targetPawn == null && target.HasThing &&
-                target.Thing.def.plant != null) {
+            if (targetFlags.Has(TargetFlags.Mechs) && targetPawn != null && targetInfo.Thing.def.race.IsMechanoid) {
+                return true;
+            }
+
+            if (targetFlags.Has(TargetFlags.Plants) && targetPawn == null && targetInfo.HasThing &&
+                targetInfo.Thing.def.plant != null) {
                 return true;
             }
 
             if (targetFlags.Has(TargetFlags.Mutants) && targetPawn is { IsMutant: true }) return true;
-            if (targetFlags.Has(TargetFlags.WorldCell) && !target.HasThing && !target.TryGetPawn(out _)) return true;
+            if (targetFlags.Has(TargetFlags.WorldCell) && !targetInfo.HasThing &&
+                !targetInfo.TryGetPawn(out _)) {
+                return true;
+            }
 
-            return base.CanApplyOn(target);
+            return base.CanApplyOn(targetInfo);
         }
 
         public virtual bool CanActivate(BurningStatus activationStatus, out string reason) {
@@ -68,16 +79,24 @@ namespace CosmereScadrial.Abilities.Allomancy {
             return true;
         }
 
-        public override void QueueCastingJob(LocalTargetInfo target, LocalTargetInfo dest) {
-            QueueCastingJob(target, dest, false);
+        public override void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
+            QueueCastingJob(targetInfo, dest, false);
         }
 
-        public void QueueCastingJob(LocalTargetInfo target, LocalTargetInfo destination, bool flare) {
+        public void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo destination, bool flare) {
+            target = targetInfo;
             shouldFlare = flare;
-            base.QueueCastingJob(target, destination);
+            base.QueueCastingJob(targetInfo, destination);
         }
 
-        public override Job GetJob(LocalTargetInfo target, LocalTargetInfo destination) {
+        public override Job GetJob(LocalTargetInfo targetInfo, LocalTargetInfo destination) {
+            if (shouldFlare) {
+                UpdateStatus(status == BurningStatus.Flaring ? BurningStatus.Off : BurningStatus.Flaring);
+            } else {
+                UpdateStatus(PawnUtility.IsAsleep(pawn) ? BurningStatus.Passive :
+                    atLeastPassive ? BurningStatus.Off : BurningStatus.Burning);
+            }
+
             var job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, target);
             job.ability = this;
             job.verbToUse = verb;

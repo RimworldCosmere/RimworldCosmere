@@ -7,5 +7,6 @@
         <metal>Aluminum</metal>
         <hediff>Cosmere_Hediff_Aluminum</hediff>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.AluminumAbility</abilityClass>
+        <beuPerTick>0.0001</beuPerTick>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

@@ -45,8 +45,9 @@
 
 ## 📦 Use & Compatibility
 
-- Compatible with Biotech, Ideology, Royalty, and Anomaly
-- Designed for RimWorld 1.5
+- Requires Biotech
+- Compatible with Ideology, Royalty, and Anomaly
+- Designed for RimWorld 1.5 (1.6 coming soon!)
 - Safe to add at game start
 - Mid-save support is partial — best used in a new colony (you wont get all the metals)
 

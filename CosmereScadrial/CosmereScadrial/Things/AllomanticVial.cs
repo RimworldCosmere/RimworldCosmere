@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CosmereCore.Utils;
 using CosmereMetals.ModExtensions;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
@@ -28,6 +29,8 @@ namespace CosmereScadrial.Things {
                 } else {
                     return false;
                 }
+
+                if (InvestitureDetector.IsShielded(pawn)) return false;
 
                 if (PawnUtility.IsAsleep(pawn)) return false;
 
@@ -60,6 +63,11 @@ namespace CosmereScadrial.Things {
 
                     yield break;
                 }
+            }
+
+            if (InvestitureDetector.IsShielded(pawn)) {
+                yield return new FloatMenuOption("Cannot ingest: currently shielded", null);
+                yield break;
             }
 
             var metal = metals.First();

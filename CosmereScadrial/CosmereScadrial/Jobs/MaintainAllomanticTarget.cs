@@ -3,7 +3,6 @@ using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Abilities.Hediffs.Comps;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Utils;
-using UnityEngine;
 using Verse;
 using Verse.AI;
 using HediffUtility = CosmereScadrial.Utils.HediffUtility;
@@ -20,7 +19,8 @@ namespace CosmereScadrial.Jobs {
         protected virtual bool targetIsPawn => targetPawn != null;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed) {
-            return pawn.Reserve(targetPawn, job, errorOnFailed: errorOnFailed, maxPawns: int.MaxValue, stackCount: 1, ignoreOtherReservations: true);
+            return pawn.Reserve(targetPawn, job, errorOnFailed: errorOnFailed, maxPawns: int.MaxValue, stackCount: 1,
+                ignoreOtherReservations: true);
         }
 
         protected override IEnumerable<Toil> MakeNewToils() {
@@ -43,13 +43,13 @@ namespace CosmereScadrial.Jobs {
 
                     // Maintain proximity
                     MaintainProximity();
-                    
+
                     // If we arent close enough to the pawn, update burnrate to 0, and get closer
                     if (PawnUtility.DistanceBetween(pawn, targetPawn) > ability.def.verbProperties.range) {
                         UpdateBurnRate(0f);
                         return;
                     }
-            
+
                     var duralumin = AllomancyUtility.GetDuraluminBurn(pawn);
                     duralumin?.Burn();
 
@@ -71,10 +71,10 @@ namespace CosmereScadrial.Jobs {
 
         protected virtual bool ShouldStopJob() {
             if (pawn.Downed || pawn.Dead || targetIsPawn && (targetPawn.Dead || targetPawn.Downed)) {
-                return false;
+                return true;
             }
 
-            if (!AllomancyUtility.CanUseMetal(pawn, ability.metal)) return false;
+            if (!AllomancyUtility.CanUseMetal(pawn, ability.metal)) return true;
 
             return !pawn.CanReach(TargetA, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell, Danger.None);
         }
@@ -82,7 +82,7 @@ namespace CosmereScadrial.Jobs {
         protected virtual void MaintainProximity() {
             var distance = pawn.Position.DistanceTo(TargetA.Cell);
 
-            if (distance > job.followRadius && pawn.pather.MovingNow == false) {
+            if (distance > job.followRadius && !pawn.pather.MovingNow) {
                 // Only re-path if not already moving, avoids constant path spam
                 pawn.pather.StartPath(TargetA, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell);
             } else if (distance <= job.followRadius && pawn.pather.MovingNow) {

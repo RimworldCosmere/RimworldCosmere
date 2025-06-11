@@ -33,6 +33,11 @@ namespace CosmereScadrial.Jobs {
 
             var toil = ToilMaker.MakeToil(nameof(CastAllomanticAbilityAtTarget));
             toil.initAction = () => {
+                if (ShouldStopJob()) {
+                    EndJobWith(JobCondition.Incompletable);
+                    return;
+                }
+
                 // Ensure the burn rate is set properly
                 UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
 
@@ -41,6 +46,10 @@ namespace CosmereScadrial.Jobs {
             toil.defaultCompleteMode = ToilCompleteMode.Instant;
 
             yield return toil;
+        }
+
+        protected virtual bool ShouldStopJob() {
+            return pawn.Downed || pawn.Dead || !AllomancyUtility.CanUseMetal(pawn, ability.metal);
         }
 
         protected virtual void UpdateBurnRate(float desiredBurnRate) {

@@ -1,4 +1,5 @@
 using CosmereCore.Needs;
+using CosmereCore.Utils;
 using CosmereMetals.ModExtensions;
 using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using CosmereScadrial.Comps.Things;
@@ -105,6 +106,7 @@ namespace CosmereScadrial.Utils {
 
         public static bool PawnHasVialForMetal(Pawn pawn, MetallicArtsMetalDef metal, bool allowMultiVial = false) {
             if (metal.Equals(MetallicArtsMetalDefOf.Duralumin)) return false;
+            if (InvestitureDetector.IsShielded(pawn)) return false;
 
             if (pawn?.inventory?.innerContainer == null) return false;
 

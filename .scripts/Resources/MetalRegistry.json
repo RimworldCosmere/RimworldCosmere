@@ -369,7 +369,10 @@
       "description": "Wipes away all other metal reserves.",
       "group": "enhancement",
       "axis": "internal",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Aluminum"
+      ]
     },
     "feruchemy": {
       "userName": "trueself",
@@ -814,7 +817,9 @@
     "stackable": false,
     "marketValue": 10000,
     "color": [
-      148, 0, 37
+      148,
+      0,
+      37
     ],
     "buildable": {
       "buildings": false,

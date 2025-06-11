@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CosmereCore.Utils;
 using CosmereScadrial.Flags;
 using RimWorld;
 using Verse;
@@ -65,7 +66,8 @@ namespace CosmereScadrial.Abilities.Allomancy {
             return false;
         }
 
-        public virtual bool CanActivate(BurningStatus activationStatus, out string reason) {
+        public virtual bool CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus, out string reason,
+            bool ignoreInvestiture = false) {
             if (!metalBurning.CanBurn(metal, def.beuPerTick)) {
                 reason = "MenuNoReserves".Translate(metal.LabelCap);
                 return false;
@@ -73,6 +75,11 @@ namespace CosmereScadrial.Abilities.Allomancy {
 
             if (activationStatus == BurningStatus.Flaring && PawnUtility.IsAsleep(pawn)) {
                 reason = "MenuCannotFlareAsleep".Translate();
+                return false;
+            }
+
+            if (!ignoreInvestiture && targetInfo.Pawn != null && InvestitureDetector.IsShielded(targetInfo.Pawn)) {
+                reason = "TargetShielded".Translate(targetInfo.Pawn.LabelShortCap);
                 return false;
             }
 

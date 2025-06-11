@@ -6,7 +6,7 @@ namespace CosmereCore.Utils {
     public static class InvestitureDetector {
         public static bool HasInvestiture(Thing thing) {
             if (IsInsideCoppercloud(thing)) return false;
-            if (IsAluminumShielded(thing)) return false;
+            if (IsShielded(thing)) return false;
 
             if (thing is Pawn pawn) {
                 return pawn.story?.traits?.HasTrait(TraitDefOf.Cosmere_Invested) ?? false;
@@ -46,9 +46,10 @@ namespace CosmereCore.Utils {
             return false;
         }
 
-        public static bool IsAluminumShielded(Thing thing) {
+        public static bool IsShielded(Thing thing) {
             if (IsInAluminumRoom(thing)) return true;
             if (IsBurningAluminum(thing as Pawn)) return true;
+            //if (IsReceivingChromium(thing as Pawn)) return true;
 
             return false;
         }
@@ -74,7 +75,15 @@ namespace CosmereCore.Utils {
                 return false;
             }
 
-            return pawn?.health?.hediffSet?.HasHediff(HediffDef.Named("Cosmere_Hediff_AluminumShield")) ?? false;
+            return pawn?.health?.hediffSet?.HasHediff(HediffDef.Named("Cosmere_Hediff_Aluminum")) ?? false;
+        }
+
+        public static bool IsReceivingChromium(Pawn pawn) {
+            if (!ModsConfig.IsActive("cryptiklemur.cosmere.scadrial")) {
+                return false;
+            }
+
+            return pawn?.health?.hediffSet?.HasHediff(HediffDef.Named("Cosmere_Hediff_Chromium")) ?? false;
         }
     }
 }

@@ -48,7 +48,8 @@ namespace CosmereScadrial.FloatMenu {
             if (ability.status == BurningStatus.Flaring && target == ability.target) {
                 action = () => ability.UpdateStatus(Event.current.control ? BurningStatus.Burning : BurningStatus.Off);
                 tooltip = $"{ability.def.description}\n\n(Ctrl-click to de-flare)";
-                Label = ability.GetRightClickLabel(target, Event.current.control ? BurningStatus.Burning : BurningStatus.Off);
+                Label = ability.GetRightClickLabel(target,
+                    Event.current.control ? BurningStatus.Burning : BurningStatus.Off);
                 return;
             }
 
@@ -63,7 +64,8 @@ namespace CosmereScadrial.FloatMenu {
             }
 
             // By default, we are turning on the ability, on the target at the cell, flaring if control is held
-            var disabled = !ability.CanActivate(Event.current.control ? BurningStatus.Flaring : BurningStatus.Burning, out var reason);
+            var disabled = !ability.CanActivate(target,
+                Event.current.control ? BurningStatus.Flaring : BurningStatus.Burning, out var reason);
             action = disabled ? null : () => ability.QueueCastingJob(target, target.Cell, Event.current.control);
 
             // If we are already using this ability on one target, that isnt this one, turn off the ability, and activate it on the new one
@@ -76,7 +78,8 @@ namespace CosmereScadrial.FloatMenu {
                 };
             }*/
 
-            Label = ability.GetRightClickLabel(target, Event.current.control ? BurningStatus.Flaring : BurningStatus.Burning, reason);
+            Label = ability.GetRightClickLabel(target,
+                Event.current.control ? BurningStatus.Flaring : BurningStatus.Burning, reason);
             tooltip = $"{ability.def.description}\n\n(Ctrl-click to flare)";
         }
     }

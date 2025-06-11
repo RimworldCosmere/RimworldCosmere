@@ -7,8 +7,6 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
     public class AllomanticHediff : HediffWithComps {
         public List<AbstractAbility> sourceAbilities = [];
 
-        public override bool ShouldRemove => sourceAbilities.Count == 0 || base.ShouldRemove;
-
         public override string LabelBase =>
             base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");
 
@@ -21,27 +19,25 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
             Severity = CalculateSeverity();
         }
 
-        public void RemoveSource(AbstractAbility sourceAbility, bool recalculate = true) {
+        public void RemoveSource(AbstractAbility sourceAbility) {
             if (!sourceAbilities.Contains(sourceAbility)) return;
 
             Log.Warning(
                 $"{sourceAbility.pawn.NameFullColored} removing {def.defName} hediff from {pawn.NameFullColored}");
             sourceAbilities.Remove(sourceAbility);
-            if (recalculate) Severity = CalculateSeverity();
         }
 
         public override void Tick() {
             var toRemove = sourceAbilities.Where(x => x.status == BurningStatus.Off || x.pawn.DestroyedOrNull())
                 .ToArray();
             foreach (var ability in toRemove) {
-                RemoveSource(ability, false);
+                RemoveSource(ability);
             }
 
-            Severity = CalculateSeverity();
             base.Tick();
         }
 
-        protected virtual float CalculateSeverity() {
+        protected float CalculateSeverity() {
             return sourceAbilities.Sum(x => x.GetStrength());
         }
 

@@ -29,30 +29,22 @@ namespace CosmereScadrial.Jobs {
                 .AddFinishAction(_ => UpdateBurnRate(0f));
 
             yield return Toils_Combat.GotoCastPosition(TargetIndex.A, maxRangeFactor: 0.95f);
+            yield return Toils_General.DoAtomic(() => { ability.UpdateStatus((BurningStatus)job.count); });
 
             var toil = ToilMaker.MakeToil(nameof(CastAllomanticAbilityAtTarget));
             toil.initAction = () => {
                 // Ensure the burn rate is set properly
-                DoBurn();
+                UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
 
                 MoveThing(TargetA.Thing);
             };
             toil.defaultCompleteMode = ToilCompleteMode.Instant;
-            //toil.AddFinishAction(() => UpdateBurnRate(0f));
 
             yield return toil;
         }
 
-        protected virtual void DoBurn() {
-            // Status is always null here, it shouldnt be
-            UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
-        }
-
         protected virtual void UpdateBurnRate(float desiredBurnRate) {
-            if (!Mathf.Approximately(metalBurning.GetBurnRateForMetalDef(ability.metal, ability.def),
-                    desiredBurnRate)) {
-                metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
-            }
+            metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
         }
 
         /// <summary>
@@ -63,7 +55,7 @@ namespace CosmereScadrial.Jobs {
         /// </summary>
         private void MoveThing(Thing thing) {
             var duralumin = AllomancyUtility.GetDuraluminBurn(pawn);
-            duralumin?.PreBurn();
+            duralumin?.Burn();
 
             var mass = MetalDetector.GetMass(thing);
             var pawnMass = MetalDetector.GetMass(pawn);

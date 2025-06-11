@@ -10,8 +10,15 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
         private MetalBurning burning => pawn.GetComp<MetalBurning>();
         private MetalReserves reserves => pawn.GetComp<MetalReserves>();
 
+        private bool endOnNextTick = false;
+
         public override void Tick() {
             base.Tick();
+
+            if (endOnNextTick) {
+                PostBurn();
+                return;
+            }
 
             if (pawn?.Map == null || pawn.Dead) return;
 
@@ -22,15 +29,13 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
             var reserveComp = pawn.TryGetComp<MetalReserves>();
             if (burningComp == null || reserveComp == null) return;
 
-            if (burningComp.IsBurning()) ProcessBurn();
+            if (!burningComp.IsBurning()) return;
+            
+            Burn();
+            endOnNextTick = true;
         }
 
-        public void ProcessBurn() {
-            PreBurn();
-            PostBurn();
-        }
-
-        public void PreBurn() {
+        public void Burn() {
             foreach (var ((_, abilityDef), rate) in burning.burnSourceMap.ToList()) {
                 if (rate <= 0f) continue;
 
@@ -41,12 +46,8 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
             }
         }
 
-        public void PostBurn(MetallicArtsMetalDef metal = null) {
-            if (metal != null) {
-                reserves.RemoveReserve(metal);
-            }
-
-            burning.burnSources.Where(kv => kv.Value.Sum() > 0f).ToList().ForEach(kv => reserves.RemoveReserve(kv.Key));
+        public void PostBurn() {
+            burning.GetBurningMetals().ForEach(reserves.RemoveReserve);
             reserves.RemoveReserve(MetallicArtsMetalDefOf.Duralumin);
             FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
 

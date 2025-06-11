@@ -68,7 +68,14 @@
             <noiseRadius>0</noiseRadius>
             <targetParams>
                 <canTargetSelf>false</canTargetSelf>
-                <canTargetBuildings>false</canTargetBuildings>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetPlants>true</canTargetPlants>
+                <canTargetAnimals>true</canTargetAnimals>
+                <canTargetHumans>true</canTargetHumans>
+                <canTargetMechs>true</canTargetMechs>
+                <canTargetMutants>true</canTargetMutants>
+                <canTargetItems>true</canTargetItems>
+                <canTargetBuildings>true</canTargetBuildings>
             </targetParams>
         </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>

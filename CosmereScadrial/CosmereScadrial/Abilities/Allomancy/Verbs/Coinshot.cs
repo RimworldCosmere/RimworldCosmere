@@ -6,17 +6,7 @@ using Verse;
 namespace CosmereScadrial.Abilities.Allomancy.Verbs {
     public class Coinshot : Verb_Shoot {
         private CoinshotAbility ability => (CoinshotAbility)verbTracker.directOwner;
-
-        public override ThingDef Projectile {
-            get {
-                var def = CoinThingDefOf.Cosmere_Clip_Projectile;
-                def.damageMultipliers = [
-                    new DamageMultiplier { multiplier = ability.GetStrength() },
-                ];
-
-                return def;
-            }
-        }
+        public override ThingDef Projectile => CoinThingDefOf.Cosmere_Clip_Projectile;
 
         public override void WarmupComplete() {
             ability.UpdateStatus(ability.shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);

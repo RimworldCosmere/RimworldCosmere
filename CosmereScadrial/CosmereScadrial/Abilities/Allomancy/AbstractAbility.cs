@@ -10,7 +10,7 @@ using Log = CosmereFramework.Log;
 namespace CosmereScadrial.Abilities.Allomancy {
     public abstract partial class AbstractAbility : Ability {
         protected int flareStartTick = -1;
-        protected bool shouldFlare;
+        protected internal bool shouldFlare;
         public BurningStatus? status;
         public LocalTargetInfo target;
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
+        <defName>Cosmere_Ability_Nicrosil_Surge</defName>
+        <label>boost investiture</label>
+        <description>Nicrosil flares another Allomancer’s active metals, dramatically amplifying their power. Only affects those already burning metals.</description>
+        <metal>Nicrosil</metal>
+        <hediff>Cosmere_Hediff_Surge_Charge</hediff>
+        <beuPerTick>0.00000001</beuPerTick>
+        <canFlare>false</canFlare>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

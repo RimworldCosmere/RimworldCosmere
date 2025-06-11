@@ -9,6 +9,7 @@ namespace CosmereScadrial.Defs {
     public class AllomanticAbilityDef : AbilityDef, MultiTypeHediff {
         public bool applyDragOnTarget = false;
         public float beuPerTick = 0.1f / GenTicks.TicksPerRealSecond;
+        public bool canFlare = true;
         public HediffDef dragHediff;
 
 

@@ -43,7 +43,7 @@ namespace CosmereScadrial.Utils {
                 return;
             }
 
-            hediff.RemoveSource(ability);
+            hediff.RemoveSource(ability, true);
         }
 
         private static bool TryGetHediff(Pawn target, HediffDef def, out AllomanticHediff hediff) {

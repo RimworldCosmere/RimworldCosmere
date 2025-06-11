@@ -72,8 +72,8 @@ namespace CosmereScadrial.Utils {
             return true;
         }
 
-        public static DuraluminChargeHediff GetDuraluminBurn(Pawn pawn) {
-            DuraluminChargeHediff hediff = null;
+        public static SurgeChargeHediff GetSurgeBurn(Pawn pawn) {
+            SurgeChargeHediff hediff = null;
             pawn.health?.hediffSet.TryGetHediff(out hediff);
 
             return hediff;
@@ -85,7 +85,10 @@ namespace CosmereScadrial.Utils {
 
         public static bool PawnConsumeVialWithMetal(Pawn pawn, MetallicArtsMetalDef metal,
             bool allowMultiVial = false) {
-            if (metal.Equals(MetallicArtsMetalDefOf.Duralumin)) return false;
+            if (metal.Equals(MetallicArtsMetalDefOf.Duralumin) || metal.Equals(MetallicArtsMetalDefOf.Nicrosil)) {
+                return false;
+            }
+
             if (PawnUtility.IsAsleep(pawn)) return false;
             if (pawn?.inventory?.innerContainer == null) return false;
 
@@ -105,7 +108,10 @@ namespace CosmereScadrial.Utils {
         }
 
         public static bool PawnHasVialForMetal(Pawn pawn, MetallicArtsMetalDef metal, bool allowMultiVial = false) {
-            if (metal.Equals(MetallicArtsMetalDefOf.Duralumin)) return false;
+            if (metal.Equals(MetallicArtsMetalDefOf.Duralumin) || metal.Equals(MetallicArtsMetalDefOf.Nicrosil)) {
+                return false;
+            }
+
             if (InvestitureDetector.IsShielded(pawn)) return false;
 
             if (pawn?.inventory?.innerContainer == null) return false;

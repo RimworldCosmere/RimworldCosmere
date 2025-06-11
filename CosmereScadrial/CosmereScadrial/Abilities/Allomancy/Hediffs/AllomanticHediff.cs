@@ -21,12 +21,13 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
             Severity = CalculateSeverity();
         }
 
-        public void RemoveSource(AbstractAbility sourceAbility) {
+        public void RemoveSource(AbstractAbility sourceAbility, bool calculateSeverity = false) {
             if (!sourceAbilities.Contains(sourceAbility)) return;
 
             Log.Warning(
                 $"{sourceAbility.pawn.NameFullColored} removing {def.defName} hediff from {pawn.NameFullColored}");
             sourceAbilities.Remove(sourceAbility);
+            if (calculateSeverity) Severity = CalculateSeverity();
         }
 
         public override void Tick() {
@@ -36,9 +37,9 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
                 RemoveSource(ability);
             }
 
-            var duralumin = AllomancyUtility.GetDuraluminBurn(pawn);
-            if (duralumin != null && def.defName != duralumin.def.defName) {
-                duralumin?.Burn(
+            var surge = AllomancyUtility.GetSurgeBurn(pawn);
+            if (surge != null && def.defName != surge.def.defName) {
+                surge?.Burn(
                     () => { Severity = CalculateSeverity(); },
                     (int)TickUtility.TICKS_PER_SECOND,
                     () => { Severity = CalculateSeverity(); }

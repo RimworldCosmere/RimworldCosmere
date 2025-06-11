@@ -93,7 +93,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
 
         public void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo destination, bool flare) {
             target = targetInfo;
-            shouldFlare = flare;
+            shouldFlare = def.canFlare && flare;
             base.QueueCastingJob(targetInfo, destination);
         }
 

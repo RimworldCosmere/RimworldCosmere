@@ -90,19 +90,13 @@ namespace CosmereScadrial.Abilities.Allomancy {
         }
 
         public override Job GetJob(LocalTargetInfo targetInfo, LocalTargetInfo destination) {
-            if (shouldFlare) {
-                UpdateStatus(status == BurningStatus.Flaring ? BurningStatus.Off : BurningStatus.Flaring);
-            } else {
-                UpdateStatus(PawnUtility.IsAsleep(pawn) ? BurningStatus.Passive :
-                    atLeastPassive ? BurningStatus.Off : BurningStatus.Burning);
-            }
-
             var job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, target);
             job.ability = this;
             job.verbToUse = verb;
             job.playerForced = true;
             job.targetA = target;
             job.targetB = destination;
+            job.count = (int)(shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
 
             return job;
         }

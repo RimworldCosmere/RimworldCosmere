@@ -124,6 +124,10 @@ namespace CosmereScadrial.Comps.Things {
             return GetTotalBurnRate(metal) > 0f;
         }
 
+        public List<MetallicArtsMetalDef> GetBurningMetals() {
+            return burnSources.Where(x => x.Value.Sum() > 0).Select(x => x.Key).ToList();
+        }
+
         private void RebuildSourceList(MetallicArtsMetalDef metal) {
             if (!burnSources.ContainsKey(metal)) {
                 burnSources[metal] = new List<float>();

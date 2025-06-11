@@ -1,3 +1,5 @@
+using CosmereScadrial.Abilities.Allomancy;
+using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using RimWorld;
 using Verse;
 
@@ -18,6 +20,8 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
         private int totalTicks = -1;
 
         private new DisappearsScaledProperties props => (DisappearsScaledProperties)base.props;
+        
+        private new AllomanticHediff parent => (AllomanticHediff)base.parent;
 
         public override string CompLabelInBracketsExtra => $"{ticksLeft.ToStringTicksToPeriod()} left";
 
@@ -30,6 +34,8 @@ namespace CosmereScadrial.Abilities.Hediffs.Comps {
         public override void CompPostTick(ref float severityAdjustment) {
             base.CompPostTick(ref severityAdjustment);
 
+            if (parent.sourceAbilities.Count > 0) return;            
+            
             ticksLeft--;
             if (ticksLeft <= 0) {
                 parent.pawn.health.RemoveHediff(parent);

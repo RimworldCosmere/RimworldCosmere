@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Abilities.Hediffs.Comps;
 using CosmereScadrial.Comps.Things;
+using CosmereScadrial.Utils;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -42,12 +43,25 @@ namespace CosmereScadrial.Jobs {
 
                     // Maintain proximity
                     MaintainProximity();
+                    
+                    // If we arent close enough to the pawn, update burnrate to 0, and get closer
+                    if (PawnUtility.DistanceBetween(pawn, targetPawn) > ability.def.verbProperties.range) {
+                        UpdateBurnRate(0f);
+                        return;
+                    }
+            
+                    var duralumin = AllomancyUtility.GetDuraluminBurn(pawn);
+                    duralumin?.Burn();
 
                     // Ensure the burn rate is set properly
                     MaintainBurnRate();
 
                     // Apply and maintain effect
                     MaintainEffectOnTarget();
+
+                    if (duralumin == null) return;
+                    duralumin.PostBurn();
+                    EndJobWith(JobCondition.Succeeded);
                 },
             };
             toil.AddFinishAction(UpdateStatusToOff);
@@ -59,6 +73,8 @@ namespace CosmereScadrial.Jobs {
             if (pawn.Downed || pawn.Dead || targetIsPawn && (targetPawn.Dead || targetPawn.Downed)) {
                 return false;
             }
+
+            if (!AllomancyUtility.CanUseMetal(pawn, ability.metal)) return false;
 
             return !pawn.CanReach(TargetA, targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell, Danger.None);
         }
@@ -77,13 +93,6 @@ namespace CosmereScadrial.Jobs {
         }
 
         protected virtual void MaintainBurnRate() {
-            // If we arent close enough to the pawn, update burnrate to 0, and get closer
-            if (PawnUtility.DistanceBetween(pawn, targetPawn) > ability.def.verbProperties.range) {
-                UpdateBurnRate(0f);
-                return;
-            }
-
-            // If we are close enough, get the desired burn rate based on the status.
             UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
         }
 
@@ -104,9 +113,7 @@ namespace CosmereScadrial.Jobs {
         }
 
         protected virtual void UpdateBurnRate(float desiredBurnRate) {
-            if (!Mathf.Approximately(metalBurning.GetBurnRateForMetalDef(ability.metal, ability.def), desiredBurnRate)) {
-                metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
-            }
+            metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
         }
     }
 }

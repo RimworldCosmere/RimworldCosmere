@@ -8,9 +8,8 @@ namespace CosmereScadrial.Abilities.Allomancy.Verbs {
         public override ThingDef Projectile {
             get {
                 var def = CoinThingDefOf.Cosmere_Clip_Projectile;
-                if (verbTracker.directOwner is CoinshotAbility { status: BurningStatus.Flaring }) {
-                    def.damageMultipliers.Add(new DamageMultiplier { multiplier = 2, damageDef = DamageDefOf.Bullet });
-                }
+                var owner = verbTracker.directOwner as CoinshotAbility;
+                def.damageMultipliers.Add(new DamageMultiplier { multiplier = owner!.GetStrength() });
 
                 return def;
             }

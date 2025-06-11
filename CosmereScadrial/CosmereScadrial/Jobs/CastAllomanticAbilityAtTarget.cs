@@ -5,7 +5,6 @@ using CosmereScadrial.Comps.Game;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
-using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -16,9 +15,8 @@ namespace CosmereScadrial.Jobs {
 
         protected virtual MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 
-        private bool isFlare => (BurningStatus)job.count == BurningStatus.Flaring;
-
-        private Material lineMaterial => MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind, ability.def.metal.color with { a = .3f });
+        private Material lineMaterial => MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind,
+            ability.def.metal.color with { a = .3f });
 
         private AllomancyPolarity polarity => ability.def.metal.allomancy.polarity ?? AllomancyPolarity.Pushing;
 
@@ -37,7 +35,7 @@ namespace CosmereScadrial.Jobs {
                 // Ensure the burn rate is set properly
                 DoBurn();
 
-                MoveThing(TargetA.Thing, isFlare);
+                MoveThing(TargetA.Thing);
             };
             toil.defaultCompleteMode = ToilCompleteMode.Instant;
             //toil.AddFinishAction(() => UpdateBurnRate(0f));
@@ -46,11 +44,13 @@ namespace CosmereScadrial.Jobs {
         }
 
         protected virtual void DoBurn() {
+            // Status is always null here, it shouldnt be
             UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
         }
 
         protected virtual void UpdateBurnRate(float desiredBurnRate) {
-            if (!Mathf.Approximately(metalBurning.GetBurnRateForMetalDef(ability.metal, ability.def), desiredBurnRate)) {
+            if (!Mathf.Approximately(metalBurning.GetBurnRateForMetalDef(ability.metal, ability.def),
+                    desiredBurnRate)) {
                 metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
             }
         }
@@ -61,13 +61,16 @@ namespace CosmereScadrial.Jobs {
         ///     math still works out, otherwise it should flip,
         ///     and start pushing the opposite way for the remainder of the distance
         /// </summary>
-        private void MoveThing(Thing thing, bool flare) {
+        private void MoveThing(Thing thing) {
+            var duralumin = AllomancyUtility.GetDuraluminBurn(pawn);
+            duralumin.ProcessBurn();
+
             var mass = MetalDetector.GetMass(thing);
             var pawnMass = MetalDetector.GetMass(pawn);
             (Thing, Thing) things = mass > pawnMass ? (pawn, thing) : (thing, pawn);
             var distanceBetweenThings = (things.Item2.Position - things.Item1.Position).LengthHorizontal;
             var dir = GetDirectionalOffsetFromTarget(things.Item2, things.Item1);
-            var forceMultiplier = GetForceMultiplier(flare);
+            var forceMultiplier = ability.GetStrength();
             var distance = Mathf.Clamp(20f / mass, 1f, 8f) * forceMultiplier * 2;
             if (polarity == AllomancyPolarity.Pulling) {
                 distance = Mathf.Min(distance, distanceBetweenThings);
@@ -87,7 +90,8 @@ namespace CosmereScadrial.Jobs {
                 break;
             }
 
-            Current.Game.GetComponent<GradualMoverManager>().StartMovement(polarity, things.Item2, things.Item1, finalPos, Mathf.Max(5, Mathf.RoundToInt(30f / forceMultiplier)), lineMaterial);
+            Current.Game.GetComponent<GradualMoverManager>().StartMovement(polarity, things.Item2, things.Item1,
+                finalPos, Mathf.Max(5, Mathf.RoundToInt(30f / forceMultiplier)), lineMaterial);
         }
 
         private IntVec3 GetDirectionalOffsetFromTarget(Thing target, Thing source) {
@@ -101,13 +105,6 @@ namespace CosmereScadrial.Jobs {
                 0,
                 (int)Math.Round(offset.z, MidpointRounding.AwayFromZero)
             );
-        }
-
-        private float GetForceMultiplier(bool flare) {
-            const int multiplier = 12;
-            var rawPower = pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
-
-            return multiplier * rawPower * (flare ? 2f : 1f);
         }
     }
 }

@@ -18,6 +18,9 @@
                 <metal>Duralumin</metal>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_Duralumin_Surge</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Duralumin</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">

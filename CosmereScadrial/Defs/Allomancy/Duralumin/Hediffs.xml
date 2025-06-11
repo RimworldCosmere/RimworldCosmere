@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="AbstractAllomanticHediff">
+        <defName>Cosmere_Hediff_Duralumin_Charge</defName>
+        <label>prepping duralumin burn</label>
+        <description>The Allomancer is preparing a duralumin burn, ready to amplify any active metals.</description>
+        <hediffClass>CosmereScadrial.Abilities.Allomancy.Hediffs.DuraluminChargeHediff</hediffClass>
+        <comps>
+        </comps>
+    </HediffDef>
+</Defs>

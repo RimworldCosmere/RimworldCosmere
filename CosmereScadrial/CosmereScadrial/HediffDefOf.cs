@@ -23,6 +23,7 @@ namespace CosmereScadrial {
         public static HediffDef Cosmere_Hediff_PewterDrag;
         public static HediffDef Cosmere_Hediff_TinDrag;
         public static HediffDef Cosmere_Scadrial_MistComa;
+        public static HediffDef Cosmere_Hediff_Duralumin_Charge;
 
         static HediffDefOf() {
             DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));

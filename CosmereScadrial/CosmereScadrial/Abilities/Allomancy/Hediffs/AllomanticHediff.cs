@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
@@ -10,12 +9,14 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
 
         public override bool ShouldRemove => sourceAbilities.Count == 0 || base.ShouldRemove;
 
-        public override string LabelBase => base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");
+        public override string LabelBase =>
+            base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");
 
         public void AddSource(AbstractAbility sourceAbility) {
             if (sourceAbilities.Contains(sourceAbility)) return;
 
-            Log.Warning($"{sourceAbility.pawn.NameFullColored} applying {def.defName} hediff to {pawn.NameFullColored} with Status={sourceAbility.status}");
+            Log.Warning(
+                $"{sourceAbility.pawn.NameFullColored} applying {def.defName} hediff to {pawn.NameFullColored} with Status={sourceAbility.status}");
             sourceAbilities.Add(sourceAbility);
             Severity = CalculateSeverity();
         }
@@ -23,13 +24,15 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
         public void RemoveSource(AbstractAbility sourceAbility, bool recalculate = true) {
             if (!sourceAbilities.Contains(sourceAbility)) return;
 
-            Log.Warning($"{sourceAbility.pawn.NameFullColored} removing {def.defName} hediff from {pawn.NameFullColored}");
+            Log.Warning(
+                $"{sourceAbility.pawn.NameFullColored} removing {def.defName} hediff from {pawn.NameFullColored}");
             sourceAbilities.Remove(sourceAbility);
             if (recalculate) Severity = CalculateSeverity();
         }
 
         public override void Tick() {
-            var toRemove = sourceAbilities.Where(x => x.status == BurningStatus.Off || x.pawn.DestroyedOrNull()).ToArray();
+            var toRemove = sourceAbilities.Where(x => x.status == BurningStatus.Off || x.pawn.DestroyedOrNull())
+                .ToArray();
             foreach (var ability in toRemove) {
                 RemoveSource(ability, false);
             }
@@ -39,7 +42,7 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
         }
 
         protected virtual float CalculateSeverity() {
-            return sourceAbilities.Sum(GetContribution);
+            return sourceAbilities.Sum(x => x.GetStrength());
         }
 
         public override void ExposeData() {
@@ -74,24 +77,11 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
 
             stringBuilder.AppendLine("Severity Sources:");
             foreach (var ability in sourceAbilities) {
-                stringBuilder.AppendLine($"  {ability.pawn.NameShortColored} -> {ability.def.LabelCap}: {GetContribution(ability):0.0000}");
+                stringBuilder.AppendLine(
+                    $"  {ability.pawn.NameShortColored} -> {ability.def.LabelCap}: {ability.GetStrength():0.0000}");
             }
 
             return stringBuilder.ToString();
-        }
-
-        private float GetContribution(AbstractAbility ability) {
-            const int multiplier = 12;
-            var rawPower = ability.pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
-            var statusValue = (ability.status ?? BurningStatus.Burning) switch {
-                BurningStatus.Off => 0f,
-                BurningStatus.Passive => 0.5f,
-                BurningStatus.Burning => 1f,
-                BurningStatus.Flaring => 2f,
-                _ => 0f,
-            };
-
-            return multiplier * ability.def.hediffSeverityFactor * rawPower * statusValue;
         }
     }
 }

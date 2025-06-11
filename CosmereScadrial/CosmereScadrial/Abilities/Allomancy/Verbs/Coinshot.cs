@@ -5,19 +5,31 @@ using Verse;
 
 namespace CosmereScadrial.Abilities.Allomancy.Verbs {
     public class Coinshot : Verb_Shoot {
+        private CoinshotAbility ability => (CoinshotAbility)verbTracker.directOwner;
+
         public override ThingDef Projectile {
             get {
                 var def = CoinThingDefOf.Cosmere_Clip_Projectile;
-                var owner = verbTracker.directOwner as CoinshotAbility;
-                def.damageMultipliers.Add(new DamageMultiplier { multiplier = owner!.GetStrength() });
+                def.damageMultipliers = [
+                    new DamageMultiplier { multiplier = ability.GetStrength() },
+                ];
 
                 return def;
             }
         }
 
+        public override void WarmupComplete() {
+            ability.UpdateStatus(ability.shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
+
+            var duralumin = AllomancyUtility.GetDuraluminBurn(CasterPawn);
+            duralumin?.Burn();
+            base.WarmupComplete();
+            duralumin?.PostBurn();
+            ability.UpdateStatus(BurningStatus.Off);
+        }
+
         protected override bool TryCastShot() {
             var pawn = CasterPawn;
-            if (verbTracker.directOwner is not CoinshotAbility ability) return false;
             if (pawn?.inventory == null) return false;
 
             // Find a Clip in inventory
@@ -33,7 +45,6 @@ namespace CosmereScadrial.Abilities.Allomancy.Verbs {
             // Consume the clip
             clip.stackCount--;
             if (clip.stackCount <= 0) clip.Destroy();
-            ability.UpdateStatus(BurningStatus.Off);
 
             return true;
         }

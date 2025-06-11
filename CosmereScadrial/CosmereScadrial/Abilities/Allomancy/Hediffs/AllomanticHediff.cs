@@ -37,10 +37,12 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
             }
 
             var duralumin = AllomancyUtility.GetDuraluminBurn(pawn);
-            if (duralumin != this) {
-                duralumin?.Burn(() => {
-                    Severity = CalculateSeverity();
-                });
+            if (duralumin != null && def.defName != duralumin.def.defName) {
+                duralumin?.Burn(
+                    () => { Severity = CalculateSeverity(); },
+                    (int)TickUtility.TICKS_PER_SECOND,
+                    () => { Severity = CalculateSeverity(); }
+                );
             }
 
             base.Tick();

@@ -27,8 +27,21 @@ namespace CosmereScadrial.Abilities.Allomancy {
 
         public override bool CanApplyOn(LocalTargetInfo targetInfo) {
             if (!base.CanApplyOn(targetInfo)) return false;
+            var shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
+            if (shooting.TotallyDisabled) return false;
 
             return pawn.inventory?.innerContainer.Contains(CoinThingDefOf.Cosmere_Clip) ?? false;
+        }
+
+        public override bool CanActivate(BurningStatus activationStatus, out string reason) {
+            if (!base.CanActivate(activationStatus, out reason)) return false;
+
+
+            var shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
+            if (!shooting.PermanentlyDisabled && !shooting.TotallyDisabled) return true;
+
+            reason = "MenuCannotShoot".Translate();
+            return false;
         }
 
         public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {

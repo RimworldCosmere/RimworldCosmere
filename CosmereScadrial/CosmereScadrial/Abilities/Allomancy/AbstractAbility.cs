@@ -2,6 +2,7 @@ using System;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Flags;
+using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
 using Log = CosmereFramework.Log;
@@ -82,8 +83,25 @@ namespace CosmereScadrial.Abilities.Allomancy {
                 BurningStatus.Passive => def.beuPerTick / 2,
                 BurningStatus.Burning => def.beuPerTick,
                 BurningStatus.Flaring => def.beuPerTick * 2,
+                BurningStatus.Duralumin => 1,
                 _ => throw new ArgumentOutOfRangeException(),
             };
+        }
+
+        public float GetStrength() {
+            const float multiplier = 12f;
+            var rawPower = pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
+            var statusValue = (status ?? BurningStatus.Burning) switch {
+                BurningStatus.Off => 0f,
+                BurningStatus.Passive => 0.5f,
+                BurningStatus.Burning => 1f,
+                BurningStatus.Flaring => 2f,
+                BurningStatus.Duralumin => AllomancyUtility.GetReservePercent(pawn, MetallicArtsMetalDefOf.Duralumin) *
+                                           10f,
+                _ => 0f,
+            };
+
+            return multiplier * def.hediffSeverityFactor * rawPower * statusValue;
         }
 
         public void UpdateStatus(BurningStatus newStatus) {

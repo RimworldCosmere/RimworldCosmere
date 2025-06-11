@@ -84,7 +84,6 @@ namespace CosmereScadrial.Abilities.Allomancy {
             job.playerForced = true;
             job.targetA = target;
             job.targetB = destination;
-            job.count = (int)(shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
 
             return job;
         }

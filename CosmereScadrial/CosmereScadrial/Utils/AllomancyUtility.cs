@@ -1,5 +1,6 @@
 using CosmereCore.Needs;
 using CosmereMetals.ModExtensions;
+using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using UnityEngine;
@@ -70,12 +71,20 @@ namespace CosmereScadrial.Utils {
             return true;
         }
 
+        public static DuraluminChargeHediff GetDuraluminBurn(Pawn pawn) {
+            DuraluminChargeHediff hediff = null;
+            pawn.health?.hediffSet.TryGetHediff(out hediff);
+
+            return hediff;
+        }
+
         public static float GetMetalNeededForBeu(float requiredBeu) {
             return requiredBeu / BEU_PER_METAL_UNIT;
         }
 
         public static bool PawnConsumeVialWithMetal(Pawn pawn, MetallicArtsMetalDef metal,
             bool allowMultiVial = false) {
+            if (metal.Equals(MetallicArtsMetalDefOf.Duralumin)) return false;
             if (PawnUtility.IsAsleep(pawn)) return false;
             if (pawn?.inventory?.innerContainer == null) return false;
 
@@ -95,6 +104,8 @@ namespace CosmereScadrial.Utils {
         }
 
         public static bool PawnHasVialForMetal(Pawn pawn, MetallicArtsMetalDef metal, bool allowMultiVial = false) {
+            if (metal.Equals(MetallicArtsMetalDefOf.Duralumin)) return false;
+
             if (pawn?.inventory?.innerContainer == null) return false;
 
             foreach (var vial in pawn.inventory.innerContainer) {

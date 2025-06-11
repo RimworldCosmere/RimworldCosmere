@@ -405,7 +405,10 @@
       "description": "Enhances the next Allomantic metal used drastically, but is consumed entirely.",
       "group": "enhancement",
       "axis": "internal",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Duralumin_Surge"
+      ]
     },
     "feruchemy": {
       "userName": "connector",

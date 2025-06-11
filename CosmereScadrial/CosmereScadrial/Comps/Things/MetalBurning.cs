@@ -18,11 +18,15 @@ namespace CosmereScadrial.Comps.Things {
         private const int SECONDS_INTERVAL = 1;
 
         // Tracks all active burn rates per metal and source
-        private readonly Dictionary<(MetallicArtsMetalDef metal, AllomanticAbilityDef def), float> burnSourceMap = new Dictionary<(MetallicArtsMetalDef metal, AllomanticAbilityDef def), float>();
-        public readonly Dictionary<MetallicArtsMetalDef, List<float>> burnSources = new Dictionary<MetallicArtsMetalDef, List<float>>();
+        public readonly Dictionary<(MetallicArtsMetalDef metal, AllomanticAbilityDef def), float> burnSourceMap =
+            new Dictionary<(MetallicArtsMetalDef metal, AllomanticAbilityDef def), float>();
+
+        public readonly Dictionary<MetallicArtsMetalDef, List<float>> burnSources =
+            new Dictionary<MetallicArtsMetalDef, List<float>>();
 
         public MetalBurning() {
-            var allomanticMetals = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => !x.godMetal && x.allomancy != null);
+            var allomanticMetals =
+                DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => !x.godMetal && x.allomancy != null);
             foreach (var metal in allomanticMetals) {
                 burnSources.Add(metal, []);
             }
@@ -34,7 +38,8 @@ namespace CosmereScadrial.Comps.Things {
 
         public bool CanBurn(MetallicArtsMetalDef metal, float requiredBEUs) {
             var amountToBurn = AllomancyUtility.GetMetalNeededForBeu(requiredBEUs * SECONDS_INTERVAL);
-            return metalReserves.CanLowerReserve(metal, amountToBurn) || AllomancyUtility.PawnHasVialForMetal(pawn, metal);
+            return metalReserves.CanLowerReserve(metal, amountToBurn) ||
+                   AllomancyUtility.PawnHasVialForMetal(pawn, metal);
         }
 
         public override void CompTick() {
@@ -105,7 +110,8 @@ namespace CosmereScadrial.Comps.Things {
         }
 
         public float GetBurnRateForMetalDef(MetallicArtsMetalDef metal, AllomanticAbilityDef def) {
-            return (from kv in burnSourceMap where kv.Key.metal == metal && kv.Key.def == def select kv.Value).FirstOrDefault();
+            return (from kv in burnSourceMap where kv.Key.metal == metal && kv.Key.def == def select kv.Value)
+                .FirstOrDefault();
         }
 
         public float GetTotalBurnRate(MetallicArtsMetalDef metal = null) {

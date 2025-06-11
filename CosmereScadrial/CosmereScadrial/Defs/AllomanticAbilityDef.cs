@@ -50,15 +50,15 @@ namespace CosmereScadrial.Defs {
                 yield return $"Invalid ability class {abilityClass}. Must inherit from {typeof(AbstractAbility)}.";
             }
 
-            if (hediff != null && hediff.hediffClass != typeof(AllomanticHediff)) {
+            if (hediff != null && !typeof(AllomanticHediff).IsAssignableFrom(hediff.hediffClass)) {
                 yield return "hediff.hediffClass is not AllomanticHediff";
             }
 
-            if (hediffFriendly != null && hediffFriendly.hediffClass != typeof(AllomanticHediff)) {
+            if (hediffFriendly != null && !typeof(AllomanticHediff).IsAssignableFrom(hediffFriendly.hediffClass)) {
                 yield return "hediffFriendly.hediffClass is not AllomanticHediff";
             }
 
-            if (hediffHostile != null && hediffHostile.hediffClass != typeof(AllomanticHediff)) {
+            if (hediffHostile != null && !typeof(AllomanticHediff).IsAssignableFrom(hediffHostile.hediffClass)) {
                 yield return "hediffHostile.hediffClass is not AllomanticHediff";
             }
 
@@ -68,7 +68,8 @@ namespace CosmereScadrial.Defs {
         }
 
         public override void PostLoad() {
-            LongEventHandler.ExecuteWhenFinished(() => uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Allomancy/{metal.defName}"));
+            LongEventHandler.ExecuteWhenFinished(() =>
+                uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Allomancy/{metal.defName}"));
         }
     }
 }

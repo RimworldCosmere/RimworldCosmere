@@ -4,5 +4,6 @@ namespace CosmereScadrial.Abilities.Allomancy {
         Passive,
         Burning,
         Flaring,
+        Duralumin,
     }
 }

@@ -63,7 +63,7 @@ namespace CosmereScadrial.Jobs {
         /// </summary>
         private void MoveThing(Thing thing) {
             var duralumin = AllomancyUtility.GetDuraluminBurn(pawn);
-            duralumin.ProcessBurn();
+            duralumin?.PreBurn();
 
             var mass = MetalDetector.GetMass(thing);
             var pawnMass = MetalDetector.GetMass(pawn);
@@ -92,6 +92,7 @@ namespace CosmereScadrial.Jobs {
 
             Current.Game.GetComponent<GradualMoverManager>().StartMovement(polarity, things.Item2, things.Item1,
                 finalPos, Mathf.Max(5, Mathf.RoundToInt(30f / forceMultiplier)), lineMaterial);
+            duralumin?.PostBurn();
         }
 
         private IntVec3 GetDirectionalOffsetFromTarget(Thing target, Thing source) {

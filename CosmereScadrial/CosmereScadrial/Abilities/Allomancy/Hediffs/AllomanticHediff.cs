@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CosmereFramework.Utils;
+using CosmereScadrial.Utils;
 using Verse;
 
 namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
@@ -32,6 +34,13 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
                 .ToArray();
             foreach (var ability in toRemove) {
                 RemoveSource(ability);
+            }
+
+            var duralumin = AllomancyUtility.GetDuraluminBurn(pawn);
+            if (duralumin != this) {
+                duralumin?.Burn(() => {
+                    Severity = CalculateSeverity();
+                });
             }
 
             base.Tick();

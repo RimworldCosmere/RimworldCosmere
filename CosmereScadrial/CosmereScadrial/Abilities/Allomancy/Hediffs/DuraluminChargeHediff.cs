@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using CosmereFramework.Utils;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
@@ -10,32 +12,25 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
         private MetalBurning burning => pawn.GetComp<MetalBurning>();
         private MetalReserves reserves => pawn.GetComp<MetalReserves>();
 
-        private bool endOnNextTick = false;
+        public int endInTicks = -1;
 
         public override void Tick() {
             base.Tick();
 
-            if (endOnNextTick) {
-                PostBurn();
-                return;
+            switch (endInTicks) {
+                case -1:
+                    return;
+                case 0:
+                    PostBurn();
+                    break;
             }
 
-            if (pawn?.Map == null || pawn.Dead) return;
-
-            var duralumin = AllomancyUtility.GetReservePercent(pawn, MetallicArtsMetalDefOf.Duralumin);
-            if (duralumin <= 0f) return;
-
-            var burningComp = pawn.TryGetComp<MetalBurning>();
-            var reserveComp = pawn.TryGetComp<MetalReserves>();
-            if (burningComp == null || reserveComp == null) return;
-
-            if (!burningComp.IsBurning()) return;
-            
-            Burn();
-            endOnNextTick = true;
+            if (endInTicks > 0) endInTicks--;
         }
 
-        public void Burn() {
+        public void Burn(Action callback = null, int endInTicks = -1) {
+            if (this.endInTicks > -1) return;            
+            
             foreach (var ((_, abilityDef), rate) in burning.burnSourceMap.ToList()) {
                 if (rate <= 0f) continue;
 
@@ -44,9 +39,14 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
 
                 allomanticAbility.UpdateStatus(BurningStatus.Duralumin);
             }
+            
+            callback?.Invoke();
+            
+            this.endInTicks = endInTicks;
         }
 
         public void PostBurn() {
+            endInTicks = -1;
             burning.GetBurningMetals().ForEach(reserves.RemoveReserve);
             reserves.RemoveReserve(MetallicArtsMetalDefOf.Duralumin);
             FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);

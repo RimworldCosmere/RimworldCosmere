@@ -6,6 +6,6 @@
         <description>Supercharges all currently burning metals (or the next metal to burn) in a flash of intense power, consuming all duralumin in the process.</description>
         <metal>Duralumin</metal>
         <hediff>Cosmere_Hediff_Duralumin_Charge</hediff>
-        <beuPerTick>0</beuPerTick>
+        <beuPerTick>0.00000001</beuPerTick>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

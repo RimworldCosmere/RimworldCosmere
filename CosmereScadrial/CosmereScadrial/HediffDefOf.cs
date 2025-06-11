@@ -6,6 +6,7 @@ namespace CosmereScadrial {
     [DefOf]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [SuppressMessage("ReSharper", "UnassignedField.Global")]
     [SuppressMessage("ReSharper", "UnusedType.Global")]
     public static class HediffDefOf {
         public static HediffDef Cosmere_Hediff_BrassAura;
@@ -22,8 +23,9 @@ namespace CosmereScadrial {
         public static HediffDef Cosmere_Hediff_TinBuff;
         public static HediffDef Cosmere_Hediff_PewterDrag;
         public static HediffDef Cosmere_Hediff_TinDrag;
+        public static HediffDef Cosmere_Hediff_Surge_Charge;
+        public static HediffDef Cosmere_Hediff_Aluminum;
         public static HediffDef Cosmere_Scadrial_MistComa;
-        public static HediffDef Cosmere_Hediff_Duralumin_Charge;
 
         static HediffDefOf() {
             DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));

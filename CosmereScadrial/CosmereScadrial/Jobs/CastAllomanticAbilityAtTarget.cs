@@ -63,8 +63,8 @@ namespace CosmereScadrial.Jobs {
         ///     and start pushing the opposite way for the remainder of the distance
         /// </summary>
         private void MoveThing(Thing thing) {
-            var duralumin = AllomancyUtility.GetDuraluminBurn(pawn);
-            duralumin?.Burn();
+            var surge = AllomancyUtility.GetSurgeBurn(pawn);
+            surge?.Burn();
 
             var mass = MetalDetector.GetMass(thing);
             var pawnMass = MetalDetector.GetMass(pawn);
@@ -93,7 +93,7 @@ namespace CosmereScadrial.Jobs {
 
             Current.Game.GetComponent<GradualMoverManager>().StartMovement(polarity, things.Item2, things.Item1,
                 finalPos, Mathf.Max(5, Mathf.RoundToInt(30f / forceMultiplier)), lineMaterial);
-            duralumin?.PostBurn();
+            surge?.PostBurn();
         }
 
         private IntVec3 GetDirectionalOffsetFromTarget(Thing target, Thing source) {

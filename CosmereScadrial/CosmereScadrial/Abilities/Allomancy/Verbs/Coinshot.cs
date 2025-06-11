@@ -11,10 +11,10 @@ namespace CosmereScadrial.Abilities.Allomancy.Verbs {
         public override void WarmupComplete() {
             ability.UpdateStatus(ability.shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
 
-            var duralumin = AllomancyUtility.GetDuraluminBurn(CasterPawn);
-            duralumin?.Burn();
+            var surge = AllomancyUtility.GetSurgeBurn(CasterPawn);
+            surge?.Burn();
             base.WarmupComplete();
-            duralumin?.PostBurn();
+            surge?.PostBurn();
             ability.UpdateStatus(BurningStatus.Off);
         }
 

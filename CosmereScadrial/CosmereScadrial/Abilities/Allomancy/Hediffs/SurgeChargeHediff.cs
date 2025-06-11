@@ -5,7 +5,7 @@ using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
-    public class DuraluminChargeHediff : AllomanticHediff {
+    public class SurgeChargeHediff : AllomanticHediff {
         public Action endCallback;
 
         public int endInTicks = -1;
@@ -46,14 +46,19 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
 
         public void PostBurn() {
             burning.GetBurningMetals().ForEach(reserves.RemoveReserve);
-            reserves.RemoveReserve(MetallicArtsMetalDefOf.Duralumin);
             FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
 
-            var ability =
-                pawn.abilities.abilities.FirstOrDefault(x =>
-                    x.def.defName.Equals(AbilityDefOf.Cosmere_Ability_Duralumin_Surge.defName));
-            if (ability is AbstractAbility duraluminAbility) {
-                duraluminAbility?.UpdateStatus(BurningStatus.Off);
+            foreach (var sourceAbility in sourceAbilities.ToList()) {
+                var res = sourceAbility.pawn.GetComp<MetalReserves>();
+                if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Ability_Duralumin_Surge)) {
+                    res.RemoveReserve(MetallicArtsMetalDefOf.Duralumin);
+                }
+
+                if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Ability_Nicrosil_Surge)) {
+                    res.RemoveReserve(MetallicArtsMetalDefOf.Nicrosil);
+                }
+
+                sourceAbility.UpdateStatus(BurningStatus.Off);
             }
 
             pawn.health?.RemoveHediff(this);

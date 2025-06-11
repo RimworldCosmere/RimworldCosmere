@@ -48,6 +48,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
 
         protected override void OnDisable() {
             ApplyDrag(pawn, flareDuration / 3000f);
+            RemoveHediff(pawn);
             flareStartTick = -1;
         }
 

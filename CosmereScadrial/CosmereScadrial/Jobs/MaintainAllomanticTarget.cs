@@ -50,8 +50,8 @@ namespace CosmereScadrial.Jobs {
                         return;
                     }
 
-                    var duralumin = AllomancyUtility.GetDuraluminBurn(pawn);
-                    duralumin?.Burn();
+                    var surge = AllomancyUtility.GetSurgeBurn(pawn);
+                    surge?.Burn();
 
                     // Ensure the burn rate is set properly
                     MaintainBurnRate();
@@ -59,8 +59,8 @@ namespace CosmereScadrial.Jobs {
                     // Apply and maintain effect
                     MaintainEffectOnTarget();
 
-                    if (duralumin == null) return;
-                    duralumin.PostBurn();
+                    if (surge == null) return;
+                    surge.PostBurn();
                     EndJobWith(JobCondition.Succeeded);
                 },
             };

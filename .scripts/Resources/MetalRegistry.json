@@ -489,7 +489,10 @@
       "description": "Boosts another Allomancer's power drastically.",
       "group": "enhancement",
       "axis": "external",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Nicrosil_Surge"
+      ]
     },
     "feruchemy": {
       "userName": "soulbearer",

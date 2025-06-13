@@ -454,7 +454,10 @@
       "description": "Wipes away another Allomancer's metal reserves.",
       "group": "enhancement",
       "axis": "external",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Chromium"
+      ]
     },
     "feruchemy": {
       "userName": "spinner",

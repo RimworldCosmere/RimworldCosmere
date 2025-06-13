@@ -18,6 +18,9 @@
                 <metal>Chromium</metal>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_Chromium</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Chromium</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">

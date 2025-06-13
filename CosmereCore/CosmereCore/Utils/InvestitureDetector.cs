@@ -48,8 +48,7 @@ namespace CosmereCore.Utils {
 
         public static bool IsShielded(Thing thing) {
             if (IsInAluminumRoom(thing)) return true;
-            if (IsBurningAluminum(thing as Pawn)) return true;
-            //if (IsReceivingChromium(thing as Pawn)) return true;
+            if (IsBurningPullingEnhancementMetal(thing as Pawn)) return true;
 
             return false;
         }
@@ -70,20 +69,12 @@ namespace CosmereCore.Utils {
             return true;
         }
 
-        public static bool IsBurningAluminum(Pawn pawn) {
-            if (!ModsConfig.IsActive("cryptiklemur.cosmere.scadrial")) {
+        public static bool IsBurningPullingEnhancementMetal(Pawn pawn) {
+            if (!ModsConfig.IsActive("cryptiklemur.cosmere.scadrial") || pawn == null) {
                 return false;
             }
 
-            return pawn?.health?.hediffSet?.HasHediff(HediffDef.Named("Cosmere_Hediff_Aluminum")) ?? false;
-        }
-
-        public static bool IsReceivingChromium(Pawn pawn) {
-            if (!ModsConfig.IsActive("cryptiklemur.cosmere.scadrial")) {
-                return false;
-            }
-
-            return pawn?.health?.hediffSet?.HasHediff(HediffDef.Named("Cosmere_Hediff_Chromium")) ?? false;
+            return pawn?.health?.hediffSet?.HasHediff(HediffDef.Named("Cosmere_Hediff_Investiture_Shield")) ?? false;
         }
     }
 }

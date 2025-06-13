@@ -90,7 +90,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
                 BurningStatus.Passive => def.beuPerTick / 2,
                 BurningStatus.Burning => def.beuPerTick,
                 BurningStatus.Flaring => def.beuPerTick * 2,
-                BurningStatus.Duralumin => 1,
+                BurningStatus.Duralumin => 0.00000001f,
                 _ => throw new ArgumentOutOfRangeException(),
             };
         }

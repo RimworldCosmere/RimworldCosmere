@@ -1,7 +1,6 @@
 using System.Linq;
 using RimWorld;
 using Verse;
-using ThingDefOf = CosmereMetals.ThingDefOf;
 
 namespace CosmereScadrial.Incidents.Worker {
     public class FindLerasium : IncidentWorker {
@@ -15,7 +14,7 @@ namespace CosmereScadrial.Incidents.Worker {
                 .RandomElementWithFallback();
             if (chosenPawn == null) return false;
 
-            var bead = ThingMaker.MakeThing(ThingDefOf.Lerasium);
+            var bead = ThingMaker.MakeThing(CosmereMetals.ThingDefOf.Lerasium);
             GenPlace.TryPlaceThing(bead, chosenPawn.Position, map, ThingPlaceMode.Near);
 
             Find.LetterStack.ReceiveLetter(

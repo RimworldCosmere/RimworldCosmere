@@ -17,9 +17,10 @@ namespace CosmereScadrial.Utils {
             return hediff.getHediff();
         }
 
-        public static AllomanticHediff GetOrAddHediff(Pawn caster, Pawn target, AbstractAbility ability,
-            MultiTypeHediff def) {
-            var hediffDef = GetHediffDefForPawn(caster, target, def);
+        public static AllomanticHediff GetOrAddHediff(Pawn target, AbstractAbility ability,
+            HediffDef hediffDef) {
+            if (hediffDef == null) return null;
+
             if (TryGetHediff(target, hediffDef, out var hediff)) {
                 hediff.AddSource(ability);
                 return hediff;
@@ -37,13 +38,23 @@ namespace CosmereScadrial.Utils {
             return newHediff;
         }
 
-        public static void RemoveHediff(Pawn caster, Pawn target, AbstractAbility ability) {
-            var hediffDef = GetHediffDefForPawn(caster, target, ability.def);
+        public static AllomanticHediff GetOrAddHediff(Pawn caster, Pawn target, AbstractAbility ability,
+            MultiTypeHediff def) {
+            return GetOrAddHediff(target, ability, GetHediffDefForPawn(caster, target, def));
+        }
+
+        public static void RemoveHediff(Pawn target, AbstractAbility ability, HediffDef hediffDef) {
+            if (hediffDef == null) return;
+
             if (!TryGetHediff(target, hediffDef, out var hediff)) {
                 return;
             }
 
             hediff.RemoveSource(ability, true);
+        }
+
+        public static void RemoveHediff(Pawn caster, Pawn target, AbstractAbility ability) {
+            RemoveHediff(target, ability, GetHediffDefForPawn(caster, target, ability.def));
         }
 
         private static bool TryGetHediff(Pawn target, HediffDef def, out AllomanticHediff hediff) {

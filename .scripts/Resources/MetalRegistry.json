@@ -538,7 +538,10 @@
       "description": "Slows down time in a bubble, creating a temporal distortion.",
       "group": "temporal",
       "axis": "external",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Cadmium"
+      ]
     },
     "feruchemy": {
       "userName": "gaspers",
@@ -573,7 +576,10 @@
       "description": "Speeds up time in a bubble around the user.",
       "group": "temporal",
       "axis": "external",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Bendalloy"
+      ]
     },
     "feruchemy": {
       "userName": "subsumer",

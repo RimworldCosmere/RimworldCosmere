@@ -26,6 +26,8 @@ namespace CosmereScadrial {
         public static HediffDef Cosmere_Hediff_Surge_Charge;
         public static HediffDef Cosmere_Hediff_Investiture_Shield;
         public static HediffDef Cosmere_Scadrial_MistComa;
+        public static HediffDef Cosmere_Hediff_TimeBubble_Cadmium;
+        public static HediffDef Cosmere_Hediff_TimeBubble_Bendalloy;
 
         static HediffDefOf() {
             DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));

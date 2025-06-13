@@ -34,7 +34,7 @@
     <HediffDef ParentName="AbstractZincHediff">
         <defName>Cosmere_Hediff_Rioted_Buff</defName>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.DisappearsScaledProperties">
+            <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties">
                 <baseTicks>3600</baseTicks>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
@@ -60,7 +60,7 @@
     <HediffDef ParentName="AbstractZincHediff">
         <defName>Cosmere_Hediff_Rioted_Debuff</defName>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Hediffs.Comps.DisappearsScaledProperties">
+            <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties">
                 <baseTicks>3600</baseTicks>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">

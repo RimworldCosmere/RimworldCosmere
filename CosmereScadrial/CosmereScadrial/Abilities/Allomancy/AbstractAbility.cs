@@ -62,13 +62,15 @@ namespace CosmereScadrial.Abilities.Allomancy {
             var label = def.LabelCap.Replace("Target",
                 target.Pawn != null ? target.Pawn.LabelShort : target.Thing.LabelNoParenthesisCap);
             if (burningStatus.Equals(BurningStatus.Off)) {
-                return def.label == metal.LabelCap ? $"Stop Burning {metal.LabelCap}" : $"Stop {label}";
+                return string.Equals(def.label, metal.label, StringComparison.CurrentCultureIgnoreCase)
+                    ? $"Stop Burning {metal.LabelCap}"
+                    : $"Stop {label}";
             }
 
-            if (def.LabelCap == metal.LabelCap) {
+            if (string.Equals(def.label, metal.label, StringComparison.CurrentCultureIgnoreCase)) {
                 return burningStatus.Equals(BurningStatus.Burning)
-                    ? $"Burn {metal.label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}"
-                    : $"Flare {metal.label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}";
+                    ? $"Burn {metal.LabelCap}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}"
+                    : $"Flare {metal.LabelCap}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}";
             }
 
             if (status == BurningStatus.Flaring && burningStatus.Equals(BurningStatus.Burning)) {

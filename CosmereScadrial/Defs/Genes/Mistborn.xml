@@ -52,6 +52,8 @@
             <li>Cosmere_Ability_Duralumin_Surge</li>
             <li>Cosmere_Ability_Chromium</li>
             <li>Cosmere_Ability_Nicrosil_Surge</li>
+            <li>Cosmere_Ability_Cadmium</li>
+            <li>Cosmere_Ability_Bendalloy</li>
         </abilities>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">

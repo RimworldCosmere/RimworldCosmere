@@ -26,7 +26,7 @@ namespace CosmereScadrial.Jobs {
 
         protected override IEnumerable<Toil> MakeNewToils() {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A)
-                .AddFinishAction(_ => UpdateBurnRate(0f));
+                .AddFinishAction(_ => UpdateStatusToOff());
 
             yield return Toils_Combat.GotoCastPosition(TargetIndex.A, maxRangeFactor: 0.95f);
             yield return Toils_General.DoAtomic(() => { ability.UpdateStatus((BurningStatus)job.count); });
@@ -54,6 +54,13 @@ namespace CosmereScadrial.Jobs {
 
         protected virtual void UpdateBurnRate(float desiredBurnRate) {
             metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
+        }
+
+        protected virtual void UpdateStatusToOff() {
+            if (ability.status != BurningStatus.Off) {
+                ability.UpdateStatus(BurningStatus.Off);
+            }
+            UpdateBurnRate(0f);
         }
 
         /// <summary>

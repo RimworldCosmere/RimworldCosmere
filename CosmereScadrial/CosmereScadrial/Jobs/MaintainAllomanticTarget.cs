@@ -103,13 +103,13 @@ namespace CosmereScadrial.Jobs {
         }
 
         protected virtual void UpdateStatusToOff() {
-            ability.UpdateStatus(BurningStatus.Off);
+            if (ability.status != BurningStatus.Off) {
+                ability.UpdateStatus(BurningStatus.Off);
+            }
         }
 
         protected virtual void UpdateStatusToOff(JobCondition jobCondition) {
-            if (ability.status != BurningStatus.Off) {
-                UpdateStatusToOff();
-            }
+            UpdateStatusToOff();
         }
 
         protected virtual void UpdateBurnRate(float desiredBurnRate) {

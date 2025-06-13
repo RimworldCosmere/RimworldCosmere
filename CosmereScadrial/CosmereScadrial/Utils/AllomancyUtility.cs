@@ -126,5 +126,11 @@ namespace CosmereScadrial.Utils {
 
             return false;
         }
+
+        public static bool IsBurning(Pawn pawn, MetallicArtsMetalDef metal) {
+            var burning = pawn.GetComp<MetalBurning>();
+
+            return burning?.IsBurning(metal) ?? false;
+        }
     }
 }

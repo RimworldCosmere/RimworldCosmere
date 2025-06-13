@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="AbstractAllomanticHediff">
+        <defName>Cosmere_Hediff_TimeBubble_Cadmium</defName>
+        <label>cadmium time bubble</label>
+        <description>This pawn is inside a Cadmium time bubble, causing them to experience time more slowly — actions are sluggish and needs decay slower.</description>
+        <isBad>false</isBad>
+        <tendable>false</tendable>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>false</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <DeteriorationRate>0.33333</DeteriorationRate>
+                    <Ability_Duration>3.0</Ability_Duration>
+                    <Ability_CastingTime>3.0</Ability_CastingTime>
+                    <StaggerDurationFactor>3.0</StaggerDurationFactor>
+                    <AimingDelayFactor>3.0</AimingDelayFactor>
+                    <ShootingAccuracyPawn>0.1</ShootingAccuracyPawn>
+                    <InjuryHealingFactor>0.33333</InjuryHealingFactor>
+                    <RestFallRateFactor>0.33333</RestFallRateFactor>
+                    <RestRateMultiplier>0.33333</RestRateMultiplier>
+                    <EatingSpeed>0.33333</EatingSpeed>
+                    <MeleeCooldownFactor>0.33333</MeleeCooldownFactor>
+                    <RangedCooldownFactor>0.33333</RangedCooldownFactor>
+                    <MoveSpeed>0.33333</MoveSpeed>
+                    <CrawlSpeed>0.33333</CrawlSpeed>
+                    <CleaningSpeed>0.33333</CleaningSpeed>
+                    <ReadingSpeed>0.33333</ReadingSpeed>
+                    <ImmunityGainSpeed>0.33333</ImmunityGainSpeed>
+                    <WorkSpeedGlobal>0.33333</WorkSpeedGlobal>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef ParentName="AbstractAllomanticHediff">
+        <defName>Cosmere_Hediff_TimeBubble_Bendalloy</defName>
+        <label>bendalloy time bubble</label>
+        <description>This pawn is inside a Bendalloy time bubble, accelerating their actions and needs.</description>
+        <isBad>false</isBad>
+        <tendable>false</tendable>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>false</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <DeteriorationRate>3.0</DeteriorationRate>
+                    <ShootingAccuracyPawn>0.1</ShootingAccuracyPawn>
+                    <Ability_CastingTime>0.33333</Ability_CastingTime>
+                    <Ability_Duration>0.33333</Ability_Duration>
+                    <StaggerDurationFactor>0.33333</StaggerDurationFactor>
+                    <InjuryHealingFactor>3.0</InjuryHealingFactor>
+                    <RestFallRateFactor>3.0</RestFallRateFactor>
+                    <RestRateMultiplier>3.0</RestRateMultiplier>
+                    <EatingSpeed>3.0</EatingSpeed>
+                    <MeleeCooldownFactor>3.0</MeleeCooldownFactor>
+                    <RangedCooldownFactor>3.0</RangedCooldownFactor>
+                    <MoveSpeed>3.0</MoveSpeed>
+                    <CrawlSpeed>3.0</CrawlSpeed>
+                    <CleaningSpeed>3.0</CleaningSpeed>
+                    <ReadingSpeed>3.0</ReadingSpeed>
+                    <ImmunityGainSpeed>3.0</ImmunityGainSpeed>
+                    <WorkSpeedGlobal>3.0</WorkSpeedGlobal>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

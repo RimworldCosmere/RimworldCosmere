@@ -5,6 +5,7 @@ using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Abilities.Allomancy {
     public class AbilitySelfTarget : AbstractAbility {
+        protected bool hasMote = true;
         public AbilitySelfTarget() { }
 
         public AbilitySelfTarget(Pawn pawn) : base(pawn) { }
@@ -33,6 +34,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
             }
 
             if (!pawn.IsHashIntervalTick(GenTicks.SecondsToTicks(5)) || !pawn.Spawned || pawn.Map == null) return;
+            if (!hasMote) return;
             var mote = MoteMaker.MakeAttachedOverlay(
                 pawn,
                 DefDatabase<ThingDef>.GetNamed("Mote_ToxicDamage"),

@@ -49,7 +49,7 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
             base.Tick();
         }
 
-        protected float CalculateSeverity() {
+        public float CalculateSeverity() {
             return sourceAbilities.Sum(x => x.GetStrength());
         }
 

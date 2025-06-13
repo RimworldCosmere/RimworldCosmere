@@ -6,7 +6,6 @@
         <description>Chromium instantly drains the target’s investiture, purging all metal reserves and canceling any active Allomantic effects. Shields the pawn from Investiture.</description>
         <metal>Chromium</metal>
         <hediff>Cosmere_Hediff_Investiture_Shield</hediff>
-        <beuPerTick>0.0004</beuPerTick>
         <verbProperties>
             <range>2</range>
         </verbProperties>

@@ -24,7 +24,7 @@ namespace CosmereScadrial {
         public static HediffDef Cosmere_Hediff_PewterDrag;
         public static HediffDef Cosmere_Hediff_TinDrag;
         public static HediffDef Cosmere_Hediff_Surge_Charge;
-        public static HediffDef Cosmere_Hediff_Aluminum;
+        public static HediffDef Cosmere_Hediff_Investiture_Shield;
         public static HediffDef Cosmere_Scadrial_MistComa;
 
         static HediffDefOf() {

@@ -55,12 +55,12 @@ namespace CosmereScadrial.Abilities.Allomancy {
 
         public override bool CanCast => metalBurning.CanBurn(metal, def.beuPerTick);
 
-        public TaggedString GetRightClickLabel(LocalTargetInfo target, BurningStatus burningStatus,
+        public TaggedString GetRightClickLabel(LocalTargetInfo targetInfo, BurningStatus burningStatus,
             string disableReason = null) {
             var hasDisableReason = !string.IsNullOrEmpty(disableReason);
 
             var label = def.LabelCap.Replace("Target",
-                target.Pawn != null ? target.Pawn.LabelShort : target.Thing.LabelNoParenthesisCap);
+                targetInfo.Pawn != null ? targetInfo.Pawn.LabelShort : targetInfo.Thing.LabelNoParenthesisCap);
             if (burningStatus.Equals(BurningStatus.Off)) {
                 return string.Equals(def.label, metal.label, StringComparison.CurrentCultureIgnoreCase)
                     ? $"Stop Burning {metal.LabelCap}"

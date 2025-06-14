@@ -723,7 +723,10 @@
       "description": "Shows one's own possible futures, useful for avoiding danger.",
       "group": "temporal",
       "axis": "internal",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Electrum"
+      ]
     },
     "feruchemy": {
       "userName": "pinnacle",
@@ -779,7 +782,10 @@
     ],
     "allomancy": {
       "userName": "seer",
-      "description": "Allows a glimpse into the immediate future of others."
+      "description": "Allows a glimpse into the immediate future of others.",
+      "abilities": [
+        "Cosmere_Ability_Atium"
+      ]
     },
     "feruchemy": {
       "description": "Stores age, granting youth or aging when tapped."

@@ -28,6 +28,8 @@ namespace CosmereScadrial {
         public static HediffDef Cosmere_Scadrial_MistComa;
         public static HediffDef Cosmere_Hediff_TimeBubble_Cadmium;
         public static HediffDef Cosmere_Hediff_TimeBubble_Bendalloy;
+        public static HediffDef Cosmere_Hediff_AtiumBuff;
+        public static HediffDef Cosmere_Hediff_ElectrumBuff;
 
         static HediffDefOf() {
             DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));

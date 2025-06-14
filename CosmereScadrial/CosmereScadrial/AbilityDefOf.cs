@@ -12,6 +12,10 @@ namespace CosmereScadrial {
         public static AbilityDef Cosmere_Ability_Bronze_Aura;
         public static AbilityDef Cosmere_Ability_Copper_Aura;
         public static AbilityDef Cosmere_Ability_Aluminum;
+        public static AbilityDef Cosmere_Ability_Cadmium;
+        public static AbilityDef Cosmere_Ability_Electrum;
+        public static AbilityDef Cosmere_Ability_Atium;
+        public static AbilityDef Cosmere_Ability_Bendalloy;
         public static AbilityDef Cosmere_Ability_Duralumin_Surge;
         public static AbilityDef Cosmere_Ability_Nicrosil_Surge;
         public static AbilityDef Cosmere_Ability_Iron_Aura;

@@ -3,7 +3,7 @@
     <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_TimeBubble_Cadmium</defName>
         <label>cadmium time bubble</label>
-        <description>This pawn is inside a Cadmium time bubble, causing them to experience time more slowly — actions are sluggish and needs decay slower.</description>
+        <description>This pawn is inside a Cadmium time bubble, causing them to experience time more slowly — actions are sluggish, and needs decay more slowly.</description>
         <isBad>false</isBad>
         <tendable>false</tendable>
         <stages>

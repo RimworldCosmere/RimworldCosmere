@@ -1,11 +1,12 @@
+using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using Verse;
 using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Abilities.Allomancy {
     public abstract partial class AbstractAbility {
-        protected void GetOrAddHediff(Pawn targetPawn) {
-            HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def);
+        protected AllomanticHediff GetOrAddHediff(Pawn targetPawn) {
+            return HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def);
         }
 
         protected void RemoveHediff(Pawn targetPawn) {

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>Cosmere_Job_FollowGoldHallucination</defName>
+        <driverClass>CosmereScadrial.Jobs.FollowGoldHallucination</driverClass>
+        <reportString>Interacting with alternative self.</reportString>
+    </JobDef>
+</Defs>

@@ -626,7 +626,10 @@
       "description": "Shows alternate versions of oneself, based on different pasts.",
       "group": "temporal",
       "axis": "internal",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Gold"
+      ]
     },
     "feruchemy": {
       "userName": "bloodmaker",

@@ -30,6 +30,8 @@ namespace CosmereScadrial {
         public static HediffDef Cosmere_Hediff_TimeBubble_Bendalloy;
         public static HediffDef Cosmere_Hediff_AtiumBuff;
         public static HediffDef Cosmere_Hediff_ElectrumBuff;
+        public static HediffDef Cosmere_Hediff_Gold;
+        public static HediffDef Cosmere_Hediff_PostGold;
 
         static HediffDefOf() {
             DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));

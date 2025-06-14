@@ -7,6 +7,7 @@ using Verse;
 
 namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
     public class AllomanticHediff : HediffWithComps {
+        public float extraSeverity = 0f;
         public List<AbstractAbility> sourceAbilities = [];
 
         public override string LabelBase =>
@@ -50,7 +51,7 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
         }
 
         public float CalculateSeverity() {
-            return sourceAbilities.Sum(x => x.GetStrength());
+            return sourceAbilities.Sum(x => x.GetStrength()) + extraSeverity;
         }
 
         public override void ExposeData() {

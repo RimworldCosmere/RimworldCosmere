@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <defName>Cosmere_Ability_Gold</defName>
+        <label>gold</label>
+        <description>The Allomancer burns gold, manifesting a hallucination of who they might have become. The vision leaves them shaken but enlightened.</description>
+        <metal>Gold</metal>
+        <hediff>Cosmere_Hediff_Gold</hediff>
+        <cooldownTicksRange>
+            <min>60000</min> <!-- 1 in-game day -->
+            <max>60000</max>
+        </cooldownTicksRange>
+        <canFlare>false</canFlare>
+        <abilityClass>CosmereScadrial.Abilities.Allomancy.GoldAbility</abilityClass>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

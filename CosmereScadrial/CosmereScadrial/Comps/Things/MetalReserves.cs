@@ -25,6 +25,10 @@ namespace CosmereScadrial.Comps.Things {
             }
         }
 
+        public List<MetallicArtsMetalDef> GetAllAvailableMetals() {
+            return reserves.Where(x => x.Value > 0f).Select(x => x.Key).ToList();
+        }
+
         public override void CompTickRare() {
             base.CompTickRare();
             if (parent is not Pawn pawn) return;

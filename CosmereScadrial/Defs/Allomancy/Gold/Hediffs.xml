@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="AbstractAllomanticHediff">
+        <defName>Cosmere_Hediff_Gold</defName>
+        <label>burning gold</label>
+        <description>The Allomancer is burning gold, experiencing visions of what they might have become. These revelations are powerful... and dangerous.</description>
+        <comps>
+            <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.GoldBurnProperties"/>
+        </comps>
+    </HediffDef>
+    
+    
+    <HediffDef ParentName="AbstractAllomanticHediff">
+        <defName>Cosmere_Hediff_PostGold</defName>
+        <label>gold bliss</label>
+        <description>The Allomancer carries the lingering weight of their vision — strengthened by clarity, burdened by memory.</description>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>60000</disappearsAfterTicks> <!-- 1 in-game day -->
+            </li>
+            <li Class="Verse.HediffCompProperties_ThoughtSetter">
+                <thought>Cosmere_Thought_PostGold_Afterglow</thought>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <MentalBreakThreshold>1.2</MentalBreakThreshold> <!-- Less likely to break -->
+                    <GlobalLearningFactor>1.15</GlobalLearningFactor> <!-- They reflect and learn -->
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

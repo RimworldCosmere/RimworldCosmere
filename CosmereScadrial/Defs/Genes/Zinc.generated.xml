@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Zinc -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Zinc</defName>
         <label>zinc misting</label>
         <labelShortAdj>rioter</labelShortAdj>
@@ -24,7 +24,7 @@
         </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Zinc</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Zinc</defName>
         <label>rioter</label>
         <description>Can riot emotions, pushing others to feel stronger emotions.</description>
@@ -44,7 +44,7 @@
     </TraitDef>
     
     <!-- Ferring: Zinc -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Zinc</defName>
         <label>zinc ferring</label>
         <labelShortAdj>sparker</labelShortAdj>
@@ -63,7 +63,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Zinc</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Zinc</defName>
         <label>sparker</label>
         <description>Stores mental speed, allowing faster thought processes.</description>

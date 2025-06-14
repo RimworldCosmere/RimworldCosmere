@@ -1,5 +1,7 @@
 using CosmereCore.Needs;
+using CosmereCore.Utils;
 using CosmereMetals.ModExtensions;
+using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using UnityEngine;
@@ -20,10 +22,9 @@ namespace CosmereScadrial.Utils {
         }
 
         public static bool CanUseMetal(Pawn pawn, MetallicArtsMetalDef metal) {
-            var mistborn = DefDatabase<GeneDef>.GetNamed("Cosmere_Mistborn");
-            var misting = DefDatabase<GeneDef>.GetNamed($"Cosmere_Misting_{metal.defName}");
+            if (metal.Equals(MetallicArtsMetalDefOf.Lerasium) && IsMistborn(pawn)) return false;
 
-            return pawn.genes.HasActiveGene(mistborn) || pawn.genes.HasActiveGene(misting);
+            return metal.godMetal || IsMistborn(pawn) || IsMisting(pawn, metal);
         }
 
         public static bool IsMistborn(Pawn pawn) {
@@ -31,7 +32,7 @@ namespace CosmereScadrial.Utils {
         }
 
         public static bool IsMisting(Pawn pawn, MetallicArtsMetalDef metal) {
-            return !IsMistborn(pawn) && pawn.genes.HasActiveGene(DefDatabase<GeneDef>.GetNamed($"Cosmere_Misting_{metal.defName}"));
+            return pawn.genes.HasActiveGene(DefDatabase<GeneDef>.GetNamed($"Cosmere_Misting_{metal.defName}"));
         }
 
         public static float GetReservePercent(Pawn pawn, MetallicArtsMetalDef metal) {
@@ -71,11 +72,23 @@ namespace CosmereScadrial.Utils {
             return true;
         }
 
+        public static SurgeChargeHediff GetSurgeBurn(Pawn pawn) {
+            SurgeChargeHediff hediff = null;
+            pawn.health?.hediffSet.TryGetHediff(out hediff);
+
+            return hediff;
+        }
+
         public static float GetMetalNeededForBeu(float requiredBeu) {
             return requiredBeu / BEU_PER_METAL_UNIT;
         }
 
-        public static bool PawnConsumeVialWithMetal(Pawn pawn, MetallicArtsMetalDef metal, bool allowMultiVial = false) {
+        public static bool PawnConsumeVialWithMetal(Pawn pawn, MetallicArtsMetalDef metal,
+            bool allowMultiVial = false) {
+            if (metal.Equals(MetallicArtsMetalDefOf.Duralumin) || metal.Equals(MetallicArtsMetalDefOf.Nicrosil)) {
+                return false;
+            }
+
             if (PawnUtility.IsAsleep(pawn)) return false;
             if (pawn?.inventory?.innerContainer == null) return false;
 
@@ -95,6 +108,12 @@ namespace CosmereScadrial.Utils {
         }
 
         public static bool PawnHasVialForMetal(Pawn pawn, MetallicArtsMetalDef metal, bool allowMultiVial = false) {
+            if (metal.Equals(MetallicArtsMetalDefOf.Duralumin) || metal.Equals(MetallicArtsMetalDefOf.Nicrosil)) {
+                return false;
+            }
+
+            if (InvestitureDetector.IsShielded(pawn)) return false;
+
             if (pawn?.inventory?.innerContainer == null) return false;
 
             foreach (var vial in pawn.inventory.innerContainer) {
@@ -106,6 +125,12 @@ namespace CosmereScadrial.Utils {
             }
 
             return false;
+        }
+
+        public static bool IsBurning(Pawn pawn, MetallicArtsMetalDef metal) {
+            var burning = pawn.GetComp<MetalBurning>();
+
+            return burning?.IsBurning(metal) ?? false;
         }
     }
 }

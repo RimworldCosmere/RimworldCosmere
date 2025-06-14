@@ -21,5 +21,13 @@ A carefully timed burst against an enemy may stoke fear, anger, or confusion —
         <hediffFriendly>Cosmere_Hediff_Rioted_Buff</hediffFriendly>
         <hediffHostile>Cosmere_Hediff_Rioted_Debuff</hediffHostile>
         <hediffSeverityFactor>2</hediffSeverityFactor>
+        <verbProperties>
+            <targetParams>
+                <canTargetItems>false</canTargetItems>
+                <canTargetBuildings>false</canTargetBuildings>
+                <canTargetPlants>false</canTargetPlants>
+                <canTargetMechs>false</canTargetMechs>
+            </targetParams>
+        </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

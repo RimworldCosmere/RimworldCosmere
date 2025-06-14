@@ -10,6 +10,8 @@ export class MetalInfo {
   public Color: [number, number, number];
   public ColorTwo?: [number, number, number];
   public GodMetal: boolean;
+  public Stackable: boolean = true;
+  public MarketValue: number;
   public MaxAmount: number = 100;
   public Allomancy?: MetalAllomancyInfo
   public Feruchemy?: MetalFeruchemyInfo;

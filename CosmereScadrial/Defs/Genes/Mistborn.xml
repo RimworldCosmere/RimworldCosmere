@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Mistborn</defName>
         <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
@@ -46,9 +46,20 @@
             <li>Cosmere_Ability_Zinc_Target</li>
             <li>Cosmere_Ability_Brass_Aura</li>
             <li>Cosmere_Ability_Brass_Target</li>
+            <li>Cosmere_Ability_Copper_Aura</li>
+            <li>Cosmere_Ability_Bronze_Aura</li>
+            <li>Cosmere_Ability_Aluminum</li>
+            <li>Cosmere_Ability_Duralumin_Surge</li>
+            <li>Cosmere_Ability_Chromium</li>
+            <li>Cosmere_Ability_Nicrosil_Surge</li>
+            <li>Cosmere_Ability_Cadmium</li>
+            <li>Cosmere_Ability_Bendalloy</li>
+            <li>Cosmere_Ability_Gold</li>
+            <li>Cosmere_Ability_Electrum</li>
+            <li>Cosmere_Ability_Atium</li>
         </abilities>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Mistborn</defName>
         <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>

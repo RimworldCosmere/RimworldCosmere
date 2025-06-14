@@ -1,13 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="RimWorld" type="RimworldRunConfiguration"
-                   factoryName="RimworldRunConfiguration">
-        <option name="commandLineOptions"
-                value="-quicktest -screen-width 2560 -screen-height 1440 -screen-fullscreen 0 -monitor 1"/>
-        <option name="modListPath" value=""/>
-        <option name="saveFilePath" value=""/>
-        <option name="scriptName" value="D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe"/>
-        <method v="2">
-            <option name="Build Solution" enabled="true"/>
-        </method>
-    </configuration>
+  <configuration default="false" name="RimWorld" type="RimworldRunConfiguration" factoryName="RimworldRunConfiguration">
+    <option name="commandLineOptions" value="-quicktest -screen-width 2560 -screen-height 1440 -screen-fullscreen 0"/>
+    <option name="modListPath" value=""/>
+    <option name="saveFilePath" value=""/>
+    <option name="scriptName" value="D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe"/>
+    <method v="2">
+      <option name="Build Solution" enabled="true"/>
+    </method>
+  </configuration>
 </component>

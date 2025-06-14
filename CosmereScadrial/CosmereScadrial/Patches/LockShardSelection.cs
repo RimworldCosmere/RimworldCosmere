@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CosmereCore.ModExtensions;
 using CosmereCore.Utils;
 using CosmereFramework;
 using HarmonyLib;
@@ -12,20 +13,17 @@ namespace CosmereScadrial.Patches {
     public static class LockShardSelection {
         private static void Prefix(ref IEnumerable<Page> pages) {
             var scenarioName = Find.Scenario?.name;
-            var defName = DefDatabase<ScenarioDef>.AllDefsListForReading.First(x => x.label == scenarioName)?.defName;
-            if (defName != null && !defName.StartsWith("Cosmere_Scadrial_")) return;
+            var def = DefDatabase<ScenarioDef>.AllDefsListForReading.FirstOrDefault(x => x.label == scenarioName);
+            var shards = def?.GetModExtension<Shards>();
+            if (shards == null) return;
 
-            switch (defName) {
-                case "Cosmere_Scadrial_PreCatacendre":
-                    ShardUtility.Enable("Ruin");
-                    ShardUtility.Enable("Preservation");
-                    break;
-                case "Cosmere_Scadrial_PostCatacendre":
-                    ShardUtility.Enable("Harmony");
-                    break;
-                default:
-                    Log.Message($"[CosmereScadrial] No matching shard system found for {defName}", LogLevel.Warning);
-                    return;
+            if (shards.shards.Count == 0) {
+                Log.Message($"[CosmereScadrial] No matching shard system found for {def.defName}", LogLevel.Warning);
+                return;
+            }
+
+            foreach (var shard in shards.shards) {
+                ShardUtility.Enable(shard);
             }
 
             Messages.Message(

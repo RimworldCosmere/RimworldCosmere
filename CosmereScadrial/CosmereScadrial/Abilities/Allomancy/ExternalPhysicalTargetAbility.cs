@@ -12,14 +12,18 @@ namespace CosmereScadrial.Abilities.Allomancy {
 
         public ExternalPhysicalTargetAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-        public ExternalPhysicalTargetAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) { }
+        public ExternalPhysicalTargetAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn,
+            sourcePrecept, def) { }
 
-        protected override sealed bool toggleable => false;
+        protected sealed override bool toggleable => false;
 
-        public override bool CanApplyOn(LocalTargetInfo target) {
-            if (!base.CanApplyOn(target) || !target.HasThing || !MetalDetector.IsCapableOfHavingMetal(target.Thing.def)) return false;
+        public override bool CanApplyOn(LocalTargetInfo targetInfo) {
+            if (!base.CanApplyOn(targetInfo) || !targetInfo.HasThing ||
+                !MetalDetector.IsCapableOfHavingMetal(targetInfo.Thing.def)) {
+                return false;
+            }
 
-            return MetalDetector.GetMetal(target.Thing) > 0f;
+            return MetalDetector.GetMetal(targetInfo.Thing) > 0f;
         }
 
         public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {

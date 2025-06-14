@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <defName>Cosmere_Ability_Atium</defName>
+        <label>atium</label>
+        <description>Burning atium allows the Allomancer to see the immediate future of others, granting extreme speed and perception in combat.</description>
+        <metal>Atium</metal>
+        <hediff>Cosmere_Hediff_AtiumBuff</hediff>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

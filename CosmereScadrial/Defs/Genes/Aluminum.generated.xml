@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Aluminum -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Aluminum</defName>
         <label>aluminum misting</label>
         <labelShortAdj>gnat (aluminum)</labelShortAdj>
@@ -18,9 +18,12 @@
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_Aluminum</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Aluminum</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Aluminum</defName>
         <label>gnat (aluminum)</label>
         <description>Wipes away all other metal reserves.</description>
@@ -40,7 +43,7 @@
     </TraitDef>
     
     <!-- Ferring: Aluminum -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Aluminum</defName>
         <label>aluminum ferring</label>
         <labelShortAdj>trueself</labelShortAdj>
@@ -59,7 +62,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Aluminum</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Aluminum</defName>
         <label>trueself</label>
         <description>Stores identity, allowing anonymous interactions or forgery.</description>

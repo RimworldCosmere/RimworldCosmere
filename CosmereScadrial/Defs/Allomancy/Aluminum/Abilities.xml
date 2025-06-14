@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <defName>Cosmere_Ability_Aluminum</defName>
+        <label>burn aluminum</label>
+        <description>Burning aluminum shields the Allomancer from external investiture effects and instantly wipes all other reserves.</description>
+        <metal>Aluminum</metal>
+        <hediff>Cosmere_Hediff_Investiture_Shield</hediff>
+        <beuPerTick>0.0008</beuPerTick>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Brass -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Brass</defName>
         <label>brass misting</label>
         <labelShortAdj>soother</labelShortAdj>
@@ -24,7 +24,7 @@
         </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Brass</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Brass</defName>
         <label>soother</label>
         <description>Can soothe emotions, calming people or manipulating moods.</description>
@@ -44,7 +44,7 @@
     </TraitDef>
     
     <!-- Ferring: Brass -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Brass</defName>
         <label>brass ferring</label>
         <labelShortAdj>firesoul</labelShortAdj>
@@ -63,7 +63,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Brass</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Brass</defName>
         <label>firesoul</label>
         <description>Stores warmth, useful for surviving cold environments or heating up.</description>

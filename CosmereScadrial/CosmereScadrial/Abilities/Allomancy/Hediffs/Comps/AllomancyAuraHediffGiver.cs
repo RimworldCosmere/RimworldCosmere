@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using CosmereFramework.Utils;
-using CosmereScadrial.Abilities.Hediffs.Comps;
+using CosmereScadrial.Comps.Hediffs;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -81,7 +81,8 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs.Comps {
                 return;
             }
 
-            var nearbyPawns = GenRadial.RadialCellsAround(center, Math.Min(radius, GenRadial.MaxRadialPatternRadius), true)
+            var nearbyPawns = GenRadial
+                .RadialCellsAround(center, Math.Min(radius, GenRadial.MaxRadialPatternRadius), true)
                 .Select(cell => cell.GetFirstPawn(map))
                 .Where(p => p != null && p != base.parent.pawn);
 

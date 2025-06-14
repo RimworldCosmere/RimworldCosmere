@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CosmereCore.Utils;
 using CosmereMetals.ModExtensions;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
@@ -9,7 +10,8 @@ using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Things {
     public class AllomanticVial : ThingWithComps {
-        private List<MetallicArtsMetalDef> metals => def.GetModExtension<MetalsLinked>().Metals.Select(MetallicArtsMetalDef.GetFromMetalDef).ToList();
+        protected List<MetallicArtsMetalDef> metals => def.GetModExtension<MetalsLinked>().Metals
+            .Select(MetallicArtsMetalDef.GetFromMetalDef).ToList();
 
         public override bool IngestibleNow {
             get {
@@ -28,10 +30,13 @@ namespace CosmereScadrial.Things {
                     return false;
                 }
 
+                if (InvestitureDetector.IsShielded(pawn)) return false;
+
                 if (PawnUtility.IsAsleep(pawn)) return false;
 
                 if (metals.Count > 1) {
-                    return AllomancyUtility.IsMistborn(pawn) && metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f);
+                    return AllomancyUtility.IsMistborn(pawn) &&
+                           metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f);
                 }
 
                 var metal = metals.First();
@@ -50,13 +55,19 @@ namespace CosmereScadrial.Things {
             }
 
             if (metals.Count > 1) {
-                if (AllomancyUtility.IsMistborn(pawn) && metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f)) {
+                if (AllomancyUtility.IsMistborn(pawn) &&
+                    metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f)) {
                     foreach (var option in base.GetFloatMenuOptions(pawn)) {
                         yield return option;
                     }
 
                     yield break;
                 }
+            }
+
+            if (InvestitureDetector.IsShielded(pawn)) {
+                yield return new FloatMenuOption("Cannot ingest: currently shielded", null);
+                yield break;
             }
 
             var metal = metals.First();
@@ -82,11 +93,9 @@ namespace CosmereScadrial.Things {
             metals.ForEach(metal => {
                 AllomancyUtility.AddMetalReserve(ingester, metal, 100f); // or adjust amount
             });
-            Messages.Message($"{ingester.LabelShortCap} downed a vial containing: {string.Join(", ", metals.Select(x => x.LabelCap))}.", ingester, MessageTypeDefOf.PositiveEvent);
-        }
-
-        public override string GetInspectString() {
-            return base.GetInspectString() + $"Contains: {string.Join(", ", metals.Select(metal => metal.LabelCap))}";
+            Messages.Message(
+                $"{ingester.LabelShortCap} downed a vial containing: {string.Join(", ", metals.Select(x => x.LabelCap))}.",
+                ingester, MessageTypeDefOf.PositiveEvent);
         }
     }
 }

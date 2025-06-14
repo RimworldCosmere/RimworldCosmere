@@ -57,6 +57,7 @@ export function shouldSkipGeneration(generator: string): boolean {
     const hash = getFileHash(file);
     newCache[file] = hash;
     if (prevCache[file] !== hash) {
+      console.log(`${file} has changed.`);
       changed = true;
     }
   }

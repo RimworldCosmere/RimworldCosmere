@@ -5,6 +5,7 @@
         <label>Nickel</label>
         <description>Nickel is a resilient, corrosion-resistant metal that enhances the strength and longevity of its alloy counterparts. Its steadfast durability makes it a critical element in high-performance industrial applications.</description>
         <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Nickel</texPath>
         </graphicData>
         <stuffProps>

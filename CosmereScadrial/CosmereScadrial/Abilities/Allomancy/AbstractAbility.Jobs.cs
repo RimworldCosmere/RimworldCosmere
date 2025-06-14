@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CosmereCore.Utils;
 using CosmereScadrial.Flags;
 using RimWorld;
 using Verse;
@@ -11,49 +12,62 @@ namespace CosmereScadrial.Abilities.Allomancy {
             yield break;
         }
 
-        public override bool CanApplyOn(LocalTargetInfo target) {
-            var targetPawn = target.Pawn;
-            if (targetFlags.Has(TargetFlags.Locations) && !target.HasThing && !target.TryGetPawn(out _)) return true;
+        public override bool CanApplyOn(LocalTargetInfo targetInfo) {
+            var targetPawn = targetInfo.Pawn;
+            if (targetFlags.Has(TargetFlags.Locations) && !targetInfo.HasThing &&
+                !targetInfo.TryGetPawn(out _)) {
+                return true;
+            }
+
             if (targetFlags.Has(TargetFlags.Self) && targetPawn == pawn) return true;
+            if (!targetFlags.Has(TargetFlags.Self) && targetPawn == pawn) return false;
             if (targetFlags.Has(TargetFlags.Pawns) && targetPawn != null) return true;
             if (targetFlags.Has(TargetFlags.Fires) && targetPawn != null && targetPawn.IsBurning()) return true;
-            if (targetFlags.Has(TargetFlags.Fires) && target.HasThing && target.Thing.IsBurning()) return true;
-            if (targetFlags.Has(TargetFlags.Fires) && !target.HasThing &&
-                target.Cell.ContainsStaticFire(pawn.Map)) {
+            if (targetFlags.Has(TargetFlags.Fires) && targetInfo.HasThing && targetInfo.Thing.IsBurning()) return true;
+            if (targetFlags.Has(TargetFlags.Fires) && !targetInfo.HasThing &&
+                targetInfo.Cell.ContainsStaticFire(pawn.Map)) {
                 return true;
             }
 
-            if (targetFlags.Has(TargetFlags.Buildings) && targetPawn == null && target.HasThing &&
-                target.Thing.def.category == ThingCategory.Building) {
+            if (targetFlags.Has(TargetFlags.Buildings) && targetPawn == null && targetInfo.HasThing &&
+                targetInfo.Thing.def.category == ThingCategory.Building) {
                 return true;
             }
 
-            if (targetFlags.Has(TargetFlags.Items) && targetPawn == null && target.HasThing &&
-                target.Thing.def.category == ThingCategory.Item) {
+            if (targetFlags.Has(TargetFlags.Items) && targetPawn == null && targetInfo.HasThing &&
+                targetInfo.Thing.def.category == ThingCategory.Item) {
                 return true;
             }
 
-            if (targetFlags.Has(TargetFlags.Animals) && targetPawn != null && target.Thing.def.race.Animal) return true;
-            if (targetFlags.Has(TargetFlags.Humans) && targetPawn != null && target.Thing.def.race.Humanlike) {
+            if (targetFlags.Has(TargetFlags.Animals) && targetPawn != null &&
+                targetInfo.Thing.def.race.Animal) {
                 return true;
             }
 
-            if (targetFlags.Has(TargetFlags.Mechs) && targetPawn != null && target.Thing.def.race.IsMechanoid) {
+            if (targetFlags.Has(TargetFlags.Humans) && targetPawn != null && targetInfo.Thing.def.race.Humanlike) {
                 return true;
             }
 
-            if (targetFlags.Has(TargetFlags.Plants) && targetPawn == null && target.HasThing &&
-                target.Thing.def.plant != null) {
+            if (targetFlags.Has(TargetFlags.Mechs) && targetPawn != null && targetInfo.Thing.def.race.IsMechanoid) {
+                return true;
+            }
+
+            if (targetFlags.Has(TargetFlags.Plants) && targetPawn == null && targetInfo.HasThing &&
+                targetInfo.Thing.def.plant != null) {
                 return true;
             }
 
             if (targetFlags.Has(TargetFlags.Mutants) && targetPawn is { IsMutant: true }) return true;
-            if (targetFlags.Has(TargetFlags.WorldCell) && !target.HasThing && !target.TryGetPawn(out _)) return true;
+            if (targetFlags.Has(TargetFlags.WorldCell) && !targetInfo.HasThing &&
+                !targetInfo.TryGetPawn(out _)) {
+                return true;
+            }
 
-            return base.CanApplyOn(target);
+            return false;
         }
 
-        public virtual bool CanActivate(BurningStatus activationStatus, out string reason) {
+        public virtual bool CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus, out string reason,
+            bool ignoreInvestiture = false) {
             if (!metalBurning.CanBurn(metal, def.beuPerTick)) {
                 reason = "MenuNoReserves".Translate(metal.LabelCap);
                 return false;
@@ -64,20 +78,26 @@ namespace CosmereScadrial.Abilities.Allomancy {
                 return false;
             }
 
+            if (!ignoreInvestiture && targetInfo.Pawn != null && InvestitureDetector.IsShielded(targetInfo.Pawn)) {
+                reason = "TargetShielded".Translate(targetInfo.Pawn.LabelShortCap);
+                return false;
+            }
+
             reason = null;
             return true;
         }
 
-        public override void QueueCastingJob(LocalTargetInfo target, LocalTargetInfo dest) {
-            QueueCastingJob(target, dest, false);
+        public override void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
+            QueueCastingJob(targetInfo, dest, false);
         }
 
-        public void QueueCastingJob(LocalTargetInfo target, LocalTargetInfo destination, bool flare) {
-            shouldFlare = flare;
-            base.QueueCastingJob(target, destination);
+        public void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo destination, bool flare) {
+            target = targetInfo;
+            shouldFlare = def.canFlare && flare;
+            base.QueueCastingJob(targetInfo, destination);
         }
 
-        public override Job GetJob(LocalTargetInfo target, LocalTargetInfo destination) {
+        public override Job GetJob(LocalTargetInfo targetInfo, LocalTargetInfo destination) {
             var job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, target);
             job.ability = this;
             job.verbToUse = verb;

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Atium">
+        <defName>Atium</defName>
+        <allomancy>
+            <description>Allows a glimpse into the immediate future of others.</description>
+        </allomancy>
+        <feruchemy>
+            <description>Stores age, granting youth or aging when tapped.</description>
+        </feruchemy>
+    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+</Defs>

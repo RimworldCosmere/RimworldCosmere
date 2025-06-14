@@ -23,12 +23,26 @@ namespace CosmereScadrial.Abilities.Allomancy {
             status = BurningStatus.Off;
         }
 
-        protected override sealed bool toggleable => false;
+        protected sealed override bool toggleable => false;
 
-        public override bool CanApplyOn(LocalTargetInfo target) {
-            if (!base.CanApplyOn(target)) return false;
+        public override bool CanApplyOn(LocalTargetInfo targetInfo) {
+            if (!base.CanApplyOn(targetInfo)) return false;
+            var shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
+            if (shooting.TotallyDisabled) return false;
 
             return pawn.inventory?.innerContainer.Contains(CoinThingDefOf.Cosmere_Clip) ?? false;
+        }
+
+        public override bool CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus,
+            out string reason, bool ignoreInvestiture) {
+            if (!base.CanActivate(targetInfo, activationStatus, out reason, true)) return false;
+
+
+            var shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
+            if (!shooting.PermanentlyDisabled && !shooting.TotallyDisabled) return true;
+
+            reason = "MenuCannotShoot".Translate();
+            return false;
         }
 
         public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {

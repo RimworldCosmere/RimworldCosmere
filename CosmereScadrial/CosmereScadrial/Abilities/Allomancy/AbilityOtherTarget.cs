@@ -29,14 +29,8 @@ namespace CosmereScadrial.Abilities.Allomancy {
             }
         }
 
-        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
-            target = targetInfo;
-
-            return base.Activate(target, dest);
-        }
-
-        public override Job GetJob(LocalTargetInfo target, LocalTargetInfo destination) {
-            job = base.GetJob(target, destination);
+        public override Job GetJob(LocalTargetInfo targetInfo, LocalTargetInfo destination) {
+            job = base.GetJob(targetInfo, destination);
             job.followRadius = def.verbProperties.range / 2f;
 
             return job;

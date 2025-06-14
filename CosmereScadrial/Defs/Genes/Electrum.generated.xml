@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Electrum -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Electrum</defName>
         <label>electrum misting</label>
         <labelShortAdj>oracle</labelShortAdj>
@@ -18,9 +18,12 @@
                 <metal>Electrum</metal>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_Electrum</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Electrum</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Electrum</defName>
         <label>oracle</label>
         <description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
@@ -40,7 +43,7 @@
     </TraitDef>
     
     <!-- Ferring: Electrum -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Electrum</defName>
         <label>electrum ferring</label>
         <labelShortAdj>pinnacle</labelShortAdj>
@@ -59,7 +62,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Electrum</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Electrum</defName>
         <label>pinnacle</label>
         <description>Stores determination or willpower.</description>

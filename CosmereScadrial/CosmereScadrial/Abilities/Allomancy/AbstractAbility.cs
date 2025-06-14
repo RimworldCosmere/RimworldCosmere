@@ -2,14 +2,16 @@ using System;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Flags;
+using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
 using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Abilities.Allomancy {
     public abstract partial class AbstractAbility : Ability {
+        private TargetFlags? cachedTargetFlags;
         protected int flareStartTick = -1;
-        protected bool shouldFlare;
+        protected internal bool shouldFlare;
         public BurningStatus? status;
         public LocalTargetInfo target;
 
@@ -31,7 +33,13 @@ namespace CosmereScadrial.Abilities.Allomancy {
             }
         }
 
-        protected TargetFlags targetFlags => TargetFlagsExtensions.FromAbilityDef(def);
+        protected TargetFlags targetFlags {
+            get {
+                cachedTargetFlags ??= TargetFlagsExtensions.FromAbilityDef(def);
+
+                return (TargetFlags)cachedTargetFlags;
+            }
+        }
 
         public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
@@ -47,20 +55,22 @@ namespace CosmereScadrial.Abilities.Allomancy {
 
         public override bool CanCast => metalBurning.CanBurn(metal, def.beuPerTick);
 
-        public TaggedString GetRightClickLabel(LocalTargetInfo target, BurningStatus burningStatus,
+        public TaggedString GetRightClickLabel(LocalTargetInfo targetInfo, BurningStatus burningStatus,
             string disableReason = null) {
             var hasDisableReason = !string.IsNullOrEmpty(disableReason);
 
             var label = def.LabelCap.Replace("Target",
-                target.Pawn != null ? target.Pawn.LabelShort : target.Thing.LabelNoParenthesisCap);
+                targetInfo.Pawn != null ? targetInfo.Pawn.LabelShort : targetInfo.Thing.LabelNoParenthesisCap);
             if (burningStatus.Equals(BurningStatus.Off)) {
-                return def.label == metal.LabelCap ? $"Stop Burning {metal.LabelCap}" : $"Stop {label}";
+                return string.Equals(def.label, metal.label, StringComparison.CurrentCultureIgnoreCase)
+                    ? $"Stop Burning {metal.LabelCap}"
+                    : $"Stop {label}";
             }
 
-            if (def.LabelCap == metal.LabelCap) {
+            if (string.Equals(def.label, metal.label, StringComparison.CurrentCultureIgnoreCase)) {
                 return burningStatus.Equals(BurningStatus.Burning)
-                    ? $"Burn {metal.label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}"
-                    : $"Flare {metal.label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}";
+                    ? $"Burn {metal.LabelCap}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}"
+                    : $"Flare {metal.LabelCap}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}";
             }
 
             if (status == BurningStatus.Flaring && burningStatus.Equals(BurningStatus.Burning)) {
@@ -82,8 +92,25 @@ namespace CosmereScadrial.Abilities.Allomancy {
                 BurningStatus.Passive => def.beuPerTick / 2,
                 BurningStatus.Burning => def.beuPerTick,
                 BurningStatus.Flaring => def.beuPerTick * 2,
+                BurningStatus.Duralumin => 0.00000001f,
                 _ => throw new ArgumentOutOfRangeException(),
             };
+        }
+
+        public float GetStrength() {
+            const float multiplier = 12f;
+            var rawPower = pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
+            var statusValue = (status ?? BurningStatus.Burning) switch {
+                BurningStatus.Off => 0f,
+                BurningStatus.Passive => 0.5f,
+                BurningStatus.Burning => 1f,
+                BurningStatus.Flaring => 2f,
+                BurningStatus.Duralumin => AllomancyUtility.GetReservePercent(pawn, MetallicArtsMetalDefOf.Duralumin) *
+                                           10f,
+                _ => 0f,
+            };
+
+            return multiplier * def.hediffSeverityFactor * rawPower * statusValue;
         }
 
         public void UpdateStatus(BurningStatus newStatus) {

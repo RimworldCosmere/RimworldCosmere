@@ -14,7 +14,7 @@ This is a modular monorepo. Each component exists as its own loadable mod:
 
 - **[Cosmere Framework](./CosmereFramework)** – Shared C# utilities and base helpers (no content)
 - **[Cosmere Core](./CosmereCore)** – Shared stats, traits, needs, and the Investiture system
-- **[Cosmere Metals](./CosmereMetals)** – Defines all base metals, alloys, and godmetals used across the Cosmere
+- **[Cosmere Resources](./CosmereResources)** – Defines all base metals, alloys, and godmetals used across the Cosmere
 
 ### Shard World Modules
 

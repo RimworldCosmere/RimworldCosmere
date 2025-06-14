@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
@@ -30,7 +30,7 @@
         <label>coinshot</label>
         <description>Can push on metals, allowing rapid movement or throwing metal objects.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
@@ -58,7 +58,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
@@ -69,7 +69,7 @@
         <label>steelrunner</label>
         <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>

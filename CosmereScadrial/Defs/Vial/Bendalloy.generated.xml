@@ -8,7 +8,7 @@
             <color>(117, 144, 108)</color>
         </graphicData>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Bendalloy</metal>
             </li>
         </modExtensions>

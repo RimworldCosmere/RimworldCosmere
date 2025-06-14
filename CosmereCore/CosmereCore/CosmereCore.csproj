@@ -13,12 +13,6 @@
 
 
     <ItemGroup>
-        <Reference Include="FloatSubMenu">
-            <HintPath>$(WorkshopDir)/2864015430/1.5/Assemblies/FloatSubMenu.dll</HintPath>
-        </Reference>
-        <Reference Include="HugsLib">
-            <HintPath>$(WorkshopDir)/818773962/Assemblies/HugsLib.dll</HintPath>
-        </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data.Linq"/>
@@ -29,9 +23,9 @@
             <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
             <Name>CosmereFramework</Name>
         </ProjectReference>
-        <ProjectReference Include="..\..\CosmereMetals\CosmereMetals\CosmereMetals.csproj">
+        <ProjectReference Include="..\..\CosmereResources\CosmereResources\CosmereResources.csproj">
             <Project>{69b78f0c-63e1-47a1-9fd4-b5cce63d727f}</Project>
-            <Name>CosmereMetals</Name>
+            <Name>CosmereResources</Name>
         </ProjectReference>
     </ItemGroup>
 

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+
+    <PropertyGroup>
+        <ProjectGuid>{69b78f0c-63e1-47a1-9fd4-b5cce63d727f}</ProjectGuid>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>CosmereResources</RootNamespace>
+        <AssemblyName>CosmereResources</AssemblyName>
+        <ModScript>generate:mod:resources</ModScript>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Data.Linq"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj">
+            <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
+            <Name>CosmereFramework</Name>
+        </ProjectReference>
+    </ItemGroup>
+
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+
+</Project>

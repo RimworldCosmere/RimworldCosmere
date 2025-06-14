@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMineable">
+        <defName>MineableChromium</defName>
+        <label>chromium Ore</label>
+        <description>Unrefined Chromium ore mined directly from the earth.</description>
+        <graphicData>
+            <color>(132, 134, 139)</color>
+            <colorTwo>(159, 171, 196)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>1600</MaxHitPoints>
+        </statBases>
+        <deepCommonality>0.3</deepCommonality>
+        <deepCountPerPortion>30</deepCountPerPortion>
+        <deepLumpSizeRange>25~45</deepLumpSizeRange>
+        <building>
+            <mineableThing>Chromium</mineableThing>
+            <mineableYield>30</mineableYield>
+            <mineableScatterCommonality>0.3</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>25~45</mineableScatterLumpSizeRange>
+        </building>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Chromium</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

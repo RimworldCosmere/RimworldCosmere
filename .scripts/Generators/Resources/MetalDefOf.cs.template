@@ -1,0 +1,20 @@
+#nullable disable
+using System.Diagnostics.CodeAnalysis;
+using CosmereResources.Defs;
+using RimWorld;
+
+namespace CosmereResources {
+    [DefOf]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [SuppressMessage("ReSharper", "UnusedType.Global")]
+    public static class MetalDefOf {        
+        {{#each metals as | metal |}}
+        public static MetalDef {{capitalize metal.Name}};
+        {{/each}}
+
+        static MetalDefOf() {
+            DefOfHelper.EnsureInitializedInCtor(typeof(MetalDefOf));
+        }
+    }
+}

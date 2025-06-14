@@ -66,24 +66,20 @@ namespace CosmereScadrial.Abilities.Allomancy {
             return false;
         }
 
-        public virtual bool CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus, out string reason,
+        public virtual AcceptanceReport CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus,
             bool ignoreInvestiture = false) {
             if (!metalBurning.CanBurn(metal, def.beuPerTick)) {
-                reason = "MenuNoReserves".Translate(metal.LabelCap);
-                return false;
+                return "MenuNoReserves".Translate(metal.LabelCap);
             }
 
             if (activationStatus == BurningStatus.Flaring && PawnUtility.IsAsleep(pawn)) {
-                reason = "MenuCannotFlareAsleep".Translate();
-                return false;
+                return "MenuCannotFlareAsleep".Translate();
             }
 
             if (!ignoreInvestiture && targetInfo.Pawn != null && InvestitureDetector.IsShielded(targetInfo.Pawn)) {
-                reason = "TargetShielded".Translate(targetInfo.Pawn.LabelShortCap);
-                return false;
+                return "TargetShielded".Translate(targetInfo.Pawn.LabelShortCap);
             }
 
-            reason = null;
             return true;
         }
 

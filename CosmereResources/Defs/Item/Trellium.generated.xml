@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMetal">
+        <defName>Trellium</defName>
+        <label>Trellium</label>
+        <description>An alien, corrupted metal aligned with Trell&#x27;s influence. It resists typical Investiture detection and interferes with other magic systems. Often associated with Hemalurgic constructs, Trellium&#x27;s strange red hue and unique properties hint at a Shardic power foreign to Scadrial.</description>
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>.25</drawSize>
+            <texPath>Item/Resource/Trellium</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.0</commonality>
+            <color>(148, 0, 37)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>10000</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Trellium</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

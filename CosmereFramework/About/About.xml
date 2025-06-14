@@ -4,7 +4,7 @@
     <description>This mod contains helpers and utilities for development the Cosmere mods for Rimworld</description>
     <author>CryptikLemur</author>
     <supportedVersions>
-        <li>1.5</li>
+        <li>1.6</li>
     </supportedVersions>
     <packageId>CryptikLemur.Cosmere.Framework</packageId>
     <modDependencies>
@@ -14,12 +14,6 @@
             <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
         </li>
         <li>
-            <packageId>UnlimitedHugs.HugsLib</packageId>
-            <displayName>HugsLib</displayName>
-            <downloadUrl>https://github.com/UnlimitedHugs/RimworldHugsLib/releases/latest</downloadUrl>
-            <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
-        </li>
-        <li>
             <packageId>kathanon.floatsubmenu</packageId>
             <displayName>Float Sub-Menus</displayName>
             <steamWorkshopUrl>steam://url/CommunityFilePage/2864015430</steamWorkshopUrl>
@@ -27,7 +21,6 @@
     </modDependencies>
     <loadAfter>
         <li>brrainz.harmony</li>
-        <li>UnlimitedHugs.HugsLib</li>
         <li>kathanon.floatsubmenu</li>
     </loadAfter>
 </ModMetaData>

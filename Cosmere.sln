@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereCore", "CosmereCore\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereFramework", "CosmereFramework\CosmereFramework\CosmereFramework.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereMetals", "CosmereMetals\CosmereMetals\CosmereMetals.csproj", "{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereResources", "CosmereResources\CosmereResources\CosmereResources.csproj", "{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

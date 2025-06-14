@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMetal">
+        <defName>Chromium</defName>
+        <label>Chromium</label>
+        <description>Chromium is a hard, lustrous metal renowned for its brilliant shine and outstanding resistance to tarnish. It enhances the durability and appearance of alloys and is often used to create sleek, modern finishes.</description>
+        <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <texPath>Item/Resource/Chromium</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.0</commonality>
+            <color>(132, 134, 139)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>0.5</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Chromium</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractBuildableMetal">
+        <defName>Steel</defName>
+        <label>Steel</label>
+        <description>Steel is a durable alloy of iron and carbon, valued for its strength, rigidity, and versatility. Ubiquitous across weaponry, construction, and tools, it forms the foundation of advanced metallurgy.</description>
+        <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <texPath>Item/Resource/Steel</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.8</commonality>
+            <color>(109, 108, 108)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>2</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Steel</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

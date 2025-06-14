@@ -14,7 +14,8 @@ namespace CosmereScadrial.Things {
             ProjectileHitFlags hitFlags, bool preventFriendlyFire = false, Thing equipment = null,
             ThingDef targetCoverDef = null) {
             var pawn = launcher as Pawn;
-            cachedDamageAmount = Mathf.CeilToInt(def.projectile.GetDamageAmount(1) * GetAbility(pawn).GetStrength());
+            cachedDamageAmount =
+                Mathf.CeilToInt(def.projectile.GetDamageAmount(1f, null) * GetAbility(pawn).GetStrength());
 
             base.Launch(launcher, origin, usedTarget, intendedTarget, hitFlags, preventFriendlyFire, equipment,
                 targetCoverDef);

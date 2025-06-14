@@ -1,15 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-  <ScenarioDef Name="Cosmere_PreCatacendre">
+  <ScenarioDef Name="Cosmere_PreCatacendre" ParentName="ScenarioBase">
     <defName>Cosmere_Scadrial_PreCatacendre</defName>
     <label>Cosmere - Scadrial: Pre-catacendre</label>
     <description>You are escaped Skaa, Terris stewards, or disillusioned nobles from the oppressive rule of the Lord Ruler. Fleeing from Inquisitors and ash-choked cities, you must forge a life in the wilderness.</description>
     <scenario>
       <summary>Survivors of the Final Empire's tyranny, now hiding on the fringe of civilization.</summary>
-      <playerFaction>
-        <def>PlayerFaction</def>
-        <factionDef>PlayerColony</factionDef>
-      </playerFaction>
       
       <parts>
         <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
@@ -72,6 +68,8 @@
         <li Class="ScenPart_StartingThing_Defined">
           <def>StartingThing_Defined</def>
           <thingDef>MeleeWeapon_Knife</thingDef>
+          <stuff>Jade</stuff>
+          <count>2</count>
         </li>
 
         <li Class="ScenPart_ScatterThingsNearPlayerStart">
@@ -94,9 +92,7 @@
 
         <li Class="ScenPart_GameStartDialog">
           <def>GameStartDialog</def>
-          <text>
-            You have escaped the Final Empire. You are hunted and under-equipped, but you have your mind, your strength — and maybe... something more.
-          </text>
+          <text>You have escaped the Final Empire. You are hunted and under-equipped, but you have your mind, your strength — and maybe... something more.</text>
           <closeSound>GameStartSting</closeSound>
         </li>
       </parts>

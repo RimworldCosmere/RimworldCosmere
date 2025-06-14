@@ -57,7 +57,7 @@
 
 - Use the **Investiture tab** to track charges and status
 - Right click to use Allomantic Abilities
-- Shift-click to flare an ability
+- Ctrl-click to flare an ability
 - Mistborn and Full Feruchemists are **extremely rare** by default
 - >!Burning Lerasium can change everything...!<
 

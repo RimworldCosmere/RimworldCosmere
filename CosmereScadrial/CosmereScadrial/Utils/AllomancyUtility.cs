@@ -1,6 +1,6 @@
 using CosmereCore.Needs;
 using CosmereCore.Utils;
-using CosmereMetals.ModExtensions;
+using CosmereResources.ModExtensions;
 using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;

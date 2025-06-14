@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMineable">
+        <defName>Mineable{{capitalize metal.Name}}</defName>
+        <label>{{metal.Name}} Ore</label>
+        <description>{{#if metal.Mining.Description}}{{metal.Mining.Description}}{{else}}Unrefined {{capitalize metal.Name}} ore mined directly from the earth.{{/if}}</description>
+        <graphicData>
+            <color>{{rgb metal.Color}}</color>
+            {{#if metal.ColorTwo}}<colorTwo>{{rgb metal.ColorTwo}}</colorTwo>{{/if}}
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>{{metal.Mining.HitPoints}}</MaxHitPoints>
+        </statBases>
+        <deepCommonality>{{metal.Mining.Commonality}}</deepCommonality>
+        <deepCountPerPortion>{{metal.Mining.Yield}}</deepCountPerPortion>
+        <deepLumpSizeRange>{{range metal.Mining.SizeRange}}</deepLumpSizeRange>
+        <building>
+            <mineableThing>{{capitalize metal.Name}}</mineableThing>
+            <mineableYield>{{metal.Mining.Yield}}</mineableYield>
+            <mineableScatterCommonality>{{metal.Mining.Commonality}}</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>{{range metal.Mining.SizeRange}}</mineableScatterLumpSizeRange>
+        </building>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>{{capitalize metal.Name}}</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

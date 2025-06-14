@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="{{#if metal.Buildable.Buildings}}AbstractBuildableMetal{{else}}AbstractMetal{{/if}}">
+        <defName>{{capitalize metal.Name}}</defName>
+        <label>{{capitalize metal.Name}}</label>
+        <description>{{metal.Description}}</description>
+        <graphicData>
+            {{# if metal.Stackable}}
+            <graphicClass>Graphic_StackCount</graphicClass>
+            {{else}}
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>.25</drawSize>
+            {{/if}}
+            <texPath>Item/Resource/{{capitalize metal.Name}}</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>{{#if metal.Buildable.Commonality}}{{metal.Buildable.Commonality}}{{else}}0.0{{/if}}</commonality>
+            <color>{{rgb metal.Color}}</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>{{metal.MarketValue}}</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>{{capitalize metal.Name}}</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

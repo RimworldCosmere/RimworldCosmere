@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMineable">
+        <defName>MineableGold</defName>
+        <label>gold Ore</label>
+        <description>Unrefined Gold ore mined directly from the earth.</description>
+        <graphicData>
+            <color>(206, 172, 55)</color>
+            <colorTwo>(136, 101, 23)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>1500</MaxHitPoints>
+        </statBases>
+        <deepCommonality>0.3</deepCommonality>
+        <deepCountPerPortion>40</deepCountPerPortion>
+        <deepLumpSizeRange>2~8</deepLumpSizeRange>
+        <building>
+            <mineableThing>Gold</mineableThing>
+            <mineableYield>40</mineableYield>
+            <mineableScatterCommonality>0.3</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>2~8</mineableScatterLumpSizeRange>
+        </building>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Gold</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereMetals;
-using CosmereMetals.Defs;
-using CosmereMetals.ModExtensions;
+using CosmereResources;
+using CosmereResources.Defs;
+using CosmereResources.ModExtensions;
 using RimWorld;
 using Verse;
 

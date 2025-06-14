@@ -84,7 +84,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
             var radius = BASE_RADIUS * GetStrength();
 
             if (CosmereSettings.debugMode) {
-                GenDraw.DrawCircleOutline(pawn.DrawPos, radius, SimpleColor.Blue);
+                GenDraw.DrawCircleOutline(bubble.DrawPos, radius, SimpleColor.Blue);
             }
 
             foreach (var pawnInBubble in pawnsInBubble.Where(otherPawn =>

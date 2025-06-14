@@ -14,8 +14,11 @@ namespace CosmereScadrial.Dev {
             actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         public static void PrepareDevPawn(Pawn pawn) {
             if (pawn.genes == null) return;
-            pawn.genes?.AddGene(GeneDefOf.Cosmere_Mistborn, true);
-            Messages.Message($"Made {pawn.NameFullColored} a mistborn", pawn, MessageTypeDefOf.PositiveEvent);
+            if (!pawn.genes.HasActiveGene(GeneDefOf.Cosmere_Mistborn)) {
+                pawn.genes?.AddGene(GeneDefOf.Cosmere_Mistborn, false);
+                Messages.Message($"Made {pawn.NameFullColored} a mistborn", pawn, MessageTypeDefOf.PositiveEvent);
+            }
+
             FillAllReserves(pawn);
             GiveAllAllomanticVials(pawn);
         }
@@ -25,8 +28,10 @@ namespace CosmereScadrial.Dev {
         public static void GiveAllAllomanticVials(Pawn pawn) {
             foreach (var metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x =>
                          !x.godMetal && x.allomancy != null)) {
-                var vial = ThingMaker.MakeThing(
-                    DefDatabase<ThingDef>.GetNamed($"Cosmere_AllomanticVial_{metal.LabelCap}"));
+                var vialDef = DefDatabase<ThingDef>.GetNamed($"Cosmere_AllomanticVial_{metal.LabelCap}");
+                if (pawn.inventory.innerContainer.Contains(vialDef)) continue;
+
+                var vial = ThingMaker.MakeThing(vialDef);
                 vial.stackCount = 20;
                 pawn.inventory.innerContainer.TryAdd(vial);
             }

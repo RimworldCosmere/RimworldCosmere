@@ -53,7 +53,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
 
         protected MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 
-        public override bool CanCast => metalBurning.CanBurn(metal, def.beuPerTick);
+        public override AcceptanceReport CanCast => metalBurning.CanBurn(metal, def.beuPerTick);
 
         public TaggedString GetRightClickLabel(LocalTargetInfo targetInfo, BurningStatus burningStatus,
             string disableReason = null) {

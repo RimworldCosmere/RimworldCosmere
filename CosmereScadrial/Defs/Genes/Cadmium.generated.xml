@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Cadmium</metal>
             </li>
         </modExtensions>
@@ -28,7 +28,7 @@
         <label>pulser</label>
         <description>Slows down time in a bubble, creating a temporal distortion.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Cadmium</metal>
             </li>
         </modExtensions>
@@ -56,7 +56,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Cadmium</metal>
             </li>
         </modExtensions>
@@ -67,7 +67,7 @@
         <label>gaspers</label>
         <description>Stores breath, useful for surviving in low-oxygen environments.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Cadmium</metal>
             </li>
         </modExtensions>

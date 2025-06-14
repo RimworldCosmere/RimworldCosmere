@@ -36,10 +36,15 @@ namespace CosmereScadrial.Comps.Things {
 
         private MetalReserves metalReserves => pawn.GetComp<MetalReserves>();
 
-        public bool CanBurn(MetallicArtsMetalDef metal, float requiredBEUs) {
+        public AcceptanceReport CanBurn(MetallicArtsMetalDef metal, float requiredBEUs) {
             var amountToBurn = AllomancyUtility.GetMetalNeededForBeu(requiredBEUs * SECONDS_INTERVAL);
-            return metalReserves.CanLowerReserve(metal, amountToBurn) ||
-                   AllomancyUtility.PawnHasVialForMetal(pawn, metal);
+
+            if (!metalReserves.CanLowerReserve(metal, amountToBurn) &&
+                !AllomancyUtility.PawnHasVialForMetal(pawn, metal)) {
+                return "Not enough metal";
+            }
+
+            return AcceptanceReport.WasAccepted;
         }
 
         public override void CompTick() {

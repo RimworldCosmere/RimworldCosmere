@@ -1,4 +1,4 @@
-﻿using CosmereMetals;
+﻿using CosmereResources;
 using UnityEngine;
 using Verse;
 

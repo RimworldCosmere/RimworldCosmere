@@ -3,6 +3,7 @@ using CosmereCore.Utils;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
+using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Comps.Maps {
     public class MistsWatcher(Map map) : MapComponent(map) {
@@ -11,14 +12,21 @@ namespace CosmereScadrial.Comps.Maps {
         private bool mistsActive;
         private int mistsEndTick;
         private int mistsStartTick;
-        private int nextMistsStartTick;
+        private int nextMistsStartTick = -1;
+
+        private bool enabled =>
+            ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation, ShardDefOf.Harmony);
 
         public override void FinalizeInit() {
+            if (!enabled) return;
+
             base.FinalizeInit();
             ScheduleNextMists(); // In case it was missed on map load
         }
 
         public override void MapComponentTick() {
+            if (!enabled) return;
+
             var currentTick = Find.TickManager.TicksGame;
 
             if (!mistsActive && currentTick >= nextMistsStartTick) {

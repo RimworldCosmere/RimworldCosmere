@@ -5,6 +5,7 @@
         <label>Copper</label>
         <description>Copper is a soft, reddish metal prized for its conductivity and malleability. It has been a staple in crafting and electrical applications across civilizations for centuries.</description>
         <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Copper</texPath>
         </graphicData>
         <stuffProps>

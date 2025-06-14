@@ -5,6 +5,7 @@
         <label>Pewter</label>
         <description>Pewter is a refined alloy formed by blending Tin with Copper. Known for its soft, workable nature and a muted, classic luster, pewter has been a favored material for decorative and utilitarian objects since ancient times.</description>
         <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Pewter</texPath>
         </graphicData>
         <stuffProps>

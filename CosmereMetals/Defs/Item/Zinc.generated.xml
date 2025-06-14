@@ -5,6 +5,7 @@
         <label>Zinc</label>
         <description>Zinc is a cool, bluish-silver metal with a distinctive character. It not only protects other metals from corrosion through galvanization but also plays a crucial role in modern alloy production.</description>
         <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Zinc</texPath>
         </graphicData>
         <stuffProps>

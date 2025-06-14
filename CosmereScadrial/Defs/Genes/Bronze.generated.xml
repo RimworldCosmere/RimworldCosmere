@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Bronze -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Bronze</defName>
         <label>bronze misting</label>
         <labelShortAdj>seeker</labelShortAdj>
@@ -18,9 +18,12 @@
                 <metal>Bronze</metal>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_Bronze_Aura</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Bronze</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Bronze</defName>
         <label>seeker</label>
         <description>Detects other Allomancers using powers.</description>
@@ -40,7 +43,7 @@
     </TraitDef>
     
     <!-- Ferring: Bronze -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Bronze</defName>
         <label>bronze ferring</label>
         <labelShortAdj>sentry</labelShortAdj>
@@ -59,7 +62,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Bronze</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Bronze</defName>
         <label>sentry</label>
         <description>Stores wakefulness, useful for staying awake or skipping sleep.</description>

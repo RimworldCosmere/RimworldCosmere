@@ -18,32 +18,31 @@ namespace CosmereCore.Utils {
             50000, // 10th
         };
 
-        public static void AssignHeighteningFromBeUs(Pawn pawn) {
+        // ReSharper disable once InconsistentNaming
+        public static void AssignHeighteningFromBEUs(Pawn pawn) {
             if (pawn?.story?.traits == null) {
                 return;
             }
 
-            var investedTrait = DefDatabase<TraitDef>.GetNamedSilentFail("Cosmere_Invested");
-            if (investedTrait == null) return;
-
-            var investNeed = pawn.needs?.TryGetNeed(DefDatabase<NeedDef>.GetNamed("Cosmere_Investiture"));
+            var investNeed = pawn.needs?.TryGetNeed(NeedDefOf.Cosmere_Investiture);
             if (investNeed == null) return;
 
-            var degree = GetDegreeFromBeUs((int)investNeed.CurLevel);
+            var degree = GetDegreeFromBEUs((int)investNeed.CurLevel);
 
             // Remove existing Invested trait (if present with different degree)
-            var existing = pawn.story.traits.GetTrait(investedTrait);
+            var existing = pawn.story.traits.GetTrait(TraitDefOf.Cosmere_Invested);
             if (existing != null && existing.Degree != degree) {
                 pawn.story.traits.allTraits.Remove(existing);
             }
 
             // Add trait if not already correct
-            if (!pawn.story.traits.HasTrait(investedTrait)) {
-                pawn.story.traits.GainTrait(new Trait(investedTrait, degree));
+            if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Invested)) {
+                pawn.story.traits.GainTrait(new Trait(TraitDefOf.Cosmere_Invested, degree));
             }
         }
 
-        public static int GetDegreeFromBeUs(int beu) {
+        // ReSharper disable once InconsistentNaming
+        public static int GetDegreeFromBEUs(int beu) {
             for (var i = beuThresholds.Length - 1; i >= 0; i--) {
                 if (beu >= beuThresholds[i]) {
                     return i;
@@ -51,6 +50,11 @@ namespace CosmereCore.Utils {
             }
 
             return 0;
+        }
+
+        // ReSharper disable once InconsistentNaming
+        public static int GetBEUsFromDegree(int degree) {
+            return beuThresholds[degree];
         }
     }
 }

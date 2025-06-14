@@ -4,22 +4,13 @@ using RimWorld;{{#ifEquals type "Gene"}}
 using Verse;{{/ifEquals}}
 
 namespace CosmereScadrial {
-    [DefOf]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("ReSharper", "UnusedType.Global")]
-    public static class {{type}}DefOf {
+    public static partial class {{type}}DefOf {
         {{#each metals as | metal |}}
         public static {{../type}}Def Cosmere_Misting_{{capitalize metal.Name}};
         public static {{../type}}Def Cosmere_Ferring_{{capitalize metal.Name}};
         {{/each}}
-
-        public static {{type}}Def Cosmere_Mistborn;
-        public static {{type}}Def Cosmere_FullFeruchemist;{{#ifEquals type "Trait"}}
-        public static TraitDef Cosmere_Metalborn;{{/ifEquals}}
-
-        static {{type}}DefOf() {
-            DefOfHelper.EnsureInitializedInCtor(typeof({{type}}DefOf));
-        }
     }
 }

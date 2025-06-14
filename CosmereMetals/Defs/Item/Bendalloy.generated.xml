@@ -5,6 +5,7 @@
         <label>Bendalloy</label>
         <description>Bendalloy is a mysterious and dynamic alloy created by precisely combining cadmium, zinc, and silver. Its shifting hues and volatile properties make it a material of both scientific intrigue and advanced technological potential.</description>
         <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Bendalloy</texPath>
         </graphicData>
         <stuffProps>

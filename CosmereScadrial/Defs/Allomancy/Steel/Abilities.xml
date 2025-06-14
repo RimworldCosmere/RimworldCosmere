@@ -27,14 +27,6 @@ These lines shimmer with the tension of potential force, visible only to those b
             <noiseRadius>0</noiseRadius>
             <drawAimPie>false</drawAimPie>
             <targetParams>
-                <canTargetSelf>false</canTargetSelf>
-                <canTargetPawns>true</canTargetPawns>
-                <canTargetAnimals>true</canTargetAnimals>
-                <canTargetHumans>true</canTargetHumans>
-                <canTargetMechs>true</canTargetMechs>
-                <canTargetMutants>true</canTargetMutants>
-                <canTargetBuildings>true</canTargetBuildings>
-                <canTargetItems>true</canTargetItems>
                 <canTargetPlants>false</canTargetPlants>
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
@@ -57,15 +49,6 @@ These lines shimmer with the tension of potential force, visible only to those b
             <defaultCooldownTime>.5</defaultCooldownTime>
             <noiseRadius>0</noiseRadius>
             <targetParams>
-                <canTargetSelf>false</canTargetSelf>
-                <canTargetPawns>true</canTargetPawns>
-                <canTargetAnimals>true</canTargetAnimals>
-                <canTargetHumans>true</canTargetHumans>
-                <canTargetMechs>true</canTargetMechs>
-                <canTargetMutants>true</canTargetMutants>
-                <canTargetBuildings>true</canTargetBuildings>
-                <canTargetItems>true</canTargetItems>
-                <canTargetPlants>false</canTargetPlants>
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>

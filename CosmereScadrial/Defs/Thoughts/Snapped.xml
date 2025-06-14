@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThoughtDef>
+        <defName>Cosmere_Scadrial_Snapped</defName>
+        <label>Snapped</label>
+        <thoughtClass>Thought_Memory</thoughtClass>
+        <stackLimit>1</stackLimit>
+        <durationDays>999999</durationDays> <!-- Infinite duration -->
+        <showBubble>false</showBubble>
+        <stages>
+            <li>
+                <label>snapped</label>
+                <description>This pawn has snapped and can now access the Metallic Arts.</description>
+                <baseMoodEffect>0</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+</Defs>

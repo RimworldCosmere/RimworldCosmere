@@ -14,5 +14,13 @@
         <metal>Brass</metal>
         <hediff>Cosmere_Hediff_Soothed</hediff>
         <hediffSeverityFactor>2</hediffSeverityFactor>
+        <verbProperties>
+            <targetParams>
+                <canTargetItems>false</canTargetItems>
+                <canTargetBuildings>false</canTargetBuildings>
+                <canTargetMechs>false</canTargetMechs>
+                <canTargetPlants>false</canTargetPlants>
+            </targetParams>
+        </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

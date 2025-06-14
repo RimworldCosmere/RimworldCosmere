@@ -5,6 +5,7 @@
         <label>Silver</label>
         <description>Silver is a bright, lustrous metal renowned for its conductivity, beauty, and symbolic purity. While soft and malleable, it remains a staple in crafting, electronics, and currency.</description>
         <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Silver</texPath>
         </graphicData>
         <stuffProps>

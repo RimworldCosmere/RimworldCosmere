@@ -2,16 +2,17 @@
 using System.Linq;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
+using CosmereScadrial.Utils;
 using LudeonTK;
 using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Dev {
     [StaticConstructorOnStartup]
-    public static class DevFillInvestitureUtility {
-        [DebugAction("Cosmere/Scadrial", "Prepare Dev Character",
+    public static class ScadrianUtility {
+        [DebugAction("Cosmere/Scadrial", "Prepare Dev Pawn",
             actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        public static void PrepareDevCharacter(Pawn pawn) {
+        public static void PrepareDevPawn(Pawn pawn) {
             if (pawn.genes == null) return;
             pawn.genes?.AddGene(GeneDefOf.Cosmere_Mistborn, true);
             Messages.Message($"Made {pawn.NameFullColored} a mistborn", pawn, MessageTypeDefOf.PositiveEvent);
@@ -22,19 +23,22 @@ namespace CosmereScadrial.Dev {
         [DebugAction("Cosmere/Scadrial", "Give All Allomantic Vials",
             actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         public static void GiveAllAllomanticVials(Pawn pawn) {
-            foreach (var metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => !x.godMetal && x.allomancy != null)) {
-                var vial = ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed($"Cosmere_AllomanticVial_{metal.LabelCap}"));
+            foreach (var metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x =>
+                         !x.godMetal && x.allomancy != null)) {
+                var vial = ThingMaker.MakeThing(
+                    DefDatabase<ThingDef>.GetNamed($"Cosmere_AllomanticVial_{metal.LabelCap}"));
                 vial.stackCount = 20;
                 pawn.inventory.innerContainer.TryAdd(vial);
             }
 
-            Messages.Message($"Gave {pawn.NameFullColored} 20 vials of each metal.", pawn, MessageTypeDefOf.PositiveEvent);
+            Messages.Message($"Gave {pawn.NameFullColored} 20 vials of each metal.", pawn,
+                MessageTypeDefOf.PositiveEvent);
         }
 
-        [DebugAction("Cosmere/Scadrial", "Prepare All Dev Characters", allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        public static void PrepareAllDevCharacters() {
+        [DebugAction("Cosmere/Scadrial", "Prepare All Dev Pawns", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void PrepareAllDevPawn() {
             foreach (var pawn in Find.CurrentMap.mapPawns.AllPawnsSpawned) {
-                PrepareDevCharacter(pawn);
+                PrepareDevPawn(pawn);
             }
         }
 
@@ -46,7 +50,8 @@ namespace CosmereScadrial.Dev {
                 comp.SetReserve(metal, MetalReserves.MAX_AMOUNT);
             }
 
-            Messages.Message($"Gave {pawn.NameFullColored} full reserves reserves for all metals", pawn, MessageTypeDefOf.PositiveEvent);
+            Messages.Message($"Gave {pawn.NameFullColored} full reserves reserves for all metals", pawn,
+                MessageTypeDefOf.PositiveEvent);
         }
 
         [DebugAction("Cosmere/Scadrial", "Wipe allomantic reserves (all metals)",
@@ -90,6 +95,34 @@ namespace CosmereScadrial.Dev {
             }
 
             Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
+        }
+
+        [DebugAction("Cosmere/Scadrial", "Snap Pawn",
+            actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void SnapPawn(Pawn pawn) {
+            SnapUtility.TrySnap(pawn);
+        }
+
+        [DebugAction("Cosmere/Scadrial", "Try Give Random Allomantic Ability",
+            actionType = DebugActionType.ToolMapForPawns,
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void TryGiveRandomAllomanticAbility(Pawn pawn) {
+            if (Rand.Chance(1f / 16f)) {
+                GeneInheritanceUtility.AddGene(pawn, "Cosmere_Mistborn", false);
+            } else {
+                GeneInheritanceUtility.TryAddRandomAllomanticGene(pawn, false);
+            }
+        }
+
+        [DebugAction("Cosmere/Scadrial", "Try Give Random Feruchemical Ability",
+            actionType = DebugActionType.ToolMapForPawns,
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void TryGiveRandomFeruchemicalAbility(Pawn pawn) {
+            if (Rand.Chance(1f / 16f)) {
+                GeneInheritanceUtility.AddGene(pawn, "Cosmere_FullFeruchemist", false);
+            } else {
+                GeneInheritanceUtility.TryAddRandomFeruchemicalGene(pawn, false);
+            }
         }
     }
 }

@@ -27,6 +27,10 @@ namespace CosmereScadrial {
         public static MetallicArtsMetalDef Silver;
         public static MetallicArtsMetalDef Nickel;
         public static MetallicArtsMetalDef Electrum;
+        public static MetallicArtsMetalDef Lerasium;
+        public static MetallicArtsMetalDef Atium;
+        public static MetallicArtsMetalDef Harmonium;
+        public static MetallicArtsMetalDef Trellium;
 
         static MetallicArtsMetalDefOf() {
             DefOfHelper.EnsureInitializedInCtor(typeof(MetallicArtsMetalDefOf));

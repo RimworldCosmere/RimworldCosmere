@@ -3,7 +3,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace YourModNamespace {
+namespace CosmereScadrial.Patches {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [HarmonyPatch(typeof(Pawn_IdeoTracker), "get_Ideo")]
     public static class PatchPawnIdeoTrackerIdeo {

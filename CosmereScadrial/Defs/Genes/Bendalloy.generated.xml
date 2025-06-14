@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Bendalloy -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Bendalloy</defName>
         <label>bendalloy misting</label>
         <labelShortAdj>slider</labelShortAdj>
@@ -18,9 +18,12 @@
                 <metal>Bendalloy</metal>
             </li>
         </modExtensions>
+        <abilities>
+            <li>Cosmere_Ability_Bendalloy</li>
+        </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Bendalloy</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Bendalloy</defName>
         <label>slider</label>
         <description>Speeds up time in a bubble around the user.</description>
@@ -40,7 +43,7 @@
     </TraitDef>
     
     <!-- Ferring: Bendalloy -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Bendalloy</defName>
         <label>bendalloy ferring</label>
         <labelShortAdj>subsumer</labelShortAdj>
@@ -59,7 +62,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Bendalloy</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Bendalloy</defName>
         <label>subsumer</label>
         <description>Stores nutrition, allowing users to go without food.</description>

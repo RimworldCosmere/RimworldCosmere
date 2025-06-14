@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Iron -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Iron</defName>
         <label>iron misting</label>
         <labelShortAdj>lurcher</labelShortAdj>
@@ -24,7 +24,7 @@
         </abilities>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Iron</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Iron</defName>
         <label>lurcher</label>
         <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
@@ -44,7 +44,7 @@
     </TraitDef>
     
     <!-- Ferring: Iron -->
-    <GeneDef ParentName="AbstractInvestitureGene">
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Iron</defName>
         <label>iron ferring</label>
         <labelShortAdj>skimmer</labelShortAdj>
@@ -63,7 +63,7 @@
         </modExtensions>
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Iron</iconPath>
     </GeneDef>
-    <TraitDef ParentName="AbstractInvestitureTrait">
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Iron</defName>
         <label>skimmer</label>
         <description>Stores weight, allowing the user to become lighter or heavier.</description>

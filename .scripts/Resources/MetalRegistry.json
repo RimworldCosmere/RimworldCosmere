@@ -283,7 +283,10 @@
       "description": "Creates a 'coppercloud' that hides Allomantic activity.",
       "group": "mental",
       "axis": "internal",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Copper_Aura"
+      ]
     },
     "feruchemy": {
       "userName": "archivist",
@@ -319,7 +322,10 @@
       "description": "Detects other Allomancers using powers.",
       "group": "mental",
       "axis": "internal",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Bronze_Aura"
+      ]
     },
     "feruchemy": {
       "userName": "sentry",
@@ -363,7 +369,10 @@
       "description": "Wipes away all other metal reserves.",
       "group": "enhancement",
       "axis": "internal",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Aluminum"
+      ]
     },
     "feruchemy": {
       "userName": "trueself",
@@ -399,7 +408,10 @@
       "description": "Enhances the next Allomantic metal used drastically, but is consumed entirely.",
       "group": "enhancement",
       "axis": "internal",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Duralumin_Surge"
+      ]
     },
     "feruchemy": {
       "userName": "connector",
@@ -442,7 +454,10 @@
       "description": "Wipes away another Allomancer's metal reserves.",
       "group": "enhancement",
       "axis": "external",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Chromium"
+      ]
     },
     "feruchemy": {
       "userName": "spinner",
@@ -477,7 +492,10 @@
       "description": "Boosts another Allomancer's power drastically.",
       "group": "enhancement",
       "axis": "external",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Nicrosil_Surge"
+      ]
     },
     "feruchemy": {
       "userName": "soulbearer",
@@ -520,7 +538,10 @@
       "description": "Slows down time in a bubble, creating a temporal distortion.",
       "group": "temporal",
       "axis": "external",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Cadmium"
+      ]
     },
     "feruchemy": {
       "userName": "gaspers",
@@ -555,7 +576,10 @@
       "description": "Speeds up time in a bubble around the user.",
       "group": "temporal",
       "axis": "external",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Bendalloy"
+      ]
     },
     "feruchemy": {
       "userName": "subsumer",
@@ -602,7 +626,10 @@
       "description": "Shows alternate versions of oneself, based on different pasts.",
       "group": "temporal",
       "axis": "internal",
-      "polarity": "pulling"
+      "polarity": "pulling",
+      "abilities": [
+        "Cosmere_Ability_Gold"
+      ]
     },
     "feruchemy": {
       "userName": "bloodmaker",
@@ -699,7 +726,10 @@
       "description": "Shows one's own possible futures, useful for avoiding danger.",
       "group": "temporal",
       "axis": "internal",
-      "polarity": "pushing"
+      "polarity": "pushing",
+      "abilities": [
+        "Cosmere_Ability_Electrum"
+      ]
     },
     "feruchemy": {
       "userName": "pinnacle",
@@ -724,14 +754,15 @@
     }
   },
   {
-    "disabled": true,
     "name": "lerasium",
     "description": "Lerasium is an exceptionally rare god metal tied to the Shard Preservation. When ingested, it transforms the user into a Mistborn, granting access to all Allomantic powers.",
     "godMetal": true,
+    "stackable": false,
+    "marketValue": 10000,
     "color": [
-      255,
-      255,
-      255
+      132,
+      159,
+      106
     ],
     "allomancy": {
       "description": "Turns a person into a Mistborn when consumed."
@@ -742,10 +773,11 @@
     }
   },
   {
-    "disabled": true,
     "name": "atium",
     "description": "Atium is the god metal of the Shard Ruin. It grants its user visions of others' immediate futures, offering immense strategic advantage in combat and prediction.",
     "godMetal": true,
+    "stackable": false,
+    "marketValue": 10000,
     "color": [
       0,
       0,
@@ -753,7 +785,10 @@
     ],
     "allomancy": {
       "userName": "seer",
-      "description": "Allows a glimpse into the immediate future of others."
+      "description": "Allows a glimpse into the immediate future of others.",
+      "abilities": [
+        "Cosmere_Ability_Atium"
+      ]
     },
     "feruchemy": {
       "description": "Stores age, granting youth or aging when tapped."
@@ -764,14 +799,48 @@
     }
   },
   {
-    "disabled": true,
     "name": "harmonium",
     "description": "Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.",
     "godMetal": true,
+    "stackable": false,
+    "marketValue": 10000,
     "color": [
       242,
       255,
       140
+    ],
+    "buildable": {
+      "buildings": false,
+      "items": false
+    },
+    "alloy": {
+      "ingredients": [
+        {
+          "item": "lerasium",
+          "count": 1
+        },
+        {
+          "item": "atium",
+          "count": 1
+        }
+      ],
+      "products": [
+        {
+          "count": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "trellium",
+    "description": "An alien, corrupted metal aligned with Trell's influence. It resists typical Investiture detection and interferes with other magic systems. Often associated with Hemalurgic constructs, Trellium's strange red hue and unique properties hint at a Shardic power foreign to Scadrial.",
+    "godMetal": true,
+    "stackable": false,
+    "marketValue": 10000,
+    "color": [
+      148,
+      0,
+      37
     ],
     "buildable": {
       "buildings": false,

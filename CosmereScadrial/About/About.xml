@@ -19,16 +19,9 @@
             <steamWorkshopUrl>steam://url/CommunityFilePage/3474223604</steamWorkshopUrl>
             <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
         </li>
-        <li>
-            <packageId>spoden.justglass</packageId>
-            <displayName>Just Glass</displayName>
-            <steamWorkshopUrl>steam://url/CommunityFilePage/2045368641</steamWorkshopUrl>
-            <downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2045368641</downloadUrl>
-        </li>
     </modDependencies>
     <forceLoadAfter>
         <li>Ludeon.RimWorld.Biotech</li>
         <li>CryptikLemur.Cosmere.Core</li>
-        <li>spoden.justglass</li>
     </forceLoadAfter>
 </ModMetaData>

@@ -3,7 +3,7 @@
     <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_TinBuff</defName>
         <label>burning tin</label>
-        <description>Empowered senses from burning Pewter.</description>
+        <description>Empowered senses from burning Tin.</description>
         <stages>
             <li>
                 <painFactor>1.25</painFactor>

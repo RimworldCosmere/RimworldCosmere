@@ -14,8 +14,8 @@
     
     <HediffDef ParentName="AbstractAllomanticHediff">
         <defName>Cosmere_Hediff_CopperClouded</defName>
-        <label>enshroud in copper</label>
-        <description>This pawn has been enshrouded by a nearby Allomancer burning copper. They are more resilient to source of investiture.</description>
+        <label>enshrouded in copper</label>
+        <description>This pawn has been enshrouded by a nearby Allomancer burning copper. They are more resilient to sources of Investiture.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps>
             <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties">

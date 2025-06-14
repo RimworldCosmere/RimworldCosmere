@@ -18,9 +18,11 @@ This is a modular monorepo. Each component exists as its own loadable mod:
 
 ### Shard World Modules
 
-- **[Cosmere - Scadrial](CosmereScadrial)** – Allomancy, Feruchemy, >!Hemalurgy!<, Mistborn genes, vial systems, snapping, and more
-- **Cosmere - Roshar** *(Coming Soon)* – Surgebinding, spren bonding, stormlight, and Ideals
-- **Cosmere - Nalthis** *(Coming Soon)* – Awakening, Breath economy, Commands, and Divine Breaths
+- **[Cosmere - Scadrial](CosmereScadrial)** – Allomancy, Feruchemy, >!Hemalurgy!<, Mistborn genes, vial systems,
+  snapping, Skaa, Nobles, and Terris, and more
+- **Cosmere - Roshar** *(Coming Soon)* – Surgebinding, spren bonding, stormlight, Ideals, and many Xenotypes
+- **Cosmere - Nalthis** *(Coming Soon)* – Awakening, Breath economy, Commands, Divine Breaths, and the Returned
+- **Cosmere - Sel** *(Coming Soon)* – Elantrians, Aon Dor, and Forgery
 
 Each module is optional, but relies on the shared foundation laid by the **Core**, **Framework**, and **Metals** mods.
 
@@ -62,14 +64,15 @@ If you’d like to contribute:
 
 ## 🧪 Status
 
-| Module             | Status        | Notes                                  |
-|--------------------|---------------|----------------------------------------|
-| Cosmere Framework  | ✅ Stable     | Internal C# helpers only               |
-| Cosmere Core       | ✅ Stable     | Needed for all content mods            |
-| Cosmere Metals     | ✅ Stable     | MetalDefs and worldgen integration     |
+| Module             | Status         | Notes                                   |
+|--------------------|----------------|-----------------------------------------|
+| Cosmere Framework  | ✅ Stable       | Internal C# helpers only                |
+| Cosmere Core       | ✅ Stable       | Needed for all content mods             |
+| Cosmere Metals     | ✅ Stable       | MetalDefs and worldgen integration      |
 | Cosmere - Scadrial | 🚧 In Progress | Allomancy and Feruchemy mostly complete |
-| Cosmere - Roshar   | 💤 Planned     | Design stage                           |
-| Cosmere - Nalthis  | 💤 Planned     | Design stage                           |
+| Cosmere - Roshar   | 💤 Planned     | Design stage                            |
+| Cosmere - Nalthis  | 💤 Planned     | Design stage                            |
+| Cosmere - Sel      | 💤 Planned     | Design stage                            |
 
 ---
 
@@ -82,7 +85,8 @@ If you’d like to contribute:
 
 ## ⚖️ License
 
-This project is open-source but is definitely subject to **Cosmere IP restrictions**. Thank you Brandon Sanderson, and Dragonsteel for all of your work!
+This project is open-source but is definitely subject to **Cosmere IP restrictions**. Thank you Brandon Sanderson, and
+Dragonsteel for all of your work!
 Please do not redistribute standalone modules without credit and attribution.  
 This is a fan project not affiliated with Brandon Sanderson or Dragonsteel Entertainment.
 

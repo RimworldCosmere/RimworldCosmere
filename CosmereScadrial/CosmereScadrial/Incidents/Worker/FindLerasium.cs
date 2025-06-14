@@ -14,7 +14,7 @@ namespace CosmereScadrial.Incidents.Worker {
                 .RandomElementWithFallback();
             if (chosenPawn == null) return false;
 
-            var bead = ThingMaker.MakeThing(CosmereMetals.ThingDefOf.Lerasium);
+            var bead = ThingMaker.MakeThing(CosmereResources.ThingDefOf.Lerasium);
             GenPlace.TryPlaceThing(bead, chosenPawn.Position, map, ThingPlaceMode.Near);
 
             Find.LetterStack.ReceiveLetter(

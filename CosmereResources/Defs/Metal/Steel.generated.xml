@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereResources.Defs.MetalDef Name="Cosmere_Metal_Steel">
+        <defName>Steel</defName>
+        <label>steel</label>
+        <description>Steel is a durable alloy of iron and carbon, valued for its strength, rigidity, and versatility. Ubiquitous across weaponry, construction, and tools, it forms the foundation of advanced metallurgy.</description>
+        <color>(109, 108, 108)</color>
+    </CosmereResources.Defs.MetalDef>
+</Defs>

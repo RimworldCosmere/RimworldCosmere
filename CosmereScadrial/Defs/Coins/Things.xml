@@ -47,7 +47,7 @@
             <Mass>0.002</Mass>
         </statBases>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>
@@ -65,7 +65,7 @@
             <Mass>0.001</Mass>
         </statBases>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>

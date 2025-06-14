@@ -13,7 +13,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Iron</li>
                     <li>Steel</li>
@@ -42,7 +42,7 @@
         <label>full feruchemist</label>
         <description>A rare individual who can use all Feruchemical metals.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metals>
                     <li>Iron</li>
                     <li>Steel</li>

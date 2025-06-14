@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Chromium</metal>
             </li>
         </modExtensions>
@@ -28,7 +28,7 @@
         <label>leecher</label>
         <description>Wipes away another Allomancer&#x27;s metal reserves.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Chromium</metal>
             </li>
         </modExtensions>
@@ -56,7 +56,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Chromium</metal>
             </li>
         </modExtensions>
@@ -67,7 +67,7 @@
         <label>spinner</label>
         <description>Stores fortune, influencing luck subtly.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Chromium</metal>
             </li>
         </modExtensions>

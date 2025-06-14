@@ -48,13 +48,13 @@ namespace CosmereScadrial.Utils {
             if (isPreservation) {
                 if (isNoble) {
                     success = RollChance(128, out roll);
-                    Log.Warning(
+                    Log.Verbose(
                         $"Trying for Mistborn. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
                     if (success) {
                         AddGene(pawn, "Cosmere_Mistborn", true);
                     } else {
                         success = RollChance(16, out roll);
-                        Log.Warning(
+                        Log.Verbose(
                             $"Trying for Misting. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
                         if (success) TryAddRandomAllomanticGene(pawn);
                     }
@@ -67,13 +67,13 @@ namespace CosmereScadrial.Utils {
                 // Full Feruchemists were way more common, from what I can tell
                 // Most Terris were Full, or nothing. There was a small chance for Ferrings, but it was rare.
                 success = RollChance(16, out roll);
-                Log.Warning(
+                Log.Verbose(
                     $"Trying for full feruchemist. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
                 if (success) {
                     AddGene(pawn, "Cosmere_FullFeruchemist", true);
                 } else {
                     success = RollChance(64, out roll);
-                    Log.Warning(
+                    Log.Verbose(
                         $"Trying for Ferring. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
                     if (success) TryAddRandomFeruchemicalGene(pawn);
                 }
@@ -85,7 +85,7 @@ namespace CosmereScadrial.Utils {
             if (!isHarmony) return;
 
             success = RollChance(16, out roll);
-            Log.Warning(
+            Log.Verbose(
                 $"Trying for random misting. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
             if (RollChance(16)) {
                 TryAddRandomAllomanticGene(pawn);
@@ -94,7 +94,7 @@ namespace CosmereScadrial.Utils {
             if (!isTerris) return;
 
             success = RollChance(16, out roll);
-            Log.Warning(
+            Log.Verbose(
                 $"Trying for random ferring. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
             if (success) TryAddRandomFeruchemicalGene(pawn);
         }
@@ -122,8 +122,7 @@ namespace CosmereScadrial.Utils {
             var geneDef = DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Purity");
             var gene = generated.genes.GetGene(geneDef);
             generated.genes.RemoveGene(gene);
-            Verse.Log.Message(
-                $"[Cosmere] Removed Cosmere_Skaa_Purity from {generated.NameFullColored} (only one parent had it)");
+            Log.Verbose($"Removed Cosmere_Skaa_Purity from {generated.NameFullColored} (only one parent had it)");
         }
 
         public static void TryAddRandomAllomanticGene(Pawn pawn, bool canSnap = true) {

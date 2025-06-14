@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Electrum</metal>
             </li>
         </modExtensions>
@@ -28,7 +28,7 @@
         <label>oracle</label>
         <description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Electrum</metal>
             </li>
         </modExtensions>
@@ -56,7 +56,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Electrum</metal>
             </li>
         </modExtensions>
@@ -67,7 +67,7 @@
         <label>pinnacle</label>
         <description>Stores determination or willpower.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Electrum</metal>
             </li>
         </modExtensions>

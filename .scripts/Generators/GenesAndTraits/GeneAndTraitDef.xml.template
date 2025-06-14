@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
             </li>{{#if metal.Allomancy.RightClickAbilities}}
             <li Class="CosmereScadrial.DefModExtensions.RightClickAbilities">
@@ -39,7 +39,7 @@
         <label>{{metal.Allomancy.UserName}}</label>
         <description>{{metal.Allomancy.Description}}</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
             </li>
         </modExtensions>
@@ -67,7 +67,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
             </li>
         </modExtensions>
@@ -78,7 +78,7 @@
         <label>{{metal.Feruchemy.UserName}}</label>
         <description>{{metal.Feruchemy.Description}}</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
             </li>
         </modExtensions>

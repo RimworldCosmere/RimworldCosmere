@@ -6,8 +6,8 @@ namespace CosmereScadrial.Patches {
     [HarmonyPatch]
     public static class TimeBubblePatches {
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(Pawn_NeedsTracker), nameof(Pawn_NeedsTracker.NeedsTrackerTick))]
-        public static bool Prefix(Pawn_NeedsTracker __instance) {
+        [HarmonyPatch(typeof(Pawn_NeedsTracker), nameof(Pawn_NeedsTracker.NeedsTrackerTickInterval))]
+        public static bool Prefix(Pawn_NeedsTracker __instance, int delta) {
             const int baseInterval = 150;
             const int cadmiumMultiplier = 3;
             const int bendalloyDivisor = 3;
@@ -17,11 +17,11 @@ namespace CosmereScadrial.Patches {
 
             // If we are in a cadmium bubble, time slows down, needs should decay a third as fast
             if (pawn.health.hediffSet.HasHediff(HediffDef.Named("Cosmere_Hediff_TimeBubble_Cadmium"))) {
-                if (!pawn.IsHashIntervalTick(baseInterval * cadmiumMultiplier)) {
+                if (!pawn.IsHashIntervalTick(baseInterval * cadmiumMultiplier, delta)) {
                     return false;
                 }
             } else if (pawn.health.hediffSet.HasHediff(HediffDef.Named("Cosmere_Hediff_TimeBubble_Bendalloy"))) {
-                if (!pawn.IsHashIntervalTick(baseInterval / bendalloyDivisor)) {
+                if (!pawn.IsHashIntervalTick(baseInterval / bendalloyDivisor, delta)) {
                     return false;
                 }
             } else {

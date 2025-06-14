@@ -1,4 +1,4 @@
-using CosmereMetals.Defs;
+using CosmereResources.Defs;
 using JetBrains.Annotations;
 using Verse;
 

@@ -1,15 +1,14 @@
 {
   "scripts": {
     "start": "npm run generate",
-    "generate": "concurrently \"npm run generate:mod:core\" \"npm run generate:mod:metals\" \"npm run generate:mod:scadrial\"",
+    "generate": "concurrently \"npm run generate:mod:core\" \"npm run generate:mod:resources\" \"npm run generate:mod:scadrial\"",
     "generate:mod:core": "exit 0",
-    "generate:mod:metals": "rimraf -g \"CosmereMetals\\**\\*.generated.xml\" && concurrently \"npm run generator:metals\"",
+    "generate:mod:resources": "rimraf -g \"CosmereResources\\**\\*.generated.xml\" && concurrently \"npm run generator:resources\"",
     "generate:mod:scadrial": "rimraf -g \"CosmereScadrial\\**\\*.generated.xml\" && concurrently \"npm run generator:metallicArtsMetals\" \"npm run generator:vials\" \"npm run generator:genesAndTraits\"",
-    "generator:metals": "tsx ./index.ts Metals",
+    "generator:resources": "tsx ./index.ts Resources",
     "generator:metallicArtsMetals": "tsx ./index.ts MetallicArtsMetals",
     "generator:vials": "tsx ./index.ts Vials",
-    "generator:genesAndTraits": "tsx ./index.ts GenesAndTraits"
-  ,
+    "generator:genesAndTraits": "tsx ./index.ts GenesAndTraits",
     "lint": "eslint \"**/*.ts\"",
     "typecheck": "tsc --noEmit"
   },

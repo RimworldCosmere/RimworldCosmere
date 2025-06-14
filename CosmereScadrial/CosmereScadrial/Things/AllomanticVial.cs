@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereCore.Utils;
-using CosmereMetals.ModExtensions;
+using CosmereResources.ModExtensions;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
 using RimWorld;

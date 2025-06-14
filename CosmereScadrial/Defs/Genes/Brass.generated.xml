@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
@@ -29,7 +29,7 @@
         <label>soother</label>
         <description>Can soothe emotions, calming people or manipulating moods.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
@@ -57,7 +57,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
@@ -68,7 +68,7 @@
         <label>firesoul</label>
         <description>Stores warmth, useful for surviving cold environments or heating up.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>

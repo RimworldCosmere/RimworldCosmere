@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereResources.Defs.MetalDef Name="Cosmere_Metal_Bendalloy">
+        <defName>Bendalloy</defName>
+        <label>bendalloy</label>
+        <description>Bendalloy is a mysterious and dynamic alloy created by precisely combining cadmium, zinc, and silver. Its shifting hues and volatile properties make it a material of both scientific intrigue and advanced technological potential.</description>
+        <color>(117, 144, 108)</color>
+    </CosmereResources.Defs.MetalDef>
+</Defs>

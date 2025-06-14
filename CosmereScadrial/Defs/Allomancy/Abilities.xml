@@ -25,7 +25,6 @@
                 <canTargetAnimals>false</canTargetAnimals>
                 <canTargetHumans>false</canTargetHumans>
                 <canTargetMechs>false</canTargetMechs>
-                <canTargetMutants>false</canTargetMutants>
             </targetParams>
         </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
@@ -73,7 +72,6 @@
                 <canTargetAnimals>true</canTargetAnimals>
                 <canTargetHumans>true</canTargetHumans>
                 <canTargetMechs>true</canTargetMechs>
-                <canTargetMutants>true</canTargetMutants>
                 <canTargetItems>true</canTargetItems>
                 <canTargetBuildings>true</canTargetBuildings>
             </targetParams>

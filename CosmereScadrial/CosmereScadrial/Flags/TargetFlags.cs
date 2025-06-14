@@ -127,7 +127,6 @@ namespace CosmereScadrial.Flags {
             if (param.canTargetHumans) flags |= TargetFlags.Humans | TargetFlags.Pawns;
             if (param.canTargetMechs) flags |= TargetFlags.Mechs | TargetFlags.Pawns;
             if (param.canTargetPlants) flags |= TargetFlags.Plants;
-            if (param.canTargetMutants) flags |= TargetFlags.Mutants | TargetFlags.Pawns;
 
             return flags;
         }

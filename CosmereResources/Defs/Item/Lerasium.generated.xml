@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMetal">
+        <defName>Lerasium</defName>
+        <label>Lerasium</label>
+        <description>Lerasium is an exceptionally rare god metal tied to the Shard Preservation. When ingested, it transforms the user into a Mistborn, granting access to all Allomantic powers.</description>
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>.25</drawSize>
+            <texPath>Item/Resource/Lerasium</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.0</commonality>
+            <color>(132, 159, 106)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>10000</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Lerasium</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

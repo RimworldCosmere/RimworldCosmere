@@ -28,7 +28,6 @@
         <DefineConstants>DEBUG;TRACE</DefineConstants>
         <WarningLevel>4</WarningLevel>
         <LangVersion>latest</LangVersion>
-        <RunPostBuildEvent>Always</RunPostBuildEvent>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <DebugSymbols>false</DebugSymbols>
@@ -57,11 +56,11 @@
         <Reference Include="0Harmony">
             <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
         </Reference>
-        <Reference Include="Assembly-CSharp">
-            <HintPath>$(RimWorldManagedPath)\Assembly-CSharp.dll</HintPath>
-        </Reference>
         <Reference Include="HarmonyMod">
             <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\HarmonyMod.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(RimWorldManagedPath)\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine">
             <HintPath>$(RimWorldManagedPath)\UnityEngine.dll</HintPath>
@@ -87,11 +86,11 @@
         <Reference Include="0Harmony">
             <HintPath>$(WorkshopDir)/2009463077/Current/Assemblies/0Harmony.dll</HintPath>
         </Reference>
-        <Reference Include="Assembly-CSharp">
-            <HintPath>$(RimWorldManagedPath)/Assembly-CSharp.dll</HintPath>
-        </Reference>
         <Reference Include="HarmonyMod">
             <HintPath>$(WorkshopDir)/2009463077/Current/Assemblies/HarmonyMod.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(RimWorldManagedPath)/Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine">
             <HintPath>$(RimWorldManagedPath)/UnityEngine.dll</HintPath>

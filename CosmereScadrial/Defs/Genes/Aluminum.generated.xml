@@ -14,7 +14,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
@@ -28,7 +28,7 @@
         <label>gnat (aluminum)</label>
         <description>Wipes away all other metal reserves.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
@@ -56,7 +56,7 @@
             </li>
         </forcedTraits>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
@@ -67,7 +67,7 @@
         <label>trueself</label>
         <description>Stores identity, allowing anonymous interactions or forgery.</description>
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>

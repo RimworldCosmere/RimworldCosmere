@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractMetal">
+        <defName>Harmonium</defName>
+        <label>Harmonium</label>
+        <description>Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.</description>
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>.25</drawSize>
+            <texPath>Item/Resource/Harmonium</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.0</commonality>
+            <color>(242, 255, 140)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>10000</MarketValue>
+        </statBases>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Harmonium</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

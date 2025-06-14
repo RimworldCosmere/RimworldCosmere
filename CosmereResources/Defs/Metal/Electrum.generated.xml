@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereResources.Defs.MetalDef Name="Cosmere_Metal_Electrum">
+        <defName>Electrum</defName>
+        <label>electrum</label>
+        <description>Electrum is an alloy of gold and silver, characterized by its soft, pale, and luminous hue. This unique blend of precious metals has captivated civilizations for millennia with its subtle brilliance and inherent value.</description>
+        <color>(182, 156, 82)</color>
+    </CosmereResources.Defs.MetalDef>
+</Defs>

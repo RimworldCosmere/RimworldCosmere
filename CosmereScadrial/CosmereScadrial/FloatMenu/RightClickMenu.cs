@@ -17,7 +17,8 @@ namespace CosmereScadrial.FloatMenu {
         protected override bool RequiresManipulation => true;
         protected override bool CanSelfTarget => true;
 
-        public override IEnumerable<FloatMenuOption> GetOptionsFor(Pawn pawn, FloatMenuContext context) {
+        public override IEnumerable<FloatMenuOption> GetOptions(FloatMenuContext context) {
+            var pawn = context.FirstSelectedPawn;
             var options = new List<FloatMenuOption>();
             var metalBurning = pawn.GetComp<MetalBurning>();
             var targetParams = TargetingParameters.ForAttackAny();

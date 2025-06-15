@@ -14,7 +14,7 @@ namespace CosmereScadrial.Comps.Maps {
         private int mistsStartTick;
         private int nextMistsStartTick = -1;
 
-        private bool enabled =>
+        private static bool enabled { get; } =
             ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation, ShardDefOf.Harmony);
 
         public override void FinalizeInit() {

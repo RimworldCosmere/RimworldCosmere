@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Flags;
@@ -139,6 +140,10 @@ namespace CosmereScadrial.Abilities.Allomancy {
                     OnDeFlare();
                     return;
             }
+        }
+
+        public override IEnumerable<Command> GetGizmos() {
+            return base.GetGizmos();
         }
     }
 }

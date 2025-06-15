@@ -36,7 +36,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
             ? ThingDefOf.Cosmere_Scadrial_TimeBubble_Cadmium
             : ThingDefOf.Cosmere_Scadrial_TimeBubble_Bendalloy;
 
-        private ThingDef warpMoteDef => ThingDefOf.Cosmere_Scadrial_TimeBubble_Warp;
+        private ThingDef warpMoteDef { get; } = ThingDefOf.Cosmere_Scadrial_TimeBubble_Warp;
 
         private float moteScale {
             get {

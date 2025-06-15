@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using CosmereCore.Utils;
 using CosmereScadrial.Flags;
 using RimWorld;
@@ -8,10 +7,6 @@ using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Abilities.Allomancy {
     public abstract partial class AbstractAbility {
-        public override IEnumerable<Command> GetGizmos() {
-            yield break;
-        }
-
         public override bool CanApplyOn(LocalTargetInfo targetInfo) {
             var targetPawn = targetInfo.Pawn;
             if (targetFlags.Has(TargetFlags.Locations) && !targetInfo.HasThing &&

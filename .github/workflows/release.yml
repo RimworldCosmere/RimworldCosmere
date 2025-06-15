@@ -77,7 +77,8 @@ jobs:
           mkdir -p "$TEMP_DIR"
 
           echo "📄 Generating description..."
-          cat .github/README.header.md "$MOD/README.md" .github/README.footer.md | steamdown > "$DESCRIPTION_FILE"
+          echo "# $MOD" > /tmp/header.md
+          cat /tmp/header.md .github/README.header.md "$MOD/README.md" .github/README.footer.md | steamdown > "$DESCRIPTION_FILE"
 
           echo "🚫 Respecting .steamignore..."
           if [ -f "$MOD/.steamignore" ]; then

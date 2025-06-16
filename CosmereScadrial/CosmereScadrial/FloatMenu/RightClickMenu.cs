@@ -47,7 +47,7 @@ namespace CosmereScadrial.FloatMenu {
                     subOptions.Add(new FloatSubMenu($"Target: {key.Thing.LabelCap}", value));
                 }
             } else {
-                return null;
+                return [];
             }
 
             options.Add(allomancyMenu);

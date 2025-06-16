@@ -11,7 +11,10 @@ using Verse.AI;
 
 namespace CosmereScadrial.Jobs {
     public class CastAllomanticAbilityAtTarget : JobDriver {
-        protected virtual AbstractAbility ability => pawn.abilities.GetAbility(job.ability.def) as AbstractAbility;
+        private AbstractAbility cachedAbility;
+
+        protected virtual AbstractAbility ability =>
+            cachedAbility ??= pawn.abilities.GetAbility(job.ability.def) as AbstractAbility;
 
         protected virtual MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 
@@ -60,6 +63,7 @@ namespace CosmereScadrial.Jobs {
             if (ability.status != BurningStatus.Off) {
                 ability.UpdateStatus(BurningStatus.Off);
             }
+
             UpdateBurnRate(0f);
         }
 

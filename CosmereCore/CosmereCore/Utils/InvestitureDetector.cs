@@ -69,7 +69,7 @@ namespace CosmereCore.Utils {
             return true;
         }
 
-        public static bool IsBurningPullingEnhancementMetal(Pawn pawn) {
+        public static bool IsBurningPullingEnhancementMetal(Pawn? pawn) {
             if (!ModsConfig.IsActive("cryptiklemur.cosmere.scadrial") || pawn == null) {
                 return false;
             }

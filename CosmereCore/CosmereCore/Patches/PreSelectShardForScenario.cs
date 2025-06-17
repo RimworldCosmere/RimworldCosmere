@@ -18,7 +18,7 @@ namespace CosmereCore.Patches {
             if (shards == null) return;
 
             if (shards.shards.Count == 0) {
-                Log.Message($"[CosmereCore] No matching shard system found for {def.defName}");
+                Log.Message($"[CosmereCore] No matching shard system found for {def?.defName}");
                 return;
             }
 

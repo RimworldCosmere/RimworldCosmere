@@ -5,7 +5,7 @@ using Verse;
 namespace CosmereFramework.Utils {
     [StaticConstructorOnStartup]
     public class DelayedActionScheduler {
-        private static readonly List<ScheduledAction> scheduled = new List<ScheduledAction>();
+        private static readonly List<ScheduledAction> scheduled = new();
 
         static DelayedActionScheduler() { }
 
@@ -20,15 +20,15 @@ namespace CosmereFramework.Utils {
             for (var i = scheduled.Count - 1; i >= 0; i--) {
                 var item = scheduled[i];
                 item.ticksLeft--;
-                if (item.ticksLeft <= 0) {
-                    item.action();
-                    scheduled.RemoveAt(i);
-                }
+                if (item.ticksLeft > 0) continue;
+
+                item.action?.Invoke();
+                scheduled.RemoveAt(i);
             }
         }
 
         private class ScheduledAction {
-            public Action action;
+            public Action? action;
             public int ticksLeft;
         }
 

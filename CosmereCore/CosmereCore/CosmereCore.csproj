@@ -1,34 +1,71 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
-            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
-
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <ProjectGuid>{5F1D8C6D-E127-4001-A575-E56D99DF271F}</ProjectGuid>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <Authors>CryptikLemur</Authors>
+        <Version>0.5.0</Version>
+        <AssemblyVersion>0.5.0</AssemblyVersion>
+        <FileVersion>0.5.0</FileVersion>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <OutDir>..\Assemblies\</OutDir>
+        <Nullable>enable</Nullable>
+        <EnableNETAnalyzers>True</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <WarningLevel>4</WarningLevel>
+        <ErrorReport>prompt</ErrorReport>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>
+
+        <RimWorldDir Condition="'$(RimWorldDir)' == ''">$([System.Environment]::GetEnvironmentVariable('RIMWORLD_DIR'))</RimWorldDir>
+        <WorkshopDir Condition="'$(WorkshopDir)' == ''">$([System.Environment]::GetEnvironmentVariable('WORKSHOP_DIR'))</WorkshopDir>
+        <RimWorldDir Condition="'$(RimWorldDir)' == ''">..\..\..\</RimWorldDir>
+        <WorkshopDir Condition="'$(WorkshopDir)' == ''">..\..\..\..\..\workshop\content\294100</WorkshopDir>
+
+        <RimWorldManagedPath>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+        <FileAlignment>512</FileAlignment>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
         <RootNamespace>CosmereCore</RootNamespace>
         <AssemblyName>CosmereCore</AssemblyName>
         <ModScript>generate:mod:core</ModScript>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugSymbols>false</DebugSymbols>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <DefineConstants>TRACE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <Reference>
+            <Private>False</Private>
+        </Reference>
+        <ProjectReference>
+            <Private>False</Private>
+        </ProjectReference>
+        <PackageReference>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+    </ItemDefinitionGroup>
 
     <ItemGroup>
-        <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Data.Linq"/>
+        <!-- RimWorld -->
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*-*"/>
+        <!-- Harmony -->
+        <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime"/>
+
+        <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj"/>
+        <ProjectReference Include="..\..\CosmereResources\CosmereResources\CosmereResources.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj">
-            <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
-            <Name>CosmereFramework</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\..\CosmereResources\CosmereResources\CosmereResources.csproj">
-            <Project>{69b78f0c-63e1-47a1-9fd4-b5cce63d727f}</Project>
-            <Name>CosmereResources</Name>
-        </ProjectReference>
-    </ItemGroup>
-
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-
+    <Target Name="GenerateAssets" AfterTargets="Build" Condition="'$(ModScript)' != ''">
+        <Exec Command="npm run $(ModScript)"
+              WorkingDirectory="$(MSBuildThisFileDirectory)..\..\.scripts"
+              StandardOutputImportance="High"/>
+    </Target>
 </Project>

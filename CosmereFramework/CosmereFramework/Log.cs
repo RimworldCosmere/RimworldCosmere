@@ -7,7 +7,7 @@ using static CosmereFramework.CosmereFramework;
 
 namespace CosmereFramework {
     public static class Log {
-        private static readonly Dictionary<LogLevel, Color> logColors = new Dictionary<LogLevel, Color> {
+        private static readonly Dictionary<LogLevel, Color> logColors = new() {
             { LogLevel.None, Color.black },
             { LogLevel.Important, Color.green },
             { LogLevel.Error, Color.red },
@@ -19,7 +19,8 @@ namespace CosmereFramework {
 
         public static void Message(string message, LogLevel level = LogLevel.Info) {
             if (level > CosmereSettings.logLevel || level == LogLevel.None) return;
-            if (level == LogLevel.Error && DebugSettings.pauseOnError && Current.ProgramState == ProgramState.Playing) Find.TickManager.Pause();
+            if (level == LogLevel.Error && DebugSettings.pauseOnError && Current.ProgramState == ProgramState.Playing)
+                Find.TickManager.Pause();
             if (level < LogLevel.Error && Prefs.OpenLogOnWarnings) Verse.Log.TryOpenLogWindow();
 
             var modsDir = CosmereFrameworkMod.Content.RootDir.Replace("CosmereFramework", "");
@@ -28,14 +29,14 @@ namespace CosmereFramework {
             var stackTrace = new StackTrace(1, true);
             for (var i = 0; i < stackTrace.FrameCount; i++) {
                 var frame = stackTrace.GetFrame(i); // 1 = immediate caller
-                var method = frame.GetMethod();
-                if (method.DeclaringType?.FullName?.Contains("CosmereFramework.Log") ?? false) {
+                var method = frame?.GetMethod();
+                if (method?.DeclaringType?.FullName?.Contains("CosmereFramework.Log") ?? false) {
                     continue;
                 }
 
-                var mod = method.DeclaringType?.Namespace;
+                var mod = method?.DeclaringType?.Namespace;
                 ns = mod?.Split('.')[0].Replace("Cosmere", "");
-                if (frame.GetFileName() != null && mod != null) {
+                if (frame?.GetFileName() != null && mod != null) {
                     var filename = frame.GetFileName()!.Replace(modsDir, "").Replace(mod, "");
                     if (filename == @"\\.cs") filename = $"{mod}.cs";
 
@@ -45,7 +46,8 @@ namespace CosmereFramework {
                 break;
             }
 
-            Verse.Log.Message($"{ColoredMessage(logColors[level], $"[Cosmere - {ns}]{stack}[{level.ToString()}]")} {message}");
+            Verse.Log.Message(
+                $"{ColoredMessage(logColors[level], $"[Cosmere - {ns}]{stack}[{level.ToString()}]")} {message}");
             Verse.Log.ResetMessageCount();
         }
 

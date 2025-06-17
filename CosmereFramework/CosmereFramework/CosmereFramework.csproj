@@ -1,25 +1,71 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
-            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
-
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <ProjectGuid>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</ProjectGuid>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <Authors>CryptikLemur</Authors>
+        <Version>0.5.0</Version>
+        <AssemblyVersion>0.5.0</AssemblyVersion>
+        <FileVersion>0.5.0</FileVersion>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <OutDir>..\Assemblies\</OutDir>
+        <Nullable>enable</Nullable>
+        <EnableNETAnalyzers>True</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <WarningLevel>4</WarningLevel>
+        <ErrorReport>prompt</ErrorReport>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>
+
+        <RimWorldDir Condition="'$(RimWorldDir)' == ''">$([System.Environment]::GetEnvironmentVariable('RIMWORLD_DIR'))</RimWorldDir>
+        <WorkshopDir Condition="'$(WorkshopDir)' == ''">$([System.Environment]::GetEnvironmentVariable('WORKSHOP_DIR'))</WorkshopDir>
+        <RimWorldDir Condition="'$(RimWorldDir)' == ''">..\..\..\</RimWorldDir>
+        <WorkshopDir Condition="'$(WorkshopDir)' == ''">..\..\..\..\..\workshop\content\294100</WorkshopDir>
+
+        <RimWorldManagedPath>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+        <FileAlignment>512</FileAlignment>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
         <RootNamespace>CosmereFramework</RootNamespace>
         <AssemblyName>CosmereFramework</AssemblyName>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugSymbols>false</DebugSymbols>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <DefineConstants>TRACE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <Reference>
+            <Private>False</Private>
+        </Reference>
+        <ProjectReference>
+            <Private>False</Private>
+        </ProjectReference>
+        <PackageReference>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+    </ItemDefinitionGroup>
+
     <ItemGroup>
+        <!-- RimWorld -->
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*-*"/>
+        <!-- Harmony -->
+        <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime"/>
+
         <Reference Include="FloatSubMenu">
             <HintPath>$(WorkshopDir)/2864015430/1.5/Assemblies/FloatSubMenu.dll</HintPath>
         </Reference>
-        <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Data.Linq"/>
     </ItemGroup>
 
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <ItemGroup>
+        <Folder Include="obj\"/>
+    </ItemGroup>
 
     <UsingTask TaskName="WriteBuildInfo" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
         <ParameterGroup>
@@ -63,4 +109,9 @@
                 BuildTime="$(BuildDateTime)"/>
     </Target>
 
+    <Target Name="GenerateAssets" AfterTargets="Build" Condition="'$(ModScript)' != ''">
+        <Exec Command="npm run $(ModScript)"
+              WorkingDirectory="$(MSBuildThisFileDirectory)..\..\.scripts"
+              StandardOutputImportance="High"/>
+    </Target>
 </Project>

@@ -7,7 +7,7 @@ namespace CosmereFramework {
             Log.Important(
                 $"Mod: {harmonyId} Build Rev: {BuildInfo.REVISION} @ {BuildInfo.BUILD_TIME}. DebugMode={CosmereFramework.CosmereSettings.debugMode} LogLevel={CosmereFramework.CosmereSettings.logLevel}");
 
-            new Harmony(harmonyId).PatchAll(new StackTrace().GetFrame(1).GetMethod().ReflectedType.Assembly);
+            new Harmony(harmonyId).PatchAll(new StackTrace().GetFrame(1)!.GetMethod()!.ReflectedType!.Assembly);
         }
     }
 }

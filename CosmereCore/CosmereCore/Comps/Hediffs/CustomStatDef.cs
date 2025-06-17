@@ -9,9 +9,10 @@ using Log = CosmereFramework.Log;
 
 namespace CosmereCore.Comps.Hediffs {
     public class CustomStatDef : HediffComp {
-        private List<StatDef> customStatDefsCache;
+        private List<StatDef>? customStatDefsCache;
 
-        protected virtual List<StatDef> customStatDefs => customStatDefsCache ??= DefDatabase<StatDef>.AllDefsListForReading.Where(x => x.defName.StartsWith("CosmereCore_")).ToList();
+        protected virtual List<StatDef> customStatDefs => customStatDefsCache ??= DefDatabase<StatDef>
+            .AllDefsListForReading.Where(x => x.defName.StartsWith("CosmereCore_")).ToList();
 
         public override void CompPostTick(ref float severityAdjustment) {
             base.CompPostTick(ref severityAdjustment);

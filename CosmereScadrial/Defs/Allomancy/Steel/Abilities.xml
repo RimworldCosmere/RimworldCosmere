@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <AbilityGroupDef>
+        <defName>Cosmere_Scadrial_Steel</defName>
+    </AbilityGroupDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Ability_Steel_Aura</defName>
         <label>steel aura</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
@@ -11,6 +15,7 @@ These lines shimmer with the tension of potential force, visible only to those b
         <beuPerTick>0.0004</beuPerTick>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
+        <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Ability_Steel_Push</defName>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
 		<label>steel push target</label>
@@ -33,6 +38,7 @@ These lines shimmer with the tension of potential force, visible only to those b
         </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
+        <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Ability_Steel_Coinshot</defName>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.CoinshotAbility</abilityClass>
 		<jobDef>UseVerbOnThing</jobDef>

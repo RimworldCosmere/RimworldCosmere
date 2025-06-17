@@ -89,12 +89,13 @@ namespace CosmereScadrial.Abilities.Allomancy {
         }
 
         public override Job GetJob(LocalTargetInfo targetInfo, LocalTargetInfo destination) {
-            var job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, target);
+            var job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, targetInfo);
             job.ability = this;
             job.verbToUse = verb;
             job.playerForced = true;
-            job.targetA = target;
+            job.targetA = targetInfo;
             job.targetB = destination;
+            job.source = this;
             job.count = (int)(shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
 
             return job;

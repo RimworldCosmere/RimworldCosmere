@@ -2,12 +2,17 @@
 <Defs>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
         <defName>Cosmere_Ability_Chromium</defName>
-        <label>drain investiture</label>
         <description>Chromium instantly drains the target’s investiture, purging all metal reserves and canceling any active Allomantic effects. Shields the pawn from Investiture.</description>
         <metal>Chromium</metal>
         <hediff>Cosmere_Hediff_Investiture_Shield</hediff>
         <verbProperties>
             <range>2</range>
+            <targetParams>
+                <canTargetItems>false</canTargetItems>
+                <canTargetBuildings>false</canTargetBuildings>
+                <canTargetMechs>false</canTargetMechs>
+                <canTargetPlants>false</canTargetPlants>
+            </targetParams>
         </verbProperties>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

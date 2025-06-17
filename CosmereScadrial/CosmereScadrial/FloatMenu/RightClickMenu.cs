@@ -57,7 +57,7 @@ namespace CosmereScadrial.FloatMenu {
 
         private static List<FloatMenuOption> GetSubTargetOptions(Pawn pawn, MetalBurning metalBurning,
             LocalTargetInfo target) {
-            if (!target.IsValid) return null;
+            if (target == null || !target.IsValid) return null;
 
             var allomanticAbilities = pawn.abilities.AllAbilitiesForReading
                 .Where(x => x.def is AllomanticAbilityDef && x.CanApplyOn(target)).Select(x => x as AbstractAbility)
@@ -68,7 +68,7 @@ namespace CosmereScadrial.FloatMenu {
             var options = new List<FloatMenuOption> {
                 new FloatMenuSearch(true),
             };
-            if (pawn.Equals(target.Pawn)) {
+            if (target.Pawn != null && pawn.Equals(target.Pawn)) {
                 options.Add(new FloatMenuOption("Stop Burning All Metals",
                     metalBurning.IsBurning() ? () => metalBurning.RemoveAllBurnSources() : null));
             }

@@ -11,10 +11,7 @@ using Verse.AI;
 
 namespace CosmereScadrial.Jobs {
     public class CastAllomanticAbilityAtTarget : JobDriver {
-        private AbstractAbility cachedAbility;
-
-        protected virtual AbstractAbility ability =>
-            cachedAbility ??= pawn.abilities.GetAbility(job.ability.def) as AbstractAbility;
+        protected virtual AbstractAbility ability => (AbstractAbility)job.source;
 
         protected virtual MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 
@@ -28,8 +25,7 @@ namespace CosmereScadrial.Jobs {
         }
 
         protected override IEnumerable<Toil> MakeNewToils() {
-            this.FailOnDespawnedNullOrForbidden(TargetIndex.A)
-                .AddFinishAction(_ => UpdateStatusToOff());
+            this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
             yield return Toils_Combat.GotoCastPosition(TargetIndex.A, maxRangeFactor: 0.95f);
             yield return Toils_General.DoAtomic(() => { ability.UpdateStatus((BurningStatus)job.count); });
@@ -37,6 +33,7 @@ namespace CosmereScadrial.Jobs {
             var toil = ToilMaker.MakeToil(nameof(CastAllomanticAbilityAtTarget));
             toil.initAction = () => {
                 if (ShouldStopJob()) {
+                    ability.UpdateStatus(BurningStatus.Off);
                     EndJobWith(JobCondition.Incompletable);
                     return;
                 }
@@ -57,14 +54,6 @@ namespace CosmereScadrial.Jobs {
 
         protected virtual void UpdateBurnRate(float desiredBurnRate) {
             metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
-        }
-
-        protected virtual void UpdateStatusToOff() {
-            if (ability.status != BurningStatus.Off) {
-                ability.UpdateStatus(BurningStatus.Off);
-            }
-
-            UpdateBurnRate(0f);
         }
 
         /// <summary>

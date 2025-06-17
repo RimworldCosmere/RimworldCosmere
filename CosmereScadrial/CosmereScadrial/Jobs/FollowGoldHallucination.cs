@@ -7,7 +7,7 @@ namespace CosmereScadrial.Jobs {
     public class FollowGoldHallucination : JobDriver {
         protected virtual Pawn hallucination => TargetA.Pawn;
 
-        protected virtual AbstractAbility ability => pawn.abilities.GetAbility(job.ability.def) as AbstractAbility;
+        protected virtual AbstractAbility ability => (AbstractAbility)job.source;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed) {
             return pawn.Reserve(pawn, job, errorOnFailed: errorOnFailed, maxPawns: int.MaxValue, stackCount: 1,
@@ -16,8 +16,7 @@ namespace CosmereScadrial.Jobs {
 
         protected override IEnumerable<Toil> MakeNewToils() {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A)
-                .FailOnDowned(TargetIndex.A)
-                .AddFinishAction(UpdateStatusToOff);
+                .FailOnDowned(TargetIndex.A);
 
             var gotoThing = Toils_General.Do(MaintainProximity);
             gotoThing.defaultCompleteMode = ToilCompleteMode.PatherArrival;
@@ -26,6 +25,7 @@ namespace CosmereScadrial.Jobs {
                 defaultCompleteMode = ToilCompleteMode.Never,
                 tickAction = () => {
                     if (ShouldStopJob()) {
+                        ability.UpdateStatus(BurningStatus.Off);
                         EndJobWith(JobCondition.Incompletable);
                         return;
                     }
@@ -56,12 +56,6 @@ namespace CosmereScadrial.Jobs {
                 // Stop if already within desired range
                 pawn.pather.StopDead();
                 pawn.jobs.curDriver.Notify_PatherArrived();
-            }
-        }
-
-        protected virtual void UpdateStatusToOff(JobCondition jobCondition) {
-            if (ability.status != BurningStatus.Off) {
-                ability.UpdateStatus(BurningStatus.Off);
             }
         }
     }

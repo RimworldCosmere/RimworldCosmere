@@ -10,6 +10,8 @@
         <stunTargetWhileCasting>False</stunTargetWhileCasting>
         <aiCanUse>true</aiCanUse>
         <ai_IsOffensive>true</ai_IsOffensive>
+        <gizmoClass>CosmereScadrial.Command.AllomancyCommand</gizmoClass>
+        <groupAbility>true</groupAbility>
         <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
         <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
         <category>Allomancy</category>

@@ -43,6 +43,7 @@ namespace CosmereScadrial.Defs {
         }
 
         public override IEnumerable<string> ConfigErrors() {
+            label ??= metal.label;
             foreach (var error in base.ConfigErrors()) {
                 yield return error;
             }

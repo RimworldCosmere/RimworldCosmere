@@ -12,7 +12,7 @@ namespace CosmereScadrial.Jobs {
     public class MaintainAllomanticTarget : JobDriver {
         protected virtual Pawn targetPawn => TargetA.Pawn;
 
-        protected virtual AbstractAbility ability => pawn.abilities.GetAbility(job.ability.def) as AbstractAbility;
+        protected virtual AbstractAbility ability => (AbstractAbility)job.source;
 
         protected virtual MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 
@@ -25,8 +25,7 @@ namespace CosmereScadrial.Jobs {
 
         protected override IEnumerable<Toil> MakeNewToils() {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A)
-                .FailOnDowned(TargetIndex.A)
-                .AddFinishAction(UpdateStatusToOff);
+                .FailOnDowned(TargetIndex.A);
 
             var gotoThing = Toils_General.Do(MaintainProximity);
             gotoThing.defaultCompleteMode = ToilCompleteMode.PatherArrival;
@@ -37,6 +36,7 @@ namespace CosmereScadrial.Jobs {
                 defaultCompleteMode = ToilCompleteMode.Never,
                 tickAction = () => {
                     if (ShouldStopJob()) {
+                        ability.UpdateStatus(BurningStatus.Off);
                         EndJobWith(JobCondition.Incompletable);
                         return;
                     }
@@ -106,10 +106,6 @@ namespace CosmereScadrial.Jobs {
             if (ability.status != BurningStatus.Off) {
                 ability.UpdateStatus(BurningStatus.Off);
             }
-        }
-
-        protected virtual void UpdateStatusToOff(JobCondition jobCondition) {
-            UpdateStatusToOff();
         }
 
         protected virtual void UpdateBurnRate(float desiredBurnRate) {

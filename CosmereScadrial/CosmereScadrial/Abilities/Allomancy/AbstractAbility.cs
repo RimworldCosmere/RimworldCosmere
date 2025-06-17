@@ -142,7 +142,7 @@ namespace CosmereScadrial.Abilities.Allomancy {
             }
         }
 
-        public override IEnumerable<Command> GetGizmos() {
+        public override IEnumerable<Verse.Command> GetGizmos() {
             return base.GetGizmos();
         }
     }

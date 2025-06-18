@@ -1,70 +1,72 @@
 using System;
 using System.Linq;
 using CosmereScadrial.Comps.Things;
+using CosmereScadrial.Defs;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
-    public class SurgeChargeHediff : AllomanticHediff {
-        public Action endCallback;
+namespace CosmereScadrial.Abilities.Allomancy.Hediffs;
 
-        public int endInTicks = -1;
-        private MetalBurning burning => pawn.GetComp<MetalBurning>();
-        private MetalReserves reserves => pawn.GetComp<MetalReserves>();
+public class SurgeChargeHediff : AllomanticHediff {
+    public Action endCallback;
 
-        public override void Tick() {
-            base.Tick();
+    public int endInTicks = -1;
+    private MetalBurning burning => pawn.GetComp<MetalBurning>();
+    private MetalReserves reserves => pawn.GetComp<MetalReserves>();
 
-            switch (endInTicks) {
-                case -1:
-                    return;
-                case 0:
-                    PostBurn();
-                    break;
-            }
+    public override void Tick() {
+        base.Tick();
 
-            if (endInTicks > 0) endInTicks--;
+        switch (endInTicks) {
+            case -1:
+                return;
+            case 0:
+                PostBurn();
+                break;
         }
 
-        public void Burn(Action callback = null, int endInTicks = -1, Action endCallback = null) {
-            if (this.endInTicks > -1) return;
+        if (endInTicks > 0) endInTicks--;
+    }
 
-            foreach (var ((_, abilityDef), rate) in burning.burnSourceMap.ToList()) {
-                if (rate <= 0f) continue;
+    public void Burn(Action callback = null, int endInTicks = -1, Action endCallback = null) {
+        if (this.endInTicks > -1) return;
 
-                var ability = pawn.abilities.GetAbility(abilityDef);
-                if (ability is not AbstractAbility allomanticAbility) continue;
+        foreach (((MetallicArtsMetalDef _, AllomanticAbilityDef abilityDef), float rate) in
+                 burning.burnSourceMap.ToList()) {
+            if (rate <= 0f) continue;
 
-                allomanticAbility.UpdateStatus(BurningStatus.Duralumin);
-            }
+            Ability? ability = pawn.abilities.GetAbility(abilityDef);
+            if (ability is not AbstractAbility allomanticAbility) continue;
 
-            callback?.Invoke();
-
-            this.endInTicks = endInTicks;
-            this.endCallback = endCallback;
+            allomanticAbility.UpdateStatus(BurningStatus.Duralumin);
         }
 
-        public void PostBurn() {
-            burning.GetBurningMetals().ForEach(reserves.RemoveReserve);
-            FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
+        callback?.Invoke();
 
-            foreach (var sourceAbility in sourceAbilities.ToList()) {
-                var res = sourceAbility.pawn.GetComp<MetalReserves>();
-                if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Ability_Duralumin_Surge)) {
-                    res.RemoveReserve(MetallicArtsMetalDefOf.Duralumin);
-                }
+        this.endInTicks = endInTicks;
+        this.endCallback = endCallback;
+    }
 
-                if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Ability_Nicrosil_Surge)) {
-                    res.RemoveReserve(MetallicArtsMetalDefOf.Nicrosil);
-                }
+    public void PostBurn() {
+        burning.GetBurningMetals().ForEach(reserves.RemoveReserve);
+        FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
 
-                sourceAbility.UpdateStatus(BurningStatus.Off);
+        foreach (AbstractAbility? sourceAbility in sourceAbilities.ToList()) {
+            MetalReserves? res = sourceAbility.pawn.GetComp<MetalReserves>();
+            if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Ability_Duralumin_Surge)) {
+                res.RemoveReserve(MetallicArtsMetalDefOf.Duralumin);
             }
 
-            pawn.health?.RemoveHediff(this);
-            endCallback?.Invoke();
-            endCallback = null;
-            endInTicks = -1;
+            if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Ability_Nicrosil_Surge)) {
+                res.RemoveReserve(MetallicArtsMetalDefOf.Nicrosil);
+            }
+
+            sourceAbility.UpdateStatus(BurningStatus.Off);
         }
+
+        pawn.health?.RemoveHediff(this);
+        endCallback?.Invoke();
+        endCallback = null;
+        endInTicks = -1;
     }
 }

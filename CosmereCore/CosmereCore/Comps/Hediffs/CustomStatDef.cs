@@ -7,49 +7,49 @@ using Verse;
 using Verse.AI;
 using Log = CosmereFramework.Log;
 
-namespace CosmereCore.Comps.Hediffs {
-    public class CustomStatDef : HediffComp {
-        private List<StatDef>? customStatDefsCache;
+namespace CosmereCore.Comps.Hediffs;
 
-        protected virtual List<StatDef> customStatDefs => customStatDefsCache ??= DefDatabase<StatDef>
-            .AllDefsListForReading.Where(x => x.defName.StartsWith("CosmereCore_")).ToList();
+public class CustomStatDef : HediffComp {
+    private List<StatDef>? customStatDefsCache;
 
-        public override void CompPostTick(ref float severityAdjustment) {
-            base.CompPostTick(ref severityAdjustment);
+    protected virtual List<StatDef> customStatDefs => customStatDefsCache ??= DefDatabase<StatDef>
+        .AllDefsListForReading.Where(x => x.defName.StartsWith("CosmereCore_")).ToList();
 
-            if (!Pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
+    public override void CompPostTick(ref float severityAdjustment) {
+        base.CompPostTick(ref severityAdjustment);
 
-            foreach (var stat in customStatDefs) {
-                var methodName = $"Handle{stat.defName.Replace("CosmereCore_", "")}";
-                var method = GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
+        if (!Pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
 
-                if (method != null) {
-                    var value = Pawn.GetStatValue(stat);
-                    method.Invoke(this, [value]);
-                } else {
-                    Log.Warning($"No handler for stat {stat.defName} defined in {GetType().Name}");
-                }
+        foreach (StatDef? stat in customStatDefs) {
+            string methodName = $"Handle{stat.defName.Replace("CosmereCore_", "")}";
+            MethodInfo? method = GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (method != null) {
+                float value = Pawn.GetStatValue(stat);
+                method.Invoke(this, [value]);
+            } else {
+                Log.Warning($"No handler for stat {stat.defName} defined in {GetType().Name}");
             }
         }
+    }
 
-        protected virtual void HandleMentalBreakAddFactor(float mentalBreakAddFactor) {
-            if (parent.pawn.InMentalState) return;
-            if (Rand.Value > mentalBreakAddFactor) return;
+    protected virtual void HandleMentalBreakAddFactor(float mentalBreakAddFactor) {
+        if (parent.pawn.InMentalState) return;
+        if (Rand.Value > mentalBreakAddFactor) return;
 
-            var breakDef = MentalBreakDefOf.BerserkShort;
-            if (!breakDef.Worker.BreakCanOccur(parent.pawn)) return;
-            parent.pawn.jobs?.EndCurrentJob(JobCondition.InterruptForced);
-            breakDef.Worker.TryStart(parent.pawn, "StatTrigger", true);
-        }
+        MentalBreakDef? breakDef = MentalBreakDefOf.BerserkShort;
+        if (!breakDef.Worker.BreakCanOccur(parent.pawn)) return;
+        parent.pawn.jobs?.EndCurrentJob(JobCondition.InterruptForced);
+        breakDef.Worker.TryStart(parent.pawn, "StatTrigger", true);
+    }
 
-        protected virtual void HandleMentalBreakRemoveFactor(float mentalBreakRemoveFactor) {
-            if (!parent.pawn.InMentalState) return;
-            if (Rand.Value > mentalBreakRemoveFactor) return;
+    protected virtual void HandleMentalBreakRemoveFactor(float mentalBreakRemoveFactor) {
+        if (!parent.pawn.InMentalState) return;
+        if (Rand.Value > mentalBreakRemoveFactor) return;
 
-            parent.pawn.mindState.mentalStateHandler.Reset();
-            if (parent.pawn.InMentalState) return;
-            parent.pawn.jobs?.EndCurrentJob(JobCondition.InterruptForced);
-            MoteMaker.ThrowText(parent.pawn.DrawPos, parent.pawn.Map, "Calmed", Color.green);
-        }
+        parent.pawn.mindState.mentalStateHandler.Reset();
+        if (parent.pawn.InMentalState) return;
+        parent.pawn.jobs?.EndCurrentJob(JobCondition.InterruptForced);
+        MoteMaker.ThrowText(parent.pawn.DrawPos, parent.pawn.Map, "Calmed", Color.green);
     }
 }

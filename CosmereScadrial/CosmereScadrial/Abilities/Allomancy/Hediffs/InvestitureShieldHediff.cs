@@ -5,57 +5,57 @@ using CosmereScadrial.Defs;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Abilities.Allomancy.Hediffs {
-    public class InvestitureShieldHediff : AllomanticHediff {
-        private MetalReserves reserves => pawn.GetComp<MetalReserves>();
+namespace CosmereScadrial.Abilities.Allomancy.Hediffs;
 
-        public override void Tick() {
-            base.Tick();
+public class InvestitureShieldHediff : AllomanticHediff {
+    private MetalReserves reserves => pawn.GetComp<MetalReserves>();
 
-            var metal = sourceAbilities.FirstOrDefault()?.metal;
-            if (metal == null) return;
+    public override void Tick() {
+        base.Tick();
 
-            var metalsToWipe = reserves.GetAllAvailableMetals().ToList();
-            if (metal == MetallicArtsMetalDefOf.Aluminum) {
-                metalsToWipe.Remove(metal);
-            }
+        MetallicArtsMetalDef? metal = sourceAbilities.FirstOrDefault()?.metal;
+        if (metal == null) return;
 
-            if (metalsToWipe.Count == 0) return;
-
-            foreach (var metalToWipe in metalsToWipe) {
-                reserves.RemoveReserve(metalToWipe);
-            }
-
-            Messages.Message(
-                GetMessage(metal, metalsToWipe),
-                MessageTypeDefOf.NeutralEvent,
-                false
-            );
+        List<MetallicArtsMetalDef> metalsToWipe = reserves.GetAllAvailableMetals().ToList();
+        if (metal == MetallicArtsMetalDefOf.Aluminum) {
+            metalsToWipe.Remove(metal);
         }
 
-        private string GetMessage(MetallicArtsMetalDef metal, List<MetallicArtsMetalDef> metalsToWipe) {
-            var metalsToWipeString = FormatDefList(metalsToWipe);
-            if (metal.Equals(MetallicArtsMetalDefOf.Aluminum)) {
-                return
-                    $"{pawn.NameFullColored} is burning {metal.LabelCap} and has wiped his reserves of {metalsToWipeString}.";
-            }
+        if (metalsToWipe.Count == 0) return;
 
-            if (metal.Equals(MetallicArtsMetalDefOf.Chromium)) {
-                return
-                    $"{pawn.NameFullColored} is the target of a lurcher, and is losing all of their reserves of {metalsToWipeString}.";
-            }
-
-            return "";
+        foreach (MetallicArtsMetalDef? metalToWipe in metalsToWipe) {
+            reserves.RemoveReserve(metalToWipe);
         }
 
-        public static string FormatDefList(List<MetallicArtsMetalDef> defs) {
-            var names = defs.Select(m => m.LabelCap).ToList();
-            return names.Count switch {
-                0 => "",
-                1 => names[0],
-                2 => $"{names[0]} and {names[1]}",
-                _ => string.Join(", ", names.Take(names.Count - 1)) + " and " + names.Last(),
-            };
+        Messages.Message(
+            GetMessage(metal, metalsToWipe),
+            MessageTypeDefOf.NeutralEvent,
+            false
+        );
+    }
+
+    private string GetMessage(MetallicArtsMetalDef metal, List<MetallicArtsMetalDef> metalsToWipe) {
+        string metalsToWipeString = FormatDefList(metalsToWipe);
+        if (metal.Equals(MetallicArtsMetalDefOf.Aluminum)) {
+            return
+                $"{pawn.NameFullColored} is burning {metal.LabelCap} and has wiped his reserves of {metalsToWipeString}.";
         }
+
+        if (metal.Equals(MetallicArtsMetalDefOf.Chromium)) {
+            return
+                $"{pawn.NameFullColored} is the target of a lurcher, and is losing all of their reserves of {metalsToWipeString}.";
+        }
+
+        return "";
+    }
+
+    public static string FormatDefList(List<MetallicArtsMetalDef> defs) {
+        List<TaggedString> names = defs.Select(m => m.LabelCap).ToList();
+        return names.Count switch {
+            0 => "",
+            1 => names[0],
+            2 => $"{names[0]} and {names[1]}",
+            _ => string.Join(", ", names.Take(names.Count - 1)) + " and " + names.Last(),
+        };
     }
 }

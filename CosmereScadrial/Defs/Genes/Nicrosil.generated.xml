@@ -3,35 +3,56 @@
     <!-- Misting: Nicrosil -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Nicrosil</defName>
+        
         <label>nicrosil misting</label>
         <labelShortAdj>nicroburst</labelShortAdj>
+        
         <description>Boosts another Allomancer&#x27;s power drastically.</description>
+        
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>13</displayOrderInCategory>
+        
+        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
+        <resourceLabel>nicrosil</resourceLabel>
+        <resourceGizmoThresholds>
+          <li>0.25</li>
+          <li>0.5</li>
+          <li>0.75</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+        <resourceDescription>Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.\n\nBoosts another Allomancer&#x27;s power drastically.</resourceDescription>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_Nicrosil</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Nicrosil</metal>
             </li>
         </modExtensions>
+        
         <abilities>
             <li>Cosmere_Ability_Nicrosil_Surge</li>
         </abilities>
+        
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Nicrosil</iconPath>
     </GeneDef>
+    
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Nicrosil</defName>
         <label>nicroburst</label>
         <description>Boosts another Allomancer&#x27;s power drastically.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Nicrosil</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>misting: nicroburst</label>
@@ -45,32 +66,40 @@
     <!-- Ferring: Nicrosil -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Nicrosil</defName>
+        
         <label>nicrosil ferring</label>
         <labelShortAdj>soulbearer</labelShortAdj>
+        
         <description>Stores Investiture, enabling storage of magical energy.</description>
+        
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>13</displayOrderInCategory>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_Nicrosil</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Nicrosil</metal>
             </li>
         </modExtensions>
+        
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Nicrosil</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Nicrosil</defName>
         <label>soulbearer</label>
         <description>Stores Investiture, enabling storage of magical energy.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Nicrosil</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>ferring: soulbearer</label>

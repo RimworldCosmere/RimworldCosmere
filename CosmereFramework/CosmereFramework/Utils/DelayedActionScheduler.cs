@@ -2,43 +2,43 @@ using System;
 using System.Collections.Generic;
 using Verse;
 
-namespace CosmereFramework.Utils {
-    [StaticConstructorOnStartup]
-    public class DelayedActionScheduler {
-        private static readonly List<ScheduledAction> scheduled = new();
+namespace CosmereFramework.Utils;
 
-        static DelayedActionScheduler() { }
+[StaticConstructorOnStartup]
+public class DelayedActionScheduler {
+    private static readonly List<ScheduledAction> scheduled = new List<ScheduledAction>();
 
-        public static void Schedule(Action action, int delayTicks) {
-            scheduled.Add(new ScheduledAction {
-                ticksLeft = delayTicks,
-                action = action,
-            });
+    static DelayedActionScheduler() { }
+
+    public static void Schedule(Action action, int delayTicks) {
+        scheduled.Add(new ScheduledAction {
+            ticksLeft = delayTicks,
+            action = action,
+        });
+    }
+
+    public static void Tick() {
+        for (int i = scheduled.Count - 1; i >= 0; i--) {
+            ScheduledAction? item = scheduled[i];
+            item.ticksLeft--;
+            if (item.ticksLeft > 0) continue;
+
+            item.action?.Invoke();
+            scheduled.RemoveAt(i);
         }
+    }
 
-        public static void Tick() {
-            for (var i = scheduled.Count - 1; i >= 0; i--) {
-                var item = scheduled[i];
-                item.ticksLeft--;
-                if (item.ticksLeft > 0) continue;
+    private class ScheduledAction {
+        public Action? action;
+        public int ticksLeft;
+    }
 
-                item.action?.Invoke();
-                scheduled.RemoveAt(i);
-            }
-        }
+    private class GameComponent_DelayedActionScheduler : GameComponent {
+        public GameComponent_DelayedActionScheduler() { }
+        public GameComponent_DelayedActionScheduler(Game game) { }
 
-        private class ScheduledAction {
-            public Action? action;
-            public int ticksLeft;
-        }
-
-        private class GameComponent_DelayedActionScheduler : GameComponent {
-            public GameComponent_DelayedActionScheduler() { }
-            public GameComponent_DelayedActionScheduler(Game game) { }
-
-            public override void GameComponentTick() {
-                Tick();
-            }
+        public override void GameComponentTick() {
+            Tick();
         }
     }
 }

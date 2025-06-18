@@ -3,35 +3,56 @@
     <!-- Misting: Aluminum -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Aluminum</defName>
+        
         <label>aluminum misting</label>
         <labelShortAdj>gnat (aluminum)</labelShortAdj>
+        
         <description>Wipes away all other metal reserves.</description>
+        
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>10</displayOrderInCategory>
+        
+        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
+        <resourceLabel>aluminum</resourceLabel>
+        <resourceGizmoThresholds>
+          <li>0.25</li>
+          <li>0.5</li>
+          <li>0.75</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+        <resourceDescription>Aluminum is a lightweight, silvery-white metal known for its corrosion resistance and flexibility. Its low density and high strength-to-weight ratio make it ideal for structural and high-tech uses.\n\nWipes away all other metal reserves.</resourceDescription>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_Aluminum</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
+        
         <abilities>
             <li>Cosmere_Ability_Aluminum</li>
         </abilities>
+        
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Aluminum</iconPath>
     </GeneDef>
+    
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Aluminum</defName>
         <label>gnat (aluminum)</label>
         <description>Wipes away all other metal reserves.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>misting: gnat (aluminum)</label>
@@ -45,32 +66,40 @@
     <!-- Ferring: Aluminum -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Aluminum</defName>
+        
         <label>aluminum ferring</label>
         <labelShortAdj>trueself</labelShortAdj>
+        
         <description>Stores identity, allowing anonymous interactions or forgery.</description>
+        
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>10</displayOrderInCategory>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_Aluminum</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
+        
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Aluminum</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Aluminum</defName>
         <label>trueself</label>
         <description>Stores identity, allowing anonymous interactions or forgery.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>ferring: trueself</label>

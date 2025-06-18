@@ -3,35 +3,56 @@
     <!-- Misting: Pewter -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Pewter</defName>
+        
         <label>pewter misting</label>
         <labelShortAdj>thug</labelShortAdj>
+        
         <description>Enhances physical strength and durability, useful in combat.</description>
+        
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>5</displayOrderInCategory>
+        
+        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
+        <resourceLabel>pewter</resourceLabel>
+        <resourceGizmoThresholds>
+          <li>0.25</li>
+          <li>0.5</li>
+          <li>0.75</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+        <resourceDescription>Pewter is a refined alloy formed by blending Tin with Copper. Known for its soft, workable nature and a muted, classic luster, pewter has been a favored material for decorative and utilitarian objects since ancient times.\n\nEnhances physical strength and durability, useful in combat.</resourceDescription>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_Pewter</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
+        
         <abilities>
             <li>Cosmere_Ability_Pewter</li>
         </abilities>
+        
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Pewter</iconPath>
     </GeneDef>
+    
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Pewter</defName>
         <label>thug</label>
         <description>Enhances physical strength and durability, useful in combat.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>misting: thug</label>
@@ -45,32 +66,40 @@
     <!-- Ferring: Pewter -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Pewter</defName>
+        
         <label>pewter ferring</label>
         <labelShortAdj>brute</labelShortAdj>
+        
         <description>Stores physical strength, tapping grants bursts of power.</description>
+        
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>5</displayOrderInCategory>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_Pewter</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
+        
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Pewter</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Pewter</defName>
         <label>brute</label>
         <description>Stores physical strength, tapping grants bursts of power.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>ferring: brute</label>

@@ -3,35 +3,56 @@
     <!-- Misting: Tin -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Tin</defName>
+        
         <label>tin misting</label>
         <labelShortAdj>tineye</labelShortAdj>
+        
         <description>Enhances senses like sight, hearing, and smell.</description>
+        
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>4</displayOrderInCategory>
+        
+        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
+        <resourceLabel>tin</resourceLabel>
+        <resourceGizmoThresholds>
+          <li>0.25</li>
+          <li>0.5</li>
+          <li>0.75</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+        <resourceDescription>Tin is a soft and malleable metal, prized for its natural resistance to corrosion. Its gentle sheen and ease of alloying make it a vital component in crafting a variety of decorative and functional metal blends.\n\nEnhances senses like sight, hearing, and smell.</resourceDescription>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_Tin</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Tin</metal>
             </li>
         </modExtensions>
+        
         <abilities>
             <li>Cosmere_Ability_Tin</li>
         </abilities>
+        
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Tin</iconPath>
     </GeneDef>
+    
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Tin</defName>
         <label>tineye</label>
         <description>Enhances senses like sight, hearing, and smell.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Tin</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>misting: tineye</label>
@@ -45,32 +66,40 @@
     <!-- Ferring: Tin -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Tin</defName>
+        
         <label>tin ferring</label>
         <labelShortAdj>windwhisper</labelShortAdj>
+        
         <description>Stores senses, dulling them while storing and enhancing while tapping.</description>
+        
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>4</displayOrderInCategory>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_Tin</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Tin</metal>
             </li>
         </modExtensions>
+        
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Tin</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Tin</defName>
         <label>windwhisper</label>
         <description>Stores senses, dulling them while storing and enhancing while tapping.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Tin</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>ferring: windwhisper</label>

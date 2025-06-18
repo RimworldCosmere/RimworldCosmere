@@ -3,36 +3,57 @@
     <!-- Misting: Iron -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Iron</defName>
+        
         <label>iron misting</label>
         <labelShortAdj>lurcher</labelShortAdj>
+        
         <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
+        
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>2</displayOrderInCategory>
+        
+        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
+        <resourceLabel>iron</resourceLabel>
+        <resourceGizmoThresholds>
+          <li>0.25</li>
+          <li>0.5</li>
+          <li>0.75</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+        <resourceDescription>Iron is a robust elemental metal, celebrated for its exceptional strength and versatility. Essential in construction, tool-making, and weaponry, iron forms the backbone of many modern and ancient applications.\n\nCan pull on metals, useful for drawing weapons or leaping through cities.</resourceDescription>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_Iron</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Iron</metal>
             </li>
         </modExtensions>
+        
         <abilities>
             <li>Cosmere_Ability_Iron_Aura</li>
             <li>Cosmere_Ability_Iron_Pull</li>
         </abilities>
+        
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Iron</iconPath>
     </GeneDef>
+    
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Iron</defName>
         <label>lurcher</label>
         <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Iron</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>misting: lurcher</label>
@@ -46,32 +67,40 @@
     <!-- Ferring: Iron -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Iron</defName>
+        
         <label>iron ferring</label>
         <labelShortAdj>skimmer</labelShortAdj>
+        
         <description>Stores weight, allowing the user to become lighter or heavier.</description>
+        
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>2</displayOrderInCategory>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_Iron</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Iron</metal>
             </li>
         </modExtensions>
+        
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Iron</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Iron</defName>
         <label>skimmer</label>
         <description>Stores weight, allowing the user to become lighter or heavier.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Iron</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>ferring: skimmer</label>

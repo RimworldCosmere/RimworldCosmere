@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using Verse;
 
-namespace CosmereCore.Tabs {
-    public static class InvestitureTabRegistry {
-        public delegate void InvestitureTabDrawer(Pawn pawn, Listing_Standard listing);
+namespace CosmereCore.Tabs;
 
-        public static readonly List<InvestitureTabDrawer> drawers = new List<InvestitureTabDrawer>();
+public static class InvestitureTabRegistry {
+    public delegate void InvestitureTabDrawer(Pawn pawn, Listing_Standard listing);
 
-        public static void Register(InvestitureTabDrawer drawer) {
-            if (!drawers.Contains(drawer)) {
-                drawers.Add(drawer);
-            }
+    public static readonly List<InvestitureTabDrawer> drawers = new List<InvestitureTabDrawer>();
+
+    public static void Register(InvestitureTabDrawer drawer) {
+        if (!drawers.Contains(drawer)) {
+            drawers.Add(drawer);
         }
     }
 }

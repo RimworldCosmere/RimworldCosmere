@@ -3,36 +3,57 @@
     <!-- Misting: Brass -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Brass</defName>
+        
         <label>brass misting</label>
         <labelShortAdj>soother</labelShortAdj>
+        
         <description>Can soothe emotions, calming people or manipulating moods.</description>
+        
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>7</displayOrderInCategory>
+        
+        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
+        <resourceLabel>brass</resourceLabel>
+        <resourceGizmoThresholds>
+          <li>0.25</li>
+          <li>0.5</li>
+          <li>0.75</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+        <resourceDescription>Brass is a warm, golden alloy produced by blending Ind_Copper with zinc. Praised for its attractive appearance and excellent workability, brass finds extensive use in both decorative applications and practical components.\n\nCan soothe emotions, calming people or manipulating moods.</resourceDescription>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_Brass</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
+        
         <abilities>
             <li>Cosmere_Ability_Brass_Aura</li>
             <li>Cosmere_Ability_Brass_Target</li>
         </abilities>
+        
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Brass</iconPath>
     </GeneDef>
+    
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Brass</defName>
         <label>soother</label>
         <description>Can soothe emotions, calming people or manipulating moods.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>misting: soother</label>
@@ -46,32 +67,40 @@
     <!-- Ferring: Brass -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Brass</defName>
+        
         <label>brass ferring</label>
         <labelShortAdj>firesoul</labelShortAdj>
+        
         <description>Stores warmth, useful for surviving cold environments or heating up.</description>
+        
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>7</displayOrderInCategory>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_Brass</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
+        
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Brass</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Brass</defName>
         <label>firesoul</label>
         <description>Stores warmth, useful for surviving cold environments or heating up.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>ferring: firesoul</label>

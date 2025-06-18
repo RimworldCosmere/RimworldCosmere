@@ -1,54 +1,54 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Abilities.Allomancy {
-    public class CoinshotAbility : AbilityOtherTarget {
-        public CoinshotAbility() {
-            status = BurningStatus.Off;
-        }
+namespace CosmereScadrial.Abilities.Allomancy;
 
-        public CoinshotAbility(Pawn pawn) : base(pawn) {
-            status = BurningStatus.Off;
-        }
+public class CoinshotAbility : AbilityOtherTarget {
+    public CoinshotAbility() {
+        status = BurningStatus.Off;
+    }
 
-        public CoinshotAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) {
-            status = BurningStatus.Off;
-        }
+    public CoinshotAbility(Pawn pawn) : base(pawn) {
+        status = BurningStatus.Off;
+    }
 
-        public CoinshotAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
-            status = BurningStatus.Off;
-        }
+    public CoinshotAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) {
+        status = BurningStatus.Off;
+    }
 
-        public CoinshotAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
-            status = BurningStatus.Off;
-        }
+    public CoinshotAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
+        status = BurningStatus.Off;
+    }
 
-        protected sealed override bool toggleable => false;
+    public CoinshotAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
+        status = BurningStatus.Off;
+    }
 
-        public override bool CanApplyOn(LocalTargetInfo targetInfo) {
-            if (!base.CanApplyOn(targetInfo)) return false;
-            var shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
-            if (shooting.TotallyDisabled) return false;
+    protected sealed override bool toggleable => false;
 
-            return pawn.inventory?.innerContainer.Contains(CoinThingDefOf.Cosmere_Clip) ?? false;
-        }
+    public override bool CanApplyOn(LocalTargetInfo targetInfo) {
+        if (!base.CanApplyOn(targetInfo)) return false;
+        SkillRecord? shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
+        if (shooting.TotallyDisabled) return false;
 
-        public override AcceptanceReport CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus,
-            bool ignoreInvestiture = false) {
-            var baseResult = base.CanActivate(targetInfo, activationStatus, ignoreInvestiture);
-            if (!baseResult.Accepted) return baseResult;
+        return pawn.inventory?.innerContainer.Contains(CoinThingDefOf.Cosmere_Clip) ?? false;
+    }
 
-            var shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
-            if (!shooting.PermanentlyDisabled && !shooting.TotallyDisabled) return true;
+    public override AcceptanceReport CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus,
+        bool ignoreInvestiture = false) {
+        AcceptanceReport baseResult = base.CanActivate(targetInfo, activationStatus, ignoreInvestiture);
+        if (!baseResult.Accepted) return baseResult;
 
-            return "MenuCannotShoot".Translate();
-        }
+        SkillRecord? shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
+        if (!shooting.PermanentlyDisabled && !shooting.TotallyDisabled) return true;
 
-        public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
-            target = targetInfo;
-            UpdateStatus(shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
+        return "MenuCannotShoot".Translate();
+    }
 
-            return base.Activate(target, dest);
-        }
+    public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
+        target = targetInfo;
+        UpdateStatus(shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
+
+        return base.Activate(target, dest);
     }
 }

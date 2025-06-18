@@ -2,15 +2,15 @@
 using HarmonyLib;
 using Verse;
 
-namespace CosmereScadrial.Patches {
-    [HarmonyPatch(typeof(Verse.PawnGenerator), "GenerateGenes")]
-    public static class PawnGeneGeneration {
-        public static void Postfix(Pawn pawn, PawnGenerationRequest request) {
-            if (pawn == null || !pawn.RaceProps.Humanlike) {
-                return;
-            }
+namespace CosmereScadrial.Patches;
 
-            GeneInheritanceUtility.TryAssignScadrialGenes(pawn);
+[HarmonyPatch(typeof(Verse.PawnGenerator), "GenerateGenes")]
+public static class PawnGeneGeneration {
+    public static void Postfix(Pawn pawn, PawnGenerationRequest request) {
+        if (pawn == null || !pawn.RaceProps.Humanlike) {
+            return;
         }
+
+        GeneUtility.TryAssignScadrialGenes(pawn);
     }
 }

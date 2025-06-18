@@ -1,12 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
+        <RootNamespace>CosmereFramework</RootNamespace>
+        <AssemblyName>CosmereFramework</AssemblyName>
+        <Description>Framework for Cosmere releated Rimworld Mods.</Description>
+
         <Authors>CryptikLemur</Authors>
+        <Product>RimworldCosmere</Product>
+        <CurrentDate>$([System.DateTime]::Now.ToString(yyyy/MM/dd HH:mm:ss))</CurrentDate>
         <Version>0.5.0</Version>
         <AssemblyVersion>0.5.0</AssemblyVersion>
         <FileVersion>0.5.0</FileVersion>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <OutputType>Library</OutputType>
         <OutDir>..\Assemblies\</OutDir>
         <Nullable>enable</Nullable>
         <EnableNETAnalyzers>True</EnableNETAnalyzers>
@@ -29,8 +36,6 @@
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <RootNamespace>CosmereFramework</RootNamespace>
-        <AssemblyName>CosmereFramework</AssemblyName>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -53,18 +58,37 @@
     </ItemDefinitionGroup>
 
     <ItemGroup>
-        <!-- RimWorld -->
-        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*-*"/>
-        <!-- Harmony -->
-        <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime"/>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(RimWorldManagedPath)\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.IMGUIModule">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.IMGUIModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextCoreTextEngineModule">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.TextRenderingModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UIElementsModule">
+            <HintPath>$(RimWorldManagedPath)\UnityEngine.UIElementsModule.dll</HintPath>
+        </Reference>
 
+        <Reference Include="0Harmony">
+            <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="HarmonyMod">
+            <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\HarmonyMod.dll</HintPath>
+        </Reference>
         <Reference Include="FloatSubMenu">
             <HintPath>$(WorkshopDir)/2864015430/1.5/Assemblies/FloatSubMenu.dll</HintPath>
         </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="obj\"/>
     </ItemGroup>
 
     <UsingTask TaskName="WriteBuildInfo" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">

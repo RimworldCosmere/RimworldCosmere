@@ -3,10 +3,7 @@ root = true
 
 [*.cs]
 # Force block-scoped namespaces (with braces)
-csharp_style_namespace_declarations = block_scoped:suggestion
-
-# Optional: enforce using declarations instead of directives
-csharp_style_using_directive_placement = outside_namespace:suggestion
+csharp_style_namespace_declarations = file_scoped:suggestion
 
 # Optional: indent settings
 indent_style = space

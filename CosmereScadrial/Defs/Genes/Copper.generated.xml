@@ -3,35 +3,56 @@
     <!-- Misting: Copper -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Copper</defName>
+        
         <label>copper misting</label>
         <labelShortAdj>smoker</labelShortAdj>
+        
         <description>Creates a &#x27;coppercloud&#x27; that hides Allomantic activity.</description>
+        
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>8</displayOrderInCategory>
+        
+        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
+        <resourceLabel>copper</resourceLabel>
+        <resourceGizmoThresholds>
+          <li>0.25</li>
+          <li>0.5</li>
+          <li>0.75</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+        <resourceDescription>Copper is a soft, reddish metal prized for its conductivity and malleability. It has been a staple in crafting and electrical applications across civilizations for centuries.\n\nCreates a &#x27;coppercloud&#x27; that hides Allomantic activity.</resourceDescription>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_Copper</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>
+        
         <abilities>
             <li>Cosmere_Ability_Copper_Aura</li>
         </abilities>
+        
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Copper</iconPath>
     </GeneDef>
+    
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Copper</defName>
         <label>smoker</label>
         <description>Creates a &#x27;coppercloud&#x27; that hides Allomantic activity.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>misting: smoker</label>
@@ -45,32 +66,40 @@
     <!-- Ferring: Copper -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Copper</defName>
+        
         <label>copper ferring</label>
         <labelShortAdj>archivist</labelShortAdj>
+        
         <description>Stores memories, allowing perfect recall of stored knowledge.</description>
+        
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>8</displayOrderInCategory>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_Copper</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>
+        
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Copper</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Copper</defName>
         <label>archivist</label>
         <description>Stores memories, allowing perfect recall of stored knowledge.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>ferring: archivist</label>

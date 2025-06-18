@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CosmereCore.Defs;
 using CosmereCore.Utils;
 using CosmereFramework.Utils;
@@ -6,84 +7,84 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereCore.Pages {
-    public class SelectShards : Page {
-        private Vector2 scrollPos = Vector2.zero;
+namespace CosmereCore.Pages;
 
-        public override string PageTitle => "Select Shards";
+public class SelectShards : Page {
+    private Vector2 scrollPos = Vector2.zero;
 
-        public override void DoWindowContents(Rect inRect) {
-            DefDatabase<ShardDef>.AddAllInMods();
+    public override string PageTitle => "Select Shards";
 
-            const float topMargin = 40f;
-            const float bottomMargin = 60f;
-            const float rowHeight = 70f;
-            const float planetHeaderHeight = 40f;
-            const float checkTextPadding = 12f;
+    public override void DoWindowContents(Rect inRect) {
+        DefDatabase<ShardDef>.AddAllInMods();
 
-            UIUtil.WithFont(GameFont.Medium,
-                () => Widgets.Label(inRect.TopPartPixels(topMargin), "Choose which Shards are active in this game:"));
+        const float topMargin = 40f;
+        const float bottomMargin = 60f;
+        const float rowHeight = 70f;
+        const float planetHeaderHeight = 40f;
+        const float checkTextPadding = 12f;
 
-            var grouped = DefDatabase<ShardDef>.AllDefsListForReading.GroupBy(s => s.planet)
-                .OrderBy(g => g.Key == "N/A" ? 0 : 1)
-                .ThenBy(g => g.Key)
-                .ToList();
+        UIUtil.WithFont(GameFont.Medium,
+            () => Widgets.Label(inRect.TopPartPixels(topMargin), "Choose which Shards are active in this game:"));
 
-            var totalHeight = grouped.Sum(g => g.Count() * rowHeight + planetHeaderHeight);
-            var scrollArea = new Rect(0f, topMargin + 10f, inRect.width, inRect.height - topMargin - bottomMargin);
-            var viewRect = new Rect(0f, 0f, scrollArea.width - 16f, totalHeight);
+        List<IGrouping<string?, ShardDef>> grouped = DefDatabase<ShardDef>.AllDefsListForReading.GroupBy(s => s.planet)
+            .OrderBy(g => g.Key == "N/A" ? 0 : 1)
+            .ThenBy(g => g.Key)
+            .ToList();
 
-            Widgets.BeginScrollView(scrollArea, ref scrollPos, viewRect);
-            var y = 0f;
+        float totalHeight = grouped.Sum(g => g.Count() * rowHeight + planetHeaderHeight);
+        Rect scrollArea = new Rect(0f, topMargin + 10f, inRect.width, inRect.height - topMargin - bottomMargin);
+        Rect viewRect = new Rect(0f, 0f, scrollArea.width - 16f, totalHeight);
 
-            foreach (var group in grouped) {
-                var planetLabelRect = new Rect(0f, y, viewRect.width, planetHeaderHeight);
-                UIUtil.WithFont(GameFont.Medium, () => Widgets.Label(planetLabelRect, group.Key));
-                y += planetHeaderHeight;
+        Widgets.BeginScrollView(scrollArea, ref scrollPos, viewRect);
+        float y = 0f;
 
-                Widgets.DrawLineHorizontal(0f, y - 6f, viewRect.width);
+        foreach (IGrouping<string?, ShardDef>? group in grouped) {
+            Rect planetLabelRect = new Rect(0f, y, viewRect.width, planetHeaderHeight);
+            UIUtil.WithFont(GameFont.Medium, () => Widgets.Label(planetLabelRect, group.Key));
+            y += planetHeaderHeight;
 
-                foreach (var shard in group) {
-                    var rowRect = new Rect(0f, y, viewRect.width, rowHeight);
-                    var checkRect = new Rect(8f, y + 10f, 24f, 24f);
+            Widgets.DrawLineHorizontal(0f, y - 6f, viewRect.width);
 
-                    var isEnabled = ShardUtility.AreAnyEnabled(shard);
-                    var isBlockedByOther =
-                        !isEnabled && shard.mutuallyExclusiveWith?.Any(ShardUtility.IsEnabled) == true;
+            foreach (ShardDef? shard in group) {
+                Rect rowRect = new Rect(0f, y, viewRect.width, rowHeight);
+                Rect checkRect = new Rect(8f, y + 10f, 24f, 24f);
 
-                    var originalGUIState = GUI.enabled;
-                    GUI.enabled = !isBlockedByOther;
+                bool isEnabled = ShardUtility.AreAnyEnabled(shard);
+                bool isBlockedByOther =
+                    !isEnabled && shard.mutuallyExclusiveWith?.Any(ShardUtility.IsEnabled) == true;
 
-                    var labelRect = new Rect(checkRect.xMax + checkTextPadding, y + 6f,
-                        rowRect.width - checkRect.xMax - 20f, 24f);
-                    var toggled = isEnabled;
-                    Widgets.CheckboxLabeled(labelRect, shard.label.CapitalizeFirst(), ref toggled, isBlockedByOther);
+                bool originalGUIState = GUI.enabled;
+                GUI.enabled = !isBlockedByOther;
 
-                    if (toggled != isEnabled) {
-                        if (toggled) {
-                            ShardUtility.Enable(shard);
-                            Messages.Message($"Enabled shard: {shard.label.CapitalizeFirst()}",
-                                MessageTypeDefOf.PositiveEvent);
-                        } else {
-                            ShardUtility.shards.enabledShardDefs.Remove(shard);
-                            Messages.Message($"Disabled shard: {shard.label.CapitalizeFirst()}",
-                                MessageTypeDefOf.NeutralEvent);
-                        }
+                Rect labelRect = new Rect(checkRect.xMax + checkTextPadding, y + 6f,
+                    rowRect.width - checkRect.xMax - 20f, 24f);
+                bool toggled = isEnabled;
+                Widgets.CheckboxLabeled(labelRect, shard.label.CapitalizeFirst(), ref toggled, isBlockedByOther);
+
+                if (toggled != isEnabled) {
+                    if (toggled) {
+                        ShardUtility.Enable(shard);
+                        Messages.Message($"Enabled shard: {shard.label.CapitalizeFirst()}",
+                            MessageTypeDefOf.PositiveEvent);
+                    } else {
+                        ShardUtility.shards.enabledShardDefs.Remove(shard);
+                        Messages.Message($"Disabled shard: {shard.label.CapitalizeFirst()}",
+                            MessageTypeDefOf.NeutralEvent);
                     }
-
-                    GUI.enabled = originalGUIState;
-
-                    var descRect = new Rect(checkRect.xMax + checkTextPadding, y + 30f,
-                        rowRect.width - checkRect.xMax - 20f, 30f);
-                    UIUtil.WithFont(GameFont.Tiny,
-                        () => Widgets.Label(descRect, shard.description.Truncate(descRect.width - 10f)));
-
-                    y += rowHeight;
                 }
-            }
 
-            Widgets.EndScrollView();
-            DoBottomButtons(inRect);
+                GUI.enabled = originalGUIState;
+
+                Rect descRect = new Rect(checkRect.xMax + checkTextPadding, y + 30f,
+                    rowRect.width - checkRect.xMax - 20f, 30f);
+                UIUtil.WithFont(GameFont.Tiny,
+                    () => Widgets.Label(descRect, shard.description.Truncate(descRect.width - 10f)));
+
+                y += rowHeight;
+            }
         }
+
+        Widgets.EndScrollView();
+        DoBottomButtons(inRect);
     }
 }

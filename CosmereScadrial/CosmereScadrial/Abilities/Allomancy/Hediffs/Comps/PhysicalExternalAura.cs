@@ -5,54 +5,57 @@ using CosmereScadrial.Utils;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Abilities.Allomancy.Hediffs.Comps {
-    public class PhysicalExternalAuraProperties : HediffCompProperties {
-        public Color lineColor = new Color(0.3f, 0.6f, 1f, 1f);
-        public float radius = 15f;
+namespace CosmereScadrial.Abilities.Allomancy.Hediffs.Comps;
 
-        public PhysicalExternalAuraProperties() {
-            compClass = typeof(PhysicalExternalAura);
-        }
+public class PhysicalExternalAuraProperties : HediffCompProperties {
+    public Color lineColor = new Color(0.3f, 0.6f, 1f, 1f);
+    public float radius = 15f;
 
-        public Material lineMaterial => MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind, lineColor);
+    public PhysicalExternalAuraProperties() {
+        compClass = typeof(PhysicalExternalAura);
     }
 
-    public class PhysicalExternalAura : HediffComp {
-        private static readonly HashSet<Thing> metalCache = new HashSet<Thing>();
+    public Material lineMaterial =>
+        MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind, lineColor);
+}
 
-        public Dictionary<Thing, float> thingsToDraw { get; } = new Dictionary<Thing, float>();
+public class PhysicalExternalAura : HediffComp {
+    private static readonly HashSet<Thing> metalCache = new HashSet<Thing>();
 
-        public new PhysicalExternalAuraProperties props => (PhysicalExternalAuraProperties)base.props;
+    public Dictionary<Thing, float> thingsToDraw { get; } = new Dictionary<Thing, float>();
 
-        private new AllomanticHediff parent => base.parent as AllomanticHediff;
+    public new PhysicalExternalAuraProperties props => (PhysicalExternalAuraProperties)base.props;
 
-        private bool isAtLeastPassive => parent.Severity >= 0.5f;
+    private new AllomanticHediff parent => base.parent as AllomanticHediff;
 
-        private void GetThingsToDraw() {
-            var map = parent.pawn.Map;
-            var center = parent.pawn.Position;
-            var radius = props.radius * parent.Severity;
-            if (map == null || !center.IsValid || !Find.Selector.IsSelected(parent.pawn)) {
-                return;
+    private bool isAtLeastPassive => parent.Severity >= 0.5f;
+
+    private void GetThingsToDraw() {
+        Map? map = parent.pawn.Map;
+        IntVec3 center = parent.pawn.Position;
+        float radius = props.radius * parent.Severity;
+        if (map == null || !center.IsValid || !Find.Selector.IsSelected(parent.pawn)) {
+            return;
+        }
+
+        thingsToDraw.Clear();
+        foreach (IntVec3 cell in GenRadial.RadialCellsAround(center,
+                     (float)Math.Round(Math.Min(GenRadial.MaxRadialPatternRadius, radius)), false)) {
+            foreach (Thing? thing in cell.GetThingList(map).Where(thing =>
+                         MetalDetector.IsCapableOfHavingMetal(thing.def) && !thingsToDraw.ContainsKey(thing))) {
+                thingsToDraw[thing] = MetalDetector.GetMetal(thing);
             }
+        }
+    }
 
+    public override void CompPostTick(ref float severityAdjustment) {
+        if (!isAtLeastPassive) {
             thingsToDraw.Clear();
-            foreach (var cell in GenRadial.RadialCellsAround(center, (float)Math.Round(Math.Min(GenRadial.MaxRadialPatternRadius, radius)), false)) {
-                foreach (var thing in cell.GetThingList(map).Where(thing => MetalDetector.IsCapableOfHavingMetal(thing.def) && !thingsToDraw.ContainsKey(thing))) {
-                    thingsToDraw[thing] = MetalDetector.GetMetal(thing);
-                }
-            }
+            return;
         }
 
-        public override void CompPostTick(ref float severityAdjustment) {
-            if (!isAtLeastPassive) {
-                thingsToDraw.Clear();
-                return;
-            }
+        if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
 
-            if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
-
-            GetThingsToDraw();
-        }
+        GetThingsToDraw();
     }
 }

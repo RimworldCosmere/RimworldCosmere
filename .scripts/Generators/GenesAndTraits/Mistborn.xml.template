@@ -1,39 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
-        <defName>Cosmere_Mistborn</defName>
-        <label>mistborn</label>
-        <description>A rare individual who can burn all Allomantic metals.</description>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Mistborn</iconPath>
-        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>1</displayOrderInCategory>
-        <forcedTraits>
-            <li>
-                <def>Cosmere_Mistborn</def>
-            </li>
-        </forcedTraits>
-        <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
-                <metals>
-                    {{#each metals}}
-                    <li>{{capitalize this.Name}}</li>
-                    {{/each}}
-                </metals>
-            </li>{{#if rightClickAbilities}}
-            <li Class="CosmereScadrial.DefModExtensions.RightClickAbilities">
-                <abilities>
-                    {{#each rightClickAbilities}}
-                    <li>{{this}}</li>
-                    {{/each}}
-                </abilities>
-            </li>{{/if}}
-        </modExtensions>
-        <abilities>
-            {{#each abilities}}
-            <li>{{this}}</li>
-            {{/each}}
-        </abilities>
-    </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Mistborn</defName>
         <label>mistborn</label>
@@ -47,6 +13,11 @@
                 </metals>
             </li>
         </modExtensions>
+        <conflictingTraits>
+            {{#each metals}}
+            <li>Cosmere_Misting_{{capitalize this.Name}}</li>
+            {{/each}}
+        </conflictingTraits>
         <degreeDatas>
             <li>
                 <label>Mistborn</label>

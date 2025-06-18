@@ -3,35 +3,56 @@
     <!-- Misting: Bronze -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Bronze</defName>
+        
         <label>bronze misting</label>
         <labelShortAdj>seeker</labelShortAdj>
+        
         <description>Detects other Allomancers using powers.</description>
+        
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>9</displayOrderInCategory>
+        
+        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
+        <resourceLabel>bronze</resourceLabel>
+        <resourceGizmoThresholds>
+          <li>0.25</li>
+          <li>0.5</li>
+          <li>0.75</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+        <resourceDescription>Bronze is a time-honored alloy, resulting from the fusion of Ind_Copper and tin. Its rich, reddish-brown hue and enduring strength have made bronze a cornerstone of art, architecture, and historical craftsmanship.\n\nDetects other Allomancers using powers.</resourceDescription>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_Bronze</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Bronze</metal>
             </li>
         </modExtensions>
+        
         <abilities>
             <li>Cosmere_Ability_Bronze_Aura</li>
         </abilities>
+        
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Bronze</iconPath>
     </GeneDef>
+    
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Bronze</defName>
         <label>seeker</label>
         <description>Detects other Allomancers using powers.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Bronze</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>misting: seeker</label>
@@ -45,32 +66,40 @@
     <!-- Ferring: Bronze -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Bronze</defName>
+        
         <label>bronze ferring</label>
         <labelShortAdj>sentry</labelShortAdj>
+        
         <description>Stores wakefulness, useful for staying awake or skipping sleep.</description>
+        
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>9</displayOrderInCategory>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_Bronze</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Bronze</metal>
             </li>
         </modExtensions>
+        
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Bronze</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Bronze</defName>
         <label>sentry</label>
         <description>Stores wakefulness, useful for staying awake or skipping sleep.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Bronze</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>ferring: sentry</label>

@@ -3,16 +3,32 @@
     <!-- Misting: {{capitalize metal.Name}} -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_{{capitalize metal.Name}}</defName>
+        
         <label>{{metal.Name}} misting</label>
         <labelShortAdj>{{metal.Allomancy.UserName}}</labelShortAdj>
+        
         <description>{{metal.Allomancy.Description}}</description>
+        
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>{{order}}</displayOrderInCategory>
+        
+        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
+        <resourceLabel>{{metal.Name}}</resourceLabel>
+        <resourceGizmoThresholds>
+          <li>0.25</li>
+          <li>0.5</li>
+          <li>0.75</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+        <resourceDescription>{{metal.Description}}\n\n{{metal.Allomancy.Description}}</resourceDescription>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_{{capitalize metal.Name}}</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
@@ -25,6 +41,7 @@
                 </abilities>
             </li>{{/if}}
         </modExtensions>
+        
         {{#if metal.Allomancy.Abilities}}
         <abilities>
             {{#each metal.Allomancy.Abilities}}
@@ -32,17 +49,21 @@
             {{/each}}
         </abilities>
         {{/if}}
+        
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/{{capitalize metal.Name}}</iconPath>
     </GeneDef>
+    
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_{{capitalize metal.Name}}</defName>
         <label>{{metal.Allomancy.UserName}}</label>
         <description>{{metal.Allomancy.Description}}</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>misting: {{metal.Allomancy.UserName}}</label>
@@ -56,32 +77,40 @@
     <!-- Ferring: {{capitalize metal.Name}} -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_{{capitalize metal.Name}}</defName>
+        
         <label>{{metal.Name}} ferring</label>
         <labelShortAdj>{{metal.Feruchemy.UserName}}</labelShortAdj>
+        
         <description>{{metal.Feruchemy.Description}}</description>
+        
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>{{order}}</displayOrderInCategory>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_{{capitalize metal.Name}}</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
             </li>
         </modExtensions>
+        
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/{{capitalize metal.Name}}</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_{{capitalize metal.Name}}</defName>
         <label>{{metal.Feruchemy.UserName}}</label>
         <description>{{metal.Feruchemy.Description}}</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>ferring: {{metal.Feruchemy.UserName}}</label>

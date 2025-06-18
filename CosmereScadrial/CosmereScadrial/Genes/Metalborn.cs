@@ -1,45 +1,48 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CosmereCore.Utils;
 using CosmereResources.ModExtensions;
+using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
-using CosmereScadrial.Gizmo;
 using CosmereScadrial.Utils;
+using RimWorld;
+using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Genes {
-    public class Metalborn : Gene {
-        public override void PostAdd() {
-            base.PostAdd();
+namespace CosmereScadrial.Genes;
 
-            if (def.defName is "Cosmere_Mistborn" or "Cosmere_FullFeruchemist") {
-                foreach (var gene in pawn.genes.GenesListForReading.Where(gene =>
-                             gene is Metalborn && !gene.Equals(this))) {
-                    pawn.genes.RemoveGene(gene);
-                }
-            }
+public class Metalborn : Gene_Resource {
+    public MetallicArtsMetalDef metal =>
+        MetallicArtsMetalDef.GetFromMetalDef(def.GetModExtension<MetalsLinked>().Metals.First()!);
 
-            MetalbornUtility.HandleMetalbornTrait(pawn);
-            InvestitureUtility.AssignHeighteningFromBEUs(pawn);
-            MetalbornUtility.HandleBurningMetalHediff(pawn);
-        }
+    public override float InitialResourceMax => 1f;
+    public override float MinLevelForAlert => .15f;
+    public override float MaxLevelOffset => .1f;
+    public override int MaxForDisplay => 100;
+    public override float Max => MetalReserves.MAX_AMOUNT;
+    protected override Color BarColor => metal.color;
+    protected override Color BarHighlightColor => metal.colorTwo ?? metal.color.SaturationChanged(50f);
 
-        public override void PostRemove() {
-            base.PostRemove();
+    public override float Value => pawn.GetComp<MetalReserves>().GetReserve(metal);
+    public override float ValuePercent => Value / MetalReserves.MAX_AMOUNT * 100;
 
-            MetalbornUtility.HandleMetalbornTrait(pawn);
-            MetalbornUtility.HandleBurningMetalHediff(pawn);
-        }
+    public override void Reset() {
+        targetValue = 0.25f;
+    }
 
-        public override IEnumerable<Verse.Gizmo> GetGizmos() {
-            foreach (var gizmo in base.GetGizmos() ?? []) {
-                yield return gizmo;
-            }
+    public override void PostAdd() {
+        base.PostAdd();
 
-            var metals = def.GetModExtension<MetalsLinked>().Metals;
-            foreach (var metal in metals) {
-                yield return new InvestitureAllomancyGizmo(this, MetallicArtsMetalDef.GetFromMetalDef(metal));
-            }
-        }
+        MetalbornUtility.HandleMistbornAndFullFeruchemistTraits(pawn);
+        MetalbornUtility.HandleMetalbornTrait(pawn);
+        InvestitureUtility.AssignHeighteningFromBEUs(pawn);
+        MetalbornUtility.HandleBurningMetalHediff(pawn);
+    }
+
+    public override void PostRemove() {
+        base.PostRemove();
+
+        MetalbornUtility.HandleMistbornAndFullFeruchemistTraits(pawn);
+        MetalbornUtility.HandleMetalbornTrait(pawn);
+        MetalbornUtility.HandleBurningMetalHediff(pawn);
     }
 }

@@ -3,35 +3,56 @@
     <!-- Misting: Gold -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Misting_Gold</defName>
+        
         <label>gold misting</label>
         <labelShortAdj>augur</labelShortAdj>
+        
         <description>Shows alternate versions of oneself, based on different pasts.</description>
+        
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>16</displayOrderInCategory>
+        
+        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
+        <resourceLabel>gold</resourceLabel>
+        <resourceGizmoThresholds>
+          <li>0.25</li>
+          <li>0.5</li>
+          <li>0.75</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+        <resourceDescription>Gold is a dense, soft, and radiant metal long valued for its rarity and beauty. Resistant to tarnish and corrosion, it has held significance in both trade and symbolism throughout history.\n\nShows alternate versions of oneself, based on different pasts.</resourceDescription>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Misting_Gold</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>
+        
         <abilities>
             <li>Cosmere_Ability_Gold</li>
         </abilities>
+        
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Gold</iconPath>
     </GeneDef>
+    
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Gold</defName>
         <label>augur</label>
         <description>Shows alternate versions of oneself, based on different pasts.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>misting: augur</label>
@@ -45,32 +66,40 @@
     <!-- Ferring: Gold -->
     <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Ferring_Gold</defName>
+        
         <label>gold ferring</label>
         <labelShortAdj>bloodmaker</labelShortAdj>
+        
         <description>Stores health, allowing fast healing when tapped.</description>
+        
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>16</displayOrderInCategory>
+        
         <forcedTraits>
             <li>
                 <def>Cosmere_Ferring_Gold</def>
             </li>
         </forcedTraits>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>
+        
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Gold</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Ferring_Gold</defName>
         <label>bloodmaker</label>
         <description>Stores health, allowing fast healing when tapped.</description>
+        
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>
+        
         <degreeDatas>
             <li>
                 <label>ferring: bloodmaker</label>

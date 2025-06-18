@@ -3,48 +3,48 @@ using Verse;
 using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 using Log = CosmereFramework.Log;
 
-namespace CosmereScadrial.Abilities.Allomancy {
-    public abstract partial class AbstractAbility {
-        protected AllomanticHediff GetOrAddHediff(Pawn targetPawn) {
-            return HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def);
-        }
+namespace CosmereScadrial.Abilities.Allomancy;
 
-        protected void RemoveHediff(Pawn targetPawn) {
-            HediffUtility.RemoveHediff(pawn, targetPawn, this);
-        }
+public abstract partial class AbstractAbility {
+    protected AllomanticHediff GetOrAddHediff(Pawn targetPawn) {
+        return HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def);
+    }
 
-        protected void ApplyDrag(Pawn targetPawn, float severity) {
-            if (def.dragHediff == null || severity < def.minSeverityForDrag) return;
+    protected void RemoveHediff(Pawn targetPawn) {
+        HediffUtility.RemoveHediff(pawn, targetPawn, this);
+    }
 
-            Log.Warning(
-                $"Applying {def.dragHediff.defName} drag to {targetPawn.NameFullColored} with Severity={severity}");
-            var drag = targetPawn.health.GetOrAddHediff(def.dragHediff);
-            drag.Severity = severity;
-        }
+    protected void ApplyDrag(Pawn targetPawn, float severity) {
+        if (def.dragHediff == null || severity < def.minSeverityForDrag) return;
 
-        protected void RemoveDrag(Pawn targetPawn) {
-            var drag = targetPawn.health.hediffSet.GetFirstHediffOfDef(def.dragHediff);
-            if (drag == null) return;
+        Log.Warning(
+            $"Applying {def.dragHediff.defName} drag to {targetPawn.NameFullColored} with Severity={severity}");
+        Hediff? drag = targetPawn.health.GetOrAddHediff(def.dragHediff);
+        drag.Severity = severity;
+    }
 
-            var existingSeverity = drag.Severity;
-            targetPawn.health.RemoveHediff(drag);
-            flareStartTick -= (int)(existingSeverity * 3000f);
-        }
+    protected void RemoveDrag(Pawn targetPawn) {
+        Hediff? drag = targetPawn.health.hediffSet.GetFirstHediffOfDef(def.dragHediff);
+        if (drag == null) return;
 
-        protected virtual void OnEnable() { }
+        float existingSeverity = drag.Severity;
+        targetPawn.health.RemoveHediff(drag);
+        flareStartTick -= (int)(existingSeverity * 3000f);
+    }
 
-        protected virtual void OnDisable() { }
+    protected virtual void OnEnable() { }
 
-        protected virtual void OnFlare() { }
+    protected virtual void OnDisable() { }
 
-        protected virtual void OnDeFlare() { }
+    protected virtual void OnFlare() { }
 
-        public override void ExposeData() {
-            base.ExposeData();
+    protected virtual void OnDeFlare() { }
 
-            Scribe_Values.Look(ref flareStartTick, "flareStartTick", -1);
-            Scribe_Values.Look(ref status, "status");
-            Scribe_TargetInfo.Look(ref target, "target");
-        }
+    public override void ExposeData() {
+        base.ExposeData();
+
+        Scribe_Values.Look(ref flareStartTick, "flareStartTick", -1);
+        Scribe_Values.Look(ref status, "status");
+        Scribe_TargetInfo.Look(ref target, "target");
     }
 }

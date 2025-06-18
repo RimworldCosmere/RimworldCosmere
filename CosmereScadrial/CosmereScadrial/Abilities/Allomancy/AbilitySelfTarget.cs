@@ -3,66 +3,66 @@ using UnityEngine;
 using Verse;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
-namespace CosmereScadrial.Abilities.Allomancy {
-    public class AbilitySelfTarget : AbstractAbility {
-        protected bool hasMote = true;
-        public AbilitySelfTarget() { }
+namespace CosmereScadrial.Abilities.Allomancy;
 
-        public AbilitySelfTarget(Pawn pawn) : base(pawn) { }
+public class AbilitySelfTarget : AbstractAbility {
+    protected bool hasMote = true;
+    public AbilitySelfTarget() { }
 
-        public AbilitySelfTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
+    public AbilitySelfTarget(Pawn pawn) : base(pawn) { }
 
-        public AbilitySelfTarget(Pawn pawn, AbilityDef def) : base(pawn, def) {
-            target = pawn;
+    public AbilitySelfTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
+
+    public AbilitySelfTarget(Pawn pawn, AbilityDef def) : base(pawn, def) {
+        target = pawn;
+    }
+
+    public AbilitySelfTarget(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
+        target = pawn;
+    }
+
+    public override void AbilityTick() {
+        base.AbilityTick();
+
+        if (!atLeastPassive) {
+            return;
         }
 
-        public AbilitySelfTarget(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
-            target = pawn;
+        if (PawnUtility.IsAsleep(pawn) && status > BurningStatus.Passive) {
+            UpdateStatus(BurningStatus.Passive);
+        } else if (!PawnUtility.IsAsleep(pawn) && status == BurningStatus.Passive) {
+            UpdateStatus(BurningStatus.Burning);
         }
 
-        public override void AbilityTick() {
-            base.AbilityTick();
+        if (!pawn.IsHashIntervalTick(GenTicks.SecondsToTicks(5)) || !pawn.Spawned || pawn.Map == null) return;
+        if (!hasMote) return;
+        Mote? mote = MoteMaker.MakeAttachedOverlay(
+            pawn,
+            DefDatabase<ThingDef>.GetNamed("Mote_ToxicDamage"),
+            Vector3.zero
+        );
 
-            if (!atLeastPassive) {
-                return;
-            }
+        mote.instanceColor = metal.color;
+    }
 
-            if (PawnUtility.IsAsleep(pawn) && status > BurningStatus.Passive) {
-                UpdateStatus(BurningStatus.Passive);
-            } else if (!PawnUtility.IsAsleep(pawn) && status == BurningStatus.Passive) {
-                UpdateStatus(BurningStatus.Burning);
-            }
+    protected override void OnEnable() {
+        GetOrAddHediff(pawn);
+    }
 
-            if (!pawn.IsHashIntervalTick(GenTicks.SecondsToTicks(5)) || !pawn.Spawned || pawn.Map == null) return;
-            if (!hasMote) return;
-            var mote = MoteMaker.MakeAttachedOverlay(
-                pawn,
-                DefDatabase<ThingDef>.GetNamed("Mote_ToxicDamage"),
-                Vector3.zero
-            );
+    protected override void OnDisable() {
+        ApplyDrag(pawn, flareDuration / 3000f);
+        RemoveHediff(pawn);
+        flareStartTick = -1;
+    }
 
-            mote.instanceColor = metal.color;
-        }
+    protected override void OnFlare() {
+        flareStartTick = Find.TickManager.TicksGame;
+        GetOrAddHediff(pawn);
+        RemoveDrag(pawn);
+    }
 
-        protected override void OnEnable() {
-            GetOrAddHediff(pawn);
-        }
-
-        protected override void OnDisable() {
-            ApplyDrag(pawn, flareDuration / 3000f);
-            RemoveHediff(pawn);
-            flareStartTick = -1;
-        }
-
-        protected override void OnFlare() {
-            flareStartTick = Find.TickManager.TicksGame;
-            GetOrAddHediff(pawn);
-            RemoveDrag(pawn);
-        }
-
-        protected override void OnDeFlare() {
-            ApplyDrag(pawn, flareDuration / 3000f / 2);
-            flareStartTick = -1;
-        }
+    protected override void OnDeFlare() {
+        ApplyDrag(pawn, flareDuration / 3000f / 2);
+        flareStartTick = -1;
     }
 }

@@ -1,29 +1,29 @@
 ﻿using System.Collections.Generic;
 using Verse;
 
-namespace CosmereScadrial.Genes {
-    public class DormantMetalborn : Gene {
-        public List<GeneDef> genesToAdd = [];
+namespace CosmereScadrial.Genes;
 
-        private bool snapped =>
-            pawn?.needs?.mood?.thoughts?.memories.GetFirstMemoryOfDef(ThoughtDefOf.Cosmere_Scadrial_Snapped) != null;
+public class DormantMetalborn : Gene {
+    public List<GeneDef> genesToAdd = [];
 
-        public override void Tick() {
-            if (!snapped) {
-                base.Tick();
-                return;
-            }
+    private bool snapped =>
+        pawn?.needs?.mood?.thoughts?.memories.GetFirstMemoryOfDef(ThoughtDefOf.Cosmere_Scadrial_Snapped) != null;
 
-            foreach (var gene in genesToAdd) {
-                pawn.genes.AddGene(gene, true);
-            }
-
-            pawn.genes.RemoveGene(this);
+    public override void Tick() {
+        if (!snapped) {
+            base.Tick();
+            return;
         }
 
-        public override void ExposeData() {
-            base.ExposeData();
-            Scribe_Collections.Look(ref genesToAdd, "genesToAdd", LookMode.Def);
+        foreach (GeneDef? gene in genesToAdd) {
+            pawn.genes.AddGene(gene, true);
         }
+
+        pawn.genes.RemoveGene(this);
+    }
+
+    public override void ExposeData() {
+        base.ExposeData();
+        Scribe_Collections.Look(ref genesToAdd, "genesToAdd", LookMode.Def);
     }
 }

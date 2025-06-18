@@ -1,16 +1,9 @@
 bin/
 obj/
-/packages/
 riderModule.iml
 /_ReSharper.Caches/
 .vs
 .idea
 node_modules
 .scripts/.cache
-Harmony
-RimHUD
-Reload mods
-Just Glass
-HugsLib
-Float Sub-Menus
-PublisherPlus
+Cosmere.sln.DotSettings.user

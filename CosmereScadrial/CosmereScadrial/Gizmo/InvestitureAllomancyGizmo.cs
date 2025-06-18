@@ -15,7 +15,9 @@ public class InvestitureAllomancyGizmo(
     List<IGeneResourceDrain> drainGenes,
     Color barColor,
     Color barHighlightColor) : GeneGizmo_Resource(gene, [], barColor, barHighlightColor) {
-    private const float AbilityIconSize = 24;
+    private const float ABILITY_ICON_SIZE = 24;
+    private const float ABILITY_ICON_PADDING = 4;
+
     protected MetallicArtsMetalDef metal => ((Metalborn)gene).metal;
     protected Pawn pawn => gene.pawn;
     protected MetalBurning burning => pawn.GetComp<MetalBurning>();
@@ -51,28 +53,32 @@ public class InvestitureAllomancyGizmo(
         return tooltip;
     }
 
-    protected override IEnumerable<float> GetBarThresholds() {
-        for (int i = 0; i < 100; i += 10) {
-            yield return i;
-        }
-    }
-
     protected override void DrawHeader(Rect headerRect, ref bool mouseOverElement) {
         if (IsDraggable) {
             Metalborn metalborn = gene as Metalborn;
             if (metalborn != null) {
-                headerRect.xMax -= AbilityIconSize * metalborn.def.abilities.Count;
+                headerRect.xMax -= (ABILITY_ICON_SIZE + ABILITY_ICON_PADDING) * metalborn.def.abilities.Count;
                 int i = 0;
                 metalborn.def.abilities.SortBy(x => x.uiOrder);
-                foreach (AbilityDef ability in metalborn.def.abilities) {
-                    Rect rect = new Rect(headerRect.xMax + i * AbilityIconSize, headerRect.y, AbilityIconSize,
-                        AbilityIconSize);
-                    Verse.Command? gizmo = (Verse.Command)Activator.CreateInstance(ability.gizmoClass, ability, pawn);
-                    gizmo.GizmoOnGUIShrunk(new Vector2(headerRect.xMin, headerRect.yMin), AbilityIconSize,
-                        new GizmoRenderParms());
+                foreach (AbilityDef abilityDef in metalborn.def.abilities) {
+                    Ability ability = pawn.abilities.GetAbility(abilityDef);
+                    Rect rect = new Rect(
+                        headerRect.xMax + i * (ABILITY_ICON_SIZE + ABILITY_ICON_PADDING),
+                        headerRect.y,
+                        ABILITY_ICON_SIZE,
+                        ABILITY_ICON_SIZE
+                    );
+                    Verse.Command? gizmo =
+                        (Verse.Command)Activator.CreateInstance(abilityDef.gizmoClass, ability, pawn);
+                    gizmo.GizmoOnGUIShrunk(
+                        new Vector2(rect.xMin, rect.yMin),
+                        ABILITY_ICON_SIZE,
+                        new GizmoRenderParms()
+                    );
+
                     if (Mouse.IsOver(rect)) {
                         Widgets.DrawHighlight(rect);
-                        TooltipHandler.TipRegion(rect, ability.description);
+                        TooltipHandler.ClearTooltipsFrom(headerRect);
                         mouseOverElement = true;
                     }
 

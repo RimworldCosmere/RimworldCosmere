@@ -43,14 +43,7 @@ public class Coinshot : Verb_Shoot {
     }
 
     public override void OrderForceTarget(LocalTargetInfo target) {
-        float num = verbProps.EffectiveMinRange(target, CasterPawn);
-        if (CasterPawn.Position.DistanceToSquared(target.Cell) < num * (double)num &&
-            CasterPawn.Position.AdjacentTo8WayOrInside(target.Cell)) {
-            Messages.Message("MessageCantShootInMelee".Translate(), (Thing)CasterPawn, MessageTypeDefOf.RejectInput,
-                false);
-        } else {
-            Job job = ability.GetJob(target, null);
-            CasterPawn.jobs.TryTakeOrderedJob(job);
-        }
+        Job job = ability.GetJob(target, null);
+        CasterPawn.jobs.TryTakeOrderedJob(job);
     }
 }

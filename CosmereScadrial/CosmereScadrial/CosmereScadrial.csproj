@@ -88,6 +88,10 @@
         <ProjectReference Include="..\..\CosmereCore\CosmereCore\CosmereCore.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="WorkGiver\"/>
+    </ItemGroup>
+
     <Target Name="GenerateAssets" AfterTargets="Build" Condition="'$(ModScript)' != ''">
         <Exec Command="npm run $(ModScript)"
               WorkingDirectory="$(MSBuildThisFileDirectory)..\..\.scripts"

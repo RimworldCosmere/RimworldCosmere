@@ -23,19 +23,21 @@ public class InvestitureAllomancyGizmo(
     private const float ABILITY_ICON_PADDING = 4;
     public static readonly Texture2D CheckOff = ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff");
     public static readonly Texture2D BGTexOff = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityOff");
-    public static readonly Texture2D BGTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityButBG");
+    public static readonly Texture2D BGTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
     public static readonly Texture2D BGTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
+    public static readonly Texture2D BGTexOffDisabled = BGTexOff.Overlay(CheckOff);
 
     protected MetallicArtsMetalDef metal => ((Metalborn)gene).metal;
     protected Pawn pawn => gene.pawn;
     protected MetalBurning burning => pawn.GetComp<MetalBurning>();
+
     protected override bool IsDraggable => gene.pawn.IsColonistPlayerControlled || gene.pawn.IsPrisonerOfColony;
-    protected override string BarLabel => $"{gene.ValueForDisplay:F}%";
+    protected override string BarLabel => $"{gene.Value / gene.Max:P1}";
     protected override int Increments => gene.MaxForDisplay / 5;
     public override bool Visible => pawn.Faction.IsPlayer;
 
     protected override string Title => metal.LabelCap;
-    protected override float Width => 200f;
+    protected override float Width => 80f + (ABILITY_ICON_SIZE + ABILITY_ICON_PADDING) * 5;
 
     protected override string GetTooltip() {
         float rate = burning.GetTotalBurnRate(metal) * GenTicks.TicksPerRealSecond;
@@ -43,7 +45,7 @@ public class InvestitureAllomancyGizmo(
         string tooltip =
             $"{gene.ResourceLabel.CapitalizeFirst().Colorize(ColoredText.TipSectionTitleColor)}: {BarLabel}\n";
         if (burning.IsBurning(metal)) {
-            tooltip += "BurnRate".Translate().Colorize(ColoredText.ThreatColor) + $": {rate:0.000}/sec\n";
+            tooltip += "BurnRate".Translate().Colorize(ColoredText.FactionColor_Hostile) + $": {rate:0.000}/sec\n";
         }
 
         if (IsDraggable) {
@@ -96,7 +98,7 @@ public class InvestitureAllomancyGizmo(
             _ => throw new ArgumentOutOfRangeException(),
         };
         GUI.color = parms.lowLight ? Verse.Command.LowLightBgColor : color;
-        Texture2D? icon = disabled ? ability.def.uiIcon.Overlay(CheckOff) : ability.def.uiIcon;
+        Texture2D? icon = disabled ? BGTexOffDisabled : ability.def.uiIcon;
         DrawIcon(rect, icon, background, grayscaleGui, parms.lowLight ? Color.gray.ToTransparent(.6f) : null);
 
         if (Widgets.ButtonInvisible(rect)) {
@@ -133,6 +135,7 @@ public class InvestitureAllomancyGizmo(
 
     protected virtual void ProcessInput(AbstractAbility ability, Event ev) {
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
+
         if (ability.def.targetRequired) {
             Find.DesignatorManager.Deselect();
             if (!ability.def.targetWorldCell) {
@@ -144,7 +147,7 @@ public class InvestitureAllomancyGizmo(
                             return false;
                         }
 
-                        ability.QueueCastingJob(t, Event.current.control);
+                        ability.QueueCastingJob(t, ev.control);
                         return true;
                     }, true, ability.def.uiIcon, !ability.pawn.IsCaravanMember(),
                     extraLabelGetter: ability.WorldMapExtraLabel, canSelectTarget: ability.ValidateGlobalTarget);
@@ -153,7 +156,7 @@ public class InvestitureAllomancyGizmo(
             ability.QueueCastingJob(
                 ability.pawn,
                 LocalTargetInfo.Invalid,
-                Event.current.control
+                ev.control
             );
         }
     }
@@ -211,7 +214,7 @@ public class InvestitureAllomancyGizmo(
     private void DrawIcon(Rect rect, Texture2D icon, Texture? background = null, Material? material = null,
         Color? color = null, float? scale = null, Vector2? offset = null) {
         GUI.color = color ?? Color.white;
-        GenUI.DrawTextureWithMaterial(rect, background, material);
+        if (background != null) GenUI.DrawTextureWithMaterial(rect, background, material);
 
         Rect iconRect = offset == null
             ? rect

@@ -16,21 +16,28 @@ public class AllomanticHediff : HediffWithComps {
         base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");
 
     public void AddSource(AbstractAbility sourceAbility) {
-        if (sourceAbilities.Contains(sourceAbility)) return;
+        if (sourceAbilities.Contains(sourceAbility)) {
+            RecalculateSeverity();
+            return;
+        }
 
         Log.Warning(
             $"{sourceAbility.pawn.NameFullColored} applying {def.defName} hediff to {pawn.NameFullColored} with Status={sourceAbility.status}");
+        sourceAbility.OnStatusChanged += (_, _, _) => RecalculateSeverity();
         sourceAbilities.Add(sourceAbility);
-        Severity = CalculateSeverity();
+        RecalculateSeverity();
     }
 
     public void RemoveSource(AbstractAbility sourceAbility, bool calculateSeverity = false) {
-        if (!sourceAbilities.Contains(sourceAbility)) return;
+        if (!sourceAbilities.Contains(sourceAbility)) {
+            if (calculateSeverity) RecalculateSeverity();
+            return;
+        }
 
         Log.Warning(
             $"{sourceAbility.pawn.NameFullColored} removing {def.defName} hediff from {pawn.NameFullColored}");
         sourceAbilities.Remove(sourceAbility);
-        if (calculateSeverity) Severity = CalculateSeverity();
+        if (calculateSeverity) RecalculateSeverity();
     }
 
     public override void Tick() {
@@ -44,13 +51,17 @@ public class AllomanticHediff : HediffWithComps {
         SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);
         if (surge != null && def.defName != surge.def.defName) {
             surge?.Burn(
-                () => { Severity = CalculateSeverity(); },
+                RecalculateSeverity,
                 (int)TickUtility.TICKS_PER_SECOND,
-                () => { Severity = CalculateSeverity(); }
+                RecalculateSeverity
             );
         }
 
         base.Tick();
+    }
+
+    protected virtual void RecalculateSeverity() {
+        Severity = CalculateSeverity();
     }
 
     public float CalculateSeverity() {

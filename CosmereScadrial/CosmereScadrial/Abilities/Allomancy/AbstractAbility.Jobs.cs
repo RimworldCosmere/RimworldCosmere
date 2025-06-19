@@ -91,12 +91,14 @@ public abstract partial class AbstractAbility {
     public void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo destination, bool flare) {
         localTarget = targetInfo;
         shouldFlare = def.canFlare && flare;
+
         base.QueueCastingJob(targetInfo, destination);
     }
 
     public void QueueCastingJob(GlobalTargetInfo targetInfo, bool flare) {
         globalTarget = targetInfo;
         shouldFlare = def.canFlare && flare;
+
         base.QueueCastingJob(targetInfo);
     }
 
@@ -115,10 +117,13 @@ public abstract partial class AbstractAbility {
 
     protected override void PreActivate(LocalTargetInfo? target) {
         if (shouldFlare) {
-            UpdateStatus(status == BurningStatus.Flaring ? BurningStatus.Off : BurningStatus.Flaring);
+            UpdateStatus(status == BurningStatus.Flaring ? BurningStatus.Burning : BurningStatus.Flaring);
         } else {
-            UpdateStatus(PawnUtility.IsAsleep(pawn) ? BurningStatus.Passive :
-                atLeastPassive ? BurningStatus.Off : BurningStatus.Burning);
+            UpdateStatus(
+                atLeastPassive
+                    ? PawnUtility.IsAsleep(pawn) && def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off
+                    : BurningStatus.Burning
+            );
         }
 
         base.PreActivate(target);

@@ -14,6 +14,7 @@ public static class HediffDefOf {
     public static HediffDef Cosmere_Hediff_Soothed;
     public static HediffDef Cosmere_Hediff_BronzeAura;
     public static HediffDef Cosmere_Hediff_SteelAura;
+    public static HediffDef Cosmere_Hediff_SteelBubble;
     public static HediffDef Cosmere_Hediff_IronAura;
     public static HediffDef Cosmere_Hediff_ZincAura;
     public static HediffDef Cosmere_Hediff_Rioted_Buff;

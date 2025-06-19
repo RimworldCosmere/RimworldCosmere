@@ -15,6 +15,9 @@ public class MetalBurningProperties : CompProperties {
     }
 }
 
+/**
+ * @TODO Notify the Hediff to recalculate severity on a rate change
+ */
 public class MetalBurning : ThingComp {
     private const int SECONDS_INTERVAL = 1;
 
@@ -69,8 +72,8 @@ public class MetalBurning : ThingComp {
             if (AllomancyUtility.PawnConsumeVialWithMetal(pawn, metal)) continue;
 
             // Auto-stop all sources if out of reserve
-            Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
             RemoveAllBurnSourcesForMetal(metal);
+            Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
             return;
         }
     }

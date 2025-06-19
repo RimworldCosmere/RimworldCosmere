@@ -9,6 +9,7 @@
         <label>Soothing aura</label>
         <description>Suppress emotional outbursts and calm the minds of others using Brass. Has a chance to break mental states when flaring.</description>
         <metal>Brass</metal>
+        <canBurnWhileAsleep>true</canBurnWhileAsleep>
         <hediff>Cosmere_Hediff_BrassAura</hediff>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">

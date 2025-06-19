@@ -16,7 +16,7 @@
         <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
         <category>Allomancy</category>
         <verbProperties>
-            <verbClass>CosmereScadrial.Abilities.Allomancy.Verbs.CastAllomanticAbility</verbClass>
+            <verbClass>Verb_CastAbility</verbClass>
             <warmupTime>0</warmupTime>
             <drawAimPie>false</drawAimPie>
             <requireLineOfSight>false</requireLineOfSight>

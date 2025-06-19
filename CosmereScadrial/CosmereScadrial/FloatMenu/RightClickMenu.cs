@@ -4,13 +4,11 @@ using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using FloatSubMenus;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.FloatMenu;
 
-[HarmonyPatch]
 public class RightClickMenu : FloatMenuOptionProvider {
     protected override bool Drafted => true;
     protected override bool Undrafted => true;
@@ -19,6 +17,7 @@ public class RightClickMenu : FloatMenuOptionProvider {
     protected override bool CanSelfTarget => true;
 
     public override IEnumerable<FloatMenuOption> GetOptions(FloatMenuContext context) {
+        return [];
         Pawn? pawn = context.FirstSelectedPawn;
         List<FloatMenuOption> options = new List<FloatMenuOption>();
         MetalBurning? metalBurning = pawn.GetComp<MetalBurning>();

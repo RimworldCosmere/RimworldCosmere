@@ -5,6 +5,7 @@
         <label>cadmium</label>
         <description>Creates a stationary time bubble that slows movement, needs, and actions for everyone inside. The bubble disappears if the Allomancer leaves or stops burning cadmium.</description>
         <metal>Cadmium</metal>
+        <canBurnWhileAsleep>true</canBurnWhileAsleep>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.TimeAbility</abilityClass>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

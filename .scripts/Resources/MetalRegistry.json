@@ -61,6 +61,7 @@
       "polarity": "pushing",
       "abilities": [
         "Cosmere_Ability_Steel_Aura",
+        "Cosmere_Ability_Steel_Bubble",
         "Cosmere_Ability_Steel_Push",
         "Cosmere_Ability_Steel_Coinshot"
       ]

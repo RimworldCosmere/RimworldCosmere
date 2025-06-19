@@ -19,4 +19,10 @@ These lines shimmer with the tension of potential force, visible only to those b
             </li>
         </stages>
     </HediffDef>
+    <HediffDef ParentName="AbstractAllomanticHediff">
+        <defName>Cosmere_Hediff_SteelBubble</defName>
+        <label>Burning steel: bubble</label>
+        <description>The Allomancer is generating a field of repelling force using Steel, subtly redirecting incoming projectiles. Ranged attackers find it harder to land shots.</description>
+    </HediffDef>
+
 </Defs>

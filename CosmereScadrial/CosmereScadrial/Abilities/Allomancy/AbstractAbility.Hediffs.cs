@@ -32,14 +32,6 @@ public abstract partial class AbstractAbility {
         flareStartTick -= (int)(existingSeverity * 3000f);
     }
 
-    protected virtual void OnEnable() { }
-
-    protected virtual void OnDisable() { }
-
-    protected virtual void OnFlare() { }
-
-    protected virtual void OnDeFlare() { }
-
     public override void ExposeData() {
         base.ExposeData();
 

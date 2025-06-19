@@ -58,6 +58,7 @@ public class CastAllomanticAbilityAtTarget : JobDriver {
         metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
     }
 
+    // @todo Add distance from target to equation of push strength
     /// <summary>
     ///     Right now, if thing hits a cell that isnt walkable, it stops.
     ///     Instead, it should add the mass of the thing in the way, and recalculate, the previous call, pushing both if the
@@ -68,12 +69,12 @@ public class CastAllomanticAbilityAtTarget : JobDriver {
         SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);
         surge?.Burn();
 
+        float forceMultiplier = ability.GetStrength();
         float mass = MetalDetector.GetMass(thing);
-        float pawnMass = MetalDetector.GetMass(pawn);
+        float pawnMass = MetalDetector.GetMass(pawn) * forceMultiplier;
         (Thing, Thing) things = mass > pawnMass ? (pawn, thing) : (thing, pawn);
         float distanceBetweenThings = (things.Item2.Position - things.Item1.Position).LengthHorizontal;
         IntVec3 dir = GetDirectionalOffsetFromTarget(things.Item2, things.Item1);
-        float forceMultiplier = ability.GetStrength();
         float distance = Mathf.Clamp(20f / mass, 1f, 8f) * forceMultiplier * 2;
         if (polarity == AllomancyPolarity.Pulling) {
             distance = Mathf.Min(distance, distanceBetweenThings);

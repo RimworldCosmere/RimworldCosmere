@@ -37,6 +37,7 @@
         
         <abilities>
             <li>Cosmere_Ability_Steel_Aura</li>
+            <li>Cosmere_Ability_Steel_Bubble</li>
             <li>Cosmere_Ability_Steel_Push</li>
             <li>Cosmere_Ability_Steel_Coinshot</li>
         </abilities>

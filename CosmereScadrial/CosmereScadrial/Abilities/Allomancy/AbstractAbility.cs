@@ -6,12 +6,14 @@ using CosmereScadrial.Flags;
 using CosmereScadrial.Utils;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Abilities.Allomancy;
 
 public abstract partial class AbstractAbility : Ability {
+    protected Mote? burningMote;
     private TargetFlags? cachedTargetFlags;
     protected int flareStartTick = -1;
     public GlobalTargetInfo globalTarget;
@@ -58,6 +60,24 @@ public abstract partial class AbstractAbility : Ability {
     protected MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 
     public override AcceptanceReport CanCast => metalBurning.CanBurn(metal, def.beuPerTick);
+    public event Action<AbstractAbility, BurningStatus, BurningStatus> OnStatusChanged;
+
+    public override void AbilityTick() {
+        base.AbilityTick();
+
+        burningMote?.Maintain();
+    }
+
+    protected virtual float GetMoteScale() {
+        return status switch {
+            BurningStatus.Off => 0f,
+            BurningStatus.Passive => 0.5f,
+            BurningStatus.Burning => 1f,
+            BurningStatus.Flaring => 2f,
+            BurningStatus.Duralumin => 10f,
+            _ => 0,
+        };
+    }
 
     public TaggedString GetRightClickLabel(LocalTargetInfo targetInfo, BurningStatus burningStatus,
         string disableReason = null) {
@@ -123,29 +143,51 @@ public abstract partial class AbstractAbility : Ability {
         Log.Verbose($"Updating {pawn.NameFullColored}'s {def.defName} from {status} -> {newStatus}");
         BurningStatus? oldStatus = status;
         status = newStatus;
+
+        if (oldStatus == BurningStatus.Off) {
+            burningMote ??= MoteMaker.MakeAttachedOverlay(pawn, def.burningMote, Vector3.zero, GetMoteScale());
+        } else if (newStatus == BurningStatus.Off) {
+            burningMote?.Destroy();
+            burningMote = null;
+        }
+
+        if (burningMote != null) burningMote.Scale = GetMoteScale();
+
         metalBurning.UpdateBurnSource(metal, GetDesiredBurnRateForStatus(newStatus), def);
 
         switch (status) {
             // When Disabling (and possibly deflaring)
             case BurningStatus.Off when oldStatus > BurningStatus.Off:
                 OnDisable();
-                return;
+                break;
             // When enabling 
             case > BurningStatus.Off when oldStatus == BurningStatus.Off:
                 OnEnable();
-                return;
+                break;
             // When Flaring
             case BurningStatus.Flaring when oldStatus < BurningStatus.Flaring:
                 OnFlare();
-                return;
+                break;
             // When de-flaring to burning
             case < BurningStatus.Burning when oldStatus == BurningStatus.Flaring:
                 OnDeFlare();
-                return;
+                break;
         }
+
+        OnStatusChanged?.Invoke(this, oldStatus ?? BurningStatus.Off, newStatus);
     }
 
     public override IEnumerable<Verse.Command> GetGizmos() {
         yield break;
     }
+
+    protected virtual void OnEnable() { }
+
+    protected virtual void OnDisable() {
+        shouldFlare = false;
+    }
+
+    protected virtual void OnFlare() { }
+
+    protected virtual void OnDeFlare() { }
 }

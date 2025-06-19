@@ -12,7 +12,7 @@ namespace CosmereScadrial.Dev;
 
 [StaticConstructorOnStartup]
 public static class ScadrianQuickstart {
-    private const int MAP_SIZE = 25;
+    private const int MAP_SIZE = 50;
     private static bool started;
     private static readonly StorytellerDef storyteller = StorytellerDefOf.Cassandra;
     private static readonly DifficultyDef difficulty = DifficultyDefOf.Easy;

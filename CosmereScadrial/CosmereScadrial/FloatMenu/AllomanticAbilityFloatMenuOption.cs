@@ -46,7 +46,7 @@ public class AllomanticAbilityFloatMenuOption : FloatMenuOption {
     private void UpdateDisplay() {
         // If we are already flaring the target of the given ability
         // Update the action to deflare on control, or turn off on click.
-        if (ability.status == BurningStatus.Flaring && target == ability.target) {
+        if (ability.status == BurningStatus.Flaring && target == ability.localTarget) {
             action = () => ability.UpdateStatus(Event.current.control ? BurningStatus.Burning : BurningStatus.Off);
             tooltip = $"{ability.def.description}\n\n(Ctrl-click to de-flare)";
             Label = ability.GetRightClickLabel(target,
@@ -57,7 +57,7 @@ public class AllomanticAbilityFloatMenuOption : FloatMenuOption {
         // If we are already burning/flaring/passing on the target of the given ability
         // And we arent holding control
         // Update the action to turn off the ability
-        if (ability.atLeastPassive && !Event.current.control && target == ability.target) {
+        if (ability.atLeastPassive && !Event.current.control && target == ability.localTarget) {
             action = () => ability.UpdateStatus(BurningStatus.Off);
             tooltip = $"{ability.def.description}\n\n(Ctrl-click to flare)";
             Label = ability.GetRightClickLabel(target, BurningStatus.Off);

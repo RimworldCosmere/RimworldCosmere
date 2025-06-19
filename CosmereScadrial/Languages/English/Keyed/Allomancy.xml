@@ -9,4 +9,6 @@
     <TargetShielded>{0} is shielded against Investiture</TargetShielded>
     <NeverConsumeVial>Never consume a {0} vial</NeverConsumeVial>
     <ConsumeVialBelow>Consume a {0} vial below</ConsumeVialBelow>
+    <NoClipsToThrow>{PAWN_nameDef} has no clips to use</NoClipsToThrow>
+    <PressToFlare>Hold "Ctrl" to flare {0}</PressToFlare>
 </LanguageData>

@@ -38,24 +38,24 @@ public class AbilityOtherTarget : AbstractAbility {
     }
 
     protected override void OnDisable() {
-        RemoveHediff(target.Pawn);
-        target = null;
+        RemoveHediff(localTarget.Pawn);
+        localTarget = null;
         if (job != null) {
             pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
             job = null;
         }
 
-        ApplyDrag(def.applyDragOnTarget ? target.Pawn : pawn, flareDuration / 3000f);
+        ApplyDrag(def.applyDragOnTarget ? localTarget.Pawn : pawn, flareDuration / 3000f);
         flareStartTick = -1;
     }
 
     protected override void OnFlare() {
         flareStartTick = Find.TickManager.TicksGame;
-        RemoveDrag(def.applyDragOnTarget ? target.Pawn : pawn);
+        RemoveDrag(def.applyDragOnTarget ? localTarget.Pawn : pawn);
     }
 
     protected override void OnDeFlare() {
-        ApplyDrag(def.applyDragOnTarget ? target.Pawn : pawn, flareDuration / 3000f / 2);
+        ApplyDrag(def.applyDragOnTarget ? localTarget.Pawn : pawn, flareDuration / 3000f / 2);
         flareStartTick = -1;
     }
 }

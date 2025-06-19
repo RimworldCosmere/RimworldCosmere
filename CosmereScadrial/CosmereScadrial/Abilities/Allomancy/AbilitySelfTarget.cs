@@ -14,11 +14,11 @@ public class AbilitySelfTarget : AbstractAbility {
     public AbilitySelfTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
 
     public AbilitySelfTarget(Pawn pawn, AbilityDef def) : base(pawn, def) {
-        target = pawn;
+        localTarget = pawn;
     }
 
     public AbilitySelfTarget(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
-        target = pawn;
+        localTarget = pawn;
     }
 
     public override void AbilityTick() {

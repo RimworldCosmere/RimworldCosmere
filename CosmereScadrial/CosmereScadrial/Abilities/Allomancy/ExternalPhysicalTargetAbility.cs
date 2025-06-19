@@ -28,8 +28,8 @@ public class ExternalPhysicalTargetAbility : AbilityOtherTarget {
     }
 
     public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
-        target = targetInfo;
+        localTarget = targetInfo;
 
-        return !target.HasThing && base.Activate(target, dest);
+        return !localTarget.HasThing && base.Activate(localTarget, dest);
     }
 }

@@ -5,6 +5,7 @@ using CosmereScadrial.Defs;
 using CosmereScadrial.Flags;
 using CosmereScadrial.Utils;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 using Log = CosmereFramework.Log;
 
@@ -13,9 +14,10 @@ namespace CosmereScadrial.Abilities.Allomancy;
 public abstract partial class AbstractAbility : Ability {
     private TargetFlags? cachedTargetFlags;
     protected int flareStartTick = -1;
+    public GlobalTargetInfo globalTarget;
+    public LocalTargetInfo localTarget;
     protected internal bool shouldFlare;
     public BurningStatus? status;
-    public LocalTargetInfo target;
 
     protected AbstractAbility() { }
 
@@ -144,6 +146,6 @@ public abstract partial class AbstractAbility : Ability {
     }
 
     public override IEnumerable<Verse.Command> GetGizmos() {
-        return base.GetGizmos();
+        yield break;
     }
 }

@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereFramework", "Cosmere
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereResources", "CosmereResources\CosmereResources\CosmereResources.csproj", "{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevTools", "DevTools\DevTools\DevTools.csproj", "{CBD9893C-47BE-405E-89F7-2342F47D26BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,5 +35,9 @@ Global
 								{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{8A92DBAF-9F90-4A16-89E1-B16A11740017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A92DBAF-9F90-4A16-89E1-B16A11740017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBD9893C-47BE-405E-89F7-2342F47D26BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBD9893C-47BE-405E-89F7-2342F47D26BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBD9893C-47BE-405E-89F7-2342F47D26BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBD9893C-47BE-405E-89F7-2342F47D26BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

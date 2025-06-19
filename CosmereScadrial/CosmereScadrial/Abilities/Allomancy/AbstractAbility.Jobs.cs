@@ -1,6 +1,7 @@
 using CosmereCore.Utils;
 using CosmereScadrial.Flags;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 using Verse.AI;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
@@ -83,10 +84,20 @@ public abstract partial class AbstractAbility {
         QueueCastingJob(targetInfo, dest, false);
     }
 
+    public override void QueueCastingJob(GlobalTargetInfo targetInfo) {
+        QueueCastingJob(targetInfo, false);
+    }
+
     public void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo destination, bool flare) {
-        target = targetInfo;
+        localTarget = targetInfo;
         shouldFlare = def.canFlare && flare;
         base.QueueCastingJob(targetInfo, destination);
+    }
+
+    public void QueueCastingJob(GlobalTargetInfo targetInfo, bool flare) {
+        globalTarget = targetInfo;
+        shouldFlare = def.canFlare && flare;
+        base.QueueCastingJob(targetInfo);
     }
 
     public override Job GetJob(LocalTargetInfo targetInfo, LocalTargetInfo destination) {

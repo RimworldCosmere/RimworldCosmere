@@ -71,7 +71,11 @@ public class AllomanticAbilityDef : AbilityDef, MultiTypeHediff {
     }
 
     public override void PostLoad() {
-        LongEventHandler.ExecuteWhenFinished(() =>
-            uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Allomancy/{metal.defName}"));
+        if (string.IsNullOrEmpty(iconPath)) {
+            LongEventHandler.ExecuteWhenFinished(() =>
+                uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Allomancy/{metal.defName}"));
+        } else {
+            base.PostLoad();
+        }
     }
 }

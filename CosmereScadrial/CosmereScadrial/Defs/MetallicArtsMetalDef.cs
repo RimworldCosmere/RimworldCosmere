@@ -1,5 +1,7 @@
+using CosmereFramework.Utils;
 using CosmereResources.Defs;
 using JetBrains.Annotations;
+using UnityEngine;
 using Verse;
 
 namespace CosmereScadrial.Defs;
@@ -31,11 +33,23 @@ public enum FeruchemyGroup {
 public class MetallicArtsMetalDef : MetalDef {
     public MetalAllomancyDef? allomancy;
     public MetalFeruchemyDef? feruchemy;
+    public Texture2D invertedIcon;
+    public Texture2D uiIcon;
 
     public static MetallicArtsMetalDef GetFromMetalDef(MetalDef def) {
         if (def is MetallicArtsMetalDef metallicArtsMetalDef) return metallicArtsMetalDef;
 
         return DefDatabase<MetallicArtsMetalDef>.GetNamed(def.defName);
+    }
+
+    public override void PostLoad() {
+        LongEventHandler.ExecuteWhenFinished(() => {
+            uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Allomancy/{defName}", false);
+            if (uiIcon == null) return;
+
+            invertedIcon = TextureUtility.CloneTexture(uiIcon);
+            TextureUtility.InvertColors(invertedIcon);
+        });
     }
 }
 

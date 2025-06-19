@@ -42,7 +42,7 @@ public class MetalBurning : ThingComp {
 
         if (!metalReserves.CanLowerReserve(metal, amountToBurn) &&
             !AllomancyUtility.PawnHasVialForMetal(pawn, metal)) {
-            return "Not enough metal";
+            return "MenuNoReserves".Translate(metal.LabelCap);
         }
 
         return AcceptanceReport.WasAccepted;

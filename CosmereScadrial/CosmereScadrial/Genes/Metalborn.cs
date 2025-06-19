@@ -17,13 +17,15 @@ public class Metalborn : Gene_Resource {
     public override float InitialResourceMax => 1f;
     public override float MinLevelForAlert => .15f;
     public override float MaxLevelOffset => .1f;
-    public override int MaxForDisplay => 100;
     public override float Max => MetalReserves.MAX_AMOUNT;
     protected override Color BarColor => metal.color;
     protected override Color BarHighlightColor => metal.colorTwo ?? metal.color.SaturationChanged(50f);
 
-    public override float Value => pawn.GetComp<MetalReserves>().GetReserve(metal);
-    public override float ValuePercent => Value / MetalReserves.MAX_AMOUNT * 100;
+    protected MetalReserves reserves => pawn.GetComp<MetalReserves>();
+    public override float Value => reserves.GetReserve(metal);
+    public override float ValuePercent => AllomancyUtility.GetReservePercent(pawn, metal);
+    public override int ValueForDisplay => PostProcessValue(Value);
+    public override int MaxForDisplay => PostProcessValue(Max);
 
     public override void Reset() {
         targetValue = 0.25f;

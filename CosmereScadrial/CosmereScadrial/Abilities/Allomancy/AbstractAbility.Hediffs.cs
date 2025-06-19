@@ -45,6 +45,6 @@ public abstract partial class AbstractAbility {
 
         Scribe_Values.Look(ref flareStartTick, "flareStartTick", -1);
         Scribe_Values.Look(ref status, "status");
-        Scribe_TargetInfo.Look(ref target, "target");
+        Scribe_TargetInfo.Look(ref localTarget, "target");
     }
 }

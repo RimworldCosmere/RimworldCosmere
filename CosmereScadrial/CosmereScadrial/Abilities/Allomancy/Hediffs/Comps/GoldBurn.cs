@@ -15,7 +15,6 @@ public class GoldBurn : HediffComp {
     private Pawn hallucination;
     private bool hallucinationSpawned;
     private float lastSeverity;
-    private int tickCounter;
     private MemoryThoughtHandler memories => Pawn.needs.mood.thoughts.memories;
 
     private new AllomanticHediff parent => base.parent as AllomanticHediff;
@@ -27,7 +26,6 @@ public class GoldBurn : HediffComp {
             return;
         }
 
-        tickCounter += 60;
         parent.extraSeverity += 0.01f; // Increase severity slowly over time
         lastSeverity = parent.Severity;
 

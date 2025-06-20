@@ -44,6 +44,8 @@ public class CastAllomanticAbilityAtTarget : JobDriver {
             UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
 
             MoveThing(TargetA.Thing);
+
+            ability.UpdateStatus(BurningStatus.Off);
         };
         toil.defaultCompleteMode = ToilCompleteMode.Instant;
 

@@ -21,14 +21,14 @@ public class AllomanticGeneCommand(
     Color barHighlightColor) : GeneGizmo_Resource(gene, [], barColor, barHighlightColor) {
     private const float AbilityIconSize = Height / 2f;
     private const float BaseWidth = 185;
+    private const float IconBorderSize = 1;
     private static readonly Vector2 Padding = new Vector2(2f, 4f);
-
 
     public static readonly Texture2D CheckOff = ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff");
 
     public static readonly Texture2D
-        BgTexOff = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f,
-            0f));
+        BgTexOff = ContentFinder<Texture2D>.Get(
+            "UI/Widgets/AbilityOff"); //SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0f));
 
     public static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
     public static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
@@ -154,6 +154,7 @@ public class AllomanticGeneCommand(
             return isMouseOver ? new GizmoResult(GizmoState.Mouseover, null) : new GizmoResult(GizmoState.Clear, null);
         }
 
+
         if (!disabled || disabledReason.NullOrEmpty()) {
             return Event.current.button == 1
                 ? new GizmoResult(GizmoState.OpenedFloatMenu, Event.current)
@@ -167,6 +168,17 @@ public class AllomanticGeneCommand(
 
     protected virtual void ProcessInput(AbstractAbility ability, Event ev) {
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
+
+        if (ability.atLeastPassive) {
+            if (ability.verb.verbProps.nonInterruptingSelfCast) {
+                ability.verb.TryStartCastOn((LocalTargetInfo)ability.verb.Caster);
+            } else {
+                pawn.jobs.TryTakeOrderedJob(
+                    ability.GetJob(ability.pawn, ability.localTarget ?? LocalTargetInfo.Invalid));
+            }
+
+            return;
+        }
 
         if (ability.def.targetRequired) {
             Find.DesignatorManager.Deselect();
@@ -256,7 +268,12 @@ public class AllomanticGeneCommand(
     }
 
     private void DrawIcon(Rect rect, Texture2D icon, Texture? background = null, Material? material = null,
-        Color? color = null, float? scale = null, Vector2? offset = null) {
+        Color? color = null, float? scale = null, Vector2? offset = null, bool doBorder = true) {
+        if (doBorder) {
+            GUI.DrawTexture(rect, BaseContent.BlackTex);
+            rect = rect.ContractedBy(IconBorderSize);
+        }
+
         GUI.color = color ?? Color.white;
         if (background != null) GenUI.DrawTextureWithMaterial(rect, background, material);
 
@@ -290,7 +307,8 @@ public class AllomanticGeneCommand(
         rect = rect.ContractedBy(Padding.x * 2, Padding.y);
 
         Rect iconRect = new Rect(rect.x, rect.y, rect.height, rect.height);
-        DrawIcon(iconRect, metal.invertedIcon, Verse.Command.BGTex, TexUI.GrayscaleGUI);
+        DrawIcon(iconRect, metal.invertedIcon, Verse.Command.BGTex, TexUI.GrayscaleGUI, offset: new Vector2(0, -4f),
+            doBorder: false);
         Text.Font = GameFont.Small;
         float barWidth = rect.width - (rect.height + Padding.y);
         Rect topBarRect = new Rect(iconRect.x + iconRect.width + Padding.x, iconRect.y, barWidth, AbilityIconSize);
@@ -303,9 +321,9 @@ public class AllomanticGeneCommand(
             using (new TextBlock(GameFont.Tiny)) {
                 float textWidth = iconRect.width;
                 float textHeight = Text.CalcHeight(Title, textWidth);
-                Rect labelRect = new Rect(iconRect.x, rect.yMin + 2, textWidth, textHeight);
+                Rect labelRect = new Rect(iconRect.x, rect.yMax - textHeight, textWidth, textHeight);
                 GUI.DrawTexture(labelRect, TexUI.GrayTextBG);
-                Text.Anchor = TextAnchor.UpperCenter;
+                Text.Anchor = TextAnchor.MiddleCenter;
                 Widgets.Label(labelRect, Title);
             }
         }

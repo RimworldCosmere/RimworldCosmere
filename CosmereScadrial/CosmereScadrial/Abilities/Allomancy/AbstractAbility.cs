@@ -16,8 +16,8 @@ public abstract partial class AbstractAbility : Ability {
     protected Mote? burningMote;
     private TargetFlags? cachedTargetFlags;
     protected int flareStartTick = -1;
-    public GlobalTargetInfo globalTarget;
-    public LocalTargetInfo localTarget;
+    public GlobalTargetInfo? globalTarget;
+    public LocalTargetInfo? localTarget;
     protected internal bool shouldFlare;
     public BurningStatus? status;
 
@@ -179,6 +179,13 @@ public abstract partial class AbstractAbility : Ability {
 
     public override IEnumerable<Verse.Command> GetGizmos() {
         yield break;
+    }
+
+    public override bool GizmoDisabled(out string reason) {
+        if (!atLeastPassive) return base.GizmoDisabled(out reason);
+
+        reason = "";
+        return false;
     }
 
     protected virtual void OnEnable() { }

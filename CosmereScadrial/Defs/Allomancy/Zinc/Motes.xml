@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+    <ThingDef ParentName="CosmereMoteAllomancyAura">
+        <defName>Cosmere_Mote_Zinc_Aura</defName>
+        <label>zinc aura</label>
+        <graphicData>
+            <color>(128, 142, 129)</color>
+            <colorTwo>(187, 189, 187)</colorTwo>
+        </graphicData>
+    </ThingDef>
+</Defs>

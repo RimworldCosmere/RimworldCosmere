@@ -43,7 +43,7 @@
   <GeneDef>
     <defName>Cosmere_Scadrial_DormantMetalborn</defName>
     <geneClass>CosmereScadrial.Genes.DormantMetalborn</geneClass>
-    <label>Dormant Connection</label>
+    <label>dormant connection</label>
     <labelShortAdj>Dormant Connection</labelShortAdj>
     <description>This pawn is attuned to a Shard’s power, though they’ve yet to tap it. A traumatic event may awaken their abilities.</description>
     <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
@@ -66,11 +66,11 @@
   </TraitDef>
   <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
     <defName>Cosmere_Metalborn</defName>
-    <label>Metalborn</label>
+    <label>metalborn</label>
     <description>This person was born with one or more of the Metallic Arts.</description>
     <degreeDatas>
       <li>
-        <label>Metalborn</label>
+        <label>metalborn</label>
         <description>This person is a user of the Metallic Arts.</description>
         <degree>0</degree>
         <commonality>0</commonality>
@@ -79,7 +79,7 @@
   </TraitDef>
   <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
     <defName>Cosmere_Allomancer</defName>
-    <label>Allomancer</label>
+    <label>allomancer</label>
     <description>This person was born with one or more of the Allomantic powers.</description>
     <degreeDatas>
       <li>

@@ -8,18 +8,18 @@ namespace CosmereScadrial.Utils;
 public static class HediffUtility {
     public static HediffDef GetHediffDefForPawn(Pawn caster, Pawn target, MultiTypeHediff hediff) {
         if (hediff.getFriendlyHediff() != null && target.Faction == caster.Faction) {
-            return hediff.getFriendlyHediff();
+            return hediff.getFriendlyHediff()!;
         }
 
         if (hediff.getHostileHediff() != null && target.Faction != caster.Faction) {
-            return hediff.getHostileHediff();
+            return hediff.getHostileHediff()!;
         }
 
-        return hediff.getHediff();
+        return hediff.getHediff()!;
     }
 
-    public static AllomanticHediff GetOrAddHediff(Pawn target, AbstractAbility ability,
-        HediffDef hediffDef) {
+    public static AllomanticHediff? GetOrAddHediff(Pawn target, AbstractAbility ability,
+        HediffDef? hediffDef) {
         if (hediffDef == null) return null;
 
         if (TryGetHediff(target, hediffDef, out AllomanticHediff hediff)) {
@@ -27,11 +27,9 @@ public static class HediffUtility {
             return hediff;
         }
 
-        AllomanticHediff? newHediff = (AllomanticHediff)Activator.CreateInstance(hediffDef.hediffClass);
-        newHediff.def = hediffDef;
-        newHediff.pawn = target;
+        AllomanticHediff? newHediff =
+            (AllomanticHediff)Activator.CreateInstance(hediffDef.hediffClass, hediffDef, target, ability);
         newHediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
-        newHediff.AddSource(ability);
         newHediff.PostMake();
 
         target.health.AddHediff(newHediff);

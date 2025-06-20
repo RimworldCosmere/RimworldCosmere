@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using CosmereFramework.Utils;
 using CosmereScadrial.Comps.Hediffs;
-using JetBrains.Annotations;
+using CosmereScadrial.Utils;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using HediffUtility = CosmereScadrial.Utils.HediffUtility;
+using static CosmereFramework.CosmereFramework;
 
 namespace CosmereScadrial.Abilities.Allomancy.Hediffs.Comps;
 
@@ -15,7 +16,7 @@ public class AllomancyAuraHediffGiverProperties : HediffCompProperties, MultiTyp
     public HediffDef hediff;
     public HediffDef hediffFriendly;
     public HediffDef hediffHostile;
-    public float radius = 18f;
+    public float radius = 12f;
     public string verb;
 
     public AllomancyAuraHediffGiverProperties() {
@@ -46,16 +47,8 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
     private AbstractAbility ability => parent.sourceAbilities.First(_ => true);
 
-    private float moteScale {
-        get {
-            ThingDef? moteDef = DefDatabase<ThingDef>.GetNamed("Cosmere_Mote_Allomancy_Aura");
-            float desiredRadius = props.radius * base.parent.Severity; // includes flare doubling if needed
-            float drawSize = moteDef.graphicData.drawSize.magnitude; // assume square; use magnitude if not
-            float scale = desiredRadius * 2f / drawSize; // times 2 since radius = diameter / 2
-
-            return scale;
-        }
-    }
+    private float moteScale =>
+        MoteUtility.GetMoteSize(ThingDefOf.Cosmere_Mote_Allomancy_Aura, props.radius, parent.Severity);
 
     public override void CompPostMake() {
         base.CompPostMake();
@@ -76,8 +69,13 @@ public class AllomancyAuraHediffGiver : HediffComp {
             return;
         }
 
+        if (CosmereSettings.debugMode) {
+            GenDraw.DrawCircleOutline(parent.pawn.DrawPos, radius, parent.metal.TransparentLineColor);
+        }
+
         CreateMote()?.Maintain();
         mote.Scale = moteScale;
+        // mote.instanceColor = parent.metal.color;
 
         if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) {
             return;
@@ -93,19 +91,20 @@ public class AllomancyAuraHediffGiver : HediffComp {
         }
     }
 
-    [CanBeNull]
     private Mote CreateMote() {
         if (mote?.Destroyed == false) {
             return mote;
         }
 
+        ThingDef moteDef = ThingDefOf.Cosmere_Mote_Allomancy_Aura;
+        moteDef.graphicData.color = parent.metal.color;
+
         mote = MoteMaker.MakeAttachedOverlay(
             base.parent.pawn,
-            DefDatabase<ThingDef>.GetNamed("Cosmere_Mote_Allomancy_Aura"),
+            moteDef,
             Vector3.zero,
             moteScale
         );
-        mote.instanceColor = MetallicArtsMetalDefOf.Brass.color;
 
         return mote;
     }

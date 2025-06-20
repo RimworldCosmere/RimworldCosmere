@@ -144,7 +144,7 @@ public abstract partial class AbstractAbility : Ability {
         BurningStatus? oldStatus = status;
         status = newStatus;
 
-        if (oldStatus == BurningStatus.Off) {
+        if (oldStatus == BurningStatus.Off && def.burningMote != null) {
             burningMote ??= MoteMaker.MakeAttachedOverlay(pawn, def.burningMote, Vector3.zero, GetMoteScale());
         } else if (newStatus == BurningStatus.Off) {
             burningMote?.Destroy();

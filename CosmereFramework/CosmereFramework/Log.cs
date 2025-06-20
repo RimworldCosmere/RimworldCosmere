@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using Verse;
 using static CosmereFramework.CosmereFramework;
@@ -27,7 +28,6 @@ public static class Log {
 
         if (level < LogLevel.Error && Prefs.OpenLogOnWarnings) Verse.Log.TryOpenLogWindow();
 
-        string modsDir = CosmereFrameworkMod.Content.RootDir.Replace("CosmereFramework", "");
         string? ns = "None";
         string stack = "";
         StackTrace stackTrace = new StackTrace(1, true);
@@ -41,7 +41,8 @@ public static class Log {
             string? mod = method?.DeclaringType?.Namespace;
             ns = mod?.Split('.')[0].Replace("Cosmere", "");
             if (frame?.GetFileName() != null && mod != null) {
-                string filename = frame.GetFileName()!.Replace(modsDir, "").Replace(mod, "");
+                string filename = Regex.Replace(frame.GetFileName()!,
+                    @"^.*?(RimworldCosmere\\RimworldCosmere\\|RimWorld\\Mods\\)+\\*", "").Replace(mod, "");
                 if (filename == @"\\.cs") filename = $"{mod}.cs";
 
                 stack = $"[{filename}:{frame.GetFileLineNumber()}]";

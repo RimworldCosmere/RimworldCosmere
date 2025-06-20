@@ -130,7 +130,7 @@ public static class AllomancyUtility {
         return false;
     }
 
-    public static bool IsBurning(Pawn pawn, MetallicArtsMetalDef metal) {
+    public static bool IsBurning(Pawn? pawn, MetallicArtsMetalDef metal) {
         MetalBurning? burning = pawn.GetComp<MetalBurning>();
 
         return burning?.IsBurning(metal) ?? false;

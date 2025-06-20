@@ -48,6 +48,11 @@ public class PhysicalExternalAura : HediffComp {
         }
     }
 
+    public override void CompPostMake() {
+        base.CompPostMake();
+        GetThingsToDraw();
+    }
+
     public override void CompPostTick(ref float severityAdjustment) {
         if (!isAtLeastPassive) {
             thingsToDraw.Clear();

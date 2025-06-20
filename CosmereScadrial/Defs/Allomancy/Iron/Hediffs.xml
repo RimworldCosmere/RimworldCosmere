@@ -19,5 +19,10 @@ These lines shimmer with the tension of potential force, visible only to those b
                 </statFactors>
             </li>
         </stages>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Iron</metal>
+            </li>
+        </modExtensions>
     </HediffDef>
 </Defs>

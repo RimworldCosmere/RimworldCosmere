@@ -3,7 +3,7 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Nicrosil">
         <defName>Nicrosil</defName>
         <allomancy>
-            <description>Boosts another Allomancer&#x27;s power drastically.</description>
+            <description>Allows {PAWN} to boosts another pawn&#x27;s next Investiture-related ability drastically, at the downside of completely draining them after.</description>
             <group>Enhancement</group>
             <axis>External</axis>
             <polarity>Pushing</polarity>

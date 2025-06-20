@@ -36,7 +36,7 @@ public class AuraLineRenderer(Map map) : MapComponent(map) {
                     thingsToDraw = physicalExternalAuraComp.thingsToDraw;
                 }
 
-                if (CosmereSettings.debugMode) {
+                if (cosmereSettings.debugMode) {
                     GenDraw.DrawCircleOutline(pawn.DrawPos, radius * hediff.Severity, lineMaterial);
                 }
 

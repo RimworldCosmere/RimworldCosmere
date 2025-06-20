@@ -7,13 +7,13 @@
         <label>brass misting</label>
         <labelShortAdj>soother</labelShortAdj>
         
-        <description>Can soothe emotions, calming people or manipulating moods.</description>
+        <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>7</displayOrderInCategory>
         
         <resourceLabel>brass</resourceLabel>
-        <resourceDescription>Brass is a warm, golden alloy produced by blending Ind_Copper with zinc. Praised for its attractive appearance and excellent workability, brass finds extensive use in both decorative applications and practical components.\n\nCan soothe emotions, calming people or manipulating moods.</resourceDescription>
+        <resourceDescription>Group: mental\nAxis: external\nPolarity: pulling\n\nAllows {PAWN} to soothe emotions, calming people or manipulating moods.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -38,7 +38,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Brass</defName>
         <label>soother</label>
-        <description>Can soothe emotions, calming people or manipulating moods.</description>
+        <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -49,7 +49,7 @@
         <degreeDatas>
             <li>
                 <label>misting: soother</label>
-                <description>Can soothe emotions, calming people or manipulating moods.</description>
+                <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

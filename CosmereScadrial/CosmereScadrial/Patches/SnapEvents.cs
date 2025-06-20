@@ -9,16 +9,16 @@ namespace CosmereScadrial.Patches;
 public static class SnapEvents {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(MentalStateHandler), nameof(MentalStateHandler.TryStartMentalState))]
-    public static void SnapFromMentalBreak(Pawn ___pawn, bool __result) {
-        if (__result) TrySnap(___pawn);
+    public static void SnapFromMentalBreak(Pawn pawn, bool result) {
+        if (result) TrySnap(pawn);
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.PostApplyDamage))]
-    public static void SnapFromInjury(Pawn ___pawn) {
-        if (___pawn.Dead || ___pawn.health.summaryHealth.SummaryHealthPercent > 0.2f) return;
+    public static void SnapFromInjury(Pawn pawn) {
+        if (pawn.Dead || pawn.health.summaryHealth.SummaryHealthPercent > 0.2f) return;
 
-        TrySnap(___pawn);
+        TrySnap(pawn);
     }
 
     private static void TrySnap(Pawn pawn) {

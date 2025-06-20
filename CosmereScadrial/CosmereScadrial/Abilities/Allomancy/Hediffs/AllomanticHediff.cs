@@ -61,7 +61,7 @@ public class AllomanticHediff : HediffWithComps {
         if (surge != null && def.defName != surge.def.defName) {
             surge?.Burn(
                 RecalculateSeverity,
-                (int)TickUtility.TICKS_PER_SECOND,
+                (int)TickUtility.TicksPerSecond,
                 RecalculateSeverity
             );
         }

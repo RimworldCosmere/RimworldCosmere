@@ -7,13 +7,13 @@
         <label>iron misting</label>
         <labelShortAdj>lurcher</labelShortAdj>
         
-        <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
+        <description>Grants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>2</displayOrderInCategory>
         
         <resourceLabel>iron</resourceLabel>
-        <resourceDescription>Iron is a robust elemental metal, celebrated for its exceptional strength and versatility. Essential in construction, tool-making, and weaponry, iron forms the backbone of many modern and ancient applications.\n\nCan pull on metals, useful for drawing weapons or leaping through cities.</resourceDescription>
+        <resourceDescription>Group: physical\nAxis: external\nPolarity: pulling\n\nGrants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -38,7 +38,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Iron</defName>
         <label>lurcher</label>
-        <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
+        <description>Grants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -49,7 +49,7 @@
         <degreeDatas>
             <li>
                 <label>misting: lurcher</label>
-                <description>Can pull on metals, useful for drawing weapons or leaping through cities.</description>
+                <description>Grants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

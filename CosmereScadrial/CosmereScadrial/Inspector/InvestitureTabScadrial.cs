@@ -9,25 +9,25 @@ using Verse;
 namespace CosmereScadrial.Inspector;
 
 public class InvestitureTabScadrial {
-    private static readonly Dictionary<Color, Texture2D> colorCache = new Dictionary<Color, Texture2D>();
+    private static readonly Dictionary<Color, Texture2D> ColorCache = new Dictionary<Color, Texture2D>();
 #if DEBUG
     [TweakValue("AAA_CosmereScadrial", 10f, 300f)]
 #endif
-    private static readonly float tableHeight = 4 * 26f + 32f;
+    public static float TableHeight = 4 * 26f + 32f;
 #if DEBUG
     [TweakValue("AAA_CosmereScadrial", 0f, 10f)]
 #endif
-    private static readonly float tableWidthPct = 1f;
+    public static float TableWidthPct = 1f;
 #if DEBUG
     [TweakValue("AAA_CosmereScadrial", 10f)]
 #endif
-    private static readonly float cellHeight = 36f;
+    public static float CellHeight = 36f;
 
     private static Texture2D GetColorTexture(Color color) {
-        if (colorCache.TryGetValue(color, out Texture2D? tex)) return tex;
+        if (ColorCache.TryGetValue(color, out Texture2D? tex)) return tex;
 
         tex = SolidColorMaterials.NewSolidColorTexture(color);
-        colorCache[color] = tex;
+        ColorCache[color] = tex;
 
         return tex;
     }
@@ -39,7 +39,7 @@ public class InvestitureTabScadrial {
             return;
         }
 
-        Rect tableRect = listing.GetRect(tableHeight, tableWidthPct); // room for headers + rows
+        Rect tableRect = listing.GetRect(TableHeight, TableWidthPct); // room for headers + rows
         DrawAllomanticMetalTable(pawn, tableRect, listing);
         listing.Gap(10f);
     }
@@ -59,7 +59,7 @@ public class InvestitureTabScadrial {
         UIUtil.WithFont(GameFont.Small, () => {
             // Draw column headers
             for (int col = 0; col < groups.Length; col++) {
-                Rect headerRect = new Rect(outerRect.x + cellWidth * (col + 1), outerRect.y, cellWidth, cellHeight);
+                Rect headerRect = new Rect(outerRect.x + cellWidth * (col + 1), outerRect.y, cellWidth, CellHeight);
                 UIUtil.WithAnchor(TextAnchor.MiddleCenter, () => Widgets.Label(headerRect, groups[col].ToString()));
             }
 
@@ -70,8 +70,8 @@ public class InvestitureTabScadrial {
                 AllomancyPolarity polarity = polarities[row % 2];
 
                 // Draw row header
-                Rect rowHeaderRect = new Rect(outerRect.x, outerRect.y + cellHeight * (row + 1),
-                    cellWidth, cellHeight);
+                Rect rowHeaderRect = new Rect(outerRect.x, outerRect.y + CellHeight * (row + 1),
+                    cellWidth, CellHeight);
                 UIUtil.WithAnchor(TextAnchor.MiddleCenter, () => Widgets.Label(rowHeaderRect, polarity.ToString()));
 
                 for (int col = 0; col < groups.Length; col++) {
@@ -85,9 +85,9 @@ public class InvestitureTabScadrial {
 
                     Rect cellRect = new Rect(
                         outerRect.x + cellWidth * (col + 1),
-                        outerRect.y + cellHeight * (row + 1),
+                        outerRect.y + CellHeight * (row + 1),
                         cellWidth,
-                        cellHeight
+                        CellHeight
                     );
 
                     if (metal != null) {
@@ -96,9 +96,9 @@ public class InvestitureTabScadrial {
 
                         // Prep bar space in Listing
                         listing.Gap(2f);
-                        float fillPct = Mathf.Clamp01(value / MetalReserves.MAX_AMOUNT);
+                        float fillPct = Mathf.Clamp01(value / MetalReserves.MaxAmount);
                         string tooltip =
-                            $"{metal.label.CapitalizeFirst()}\n\n{metal.allomancy.description}\n\n{value:N0} / {MetalReserves.MAX_AMOUNT:N0}";
+                            $"{metal.label.CapitalizeFirst()}\n\n{metal.allomancy.description}\n\n{value:N0} / {MetalReserves.MaxAmount:N0}";
                         if (burning.IsBurning(metal)) {
                             tooltip += $" ({rate:0.000}/sec)";
                         }

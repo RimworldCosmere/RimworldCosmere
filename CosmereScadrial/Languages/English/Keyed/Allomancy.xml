@@ -1,14 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-    <CannotBurn>{0_labelShort} doesn't have enough {1_label} to burn, and no vial to replenish {0_possessive} reserves.</CannotBurn>
-    <CannotFlareAsleep>{0_labelShort} cannot flare {1_label} while they are sleeping.</CannotFlareAsleep>
-    
-    <MenuNoReserves>Not enough {0} to burn</MenuNoReserves>
-    <MenuCannotFlareAsleep>Cannot flare while sleeping</MenuCannotFlareAsleep>
-    <MenuCannotShoot>Not capable</MenuCannotShoot>
-    <TargetShielded>{0} is shielded against Investiture</TargetShielded>
-    <NeverConsumeVial>Never consume a {0} vial</NeverConsumeVial>
-    <ConsumeVialBelow>Consume a {0} vial below</ConsumeVialBelow>
-    <NoClipsToThrow>{PAWN_nameDef} has no clips to use</NoClipsToThrow>
-    <PressToFlare>Hold "Ctrl" to flare {0}</PressToFlare>
+    <CS_CannotBurn>{PAWN} doesn't have enough {METAL} to burn, and no vial to replenish {PAWN_possessive} reserves.</CS_CannotBurn>
+    <CS_CannotFlareAsleep>{PAWN} cannot flare {METAL} while they are sleeping.</CS_CannotFlareAsleep>
+    <CS_CannotShoot>{PAWN} is not capable of shooting</CS_CannotShoot>
+    <CS_BurnRate>Burn Rate: {RATE}/second</CS_BurnRate>
+    <CS_TargetShielded>{PAWN} is shielded against Investiture</CS_TargetShielded>
+    <CS_NeverConsumeVial>Never consume a {METAL} vial</CS_NeverConsumeVial>
+    <CS_ConsumeVialBelow>Consume a {METAL} vial below</CS_ConsumeVialBelow>
+    <CS_SetVialLevelTooltip>Drag the bar to configure when {PAWN} will consume a {METAL} vial.</CS_SetVialLevelTooltip>
+    <CS_NoClipsToThrow>{PAWN} has no clips to use</CS_NoClipsToThrow>
+    <CS_PressToFlare>Hold "Ctrl" to flare {METAL}</CS_PressToFlare>
 </LanguageData>

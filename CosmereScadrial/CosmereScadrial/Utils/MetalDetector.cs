@@ -9,7 +9,7 @@ using Verse;
 namespace CosmereScadrial.Utils;
 
 public static class MetalDetector {
-    private static readonly Dictionary<RecipeDef, bool> metalRecipeCache = new Dictionary<RecipeDef, bool>();
+    private static readonly Dictionary<RecipeDef, bool> MetalRecipeCache = new Dictionary<RecipeDef, bool>();
 
     public static bool IsCapableOfHavingMetal(ThingDef thingDef) {
         return thingDef?.category is ThingCategory.Item or ThingCategory.Building or ThingCategory.Pawn
@@ -92,21 +92,21 @@ public static class MetalDetector {
     }
 
     public static bool RecipeUsesMetalIngredient(RecipeDef recipe, int depth, bool allowAluminum = false) {
-        if (metalRecipeCache.TryGetValue(recipe, out bool metalIngredient)) return metalIngredient;
+        if (MetalRecipeCache.TryGetValue(recipe, out bool metalIngredient)) return metalIngredient;
 
         if (recipe.ingredients == null || recipe.ingredients.Count == 0) {
-            metalRecipeCache[recipe] = false;
+            MetalRecipeCache[recipe] = false;
             return false;
         }
 
         if (!Enumerable.Any(recipe.ingredients,
                 ingredient => ingredient.filter.AllowedThingDefs.Any(thingDef =>
                     GetMetal(ThingMaker.MakeThing(thingDef), depth, allowAluminum) > 0f))) {
-            metalRecipeCache[recipe] = false;
+            MetalRecipeCache[recipe] = false;
             return false;
         }
 
-        metalRecipeCache[recipe] = true;
+        MetalRecipeCache[recipe] = true;
         return true;
     }
 

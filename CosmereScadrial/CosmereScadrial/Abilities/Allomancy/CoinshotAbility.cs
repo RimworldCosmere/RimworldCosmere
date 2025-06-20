@@ -29,7 +29,7 @@ public class CoinshotAbility : AbilityOtherTarget {
     public override bool GizmoDisabled(out string reason) {
         bool hasClip = pawn.inventory?.innerContainer.Contains(CoinThingDefOf.Cosmere_Clip) ?? false;
         if (!hasClip) {
-            reason = "NoClipsToThrow".Translate(pawn.Named("PAWN"));
+            reason = "CS_NoClipsToThrow".Translate(pawn.Named("PAWN"));
             return true;
         }
 
@@ -52,7 +52,7 @@ public class CoinshotAbility : AbilityOtherTarget {
         SkillRecord? shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
         if (!shooting.PermanentlyDisabled && !shooting.TotallyDisabled) return true;
 
-        return "MenuCannotShoot".Translate();
+        return "CS_CannotShoot".Translate(pawn.Named("PAWN"));
     }
 
     public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {

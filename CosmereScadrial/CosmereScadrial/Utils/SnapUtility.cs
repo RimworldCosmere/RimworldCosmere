@@ -4,13 +4,13 @@ using Verse;
 namespace CosmereScadrial.Utils;
 
 public class SnapUtility {
-    public static ThoughtDef SnappedThought = ThoughtDefOf.Cosmere_Scadrial_Snapped;
+    public static ThoughtDef snappedThought = ThoughtDefOf.Cosmere_Scadrial_Snapped;
 
     public static void TrySnap(Pawn pawn, string cause = "", bool withMessage = true) {
         if (IsSnapped(pawn)) return;
 
-        pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(SnappedThought);
-        Thought_Memory? firstMemoryOfDef = pawn.needs?.mood?.thoughts?.memories?.GetFirstMemoryOfDef(SnappedThought);
+        pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(snappedThought);
+        Thought_Memory? firstMemoryOfDef = pawn.needs?.mood?.thoughts?.memories?.GetFirstMemoryOfDef(snappedThought);
         firstMemoryOfDef!.permanent = true;
         firstMemoryOfDef.moodOffset = 1;
         firstMemoryOfDef.moodPowerFactor = 0f;
@@ -27,6 +27,6 @@ public class SnapUtility {
     }
 
     public static bool IsSnapped(Pawn pawn) {
-        return pawn.needs?.mood?.thoughts?.memories?.GetFirstMemoryOfDef(SnappedThought) != null;
+        return pawn.needs?.mood?.thoughts?.memories?.GetFirstMemoryOfDef(snappedThought) != null;
     }
 }

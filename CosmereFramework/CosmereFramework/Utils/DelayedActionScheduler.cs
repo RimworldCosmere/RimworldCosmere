@@ -6,25 +6,25 @@ namespace CosmereFramework.Utils;
 
 [StaticConstructorOnStartup]
 public class DelayedActionScheduler {
-    private static readonly List<ScheduledAction> scheduled = new List<ScheduledAction>();
+    private static readonly List<ScheduledAction> Scheduled = new List<ScheduledAction>();
 
     static DelayedActionScheduler() { }
 
     public static void Schedule(Action action, int delayTicks) {
-        scheduled.Add(new ScheduledAction {
+        Scheduled.Add(new ScheduledAction {
             ticksLeft = delayTicks,
             action = action,
         });
     }
 
     public static void Tick() {
-        for (int i = scheduled.Count - 1; i >= 0; i--) {
-            ScheduledAction? item = scheduled[i];
+        for (int i = Scheduled.Count - 1; i >= 0; i--) {
+            ScheduledAction? item = Scheduled[i];
             item.ticksLeft--;
             if (item.ticksLeft > 0) continue;
 
             item.action?.Invoke();
-            scheduled.RemoveAt(i);
+            Scheduled.RemoveAt(i);
         }
     }
 
@@ -33,9 +33,9 @@ public class DelayedActionScheduler {
         public int ticksLeft;
     }
 
-    private class GameComponent_DelayedActionScheduler : GameComponent {
-        public GameComponent_DelayedActionScheduler() { }
-        public GameComponent_DelayedActionScheduler(Game game) { }
+    private class GameComponentDelayedActionScheduler : GameComponent {
+        public GameComponentDelayedActionScheduler() { }
+        public GameComponentDelayedActionScheduler(Game game) { }
 
         public override void GameComponentTick() {
             Tick();

@@ -2,7 +2,7 @@
 <Defs>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Ability_Pewter</defName>
-        <label>pewter</label>
+        <label>burn pewter</label>
         <canBurnWhileAsleep>true</canBurnWhileAsleep>
         <description>Burn pewter to enhance physical power and resilience for a short duration.</description>
         <metal>Pewter</metal>

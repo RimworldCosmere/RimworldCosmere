@@ -9,7 +9,7 @@ using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 namespace CosmereScadrial.Abilities.Allomancy;
 
 public class TimeAbility : AbilitySelfTarget {
-    private const int BASE_RADIUS = 3;
+    private const int BaseRadius = 3;
     private readonly List<Pawn> pawnsInBubble = [];
     private Mote bubble;
     private Mote bubbleWithDistortion;
@@ -40,7 +40,7 @@ public class TimeAbility : AbilitySelfTarget {
 
     private ThingDef warpMoteDef { get; } = ThingDefOf.Cosmere_Scadrial_TimeBubble_Warp;
 
-    private float moteScale => MoteUtility.GetMoteSize(moteDef, BASE_RADIUS, GetStrength());
+    private float moteScale => MoteUtility.GetMoteSize(moteDef, BaseRadius, GetStrength());
 
     private HediffDef hediffToApply => metal.defName switch {
         "Cadmium" => HediffDefOf.Cosmere_Hediff_TimeBubble_Cadmium,
@@ -75,10 +75,10 @@ public class TimeAbility : AbilitySelfTarget {
         bubbleWithDistortion.Scale = moteScale * 0.8f;
 
 
-        float radius = BASE_RADIUS * GetStrength();
+        float radius = BaseRadius * GetStrength();
 
-        if (CosmereSettings.debugMode) {
-            GenDraw.DrawCircleOutline(bubble.DrawPos, radius, metal.SolidLineColor);
+        if (cosmereSettings.debugMode) {
+            GenDraw.DrawCircleOutline(bubble.DrawPos, radius, metal.solidLineColor);
         }
 
         foreach (Pawn? pawnInBubble in pawnsInBubble.Where(otherPawn =>

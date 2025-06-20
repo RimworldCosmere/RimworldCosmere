@@ -9,15 +9,15 @@ using Verse;
 namespace CosmereScadrial;
 
 public class CosmereScadrial : Mod {
-    public static CosmereScadrialSettings Settings;
+    public static CosmereScadrialSettings settings;
 
     public CosmereScadrial(ModContentPack content) : base(content) {
         InvestitureTabRegistry.Register(InvestitureTabScadrial.Draw);
-        Settings = GetSettings<CosmereScadrialSettings>();
+        settings = GetSettings<CosmereScadrialSettings>();
     }
 
 
-    public static CosmereScadrial CosmereScadrialMod => LoadedModManager.GetMod<CosmereScadrial>();
+    public static CosmereScadrial cosmereScadrialMod => LoadedModManager.GetMod<CosmereScadrial>();
 
     public override void DoSettingsWindowContents(Rect inRect) {
         Listing_Standard listing = new Listing_Standard();
@@ -28,15 +28,15 @@ public class CosmereScadrial : Mod {
         Rect dropdownRect = listing.GetRect(30f);
         Widgets.Dropdown(
             dropdownRect,
-            Settings,
+            settings,
             s => s.mistsFrequency,
             s => Enum.GetValues(typeof(MistsFrequency))
                 .Cast<MistsFrequency>()
                 .Select(freq => new Widgets.DropdownMenuElement<MistsFrequency> {
-                    option = new FloatMenuOption(freq.ToString(), () => Settings.mistsFrequency = freq),
+                    option = new FloatMenuOption(freq.ToString(), () => settings.mistsFrequency = freq),
                     payload = freq,
                 }),
-            Settings.mistsFrequency.ToString()
+            settings.mistsFrequency.ToString()
         );
 
         listing.End();

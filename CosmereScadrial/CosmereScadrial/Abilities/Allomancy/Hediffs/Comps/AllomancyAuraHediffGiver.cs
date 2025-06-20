@@ -12,7 +12,7 @@ using static CosmereFramework.CosmereFramework;
 
 namespace CosmereScadrial.Abilities.Allomancy.Hediffs.Comps;
 
-public class AllomancyAuraHediffGiverProperties : HediffCompProperties, MultiTypeHediff {
+public class AllomancyAuraHediffGiverProperties : HediffCompProperties, IMultiTypeHediff {
     public HediffDef hediff;
     public HediffDef hediffFriendly;
     public HediffDef hediffHostile;
@@ -24,15 +24,15 @@ public class AllomancyAuraHediffGiverProperties : HediffCompProperties, MultiTyp
         compClass = typeof(AllomancyAuraHediffGiver);
     }
 
-    public HediffDef getHediff() {
+    public HediffDef GetHediff() {
         return hediff;
     }
 
-    public HediffDef getFriendlyHediff() {
+    public HediffDef GetFriendlyHediff() {
         return hediffFriendly;
     }
 
-    public HediffDef getHostileHediff() {
+    public HediffDef GetHostileHediff() {
         return hediffHostile;
     }
 }
@@ -70,8 +70,8 @@ public class AllomancyAuraHediffGiver : HediffComp {
             return;
         }
 
-        if (CosmereSettings.debugMode) {
-            GenDraw.DrawCircleOutline(parent.pawn.DrawPos, radius, parent.metal.TransparentLineColor);
+        if (cosmereSettings.debugMode) {
+            GenDraw.DrawCircleOutline(parent.pawn.DrawPos, radius, parent.metal.transparentLineColor);
         }
 
         CreateMote()?.Maintain();

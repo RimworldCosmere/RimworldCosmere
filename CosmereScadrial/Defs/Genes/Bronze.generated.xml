@@ -7,13 +7,13 @@
         <label>bronze misting</label>
         <labelShortAdj>seeker</labelShortAdj>
         
-        <description>Detects other Allomancers using powers.</description>
+        <description>Allows {PAWN} to detect other Invested pawns and items, revealing their Investiture.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>9</displayOrderInCategory>
         
         <resourceLabel>bronze</resourceLabel>
-        <resourceDescription>Bronze is a time-honored alloy, resulting from the fusion of Ind_Copper and tin. Its rich, reddish-brown hue and enduring strength have made bronze a cornerstone of art, architecture, and historical craftsmanship.\n\nDetects other Allomancers using powers.</resourceDescription>
+        <resourceDescription>Group: mental\nAxis: internal\nPolarity: pushing\n\nAllows {PAWN} to detect other Invested pawns and items, revealing their Investiture.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -37,7 +37,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Bronze</defName>
         <label>seeker</label>
-        <description>Detects other Allomancers using powers.</description>
+        <description>Allows {PAWN} to detect other Invested pawns and items, revealing their Investiture.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -48,7 +48,7 @@
         <degreeDatas>
             <li>
                 <label>misting: seeker</label>
-                <description>Detects other Allomancers using powers.</description>
+                <description>Allows {PAWN} to detect other Invested pawns and items, revealing their Investiture.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

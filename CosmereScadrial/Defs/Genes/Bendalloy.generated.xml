@@ -7,13 +7,13 @@
         <label>bendalloy misting</label>
         <labelShortAdj>slider</labelShortAdj>
         
-        <description>Speeds up time in a bubble around the user.</description>
+        <description>Allows {PAWN} to speed up time in a bubble around the user.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>15</displayOrderInCategory>
         
         <resourceLabel>bendalloy</resourceLabel>
-        <resourceDescription>Bendalloy is a mysterious and dynamic alloy created by precisely combining cadmium, zinc, and silver. Its shifting hues and volatile properties make it a material of both scientific intrigue and advanced technological potential.\n\nSpeeds up time in a bubble around the user.</resourceDescription>
+        <resourceDescription>Group: temporal\nAxis: external\nPolarity: pushing\n\nAllows {PAWN} to speed up time in a bubble around the user.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -37,7 +37,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Bendalloy</defName>
         <label>slider</label>
-        <description>Speeds up time in a bubble around the user.</description>
+        <description>Allows {PAWN} to speed up time in a bubble around the user.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -48,7 +48,7 @@
         <degreeDatas>
             <li>
                 <label>misting: slider</label>
-                <description>Speeds up time in a bubble around the user.</description>
+                <description>Allows {PAWN} to speed up time in a bubble around the user.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

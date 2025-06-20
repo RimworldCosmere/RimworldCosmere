@@ -18,7 +18,7 @@ public static class AllomancyUtility {
      * Based on a FULL mistborn burning every metal being capped around 5 BEUs
      * 5 BEU / 16 metals / 100 units per metal ends up with this conversion rate
      */
-    public const float BEU_PER_METAL_UNIT = 0.3125f;
+    public const float BeuPerMetalUnit = 0.3125f;
 
     public static void AddMetalReserve(Pawn pawn, MetallicArtsMetalDef metal, float amount) {
         pawn.GetComp<MetalReserves>().AddReserve(metal, amount);
@@ -44,7 +44,7 @@ public static class AllomancyUtility {
             return 0f;
         }
 
-        return value / MetalReserves.MAX_AMOUNT;
+        return value / MetalReserves.MaxAmount;
     }
 
     /// <summary>
@@ -52,10 +52,10 @@ public static class AllomancyUtility {
     /// </summary>
     /// <param name="pawn">The pawn performing the burn.</param>
     /// <param name="metal">The metal to burn.</param>
-    /// <param name="requiredBEUs">The amount of Investiture to generate.</param>
+    /// <param name="requiredBeUs">The amount of Investiture to generate.</param>
     /// <returns>True if successful; false if not enough metal is available.</returns>
-    public static bool TryBurnMetalForInvestiture(Pawn pawn, MetallicArtsMetalDef metal, float requiredBEUs) {
-        float metalNeeded = GetMetalNeededForBeu(requiredBEUs);
+    public static bool TryBurnMetalForInvestiture(Pawn pawn, MetallicArtsMetalDef metal, float requiredBeUs) {
+        float metalNeeded = GetMetalNeededForBeu(requiredBeUs);
         MetalReserves? comp = pawn.GetComp<MetalReserves>();
 
         if (!comp.CanLowerReserve(metal, metalNeeded)) {
@@ -68,7 +68,7 @@ public static class AllomancyUtility {
         if (investitureNeed == null) throw new MissingReferenceException("Pawn is missing the Investiture need.");
 
         investitureNeed.CurLevel = Mathf.Min(
-            investitureNeed.CurLevel + requiredBEUs,
+            investitureNeed.CurLevel + requiredBeUs,
             investitureNeed.MaxLevel
         );
 
@@ -83,7 +83,7 @@ public static class AllomancyUtility {
     }
 
     public static float GetMetalNeededForBeu(float requiredBeu) {
-        return requiredBeu / BEU_PER_METAL_UNIT;
+        return requiredBeu / BeuPerMetalUnit;
     }
 
     public static bool PawnConsumeVialWithMetal(Pawn pawn, MetallicArtsMetalDef metal,

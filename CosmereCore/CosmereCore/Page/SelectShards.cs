@@ -17,36 +17,36 @@ public class SelectShards : Page {
     public override void DoWindowContents(Rect inRect) {
         DefDatabase<ShardDef>.AddAllInMods();
 
-        const float topMargin = 40f;
-        const float bottomMargin = 60f;
-        const float rowHeight = 70f;
-        const float planetHeaderHeight = 40f;
-        const float checkTextPadding = 12f;
+        const float TopMargin = 40f;
+        const float BottomMargin = 60f;
+        const float RowHeight = 70f;
+        const float PlanetHeaderHeight = 40f;
+        const float CheckTextPadding = 12f;
 
         UIUtil.WithFont(GameFont.Medium,
-            () => Widgets.Label(inRect.TopPartPixels(topMargin), "Choose which Shards are active in this game:"));
+            () => Widgets.Label(inRect.TopPartPixels(TopMargin), "Choose which Shards are active in this game:"));
 
         List<IGrouping<string?, ShardDef>> grouped = DefDatabase<ShardDef>.AllDefsListForReading.GroupBy(s => s.planet)
             .OrderBy(g => g.Key == "N/A" ? 0 : 1)
             .ThenBy(g => g.Key)
             .ToList();
 
-        float totalHeight = grouped.Sum(g => g.Count() * rowHeight + planetHeaderHeight);
-        Rect scrollArea = new Rect(0f, topMargin + 10f, inRect.width, inRect.height - topMargin - bottomMargin);
+        float totalHeight = grouped.Sum(g => g.Count() * RowHeight + PlanetHeaderHeight);
+        Rect scrollArea = new Rect(0f, TopMargin + 10f, inRect.width, inRect.height - TopMargin - BottomMargin);
         Rect viewRect = new Rect(0f, 0f, scrollArea.width - 16f, totalHeight);
 
         Widgets.BeginScrollView(scrollArea, ref scrollPos, viewRect);
         float y = 0f;
 
         foreach (IGrouping<string?, ShardDef>? group in grouped) {
-            Rect planetLabelRect = new Rect(0f, y, viewRect.width, planetHeaderHeight);
+            Rect planetLabelRect = new Rect(0f, y, viewRect.width, PlanetHeaderHeight);
             UIUtil.WithFont(GameFont.Medium, () => Widgets.Label(planetLabelRect, group.Key));
-            y += planetHeaderHeight;
+            y += PlanetHeaderHeight;
 
             Widgets.DrawLineHorizontal(0f, y - 6f, viewRect.width);
 
             foreach (ShardDef? shard in group) {
-                Rect rowRect = new Rect(0f, y, viewRect.width, rowHeight);
+                Rect rowRect = new Rect(0f, y, viewRect.width, RowHeight);
                 Rect checkRect = new Rect(8f, y + 10f, 24f, 24f);
 
                 bool isEnabled = ShardUtility.AreAnyEnabled(shard);
@@ -56,7 +56,7 @@ public class SelectShards : Page {
                 bool originalGUIState = GUI.enabled;
                 GUI.enabled = !isBlockedByOther;
 
-                Rect labelRect = new Rect(checkRect.xMax + checkTextPadding, y + 6f,
+                Rect labelRect = new Rect(checkRect.xMax + CheckTextPadding, y + 6f,
                     rowRect.width - checkRect.xMax - 20f, 24f);
                 bool toggled = isEnabled;
                 Widgets.CheckboxLabeled(labelRect, shard.label.CapitalizeFirst(), ref toggled, isBlockedByOther);
@@ -75,12 +75,12 @@ public class SelectShards : Page {
 
                 GUI.enabled = originalGUIState;
 
-                Rect descRect = new Rect(checkRect.xMax + checkTextPadding, y + 30f,
+                Rect descRect = new Rect(checkRect.xMax + CheckTextPadding, y + 30f,
                     rowRect.width - checkRect.xMax - 20f, 30f);
                 UIUtil.WithFont(GameFont.Tiny,
                     () => Widgets.Label(descRect, shard.description.Truncate(descRect.width - 10f)));
 
-                y += rowHeight;
+                y += RowHeight;
             }
         }
 

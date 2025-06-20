@@ -3,7 +3,7 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Cadmium">
         <defName>Cadmium</defName>
         <allomancy>
-            <description>Slows down time in a bubble, creating a temporal distortion.</description>
+            <description>Allows {PAWN} to slow down time in a bubble, creating a temporal distortion.</description>
             <group>Temporal</group>
             <axis>External</axis>
             <polarity>Pulling</polarity>

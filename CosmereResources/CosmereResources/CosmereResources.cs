@@ -4,7 +4,7 @@ using Verse;
 namespace CosmereResources;
 
 public class CosmereResources(ModContentPack content) : Mod(content) {
-    public static CosmereResources CosmereResourcesMod => LoadedModManager.GetMod<CosmereResources>();
+    public static CosmereResources cosmereResourcesMod => LoadedModManager.GetMod<CosmereResources>();
 }
 
 [StaticConstructorOnStartup]

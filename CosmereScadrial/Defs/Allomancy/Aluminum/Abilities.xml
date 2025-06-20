@@ -6,6 +6,7 @@
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <groupDef>Cosmere_Scadrial_Aluminum</groupDef>
         <defName>Cosmere_Ability_Aluminum</defName>
+        <label>shield against investiture</label>
         <description>Burning aluminum shields the Allomancer from external investiture effects and instantly wipes all other reserves.</description>
         <metal>Aluminum</metal>
         <canBurnWhileAsleep>true</canBurnWhileAsleep>

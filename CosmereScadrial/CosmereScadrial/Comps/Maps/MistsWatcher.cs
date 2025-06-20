@@ -103,7 +103,7 @@ public class MistsWatcher(Map map) : MapComponent(map) {
     }
 
     private int GetIntervalTicks() {
-        return CosmereScadrial.Settings.mistsFrequency switch {
+        return CosmereScadrial.settings.mistsFrequency switch {
             MistsFrequency.Daily => GenDate.TicksPerDay,
             MistsFrequency.Weekly => 7 * GenDate.TicksPerDay,
             MistsFrequency.Monthly => 30 * GenDate.TicksPerDay,

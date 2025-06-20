@@ -7,13 +7,13 @@
         <label>copper misting</label>
         <labelShortAdj>smoker</labelShortAdj>
         
-        <description>Creates a &#x27;coppercloud&#x27; that hides Allomantic activity.</description>
+        <description>Creates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>8</displayOrderInCategory>
         
         <resourceLabel>copper</resourceLabel>
-        <resourceDescription>Copper is a soft, reddish metal prized for its conductivity and malleability. It has been a staple in crafting and electrical applications across civilizations for centuries.\n\nCreates a &#x27;coppercloud&#x27; that hides Allomantic activity.</resourceDescription>
+        <resourceDescription>Group: mental\nAxis: internal\nPolarity: pulling\n\nCreates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -37,7 +37,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Copper</defName>
         <label>smoker</label>
-        <description>Creates a &#x27;coppercloud&#x27; that hides Allomantic activity.</description>
+        <description>Creates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -48,7 +48,7 @@
         <degreeDatas>
             <li>
                 <label>misting: smoker</label>
-                <description>Creates a &#x27;coppercloud&#x27; that hides Allomantic activity.</description>
+                <description>Creates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

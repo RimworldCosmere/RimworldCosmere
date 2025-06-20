@@ -2,7 +2,7 @@
 <Defs>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Ability_Gold</defName>
-        <label>gold</label>
+        <label>see my past</label>
         <description>The Allomancer burns gold, manifesting a hallucination of who they might have become. The vision leaves them shaken but enlightened.</description>
         <metal>Gold</metal>
         <hediff>Cosmere_Hediff_Gold</hediff>

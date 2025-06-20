@@ -7,13 +7,13 @@
         <label>duralumin misting</label>
         <labelShortAdj>gnat (duralumin)</labelShortAdj>
         
-        <description>Enhances the next Allomantic metal used drastically, but is consumed entirely.</description>
+        <description>Enhances the next Investiture-related ability {PAWN} uses drastically, but is consumed entirely.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>11</displayOrderInCategory>
         
         <resourceLabel>duralumin</resourceLabel>
-        <resourceDescription>Duralumin is a lightweight yet remarkably strong alloy made by combining Aluminium with Copper. Its excellent strength-to-weight ratio makes it indispensable in advanced engineering and high-performance designs.\n\nEnhances the next Allomantic metal used drastically, but is consumed entirely.</resourceDescription>
+        <resourceDescription>Group: enhancement\nAxis: internal\nPolarity: pushing\n\nEnhances the next Investiture-related ability {PAWN} uses drastically, but is consumed entirely.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -37,7 +37,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Duralumin</defName>
         <label>gnat (duralumin)</label>
-        <description>Enhances the next Allomantic metal used drastically, but is consumed entirely.</description>
+        <description>Enhances the next Investiture-related ability {PAWN} uses drastically, but is consumed entirely.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -48,7 +48,7 @@
         <degreeDatas>
             <li>
                 <label>misting: gnat (duralumin)</label>
-                <description>Enhances the next Allomantic metal used drastically, but is consumed entirely.</description>
+                <description>Enhances the next Investiture-related ability {PAWN} uses drastically, but is consumed entirely.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

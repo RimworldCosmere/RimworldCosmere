@@ -93,7 +93,7 @@ public class AllomanticVial : ThingWithComps {
         base.PostIngested(ingester);
 
         metals.ForEach(metal => {
-            AllomancyUtility.AddMetalReserve(ingester, metal, MetalReserves.MAX_AMOUNT); // or adjust amount
+            AllomancyUtility.AddMetalReserve(ingester, metal, MetalReserves.MaxAmount); // or adjust amount
         });
         Messages.Message(
             $"{ingester.LabelShortCap} downed a vial containing: {string.Join(", ", metals.Select(x => x.LabelCap))}.",

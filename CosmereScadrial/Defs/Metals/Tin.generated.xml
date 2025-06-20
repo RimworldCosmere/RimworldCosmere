@@ -3,7 +3,7 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Tin">
         <defName>Tin</defName>
         <allomancy>
-            <description>Enhances senses like sight, hearing, and smell.</description>
+            <description>Enhances {PAWN}&#x27;s senses like sight, hearing, and smell.</description>
             <group>Physical</group>
             <axis>Internal</axis>
             <polarity>Pulling</polarity>

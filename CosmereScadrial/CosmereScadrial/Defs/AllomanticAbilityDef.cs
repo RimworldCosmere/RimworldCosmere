@@ -7,7 +7,7 @@ using Verse;
 
 namespace CosmereScadrial.Defs;
 
-public class AllomanticAbilityDef : AbilityDef, MultiTypeHediff {
+public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
     public bool applyDragOnTarget = false;
     public float beuPerTick = 0.1f / GenTicks.TicksPerRealSecond;
     public ThingDef? burningMote;
@@ -34,15 +34,15 @@ public class AllomanticAbilityDef : AbilityDef, MultiTypeHediff {
         }
     }
 
-    public HediffDef getHediff() {
+    public HediffDef GetHediff() {
         return hediff;
     }
 
-    public HediffDef getFriendlyHediff() {
+    public HediffDef GetFriendlyHediff() {
         return hediffFriendly;
     }
 
-    public HediffDef getHostileHediff() {
+    public HediffDef GetHostileHediff() {
         return hediffHostile;
     }
 

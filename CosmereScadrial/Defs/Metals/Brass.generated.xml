@@ -3,7 +3,7 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Brass">
         <defName>Brass</defName>
         <allomancy>
-            <description>Can soothe emotions, calming people or manipulating moods.</description>
+            <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
             <group>Mental</group>
             <axis>External</axis>
             <polarity>Pulling</polarity>

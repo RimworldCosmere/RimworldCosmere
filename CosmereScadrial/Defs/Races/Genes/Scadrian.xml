@@ -5,10 +5,11 @@
         <biostatCpx>1</biostatCpx>
         <biostatMet>0</biostatMet>
         <biostatArc>-1</biostatArc>
+        <iconPath>UI/Icons/Xenotype/Noble</iconPath>
     </GeneDef>
     <GeneDef ParentName="Cosmere_ScadrianGeneBase">
         <defName>Cosmere_Scadrian_Heritage</defName>
         <label>scadrian bloodline</label>
-        <description>This pawn descends from both Skaa and Noble lines, bearing their combined legacy.</description>
+        <description>This Scadrian descends from both Skaa and Noble lines, bearing their combined legacy.</description>
     </GeneDef>
 </Defs>

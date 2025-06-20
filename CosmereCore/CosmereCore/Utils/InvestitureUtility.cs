@@ -5,7 +5,7 @@ namespace CosmereCore.Utils;
 
 public static class InvestitureUtility {
     // These thresholds match the canon Heightenings from Warbreaker
-    private static readonly int[] beuThresholds = {
+    private static readonly int[] BeuThresholds = {
         1, // Degree 0: Invested
         100, // 1st Heightening
         200, // 2nd
@@ -44,8 +44,8 @@ public static class InvestitureUtility {
 
     // ReSharper disable once InconsistentNaming
     public static int GetDegreeFromBEUs(int beu) {
-        for (int i = beuThresholds.Length - 1; i >= 0; i--) {
-            if (beu >= beuThresholds[i]) {
+        for (int i = BeuThresholds.Length - 1; i >= 0; i--) {
+            if (beu >= BeuThresholds[i]) {
                 return i;
             }
         }
@@ -55,6 +55,6 @@ public static class InvestitureUtility {
 
     // ReSharper disable once InconsistentNaming
     public static int GetBEUsFromDegree(int degree) {
-        return beuThresholds[degree];
+        return BeuThresholds[degree];
     }
 }

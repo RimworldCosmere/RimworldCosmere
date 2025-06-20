@@ -7,13 +7,13 @@
         <label>tin misting</label>
         <labelShortAdj>tineye</labelShortAdj>
         
-        <description>Enhances senses like sight, hearing, and smell.</description>
+        <description>Enhances {PAWN}&#x27;s senses like sight, hearing, and smell.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>4</displayOrderInCategory>
         
         <resourceLabel>tin</resourceLabel>
-        <resourceDescription>Tin is a soft and malleable metal, prized for its natural resistance to corrosion. Its gentle sheen and ease of alloying make it a vital component in crafting a variety of decorative and functional metal blends.\n\nEnhances senses like sight, hearing, and smell.</resourceDescription>
+        <resourceDescription>Group: physical\nAxis: internal\nPolarity: pulling\n\nEnhances {PAWN}&#x27;s senses like sight, hearing, and smell.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -37,7 +37,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Tin</defName>
         <label>tineye</label>
-        <description>Enhances senses like sight, hearing, and smell.</description>
+        <description>Enhances {PAWN}&#x27;s senses like sight, hearing, and smell.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -48,7 +48,7 @@
         <degreeDatas>
             <li>
                 <label>misting: tineye</label>
-                <description>Enhances senses like sight, hearing, and smell.</description>
+                <description>Enhances {PAWN}&#x27;s senses like sight, hearing, and smell.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

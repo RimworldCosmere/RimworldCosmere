@@ -12,19 +12,19 @@ namespace CosmereScadrial.Dev;
 
 [StaticConstructorOnStartup]
 public static class ScadrianQuickstart {
-    private const int MAP_SIZE = 50;
-    private static bool started;
-    private static readonly StorytellerDef storyteller = StorytellerDefOf.Cassandra;
-    private static readonly DifficultyDef difficulty = DifficultyDefOf.Easy;
-    private static readonly ScenarioDef scenario = DefDatabase<ScenarioDef>.GetNamed("Cosmere_Scadrial_PreCatacendre");
+    private const int MapSize = 50;
+    private static bool Started;
+    private static readonly StorytellerDef Storyteller = StorytellerDefOf.Cassandra;
+    private static readonly DifficultyDef Difficulty = DifficultyDefOf.Easy;
+    private static readonly ScenarioDef Scenario = DefDatabase<ScenarioDef>.GetNamed("Cosmere_Scadrial_PreCatacendre");
 
     static ScadrianQuickstart() {
         if (!Prefs.DevMode) return;
-        if (!CosmereFramework.CosmereFramework.CosmereSettings.debugMode) return;
+        if (!CosmereFramework.CosmereFramework.cosmereSettings.debugMode) return;
 
         LongEventHandler.ExecuteWhenFinished(() => {
-            if (started) return;
-            started = true;
+            if (Started) return;
+            Started = true;
             TryStartGame();
         });
     }
@@ -47,10 +47,10 @@ public static class ScadrianQuickstart {
         Current.ProgramState = ProgramState.Entry;
         Current.Game = new Game {
             InitData = new GameInitData(),
-            Scenario = scenario.scenario,
+            Scenario = Scenario.scenario,
         };
         Find.Scenario.PreConfigure();
-        Current.Game.storyteller = new Storyteller(storyteller, difficulty);
+        Current.Game.storyteller = new Storyteller(Storyteller, Difficulty);
         Current.Game.World = WorldGenerator.GenerateWorld(
             0.05f,
             seed,
@@ -60,7 +60,7 @@ public static class ScadrianQuickstart {
             LandmarkDensity.Normal
         );
         Find.GameInitData.ChooseRandomStartingTile();
-        Find.GameInitData.mapSize = MAP_SIZE;
+        Find.GameInitData.mapSize = MapSize;
         Find.Scenario.PostIdeoChosen();
         Find.GameInitData.PrepForMapGen();
         Find.Scenario.PreMapGenerate();
@@ -93,21 +93,27 @@ public static class ScadrianQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, "Cosmere_Misting_Steel", false, true);
-            GeneUtility.AddGene(pawn, "Cosmere_Misting_Aluminum", false, true);
+            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Misting_Steel.defName, false, true);
+            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Misting_Aluminum.defName, false, true);
             pawn.Name = new NameSingle("Steel and Aluminum");
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, "Cosmere_Misting_Aluminum", false, true);
-            ScadrianUtility.FillAllReserves(pawn);
+            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Misting_Aluminum.defName, false, true);
+            pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Aluminum, MetalReserves.MaxAmount);
             pawn.Name = new NameSingle("Aluminum");
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, "Cosmere_Misting_Steel", false, true);
-            pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Steel, MetalReserves.MAX_AMOUNT);
+            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Misting_Steel.defName, false, true);
+            pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Steel, MetalReserves.MaxAmount);
             pawn.Name = new NameSingle("Steel");
+        }
+
+        if (pawns.TryPopFront(out pawn)) {
+            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Misting_Atium.defName, false, true);
+            pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Atium, MetalReserves.MaxAmount);
+            pawn.Name = new NameSingle("Atium");
         }
 
         Find.TickManager.Pause();

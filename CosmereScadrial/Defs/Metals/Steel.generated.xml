@@ -3,7 +3,7 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Steel">
         <defName>Steel</defName>
         <allomancy>
-            <description>Can push on metals, allowing rapid movement or throwing metal objects.</description>
+            <description>Grants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.</description>
             <group>Physical</group>
             <axis>External</axis>
             <polarity>Pushing</polarity>

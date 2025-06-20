@@ -3,10 +3,14 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Atium">
         <defName>Atium</defName>
         <allomancy>
-            <description>Allows a glimpse into the immediate future of others.</description>
+            <description>Allows {PAWN} a glimpse into the immediate future of others.</description>
+            <group>None</group>
+            <axis>None</axis>
+            <polarity>None</polarity>
         </allomancy>
         <feruchemy>
             <description>Stores age, granting youth or aging when tapped.</description>
+            <group>None</group>
         </feruchemy>
     </CosmereScadrial.Defs.MetallicArtsMetalDef>
 </Defs>

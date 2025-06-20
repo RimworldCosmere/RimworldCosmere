@@ -103,9 +103,9 @@
         System.IO.File.WriteAllText(OutputPath,
 @"namespace CosmereFramework {
     public static class BuildInfo {
-        public const string REVISION = """+Revision+@""";
+        public const string Revision = """+Revision+@""";
         
-        public const string BUILD_TIME = """+BuildTime+@""";
+        public const string BuildTime = """+BuildTime+@""";
     }
 }
 ");

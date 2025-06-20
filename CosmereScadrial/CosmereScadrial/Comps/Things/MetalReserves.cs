@@ -14,8 +14,8 @@ public class MetalReservesProperties : CompProperties {
 }
 
 public class MetalReserves : ThingComp {
-    public const float MAX_AMOUNT = 1f;
-    private const float SLEEP_DECAY_AMOUNT = .025f;
+    public const float MaxAmount = 1f;
+    private const float SleepDecayAmount = .025f;
 
     private Dictionary<MetallicArtsMetalDef, float> reserves = new Dictionary<MetallicArtsMetalDef, float>();
 
@@ -38,7 +38,7 @@ public class MetalReserves : ThingComp {
 
         MetallicArtsMetalDef[] keys = reserves.Keys.Where(metal => reserves[metal] > 0).ToArray();
         foreach (MetallicArtsMetalDef metal in keys) {
-            LowerReserve(metal, SLEEP_DECAY_AMOUNT);
+            LowerReserve(metal, SleepDecayAmount);
         }
     }
 
@@ -67,7 +67,7 @@ public class MetalReserves : ThingComp {
             reserves[metal] = 0;
         }
 
-        SetReserve(metal, Math.Min(reserves[metal] + amount, MAX_AMOUNT));
+        SetReserve(metal, Math.Min(reserves[metal] + amount, MaxAmount));
     }
 
     public bool CanLowerReserve(MetallicArtsMetalDef metal, float amount) {

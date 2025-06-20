@@ -3,7 +3,7 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Pewter">
         <defName>Pewter</defName>
         <allomancy>
-            <description>Enhances physical strength and durability, useful in combat.</description>
+            <description>Enhances {PAWN}&#x27;s physical strength and durability.</description>
             <group>Physical</group>
             <axis>Internal</axis>
             <polarity>Pushing</polarity>

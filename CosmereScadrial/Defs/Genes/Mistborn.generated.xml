@@ -23,6 +23,7 @@
                     <li>Bendalloy</li>
                     <li>Gold</li>
                     <li>Electrum</li>
+                    <li>Atium</li>
                 </metals>
             </li>
         </modExtensions>
@@ -43,6 +44,7 @@
             <li>Cosmere_Misting_Bendalloy</li>
             <li>Cosmere_Misting_Gold</li>
             <li>Cosmere_Misting_Electrum</li>
+            <li>Cosmere_Misting_Atium</li>
         </conflictingTraits>
         <degreeDatas>
             <li>

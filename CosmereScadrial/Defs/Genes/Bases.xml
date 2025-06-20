@@ -29,9 +29,10 @@
     <geneClass>CosmereScadrial.Genes.Allomancer</geneClass>
     <resourceGizmoType>CosmereScadrial.Gizmo.AllomanticGeneCommand</resourceGizmoType>
     <resourceGizmoThresholds>
-      <li>0.25</li>
-      <li>0.5</li>
-      <li>0.75</li>
+      <li>0.2</li>
+      <li>0.4</li>
+      <li>0.6</li>
+      <li>0.8</li>
     </resourceGizmoThresholds>
     <showGizmoOnWorldView>true</showGizmoOnWorldView>
     <showGizmoWhenDrafted>true</showGizmoWhenDrafted>

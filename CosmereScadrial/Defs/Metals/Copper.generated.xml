@@ -3,7 +3,7 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Copper">
         <defName>Copper</defName>
         <allomancy>
-            <description>Creates a &#x27;coppercloud&#x27; that hides Allomantic activity.</description>
+            <description>Creates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</description>
             <group>Mental</group>
             <axis>Internal</axis>
             <polarity>Pulling</polarity>

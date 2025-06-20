@@ -8,7 +8,7 @@ using Log = CosmereFramework.Log;
 namespace CosmereCore.Tabs;
 
 public class PawnInvestiture : ITab {
-    private const float padding = 10f;
+    private const float Padding = 10f;
 
     public PawnInvestiture() {
         Text.Font = GameFont.Small;
@@ -22,7 +22,7 @@ public class PawnInvestiture : ITab {
 
     protected override void FillTab() {
         Pawn? pawn = SelPawn;
-        Rect rect = new Rect(padding, padding, size.x - padding * 2, size.y - padding * 2);
+        Rect rect = new Rect(Padding, Padding, size.x - Padding * 2, size.y - Padding * 2);
         Listing_Standard listing = new Listing_Standard();
         listing.Begin(rect);
 
@@ -35,7 +35,7 @@ public class PawnInvestiture : ITab {
             listing.Label($"BEUs: {beus:N0}");
         }
 
-        foreach (InvestitureTabRegistry.InvestitureTabDrawer? drawer in InvestitureTabRegistry.drawers) {
+        foreach (InvestitureTabRegistry.InvestitureTabDrawer? drawer in InvestitureTabRegistry.Drawers) {
             try {
                 drawer(SelPawn, listing);
             } catch (Exception ex) {

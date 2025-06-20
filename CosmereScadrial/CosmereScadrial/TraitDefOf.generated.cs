@@ -39,5 +39,7 @@ namespace CosmereScadrial {
         public static TraitDef Cosmere_Ferring_Gold;
         public static TraitDef Cosmere_Misting_Electrum;
         public static TraitDef Cosmere_Ferring_Electrum;
+        public static TraitDef Cosmere_Misting_Atium;
+        public static TraitDef Cosmere_Ferring_Atium;
     }
 }

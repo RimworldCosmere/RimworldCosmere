@@ -19,13 +19,37 @@ public class AllomanticGeneCommand(
     List<IGeneResourceDrain> drainGenes,
     Color barColor,
     Color barHighlightColor) : GeneGizmo_Resource(gene, [], barColor, barHighlightColor) {
-    private const float ABILITY_ICON_SIZE = 24;
-    private const float ABILITY_ICON_PADDING = 4;
+    private const float AbilityIconSize = Height / 2f;
+    private const float BaseWidth = 185;
+    private static readonly Vector2 Padding = new Vector2(2f, 4f);
+
+
     public static readonly Texture2D CheckOff = ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff");
-    public static readonly Texture2D BGTexOff = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityOff");
-    public static readonly Texture2D BGTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
-    public static readonly Texture2D BGTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
-    public static readonly Texture2D BGTexOffDisabled = BGTexOff.Overlay(CheckOff);
+
+    public static readonly Texture2D
+        BgTexOff = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f,
+            0f));
+
+    public static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
+    public static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
+    private static readonly Texture2D BarTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.34f, 0.42f, 0.43f));
+
+    private static readonly Texture2D EmptyBarTex =
+        SolidColorMaterials.NewSolidColorTexture(new Color(0.03f, 0.035f, 0.05f));
+
+    private static readonly Texture2D DragBarTex =
+        SolidColorMaterials.NewSolidColorTexture(new Color(0.74f, 0.97f, 0.8f));
+
+    public static readonly Texture2D BgTexOffDisabled =
+        ContentFinder<Texture2D>.Get("UI/Widgets/AbilityOff").Overlay(CheckOff);
+
+    private static bool DraggingBar;
+    private Texture2D barDragTex;
+    private Texture2D barHighlightTex;
+    private Texture2D barTex;
+
+    private bool initialized;
+    private float targetValuePct;
 
     protected MetallicArtsMetalDef metal => ((Allomancer)gene).metal;
     protected Pawn pawn => gene.pawn;
@@ -38,10 +62,8 @@ public class AllomanticGeneCommand(
 
     protected override string Title => metal.LabelCap;
 
-    private float TitleWidth => Text.CalcSize(Title).x;
-
-    protected override float Width => Mathf.Max(165f,
-        TitleWidth + 30f + (ABILITY_ICON_SIZE + ABILITY_ICON_PADDING) * (gene.def.abilities.Count + 1));
+    protected override float Width => Mathf.Max(BaseWidth,
+        Height + Padding.x + (AbilityIconSize + Padding.x) * gene.def.abilities.Count);
 
     protected override string GetTooltip() {
         float rate = burning.GetTotalBurnRate(metal) * GenTicks.TicksPerRealSecond;
@@ -49,20 +71,26 @@ public class AllomanticGeneCommand(
         string tooltip =
             $"{gene.ResourceLabel.CapitalizeFirst().Colorize(ColoredText.TipSectionTitleColor)}: {BarLabel}\n";
         if (burning.IsBurning(metal)) {
-            tooltip += "BurnRate".Translate().Colorize(ColoredText.FactionColor_Hostile) + $": {rate:0.000}/sec\n";
+            tooltip +=
+                "CS_BurnRate".Translate($"{rate:0.000}".Named("RATE")).Colorize(ColoredText.FactionColor_Hostile) +
+                "\n";
         }
 
         if (IsDraggable) {
             if (gene.targetValue <= 0.0) {
-                tooltip += "NeverConsumeVial".Translate(metal.LabelCap).ToString();
+                tooltip += "CS_NeverConsumeVial"
+                    .Translate(metal.label.Colorize(ColoredText.DateTimeColor).Named("METAL")).Resolve();
             } else {
-                tooltip += (string)("ConsumeVialBelow".Translate(metal.LabelCap) + ": ") +
+                tooltip += ("CS_ConsumeVialBelow".Translate(metal.label.Colorize(ColoredText.DateTimeColor)
+                               .Named("METAL")) + ": ").Resolve() +
                            gene.PostProcessValue(gene.targetValue) + '%';
             }
         }
 
         if (!gene.def.resourceDescription.NullOrEmpty()) {
-            tooltip += $"\n\n{gene.def.resourceDescription.Formatted(gene.pawn.Named("PAWN"))}";
+            string resourceDescription =
+                gene.def.resourceDescription.Formatted(pawn.NameShortColored.Named("PAWN")).Resolve();
+            tooltip += $"\n\n{resourceDescription}";
         }
 
         return tooltip;
@@ -93,16 +121,16 @@ public class AllomanticGeneCommand(
 
         Material? grayscaleGui = parms.lowLight ? TexUI.GrayscaleGUI : null;
         Texture2D background = ability.status switch {
-            null => BGTexOff,
-            BurningStatus.Off => BGTexOff,
-            BurningStatus.Passive => BGTexBurning,
-            BurningStatus.Burning => BGTexBurning,
-            BurningStatus.Flaring => BGTexFlaring,
-            BurningStatus.Duralumin => BGTexFlaring,
+            null => BgTexOff,
+            BurningStatus.Off => BgTexOff,
+            BurningStatus.Passive => BgTexBurning,
+            BurningStatus.Burning => BgTexBurning,
+            BurningStatus.Flaring => BgTexFlaring,
+            BurningStatus.Duralumin => BgTexFlaring,
             _ => throw new ArgumentOutOfRangeException(),
         };
         GUI.color = parms.lowLight ? Verse.Command.LowLightBgColor : color;
-        Texture2D? icon = disabled ? BGTexOffDisabled : ability.def.uiIcon;
+        Texture2D? icon = disabled ? BgTexOffDisabled : ability.def.uiIcon;
         DrawIcon(rect, icon, background, grayscaleGui, parms.lowLight ? Color.gray.ToTransparent(.6f) : null);
 
         if (Widgets.ButtonInvisible(rect)) {
@@ -112,7 +140,7 @@ public class AllomanticGeneCommand(
         if (isMouseOver) {
             TipSignal desc = ability.Tooltip;
 
-            desc.text += "\n\n" + "PressToFlare".Translate(metal.LabelCap).Colorize(ColoredText.GeneColor);
+            desc.text += "\n\n" + "CS_PressToFlare".Translate(metal.Named("METAL")).Colorize(ColoredText.GeneColor);
 
             if (disabled && !disabledReason.NullOrEmpty()) {
                 desc.text +=
@@ -165,54 +193,66 @@ public class AllomanticGeneCommand(
         }
     }
 
-    protected override void DrawHeader(Rect headerRect, ref bool mouseOverElement) {
-        if (IsDraggable) {
-            if (gene is Allomancer metalborn) {
-                headerRect.xMax -= (ABILITY_ICON_SIZE + ABILITY_ICON_PADDING) * metalborn.def.abilities.Count;
-                int i = 0;
-                metalborn.def.abilities.SortBy(x => x.uiOrder);
-                foreach (AbilityDef abilityDef in metalborn.def.abilities) {
-                    if (pawn.abilities.GetAbility(abilityDef) is not AbstractAbility ability) continue;
+    private void DrawTopBar(Rect topBarRect, ref bool mouseOverElement) {
+        if (!IsDraggable) return;
+        if (gene is not Allomancer metalborn) return;
 
-                    Rect rect = new Rect(
-                        headerRect.xMax + i * (ABILITY_ICON_SIZE + ABILITY_ICON_PADDING),
-                        headerRect.y,
-                        ABILITY_ICON_SIZE,
-                        ABILITY_ICON_SIZE
-                    );
+        metalborn.def.abilities.SortBy(x => x.uiOrder);
+        Rect abilityRect = new Rect(topBarRect.x, topBarRect.y, topBarRect.height, topBarRect.height);
+        foreach (AbilityDef abilityDef in metalborn.def.abilities) {
+            if (pawn.abilities.GetAbility(abilityDef) is not AbstractAbility ability) continue;
 
+            GizmoResult result = AbilityOnGUI(abilityRect, ability);
 
-                    GizmoResult result = AbilityOnGUI(rect, ability);
-
-                    switch (result.State) {
-                        case GizmoState.Interacted:
-                            ProcessInput(ability, result.InteractEvent);
-                            break;
-                        case GizmoState.Mouseover:
-                            TooltipHandler.ClearTooltipsFrom(headerRect);
-                            if (ability.verb is Verb_CastAbility verb) {
-                                verb.verbProps.DrawRadiusRing(verb.caster.Position, verb);
-                            }
-
-                            ability.OnGizmoUpdate();
-                            Widgets.DrawHighlight(rect);
-                            mouseOverElement = true;
-                            break;
+            switch (result.State) {
+                case GizmoState.Interacted:
+                    ProcessInput(ability, result.InteractEvent);
+                    break;
+                case GizmoState.Mouseover:
+                    //TooltipHandler.ClearTooltipsFrom(headerRect);
+                    if (ability.verb is Verb_CastAbility verb) {
+                        verb.verbProps.DrawRadiusRing(verb.caster.Position, verb);
                     }
 
-                    i++;
-                }
+                    ability.OnGizmoUpdate();
+                    Widgets.DrawHighlight(abilityRect);
+                    mouseOverElement = true;
+                    break;
             }
+
+            abilityRect.x += AbilityIconSize + Padding.x;
+        }
+    }
+
+    private void DrawBottomBar(Rect bottomBarRect, ref bool mouseOverElement) {
+        Texture thresholdColor =
+            metal.Equals(MetallicArtsMetalDefOf.Atium) ? BaseContent.WhiteTex : BaseContent.BlackTex;
+        if (!IsDraggable) {
+            Widgets.FillableBar(bottomBarRect, ValuePercent, barTex, EmptyBarTex, true);
+            foreach (float barThreshold in GetBarThresholds()) {
+                GUI.DrawTexture(new Rect {
+                        x = (float)(barRect.x + 3.0 + (barRect.width - 8.0) * barThreshold),
+                        y = (float)(barRect.y + (double)barRect.height - 9.0),
+                        width = 2f,
+                        height = 6f,
+                    },
+                    ValuePercent < (double)barThreshold ? BaseContent.GreyTex : thresholdColor);
+            }
+        } else {
+            Widgets.DraggableBar(bottomBarRect, barTex, barHighlightTex, EmptyBarTex, barDragTex,
+                ref DraggingBar, ValuePercent, ref targetValuePct, GetBarThresholds(), Increments,
+                DragRange.min, DragRange.max);
+            targetValuePct = Mathf.Clamp(targetValuePct, DragRange.min, DragRange.max);
+            Target = targetValuePct;
         }
 
-        if (metal.invertedIcon) {
-            Rect icon = new Rect(headerRect.xMin, headerRect.yMin, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE);
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter)) Widgets.Label(bottomBarRect, BarLabel);
 
-            DrawIcon(icon, metal.invertedIcon, scale: 1.5f);
-            headerRect.xMin += ABILITY_ICON_SIZE + ABILITY_ICON_PADDING;
+        TooltipHandler.TipRegionByKey(bottomBarRect, "CS_SetVialLevelTooltip", pawn.Named("PAWN"),
+            metal.Named("METAL"));
+        if (Mouse.IsOver(bottomBarRect)) {
+            mouseOverElement = true;
         }
-
-        base.DrawHeader(headerRect, ref mouseOverElement);
     }
 
     private void DrawIcon(Rect rect, Texture2D icon, Texture? background = null, Material? material = null,
@@ -225,5 +265,56 @@ public class AllomanticGeneCommand(
             : new Rect(rect.x + offset.Value.x, rect.y + offset.Value.y, rect.width, rect.height);
         Widgets.DrawTextureFitted(iconRect, icon, scale ?? 1f);
         GUI.color = Color.white;
+    }
+
+
+    private void Initialize() {
+        if (initialized) {
+            return;
+        }
+
+        initialized = true;
+        targetValuePct = Mathf.Clamp(Target, DragRange.min, DragRange.max);
+        barTex = BarColor == new Color() ? BarTex : SolidColorMaterials.NewSolidColorTexture(BarColor);
+        barHighlightTex = SolidColorMaterials.NewSolidColorTexture(BarColor.SaturationChanged(50f));
+        barDragTex = BarDragColor == new Color() ? DragBarTex : SolidColorMaterials.NewSolidColorTexture(BarDragColor);
+    }
+
+    public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {
+        Initialize();
+
+        bool mouseOver = false;
+        using TextBlock textBlock = new TextBlock(GameFont.Tiny);
+        Rect rect = new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), Height);
+        Widgets.DrawWindowBackground(rect);
+        rect = rect.ContractedBy(Padding.x * 2, Padding.y);
+
+        Rect iconRect = new Rect(rect.x, rect.y, rect.height, rect.height);
+        DrawIcon(iconRect, metal.invertedIcon, Verse.Command.BGTex, TexUI.GrayscaleGUI);
+        Text.Font = GameFont.Small;
+        float barWidth = rect.width - (rect.height + Padding.y);
+        Rect topBarRect = new Rect(iconRect.x + iconRect.width + Padding.x, iconRect.y, barWidth, AbilityIconSize);
+        DrawTopBar(topBarRect, ref mouseOver);
+        Rect bottomBarRect = new Rect(topBarRect.x, topBarRect.y + AbilityIconSize + Padding.y / 2, topBarRect.width,
+            Height - AbilityIconSize - Padding.y * 3);
+        DrawBottomBar(bottomBarRect, ref mouseOver);
+
+        if (!Title.NullOrEmpty()) {
+            using (new TextBlock(GameFont.Tiny)) {
+                float textWidth = iconRect.width;
+                float textHeight = Text.CalcHeight(Title, textWidth);
+                Rect labelRect = new Rect(iconRect.x, rect.yMin + 2, textWidth, textHeight);
+                GUI.DrawTexture(labelRect, TexUI.GrayTextBG);
+                Text.Anchor = TextAnchor.UpperCenter;
+                Widgets.Label(labelRect, Title);
+            }
+        }
+
+        if (Mouse.IsOver(rect) && !mouseOver) {
+            Widgets.DrawHighlight(rect);
+            TooltipHandler.TipRegion(rect, GetTooltip, Gen.HashCombineInt(GetHashCode(), 8491284));
+        }
+
+        return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear, null);
     }
 }

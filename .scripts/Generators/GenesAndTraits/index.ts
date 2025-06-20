@@ -13,7 +13,7 @@ const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
 
 export default function () {
     let order = 2
-    const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && (!!x.Allomancy || !!x.Feruchemy));
+    const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && (!!x.Allomancy || !!x.Feruchemy)).concat(MetalRegistry.Metals.Atium);
     for (const metalInfo of metals) {
         writeGeneratedFile(
             outputDir,

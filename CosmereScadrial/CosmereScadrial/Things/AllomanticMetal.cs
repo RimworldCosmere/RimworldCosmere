@@ -78,7 +78,7 @@ public class AllomanticMetal : AllomanticVial {
             GeneUtility.AddMistborn(ingester, false, true);
             MetalReserves? comp = ingester.GetComp<MetalReserves>();
             foreach (MetallicArtsMetalDef? m in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
-                comp.SetReserve(m, MetalReserves.MAX_AMOUNT);
+                comp.SetReserve(m, MetalReserves.MaxAmount);
             }
 
             Find.LetterStack.ReceiveLetter(

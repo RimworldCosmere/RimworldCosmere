@@ -10,7 +10,7 @@ using static CosmereFramework.CosmereFramework;
 namespace CosmereFramework;
 
 public static class Log {
-    private static readonly Dictionary<LogLevel, Color> logColors = new Dictionary<LogLevel, Color> {
+    private static readonly Dictionary<LogLevel, Color> LOGColors = new Dictionary<LogLevel, Color> {
         { LogLevel.None, Color.black },
         { LogLevel.Important, Color.green },
         { LogLevel.Error, Color.red },
@@ -21,7 +21,7 @@ public static class Log {
 
 
     public static void Message(string message, LogLevel level = LogLevel.Info) {
-        if (level > CosmereSettings.logLevel || level == LogLevel.None) return;
+        if (level > cosmereSettings.logLevel || level == LogLevel.None) return;
         if (level == LogLevel.Error && DebugSettings.pauseOnError && Current.ProgramState == ProgramState.Playing) {
             Find.TickManager.Pause();
         }
@@ -52,7 +52,7 @@ public static class Log {
         }
 
         Verse.Log.Message(
-            $"{ColoredMessage(logColors[level], $"[Cosmere - {ns}]{stack}[{level.ToString()}]")} {message}");
+            $"{ColoredMessage(LOGColors[level], $"[Cosmere - {ns}]{stack}[{level.ToString()}]")} {message}");
         Verse.Log.ResetMessageCount();
     }
 

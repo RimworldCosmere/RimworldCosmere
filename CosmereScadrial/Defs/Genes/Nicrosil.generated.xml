@@ -7,13 +7,13 @@
         <label>nicrosil misting</label>
         <labelShortAdj>nicroburst</labelShortAdj>
         
-        <description>Boosts another Allomancer&#x27;s power drastically.</description>
+        <description>Allows {PAWN} to boosts another pawn&#x27;s next Investiture-related ability drastically, at the downside of completely draining them after.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>13</displayOrderInCategory>
         
         <resourceLabel>nicrosil</resourceLabel>
-        <resourceDescription>Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.\n\nBoosts another Allomancer&#x27;s power drastically.</resourceDescription>
+        <resourceDescription>Group: enhancement\nAxis: external\nPolarity: pushing\n\nAllows {PAWN} to boosts another pawn&#x27;s next Investiture-related ability drastically, at the downside of completely draining them after.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -37,7 +37,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Nicrosil</defName>
         <label>nicroburst</label>
-        <description>Boosts another Allomancer&#x27;s power drastically.</description>
+        <description>Allows {PAWN} to boosts another pawn&#x27;s next Investiture-related ability drastically, at the downside of completely draining them after.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -48,7 +48,7 @@
         <degreeDatas>
             <li>
                 <label>misting: nicroburst</label>
-                <description>Boosts another Allomancer&#x27;s power drastically.</description>
+                <description>Allows {PAWN} to boosts another pawn&#x27;s next Investiture-related ability drastically, at the downside of completely draining them after.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

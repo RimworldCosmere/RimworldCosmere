@@ -7,13 +7,13 @@
         <label>cadmium misting</label>
         <labelShortAdj>pulser</labelShortAdj>
         
-        <description>Slows down time in a bubble, creating a temporal distortion.</description>
+        <description>Allows {PAWN} to slow down time in a bubble, creating a temporal distortion.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>14</displayOrderInCategory>
         
         <resourceLabel>cadmium</resourceLabel>
-        <resourceDescription>Cadmium is a soft, subtly reflective metal known for its unique properties and low melting point. Often used in specialized applications, it brings distinct qualities when blended into advanced alloys.\n\nSlows down time in a bubble, creating a temporal distortion.</resourceDescription>
+        <resourceDescription>Group: temporal\nAxis: external\nPolarity: pulling\n\nAllows {PAWN} to slow down time in a bubble, creating a temporal distortion.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -37,7 +37,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Cadmium</defName>
         <label>pulser</label>
-        <description>Slows down time in a bubble, creating a temporal distortion.</description>
+        <description>Allows {PAWN} to slow down time in a bubble, creating a temporal distortion.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -48,7 +48,7 @@
         <degreeDatas>
             <li>
                 <label>misting: pulser</label>
-                <description>Slows down time in a bubble, creating a temporal distortion.</description>
+                <description>Allows {PAWN} to slow down time in a bubble, creating a temporal distortion.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

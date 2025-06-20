@@ -6,7 +6,7 @@
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Ability_Steel_Aura</defName>
-        <label>steel aura</label>
+        <label>steel sight</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.\nEach line points toward a metal object — coin, armor, blade — waiting to be pushed.\nThese lines shimmer with the tension of potential force, visible only to those burning Steel.</description>
         <metal>Steel</metal>
         <hediff>Cosmere_Hediff_SteelAura</hediff>
@@ -26,7 +26,7 @@
         <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Ability_Steel_Push</defName>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
-        <label>steel push target</label>
+        <label>steel push</label>
         <description>By burning steel, the Allomancer projects invisible lines of force toward nearby sources of metal, pushing against them with immense power. A skilled practitioner can hurl weapons from foes’ hands, send enemies tumbling, or launch themselves through the air when braced properly.</description>
         <cooldownTicksRange>
             <min>20</min>
@@ -50,7 +50,7 @@
         <defName>Cosmere_Ability_Steel_Coinshot</defName>
         <abilityClass>CosmereScadrial.Abilities.Allomancy.CoinshotAbility</abilityClass>
 		<jobDef>UseVerbOnThing</jobDef>
-        <label>push coin at target</label>
+        <label>push coin</label>
         <description>Pushes a Clip at incredible speed toward the target.</description>
         <cooldownTicksRange>
             <min>20</min>

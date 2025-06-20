@@ -2,30 +2,28 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereCore.Utils {
-    [StaticConstructorOnStartup]
-    public static class MapCosmereGizmoUtility {
-        private static Gizmo mouseoverGizmo;
-        private static Gizmo lastMouseOverGizmo;
-        private static int cacheFrame;
-        private static readonly List<object> tmpObjectsList = new List<object>();
+namespace CosmereCore.Utils;
 
-        public static Gizmo LastMouseOverGizmo => MapCosmereGizmoUtility.lastMouseOverGizmo;
+[StaticConstructorOnStartup]
+public static class MapCosmereGizmoUtility {
+    private static Gizmo MouseoverGizmo;
+    private static int CacheFrame;
+    private static readonly List<object> TMPObjectsList = new List<object>();
 
-        public static void MapUIOnGUI()
-        {
-            if (Find.MainTabsRoot.OpenTab != null && Find.MainTabsRoot.OpenTab != MainButtonDefOf.Inspect)
-                return;
-            tmpObjectsList.Clear();
-            tmpObjectsList.AddRange(Find.Selector.SelectedObjects);
-            GizmoGridDrawer.DrawGizmoGridFor(tmpObjectsList, out mouseoverGizmo);
+    public static Gizmo lastMouseOverGizmo { get; private set; }
+
+    public static void MapUIOnGUI() {
+        if (Find.MainTabsRoot.OpenTab != null && Find.MainTabsRoot.OpenTab != MainButtonDefOf.Inspect) {
+            return;
         }
 
-        public static void MapUIUpdate()
-        {
-            lastMouseOverGizmo = mouseoverGizmo;
-            mouseoverGizmo?.GizmoUpdateOnMouseover();
-        }
+        TMPObjectsList.Clear();
+        TMPObjectsList.AddRange(Find.Selector.SelectedObjects);
+        GizmoGridDrawer.DrawGizmoGridFor(TMPObjectsList, out MouseoverGizmo);
+    }
+
+    public static void MapUIUpdate() {
+        lastMouseOverGizmo = MouseoverGizmo;
+        MouseoverGizmo?.GizmoUpdateOnMouseover();
     }
 }
-

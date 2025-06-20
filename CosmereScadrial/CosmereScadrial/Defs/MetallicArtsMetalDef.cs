@@ -7,11 +7,13 @@ using Verse;
 namespace CosmereScadrial.Defs;
 
 public enum AllomancyAxis {
+    None,
     Internal,
     External,
 }
 
 public enum AllomancyGroup {
+    None,
     Physical,
     Mental,
     Enhancement,
@@ -19,11 +21,13 @@ public enum AllomancyGroup {
 }
 
 public enum AllomancyPolarity {
+    None,
     Pushing,
     Pulling,
 }
 
 public enum FeruchemyGroup {
+    None,
     Physical,
     Cognitive,
     Spiritual,

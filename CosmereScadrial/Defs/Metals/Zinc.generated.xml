@@ -3,7 +3,7 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Zinc">
         <defName>Zinc</defName>
         <allomancy>
-            <description>Can riot emotions, pushing others to feel stronger emotions.</description>
+            <description>Allows {PAWN} to riot emotions, pushing others to feel stronger emotions.</description>
             <group>Mental</group>
             <axis>External</axis>
             <polarity>Pushing</polarity>

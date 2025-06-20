@@ -17,7 +17,7 @@ public class Allomancer : Gene_Resource {
     public override float InitialResourceMax => 1f;
     public override float MinLevelForAlert => .15f;
     public override float MaxLevelOffset => .1f;
-    public override float Max => MetalReserves.MAX_AMOUNT;
+    public override float Max => MetalReserves.MaxAmount;
     protected override Color BarColor => metal.color;
     protected override Color BarHighlightColor => metal.colorTwo ?? metal.color.SaturationChanged(50f);
 

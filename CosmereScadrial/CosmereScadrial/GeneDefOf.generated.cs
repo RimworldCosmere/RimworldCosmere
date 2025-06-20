@@ -40,5 +40,7 @@ namespace CosmereScadrial {
         public static GeneDef Cosmere_Ferring_Gold;
         public static GeneDef Cosmere_Misting_Electrum;
         public static GeneDef Cosmere_Ferring_Electrum;
+        public static GeneDef Cosmere_Misting_Atium;
+        public static GeneDef Cosmere_Ferring_Atium;
     }
 }

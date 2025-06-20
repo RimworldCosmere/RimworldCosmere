@@ -21,7 +21,7 @@ public class TimeBubble : ThingComp {
     public MetallicArtsMetalDef metal = null;
     public Pawn owner;
     private int ticksAlive;
-    private TimeBubbleProperties Props => (TimeBubbleProperties)props;
+    private TimeBubbleProperties props => (TimeBubbleProperties)base.props;
 
     private HediffDef? hediffToApply => metal.defName switch {
         "Cadmium" => HediffDefOf.Cosmere_Hediff_TimeBubble_Cadmium,
@@ -41,13 +41,13 @@ public class TimeBubble : ThingComp {
             return;
         }
 
-        float radius = Props.baseRadius + GetSeverity(owner) * Props.radiusPerSeverity;
+        float radius = props.baseRadius + GetSeverity(owner) * props.radiusPerSeverity;
         if (!owner.Position.InHorDistOf(parent.Position, radius)) {
             parent.Destroy();
             return;
         }
 
-        if (ticksAlive % Props.applyEveryXTicks != 0) return;
+        if (ticksAlive % props.applyEveryXTicks != 0) return;
 
         foreach (Pawn? pawn in GenRadial.RadialDistinctThingsAround(parent.Position, parent.Map, radius, true)
                      .OfType<Pawn>()) {

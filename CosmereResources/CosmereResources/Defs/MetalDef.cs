@@ -13,18 +13,18 @@ public class MetalDef : Def {
     public Color? colorTwo;
     public bool godMetal = false;
 
-    public Material TransparentLineColor => cachedTransparentLineColor ??=
+    public Material transparentLineColor => cachedTransparentLineColor ??=
         MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.Transparent, color);
 
-    public Material? TransparentLineColorTwo => cachedTransparentLineColorTwo ??=
+    public Material? transparentLineColorTwo => cachedTransparentLineColorTwo ??=
         colorTwo is null
             ? null
             : MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.Transparent, colorTwo.Value);
 
-    public Material SolidLineColor => cachedSolidLineColor ??=
+    public Material solidLineColor => cachedSolidLineColor ??=
         MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind, color);
 
-    public Material? SolidLineColorTwo => cachedSolidLineColorTwo ??=
+    public Material? solidLineColorTwo => cachedSolidLineColorTwo ??=
         colorTwo is null
             ? null
             : MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind, colorTwo.Value);

@@ -66,15 +66,15 @@ public abstract partial class AbstractAbility {
     public virtual AcceptanceReport CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus,
         bool ignoreInvestiture = false) {
         if (!metalBurning.CanBurn(metal, def.beuPerTick)) {
-            return "MenuNoReserves".Translate(metal.LabelCap);
+            return "CS_CannotBurn".Translate(metal.Named("METAL"));
         }
 
         if (activationStatus == BurningStatus.Flaring && PawnUtility.IsAsleep(pawn)) {
-            return "MenuCannotFlareAsleep".Translate();
+            return "CS_CannotFlareAsleep".Translate(pawn.Named("PAWN"), metal.Named("METAL"));
         }
 
         if (!ignoreInvestiture && targetInfo.Pawn != null && InvestitureDetector.IsShielded(targetInfo.Pawn)) {
-            return "TargetShielded".Translate(targetInfo.Pawn.LabelShortCap);
+            return "CS_TargetShielded".Translate(targetInfo.Pawn.Named("PAWN"));
         }
 
         return true;

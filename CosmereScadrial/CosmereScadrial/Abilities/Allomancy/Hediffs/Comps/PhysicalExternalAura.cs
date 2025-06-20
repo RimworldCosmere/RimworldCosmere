@@ -20,7 +20,7 @@ public class PhysicalExternalAuraProperties : HediffCompProperties {
 }
 
 public class PhysicalExternalAura : HediffComp {
-    private static readonly HashSet<Thing> metalCache = new HashSet<Thing>();
+    private static readonly HashSet<Thing> MetalCache = new HashSet<Thing>();
 
     public Dictionary<Thing, float> thingsToDraw { get; } = new Dictionary<Thing, float>();
 

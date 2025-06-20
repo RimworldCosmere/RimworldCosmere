@@ -7,13 +7,13 @@
         <label>electrum misting</label>
         <labelShortAdj>oracle</labelShortAdj>
         
-        <description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
+        <description>Shows {PAWN}&#x27;s possible futures, useful for avoiding danger.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>17</displayOrderInCategory>
         
         <resourceLabel>electrum</resourceLabel>
-        <resourceDescription>Electrum is an alloy of gold and silver, characterized by its soft, pale, and luminous hue. This unique blend of precious metals has captivated civilizations for millennia with its subtle brilliance and inherent value.\n\nShows one&#x27;s own possible futures, useful for avoiding danger.</resourceDescription>
+        <resourceDescription>Group: temporal\nAxis: internal\nPolarity: pushing\n\nShows {PAWN}&#x27;s possible futures, useful for avoiding danger.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -37,7 +37,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Electrum</defName>
         <label>oracle</label>
-        <description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
+        <description>Shows {PAWN}&#x27;s possible futures, useful for avoiding danger.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -48,7 +48,7 @@
         <degreeDatas>
             <li>
                 <label>misting: oracle</label>
-                <description>Shows one&#x27;s own possible futures, useful for avoiding danger.</description>
+                <description>Shows {PAWN}&#x27;s possible futures, useful for avoiding danger.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

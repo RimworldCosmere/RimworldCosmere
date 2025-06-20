@@ -3,7 +3,7 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Bendalloy">
         <defName>Bendalloy</defName>
         <allomancy>
-            <description>Speeds up time in a bubble around the user.</description>
+            <description>Allows {PAWN} to speed up time in a bubble around the user.</description>
             <group>Temporal</group>
             <axis>External</axis>
             <polarity>Pushing</polarity>

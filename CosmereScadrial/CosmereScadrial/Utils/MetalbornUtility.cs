@@ -62,5 +62,6 @@ public static class MetalbornUtility {
         }
 
         pawn.story.traits.GainTrait(trait);
+        pawn.story.traits.RecalculateSuppression();
     }
 }

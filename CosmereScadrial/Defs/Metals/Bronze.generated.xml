@@ -3,7 +3,7 @@
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Bronze">
         <defName>Bronze</defName>
         <allomancy>
-            <description>Detects other Allomancers using powers.</description>
+            <description>Allows {PAWN} to detect other Invested pawns and items, revealing their Investiture.</description>
             <group>Mental</group>
             <axis>Internal</axis>
             <polarity>Pushing</polarity>

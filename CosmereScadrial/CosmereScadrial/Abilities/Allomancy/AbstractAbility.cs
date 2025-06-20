@@ -122,7 +122,7 @@ public abstract partial class AbstractAbility : Ability {
     }
 
     public float GetStrength() {
-        const float multiplier = 12f;
+        const float Multiplier = 12f;
         float rawPower = pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
         float statusValue = (status ?? BurningStatus.Burning) switch {
             BurningStatus.Off => 0f,
@@ -134,7 +134,7 @@ public abstract partial class AbstractAbility : Ability {
             _ => 0f,
         };
 
-        return multiplier * def.hediffSeverityFactor * rawPower * statusValue;
+        return Multiplier * def.hediffSeverityFactor * rawPower * statusValue;
     }
 
     public void UpdateStatus(BurningStatus newStatus) {

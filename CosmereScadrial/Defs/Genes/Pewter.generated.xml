@@ -7,13 +7,13 @@
         <label>pewter misting</label>
         <labelShortAdj>thug</labelShortAdj>
         
-        <description>Enhances physical strength and durability, useful in combat.</description>
+        <description>Enhances {PAWN}&#x27;s physical strength and durability.</description>
         
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>5</displayOrderInCategory>
         
         <resourceLabel>pewter</resourceLabel>
-        <resourceDescription>Pewter is a refined alloy formed by blending Tin with Copper. Known for its soft, workable nature and a muted, classic luster, pewter has been a favored material for decorative and utilitarian objects since ancient times.\n\nEnhances physical strength and durability, useful in combat.</resourceDescription>
+        <resourceDescription>Group: physical\nAxis: internal\nPolarity: pushing\n\nEnhances {PAWN}&#x27;s physical strength and durability.</resourceDescription>
         
         <forcedTraits>
             <li>
@@ -37,7 +37,7 @@
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Misting_Pewter</defName>
         <label>thug</label>
-        <description>Enhances physical strength and durability, useful in combat.</description>
+        <description>Enhances {PAWN}&#x27;s physical strength and durability.</description>
         
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
@@ -48,7 +48,7 @@
         <degreeDatas>
             <li>
                 <label>misting: thug</label>
-                <description>Enhances physical strength and durability, useful in combat.</description>
+                <description>Enhances {PAWN}&#x27;s physical strength and durability.</description>
                 <degree>0</degree>
                 <commonality>0</commonality>
             </li>

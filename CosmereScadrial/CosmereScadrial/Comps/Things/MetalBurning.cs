@@ -19,7 +19,7 @@ public class MetalBurningProperties : CompProperties {
  * @TODO Notify the Hediff to recalculate severity on a rate change
  */
 public class MetalBurning : ThingComp {
-    private const int SECONDS_INTERVAL = 1;
+    private const int SecondsInterval = 1;
 
     // Tracks all active burn rates per metal and source
     public readonly Dictionary<(MetallicArtsMetalDef metal, AllomanticAbilityDef def), float> burnSourceMap =
@@ -40,12 +40,12 @@ public class MetalBurning : ThingComp {
 
     private MetalReserves metalReserves => pawn.GetComp<MetalReserves>();
 
-    public AcceptanceReport CanBurn(MetallicArtsMetalDef metal, float requiredBEUs) {
-        float amountToBurn = AllomancyUtility.GetMetalNeededForBeu(requiredBEUs);
+    public AcceptanceReport CanBurn(MetallicArtsMetalDef metal, float requiredBeUs) {
+        float amountToBurn = AllomancyUtility.GetMetalNeededForBeu(requiredBeUs);
 
         if (!metalReserves.CanLowerReserve(metal, amountToBurn) &&
             !AllomancyUtility.PawnHasVialForMetal(pawn, metal)) {
-            return "MenuNoReserves".Translate(metal.LabelCap);
+            return "CS_CannotBurn".Translate(pawn.Named("PAWN"), metal.Named("METAL"));
         }
 
         return AcceptanceReport.WasAccepted;

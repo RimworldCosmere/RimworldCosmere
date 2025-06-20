@@ -8,7 +8,7 @@ using Verse.Sound;
 namespace CosmereFramework.Utils;
 
 public static class UIUtil {
-    private static readonly Dictionary<string, bool> collapsedStates = new Dictionary<string, bool>();
+    private static readonly Dictionary<string, bool> CollapsedStates = new Dictionary<string, bool>();
 
     public static void WithAnchor(TextAnchor anchor, Action draw) {
         TextAnchor prev = Text.Anchor;
@@ -55,7 +55,7 @@ public static class UIUtil {
     }
 
     public static bool DrawCollapsibleHeader(string label, string key, Listing_Standard listing) {
-        if (!collapsedStates.TryGetValue(key, out bool expanded)) {
+        if (!CollapsedStates.TryGetValue(key, out bool expanded)) {
             expanded = true;
         }
 
@@ -66,7 +66,7 @@ public static class UIUtil {
 
         if (Widgets.ButtonInvisible(headerRect)) {
             expanded = !expanded;
-            collapsedStates[key] = expanded;
+            CollapsedStates[key] = expanded;
             SoundDefOf.Tick_High.PlayOneShotOnCamera();
         }
 

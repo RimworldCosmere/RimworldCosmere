@@ -6,13 +6,13 @@ using Verse;
 namespace CosmereCore.Needs;
 
 public class Investiture : Need {
-    public const int MAX_INVESTITURE = 1000000;
+    public const int MaxInvestiture = 1000000;
 
     public Investiture(Pawn pawn) : base(pawn) {
         threshPercents = new List<float> { 0.1f, 0.25f, 0.5f, 0.75f };
     }
 
-    public override float MaxLevel => MAX_INVESTITURE;
+    public override float MaxLevel => MaxInvestiture;
 
     public override bool ShowOnNeedList =>
         pawn != null && pawn.story.traits.HasTrait(TraitDef.Named("Cosmere_Invested"));

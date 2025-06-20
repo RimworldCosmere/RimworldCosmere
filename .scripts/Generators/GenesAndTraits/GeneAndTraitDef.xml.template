@@ -13,7 +13,7 @@
         <displayOrderInCategory>{{order}}</displayOrderInCategory>
         
         <resourceLabel>{{metal.Name}}</resourceLabel>
-        <resourceDescription>{{metal.Description}}\n\n{{metal.Allomancy.Description}}</resourceDescription>
+        <resourceDescription>Group: {{metal.Allomancy.Group}}\nAxis: {{metal.Allomancy.Axis}}\nPolarity: {{metal.Allomancy.Polarity}}\n\n{{metal.Allomancy.Description}}</resourceDescription>
         
         <forcedTraits>
             <li>

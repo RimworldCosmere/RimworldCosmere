@@ -15,9 +15,9 @@ public enum LogLevel {
 }
 
 public class CosmereFramework(ModContentPack content) : Mod(content) {
-    public static CosmereFramework CosmereFrameworkMod => LoadedModManager.GetMod<CosmereFramework>();
+    public static CosmereFramework cosmereFrameworkMod => LoadedModManager.GetMod<CosmereFramework>();
 
-    public static CosmereSettings CosmereSettings => CosmereFrameworkMod.settings;
+    public static CosmereSettings cosmereSettings => cosmereFrameworkMod.settings;
 
     public CosmereSettings settings => GetSettings<CosmereSettings>();
 

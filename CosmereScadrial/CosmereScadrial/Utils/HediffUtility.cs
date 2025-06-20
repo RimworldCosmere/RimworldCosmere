@@ -6,16 +6,16 @@ using Verse;
 namespace CosmereScadrial.Utils;
 
 public static class HediffUtility {
-    public static HediffDef GetHediffDefForPawn(Pawn caster, Pawn target, MultiTypeHediff hediff) {
-        if (hediff.getFriendlyHediff() != null && target.Faction == caster.Faction) {
-            return hediff.getFriendlyHediff()!;
+    public static HediffDef GetHediffDefForPawn(Pawn caster, Pawn target, IMultiTypeHediff hediff) {
+        if (hediff.GetFriendlyHediff() != null && target.Faction == caster.Faction) {
+            return hediff.GetFriendlyHediff()!;
         }
 
-        if (hediff.getHostileHediff() != null && target.Faction != caster.Faction) {
-            return hediff.getHostileHediff()!;
+        if (hediff.GetHostileHediff() != null && target.Faction != caster.Faction) {
+            return hediff.GetHostileHediff()!;
         }
 
-        return hediff.getHediff()!;
+        return hediff.GetHediff()!;
     }
 
     public static AllomanticHediff? GetOrAddHediff(Pawn target, AbstractAbility ability,
@@ -38,7 +38,7 @@ public static class HediffUtility {
     }
 
     public static AllomanticHediff GetOrAddHediff(Pawn caster, Pawn target, AbstractAbility ability,
-        MultiTypeHediff def) {
+        IMultiTypeHediff def) {
         return GetOrAddHediff(target, ability, GetHediffDefForPawn(caster, target, def));
     }
 

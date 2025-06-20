@@ -15,7 +15,7 @@
     ],
     "allomancy": {
       "userName": "lurcher",
-      "description": "Can pull on metals, useful for drawing weapons or leaping through cities.",
+      "description": "Grants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.",
       "group": "physical",
       "axis": "external",
       "polarity": "pulling",
@@ -55,7 +55,7 @@
     ],
     "allomancy": {
       "userName": "coinshot",
-      "description": "Can push on metals, allowing rapid movement or throwing metal objects.",
+      "description": "Grants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.",
       "group": "physical",
       "axis": "external",
       "polarity": "pushing",
@@ -110,7 +110,7 @@
     ],
     "allomancy": {
       "userName": "tineye",
-      "description": "Enhances senses like sight, hearing, and smell.",
+      "description": "Enhances {PAWN}'s senses like sight, hearing, and smell.",
       "group": "physical",
       "axis": "internal",
       "polarity": "pulling",
@@ -148,7 +148,7 @@
     ],
     "allomancy": {
       "userName": "thug",
-      "description": "Enhances physical strength and durability, useful in combat.",
+      "description": "Enhances {PAWN}'s physical strength and durability.",
       "group": "physical",
       "axis": "internal",
       "polarity": "pushing",
@@ -194,7 +194,7 @@
     ],
     "allomancy": {
       "userName": "rioter",
-      "description": "Can riot emotions, pushing others to feel stronger emotions.",
+      "description": "Allows {PAWN} to riot emotions, pushing others to feel stronger emotions.",
       "group": "mental",
       "axis": "external",
       "polarity": "pushing",
@@ -233,7 +233,7 @@
     ],
     "allomancy": {
       "userName": "soother",
-      "description": "Can soothe emotions, calming people or manipulating moods.",
+      "description": "Allows {PAWN} to soothe emotions, calming people or manipulating moods.",
       "group": "mental",
       "axis": "external",
       "polarity": "pulling",
@@ -281,7 +281,7 @@
     ],
     "allomancy": {
       "userName": "smoker",
-      "description": "Creates a 'coppercloud' that hides Allomantic activity.",
+      "description": "Creates a 'coppercloud' around {PAWN} that hides any Investiture-related activity.",
       "group": "mental",
       "axis": "internal",
       "polarity": "pulling",
@@ -320,7 +320,7 @@
     ],
     "allomancy": {
       "userName": "seeker",
-      "description": "Detects other Allomancers using powers.",
+      "description": "Allows {PAWN} to detect other Invested pawns and items, revealing their Investiture.",
       "group": "mental",
       "axis": "internal",
       "polarity": "pushing",
@@ -367,7 +367,7 @@
     ],
     "allomancy": {
       "userName": "gnat (aluminum)",
-      "description": "Wipes away all other metal reserves.",
+      "description": "Shields {PAWN} from investiture. Also wipes away all other investiture reserves.",
       "group": "enhancement",
       "axis": "internal",
       "polarity": "pulling",
@@ -406,7 +406,7 @@
     ],
     "allomancy": {
       "userName": "gnat (duralumin)",
-      "description": "Enhances the next Allomantic metal used drastically, but is consumed entirely.",
+      "description": "Enhances the next Investiture-related ability {PAWN} uses drastically, but is consumed entirely.",
       "group": "enhancement",
       "axis": "internal",
       "polarity": "pushing",
@@ -452,7 +452,7 @@
     ],
     "allomancy": {
       "userName": "leecher",
-      "description": "Wipes away another Allomancer's metal reserves.",
+      "description": "Allows {PAWN} to shield a target against Investiture, while wiping away their investiture reserves.",
       "group": "enhancement",
       "axis": "external",
       "polarity": "pulling",
@@ -490,7 +490,7 @@
     ],
     "allomancy": {
       "userName": "nicroburst",
-      "description": "Boosts another Allomancer's power drastically.",
+      "description": "Allows {PAWN} to boosts another pawn's next Investiture-related ability drastically, at the downside of completely draining them after.",
       "group": "enhancement",
       "axis": "external",
       "polarity": "pushing",
@@ -536,7 +536,7 @@
     ],
     "allomancy": {
       "userName": "pulser",
-      "description": "Slows down time in a bubble, creating a temporal distortion.",
+      "description": "Allows {PAWN} to slow down time in a bubble, creating a temporal distortion.",
       "group": "temporal",
       "axis": "external",
       "polarity": "pulling",
@@ -574,7 +574,7 @@
     ],
     "allomancy": {
       "userName": "slider",
-      "description": "Speeds up time in a bubble around the user.",
+      "description": "Allows {PAWN} to speed up time in a bubble around the user.",
       "group": "temporal",
       "axis": "external",
       "polarity": "pushing",
@@ -624,7 +624,7 @@
     ],
     "allomancy": {
       "userName": "augur",
-      "description": "Shows alternate versions of oneself, based on different pasts.",
+      "description": "Shows alternate versions of {PAWN}, based on different pasts. Reflecting on these visions will grant a mood buff.",
       "group": "temporal",
       "axis": "internal",
       "polarity": "pulling",
@@ -724,7 +724,7 @@
     ],
     "allomancy": {
       "userName": "oracle",
-      "description": "Shows one's own possible futures, useful for avoiding danger.",
+      "description": "Shows {PAWN}'s possible futures, useful for avoiding danger.",
       "group": "temporal",
       "axis": "internal",
       "polarity": "pushing",
@@ -766,7 +766,7 @@
       106
     ],
     "allomancy": {
-      "description": "Turns a person into a Mistborn when consumed."
+      "description": "Turns {PAWN} person into a Mistborn when consumed."
     },
     "buildable": {
       "buildings": false,
@@ -786,7 +786,7 @@
     ],
     "allomancy": {
       "userName": "seer",
-      "description": "Allows a glimpse into the immediate future of others.",
+      "description": "Allows {PAWN} a glimpse into the immediate future of others.",
       "abilities": [
         "Cosmere_Ability_Atium"
       ]

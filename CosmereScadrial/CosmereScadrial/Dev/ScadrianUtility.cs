@@ -53,8 +53,9 @@ public static class ScadrianUtility {
         actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
     public static void FillAllReserves(Pawn pawn) {
         MetalReserves? comp = pawn.GetComp<MetalReserves>();
-        foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading) {
-            comp.SetReserve(metal, MetalReserves.MAX_AMOUNT);
+        foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x =>
+                     x.allomancy != null)) {
+            comp.SetReserve(metal, MetalReserves.MaxAmount);
         }
 
         Messages.Message($"Gave {pawn.NameFullColored} full reserves reserves for all metals", pawn,
@@ -65,7 +66,7 @@ public static class ScadrianUtility {
         actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
     public static void WipeAllReserves(Pawn pawn) {
         MetalReserves? comp = pawn.GetComp<MetalReserves>();
-        foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) comp.RemoveReserve(metal);
+        comp.GetAllAvailableMetals().ForEach(comp.RemoveReserve);
 
         Messages.Message($"Wiped all reserves for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
     }
@@ -79,7 +80,7 @@ public static class ScadrianUtility {
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
             string? label = metal.label.CapitalizeFirst();
             options.Add(new DebugMenuOption(label, DebugMenuOptionMode.Action, () => {
-                comp.SetReserve(metal, MetalReserves.MAX_AMOUNT);
+                comp.SetReserve(metal, MetalReserves.MaxAmount);
                 Messages.Message($"Filled {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
             }));
         }

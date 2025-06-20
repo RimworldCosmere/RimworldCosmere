@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="MoteGlowDistorted">
-        <defName>Cosmere_Mote_Allomancy_Aura</defName>
+    <ThingDef Name="CosmereMoteAllomancyAura" ParentName="MoteGlowDistorted" Abstract="True">
         <thingClass>MoteAttached</thingClass>
         <altitudeLayer>MoteOverhead</altitudeLayer>
-        <label>allomancy aura</label>
         <graphicData>
             <texPath>Effects/AllomancyAura</texPath>
             <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>
             <shaderType>RitualSmokeNoMask</shaderType>
-            
-            <color>(185, 129, 80)</color>
             <shaderParameters>
                 <_SmokeTex1>/Things/Mote/RitualEffects/Smoke1_Thick</_SmokeTex1>
                 <_SmokeTex2>/Things/Mote/RitualEffects/Smoke2_Thick</_SmokeTex2>
@@ -21,7 +17,6 @@
                 <_Thickness>3</_Thickness>
                 <_Distortion>1</_Distortion>
                 <_VerticalScale>.2</_VerticalScale>
-                <_Color>(.553, .592, .651, .8)</_Color>
             </shaderParameters>
             <drawSize>1</drawSize>
         </graphicData>

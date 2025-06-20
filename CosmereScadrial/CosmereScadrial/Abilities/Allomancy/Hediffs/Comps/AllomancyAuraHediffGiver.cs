@@ -16,6 +16,7 @@ public class AllomancyAuraHediffGiverProperties : HediffCompProperties, MultiTyp
     public HediffDef hediff;
     public HediffDef hediffFriendly;
     public HediffDef hediffHostile;
+    public ThingDef? moteDef;
     public float radius = 12f;
     public string verb;
 
@@ -48,7 +49,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
     private AbstractAbility ability => parent.sourceAbilities.First(_ => true);
 
     private float moteScale =>
-        MoteUtility.GetMoteSize(ThingDefOf.Cosmere_Mote_Allomancy_Aura, props.radius, parent.Severity);
+        props.moteDef == null ? 1f : MoteUtility.GetMoteSize(props.moteDef, props.radius, parent.Severity);
 
     public override void CompPostMake() {
         base.CompPostMake();
@@ -74,8 +75,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
         }
 
         CreateMote()?.Maintain();
-        mote.Scale = moteScale;
-        // mote.instanceColor = parent.metal.color;
+        if (mote != null) mote.Scale = moteScale;
 
         if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) {
             return;
@@ -91,17 +91,21 @@ public class AllomancyAuraHediffGiver : HediffComp {
         }
     }
 
-    private Mote CreateMote() {
+    private Mote? CreateMote() {
+        if (props.moteDef == null) return null;
+
         if (mote?.Destroyed == false) {
             return mote;
         }
 
-        ThingDef moteDef = ThingDefOf.Cosmere_Mote_Allomancy_Aura;
-        moteDef.graphicData.color = parent.metal.color;
+        /*
+        props.moteDef.graphicData.color = parent.metal.color;
+        if (parent.metal.colorTwo != null) props.moteDef.graphicData.colorTwo = parent.metal.colorTwo.Value;
+        */
 
         mote = MoteMaker.MakeAttachedOverlay(
             base.parent.pawn,
-            moteDef,
+            props.moteDef,
             Vector3.zero,
             moteScale
         );

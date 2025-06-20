@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="CosmereMoteAllomancyAura">
+        <defName>Cosmere_Mote_Brass_Aura</defName>
+        <label>brass aura</label>
+        <graphicData>
+            <color>(175, 148, 91)</color>
+        </graphicData>
+    </ThingDef>
+</Defs>

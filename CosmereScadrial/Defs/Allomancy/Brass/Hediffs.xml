@@ -24,6 +24,11 @@
                 </statFactors>
             </li>
         </stages>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
     </HediffDef>
     
     <HediffDef ParentName="AbstractAllomanticHediff">

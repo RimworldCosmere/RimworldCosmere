@@ -7,7 +7,8 @@ using Verse;
 
 namespace CosmereScadrial.Abilities.Allomancy.Hediffs;
 
-public class InvestitureShieldHediff : AllomanticHediff {
+public class InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability)
+    : AllomanticHediff(hediffDef, pawn, ability) {
     private MetalReserves reserves => pawn.GetComp<MetalReserves>();
 
     public override void Tick() {

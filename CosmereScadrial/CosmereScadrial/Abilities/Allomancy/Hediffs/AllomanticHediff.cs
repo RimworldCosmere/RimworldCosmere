@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CosmereFramework.Utils;
+using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
@@ -10,7 +11,15 @@ namespace CosmereScadrial.Abilities.Allomancy.Hediffs;
 
 public class AllomanticHediff : HediffWithComps {
     public float extraSeverity = 0f;
+    public MetallicArtsMetalDef metal;
     public List<AbstractAbility> sourceAbilities = [];
+
+    public AllomanticHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability) {
+        def = hediffDef;
+        this.pawn = pawn;
+        AddSource(ability);
+        metal = ability.metal;
+    }
 
     public override string LabelBase =>
         base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");

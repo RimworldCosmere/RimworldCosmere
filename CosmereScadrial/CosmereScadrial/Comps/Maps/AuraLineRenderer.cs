@@ -37,7 +37,7 @@ public class AuraLineRenderer(Map map) : MapComponent(map) {
                 }
 
                 if (CosmereSettings.debugMode) {
-                    GenDraw.DrawCircleOutline(pawn.DrawPos, radius * hediff.Severity, SimpleColor.Blue);
+                    GenDraw.DrawCircleOutline(pawn.DrawPos, radius * hediff.Severity, lineMaterial);
                 }
 
                 foreach ((Thing? thing, float mass) in thingsToDraw.Where(x => x.Value > 0f)) {

@@ -7,5 +7,10 @@
         <comps>
             <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.BronzeAuraProperties" />
         </comps>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Bronze</metal>
+            </li>
+        </modExtensions>
     </HediffDef>
 </Defs>

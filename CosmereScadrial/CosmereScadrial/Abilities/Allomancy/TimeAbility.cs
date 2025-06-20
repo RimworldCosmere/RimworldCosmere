@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
 using static CosmereFramework.CosmereFramework;
@@ -39,15 +40,7 @@ public class TimeAbility : AbilitySelfTarget {
 
     private ThingDef warpMoteDef { get; } = ThingDefOf.Cosmere_Scadrial_TimeBubble_Warp;
 
-    private float moteScale {
-        get {
-            float desiredRadius = BASE_RADIUS * GetStrength(); // includes flare doubling if needed
-            float drawSize = moteDef.graphicData.drawSize.magnitude; // assume square; use magnitude if not
-            float scale = desiredRadius * 2f * drawSize; // times 2 since radius = diameter / 2
-
-            return scale + GetStrength() * drawSize;
-        }
-    }
+    private float moteScale => MoteUtility.GetMoteSize(moteDef, BASE_RADIUS, GetStrength());
 
     private HediffDef hediffToApply => metal.defName switch {
         "Cadmium" => HediffDefOf.Cosmere_Hediff_TimeBubble_Cadmium,
@@ -85,7 +78,7 @@ public class TimeAbility : AbilitySelfTarget {
         float radius = BASE_RADIUS * GetStrength();
 
         if (CosmereSettings.debugMode) {
-            GenDraw.DrawCircleOutline(bubble.DrawPos, radius, SimpleColor.Blue);
+            GenDraw.DrawCircleOutline(bubble.DrawPos, radius, metal.SolidLineColor);
         }
 
         foreach (Pawn? pawnInBubble in pawnsInBubble.Where(otherPawn =>

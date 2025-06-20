@@ -10,6 +10,11 @@
                 <verb>enshrouded</verb>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Copper</metal>
+            </li>
+        </modExtensions>
     </HediffDef>
     
     <HediffDef ParentName="AbstractAllomanticHediff">

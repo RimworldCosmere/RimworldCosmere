@@ -37,7 +37,11 @@ public class InvestitureAllomancyGizmo(
     public override bool Visible => pawn.Faction.IsPlayer;
 
     protected override string Title => metal.LabelCap;
-    protected override float Width => 80f + (ABILITY_ICON_SIZE + ABILITY_ICON_PADDING) * 5;
+
+    private float TitleWidth => Text.CalcSize(Title).x;
+
+    protected override float Width => Mathf.Max(165f,
+        TitleWidth + 30f + (ABILITY_ICON_SIZE + ABILITY_ICON_PADDING) * (gene.def.abilities.Count + 1));
 
     protected override string GetTooltip() {
         float rate = burning.GetTotalBurnRate(metal) * GenTicks.TicksPerRealSecond;

@@ -21,9 +21,9 @@ public class TimeBubble : ThingComp {
     public MetallicArtsMetalDef metal = null;
     public Pawn owner;
     private int ticksAlive;
-    private new TimeBubbleProperties Props => (TimeBubbleProperties)props;
+    private TimeBubbleProperties Props => (TimeBubbleProperties)props;
 
-    private HediffDef hediffToApply => metal.defName switch {
+    private HediffDef? hediffToApply => metal.defName switch {
         "Cadmium" => HediffDefOf.Cosmere_Hediff_TimeBubble_Cadmium,
         "Bendalloy" => HediffDefOf.Cosmere_Hediff_TimeBubble_Bendalloy,
         _ => null,

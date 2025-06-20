@@ -7,7 +7,8 @@ using Verse;
 
 namespace CosmereScadrial.Abilities.Allomancy.Hediffs;
 
-public class SurgeChargeHediff : AllomanticHediff {
+public class SurgeChargeHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability)
+    : AllomanticHediff(hediffDef, pawn, ability) {
     public Action endCallback;
 
     public int endInTicks = -1;

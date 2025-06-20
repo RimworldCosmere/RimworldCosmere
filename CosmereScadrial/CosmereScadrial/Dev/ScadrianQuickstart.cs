@@ -77,31 +77,37 @@ public static class ScadrianQuickstart {
         if (pawns.TryPopFront(out Pawn pawn)) {
             GeneUtility.AddMistborn(pawn, false, true);
             ScadrianUtility.FillAllReserves(pawn);
+            pawn.Name = new NameSingle("Mistborn");
         }
 
         if (false && pawns.TryPopFront(out pawn)) {
             GeneUtility.AddFullFeruchemist(pawn, false, true);
+            pawn.Name = new NameSingle("Full Feru");
         }
 
         if (false && pawns.TryPopFront(out pawn)) {
             GeneUtility.AddMistborn(pawn, false, true);
             ScadrianUtility.FillAllReserves(pawn);
             GeneUtility.AddFullFeruchemist(pawn, false, true);
+            pawn.Name = new NameSingle("Full Twin");
         }
 
         if (pawns.TryPopFront(out pawn)) {
             GeneUtility.AddGene(pawn, "Cosmere_Misting_Steel", false, true);
             GeneUtility.AddGene(pawn, "Cosmere_Misting_Aluminum", false, true);
+            pawn.Name = new NameSingle("Steel and Aluminum");
         }
 
         if (pawns.TryPopFront(out pawn)) {
             GeneUtility.AddGene(pawn, "Cosmere_Misting_Aluminum", false, true);
             ScadrianUtility.FillAllReserves(pawn);
+            pawn.Name = new NameSingle("Aluminum");
         }
 
         if (pawns.TryPopFront(out pawn)) {
             GeneUtility.AddGene(pawn, "Cosmere_Misting_Steel", false, true);
             pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Steel, MetalReserves.MAX_AMOUNT);
+            pawn.Name = new NameSingle("Steel");
         }
 
         Find.TickManager.Pause();

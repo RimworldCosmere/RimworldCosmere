@@ -10,6 +10,7 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ThingDefOf {
+    public static ThingDef Cosmere_Mote_Allomancy_Aura;
     public static ThingDef Cosmere_Scadrial_TimeBubble_Cadmium;
     public static ThingDef Cosmere_Scadrial_TimeBubble_Bendalloy;
     public static ThingDef Cosmere_Scadrial_TimeBubble_Warp;

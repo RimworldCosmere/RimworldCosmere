@@ -8,12 +8,13 @@ using Verse;
 namespace CosmereScadrial.Abilities.Allomancy.Hediffs.Comps;
 
 public class BronzeAuraProperties : HediffCompProperties {
-    public Color lineColor = new Color(0.6f, 0.3f, 0.3f, 1f);
     public float radius = 15f;
 
     public BronzeAuraProperties() {
         compClass = typeof(BronzeAura);
     }
+
+    public Color lineColor => MetallicArtsMetalDefOf.Bronze.color;
 
     public Material lineMaterial =>
         MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind, lineColor);

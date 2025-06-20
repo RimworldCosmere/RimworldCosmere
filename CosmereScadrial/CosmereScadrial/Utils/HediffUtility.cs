@@ -27,12 +27,18 @@ public static class HediffUtility {
             return hediff;
         }
 
-        AllomanticHediff? newHediff =
-            (AllomanticHediff)Activator.CreateInstance(hediffDef.hediffClass, hediffDef, target, ability);
-        newHediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
-        newHediff.PostMake();
+        AllomanticHediff? newHediff = CreateHediff(hediffDef, target, ability);
 
         target.health.AddHediff(newHediff);
+
+        return newHediff;
+    }
+
+    public static AllomanticHediff CreateHediff(HediffDef def, Pawn target, AbstractAbility? ability) {
+        AllomanticHediff? newHediff =
+            (AllomanticHediff)Activator.CreateInstance(def.hediffClass, def, target, ability);
+        newHediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
+        newHediff.PostMake();
 
         return newHediff;
     }

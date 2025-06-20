@@ -37,6 +37,25 @@ public abstract partial class AbstractAbility {
 
         Scribe_Values.Look(ref flareStartTick, "flareStartTick", -1);
         Scribe_Values.Look(ref status, "status");
-        Scribe_TargetInfo.Look(ref localTarget, "target");
+
+        // Save/load logic
+        if (Scribe.mode == LoadSaveMode.Saving) {
+            bool localTargetPresent = localTarget.HasValue;
+            Scribe_Values.Look(ref localTargetPresent, "targetPresent");
+            if (localTargetPresent) {
+                LocalTargetInfo temp = localTarget.Value;
+                Scribe_TargetInfo.Look(ref temp, "target");
+            }
+        } else if (Scribe.mode == LoadSaveMode.LoadingVars) {
+            bool localTargetPresent = false;
+            Scribe_Values.Look(ref localTargetPresent, "targetPresent");
+            if (localTargetPresent) {
+                LocalTargetInfo temp = LocalTargetInfo.Invalid;
+                Scribe_TargetInfo.Look(ref temp, "target");
+                localTarget = temp;
+            } else {
+                localTarget = null;
+            }
+        }
     }
 }

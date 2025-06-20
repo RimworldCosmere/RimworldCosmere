@@ -60,7 +60,10 @@ public class GoldAbility : AbilitySelfTarget {
 
     protected override void OnDisable() {
         base.OnDisable();
-        pawn.health.RemoveHediff(hediff);
+        if (pawn.health.hediffSet.HasHediff(hediff.def)) {
+            pawn.health.RemoveHediff(hediff);
+        }
+
         if (pawn.CurJob.def.Equals(JobDefOf.Cosmere_Job_FollowGoldHallucination)) {
             pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
         }

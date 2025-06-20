@@ -4,17 +4,18 @@
         <biostatCpx>1</biostatCpx>
         <biostatMet>0</biostatMet>
         <biostatArc>-1</biostatArc>
+        <iconPath>UI/Icons/Xenotype/Noble</iconPath>
     </GeneDef>
     <GeneDef ParentName="Cosmere_NobleGeneBase">
         <defName>Cosmere_Noble_Heritage</defName>
         <label>noble heritage</label>
         <randomChosen>true</randomChosen>
-        <description>This pawn descends from a noble bloodline. Their Allomantic potential is increased.</description>
+        <description>This Noble Scadrian descends from a noble bloodline. Their Allomantic potential is increased.</description>
     </GeneDef>
     <GeneDef ParentName="Cosmere_NobleGeneBase">
         <defName>Cosmere_Noble_HighSocial</defName>
         <label>charismatic</label>
-        <description>This pawn has an aura of authority and charm. Their social impact is increased.</description>
+        <description>This Noble Scadrian has an aura of authority and charm. Their social impact is increased.</description>
         <statOffsets>
             <SocialImpact>0.3</SocialImpact>
         </statOffsets>
@@ -22,7 +23,7 @@
     <GeneDef ParentName="Cosmere_NobleGeneBase">
         <defName>Cosmere_Noble_FastLearner</defName>
         <label>fast learner</label>
-        <description>This pawn is intellectually sharp and picks up new skills quickly.</description>
+        <description>This Noble Scadrian is intellectually sharp and picks up new skills quickly.</description>
         <statOffsets>
             <GlobalLearningFactor>0.15</GlobalLearningFactor>
         </statOffsets>
@@ -30,7 +31,7 @@
     <GeneDef ParentName="Cosmere_NobleGeneBase">
         <defName>Cosmere_Noble_LowFertility</defName>
         <label>infertile lineage</label>
-        <description>This pawn descends from an aristocratic bloodline that is less fertile due to generations of selective breeding.</description>
+        <description>This Noble Scadrian descends from an aristocratic bloodline that is less fertile due to generations of selective breeding.</description>
         <statFactors>
             <Fertility>0.75</Fertility>
         </statFactors>
@@ -38,7 +39,7 @@
     <GeneDef ParentName="Cosmere_NobleGeneBase">
         <defName>Cosmere_Noble_LowWorkDrive</defName>
         <label>idle elite</label>
-        <description>This pawn was bred for leadership, not labor. They work slower overall.</description>
+        <description>This Noble Scadrian was bred for leadership, not labor. They work slower overall.</description>
         <statFactors>
             <WorkSpeedGlobal>0.85</WorkSpeedGlobal>
         </statFactors>

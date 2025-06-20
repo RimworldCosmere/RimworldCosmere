@@ -10,20 +10,20 @@ namespace CosmereScadrial.Patches;
 public static class AtiumElectrumSteelPatches {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Verb_MeleeAttack), "TryCastShot")]
-    public static bool PrefixVerbShoot(Verb_MeleeAttack instance, ref bool result) {
-        return Patch(instance, ref result);
+    public static bool PrefixVerbShoot(Verb_MeleeAttack __instance, ref bool __result) {
+        return Patch(__instance, ref __result);
     }
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Verb_Shoot), "TryCastShot")]
-    public static bool PrefixVerbShoot(Verb_Shoot instance, ref bool result) {
-        return Patch(instance, ref result);
+    public static bool PrefixVerbShoot(Verb_Shoot __instance, ref bool __result) {
+        return Patch(__instance, ref __result);
     }
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Verb_CastAbility), "TryCastShot")]
-    public static bool PrefixVerbCastAbility(Verb_CastAbility instance, ref bool result) {
-        return Patch(instance, ref result);
+    public static bool PrefixVerbCastAbility(Verb_CastAbility __instance, ref bool __result) {
+        return Patch(__instance, ref __result);
     }
 
     private static bool Patch(Verb verb, ref bool result) {
@@ -31,7 +31,9 @@ public static class AtiumElectrumSteelPatches {
         if (verb.caster is not Pawn casterPawn) return true;
         if (casterPawn.Equals(targetPawn)) return true;
 
-        return ShouldHit(verb, casterPawn, targetPawn);
+        result = ShouldHit(verb, casterPawn, targetPawn);
+
+        return true;
     }
 
     private static bool ShouldHit(Verb verb, Pawn casterPawn, Pawn targetPawn) {

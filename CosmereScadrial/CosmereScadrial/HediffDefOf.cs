@@ -19,7 +19,7 @@ public static class HediffDefOf {
     public static HediffDef Cosmere_Hediff_ZincAura;
     public static HediffDef Cosmere_Hediff_Rioted_Buff;
     public static HediffDef Cosmere_Hediff_Rioted_Debuff;
-    public static HediffDef Cosmere_Hediff_CopperClouded;
+    public static HediffDef Cosmere_Hediff_Copperclouded;
     public static HediffDef Cosmere_Hediff_CopperAura;
     public static HediffDef Cosmere_Hediff_PewterBuff;
     public static HediffDef Cosmere_Hediff_TinBuff;

@@ -4,17 +4,18 @@
         <biostatCpx>1</biostatCpx>
         <biostatMet>0</biostatMet>
         <biostatArc>-1</biostatArc>
+        <iconPath>UI/Icons/Xenotype/Terris</iconPath>
     </GeneDef>
     <GeneDef ParentName="Cosmere_TerrisGeneBase">
         <defName>Cosmere_Terris_Heritage</defName>
         <label>terris heritage</label>
         <randomChosen>true</randomChosen>
-        <description>This pawn descends from a Terris bloodline. Their Feruchemical potential is increased.</description>
+        <description>This Terrisfolk descends from a Terris bloodline. Their Feruchemical potential is increased.</description>
     </GeneDef>
     <GeneDef ParentName="Cosmere_TerrisGeneBase">
         <defName>Cosmere_Terris_DeepMemory</defName>
         <label>deep memory</label>
-        <description>This pawn was raised in a culture of oral tradition and scholarship. They learn more quickly than most.</description>
+        <description>This Terrisfolk was raised in a culture of oral tradition and scholarship. They learn more quickly than most.</description>
         <statOffsets>
             <GlobalLearningFactor>0.25</GlobalLearningFactor>
         </statOffsets>
@@ -22,7 +23,7 @@
     <GeneDef ParentName="Cosmere_TerrisGeneBase">
         <defName>Cosmere_Terris_Peaceful</defName>
         <label>nonviolent</label>
-        <description>This pawn comes from a tradition of peacekeeping and cultural preservation. Their combat ability is reduced.</description>
+        <description>This Terrisfolk comes from a tradition of peacekeeping and cultural preservation. Their combat ability is reduced.</description>
         <statFactors>
             <MeleeHitChance>0.85</MeleeHitChance>
             <ShootingAccuracyPawn>0.85</ShootingAccuracyPawn>
@@ -32,7 +33,7 @@
     <GeneDef ParentName="Cosmere_TerrisGeneBase">
         <defName>Cosmere_Terris_Stability</defName>
         <label>mentally disciplined</label>
-        <description>This pawn has a stoic, composed mind. Mental breaks are slightly less likely.</description>
+        <description>This Terrisfolk has a stoic, composed mind. Mental breaks are slightly less likely.</description>
         <statOffsets>
             <MentalBreakThreshold>-0.05</MentalBreakThreshold>
         </statOffsets>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Gold -->
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
         <defName>Cosmere_Misting_Gold</defName>
         
         <label>gold misting</label>
@@ -12,15 +12,7 @@
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>16</displayOrderInCategory>
         
-        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
         <resourceLabel>gold</resourceLabel>
-        <resourceGizmoThresholds>
-          <li>0.25</li>
-          <li>0.5</li>
-          <li>0.75</li>
-        </resourceGizmoThresholds>
-        <showGizmoOnWorldView>true</showGizmoOnWorldView>
-        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
         <resourceDescription>Gold is a dense, soft, and radiant metal long valued for its rarity and beauty. Resistant to tarnish and corrosion, it has held significance in both trade and symbolism throughout history.\n\nShows alternate versions of oneself, based on different pasts.</resourceDescription>
         
         <forcedTraits>
@@ -64,7 +56,7 @@
     </TraitDef>
     
     <!-- Ferring: Gold -->
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
         <defName>Cosmere_Ferring_Gold</defName>
         
         <label>gold ferring</label>

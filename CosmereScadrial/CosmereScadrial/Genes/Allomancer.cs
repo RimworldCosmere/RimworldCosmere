@@ -10,7 +10,7 @@ using Verse;
 
 namespace CosmereScadrial.Genes;
 
-public class Metalborn : Gene_Resource {
+public class Allomancer : Gene_Resource {
     public MetallicArtsMetalDef metal =>
         MetallicArtsMetalDef.GetFromMetalDef(def.GetModExtension<MetalsLinked>().Metals.First()!);
 

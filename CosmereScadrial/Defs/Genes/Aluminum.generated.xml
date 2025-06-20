@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Aluminum -->
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
         <defName>Cosmere_Misting_Aluminum</defName>
         
         <label>aluminum misting</label>
@@ -12,15 +12,7 @@
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>10</displayOrderInCategory>
         
-        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
         <resourceLabel>aluminum</resourceLabel>
-        <resourceGizmoThresholds>
-          <li>0.25</li>
-          <li>0.5</li>
-          <li>0.75</li>
-        </resourceGizmoThresholds>
-        <showGizmoOnWorldView>true</showGizmoOnWorldView>
-        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
         <resourceDescription>Aluminum is a lightweight, silvery-white metal known for its corrosion resistance and flexibility. Its low density and high strength-to-weight ratio make it ideal for structural and high-tech uses.\n\nWipes away all other metal reserves.</resourceDescription>
         
         <forcedTraits>
@@ -64,7 +56,7 @@
     </TraitDef>
     
     <!-- Ferring: Aluminum -->
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
         <defName>Cosmere_Ferring_Aluminum</defName>
         
         <label>aluminum ferring</label>

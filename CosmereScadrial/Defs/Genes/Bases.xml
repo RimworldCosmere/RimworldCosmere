@@ -19,12 +19,25 @@
     <displayPriorityInGenepack>4999</displayPriorityInGenepack>
   </GeneCategoryDef>
   <GeneDef Name="AbstractMetallicArtsInvestitureGene" Abstract="True">
-    <geneClass>CosmereScadrial.Genes.Metalborn</geneClass>
     <passOnDirectly>false</passOnDirectly>
     <biostatCpx>5</biostatCpx>
     <biostatMet>0</biostatMet>
     <biostatArc>1</biostatArc>
     <randomChosen>false</randomChosen>
+  </GeneDef>
+  <GeneDef Name="AbstractAllomancyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
+    <geneClass>CosmereScadrial.Genes.Allomancer</geneClass>
+    <resourceGizmoType>CosmereScadrial.Gizmo.AllomanticGeneCommand</resourceGizmoType>
+    <resourceGizmoThresholds>
+      <li>0.25</li>
+      <li>0.5</li>
+      <li>0.75</li>
+    </resourceGizmoThresholds>
+    <showGizmoOnWorldView>true</showGizmoOnWorldView>
+    <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+  </GeneDef>
+  <GeneDef Name="AbstractFeruchemyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
+    <geneClass>CosmereScadrial.Genes.Feruchemist</geneClass>
   </GeneDef>
   
   <GeneDef>
@@ -59,6 +72,32 @@
       <li>
         <label>Metalborn</label>
         <description>This person is a user of the Metallic Arts.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+  <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+    <defName>Cosmere_Allomancer</defName>
+    <label>Allomancer</label>
+    <description>This person was born with one or more of the Allomantic powers.</description>
+    <degreeDatas>
+      <li>
+        <label>Allomancer</label>
+        <description>This person is an Allomancer.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+  <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+    <defName>Cosmere_Feruchemist</defName>
+    <label>Feruchemist</label>
+    <description>This person was born with one or more of the Feruchemist powers.</description>
+    <degreeDatas>
+      <li>
+        <label>Feruchemist</label>
+        <description>This person is a Feruchemist.</description>
         <degree>0</degree>
         <commonality>0</commonality>
       </li>

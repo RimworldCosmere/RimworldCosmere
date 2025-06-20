@@ -14,7 +14,7 @@ using Verse.Sound;
 namespace CosmereScadrial.Gizmo;
 
 [StaticConstructorOnStartup]
-public class InvestitureAllomancyGizmo(
+public class AllomanticGeneCommand(
     Gene_Resource gene,
     List<IGeneResourceDrain> drainGenes,
     Color barColor,
@@ -27,7 +27,7 @@ public class InvestitureAllomancyGizmo(
     public static readonly Texture2D BGTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
     public static readonly Texture2D BGTexOffDisabled = BGTexOff.Overlay(CheckOff);
 
-    protected MetallicArtsMetalDef metal => ((Metalborn)gene).metal;
+    protected MetallicArtsMetalDef metal => ((Allomancer)gene).metal;
     protected Pawn pawn => gene.pawn;
     protected MetalBurning burning => pawn.GetComp<MetalBurning>();
 
@@ -167,7 +167,7 @@ public class InvestitureAllomancyGizmo(
 
     protected override void DrawHeader(Rect headerRect, ref bool mouseOverElement) {
         if (IsDraggable) {
-            if (gene is Metalborn metalborn) {
+            if (gene is Allomancer metalborn) {
                 headerRect.xMax -= (ABILITY_ICON_SIZE + ABILITY_ICON_PADDING) * metalborn.def.abilities.Count;
                 int i = 0;
                 metalborn.def.abilities.SortBy(x => x.uiOrder);

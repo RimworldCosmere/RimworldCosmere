@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: {{capitalize metal.Name}} -->
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
         <defName>Cosmere_Misting_{{capitalize metal.Name}}</defName>
         
         <label>{{metal.Name}} misting</label>
@@ -12,15 +12,7 @@
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>{{order}}</displayOrderInCategory>
         
-        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
         <resourceLabel>{{metal.Name}}</resourceLabel>
-        <resourceGizmoThresholds>
-          <li>0.25</li>
-          <li>0.5</li>
-          <li>0.75</li>
-        </resourceGizmoThresholds>
-        <showGizmoOnWorldView>true</showGizmoOnWorldView>
-        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
         <resourceDescription>{{metal.Description}}\n\n{{metal.Allomancy.Description}}</resourceDescription>
         
         <forcedTraits>
@@ -75,7 +67,7 @@
     </TraitDef>
     
     <!-- Ferring: {{capitalize metal.Name}} -->
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
         <defName>Cosmere_Ferring_{{capitalize metal.Name}}</defName>
         
         <label>{{metal.Name}} ferring</label>

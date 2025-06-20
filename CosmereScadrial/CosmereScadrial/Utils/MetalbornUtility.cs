@@ -9,7 +9,7 @@ namespace CosmereScadrial.Utils;
 
 public static class MetalbornUtility {
     public static bool HasAnyMetalbornGene(Pawn pawn) {
-        return pawn?.genes != null && pawn.genes.GenesListForReading.Any(gene => gene is Metalborn && gene.Active);
+        return pawn?.genes != null && pawn.genes.GenesListForReading.Any(gene => gene is Allomancer && gene.Active);
     }
 
     public static void HandleMetalbornTrait(Pawn pawn) {

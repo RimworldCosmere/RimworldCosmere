@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Nicrosil -->
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
         <defName>Cosmere_Misting_Nicrosil</defName>
         
         <label>nicrosil misting</label>
@@ -12,15 +12,7 @@
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>13</displayOrderInCategory>
         
-        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
         <resourceLabel>nicrosil</resourceLabel>
-        <resourceGizmoThresholds>
-          <li>0.25</li>
-          <li>0.5</li>
-          <li>0.75</li>
-        </resourceGizmoThresholds>
-        <showGizmoOnWorldView>true</showGizmoOnWorldView>
-        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
         <resourceDescription>Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.\n\nBoosts another Allomancer&#x27;s power drastically.</resourceDescription>
         
         <forcedTraits>
@@ -64,7 +56,7 @@
     </TraitDef>
     
     <!-- Ferring: Nicrosil -->
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
         <defName>Cosmere_Ferring_Nicrosil</defName>
         
         <label>nicrosil ferring</label>

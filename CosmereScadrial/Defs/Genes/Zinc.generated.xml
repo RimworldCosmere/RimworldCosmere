@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- Misting: Zinc -->
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
         <defName>Cosmere_Misting_Zinc</defName>
         
         <label>zinc misting</label>
@@ -12,15 +12,7 @@
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>6</displayOrderInCategory>
         
-        <resourceGizmoType>CosmereScadrial.Gizmo.InvestitureAllomancyGizmo</resourceGizmoType>
         <resourceLabel>zinc</resourceLabel>
-        <resourceGizmoThresholds>
-          <li>0.25</li>
-          <li>0.5</li>
-          <li>0.75</li>
-        </resourceGizmoThresholds>
-        <showGizmoOnWorldView>true</showGizmoOnWorldView>
-        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
         <resourceDescription>Zinc is a cool, bluish-silver metal with a distinctive character. It not only protects other metals from corrosion through galvanization but also plays a crucial role in modern alloy production.\n\nCan riot emotions, pushing others to feel stronger emotions.</resourceDescription>
         
         <forcedTraits>
@@ -65,7 +57,7 @@
     </TraitDef>
     
     <!-- Ferring: Zinc -->
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
         <defName>Cosmere_Ferring_Zinc</defName>
         
         <label>zinc ferring</label>

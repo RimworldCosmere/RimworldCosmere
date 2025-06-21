@@ -10,12 +10,14 @@ public abstract partial class AbstractAbility {
         return HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def);
     }
 
-    protected void RemoveHediff(Pawn targetPawn) {
+    protected void RemoveHediff(Pawn? targetPawn) {
+        if (targetPawn == null) return;
+
         HediffUtility.RemoveHediff(pawn, targetPawn, this);
     }
 
-    protected void ApplyDrag(Pawn targetPawn, float severity) {
-        if (def.dragHediff == null || severity < def.minSeverityForDrag) return;
+    protected void ApplyDrag(Pawn? targetPawn, float severity) {
+        if (targetPawn == null || def.dragHediff == null || severity < def.minSeverityForDrag) return;
 
         Log.Warning(
             $"Applying {def.dragHediff.defName} drag to {targetPawn.NameFullColored} with Severity={severity}");
@@ -23,12 +25,12 @@ public abstract partial class AbstractAbility {
         drag.Severity = severity;
     }
 
-    protected void RemoveDrag(Pawn targetPawn) {
-        Hediff? drag = targetPawn.health.hediffSet.GetFirstHediffOfDef(def.dragHediff);
+    protected void RemoveDrag(Pawn? targetPawn) {
+        Hediff? drag = targetPawn?.health.hediffSet.GetFirstHediffOfDef(def.dragHediff);
         if (drag == null) return;
 
         float existingSeverity = drag.Severity;
-        targetPawn.health.RemoveHediff(drag);
+        targetPawn!.health.RemoveHediff(drag);
         flareStartTick -= (int)(existingSeverity * 3000f);
     }
 

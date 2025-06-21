@@ -115,6 +115,9 @@ public abstract partial class AbstractAbility {
         return job;
     }
 
+    /**
+     * @TODO Implement AbstractAbility.NextStatus, and read/use it here
+     */
     protected override void PreActivate(LocalTargetInfo? target) {
         if (shouldFlare) {
             UpdateStatus(status == BurningStatus.Flaring ? BurningStatus.Burning : BurningStatus.Flaring);

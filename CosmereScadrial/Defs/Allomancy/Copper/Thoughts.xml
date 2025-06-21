@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThoughtDef>
-        <defName>Cosmere_Thought_CopperClouded</defName>
+        <defName>Cosmere_Thought_Copper_Clouded</defName>
         <thoughtClass>Thought_Memory</thoughtClass>
         <validWhileDespawned>true</validWhileDespawned>
         <stages>

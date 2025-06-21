@@ -183,7 +183,9 @@ public class AllomanticGeneCommand(
         if (ability.def.targetRequired) {
             Find.DesignatorManager.Deselect();
             if (!ability.def.targetWorldCell) {
-                Find.Targeter.BeginTargeting(ability.verb);
+                Find.Targeter.BeginTargeting(ability.verb,
+                    actionWhenFinished: () =>
+                        ability.UpdateStatus(Event.current.control ? BurningStatus.Flaring : BurningStatus.Burning));
             } else {
                 CameraJumper.TryJump(CameraJumper.GetWorldTarget((GlobalTargetInfo)(Thing)ability.pawn));
                 Find.WorldTargeter.BeginTargeting(t => {

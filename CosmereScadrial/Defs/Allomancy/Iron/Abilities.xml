@@ -11,7 +11,7 @@
 Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
 These lines shimmer with the tension of potential force, visible only to those burning Iron.</description>
         <metal>Iron</metal>
-        <hediff>Cosmere_Hediff_IronAura</hediff>
+        <hediff>Cosmere_Hediff_Iron_Aura</hediff>
         <beuPerTick>0.0004</beuPerTick>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">

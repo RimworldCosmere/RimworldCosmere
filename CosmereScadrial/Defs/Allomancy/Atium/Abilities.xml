@@ -9,7 +9,7 @@
         <label>future sight</label>
         <description>Burning atium allows the Allomancer to see the immediate future of others, granting extreme speed and perception in combat.</description>
         <metal>Atium</metal>
-        <hediff>Cosmere_Hediff_AtiumBuff</hediff>
+        <hediff>Cosmere_Hediff_Atium_Buff</hediff>
         <iconPath>UI/Icons/Abilities/Atium</iconPath>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

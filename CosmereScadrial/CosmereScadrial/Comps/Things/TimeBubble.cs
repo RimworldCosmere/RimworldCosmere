@@ -24,8 +24,8 @@ public class TimeBubble : ThingComp {
     private TimeBubbleProperties props => (TimeBubbleProperties)base.props;
 
     private HediffDef? hediffToApply => metal.defName switch {
-        "Cadmium" => HediffDefOf.Cosmere_Hediff_TimeBubble_Cadmium,
-        "Bendalloy" => HediffDefOf.Cosmere_Hediff_TimeBubble_Bendalloy,
+        "Cadmium" => HediffDefOf.Cosmere_Hediff_Time_Bubble_Cadmium,
+        "Bendalloy" => HediffDefOf.Cosmere_Hediff_Time_Bubble_Bendalloy,
         _ => null,
     };
 

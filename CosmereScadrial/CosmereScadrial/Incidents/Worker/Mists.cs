@@ -26,7 +26,7 @@ public class Mists : IncidentWorker {
                 if (SnapUtility.IsSnapped(pawn)) continue;
                 // Check if the pawn has DormantConnection
                 SnapUtility.TrySnap(pawn);
-                pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_MistComa).Severity = 1.0f;
+                pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_Mist_Coma).Severity = 1.0f;
                 snappedCount++;
             }
 

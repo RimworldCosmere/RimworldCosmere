@@ -6,7 +6,7 @@ using PawnUtility = CosmereFramework.Utils.PawnUtility;
 namespace CosmereScadrial.Abilities.Allomancy;
 
 public class AbilityOtherTarget : AbstractAbility {
-    private Job job;
+    private Job? job;
 
     public AbilityOtherTarget() { }
 
@@ -38,24 +38,25 @@ public class AbilityOtherTarget : AbstractAbility {
     }
 
     protected override void OnDisable() {
-        RemoveHediff(localTarget.Value.Pawn);
+        RemoveHediff(localTarget?.Pawn);
+        ApplyDrag(def.applyDragOnTarget ? localTarget?.Pawn : pawn, flareDuration / 3000f);
         localTarget = null;
+
         if (job != null) {
             pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
             job = null;
         }
 
-        ApplyDrag(def.applyDragOnTarget ? localTarget.Value.Pawn : pawn, flareDuration / 3000f);
         flareStartTick = -1;
     }
 
     protected override void OnFlare() {
         flareStartTick = Find.TickManager.TicksGame;
-        RemoveDrag(def.applyDragOnTarget ? localTarget.Value.Pawn : pawn);
+        RemoveDrag(def.applyDragOnTarget ? localTarget?.Pawn : pawn);
     }
 
     protected override void OnDeFlare() {
-        ApplyDrag(def.applyDragOnTarget ? localTarget.Value.Pawn : pawn, flareDuration / 3000f / 2);
+        ApplyDrag(def.applyDragOnTarget ? localTarget?.Pawn : pawn, flareDuration / 3000f / 2);
         flareStartTick = -1;
     }
 }

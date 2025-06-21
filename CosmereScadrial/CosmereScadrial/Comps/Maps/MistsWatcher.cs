@@ -45,7 +45,7 @@ public class MistsWatcher(Map map) : MapComponent(map) {
                 if (!Rand.Chance(1f / 16f)) continue;
 
                 SnapUtility.TrySnap(pawn, "the mists");
-                pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_MistComa).Severity = 1.0f;
+                pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_Mist_Coma).Severity = 1.0f;
             }
         }
 

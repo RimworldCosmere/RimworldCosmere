@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs> 
     <ThingDef ParentName="MoteGlowDistorted">
-        <defName>Cosmere_Scadrial_SteelBubble</defName>
-        <label>Steel Bubble</label>
+        <defName>Cosmere_Scadrial_Steel_Bubble</defName>
+        <label>steel bubble</label>
         <thingClass>MoteAttached</thingClass>
         <altitudeLayer>MoteOverhead</altitudeLayer>
         <mote>

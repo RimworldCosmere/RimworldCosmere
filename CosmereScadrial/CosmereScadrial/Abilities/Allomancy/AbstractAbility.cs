@@ -121,10 +121,10 @@ public abstract partial class AbstractAbility : Ability {
         };
     }
 
-    public float GetStrength() {
+    public float GetStrength(BurningStatus? nextStatus = null) {
         const float Multiplier = 12f;
         float rawPower = pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
-        float statusValue = (status ?? BurningStatus.Burning) switch {
+        float statusValue = (nextStatus ?? status ?? BurningStatus.Off) switch {
             BurningStatus.Off => 0f,
             BurningStatus.Passive => 0.5f,
             BurningStatus.Burning => 1f,

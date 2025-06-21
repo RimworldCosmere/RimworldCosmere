@@ -11,6 +11,9 @@ namespace CosmereScadrial;
 public static class ThoughtDefOf {
     public static ThoughtDef Cosmere_Scadrial_Snapped;
 
+    public static ThoughtDef Cosmere_Thought_Copper_Clouded;
+
+
     public static ThoughtDef Cosmere_Thought_Gold_Dread;
     public static ThoughtDef Cosmere_Thought_Gold_Awe;
     public static ThoughtDef Cosmere_Thought_Gold_Gratitude;

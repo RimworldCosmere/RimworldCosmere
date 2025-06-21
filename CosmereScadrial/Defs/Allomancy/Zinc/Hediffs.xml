@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_ZincAura</defName>
+        <defName>Cosmere_Hediff_Zinc_Aura</defName>
         <label>burning zinc: aura</label>
         <description>Subtly fanning the emotional flames of all nearby minds by burning Zinc.</description>
         <comps>

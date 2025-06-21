@@ -9,7 +9,7 @@ Friendly individuals feel surges of courage and determination, sharpening their 
 Hostile or neutral targets grow tense, anxious, or unstable — their emotions stretched toward breaking.</description>
         <metal>Zinc</metal>
         <canBurnWhileAsleep>true</canBurnWhileAsleep>
-        <hediff>Cosmere_Hediff_ZincAura</hediff>
+        <hediff>Cosmere_Hediff_Zinc_Aura</hediff>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
         <defName>Cosmere_Ability_Zinc_Target</defName>

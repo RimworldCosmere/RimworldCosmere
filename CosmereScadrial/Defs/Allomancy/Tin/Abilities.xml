@@ -5,8 +5,8 @@
         <label>burn tin</label>
         <description>Burn tin to enhance senses.</description>
         <metal>Tin</metal>
-        <hediff>Cosmere_Hediff_TinBuff</hediff>
-        <dragHediff>Cosmere_Hediff_TinDrag</dragHediff>
+        <hediff>Cosmere_Hediff_Tin_Buff</hediff>
+        <dragHediff>Cosmere_Hediff_Tin_Drag</dragHediff>
         <beuPerTick>0.0004</beuPerTick>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

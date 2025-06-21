@@ -69,7 +69,7 @@ public class GoldBurn : HediffComp {
         base.CompPostPostRemoved();
 
         // Apply afterglow buff
-        Hediff? hediff = Pawn.health.AddHediff(HediffDefOf.Cosmere_Hediff_PostGold);
+        Hediff? hediff = Pawn.health.AddHediff(HediffDefOf.Cosmere_Hediff_Post_Gold);
         hediff.Severity = lastSeverity;
 
         memoriesAdded.ForEach(mem => memories.RemoveMemoriesOfDef(mem));

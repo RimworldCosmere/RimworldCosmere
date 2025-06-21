@@ -15,16 +15,16 @@ public class AuraLineRenderer(Map map) : MapComponent(map) {
             if (!pawn.Spawned || pawn.Dead) continue;
 
             foreach (AllomanticHediff? hediff in pawn.health?.hediffSet.hediffs.OfType<AllomanticHediff>() ?? []) {
-                if (!hediff.def.Equals(HediffDefOf.Cosmere_Hediff_BronzeAura) &&
-                    !hediff.def.Equals(HediffDefOf.Cosmere_Hediff_SteelAura) &&
-                    !hediff.def.Equals(HediffDefOf.Cosmere_Hediff_IronAura)) {
+                if (!hediff.def.Equals(HediffDefOf.Cosmere_Hediff_Bronze_Aura) &&
+                    !hediff.def.Equals(HediffDefOf.Cosmere_Hediff_Steel_Aura) &&
+                    !hediff.def.Equals(HediffDefOf.Cosmere_Hediff_Iron_Aura)) {
                     continue;
                 }
 
                 float radius;
                 Material lineMaterial;
                 Dictionary<Thing, float> thingsToDraw;
-                if (hediff.def.Equals(HediffDefOf.Cosmere_Hediff_BronzeAura)) {
+                if (hediff.def.Equals(HediffDefOf.Cosmere_Hediff_Bronze_Aura)) {
                     BronzeAura? bronzeAuraComp = hediff.TryGetComp<BronzeAura>();
                     radius = bronzeAuraComp.props.radius;
                     lineMaterial = bronzeAuraComp.props.lineMaterial;

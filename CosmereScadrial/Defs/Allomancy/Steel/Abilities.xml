@@ -9,8 +9,38 @@
         <label>steel sight</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.\nEach line points toward a metal object — coin, armor, blade — waiting to be pushed.\nThese lines shimmer with the tension of potential force, visible only to those burning Steel.</description>
         <metal>Steel</metal>
-        <hediff>Cosmere_Hediff_SteelAura</hediff>
+        <hediff>Cosmere_Hediff_Steel_Aura</hediff>
         <beuPerTick>0.0004</beuPerTick>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
+        <groupDef>Cosmere_Scadrial_Steel</groupDef>
+        <defName>Cosmere_Ability_Steel_Jump</defName>
+        <label>steel jump</label>
+        <description>Uses a downward push to leap forward. Useful for quick escapes or aggressive repositioning.</description>
+        <metal>Steel</metal>
+        <hediff>Cosmere_Hediff_Steel_Jump</hediff>
+        <cooldownTicksRange>60</cooldownTicksRange> <!-- Takes 1 second to jump -->
+        <verbProperties Inherit="False">
+            <verbClass>CosmereScadrial.Abilities.Allomancy.Verbs.SteelJump</verbClass>
+            <label>jump</label>
+            <violent>false</violent>
+            <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+            <range>12</range>
+            <requireLineOfSight>true</requireLineOfSight>
+            <soundCast>Longjump_Jump</soundCast>
+            <soundLanding>Longjump_Land</soundLanding>
+            <targetParams>
+                <canTargetLocations>true</canTargetLocations>
+                <canTargetPawns>false</canTargetPawns>
+                <canTargetBuildings>false</canTargetBuildings>
+            </targetParams>
+        </verbProperties>
+        <jobDef>CastJump</jobDef>
+        <comps>
+            <li Class="CosmereScadrial.Comps.Ability.MetalCostProperties">
+                <cost>0.02</cost>
+            </li>
+        </comps>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <groupDef>Cosmere_Scadrial_Steel</groupDef>
@@ -18,8 +48,8 @@
         <label>steel bubble</label>
         <description>Creates a swirling field of Steel lines that subtly deflect projectiles, making the Allomancer harder to hit with ranged attacks.</description>
         <metal>Steel</metal>
-        <hediff>Cosmere_Hediff_SteelBubble</hediff>
-        <burningMote>Cosmere_Scadrial_SteelBubble</burningMote>
+        <hediff>Cosmere_Hediff_Steel_Bubble</hediff>
+        <burningMote>Cosmere_Scadrial_Steel_Bubble</burningMote>
         <beuPerTick>0.0004</beuPerTick>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">

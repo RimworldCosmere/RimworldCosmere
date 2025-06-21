@@ -5,6 +5,6 @@
         <label>see my future</label>
         <description>The Allomancer burns electrum, glimpsing their own possible futures.</description>
         <metal>Electrum</metal>
-        <hediff>Cosmere_Hediff_ElectrumBuff</hediff>
+        <hediff>Cosmere_Hediff_Electrum_Buff</hediff>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

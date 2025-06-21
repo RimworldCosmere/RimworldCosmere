@@ -24,10 +24,16 @@ public static class AllomancyUtility {
         pawn.GetComp<MetalReserves>().AddReserve(metal, amount);
     }
 
-    public static bool CanUseMetal(Pawn pawn, MetallicArtsMetalDef metal) {
-        if (metal.Equals(MetallicArtsMetalDefOf.Lerasium) && IsMistborn(pawn)) return false;
+    public static AcceptanceReport CanUseMetal(Pawn pawn, MetallicArtsMetalDef metal) {
+        if (metal.Equals(MetallicArtsMetalDefOf.Lerasium) && IsMistborn(pawn)) {
+            return new AcceptanceReport("CS_AlreadyMistborn".Translate(pawn.Named("PAWN")));
+        }
 
-        return metal.godMetal || IsMistborn(pawn) || IsMisting(pawn, metal);
+        if (metal.godMetal || IsMistborn(pawn) || IsMisting(pawn, metal)) {
+            return true;
+        }
+
+        return new AcceptanceReport("CS_CannotUseMetal".Translate(pawn.Named("PAWN"), metal.Named("METAL")));
     }
 
     public static bool IsMistborn(Pawn pawn) {

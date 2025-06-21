@@ -11,7 +11,7 @@
     
     
     <HediffDef>
-        <defName>Cosmere_Hediff_PostGold</defName>
+        <defName>Cosmere_Hediff_Post_Gold</defName>
         <hediffClass>HediffWithComps</hediffClass>
         <label>gold bliss</label>
         <description>The Allomancer carries the lingering weight of their vision — strengthened by clarity, burdened by memory.</description>

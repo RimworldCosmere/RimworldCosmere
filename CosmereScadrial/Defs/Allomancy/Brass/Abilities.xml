@@ -10,7 +10,7 @@
         <description>Suppress emotional outbursts and calm the minds of others using Brass. Has a chance to break mental states when flaring.</description>
         <metal>Brass</metal>
         <canBurnWhileAsleep>true</canBurnWhileAsleep>
-        <hediff>Cosmere_Hediff_BrassAura</hediff>
+        <hediff>Cosmere_Hediff_Brass_Aura</hediff>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
         <groupDef>Cosmere_Scadrial_Brass</groupDef>

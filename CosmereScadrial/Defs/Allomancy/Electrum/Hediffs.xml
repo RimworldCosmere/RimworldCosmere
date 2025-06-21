@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_ElectrumBuff</defName>
+        <defName>Cosmere_Hediff_Electrum_Buff</defName>
         <label>burning electrum</label>
         <description>The Allomancer is burning electrum, glimpsing their own branching futures to confuse enemies and steel their resolve.</description>
         <stages>

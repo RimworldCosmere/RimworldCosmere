@@ -37,9 +37,9 @@
         <label>soothed</label>
         <description>This pawn has been soothed by a nearby Allomancer burning brass. Their emotions feel more stable and calm.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties">
-                <baseTicks>3600</baseTicks>
+        <comps Inherit="False">
+            <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.SeverityCalculatorProperties">
+                <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_Soothed</thought>

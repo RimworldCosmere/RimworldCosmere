@@ -24,17 +24,6 @@ public static class MetalbornUtility {
         }
     }
 
-    public static void HandleBurningMetalHediff(Pawn pawn) {
-        HediffDef? hediffDef = DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Burning_Metals");
-        if (!HasAnyMetalbornGene(pawn)) {
-            Hediff? hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef);
-            if (hediff != null) pawn.health.RemoveHediff(hediff);
-            return;
-        }
-
-        pawn.health.GetOrAddHediff(hediffDef);
-    }
-
     public static void HandleMistbornAndFullFeruchemistTraits(Pawn pawn) {
         HandleMistbornTrait(pawn);
         HandleFullFeruchemistTrait(pawn);

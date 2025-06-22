@@ -37,10 +37,9 @@
         </verbProperties>
         <jobDef>CastJump</jobDef>
         <comps>
-            <li Class="CosmereScadrial.Comps.Ability.MetalCostProperties">
-                <cost>0.02</cost>
-            </li>
+            <li Class="CosmereScadrial.Comps.Ability.MetalCostProperties" />
         </comps>
+        <beuPerTick>0.002</beuPerTick>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <groupDef>Cosmere_Scadrial_Steel</groupDef>

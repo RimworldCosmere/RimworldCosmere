@@ -132,10 +132,4 @@
                 Revision="$(GitRevision)"
                 BuildTime="$(BuildDateTime)"/>
     </Target>
-
-    <Target Name="GenerateAssets" AfterTargets="Build" Condition="'$(ModScript)' != ''">
-        <Exec Command="npm run $(ModScript)"
-              WorkingDirectory="$(MSBuildThisFileDirectory)..\..\.scripts"
-              StandardOutputImportance="High"/>
-    </Target>
 </Project>

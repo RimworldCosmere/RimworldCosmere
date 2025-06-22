@@ -17,7 +17,6 @@ public class Feruchemist : Gene {
         MetalbornUtility.HandleMistbornAndFullFeruchemistTraits(pawn);
         MetalbornUtility.HandleMetalbornTrait(pawn);
         InvestitureUtility.AssignHeighteningFromBEUs(pawn);
-        MetalbornUtility.HandleBurningMetalHediff(pawn);
     }
 
     public override void PostRemove() {
@@ -25,6 +24,5 @@ public class Feruchemist : Gene {
 
         MetalbornUtility.HandleMistbornAndFullFeruchemistTraits(pawn);
         MetalbornUtility.HandleMetalbornTrait(pawn);
-        MetalbornUtility.HandleBurningMetalHediff(pawn);
     }
 }

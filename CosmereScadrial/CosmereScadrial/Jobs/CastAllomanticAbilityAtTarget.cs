@@ -29,9 +29,6 @@ public class CastAllomanticAbilityAtTarget : JobDriver {
     protected override IEnumerable<Toil> MakeNewToils() {
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
-        yield return Toils_Combat.GotoCastPosition(TargetIndex.A, maxRangeFactor: 0.95f);
-        yield return Toils_General.DoAtomic(() => { ability.UpdateStatus((BurningStatus)job.count); });
-
         Toil? toil = ToilMaker.MakeToil(nameof(CastAllomanticAbilityAtTarget));
         toil.initAction = () => {
             if (ShouldStopJob()) {

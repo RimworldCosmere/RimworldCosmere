@@ -46,7 +46,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
     private bool isAtLeastPassive => parent.Severity >= 0.5f;
 
-    private AbstractAbility ability => parent.sourceAbilities.First(_ => true);
+    private AbstractAbility ability => parent.sourceAbilities.FirstOrDefault(_ => true);
 
     private float moteScale =>
         props.moteDef == null ? 1f : MoteUtility.GetMoteSize(props.moteDef, props.radius, parent.Severity);
@@ -56,12 +56,12 @@ public class AllomancyAuraHediffGiver : HediffComp {
         CreateMote();
     }
 
-    public override void CompPostTick(ref float severityAdjustment) {
+    public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
         if (!isAtLeastPassive) {
             return;
         }
 
-        base.CompPostTick(ref severityAdjustment);
+        base.CompPostTickInterval(ref severityAdjustment, delta);
         float radius = props.radius * base.parent.Severity;
         IntVec3 center = base.parent.pawn.Position;
         Map? map = base.parent.pawn.Map;
@@ -70,14 +70,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
             return;
         }
 
-        if (cosmereSettings.debugMode) {
-            GenDraw.DrawCircleOutline(parent.pawn.DrawPos, radius, parent.metal.transparentLineColor);
-        }
-
-        CreateMote()?.Maintain();
-        if (mote != null) mote.Scale = moteScale;
-
-        if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) {
+        if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) {
             return;
         }
 
@@ -88,6 +81,33 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
         foreach (Pawn? pawn in nearbyPawns) {
             TryAct(pawn);
+        }
+    }
+
+    public override void CompPostTick(ref float severityAdjustment) {
+        base.CompPostTick(ref severityAdjustment);
+        if (cosmereSettings.debugMode && Find.Selector.IsSelected(parent.pawn)) {
+            GenDraw.DrawCircleOutline(parent.pawn.DrawPos, props.radius * base.parent.Severity,
+                parent.metal.transparentLineColor);
+        }
+
+        CreateMote()?.Maintain();
+        if (mote != null) mote.Scale = moteScale;
+
+
+        if (cosmereSettings.debugMode && Find.Selector.IsSelected(parent.pawn)) {
+            float radius = props.radius * base.parent.Severity;
+            IntVec3 center = base.parent.pawn.Position;
+            Map? map = base.parent.pawn.Map;
+
+            IEnumerable<Pawn> nearbyPawns = GenRadial
+                .RadialCellsAround(center, Math.Min(radius, GenRadial.MaxRadialPatternRadius), true)
+                .Select(cell => cell.GetFirstPawn(map))
+                .Where(p => p != null && p != base.parent.pawn)
+                .ToArray();
+            foreach (Pawn nearbyPawn in nearbyPawns) {
+                GenDraw.DrawLineBetween(parent.pawn.DrawPos, nearbyPawn.DrawPos, SimpleColor.Red, 1f);
+            }
         }
     }
 
@@ -114,11 +134,13 @@ public class AllomancyAuraHediffGiver : HediffComp {
     }
 
     private void TryAct(Pawn target) {
-        if (target?.mindState == null || target.Dead) {
+        if (target?.mindState == null || target.Dead || ability == null) {
             return;
         }
 
-        AllomanticHediff hediff = HediffUtility.GetOrAddHediff(Pawn, target, ability, props);
+        AllomanticHediff? hediff =
+            HediffUtility.GetOrAddHediff(Pawn, target, ability, props);
+        if (hediff == null) return;
 
         // Reset the Disappears timer
         if (hediff.TryGetComp<DisappearsScaled>(out DisappearsScaled? disappearsComp)) {

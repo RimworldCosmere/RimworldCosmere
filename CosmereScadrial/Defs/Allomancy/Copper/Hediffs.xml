@@ -24,9 +24,6 @@
         <description>This pawn has been enshrouded by a nearby Allomancer burning copper. They are more resilient to sources of Investiture.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps>
-            <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties">
-                <baseTicks>600</baseTicks> <!-- 10 seconds -->
-            </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_Copper_Clouded</thought>
                 <moodOffset>1</moodOffset>
@@ -38,23 +35,14 @@
                 <statFactors>
                     <PainShockThreshold>1.15</PainShockThreshold>
                     <MentalBreakThreshold>1.15</MentalBreakThreshold>
-                    <RestRateMultiplier>1.15</RestRateMultiplier>
-                    <RestFallRateFactor>0.85</RestFallRateFactor>
-                    <JoyFallRateFactor>0.85</JoyFallRateFactor>
                 </statFactors>
             </li>
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <minSeverity>2</minSeverity>
-                <statOffsets>
-                    <CosmereCore_MentalBreakRemoveFactor>0.05</CosmereCore_MentalBreakRemoveFactor>
-                </statOffsets>
                 <statFactors>
                     <PainShockThreshold>1.15</PainShockThreshold>
                     <MentalBreakThreshold>1.15</MentalBreakThreshold>
-                    <RestRateMultiplier>1.15</RestRateMultiplier>
-                    <RestFallRateFactor>0.85</RestFallRateFactor>
-                    <JoyFallRateFactor>0.85</JoyFallRateFactor>
                 </statFactors>
             </li>
         </stages>

@@ -1,4 +1,3 @@
-using System;
 using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using Verse;
@@ -18,8 +17,17 @@ public static class HediffUtility {
         return hediff.GetHediff()!;
     }
 
-    public static AllomanticHediff? GetOrAddHediff(Pawn target, AbstractAbility ability,
-        HediffDef? hediffDef) {
+    public static AllomanticHediff CreateHediff(HediffDef def, Pawn target, AbstractAbility ability) {
+        AllomanticHediff? newHediff = new AllomanticHediff(def, target, ability) {
+            loadID = Find.UniqueIDsManager.GetNextHediffID(),
+        };
+        newHediff.PostMake();
+        newHediff.AddSource(ability);
+
+        return newHediff;
+    }
+
+    public static AllomanticHediff? GetOrAddHediff(Pawn target, AbstractAbility ability, HediffDef? hediffDef) {
         if (hediffDef == null) return null;
 
         if (TryGetHediff(target, hediffDef, out AllomanticHediff hediff)) {
@@ -34,32 +42,23 @@ public static class HediffUtility {
         return newHediff;
     }
 
-    public static AllomanticHediff CreateHediff(HediffDef def, Pawn target, AbstractAbility? ability) {
-        AllomanticHediff? newHediff =
-            (AllomanticHediff)Activator.CreateInstance(def.hediffClass, def, target, ability);
-        newHediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
-        newHediff.PostMake();
-
-        return newHediff;
-    }
-
-    public static AllomanticHediff GetOrAddHediff(Pawn caster, Pawn target, AbstractAbility ability,
+    public static AllomanticHediff? GetOrAddHediff(Pawn caster, Pawn target, AbstractAbility ability,
         IMultiTypeHediff def) {
         return GetOrAddHediff(target, ability, GetHediffDefForPawn(caster, target, def));
     }
 
-    public static void RemoveHediff(Pawn target, AbstractAbility ability, HediffDef hediffDef) {
+    public static void RemoveHediff(Pawn target, AbstractAbility ability, HediffDef? hediffDef) {
         if (hediffDef == null) return;
 
         if (!TryGetHediff(target, hediffDef, out AllomanticHediff hediff)) {
             return;
         }
 
-        hediff.RemoveSource(ability, true);
+        hediff.RemoveSource(ability);
     }
 
-    public static void RemoveHediff(Pawn caster, Pawn target, AbstractAbility ability) {
-        RemoveHediff(target, ability, GetHediffDefForPawn(caster, target, ability.def));
+    public static void RemoveHediff(Pawn caster, Pawn target, AbstractAbility ability, IMultiTypeHediff def) {
+        RemoveHediff(target, ability, GetHediffDefForPawn(caster, target, def));
     }
 
     private static bool TryGetHediff(Pawn target, HediffDef def, out AllomanticHediff hediff) {

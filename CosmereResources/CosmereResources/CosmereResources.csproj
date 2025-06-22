@@ -30,7 +30,6 @@
         <Optimize>false</Optimize>
         <RootNamespace>CosmereResources</RootNamespace>
         <AssemblyName>CosmereResources</AssemblyName>
-        <ModScript>generate:mod:resources</ModScript>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -81,10 +80,4 @@
 
         <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj"/>
     </ItemGroup>
-
-    <Target Name="GenerateAssets" AfterTargets="Build" Condition="'$(ModScript)' != ''">
-        <Exec Command="npm run $(ModScript)"
-              WorkingDirectory="$(MSBuildThisFileDirectory)..\..\.scripts"
-              StandardOutputImportance="High"/>
-    </Target>
 </Project>

@@ -37,7 +37,7 @@ public class CustomStatDef : HediffComp {
         if (parent.pawn.InMentalState) return;
         if (Rand.Value > mentalBreakAddFactor) return;
 
-        MentalBreakDef? breakDef = MentalBreakDefOf.BerserkShort;
+        MentalBreakDef? breakDef = MentalBreakDefOf.Berserk;
         if (!breakDef.Worker.BreakCanOccur(parent.pawn)) return;
         parent.pawn.jobs?.EndCurrentJob(JobCondition.InterruptForced);
         breakDef.Worker.TryStart(parent.pawn, "StatTrigger", true);

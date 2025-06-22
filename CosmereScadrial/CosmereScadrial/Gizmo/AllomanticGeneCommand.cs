@@ -140,7 +140,11 @@ public class AllomanticGeneCommand(
         if (isMouseOver) {
             TipSignal desc = ability.Tooltip;
 
-            desc.text += "\n\n" + "CS_PressToFlare".Translate(metal.Named("METAL")).Colorize(ColoredText.GeneColor);
+            TaggedString flareOrDeflare =
+                (ability.status == BurningStatus.Flaring ? "CS_Deflare" : "CS_Flare").Translate();
+            desc.text += "\n\n" + "CS_PressToFlare"
+                .Translate(flareOrDeflare.Named("FLARE"), metal.label.Named("METAL"))
+                .Colorize(ColoredText.GeneColor);
 
             if (disabled && !disabledReason.NullOrEmpty()) {
                 desc.text +=
@@ -170,22 +174,32 @@ public class AllomanticGeneCommand(
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
 
         if (ability.atLeastPassive) {
-            if (ability.verb.verbProps.nonInterruptingSelfCast) {
-                ability.verb.TryStartCastOn((LocalTargetInfo)ability.verb.Caster);
+            bool isFlaring = ability.status == BurningStatus.Flaring;
+            bool isBurningOrPassive = ability.status is BurningStatus.Burning or BurningStatus.Passive;
+
+            if (ev.control) {
+                if (isBurningOrPassive) {
+                    ability.SetNextStatus(BurningStatus.Flaring);
+                } else if (isFlaring) {
+                    ability.SetNextStatus(BurningStatus.Burning);
+                }
             } else {
-                pawn.jobs.TryTakeOrderedJob(
-                    ability.GetJob(ability.pawn, ability.localTarget ?? LocalTargetInfo.Invalid));
+                ability.SetNextStatus(BurningStatus.Off);
             }
+
+            ability.UpdateStatus(ability.nextStatus!.Value);
 
             return;
         }
 
         if (ability.def.targetRequired) {
             Find.DesignatorManager.Deselect();
+            ability.SetNextStatus(ev.control ? BurningStatus.Flaring : BurningStatus.Burning, true);
             if (!ability.def.targetWorldCell) {
+                float originalRange = ability.verb.verbProps.range;
+                ability.verb.verbProps.range = originalRange * ability.GetStrength(ability.nextStatus);
                 Find.Targeter.BeginTargeting(ability.verb,
-                    actionWhenFinished: () =>
-                        ability.UpdateStatus(Event.current.control ? BurningStatus.Flaring : BurningStatus.Burning));
+                    actionWhenFinished: () => ability.verb.verbProps.range = originalRange);
             } else {
                 CameraJumper.TryJump(CameraJumper.GetWorldTarget((GlobalTargetInfo)(Thing)ability.pawn));
                 Find.WorldTargeter.BeginTargeting(t => {
@@ -199,11 +213,7 @@ public class AllomanticGeneCommand(
                     extraLabelGetter: ability.WorldMapExtraLabel, canSelectTarget: ability.ValidateGlobalTarget);
             }
         } else {
-            ability.QueueCastingJob(
-                ability.pawn,
-                LocalTargetInfo.Invalid,
-                ev.control
-            );
+            ability.QueueCastingJob(ability.pawn, LocalTargetInfo.Invalid, ev.control);
         }
     }
 
@@ -223,9 +233,9 @@ public class AllomanticGeneCommand(
                     ProcessInput(ability, result.InteractEvent);
                     break;
                 case GizmoState.Mouseover:
-                    //TooltipHandler.ClearTooltipsFrom(headerRect);
                     if (ability.verb is Verb_CastAbility verb) {
-                        verb.verbProps.DrawRadiusRing(verb.caster.Position, verb);
+                        // @TODO This doesn't work very well. Gotta figure that out. Its like its not happening every tick?
+                        // verb.verbProps.DrawRadiusRing(verb.caster.Position, verb);
                     }
 
                     ability.OnGizmoUpdate();
@@ -336,5 +346,9 @@ public class AllomanticGeneCommand(
         }
 
         return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear, null);
+    }
+
+    public override void GizmoUpdateOnMouseover() {
+        base.GizmoUpdateOnMouseover();
     }
 }

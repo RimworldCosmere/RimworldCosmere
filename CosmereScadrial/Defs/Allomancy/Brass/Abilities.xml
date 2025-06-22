@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <AbilityGroupDef>
-        <defName>Cosmere_Scadrial_Brass</defName>
-    </AbilityGroupDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
-        <groupDef>Cosmere_Scadrial_Brass</groupDef>
         <defName>Cosmere_Ability_Brass_Aura</defName>
         <label>soothing aura</label>
         <description>Suppress emotional outbursts and calm the minds of others using Brass. Has a chance to break mental states when flaring.</description>
@@ -13,7 +9,6 @@
         <hediff>Cosmere_Hediff_Brass_Aura</hediff>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
-        <groupDef>Cosmere_Scadrial_Brass</groupDef>
         <defName>Cosmere_Ability_Brass_Target</defName>
         <label>soothe target</label>
         <description>Suppress emotional outburst and calm the mind of a target Brass. Has a chance to break mental states.</description>

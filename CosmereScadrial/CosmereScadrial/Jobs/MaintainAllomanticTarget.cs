@@ -29,11 +29,6 @@ public class MaintainAllomanticTarget : JobDriver {
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A)
             .FailOnDowned(TargetIndex.A);
 
-        Toil? gotoThing = Toils_General.Do(MaintainProximity);
-        gotoThing.defaultCompleteMode = ToilCompleteMode.PatherArrival;
-
-        yield return Toils_General.DoAtomic(() => { ability.UpdateStatus((BurningStatus)job.count); });
-
         Toil toil = new Toil {
             defaultCompleteMode = ToilCompleteMode.Never,
             tickAction = () => {

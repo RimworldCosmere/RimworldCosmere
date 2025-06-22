@@ -3,14 +3,11 @@ using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace CosmereScadrial.Comps.Ability;
 
 public class MetalCostProperties : CompProperties_AbilityEffect {
-    public float cost;
-
     public MetalCostProperties() {
         compClass = typeof(MetalCost);
     }
@@ -23,10 +20,7 @@ public class MetalCost : CompAbilityEffect {
     private MetalReserves reserves => parent.pawn.GetComp<MetalReserves>();
     private MetalBurning burning => parent.pawn.GetComp<MetalBurning>();
 
-    private float currentCost =>
-        Props.cost * Parent.GetStrength(Event.current.control
-            ? BurningStatus.Flaring
-            : BurningStatus.Burning);
+    private float currentCost => Parent.GetDesiredBurnRateForStatus(Parent.nextStatus);
 
     private bool hasEnoughMetal => burning.CanBurn(metal, currentCost);
 

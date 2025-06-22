@@ -48,6 +48,6 @@ public class Investiture : Need {
 
     public override string GetTipString() {
         return
-            $"Represents this pawn’s connection to the Spiritual Realm. Increased by ingesting Allomantic metals.\n\nCurrent Level: {Mathf.RoundToInt(CurLevel * 100)}%";
+            $"Represents this pawn’s connection to the Spiritual Realm. \n\nCurrent Level: {Mathf.RoundToInt(CurLevel * 100)}%";
     }
 }

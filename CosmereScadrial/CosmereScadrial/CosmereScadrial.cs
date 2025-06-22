@@ -10,10 +10,8 @@ public class CosmereScadrial : Mod {
     public static CosmereScadrialSettings settings;
 
     public CosmereScadrial(ModContentPack content) : base(content) {
-        //InvestitureTabRegistry.Register(InvestitureTabScadrial.Draw);
         settings = GetSettings<CosmereScadrialSettings>();
     }
-
 
     public static CosmereScadrial cosmereScadrialMod => LoadedModManager.GetMod<CosmereScadrial>();
 

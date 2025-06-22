@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using CosmereFramework.Extensions;
 using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Genes;
 using RimWorld;
 using RimWorld.Planet;
-using TextureTools;
 using UnityEngine;
 using Verse;
 using Verse.Sound;

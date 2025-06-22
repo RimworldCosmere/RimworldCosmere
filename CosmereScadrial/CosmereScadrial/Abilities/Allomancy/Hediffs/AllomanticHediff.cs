@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CosmereFramework.Utils;
 using CosmereScadrial.Abilities.Allomancy.Hediffs.Comps;
+using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
 using RimWorld;
@@ -65,8 +66,10 @@ public class AllomanticHediff : HediffWithComps {
             surge?.Burn(
                 severityCalculator.RecalculateSeverity,
                 (int)TickUtility.TicksPerSecond,
-                severityCalculator.RecalculateSeverity
-            );
+                () => {
+                    pawn.GetComp<MetalBurning>().TryBurnMetals();
+                    severityCalculator.RecalculateSeverity();
+                });
         }
 
         base.Tick();

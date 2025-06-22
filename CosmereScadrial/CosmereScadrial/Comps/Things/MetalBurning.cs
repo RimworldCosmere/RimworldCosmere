@@ -58,6 +58,10 @@ public class MetalBurning : ThingComp {
             return;
         }
 
+        TryBurnMetals();
+    }
+
+    public void TryBurnMetals() {
         if (pawn.Dead) {
             return;
         }

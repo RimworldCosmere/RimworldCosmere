@@ -1,7 +1,6 @@
 using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using Verse;
 using HediffUtility = CosmereScadrial.Utils.HediffUtility;
-using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Abilities.Allomancy;
 
@@ -19,10 +18,9 @@ public abstract partial class AbstractAbility {
     protected void ApplyDrag(Pawn? targetPawn, float severity) {
         if (targetPawn == null || def.dragHediff == null || severity < def.minSeverityForDrag) return;
 
-        Log.Warning(
-            $"Applying {def.dragHediff.defName} drag to {targetPawn.NameFullColored} with Severity={severity}");
         Hediff? drag = targetPawn.health.GetOrAddHediff(def.dragHediff);
         drag.Severity = severity;
+        //Log.Warning($"Applying {def.dragHediff.defName} drag to {targetPawn.NameFullColored} with Severity={severity}");
     }
 
     protected void RemoveDrag(Pawn? targetPawn) {

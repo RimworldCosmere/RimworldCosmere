@@ -1,11 +1,10 @@
-using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Comps.Hediffs;
 
 public class DisappearsScaledProperties : HediffCompProperties {
-    public int baseTicks = GenDate.TicksPerHour / 2;
+    public int baseTicks = GenDate.TicksPerHour;
     public float minSeverity = 0f;
     public bool scaleSeverity = true;
 
@@ -22,8 +21,6 @@ public class DisappearsScaled : HediffComp {
     private static int CurrentTick => Find.TickManager.TicksGame;
 
     private new DisappearsScaledProperties props => (DisappearsScaledProperties)base.props;
-
-    private new AllomanticHediff parent => (AllomanticHediff)base.parent;
 
     public override string CompLabelInBracketsExtra => $"{ticksLeft.ToStringTicksToPeriod()} left";
 

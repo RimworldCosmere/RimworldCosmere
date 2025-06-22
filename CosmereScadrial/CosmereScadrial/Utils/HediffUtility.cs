@@ -1,3 +1,4 @@
+using System;
 using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using Verse;
@@ -18,9 +19,8 @@ public static class HediffUtility {
     }
 
     public static AllomanticHediff CreateHediff(HediffDef def, Pawn target, AbstractAbility ability) {
-        AllomanticHediff? newHediff = new AllomanticHediff(def, target, ability) {
-            loadID = Find.UniqueIDsManager.GetNextHediffID(),
-        };
+        AllomanticHediff newHediff = (AllomanticHediff)Activator.CreateInstance(def.hediffClass, def, target, ability);
+        newHediff.loadID = Find.UniqueIDsManager.GetNextHediffID();
         newHediff.PostMake();
         newHediff.AddSource(ability);
 

@@ -57,7 +57,6 @@ public class CoinshotAbility : AbilityOtherTarget {
 
     public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
         localTarget = targetInfo;
-        UpdateStatus(shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
 
         return base.Activate(localTarget.Value, dest);
     }

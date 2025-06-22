@@ -12,7 +12,7 @@ public class Coinshot : Verb_Shoot {
     public override ThingDef Projectile => CoinThingDefOf.Cosmere_Clip_Projectile;
 
     public override void WarmupComplete() {
-        ability.UpdateStatus(ability.shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
+        ability.UpdateStatus(ability.nextStatus!.Value);
 
         SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(CasterPawn);
         surge?.Burn();

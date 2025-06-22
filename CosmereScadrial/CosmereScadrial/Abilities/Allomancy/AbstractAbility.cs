@@ -18,7 +18,6 @@ public abstract partial class AbstractAbility : Ability {
     protected int flareStartTick = -1;
     public GlobalTargetInfo? globalTarget;
     public LocalTargetInfo? localTarget;
-    protected internal bool shouldFlare;
     public BurningStatus? status;
 
     protected AbstractAbility() { }
@@ -38,6 +37,8 @@ public abstract partial class AbstractAbility : Ability {
             status = BurningStatus.Off;
         }
     }
+
+    public BurningStatus? nextStatus { get; private set; }
 
     protected TargetFlags targetFlags {
         get {
@@ -110,8 +111,8 @@ public abstract partial class AbstractAbility : Ability {
         return GetDesiredBurnRateForStatus(status ?? BurningStatus.Off);
     }
 
-    public float GetDesiredBurnRateForStatus(BurningStatus burningStatus) {
-        return burningStatus switch {
+    public float GetDesiredBurnRateForStatus(BurningStatus? burningStatus = null) {
+        return (burningStatus ?? status ?? BurningStatus.Off) switch {
             BurningStatus.Off => 0,
             BurningStatus.Passive => def.beuPerTick / 2,
             BurningStatus.Burning => def.beuPerTick,
@@ -121,10 +122,10 @@ public abstract partial class AbstractAbility : Ability {
         };
     }
 
-    public float GetStrength(BurningStatus? nextStatus = null) {
+    public float GetStrength(BurningStatus? burningStatus = null) {
         const float Multiplier = 12f;
         float rawPower = pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
-        float statusValue = (nextStatus ?? status ?? BurningStatus.Off) switch {
+        float statusValue = (burningStatus ?? status ?? BurningStatus.Off) switch {
             BurningStatus.Off => 0f,
             BurningStatus.Passive => 0.5f,
             BurningStatus.Burning => 1f,
@@ -137,7 +138,16 @@ public abstract partial class AbstractAbility : Ability {
         return Multiplier * def.hediffSeverityFactor * rawPower * statusValue;
     }
 
-    public void UpdateStatus(BurningStatus newStatus) {
+    public void UpdateStatus(BurningStatus? newStatus = null) {
+        if (newStatus == null) {
+            if (nextStatus == null) {
+                Log.Error("Call to UpdateStatus with no status, and no next status");
+                return;
+            }
+
+            newStatus = nextStatus;
+        }
+
         if (status == newStatus) return;
 
         Log.Verbose($"Updating {pawn.NameFullColored}'s {def.defName} from {status} -> {newStatus}");
@@ -154,6 +164,8 @@ public abstract partial class AbstractAbility : Ability {
         if (burningMote != null) burningMote.Scale = GetMoteScale();
 
         metalBurning.UpdateBurnSource(metal, GetDesiredBurnRateForStatus(newStatus), def);
+
+        // OnStatusChanged needs to be called in these orders so that the SeverityCalculator can be updated properly
 
         switch (status) {
             // When Disabling (and possibly deflaring)
@@ -174,7 +186,9 @@ public abstract partial class AbstractAbility : Ability {
                 break;
         }
 
-        OnStatusChanged?.Invoke(this, oldStatus ?? BurningStatus.Off, newStatus);
+        OnStatusChanged?.Invoke(this, oldStatus!.Value, newStatus.Value);
+
+        nextStatus = null;
     }
 
     public override IEnumerable<Verse.Command> GetGizmos() {
@@ -191,7 +205,7 @@ public abstract partial class AbstractAbility : Ability {
     protected virtual void OnEnable() { }
 
     protected virtual void OnDisable() {
-        shouldFlare = false;
+        nextStatus = null;
     }
 
     protected virtual void OnFlare() { }

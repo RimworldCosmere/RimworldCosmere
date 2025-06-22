@@ -31,7 +31,6 @@
         <DefineConstants>DEBUG;TRACE</DefineConstants>
         <RootNamespace>CosmereScadrial</RootNamespace>
         <AssemblyName>CosmereScadrial</AssemblyName>
-        <ModScript>generate:mod:scadrial</ModScript>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -92,10 +91,4 @@
         <Folder Include="Command\"/>
         <Folder Include="WorkGiver\"/>
     </ItemGroup>
-
-    <Target Name="GenerateAssets" AfterTargets="Build" Condition="'$(ModScript)' != ''">
-        <Exec Command="npm run $(ModScript)"
-              WorkingDirectory="$(MSBuildThisFileDirectory)..\..\.scripts"
-              StandardOutputImportance="High"/>
-    </Target>
 </Project>

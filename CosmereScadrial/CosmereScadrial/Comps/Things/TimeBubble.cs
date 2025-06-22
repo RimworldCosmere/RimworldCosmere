@@ -69,6 +69,6 @@ public class TimeBubble : ThingComp {
                    hediff.sourceAbilities.Any(ability => ability.metal.Equals(metal));
         });
 
-        return hediff is not AllomanticHediff allomanticHediff ? 0f : allomanticHediff.CalculateSeverity();
+        return hediff is not AllomanticHediff allomanticHediff ? 0f : allomanticHediff.severityCalculator.severity;
     }
 }

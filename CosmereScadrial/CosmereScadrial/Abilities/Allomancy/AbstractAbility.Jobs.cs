@@ -90,19 +90,27 @@ public abstract partial class AbstractAbility {
 
     public void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo destination, bool flare) {
         localTarget = targetInfo;
-        shouldFlare = def.canFlare && flare;
+        SetNextStatus(def.canFlare && flare ? BurningStatus.Flaring : BurningStatus.Burning);
 
         base.QueueCastingJob(targetInfo, destination);
     }
 
     public void QueueCastingJob(GlobalTargetInfo targetInfo, bool flare) {
         globalTarget = targetInfo;
-        shouldFlare = def.canFlare && flare;
+        SetNextStatus(def.canFlare && flare ? BurningStatus.Flaring : BurningStatus.Burning);
 
         base.QueueCastingJob(targetInfo);
     }
 
     public override Job GetJob(LocalTargetInfo targetInfo, LocalTargetInfo destination) {
+        if (nextStatus != null) {
+            UpdateStatus(nextStatus.Value);
+        }
+
+        if (status == null) {
+            Log.Warning("Ability doesn't have a status or a nextStatus");
+        }
+
         Job? job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, targetInfo);
         job.ability = this;
         job.verbToUse = verb;
@@ -110,31 +118,37 @@ public abstract partial class AbstractAbility {
         job.targetA = targetInfo;
         job.targetB = destination;
         job.source = this;
-        job.count = (int)(shouldFlare ? BurningStatus.Flaring : BurningStatus.Burning);
+        job.count = (int)(status ?? BurningStatus.Burning);
 
         return job;
+    }
+
+    public void SetNextStatus(BurningStatus status, bool overrideNextStatus = false) {
+        if (nextStatus != null && !overrideNextStatus) return;
+
+        if (!def.canFlare && status is BurningStatus.Flaring or BurningStatus.Duralumin) {
+            status = BurningStatus.Burning;
+        }
+
+        if (PawnUtility.IsAsleep(pawn) && status == BurningStatus.Burning) {
+            status = def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off;
+        }
+
+        nextStatus = status;
     }
 
     /**
      * @TODO Implement AbstractAbility.NextStatus, and read/use it here
      */
     protected override void PreActivate(LocalTargetInfo? target) {
-        if (shouldFlare) {
-            UpdateStatus(status == BurningStatus.Flaring ? BurningStatus.Burning : BurningStatus.Flaring);
-        } else {
-            UpdateStatus(
-                atLeastPassive
-                    ? PawnUtility.IsAsleep(pawn) && def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off
-                    : BurningStatus.Burning
-            );
-        }
+        UpdateStatus();
 
         base.PreActivate(target);
     }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
         bool result = base.Activate(target, dest);
-        shouldFlare = false;
+        nextStatus = null;
 
         return result;
     }

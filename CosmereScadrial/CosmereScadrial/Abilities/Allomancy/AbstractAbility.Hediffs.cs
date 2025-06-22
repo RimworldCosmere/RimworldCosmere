@@ -13,7 +13,7 @@ public abstract partial class AbstractAbility {
     protected void RemoveHediff(Pawn? targetPawn) {
         if (targetPawn == null) return;
 
-        HediffUtility.RemoveHediff(pawn, targetPawn, this);
+        HediffUtility.RemoveHediff(pawn, targetPawn, this, def);
     }
 
     protected void ApplyDrag(Pawn? targetPawn, float severity) {

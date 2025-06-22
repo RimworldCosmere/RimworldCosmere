@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CosmereFramework.Utils;
+using CosmereScadrial.Abilities.Allomancy.Hediffs.Comps;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
 using RimWorld;
@@ -17,64 +19,57 @@ public class AllomanticHediff : HediffWithComps {
     public AllomanticHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability) {
         def = hediffDef;
         this.pawn = pawn;
-        AddSource(ability);
         metal = ability.metal;
     }
 
     public override string LabelBase =>
         base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");
 
+    public SeverityCalculator severityCalculator => GetComp<SeverityCalculator>();
+
+    public event Action<AllomanticHediff, AbstractAbility> OnSourceAdded;
+    public event Action<AllomanticHediff, AbstractAbility> OnSourceRemoved;
+
+    public override void PostRemoved() {
+        base.PostRemoved();
+        Log.Warning($"{pawn.NameFullColored} has lost {def.defName} hediff");
+    }
+
     public void AddSource(AbstractAbility sourceAbility) {
         if (sourceAbilities.Contains(sourceAbility)) {
-            RecalculateSeverity();
             return;
         }
 
         Log.Warning(
             $"{sourceAbility.pawn.NameFullColored} applying {def.defName} hediff to {pawn.NameFullColored} with Status={sourceAbility.status}");
-        sourceAbility.OnStatusChanged += (_, _, _) => RecalculateSeverity();
+
         sourceAbilities.Add(sourceAbility);
-        RecalculateSeverity();
+        OnSourceAdded?.Invoke(this, sourceAbility);
     }
 
-    public void RemoveSource(AbstractAbility sourceAbility, bool calculateSeverity = false) {
+    public void RemoveSource(AbstractAbility sourceAbility) {
         if (!sourceAbilities.Contains(sourceAbility)) {
-            if (calculateSeverity) RecalculateSeverity();
             return;
         }
 
         Log.Warning(
-            $"{sourceAbility.pawn.NameFullColored} removing {def.defName} hediff from {pawn.NameFullColored}");
+            $"{sourceAbility.pawn.NameFullColored} is no longer casting {sourceAbility.def.defName} on {pawn.NameFullColored}, Removing source for {def.defName} hediff");
+
         sourceAbilities.Remove(sourceAbility);
-        if (calculateSeverity) RecalculateSeverity();
+        OnSourceRemoved?.Invoke(this, sourceAbility);
     }
 
     public override void Tick() {
-        AbstractAbility[] toRemove = sourceAbilities
-            .Where(x => x.status == BurningStatus.Off || x.pawn.DestroyedOrNull())
-            .ToArray();
-        foreach (AbstractAbility ability in toRemove) {
-            RemoveSource(ability);
-        }
-
         SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);
-        if (surge != null && def.defName != surge.def.defName) {
+        if (def.defName != surge?.def.defName) {
             surge?.Burn(
-                RecalculateSeverity,
+                severityCalculator.RecalculateSeverity,
                 (int)TickUtility.TicksPerSecond,
-                RecalculateSeverity
+                severityCalculator.RecalculateSeverity
             );
         }
 
         base.Tick();
-    }
-
-    protected virtual void RecalculateSeverity() {
-        Severity = CalculateSeverity();
-    }
-
-    public float CalculateSeverity() {
-        return sourceAbilities.Sum(x => x.GetStrength()) + extraSeverity;
     }
 
     public override void ExposeData() {

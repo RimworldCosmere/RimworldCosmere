@@ -16,8 +16,10 @@ public class DisappearsScaledProperties : HediffCompProperties {
 
 public class DisappearsScaled : HediffComp {
     private float initialSeverity;
+    private int startTick = -1;
     private int ticksLeft = -1;
     private int totalTicks = -1;
+    private static int CurrentTick => Find.TickManager.TicksGame;
 
     private new DisappearsScaledProperties props => (DisappearsScaledProperties)base.props;
 
@@ -29,14 +31,18 @@ public class DisappearsScaled : HediffComp {
         base.CompPostMake();
         initialSeverity = parent.Severity;
         totalTicks = ticksLeft = (int)(props.baseTicks * initialSeverity); // Scale duration
+
+        // Set the start tick to the current tick
+        startTick = CurrentTick;
     }
 
-    public override void CompPostTick(ref float severityAdjustment) {
-        base.CompPostTick(ref severityAdjustment);
+    public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
+        base.CompPostTickInterval(ref severityAdjustment, delta);
 
-        if (parent.sourceAbilities.Count > 0) return;
+        // If the startTick is less than 5 seconds ago, don't do anything
+        if (CurrentTick - startTick < GenTicks.SecondsToTicks(3)) return;
 
-        ticksLeft--;
+        ticksLeft -= delta;
         if (ticksLeft <= 0) {
             parent.pawn.health.RemoveHediff(parent);
             return;

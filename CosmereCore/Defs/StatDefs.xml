@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <StatDef>
-        <defName>CosmereCore_MentalBreakAddFactor</defName>
+        <defName>Cosmere_Mental_Break_Add_Factor</defName>
         <label>mental break induction chance</label>
         <description>A multiplier that affects the chance to cause a pawn to experiencing a mental break.</description>
-        <category>PawnMisc</category>
+        <category>PawnHealth</category>
         <defaultBaseValue>0</defaultBaseValue>
         <toStringStyle>PercentZero</toStringStyle>
         <displayPriorityInCategory>1000</displayPriorityInCategory>
     </StatDef>
     <StatDef>
-        <defName>CosmereCore_MentalBreakRemoveFactor</defName>
+        <defName>Cosmere_Mental_Break_Remove_Factor</defName>
         <label>mental break recovery chance</label>
         <description>A multiplier that affects the chance to calm a pawn experiencing a mental break.</description>
-        <category>PawnMisc</category>
+        <category>PawnHealth</category>
         <defaultBaseValue>0</defaultBaseValue>
         <toStringStyle>PercentZero</toStringStyle>
         <displayPriorityInCategory>1001</displayPriorityInCategory>
+    </StatDef>
+    <StatDef>
+        <defName>Cosmere_Time_Dilation_Factor</defName>
+        <label>time dilation rate</label>
+        <description>A multiplier that affects the rate at which time passes. Above 1 speeds up, below slows down.</description>
+        <category>PawnMisc</category>
+        <defaultBaseValue>1</defaultBaseValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>1000</displayPriorityInCategory>
     </StatDef>
 </Defs>

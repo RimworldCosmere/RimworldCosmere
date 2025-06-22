@@ -38,7 +38,7 @@ public static class InvestitureDetector {
         if (thing?.Map == null) return false;
 
         foreach (Pawn? pawn in thing.Map.mapPawns.AllPawnsSpawned) {
-            Hediff? aura = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDef.Named("Cosmere_Hediff_CopperAura"));
+            Hediff? aura = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDef.Named("Cosmere_Hediff_Copper_Aura"));
             if (aura == null) continue;
 
             float radius = 18f * aura.Severity;

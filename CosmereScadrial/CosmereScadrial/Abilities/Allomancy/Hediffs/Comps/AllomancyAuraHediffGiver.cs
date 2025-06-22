@@ -106,7 +106,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
                 .Where(p => p != null && p != base.parent.pawn)
                 .ToArray();
             foreach (Pawn nearbyPawn in nearbyPawns) {
-                GenDraw.DrawLineBetween(parent.pawn.DrawPos, nearbyPawn.DrawPos, SimpleColor.Red, 1f);
+                GenDraw.DrawLineBetween(parent.pawn.DrawPos, nearbyPawn.DrawPos, SimpleColor.Red);
             }
         }
     }

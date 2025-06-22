@@ -52,7 +52,7 @@ public abstract partial class AbstractAbility : Ability {
 
     public new AllomanticAbilityDef def => (AllomanticAbilityDef)base.def;
 
-    public bool atLeastPassive => status > BurningStatus.Passive;
+    public bool atLeastPassive => status >= BurningStatus.Passive;
 
     public MetallicArtsMetalDef metal => def.metal;
 

@@ -28,6 +28,7 @@
                     <ReadingSpeed>0.33333</ReadingSpeed>
                     <ImmunityGainSpeed>0.33333</ImmunityGainSpeed>
                     <WorkSpeedGlobal>0.33333</WorkSpeedGlobal>
+                    <Cosmere_Time_Dilation_Factor>0.33333</Cosmere_Time_Dilation_Factor>
                 </statFactors>
             </li>
         </stages>
@@ -59,6 +60,7 @@
                     <ReadingSpeed>3.0</ReadingSpeed>
                     <ImmunityGainSpeed>3.0</ImmunityGainSpeed>
                     <WorkSpeedGlobal>3.0</WorkSpeedGlobal>
+                    <Cosmere_Time_Dilation_Factor>3.0</Cosmere_Time_Dilation_Factor>
                 </statFactors>
             </li>
         </stages>

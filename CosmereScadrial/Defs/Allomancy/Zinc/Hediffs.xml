@@ -108,7 +108,7 @@
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <minSeverity>2</minSeverity>
                 <statOffsets>
-                    <CosmereCore_MentalBreakAddFactor>0.05</CosmereCore_MentalBreakAddFactor>
+                    <Cosmere_Mental_Break_Add_Factor>0.05</Cosmere_Mental_Break_Add_Factor>
                 </statOffsets>
                 <statFactors>
                     <SocialImpact>0.8</SocialImpact>

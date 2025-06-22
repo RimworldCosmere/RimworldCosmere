@@ -13,14 +13,8 @@
             <displayName>Harmony</displayName>
             <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
         </li>
-        <li>
-            <packageId>kathanon.floatsubmenu</packageId>
-            <displayName>Float Sub-Menus</displayName>
-            <steamWorkshopUrl>steam://url/CommunityFilePage/2864015430</steamWorkshopUrl>
-        </li>
     </modDependencies>
     <loadAfter>
         <li>brrainz.harmony</li>
-        <li>kathanon.floatsubmenu</li>
     </loadAfter>
 </ModMetaData>

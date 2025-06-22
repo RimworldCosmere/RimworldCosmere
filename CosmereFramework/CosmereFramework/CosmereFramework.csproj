@@ -86,9 +86,6 @@
         <Reference Include="HarmonyMod">
             <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\HarmonyMod.dll</HintPath>
         </Reference>
-        <Reference Include="FloatSubMenu">
-            <HintPath>$(WorkshopDir)/2864015430/1.5/Assemblies/FloatSubMenu.dll</HintPath>
-        </Reference>
     </ItemGroup>
 
     <UsingTask TaskName="WriteBuildInfo" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">

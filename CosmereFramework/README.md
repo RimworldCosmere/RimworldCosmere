@@ -1,10 +1,10 @@
-# 🧱 Cosmere Framework
+# Cosmere Framework
 
 *Shared utility code for Cosmere-based RimWorld mods.*
 
 ---
 
-## 🔧 What This Mod Does
+## What This Mod Does
 
 This mod provides internal C# utility classes used by other Cosmere mods.  
 It does **not** add any content, gameplay changes, or settings on its own.
@@ -13,7 +13,7 @@ If you’re seeing this listed as a requirement, it’s because another mod depe
 
 ---
 
-## 📦 Use & Compatibility
+## Use & Compatibility
 
 - No gameplay impact by itself
 - Safe to add or remove at any time (unless required by another mod)
@@ -21,7 +21,7 @@ If you’re seeing this listed as a requirement, it’s because another mod depe
 
 ---
 
-## 🧪 For Modders
+## For Modders
 
 Feel free to use it as a dependency in your own Cosmere-compatible mods.
 

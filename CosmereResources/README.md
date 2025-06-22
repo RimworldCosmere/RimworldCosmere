@@ -1,10 +1,10 @@
-# ⚗️ Cosmere Metals
+# Cosmere Metals
 
 *A shared metals library for Cosmere-based mods in RimWorld.*
 
 ---
 
-## 🌌 What's Included
+## What's Included
 
 - Adds/Replaces all **16 base metals** from Scadrial as *stuffable materials* with balanced stat modifiers.
 - Also adds Nickel (for alloying), Coal/Charcoal, and retextures silver.
@@ -22,7 +22,7 @@
 
 ---
 
-## 📦 Use & Compatibility
+## Use & Compatibility
 
 - This is a *dependency mod* — most other Cosmere mods will require this.
 - Safe to add mid-save, though current maps wont contain new metals

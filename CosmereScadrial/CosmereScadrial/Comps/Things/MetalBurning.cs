@@ -3,6 +3,7 @@ using System.Linq;
 using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
+using RimWorld;
 using UnityEngine;
 using Verse;
 using Log = CosmereFramework.Log;
@@ -37,6 +38,8 @@ public class MetalBurning : ThingComp {
     }
 
     private Pawn pawn => (parent as Pawn)!;
+    private float timeDilationFactor => pawn.GetStatValue(CosmereCore.StatDefOf.Cosmere_Time_Dilation_Factor);
+    private int tickRate => Mathf.RoundToInt(GenTicks.TickRareInterval / timeDilationFactor);
 
     private MetalReserves metalReserves => pawn.GetComp<MetalReserves>();
 
@@ -51,12 +54,10 @@ public class MetalBurning : ThingComp {
         return AcceptanceReport.WasAccepted;
     }
 
-    public override void CompTick() {
-        base.CompTick();
+    public override void CompTickInterval(int delta) {
+        base.CompTickInterval(delta);
 
-        if (!GenTicks.IsTickInterval(GenTicks.TickRareInterval)) {
-            return;
-        }
+        if (!pawn.IsHashIntervalTick(tickRate, delta)) return;
 
         TryBurnMetals();
     }

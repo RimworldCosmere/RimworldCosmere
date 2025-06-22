@@ -64,12 +64,14 @@ public class TimeAbility : AbilitySelfTarget {
         if (!bubbleWithDistortion.Destroyed) bubbleWithDistortion.Destroy();
     }
 
+
     public override void AbilityTick() {
         base.AbilityTick();
+        if (!atLeastPassive) return;
 
         bubble?.Maintain();
         bubbleWithDistortion?.Maintain();
-        if (!atLeastPassive || bubble == null || bubbleWithDistortion == null) return;
+        if (bubble == null || bubbleWithDistortion == null) return;
 
         bubble.Scale = moteScale;
         bubbleWithDistortion.Scale = moteScale * 0.8f;

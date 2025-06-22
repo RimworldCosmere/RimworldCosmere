@@ -123,18 +123,18 @@ public abstract partial class AbstractAbility {
         return job;
     }
 
-    public void SetNextStatus(BurningStatus status, bool overrideNextStatus = false) {
+    public void SetNextStatus(BurningStatus desiredStatus, bool overrideNextStatus = false) {
         if (nextStatus != null && !overrideNextStatus) return;
 
-        if (!def.canFlare && status is BurningStatus.Flaring or BurningStatus.Duralumin) {
-            status = BurningStatus.Burning;
+        if (!def.canFlare && desiredStatus is BurningStatus.Flaring or BurningStatus.Duralumin) {
+            desiredStatus = BurningStatus.Burning;
         }
 
-        if (PawnUtility.IsAsleep(pawn) && status == BurningStatus.Burning) {
-            status = def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off;
+        if (PawnUtility.IsAsleep(pawn) && desiredStatus >= BurningStatus.Burning) {
+            desiredStatus = def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off;
         }
 
-        nextStatus = status;
+        nextStatus = desiredStatus;
     }
 
     /**

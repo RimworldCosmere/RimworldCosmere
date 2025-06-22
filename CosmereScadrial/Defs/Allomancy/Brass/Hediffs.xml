@@ -61,7 +61,7 @@
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <minSeverity>2</minSeverity>
                 <statOffsets>
-                    <CosmereCore_MentalBreakRemoveFactor>0.05</CosmereCore_MentalBreakRemoveFactor>
+                    <Cosmere_Mental_Break_Remove_Factor>0.05</Cosmere_Mental_Break_Remove_Factor>
                 </statOffsets>
                 <statFactors>
                     <PainShockThreshold>1.15</PainShockThreshold>

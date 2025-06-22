@@ -15,7 +15,7 @@ public class MetalReservesProperties : CompProperties {
 
 public class MetalReserves : ThingComp {
     public const float MaxAmount = 1f;
-    private const float SleepDecayAmount = .025f;
+    private const float SleepDecayAmount = .0025f;
 
     private Dictionary<MetallicArtsMetalDef, float> reserves = new Dictionary<MetallicArtsMetalDef, float>();
 

@@ -5,7 +5,7 @@
         <label>prepping duralumin burn</label>
         <description>The Allomancer is preparing a surged (Duralumin or Nicrosil) burn, ready to amplify any active metals.</description>
         <hediffClass>CosmereScadrial.Abilities.Allomancy.Hediffs.SurgeChargeHediff</hediffClass>
-        <comps>
+        <comps Inherit="False">
         </comps>
     </HediffDef>
 </Defs>

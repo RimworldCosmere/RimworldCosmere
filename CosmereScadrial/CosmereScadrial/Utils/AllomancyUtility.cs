@@ -81,11 +81,8 @@ public static class AllomancyUtility {
         return true;
     }
 
-    public static SurgeChargeHediff GetSurgeBurn(Pawn pawn) {
-        SurgeChargeHediff hediff = null;
-        pawn.health?.hediffSet.TryGetHediff(out hediff);
-
-        return hediff;
+    public static SurgeChargeHediff? GetSurgeBurn(Pawn pawn) {
+        return pawn.health.hediffSet.TryGetHediff(out SurgeChargeHediff hediff) ? hediff : null;
     }
 
     public static float GetMetalNeededForBeu(float requiredBeu) {

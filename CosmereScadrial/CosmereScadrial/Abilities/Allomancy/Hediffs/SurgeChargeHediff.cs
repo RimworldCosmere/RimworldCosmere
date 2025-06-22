@@ -12,6 +12,7 @@ public class SurgeChargeHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility a
     public Action endCallback;
 
     public int endInTicks = -1;
+
     private MetalBurning burning => pawn.GetComp<MetalBurning>();
     private MetalReserves reserves => pawn.GetComp<MetalReserves>();
 

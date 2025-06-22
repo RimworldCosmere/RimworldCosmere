@@ -2,7 +2,7 @@
 <Defs>
     <HediffDef Name="AbstractCosmereHediff" Abstract="True">
         <comps>
-            <li Class="CosmereCore.Comps.Hediffs.Properties.CustomStatDef" />
+            <li Class="CosmereCore.Comps.Hediffs.CustomStatDefProperties" />
         </comps>
     </HediffDef>
 </Defs>

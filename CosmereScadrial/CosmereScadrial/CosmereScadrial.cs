@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
-using CosmereCore.Tabs;
 using CosmereFramework;
-using CosmereScadrial.Inspector;
 using UnityEngine;
 using Verse;
 
@@ -12,7 +10,7 @@ public class CosmereScadrial : Mod {
     public static CosmereScadrialSettings settings;
 
     public CosmereScadrial(ModContentPack content) : base(content) {
-        InvestitureTabRegistry.Register(InvestitureTabScadrial.Draw);
+        //InvestitureTabRegistry.Register(InvestitureTabScadrial.Draw);
         settings = GetSettings<CosmereScadrialSettings>();
     }
 

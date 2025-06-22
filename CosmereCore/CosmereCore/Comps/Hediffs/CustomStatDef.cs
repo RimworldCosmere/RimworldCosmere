@@ -9,6 +9,12 @@ using Log = CosmereFramework.Log;
 
 namespace CosmereCore.Comps.Hediffs;
 
+public class CustomStatDefProperties : HediffCompProperties {
+    public CustomStatDefProperties() {
+        compClass = typeof(CustomStatDef);
+    }
+}
+
 public class CustomStatDef : HediffComp {
     private List<StatDef>? customStatDefsCache;
 

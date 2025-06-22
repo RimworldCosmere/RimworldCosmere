@@ -167,23 +167,24 @@ public abstract partial class AbstractAbility : Ability {
 
         // OnStatusChanged needs to be called in these orders so that the SeverityCalculator can be updated properly
 
-        switch (status) {
-            // When Disabling (and possibly deflaring)
-            case BurningStatus.Off when oldStatus > BurningStatus.Off:
-                OnDisable();
-                break;
-            // When enabling 
-            case > BurningStatus.Off when oldStatus == BurningStatus.Off:
-                OnEnable();
-                break;
-            // When Flaring
-            case BurningStatus.Flaring when oldStatus < BurningStatus.Flaring:
-                OnFlare();
-                break;
-            // When de-flaring to burning
-            case < BurningStatus.Burning when oldStatus == BurningStatus.Flaring:
-                OnDeFlare();
-                break;
+        // When Disabling (and possibly deflaring)
+        if (status == BurningStatus.Off && oldStatus > BurningStatus.Off) {
+            OnDisable();
+        }
+
+        // When enabling 
+        if (status > BurningStatus.Off && oldStatus == BurningStatus.Off) {
+            OnEnable();
+        }
+
+        // When Flaring
+        if (status == BurningStatus.Flaring && oldStatus < BurningStatus.Flaring) {
+            OnFlare();
+        }
+
+        // When de-flaring to burning
+        if (status < BurningStatus.Burning && oldStatus == BurningStatus.Flaring) {
+            OnDeFlare();
         }
 
         OnStatusChanged?.Invoke(this, oldStatus!.Value, newStatus.Value);

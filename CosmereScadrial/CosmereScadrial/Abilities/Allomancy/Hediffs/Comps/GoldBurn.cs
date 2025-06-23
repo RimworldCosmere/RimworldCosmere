@@ -12,12 +12,10 @@ public class GoldBurnProperties : HediffCompProperties {
 
 public class GoldBurn : HediffComp {
     private readonly List<ThoughtDef> memoriesAdded = [];
-    private Pawn hallucination;
-    private bool hallucinationSpawned;
     private float lastSeverity;
     private MemoryThoughtHandler memories => Pawn.needs.mood.thoughts.memories;
 
-    private new AllomanticHediff parent => base.parent as AllomanticHediff;
+    private new AllomanticHediff parent => (AllomanticHediff)base.parent;
 
     public override void CompPostTick(ref float severityAdjustment) {
         base.CompPostTick(ref severityAdjustment);

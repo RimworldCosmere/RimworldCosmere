@@ -38,11 +38,11 @@ public class AllomancyAuraHediffGiverProperties : HediffCompProperties, IMultiTy
 }
 
 public class AllomancyAuraHediffGiver : HediffComp {
-    private Mote mote;
+    private Mote? mote;
 
     private new AllomancyAuraHediffGiverProperties props => (AllomancyAuraHediffGiverProperties)base.props;
 
-    private new AllomanticHediff parent => base.parent as AllomanticHediff;
+    private new AllomanticHediff parent => (AllomanticHediff)base.parent;
 
     private bool isAtLeastPassive => parent.Severity >= 0.5f;
 

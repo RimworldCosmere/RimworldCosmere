@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
-        <defName>Cosmere_AllomanticVial_Tin</defName>
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialTin</defName>
         <label>misting vial: tineye</label>
         <description>A vial containing Tin suspended in alcohol, used in allomancy.</description>
         <graphicData>
@@ -12,11 +12,11 @@
                 <metal>Tin</metal>
             </li>
         </modExtensions>
-        <orderedTakeGroup>AllomanticVial_Tin</orderedTakeGroup>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialTin</orderedTakeGroup>
     </ThingDef>
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
-        <defName>Cosmere_CraftAllomanticVial_Tin</defName>
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialTin</defName>
         <label>craft misting vial: tineye</label>
         <description>Create a vial of Tin infused alcohol for use by Mistborns and tineyes.</description>
         <ingredients>
@@ -26,12 +26,12 @@
             </li>
         </ingredients>
         <products>
-            <Cosmere_AllomanticVial_Tin>8</Cosmere_AllomanticVial_Tin>
+            <Cosmere_Scadrial_Thing_AllomanticVialTin>8</Cosmere_Scadrial_Thing_AllomanticVialTin>
         </products>
     </RecipeDef>
 
     <OrderedTakeGroupDef>
-        <defName>AllomanticVial_Tin</defName>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialTin</defName>
         <label>allomantic vial: tin</label>
         <max>20</max>
     </OrderedTakeGroupDef>

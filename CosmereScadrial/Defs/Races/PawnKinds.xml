@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <PawnKindDef>
+        <defName>Cosmere_Scadrial_PawnKind_Noble</defName>
+        <label>scadrian noble</label>
+        <race>Human</race>
+        <xenotypeSet>
+            <xenotypeChances>
+                <Cosmere_Scadrial_Xenotype_Noble>1</Cosmere_Scadrial_Xenotype_Noble>
+            </xenotypeChances>
+        </xenotypeSet>
+        <combatPower>45</combatPower>
+        <gearHealthRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </gearHealthRange>
+        <initialResistanceRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </initialResistanceRange>
+        <initialWillRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </initialWillRange>
+        <inventoryOptions>
+            <skipChance>1</skipChance>
+        </inventoryOptions>
+    </PawnKindDef>
+    
+    <PawnKindDef>
+        <defName>Cosmere_Scadrial_PawnKind_Scadrian</defName>
+        <label>scadrian person</label>
+        <race>Human</race>
+        <xenotypeSet>
+            <xenotypeChances>
+                <Cosmere_Scadrial_Xenotype_Scadrian>1</Cosmere_Scadrial_Xenotype_Scadrian>
+            </xenotypeChances>
+        </xenotypeSet>
+        <combatPower>45</combatPower>
+        <gearHealthRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </gearHealthRange>
+        <initialResistanceRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </initialResistanceRange>
+        <initialWillRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </initialWillRange>
+        <inventoryOptions>
+            <skipChance>1</skipChance>
+        </inventoryOptions>
+    </PawnKindDef>
+    
+    <PawnKindDef>
+        <defName>Cosmere_Scadrial_PawnKind_Skaa</defName>
+        <label>skaa person</label>
+        <race>Human</race>
+        <xenotypeSet>
+            <xenotypeChances>
+                <Cosmere_Scadrial_Xenotype_Skaa>1</Cosmere_Scadrial_Xenotype_Skaa>
+            </xenotypeChances>
+        </xenotypeSet>
+        <combatPower>45</combatPower>
+        <gearHealthRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </gearHealthRange>
+        <initialResistanceRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </initialResistanceRange>
+        <initialWillRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </initialWillRange>
+        <inventoryOptions>
+            <skipChance>1</skipChance>
+        </inventoryOptions>
+    </PawnKindDef>
+    
+    <PawnKindDef>
+        <defName>Cosmere_Scadrial_PawnKind_Terris</defName>
+        <label>terris person</label>
+        <race>Human</race>
+        <xenotypeSet>
+            <xenotypeChances>
+                <Cosmere_Scadrial_Xenotype_Terris>1</Cosmere_Scadrial_Xenotype_Terris>
+            </xenotypeChances>
+        </xenotypeSet>
+        <combatPower>45</combatPower>
+        <gearHealthRange>
+            <min>0.5</min>
+            <max>1.0</max>
+        </gearHealthRange>
+        <initialResistanceRange>
+            <min>0.5</min>
+            <max>1.0</max>
+        </initialResistanceRange>
+        <initialWillRange>
+            <min>0.5</min>
+            <max>1.0</max>
+        </initialWillRange>
+        <inventoryOptions>
+            <skipChance>1</skipChance>
+        </inventoryOptions>
+    </PawnKindDef>
+</Defs>

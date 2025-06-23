@@ -19,7 +19,7 @@ public static class LockShardSelection {
         if (shards == null) return;
 
         if (shards.shards.Count == 0) {
-            Log.Message($"[CosmereScadrial] No matching shard system found for {def.defName}", LogLevel.Warning);
+            Log.Message($"[CosmereScadrial] No matching shard system found for {def!.defName}", LogLevel.Warning);
             return;
         }
 

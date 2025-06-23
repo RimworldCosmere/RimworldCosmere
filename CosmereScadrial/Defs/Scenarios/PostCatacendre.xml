@@ -17,21 +17,21 @@
           <customSummary>Start with four colonists: a mix of Scadrians and Terris, each reflecting the resilience and legacy of post-Catacendre Scadrial.</customSummary>
           <overrideKinds>
             <li>
-              <xenotype>Cosmere_Scadrian</xenotype>
-              <pawnKind>Cosmere_ScadrianPerson</pawnKind>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Scadrian</pawnKind>
             </li>
             <li>
-              <xenotype>Cosmere_Terris</xenotype>
-              <pawnKind>Cosmere_TerrisPerson</pawnKind>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Terris</pawnKind>
             </li>
           </overrideKinds>
           <xenotypeCounts>
             <li>
-              <xenotype>Cosmere_Scadrian</xenotype>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
               <count>2</count>
             </li>
             <li>
-              <xenotype>Cosmere_Terris</xenotype>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
               <count>2</count>
             </li>
           </xenotypeCounts>

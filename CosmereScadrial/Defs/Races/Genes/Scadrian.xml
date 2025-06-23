@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
-    <GeneDef Name="Cosmere_ScadrianGeneBase" ParentName="Cosmere_ScadrialGeneBase" Abstract="True">
+    <GeneDef Name="Cosmere_Scadrial_Xenotype_ScadrianGeneBase" ParentName="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
         <biostatCpx>1</biostatCpx>
         <biostatMet>0</biostatMet>
         <biostatArc>-1</biostatArc>
         <iconPath>UI/Icons/Xenotype/Noble</iconPath>
     </GeneDef>
-    <GeneDef ParentName="Cosmere_ScadrianGeneBase">
-        <defName>Cosmere_Scadrian_Heritage</defName>
+    <GeneDef ParentName="Cosmere_Scadrial_Xenotype_ScadrianGeneBase">
+        <defName>Cosmere_Scadrial_Gene_ScadrianHeritage</defName>
         <label>scadrian bloodline</label>
         <description>This Scadrian descends from both Skaa and Noble lines, bearing their combined legacy.</description>
     </GeneDef>

@@ -38,12 +38,14 @@ public static class Log {
                 continue;
             }
 
-            string? mod = method?.DeclaringType?.Namespace;
+            string? mod = method?.DeclaringType?.Assembly.GetName().Name;
             ns = mod?.Split('.')[0].Replace("Cosmere", "");
             if (frame?.GetFileName() != null && mod != null) {
                 string filename = Regex.Replace(frame.GetFileName()!,
-                    @"^.*?(RimworldCosmere\\RimworldCosmere\\|RimWorld\\Mods\\)+\\*", "").Replace(mod, "");
-                if (filename == @"\\.cs") filename = $"{mod}.cs";
+                    @"^.*?(RimworldCosmere\\RimworldCosmere\\|RimWorld\\Mods\\)+\\*", "");
+                filename = filename.Replace(mod, "").TrimStart('\\');
+                if (filename == ".cs") filename = $"{mod}.cs";
+                filename = filename.TrimStart('\\');
 
                 stack = $"[{filename}:{frame.GetFileLineNumber()}]";
             }

@@ -21,14 +21,16 @@ public class AllomanticVial : ThingWithComps {
                 return false;
             }
 
-            Pawn pawn;
+            Pawn? pawn = null;
             if (holdingOwner.Owner is Pawn_InventoryTracker tracker) {
                 pawn = tracker?.pawn;
             } else if (Find.Selector?.SingleSelectedThing is Pawn selectedThing) {
                 pawn = selectedThing;
             } else if (Spawned && Position.GetFirstPawn(Map) is { } standingPawn) {
                 pawn = standingPawn;
-            } else {
+            }
+
+            if (pawn == null) {
                 return false;
             }
 

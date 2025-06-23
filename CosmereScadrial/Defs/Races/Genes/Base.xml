@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <Defs>
-  <GeneDef Name="Cosmere_ScadrialGeneBase" Abstract="True">
+  <GeneDef Name="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
     <geneClass>Gene</geneClass>
     <displayCategory>Cosmere_Scadrial</displayCategory>
   </GeneDef>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
-        <defName>Cosmere_AllomanticVial_Copper</defName>
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialCopper</defName>
         <label>misting vial: smoker</label>
         <description>A vial containing Copper suspended in alcohol, used in allomancy.</description>
         <graphicData>
@@ -12,11 +12,11 @@
                 <metal>Copper</metal>
             </li>
         </modExtensions>
-        <orderedTakeGroup>AllomanticVial_Copper</orderedTakeGroup>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialCopper</orderedTakeGroup>
     </ThingDef>
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
-        <defName>Cosmere_CraftAllomanticVial_Copper</defName>
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialCopper</defName>
         <label>craft misting vial: smoker</label>
         <description>Create a vial of Copper infused alcohol for use by Mistborns and smokers.</description>
         <ingredients>
@@ -26,12 +26,12 @@
             </li>
         </ingredients>
         <products>
-            <Cosmere_AllomanticVial_Copper>8</Cosmere_AllomanticVial_Copper>
+            <Cosmere_Scadrial_Thing_AllomanticVialCopper>8</Cosmere_Scadrial_Thing_AllomanticVialCopper>
         </products>
     </RecipeDef>
 
     <OrderedTakeGroupDef>
-        <defName>AllomanticVial_Copper</defName>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialCopper</defName>
         <label>allomantic vial: copper</label>
         <max>20</max>
     </OrderedTakeGroupDef>

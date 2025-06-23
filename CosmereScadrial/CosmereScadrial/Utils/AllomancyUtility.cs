@@ -37,11 +37,11 @@ public static class AllomancyUtility {
     }
 
     public static bool IsMistborn(Pawn pawn) {
-        return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Mistborn);
+        return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn);
     }
 
     public static bool IsMisting(Pawn pawn, MetallicArtsMetalDef metal) {
-        return pawn.genes.HasActiveGene(DefDatabase<GeneDef>.GetNamed($"Cosmere_Misting_{metal.defName}"));
+        return pawn.genes.HasActiveGene(GeneDefOf.GetMistingGeneForMetal(metal));
     }
 
     public static float GetReservePercent(Pawn pawn, MetallicArtsMetalDef metal) {
@@ -96,7 +96,7 @@ public static class AllomancyUtility {
         }
 
         if (PawnUtility.IsAsleep(pawn)) return false;
-        if (pawn?.inventory?.innerContainer == null) return false;
+        if (pawn.inventory?.innerContainer == null) return false;
 
         foreach (Thing? vial in pawn.inventory.innerContainer) {
             List<MetalDef?> metals = vial.def.GetModExtension<MetalsLinked>()?.Metals ?? [];
@@ -120,7 +120,7 @@ public static class AllomancyUtility {
 
         if (InvestitureDetector.IsShielded(pawn)) return false;
 
-        if (pawn?.inventory?.innerContainer == null) return false;
+        if (pawn.inventory?.innerContainer == null) return false;
 
         foreach (Thing? vial in pawn.inventory.innerContainer) {
             List<MetalDef?> metals = vial.def.GetModExtension<MetalsLinked>()?.Metals ?? [];
@@ -133,9 +133,7 @@ public static class AllomancyUtility {
         return false;
     }
 
-    public static bool IsBurning(Pawn? pawn, MetallicArtsMetalDef metal) {
-        MetalBurning? burning = pawn.GetComp<MetalBurning>();
-
-        return burning?.IsBurning(metal) ?? false;
+    public static bool IsBurning(Pawn pawn, MetallicArtsMetalDef metal) {
+        return pawn.GetComp<MetalBurning>()?.IsBurning(metal) ?? false;
     }
 }

@@ -19,8 +19,8 @@ public class TimeBubbleProperties : CompProperties_ThingContainer {
 
 public class TimeBubble : ThingComp {
     public MetallicArtsMetalDef metal = null;
-    public Pawn owner;
     private int ticksAlive;
+    public Pawn owner { get; set; }
     private TimeBubbleProperties props => (TimeBubbleProperties)base.props;
 
     private HediffDef? hediffToApply => metal.defName switch {

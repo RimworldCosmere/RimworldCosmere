@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
-        <defName>Cosmere_AllomanticVial_Nicrosil</defName>
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialNicrosil</defName>
         <label>misting vial: nicroburst</label>
         <description>A vial containing Nicrosil suspended in alcohol, used in allomancy.</description>
         <graphicData>
@@ -12,11 +12,11 @@
                 <metal>Nicrosil</metal>
             </li>
         </modExtensions>
-        <orderedTakeGroup>AllomanticVial_Nicrosil</orderedTakeGroup>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialNicrosil</orderedTakeGroup>
     </ThingDef>
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
-        <defName>Cosmere_CraftAllomanticVial_Nicrosil</defName>
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialNicrosil</defName>
         <label>craft misting vial: nicroburst</label>
         <description>Create a vial of Nicrosil infused alcohol for use by Mistborns and nicrobursts.</description>
         <ingredients>
@@ -26,12 +26,12 @@
             </li>
         </ingredients>
         <products>
-            <Cosmere_AllomanticVial_Nicrosil>8</Cosmere_AllomanticVial_Nicrosil>
+            <Cosmere_Scadrial_Thing_AllomanticVialNicrosil>8</Cosmere_Scadrial_Thing_AllomanticVialNicrosil>
         </products>
     </RecipeDef>
 
     <OrderedTakeGroupDef>
-        <defName>AllomanticVial_Nicrosil</defName>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialNicrosil</defName>
         <label>allomantic vial: nicrosil</label>
         <max>20</max>
     </OrderedTakeGroupDef>

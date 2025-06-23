@@ -6,7 +6,7 @@ import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {SCADRIAL_MOD_DIR} from '../../constants';
 
 const template = compileTemplate(__dirname, 'GeneAndTraitDef.xml.template');
-const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Genes');
+const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Allomancy', 'Genes');
 
 const defOfTemplate = compileTemplate(__dirname, 'DefOf.cs.template');
 const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');

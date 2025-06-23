@@ -73,10 +73,8 @@ const multiVialGroups = [
 ];
 
 export default function () {
-    const metals = Object.values(MetalRegistry.Metals);
+    const metals = Object.values(MetalRegistry.Metals).filter(x => x.Allomancy);
     for (const metal of metals) {
-        if (!metal.Allomancy) continue;
-
         writeGeneratedFile(outputDir, upperFirst(metal.Name) + '.generated.xml', template({
             metal,
             defName: metal.DefName ?? upperFirst(metal.Name)
@@ -84,7 +82,7 @@ export default function () {
     }
 
     console.log("Generating ThingDefOf.Vial");
-    writeGeneratedFile(CosmereScadrial, 'ThingDefOf.Vial.cs', thingDefOfVialTemplate({metals}));
+    writeGeneratedFile(CosmereScadrial, 'ThingDefOf.Vial.generated.cs', thingDefOfVialTemplate({metals}));
 
     /*for (const group of multiVialGroups) {
         writeGeneratedFile(outputDir, group.defName + '.generated.xml', multiVialTemplate(group));

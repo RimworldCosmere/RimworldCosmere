@@ -2,11 +2,5 @@
 <Defs>
     <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Lerasium">
         <defName>Lerasium</defName>
-        <allomancy>
-            <description>Turns {PAWN} person into a Mistborn when consumed.</description>
-            <group>None</group>
-            <axis>None</axis>
-            <polarity>None</polarity>
-        </allomancy>
     </CosmereScadrial.Defs.MetallicArtsMetalDef>
 </Defs>

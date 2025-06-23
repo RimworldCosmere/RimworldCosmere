@@ -1,27 +1,27 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Defs>
-  <GeneDef Name="Cosmere_SkaaGeneBase" ParentName="Cosmere_ScadrialGeneBase" Abstract="True">
+  <GeneDef Name="Cosmere_Scadrial_Xenotype_SkaaGeneBase" ParentName="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <biostatArc>-1</biostatArc>
     <iconPath>UI/Icons/Xenotype/Skaa</iconPath>
   </GeneDef>
-  <GeneDef ParentName="Cosmere_SkaaGeneBase">
-    <defName>Cosmere_Skaa_Heritage</defName>
+  <GeneDef ParentName="Cosmere_Scadrial_Xenotype_SkaaGeneBase">
+    <defName>Cosmere_Scadrial_Gene_SkaaHeritage</defName>
     <label>skaa heritage</label>
     <randomChosen>true</randomChosen>
     <description>This Skaa descends from a pure Skaa bloodline.</description>
   </GeneDef>
-  <GeneDef ParentName="Cosmere_SkaaGeneBase">
-    <defName>Cosmere_Skaa_LowSocial</defName>
+  <GeneDef ParentName="Cosmere_Scadrial_Xenotype_SkaaGeneBase">
+    <defName>Cosmere_Scadrial_Gene_SkaaLowSocial</defName>
     <label>socially stunted</label>
     <description>This Skaa has difficulty communicating effectively. Their social impact is reduced.</description>
     <statOffsets>
       <SocialImpact>-0.2</SocialImpact>
     </statOffsets>
   </GeneDef>
-  <GeneDef ParentName="Cosmere_SkaaGeneBase">
-    <defName>Cosmere_Skaa_LowLearning</defName>
+  <GeneDef ParentName="Cosmere_Scadrial_Xenotype_SkaaGeneBase">
+    <defName>Cosmere_Scadrial_Gene_SkaaLowLearning</defName>
     <label>slow learner</label>
     <description>This Skaa has reduced learning speed and lower mental adaptability.</description>
     <statOffsets>
@@ -29,16 +29,16 @@
       <MentalBreakThreshold>0.05</MentalBreakThreshold>
     </statOffsets>
   </GeneDef>
-  <GeneDef ParentName="Cosmere_SkaaGeneBase">
-    <defName>Cosmere_Skaa_HighFertility</defName>
+  <GeneDef ParentName="Cosmere_Scadrial_Xenotype_SkaaGeneBase">
+    <defName>Cosmere_Scadrial_Gene_SkaaHighFertility</defName>
     <label>fertile</label>
     <description>This Skaa is unusually fertile.</description>
     <statOffsets>
       <Fertility>0.3</Fertility>
     </statOffsets>
   </GeneDef>
-  <GeneDef ParentName="Cosmere_SkaaGeneBase">
-    <defName>Cosmere_Skaa_Endurance</defName>
+  <GeneDef ParentName="Cosmere_Scadrial_Xenotype_SkaaGeneBase">
+    <defName>Cosmere_Scadrial_Gene_SkaaEndurance</defName>
     <label>enduring</label>
     <description>This Skaa is resilient to hunger and disease.</description>
     <statOffsets>
@@ -54,16 +54,16 @@
       <LifespanFactor>.1</LifespanFactor>
     </statOffsets>
   </GeneDef>
-  <GeneDef ParentName="Cosmere_SkaaGeneBase">
-    <defName>Cosmere_Skaa_Purity</defName>
+  <GeneDef ParentName="Cosmere_Scadrial_Xenotype_SkaaGeneBase">
+    <defName>Cosmere_Scadrial_Gene_SkaaPurity</defName>
     <label>skaa bloodline</label>
     <description>This Skaa comes from a pure Skaa bloodline and cannot be born with Metalborn powers.</description>
     <exclusionTags>
       <li>Metalborn</li>
     </exclusionTags>
   </GeneDef>
-  <GeneDef ParentName="Cosmere_SkaaGeneBase">
-    <defName>Cosmere_Skaa_Agnostic</defName>
+  <GeneDef ParentName="Cosmere_Scadrial_Xenotype_SkaaGeneBase">
+    <defName>Cosmere_Scadrial_Gene_SkaaAgnostic</defName>
     <label>agnostic</label>
     <description>Skaa are forbidden from following or adopting ideoligions.</description>
   </GeneDef>

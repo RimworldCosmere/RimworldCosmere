@@ -36,7 +36,7 @@ public class PoweredOrFueled : StatPart {
 
     public override string ExplanationPart(StatRequest req) {
         (bool success, bool hasPower, bool hasFuel) = GetPowerAndFuel(req);
-        if (!success) return null;
+        if (!success) return "";
 
         if (hasPower) {
             return "Powered: ×2.0";

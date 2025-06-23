@@ -15,6 +15,8 @@ public class Clip : Bullet {
         ProjectileHitFlags hitFlags, bool preventFriendlyFire = false, Thing equipment = null,
         ThingDef targetCoverDef = null) {
         Pawn? pawn = launcher as Pawn;
+        if (pawn == null) return;
+
         cachedDamageAmount =
             Mathf.CeilToInt(def.projectile.GetDamageAmount(1f, null) * GetAbility(pawn).GetStrength());
 

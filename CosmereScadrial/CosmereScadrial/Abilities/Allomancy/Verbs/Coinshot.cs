@@ -9,7 +9,7 @@ namespace CosmereScadrial.Abilities.Allomancy.Verbs;
 
 public class Coinshot : Verb_Shoot {
     private CoinshotAbility ability => (CoinshotAbility)verbTracker.directOwner;
-    public override ThingDef Projectile => CoinThingDefOf.Cosmere_Scadrial_Thing_ClipProjectile;
+    public override ThingDef Projectile => ThingDefOf.Cosmere_Scadrial_Thing_ClipProjectile;
 
     public override void WarmupComplete() {
         ability.UpdateStatus(ability.nextStatus!.Value);
@@ -27,7 +27,7 @@ public class Coinshot : Verb_Shoot {
 
         // Find a Clip in inventory
         Thing? clip =
-            pawn.inventory.innerContainer.FirstOrDefault(t => t.def.Equals(CoinThingDefOf.Cosmere_Scadrial_Thing_Clip));
+            pawn.inventory.innerContainer.FirstOrDefault(t => t.def.Equals(ThingDefOf.Cosmere_Scadrial_Thing_Clip));
         if (clip == null) {
             Messages.Message("No Clips available!", pawn, MessageTypeDefOf.RejectInput, false);
             return false;

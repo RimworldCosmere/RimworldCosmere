@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: Brass -->
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_MistingBrass</defName>
+        
+        <label>brass misting</label>
+        <labelShortAdj>soother</labelShortAdj>
+        
+        <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
+        
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>7</displayOrderInCategory>
+        
+        <resourceLabel>brass</resourceLabel>
+        <resourceDescription>Group: mental\nAxis: external\nPolarity: pulling\n\nAllows {PAWN} to soothe emotions, calming people or manipulating moods.</resourceDescription>
+        
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_MistingBrass</def>
+            </li>
+        </forcedTraits>
+        
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
+        
+        <abilities>
+            <li>Cosmere_Scadrial_Ability_BrassAura</li>
+            <li>Cosmere_Scadrial_Ability_BrassTarget</li>
+        </abilities>
+        
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Brass</iconPath>
+    </GeneDef>
+    
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_MistingBrass</defName>
+        <label>soother</label>
+        <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
+        
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
+        
+        <degreeDatas>
+            <li>
+                <label>misting: soother</label>
+                <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+    
+    <!-- Ferring: Brass -->
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_FerringBrass</defName>
+        
+        <label>brass ferring</label>
+        <labelShortAdj>firesoul</labelShortAdj>
+        
+        <description>Stores warmth, useful for surviving cold environments or heating up.</description>
+        
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>7</displayOrderInCategory>
+        
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_FerringBrass</def>
+            </li>
+        </forcedTraits>
+        
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
+        
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Brass</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_FerringBrass</defName>
+        <label>firesoul</label>
+        <description>Stores warmth, useful for surviving cold environments or heating up.</description>
+        
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
+        
+        <degreeDatas>
+            <li>
+                <label>ferring: firesoul</label>
+                <description>Stores warmth, useful for surviving cold environments or heating up.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

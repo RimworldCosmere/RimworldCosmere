@@ -20,8 +20,8 @@
       "axis": "external",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_Iron_Aura",
-        "Cosmere_Ability_Iron_Pull"
+        "Cosmere_Scadrial_Ability_IronAura",
+        "Cosmere_Scadrial_Ability_IronPull"
       ]
     },
     "feruchemy": {
@@ -60,11 +60,11 @@
       "axis": "external",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_Steel_Aura",
-        "Cosmere_Ability_Steel_Bubble",
-        "Cosmere_Ability_Steel_Jump",
-        "Cosmere_Ability_Steel_Push",
-        "Cosmere_Ability_Steel_Coinshot"
+        "Cosmere_Scadrial_Ability_SteelAura",
+        "Cosmere_Scadrial_Ability_SteelBubble",
+        "Cosmere_Scadrial_Ability_SteelJump",
+        "Cosmere_Scadrial_Ability_SteelPush",
+        "Cosmere_Scadrial_Ability_SteelCoinshot"
       ]
     },
     "feruchemy": {
@@ -116,7 +116,7 @@
       "axis": "internal",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_Tin"
+        "Cosmere_Scadrial_Ability_Tin"
       ]
     },
     "feruchemy": {
@@ -154,7 +154,7 @@
       "axis": "internal",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_Pewter"
+        "Cosmere_Scadrial_Ability_Pewter"
       ]
     },
     "feruchemy": {
@@ -200,8 +200,8 @@
       "axis": "external",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_Zinc_Aura",
-        "Cosmere_Ability_Zinc_Target"
+        "Cosmere_Scadrial_Ability_ZincAura",
+        "Cosmere_Scadrial_Ability_ZincTarget"
       ]
     },
     "feruchemy": {
@@ -239,8 +239,8 @@
       "axis": "external",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_Brass_Aura",
-        "Cosmere_Ability_Brass_Target"
+        "Cosmere_Scadrial_Ability_BrassAura",
+        "Cosmere_Scadrial_Ability_BrassTarget"
       ]
     },
     "feruchemy": {
@@ -287,7 +287,7 @@
       "axis": "internal",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_Copper_Aura"
+        "Cosmere_Scadrial_Ability_CopperAura"
       ]
     },
     "feruchemy": {
@@ -326,7 +326,7 @@
       "axis": "internal",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_Bronze_Aura"
+        "Cosmere_Scadrial_Ability_BronzeAura"
       ]
     },
     "feruchemy": {
@@ -373,7 +373,7 @@
       "axis": "internal",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_Aluminum"
+        "Cosmere_Scadrial_Ability_Aluminum"
       ]
     },
     "feruchemy": {
@@ -412,7 +412,7 @@
       "axis": "internal",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_Duralumin_Surge"
+        "Cosmere_Scadrial_Ability_DuraluminSurge"
       ]
     },
     "feruchemy": {
@@ -458,7 +458,7 @@
       "axis": "external",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_Chromium"
+        "Cosmere_Scadrial_Ability_Chromium"
       ]
     },
     "feruchemy": {
@@ -496,7 +496,7 @@
       "axis": "external",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_Nicrosil_Surge"
+        "Cosmere_Scadrial_Ability_NicrosilSurge"
       ]
     },
     "feruchemy": {
@@ -542,7 +542,7 @@
       "axis": "external",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_Cadmium"
+        "Cosmere_Scadrial_Ability_Cadmium"
       ]
     },
     "feruchemy": {
@@ -580,7 +580,7 @@
       "axis": "external",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_Bendalloy"
+        "Cosmere_Scadrial_Ability_Bendalloy"
       ]
     },
     "feruchemy": {
@@ -630,7 +630,7 @@
       "axis": "internal",
       "polarity": "pulling",
       "abilities": [
-        "Cosmere_Ability_Gold"
+        "Cosmere_Scadrial_Ability_Gold"
       ]
     },
     "feruchemy": {
@@ -730,7 +730,7 @@
       "axis": "internal",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Ability_Electrum"
+        "Cosmere_Scadrial_Ability_Electrum"
       ]
     },
     "feruchemy": {
@@ -766,9 +766,6 @@
       159,
       106
     ],
-    "allomancy": {
-      "description": "Turns {PAWN} person into a Mistborn when consumed."
-    },
     "buildable": {
       "buildings": false,
       "items": false
@@ -789,7 +786,7 @@
       "userName": "seer",
       "description": "Allows {PAWN} a glimpse into the immediate future of others.",
       "abilities": [
-        "Cosmere_Ability_Atium"
+        "Cosmere_Scadrial_Ability_Atium"
       ]
     },
     "feruchemy": {

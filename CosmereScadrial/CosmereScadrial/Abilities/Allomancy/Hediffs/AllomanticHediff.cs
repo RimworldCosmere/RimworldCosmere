@@ -78,7 +78,7 @@ public class AllomanticHediff : HediffWithComps {
     public override void ExposeData() {
         base.ExposeData();
 
-        List<Pawn> sourcePawns = null;
+        List<Pawn> sourcePawns = null!;
 
         if (Scribe.mode == LoadSaveMode.Saving) {
             sourcePawns = sourceAbilities.Select(a => a.pawn).Distinct().ToList();

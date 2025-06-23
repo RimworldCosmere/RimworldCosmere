@@ -14,17 +14,26 @@
         </modExtensions>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialBendalloy</orderedTakeGroup>
     </ThingDef>
-    
+
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialBendalloy</defName>
         <label>craft misting vial: slider</label>
         <description>Create a vial of Bendalloy infused alcohol for use by Mistborns and sliders.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Bendalloy</li></thingDefs></filter>
+                <filter>
+                    <thingDefs>
+                        <li>Bendalloy</li>
+                    </thingDefs>
+                </filter>
                 <count>1</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Bendalloy</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Cosmere_Scadrial_Thing_AllomanticVialBendalloy>8</Cosmere_Scadrial_Thing_AllomanticVialBendalloy>
         </products>

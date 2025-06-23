@@ -1,6 +1,12 @@
 # top-most EditorConfig file
 root = true
 
+[*.xml]
+max_line_length = off
+
+[*.xml.template]
+max_line_length = off
+
 [*.cs]
 # Force block-scoped namespaces (with braces)
 csharp_style_namespace_declarations = file_scoped:suggestion

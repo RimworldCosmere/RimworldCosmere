@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- {{capitalize metal.Name}} Alloy Recipe-->
-    <RecipeDef ParentName="AlloyBase">
+    <RecipeDef ParentName="Cosmere_Resource_Recipe_AlloyBase">
         <defName>Cosmere_Make_Alloy_{{capitalize metal.Name}}</defName>
         <label>create alloy: {{metal.Name}}</label>
         <jobString>Creating alloy: {{capitalize metal.Name}}</jobString>
         <ingredients>
             {{#each metal.Alloy.Ingredients}}
-            <li>
-                <filter>
-                    <thingDefs>
-                        {{#each this.Items}}
-                        <li>{{capitalize this}}</li>
-                        {{/each}}
-                    </thingDefs>
-                </filter>
-                <count>{{this.Count}}</count>
-            </li>
+                <li>
+                    <filter>
+                        <thingDefs>
+                            {{#each this.Items}}
+                                <li>{{capitalize this}}</li>
+                            {{/each}}
+                        </thingDefs>
+                    </filter>
+                    <count>{{this.Count}}</count>
+                </li>
             {{/each}}
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                {{#each metal.Alloy.Ingredients}}
+                    {{#each this.Items}}
+                        <li>{{capitalize this}}</li>
+                    {{/each}}
+                {{/each}}
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             {{#each metal.Alloy.Products}}
-            <{{#if (isdefined this.Item)}}{{this.Item}}{{else}}{{capitalize ../metal.Name}}{{/if}}>{{this.Count}}</{{#if (isdefined this.Item)}}{{this.Item}}{{else}}{{capitalize ../metal.Name}}{{/if}}>
+                <{{#if (isdefined this.Item)}}{{this.Item}}{{else}}{{capitalize ../metal.Name}}{{/if}}>{{this.Count}}</{{#if (isdefined this.Item)}}{{this.Item}}{{else}}{{capitalize ../metal.Name}}{{/if}}>
             {{/each}}
         </products>
         {{#if metal.GodMetal}}
-        <researchPrerequisites>
-            <li>Cosmere_God_Metals</li>
-        </researchPrerequisites>
+            <researchPrerequisites>
+                <li>Cosmere_God_Metals</li>
+            </researchPrerequisites>
         {{/if}}
     </RecipeDef>
 </Defs>

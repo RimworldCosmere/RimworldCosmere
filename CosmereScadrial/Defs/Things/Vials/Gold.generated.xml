@@ -14,17 +14,26 @@
         </modExtensions>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialGold</orderedTakeGroup>
     </ThingDef>
-    
+
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialGold</defName>
         <label>craft misting vial: augur</label>
         <description>Create a vial of Gold infused alcohol for use by Mistborns and augurs.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Gold</li></thingDefs></filter>
+                <filter>
+                    <thingDefs>
+                        <li>Gold</li>
+                    </thingDefs>
+                </filter>
                 <count>1</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Gold</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Cosmere_Scadrial_Thing_AllomanticVialGold>8</Cosmere_Scadrial_Thing_AllomanticVialGold>
         </products>

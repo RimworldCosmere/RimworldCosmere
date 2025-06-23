@@ -39,6 +39,7 @@
         <useHitPoints>false</useHitPoints>
         <thingCategories>
             <li>ResourcesRaw</li>
+            <li>Cosmere_Resource_ThingCategory_CoalOrCharcoal</li>
         </thingCategories>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
@@ -67,6 +68,7 @@
         <useHitPoints>false</useHitPoints>
         <thingCategories>
             <li>ResourcesRaw</li>
+            <li>Cosmere_Resource_ThingCategory_CoalOrCharcoal</li>
         </thingCategories>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>

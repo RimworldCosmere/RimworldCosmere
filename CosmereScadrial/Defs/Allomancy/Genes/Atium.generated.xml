@@ -3,48 +3,48 @@
     <!-- Misting: Atium -->
     <GeneDef ParentName="AbstractAllomancyInvestitureGene">
         <defName>Cosmere_Scadrial_Gene_MistingAtium</defName>
-        
+
         <label>atium misting</label>
         <labelShortAdj>seer</labelShortAdj>
-        
+
         <description>Allows {PAWN} a glimpse into the immediate future of others.</description>
-        
+
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>18</displayOrderInCategory>
-        
+
         <resourceLabel>atium</resourceLabel>
         <resourceDescription>Group: None\nAxis: None\nPolarity: None\n\nAllows {PAWN} a glimpse into the immediate future of others.</resourceDescription>
-        
+
         <forcedTraits>
             <li>
                 <def>Cosmere_Scadrial_Trait_MistingAtium</def>
             </li>
         </forcedTraits>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Atium</metal>
             </li>
         </modExtensions>
-        
-        <abilities>
-            <li>Cosmere_Scadrial_Ability_Atium</li>
-        </abilities>
-        
+
+            <abilities>
+                    <li>Cosmere_Scadrial_Ability_Atium</li>
+            </abilities>
+
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Atium</iconPath>
     </GeneDef>
-    
+
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Scadrial_Trait_MistingAtium</defName>
         <label>seer</label>
         <description>Allows {PAWN} a glimpse into the immediate future of others.</description>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Atium</metal>
             </li>
         </modExtensions>
-        
+
         <degreeDatas>
             <li>
                 <label>misting: seer</label>
@@ -54,44 +54,44 @@
             </li>
         </degreeDatas>
     </TraitDef>
-    
+
     <!-- Ferring: Atium -->
     <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
         <defName>Cosmere_Scadrial_Gene_FerringAtium</defName>
-        
+
         <label>atium ferring</label>
         <labelShortAdj></labelShortAdj>
-        
+
         <description>Stores age, granting youth or aging when tapped.</description>
-        
+
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>18</displayOrderInCategory>
-        
+
         <forcedTraits>
             <li>
                 <def>Cosmere_Scadrial_Trait_FerringAtium</def>
             </li>
         </forcedTraits>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Atium</metal>
             </li>
         </modExtensions>
-        
+
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Atium</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Scadrial_Trait_FerringAtium</defName>
         <label></label>
         <description>Stores age, granting youth or aging when tapped.</description>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Atium</metal>
             </li>
         </modExtensions>
-        
+
         <degreeDatas>
             <li>
                 <label>ferring: </label>

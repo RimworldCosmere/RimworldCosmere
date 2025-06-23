@@ -14,17 +14,26 @@
         </modExtensions>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialAluminum</orderedTakeGroup>
     </ThingDef>
-    
+
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialAluminum</defName>
         <label>craft misting vial: gnat (aluminum)</label>
         <description>Create a vial of Aluminum infused alcohol for use by Mistborns and gnat (aluminum)s.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Aluminum</li></thingDefs></filter>
+                <filter>
+                    <thingDefs>
+                        <li>Aluminum</li>
+                    </thingDefs>
+                </filter>
                 <count>1</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Aluminum</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Cosmere_Scadrial_Thing_AllomanticVialAluminum>8</Cosmere_Scadrial_Thing_AllomanticVialAluminum>
         </products>

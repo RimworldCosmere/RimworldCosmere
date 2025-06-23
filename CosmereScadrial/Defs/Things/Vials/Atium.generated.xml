@@ -14,17 +14,26 @@
         </modExtensions>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialAtium</orderedTakeGroup>
     </ThingDef>
-    
+
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialAtium</defName>
         <label>craft misting vial: seer</label>
         <description>Create a vial of Atium infused alcohol for use by Mistborns and seers.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Atium</li></thingDefs></filter>
+                <filter>
+                    <thingDefs>
+                        <li>Atium</li>
+                    </thingDefs>
+                </filter>
                 <count>1</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Atium</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Cosmere_Scadrial_Thing_AllomanticVialAtium>8</Cosmere_Scadrial_Thing_AllomanticVialAtium>
         </products>

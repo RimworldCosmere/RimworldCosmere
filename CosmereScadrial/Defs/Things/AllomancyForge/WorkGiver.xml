@@ -7,7 +7,7 @@
         <workType>Crafting</workType>
         <priorityInType>90</priorityInType>
         <fixedBillGiverDefs>
-            <li>Cosmere_TableAllomancyForge</li>
+            <li>Cosmere_Scadrial_Table_AllomancyForge</li>
         </fixedBillGiverDefs>
         <verb>refine</verb>
         <gerund>refining allomantic metals at</gerund>

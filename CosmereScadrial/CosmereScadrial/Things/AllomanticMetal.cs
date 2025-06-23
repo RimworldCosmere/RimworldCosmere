@@ -23,7 +23,7 @@ public class AllomanticMetal : AllomanticVial {
         }
 
         MetallicArtsMetalDef? metal = metals.First();
-        if (!pawn.story.traits.HasTrait(DefDatabase<TraitDef>.GetNamed("Cosmere_Metalborn")) && !metal.godMetal) {
+        if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Allomancer) && !metal.godMetal) {
             yield return new FloatMenuOption("Cannot ingest: Not Allomancer", null);
             yield break;
         }

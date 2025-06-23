@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="BenchBase">
-        <defName>Cosmere_TableAllomancyForge</defName>
+        <defName>Cosmere_Scadrial_Table_AllomancyForge</defName>
         <label>allomantic forge</label>
         <description>A work bench for metalworkers to work on the allomantic metals</description>
         <thingClass>Building_WorkTable_HeatPush</thingClass>

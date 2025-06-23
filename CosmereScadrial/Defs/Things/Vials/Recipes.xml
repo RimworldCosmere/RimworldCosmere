@@ -12,7 +12,7 @@
             <Crafting>4</Crafting>
         </skillRequirements>
         <recipeUsers>
-            <li>Cosmere_TableAllomancyForge</li>
+            <li>Cosmere_Scadrial_Table_AllomancyForge</li>
         </recipeUsers>
         
         <ingredients>
@@ -33,6 +33,12 @@
                 <count>1</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Glass</li>
+                <li>Cosmere_Alcohol</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <researchPrerequisites>
             <li>Smithing</li>
             <li>Cosmere_Allomancy</li>

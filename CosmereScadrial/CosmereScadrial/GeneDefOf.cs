@@ -10,7 +10,7 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class GeneDefOf {
-    public static GeneDef Cosmere_Scadrial_DormantMetalborn;
+    public static GeneDef Cosmere_Scadrial_Gene_DormantMetalborn;
 
     static GeneDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(GeneDefOf));

@@ -2,7 +2,7 @@
 <Defs>
     <!-- Misting: {{capitalize metal.Name}} -->
     <GeneDef ParentName="AbstractAllomancyInvestitureGene">
-        <defName>Cosmere_Misting_{{capitalize metal.Name}}</defName>
+        <defName>Cosmere_Scadrial_Gene_Misting{{capitalize metal.Name}}</defName>
         
         <label>{{metal.Name}} misting</label>
         <labelShortAdj>{{metal.Allomancy.UserName}}</labelShortAdj>
@@ -17,7 +17,7 @@
         
         <forcedTraits>
             <li>
-                <def>Cosmere_Misting_{{capitalize metal.Name}}</def>
+                <def>Cosmere_Scadrial_Trait_Misting{{capitalize metal.Name}}</def>
             </li>
         </forcedTraits>
         
@@ -46,7 +46,7 @@
     </GeneDef>
     
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
-        <defName>Cosmere_Misting_{{capitalize metal.Name}}</defName>
+        <defName>Cosmere_Scadrial_Trait_Misting{{capitalize metal.Name}}</defName>
         <label>{{metal.Allomancy.UserName}}</label>
         <description>{{metal.Allomancy.Description}}</description>
         
@@ -68,7 +68,7 @@
     
     <!-- Ferring: {{capitalize metal.Name}} -->
     <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
-        <defName>Cosmere_Ferring_{{capitalize metal.Name}}</defName>
+        <defName>Cosmere_Scadrial_Gene_Ferring{{capitalize metal.Name}}</defName>
         
         <label>{{metal.Name}} ferring</label>
         <labelShortAdj>{{metal.Feruchemy.UserName}}</labelShortAdj>
@@ -80,7 +80,7 @@
         
         <forcedTraits>
             <li>
-                <def>Cosmere_Ferring_{{capitalize metal.Name}}</def>
+                <def>Cosmere_Scadrial_Trait_Ferring{{capitalize metal.Name}}</def>
             </li>
         </forcedTraits>
         
@@ -93,7 +93,7 @@
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/{{capitalize metal.Name}}</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
-        <defName>Cosmere_Ferring_{{capitalize metal.Name}}</defName>
+        <defName>Cosmere_Scadrial_Trait_Ferring{{capitalize metal.Name}}</defName>
         <label>{{metal.Feruchemy.UserName}}</label>
         <description>{{metal.Feruchemy.Description}}</description>
         

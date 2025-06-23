@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <defName>Cosmere_Scadrial_Ability_Pewter</defName>
+        <label>burn pewter</label>
+        <canBurnWhileAsleep>true</canBurnWhileAsleep>
+        <description>Burn pewter to enhance physical power and resilience for a short duration.</description>
+        <metal>Pewter</metal>
+        <hediff>Cosmere_Hediff_Pewter_Buff</hediff>
+        <dragHediff>Cosmere_Hediff_Pewter_Drag</dragHediff>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

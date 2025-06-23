@@ -86,7 +86,7 @@
 
         <li Class="ScenPart_StartingThing_Defined">
           <def>StartingThing_Defined</def>
-          <thingDef>Cosmere_Clip</thingDef>
+          <thingDef>Cosmere_Scadrial_Thing_Clip</thingDef>
           <count>500</count>
         </li>
 

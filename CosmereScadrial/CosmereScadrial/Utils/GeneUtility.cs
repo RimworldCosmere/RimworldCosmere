@@ -156,7 +156,7 @@ public static class GeneUtility {
         if (snapped) {
             PawnUtility.TryAddGene(pawn, gene);
         } else {
-            GeneDef? geneWrapperDef = GeneDefOf.Cosmere_Scadrial_DormantMetalborn;
+            GeneDef? geneWrapperDef = GeneDefOf.Cosmere_Scadrial_Gene_DormantMetalborn;
             if (pawn.genes.GetGene(geneWrapperDef) is not DormantMetalborn geneWrapper) {
                 geneWrapper = (DormantMetalborn)PawnUtility.TryAddGene(pawn, geneWrapperDef);
             }

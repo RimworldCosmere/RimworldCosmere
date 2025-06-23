@@ -13,7 +13,7 @@ namespace CosmereScadrial.Things;
 
 public class AllomanticVial : ThingWithComps {
     protected List<MetallicArtsMetalDef> metals => def.GetModExtension<MetalsLinked>().Metals
-        .Select(MetallicArtsMetalDef.GetFromMetalDef).ToList();
+        .Select(MetallicArtsMetalDef.GetFromMetalDef!).ToList();
 
     public override bool IngestibleNow {
         get {
@@ -48,6 +48,12 @@ public class AllomanticVial : ThingWithComps {
 
             return AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f;
         }
+    }
+
+    public bool IsForMetal(MetallicArtsMetalDef metal, bool singleMetal = true) {
+        if (singleMetal && metals.Count > 1) return false;
+
+        return metals.Contains(metal);
     }
 
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn pawn) {

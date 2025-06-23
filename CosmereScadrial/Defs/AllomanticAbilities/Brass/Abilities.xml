@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <defName>Cosmere_Scadrial_Ability_BrassAura</defName>
+        <label>soothing aura</label>
+        <description>Suppress emotional outbursts and calm the minds of others using Brass. Has a chance to break mental states when flaring.</description>
+        <metal>Brass</metal>
+        <canBurnWhileAsleep>true</canBurnWhileAsleep>
+        <hediff>Cosmere_Hediff_Brass_Aura</hediff>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
+        <defName>Cosmere_Scadrial_Ability_BrassTarget</defName>
+        <label>soothe target</label>
+        <description>Suppress emotional outburst and calm the mind of a target Brass. Has a chance to break mental states.</description>
+        <metal>Brass</metal>
+        <hediff>Cosmere_Hediff_Soothed</hediff>
+        <hediffSeverityFactor>2</hediffSeverityFactor>
+        <verbProperties>
+            <targetParams>
+                <canTargetItems>false</canTargetItems>
+                <canTargetBuildings>false</canTargetBuildings>
+                <canTargetMechs>false</canTargetMechs>
+                <canTargetPlants>false</canTargetPlants>
+            </targetParams>
+        </verbProperties>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

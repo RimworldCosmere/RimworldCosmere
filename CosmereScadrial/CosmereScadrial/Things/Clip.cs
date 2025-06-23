@@ -23,6 +23,6 @@ public class Clip : Bullet {
     }
 
     private CoinshotAbility GetAbility(Pawn pawn) {
-        return (CoinshotAbility)pawn.abilities.GetAbility(AbilityDefOf.Cosmere_Ability_Steel_Coinshot);
+        return (CoinshotAbility)pawn.abilities.GetAbility(AbilityDefOf.Cosmere_Scadrial_Ability_SteelCoinshot);
     }
 }

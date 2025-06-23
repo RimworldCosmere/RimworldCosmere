@@ -55,11 +55,11 @@ public class SurgeChargeHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility a
 
         foreach (AbstractAbility? sourceAbility in sourceAbilities.ToList()) {
             MetalReserves? res = sourceAbility.pawn.GetComp<MetalReserves>();
-            if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Ability_Duralumin_Surge)) {
+            if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Scadrial_Ability_DuraluminSurge)) {
                 res.RemoveReserve(MetallicArtsMetalDefOf.Duralumin);
             }
 
-            if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Ability_Nicrosil_Surge)) {
+            if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Scadrial_Ability_NicrosilSurge)) {
                 res.RemoveReserve(MetallicArtsMetalDefOf.Nicrosil);
             }
 

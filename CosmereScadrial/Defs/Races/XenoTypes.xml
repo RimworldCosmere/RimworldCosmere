@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <XenotypeDef>
+        <defName>Cosmere_ScadrialNoble</defName>
+        <label>scadrian noble</label>
+        <description>Nobles are elite descendants of ancient bloodlines, often gifted with Allomantic abilities and steeped in power, tradition, and influence.</description>
+        <displayPriority>5002</displayPriority>
+        <inheritable>true</inheritable>
+        <iconPath>UI/Icons/Xenotype/Noble</iconPath>
+        <genes>
+            <li>Cosmere_Noble_Heritage</li>
+            <li>Cosmere_Noble_HighSocial</li>
+            <li>Cosmere_Noble_FastLearner</li>
+            <li>Cosmere_Noble_LowFertility</li>
+            <li>Cosmere_Noble_LowWorkDrive</li>
+        </genes>
+    </XenotypeDef>
+    
+    <XenotypeDef>
+        <defName>Cosmere_Scadrian</defName>
+        <label>scadrian</label>
+        <description>Scadrians are the unified descendants of both Skaa and Nobility following the Catacendre. Strong, capable, and socially adaptive.</description>
+        <displayPriority>4999</displayPriority>
+        <iconPath>UI/Icons/Xenotype/Noble</iconPath>
+        <genes>
+            <li>Cosmere_Scadrian_Heritage</li>
+            <li>Cosmere_Skaa_HighFertility</li>
+            <li>Cosmere_Skaa_Endurance</li>
+            <li>Cosmere_Noble_HighSocial</li>
+            <li>Cosmere_Noble_FastLearner</li>
+        </genes>
+    </XenotypeDef>
+    
+    <XenotypeDef>
+        <defName>Cosmere_Skaa</defName>
+        <label>skaa</label>
+        <description>The Skaa are a hardy underclass bred for labor, possessing high fertility and endurance but diminished intellect and social capabilities. They are barred from ideology participation and cannot be born with Metalborn genes unless through noble or Terris lineage.</description>
+        <displayPriority>5001</displayPriority>
+        <inheritable>true</inheritable>
+        <iconPath>UI/Icons/Xenotype/Skaa</iconPath>
+        <genes>
+            <li>Cosmere_Skaa_Heritage</li>
+            <li>Cosmere_Skaa_LowSocial</li>
+            <li>Cosmere_Skaa_LowLearning</li>
+            <li>Cosmere_Skaa_HighFertility</li>
+            <li>Cosmere_Skaa_Endurance</li>
+            <li>Cosmere_Skaa_Agnostic</li>
+            <li>Cosmere_Skaa_Purity</li>
+        </genes>
+    </XenotypeDef>
+    
+    <XenotypeDef>
+        <defName>Cosmere_Terris</defName>
+        <label>terris</label>
+        <description>A reclusive people known for their cultural memory and Feruchemical potential.</description>
+        <displayPriority>5000</displayPriority>
+        <inheritable>true</inheritable>
+        <iconPath>UI/Icons/Xenotype/Terris</iconPath>
+        <genes>
+            <li>Cosmere_Terris_Heritage</li>
+            <li>Cosmere_Terris_DeepMemory</li>
+            <li>Cosmere_Terris_Peaceful</li>
+            <li>Cosmere_Terris_Stability</li>
+        </genes>
+    </XenotypeDef>
+</Defs>

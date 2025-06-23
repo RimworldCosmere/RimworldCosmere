@@ -41,7 +41,7 @@ public class MistsWatcher(Map map) : MapComponent(map) {
             foreach (Pawn? pawn in map.mapPawns.AllPawnsSpawned.Where(p =>
                          p.RaceProps.Humanlike && !p.Dead && !p.Position.Roofed(map))) {
                 if (SnapUtility.IsSnapped(pawn)) continue;
-                if (!pawn.genes.HasActiveGene(GeneDefOf.Cosmere_Scadrial_DormantMetalborn)) continue;
+                if (!pawn.genes.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_DormantMetalborn)) continue;
                 if (!Rand.Chance(1f / 16f)) continue;
 
                 SnapUtility.TrySnap(pawn, "the mists");

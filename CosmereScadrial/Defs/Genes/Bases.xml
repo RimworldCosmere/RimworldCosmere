@@ -42,7 +42,7 @@
   </GeneDef>
   
   <GeneDef>
-    <defName>Cosmere_Scadrial_DormantMetalborn</defName>
+    <defName>Cosmere_Scadrial_Gene_DormantMetalborn</defName>
     <geneClass>CosmereScadrial.Genes.DormantMetalborn</geneClass>
     <label>dormant connection</label>
     <labelShortAdj>Dormant Connection</labelShortAdj>
@@ -51,7 +51,7 @@
     <displayOrderInCategory>10</displayOrderInCategory>
     <forcedTraits>
       <li>
-        <def>Cosmere_Scadrial_DormantMetalborn</def>
+        <def>Cosmere_Scadrial_Gene_DormantMetalborn</def>
       </li>
     </forcedTraits>
     <iconPath>UI/Icons/Genes/Investiture/Allomancy/Ettmetal</iconPath>
@@ -106,7 +106,7 @@
   </TraitDef>
   
   <TraitDef>
-    <defName>Cosmere_Scadrial_DormantMetalborn</defName>
+    <defName>Cosmere_Scadrial_Gene_DormantMetalborn</defName>
     <label>Dormant Connection</label>
     <description>This pawn is attuned to a Shard’s power, though they’ve yet to tap it. A traumatic event may awaken their abilities.</description>
     <commonality>0</commonality>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <AbilityGroupDef>
+        <defName>Cosmere_Scadrial_Iron</defName>
+    </AbilityGroupDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <groupDef>Cosmere_Scadrial_Iron</groupDef>
+        <defName>Cosmere_Scadrial_Ability_IronAura</defName>
+        <label>iron sight</label>
+        <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
+Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
+These lines shimmer with the tension of potential force, visible only to those burning Iron.</description>
+        <metal>Iron</metal>
+        <hediff>Cosmere_Hediff_Iron_Aura</hediff>
+        <beuPerTick>0.0004</beuPerTick>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
+        <groupDef>Cosmere_Scadrial_Iron</groupDef>
+        <defName>Cosmere_Scadrial_Ability_IronPull</defName>
+        <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
+        <label>iron pull</label>
+        <description>Burning iron allows the Allomancer to pull on nearby sources of metal, drawing them—or themselves—closer. The lighter object moves, unless anchored by greater mass.</description>
+        <cooldownTicksRange>
+            <min>20</min>
+            <max>60</max>
+        </cooldownTicksRange>
+        <metal>Iron</metal>
+        <verbProperties>
+            <requireLineOfSight>false</requireLineOfSight>
+            <violent>false</violent>
+            <noiseRadius>0</noiseRadius>
+            <drawAimPie>false</drawAimPie>
+            <targetParams>
+                <canTargetPlants>false</canTargetPlants>
+                <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
+            </targetParams>
+        </verbProperties>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

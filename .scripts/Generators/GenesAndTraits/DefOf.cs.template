@@ -9,8 +9,8 @@ namespace CosmereScadrial {
     [SuppressMessage("ReSharper", "UnusedType.Global")]
     public static partial class {{type}}DefOf {
         {{#each metals as | metal |}}
-        public static {{../type}}Def Cosmere_Misting_{{capitalize metal.Name}};
-        public static {{../type}}Def Cosmere_Ferring_{{capitalize metal.Name}};
+        public static {{../type}}Def Cosmere_Scadrial_Gene_Misting{{capitalize metal.Name}};
+        public static {{../type}}Def Cosmere_Scadrial_Gene_Ferring{{capitalize metal.Name}};
         {{/each}}
     }
 }

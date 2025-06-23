@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <defName>Cosmere_Scadrial_Ability_CopperAura</defName>
+        <label>coppercloud</label>
+        <description>Creates a Coppercloud around the Allomancer, hiding Allomantic activity from external senses.</description>
+        <metal>Copper</metal>
+        <canBurnWhileAsleep>true</canBurnWhileAsleep>
+        <hediff>Cosmere_Hediff_Copper_Aura</hediff>
+        <beuPerTick>0.0002</beuPerTick>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

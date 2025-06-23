@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThinkTreeDef>
+        <defName>Cosmere_Scadrial_Ingest_Vial</defName>
+        <insertTag>Humanlike_PreMain</insertTag>
+        <thinkRoot Class="CosmereScadrial.JobGivers.IngestVial" />
+    </ThinkTreeDef>
+</Defs>

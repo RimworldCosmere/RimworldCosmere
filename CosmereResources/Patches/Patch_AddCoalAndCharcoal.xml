@@ -11,19 +11,6 @@
           <li>Charcoal</li>
         </value>
       </li>
-      <li Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName = "Campfire"]/recipes</xpath>
-        <value>
-          <li>Make_CharcoalFromWood</li>
-        </value>
-      </li>
-      <li Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName = "ElectricSmelter"]/recipes</xpath>
-        <value>
-          <li>Make_CharcoalFromWood</li>
-          <li>Make_CoalFromStone</li>
-        </value>
-      </li>
       <!-- Descriptions -->
       <li Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName = "FueledSmithy"]/description</xpath>

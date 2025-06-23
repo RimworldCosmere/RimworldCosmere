@@ -24,6 +24,13 @@
                 <count>2</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Iron</li>
+                <li>Coal</li>
+                <li>Charcoal</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Steel>10</Steel>
         </products>

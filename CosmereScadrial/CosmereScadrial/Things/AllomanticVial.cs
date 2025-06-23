@@ -59,7 +59,7 @@ public class AllomanticVial : ThingWithComps {
     }
 
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn pawn) {
-        if (!pawn.story.traits.HasTrait(DefDatabase<TraitDef>.GetNamed("Cosmere_Metalborn"))) {
+        if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Allomancer)) {
             yield return new FloatMenuOption("Cannot ingest: Not Allomancer", null);
             yield break;
         }

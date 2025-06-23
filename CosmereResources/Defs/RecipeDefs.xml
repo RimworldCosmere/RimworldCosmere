@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
-    <RecipeDef Name="AlloyBase" Abstract="true">
+    <RecipeDef Name="Cosmere_Resource_Recipe_AlloyBase" Abstract="true">
         <workAmount>1500</workAmount>
         <workSpeedStat>SmeltingSpeed</workSpeedStat>
         <workSkill>Crafting</workSkill>
+        <requiredGiverWorkType>Smithing</requiredGiverWorkType>
         <effectWorking>Smelt</effectWorking>
         <soundWorking>Recipe_Smelt</soundWorking>
         <recipeUsers>
             <li>ElectricSmelter</li>
-            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_TableAllomancyForge</li>
+            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
         </recipeUsers>
         <researchPrerequisites>
             <li>Cosmere_Alloys</li>
@@ -138,7 +139,7 @@
         </fixedIngredientFilter>
         <researchPrerequisite>Smithing</researchPrerequisite>
         <recipeUsers>
-            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_TableAllomancyForge</li>
+            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
             <li>ElectricSmithy</li>
             <li>FueledSmithy</li>
         </recipeUsers>

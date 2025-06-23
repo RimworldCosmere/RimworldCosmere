@@ -14,17 +14,26 @@
         </modExtensions>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialElectrum</orderedTakeGroup>
     </ThingDef>
-    
+
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialElectrum</defName>
         <label>craft misting vial: oracle</label>
         <description>Create a vial of Electrum infused alcohol for use by Mistborns and oracles.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Electrum</li></thingDefs></filter>
+                <filter>
+                    <thingDefs>
+                        <li>Electrum</li>
+                    </thingDefs>
+                </filter>
                 <count>1</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Electrum</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Cosmere_Scadrial_Thing_AllomanticVialElectrum>8</Cosmere_Scadrial_Thing_AllomanticVialElectrum>
         </products>

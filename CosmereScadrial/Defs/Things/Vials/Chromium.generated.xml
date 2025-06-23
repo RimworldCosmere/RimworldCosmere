@@ -14,17 +14,26 @@
         </modExtensions>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialChromium</orderedTakeGroup>
     </ThingDef>
-    
+
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialChromium</defName>
         <label>craft misting vial: leecher</label>
         <description>Create a vial of Chromium infused alcohol for use by Mistborns and leechers.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Chromium</li></thingDefs></filter>
+                <filter>
+                    <thingDefs>
+                        <li>Chromium</li>
+                    </thingDefs>
+                </filter>
                 <count>1</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Chromium</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Cosmere_Scadrial_Thing_AllomanticVialChromium>8</Cosmere_Scadrial_Thing_AllomanticVialChromium>
         </products>

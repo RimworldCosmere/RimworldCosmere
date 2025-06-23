@@ -14,17 +14,26 @@
         </modExtensions>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialCadmium</orderedTakeGroup>
     </ThingDef>
-    
+
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialCadmium</defName>
         <label>craft misting vial: pulser</label>
         <description>Create a vial of Cadmium infused alcohol for use by Mistborns and pulsers.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Cadmium</li></thingDefs></filter>
+                <filter>
+                    <thingDefs>
+                        <li>Cadmium</li>
+                    </thingDefs>
+                </filter>
                 <count>1</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Cadmium</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Cosmere_Scadrial_Thing_AllomanticVialCadmium>8</Cosmere_Scadrial_Thing_AllomanticVialCadmium>
         </products>

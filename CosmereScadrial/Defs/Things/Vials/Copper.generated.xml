@@ -14,17 +14,26 @@
         </modExtensions>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialCopper</orderedTakeGroup>
     </ThingDef>
-    
+
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialCopper</defName>
         <label>craft misting vial: smoker</label>
         <description>Create a vial of Copper infused alcohol for use by Mistborns and smokers.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Copper</li></thingDefs></filter>
+                <filter>
+                    <thingDefs>
+                        <li>Copper</li>
+                    </thingDefs>
+                </filter>
                 <count>1</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Copper</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Cosmere_Scadrial_Thing_AllomanticVialCopper>8</Cosmere_Scadrial_Thing_AllomanticVialCopper>
         </products>

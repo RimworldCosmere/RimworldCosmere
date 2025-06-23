@@ -3,48 +3,48 @@
     <!-- Misting: Bendalloy -->
     <GeneDef ParentName="AbstractAllomancyInvestitureGene">
         <defName>Cosmere_Scadrial_Gene_MistingBendalloy</defName>
-        
+
         <label>bendalloy misting</label>
         <labelShortAdj>slider</labelShortAdj>
-        
+
         <description>Allows {PAWN} to speed up time in a bubble around the user.</description>
-        
+
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>15</displayOrderInCategory>
-        
+
         <resourceLabel>bendalloy</resourceLabel>
         <resourceDescription>Group: temporal\nAxis: external\nPolarity: pushing\n\nAllows {PAWN} to speed up time in a bubble around the user.</resourceDescription>
-        
+
         <forcedTraits>
             <li>
                 <def>Cosmere_Scadrial_Trait_MistingBendalloy</def>
             </li>
         </forcedTraits>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Bendalloy</metal>
             </li>
         </modExtensions>
-        
-        <abilities>
-            <li>Cosmere_Scadrial_Ability_Bendalloy</li>
-        </abilities>
-        
+
+            <abilities>
+                    <li>Cosmere_Scadrial_Ability_Bendalloy</li>
+            </abilities>
+
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Bendalloy</iconPath>
     </GeneDef>
-    
+
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Scadrial_Trait_MistingBendalloy</defName>
         <label>slider</label>
         <description>Allows {PAWN} to speed up time in a bubble around the user.</description>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Bendalloy</metal>
             </li>
         </modExtensions>
-        
+
         <degreeDatas>
             <li>
                 <label>misting: slider</label>
@@ -54,44 +54,44 @@
             </li>
         </degreeDatas>
     </TraitDef>
-    
+
     <!-- Ferring: Bendalloy -->
     <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
         <defName>Cosmere_Scadrial_Gene_FerringBendalloy</defName>
-        
+
         <label>bendalloy ferring</label>
         <labelShortAdj>subsumer</labelShortAdj>
-        
+
         <description>Stores nutrition, allowing users to go without food.</description>
-        
+
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>15</displayOrderInCategory>
-        
+
         <forcedTraits>
             <li>
                 <def>Cosmere_Scadrial_Trait_FerringBendalloy</def>
             </li>
         </forcedTraits>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Bendalloy</metal>
             </li>
         </modExtensions>
-        
+
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Bendalloy</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Scadrial_Trait_FerringBendalloy</defName>
         <label>subsumer</label>
         <description>Stores nutrition, allowing users to go without food.</description>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Bendalloy</metal>
             </li>
         </modExtensions>
-        
+
         <degreeDatas>
             <li>
                 <label>ferring: subsumer</label>

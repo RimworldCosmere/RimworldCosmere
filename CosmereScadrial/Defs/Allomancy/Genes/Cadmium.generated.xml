@@ -3,48 +3,48 @@
     <!-- Misting: Cadmium -->
     <GeneDef ParentName="AbstractAllomancyInvestitureGene">
         <defName>Cosmere_Scadrial_Gene_MistingCadmium</defName>
-        
+
         <label>cadmium misting</label>
         <labelShortAdj>pulser</labelShortAdj>
-        
+
         <description>Allows {PAWN} to slow down time in a bubble, creating a temporal distortion.</description>
-        
+
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>14</displayOrderInCategory>
-        
+
         <resourceLabel>cadmium</resourceLabel>
         <resourceDescription>Group: temporal\nAxis: external\nPolarity: pulling\n\nAllows {PAWN} to slow down time in a bubble, creating a temporal distortion.</resourceDescription>
-        
+
         <forcedTraits>
             <li>
                 <def>Cosmere_Scadrial_Trait_MistingCadmium</def>
             </li>
         </forcedTraits>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Cadmium</metal>
             </li>
         </modExtensions>
-        
-        <abilities>
-            <li>Cosmere_Scadrial_Ability_Cadmium</li>
-        </abilities>
-        
+
+            <abilities>
+                    <li>Cosmere_Scadrial_Ability_Cadmium</li>
+            </abilities>
+
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Cadmium</iconPath>
     </GeneDef>
-    
+
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Scadrial_Trait_MistingCadmium</defName>
         <label>pulser</label>
         <description>Allows {PAWN} to slow down time in a bubble, creating a temporal distortion.</description>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Cadmium</metal>
             </li>
         </modExtensions>
-        
+
         <degreeDatas>
             <li>
                 <label>misting: pulser</label>
@@ -54,44 +54,44 @@
             </li>
         </degreeDatas>
     </TraitDef>
-    
+
     <!-- Ferring: Cadmium -->
     <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
         <defName>Cosmere_Scadrial_Gene_FerringCadmium</defName>
-        
+
         <label>cadmium ferring</label>
         <labelShortAdj>gaspers</labelShortAdj>
-        
+
         <description>Stores breath, useful for surviving in low-oxygen environments.</description>
-        
+
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>14</displayOrderInCategory>
-        
+
         <forcedTraits>
             <li>
                 <def>Cosmere_Scadrial_Trait_FerringCadmium</def>
             </li>
         </forcedTraits>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Cadmium</metal>
             </li>
         </modExtensions>
-        
+
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Cadmium</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Scadrial_Trait_FerringCadmium</defName>
         <label>gaspers</label>
         <description>Stores breath, useful for surviving in low-oxygen environments.</description>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Cadmium</metal>
             </li>
         </modExtensions>
-        
+
         <degreeDatas>
             <li>
                 <label>ferring: gaspers</label>

@@ -14,17 +14,26 @@
         </modExtensions>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialTin</orderedTakeGroup>
     </ThingDef>
-    
+
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
         <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialTin</defName>
         <label>craft misting vial: tineye</label>
         <description>Create a vial of Tin infused alcohol for use by Mistborns and tineyes.</description>
         <ingredients>
             <li>
-                <filter><thingDefs><li>Tin</li></thingDefs></filter>
+                <filter>
+                    <thingDefs>
+                        <li>Tin</li>
+                    </thingDefs>
+                </filter>
                 <count>1</count>
             </li>
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Tin</li>
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Cosmere_Scadrial_Thing_AllomanticVialTin>8</Cosmere_Scadrial_Thing_AllomanticVialTin>
         </products>

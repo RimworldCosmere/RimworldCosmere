@@ -3,52 +3,52 @@
     <!-- Misting: Steel -->
     <GeneDef ParentName="AbstractAllomancyInvestitureGene">
         <defName>Cosmere_Scadrial_Gene_MistingSteel</defName>
-        
+
         <label>steel misting</label>
         <labelShortAdj>coinshot</labelShortAdj>
-        
+
         <description>Grants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.</description>
-        
+
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>3</displayOrderInCategory>
-        
+
         <resourceLabel>steel</resourceLabel>
         <resourceDescription>Group: physical\nAxis: external\nPolarity: pushing\n\nGrants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.</resourceDescription>
-        
+
         <forcedTraits>
             <li>
                 <def>Cosmere_Scadrial_Trait_MistingSteel</def>
             </li>
         </forcedTraits>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
-        
-        <abilities>
-            <li>Cosmere_Scadrial_Ability_SteelAura</li>
-            <li>Cosmere_Scadrial_Ability_SteelBubble</li>
-            <li>Cosmere_Scadrial_Ability_SteelJump</li>
-            <li>Cosmere_Scadrial_Ability_SteelPush</li>
-            <li>Cosmere_Scadrial_Ability_SteelCoinshot</li>
-        </abilities>
-        
+
+            <abilities>
+                    <li>Cosmere_Scadrial_Ability_SteelAura</li>
+                    <li>Cosmere_Scadrial_Ability_SteelBubble</li>
+                    <li>Cosmere_Scadrial_Ability_SteelJump</li>
+                    <li>Cosmere_Scadrial_Ability_SteelPush</li>
+                    <li>Cosmere_Scadrial_Ability_SteelCoinshot</li>
+            </abilities>
+
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Steel</iconPath>
     </GeneDef>
-    
+
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Scadrial_Trait_MistingSteel</defName>
         <label>coinshot</label>
         <description>Grants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.</description>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
-        
+
         <degreeDatas>
             <li>
                 <label>misting: coinshot</label>
@@ -58,44 +58,44 @@
             </li>
         </degreeDatas>
     </TraitDef>
-    
+
     <!-- Ferring: Steel -->
     <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
         <defName>Cosmere_Scadrial_Gene_FerringSteel</defName>
-        
+
         <label>steel ferring</label>
         <labelShortAdj>steelrunner</labelShortAdj>
-        
+
         <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
-        
+
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
         <displayOrderInCategory>3</displayOrderInCategory>
-        
+
         <forcedTraits>
             <li>
                 <def>Cosmere_Scadrial_Trait_FerringSteel</def>
             </li>
         </forcedTraits>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
-        
+
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Steel</iconPath>
     </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
         <defName>Cosmere_Scadrial_Trait_FerringSteel</defName>
         <label>steelrunner</label>
         <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
-        
+
         <modExtensions>
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
-        
+
         <degreeDatas>
             <li>
                 <label>ferring: steelrunner</label>

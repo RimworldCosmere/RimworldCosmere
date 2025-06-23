@@ -11,7 +11,7 @@
             <li Class="CosmereResources.ModExtensions.MetalsLinked">
                 <metals>
                     {{#each metals}}
-                    <li>{{capitalize this}}</li>
+                        <li>{{capitalize this}}</li>
                     {{/each}}
                 </metals>
             </li>
@@ -24,12 +24,23 @@
         <description>Create a vial of multiple metals suspended in alcohol for use by Mistborns.</description>
         <ingredients>
             {{#each metals}}
-            <li>
-                <filter><thingDefs><li>{{this}}</li></thingDefs></filter>
-                <count>1</count>
-            </li>
+                <li>
+                    <filter>
+                        <thingDefs>
+                            <li>{{this}}</li>
+                        </thingDefs>
+                    </filter>
+                    <count>1</count>
+                </li>
             {{/each}}
         </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                {{#each metals}}
+                    <li>{{this}}</li>
+                {{/each}}
+            </thingDefs>
+        </fixedIngredientFilter>
         <products>
             <Cosmere_AllomanticVial_{{defName}}>8</Cosmere_AllomanticVial_{{defName}}>
         </products>

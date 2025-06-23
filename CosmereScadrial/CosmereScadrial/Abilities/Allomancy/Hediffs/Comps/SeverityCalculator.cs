@@ -23,7 +23,6 @@ public class SeverityCalculatorProperties : HediffCompProperties {
 public class SeverityCalculator : HediffComp {
     private float desiredSeverity = -1;
 
-    private bool removeOnNextChange;
     private new SeverityCalculatorProperties props => (SeverityCalculatorProperties)base.props;
 
     private new AllomanticHediff parent => (AllomanticHediff)base.parent;

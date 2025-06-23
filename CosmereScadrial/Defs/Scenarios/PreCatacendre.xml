@@ -14,29 +14,29 @@
           <customSummary>Begin with six pawns: a mix of Skaa laborers, Terris stewards, and disillusioned Nobles, each escaping the Final Empire's oppressive grip.</customSummary>
           <overrideKinds>
             <li>
-              <xenotype>Cosmere_Skaa</xenotype>
-              <pawnKind>Cosmere_SkaaPerson</pawnKind>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Skaa</pawnKind>
             </li>
             <li>
-              <xenotype>Cosmere_ScadrialNoble</xenotype>
-              <pawnKind>Cosmere_NoblePerson</pawnKind>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Noble</pawnKind>
             </li>
             <li>
-              <xenotype>Cosmere_Terris</xenotype>
-              <pawnKind>Cosmere_TerrisPerson</pawnKind>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Terris</pawnKind>
             </li>
           </overrideKinds>
           <xenotypeCounts>
             <li>
-              <xenotype>Cosmere_Skaa</xenotype>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
               <count>2</count>
             </li>
             <li>
-              <xenotype>Cosmere_ScadrialNoble</xenotype>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
               <count>2</count>
             </li>
             <li>
-              <xenotype>Cosmere_Terris</xenotype>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
               <count>2</count>
             </li>
           </xenotypeCounts>

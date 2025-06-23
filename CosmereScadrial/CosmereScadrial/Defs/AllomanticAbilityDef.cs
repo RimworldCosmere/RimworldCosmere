@@ -14,35 +14,33 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
     public int burningMoteInterval = GenTicks.TickRareInterval;
     public bool canBurnWhileAsleep = false;
     public bool canFlare = true;
-    public HediffDef dragHediff;
-
-
-    public HediffDef hediff;
-    public HediffDef hediffFriendly;
-    public HediffDef hediffHostile;
+    public HediffDef? dragHediff;
+    public HediffDef? hediff;
+    public HediffDef? hediffFriendly;
+    public HediffDef? hediffHostile;
     public float hediffSeverityFactor = 1f;
-    public MetallicArtsMetalDef metal;
+    public MetallicArtsMetalDef metal = null!;
     public float minSeverityForDrag = 1f;
-    public bool toggleable;
+    public bool toggleable = false;
 
     public override TaggedString LabelCap {
         get {
-            if (label.NullOrEmpty()) return (TaggedString)(string)null;
+            if (label.NullOrEmpty()) return (TaggedString)(string)null!;
             if (cachedLabelCap.NullOrEmpty()) cachedLabelCap = (TaggedString)GenText.ToTitleCaseSmart(label);
 
             return cachedLabelCap;
         }
     }
 
-    public HediffDef GetHediff() {
+    public HediffDef? GetHediff() {
         return hediff;
     }
 
-    public HediffDef GetFriendlyHediff() {
+    public HediffDef? GetFriendlyHediff() {
         return hediffFriendly;
     }
 
-    public HediffDef GetHostileHediff() {
+    public HediffDef? GetHostileHediff() {
         return hediffHostile;
     }
 

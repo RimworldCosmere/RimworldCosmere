@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CosmereCore.Utils;
+using CosmereFramework.Extensions;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Genes;
 using RimWorld;
@@ -19,21 +20,18 @@ public static class GeneUtility {
     private static bool isPreservation => ShardUtility.AreAnyEnabled(ShardDefOf.Preservation);
 
     public static void TryAssignScadrialGenes(Pawn pawn) {
-        if (pawn?.genes == null || !pawn.RaceProps.Humanlike) {
+        if (pawn.genes == null || !pawn.RaceProps.Humanlike) {
             return;
         }
 
-        Pawn_GeneTracker? genes = pawn.genes;
-        string? xenotype = genes?.Xenotype?.defName;
+        Pawn_GeneTracker genes = pawn.genes;
+        if (genes.Xenotype?.Equals(XenotypeDefOf.Cosmere_Scadrial_Xenotype_Skaa) ?? false) {
+            TryAddHeritageGene(genes, GeneDefOf.Cosmere_Scadrial_Gene_TerrisHeritage, 0.10f);
+            TryAddHeritageGene(genes, GeneDefOf.Cosmere_Scadrial_Gene_NobleHeritage, 0.10f);
+        }
 
-        switch (xenotype) {
-            case "Cosmere_Skaa":
-                TryAddHeritageGene(genes, "Cosmere_Terris_Heritage", 0.10f);
-                TryAddHeritageGene(genes, "Cosmere_Noble_Heritage", 0.10f);
-                break;
-            case "Cosmere_ScadrialNoble":
-                TryAddHeritageGene(genes, "Cosmere_Terris_Heritage", 0.10f);
-                break;
+        if (genes.Xenotype?.Equals(XenotypeDefOf.Cosmere_Scadrial_Xenotype_Noble) ?? false) {
+            TryAddHeritageGene(genes, GeneDefOf.Cosmere_Scadrial_Gene_TerrisHeritage, 0.10f);
         }
 
 
@@ -113,38 +111,36 @@ public static class GeneUtility {
         // Null safety
         if (parent1 == null || parent2 == null) return;
 
-        bool parent1Skaa = parent1.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Purity")) ==
-                           true;
-        bool parent2Skaa = parent2.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Purity")) ==
-                           true;
-
-        bool childSkaa = generated.genes.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Purity"));
+        GeneDef skaaPurity = GeneDefOf.Cosmere_Scadrial_Gene_SkaaPurity;
+        bool parent1Skaa =
+            parent1.genes?.HasActiveGene(skaaPurity) == true;
+        bool parent2Skaa =
+            parent2.genes?.HasActiveGene(skaaPurity) == true;
+        bool childSkaa = generated.genes.HasActiveGene(skaaPurity);
 
         // Remove if child inherited it but only one parent had it
         if (!childSkaa || parent1Skaa && parent2Skaa) return;
-        GeneDef? geneDef = DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Purity");
-        Gene? gene = generated.genes.GetGene(geneDef);
-        generated.genes.RemoveGene(gene);
-        Log.Verbose($"Removed Cosmere_Skaa_Purity from {generated.NameFullColored} (only one parent had it)");
+        generated.genes.RemoveGene(skaaPurity);
+        Log.Verbose(
+            $"Removed {skaaPurity.defName} from {generated.NameFullColored} (only one parent had it)");
     }
 
     public static void TryAddRandomAllomanticGene(Pawn pawn, bool canSnap = true) {
         MetallicArtsMetalDef? metal = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading
             .Where(x => x.allomancy != null)
             .RandomElement();
-        AddGene(pawn, $"Cosmere_Misting_{metal.defName}", canSnap);
+        AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), canSnap);
     }
 
     public static void TryAddRandomFeruchemicalGene(Pawn pawn, bool canSnap = true) {
         MetallicArtsMetalDef? metal = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading
             .Where(x => x.feruchemy != null)
             .RandomElement();
-        AddGene(pawn, $"Cosmere_Ferring_{metal.defName}", canSnap);
+        AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), canSnap);
     }
 
-    public static void AddGene(Pawn pawn, string defName, bool canSnap, bool snapped = false) {
-        GeneDef? gene = DefDatabase<GeneDef>.GetNamedSilentFail(defName);
-        if (gene == null || pawn.genes.HasActiveGene(gene)) return;
+    public static void AddGene(Pawn pawn, GeneDef gene, bool canSnap = true, bool snapped = false) {
+        if (pawn.genes.HasActiveGene(gene)) return;
 
         if (snapped) {
             SnapUtility.TrySnap(pawn);
@@ -176,10 +172,10 @@ public static class GeneUtility {
         IEnumerable<MetallicArtsMetalDef> metals =
             DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => x.allomancy != null);
         foreach (MetallicArtsMetalDef? metal in metals) {
-            AddGene(pawn, $"Cosmere_Misting_{metal.LabelCap}", false, snapped);
+            AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false, snapped);
         }
 
-        PawnUtility.TryAddTrait(pawn, TraitDefOf.Cosmere_Mistborn);
+        PawnUtility.TryAddTrait(pawn, TraitDefOf.Cosmere_Scadrial_Trait_Mistborn);
     }
 
     public static void AddFullFeruchemist(Pawn pawn, bool canSnap = true, bool snapped = false) {
@@ -194,28 +190,26 @@ public static class GeneUtility {
             DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x =>
                 !x.godMetal && x.allomancy != null);
         foreach (MetallicArtsMetalDef? metal in metals) {
-            AddGene(pawn, $"Cosmere_Ferring_{metal.LabelCap}", false, snapped);
+            AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), false, snapped);
         }
 
-        PawnUtility.TryAddTrait(pawn, TraitDefOf.Cosmere_FullFeruchemist);
+        PawnUtility.TryAddTrait(pawn, TraitDefOf.Cosmere_Scadrial_Trait_FullFeruchemist);
     }
 
     private static bool IsTerris(Pawn pawn) {
-        return pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Terris_Heritage")) ==
-               true;
+        return pawn.genes?.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_TerrisHeritage) == true;
     }
 
     private static bool IsNoble(Pawn pawn) {
-        return pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Noble_Heritage")) == true;
+        return pawn.genes?.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_NobleHeritage) == true;
     }
 
     private static bool IsSkaa(Pawn pawn) {
-        return pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Heritage")) == true;
+        return pawn.genes?.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_SkaaHeritage) == true;
     }
 
     private static bool IsMetalbornBlocked(Pawn pawn) {
-        return !isHarmony &&
-               pawn.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Skaa_Purity")) == true;
+        return !isHarmony && pawn.genes?.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_SkaaPurity) == true;
     }
 
     private static bool RollChance(int oneIn) {
@@ -229,9 +223,9 @@ public static class GeneUtility {
         return roll == 1;
     }
 
-    private static void TryAddHeritageGene(Pawn_GeneTracker genes, string defName, float chance) {
-        if (Rand.Chance(chance) && !genes.HasActiveGene(DefDatabase<GeneDef>.GetNamed(defName))) {
-            genes.AddGene(DefDatabase<GeneDef>.GetNamed(defName), false);
+    private static void TryAddHeritageGene(Pawn_GeneTracker genes, GeneDef def, float chance) {
+        if (Rand.Chance(chance) && !genes.HasActiveGene(def)) {
+            genes.AddGene(def, false);
         }
     }
 }

@@ -61,18 +61,20 @@ public static class HediffUtility {
         RemoveHediff(target, ability, GetHediffDefForPawn(caster, target, def));
     }
 
-    private static bool TryGetHediff(Pawn target, HediffDef def, out AllomanticHediff hediff) {
-        hediff = null;
+    private static bool TryGetHediff(Pawn target, HediffDef? def, out AllomanticHediff hediff) {
+        hediff = null!;
         if (def == null) return false;
 
-        Hediff uncastHediff = null;
+        Hediff? uncastHediff = null;
 
         target.health?.hediffSet?.TryGetHediff(
             def,
             out uncastHediff
         );
+        if (uncastHediff == null) return false;
+
         hediff = (AllomanticHediff)uncastHediff;
 
-        return hediff != null;
+        return true;
     }
 }

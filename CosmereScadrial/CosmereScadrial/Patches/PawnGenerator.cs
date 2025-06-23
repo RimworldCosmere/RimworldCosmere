@@ -21,9 +21,9 @@ public static class PawnGenerator {
 
         if (defName == "Cosmere_Scadrial_PreCatacendre") {
             __result = DefDatabase<XenotypeDef>.GetNamed(new[] {
-                "Cosmere_Terris",
-                "Cosmere_Skaa",
-                "Cosmere_ScadrialNoble",
+                "Cosmere_Scadrial_Xenotype_Terris",
+                "Cosmere_Scadrial_Xenotype_Skaa",
+                "Cosmere_Scadrial_Xenotype_Noble",
             }.RandomElement());
 
             return false;
@@ -31,8 +31,8 @@ public static class PawnGenerator {
 
         if (defName == "Cosmere_Scadrial_PostCatacendre") {
             __result = DefDatabase<XenotypeDef>.GetNamed(new[] {
-                "Cosmere_Terris",
-                "Cosmere_Scadrian",
+                "Cosmere_Scadrial_Xenotype_Terris",
+                "Cosmere_Scadrial_Xenotype_Scadrian",
             }.RandomElement());
 
             return false;

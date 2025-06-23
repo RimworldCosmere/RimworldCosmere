@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
-        <defName>Cosmere_AllomanticVial_Brass</defName>
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialBrass</defName>
         <label>misting vial: soother</label>
         <description>A vial containing Brass suspended in alcohol, used in allomancy.</description>
         <graphicData>
@@ -12,11 +12,11 @@
                 <metal>Brass</metal>
             </li>
         </modExtensions>
-        <orderedTakeGroup>AllomanticVial_Brass</orderedTakeGroup>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialBrass</orderedTakeGroup>
     </ThingDef>
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
-        <defName>Cosmere_CraftAllomanticVial_Brass</defName>
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialBrass</defName>
         <label>craft misting vial: soother</label>
         <description>Create a vial of Brass infused alcohol for use by Mistborns and soothers.</description>
         <ingredients>
@@ -26,12 +26,12 @@
             </li>
         </ingredients>
         <products>
-            <Cosmere_AllomanticVial_Brass>8</Cosmere_AllomanticVial_Brass>
+            <Cosmere_Scadrial_Thing_AllomanticVialBrass>8</Cosmere_Scadrial_Thing_AllomanticVialBrass>
         </products>
     </RecipeDef>
 
     <OrderedTakeGroupDef>
-        <defName>AllomanticVial_Brass</defName>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialBrass</defName>
         <label>allomantic vial: brass</label>
         <max>20</max>
     </OrderedTakeGroupDef>

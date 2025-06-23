@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
-        <defName>Cosmere_AllomanticVial_Bronze</defName>
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialBronze</defName>
         <label>misting vial: seeker</label>
         <description>A vial containing Bronze suspended in alcohol, used in allomancy.</description>
         <graphicData>
@@ -12,11 +12,11 @@
                 <metal>Bronze</metal>
             </li>
         </modExtensions>
-        <orderedTakeGroup>AllomanticVial_Bronze</orderedTakeGroup>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialBronze</orderedTakeGroup>
     </ThingDef>
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
-        <defName>Cosmere_CraftAllomanticVial_Bronze</defName>
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialBronze</defName>
         <label>craft misting vial: seeker</label>
         <description>Create a vial of Bronze infused alcohol for use by Mistborns and seekers.</description>
         <ingredients>
@@ -26,12 +26,12 @@
             </li>
         </ingredients>
         <products>
-            <Cosmere_AllomanticVial_Bronze>8</Cosmere_AllomanticVial_Bronze>
+            <Cosmere_Scadrial_Thing_AllomanticVialBronze>8</Cosmere_Scadrial_Thing_AllomanticVialBronze>
         </products>
     </RecipeDef>
 
     <OrderedTakeGroupDef>
-        <defName>AllomanticVial_Bronze</defName>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialBronze</defName>
         <label>allomantic vial: bronze</label>
         <max>20</max>
     </OrderedTakeGroupDef>

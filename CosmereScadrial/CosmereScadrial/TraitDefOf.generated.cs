@@ -2,44 +2,45 @@
 using System.Diagnostics.CodeAnalysis;
 using RimWorld;
 
-namespace CosmereScadrial {
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    [SuppressMessage("ReSharper", "UnusedType.Global")]
-    public static partial class TraitDefOf {
-        public static TraitDef Cosmere_Misting_Iron;
-        public static TraitDef Cosmere_Ferring_Iron;
-        public static TraitDef Cosmere_Misting_Steel;
-        public static TraitDef Cosmere_Ferring_Steel;
-        public static TraitDef Cosmere_Misting_Tin;
-        public static TraitDef Cosmere_Ferring_Tin;
-        public static TraitDef Cosmere_Misting_Pewter;
-        public static TraitDef Cosmere_Ferring_Pewter;
-        public static TraitDef Cosmere_Misting_Zinc;
-        public static TraitDef Cosmere_Ferring_Zinc;
-        public static TraitDef Cosmere_Misting_Brass;
-        public static TraitDef Cosmere_Ferring_Brass;
-        public static TraitDef Cosmere_Misting_Copper;
-        public static TraitDef Cosmere_Ferring_Copper;
-        public static TraitDef Cosmere_Misting_Bronze;
-        public static TraitDef Cosmere_Ferring_Bronze;
-        public static TraitDef Cosmere_Misting_Aluminum;
-        public static TraitDef Cosmere_Ferring_Aluminum;
-        public static TraitDef Cosmere_Misting_Duralumin;
-        public static TraitDef Cosmere_Ferring_Duralumin;
-        public static TraitDef Cosmere_Misting_Chromium;
-        public static TraitDef Cosmere_Ferring_Chromium;
-        public static TraitDef Cosmere_Misting_Nicrosil;
-        public static TraitDef Cosmere_Ferring_Nicrosil;
-        public static TraitDef Cosmere_Misting_Cadmium;
-        public static TraitDef Cosmere_Ferring_Cadmium;
-        public static TraitDef Cosmere_Misting_Bendalloy;
-        public static TraitDef Cosmere_Ferring_Bendalloy;
-        public static TraitDef Cosmere_Misting_Gold;
-        public static TraitDef Cosmere_Ferring_Gold;
-        public static TraitDef Cosmere_Misting_Electrum;
-        public static TraitDef Cosmere_Ferring_Electrum;
-        public static TraitDef Cosmere_Misting_Atium;
-        public static TraitDef Cosmere_Ferring_Atium;
-    }
+namespace CosmereScadrial;
+
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnassignedField.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
+public static partial class TraitDefOf {
+    public static TraitDef Cosmere_Scadrial_Trait_MistingIron;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringIron;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingSteel;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringSteel;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingTin;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringTin;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingPewter;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringPewter;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingZinc;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringZinc;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingBrass;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringBrass;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingCopper;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringCopper;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingBronze;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringBronze;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingAluminum;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringAluminum;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingDuralumin;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringDuralumin;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingChromium;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringChromium;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingNicrosil;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringNicrosil;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingCadmium;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringCadmium;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingBendalloy;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringBendalloy;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingGold;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringGold;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingElectrum;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringElectrum;
+    public static TraitDef Cosmere_Scadrial_Trait_MistingAtium;
+    public static TraitDef Cosmere_Scadrial_Trait_FerringAtium;
 }

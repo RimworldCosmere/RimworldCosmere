@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
-        <defName>Cosmere_AllomanticVial_Iron</defName>
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialIron</defName>
         <label>misting vial: lurcher</label>
         <description>A vial containing Iron suspended in alcohol, used in allomancy.</description>
         <graphicData>
@@ -12,11 +12,11 @@
                 <metal>Iron</metal>
             </li>
         </modExtensions>
-        <orderedTakeGroup>AllomanticVial_Iron</orderedTakeGroup>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialIron</orderedTakeGroup>
     </ThingDef>
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
-        <defName>Cosmere_CraftAllomanticVial_Iron</defName>
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialIron</defName>
         <label>craft misting vial: lurcher</label>
         <description>Create a vial of Iron infused alcohol for use by Mistborns and lurchers.</description>
         <ingredients>
@@ -26,12 +26,12 @@
             </li>
         </ingredients>
         <products>
-            <Cosmere_AllomanticVial_Iron>8</Cosmere_AllomanticVial_Iron>
+            <Cosmere_Scadrial_Thing_AllomanticVialIron>8</Cosmere_Scadrial_Thing_AllomanticVialIron>
         </products>
     </RecipeDef>
 
     <OrderedTakeGroupDef>
-        <defName>AllomanticVial_Iron</defName>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialIron</defName>
         <label>allomantic vial: iron</label>
         <max>20</max>
     </OrderedTakeGroupDef>

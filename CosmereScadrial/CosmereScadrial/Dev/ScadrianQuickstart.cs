@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CosmereFramework.Extensions;
 using CosmereFramework.Utils;
 using CosmereScadrial.Comps.Things;
 using RimWorld;
@@ -91,39 +92,29 @@ public static class ScadrianQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Misting_Steel.defName, false, true);
-            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Misting_Aluminum.defName, false, true);
+            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Scadrial_Gene_MistingSteel, false, true);
+            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Scadrial_Gene_MistingAluminum, false, true);
             pawn.Name = new NameSingle("Steel and Aluminum");
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Misting_Aluminum.defName, false, true);
+            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Scadrial_Gene_MistingAluminum, false, true);
             pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Aluminum, MetalReserves.MaxAmount);
             pawn.Name = new NameSingle("Aluminum");
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Misting_Steel.defName, false, true);
+            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Scadrial_Gene_MistingSteel, false, true);
             pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Steel, MetalReserves.MaxAmount);
             pawn.Name = new NameSingle("Steel");
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Misting_Atium.defName, false, true);
+            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Scadrial_Gene_MistingAtium, false, true);
             pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Atium, MetalReserves.MaxAmount);
             pawn.Name = new NameSingle("Atium");
         }
 
         Find.TickManager.Pause();
-    }
-
-    public static bool TryPopFront<T>(this List<T> list, out T element) {
-        if (list.Count == 0) {
-            element = default;
-            return false;
-        }
-
-        element = list.PopFront();
-        return true;
     }
 }

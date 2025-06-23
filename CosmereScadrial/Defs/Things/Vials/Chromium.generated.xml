@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="AbstractAllomanticVial">
-        <defName>Cosmere_AllomanticVial_Chromium</defName>
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialChromium</defName>
         <label>misting vial: leecher</label>
         <description>A vial containing Chromium suspended in alcohol, used in allomancy.</description>
         <graphicData>
@@ -12,11 +12,11 @@
                 <metal>Chromium</metal>
             </li>
         </modExtensions>
-        <orderedTakeGroup>AllomanticVial_Chromium</orderedTakeGroup>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialChromium</orderedTakeGroup>
     </ThingDef>
     
     <RecipeDef ParentName="AbstractCraftAllomanticVial">
-        <defName>Cosmere_CraftAllomanticVial_Chromium</defName>
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialChromium</defName>
         <label>craft misting vial: leecher</label>
         <description>Create a vial of Chromium infused alcohol for use by Mistborns and leechers.</description>
         <ingredients>
@@ -26,12 +26,12 @@
             </li>
         </ingredients>
         <products>
-            <Cosmere_AllomanticVial_Chromium>8</Cosmere_AllomanticVial_Chromium>
+            <Cosmere_Scadrial_Thing_AllomanticVialChromium>8</Cosmere_Scadrial_Thing_AllomanticVialChromium>
         </products>
     </RecipeDef>
 
     <OrderedTakeGroupDef>
-        <defName>AllomanticVial_Chromium</defName>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialChromium</defName>
         <label>allomantic vial: chromium</label>
         <max>20</max>
     </OrderedTakeGroupDef>

@@ -158,9 +158,9 @@ public class MetalBurning : ThingComp {
         base.PostExposeData();
 
         // Serialize burnSourceMap into three parallel lists
-        List<MetallicArtsMetalDef> metalDefs = null;
-        List<AllomanticAbilityDef> defs = null;
-        List<float> rates = null;
+        List<MetallicArtsMetalDef>? metalDefs = null;
+        List<AllomanticAbilityDef>? defs = null;
+        List<float>? rates = null;
 
         if (Scribe.mode == LoadSaveMode.Saving) {
             metalDefs = [];

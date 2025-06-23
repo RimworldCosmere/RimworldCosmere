@@ -16,7 +16,7 @@ public static class ScadrianUtility {
         actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
     public static void PrepareDevPawn(Pawn pawn) {
         if (pawn.genes == null) return;
-        if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Mistborn)) {
+        if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn)) {
             GeneUtility.AddMistborn(pawn, false, true);
             Messages.Message($"Made {pawn.NameFullColored} a mistborn", pawn, MessageTypeDefOf.PositiveEvent);
         }
@@ -30,7 +30,7 @@ public static class ScadrianUtility {
     public static void GiveAllAllomanticVials(Pawn pawn) {
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x =>
                      !x.godMetal && x.allomancy != null)) {
-            ThingDef? vialDef = DefDatabase<ThingDef>.GetNamed($"Cosmere_AllomanticVial_{metal.LabelCap}");
+            ThingDef vialDef = ThingDefOf.GetVialForMetal(metal);
             if (pawn.inventory.innerContainer.Contains(vialDef)) continue;
 
             Thing? vial = ThingMaker.MakeThing(vialDef);

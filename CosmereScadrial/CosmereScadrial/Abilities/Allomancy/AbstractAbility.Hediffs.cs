@@ -5,7 +5,7 @@ using HediffUtility = CosmereScadrial.Utils.HediffUtility;
 namespace CosmereScadrial.Abilities.Allomancy;
 
 public abstract partial class AbstractAbility {
-    protected AllomanticHediff GetOrAddHediff(Pawn targetPawn) {
+    protected AllomanticHediff? GetOrAddHediff(Pawn targetPawn) {
         return HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def);
     }
 
@@ -43,7 +43,7 @@ public abstract partial class AbstractAbility {
             bool localTargetPresent = localTarget.HasValue;
             Scribe_Values.Look(ref localTargetPresent, "targetPresent");
             if (localTargetPresent) {
-                LocalTargetInfo temp = localTarget.Value;
+                LocalTargetInfo temp = localTarget!.Value;
                 Scribe_TargetInfo.Look(ref temp, "target");
             }
         } else if (Scribe.mode == LoadSaveMode.LoadingVars) {

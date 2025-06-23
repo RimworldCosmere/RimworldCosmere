@@ -3,14 +3,15 @@ using System.Diagnostics.CodeAnalysis;
 using RimWorld;{{#ifEquals type "Gene"}}
 using Verse;{{/ifEquals}}
 
-namespace CosmereScadrial {
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    [SuppressMessage("ReSharper", "UnusedType.Global")]
-    public static partial class {{type}}DefOf {
-        {{#each metals as | metal |}}
-        public static {{../type}}Def Cosmere_Scadrial_Gene_Misting{{capitalize metal.Name}};
-        public static {{../type}}Def Cosmere_Scadrial_Gene_Ferring{{capitalize metal.Name}};
-        {{/each}}
-    }
+namespace CosmereScadrial;
+
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnassignedField.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
+public static partial class {{type}}DefOf {
+    {{#each metals as | metal |}}
+    public static {{../type}}Def Cosmere_Scadrial_{{../type}}_Misting{{capitalize metal.Name}};
+    public static {{../type}}Def Cosmere_Scadrial_{{../type}}_Ferring{{capitalize metal.Name}};
+    {{/each}}
 }

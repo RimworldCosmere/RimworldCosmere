@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: Copper -->
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_MistingCopper</defName>
+        
+        <label>copper misting</label>
+        <labelShortAdj>smoker</labelShortAdj>
+        
+        <description>Creates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</description>
+        
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>8</displayOrderInCategory>
+        
+        <resourceLabel>copper</resourceLabel>
+        <resourceDescription>Group: mental\nAxis: internal\nPolarity: pulling\n\nCreates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</resourceDescription>
+        
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_MistingCopper</def>
+            </li>
+        </forcedTraits>
+        
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Copper</metal>
+            </li>
+        </modExtensions>
+        
+        <abilities>
+            <li>Cosmere_Scadrial_Ability_CopperAura</li>
+        </abilities>
+        
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Copper</iconPath>
+    </GeneDef>
+    
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_MistingCopper</defName>
+        <label>smoker</label>
+        <description>Creates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</description>
+        
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Copper</metal>
+            </li>
+        </modExtensions>
+        
+        <degreeDatas>
+            <li>
+                <label>misting: smoker</label>
+                <description>Creates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+    
+    <!-- Ferring: Copper -->
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_FerringCopper</defName>
+        
+        <label>copper ferring</label>
+        <labelShortAdj>archivist</labelShortAdj>
+        
+        <description>Stores memories, allowing perfect recall of stored knowledge.</description>
+        
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>8</displayOrderInCategory>
+        
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_FerringCopper</def>
+            </li>
+        </forcedTraits>
+        
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Copper</metal>
+            </li>
+        </modExtensions>
+        
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Copper</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_FerringCopper</defName>
+        <label>archivist</label>
+        <description>Stores memories, allowing perfect recall of stored knowledge.</description>
+        
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Copper</metal>
+            </li>
+        </modExtensions>
+        
+        <degreeDatas>
+            <li>
+                <label>ferring: archivist</label>
+                <description>Stores memories, allowing perfect recall of stored knowledge.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

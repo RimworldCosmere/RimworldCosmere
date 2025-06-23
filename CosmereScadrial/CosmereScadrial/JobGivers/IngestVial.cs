@@ -8,10 +8,6 @@ using Verse.AI;
 namespace CosmereScadrial.JobGivers;
 
 public class IngestVial : ThinkNode_JobGiver {
-    private Allomancer? GetAllomancerGene(Pawn pawn) {
-        return pawn.genes?.GetFirstGeneOfType<Allomancer>();
-    }
-
     private List<Allomancer> GetGenes(Pawn pawn) {
         return pawn.genes?.GenesListForReading.Where(x => x is Allomancer).Cast<Allomancer>().ToList() ?? [];
     }
@@ -36,7 +32,7 @@ public class IngestVial : ThinkNode_JobGiver {
                 return null;
             }
 
-            Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, vial);
+            Job job = JobMaker.MakeJob(JobDefOf.Cosmere_Job_IngestVial, vial);
             job.count = 1;
             job.ingestTotalCount = true;
 

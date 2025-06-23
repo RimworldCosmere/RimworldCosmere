@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <GeneDef Name="Cosmere_TerrisGeneBase" ParentName="Cosmere_ScadrialGeneBase" Abstract="True">
+    <GeneDef Name="Cosmere_Scadrial_Xenotype_TerrisGeneBase" ParentName="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
         <biostatCpx>1</biostatCpx>
         <biostatMet>0</biostatMet>
         <biostatArc>-1</biostatArc>
         <iconPath>UI/Icons/Xenotype/Terris</iconPath>
     </GeneDef>
-    <GeneDef ParentName="Cosmere_TerrisGeneBase">
-        <defName>Cosmere_Terris_Heritage</defName>
+    <GeneDef ParentName="Cosmere_Scadrial_Xenotype_TerrisGeneBase">
+        <defName>Cosmere_Scadrial_Gene_TerrisHeritage</defName>
         <label>terris heritage</label>
         <randomChosen>true</randomChosen>
         <description>This Terrisfolk descends from a Terris bloodline. Their Feruchemical potential is increased.</description>
     </GeneDef>
-    <GeneDef ParentName="Cosmere_TerrisGeneBase">
-        <defName>Cosmere_Terris_DeepMemory</defName>
+    <GeneDef ParentName="Cosmere_Scadrial_Xenotype_TerrisGeneBase">
+        <defName>Cosmere_Scadrial_Gene_TerrisDeepMemory</defName>
         <label>deep memory</label>
         <description>This Terrisfolk was raised in a culture of oral tradition and scholarship. They learn more quickly than most.</description>
         <statOffsets>
             <GlobalLearningFactor>0.25</GlobalLearningFactor>
         </statOffsets>
     </GeneDef>
-    <GeneDef ParentName="Cosmere_TerrisGeneBase">
-        <defName>Cosmere_Terris_Peaceful</defName>
+    <GeneDef ParentName="Cosmere_Scadrial_Xenotype_TerrisGeneBase">
+        <defName>Cosmere_Scadrial_Gene_TerrisPeaceful</defName>
         <label>nonviolent</label>
         <description>This Terrisfolk comes from a tradition of peacekeeping and cultural preservation. Their combat ability is reduced.</description>
         <statFactors>
@@ -30,8 +30,8 @@
             <AimingDelayFactor>1.1</AimingDelayFactor>
         </statFactors>
     </GeneDef>
-    <GeneDef ParentName="Cosmere_TerrisGeneBase">
-        <defName>Cosmere_Terris_Stability</defName>
+    <GeneDef ParentName="Cosmere_Scadrial_Xenotype_TerrisGeneBase">
+        <defName>Cosmere_Scadrial_Gene_TerrisStability</defName>
         <label>mentally disciplined</label>
         <description>This Terrisfolk has a stoic, composed mind. Mental breaks are slightly less likely.</description>
         <statOffsets>

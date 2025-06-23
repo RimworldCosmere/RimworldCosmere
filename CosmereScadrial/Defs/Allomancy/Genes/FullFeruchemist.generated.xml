@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_FullFeruchemist</defName>
+        <label>full feruchemist</label>
+        <description>A rare individual who can use all Feruchemical metals.</description>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metals>
+                        <li>Iron</li>
+                        <li>Steel</li>
+                        <li>Tin</li>
+                        <li>Pewter</li>
+                        <li>Zinc</li>
+                        <li>Brass</li>
+                        <li>Copper</li>
+                        <li>Bronze</li>
+                        <li>Aluminum</li>
+                        <li>Duralumin</li>
+                        <li>Chromium</li>
+                        <li>Nicrosil</li>
+                        <li>Cadmium</li>
+                        <li>Bendalloy</li>
+                        <li>Gold</li>
+                        <li>Electrum</li>
+                        <li>Atium</li>
+                </metals>
+            </li>
+        </modExtensions>
+        <conflictingTraits>
+                <li>Cosmere_Scadrial_Trait_FerringIron</li>
+                <li>Cosmere_Scadrial_Trait_FerringSteel</li>
+                <li>Cosmere_Scadrial_Trait_FerringTin</li>
+                <li>Cosmere_Scadrial_Trait_FerringPewter</li>
+                <li>Cosmere_Scadrial_Trait_FerringZinc</li>
+                <li>Cosmere_Scadrial_Trait_FerringBrass</li>
+                <li>Cosmere_Scadrial_Trait_FerringCopper</li>
+                <li>Cosmere_Scadrial_Trait_FerringBronze</li>
+                <li>Cosmere_Scadrial_Trait_FerringAluminum</li>
+                <li>Cosmere_Scadrial_Trait_FerringDuralumin</li>
+                <li>Cosmere_Scadrial_Trait_FerringChromium</li>
+                <li>Cosmere_Scadrial_Trait_FerringNicrosil</li>
+                <li>Cosmere_Scadrial_Trait_FerringCadmium</li>
+                <li>Cosmere_Scadrial_Trait_FerringBendalloy</li>
+                <li>Cosmere_Scadrial_Trait_FerringGold</li>
+                <li>Cosmere_Scadrial_Trait_FerringElectrum</li>
+                <li>Cosmere_Scadrial_Trait_FerringAtium</li>
+        </conflictingTraits>
+        <degreeDatas>
+            <li>
+                <label>full feruchemist</label>
+                <description>A rare individual who can use all Feruchemical metals.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

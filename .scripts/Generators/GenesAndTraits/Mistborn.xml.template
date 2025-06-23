@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
-        <defName>Cosmere_Mistborn</defName>
+        <defName>Cosmere_Scadrial_Gene_Mistborn</defName>
         <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
         <modExtensions>
@@ -15,7 +15,7 @@
         </modExtensions>
         <conflictingTraits>
             {{#each metals}}
-            <li>Cosmere_Misting_{{capitalize this.Name}}</li>
+            <li>Cosmere_Scadrial_Trait_Misting{{capitalize this.Name}}</li>
             {{/each}}
         </conflictingTraits>
         <degreeDatas>

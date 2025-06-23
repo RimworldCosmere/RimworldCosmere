@@ -9,7 +9,7 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class CoinThingDefOf {
-    public static ThingDef Cosmere_Boxing;
-    public static ThingDef Cosmere_Clip;
-    public static ThingDef Cosmere_Clip_Projectile;
+    public static ThingDef Cosmere_Scadrial_Thing_Boxing;
+    public static ThingDef Cosmere_Scadrial_Thing_Clip;
+    public static ThingDef Cosmere_Scadrial_Thing_ClipProjectile;
 }

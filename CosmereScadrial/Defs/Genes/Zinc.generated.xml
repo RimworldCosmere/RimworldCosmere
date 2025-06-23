@@ -28,8 +28,8 @@
         </modExtensions>
         
         <abilities>
-            <li>Cosmere_Ability_Zinc_Aura</li>
-            <li>Cosmere_Ability_Zinc_Target</li>
+            <li>Cosmere_Scadrial_Ability_ZincAura</li>
+            <li>Cosmere_Scadrial_Ability_ZincTarget</li>
         </abilities>
         
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Zinc</iconPath>

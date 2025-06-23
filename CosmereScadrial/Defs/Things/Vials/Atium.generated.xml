@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Atium</defName>
+        <label>misting vial: seer</label>
+        <description>A vial containing Atium suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(0, 0, 0)</color>
+        </graphicData>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Atium</metal>
+            </li>
+        </modExtensions>
+        <orderedTakeGroup>AllomanticVial_Atium</orderedTakeGroup>
+    </ThingDef>
+    
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Atium</defName>
+        <label>craft misting vial: seer</label>
+        <description>Create a vial of Atium infused alcohol for use by Mistborns and seers.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Atium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Atium>8</Cosmere_AllomanticVial_Atium>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Atium</defName>
+        <label>allomantic vial: atium</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
+</Defs>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_AllomanticVial_Lerasium</defName>
+        <label>misting vial: </label>
+        <description>A vial containing Lerasium suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(132, 159, 106)</color>
+        </graphicData>
+        <modExtensions>
+            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+                <metal>Lerasium</metal>
+            </li>
+        </modExtensions>
+        <orderedTakeGroup>AllomanticVial_Lerasium</orderedTakeGroup>
+    </ThingDef>
+    
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_CraftAllomanticVial_Lerasium</defName>
+        <label>craft misting vial: </label>
+        <description>Create a vial of Lerasium infused alcohol for use by Mistborns and s.</description>
+        <ingredients>
+            <li>
+                <filter><thingDefs><li>Lerasium</li></thingDefs></filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products>
+            <Cosmere_AllomanticVial_Lerasium>8</Cosmere_AllomanticVial_Lerasium>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>AllomanticVial_Lerasium</defName>
+        <label>allomantic vial: lerasium</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
+</Defs>

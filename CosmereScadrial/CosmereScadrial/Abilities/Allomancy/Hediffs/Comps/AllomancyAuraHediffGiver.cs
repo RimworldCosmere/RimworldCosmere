@@ -93,22 +93,6 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
         CreateMote()?.Maintain();
         if (mote != null) mote.Scale = moteScale;
-
-
-        if (cosmereSettings.debugMode && Find.Selector.IsSelected(parent.pawn)) {
-            float radius = props.radius * base.parent.Severity;
-            IntVec3 center = base.parent.pawn.Position;
-            Map? map = base.parent.pawn.Map;
-
-            IEnumerable<Pawn> nearbyPawns = GenRadial
-                .RadialCellsAround(center, Math.Min(radius, GenRadial.MaxRadialPatternRadius), true)
-                .Select(cell => cell.GetFirstPawn(map))
-                .Where(p => p != null && p != base.parent.pawn)
-                .ToArray();
-            foreach (Pawn nearbyPawn in nearbyPawns) {
-                GenDraw.DrawLineBetween(parent.pawn.DrawPos, nearbyPawn.DrawPos, SimpleColor.Red);
-            }
-        }
     }
 
     private Mote? CreateMote() {

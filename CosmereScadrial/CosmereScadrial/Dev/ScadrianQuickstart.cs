@@ -73,10 +73,8 @@ public static class ScadrianQuickstart {
             return;
         }
 
-        pawns.Shuffle();
         if (pawns.TryPopFront(out Pawn pawn)) {
-            GeneUtility.AddMistborn(pawn, false, true);
-            ScadrianUtility.FillAllReserves(pawn);
+            ScadrianUtility.PrepareDevPawn(pawn);
             pawn.Name = new NameSingle("Mistborn");
         }
 

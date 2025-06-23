@@ -28,8 +28,8 @@
         </modExtensions>
         
         <abilities>
-            <li>Cosmere_Ability_Iron_Aura</li>
-            <li>Cosmere_Ability_Iron_Pull</li>
+            <li>Cosmere_Scadrial_Ability_IronAura</li>
+            <li>Cosmere_Scadrial_Ability_IronPull</li>
         </abilities>
         
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Iron</iconPath>

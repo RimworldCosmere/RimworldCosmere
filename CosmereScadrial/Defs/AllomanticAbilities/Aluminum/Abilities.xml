@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <AbilityGroupDef>
+        <defName>Cosmere_Scadrial_Aluminum</defName>
+    </AbilityGroupDef>
+    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <groupDef>Cosmere_Scadrial_Aluminum</groupDef>
+        <defName>Cosmere_Scadrial_Ability_Aluminum</defName>
+        <label>shield against investiture</label>
+        <description>Burning aluminum shields the Allomancer from external investiture effects and instantly wipes all other reserves.</description>
+        <metal>Aluminum</metal>
+        <canBurnWhileAsleep>true</canBurnWhileAsleep>
+        <hediff>Cosmere_Hediff_Investiture_Shield</hediff>
+        <beuPerTick>0.0008</beuPerTick>
+        <iconPath>UI/Icons/Abilities/InvestitureShield</iconPath>
+    </CosmereScadrial.Defs.AllomanticAbilityDef>
+</Defs>

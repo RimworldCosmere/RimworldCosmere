@@ -28,7 +28,7 @@ public class Allomancer : Gene_Resource {
     public override int MaxForDisplay => PostProcessValue(Max);
 
     public override void Reset() {
-        targetValue = 0.25f;
+        targetValue = 0.15f;
     }
 
     public override void PostAdd() {
@@ -44,5 +44,9 @@ public class Allomancer : Gene_Resource {
 
         MetalbornUtility.HandleMistbornAndFullFeruchemistTraits(pawn);
         MetalbornUtility.HandleMetalbornTrait(pawn);
+    }
+
+    public bool ShouldConsumeVialNow() {
+        return Value < (double)targetValue;
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
-        <defName>Cosmere_FullFeruchemist</defName>
+        <defName>Cosmere_Scadrial_Gene_FullFeruchemist</defName>
         <label>full feruchemist</label>
         <description>A rare individual who can use all Feruchemical metals.</description>
         <modExtensions>
@@ -15,7 +15,7 @@
         </modExtensions>
         <conflictingTraits>
             {{#each metals}}
-            <li>Cosmere_Ferring_{{capitalize this.Name}}</li>
+            <li>Cosmere_Scadrial_Trait_Ferring{{capitalize this.Name}}</li>
             {{/each}}
         </conflictingTraits>
         <degreeDatas>

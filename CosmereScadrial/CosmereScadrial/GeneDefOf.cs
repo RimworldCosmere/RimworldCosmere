@@ -1,8 +1,6 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
 using CosmereResources.Defs;
-using CosmereScadrial.Defs;
-using CosmereScadrial.Extensions;
 using RimWorld;
 using Verse;
 
@@ -43,18 +41,11 @@ public static partial class GeneDefOf {
     }
 
     public static GeneDef GetMistingGeneForMetal(MetalDef def) {
-        return GetMistingGeneForMetal(def.ToMetallicArts());
-    }
-
-    public static GeneDef GetMistingGeneForMetal(MetallicArtsMetalDef def) {
         return DefDatabase<GeneDef>.GetNamed("Cosmere_Scadrial_Gene_Misting" + def.defName);
     }
 
-    public static GeneDef GetFerringGeneForMetal(MetalDef def) {
-        return GetMistingGeneForMetal(def.ToMetallicArts());
-    }
 
-    public static GeneDef GetFerringGeneForMetal(MetallicArtsMetalDef def) {
+    public static GeneDef GetFerringGeneForMetal(MetalDef def) {
         return DefDatabase<GeneDef>.GetNamed("Cosmere_Scadrial_Gene_Ferring" + def.defName);
     }
 }

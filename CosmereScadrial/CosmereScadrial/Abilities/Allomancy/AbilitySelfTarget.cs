@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereFramework.Extensions;
+using CosmereScadrial.Comps.Things;
+using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
 
@@ -36,9 +38,10 @@ public class AbilitySelfTarget : AbstractAbility {
         base.AbilityTick();
 
 
-        if (willBurnWhileDowned && pawn.Downed && !pawn.Dead) {
-            if (!atLeastPassive) {
-                //UpdateStatus();
+        if (willBurnWhileDowned && pawn.Downed && !pawn.Dead && !atLeastPassive) {
+            MetalReserves reserves = pawn.GetComp<MetalReserves>();
+            if (reserves?.CanLowerReserve(metal, AllomancyUtility.GetMetalNeededForBeu(def.beuPerTick)) ?? false) {
+                UpdateStatus(BurningStatus.Passive);
             }
         }
 
@@ -46,7 +49,13 @@ public class AbilitySelfTarget : AbstractAbility {
             return;
         }
 
-        if (pawn.IsAsleep() && status > BurningStatus.Passive) {
+        if (pawn.Downed) {
+            if (status > BurningStatus.Passive && (!def.canBurnWhileDowned || !willBurnWhileDowned)) {
+                UpdateStatus(BurningStatus.Off);
+            } else if (status == BurningStatus.Off && willBurnWhileDowned) {
+                UpdateStatus(BurningStatus.Passive);
+            }
+        } else if (pawn.IsAsleep() && status > BurningStatus.Passive) {
             UpdateStatus(def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off);
         } else if (!pawn.IsAsleep() && status == BurningStatus.Passive) {
             UpdateStatus(BurningStatus.Burning);

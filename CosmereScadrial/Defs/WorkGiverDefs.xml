@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <WorkGiverDef>
+        <defName>DoctorGiveThugsVial</defName>
+        <label>give thug patients pewter vials</label>
+        <giverClass>CosmereScadrial.WorkGivers.GivePewterVialToDownedThugs</giverClass>
+        <workType>Doctor</workType>
+        <verb>give vial</verb>
+        <gerund>giving vial</gerund>
+        <priorityInType>80</priorityInType>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+        <canBeDoneByMechs>true</canBeDoneByMechs>
+    </WorkGiverDef>
+</Defs>

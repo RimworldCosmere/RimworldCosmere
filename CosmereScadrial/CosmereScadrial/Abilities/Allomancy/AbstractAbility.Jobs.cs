@@ -131,6 +131,10 @@ public abstract partial class AbstractAbility {
             desiredStatus = def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off;
         }
 
+        if (pawn.Downed && !willBurnWhileDowned) {
+            desiredStatus = BurningStatus.Off;
+        }
+
         nextStatus = desiredStatus;
     }
 

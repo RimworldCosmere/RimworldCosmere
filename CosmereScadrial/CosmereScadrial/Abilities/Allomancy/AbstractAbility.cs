@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
-using CosmereScadrial.Flags;
 using CosmereScadrial.Utils;
 using RimWorld;
 using RimWorld.Planet;
@@ -14,7 +13,10 @@ namespace CosmereScadrial.Abilities.Allomancy;
 
 public abstract partial class AbstractAbility : Ability {
     protected Mote? burningMote;
+
+    /*
     private TargetFlags? cachedTargetFlags;
+    */
     protected int flareStartTick = -1;
     public GlobalTargetInfo? globalTarget;
     public LocalTargetInfo? localTarget;
@@ -40,13 +42,13 @@ public abstract partial class AbstractAbility : Ability {
 
     public BurningStatus? nextStatus { get; private set; }
 
-    protected TargetFlags targetFlags {
+    /*protected TargetFlags targetFlags {
         get {
             cachedTargetFlags ??= TargetFlagsExtensions.FromAbilityDef(def);
 
             return (TargetFlags)cachedTargetFlags;
         }
-    }
+    }*/
 
     public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
@@ -80,7 +82,7 @@ public abstract partial class AbstractAbility : Ability {
         };
     }
 
-    public TaggedString GetRightClickLabel(LocalTargetInfo targetInfo, BurningStatus burningStatus,
+    /*public TaggedString GetRightClickLabel(LocalTargetInfo targetInfo, BurningStatus burningStatus,
         string disableReason = null) {
         bool hasDisableReason = !string.IsNullOrEmpty(disableReason);
 
@@ -105,13 +107,13 @@ public abstract partial class AbstractAbility : Ability {
         return burningStatus.Equals(BurningStatus.Burning)
             ? $"{label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}"
             : $"Flare {label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}";
-    }
+    }*/
 
     public float GetDesiredBurnRateForStatus() {
         return GetDesiredBurnRateForStatus(status ?? BurningStatus.Off);
     }
 
-    public float GetDesiredBurnRateForStatus(BurningStatus? burningStatus = null) {
+    public float GetDesiredBurnRateForStatus(BurningStatus? burningStatus) {
         return (burningStatus ?? status ?? BurningStatus.Off) switch {
             BurningStatus.Off => 0,
             BurningStatus.Passive => def.beuPerTick / 2,
@@ -123,7 +125,7 @@ public abstract partial class AbstractAbility : Ability {
     }
 
     public float GetStrength(BurningStatus? burningStatus = null) {
-        const float Multiplier = 12f;
+        const float multiplier = 10f;
         float rawPower = pawn.GetStatValue(StatDefOf.Cosmere_Allomantic_Power);
         float statusValue = (burningStatus ?? status ?? BurningStatus.Off) switch {
             BurningStatus.Off => 0f,
@@ -135,7 +137,7 @@ public abstract partial class AbstractAbility : Ability {
             _ => 0f,
         };
 
-        return Multiplier * def.hediffSeverityFactor * rawPower * statusValue;
+        return multiplier * def.hediffSeverityFactor * rawPower * statusValue;
     }
 
     public void UpdateStatus(BurningStatus? newStatus = null) {

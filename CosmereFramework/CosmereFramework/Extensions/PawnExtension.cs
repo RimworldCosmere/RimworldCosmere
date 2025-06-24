@@ -1,3 +1,4 @@
+using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -16,5 +17,18 @@ public static class PawnExtension {
             pawn.pather.StopDead();
             pawn.jobs.curDriver.Notify_PatherArrived();
         }
+    }
+
+    public static bool IsAsleep(this Pawn pawn) {
+        return pawn.CurJob?.def == JobDefOf.LayDown && pawn.jobs.curDriver is JobDriver_LayDown driver &&
+               driver.asleep;
+    }
+
+    public static float DistanceTo(this Pawn pawn, Thing thing) {
+        return pawn.DistanceTo(thing.Position);
+    }
+
+    public static float DistanceTo(this Pawn pawn, IntVec3 position) {
+        return pawn.Position.DistanceTo(position);
     }
 }

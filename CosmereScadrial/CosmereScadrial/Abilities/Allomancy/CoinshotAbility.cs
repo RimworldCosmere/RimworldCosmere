@@ -44,7 +44,7 @@ public class CoinshotAbility : AbilityOtherTarget {
         return pawn.inventory?.innerContainer.Contains(ThingDefOf.Cosmere_Scadrial_Thing_Clip) ?? false;
     }
 
-    public override AcceptanceReport CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus,
+    /*public override AcceptanceReport CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus,
         bool ignoreInvestiture = false) {
         AcceptanceReport baseResult = base.CanActivate(targetInfo, activationStatus, ignoreInvestiture);
         if (!baseResult.Accepted) return baseResult;
@@ -53,7 +53,7 @@ public class CoinshotAbility : AbilityOtherTarget {
         if (!shooting.PermanentlyDisabled && !shooting.TotallyDisabled) return true;
 
         return "CS_CannotShoot".Translate(pawn.Named("PAWN"));
-    }
+    }*/
 
     public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
         localTarget = targetInfo;

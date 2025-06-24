@@ -7,7 +7,6 @@ using CosmereScadrial.Utils;
 using Verse;
 using Verse.AI;
 using HediffUtility = CosmereScadrial.Utils.HediffUtility;
-using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.JobDrivers;
 
@@ -38,8 +37,8 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
                 pawn.MaintainProximityTo(TargetA, job.followRadius,
                     targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell);
 
-                // If we arent close enough to the pawn, update burnrate to 0, and get closer
-                if (PawnUtility.DistanceBetween(pawn, targetPawn) > ability.def.verbProperties.range) {
+                // If we aren't close enough to the pawn, update burnrate to 0, and get closer
+                if (pawn.DistanceTo(targetPawn) > ability.def.verbProperties.range) {
                     UpdateBurnRate(0f);
                     return;
                 }

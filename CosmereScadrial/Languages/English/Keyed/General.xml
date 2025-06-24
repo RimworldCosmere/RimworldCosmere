@@ -15,7 +15,7 @@
 	<CS_MetalCost>Metal Cost</CS_MetalCost>
 	<CS_Flare>flare</CS_Flare>
 	<CS_Deflare>de-flare</CS_Deflare>
+	<CS_SetVialCountTooltip>Click to change the number of {METAL} vials {PAWN} will keep in {pawn_possessive} inventory.</CS_SetVialCountTooltip>
+	<CS_SetVialCountSlider>{PAWN} will keep {COUNT} {METAL} vials in {pawn_possessive} inventory.</CS_SetVialCountSlider>
 	<CS_CurrentVialStock>Keeping {COUNT} vials in inventory</CS_CurrentVialStock>
-	<CS_CurrentVialStockMenu>Currently keeping {COUNT} vials</CS_CurrentVialStockMenu>
-	<CS_ChangeVialStock>Right-click to change how many vials to keep in stock.</CS_ChangeVialStock>
 </LanguageData>

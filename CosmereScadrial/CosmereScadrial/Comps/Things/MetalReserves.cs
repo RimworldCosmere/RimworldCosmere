@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Utils;
+using CosmereFramework.Extensions;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Extensions;
 using CosmereScadrial.Genes;
@@ -41,7 +41,7 @@ public class MetalReserves : ThingComp {
 
     public override void CompTickRare() {
         base.CompTickRare();
-        if (!PawnUtility.IsAsleep(pawn)) return;
+        if (!pawn.IsAsleep()) return;
 
         MetallicArtsMetalDef[] keys = reserves.Keys.Where(metal => reserves[metal] > 0).ToArray();
         foreach (MetallicArtsMetalDef metal in keys) {

@@ -1,16 +1,15 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CosmereFramework.Extensions;
+using CosmereFramework.Utils;
 using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Genes;
 using RimWorld;
-using RimWorld.Planet;
 using UnityEngine;
 using Verse;
-using Verse.Sound;
 
 namespace CosmereScadrial.Gizmo;
 
@@ -22,30 +21,28 @@ public class AllomanticGeneCommand(
     Color barHighlightColor) : GeneGizmo_Resource(gene, [], barColor, barHighlightColor) {
     private const float AbilityIconSize = Height / 2f;
     private const float BaseWidth = 185;
-    private const float IconBorderSize = 1;
     private static readonly Vector2 Padding = new Vector2(2f, 4f);
 
-    private static readonly Texture2D CheckOff = ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff");
-    private static readonly Texture2D BgTexOff = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityOff");
-    private static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
-    private static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
+    private static readonly Texture2D VialIcon =
+        ContentFinder<Texture2D>.Get("Things/Item/AllomanticVial/AllomanticVial_c");
+
     private static readonly Texture2D BarTex = new Color(0.34f, 0.42f, 0.43f).ToSolidColorTexture();
     private static readonly Texture2D EmptyBarTex = new Color(0.03f, 0.035f, 0.05f).ToSolidColorTexture();
     private static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
-    private static readonly Texture2D BgTexOffDisabled = BgTexOff.Overlay(CheckOff);
-
     private static bool DraggingBar;
     private Texture2D barDragTex;
     private Texture2D barHighlightTex;
     private Texture2D barTex;
 
+    // Things to initialize
     private bool initialized;
+    private IEnumerable<SubGizmo> subgizmos;
     private float targetValuePct;
 
-    protected new Allomancer gene => (Allomancer)base.gene;
-    protected MetallicArtsMetalDef metal => gene.metal;
-    protected Pawn pawn => gene.pawn;
-    protected MetalBurning burning => pawn.GetComp<MetalBurning>();
+    private new Allomancer gene => (Allomancer)base.gene;
+    private MetallicArtsMetalDef metal => gene.metal;
+    private Pawn pawn => gene.pawn;
+    private MetalBurning burning => pawn.GetComp<MetalBurning>();
 
     protected override bool IsDraggable => gene.pawn.IsColonistPlayerControlled || gene.pawn.IsPrisonerOfColony;
     protected override string BarLabel => $"{gene.Value / gene.Max:P1}";
@@ -56,22 +53,6 @@ public class AllomanticGeneCommand(
 
     protected override float Width => Mathf.Max(BaseWidth,
         Height + Padding.x + (AbilityIconSize + Padding.x) * gene.def.abilities.Count);
-
-    public override IEnumerable<FloatMenuOption> RightClickFloatMenuOptions {
-        get {
-            return [
-                new FloatMenuOption(
-                    "CS_CurrentVialStockMenu".Translate(gene.RequestedVialStock.Named("COUNT")),
-                    () => { }),
-                new FloatMenuOption("Keep 0 Vials", () => gene.RequestedVialStock = 0),
-                new FloatMenuOption("Keep 1 Vials", () => gene.RequestedVialStock = 1),
-                new FloatMenuOption("Keep 2 Vials", () => gene.RequestedVialStock = 2),
-                new FloatMenuOption("Keep 3 Vials", () => gene.RequestedVialStock = 3),
-                new FloatMenuOption("Keep 4 Vials", () => gene.RequestedVialStock = 4),
-                new FloatMenuOption("Keep 5 Vials", () => gene.RequestedVialStock = 5),
-            ];
-        }
-    }
 
     protected override string GetTooltip() {
         float rate = burning.GetTotalBurnRate(metal) * GenTicks.TicksPerRealSecond;
@@ -107,152 +88,19 @@ public class AllomanticGeneCommand(
         return tooltip.ToString();
     }
 
-    protected virtual GizmoResult AbilityOnGUI(Rect rect, AbstractAbility ability) {
-        //GeneGizmo_ResourceHemogen
-        GizmoRenderParms parms = new GizmoRenderParms { shrunk = true, lowLight = false, highLight = false };
-        Color color = Color.white;
-        bool isMouseOver = false;
-        bool isClicked = false;
-        AcceptanceReport disabled = ability.GizmoDisabled();
-        if (Mouse.IsOver(rect)) {
-            isMouseOver = true;
-            if (!disabled) {
-                color = GenUI.MouseoverColor;
-            }
-        }
-
-        MouseoverSounds.DoRegion(rect, SoundDefOf.Mouseover_Command);
-        if (parms.highLight && !disabled) {
-            Widgets.DrawStrongHighlight(rect.ExpandedBy(4f));
-        }
-
-        if (disabled) {
-            parms.lowLight = true;
-        }
-
-        Material? grayscaleGui = parms.lowLight ? TexUI.GrayscaleGUI : null;
-        Texture2D background = ability.status switch {
-            null => BgTexOff,
-            BurningStatus.Off => BgTexOff,
-            BurningStatus.Passive => BgTexBurning,
-            BurningStatus.Burning => BgTexBurning,
-            BurningStatus.Flaring => BgTexFlaring,
-            BurningStatus.Duralumin => BgTexFlaring,
-            _ => throw new ArgumentOutOfRangeException(),
-        };
-        GUI.color = parms.lowLight ? Verse.Command.LowLightBgColor : color;
-        Texture2D? icon = disabled ? BgTexOffDisabled : ability.def.uiIcon;
-        DrawIcon(rect, icon, background, grayscaleGui, parms.lowLight ? Color.gray.ToTransparent(.6f) : null);
-
-        if (Widgets.ButtonInvisible(rect)) {
-            isClicked = true;
-        }
-
-        if (isMouseOver) {
-            TipSignal desc = ability.Tooltip;
-
-            TaggedString flareOrDeflare =
-                (ability.status == BurningStatus.Flaring ? "CS_Deflare" : "CS_Flare").Translate();
-            desc.text += "\n\n" + "CS_PressToFlare"
-                .Translate(flareOrDeflare.Named("FLARE"), metal.label.Named("METAL"))
-                .Colorize(ColoredText.GeneColor);
-
-            if (disabled && !disabled.Reason.NullOrEmpty()) {
-                desc.text +=
-                    ("\n\n" + "DisabledCommand".Translate() + ": " + disabled.Reason)
-                    .Colorize(ColorLibrary.RedReadable);
-            }
-
-            TooltipHandler.TipRegion(rect, desc);
-        }
-
-        if (!isClicked) {
-            return isMouseOver ? new GizmoResult(GizmoState.Mouseover, null) : new GizmoResult(GizmoState.Clear, null);
-        }
-
-
-        if (!disabled || disabled.Reason.NullOrEmpty()) {
-            return Event.current.button == 1
-                ? new GizmoResult(GizmoState.OpenedFloatMenu, Event.current)
-                : new GizmoResult(GizmoState.Interacted, Event.current);
-        }
-
-        Messages.Message((string)("DisabledCommand".Translate() + ": " + disabled.Reason),
-            MessageTypeDefOf.RejectInput, false);
-        return new GizmoResult(GizmoState.Mouseover, null);
-    }
-
-    protected virtual void ProcessInput(AbstractAbility ability, Event ev) {
-        SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
-
-        if (ability.atLeastPassive) {
-            bool isFlaring = ability.status == BurningStatus.Flaring;
-            bool isBurningOrPassive = ability.status is BurningStatus.Burning or BurningStatus.Passive;
-
-            if (ev.control) {
-                if (isBurningOrPassive) {
-                    ability.SetNextStatus(BurningStatus.Flaring);
-                } else if (isFlaring) {
-                    ability.SetNextStatus(BurningStatus.Burning);
-                }
-            } else {
-                ability.SetNextStatus(BurningStatus.Off);
-            }
-
-            ability.UpdateStatus(ability.nextStatus!.Value);
-
-            return;
-        }
-
-        if (ability.def.targetRequired) {
-            Find.DesignatorManager.Deselect();
-            ability.SetNextStatus(ev.control ? BurningStatus.Flaring : BurningStatus.Burning, true);
-            if (!ability.def.targetWorldCell) {
-                float originalRange = ability.verb.verbProps.range;
-                ability.verb.verbProps.range = originalRange * ability.GetStrength(ability.nextStatus);
-                Find.Targeter.BeginTargeting(ability.verb,
-                    actionWhenFinished: () => ability.verb.verbProps.range = originalRange);
-            } else {
-                CameraJumper.TryJump(CameraJumper.GetWorldTarget((GlobalTargetInfo)(Thing)ability.pawn));
-                Find.WorldTargeter.BeginTargeting(t => {
-                        if (!ability.ValidateGlobalTarget(t)) {
-                            return false;
-                        }
-
-                        ability.QueueCastingJob(t, ev.control);
-                        return true;
-                    }, true, ability.def.uiIcon, !ability.pawn.IsCaravanMember(),
-                    extraLabelGetter: ability.WorldMapExtraLabel, canSelectTarget: ability.ValidateGlobalTarget);
-            }
-        } else {
-            ability.QueueCastingJob(ability.pawn, LocalTargetInfo.Invalid, ev.control);
-        }
-    }
-
     private void DrawTopBar(Rect topBarRect, ref bool mouseOverElement) {
         if (!IsDraggable) return;
 
-        gene.def.abilities.SortBy(x => x.uiOrder);
         Rect abilityRect = new Rect(topBarRect.x, topBarRect.y, topBarRect.height, topBarRect.height);
-        foreach (AbilityDef abilityDef in gene.def.abilities) {
-            if (pawn.abilities.GetAbility(abilityDef) is not AbstractAbility ability) continue;
+        foreach (SubGizmo subgizmo in subgizmos) {
+            GizmoResult result = subgizmo.OnGUI(abilityRect);
+            if (result.State == GizmoState.Interacted) {
+                subgizmo.ProcessInput(result.InteractEvent);
+            }
 
-            GizmoResult result = AbilityOnGUI(abilityRect, ability);
-
-            switch (result.State) {
-                case GizmoState.Interacted:
-                    ProcessInput(ability, result.InteractEvent);
-                    break;
-                case GizmoState.Mouseover:
-                    if (ability.verb is Verb_CastAbility verb) {
-                        // @TODO This doesn't work very well. Gotta figure that out. Its like its not happening every tick?
-                        // verb.verbProps.DrawRadiusRing(verb.caster.Position, verb);
-                    }
-
-                    ability.OnGizmoUpdate();
-                    Widgets.DrawHighlight(abilityRect);
-                    mouseOverElement = true;
-                    break;
+            if (result.State == GizmoState.Mouseover) {
+                subgizmo.OnUpdate(abilityRect);
+                mouseOverElement = true;
             }
 
             abilityRect.x += AbilityIconSize + Padding.x;
@@ -290,28 +138,55 @@ public class AllomanticGeneCommand(
         }
     }
 
-    private void DrawIcon(Rect rect, Texture2D icon, Texture? background = null, Material? material = null,
-        Color? color = null, float? scale = null, Vector2? offset = null, bool doBorder = true) {
-        if (doBorder) {
-            GUI.DrawTexture(rect, BaseContent.BlackTex);
-            rect = rect.ContractedBy(IconBorderSize);
+    private Rect DrawIconBox(Rect iconBoxRect, ref bool mouseOverElement) {
+        const float configureButtonSize = 20f;
+        NamedArgument coloredPawn = pawn.NameShortColored.Named("PAWN");
+        NamedArgument coloredMetal = metal.coloredLabel.Named("METAL");
+
+        Rect iconRect = new Rect(iconBoxRect.x, iconBoxRect.y, iconBoxRect.height, iconBoxRect.height);
+        UIUtil.DrawIcon(
+            iconRect,
+            metal.invertedIcon,
+            Verse.Command.BGTex,
+            TexUI.GrayscaleGUI,
+            offset: new Vector2(0, -4f),
+            doBorder: false
+        );
+        Rect configureRect = new Rect(iconRect.xMax - configureButtonSize, iconRect.yMin + 2,
+            configureButtonSize, configureButtonSize);
+        TooltipHandler.TipRegion(configureRect,
+            (TaggedString)"CS_SetVialCountTooltip".Translate(coloredPawn, coloredMetal, pawn.Named("pawn")).Resolve());
+        if (Mouse.IsOver(configureRect)) {
+            mouseOverElement = true;
         }
 
-        GUI.color = color ?? Color.white;
-        if (background != null) GenUI.DrawTextureWithMaterial(rect, background, material);
+        if (Widgets.ButtonImageFitted(configureRect, VialIcon)) {
+            const int min = 0;
+            const int max = 20;
+            Dialog_Slider slider = new Dialog_Slider(
+                amount => "CS_SetVialCountSlider"
+                    .Translate(amount.Named("COUNT"), coloredPawn, coloredMetal, pawn.Named("pawn")).Resolve(),
+                min,
+                max,
+                value => gene.RequestedVialStock = value,
+                gene.RequestedVialStock
+            );
+            Find.WindowStack.Add(slider);
+        }
 
-        Rect iconRect = offset == null
-            ? rect
-            : new Rect(rect.x + offset.Value.x, rect.y + offset.Value.y, rect.width, rect.height);
-        Widgets.DrawTextureFitted(iconRect, icon, scale ?? 1f);
-        GUI.color = Color.white;
+        return iconRect;
     }
-
 
     private void Initialize() {
         if (initialized) {
             return;
         }
+
+        subgizmos = gene.def.abilities
+            .OrderBy(x => x.uiOrder)
+            .Select(x => pawn.abilities.GetAbility(x))
+            .Cast<AbstractAbility>()
+            .Select(x => new AbilitySubGizmo(this, gene, x));
 
         initialized = true;
         targetValuePct = Mathf.Clamp(Target, DragRange.min, DragRange.max);
@@ -329,12 +204,10 @@ public class AllomanticGeneCommand(
         Widgets.DrawWindowBackground(rect);
         rect = rect.ContractedBy(Padding.x * 2, Padding.y);
 
-        Rect iconRect = new Rect(rect.x, rect.y, rect.height, rect.height);
-        DrawIcon(iconRect, metal.invertedIcon, Verse.Command.BGTex, TexUI.GrayscaleGUI, offset: new Vector2(0, -4f),
-            doBorder: false);
-        Text.Font = GameFont.Small;
-        float barWidth = rect.width - (rect.height + Padding.y);
-        Rect topBarRect = new Rect(iconRect.x + iconRect.width + Padding.x, iconRect.y, barWidth, AbilityIconSize);
+        Rect iconRect = DrawIconBox(rect, ref mouseOver);
+        // Text.Font = GameFont.Small;
+        Rect topBarRect = new Rect(iconRect.x + iconRect.width + Padding.x, iconRect.y,
+            rect.width - (rect.height + Padding.y), AbilityIconSize);
         DrawTopBar(topBarRect, ref mouseOver);
         Rect bottomBarRect = new Rect(topBarRect.x, topBarRect.y + AbilityIconSize + Padding.y / 2, topBarRect.width,
             Height - AbilityIconSize - Padding.y * 3);
@@ -351,10 +224,7 @@ public class AllomanticGeneCommand(
             }
         }
 
-        if (Event.current.button == 1) {
-            return new GizmoResult(GizmoState.OpenedFloatMenu, Event.current);
-        }
-
+        // @todo Maybe implement float menu stuff?
 
         if (Mouse.IsOver(rect) && !mouseOver) {
             Widgets.DrawHighlight(rect);

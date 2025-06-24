@@ -1,16 +1,16 @@
+using CosmereFramework.Extensions;
 using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using RimWorld;
 using Verse;
 using Verse.AI;
-using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Abilities.Allomancy;
 
 public class GoldAbility : AbilitySelfTarget {
-    private Pawn hallucination;
+    private Pawn? hallucination;
 
-    public AllomanticHediff hediff;
-    private Job job;
+    public AllomanticHediff? hediff;
+    private Job? job;
 
     public GoldAbility() { }
 
@@ -29,9 +29,9 @@ public class GoldAbility : AbilitySelfTarget {
             return;
         }
 
-        if (PawnUtility.IsAsleep(pawn) && status > BurningStatus.Passive) {
+        if (pawn.IsAsleep() && status > BurningStatus.Passive) {
             UpdateStatus(BurningStatus.Passive);
-        } else if (!PawnUtility.IsAsleep(pawn) && status == BurningStatus.Passive) {
+        } else if (!pawn.IsAsleep() && status == BurningStatus.Passive) {
             UpdateStatus(BurningStatus.Burning);
         }
 
@@ -50,7 +50,7 @@ public class GoldAbility : AbilitySelfTarget {
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
 
         hediff = GetOrAddHediff(pawn);
-        hediff.extraSeverity += 0.06f;
+        if (hediff != null) hediff.extraSeverity += 0.06f;
     }
 
     protected override void OnEnable() {
@@ -60,7 +60,7 @@ public class GoldAbility : AbilitySelfTarget {
 
     protected override void OnDisable() {
         base.OnDisable();
-        if (pawn.health.hediffSet.HasHediff(hediff.def)) {
+        if (hediff != null && pawn.health.hediffSet.HasHediff(hediff.def)) {
             pawn.health.RemoveHediff(hediff);
         }
 

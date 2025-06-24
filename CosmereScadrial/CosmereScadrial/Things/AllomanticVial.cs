@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereCore.Utils;
+using CosmereFramework.Extensions;
 using CosmereResources.ModExtensions;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
@@ -10,7 +11,6 @@ using CosmereScadrial.Utils;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Things;
 
@@ -39,11 +39,10 @@ public class AllomanticVial : ThingWithComps {
 
             if (InvestitureDetector.IsShielded(pawn)) return false;
 
-            if (PawnUtility.IsAsleep(pawn)) return false;
+            if (pawn.IsAsleep()) return false;
 
             if (metals.Count > 1) {
-                return AllomancyUtility.IsMistborn(pawn) &&
-                       metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f);
+                return pawn.IsMistborn() && metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f);
             }
 
             MetallicArtsMetalDef? metal = metals.First();

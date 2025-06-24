@@ -1,7 +1,7 @@
+using CosmereFramework.Extensions;
 using RimWorld;
 using Verse;
 using Verse.AI;
-using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Abilities.Allomancy;
 
@@ -25,7 +25,7 @@ public class AbilityOtherTarget : AbstractAbility {
             return;
         }
 
-        if (PawnUtility.IsAsleep(pawn)) {
+        if (pawn.IsAsleep()) {
             UpdateStatus(BurningStatus.Off);
         }
     }

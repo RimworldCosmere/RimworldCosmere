@@ -1,5 +1,6 @@
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace CosmereScadrial.Patches;
@@ -22,7 +23,7 @@ public static class TimeBubblePatches {
                 return false;
             }
         } else if (pawn.health.hediffSet.HasHediff(HediffDef.Named("Cosmere_Hediff_Time_Bubble_Bendalloy"))) {
-            if (!pawn.IsHashIntervalTick(BaseInterval / BendalloyDivisor, delta)) {
+            if (!pawn.IsHashIntervalTick(Mathf.RoundToInt((float)BaseInterval / BendalloyDivisor), delta)) {
                 return false;
             }
         } else {

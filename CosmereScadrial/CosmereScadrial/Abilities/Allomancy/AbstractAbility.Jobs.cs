@@ -1,15 +1,12 @@
-using CosmereCore.Utils;
-using CosmereScadrial.Flags;
-using RimWorld;
+using CosmereFramework.Extensions;
 using RimWorld.Planet;
 using Verse;
 using Verse.AI;
-using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Abilities.Allomancy;
 
 public abstract partial class AbstractAbility {
-    public override bool CanApplyOn(LocalTargetInfo targetInfo) {
+    /*public override bool CanApplyOn(LocalTargetInfo targetInfo) {
         Pawn? targetPawn = targetInfo.Pawn;
         if (targetFlags.Has(TargetFlags.Locations) && !targetInfo.HasThing &&
             !targetInfo.TryGetPawn(out _)) {
@@ -61,9 +58,9 @@ public abstract partial class AbstractAbility {
         }
 
         return false;
-    }
+    }*/
 
-    public virtual AcceptanceReport CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus,
+    /*public virtual AcceptanceReport CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus,
         bool ignoreInvestiture = false) {
         if (!metalBurning.CanBurn(metal, def.beuPerTick)) {
             return "CS_CannotBurn".Translate(metal.Named("METAL"));
@@ -78,7 +75,7 @@ public abstract partial class AbstractAbility {
         }
 
         return true;
-    }
+    }*/
 
     public override void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
         QueueCastingJob(targetInfo, dest, false);
@@ -130,7 +127,7 @@ public abstract partial class AbstractAbility {
             desiredStatus = BurningStatus.Burning;
         }
 
-        if (PawnUtility.IsAsleep(pawn) && desiredStatus >= BurningStatus.Burning) {
+        if (pawn.IsAsleep() && desiredStatus >= BurningStatus.Burning) {
             desiredStatus = def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off;
         }
 

@@ -77,9 +77,10 @@ public static class UIUtil {
 
     public static void DrawIcon(Rect rect, Texture2D icon, Texture? background = null, Material? material = null,
         Color? color = null, float? scale = null, Vector2? offset = null, bool doBorder = true,
+        Texture? borderTexture = null,
         float iconBorderSize = 1f) {
         if (doBorder) {
-            GUI.DrawTexture(rect, BaseContent.BlackTex);
+            GUI.DrawTexture(rect, borderTexture ?? BaseContent.BlackTex);
             rect = rect.ContractedBy(iconBorderSize);
         }
 

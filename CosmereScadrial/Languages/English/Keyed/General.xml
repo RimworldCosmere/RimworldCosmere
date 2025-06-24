@@ -9,7 +9,8 @@
     <CS_ConsumeVialBelow>Consume a vial below</CS_ConsumeVialBelow>
     <CS_SetVialLevelTooltip>Drag the bar to configure when {PAWN} will consume a {METAL} vial.</CS_SetVialLevelTooltip>
     <CS_NoClipsToThrow>{PAWN} has no clips to use</CS_NoClipsToThrow>
-    <CS_PressToFlare>Hold "Ctrl" to {FLARE} {METAL}</CS_PressToFlare>
+    <CS_ToggleAutomaticBurning>Shift-click to toggle auto-burning</CS_ToggleAutomaticBurning>
+    <CS_PressToFlare>Ctrl-click to {FLARE}</CS_PressToFlare>
 	<CS_AlreadyMistborn>{PAWN} is already a Mistborn. Consuming Lerasium won't do anything.</CS_AlreadyMistborn>
 	<CS_CannotUseMetal>{PAWN} does not have the genes required to burn {METAL}.</CS_CannotUseMetal>
 	<CS_MetalCost>Metal Cost</CS_MetalCost>
@@ -18,4 +19,5 @@
 	<CS_SetVialCountTooltip>Click to change the number of {METAL} vials {PAWN} will keep in {pawn_possessive} inventory.</CS_SetVialCountTooltip>
 	<CS_SetVialCountSlider>{PAWN} will keep {COUNT} {METAL} vials in {pawn_possessive} inventory.</CS_SetVialCountSlider>
 	<CS_CurrentVialStock>Keeping {COUNT} vials in inventory</CS_CurrentVialStock>
+	<CS_WillBurnWhileDowned>Auto-Burning while downed</CS_WillBurnWhileDowned>
 </LanguageData>

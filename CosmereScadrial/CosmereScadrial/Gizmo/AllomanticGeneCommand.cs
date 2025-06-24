@@ -152,6 +152,7 @@ public class AllomanticGeneCommand(
             offset: new Vector2(0, -4f),
             doBorder: false
         );
+
         Rect configureRect = new Rect(iconRect.xMax - configureButtonSize, iconRect.yMin + 2,
             configureButtonSize, configureButtonSize);
         TooltipHandler.TipRegion(configureRect,
@@ -205,7 +206,6 @@ public class AllomanticGeneCommand(
         rect = rect.ContractedBy(Padding.x * 2, Padding.y);
 
         Rect iconRect = DrawIconBox(rect, ref mouseOver);
-        // Text.Font = GameFont.Small;
         Rect topBarRect = new Rect(iconRect.x + iconRect.width + Padding.x, iconRect.y,
             rect.width - (rect.height + Padding.y), AbilityIconSize);
         DrawTopBar(topBarRect, ref mouseOver);

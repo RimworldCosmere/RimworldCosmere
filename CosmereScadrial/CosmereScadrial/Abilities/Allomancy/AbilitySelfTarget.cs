@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using CosmereFramework.Extensions;
 using RimWorld;
 using Verse;
@@ -19,8 +21,26 @@ public class AbilitySelfTarget : AbstractAbility {
         localTarget = pawn;
     }
 
+    public override string Tooltip {
+        get {
+            string tooltip = base.Tooltip;
+            if (!willBurnWhileDowned) return tooltip;
+            List<string> tooltipByLine = tooltip.Split('\n').ToList();
+            tooltipByLine.Insert(1, "CS_WillBurnWhileDowned".Translate().Colorize(ColorLibrary.Green));
+
+            return tooltipByLine.ToStringList("\n");
+        }
+    }
+
     public override void AbilityTick() {
         base.AbilityTick();
+
+
+        if (willBurnWhileDowned && pawn.Downed && !pawn.Dead) {
+            if (!atLeastPassive) {
+                //UpdateStatus();
+            }
+        }
 
         if (!atLeastPassive) {
             return;

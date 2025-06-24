@@ -13,6 +13,7 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
     public ThingDef? burningMote;
     public int burningMoteInterval = GenTicks.TickRareInterval;
     public bool canBurnWhileAsleep = false;
+    public bool canBurnWhileDowned = false;
     public bool canFlare = true;
     public HediffDef? dragHediff;
     public HediffDef? hediff;

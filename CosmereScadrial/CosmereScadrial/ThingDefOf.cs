@@ -24,7 +24,7 @@ public static partial class ThingDefOf {
     }
 
     public static ThingDef GetVialForMetal(MetalDef def) {
-        return GetVialForMetal(def.GetMetallicArtsMetalDef());
+        return GetVialForMetal(def.ToMetallicArts());
     }
 
     public static ThingDef GetVialForMetal(MetallicArtsMetalDef def) {

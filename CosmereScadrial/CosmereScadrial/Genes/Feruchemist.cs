@@ -2,14 +2,14 @@
 using CosmereCore.Utils;
 using CosmereResources.ModExtensions;
 using CosmereScadrial.Defs;
+using CosmereScadrial.Extensions;
 using CosmereScadrial.Utils;
 using Verse;
 
 namespace CosmereScadrial.Genes;
 
 public class Feruchemist : Gene {
-    public MetallicArtsMetalDef metal =>
-        MetallicArtsMetalDef.GetFromMetalDef(def.GetModExtension<MetalsLinked>().Metals.First()!);
+    public MetallicArtsMetalDef metal => def.GetModExtension<MetalsLinked>().Metals.First()!.ToMetallicArts();
 
     public override void PostAdd() {
         base.PostAdd();

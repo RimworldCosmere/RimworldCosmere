@@ -4,6 +4,7 @@ using CosmereCore.Utils;
 using CosmereResources.ModExtensions;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
+using CosmereScadrial.Extensions;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
@@ -12,8 +13,8 @@ using PawnUtility = CosmereFramework.Utils.PawnUtility;
 namespace CosmereScadrial.Things;
 
 public class AllomanticVial : ThingWithComps {
-    protected List<MetallicArtsMetalDef> metals => def.GetModExtension<MetalsLinked>().Metals
-        .Select(MetallicArtsMetalDef.GetFromMetalDef!).ToList();
+    public List<MetallicArtsMetalDef> metals => def.GetModExtension<MetalsLinked>().Metals
+        .Select(x => x.ToMetallicArts()).ToList();
 
     public override bool IngestibleNow {
         get {

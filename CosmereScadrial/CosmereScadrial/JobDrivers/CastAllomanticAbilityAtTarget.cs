@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using CosmereScadrial.Comps.Game;
-using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Utils;
 using UnityEngine;
@@ -12,21 +11,21 @@ using Verse.AI;
 
 namespace CosmereScadrial.JobDrivers;
 
-public class CastAllomanticAbilityAtTarget : JobDriver {
-    protected virtual AbstractAbility ability => (AbstractAbility)job.source;
-
-    protected virtual MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
-
+public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
     private Material lineMaterial => MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind,
         ability.def.metal.color with { a = .3f });
 
-    private AllomancyPolarity polarity => ability.def.metal.allomancy.polarity ?? AllomancyPolarity.Pushing;
+    private AllomancyPolarity polarity => ability.def.metal.allomancy!.polarity ?? AllomancyPolarity.Pushing;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return pawn.Reserve(TargetA, job, errorOnFailed: errorOnFailed);
     }
 
     protected override IEnumerable<Toil> MakeNewToils() {
+        foreach (Toil baseToil in base.MakeNewToils()) {
+            yield return baseToil;
+        }
+
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
         Toil? toil = ToilMaker.MakeToil(nameof(CastAllomanticAbilityAtTarget));
@@ -47,14 +46,6 @@ public class CastAllomanticAbilityAtTarget : JobDriver {
         toil.defaultCompleteMode = ToilCompleteMode.Instant;
 
         yield return toil;
-    }
-
-    protected virtual bool ShouldStopJob() {
-        return pawn.Downed || pawn.Dead || !AllomancyUtility.CanUseMetal(pawn, ability.metal);
-    }
-
-    protected virtual void UpdateBurnRate(float desiredBurnRate) {
-        metalBurning.UpdateBurnSource(ability.metal, desiredBurnRate, ability.def);
     }
 
     // @todo Add distance from target to equation of push strength

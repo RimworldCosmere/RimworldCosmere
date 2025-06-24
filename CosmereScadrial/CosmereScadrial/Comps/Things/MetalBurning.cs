@@ -74,7 +74,6 @@ public class MetalBurning : ThingComp {
             }
 
             if (AllomancyUtility.TryBurnMetalForInvestiture(pawn, metal, totalRate)) continue;
-            if (AllomancyUtility.PawnConsumeVialWithMetal(pawn, metal)) continue;
 
             // Auto-stop all sources if out of reserve
             RemoveAllBurnSourcesForMetal(metal);

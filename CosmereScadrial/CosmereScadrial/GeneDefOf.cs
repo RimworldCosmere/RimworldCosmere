@@ -43,7 +43,7 @@ public static partial class GeneDefOf {
     }
 
     public static GeneDef GetMistingGeneForMetal(MetalDef def) {
-        return GetMistingGeneForMetal(def.GetMetallicArtsMetalDef());
+        return GetMistingGeneForMetal(def.ToMetallicArts());
     }
 
     public static GeneDef GetMistingGeneForMetal(MetallicArtsMetalDef def) {
@@ -51,7 +51,7 @@ public static partial class GeneDefOf {
     }
 
     public static GeneDef GetFerringGeneForMetal(MetalDef def) {
-        return GetMistingGeneForMetal(def.GetMetallicArtsMetalDef());
+        return GetMistingGeneForMetal(def.ToMetallicArts());
     }
 
     public static GeneDef GetFerringGeneForMetal(MetallicArtsMetalDef def) {

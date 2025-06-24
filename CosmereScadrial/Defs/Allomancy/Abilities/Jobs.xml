@@ -4,10 +4,12 @@
         <defName>Cosmere_Job_MaintainAllomanticTarget</defName>
         <driverClass>CosmereScadrial.JobDrivers.MaintainAllomanticTarget</driverClass>
         <reportString>Maintaining Allomantic Effect on TargetA.</reportString>
+        <suspendable>true</suspendable>
     </JobDef>
     <JobDef>
         <defName>Cosmere_Job_CastAllomanticAbilityAtTarget</defName>
         <driverClass>CosmereScadrial.JobDrivers.CastAllomanticAbilityAtTarget</driverClass>
         <reportString>Casting Allomantic Ability on TargetA.</reportString>
+        <suspendable>true</suspendable>
     </JobDef>
 </Defs>

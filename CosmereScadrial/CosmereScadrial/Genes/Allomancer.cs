@@ -3,6 +3,7 @@ using CosmereCore.Utils;
 using CosmereResources.ModExtensions;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
+using CosmereScadrial.Extensions;
 using CosmereScadrial.Utils;
 using RimWorld;
 using UnityEngine;
@@ -11,8 +12,7 @@ using Verse;
 namespace CosmereScadrial.Genes;
 
 public class Allomancer : Gene_Resource {
-    public MetallicArtsMetalDef metal =>
-        MetallicArtsMetalDef.GetFromMetalDef(def.GetModExtension<MetalsLinked>().Metals.First()!);
+    public MetallicArtsMetalDef metal => def.GetModExtension<MetalsLinked>().Metals.First()!.ToMetallicArts();
 
     public override float InitialResourceMax => 1f;
     public override float MinLevelForAlert => .15f;

@@ -1,6 +1,7 @@
 using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
+using CosmereScadrial.Extensions;
 using CosmereScadrial.Utils;
 using RimWorld;
 using Verse;
@@ -16,7 +17,7 @@ public class MetalCostProperties : CompProperties_AbilityEffect {
 public class MetalCost : CompAbilityEffect {
     private MetalCostProperties Props => (MetalCostProperties)props;
     private AbstractAbility Parent => (AbstractAbility)parent;
-    private MetallicArtsMetalDef metal => MetallicArtsMetalDef.GetFromMetalDef(Parent.def.metal);
+    private MetallicArtsMetalDef metal => Parent.def.metal.ToMetallicArts();
     private MetalReserves reserves => parent.pawn.GetComp<MetalReserves>();
     private MetalBurning burning => parent.pawn.GetComp<MetalBurning>();
 

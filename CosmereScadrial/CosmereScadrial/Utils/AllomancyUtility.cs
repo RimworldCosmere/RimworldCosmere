@@ -1,14 +1,15 @@
-using System.Collections.Generic;
+using System.Linq;
 using CosmereCore.Needs;
 using CosmereCore.Utils;
-using CosmereResources.Defs;
-using CosmereResources.ModExtensions;
+using CosmereFramework.Extensions;
 using CosmereScadrial.Abilities.Allomancy.Hediffs;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
+using CosmereScadrial.Extensions;
+using CosmereScadrial.Things;
 using UnityEngine;
 using Verse;
-using Log = CosmereFramework.Log;
+using Verse.AI;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Utils;
@@ -89,48 +90,33 @@ public static class AllomancyUtility {
         return requiredBeu / BeuPerMetalUnit;
     }
 
-    public static bool PawnConsumeVialWithMetal(Pawn pawn, MetallicArtsMetalDef metal,
-        bool allowMultiVial = false) {
-        if (metal.Equals(MetallicArtsMetalDefOf.Duralumin) || metal.Equals(MetallicArtsMetalDefOf.Nicrosil)) {
+    public static bool TryPawnConsumeVialWithMetal(Pawn pawn, MetallicArtsMetalDef metal) {
+        if (pawn.CurJobDef?.defName == RimWorld.JobDefOf.Ingest.defName &&
+            pawn.CurJob.targetA.Thing is AllomanticVial) {
             return false;
         }
 
+        if (metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil)) return false;
         if (PawnUtility.IsAsleep(pawn)) return false;
-        if (pawn.inventory?.innerContainer == null) return false;
-
-        foreach (Thing? vial in pawn.inventory.innerContainer) {
-            List<MetalDef?> metals = vial.def.GetModExtension<MetalsLinked>()?.Metals ?? [];
-
-            if (metals.Count > 1 && !allowMultiVial) continue;
-
-            if (!metals.Contains(metal) || vial.stackCount <= 0) continue;
-
-            if (Mathf.Approximately(vial.Ingested(pawn, 1f), 0f)) continue;
-            Log.Warning($"{pawn.NameShortColored} is auto-ingesting {vial.LabelShort} for {metal}.");
-            return true;
-        }
-
-        return false;
-    }
-
-    public static bool PawnHasVialForMetal(Pawn pawn, MetallicArtsMetalDef metal, bool allowMultiVial = false) {
-        if (metal.Equals(MetallicArtsMetalDefOf.Duralumin) || metal.Equals(MetallicArtsMetalDefOf.Nicrosil)) {
-            return false;
-        }
-
         if (InvestitureDetector.IsShielded(pawn)) return false;
 
-        if (pawn.inventory?.innerContainer == null) return false;
+        AllomanticVial? vial = pawn.GetVials(metal).FirstOrDefault();
+        if (vial == null || vial?.stackCount == 0) return false;
 
-        foreach (Thing? vial in pawn.inventory.innerContainer) {
-            List<MetalDef?> metals = vial.def.GetModExtension<MetalsLinked>()?.Metals ?? [];
+        Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, vial);
+        job.count = 1;
+        job.ingestTotalCount = true;
+        pawn.jobs.InterruptJobWith(job, JobTag.SatisfyingNeeds);
 
-            if (metals.Count > 1 && !allowMultiVial) continue;
+        return true;
+    }
 
-            if (metals.Contains(metal) && vial.stackCount > 0) return true;
-        }
+    public static bool PawnHasVialForMetal(Pawn pawn, MetallicArtsMetalDef metal) {
+        if (metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil)) return false;
+        if (PawnUtility.IsAsleep(pawn)) return false;
+        if (InvestitureDetector.IsShielded(pawn)) return false;
 
-        return false;
+        return pawn.GetVials(metal).FirstOrDefault()?.stackCount != 0;
     }
 
     public static bool IsBurning(Pawn pawn, MetallicArtsMetalDef metal) {

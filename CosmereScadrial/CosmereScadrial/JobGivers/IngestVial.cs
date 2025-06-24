@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
+using CosmereScadrial.Extensions;
 using CosmereScadrial.Genes;
 using CosmereScadrial.Things;
 using Verse;
@@ -8,12 +8,8 @@ using Verse.AI;
 namespace CosmereScadrial.JobGivers;
 
 public class IngestVial : ThinkNode_JobGiver {
-    private List<Allomancer> GetGenes(Pawn pawn) {
-        return pawn.genes?.GenesListForReading.Where(x => x is Allomancer).Cast<Allomancer>().ToList() ?? [];
-    }
-
     public override float GetPriority(Pawn pawn) {
-        return GetGenes(pawn).Any(x => x.ShouldConsumeVialNow()) ? 200f : 0f;
+        return pawn.genes.GetMistingGenes().Any(x => x.ShouldConsumeVialNow()) ? 200f : 0f;
     }
 
     /**
@@ -22,17 +18,15 @@ public class IngestVial : ThinkNode_JobGiver {
     protected override Job? TryGiveJob(Pawn pawn) {
         if (pawn.Downed) return null;
 
-        List<Allomancer> genes = GetGenes(pawn);
-        foreach (Allomancer? gene in GetGenes(pawn)) {
+        foreach (Allomancer gene in pawn.genes.GetMistingGenes()) {
             if (!gene.ShouldConsumeVialNow()) continue;
-            AllomanticVial? vial = GetVial(pawn, gene);
+            AllomanticVial? vial = pawn.GetVials(gene).FirstOrDefault();
             if (vial == null) continue;
-            if (!pawn.CanReserveAndReach(vial, PathEndMode.InteractionCell, Danger.Some,
-                    ignoreOtherReservations: true)) {
+            if (!pawn.CanReserveAndReach(vial, PathEndMode.InteractionCell, Danger.Some)) {
                 return null;
             }
 
-            Job job = JobMaker.MakeJob(JobDefOf.Cosmere_Job_IngestVial, vial);
+            Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, vial);
             job.count = 1;
             job.ingestTotalCount = true;
 
@@ -40,14 +34,5 @@ public class IngestVial : ThinkNode_JobGiver {
         }
 
         return null;
-    }
-
-    private AllomanticVial? GetVial(Pawn pawn, Allomancer gene) {
-        return Enumerable.FirstOrDefault(GetVials(pawn), x => x.IsForMetal(gene.metal));
-    }
-
-    private List<AllomanticVial> GetVials(Pawn pawn) {
-        return pawn.inventory?.innerContainer?
-            .Where(x => x is AllomanticVial && x is not AllomanticMetal).Cast<AllomanticVial>().ToList() ?? [];
     }
 }

@@ -40,7 +40,7 @@ public class MetallicArtsMetalDef : MetalDef {
     public Texture2D invertedIcon;
     public Texture2D uiIcon;
 
-    public static MetallicArtsMetalDef GetFromMetalDef(MetalDef def) {
+    public static MetallicArtsMetalDef FromMetalDef(MetalDef def) {
         if (def is MetallicArtsMetalDef metallicArtsMetalDef) return metallicArtsMetalDef;
 
         return DefDatabase<MetallicArtsMetalDef>.GetNamed(def.defName);

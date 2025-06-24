@@ -25,9 +25,9 @@ public class MetalCost : CompAbilityEffect {
 
     private bool hasEnoughMetal => burning.CanBurn(metal, currentCost);
 
-    public override string ExtraTooltipPart() {
+    /*public override string ExtraTooltipPart() {
         return "CS_MetalCost".Translate() + $": {currentCost:0.000}";
-    }
+    }*/
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         base.Apply(target, dest);

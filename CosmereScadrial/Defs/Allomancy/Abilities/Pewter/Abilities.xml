@@ -4,6 +4,7 @@
         <defName>Cosmere_Scadrial_Ability_Pewter</defName>
         <label>burn pewter</label>
         <canBurnWhileAsleep>true</canBurnWhileAsleep>
+        <canBurnWhileDowned>true</canBurnWhileDowned>
         <description>Burn pewter to enhance physical power and resilience for a short duration.</description>
         <metal>Pewter</metal>
         <hediff>Cosmere_Hediff_Pewter_Buff</hediff>

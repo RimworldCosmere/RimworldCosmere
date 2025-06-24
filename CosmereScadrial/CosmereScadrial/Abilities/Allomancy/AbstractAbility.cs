@@ -21,6 +21,7 @@ public abstract partial class AbstractAbility : Ability {
     public GlobalTargetInfo? globalTarget;
     public LocalTargetInfo? localTarget;
     public BurningStatus? status;
+    public bool willBurnWhileDowned;
 
     protected AbstractAbility() { }
 
@@ -32,12 +33,16 @@ public abstract partial class AbstractAbility : Ability {
         if (toggleable) {
             status = BurningStatus.Off;
         }
+
+        Initialize();
     }
 
     protected AbstractAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
         if (toggleable) {
             status = BurningStatus.Off;
         }
+
+        Initialize();
     }
 
     public BurningStatus? nextStatus { get; private set; }
@@ -63,6 +68,12 @@ public abstract partial class AbstractAbility : Ability {
     protected MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
 
     public override AcceptanceReport CanCast => metalBurning.CanBurn(metal, def.beuPerTick);
+
+    public new void Initialize() {
+        base.Initialize();
+        willBurnWhileDowned = def.canBurnWhileDowned;
+    }
+
     public event Action<AbstractAbility, BurningStatus, BurningStatus> OnStatusChanged;
 
     public override void AbilityTick() {

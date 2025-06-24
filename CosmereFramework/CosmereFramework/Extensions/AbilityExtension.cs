@@ -4,9 +4,9 @@ using Verse;
 namespace CosmereFramework.Extensions;
 
 public static class AbilityExtension {
-    public static AcceptanceReport GizmoDisabled(this Ability ability) {
+    public static AcceptanceReport GizmoEnabled(this Ability ability) {
         bool isDisabled = ability.GizmoDisabled(out string reason);
-        if (!isDisabled) return false;
+        if (!isDisabled) return true;
 
         return new AcceptanceReport(reason);
     }

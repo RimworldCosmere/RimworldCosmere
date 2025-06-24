@@ -18,7 +18,7 @@ public static class Pawn_InventoryTrackerExtension {
     }
 
     public static IEnumerable<AllomanticVial> GetVials(this Pawn pawn, MetalDef metal) {
-        Allomancer? gene = pawn.genes.GetMistingGeneForMetal(metal);
+        Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
 
         return gene == null ? [] : pawn.GetVials(gene);
     }

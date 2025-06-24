@@ -9,7 +9,7 @@ namespace CosmereScadrial.JobGivers;
 
 public class IngestVial : ThinkNode_JobGiver {
     public override float GetPriority(Pawn pawn) {
-        return pawn.genes.GetMistingGenes().Any(x => x.ShouldConsumeVialNow()) ? 200f : 0f;
+        return pawn.genes.GetAllomanticGenes().Any(x => x.ShouldConsumeVialNow()) ? 200f : 0f;
     }
 
     /**
@@ -18,7 +18,7 @@ public class IngestVial : ThinkNode_JobGiver {
     protected override Job? TryGiveJob(Pawn pawn) {
         if (pawn.Downed) return null;
 
-        foreach (Allomancer gene in pawn.genes.GetMistingGenes()) {
+        foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
             if (!gene.ShouldConsumeVialNow()) continue;
             AllomanticVial? vial = pawn.GetVials(gene).FirstOrDefault();
             if (vial == null) continue;

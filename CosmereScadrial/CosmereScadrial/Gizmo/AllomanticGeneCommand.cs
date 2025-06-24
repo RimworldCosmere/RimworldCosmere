@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using CosmereFramework.Extensions;
 using CosmereScadrial.Abilities.Allomancy;
 using CosmereScadrial.Comps.Things;
@@ -24,24 +25,14 @@ public class AllomanticGeneCommand(
     private const float IconBorderSize = 1;
     private static readonly Vector2 Padding = new Vector2(2f, 4f);
 
-    public static readonly Texture2D CheckOff = ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff");
-
-    public static readonly Texture2D
-        BgTexOff = ContentFinder<Texture2D>.Get(
-            "UI/Widgets/AbilityOff"); //SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0f));
-
-    public static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
-    public static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
-    private static readonly Texture2D BarTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.34f, 0.42f, 0.43f));
-
-    private static readonly Texture2D EmptyBarTex =
-        SolidColorMaterials.NewSolidColorTexture(new Color(0.03f, 0.035f, 0.05f));
-
-    private static readonly Texture2D DragBarTex =
-        SolidColorMaterials.NewSolidColorTexture(new Color(0.74f, 0.97f, 0.8f));
-
-    public static readonly Texture2D BgTexOffDisabled =
-        ContentFinder<Texture2D>.Get("UI/Widgets/AbilityOff").Overlay(CheckOff);
+    private static readonly Texture2D CheckOff = ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff");
+    private static readonly Texture2D BgTexOff = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityOff");
+    private static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
+    private static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
+    private static readonly Texture2D BarTex = new Color(0.34f, 0.42f, 0.43f).ToSolidColorTexture();
+    private static readonly Texture2D EmptyBarTex = new Color(0.03f, 0.035f, 0.05f).ToSolidColorTexture();
+    private static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
+    private static readonly Texture2D BgTexOffDisabled = BgTexOff.Overlay(CheckOff);
 
     private static bool DraggingBar;
     private Texture2D barDragTex;
@@ -51,7 +42,8 @@ public class AllomanticGeneCommand(
     private bool initialized;
     private float targetValuePct;
 
-    protected MetallicArtsMetalDef metal => ((Allomancer)gene).metal;
+    protected new Allomancer gene => (Allomancer)base.gene;
+    protected MetallicArtsMetalDef metal => gene.metal;
     protected Pawn pawn => gene.pawn;
     protected MetalBurning burning => pawn.GetComp<MetalBurning>();
 
@@ -65,35 +57,54 @@ public class AllomanticGeneCommand(
     protected override float Width => Mathf.Max(BaseWidth,
         Height + Padding.x + (AbilityIconSize + Padding.x) * gene.def.abilities.Count);
 
+    public override IEnumerable<FloatMenuOption> RightClickFloatMenuOptions {
+        get {
+            return [
+                new FloatMenuOption(
+                    "CS_CurrentVialStockMenu".Translate(gene.RequestedVialStock.Named("COUNT")),
+                    () => { }),
+                new FloatMenuOption("Keep 0 Vials", () => gene.RequestedVialStock = 0),
+                new FloatMenuOption("Keep 1 Vials", () => gene.RequestedVialStock = 1),
+                new FloatMenuOption("Keep 2 Vials", () => gene.RequestedVialStock = 2),
+                new FloatMenuOption("Keep 3 Vials", () => gene.RequestedVialStock = 3),
+                new FloatMenuOption("Keep 4 Vials", () => gene.RequestedVialStock = 4),
+                new FloatMenuOption("Keep 5 Vials", () => gene.RequestedVialStock = 5),
+            ];
+        }
+    }
+
     protected override string GetTooltip() {
         float rate = burning.GetTotalBurnRate(metal) * GenTicks.TicksPerRealSecond;
 
-        string tooltip =
-            $"{gene.ResourceLabel.CapitalizeFirst().Colorize(ColoredText.TipSectionTitleColor)}: {BarLabel}\n";
+        NamedArgument coloredPawn = pawn.NameShortColored.Named("PAWN");
+        NamedArgument coloredCount =
+            gene.RequestedVialStock.ToString().Colorize(ColoredText.FactionColor_Ally).Named("COUNT");
+
+        StringBuilder tooltip = new StringBuilder();
+
+        tooltip.AppendLine(
+            $"{gene.ResourceLabel.CapitalizeFirst().Colorize(ColoredText.TipSectionTitleColor)}: {BarLabel}");
         if (burning.IsBurning(metal)) {
-            tooltip +=
-                "CS_BurnRate".Translate($"{rate:0.000}".Named("RATE")).Colorize(ColoredText.FactionColor_Hostile) +
-                "\n";
+            tooltip.AppendLine("CS_BurnRate".Translate($"{rate:0.000}".Named("RATE"))
+                .Colorize(ColoredText.FactionColor_Hostile));
         }
 
         if (IsDraggable) {
+            tooltip.AppendLine("CS_CurrentVialStock".Translate(coloredCount));
             if (gene.targetValue <= 0.0) {
-                tooltip += "CS_NeverConsumeVial"
-                    .Translate(metal.label.Colorize(ColoredText.DateTimeColor).Named("METAL")).Resolve();
+                tooltip.AppendLine("CS_NeverConsumeVial".Translate());
             } else {
-                tooltip += ("CS_ConsumeVialBelow".Translate(metal.label.Colorize(ColoredText.DateTimeColor)
-                               .Named("METAL")) + ": ").Resolve() +
-                           gene.PostProcessValue(gene.targetValue) + '%';
+                tooltip.AppendLine("CS_ConsumeVialBelow".Translate() + $": {gene.PostProcessValue(gene.targetValue)}%");
             }
         }
 
         if (!gene.def.resourceDescription.NullOrEmpty()) {
-            string resourceDescription =
-                gene.def.resourceDescription.Formatted(pawn.NameShortColored.Named("PAWN")).Resolve();
-            tooltip += $"\n\n{resourceDescription}";
+            tooltip.AppendLine("\n" + gene.def.resourceDescription.Formatted(coloredPawn).Resolve());
         }
 
-        return tooltip;
+        if (IsDraggable) tooltip.Append("\n" + "CS_ChangeVialStock".Translate());
+
+        return tooltip.ToString();
     }
 
     protected virtual GizmoResult AbilityOnGUI(Rect rect, AbstractAbility ability) {
@@ -102,7 +113,7 @@ public class AllomanticGeneCommand(
         Color color = Color.white;
         bool isMouseOver = false;
         bool isClicked = false;
-        bool disabled = ability.GizmoDisabled(out string disabledReason);
+        AcceptanceReport disabled = ability.GizmoDisabled();
         if (Mouse.IsOver(rect)) {
             isMouseOver = true;
             if (!disabled) {
@@ -146,9 +157,10 @@ public class AllomanticGeneCommand(
                 .Translate(flareOrDeflare.Named("FLARE"), metal.label.Named("METAL"))
                 .Colorize(ColoredText.GeneColor);
 
-            if (disabled && !disabledReason.NullOrEmpty()) {
+            if (disabled && !disabled.Reason.NullOrEmpty()) {
                 desc.text +=
-                    ("\n\n" + "DisabledCommand".Translate() + ": " + disabledReason).Colorize(ColorLibrary.RedReadable);
+                    ("\n\n" + "DisabledCommand".Translate() + ": " + disabled.Reason)
+                    .Colorize(ColorLibrary.RedReadable);
             }
 
             TooltipHandler.TipRegion(rect, desc);
@@ -159,13 +171,13 @@ public class AllomanticGeneCommand(
         }
 
 
-        if (!disabled || disabledReason.NullOrEmpty()) {
+        if (!disabled || disabled.Reason.NullOrEmpty()) {
             return Event.current.button == 1
                 ? new GizmoResult(GizmoState.OpenedFloatMenu, Event.current)
                 : new GizmoResult(GizmoState.Interacted, Event.current);
         }
 
-        Messages.Message((string)("DisabledCommand".Translate() + ": " + disabledReason),
+        Messages.Message((string)("DisabledCommand".Translate() + ": " + disabled.Reason),
             MessageTypeDefOf.RejectInput, false);
         return new GizmoResult(GizmoState.Mouseover, null);
     }
@@ -219,11 +231,10 @@ public class AllomanticGeneCommand(
 
     private void DrawTopBar(Rect topBarRect, ref bool mouseOverElement) {
         if (!IsDraggable) return;
-        if (gene is not Allomancer metalborn) return;
 
-        metalborn.def.abilities.SortBy(x => x.uiOrder);
+        gene.def.abilities.SortBy(x => x.uiOrder);
         Rect abilityRect = new Rect(topBarRect.x, topBarRect.y, topBarRect.height, topBarRect.height);
-        foreach (AbilityDef abilityDef in metalborn.def.abilities) {
+        foreach (AbilityDef abilityDef in gene.def.abilities) {
             if (pawn.abilities.GetAbility(abilityDef) is not AbstractAbility ability) continue;
 
             GizmoResult result = AbilityOnGUI(abilityRect, ability);
@@ -340,15 +351,16 @@ public class AllomanticGeneCommand(
             }
         }
 
+        if (Event.current.button == 1) {
+            return new GizmoResult(GizmoState.OpenedFloatMenu, Event.current);
+        }
+
+
         if (Mouse.IsOver(rect) && !mouseOver) {
             Widgets.DrawHighlight(rect);
             TooltipHandler.TipRegion(rect, GetTooltip, Gen.HashCombineInt(GetHashCode(), 8491284));
         }
 
-        return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear, null);
-    }
-
-    public override void GizmoUpdateOnMouseover() {
-        base.GizmoUpdateOnMouseover();
+        return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear);
     }
 }

@@ -5,8 +5,8 @@
     <CS_CannotShoot>{PAWN} is not capable of shooting</CS_CannotShoot>
     <CS_BurnRate>Burn Rate: {RATE}/second</CS_BurnRate>
     <CS_TargetShielded>{PAWN} is shielded against Investiture</CS_TargetShielded>
-    <CS_NeverConsumeVial>Never consume a {METAL} vial</CS_NeverConsumeVial>
-    <CS_ConsumeVialBelow>Consume a {METAL} vial below</CS_ConsumeVialBelow>
+    <CS_NeverConsumeVial>Never consume a vial</CS_NeverConsumeVial>
+    <CS_ConsumeVialBelow>Consume a vial below</CS_ConsumeVialBelow>
     <CS_SetVialLevelTooltip>Drag the bar to configure when {PAWN} will consume a {METAL} vial.</CS_SetVialLevelTooltip>
     <CS_NoClipsToThrow>{PAWN} has no clips to use</CS_NoClipsToThrow>
     <CS_PressToFlare>Hold "Ctrl" to {FLARE} {METAL}</CS_PressToFlare>
@@ -15,4 +15,7 @@
 	<CS_MetalCost>Metal Cost</CS_MetalCost>
 	<CS_Flare>flare</CS_Flare>
 	<CS_Deflare>de-flare</CS_Deflare>
+	<CS_CurrentVialStock>Keeping {COUNT} vials in inventory</CS_CurrentVialStock>
+	<CS_CurrentVialStockMenu>Currently keeping {COUNT} vials</CS_CurrentVialStockMenu>
+	<CS_ChangeVialStock>Right-click to change how many vials to keep in stock.</CS_ChangeVialStock>
 </LanguageData>

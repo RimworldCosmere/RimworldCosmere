@@ -5,8 +5,10 @@ using CosmereResources.ModExtensions;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
 using CosmereScadrial.Extensions;
+using CosmereScadrial.Genes;
 using CosmereScadrial.Utils;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
@@ -65,9 +67,14 @@ public class AllomanticVial : ThingWithComps {
             yield break;
         }
 
+        if (InvestitureDetector.IsShielded(pawn)) {
+            yield return new FloatMenuOption("Cannot ingest: currently shielded", null);
+            yield break;
+        }
+
         if (metals.Count > 1) {
-            if (AllomancyUtility.IsMistborn(pawn) &&
-                metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f)) {
+            if (pawn.IsMistborn() &&
+                metals.Any(x => pawn.genes.GetAllomanticGeneForMetal(x)?.ShouldConsumeVialNow() ?? false)) {
                 foreach (FloatMenuOption? option in base.GetFloatMenuOptions(pawn)) {
                     yield return option;
                 }
@@ -76,18 +83,14 @@ public class AllomanticVial : ThingWithComps {
             }
         }
 
-        if (InvestitureDetector.IsShielded(pawn)) {
-            yield return new FloatMenuOption("Cannot ingest: currently shielded", null);
-            yield break;
-        }
-
         MetallicArtsMetalDef? metal = metals.First();
-        if (!AllomancyUtility.CanUseMetal(pawn, metal)) {
-            yield return new FloatMenuOption("Cannot ingest: wrong metal", null);
+        Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
+        if (gene == null) {
+            yield return new FloatMenuOption("Cannot ingest: not a " + metal.allomancy!.userName, null);
             yield break;
         }
 
-        if (AllomancyUtility.GetReservePercent(pawn, metal) >= 0.8f) {
+        if (Mathf.Approximately(gene.Value, 1) || !gene.ShouldConsumeVialNow()) {
             yield return new FloatMenuOption("Cannot ingest: reserve too full", null);
             yield break;
         }

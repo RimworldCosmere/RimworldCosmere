@@ -9,7 +9,8 @@ namespace CosmereScadrial.Utils;
 
 public static class MetalbornUtility {
     public static bool HasAnyMetalbornGene(Pawn pawn) {
-        return pawn?.genes != null && pawn.genes.GenesListForReading.Any(gene => gene is Allomancer && gene.Active);
+        return pawn?.genes != null &&
+               pawn.genes.GenesListForReading.Any(gene => gene is Allomancer or Feruchemist && gene.Active);
     }
 
     public static void HandleMetalbornTrait(Pawn pawn) {
@@ -29,11 +30,11 @@ public static class MetalbornUtility {
         HandleFullFeruchemistTrait(pawn);
     }
 
-    private static void HandleMistbornTrait(Pawn pawn) {
+    public static void HandleMistbornTrait(Pawn pawn) {
         HandleCombinedTrait(pawn, TraitDefOf.Cosmere_Scadrial_Trait_Mistborn);
     }
 
-    private static void HandleFullFeruchemistTrait(Pawn pawn) {
+    public static void HandleFullFeruchemistTrait(Pawn pawn) {
         HandleCombinedTrait(pawn, TraitDefOf.Cosmere_Scadrial_Trait_FullFeruchemist);
     }
 
@@ -51,5 +52,29 @@ public static class MetalbornUtility {
 
         pawn.story.traits.GainTrait(trait);
         pawn.story.traits.RecalculateSuppression();
+    }
+
+    public static void HandleAllomancerTrait(Pawn pawn) {
+        if (!HasAnyMetalbornGene(pawn)) {
+            Trait? trait = pawn.story.traits.GetTrait(TraitDefOf.Cosmere_Scadrial_Trait_Allomancer);
+            if (trait != null) pawn.story.traits.RemoveTrait(trait);
+            return;
+        }
+
+        if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Allomancer)) {
+            pawn.story.traits.GainTrait(new Trait(TraitDefOf.Cosmere_Scadrial_Trait_Allomancer));
+        }
+    }
+
+    public static void HandleFeruchemistTrait(Pawn pawn) {
+        if (!HasAnyMetalbornGene(pawn)) {
+            Trait? trait = pawn.story.traits.GetTrait(TraitDefOf.Cosmere_Scadrial_Trait_Feruchemist);
+            if (trait != null) pawn.story.traits.RemoveTrait(trait);
+            return;
+        }
+
+        if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Feruchemist)) {
+            pawn.story.traits.GainTrait(new Trait(TraitDefOf.Cosmere_Scadrial_Trait_Feruchemist));
+        }
     }
 }

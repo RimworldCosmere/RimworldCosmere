@@ -60,7 +60,7 @@ public class MetalReserves : ThingComp {
 
         foreach (MetallicArtsMetalDef metal in reserves.Keys) {
             if (!cachedGenes.ContainsKey(metal)) {
-                Allomancer? gene = pawn.genes.GetMistingGeneForMetal(metal);
+                Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
                 if (gene == null) continue;
                 cachedGenes[metal] = gene;
             }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using CosmereFramework.Utils;
 using CosmereScadrial.Defs;
+using CosmereScadrial.Extensions;
+using CosmereScadrial.Genes;
+using CosmereScadrial.Utils;
 using Verse;
 
 namespace CosmereScadrial.Comps.Things;
@@ -17,6 +20,9 @@ public class MetalReserves : ThingComp {
     public const float MaxAmount = 1f;
     private const float SleepDecayAmount = .0025f;
 
+    private readonly Dictionary<MetallicArtsMetalDef, Allomancer?> cachedGenes =
+        new Dictionary<MetallicArtsMetalDef, Allomancer?>();
+
     private Dictionary<MetallicArtsMetalDef, float> reserves = new Dictionary<MetallicArtsMetalDef, float>();
 
     public MetalReserves() {
@@ -27,18 +33,40 @@ public class MetalReserves : ThingComp {
         }
     }
 
+    private Pawn pawn => (Pawn)parent;
+
     public List<MetallicArtsMetalDef> GetAllAvailableMetals() {
         return reserves.Where(x => x.Value > 0f).Select(x => x.Key).ToList();
     }
 
     public override void CompTickRare() {
         base.CompTickRare();
-        if (parent is not Pawn pawn) return;
         if (!PawnUtility.IsAsleep(pawn)) return;
 
         MetallicArtsMetalDef[] keys = reserves.Keys.Where(metal => reserves[metal] > 0).ToArray();
         foreach (MetallicArtsMetalDef metal in keys) {
             LowerReserve(metal, SleepDecayAmount);
+        }
+    }
+
+    public override void PostPostMake() {
+        base.PostPostMake();
+        if (pawn == null) throw new Exception("MetalReserves can only be attached to pawns.");
+    }
+
+    public override void CompTickInterval(int delta) {
+        base.CompTickInterval(delta);
+        if (pawn.CurJob == null) return;
+
+        foreach (MetallicArtsMetalDef metal in reserves.Keys) {
+            if (!cachedGenes.ContainsKey(metal)) {
+                Allomancer? gene = pawn.genes.GetMistingGeneForMetal(metal);
+                if (gene == null) continue;
+                cachedGenes[metal] = gene;
+            }
+
+            if (!cachedGenes[metal]!.ShouldConsumeVialNow() || !pawn.HasVial(metal)) continue;
+            AllomancyUtility.TryPawnConsumeVialWithMetal(pawn, metal);
         }
     }
 

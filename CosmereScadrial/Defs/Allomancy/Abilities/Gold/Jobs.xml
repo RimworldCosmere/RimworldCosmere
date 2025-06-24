@@ -4,5 +4,6 @@
         <defName>Cosmere_Job_FollowGoldHallucination</defName>
         <driverClass>CosmereScadrial.JobDrivers.FollowGoldHallucination</driverClass>
         <reportString>Interacting with alternative self.</reportString>
+        <suspendable>true</suspendable>
     </JobDef>
 </Defs>

@@ -1,0 +1,26 @@
+using System.Collections.Generic;
+using System.Linq;
+using CosmereResources.Defs;
+using CosmereScadrial.Genes;
+using RimWorld;
+using Verse;
+
+namespace CosmereScadrial.Extensions;
+
+public static class Pawn_GeneTrackerExtension {
+    public static Allomancer? GetMistingGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {
+        GeneDef geneDef = GeneDefOf.GetMistingGeneForMetal(metal);
+
+        return (Allomancer)genes.GetGene(geneDef);
+    }
+
+    public static Feruchemist? GetFerringGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {
+        GeneDef geneDef = GeneDefOf.GetFerringGeneForMetal(metal);
+
+        return (Feruchemist)genes.GetGene(geneDef);
+    }
+
+    public static IEnumerable<Allomancer> GetMistingGenes(this Pawn_GeneTracker genes) {
+        return genes.GenesListForReading.Where(x => x is Allomancer).Cast<Allomancer>().ToList();
+    }
+}

@@ -1,8 +1,5 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
-using CosmereResources.Defs;
-using CosmereScadrial.Defs;
-using CosmereScadrial.Extensions;
 using RimWorld;
 using Verse;
 
@@ -21,13 +18,5 @@ public static partial class ThingDefOf {
 
     static ThingDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));
-    }
-
-    public static ThingDef GetVialForMetal(MetalDef def) {
-        return GetVialForMetal(def.ToMetallicArts());
-    }
-
-    public static ThingDef GetVialForMetal(MetallicArtsMetalDef def) {
-        return DefDatabase<ThingDef>.GetNamed("Cosmere_Scadrial_Thing_AllomanticVial" + def.defName);
     }
 }

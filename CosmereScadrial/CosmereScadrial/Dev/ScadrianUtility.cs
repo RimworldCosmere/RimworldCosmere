@@ -2,6 +2,7 @@
 using System.Linq;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
+using CosmereScadrial.Extensions;
 using CosmereScadrial.Utils;
 using LudeonTK;
 using RimWorld;
@@ -30,7 +31,7 @@ public static class ScadrianUtility {
     public static void GiveAllAllomanticVials(Pawn pawn) {
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x =>
                      !x.godMetal && x.allomancy != null)) {
-            ThingDef vialDef = ThingDefOf.GetVialForMetal(metal);
+            ThingDef vialDef = metal.GetVial();
             if (pawn.inventory.innerContainer.Contains(vialDef)) continue;
 
             Thing? vial = ThingMaker.MakeThing(vialDef);

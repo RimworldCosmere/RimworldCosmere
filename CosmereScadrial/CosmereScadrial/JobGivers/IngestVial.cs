@@ -20,7 +20,7 @@ public class IngestVial : ThinkNode_JobGiver {
 
         foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
             if (!gene.ShouldConsumeVialNow()) continue;
-            AllomanticVial? vial = pawn.GetVials(gene).FirstOrDefault();
+            AllomanticVial? vial = pawn.GetVial(gene);
             if (vial == null) continue;
             if (!pawn.CanReserveAndReach(vial, PathEndMode.InteractionCell, Danger.Some)) {
                 return null;

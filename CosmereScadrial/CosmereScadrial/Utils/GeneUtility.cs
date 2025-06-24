@@ -8,7 +8,6 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Log = CosmereFramework.Log;
-using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Utils;
 
@@ -150,11 +149,11 @@ public static class GeneUtility {
         }
 
         if (snapped) {
-            PawnUtility.TryAddGene(pawn, gene);
+            pawn.genes.TryAddGene(gene);
         } else {
             GeneDef? geneWrapperDef = GeneDefOf.Cosmere_Scadrial_Gene_DormantMetalborn;
             if (pawn.genes.GetGene(geneWrapperDef) is not DormantMetalborn geneWrapper) {
-                geneWrapper = (DormantMetalborn)PawnUtility.TryAddGene(pawn, geneWrapperDef);
+                geneWrapper = (DormantMetalborn)pawn.genes.TryAddGene(geneWrapperDef);
             }
 
             geneWrapper.genesToAdd.Add(gene);
@@ -175,7 +174,7 @@ public static class GeneUtility {
             AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false, snapped);
         }
 
-        PawnUtility.TryAddTrait(pawn, TraitDefOf.Cosmere_Scadrial_Trait_Mistborn);
+        pawn.story.TryAddTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn);
     }
 
     public static void AddFullFeruchemist(Pawn pawn, bool canSnap = true, bool snapped = false) {
@@ -193,7 +192,7 @@ public static class GeneUtility {
             AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), false, snapped);
         }
 
-        PawnUtility.TryAddTrait(pawn, TraitDefOf.Cosmere_Scadrial_Trait_FullFeruchemist);
+        pawn.story.TryAddTrait(TraitDefOf.Cosmere_Scadrial_Trait_FullFeruchemist);
     }
 
     private static bool IsTerris(Pawn pawn) {

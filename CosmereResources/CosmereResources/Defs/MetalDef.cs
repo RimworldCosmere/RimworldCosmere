@@ -28,4 +28,6 @@ public class MetalDef : Def {
         colorTwo is null
             ? null
             : MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind, colorTwo.Value);
+
+    public string coloredLabel => label.Colorize(ColoredText.DateTimeColor);
 }

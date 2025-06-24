@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using CosmereCore.Needs;
 using CosmereCore.Utils;
 using CosmereFramework.Extensions;
@@ -11,7 +9,6 @@ using CosmereScadrial.Things;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using PawnUtility = CosmereFramework.Utils.PawnUtility;
 
 namespace CosmereScadrial.Utils;
 
@@ -27,25 +24,15 @@ public static class AllomancyUtility {
     }
 
     public static AcceptanceReport CanUseMetal(Pawn pawn, MetallicArtsMetalDef metal) {
-        if (metal.Equals(MetallicArtsMetalDefOf.Lerasium) && IsMistborn(pawn)) {
+        if (metal.Equals(MetallicArtsMetalDefOf.Lerasium) && pawn.IsMistborn()) {
             return new AcceptanceReport("CS_AlreadyMistborn".Translate(pawn.Named("PAWN")));
         }
 
-        if (metal.godMetal || IsMistborn(pawn) || IsMisting(pawn, metal)) {
+        if (metal.godMetal || pawn.IsMistborn() || pawn.IsMisting(metal)) {
             return true;
         }
 
         return new AcceptanceReport("CS_CannotUseMetal".Translate(pawn.Named("PAWN"), metal.Named("METAL")));
-    }
-
-    [Obsolete("Use pawn.IsMistborn() instead.")]
-    public static bool IsMistborn(Pawn pawn) {
-        return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn);
-    }
-
-    [Obsolete("Use pawn.IsMisting() instead.")]
-    public static bool IsMisting(Pawn pawn, MetallicArtsMetalDef metal) {
-        return pawn.genes.HasActiveGene(GeneDefOf.GetMistingGeneForMetal(metal));
     }
 
     public static float GetReservePercent(Pawn pawn, MetallicArtsMetalDef metal) {
@@ -100,11 +87,11 @@ public static class AllomancyUtility {
         }
 
         if (metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil)) return;
-        if (PawnUtility.IsAsleep(pawn)) return;
+        if (pawn.IsAsleep()) return;
         if (InvestitureDetector.IsShielded(pawn)) return;
 
-        AllomanticVial? vial = pawn.GetVials(metal).FirstOrDefault();
-        if (vial == null || vial?.stackCount == 0) return;
+        AllomanticVial? vial = pawn.GetVial(metal);
+        if (vial == null || vial.stackCount == 0) return;
 
         Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, vial);
         job.count = 1;
@@ -114,10 +101,10 @@ public static class AllomancyUtility {
 
     public static bool PawnHasVialForMetal(Pawn pawn, MetallicArtsMetalDef metal) {
         if (metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil)) return false;
-        if (PawnUtility.IsAsleep(pawn)) return false;
+        if (pawn.IsAsleep()) return false;
         if (InvestitureDetector.IsShielded(pawn)) return false;
 
-        return pawn.GetVials(metal).FirstOrDefault()?.stackCount != 0;
+        return pawn.GetVial(metal)?.stackCount != 0;
     }
 
     public static bool IsBurning(Pawn pawn, MetallicArtsMetalDef metal) {

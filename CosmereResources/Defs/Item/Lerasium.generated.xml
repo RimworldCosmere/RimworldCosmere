@@ -6,7 +6,7 @@
         <description>Lerasium is an exceptionally rare god metal tied to the Shard Preservation. When ingested, it transforms the user into a Mistborn, granting access to all Allomantic powers.</description>
         <graphicData>
                 <graphicClass>Graphic_Single</graphicClass>
-                <drawSize>.25</drawSize>
+                <drawSize>1</drawSize>
             <texPath>Item/Resource/Lerasium</texPath>
         </graphicData>
         <stuffProps>

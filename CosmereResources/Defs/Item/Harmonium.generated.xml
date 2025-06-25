@@ -6,7 +6,7 @@
         <description>Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.</description>
         <graphicData>
                 <graphicClass>Graphic_Single</graphicClass>
-                <drawSize>.25</drawSize>
+                <drawSize>1</drawSize>
             <texPath>Item/Resource/Harmonium</texPath>
         </graphicData>
         <stuffProps>

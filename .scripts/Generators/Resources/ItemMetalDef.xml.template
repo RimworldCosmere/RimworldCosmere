@@ -9,7 +9,7 @@
                 <graphicClass>Graphic_StackCount</graphicClass>
             {{else}}
                 <graphicClass>Graphic_Single</graphicClass>
-                <drawSize>.25</drawSize>
+                <drawSize>{{metal.DrawSize}}</drawSize>
             {{/if}}
             <texPath>Item/Resource/{{capitalize metal.Name}}</texPath>
         </graphicData>

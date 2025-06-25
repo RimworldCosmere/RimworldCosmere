@@ -28,7 +28,7 @@ public static class PreSelectShardForScenario {
         }
 
         Messages.Message(
-            $"Shard System has been pre-selected: {string.Join(", ", (string[])ShardUtility.shards.enabledShardDefs.Select(x => x.label))}",
+            $"Shard System has been pre-selected: {string.Join(", ", ShardUtility.shards.enabledShardDefs.Select(x => x.label))}",
             MessageTypeDefOf.PositiveEvent);
     }
 }

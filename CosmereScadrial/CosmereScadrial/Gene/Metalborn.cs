@@ -19,8 +19,8 @@ public abstract class Metalborn : Gene_Resource {
 
     // @TODO IMPLEMENT
     public override float Max => 100f;
-    protected override Color BarColor => metal.color;
-    protected override Color BarHighlightColor => metal.colorTwo ?? metal.color.SaturationChanged(50f);
+    protected override Color BarColor => metal.color.SaturationChanged(1f);
+    protected override Color BarHighlightColor => metal.color.SaturationChanged(2f);
 
     // @TODO IMPLEMENT
     public override float Value => 0f;

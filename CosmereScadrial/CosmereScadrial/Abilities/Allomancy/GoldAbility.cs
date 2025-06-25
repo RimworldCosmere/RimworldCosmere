@@ -35,9 +35,9 @@ public class GoldAbility : AbilitySelfTarget {
             UpdateStatus(BurningStatus.Burning);
         }
 
-        if (!pawn.CurJob.def.Equals(JobDefOf.Cosmere_Job_FollowGoldHallucination) && hallucination != null) {
+        if (!pawn.CurJob.def.Equals(JobDefOf.Cosmere_Scadrial_Job_FollowGoldHallucination) && hallucination != null) {
             pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
-            job = JobMaker.MakeJob(JobDefOf.Cosmere_Job_FollowGoldHallucination, hallucination);
+            job = JobMaker.MakeJob(JobDefOf.Cosmere_Scadrial_Job_FollowGoldHallucination, hallucination);
             job.ability = this;
             job.verbToUse = verb;
             job.playerForced = true;
@@ -64,7 +64,7 @@ public class GoldAbility : AbilitySelfTarget {
             pawn.health.RemoveHediff(hediff);
         }
 
-        if (pawn.CurJob.def.Equals(JobDefOf.Cosmere_Job_FollowGoldHallucination)) {
+        if (pawn.CurJob.def.Equals(JobDefOf.Cosmere_Scadrial_Job_FollowGoldHallucination)) {
             pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
         }
 

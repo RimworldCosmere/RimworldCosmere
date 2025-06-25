@@ -2,7 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using CosmereFramework.Extensions;
 using CosmereFramework.Utils;
+using CosmereResources;
+using CosmereResources.Defs;
 using CosmereScadrial.Comps.Things;
+using CosmereScadrial.Defs;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -13,11 +16,11 @@ namespace CosmereScadrial.Dev;
 
 [StaticConstructorOnStartup]
 public static class ScadrianQuickstart {
-    private const int MapSize = 50;
+    private const int MapSize = 75;
     private static bool Started;
     private static readonly StorytellerDef Storyteller = StorytellerDefOf.Cassandra;
     private static readonly DifficultyDef Difficulty = DifficultyDefOf.Easy;
-    private static readonly ScenarioDef Scenario = DefDatabase<ScenarioDef>.GetNamed("Cosmere_Scadrial_PreCatacendre");
+    private static readonly ScenarioDef Scenario = ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
     static ScadrianQuickstart() {
         if (!Prefs.DevMode) return;
@@ -92,29 +95,32 @@ public static class ScadrianQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Scadrial_Gene_MistingSteel, false, true);
-            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Scadrial_Gene_MistingAluminum, false, true);
-            pawn.Name = new NameSingle("Steel and Aluminum");
+            PrepareColonistAsMisting(pawn, false, MetalDefOf.Steel, MetalDefOf.Aluminum);
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Scadrial_Gene_MistingAluminum, false, true);
-            pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Aluminum, MetalReserves.MaxAmount);
-            pawn.Name = new NameSingle("Aluminum");
+            PrepareColonistAsMisting(pawn, true, MetalDefOf.Aluminum);
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Scadrial_Gene_MistingSteel, false, true);
-            pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Steel, MetalReserves.MaxAmount);
-            pawn.Name = new NameSingle("Steel");
+            PrepareColonistAsMisting(pawn, true, MetalDefOf.Steel);
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddGene(pawn, GeneDefOf.Cosmere_Scadrial_Gene_MistingAtium, false, true);
-            pawn.GetComp<MetalReserves>().SetReserve(MetallicArtsMetalDefOf.Atium, MetalReserves.MaxAmount);
-            pawn.Name = new NameSingle("Atium");
+            PrepareColonistAsMisting(pawn, false, MetalDefOf.Pewter);
+            pawn.health.forceDowned = true;
         }
 
         Find.TickManager.Pause();
+    }
+
+    private static void PrepareColonistAsMisting(Pawn pawn, bool fillReserves, params MetalDef[] metals) {
+        MetalReserves reserves = pawn.GetComp<MetalReserves>();
+        foreach (MetalDef metal in metals) {
+            GeneUtility.AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false, true);
+            if (fillReserves) reserves.SetReserve(MetallicArtsMetalDef.FromMetalDef(metal), MetalReserves.MaxAmount);
+        }
+
+        pawn.Name = new NameSingle(string.Join(" and ", metals.Select(m => m.LabelCap)));
     }
 }

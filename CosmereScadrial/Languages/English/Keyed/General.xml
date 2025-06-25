@@ -20,4 +20,5 @@
 	<CS_SetVialCountSlider>{PAWN} will keep {COUNT} {METAL} vials in {pawn_possessive} inventory.</CS_SetVialCountSlider>
 	<CS_CurrentVialStock>Keeping {COUNT} vials in inventory</CS_CurrentVialStock>
 	<CS_WillBurnWhileDowned>Auto-Burning while downed</CS_WillBurnWhileDowned>
+	<CS_NoVials>No {METAL_label} vials to give</CS_NoVials>
 </LanguageData>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>Cosmere_Scadrial_Job_GivePatientVial</defName>
+        <driverClass>CosmereScadrial.JobDrivers.GivePatientVial</driverClass>
+        <reportString>giving TargetA to TargetB.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+</Defs>

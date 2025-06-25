@@ -6,7 +6,7 @@
         <giverClass>CosmereScadrial.WorkGivers.GivePewterVialToDownedThugs</giverClass>
         <workType>Doctor</workType>
         <verb>give vial</verb>
-        <gerund>giving vial</gerund>
+        <gerund>giving vial ofs</gerund>
         <priorityInType>80</priorityInType>
         <requiredCapacities>
             <li>Manipulation</li>

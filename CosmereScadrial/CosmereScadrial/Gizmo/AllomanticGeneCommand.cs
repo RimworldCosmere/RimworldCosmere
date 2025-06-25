@@ -27,6 +27,10 @@ public class AllomanticGeneCommand(
         ContentFinder<Texture2D>.Get("Things/Item/AllomanticVial/AllomanticVial_c");
 
     private static readonly Texture2D BarTex = new Color(0.34f, 0.42f, 0.43f).ToSolidColorTexture();
+
+    private static readonly Texture2D BarHighlightTex =
+        SolidColorMaterials.NewSolidColorTexture(new Color(0.43f, 0.54f, 0.55f));
+
     private static readonly Texture2D EmptyBarTex = new Color(0.03f, 0.035f, 0.05f).ToSolidColorTexture();
     private static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
     private static bool DraggingBar;
@@ -191,9 +195,9 @@ public class AllomanticGeneCommand(
 
         initialized = true;
         targetValuePct = Mathf.Clamp(Target, DragRange.min, DragRange.max);
-        barTex = BarColor == new Color() ? BarTex : SolidColorMaterials.NewSolidColorTexture(BarColor);
-        barHighlightTex = SolidColorMaterials.NewSolidColorTexture(BarColor.SaturationChanged(50f));
-        barDragTex = BarDragColor == new Color() ? DragBarTex : SolidColorMaterials.NewSolidColorTexture(BarDragColor);
+        barTex = BarColor == new Color() ? BarTex : BarColor.ToSolidColorTexture();
+        barHighlightTex = BarHighlightColor == new Color() ? BarHighlightTex : BarHighlightColor.ToSolidColorTexture();
+        barDragTex = BarDragColor == new Color() ? DragBarTex : BarDragColor.ToSolidColorTexture();
     }
 
     public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {

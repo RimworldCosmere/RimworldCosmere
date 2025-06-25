@@ -77,7 +77,7 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
             string abilityName = defName.Replace("Cosmere_Scadrial_Ability_", "");
             LongEventHandler.ExecuteWhenFinished(() => {
                 uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
-                         ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Allomancy/{metal.defName}");
+                         metal.invertedIcon;
             });
         } else {
             base.PostLoad();

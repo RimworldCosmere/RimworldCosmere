@@ -37,7 +37,6 @@ public class AbilitySelfTarget : AbstractAbility {
     public override void AbilityTick() {
         base.AbilityTick();
 
-
         if (willBurnWhileDowned && pawn.Downed && !pawn.Dead && !atLeastPassive) {
             MetalReserves reserves = pawn.GetComp<MetalReserves>();
             if (reserves?.CanLowerReserve(metal, AllomancyUtility.GetMetalNeededForBeu(def.beuPerTick)) ?? false) {

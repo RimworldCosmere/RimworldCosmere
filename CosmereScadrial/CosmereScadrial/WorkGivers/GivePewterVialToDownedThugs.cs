@@ -10,9 +10,17 @@ using Verse.AI;
 
 namespace CosmereScadrial.WorkGivers;
 
-public class GivePewterVialToDownedThugs : WorkGiver_FeedPatient {
+public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
     private MetalDef pewter => MetalDefOf.Pewter;
     private ThingDef vialDef => pewter.GetVial();
+
+    public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
+
+    public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
+
+    public override Danger MaxPathDanger(Pawn pawn) {
+        return Danger.None;
+    }
 
     public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) {
         return pawn.Map.mapPawns.FreeColonistsSpawned.Where(x => x.genes.HasAllomanticGeneForMetal(MetalDefOf.Pewter));
@@ -24,31 +32,27 @@ public class GivePewterVialToDownedThugs : WorkGiver_FeedPatient {
         if (target.DevelopmentalStage.Baby()) return false;
         if (target.genes == null) return false;
         if (!target.genes.HasAllomanticGeneForMetal(pewter)) return false;
-
+        if (!pawn.CanReserve(t, ignoreOtherReservations: forced)) return false;
 
         Allomancer pewterGene = target.genes.GetAllomanticGeneForMetal(pewter)!;
         if (!pewterGene.ShouldConsumeVialNow()) return false;
-        if (!pawn.CanReserve(t, ignoreOtherReservations: forced)) return false;
 
         if (TryFindBestVialSourceFor(pawn, out _)) {
             return true;
         }
 
-        JobFailReason.Is((string)"NoFood".Translate());
+        JobFailReason.Is((string)"CS_NoVials".Translate(pewter.Named("METAL")));
         return false;
     }
 
     public override Job? JobOnThing(Pawn pawn, Thing t, bool forced = false) {
-        Pawn target = (Pawn)t;
-        Thing vialSource;
-        if (!TryFindBestVialSourceFor(pawn, out vialSource)) {
+        if (!TryFindBestVialSourceFor(pawn, out Thing vialSource)) {
             return null;
         }
 
-        Job job = JobMaker.MakeJob(RimWorld.JobDefOf.FeedPatient);
-        job.targetA = (LocalTargetInfo)vialSource;
-        job.targetB = (LocalTargetInfo)(Thing)target;
+        Job job = JobMaker.MakeJob(JobDefOf.Cosmere_Scadrial_Job_GivePatientVial, vialSource, t);
         job.count = 1;
+
         return job;
     }
 

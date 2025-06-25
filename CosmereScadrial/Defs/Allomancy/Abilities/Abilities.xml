@@ -53,7 +53,7 @@
     
     <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractTargetBurnAbility" ParentName="AbstractBurnAbility" Abstract="True">
         <abilityClass>CosmereScadrial.Abilities.Allomancy.AbilityOtherTarget</abilityClass>
-        <jobDef>Cosmere_Job_CastAllomanticAbilityAtTarget</jobDef>
+        <jobDef>Cosmere_Scadrial_Job_CastAllomanticAbilityAtTarget</jobDef>
         <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
         <targetRequired>true</targetRequired>
         <targetWorldCell>false</targetWorldCell>
@@ -92,10 +92,10 @@
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractToggleTargetBurnAbility" ParentName="AbstractTargetBurnAbility" Abstract="True">
         <toggleable>true</toggleable>
-        <jobDef>Cosmere_Job_MaintainAllomanticTarget</jobDef>
+        <jobDef>Cosmere_Scadrial_Job_MaintainAllomanticTarget</jobDef>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef Name="AbstractToggleTargetHostileBurnAbility" ParentName="AbstractTargetHostileBurnAbility" Abstract="True">
         <toggleable>true</toggleable>
-        <jobDef>Cosmere_Job_MaintainAllomanticTarget</jobDef>
+        <jobDef>Cosmere_Scadrial_Job_MaintainAllomanticTarget</jobDef>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

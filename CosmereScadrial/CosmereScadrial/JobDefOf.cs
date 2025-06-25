@@ -11,7 +11,8 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class JobDefOf {
-    public static JobDef Cosmere_Job_MaintainAllomanticTarget;
-    public static JobDef Cosmere_Job_CastAllomanticAbilityAtTarget;
-    public static JobDef Cosmere_Job_FollowGoldHallucination;
+    public static JobDef Cosmere_Scadrial_Job_MaintainAllomanticTarget;
+    public static JobDef Cosmere_Scadrial_Job_CastAllomanticAbilityAtTarget;
+    public static JobDef Cosmere_Scadrial_Job_FollowGoldHallucination;
+    public static JobDef Cosmere_Scadrial_Job_GivePatientVial;
 }

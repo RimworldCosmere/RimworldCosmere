@@ -11,6 +11,7 @@ export class MetalInfo {
     public ColorTwo?: [number, number, number];
     public GodMetal: boolean;
     public Stackable: boolean = true;
+    public DrawSize: number = .25;
     public MarketValue: number;
     public MaxAmount: number = 100;
     public Allomancy?: MetalAllomancyInfo

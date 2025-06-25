@@ -3,7 +3,6 @@ using System.Linq;
 using CosmereResources;
 using RimWorld;
 using Verse;
-using Verse.AI;
 using Verse.AI.Group;
 
 namespace CosmereScadrial.IncidentWorker;
@@ -52,15 +51,14 @@ public class AtiumCaravan : RimWorld.IncidentWorker {
             GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(entryPoint, map, 10), map);
         }
 
-        LordJob lordJob = new LordJob_ExitMapNear(exitPoint, LocomotionUrgency.Walk, 6f, false, true);
+        LordJob lordJob = new LordJob_AssaultColony(faction, false, canSteal: false);
         LordMaker.MakeNewLord(faction, lordJob, map, attackers);
 
-        string coloredMetal = MetalDefOf.Atium.coloredLabel;
         Find.LetterStack.ReceiveLetter(
             "Atium Caravan",
             "CS_MetalCaravanLetter".Translate(MetalDefOf.Atium.coloredLabel.Named("METAL")).Resolve(),
             LetterDefOf.PositiveEvent,
-            new TargetInfo(entryPoint, map)
+            attackers[0]
         );
 
         return true;

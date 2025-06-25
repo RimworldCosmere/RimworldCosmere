@@ -760,6 +760,7 @@
     "description": "Lerasium is an exceptionally rare god metal tied to the Shard Preservation. When ingested, it transforms the user into a Mistborn, granting access to all Allomantic powers.",
     "godMetal": true,
     "stackable": false,
+    "drawSize": 1,
     "marketValue": 10000,
     "color": [
       132,
@@ -776,6 +777,7 @@
     "description": "Atium is the god metal of the Shard Ruin. It grants its user visions of others' immediate futures, offering immense strategic advantage in combat and prediction.",
     "godMetal": true,
     "stackable": false,
+    "drawSize": 1,
     "marketValue": 10000,
     "color": [
       60,
@@ -802,6 +804,7 @@
     "description": "Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.",
     "godMetal": true,
     "stackable": false,
+    "drawSize": 1,
     "marketValue": 10000,
     "color": [
       242,
@@ -835,6 +838,7 @@
     "description": "An alien, corrupted metal aligned with Trell's influence. It resists typical Investiture detection and interferes with other magic systems. Often associated with Hemalurgic constructs, Trellium's strange red hue and unique properties hint at a Shardic power foreign to Scadrial.",
     "godMetal": true,
     "stackable": false,
+    "drawSize": 1,
     "marketValue": 10000,
     "color": [
       148,

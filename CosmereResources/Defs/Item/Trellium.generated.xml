@@ -6,7 +6,7 @@
         <description>An alien, corrupted metal aligned with Trell&#x27;s influence. It resists typical Investiture detection and interferes with other magic systems. Often associated with Hemalurgic constructs, Trellium&#x27;s strange red hue and unique properties hint at a Shardic power foreign to Scadrial.</description>
         <graphicData>
                 <graphicClass>Graphic_Single</graphicClass>
-                <drawSize>.25</drawSize>
+                <drawSize>1</drawSize>
             <texPath>Item/Resource/Trellium</texPath>
         </graphicData>
         <stuffProps>

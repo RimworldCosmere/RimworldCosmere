@@ -30,6 +30,7 @@ export class MetalRegistry {
                 DefName: metal.defName,
                 GodMetal: metal.godMetal ?? false,
                 Stackable: metal.stackable ?? true,
+                DrawSize: metal.drawSize ?? .25,
                 MaxAmount: metal.maxAmount ?? 100,
                 MarketValue: metal.marketValue ?? (metal.alloy ? 2 : 0.5),
                 Color: metal.color,

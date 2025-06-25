@@ -6,8 +6,11 @@
         <category>ThreatBig</category>
         <letterLabel>Atium Caravan</letterLabel>
         <letterText>
-            A heavily guarded caravan carrying rare Atium is passing through the area. If you act quickly, you may intercept it and steal the precious cargo.
+            A heavily guarded caravan carrying rare Atium is passing through the area. If you act quickly, you may be able to intercept it and steal the precious cargo.
         </letterText>
+        <targetTags>
+            <li>Map_PlayerHome</li>
+        </targetTags>
         <letterDef>PositiveEvent</letterDef>
         <baseChance>0.02</baseChance>
     </IncidentDef>

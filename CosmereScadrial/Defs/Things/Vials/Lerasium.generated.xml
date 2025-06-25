@@ -8,7 +8,7 @@
             <color>(132, 159, 106)</color>
         </graphicData>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Lerasium</metal>
             </li>
         </modExtensions>

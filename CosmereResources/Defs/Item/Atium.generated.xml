@@ -5,8 +5,8 @@
         <label>Atium</label>
         <description>Atium is the god metal of the Shard Ruin. It grants its user visions of others&#x27; immediate futures, offering immense strategic advantage in combat and prediction.</description>
         <graphicData>
-            <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>.25</drawSize>
+                <graphicClass>Graphic_Single</graphicClass>
+                <drawSize>.25</drawSize>
             <texPath>Item/Resource/Atium</texPath>
         </graphicData>
         <stuffProps>
@@ -17,7 +17,7 @@
             <MarketValue>10000</MarketValue>
         </statBases>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Atium</metal>
             </li>
         </modExtensions>

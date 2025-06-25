@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Aluminum">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Aluminum">
         <defName>Aluminum</defName>
         <allomancy>
             <description>Shields {PAWN} from investiture. Also wipes away all other investiture reserves.</description>
@@ -13,5 +13,5 @@
             <description>Stores identity, allowing anonymous interactions or forgery.</description>
             <group>Spiritual</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

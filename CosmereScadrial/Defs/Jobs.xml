@@ -2,7 +2,7 @@
 <Defs>
     <JobDef>
         <defName>Cosmere_Scadrial_Job_GivePatientVial</defName>
-        <driverClass>CosmereScadrial.JobDrivers.GivePatientVial</driverClass>
+        <driverClass>CosmereScadrial.JobDriver.GivePatientVial</driverClass>
         <reportString>giving TargetA to TargetB.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>

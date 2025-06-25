@@ -5,7 +5,7 @@
         <label>Iron</label>
         <description>Iron is a robust elemental metal, celebrated for its exceptional strength and versatility. Essential in construction, tool-making, and weaponry, iron forms the backbone of many modern and ancient applications.</description>
         <graphicData>
-            <graphicClass>Graphic_StackCount</graphicClass>
+                <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Iron</texPath>
         </graphicData>
         <stuffProps>
@@ -16,7 +16,7 @@
             <MarketValue>0.5</MarketValue>
         </statBases>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Iron</metal>
             </li>
         </modExtensions>

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereResources;
-using CosmereResources.Defs;
-using CosmereScadrial.Extensions;
-using CosmereScadrial.Genes;
+using CosmereResources.Def;
+using CosmereScadrial.Extension;
+using CosmereScadrial.Gene;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -22,11 +22,11 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
         return Danger.None;
     }
 
-    public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) {
+    public override IEnumerable<Verse.Thing> PotentialWorkThingsGlobal(Pawn pawn) {
         return pawn.Map.mapPawns.FreeColonistsSpawned.Where(x => x.genes.HasAllomanticGeneForMetal(MetalDefOf.Pewter));
     }
 
-    public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false) {
+    public override bool HasJobOnThing(Pawn pawn, Verse.Thing t, bool forced = false) {
         if (t is not Pawn target) return false;
         if (target == pawn) return false;
         if (target.DevelopmentalStage.Baby()) return false;
@@ -45,8 +45,8 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
         return false;
     }
 
-    public override Job? JobOnThing(Pawn pawn, Thing t, bool forced = false) {
-        if (!TryFindBestVialSourceFor(pawn, out Thing vialSource)) {
+    public override Job? JobOnThing(Pawn pawn, Verse.Thing t, bool forced = false) {
+        if (!TryFindBestVialSourceFor(pawn, out Verse.Thing vialSource)) {
             return null;
         }
 
@@ -58,7 +58,7 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
 
     private bool TryFindBestVialSourceFor(
         Pawn pawn,
-        out Thing vialSource) {
+        out Verse.Thing vialSource) {
         vialSource = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(vialDef),
             PathEndMode.Touch, TraverseParms.For(pawn), 9999f, x => VialValidator(pawn, x));
 
@@ -66,7 +66,7 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
     }
 
 
-    private bool VialValidator(Pawn pawn, Thing vial) {
+    private bool VialValidator(Pawn pawn, Verse.Thing vial) {
         if (!vial.Spawned) return true;
         if (vial.IsForbidden(pawn)) return false;
 

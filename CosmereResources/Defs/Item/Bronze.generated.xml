@@ -5,7 +5,7 @@
         <label>Bronze</label>
         <description>Bronze is a time-honored alloy, resulting from the fusion of Ind_Copper and tin. Its rich, reddish-brown hue and enduring strength have made bronze a cornerstone of art, architecture, and historical craftsmanship.</description>
         <graphicData>
-            <graphicClass>Graphic_StackCount</graphicClass>
+                <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Bronze</texPath>
         </graphicData>
         <stuffProps>
@@ -16,7 +16,7 @@
             <MarketValue>2</MarketValue>
         </statBases>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Bronze</metal>
             </li>
         </modExtensions>

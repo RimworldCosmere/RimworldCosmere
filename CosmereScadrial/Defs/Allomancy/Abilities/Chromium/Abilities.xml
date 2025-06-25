@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_Chromium</defName>
         <description>Chromium shields the target against investiture. It also instantly drains the target’s investiture, purging all metal reserves and canceling any active Investiture-related effects.</description>
         <label>shield target against investiture</label>
@@ -15,5 +15,5 @@
                 <canTargetPlants>false</canTargetPlants>
             </targetParams>
         </verbProperties>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

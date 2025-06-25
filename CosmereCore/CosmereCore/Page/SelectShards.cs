@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Defs;
-using CosmereCore.Utils;
-using CosmereFramework.Utils;
+using CosmereCore.Def;
+using CosmereCore.Util;
+using CosmereFramework.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereCore.Pages;
+namespace CosmereCore.Page;
 
-public class SelectShards : Page {
+public class SelectShards : RimWorld.Page {
     private Vector2 scrollPos = Vector2.zero;
 
     public override string PageTitle => "Select Shards";

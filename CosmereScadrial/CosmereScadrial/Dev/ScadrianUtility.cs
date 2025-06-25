@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Comps.Things;
-using CosmereScadrial.Defs;
-using CosmereScadrial.Extensions;
-using CosmereScadrial.Utils;
+using CosmereScadrial.Comp.Thing;
+using CosmereScadrial.Def;
+using CosmereScadrial.Extension;
+using CosmereScadrial.Util;
 using LudeonTK;
 using RimWorld;
 using Verse;
-using GeneUtility = CosmereScadrial.Utils.GeneUtility;
+using GeneUtility = CosmereScadrial.Util.GeneUtility;
 
 namespace CosmereScadrial.Dev;
 
@@ -34,7 +34,7 @@ public static class ScadrianUtility {
             ThingDef vialDef = metal.GetVial();
             if (pawn.inventory.innerContainer.Contains(vialDef)) continue;
 
-            Thing? vial = ThingMaker.MakeThing(vialDef);
+            Verse.Thing? vial = ThingMaker.MakeThing(vialDef);
             vial.stackCount = 20;
             pawn.inventory.innerContainer.TryAdd(vial);
         }

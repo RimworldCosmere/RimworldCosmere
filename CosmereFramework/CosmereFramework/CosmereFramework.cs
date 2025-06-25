@@ -1,5 +1,4 @@
-﻿using CosmereFramework.Settings;
-using UnityEngine;
+﻿using UnityEngine;
 using Verse;
 
 namespace CosmereFramework;

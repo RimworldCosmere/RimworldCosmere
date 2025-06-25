@@ -2,7 +2,7 @@
 <Defs>
     <JobDef>
         <defName>Cosmere_Scadrial_Job_FollowGoldHallucination</defName>
-        <driverClass>CosmereScadrial.JobDrivers.FollowGoldHallucination</driverClass>
+        <driverClass>CosmereScadrial.JobDriver.FollowGoldHallucination</driverClass>
         <reportString>Interacting with alternative self.</reportString>
         <suspendable>true</suspendable>
     </JobDef>

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
-  <Operation Class="PatchOperationSequence">
-    <operations>
-      <li Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName = "Brass"]</xpath>
-        <value>
-            <thingClass>CosmereScadrial.Things.AllomanticMetal</thingClass>
-            <ingestible>
-                <preferability>NeverForNutrition</preferability>
-                <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
-                <defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce>
-                <chairSearchRadius>0</chairSearchRadius>
-                <ingestSound>Ingest_Pill</ingestSound>
-                <baseIngestTicks>10</baseIngestTicks>
-                <drugCategory>None</drugCategory>
-                <foodType>Fluid</foodType>
-                <ingestCommandString>Ingest Brass</ingestCommandString>
-                <ingestReportString>ingesting Brass</ingestReportString>
-            </ingestible>
-        </value>
-      </li>
-    </operations>
-  </Operation>
+    <Operation Class="PatchOperationSequence">
+        <operations>
+            <li Class="PatchOperationAdd">
+                <xpath>Defs/ThingDef[defName = "Brass"]</xpath>
+                <value>
+                    <thingClass>CosmereScadrial.Thing.AllomanticMetal</thingClass>
+                    <ingestible>
+                        <preferability>NeverForNutrition</preferability>
+                        <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+                        <defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce>
+                        <chairSearchRadius>0</chairSearchRadius>
+                        <ingestSound>Ingest_Pill</ingestSound>
+                        <baseIngestTicks>10</baseIngestTicks>
+                        <drugCategory>None</drugCategory>
+                        <foodType>Fluid</foodType>
+                        <ingestCommandString>Ingest Brass</ingestCommandString>
+                        <ingestReportString>ingesting Brass</ingestReportString>
+                    </ingestible>
+                </value>
+            </li>
+        </operations>
+    </Operation>
 </Patch>

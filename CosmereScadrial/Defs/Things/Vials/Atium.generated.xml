@@ -8,7 +8,7 @@
             <color>(0, 0, 0)</color>
         </graphicData>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Atium</metal>
             </li>
         </modExtensions>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Scadrial_Ability_DuraluminSurge</defName>
         <label>supercharge</label>
         <description>Supercharges all currently burning metals (or the next metal to burn) in a flash of intense power, consuming all duralumin in the process.</description>
@@ -8,5 +8,5 @@
         <hediff>Cosmere_Hediff_Surge_Charge</hediff>
         <beuPerTick>0.00000001</beuPerTick>
         <canFlare>false</canFlare>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

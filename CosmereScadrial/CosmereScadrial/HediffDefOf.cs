@@ -29,7 +29,7 @@ public static class HediffDefOf {
     public static HediffDef Cosmere_Hediff_Tin_Drag;
     public static HediffDef Cosmere_Hediff_Surge_Charge;
     public static HediffDef Cosmere_Hediff_Investiture_Shield;
-    public static HediffDef Cosmere_Scadrial_Mist_Coma;
+    public static HediffDef Cosmere_Scadrial_Hediff_MistComa;
     public static HediffDef Cosmere_Hediff_Time_Bubble_Cadmium;
     public static HediffDef Cosmere_Hediff_Time_Bubble_Bendalloy;
     public static HediffDef Cosmere_Hediff_Atium_Buff;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Iron">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Iron">
         <defName>Iron</defName>
         <allomancy>
             <description>Grants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.</description>
@@ -13,5 +13,5 @@
             <description>Stores weight, allowing the user to become lighter or heavier.</description>
             <group>Physical</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Gold">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Gold">
         <defName>Gold</defName>
         <allomancy>
             <description>Shows alternate versions of {PAWN}, based on different pasts. Reflecting on these visions will grant a mood buff.</description>
@@ -13,5 +13,5 @@
             <description>Stores health, allowing fast healing when tapped.</description>
             <group>Hybrid</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

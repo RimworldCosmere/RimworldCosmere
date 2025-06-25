@@ -3,12 +3,12 @@
     <ThinkTreeDef>
         <defName>Cosmere_Scadrial_Ingest_Vial</defName>
         <insertTag>Humanlike_PreMain</insertTag>
-        <thinkRoot Class="CosmereScadrial.JobGivers.IngestVial" />
+        <thinkRoot Class="CosmereScadrial.JobGiver.IngestVial" />
     </ThinkTreeDef>
     <ThinkTreeDef>
         <defName>Cosmere_Scadrial_KeepVialInStock</defName>
         <insertTag>Humanlike_PostMain</insertTag>
         <insertPriority>7.5</insertPriority>
-        <thinkRoot Class="CosmereScadrial.JobGivers.KeepVialInStock" />
+        <thinkRoot Class="CosmereScadrial.JobGiver.KeepVialInStock" />
     </ThinkTreeDef>
 </Defs>

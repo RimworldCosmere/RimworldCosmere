@@ -21,7 +21,7 @@
             <mineableScatterLumpSizeRange>25~45</mineableScatterLumpSizeRange>
         </building>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Chromium</metal>
             </li>
         </modExtensions>

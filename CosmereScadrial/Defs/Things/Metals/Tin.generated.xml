@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Tin">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Tin">
         <defName>Tin</defName>
         <allomancy>
             <description>Enhances {PAWN}&#x27;s senses like sight, hearing, and smell.</description>
@@ -13,5 +13,5 @@
             <description>Stores senses, dulling them while storing and enhancing while tapping.</description>
             <group>Physical</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

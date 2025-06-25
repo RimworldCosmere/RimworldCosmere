@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Nicrosil">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Nicrosil">
         <defName>Nicrosil</defName>
         <allomancy>
             <description>Allows {PAWN} to boosts another pawn&#x27;s next Investiture-related ability drastically, at the downside of completely draining them after.</description>
@@ -13,5 +13,5 @@
             <description>Stores Investiture, enabling storage of magical energy.</description>
             <group>Spiritual</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

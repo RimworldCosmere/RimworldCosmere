@@ -5,7 +5,7 @@
         <label>burning zinc: aura</label>
         <description>Subtly fanning the emotional flames of all nearby minds by burning Zinc.</description>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
+            <li Class="CosmereScadrial.Ability.Allomancy.Hediff.Comp.AllomancyAuraHediffGiverProperties">
                 <hediffFriendly>Cosmere_Hediff_Rioted_Buff</hediffFriendly>
                 <hediffHostile>Cosmere_Hediff_Rioted_Debuff</hediffHostile>
                 <moteDef>Cosmere_Mote_Zinc_Aura</moteDef>
@@ -26,7 +26,7 @@
             </li>
         </stages>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Zinc</metal>
             </li>
         </modExtensions>
@@ -40,7 +40,7 @@
     <HediffDef ParentName="AbstractZincHediff">
         <defName>Cosmere_Hediff_Rioted_Buff</defName>
         <comps Inherit="False">
-            <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.SeverityCalculatorProperties">
+            <li Class="CosmereScadrial.Ability.Allomancy.Hediff.Comp.SeverityCalculatorProperties">
                 <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
@@ -66,7 +66,7 @@
     <HediffDef ParentName="AbstractZincHediff">
         <defName>Cosmere_Hediff_Rioted_Debuff</defName>
         <comps>
-            <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties">
+            <li Class="CosmereScadrial.Comp.Hediff.DisappearsScaledProperties">
                 <baseTicks>3600</baseTicks>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">

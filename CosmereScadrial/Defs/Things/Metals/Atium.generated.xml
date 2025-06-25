@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Atium">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Atium">
         <defName>Atium</defName>
         <allomancy>
             <description>Allows {PAWN} a glimpse into the immediate future of others.</description>
@@ -12,5 +12,5 @@
             <description>Stores age, granting youth or aging when tapped.</description>
             <group>None</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

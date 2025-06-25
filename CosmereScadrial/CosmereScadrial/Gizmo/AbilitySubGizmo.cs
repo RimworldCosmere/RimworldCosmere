@@ -1,9 +1,9 @@
 using System;
 using System.Text;
-using CosmereFramework.Extensions;
-using CosmereFramework.Utils;
-using CosmereScadrial.Abilities.Allomancy;
-using CosmereScadrial.Genes;
+using CosmereFramework.Extension;
+using CosmereFramework.Util;
+using CosmereScadrial.Ability.Allomancy;
+using CosmereScadrial.Gene;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;

@@ -47,7 +47,7 @@
             <Mass>0.002</Mass>
         </statBases>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>
@@ -65,7 +65,7 @@
             <Mass>0.001</Mass>
         </statBases>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>
@@ -73,7 +73,7 @@
     
     <ThingDef ParentName="BaseBullet">
         <defName>Cosmere_Scadrial_Thing_ClipProjectile</defName>
-        <thingClass>CosmereScadrial.Things.Clip</thingClass>
+        <thingClass>CosmereScadrial.Thing.Clip</thingClass>
         <label>clip</label>
         <graphicData>
             <texPath>Things/Projectile/Clip</texPath>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef>
-        <defName>Cosmere_Scadrial_Mist_Coma</defName>
+        <defName>Cosmere_Scadrial_Hediff_MistComa</defName>
         <label>Mist Coma</label>
         <description>This pawn has fallen into a coma after being exposed to the unnatural mists.</description>
         <hediffClass>HediffWithComps</hediffClass>
@@ -33,7 +33,7 @@
     </HediffDef>
     
     <WeatherDef>
-        <defName>Cosmere_Scadrial_MistsWeather</defName>
+        <defName>Cosmere_Scadrial_Weather_MistsWeather</defName>
         <label>Dense Mists</label>
         <isBad>true</isBad>
         <repeatable>true</repeatable>

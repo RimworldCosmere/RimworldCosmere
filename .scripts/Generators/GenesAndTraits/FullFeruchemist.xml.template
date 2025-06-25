@@ -5,7 +5,7 @@
         <label>full feruchemist</label>
         <description>A rare individual who can use all Feruchemical metals.</description>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metals>
                     {{#each metals}}
                         <li>{{capitalize this.Name}}</li>

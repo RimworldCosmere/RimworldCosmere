@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Steel">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Steel">
         <defName>Steel</defName>
         <allomancy>
             <description>Grants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.</description>
@@ -13,5 +13,5 @@
             <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
             <group>Physical</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

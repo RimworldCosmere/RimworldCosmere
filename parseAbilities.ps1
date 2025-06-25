@@ -5,7 +5,7 @@ foreach ($file in $abilityFiles)
     try
     {
         [xml]$xml = Get-Content $file.FullName
-        foreach ($def in $xml.SelectNodes("//CosmereScadrial.Defs.AllomanticAbilityDef"))
+        foreach ($def in $xml.SelectNodes("//CosmereScadrial.Def.AllomanticAbilityDef"))
         {
             if ($def.Abstract -ne "True")
             {

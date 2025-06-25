@@ -22,7 +22,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
@@ -44,7 +44,7 @@
         <description>Grants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.</description>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
@@ -78,7 +78,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
@@ -91,7 +91,7 @@
         <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>

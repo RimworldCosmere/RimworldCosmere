@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <IncidentDef>
+        <defName>Cosmere_Scadrial_Incident_AtiumCaravan</defName>
+        <workerClass>CosmereScadrial.IncidentWorker.AtiumCaravan</workerClass>
+        <category>ThreatBig</category>
+        <letterLabel>Atium Caravan</letterLabel>
+        <letterText>
+            A heavily guarded caravan carrying rare Atium is passing through the area. If you act quickly, you may intercept it and steal the precious cargo.
+        </letterText>
+        <letterDef>PositiveEvent</letterDef>
+        <baseChance>0.02</baseChance>
+    </IncidentDef>
+
+</Defs>

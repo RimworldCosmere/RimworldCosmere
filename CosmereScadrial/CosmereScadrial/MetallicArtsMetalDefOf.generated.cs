@@ -1,6 +1,6 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
-using CosmereScadrial.Defs;
+using CosmereScadrial.Def;
 using RimWorld;
 
 namespace CosmereScadrial;

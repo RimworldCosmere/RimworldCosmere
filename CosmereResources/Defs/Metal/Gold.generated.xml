@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereResources.Defs.MetalDef Name="Cosmere_Metal_Gold">
+    <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Gold">
         <defName>Gold</defName>
         <label>gold</label>
         <description>Gold is a dense, soft, and radiant metal long valued for its rarity and beauty. Resistant to tarnish and corrosion, it has held significance in both trade and symbolism throughout history.</description>
         <color>(206, 172, 55)</color>
         <colorTwo>(136, 101, 23)</colorTwo>
-    </CosmereResources.Defs.MetalDef>
+    </CosmereResources.Def.MetalDef>
 </Defs>

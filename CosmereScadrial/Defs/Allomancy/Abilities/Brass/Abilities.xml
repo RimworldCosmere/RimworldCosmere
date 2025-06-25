@@ -7,7 +7,6 @@
         <metal>Brass</metal>
         <canBurnWhileAsleep>true</canBurnWhileAsleep>
         <hediff>Cosmere_Hediff_Brass_Aura</hediff>
-        <iconPath>UI/Icons/Abilities/BrassSoothingAura</iconPath>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
     <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_BrassTarget</defName>
@@ -24,6 +23,5 @@
                 <canTargetPlants>false</canTargetPlants>
             </targetParams>
         </verbProperties>
-        <iconPath>UI/Icons/Abilities/BrassSootheTarget</iconPath>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

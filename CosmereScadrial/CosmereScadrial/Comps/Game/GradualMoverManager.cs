@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CosmereFramework.Extensions;
 using CosmereScadrial.Defs;
 using RimWorld;
 using UnityEngine;
@@ -36,8 +37,13 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
                 if (m.source is not Pawn pawn) continue;
                 if (!m.thing.def.EverHaulable || pawn.inventory == null) continue;
 
-                Job? job = JobMaker.MakeJob(RimWorld.JobDefOf.TakeCountToInventory, m.thing);
-                job.count = Mathf.Min(m.thing.stackCount, m.thing.def.stackLimit);
+
+                JobDef jobDef = m.thing.CanBeEquippedBy(pawn)
+                    ? RimWorld.JobDefOf.Equip
+                    : RimWorld.JobDefOf.TakeCountToInventory;
+                Job job = JobMaker.MakeJob(jobDef, m.thing);
+                job.count = m.thing.GetMaxAmountToPickupForPawn(pawn, m.thing.stackCount);
+
                 pawn.jobs.TryTakeOrderedJob(job);
             } else {
                 activeMovements[i] = m; // update struct

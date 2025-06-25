@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereCore.Utils;
-using CosmereFramework.Extensions;
 using CosmereResources.ModExtensions;
 using CosmereScadrial.Comps.Things;
 using CosmereScadrial.Defs;
@@ -17,42 +16,6 @@ namespace CosmereScadrial.Things;
 public class AllomanticVial : ThingWithComps {
     public List<MetallicArtsMetalDef> metals => def.GetModExtension<MetalsLinked>().Metals
         .Select(x => x.ToMetallicArts()).ToList();
-
-    public override bool IngestibleNow {
-        get {
-            if (!base.IngestibleNow) {
-                return false;
-            }
-
-            Pawn? pawn = null;
-            if (holdingOwner.Owner is Pawn_InventoryTracker tracker) {
-                pawn = tracker?.pawn;
-            } else if (Find.Selector?.SingleSelectedThing is Pawn selectedThing) {
-                pawn = selectedThing;
-            } else if (Spawned && Position.GetFirstPawn(Map) is { } standingPawn) {
-                pawn = standingPawn;
-            }
-
-            if (pawn == null) {
-                return false;
-            }
-
-            if (InvestitureDetector.IsShielded(pawn)) return false;
-
-            if (pawn.IsAsleep()) return false;
-
-            if (metals.Count > 1) {
-                return pawn.IsMistborn() && metals.Any(metal => AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f);
-            }
-
-            MetallicArtsMetalDef? metal = metals.First();
-            if (!AllomancyUtility.CanUseMetal(pawn, metal)) {
-                return false;
-            }
-
-            return AllomancyUtility.GetReservePercent(pawn, metal) < 0.8f;
-        }
-    }
 
     public bool IsForMetal(MetallicArtsMetalDef metal, bool singleMetal = true) {
         if (singleMetal && metals.Count > 1) return false;

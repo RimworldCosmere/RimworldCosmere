@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
@@ -23,15 +22,11 @@ public class GivePatientVial : JobDriver {
             return true;
         }
 
-        int val1 = Math.Min(job.count, vial.stackCount);
-        int maxAmountToPickup = vial is { Spawned: true, Map: not null }
-            ? Math.Min(val1, vial.Map.reservationManager.CanReserveStack(pawn, (LocalTargetInfo)vial, 10))
-            : val1;
-        if (!pawn.Reserve(vial, job, 10, maxAmountToPickup, errorOnFailed: errorOnFailed)) {
+        if (!pawn.Reserve(vial, job, 10, 1, errorOnFailed: errorOnFailed)) {
             return false;
         }
 
-        job.count = maxAmountToPickup;
+        job.count = 1;
 
         return true;
     }
@@ -54,11 +49,10 @@ public class GivePatientVial : JobDriver {
         yield return Toils_Haul.TakeFromOtherInventory(vial, pawn.inventory.innerContainer,
             vialHolderInventory?.innerContainer, job.count, TargetIndex.A);
         yield return carryVialFromInventory;
-        yield return Toils_Jump.Jump(carryVialToPatient);
         yield return carryVialToPatient;
         yield return Toils_Ingest.ChewIngestible(deliveree, FeedDurationMultiplier, TargetIndex.A)
             .FailOnCannotTouch(TargetIndex.B, PathEndMode.Touch);
-        Toil toil = Toils_Ingest.FinalizeIngest(deliveree, TargetIndex.A);
-        yield return toil;
+        yield return Toils_Ingest.FinalizeIngest(deliveree, TargetIndex.A);
+        ;
     }
 }

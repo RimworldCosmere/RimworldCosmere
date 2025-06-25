@@ -23,7 +23,7 @@ public class KeepVialInStock : ThinkNode_JobGiver {
             if (thing == null) continue;
 
             Job job = JobMaker.MakeJob(RimWorld.JobDefOf.TakeInventory, thing);
-            job.count = Math.Min(amountToTake, thing.stackCount - inStock);
+            job.count = Math.Min(amountToTake, thing.def.orderedTakeGroup.max - inStock);
 
             return job;
         }
@@ -41,6 +41,6 @@ public class KeepVialInStock : ThinkNode_JobGiver {
         if (vial.IsForbidden(pawn)) return false;
 
         return pawn.CanReserveAndReach(vial, PathEndMode.ClosestTouch, Danger.None, 10,
-            Math.Min(vial.stackCount, desired));
+            Math.Min(vial.def.orderedTakeGroup.max, desired));
     }
 }

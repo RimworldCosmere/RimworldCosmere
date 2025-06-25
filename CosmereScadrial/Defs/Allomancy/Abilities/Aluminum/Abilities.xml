@@ -12,6 +12,5 @@
         <canBurnWhileAsleep>true</canBurnWhileAsleep>
         <hediff>Cosmere_Hediff_Investiture_Shield</hediff>
         <beuPerTick>0.0008</beuPerTick>
-        <iconPath>UI/Icons/Abilities/InvestitureShield</iconPath>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

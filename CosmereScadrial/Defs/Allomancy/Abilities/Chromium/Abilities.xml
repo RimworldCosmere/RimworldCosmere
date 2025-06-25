@@ -15,6 +15,5 @@
                 <canTargetPlants>false</canTargetPlants>
             </targetParams>
         </verbProperties>
-        <iconPath>UI/Icons/Abilities/InvestitureShield</iconPath>
     </CosmereScadrial.Defs.AllomanticAbilityDef>
 </Defs>

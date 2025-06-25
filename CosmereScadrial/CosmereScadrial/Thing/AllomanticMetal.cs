@@ -1,7 +1,6 @@
 using System.Linq;
 using CosmereScadrial.Comp.Thing;
 using CosmereScadrial.Def;
-using CosmereScadrial.Util;
 using RimWorld;
 using Verse;
 using GeneUtility = CosmereScadrial.Util.GeneUtility;
@@ -12,8 +11,7 @@ public class AllomanticMetal : AllomanticVial {
     protected override void PostIngested(Pawn ingester) {
         MetallicArtsMetalDef? metal = metals.First();
         if (metal.defName == MetallicArtsMetalDefOf.Lerasium.defName) {
-            SnapUtility.TrySnap(ingester, "ingested Lerasium", false);
-            GeneUtility.AddMistborn(ingester, false, true);
+            GeneUtility.AddMistborn(ingester, false, true, "ingested Lerasium");
             MetalReserves? comp = ingester.GetComp<MetalReserves>();
             foreach (MetallicArtsMetalDef? m in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
                 comp.SetReserve(m, MetalReserves.MaxAmount);

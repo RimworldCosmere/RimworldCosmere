@@ -160,11 +160,11 @@ public static class GeneUtility {
         }
     }
 
-    public static void AddMistborn(Pawn pawn, bool canSnap = true, bool snapped = false) {
+    public static void AddMistborn(Pawn pawn, bool canSnap = true, bool snapped = false, string snapCause = null) {
         if (snapped) {
-            SnapUtility.TrySnap(pawn);
+            SnapUtility.TrySnap(pawn, snapCause);
         } else if (canSnap && Rand.Chance(1f / 16f)) {
-            SnapUtility.TrySnap(pawn);
+            SnapUtility.TrySnap(pawn, snapCause);
             snapped = true;
         }
 

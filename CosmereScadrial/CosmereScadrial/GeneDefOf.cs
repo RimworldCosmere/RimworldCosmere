@@ -41,11 +41,11 @@ public static partial class GeneDefOf {
     }
 
     public static GeneDef GetMistingGeneForMetal(MetalDef def) {
-        return DefDatabase<GeneDef>.GetNamed("Cosmere_Scadrial_Gene_Misting" + def.defName);
+        return DefDatabase<GeneDef>.GetNamed("Cosmere_Scadrial_Gene_Misting" + def.defName, false);
     }
 
 
     public static GeneDef GetFerringGeneForMetal(MetalDef def) {
-        return DefDatabase<GeneDef>.GetNamed("Cosmere_Scadrial_Gene_Ferring" + def.defName);
+        return DefDatabase<GeneDef>.GetNamed("Cosmere_Scadrial_Gene_Ferring" + def.defName, false);
     }
 }

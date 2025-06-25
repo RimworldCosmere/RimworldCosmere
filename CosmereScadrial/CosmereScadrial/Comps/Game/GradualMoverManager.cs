@@ -37,12 +37,12 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
                 if (m.source is not Pawn pawn) continue;
                 if (!m.thing.def.EverHaulable || pawn.inventory == null) continue;
 
-
                 JobDef jobDef = m.thing.CanBeEquippedBy(pawn)
                     ? RimWorld.JobDefOf.Equip
                     : RimWorld.JobDefOf.TakeCountToInventory;
                 Job job = JobMaker.MakeJob(jobDef, m.thing);
                 job.count = m.thing.GetMaxAmountToPickupForPawn(pawn, m.thing.stackCount);
+                if (job.count < 1) break;
 
                 pawn.jobs.TryTakeOrderedJob(job);
             } else {

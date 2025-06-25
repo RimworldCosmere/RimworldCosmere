@@ -8,7 +8,7 @@
             <color>(170, 132, 121)</color>
         </graphicData>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Cadmium</metal>
             </li>
         </modExtensions>

@@ -22,7 +22,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Bendalloy</metal>
             </li>
         </modExtensions>
@@ -40,7 +40,7 @@
         <description>Allows {PAWN} to speed up time in a bubble around the user.</description>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Bendalloy</metal>
             </li>
         </modExtensions>
@@ -74,7 +74,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Bendalloy</metal>
             </li>
         </modExtensions>
@@ -87,7 +87,7 @@
         <description>Stores nutrition, allowing users to go without food.</description>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Bendalloy</metal>
             </li>
         </modExtensions>

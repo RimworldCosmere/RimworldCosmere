@@ -10,7 +10,7 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class StatDefOf {
-    public static StatDef Cosmere_Allomantic_Power;
+    public static StatDef Cosmere_Scadrial_Stat_AllomanticPower;
 
     static StatDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(StatDefOf));

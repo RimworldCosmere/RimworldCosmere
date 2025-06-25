@@ -3,7 +3,7 @@
     <AbilityGroupDef>
         <defName>Cosmere_Scadrial_Steel</defName>
     </AbilityGroupDef>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Scadrial_Ability_SteelAura</defName>
         <label>steel sight</label>
@@ -11,8 +11,8 @@
         <metal>Steel</metal>
         <hediff>Cosmere_Hediff_Steel_Aura</hediff>
         <beuPerTick>0.0004</beuPerTick>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Scadrial_Ability_SteelJump</defName>
         <label>steel jump</label>
@@ -21,7 +21,7 @@
         <hediff>Cosmere_Hediff_Steel_Jump</hediff>
         <cooldownTicksRange>60</cooldownTicksRange> <!-- Takes 1 second to jump -->
         <verbProperties Inherit="False">
-            <verbClass>CosmereScadrial.Abilities.Allomancy.Verbs.SteelJump</verbClass>
+            <verbClass>CosmereScadrial.Ability.Allomancy.Verb.SteelJump</verbClass>
             <label>jump</label>
             <violent>false</violent>
             <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
@@ -37,11 +37,11 @@
         </verbProperties>
         <jobDef>CastJump</jobDef>
         <comps>
-            <li Class="CosmereScadrial.Comps.Ability.MetalCostProperties" />
+            <li Class="CosmereScadrial.Comp.Ability.MetalCostProperties" />
         </comps>
         <beuPerTick>0.002</beuPerTick>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Scadrial_Ability_SteelBubble</defName>
         <label>steel bubble</label>
@@ -50,11 +50,11 @@
         <hediff>Cosmere_Hediff_Steel_Bubble</hediff>
         <burningMote>Cosmere_Scadrial_Steel_Bubble</burningMote>
         <beuPerTick>0.0004</beuPerTick>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Scadrial_Ability_SteelPush</defName>
-        <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
+        <abilityClass>CosmereScadrial.Ability.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
         <label>steel push</label>
         <description>By burning steel, the Allomancer projects invisible lines of force toward nearby sources of metal, pushing against them with immense power. A skilled practitioner can hurl weapons from foes’ hands, send enemies tumbling, or launch themselves through the air when braced properly.</description>
         <cooldownTicksRange>
@@ -73,11 +73,11 @@
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
         <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Scadrial_Ability_SteelCoinshot</defName>
-        <abilityClass>CosmereScadrial.Abilities.Allomancy.CoinshotAbility</abilityClass>
+        <abilityClass>CosmereScadrial.Ability.Allomancy.CoinshotAbility</abilityClass>
 		<jobDef>UseVerbOnThing</jobDef>
         <label>push coin</label>
         <description>Pushes a Clip at incredible speed toward the target.</description>
@@ -87,7 +87,7 @@
         </cooldownTicksRange>
         <metal>Steel</metal>
         <verbProperties>
-            <verbClass>CosmereScadrial.Abilities.Allomancy.Verbs.Coinshot</verbClass>
+            <verbClass>CosmereScadrial.Ability.Allomancy.Verb.Coinshot</verbClass>
             <drawAimPie>true</drawAimPie>
             <requireLineOfSight>true</requireLineOfSight>
             <defaultCooldownTime>.25</defaultCooldownTime>
@@ -97,5 +97,5 @@
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

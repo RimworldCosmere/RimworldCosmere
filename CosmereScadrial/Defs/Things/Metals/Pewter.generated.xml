@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Pewter">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Pewter">
         <defName>Pewter</defName>
         <allomancy>
             <description>Enhances {PAWN}&#x27;s physical strength and durability.</description>
@@ -13,5 +13,5 @@
             <description>Stores physical strength, tapping grants bursts of power.</description>
             <group>Physical</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

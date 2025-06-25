@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <StatDef>
-        <defName>Cosmere_Allomantic_Power</defName>
+        <defName>Cosmere_Scadrial_Stat_AllomanticPower</defName>
         <label>allomantic strength</label>
         <description>Affects potency and range of allomantic abilities.</description>
         <category>Basics</category>

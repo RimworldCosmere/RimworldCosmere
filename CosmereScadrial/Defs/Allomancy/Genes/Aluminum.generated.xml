@@ -22,7 +22,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
@@ -40,7 +40,7 @@
         <description>Shields {PAWN} from investiture. Also wipes away all other investiture reserves.</description>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
@@ -74,7 +74,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>
@@ -87,7 +87,7 @@
         <description>Stores identity, allowing anonymous interactions or forgery.</description>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereResources.Defs.MetalDef Name="Cosmere_Metal_{{capitalize metal.Name}}">
+    <CosmereResources.Def.MetalDef Name="Cosmere_Metal_{{capitalize metal.Name}}">
         <defName>{{capitalize metal.Name}}</defName>
         <label>{{metal.Name}}</label>
         <description>{{metal.Description}}</description>
         <color>{{rgb metal.Color}}</color>{{#if metal.ColorTwo}}
         <colorTwo>{{rgb metal.ColorTwo}}</colorTwo>{{/if}}{{#if metal.GodMetal}}
         <godMetal>{{metal.GodMetal}}</godMetal>{{/if}}
-    </CosmereResources.Defs.MetalDef>
+    </CosmereResources.Def.MetalDef>
 </Defs>

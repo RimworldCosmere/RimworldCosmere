@@ -5,7 +5,7 @@
         <label>Gold</label>
         <description>Gold is a dense, soft, and radiant metal long valued for its rarity and beauty. Resistant to tarnish and corrosion, it has held significance in both trade and symbolism throughout history.</description>
         <graphicData>
-            <graphicClass>Graphic_StackCount</graphicClass>
+                <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Gold</texPath>
         </graphicData>
         <stuffProps>
@@ -16,7 +16,7 @@
             <MarketValue>0.5</MarketValue>
         </statBases>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>

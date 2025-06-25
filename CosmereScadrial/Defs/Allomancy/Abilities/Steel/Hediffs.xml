@@ -7,7 +7,7 @@
 Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
 These lines shimmer with the tension of potential force, visible only to those burning Steel.</description>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.PhysicalExternalAuraProperties" />
+            <li Class="CosmereScadrial.Ability.Allomancy.Hediff.Comp.PhysicalExternalAuraProperties" />
         </comps>
         <stages>
             <li>
@@ -19,7 +19,7 @@ These lines shimmer with the tension of potential force, visible only to those b
             </li>
         </stages>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>

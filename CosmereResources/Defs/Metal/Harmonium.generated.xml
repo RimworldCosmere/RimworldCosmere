@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereResources.Defs.MetalDef Name="Cosmere_Metal_Harmonium">
+    <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Harmonium">
         <defName>Harmonium</defName>
         <label>harmonium</label>
         <description>Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.</description>
         <color>(242, 255, 140)</color>
         <godMetal>true</godMetal>
-    </CosmereResources.Defs.MetalDef>
+    </CosmereResources.Def.MetalDef>
 </Defs>

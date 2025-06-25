@@ -5,7 +5,7 @@
         <label>Aluminum</label>
         <description>Aluminum is a lightweight, silvery-white metal known for its corrosion resistance and flexibility. Its low density and high strength-to-weight ratio make it ideal for structural and high-tech uses.</description>
         <graphicData>
-            <graphicClass>Graphic_StackCount</graphicClass>
+                <graphicClass>Graphic_StackCount</graphicClass>
             <texPath>Item/Resource/Aluminum</texPath>
         </graphicData>
         <stuffProps>
@@ -16,7 +16,7 @@
             <MarketValue>0.5</MarketValue>
         </statBases>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Aluminum</metal>
             </li>
         </modExtensions>

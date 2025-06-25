@@ -22,7 +22,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
@@ -41,7 +41,7 @@
         <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
@@ -75,7 +75,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>
@@ -88,7 +88,7 @@
         <description>Stores warmth, useful for surviving cold environments or heating up.</description>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Brass</metal>
             </li>
         </modExtensions>

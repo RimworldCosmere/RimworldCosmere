@@ -98,7 +98,7 @@
       </parts>
     </scenario>
     <modExtensions>
-      <li Class="CosmereCore.ModExtensions.Shards">
+      <li Class="CosmereCore.DefModExtension.Shards">
         <shards>
           <li>Ruin</li>
           <li>Preservation</li>

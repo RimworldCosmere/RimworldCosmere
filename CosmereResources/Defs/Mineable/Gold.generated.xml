@@ -21,7 +21,7 @@
             <mineableScatterLumpSizeRange>2~8</mineableScatterLumpSizeRange>
         </building>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>

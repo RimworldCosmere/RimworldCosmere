@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Brass">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Brass">
         <defName>Brass</defName>
         <allomancy>
             <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
@@ -13,5 +13,5 @@
             <description>Stores warmth, useful for surviving cold environments or heating up.</description>
             <group>Cognitive</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

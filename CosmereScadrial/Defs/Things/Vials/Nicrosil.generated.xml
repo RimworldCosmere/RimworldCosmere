@@ -8,7 +8,7 @@
             <color>(141, 139, 135)</color>
         </graphicData>
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Nicrosil</metal>
             </li>
         </modExtensions>

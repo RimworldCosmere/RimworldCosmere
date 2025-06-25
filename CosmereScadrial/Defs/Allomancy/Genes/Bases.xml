@@ -26,7 +26,7 @@
     <randomChosen>false</randomChosen>
   </GeneDef>
   <GeneDef Name="AbstractAllomancyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
-    <geneClass>CosmereScadrial.Genes.Allomancer</geneClass>
+    <geneClass>CosmereScadrial.Gene.Allomancer</geneClass>
     <resourceGizmoType>CosmereScadrial.Gizmo.AllomanticGeneCommand</resourceGizmoType>
     <resourceGizmoThresholds>
       <li>0.2</li>
@@ -38,12 +38,12 @@
     <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
   </GeneDef>
   <GeneDef Name="AbstractFeruchemyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
-    <geneClass>CosmereScadrial.Genes.Feruchemist</geneClass>
+    <geneClass>CosmereScadrial.Gene.Feruchemist</geneClass>
   </GeneDef>
   
   <GeneDef>
     <defName>Cosmere_Scadrial_Gene_DormantMetalborn</defName>
-    <geneClass>CosmereScadrial.Genes.DormantMetalborn</geneClass>
+    <geneClass>CosmereScadrial.Gene.DormantMetalborn</geneClass>
     <label>dormant connection</label>
     <labelShortAdj>Dormant Connection</labelShortAdj>
     <description>This pawn is attuned to a Shard’s power, though they’ve yet to tap it. A traumatic event may awaken their abilities.</description>

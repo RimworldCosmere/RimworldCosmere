@@ -11,7 +11,7 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class WeatherDefOf {
-    public static WeatherDef Cosmere_Scadrial_MistsWeather;
+    public static WeatherDef Cosmere_Scadrial_Weather_MistsWeather;
 
     static WeatherDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(WeatherDefOf));

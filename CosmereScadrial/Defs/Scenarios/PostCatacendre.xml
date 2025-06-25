@@ -87,7 +87,7 @@
       </parts>
     </scenario>
     <modExtensions>
-      <li Class="CosmereCore.ModExtensions.Shards">
+      <li Class="CosmereCore.DefModExtension.Shards">
         <shards><li>Harmony</li></shards>
         <allowChange>False</allowChange>
       </li>

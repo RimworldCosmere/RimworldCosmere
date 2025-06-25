@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Bendalloy">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Bendalloy">
         <defName>Bendalloy</defName>
         <allomancy>
             <description>Allows {PAWN} to speed up time in a bubble around the user.</description>
@@ -13,5 +13,5 @@
             <description>Stores nutrition, allowing users to go without food.</description>
             <group>Hybrid</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

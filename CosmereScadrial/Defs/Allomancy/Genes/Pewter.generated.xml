@@ -22,7 +22,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
@@ -40,7 +40,7 @@
         <description>Enhances {PAWN}&#x27;s physical strength and durability.</description>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
@@ -74,7 +74,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
@@ -87,7 +87,7 @@
         <description>Stores physical strength, tapping grants bursts of power.</description>
 
         <modExtensions>
-            <li Class="CosmereResources.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Pewter</metal>
             </li>
         </modExtensions>

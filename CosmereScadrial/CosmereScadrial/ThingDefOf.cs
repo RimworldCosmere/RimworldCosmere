@@ -11,10 +11,10 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class ThingDefOf {
-    public static ThingDef Cosmere_Mote_Copper_Cloud;
-    public static ThingDef Cosmere_Scadrial_TimeBubble_Cadmium;
-    public static ThingDef Cosmere_Scadrial_TimeBubble_Bendalloy;
-    public static ThingDef Cosmere_Scadrial_TimeBubble_Warp;
+    public static ThingDef Cosmere_Scadrial_Mote_CopperCloud;
+    public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleCadmium;
+    public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleBendalloy;
+    public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleWarp;
 
     static ThingDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));

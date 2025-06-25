@@ -10,7 +10,7 @@
         <toStringStyle>PercentZero</toStringStyle>
         <showOnNonWorkTables>false</showOnNonWorkTables>
         <parts>
-            <li Class="CosmereScadrial.Stats.Parts.PoweredOrFueled" />
+            <li Class="CosmereScadrial.StatPart.PoweredOrFueled" />
             <li Class="StatPart_WorkTableTemperature" />
             <li Class="StatPart_WorkTableOutdoors" />
         </parts>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <IncidentDef>
-        <defName>FindLerasium</defName>
-        <workerClass>CosmereScadrial.Incidents.Worker.FindLerasium</workerClass>
+        <defName>Cosmere_Scadrial_Incident_FindLerasium</defName>
+        <workerClass>CosmereScadrial.IncidentWorker.FindLerasium</workerClass>
         <category>Special</category>
         <baseChance>0.00001</baseChance>
         <targetTags>

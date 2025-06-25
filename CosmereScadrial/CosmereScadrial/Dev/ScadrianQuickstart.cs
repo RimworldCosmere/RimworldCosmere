@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Extensions;
-using CosmereFramework.Utils;
+using CosmereFramework.Extension;
+using CosmereFramework.Util;
 using CosmereResources;
-using CosmereResources.Defs;
-using CosmereScadrial.Comps.Things;
-using CosmereScadrial.Defs;
+using CosmereResources.Def;
+using CosmereScadrial.Comp.Thing;
+using CosmereScadrial.Def;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
 using Verse.Profile;
-using GeneUtility = CosmereScadrial.Utils.GeneUtility;
+using GeneUtility = CosmereScadrial.Util.GeneUtility;
 
 namespace CosmereScadrial.Dev;
 

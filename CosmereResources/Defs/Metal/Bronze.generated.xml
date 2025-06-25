@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereResources.Defs.MetalDef Name="Cosmere_Metal_Bronze">
+    <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Bronze">
         <defName>Bronze</defName>
         <label>bronze</label>
         <description>Bronze is a time-honored alloy, resulting from the fusion of Ind_Copper and tin. Its rich, reddish-brown hue and enduring strength have made bronze a cornerstone of art, architecture, and historical craftsmanship.</description>
         <color>(191, 160, 138)</color>
-    </CosmereResources.Defs.MetalDef>
+    </CosmereResources.Def.MetalDef>
 </Defs>

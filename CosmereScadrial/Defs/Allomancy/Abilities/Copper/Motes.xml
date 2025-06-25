@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="CosmereMoteAllomancyAura">
-        <defName>Cosmere_Mote_Copper_Cloud</defName>
+        <defName>Cosmere_Scadrial_Mote_CopperCloud</defName>
         <label>coppercloud</label>
         <graphicData>
             <color>(185, 129, 80)</color>

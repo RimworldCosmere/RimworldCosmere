@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.MetallicArtsMetalDef ParentName="Cosmere_Metal_Electrum">
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Electrum">
         <defName>Electrum</defName>
         <allomancy>
             <description>Shows {PAWN}&#x27;s possible futures, useful for avoiding danger.</description>
@@ -13,5 +13,5 @@
             <description>Stores determination or willpower.</description>
             <group>Hybrid</group>
         </feruchemy>
-    </CosmereScadrial.Defs.MetallicArtsMetalDef>
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

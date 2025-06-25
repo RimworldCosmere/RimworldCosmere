@@ -72,7 +72,7 @@
                 <glowColor>(255,120,60,0)</glowColor>
                 <overlightRadius>2</overlightRadius>
             </li>
-            <li Class="CosmereScadrial.Comps.Things.RefuelableSuspendWhenPoweredProperties">
+            <li Class="CosmereScadrial.Comp.Thing.RefuelableSuspendWhenPoweredProperties">
                 <fuelFilter>
                     <thingDefs>
                         <li>WoodLog</li>
@@ -93,7 +93,7 @@
             </li>
         </comps>
         <modExtensions>
-            <li Class="CosmereScadrial.DefModExtensions.PoweredOrFueled" />
+            <li Class="CosmereScadrial.DefModExtension.PoweredOrFueled" />
         </modExtensions>
         <researchPrerequisites>
             <li>Cosmere_Allomancy</li>

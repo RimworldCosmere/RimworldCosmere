@@ -18,7 +18,7 @@
     </ThingDef>
     
     <ThingDef ParentName="CosmereScadrialTimeBubble">
-        <defName>Cosmere_Scadrial_TimeBubble_Cadmium</defName>
+        <defName>Cosmere_Scadrial_Thing_TimeBubbleCadmium</defName>
         <label>Cadmium Time Bubble</label>
         <graphicData>
             <texPath>Effects/CadmiumTimeBubble</texPath>
@@ -26,7 +26,7 @@
     </ThingDef>
     
     <ThingDef ParentName="CosmereScadrialTimeBubble">
-        <defName>Cosmere_Scadrial_TimeBubble_Bendalloy</defName>
+        <defName>Cosmere_Scadrial_Thing_TimeBubbleBendalloy</defName>
         <label>Bendalloy Time Bubble</label>
         <graphicData>
             <texPath>Effects/BendalloyTimeBubble</texPath>
@@ -34,7 +34,7 @@
     </ThingDef>
     
     <ThingDef ParentName="CosmereScadrialTimeBubble">
-        <defName>Cosmere_Scadrial_TimeBubble_Warp</defName>
+        <defName>Cosmere_Scadrial_Thing_TimeBubbleWarp</defName>
         <label>Time Bubble Distortion</label>
         <graphicData>
             <texPath>Things/Mote/Black</texPath>

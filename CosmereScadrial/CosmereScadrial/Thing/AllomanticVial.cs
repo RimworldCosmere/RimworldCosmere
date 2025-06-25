@@ -46,13 +46,19 @@ public class AllomanticVial : ThingWithComps {
         }
 
         MetallicArtsMetalDef? metal = metals.First();
-        Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
-        if (gene == null) {
-            yield return new FloatMenuOption("Cannot ingest: not a " + metal.allomancy!.userName, null);
+        if (metal.allomancy == null) {
+            yield return new FloatMenuOption("Cannot ingest: no allomantic properties", null);
             yield break;
         }
 
-        if (Mathf.Approximately(gene.Value, 1) || !gene.ShouldConsumeVialNow()) {
+        // @TODO Any pawn should be able to get any of the god metals if they have allomantic properties.
+        Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
+        if (gene == null) {
+            yield return new FloatMenuOption("Cannot ingest: not a " + metal.allomancy.userName, null);
+            yield break;
+        }
+
+        if (gene != null && Mathf.Approximately(gene.Value, 1) || !gene!.ShouldConsumeVialNow()) {
             yield return new FloatMenuOption("Cannot ingest: reserve too full", null);
             yield break;
         }

@@ -40,7 +40,7 @@ public class PhysicalExternalAura : HediffComp {
 
         thingsToDraw.Clear();
         foreach (IntVec3 cell in GenRadial.RadialCellsAround(center,
-                     (float)Math.Round(Math.Min(GenRadial.MaxRadialPatternRadius, radius)), false)) {
+                     Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, radius)), false)) {
             foreach (Verse.Thing? thing in cell.GetThingList(map).Where(thing =>
                          MetalDetector.IsCapableOfHavingMetal(thing.def) && !thingsToDraw.ContainsKey(thing))) {
                 thingsToDraw[thing] = MetalDetector.GetMetal(thing);

@@ -19,6 +19,8 @@ public class ExternalPhysicalTargetAbility : AbilityOtherTarget {
     protected sealed override bool toggleable => false;
 
     public override bool CanApplyOn(LocalTargetInfo targetInfo) {
+        if (targetInfo.Equals(pawn)) return true;
+
         if (!base.CanApplyOn(targetInfo) || !targetInfo.HasThing ||
             !MetalDetector.IsCapableOfHavingMetal(targetInfo.Thing.def)) {
             return false;

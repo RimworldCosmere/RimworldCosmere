@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CosmereScadrial.Ability.Allomancy;
 using CosmereScadrial.Ability.Allomancy.Hediff;
 using CosmereScadrial.Comp.Game;
@@ -39,7 +40,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
             // Ensure the burn rate is set properly
             UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
 
-            MoveThing(TargetA.Thing);
+            MoveThing(TargetA.Thing, true);
 
             ability.UpdateStatus(BurningStatus.Off);
         };
@@ -55,13 +56,31 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
     ///     math still works out, otherwise it should flip,
     ///     and start pushing the opposite way for the remainder of the distance
     /// </summary>
-    private void MoveThing(Verse.Thing thing) {
+    private void MoveThing(Verse.Thing thing, bool movePawn) {
         SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);
         surge?.Burn();
+
+        if (thing == pawn) {
+            // Get everything metal in a radius around self (same radius as the ability range)
+            // Use MoveThing(newThing, false) on them
+            IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(thing.Position,
+                Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, ability.verb.EffectiveRange)), false);
+            foreach (IntVec3 cell in cells) {
+                foreach (Verse.Thing? newThing in cell.GetThingList(pawn.Map).Where(x => MetalDetector.HasMetal(x))) {
+                    MoveThing(newThing, false);
+                }
+            }
+
+            return;
+        }
 
         float forceMultiplier = ability.GetStrength();
         float mass = MetalDetector.GetMass(thing);
         float pawnMass = MetalDetector.GetMass(pawn) * forceMultiplier;
+        if (mass > pawnMass && !movePawn) {
+            return;
+        }
+
         (Verse.Thing, Verse.Thing) things = mass > pawnMass ? (pawn, thing) : (thing, pawn);
         float distanceBetweenThings = (things.Item2.Position - things.Item1.Position).LengthHorizontal;
         IntVec3 dir = GetDirectionalOffsetFromTarget(things.Item2, things.Item1);
@@ -69,6 +88,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         if (polarity == AllomancyPolarity.Pulling) {
             distance = Mathf.Min(distance, distanceBetweenThings);
         }
+
 
         IntVec3 destination = things.Item1.Position + dir * (int)distance;
         if (Mathf.Approximately(distance, distanceBetweenThings)) {

@@ -99,15 +99,11 @@ public static class ScadrianQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsMisting(pawn, true, MetalDefOf.Aluminum);
-        }
-
-        if (pawns.TryPopFront(out pawn)) {
             PrepareColonistAsMisting(pawn, true, MetalDefOf.Steel);
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsMisting(pawn, false, MetalDefOf.Pewter);
+            PrepareColonistAsMisting(pawn, false, MetalDefOf.Iron);
             pawn.health.forceDowned = true;
         }
 

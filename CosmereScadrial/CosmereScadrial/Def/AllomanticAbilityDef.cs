@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CosmereFramework.Extension;
 using CosmereScadrial.Ability.Allomancy;
 using CosmereScadrial.Ability.Allomancy.Hediff;
 using RimWorld;
@@ -15,6 +16,7 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
     public bool canBurnWhileAsleep = false;
     public bool canBurnWhileDowned = false;
     public bool canFlare = true;
+    public Texture2D disabledIcon = BaseContent.BadTex;
     public HediffDef? dragHediff;
     public HediffDef? hediff;
     public HediffDef? hediffFriendly;
@@ -78,6 +80,7 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
             LongEventHandler.ExecuteWhenFinished(() => {
                 uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
                          metal.invertedIcon;
+                disabledIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
             });
         } else {
             base.PostLoad();

@@ -83,8 +83,4 @@
         <ProjectReference Include="..\..\CosmereResources\CosmereResources\CosmereResources.csproj"/>
         <ProjectReference Include="..\..\CosmereCore\CosmereCore\CosmereCore.csproj"/>
     </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Command\"/>
-    </ItemGroup>
 </Project>

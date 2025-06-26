@@ -69,6 +69,7 @@
             <noiseRadius>0</noiseRadius>
             <drawAimPie>false</drawAimPie>
             <targetParams>
+                <canTargetSelf>true</canTargetSelf>
                 <canTargetPlants>false</canTargetPlants>
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>

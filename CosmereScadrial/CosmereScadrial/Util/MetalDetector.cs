@@ -11,28 +11,32 @@ namespace CosmereScadrial.Util;
 public static class MetalDetector {
     private static readonly Dictionary<RecipeDef, bool> MetalRecipeCache = new Dictionary<RecipeDef, bool>();
 
-    public static bool IsCapableOfHavingMetal(ThingDef thingDef) {
+    public static bool IsCapableOfHavingMetal(ThingDef? thingDef) {
         return thingDef?.category is ThingCategory.Item or ThingCategory.Building or ThingCategory.Pawn
             or ThingCategory.Projectile;
     }
 
-    public static List<MetalDef> GetLinkedMetals(ThingDef thingDef, bool allowAluminum = false) {
+    public static List<MetalDef> GetLinkedMetals(ThingDef? thingDef, bool allowAluminum = false) {
         if (thingDef == null) return [];
 
-        List<MetalDef?> metals = thingDef.GetModExtension<MetalsLinked>()?.Metals ?? [];
+        List<MetalDef> metals = thingDef.GetModExtension<MetalsLinked>()?.Metals ?? [];
 
         return allowAluminum ? metals : metals.Where(x => !x.Equals(MetalDefOf.Aluminum)).ToList();
+    }
+
+    public static bool HasMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
+        return GetMetal(thing, depth, allowAluminum) > 0f;
     }
 
     /// <summary>
     ///     This isn't entirely accurate at getting the metal mass of an item, but its a rough implementation.
     /// </summary>
-    public static float GetMetal(Verse.Thing thing, int depth = 0, bool allowAluminum = false) {
+    public static float GetMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
+        if (!IsCapableOfHavingMetal(thing?.def)) return 0f;
         if (thing?.def == null || depth > 25) return 0f;
 
         List<MetalDef> metals = GetLinkedMetals(thing.def, allowAluminum);
-        if (metals.Count > 0) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
-        if (thing.def.IsMetal) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
+        if (metals.Count > 0 || thing.def.IsMetal) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
         //if (thing.Stuff != null && (thing.Stuff.IsMetal || GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0)) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
         if (thing.def.defName is "ChunkSlagSteel" or "ChunkMechanoidSlag") {
             return thing.GetStatValue(RimWorld.StatDefOf.Mass);

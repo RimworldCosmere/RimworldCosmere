@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using CosmereFramework.Extension;
 using CosmereScadrial.Def;
 using RimWorld;
@@ -15,11 +16,20 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
     public override void GameComponentTick() {
         for (int i = activeMovements.Count - 1; i >= 0; i--) {
             MovementData m = activeMovements[i];
+            List<Pawn> haveDamaged = m.haveDamaged;
+            if (m.source is not Pawn pawn) continue;
             if (m.thing.Destroyed || m.thing.Map == null || game.CurrentMap != m.thing.Map) continue;
+
 
             m.ticksElapsed++;
             float t = Mathf.Clamp01((float)m.ticksElapsed / m.ticksTotal);
             m.thing.Position = Vector3.Lerp(m.start, m.end, t).ToIntVec3();
+            IEnumerable<Pawn> pawnsInSameCell = m.thing.ThingsSharingPosition<Pawn>()
+                .Where(x => !x.Equals(pawn) && !haveDamaged.Contains(x) && !x.Faction.IsPlayer);
+            foreach (Pawn? pawn1 in pawnsInSameCell) {
+                ApplyDragDamage(pawn1, pawn);
+                haveDamaged.Add(pawn1);
+            }
 
             FleckMaker.ThrowDustPuff(m.thing.Position, m.thing.Map, 1f);
             GenDraw.DrawLineBetween(
@@ -34,7 +44,6 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
                     continue;
                 }
 
-                if (m.source is not Pawn pawn) continue;
                 if (!m.thing.def.EverHaulable || pawn.inventory == null) continue;
 
                 JobDef jobDef = m.thing.CanBeEquippedBy(pawn)
@@ -51,6 +60,16 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
         }
     }
 
+    private void ApplyDragDamage(Verse.Thing thing, Pawn instigator) {
+        if (thing is not Pawn pawn || thing == instigator) return;
+
+        pawn.TakeDamage(new DamageInfo(
+            DamageDefOf.Scratch,
+            1f,
+            instigator: instigator
+        ));
+    }
+
     public void StartMovement(AllomancyPolarity polarity, Verse.Thing source, Verse.Thing thing, IntVec3 destination,
         int duration, Material material) {
         Log.Verbose(
@@ -64,6 +83,7 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
             material = material,
             ticksTotal = duration,
             ticksElapsed = 0,
+            haveDamaged = [],
         });
     }
 
@@ -76,5 +96,6 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
         public Vector3 end;
         public int ticksTotal;
         public int ticksElapsed;
+        public List<Pawn> haveDamaged;
     }
 }

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -7,6 +9,14 @@ namespace CosmereFramework.Extension;
 public static class ThingExtension {
     public static bool CanBeEquipped(this Thing thing) {
         return thing.TryGetComp<CompEquippable>() != null || thing.def.IsApparel || thing.def.IsWeapon;
+    }
+
+    public static IEnumerable<Thing> ThingsSharingPosition(this Thing thing) {
+        return thing.Map.thingGrid.ThingsAt(thing.Position).Where(x => !x.Equals(thing));
+    }
+
+    public static IEnumerable<T> ThingsSharingPosition<T>(this Thing thing) {
+        return thing.ThingsSharingPosition().OfType<T>();
     }
 
     public static bool CanBeEquippedBy(this Thing thing, Pawn pawn) {

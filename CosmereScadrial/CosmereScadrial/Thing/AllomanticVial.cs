@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Util;
 using CosmereResources.DefModExtension;
 using CosmereScadrial.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
 using CosmereScadrial.Util;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace CosmereScadrial.Thing;
@@ -23,50 +20,12 @@ public class AllomanticVial : ThingWithComps {
         return metals.Contains(metal);
     }
 
-    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn pawn) {
-        if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Allomancer)) {
-            yield return new FloatMenuOption("Cannot ingest: Not Allomancer", null);
-            yield break;
-        }
+    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn) {
+        yield break;
+    }
 
-        if (InvestitureDetector.IsShielded(pawn)) {
-            yield return new FloatMenuOption("Cannot ingest: currently shielded", null);
-            yield break;
-        }
-
-        if (metals.Count > 1) {
-            if (pawn.IsMistborn() &&
-                metals.Any(x => pawn.genes.GetAllomanticGeneForMetal(x)?.ShouldConsumeVialNow() ?? false)) {
-                foreach (FloatMenuOption? option in base.GetFloatMenuOptions(pawn)) {
-                    yield return option;
-                }
-
-                yield break;
-            }
-        }
-
-        MetallicArtsMetalDef? metal = metals.First();
-        if (metal.allomancy == null) {
-            yield return new FloatMenuOption("Cannot ingest: no allomantic properties", null);
-            yield break;
-        }
-
-        // @TODO Any pawn should be able to get any of the god metals if they have allomantic properties.
-        Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
-        if (gene == null) {
-            yield return new FloatMenuOption("Cannot ingest: not a " + metal.allomancy.userName, null);
-            yield break;
-        }
-
-        if (gene != null && Mathf.Approximately(gene.Value, 1) || !gene!.ShouldConsumeVialNow()) {
-            yield return new FloatMenuOption("Cannot ingest: reserve too full", null);
-            yield break;
-        }
-
-        // Default ingest option
-        foreach (FloatMenuOption? option in base.GetFloatMenuOptions(pawn)) {
-            yield return option;
-        }
+    public override IEnumerable<FloatMenuOption> GetMultiSelectFloatMenuOptions(IEnumerable<Pawn> selPawns) {
+        yield break;
     }
 
     protected override void PostIngested(Pawn ingester) {

@@ -1,0 +1,81 @@
+﻿using System;
+using System.Linq;
+using CosmereCore.Extension;
+using CosmereScadrial.Def;
+using CosmereScadrial.Extension;
+using CosmereScadrial.Gene;
+using CosmereScadrial.Thing;
+using RimWorld;
+using Verse;
+using Verse.AI;
+
+namespace CosmereScadrial.FloatMenuOptionProvider;
+
+public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
+    protected override bool Drafted => true;
+    protected override bool Undrafted => true;
+    protected override bool Multiselect => false;
+
+    private static FloatMenuOption CannotIngestReason(string reason) {
+        return new FloatMenuOption("CS_CannotIngest".Translate() + ": " + reason, null);
+    }
+
+    protected override FloatMenuOption? GetSingleOptionFor(Verse.Thing clickedThing, FloatMenuContext context) {
+        if (clickedThing is not AllomanticVial vial) return null;
+        Pawn? pawn = context.FirstSelectedPawn;
+        if (pawn is null) return null;
+        MetallicArtsMetalDef? metal = vial.metals.First();
+        if (metal is null) return null;
+        Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
+
+        if (metal.godMetal) {
+            // Lerasium Requirements
+            if (metal.Equals(MetallicArtsMetalDefOf.Lerasium) && pawn.IsMistborn()) {
+                return CannotIngestReason("CS_AlreadyMistborn".Translate());
+            }
+
+            // @todo Others? Like maybe something to make the pawn a FullFeruchemist? Harmonium?
+        } else {
+            if (metal.allomancy == null) return CannotIngestReason("CS_NoAllomanticProperties".Translate());
+            if (!pawn.IsAllomancer()) return CannotIngestReason("CS_NotAllomancer".Translate());
+            if (pawn.IsShieldedAgainstInvestiture()) return CannotIngestReason("CS_CurrentlyShielded".Translate());
+        }
+
+        if (gene is null && !metal.godMetal) {
+            return CannotIngestReason("CS_NotMisting".Translate(metal.allomancy!.userName.Named("MISTING")));
+        }
+
+        if (gene is not null && gene.Value > .9f) return CannotIngestReason("CS_TooFull".Translate());
+
+        string str = !clickedThing.def.ingestible.ingestCommandString.NullOrEmpty()
+            ? (string)clickedThing.def.ingestible.ingestCommandString.Formatted((NamedArgument)clickedThing.LabelShort)
+            : (string)"ConsumeThing".Translate((NamedArgument)clickedThing.LabelShort, (NamedArgument)clickedThing);
+        if (!context.FirstSelectedPawn.CanReach((LocalTargetInfo)clickedThing, PathEndMode.OnCell, Danger.Deadly)) {
+            return new FloatMenuOption((string)(str + ": " + "NoPath".Translate().CapitalizeFirst()), null);
+        }
+
+        int maxAmountToPickup1 = FoodUtility.GetMaxAmountToPickup(clickedThing, context.FirstSelectedPawn,
+            FoodUtility.WillIngestStackCountOf(context.FirstSelectedPawn, clickedThing.def,
+                FoodUtility.NutritionForEater(context.FirstSelectedPawn, clickedThing)));
+        FloatMenuOption singleOptionFor = FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(str,
+                (Action)(() => {
+                    int maxAmountToPickup2 = FoodUtility.GetMaxAmountToPickup(clickedThing, context.FirstSelectedPawn,
+                        FoodUtility.WillIngestStackCountOf(context.FirstSelectedPawn, clickedThing.def,
+                            FoodUtility.NutritionForEater(context.FirstSelectedPawn, clickedThing)));
+                    if (maxAmountToPickup2 == 0) {
+                        return;
+                    }
+
+                    clickedThing.SetForbidden(false);
+                    Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, (LocalTargetInfo)clickedThing);
+                    job.count = maxAmountToPickup2;
+                    context.FirstSelectedPawn.jobs.TryTakeOrderedJob(job);
+                }), clickedThing is Corpse ? MenuOptionPriority.Low : MenuOptionPriority.Default),
+            context.FirstSelectedPawn, (LocalTargetInfo)clickedThing);
+        if (maxAmountToPickup1 == 0) {
+            singleOptionFor.action = null;
+        }
+
+        return singleOptionFor;
+    }
+}

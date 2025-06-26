@@ -31,6 +31,7 @@
             <chairSearchRadius>0</chairSearchRadius>
             <ingestSound>Ingest_Drink</ingestSound>
             <baseIngestTicks>60</baseIngestTicks>
+            <showIngestFloatOption>false</showIngestFloatOption>
             <drugCategory>None</drugCategory>
             <foodType>Fluid</foodType>
             <ingestCommandString>Drink vial</ingestCommandString>

@@ -9,26 +9,23 @@ namespace CosmereScadrial.Extension;
 
 public static class Pawn_GeneTrackerExtension {
     public static Allomancer? GetAllomanticGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {
-        GeneDef geneDef = GeneDefOf.GetMistingGeneForMetal(metal);
-        if (geneDef == null) return null;
+        GeneDef? geneDef = metal.GetMistingGene();
 
-        return (Allomancer)genes.GetGene(geneDef);
+        return geneDef == null ? null : (Allomancer)genes.GetGene(geneDef);
     }
 
     public static bool HasAllomanticGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {
-        GeneDef mistingGene = GeneDefOf.GetMistingGeneForMetal(metal);
-
-        return genes.HasActiveGene(mistingGene);
+        return genes.HasActiveGene(metal.GetMistingGene());
     }
 
     public static Feruchemist? GetFeruchemicGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {
-        GeneDef geneDef = GeneDefOf.GetFerringGeneForMetal(metal);
+        GeneDef? geneDef = metal.GetFerringGene();
 
-        return (Feruchemist)genes.GetGene(geneDef);
+        return geneDef == null ? null : (Feruchemist)genes.GetGene(geneDef);
     }
 
     public static bool HasFeruchemicGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {
-        return genes.HasActiveGene(GeneDefOf.GetFerringGeneForMetal(metal));
+        return genes.HasActiveGene(metal.GetFerringGene());
     }
 
     public static IEnumerable<Allomancer> GetAllomanticGenes(this Pawn_GeneTracker genes) {

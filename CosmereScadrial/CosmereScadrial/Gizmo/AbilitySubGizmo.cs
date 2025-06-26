@@ -12,54 +12,55 @@ using Verse.Sound;
 
 namespace CosmereScadrial.Gizmo;
 
-public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility ability) : SubGizmo(parent) {
+[StaticConstructorOnStartup]
+public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility ability)
+    : SubGizmo(parent) {
     private static readonly Texture2D CheckOff = ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff");
-    private static readonly Texture2D BgTexOff = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityOff");
+    private static readonly Texture2D BgTexOff = GenColor.FromHex("000000").ToSolidColorTexture();
     private static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
-    private static readonly Texture2D BgTexOffDisabled = BgTexOff.Overlay(CheckOff);
     private static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
+    private static readonly Texture2D Border = ColorLibrary.Grey.ToSolidColorTexture();
+    private static readonly Texture2D AutoBurnBorder = ColorLibrary.LightBlue.ToSolidColorTexture();
 
-    public readonly AbstractAbility ability = ability;
-    public readonly Metalborn gene = gene;
+    private bool disabled => !GizmoEnabled().Accepted;
+
+    private string? disabledReason => GizmoEnabled().Reason;
+
+    private Texture2D icon => disabled ? ability.def.disabledIcon : ability.def.uiIcon;
+
+    private Texture2D background => ability.status switch {
+        null => BgTexOff,
+        BurningStatus.Off => BgTexOff,
+        BurningStatus.Passive => BgTexBurning,
+        BurningStatus.Burning => BgTexBurning,
+        BurningStatus.Flaring => BgTexFlaring,
+        BurningStatus.Duralumin => BgTexFlaring,
+        _ => throw new ArgumentOutOfRangeException(),
+    };
+
+    private AcceptanceReport GizmoEnabled() {
+        return ability.GizmoEnabled();
+    }
 
     public override GizmoResult OnGUI(Rect rect) {
-        //GeneGizmo_ResourceHemogen
         GizmoRenderParms parms = new GizmoRenderParms { shrunk = true, lowLight = false, highLight = false };
-        Color color = Color.white;
         bool isMouseOver = false;
         bool isClicked = false;
-        AcceptanceReport gizmoEnabled = ability.GizmoEnabled();
         if (Mouse.IsOver(rect)) {
             isMouseOver = true;
-            if (gizmoEnabled) {
-                color = GenUI.MouseoverColor;
-            }
         }
 
         MouseoverSounds.DoRegion(rect, SoundDefOf.Mouseover_Command);
-        if (parms.highLight && gizmoEnabled) {
+        if (parms.highLight && !disabled) {
             Widgets.DrawStrongHighlight(rect.ExpandedBy(4f));
         }
 
-        Material? grayscaleGui = !gizmoEnabled ? TexUI.GrayscaleGUI : null;
-        Texture2D background = ability.status switch {
-            null => BgTexOff,
-            BurningStatus.Off => BgTexOff,
-            BurningStatus.Passive => BgTexBurning,
-            BurningStatus.Burning => BgTexBurning,
-            BurningStatus.Flaring => BgTexFlaring,
-            BurningStatus.Duralumin => BgTexFlaring,
-            _ => throw new ArgumentOutOfRangeException(),
-        };
-        GUI.color = !gizmoEnabled ? Verse.Command.LowLightBgColor : color;
-        Texture2D? icon = !gizmoEnabled ? BgTexOffDisabled : ability.def.uiIcon;
         UIUtil.DrawIcon(
             rect,
             icon,
             background,
-            grayscaleGui,
-            !gizmoEnabled ? Color.gray.ToTransparent(.6f) : null,
-            borderTexture: ability.willBurnWhileDowned ? ColorLibrary.LightBlue.ToSolidColorTexture() : null
+            !disabled ? null : TexUI.GrayscaleGUI,
+            borderTexture: ability.willBurnWhileDowned ? AutoBurnBorder : Border
         );
 
         if (Widgets.ButtonInvisible(rect)) {
@@ -83,11 +84,10 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
                     .Colorize(ColoredText.GeneColor));
             }
 
-
-            if (!gizmoEnabled.Reason.NullOrEmpty()) {
+            if (!disabledReason.NullOrEmpty()) {
                 desc.AppendLine("\n");
                 desc.AppendLine(
-                    ("DisabledCommand".Translate() + ": " + gizmoEnabled.Reason).Colorize(ColorLibrary.RedReadable));
+                    ("DisabledCommand".Translate() + ": " + disabledReason).Colorize(ColorLibrary.RedReadable));
             }
 
             TooltipHandler.TipRegion(rect, (TipSignal)desc.ToString());
@@ -98,13 +98,13 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
         }
 
 
-        if (gizmoEnabled || Event.current.shift) {
+        if (!disabled || Event.current.shift) {
             return Event.current.button == 1
                 ? new GizmoResult(GizmoState.OpenedFloatMenu, Event.current)
                 : new GizmoResult(GizmoState.Interacted, Event.current);
         }
 
-        Messages.Message((string)("DisabledCommand".Translate() + ": " + gizmoEnabled.Reason),
+        Messages.Message((string)("DisabledCommand".Translate() + ": " + disabledReason),
             MessageTypeDefOf.RejectInput, false);
         return new GizmoResult(GizmoState.Mouseover, null);
     }

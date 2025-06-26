@@ -138,7 +138,8 @@ public static class GeneUtility {
         AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), canSnap);
     }
 
-    public static void AddGene(Pawn pawn, GeneDef gene, bool canSnap = true, bool snapped = false) {
+    public static void AddGene(Pawn pawn, GeneDef? gene, bool canSnap = true, bool snapped = false) {
+        if (gene == null) return;
         if (pawn.genes.HasActiveGene(gene)) return;
 
         if (snapped) {

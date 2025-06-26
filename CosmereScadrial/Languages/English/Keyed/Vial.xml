@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CS_CannotIngest>Cannot Ingest</CS_CannotIngest>
+    <CS_NotAllomancer>not an Allomancer</CS_NotAllomancer>
+    <CS_CurrentlyShielded>metals actively drained</CS_CurrentlyShielded>
+    <CS_NotMisting>not a {MISTING}</CS_NotMisting>
+    <CS_AlreadyMistborn>already Mistborn</CS_AlreadyMistborn>
+    <CS_TooFull>reserve too full</CS_TooFull>
+    <CS_NoAllomanticProperties>no allomantic properties</CS_NoAllomanticProperties>
+    <CS_BurnedGodMetal>Pawn burned {METAL}!</CS_BurnedGodMetal>
+    <CS_BurnedGodMetal_Lerasium>{PAWN} consumes the god metal. In an instant, their spirit web reshapes — all paths of Allomancy now lie open.</CS_BurnedGodMetal_Lerasium>
+    <CS_BurnedGodMetal_Atium>{PAWN} consumes the god metal. They can now catch glimpses of other pawns futures! Use it wisely...</CS_BurnedGodMetal_Atium>
+</LanguageData>

@@ -36,7 +36,7 @@ public class Mists : RimWorld.IncidentWorker {
                     ? $"The mists rolled through the colony, and {snappedCount} pawn(s) were forever changed."
                     : "The mists rolled through the colony. This time, they passed without consequence.",
                 LetterDefOf.NegativeEvent,
-                new TargetInfo(map.Center, map)
+                LookTargets.Invalid
             );
         }, 2500);
 

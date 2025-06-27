@@ -8,6 +8,7 @@
         <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
     </HediffDef>
     <HediffDef Name="AbstractAllomanticHediff" ParentName="AbstractBurnHediff" Abstract="True">
+        <alwaysShowSeverity>true</alwaysShowSeverity>
         <hediffClass>CosmereScadrial.Ability.Allomancy.Hediff.AllomanticHediff</hediffClass>
         <comps>
             <li Class="CosmereScadrial.Ability.Allomancy.Hediff.Comp.SeverityCalculatorProperties" />

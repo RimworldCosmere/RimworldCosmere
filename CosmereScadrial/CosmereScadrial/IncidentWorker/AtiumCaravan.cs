@@ -51,6 +51,8 @@ public class AtiumCaravan : RimWorld.IncidentWorker {
             GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(entryPoint, map, 10), map);
         }
 
+        // @TODO Create a new LordJob for this. ExitMapBest just has the pawns turn around
+        // ExitMapNear doesn't allow them to fight efficiently. Need to combine the two
         LordJob lordJob = new LordJob_AssaultColony(faction, false, canSteal: false);
         LordMaker.MakeNewLord(faction, lordJob, map, attackers);
 

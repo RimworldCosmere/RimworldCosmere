@@ -75,6 +75,6 @@ public static class InvestitureDetector {
             return false;
         }
 
-        return pawn?.health?.hediffSet?.HasHediff(HediffDef.Named("Cosmere_Hediff_Investiture_Shield")) ?? false;
+        return pawn.health?.hediffSet?.HasHediff(HediffDef.Named("Cosmere_Hediff_Investiture_Shield")) ?? false;
     }
 }

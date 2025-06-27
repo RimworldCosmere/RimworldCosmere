@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CosmereCore.Extension;
 using CosmereFramework.Util;
 using CosmereScadrial.Ability.Allomancy.Hediff.Comp;
 using CosmereScadrial.Comp.Thing;
@@ -69,6 +70,12 @@ public class AllomanticHediff : HediffWithComps {
                     pawn.GetComp<MetalBurning>().TryBurnMetals();
                     severityCalculator.RecalculateSeverity();
                 });
+        }
+
+        if (pawn.IsShieldedAgainstInvestiture() && !def.Equals(HediffDefOf.Cosmere_Hediff_Investiture_Shield)) {
+            foreach (AbstractAbility abstractAbility in sourceAbilities.ToList()) {
+                abstractAbility.UpdateStatus(BurningStatus.Off);
+            }
         }
 
         base.Tick();

@@ -1,25 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMetal">
+    <ThingDef ParentName="ResourceBase">
         <defName>Harmonium</defName>
         <label>Harmonium</label>
         <description>Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.</description>
+
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <tradeability>All</tradeability>
+        <stackLimit>150</stackLimit>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+        </thingCategories>
+        <burnableByRecipe>false</burnableByRecipe>
+        <smeltable>true</smeltable>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        
+        <costList>
+            <Lerasium>1</Lerasium>
+        
+            <Atium>1</Atium>
+        </costList>
+        
         <graphicData>
-                <graphicClass>Graphic_Single</graphicClass>
-                <drawSize>1</drawSize>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1</drawSize>
             <texPath>Item/Resource/Harmonium</texPath>
         </graphicData>
+        
         <stuffProps>
             <commonality>0.0</commonality>
             <color>(242, 255, 140)</color>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Metallic</li>
+            </categories>
+            <appearance>Metal</appearance>
         </stuffProps>
+        
         <statBases>
+            <Mass>0.5</Mass>
             <MarketValue>10000</MarketValue>
         </statBases>
+        
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Harmonium</metal>
             </li>
         </modExtensions>
+        <soundInteract>Metal_Drop</soundInteract>
+        <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>
 </Defs>

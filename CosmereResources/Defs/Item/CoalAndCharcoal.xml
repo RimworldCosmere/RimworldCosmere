@@ -1,23 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMineable">
-        <defName>MineableCoal</defName>
-        <label>Coal Ore</label>
-        <description>Coal mined directly from the earth.</description>
-        <graphicData>
-            <color>(60, 60, 60)</color>
-            <colorTwo>(93, 93, 93)</colorTwo>
-        </graphicData>
-        <statBases>
-            <MaxHitPoints>360</MaxHitPoints>
-        </statBases>
-        <building>
-            <mineableThing>Coal</mineableThing>
-            <mineableYield>40</mineableYield>
-            <mineableScatterCommonality>0.7</mineableScatterCommonality>
-            <mineableScatterLumpSizeRange>15~35</mineableScatterLumpSizeRange>
-        </building>
-    </ThingDef>
     <ThingDef ParentName="ResourceBase">
         <defName>Coal</defName>
         <label>Coal</label>

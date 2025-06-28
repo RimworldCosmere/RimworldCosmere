@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMineable">
+    <ThingDef ParentName="RockBase">
         <defName>Mineable{{capitalize metal.Name}}</defName>
         <label>{{metal.Name}} Ore</label>
         <description>{{#if metal.Mining.Description}}{{metal.Mining.Description}}{{else}}Unrefined {{capitalize metal.Name}} ore mined directly from the earth.{{/if}}</description>
         <graphicData>
             <color>{{rgb metal.Color}}</color>
             {{#if metal.ColorTwo}}<colorTwo>{{rgb metal.ColorTwo}}</colorTwo>{{/if}}
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
         </graphicData>
         <statBases>
             <MaxHitPoints>{{metal.Mining.HitPoints}}</MaxHitPoints>
@@ -15,6 +18,8 @@
         <deepCountPerPortion>{{metal.Mining.Yield}}</deepCountPerPortion>
         <deepLumpSizeRange>{{range metal.Mining.SizeRange}}</deepLumpSizeRange>
         <building>
+            <isResourceRock>true</isResourceRock>
+            <veinMineable>true</veinMineable>
             <mineableThing>{{capitalize metal.Name}}</mineableThing>
             <mineableYield>{{metal.Mining.Yield}}</mineableYield>
             <mineableScatterCommonality>{{metal.Mining.Commonality}}</mineableScatterCommonality>

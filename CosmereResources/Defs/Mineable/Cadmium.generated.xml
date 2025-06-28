@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMineable">
+    <ThingDef ParentName="RockBase">
         <defName>MineableCadmium</defName>
         <label>cadmium Ore</label>
         <description>Unrefined Cadmium ore mined directly from the earth.</description>
         <graphicData>
             <color>(170, 132, 121)</color>
             <colorTwo>(201, 207, 206)</colorTwo>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
         </graphicData>
         <statBases>
             <MaxHitPoints>1300</MaxHitPoints>
@@ -15,6 +18,8 @@
         <deepCountPerPortion>20</deepCountPerPortion>
         <deepLumpSizeRange>15~35</deepLumpSizeRange>
         <building>
+            <isResourceRock>true</isResourceRock>
+            <veinMineable>true</veinMineable>
             <mineableThing>Cadmium</mineableThing>
             <mineableYield>20</mineableYield>
             <mineableScatterCommonality>0.3</mineableScatterCommonality>

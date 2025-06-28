@@ -1,25 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMetal">
+    <ThingDef ParentName="ResourceBase">
         <defName>Lerasium</defName>
         <label>Lerasium</label>
         <description>Lerasium is an exceptionally rare god metal tied to the Shard Preservation. When ingested, it transforms the user into a Mistborn, granting access to all Allomantic powers.</description>
+
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <tradeability>All</tradeability>
+        <stackLimit>150</stackLimit>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+        </thingCategories>
+        <burnableByRecipe>false</burnableByRecipe>
+        <smeltable>true</smeltable>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        
+        
         <graphicData>
-                <graphicClass>Graphic_Single</graphicClass>
-                <drawSize>1</drawSize>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1</drawSize>
             <texPath>Item/Resource/Lerasium</texPath>
         </graphicData>
+        
         <stuffProps>
             <commonality>0.0</commonality>
             <color>(132, 159, 106)</color>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Metallic</li>
+            </categories>
+            <appearance>Metal</appearance>
         </stuffProps>
+        
         <statBases>
+            <Mass>0.5</Mass>
             <MarketValue>10000</MarketValue>
         </statBases>
+        
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Lerasium</metal>
             </li>
         </modExtensions>
+        <soundInteract>Metal_Drop</soundInteract>
+        <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>
 </Defs>

@@ -1,24 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMetal">
+    <ThingDef ParentName="ResourceBase">
         <defName>Chromium</defName>
         <label>Chromium</label>
         <description>Chromium is a hard, lustrous metal renowned for its brilliant shine and outstanding resistance to tarnish. It enhances the durability and appearance of alloys and is often used to create sleek, modern finishes.</description>
+
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <tradeability>All</tradeability>
+        <stackLimit>150</stackLimit>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+        </thingCategories>
+        <burnableByRecipe>false</burnableByRecipe>
+        <smeltable>true</smeltable>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        
+        
         <graphicData>
-                <graphicClass>Graphic_StackCount</graphicClass>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>1</drawSize>
             <texPath>Item/Resource/Chromium</texPath>
         </graphicData>
+        
         <stuffProps>
             <commonality>0.0</commonality>
             <color>(132, 134, 139)</color>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Metallic</li>
+            </categories>
+            <appearance>Metal</appearance>
         </stuffProps>
+        
         <statBases>
+            <Mass>0.5</Mass>
             <MarketValue>0.5</MarketValue>
         </statBases>
+        
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Chromium</metal>
             </li>
         </modExtensions>
+        <soundInteract>Metal_Drop</soundInteract>
+        <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>
 </Defs>

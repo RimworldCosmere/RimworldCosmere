@@ -17,6 +17,38 @@
         </researchPrerequisites>
     </RecipeDef>
 
+    <!--RecipeDef>
+        <defName>Cosmere_Resources_Recipe_SmeltAlloys</defName>
+        <label>smelt alloys</label>
+        <description>Use heat and strong electromagnets to smelt multiple resources together into a new alloy.</description>
+        <jobString>Smelting alloy.</jobString>
+        <workAmount>1600</workAmount>
+        <workSpeedStat>SmeltingSpeed</workSpeedStat>
+        <effectWorking>Smelt</effectWorking>
+        <soundWorking>Recipe_Smelt</soundWorking>
+        <specialProducts>
+            <li>Smelted</li>
+        </specialProducts>
+        <ingredients>
+            <li>
+                <filter>
+                    <categories>
+                        <li>Cosmere_Resource_ThingCategory_Alloy</li>
+                    </categories>
+                </filter>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <categories>
+                <li>Cosmere_Resource_ThingCategory_Alloy</li>
+            </categories>
+        </fixedIngredientFilter>
+        <recipeUsers>
+            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
+            <li>ElectricSmelter</li>
+        </recipeUsers>
+    </RecipeDef-->
+
     <!-- Coal Recipes -->
     <RecipeDef>
         <defName>Make_CharcoalFromWood</defName>

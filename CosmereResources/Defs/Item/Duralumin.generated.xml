@@ -1,24 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMetal">
+    <ThingDef ParentName="ResourceBase">
         <defName>Duralumin</defName>
         <label>Duralumin</label>
         <description>Duralumin is a lightweight yet remarkably strong alloy made by combining Aluminium with Copper. Its excellent strength-to-weight ratio makes it indispensable in advanced engineering and high-performance designs.</description>
+
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <tradeability>All</tradeability>
+        <stackLimit>150</stackLimit>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+        </thingCategories>
+        <burnableByRecipe>false</burnableByRecipe>
+        <smeltable>true</smeltable>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        
+        <costList>
+            <Aluminum>9</Aluminum>
+        
+            <Copper>1</Copper>
+        </costList>
+        
         <graphicData>
-                <graphicClass>Graphic_StackCount</graphicClass>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>1</drawSize>
             <texPath>Item/Resource/Duralumin</texPath>
         </graphicData>
+        
         <stuffProps>
             <commonality>0.0</commonality>
             <color>(127, 113, 115)</color>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Metallic</li>
+            </categories>
+            <appearance>Metal</appearance>
         </stuffProps>
+        
         <statBases>
+            <Mass>0.5</Mass>
             <MarketValue>2</MarketValue>
         </statBases>
+        
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Duralumin</metal>
             </li>
         </modExtensions>
+        <soundInteract>Metal_Drop</soundInteract>
+        <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>
 </Defs>

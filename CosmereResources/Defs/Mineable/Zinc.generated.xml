@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMineable">
+    <ThingDef ParentName="RockBase">
         <defName>MineableZinc</defName>
         <label>zinc Ore</label>
         <description>Unrefined Zinc ore mined directly from the earth.</description>
         <graphicData>
             <color>(128, 142, 129)</color>
             <colorTwo>(187, 189, 187)</colorTwo>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
         </graphicData>
         <statBases>
             <MaxHitPoints>1360</MaxHitPoints>
@@ -15,6 +18,8 @@
         <deepCountPerPortion>40</deepCountPerPortion>
         <deepLumpSizeRange>30~55</deepLumpSizeRange>
         <building>
+            <isResourceRock>true</isResourceRock>
+            <veinMineable>true</veinMineable>
             <mineableThing>Zinc</mineableThing>
             <mineableYield>40</mineableYield>
             <mineableScatterCommonality>0.6</mineableScatterCommonality>

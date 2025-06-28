@@ -50,7 +50,7 @@ export default function () {
     writeGeneratedFile(CosmereResources, 'ThingDefOf.Items.generated.cs', thingDefOfItemTemplate({metals: items}));
 
     // @todo Implement the god metals
-    console.log("Generating Alloy Item ThingDefs");
+    console.log("Generating Alloy Item RecipeDef");
     const alloys = Object.values(MetalRegistry.Metals).filter((x) => x.Alloy !== undefined && !x.GodMetal);
     for (const metal of alloys) {
         writeGeneratedFile(alloyRecipeOutputDir, upperFirst(metal.Name) + '.generated.xml', alloyRecipeTemplate({metal}));

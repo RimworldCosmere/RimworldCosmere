@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMineable">
+    <ThingDef ParentName="RockBase">
         <defName>MineableChromium</defName>
         <label>chromium Ore</label>
         <description>Unrefined Chromium ore mined directly from the earth.</description>
         <graphicData>
             <color>(132, 134, 139)</color>
             <colorTwo>(159, 171, 196)</colorTwo>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
         </graphicData>
         <statBases>
             <MaxHitPoints>1600</MaxHitPoints>
@@ -15,6 +18,8 @@
         <deepCountPerPortion>30</deepCountPerPortion>
         <deepLumpSizeRange>25~45</deepLumpSizeRange>
         <building>
+            <isResourceRock>true</isResourceRock>
+            <veinMineable>true</veinMineable>
             <mineableThing>Chromium</mineableThing>
             <mineableYield>30</mineableYield>
             <mineableScatterCommonality>0.3</mineableScatterCommonality>

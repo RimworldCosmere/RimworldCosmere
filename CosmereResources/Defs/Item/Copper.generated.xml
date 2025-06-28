@@ -1,24 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractBuildableMetal">
+    <ThingDef ParentName="ResourceBase">
         <defName>Copper</defName>
         <label>Copper</label>
         <description>Copper is a soft, reddish metal prized for its conductivity and malleability. It has been a staple in crafting and electrical applications across civilizations for centuries.</description>
+
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <tradeability>All</tradeability>
+        <stackLimit>150</stackLimit>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+        </thingCategories>
+        <burnableByRecipe>false</burnableByRecipe>
+        <smeltable>true</smeltable>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        
+        
         <graphicData>
-                <graphicClass>Graphic_StackCount</graphicClass>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>1</drawSize>
             <texPath>Item/Resource/Copper</texPath>
         </graphicData>
+        
         <stuffProps>
             <commonality>0.2</commonality>
             <color>(185, 129, 80)</color>
+            <constructEffect>ConstructMetal</constructEffect>
+            <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
+            <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+            <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+            <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Metallic</li>
+            </categories>
+            <appearance>Metal</appearance>
         </stuffProps>
+        
         <statBases>
+            <Mass>0.5</Mass>
             <MarketValue>0.5</MarketValue>
         </statBases>
+        
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>
+        <soundInteract>Metal_Drop</soundInteract>
+        <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>
 </Defs>

@@ -1,29 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="{{#if metal.Buildable.Buildings}}AbstractBuildableMetal{{else}}AbstractMetal{{/if}}">
+    <ThingDef ParentName="ResourceBase">
         <defName>{{capitalize metal.Name}}</defName>
         <label>{{capitalize metal.Name}}</label>
         <description>{{metal.Description}}</description>
+
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <tradeability>All</tradeability>
+        <stackLimit>150</stackLimit>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+        </thingCategories>
+        <burnableByRecipe>false</burnableByRecipe>
+        <smeltable>true</smeltable>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        
+        {{#if metal.Alloy}}
+        <costList>{{#each metal.Alloy.Ingredients}}{{#each this.Items}}
+            <{{capitalize this}}>{{../Count}}</{{capitalize this}}>
+        {{/each}}{{/each}}</costList>
+        {{#if metal.Alloy.Stuff}}
+        <stuffCategories>
+        {{#each metal.Alloy.Stuff}}
+            <li>{{this}}</li>
+        {{/each}}
+        </stuffCategories>
+        <costStuffCount>{{metal.Alloy.StuffCount}}</costStuffCount>
+        <recipeMaker>
+            <workAmount>1500</workAmount>
+            <workSpeedStat>SmeltingSpeed</workSpeedStat>
+            <workSkill>Crafting</workSkill>
+            <requiredGiverWorkType>Smithing</requiredGiverWorkType>
+            <effectWorking>Smelt</effectWorking>
+            <soundWorking>Recipe_Smelt</soundWorking>
+            <researchPrerequisites>
+                <li>Smithing</li>
+                <li>Cosmere_Alloys</li>
+            </researchPrerequisites>
+            <recipeUsers>
+                <li>ElectricSmelter</li>
+                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
+            </recipeUsers>
+            <displayPriority>200</displayPriority>
+        </recipeMaker>
+        {{/if}}
+        {{/if}}
+        
         <graphicData>
             {{# if metal.Stackable}}
-                <graphicClass>Graphic_StackCount</graphicClass>
+            <graphicClass>Graphic_StackCount</graphicClass>
             {{else}}
-                <graphicClass>Graphic_Single</graphicClass>
-                <drawSize>{{metal.DrawSize}}</drawSize>
+            <graphicClass>Graphic_Single</graphicClass>
             {{/if}}
+            <drawSize>{{metal.DrawSize}}</drawSize>
             <texPath>Item/Resource/{{capitalize metal.Name}}</texPath>
         </graphicData>
+        
         <stuffProps>
             <commonality>{{#if metal.Buildable.Commonality}}{{metal.Buildable.Commonality}}{{else}}0.0{{/if}}</commonality>
             <color>{{rgb metal.Color}}</color>
+            {{#if metal.Buildable.Buildings}}
+            <constructEffect>ConstructMetal</constructEffect>
+            <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
+            <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+            <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+            <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
+            {{/if}}
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Metallic</li>
+            </categories>
+            <appearance>Metal</appearance>
         </stuffProps>
+        
         <statBases>
+            <Mass>0.5</Mass>
             <MarketValue>{{metal.MarketValue}}</MarketValue>
         </statBases>
+        
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>
             </li>
         </modExtensions>
+        <soundInteract>Metal_Drop</soundInteract>
+        <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>
 </Defs>

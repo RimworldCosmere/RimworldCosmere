@@ -11,7 +11,7 @@ export class MetalInfo {
     public ColorTwo?: [number, number, number];
     public GodMetal: boolean;
     public Stackable: boolean = true;
-    public DrawSize: number = .25;
+    public DrawSize: number = 1;
     public MarketValue: number;
     public MaxAmount: number = 100;
     public Allomancy?: MetalAllomancyInfo
@@ -71,27 +71,42 @@ export class MetalMiningInfo {
     }
 }
 
+interface AlloyInput {
+    ingredients: {
+        item: string|string[];
+        count: number;
+    }[];
+    stuff?: string | string[];
+    stuffCount?: number;
+    products: {
+        item?: string;
+        count: number;
+    }[];
+}
+
 export class MetalAlloyInfo {
     public Ingredients: MetalAlloyIngredient[];
+    public Stuff?: string[];
+    public StuffCount?: number;
     public Products: MetalAlloyProduct[];
 
-    public constructor(ingredients: Array<{ item: string | string[], count: number }>, products: {
-        item?: string;
-        count: number
-    }[] = [{count: 10}]) {
+    public constructor({ingredients, stuff, stuffCount, products = [{count: 10}]}: AlloyInput) {
         this.Ingredients = ingredients.map(i => new MetalAlloyIngredient({
-            Items: Array.isArray(i.item) ? i.item : [i.item],
+            Items: i.item ? (Array.isArray(i.item) ? i.item : [i.item]) : undefined,
             Count: i.count,
         }));
         this.Products = products.map(p => new MetalAlloyProduct({
             Item: p.item,
             Count: p.count,
-        }))
+        }));
+        this.Stuff = stuff ? (Array.isArray(stuff) ? stuff : [stuff]) : undefined;
+        this.StuffCount = stuffCount;
     }
 }
 
 export class MetalAlloyIngredient {
-    public Items: string[];
+    public Items?: string[];
+    public Stuffs?: string[];
     public Count: number;
 
     constructor(self: Partial<MetalAlloyIngredient>) {

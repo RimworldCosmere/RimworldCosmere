@@ -1,24 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMetal">
+    <ThingDef ParentName="ResourceBase">
         <defName>Electrum</defName>
         <label>Electrum</label>
         <description>Electrum is an alloy of gold and silver, characterized by its soft, pale, and luminous hue. This unique blend of precious metals has captivated civilizations for millennia with its subtle brilliance and inherent value.</description>
+
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <tradeability>All</tradeability>
+        <stackLimit>150</stackLimit>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+        </thingCategories>
+        <burnableByRecipe>false</burnableByRecipe>
+        <smeltable>true</smeltable>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        
+        <costList>
+            <Gold>5</Gold>
+        
+            <Silver>5</Silver>
+        </costList>
+        
         <graphicData>
-                <graphicClass>Graphic_StackCount</graphicClass>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>1</drawSize>
             <texPath>Item/Resource/Electrum</texPath>
         </graphicData>
+        
         <stuffProps>
             <commonality>0.0</commonality>
             <color>(182, 156, 82)</color>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Metallic</li>
+            </categories>
+            <appearance>Metal</appearance>
         </stuffProps>
+        
         <statBases>
+            <Mass>0.5</Mass>
             <MarketValue>2</MarketValue>
         </statBases>
+        
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Electrum</metal>
             </li>
         </modExtensions>
+        <soundInteract>Metal_Drop</soundInteract>
+        <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>
 </Defs>

@@ -44,6 +44,8 @@ public static class ScadrianQuickstart {
             ApplyConfiguration();
             PageUtility.InitGameStart();
             DelayedActionScheduler.Schedule(PrepareColonists, 20);
+            Current.Game.researchManager.DebugSetAllProjectsFinished();
+            DebugSettings.godMode = true;
         }, "GeneratingMap", true, GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap);
     }
 

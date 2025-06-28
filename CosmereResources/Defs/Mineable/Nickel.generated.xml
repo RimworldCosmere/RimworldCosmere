@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMineable">
+    <ThingDef ParentName="RockBase">
         <defName>MineableNickel</defName>
         <label>nickel Ore</label>
         <description>Unrefined Nickel ore mined directly from the earth.</description>
         <graphicData>
             <color>(85, 107, 47)</color>
             <colorTwo>(100, 100, 100)</colorTwo>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
         </graphicData>
         <statBases>
             <MaxHitPoints>1480</MaxHitPoints>
@@ -15,6 +18,8 @@
         <deepCountPerPortion>30</deepCountPerPortion>
         <deepLumpSizeRange>20~40</deepLumpSizeRange>
         <building>
+            <isResourceRock>true</isResourceRock>
+            <veinMineable>true</veinMineable>
             <mineableThing>Nickel</mineableThing>
             <mineableYield>30</mineableYield>
             <mineableScatterCommonality>0.2</mineableScatterCommonality>

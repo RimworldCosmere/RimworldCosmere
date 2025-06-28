@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="AbstractMineable">
+    <ThingDef ParentName="RockBase">
         <defName>MineableAluminum</defName>
         <label>aluminum Ore</label>
         <description>Unrefined Aluminum ore mined directly from the earth.</description>
         <graphicData>
             <color>(163, 163, 163)</color>
             <colorTwo>(194, 194, 194)</colorTwo>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
         </graphicData>
         <statBases>
             <MaxHitPoints>1700</MaxHitPoints>
@@ -15,6 +18,8 @@
         <deepCountPerPortion>25</deepCountPerPortion>
         <deepLumpSizeRange>20~30</deepLumpSizeRange>
         <building>
+            <isResourceRock>true</isResourceRock>
+            <veinMineable>true</veinMineable>
             <mineableThing>Aluminum</mineableThing>
             <mineableYield>25</mineableYield>
             <mineableScatterCommonality>0.2</mineableScatterCommonality>

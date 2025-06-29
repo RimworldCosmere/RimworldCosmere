@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialZinc</defName>
+        <label>misting vial: rioter</label>
+        <description>A vial containing Zinc suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(128, 142, 129)</color>
+        </graphicData>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Zinc</metal>
+            </li>
+        </modExtensions>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialZinc</orderedTakeGroup>
+    </ThingDef>
+
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialZinc</defName>
+        <label>craft misting vial: rioter</label>
+        <description>Create a vial of Zinc infused alcohol for use by Mistborns and rioters.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Zinc</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Zinc</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <Cosmere_Scadrial_Thing_AllomanticVialZinc>8</Cosmere_Scadrial_Thing_AllomanticVialZinc>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialZinc</defName>
+        <label>allomantic vial: zinc</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
+</Defs>

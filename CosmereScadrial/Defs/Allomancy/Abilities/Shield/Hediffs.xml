@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_Investiture_Shield</defName>
+        <defName>Cosmere_Scadrial_Hediff_InvestitureShield</defName>
         <label>shielded from investiture</label>
         <description>The Allomancer is immune to external investiture (via Aluminum or Chromium). All other metal reserves were instantly consumed on activation.</description>
-        <hediffClass>CosmereScadrial.Ability.Allomancy.Hediff.InvestitureShieldHediff</hediffClass>
+        <hediffClass>CosmereScadrial.Allomancy.Hediff.InvestitureShieldHediff</hediffClass>
         <comps>
         </comps>
     </HediffDef>

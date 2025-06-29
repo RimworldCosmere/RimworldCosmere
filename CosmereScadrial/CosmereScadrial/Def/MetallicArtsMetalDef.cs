@@ -36,8 +36,8 @@ public enum FeruchemyGroup {
 public class MetallicArtsMetalDef : MetalDef {
     public MetalAllomancyDef? allomancy;
     public MetalFeruchemyDef? feruchemy;
-    public Texture2D invertedIcon;
-    public Texture2D uiIcon;
+    public Texture2D? invertedIcon;
+    public Texture2D? uiIcon;
 
     public static MetallicArtsMetalDef FromMetalDef(MetalDef def) {
         if (def is MetallicArtsMetalDef metallicArtsMetalDef) return metallicArtsMetalDef;
@@ -47,10 +47,22 @@ public class MetallicArtsMetalDef : MetalDef {
 
     public override void PostLoad() {
         LongEventHandler.ExecuteWhenFinished(() => {
-            uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Allomancy/{defName}", false);
-            if (uiIcon == null) return;
+            if (allomancy != null) {
+                allomancy.icon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Allomancy/{defName}", false);
+                if (allomancy.icon != null) {
+                    allomancy.invertedIcon = allomancy.icon.CloneTexture().InvertColors();
+                }
+            }
 
-            invertedIcon = uiIcon.CloneTexture().InvertColors();
+            if (feruchemy != null) {
+                feruchemy.icon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Feruchemy/{defName}", false);
+                if (feruchemy.icon != null) {
+                    feruchemy.invertedIcon = feruchemy.icon.CloneTexture().InvertColors();
+                }
+            }
+
+            uiIcon = allomancy?.icon ?? feruchemy?.icon;
+            invertedIcon = allomancy?.invertedIcon ?? feruchemy?.invertedIcon;
         });
     }
 }
@@ -59,6 +71,8 @@ public class MetalAllomancyDef {
     public AllomancyAxis? axis;
     public string description;
     public AllomancyGroup? group;
+    public Texture2D icon;
+    public Texture2D invertedIcon;
     public AllomancyPolarity? polarity;
     public string? userName;
 }
@@ -66,5 +80,7 @@ public class MetalAllomancyDef {
 public class MetalFeruchemyDef {
     public string description;
     public FeruchemyGroup? group;
+    public Texture2D icon;
+    public Texture2D invertedIcon;
     public string? userName;
 }

@@ -5,7 +5,7 @@
         <description>Chromium shields the target against investiture. It also instantly drains the target’s investiture, purging all metal reserves and canceling any active Investiture-related effects.</description>
         <label>shield target against investiture</label>
         <metal>Chromium</metal>
-        <hediff>Cosmere_Hediff_Investiture_Shield</hediff>
+        <hediff>Cosmere_Scadrial_Hediff_InvestitureShield</hediff>
         <verbProperties>
             <range>2</range>
             <targetParams>

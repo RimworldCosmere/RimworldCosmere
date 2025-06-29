@@ -4,8 +4,8 @@
     <Operation Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="Human"]/comps</xpath>
         <value>
-            <li Class="CosmereScadrial.Comp.Thing.MetalReservesProperties" />
-            <li Class="CosmereScadrial.Comp.Thing.MetalBurningProperties" />
+            <li Class="CosmereScadrial.Allomancy.Comp.Thing.MetalReservesProperties" />
+            <li Class="CosmereScadrial.Allomancy.Comp.Thing.MetalBurningProperties" />
         </value>
     </Operation>
 </Patch>

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereResources.DefModExtension;
-using CosmereScadrial.Comp.Thing;
+using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Util;

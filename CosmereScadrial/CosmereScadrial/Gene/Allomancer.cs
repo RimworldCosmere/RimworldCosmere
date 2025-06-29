@@ -1,4 +1,4 @@
-﻿using CosmereScadrial.Comp.Thing;
+﻿using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Util;
 using Verse;
 
@@ -8,7 +8,6 @@ public class Allomancer : Metalborn {
     public int RequestedVialStock = 3;
     public override float Max => MetalReserves.MaxAmount;
     public override float Value => reserves.GetReserve(metal);
-    public override float ValuePercent => AllomancyUtility.GetReservePercent(pawn, metal);
 
     private MetalReserves reserves => pawn.GetComp<MetalReserves>();
 

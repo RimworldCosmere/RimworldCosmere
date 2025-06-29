@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_Steel_Aura</defName>
+        <defName>Cosmere_Scadrial_Hediff_SteelAura</defName>
         <label>burning steel: aura</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
 Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
 These lines shimmer with the tension of potential force, visible only to those burning Steel.</description>
         <comps>
-            <li Class="CosmereScadrial.Ability.Allomancy.Hediff.Comp.PhysicalExternalAuraProperties" />
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.PhysicalExternalAuraProperties" />
         </comps>
         <stages>
             <li>
@@ -25,12 +25,12 @@ These lines shimmer with the tension of potential force, visible only to those b
         </modExtensions>
     </HediffDef>
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_Steel_Bubble</defName>
+        <defName>Cosmere_Scadrial_Hediff_SteelBubble</defName>
         <label>Burning steel: bubble</label>
         <description>The Allomancer is generating a field of repelling force using Steel, subtly redirecting incoming projectiles. Ranged attackers find it harder to land shots.</description>
     </HediffDef>
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_Steel_Jump</defName>
+        <defName>Cosmere_Scadrial_Hediff_SteelJump</defName>
         <label>Burning steel: bubble</label>
         <description>This pawn is in mid-air, having pushed off the ground with Allomantic Steel. They are temporarily immune to ground-based hazards and cannot be targeted in melee.</description>
         <comps>

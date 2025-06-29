@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <SkillDef>
+        <defName>Cosmere_Scadrial_Skill_AllomanticPower</defName>
+        <description>Represents the strength and control of a pawn’s allomantic abilities.</description>
+        <skillLabel>allomancy</skillLabel>
+        <pawnCreatorSummaryVisible>true</pawnCreatorSummaryVisible>
+        <usuallyDefinedInBackstories>false</usuallyDefinedInBackstories>
+    </SkillDef>
+    <SkillDef>
+        <defName>Cosmere_Scadrial_Skill_FeruchemicPower</defName>
+        <description>Represents the strength and control of a pawn’s feruchemic abilities.</description>
+        <skillLabel>feruchemy</skillLabel>
+        <pawnCreatorSummaryVisible>true</pawnCreatorSummaryVisible>
+        <usuallyDefinedInBackstories>false</usuallyDefinedInBackstories>
+    </SkillDef>
+</Defs>

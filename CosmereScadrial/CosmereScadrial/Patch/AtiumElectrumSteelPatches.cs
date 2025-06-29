@@ -40,13 +40,16 @@ public static class AtiumElectrumSteelPatches {
         float baseHitChance = 1f;
 
         float casterAtiumSeverity = casterPawn.health?.hediffSet
-            ?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Hediff_Atium_Buff)?.Severity ?? 0f;
+            ?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_AtiumBuff)?.Severity ?? 0f;
         float targetAtiumSeverity =
-            targetPawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Hediff_Atium_Buff)?.Severity ?? 0f;
+            targetPawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_AtiumBuff)
+                ?.Severity ?? 0f;
         float targetSteelBubbleSeverity =
-            targetPawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Hediff_Steel_Bubble)?.Severity ?? 0f;
+            targetPawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_SteelBubble)
+                ?.Severity ?? 0f;
         float targetElectrumSeverity =
-            targetPawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Hediff_Electrum_Buff)?.Severity ?? 0f;
+            targetPawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ElectrumBuff)
+                ?.Severity ?? 0f;
 
         bool targetHasAtium = targetAtiumSeverity > 0f;
         bool targetHasSteelBubble = targetSteelBubbleSeverity > 0f;

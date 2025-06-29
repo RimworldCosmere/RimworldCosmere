@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using CosmereCore.Util;
 using CosmereResources.DefModExtension;
@@ -17,16 +18,13 @@ public abstract class Metalborn : Gene_Resource {
     public override float MinLevelForAlert => .15f;
     public override float MaxLevelOffset => .1f;
 
-    // @TODO IMPLEMENT
-    public override float Max => 100f;
     protected override Color BarColor => metal.color.SaturationChanged(1f);
     protected override Color BarHighlightColor => metal.color.SaturationChanged(2f);
 
-    // @TODO IMPLEMENT
-    public override float Value => 0f;
+    public override float Max => throw new NotImplementedException();
+    public override float Value => throw new NotImplementedException();
 
-    // @TODO IMPLEMENT
-    public override float ValuePercent => 0f;
+    public override float ValuePercent => Max > 0 ? Value / Max : 0;
 
     public override int ValueForDisplay => PostProcessValue(Value);
     public override int MaxForDisplay => PostProcessValue(Max);

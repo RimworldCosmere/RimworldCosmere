@@ -5,7 +5,7 @@
         <description>Nicrosil flares another Allomancer’s active metals, dramatically amplifying their power. Only affects those already burning metals.</description>
         <label>supercharge target</label>
         <metal>Nicrosil</metal>
-        <hediff>Cosmere_Hediff_Surge_Charge</hediff>
+        <hediff>Cosmere_Scadrial_Hediff_SurgeCharge</hediff>
         <beuPerTick>0.00000001</beuPerTick>
         <canFlare>false</canFlare>
         <verbProperties>

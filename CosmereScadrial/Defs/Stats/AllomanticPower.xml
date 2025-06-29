@@ -12,10 +12,10 @@
         <hideAtValue>0</hideAtValue>
         <displayPriorityInCategory>5000</displayPriorityInCategory>
         <scenarioRandomizable>false</scenarioRandomizable>
-        <disableIfSkillDisabled>Cosmere_Allomantic_Power</disableIfSkillDisabled>
+        <disableIfSkillDisabled>Cosmere_Scadrial_Skill_AllomanticPower</disableIfSkillDisabled>
         <skillNeedFactors>
             <li Class="SkillNeed_BaseBonus">
-                <skill>Cosmere_Allomantic_Power</skill>
+                <skill>Cosmere_Scadrial_Skill_AllomanticPower</skill>
                 <baseValue>0.25</baseValue>
                 <bonusPerLevel>0.0375</bonusPerLevel> <!-- At level 20, total = 1.0 -->
             </li>

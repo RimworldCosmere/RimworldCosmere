@@ -1,8 +1,8 @@
 using CosmereCore.Need;
 using CosmereCore.Util;
 using CosmereFramework.Extension;
-using CosmereScadrial.Ability.Allomancy.Hediff;
-using CosmereScadrial.Comp.Thing;
+using CosmereScadrial.Allomancy.Comp.Thing;
+using CosmereScadrial.Allomancy.Hediff;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Thing;

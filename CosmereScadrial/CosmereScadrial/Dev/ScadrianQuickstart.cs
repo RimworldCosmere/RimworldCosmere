@@ -4,7 +4,7 @@ using CosmereFramework.Extension;
 using CosmereFramework.Util;
 using CosmereResources;
 using CosmereResources.Def;
-using CosmereScadrial.Comp.Thing;
+using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using RimWorld;
 using RimWorld.Planet;
@@ -97,14 +97,20 @@ public static class ScadrianQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsMisting(pawn, false, MetalDefOf.Steel, MetalDefOf.Aluminum);
+            PrepareColonistAsMisting(pawn, false, MetalDefOf.Steel);
+            PrepareColonistAsFerring(pawn, MetalDefOf.Steel);
+            pawn.Name = new NameSingle("Twinborn: Steel");
+
+            Verse.Thing metalmind = ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindEarring,
+                CosmereResources.ThingDefOf.Steel);
+            pawn.inventory.innerContainer.TryAdd(metalmind);
         }
 
-        if (pawns.TryPopFront(out pawn)) {
+        if (false && pawns.TryPopFront(out pawn)) {
             PrepareColonistAsMisting(pawn, true, MetalDefOf.Steel);
         }
 
-        if (pawns.TryPopFront(out pawn)) {
+        if (false && pawns.TryPopFront(out pawn)) {
             PrepareColonistAsMisting(pawn, false, MetalDefOf.Iron);
             pawn.health.forceDowned = true;
         }
@@ -119,6 +125,15 @@ public static class ScadrianQuickstart {
             if (fillReserves) reserves.SetReserve(MetallicArtsMetalDef.FromMetalDef(metal), MetalReserves.MaxAmount);
         }
 
-        pawn.Name = new NameSingle(string.Join(" and ", metals.Select(m => m.LabelCap)));
+        pawn.Name = new NameSingle("Misting: " + string.Join(" and ", metals.Select(m => m.LabelCap)));
+    }
+
+    private static void PrepareColonistAsFerring(Pawn pawn, params MetalDef[] metals) {
+        MetalReserves reserves = pawn.GetComp<MetalReserves>();
+        foreach (MetalDef metal in metals) {
+            GeneUtility.AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), false, true);
+        }
+
+        pawn.Name = new NameSingle("Ferring: " + string.Join(" and ", metals.Select(m => m.LabelCap)));
     }
 }

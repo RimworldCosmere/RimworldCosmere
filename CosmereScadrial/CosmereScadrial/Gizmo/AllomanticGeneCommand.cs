@@ -3,8 +3,8 @@ using System.Linq;
 using System.Text;
 using CosmereFramework.Extension;
 using CosmereFramework.Util;
-using CosmereScadrial.Ability.Allomancy;
-using CosmereScadrial.Comp.Thing;
+using CosmereScadrial.Allomancy.Ability;
+using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Gene;
 using RimWorld;
@@ -112,8 +112,6 @@ public class AllomanticGeneCommand(
     }
 
     private void DrawBottomBar(Rect bottomBarRect, ref bool mouseOverElement) {
-        Texture thresholdColor =
-            metal.Equals(MetallicArtsMetalDefOf.Atium) ? BaseContent.WhiteTex : BaseContent.BlackTex;
         if (!IsDraggable) {
             Widgets.FillableBar(bottomBarRect, ValuePercent, barTex, EmptyBarTex, true);
             foreach (float barThreshold in GetBarThresholds()) {
@@ -123,7 +121,7 @@ public class AllomanticGeneCommand(
                         width = 2f,
                         height = 6f,
                     },
-                    ValuePercent < (double)barThreshold ? BaseContent.GreyTex : thresholdColor);
+                    ValuePercent < (double)barThreshold ? BaseContent.GreyTex : BaseContent.BlackTex);
             }
         } else {
             Widgets.DraggableBar(bottomBarRect, barTex, barHighlightTex, EmptyBarTex, barDragTex,
@@ -150,7 +148,7 @@ public class AllomanticGeneCommand(
         Rect iconRect = new Rect(iconBoxRect.x, iconBoxRect.y, iconBoxRect.height, iconBoxRect.height);
         UIUtil.DrawIcon(
             iconRect,
-            metal.invertedIcon,
+            metal.allomancy!.invertedIcon,
             Verse.Command.BGTex,
             TexUI.GrayscaleGUI,
             offset: new Vector2(0, -4f),

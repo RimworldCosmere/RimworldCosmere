@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="AbstractAllomanticVial" ParentName="ResourceBase" Abstract="True">
+        <thingClass>CosmereScadrial.Thing.AllomanticVial</thingClass>
+        <graphicData>
+            <texPath>Things/Item/AllomanticVial</texPath>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(0, 0, 0)</color>
+            <colorTwo>(255, 255, 255)</colorTwo>
+            <drawSize>.5</drawSize>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>50</MaxHitPoints>
+            <Flammability>0.2</Flammability>
+            <DeteriorationRate>1</DeteriorationRate>
+            <Mass>0.005</Mass>
+            <MarketValue>8</MarketValue>
+        </statBases>
+        <stackLimit>150</stackLimit>
+        <thingCategories>
+            <li>Cosmere_Scadrial_ThingCategoryDef_AllomanticVial</li>
+        </thingCategories>
+        <tradeTags>
+            <li>Allomancy</li>
+        </tradeTags>
+        <ingestible>
+            <preferability>NeverForNutrition</preferability>
+            <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+            <defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce>
+            <chairSearchRadius>0</chairSearchRadius>
+            <ingestSound>Ingest_Drink</ingestSound>
+            <baseIngestTicks>60</baseIngestTicks>
+            <showIngestFloatOption>false</showIngestFloatOption>
+            <drugCategory>None</drugCategory>
+            <foodType>Fluid</foodType>
+            <ingestCommandString>Drink vial</ingestCommandString>
+            <ingestReportString>drinks an allomantic vial</ingestReportString>
+        </ingestible>
+    </ThingDef>
+</Defs>

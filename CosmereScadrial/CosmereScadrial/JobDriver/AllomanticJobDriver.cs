@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using CosmereScadrial.Ability.Allomancy;
-using CosmereScadrial.Comp.Thing;
+using CosmereScadrial.Allomancy.Ability;
+using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Util;
 using Verse;
 using Verse.AI;

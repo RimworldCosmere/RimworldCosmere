@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_StoreSteel</defName>
+        <label>storing steel</label>
+        <description>Storing steel draws kinetic energy from the body into a metalmind. Every movement feels sluggish, as if pushing through water. The pawn conserves speed for later use, willingly enduring slow steps and dulled reflexes.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <Ability_Duration>2.0</Ability_Duration>
+                    <Ability_CastingTime>2.0</Ability_CastingTime>
+                    <StaggerDurationFactor>2.0</StaggerDurationFactor>
+                    <AimingDelayFactor>2.0</AimingDelayFactor>
+                    <InjuryHealingFactor>0.5</InjuryHealingFactor>
+                    <RestFallRateFactor>0.5</RestFallRateFactor>
+                    <RestRateMultiplier>0.5</RestRateMultiplier>
+                    <EatingSpeed>0.5</EatingSpeed>
+                    <MeleeCooldownFactor>0.5</MeleeCooldownFactor>
+                    <RangedCooldownFactor>0.5</RangedCooldownFactor>
+                    <MoveSpeed>0.5</MoveSpeed>
+                    <CrawlSpeed>0.5</CrawlSpeed>
+                    <CleaningSpeed>0.5</CleaningSpeed>
+                    <ReadingSpeed>0.5</ReadingSpeed>
+                    <ImmunityGainSpeed>0.5</ImmunityGainSpeed>
+                    <WorkSpeedGlobal>0.5</WorkSpeedGlobal>
+                    <Cosmere_Time_Dilation_Factor>0.5</Cosmere_Time_Dilation_Factor>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Steel</metal>
+            </li>
+        </modExtensions>
+    </HediffDef><HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_TapSteel</defName>
+        <label>tapping steel</label>
+        <description>Tapping steel unleashes a sudden burst of kinetic energy from the metalmind, drastically increasing the pawn's movement speed. Muscles respond faster, steps blur with unnatural agility, and the world seems to slow as they move with Feruchemical swiftness.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <Ability_Duration>0.5</Ability_Duration>
+                    <Ability_CastingTime>0.5</Ability_CastingTime>
+                    <StaggerDurationFactor>0.5</StaggerDurationFactor>
+                    <AimingDelayFactor>0.5</AimingDelayFactor>
+                    <InjuryHealingFactor>2.0</InjuryHealingFactor>
+                    <RestFallRateFactor>2.0</RestFallRateFactor>
+                    <RestRateMultiplier>2.0</RestRateMultiplier>
+                    <EatingSpeed>2.0</EatingSpeed>
+                    <MeleeCooldownFactor>2.0</MeleeCooldownFactor>
+                    <RangedCooldownFactor>2.0</RangedCooldownFactor>
+                    <MoveSpeed>2.0</MoveSpeed>
+                    <CrawlSpeed>2.0</CrawlSpeed>
+                    <CleaningSpeed>2.0</CleaningSpeed>
+                    <ReadingSpeed>2.0</ReadingSpeed>
+                    <ImmunityGainSpeed>2.0</ImmunityGainSpeed>
+                    <WorkSpeedGlobal>2.0</WorkSpeedGlobal>
+                    <Cosmere_Time_Dilation_Factor>2.0</Cosmere_Time_Dilation_Factor>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Steel</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+</Defs>

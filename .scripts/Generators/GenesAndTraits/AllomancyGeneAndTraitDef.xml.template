@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: {{capitalize metal.Name}} -->
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_Misting{{capitalize metal.Name}}</defName>
+
+        <label>{{metal.Name}} misting</label>
+        <labelShortAdj>{{metal.Allomancy.UserName}}</labelShortAdj>
+
+        <description>{{metal.Allomancy.Description}}</description>
+
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>{{order}}</displayOrderInCategory>
+
+        <resourceLabel>{{metal.Name}}</resourceLabel>
+        <resourceDescription>Group: {{metal.Allomancy.Group}}\nAxis: {{metal.Allomancy.Axis}}\nPolarity: {{metal.Allomancy.Polarity}}\n\n{{metal.Allomancy.Description}}</resourceDescription>
+
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_Misting{{capitalize metal.Name}}</def>
+            </li>
+        </forcedTraits>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>{{capitalize metal.Name}}</metal>
+            </li>
+        </modExtensions>
+
+        {{#if metal.Allomancy.Abilities}}
+            <abilities>
+                {{#each metal.Allomancy.Abilities}}
+                    <li>{{this}}</li>
+                {{/each}}
+            </abilities>
+        {{/if}}
+
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/{{capitalize metal.Name}}</iconPath>
+    </GeneDef>
+
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_Misting{{capitalize metal.Name}}</defName>
+        <label>{{metal.Allomancy.UserName}}</label>
+        <description>{{metal.Allomancy.Description}}</description>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>{{capitalize metal.Name}}</metal>
+            </li>
+        </modExtensions>
+
+        <degreeDatas>
+            <li>
+                <label>misting: {{metal.Allomancy.UserName}}</label>
+                <description>{{metal.Allomancy.Description}}</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

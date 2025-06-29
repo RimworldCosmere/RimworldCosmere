@@ -1,6 +1,6 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
-using RimWorld;{{#ifEquals type "Gene"}}
+using RimWorld;{{#ifEquals kind "Gene"}}
 using Verse;{{/ifEquals}}
 
 namespace CosmereScadrial;
@@ -9,9 +9,8 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public static partial class {{type}}DefOf {
+public static partial class {{kind}}DefOf {
     {{#each metals as | metal |}}
-    public static {{../type}}Def Cosmere_Scadrial_{{../type}}_Misting{{capitalize metal.Name}};
-    public static {{../type}}Def Cosmere_Scadrial_{{../type}}_Ferring{{capitalize metal.Name}};
+    public static {{../kind}}Def Cosmere_Scadrial_{{../kind}}_{{../type}}{{capitalize metal.Name}};
     {{/each}}
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Ferring: Zinc -->
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_FerringZinc</defName>
+
+        <label>zinc ferring</label>
+        <labelShortAdj>sparker</labelShortAdj>
+
+        <description>Stores mental speed, allowing faster thought processes.</description>
+
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>6</displayOrderInCategory>
+
+        <resourceLabel>zinc</resourceLabel>
+        <resourceDescription>Group: cognitive\n\nStores mental speed, allowing faster thought processes.</resourceDescription>
+
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_FerringZinc</def>
+            </li>
+        </forcedTraits>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Zinc</metal>
+            </li>
+        </modExtensions>
+
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Zinc</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_FerringZinc</defName>
+        <label>sparker</label>
+        <description>Stores mental speed, allowing faster thought processes.</description>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Zinc</metal>
+            </li>
+        </modExtensions>
+
+        <degreeDatas>
+            <li>
+                <label>ferring: sparker</label>
+                <description>Stores mental speed, allowing faster thought processes.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Nicrosil Alloy Recipe-->
+    <RecipeDef ParentName="Cosmere_Resource_Recipe_AlloyBase">
+        <defName>Cosmere_Make_Alloy_Nicrosil</defName>
+        <label>create alloy: nicrosil</label>
+        <jobString>Creating alloy: Nicrosil</jobString>
+        <ingredients>
+                <li>
+                    <filter>
+                        <thingDefs>
+                                <li>Nickel</li>
+                        </thingDefs>
+                    </filter>
+                    <count>8</count>
+                </li>
+                <li>
+                    <filter>
+                        <thingDefs>
+                                <li>Chromium</li>
+                        </thingDefs>
+                    </filter>
+                    <count>2</count>
+                </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                        <li>Nickel</li>
+                        <li>Chromium</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+                <Nicrosil>10</Nicrosil>
+        </products>
+    </RecipeDef>
+</Defs>

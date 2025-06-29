@@ -15,6 +15,7 @@ public static partial class ThingDefOf {
     public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleCadmium;
     public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleBendalloy;
     public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleWarp;
+    public static ThingDef Cosmere_Scadrial_Thing_MetalmindEarring;
 
     static ThingDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));

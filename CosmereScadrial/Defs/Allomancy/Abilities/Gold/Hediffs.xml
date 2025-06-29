@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_Gold</defName>
+        <defName>Cosmere_Scadrial_Hediff_Gold</defName>
         <label>burning gold</label>
         <description>The Allomancer is burning gold, experiencing visions of what they might have become. These revelations are powerful... and dangerous.</description>
         <comps>
-            <li Class="CosmereScadrial.Ability.Allomancy.Hediff.Comp.GoldBurnProperties"/>
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.GoldBurnProperties"/>
         </comps>
     </HediffDef>
     
     
     <HediffDef>
-        <defName>Cosmere_Hediff_Post_Gold</defName>
+        <defName>Cosmere_Scadrial_Hediff_PostGold</defName>
         <hediffClass>HediffWithComps</hediffClass>
         <label>gold bliss</label>
         <description>The Allomancer carries the lingering weight of their vision — strengthened by clarity, burdened by memory.</description>

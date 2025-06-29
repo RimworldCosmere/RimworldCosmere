@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialPewter</defName>
+        <label>misting vial: thug</label>
+        <description>A vial containing Pewter suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(141, 151, 166)</color>
+        </graphicData>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Pewter</metal>
+            </li>
+        </modExtensions>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialPewter</orderedTakeGroup>
+    </ThingDef>
+
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialPewter</defName>
+        <label>craft misting vial: thug</label>
+        <description>Create a vial of Pewter infused alcohol for use by Mistborns and thugs.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Pewter</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Pewter</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <Cosmere_Scadrial_Thing_AllomanticVialPewter>8</Cosmere_Scadrial_Thing_AllomanticVialPewter>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialPewter</defName>
+        <label>allomantic vial: pewter</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
+</Defs>

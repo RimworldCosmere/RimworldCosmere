@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <GeneDef Name="AbstractMetallicArtsInvestitureGene" Abstract="True">
+        <passOnDirectly>false</passOnDirectly>
+        <biostatCpx>5</biostatCpx>
+        <biostatMet>0</biostatMet>
+        <biostatArc>1</biostatArc>
+        <randomChosen>false</randomChosen>
+    </GeneDef>
+    <GeneDef Name="AbstractAllomancyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
+        <geneClass>CosmereScadrial.Gene.Allomancer</geneClass>
+        <resourceGizmoType>CosmereScadrial.Gizmo.AllomanticGeneCommand</resourceGizmoType>
+        <resourceGizmoThresholds>
+            <li>0.2</li>
+            <li>0.4</li>
+            <li>0.6</li>
+            <li>0.8</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+    </GeneDef>
+    <GeneDef Name="AbstractFeruchemyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
+        <geneClass>CosmereScadrial.Gene.Feruchemist</geneClass>
+        <resourceGizmoType>CosmereScadrial.Gizmo.FeruchemicGeneCommand</resourceGizmoType>
+        <resourceGizmoThresholds>
+            <li>0.2</li>
+            <li>0.4</li>
+            <li>0.6</li>
+            <li>0.8</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+    </GeneDef>
+  
+    <GeneDef>
+        <defName>Cosmere_Scadrial_Gene_DormantMetalborn</defName>
+        <geneClass>CosmereScadrial.Gene.DormantMetalborn</geneClass>
+        <label>dormant connection</label>
+        <labelShortAdj>Dormant Connection</labelShortAdj>
+        <description>This pawn is attuned to a Shard’s power, though they’ve yet to tap it. A traumatic event may awaken their abilities.</description>
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>10</displayOrderInCategory>
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_DormantMetalborn</def>
+            </li>
+        </forcedTraits>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Ettmetal</iconPath>
+        <passOnDirectly>false</passOnDirectly>
+        <biostatCpx>5</biostatCpx>
+        <biostatMet>0</biostatMet>
+        <biostatArc>1</biostatArc>
+        <randomChosen>false</randomChosen>
+    </GeneDef>
+</Defs>

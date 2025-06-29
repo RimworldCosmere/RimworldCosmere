@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Ferring: Steel -->
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_FerringSteel</defName>
+
+        <label>steel ferring</label>
+        <labelShortAdj>steelrunner</labelShortAdj>
+
+        <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
+
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>3</displayOrderInCategory>
+
+        <resourceLabel>steel</resourceLabel>
+        <resourceDescription>Group: physical\n\nStores physical speed, allowing for bursts of superhuman speed.</resourceDescription>
+
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_FerringSteel</def>
+            </li>
+        </forcedTraits>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Steel</metal>
+            </li>
+        </modExtensions>
+
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Steel</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_FerringSteel</defName>
+        <label>steelrunner</label>
+        <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Steel</metal>
+            </li>
+        </modExtensions>
+
+        <degreeDatas>
+            <li>
+                <label>ferring: steelrunner</label>
+                <description>Stores physical speed, allowing for bursts of superhuman speed.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

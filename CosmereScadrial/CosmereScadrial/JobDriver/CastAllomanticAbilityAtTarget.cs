@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Ability.Allomancy;
-using CosmereScadrial.Ability.Allomancy.Hediff;
+using CosmereScadrial.Allomancy.Ability;
+using CosmereScadrial.Allomancy.Hediff;
 using CosmereScadrial.Comp.Game;
 using CosmereScadrial.Def;
 using CosmereScadrial.Util;

@@ -1,6 +1,6 @@
 using System;
-using CosmereScadrial.Ability.Allomancy;
-using CosmereScadrial.Ability.Allomancy.Hediff;
+using CosmereScadrial.Allomancy.Ability;
+using CosmereScadrial.Allomancy.Hediff;
 using Verse;
 
 namespace CosmereScadrial.Util;

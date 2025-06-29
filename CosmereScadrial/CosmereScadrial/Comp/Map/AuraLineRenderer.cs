@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Ability.Allomancy.Hediff;
-using CosmereScadrial.Ability.Allomancy.Hediff.Comp;
+using CosmereScadrial.Allomancy.Comp.Hediff;
+using CosmereScadrial.Allomancy.Hediff;
 using UnityEngine;
 using Verse;
 using static CosmereFramework.CosmereFramework;
@@ -15,16 +15,16 @@ public class AuraLineRenderer(Verse.Map map) : MapComponent(map) {
             if (!pawn.Spawned || pawn.Dead) continue;
 
             foreach (AllomanticHediff? hediff in pawn.health?.hediffSet.hediffs.OfType<AllomanticHediff>() ?? []) {
-                if (!hediff.def.Equals(HediffDefOf.Cosmere_Hediff_Bronze_Aura) &&
-                    !hediff.def.Equals(HediffDefOf.Cosmere_Hediff_Steel_Aura) &&
-                    !hediff.def.Equals(HediffDefOf.Cosmere_Hediff_Iron_Aura)) {
+                if (!hediff.def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_BronzeAura) &&
+                    !hediff.def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_SteelAura) &&
+                    !hediff.def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_IronAura)) {
                     continue;
                 }
 
                 float radius;
                 Material lineMaterial;
                 Dictionary<Verse.Thing, float> thingsToDraw;
-                if (hediff.def.Equals(HediffDefOf.Cosmere_Hediff_Bronze_Aura)) {
+                if (hediff.def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_BronzeAura)) {
                     BronzeAura? bronzeAuraComp = hediff.TryGetComp<BronzeAura>();
                     radius = bronzeAuraComp.props.radius;
                     lineMaterial = bronzeAuraComp.props.lineMaterial;

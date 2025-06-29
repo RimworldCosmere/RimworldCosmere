@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using CosmereFramework.Extension;
-using CosmereScadrial.Ability.Allomancy;
-using CosmereScadrial.Ability.Allomancy.Hediff;
+using CosmereScadrial.Allomancy.Ability;
+using CosmereScadrial.Allomancy.Hediff;
 using CosmereScadrial.Comp.Hediff;
 using CosmereScadrial.Util;
 using Verse;

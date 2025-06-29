@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using CosmereFramework.Extension;
 using CosmereFramework.Util;
-using CosmereScadrial.Ability.Allomancy;
+using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Gene;
 using RimWorld;
 using RimWorld.Planet;

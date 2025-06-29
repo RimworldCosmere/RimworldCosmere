@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_Brass_Aura</defName>
+        <defName>Cosmere_Scadrial_Hediff_BrassAura</defName>
         <label>burning brass: aura</label>
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
         <comps>
-            <li Class="CosmereScadrial.Ability.Allomancy.Hediff.Comp.AllomancyAuraHediffGiverProperties">
-                <hediff>Cosmere_Hediff_Soothed</hediff>
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
+                <hediff>Cosmere_Scadrial_Hediff_Soothed</hediff>
                 <moteDef>Cosmere_Mote_Brass_Aura</moteDef>
                 <verb>soothed</verb>
             </li>
@@ -33,12 +33,12 @@
     </HediffDef>
     
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_Soothed</defName>
+        <defName>Cosmere_Scadrial_Hediff_Soothed</defName>
         <label>soothed</label>
         <description>This pawn has been soothed by a nearby Allomancer burning brass. Their emotions feel more stable and calm.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps Inherit="False">
-            <li Class="CosmereScadrial.Ability.Allomancy.Hediff.Comp.SeverityCalculatorProperties">
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.SeverityCalculatorProperties">
                 <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">

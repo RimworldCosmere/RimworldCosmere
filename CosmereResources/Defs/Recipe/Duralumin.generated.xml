@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Duralumin Alloy Recipe-->
+    <RecipeDef ParentName="Cosmere_Resource_Recipe_AlloyBase">
+        <defName>Cosmere_Make_Alloy_Duralumin</defName>
+        <label>create alloy: duralumin</label>
+        <jobString>Creating alloy: Duralumin</jobString>
+        <ingredients>
+                <li>
+                    <filter>
+                        <thingDefs>
+                                <li>Aluminum</li>
+                        </thingDefs>
+                    </filter>
+                    <count>9</count>
+                </li>
+                <li>
+                    <filter>
+                        <thingDefs>
+                                <li>Copper</li>
+                        </thingDefs>
+                    </filter>
+                    <count>1</count>
+                </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                        <li>Aluminum</li>
+                        <li>Copper</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+                <Duralumin>10</Duralumin>
+        </products>
+    </RecipeDef>
+</Defs>

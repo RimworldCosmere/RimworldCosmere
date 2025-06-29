@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialCadmium</defName>
+        <label>misting vial: pulser</label>
+        <description>A vial containing Cadmium suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(170, 132, 121)</color>
+        </graphicData>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Cadmium</metal>
+            </li>
+        </modExtensions>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialCadmium</orderedTakeGroup>
+    </ThingDef>
+
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialCadmium</defName>
+        <label>craft misting vial: pulser</label>
+        <description>Create a vial of Cadmium infused alcohol for use by Mistborns and pulsers.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Cadmium</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Cadmium</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <Cosmere_Scadrial_Thing_AllomanticVialCadmium>8</Cosmere_Scadrial_Thing_AllomanticVialCadmium>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialCadmium</defName>
+        <label>allomantic vial: cadmium</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
+</Defs>

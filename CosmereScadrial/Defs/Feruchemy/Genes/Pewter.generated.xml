@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Ferring: Pewter -->
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_FerringPewter</defName>
+
+        <label>pewter ferring</label>
+        <labelShortAdj>brute</labelShortAdj>
+
+        <description>Stores physical strength, tapping grants bursts of power.</description>
+
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>5</displayOrderInCategory>
+
+        <resourceLabel>pewter</resourceLabel>
+        <resourceDescription>Group: physical\n\nStores physical strength, tapping grants bursts of power.</resourceDescription>
+
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_FerringPewter</def>
+            </li>
+        </forcedTraits>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Pewter</metal>
+            </li>
+        </modExtensions>
+
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Pewter</iconPath>
+    </GeneDef>
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_FerringPewter</defName>
+        <label>brute</label>
+        <description>Stores physical strength, tapping grants bursts of power.</description>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Pewter</metal>
+            </li>
+        </modExtensions>
+
+        <degreeDatas>
+            <li>
+                <label>ferring: brute</label>
+                <description>Stores physical strength, tapping grants bursts of power.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

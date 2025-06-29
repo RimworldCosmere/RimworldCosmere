@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialSteel</defName>
+        <label>misting vial: coinshot</label>
+        <description>A vial containing Steel suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(109, 108, 108)</color>
+        </graphicData>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Steel</metal>
+            </li>
+        </modExtensions>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialSteel</orderedTakeGroup>
+    </ThingDef>
+
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialSteel</defName>
+        <label>craft misting vial: coinshot</label>
+        <description>Create a vial of Steel infused alcohol for use by Mistborns and coinshots.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Steel</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Steel</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <Cosmere_Scadrial_Thing_AllomanticVialSteel>8</Cosmere_Scadrial_Thing_AllomanticVialSteel>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialSteel</defName>
+        <label>allomantic vial: steel</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
+</Defs>

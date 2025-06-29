@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_Bronze_Aura</defName>
+        <defName>Cosmere_Scadrial_Hediff_BronzeAura</defName>
         <label>seeking pulses</label>
         <description>The Allomancer is burning bronze, sensing the pulses of nearby Allomantic powers in its radius.</description>
         <comps>
-            <li Class="CosmereScadrial.Ability.Allomancy.Hediff.Comp.BronzeAuraProperties" />
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.BronzeAuraProperties" />
         </comps>
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">

@@ -9,7 +9,7 @@
         <label>steel sight</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.\nEach line points toward a metal object — coin, armor, blade — waiting to be pushed.\nThese lines shimmer with the tension of potential force, visible only to those burning Steel.</description>
         <metal>Steel</metal>
-        <hediff>Cosmere_Hediff_Steel_Aura</hediff>
+        <hediff>Cosmere_Scadrial_Hediff_SteelAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
     </CosmereScadrial.Def.AllomanticAbilityDef>
     <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
@@ -18,10 +18,10 @@
         <label>steel jump</label>
         <description>Uses a downward push to leap forward. Useful for quick escapes or aggressive repositioning.</description>
         <metal>Steel</metal>
-        <hediff>Cosmere_Hediff_Steel_Jump</hediff>
+        <hediff>Cosmere_Scadrial_Hediff_SteelJump</hediff>
         <cooldownTicksRange>60</cooldownTicksRange> <!-- Takes 1 second to jump -->
         <verbProperties Inherit="False">
-            <verbClass>CosmereScadrial.Ability.Allomancy.Verb.SteelJump</verbClass>
+            <verbClass>CosmereScadrial.Allomancy.Verb.SteelJump</verbClass>
             <label>jump</label>
             <violent>false</violent>
             <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
@@ -37,7 +37,7 @@
         </verbProperties>
         <jobDef>CastJump</jobDef>
         <comps>
-            <li Class="CosmereScadrial.Comp.Ability.MetalCostProperties" />
+            <li Class="CosmereScadrial.Allomancy.Comp.Ability.MetalCostProperties" />
         </comps>
         <beuPerTick>0.002</beuPerTick>
     </CosmereScadrial.Def.AllomanticAbilityDef>
@@ -47,14 +47,14 @@
         <label>steel bubble</label>
         <description>Creates a swirling field of Steel lines that subtly deflect projectiles, making the Allomancer harder to hit with ranged attacks.</description>
         <metal>Steel</metal>
-        <hediff>Cosmere_Hediff_Steel_Bubble</hediff>
+        <hediff>Cosmere_Scadrial_Hediff_SteelBubble</hediff>
         <burningMote>Cosmere_Scadrial_Steel_Bubble</burningMote>
         <beuPerTick>0.0004</beuPerTick>
     </CosmereScadrial.Def.AllomanticAbilityDef>
     <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Scadrial_Ability_SteelPush</defName>
-        <abilityClass>CosmereScadrial.Ability.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
+        <abilityClass>CosmereScadrial.Allomancy.Ability.ExternalPhysicalTargetAbility</abilityClass>
         <label>steel push</label>
         <description>By burning steel, the Allomancer projects invisible lines of force toward nearby sources of metal, pushing against them with immense power. A skilled practitioner can hurl weapons from foes’ hands, send enemies tumbling, or launch themselves through the air when braced properly.</description>
         <cooldownTicksRange>
@@ -78,7 +78,7 @@
     <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
         <groupDef>Cosmere_Scadrial_Steel</groupDef>
         <defName>Cosmere_Scadrial_Ability_SteelCoinshot</defName>
-        <abilityClass>CosmereScadrial.Ability.Allomancy.CoinshotAbility</abilityClass>
+        <abilityClass>CosmereScadrial.Allomancy.Ability.CoinshotAbility</abilityClass>
 		<jobDef>UseVerbOnThing</jobDef>
         <label>push coin</label>
         <description>Pushes a Clip at incredible speed toward the target.</description>
@@ -88,7 +88,7 @@
         </cooldownTicksRange>
         <metal>Steel</metal>
         <verbProperties>
-            <verbClass>CosmereScadrial.Ability.Allomancy.Verb.Coinshot</verbClass>
+            <verbClass>CosmereScadrial.Allomancy.Verb.Coinshot</verbClass>
             <drawAimPie>true</drawAimPie>
             <requireLineOfSight>true</requireLineOfSight>
             <defaultCooldownTime>.25</defaultCooldownTime>

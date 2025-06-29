@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <TraitDef Name="AbstractMetallicArtsInvestitureTrait" Abstract="True">
+    <commonality>0</commonality>
+  </TraitDef>
+  <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+    <defName>Cosmere_Scadrial_Trait_Metalborn</defName>
+    <label>metalborn</label>
+    <description>This person was born with one or more of the Metallic Arts.</description>
+    <degreeDatas>
+      <li>
+        <label>metalborn</label>
+        <description>This person is a user of the Metallic Arts.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+  <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+    <defName>Cosmere_Scadrial_Trait_Allomancer</defName>
+    <label>allomancer</label>
+    <description>This person was born with one or more of the Allomantic powers.</description>
+    <degreeDatas>
+      <li>
+        <label>Allomancer</label>
+        <description>This person is an Allomancer.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+  <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+    <defName>Cosmere_Scadrial_Trait_Feruchemist</defName>
+    <label>Feruchemist</label>
+    <description>This person was born with one or more of the Feruchemist powers.</description>
+    <degreeDatas>
+      <li>
+        <label>Feruchemist</label>
+        <description>This person is a Feruchemist.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+  
+  <TraitDef>
+    <defName>Cosmere_Scadrial_Trait_DormantMetalborn</defName>
+    <label>Dormant Connection</label>
+    <description>This pawn is attuned to a Shard’s power, though they’ve yet to tap it. A traumatic event may awaken their abilities.</description>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>Dormant Connection</label>
+        <description>This pawn is attuned to a Shard’s power, though they’ve yet to tap it. A traumatic event may awaken their abilities.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+</Defs>

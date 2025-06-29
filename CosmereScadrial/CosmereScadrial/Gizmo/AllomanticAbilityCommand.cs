@@ -1,4 +1,4 @@
-using CosmereScadrial.Ability.Allomancy;
+using CosmereScadrial.Allomancy.Ability;
 using RimWorld;
 using Verse;
 

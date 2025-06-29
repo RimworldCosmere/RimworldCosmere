@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialElectrum</defName>
+        <label>misting vial: oracle</label>
+        <description>A vial containing Electrum suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(182, 156, 82)</color>
+        </graphicData>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Electrum</metal>
+            </li>
+        </modExtensions>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialElectrum</orderedTakeGroup>
+    </ThingDef>
+
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialElectrum</defName>
+        <label>craft misting vial: oracle</label>
+        <description>Create a vial of Electrum infused alcohol for use by Mistborns and oracles.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Electrum</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Electrum</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <Cosmere_Scadrial_Thing_AllomanticVialElectrum>8</Cosmere_Scadrial_Thing_AllomanticVialElectrum>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialElectrum</defName>
+        <label>allomantic vial: electrum</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
+</Defs>

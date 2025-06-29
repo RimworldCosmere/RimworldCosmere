@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="AbstractAllomanticVial">
+        <defName>Cosmere_Scadrial_Thing_AllomanticVialDuralumin</defName>
+        <label>misting vial: gnat (duralumin)</label>
+        <description>A vial containing Duralumin suspended in alcohol, used in allomancy.</description>
+        <graphicData>
+            <color>(127, 113, 115)</color>
+        </graphicData>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Duralumin</metal>
+            </li>
+        </modExtensions>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialDuralumin</orderedTakeGroup>
+    </ThingDef>
+
+    <RecipeDef ParentName="AbstractCraftAllomanticVial">
+        <defName>Cosmere_Scadrial_Recipe_CraftAllomanticVialDuralumin</defName>
+        <label>craft misting vial: gnat (duralumin)</label>
+        <description>Create a vial of Duralumin infused alcohol for use by Mistborns and gnat (duralumin)s.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Duralumin</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Duralumin</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <Cosmere_Scadrial_Thing_AllomanticVialDuralumin>8</Cosmere_Scadrial_Thing_AllomanticVialDuralumin>
+        </products>
+    </RecipeDef>
+
+    <OrderedTakeGroupDef>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVialDuralumin</defName>
+        <label>allomantic vial: duralumin</label>
+        <max>20</max>
+    </OrderedTakeGroupDef>
+</Defs>

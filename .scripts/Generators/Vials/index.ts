@@ -6,7 +6,7 @@ import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {SCADRIAL_MOD_DIR} from '../../constants';
 
 const template = compileTemplate(__dirname, 'VialDef.xml.template');
-const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Things', 'Vials');
+const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Allomancy', 'Things', 'Vials');
 
 const thingDefOfVialTemplate = compileTemplate(__dirname, 'ThingDefOf.Vial.cs.template');
 const CosmereScadrial = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');

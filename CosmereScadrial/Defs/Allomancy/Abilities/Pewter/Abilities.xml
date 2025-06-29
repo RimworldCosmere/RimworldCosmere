@@ -7,7 +7,7 @@
         <canBurnWhileDowned>true</canBurnWhileDowned>
         <description>Burn pewter to enhance physical power and resilience for a short duration.</description>
         <metal>Pewter</metal>
-        <hediff>Cosmere_Hediff_Pewter_Buff</hediff>
-        <dragHediff>Cosmere_Hediff_Pewter_Drag</dragHediff>
+        <hediff>Cosmere_Scadrial_Hediff_PewterBuff</hediff>
+        <dragHediff>Cosmere_Scadrial_Hediff_PewterDrag</dragHediff>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

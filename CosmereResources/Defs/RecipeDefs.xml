@@ -156,7 +156,7 @@
     <!-- Glass Recipes -->
     <RecipeDef>
         <defName>MakeGlass</defName>
-        <label>Make Glass</label>
+        <label>make glass</label>
         <description>Melt various stone chunks into glass.</description>
         <jobString>Making glass.</jobString>
         <workAmount>1500</workAmount>

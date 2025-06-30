@@ -21,27 +21,11 @@ public static class ThingExtension {
 
     public static bool CanBeEquippedBy(this Thing thing, Pawn pawn) {
         if (thing.def.apparel != null) {
-            if (!pawn.apparel.CanWearWithoutDroppingAnything(thing.def)) {
-                return false;
-            }
-
-            if (HasConflictInApparelSlot(pawn, thing)) {
-                return false;
-            }
-
-            return true;
+            return pawn.apparel.CanWearWithoutDroppingAnything(thing.def) && !HasConflictInApparelSlot(pawn, thing);
         }
 
         if (thing.TryGetComp<CompEquippable>() != null) {
-            if (!EquipmentUtility.CanEquip(thing, pawn)) {
-                return false;
-            }
-
-            if (HasConflictInEquipmentSlot(pawn, thing)) {
-                return false;
-            }
-
-            return true;
+            return EquipmentUtility.CanEquip(thing, pawn) && !HasConflictInEquipmentSlot(pawn, thing);
         }
 
         return false;
@@ -56,7 +40,7 @@ public static class ThingExtension {
             return thing is { Spawned: true, Map: not null }
                 ? Math.Min(val1, thing.Map.reservationManager.CanReserveStack(pawn, thing, 10))
                 : val1;
-        } catch (Exception e) {
+        } catch (Exception) {
             return desired;
         }
     }

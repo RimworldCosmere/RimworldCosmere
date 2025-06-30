@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
-    <RecipeDef Name="Cosmere_Resource_Recipe_AlloyBase" Abstract="true">
+    <!--<RecipeDef Name="Cosmere_Resource_Recipe_AlloyBase" Abstract="true">
         <workAmount>1500</workAmount>
         <workSpeedStat>SmeltingSpeed</workSpeedStat>
         <workSkill>Crafting</workSkill>
@@ -12,10 +12,7 @@
             <li>ElectricSmelter</li>
             <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
         </recipeUsers>
-        <researchPrerequisites>
-            <li>Cosmere_Alloys</li>
-        </researchPrerequisites>
-    </RecipeDef>
+    </RecipeDef>-->
 
     <!--RecipeDef>
         <defName>Cosmere_Resources_Recipe_SmeltAlloys</defName>
@@ -154,7 +151,7 @@
     </RecipeDef>
     
     <!-- Glass Recipes -->
-    <RecipeDef>
+    <!--<RecipeDef>
         <defName>MakeGlass</defName>
         <label>make glass</label>
         <description>Melt various stone chunks into glass.</description>
@@ -183,11 +180,11 @@
                 <li>StoneChunks</li>
             </categories>
         </fixedIngredientFilter>
-        <researchPrerequisite>Smithing</researchPrerequisite>
+        <researchPrerequisite>Cosmere_Glass</researchPrerequisite>
         <recipeUsers>
             <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
             <li>ElectricSmithy</li>
             <li>FueledSmithy</li>
         </recipeUsers>
-    </RecipeDef>
+    </RecipeDef>-->
 </Defs>

@@ -72,8 +72,9 @@ export class MetalMiningInfo {
 }
 
 interface AlloyInput {
+    type: 'simple' | 'complex';
     ingredients: {
-        item: string|string[];
+        item: string | string[];
         count: number;
     }[];
     stuff?: string | string[];
@@ -89,8 +90,10 @@ export class MetalAlloyInfo {
     public Stuff?: string[];
     public StuffCount?: number;
     public Products: MetalAlloyProduct[];
+    public Type: 'simple' | 'complex';
 
-    public constructor({ingredients, stuff, stuffCount, products = [{count: 10}]}: AlloyInput) {
+    public constructor({type, ingredients, stuff, stuffCount, products = [{count: 10}]}: AlloyInput) {
+        this.Type = type;
         this.Ingredients = ingredients.map(i => new MetalAlloyIngredient({
             Items: i.item ? (Array.isArray(i.item) ? i.item : [i.item]) : undefined,
             Count: i.count,

@@ -53,7 +53,7 @@ export default function () {
     console.log("Generating Alloy Item RecipeDef");
     const alloys = Object.values(MetalRegistry.Metals).filter((x) => x.Alloy !== undefined && !x.GodMetal);
     for (const metal of alloys) {
-        writeGeneratedFile(alloyRecipeOutputDir, upperFirst(metal.Name) + '.generated.xml', alloyRecipeTemplate({metal}));
+        //writeGeneratedFile(alloyRecipeOutputDir, upperFirst(metal.Name) + '.generated.xml', alloyRecipeTemplate({metal}));
     }
 }
 

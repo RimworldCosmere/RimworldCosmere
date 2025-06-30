@@ -1,21 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 	<ResearchProjectDef>
-		<defName>Cosmere_Alloys</defName>
-		<label>Metal Alloys</label>
-		<description>Combine metals in unique combinations to make new alloys.</description>
-		<baseCost>600</baseCost>
+		<defName>Cosmere_Simple_Alloys</defName>
+		<label>simple metal alloys</label>
+		<description>Combine metals in unique combinations to make new simple alloys.</description>
+		<baseCost>300</baseCost>
 		<techLevel>Medieval</techLevel>
-		<researchViewX>2.00</researchViewX>
-		<researchViewY>1.00</researchViewY>
+		<researchViewX>0.00</researchViewX>
+		<researchViewY>5.60</researchViewY>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Complex_Alloys</defName>
+		<label>complex metal alloys</label>
+		<description>Combine metals in unique combinations to make new complex alloys.</description>
+		<baseCost>1200</baseCost>
+		<techLevel>Industrial</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>5.60</researchViewY>
+		<prerequisites>
+			<li>Smithing</li>
+			<li>Cosmere_Simple_Alloys</li>
+		</prerequisites>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_God_Metals</defName>
-		<label>God Metals</label>
+		<tab>Cosmere</tab>
+		<label>god metals</label>
 		<description>Learn about the God Metals</description>
 		<baseCost>3600</baseCost>
-		<techLevel>Industrial</techLevel>
-		<researchViewX>2.00</researchViewX>
-		<researchViewY>2.00</researchViewY>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>0.00</researchViewX>
+		<researchViewY>0.70</researchViewY>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Glass</defName>
+		<label>glass</label>
+		<description>Melt stones into glass</description>
+		<baseCost>1800</baseCost>
+		<techLevel>Medieval</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>2.80</researchViewY>
 	</ResearchProjectDef>
 </Defs>

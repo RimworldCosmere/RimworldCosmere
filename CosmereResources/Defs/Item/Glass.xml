@@ -43,6 +43,34 @@
                 <Flammability>0.2</Flammability>
             </statFactors>
         </stuffProps>
+        <recipeMaker>
+            <workAmount>750</workAmount>
+            <workSpeedStat>SmeltingSpeed</workSpeedStat>
+            <workSkill>Crafting</workSkill>
+            <requiredGiverWorkType>Smithing</requiredGiverWorkType>
+            <effectWorking>Smith</effectWorking>
+            <soundWorking>Recipe_Smelt</soundWorking>
+            <researchPrerequisite>Cosmere_Glass</researchPrerequisite>
+            <skillRequirements>
+                <Crafting>3</Crafting>
+            </skillRequirements>
+            <recipeUsers>
+                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
+                <li>ElectricSmithy</li>
+                <li>FueledSmithy</li>
+                <li>Campfire</li>
+            </recipeUsers>
+            <productCount>4</productCount>
+            <defaultIngredientFilter>
+                <categories>
+                    <li>StoneChunks</li>
+                </categories>
+            </defaultIngredientFilter>
+        </recipeMaker>
+        <stuffCategories>
+            <li>Stony</li>
+        </stuffCategories>
+        <costStuffCount>1</costStuffCount>
     </ThingDef>
 
 </Defs>

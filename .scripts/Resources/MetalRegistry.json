@@ -78,6 +78,7 @@
       "commonality": 0.8
     },
     "alloy": {
+      "type": "simple",
       "ingredients": [
         {
           "item": [
@@ -166,6 +167,7 @@
       "items": false
     },
     "alloy": {
+      "type": "simple",
       "ingredients": [
         {
           "item": "tin",
@@ -253,6 +255,7 @@
       "commonality": 0.2
     },
     "alloy": {
+      "type": "simple",
       "ingredients": [
         {
           "item": "copper",
@@ -339,6 +342,7 @@
       "commonality": 0.2
     },
     "alloy": {
+      "type": "simple",
       "ingredients": [
         {
           "item": "copper",
@@ -424,6 +428,7 @@
       "items": false
     },
     "alloy": {
+      "type": "complex",
       "ingredients": [
         {
           "item": "aluminum",
@@ -508,6 +513,7 @@
       "items": false
     },
     "alloy": {
+      "type": "complex",
       "ingredients": [
         {
           "item": "nickel",
@@ -592,6 +598,7 @@
       "items": false
     },
     "alloy": {
+      "type": "complex",
       "ingredients": [
         {
           "item": "cadmium",
@@ -742,6 +749,7 @@
       "items": false
     },
     "alloy": {
+      "type": "simple",
       "ingredients": [
         {
           "item": "gold",
@@ -815,6 +823,7 @@
       "items": false
     },
     "alloy": {
+      "type": "complex",
       "ingredients": [
         {
           "item": "lerasium",

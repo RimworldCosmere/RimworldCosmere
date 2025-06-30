@@ -16,18 +16,12 @@
         <smeltable>true</smeltable>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
-        
+
         {{#if metal.Alloy}}
         <costList>{{#each metal.Alloy.Ingredients}}{{#each this.Items}}
             <{{capitalize this}}>{{../Count}}</{{capitalize this}}>
-        {{/each}}{{/each}}</costList>
-        {{#if metal.Alloy.Stuff}}
-        <stuffCategories>
-        {{#each metal.Alloy.Stuff}}
-            <li>{{this}}</li>
-        {{/each}}
-        </stuffCategories>
-        <costStuffCount>{{metal.Alloy.StuffCount}}</costStuffCount>
+            {{/each}}{{/each}}
+        </costList>
         <recipeMaker>
             <workAmount>1500</workAmount>
             <workSpeedStat>SmeltingSpeed</workSpeedStat>
@@ -36,18 +30,30 @@
             <effectWorking>Smelt</effectWorking>
             <soundWorking>Recipe_Smelt</soundWorking>
             <researchPrerequisites>
+                {{#if (eq metal.Alloy.Type "simple")}}
+                <li>Cosmere_Simple_Alloys</li>
+                {{else}}
                 <li>Smithing</li>
-                <li>Cosmere_Alloys</li>
+                <li>Cosmere_Complex_Alloys</li>
+                {{/if}}
             </researchPrerequisites>
             <recipeUsers>
                 <li>ElectricSmelter</li>
                 <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
+                {{#if (eq metal.Alloy.Type "simple")}}
+                <li>Campfire</li>
+                {{/if}}
             </recipeUsers>
             <displayPriority>200</displayPriority>
         </recipeMaker>
+        {{#if metal.Alloy.Stuff}}
+        <stuffCategories>
+            {{#each metal.Alloy.Stuff}}<li>{{this}}</li>{{/each}}
+        </stuffCategories>
+        <costStuffCount>{{metal.Alloy.StuffCount}}</costStuffCount>
         {{/if}}
         {{/if}}
-        
+
         <graphicData>
             {{# if metal.Stackable}}
             <graphicClass>Graphic_StackCount</graphicClass>
@@ -57,7 +63,7 @@
             <drawSize>{{metal.DrawSize}}</drawSize>
             <texPath>Item/Resource/{{capitalize metal.Name}}</texPath>
         </graphicData>
-        
+
         <stuffProps>
             <commonality>{{#if metal.Buildable.Commonality}}{{metal.Buildable.Commonality}}{{else}}0.0{{/if}}</commonality>
             <color>{{rgb metal.Color}}</color>
@@ -74,12 +80,12 @@
             </categories>
             <appearance>Metal</appearance>
         </stuffProps>
-        
+
         <statBases>
             <Mass>0.5</Mass>
             <MarketValue>{{metal.MarketValue}}</MarketValue>
         </statBases>
-        
+
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>{{capitalize metal.Name}}</metal>

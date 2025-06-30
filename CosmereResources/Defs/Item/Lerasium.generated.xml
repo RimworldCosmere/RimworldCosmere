@@ -16,14 +16,14 @@
         <smeltable>true</smeltable>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
-        
-        
+
+
         <graphicData>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>1</drawSize>
             <texPath>Item/Resource/Lerasium</texPath>
         </graphicData>
-        
+
         <stuffProps>
             <commonality>0.0</commonality>
             <color>(132, 159, 106)</color>
@@ -33,12 +33,12 @@
             </categories>
             <appearance>Metal</appearance>
         </stuffProps>
-        
+
         <statBases>
             <Mass>0.5</Mass>
             <MarketValue>10000</MarketValue>
         </statBases>
-        
+
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Lerasium</metal>

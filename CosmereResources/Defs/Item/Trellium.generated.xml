@@ -16,19 +16,37 @@
         <smeltable>true</smeltable>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
-        
+
         <costList>
             <Lerasium>1</Lerasium>
-        
+            
             <Atium>1</Atium>
+            
         </costList>
-        
+        <recipeMaker>
+            <workAmount>1500</workAmount>
+            <workSpeedStat>SmeltingSpeed</workSpeedStat>
+            <workSkill>Crafting</workSkill>
+            <requiredGiverWorkType>Smithing</requiredGiverWorkType>
+            <effectWorking>Smelt</effectWorking>
+            <soundWorking>Recipe_Smelt</soundWorking>
+            <researchPrerequisites>
+                <li>Smithing</li>
+                <li>Cosmere_Complex_Alloys</li>
+            </researchPrerequisites>
+            <recipeUsers>
+                <li>ElectricSmelter</li>
+                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
+            </recipeUsers>
+            <displayPriority>200</displayPriority>
+        </recipeMaker>
+
         <graphicData>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>1</drawSize>
             <texPath>Item/Resource/Trellium</texPath>
         </graphicData>
-        
+
         <stuffProps>
             <commonality>0.0</commonality>
             <color>(148, 0, 37)</color>
@@ -38,12 +56,12 @@
             </categories>
             <appearance>Metal</appearance>
         </stuffProps>
-        
+
         <statBases>
             <Mass>0.5</Mass>
             <MarketValue>10000</MarketValue>
         </statBases>
-        
+
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Trellium</metal>

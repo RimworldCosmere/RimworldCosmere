@@ -1,7 +1,7 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
-using RimWorld;{{#ifEquals kind "Gene"}}
-using Verse;{{/ifEquals}}
+using RimWorld;{{#if (eq kind "Gene")}}
+using Verse;{{/if}}
 
 namespace CosmereScadrial;
 

@@ -29,8 +29,8 @@ public class AllomanticHediff : HediffWithComps {
 
     public SeverityCalculator severityCalculator => GetComp<SeverityCalculator>();
 
-    public event Action<AllomanticHediff, AbstractAbility> OnSourceAdded;
-    public event Action<AllomanticHediff, AbstractAbility> OnSourceRemoved;
+    public event Action<AllomanticHediff, AbstractAbility>? OnSourceAdded;
+    public event Action<AllomanticHediff, AbstractAbility>? OnSourceRemoved;
 
     public override void PostRemoved() {
         base.PostRemoved();

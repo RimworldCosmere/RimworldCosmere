@@ -6,7 +6,7 @@ namespace CosmereScadrial.Util;
 public class SnapUtility {
     public static ThoughtDef snappedThought = ThoughtDefOf.Cosmere_Scadrial_Snapped;
 
-    public static void TrySnap(Pawn pawn, string cause = "", bool withMessage = true) {
+    public static void TrySnap(Pawn pawn, string? cause = "", bool withMessage = true) {
         if (IsSnapped(pawn)) return;
 
         pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(snappedThought);

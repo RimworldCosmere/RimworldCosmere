@@ -6,6 +6,8 @@ namespace CosmereScadrial.Extension;
 
 public static class MetalDefExtension {
     public static MetallicArtsMetalDef ToMetallicArts(this MetalDef def) {
+        if (def is MetallicArtsMetalDef metallicArtsMetal) return metallicArtsMetal;
+
         return MetallicArtsMetalDef.FromMetalDef(def);
     }
 

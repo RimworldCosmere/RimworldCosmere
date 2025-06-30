@@ -10,10 +10,16 @@ public class Clip : Bullet {
 
     public override int DamageAmount => cachedDamageAmount;
 
-    public override void Launch(Verse.Thing launcher, Vector3 origin, LocalTargetInfo usedTarget,
+    public override void Launch(
+        Verse.Thing launcher,
+        Vector3 origin,
+        LocalTargetInfo usedTarget,
         LocalTargetInfo intendedTarget,
-        ProjectileHitFlags hitFlags, bool preventFriendlyFire = false, Verse.Thing equipment = null,
-        ThingDef targetCoverDef = null) {
+        ProjectileHitFlags hitFlags,
+        bool preventFriendlyFire = false,
+        Verse.Thing? equipment = null,
+        ThingDef? targetCoverDef = null
+    ) {
         Pawn? pawn = launcher as Pawn;
         if (pawn == null) return;
 

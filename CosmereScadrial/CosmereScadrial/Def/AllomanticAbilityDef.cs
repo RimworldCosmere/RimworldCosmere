@@ -80,7 +80,7 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
             LongEventHandler.ExecuteWhenFinished(() => {
                 uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
                          metal.invertedIcon;
-                disabledIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
+                disabledIcon = uiIcon!.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
             });
         } else {
             base.PostLoad();

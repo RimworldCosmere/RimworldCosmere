@@ -69,18 +69,18 @@ public class MetallicArtsMetalDef : MetalDef {
 
 public class MetalAllomancyDef {
     public AllomancyAxis? axis;
-    public string description;
+    public string description = "";
     public AllomancyGroup? group;
-    public Texture2D icon;
-    public Texture2D invertedIcon;
+    public Texture2D icon = null!;
+    public Texture2D invertedIcon = null!;
     public AllomancyPolarity? polarity;
     public string? userName;
 }
 
 public class MetalFeruchemyDef {
-    public string description;
+    public string description = "";
     public FeruchemyGroup? group;
-    public Texture2D icon;
-    public Texture2D invertedIcon;
+    public Texture2D icon = null!;
+    public Texture2D invertedIcon = null!;
     public string? userName;
 }

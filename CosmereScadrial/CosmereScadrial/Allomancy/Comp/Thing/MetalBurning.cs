@@ -128,13 +128,13 @@ public class MetalBurning : ThingComp {
             .FirstOrDefault();
     }
 
-    public float GetTotalBurnRate(MetallicArtsMetalDef metal = null) {
+    public float GetTotalBurnRate(MetallicArtsMetalDef? metal = null) {
         MetallicArtsMetalDef[] metals = metal == null ? burnSources.Keys.ToArray() : [metal];
 
         return metals.Sum(x => burnSources.TryGetValue(x, out List<float>? list) ? list.Sum() : 0f);
     }
 
-    public bool IsBurning(MetallicArtsMetalDef metal = null) {
+    public bool IsBurning(MetallicArtsMetalDef? metal = null) {
         return GetTotalBurnRate(metal) > 0f;
     }
 

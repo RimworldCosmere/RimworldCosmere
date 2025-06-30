@@ -11,8 +11,8 @@ namespace CosmereScadrial.Allomancy.Ability;
 public class TimeAbility : AbilitySelfTarget {
     private const int BaseRadius = 3;
     private readonly List<Pawn> pawnsInBubble = [];
-    private Mote bubble;
-    private Mote bubbleWithDistortion;
+    private Mote? bubble;
+    private Mote? bubbleWithDistortion;
 
     public TimeAbility() {
         status = BurningStatus.Off;
@@ -60,8 +60,8 @@ public class TimeAbility : AbilitySelfTarget {
 
     protected override void OnDisable() {
         base.OnDisable();
-        if (!bubble.Destroyed) bubble.Destroy();
-        if (!bubbleWithDistortion.Destroyed) bubbleWithDistortion.Destroy();
+        if (!bubble?.Destroyed ?? false) bubble?.Destroy();
+        if (!bubbleWithDistortion?.Destroyed ?? false) bubbleWithDistortion?.Destroy();
     }
 
 

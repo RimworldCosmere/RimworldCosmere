@@ -1,4 +1,5 @@
 using CosmereResources.Def;
+using CosmereScadrial.Util;
 using Verse;
 
 namespace CosmereScadrial.Extension;
@@ -18,5 +19,9 @@ public static class PawnExtension {
 
     public static bool IsFerring(this Pawn pawn, MetalDef metal) {
         return pawn.genes.HasFeruchemicGeneForMetal(metal);
+    }
+
+    public static bool IsBurning(this Pawn pawn, MetalDef metal) {
+        return AllomancyUtility.IsBurning(pawn, metal.ToMetallicArts());
     }
 }

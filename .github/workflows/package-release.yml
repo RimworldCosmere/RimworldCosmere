@@ -99,7 +99,7 @@ jobs:
         run: mv $MOD/About/ $MOD/Assemblies/ $MOD/Defs/ $MOD/Languages/ $MOD/Textures/ $TEMP_DIR
 
       - name: Upload Mod Artifacts
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: Cosmere-$MOD-$BRANCH_NAME
           path: |

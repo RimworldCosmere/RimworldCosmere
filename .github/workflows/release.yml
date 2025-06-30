@@ -93,6 +93,10 @@ jobs:
           echo "✅ Generated workshop.vdf:"
           cat "$TEMP_DIR/workshop.vdf"
           
+          ZIP_PATH="${{ github.workspace }}/${MOD}-${BRANCH_NAME}.zip"
+          cd "$TEMP_DIR"
+          zip -r "$ZIP_PATH" .
+          
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
       - name: Upload with SteamCMD
@@ -104,7 +108,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.mod }}-zip
-          path: ${{ env.TEMP_DIR }}
+          path: ${{ github.workspace }}/${{ matrix.mod }}-${{ env.BRANCH_NAME }}.zip
   github-publish:
     needs: github-prepare
     runs-on: ubuntu-latest

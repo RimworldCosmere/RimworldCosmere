@@ -1,59 +1,67 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
-            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
-
+  <Import Project="../../packages/Scriban.6.2.1/build/Scriban.props" Condition="Exists('../../packages/Scriban.6.2.1/build/Scriban.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <ProjectGuid>{6FB30E55-8B7A-4E51-99D6-D110854999AB}</ProjectGuid>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CosmereScadrial</RootNamespace>
+    <AssemblyName>CosmereScadrial</AssemblyName>
+    <ModScript>generate:mod:scadrial</ModScript>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FloatSubMenu">
+      <HintPath>$(WorkshopDir)\2864015430\1.5\Assemblies\FloatSubMenu.dll</HintPath>
+    </Reference>
+    <Reference Include="HugsLib">
+      <HintPath>$(WorkshopDir)\818773962\Assemblies\HugsLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Scriban, Version=6.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\Scriban.6.2.1\lib\netstandard2.0\Scriban.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(RimWorldManagedPath)\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CosmereCore\CosmereCore\CosmereCore.csproj">
+      <Project>{5f1d8c6d-e127-4001-a575-e56d99df271f}</Project>
+      <Name>CosmereCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj">
+      <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
+      <Name>CosmereFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CosmereMetals\CosmereMetals\CosmereMetals.csproj">
+      <Project>{69b78f0c-63e1-47a1-9fd4-b5cce63d727f}</Project>
+      <Name>CosmereMetals</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-        <ProjectGuid>{6FB30E55-8B7A-4E51-99D6-D110854999AB}</ProjectGuid>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>CosmereScadrial</RootNamespace>
-        <AssemblyName>CosmereScadrial</AssemblyName>
-        <ModScript>generate:mod:scadrial</ModScript>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
     </PropertyGroup>
-
-
-    <ItemGroup>
-        <Reference Include="FloatSubMenu">
-            <HintPath>$(WorkshopDir)/2864015430/1.5/Assemblies/FloatSubMenu.dll</HintPath>
-        </Reference>
-        <Reference Include="HugsLib">
-            <HintPath>$(WorkshopDir)/818773962/Assemblies/HugsLib.dll</HintPath>
-        </Reference>
-        <Reference Include="Microsoft.CSharp"/>
-        <Reference Include="System"/>
-        <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-            <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-            <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Xml"/>
-        <Reference Include="UnityEngine.InputLegacyModule">
-            <HintPath>$(RimWorldManagedPath)/UnityEngine.InputLegacyModule.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\CosmereCore\CosmereCore\CosmereCore.csproj">
-            <Project>{5f1d8c6d-e127-4001-a575-e56d99df271f}</Project>
-            <Name>CosmereCore</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj">
-            <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
-            <Name>CosmereFramework</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\..\CosmereMetals\CosmereMetals\CosmereMetals.csproj">
-            <Project>{69b78f0c-63e1-47a1-9fd4-b5cce63d727f}</Project>
-            <Name>CosmereMetals</Name>
-        </ProjectReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="packages.config"/>
-    </ItemGroup>
-
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+    <Error Condition="!Exists('../../packages/Scriban.6.2.1/build/Scriban.props')" Text="$([System.String]::Format('$(ErrorText)', '../../packages/Scriban.6.2.1/build/Scriban.props'))" />
+    <Error Condition="!Exists('../../packages/Scriban.6.2.1/build/Scriban.targets')" Text="$([System.String]::Format('$(ErrorText)', '../../packages/Scriban.6.2.1/build/Scriban.targets'))" />
+  </Target>
+  <Import Project="../../packages/Scriban.6.2.1/build/Scriban.targets" Condition="Exists('../../packages/Scriban.6.2.1/build/Scriban.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
            Other similar extension points exist, see Microsoft.Common.targets.
     -->
 </Project>

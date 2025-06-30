@@ -106,6 +106,7 @@ jobs:
           cat "$TEMP_DIR/workshop.vdf"
           
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
+          echo "Output Path: $TEMP_DIR"
 
       - name: Upload Mod Artifacts
         uses: actions/upload-artifact@v4.6.2

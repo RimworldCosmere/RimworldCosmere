@@ -107,6 +107,7 @@ jobs:
           
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
           echo "Output Path: $TEMP_DIR"
+          ls -lha $TEMP_DIR $TEMP_DIR/*
 
       - name: Move files
         run: mv $MOD/About/ $MOD/Assemblies/ $MOD/Defs/ $MOD/Patches/ $MOD/Languages/ $MOD/Textures/ $TEMP_DIR

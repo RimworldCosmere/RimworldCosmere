@@ -53,31 +53,8 @@
     </ItemDefinitionGroup>
 
     <ItemGroup>
-        <Reference Include="Assembly-CSharp">
-            <HintPath>$(RimWorldManagedPath)\Assembly-CSharp.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.CoreModule">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.CoreModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.IMGUIModule">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.IMGUIModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.TextRenderingModule">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.TextRenderingModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UIElementsModule">
-            <HintPath>$(RimWorldManagedPath)\UnityEngine.UIElementsModule.dll</HintPath>
-        </Reference>
-
-        <Reference Include="0Harmony">
-            <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
-        </Reference>
-        <Reference Include="HarmonyMod">
-            <HintPath>$(WorkshopDir)\2009463077\Current\Assemblies\HarmonyMod.dll</HintPath>
-        </Reference>
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4503-beta"/>
+        <PackageReference Include="Lib.Harmony" Version="2.3.6"/>
 
         <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj"/>
         <ProjectReference Include="..\..\CosmereResources\CosmereResources\CosmereResources.csproj"/>

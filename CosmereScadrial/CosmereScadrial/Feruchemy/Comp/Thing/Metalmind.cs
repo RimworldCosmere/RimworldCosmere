@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CosmereResources.Def;
@@ -11,21 +10,9 @@ namespace CosmereScadrial.Feruchemy.Comp.Thing;
 
 public class MetalmindProperties : CompProperties {
     public float maxAmount;
-    public HediffDef storeHediff;
-    public HediffDef tapHediff;
 
     public MetalmindProperties() {
         compClass = typeof(Metalmind);
-    }
-
-    public override IEnumerable<string> ConfigErrors(ThingDef parentDef) {
-        if (tapHediff == null) {
-            yield return "tapHediff is null";
-        }
-
-        if (storeHediff == null) {
-            yield return "storeHediff is null";
-        }
     }
 }
 

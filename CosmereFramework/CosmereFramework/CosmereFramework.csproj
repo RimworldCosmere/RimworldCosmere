@@ -17,7 +17,7 @@
         <AnalysisLevel>latest</AnalysisLevel>
         <WarningLevel>4</WarningLevel>
         <ErrorReport>prompt</ErrorReport>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>

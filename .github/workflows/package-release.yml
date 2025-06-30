@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        mod: ${{ fromJson(needs.prepare.outputs.mods) }}
+        mod: ${{ fromJson(needs.github-prepare.outputs.mods) }}
       max-parallel: 1
     
     env:

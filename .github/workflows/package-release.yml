@@ -30,7 +30,6 @@ jobs:
             # Only include changed Cosmere mods
             mods=$(echo "$changed" | grep '^Cosmere[^/]\+/' | cut -d/ -f1 | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
           fi
-          
           echo "mods=$mods" >> "$GITHUB_OUTPUT"
 
   github-publish:

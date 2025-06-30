@@ -1,7 +1,7 @@
 using System.Linq;
 using CosmereScadrial.Allomancy.Hediff;
 using CosmereScadrial.Def;
-using CosmereScadrial.Util;
+using CosmereScadrial.Extension;
 using RimWorld;
 using Verse;
 
@@ -18,10 +18,10 @@ public class TimeBubbleProperties : CompProperties_ThingContainer {
 }
 
 public class TimeBubble : ThingComp {
-    public MetallicArtsMetalDef? metal = null;
+    private readonly MetallicArtsMetalDef? metal = null;
     private int ticksAlive;
     public Pawn? owner { get; set; }
-    private TimeBubbleProperties props => (TimeBubbleProperties)base.props;
+    private new TimeBubbleProperties props => (TimeBubbleProperties)base.props;
 
     private HediffDef? hediffToApply => metal?.defName switch {
         "Cadmium" => HediffDefOf.Cosmere_Scadrial_Hediff_TimeBubbleCadmium,
@@ -36,7 +36,7 @@ public class TimeBubble : ThingComp {
 
         ticksAlive++;
 
-        if (owner == null || owner.Dead || owner.Map != parent.Map || !IsBurningMetal(owner)) {
+        if (owner == null || owner.Dead || owner.Map != parent.Map || !owner.IsBurning(metal)) {
             parent.Destroy();
             return;
         }
@@ -57,10 +57,6 @@ public class TimeBubble : ThingComp {
             hediff.Severity = 1.0f;
             pawn.health.AddHediff(hediff);
         }
-    }
-
-    private bool IsBurningMetal(Pawn pawn) {
-        return AllomancyUtility.IsBurning(pawn, metal);
     }
 
     private float GetSeverity(Pawn pawn) {

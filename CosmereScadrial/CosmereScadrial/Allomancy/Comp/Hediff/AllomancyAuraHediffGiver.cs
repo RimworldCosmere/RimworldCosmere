@@ -15,26 +15,26 @@ using static CosmereFramework.CosmereFramework;
 namespace CosmereScadrial.Allomancy.Comp.Hediff;
 
 public class AllomancyAuraHediffGiverProperties : HediffCompProperties, IMultiTypeHediff {
-    public HediffDef hediff;
-    public HediffDef hediffFriendly;
-    public HediffDef hediffHostile;
+    public HediffDef? hediff;
+    public HediffDef? hediffFriendly;
+    public HediffDef? hediffHostile;
     public ThingDef? moteDef;
     public float radius = 12f;
-    public string verb;
+    public string? verb;
 
     public AllomancyAuraHediffGiverProperties() {
         compClass = typeof(AllomancyAuraHediffGiver);
     }
 
-    public HediffDef GetHediff() {
+    public HediffDef? GetHediff() {
         return hediff;
     }
 
-    public HediffDef GetFriendlyHediff() {
+    public HediffDef? GetFriendlyHediff() {
         return hediffFriendly;
     }
 
-    public HediffDef GetHostileHediff() {
+    public HediffDef? GetHostileHediff() {
         return hediffHostile;
     }
 }
@@ -119,7 +119,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
         return mote;
     }
 
-    private void TryAct(Pawn target) {
+    private void TryAct(Pawn? target) {
         if (target?.mindState == null || target.Dead || ability == null) {
             return;
         }

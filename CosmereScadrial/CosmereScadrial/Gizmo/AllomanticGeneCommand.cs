@@ -18,7 +18,8 @@ public class AllomanticGeneCommand(
     Gene_Resource gene,
     List<IGeneResourceDrain> drainGenes,
     Color barColor,
-    Color barHighlightColor) : GeneGizmo_Resource(gene, [], barColor, barHighlightColor) {
+    Color barHighlightColor
+) : GeneGizmo_Resource(gene, drainGenes, barColor, barHighlightColor) {
     private const float AbilityIconSize = Height / 2f;
     private const float BaseWidth = 185;
     private static readonly Vector2 Padding = new Vector2(2f, 4f);
@@ -34,13 +35,13 @@ public class AllomanticGeneCommand(
     private static readonly Texture2D EmptyBarTex = new Color(0.03f, 0.035f, 0.05f).ToSolidColorTexture();
     private static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
     private static bool DraggingBar;
-    private Texture2D barDragTex;
-    private Texture2D barHighlightTex;
-    private Texture2D barTex;
+    private Texture2D? barDragTex;
+    private Texture2D? barHighlightTex;
+    private Texture2D? barTex;
 
     // Things to initialize
     private bool initialized;
-    private IEnumerable<SubGizmo> subgizmos;
+    private IEnumerable<SubGizmo>? subgizmos;
     private float targetValuePct;
 
     private new Allomancer gene => (Allomancer)base.gene;
@@ -96,7 +97,7 @@ public class AllomanticGeneCommand(
         if (!IsDraggable) return;
 
         Rect abilityRect = new Rect(topBarRect.x, topBarRect.y, topBarRect.height, topBarRect.height);
-        foreach (SubGizmo subgizmo in subgizmos) {
+        foreach (SubGizmo subgizmo in subgizmos ?? []) {
             GizmoResult result = subgizmo.OnGUI(abilityRect);
             if (result.State == GizmoState.Interacted) {
                 subgizmo.ProcessInput(result.InteractEvent);

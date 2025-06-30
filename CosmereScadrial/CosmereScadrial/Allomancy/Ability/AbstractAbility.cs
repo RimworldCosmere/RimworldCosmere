@@ -63,7 +63,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
         willBurnWhileDowned = def.canBurnWhileDowned;
     }
 
-    public event Action<AbstractAbility, BurningStatus, BurningStatus> OnStatusChanged;
+    public event Action<AbstractAbility, BurningStatus, BurningStatus>? OnStatusChanged;
 
     public override void AbilityTick() {
         base.AbilityTick();

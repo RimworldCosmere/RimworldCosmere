@@ -16,7 +16,8 @@ public class FeruchemicGeneCommand(
     Gene_Resource gene,
     List<IGeneResourceDrain> drainGenes,
     Color barColor,
-    Color barHighlightColor) : GeneGizmo_Resource(gene, [], barColor, barHighlightColor) {
+    Color barHighlightColor
+) : GeneGizmo_Resource(gene, drainGenes, barColor, barHighlightColor) {
     private const float AbilityIconSize = Height / 2f;
     private const float BaseWidth = 200f;
     private static readonly Vector2 Padding = new Vector2(2f, 4f);
@@ -29,9 +30,9 @@ public class FeruchemicGeneCommand(
     private static readonly Texture2D EmptyBarTex = new Color(0.03f, 0.035f, 0.05f).ToSolidColorTexture();
     private static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
     private static bool DraggingBar;
-    private Texture2D barDragTex;
-    private Texture2D barHighlightTex;
-    private Texture2D barTex;
+    private Texture2D? barDragTex;
+    private Texture2D? barHighlightTex;
+    private Texture2D? barTex;
 
     // Things to initialize
     private bool initialized;

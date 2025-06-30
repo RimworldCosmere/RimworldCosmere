@@ -15,13 +15,12 @@ public class MetalCostProperties : CompProperties_AbilityEffect {
 }
 
 public class MetalCost : CompAbilityEffect {
-    private MetalCostProperties Props => (MetalCostProperties)props;
-    private AbstractAbility Parent => (AbstractAbility)parent;
-    private MetallicArtsMetalDef metal => Parent.def.metal.ToMetallicArts();
+    private new AbstractAbility parent => (AbstractAbility)base.parent;
+    private MetallicArtsMetalDef metal => parent.def.metal.ToMetallicArts();
     private MetalReserves reserves => parent.pawn.GetComp<MetalReserves>();
     private MetalBurning burning => parent.pawn.GetComp<MetalBurning>();
 
-    private float currentCost => Parent.GetDesiredBurnRateForStatus(Parent.nextStatus);
+    private float currentCost => parent.GetDesiredBurnRateForStatus(parent.nextStatus);
 
     private bool hasEnoughMetal => burning.CanBurn(metal, currentCost);
 
@@ -35,7 +34,7 @@ public class MetalCost : CompAbilityEffect {
     }
 
     public override bool GizmoDisabled(out string? reason) {
-        AcceptanceReport canUseMetal = AllomancyUtility.CanUseMetal(parent.pawn, metal);
+        AcceptanceReport canUseMetal = AllomancyUtility.CanUseMetal(((AbilityComp)this).parent.pawn, metal);
         if (!canUseMetal) {
             reason = canUseMetal.Reason;
             return true;

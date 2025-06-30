@@ -126,7 +126,7 @@ jobs:
           ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
 
       - name: Upload Mod Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact
         env:
           MOD: "${{ matrix.mod }}"
         with:

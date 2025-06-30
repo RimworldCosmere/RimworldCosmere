@@ -15,17 +15,6 @@
         </graphicData>
         <techLevel>Medieval</techLevel>
         <tradeability>Sellable</tradeability>
-        <statBases>
-            <Beauty>2</Beauty>
-            <MarketValue>60</MarketValue>
-            <Mass>0.1</Mass>
-            <MaxHitPoints>150</MaxHitPoints>
-            <WorkToMake>3500</WorkToMake>
-            <StuffEffectMultiplierArmor>0.47</StuffEffectMultiplierArmor>
-            <StuffEffectMultiplierInsulation_Cold>0.1</StuffEffectMultiplierInsulation_Cold>
-            <StuffEffectMultiplierInsulation_Heat>0.05</StuffEffectMultiplierInsulation_Heat>
-            <EquipDelay>2</EquipDelay>
-        </statBases>
         <stackLimit>1</stackLimit>
         <stuffCategories>
             <li>Cosmere_Resources_StuffCategory_Metals</li>
@@ -52,16 +41,63 @@
     <ThingDef ParentName="Cosmere_Scadrial_Thing_MetalmindBase">
         <defName>Cosmere_Scadrial_Thing_MetalmindEarring</defName>
         <label>metalmind earring</label>
-        <description>A small earring for storing Feruchemical attributes.</description>
+        <description>A small earring for storing Feruchemical attributes. Stores 25 metal.</description>
         <graphicData>
             <texPath>Things/Pawn/Equipment/Earring</texPath>
         </graphicData>
         <comps>
             <li Class="CosmereScadrial.Feruchemy.Comp.Thing.MetalmindProperties">
                 <maxAmount>25</maxAmount>
-                <tapHediff>Cosmere_Scadrial_Hediff_TapSteel</tapHediff>
-                <storeHediff>Cosmere_Scadrial_Hediff_StoreSteel</storeHediff>
             </li>
         </comps>
+        <statBases>
+            <Beauty>1</Beauty>
+            <MarketValue>20</MarketValue>
+            <Mass>0.05</Mass>
+            <MaxHitPoints>75</MaxHitPoints>
+            <WorkToMake>750</WorkToMake>
+        </statBases>
+    </ThingDef>
+
+    <ThingDef ParentName="Cosmere_Scadrial_Thing_MetalmindBase">
+        <defName>Cosmere_Scadrial_Thing_MetalmindBracelet</defName>
+        <label>metalmind bracelet</label>
+        <description>A bracelet for storing Feruchemical attributes. Stores 75 metal.</description>
+        <graphicData>
+            <texPath>Things/Pawn/Equipment/Earring</texPath>
+        </graphicData>
+        <comps>
+            <li Class="CosmereScadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+                <maxAmount>75</maxAmount>
+            </li>
+        </comps>
+        <statBases>
+            <Beauty>3</Beauty>
+            <MarketValue>60</MarketValue>
+            <Mass>0.15</Mass>
+            <MaxHitPoints>150</MaxHitPoints>
+            <WorkToMake>2250</WorkToMake>
+        </statBases>
+    </ThingDef>
+
+    <ThingDef ParentName="Cosmere_Scadrial_Thing_MetalmindBase">
+        <defName>Cosmere_Scadrial_Thing_MetalmindBand</defName>
+        <label>metalmind band</label>
+        <description>A large band for storing Feruchemical attributes. Stores 150 metal.</description>
+        <graphicData>
+            <texPath>Things/Pawn/Equipment/Earring</texPath>
+        </graphicData>
+        <comps>
+            <li Class="CosmereScadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+                <maxAmount>150</maxAmount>
+            </li>
+        </comps>
+        <statBases>
+            <Beauty>6</Beauty>
+            <MarketValue>120</MarketValue>
+            <Mass>0.3</Mass>
+            <MaxHitPoints>300</MaxHitPoints>
+            <WorkToMake>5000</WorkToMake>
+        </statBases>
     </ThingDef>
 </Defs>

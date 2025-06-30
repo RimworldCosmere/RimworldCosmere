@@ -8,7 +8,7 @@ using Verse;
 namespace CosmereScadrial.Gene;
 
 public class Feruchemist : Metalborn {
-    private readonly float metalPerRareTick = .0333333f;
+    private readonly float metalPerRareTick = 0.333333f;
 
     public IEnumerable<Metalmind> metalminds => pawn.inventory.innerContainer.InnerListForReading
         .Where(t => t.HasComp<Metalmind>())
@@ -65,12 +65,10 @@ public class Feruchemist : Metalborn {
 
         if (!canTap && pawn.health.hediffSet.HasHediff(tapHediffDef)) {
             pawn.health.RemoveHediff(tapHediff);
-            targetValue = 50;
         }
 
         if (!canStore && pawn.health.hediffSet.HasHediff(storeHediffDef)) {
             pawn.health.RemoveHediff(storeHediff);
-            targetValue = 50;
         }
 
 

@@ -9,13 +9,13 @@ using Log = CosmereFramework.Log;
 
 namespace CosmereCore.Comp.Hediff;
 
-public class CustomStatDefProperties : HediffCompProperties {
-    public CustomStatDefProperties() {
-        compClass = typeof(CustomStatDef);
+public class MentalBreakHandlerProperties : HediffCompProperties {
+    public MentalBreakHandlerProperties() {
+        compClass = typeof(MentalBreakHandler);
     }
 }
 
-public class CustomStatDef : HediffComp {
+public class MentalBreakHandler : HediffComp {
     private List<StatDef>? customStatDefsCache;
 
     protected virtual List<StatDef> customStatDefs => customStatDefsCache ??= DefDatabase<StatDef>

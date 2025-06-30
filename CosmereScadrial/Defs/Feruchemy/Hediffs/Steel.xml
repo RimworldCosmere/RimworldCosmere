@@ -12,9 +12,8 @@
                     <Ability_CastingTime>2.0</Ability_CastingTime>
                     <StaggerDurationFactor>2.0</StaggerDurationFactor>
                     <AimingDelayFactor>2.0</AimingDelayFactor>
-                    <InjuryHealingFactor>0.5</InjuryHealingFactor>
-                    <RestFallRateFactor>0.5</RestFallRateFactor>
-                    <RestRateMultiplier>0.5</RestRateMultiplier>
+                    <RestFallRateFactor>0.75</RestFallRateFactor>
+                    <RestRateMultiplier>0.75</RestRateMultiplier>
                     <EatingSpeed>0.5</EatingSpeed>
                     <MeleeCooldownFactor>0.5</MeleeCooldownFactor>
                     <RangedCooldownFactor>0.5</RangedCooldownFactor>
@@ -22,9 +21,7 @@
                     <CrawlSpeed>0.5</CrawlSpeed>
                     <CleaningSpeed>0.5</CleaningSpeed>
                     <ReadingSpeed>0.5</ReadingSpeed>
-                    <ImmunityGainSpeed>0.5</ImmunityGainSpeed>
                     <WorkSpeedGlobal>0.5</WorkSpeedGlobal>
-                    <Cosmere_Time_Dilation_Factor>0.5</Cosmere_Time_Dilation_Factor>
                 </statFactors>
             </li>
         </stages>
@@ -45,9 +42,8 @@
                     <Ability_CastingTime>0.5</Ability_CastingTime>
                     <StaggerDurationFactor>0.5</StaggerDurationFactor>
                     <AimingDelayFactor>0.5</AimingDelayFactor>
-                    <InjuryHealingFactor>2.0</InjuryHealingFactor>
-                    <RestFallRateFactor>2.0</RestFallRateFactor>
-                    <RestRateMultiplier>2.0</RestRateMultiplier>
+                    <RestFallRateFactor>1.25</RestFallRateFactor>
+                    <RestRateMultiplier>1.25</RestRateMultiplier>
                     <EatingSpeed>2.0</EatingSpeed>
                     <MeleeCooldownFactor>2.0</MeleeCooldownFactor>
                     <RangedCooldownFactor>2.0</RangedCooldownFactor>
@@ -55,9 +51,7 @@
                     <CrawlSpeed>2.0</CrawlSpeed>
                     <CleaningSpeed>2.0</CleaningSpeed>
                     <ReadingSpeed>2.0</ReadingSpeed>
-                    <ImmunityGainSpeed>2.0</ImmunityGainSpeed>
                     <WorkSpeedGlobal>2.0</WorkSpeedGlobal>
-                    <Cosmere_Time_Dilation_Factor>2.0</Cosmere_Time_Dilation_Factor>
                 </statFactors>
             </li>
         </stages>

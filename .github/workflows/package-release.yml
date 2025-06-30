@@ -1,9 +1,7 @@
 name: Publish Cosmere Mods
 
 on:
-  push:
-    branches:
-      - main
+  push: ~
 
 jobs:
   prepare:
@@ -39,39 +37,20 @@ jobs:
       matrix:
         mod: ${{ fromJson(needs.prepare.outputs.mods) }}
       max-parallel: 1
-
+    
     env:
-      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
-      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
-      STEAM_TFA_SEED: ${{ secrets.STEAM_TFA_SEED }}
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      MOD: ${{ matrix.mod }}
+      TEMP_DIR: "/tmp/${MOD}_upload"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
-      - name: Install steamdown + steam-totp
-        run: |
-          npm install -g @steamdown/cli tsx
-          cd .scripts && npm i
-
-      - name: Install SteamCMD
-        run: |
-          sudo apt update
-          sudo apt install -y lib32gcc-s1
-          mkdir -p ~/steamcmd
-          curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
-
       - name: Prepare upload directory
         id: prepare
         run: |
-          MOD="${{ matrix.mod }}"
           FILE_ID=$(cat "$MOD/About/PublishedFileId.txt")
-          TEMP_DIR="/tmp/${MOD}_upload"
           DESCRIPTION_FILE="$TEMP_DIR/steam_description.txt"
 
           mkdir -p "$TEMP_DIR"
@@ -104,16 +83,6 @@ jobs:
           cat "$TEMP_DIR/workshop.vdf"
           
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
-      
-      #      - name: Upload with SteamCMD + 2FA
-      #        run: |
-      #          CODE=$(tsx .scripts/getSteam2FA.ts $STEAM_TFA_SEED)
-      #          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" "$CODE" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
-
-      - name: Upload with SteamCMD
-        run: |
-          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
-
 
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v2
@@ -124,16 +93,14 @@ jobs:
         run: dotnet restore $MOD/$MOD
 
       - name: Build Mod
-        run: dotnet build $MOD --configuration Release --no-restore
-
-      - run: mkdir -p output/$MOD/$MOD
+        run: dotnet build $MOD/$MOD --configuration Release --no-restore
 
       - name: Move files
-        run: mv $MOD/About/ $MOD/Assemblies/ $MOD/Defs/ $MOD/Languages/ $MOD/Textures/ output/$MOD
+        run: mv $MOD/About/ $MOD/Assemblies/ $MOD/Defs/ $MOD/Languages/ $MOD/Textures/ $TEMP_DIR
 
       - name: Upload Mod Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Cosmere-$MOD
+          name: Cosmere-$MOD-$BRANCH_NAME
           path: |
-            output/$MOD
+            $TEMP_DIR

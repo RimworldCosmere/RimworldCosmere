@@ -50,7 +50,7 @@ jobs:
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
       - name: Install Mod Dependencies
         run: dotnet restore $MOD/$MOD

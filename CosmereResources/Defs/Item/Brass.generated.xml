@@ -16,19 +16,37 @@
         <smeltable>true</smeltable>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
-        
+
         <costList>
             <Copper>5</Copper>
-        
+            
             <Zinc>5</Zinc>
+            
         </costList>
-        
+        <recipeMaker>
+            <workAmount>1500</workAmount>
+            <workSpeedStat>SmeltingSpeed</workSpeedStat>
+            <workSkill>Crafting</workSkill>
+            <requiredGiverWorkType>Smithing</requiredGiverWorkType>
+            <effectWorking>Smelt</effectWorking>
+            <soundWorking>Recipe_Smelt</soundWorking>
+            <researchPrerequisites>
+                <li>Cosmere_Simple_Alloys</li>
+            </researchPrerequisites>
+            <recipeUsers>
+                <li>ElectricSmelter</li>
+                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
+                <li>Campfire</li>
+            </recipeUsers>
+            <displayPriority>200</displayPriority>
+        </recipeMaker>
+
         <graphicData>
             <graphicClass>Graphic_StackCount</graphicClass>
             <drawSize>1</drawSize>
             <texPath>Item/Resource/Brass</texPath>
         </graphicData>
-        
+
         <stuffProps>
             <commonality>0.2</commonality>
             <color>(175, 148, 91)</color>
@@ -43,12 +61,12 @@
             </categories>
             <appearance>Metal</appearance>
         </stuffProps>
-        
+
         <statBases>
             <Mass>0.5</Mass>
             <MarketValue>2</MarketValue>
         </statBases>
-        
+
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Brass</metal>

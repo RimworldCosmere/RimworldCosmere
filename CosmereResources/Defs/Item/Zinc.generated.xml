@@ -16,14 +16,14 @@
         <smeltable>true</smeltable>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
-        
-        
+
+
         <graphicData>
             <graphicClass>Graphic_StackCount</graphicClass>
             <drawSize>1</drawSize>
             <texPath>Item/Resource/Zinc</texPath>
         </graphicData>
-        
+
         <stuffProps>
             <commonality>0.0</commonality>
             <color>(128, 142, 129)</color>
@@ -33,12 +33,12 @@
             </categories>
             <appearance>Metal</appearance>
         </stuffProps>
-        
+
         <statBases>
             <Mass>0.5</Mass>
             <MarketValue>0.5</MarketValue>
         </statBases>
-        
+
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Zinc</metal>

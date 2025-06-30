@@ -66,6 +66,17 @@ jobs:
           mkdir -p ~/steamcmd
           curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
 
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install Mod Dependencies
+        run: dotnet restore $MOD/$MOD
+
+      - name: Build Mod
+        run: dotnet build $MOD --configuration Release --no-restore
+
       - name: Prepare upload directory
         id: prepare
         run: |
@@ -114,26 +125,10 @@ jobs:
         run: |
           ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
 
-
-      - name: Setup Dotnet
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Install Mod Dependencies
-        run: dotnet restore $MOD/$MOD
-
-      - name: Build Mod
-        run: dotnet build $MOD --configuration Release --no-restore
-
-      - run: mkdir -p output/$MOD/$MOD
-
-      - name: Move files
-        run: mv $MOD/About/ $MOD/Assemblies/ $MOD/Defs/ $MOD/Languages/ $MOD/Textures/ output/$MOD
-
       - name: Upload Mod Artifacts
         uses: actions/upload-artifact@v2
+        env:
+          MOD: "${{ matrix.mod }}"
         with:
           name: Cosmere-$MOD
-          path: |
-            output/$MOD
+          path: "/tmp/${MOD}_upload"

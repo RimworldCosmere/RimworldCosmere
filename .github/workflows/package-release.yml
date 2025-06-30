@@ -47,6 +47,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install Mod Dependencies
+        run: dotnet restore $MOD/$MOD
+
+      - name: Build Mod
+        run: dotnet build $MOD/$MOD --configuration Release --no-restore
+
       - name: Prepare upload directory
         id: prepare
         run: |
@@ -83,17 +94,6 @@ jobs:
           cat "$TEMP_DIR/workshop.vdf"
           
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
-
-      - name: Setup Dotnet
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Install Mod Dependencies
-        run: dotnet restore $MOD/$MOD
-
-      - name: Build Mod
-        run: dotnet build $MOD/$MOD --configuration Release --no-restore
 
       - name: Move files
         run: mv $MOD/About/ $MOD/Assemblies/ $MOD/Defs/ $MOD/Languages/ $MOD/Textures/ $TEMP_DIR

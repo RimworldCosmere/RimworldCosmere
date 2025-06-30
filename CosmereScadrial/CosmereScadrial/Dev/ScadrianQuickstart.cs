@@ -97,13 +97,19 @@ public static class ScadrianQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsMisting(pawn, false, MetalDefOf.Steel);
-            PrepareColonistAsFerring(pawn, MetalDefOf.Steel);
-            pawn.Name = new NameSingle("Twinborn: Steel");
+            PrepareColonistAsTwinborn(pawn, true, true, MetalDefOf.Steel);
+        }
 
-            Verse.Thing metalmind = ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindEarring,
-                CosmereResources.ThingDefOf.Steel);
-            pawn.inventory.innerContainer.TryAdd(metalmind);
+        if (pawns.TryPopFront(out pawn)) {
+            PrepareColonistAsTwinborn(pawn, true, true, MetalDefOf.Brass);
+        }
+
+        if (pawns.TryPopFront(out pawn)) {
+            PrepareColonistAsTwinborn(pawn, true, true, MetalDefOf.Bronze);
+        }
+
+        if (pawns.TryPopFront(out pawn)) {
+            PrepareColonistAsTwinborn(pawn, true, true, MetalDefOf.Zinc);
         }
 
         if (false && pawns.TryPopFront(out pawn)) {
@@ -118,6 +124,20 @@ public static class ScadrianQuickstart {
         Find.TickManager.Pause();
     }
 
+    private static void PrepareColonistAsTwinborn(
+        Pawn pawn,
+        bool fillReserves,
+        bool createMetalmind,
+        params MetalDef[] metals
+    ) {
+        foreach (MetalDef metal in metals) {
+            PrepareColonistAsMisting(pawn, fillReserves, metal);
+            PrepareColonistAsFerring(pawn, createMetalmind, metal);
+        }
+
+        pawn.Name = new NameSingle("TB: " + string.Join(" and ", metals.Select(m => m.LabelCap)));
+    }
+
     private static void PrepareColonistAsMisting(Pawn pawn, bool fillReserves, params MetalDef[] metals) {
         MetalReserves reserves = pawn.GetComp<MetalReserves>();
         foreach (MetalDef metal in metals) {
@@ -128,10 +148,13 @@ public static class ScadrianQuickstart {
         pawn.Name = new NameSingle("Misting: " + string.Join(" and ", metals.Select(m => m.LabelCap)));
     }
 
-    private static void PrepareColonistAsFerring(Pawn pawn, params MetalDef[] metals) {
-        MetalReserves reserves = pawn.GetComp<MetalReserves>();
+    private static void PrepareColonistAsFerring(Pawn pawn, bool createMetalmind, params MetalDef[] metals) {
         foreach (MetalDef metal in metals) {
             GeneUtility.AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), false, true);
+            if (createMetalmind) {
+                pawn.inventory.innerContainer.TryAdd(
+                    ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item));
+            }
         }
 
         pawn.Name = new NameSingle("Ferring: " + string.Join(" and ", metals.Select(m => m.LabelCap)));

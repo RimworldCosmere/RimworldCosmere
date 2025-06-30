@@ -11,17 +11,14 @@
                     <Ability_Duration>2.0</Ability_Duration>
                     <Ability_CastingTime>2.0</Ability_CastingTime>
                     <StaggerDurationFactor>2.0</StaggerDurationFactor>
-                    <AimingDelayFactor>2.0</AimingDelayFactor>
-                    <RestFallRateFactor>0.75</RestFallRateFactor>
-                    <RestRateMultiplier>0.75</RestRateMultiplier>
+                    <AimingDelayFactor>1.5</AimingDelayFactor>
                     <EatingSpeed>0.5</EatingSpeed>
                     <MeleeCooldownFactor>0.5</MeleeCooldownFactor>
                     <RangedCooldownFactor>0.5</RangedCooldownFactor>
                     <MoveSpeed>0.5</MoveSpeed>
                     <CrawlSpeed>0.5</CrawlSpeed>
                     <CleaningSpeed>0.5</CleaningSpeed>
-                    <ReadingSpeed>0.5</ReadingSpeed>
-                    <WorkSpeedGlobal>0.5</WorkSpeedGlobal>
+                    <WorkSpeedGlobal>0.75</WorkSpeedGlobal>
                 </statFactors>
             </li>
         </stages>
@@ -42,16 +39,13 @@
                     <Ability_CastingTime>0.5</Ability_CastingTime>
                     <StaggerDurationFactor>0.5</StaggerDurationFactor>
                     <AimingDelayFactor>0.5</AimingDelayFactor>
-                    <RestFallRateFactor>1.25</RestFallRateFactor>
-                    <RestRateMultiplier>1.25</RestRateMultiplier>
                     <EatingSpeed>2.0</EatingSpeed>
                     <MeleeCooldownFactor>2.0</MeleeCooldownFactor>
                     <RangedCooldownFactor>2.0</RangedCooldownFactor>
                     <MoveSpeed>2.0</MoveSpeed>
                     <CrawlSpeed>2.0</CrawlSpeed>
                     <CleaningSpeed>2.0</CleaningSpeed>
-                    <ReadingSpeed>2.0</ReadingSpeed>
-                    <WorkSpeedGlobal>2.0</WorkSpeedGlobal>
+                    <WorkSpeedGlobal>1.5</WorkSpeedGlobal>
                 </statFactors>
             </li>
         </stages>

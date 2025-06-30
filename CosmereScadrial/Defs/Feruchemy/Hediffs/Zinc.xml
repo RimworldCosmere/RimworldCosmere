@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_StoreZinc</defName>
+        <label>storing zinc</label>
+        <description>This pawn is storing mental speed in a zinc metalmind, dulling their cognition to a sluggish pace. Reactions are delayed, thoughts come slowly, and decision-making is impaired. While this frees up zinc for later tapping, it severely hampers their performance in mentally intensive tasks.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <ReadingSpeed>0.5</ReadingSpeed>
+                    <HackingSpeed>0.5</HackingSpeed>
+                    <GlobalLearningFactor>0.5</GlobalLearningFactor>
+                    <ResearchSpeed>0.5</ResearchSpeed>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Zinc</metal>
+            </li>
+        </modExtensions>
+    </HediffDef><HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_TapZinc</defName>
+        <label>tapping zinc</label>
+        <description>This pawn is tapping a zinc metalmind, dramatically enhancing their mental speed. Their thoughts race, reflexes sharpen, and decisions come swiftly. This heightened cognitive state improves work involving research, crafting, and strategic reaction time, but may come with increased mental strain if maintained for too long.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <ReadingSpeed>2.0</ReadingSpeed>
+                    <HackingSpeed>2.0</HackingSpeed>
+                    <GlobalLearningFactor>2.0</GlobalLearningFactor>
+                    <ResearchSpeed>2.0</ResearchSpeed>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Zinc</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+</Defs>

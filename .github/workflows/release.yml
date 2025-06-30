@@ -129,7 +129,6 @@ jobs:
       - name: List all zip files
         run: |
           echo "Zips downloaded:"
-          ls -lha zips
           find ./zips -name "*.zip"
 
       - name: Get latest commit message

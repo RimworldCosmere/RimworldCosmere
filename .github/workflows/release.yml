@@ -82,20 +82,34 @@ jobs:
       - name: Build Mod
         if: ${{ github.ref_type == 'tag' }}
         run: |
-          TAG="${{ github.ref_name }}"
-          VERSION=${TAG#v}
-          CONFIG="Debug"
+          TAG="${{ github.ref_name }}"          # e.g. v1.6.0-beta or 1.6.0.1
+          VERSION="${TAG#v}"                    # strip leading 'v'
 
-          if [[ "${GITHUB_REF_TYPE}" == "tag" && "${GITHUB_REF_NAME}" == "main" ]]; then
-            CONFIG="Release"
-          fi
+          # Extract components with known-good format
+          REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)(\.[0-9]+)?(-alpha|-beta)?$'
+          [[ "$VERSION" =~ $REGEX ]]
+
+          MAJOR="${BASH_REMATCH[1]}"
+          MINOR="${BASH_REMATCH[2]}"
+          PATCH="${BASH_REMATCH[3]}"
+          REVISION="${BASH_REMATCH[4]#.}"      # optional, strip leading dot
+          LABEL="${BASH_REMATCH[5]#-}"         # optional, strip leading dash
+
+          CONFIG="Debug"
+          [[ -z "$LABEL" && "${GITHUB_REF_NAME}" == "main" ]] && CONFIG="Release"
+
+          BUILD_VERSION="$MAJOR.$MINOR.$PATCH"
+          [[ -n "$REVISION" ]] && BUILD_VERSION+=".$REVISION"
+          [[ -n "$LABEL" ]] && BUILD_VERSION+="-${LABEL}"
+
+          echo "Building $MOD@$BUILD_VERSION ($CONFIG)"
 
           dotnet build $MOD/$MOD \
             --configuration "$CONFIG" \
-            -p:Version="$VERSION.0" \
-            -p:FileVersion="$VERSION.0" \
-            -p:AssemblyVersion="$VERSION.0" \
-            -p:InformationalVersion="$VERSION" \
+            -p:Version="$BUILD_VERSION" \
+            -p:FileVersion="$BUILD_VERSION" \
+            -p:AssemblyVersion="$MAJOR.$MINOR.$PATCH.0" \
+            -p:InformationalVersion="$BUILD_VERSION" \
             --no-restore
 
       - name: Build Mod

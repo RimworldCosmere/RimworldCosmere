@@ -38,7 +38,6 @@ jobs:
     strategy:
       matrix:
         mod: ${{ fromJson(needs.github-prepare.outputs.mods) }}
-      max-parallel: 1
     
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
@@ -108,9 +107,6 @@ jobs:
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
           echo "Output Path: $TEMP_DIR"
           ls -lha $TEMP_DIR $TEMP_DIR/*
-
-      - name: Move files
-        run: mv $MOD/About/ $MOD/Assemblies/ $MOD/Defs/ $MOD/Patches/ $MOD/Languages/ $MOD/Textures/ $TEMP_DIR
 
       - name: Upload Mod Artifacts
         uses: actions/upload-artifact@v4.6.2

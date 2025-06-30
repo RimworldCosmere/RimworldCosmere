@@ -96,7 +96,7 @@ jobs:
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
       - name: Upload with SteamCMD
-        if: ${{ env.BRANCH_NAME == "main" }}  && github.ref_type == "tag"
+        if: ${{ env.BRANCH_NAME == 'main' && github.ref_type == 'tag' }}
         run: |
           ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
 

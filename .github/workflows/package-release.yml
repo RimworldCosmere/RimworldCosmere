@@ -97,13 +97,12 @@ jobs:
           echo "✅ Generated workshop.vdf:"
           cat "$TEMP_DIR/workshop.vdf"
           
-          echo "changenote=$CHANGE_NOTE" >> "$GITHUB_OUTPUT"
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
       - name: Upload zip artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.mod }}-zip
-          path: ${{ github.workspace }}/${{ matrix.mod }}-${{ env.BRANCH_NAME }}.zip
+          path: ${{ env.TEMP_DIR }}
   
   github-publish:
     needs: github-prepare

@@ -2,6 +2,9 @@ name: Publish Cosmere Mods to GitHub
 
 on: push
 
+permissions:
+  contents: write
+
 jobs:
   github-get-mods:
     runs-on: ubuntu-latest

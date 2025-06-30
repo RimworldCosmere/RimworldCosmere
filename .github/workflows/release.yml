@@ -26,7 +26,7 @@ jobs:
           fi
 
           echo "✅ Tag format valid."
-      
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -80,6 +80,7 @@ jobs:
           fi
 
       - name: Build Mod
+        if: ${{ github.ref_type == 'tag' }}
         run: |
           TAG="${{ github.ref_name }}"
           VERSION=${TAG#v}
@@ -94,7 +95,12 @@ jobs:
             -p:Version="$VERSION.0" \
             -p:FileVersion="$VERSION.0" \
             -p:AssemblyVersion="$VERSION.0" \
-            -p:InformationalVersion="$VERSION"
+            -p:InformationalVersion="$VERSION" \
+            --no-restore
+
+      - name: Build Mod
+        if: ${{ github.ref_type != 'tag' }}
+        run: dotnet build $MOD/$MOD --configuration Debug --no-restore
 
       - name: Prepare upload directory
         id: prepare

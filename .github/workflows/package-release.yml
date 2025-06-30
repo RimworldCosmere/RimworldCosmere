@@ -111,6 +111,5 @@ jobs:
       - name: Upload Mod Artifacts
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: Cosmere-$MOD-$BRANCH_NAME
-          path: |
-            $TEMP_DIR
+          name: "Cosmere-${{ env.MOD }}-${{ env.BRANCH_NAME }}"
+          path: "/tmp/${{ env.MOD }}_upload"

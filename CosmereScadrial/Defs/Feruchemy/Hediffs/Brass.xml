@@ -3,13 +3,13 @@
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_StoreBrass</defName>
         <label>storing brass</label>
-        <description>This pawn is storing body heat in a brass metalmind, cooling themselves unnaturally. Their minimum comfortable temperature drops, making them vulnerable to cold, but preserving thermal energy for later use.</description>
+        <description>This pawn is storing body heat into a brass metalmind, passively absorbing thermal energy. Their body resists high temperatures and fire damage far better than normal, allowing them to function in burning environments with reduced risk of heatstroke.</description>
         <stages>
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <ComfyTemperatureMin>2.0</ComfyTemperatureMin>
-                    <ComfyTemperatureMax>0.5</ComfyTemperatureMax>
+                    <ComfyTemperatureMin>0.75</ComfyTemperatureMin>
+                    <ComfyTemperatureMax>0.75</ComfyTemperatureMax>
                 </statFactors>
             </li>
         </stages>
@@ -21,13 +21,13 @@
     </HediffDef><HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_TapBrass</defName>
         <label>tapping brass</label>
-        <description>This pawn is tapping a brass metalmind, radiating stored warmth. Their body resists the chill, allowing them to operate in colder environments without discomfort or risk of hypothermia.</description>
+        <description>This pawn is tapping a brass metalmind, releasing stored heat into their body. They become much more vulnerable to high temperatures and fire, and risk heatstroke if not careful — but can survive extreme cold with ease.</description>
         <stages>
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <ComfyTemperatureMin>0.5</ComfyTemperatureMin>
-                    <ComfyTemperatureMax>2.0</ComfyTemperatureMax>
+                    <ComfyTemperatureMin>1.5</ComfyTemperatureMin>
+                    <ComfyTemperatureMax>1.5</ComfyTemperatureMax>
                 </statFactors>
             </li>
         </stages>

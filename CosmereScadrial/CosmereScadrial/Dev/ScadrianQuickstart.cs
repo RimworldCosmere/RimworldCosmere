@@ -84,8 +84,13 @@ public static class ScadrianQuickstart {
             pawn.Name = new NameSingle("Mistborn");
         }
 
-        if (false && pawns.TryPopFront(out pawn)) {
+        if (pawns.TryPopFront(out pawn)) {
             GeneUtility.AddFullFeruchemist(pawn, false, true);
+            foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
+                pawn.inventory.innerContainer.TryAdd(
+                    ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item));
+            }
+
             pawn.Name = new NameSingle("Full Feru");
         }
 
@@ -105,7 +110,7 @@ public static class ScadrianQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsTwinborn(pawn, true, true, MetalDefOf.Bronze);
+            PrepareColonistAsTwinborn(pawn, true, true, MetalDefOf.Pewter);
         }
 
         if (pawns.TryPopFront(out pawn)) {

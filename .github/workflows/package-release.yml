@@ -1,10 +1,13 @@
-name: Publish Cosmere Mods
+name: Publish Cosmere Mods to GitHub
 
 on:
-  push: ~
+  push:
+    branches:
+      - '*'
+      - '!main'
 
 jobs:
-  prepare:
+  github-prepare:
     runs-on: ubuntu-latest
     outputs:
       mods: ${{ steps.set-mods.outputs.mods }}
@@ -30,8 +33,8 @@ jobs:
           
           echo "mods=$mods" >> "$GITHUB_OUTPUT"
 
-  publish:
-    needs: prepare
+  github-publish:
+    needs: github-prepare
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -104,9 +107,6 @@ jobs:
           cat "$TEMP_DIR/workshop.vdf"
           
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
-
-      - name: Move files
-        run: mv $MOD/About/ $MOD/Assemblies/ $MOD/Defs/ $MOD/Languages/ $MOD/Textures/ $TEMP_DIR
 
       - name: Upload Mod Artifacts
         uses: actions/upload-artifact@v4.6.2

@@ -1,4 +1,4 @@
-name: Publish Cosmere Mods
+name: Publish Cosmere Mods to GitHub and Steam
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  prepare:
+  steam-prepare:
     runs-on: ubuntu-latest
     outputs:
       mods: ${{ steps.set-mods.outputs.mods }}
@@ -32,8 +32,8 @@ jobs:
           
           echo "mods=$mods" >> "$GITHUB_OUTPUT"
 
-  publish:
-    needs: prepare
+  steam-publish:
+    needs: steam-prepare
     runs-on: ubuntu-latest
     strategy:
       matrix:

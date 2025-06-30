@@ -104,12 +104,23 @@ jobs:
           echo "✅ Generated workshop.vdf:"
           cat "$TEMP_DIR/workshop.vdf"
           
+          echo "changenote=$CHANGE_NOTE" >> "$GITHUB_OUTPUT"
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
-          echo "Output Path: $TEMP_DIR"
-          ls -lha $TEMP_DIR $TEMP_DIR/*
 
       - name: Upload Mod Artifacts
         uses: actions/upload-artifact@v4.6.2
         with:
           name: "Cosmere-${{ env.MOD }}-${{ env.BRANCH_NAME }}"
           path: "/tmp/${{ env.MOD }}_upload"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ env.MOD }} - ${{ env.BRANCH_NAME }}@${{ github.ref }}
+          body: "${{ steps.prepare.outputs.changenote }}"
+          draft: false
+          prerelease: true

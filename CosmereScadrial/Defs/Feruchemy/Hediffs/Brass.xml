@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_StoreBrass</defName>
+        <label>storing brass</label>
+        <description>This pawn is storing body heat in a brass metalmind, cooling themselves unnaturally. Their minimum comfortable temperature drops, making them vulnerable to cold, but preserving thermal energy for later use.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <ComfyTemperatureMin>2.0</ComfyTemperatureMin>
+                    <ComfyTemperatureMax>0.5</ComfyTemperatureMax>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
+    </HediffDef><HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_TapBrass</defName>
+        <label>tapping brass</label>
+        <description>This pawn is tapping a brass metalmind, radiating stored warmth. Their body resists the chill, allowing them to operate in colder environments without discomfort or risk of hypothermia.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <ComfyTemperatureMin>0.5</ComfyTemperatureMin>
+                    <ComfyTemperatureMax>2.0</ComfyTemperatureMax>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+</Defs>

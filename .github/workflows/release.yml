@@ -125,8 +125,11 @@ jobs:
         run: |
           ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
 
+      - name: Move files
+        run: mv $MOD/About/ $MOD/Assemblies/ $MOD/Defs/ $MOD/Patches/ $MOD/Languages/ $MOD/Textures/ $TEMP_DIR
+
       - name: Upload Mod Artifacts
         uses: actions/upload-artifact@v4.6.2
         with:
           name: Cosmere-$MOD
-          path: "/tmp/${MOD}_upload"
+          path: $TEMP_DIR

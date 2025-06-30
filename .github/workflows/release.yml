@@ -24,9 +24,6 @@ jobs:
   github-prepare:
     needs: github-get-mods
     runs-on: ubuntu-latest
-    outputs:
-      changenote: ${{ steps.prepare.outputs.changenote }}
-      zip: ${{ steps.prepare.outputs.zip }}
     strategy:
       matrix:
         mod: ${{ fromJson(needs.github-get-mods.outputs.mods) }}
@@ -113,8 +110,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-      MOD: ${{ matrix.mod }}
-      TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
 
     steps:
       - name: Checkout
@@ -123,7 +118,9 @@ jobs:
       - name: Download all zip artifacts
         uses: actions/download-artifact@v4
         with:
+          pattern: '*-zip'
           path: ./zips
+          merge-multiple: true
 
       - name: List all zip files
         run: |
@@ -140,8 +137,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
-          name: Cosmere Mods - ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          name: "Cosmere Mods Release - ${{ github.ref_name }}"
           body: ${{ steps.commit.outputs.body }}
-          prerelease: true
           files: ./zips/**/*.zip
-          make_latest: false
+          prerelease: ${{ env.BRANCH_NAME != 'main' || github.ref_type != 'tag' }}
+          make_latest: ${{ env.BRANCH_NAME == 'main' && github.ref_type == 'tag' }}

@@ -46,7 +46,6 @@ jobs:
     
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-      BUILD: ${{ env.BRANCH_NAME == 'main' && github.ref_type == 'tag' }}
       MOD: ${{ matrix.mod }}
       TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
 

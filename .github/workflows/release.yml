@@ -44,6 +44,8 @@ jobs:
       STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
       STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
       STEAM_TFA_SEED: ${{ secrets.STEAM_TFA_SEED }}
+      MOD: ${{ matrix.mod }}
+      TEMP_DIR: "/tmp/${MOD}_upload"
 
     steps:
       - name: Checkout
@@ -80,9 +82,7 @@ jobs:
       - name: Prepare upload directory
         id: prepare
         run: |
-          MOD="${{ matrix.mod }}"
           FILE_ID=$(cat "$MOD/About/PublishedFileId.txt")
-          TEMP_DIR="/tmp/${MOD}_upload"
           DESCRIPTION_FILE="$TEMP_DIR/steam_description.txt"
 
           mkdir -p "$TEMP_DIR"
@@ -126,9 +126,7 @@ jobs:
           ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
 
       - name: Upload Mod Artifacts
-        uses: actions/upload-artifact
-        env:
-          MOD: "${{ matrix.mod }}"
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: Cosmere-$MOD
           path: "/tmp/${MOD}_upload"

@@ -4,7 +4,7 @@ using RimWorld;
 namespace CosmereScadrial.Allomancy.Verb;
 
 public class SteelJump : Verb_CastAbilityJump {
-    private AbstractAbility ability => (AbstractAbility)verbTracker.directOwner;
+    private new AbstractAbility ability => (AbstractAbility)verbTracker.directOwner;
 
     public override float EffectiveRange => base.EffectiveRange * ability.GetStrength(ability.nextStatus);
 

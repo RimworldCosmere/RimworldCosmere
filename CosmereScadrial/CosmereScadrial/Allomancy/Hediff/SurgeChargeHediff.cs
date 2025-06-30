@@ -31,7 +31,7 @@ public class SurgeChargeHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility a
         if (endInTicks > 0) endInTicks--;
     }
 
-    public void Burn(Action callback = null, int endInTicks = -1, Action endCallback = null) {
+    public void Burn(Action? callback = null, int endInTicks = -1, Action? endCallback = null) {
         if (this.endInTicks > -1) return;
 
         foreach (((MetallicArtsMetalDef _, AllomanticAbilityDef abilityDef), float rate) in

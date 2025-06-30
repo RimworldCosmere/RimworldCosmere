@@ -45,7 +45,7 @@ jobs:
       STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
       STEAM_TFA_SEED: ${{ secrets.STEAM_TFA_SEED }}
       MOD: ${{ matrix.mod }}
-      TEMP_DIR: "/tmp/${MOD}_upload"
+      TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
 
     steps:
       - name: Checkout

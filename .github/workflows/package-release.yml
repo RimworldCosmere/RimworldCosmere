@@ -43,7 +43,7 @@ jobs:
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       MOD: ${{ matrix.mod }}
-      TEMP_DIR: "/tmp/${MOD}_upload"
+      TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
 
     steps:
       - name: Checkout

@@ -29,10 +29,10 @@ public class FeruchemicGeneCommand(
 
     private static readonly Texture2D EmptyBarTex = new Color(0.03f, 0.035f, 0.05f).ToSolidColorTexture();
     private static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
-    private static bool DraggingBar;
     private Texture2D? barDragTex;
     private Texture2D? barHighlightTex;
     private Texture2D? barTex;
+    private bool draggingBar;
 
     // Things to initialize
     private bool initialized;
@@ -91,7 +91,7 @@ public class FeruchemicGeneCommand(
             }
         } else {
             Widgets.DraggableBar(bottomBarRect, barTex, barHighlightTex, EmptyBarTex, barDragTex,
-                ref DraggingBar, ValuePercent, ref targetValuePct, GetBarThresholds(), Increments,
+                ref draggingBar, ValuePercent, ref targetValuePct, GetBarThresholds(), Increments,
                 DragRange.min, DragRange.max);
             targetValuePct = Mathf.Clamp(targetValuePct, DragRange.min, DragRange.max);
             Target = targetValuePct;

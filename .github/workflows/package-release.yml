@@ -7,7 +7,7 @@ on:
       - '!main'
 
 jobs:
-  github-prepare:
+  github-get-mods:
     runs-on: ubuntu-latest
     outputs:
       mods: ${{ steps.set-mods.outputs.mods }}
@@ -19,25 +19,18 @@ jobs:
       - name: Determine changed Cosmere mods
         id: set-mods
         run: |
-          # Get changed files in last commit (or adjust to your commit range)
-          changed=$(git diff --name-only HEAD~1)
-          
-          # If any .github files changed, include all Cosmere mods
-          if echo "$changed" | grep -q "^.github/"; then
-            echo "🔁 Detected changes in .github — including all Cosmere mods"
-            mods=$(find . -maxdepth 1 -type d -name "Cosmere*" -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
-          else
-            # Only include changed Cosmere mods
-            mods=$(echo "$changed" | grep '^Cosmere[^/]\+/' | cut -d/ -f1 | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
-          fi
+          mods=$(find . -maxdepth 1 -type d -name "Cosmere*" -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "mods=$mods" >> "$GITHUB_OUTPUT"
 
-  github-publish:
-    needs: github-prepare
+  github-prepare:
+    needs: github-get-mods
     runs-on: ubuntu-latest
+    outputs:
+      changenote: ${{ steps.prepare.outputs.changenote }}
+      zip: ${{ steps.prepare.outputs.zip }}
     strategy:
       matrix:
-        mod: ${{ fromJson(needs.github-prepare.outputs.mods) }}
+        mod: ${{ fromJson(needs.github-get-mods.outputs.mods) }}
     
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
@@ -109,12 +102,45 @@ jobs:
           echo "zip=$PWD/$MOD-$BRANCH_NAME.zip" >> "$GITHUB_ZIP"
           echo "changenote=$CHANGE_NOTE" >> "$GITHUB_OUTPUT"
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
+      - name: Upload zip artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.mod }}-zip
+          path: ${{ github.workspace }}/${{ matrix.mod }}-${{ env.BRANCH_NAME }}.zip
+  
+  github-publish:
+    needs: github-prepare
+    runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      MOD: ${{ matrix.mod }}
+      TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
 
-      - name: Release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download all zip artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ./zips
+
+      - name: List all zip files
+        run: |
+          echo "Zips downloaded:"
+          find ./zips -name "*.zip"
+          
+      - name: Get latest commit message
+        id: commit
+        run: |
+          BODY=$(git log -1 --pretty=%B | sed 's/"/\\"/g')
+          echo "body=$BODY" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ env.MOD }} - ${{ env.BRANCH_NAME }}
-          body: ${{ steps.prepare.outputs.changenote }}
+          name: Cosmere Mods - ${{ github.ref_name }}
+          body: ${{ steps.commit.outputs.body }}
           prerelease: true
-          files: ${{ steps.prepare.outputs.zip }}
+          files: ./zips/**/*.zip
           make_latest: false

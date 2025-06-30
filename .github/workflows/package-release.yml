@@ -97,9 +97,6 @@ jobs:
           echo "✅ Generated workshop.vdf:"
           cat "$TEMP_DIR/workshop.vdf"
           
-          zip -r -q $MOD-$BRANCH_NAME.zip $TEMP_DIR
-          
-          echo "zip=$PWD/$MOD-$BRANCH_NAME.zip" >> "$GITHUB_ZIP"
           echo "changenote=$CHANGE_NOTE" >> "$GITHUB_OUTPUT"
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
       - name: Upload zip artifact

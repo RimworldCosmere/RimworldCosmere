@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_StoreCadmium</defName>
+        <label>storing cadmium</label>
+        <description>This pawn is storing breath in a cadmium metalmind, constricting their airflow. They breathe shallowly, tire more easily, and may suffer from shortness of breath during strenuous activity — but the stored air may save them later.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <RestFallRateFactor>0.9</RestFallRateFactor>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Cadmium</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+<HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_TapCadmium</defName>
+        <label>tapping cadmium</label>
+        <description>This pawn is tapping a cadmium metalmind, drawing on stored reserves of air. They can function without breathing for extended periods, shrug off smoke or gas effects, and resist asphyxiation far longer than normal.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <RestFallRateFactor>1.1</RestFallRateFactor>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Cadmium</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+</Defs>

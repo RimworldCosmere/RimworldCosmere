@@ -27,7 +27,8 @@
                 <metal>Steel</metal>
             </li>
         </modExtensions>
-    </HediffDef><HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+    </HediffDef>
+<HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_TapSteel</defName>
         <label>tapping steel</label>
         <description>Tapping steel unleashes a sudden burst of kinetic energy from the metalmind, drastically increasing the pawn's movement speed. Muscles respond faster, steps blur with unnatural agility, and the world seems to slow as they move with Feruchemical swiftness.</description>

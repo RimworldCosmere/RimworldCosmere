@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_StoreAluminum</defName>
+        <label>storing aluminum</label>
+        <description>This pawn is storing nutrition in a aluminum metalmind. Their metabolism speeds up dramatically, burning through food reserves at an accelerated rate. They become hungry faster and must eat more to maintain energy — but the nutrition is preserved for future emergencies.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Aluminum</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_TapAluminum</defName>
+        <label>tapping aluminum</label>
+        <description>This pawn is tapping an aluminum metalmind, solidifying their Identity. Their investiture is tightly bound to them, resisting foreign influence and making keyed metalminds nearly impossible to access by others.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Aluminum</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+</Defs>

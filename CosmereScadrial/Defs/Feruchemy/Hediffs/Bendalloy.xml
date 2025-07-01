@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_StoreBendalloy</defName>
+        <label>storing bendalloy</label>
+        <description>This pawn is storing nutrition in a bendalloy metalmind. Their metabolism speeds up dramatically, burning through food reserves at an accelerated rate. They become hungry faster and must eat more to maintain energy — but the nutrition is preserved for future emergencies.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <HungerRate>2.0</HungerRate>
+                    <MaxNutrition>2.0</MaxNutrition>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Bendalloy</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+<HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_TapBendalloy</defName>
+        <label>tapping bendalloy</label>
+        <description>This pawn is tapping a bendalloy metalmind, sustaining themselves on stored nutrition. They require little to no food while tapping, allowing them to survive starvation, long marches, or resource-scarce environments with ease.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <HungerRate>0.5</HungerRate>
+                    <MaxNutrition>0.5</MaxNutrition>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Bendalloy</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+</Defs>

@@ -20,7 +20,8 @@
                 <metal>Zinc</metal>
             </li>
         </modExtensions>
-    </HediffDef><HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+    </HediffDef>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_TapZinc</defName>
         <label>tapping zinc</label>
         <description>This pawn is tapping a zinc metalmind, dramatically enhancing their mental speed. Their thoughts race, reflexes sharpen, and decisions come swiftly. This heightened cognitive state improves work involving research, crafting, and strategic reaction time, but may come with increased mental strain if maintained for too long.</description>

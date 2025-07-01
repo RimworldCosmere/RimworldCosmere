@@ -17,6 +17,9 @@
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
 
+        <researchPrerequisites>
+            <li>Cosmere_God_Metals</li>
+        </researchPrerequisites>
 
         <graphicData>
             <graphicClass>Graphic_Single</graphicClass>
@@ -29,6 +32,7 @@
             <color>(60, 60, 60)</color>
             <categories>
                 <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
                 <li>Metallic</li>
             </categories>
             <appearance>Metal</appearance>

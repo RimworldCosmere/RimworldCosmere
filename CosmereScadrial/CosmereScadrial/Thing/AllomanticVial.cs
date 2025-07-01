@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereResources.DefModExtension;
 using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
 using CosmereScadrial.Util;
 using RimWorld;
 using Verse;
@@ -11,8 +9,7 @@ using Verse;
 namespace CosmereScadrial.Thing;
 
 public class AllomanticVial : ThingWithComps {
-    public List<MetallicArtsMetalDef> metals => def.GetModExtension<MetalsLinked>().Metals
-        .Select(x => x.ToMetallicArts()).ToList();
+    public List<MetallicArtsMetalDef> metals => [DefDatabase<MetallicArtsMetalDef>.GetNamed(Stuff.defName)];
 
     public bool IsForMetal(MetallicArtsMetalDef metal, bool singleMetal = true) {
         if (singleMetal && metals.Count > 1) return false;

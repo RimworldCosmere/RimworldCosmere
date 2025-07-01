@@ -79,29 +79,29 @@ interface AlloyInput {
     }[];
     stuff?: string | string[];
     stuffCount?: number;
-    products: {
+    product: {
         item?: string;
         count: number;
-    }[];
+    };
 }
 
 export class MetalAlloyInfo {
     public Ingredients: MetalAlloyIngredient[];
     public Stuff?: string[];
     public StuffCount?: number;
-    public Products: MetalAlloyProduct[];
+    public Product: MetalAlloyProduct;
     public Type: 'simple' | 'complex';
 
-    public constructor({type, ingredients, stuff, stuffCount, products = [{count: 10}]}: AlloyInput) {
+    public constructor({type, ingredients, stuff, stuffCount, product = {count: 10}}: AlloyInput) {
         this.Type = type;
         this.Ingredients = ingredients.map(i => new MetalAlloyIngredient({
             Items: i.item ? (Array.isArray(i.item) ? i.item : [i.item]) : undefined,
             Count: i.count,
         }));
-        this.Products = products.map(p => new MetalAlloyProduct({
-            Item: p.item,
-            Count: p.count,
-        }));
+        this.Product = new MetalAlloyProduct({
+            Item: product.item,
+            Count: product.count,
+        });
         this.Stuff = stuff ? (Array.isArray(stuff) ? stuff : [stuff]) : undefined;
         this.StuffCount = stuffCount;
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
-        <defName>Cosmere_Scadrial_Ability_DuraluminSurge</defName>
+        <defName>Cosmere_Scadrial_Ability_Duralumin</defName>
         <label>supercharge</label>
         <description>Supercharges all currently burning metals (or the next metal to burn) in a flash of intense power, consuming all duralumin in the process.</description>
         <metal>Duralumin</metal>

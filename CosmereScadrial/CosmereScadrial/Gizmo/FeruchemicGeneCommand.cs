@@ -36,7 +36,7 @@ public class FeruchemicGeneCommand(
 
     // Things to initialize
     private bool initialized;
-    private float targetValuePct;
+    internal float targetValuePct;
 
     private new Feruchemist gene => (Feruchemist)base.gene;
     private MetallicArtsMetalDef metal => gene.metal;
@@ -45,8 +45,10 @@ public class FeruchemicGeneCommand(
 
     protected override bool IsDraggable => gene.pawn.IsColonistPlayerControlled || gene.pawn.IsPrisonerOfColony;
     protected override string BarLabel => gene.Max > 0 ? $"{gene.Value / gene.Max:P1}" : $"{0:P1}";
-    protected override int Increments => gene.MaxForDisplay / 5;
+    protected override int Increments => gene.MaxForDisplay / 100 / 5;
     public override bool Visible => pawn.Faction.IsPlayer;
+
+    protected override FloatRange DragRange => new FloatRange(0.0f, 1f);
 
     protected override string Title => metal.LabelCap;
 
@@ -166,8 +168,6 @@ public class FeruchemicGeneCommand(
                 Widgets.Label(labelRect, Title);
             }
         }
-
-        // @todo Maybe implement float menu stuff?
 
         if (Mouse.IsOver(rect) && !mouseOver) {
             Widgets.DrawHighlight(rect);

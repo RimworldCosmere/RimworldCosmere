@@ -415,7 +415,7 @@
       "axis": "internal",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Scadrial_Ability_DuraluminSurge"
+        "Cosmere_Scadrial_Ability_Duralumin"
       ]
     },
     "feruchemy": {
@@ -500,7 +500,7 @@
       "axis": "external",
       "polarity": "pushing",
       "abilities": [
-        "Cosmere_Scadrial_Ability_NicrosilSurge"
+        "Cosmere_Scadrial_Ability_Nicrosil"
       ]
     },
     "feruchemy": {
@@ -834,11 +834,9 @@
           "count": 1
         }
       ],
-      "products": [
-        {
-          "count": 1
-        }
-      ]
+      "product": {
+        "count": 1
+      }
     }
   },
   {
@@ -856,23 +854,6 @@
     "buildable": {
       "buildings": false,
       "items": false
-    },
-    "alloy": {
-      "ingredients": [
-        {
-          "item": "lerasium",
-          "count": 1
-        },
-        {
-          "item": "atium",
-          "count": 1
-        }
-      ],
-      "products": [
-        {
-          "count": 1
-        }
-      ]
     }
   }
 ]

@@ -17,29 +17,9 @@
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
 
-        <costList>
-            <Lerasium>1</Lerasium>
-            
-            <Atium>1</Atium>
-            
-        </costList>
-        <recipeMaker>
-            <workAmount>1500</workAmount>
-            <workSpeedStat>SmeltingSpeed</workSpeedStat>
-            <workSkill>Crafting</workSkill>
-            <requiredGiverWorkType>Smithing</requiredGiverWorkType>
-            <effectWorking>Smelt</effectWorking>
-            <soundWorking>Recipe_Smelt</soundWorking>
-            <researchPrerequisites>
-                <li>Smithing</li>
-                <li>Cosmere_Complex_Alloys</li>
-            </researchPrerequisites>
-            <recipeUsers>
-                <li>ElectricSmelter</li>
-                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
-            </recipeUsers>
-            <displayPriority>200</displayPriority>
-        </recipeMaker>
+        <researchPrerequisites>
+            <li>Cosmere_God_Metals</li>
+        </researchPrerequisites>
 
         <graphicData>
             <graphicClass>Graphic_Single</graphicClass>

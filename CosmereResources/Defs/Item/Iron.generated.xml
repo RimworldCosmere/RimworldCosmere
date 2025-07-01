@@ -17,6 +17,8 @@
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
 
+        <researchPrerequisites>
+        </researchPrerequisites>
 
         <graphicData>
             <graphicClass>Graphic_StackCount</graphicClass>
@@ -34,6 +36,7 @@
             <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
             <categories>
                 <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
                 <li>Metallic</li>
             </categories>
             <appearance>Metal</appearance>

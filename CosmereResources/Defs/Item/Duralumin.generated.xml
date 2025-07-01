@@ -17,18 +17,24 @@
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
 
+        <researchPrerequisites>
+            <li>Smithing</li>
+            <li>Cosmere_Complex_Alloys</li>
+        </researchPrerequisites>
         <costList>
             <Aluminum>9</Aluminum>
             
             <Copper>1</Copper>
             
         </costList>
+
         <recipeMaker>
             <workAmount>1500</workAmount>
             <workSpeedStat>SmeltingSpeed</workSpeedStat>
             <workSkill>Crafting</workSkill>
             <requiredGiverWorkType>Smithing</requiredGiverWorkType>
             <effectWorking>Smelt</effectWorking>
+            <productCount>10</productCount>
             <soundWorking>Recipe_Smelt</soundWorking>
             <researchPrerequisites>
                 <li>Smithing</li>
@@ -36,7 +42,7 @@
             </researchPrerequisites>
             <recipeUsers>
                 <li>ElectricSmelter</li>
-                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
+                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_Forge</li>
             </recipeUsers>
             <displayPriority>200</displayPriority>
         </recipeMaker>
@@ -52,6 +58,7 @@
             <color>(127, 113, 115)</color>
             <categories>
                 <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
                 <li>Metallic</li>
             </categories>
             <appearance>Metal</appearance>

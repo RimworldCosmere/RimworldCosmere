@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="BenchBase">
-        <defName>Cosmere_Scadrial_Table_AllomancyForge</defName>
-        <label>allomantic forge</label>
-        <description>A work bench for metalworkers to work on the allomantic metals</description>
+        <defName>Cosmere_Scadrial_Table_Forge</defName>
+        <label>forge</label>
+        <description>A work bench for metalworkers to work on metals</description>
         <thingClass>Building_WorkTable_HeatPush</thingClass>
         <graphicData>
-            <texPath>Things/Building/Production/AllomancyForge/AllomancyForge</texPath>
+            <texPath>Things/Building/Production/Forge/Forge</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
             <drawSize>(4,3)</drawSize>
             <shaderType>CutoutComplex</shaderType>
@@ -56,11 +56,6 @@
             <paintable>true</paintable>
         </building>
         <comps>
-            <li Class="CompProperties_Power">
-                <compClass>CompPowerTrader</compClass>
-                <shortCircuitInRain>true</shortCircuitInRain>
-                <basePowerConsumption>300</basePowerConsumption>
-            </li>
             <li Class="CompProperties_AffectedByFacilities">
                 <linkableFacilities>
                     <li>ToolCabinet</li>
@@ -72,7 +67,7 @@
                 <glowColor>(255,120,60,0)</glowColor>
                 <overlightRadius>2</overlightRadius>
             </li>
-            <li Class="CosmereScadrial.Comp.Thing.RefuelableSuspendWhenPoweredProperties">
+            <li Class="CompProperties_Refuelable">
                 <fuelFilter>
                     <thingDefs>
                         <li>WoodLog</li>
@@ -83,7 +78,7 @@
                 <fuelCapacity>200</fuelCapacity>
                 <fuelConsumptionRate>2</fuelConsumptionRate>
                 <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
-                <initialFuelPercent>1</initialFuelPercent>
+                <initialFuelPercent>0</initialFuelPercent>
                 <autoRefuelPercent>0.2</autoRefuelPercent>
                 <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
             </li>
@@ -92,11 +87,8 @@
                 <heatPushMaxTemperature>50</heatPushMaxTemperature>
             </li>
         </comps>
-        <modExtensions>
-            <li Class="CosmereScadrial.DefModExtension.PoweredOrFueled" />
-        </modExtensions>
         <researchPrerequisites>
-            <li>Cosmere_Allomancy</li>
+            <li>Cosmere_Simple_Alloys</li>
         </researchPrerequisites>
         <placeWorkers>
             <li>PlaceWorker_ShowFacilitiesConnections</li>

@@ -9,6 +9,14 @@
         <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
     </StuffCategoryDef>
     <StuffCategoryDef>
+        <defName>Cosmere_Resources_StuffCategory_AllomanticMetals</defName>
+        <label>cosmere allomantic metals</label>
+        <noun>cosmere allomantic metal</noun>
+        <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+        <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+        <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+    </StuffCategoryDef>
+    <StuffCategoryDef>
         <defName>Cosmere_Resources_StuffCategory_CoalOrCharcoal</defName>
         <label>coal or charcoal</label>
         <noun>coal or charcoal</noun>

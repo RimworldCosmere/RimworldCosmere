@@ -20,9 +20,9 @@ public class AllomanticGeneCommand(
     Color barColor,
     Color barHighlightColor
 ) : GeneGizmo_Resource(gene, drainGenes, barColor, barHighlightColor) {
-    private const float AbilityIconSize = Height / 2f;
-    private const float BaseWidth = 185;
+    private const float AbilityIconSize = Height / 1.4f;
     private static readonly Vector2 Padding = new Vector2(2f, 4f);
+    private static readonly float BaseWidth = GetWidthForAbilityCount(2);
 
     private static readonly Texture2D VialIcon =
         ContentFinder<Texture2D>.Get("Things/Item/AllomanticVial/AllomanticVial_c");
@@ -34,10 +34,10 @@ public class AllomanticGeneCommand(
 
     private static readonly Texture2D EmptyBarTex = new Color(0.03f, 0.035f, 0.05f).ToSolidColorTexture();
     private static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
-    private static bool DraggingBar;
     private Texture2D? barDragTex;
     private Texture2D? barHighlightTex;
     private Texture2D? barTex;
+    private bool draggingBar;
 
     // Things to initialize
     private bool initialized;
@@ -56,13 +56,17 @@ public class AllomanticGeneCommand(
 
     protected override string Title => metal.LabelCap;
 
-    protected override float Width => Mathf.Max(BaseWidth,
-        Height + Padding.x + (AbilityIconSize + Padding.x) * gene.def.abilities.Count);
+    protected override float Width => Mathf.Max(BaseWidth, GetWidthForAbilityCount(gene.def.abilities.Count));
+
+    private static float GetWidthForAbilityCount(int abilityCount) {
+        return Height + Padding.x + (AbilityIconSize + Padding.x) * abilityCount - Padding.x;
+    }
 
     protected override string GetTooltip() {
         float rate = burning.GetTotalBurnRate(metal) * GenTicks.TicksPerRealSecond;
 
         NamedArgument coloredPawn = pawn.NameShortColored.Named("PAWN");
+        NamedArgument coloredMetal = metal.coloredLabel.Named("METAL");
         NamedArgument coloredCount =
             gene.RequestedVialStock.ToString().Colorize(ColoredText.FactionColor_Ally).Named("COUNT");
 
@@ -88,7 +92,11 @@ public class AllomanticGeneCommand(
             tooltip.AppendLine("\n" + gene.def.resourceDescription.Formatted(coloredPawn).Resolve());
         }
 
-        if (IsDraggable) tooltip.Append("\n" + "CS_ChangeVialStock".Translate());
+        if (IsDraggable) {
+            tooltip.AppendLine("\n" + "CS_ChangeVialStock".Translate(coloredPawn, coloredMetal, pawn.Named("pawn"))
+                .Resolve());
+            tooltip.AppendLine("\n" + "CS_SetVialLevelTooltip".Translate(coloredPawn, coloredMetal).Resolve());
+        }
 
         return tooltip.ToString();
     }
@@ -112,7 +120,7 @@ public class AllomanticGeneCommand(
         }
     }
 
-    private void DrawBottomBar(Rect bottomBarRect, ref bool mouseOverElement) {
+    private void DrawBottomBar(Rect bottomBarRect) {
         if (!IsDraggable) {
             Widgets.FillableBar(bottomBarRect, ValuePercent, barTex, EmptyBarTex, true);
             foreach (float barThreshold in GetBarThresholds()) {
@@ -126,18 +134,10 @@ public class AllomanticGeneCommand(
             }
         } else {
             Widgets.DraggableBar(bottomBarRect, barTex, barHighlightTex, EmptyBarTex, barDragTex,
-                ref DraggingBar, ValuePercent, ref targetValuePct, GetBarThresholds(), Increments,
+                ref draggingBar, ValuePercent, ref targetValuePct, GetBarThresholds(), Increments,
                 DragRange.min, DragRange.max);
             targetValuePct = Mathf.Clamp(targetValuePct, DragRange.min, DragRange.max);
             Target = targetValuePct;
-        }
-
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter)) Widgets.Label(bottomBarRect, BarLabel);
-
-        TooltipHandler.TipRegionByKey(bottomBarRect, "CS_SetVialLevelTooltip", pawn.Named("PAWN"),
-            metal.Named("METAL"));
-        if (Mouse.IsOver(bottomBarRect)) {
-            mouseOverElement = true;
         }
     }
 
@@ -210,11 +210,11 @@ public class AllomanticGeneCommand(
 
         Rect iconRect = DrawIconBox(rect, ref mouseOver);
         Rect topBarRect = new Rect(iconRect.x + iconRect.width + Padding.x, iconRect.y,
-            rect.width - (rect.height + Padding.y), AbilityIconSize);
+            rect.width - (iconRect.width + Padding.x), AbilityIconSize);
         DrawTopBar(topBarRect, ref mouseOver);
-        Rect bottomBarRect = new Rect(topBarRect.x, topBarRect.y + AbilityIconSize + Padding.y / 2, topBarRect.width,
-            Height - AbilityIconSize - Padding.y * 3);
-        DrawBottomBar(bottomBarRect, ref mouseOver);
+        Rect bottomBarRect = new Rect(topBarRect.x, topBarRect.y + AbilityIconSize + Padding.y, topBarRect.width,
+            Height - topBarRect.height - Padding.y * 3);
+        DrawBottomBar(bottomBarRect);
 
         if (!Title.NullOrEmpty()) {
             using (new TextBlock(GameFont.Tiny)) {

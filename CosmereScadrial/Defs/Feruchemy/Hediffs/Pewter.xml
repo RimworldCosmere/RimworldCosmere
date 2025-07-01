@@ -23,7 +23,8 @@
                 <metal>Pewter</metal>
             </li>
         </modExtensions>
-    </HediffDef><HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+    </HediffDef>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_TapPewter</defName>
         <label>tapping pewter</label>
         <description>This pawn is tapping a pewter metalmind, enhancing their strength, endurance, and physical resilience. Their blows hit harder, they shrug off injuries more easily, and their muscles propel them faster across the battlefield.</description>

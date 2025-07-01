@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_StoreIron</defName>
+        <label>storing iron</label>
+        <description>This pawn is storing physical weight in an iron metalmind, becoming unnaturally light. They move slightly faster and become easier to knock around, but they store their mass for future use. Stored weight makes them poor at resisting external force — like explosions or Allomantic pushes.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <MoveSpeed>0.9</MoveSpeed>
+                    <Mass>0.5</Mass>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Iron</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+<HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_TapIron</defName>
+        <label>tapping iron</label>
+        <description>This pawn is tapping an iron metalmind, dramatically increasing their weight. They move more slowly but become far harder to move or stagger, and deal greater impact force when colliding with objects. They resist external force and can push through enemies with mass alone.</description>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <MoveSpeed>1.1</MoveSpeed>
+                    <Mass>2.0</Mass>
+                </statFactors>
+            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Iron</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+</Defs>

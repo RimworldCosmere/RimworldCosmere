@@ -17,7 +17,8 @@
                 <metal>Bronze</metal>
             </li>
         </modExtensions>
-    </HediffDef><HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+    </HediffDef>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_TapBronze</defName>
         <label>tapping bronze</label>
         <description>This pawn is tapping a bronze metalmind, flooding their body with stored wakefulness. They feel intensely alert and energized, allowing them to work longer without sleep. Sustained tapping may mask exhaustion but can lead to burnout once reserves run dry.</description>

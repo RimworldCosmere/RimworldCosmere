@@ -8,7 +8,7 @@
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <ComfyTemperatureMin>0.75</ComfyTemperatureMin>
+                    <ComfyTemperatureMin>1.5</ComfyTemperatureMin>
                     <ComfyTemperatureMax>0.75</ComfyTemperatureMax>
                 </statFactors>
             </li>
@@ -18,7 +18,8 @@
                 <metal>Brass</metal>
             </li>
         </modExtensions>
-    </HediffDef><HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+    </HediffDef>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_TapBrass</defName>
         <label>tapping brass</label>
         <description>This pawn is tapping a brass metalmind, releasing stored heat into their body. They become much more vulnerable to high temperatures and fire, and risk heatstroke if not careful — but can survive extreme cold with ease.</description>
@@ -26,7 +27,7 @@
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <ComfyTemperatureMin>1.5</ComfyTemperatureMin>
+                    <ComfyTemperatureMin>.75</ComfyTemperatureMin>
                     <ComfyTemperatureMax>1.5</ComfyTemperatureMax>
                 </statFactors>
             </li>

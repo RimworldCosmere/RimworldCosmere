@@ -1,84 +1,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereFramework.Extension;
-using CosmereFramework.Util;
+using CosmereFramework.Quickstart;
 using CosmereResources;
 using CosmereResources.Def;
 using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
+using CosmereScadrial.Dev;
 using RimWorld;
-using RimWorld.Planet;
 using Verse;
-using Verse.Profile;
 using GeneUtility = CosmereScadrial.Util.GeneUtility;
 
-namespace CosmereScadrial.Dev;
+namespace CosmereScadrial.Quickstart;
 
-[StaticConstructorOnStartup]
-public static class ScadrianQuickstart {
-    private const int MapSize = 75;
-    private static bool Started;
-    private static readonly StorytellerDef Storyteller = StorytellerDefOf.Cassandra;
-    private static readonly DifficultyDef Difficulty = DifficultyDefOf.Easy;
-    private static readonly ScenarioDef Scenario = ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
+public class PreCatacendre : AbstractQuickstart {
+    public override int MapSize => 75;
+    public override StorytellerDef Storyteller => StorytellerDefOf.Cassandra;
+    public override DifficultyDef Difficulty => DifficultyDefOf.Easy;
+    public override ScenarioDef? Scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
-    static ScadrianQuickstart() {
-        if (!Prefs.DevMode) return;
-        if (!CosmereFramework.CosmereFramework.cosmereSettings.debugMode) return;
-
-        LongEventHandler.ExecuteWhenFinished(() => {
-            if (Started) return;
-            Started = true;
-            TryStartGame();
-        });
+    public override void PostLoaded() {
+        Find.TickManager.Pause();
     }
 
-    private static string seed => GenText.RandomSeedString();
-
-    private static void TryStartGame() {
-        if (Current.ProgramState != ProgramState.Entry) return;
-        if (Find.GameInitData != null || Current.Game != null) return;
-
-        LongEventHandler.QueueLongEvent(() => {
-            MemoryUtility.ClearAllMapsAndWorld();
-            ApplyConfiguration();
-            PageUtility.InitGameStart();
-            DelayedActionScheduler.Schedule(PrepareColonists, 20);
-            //Current.Game?.researchManager.DebugSetAllProjectsFinished();
-            //DebugSettings.godMode = true;
-            DebugViewSettings.showFpsCounter = true;
-            DebugViewSettings.showTpsCounter = true;
-            DebugViewSettings.showMemoryInfo = true;
-        }, "GeneratingMap", true, GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap);
+    public override void PostStart() {
+        //Current.Game?.researchManager.DebugSetAllProjectsFinished();
+        //DebugSettings.godMode = true;
+        DebugViewSettings.showFpsCounter = true;
+        DebugViewSettings.showTpsCounter = true;
+        DebugViewSettings.showMemoryInfo = true;
     }
 
-    private static void ApplyConfiguration() {
-        Current.ProgramState = ProgramState.Entry;
-        Current.Game = new Game {
-            InitData = new GameInitData(),
-            Scenario = Scenario.scenario,
-        };
-        Find.Scenario.PreConfigure();
-        Current.Game.storyteller = new Storyteller(Storyteller, Difficulty);
-        Current.Game.World = WorldGenerator.GenerateWorld(
-            0.05f,
-            seed,
-            OverallRainfall.Normal,
-            OverallTemperature.Normal,
-            OverallPopulation.Normal,
-            LandmarkDensity.Normal
-        );
-        Find.GameInitData.ChooseRandomStartingTile();
-        Find.GameInitData.mapSize = MapSize;
-        Find.Scenario.PostIdeoChosen();
-        Find.GameInitData.PrepForMapGen();
-        Find.Scenario.PreMapGenerate();
-    }
-
-    private static void PrepareColonists() {
-        List<Pawn> pawns = Find.World.PlayerPawnsForStoryteller.ToList();
+    public override void PrepareColonists(List<Pawn> pawns) {
         if (pawns.Count == 0) {
-            Find.TickManager.Pause();
             return;
         }
 

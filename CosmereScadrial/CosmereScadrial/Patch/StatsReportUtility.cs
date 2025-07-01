@@ -12,7 +12,7 @@ public static class StatsReportUtility {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(RimWorld.StatsReportUtility), "DescriptionEntry", typeof(Verse.Def))]
     public static bool RemoveTokens(Verse.Def def, ref StatDrawEntry __result) {
-        if (def is not GeneDef geneDef) return false;
+        if (def is not GeneDef geneDef) return true;
 
         MetalDef metal = geneDef.GetModExtension<MetalsLinked>().Metals.First()!;
         TaggedString description =

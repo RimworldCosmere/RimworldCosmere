@@ -15,6 +15,15 @@ public class Allomancer : Metalborn {
         targetValue = 0.15f;
     }
 
+    public override void PostAdd() {
+        base.PostAdd();
+        if (!pawn.HasComp<MetalReserves>()) { }
+    }
+
+    public override void PostRemove() {
+        base.PostRemove();
+    }
+
     protected override void PostAddOrRemove() {
         MetalbornUtility.HandleMistbornTrait(pawn);
         MetalbornUtility.HandleAllomancerTrait(pawn);

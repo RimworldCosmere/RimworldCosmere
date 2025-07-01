@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using JetBrains.Annotations;
 using Verse;
 using ThingUtility = CosmereScadrial.Util.ThingUtility;
 
@@ -11,6 +12,7 @@ namespace CosmereScadrial.Patch;
 
 [HarmonyPatch(typeof(Pawn_InventoryTracker), "DropAllNearPawnHelper")]
 [HarmonyPatch(new[] { typeof(IntVec3), typeof(bool), typeof(bool), typeof(bool) })]
+[UsedImplicitly]
 public static class PawnInventoryTrackerDropAllNearPawnHelperTranspiler {
     [HarmonyTranspiler]
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il) {

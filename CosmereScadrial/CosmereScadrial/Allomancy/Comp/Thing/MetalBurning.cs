@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Def;
+using CosmereScadrial.Extension;
 using CosmereScadrial.Util;
 using RimWorld;
 using UnityEngine;
@@ -20,8 +21,6 @@ public class MetalBurningProperties : CompProperties {
  * @TODO Notify the Hediff to recalculate severity on a rate change
  */
 public class MetalBurning : ThingComp {
-    private const int SecondsInterval = 1;
-
     // Tracks all active burn rates per metal and source
     public readonly Dictionary<(MetallicArtsMetalDef metal, AllomanticAbilityDef def), float> burnSourceMap =
         new Dictionary<(MetallicArtsMetalDef metal, AllomanticAbilityDef def), float>();
@@ -57,7 +56,7 @@ public class MetalBurning : ThingComp {
     public override void CompTickInterval(int delta) {
         base.CompTickInterval(delta);
 
-        if (!pawn.IsHashIntervalTick(tickRate, delta)) return;
+        if (!pawn.IsAllomancer() || !pawn.IsHashIntervalTick(tickRate, delta)) return;
 
         TryBurnMetals();
     }

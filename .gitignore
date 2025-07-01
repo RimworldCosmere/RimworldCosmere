@@ -8,3 +8,4 @@ node_modules
 .scripts/.cache
 Cosmere.sln.DotSettings.user
 **/Assemblies
+BuildInfo.cs

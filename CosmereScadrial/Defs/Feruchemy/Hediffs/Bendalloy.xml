@@ -8,7 +8,6 @@
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <HungerRate>2.0</HungerRate>
                     <MaxNutrition>2.0</MaxNutrition>
                 </statFactors>
             </li>
@@ -27,7 +26,6 @@
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <HungerRate>0.5</HungerRate>
                     <MaxNutrition>0.5</MaxNutrition>
                 </statFactors>
             </li>

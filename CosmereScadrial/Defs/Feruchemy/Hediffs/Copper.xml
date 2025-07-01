@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
-        <defName>Cosmere_Scadrial_Hediff_StoreBendalloy</defName>
-        <label>storing bendalloy</label>
+        <defName>Cosmere_Scadrial_Hediff_StoreCopper</defName>
+        <label>storing copper</label>
         <description>This pawn is storing memories in a copper metalmind, causing their thoughts to blur. Learning slows, task focus falters, and they struggle to retain information — all sacrificed in the name of long-term clarity.</description>
         <stages>
             <li>
@@ -10,19 +10,19 @@
                 <statFactors>
                     <GlobalLearningFactor>0.5</GlobalLearningFactor>
                     <ResearchSpeed>0.5</ResearchSpeed>
-                    <MentalBreakThreshhold>2.0</MentalBreakThreshhold>
+                    <MentalBreakThreshold>2.0</MentalBreakThreshold>
                 </statFactors>
             </li>
         </stages>
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
-                <metal>Bendalloy</metal>
+                <metal>Copper</metal>
             </li>
         </modExtensions>
     </HediffDef>
 <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
-        <defName>Cosmere_Scadrial_Hediff_TapBendalloy</defName>
-        <label>tapping bendalloy</label>
+        <defName>Cosmere_Scadrial_Hediff_TapCopper</defName>
+        <label>tapping copper</label>
         <description>This pawn is tapping a copper metalmind, unlocking stored memories with razor-sharp clarity. Their mind is focused, efficient, and highly receptive — making research, learning, and complex tasks faster and easier.</description>
         <stages>
             <li>
@@ -30,13 +30,13 @@
                 <statFactors>
                     <GlobalLearningFactor>2.0</GlobalLearningFactor>
                     <ResearchSpeed>2.0</ResearchSpeed>
-                    <MentalBreakThreshhold>0.5</MentalBreakThreshhold>
+                    <MentalBreakThreshold>0.5</MentalBreakThreshold>
                 </statFactors>
             </li>
         </stages>
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
-                <metal>Bendalloy</metal>
+                <metal>Copper</metal>
             </li>
         </modExtensions>
     </HediffDef>

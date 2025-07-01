@@ -46,6 +46,9 @@ public static class ScadrianQuickstart {
             DelayedActionScheduler.Schedule(PrepareColonists, 20);
             //Current.Game?.researchManager.DebugSetAllProjectsFinished();
             //DebugSettings.godMode = true;
+            DebugViewSettings.showFpsCounter = true;
+            DebugViewSettings.showTpsCounter = true;
+            DebugViewSettings.showMemoryInfo = true;
         }, "GeneratingMap", true, GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap);
     }
 
@@ -94,36 +97,12 @@ public static class ScadrianQuickstart {
             pawn.Name = new NameSingle("Full Feru");
         }
 
-        if (false && pawns.TryPopFront(out pawn)) {
-            GeneUtility.AddMistborn(pawn, false, true);
-            ScadrianUtility.FillAllReserves(pawn);
-            GeneUtility.AddFullFeruchemist(pawn, false, true);
-            pawn.Name = new NameSingle("Full Twin");
+        if (pawns.TryPopFront(out pawn)) {
+            PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsTwinborn(pawn, true, true, MetalDefOf.Steel);
-        }
-
-        if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsTwinborn(pawn, true, true, MetalDefOf.Brass);
-        }
-
-        if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsTwinborn(pawn, true, true, MetalDefOf.Pewter);
-        }
-
-        if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsTwinborn(pawn, true, true, MetalDefOf.Zinc);
-        }
-
-        if (false && pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsMisting(pawn, true, MetalDefOf.Steel);
-        }
-
-        if (false && pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsMisting(pawn, false, MetalDefOf.Iron);
-            pawn.health.forceDowned = true;
+            PrepareColonistAsFerring(pawn, true, false, MetalDefOf.Brass);
         }
 
         Find.TickManager.Pause();
@@ -133,29 +112,35 @@ public static class ScadrianQuickstart {
         Pawn pawn,
         bool fillReserves,
         bool createMetalmind,
+        bool snapped,
         params MetalDef[] metals
     ) {
         foreach (MetalDef metal in metals) {
-            PrepareColonistAsMisting(pawn, fillReserves, metal);
-            PrepareColonistAsFerring(pawn, createMetalmind, metal);
+            PrepareColonistAsMisting(pawn, fillReserves, snapped, metal);
+            PrepareColonistAsFerring(pawn, createMetalmind, snapped, metal);
         }
 
         pawn.Name = new NameSingle("TB: " + string.Join(" and ", metals.Select(m => m.LabelCap)));
     }
 
-    private static void PrepareColonistAsMisting(Pawn pawn, bool fillReserves, params MetalDef[] metals) {
+    private static void PrepareColonistAsMisting(Pawn pawn, bool fillReserves, bool snapped, params MetalDef[] metals) {
         MetalReserves reserves = pawn.GetComp<MetalReserves>();
         foreach (MetalDef metal in metals) {
-            GeneUtility.AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false);
+            GeneUtility.AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false, snapped);
             if (fillReserves) reserves.SetReserve(MetallicArtsMetalDef.FromMetalDef(metal), MetalReserves.MaxAmount);
         }
 
         pawn.Name = new NameSingle("Misting: " + string.Join(" and ", metals.Select(m => m.LabelCap)));
     }
 
-    private static void PrepareColonistAsFerring(Pawn pawn, bool createMetalmind, params MetalDef[] metals) {
+    private static void PrepareColonistAsFerring(
+        Pawn pawn,
+        bool createMetalmind,
+        bool snapped,
+        params MetalDef[] metals
+    ) {
         foreach (MetalDef metal in metals) {
-            GeneUtility.AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), false);
+            GeneUtility.AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), false, snapped);
             if (createMetalmind) {
                 pawn.inventory.innerContainer.TryAdd(
                     ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item));

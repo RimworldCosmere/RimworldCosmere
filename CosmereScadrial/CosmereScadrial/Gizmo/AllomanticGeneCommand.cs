@@ -116,7 +116,7 @@ public class AllomanticGeneCommand(
         GizmoResult result = base.GizmoOnGUI(topLeft, maxWidth, parms);
         bool mouseOver = result.State.Equals(GizmoState.Mouseover);
 
-        if (!Title.NullOrEmpty()) {
+        /*if (!Title.NullOrEmpty()) {
             using (new TextBlock(GameFont.Tiny)) {
                 float textWidth = iconRect.width;
                 float textHeight = Text.CalcHeight(Title, textWidth);
@@ -132,7 +132,7 @@ public class AllomanticGeneCommand(
         if (Mouse.IsOver(mainRect) && !mouseOver) {
             Widgets.DrawHighlight(mainRect);
             TooltipHandler.TipRegion(mainRect, GetTooltip, Gen.HashCombineInt(GetHashCode(), 8491284));
-        }
+        }*/
 
         return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear, result.InteractEvent);
     }

@@ -41,7 +41,7 @@ public class MetalReserves : ThingComp {
 
     public override void CompTickRare() {
         base.CompTickRare();
-        if (!pawn.IsAsleep()) return;
+        if (!pawn.IsAllomancer() || !pawn.IsAsleep()) return;
 
         MetallicArtsMetalDef[] keys = reserves.Keys.Where(metal => reserves[metal] > 0).ToArray();
         foreach (MetallicArtsMetalDef metal in keys) {
@@ -56,7 +56,7 @@ public class MetalReserves : ThingComp {
 
     public override void CompTickInterval(int delta) {
         base.CompTickInterval(delta);
-        if (pawn.CurJob == null) return;
+        if (!pawn.IsAllomancer() || pawn.CurJob == null) return;
 
         foreach (MetallicArtsMetalDef metal in reserves.Keys) {
             if (!cachedGenes.ContainsKey(metal)) {

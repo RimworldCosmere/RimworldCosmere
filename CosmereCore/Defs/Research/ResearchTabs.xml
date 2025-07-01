@@ -3,5 +3,7 @@
 	<ResearchTabDef>
 		<defName>Cosmere</defName>
 		<label>Cosmere</label>
+		<generalTitle>Cosmere research projects</generalTitle>
+		<generalDescription>Research into the fundamental forces and Shardic Investiture that shape reality itself. Unlocks powerful systems from across the worlds of the Cosmere, including the Metallic Arts, Surgebinding, Breaths, god metals, and more.</generalDescription>
 	</ResearchTabDef>
 </Defs>

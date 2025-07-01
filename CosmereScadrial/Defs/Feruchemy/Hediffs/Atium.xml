@@ -29,6 +29,7 @@
                     <MoveSpeed>0.8</MoveSpeed>
                     <ImmunityGainSpeed>0.5</ImmunityGainSpeed>
                     <PainShockThreshold>0.5</PainShockThreshold>
+                    <LifespanFactor>0.5</LifespanFactor>
                 </statFactors>
             </li>
         </stages>
@@ -66,6 +67,7 @@
                 <statFactors>
                     <ImmunityGainSpeed>2.0</ImmunityGainSpeed>
                     <PainShockThreshold>2.0</PainShockThreshold>
+                    <LifespanFactor>2.0</LifespanFactor>
                 </statFactors>
             </li>
         </stages>

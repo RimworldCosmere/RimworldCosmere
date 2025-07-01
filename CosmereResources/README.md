@@ -1,4 +1,4 @@
-# Cosmere Metals
+# Cosmere Resources
 
 *A shared metals library for Cosmere-based mods in RimWorld.*
 

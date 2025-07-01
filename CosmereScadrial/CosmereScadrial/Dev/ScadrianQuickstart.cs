@@ -146,7 +146,7 @@ public static class ScadrianQuickstart {
     private static void PrepareColonistAsMisting(Pawn pawn, bool fillReserves, params MetalDef[] metals) {
         MetalReserves reserves = pawn.GetComp<MetalReserves>();
         foreach (MetalDef metal in metals) {
-            GeneUtility.AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false, true);
+            GeneUtility.AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false);
             if (fillReserves) reserves.SetReserve(MetallicArtsMetalDef.FromMetalDef(metal), MetalReserves.MaxAmount);
         }
 
@@ -155,7 +155,7 @@ public static class ScadrianQuickstart {
 
     private static void PrepareColonistAsFerring(Pawn pawn, bool createMetalmind, params MetalDef[] metals) {
         foreach (MetalDef metal in metals) {
-            GeneUtility.AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), false, true);
+            GeneUtility.AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), false);
             if (createMetalmind) {
                 pawn.inventory.innerContainer.TryAdd(
                     ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item));

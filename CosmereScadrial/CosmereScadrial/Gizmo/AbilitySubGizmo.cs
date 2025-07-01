@@ -22,9 +22,9 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
     private static readonly Texture2D Border = ColorLibrary.Grey.ToSolidColorTexture();
     private static readonly Texture2D AutoBurnBorder = ColorLibrary.LightBlue.ToSolidColorTexture();
 
-    private bool disabled => !GizmoEnabled().Accepted;
-
-    private string? disabledReason => GizmoEnabled().Reason;
+    private AcceptanceReport _cachedReport;
+    private bool disabled => !_cachedReport.Accepted;
+    private string? disabledReason => _cachedReport.Reason;
 
     private Texture2D icon => disabled ? ability.def.disabledIcon : ability.def.uiIcon;
 
@@ -43,6 +43,8 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
     }
 
     public override GizmoResult OnGUI(Rect rect) {
+        _cachedReport = GizmoEnabled();
+
         GizmoRenderParms parms = new GizmoRenderParms { shrunk = true, lowLight = false, highLight = false };
         bool isMouseOver = false;
         bool isClicked = false;
@@ -110,6 +112,7 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
     }
 
     public override void ProcessInput(Event ev) {
+        _cachedReport = GizmoEnabled();
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
 
         if (ev.shift) {

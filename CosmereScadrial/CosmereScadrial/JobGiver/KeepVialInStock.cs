@@ -13,13 +13,14 @@ public class KeepVialInStock : ThinkNode_JobGiver {
         if (pawn.Downed || pawn.IsAsleep()) return null;
 
         foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
-            ThingDef vialDef = gene.metal.GetVial();
-            int inStock = pawn.inventory.innerContainer.TotalStackCountOfDef(vialDef);
+            int inStock =
+                pawn.inventory.innerContainer.TotalStackCountOfDef(ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial,
+                    gene.metal.Item);
             if (inStock >= gene.RequestedVialStock) continue;
 
             int amountToTake = gene.RequestedVialStock - inStock;
 
-            Verse.Thing? thing = FindVialFor(pawn, vialDef, amountToTake);
+            Verse.Thing? thing = FindVialFor(pawn, gene, amountToTake);
             if (thing == null) continue;
 
             Job job = JobMaker.MakeJob(RimWorld.JobDefOf.TakeInventory, thing);
@@ -31,14 +32,16 @@ public class KeepVialInStock : ThinkNode_JobGiver {
         return null;
     }
 
-    private Verse.Thing? FindVialFor(Pawn pawn, ThingDef vialDef, int desired) {
-        return GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(vialDef),
-            PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, x => VialValidator(pawn, x, desired));
+    private Verse.Thing? FindVialFor(Pawn pawn, Allomancer gene, int desired) {
+        return GenClosest.ClosestThingReachable(pawn.Position, pawn.Map,
+            ThingRequest.ForDef(ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial),
+            PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, x => VialValidator(pawn, gene, x, desired));
     }
 
-    private bool VialValidator(Pawn pawn, Verse.Thing vial, int desired) {
+    private bool VialValidator(Pawn pawn, Allomancer gene, Verse.Thing vial, int desired) {
         if (!vial.Spawned) return true;
         if (vial.IsForbidden(pawn)) return false;
+        if (!vial.Stuff.Equals(gene.metal.Item)) return false;
 
         return pawn.CanReserveAndReach(vial, PathEndMode.ClosestTouch, Danger.None, 10,
             Math.Min(vial.def.orderedTakeGroup.max, desired));

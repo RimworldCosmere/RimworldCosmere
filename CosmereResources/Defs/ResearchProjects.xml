@@ -2,8 +2,8 @@
 <Defs>
 	<ResearchProjectDef>
 		<defName>Cosmere_Simple_Alloys</defName>
-		<label>simple metal alloys</label>
-		<description>Combine metals in unique combinations to make new simple alloys.</description>
+		<label>simple alloys</label>
+		<description>Combining base metals to create stronger, more useful materials. Unlocks basic alloys like steel and bronze for construction, crafting, and equipment.</description>
 		<baseCost>300</baseCost>
 		<techLevel>Medieval</techLevel>
 		<researchViewX>0.00</researchViewX>
@@ -11,8 +11,8 @@
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_Complex_Alloys</defName>
-		<label>complex metal alloys</label>
-		<description>Combine metals in unique combinations to make new complex alloys.</description>
+		<label>complex alloys</label>
+		<description>Advanced metallurgy techniques enable the forging of rare and potent alloys. Unlocks high-tier materials used in specialized tools, weapons, and metal refinement.</description>
 		<baseCost>1200</baseCost>
 		<techLevel>Industrial</techLevel>
 		<researchViewX>1.00</researchViewX>
@@ -26,7 +26,7 @@
 		<defName>Cosmere_God_Metals</defName>
 		<tab>Cosmere</tab>
 		<label>god metals</label>
-		<description>Learn about the God Metals</description>
+		<description>Rare and divine, the God Metals transcend ordinary Investiture. This research unlocks the secrets of metals like Atium, Lerasium, and Harmonium—granting powerful abilities, unique crafting recipes, and pivotal roles in ascension, rebirth, and destiny.</description>
 		<baseCost>3600</baseCost>
 		<techLevel>Neolithic</techLevel>
 		<researchViewX>0.00</researchViewX>
@@ -35,7 +35,7 @@
 	<ResearchProjectDef>
 		<defName>Cosmere_Glass</defName>
 		<label>glass</label>
-		<description>Melt stones into glass</description>
+		<description>A versatile material made from sand and heat. Unlocks glass production and allows construction of fragile but beautiful objects like windows, lenses, and decorative structures.</description>
 		<baseCost>1800</baseCost>
 		<techLevel>Medieval</techLevel>
 		<researchViewX>1.00</researchViewX>

@@ -1,51 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
-    <!--<RecipeDef Name="Cosmere_Resource_Recipe_AlloyBase" Abstract="true">
-        <workAmount>1500</workAmount>
-        <workSpeedStat>SmeltingSpeed</workSpeedStat>
-        <workSkill>Crafting</workSkill>
-        <requiredGiverWorkType>Smithing</requiredGiverWorkType>
-        <effectWorking>Smelt</effectWorking>
-        <soundWorking>Recipe_Smelt</soundWorking>
-        <recipeUsers>
-            <li>ElectricSmelter</li>
-            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
-        </recipeUsers>
-    </RecipeDef>-->
-
-    <!--RecipeDef>
-        <defName>Cosmere_Resources_Recipe_SmeltAlloys</defName>
-        <label>smelt alloys</label>
-        <description>Use heat and strong electromagnets to smelt multiple resources together into a new alloy.</description>
-        <jobString>Smelting alloy.</jobString>
-        <workAmount>1600</workAmount>
-        <workSpeedStat>SmeltingSpeed</workSpeedStat>
-        <effectWorking>Smelt</effectWorking>
-        <soundWorking>Recipe_Smelt</soundWorking>
-        <specialProducts>
-            <li>Smelted</li>
-        </specialProducts>
-        <ingredients>
-            <li>
-                <filter>
-                    <categories>
-                        <li>Cosmere_Resource_ThingCategory_Alloy</li>
-                    </categories>
-                </filter>
-            </li>
-        </ingredients>
-        <fixedIngredientFilter>
-            <categories>
-                <li>Cosmere_Resource_ThingCategory_Alloy</li>
-            </categories>
-        </fixedIngredientFilter>
-        <recipeUsers>
-            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
-            <li>ElectricSmelter</li>
-        </recipeUsers>
-    </RecipeDef-->
-
     <!-- Coal Recipes -->
     <RecipeDef>
         <defName>Make_CharcoalFromWood</defName>
@@ -54,7 +9,7 @@
         <jobString>Burning wood into charcoal.</jobString>
         <effectWorking>Cremate</effectWorking>
         <soundWorking>Recipe_Cremate</soundWorking>
-        <workAmount>2000</workAmount>
+        <workAmount>1000</workAmount>
         <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
         <ingredients>
             <li>
@@ -75,7 +30,7 @@
             <Charcoal>100</Charcoal>
         </products>
         <recipeUsers>
-            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
+            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_Forge</li>
             <li>ElectricSmithy</li>
             <li>FueledSmithy</li>
             <li>Campfire</li>
@@ -89,7 +44,7 @@
         <effectWorking>Cremate</effectWorking>
         <soundWorking>Recipe_Cremate</soundWorking>
         <allowMixingIngredients>true</allowMixingIngredients>
-        <workAmount>2800</workAmount>
+        <workAmount>2000</workAmount>
         <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
         <ingredients>
             <li>
@@ -110,7 +65,7 @@
             <Coal>5</Coal>
         </products>
         <recipeUsers>
-            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
+            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_Forge</li>
             <li>ElectricSmithy</li>
             <li>FueledSmithy</li>
         </recipeUsers>
@@ -149,42 +104,4 @@
             <li>BiofuelRefinery</li>
         </recipeUsers>
     </RecipeDef>
-    
-    <!-- Glass Recipes -->
-    <!--<RecipeDef>
-        <defName>MakeGlass</defName>
-        <label>make glass</label>
-        <description>Melt various stone chunks into glass.</description>
-        <jobString>Making glass.</jobString>
-        <workAmount>1500</workAmount>
-        <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
-        <effectWorking>Smith</effectWorking>
-        <skillRequirements>
-            <Crafting>3</Crafting>
-        </skillRequirements>
-        <ingredients>
-            <li>
-                <filter>
-                    <categories>
-                        <li>StoneChunks</li>
-                    </categories>
-                </filter>
-                <count>1</count>
-            </li>
-        </ingredients>
-        <products>
-            <Glass>4</Glass>
-        </products>
-        <fixedIngredientFilter>
-            <categories>
-                <li>StoneChunks</li>
-            </categories>
-        </fixedIngredientFilter>
-        <researchPrerequisite>Cosmere_Glass</researchPrerequisite>
-        <recipeUsers>
-            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
-            <li>ElectricSmithy</li>
-            <li>FueledSmithy</li>
-        </recipeUsers>
-    </RecipeDef>-->
 </Defs>

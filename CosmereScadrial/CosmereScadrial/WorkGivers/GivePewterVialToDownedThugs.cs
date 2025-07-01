@@ -12,7 +12,7 @@ namespace CosmereScadrial.WorkGivers;
 
 public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
     private MetalDef pewter => MetalDefOf.Pewter;
-    private ThingDef vialDef => pewter.GetVial();
+    private ThingDef vialDef => ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial;
 
     public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
 
@@ -58,7 +58,8 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
 
     private bool TryFindBestVialSourceFor(
         Pawn pawn,
-        out Verse.Thing vialSource) {
+        out Verse.Thing vialSource
+    ) {
         vialSource = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(vialDef),
             PathEndMode.Touch, TraverseParms.For(pawn), 9999f, x => VialValidator(pawn, x));
 
@@ -69,6 +70,7 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
     private bool VialValidator(Pawn pawn, Verse.Thing vial) {
         if (!vial.Spawned) return true;
         if (vial.IsForbidden(pawn)) return false;
+        if (!vial.Stuff.Equals(pewter.Item)) return false;
 
         return pawn.CanReserveAndReach(vial, PathEndMode.ClosestTouch, Danger.None, 10, 1);
     }

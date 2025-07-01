@@ -17,6 +17,9 @@
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
 
+        <researchPrerequisites>
+            <li>Cosmere_God_Metals</li>
+        </researchPrerequisites>
 
         <graphicData>
             <graphicClass>Graphic_Single</graphicClass>

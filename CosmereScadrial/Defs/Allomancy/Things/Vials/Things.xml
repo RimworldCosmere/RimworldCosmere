@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef Name="AbstractAllomanticVial" ParentName="ResourceBase" Abstract="True">
+    <OrderedTakeGroupDef>
+        <defName>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVial</defName>
+        <label>allomantic vial</label>
+        <max>30</max>
+    </OrderedTakeGroupDef>
+    
+    <ThingDef Name="Cosmere_Scadrial_Thing_AllomanticVialBase" ParentName="ResourceBase" Abstract="True">
         <thingClass>CosmereScadrial.Thing.AllomanticVial</thingClass>
         <graphicData>
             <texPath>Things/Item/AllomanticVial</texPath>
@@ -10,6 +16,7 @@
             <colorTwo>(255, 255, 255)</colorTwo>
             <drawSize>.5</drawSize>
         </graphicData>
+        <techLevel>Medieval</techLevel>
         <statBases>
             <MaxHitPoints>50</MaxHitPoints>
             <Flammability>0.2</Flammability>
@@ -17,6 +24,38 @@
             <Mass>0.005</Mass>
             <MarketValue>8</MarketValue>
         </statBases>
+        <stuffCategories>
+            <li>Cosmere_Resources_StuffCategory_Metals</li>
+        </stuffCategories>
+        <costList>
+            <Cosmere_Resource_Thing_Glass>1</Cosmere_Resource_Thing_Glass>
+            <Cosmere_Resource_Thing_Alcohol>1</Cosmere_Resource_Thing_Alcohol>
+        </costList>
+        <costStuffCount>1</costStuffCount>
+        <recipeMaker>
+            <workAmount>600</workAmount>
+            <workSpeedStat>DrugCookingSpeed</workSpeedStat>
+            <effectWorking>Cook</effectWorking>
+            <soundWorking>Recipe_CookMeal</soundWorking>
+            <workSkill>Crafting</workSkill>
+            <researchPrerequisites>
+                <li>Cosmere_Glass</li>
+                <li>Cosmere_Scadrial_Allomancy</li>
+            </researchPrerequisites>
+            <productCount>8</productCount>
+            <skillRequirements>
+                <Crafting>3</Crafting>
+            </skillRequirements>
+            <recipeUsers Inherit="False">
+                <li>Cosmere_Scadrial_Table_Forge</li>
+            </recipeUsers>
+            <defaultIngredientFilter>
+                <thingDefs>
+                    <li>Cosmere_Resource_Thing_Glass</li>
+                    <li>Cosmere_Resource_Thing_Alcohol</li>
+                </thingDefs>
+            </defaultIngredientFilter>
+        </recipeMaker>
         <stackLimit>150</stackLimit>
         <thingCategories>
             <li>Cosmere_Scadrial_ThingCategoryDef_AllomanticVial</li>
@@ -37,5 +76,15 @@
             <ingestCommandString>Drink vial</ingestCommandString>
             <ingestReportString>drinks an allomantic vial</ingestReportString>
         </ingestible>
+        <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVial</orderedTakeGroup>
+        <comps>
+            <li Class="CosmereScadrial.Comp.Thing.PreventDropOnDownedProperties"/>
+        </comps>
+    </ThingDef>
+    
+    <ThingDef ParentName="Cosmere_Scadrial_Thing_AllomanticVialBase">
+        <defName>Cosmere_Scadrial_Thing_AllomanticVial</defName>
+        <label>allomantic vial</label>
+        <description>A small vial containing a small amount of allomantic metal suspended in alcohol. Used by Allomancers.</description>
     </ThingDef>
 </Defs>

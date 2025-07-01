@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 	<ThingDef ParentName="DrugBase">
-		<defName>Cosmere_Alcohol</defName>
+		<defName>Cosmere_Resource_Thing_Alcohol</defName>
 		<label>alcohol</label>
 		<description>A clear, potent alcohol distilled from fermented starches. Burns clean, hits hard. Colonists drink it to take the edge off or numb the pain—literally. Often used in harsh biomes to survive colder nights and colder memories. Allomancers use this in their vials.</description>
 		<descriptionHyperlinks>
@@ -27,6 +27,27 @@
 			<Flammability>0.5</Flammability>
 			<Nutrition>0.08</Nutrition>
 		</statBases>
+		<costList>
+			<RawPotatoes>25</RawPotatoes>
+			<Cosmere_Resource_Thing_Glass>4</Cosmere_Resource_Thing_Glass>
+		</costList>
+		<recipeMaker>
+			<workSpeedStat>DrugCookingSpeed</workSpeedStat>
+			<workSkill>Cooking</workSkill>
+			<effectWorking>Cook</effectWorking>
+			<soundWorking>Recipe_Brewing</soundWorking>
+			<workAmount>1000</workAmount>
+			<productCount>5</productCount>
+			<defaultIngredientFilter>
+				<thingDefs>
+					<li>RawPotatoes</li>
+					<li>Cosmere_Resource_Thing_Glass</li>
+				</thingDefs>
+			</defaultIngredientFilter>
+			<recipeUsers>
+				<li>Brewery</li>
+			</recipeUsers>
+		</recipeMaker>
 		<ingestible>
 			<foodType>Fluid, Processed, Liquor</foodType>
 			<joyKind>Chemical</joyKind>

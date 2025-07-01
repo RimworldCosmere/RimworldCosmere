@@ -17,6 +17,8 @@
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
 
+        <researchPrerequisites>
+        </researchPrerequisites>
 
         <graphicData>
             <graphicClass>Graphic_StackCount</graphicClass>

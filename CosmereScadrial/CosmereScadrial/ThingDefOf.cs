@@ -18,6 +18,7 @@ public static partial class ThingDefOf {
     public static ThingDef Cosmere_Scadrial_Thing_MetalmindEarring;
     public static ThingDef Cosmere_Scadrial_Thing_MetalmindBracelet;
     public static ThingDef Cosmere_Scadrial_Thing_MetalmindBand;
+    public static ThingDef Cosmere_Scadrial_Thing_AllomanticVial;
 
     static ThingDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));

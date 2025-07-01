@@ -19,8 +19,8 @@ public class AbilityDefOf {
     public static AbilityDef Cosmere_Scadrial_Ability_Electrum;
     public static AbilityDef Cosmere_Scadrial_Ability_Atium;
     public static AbilityDef Cosmere_Scadrial_Ability_Bendalloy;
-    public static AbilityDef Cosmere_Scadrial_Ability_DuraluminSurge;
-    public static AbilityDef Cosmere_Scadrial_Ability_NicrosilSurge;
+    public static AbilityDef Cosmere_Scadrial_Ability_Duralumin;
+    public static AbilityDef Cosmere_Scadrial_Ability_Nicrosil;
     public static AbilityDef Cosmere_Scadrial_Ability_IronAura;
     public static AbilityDef Cosmere_Scadrial_Ability_IronPull;
     public static AbilityDef Cosmere_Scadrial_Ability_Pewter;

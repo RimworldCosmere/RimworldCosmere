@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CosmereScadrial.Feruchemy.Comp.Thing;
+using CosmereScadrial.Gizmo;
 using CosmereScadrial.Util;
 using UnityEngine;
 using Verse;
@@ -9,6 +10,7 @@ namespace CosmereScadrial.Gene;
 
 public class Feruchemist : Metalborn {
     private readonly float metalPerRareTick = 0.333333f;
+    private new FeruchemicGeneCommand gizmo => (FeruchemicGeneCommand)base.gizmo;
 
     public IEnumerable<Metalmind> metalminds => pawn.inventory.innerContainer.InnerListForReading
         .Where(t => t.HasComp<Metalmind>())
@@ -65,10 +67,12 @@ public class Feruchemist : Metalborn {
 
         if (!canTap && pawn.health.hediffSet.HasHediff(tapHediffDef)) {
             pawn.health.RemoveHediff(tapHediff);
+            gizmo.targetValuePct = .5f;
         }
 
         if (!canStore && pawn.health.hediffSet.HasHediff(storeHediffDef)) {
             pawn.health.RemoveHediff(storeHediff);
+            gizmo.targetValuePct = .5f;
         }
 
 

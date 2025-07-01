@@ -11,10 +11,6 @@ public static class MetalDefExtension {
         return MetallicArtsMetalDef.FromMetalDef(def);
     }
 
-    public static ThingDef GetVial(this MetalDef def) {
-        return DefDatabase<ThingDef>.GetNamed("Cosmere_Scadrial_Thing_AllomanticVial" + def.defName);
-    }
-
     public static GeneDef? GetMistingGene(this MetalDef def) {
         return GeneDefOf.GetMistingGeneForMetal(def);
     }

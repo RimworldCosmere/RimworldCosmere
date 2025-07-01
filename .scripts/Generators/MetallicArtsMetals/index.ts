@@ -14,7 +14,6 @@ const metalDefOfTemplate = compileTemplate(__dirname, 'MetallicArtsMetalDefOf.cs
 const metalDefOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
 
 export default function () {
-    console.log("Generating MetallicArtMetalDefs");
     const metals = Object.values(MetalRegistry.Metals)
         .filter(x => x.Allomancy !== null || x.Feruchemy !== null);
     for (const metal of metals) {
@@ -22,7 +21,6 @@ export default function () {
         writeGeneratedFile(patchMetalDefOfOutputDir, upperFirst(metal.Name) + '.generated.xml', patchMetalDefOfTemplate({metal}));
     }
 
-    console.log("Generating MetallicArtsMetalDefOf");
     writeGeneratedFile(metalDefOfOutputDir, 'MetallicArtsMetalDefOf.generated.cs', metalDefOfTemplate({metals}));
 }
 

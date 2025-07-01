@@ -17,17 +17,32 @@
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
 
+        <researchPrerequisites>
+            {{#if metal.Alloy }}
+            {{#if (eq metal.Alloy.Type "simple")}}
+            <li>Cosmere_Simple_Alloys</li>
+            {{else}}
+            <li>Smithing</li>
+            <li>Cosmere_Complex_Alloys</li>
+            {{/if}}
+            {{/if}}
+            {{#if metal.GodMetal }}
+            <li>Cosmere_God_Metals</li>
+            {{/if}}
+        </researchPrerequisites>
         {{#if metal.Alloy}}
         <costList>{{#each metal.Alloy.Ingredients}}{{#each this.Items}}
             <{{capitalize this}}>{{../Count}}</{{capitalize this}}>
             {{/each}}{{/each}}
         </costList>
+
         <recipeMaker>
             <workAmount>1500</workAmount>
             <workSpeedStat>SmeltingSpeed</workSpeedStat>
             <workSkill>Crafting</workSkill>
             <requiredGiverWorkType>Smithing</requiredGiverWorkType>
             <effectWorking>Smelt</effectWorking>
+            <productCount>{{ metal.Alloy.Product.Count }}</productCount>
             <soundWorking>Recipe_Smelt</soundWorking>
             <researchPrerequisites>
                 {{#if (eq metal.Alloy.Type "simple")}}
@@ -36,13 +51,13 @@
                 <li>Smithing</li>
                 <li>Cosmere_Complex_Alloys</li>
                 {{/if}}
+                {{#if metal.GodMetal }}
+                <li>Cosmere_God_Metals</li>
+                {{/if}}
             </researchPrerequisites>
             <recipeUsers>
                 <li>ElectricSmelter</li>
-                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_AllomancyForge</li>
-                {{#if (eq metal.Alloy.Type "simple")}}
-                <li>Campfire</li>
-                {{/if}}
+                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_Forge</li>
             </recipeUsers>
             <displayPriority>200</displayPriority>
         </recipeMaker>
@@ -76,6 +91,9 @@
             {{/if}}
             <categories>
                 <li>Cosmere_Resources_StuffCategory_Metals</li>
+                {{#if metal.Allomancy }}
+                <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
+                {{/if}}
                 <li>Metallic</li>
             </categories>
             <appearance>Metal</appearance>

@@ -5,11 +5,6 @@ import {compileTemplate, writeGeneratedFile} from '../../Helpers';
 import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {SCADRIAL_MOD_DIR} from '../../constants';
 
-const allomancyTemplate = compileTemplate(__dirname, 'AllomancyGeneAndTraitDef.xml.template');
-const allomancyOutputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Allomancy', 'Genes');
-const feruchemyTemplate = compileTemplate(__dirname, 'FeruchemyGeneAndTraitDef.xml.template');
-const feruchemyOutputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Feruchemy', 'Genes');
-
 const defOfTemplate = compileTemplate(__dirname, 'DefOf.cs.template');
 const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
 
@@ -33,10 +28,14 @@ export default function () {
         }
 
         ['Gene', 'Trait'].forEach(kind => {
-            writeGeneratedFile(defOfOutputDir, kind + 'DefOf.' + type + '.generated.cs', defOfTemplate({type: type === 'Allomancy' ? 'Misting' : 'Ferring', kind, metals}));
+            writeGeneratedFile(defOfOutputDir, kind + 'DefOf.' + type + '.generated.cs', defOfTemplate({
+                type: type === 'Allomancy' ? 'Misting' : 'Ferring',
+                kind,
+                metals
+            }));
         });
     }
-    
+
 
     ['Mistborn', 'FullFeruchemist'].forEach(type => {
         const dir = type === 'Mistborn' ? 'Allomancy' : 'Feruchemy';
@@ -52,6 +51,10 @@ export default function () {
             return acc;
         }, {abilities: [] as string[], rightClickAbilities: [] as string[]});
 
-        writeGeneratedFile(resolve(SCADRIAL_MOD_DIR, 'Defs', dir, 'Genes'), type + '.generated.xml', template({metals, abilities, rightClickAbilities}));
+        writeGeneratedFile(resolve(SCADRIAL_MOD_DIR, 'Defs', dir, 'Genes'), type + '.generated.xml', template({
+            metals,
+            abilities,
+            rightClickAbilities
+        }));
     })
 }

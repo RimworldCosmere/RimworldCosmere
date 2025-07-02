@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CosmereCore.Util;
 using CosmereScadrial.Allomancy.Hediff;
-using CosmereScadrial.Util;
 using UnityEngine;
 using Verse;
 
@@ -40,10 +40,15 @@ public class PhysicalExternalAura : HediffComp {
         }
 
         thingsToDraw.Clear();
-        foreach (IntVec3 cell in GenRadial.RadialCellsAround(center,
-                     Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, radius)), false)) {
-            foreach (Verse.Thing? thing in cell.GetThingList(map).Where(thing =>
-                         MetalDetector.IsCapableOfHavingMetal(thing.def) && !thingsToDraw.ContainsKey(thing))) {
+        foreach (IntVec3 cell in GenRadial.RadialCellsAround(
+                     center,
+                     Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, radius)),
+                     false
+                 )) {
+            foreach (Verse.Thing? thing in cell.GetThingList(map)
+                         .Where(thing =>
+                             MetalDetector.IsCapableOfHavingMetal(thing.def) && !thingsToDraw.ContainsKey(thing)
+                         )) {
                 thingsToDraw[thing] = MetalDetector.GetMetal(thing);
             }
         }

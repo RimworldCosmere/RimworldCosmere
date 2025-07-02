@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CosmereCore.Util;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Allomancy.Comp.Game;
 using CosmereScadrial.Allomancy.Hediff;
 using CosmereScadrial.Def;
 using CosmereScadrial.Util;
+using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -79,16 +81,15 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         }
 
         float forceMultiplier = ability.GetStrength();
-        float mass = MetalDetector.GetMass(thing);
-        float pawnMass = MetalDetector.GetMass(pawn) * forceMultiplier;
+        float mass = thing.GetStatValue(RimWorld.StatDefOf.Mass);
+        float pawnMass = pawn.GetStatValue(RimWorld.StatDefOf.Mass) * forceMultiplier;
         if (mass > pawnMass && !movePawn) return;
 
         (Verse.Thing, Verse.Thing) things = mass > pawnMass ? (pawn, thing) : (thing, pawn);
         float distanceBetweenThings = (things.Item2.Position - things.Item1.Position).LengthHorizontal;
         IntVec3 dir = GetDirectionalOffsetFromTarget(things.Item2, things.Item1);
-        float distance = Mathf.Clamp(20f / mass, 1f, 8f) * forceMultiplier * 2;
+        float distance = Mathf.Clamp(20f / mass, 1f, 8f) * forceMultiplier * 4;
         if (polarity == AllomancyPolarity.Pulling) distance = Mathf.Min(distance, distanceBetweenThings);
-
 
         IntVec3 destination = things.Item1.Position + dir * (int)distance;
         if (Mathf.Approximately(distance, distanceBetweenThings)) destination = things.Item2.Position;

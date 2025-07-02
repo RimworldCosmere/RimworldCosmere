@@ -5,6 +5,7 @@ using Verse;
 namespace CosmereFramework.Quickstart;
 
 internal interface IQuickstart {
+    public bool PauseAfterLoad { get; }
     public int MapSize { get; }
     public StorytellerDef Storyteller { get; }
     public DifficultyDef Difficulty { get; }

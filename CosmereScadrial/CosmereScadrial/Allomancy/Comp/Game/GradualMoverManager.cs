@@ -8,7 +8,7 @@ using Verse;
 using Verse.AI;
 using Log = CosmereFramework.Log;
 
-namespace CosmereScadrial.Comp.Game;
+namespace CosmereScadrial.Allomancy.Comp.Game;
 
 public class GradualMoverManager(Verse.Game game) : GameComponent {
     private readonly List<MovementData> activeMovements = new List<MovementData>();
@@ -63,28 +63,39 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
     private void ApplyDragDamage(Verse.Thing thing, Pawn instigator) {
         if (thing is not Pawn pawn || thing == instigator) return;
 
-        pawn.TakeDamage(new DamageInfo(
-            DamageDefOf.Scratch,
-            1f,
-            instigator: instigator
-        ));
+        pawn.TakeDamage(
+            new DamageInfo(
+                DamageDefOf.Scratch,
+                1f,
+                instigator: instigator
+            )
+        );
     }
 
-    public void StartMovement(AllomancyPolarity polarity, Verse.Thing source, Verse.Thing thing, IntVec3 destination,
-        int duration, Material material) {
+    public void StartMovement(
+        AllomancyPolarity polarity,
+        Verse.Thing source,
+        Verse.Thing thing,
+        IntVec3 destination,
+        int duration,
+        Material material
+    ) {
         Log.Verbose(
-            $"{source.LabelCap} {polarity} {thing.LabelCap} to {destination} (from {thing.Position}) for {duration} ticks");
-        activeMovements.Add(new MovementData {
-            polarity = polarity,
-            source = source,
-            thing = thing,
-            start = thing.DrawPos,
-            end = destination.ToVector3Shifted(),
-            material = material,
-            ticksTotal = duration,
-            ticksElapsed = 0,
-            haveDamaged = [],
-        });
+            $"{source.LabelCap} {polarity} {thing.LabelCap} to {destination} (from {thing.Position}) for {duration} ticks"
+        );
+        activeMovements.Add(
+            new MovementData {
+                polarity = polarity,
+                source = source,
+                thing = thing,
+                start = thing.DrawPos,
+                end = destination.ToVector3Shifted(),
+                material = material,
+                ticksTotal = duration,
+                ticksElapsed = 0,
+                haveDamaged = [],
+            }
+        );
     }
 
     private struct MovementData {

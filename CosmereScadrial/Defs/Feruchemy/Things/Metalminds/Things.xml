@@ -59,7 +59,7 @@
         <statBases>
             <Beauty>1</Beauty>
             <MarketValue>20</MarketValue>
-            <Mass>0.05</Mass>
+            <Mass>0.005</Mass>
             <MaxHitPoints>75</MaxHitPoints>
             <WorkToMake>750</WorkToMake>
         </statBases>
@@ -80,7 +80,7 @@
         <statBases>
             <Beauty>3</Beauty>
             <MarketValue>60</MarketValue>
-            <Mass>0.15</Mass>
+            <Mass>0.015</Mass>
             <MaxHitPoints>150</MaxHitPoints>
             <WorkToMake>2250</WorkToMake>
         </statBases>
@@ -101,7 +101,7 @@
         <statBases>
             <Beauty>6</Beauty>
             <MarketValue>120</MarketValue>
-            <Mass>0.3</Mass>
+            <Mass>0.03</Mass>
             <MaxHitPoints>300</MaxHitPoints>
             <WorkToMake>5000</WorkToMake>
         </statBases>

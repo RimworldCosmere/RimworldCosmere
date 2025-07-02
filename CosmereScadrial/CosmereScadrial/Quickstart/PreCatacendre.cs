@@ -19,10 +19,6 @@ public class PreCatacendre : AbstractQuickstart {
     public override DifficultyDef Difficulty => DifficultyDefOf.Easy;
     public override ScenarioDef? Scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
-    public override void PostLoaded() {
-        Find.TickManager.Pause();
-    }
-
     public override void PostStart() {
         //Current.Game?.researchManager.DebugSetAllProjectsFinished();
         //DebugSettings.godMode = true;
@@ -32,34 +28,36 @@ public class PreCatacendre : AbstractQuickstart {
     }
 
     public override void PrepareColonists(List<Pawn> pawns) {
-        if (pawns.Count == 0) {
-            return;
-        }
+        if (pawns.Count == 0) return;
 
         if (pawns.TryPopFront(out Pawn pawn)) {
             ScadrianUtility.PrepareDevPawn(pawn);
-            pawn.Name = new NameSingle("Mistborn");
+            pawn.Name = new NameSingle("Vin Venture");
+            pawn.gender = Gender.Female;
         }
 
         if (pawns.TryPopFront(out pawn)) {
             GeneUtility.AddFullFeruchemist(pawn, false, true);
             foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
                 pawn.inventory.innerContainer.TryAdd(
-                    ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item));
+                    ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item)
+                );
             }
 
-            pawn.Name = new NameSingle("Full Feru");
+            pawn.Name = new NameSingle("Sazed");
+            pawn.gender = Gender.Male;
         }
+
+        if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);
+
+        if (pawns.TryPopFront(out pawn)) PrepareColonistAsFerring(pawn, true, true, MetalDefOf.Brass);
 
         if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);
+            PrepareColonistAsMisting(pawn, true, true, MetalDefOf.Steel);
+            PrepareColonistAsFerring(pawn, true, true, MetalDefOf.Iron);
+            pawn.Name = new NameTriple("Waxillium", "Wax", "Ladrian");
+            pawn.gender = Gender.Male;
         }
-
-        if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsFerring(pawn, true, false, MetalDefOf.Brass);
-        }
-
-        Find.TickManager.Pause();
     }
 
     private static void PrepareColonistAsTwinborn(
@@ -97,7 +95,8 @@ public class PreCatacendre : AbstractQuickstart {
             GeneUtility.AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), false, snapped);
             if (createMetalmind) {
                 pawn.inventory.innerContainer.TryAdd(
-                    ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item));
+                    ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item)
+                );
             }
         }
 

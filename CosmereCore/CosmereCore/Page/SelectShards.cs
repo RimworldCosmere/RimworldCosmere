@@ -2,7 +2,6 @@
 using System.Linq;
 using CosmereCore.Def;
 using CosmereCore.Util;
-using CosmereFramework.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -23,8 +22,8 @@ public class SelectShards : RimWorld.Page {
         const float PlanetHeaderHeight = 40f;
         const float CheckTextPadding = 12f;
 
-        UIUtil.WithFont(GameFont.Medium,
-            () => Widgets.Label(inRect.TopPartPixels(TopMargin), "Choose which Shards are active in this game:"));
+        using (new TextBlock(GameFont.Medium))
+            Widgets.Label(inRect.TopPartPixels(TopMargin), "Choose which Shards are active in this game:");
 
         List<IGrouping<string?, ShardDef>> grouped = DefDatabase<ShardDef>.AllDefsListForReading.GroupBy(s => s.planet)
             .OrderBy(g => g.Key == "N/A" ? 0 : 1)
@@ -40,7 +39,7 @@ public class SelectShards : RimWorld.Page {
 
         foreach (IGrouping<string?, ShardDef>? group in grouped) {
             Rect planetLabelRect = new Rect(0f, y, viewRect.width, PlanetHeaderHeight);
-            UIUtil.WithFont(GameFont.Medium, () => Widgets.Label(planetLabelRect, group.Key));
+            using (new TextBlock(GameFont.Medium)) Widgets.Label(planetLabelRect, group.Key);
             y += PlanetHeaderHeight;
 
             Widgets.DrawLineHorizontal(0f, y - 6f, viewRect.width);
@@ -56,29 +55,41 @@ public class SelectShards : RimWorld.Page {
                 bool originalGUIState = GUI.enabled;
                 GUI.enabled = !isBlockedByOther;
 
-                Rect labelRect = new Rect(checkRect.xMax + CheckTextPadding, y + 6f,
-                    rowRect.width - checkRect.xMax - 20f, 24f);
+                Rect labelRect = new Rect(
+                    checkRect.xMax + CheckTextPadding,
+                    y + 6f,
+                    rowRect.width - checkRect.xMax - 20f,
+                    24f
+                );
                 bool toggled = isEnabled;
                 Widgets.CheckboxLabeled(labelRect, shard.label.CapitalizeFirst(), ref toggled, isBlockedByOther);
 
                 if (toggled != isEnabled) {
                     if (toggled) {
                         ShardUtility.Enable(shard);
-                        Messages.Message($"Enabled shard: {shard.label.CapitalizeFirst()}",
-                            MessageTypeDefOf.PositiveEvent);
+                        Messages.Message(
+                            $"Enabled shard: {shard.label.CapitalizeFirst()}",
+                            MessageTypeDefOf.PositiveEvent
+                        );
                     } else {
                         ShardUtility.shards.enabledShardDefs.Remove(shard);
-                        Messages.Message($"Disabled shard: {shard.label.CapitalizeFirst()}",
-                            MessageTypeDefOf.NeutralEvent);
+                        Messages.Message(
+                            $"Disabled shard: {shard.label.CapitalizeFirst()}",
+                            MessageTypeDefOf.NeutralEvent
+                        );
                     }
                 }
 
                 GUI.enabled = originalGUIState;
 
-                Rect descRect = new Rect(checkRect.xMax + CheckTextPadding, y + 30f,
-                    rowRect.width - checkRect.xMax - 20f, 30f);
-                UIUtil.WithFont(GameFont.Tiny,
-                    () => Widgets.Label(descRect, shard.description.Truncate(descRect.width - 10f)));
+                Rect descRect = new Rect(
+                    checkRect.xMax + CheckTextPadding,
+                    y + 30f,
+                    rowRect.width - checkRect.xMax - 20f,
+                    30f
+                );
+                using (new TextBlock(GameFont.Tiny))
+                    Widgets.Label(descRect, shard.description.Truncate(descRect.width - 10f));
 
                 y += RowHeight;
             }

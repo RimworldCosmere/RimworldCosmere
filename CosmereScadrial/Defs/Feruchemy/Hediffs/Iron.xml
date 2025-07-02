@@ -8,7 +8,6 @@
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <MoveSpeed>0.9</MoveSpeed>
                     <Mass>0.5</Mass>
                 </statFactors>
             </li>
@@ -27,7 +26,6 @@
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <MoveSpeed>1.1</MoveSpeed>
                     <Mass>2.0</Mass>
                 </statFactors>
             </li>

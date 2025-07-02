@@ -20,8 +20,8 @@ public class PreCatacendre : AbstractQuickstart {
     public override ScenarioDef? Scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
     public override void PostStart() {
-        //Current.Game?.researchManager.DebugSetAllProjectsFinished();
-        //DebugSettings.godMode = true;
+        Current.Game?.researchManager.DebugSetAllProjectsFinished();
+        DebugSettings.godMode = true;
         DebugViewSettings.showFpsCounter = true;
         DebugViewSettings.showTpsCounter = true;
         DebugViewSettings.showMemoryInfo = true;

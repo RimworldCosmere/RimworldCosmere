@@ -1,4 +1,4 @@
-using CosmereScadrial.Util;
+using CosmereCore.Util;
 using RimWorld;
 using Verse;
 
@@ -13,15 +13,19 @@ public class ExternalPhysicalTargetAbility : AbilityOtherTarget {
 
     public ExternalPhysicalTargetAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    public ExternalPhysicalTargetAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn,
-        sourcePrecept, def) { }
+    public ExternalPhysicalTargetAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(
+        pawn,
+        sourcePrecept,
+        def
+    ) { }
 
     protected sealed override bool toggleable => false;
 
     public override bool CanApplyOn(LocalTargetInfo targetInfo) {
         if (targetInfo.Equals(pawn)) return true;
 
-        if (!base.CanApplyOn(targetInfo) || !targetInfo.HasThing ||
+        if (!base.CanApplyOn(targetInfo) ||
+            !targetInfo.HasThing ||
             !MetalDetector.IsCapableOfHavingMetal(targetInfo.Thing.def)) {
             return false;
         }

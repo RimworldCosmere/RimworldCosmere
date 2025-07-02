@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationInsert">
+        <xpath>Defs/StatDef[defName="Mass"]/parts/li[@Class="StatPart_AddedBodyPartsMass"]</xpath>
+        <value>
+            <li Class="CosmereCore.StatPart.BodyType" />
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationInsert">
+        <xpath>Defs/StatDef[defName="Mass"]/parts/li[@Class="StatPart_AddedBodyPartsMass"]</xpath>
+        <value>
+            <li Class="CosmereCore.StatPart.BuildingMaterial" />
+        </value>
+    </Operation>
+</Patch>

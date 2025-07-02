@@ -17,15 +17,21 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
         for (int i = activeMovements.Count - 1; i >= 0; i--) {
             MovementData m = activeMovements[i];
             List<Pawn> haveDamaged = m.haveDamaged;
-            if (m.source is not Pawn pawn) continue;
-            if (m.thing.Destroyed || m.thing.Map == null || game.CurrentMap != m.thing.Map) continue;
+            if (m.thing.Destroyed || m.thing.Map == null || game.CurrentMap != m.thing.Map) {
+                activeMovements.RemoveAt(i);
+                continue;
+            }
 
+            Pawn pawn = (m.source as Pawn ?? m.thing as Pawn)!;
 
             m.ticksElapsed++;
             float t = Mathf.Clamp01((float)m.ticksElapsed / m.ticksTotal);
             m.thing.Position = Vector3.Lerp(m.start, m.end, t).ToIntVec3();
-            IEnumerable<Pawn> pawnsInSameCell = m.thing.ThingsSharingPosition<Pawn>()
-                .Where(x => !x.Equals(pawn) && !haveDamaged.Contains(x) && !x.Faction.IsPlayer);
+            List<Pawn> pawnsInSameCell = m.thing.ThingsSharingPosition<Pawn>()
+                .Where(x =>
+                    !x.Equals(m.source) && !x.Equals(m.thing) && !haveDamaged.Contains(x) && !x.Faction.IsPlayer
+                )
+                .ToList();
             foreach (Pawn? pawn1 in pawnsInSameCell) {
                 ApplyDragDamage(pawn1, pawn);
                 haveDamaged.Add(pawn1);
@@ -60,7 +66,7 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
         }
     }
 
-    private void ApplyDragDamage(Verse.Thing thing, Pawn instigator) {
+    private void ApplyDragDamage(Verse.Thing thing, Verse.Thing instigator) {
         if (thing is not Pawn pawn || thing == instigator) return;
 
         pawn.TakeDamage(

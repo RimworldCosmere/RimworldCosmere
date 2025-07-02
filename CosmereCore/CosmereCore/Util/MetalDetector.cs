@@ -5,8 +5,9 @@ using CosmereResources.Def;
 using CosmereResources.DefModExtension;
 using RimWorld;
 using Verse;
+using ThingDefOf = CosmereResources.ThingDefOf;
 
-namespace CosmereScadrial.Util;
+namespace CosmereCore.Util;
 
 public static class MetalDetector {
     private static readonly Dictionary<RecipeDef, bool> MetalRecipeCache = new Dictionary<RecipeDef, bool>();
@@ -26,14 +27,14 @@ public static class MetalDetector {
         return allowAluminum ? metals : metals.Where(x => !x.Equals(MetalDefOf.Aluminum)).ToList();
     }
 
-    public static bool HasMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
+    public static bool HasMetal(Thing? thing, int depth = 0, bool allowAluminum = false) {
         return GetMetal(thing, depth, allowAluminum) > 0f;
     }
 
     /// <summary>
     ///     This isn't entirely accurate at getting the metal mass of an item, but its a rough implementation.
     /// </summary>
-    public static float GetMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
+    public static float GetMetal(Thing? thing, int depth = 0, bool allowAluminum = false) {
         if (!IsCapableOfHavingMetal(thing?.def)) return 0f;
         if (thing?.def == null || depth > 25) return 0f;
 
@@ -45,16 +46,16 @@ public static class MetalDetector {
         }
 
         if (thing.Stuff != null) {
-            if (thing.Stuff.IsMetal && !thing.Stuff.Equals(CosmereResources.ThingDefOf.Aluminum) ||
+            if (thing.Stuff.IsMetal && !thing.Stuff.Equals(ThingDefOf.Aluminum) ||
                 GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0) {
-                float mass = thing.GetStatValue(RimWorld.StatDefOf.Mass);
+                float mass = thing.Stuff.GetStatValueAbstract(RimWorld.StatDefOf.Mass, thing.Stuff);
 
                 return mass * thing.def.CostStuffCount;
             }
         }
 
         if (thing.def.defName.Contains("Ancient")) {
-            if (thing.def.defName != "AncientFence") return thing.GetStatValue(RimWorld.StatDefOf.Mass);
+            if (thing.def.defName != "AncientFence") return 1;
         }
 
         if (RecipesThatMake(thing.def).Any(recipe => RecipeUsesMetalIngredient(recipe, depth + 1, allowAluminum))) {
@@ -89,7 +90,7 @@ public static class MetalDetector {
     }
 
     public static float GetMetalForThingDefCountClass(ThingDefCountClass def, int depth, bool allowAluminum = false) {
-        Verse.Thing? item = ThingMaker.MakeThing(def.thingDef);
+        Thing? item = ThingMaker.MakeThing(def.thingDef);
         float metalMass = GetMetal(item, depth + 1, allowAluminum);
         return metalMass * def.count;
     }
@@ -123,38 +124,5 @@ public static class MetalDetector {
 
         MetalRecipeCache[recipe] = true;
         return true;
-    }
-
-
-    public static float GetMass(Verse.Thing thing) {
-        float massStat = thing.GetStatValue(RimWorld.StatDefOf.Mass);
-        switch (thing?.def?.category) {
-            case ThingCategory.Pawn:
-                Pawn pawn = (Pawn)thing;
-                BodyTypeDef? bodyType = pawn.story?.bodyType;
-                int size = 20;
-
-                if (bodyType == null) { } else if
-                    (bodyType.Equals(BodyTypeDefOf.Thin)) { size = 0; } else if
-                    (bodyType.Equals(BodyTypeDefOf.Baby)) { size = -45; } else if
-                    (bodyType.Equals(BodyTypeDefOf.Child)) { size = -30; } else if
-                    (bodyType.Equals(BodyTypeDefOf.Fat)) { size = 50; } else if
-                    (bodyType.Equals(BodyTypeDefOf.Hulk)) { size = 40; } else if
-                    (bodyType.Equals(BodyTypeDefOf.Female)) { size = 5; }
-
-                return massStat + size + GetMetal(thing);
-            case ThingCategory.Item:
-                return massStat * thing.stackCount;
-            case ThingCategory.Building: {
-                Building building = (Building)thing;
-                if (massStat <= 1f) massStat = 100;
-
-                // Add a 100x multiplier to this stat. For some reason, buildings don't have a mass.
-                return massStat * building.def.Size.x * building.def.Size.z * GetMetal(building);
-            }
-            case null: return float.MaxValue;
-            default:
-                return massStat;
-        }
     }
 }

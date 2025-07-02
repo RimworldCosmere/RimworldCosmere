@@ -49,9 +49,7 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
 
     public override IEnumerable<string> ConfigErrors() {
         label ??= metal.label;
-        foreach (string? error in base.ConfigErrors()) {
-            yield return error;
-        }
+        foreach (string? error in base.ConfigErrors()) yield return error;
 
         if (!typeof(AbstractAbility).IsAssignableFrom(abilityClass)) {
             yield return $"Invalid ability class {abilityClass}. Must inherit from {typeof(AbstractAbility)}.";
@@ -69,21 +67,18 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
             yield return "hediffHostile.hediffClass is not AllomanticHediff";
         }
 
-        if (metal == null) {
-            yield return "metal is null";
-        }
+        if (metal == null) yield return "metal is null";
     }
 
     public override void PostLoad() {
         if (string.IsNullOrEmpty(iconPath)) {
             string abilityName = defName.Replace("Cosmere_Scadrial_Ability_", "");
             LongEventHandler.ExecuteWhenFinished(() => {
-                uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
-                         metal.invertedIcon;
-                disabledIcon = uiIcon!.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
-            });
-        } else {
-            base.PostLoad();
-        }
+                    uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
+                             metal.invertedIcon;
+                    disabledIcon = uiIcon!.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
+                }
+            );
+        } else { base.PostLoad(); }
     }
 }

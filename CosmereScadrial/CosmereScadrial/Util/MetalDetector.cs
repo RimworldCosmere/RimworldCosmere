@@ -12,7 +12,9 @@ public static class MetalDetector {
     private static readonly Dictionary<RecipeDef, bool> MetalRecipeCache = new Dictionary<RecipeDef, bool>();
 
     public static bool IsCapableOfHavingMetal(ThingDef? thingDef) {
-        return thingDef?.category is ThingCategory.Item or ThingCategory.Building or ThingCategory.Pawn
+        return thingDef?.category is ThingCategory.Item
+            or ThingCategory.Building
+            or ThingCategory.Pawn
             or ThingCategory.Projectile;
     }
 
@@ -43,8 +45,9 @@ public static class MetalDetector {
         }
 
         if (thing.Stuff != null) {
-            if (thing.Stuff.IsMetal || GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0) {
-                float mass = thing.Stuff.GetStatValueAbstract(RimWorld.StatDefOf.Mass);
+            if (thing.Stuff.IsMetal && !thing.Stuff.Equals(CosmereResources.ThingDefOf.Aluminum) ||
+                GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0) {
+                float mass = thing.GetStatValue(RimWorld.StatDefOf.Mass);
 
                 return mass * thing.def.CostStuffCount;
             }
@@ -60,30 +63,34 @@ public static class MetalDetector {
 
         if (thing.def.category == ThingCategory.Pawn && thing is Pawn pawn) {
             float combinedMass =
-                (pawn.inventory?.innerContainer ?? []).Sum(item => GetMetal(item, depth + 1) * item.stackCount);
+                (pawn.inventory?.innerContainer ?? []).Sum(item =>
+                    GetMetal(item, depth + 1, allowAluminum) * item.stackCount
+                );
             combinedMass +=
-                (pawn.apparel?.WornApparel ?? []).Sum(item => GetMetal(item, depth + 1) * item.stackCount);
+                (pawn.apparel?.WornApparel ?? []).Sum(item => GetMetal(item, depth + 1, allowAluminum) * item.stackCount
+                );
             combinedMass +=
                 (pawn.equipment?.AllEquipmentListForReading ?? []).Sum(item =>
-                    GetMetal(item, depth + 1) * item.stackCount);
+                    GetMetal(item, depth + 1) * item.stackCount
+                );
 
             if (combinedMass > 0f) return combinedMass;
         }
 
         if (!thing.def.killedLeavings.NullOrEmpty()) {
-            return thing.def.killedLeavings.Sum(def => GetMetalForThingDefCountClass(def, depth + 1));
+            return thing.def.killedLeavings.Sum(def => GetMetalForThingDefCountClass(def, depth + 1, allowAluminum));
         }
 
         if (!thing.def.costList.NullOrEmpty()) {
-            return thing.def.costList.Sum(def => GetMetalForThingDefCountClass(def, depth + 1));
+            return thing.def.costList.Sum(def => GetMetalForThingDefCountClass(def, depth + 1, allowAluminum));
         }
 
         return 0f;
     }
 
-    public static float GetMetalForThingDefCountClass(ThingDefCountClass def, int depth) {
+    public static float GetMetalForThingDefCountClass(ThingDefCountClass def, int depth, bool allowAluminum = false) {
         Verse.Thing? item = ThingMaker.MakeThing(def.thingDef);
-        float metalMass = GetMetal(item, depth + 1);
+        float metalMass = GetMetal(item, depth + 1, allowAluminum);
         return metalMass * def.count;
     }
 
@@ -91,7 +98,8 @@ public static class MetalDetector {
         return DefDatabase<RecipeDef>.AllDefsListForReading
             .Where(recipe =>
                 recipe.products != null &&
-                recipe.products.Any(p => p.thingDef == thingDef))
+                recipe.products.Any(p => p.thingDef == thingDef)
+            )
             .ToList();
     }
 
@@ -103,9 +111,12 @@ public static class MetalDetector {
             return false;
         }
 
-        if (!Enumerable.Any(recipe.ingredients,
+        if (!Enumerable.Any(
+                recipe.ingredients,
                 ingredient => ingredient.filter.AllowedThingDefs.Any(thingDef =>
-                    GetMetal(ThingMaker.MakeThing(thingDef), depth, allowAluminum) > 0f))) {
+                    GetMetal(ThingMaker.MakeThing(thingDef), depth, allowAluminum) > 0f
+                )
+            )) {
             MetalRecipeCache[recipe] = false;
             return false;
         }
@@ -121,32 +132,22 @@ public static class MetalDetector {
             case ThingCategory.Pawn:
                 Pawn pawn = (Pawn)thing;
                 BodyTypeDef? bodyType = pawn.story?.bodyType;
-                float size = 1f;
+                int size = 20;
 
-                if (bodyType == null) {
-                    size = 0.7f;
-                } else if (bodyType.Equals(BodyTypeDefOf.Thin)) {
-                    size = 0.8f;
-                } else if (bodyType.Equals(BodyTypeDefOf.Baby)) {
-                    size = 0.2f;
-                } else if (bodyType.Equals(BodyTypeDefOf.Child)) {
-                    size = 0.5f;
-                } else if (bodyType.Equals(BodyTypeDefOf.Fat)) {
-                    size = 1.3f;
-                } else if (bodyType.Equals(BodyTypeDefOf.Hulk)) {
-                    size = 1.5f;
-                } else if (bodyType.Equals(BodyTypeDefOf.Female)) {
-                    size = 0.9f;
-                }
+                if (bodyType == null) { } else if
+                    (bodyType.Equals(BodyTypeDefOf.Thin)) { size = 0; } else if
+                    (bodyType.Equals(BodyTypeDefOf.Baby)) { size = -45; } else if
+                    (bodyType.Equals(BodyTypeDefOf.Child)) { size = -30; } else if
+                    (bodyType.Equals(BodyTypeDefOf.Fat)) { size = 50; } else if
+                    (bodyType.Equals(BodyTypeDefOf.Hulk)) { size = 40; } else if
+                    (bodyType.Equals(BodyTypeDefOf.Female)) { size = 5; }
 
-                return massStat * size + GetMetal(thing);
+                return massStat + size + GetMetal(thing);
             case ThingCategory.Item:
                 return massStat * thing.stackCount;
             case ThingCategory.Building: {
                 Building building = (Building)thing;
-                if (massStat <= 1f) {
-                    massStat = 100;
-                }
+                if (massStat <= 1f) massStat = 100;
 
                 // Add a 100x multiplier to this stat. For some reason, buildings don't have a mass.
                 return massStat * building.def.Size.x * building.def.Size.z * GetMetal(building);

@@ -15,16 +15,15 @@ namespace CosmereScadrial.Gizmo;
 [StaticConstructorOnStartup]
 public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility ability)
     : SubGizmo(parent) {
-    private static readonly Texture2D CheckOff = ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff");
     private static readonly Texture2D BgTexOff = GenColor.FromHex("000000").ToSolidColorTexture();
     private static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
     private static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
     private static readonly Texture2D Border = ColorLibrary.Grey.ToSolidColorTexture();
     private static readonly Texture2D AutoBurnBorder = ColorLibrary.LightBlue.ToSolidColorTexture();
 
-    private AcceptanceReport _cachedReport;
-    private bool disabled => !_cachedReport.Accepted;
-    private string? disabledReason => _cachedReport.Reason;
+    private AcceptanceReport cachedReport;
+    private bool disabled => !cachedReport.Accepted;
+    private string? disabledReason => cachedReport.Reason;
 
     private Texture2D icon => disabled ? ability.def.disabledIcon : ability.def.uiIcon;
 
@@ -43,19 +42,15 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
     }
 
     public override GizmoResult OnGUI(Rect rect) {
-        _cachedReport = GizmoEnabled();
+        cachedReport = GizmoEnabled();
 
         GizmoRenderParms parms = new GizmoRenderParms { shrunk = true, lowLight = false, highLight = false };
         bool isMouseOver = false;
         bool isClicked = false;
-        if (Mouse.IsOver(rect)) {
-            isMouseOver = true;
-        }
+        if (Mouse.IsOver(rect)) isMouseOver = true;
 
         MouseoverSounds.DoRegion(rect, SoundDefOf.Mouseover_Command);
-        if (parms.highLight && !disabled) {
-            Widgets.DrawStrongHighlight(rect.ExpandedBy(4f));
-        }
+        if (parms.highLight && !disabled) Widgets.DrawStrongHighlight(rect.ExpandedBy(4f));
 
         UIUtil.DrawIcon(
             rect,
@@ -65,9 +60,7 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
             borderTexture: ability.willBurnWhileDowned ? AutoBurnBorder : Border
         );
 
-        if (Widgets.ButtonInvisible(rect)) {
-            isClicked = true;
-        }
+        if (Widgets.ButtonInvisible(rect)) isClicked = true;
 
         if (isMouseOver) {
             StringBuilder desc = new StringBuilder(ability.Tooltip);
@@ -82,14 +75,17 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
             );
 
             if (ability.def.canBurnWhileDowned) {
-                desc.AppendLine("CS_ToggleAutomaticBurning".Translate()
-                    .Colorize(ColoredText.GeneColor));
+                desc.AppendLine(
+                    "CS_ToggleAutomaticBurning".Translate()
+                        .Colorize(ColoredText.GeneColor)
+                );
             }
 
             if (!disabledReason.NullOrEmpty()) {
                 desc.AppendLine("\n");
                 desc.AppendLine(
-                    ("DisabledCommand".Translate() + ": " + disabledReason).Colorize(ColorLibrary.RedReadable));
+                    ("DisabledCommand".Translate() + ": " + disabledReason).Colorize(ColorLibrary.RedReadable)
+                );
             }
 
             TooltipHandler.TipRegion(rect, (TipSignal)desc.ToString());
@@ -106,13 +102,16 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
                 : new GizmoResult(GizmoState.Interacted, Event.current);
         }
 
-        Messages.Message((string)("DisabledCommand".Translate() + ": " + disabledReason),
-            MessageTypeDefOf.RejectInput, false);
+        Messages.Message(
+            (string)("DisabledCommand".Translate() + ": " + disabledReason),
+            MessageTypeDefOf.RejectInput,
+            false
+        );
         return new GizmoResult(GizmoState.Mouseover, null);
     }
 
     public override void ProcessInput(Event ev) {
-        _cachedReport = GizmoEnabled();
+        cachedReport = GizmoEnabled();
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
 
         if (ev.shift) {
@@ -125,14 +124,10 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
             bool isBurningOrPassive = ability.status is BurningStatus.Burning or BurningStatus.Passive;
 
             if (ev.control) {
-                if (isBurningOrPassive) {
-                    ability.SetNextStatus(BurningStatus.Flaring);
-                } else if (isFlaring) {
+                if (isBurningOrPassive) { ability.SetNextStatus(BurningStatus.Flaring); } else if (isFlaring) {
                     ability.SetNextStatus(BurningStatus.Burning);
                 }
-            } else {
-                ability.SetNextStatus(BurningStatus.Off);
-            }
+            } else { ability.SetNextStatus(BurningStatus.Off); }
 
             ability.UpdateStatus(ability.nextStatus!.Value);
 
@@ -145,22 +140,26 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
             if (!ability.def.targetWorldCell) {
                 float originalRange = ability.verb.verbProps.range;
                 ability.verb.verbProps.range = originalRange * ability.GetStrength(ability.nextStatus);
-                Find.Targeter.BeginTargeting(ability.verb,
-                    actionWhenFinished: () => ability.verb.verbProps.range = originalRange);
+                Find.Targeter.BeginTargeting(
+                    ability.verb,
+                    actionWhenFinished: () => ability.verb.verbProps.range = originalRange
+                );
             } else {
                 CameraJumper.TryJump(CameraJumper.GetWorldTarget(ability.pawn));
-                Find.WorldTargeter.BeginTargeting(t => {
-                        if (!ability.ValidateGlobalTarget(t)) {
-                            return false;
-                        }
+                Find.WorldTargeter.BeginTargeting(
+                    t => {
+                        if (!ability.ValidateGlobalTarget(t)) return false;
 
                         ability.QueueCastingJob(t, ev.control);
                         return true;
-                    }, true, ability.def.uiIcon, !ability.pawn.IsCaravanMember(),
-                    extraLabelGetter: ability.WorldMapExtraLabel, canSelectTarget: ability.ValidateGlobalTarget);
+                    },
+                    true,
+                    ability.def.uiIcon,
+                    !ability.pawn.IsCaravanMember(),
+                    extraLabelGetter: ability.WorldMapExtraLabel,
+                    canSelectTarget: ability.ValidateGlobalTarget
+                );
             }
-        } else {
-            ability.QueueCastingJob(ability.pawn, LocalTargetInfo.Invalid, ev.control);
-        }
+        } else { ability.QueueCastingJob(ability.pawn, LocalTargetInfo.Invalid, ev.control); }
     }
 }

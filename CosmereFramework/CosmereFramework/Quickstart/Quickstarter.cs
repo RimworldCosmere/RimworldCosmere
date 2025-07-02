@@ -27,10 +27,11 @@ public class Quickstarter {
         quickstart = (IQuickstart)Activator.CreateInstance(type);
 
         LongEventHandler.ExecuteWhenFinished(() => {
-            if (Started) return;
-            Started = true;
-            TryStartGame();
-        });
+                if (Started) return;
+                Started = true;
+                TryStartGame();
+            }
+        );
     }
 
     private static string seed => GenText.RandomSeedString();
@@ -39,18 +40,25 @@ public class Quickstarter {
         if (Current.ProgramState != ProgramState.Entry) return;
         if (Find.GameInitData != null || Current.Game != null) return;
 
-        LongEventHandler.QueueLongEvent(() => {
-            MemoryUtility.ClearAllMapsAndWorld();
-            ApplyConfiguration();
-            PageUtility.InitGameStart();
-            DelayedActionScheduler.Schedule(PrepareColonists, 20);
-            DelayedActionScheduler.Schedule(quickstart.PostLoaded, 60);
-        }, "GeneratingMap", true, GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap);
+        LongEventHandler.QueueLongEvent(
+            () => {
+                MemoryUtility.ClearAllMapsAndWorld();
+                ApplyConfiguration();
+                PageUtility.InitGameStart();
+                DelayedActionScheduler.Schedule(
+                    () => {
+                        quickstart.PrepareColonists(Find.World.PlayerPawnsForStoryteller.ToList());
+                        quickstart.PostLoaded();
+                        if (quickstart.PauseAfterLoad) Find.TickManager.Pause();
+                    },
+                    10
+                );
+            },
+            "GeneratingMap",
+            true,
+            GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap
+        );
         quickstart.PostStart();
-    }
-
-    private static void PrepareColonists() {
-        quickstart.PrepareColonists(Find.World.PlayerPawnsForStoryteller.ToList());
     }
 
     private static void ApplyConfiguration() {

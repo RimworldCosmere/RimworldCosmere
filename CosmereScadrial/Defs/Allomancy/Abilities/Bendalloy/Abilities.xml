@@ -7,7 +7,6 @@
         <metal>Bendalloy</metal>
         <canBurnWhileAsleep>true</canBurnWhileAsleep>
         <abilityClass>CosmereScadrial.Allomancy.Ability.TimeAbility</abilityClass>
-        <iconPath>UI/Icons/Abilities/Bendalloy</iconPath>
         <beuPerTick>.01</beuPerTick>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

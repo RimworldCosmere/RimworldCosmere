@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
     <configuration default="false" name="RimWorld" type="RimworldRunConfiguration" factoryName="RimworldRunConfiguration">
-        <option name="commandLineOptions" value="-popupwindow"/>
+        <option name="commandLineOptions" value=""/>
         <option name="modListPath" value=""/>
         <option name="saveFilePath" value=""/>
         <option name="scriptName" value="D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe"/>

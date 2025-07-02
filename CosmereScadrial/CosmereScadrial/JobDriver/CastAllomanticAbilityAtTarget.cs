@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CosmereScadrial.Allomancy.Ability;
+using CosmereScadrial.Allomancy.Comp.Game;
 using CosmereScadrial.Allomancy.Hediff;
-using CosmereScadrial.Comp.Game;
 using CosmereScadrial.Def;
 using CosmereScadrial.Util;
 using UnityEngine;
@@ -13,8 +13,11 @@ using Verse.AI;
 namespace CosmereScadrial.JobDriver;
 
 public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
-    private Material lineMaterial => MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind,
-        ability.def.metal.color with { a = .3f });
+    private Material lineMaterial => MaterialPool.MatFrom(
+        GenDraw.LineTexPath,
+        ShaderDatabase.SolidColorBehind,
+        ability.def.metal.color with { a = .3f }
+    );
 
     private AllomancyPolarity polarity => ability.def.metal.allomancy!.polarity ?? AllomancyPolarity.Pushing;
 
@@ -23,9 +26,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
     }
 
     protected override IEnumerable<Toil> MakeNewToils() {
-        foreach (Toil baseToil in base.MakeNewToils()) {
-            yield return baseToil;
-        }
+        foreach (Toil baseToil in base.MakeNewToils()) yield return baseToil;
 
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
@@ -63,8 +64,11 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         if (thing == pawn) {
             // Get everything metal in a radius around self (same radius as the ability range)
             // Use MoveThing(newThing, false) on them
-            IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(thing.Position,
-                Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, ability.verb.EffectiveRange)), false);
+            IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(
+                thing.Position,
+                Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius, ability.verb.EffectiveRange)),
+                false
+            );
             foreach (IntVec3 cell in cells) {
                 foreach (Verse.Thing? newThing in cell.GetThingList(pawn.Map).Where(x => MetalDetector.HasMetal(x))) {
                     MoveThing(newThing, false);
@@ -77,23 +81,17 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         float forceMultiplier = ability.GetStrength();
         float mass = MetalDetector.GetMass(thing);
         float pawnMass = MetalDetector.GetMass(pawn) * forceMultiplier;
-        if (mass > pawnMass && !movePawn) {
-            return;
-        }
+        if (mass > pawnMass && !movePawn) return;
 
         (Verse.Thing, Verse.Thing) things = mass > pawnMass ? (pawn, thing) : (thing, pawn);
         float distanceBetweenThings = (things.Item2.Position - things.Item1.Position).LengthHorizontal;
         IntVec3 dir = GetDirectionalOffsetFromTarget(things.Item2, things.Item1);
         float distance = Mathf.Clamp(20f / mass, 1f, 8f) * forceMultiplier * 2;
-        if (polarity == AllomancyPolarity.Pulling) {
-            distance = Mathf.Min(distance, distanceBetweenThings);
-        }
+        if (polarity == AllomancyPolarity.Pulling) distance = Mathf.Min(distance, distanceBetweenThings);
 
 
         IntVec3 destination = things.Item1.Position + dir * (int)distance;
-        if (Mathf.Approximately(distance, distanceBetweenThings)) {
-            destination = things.Item2.Position;
-        }
+        if (Mathf.Approximately(distance, distanceBetweenThings)) destination = things.Item2.Position;
 
         IntVec3 finalPos = destination;
         for (int i = 1; i <= distance; i++) {
@@ -104,16 +102,21 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
             break;
         }
 
-        Current.Game.GetComponent<GradualMoverManager>().StartMovement(polarity, things.Item2, things.Item1,
-            finalPos, Mathf.Max(5, Mathf.RoundToInt(30f / forceMultiplier)), lineMaterial);
+        Current.Game.GetComponent<GradualMoverManager>()
+            .StartMovement(
+                polarity,
+                things.Item2,
+                things.Item1,
+                finalPos,
+                Mathf.Max(5, Mathf.RoundToInt(30f / forceMultiplier)),
+                lineMaterial
+            );
         surge?.PostBurn();
     }
 
     private IntVec3 GetDirectionalOffsetFromTarget(Verse.Thing target, Verse.Thing source) {
         Vector3 offset = (source.Position.ToVector3() - target.Position.ToVector3()).normalized;
-        if (polarity == AllomancyPolarity.Pulling) {
-            offset = -offset;
-        }
+        if (polarity == AllomancyPolarity.Pulling) offset = -offset;
 
         return new IntVec3(
             (int)Math.Round(offset.x, MidpointRounding.AwayFromZero),

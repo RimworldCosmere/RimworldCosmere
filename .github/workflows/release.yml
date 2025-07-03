@@ -169,6 +169,7 @@ jobs:
           path: ${{ github.workspace }}/${{ matrix.mod }}-${{ env.BRANCH_NAME }}.zip
   github-publish:
     needs: github-prepare
+    if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
@@ -176,6 +177,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        
+      - name: start deployment
+        uses: bobheadxi/deployments@v1
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: ${{ github.ref_name }}
 
       - name: Download all zip artifacts
         uses: actions/download-artifact@v4
@@ -197,11 +206,20 @@ jobs:
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
-        if: github.ref_type == 'tag'
         with:
           tag_name: ${{ github.ref_name }}
           name: "Cosmere Mods Release - ${{ github.ref_name }}"
           body: ${{ steps.commit.outputs.body }}
           files: ./zips/**/*.zip
-          prerelease: ${{ env.BRANCH_NAME != 'main' || github.ref_type != 'tag' }}
-          make_latest: ${{ env.BRANCH_NAME == 'main' && github.ref_type == 'tag' }}
+          prerelease: ${{ contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
+          make_latest: ${{ !(contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha')) }}
+          
+      - name: update deployment status
+        uses: bobheadxi/deployments@v1
+        if: always()
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          env: ${{ steps.deployment.outputs.env }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}

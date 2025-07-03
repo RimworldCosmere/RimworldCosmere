@@ -3,8 +3,10 @@ name: Publish Cosmere Mods to GitHub
 on: push
 
 permissions:
-  deployments: write
-  contents: write
+  contents: write # to be able to publish a GitHub release
+  issues: write # to be able to comment on released issues
+  pull-requests: write # to be able to comment on released pull requests
+  id-token: write # to enable use of OIDC for npm provenance
 
 jobs:
   github-get-mods:
@@ -60,9 +62,9 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "lts/*"
 
       - name: Install steamdown + steam-totp
         run: |
@@ -87,14 +89,15 @@ jobs:
           VERSION="${TAG#v}"                    # strip leading 'v'
 
           # Extract components with known-good format
-          REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)(\.[0-9]+)?(-alpha|-beta)?$'
+          REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)(-alpha|-beta)?(\.[0-9]+)?$'
           [[ "$VERSION" =~ $REGEX ]]
 
           MAJOR="${BASH_REMATCH[1]}"
           MINOR="${BASH_REMATCH[2]}"
           PATCH="${BASH_REMATCH[3]}"
-          REVISION="${BASH_REMATCH[4]#.}"      # optional, strip leading dot
-          LABEL="${BASH_REMATCH[5]#-}"         # optional, strip leading dash
+          LABEL="${BASH_REMATCH[4]#-}"         # optional, strip leading dash
+          REVISION="${BASH_REMATCH[5]#.}"      # optional, strip leading dot
+          [[ -z "$REVISION" ]] && REVISION="0" # default REVISION to `0`
 
           CONFIG="Debug"
           [[ -z "$LABEL" && "${GITHUB_REF_NAME}" == "main" ]] && CONFIG="Release"
@@ -168,6 +171,12 @@ jobs:
         with:
           name: ${{ matrix.mod }}-zip
           path: ${{ github.workspace }}/${{ matrix.mod }}-${{ env.BRANCH_NAME }}.zip
+
+      - name: Release
+        if: ${{ github.ref_type == 'branch' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
   github-publish:
     needs: github-prepare
     if: github.ref_type == 'tag'
@@ -178,14 +187,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
-      - name: start deployment
-        uses: bobheadxi/deployments@v1
-        id: deployment
-        with:
-          step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: ${{ github.ref_name }}
 
       - name: Download all zip artifacts
         uses: actions/download-artifact@v4
@@ -214,13 +215,3 @@ jobs:
           files: ./zips/**/*.zip
           prerelease: ${{ contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
           make_latest: ${{ !(contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha')) }}
-          
-      - name: update deployment status
-        uses: bobheadxi/deployments@v1
-        if: always()
-        with:
-          step: finish
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
-          env: ${{ steps.deployment.outputs.env }}
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}

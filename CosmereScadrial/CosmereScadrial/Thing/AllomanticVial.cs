@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Util;
@@ -9,12 +8,10 @@ using Verse;
 namespace CosmereScadrial.Thing;
 
 public class AllomanticVial : ThingWithComps {
-    public List<MetallicArtsMetalDef> metals => [DefDatabase<MetallicArtsMetalDef>.GetNamed(Stuff.defName)];
+    public virtual MetallicArtsMetalDef metal => DefDatabase<MetallicArtsMetalDef>.GetNamed(Stuff.defName);
 
-    public bool IsForMetal(MetallicArtsMetalDef metal, bool singleMetal = true) {
-        if (singleMetal && metals.Count > 1) return false;
-
-        return metals.Contains(metal);
+    public bool IsForMetal(MetallicArtsMetalDef metalCheck) {
+        return metal.Equals(metalCheck);
     }
 
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn) {
@@ -28,11 +25,13 @@ public class AllomanticVial : ThingWithComps {
     protected override void PostIngested(Pawn ingester) {
         base.PostIngested(ingester);
 
-        metals.ForEach(metal => {
-            AllomancyUtility.AddMetalReserve(ingester, metal, MetalReserves.MaxAmount); // or adjust amount
-        });
+
+        AllomancyUtility.AddMetalReserve(ingester, metal, MetalReserves.MaxAmount); // or adjust amount
+
         Messages.Message(
-            $"{ingester.LabelShortCap} downed a vial containing: {string.Join(", ", metals.Select(x => x.LabelCap))}.",
-            ingester, MessageTypeDefOf.PositiveEvent);
+            "CS_IngestedVial".Translate(ingester.NameFullColored.Named("PAWN"), metal.coloredLabel.Named("THING")),
+            ingester,
+            MessageTypeDefOf.PositiveEvent
+        );
     }
 }

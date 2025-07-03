@@ -4,7 +4,7 @@
         <defName>Cosmere_Scadrial_Stat_FeruchemicPower</defName>
         <label>feruchemic strength</label>
         <description>Affects potency and range of feruchemic abilities.</description>
-        <category>Basics</category>
+        <category>Ability</category>
         <minValue>0</minValue>
         <defaultBaseValue>.25</defaultBaseValue>
         <toStringStyle>PercentZero</toStringStyle>

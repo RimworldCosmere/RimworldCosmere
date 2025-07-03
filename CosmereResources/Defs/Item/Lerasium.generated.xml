@@ -32,6 +32,7 @@
             <color>(132, 159, 106)</color>
             <categories>
                 <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
                 <li>Metallic</li>
             </categories>
             <appearance>Metal</appearance>
@@ -39,6 +40,7 @@
 
         <statBases>
             <Mass>0.5</Mass>
+            <Beauty>100</Beauty>
             <MarketValue>10000</MarketValue>
         </statBases>
 

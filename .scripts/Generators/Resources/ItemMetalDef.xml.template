@@ -101,6 +101,7 @@
 
         <statBases>
             <Mass>0.5</Mass>
+            <Beauty>{{metal.Beauty}}</Beauty>
             <MarketValue>{{metal.MarketValue}}</MarketValue>
         </statBases>
 

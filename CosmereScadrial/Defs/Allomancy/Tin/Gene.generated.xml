@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: Tin -->
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_MistingTin</defName>
+
+        <label>tin misting</label>
+        <labelShortAdj>tineye</labelShortAdj>
+
+        <description>Enhances {PAWN}&#x27;s senses like sight, hearing, and smell.</description>
+
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>6</displayOrderInCategory>
+
+        <resourceLabel>tin</resourceLabel>
+        <resourceDescription>Group: physical\nAxis: internal\nPolarity: pulling\n\nEnhances {PAWN}&#x27;s senses like sight, hearing, and smell.</resourceDescription>
+
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_MistingTin</def>
+            </li>
+        </forcedTraits>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Tin</metal>
+            </li>
+        </modExtensions>
+
+        <abilities>
+            <li>Cosmere_Scadrial_Ability_Tin</li>
+        </abilities>
+
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Tin</iconPath>
+    </GeneDef>
+</Defs>

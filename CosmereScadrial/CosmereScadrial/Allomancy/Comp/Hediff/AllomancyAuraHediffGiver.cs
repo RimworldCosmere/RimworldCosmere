@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Util;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Allomancy.Hediff;
 using CosmereScadrial.Comp.Hediff;
@@ -89,8 +88,11 @@ public class AllomancyAuraHediffGiver : HediffComp {
     public override void CompPostTick(ref float severityAdjustment) {
         base.CompPostTick(ref severityAdjustment);
         if (cosmereSettings.debugMode && Find.Selector.IsSelected(parent.pawn)) {
-            GenDraw.DrawCircleOutline(parent.pawn.DrawPos, props.radius * base.parent.Severity,
-                parent.metal.transparentLineColor);
+            GenDraw.DrawCircleOutline(
+                parent.pawn.DrawPos,
+                props.radius * base.parent.Severity,
+                parent.metal.transparentLineColor
+            );
         }
 
         CreateMote()?.Maintain();
@@ -134,7 +136,8 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
         // Update the mood offset
         if (hediff.TryGetComp<HediffComp_ThoughtSetter>(out HediffComp_ThoughtSetter? thoughtComp)) {
-            float offset = hediff.ageTicks / TickUtility.Minutes(5) * hediff.Severity; // Jumps for every hour
+            float offset =
+                hediff.ageTicks / (float)GenTicks.SecondsToTicks(60 * 5) * hediff.Severity; // Jumps for every hour
             int newOffset = Mathf.RoundToInt(Mathf.Clamp(offset, 2f, 10f));
             thoughtComp.OverrideMoodOffset(newOffset);
         }

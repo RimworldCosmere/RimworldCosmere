@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: Copper -->
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_MistingCopper</defName>
+
+        <label>copper misting</label>
+        <labelShortAdj>smoker</labelShortAdj>
+
+        <description>Creates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</description>
+
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>14</displayOrderInCategory>
+
+        <resourceLabel>copper</resourceLabel>
+        <resourceDescription>Group: mental\nAxis: internal\nPolarity: pulling\n\nCreates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</resourceDescription>
+
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_MistingCopper</def>
+            </li>
+        </forcedTraits>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Copper</metal>
+            </li>
+        </modExtensions>
+
+        <abilities>
+            <li>Cosmere_Scadrial_Ability_CopperAura</li>
+        </abilities>
+
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Copper</iconPath>
+    </GeneDef>
+</Defs>

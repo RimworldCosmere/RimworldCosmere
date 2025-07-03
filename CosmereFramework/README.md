@@ -25,4 +25,6 @@ If you’re seeing this listed as a requirement, it’s because another mod depe
 
 Feel free to use it as a dependency in your own Cosmere-compatible mods.
 
+You can find more documentation about what is in this mod, and what you can use inside the Docs directory on GitHub
+
 ---

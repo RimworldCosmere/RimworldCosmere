@@ -10,16 +10,26 @@ const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
 
 export default function () {
     for (const type of ['Allomancy', 'Feruchemy'] as const) {
-        const template = compileTemplate(__dirname, type + 'GeneAndTraitDef.xml.template');
-        const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', type, 'Genes');
+        const geneTemplate = compileTemplate(__dirname, type + 'GeneDef.xml.template');
+        const traitTemplate = compileTemplate(__dirname, type + 'TraitDef.xml.template');
+        const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', type);
 
         let order = 2
         const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && (!!x[type])).concat(MetalRegistry.Metals.Atium);
         for (const metalInfo of metals) {
             writeGeneratedFile(
-                outputDir,
-                upperFirst(metalInfo.Name) + '.generated.xml',
-                template({
+                resolve(outputDir, upperFirst(metalInfo.Name)),
+                'Gene.generated.xml',
+                geneTemplate({
+                    metal: metalInfo,
+                    defName: metalInfo.DefName ?? upperFirst(metalInfo.Name),
+                    order: order++,
+                }),
+            );
+            writeGeneratedFile(
+                resolve(outputDir, upperFirst(metalInfo.Name)),
+                'Trait.generated.xml',
+                traitTemplate({
                     metal: metalInfo,
                     defName: metalInfo.DefName ?? upperFirst(metalInfo.Name),
                     order: order++,
@@ -51,7 +61,7 @@ export default function () {
             return acc;
         }, {abilities: [] as string[], rightClickAbilities: [] as string[]});
 
-        writeGeneratedFile(resolve(SCADRIAL_MOD_DIR, 'Defs', dir, 'Genes'), type + '.generated.xml', template({
+        writeGeneratedFile(resolve(SCADRIAL_MOD_DIR, 'Defs', dir, type), 'Trait.generated.xml', template({
             metals,
             abilities,
             rightClickAbilities

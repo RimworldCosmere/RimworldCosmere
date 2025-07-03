@@ -20,7 +20,7 @@ public class Quickstarter {
 
         Type? type = Type.GetType(CosmereFramework.cosmereSettings.quickstartName);
         if (type == null) {
-            Log.Error("Could not find the quickstart with type: " + CosmereFramework.cosmereSettings.quickstartName);
+            Logger.Error("Could not find the quickstart with type: " + CosmereFramework.cosmereSettings.quickstartName);
             return;
         }
 

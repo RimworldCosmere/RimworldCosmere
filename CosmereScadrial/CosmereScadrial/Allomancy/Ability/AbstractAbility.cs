@@ -7,7 +7,7 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
-using Log = CosmereFramework.Log;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereScadrial.Allomancy.Ability;
 
@@ -143,7 +143,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     public void UpdateStatus(BurningStatus? newStatus = null) {
         if (newStatus == null) {
             if (nextStatus == null) {
-                Log.Error("Call to UpdateStatus with no status, and no next status");
+                Logger.Error("Call to UpdateStatus with no status, and no next status");
                 return;
             }
 
@@ -152,7 +152,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
 
         if (status == newStatus) return;
 
-        Log.Verbose($"Updating {pawn.NameFullColored}'s {def.defName} from {status} -> {newStatus}");
+        Logger.Verbose($"Updating {pawn.NameFullColored}'s {def.defName} from {status} -> {newStatus}");
         BurningStatus? oldStatus = status;
         status = newStatus;
 

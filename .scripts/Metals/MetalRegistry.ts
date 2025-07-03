@@ -24,7 +24,7 @@ export class MetalRegistry {
         MetalRegistry.Metals = metals.reduce((curr: any, metal: Record<string, any>) => {
             if (metal.disabled) return curr;
 
-            const metalInfo = new MetalInfo({
+            curr[upperFirst(metal.name)] = new MetalInfo({
                 Name: metal.name,
                 Description: metal.description,
                 DefName: metal.defName,
@@ -32,7 +32,8 @@ export class MetalRegistry {
                 Stackable: metal.stackable ?? true,
                 DrawSize: metal.drawSize ?? 1,
                 MaxAmount: metal.maxAmount ?? 100,
-                MarketValue: metal.marketValue ?? (metal.alloy ? 2 : 0.5),
+                Beauty: metal.beauty,
+                MarketValue: metal.marketValue,
                 Color: metal.color,
                 ColorTwo: metal.colorTwo,
                 Allomancy: metal.allomancy ? new MetalAllomancyInfo({
@@ -63,8 +64,6 @@ export class MetalRegistry {
                     SizeRange: metal.mining.sizeRange,
                 }) : undefined,
             });
-
-            curr[upperFirst(metal.name)] = metalInfo;
 
             return curr;
         }, MetalRegistry.Metals);

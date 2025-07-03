@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CS_IngestedThing>{PAWN} ingested some {THING}</CS_IngestedThing>
+    <CS_IngestedVial>{PAWN} downed a vial containing {THING}</CS_IngestedVial>
+</LanguageData>

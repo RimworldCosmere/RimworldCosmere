@@ -6,7 +6,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using Log = CosmereFramework.Log;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereScadrial.Allomancy.Comp.Game;
 
@@ -86,7 +86,7 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
         int duration,
         Material material
     ) {
-        Log.Verbose(
+        Logger.Verbose(
             $"{source.LabelCap} {polarity} {thing.LabelCap} to {destination} (from {thing.Position}) for {duration} ticks"
         );
         activeMovements.Add(

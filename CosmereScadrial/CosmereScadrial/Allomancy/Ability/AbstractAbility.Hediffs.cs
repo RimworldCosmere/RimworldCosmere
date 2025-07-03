@@ -20,7 +20,7 @@ public abstract partial class AbstractAbility {
 
         Verse.Hediff? drag = targetPawn.health.GetOrAddHediff(def.dragHediff);
         drag.Severity = severity;
-        //Log.Warning($"Applying {def.dragHediff.defName} drag to {targetPawn.NameFullColored} with Severity={severity}");
+        //Logger.Warning($"Applying {def.dragHediff.defName} drag to {targetPawn.NameFullColored} with Severity={severity}");
     }
 
     protected void RemoveDrag(Pawn? targetPawn) {

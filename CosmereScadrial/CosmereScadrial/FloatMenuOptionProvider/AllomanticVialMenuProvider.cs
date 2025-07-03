@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using CosmereCore.Extension;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
@@ -24,8 +23,7 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
         if (clickedThing is not AllomanticVial vial) return null;
         Pawn? pawn = context.FirstSelectedPawn;
         if (pawn is null) return null;
-        MetallicArtsMetalDef? metal = vial.metals.First();
-        if (metal is null) return null;
+        MetallicArtsMetalDef metal = vial.metal;
         Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
 
         if (metal.godMetal) {
@@ -54,14 +52,28 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
             return new FloatMenuOption((string)(str + ": " + "NoPath".Translate().CapitalizeFirst()), null);
         }
 
-        int maxAmountToPickup1 = FoodUtility.GetMaxAmountToPickup(clickedThing, context.FirstSelectedPawn,
-            FoodUtility.WillIngestStackCountOf(context.FirstSelectedPawn, clickedThing.def,
-                FoodUtility.NutritionForEater(context.FirstSelectedPawn, clickedThing)));
-        FloatMenuOption singleOptionFor = FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(str,
+        int maxAmountToPickup1 = FoodUtility.GetMaxAmountToPickup(
+            clickedThing,
+            context.FirstSelectedPawn,
+            FoodUtility.WillIngestStackCountOf(
+                context.FirstSelectedPawn,
+                clickedThing.def,
+                FoodUtility.NutritionForEater(context.FirstSelectedPawn, clickedThing)
+            )
+        );
+        FloatMenuOption singleOptionFor = FloatMenuUtility.DecoratePrioritizedTask(
+            new FloatMenuOption(
+                str,
                 (Action)(() => {
-                    int maxAmountToPickup2 = FoodUtility.GetMaxAmountToPickup(clickedThing, context.FirstSelectedPawn,
-                        FoodUtility.WillIngestStackCountOf(context.FirstSelectedPawn, clickedThing.def,
-                            FoodUtility.NutritionForEater(context.FirstSelectedPawn, clickedThing)));
+                    int maxAmountToPickup2 = FoodUtility.GetMaxAmountToPickup(
+                        clickedThing,
+                        context.FirstSelectedPawn,
+                        FoodUtility.WillIngestStackCountOf(
+                            context.FirstSelectedPawn,
+                            clickedThing.def,
+                            FoodUtility.NutritionForEater(context.FirstSelectedPawn, clickedThing)
+                        )
+                    );
                     if (maxAmountToPickup2 == 0) {
                         return;
                     }
@@ -70,8 +82,12 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
                     Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, (LocalTargetInfo)clickedThing);
                     job.count = maxAmountToPickup2;
                     context.FirstSelectedPawn.jobs.TryTakeOrderedJob(job);
-                }), clickedThing is Corpse ? MenuOptionPriority.Low : MenuOptionPriority.Default),
-            context.FirstSelectedPawn, (LocalTargetInfo)clickedThing);
+                }),
+                clickedThing is Corpse ? MenuOptionPriority.Low : MenuOptionPriority.Default
+            ),
+            context.FirstSelectedPawn,
+            (LocalTargetInfo)clickedThing
+        );
         if (maxAmountToPickup1 == 0) {
             singleOptionFor.action = null;
         }

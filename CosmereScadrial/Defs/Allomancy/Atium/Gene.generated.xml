@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Misting: Atium -->
+    <GeneDef ParentName="AbstractAllomancyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_MistingAtium</defName>
+
+        <label>atium misting</label>
+        <labelShortAdj>seer</labelShortAdj>
+
+        <description>Allows {PAWN} a glimpse into the immediate future of others.</description>
+
+        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
+        <displayOrderInCategory>34</displayOrderInCategory>
+
+        <resourceLabel>atium</resourceLabel>
+        <resourceDescription>Group: None\nAxis: None\nPolarity: None\n\nAllows {PAWN} a glimpse into the immediate future of others.</resourceDescription>
+
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_MistingAtium</def>
+            </li>
+        </forcedTraits>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Atium</metal>
+            </li>
+        </modExtensions>
+
+        <abilities>
+            <li>Cosmere_Scadrial_Ability_Atium</li>
+        </abilities>
+
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Atium</iconPath>
+    </GeneDef>
+</Defs>

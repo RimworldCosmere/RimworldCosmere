@@ -6,7 +6,6 @@ using CosmereFramework;
 using HarmonyLib;
 using RimWorld;
 using Verse;
-using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Patch;
 
@@ -19,7 +18,7 @@ public static class LockShardSelection {
         if (shards == null) return;
 
         if (shards.shards.Count == 0) {
-            Log.Message($"[CosmereScadrial] No matching shard system found for {def!.defName}", LogLevel.Warning);
+            Logger.Message($"[CosmereScadrial] No matching shard system found for {def!.defName}", LogLevel.Warning);
             return;
         }
 
@@ -29,6 +28,7 @@ public static class LockShardSelection {
 
         Messages.Message(
             $"Shard System has been pre-selected: {string.Join(", ", ShardUtility.shards.enabledShardDefs.Select(x => x.label))}",
-            MessageTypeDefOf.PositiveEvent);
+            MessageTypeDefOf.PositiveEvent
+        );
     }
 }

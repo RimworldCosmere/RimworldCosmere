@@ -39,7 +39,8 @@
 
         <statBases>
             <Mass>0.5</Mass>
-            <MarketValue>0.5</MarketValue>
+            <Beauty>1</Beauty>
+            <MarketValue>1.3</MarketValue>
         </statBases>
 
         <modExtensions>

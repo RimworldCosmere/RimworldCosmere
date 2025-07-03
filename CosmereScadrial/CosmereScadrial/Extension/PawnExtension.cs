@@ -9,8 +9,16 @@ public static class PawnExtension {
         return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn);
     }
 
+    public static bool IsFullFeruchemist(this Pawn pawn) {
+        return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_FullFeruchemist);
+    }
+
     public static bool IsAllomancer(this Pawn pawn) {
         return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Allomancer);
+    }
+
+    public static bool IsFeruchemist(this Pawn pawn) {
+        return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Feruchemist);
     }
 
     public static bool IsMisting(this Pawn pawn, MetalDef metal) {

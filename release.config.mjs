@@ -45,7 +45,7 @@ export default {
         [
             "@semantic-release/git",
             {
-                "assets": ["foo/*.py"]
+                "assets": ["CosmereFramework/CosmereFramework/BuildInfo.cs"]
             }
         ]
     ],

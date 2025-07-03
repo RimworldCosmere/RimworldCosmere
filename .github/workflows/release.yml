@@ -186,7 +186,9 @@ jobs:
         if: ${{ github.ref_type == 'branch' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+        run: |
+          npm install @semantic-release/git @semantic-release/changelog -D
+          npx semantic-release
   publish:
     needs: prepare
     if: github.ref_type == 'tag'

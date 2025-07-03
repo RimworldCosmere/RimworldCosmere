@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereFramework.Quickstart;
+using CosmereFramework.Settings;
 using UnityEngine;
 using Verse;
 
@@ -25,6 +26,12 @@ public class CosmereFramework(ModContentPack content) : Mod(content) {
     public CosmereSettings settings => GetSettings<CosmereSettings>();
 
     public override void DoSettingsWindowContents(Rect inRect) {
+        IEnumerable<CosmereModSettings> modSettings = typeof(CosmereModSettings).AllSubclassesNonAbstract()
+            .Select(x => Activator.CreateInstance(x))
+            .Cast<CosmereModSettings>()
+            .ToList();
+        foreach (CosmereModSettings modSetting in modSettings) { }
+
         const float categoryPadding = 10f;
         const float categoryInset = 30f;
         const float subListingSpacing = 6f;
@@ -36,11 +43,20 @@ public class CosmereFramework(ModContentPack content) : Mod(content) {
         Listing_Standard listingStandard = new Listing_Standard();
         listingStandard.Begin(inRect);
         listingStandard.Label($"Log Level - {settings.logLevel.ToString()}");
-        settings.logLevel = (LogLevel)(int)listingStandard.Slider((float)settings.logLevel, (float)LogLevel.None,
-            (float)LogLevel.Verbose);
+        settings.logLevel = (LogLevel)(int)listingStandard.Slider(
+            (float)settings.logLevel,
+            (float)LogLevel.None,
+            (float)LogLevel.Verbose
+        );
         listingStandard.CheckboxLabeled("Debug Mode", ref settings.debugMode, "Opens the logs.");
 
-        MakeSubListing(listingStandard, 0, expectedHeight, categoryPadding, categoryInset, subListingSpacing,
+        MakeSubListing(
+            listingStandard,
+            0,
+            expectedHeight,
+            categoryPadding,
+            categoryInset,
+            subListingSpacing,
             (sub, width) => {
                 sub.ColumnWidth = subListingLabelWidth;
 
@@ -51,7 +67,8 @@ public class CosmereFramework(ModContentPack content) : Mod(content) {
                 sub.NewColumn();
                 sub.ColumnWidth = width - subListingLabelWidth - listingColumnSpacing;
                 MakeSelectScenarioButton(sub, settings);
-            });
+            }
+        );
 
         listingStandard.End();
         base.DoSettingsWindowContents(inRect);
@@ -75,10 +92,16 @@ public class CosmereFramework(ModContentPack content) : Mod(content) {
             List<FloatMenuOption> options =
                 new List<FloatMenuOption>([new FloatMenuOption("None", () => { settings.quickstartName = null; })]);
 
-            options.AddRange(typeof(AbstractQuickstart).AllSubclassesNonAbstract().Select(s => {
-                return new FloatMenuOption($"{s.Assembly.GetName().Name}: {s.Name}",
-                    () => { settings.quickstartName = s.AssemblyQualifiedName; });
-            }));
+            options.AddRange(
+                typeof(AbstractQuickstart).AllSubclassesNonAbstract()
+                    .Select(s => {
+                            return new FloatMenuOption(
+                                $"{s.Assembly.GetName().Name}: {s.Name}",
+                                () => { settings.quickstartName = s.AssemblyQualifiedName; }
+                            );
+                        }
+                    )
+            );
             Find.WindowStack.Add(new FloatMenu(options));
         }
 

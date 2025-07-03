@@ -9,7 +9,7 @@ permissions:
   id-token: write # to enable use of OIDC for npm provenance
 
 jobs:
-  github-get-mods:
+  get-mods:
     runs-on: ubuntu-latest
     outputs:
       mods: ${{ steps.set-mods.outputs.mods }}
@@ -40,12 +40,12 @@ jobs:
           mods=$(find . -maxdepth 1 -type d -name "Cosmere*" -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "mods=$mods" >> "$GITHUB_OUTPUT"
 
-  github-prepare:
-    needs: github-get-mods
+  prepare:
+    needs: get-mods
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        mod: ${{ fromJson(needs.github-get-mods.outputs.mods) }}
+        mod: ${{ fromJson(needs.get-mods.outputs.mods) }}
     
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
@@ -171,14 +171,24 @@ jobs:
         with:
           name: ${{ matrix.mod }}-zip
           path: ${{ github.workspace }}/${{ matrix.mod }}-${{ env.BRANCH_NAME }}.zip
-
+  semantic-release:
+    needs: prepare
+    if: github.ref_type != 'tag'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
       - name: Release
         if: ${{ github.ref_type == 'branch' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-  github-publish:
-    needs: github-prepare
+  publish:
+    needs: prepare
     if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
     env:

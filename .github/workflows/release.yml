@@ -3,6 +3,7 @@ name: Publish Cosmere Mods to GitHub
 on: push
 
 permissions:
+  deployments: write
   contents: write
 
 jobs:

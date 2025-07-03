@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_MistingNicrosil</defName>
+        <label>nicroburst</label>
+        <description>Allows {PAWN} to boosts another pawn&#x27;s next Investiture-related ability drastically, at the downside of completely draining them after.</description>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Nicrosil</metal>
+            </li>
+        </modExtensions>
+
+        <degreeDatas>
+            <li>
+                <label>misting: nicroburst</label>
+                <description>Allows {PAWN} to boosts another pawn&#x27;s next Investiture-related ability drastically, at the downside of completely draining them after.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

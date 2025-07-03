@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
     <configuration default="false" name="RimWorld" type="RimworldRunConfiguration" factoryName="RimworldRunConfiguration">
-        <option name="commandLineOptions" value=""/>
+        <option name="commandLineOptions" value="-screen-width 1600 -screen-height 900 -screen-fullscreen 0 -screen-monitor 0"/>
         <option name="modListPath" value=""/>
         <option name="saveFilePath" value=""/>
         <option name="scriptName" value="D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe"/>

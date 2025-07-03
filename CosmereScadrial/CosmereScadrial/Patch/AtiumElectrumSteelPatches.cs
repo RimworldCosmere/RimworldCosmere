@@ -2,7 +2,7 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Log = CosmereFramework.Log;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereScadrial.Patch;
 
@@ -40,16 +40,21 @@ public static class AtiumElectrumSteelPatches {
         float baseHitChance = 1f;
 
         float casterAtiumSeverity = casterPawn.health?.hediffSet
-            ?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_AtiumBuff)?.Severity ?? 0f;
+                                        ?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_AtiumBuff)
+                                        ?.Severity ??
+                                    0f;
         float targetAtiumSeverity =
             targetPawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_AtiumBuff)
-                ?.Severity ?? 0f;
+                ?.Severity ??
+            0f;
         float targetSteelBubbleSeverity =
             targetPawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_SteelBubble)
-                ?.Severity ?? 0f;
+                ?.Severity ??
+            0f;
         float targetElectrumSeverity =
             targetPawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ElectrumBuff)
-                ?.Severity ?? 0f;
+                ?.Severity ??
+            0f;
 
         bool targetHasAtium = targetAtiumSeverity > 0f;
         bool targetHasSteelBubble = targetSteelBubbleSeverity > 0f;
@@ -82,8 +87,9 @@ public static class AtiumElectrumSteelPatches {
 
         // Clamp final value for safety
         baseHitChance = Mathf.Clamp(baseHitChance, 0.05f, 1f);
-        Log.Verbose(
-            $"{casterPawn.NameFullColored} chance to hit {targetPawn.NameFullColored} = {baseHitChance:P} casterAtiumSeverity={casterAtiumSeverity} targetAtiumSeverity={targetAtiumSeverity} targetSteelBubbleSeverity={targetSteelBubbleSeverity} targetElectrumSeverity={targetElectrumSeverity}");
+        Logger.Verbose(
+            $"{casterPawn.NameFullColored} chance to hit {targetPawn.NameFullColored} = {baseHitChance:P} casterAtiumSeverity={casterAtiumSeverity} targetAtiumSeverity={targetAtiumSeverity} targetSteelBubbleSeverity={targetSteelBubbleSeverity} targetElectrumSeverity={targetElectrumSeverity}"
+        );
         return Rand.Chance(baseHitChance);
     }
 }

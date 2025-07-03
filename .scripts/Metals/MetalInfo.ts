@@ -12,6 +12,7 @@ export class MetalInfo {
     public GodMetal: boolean;
     public Stackable: boolean = true;
     public DrawSize: number = 1;
+    public Beauty: number;
     public MarketValue: number;
     public MaxAmount: number = 100;
     public Allomancy?: MetalAllomancyInfo

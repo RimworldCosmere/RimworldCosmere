@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Ferring: Aluminum -->
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_FerringAluminum</defName>
+
+        <label>aluminum ferring</label>
+        <labelShortAdj>trueself</labelShortAdj>
+
+        <description>Stores identity, allowing anonymous interactions or forgery.</description>
+
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>18</displayOrderInCategory>
+
+        <resourceLabel>aluminum</resourceLabel>
+        <resourceDescription>Group: spiritual\n\nStores identity, allowing anonymous interactions or forgery.</resourceDescription>
+
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_FerringAluminum</def>
+            </li>
+        </forcedTraits>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Aluminum</metal>
+            </li>
+        </modExtensions>
+
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Aluminum</iconPath>
+    </GeneDef>
+</Defs>

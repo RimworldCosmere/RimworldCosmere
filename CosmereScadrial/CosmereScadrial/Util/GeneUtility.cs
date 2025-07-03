@@ -7,7 +7,7 @@ using CosmereScadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Log = CosmereFramework.Log;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereScadrial.Util;
 
@@ -48,14 +48,16 @@ public static class GeneUtility {
         if (isPreservation) {
             if (isNoble) {
                 success = RollChance(128, out roll);
-                Log.Verbose(
-                    $"Trying for Mistborn. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
+                Logger.Verbose(
+                    $"Trying for Mistborn. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+                );
                 if (success) {
                     AddMistborn(pawn);
                 } else {
                     success = RollChance(16, out roll);
-                    Log.Verbose(
-                        $"Trying for Misting. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
+                    Logger.Verbose(
+                        $"Trying for Misting. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+                    );
                     if (success) TryAddRandomAllomanticGene(pawn);
                 }
             }
@@ -67,14 +69,16 @@ public static class GeneUtility {
             // Full Feruchemists were way more common, from what I can tell
             // Most Terris were Full, or nothing. There was a small chance for Ferrings, but it was rare.
             success = RollChance(16, out roll);
-            Log.Verbose(
-                $"Trying for full feruchemist. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
+            Logger.Verbose(
+                $"Trying for full feruchemist. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+            );
             if (success) {
                 AddFullFeruchemist(pawn);
             } else {
                 success = RollChance(64, out roll);
-                Log.Verbose(
-                    $"Trying for Ferring. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
+                Logger.Verbose(
+                    $"Trying for Ferring. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+                );
                 if (success) TryAddRandomFeruchemicalGene(pawn);
             }
 
@@ -85,8 +89,9 @@ public static class GeneUtility {
         if (!isHarmony) return;
 
         success = RollChance(16, out roll);
-        Log.Verbose(
-            $"Trying for random misting. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
+        Logger.Verbose(
+            $"Trying for random misting. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+        );
         if (RollChance(16)) {
             TryAddRandomAllomanticGene(pawn);
         }
@@ -94,8 +99,9 @@ public static class GeneUtility {
         if (!isTerris) return;
 
         success = RollChance(16, out roll);
-        Log.Verbose(
-            $"Trying for random ferring. Pawn={pawn.NameFullColored} Success={Log.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}");
+        Logger.Verbose(
+            $"Trying for random ferring. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+        );
         if (success) TryAddRandomFeruchemicalGene(pawn);
     }
 
@@ -120,8 +126,9 @@ public static class GeneUtility {
         // Remove if child inherited it but only one parent had it
         if (!childSkaa || parent1Skaa && parent2Skaa) return;
         generated.genes.RemoveGene(skaaPurity);
-        Log.Verbose(
-            $"Removed {skaaPurity.defName} from {generated.NameFullColored} (only one parent had it)");
+        Logger.Verbose(
+            $"Removed {skaaPurity.defName} from {generated.NameFullColored} (only one parent had it)"
+        );
     }
 
     public static void TryAddRandomAllomanticGene(Pawn pawn, bool canSnap = true) {

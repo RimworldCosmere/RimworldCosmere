@@ -29,7 +29,7 @@ export default function (program: Command) {
     writeGeneratedFile(CosmereResources, 'MetalDefOf.generated.cs', metalDefOfTemplate({metals}));
 
 
-    const mineable = Object.values(MetalRegistry.Metals).filter((x) => x.Mining !== undefined);
+    const mineable = Object.values(MetalRegistry.Metals).filter((x) => !!x.Mining);
     for (const metal of mineable) {
         writeGeneratedFile(mineableOutputDir, upperFirst(metal.Name) + '.generated.xml', mineableTemplate({metal}));
     }

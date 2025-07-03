@@ -15,7 +15,7 @@ const metalDefOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
 
 export default function () {
     const metals = Object.values(MetalRegistry.Metals)
-        .filter(x => x.Allomancy !== null || x.Feruchemy !== null);
+        .filter(x => !!x.Allomancy || !!x.Feruchemy);
     for (const metal of metals) {
         writeGeneratedFile(metalOutputDir, upperFirst(metal.Name) + '.generated.xml', metalTemplate({metal}));
         writeGeneratedFile(patchMetalDefOfOutputDir, upperFirst(metal.Name) + '.generated.xml', patchMetalDefOfTemplate({metal}));

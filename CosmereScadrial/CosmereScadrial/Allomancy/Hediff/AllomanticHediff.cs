@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CosmereCore.Extension;
-using CosmereFramework.Util;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Allomancy.Comp.Hediff;
 using CosmereScadrial.Allomancy.Comp.Thing;
@@ -43,7 +42,8 @@ public class AllomanticHediff : HediffWithComps {
         }
 
         Log.Warning(
-            $"{sourceAbility.pawn.NameFullColored} applying {def.defName} hediff to {pawn.NameFullColored} with Status={sourceAbility.status}");
+            $"{sourceAbility.pawn.NameFullColored} applying {def.defName} hediff to {pawn.NameFullColored} with Status={sourceAbility.status}"
+        );
 
         sourceAbilities.Add(sourceAbility);
         OnSourceAdded?.Invoke(this, sourceAbility);
@@ -55,7 +55,8 @@ public class AllomanticHediff : HediffWithComps {
         }
 
         Log.Warning(
-            $"{sourceAbility.pawn.NameFullColored} is no longer casting {sourceAbility.def.defName} on {pawn.NameFullColored}, Removing source for {def.defName} hediff");
+            $"{sourceAbility.pawn.NameFullColored} is no longer casting {sourceAbility.def.defName} on {pawn.NameFullColored}, Removing source for {def.defName} hediff"
+        );
 
         sourceAbilities.Remove(sourceAbility);
         OnSourceRemoved?.Invoke(this, sourceAbility);
@@ -66,11 +67,12 @@ public class AllomanticHediff : HediffWithComps {
         if (def.defName != surge?.def.defName) {
             surge?.Burn(
                 severityCalculator.RecalculateSeverity,
-                (int)TickUtility.TicksPerSecond,
+                GenTicks.TicksPerRealSecond,
                 () => {
                     pawn.GetComp<MetalBurning>().TryBurnMetals();
                     severityCalculator.RecalculateSeverity();
-                });
+                }
+            );
         }
 
         if (pawn.IsShieldedAgainstInvestiture() && !def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_InvestitureShield)) {
@@ -115,7 +117,8 @@ public class AllomanticHediff : HediffWithComps {
         stringBuilder.AppendLine("Severity Sources:");
         foreach (AbstractAbility? ability in sourceAbilities) {
             stringBuilder.AppendLine(
-                $"  {ability.pawn.NameShortColored} -> {ability.def.LabelCap}: {ability.GetStrength():0.0000}");
+                $"  {ability.pawn.NameShortColored} -> {ability.def.LabelCap}: {ability.GetStrength():0.0000}"
+            );
         }
 
         return stringBuilder.ToString();

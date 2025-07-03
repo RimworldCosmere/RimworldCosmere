@@ -7,7 +7,7 @@ using CosmereScadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Log = CosmereFramework.Log;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereScadrial.Allomancy.Comp.Thing;
 
@@ -76,7 +76,7 @@ public class MetalBurning : ThingComp {
 
             // Auto-stop all sources if out of reserve
             RemoveAllBurnSourcesForMetal(metal);
-            Log.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
+            Logger.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");
             return;
         }
     }

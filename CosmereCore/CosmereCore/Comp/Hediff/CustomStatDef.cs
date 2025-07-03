@@ -5,7 +5,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using Log = CosmereFramework.Log;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereCore.Comp.Hediff;
 
@@ -19,7 +19,8 @@ public class MentalBreakHandler : HediffComp {
     private List<StatDef>? customStatDefsCache;
 
     protected virtual List<StatDef> customStatDefs => customStatDefsCache ??= DefDatabase<StatDef>
-        .AllDefsListForReading.Where(x => x.defName.StartsWith("CosmereCore_")).ToList();
+        .AllDefsListForReading.Where(x => x.defName.StartsWith("CosmereCore_"))
+        .ToList();
 
     public override void CompPostTick(ref float severityAdjustment) {
         base.CompPostTick(ref severityAdjustment);
@@ -34,7 +35,7 @@ public class MentalBreakHandler : HediffComp {
                 float value = Pawn.GetStatValue(stat);
                 method.Invoke(this, [value]);
             } else {
-                Log.Warning($"No handler for stat {stat.defName} defined in {GetType().Name}");
+                Logger.Warning($"No handler for stat {stat.defName} defined in {GetType().Name}");
             }
         }
     }

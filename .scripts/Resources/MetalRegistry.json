@@ -13,6 +13,8 @@
       77,
       76
     ],
+    "marketValue": 1.3,
+    "beauty": 1,
     "allomancy": {
       "userName": "lurcher",
       "description": "Grants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.",
@@ -53,6 +55,8 @@
       108,
       108
     ],
+    "marketValue": 1.9,
+    "beauty": 1,
     "allomancy": {
       "userName": "coinshot",
       "description": "Grants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.",
@@ -109,6 +113,8 @@
       137,
       137
     ],
+    "marketValue": 1.3,
+    "beauty": 1,
     "allomancy": {
       "userName": "tineye",
       "description": "Enhances {PAWN}'s senses like sight, hearing, and smell.",
@@ -147,6 +153,8 @@
       151,
       166
     ],
+    "marketValue": 1.9,
+    "beauty": 1,
     "allomancy": {
       "userName": "thug",
       "description": "Enhances {PAWN}'s physical strength and durability.",
@@ -194,6 +202,8 @@
       189,
       187
     ],
+    "marketValue": 1.3,
+    "beauty": 1,
     "allomancy": {
       "userName": "rioter",
       "description": "Allows {PAWN} to riot emotions, pushing others to feel stronger emotions.",
@@ -233,6 +243,8 @@
       148,
       91
     ],
+    "marketValue": 1.9,
+    "beauty": 2,
     "allomancy": {
       "userName": "soother",
       "description": "Allows {PAWN} to soothe emotions, calming people or manipulating moods.",
@@ -282,6 +294,8 @@
       58,
       43
     ],
+    "marketValue": 1,
+    "beauty": 1,
     "allomancy": {
       "userName": "smoker",
       "description": "Creates a 'coppercloud' around {PAWN} that hides any Investiture-related activity.",
@@ -321,6 +335,8 @@
       160,
       138
     ],
+    "marketValue": 1.9,
+    "beauty": 3,
     "allomancy": {
       "userName": "seeker",
       "description": "Allows {PAWN} to detect other Invested pawns and items, revealing their Investiture.",
@@ -369,6 +385,8 @@
       194,
       194
     ],
+    "marketValue": 10,
+    "beauty": 2,
     "allomancy": {
       "userName": "gnat (aluminum)",
       "description": "Shields {PAWN} from investiture. Also wipes away all other investiture reserves.",
@@ -408,6 +426,8 @@
       113,
       115
     ],
+    "marketValue": 20,
+    "beauty": 1,
     "allomancy": {
       "userName": "gnat (duralumin)",
       "description": "Enhances the next Investiture-related ability {PAWN} uses drastically, but is consumed entirely.",
@@ -455,6 +475,8 @@
       171,
       196
     ],
+    "marketValue": 10,
+    "beauty": 2,
     "allomancy": {
       "userName": "leecher",
       "description": "Allows {PAWN} to shield a target against Investiture, while wiping away their investiture reserves.",
@@ -493,6 +515,8 @@
       139,
       135
     ],
+    "marketValue": 20,
+    "beauty": 2,
     "allomancy": {
       "userName": "nicroburst",
       "description": "Allows {PAWN} to boosts another pawn's next Investiture-related ability drastically, at the downside of completely draining them after.",
@@ -540,6 +564,8 @@
       207,
       206
     ],
+    "marketValue": 10,
+    "beauty": 2,
     "allomancy": {
       "userName": "pulser",
       "description": "Allows {PAWN} to slow down time in a bubble, creating a temporal distortion.",
@@ -578,6 +604,8 @@
       144,
       108
     ],
+    "marketValue": 100,
+    "beauty": 3,
     "allomancy": {
       "userName": "slider",
       "description": "Allows {PAWN} to speed up time in a bubble around the user.",
@@ -629,6 +657,8 @@
       101,
       23
     ],
+    "marketValue": 20,
+    "beauty": 20,
     "allomancy": {
       "userName": "augur",
       "description": "Shows alternate versions of {PAWN}, based on different pasts. Reflecting on these visions will grant a mood buff.",
@@ -673,8 +703,8 @@
       103,
       93
     ],
-    "allomancy": null,
-    "feruchemy": null,
+    "marketValue": 1,
+    "beauty": 6,
     "buildable": {
       "buildings": true,
       "items": true,
@@ -704,8 +734,8 @@
       100,
       100
     ],
-    "allomancy": null,
-    "feruchemy": null,
+    "marketValue": 0.9,
+    "beauty": 1,
     "buildable": {
       "buildings": false,
       "items": false
@@ -729,6 +759,8 @@
       156,
       82
     ],
+    "marketValue": 15,
+    "beauty": 1,
     "allomancy": {
       "userName": "oracle",
       "description": "Shows {PAWN}'s possible futures, useful for avoiding danger.",
@@ -769,11 +801,15 @@
     "stackable": false,
     "drawSize": 1,
     "marketValue": 10000,
+    "beauty": 100,
     "color": [
       132,
       159,
       106
     ],
+    "allomancy": {
+      "description": "Rewrites {PAWN}s spirit-web, granting them the powers of a Mistborn"
+    },
     "buildable": {
       "buildings": false,
       "items": false
@@ -786,6 +822,7 @@
     "stackable": false,
     "drawSize": 1,
     "marketValue": 10000,
+    "beauty": 100,
     "color": [
       60,
       60,
@@ -813,6 +850,7 @@
     "stackable": false,
     "drawSize": 1,
     "marketValue": 10000,
+    "beauty": 100,
     "color": [
       242,
       255,
@@ -846,6 +884,7 @@
     "stackable": false,
     "drawSize": 1,
     "marketValue": 10000,
+    "beauty": 100,
     "color": [
       148,
       0,

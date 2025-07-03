@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_MistingIron</defName>
+        <label>lurcher</label>
+        <description>Grants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.</description>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Iron</metal>
+            </li>
+        </modExtensions>
+
+        <degreeDatas>
+            <li>
+                <label>misting: lurcher</label>
+                <description>Grants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

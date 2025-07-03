@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
@@ -10,8 +9,9 @@ using GeneUtility = CosmereScadrial.Util.GeneUtility;
 namespace CosmereScadrial.Thing;
 
 public class AllomanticMetal : AllomanticVial {
+    public override MetallicArtsMetalDef metal => DefDatabase<MetallicArtsMetalDef>.GetNamed(def.defName);
+
     protected override void PostIngested(Pawn ingester) {
-        MetallicArtsMetalDef? metal = metals.First();
         if (metal.godMetal) {
             MetalReserves? comp = ingester.GetComp<MetalReserves>();
             if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
@@ -35,8 +35,10 @@ public class AllomanticMetal : AllomanticVial {
         }
 
         Messages.Message(
-            $"{ingester.LabelShortCap} downed a bit of: {string.Join(", ", metals.Select(x => x.LabelCap))}.",
-            ingester, MessageTypeDefOf.PositiveEvent);
+            "CS_IngestedThing".Translate(ingester.NameFullColored.Named("PAWN"), metal.coloredLabel.Named("THING")),
+            ingester,
+            MessageTypeDefOf.PositiveEvent
+        );
     }
 
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn) {

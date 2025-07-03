@@ -21,11 +21,7 @@ public static partial class MetallicArtsMetalDefOf {
     public static MetallicArtsMetalDef Cadmium;
     public static MetallicArtsMetalDef Bendalloy;
     public static MetallicArtsMetalDef Gold;
-    public static MetallicArtsMetalDef Silver;
-    public static MetallicArtsMetalDef Nickel;
     public static MetallicArtsMetalDef Electrum;
     public static MetallicArtsMetalDef Lerasium;
     public static MetallicArtsMetalDef Atium;
-    public static MetallicArtsMetalDef Harmonium;
-    public static MetallicArtsMetalDef Trellium;
 }

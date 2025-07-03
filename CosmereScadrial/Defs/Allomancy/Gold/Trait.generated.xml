@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
+        <defName>Cosmere_Scadrial_Trait_MistingGold</defName>
+        <label>augur</label>
+        <description>Shows alternate versions of {PAWN}, based on different pasts. Reflecting on these visions will grant a mood buff.</description>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Gold</metal>
+            </li>
+        </modExtensions>
+
+        <degreeDatas>
+            <li>
+                <label>misting: augur</label>
+                <description>Shows alternate versions of {PAWN}, based on different pasts. Reflecting on these visions will grant a mood buff.</description>
+                <degree>0</degree>
+                <commonality>0</commonality>
+            </li>
+        </degreeDatas>
+    </TraitDef>
+</Defs>

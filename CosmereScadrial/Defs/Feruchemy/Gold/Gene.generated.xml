@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Ferring: Gold -->
+    <GeneDef ParentName="AbstractFeruchemyInvestitureGene">
+        <defName>Cosmere_Scadrial_Gene_FerringGold</defName>
+
+        <label>gold ferring</label>
+        <labelShortAdj>bloodmaker</labelShortAdj>
+
+        <description>Stores health, allowing fast healing when tapped.</description>
+
+        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
+        <displayOrderInCategory>30</displayOrderInCategory>
+
+        <resourceLabel>gold</resourceLabel>
+        <resourceDescription>Group: hybrid\n\nStores health, allowing fast healing when tapped.</resourceDescription>
+
+        <forcedTraits>
+            <li>
+                <def>Cosmere_Scadrial_Trait_FerringGold</def>
+            </li>
+        </forcedTraits>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Gold</metal>
+            </li>
+        </modExtensions>
+
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Gold</iconPath>
+    </GeneDef>
+</Defs>

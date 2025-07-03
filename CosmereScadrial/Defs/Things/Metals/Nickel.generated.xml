@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Defs>
-    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Nickel">
-        <defName>Nickel</defName>
-    </CosmereScadrial.Def.MetallicArtsMetalDef>
-</Defs>

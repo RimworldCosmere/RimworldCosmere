@@ -1,9 +1,9 @@
 using System.Linq;
 using CosmereCore.Util;
+using CosmereFramework;
 using CosmereScadrial.Util;
 using RimWorld;
 using Verse;
-using Log = CosmereFramework.Log;
 
 namespace CosmereScadrial.Comp.Map;
 
@@ -39,7 +39,8 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
         // Every hour: scan for exposed pawns
         if (currentTick % GenDate.TicksPerHour == 0) {
             foreach (Pawn? pawn in map.mapPawns.AllPawnsSpawned.Where(p =>
-                         p.RaceProps.Humanlike && !p.Dead && !p.Position.Roofed(map))) {
+                         p.RaceProps.Humanlike && !p.Dead && !p.Position.Roofed(map)
+                     )) {
                 if (SnapUtility.IsSnapped(pawn)) continue;
                 if (!pawn.genes.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_DormantMetalborn)) continue;
                 if (!Rand.Chance(1f / 16f)) continue;
@@ -89,8 +90,9 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
 
         nextMistsStartTick = lastMistsStartTick + intervalTicks;
 
-        Log.Message(
-            $"[Mists] Next scheduled at tick {nextMistsStartTick} (interval {intervalTicks}, last at {lastMistsStartTick})");
+        Logger.Message(
+            $"[Mists] Next scheduled at tick {nextMistsStartTick} (interval {intervalTicks}, last at {lastMistsStartTick})"
+        );
     }
 
 

@@ -14,10 +14,11 @@ using GeneUtility = CosmereScadrial.Util.GeneUtility;
 namespace CosmereScadrial.Quickstart;
 
 public class PreCatacendre : AbstractQuickstart {
-    public override int MapSize => 75;
-    public override StorytellerDef Storyteller => StorytellerDefOf.Cassandra;
-    public override DifficultyDef Difficulty => DifficultyDefOf.Easy;
-    public override ScenarioDef? Scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
+    public override int mapSize => 75;
+    public override TaggedString description => "Used to test Pre-catacendre pawns";
+    public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
+    public override DifficultyDef difficulty => DifficultyDefOf.Easy;
+    public override ScenarioDef? scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
     public override void PostStart() {
         Current.Game?.researchManager.DebugSetAllProjectsFinished();
@@ -25,6 +26,11 @@ public class PreCatacendre : AbstractQuickstart {
         DebugViewSettings.showFpsCounter = true;
         DebugViewSettings.showTpsCounter = true;
         DebugViewSettings.showMemoryInfo = true;
+    }
+
+    public override void PostLoaded() {
+        Mod modInstance = LoadedModManager.GetMod<CosmereFramework.CosmereFramework>();
+        Find.WindowStack.Add(new Dialog_ModSettings(modInstance));
     }
 
     public override void PrepareColonists(List<Pawn> pawns) {

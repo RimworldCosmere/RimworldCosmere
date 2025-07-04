@@ -24,7 +24,7 @@ public static class Logger {
 
     public static void Message(string message, LogLevel level = LogLevel.Info) {
         try {
-            if (level > cosmereSettings.logLevel || level == LogLevel.None) return;
+            if (level > logLevel || level == LogLevel.None) return;
             switch (level) {
                 case LogLevel.Error
                     when DebugSettings.pauseOnError && Current.ProgramState == ProgramState.Playing:

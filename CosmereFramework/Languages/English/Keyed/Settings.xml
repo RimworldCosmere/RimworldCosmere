@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CS_Quickstart_Name>Quickstart: </CS_Quickstart_Name>
+    <CS_Quickstart_MapSize>Map Size: </CS_Quickstart_MapSize>
+    <CS_Quickstart_Difficulty>Difficulty: </CS_Quickstart_Difficulty>
+    <CS_Quickstart_Scenario>Scenario: </CS_Quickstart_Scenario>
+    <CS_Quickstart_PauseAfterLoad>Pause After Load: </CS_Quickstart_PauseAfterLoad>
+</LanguageData>

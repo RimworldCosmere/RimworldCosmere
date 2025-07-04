@@ -40,7 +40,9 @@ public abstract class CosmereGeneCommand(
     protected string? cachedTooltipHeader;
     protected NamedArgument coloredMetal;
     protected NamedArgument coloredPawn;
+
     protected bool draggingBar;
+
     protected Rect? iconRect;
     protected bool initialized;
     protected Rect? labelRect;
@@ -49,6 +51,12 @@ public abstract class CosmereGeneCommand(
     protected List<SubGizmo> subgizmos = [];
     internal float targetValuePct;
     protected Rect? topBarRect;
+
+    protected override bool DraggingBar {
+        get => draggingBar;
+        set => draggingBar = value;
+    }
+
     protected virtual float baseWidth => GetWidthForAbilityCount(2);
     protected virtual float abilityIconSize => Height / 2f;
 

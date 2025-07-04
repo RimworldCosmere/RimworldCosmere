@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using CosmereFramework.Settings;
 using CosmereFramework.Util;
 using RimWorld;
 using RimWorld.Planet;
@@ -11,20 +12,21 @@ namespace CosmereFramework.Quickstart;
 [StaticConstructorOnStartup]
 public class Quickstarter {
     private static bool Started;
-    private static readonly IQuickstart quickstart;
+    private static readonly AbstractQuickstart quickstart;
 
     static Quickstarter() {
         if (!Prefs.DevMode) return;
-        if (!CosmereFramework.cosmereSettings.debugMode) return;
-        if (CosmereFramework.cosmereSettings.quickstartName == null) return;
+        if (!CosmereFramework.debugMode) return;
+        string? quickstartName = CosmereFramework.GetModSettings<FrameworkModSettings>().quickstartName;
+        if (quickstartName == null) return;
 
-        Type? type = Type.GetType(CosmereFramework.cosmereSettings.quickstartName);
+        Type? type = Type.GetType(quickstartName);
         if (type == null) {
-            Logger.Error("Could not find the quickstart with type: " + CosmereFramework.cosmereSettings.quickstartName);
+            Logger.Error("Could not find the quickstart with type: " + quickstartName);
             return;
         }
 
-        quickstart = (IQuickstart)Activator.CreateInstance(type);
+        quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
 
         LongEventHandler.ExecuteWhenFinished(() => {
                 if (Started) return;
@@ -49,7 +51,7 @@ public class Quickstarter {
                     () => {
                         quickstart.PrepareColonists(Find.World.PlayerPawnsForStoryteller.ToList());
                         quickstart.PostLoaded();
-                        if (quickstart.PauseAfterLoad) Find.TickManager.Pause();
+                        if (quickstart.pauseAfterLoad) Find.TickManager.Pause();
                     },
                     10
                 );
@@ -65,10 +67,10 @@ public class Quickstarter {
         Current.ProgramState = ProgramState.Entry;
         Current.Game = new Game {
             InitData = new GameInitData(),
-            Scenario = quickstart.Scenario?.scenario,
+            Scenario = quickstart.scenario?.scenario,
         };
         Find.Scenario.PreConfigure();
-        Current.Game.storyteller = new Storyteller(quickstart.Storyteller, quickstart.Difficulty);
+        Current.Game.storyteller = new Storyteller(quickstart.storyteller, quickstart.difficulty);
         Current.Game.World = WorldGenerator.GenerateWorld(
             0.05f,
             seed,
@@ -78,7 +80,7 @@ public class Quickstarter {
             LandmarkDensity.Normal
         );
         Find.GameInitData.ChooseRandomStartingTile();
-        Find.GameInitData.mapSize = quickstart.MapSize;
+        Find.GameInitData.mapSize = quickstart.mapSize;
         Find.Scenario.PostIdeoChosen();
         Find.GameInitData.PrepForMapGen();
         Find.Scenario.PreMapGenerate();

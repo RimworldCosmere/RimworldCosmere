@@ -79,12 +79,13 @@ public class TimeAbility : AbilitySelfTarget {
 
         float radius = BaseRadius * GetStrength();
 
-        if (cosmereSettings.debugMode) {
+        if (debugMode) {
             GenDraw.DrawCircleOutline(bubble.DrawPos, radius, metal.solidLineColor);
         }
 
         foreach (Pawn? pawnInBubble in pawnsInBubble.Where(otherPawn =>
-                     !otherPawn.Position.InHorDistOf(bubble.Position, radius))) {
+                     !otherPawn.Position.InHorDistOf(bubble.Position, radius)
+                 )) {
             HediffUtility.RemoveHediff(pawnInBubble, this, hediffToApply);
         }
 

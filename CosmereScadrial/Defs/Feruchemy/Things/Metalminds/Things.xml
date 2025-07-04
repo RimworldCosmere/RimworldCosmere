@@ -40,7 +40,7 @@
         </recipeMaker>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_Metalmind</orderedTakeGroup>
         <comps>
-            <li Class="CosmereScadrial.Comp.Thing.PreventDropOnDownedProperties"/>
+            <li Class="CosmereCore.Comp.Thing.PreventDropOnDownedProperties"/>
         </comps>
     </ThingDef>
 

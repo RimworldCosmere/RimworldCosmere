@@ -90,4 +90,23 @@ public static class UIUtil {
             allowNone: allowNone
         );
     }
+
+    public static void BoolEnumDropdown(
+        Listing_Standard sub,
+        bool currentValue,
+        Action<bool> onSelected
+    ) {
+        Dropdown(
+            sub,
+            val => val ? "Yes" : "No",
+            currentValue,
+            "",
+            new Dictionary<string, bool> {
+                { "Yes", true },
+                { "No", false },
+            },
+            onSelected,
+            allowNone: false
+        );
+    }
 }

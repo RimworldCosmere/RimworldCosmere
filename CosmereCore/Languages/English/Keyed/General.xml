@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
     <CS_StatsReport_BodyType>Multiplier for body size "{0}"</CS_StatsReport_BodyType>
+    <CS_Current_Investiture>Represents this pawn’s connection to the Spiritual Realm. \n\nCurrent Level: {LEVEL}\nHeightening: {HEIGHT}</CS_Current_Investiture>
 </LanguageData>

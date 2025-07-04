@@ -9,7 +9,7 @@ using Verse;
 namespace CosmereScadrial.Gene;
 
 public class Feruchemist : Metalborn {
-    private readonly float metalPerRareTick = 1 / 18f;
+    public static readonly float AmountPerRareTick = 1 / 18f;
     private new FeruchemicGeneCommand? gizmo => (FeruchemicGeneCommand)base.gizmo;
 
     public List<Metalmind> metalminds => pawn.inventory.innerContainer.InnerListForReading
@@ -35,6 +35,9 @@ public class Feruchemist : Metalborn {
         DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Store" + metal.LabelCap);
 
     private Hediff storeHediff => pawn.health.hediffSet.GetFirstHediffOfDef(storeHediffDef);
+
+    public bool canTap => metalminds.Any(x => x.canTap);
+    public bool canStore => metalminds.Any(x => x.canStore);
 
     private float effectiveSeverity {
         get {
@@ -65,11 +68,7 @@ public class Feruchemist : Metalborn {
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
 
-        bool canTap = metalminds.Any(x => x.canTap);
-        bool canStore = metalminds.Any(x => x.canStore);
-
         if (!canTap && pawn.health.hediffSet.HasHediff(tapHediffDef)) Reset();
-
         if (!canStore && pawn.health.hediffSet.HasHediff(storeHediffDef)) Reset();
 
         if (effectiveSeverity > 0f) {
@@ -85,9 +84,9 @@ public class Feruchemist : Metalborn {
         }
 
         if (pawn.health.hediffSet.HasHediff(storeHediffDef)) {
-            metalminds.First(x => x.canStore).AddStored(metalPerRareTick * storeHediff.Severity);
+            metalminds.First(x => x.canStore).AddStored(AmountPerRareTick * storeHediff.Severity);
         } else if (pawn.health.hediffSet.HasHediff(tapHediffDef)) {
-            metalminds.First(x => x.canTap).ConsumeStored(metalPerRareTick * tapHediff.Severity);
+            metalminds.First(x => x.canTap).ConsumeStored(AmountPerRareTick * tapHediff.Severity);
         }
     }
 }

@@ -1,11 +1,14 @@
 using CosmereResources.Def;
 using CosmereScadrial.Util;
+using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Extension;
 
 public static class PawnExtension {
     public static bool IsMistborn(this Pawn pawn) {
+        Need_Food? need = pawn.needs.food;
+
         return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn);
     }
 

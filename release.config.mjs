@@ -14,7 +14,7 @@ export default {
                     {
                         "files": ["CosmereFramework/CosmereFramework/BuildInfo.cs"],
                         "from": "Revision = \".*\";",
-                        "to": "Revision = \"${nextRelease.version}\"",
+                        "to": "Revision = \"${nextRelease.version}\";",
                         "results": [
                             {
                                 "file": "CosmereFramework/CosmereFramework/BuildInfo.cs",
@@ -28,7 +28,7 @@ export default {
                     {
                         "files": ["CosmereFramework/CosmereFramework/BuildInfo.cs"],
                         "from": "BuildTime = \".*\";",
-                        "to": "BuildTime = \"${(new Date()).toISOString()}\"",
+                        "to": "BuildTime = \"${(new Date()).toISOString()}\";",
                         "results": [
                             {
                                 "file": "CosmereFramework/CosmereFramework/BuildInfo.cs",

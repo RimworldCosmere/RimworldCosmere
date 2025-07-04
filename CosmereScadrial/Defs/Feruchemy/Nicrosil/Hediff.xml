@@ -2,15 +2,9 @@
 <Defs>
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_StoreNicrosil</defName>
+        <hediffClass>CosmereScadrial.Feruchemy.Hediff.NicrosilStore</hediffClass>
         <label>storing nicrosil</label>
         <description>This pawn is storing their Investiture in a nicrosil metalmind. Their spiritual connection weakens, reducing their ability to use magical or investiture-based abilities. The power they sacrifice now is preserved for future use — but for now, they feel hollow.</description>
-        <stages>
-            <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <statFactors>
-                </statFactors>
-            </li>
-        </stages>
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Nicrosil</metal>
@@ -19,15 +13,9 @@
     </HediffDef>
 <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_TapNicrosil</defName>
+    <hediffClass>CosmereScadrial.Feruchemy.Hediff.NicrosilTap</hediffClass>
         <label>tapping nicrosil</label>
         <description>This pawn is tapping a nicrosil metalmind, enhancing their spiritual potential. Investiture flows through them more freely, amplifying their magical abilities and allowing for prolonged or more potent effects. They burn brighter — but it drains quickly.</description>
-        <stages>
-            <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <statFactors>
-                </statFactors>
-            </li>
-        </stages>
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metal>Nicrosil</metal>

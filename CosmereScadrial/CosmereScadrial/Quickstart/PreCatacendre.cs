@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CosmereCore.Need;
 using CosmereFramework.Extension;
 using CosmereFramework.Quickstart;
 using CosmereResources;
@@ -38,6 +39,9 @@ public class PreCatacendre : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
+            if (pawn.needs.TryGetNeed<Investiture>() is not { } investiture) return;
+            investiture.CurLevel = 5;
+
             GeneUtility.AddFullFeruchemist(pawn, false, true);
             foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
                 pawn.inventory.innerContainer.TryAdd(
@@ -47,6 +51,7 @@ public class PreCatacendre : AbstractQuickstart {
 
             pawn.Name = new NameSingle("Sazed");
             pawn.gender = Gender.Male;
+            Find.Selector.Select(pawn);
         }
 
         if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);

@@ -6,16 +6,44 @@
         <description>This pawn is storing breath in a cadmium metalmind, constricting their airflow. They breathe shallowly, tire more easily, and may suffer from shortness of breath during strenuous activity — but the stored air may save them later.</description>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <capMods>
-                    <li>
-                        <capacity>Breathing</capacity>
-                        <postFactor>.9</postFactor>
-                    </li>
-                </capMods>
-                <statFactors>
-                    <RestFallRateFactor>0.9</RestFallRateFactor>
-                </statFactors>
+                <minSeverity>0</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>.9</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>1</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>.8</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>2</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>.7</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>3</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>.6</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>4</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>.5</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>5</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>.4</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>6</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>.3</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>7</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>.2</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>8</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>.1</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>9</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>0.01</postFactor></li></capMods>
             </li>
         </stages>
         <modExtensions>
@@ -30,16 +58,44 @@
         <description>This pawn is tapping a cadmium metalmind, drawing on stored reserves of air. They can function without breathing for extended periods, shrug off smoke or gas effects, and resist asphyxiation far longer than normal.</description>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <capMods>
-                    <li>
-                        <capacity>Breathing</capacity>
-                        <postFactor>1.1</postFactor>
-                    </li>
-                </capMods>
-                <statFactors>
-                    <RestFallRateFactor>1.1</RestFallRateFactor>
-                </statFactors>
+                <minSeverity>0</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>1.1</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>1</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>1.2</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>2</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>1.3</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>3</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>1.4</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>4</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>1.5</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>5</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>1.6</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>6</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>1.7</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>7</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>1.8</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>8</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>1.9</postFactor></li></capMods>
+            </li>
+            <li>
+                <minSeverity>9</minSeverity>
+                <capMods><li><capacity>Breathing</capacity><postFactor>2</postFactor></li></capMods>
             </li>
         </stages>
         <modExtensions>

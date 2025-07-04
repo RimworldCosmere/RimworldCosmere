@@ -6,10 +6,54 @@
         <description>This pawn is storing nutrition in a bendalloy metalmind. Their metabolism speeds up dramatically, burning through food reserves at an accelerated rate. They become hungry faster and must eat more to maintain energy — but the nutrition is preserved for future emergencies.</description>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <statFactors>
-                    <MaxNutrition>2.0</MaxNutrition>
-                </statFactors>
+                <minSeverity>0</minSeverity>
+                <hungerRateFactor>1.1</hungerRateFactor>
+                <statFactors><MaxNutrition>0.95</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>1</minSeverity>
+                <hungerRateFactor>1.2</hungerRateFactor>
+                <statFactors><MaxNutrition>0.9</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>2</minSeverity>
+                <hungerRateFactor>1.3</hungerRateFactor>
+                <statFactors><MaxNutrition>0.85</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>3</minSeverity>
+                <hungerRateFactor>1.4</hungerRateFactor>
+                <statFactors><MaxNutrition>0.8</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>4</minSeverity>
+                <hungerRateFactor>1.5</hungerRateFactor>
+                <statFactors><MaxNutrition>0.75</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>5</minSeverity>
+                <hungerRateFactor>1.6</hungerRateFactor>
+                <statFactors><MaxNutrition>0.7</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>6</minSeverity>
+                <hungerRateFactor>1.7</hungerRateFactor>
+                <statFactors><MaxNutrition>0.65</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>7</minSeverity>
+                <hungerRateFactor>1.8</hungerRateFactor>
+                <statFactors><MaxNutrition>0.6</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>8</minSeverity>
+                <hungerRateFactor>1.9</hungerRateFactor>
+                <statFactors><MaxNutrition>0.55</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>9</minSeverity>
+                <hungerRateFactor>2</hungerRateFactor>
+                <statFactors><MaxNutrition>0.5</MaxNutrition></statFactors>
             </li>
         </stages>
         <modExtensions>
@@ -24,10 +68,54 @@
         <description>This pawn is tapping a bendalloy metalmind, sustaining themselves on stored nutrition. They require little to no food while tapping, allowing them to survive starvation, long marches, or resource-scarce environments with ease.</description>
         <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <statFactors>
-                    <MaxNutrition>0.5</MaxNutrition>
-                </statFactors>
+                <minSeverity>0</minSeverity>
+                <hungerRateFactor>0.9</hungerRateFactor>
+                <statFactors><MaxNutrition>1.1</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>1</minSeverity>
+                <hungerRateFactor>0.8</hungerRateFactor>
+                <statFactors><MaxNutrition>1.2</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>2</minSeverity>
+                <hungerRateFactor>0.7</hungerRateFactor>
+                <statFactors><MaxNutrition>1.3</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>3</minSeverity>
+                <hungerRateFactor>0.6</hungerRateFactor>
+                <statFactors><MaxNutrition>1.4</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>4</minSeverity>
+                <hungerRateFactor>0.5</hungerRateFactor>
+                <statFactors><MaxNutrition>1.5</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>5</minSeverity>
+                <hungerRateFactor>0.4</hungerRateFactor>
+                <statFactors><MaxNutrition>1.6</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>6</minSeverity>
+                <hungerRateFactor>0.3</hungerRateFactor>
+                <statFactors><MaxNutrition>1.7</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>7</minSeverity>
+                <hungerRateFactor>0.2</hungerRateFactor>
+                <statFactors><MaxNutrition>1.8</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>8</minSeverity>
+                <hungerRateFactor>0.1</hungerRateFactor>
+                <statFactors><MaxNutrition>1.9</MaxNutrition></statFactors>
+            </li>
+            <li>
+                <minSeverity>9</minSeverity>
+                <hungerRateFactor>0</hungerRateFactor>
+                <statFactors><MaxNutrition>2</MaxNutrition></statFactors>
             </li>
         </stages>
         <modExtensions>

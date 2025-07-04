@@ -12,8 +12,12 @@ namespace CosmereScadrial.Dev;
 
 [StaticConstructorOnStartup]
 public static class ScadrianUtility {
-    [DebugAction("Cosmere/Scadrial", "Prepare Dev Pawn",
-        actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    [DebugAction(
+        "Cosmere/Scadrial",
+        "Prepare Dev Pawn",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void PrepareDevPawn(Pawn pawn) {
         if (pawn.genes == null) return;
         if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn)) {
@@ -25,18 +29,26 @@ public static class ScadrianUtility {
         GiveAllAllomanticVials(pawn);
     }
 
-    [DebugAction("Cosmere/Scadrial", "Give All Allomantic Vials",
-        actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    [DebugAction(
+        "Cosmere/Scadrial",
+        "Give All Allomantic Vials",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void GiveAllAllomanticVials(Pawn pawn) {
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x =>
-                     !x.godMetal && x.allomancy != null)) {
+                     !x.godMetal && x.allomancy != null
+                 )) {
             Verse.Thing? vial = ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial, metal.Item);
             vial.stackCount = 20;
             pawn.inventory.innerContainer.TryAdd(vial);
         }
 
-        Messages.Message($"Gave {pawn.NameFullColored} 20 vials of each metal.", pawn,
-            MessageTypeDefOf.PositiveEvent);
+        Messages.Message(
+            $"Gave {pawn.NameFullColored} 20 vials of each metal.",
+            pawn,
+            MessageTypeDefOf.PositiveEvent
+        );
     }
 
     [DebugAction("Cosmere/Scadrial", "Prepare All Dev Pawns", allowedGameStates = AllowedGameStates.PlayingOnMap)]
@@ -46,21 +58,33 @@ public static class ScadrianUtility {
         }
     }
 
-    [DebugAction("Cosmere/Scadrial", "Fill allomantic reserves (all metals)",
-        actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    [DebugAction(
+        "Cosmere/Scadrial",
+        "Fill allomantic reserves (all metals)",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void FillAllReserves(Pawn pawn) {
         MetalReserves? comp = pawn.GetComp<MetalReserves>();
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x =>
-                     x.allomancy != null)) {
+                     x.allomancy != null
+                 )) {
             comp.SetReserve(metal, MetalReserves.MaxAmount);
         }
 
-        Messages.Message($"Gave {pawn.NameFullColored} full reserves reserves for all metals", pawn,
-            MessageTypeDefOf.PositiveEvent);
+        Messages.Message(
+            $"Gave {pawn.NameFullColored} full reserves reserves for all metals",
+            pawn,
+            MessageTypeDefOf.PositiveEvent
+        );
     }
 
-    [DebugAction("Cosmere/Scadrial", "Wipe allomantic reserves (all metals)",
-        actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    [DebugAction(
+        "Cosmere/Scadrial",
+        "Wipe allomantic reserves (all metals)",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void WipeAllReserves(Pawn pawn) {
         MetalReserves? comp = pawn.GetComp<MetalReserves>();
         comp.GetAllAvailableMetals().ForEach(comp.RemoveReserve);
@@ -68,49 +92,76 @@ public static class ScadrianUtility {
         Messages.Message($"Wiped all reserves for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
     }
 
-    [DebugAction("Cosmere/Scadrial", "Fill specific metal reserve", actionType = DebugActionType.ToolMapForPawns,
-        allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    [DebugAction(
+        "Cosmere/Scadrial",
+        "Fill specific metal reserve",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void FillSpecificMetal(Pawn pawn) {
         List<DebugMenuOption> options = new List<DebugMenuOption>();
 
         MetalReserves? comp = pawn.GetComp<MetalReserves>();
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
             string? label = metal.label.CapitalizeFirst();
-            options.Add(new DebugMenuOption(label, DebugMenuOptionMode.Action, () => {
-                comp.SetReserve(metal, MetalReserves.MaxAmount);
-                Messages.Message($"Filled {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
-            }));
+            options.Add(
+                new DebugMenuOption(
+                    label,
+                    DebugMenuOptionMode.Action,
+                    () => {
+                        comp.SetReserve(metal, MetalReserves.MaxAmount);
+                        Messages.Message($"Filled {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
+                    }
+                )
+            );
         }
 
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
     }
 
-    [DebugAction("Cosmere/Scadrial", "Wipe specific metal reserve", actionType = DebugActionType.ToolMapForPawns,
-        allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    [DebugAction(
+        "Cosmere/Scadrial",
+        "Wipe specific metal reserve",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void WipeSpecificMetal(Pawn pawn) {
         List<DebugMenuOption> options = new List<DebugMenuOption>();
 
         MetalReserves? comp = pawn.GetComp<MetalReserves>();
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
             string? label = metal.label.CapitalizeFirst();
-            options.Add(new DebugMenuOption(label, DebugMenuOptionMode.Action, () => {
-                comp.SetReserve(metal, 0);
-                Messages.Message($"Wiped {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
-            }));
+            options.Add(
+                new DebugMenuOption(
+                    label,
+                    DebugMenuOptionMode.Action,
+                    () => {
+                        comp.SetReserve(metal, 0);
+                        Messages.Message($"Wiped {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
+                    }
+                )
+            );
         }
 
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
     }
 
-    [DebugAction("Cosmere/Scadrial", "Snap Pawn",
-        actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    [DebugAction(
+        "Cosmere/Scadrial",
+        "Snap Pawn",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void SnapPawn(Pawn pawn) {
         SnapUtility.TrySnap(pawn);
     }
 
-    [DebugAction("Cosmere/Scadrial", "Try Give Random Allomantic Ability",
+    [DebugAction(
+        "Cosmere/Scadrial",
+        "Try Give Random Allomantic Ability",
         actionType = DebugActionType.ToolMapForPawns,
-        allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void TryGiveRandomAllomanticAbility(Pawn pawn) {
         if (Rand.Chance(1f / 16f)) {
             GeneUtility.AddMistborn(pawn);
@@ -119,9 +170,12 @@ public static class ScadrianUtility {
         }
     }
 
-    [DebugAction("Cosmere/Scadrial", "Try Give Random Feruchemical Ability",
+    [DebugAction(
+        "Cosmere/Scadrial",
+        "Try Give Random Feruchemical Ability",
         actionType = DebugActionType.ToolMapForPawns,
-        allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void TryGiveRandomFeruchemicalAbility(Pawn pawn) {
         if (Rand.Chance(1f / 16f)) {
             GeneUtility.AddFullFeruchemist(pawn);

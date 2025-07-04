@@ -1,13 +1,16 @@
 using Verse;
 
-namespace CosmereScadrial.Comp.Thing;
+namespace CosmereCore.Comp.Thing;
 
 public class PreventDropOnDownedProperties : CompProperties {
+    public bool preventDrop = true;
+
     public PreventDropOnDownedProperties() {
         compClass = typeof(PreventDropOnDowned);
     }
 }
 
 public class PreventDropOnDowned : ThingComp {
-    public static bool PreventDrop => true;
+    public PreventDropOnDownedProperties props => (PreventDropOnDownedProperties)base.props;
+    public bool PreventDrop => props.preventDrop;
 }

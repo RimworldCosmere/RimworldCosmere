@@ -11,7 +11,7 @@ public abstract class CosmereModSettings : IExposable {
     protected const float CategoryInset = 30f;
     protected const float SubListingSpacing = 2f;
     protected const float SubListingLabelWidth = 150f;
-    protected const float SubListingRowHeight = 30f;
+    protected const float SubListingRowHeight = 40f;
     protected const float ListingColumnSpacing = 17f;
 
     public abstract string Name { get; }
@@ -26,9 +26,10 @@ public abstract class CosmereModSettings : IExposable {
         Action<Listing_Standard, float> drawContents,
         float padding = CategoryPadding,
         float extraInset = CategoryInset,
-        float verticalSpacing = SubListingSpacing
+        float verticalSpacing = SubListingSpacing,
+        TextAnchor anchor = TextAnchor.UpperLeft
     ) {
-        using (new TextBlock(TextAnchor.MiddleLeft)) {
+        using (new TextBlock(anchor)) {
             Rect subRect = mainListing.GetRect(allocatedHeight)
                 .ContractedBy(new Padding(padding, padding, padding, padding + extraInset));
             Listing_Standard sub = new Listing_Standard { verticalSpacing = verticalSpacing };

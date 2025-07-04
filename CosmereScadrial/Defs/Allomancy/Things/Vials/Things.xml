@@ -78,7 +78,7 @@
         </ingestible>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVial</orderedTakeGroup>
         <comps>
-            <li Class="CosmereScadrial.Comp.Thing.PreventDropOnDownedProperties"/>
+            <li Class="CosmereCore.Comp.Thing.PreventDropOnDownedProperties"/>
         </comps>
     </ThingDef>
     

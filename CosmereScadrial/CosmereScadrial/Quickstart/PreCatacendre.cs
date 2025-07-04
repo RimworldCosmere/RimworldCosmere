@@ -28,11 +28,6 @@ public class PreCatacendre : AbstractQuickstart {
         DebugViewSettings.showMemoryInfo = true;
     }
 
-    public override void PostLoaded() {
-        Mod modInstance = LoadedModManager.GetMod<CosmereFramework.CosmereFramework>();
-        Find.WindowStack.Add(new Dialog_ModSettings(modInstance));
-    }
-
     public override void PrepareColonists(List<Pawn> pawns) {
         if (pawns.Count == 0) return;
 

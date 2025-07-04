@@ -87,7 +87,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
     public override void CompPostTick(ref float severityAdjustment) {
         base.CompPostTick(ref severityAdjustment);
-        if (cosmereSettings.debugMode && Find.Selector.IsSelected(parent.pawn)) {
+        if (debugMode && Find.Selector.IsSelected(parent.pawn)) {
             GenDraw.DrawCircleOutline(
                 parent.pawn.DrawPos,
                 props.radius * base.parent.Severity,

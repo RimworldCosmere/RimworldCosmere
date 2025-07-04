@@ -1,6 +1,7 @@
 using System.Linq;
 using CosmereCore.Util;
 using CosmereFramework;
+using CosmereScadrial.Settings;
 using CosmereScadrial.Util;
 using RimWorld;
 using Verse;
@@ -105,7 +106,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
     }
 
     private int GetIntervalTicks() {
-        return CosmereScadrial.settings.mistsFrequency switch {
+        return CosmereScadrial.mistsFrequency switch {
             MistsFrequency.Daily => GenDate.TicksPerDay,
             MistsFrequency.Weekly => 7 * GenDate.TicksPerDay,
             MistsFrequency.Monthly => 30 * GenDate.TicksPerDay,

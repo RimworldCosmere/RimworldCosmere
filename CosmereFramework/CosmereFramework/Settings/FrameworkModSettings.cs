@@ -42,76 +42,74 @@ public class FrameworkModSettings : CosmereModSettings {
                 UIUtil.IntEnumDropdown(sub, logLevel, v => logLevel = v, false);
             }
         );
-        MakeSubListing(
-            mainListing,
-            expectedHeight,
-            (sub, width) => {
-                sub.ColumnWidth = SubListingLabelWidth;
-                Rect rect = sub.GetRect(SubListingRowHeight);
-                Widgets.Label(rect, "Debug Mode:");
 
-                sub.NewColumn();
-                sub.ColumnWidth = Mathf.Min(100, width - SubListingLabelWidth - ListingColumnSpacing);
-                sub.CheckboxLabeled("", ref debugMode, "Opens the logs.");
-            }
-        );
+        if (!Prefs.DevMode) return;
+        {
+            MakeSubListing(
+                mainListing,
+                expectedHeight,
+                (sub, width) => {
+                    sub.ColumnWidth = SubListingLabelWidth;
+                    Rect rect = sub.GetRect(SubListingRowHeight);
+                    Widgets.Label(rect, "Debug Mode:");
 
-        MakeSubListing(
-            mainListing,
-            expectedHeight,
-            (sub, width) => {
-                sub.ColumnWidth = SubListingLabelWidth;
-                Rect rect = sub.GetRect(SubListingRowHeight);
-                Widgets.Label(rect, "Quickstarter:");
-                sub.Gap(SubListingSpacing);
-
-                sub.NewColumn();
-                sub.ColumnWidth = Mathf.Min(400, width - SubListingLabelWidth - ListingColumnSpacing);
-                UIUtil.Dropdown(
-                    sub,
-                    GetQuickstartScenarioLabel,
-                    quickstartName,
-                    "Select a Quickstarter",
-                    quickstarters,
-                    val => quickstartName = val
-                );
-            }
-        );
-
-        MakeSubListing(
-            mainListing,
-            inRect.height - mainListing.CurHeight,
-            (sub, width) => {
-                sub.ColumnWidth = SubListingLabelWidth;
-                Rect rect = sub.GetRect(SubListingRowHeight);
-                Widgets.Label(rect, "");
-                sub.Gap(SubListingSpacing);
-
-                sub.NewColumn();
-                sub.ColumnWidth = 400;
-                if (string.IsNullOrEmpty(quickstartName)) {
-                    return;
+                    sub.NewColumn();
+                    sub.ColumnWidth = Mathf.Min(100, width - SubListingLabelWidth - ListingColumnSpacing);
+                    sub.CheckboxLabeled("", ref debugMode, "Opens the logs.");
                 }
+            );
 
-                Type? type = Type.GetType(quickstartName!);
-                if (type == null) {
-                    Rect errorRect = sub.GetRect(SubListingRowHeight);
-                    Widgets.Label(errorRect, "Failed to find quickstart");
-                    return;
+            MakeSubListing(
+                mainListing,
+                expectedHeight,
+                (sub, width) => {
+                    sub.ColumnWidth = SubListingLabelWidth;
+                    Rect rect = sub.GetRect(SubListingRowHeight);
+                    Widgets.Label(rect, "Quickstarter:");
+                    sub.Gap(SubListingSpacing);
+
+                    sub.NewColumn();
+                    sub.ColumnWidth = Mathf.Min(400, width - SubListingLabelWidth - ListingColumnSpacing);
+                    UIUtil.Dropdown(
+                        sub,
+                        GetQuickstartScenarioLabel,
+                        quickstartName,
+                        "Select a Quickstarter",
+                        quickstarters,
+                        val => quickstartName = val
+                    );
                 }
+            );
 
-                AbstractQuickstart? quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
-                TaggedString description = quickstart.GetDescription();
+            MakeSubListing(
+                mainListing,
+                inRect.height - mainListing.CurHeight,
+                (sub, width) => {
+                    sub.ColumnWidth = SubListingLabelWidth;
+                    Rect rect = sub.GetRect(SubListingRowHeight);
+                    Widgets.Label(rect, "");
+                    sub.Gap(SubListingSpacing);
 
-                Widgets.Label(sub.GetRect(Text.CalcHeight(description, sub.ColumnWidth)), description);
-            }
-        );
-    }
+                    sub.NewColumn();
+                    sub.ColumnWidth = 400;
+                    if (string.IsNullOrEmpty(quickstartName)) {
+                        return;
+                    }
 
-    private string? GetLogLevelLabel(int level) {
-        if (level == null || level < 1) return null;
+                    Type? type = Type.GetType(quickstartName!);
+                    if (type == null) {
+                        Rect errorRect = sub.GetRect(SubListingRowHeight);
+                        Widgets.Label(errorRect, "Failed to find quickstart");
+                        return;
+                    }
 
-        return ((LogLevel)level).ToString();
+                    AbstractQuickstart? quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
+                    TaggedString description = quickstart.GetDescription();
+
+                    Widgets.Label(sub.GetRect(Text.CalcHeight(description, sub.ColumnWidth)), description);
+                }
+            );
+        }
     }
 
     private string? GetQuickstartScenarioLabel(string? quickstarter) {

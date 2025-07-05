@@ -2,6 +2,7 @@
 <Defs>
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_StoreAtium</defName>
+        <hediffClass>CosmereScadrial.Feruchemy.Hediff.Atium</hediffClass>
         <label>storing atium</label>
         <description>This pawn is storing youth in an atium metalmind, aging their body unnaturally. Their joints ache, their reflexes slow, and their strength wanes. They sacrifice vitality now to reclaim it later — if they survive.</description>
         <stages>
@@ -39,8 +40,9 @@
             </li>
         </modExtensions>
     </HediffDef>
-<HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_TapAtium</defName>
+        <hediffClass>CosmereScadrial.Feruchemy.Hediff.Atium</hediffClass>
         <label>tapping atium</label>
         <description>This pawn is tapping an atium metalmind, reversing the effects of time. Their body becomes younger, stronger, and faster — regaining agility, endurance, and resilience as if years were stripped away.</description>
         <stages>

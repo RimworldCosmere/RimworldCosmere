@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractAllomanticHediff">
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
         <defName>Cosmere_Scadrial_Hediff_Gold</defName>
         <label>burning gold</label>
         <description>The Allomancer is burning gold, experiencing visions of what they might have become. These revelations are powerful... and dangerous.</description>

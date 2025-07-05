@@ -10,13 +10,14 @@ namespace CosmereScadrial.Def;
 
 public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
     public bool applyDragOnTarget = false;
+    public bool autoBurnWhileDownedByDefault = true;
     public float beuPerTick = 0.1f / GenTicks.TicksPerRealSecond;
     public ThingDef? burningMote;
     public int burningMoteInterval = GenTicks.TickRareInterval;
     public bool canBurnWhileAsleep = false;
     public bool canBurnWhileDowned = false;
     public bool canFlare = true;
-    public Texture2D disabledIcon = BaseContent.BadTex;
+    public Texture2D? disabledIcon = BaseContent.BadTex;
     public HediffDef? dragHediff;
     public HediffDef? hediff;
     public HediffDef? hediffFriendly;
@@ -76,9 +77,11 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
             LongEventHandler.ExecuteWhenFinished(() => {
                     uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
                              metal.invertedIcon;
-                    disabledIcon = uiIcon!.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
+                    disabledIcon = uiIcon?.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
                 }
             );
-        } else { base.PostLoad(); }
+        } else {
+            base.PostLoad();
+        }
     }
 }

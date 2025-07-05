@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractAllomanticHediff">
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
         <defName>Cosmere_Scadrial_Hediff_ZincAura</defName>
         <label>burning zinc: aura</label>
         <description>Subtly fanning the emotional flames of all nearby minds by burning Zinc.</description>
@@ -32,7 +32,7 @@
         </modExtensions>
     </HediffDef>
     
-    <HediffDef Name="AbstractZincHediff" ParentName="AbstractAllomanticHediff" Abstract="True">
+    <HediffDef Name="AbstractZincHediff" ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff" Abstract="True">
         <label>rioted</label>
         <description>This pawn has been rioted by a nearby Allomancer burning Zinc. Their emotions feel more erratic and displaced.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>

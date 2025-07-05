@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractCompoundHediff">
+        <defName>Cosmere_Scadrial_Hediff_CompoundChromium</defName>
+        <label>compounding chromium</label>
+        <description>Rapidly stores fortune by burning a chromium metalmind.</description>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Chromium</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_StoreChromium</defName>
         <label>storing chromium</label>

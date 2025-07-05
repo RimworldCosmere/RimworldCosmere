@@ -8,4 +8,8 @@
         <countsAsAddedPartOrImplant>false</countsAsAddedPartOrImplant>
         <alwaysShowSeverity>true</alwaysShowSeverity>
     </HediffDef>
+    <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractCompoundHediff" ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff" Abstract="True">
+        <hediffClass>CosmereScadrial.Feruchemy.Hediff.Compound</hediffClass>
+        <alwaysShowSeverity>false</alwaysShowSeverity>
+    </HediffDef>
 </Defs>

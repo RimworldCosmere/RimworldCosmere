@@ -3,11 +3,7 @@
     <CS_CannotBurn>{PAWN} doesn't have enough {METAL} to burn, and no vial to replenish {PAWN_possessive} reserves.</CS_CannotBurn>
     <CS_CannotFlareAsleep>{PAWN} cannot flare {METAL} while they are sleeping.</CS_CannotFlareAsleep>
     <CS_CannotShoot>{PAWN} is not capable of shooting</CS_CannotShoot>
-    <CS_BurnRate>Burn Rate: {RATE}/second</CS_BurnRate>
     <CS_TargetShielded>{PAWN} is shielded against Investiture</CS_TargetShielded>
-    <CS_NeverConsumeVial>Never consume a vial</CS_NeverConsumeVial>
-    <CS_ConsumeVialBelow>Consume a vial below</CS_ConsumeVialBelow>
-    <CS_SetVialLevelTooltip>Drag the bar to configure when {PAWN} will consume a {METAL} vial.</CS_SetVialLevelTooltip>
     <CS_NoClipsToThrow>{PAWN} has no clips to use</CS_NoClipsToThrow>
     <CS_ToggleAutomaticBurning>Shift-click to toggle auto-burning</CS_ToggleAutomaticBurning>
     <CS_PressToFlare>Ctrl-click to {FLARE}</CS_PressToFlare>
@@ -16,10 +12,6 @@
 	<CS_MetalCost>Metal Cost</CS_MetalCost>
 	<CS_Flare>flare</CS_Flare>
 	<CS_Deflare>de-flare</CS_Deflare>
-	<CS_ChangeVialStock>Click to vial to change the number of {METAL} vials {PAWN} will keep in {pawn_possessive} inventory.</CS_ChangeVialStock>
-	<CS_SetVialCountTooltip>Click to change the number of {METAL} vials {PAWN} will keep in {pawn_possessive} inventory.</CS_SetVialCountTooltip>
-	<CS_SetVialCountSlider>{PAWN} will keep {COUNT} {METAL} vials in {pawn_possessive} inventory.</CS_SetVialCountSlider>
-	<CS_CurrentVialStock>Keeping {COUNT} vials in inventory</CS_CurrentVialStock>
 	<CS_WillBurnWhileDowned>Auto-Burning while downed</CS_WillBurnWhileDowned>
 	<CS_NoVials>No {METAL_label} vials to give</CS_NoVials>
 	<CS_MetalCaravanLetter>A hostile caravan is making its way across the map. A few of them carry {METAL}. Intercept them before they escape!</CS_MetalCaravanLetter>

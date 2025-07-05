@@ -48,10 +48,12 @@ public static partial class HediffDefOf {
 
     public static HediffDef Cosmere_Scadrial_Hediff_StoreGold;
     public static HediffDef Cosmere_Scadrial_Hediff_TapGold;
+    public static HediffDef Cosmere_Scadrial_Hediff_CompoundGold;
 
     public static HediffDef Cosmere_Scadrial_Hediff_StoreElectrum;
     public static HediffDef Cosmere_Scadrial_Hediff_TapElectrum;
 
     public static HediffDef Cosmere_Scadrial_Hediff_StoreAtium;
     public static HediffDef Cosmere_Scadrial_Hediff_TapAtium;
+    public static HediffDef Cosmere_Scadrial_Hediff_CompoundAtium;
 }

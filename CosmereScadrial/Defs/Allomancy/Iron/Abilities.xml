@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <AbilityGroupDef>
-        <defName>Cosmere_Scadrial_Iron</defName>
-    </AbilityGroupDef>
     <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
-        <groupDef>Cosmere_Scadrial_Iron</groupDef>
         <defName>Cosmere_Scadrial_Ability_IronAura</defName>
         <label>iron sight</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
@@ -15,7 +11,6 @@ These lines shimmer with the tension of potential force, visible only to those b
         <beuPerTick>0.0004</beuPerTick>
     </CosmereScadrial.Def.AllomanticAbilityDef>
     <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
-        <groupDef>Cosmere_Scadrial_Iron</groupDef>
         <defName>Cosmere_Scadrial_Ability_IronPull</defName>
         <abilityClass>CosmereScadrial.Allomancy.Ability.ExternalPhysicalTargetAbility</abilityClass>
         <label>iron pull</label>

@@ -15,7 +15,7 @@ public class FeruchemicGeneCommand(
 ) : CosmereGeneCommand(gene, drainGenes, barColor, barHighlightColor) {
     private string? setTapStoreRateTooltipCache;
     protected override float abilityIconSize => Height / 2f;
-    protected override float baseWidth => GetWidthForAbilityCount(3);
+    protected override float baseWidth => GetWidthForAbilityCount(2);
     private new Feruchemist gene => (Feruchemist)base.gene;
 
     protected override int IncrementDivisor => 100 / 5;

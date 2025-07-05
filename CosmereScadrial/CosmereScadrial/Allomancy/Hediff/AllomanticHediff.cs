@@ -13,8 +13,8 @@ using Verse;
 namespace CosmereScadrial.Allomancy.Hediff;
 
 public class AllomanticHediff : HediffWithComps {
+    public readonly MetallicArtsMetalDef metal;
     public float extraSeverity = 0f;
-    public MetallicArtsMetalDef metal;
     public List<AbstractAbility> sourceAbilities = [];
 
     public AllomanticHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability) {

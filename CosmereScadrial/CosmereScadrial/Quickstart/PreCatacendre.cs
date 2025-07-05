@@ -15,7 +15,7 @@ using GeneUtility = CosmereScadrial.Util.GeneUtility;
 namespace CosmereScadrial.Quickstart;
 
 public class PreCatacendre : AbstractQuickstart {
-    public override int mapSize => 75;
+    public override int mapSize => 50;
     public override TaggedString description => "Used to test Pre-catacendre pawns";
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
@@ -40,8 +40,9 @@ public class PreCatacendre : AbstractQuickstart {
 
         if (pawns.TryPopFront(out pawn)) {
             if (pawn.needs.TryGetNeed<Investiture>() is not { } investiture) return;
-            investiture.CurLevel = 5;
+            investiture.CurLevel = 10;
 
+            ScadrianUtility.PrepareDevPawn(pawn);
             GeneUtility.AddFullFeruchemist(pawn, false, true);
             foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
                 pawn.inventory.innerContainer.TryAdd(
@@ -49,14 +50,17 @@ public class PreCatacendre : AbstractQuickstart {
                 );
             }
 
-            pawn.Name = new NameSingle("Sazed");
+            pawn.Name = new NameSingle("Rashek");
             pawn.gender = Gender.Male;
             Find.Selector.Select(pawn);
         }
 
-        if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);
+        if (pawns.TryPopFront(out pawn)) {
+            PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Atium);
+        }
 
-        if (pawns.TryPopFront(out pawn)) PrepareColonistAsFerring(pawn, true, true, MetalDefOf.Brass);
+        if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);
+        if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Gold);
 
         if (pawns.TryPopFront(out pawn)) {
             PrepareColonistAsMisting(pawn, true, true, MetalDefOf.Steel);

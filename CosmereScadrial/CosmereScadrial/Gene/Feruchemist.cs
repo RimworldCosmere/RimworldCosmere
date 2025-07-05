@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CosmereScadrial.Extension;
 using CosmereScadrial.Feruchemy.Comp.Thing;
 using CosmereScadrial.Gizmo;
 using CosmereScadrial.Util;
@@ -45,9 +46,9 @@ public class Feruchemist : Metalborn {
             if (Mathf.Abs(delta) < 1f) return 0f; // Deadzone from 49–51
 
             float exponent = 2.5f;
-            float maxSeverity = 9f;
+            float maxSeverity = 19f;
             float normalized = Mathf.Abs(delta) / 50f; // [0, 1]
-            return 1 + Mathf.Pow(normalized, exponent) * maxSeverity; // [1, 10]
+            return 1 + Mathf.Pow(normalized, exponent) * maxSeverity; // [1, 20]
         }
     }
 
@@ -68,8 +69,10 @@ public class Feruchemist : Metalborn {
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
 
-        if (!canTap && pawn.health.hediffSet.HasHediff(tapHediffDef)) Reset();
-        if (!canStore && pawn.health.hediffSet.HasHediff(storeHediffDef)) Reset();
+        // If we can't tap anymore, but we ARE tapping (and we aren't compounding), stop tapping
+        if (!canTap && pawn.health.hediffSet.HasHediff(tapHediffDef) && !pawn.IsCompounding(metal)) Reset();
+        // If we can't store anymore, but we are storing (and we aren't compounding), stop storing
+        if (!canStore && pawn.health.hediffSet.HasHediff(storeHediffDef) && !pawn.IsCompounding(metal)) Reset();
 
         if (effectiveSeverity > 0f) {
             if (targetValue < 50 && canStore) {
@@ -84,9 +87,25 @@ public class Feruchemist : Metalborn {
         }
 
         if (pawn.health.hediffSet.HasHediff(storeHediffDef)) {
-            metalminds.First(x => x.canStore).AddStored(AmountPerRareTick * storeHediff.Severity);
+            AddToStore(AmountPerRareTick * storeHediff.Severity);
         } else if (pawn.health.hediffSet.HasHediff(tapHediffDef)) {
-            metalminds.First(x => x.canTap).ConsumeStored(AmountPerRareTick * tapHediff.Severity);
+            RemoveFromStore(AmountPerRareTick * tapHediff.Severity);
         }
+    }
+
+    public bool AddToStore(float amount) {
+        Metalmind? metalmind = metalminds.FirstOrDefault(x => x.canStore);
+        if (metalmind == null) return false;
+
+        metalmind.AddStored(amount);
+        return true;
+    }
+
+    public bool RemoveFromStore(float amount) {
+        Metalmind? metalmind = metalminds.FirstOrDefault(x => x.canTap);
+        if (metalmind == null) return false;
+
+        metalmind.ConsumeStored(amount);
+        return true;
     }
 }

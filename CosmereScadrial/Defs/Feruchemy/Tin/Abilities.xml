@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundTin</defName>
+        <label>compound tin</label>
+        <description>Compounding tin clouds the world in silence and blur. Senses dull, colors fade, and sounds become muffled — all to pour future clarity into the metalmind. With enough sacrifice, the Allomancer will one day see farther, hear sharper, and feel every detail with unbearable precision.</description>
+        <metal>Tin</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundTin</hediff>
+        <iconPath>UI/Icons/PassionMajor</iconPath>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

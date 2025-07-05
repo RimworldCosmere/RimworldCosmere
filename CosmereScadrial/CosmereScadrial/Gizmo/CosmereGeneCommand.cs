@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CosmereFramework.Extension;
 using CosmereFramework.Util;
+using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Def;
 using CosmereScadrial.Gene;
 using RimWorld;
@@ -26,6 +28,11 @@ public abstract class CosmereGeneCommand(
 
     protected static readonly Texture2D EmptyBarTex = new Color(0.03f, 0.035f, 0.05f).ToSolidColorTexture();
     protected static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
+
+
+    private static readonly Texture2D PlusIcon = ContentFinder<Texture2D>.Get("UI/Buttons/Plus");
+    private static readonly Texture2D MinusIcon = ContentFinder<Texture2D>.Get("UI/Buttons/Minus");
+
     protected Texture2D? barDragTex;
     protected Texture2D? barHighlightTex;
     protected Texture2D? barTex;
@@ -33,11 +40,10 @@ public abstract class CosmereGeneCommand(
     // Things that get initialized
     protected Rect? bottomBarRect;
 
-    public Texture2D? cachedIcon;
+    protected Texture2D? cachedIcon;
     protected string? cachedTooltipDescription;
 
-    public string? cachedTooltipFooter;
-    protected string? cachedTooltipHeader;
+    protected string? cachedTooltipFooter;
     protected NamedArgument coloredMetal;
     protected NamedArgument coloredPawn;
 
@@ -48,6 +54,7 @@ public abstract class CosmereGeneCommand(
     protected Rect? labelRect;
     protected Rect? mainRect;
     protected Rect? outerRect;
+
     protected List<SubGizmo> subgizmos = [];
     internal float targetValuePct;
     protected Rect? topBarRect;
@@ -71,8 +78,17 @@ public abstract class CosmereGeneCommand(
     public override bool Visible => pawn.Faction.IsPlayer;
 
     protected override string Title => metal.LabelCap;
+    protected bool shrunk => gene.gizmoShrunk;
 
-    protected override float Width => Mathf.Max(baseWidth, GetWidthForAbilityCount(gene.def.abilities?.Count ?? 0));
+    protected override float Width {
+        get {
+            if (shrunk) {
+                return Height + Padding.x / 2;
+            }
+
+            return Mathf.Max(baseWidth, GetWidthForAbilityCount(gene.def.abilities?.Count ?? 0));
+        }
+    }
 
     protected float GetWidthForAbilityCount(int abilityCount) {
         return Height + Padding.x + (abilityIconSize + Padding.x) * abilityCount - Padding.x;
@@ -150,8 +166,7 @@ public abstract class CosmereGeneCommand(
     }
 
     protected virtual string GetTooltipHeader() {
-        return cachedTooltipHeader ??=
-            $"{gene.ResourceLabel.CapitalizeFirst().Colorize(ColoredText.TipSectionTitleColor)}: {BarLabel}";
+        return $"{gene.ResourceLabel.CapitalizeFirst().Colorize(ColoredText.TipSectionTitleColor)}: {BarLabel}";
     }
 
     protected virtual string GetTooltipFooter() {
@@ -170,6 +185,7 @@ public abstract class CosmereGeneCommand(
     }
 
     protected virtual Rect DrawIconBox(ref bool mouseOverElement) {
+        const float toggleSizeButtonSize = 14f;
         Rect rect = new Rect(mainRect!.Value.x, mainRect.Value.y, mainRect.Value.height, mainRect.Value.height);
         UIUtil.DrawIcon(
             rect,
@@ -180,7 +196,36 @@ public abstract class CosmereGeneCommand(
             doBorder: false
         );
 
-        if (Title.NullOrEmpty()) return rect;
+        if (!Title.NullOrEmpty()) {
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter)) {
+                float textWidth = rect.width;
+                float textHeight = Text.CalcHeight(Title, textWidth);
+                labelRect = new Rect(rect.x, mainRect!.Value.yMax - textHeight, textWidth, textHeight);
+
+                GUI.DrawTexture(labelRect.Value, TexUI.GrayTextBG);
+                Widgets.Label(labelRect.Value, Title);
+            }
+        }
+
+        Rect toggleShrunk = new Rect(
+            rect.xMin,
+            rect.yMin + 2,
+            toggleSizeButtonSize,
+            toggleSizeButtonSize
+        );
+        TooltipHandler.TipRegion(
+            toggleShrunk,
+            () => "CS_ToggleGizmoSize",
+            Gen.HashCombineInt(GetHashCode(), 97519827)
+        );
+
+        if (Widgets.ButtonImageFitted(toggleShrunk, shrunk ? PlusIcon : MinusIcon)) {
+            gene.gizmoShrunk = !shrunk;
+        }
+
+        if (Mouse.IsOver(toggleShrunk)) {
+            mouseOverElement = true;
+        }
 
         return rect;
     }
@@ -195,6 +240,15 @@ public abstract class CosmereGeneCommand(
         barDragTex = BarDragColor == new Color() ? DragBarTex : BarDragColor.ToSolidColorTexture();
         coloredPawn = pawn.NameShortColored.Named("PAWN");
         coloredMetal = metal.coloredLabel.Named("METAL");
+
+        subgizmos = gene.def.abilities?
+                        .OrderBy(x => x.uiOrder)
+                        .Select(x => pawn.abilities.GetAbility(x))
+                        .Cast<AbstractAbility>()
+                        .Where(x => x.GizmosVisible())
+                        .Select(x => new AbilitySubGizmo(this, gene, x))
+                        .ToList<SubGizmo>() ??
+                    [];
     }
 
     protected virtual Rect GetTopBarRect() {
@@ -219,27 +273,20 @@ public abstract class CosmereGeneCommand(
         Initialize();
         bool mouseOver = false;
 
-
         using TextBlock textBlock = new TextBlock(GameFont.Tiny);
-        outerRect ??= new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), Height);
-        mainRect ??= outerRect.Value.ContractedBy(Padding.x * 2, Padding.y);
+        outerRect = new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), Height);
+        mainRect = outerRect.Value.ContractedBy(Padding.x * 2, Padding.y);
 
         Widgets.DrawWindowBackground(outerRect.Value);
 
         iconRect = DrawIconBox(ref mouseOver);
-        topBarRect ??= GetTopBarRect();
-        bottomBarRect ??= GetBottomBarRect();
 
-        DrawTopBar(ref mouseOver);
-        DrawBottomBar(ref mouseOver);
+        if (!shrunk) {
+            topBarRect = GetTopBarRect();
+            bottomBarRect = GetBottomBarRect();
 
-        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter)) {
-            float textWidth = iconRect!.Value.width;
-            float textHeight = Text.CalcHeight(Title, textWidth);
-            labelRect ??= new Rect(iconRect!.Value.x, mainRect!.Value.yMax - textHeight, textWidth, textHeight);
-
-            GUI.DrawTexture(labelRect.Value, TexUI.GrayTextBG);
-            Widgets.Label(labelRect.Value, Title);
+            DrawTopBar(ref mouseOver);
+            DrawBottomBar(ref mouseOver);
         }
 
         if (Mouse.IsOver(mainRect.Value) && !mouseOver) {

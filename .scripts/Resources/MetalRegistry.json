@@ -29,7 +29,10 @@
     "feruchemy": {
       "userName": "skimmer",
       "group": "physical",
-      "description": "Stores weight, allowing the user to become lighter or heavier."
+      "description": "Stores weight, allowing the user to become lighter or heavier.",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundIron"
+      ]
     },
     "buildable": {
       "buildings": true,
@@ -74,7 +77,10 @@
     "feruchemy": {
       "userName": "steelrunner",
       "description": "Stores physical speed, allowing for bursts of superhuman speed.",
-      "group": "physical"
+      "group": "physical",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundSteel"
+      ]
     },
     "buildable": {
       "buildings": true,
@@ -128,7 +134,10 @@
     "feruchemy": {
       "userName": "windwhisper",
       "description": "Stores senses, dulling them while storing and enhancing while tapping.",
-      "group": "physical"
+      "group": "physical",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundTin"
+      ]
     },
     "buildable": {
       "buildings": false,
@@ -218,7 +227,10 @@
     "feruchemy": {
       "userName": "sparker",
       "description": "Stores mental speed, allowing faster thought processes.",
-      "group": "cognitive"
+      "group": "cognitive",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundZinc"
+      ]
     },
     "buildable": {
       "buildings": false,
@@ -236,7 +248,7 @@
   },
   {
     "name": "brass",
-    "description": "Brass is a warm, golden alloy produced by blending Ind_Copper with zinc. Praised for its attractive appearance and excellent workability, brass finds extensive use in both decorative applications and practical components.",
+    "description": "Brass is a warm, golden alloy produced by blending Copper with zinc. Praised for its attractive appearance and excellent workability, brass finds extensive use in both decorative applications and practical components.",
     "godMetal": false,
     "color": [
       175,
@@ -259,7 +271,10 @@
     "feruchemy": {
       "userName": "firesoul",
       "description": "Stores warmth, useful for surviving cold environments or heating up.",
-      "group": "cognitive"
+      "group": "cognitive",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundBrass"
+      ]
     },
     "buildable": {
       "buildings": true,
@@ -309,7 +324,10 @@
     "feruchemy": {
       "userName": "archivist",
       "description": "Stores memories, allowing perfect recall of stored knowledge.",
-      "group": "cognitive"
+      "group": "cognitive",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundCopper"
+      ]
     },
     "buildable": {
       "buildings": true,
@@ -328,7 +346,7 @@
   },
   {
     "name": "bronze",
-    "description": "Bronze is a time-honored alloy, resulting from the fusion of Ind_Copper and tin. Its rich, reddish-brown hue and enduring strength have made bronze a cornerstone of art, architecture, and historical craftsmanship.",
+    "description": "Bronze is a time-honored alloy, resulting from the fusion of Copper and tin. Its rich, reddish-brown hue and enduring strength have made bronze a cornerstone of art, architecture, and historical craftsmanship.",
     "godMetal": false,
     "color": [
       191,
@@ -350,7 +368,10 @@
     "feruchemy": {
       "userName": "sentry",
       "description": "Stores wakefulness, useful for staying awake or skipping sleep.",
-      "group": "cognitive"
+      "group": "cognitive",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundBronze"
+      ]
     },
     "buildable": {
       "buildings": true,
@@ -400,7 +421,10 @@
     "feruchemy": {
       "userName": "trueself",
       "description": "Stores identity, allowing anonymous interactions or forgery.",
-      "group": "spiritual"
+      "group": "spiritual",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundAluminum"
+      ]
     },
     "buildable": {
       "buildings": true,
@@ -441,7 +465,10 @@
     "feruchemy": {
       "userName": "connector",
       "description": "Stores connection, useful for adjusting social ties or affiliations.",
-      "group": "spiritual"
+      "group": "spiritual",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundDuralumin"
+      ]
     },
     "buildable": {
       "buildings": false,
@@ -490,7 +517,10 @@
     "feruchemy": {
       "userName": "spinner",
       "description": "Stores fortune, influencing luck subtly.",
-      "group": "spiritual"
+      "group": "spiritual",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundChromium"
+      ]
     },
     "buildable": {
       "buildings": false,
@@ -530,7 +560,10 @@
     "feruchemy": {
       "userName": "soulbearer",
       "description": "Stores Investiture, enabling storage of magical energy.",
-      "group": "spiritual"
+      "group": "spiritual",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundNicrosil"
+      ]
     },
     "buildable": {
       "buildings": false,
@@ -579,7 +612,10 @@
     "feruchemy": {
       "userName": "gaspers",
       "description": "Stores breath, useful for surviving in low-oxygen environments.",
-      "group": "hybrid"
+      "group": "hybrid",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundCadmium"
+      ]
     },
     "buildable": {
       "buildings": false,
@@ -619,7 +655,10 @@
     "feruchemy": {
       "userName": "subsumer",
       "description": "Stores nutrition, allowing users to go without food.",
-      "group": "hybrid"
+      "group": "hybrid",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundBendalloy"
+      ]
     },
     "buildable": {
       "buildings": false,
@@ -672,7 +711,10 @@
     "feruchemy": {
       "userName": "bloodmaker",
       "description": "Stores health, allowing fast healing when tapped.",
-      "group": "hybrid"
+      "group": "hybrid",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundGold"
+      ]
     },
     "buildable": {
       "buildings": true,
@@ -774,7 +816,10 @@
     "feruchemy": {
       "userName": "pinnacle",
       "description": "Stores determination or willpower.",
-      "group": "hybrid"
+      "group": "hybrid",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundElectrum"
+      ]
     },
     "buildable": {
       "buildings": false,
@@ -836,7 +881,10 @@
       ]
     },
     "feruchemy": {
-      "description": "Stores age, granting youth or aging when tapped."
+      "description": "Stores age, granting youth or aging when tapped.",
+      "abilities": [
+        "Cosmere_Scadrial_Ability_CompoundAtium"
+      ]
     },
     "buildable": {
       "buildings": false,

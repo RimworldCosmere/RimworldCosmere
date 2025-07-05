@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using CosmereCore.Need;
 using CosmereResources;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
@@ -12,7 +11,7 @@ namespace CosmereScadrial.Feruchemy.Hediff;
 
 public class Atium : HediffWithComps {
     private const int TicksPerDay = GenDate.TicksPerDay;
-    private const int MinBiologicalAgeYears = 21;
+    public const int MinAgeYears = 21;
     private const float AgeTicksPerGameTick = 43200f; // 5 years per hour at severity 5
 
     private static readonly List<HediffDef> AgeConditions = new List<HediffDef> {
@@ -30,13 +29,11 @@ public class Atium : HediffWithComps {
 
     protected bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapAtium);
     protected bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreAtium);
-    protected Investiture? investiture => pawn?.needs?.TryGetNeed<Investiture>();
     protected Feruchemist? atium => pawn.genes.GetFeruchemicGeneForMetal(MetalDefOf.Atium);
 
     public override void PostMake() {
         base.PostMake();
 
-        if (investiture == null) throw new Exception("Atium can't be on a pawn that doesnt have investiture");
         if (atium == null) throw new Exception("Atium can't be on a pawn that doesnt have the Atium gene");
     }
 
@@ -52,9 +49,9 @@ public class Atium : HediffWithComps {
         // 5.0 severity = 1 year per in-game hour = 8640 biological age ticks per game tick
         float severityFactor = Severity / 5.0f;
         long ageDeltaTicks = (long)(direction * delta * AgeTicksPerGameTick * severityFactor);
-        long newAge = pawn.ageTracker.AgeBiologicalTicks + ageDeltaTicks;
+        long newBiologicalAge = pawn.ageTracker.AgeBiologicalTicks + ageDeltaTicks;
 
-        pawn.ageTracker.AgeBiologicalTicks = (long)Mathf.Max(newAge, MinBiologicalAgeYears * TicksPerDay);
+        pawn.ageTracker.AgeBiologicalTicks = (long)Mathf.Max(newBiologicalAge, MinAgeYears * TicksPerDay);
 
         float ageYears = pawn.ageTracker.AgeBiologicalYearsFloat;
         if (!isTapping ||

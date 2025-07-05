@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+	<CS_SetVialCountTooltip>Click to change the number of {METAL} vials {PAWN} will keep in {pawn_possessive} inventory.</CS_SetVialCountTooltip>
+    <CS_BurnRate>Burn Rate: {RATE}/second</CS_BurnRate>
+	<CS_CurrentVialStock>Keeping {COUNT} vials in inventory</CS_CurrentVialStock>
+	<CS_ConsumeVialBelow>Consume a vial below</CS_ConsumeVialBelow>
+    <CS_NeverConsumeVial>Never consume a vial</CS_NeverConsumeVial>
+    <CS_SetVialLevelTooltip>Drag the bar to configure when {PAWN} will consume a {METAL} vial.</CS_SetVialLevelTooltip>
+	<CS_ChangeVialStock>Click to vial to change the number of {METAL} vials {PAWN} will keep in {pawn_possessive} inventory.</CS_ChangeVialStock>
+	<CS_SetVialCountSlider>{PAWN} will keep {COUNT} {METAL} vials in {pawn_possessive} inventory.</CS_SetVialCountSlider>
+</LanguageData>

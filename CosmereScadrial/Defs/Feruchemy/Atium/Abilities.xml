@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundAtium</defName>
+        <label>compound atium</label>
+        <description>Compounding atium twists time inward. As the metal burns, the Allomancer feels their body accelerate through the years — skin loosens, joints stiffen, hair grays. Yet this sacrifice is not in vain. Every moment of age stored flows into the metalmind, building a reservoir of youth that can one day undo all decay. It is a dangerous alchemy: to grow old now, so you may steal your youth back later — stronger, faster, renewed.</description>
+        <metal>Atium</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundAtium</hediff>
+        <iconPath>UI/Icons/PassionMajor</iconPath>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

@@ -35,4 +35,10 @@ public static class PawnExtension {
     public static bool IsBurning(this Pawn pawn, MetalDef metal) {
         return AllomancyUtility.IsBurning(pawn, metal.ToMetallicArts());
     }
+
+    public static bool IsCompounding(this Pawn pawn, MetalDef metal) {
+        return pawn.health.hediffSet.HasHediff(
+            DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_Compound" + metal.defName, false)
+        );
+    }
 }

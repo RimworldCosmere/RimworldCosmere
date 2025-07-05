@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Gene;
 using RimWorld;
@@ -33,7 +31,7 @@ public class AllomanticGeneCommand(
         float rate = burning.GetTotalBurnRate(metal) * GenTicks.TicksPerRealSecond;
         NamedArgument coloredCount =
             gene.RequestedVialStock.ToString().Colorize(ColoredText.FactionColor_Ally).Named("COUNT");
-        StringBuilder tooltip = new StringBuilder(base.GetTooltipHeader());
+        StringBuilder tooltip = new StringBuilder(base.GetTooltipHeader() + "\n");
 
         if (burning.IsBurning(metal)) {
             tooltip.AppendLine(
@@ -44,7 +42,9 @@ public class AllomanticGeneCommand(
 
         if (IsDraggable) {
             tooltip.AppendLine("CS_CurrentVialStock".Translate(coloredCount));
-            if (gene.targetValue <= 0.0) { tooltip.AppendLine("CS_NeverConsumeVial".Translate()); } else {
+            if (gene.targetValue <= 0.0) {
+                tooltip.AppendLine("CS_NeverConsumeVial".Translate());
+            } else {
                 tooltip.AppendLine("CS_ConsumeVialBelow".Translate() + $": {gene.PostProcessValue(gene.targetValue)}%");
             }
         }
@@ -55,7 +55,7 @@ public class AllomanticGeneCommand(
     protected override string GetTooltipFooter() {
         if (cachedTooltipFooter != null) return cachedTooltipFooter;
 
-        StringBuilder tooltip = new StringBuilder(base.GetTooltipFooter());
+        StringBuilder tooltip = new StringBuilder(base.GetTooltipFooter() + "\n");
 
         if (IsDraggable) {
             tooltip.AppendLine(
@@ -101,18 +101,5 @@ public class AllomanticGeneCommand(
         if (Mouse.IsOver(configureRect)) mouseOverElement = true;
 
         return rect;
-    }
-
-    protected override void Initialize() {
-        if (initialized) return;
-
-        base.Initialize();
-
-        subgizmos = gene.def.abilities
-            .OrderBy(x => x.uiOrder)
-            .Select(x => pawn.abilities.GetAbility(x))
-            .Cast<AbstractAbility>()
-            .Select(x => new AbilitySubGizmo(this, gene, x))
-            .ToList<SubGizmo>();
     }
 }

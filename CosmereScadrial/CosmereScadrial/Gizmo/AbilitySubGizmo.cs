@@ -68,11 +68,13 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
             TaggedString flareOrDeflare =
                 (ability.status == BurningStatus.Flaring ? "CS_Deflare" : "CS_Flare").Translate();
             desc.AppendLine("\n");
-            desc.AppendLine(
-                "CS_PressToFlare"
-                    .Translate(flareOrDeflare.Named("FLARE"), gene.metal.label.Named("METAL"))
-                    .Colorize(ColoredText.GeneColor)
-            );
+            if (ability.def.canFlare) {
+                desc.AppendLine(
+                    "CS_PressToFlare"
+                        .Translate(flareOrDeflare.Named("FLARE"), gene.metal.label.Named("METAL"))
+                        .Colorize(ColoredText.GeneColor)
+                );
+            }
 
             if (ability.def.canBurnWhileDowned) {
                 desc.AppendLine(
@@ -124,10 +126,14 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
             bool isBurningOrPassive = ability.status is BurningStatus.Burning or BurningStatus.Passive;
 
             if (ev.control) {
-                if (isBurningOrPassive) { ability.SetNextStatus(BurningStatus.Flaring); } else if (isFlaring) {
+                if (isBurningOrPassive) {
+                    ability.SetNextStatus(BurningStatus.Flaring);
+                } else if (isFlaring) {
                     ability.SetNextStatus(BurningStatus.Burning);
                 }
-            } else { ability.SetNextStatus(BurningStatus.Off); }
+            } else {
+                ability.SetNextStatus(BurningStatus.Off);
+            }
 
             ability.UpdateStatus(ability.nextStatus!.Value);
 
@@ -160,6 +166,8 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
                     canSelectTarget: ability.ValidateGlobalTarget
                 );
             }
-        } else { ability.QueueCastingJob(ability.pawn, LocalTargetInfo.Invalid, ev.control); }
+        } else {
+            ability.QueueCastingJob(ability.pawn, LocalTargetInfo.Invalid, ev.control);
+        }
     }
 }

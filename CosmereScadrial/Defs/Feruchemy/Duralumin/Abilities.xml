@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundDuralumin</defName>
+        <label>compound duralumin</label>
+        <description>Compounding duralumin frays every bond. Connections to friends, factions, and faiths fade until only isolation remains. But each severed tie feeds the metalmind. With time, the Allomancer can forge connections stronger than any forged by nature.</description>
+        <metal>Duralumin</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundDuralumin</hediff>
+        <iconPath>UI/Icons/PassionMajor</iconPath>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

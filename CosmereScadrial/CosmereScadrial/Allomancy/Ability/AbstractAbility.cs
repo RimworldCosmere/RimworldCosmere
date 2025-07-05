@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Util;
@@ -60,7 +59,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
 
     public new void Initialize() {
         base.Initialize();
-        willBurnWhileDowned = def.canBurnWhileDowned;
+        willBurnWhileDowned = def is { canBurnWhileDowned: true, autoBurnWhileDownedByDefault: true };
     }
 
     public event Action<AbstractAbility, BurningStatus, BurningStatus>? OnStatusChanged;
@@ -192,17 +191,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
         OnStatusChanged?.Invoke(this, oldStatus!.Value, newStatus.Value);
 
         nextStatus = null;
-    }
-
-    public override IEnumerable<Verse.Command> GetGizmos() {
-        yield break;
-    }
-
-    public override bool GizmoDisabled(out string reason) {
-        if (!atLeastPassive) return base.GizmoDisabled(out reason);
-
-        reason = "";
-        return false;
     }
 
     protected virtual void OnEnable() { }

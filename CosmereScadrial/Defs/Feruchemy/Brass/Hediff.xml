@@ -1,9 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractCompoundHediff">
+        <defName>Cosmere_Scadrial_Hediff_CompoundBrass</defName>
+        <label>compounding brass</label>
+        <description>Rapidly stores heat by burning a brass metalmind.</description>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_StoreBrass</defName>
         <label>storing brass</label>
-        <description>This pawn is storing body heat into a brass metalmind, passively absorbing thermal energy. Their body resists high temperatures and fire damage far better than normal, allowing them to function in burning environments with reduced risk of heatstroke.</description>
+        <description>This pawn is storing body heat into a brass metalmind, passively absorbing thermal energy. Their body resists high temperatures and fire damage far better than normal, allowing them to function in burning envbrassments with reduced risk of heatstroke.</description>
         <stages>
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>

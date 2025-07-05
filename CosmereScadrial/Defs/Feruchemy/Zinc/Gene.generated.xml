@@ -27,6 +27,10 @@
             </li>
         </modExtensions>
 
+        <abilities>
+            <li>Cosmere_Scadrial_Ability_CompoundZinc</li>
+        </abilities>
+
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Zinc</iconPath>
     </GeneDef>
 </Defs>

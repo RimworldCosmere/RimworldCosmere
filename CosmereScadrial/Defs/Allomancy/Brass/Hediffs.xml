@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractAllomanticHediff">
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
         <defName>Cosmere_Scadrial_Hediff_BrassAura</defName>
         <label>burning brass: aura</label>
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
@@ -32,7 +32,7 @@
         </modExtensions>
     </HediffDef>
     
-    <HediffDef ParentName="AbstractAllomanticHediff">
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
         <defName>Cosmere_Scadrial_Hediff_Soothed</defName>
         <label>soothed</label>
         <description>This pawn has been soothed by a nearby Allomancer burning brass. Their emotions feel more stable and calm.</description>

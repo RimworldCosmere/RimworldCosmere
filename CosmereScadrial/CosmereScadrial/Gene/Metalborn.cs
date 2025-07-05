@@ -12,6 +12,7 @@ using Verse;
 namespace CosmereScadrial.Gene;
 
 public abstract class Metalborn : Gene_Resource {
+    internal bool gizmoShrunk = true;
     public MetallicArtsMetalDef metal => def.GetModExtension<MetalsLinked>().Metals.First()!.ToMetallicArts();
 
     public override float InitialResourceMax => 1f;
@@ -28,6 +29,11 @@ public abstract class Metalborn : Gene_Resource {
 
     public override int ValueForDisplay => PostProcessValue(Value);
     public override int MaxForDisplay => PostProcessValue(Max);
+
+    public override void ExposeData() {
+        base.ExposeData();
+        Scribe_Values.Look(ref gizmoShrunk, "gizmoShrunk");
+    }
 
     public override void Reset() {
         targetValue = 0.5f;

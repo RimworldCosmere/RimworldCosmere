@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractCompoundHediff">
+        <defName>Cosmere_Scadrial_Hediff_CompoundNicrosil</defName>
+        <label>compounding nicrosil</label>
+        <description>Rapidly stores Investiture by burning a nicrosil metalmind.</description>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Nicrosil</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_StoreNicrosil</defName>
         <hediffClass>CosmereScadrial.Feruchemy.Hediff.Nicrosil</hediffClass>
@@ -11,9 +21,9 @@
             </li>
         </modExtensions>
     </HediffDef>
-<HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_TapNicrosil</defName>
-    <hediffClass>CosmereScadrial.Feruchemy.Hediff.Nicrosil</hediffClass>
+        <hediffClass>CosmereScadrial.Feruchemy.Hediff.Nicrosil</hediffClass>
         <label>tapping nicrosil</label>
         <description>This pawn is tapping a nicrosil metalmind, enhancing their spiritual potential. Investiture flows through them more freely, amplifying their magical abilities and allowing for prolonged or more potent effects. They burn brighter — but it drains quickly.</description>
         <modExtensions>

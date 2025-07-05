@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundGold</defName>
+        <label>compound gold</label>
+        <description>To compound gold is to feel pain and relief simultaneously. Wounds stitch closed in seconds, bones fuse mid-battle, and blood loss reverses. But the price is real: the body burns, and the mind reels. It is not a gentle healing — it is life clawed back through agony.</description>
+        <metal>Gold</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundGold</hediff>
+        <iconPath>UI/Icons/PassionMajor</iconPath>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

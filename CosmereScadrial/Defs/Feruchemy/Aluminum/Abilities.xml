@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundAluminum</defName>
+        <label>compound aluminum</label>
+        <description>Compounding aluminum unravels the self. Identity bleeds away — memories, loyalties, even a sense of purpose — all dissolve into the metalmind. What remains is a shell, empty but waiting. One day, that identity can be reclaimed... or replaced.</description>
+        <metal>Aluminum</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundAluminum</hediff>
+        <iconPath>UI/Icons/PassionMajor</iconPath>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

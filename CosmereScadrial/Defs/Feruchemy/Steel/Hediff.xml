@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractCompoundHediff">
+        <defName>Cosmere_Scadrial_Hediff_CompoundSteel</defName>
+        <label>compounding steel</label>
+        <description>Rapidly stores speed by burning a steel metalmind.</description>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Steel</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_StoreSteel</defName>
         <label>storing steel</label>
@@ -13,11 +23,12 @@
                     <StaggerDurationFactor>2.0</StaggerDurationFactor>
                     <AimingDelayFactor>1.5</AimingDelayFactor>
                     <EatingSpeed>0.5</EatingSpeed>
-                    <MeleeCooldownFactor>0.5</MeleeCooldownFactor>
-                    <RangedCooldownFactor>0.5</RangedCooldownFactor>
+                    <MeleeCooldownFactor>2.0</MeleeCooldownFactor>
+                    <RangedCooldownFactor>2.0</RangedCooldownFactor>
                     <MoveSpeed>0.5</MoveSpeed>
                     <CrawlSpeed>0.5</CrawlSpeed>
                     <CleaningSpeed>0.5</CleaningSpeed>
+                    <MiningSpeed>0.75</MiningSpeed>
                     <WorkSpeedGlobal>0.75</WorkSpeedGlobal>
                 </statFactors>
             </li>
@@ -41,11 +52,12 @@
                     <StaggerDurationFactor>0.5</StaggerDurationFactor>
                     <AimingDelayFactor>0.5</AimingDelayFactor>
                     <EatingSpeed>2.0</EatingSpeed>
-                    <MeleeCooldownFactor>2.0</MeleeCooldownFactor>
-                    <RangedCooldownFactor>2.0</RangedCooldownFactor>
+                    <MeleeCooldownFactor>0.5</MeleeCooldownFactor>
+                    <RangedCooldownFactor>0.5</RangedCooldownFactor>
                     <MoveSpeed>2.0</MoveSpeed>
                     <CrawlSpeed>2.0</CrawlSpeed>
                     <CleaningSpeed>2.0</CleaningSpeed>
+                    <MiningSpeed>1.5</MiningSpeed>
                     <WorkSpeedGlobal>1.5</WorkSpeedGlobal>
                 </statFactors>
             </li>

@@ -8,16 +8,9 @@ using Verse;
 
 namespace CosmereScadrial.Feruchemy.Hediff;
 
-public abstract class Nicrosil : Verse.Hediff {
-    protected readonly bool isStoring;
-
-    protected readonly bool isTapping;
-
-    protected Nicrosil(bool tapping, bool storing) {
-        isTapping = tapping;
-        isStoring = storing;
-    }
-
+public class Nicrosil : HediffWithComps {
+    protected bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapNicrosil);
+    protected bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreNicrosil);
     protected Investiture? investiture => pawn?.needs?.TryGetNeed<Investiture>();
     protected Feruchemist? nicrosil => pawn.genes.GetFeruchemicGeneForMetal(MetalDefOf.Nicrosil);
 

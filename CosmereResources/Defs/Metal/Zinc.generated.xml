@@ -2,7 +2,7 @@
 <Defs>
     <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Zinc">
         <defName>Zinc</defName>
-        <label>zinc</label>
+        <label>Zinc</label>
         <description>Zinc is a cool, bluish-silver metal with a distinctive character. It not only protects other metals from corrosion through galvanization but also plays a crucial role in modern alloy production.</description>
         <color>(128, 142, 129)</color>
         <colorTwo>(187, 189, 187)</colorTwo>

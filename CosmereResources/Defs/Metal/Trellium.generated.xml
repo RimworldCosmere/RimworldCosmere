@@ -2,7 +2,7 @@
 <Defs>
     <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Trellium">
         <defName>Trellium</defName>
-        <label>trellium</label>
+        <label>Trellium</label>
         <description>An alien, corrupted metal aligned with Trell&#x27;s influence. It resists typical Investiture detection and interferes with other magic systems. Often associated with Hemalurgic constructs, Trellium&#x27;s strange red hue and unique properties hint at a Shardic power foreign to Scadrial.</description>
         <color>(148, 0, 37)</color>
         <godMetal>true</godMetal>

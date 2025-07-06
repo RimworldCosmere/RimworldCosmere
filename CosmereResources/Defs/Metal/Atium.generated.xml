@@ -2,7 +2,7 @@
 <Defs>
     <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Atium">
         <defName>Atium</defName>
-        <label>atium</label>
+        <label>Atium</label>
         <description>Atium is the god metal of the Shard Ruin. It grants its user visions of others&#x27; immediate futures, offering immense strategic advantage in combat and prediction.</description>
         <color>(60, 60, 60)</color>
         <godMetal>true</godMetal>

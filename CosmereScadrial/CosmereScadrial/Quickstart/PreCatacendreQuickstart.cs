@@ -3,7 +3,6 @@ using System.Linq;
 using CosmereCore.Need;
 using CosmereFramework.Extension;
 using CosmereFramework.Quickstart;
-using CosmereResources;
 using CosmereResources.Def;
 using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
@@ -14,7 +13,7 @@ using GeneUtility = CosmereScadrial.Util.GeneUtility;
 
 namespace CosmereScadrial.Quickstart;
 
-public class PreCatacendre : AbstractQuickstart {
+public class PreCatacendreQuickstart : AbstractQuickstart {
     public override int mapSize => 50;
     public override TaggedString description => "Used to test Pre-catacendre pawns";
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
@@ -44,7 +43,9 @@ public class PreCatacendre : AbstractQuickstart {
 
             ScadrianUtility.PrepareDevPawn(pawn);
             GeneUtility.AddFullFeruchemist(pawn, false, true);
-            foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
+            foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs.Where(x =>
+                         x.feruchemy?.userName != null
+                     )) {
                 pawn.inventory.innerContainer.TryAdd(
                     ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item)
                 );
@@ -55,19 +56,16 @@ public class PreCatacendre : AbstractQuickstart {
             Find.Selector.Select(pawn);
         }
 
-        if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Atium);
-        }
+        //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Atium);
+        //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);
+        //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Gold);
 
-        if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);
-        if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Gold);
-
-        if (pawns.TryPopFront(out pawn)) {
+        /*if (pawns.TryPopFront(out pawn)) {
             PrepareColonistAsMisting(pawn, true, true, MetalDefOf.Steel);
             PrepareColonistAsFerring(pawn, true, true, MetalDefOf.Iron);
             pawn.Name = new NameTriple("Waxillium", "Wax", "Ladrian");
             pawn.gender = Gender.Male;
-        }
+        }*/
     }
 
     private static void PrepareColonistAsTwinborn(

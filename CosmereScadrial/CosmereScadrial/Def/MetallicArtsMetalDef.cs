@@ -47,23 +47,30 @@ public class MetallicArtsMetalDef : MetalDef {
 
     public override void PostLoad() {
         LongEventHandler.ExecuteWhenFinished(() => {
-            if (allomancy != null) {
-                allomancy.icon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Allomancy/{defName}", false);
-                if (allomancy.icon != null) {
-                    allomancy.invertedIcon = allomancy.icon.CloneTexture().InvertColors();
+                if (allomancy != null) {
+                    allomancy.icon = ContentFinder<Texture2D>.Get(
+                        $"UI/Icons/Genes/Investiture/Allomancy/{defName}",
+                        false
+                    );
+                    if (allomancy.icon != null) {
+                        allomancy.invertedIcon = allomancy.icon.CloneTexture().InvertColors();
+                    }
                 }
-            }
 
-            if (feruchemy != null) {
-                feruchemy.icon = ContentFinder<Texture2D>.Get($"UI/Icons/Genes/Investiture/Feruchemy/{defName}", false);
-                if (feruchemy.icon != null) {
-                    feruchemy.invertedIcon = feruchemy.icon.CloneTexture().InvertColors();
+                if (feruchemy != null) {
+                    feruchemy.icon = ContentFinder<Texture2D>.Get(
+                        $"UI/Icons/Genes/Investiture/Feruchemy/{defName}",
+                        false
+                    );
+                    if (feruchemy.icon != null) {
+                        feruchemy.invertedIcon = feruchemy.icon.CloneTexture().InvertColors();
+                    }
                 }
-            }
 
-            uiIcon = allomancy?.icon ?? feruchemy?.icon;
-            invertedIcon = allomancy?.invertedIcon ?? feruchemy?.invertedIcon;
-        });
+                uiIcon = allomancy?.icon ?? feruchemy?.icon;
+                invertedIcon = allomancy?.invertedIcon ?? feruchemy?.invertedIcon;
+            }
+        );
     }
 }
 

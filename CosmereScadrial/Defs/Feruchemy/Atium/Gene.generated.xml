@@ -5,7 +5,7 @@
         <defName>Cosmere_Scadrial_Gene_FerringAtium</defName>
 
         <label>atium ferring</label>
-        <labelShortAdj></labelShortAdj>
+        <labelShortAdj>chronist</labelShortAdj>
 
         <description>Stores age, granting youth or aging when tapped.</description>
 
@@ -27,9 +27,6 @@
             </li>
         </modExtensions>
 
-        <abilities>
-            <li>Cosmere_Scadrial_Ability_CompoundAtium</li>
-        </abilities>
 
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Atium</iconPath>
     </GeneDef>

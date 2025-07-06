@@ -45,7 +45,10 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
 
     public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
-    public new AllomanticAbilityDef def => (AllomanticAbilityDef)base.def;
+    public new AllomanticAbilityDef def {
+        get => (AllomanticAbilityDef)base.def;
+        set => base.def = value;
+    }
 
     public bool atLeastPassive => status >= BurningStatus.Passive;
 
@@ -58,7 +61,31 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     public override AcceptanceReport CanCast => metalBurning.CanBurn(metal, def.beuPerTick);
 
     public new void Initialize() {
-        base.Initialize();
+        if (def.comps.Any<AbilityCompProperties>()) {
+            comps = [];
+            for (int index = 0; index < def.comps.Count; ++index) {
+                AbilityComp? abilityComp = null;
+                try {
+                    abilityComp = (AbilityComp)Activator.CreateInstance(def.comps[index].compClass);
+                    abilityComp.parent = this;
+                    comps.Add(abilityComp);
+                    abilityComp.Initialize(def.comps[index]);
+                } catch (Exception ex) {
+                    Log.Error("Could not instantiate or initialize an AbilityComp: " + ex);
+                    comps.Remove(abilityComp);
+                }
+            }
+        }
+
+        if (Id == -1)
+            Id = Find.UniqueIDsManager.GetNextAbilityID();
+        if (VerbTracker.PrimaryVerb is IAbilityVerb primaryVerb)
+            primaryVerb.Ability = this;
+        if (def.charges <= 0)
+            return;
+        maxCharges = def.charges;
+        RemainingCharges = maxCharges;
+
         willBurnWhileDowned = def is { canBurnWhileDowned: true, autoBurnWhileDownedByDefault: true };
     }
 

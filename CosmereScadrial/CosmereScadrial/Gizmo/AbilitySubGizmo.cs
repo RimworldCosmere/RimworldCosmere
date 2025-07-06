@@ -25,7 +25,7 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
     private bool disabled => !cachedReport.Accepted;
     private string? disabledReason => cachedReport.Reason;
 
-    private Texture2D icon => disabled ? ability.def.disabledIcon : ability.def.uiIcon;
+    private Texture2D? icon => disabled ? ability.def.disabledIcon : ability.def.uiIcon;
 
     private Texture2D background => ability.status switch {
         null => BgTexOff,

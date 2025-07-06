@@ -12,16 +12,7 @@ public class Allomancer : Metalborn {
     private MetalReserves reserves => pawn.GetComp<MetalReserves>();
 
     public override void Reset() {
-        targetValue = 0.15f;
-    }
-
-    public override void PostAdd() {
-        base.PostAdd();
-        if (!pawn.HasComp<MetalReserves>()) { }
-    }
-
-    public override void PostRemove() {
-        base.PostRemove();
+        targetValue = 0.05f;
     }
 
     protected override void PostAddOrRemove() {

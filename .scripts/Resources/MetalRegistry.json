@@ -29,10 +29,7 @@
     "feruchemy": {
       "userName": "skimmer",
       "group": "physical",
-      "description": "Stores weight, allowing the user to become lighter or heavier.",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundIron"
-      ]
+      "description": "Stores weight, allowing the user to become lighter or heavier."
     },
     "buildable": {
       "buildings": true,
@@ -77,10 +74,7 @@
     "feruchemy": {
       "userName": "steelrunner",
       "description": "Stores physical speed, allowing for bursts of superhuman speed.",
-      "group": "physical",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundSteel"
-      ]
+      "group": "physical"
     },
     "buildable": {
       "buildings": true,
@@ -134,14 +128,11 @@
     "feruchemy": {
       "userName": "windwhisper",
       "description": "Stores senses, dulling them while storing and enhancing while tapping.",
-      "group": "physical",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundTin"
-      ]
+      "group": "physical"
     },
     "buildable": {
-      "buildings": false,
-      "items": false
+      "buildings": true,
+      "items": true
     },
     "mining": {
       "hitPoints": 1400,
@@ -181,7 +172,7 @@
     },
     "buildable": {
       "buildings": false,
-      "items": false
+      "items": true
     },
     "alloy": {
       "type": "simple",
@@ -227,14 +218,11 @@
     "feruchemy": {
       "userName": "sparker",
       "description": "Stores mental speed, allowing faster thought processes.",
-      "group": "cognitive",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundZinc"
-      ]
+      "group": "cognitive"
     },
     "buildable": {
       "buildings": false,
-      "items": false
+      "items": true
     },
     "mining": {
       "hitPoints": 1360,
@@ -271,10 +259,7 @@
     "feruchemy": {
       "userName": "firesoul",
       "description": "Stores warmth, useful for surviving cold environments or heating up.",
-      "group": "cognitive",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundBrass"
-      ]
+      "group": "cognitive"
     },
     "buildable": {
       "buildings": true,
@@ -324,10 +309,7 @@
     "feruchemy": {
       "userName": "archivist",
       "description": "Stores memories, allowing perfect recall of stored knowledge.",
-      "group": "cognitive",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundCopper"
-      ]
+      "group": "cognitive"
     },
     "buildable": {
       "buildings": true,
@@ -368,10 +350,7 @@
     "feruchemy": {
       "userName": "sentry",
       "description": "Stores wakefulness, useful for staying awake or skipping sleep.",
-      "group": "cognitive",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundBronze"
-      ]
+      "group": "cognitive"
     },
     "buildable": {
       "buildings": true,
@@ -421,10 +400,7 @@
     "feruchemy": {
       "userName": "trueself",
       "description": "Stores identity, allowing anonymous interactions or forgery.",
-      "group": "spiritual",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundAluminum"
-      ]
+      "group": "spiritual"
     },
     "buildable": {
       "buildings": true,
@@ -465,14 +441,11 @@
     "feruchemy": {
       "userName": "connector",
       "description": "Stores connection, useful for adjusting social ties or affiliations.",
-      "group": "spiritual",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundDuralumin"
-      ]
+      "group": "spiritual"
     },
     "buildable": {
       "buildings": false,
-      "items": false
+      "items": true
     },
     "alloy": {
       "type": "complex",
@@ -517,14 +490,11 @@
     "feruchemy": {
       "userName": "spinner",
       "description": "Stores fortune, influencing luck subtly.",
-      "group": "spiritual",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundChromium"
-      ]
+      "group": "spiritual"
     },
     "buildable": {
       "buildings": false,
-      "items": false
+      "items": true
     },
     "mining": {
       "hitPoints": 1600,
@@ -560,14 +530,11 @@
     "feruchemy": {
       "userName": "soulbearer",
       "description": "Stores Investiture, enabling storage of magical energy.",
-      "group": "spiritual",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundNicrosil"
-      ]
+      "group": "spiritual"
     },
     "buildable": {
       "buildings": false,
-      "items": false
+      "items": true
     },
     "alloy": {
       "type": "complex",
@@ -612,14 +579,11 @@
     "feruchemy": {
       "userName": "gaspers",
       "description": "Stores breath, useful for surviving in low-oxygen environments.",
-      "group": "hybrid",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundCadmium"
-      ]
+      "group": "hybrid"
     },
     "buildable": {
       "buildings": false,
-      "items": false
+      "items": true
     },
     "mining": {
       "hitPoints": 1300,
@@ -655,14 +619,11 @@
     "feruchemy": {
       "userName": "subsumer",
       "description": "Stores nutrition, allowing users to go without food.",
-      "group": "hybrid",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundBendalloy"
-      ]
+      "group": "hybrid"
     },
     "buildable": {
       "buildings": false,
-      "items": false
+      "items": true
     },
     "alloy": {
       "type": "complex",
@@ -711,10 +672,7 @@
     "feruchemy": {
       "userName": "bloodmaker",
       "description": "Stores health, allowing fast healing when tapped.",
-      "group": "hybrid",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundGold"
-      ]
+      "group": "hybrid"
     },
     "buildable": {
       "buildings": true,
@@ -780,7 +738,7 @@
     "beauty": 1,
     "buildable": {
       "buildings": false,
-      "items": false
+      "items": true
     },
     "mining": {
       "hitPoints": 1480,
@@ -816,14 +774,11 @@
     "feruchemy": {
       "userName": "pinnacle",
       "description": "Stores determination or willpower.",
-      "group": "hybrid",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundElectrum"
-      ]
+      "group": "hybrid"
     },
     "buildable": {
       "buildings": false,
-      "items": false
+      "items": true
     },
     "alloy": {
       "type": "simple",
@@ -852,12 +807,59 @@
       159,
       106
     ],
+    "genesToGrant": {
+      "CryptikLemur.Cosmere.Scadrial": [
+        "Cosmere_Scadrial_Gene_MistingIron",
+        "Cosmere_Scadrial_Gene_MistingSteel",
+        "Cosmere_Scadrial_Gene_MistingTin",
+        "Cosmere_Scadrial_Gene_MistingPewter",
+        "Cosmere_Scadrial_Gene_MistingZinc",
+        "Cosmere_Scadrial_Gene_MistingBrass",
+        "Cosmere_Scadrial_Gene_MistingCopper",
+        "Cosmere_Scadrial_Gene_MistingBronze",
+        "Cosmere_Scadrial_Gene_MistingChromium",
+        "Cosmere_Scadrial_Gene_MistingNicrosil",
+        "Cosmere_Scadrial_Gene_MistingAluminum",
+        "Cosmere_Scadrial_Gene_MistingDuralumin",
+        "Cosmere_Scadrial_Gene_MistingCadmium",
+        "Cosmere_Scadrial_Gene_MistingBendalloy",
+        "Cosmere_Scadrial_Gene_MistingGold",
+        "Cosmere_Scadrial_Gene_MistingElectrum"
+      ]
+    },
     "allomancy": {
       "description": "Rewrites {PAWN}s spirit-web, granting them the powers of a Mistborn"
+    }
+  },
+  {
+    "name": "lerasium alloy",
+    "description": "Lerasium alloyed with common metals transforms the ingester into a Misting for the alloyed metal.",
+    "godMetal": true,
+    "stackable": false,
+    "drawSize": 1,
+    "marketValue": 8000,
+    "beauty": 80,
+    "color": [
+      132,
+      159,
+      106
+    ],
+    "allomancy": {
+      "description": "Rewrites {PAWN}s spirit-web, granting them the powers of a Misting"
     },
-    "buildable": {
-      "buildings": false,
-      "items": false
+    "alloy": {
+      "type": "god",
+      "stuff": "Cosmere_Resources_StuffCategory_AllomanticMetals",
+      "stuffCount": "32",
+      "ingredients": [
+        {
+          "item": "lerasium",
+          "count": 1
+        }
+      ],
+      "product": {
+        "count": 8
+      }
     }
   },
   {
@@ -873,6 +875,11 @@
       60,
       60
     ],
+    "genesToGrant": {
+      "CryptikLemur.Cosmere.Scadrial": [
+        "Cosmere_Scadrial_Gene_MistingAtium"
+      ]
+    },
     "allomancy": {
       "userName": "seer",
       "description": "Allows {PAWN} a glimpse into the immediate future of others.",
@@ -881,32 +888,45 @@
       ]
     },
     "feruchemy": {
-      "description": "Stores age, granting youth or aging when tapped.",
-      "abilities": [
-        "Cosmere_Scadrial_Ability_CompoundAtium"
-      ]
-    },
-    "buildable": {
-      "buildings": false,
-      "items": false
+      "userName": "chronist",
+      "description": "Stores age, granting youth or aging when tapped."
     }
   },
   {
-    "name": "harmonium",
-    "description": "Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.",
+    "name": "leratium",
+    "description": "Leratium is an alloy of the two god metals: Atium and Lerasium. A more perfect combination of the god metals.",
     "godMetal": true,
     "stackable": false,
     "drawSize": 1,
-    "marketValue": 10000,
+    "marketValue": 15000,
     "beauty": 100,
     "color": [
       242,
       255,
       140
     ],
-    "buildable": {
-      "buildings": false,
-      "items": false
+    "genesToGrant": {
+      "CryptikLemur.Cosmere.Scadrial": [
+        "Cosmere_Scadrial_Gene_FerringIron",
+        "Cosmere_Scadrial_Gene_FerringSteel",
+        "Cosmere_Scadrial_Gene_FerringTin",
+        "Cosmere_Scadrial_Gene_FerringPewter",
+        "Cosmere_Scadrial_Gene_FerringZinc",
+        "Cosmere_Scadrial_Gene_FerringBrass",
+        "Cosmere_Scadrial_Gene_FerringCopper",
+        "Cosmere_Scadrial_Gene_FerringBronze",
+        "Cosmere_Scadrial_Gene_FerringChromium",
+        "Cosmere_Scadrial_Gene_FerringNicrosil",
+        "Cosmere_Scadrial_Gene_FerringAluminum",
+        "Cosmere_Scadrial_Gene_FerringDuralumin",
+        "Cosmere_Scadrial_Gene_FerringCadmium",
+        "Cosmere_Scadrial_Gene_FerringBendalloy",
+        "Cosmere_Scadrial_Gene_FerringGold",
+        "Cosmere_Scadrial_Gene_FerringElectrum"
+      ]
+    },
+    "feruchemy": {
+      "description": "Rewrites {PAWN}s spirit-web, granting them the powers of a Full Feruchemist"
     },
     "alloy": {
       "type": "complex",
@@ -926,6 +946,67 @@
     }
   },
   {
+    "name": "leratium alloy",
+    "description": "Leratium alloyed with common metals transforms the ingester into a Ferring for the alloyed metal.",
+    "godMetal": true,
+    "stackable": false,
+    "drawSize": 1,
+    "marketValue": 8000,
+    "beauty": 80,
+    "color": [
+      132,
+      159,
+      106
+    ],
+    "allomancy": {
+      "description": "Rewrites {PAWN}s spirit-web, granting them the powers of a Ferring"
+    },
+    "alloy": {
+      "type": "god",
+      "stuff": "Cosmere_Resources_StuffCategory_AllomanticMetals",
+      "stuffCount": "32",
+      "ingredients": [
+        {
+          "item": "leratium",
+          "count": 1
+        }
+      ],
+      "product": {
+        "count": 8
+      }
+    }
+  },
+  {
+    "name": "harmonium",
+    "description": "Harmonium is the god metal of Harmony, known for its volatile instability and unique interactions with Investiture. While powerful, its unpredictable behavior makes it dangerous to handle.",
+    "godMetal": true,
+    "stackable": false,
+    "drawSize": 1,
+    "marketValue": 10000,
+    "beauty": 100,
+    "color": [
+      242,
+      255,
+      140
+    ],
+    "alloy": {
+      "type": "complex",
+      "ingredients": [
+        {
+          "item": "lerasium",
+          "count": 3
+        },
+        {
+          "item": "atium",
+          "count": 2
+        }
+      ],
+      "product": {
+        "count": 5
+      }
+    }
+  },
+  {
     "name": "trellium",
     "description": "An alien, corrupted metal aligned with Trell's influence. It resists typical Investiture detection and interferes with other magic systems. Often associated with Hemalurgic constructs, Trellium's strange red hue and unique properties hint at a Shardic power foreign to Scadrial.",
     "godMetal": true,
@@ -937,10 +1018,6 @@
       148,
       0,
       37
-    ],
-    "buildable": {
-      "buildings": false,
-      "items": false
-    }
+    ]
   }
 ]

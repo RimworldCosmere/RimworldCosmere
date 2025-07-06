@@ -1,9 +1,9 @@
 import {resolve} from 'node:path';
-import {upperFirst} from "lodash";
 
 import {compileTemplate, writeGeneratedFile} from '../../Helpers';
 import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {SCADRIAL_MOD_DIR} from '../../constants';
+import {toDefName} from "../../Helpers/Handlebars";
 
 const defOfTemplate = compileTemplate(__dirname, 'DefOf.cs.template');
 const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
@@ -18,20 +18,20 @@ export default function () {
         const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && (!!x[type])).concat(MetalRegistry.Metals.Atium);
         for (const metalInfo of metals) {
             writeGeneratedFile(
-                resolve(outputDir, upperFirst(metalInfo.Name)),
+                resolve(outputDir, toDefName(metalInfo.Name)),
                 'Gene.generated.xml',
                 geneTemplate({
                     metal: metalInfo,
-                    defName: metalInfo.DefName ?? upperFirst(metalInfo.Name),
+                    defName: metalInfo.DefName ?? toDefName(metalInfo.Name),
                     order: order++,
                 }),
             );
             writeGeneratedFile(
-                resolve(outputDir, upperFirst(metalInfo.Name)),
+                resolve(outputDir, toDefName(metalInfo.Name)),
                 'Trait.generated.xml',
                 traitTemplate({
                     metal: metalInfo,
-                    defName: metalInfo.DefName ?? upperFirst(metalInfo.Name),
+                    defName: metalInfo.DefName ?? toDefName(metalInfo.Name),
                     order: order++,
                 }),
             );

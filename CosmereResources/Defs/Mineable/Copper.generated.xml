@@ -2,14 +2,14 @@
 <Defs>
     <ThingDef ParentName="RockBase">
         <defName>MineableCopper</defName>
-        <label>copper Ore</label>
+        <label>Copper Ore</label>
         <description>Unrefined Copper ore mined directly from the earth.</description>
         <graphicData>
-            <color>(185, 129, 80)</color>
-            <colorTwo>(90, 58, 43)</colorTwo>
             <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutComplex</shaderType>
+            <color>(185, 129, 80)</color>
+            <colorTwo>(90, 58, 43)</colorTwo>
         </graphicData>
         <statBases>
             <MaxHitPoints>1440</MaxHitPoints>

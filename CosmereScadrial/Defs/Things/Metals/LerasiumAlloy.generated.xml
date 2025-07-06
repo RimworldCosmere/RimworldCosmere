@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_LerasiumAlloy">
+        <defName>LerasiumAlloy</defName>
+        <allomancy>
+            <description>Rewrites {PAWN}s spirit-web, granting them the powers of a Misting</description>
+            <group>None</group>
+            <axis>None</axis>
+            <polarity>None</polarity>
+        </allomancy>
+        
+    </CosmereScadrial.Def.MetallicArtsMetalDef>
+</Defs>

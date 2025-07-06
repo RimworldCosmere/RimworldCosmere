@@ -2,10 +2,14 @@
 <Defs>
     <ThingCategoryDef>
         <defName>Cosmere_Resource_ThingCategory_CoalOrCharcoal</defName>
-        <label>Coal or Charcoal</label>
+        <label>coal or charcoal</label>
         <childThingDefs>
             <li>Coal</li>
             <li>Charcoal</li>
         </childThingDefs>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Resource_ThingCategory_Metal</defName>
+        <label>cosmere metals</label>
     </ThingCategoryDef>
 </Defs>

@@ -3,7 +3,7 @@
     <Operation Class="PatchOperationSequence">
         <operations>
             <li Class="PatchOperationAdd">
-                <xpath>Defs/ThingDef[defName = "Steel"]</xpath>
+                <xpath>Defs/ThingDef[defName="Steel"]</xpath>
                 <value>
                     <thingClass>CosmereScadrial.Thing.AllomanticMetal</thingClass>
                     <ingestible>

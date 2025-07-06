@@ -3,15 +3,18 @@
     <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Brass">
         <defName>Brass</defName>
         <allomancy>
+            <userName>soother</userName>
             <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
             <group>Mental</group>
             <axis>External</axis>
             <polarity>Pulling</polarity>
         </allomancy>
+        
         <feruchemy>
             <userName>firesoul</userName>
             <description>Stores warmth, useful for surviving cold environments or heating up.</description>
             <group>Cognitive</group>
         </feruchemy>
+        
     </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

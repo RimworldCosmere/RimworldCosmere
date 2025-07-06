@@ -27,25 +27,6 @@
                 </metals>
             </li>
         </modExtensions>
-        <conflictingTraits>
-                <li>Cosmere_Scadrial_Trait_MistingIron</li>
-                <li>Cosmere_Scadrial_Trait_MistingSteel</li>
-                <li>Cosmere_Scadrial_Trait_MistingTin</li>
-                <li>Cosmere_Scadrial_Trait_MistingPewter</li>
-                <li>Cosmere_Scadrial_Trait_MistingZinc</li>
-                <li>Cosmere_Scadrial_Trait_MistingBrass</li>
-                <li>Cosmere_Scadrial_Trait_MistingCopper</li>
-                <li>Cosmere_Scadrial_Trait_MistingBronze</li>
-                <li>Cosmere_Scadrial_Trait_MistingAluminum</li>
-                <li>Cosmere_Scadrial_Trait_MistingDuralumin</li>
-                <li>Cosmere_Scadrial_Trait_MistingChromium</li>
-                <li>Cosmere_Scadrial_Trait_MistingNicrosil</li>
-                <li>Cosmere_Scadrial_Trait_MistingCadmium</li>
-                <li>Cosmere_Scadrial_Trait_MistingBendalloy</li>
-                <li>Cosmere_Scadrial_Trait_MistingGold</li>
-                <li>Cosmere_Scadrial_Trait_MistingElectrum</li>
-                <li>Cosmere_Scadrial_Trait_MistingAtium</li>
-        </conflictingTraits>
         <degreeDatas>
             <li>
                 <label>Mistborn</label>

@@ -2,14 +2,14 @@
 <Defs>
     <ThingDef ParentName="RockBase">
         <defName>MineableCadmium</defName>
-        <label>cadmium Ore</label>
+        <label>Cadmium Ore</label>
         <description>Unrefined Cadmium ore mined directly from the earth.</description>
         <graphicData>
-            <color>(170, 132, 121)</color>
-            <colorTwo>(201, 207, 206)</colorTwo>
             <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutComplex</shaderType>
+            <color>(170, 132, 121)</color>
+            <colorTwo>(201, 207, 206)</colorTwo>
         </graphicData>
         <statBases>
             <MaxHitPoints>1300</MaxHitPoints>

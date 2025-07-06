@@ -30,7 +30,10 @@ public static partial class ThingDefOf {
     public static ThingDef Nickel;
     public static ThingDef Electrum;
     public static ThingDef Lerasium;
+    public static ThingDef LerasiumAlloy;
     public static ThingDef Atium;
+    public static ThingDef Leratium;
+    public static ThingDef LeratiumAlloy;
     public static ThingDef Harmonium;
     public static ThingDef Trellium;
 }

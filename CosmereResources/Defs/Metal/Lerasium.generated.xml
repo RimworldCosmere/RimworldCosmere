@@ -2,7 +2,7 @@
 <Defs>
     <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Lerasium">
         <defName>Lerasium</defName>
-        <label>lerasium</label>
+        <label>Lerasium</label>
         <description>Lerasium is an exceptionally rare god metal tied to the Shard Preservation. When ingested, it transforms the user into a Mistborn, granting access to all Allomantic powers.</description>
         <color>(132, 159, 106)</color>
         <godMetal>true</godMetal>

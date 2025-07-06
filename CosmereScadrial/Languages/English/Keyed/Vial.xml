@@ -5,6 +5,9 @@
     <CS_CurrentlyShielded>metals actively drained</CS_CurrentlyShielded>
     <CS_NotMisting>not a {MISTING}</CS_NotMisting>
     <CS_AlreadyMistborn>already Mistborn</CS_AlreadyMistborn>
+    <CS_AlreadyMisting>already {0} Misting</CS_AlreadyMisting>
+    <CS_AlreadyFullFeruchemist>already Full Feruchemist</CS_AlreadyFullFeruchemist>
+    <CS_AlreadyFerring>already {0} Ferring</CS_AlreadyFerring>
     <CS_TooFull>reserve too full</CS_TooFull>
     <CS_NoAllomanticProperties>no allomantic properties</CS_NoAllomanticProperties>
     <CS_BurnedGodMetal>Pawn burned {METAL}!</CS_BurnedGodMetal>

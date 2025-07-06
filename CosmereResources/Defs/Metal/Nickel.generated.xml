@@ -2,7 +2,7 @@
 <Defs>
     <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Nickel">
         <defName>Nickel</defName>
-        <label>nickel</label>
+        <label>Nickel</label>
         <description>Nickel is a resilient, corrosion-resistant metal that enhances the strength and longevity of its alloy counterparts. Its steadfast durability makes it a critical element in high-performance industrial applications.</description>
         <color>(85, 107, 47)</color>
         <colorTwo>(100, 100, 100)</colorTwo>

@@ -33,6 +33,20 @@
 		<researchViewY>0.70</researchViewY>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
+		<defName>Cosmere_God_Metal_Alloys</defName>
+		<tab>Cosmere</tab>
+		<label>god metal alloys</label>
+		<description>The fusion of god metals with base metals unlocks powers once thought myth. By alloying lerasium, atium, and other divine substances, it becomes possible to forge new identities, rewrite spiritual DNA, and grant access to the Metallic Arts in ways no mortal bloodline could. Few possess the knowledge — or the audacity — to attempt it.</description>
+		<baseCost>3200</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>0.70</researchViewY>
+		<prerequisites>
+			<li>Cosmere_Simple_Alloys</li>
+			<li>Cosmere_God_Metals</li>
+		</prerequisites>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
 		<defName>Cosmere_Glass</defName>
 		<label>glass</label>
 		<description>A versatile material made from sand and heat. Unlocks glass production and allows construction of fragile but beautiful objects like windows, lenses, and decorative structures.</description>

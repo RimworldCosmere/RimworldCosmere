@@ -3,15 +3,18 @@
     <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Bendalloy">
         <defName>Bendalloy</defName>
         <allomancy>
+            <userName>slider</userName>
             <description>Allows {PAWN} to speed up time in a bubble around the user.</description>
             <group>Temporal</group>
             <axis>External</axis>
             <polarity>Pushing</polarity>
         </allomancy>
+        
         <feruchemy>
             <userName>subsumer</userName>
             <description>Stores nutrition, allowing users to go without food.</description>
             <group>Hybrid</group>
         </feruchemy>
+        
     </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

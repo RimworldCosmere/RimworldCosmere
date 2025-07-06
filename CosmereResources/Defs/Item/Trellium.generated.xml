@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="ResourceBase">
+    <ThingDef ParentName="CosmereResourceBase">
         <defName>Trellium</defName>
         <label>Trellium</label>
         <description>An alien, corrupted metal aligned with Trell&#x27;s influence. It resists typical Investiture detection and interferes with other magic systems. Often associated with Hemalurgic constructs, Trellium&#x27;s strange red hue and unique properties hint at a Shardic power foreign to Scadrial.</description>
 
-        <useHitPoints>false</useHitPoints>
-        <healthAffectsPrice>false</healthAffectsPrice>
-        <tradeability>All</tradeability>
-        <stackLimit>150</stackLimit>
-        <thingCategories>
-            <li>ResourcesRaw</li>
-        </thingCategories>
-        <burnableByRecipe>false</burnableByRecipe>
-        <smeltable>true</smeltable>
-        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
-        <allowedArchonexusCount>80</allowedArchonexusCount>
-
+        <thingCategories/>
         <researchPrerequisites>
             <li>Cosmere_God_Metals</li>
         </researchPrerequisites>
@@ -27,18 +16,8 @@
             <texPath>Item/Resource/Trellium</texPath>
         </graphicData>
 
-        <stuffProps>
-            <commonality>0.0</commonality>
-            <color>(148, 0, 37)</color>
-            <categories>
-                <li>Cosmere_Resources_StuffCategory_Metals</li>
-                <li>Metallic</li>
-            </categories>
-            <appearance>Metal</appearance>
-        </stuffProps>
 
         <statBases>
-            <Mass>0.5</Mass>
             <Beauty>100</Beauty>
             <MarketValue>10000</MarketValue>
         </statBases>
@@ -48,6 +27,8 @@
                 <metal>Trellium</metal>
             </li>
         </modExtensions>
+        <comps>
+        </comps>
         <soundInteract>Metal_Drop</soundInteract>
         <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>

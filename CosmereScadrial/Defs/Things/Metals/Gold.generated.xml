@@ -3,15 +3,18 @@
     <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Gold">
         <defName>Gold</defName>
         <allomancy>
+            <userName>augur</userName>
             <description>Shows alternate versions of {PAWN}, based on different pasts. Reflecting on these visions will grant a mood buff.</description>
             <group>Temporal</group>
             <axis>Internal</axis>
             <polarity>Pulling</polarity>
         </allomancy>
+        
         <feruchemy>
             <userName>bloodmaker</userName>
             <description>Stores health, allowing fast healing when tapped.</description>
             <group>Hybrid</group>
         </feruchemy>
+        
     </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

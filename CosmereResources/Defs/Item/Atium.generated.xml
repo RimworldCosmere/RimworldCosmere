@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="ResourceBase">
+    <ThingDef ParentName="CosmereResourceBase">
         <defName>Atium</defName>
         <label>Atium</label>
         <description>Atium is the god metal of the Shard Ruin. It grants its user visions of others&#x27; immediate futures, offering immense strategic advantage in combat and prediction.</description>
 
-        <useHitPoints>false</useHitPoints>
-        <healthAffectsPrice>false</healthAffectsPrice>
-        <tradeability>All</tradeability>
-        <stackLimit>150</stackLimit>
-        <thingCategories>
-            <li>ResourcesRaw</li>
-        </thingCategories>
-        <burnableByRecipe>false</burnableByRecipe>
-        <smeltable>true</smeltable>
-        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
-        <allowedArchonexusCount>80</allowedArchonexusCount>
-
+        <thingCategories/>
         <researchPrerequisites>
             <li>Cosmere_God_Metals</li>
         </researchPrerequisites>
@@ -39,7 +28,6 @@
         </stuffProps>
 
         <statBases>
-            <Mass>0.5</Mass>
             <Beauty>100</Beauty>
             <MarketValue>10000</MarketValue>
         </statBases>
@@ -49,6 +37,11 @@
                 <metal>Atium</metal>
             </li>
         </modExtensions>
+        <comps>
+            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
+                <geneDef>Cosmere_Scadrial_Gene_MistingAtium</geneDef>
+            </li>
+        </comps>
         <soundInteract>Metal_Drop</soundInteract>
         <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>

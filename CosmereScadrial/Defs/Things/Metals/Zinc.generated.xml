@@ -3,15 +3,18 @@
     <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Zinc">
         <defName>Zinc</defName>
         <allomancy>
+            <userName>rioter</userName>
             <description>Allows {PAWN} to riot emotions, pushing others to feel stronger emotions.</description>
             <group>Mental</group>
             <axis>External</axis>
             <polarity>Pushing</polarity>
         </allomancy>
+        
         <feruchemy>
             <userName>sparker</userName>
             <description>Stores mental speed, allowing faster thought processes.</description>
             <group>Cognitive</group>
         </feruchemy>
+        
     </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

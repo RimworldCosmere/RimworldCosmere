@@ -2,14 +2,14 @@
 <Defs>
     <ThingDef ParentName="RockBase">
         <defName>MineableNickel</defName>
-        <label>nickel Ore</label>
+        <label>Nickel Ore</label>
         <description>Unrefined Nickel ore mined directly from the earth.</description>
         <graphicData>
-            <color>(85, 107, 47)</color>
-            <colorTwo>(100, 100, 100)</colorTwo>
             <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutComplex</shaderType>
+            <color>(85, 107, 47)</color>
+            <colorTwo>(100, 100, 100)</colorTwo>
         </graphicData>
         <statBases>
             <MaxHitPoints>1480</MaxHitPoints>

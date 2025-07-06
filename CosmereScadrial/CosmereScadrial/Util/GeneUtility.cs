@@ -177,7 +177,7 @@ public static class GeneUtility {
         }
 
         IEnumerable<MetallicArtsMetalDef> metals =
-            DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => x.allomancy != null);
+            DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x => x.allomancy?.userName != null);
         foreach (MetallicArtsMetalDef? metal in metals) {
             AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false, snapped);
         }

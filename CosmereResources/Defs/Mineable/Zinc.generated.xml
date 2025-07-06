@@ -2,14 +2,14 @@
 <Defs>
     <ThingDef ParentName="RockBase">
         <defName>MineableZinc</defName>
-        <label>zinc Ore</label>
+        <label>Zinc Ore</label>
         <description>Unrefined Zinc ore mined directly from the earth.</description>
         <graphicData>
-            <color>(128, 142, 129)</color>
-            <colorTwo>(187, 189, 187)</colorTwo>
             <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutComplex</shaderType>
+            <color>(128, 142, 129)</color>
+            <colorTwo>(187, 189, 187)</colorTwo>
         </graphicData>
         <statBases>
             <MaxHitPoints>1360</MaxHitPoints>

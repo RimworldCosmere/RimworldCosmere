@@ -2,7 +2,7 @@
 <Defs>
     <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Iron">
         <defName>Iron</defName>
-        <label>iron</label>
+        <label>Iron</label>
         <description>Iron is a robust elemental metal, celebrated for its exceptional strength and versatility. Essential in construction, tool-making, and weaponry, iron forms the backbone of many modern and ancient applications.</description>
         <color>(121, 113, 111)</color>
         <colorTwo>(94, 77, 76)</colorTwo>

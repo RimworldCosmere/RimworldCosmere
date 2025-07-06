@@ -2,14 +2,14 @@
 <Defs>
     <ThingDef ParentName="RockBase">
         <defName>MineableAluminum</defName>
-        <label>aluminum Ore</label>
+        <label>Aluminum Ore</label>
         <description>Unrefined Aluminum ore mined directly from the earth.</description>
         <graphicData>
-            <color>(163, 163, 163)</color>
-            <colorTwo>(194, 194, 194)</colorTwo>
             <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutComplex</shaderType>
+            <color>(163, 163, 163)</color>
+            <colorTwo>(194, 194, 194)</colorTwo>
         </graphicData>
         <statBases>
             <MaxHitPoints>1700</MaxHitPoints>

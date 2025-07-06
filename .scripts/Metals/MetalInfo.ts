@@ -15,6 +15,7 @@ export class MetalInfo {
     public Beauty: number;
     public MarketValue: number;
     public MaxAmount: number = 100;
+    public GenesToGrant: Record<string, string[]>;
     public Allomancy?: MetalAllomancyInfo
     public Feruchemy?: MetalFeruchemyInfo;
     public Buildable?: MetalBuildableInfo;
@@ -73,7 +74,7 @@ export class MetalMiningInfo {
 }
 
 interface AlloyInput {
-    type: 'simple' | 'complex';
+    type: 'simple' | 'complex' | 'god';
     ingredients: {
         item: string | string[];
         count: number;
@@ -91,7 +92,7 @@ export class MetalAlloyInfo {
     public Stuff?: string[];
     public StuffCount?: number;
     public Product: MetalAlloyProduct;
-    public Type: 'simple' | 'complex';
+    public Type: 'simple' | 'complex' | 'god';
 
     public constructor({type, ingredients, stuff, stuffCount, product = {count: 10}}: AlloyInput) {
         this.Type = type;

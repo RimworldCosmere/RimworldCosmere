@@ -36,6 +36,7 @@ export class MetalRegistry {
                 MarketValue: metal.marketValue,
                 Color: metal.color,
                 ColorTwo: metal.colorTwo,
+                GenesToGrant: metal.genesToGrant ?? [],
                 Allomancy: metal.allomancy ? new MetalAllomancyInfo({
                     Axis: metal.allomancy.axis ?? 'None',
                     Description: metal.allomancy.description,

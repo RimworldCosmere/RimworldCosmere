@@ -24,7 +24,7 @@ internal static class DrawInfoInCorner {
         }
     }
 
-    [HarmonyPrefix]
+    [HarmonyPostfix]
     private static void Postfix() {
         cosmereMods ??= typeof(Mod).AllSubclassesNonAbstract()
             .Where(m => m.Name.Contains("Cosmere"))

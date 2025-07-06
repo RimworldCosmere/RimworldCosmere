@@ -27,9 +27,6 @@
             </li>
         </modExtensions>
 
-        <abilities>
-            <li>Cosmere_Scadrial_Ability_CompoundBendalloy</li>
-        </abilities>
 
         <iconPath>UI/Icons/Genes/Investiture/Feruchemy/Bendalloy</iconPath>
     </GeneDef>

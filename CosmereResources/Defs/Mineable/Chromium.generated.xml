@@ -2,14 +2,14 @@
 <Defs>
     <ThingDef ParentName="RockBase">
         <defName>MineableChromium</defName>
-        <label>chromium Ore</label>
+        <label>Chromium Ore</label>
         <description>Unrefined Chromium ore mined directly from the earth.</description>
         <graphicData>
-            <color>(132, 134, 139)</color>
-            <colorTwo>(159, 171, 196)</colorTwo>
             <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutComplex</shaderType>
+            <color>(132, 134, 139)</color>
+            <colorTwo>(159, 171, 196)</colorTwo>
         </graphicData>
         <statBases>
             <MaxHitPoints>1600</MaxHitPoints>

@@ -12,7 +12,7 @@ namespace CosmereResources;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class MetalDefOf {        
     {{#each metals as | metal |}}
-    public static MetalDef {{capitalize metal.Name}};
+    public static MetalDef {{defName metal.Name}};
     {{/each}}
 
     static MetalDefOf() {

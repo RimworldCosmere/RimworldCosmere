@@ -19,9 +19,25 @@ public class AllomanticMetal : AllomanticVial {
                 foreach (MetallicArtsMetalDef? m in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
                     comp.SetReserve(m, MetalReserves.MaxAmount);
                 }
-            } else if (metal.Equals(MetallicArtsMetalDefOf.Atium)) {
+            }
+
+            if (metal.Equals(MetallicArtsMetalDefOf.Leratium)) {
+                GeneUtility.AddFullFeruchemist(ingester, false, true, "ingested Leratium");
+            }
+
+            if (metal.Equals(MetallicArtsMetalDefOf.Atium)) {
                 GeneUtility.AddGene(ingester, metal.GetMistingGene(), false, true);
                 comp.SetReserve(metal, MetalReserves.MaxAmount);
+            }
+
+            if (metal.Equals(MetallicArtsMetalDefOf.LerasiumAlloy)) {
+                MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
+                GeneUtility.AddGene(ingester, stuffMetal.GetMistingGene(), false, true);
+            }
+
+            if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy)) {
+                MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
+                GeneUtility.AddGene(ingester, stuffMetal.GetFerringGene(), false, true);
             }
 
             Find.LetterStack.ReceiveLetter(

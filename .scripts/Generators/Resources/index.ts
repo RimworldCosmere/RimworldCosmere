@@ -1,10 +1,10 @@
 import {resolve} from 'node:path';
-import {upperFirst} from "lodash";
 
 import {compileTemplate, writeGeneratedFile} from '../../Helpers';
 import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {METALS_MOD_DIR} from '../../constants';
 import {Command} from "commander";
+import {toDefName} from "../../Helpers/Handlebars";
 
 const metalDefTemplate = compileTemplate(__dirname, 'MetalDef.xml.template');
 const metalDefOutputDir = resolve(METALS_MOD_DIR, 'Defs', 'Metal');
@@ -23,7 +23,7 @@ const itemOutputDir = resolve(METALS_MOD_DIR, 'Defs', 'Item');
 export default function (program: Command) {
     const metals = Object.values(MetalRegistry.Metals);
     for (const metal of metals) {
-        writeGeneratedFile(metalDefOutputDir, upperFirst(metal.Name) + '.generated.xml', metalDefTemplate({metal}));
+        writeGeneratedFile(metalDefOutputDir, toDefName(metal.Name) + '.generated.xml', metalDefTemplate({metal}));
     }
 
     writeGeneratedFile(CosmereResources, 'MetalDefOf.generated.cs', metalDefOfTemplate({metals}));
@@ -31,13 +31,13 @@ export default function (program: Command) {
 
     const mineable = Object.values(MetalRegistry.Metals).filter((x) => !!x.Mining);
     for (const metal of mineable) {
-        writeGeneratedFile(mineableOutputDir, upperFirst(metal.Name) + '.generated.xml', mineableTemplate({metal}));
+        writeGeneratedFile(mineableOutputDir, toDefName(metal.Name) + '.generated.xml', mineableTemplate({metal}));
     }
     writeGeneratedFile(CosmereResources, 'ThingDefOf.Mineable.generated.cs', thingDefOfMineableTemplate({metals: mineable}));
 
     const items = Object.values(MetalRegistry.Metals);
     for (const metal of items) {
-        writeGeneratedFile(itemOutputDir, upperFirst(metal.Name) + '.generated.xml', itemTemplate({metal}));
+        writeGeneratedFile(itemOutputDir, toDefName(metal.Name) + '.generated.xml', itemTemplate({metal}));
     }
     writeGeneratedFile(CosmereResources, 'ThingDefOf.Items.generated.cs', thingDefOfItemTemplate({metals: items}));
 }

@@ -12,6 +12,6 @@ namespace CosmereResources;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class ThingDefOf {        
     {{#each metals as | metal |}}
-    public static ThingDef Mineable{{capitalize metal.Name}};
+    public static ThingDef Mineable{{defName metal.Name}};
     {{/each}}
 }

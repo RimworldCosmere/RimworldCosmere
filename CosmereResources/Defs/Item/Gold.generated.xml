@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="ResourceBase">
+    <ThingDef ParentName="CosmereResourceBase">
         <defName>Gold</defName>
         <label>Gold</label>
         <description>Gold is a dense, soft, and radiant metal long valued for its rarity and beauty. Resistant to tarnish and corrosion, it has held significance in both trade and symbolism throughout history.</description>
 
-        <useHitPoints>false</useHitPoints>
-        <healthAffectsPrice>false</healthAffectsPrice>
-        <tradeability>All</tradeability>
-        <stackLimit>150</stackLimit>
-        <thingCategories>
-            <li>ResourcesRaw</li>
-        </thingCategories>
-        <burnableByRecipe>false</burnableByRecipe>
-        <smeltable>true</smeltable>
-        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
-        <allowedArchonexusCount>80</allowedArchonexusCount>
-
+        <thingCategories/>
         <researchPrerequisites>
         </researchPrerequisites>
 
         <graphicData>
-            <graphicClass>Graphic_StackCount</graphicClass>
             <drawSize>1</drawSize>
             <texPath>Item/Resource/Gold</texPath>
         </graphicData>
@@ -43,7 +31,6 @@
         </stuffProps>
 
         <statBases>
-            <Mass>0.5</Mass>
             <Beauty>20</Beauty>
             <MarketValue>20</MarketValue>
         </statBases>
@@ -53,6 +40,8 @@
                 <metal>Gold</metal>
             </li>
         </modExtensions>
+        <comps>
+        </comps>
         <soundInteract>Metal_Drop</soundInteract>
         <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>

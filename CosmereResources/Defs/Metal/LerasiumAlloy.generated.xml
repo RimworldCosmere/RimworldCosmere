@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereResources.Def.MetalDef Name="Cosmere_Metal_LerasiumAlloy">
+        <defName>LerasiumAlloy</defName>
+        <label>Lerasium Alloy</label>
+        <description>Lerasium alloyed with common metals transforms the ingester into a Misting for the alloyed metal.</description>
+        <color>(132, 159, 106)</color>
+        <godMetal>true</godMetal>
+    </CosmereResources.Def.MetalDef>
+</Defs>

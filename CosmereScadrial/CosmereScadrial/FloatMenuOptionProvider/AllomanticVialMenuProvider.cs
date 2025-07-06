@@ -27,12 +27,31 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
         Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
 
         if (metal.godMetal) {
-            // Lerasium Requirements
             if (metal.Equals(MetallicArtsMetalDefOf.Lerasium) && pawn.IsMistborn()) {
                 return CannotIngestReason("CS_AlreadyMistborn".Translate());
             }
 
-            // @todo Others? Like maybe something to make the pawn a FullFeruchemist? Harmonium?
+            if (metal.Equals(MetallicArtsMetalDefOf.Leratium) && pawn.IsFullFeruchemist()) {
+                return CannotIngestReason("CS_AlreadyFullFeruchemist".Translate());
+            }
+
+            if (clickedThing.Stuff != null) {
+                MetallicArtsMetalDef? stuffMetal =
+                    DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(clickedThing.Stuff.defName);
+                if (metal.Equals(MetallicArtsMetalDefOf.LerasiumAlloy) &&
+                    stuffMetal != null &&
+                    pawn.IsMisting(stuffMetal)) {
+                    "CS_AlreadyMisting".Translate(metal.allomancy!.userName.CapitalizeFirst());
+                }
+
+                if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy) &&
+                    stuffMetal != null &&
+                    pawn.IsFerring(stuffMetal)) {
+                    return CannotIngestReason(
+                        "CS_AlreadyFerring".Translate(metal.feruchemy!.userName.CapitalizeFirst())
+                    );
+                }
+            }
         } else {
             if (metal.allomancy == null) return CannotIngestReason("CS_NoAllomanticProperties".Translate());
             if (!pawn.IsAllomancer()) return CannotIngestReason("CS_NotAllomancer".Translate());

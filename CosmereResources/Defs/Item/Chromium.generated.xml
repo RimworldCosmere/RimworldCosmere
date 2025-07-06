@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="ResourceBase">
+    <ThingDef ParentName="CosmereResourceBase">
         <defName>Chromium</defName>
         <label>Chromium</label>
         <description>Chromium is a hard, lustrous metal renowned for its brilliant shine and outstanding resistance to tarnish. It enhances the durability and appearance of alloys and is often used to create sleek, modern finishes.</description>
 
-        <useHitPoints>false</useHitPoints>
-        <healthAffectsPrice>false</healthAffectsPrice>
-        <tradeability>All</tradeability>
-        <stackLimit>150</stackLimit>
-        <thingCategories>
-            <li>ResourcesRaw</li>
-        </thingCategories>
-        <burnableByRecipe>false</burnableByRecipe>
-        <smeltable>true</smeltable>
-        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
-        <allowedArchonexusCount>80</allowedArchonexusCount>
-
+        <thingCategories/>
         <researchPrerequisites>
         </researchPrerequisites>
 
         <graphicData>
-            <graphicClass>Graphic_StackCount</graphicClass>
             <drawSize>1</drawSize>
             <texPath>Item/Resource/Chromium</texPath>
         </graphicData>
@@ -38,7 +26,6 @@
         </stuffProps>
 
         <statBases>
-            <Mass>0.5</Mass>
             <Beauty>2</Beauty>
             <MarketValue>10</MarketValue>
         </statBases>
@@ -48,6 +35,8 @@
                 <metal>Chromium</metal>
             </li>
         </modExtensions>
+        <comps>
+        </comps>
         <soundInteract>Metal_Drop</soundInteract>
         <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>

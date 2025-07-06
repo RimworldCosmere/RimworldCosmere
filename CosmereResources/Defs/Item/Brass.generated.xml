@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="ResourceBase">
+    <ThingDef ParentName="CosmereResourceBase">
         <defName>Brass</defName>
         <label>Brass</label>
         <description>Brass is a warm, golden alloy produced by blending Copper with zinc. Praised for its attractive appearance and excellent workability, brass finds extensive use in both decorative applications and practical components.</description>
 
-        <useHitPoints>false</useHitPoints>
-        <healthAffectsPrice>false</healthAffectsPrice>
-        <tradeability>All</tradeability>
-        <stackLimit>150</stackLimit>
-        <thingCategories>
-            <li>ResourcesRaw</li>
-        </thingCategories>
-        <burnableByRecipe>false</burnableByRecipe>
-        <smeltable>true</smeltable>
-        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
-        <allowedArchonexusCount>80</allowedArchonexusCount>
-
+        <thingCategories/>
         <researchPrerequisites>
             <li>Cosmere_Simple_Alloys</li>
+            <li>Cosmere_Complex_Alloys</li>
         </researchPrerequisites>
         <costList>
             <Copper>5</Copper>
@@ -46,7 +36,6 @@
         </recipeMaker>
 
         <graphicData>
-            <graphicClass>Graphic_StackCount</graphicClass>
             <drawSize>1</drawSize>
             <texPath>Item/Resource/Brass</texPath>
         </graphicData>
@@ -68,7 +57,6 @@
         </stuffProps>
 
         <statBases>
-            <Mass>0.5</Mass>
             <Beauty>2</Beauty>
             <MarketValue>1.9</MarketValue>
         </statBases>
@@ -78,6 +66,8 @@
                 <metal>Brass</metal>
             </li>
         </modExtensions>
+        <comps>
+        </comps>
         <soundInteract>Metal_Drop</soundInteract>
         <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>

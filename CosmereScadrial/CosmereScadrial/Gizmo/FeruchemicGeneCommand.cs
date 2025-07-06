@@ -1,4 +1,8 @@
+using System;
 using System.Collections.Generic;
+using CosmereScadrial.Allomancy.Ability;
+using CosmereScadrial.Def;
+using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
 using RimWorld;
 using UnityEngine;
@@ -39,6 +43,25 @@ public class FeruchemicGeneCommand(
             Gen.HashCombineInt(GetHashCode(), 1957199)
         );
         if (Mouse.IsOver(bottomBarRect!.Value)) mouseOverElement = true;
+    }
+
+    protected override void Initialize() {
+        if (initialized) return;
+        Type type = typeof(CharacterCardUtility);
+
+        if (pawn.IsMisting(metal)) {
+            AllomanticAbilityDef? def = metal.GetCompoundAbility();
+            if (def == null) return;
+            AbstractAbility ability = (AbstractAbility)Activator.CreateInstance(
+                typeof(AbilitySelfTarget),
+                pawn,
+                null,
+                def
+            );
+            subgizmos.Add(new AbilitySubGizmo(this, gene, ability));
+        }
+
+        base.Initialize();
     }
 
     public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {

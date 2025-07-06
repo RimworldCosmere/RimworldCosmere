@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CosmereFramework.Extension;
 using CosmereScadrial.Def;
+using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
 using RimWorld;
 using Verse;
@@ -41,17 +43,25 @@ public static class MetalbornUtility {
     private static void HandleCombinedTrait(Pawn pawn, TraitDef traitDef) {
         Trait trait = new Trait(traitDef);
         bool allomancy = traitDef.defName == TraitDefOf.Cosmere_Scadrial_Trait_Mistborn.defName;
-        IEnumerable<MetallicArtsMetalDef> metals = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading
-            .Where(x => !x.godMetal && (allomancy ? x.allomancy != null : x.feruchemy != null));
-        foreach (MetallicArtsMetalDef? metal in metals) {
-            if (pawn.genes.HasActiveGene(GeneDefOf.GetMistingGeneForMetal(metal))) continue;
-            if (pawn.story.traits.HasTrait(trait.def)) pawn.story.traits.RemoveTrait(trait);
+        List<MetallicArtsMetalDef> metals = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading
+            .Where(x => allomancy ? x.allomancy?.userName != null : x.feruchemy?.userName != null)
+            .ToList();
 
-            return;
+        bool hasAllGenes = metals.All(x =>
+            pawn.genes.HasActiveGene(
+                allomancy ? x.GetMistingGene() : x.GetFerringGene()
+            )
+        );
+
+        switch (hasAllGenes) {
+            case false when pawn.story.traits.HasTrait(trait.def):
+                pawn.story.traits.RemoveTrait(trait);
+                return;
+            case true when !pawn.story.traits.HasTrait(traitDef): {
+                pawn.story.TryAddTrait(trait.def);
+                return;
+            }
         }
-
-        pawn.story.traits.GainTrait(trait);
-        pawn.story.traits.RecalculateSuppression();
     }
 
     public static void HandleAllomancerTrait(Pawn pawn) {

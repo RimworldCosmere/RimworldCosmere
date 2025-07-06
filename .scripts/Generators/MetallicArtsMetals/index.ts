@@ -1,9 +1,9 @@
 import {resolve} from 'node:path';
-import {upperFirst} from "lodash";
 
 import {compileTemplate, writeGeneratedFile} from '../../Helpers';
 import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {SCADRIAL_MOD_DIR} from '../../constants';
+import {toDefName} from "../../Helpers/Handlebars";
 
 const metalTemplate = compileTemplate(__dirname, 'MetallicArtsMetalDef.xml.template');
 const metalOutputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Things', 'Metals');
@@ -17,8 +17,8 @@ export default function () {
     const metals = Object.values(MetalRegistry.Metals)
         .filter(x => !!x.Allomancy || !!x.Feruchemy);
     for (const metal of metals) {
-        writeGeneratedFile(metalOutputDir, upperFirst(metal.Name) + '.generated.xml', metalTemplate({metal}));
-        writeGeneratedFile(patchMetalDefOfOutputDir, upperFirst(metal.Name) + '.generated.xml', patchMetalDefOfTemplate({metal}));
+        writeGeneratedFile(metalOutputDir, toDefName(metal.Name) + '.generated.xml', metalTemplate({metal}));
+        writeGeneratedFile(patchMetalDefOfOutputDir, toDefName(metal.Name) + '.generated.xml', patchMetalDefOfTemplate({metal}));
     }
 
     writeGeneratedFile(metalDefOfOutputDir, 'MetallicArtsMetalDefOf.generated.cs', metalDefOfTemplate({metals}));

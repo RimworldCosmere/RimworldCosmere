@@ -2,7 +2,7 @@
 <Defs>
     <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Copper">
         <defName>Copper</defName>
-        <label>copper</label>
+        <label>Copper</label>
         <description>Copper is a soft, reddish metal prized for its conductivity and malleability. It has been a staple in crafting and electrical applications across civilizations for centuries.</description>
         <color>(185, 129, 80)</color>
         <colorTwo>(90, 58, 43)</colorTwo>

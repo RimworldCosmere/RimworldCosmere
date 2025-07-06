@@ -195,8 +195,7 @@
       "name",
       "description",
       "godMetal",
-      "color",
-      "buildable"
+      "color"
     ]
   }
 }

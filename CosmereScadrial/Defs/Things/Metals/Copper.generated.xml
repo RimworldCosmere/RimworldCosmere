@@ -3,15 +3,18 @@
     <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Copper">
         <defName>Copper</defName>
         <allomancy>
+            <userName>smoker</userName>
             <description>Creates a &#x27;coppercloud&#x27; around {PAWN} that hides any Investiture-related activity.</description>
             <group>Mental</group>
             <axis>Internal</axis>
             <polarity>Pulling</polarity>
         </allomancy>
+        
         <feruchemy>
             <userName>archivist</userName>
             <description>Stores memories, allowing perfect recall of stored knowledge.</description>
             <group>Cognitive</group>
         </feruchemy>
+        
     </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

@@ -3,7 +3,7 @@
     <Operation Class="PatchOperationSequence">
         <operations>
             <li Class="PatchOperationAdd">
-                <xpath>Defs/ThingDef[defName = "{{capitalize metal.Name}}"]</xpath>
+                <xpath>Defs/ThingDef[defName="{{defName metal.Name}}"]</xpath>
                 <value>
                     <thingClass>CosmereScadrial.Thing.AllomanticMetal</thingClass>
                     <ingestible>
@@ -22,7 +22,7 @@
                 </value>
             </li>
             <li Class="PatchOperationAdd">
-                <xpath>Defs/ThingDef[defName = "{{capitalize metal.Name}}"]/thingCategories</xpath>
+                <xpath>Defs/ThingDef[defName = "{{defName metal.Name}}"]/thingCategories</xpath>
                 <value>
                     <li>Cosmere_Scadrial_ThingCategory_Metal</li>
                 </value>

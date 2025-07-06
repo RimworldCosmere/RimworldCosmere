@@ -2,14 +2,14 @@
 <Defs>
     <ThingDef ParentName="RockBase">
         <defName>MineableGold</defName>
-        <label>gold Ore</label>
+        <label>Gold Ore</label>
         <description>Unrefined Gold ore mined directly from the earth.</description>
         <graphicData>
-            <color>(206, 172, 55)</color>
-            <colorTwo>(136, 101, 23)</colorTwo>
             <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutComplex</shaderType>
+            <color>(206, 172, 55)</color>
+            <colorTwo>(136, 101, 23)</colorTwo>
         </graphicData>
         <statBases>
             <MaxHitPoints>1500</MaxHitPoints>

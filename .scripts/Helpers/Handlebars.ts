@@ -3,11 +3,24 @@ import {toLower, upperFirst} from "lodash";
 
 require('handlebars-helpers')();
 
+export const toTitleCase = (string: string) => string
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+export const toDefName = (string: string) => toTitleCase(string).replace(/\s/g, '');
+
 Handlebars.registerHelper('lower', (string: string) => {
     return toLower(string);
 });
 Handlebars.registerHelper('capitalize', (string: string) => {
     return upperFirst(string);
+});
+Handlebars.registerHelper('title', (string: string) => {
+    return toTitleCase(string);
+});
+Handlebars.registerHelper('defName', (string: string) => {
+    return toDefName(string);
 });
 Handlebars.registerHelper('join', (strings: (number | string)[], character: string) => {
     return strings?.join(character);

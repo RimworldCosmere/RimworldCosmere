@@ -2,14 +2,14 @@
 <Defs>
     <ThingDef ParentName="RockBase">
         <defName>MineableTin</defName>
-        <label>tin Ore</label>
+        <label>Tin Ore</label>
         <description>Unrefined Tin ore mined directly from the earth.</description>
         <graphicData>
-            <color>(197, 202, 201)</color>
-            <colorTwo>(128, 137, 137)</colorTwo>
             <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutComplex</shaderType>
+            <color>(197, 202, 201)</color>
+            <colorTwo>(128, 137, 137)</colorTwo>
         </graphicData>
         <statBases>
             <MaxHitPoints>1400</MaxHitPoints>

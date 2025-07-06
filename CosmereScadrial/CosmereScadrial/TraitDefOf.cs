@@ -1,6 +1,8 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
+using CosmereResources.Def;
 using RimWorld;
+using Verse;
 
 namespace CosmereScadrial;
 
@@ -19,5 +21,14 @@ public static partial class TraitDefOf {
 
     static TraitDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(TraitDefOf));
+    }
+
+    public static TraitDef GetMistingTraitForMetal(MetalDef def) {
+        return DefDatabase<TraitDef>.GetNamed("Cosmere_Scadrial_Trait_Misting" + def.defName, false);
+    }
+
+
+    public static TraitDef GetFerringTraitForMetal(MetalDef def) {
+        return DefDatabase<TraitDef>.GetNamed("Cosmere_Scadrial_Trait_Ferring" + def.defName, false);
     }
 }

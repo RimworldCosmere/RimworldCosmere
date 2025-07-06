@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="ResourceBase">
-        <defName>{{capitalize metal.Name}}</defName>
-        <label>{{capitalize metal.Name}}</label>
+    <ThingDef ParentName="CosmereResourceBase">
+        <defName>{{defName metal.Name}}</defName>
+        <label>{{title metal.Name}}</label>
         <description>{{metal.Description}}</description>
 
-        <useHitPoints>false</useHitPoints>
-        <healthAffectsPrice>false</healthAffectsPrice>
-        <tradeability>All</tradeability>
-        <stackLimit>150</stackLimit>
-        <thingCategories>
-            <li>ResourcesRaw</li>
-        </thingCategories>
-        <burnableByRecipe>false</burnableByRecipe>
-        <smeltable>true</smeltable>
-        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
-        <allowedArchonexusCount>80</allowedArchonexusCount>
-
+        <thingCategories/>
         <researchPrerequisites>
             {{#if metal.Alloy }}
             {{#if (eq metal.Alloy.Type "simple")}}
             <li>Cosmere_Simple_Alloys</li>
-            {{else}}
-            <li>Smithing</li>
+            {{/if}}
+            {{#if (eq metal.Alloy.Type "simple")}}
             <li>Cosmere_Complex_Alloys</li>
+            {{/if}}
+            {{#if (eq metal.Alloy.Type "god")}}
+            <li>Cosmere_God_Metal_Alloys</li>
             {{/if}}
             {{/if}}
             {{#if metal.GodMetal }}
@@ -32,12 +24,12 @@
         </researchPrerequisites>
         {{#if metal.Alloy}}
         <costList>{{#each metal.Alloy.Ingredients}}{{#each this.Items}}
-            <{{capitalize this}}>{{../Count}}</{{capitalize this}}>
+            <{{defName this}}>{{../Count}}</{{defName this}}>
             {{/each}}{{/each}}
         </costList>
 
         <recipeMaker>
-            <workAmount>1500</workAmount>
+            <workAmount>{{#if metal.GodMetal}}3000{{else}}1500{{/if}}</workAmount>
             <workSpeedStat>SmeltingSpeed</workSpeedStat>
             <workSkill>Crafting</workSkill>
             <requiredGiverWorkType>Smithing</requiredGiverWorkType>
@@ -52,7 +44,7 @@
                 <li>Cosmere_Complex_Alloys</li>
                 {{/if}}
                 {{#if metal.GodMetal }}
-                <li>Cosmere_God_Metals</li>
+                <li>Cosmere_God_Metal_Alloys</li>
                 {{/if}}
             </researchPrerequisites>
             <recipeUsers>
@@ -70,15 +62,14 @@
         {{/if}}
 
         <graphicData>
-            {{# if metal.Stackable}}
-            <graphicClass>Graphic_StackCount</graphicClass>
-            {{else}}
+            {{# unless metal.Stackable}}
             <graphicClass>Graphic_Single</graphicClass>
-            {{/if}}
+            {{/unless}}
             <drawSize>{{metal.DrawSize}}</drawSize>
-            <texPath>Item/Resource/{{capitalize metal.Name}}</texPath>
+            <texPath>Item/Resource/{{defName metal.Name}}</texPath>
         </graphicData>
 
+        {{#if metal.Buildable}}
         <stuffProps>
             <commonality>{{#if metal.Buildable.Commonality}}{{metal.Buildable.Commonality}}{{else}}0.0{{/if}}</commonality>
             <color>{{rgb metal.Color}}</color>
@@ -98,18 +89,27 @@
             </categories>
             <appearance>Metal</appearance>
         </stuffProps>
+        {{/if}}
 
         <statBases>
-            <Mass>0.5</Mass>
             <Beauty>{{metal.Beauty}}</Beauty>
             <MarketValue>{{metal.MarketValue}}</MarketValue>
         </statBases>
 
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
-                <metal>{{capitalize metal.Name}}</metal>
+                <metal>{{defName metal.Name}}</metal>
             </li>
         </modExtensions>
+        <comps>
+            {{#each metal.GenesToGrant}}
+            {{#each this}}
+            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="{{@../key}}">
+                <geneDef>{{this}}</geneDef>
+            </li>
+            {{/each}}
+            {{/each}}
+        </comps>
         <soundInteract>Metal_Drop</soundInteract>
         <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>

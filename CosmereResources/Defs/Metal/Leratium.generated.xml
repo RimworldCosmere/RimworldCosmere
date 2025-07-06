@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Leratium">
+        <defName>Leratium</defName>
+        <label>Leratium</label>
+        <description>Leratium is an alloy of the two god metals: Atium and Lerasium. A more perfect combination of the god metals.</description>
+        <color>(242, 255, 140)</color>
+        <godMetal>true</godMetal>
+    </CosmereResources.Def.MetalDef>
+</Defs>

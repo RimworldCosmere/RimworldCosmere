@@ -30,7 +30,10 @@ public static class MetalDefOf {
     public static MetalDef Nickel;
     public static MetalDef Electrum;
     public static MetalDef Lerasium;
+    public static MetalDef LerasiumAlloy;
     public static MetalDef Atium;
+    public static MetalDef Leratium;
+    public static MetalDef LeratiumAlloy;
     public static MetalDef Harmonium;
     public static MetalDef Trellium;
 

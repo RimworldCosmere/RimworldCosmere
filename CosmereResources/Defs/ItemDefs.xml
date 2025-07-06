@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="CosmereResourceBase" ParentName="ResourceBase" Abstract="True">
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <tradeability>All</tradeability>
+        <stackLimit>150</stackLimit>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+            <li>Cosmere_Resource_ThingCategory_Metal</li>
+        </thingCategories>
+        <burnableByRecipe>false</burnableByRecipe>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        
+        <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>1</drawSize>
+        </graphicData>
+        
+        <statBases>
+            <Mass>0.5</Mass>
+            <Beauty>-4</Beauty>
+            <MarketValue>1</MarketValue>
+        </statBases>
+        <soundInteract>Metal_Drop</soundInteract>
+        <soundDrop>Metal_Drop</soundDrop>
+    </ThingDef>
+</Defs>

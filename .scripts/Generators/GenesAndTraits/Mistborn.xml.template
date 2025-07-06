@@ -13,11 +13,6 @@
                 </metals>
             </li>
         </modExtensions>
-        <conflictingTraits>
-            {{#each metals}}
-                <li>Cosmere_Scadrial_Trait_Misting{{capitalize this.Name}}</li>
-            {{/each}}
-        </conflictingTraits>
         <degreeDatas>
             <li>
                 <label>Mistborn</label>

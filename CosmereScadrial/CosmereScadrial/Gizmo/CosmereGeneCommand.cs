@@ -68,7 +68,7 @@ public abstract class CosmereGeneCommand(
     protected virtual float abilityIconSize => Height / 2f;
 
     protected new Metalborn gene => (Metalborn)base.gene;
-    protected MetallicArtsMetalDef metal => gene.metal;
+    internal MetallicArtsMetalDef metal => gene.metal;
     protected Pawn pawn => gene.pawn;
 
     protected virtual int IncrementDivisor => 5;
@@ -241,14 +241,16 @@ public abstract class CosmereGeneCommand(
         coloredPawn = pawn.NameShortColored.Named("PAWN");
         coloredMetal = metal.coloredLabel.Named("METAL");
 
-        subgizmos = gene.def.abilities?
-                        .OrderBy(x => x.uiOrder)
-                        .Select(x => pawn.abilities.GetAbility(x))
-                        .Cast<AbstractAbility>()
-                        .Where(x => x.GizmosVisible())
-                        .Select(x => new AbilitySubGizmo(this, gene, x))
-                        .ToList<SubGizmo>() ??
-                    [];
+        subgizmos.AddRange(
+            gene.def.abilities?
+                .OrderBy(x => x.uiOrder)
+                .Select(x => pawn.abilities.GetAbility(x))
+                .Cast<AbstractAbility>()
+                .Where(x => x.GizmosVisible())
+                .Select(x => new AbilitySubGizmo(this, gene, x))
+                .ToList<SubGizmo>() ??
+            []
+        );
     }
 
     protected virtual Rect GetTopBarRect() {

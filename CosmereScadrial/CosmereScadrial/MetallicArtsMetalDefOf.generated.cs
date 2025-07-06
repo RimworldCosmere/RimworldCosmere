@@ -23,5 +23,8 @@ public static partial class MetallicArtsMetalDefOf {
     public static MetallicArtsMetalDef Gold;
     public static MetallicArtsMetalDef Electrum;
     public static MetallicArtsMetalDef Lerasium;
+    public static MetallicArtsMetalDef LerasiumAlloy;
     public static MetallicArtsMetalDef Atium;
+    public static MetallicArtsMetalDef Leratium;
+    public static MetallicArtsMetalDef LeratiumAlloy;
 }

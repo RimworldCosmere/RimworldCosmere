@@ -11,7 +11,7 @@
 		</tags>
 		<techLevel>Neolithic</techLevel>
 		<researchViewX>0.00</researchViewX>
-		<researchViewY>1.40</researchViewY>
+		<researchViewY>2.10</researchViewY>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_Scadrial_Allomancy</defName>
@@ -21,7 +21,7 @@
 		<baseCost>600</baseCost>
 		<techLevel>Neolithic</techLevel>
 		<researchViewX>1.00</researchViewX>
-		<researchViewY>0.70</researchViewY>
+		<researchViewY>1.40</researchViewY>
 		<prerequisites>
             <li>Cosmere_Scadrial_MetallicArts</li>
         </prerequisites>
@@ -34,7 +34,7 @@
 		<baseCost>600</baseCost>
 		<techLevel>Neolithic</techLevel>
 		<researchViewX>1.00</researchViewX>
-		<researchViewY>1.40</researchViewY>
+		<researchViewY>2.10</researchViewY>
 		<prerequisites>
 			<li>Cosmere_Scadrial_MetallicArts</li>
 		</prerequisites>
@@ -47,7 +47,7 @@
 		<baseCost>60000</baseCost>
 		<techLevel>Neolithic</techLevel>
 		<researchViewX>1.00</researchViewX>
-		<researchViewY>2.10</researchViewY>
+		<researchViewY>2.80</researchViewY>
 		<prerequisites>
 			<li>Cosmere_Scadrial_MetallicArts</li>
 		</prerequisites>

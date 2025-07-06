@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="ResourceBase">
+    <ThingDef ParentName="CosmereResourceBase">
         <defName>Silver</defName>
         <label>Silver</label>
         <description>Silver is a bright, lustrous metal renowned for its conductivity, beauty, and symbolic purity. While soft and malleable, it remains a staple in crafting, electronics, and currency.</description>
 
-        <useHitPoints>false</useHitPoints>
-        <healthAffectsPrice>false</healthAffectsPrice>
-        <tradeability>All</tradeability>
-        <stackLimit>150</stackLimit>
-        <thingCategories>
-            <li>ResourcesRaw</li>
-        </thingCategories>
-        <burnableByRecipe>false</burnableByRecipe>
-        <smeltable>true</smeltable>
-        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
-        <allowedArchonexusCount>80</allowedArchonexusCount>
-
+        <thingCategories/>
         <researchPrerequisites>
         </researchPrerequisites>
 
         <graphicData>
-            <graphicClass>Graphic_StackCount</graphicClass>
             <drawSize>1</drawSize>
             <texPath>Item/Resource/Silver</texPath>
         </graphicData>
@@ -42,7 +30,6 @@
         </stuffProps>
 
         <statBases>
-            <Mass>0.5</Mass>
             <Beauty>6</Beauty>
             <MarketValue>1</MarketValue>
         </statBases>
@@ -52,6 +39,8 @@
                 <metal>Silver</metal>
             </li>
         </modExtensions>
+        <comps>
+        </comps>
         <soundInteract>Metal_Drop</soundInteract>
         <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>

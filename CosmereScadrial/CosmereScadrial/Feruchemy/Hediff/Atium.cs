@@ -51,7 +51,7 @@ public class Atium : HediffWithComps {
         long ageDeltaTicks = (long)(direction * delta * AgeTicksPerGameTick * severityFactor);
         long newBiologicalAge = pawn.ageTracker.AgeBiologicalTicks + ageDeltaTicks;
 
-        pawn.ageTracker.AgeBiologicalTicks = (long)Mathf.Max(newBiologicalAge, MinAgeYears * TicksPerDay);
+        pawn.ageTracker.AgeBiologicalTicks = (long)Mathf.Max(newBiologicalAge, MinAgeYears * GenDate.TicksPerYear);
 
         float ageYears = pawn.ageTracker.AgeBiologicalYearsFloat;
         if (!isTapping ||

@@ -3,15 +3,18 @@
     <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_Duralumin">
         <defName>Duralumin</defName>
         <allomancy>
+            <userName>gnat (duralumin)</userName>
             <description>Enhances the next Investiture-related ability {PAWN} uses drastically, but is consumed entirely.</description>
             <group>Enhancement</group>
             <axis>Internal</axis>
             <polarity>Pushing</polarity>
         </allomancy>
+        
         <feruchemy>
             <userName>connector</userName>
             <description>Stores connection, useful for adjusting social ties or affiliations.</description>
             <group>Spiritual</group>
         </feruchemy>
+        
     </CosmereScadrial.Def.MetallicArtsMetalDef>
 </Defs>

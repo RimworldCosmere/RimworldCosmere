@@ -15,4 +15,5 @@
 	<CS_WillBurnWhileDowned>Auto-Burning while downed</CS_WillBurnWhileDowned>
 	<CS_NoVials>No {METAL_label} vials to give</CS_NoVials>
 	<CS_MetalCaravanLetter>A hostile caravan is making its way across the map. A few of them carry {METAL}. Intercept them before they escape!</CS_MetalCaravanLetter>
+	<CS_ToggleGizmoSize>Click to toggle the size of this gizmo</CS_ToggleGizmoSize>
 </LanguageData>

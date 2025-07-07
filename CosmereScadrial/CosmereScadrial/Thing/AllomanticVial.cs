@@ -24,7 +24,7 @@ public class AllomanticVial : ThingWithComps {
     protected override void PostIngested(Pawn ingester) {
         base.PostIngested(ingester);
 
-        ingester.FillAllomanticReserves(metal);
+        ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(Constants.VialMetalAmount);
 
         Messages.Message(
             "CS_IngestedVial".Translate(ingester.NameFullColored.Named("PAWN"), metal.coloredLabel.Named("THING")),

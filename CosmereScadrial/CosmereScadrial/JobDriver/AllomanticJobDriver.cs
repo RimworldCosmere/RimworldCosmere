@@ -28,7 +28,7 @@ public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
     }
 
     protected virtual void UpdateBurnRate(float desiredBurnRate) {
-        gene.UpdateBurnSource(desiredBurnRate, ability.def);
+        gene.UpdateBurnSource((ability.def, desiredBurnRate));
     }
 
     protected virtual bool ShouldStopJob() {

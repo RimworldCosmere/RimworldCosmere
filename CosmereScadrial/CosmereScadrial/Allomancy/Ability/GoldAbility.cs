@@ -12,8 +12,6 @@ public class GoldAbility : AbilitySelfTarget {
     public AllomanticHediff? hediff;
     private Job? job;
 
-    public GoldAbility() { }
-
     public GoldAbility(Pawn pawn) : base(pawn) { }
 
     public GoldAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }

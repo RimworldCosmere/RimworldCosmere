@@ -97,13 +97,13 @@ public static class PawnExtension {
 
     public static void FillAllAllomanticReserves(this Pawn pawn) {
         foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
-            gene.SetReserve(gene.Max);
+            gene.FillReserve();
         }
     }
 
     public static void FillAllomanticReserves(this Pawn pawn, MetalDef metal) {
         Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
-        gene?.SetReserve(gene.Max);
+        gene?.FillReserve();
     }
 
     public static float GetAllomanticReservePercent(this Pawn pawn, MetalDef metal) {

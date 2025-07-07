@@ -21,7 +21,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     public BurningStatus? status;
     public bool willBurnWhileDowned;
 
-    protected AbstractAbility() { }
+    // protected AbstractAbility() { }
 
     protected AbstractAbility(Pawn pawn) : base(pawn) {
         gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
@@ -169,7 +169,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
 
         if (burningMote != null) burningMote.Scale = GetMoteScale();
 
-        gene.UpdateBurnSource(GetDesiredBurnRateForStatus(newStatus), def);
+        gene.UpdateBurnSource((def, GetDesiredBurnRateForStatus(newStatus)));
 
         // OnStatusChanged needs to be called in these orders so that the SeverityCalculator can be updated properly
 

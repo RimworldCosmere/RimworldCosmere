@@ -2,8 +2,8 @@
 using System.Linq;
 using CosmereCore.Need;
 using CosmereFramework.Extension;
+using CosmereScadrial.Allomancy;
 using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Util;
 using RimWorld;
@@ -19,14 +19,14 @@ public class Allomancer : Metalborn {
     private const float SleepDecayAmountPerRareInterval = .0025f;
     private float currentReserve;
     public int requestedVialStock = 3;
-    private List<(AllomanticAbilityDef def, float amount)> sources = [];
+    private List<AllomanticBurnSource> sources = [];
     private float? timeDilationFactor;
     public bool shouldConsumeVialNow => Value < (double)targetValue;
     public bool Burning => BurnRate > 0f;
-    public float BurnRate => sources.Sum(s => s.amount);
+    public float BurnRate => sources.Sum(s => s.Rate);
     private int burnTickRate => Mathf.RoundToInt(GenTicks.TickRareInterval / timeDilationFactor!.Value);
     public override float Max => MaxMetalAmount * Mathf.Log(skill.Level + 1, 2); // log base 2
-    public List<(AllomanticAbilityDef def, float amount)> Sources => sources;
+    public List<AllomanticBurnSource> Sources => sources;
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
 
     public override float Value {
@@ -65,7 +65,7 @@ public class Allomancer : Metalborn {
             RemoveFromReserve(SleepDecayAmountPerRareInterval);
         }
 
-        if (pawn.IsHashIntervalTick(burnTickRate, delta)) {
+        if (sources.Count > 0 && pawn.IsHashIntervalTick(burnTickRate, delta)) {
             BurnTickInterval();
         }
 
@@ -74,7 +74,7 @@ public class Allomancer : Metalborn {
         }
     }
 
-    public void BurnTickInterval() {
+    private void BurnTickInterval() {
         if (BurnRate <= 0) return;
 
         if (TryBurnMetalForInvestiture(BurnRate)) return;
@@ -84,11 +84,10 @@ public class Allomancer : Metalborn {
     }
 
     private void RemoveAllSources() {
-        foreach ((AllomanticAbilityDef def, float amount) source in sources) {
-            pawn.GetAllomanticAbility(source.def).UpdateStatus(BurningStatus.Off);
+        foreach (AllomanticBurnSource source in sources.ToList()) {
+            pawn.GetAllomanticAbility(source.Def).UpdateStatus(BurningStatus.Off);
+            sources.Remove(source);
         }
-
-        sources.Clear();
     }
 
     protected override void PostAddOrRemove() {
@@ -101,7 +100,7 @@ public class Allomancer : Metalborn {
 
         Scribe_Values.Look(ref requestedVialStock, "RequestedVialStock", 3);
         Scribe_Values.Look(ref currentReserve, "currentReserve");
-        Scribe_Collections.Look(ref sources, "sources", LookMode.Reference);
+        Scribe_Collections.Look(ref sources, "sources", LookMode.Deep);
     }
 
     public AcceptanceReport CanBurn(float requiredBreathEquivalentUnits) {
@@ -113,11 +112,11 @@ public class Allomancer : Metalborn {
         return AcceptanceReport.WasAccepted;
     }
 
-    public void UpdateBurnSource(float rate, AllomanticAbilityDef def) {
-        if (rate <= 0) {
-            sources.Add((def, rate));
+    public void UpdateBurnSource(AllomanticBurnSource source) {
+        if (source.Rate > 0f) {
+            if (!sources.Contains(source)) sources.Add(source);
         } else {
-            sources.Remove((def, rate));
+            sources.Remove(source);
         }
     }
 
@@ -138,10 +137,14 @@ public class Allomancer : Metalborn {
     }
 
     public float GetReservePercent() {
-        return Value / Max;
+        return Max == 0 ? 0 : Value / Max;
     }
 
     public void WipeReserve() {
         SetReserve(0);
+    }
+
+    public void FillReserve() {
+        SetReserve(Max);
     }
 }

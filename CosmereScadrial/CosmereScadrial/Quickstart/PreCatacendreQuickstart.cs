@@ -89,7 +89,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
             GeneUtility.AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false, snapped);
             if (fillReserves) {
                 Allomancer gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
-                gene.SetReserve(gene.Max);
+                gene.FillReserve();
             }
         }
 

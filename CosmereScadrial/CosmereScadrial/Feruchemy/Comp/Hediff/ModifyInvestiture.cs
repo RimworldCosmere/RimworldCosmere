@@ -1,10 +1,10 @@
-using System;
 using CosmereCore.Need;
 using CosmereResources;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
 using UnityEngine;
 using Verse;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereScadrial.Feruchemy.Comp.Hediff;
 
@@ -45,15 +45,22 @@ public class ModifyInvestiture : HediffComp {
 
     public override void CompPostMake() {
         base.CompPostMake();
-        if (investiture == null)
-            throw new Exception("Modifying investiture on on an hediff tree that doesnt have investiture");
+        if (investiture == null) {
+            Logger.Error("CS_Error_CannotModifyInvestiture".Translate());
+            parent.pawn.health.RemoveHediff(parent);
+            return;
+        }
 
         if (shouldResetNicrosil) nicrosil?.Reset();
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
-        if (investiture == null)
-            throw new Exception("Modifying investiture on on an hediff tree that doesnt have investiture");
+        if (investiture == null) {
+            Logger.Error("CS_Error_CannotModifyInvestiture".Translate());
+            parent.pawn.health.RemoveHediff(parent);
+            return;
+        }
+
         if (shouldResetNicrosil) {
             nicrosil?.Reset();
             return;

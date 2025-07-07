@@ -15,6 +15,8 @@ public static class PatchPawnIdeoTrackerIdeo {
             true) {
             __result = null;
         }
+
+        InteractionWorker_ConvertIdeoAttempt
     }
 }
 

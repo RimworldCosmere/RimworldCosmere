@@ -14,10 +14,6 @@ public class TimeAbility : AbilitySelfTarget {
     private Mote? bubble;
     private Mote? bubbleWithDistortion;
 
-    public TimeAbility() {
-        status = BurningStatus.Off;
-    }
-
     public TimeAbility(Pawn pawn) : base(pawn) {
         status = BurningStatus.Off;
     }

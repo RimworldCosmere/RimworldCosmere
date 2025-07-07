@@ -8,8 +8,6 @@ namespace CosmereScadrial.Allomancy.Ability;
 public class AbilityOtherTarget : AbstractAbility {
     private Job? job;
 
-    public AbilityOtherTarget() { }
-
     public AbilityOtherTarget(Pawn pawn) : base(pawn) { }
 
     public AbilityOtherTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }

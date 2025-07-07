@@ -1,10 +1,10 @@
-using System;
 using CosmereCore.Need;
 using CosmereResources;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
 using UnityEngine;
 using Verse;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereScadrial.Feruchemy.Hediff;
 
@@ -36,8 +36,17 @@ public class Nicrosil : HediffWithComps {
     public override void PostMake() {
         base.PostMake();
 
-        if (investiture == null) throw new Exception("Nicrosil can't be on a pawn that doesnt have investiture");
-        if (nicrosil == null) throw new Exception("Nicrosil can't be on a pawn that doesnt have the Nicrosil gene");
+        if (investiture == null) {
+            Logger.Error("CS_Error_MissingRequirement".Translate("Nicrosil", "investiture"));
+            pawn.health.RemoveHediff(this);
+            return;
+        }
+
+        if (nicrosil == null) {
+            Logger.Error("CS_Error_MissingRequirement".Translate("Nicrosil", "the Nicrosil gene"));
+            pawn.health.RemoveHediff(this);
+            return;
+        }
 
         if (shouldResetNicrosil) nicrosil.Reset();
     }

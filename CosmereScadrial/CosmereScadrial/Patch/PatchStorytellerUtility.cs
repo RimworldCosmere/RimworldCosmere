@@ -20,7 +20,6 @@ public static class PatchStorytellerUtility {
         MethodInfo getBonus = AccessTools.Method(typeof(PatchStorytellerUtility), nameof(GetThreatBonusForPawn));
 
         byte? pawnLocalIndex = null;
-        byte? num3LocalIndex = null;
         bool injected = false;
 
         for (int i = 0; i < codeList.Count; i++) {
@@ -46,7 +45,7 @@ public static class PatchStorytellerUtility {
                 previous?.opcode == OpCodes.Callvirt &&
                 previous.operand is MethodInfo prevMethod &&
                 prevMethod.Name == nameof(SimpleCurve.Evaluate)) {
-                num3LocalIndex = current.operand switch {
+                byte? num3LocalIndex = current.operand switch {
                     LocalBuilder lb => (byte)lb.LocalIndex,
                     int intIdx => (byte)intIdx,
                     byte b => b,

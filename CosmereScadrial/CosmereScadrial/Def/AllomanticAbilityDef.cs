@@ -76,8 +76,8 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
             string abilityName = defName.Replace("Cosmere_Scadrial_Ability_", "");
             LongEventHandler.ExecuteWhenFinished(() => {
                     uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
-                             metal.invertedIcon;
-                    disabledIcon = uiIcon?.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
+                             metal.invertedIcon!;
+                    disabledIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
                 }
             );
         } else {

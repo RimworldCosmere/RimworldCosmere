@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
+using CosmereScadrial.Extension;
+using CosmereScadrial.Gene;
 using CosmereScadrial.Util;
 using LudeonTK;
 using RimWorld;
@@ -65,12 +66,7 @@ public static class ScadrianUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void FillAllReserves(Pawn pawn) {
-        MetalReserves? comp = pawn.GetComp<MetalReserves>();
-        foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading.Where(x =>
-                     x.allomancy != null
-                 )) {
-            comp.SetReserve(metal, MetalReserves.MaxAmount);
-        }
+        pawn.FillAllAllomanticReserves();
 
         Messages.Message(
             $"Gave {pawn.NameFullColored} full reserves reserves for all metals",
@@ -86,8 +82,7 @@ public static class ScadrianUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void WipeAllReserves(Pawn pawn) {
-        MetalReserves? comp = pawn.GetComp<MetalReserves>();
-        comp.GetAllAvailableMetals().ForEach(comp.RemoveReserve);
+        pawn.WipeAllAllomanticReserves();
 
         Messages.Message($"Wiped all reserves for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
     }
@@ -101,15 +96,15 @@ public static class ScadrianUtility {
     public static void FillSpecificMetal(Pawn pawn) {
         List<DebugMenuOption> options = new List<DebugMenuOption>();
 
-        MetalReserves? comp = pawn.GetComp<MetalReserves>();
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
+            Allomancer gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
             string? label = metal.label.CapitalizeFirst();
             options.Add(
                 new DebugMenuOption(
                     label,
                     DebugMenuOptionMode.Action,
                     () => {
-                        comp.SetReserve(metal, MetalReserves.MaxAmount);
+                        gene.SetReserve(gene.Max);
                         Messages.Message($"Filled {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
                     }
                 )
@@ -128,15 +123,15 @@ public static class ScadrianUtility {
     public static void WipeSpecificMetal(Pawn pawn) {
         List<DebugMenuOption> options = new List<DebugMenuOption>();
 
-        MetalReserves? comp = pawn.GetComp<MetalReserves>();
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
+            Allomancer gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
             string? label = metal.label.CapitalizeFirst();
             options.Add(
                 new DebugMenuOption(
                     label,
                     DebugMenuOptionMode.Action,
                     () => {
-                        comp.SetReserve(metal, 0);
+                        gene.SetReserve(0);
                         Messages.Message($"Wiped {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
                     }
                 )

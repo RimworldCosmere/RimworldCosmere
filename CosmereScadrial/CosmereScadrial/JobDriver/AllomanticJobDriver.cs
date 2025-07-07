@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Allomancy.Comp.Thing;
-using CosmereScadrial.Util;
+using CosmereScadrial.Extension;
 using Verse;
 using Verse.AI;
 
@@ -32,6 +32,6 @@ public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
     }
 
     protected virtual bool ShouldStopJob() {
-        return pawn.Downed || pawn.Dead || !AllomancyUtility.CanUseMetal(pawn, ability.metal);
+        return pawn.Downed || pawn.Dead || !pawn.CanUseMetal(ability.metal);
     }
 }

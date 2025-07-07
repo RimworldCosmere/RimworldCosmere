@@ -4,9 +4,10 @@ using CosmereCore.Need;
 using CosmereFramework.Extension;
 using CosmereFramework.Quickstart;
 using CosmereResources.Def;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Dev;
+using CosmereScadrial.Extension;
+using CosmereScadrial.Gene;
 using RimWorld;
 using Verse;
 using GeneUtility = CosmereScadrial.Util.GeneUtility;
@@ -84,10 +85,12 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
     }
 
     private static void PrepareColonistAsMisting(Pawn pawn, bool fillReserves, bool snapped, params MetalDef[] metals) {
-        MetalReserves reserves = pawn.GetComp<MetalReserves>();
         foreach (MetalDef metal in metals) {
             GeneUtility.AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), false, snapped);
-            if (fillReserves) reserves.SetReserve(MetallicArtsMetalDef.FromMetalDef(metal), MetalReserves.MaxAmount);
+            if (fillReserves) {
+                Allomancer gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
+                gene.SetReserve(gene.Max);
+            }
         }
 
         pawn.Name = new NameSingle("Misting: " + string.Join(" and ", metals.Select(m => m.LabelCap)));

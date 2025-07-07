@@ -35,7 +35,7 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
         if (!pawn.CanReserve(t, ignoreOtherReservations: forced)) return false;
 
         Allomancer pewterGene = target.genes.GetAllomanticGeneForMetal(pewter)!;
-        if (!pewterGene.ShouldConsumeVialNow()) return false;
+        if (!pewterGene.shouldConsumeVialNow) return false;
 
         if (TryFindBestVialSourceFor(pawn, out _)) {
             return true;
@@ -60,8 +60,15 @@ public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
         Pawn pawn,
         out Verse.Thing vialSource
     ) {
-        vialSource = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(vialDef),
-            PathEndMode.Touch, TraverseParms.For(pawn), 9999f, x => VialValidator(pawn, x));
+        vialSource = GenClosest.ClosestThingReachable(
+            pawn.Position,
+            pawn.Map,
+            ThingRequest.ForDef(vialDef),
+            PathEndMode.Touch,
+            TraverseParms.For(pawn),
+            9999f,
+            x => VialValidator(pawn, x)
+        );
 
         return vialSource != null;
     }

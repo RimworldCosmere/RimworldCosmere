@@ -1,4 +1,3 @@
-using System.Linq;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
 using CosmereScadrial.Thing;
@@ -9,7 +8,7 @@ namespace CosmereScadrial.JobGiver;
 
 public class IngestVial : ThinkNode_JobGiver {
     public override float GetPriority(Pawn pawn) {
-        return pawn.genes.GetAllomanticGenes().Any(x => x.ShouldConsumeVialNow()) ? 200f : 0f;
+        return pawn.genes.GetAllomanticGenes().Any(x => x.shouldConsumeVialNow) ? 200f : 0f;
     }
 
     /**
@@ -19,7 +18,7 @@ public class IngestVial : ThinkNode_JobGiver {
         if (pawn.Downed) return null;
 
         foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
-            if (!gene.ShouldConsumeVialNow()) continue;
+            if (!gene.shouldConsumeVialNow) continue;
             AllomanticVial? vial = pawn.GetVial(gene);
             if (vial == null) continue;
             if (!pawn.CanReserveAndReach(vial, PathEndMode.InteractionCell, Danger.Some)) {

@@ -1,10 +1,13 @@
+using System.Collections.Generic;
+using System.Linq;
 using CosmereCore.Util;
 using CosmereFramework.Extension;
 using CosmereResources;
 using CosmereResources.Def;
+using CosmereScadrial.Allomancy.Ability;
+using CosmereScadrial.Def;
 using CosmereScadrial.Gene;
 using CosmereScadrial.Thing;
-using CosmereScadrial.Util;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -51,7 +54,9 @@ public static class PawnExtension {
     }
 
     public static bool IsBurning(this Pawn pawn, MetalDef metal) {
-        return AllomancyUtility.IsBurning(pawn, metal.ToMetallicArts());
+        Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
+
+        return gene?.Burning ?? false;
     }
 
     public static bool IsCompounding(this Pawn pawn, MetalDef metal) {
@@ -104,5 +109,13 @@ public static class PawnExtension {
     public static float GetAllomanticReservePercent(this Pawn pawn, MetalDef metal) {
         Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
         return gene?.GetReservePercent() ?? 0f;
+    }
+
+    public static AbstractAbility GetAllomanticAbility(this Pawn pawn, AllomanticAbilityDef def) {
+        return (AbstractAbility)pawn.abilities.GetAbility(def);
+    }
+
+    public static List<MetallicArtsMetalDef> GetAllBurningMetals(this Pawn pawn) {
+        return pawn.genes.GetAllomanticGenes().Where(x => x.Burning).Select(x => x.metal).ToList();
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using CosmereFramework.Extension;
 using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
@@ -15,8 +14,6 @@ public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : Alloman
     public Action? endCallback;
 
     public int endInTicks = -1;
-
-    private MetalBurning burning => pawn.GetComp<MetalBurning>();
 
     public override void Tick() {
         base.Tick();
@@ -35,14 +32,13 @@ public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : Alloman
     public void Burn(Action? callback = null, int endInTicks = -1, Action? endCallback = null) {
         if (this.endInTicks > -1) return;
 
-        foreach (((MetallicArtsMetalDef _, AllomanticAbilityDef abilityDef), float rate) in
-                 burning.burnSourceMap.ToList()) {
+        foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
+            float rate = gene.BurnRate;
             if (rate <= 0f) continue;
 
-            RimWorld.Ability? ability = pawn.abilities.GetAbility(abilityDef);
-            if (ability is not AbstractAbility allomanticAbility) continue;
-
-            allomanticAbility.UpdateStatus(BurningStatus.Duralumin);
+            foreach ((AllomanticAbilityDef def, float amount) source in gene.Sources) {
+                pawn.GetAllomanticAbility(source.def).UpdateStatus(BurningStatus.Duralumin);
+            }
         }
 
         callback?.Invoke();
@@ -52,9 +48,7 @@ public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : Alloman
     }
 
     public void PostBurn() {
-        foreach (MetallicArtsMetalDef m in burning.GetBurningMetals()) {
-            pawn.genes.GetAllomanticGeneForMetal(m)?.WipeReserve();
-        }
+        pawn.genes.GetAllomanticGenes().ForEach(g => g.WipeReserve());
 
         FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
 

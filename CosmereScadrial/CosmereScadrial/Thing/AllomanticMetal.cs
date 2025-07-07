@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
 using RimWorld;
@@ -13,12 +12,9 @@ public class AllomanticMetal : AllomanticVial {
 
     protected override void PostIngested(Pawn ingester) {
         if (metal.godMetal) {
-            MetalReserves? comp = ingester.GetComp<MetalReserves>();
             if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
                 GeneUtility.AddMistborn(ingester, false, true, "ingested Lerasium");
-                foreach (MetallicArtsMetalDef? m in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
-                    comp.SetReserve(m, MetalReserves.MaxAmount);
-                }
+                ingester.FillAllAllomanticReserves();
             }
 
             if (metal.Equals(MetallicArtsMetalDefOf.Leratium)) {
@@ -27,12 +23,13 @@ public class AllomanticMetal : AllomanticVial {
 
             if (metal.Equals(MetallicArtsMetalDefOf.Atium)) {
                 GeneUtility.AddGene(ingester, metal.GetMistingGene(), false, true);
-                comp.SetReserve(metal, MetalReserves.MaxAmount);
+                ingester.FillAllomanticReserves(metal);
             }
 
             if (metal.Equals(MetallicArtsMetalDefOf.LerasiumAlloy)) {
                 MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
                 GeneUtility.AddGene(ingester, stuffMetal.GetMistingGene(), false, true);
+                ingester.FillAllomanticReserves(stuffMetal);
             }
 
             if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy)) {

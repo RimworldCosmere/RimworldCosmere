@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
-using CosmereScadrial.Util;
+using CosmereScadrial.Extension;
 using RimWorld;
 using Verse;
 
@@ -25,8 +24,7 @@ public class AllomanticVial : ThingWithComps {
     protected override void PostIngested(Pawn ingester) {
         base.PostIngested(ingester);
 
-
-        AllomancyUtility.AddMetalReserve(ingester, metal, MetalReserves.MaxAmount); // or adjust amount
+        ingester.FillAllomanticReserves(metal);
 
         Messages.Message(
             "CS_IngestedVial".Translate(ingester.NameFullColored.Named("PAWN"), metal.coloredLabel.Named("THING")),

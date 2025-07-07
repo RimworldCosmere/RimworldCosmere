@@ -1,21 +1,22 @@
 using System;
 using System.Linq;
+using CosmereFramework.Extension;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
+using CosmereScadrial.Extension;
+using CosmereScadrial.Gene;
 using RimWorld;
 using Verse;
 
 namespace CosmereScadrial.Allomancy.Hediff;
 
-public class SurgeChargeHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability)
-    : AllomanticHediff(hediffDef, pawn, ability) {
+public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : AllomanticHediff(d, p, a) {
     public Action? endCallback;
 
     public int endInTicks = -1;
 
     private MetalBurning burning => pawn.GetComp<MetalBurning>();
-    private MetalReserves reserves => pawn.GetComp<MetalReserves>();
 
     public override void Tick() {
         base.Tick();
@@ -51,17 +52,21 @@ public class SurgeChargeHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility a
     }
 
     public void PostBurn() {
-        burning.GetBurningMetals().ForEach(reserves.RemoveReserve);
+        foreach (MetallicArtsMetalDef m in burning.GetBurningMetals()) {
+            pawn.genes.GetAllomanticGeneForMetal(m)?.WipeReserve();
+        }
+
         FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
 
         foreach (AbstractAbility? sourceAbility in sourceAbilities.ToList()) {
-            MetalReserves? res = sourceAbility.pawn.GetComp<MetalReserves>();
-            if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Scadrial_Ability_Duralumin)) {
-                res.RemoveReserve(MetallicArtsMetalDefOf.Duralumin);
-            }
-
-            if (sourceAbility.def.Equals(AbilityDefOf.Cosmere_Scadrial_Ability_Nicrosil)) {
-                res.RemoveReserve(MetallicArtsMetalDefOf.Nicrosil);
+            Allomancer? sourceGene = sourceAbility.pawn.genes.GetAllomanticGeneForMetal(sourceAbility.metal);
+            if (
+                sourceAbility.def.IsOneOf(
+                    AbilityDefOf.Cosmere_Scadrial_Ability_Duralumin,
+                    AbilityDefOf.Cosmere_Scadrial_Ability_Nicrosil
+                )
+            ) {
+                sourceGene?.WipeReserve();
             }
 
             sourceAbility.UpdateStatus(BurningStatus.Off);

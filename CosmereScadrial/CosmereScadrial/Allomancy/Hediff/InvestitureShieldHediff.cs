@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
+using CosmereScadrial.Extension;
+using CosmereScadrial.Gene;
 using RimWorld;
 using Verse;
 
@@ -10,27 +11,25 @@ namespace CosmereScadrial.Allomancy.Hediff;
 
 public class InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability)
     : AllomanticHediff(hediffDef, pawn, ability) {
-    private MetalReserves reserves => pawn.GetComp<MetalReserves>();
-
     public override void Tick() {
         base.Tick();
 
         MetallicArtsMetalDef? metal = sourceAbilities.FirstOrDefault()?.metal;
         if (metal == null) return;
 
-        List<MetallicArtsMetalDef> metalsToWipe = reserves.GetAllAvailableMetals().ToList();
+        List<Allomancer> genes = pawn.genes.GetAllomanticGenes();
         if (metal == MetallicArtsMetalDefOf.Aluminum) {
-            metalsToWipe.Remove(metal);
+            genes.RemoveWhere(x => x.metal == MetallicArtsMetalDefOf.Aluminum);
         }
 
-        if (metalsToWipe.Count == 0) return;
+        if (genes.Count == 0) return;
 
-        foreach (MetallicArtsMetalDef? metalToWipe in metalsToWipe) {
-            reserves.RemoveReserve(metalToWipe);
+        foreach (Allomancer gene in genes) {
+            gene.WipeReserve();
         }
 
         Messages.Message(
-            GetMessage(metal, metalsToWipe),
+            GetMessage(metal, genes.Select(g => g.metal).ToList()),
             MessageTypeDefOf.NeutralEvent,
             false
         );

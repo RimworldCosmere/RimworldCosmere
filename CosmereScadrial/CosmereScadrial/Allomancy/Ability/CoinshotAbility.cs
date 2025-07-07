@@ -38,7 +38,7 @@ public class CoinshotAbility : AbilityOtherTarget {
 
     public override bool CanApplyOn(LocalTargetInfo targetInfo) {
         if (!base.CanApplyOn(targetInfo)) return false;
-        SkillRecord? shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
+        SkillRecord? shooting = pawn.skills.GetSkill(RimWorld.SkillDefOf.Shooting);
         if (shooting.TotallyDisabled) return false;
 
         return pawn.inventory?.innerContainer.Contains(ThingDefOf.Cosmere_Scadrial_Thing_Clip) ?? false;

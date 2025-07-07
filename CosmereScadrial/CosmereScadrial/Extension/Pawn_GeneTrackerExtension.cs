@@ -28,11 +28,11 @@ public static class Pawn_GeneTrackerExtension {
         return genes.HasActiveGene(metal.GetFerringGene());
     }
 
-    public static IEnumerable<Allomancer> GetAllomanticGenes(this Pawn_GeneTracker genes) {
+    public static List<Allomancer> GetAllomanticGenes(this Pawn_GeneTracker genes) {
         return genes.GenesListForReading.Where(x => x is Allomancer).Cast<Allomancer>().ToList();
     }
 
-    public static IEnumerable<Feruchemist> GetFeruchemicGenes(this Pawn_GeneTracker genes) {
+    public static List<Feruchemist> GetFeruchemicGenes(this Pawn_GeneTracker genes) {
         return genes.GenesListForReading.Where(x => x is Feruchemist).Cast<Feruchemist>().ToList();
     }
 }

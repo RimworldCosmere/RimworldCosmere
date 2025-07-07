@@ -1,7 +1,9 @@
 using System;
+using CosmereResources;
 using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
-using CosmereScadrial.Util;
+using CosmereScadrial.Extension;
+using CosmereScadrial.Gene;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -14,6 +16,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     protected Mote? burningMote;
 
     protected int flareStartTick = -1;
+    protected Allomancer gene;
     public GlobalTargetInfo? globalTarget;
     public LocalTargetInfo? localTarget;
     public BurningStatus? status;
@@ -21,15 +24,20 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
 
     protected AbstractAbility() { }
 
-    protected AbstractAbility(Pawn pawn) : base(pawn) { }
+    protected AbstractAbility(Pawn pawn) : base(pawn) {
+        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
+    }
 
-    protected AbstractAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
+    protected AbstractAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) {
+        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
+    }
 
     protected AbstractAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
         if (toggleable) {
             status = BurningStatus.Off;
         }
 
+        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
         Initialize();
     }
 
@@ -38,6 +46,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             status = BurningStatus.Off;
         }
 
+        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
         Initialize();
     }
 
@@ -87,6 +96,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
         RemainingCharges = maxCharges;
 
         willBurnWhileDowned = def is { canBurnWhileDowned: true, autoBurnWhileDownedByDefault: true };
+        gene ??= pawn.genes.GetAllomanticGeneForMetal(metal)!;
     }
 
     public event Action<AbstractAbility, BurningStatus, BurningStatus>? OnStatusChanged;
@@ -107,33 +117,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             _ => 0,
         };
     }
-
-    /*public TaggedString GetRightClickLabel(LocalTargetInfo targetInfo, BurningStatus burningStatus,
-        string disableReason = null) {
-        bool hasDisableReason = !string.IsNullOrEmpty(disableReason);
-
-        TaggedString label = def.LabelCap.Replace("Target",
-            targetInfo.Pawn != null ? targetInfo.Pawn.LabelShort : targetInfo.Thing.LabelNoParenthesisCap);
-        if (burningStatus.Equals(BurningStatus.Off)) {
-            return string.Equals(def.label, metal.label, StringComparison.CurrentCultureIgnoreCase)
-                ? $"Stop Burning {metal.LabelCap}"
-                : $"Stop {label}";
-        }
-
-        if (string.Equals(def.label, metal.label, StringComparison.CurrentCultureIgnoreCase)) {
-            return burningStatus.Equals(BurningStatus.Burning)
-                ? $"Burn {metal.LabelCap}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}"
-                : $"Flare {metal.LabelCap}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}";
-        }
-
-        if (status == BurningStatus.Flaring && burningStatus.Equals(BurningStatus.Burning)) {
-            label = $"De-Flare: {label}";
-        }
-
-        return burningStatus.Equals(BurningStatus.Burning)
-            ? $"{label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}"
-            : $"Flare {label}{(hasDisableReason ? $" ({disableReason.Trim()})" : "")}";
-    }*/
 
     public float GetDesiredBurnRateForStatus() {
         return GetDesiredBurnRateForStatus(status ?? BurningStatus.Off);
@@ -158,8 +141,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             BurningStatus.Passive => 0.5f,
             BurningStatus.Burning => 1f,
             BurningStatus.Flaring => 2f,
-            BurningStatus.Duralumin => AllomancyUtility.GetReservePercent(pawn, MetallicArtsMetalDefOf.Duralumin) *
-                                       10f,
+            BurningStatus.Duralumin => pawn.GetAllomanticReservePercent(MetalDefOf.Duralumin) * 10f,
             _ => 0f,
         };
 

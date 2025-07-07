@@ -5,10 +5,9 @@ using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Allomancy.Hediff;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
-using CosmereScadrial.Thing;
+using CosmereScadrial.Gene;
 using UnityEngine;
 using Verse;
-using Verse.AI;
 
 namespace CosmereScadrial.Util;
 
@@ -19,31 +18,6 @@ public static class AllomancyUtility {
      */
     public const float BeuPerMetalUnit = 0.3125f;
 
-    public static void AddMetalReserve(Pawn pawn, MetallicArtsMetalDef metal, float amount) {
-        pawn.GetComp<MetalReserves>().AddReserve(metal, amount);
-    }
-
-    public static AcceptanceReport CanUseMetal(Pawn pawn, MetallicArtsMetalDef metal) {
-        if (metal.Equals(MetallicArtsMetalDefOf.Lerasium) && pawn.IsMistborn()) {
-            return new AcceptanceReport("CS_AlreadyMistborn".Translate(pawn.Named("PAWN")));
-        }
-
-        if (metal.godMetal || pawn.IsMistborn() || pawn.IsMisting(metal)) {
-            return true;
-        }
-
-        return new AcceptanceReport("CS_CannotUseMetal".Translate(pawn.Named("PAWN"), metal.Named("METAL")));
-    }
-
-    public static float GetReservePercent(Pawn pawn, MetallicArtsMetalDef metal) {
-        MetalReserves? comp = pawn.GetComp<MetalReserves>();
-        if (comp == null || !comp.TryGetReserve(metal, out float value)) {
-            return 0f;
-        }
-
-        return value / MetalReserves.MaxAmount;
-    }
-
     /// <summary>
     ///     Tries to burn the specified metal to generate the required BEUs of investiture.
     /// </summary>
@@ -53,13 +27,14 @@ public static class AllomancyUtility {
     /// <returns>True if successful; false if not enough metal is available.</returns>
     public static bool TryBurnMetalForInvestiture(Pawn pawn, MetallicArtsMetalDef metal, float requiredBeUs) {
         float metalNeeded = GetMetalNeededForBeu(requiredBeUs);
-        MetalReserves? comp = pawn.GetComp<MetalReserves>();
+        Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
+        if (gene == null) return false;
 
-        if (!comp.CanLowerReserve(metal, metalNeeded)) {
+        if (!gene.CanLowerReserve(metalNeeded)) {
             return false;
         }
 
-        comp.LowerReserve(metal, metalNeeded);
+        gene.RemoveFromReserve(metalNeeded);
 
         Investiture? investitureNeed = pawn.needs.TryGetNeed<Investiture>();
         if (investitureNeed == null) throw new MissingReferenceException("Pawn is missing the Investiture need.");
@@ -78,25 +53,6 @@ public static class AllomancyUtility {
 
     public static float GetMetalNeededForBeu(float requiredBeu) {
         return requiredBeu / BeuPerMetalUnit;
-    }
-
-    public static void TryPawnConsumeVialWithMetal(Pawn pawn, MetallicArtsMetalDef metal) {
-        if (pawn.CurJobDef?.defName == RimWorld.JobDefOf.Ingest.defName &&
-            pawn.CurJob.targetA.Thing is AllomanticVial) {
-            return;
-        }
-
-        if (metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil)) return;
-        if (pawn.IsAsleep()) return;
-        if (InvestitureDetector.IsShielded(pawn)) return;
-
-        AllomanticVial? vial = pawn.GetVial(metal);
-        if (vial == null || vial.stackCount == 0) return;
-
-        Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, vial);
-        job.count = 1;
-        job.ingestTotalCount = true;
-        pawn.jobs.InterruptJobWith(job, JobTag.SatisfyingNeeds);
     }
 
     /**

@@ -3,6 +3,7 @@ using System.Linq;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
+using CosmereScadrial.Gene;
 using CosmereScadrial.Util;
 using RimWorld;
 using UnityEngine;
@@ -40,15 +41,14 @@ public class MetalBurning : ThingComp {
     private float timeDilationFactor => pawn.GetStatValue(CosmereCore.StatDefOf.Cosmere_Time_Dilation_Factor);
     private int tickRate => Mathf.RoundToInt(GenTicks.TickRareInterval / timeDilationFactor);
 
-    private MetalReserves metalReserves => pawn.GetComp<MetalReserves>();
-
     public AcceptanceReport CanBurn(MetallicArtsMetalDef metal, float requiredBeUs) {
         float amountToBurn = AllomancyUtility.GetMetalNeededForBeu(requiredBeUs);
 
-        if (!metalReserves.CanLowerReserve(metal, amountToBurn) &&
-            !AllomancyUtility.PawnHasVialForMetal(pawn, metal)) {
+        Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
+        if (gene == null ||
+            !gene.CanLowerReserve(amountToBurn) &&
+            !AllomancyUtility.PawnHasVialForMetal(pawn, metal))
             return "CS_CannotBurn".Translate(pawn.Named("PAWN"), metal.Named("METAL"));
-        }
 
         return AcceptanceReport.WasAccepted;
     }

@@ -30,7 +30,7 @@ public class AllomanticGeneCommand(
     protected override string GetTooltipHeader() {
         float rate = burning.GetTotalBurnRate(metal) * GenTicks.TicksPerRealSecond;
         NamedArgument coloredCount =
-            gene.RequestedVialStock.ToString().Colorize(ColoredText.FactionColor_Ally).Named("COUNT");
+            gene.requestedVialStock.ToString().Colorize(ColoredText.FactionColor_Ally).Named("COUNT");
         StringBuilder tooltip = new StringBuilder(base.GetTooltipHeader() + "\n");
 
         if (burning.IsBurning(metal)) {
@@ -92,8 +92,8 @@ public class AllomanticGeneCommand(
                     .Resolve(),
                 0,
                 20,
-                value => gene.RequestedVialStock = value,
-                gene.RequestedVialStock
+                value => gene.requestedVialStock = value,
+                gene.requestedVialStock
             );
             Find.WindowStack.Add(slider);
         }

@@ -17,7 +17,7 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
     public bool canBurnWhileAsleep = false;
     public bool canBurnWhileDowned = false;
     public bool canFlare = true;
-    public Texture2D? disabledIcon = BaseContent.BadTex;
+    public Texture2D disabledIcon = BaseContent.BadTex;
     public HediffDef? dragHediff;
     public HediffDef? hediff;
     public HediffDef? hediffFriendly;

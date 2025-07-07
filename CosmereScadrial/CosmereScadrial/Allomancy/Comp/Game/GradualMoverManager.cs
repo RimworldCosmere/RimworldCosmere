@@ -26,7 +26,12 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
 
             m.ticksElapsed++;
             float t = Mathf.Clamp01((float)m.ticksElapsed / m.ticksTotal);
-            m.thing.Position = Vector3.Lerp(m.start, m.end, t).ToIntVec3();
+            float distanceCoveredFraction = Mathf.Clamp01(1f - t);
+            float easedPosition = EasingFunctions.EaseInOutQuint(distanceCoveredFraction);
+            Vector3 position = Vector3.Lerp(m.end, m.start, easedPosition);
+
+
+            m.thing.Position = position.ToIntVec3(); //Vector3.Lerp(m.start, m.end, t).ToIntVec3();
             List<Pawn> pawnsInSameCell = m.thing.ThingsSharingPosition<Pawn>()
                 .Where(x =>
                     !x.Equals(m.source) && !x.Equals(m.thing) && !haveDamaged.Contains(x) && !x.Faction.IsPlayer

@@ -28,54 +28,6 @@
             </li>
         </modExtensions>
         <comps>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingIron</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingSteel</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingTin</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingPewter</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingZinc</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingBrass</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingCopper</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingBronze</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingChromium</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingNicrosil</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingAluminum</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingDuralumin</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingCadmium</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingBendalloy</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingGold</geneDef>
-            </li>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingElectrum</geneDef>
-            </li>
         </comps>
         <soundInteract>Metal_Drop</soundInteract>
         <soundDrop>Metal_Drop</soundDrop>

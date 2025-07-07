@@ -17,6 +17,11 @@
         <stuffProps>
             <commonality>0.0</commonality>
             <color>(197, 202, 201)</color>
+            <constructEffect>ConstructMetal</constructEffect>
+            <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
+            <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+            <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+            <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
             <categories>
                 <li>Cosmere_Resources_StuffCategory_Metals</li>
                 <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>

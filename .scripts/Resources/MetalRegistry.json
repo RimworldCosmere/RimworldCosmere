@@ -807,26 +807,6 @@
       159,
       106
     ],
-    "genesToGrant": {
-      "CryptikLemur.Cosmere.Scadrial": [
-        "Cosmere_Scadrial_Gene_MistingIron",
-        "Cosmere_Scadrial_Gene_MistingSteel",
-        "Cosmere_Scadrial_Gene_MistingTin",
-        "Cosmere_Scadrial_Gene_MistingPewter",
-        "Cosmere_Scadrial_Gene_MistingZinc",
-        "Cosmere_Scadrial_Gene_MistingBrass",
-        "Cosmere_Scadrial_Gene_MistingCopper",
-        "Cosmere_Scadrial_Gene_MistingBronze",
-        "Cosmere_Scadrial_Gene_MistingChromium",
-        "Cosmere_Scadrial_Gene_MistingNicrosil",
-        "Cosmere_Scadrial_Gene_MistingAluminum",
-        "Cosmere_Scadrial_Gene_MistingDuralumin",
-        "Cosmere_Scadrial_Gene_MistingCadmium",
-        "Cosmere_Scadrial_Gene_MistingBendalloy",
-        "Cosmere_Scadrial_Gene_MistingGold",
-        "Cosmere_Scadrial_Gene_MistingElectrum"
-      ]
-    },
     "allomancy": {
       "description": "Rewrites {PAWN}s spirit-web, granting them the powers of a Mistborn"
     }
@@ -875,17 +855,16 @@
       60,
       60
     ],
-    "genesToGrant": {
-      "CryptikLemur.Cosmere.Scadrial": [
-        "Cosmere_Scadrial_Gene_MistingAtium"
-      ]
-    },
     "allomancy": {
       "userName": "seer",
       "description": "Allows {PAWN} a glimpse into the immediate future of others.",
       "abilities": [
         "Cosmere_Scadrial_Ability_Atium"
       ]
+    },
+    "buildable": {
+      "items": true,
+      "buildings": false
     },
     "feruchemy": {
       "userName": "chronist",
@@ -905,26 +884,6 @@
       255,
       140
     ],
-    "genesToGrant": {
-      "CryptikLemur.Cosmere.Scadrial": [
-        "Cosmere_Scadrial_Gene_FerringIron",
-        "Cosmere_Scadrial_Gene_FerringSteel",
-        "Cosmere_Scadrial_Gene_FerringTin",
-        "Cosmere_Scadrial_Gene_FerringPewter",
-        "Cosmere_Scadrial_Gene_FerringZinc",
-        "Cosmere_Scadrial_Gene_FerringBrass",
-        "Cosmere_Scadrial_Gene_FerringCopper",
-        "Cosmere_Scadrial_Gene_FerringBronze",
-        "Cosmere_Scadrial_Gene_FerringChromium",
-        "Cosmere_Scadrial_Gene_FerringNicrosil",
-        "Cosmere_Scadrial_Gene_FerringAluminum",
-        "Cosmere_Scadrial_Gene_FerringDuralumin",
-        "Cosmere_Scadrial_Gene_FerringCadmium",
-        "Cosmere_Scadrial_Gene_FerringBendalloy",
-        "Cosmere_Scadrial_Gene_FerringGold",
-        "Cosmere_Scadrial_Gene_FerringElectrum"
-      ]
-    },
     "feruchemy": {
       "description": "Rewrites {PAWN}s spirit-web, granting them the powers of a Full Feruchemist"
     },

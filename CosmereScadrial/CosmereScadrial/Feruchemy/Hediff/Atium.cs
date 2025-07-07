@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CosmereResources;
 using CosmereScadrial.Extension;
@@ -6,6 +5,7 @@ using CosmereScadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereScadrial.Feruchemy.Hediff;
 
@@ -34,7 +34,10 @@ public class Atium : HediffWithComps {
     public override void PostMake() {
         base.PostMake();
 
-        if (atium == null) throw new Exception("Atium can't be on a pawn that doesnt have the Atium gene");
+        if (atium == null) {
+            Logger.Error("CS_Error_MissingRequirement".Translate("Atium", "the Atium gene"));
+            pawn.health.RemoveHediff(this);
+        }
     }
 
     public override void TickInterval(int delta) {

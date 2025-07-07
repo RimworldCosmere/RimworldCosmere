@@ -69,7 +69,7 @@ public class AllomanticHediff : HediffWithComps {
                 severityCalculator.RecalculateSeverity,
                 GenTicks.TicksPerRealSecond,
                 () => {
-                    pawn.genes.GetAllomanticGenes().ForEach(g => g.BurnTickInterval());
+                    pawn.genes.GetAllomanticGenes().ForEach(g => g.TryBurnMetalForInvestiture(g.BurnRate));
                     severityCalculator.RecalculateSeverity();
                 }
             );

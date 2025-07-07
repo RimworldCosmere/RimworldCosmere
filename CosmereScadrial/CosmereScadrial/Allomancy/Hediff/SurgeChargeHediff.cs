@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using CosmereFramework.Extension;
 using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
 using RimWorld;
@@ -36,8 +35,8 @@ public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : Alloman
             float rate = gene.BurnRate;
             if (rate <= 0f) continue;
 
-            foreach ((AllomanticAbilityDef def, float amount) source in gene.Sources) {
-                pawn.GetAllomanticAbility(source.def).UpdateStatus(BurningStatus.Duralumin);
+            foreach (AllomanticBurnSource source in gene.Sources) {
+                pawn.GetAllomanticAbility(source.Def).UpdateStatus(BurningStatus.Duralumin);
             }
         }
 

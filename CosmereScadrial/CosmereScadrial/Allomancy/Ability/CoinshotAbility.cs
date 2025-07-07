@@ -4,10 +4,6 @@ using Verse;
 namespace CosmereScadrial.Allomancy.Ability;
 
 public class CoinshotAbility : AbilityOtherTarget {
-    public CoinshotAbility() {
-        status = BurningStatus.Off;
-    }
-
     public CoinshotAbility(Pawn pawn) : base(pawn) {
         status = BurningStatus.Off;
     }
@@ -28,12 +24,10 @@ public class CoinshotAbility : AbilityOtherTarget {
 
     public override bool GizmoDisabled(out string reason) {
         bool hasClip = pawn.inventory?.innerContainer.Contains(ThingDefOf.Cosmere_Scadrial_Thing_Clip) ?? false;
-        if (!hasClip) {
-            reason = "CS_NoClipsToThrow".Translate(pawn.Named("PAWN"));
-            return true;
-        }
+        if (hasClip) return base.GizmoDisabled(out reason);
 
-        return base.GizmoDisabled(out reason);
+        reason = "CS_NoClipsToThrow".Translate(pawn.Named("PAWN"));
+        return true;
     }
 
     public override bool CanApplyOn(LocalTargetInfo targetInfo) {
@@ -43,17 +37,6 @@ public class CoinshotAbility : AbilityOtherTarget {
 
         return pawn.inventory?.innerContainer.Contains(ThingDefOf.Cosmere_Scadrial_Thing_Clip) ?? false;
     }
-
-    /*public override AcceptanceReport CanActivate(LocalTargetInfo targetInfo, BurningStatus activationStatus,
-        bool ignoreInvestiture = false) {
-        AcceptanceReport baseResult = base.CanActivate(targetInfo, activationStatus, ignoreInvestiture);
-        if (!baseResult.Accepted) return baseResult;
-
-        SkillRecord? shooting = pawn.skills.GetSkill(SkillDefOf.Shooting);
-        if (!shooting.PermanentlyDisabled && !shooting.TotallyDisabled) return true;
-
-        return "CS_CannotShoot".Translate(pawn.Named("PAWN"));
-    }*/
 
     public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
         localTarget = targetInfo;

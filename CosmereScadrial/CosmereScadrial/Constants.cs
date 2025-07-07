@@ -6,4 +6,6 @@ public static class Constants {
      * 5 BEU / 16 metals / 100 units per metal ends up with this conversion rate
      */
     public const float BreathEquivalentUnitsPerMetalUnit = 0.3125f;
+
+    public const float VialMetalAmount = 1f;
 }

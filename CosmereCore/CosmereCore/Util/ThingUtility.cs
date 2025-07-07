@@ -4,9 +4,11 @@ using Verse;
 namespace CosmereCore.Util;
 
 public static class ThingUtility {
-    public static bool ShouldDrop(ThingWithComps thing) {
-        if (thing.holdingOwner.Owner.ParentHolder is Pawn { Dead: true }) return true;
+    public static bool ShouldDrop(Thing thing) {
+        if (thing is not ThingWithComps thingWithComps) return true;
+        if (thingWithComps.holdingOwner.Owner.ParentHolder is Pawn { Dead: true }) return true;
 
-        return !thing.HasComp<PreventDropOnDowned>() || thing.GetComp<PreventDropOnDowned>().PreventDrop;
+        return !thingWithComps.HasComp<PreventDropOnDowned>() ||
+               thingWithComps.GetComp<PreventDropOnDowned>().PreventDrop;
     }
 }

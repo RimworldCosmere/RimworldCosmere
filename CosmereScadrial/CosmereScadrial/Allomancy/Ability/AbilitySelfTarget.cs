@@ -7,8 +7,6 @@ using Verse;
 namespace CosmereScadrial.Allomancy.Ability;
 
 public class AbilitySelfTarget : AbstractAbility {
-    public AbilitySelfTarget() { }
-
     public AbilitySelfTarget(Pawn pawn) : base(pawn) { }
 
     public AbilitySelfTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }

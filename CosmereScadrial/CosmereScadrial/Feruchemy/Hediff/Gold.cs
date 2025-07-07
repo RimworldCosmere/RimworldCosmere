@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using CosmereFramework;
 using CosmereResources;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
@@ -15,7 +15,10 @@ public class Gold : HediffWithComps {
     public override void PostMake() {
         base.PostMake();
 
-        if (gold == null) throw new Exception("Gold can't be on a pawn that doesnt have the Gold gene");
+        if (gold == null) {
+            Logger.Error("CS_Error_MissingRequirement".Translate("Gold", "the Gold gene"));
+            pawn.health.RemoveHediff(this);
+        }
     }
 
     public override void TickInterval(int delta) {

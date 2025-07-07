@@ -104,7 +104,7 @@ public static class ScadrianUtility {
                     label,
                     DebugMenuOptionMode.Action,
                     () => {
-                        gene.SetReserve(gene.Max);
+                        gene.FillReserve();
                         Messages.Message($"Filled {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
                     }
                 )
@@ -131,7 +131,7 @@ public static class ScadrianUtility {
                     label,
                     DebugMenuOptionMode.Action,
                     () => {
-                        gene.SetReserve(0);
+                        gene.WipeReserve();
                         Messages.Message($"Wiped {label} for {pawn.LabelShort}", pawn, MessageTypeDefOf.PositiveEvent);
                     }
                 )

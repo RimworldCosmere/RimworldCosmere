@@ -5,8 +5,6 @@ using Verse;
 namespace CosmereScadrial.Allomancy.Ability;
 
 public class ExternalPhysicalTargetAbility : AbilityOtherTarget {
-    public ExternalPhysicalTargetAbility() { }
-
     public ExternalPhysicalTargetAbility(Pawn pawn) : base(pawn) { }
 
     public ExternalPhysicalTargetAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }

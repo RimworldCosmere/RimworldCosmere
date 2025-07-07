@@ -81,14 +81,16 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         }
 
         float forceMultiplier = ability.GetStrength();
-        float mass = thing.GetStatValue(RimWorld.StatDefOf.Mass);
-        float pawnMass = pawn.GetStatValue(RimWorld.StatDefOf.Mass) * forceMultiplier;
+        float mass = thing.GetStatValue(RimWorld.StatDefOf.Mass) * thing.stackCount;
+        float pawnMass = pawn.GetStatValue(RimWorld.StatDefOf.Mass) +
+                         MassUtility.GearAndInventoryMass(pawn) * forceMultiplier;
+        float massDifference = Mathf.Abs(pawnMass - mass);
         if (mass > pawnMass && !movePawn) return;
 
         (Verse.Thing, Verse.Thing) things = mass > pawnMass ? (pawn, thing) : (thing, pawn);
         float distanceBetweenThings = (things.Item2.Position - things.Item1.Position).LengthHorizontal;
         IntVec3 dir = GetDirectionalOffsetFromTarget(things.Item2, things.Item1);
-        float distance = Mathf.Clamp(20f / mass, 1f, 8f) * forceMultiplier * 4;
+        float distance = Mathf.Lerp(0, massDifference, .333333f) * forceMultiplier;
         if (polarity == AllomancyPolarity.Pulling) distance = Mathf.Min(distance, distanceBetweenThings);
 
         IntVec3 destination = things.Item1.Position + dir * (int)distance;
@@ -103,13 +105,16 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
             break;
         }
 
+        int duration = Mathf.RoundToInt(
+            Mathf.Lerp(GenTicks.TicksPerRealSecond / 2f, massDifference, 30f / forceMultiplier / 100)
+        );
         Current.Game.GetComponent<GradualMoverManager>()
             .StartMovement(
                 polarity,
                 things.Item2,
                 things.Item1,
                 finalPos,
-                Mathf.Max(5, Mathf.RoundToInt(30f / forceMultiplier)),
+                duration,
                 lineMaterial
             );
         surge?.PostBurn();

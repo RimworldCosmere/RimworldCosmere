@@ -38,9 +38,6 @@
             </li>
         </modExtensions>
         <comps>
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="CryptikLemur.Cosmere.Scadrial">
-                <geneDef>Cosmere_Scadrial_Gene_MistingAtium</geneDef>
-            </li>
         </comps>
         <soundInteract>Metal_Drop</soundInteract>
         <soundDrop>Metal_Drop</soundDrop>

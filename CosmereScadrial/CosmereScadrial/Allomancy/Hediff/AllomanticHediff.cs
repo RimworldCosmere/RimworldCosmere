@@ -5,8 +5,8 @@ using System.Text;
 using CosmereCore.Extension;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Allomancy.Comp.Hediff;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
+using CosmereScadrial.Extension;
 using CosmereScadrial.Util;
 using Verse;
 
@@ -69,7 +69,7 @@ public class AllomanticHediff : HediffWithComps {
                 severityCalculator.RecalculateSeverity,
                 GenTicks.TicksPerRealSecond,
                 () => {
-                    pawn.GetComp<MetalBurning>().TryBurnMetals();
+                    pawn.genes.GetAllomanticGenes().ForEach(g => g.BurnTickInterval());
                     severityCalculator.RecalculateSeverity();
                 }
             );

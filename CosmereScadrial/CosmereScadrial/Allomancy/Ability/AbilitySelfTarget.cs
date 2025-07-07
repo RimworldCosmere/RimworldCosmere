@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereFramework.Extension;
-using CosmereScadrial.Util;
 using RimWorld;
 using Verse;
 
@@ -37,7 +36,7 @@ public class AbilitySelfTarget : AbstractAbility {
         base.AbilityTick();
 
         if (willBurnWhileDowned && pawn.Downed && !pawn.Dead && !atLeastPassive) {
-            if (gene?.CanLowerReserve(AllomancyUtility.GetMetalNeededForBeu(def.beuPerTick)) ?? false) {
+            if (gene.CanLowerReserve(gene.GetMetalNeededForBreathEquivalentUnits(def.beuPerTick))) {
                 UpdateStatus(BurningStatus.Passive);
             }
         }

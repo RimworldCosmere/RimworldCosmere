@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Gene;
 using RimWorld;
 using UnityEngine;
@@ -21,19 +20,18 @@ public class AllomanticGeneCommand(
     private string? setVialCountTooltipCache;
 
     private new Allomancer gene => (Allomancer)base.gene;
-    private MetalBurning burning => pawn.GetComp<MetalBurning>();
     protected override int IncrementDivisor => 5;
 
     private string setVialCountTooltip => setVialCountTooltipCache ??=
         "CS_SetVialCountTooltip".Translate(coloredPawn, coloredMetal, pawn.Named("pawn")).Resolve();
 
     protected override string GetTooltipHeader() {
-        float rate = burning.GetTotalBurnRate(metal) * GenTicks.TicksPerRealSecond;
+        float rate = gene.BurnRate * GenTicks.TicksPerRealSecond;
         NamedArgument coloredCount =
             gene.requestedVialStock.ToString().Colorize(ColoredText.FactionColor_Ally).Named("COUNT");
         StringBuilder tooltip = new StringBuilder(base.GetTooltipHeader() + "\n");
 
-        if (burning.IsBurning(metal)) {
+        if (gene.Burning) {
             tooltip.AppendLine(
                 "CS_BurnRate".Translate($"{rate:0.000}".Named("RATE"))
                     .Colorize(ColoredText.FactionColor_Hostile)

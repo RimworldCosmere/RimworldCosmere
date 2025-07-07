@@ -34,7 +34,7 @@ public class Coinshot : Verb_Shoot {
             return false;
         }
 
-        if (!AllomancyUtility.TryBurnMetalForInvestiture(pawn, ability.metal, ability.def.beuPerTick)) return false;
+        if (!ability.gene.TryBurnMetalForInvestiture(ability.def.beuPerTick)) return false;
         base.TryCastShot();
 
         // Consume the clip

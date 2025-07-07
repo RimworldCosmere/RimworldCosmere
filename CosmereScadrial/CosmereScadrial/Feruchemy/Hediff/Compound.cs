@@ -1,5 +1,4 @@
 using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Allomancy.Hediff;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
@@ -10,12 +9,10 @@ namespace CosmereScadrial.Feruchemy.Hediff;
 public class Compound : AllomanticHediff {
     protected readonly AbstractAbility ability;
     protected readonly Allomancer? allomancer;
-    protected readonly MetalBurning burning;
     protected readonly Feruchemist? feruchemist;
 
     public Compound(HediffDef hediffDef, Pawn pawn, AbstractAbility ability) : base(hediffDef, pawn, ability) {
         this.ability = ability;
-        burning = pawn.GetComp<MetalBurning>();
         allomancer = pawn.genes.GetAllomanticGeneForMetal(metal);
         feruchemist = pawn.genes.GetFeruchemicGeneForMetal(metal);
     }

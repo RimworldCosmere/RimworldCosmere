@@ -1,5 +1,4 @@
 using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
@@ -18,11 +17,10 @@ public class MetalCost : CompAbilityEffect {
     private new AbstractAbility parent => (AbstractAbility)base.parent;
     private MetallicArtsMetalDef metal => parent.def.metal.ToMetallicArts();
     private Allomancer gene => parent.pawn.genes.GetAllomanticGeneForMetal(metal)!;
-    private MetalBurning burning => parent.pawn.GetComp<MetalBurning>();
 
     private float currentCost => parent.GetDesiredBurnRateForStatus(parent.nextStatus);
 
-    private bool hasEnoughMetal => burning.CanBurn(metal, currentCost);
+    private bool hasEnoughMetal => gene.CanBurn(currentCost);
 
     /*public override string ExtraTooltipPart() {
         return "CS_MetalCost".Translate() + $": {currentCost:0.000}";
@@ -40,7 +38,7 @@ public class MetalCost : CompAbilityEffect {
             return true;
         }
 
-        AcceptanceReport canBurn = burning.CanBurn(metal, currentCost);
+        AcceptanceReport canBurn = gene.CanBurn(currentCost);
         if (!canBurn.Accepted) {
             reason = canBurn.Reason;
             return true;

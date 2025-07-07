@@ -1,6 +1,5 @@
 using System;
 using CosmereResources;
-using CosmereScadrial.Allomancy.Comp.Thing;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
@@ -13,10 +12,10 @@ using Logger = CosmereFramework.Logger;
 namespace CosmereScadrial.Allomancy.Ability;
 
 public abstract partial class AbstractAbility : RimWorld.Ability {
+    public readonly Allomancer gene;
     protected Mote? burningMote;
 
     protected int flareStartTick = -1;
-    protected Allomancer gene;
     public GlobalTargetInfo? globalTarget;
     public LocalTargetInfo? localTarget;
     public BurningStatus? status;
@@ -65,9 +64,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
 
     protected virtual bool toggleable => def.toggleable;
 
-    protected MetalBurning metalBurning => pawn.GetComp<MetalBurning>();
-
-    public override AcceptanceReport CanCast => metalBurning.CanBurn(metal, def.beuPerTick);
+    public override AcceptanceReport CanCast => gene.CanBurn(def.beuPerTick);
 
     public new void Initialize() {
         if (def.comps.Any<AbilityCompProperties>()) {
@@ -96,7 +93,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
         RemainingCharges = maxCharges;
 
         willBurnWhileDowned = def is { canBurnWhileDowned: true, autoBurnWhileDownedByDefault: true };
-        gene ??= pawn.genes.GetAllomanticGeneForMetal(metal)!;
     }
 
     public event Action<AbstractAbility, BurningStatus, BurningStatus>? OnStatusChanged;
@@ -173,7 +169,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
 
         if (burningMote != null) burningMote.Scale = GetMoteScale();
 
-        metalBurning.UpdateBurnSource(metal, GetDesiredBurnRateForStatus(newStatus), def);
+        gene.UpdateBurnSource(GetDesiredBurnRateForStatus(newStatus), def);
 
         // OnStatusChanged needs to be called in these orders so that the SeverityCalculator can be updated properly
 

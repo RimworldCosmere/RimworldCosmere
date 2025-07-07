@@ -215,7 +215,7 @@ public abstract class CosmereGeneCommand(
         );
         TooltipHandler.TipRegion(
             toggleShrunk,
-            () => "CS_ToggleGizmoSize",
+            () => "CS_ToggleGizmoSize".Translate(),
             Gen.HashCombineInt(GetHashCode(), 97519827)
         );
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CosmereCore.Need;
+using CosmereFramework.Extension;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
@@ -16,27 +17,22 @@ public class Allomancer : Metalborn {
     public const float MinMetalAmount = 0;
     public const float MaxMetalAmount = 1f;
     private const float SleepDecayAmountPerRareInterval = .0025f;
-
     private float currentReserve;
-
     public int requestedVialStock = 3;
-
     private List<(AllomanticAbilityDef def, float amount)> sources = [];
     private float? timeDilationFactor;
-    public List<(AllomanticAbilityDef def, float amount)> Sources => sources;
-    public float BurnRate => sources.Sum(s => s.amount);
+    public bool shouldConsumeVialNow => Value < (double)targetValue;
     public bool Burning => BurnRate > 0f;
-
-    public override float Max => MaxMetalAmount * Mathf.Log(skill.Level + 1, 2); // log base 2
-    private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
+    public float BurnRate => sources.Sum(s => s.amount);
     private int burnTickRate => Mathf.RoundToInt(GenTicks.TickRareInterval / timeDilationFactor!.Value);
+    public override float Max => MaxMetalAmount * Mathf.Log(skill.Level + 1, 2); // log base 2
+    public List<(AllomanticAbilityDef def, float amount)> Sources => sources;
+    private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
 
     public override float Value {
         get => currentReserve;
         set => currentReserve = value;
     }
-
-    public bool shouldConsumeVialNow => Value < (double)targetValue;
 
     public float GetMetalNeededForBreathEquivalentUnits(float requiredBreathEquivalentUnits) {
         return requiredBreathEquivalentUnits / Constants.BreathEquivalentUnitsPerMetalUnit;
@@ -65,7 +61,7 @@ public class Allomancer : Metalborn {
         base.TickInterval(delta);
         if (!timeDilationFactor.HasValue) UpdateTimeDilationFactor();
 
-        if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) {
+        if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta) && pawn.IsAsleep()) {
             RemoveFromReserve(SleepDecayAmountPerRareInterval);
         }
 
@@ -79,10 +75,9 @@ public class Allomancer : Metalborn {
     }
 
     public void BurnTickInterval() {
-        float totalRate = sources.Sum(s => s.amount);
-        if (totalRate <= 0) return;
+        if (BurnRate <= 0) return;
 
-        if (TryBurnMetalForInvestiture(totalRate)) return;
+        if (TryBurnMetalForInvestiture(BurnRate)) return;
 
         RemoveAllSources();
         Logger.Info($"{pawn.NameFullColored} can't burn {metal} any more. Removing all burn sources for {metal}.");

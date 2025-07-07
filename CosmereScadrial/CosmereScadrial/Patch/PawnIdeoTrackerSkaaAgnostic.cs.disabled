@@ -13,10 +13,8 @@ public static class PatchPawnIdeoTrackerIdeo {
         Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
         if (pawn?.genes?.HasActiveGene(DefDatabase<GeneDef>.GetNamed("Cosmere_Scadrial_Gene_SkaaAgnostic")) ==
             true) {
-            __result = null;
+            //__result = null;
         }
-
-        InteractionWorker_ConvertIdeoAttempt
     }
 }
 

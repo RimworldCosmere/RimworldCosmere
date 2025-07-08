@@ -106,6 +106,9 @@ jobs:
           [[ -n "$REVISION" ]] && BUILD_VERSION+=".$REVISION"
           [[ -n "$LABEL" ]] && BUILD_VERSION+="-${LABEL}"
 
+          echo "Running script generation"
+          npm start --prefix .scripts -- -d -f --dryRun
+
           echo "Building $MOD@$BUILD_VERSION ($CONFIG)"
 
           dotnet build $MOD/$MOD \

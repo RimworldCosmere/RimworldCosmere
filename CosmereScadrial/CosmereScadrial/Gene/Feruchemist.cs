@@ -37,8 +37,16 @@ public class Feruchemist : Metalborn {
 
     private Hediff storeHediff => pawn.health.hediffSet.GetFirstHediffOfDef(storeHediffDef);
 
+    private HediffDef compoundHediffDef =>
+        DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Compound" + metal.LabelCap);
+
+    private Hediff compoundHediff => pawn.health.hediffSet.GetFirstHediffOfDef(compoundHediffDef);
+
     public bool canTap => metalminds.Any(x => x.canTap);
+    public bool isTapping => pawn.health.hediffSet.HasHediff(tapHediffDef);
     public bool canStore => metalminds.Any(x => x.canStore);
+    public bool isStoring => pawn.health.hediffSet.HasHediff(storeHediffDef);
+    public bool isCompounding => pawn.health.hediffSet.HasHediff(compoundHediffDef);
 
     private float effectiveSeverity {
         get {
@@ -86,10 +94,25 @@ public class Feruchemist : Metalborn {
             }
         }
 
-        if (pawn.health.hediffSet.HasHediff(storeHediffDef)) {
+
+        if (isStoring) {
             AddToStore(AmountPerRareTick * storeHediff.Severity);
-        } else if (pawn.health.hediffSet.HasHediff(tapHediffDef)) {
+        } else if (isTapping) {
             RemoveFromStore(AmountPerRareTick * tapHediff.Severity);
+        }
+
+        if (pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) {
+            if (isCompounding) {
+                pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
+                    .Learn(10 * Constants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
+                pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower)
+                    .Learn(10 * Constants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
+            } else if (isTapping || isStoring) {
+                pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
+                    .Learn(
+                        Mathf.Lerp(1, 2, effectiveSeverity) * Constants.FeruchemyXPPerTick * GenTicks.TickLongInterval
+                    );
+            }
         }
     }
 

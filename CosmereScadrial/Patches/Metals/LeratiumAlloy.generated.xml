@@ -22,7 +22,7 @@
                 </value>
             </li>
             <li Class="PatchOperationAdd">
-                <xpath>Defs/ThingDef[defName = "LeratiumAlloy"]/thingCategories</xpath>
+                <xpath>Defs/ThingDef[defName="LeratiumAlloy"]/thingCategories</xpath>
                 <value>
                     <li>Cosmere_Scadrial_ThingCategory_Metal</li>
                 </value>

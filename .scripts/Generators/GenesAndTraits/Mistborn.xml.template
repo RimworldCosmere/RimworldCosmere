@@ -8,7 +8,7 @@
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metals>
                     {{#each metals}}
-                        <li>{{capitalize this.Name}}</li>
+                        <li>{{capitalize name}}</li>
                     {{/each}}
                 </metals>
             </li>

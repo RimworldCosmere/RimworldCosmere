@@ -7,23 +7,23 @@
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metals>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
+                        <li>Aluminum</li>
+                        <li>Bendalloy</li>
+                        <li>Brass</li>
+                        <li>Bronze</li>
+                        <li>Cadmium</li>
+                        <li>Chromium</li>
+                        <li>Copper</li>
+                        <li>Duralumin</li>
+                        <li>Electrum</li>
+                        <li>Gold</li>
+                        <li>Iron</li>
+                        <li>Nicrosil</li>
+                        <li>Pewter</li>
+                        <li>Steel</li>
+                        <li>Tin</li>
+                        <li>Zinc</li>
+                        <li>Atium</li>
                 </metals>
             </li>
         </modExtensions>

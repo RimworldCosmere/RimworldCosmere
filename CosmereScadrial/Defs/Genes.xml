@@ -53,34 +53,4 @@
         <canGenerateInGeneSet>false</canGenerateInGeneSet>
         <randomChosen>false</randomChosen>
     </GeneDef>
-    
-    <GeneDef>
-        <defName>Cosmere_Scadrial_Gene_ConsumedLerasium</defName>
-        <label>consumed Lerasium</label>
-        <description>This pawn has consumed some Lerasium, permanently altering their spirit-web, turning them into a Mistborn or Misting.</description>
-        <iconPath>Item/Resource/Lerasium</iconPath>
-        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>1</displayOrderInCategory>
-        <passOnDirectly>false</passOnDirectly>
-        <biostatCpx>5</biostatCpx>
-        <biostatMet>0</biostatMet>
-        <biostatArc>1</biostatArc>
-        <canGenerateInGeneSet>false</canGenerateInGeneSet>
-        <randomChosen>false</randomChosen>
-    </GeneDef>
-    
-    <GeneDef>
-        <defName>Cosmere_Scadrial_Gene_ConsumedLeratium</defName>
-        <label>consumed Leratium</label>
-        <description>This pawn has consumed Leratium, permanently altering their spirit-web, turning them into a Full Feruchemist or Ferring.</description>
-        <iconPath>Item/Resource/Leratium</iconPath>
-        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>1</displayOrderInCategory>
-        <passOnDirectly>false</passOnDirectly>
-        <biostatCpx>5</biostatCpx>
-        <biostatMet>0</biostatMet>
-        <biostatArc>1</biostatArc>
-        <canGenerateInGeneSet>false</canGenerateInGeneSet>
-        <randomChosen>false</randomChosen>
-    </GeneDef>
 </Defs>

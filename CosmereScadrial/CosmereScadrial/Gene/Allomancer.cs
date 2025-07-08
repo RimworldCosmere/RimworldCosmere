@@ -17,6 +17,9 @@ public class Allomancer : Metalborn {
     public const float MinMetalAmount = 0;
     public const float MaxMetalAmount = 1f;
     private const float SleepDecayAmountPerRareInterval = .0025f;
+
+    private RecordDef? cachedMetalBurntRecord;
+    private RecordDef? cachedTimeSpentBurningRecord;
     private float currentReserve;
     public int requestedVialStock = 3;
     private List<AllomanticBurnSource> sources = [];
@@ -28,6 +31,11 @@ public class Allomancer : Metalborn {
     public override float Max => Mathf.Max(1, MaxMetalAmount * Mathf.Log(skill.Level + 1, 2f));
     public List<AllomanticBurnSource> Sources => sources;
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
+
+    private RecordDef metalBurntRecord => cachedMetalBurntRecord ??= RecordDefOf.GetMetalBurnRecordForMetal(metal);
+
+    private RecordDef timeSpentBurningRecord =>
+        cachedTimeSpentBurningRecord ??= RecordDefOf.GetTimeSpentBurningForMetal(metal);
 
     public override float Value {
         get => currentReserve;
@@ -41,10 +49,12 @@ public class Allomancer : Metalborn {
     public bool TryBurnMetalForInvestiture(float requiredBreathEquivalentUnits) {
         float metalNeeded = GetMetalNeededForBreathEquivalentUnits(requiredBreathEquivalentUnits);
         if (!CanLowerReserve(metalNeeded)) return false;
-        RemoveFromReserve(metalNeeded);
-
         Investiture need = pawn.needs.TryGetNeed<Investiture>();
-        need.CurLevel = Mathf.Min(need.CurLevel + requiredBreathEquivalentUnits, need.MaxLevel);
+        need.CurLevel += requiredBreathEquivalentUnits;
+        RemoveFromReserve(metalNeeded);
+        need.CurLevel -= requiredBreathEquivalentUnits;
+
+        pawn.records.AddTo(metalBurntRecord, metalNeeded);
 
         return true;
     }

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[@Name="Human"]/statBases</xpath>
+        <value>
+            <Cosmere_Scadrial_Stat_AllomanticPower>0</Cosmere_Scadrial_Stat_AllomanticPower>
+            <Cosmere_Scadrial_Stat_FeruchemicPower>0</Cosmere_Scadrial_Stat_FeruchemicPower>
+        </value>
+    </Operation>
+</Patch>

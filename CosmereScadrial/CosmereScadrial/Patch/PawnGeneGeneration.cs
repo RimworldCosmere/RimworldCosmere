@@ -14,6 +14,5 @@ public static class PawnGeneGeneration {
         }
 
         GeneUtility.TryAssignScadrialGenes(pawn);
-        pawn.records.AddTo();
     }
 }

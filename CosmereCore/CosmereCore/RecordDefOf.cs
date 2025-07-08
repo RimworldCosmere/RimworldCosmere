@@ -10,8 +10,8 @@ namespace CosmereCore;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class RecordDefOf {
-    public static RecordDef Cosmere_InvestitureGained;
-    public static RecordDef Cosmere_InvestitureSpent;
+    public static RecordDef Cosmere_Core_Record_InvestitureGained;
+    public static RecordDef Cosmere_Core_Record_InvestitureSpent;
 
     static RecordDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));

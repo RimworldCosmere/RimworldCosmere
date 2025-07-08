@@ -26,6 +26,8 @@ public class AllomanticVial : ThingWithComps {
 
         ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(Constants.VialMetalAmount);
 
+        ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedVial);
+
         Messages.Message(
             "CS_IngestedVial".Translate(ingester.NameFullColored.Named("PAWN"), metal.coloredLabel.Named("THING")),
             ingester,

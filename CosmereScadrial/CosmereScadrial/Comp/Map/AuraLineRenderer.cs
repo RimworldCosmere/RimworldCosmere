@@ -37,7 +37,7 @@ public class AuraLineRenderer(Verse.Map map) : MapComponent(map) {
                 }
 
                 if (debugMode) {
-                    GenDraw.DrawCircleOutline(pawn.DrawPos, radius * hediff.Severity, lineMaterial);
+                    GenDraw.DrawRadiusRing(pawn.DrawPos.ToIntVec3(), radius * hediff.Severity, lineMaterial.color);
                 }
 
                 foreach ((Verse.Thing? thing, float mass) in thingsToDraw.Where(x => x.Value > 0f)) {

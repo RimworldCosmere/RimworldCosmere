@@ -2,25 +2,35 @@
 <Defs>
     {{#each metals as | metal |}}
     <RecordDef>
-        <defName>Cosmere_TimeSpentBurning_{{ defName metal.name }}</defName>
+        <defName>Cosmere_Scadrial_Record_MetalBurnt_{{ defName metal.name }}</defName>
+        <label>time spent burning {{ title metal.name }}</label>
+        <description>Amount of {{title metal.name}} I have burnt</description>
+        <type>Int</type>
+        <displayOrder>{{add 1120 @index }}</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Scadrial_Record_TimeSpentBurning_{{ defName metal.name }}</defName>
         <label>time spent burning {{ title metal.name }}</label>
         <description>Total time spent burning {{title metal.name}}</description>
         <type>Time</type>
-        <displayOrder>{{add 1130 @index }}</displayOrder>
+        <displayOrder>{{add 1140 @index }}</displayOrder>
+        <workerClass>CosmereScadrial.Records.Worker.TimeSpentBurningWorker</workerClass>
     </RecordDef>
     <RecordDef>
-        <defName>Cosmere_TimeSpentStoring_{{ defName metal.name }}</defName>
+        <defName>Cosmere_Scadrial_Record_TimeSpentStoring_{{ defName metal.name }}</defName>
         <label>time spent storing {{ title metal.name }}</label>
         <description>Total time spent storing {{title metal.name}}</description>
         <type>Time</type>
-        <displayOrder>{{add 1150 @index }}</displayOrder>
+        <displayOrder>{{add 1160 @index }}</displayOrder>
+        <workerClass>CosmereScadrial.Records.Worker.TimeSpentStoringWorker</workerClass>
     </RecordDef>
     <RecordDef>
-        <defName>Cosmere_TimeSpentTapping_{{ defName metal.name }}</defName>
+        <defName>Cosmere_Scadrial_Record_TimeSpentTapping_{{ defName metal.name }}</defName>
         <label>time spent tapping {{ title metal.name }}</label>
         <description>Total time spent tapping {{title metal.name}}</description>
         <type>Time</type>
-        <displayOrder>{{add 1170 @index }}</displayOrder>
+        <displayOrder>{{add 1180 @index }}</displayOrder>
+        <workerClass>CosmereScadrial.Records.Worker.TimeSpentTappingWorker</workerClass>
     </RecordDef>
     {{/each}}
 </Defs>

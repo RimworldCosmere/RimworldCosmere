@@ -40,7 +40,7 @@ public static class UIUtil {
         Listing_Standard listing,
         Func<T?, string?> labelGetter,
         T? selected,
-        string placeholder,
+        string? placeholder,
         Dictionary<string, T> items,
         Action<T?> onSelected,
         string? noOptionsText = "None",
@@ -50,7 +50,7 @@ public static class UIUtil {
         Rect buttonRect = listing.GetRect(30f);
         if (widthOverride.HasValue) buttonRect.width = widthOverride.Value;
 
-        string label = labelGetter(selected) ?? placeholder;
+        string? label = labelGetter(selected) ?? placeholder;
 
         if (!Widgets.ButtonText(buttonRect, label)) return;
         List<FloatMenuOption> options = [];

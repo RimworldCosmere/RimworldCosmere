@@ -11,6 +11,10 @@
             </li>
         </modExtensions>
 
+        <forcedPassions>
+            <li>Cosmere_Scadrial_Skill_FeruchemicPower</li>
+        </forcedPassions>
+
         <degreeDatas>
             <li>
                 <label>ferring: {{metal.feruchemy.userName}}</label>

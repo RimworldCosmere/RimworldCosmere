@@ -51,6 +51,9 @@ Handlebars.registerHelper('log', function (value: any) {
 Handlebars.registerHelper('multiply', function (valueOne: number, valueTwo: number) {
     return Number((valueOne * valueTwo).toFixed(6));
 });
+Handlebars.registerHelper('add', function (valueOne: number, valueTwo: number) {
+    return valueOne + valueTwo;
+});
 Handlebars.registerHelper('getStatForStage', function (stage: number, step: number) {
     return Number((1 + step * (stage + 1)).toFixed(8));
 });

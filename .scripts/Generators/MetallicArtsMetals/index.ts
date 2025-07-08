@@ -7,20 +7,26 @@ import {toDefName} from "../../Helpers/Handlebars";
 
 const metalTemplate = compileTemplate(__dirname, 'MetallicArtsMetalDef.xml.template');
 const metalOutputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Things', 'Metals');
-const patchMetalDefOfTemplate = compileTemplate(__dirname, 'PatchScadrialMetalDef.xml.template');
-const patchMetalDefOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'Patches', 'Metals');
+const patchMetalDefTemplate = compileTemplate(__dirname, 'PatchScadrialMetalDef.xml.template');
+const patchMetalDefOutputDir = resolve(SCADRIAL_MOD_DIR, 'Patches', 'Metals');
 
 const metalDefOfTemplate = compileTemplate(__dirname, 'MetallicArtsMetalDefOf.cs.template');
-const metalDefOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
+const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
+
+const recordsTemplate = compileTemplate(__dirname, 'Records.xml.template');
+const recordDefOfTemplate = compileTemplate(__dirname, 'RecordDefOf.cs.template');
+const recordsOutputDir = resolve(SCADRIAL_MOD_DIR, 'Defs');
 
 export default function () {
     const metals = Object.values(MetalRegistry.Metals)
         .filter(x => !!x.allomancy || !!x.feruchemy);
     for (const metal of metals) {
         writeGeneratedFile(metalOutputDir, toDefName(metal.name) + '.generated.xml', metalTemplate({metal}));
-        writeGeneratedFile(patchMetalDefOfOutputDir, toDefName(metal.name) + '.generated.xml', patchMetalDefOfTemplate({metal}));
+        writeGeneratedFile(patchMetalDefOutputDir, toDefName(metal.name) + '.generated.xml', patchMetalDefTemplate({metal}));
     }
 
-    writeGeneratedFile(metalDefOfOutputDir, 'MetallicArtsMetalDefOf.generated.cs', metalDefOfTemplate({metals}));
+    writeGeneratedFile(recordsOutputDir, 'Records.generated.xml', recordsTemplate({metals}));
+    writeGeneratedFile(defOfOutputDir, 'MetallicArtsMetalDefOf.generated.cs', metalDefOfTemplate({metals}));
+    writeGeneratedFile(defOfOutputDir, 'RecordDefOf.generated.cs', recordDefOfTemplate({metals}));
 }
 

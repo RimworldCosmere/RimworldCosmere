@@ -2,10 +2,11 @@
 <Defs>
     <StatDef Name="Cosmere_Scadrial_StatDef_AbstractPowerStat" Abstract="True">
         <category>Cosmere</category>
-        <minValue>0.25</minValue>
-        <defaultBaseValue>0.25</defaultBaseValue>
+        <minValue>0</minValue>
+        <defaultBaseValue>0.01</defaultBaseValue>
         <toStringStyle>PercentZero</toStringStyle>
         <showOnAnimals>false</showOnAnimals>
+        <showOnPawns>true</showOnPawns>
         <showOnHumanlikes>false</showOnHumanlikes>
         <showOnNonWildManHumanlikes>false</showOnNonWildManHumanlikes>
         <showOnMechanoids>false</showOnMechanoids>
@@ -13,9 +14,8 @@
         <showOnEntities>false</showOnEntities>
         <showOnDrones>false</showOnDrones>
         <showOnNonPowerPlants>false</showOnNonPowerPlants>
-        <showOnDefaultValue>false</showOnDefaultValue>
-        <hideAtValue>0</hideAtValue>
         <maxValue>1</maxValue>
+        <showOnDefaultValue>true</showOnDefaultValue>
         <showIfUndefined>false</showIfUndefined>
         <scenarioRandomizable>false</scenarioRandomizable>
     </StatDef>
@@ -33,6 +33,11 @@
                 <bonusPerLevel>0.0375</bonusPerLevel> <!-- At level 20, total = 1.0 -->
             </li>
         </skillNeedFactors>
+        <parts>
+            <li Class="CosmereScadrial.StatPart.GenerationalDecay">
+                <allomancy>true</allomancy>
+            </li>
+        </parts>
     </StatDef>
     
     <StatDef ParentName="Cosmere_Scadrial_StatDef_AbstractPowerStat">
@@ -48,5 +53,10 @@
                 <bonusPerLevel>0.0375</bonusPerLevel> <!-- At level 20, total = 1.0 -->
             </li>
         </skillNeedFactors>
+        <parts>
+            <li Class="CosmereScadrial.StatPart.GenerationalDecay">
+                <feruchemy>true</feruchemy>
+            </li>
+        </parts>
     </StatDef>
 </Defs>

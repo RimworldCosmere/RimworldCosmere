@@ -11,6 +11,10 @@
             </li>
         </modExtensions>
 
+        <forcedPassions>
+            <li>Cosmere_Scadrial_Skill_AllomanticPower</li>
+        </forcedPassions>
+
         <degreeDatas>
             <li>
                 <label>misting: {{metal.allomancy.userName}}</label>

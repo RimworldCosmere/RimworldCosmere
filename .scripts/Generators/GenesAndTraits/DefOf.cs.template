@@ -5,10 +5,6 @@ using Verse;{{/if}}
 
 namespace CosmereScadrial;
 
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
-[SuppressMessage("ReSharper", "UnassignedField.Global")]
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class {{kind}}DefOf {
     {{#each metals as | metal |}}
     public static {{../kind}}Def Cosmere_Scadrial_{{../kind}}_{{../type}}{{defName metal.name}};

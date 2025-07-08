@@ -11,6 +11,8 @@
             <li>Cosmere_God_Metals</li>
         </researchPrerequisites>
         <costList>
+            <Lerasium>1</Lerasium>
+            
         </costList>
 
         <recipeMaker>
@@ -47,7 +49,7 @@
         <statBases>
             <Beauty>80</Beauty>
             <MarketValue>8000</MarketValue>
-            <Investiture>10</Investiture>
+            <Cosmere_Investiture>10</Cosmere_Investiture>
         </statBases>
 
         <modExtensions>

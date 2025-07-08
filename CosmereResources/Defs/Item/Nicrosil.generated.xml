@@ -9,6 +9,10 @@
         <researchPrerequisites>
         </researchPrerequisites>
         <costList>
+            <Nickel>8</Nickel>
+            
+            <Chromium>2</Chromium>
+            
         </costList>
 
         <recipeMaker>

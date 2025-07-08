@@ -41,7 +41,7 @@
       },
       "statFactors": {
         "ShootingAccuracyPawn": -0.049,
-        "MeleeHitChange": -0.049
+        "MeleeHitChance": -0.049
       }
     },
     "tap": {

@@ -20,7 +20,7 @@
         <statBases>
             <Beauty>100</Beauty>
             <MarketValue>10000</MarketValue>
-            <Investiture>10</Investiture>
+            <Cosmere_Investiture>10</Cosmere_Investiture>
         </statBases>
 
         <modExtensions>

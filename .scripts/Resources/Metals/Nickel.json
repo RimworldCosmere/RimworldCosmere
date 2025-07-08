@@ -1,0 +1,30 @@
+{
+  "name": "nickel",
+  "description": "Nickel is a resilient, corrosion-resistant metal that enhances the strength and longevity of its alloy counterparts. Its steadfast durability makes it a critical element in high-performance industrial applications.",
+  "godMetal": false,
+  "color": [
+    85,
+    107,
+    47
+  ],
+  "colorTwo": [
+    100,
+    100,
+    100
+  ],
+  "marketValue": 0.9,
+  "beauty": 1,
+  "buildable": {
+    "buildings": false,
+    "items": true
+  },
+  "mining": {
+    "hitPoints": 1480,
+    "yield": 30,
+    "commonality": 0.2,
+    "sizeRange": [
+      20,
+      40
+    ]
+  }
+}

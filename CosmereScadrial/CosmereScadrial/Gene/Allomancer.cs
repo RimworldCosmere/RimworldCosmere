@@ -25,7 +25,7 @@ public class Allomancer : Metalborn {
     public bool Burning => BurnRate > 0f;
     public float BurnRate => sources.Sum(s => s.Rate);
     private int burnTickRate => Mathf.RoundToInt(GenTicks.TickRareInterval / timeDilationFactor!.Value);
-    public override float Max => MaxMetalAmount * Mathf.Log(skill.Level + 1, 2); // log base 2
+    public override float Max => Mathf.Max(1, MaxMetalAmount * Mathf.Log(skill.Level + 1, 2f));
     public List<AllomanticBurnSource> Sources => sources;
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
 
@@ -62,7 +62,7 @@ public class Allomancer : Metalborn {
         if (!timeDilationFactor.HasValue) UpdateTimeDilationFactor();
 
         if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta) && pawn.IsAsleep()) {
-            RemoveFromReserve(SleepDecayAmountPerRareInterval);
+            RemoveFromReserve(SleepDecayAmountPerRareInterval / Mathf.Max(0, Mathf.Log(skill.Level + 1, 2f)));
         }
 
         if (sources.Count > 0 && pawn.IsHashIntervalTick(burnTickRate, delta)) {
@@ -85,7 +85,7 @@ public class Allomancer : Metalborn {
 
     private void RemoveAllSources() {
         foreach (AllomanticBurnSource source in sources.ToList()) {
-            pawn.GetAllomanticAbility(source.Def).UpdateStatus(BurningStatus.Off);
+            pawn.GetAllomanticAbility(source.Def)?.UpdateStatus(BurningStatus.Off);
             sources.Remove(source);
         }
     }
@@ -105,7 +105,7 @@ public class Allomancer : Metalborn {
 
     public AcceptanceReport CanBurn(float requiredBreathEquivalentUnits) {
         float amountToBurn = GetMetalNeededForBreathEquivalentUnits(requiredBreathEquivalentUnits);
-        if (CanLowerReserve(amountToBurn) && !pawn.HasVial(metal)) {
+        if (!CanLowerReserve(amountToBurn) && !pawn.HasVial(metal)) {
             return "CS_CannotBurn".Translate(pawn.Named("PAWN"), metal.Named("METAL"));
         }
 
@@ -113,10 +113,12 @@ public class Allomancer : Metalborn {
     }
 
     public void UpdateBurnSource(AllomanticBurnSource source) {
-        if (source.Rate > 0f) {
-            if (!sources.Contains(source)) sources.Add(source);
-        } else {
+        if (source.Rate <= 0f || sources.Contains(source)) {
             sources.Remove(source);
+        }
+
+        if (source.Rate > 0) {
+            sources.Add(source);
         }
     }
 
@@ -137,7 +139,7 @@ public class Allomancer : Metalborn {
     }
 
     public float GetReservePercent() {
-        return Max == 0 ? 0 : Value / Max;
+        return Mathf.Approximately(Max, 0) ? 0 : Value / Max;
     }
 
     public void WipeReserve() {

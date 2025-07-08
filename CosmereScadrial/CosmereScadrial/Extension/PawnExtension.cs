@@ -111,7 +111,7 @@ public static class PawnExtension {
         return gene?.GetReservePercent() ?? 0f;
     }
 
-    public static AbstractAbility GetAllomanticAbility(this Pawn pawn, AllomanticAbilityDef def) {
+    public static AbstractAbility? GetAllomanticAbility(this Pawn pawn, AllomanticAbilityDef def) {
         return (AbstractAbility)pawn.abilities.GetAbility(def);
     }
 

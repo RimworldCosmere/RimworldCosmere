@@ -10,7 +10,7 @@
         <description>Shields {PAWN} from investiture. Also wipes away all other investiture reserves.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>18</displayOrderInCategory>
+        <displayOrderInCategory>2</displayOrderInCategory>
 
         <resourceLabel>aluminum</resourceLabel>
         <resourceDescription>Group: enhancement\nAxis: internal\nPolarity: pulling\n\nShields {PAWN} from investiture. Also wipes away all other investiture reserves.</resourceDescription>

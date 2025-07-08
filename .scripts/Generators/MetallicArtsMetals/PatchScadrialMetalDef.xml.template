@@ -3,7 +3,7 @@
     <Operation Class="PatchOperationSequence">
         <operations>
             <li Class="PatchOperationAdd">
-                <xpath>Defs/ThingDef[defName="{{defName metal.Name}}"]</xpath>
+                <xpath>Defs/ThingDef[defName="{{defName metal.name}}"]</xpath>
                 <value>
                     <thingClass>CosmereScadrial.Thing.AllomanticMetal</thingClass>
                     <ingestible>
@@ -16,13 +16,13 @@
                         <baseIngestTicks>10</baseIngestTicks>
                         <drugCategory>None</drugCategory>
                         <foodType>Fluid</foodType>
-                        <ingestCommandString>Ingest {{capitalize metal.Name}}</ingestCommandString>
-                        <ingestReportString>ingesting {{capitalize metal.Name}}</ingestReportString>
+                        <ingestCommandString>Ingest {{capitalize metal.name}}</ingestCommandString>
+                        <ingestReportString>ingesting {{capitalize metal.name}}</ingestReportString>
                     </ingestible>
                 </value>
             </li>
             <li Class="PatchOperationAdd">
-                <xpath>Defs/ThingDef[defName = "{{defName metal.Name}}"]/thingCategories</xpath>
+                <xpath>Defs/ThingDef[defName = "{{defName metal.name}}"]/thingCategories</xpath>
                 <value>
                     <li>Cosmere_Scadrial_ThingCategory_Metal</li>
                 </value>

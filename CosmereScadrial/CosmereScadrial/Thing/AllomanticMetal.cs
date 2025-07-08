@@ -15,10 +15,12 @@ public class AllomanticMetal : AllomanticVial {
             if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
                 GeneUtility.AddMistborn(ingester, false, true, "ingested Lerasium");
                 ingester.FillAllAllomanticReserves();
+                ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level += 10;
             }
 
             if (metal.Equals(MetallicArtsMetalDefOf.Leratium)) {
                 GeneUtility.AddFullFeruchemist(ingester, false, true, "ingested Leratium");
+                ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level += 10;
             }
 
             if (metal.Equals(MetallicArtsMetalDefOf.Atium)) {
@@ -30,11 +32,13 @@ public class AllomanticMetal : AllomanticVial {
                 MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
                 GeneUtility.AddGene(ingester, stuffMetal.GetMistingGene(), false, true);
                 ingester.FillAllomanticReserves(stuffMetal);
+                ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level += 5;
             }
 
             if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy)) {
                 MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
                 GeneUtility.AddGene(ingester, stuffMetal.GetFerringGene(), false, true);
+                ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level += 5;
             }
 
             Find.LetterStack.ReceiveLetter(

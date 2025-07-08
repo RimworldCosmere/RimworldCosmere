@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <StatDef Name="Cosmere_Scadrial_StatDef_AbstractPowerStat" Abstract="True">
+        <category>Cosmere</category>
+        <minValue>0.25</minValue>
+        <defaultBaseValue>0.25</defaultBaseValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <showOnAnimals>false</showOnAnimals>
+        <showOnHumanlikes>false</showOnHumanlikes>
+        <showOnNonWildManHumanlikes>false</showOnNonWildManHumanlikes>
+        <showOnMechanoids>false</showOnMechanoids>
+        <showOnNonWorkTables>false</showOnNonWorkTables>
+        <showOnEntities>false</showOnEntities>
+        <showOnDrones>false</showOnDrones>
+        <showOnNonPowerPlants>false</showOnNonPowerPlants>
+        <showOnDefaultValue>false</showOnDefaultValue>
+        <hideAtValue>0</hideAtValue>
+        <maxValue>1</maxValue>
+        <showIfUndefined>false</showIfUndefined>
+        <scenarioRandomizable>false</scenarioRandomizable>
+    </StatDef>
+    
+    <StatDef ParentName="Cosmere_Scadrial_StatDef_AbstractPowerStat">
+        <defName>Cosmere_Scadrial_Stat_AllomanticPower</defName>
+        <label>allomantic strength</label>
+        <description>Affects potency and range of allomantic abilities.</description>
+        <displayPriorityInCategory>100</displayPriorityInCategory>
+        <disableIfSkillDisabled>Cosmere_Scadrial_Skill_AllomanticPower</disableIfSkillDisabled>
+        <skillNeedFactors>
+            <li Class="SkillNeed_BaseBonus">
+                <skill>Cosmere_Scadrial_Skill_AllomanticPower</skill>
+                <baseValue>0.25</baseValue>
+                <bonusPerLevel>0.0375</bonusPerLevel> <!-- At level 20, total = 1.0 -->
+            </li>
+        </skillNeedFactors>
+    </StatDef>
+    
+    <StatDef ParentName="Cosmere_Scadrial_StatDef_AbstractPowerStat">
+        <defName>Cosmere_Scadrial_Stat_FeruchemicPower</defName>
+        <label>feruchemic strength</label>
+        <description>Affects potency and range of feruchemic abilities.</description>
+        <displayPriorityInCategory>101</displayPriorityInCategory>
+        <disableIfSkillDisabled>Cosmere_Scadrial_Skill_FeruchemicPower</disableIfSkillDisabled>
+        <skillNeedFactors>
+            <li Class="SkillNeed_BaseBonus">
+                <skill>Cosmere_Scadrial_Skill_FeruchemicPower</skill>
+                <baseValue>0.25</baseValue>
+                <bonusPerLevel>0.0375</bonusPerLevel> <!-- At level 20, total = 1.0 -->
+            </li>
+        </skillNeedFactors>
+    </StatDef>
+</Defs>

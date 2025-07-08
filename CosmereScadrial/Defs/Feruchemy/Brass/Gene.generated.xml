@@ -10,7 +10,7 @@
         <description>Stores warmth, useful for surviving cold environments or heating up.</description>
 
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>12</displayOrderInCategory>
+        <displayOrderInCategory>6</displayOrderInCategory>
 
         <resourceLabel>brass</resourceLabel>
         <resourceDescription>Group: cognitive\n\nStores warmth, useful for surviving cold environments or heating up.</resourceDescription>

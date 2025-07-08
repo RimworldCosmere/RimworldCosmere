@@ -1,0 +1,62 @@
+{
+  "name": "cadmium",
+  "description": "Cadmium is a soft, subtly reflective metal known for its unique properties and low melting point. Often used in specialized applications, it brings distinct qualities when blended into advanced alloys.",
+  "godMetal": false,
+  "color": [
+    170,
+    132,
+    121
+  ],
+  "colorTwo": [
+    201,
+    207,
+    206
+  ],
+  "marketValue": 10,
+  "beauty": 2,
+  "allomancy": {
+    "userName": "pulser",
+    "description": "Allows {PAWN} to slow down time in a bubble, creating a temporal distortion.",
+    "group": "temporal",
+    "axis": "external",
+    "polarity": "pulling",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Cadmium"
+    ]
+  },
+  "feruchemy": {
+    "userName": "gaspers",
+    "description": "Stores breath, useful for surviving in low-oxygen environments.",
+    "group": "hybrid",
+    "attribute": "breath",
+    "store": {
+      "description": "This pawn is storing breath in a cadmium metalmind, constricting their airflow. They breathe shallowly, tire more easily, and may suffer from shortness of breath during strenuous activity — but the stored air may save them later.",
+      "capacityMods": {
+        "Breathing": {
+          "factor": -0.035
+        }
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping a cadmium metalmind, drawing on stored reserves of air. They can function without breathing for extended periods, shrug off smoke or gas effects, and resist asphyxiation far longer than normal.",
+      "capacityMods": {
+        "Breathing": {
+          "factor": 0.035
+        }
+      }
+    }
+  },
+  "buildable": {
+    "buildings": false,
+    "items": true
+  },
+  "mining": {
+    "hitPoints": 1300,
+    "yield": 20,
+    "commonality": 0.3,
+    "sizeRange": [
+      15,
+      35
+    ]
+  }
+}

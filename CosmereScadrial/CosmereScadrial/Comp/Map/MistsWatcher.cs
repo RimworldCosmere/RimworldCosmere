@@ -53,6 +53,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
 
         if (currentTick < mistsEndTick) return;
         mistsActive = false;
+        map.weatherDecider.StartNextWeather();
         ScheduleNextMists();
         Messages.Message("The mists retreat with the dawn.", MessageTypeDefOf.PositiveEvent);
     }

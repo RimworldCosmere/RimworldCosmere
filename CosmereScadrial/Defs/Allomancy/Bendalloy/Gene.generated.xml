@@ -10,7 +10,7 @@
         <description>Allows {PAWN} to speed up time in a bubble around the user.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>28</displayOrderInCategory>
+        <displayOrderInCategory>4</displayOrderInCategory>
 
         <resourceLabel>bendalloy</resourceLabel>
         <resourceDescription>Group: temporal\nAxis: external\nPolarity: pushing\n\nAllows {PAWN} to speed up time in a bubble around the user.</resourceDescription>

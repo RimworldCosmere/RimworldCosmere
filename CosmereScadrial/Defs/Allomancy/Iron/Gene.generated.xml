@@ -10,7 +10,7 @@
         <description>Grants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>2</displayOrderInCategory>
+        <displayOrderInCategory>22</displayOrderInCategory>
 
         <resourceLabel>iron</resourceLabel>
         <resourceDescription>Group: physical\nAxis: external\nPolarity: pulling\n\nGrants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.</resourceDescription>

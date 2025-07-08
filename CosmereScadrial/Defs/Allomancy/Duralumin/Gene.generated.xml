@@ -10,7 +10,7 @@
         <description>Enhances the next Investiture-related ability {PAWN} uses drastically, but is consumed entirely.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>20</displayOrderInCategory>
+        <displayOrderInCategory>16</displayOrderInCategory>
 
         <resourceLabel>duralumin</resourceLabel>
         <resourceDescription>Group: enhancement\nAxis: internal\nPolarity: pushing\n\nEnhances the next Investiture-related ability {PAWN} uses drastically, but is consumed entirely.</resourceDescription>

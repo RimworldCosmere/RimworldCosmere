@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractCompoundHediff">
+        <defName>Cosmere_Scadrial_Hediff_CompoundTin</defName>
+        <label>compounding tin</label>
+        <description>Rapidly stores senses by burning a metalmind of Tin .</description>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Tin</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_StoreTin</defName>
+        <label>storing Tin</label>
+        <description>This pawn is storing sensory perception in a tin metalmind, numbing themselves to the world. Sight and hearing are muted, impairing awareness and coordination. It’s harder to aim, react, or interact effectively — but sensory clarity is being saved for later.</description>
+        <stages>
+            <li>
+                <minSeverity>0</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.95</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.95</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.951</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.951</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>1</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.9</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.9</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.902</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.902</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>2</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.85</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.85</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.853</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.853</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>3</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.8</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.8</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.804</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.804</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>4</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.75</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.75</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.755</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.755</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>5</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.7</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.7</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.706</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.706</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>6</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.65</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.65</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.657</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.657</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>7</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.6</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.6</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.608</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.608</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>8</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.55</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.55</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.559</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.559</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>9</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.5</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.5</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.51</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.51</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>10</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.45</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.45</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.461</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.461</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>11</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.4</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.4</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.412</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.412</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>12</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.35</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.35</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.363</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.363</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>13</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.3</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.3</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.314</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.314</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>14</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.25</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.25</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.265</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.265</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>15</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.2</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.2</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.216</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.216</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>16</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.15</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.15</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.167</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.167</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>17</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.1</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.1</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.118</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.118</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>18</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.05</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.05</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.069</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.069</MeleeHitChange>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>19</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>0.02</ShootingAccuracyPawn>
+                    <MeleeHitChange>0.02</MeleeHitChange>
+                </statFactors>
+                            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Tin</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_TapTin</defName>
+        
+        <label>tapping Tin</label>
+        <description>This pawn is tapping a tin metalmind, flooding their body with enhanced sensory input. Their vision and hearing sharpen dramatically, improving combat awareness and task efficiency. However, overstimulation may lead to distraction or sensitivity.</description>
+        <stages>
+            <li>
+                <minSeverity>0</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>1.1</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>1.1</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>1.1</ShootingAccuracyPawn>
+                    <MeleeHitChance>1.1</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>1</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>1.2</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>1.2</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>1.2</ShootingAccuracyPawn>
+                    <MeleeHitChance>1.2</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>2</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>1.3</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>1.3</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>1.3</ShootingAccuracyPawn>
+                    <MeleeHitChance>1.3</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>3</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>1.4</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>1.4</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>1.4</ShootingAccuracyPawn>
+                    <MeleeHitChance>1.4</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>4</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>1.5</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>1.5</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>1.5</ShootingAccuracyPawn>
+                    <MeleeHitChance>1.5</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>5</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>1.6</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>1.6</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>1.6</ShootingAccuracyPawn>
+                    <MeleeHitChance>1.6</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>6</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>1.7</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>1.7</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>1.7</ShootingAccuracyPawn>
+                    <MeleeHitChance>1.7</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>7</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>1.8</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>1.8</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>1.8</ShootingAccuracyPawn>
+                    <MeleeHitChance>1.8</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>8</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>1.9</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>1.9</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>1.9</ShootingAccuracyPawn>
+                    <MeleeHitChance>1.9</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>9</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>2</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>2</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>2</ShootingAccuracyPawn>
+                    <MeleeHitChance>2</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>10</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>2.1</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>2.1</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>2.1</ShootingAccuracyPawn>
+                    <MeleeHitChance>2.1</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>11</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>2.2</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>2.2</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>2.2</ShootingAccuracyPawn>
+                    <MeleeHitChance>2.2</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>12</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>2.3</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>2.3</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>2.3</ShootingAccuracyPawn>
+                    <MeleeHitChance>2.3</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>13</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>2.4</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>2.4</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>2.4</ShootingAccuracyPawn>
+                    <MeleeHitChance>2.4</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>14</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>2.5</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>2.5</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>2.5</ShootingAccuracyPawn>
+                    <MeleeHitChance>2.5</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>15</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>2.6</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>2.6</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>2.6</ShootingAccuracyPawn>
+                    <MeleeHitChance>2.6</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>16</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>2.7</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>2.7</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>2.7</ShootingAccuracyPawn>
+                    <MeleeHitChance>2.7</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>17</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>2.8</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>2.8</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>2.8</ShootingAccuracyPawn>
+                    <MeleeHitChance>2.8</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>18</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>2.9</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>2.9</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>2.9</ShootingAccuracyPawn>
+                    <MeleeHitChance>2.9</MeleeHitChance>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>19</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>3</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>3</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <ShootingAccuracyPawn>3</ShootingAccuracyPawn>
+                    <MeleeHitChance>3</MeleeHitChance>
+                </statFactors>
+                            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Tin</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+</Defs>

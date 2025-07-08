@@ -10,7 +10,7 @@
         <description>Stores connection, useful for adjusting social ties or affiliations.</description>
 
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>20</displayOrderInCategory>
+        <displayOrderInCategory>16</displayOrderInCategory>
 
         <resourceLabel>duralumin</resourceLabel>
         <resourceDescription>Group: spiritual\n\nStores connection, useful for adjusting social ties or affiliations.</resourceDescription>

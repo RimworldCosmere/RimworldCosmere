@@ -10,7 +10,7 @@
         <description>Stores health, allowing fast healing when tapped.</description>
 
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>30</displayOrderInCategory>
+        <displayOrderInCategory>20</displayOrderInCategory>
 
         <resourceLabel>gold</resourceLabel>
         <resourceDescription>Group: hybrid\n\nStores health, allowing fast healing when tapped.</resourceDescription>

@@ -4,23 +4,23 @@ export type Axis = 'internal' | 'external';
 export type Polarity = 'pushing' | 'pulling';
 
 export class MetalInfo {
-    public Name: string;
-    public Description: string;
-    public DefName?: string;
-    public Color: [number, number, number];
-    public ColorTwo?: [number, number, number];
-    public GodMetal: boolean;
-    public Stackable: boolean = true;
-    public DrawSize: number = 1;
-    public Beauty: number;
-    public MarketValue: number;
-    public MaxAmount: number = 100;
-    public GenesToGrant: Record<string, string[]>;
-    public Allomancy?: MetalAllomancyInfo
-    public Feruchemy?: MetalFeruchemyInfo;
-    public Buildable?: MetalBuildableInfo;
-    public Mining?: MetalMiningInfo;
-    public Alloy?: MetalAlloyInfo;
+    public name: string;
+    public description: string;
+    public defName?: string;
+    public color: [number, number, number];
+    public colorTwo?: [number, number, number];
+    public godMetal: boolean = false;
+    public stackable: boolean = true;
+    public drawSize: number = 1;
+    public beauty: number;
+    public marketValue: number;
+    public maxAmount: number = 100;
+    public genesToGrant: Record<string, string[]> = {};
+    public allomancy?: MetalAllomancyInfo
+    public feruchemy?: MetalFeruchemyInfo;
+    public buildable?: MetalBuildableInfo;
+    public mining?: MetalMiningInfo;
+    public alloy?: MetalAlloyInfo;
 
     constructor(self: Partial<MetalInfo>) {
         Object.assign(this, self);
@@ -28,12 +28,12 @@ export class MetalInfo {
 }
 
 export class MetalAllomancyInfo {
-    public UserName: string;
-    public Description: string;
-    public Group: AllomancyGroup;
-    public Axis: Axis;
-    public Polarity: Polarity;
-    public Abilities: string[];
+    public userName?: string;
+    public description: string;
+    public group: AllomancyGroup | 'None' = 'None';
+    public axis: Axis | 'None' = 'None';
+    public polarity: Polarity | 'None' = 'None';
+    public abilities: string[] = [];
 
     constructor(self: Partial<MetalAllomancyInfo>) {
         Object.assign(this, self);
@@ -41,20 +41,40 @@ export class MetalAllomancyInfo {
 }
 
 export class MetalFeruchemyInfo {
-    public UserName: string;
-    public Description: string;
-    public Group: FeruchemyGroup;
-    public Abilities: string[];
+    public userName?: string;
+    public description: string;
+    public group: FeruchemyGroup | 'None' = 'None';
+    public abilities: string[] = [];
+    public attribute?: string;
+    public customHediffClass: boolean = false;
+    public store?: FeruchemyAbilityInfo;
+    public tap?: FeruchemyAbilityInfo;
 
     constructor(self: Partial<MetalFeruchemyInfo>) {
+        Object.assign(this, self);
+        this.store = self.store ? new FeruchemyAbilityInfo(self.store) : undefined;
+        this.tap = self.tap ? new FeruchemyAbilityInfo(self.tap) : undefined;
+    }
+}
+
+export class FeruchemyAbilityInfo {
+    public description: string;
+    public stages: number = 20;
+    public multiplyBySeverity: boolean = false;
+    public capacityMods: Record<string, { factor?: number; offset?: number }>;
+    public statOffsets?: Record<string, number>;
+    public statFactors?: Record<string, number>;
+    public hungerRateFactor?: number;
+
+    constructor(self: Partial<FeruchemyAbilityInfo>) {
         Object.assign(this, self);
     }
 }
 
 export class MetalBuildableInfo {
-    public Buildings: boolean;
-    public Items: boolean;
-    public Commonality: number;
+    public buildings: boolean;
+    public items: boolean;
+    public commonality: number;
 
     constructor(self: Partial<MetalBuildableInfo>) {
         Object.assign(this, self);
@@ -62,11 +82,11 @@ export class MetalBuildableInfo {
 }
 
 export class MetalMiningInfo {
-    public Description?: string;
-    public HitPoints: number;
-    public Yield: number;
-    public Commonality: number;
-    public SizeRange: [number, number];
+    public description?: string;
+    public hitPoints: number;
+    public yield: number;
+    public commonality: number;
+    public sizeRange: [number, number];
 
     constructor(self: Partial<MetalMiningInfo>) {
         Object.assign(this, self);
@@ -88,31 +108,31 @@ interface AlloyInput {
 }
 
 export class MetalAlloyInfo {
-    public Ingredients: MetalAlloyIngredient[];
-    public Stuff?: string[];
-    public StuffCount?: number;
-    public Product: MetalAlloyProduct;
-    public Type: 'simple' | 'complex' | 'god';
+    public ingredients: MetalAlloyIngredient[];
+    public stuff?: string[];
+    public stuffCount?: number;
+    public product: MetalAlloyProduct;
+    public type: 'simple' | 'complex' | 'god';
 
     public constructor({type, ingredients, stuff, stuffCount, product = {count: 10}}: AlloyInput) {
-        this.Type = type;
-        this.Ingredients = ingredients.map(i => new MetalAlloyIngredient({
-            Items: i.item ? (Array.isArray(i.item) ? i.item : [i.item]) : undefined,
-            Count: i.count,
+        this.type = type;
+        this.ingredients = ingredients.map(i => new MetalAlloyIngredient({
+            items: i.item ? (Array.isArray(i.item) ? i.item : [i.item]) : undefined,
+            count: i.count,
         }));
-        this.Product = new MetalAlloyProduct({
-            Item: product.item,
-            Count: product.count,
+        this.product = new MetalAlloyProduct({
+            item: product.item,
+            count: product.count,
         });
-        this.Stuff = stuff ? (Array.isArray(stuff) ? stuff : [stuff]) : undefined;
-        this.StuffCount = stuffCount;
+        this.stuff = stuff ? (Array.isArray(stuff) ? stuff : [stuff]) : undefined;
+        this.stuffCount = stuffCount;
     }
 }
 
 export class MetalAlloyIngredient {
-    public Items?: string[];
-    public Stuffs?: string[];
-    public Count: number;
+    public items?: string[];
+    public stuffs?: string[];
+    public count: number;
 
     constructor(self: Partial<MetalAlloyIngredient>) {
         Object.assign(this, self);
@@ -120,8 +140,8 @@ export class MetalAlloyIngredient {
 }
 
 export class MetalAlloyProduct {
-    public Item: string;
-    public Count: number;
+    public item: string;
+    public count: number;
 
     constructor(self: Partial<MetalAlloyProduct>) {
         Object.assign(this, self);

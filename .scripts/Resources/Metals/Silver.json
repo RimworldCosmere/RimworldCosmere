@@ -1,0 +1,31 @@
+{
+  "name": "silver",
+  "description": "Silver is a bright, lustrous metal renowned for its conductivity, beauty, and symbolic purity. While soft and malleable, it remains a staple in crafting, electronics, and currency.",
+  "godMetal": false,
+  "color": [
+    204,
+    195,
+    173
+  ],
+  "colorTwo": [
+    110,
+    103,
+    93
+  ],
+  "marketValue": 1,
+  "beauty": 6,
+  "buildable": {
+    "buildings": true,
+    "items": true,
+    "commonality": 0.01
+  },
+  "mining": {
+    "hitPoints": 1500,
+    "yield": 40,
+    "commonality": 0.3,
+    "sizeRange": [
+      4,
+      12
+    ]
+  }
+}

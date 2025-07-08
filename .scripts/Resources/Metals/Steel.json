@@ -1,0 +1,88 @@
+{
+  "name": "steel",
+  "description": "Steel is a durable alloy of iron and carbon, valued for its strength, rigidity, and versatility. Ubiquitous across weaponry, construction, and tools, it forms the foundation of advanced metallurgy.",
+  "godMetal": false,
+  "color": [
+    109,
+    108,
+    108
+  ],
+  "marketValue": 1.9,
+  "beauty": 1,
+  "allomancy": {
+    "userName": "coinshot",
+    "description": "Grants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.",
+    "group": "physical",
+    "axis": "external",
+    "polarity": "pushing",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_SteelAura",
+      "Cosmere_Scadrial_Ability_SteelBubble",
+      "Cosmere_Scadrial_Ability_SteelJump",
+      "Cosmere_Scadrial_Ability_SteelPush",
+      "Cosmere_Scadrial_Ability_SteelCoinshot"
+    ]
+  },
+  "feruchemy": {
+    "userName": "steelrunner",
+    "description": "Stores physical speed, allowing for bursts of superhuman speed.",
+    "group": "physical",
+    "attribute": "physical speed",
+    "store": {
+      "description": "Storing steel draws kinetic energy from the body into a metalmind. Every movement feels sluggish, as if pushing through water. The pawn conserves speed for later use, willingly enduring slow steps and dulled reflexes.",
+      "statFactors": {
+        "Ability_Duration": 0.03,
+        "Ability_CastingTime": 0.03,
+        "StaggerDurationFactor": 0.03,
+        "AimingDelayFactor": 0.03,
+        "MeleeCooldownFactor": 0.03,
+        "RangedCooldownFactor": 0.03,
+        "EatingSpeed": -0.03,
+        "MoveSpeed": -0.03,
+        "CrawlSpeed": -0.03,
+        "CleaningSpeed": -0.03,
+        "MiningSpeed": -0.03,
+        "WorkSpeedGlobal": -0.03
+      }
+    },
+    "tap": {
+      "description": "Tapping steel unleashes a sudden burst of kinetic energy from the metalmind, drastically increasing the pawn's movement speed. Muscles respond faster, steps blur with unnatural agility, and the world seems to slow as they move with Feruchemical swiftness.",
+      "statFactors": {
+        "Ability_Duration": -0.06,
+        "Ability_CastingTime": -0.06,
+        "StaggerDurationFactor": -0.06,
+        "AimingDelayFactor": -0.06,
+        "MeleeCooldownFactor": -0.06,
+        "RangedCooldownFactor": -0.06,
+        "EatingSpeed": 0.06,
+        "MoveSpeed": 0.06,
+        "CrawlSpeed": 0.06,
+        "CleaningSpeed": 0.06,
+        "MiningSpeed": 0.06,
+        "WorkSpeedGlobal": 0.06
+      }
+    }
+  },
+  "buildable": {
+    "buildings": true,
+    "items": true,
+    "commonality": 0.8
+  },
+  "alloy": {
+    "type": "simple",
+    "ingredients": [
+      {
+        "item": [
+          "iron"
+        ],
+        "count": 8
+      },
+      {
+        "item": [
+          "charcoal"
+        ],
+        "count": 2
+      }
+    ]
+  }
+}

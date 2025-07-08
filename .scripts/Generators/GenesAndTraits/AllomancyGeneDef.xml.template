@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <!-- Misting: {{capitalize metal.Name}} -->
+    <!-- Misting: {{capitalize metal.name}} -->
     <GeneDef ParentName="AbstractAllomancyInvestitureGene">
-        <defName>Cosmere_Scadrial_Gene_Misting{{capitalize metal.Name}}</defName>
+        <defName>Cosmere_Scadrial_Gene_Misting{{capitalize metal.name}}</defName>
 
-        <label>{{metal.Name}} misting</label>
-        <labelShortAdj>{{metal.Allomancy.UserName}}</labelShortAdj>
+        <label>{{metal.name}} misting</label>
+        <labelShortAdj>{{metal.allomancy.userName}}</labelShortAdj>
 
-        <description>{{metal.Allomancy.Description}}</description>
+        <description>{{metal.allomancy.description}}</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
         <displayOrderInCategory>{{order}}</displayOrderInCategory>
 
-        <resourceLabel>{{metal.Name}}</resourceLabel>
-        <resourceDescription>Group: {{metal.Allomancy.Group}}\nAxis: {{metal.Allomancy.Axis}}\nPolarity: {{metal.Allomancy.Polarity}}\n\n{{metal.Allomancy.Description}}</resourceDescription>
+        <resourceLabel>{{metal.name}}</resourceLabel>
+        <resourceDescription>Group: {{metal.allomancy.group}}\nAxis: {{metal.allomancy.axis}}\nPolarity: {{metal.allomancy.polarity}}\n\n{{metal.allomancy.description}}</resourceDescription>
 
         <forcedTraits>
             <li>
-                <def>Cosmere_Scadrial_Trait_Misting{{capitalize metal.Name}}</def>
+                <def>Cosmere_Scadrial_Trait_Misting{{capitalize metal.name}}</def>
             </li>
         </forcedTraits>
 
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
-                <metal>{{capitalize metal.Name}}</metal>
+                <metal>{{capitalize metal.name}}</metal>
             </li>
         </modExtensions>
 
-        {{#if metal.Allomancy.Abilities}}
+        {{#if metal.allomancy.abilities}}
         <abilities>
-            {{#each metal.Allomancy.Abilities}}
+            {{#each metal.allomancy.abilities}}
             <li>{{this}}</li>
             {{/each}}
         </abilities>
         {{/if}}
 
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/{{capitalize metal.Name}}</iconPath>
+        <iconPath>UI/Icons/Genes/Investiture/Allomancy/{{capitalize metal.name}}</iconPath>
     </GeneDef>
 </Defs>

@@ -10,7 +10,7 @@
         <description>Allows {PAWN} to soothe emotions, calming people or manipulating moods.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>12</displayOrderInCategory>
+        <displayOrderInCategory>6</displayOrderInCategory>
 
         <resourceLabel>brass</resourceLabel>
         <resourceDescription>Group: mental\nAxis: external\nPolarity: pulling\n\nAllows {PAWN} to soothe emotions, calming people or manipulating moods.</resourceDescription>

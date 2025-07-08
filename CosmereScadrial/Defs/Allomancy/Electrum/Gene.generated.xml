@@ -10,7 +10,7 @@
         <description>Shows {PAWN}&#x27;s possible futures, useful for avoiding danger.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>32</displayOrderInCategory>
+        <displayOrderInCategory>18</displayOrderInCategory>
 
         <resourceLabel>electrum</resourceLabel>
         <resourceDescription>Group: temporal\nAxis: internal\nPolarity: pushing\n\nShows {PAWN}&#x27;s possible futures, useful for avoiding danger.</resourceDescription>

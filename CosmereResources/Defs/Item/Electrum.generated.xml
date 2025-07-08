@@ -11,10 +11,6 @@
             <li>Cosmere_Complex_Alloys</li>
         </researchPrerequisites>
         <costList>
-            <Gold>5</Gold>
-            
-            <Silver>5</Silver>
-            
         </costList>
 
         <recipeMaker>

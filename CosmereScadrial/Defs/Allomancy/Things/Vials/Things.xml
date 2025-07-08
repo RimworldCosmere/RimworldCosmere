@@ -58,7 +58,7 @@
         </recipeMaker>
         <stackLimit>150</stackLimit>
         <thingCategories>
-            <li>Cosmere_Scadrial_ThingCategoryDef_AllomanticVial</li>
+            <li>Cosmere_Scadrial_ThingCategory_AllomanticVial</li>
         </thingCategories>
         <tradeTags>
             <li>Allomancy</li>

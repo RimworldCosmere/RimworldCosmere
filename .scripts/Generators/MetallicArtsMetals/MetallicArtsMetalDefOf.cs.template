@@ -7,6 +7,6 @@ namespace CosmereScadrial;
 
 public static partial class MetallicArtsMetalDefOf {
     {{#each metals as | metal |}}
-    public static MetallicArtsMetalDef {{defName metal.Name}};
+    public static MetallicArtsMetalDef {{defName metal.name}};
     {{/each}}
 }

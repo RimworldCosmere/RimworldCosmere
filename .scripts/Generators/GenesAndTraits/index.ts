@@ -9,29 +9,29 @@ const defOfTemplate = compileTemplate(__dirname, 'DefOf.cs.template');
 const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
 
 export default function () {
-    for (const type of ['Allomancy', 'Feruchemy'] as const) {
+    for (const type of ['allomancy', 'feruchemy'] as const) {
         const geneTemplate = compileTemplate(__dirname, type + 'GeneDef.xml.template');
         const traitTemplate = compileTemplate(__dirname, type + 'TraitDef.xml.template');
         const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', type);
 
         let order = 2
-        const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && (!!x[type])).concat(MetalRegistry.Metals.Atium);
+        const metals = Object.values(MetalRegistry.Metals).filter(x => !x.godMetal && (!!x[type])).concat(MetalRegistry.Metals.Atium);
         for (const metalInfo of metals) {
             writeGeneratedFile(
-                resolve(outputDir, toDefName(metalInfo.Name)),
+                resolve(outputDir, toDefName(metalInfo.name)),
                 'Gene.generated.xml',
                 geneTemplate({
                     metal: metalInfo,
-                    defName: metalInfo.DefName ?? toDefName(metalInfo.Name),
+                    defName: metalInfo.defName ?? toDefName(metalInfo.name),
                     order: order++,
                 }),
             );
             writeGeneratedFile(
-                resolve(outputDir, toDefName(metalInfo.Name)),
+                resolve(outputDir, toDefName(metalInfo.name)),
                 'Trait.generated.xml',
                 traitTemplate({
                     metal: metalInfo,
-                    defName: metalInfo.DefName ?? toDefName(metalInfo.Name),
+                    defName: metalInfo.defName ?? toDefName(metalInfo.name),
                     order: order++,
                 }),
             );
@@ -39,7 +39,7 @@ export default function () {
 
         ['Gene', 'Trait'].forEach(kind => {
             writeGeneratedFile(defOfOutputDir, kind + 'DefOf.' + type + '.generated.cs', defOfTemplate({
-                type: type === 'Allomancy' ? 'Misting' : 'Ferring',
+                type: type === 'allomancy' ? 'Misting' : 'Ferring',
                 kind,
                 metals
             }));
@@ -48,13 +48,13 @@ export default function () {
 
 
     ['Mistborn', 'FullFeruchemist'].forEach(type => {
-        const dir = type === 'Mistborn' ? 'Allomancy' : 'Feruchemy';
-        const metals = Object.values(MetalRegistry.Metals).filter(x => !x.GodMetal && (!!x[dir])).concat(MetalRegistry.Metals.Atium);
+        const dir = type === 'Mistborn' ? 'allomancy' : 'feruchemy';
+        const metals = Object.values(MetalRegistry.Metals).filter(x => !x.godMetal && (!!x[dir])).concat(MetalRegistry.Metals.Atium);
         const template = compileTemplate(__dirname, type + '.xml.template');
         const {abilities, rightClickAbilities} = Object.values(MetalRegistry.Metals).reduce((acc, metal) => {
             const typeData = metal[dir];
-            if (typeData?.Abilities) {
-                acc.abilities.push(...typeData.Abilities);
+            if (typeData?.abilities) {
+                acc.abilities.push(...typeData.abilities);
             }
 
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <StatCategoryDef>
+        <defName>Cosmere</defName>
+        <label>Cosmere</label>
+        <displayOrder>3</displayOrder>
+        <displayAllByDefault>true</displayAllByDefault>
+    </StatCategoryDef>
+</Defs>

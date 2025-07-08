@@ -1,3 +1,4 @@
+#nullable disable
 using System;
 using System.Xml;
 using CosmereFramework.Extension;
@@ -12,7 +13,7 @@ public class UseSetting : PatchOperation {
     public string modId;
 
     protected override bool ApplyWorker(XmlDocument xml) {
-        if (!CosmereSettings.TryGetRaw(modId, key, out object? settingValue)) {
+        if (!CosmereSettings.TryGetRaw(modId, key, out object settingValue)) {
             Log.Warning($"[Cosmere] PatchOperationUseSetting: Missing setting '{key}' in mod '{modId}'");
             return false;
         }

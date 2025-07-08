@@ -4,15 +4,21 @@
         <defName>Cosmere_Scadrial_Trait_Mistborn</defName>
         <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
+
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metals>
                     {{#each metals}}
-                        <li>{{capitalize name}}</li>
+                    <li>{{capitalize name}}</li>
                     {{/each}}
                 </metals>
             </li>
         </modExtensions>
+
+        <forcedPassions>
+            <li>Cosmere_Scadrial_Skill_AllomanticPower</li>
+        </forcedPassions>
+
         <degreeDatas>
             <li>
                 <label>Mistborn</label>

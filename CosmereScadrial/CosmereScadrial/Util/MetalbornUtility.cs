@@ -10,9 +10,19 @@ using Verse;
 namespace CosmereScadrial.Util;
 
 public static class MetalbornUtility {
-    public static bool HasAnyMetalbornGene(Pawn pawn) {
+    public static bool HasAnyMetalbornGene(Pawn? pawn) {
         return pawn?.genes != null &&
                pawn.genes.GenesListForReading.Any(gene => gene is Allomancer or Feruchemist && gene.Active);
+    }
+
+    public static bool HasAnyMistingGene(Pawn? pawn) {
+        return pawn?.genes != null &&
+               pawn.genes.GenesListForReading.Any(gene => gene is Allomancer && gene.Active);
+    }
+
+    public static bool HasAnyFerringGene(Pawn? pawn) {
+        return pawn?.genes != null &&
+               pawn.genes.GenesListForReading.Any(gene => gene is Feruchemist && gene.Active);
     }
 
     public static void HandleMetalbornTrait(Pawn pawn) {
@@ -65,9 +75,10 @@ public static class MetalbornUtility {
     }
 
     public static void HandleAllomancerTrait(Pawn pawn) {
-        if (!HasAnyMetalbornGene(pawn)) {
+        if (!HasAnyMistingGene(pawn)) {
             Trait? trait = pawn.story.traits.GetTrait(TraitDefOf.Cosmere_Scadrial_Trait_Allomancer);
             if (trait != null) pawn.story.traits.RemoveTrait(trait);
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level = 0;
             return;
         }
 
@@ -77,8 +88,9 @@ public static class MetalbornUtility {
     }
 
     public static void HandleFeruchemistTrait(Pawn pawn) {
-        if (!HasAnyMetalbornGene(pawn)) {
+        if (!HasAnyFerringGene(pawn)) {
             Trait? trait = pawn.story.traits.GetTrait(TraitDefOf.Cosmere_Scadrial_Trait_Feruchemist);
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level = 0;
             if (trait != null) pawn.story.traits.RemoveTrait(trait);
             return;
         }

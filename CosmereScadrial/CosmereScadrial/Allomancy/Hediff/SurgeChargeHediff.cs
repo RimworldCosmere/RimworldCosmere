@@ -36,7 +36,7 @@ public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : Alloman
             if (rate <= 0f) continue;
 
             foreach (AllomanticBurnSource source in gene.Sources) {
-                pawn.GetAllomanticAbility(source.Def).UpdateStatus(BurningStatus.Duralumin);
+                pawn.GetAllomanticAbility(source.Def)?.UpdateStatus(BurningStatus.Duralumin);
             }
         }
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    {{#each metals as | metal |}}
+    <RecordDef>
+        <defName>Cosmere_TimeSpentBurning_{{ defName metal.name }}</defName>
+        <label>time spent burning {{ title metal.name }}</label>
+        <description>Total time spent burning {{title metal.name}}</description>
+        <type>Time</type>
+        <displayOrder>{{add 1130 @index }}</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_TimeSpentStoring_{{ defName metal.name }}</defName>
+        <label>time spent storing {{ title metal.name }}</label>
+        <description>Total time spent storing {{title metal.name}}</description>
+        <type>Time</type>
+        <displayOrder>{{add 1150 @index }}</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_TimeSpentTapping_{{ defName metal.name }}</defName>
+        <label>time spent tapping {{ title metal.name }}</label>
+        <description>Total time spent tapping {{title metal.name}}</description>
+        <type>Time</type>
+        <displayOrder>{{add 1170 @index }}</displayOrder>
+    </RecordDef>
+    {{/each}}
+</Defs>

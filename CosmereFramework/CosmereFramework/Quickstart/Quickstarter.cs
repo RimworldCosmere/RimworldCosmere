@@ -12,7 +12,7 @@ namespace CosmereFramework.Quickstart;
 [StaticConstructorOnStartup]
 public class Quickstarter {
     private static bool Started;
-    private static readonly AbstractQuickstart quickstart;
+    private static readonly AbstractQuickstart? Quickstart;
 
     static Quickstarter() {
         if (!Prefs.DevMode) return;
@@ -26,7 +26,7 @@ public class Quickstarter {
             return;
         }
 
-        quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
+        Quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
 
         LongEventHandler.ExecuteWhenFinished(() => {
                 if (Started) return;
@@ -39,6 +39,7 @@ public class Quickstarter {
     private static string seed => GenText.RandomSeedString();
 
     private static void TryStartGame() {
+        if (Quickstart == null) return;
         if (Current.ProgramState != ProgramState.Entry) return;
         if (Find.GameInitData != null || Current.Game != null) return;
 
@@ -49,9 +50,9 @@ public class Quickstarter {
                 PageUtility.InitGameStart();
                 DelayedActionScheduler.Schedule(
                     () => {
-                        quickstart.PrepareColonists(Find.World.PlayerPawnsForStoryteller.ToList());
-                        quickstart.PostLoaded();
-                        if (quickstart.pauseAfterLoad) Find.TickManager.Pause();
+                        Quickstart.PrepareColonists(Find.World.PlayerPawnsForStoryteller.ToList());
+                        Quickstart.PostLoaded();
+                        if (Quickstart.pauseAfterLoad) Find.TickManager.Pause();
                     },
                     10
                 );
@@ -60,17 +61,18 @@ public class Quickstarter {
             true,
             GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap
         );
-        quickstart.PostStart();
+        Quickstart.PostStart();
     }
 
     private static void ApplyConfiguration() {
+        if (Quickstart == null) return;
         Current.ProgramState = ProgramState.Entry;
         Current.Game = new Game {
             InitData = new GameInitData(),
-            Scenario = quickstart.scenario?.scenario,
+            Scenario = Quickstart.scenario?.scenario,
         };
         Find.Scenario.PreConfigure();
-        Current.Game.storyteller = new Storyteller(quickstart.storyteller, quickstart.difficulty);
+        Current.Game.storyteller = new Storyteller(Quickstart.storyteller, Quickstart.difficulty);
         Current.Game.World = WorldGenerator.GenerateWorld(
             0.05f,
             seed,
@@ -80,11 +82,11 @@ public class Quickstarter {
             LandmarkDensity.Normal
         );
         Find.GameInitData.ChooseRandomStartingTile();
-        Find.GameInitData.mapSize = quickstart.mapSize;
+        Find.GameInitData.mapSize = Quickstart.mapSize;
         Find.Scenario.PostIdeoChosen();
         Find.GameInitData.PrepForMapGen();
         Find.Scenario.PreMapGenerate();
 
-        quickstart.PostApplyConfiguration();
+        Quickstart.PostApplyConfiguration();
     }
 }

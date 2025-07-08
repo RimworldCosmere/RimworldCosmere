@@ -9,6 +9,6 @@ public static class ThingUtility {
         if (thingWithComps.holdingOwner.Owner.ParentHolder is Pawn { Dead: true }) return true;
 
         return !thingWithComps.HasComp<PreventDropOnDowned>() ||
-               thingWithComps.GetComp<PreventDropOnDowned>().PreventDrop;
+               thingWithComps.GetComp<PreventDropOnDowned>().preventDrop;
     }
 }

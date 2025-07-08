@@ -1,0 +1,13 @@
+#nullable disable
+using CosmereScadrial.Def;
+using RimWorld;
+
+namespace CosmereScadrial;
+
+public static partial class RecordDefOf {
+    {{#each metals as | metal |}}
+    public static RecordDef Cosmere_TimeSpentBurning_{{defName metal.name}};
+    public static RecordDef Cosmere_TimeSpentStoring_{{defName metal.name}};
+    public static RecordDef Cosmere_TimeSpentTapping_{{defName metal.name}};
+    {{/each}}
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RecordDef>
+        <defName>Cosmere_InvestitureGained</defName>
+        <label>Investiture gained</label>
+        <description>The amount of Investiture I've gained.</description>
+        <type>Int</type>
+        <displayOrder>1000</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_InvestitureSpent</defName>
+        <label>Investiture spent</label>
+        <description>The amount of Investiture I've spent.</description>
+        <type>Int</type>
+        <displayOrder>1001</displayOrder>
+    </RecordDef>
+</Defs>

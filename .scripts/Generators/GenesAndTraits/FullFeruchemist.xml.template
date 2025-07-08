@@ -4,6 +4,7 @@
         <defName>Cosmere_Scadrial_Trait_FullFeruchemist</defName>
         <label>full feruchemist</label>
         <description>A rare individual who can use all Feruchemical metals.</description>
+
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metals>
@@ -13,6 +14,11 @@
                 </metals>
             </li>
         </modExtensions>
+
+        <forcedPassions>
+            <li>Cosmere_Scadrial_Skill_FeruchemicPower</li>
+        </forcedPassions>
+
         <degreeDatas>
             <li>
                 <label>full feruchemist</label>

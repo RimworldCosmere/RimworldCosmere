@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Defs>
-    <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Duralumin">
-        <defName>Duralumin</defName>
-        <label>Duralumin</label>
-        <description>Duralumin is a lightweight yet remarkably strong alloy made by combining Aluminium with Copper. Its excellent strength-to-weight ratio makes it indispensable in advanced engineering and high-performance designs.</description>
-        <color>(127, 113, 115)</color>
-    </CosmereResources.Def.MetalDef>
-</Defs>

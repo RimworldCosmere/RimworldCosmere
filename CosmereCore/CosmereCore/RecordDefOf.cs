@@ -9,10 +9,11 @@ namespace CosmereCore;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public static class TraitDefOf {
-    public static TraitDef Cosmere_Invested;
+public static class RecordDefOf {
+    public static RecordDef Cosmere_InvestitureGained;
+    public static RecordDef Cosmere_InvestitureSpent;
 
-    static TraitDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(TraitDefOf));
+    static RecordDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
     }
 }

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Defs>
-    <CosmereResources.Def.MetalDef Name="Cosmere_Metal_Brass">
-        <defName>Brass</defName>
-        <label>Brass</label>
-        <description>Brass is a warm, golden alloy produced by blending Copper with zinc. Praised for its attractive appearance and excellent workability, brass finds extensive use in both decorative applications and practical components.</description>
-        <color>(175, 148, 91)</color>
-    </CosmereResources.Def.MetalDef>
-</Defs>

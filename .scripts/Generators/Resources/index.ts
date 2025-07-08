@@ -3,7 +3,6 @@ import {resolve} from 'node:path';
 import {compileTemplate, writeGeneratedFile} from '../../Helpers';
 import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {METALS_MOD_DIR} from '../../constants';
-import {Command} from "commander";
 import {toDefName} from "../../Helpers/Handlebars";
 
 const metalDefTemplate = compileTemplate(__dirname, 'MetalDef.xml.template');
@@ -20,24 +19,24 @@ const mineableOutputDir = resolve(METALS_MOD_DIR, 'Defs', 'Mineable');
 const itemTemplate = compileTemplate(__dirname, 'ItemMetalDef.xml.template');
 const itemOutputDir = resolve(METALS_MOD_DIR, 'Defs', 'Item');
 
-export default function (program: Command) {
+export default function () {
     const metals = Object.values(MetalRegistry.Metals);
     for (const metal of metals) {
-        writeGeneratedFile(metalDefOutputDir, toDefName(metal.Name) + '.generated.xml', metalDefTemplate({metal}));
+        writeGeneratedFile(metalDefOutputDir, toDefName(metal.name) + '.generated.xml', metalDefTemplate({metal}));
     }
 
     writeGeneratedFile(CosmereResources, 'MetalDefOf.generated.cs', metalDefOfTemplate({metals}));
 
 
-    const mineable = Object.values(MetalRegistry.Metals).filter((x) => !!x.Mining);
+    const mineable = Object.values(MetalRegistry.Metals).filter((x) => !!x.mining);
     for (const metal of mineable) {
-        writeGeneratedFile(mineableOutputDir, toDefName(metal.Name) + '.generated.xml', mineableTemplate({metal}));
+        writeGeneratedFile(mineableOutputDir, toDefName(metal.name) + '.generated.xml', mineableTemplate({metal}));
     }
     writeGeneratedFile(CosmereResources, 'ThingDefOf.Mineable.generated.cs', thingDefOfMineableTemplate({metals: mineable}));
 
     const items = Object.values(MetalRegistry.Metals);
     for (const metal of items) {
-        writeGeneratedFile(itemOutputDir, toDefName(metal.Name) + '.generated.xml', itemTemplate({metal}));
+        writeGeneratedFile(itemOutputDir, toDefName(metal.name) + '.generated.xml', itemTemplate({metal}));
     }
     writeGeneratedFile(CosmereResources, 'ThingDefOf.Items.generated.cs', thingDefOfItemTemplate({metals: items}));
 }

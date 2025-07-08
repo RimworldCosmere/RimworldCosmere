@@ -10,7 +10,7 @@
         <description>Allows {PAWN} to detect other Invested pawns and items, revealing their Investiture.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>16</displayOrderInCategory>
+        <displayOrderInCategory>8</displayOrderInCategory>
 
         <resourceLabel>bronze</resourceLabel>
         <resourceDescription>Group: mental\nAxis: internal\nPolarity: pushing\n\nAllows {PAWN} to detect other Invested pawns and items, revealing their Investiture.</resourceDescription>

@@ -10,7 +10,7 @@
         <description>Enhances {PAWN}&#x27;s physical strength and durability.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>8</displayOrderInCategory>
+        <displayOrderInCategory>26</displayOrderInCategory>
 
         <resourceLabel>pewter</resourceLabel>
         <resourceDescription>Group: physical\nAxis: internal\nPolarity: pushing\n\nEnhances {PAWN}&#x27;s physical strength and durability.</resourceDescription>

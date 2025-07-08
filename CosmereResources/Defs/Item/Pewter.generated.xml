@@ -11,10 +11,6 @@
             <li>Cosmere_Complex_Alloys</li>
         </researchPrerequisites>
         <costList>
-            <Tin>8</Tin>
-            
-            <Copper>2</Copper>
-            
         </costList>
 
         <recipeMaker>

@@ -20,6 +20,7 @@
         <statBases>
             <Beauty>100</Beauty>
             <MarketValue>10000</MarketValue>
+            <Investiture>10</Investiture>
         </statBases>
 
         <modExtensions>

@@ -10,7 +10,7 @@
         <description>Allows {PAWN} to shield a target against Investiture, while wiping away their investiture reserves.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>22</displayOrderInCategory>
+        <displayOrderInCategory>12</displayOrderInCategory>
 
         <resourceLabel>chromium</resourceLabel>
         <resourceDescription>Group: enhancement\nAxis: external\nPolarity: pulling\n\nAllows {PAWN} to shield a target against Investiture, while wiping away their investiture reserves.</resourceDescription>

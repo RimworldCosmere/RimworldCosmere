@@ -10,7 +10,7 @@
         <description>Stores mental speed, allowing faster thought processes.</description>
 
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>10</displayOrderInCategory>
+        <displayOrderInCategory>32</displayOrderInCategory>
 
         <resourceLabel>zinc</resourceLabel>
         <resourceDescription>Group: cognitive\n\nStores mental speed, allowing faster thought processes.</resourceDescription>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_{{defName metal.Name}}">
-        <defName>{{defName metal.Name}}</defName>{{#with metal.Allomancy}}
-        <allomancy>{{#if UserName}}
-            <userName>{{UserName}}</userName>{{/if}}{{#if Description}}
-            <description>{{Description}}</description>{{/if}}{{#if Group}}
-            <group>{{capitalize Group}}</group>{{/if}}{{#if Axis}}
-            <axis>{{capitalize Axis}}</axis>{{/if}}{{#if Polarity}}
-            <polarity>{{capitalize Polarity}}</polarity>{{/if}}
+    <CosmereScadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_{{defName metal.name}}">
+        <defName>{{defName metal.name}}</defName>{{#with metal.allomancy}}
+        <allomancy>{{#if userName}}
+            <userName>{{userName}}</userName>{{/if}}{{#if description}}
+            <description>{{description}}</description>{{/if}}{{#if group}}
+            <group>{{capitalize group}}</group>{{/if}}{{#if axis}}
+            <axis>{{capitalize axis}}</axis>{{/if}}{{#if polarity}}
+            <polarity>{{capitalize polarity}}</polarity>{{/if}}
         </allomancy>
-        {{else}}{{/with}}{{#with metal.Feruchemy}}
-        <feruchemy>{{#if UserName}}
-            <userName>{{UserName}}</userName>{{/if}}{{#if Description}}
-            <description>{{Description}}</description>{{/if}}{{#if Group}}
-            <group>{{capitalize Group}}</group>{{/if}}
+        {{else}}{{/with}}{{#with metal.feruchemy}}
+        <feruchemy>{{#if userName}}
+            <userName>{{userName}}</userName>{{/if}}{{#if description}}
+            <description>{{description}}</description>{{/if}}{{#if group}}
+            <group>{{capitalize group}}</group>{{/if}}
         </feruchemy>
         {{else}}{{/with}}
     </CosmereScadrial.Def.MetallicArtsMetalDef>

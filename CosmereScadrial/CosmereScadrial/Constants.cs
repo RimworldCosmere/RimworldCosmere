@@ -8,4 +8,6 @@ public static class Constants {
     public const float BreathEquivalentUnitsPerMetalUnit = 0.3125f;
 
     public const float VialMetalAmount = 1f;
+
+    public const float DefaultBreathEquivalentUnitsPerTick = 0.00166666666666666666f;
 }

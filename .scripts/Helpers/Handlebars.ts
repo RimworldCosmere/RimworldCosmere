@@ -3,6 +3,8 @@ import {toLower, upperFirst} from "lodash";
 
 require('handlebars-helpers')();
 
+Handlebars.registerHelper('log', (...args: any[]) => console.log(...args));
+
 export const toTitleCase = (string: string) => string
     .toLowerCase()
     .split(' ')
@@ -37,13 +39,30 @@ Handlebars.registerHelper('range', (range: [number, number]) => {
 Handlebars.registerHelper('isdefined', function (value) {
     return value !== undefined;
 });
+Handlebars.registerHelper('gt', function (valueOne: number, valueTwo: number, block) {
+    return valueOne > valueTwo ? block.fn() : null;
+});
 Handlebars.registerHelper('count', function (value: Array<any>) {
     return value.length;
 });
 Handlebars.registerHelper('log', function (value: any) {
     return console.log(value);
 });
+Handlebars.registerHelper('multiply', function (valueOne: number, valueTwo: number) {
+    return Number((valueOne * valueTwo).toFixed(6));
+});
+Handlebars.registerHelper('getStatForStage', function (stage: number, step: number) {
+    return Number((1 + step * (stage + 1)).toFixed(8));
+});
 Handlebars.registerHelper('fallback', function (value: any, fallback: any) {
     console.log('Fallback: ', {value, fallback});
     return value === undefined ? fallback : value;
+});
+Handlebars.registerHelper('times', function (n, block) {
+    let accum = '';
+    for (let i = 0; i < n; ++i) {
+        block.data.time = i;
+        accum += block.fn(i);
+    }
+    return accum;
 });

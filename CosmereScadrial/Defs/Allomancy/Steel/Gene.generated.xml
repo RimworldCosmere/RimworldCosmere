@@ -10,7 +10,7 @@
         <description>Grants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>4</displayOrderInCategory>
+        <displayOrderInCategory>28</displayOrderInCategory>
 
         <resourceLabel>steel</resourceLabel>
         <resourceDescription>Group: physical\nAxis: external\nPolarity: pushing\n\nGrants sight to metals around {PAWN} and can push on metals, allowing rapid movement, throwing metal objects, or finding hidden metals.</resourceDescription>

@@ -10,7 +10,7 @@
         <description>Stores breath, useful for surviving in low-oxygen environments.</description>
 
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>26</displayOrderInCategory>
+        <displayOrderInCategory>10</displayOrderInCategory>
 
         <resourceLabel>cadmium</resourceLabel>
         <resourceDescription>Group: hybrid\n\nStores breath, useful for surviving in low-oxygen environments.</resourceDescription>

@@ -10,7 +10,7 @@
         <description>Stores senses, dulling them while storing and enhancing while tapping.</description>
 
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>6</displayOrderInCategory>
+        <displayOrderInCategory>30</displayOrderInCategory>
 
         <resourceLabel>tin</resourceLabel>
         <resourceDescription>Group: physical\n\nStores senses, dulling them while storing and enhancing while tapping.</resourceDescription>

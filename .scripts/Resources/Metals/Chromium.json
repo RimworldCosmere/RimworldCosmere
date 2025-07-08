@@ -1,0 +1,90 @@
+{
+  "name": "chromium",
+  "description": "Chromium is a hard, lustrous metal renowned for its brilliant shine and outstanding resistance to tarnish. It enhances the durability and appearance of alloys and is often used to create sleek, modern finishes.",
+  "godMetal": false,
+  "color": [
+    132,
+    134,
+    139
+  ],
+  "colorTwo": [
+    159,
+    171,
+    196
+  ],
+  "marketValue": 10,
+  "beauty": 2,
+  "allomancy": {
+    "userName": "leecher",
+    "description": "Allows {PAWN} to shield a target against Investiture, while wiping away their investiture reserves.",
+    "group": "enhancement",
+    "axis": "external",
+    "polarity": "pulling",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Chromium"
+    ]
+  },
+  "feruchemy": {
+    "userName": "spinner",
+    "description": "Stores fortune, influencing luck subtly.",
+    "group": "spiritual",
+    "attribute": "fortune",
+    "store": {
+      "description": "This pawn is storing fortune in a chromium metalmind. Chance turns against them — shots miss, tasks fail, and random events tend to break poorly. They seem cursed, but the bad luck is bottled for future use.",
+      "statFactors": {
+        "MedicalSurgerySuccessChance": -0.04,
+        "Ability_DetectChancePerEntropy": -0.04,
+        "MeleeHitChance": -0.04,
+        "MeleeDodgeChance": -0.04,
+        "PawnTrapSpringChance": -0.04,
+        "ArrestSuccessChance": -0.04,
+        "TameAnimalChance": -0.04,
+        "TrainAnimalChance": -0.04,
+        "BondAnimalChanceFactor": -0.04,
+        "PlantHarvestYield": -0.04,
+        "DrugHarvestYield": -0.04,
+        "HuntingStealth": -0.04,
+        "ConstructSuccessChance": -0.04,
+        "FixBrokenDownBuildingSuccessChance": -0.04,
+        "FoodPoisonChance": 0.04,
+        "ShootingAccuracyPawn": -0.04,
+        "TradePriceImprovement": -0.04
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping a chromium metalmind, drawing on stored fortune to twist chance in their favor. They dodge danger, succeed unexpectedly, and enjoy improbable good luck. Nothing’s guaranteed — but odds are tilted in their favor.",
+      "statFactors": {
+        "MedicalSurgerySuccessChance": 0.04,
+        "Ability_DetectChancePerEntropy": 0.04,
+        "MeleeHitChance": 0.04,
+        "MeleeDodgeChance": 0.04,
+        "PawnTrapSpringChance": 0.04,
+        "ArrestSuccessChance": 0.04,
+        "TameAnimalChance": 0.04,
+        "TrainAnimalChance": 0.04,
+        "BondAnimalChanceFactor": 0.04,
+        "PlantHarvestYield": 0.04,
+        "DrugHarvestYield": 0.04,
+        "HuntingStealth": 0.04,
+        "ConstructSuccessChance": 0.04,
+        "FixBrokenDownBuildingSuccessChance": 0.04,
+        "FoodPoisonChance": -0.04,
+        "ShootingAccuracyPawn": 0.04,
+        "TradePriceImprovement": 0.04
+      }
+    }
+  },
+  "buildable": {
+    "buildings": false,
+    "items": true
+  },
+  "mining": {
+    "hitPoints": 1600,
+    "yield": 30,
+    "commonality": 0.3,
+    "sizeRange": [
+      25,
+      45
+    ]
+  }
+}

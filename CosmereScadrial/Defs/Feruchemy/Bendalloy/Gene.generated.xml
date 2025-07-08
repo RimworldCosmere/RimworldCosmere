@@ -10,7 +10,7 @@
         <description>Stores nutrition, allowing users to go without food.</description>
 
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>28</displayOrderInCategory>
+        <displayOrderInCategory>4</displayOrderInCategory>
 
         <resourceLabel>bendalloy</resourceLabel>
         <resourceDescription>Group: hybrid\n\nStores nutrition, allowing users to go without food.</resourceDescription>

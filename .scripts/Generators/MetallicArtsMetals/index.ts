@@ -15,10 +15,10 @@ const metalDefOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
 
 export default function () {
     const metals = Object.values(MetalRegistry.Metals)
-        .filter(x => !!x.Allomancy || !!x.Feruchemy);
+        .filter(x => !!x.allomancy || !!x.feruchemy);
     for (const metal of metals) {
-        writeGeneratedFile(metalOutputDir, toDefName(metal.Name) + '.generated.xml', metalTemplate({metal}));
-        writeGeneratedFile(patchMetalDefOfOutputDir, toDefName(metal.Name) + '.generated.xml', patchMetalDefOfTemplate({metal}));
+        writeGeneratedFile(metalOutputDir, toDefName(metal.name) + '.generated.xml', metalTemplate({metal}));
+        writeGeneratedFile(patchMetalDefOfOutputDir, toDefName(metal.name) + '.generated.xml', patchMetalDefOfTemplate({metal}));
     }
 
     writeGeneratedFile(metalDefOfOutputDir, 'MetallicArtsMetalDefOf.generated.cs', metalDefOfTemplate({metals}));

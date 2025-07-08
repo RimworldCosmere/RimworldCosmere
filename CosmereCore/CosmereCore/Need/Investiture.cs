@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CosmereCore.Extension;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -43,18 +44,7 @@ public class Investiture : RimWorld.Need {
         threshPercents = new List<float> { 0.1f, 0.25f, 0.5f, 0.75f };
     }
 
-    public override float MaxLevel {
-        get {
-            float cur = CurLevel;
-            foreach (int threshold in BreathEquivalentUnitThresholds) {
-                if (cur < threshold)
-                    return threshold;
-            }
-
-            // If above all thresholds, use the last one as the cap
-            return MaxInvestiture;
-        }
-    }
+    public override float MaxLevel => MaxInvestiture;
 
     public override bool ShowOnNeedList =>
         pawn != null && pawn.story.traits.HasTrait(TraitDef.Named("Cosmere_Invested"));
@@ -63,7 +53,6 @@ public class Investiture : RimWorld.Need {
     public static int GetBreathEquivalentUnitsFromDegree(int degree) {
         return BreathEquivalentUnitThresholds[degree];
     }
-
 
     // ReSharper disable once InconsistentNaming
     public static int GetDegreeFromBreathEquivalentUnits(int beu) {
@@ -193,9 +182,7 @@ public class Investiture : RimWorld.Need {
 
         int beu = Mathf.FloorToInt(CurLevel);
         int degree = GetDegreeFromBreathEquivalentUnits(beu);
-        string tier = HeighteningLabels[Mathf.Clamp(degree, 0, HeighteningLabels.Length - 1)];
-
-        string text = $"{tier} ({beu} BEUs)";
+        string text = beu.ToStringBreathEquivalentUnits();
 
         // Optional: assign a color gradient based on Heightening
         Color color = Color.Lerp(Color.gray, new Color(0.4f, 0.9f, 1.0f), degree / 10f);

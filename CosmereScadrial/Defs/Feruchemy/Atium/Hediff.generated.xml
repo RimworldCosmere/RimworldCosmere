@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractCompoundHediff">
+        <defName>Cosmere_Scadrial_Hediff_CompoundAtium</defName>
+        <label>compounding atium</label>
+        <description>Rapidly stores youth by burning a metalmind of Atium .</description>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Atium</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_StoreAtium</defName>
+        <hediffClass>CosmereScadrial.Feruchemy.Hediff.Atium</hediffClass>
+        <label>storing Atium</label>
+        <description>This pawn is storing youth in an atium metalmind, aging their body unnaturally. Their joints ache, their reflexes slow, and their strength wanes. They sacrifice vitality now to reclaim it later — if they survive.</description>
+        <stages>
+            <li>
+                <minSeverity>0</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.99</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.99</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.98</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.98</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.99</MoveSpeed>
+                    <ImmunityGainSpeed>0.98</ImmunityGainSpeed>
+                    <PainShockThreshold>0.99</PainShockThreshold>
+                    <LifespanFactor>0.97</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>1</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.98</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.98</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.96</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.96</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.98</MoveSpeed>
+                    <ImmunityGainSpeed>0.96</ImmunityGainSpeed>
+                    <PainShockThreshold>0.98</PainShockThreshold>
+                    <LifespanFactor>0.94</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>2</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.97</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.97</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.94</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.94</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.97</MoveSpeed>
+                    <ImmunityGainSpeed>0.94</ImmunityGainSpeed>
+                    <PainShockThreshold>0.97</PainShockThreshold>
+                    <LifespanFactor>0.91</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>3</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.96</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.96</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.92</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.92</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.96</MoveSpeed>
+                    <ImmunityGainSpeed>0.92</ImmunityGainSpeed>
+                    <PainShockThreshold>0.96</PainShockThreshold>
+                    <LifespanFactor>0.88</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>4</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.95</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.95</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.9</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.9</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.95</MoveSpeed>
+                    <ImmunityGainSpeed>0.9</ImmunityGainSpeed>
+                    <PainShockThreshold>0.95</PainShockThreshold>
+                    <LifespanFactor>0.85</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>5</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.94</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.94</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.88</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.88</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.94</MoveSpeed>
+                    <ImmunityGainSpeed>0.88</ImmunityGainSpeed>
+                    <PainShockThreshold>0.94</PainShockThreshold>
+                    <LifespanFactor>0.82</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>6</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.93</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.93</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.86</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.86</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.93</MoveSpeed>
+                    <ImmunityGainSpeed>0.86</ImmunityGainSpeed>
+                    <PainShockThreshold>0.93</PainShockThreshold>
+                    <LifespanFactor>0.79</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>7</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.92</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.92</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.84</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.84</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.92</MoveSpeed>
+                    <ImmunityGainSpeed>0.84</ImmunityGainSpeed>
+                    <PainShockThreshold>0.92</PainShockThreshold>
+                    <LifespanFactor>0.76</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>8</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.91</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.91</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.82</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.82</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.91</MoveSpeed>
+                    <ImmunityGainSpeed>0.82</ImmunityGainSpeed>
+                    <PainShockThreshold>0.91</PainShockThreshold>
+                    <LifespanFactor>0.73</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>9</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.9</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.9</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.8</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.8</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.9</MoveSpeed>
+                    <ImmunityGainSpeed>0.8</ImmunityGainSpeed>
+                    <PainShockThreshold>0.9</PainShockThreshold>
+                    <LifespanFactor>0.7</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>10</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.89</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.89</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.78</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.78</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.89</MoveSpeed>
+                    <ImmunityGainSpeed>0.78</ImmunityGainSpeed>
+                    <PainShockThreshold>0.89</PainShockThreshold>
+                    <LifespanFactor>0.67</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>11</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.88</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.88</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.76</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.76</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.88</MoveSpeed>
+                    <ImmunityGainSpeed>0.76</ImmunityGainSpeed>
+                    <PainShockThreshold>0.88</PainShockThreshold>
+                    <LifespanFactor>0.64</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>12</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.87</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.87</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.74</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.74</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.87</MoveSpeed>
+                    <ImmunityGainSpeed>0.74</ImmunityGainSpeed>
+                    <PainShockThreshold>0.87</PainShockThreshold>
+                    <LifespanFactor>0.61</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>13</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.86</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.86</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.72</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.72</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.86</MoveSpeed>
+                    <ImmunityGainSpeed>0.72</ImmunityGainSpeed>
+                    <PainShockThreshold>0.86</PainShockThreshold>
+                    <LifespanFactor>0.58</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>14</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.85</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.85</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.7</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.7</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.85</MoveSpeed>
+                    <ImmunityGainSpeed>0.7</ImmunityGainSpeed>
+                    <PainShockThreshold>0.85</PainShockThreshold>
+                    <LifespanFactor>0.55</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>15</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.84</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.84</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.68</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.68</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.84</MoveSpeed>
+                    <ImmunityGainSpeed>0.68</ImmunityGainSpeed>
+                    <PainShockThreshold>0.84</PainShockThreshold>
+                    <LifespanFactor>0.52</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>16</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.83</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.83</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.66</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.66</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.83</MoveSpeed>
+                    <ImmunityGainSpeed>0.66</ImmunityGainSpeed>
+                    <PainShockThreshold>0.83</PainShockThreshold>
+                    <LifespanFactor>0.49</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>17</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.82</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.82</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.64</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.64</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.82</MoveSpeed>
+                    <ImmunityGainSpeed>0.64</ImmunityGainSpeed>
+                    <PainShockThreshold>0.82</PainShockThreshold>
+                    <LifespanFactor>0.46</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>18</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.81</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.81</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.62</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.62</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.81</MoveSpeed>
+                    <ImmunityGainSpeed>0.62</ImmunityGainSpeed>
+                    <PainShockThreshold>0.81</PainShockThreshold>
+                    <LifespanFactor>0.43</LifespanFactor>
+                </statFactors>
+                            </li>
+            <li>
+                <minSeverity>19</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.8</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.8</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>0.6</postFactor>
+                        
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.6</postFactor>
+                        
+                    </li>
+                </capMods>
+                
+                <statFactors>
+                    <MoveSpeed>0.8</MoveSpeed>
+                    <ImmunityGainSpeed>0.6</ImmunityGainSpeed>
+                    <PainShockThreshold>0.8</PainShockThreshold>
+                    <LifespanFactor>0.4</LifespanFactor>
+                </statFactors>
+                            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Atium</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_TapAtium</defName>
+        <hediffClass>CosmereScadrial.Feruchemy.Hediff.Atium</hediffClass>
+        <label>tapping Atium</label>
+        <description>This pawn is tapping an atium metalmind, reversing the effects of time. Their body becomes younger, stronger, and faster — regaining agility, endurance, and resilience as if years were stripped away.</description>
+        <stages>
+            <li>
+                <minSeverity>0</minSeverity>            </li>
+            <li>
+                <minSeverity>1</minSeverity>            </li>
+            <li>
+                <minSeverity>2</minSeverity>            </li>
+            <li>
+                <minSeverity>3</minSeverity>            </li>
+            <li>
+                <minSeverity>4</minSeverity>            </li>
+            <li>
+                <minSeverity>5</minSeverity>            </li>
+            <li>
+                <minSeverity>6</minSeverity>            </li>
+            <li>
+                <minSeverity>7</minSeverity>            </li>
+            <li>
+                <minSeverity>8</minSeverity>            </li>
+            <li>
+                <minSeverity>9</minSeverity>            </li>
+            <li>
+                <minSeverity>10</minSeverity>            </li>
+            <li>
+                <minSeverity>11</minSeverity>            </li>
+            <li>
+                <minSeverity>12</minSeverity>            </li>
+            <li>
+                <minSeverity>13</minSeverity>            </li>
+            <li>
+                <minSeverity>14</minSeverity>            </li>
+            <li>
+                <minSeverity>15</minSeverity>            </li>
+            <li>
+                <minSeverity>16</minSeverity>            </li>
+            <li>
+                <minSeverity>17</minSeverity>            </li>
+            <li>
+                <minSeverity>18</minSeverity>            </li>
+            <li>
+                <minSeverity>19</minSeverity>            </li>
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Atium</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+</Defs>

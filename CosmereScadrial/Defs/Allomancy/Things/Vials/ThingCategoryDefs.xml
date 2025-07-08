@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingCategoryDef>
-        <defName>Cosmere_Scadrial_ThingCategoryDef_AllomanticVial</defName>
+        <defName>Cosmere_Scadrial_ThingCategory_AllomanticVial</defName>
         <label>allomantic vial</label>
         <parent>Manufactured</parent>
         <resourceReadoutRoot>true</resourceReadoutRoot>

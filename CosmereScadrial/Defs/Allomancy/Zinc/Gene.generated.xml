@@ -10,7 +10,7 @@
         <description>Allows {PAWN} to riot emotions, pushing others to feel stronger emotions.</description>
 
         <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>10</displayOrderInCategory>
+        <displayOrderInCategory>32</displayOrderInCategory>
 
         <resourceLabel>zinc</resourceLabel>
         <resourceDescription>Group: mental\nAxis: external\nPolarity: pushing\n\nAllows {PAWN} to riot emotions, pushing others to feel stronger emotions.</resourceDescription>

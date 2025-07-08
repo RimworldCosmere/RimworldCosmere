@@ -11,9 +11,8 @@ namespace CosmereScadrial.Def;
 public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
     public bool applyDragOnTarget = false;
     public bool autoBurnWhileDownedByDefault = true;
-    public float beuPerTick = 0.1f / GenTicks.TicksPerRealSecond;
+    public float beuPerTick = Constants.DefaultBreathEquivalentUnitsPerTick;
     public ThingDef? burningMote;
-    public int burningMoteInterval = GenTicks.TickRareInterval;
     public bool canBurnWhileAsleep = false;
     public bool canBurnWhileDowned = false;
     public bool canFlare = true;

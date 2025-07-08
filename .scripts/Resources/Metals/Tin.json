@@ -1,0 +1,76 @@
+{
+  "name": "tin",
+  "description": "Tin is a soft and malleable metal, prized for its natural resistance to corrosion. Its gentle sheen and ease of alloying make it a vital component in crafting a variety of decorative and functional metal blends.",
+  "godMetal": false,
+  "color": [
+    197,
+    202,
+    201
+  ],
+  "colorTwo": [
+    128,
+    137,
+    137
+  ],
+  "marketValue": 1.3,
+  "beauty": 1,
+  "allomancy": {
+    "userName": "tineye",
+    "description": "Enhances {PAWN}'s senses like sight, hearing, and smell.",
+    "group": "physical",
+    "axis": "internal",
+    "polarity": "pulling",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Tin"
+    ]
+  },
+  "feruchemy": {
+    "userName": "windwhisper",
+    "description": "Stores senses, dulling them while storing and enhancing while tapping.",
+    "group": "physical",
+    "attribute": "senses",
+    "store": {
+      "description": "This pawn is storing sensory perception in a tin metalmind, numbing themselves to the world. Sight and hearing are muted, impairing awareness and coordination. It’s harder to aim, react, or interact effectively — but sensory clarity is being saved for later.",
+      "capacityMods": {
+        "Sight": {
+          "factor": -0.05
+        },
+        "Hearing": {
+          "factor": -0.05
+        }
+      },
+      "statFactors": {
+        "ShootingAccuracyPawn": -0.049,
+        "MeleeHitChange": -0.049
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping a tin metalmind, flooding their body with enhanced sensory input. Their vision and hearing sharpen dramatically, improving combat awareness and task efficiency. However, overstimulation may lead to distraction or sensitivity.",
+      "capacityMods": {
+        "Sight": {
+          "factor": 0.1
+        },
+        "Hearing": {
+          "factor": 0.1
+        }
+      },
+      "statFactors": {
+        "ShootingAccuracyPawn": 0.1,
+        "MeleeHitChance": 0.1
+      }
+    }
+  },
+  "buildable": {
+    "buildings": true,
+    "items": true
+  },
+  "mining": {
+    "hitPoints": 1400,
+    "yield": 40,
+    "commonality": 0.6,
+    "sizeRange": [
+      35,
+      65
+    ]
+  }
+}

@@ -10,7 +10,7 @@
         <description>Stores identity, allowing anonymous interactions or forgery.</description>
 
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>18</displayOrderInCategory>
+        <displayOrderInCategory>2</displayOrderInCategory>
 
         <resourceLabel>aluminum</resourceLabel>
         <resourceDescription>Group: spiritual\n\nStores identity, allowing anonymous interactions or forgery.</resourceDescription>

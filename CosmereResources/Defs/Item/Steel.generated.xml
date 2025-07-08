@@ -11,10 +11,6 @@
             <li>Cosmere_Complex_Alloys</li>
         </researchPrerequisites>
         <costList>
-            <Iron>8</Iron>
-            
-            <Charcoal>2</Charcoal>
-            
         </costList>
 
         <recipeMaker>

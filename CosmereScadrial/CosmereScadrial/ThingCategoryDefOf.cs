@@ -11,7 +11,8 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ThingCategoryDefOf {
-    public static ThingCategoryDef Cosmere_Scadrial_ThingCategoryDef_AllomanticVial;
+    public static ThingCategoryDef Cosmere_Scadrial_ThingCategory_AllomanticVial;
+    public static ThingCategoryDef Cosmere_Scadrial_ThingCategory_Metalmind;
 
     static ThingCategoryDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingCategoryDefOf));

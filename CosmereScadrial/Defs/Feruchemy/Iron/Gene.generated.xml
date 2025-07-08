@@ -10,7 +10,7 @@
         <description>Stores weight, allowing the user to become lighter or heavier.</description>
 
         <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>2</displayOrderInCategory>
+        <displayOrderInCategory>22</displayOrderInCategory>
 
         <resourceLabel>iron</resourceLabel>
         <resourceDescription>Group: physical\n\nStores weight, allowing the user to become lighter or heavier.</resourceDescription>

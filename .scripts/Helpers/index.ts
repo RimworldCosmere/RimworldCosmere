@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars';
-import {mkdirSync, readFileSync, writeFileSync} from 'fs';
+import {mkdirSync, readdirSync, readFileSync, writeFileSync} from 'fs';
 import {dirname, resolve} from 'path';
 import {options} from "../index";
 
@@ -16,4 +16,19 @@ export function writeGeneratedFile(dir: string, fileName: string, content: strin
 
     mkdirSync(dirname(fullPath), {recursive: true});
     writeFileSync(fullPath, content, 'utf8');
+}
+
+export function loadAllJsonSync(directoryPath: string): Record<string, any>[] {
+    const files = readdirSync(directoryPath);
+    const jsonObjects = [];
+
+    for (const file of files) {
+        if (file.endsWith('.json')) {
+            const fullPath = resolve(directoryPath, file);
+            const content = readFileSync(fullPath, 'utf-8');
+            jsonObjects.push(JSON.parse(content));
+        }
+    }
+
+    return jsonObjects;
 }

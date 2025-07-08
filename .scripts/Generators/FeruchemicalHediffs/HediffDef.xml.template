@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractCompoundHediff">
+        <defName>Cosmere_Scadrial_Hediff_Compound{{defName metal.name}}</defName>
+        <label>compounding {{metal.name}}</label>
+        <description>Rapidly stores {{metal.feruchemy.attribute}} by burning a metalmind of {{title metal.name}} .</description>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>{{defName metal.name}}</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+    {{#with metal.feruchemy.store}}
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_Store{{defName ../metal.name}}</defName>{{#if ../metal.feruchemy.customHediffClass}}
+        <hediffClass>CosmereScadrial.Feruchemy.Hediff.{{defName ../metal.name}}</hediffClass>{{/if}}
+        <label>storing {{title ../metal.name}}</label>
+        <description>{{description}}</description>
+        <stages>
+            {{#times stages}}
+            <li>
+                {{#gt ../stages 1}}<minSeverity>{{@time}}</minSeverity>{{/gt}}{{#if ../multiplyBySeverity}}
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getStatForStage this ../hungerRateFactor}}</hungerRateFactor>{{/if}}{{#if ../capacityMods}}
+                <capMods>
+                    {{#each ../capacityMods}}
+                    <li>
+                        <capacity>{{@key}}</capacity>
+                        {{#if factor}}
+                        <postFactor>{{getStatForStage @time factor}}</postFactor>
+                        {{/if}}
+                        {{#if offset}}<offset>{{getStatForStage @time offset}}</offset>{{/if}}
+                    </li>
+                    {{/each}}
+                </capMods>
+                {{/if}}{{#if ../statFactors}}
+                <statFactors>
+                    {{#each ../statFactors as |value attribute| }}
+                    <{{attribute}}>{{getStatForStage @time value}}</{{attribute}}>
+                    {{/each}}
+                </statFactors>
+                {{/if}}{{#if ../statOffsets}}
+                <statOffsets>
+                    {{#each ../statOffsets as |value attribute| }}
+                    <{{attribute}}>{{getStatForStage @time value}}</{{attribute}}>
+                    {{/each}}
+                </statOffsets>
+                {{/if}}
+            </li>
+            {{/times}}
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>{{defName ../metal.name}}</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+    {{/with}}
+    {{#with metal.feruchemy.tap}}
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
+        <defName>Cosmere_Scadrial_Hediff_Tap{{defName ../metal.name}}</defName>
+        {{#if ../metal.feruchemy.customHediffClass}}<hediffClass>CosmereScadrial.Feruchemy.Hediff.{{defName ../metal.name}}</hediffClass>{{/if}}
+        <label>tapping {{title ../metal.name}}</label>
+        <description>{{description}}</description>
+        <stages>
+            {{#times stages}}
+            <li>
+                {{#gt ../stages 1}}<minSeverity>{{@time}}</minSeverity>{{/gt}}{{#if ../multiplyBySeverity}}
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getStatForStage this ../hungerRateFactor}}</hungerRateFactor>{{/if}}{{#if ../capacityMods}}
+                <capMods>
+                    {{#each ../capacityMods}}
+                    <li>
+                        <capacity>{{@key}}</capacity>
+                        {{#if this.factor}}
+                        <postFactor>{{getStatForStage @time this.factor}}</postFactor>
+                        {{/if}}
+                        {{#if this.offset}}<offset>{{getStatForStage @time this.offset}}</offset>{{/if}}
+                    </li>
+                    {{/each}}
+                </capMods>
+                {{/if}}{{#if ../statFactors}}
+                <statFactors>
+                    {{#each ../statFactors as |value attribute| }}
+                    <{{attribute}}>{{getStatForStage @time value}}</{{attribute}}>
+                    {{/each}}
+                </statFactors>
+                {{/if}}{{#if ../statOffsets}}
+                <statOffsets>
+                    {{#each ../statOffsets as |value attribute| }}
+                    <{{attribute}}>{{getStatForStage @time value}}</{{attribute}}>
+                    {{/each}}
+                </statOffsets>
+                {{/if}}
+            </li>
+            {{/times}}
+        </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>{{defName ../metal.name}}</metal>
+            </li>
+        </modExtensions>
+    </HediffDef>
+    {{/with}}
+</Defs>

@@ -36,6 +36,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
             ScadrianUtility.PrepareDevPawn(pawn);
             pawn.Name = new NameSingle("Vin Venture");
             pawn.gender = Gender.Female;
+            Find.Selector.Select(pawn);
         }
 
         if (pawns.TryPopFront(out pawn)) {
@@ -54,7 +55,6 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
 
             pawn.Name = new NameSingle("Rashek");
             pawn.gender = Gender.Male;
-            Find.Selector.Select(pawn);
         }
 
         //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Atium);

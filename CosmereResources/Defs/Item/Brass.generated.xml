@@ -11,10 +11,6 @@
             <li>Cosmere_Complex_Alloys</li>
         </researchPrerequisites>
         <costList>
-            <Copper>5</Copper>
-            
-            <Zinc>5</Zinc>
-            
         </costList>
 
         <recipeMaker>

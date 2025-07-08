@@ -69,6 +69,11 @@ public class Allomancer : Metalborn {
             BurnTickInterval();
         }
 
+        if (sources.Count > 0 && pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) {
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower)
+                .Learn(sources.Count * Constants.AllomancyXPPerTick * GenTicks.TickLongInterval);
+        }
+
         if (shouldConsumeVialNow && pawn.HasVial(metal)) {
             pawn.TryConsumeVial(metal);
         }

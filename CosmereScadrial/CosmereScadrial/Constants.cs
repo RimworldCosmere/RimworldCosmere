@@ -1,4 +1,6 @@
-﻿namespace CosmereScadrial;
+﻿using Verse;
+
+namespace CosmereScadrial;
 
 public static class Constants {
     /**
@@ -10,4 +12,7 @@ public static class Constants {
     public const float VialMetalAmount = 1f;
 
     public const float DefaultBreathEquivalentUnitsPerTick = 0.00166666666666666666f;
+
+    public const float AllomancyXPPerTick = 1 / (float)GenTicks.TickRareInterval;
+    public const float FeruchemyXPPerTick = 1 / (float)GenTicks.TickRareInterval;
 }

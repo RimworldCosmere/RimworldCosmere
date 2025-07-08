@@ -23,8 +23,8 @@
             {{/if}}
         </researchPrerequisites>
         {{#if metal.alloy}}
-        <costList>{{#each metal.alloy.ingredients}}{{#each this.Items}}
-            <{{defName this}}>{{../Count}}</{{defName this}}>
+        <costList>{{#each metal.alloy.ingredients}}{{#each this.items}}
+            <{{defName this}}>{{../count}}</{{defName this}}>
             {{/each}}{{/each}}
         </costList>
 
@@ -95,7 +95,7 @@
             <Beauty>{{metal.beauty}}</Beauty>
             <MarketValue>{{metal.marketValue}}</MarketValue>
             {{#if metal.godMetal }}
-            <Investiture>10</Investiture>
+            <Cosmere_Investiture>10</Cosmere_Investiture>
             {{/if}}
         </statBases>
 

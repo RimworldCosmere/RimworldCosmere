@@ -5,10 +5,6 @@ using Verse;
 
 namespace CosmereScadrial;
 
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
-[SuppressMessage("ReSharper", "UnassignedField.Global")]
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class GeneDefOf {
     public static GeneDef Cosmere_Scadrial_Gene_MistingAluminum;
     public static GeneDef Cosmere_Scadrial_Gene_MistingBendalloy;

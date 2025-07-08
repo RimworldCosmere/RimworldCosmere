@@ -4,10 +4,6 @@ using RimWorld;
 
 namespace CosmereScadrial;
 
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
-[SuppressMessage("ReSharper", "UnassignedField.Global")]
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class TraitDefOf {
     public static TraitDef Cosmere_Scadrial_Trait_MistingAluminum;
     public static TraitDef Cosmere_Scadrial_Trait_MistingBendalloy;

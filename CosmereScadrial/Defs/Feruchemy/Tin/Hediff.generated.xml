@@ -32,7 +32,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.951</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.951</MeleeHitChange>
+                    <MeleeHitChance>0.951</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -52,7 +52,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.902</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.902</MeleeHitChange>
+                    <MeleeHitChance>0.902</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -72,7 +72,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.853</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.853</MeleeHitChange>
+                    <MeleeHitChance>0.853</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -92,7 +92,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.804</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.804</MeleeHitChange>
+                    <MeleeHitChance>0.804</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -112,7 +112,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.755</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.755</MeleeHitChange>
+                    <MeleeHitChance>0.755</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -132,7 +132,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.706</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.706</MeleeHitChange>
+                    <MeleeHitChance>0.706</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -152,7 +152,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.657</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.657</MeleeHitChange>
+                    <MeleeHitChance>0.657</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -172,7 +172,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.608</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.608</MeleeHitChange>
+                    <MeleeHitChance>0.608</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -192,7 +192,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.559</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.559</MeleeHitChange>
+                    <MeleeHitChance>0.559</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -212,7 +212,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.51</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.51</MeleeHitChange>
+                    <MeleeHitChance>0.51</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -232,7 +232,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.461</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.461</MeleeHitChange>
+                    <MeleeHitChance>0.461</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -252,7 +252,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.412</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.412</MeleeHitChange>
+                    <MeleeHitChance>0.412</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -272,7 +272,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.363</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.363</MeleeHitChange>
+                    <MeleeHitChance>0.363</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -292,7 +292,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.314</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.314</MeleeHitChange>
+                    <MeleeHitChance>0.314</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -312,7 +312,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.265</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.265</MeleeHitChange>
+                    <MeleeHitChance>0.265</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -332,7 +332,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.216</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.216</MeleeHitChange>
+                    <MeleeHitChance>0.216</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -352,7 +352,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.167</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.167</MeleeHitChange>
+                    <MeleeHitChance>0.167</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -372,7 +372,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.118</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.118</MeleeHitChange>
+                    <MeleeHitChance>0.118</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -392,7 +392,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.069</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.069</MeleeHitChange>
+                    <MeleeHitChance>0.069</MeleeHitChance>
                 </statFactors>
                             </li>
             <li>
@@ -412,7 +412,7 @@
                 
                 <statFactors>
                     <ShootingAccuracyPawn>0.02</ShootingAccuracyPawn>
-                    <MeleeHitChange>0.02</MeleeHitChange>
+                    <MeleeHitChance>0.02</MeleeHitChance>
                 </statFactors>
                             </li>
         </stages>

@@ -1,15 +1,10 @@
 #nullable disable
-using System.Diagnostics.CodeAnalysis;
 using CosmereResources.Def;
 using RimWorld;
 using Verse;
 
 namespace CosmereResources;
 
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
-[SuppressMessage("ReSharper", "UnassignedField.Global")]
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class ThingDefOf {        
     public static ThingDef Aluminum;
     public static ThingDef Atium;

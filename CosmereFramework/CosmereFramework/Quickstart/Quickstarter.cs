@@ -16,7 +16,6 @@ public class Quickstarter {
 
     static Quickstarter() {
         if (!Prefs.DevMode) return;
-        if (!CosmereFramework.debugMode) return;
         string? quickstartName = CosmereFramework.GetModSettings<FrameworkModSettings>().quickstartName;
         if (quickstartName == null) return;
 

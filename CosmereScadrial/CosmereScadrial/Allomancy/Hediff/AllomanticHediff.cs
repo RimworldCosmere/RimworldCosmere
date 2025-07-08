@@ -62,7 +62,7 @@ public class AllomanticHediff : HediffWithComps {
         OnSourceRemoved?.Invoke(this, sourceAbility);
     }
 
-    public override void Tick() {
+    public override void TickInterval(int delta) {
         SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);
         if (def.defName != surge?.def.defName) {
             surge?.Burn(
@@ -81,7 +81,11 @@ public class AllomanticHediff : HediffWithComps {
             }
         }
 
-        base.Tick();
+        if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) {
+            severityCalculator.RecalculateSeverity();
+        }
+
+        base.TickInterval(delta);
     }
 
     public override void ExposeData() {
@@ -95,13 +99,22 @@ public class AllomanticHediff : HediffWithComps {
 
         Scribe_Collections.Look(ref sourcePawns, "sourcePawns", LookMode.Reference);
 
-        if (Scribe.mode != LoadSaveMode.LoadingVars) return;
+        if (Scribe.mode != LoadSaveMode.LoadingVars) {
+            return;
+        }
+
         sourceAbilities = [];
 
-        if (sourcePawns == null) return;
+        if (sourcePawns == null) {
+            return;
+        }
+
         foreach (Pawn? localPawn in sourcePawns) {
             foreach (RimWorld.Ability? ability in localPawn?.abilities?.abilities ?? []) {
-                if (ability is not AbstractAbility aa) continue;
+                if (ability is not AbstractAbility aa) {
+                    continue;
+                }
+
                 // If this pawn has any Allomantic ability, we re-attach it
                 sourceAbilities.Add(aa);
                 // Optional: maybe only add one matching ability type, if you can correlate them

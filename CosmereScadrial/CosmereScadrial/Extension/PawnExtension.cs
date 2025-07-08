@@ -9,6 +9,7 @@ using CosmereScadrial.Def;
 using CosmereScadrial.Gene;
 using CosmereScadrial.Thing;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -117,5 +118,26 @@ public static class PawnExtension {
 
     public static List<MetallicArtsMetalDef> GetAllBurningMetals(this Pawn pawn) {
         return pawn.genes.GetAllomanticGenes().Where(x => x.Burning).Select(x => x.metal).ToList();
+    }
+
+    public static float GetRawAllomanticPower(this Pawn pawn) {
+        float power = Mathf.Clamp01(pawn.GetStatValue(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower));
+        float skill = Mathf.Clamp(
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level,
+            0.1f,
+            20
+        );
+
+        // Normalize against baseline: 0.25 power, 4 skill → target ~1 severity
+        float normalizedPower = power * 2.5f;
+        float normalizedSkill = skill * 0.10f;
+
+        // sqrt curve with diminishing returns
+        float raw = Mathf.Sqrt(normalizedPower * normalizedSkill);
+
+        // Scale it to hit your desired range
+        float scaled = raw * 1.5f; // tweak this if severity is still too high or low
+
+        return Mathf.Clamp(scaled, 0.1f, 5f);
     }
 }

@@ -15,7 +15,10 @@ public class SnapUtility {
         firstMemoryOfDef.moodOffset = 1;
         firstMemoryOfDef.moodPowerFactor = 0f;
 
-        if (!withMessage || !pawn.Faction.IsPlayer) return;
+        if (!withMessage || !pawn.Faction.IsPlayer || pawn.Map == null) {
+            return;
+        }
+
         Find.LetterStack.ReceiveLetter(
             LetterMaker.MakeLetter(
                 "Pawn Snapped!",

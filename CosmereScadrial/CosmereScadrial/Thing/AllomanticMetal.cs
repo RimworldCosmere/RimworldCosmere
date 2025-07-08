@@ -16,11 +16,15 @@ public class AllomanticMetal : AllomanticVial {
                 GeneUtility.AddMistborn(ingester, false, true, "ingested Lerasium");
                 ingester.FillAllAllomanticReserves();
                 ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level += 10;
+                ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
+                StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower.Worker.ClearCacheForThing(ingester);
             }
 
             if (metal.Equals(MetallicArtsMetalDefOf.Leratium)) {
                 GeneUtility.AddFullFeruchemist(ingester, false, true, "ingested Leratium");
                 ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level += 10;
+                ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
+                StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(ingester);
             }
 
             if (metal.Equals(MetallicArtsMetalDefOf.Atium)) {
@@ -33,12 +37,16 @@ public class AllomanticMetal : AllomanticVial {
                 GeneUtility.AddGene(ingester, stuffMetal.GetMistingGene(), false, true);
                 ingester.FillAllomanticReserves(stuffMetal);
                 ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level += 5;
+                ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasiumAlloy);
+                StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower.Worker.ClearCacheForThing(ingester);
             }
 
             if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy)) {
                 MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
                 GeneUtility.AddGene(ingester, stuffMetal.GetFerringGene(), false, true);
                 ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level += 5;
+                ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratiumAlloy);
+                StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(ingester);
             }
 
             Find.LetterStack.ReceiveLetter(
@@ -56,6 +64,9 @@ public class AllomanticMetal : AllomanticVial {
             ingester,
             MessageTypeDefOf.PositiveEvent
         );
+        ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(Constants.RawMetalMetalAmount);
+
+        ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedRawMetal);
     }
 
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn) {

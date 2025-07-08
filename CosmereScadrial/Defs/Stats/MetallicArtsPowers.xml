@@ -3,21 +3,12 @@
     <StatDef Name="Cosmere_Scadrial_StatDef_AbstractPowerStat" Abstract="True">
         <category>Cosmere</category>
         <minValue>0</minValue>
-        <defaultBaseValue>0.01</defaultBaseValue>
+        <defaultBaseValue>0</defaultBaseValue>
         <toStringStyle>PercentZero</toStringStyle>
-        <showOnAnimals>false</showOnAnimals>
-        <showOnPawns>true</showOnPawns>
-        <showOnHumanlikes>false</showOnHumanlikes>
-        <showOnNonWildManHumanlikes>false</showOnNonWildManHumanlikes>
-        <showOnMechanoids>false</showOnMechanoids>
-        <showOnNonWorkTables>false</showOnNonWorkTables>
-        <showOnEntities>false</showOnEntities>
-        <showOnDrones>false</showOnDrones>
-        <showOnNonPowerPlants>false</showOnNonPowerPlants>
         <maxValue>1</maxValue>
-        <showOnDefaultValue>true</showOnDefaultValue>
-        <showIfUndefined>false</showIfUndefined>
         <scenarioRandomizable>false</scenarioRandomizable>
+        <showOnDefaultValue>false</showOnDefaultValue>
+        <showIfUndefined>false</showIfUndefined>
     </StatDef>
     
     <StatDef ParentName="Cosmere_Scadrial_StatDef_AbstractPowerStat">
@@ -26,14 +17,12 @@
         <description>Affects potency and range of allomantic abilities.</description>
         <displayPriorityInCategory>100</displayPriorityInCategory>
         <disableIfSkillDisabled>Cosmere_Scadrial_Skill_AllomanticPower</disableIfSkillDisabled>
-        <skillNeedFactors>
-            <li Class="SkillNeed_BaseBonus">
-                <skill>Cosmere_Scadrial_Skill_AllomanticPower</skill>
-                <baseValue>0.25</baseValue>
-                <bonusPerLevel>0.0375</bonusPerLevel> <!-- At level 20, total = 1.0 -->
-            </li>
-        </skillNeedFactors>
+        <immutable>true</immutable>
+        <cacheable>true</cacheable>
         <parts>
+            <li Class="CosmereScadrial.StatPart.IngestedGodMetalGranter">
+                <allomancy>true</allomancy>
+            </li>
             <li Class="CosmereScadrial.StatPart.GenerationalDecay">
                 <allomancy>true</allomancy>
             </li>
@@ -46,14 +35,12 @@
         <description>Affects potency and range of feruchemic abilities.</description>
         <displayPriorityInCategory>101</displayPriorityInCategory>
         <disableIfSkillDisabled>Cosmere_Scadrial_Skill_FeruchemicPower</disableIfSkillDisabled>
-        <skillNeedFactors>
-            <li Class="SkillNeed_BaseBonus">
-                <skill>Cosmere_Scadrial_Skill_FeruchemicPower</skill>
-                <baseValue>0.25</baseValue>
-                <bonusPerLevel>0.0375</bonusPerLevel> <!-- At level 20, total = 1.0 -->
-            </li>
-        </skillNeedFactors>
+        <immutable>true</immutable>
+        <cacheable>true</cacheable>
         <parts>
+            <li Class="CosmereScadrial.StatPart.IngestedGodMetalGranter">
+                <feruchemy>true</feruchemy>
+            </li>
             <li Class="CosmereScadrial.StatPart.GenerationalDecay">
                 <feruchemy>true</feruchemy>
             </li>

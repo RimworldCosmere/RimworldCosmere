@@ -131,18 +131,18 @@ public static class GeneUtility {
         );
     }
 
-    public static void TryAddRandomAllomanticGene(Pawn pawn, bool canSnap = true) {
+    public static void TryAddRandomAllomanticGene(Pawn pawn, bool canSnap = true, bool snapped = false) {
         MetallicArtsMetalDef? metal = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading
             .Where(x => x.allomancy != null)
             .RandomElement();
-        AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), canSnap);
+        AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), canSnap, snapped);
     }
 
-    public static void TryAddRandomFeruchemicalGene(Pawn pawn, bool canSnap = true) {
+    public static void TryAddRandomFeruchemicalGene(Pawn pawn, bool canSnap = true, bool snapped = false) {
         MetallicArtsMetalDef? metal = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading
             .Where(x => x.feruchemy != null)
             .RandomElement();
-        AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), canSnap);
+        AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), canSnap, snapped);
     }
 
     public static void AddGene(Pawn pawn, GeneDef? gene, bool canSnap = true, bool snapped = false) {

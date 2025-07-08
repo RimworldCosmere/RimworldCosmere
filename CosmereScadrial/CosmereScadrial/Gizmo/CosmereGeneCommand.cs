@@ -196,6 +196,10 @@ public abstract class CosmereGeneCommand(
             doBorder: false
         );
 
+        if (Widgets.ButtonInvisible(rect)) {
+            gene.gizmoShrunk = !shrunk;
+        }
+
         if (!Title.NullOrEmpty()) {
             using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter)) {
                 float textWidth = rect.width;

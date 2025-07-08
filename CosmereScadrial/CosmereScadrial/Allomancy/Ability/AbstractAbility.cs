@@ -83,12 +83,18 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             }
         }
 
-        if (Id == -1)
+        if (Id == -1) {
             Id = Find.UniqueIDsManager.GetNextAbilityID();
-        if (VerbTracker.PrimaryVerb is IAbilityVerb primaryVerb)
+        }
+
+        if (VerbTracker.PrimaryVerb is IAbilityVerb primaryVerb) {
             primaryVerb.Ability = this;
-        if (def.charges <= 0)
+        }
+
+        if (def.charges <= 0) {
             return;
+        }
+
         maxCharges = def.charges;
         RemainingCharges = maxCharges;
 
@@ -130,8 +136,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     }
 
     public float GetStrength(BurningStatus? burningStatus = null) {
-        const float multiplier = 10f;
-        float rawPower = pawn.GetStatValue(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower);
         float statusValue = (burningStatus ?? status ?? BurningStatus.Off) switch {
             BurningStatus.Off => 0f,
             BurningStatus.Passive => 0.5f,
@@ -140,8 +144,9 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             BurningStatus.Duralumin => pawn.GetAllomanticReservePercent(MetalDefOf.Duralumin) * 10f,
             _ => 0f,
         };
+        float rawPower = pawn.GetRawAllomanticPower();
 
-        return multiplier * def.hediffSeverityFactor * rawPower * statusValue;
+        return def.hediffSeverityFactor * rawPower * statusValue;
     }
 
     public void UpdateStatus(BurningStatus? newStatus = null) {
@@ -154,7 +159,9 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             newStatus = nextStatus;
         }
 
-        if (status == newStatus) return;
+        if (status == newStatus) {
+            return;
+        }
 
         Logger.Verbose($"Updating {pawn.NameFullColored}'s {def.defName} from {status} -> {newStatus}");
         BurningStatus? oldStatus = status;
@@ -167,7 +174,9 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             burningMote = null;
         }
 
-        if (burningMote != null) burningMote.Scale = GetMoteScale();
+        if (burningMote != null) {
+            burningMote.Scale = GetMoteScale();
+        }
 
         gene.UpdateBurnSource((def, GetDesiredBurnRateForStatus(newStatus)));
 

@@ -39,12 +39,24 @@ public class Investiture : RimWorld.Need {
         "10th Heightening",
     };
 
-
     public Investiture(Pawn pawn) : base(pawn) {
         threshPercents = new List<float> { 0.1f, 0.25f, 0.5f, 0.75f };
     }
 
     public override float MaxLevel => MaxInvestiture;
+
+    public override float CurLevel {
+        get => base.CurLevel;
+        set {
+            pawn.records.AddTo(
+                value > base.CurLevel
+                    ? RecordDefOf.Cosmere_Core_Record_InvestitureGained
+                    : RecordDefOf.Cosmere_Core_Record_InvestitureSpent,
+                value
+            );
+            base.CurLevel = value;
+        }
+    }
 
     public override bool ShowOnNeedList =>
         pawn != null && pawn.story.traits.HasTrait(TraitDef.Named("Cosmere_Invested"));

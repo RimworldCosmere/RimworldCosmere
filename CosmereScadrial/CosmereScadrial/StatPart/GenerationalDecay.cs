@@ -1,4 +1,3 @@
-using System;
 using CosmereScadrial.Extension;
 using RimWorld;
 using UnityEngine;
@@ -7,59 +6,74 @@ using Verse;
 namespace CosmereScadrial.StatPart;
 
 public class GenerationalDecay : RimWorld.StatPart {
+    public const float MinimumValue = 0.1f;
+    public const float GenerationalMultiplier = 0.5f;
     public bool allomancy = false;
-    public float decayPerGeneration = 0.25f;
     public bool feruchemy = false;
 
+    private StatDef stat => allomancy
+        ? StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower
+        : StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower;
+
     public override void TransformValue(StatRequest req, ref float val) {
-        if (!req.HasThing || req.Thing is not Pawn pawn)
+        if (!TryGetValue(req, out (float, float, float, float) value)) {
             return;
+        }
 
-        float maternalFactor = GetInheritanceFactor(pawn.GetMother());
-        float paternalFactor = GetInheritanceFactor(pawn.GetFather());
+        (float _, float _, float _, float final) = value;
 
-        val *= Mathf.Clamp01(maternalFactor + paternalFactor);
+        val += Mathf.Max(MinimumValue, final);
     }
 
-    public override string ExplanationPart(StatRequest req) {
-        if (!req.HasThing || req.Thing is not Pawn pawn)
+    public override string? ExplanationPart(StatRequest req) {
+        if (!TryGetValue(req, out (float, float, float, float) value)) {
             return null;
+        }
 
-        float maternal = GetInheritanceFactor(pawn.GetMother());
-        float paternal = GetInheritanceFactor(pawn.GetFather());
+        (float maternal, float paternal, float _, float final) = value;
+
+        if (maternal > 0f || paternal > 0f) {
+            return "CS_StatsReport_GenerationalDecay".Translate(
+                $"{maternal:P}".Named("MATERNAL"),
+                $"{paternal:P}".Named("PATERNAL"),
+                $"{final:P}".Named("TOTAL")
+            );
+        }
+
+        return "CS_StatsReport_GenerationalDecay_Unknown".Translate($"{MinimumValue:P}".Named("TOTAL"));
+    }
+
+    private bool IsCorrectMetalborn(Pawn pawn) {
+        return allomancy && pawn.IsAllomancer() || feruchemy && pawn.IsFeruchemist();
+    }
+
+    private bool TryGetValue(StatRequest req, out (float, float, float, float) value) {
+        value = default;
+        if (!req.HasThing || req.Thing is not Pawn pawn || !IsCorrectMetalborn(pawn)) {
+            return false;
+        }
+
+        float maternal = GetInheritedPower(pawn.GetMother()) * GenerationalMultiplier;
+        float paternal = GetInheritedPower(pawn.GetFather()) * GenerationalMultiplier;
         float total = Mathf.Clamp01(maternal + paternal);
+        float final = Mathf.Max(MinimumValue, total);
 
-        return $"Inherited Power: Maternal x{maternal:0.##}, Paternal x{paternal:0.##} → Total x{total:0.##}";
+        value = (maternal, paternal, total, final);
+        return true;
     }
 
-    private float GetInheritanceFactor(Pawn? parent) {
-        if (parent == null)
+    private float GetInheritedPower(Pawn? pawn, int depth = 0) {
+        if (pawn == null || depth > 10) {
             return 0f;
+        }
 
-        int? generation = FindGeneration(parent, IsRelevantMetalborn, 0);
-        if (generation == null)
-            return 0f;
+        if (IsCorrectMetalborn(pawn)) {
+            return pawn.GetStatValue(stat);
+        }
 
-        return Mathf.Pow(decayPerGeneration, generation.Value);
-    }
+        float fromMother = GetInheritedPower(pawn.GetMother(), depth + 1);
+        float fromFather = GetInheritedPower(pawn.GetFather(), depth + 1);
 
-    private int? FindGeneration(Pawn? pawn, Predicate<Pawn> match, int depth) {
-        if (pawn == null || depth > 10)
-            return null;
-
-        if (match(pawn))
-            return depth;
-
-        int? fromMother = FindGeneration(pawn.GetMother(), match, depth + 1);
-        int? fromFather = FindGeneration(pawn.GetFather(), match, depth + 1);
-
-        if (fromMother.HasValue && fromFather.HasValue)
-            return Mathf.Min(fromMother.Value, fromFather.Value);
-        return fromMother ?? fromFather;
-    }
-
-    // TODO: Override this in Allomantic/Feruchemical-specific subclasses if needed
-    protected virtual bool IsRelevantMetalborn(Pawn p) {
-        return allomancy && p.IsAllomancer() || feruchemy && p.IsFeruchemist();
+        return fromMother + fromFather;
     }
 }

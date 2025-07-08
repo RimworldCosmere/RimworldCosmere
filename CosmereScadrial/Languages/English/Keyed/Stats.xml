@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+	<CS_StatsReport_MetalmindInvestiture>Stored Investiture</CS_StatsReport_MetalmindInvestiture>
+	<CS_StatsReport_GenerationalDecay>Inherited: {TOTAL} &lt;- Maternal {MATERNAL} Paternal {PATERNAL}</CS_StatsReport_GenerationalDecay>
+	<CS_StatsReport_GenerationalDecay_Unknown>Unknown Lineage: {TOTAL}</CS_StatsReport_GenerationalDecay_Unknown>
+	<CS_StatsReport_IngestedLerasium>Ingested Lerasium</CS_StatsReport_IngestedLerasium>
+	<CS_StatsReport_IngestedLerasiumAlloy>Ingested Lerasium-Alloy</CS_StatsReport_IngestedLerasiumAlloy>
+	<CS_StatsReport_IngestedLeratium>Ingested Leratium</CS_StatsReport_IngestedLeratium>
+	<CS_StatsReport_IngestedLeratiumAlloy>Ingested Leratium-Alloy</CS_StatsReport_IngestedLeratiumAlloy>
+</LanguageData>

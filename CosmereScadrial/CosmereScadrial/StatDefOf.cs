@@ -11,6 +11,7 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class StatDefOf {
     public static StatDef Cosmere_Scadrial_Stat_AllomanticPower;
+    public static StatDef Cosmere_Scadrial_Stat_FeruchemicPower;
 
     static StatDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(StatDefOf));

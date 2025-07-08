@@ -125,4 +125,18 @@ public static class Logger {
     public static void Important(FormattableString message) {
         Message(message, LogLevel.Important);
     }
+
+    public static void Profile(string label, long elapsedTicks) {
+        // High-resolution timing in nanoseconds
+        double nanoseconds = (double)elapsedTicks / Stopwatch.Frequency * 1_000_000_000;
+        double microseconds = nanoseconds / 1000;
+        double milliseconds = nanoseconds / 1_000_000;
+        if (milliseconds >= 1) {
+            Message($"[Profile] {label} took {milliseconds}ms", LogLevel.Important);
+        } else if (microseconds >= 1) {
+            Message($"[Profile] {label} took {microseconds}μs", LogLevel.Important);
+        } else {
+            Message($"[Profile] {label} took {nanoseconds}ns", LogLevel.Important);
+        }
+    }
 }

@@ -7,6 +7,15 @@ Cosmere.
 - [GitHub Source](https://github.com/RimworldCosmere/RimworldCosmere)
 - [Discord Community](https://discord.gg/jTcrKfXdYU)
 
+## Recommended Mods
+
+Here are a couple recommended mods that work really well with the Cosmere mods:
+
+* [Nice Bill Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3520130671)
+  * Rusts! This is one of the most gorgeous UI mods this game has. Drastically improves the Bills UI
+* [Nice Health Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3328729902)
+  * Storms! This is another awesome mod by Andromeda that makes the Health tab gorgeous
+
 ## Attributions
 
 * Big thanks to Sir Van (`sir_vann` On Discord) for in-game art

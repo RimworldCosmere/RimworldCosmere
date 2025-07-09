@@ -41,7 +41,7 @@ public abstract class LineDrawingAura : HediffComp {
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
-        if (!parent.sourceAbilities.Any(x => x.atLeastPassive) || !Find.Selector.IsSelected(parent.pawn)) {
+        if (!atLeastPassive || !Find.Selector.IsSelected(parent.pawn)) {
             LineRenderer.TryClear(this);
             return;
         }
@@ -52,8 +52,7 @@ public abstract class LineDrawingAura : HediffComp {
                 new CircleToRender(
                     parent.pawn,
                     radius,
-                    cachedLineMaterial ??= props.lineMaterial,
-                    1f
+                    cachedLineMaterial ??= props.lineMaterial
                 )
             );
         }

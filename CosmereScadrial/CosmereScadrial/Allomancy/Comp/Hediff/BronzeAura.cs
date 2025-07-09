@@ -1,62 +1,44 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Util;
-using CosmereScadrial.Allomancy.Hediff;
+using CosmereCore.Extension;
+using CosmereFramework.Comp.Map;
 using UnityEngine;
 using Verse;
 
 namespace CosmereScadrial.Allomancy.Comp.Hediff;
 
-public class BronzeAuraProperties : HediffCompProperties {
-    public float radius = 15f;
-
+public class BronzeAuraProperties : LineDrawingAuraProperties {
     public BronzeAuraProperties() {
         compClass = typeof(BronzeAura);
     }
 
-    public Color lineColor => MetallicArtsMetalDefOf.Bronze.color;
-
-    public Material lineMaterial =>
-        MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.SolidColorBehind, lineColor);
+    public override Color lineColor => MetallicArtsMetalDefOf.Bronze.color;
 }
 
-public class BronzeAura : HediffComp {
-    public Dictionary<Verse.Thing, float> thingsToDraw { get; } = new Dictionary<Verse.Thing, float>();
-
-    public new BronzeAuraProperties props => (BronzeAuraProperties)base.props;
-
-    private new AllomanticHediff parent => (AllomanticHediff)base.parent;
-
-    private bool isAtLeastPassive => parent.Severity >= 0.5f;
-
-    private void GetThingsToDraw() {
-        Map? map = parent.pawn.Map;
-        IntVec3 center = parent.pawn.Position;
-        float radius = props.radius * parent.Severity;
-        if (map == null || !center.IsValid || !Find.Selector.IsSelected(parent.pawn)) {
-            return;
-        }
-
-        thingsToDraw.Clear();
-        foreach (IntVec3 cell in GenRadial.RadialCellsAround(center,
-                     (float)Math.Round(Math.Min(GenRadial.MaxRadialPatternRadius, radius)), false)) {
-            foreach (Verse.Thing? thing in cell.GetThingList(map)
-                         .Where(thing =>
-                             InvestitureDetector.HasInvestiture(thing) && !thingsToDraw.ContainsKey(thing))) {
-                thingsToDraw[thing] = InvestitureDetector.GetInvestiture(thing);
-            }
-        }
+public class BronzeAura : LineDrawingAura {
+    protected override IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map) {
+        return cell.GetThingList(map).Where(t => t.GetInvestiture() > 0);
     }
 
-    public override void CompPostTick(ref float severityAdjustment) {
-        if (!isAtLeastPassive) {
-            thingsToDraw.Clear();
-            return;
-        }
+    protected override LineToRender GetLineToRender(Verse.Thing thing) {
+        float distance = (thing.DrawPos - parent.pawn.DrawPos).ToIntVec3().LengthHorizontal;
+        float investiture = thing.GetInvestiture();
 
-        if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
+        // Fade is fully opaque (1.0) if the object is within 3 tiles,
+        // then linearly fades out to a minimum of 0.3 as it approaches the edge of the radius.
+        // The fade value never goes below 0.3 to keep distant lines visible.
+        float fade = Mathf.Max(0.3f, Mathf.Clamp01((radius - Mathf.Max(distance, 3f)) / (radius - 3f)));
 
-        GetThingsToDraw();
+        // Thickness scales between 0.15 and 1 based on thing's investiture, 
+        // with 10000 BEUs or more giving maximum thickness.
+        float thickness = Mathf.Lerp(0.15f, 1f, Mathf.Clamp01(investiture / 50000f));
+
+        return new LineToRender(
+            parent.pawn,
+            thing,
+            cachedLineMaterial ??= props.lineMaterial,
+            fade,
+            thickness
+        );
     }
 }

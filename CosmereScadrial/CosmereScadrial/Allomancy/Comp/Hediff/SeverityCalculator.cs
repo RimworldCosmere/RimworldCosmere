@@ -44,14 +44,19 @@ public class SeverityCalculator : HediffComp {
             throw new Exception("SeverityCalculator can only be placed on an AllomanticHediff");
         }
 
-        if (!props.onStatusChange) return;
+        if (!props.onStatusChange) {
+            return;
+        }
+
         parent.OnSourceAdded += OnSourceAdded;
         parent.OnSourceRemoved += OnSourceRemoved;
     }
 
     public override void CompPostPostAdd(DamageInfo? dinfo) {
         base.CompPostPostAdd(dinfo);
-        if (props.onPostAdd) RecalculateSeverity();
+        if (props.onPostAdd) {
+            RecalculateSeverity();
+        }
     }
 
 
@@ -61,9 +66,14 @@ public class SeverityCalculator : HediffComp {
     }
 
     private void OnSourceAdded(AllomanticHediff hediff, AbstractAbility sourceAbility) {
-        if (desiredSeverity >= 0) desiredSeverity += sourceAbility.GetStrength();
+        if (desiredSeverity >= 0) {
+            desiredSeverity += sourceAbility.GetStrength();
+        }
+
         sourceAbility.OnStatusChanged += OnStatusChange;
-        if (props.onStatusChange) RecalculateSeverity();
+        if (props.onStatusChange) {
+            RecalculateSeverity();
+        }
     }
 
     private void OnStatusChange(AbstractAbility sourceAbility, BurningStatus oldStatus, BurningStatus newStatus) {
@@ -81,15 +91,23 @@ public class SeverityCalculator : HediffComp {
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
-        if (props.onTickInterval && Pawn.IsHashIntervalTick(props.tickInterval, delta)) RecalculateSeverity();
+        if (props.onTickInterval && Pawn.IsHashIntervalTick(props.tickInterval, delta)) {
+            RecalculateSeverity();
+        }
 
-        if (!props.shouldDecay || desiredSeverity < 0) return;
+        if (!props.shouldDecay || desiredSeverity < 0) {
+            return;
+        }
+
         if (Mathf.Approximately(parent.Severity, desiredSeverity) || parent.Severity <= desiredSeverity) {
             desiredSeverity = -1;
             return;
         }
 
-        if (!Pawn.IsHashIntervalTick(props.decayInterval, delta)) return;
+        if (!Pawn.IsHashIntervalTick(props.decayInterval, delta)) {
+            return;
+        }
+
         parent.Severity = Mathf.Max(desiredSeverity, parent.Severity - props.decayAmount);
     }
 

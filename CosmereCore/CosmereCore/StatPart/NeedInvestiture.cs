@@ -24,7 +24,7 @@ public class NeedInvestiture : RimWorld.StatPart {
     private bool TryGetValue(StatRequest req, out float value) {
         return InvestitureStatUtility.TryGetPawnInvestitureStat(
             req,
-            x => x.needs.TryGetNeed<Investiture>().CurLevel,
+            x => x.needs?.TryGetNeed<Investiture>()?.CurLevel ?? 0,
             x => x.statBases.Find(x => x.stat.Equals(parentStat)).value,
             out value
         );

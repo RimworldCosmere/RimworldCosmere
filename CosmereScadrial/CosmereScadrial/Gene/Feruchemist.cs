@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Extension;
 using CosmereScadrial.Feruchemy.Comp.Thing;
 using CosmereScadrial.Gizmo;
 using CosmereScadrial.Util;
@@ -13,12 +12,14 @@ public class Feruchemist : Metalborn {
     public static readonly float AmountPerRareTick = 1 / 18f;
     private new FeruchemicGeneCommand? gizmo => (FeruchemicGeneCommand)base.gizmo;
 
-    public List<Metalmind> metalminds => pawn.inventory.innerContainer.InnerListForReading
-                                             .Where(t => t.HasComp<Metalmind>())
-                                             .Select(t => t.TryGetComp<Metalmind>())
-                                             .Where(c => c.metal == metal)
-                                             .ToList() ??
-                                         [];
+    public List<Metalmind> metalminds =>
+        pawn.inventory.innerContainer
+            .InnerListForReading
+            .Where(t => t.HasComp<Metalmind>())
+            .Select(t => t.TryGetComp<Metalmind>())
+            .Where(c => c.metal == metal)
+            .ToList() ??
+        [];
 
     private float ActualMax => metalminds.Sum(m => m.maxAmount);
     private float ActualValue => metalminds.Sum(m => m.StoredAmount);
@@ -28,17 +29,17 @@ public class Feruchemist : Metalborn {
     public override float Value => ActualMax <= 0f ? 0f : ActualValue / ActualMax * Max;
 
     private HediffDef tapHediffDef =>
-        DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Tap" + metal.LabelCap);
+        DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Tap" + metal.defName);
 
     private Hediff tapHediff => pawn.health.hediffSet.GetFirstHediffOfDef(tapHediffDef);
 
     private HediffDef storeHediffDef =>
-        DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Store" + metal.LabelCap);
+        DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Store" + metal.defName);
 
     private Hediff storeHediff => pawn.health.hediffSet.GetFirstHediffOfDef(storeHediffDef);
 
     private HediffDef compoundHediffDef =>
-        DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Compound" + metal.LabelCap);
+        DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Compound" + metal.defName);
 
     private Hediff compoundHediff => pawn.health.hediffSet.GetFirstHediffOfDef(compoundHediffDef);
 
@@ -78,9 +79,9 @@ public class Feruchemist : Metalborn {
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
 
         // If we can't tap anymore, but we ARE tapping (and we aren't compounding), stop tapping
-        if (!canTap && pawn.health.hediffSet.HasHediff(tapHediffDef) && !pawn.IsCompounding(metal)) Reset();
+        if (!canTap && isTapping && !isCompounding) Reset();
         // If we can't store anymore, but we are storing (and we aren't compounding), stop storing
-        if (!canStore && pawn.health.hediffSet.HasHediff(storeHediffDef) && !pawn.IsCompounding(metal)) Reset();
+        if (!canStore && isStoring && !isCompounding) Reset();
 
         if (effectiveSeverity > 0f) {
             if (targetValue < 50 && canStore) {

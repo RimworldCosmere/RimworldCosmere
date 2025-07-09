@@ -21,15 +21,9 @@ public class Nicrosil : HediffWithComps {
     private bool shouldResetNicrosil {
         get {
             float nextCurLevel = Mathf.Clamp(investiture!.CurLevel - changePerTick, 0, investiture.MaxLevel);
-            if (isTapping) {
-                if (!nicrosil!.canTap || nextCurLevel >= investiture.MaxLevel) return true;
-            }
+            if (isTapping && nextCurLevel >= investiture.MaxLevel) return true;
 
-            if (isStoring) {
-                if (!nicrosil!.canStore || nextCurLevel <= 0) return true;
-            }
-
-            return false;
+            return isStoring && nextCurLevel <= 0;
         }
     }
 

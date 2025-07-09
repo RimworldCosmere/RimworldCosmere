@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <GeneDef Name="AbstractMetallicArtsInvestitureGene" Abstract="True">
-        <biostatCpx>5</biostatCpx>
-        <biostatMet>0</biostatMet>
-        <biostatArc>1</biostatArc>
         <randomChosen>false</randomChosen>
         <canGenerateInGeneSet>false</canGenerateInGeneSet>
         <passOnDirectly>false</passOnDirectly>
@@ -47,9 +44,6 @@
         </forcedTraits>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Ettmetal</iconPath>
         <passOnDirectly>false</passOnDirectly>
-        <biostatCpx>5</biostatCpx>
-        <biostatMet>0</biostatMet>
-        <biostatArc>1</biostatArc>
         <canGenerateInGeneSet>false</canGenerateInGeneSet>
         <randomChosen>false</randomChosen>
     </GeneDef>

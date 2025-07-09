@@ -1,9 +1,6 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Defs>
   <GeneDef Name="Cosmere_Scadrial_Xenotype_SkaaGeneBase" ParentName="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
-    <biostatCpx>1</biostatCpx>
-    <biostatMet>0</biostatMet>
-    <biostatArc>-1</biostatArc>
     <iconPath>UI/Icons/Xenotype/Skaa</iconPath>
   </GeneDef>
   <GeneDef ParentName="Cosmere_Scadrial_Xenotype_SkaaGeneBase">

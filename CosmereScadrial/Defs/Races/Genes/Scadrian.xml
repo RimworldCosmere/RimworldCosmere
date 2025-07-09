@@ -2,9 +2,6 @@
 
 <Defs>
     <GeneDef Name="Cosmere_Scadrial_Xenotype_ScadrianGeneBase" ParentName="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
-        <biostatCpx>1</biostatCpx>
-        <biostatMet>0</biostatMet>
-        <biostatArc>-1</biostatArc>
         <iconPath>UI/Icons/Xenotype/Noble</iconPath>
     </GeneDef>
     <GeneDef ParentName="Cosmere_Scadrial_Xenotype_ScadrianGeneBase">

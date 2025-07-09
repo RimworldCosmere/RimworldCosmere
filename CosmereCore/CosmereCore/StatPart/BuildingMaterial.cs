@@ -18,7 +18,7 @@ public class BuildingMaterial : RimWorld.StatPart {
             return null;
         }
 
-        return "CS_StatsReport_BuildingMaterial".Translate() + ": x" + mass.ToStringPercent();
+        return "CC_StatsReport_BuildingMaterial".Translate() + ": x" + mass.ToStringPercent();
     }
 
     private bool TryGetBuildingMass(StatRequest req, out float mass) {

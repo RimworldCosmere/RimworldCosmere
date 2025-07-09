@@ -15,7 +15,7 @@ public class NeedInvestiture : RimWorld.StatPart {
 
     public override string? ExplanationPart(StatRequest req) {
         if (TryGetValue(req, out float value)) {
-            return "CS_StatsReport_NeedInvestiture".Translate() + ": " + value.ToStringBreathEquivalentUnits();
+            return "CC_StatsReport_NeedInvestiture".Translate() + ": " + value.ToStringBreathEquivalentUnits();
         }
 
         return null;

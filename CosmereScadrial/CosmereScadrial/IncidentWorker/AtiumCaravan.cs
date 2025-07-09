@@ -57,8 +57,8 @@ public class AtiumCaravan : RimWorld.IncidentWorker {
         LordMaker.MakeNewLord(faction, lordJob, map, attackers);
 
         Find.LetterStack.ReceiveLetter(
-            "Atium Caravan",
-            "CS_MetalCaravanLetter".Translate(MetalDefOf.Atium.coloredLabel.Named("METAL")).Resolve(),
+            "CS_MetalCaravan_Title".Translate(MetalDefOf.Atium.Named("METAL")),
+            "CS_MetalCaravan_Message".Translate(MetalDefOf.Atium.coloredLabel.Named("METAL")).Resolve(),
             LetterDefOf.PositiveEvent,
             attackers[0]
         );

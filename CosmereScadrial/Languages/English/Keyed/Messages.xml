@@ -2,4 +2,21 @@
 <LanguageData>
     <CS_IngestedThing>{PAWN} ingested some {THING}</CS_IngestedThing>
     <CS_IngestedVial>{PAWN} downed a vial containing {THING}</CS_IngestedVial>
+    
+    <CS_MistsRetreat>The mists retreat with the rising of the sun.</CS_MistsRetreat>
+    <CS_MistsArriveTitle>The mists arrive</CS_MistsArriveTitle>
+    <CS_MistsArriveMessage>As night falls, a dense, ethereal mist blankets the land. At 20:00, they will settle. Pawns outside during the night may never be the same.</CS_MistsArriveMessage>
+    
+    <CS_FindLerasium_Title>A bead of Lerasium has appeared!</CS_FindLerasium_Title>
+    <CS_FindLerasium_Message>{PAWN} feels a strange pull. A small bead of shining metal has appeared nearby. Where did this come from?</CS_FindLerasium_Message>
+    
+    <CS_MetalCaravan_Title>{METAL} Caravan</CS_MetalCaravan_Title>
+    <CS_MetalCaravan_Message>A hostile caravan is making its way across the map. A few of them carry {METAL}. Intercept them before they escape!</CS_MetalCaravan_Message>
+    
+    <CS_PawnSnapped_Title>Pawn Snapped!</CS_PawnSnapped_Title>
+    <CS_PawnSnapped_Message>{PAWN} has snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Message>
+    
+    <CS_LockShardSelection>Shard System has been pre-selected: {SHARDS}</CS_LockShardSelection>
+    
+    <CS_Coinshot_NoClips>{PAWN} has no clips to throw!</CS_Coinshot_NoClips>
 </LanguageData>

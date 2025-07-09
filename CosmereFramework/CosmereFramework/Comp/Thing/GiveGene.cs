@@ -21,7 +21,11 @@ public class GiveGene : ThingComp {
 
         ingester.genes.TryAddGene(props.geneDef);
         Messages.Message(
-            $"{ingester.NameFullColored} gained {props.geneDef.LabelCap.Colorize(ColoredText.GeneColor)}",
+            "CF_GiveGene".Translate(
+                    ingester.NameFullColored.Named("PAWN"),
+                    props.geneDef.LabelCap.Colorize(ColoredText.GeneColor)
+                )
+                .Resolve(),
             ingester,
             MessageTypeDefOf.PositiveEvent
         );

@@ -21,8 +21,8 @@ public class SnapUtility {
 
         Find.LetterStack.ReceiveLetter(
             LetterMaker.MakeLetter(
-                "Pawn Snapped!",
-                $"{pawn.NameFullColored} has snapped and gained access to some new Investiture related powers!",
+                "CS_PawnSnapped_Title".Translate(),
+                "CS_PawnSnapped_Message".Translate(pawn.NameFullColored.Named("PAWN")).Resolve(),
                 LetterDefOf.PositiveEvent,
                 pawn
             )

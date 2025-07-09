@@ -25,7 +25,7 @@ public class ScadrialModSettings : CosmereModSettings {
     }
 
     public override void DoTabContents(Rect inRect, Listing_Standard mainListing) {
-        using (new TextBlock(GameFont.Medium)) mainListing.Label("Incident Settings");
+        using (new TextBlock(GameFont.Medium)) mainListing.Label("CS_Settings_Category_Incidents".Translate());
         using (new TextBlock(GameFont.Small)) {
             mainListing.GapLine();
             mainListing.Gap();
@@ -38,20 +38,28 @@ public class ScadrialModSettings : CosmereModSettings {
             (sub, width) => {
                 sub.ColumnWidth = SubListingLabelWidth;
                 Rect rect = sub.GetRect(SubListingRowHeight);
-                Widgets.Label(rect, "Mists Frequency:");
+                Widgets.Label(rect, "CS_Settings_MistsFrequency".Translate());
 
                 sub.NewColumn();
                 sub.ColumnWidth = Mathf.Min(100, width - SubListingLabelWidth - ListingColumnSpacing);
                 UIUtil.IntEnumDropdown(sub, mistsFrequency, v => mistsFrequency = v, false);
             }
         );
+
+        using (new TextBlock(GameFont.Small)) mainListing.Gap();
+        using (new TextBlock(GameFont.Medium)) mainListing.Label("CS_Settings_Category_Pawns".Translate());
+        using (new TextBlock(GameFont.Small)) {
+            mainListing.GapLine();
+            mainListing.Gap();
+        }
+
         MakeSubListing(
             mainListing,
             expectedHeight,
             (sub, width) => {
                 sub.ColumnWidth = SubListingLabelWidth;
                 Rect rect = sub.GetRect(SubListingRowHeight);
-                Widgets.Label(rect, "Pawns keep Vial on Down:");
+                Widgets.Label(rect, "CS_Settings_PawnsKeepVialOnDown".Translate());
 
                 sub.NewColumn();
                 sub.ColumnWidth = Mathf.Min(100, width - SubListingLabelWidth - ListingColumnSpacing);
@@ -64,7 +72,7 @@ public class ScadrialModSettings : CosmereModSettings {
             (sub, width) => {
                 sub.ColumnWidth = SubListingLabelWidth;
                 Rect rect = sub.GetRect(SubListingRowHeight);
-                Widgets.Label(rect, "Pawns keep Metalminds on Down:");
+                Widgets.Label(rect, "CS_Settings_PawnsKeepMetalmindsOnDown".Translate());
 
                 sub.NewColumn();
                 sub.ColumnWidth = Mathf.Min(100, width - SubListingLabelWidth - ListingColumnSpacing);

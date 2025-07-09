@@ -22,7 +22,7 @@ public class FrameworkModSettings : CosmereModSettings {
     public override string Name => "Framework";
 
     public override void DoTabContents(Rect inRect, Listing_Standard mainListing) {
-        using (new TextBlock(GameFont.Medium)) mainListing.Label("Debug Settings");
+        using (new TextBlock(GameFont.Medium)) mainListing.Label("CF_Settings_Category_Debug".Translate());
         using (new TextBlock(GameFont.Small)) {
             mainListing.GapLine();
             mainListing.Gap();
@@ -35,7 +35,7 @@ public class FrameworkModSettings : CosmereModSettings {
             (sub, width) => {
                 sub.ColumnWidth = SubListingLabelWidth;
                 Rect rect = sub.GetRect(SubListingRowHeight);
-                Widgets.Label(rect, "Log Level:");
+                Widgets.Label(rect, "CF_Settings_LogLevel".Translate());
 
                 sub.NewColumn();
                 sub.ColumnWidth = Mathf.Min(100, width - SubListingLabelWidth - ListingColumnSpacing);
@@ -51,11 +51,11 @@ public class FrameworkModSettings : CosmereModSettings {
                 (sub, width) => {
                     sub.ColumnWidth = SubListingLabelWidth;
                     Rect rect = sub.GetRect(SubListingRowHeight);
-                    Widgets.Label(rect, "Debug Mode:");
+                    Widgets.Label(rect, "CF_Settings_DebugMode".Translate());
 
                     sub.NewColumn();
                     sub.ColumnWidth = Mathf.Min(100, width - SubListingLabelWidth - ListingColumnSpacing);
-                    sub.CheckboxLabeled("", ref debugMode, "Opens the logs.");
+                    sub.CheckboxLabeled("", ref debugMode, "CF_Settings_DebugMode_Tooltip".Translate());
                 }
             );
 
@@ -65,7 +65,7 @@ public class FrameworkModSettings : CosmereModSettings {
                 (sub, width) => {
                     sub.ColumnWidth = SubListingLabelWidth;
                     Rect rect = sub.GetRect(SubListingRowHeight);
-                    Widgets.Label(rect, "Quickstarter:");
+                    Widgets.Label(rect, "CF_Settings_Quickstarter".Translate());
                     sub.Gap(SubListingSpacing);
 
                     sub.NewColumn();
@@ -74,7 +74,7 @@ public class FrameworkModSettings : CosmereModSettings {
                         sub,
                         GetQuickstartScenarioLabel,
                         quickstartName,
-                        "Select a Quickstarter",
+                        "CF_Settings_Quickstarter_Placeholder".Translate(),
                         quickstarters,
                         val => quickstartName = val
                     );
@@ -99,7 +99,7 @@ public class FrameworkModSettings : CosmereModSettings {
                     Type? type = Type.GetType(quickstartName!);
                     if (type == null) {
                         Rect errorRect = sub.GetRect(SubListingRowHeight);
-                        Widgets.Label(errorRect, "Failed to find quickstart");
+                        Widgets.Label(errorRect, "CF_Settings_Quickstarter_FailedToFind".Translate());
                         return;
                     }
 

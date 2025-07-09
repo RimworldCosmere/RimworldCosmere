@@ -15,10 +15,11 @@
     - Full burn and flare systems with unique abilities, auras, and status effects
     - Multi-metal vials, targeted abilities, and environmental effects
 
-- **Feruchemy - Coming Soon!**
+- **Feruchemy**
     - Store and tap traits like strength, speed, health, or senses
     - Full Feruchemists can master the entire suite of metalminds
     - Custom storage mechanics and UI integration for charge tracking
+    - >!Pawns with both Allomantic and Feruchemical powers in one metal can Compound!!<
 
 - **>!Hemalurgy - Coming Soon!<**
     - >!Dark, dangerous, and very real. Use at your own moral peril. WIP but coming soon.!<
@@ -47,7 +48,7 @@
 
 - Requires Biotech
 - Compatible with Ideology, Royalty, and Anomaly
-- Designed for RimWorld 1.5 (1.6 coming soon!)
+- Designed for RimWorld 1.6
 - Safe to add at game start
 - Mid-save support is partial — best used in a new colony (you wont get all the metals)
 
@@ -55,10 +56,8 @@
 
 ## Tips
 
-- Use the **Investiture tab** to track charges and status
-- Right click to use Allomantic Abilities
-- Ctrl-click to flare an ability
 - Mistborn and Full Feruchemists are **extremely rare** by default
-- >!Burning Lerasium can change everything...!<
+- >!Use your Lerasium and Atium wisely. There are alloys...!<
+- >!Burning Lerasium or Leratium can change everything...!<
 
 ---

@@ -27,8 +27,10 @@ public static class LockShardSelection {
         }
 
         Messages.Message(
-            $"Shard System has been pre-selected: {string.Join(", ", ShardUtility.shards.enabledShardDefs.Select(x => x.label))}",
-            MessageTypeDefOf.PositiveEvent
+            "CS_LockShardSelection".Translate(
+                string.Join(", ", ShardUtility.shards.enabledShardDefs.Select(x => x.label)).Named("SHARDS")
+            ),
+            MessageTypeDefOf.NeutralEvent
         );
     }
 }

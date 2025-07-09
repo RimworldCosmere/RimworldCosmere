@@ -55,7 +55,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
         mistsActive = false;
         map.weatherDecider.StartNextWeather();
         ScheduleNextMists();
-        Messages.Message("The mists retreat with the dawn.", MessageTypeDefOf.PositiveEvent);
+        Messages.Message("CS_MistsRetreat".Translate(), MessageTypeDefOf.PositiveEvent);
     }
 
     private void StartMists(Verse.Map map) {
@@ -68,10 +68,10 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
         map.weatherManager.TransitionTo(WeatherDefOf.Cosmere_Scadrial_Weather_MistsWeather);
 
         Find.LetterStack.ReceiveLetter(
-            "The mists arrive",
-            "As night falls, a dense, ethereal mist blankets the land. At 20:00, they will settle. Pawns outside during the night may never be the same.",
+            "CS_MistsArriveTitle".Translate(),
+            "CS_MistsArriveMessage".Translate(),
             LetterDefOf.ThreatSmall,
-            new TargetInfo(map.Center, map)
+            TargetInfo.Invalid
         );
     }
 
@@ -92,7 +92,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
 
         nextMistsStartTick = lastMistsStartTick + intervalTicks;
 
-        Logger.Message(
+        Logger.Verbose(
             $"[Mists] Next scheduled at tick {nextMistsStartTick} (interval {intervalTicks}, last at {lastMistsStartTick})"
         );
     }

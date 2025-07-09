@@ -2,7 +2,6 @@
 using System.Linq;
 using CosmereCore.Def;
 using CosmereCore.Util;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -23,7 +22,7 @@ public class SelectShards : RimWorld.Page {
         const float CheckTextPadding = 12f;
 
         using (new TextBlock(GameFont.Medium))
-            Widgets.Label(inRect.TopPartPixels(TopMargin), "Choose which Shards are active in this game:");
+            Widgets.Label(inRect.TopPartPixels(TopMargin), "CC_SelectShard_Label".Translate());
 
         List<IGrouping<string?, ShardDef>> grouped = DefDatabase<ShardDef>.AllDefsListForReading.GroupBy(s => s.planet)
             .OrderBy(g => g.Key == "N/A" ? 0 : 1)
@@ -67,16 +66,8 @@ public class SelectShards : RimWorld.Page {
                 if (toggled != isEnabled) {
                     if (toggled) {
                         ShardUtility.Enable(shard);
-                        Messages.Message(
-                            $"Enabled shard: {shard.label.CapitalizeFirst()}",
-                            MessageTypeDefOf.PositiveEvent
-                        );
                     } else {
                         ShardUtility.shards.enabledShardDefs.Remove(shard);
-                        Messages.Message(
-                            $"Disabled shard: {shard.label.CapitalizeFirst()}",
-                            MessageTypeDefOf.NeutralEvent
-                        );
                     }
                 }
 

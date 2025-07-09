@@ -4,15 +4,16 @@ import {compileTemplate, writeGeneratedFile} from '../../Helpers';
 import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {SCADRIAL_MOD_DIR} from '../../constants';
 import {toDefName} from "../../Helpers/Handlebars";
+import {upperFirst} from "lodash";
 
 const defOfTemplate = compileTemplate(__dirname, 'DefOf.cs.template');
 const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');
 
 export default function () {
     for (const type of ['allomancy', 'feruchemy'] as const) {
-        const geneTemplate = compileTemplate(__dirname, type + 'GeneDef.xml.template');
-        const traitTemplate = compileTemplate(__dirname, type + 'TraitDef.xml.template');
-        const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', type);
+        const geneTemplate = compileTemplate(__dirname, upperFirst(type) + 'GeneDef.xml.template');
+        const traitTemplate = compileTemplate(__dirname, upperFirst(type) + 'TraitDef.xml.template');
+        const outputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', upperFirst(type));
 
         let order = 2
         const metals = Object.values(MetalRegistry.Metals).filter(x => !x.godMetal && (!!x[type])).concat(MetalRegistry.Metals.Atium);
@@ -38,7 +39,7 @@ export default function () {
         }
 
         ['Gene', 'Trait'].forEach(kind => {
-            writeGeneratedFile(defOfOutputDir, kind + 'DefOf.' + type + '.generated.cs', defOfTemplate({
+            writeGeneratedFile(defOfOutputDir, kind + 'DefOf.' + upperFirst(type) + '.generated.cs', defOfTemplate({
                 type: type === 'allomancy' ? 'Misting' : 'Ferring',
                 kind,
                 metals
@@ -61,7 +62,7 @@ export default function () {
             return acc;
         }, {abilities: [] as string[], rightClickAbilities: [] as string[]});
 
-        writeGeneratedFile(resolve(SCADRIAL_MOD_DIR, 'Defs', dir, type), 'Trait.generated.xml', template({
+        writeGeneratedFile(resolve(SCADRIAL_MOD_DIR, 'Defs', upperFirst(dir), type), 'Trait.generated.xml', template({
             metals,
             abilities,
             rightClickAbilities

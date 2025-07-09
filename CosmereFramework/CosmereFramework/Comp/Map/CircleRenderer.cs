@@ -8,12 +8,12 @@ public record struct CircleToRender {
     public readonly Material lineMaterial;
     public readonly float radius;
 
-    public CircleToRender(Verse.Thing from, float radius, Material lineMaterial, float? alpha) {
+    public CircleToRender(Verse.Thing from, float radius, Material lineMaterial, float alpha = 1f) {
         this.from = from;
         this.from = from;
         this.radius = radius;
 
-        this.lineMaterial = FadedMaterialPool.FadedVersionOf(lineMaterial, alpha ?? 1f);
+        this.lineMaterial = FadedMaterialPool.FadedVersionOf(lineMaterial, alpha);
         this.lineMaterial.color = lineMaterial.color.WithAlpha(this.lineMaterial.color.a);
     }
 }

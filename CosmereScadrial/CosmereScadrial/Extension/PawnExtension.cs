@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Util;
 using CosmereFramework.Extension;
 using CosmereResources;
 using CosmereResources.Def;
@@ -66,17 +65,11 @@ public static class PawnExtension {
         );
     }
 
-    public static void TryConsumeVial(this Pawn pawn, MetalDef metal) {
-        if (pawn.CurJobDef?.defName == RimWorld.JobDefOf.Ingest.defName &&
-            pawn.CurJob.targetA.Thing is AllomanticVial) {
-            return;
-        }
+    public static void TryConsumeVialIfNeeded(this Pawn pawn, MetalDef metal) {
+        Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
+        if (gene == null || !pawn.HasVial(metal) || !gene.shouldConsumeVialNow) return;
 
-        if (metal.IsOneOf(MetalDefOf.Duralumin, MetalDefOf.Nicrosil)) return;
-        if (pawn.IsAsleep()) return;
-        if (InvestitureDetector.IsShielded(pawn)) return;
-
-        AllomanticVial? vial = pawn.GetVial(metal);
+        AllomanticVial? vial = pawn.GetVial(gene);
         if (vial == null || vial.stackCount == 0) return;
 
         Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, vial);

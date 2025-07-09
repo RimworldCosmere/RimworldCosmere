@@ -1,6 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using CosmereFramework.Comp.Map;
+using CosmereFramework.Extension;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Allomancy.Hediff;
 using CosmereScadrial.Comp.Hediff;
@@ -64,34 +65,35 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
         base.CompPostTickInterval(ref severityAdjustment, delta);
         float radius = props.radius * base.parent.Severity;
-        IntVec3 center = base.parent.pawn.Position;
-        Map? map = base.parent.pawn.Map;
-
-        if (map == null || !center.IsValid) {
-            return;
-        }
 
         if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) {
             return;
         }
 
-        IEnumerable<Pawn> nearbyPawns = GenRadial
-            .RadialCellsAround(center, Math.Min(radius, GenRadial.MaxRadialPatternRadius), true)
-            .Select(cell => cell.GetFirstPawn(map))
-            .Where(p => p != null && p != base.parent.pawn);
-
+        List<Pawn> nearbyPawns = base.parent.pawn.GetCellsAround(radius, true)
+            .Select(c => c.GetFirstPawn(base.parent.pawn.Map))
+            .Where(p => p != base.parent.pawn)
+            .ToList();
         foreach (Pawn? pawn in nearbyPawns) {
             TryAct(pawn);
         }
     }
 
+    public override void CompPostPostRemoved() {
+        base.CompPostPostRemoved();
+        CircleRenderer.TryRemove(this);
+    }
+
     public override void CompPostTick(ref float severityAdjustment) {
         base.CompPostTick(ref severityAdjustment);
         if (debugMode && Find.Selector.IsSelected(parent.pawn)) {
-            GenDraw.DrawCircleOutline(
-                parent.pawn.DrawPos,
-                props.radius * base.parent.Severity,
-                parent.metal.transparentLineColor
+            CircleRenderer.TryAdd(
+                this,
+                new CircleToRender(
+                    parent.pawn,
+                    props.radius * base.parent.Severity,
+                    parent.metal.transparentLineColor
+                )
             );
         }
 
@@ -105,11 +107,6 @@ public class AllomancyAuraHediffGiver : HediffComp {
         if (mote?.Destroyed == false) {
             return mote;
         }
-
-        /*
-        props.moteDef.graphicData.color = parent.metal.color;
-        if (parent.metal.colorTwo != null) props.moteDef.graphicData.colorTwo = parent.metal.colorTwo.Value;
-        */
 
         mote = MoteMaker.MakeAttachedOverlay(
             base.parent.pawn,

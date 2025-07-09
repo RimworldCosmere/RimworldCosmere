@@ -3,7 +3,6 @@ import {resolve} from 'node:path';
 import {compileTemplate, writeGeneratedFile} from '../../Helpers';
 import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {SCADRIAL_MOD_DIR} from '../../constants';
-import {toDefName} from "../../Helpers/Handlebars";
 
 const metalTemplate = compileTemplate(__dirname, 'MetallicArtsMetalDef.xml.template');
 const metalOutputDir = resolve(SCADRIAL_MOD_DIR, 'Defs', 'Things', 'Metals');
@@ -21,8 +20,8 @@ export default function () {
     const metals = Object.values(MetalRegistry.Metals)
         .filter(x => !!x.allomancy || !!x.feruchemy);
     for (const metal of metals) {
-        writeGeneratedFile(metalOutputDir, toDefName(metal.name) + '.generated.xml', metalTemplate({metal}));
-        writeGeneratedFile(patchMetalDefOutputDir, toDefName(metal.name) + '.generated.xml', patchMetalDefTemplate({metal}));
+        writeGeneratedFile(metalOutputDir, metal.name.toDefName() + '.generated.xml', metalTemplate({metal}));
+        writeGeneratedFile(patchMetalDefOutputDir, metal.name.toDefName() + '.generated.xml', patchMetalDefTemplate({metal}));
     }
 
     writeGeneratedFile(recordsOutputDir, 'Records.generated.xml', recordsTemplate({metals}));

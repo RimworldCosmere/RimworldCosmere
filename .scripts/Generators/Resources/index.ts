@@ -3,7 +3,6 @@ import {resolve} from 'node:path';
 import {compileTemplate, writeGeneratedFile} from '../../Helpers';
 import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {METALS_MOD_DIR} from '../../constants';
-import {toDefName} from "../../Helpers/Handlebars";
 
 const metalDefTemplate = compileTemplate(__dirname, 'MetalDef.xml.template');
 const metalDefOutputDir = resolve(METALS_MOD_DIR, 'Defs', 'Metal');
@@ -22,7 +21,7 @@ const itemOutputDir = resolve(METALS_MOD_DIR, 'Defs', 'Item');
 export default function () {
     const metals = Object.values(MetalRegistry.Metals);
     for (const metal of metals) {
-        writeGeneratedFile(metalDefOutputDir, toDefName(metal.name) + '.generated.xml', metalDefTemplate({metal}));
+        writeGeneratedFile(metalDefOutputDir, metal.name.toDefName() + '.generated.xml', metalDefTemplate({metal}));
     }
 
     writeGeneratedFile(CosmereResources, 'MetalDefOf.generated.cs', metalDefOfTemplate({metals}));
@@ -30,13 +29,13 @@ export default function () {
 
     const mineable = Object.values(MetalRegistry.Metals).filter((x) => !!x.mining);
     for (const metal of mineable) {
-        writeGeneratedFile(mineableOutputDir, toDefName(metal.name) + '.generated.xml', mineableTemplate({metal}));
+        writeGeneratedFile(mineableOutputDir, metal.name.toDefName() + '.generated.xml', mineableTemplate({metal}));
     }
     writeGeneratedFile(CosmereResources, 'ThingDefOf.Mineable.generated.cs', thingDefOfMineableTemplate({metals: mineable}));
 
     const items = Object.values(MetalRegistry.Metals);
     for (const metal of items) {
-        writeGeneratedFile(itemOutputDir, toDefName(metal.name) + '.generated.xml', itemTemplate({metal}));
+        writeGeneratedFile(itemOutputDir, metal.name.toDefName() + '.generated.xml', itemTemplate({metal}));
     }
     writeGeneratedFile(CosmereResources, 'ThingDefOf.Items.generated.cs', thingDefOfItemTemplate({metals: items}));
 }

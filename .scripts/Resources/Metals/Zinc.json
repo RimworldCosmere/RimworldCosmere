@@ -49,10 +49,6 @@
       }
     }
   },
-  "buildable": {
-    "buildings": false,
-    "items": true
-  },
   "mining": {
     "hitPoints": 1360,
     "yield": 40,

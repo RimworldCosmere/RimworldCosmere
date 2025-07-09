@@ -34,10 +34,6 @@
       "description": "This pawn is tapping a nicrosil metalmind, enhancing their spiritual potential. Investiture flows through them more freely, amplifying their magical abilities and allowing for prolonged or more potent effects. They burn brighter — but it drains quickly."
     }
   },
-  "buildable": {
-    "buildings": false,
-    "items": true
-  },
   "alloy": {
     "type": "complex",
     "ingredients": [

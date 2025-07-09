@@ -19,7 +19,7 @@
         <stages>
             {{#times stages}}
             <li>
-                {{#gt ../stages 1}}<minSeverity>{{@time}}</minSeverity>{{/gt}}{{#if ../multiplyBySeverity}}
+                {{#if (gt ../stages 1)}}<minSeverity>{{@time}}</minSeverity>{{/if}}{{#if ../multiplyBySeverity}}
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getStatForStage this ../hungerRateFactor}}</hungerRateFactor>{{/if}}{{#if ../capacityMods}}
                 <capMods>
@@ -65,7 +65,7 @@
         <stages>
             {{#times stages}}
             <li>
-                {{#gt ../stages 1}}<minSeverity>{{@time}}</minSeverity>{{/gt}}{{#if ../multiplyBySeverity}}
+                {{#if (gt ../stages 1)}}<minSeverity>{{@time}}</minSeverity>{{/if}}{{#if ../multiplyBySeverity}}
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getStatForStage this ../hungerRateFactor}}</hungerRateFactor>{{/if}}{{#if ../capacityMods}}
                 <capMods>

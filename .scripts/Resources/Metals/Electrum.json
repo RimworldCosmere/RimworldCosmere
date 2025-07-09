@@ -39,10 +39,6 @@
       }
     }
   },
-  "buildable": {
-    "buildings": false,
-    "items": true
-  },
   "alloy": {
     "type": "simple",
     "ingredients": [

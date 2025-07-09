@@ -33,10 +33,6 @@
       "description": "This pawn is tapping a duralumin metalmind, intensifying their Connection to others. Bonds strengthen, allegiances deepen, and ties to people or places become nearly unbreakable. Useful for bonding, commanding, or interacting with spiritual systems."
     }
   },
-  "buildable": {
-    "buildings": false,
-    "items": true
-  },
   "alloy": {
     "type": "complex",
     "ingredients": [

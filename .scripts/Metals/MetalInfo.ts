@@ -72,9 +72,21 @@ export class FeruchemyAbilityInfo {
 }
 
 export class MetalBuildableInfo {
-    public buildings: boolean;
-    public items: boolean;
     public commonality: number;
+    public defense?: {
+        sharp?: number;
+        blunt?: number;
+        heat?: number;
+        coldInsulation?: number;
+        heatInsulation?: number;
+    };
+    public offense?: {
+        sharp?: number;
+        blunt?: number;
+        armorPenetration?: number;
+        cooldown?: number;
+    }
+    public stuffStatFactors?: Record<string, number>;
 
     constructor(self: Partial<MetalBuildableInfo>) {
         Object.assign(this, self);

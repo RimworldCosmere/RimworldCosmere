@@ -69,27 +69,27 @@
             <texPath>Item/Resource/{{defName metal.name}}</texPath>
         </graphicData>
 
-        {{#if metal.buildable}}
+        {{# with metal.buildable }}
         <stuffProps>
-            <commonality>{{#if metal.buildable.commonality}}{{metal.buildable.commonality}}{{else}}0.0{{/if}}</commonality>
-            <color>{{rgb metal.color}}</color>
-            {{#if metal.buildable.buildings}}
+            <commonality>{{#if commonality}}{{commonality}}{{else}}0.0{{/if}}</commonality>
+            <color>{{rgb ../metal.color}}</color>
             <constructEffect>ConstructMetal</constructEffect>
-            <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
-            <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
-            <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
-            <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
-            {{/if}}
             <categories>
-                <li>Cosmere_Resources_StuffCategory_Metals</li>
-                {{#if metal.allomancy }}
+                {{#if ../metal.allomancy }}
                 <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
                 {{/if}}
                 <li>Metallic</li>
             </categories>
-            <appearance>Metal</appearance>
+            {{#if (or stuffStatFactors (and offense offense.cooldown)) }}
+            <statFactors>
+                {{#each stuffStatFactors as |value key| }}
+                <{{key}}>{{value}}</{{key}}>
+                {{/each}}
+                {{#if (and offense offense.cooldown) }}<MeleeWeapon_CooldownMultiplier>{{ offense.cooldown }}</MeleeWeapon_CooldownMultiplier>{{/if}}
+            </statFactors>
+            {{/if}}
         </stuffProps>
-        {{/if}}
+        {{/with}}
 
         <statBases>
             <Beauty>{{metal.beauty}}</Beauty>
@@ -97,6 +97,36 @@
             {{#if metal.godMetal }}
             <Cosmere_Investiture>10</Cosmere_Investiture>
             {{/if}}
+            {{#with metal.buildable}}
+            {{#with defense}}
+            {{#if sharp}}
+            <StuffPower_Armor_Sharp>{{ sharp }}</StuffPower_Armor_Sharp>
+            {{/if}}
+            {{#if blunt}}
+            <StuffPower_Armor_Blunt>{{ blunt }}</StuffPower_Armor_Blunt>
+            {{/if}}
+            {{#if heat}}
+            <StuffPower_Armor_Heat>{{ heat }}</StuffPower_Armor_Heat>
+            {{/if}}
+            {{#if coldInsulation}}
+            <StuffPower_Insulation_Cold>{{ coldInsulation }}</StuffPower_Insulation_Cold>
+            {{/if}}
+            {{#if heatInsulation}}
+            <StuffPower_Insulation_Heat>{{ heatInsulation }}</StuffPower_Insulation_Heat>
+            {{/if}}
+            {{/with}}
+            {{#with offense}}
+            {{#if sharp }}
+            <SharpDamageMultiplier>{{ sharp }}</SharpDamageMultiplier>
+            {{/if}}
+            {{#if blunt }}
+            <BluntDamageMultiplier>{{ blunt }}</BluntDamageMultiplier>
+            {{/if}}
+            {{#if armorPenetration }}
+            <MeleeArmorPenetration>{{ armorPenetration }}</MeleeArmorPenetration>
+            {{/if}}
+            {{/with}}
+            {{/with}}
         </statBases>
 
         <modExtensions>

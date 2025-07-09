@@ -3,6 +3,7 @@ using System.Linq;
 using CosmereCore.Need;
 using CosmereFramework.Extension;
 using CosmereFramework.Quickstart;
+using CosmereResources;
 using CosmereResources.Def;
 using CosmereScadrial.Def;
 using CosmereScadrial.Dev;
@@ -22,11 +23,14 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
     public override ScenarioDef? scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
     public override void PostStart() {
-        Current.Game?.researchManager.DebugSetAllProjectsFinished();
         DebugSettings.godMode = true;
         DebugViewSettings.showFpsCounter = true;
         DebugViewSettings.showTpsCounter = true;
         DebugViewSettings.showMemoryInfo = true;
+    }
+
+    public override void PostLoaded() {
+        Current.Game?.researchManager.DebugSetAllProjectsFinished();
     }
 
     public override void PrepareColonists(List<Pawn> pawns) {
@@ -59,13 +63,12 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
 
             pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, father);
             pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, mother);
-            GenSpawn.Spawn(grandfather, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
-            GenSpawn.Spawn(grandmother, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
-            GenSpawn.Spawn(father, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
-            GenSpawn.Spawn(mother, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
+            //GenSpawn.Spawn(grandfather, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
+            //GenSpawn.Spawn(grandmother, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
+            //GenSpawn.Spawn(father, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
+            //GenSpawn.Spawn(mother, DropCellFinder.RandomDropSpot(pawn.Map), pawn.Map);
             StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower.Worker.ClearCacheForThing(pawn);
             StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower.Worker.ClearCacheForThing(pawn);
-            Find.Selector.Select(pawn);
         }
 
         if (pawns.TryPopFront(out pawn)) {
@@ -92,12 +95,12 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);
         //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Gold);
 
-        /*if (pawns.TryPopFront(out pawn)) {
+        if (pawns.TryPopFront(out pawn)) {
             PrepareColonistAsMisting(pawn, true, true, MetalDefOf.Steel);
             PrepareColonistAsFerring(pawn, true, true, MetalDefOf.Iron);
             pawn.Name = new NameTriple("Waxillium", "Wax", "Ladrian");
             pawn.gender = Gender.Male;
-        }*/
+        }
     }
 
     private Pawn GeneratePawn(Gender gender, XenotypeDef xenotype) {

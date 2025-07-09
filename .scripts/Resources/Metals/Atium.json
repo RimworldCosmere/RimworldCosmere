@@ -18,10 +18,6 @@
       "Cosmere_Scadrial_Ability_Atium"
     ]
   },
-  "buildable": {
-    "items": true,
-    "buildings": false
-  },
   "feruchemy": {
     "userName": "chronist",
     "description": "Stores age, granting youth or aging when tapped.",

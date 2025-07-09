@@ -38,9 +38,23 @@
     }
   },
   "buildable": {
-    "buildings": true,
-    "items": true,
-    "commonality": 0.2
+    "commonality": 0.2,
+    "defense": {
+      "sharp": 0.7,
+      "blunt": 0.15,
+      "heat": 0.30,
+      "coldInsulation": 1,
+      "heatInsulation": 0
+    },
+    "offense": {
+      "sharp": 2,
+      "blunt": 1
+    },
+    "stuffStatFactors": {
+      "MaxHitPoints": 0.8,
+      "Beauty": 2,
+      "Flammability": 0.4
+    }
   },
   "alloy": {
     "type": "simple",

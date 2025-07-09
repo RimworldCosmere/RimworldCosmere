@@ -14,10 +14,6 @@
   ],
   "marketValue": 0.9,
   "beauty": 1,
-  "buildable": {
-    "buildings": false,
-    "items": true
-  },
   "mining": {
     "hitPoints": 1480,
     "yield": 30,

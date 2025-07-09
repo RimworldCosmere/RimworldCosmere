@@ -39,9 +39,25 @@
     }
   },
   "buildable": {
-    "buildings": true,
-    "items": true,
-    "commonality": 0.3
+    "commonality": 0.3,
+    "defense": {
+      "sharp": 0.9,
+      "blunt": 0.25,
+      "heat": 0.40,
+      "coldInsulation": 0,
+      "heatInsulation": 0
+    },
+    "offense": {
+      "sharp": 2,
+      "blunt": 1,
+      "cooldown": 0.8
+    },
+    "stuffStatFactors": {
+      "Mass": 0.6,
+      "MaxHitPoints": 0.9,
+      "Beauty": 3,
+      "Flammability": 0.4
+    }
   },
   "mining": {
     "hitPoints": 1700,

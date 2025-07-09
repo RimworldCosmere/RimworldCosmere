@@ -7,10 +7,10 @@
 ## What's Included
 
 - Adds/Replaces all **16 base metals** from Scadrial as *stuffable materials* with balanced stat modifiers.
-- Also adds Nickel (for alloying), Coal/Charcoal, and retextures silver.
+- Also adds Nickel (for alloying), Coal/Charcoal, Glass, Alcohol, and retextures silver.
 - All new/replaced metals and materials have a fresh new texture
 - Removes mine-able Steel. Now must come from alloying Coal/Charcoal with Iron 
-- Introduces rare >!**Godmetals** like Atium, Lerasium, Harmonium/Ettmetal, and Trellium!< — powerful and lore-rich, when each dependent mod is added
+- Introduces rare >!**Godmetals** like Atium, Lerasium, Harmonium/Ettmetal, and Trellium!< — powerful and lore-rich, when each dependent mod is added. Also includes alloys of the god metals
 - Integrated into **world generation**, with custom ores appearing across biomes.
 - Each metal includes:
     - Damage multipliers (sharp/blunt)

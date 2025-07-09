@@ -14,7 +14,7 @@ public class GearAndInventoryInvestiture : RimWorld.StatPart {
 
     public override string? ExplanationPart(StatRequest req) {
         if (TryGetValue(req, out float value)) {
-            return "CS_StatsReport_GearAndInventoryInvestiture".Translate() +
+            return "CC_StatsReport_GearAndInventoryInvestiture".Translate() +
                    ": " +
                    value.ToStringBreathEquivalentUnitsRaw();
         }

@@ -1,8 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-    <CS_Quickstart_Name>Quickstart: </CS_Quickstart_Name>
-    <CS_Quickstart_MapSize>Map Size: </CS_Quickstart_MapSize>
-    <CS_Quickstart_Difficulty>Difficulty: </CS_Quickstart_Difficulty>
-    <CS_Quickstart_Scenario>Scenario: </CS_Quickstart_Scenario>
-    <CS_Quickstart_PauseAfterLoad>Pause After Load: </CS_Quickstart_PauseAfterLoad>
+    <CF_Settings_Category_Debug>Debug Settings</CF_Settings_Category_Debug>
+    <CF_Settings_LogLevel>Log Level: </CF_Settings_LogLevel>
+    <CF_Settings_DebugMode>Debug Mode: </CF_Settings_DebugMode>
+    <CF_Settings_DebugMode_Tooltip>Provides extra debugging features: </CF_Settings_DebugMode_Tooltip>
+    <CF_Settings_Quickstarter>Quickstarter: </CF_Settings_Quickstarter>
+    <CF_Settings_Quickstarter_Placeholder>Select a Quickstarter </CF_Settings_Quickstarter_Placeholder>
+    <CF_Settings_Quickstarter_FailedToFind>Failed to find Quickstarter</CF_Settings_Quickstarter_FailedToFind>
+    <CF_Quickstart_Name>Quickstart: </CF_Quickstart_Name>
+    <CF_Quickstart_MapSize>Map Size: </CF_Quickstart_MapSize>
+    <CF_Quickstart_Difficulty>Difficulty: </CF_Quickstart_Difficulty>
+    <CF_Quickstart_Scenario>Scenario: </CF_Quickstart_Scenario>
+    <CF_Quickstart_PauseAfterLoad>Pause After Load: </CF_Quickstart_PauseAfterLoad>
 </LanguageData>

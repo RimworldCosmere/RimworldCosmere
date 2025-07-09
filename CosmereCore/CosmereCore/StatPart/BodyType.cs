@@ -14,7 +14,7 @@ public class BodyType : RimWorld.StatPart {
         if (TryGetBodyType(req, out float bodyType)) {
             Pawn? pawn = req.Pawn ?? req.Thing as Pawn;
             string bodyTypeDisplay = pawn?.story.bodyType?.defName ?? "N/A";
-            return "CS_StatsReport_BodyType".Translate(bodyTypeDisplay) + ": x" + bodyType.ToStringPercent();
+            return "CC_StatsReport_BodyType".Translate(bodyTypeDisplay) + ": x" + bodyType.ToStringPercent();
         }
 
         return null;

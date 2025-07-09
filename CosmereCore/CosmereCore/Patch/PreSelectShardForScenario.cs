@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using CosmereCore.Util;
+﻿using CosmereCore.Util;
 using CosmereFramework;
 using HarmonyLib;
 using RimWorld;
@@ -26,10 +25,5 @@ public static class PreSelectShardForScenario {
         foreach (string? shard in shards.shards) {
             ShardUtility.Enable(shard);
         }
-
-        Messages.Message(
-            $"Shard System has been pre-selected: {string.Join(", ", ShardUtility.shards.enabledShardDefs.Select(x => x.label))}",
-            MessageTypeDefOf.PositiveEvent
-        );
     }
 }

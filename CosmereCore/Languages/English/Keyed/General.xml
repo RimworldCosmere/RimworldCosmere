@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-    <CS_StatsReport_BodyType>Multiplier for body size "{0}"</CS_StatsReport_BodyType>
-    <CS_StatsReport_GearAndInventoryInvestiture>Investiture from Gear and Inventory</CS_StatsReport_GearAndInventoryInvestiture>
-    <CS_StatsReport_NeedInvestiture>Base Investiture</CS_StatsReport_NeedInvestiture>
-    <CS_Current_Investiture>Represents this pawn’s connection to the Spiritual Realm. \n\nCurrent Level: {LEVEL}\nHeightening: {HEIGHT}</CS_Current_Investiture>
+    <CC_StatsReport_BodyType>Multiplier for body size "{0}"</CC_StatsReport_BodyType>
+    <CC_StatsReport_GearAndInventoryInvestiture>Investiture from Gear and Inventory</CC_StatsReport_GearAndInventoryInvestiture>
+    <CC_StatsReport_NeedInvestiture>Base Investiture</CC_StatsReport_NeedInvestiture>
+    <CC_Current_Investiture>Represents this pawn’s connection to the Spiritual Realm. \n\nCurrent Level: {LEVEL}\nHeightening: {HEIGHT}</CC_Current_Investiture>
+    <CC_SelectShard_Label>Choose which Shards are active in this game:</CC_SelectShard_Label>
 </LanguageData>

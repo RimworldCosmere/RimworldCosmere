@@ -37,17 +37,25 @@ public class InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbi
         );
     }
 
-    // @todo Add translations
     private string GetMessage(MetallicArtsMetalDef metal, List<MetallicArtsMetalDef> metalsToWipe) {
         string metalsToWipeString = FormatDefList(metalsToWipe);
         if (metal.Equals(MetallicArtsMetalDefOf.Aluminum)) {
-            return
-                $"{pawn.NameFullColored} is burning {metal.LabelCap} and has wiped his reserves of {metalsToWipeString}.";
+            return "CS_WipeReserves".Translate(
+                    pawn.Named("pawn"),
+                    pawn.NameFullColored.Named("PAWN"),
+                    metal.coloredLabel.Named("METAL"),
+                    metalsToWipeString.Named("METALS")
+                )
+                .Resolve();
         }
 
         if (metal.Equals(MetallicArtsMetalDefOf.Chromium)) {
-            return
-                $"{pawn.NameFullColored} is the target of a lurcher, and is losing all of their reserves of {metalsToWipeString}.";
+            return "CS_WipeReservesByLurcher".Translate(
+                    pawn.Named("pawn"),
+                    pawn.NameFullColored.Named("PAWN"),
+                    metalsToWipeString.Named("METALS")
+                )
+                .Resolve();
         }
 
         return "";

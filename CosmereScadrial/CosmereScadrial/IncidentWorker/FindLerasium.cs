@@ -19,8 +19,8 @@ public class FindLerasium : RimWorld.IncidentWorker {
         GenPlace.TryPlaceThing(bead, chosenPawn.Position, map, ThingPlaceMode.Near);
 
         Find.LetterStack.ReceiveLetter(
-            "A bead of Lerasium has appeared!",
-            $"{chosenPawn.NameShortColored} feels a strange pull... A small bead of shining metal has appeared nearby.",
+            "CS_FindLerasium_Title".Translate(),
+            "CS_FindLerasium_Message".Translate(chosenPawn.NameShortColored).Resolve(),
             LetterDefOf.PositiveEvent,
             new TargetInfo(chosenPawn.Position, map)
         );

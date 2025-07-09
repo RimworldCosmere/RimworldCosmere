@@ -67,9 +67,6 @@ public abstract partial class AbstractAbility {
         nextStatus = desiredStatus;
     }
 
-    /**
-     * @TODO Implement AbstractAbility.NextStatus, and read/use it here
-     */
     protected override void PreActivate(LocalTargetInfo? target) {
         UpdateStatus();
 

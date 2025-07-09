@@ -30,7 +30,12 @@ public class Coinshot : Verb_Shoot {
         Verse.Thing? clip =
             pawn.inventory.innerContainer.FirstOrDefault(t => t.def.Equals(ThingDefOf.Cosmere_Scadrial_Thing_Clip));
         if (clip == null) {
-            Messages.Message("No Clips available!", pawn, MessageTypeDefOf.RejectInput, false);
+            Messages.Message(
+                "CS_Coinshot_NoClips".Translate(pawn.NameShortColored.Named("PAWN")).Resolve(),
+                pawn,
+                MessageTypeDefOf.RejectInput,
+                false
+            );
             return false;
         }
 

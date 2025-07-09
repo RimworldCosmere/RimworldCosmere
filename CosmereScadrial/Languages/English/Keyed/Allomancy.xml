@@ -8,4 +8,6 @@
     <CS_SetVialLevelTooltip>Drag the bar to configure when {PAWN} will consume a {METAL} vial.</CS_SetVialLevelTooltip>
 	<CS_ChangeVialStock>Click to vial to change the number of {METAL} vials {PAWN} will keep in {pawn_possessive} inventory.</CS_ChangeVialStock>
 	<CS_SetVialCountSlider>{PAWN} will keep {COUNT} {METAL} vials in {pawn_possessive} inventory.</CS_SetVialCountSlider>
+	<CS_WipeReserves>{PAWN} is burning {METAL} and has wiped {pawn_possessive} reserves of {METALS}.</CS_WipeReserves>
+	<CS_WipeReservesByLurcher>{PAWN} is the target of a lurcher, and is loosing all of {pawn_possessive} reserves of {METALS}.</CS_WipeReservesByLurcher>
 </LanguageData>

@@ -26,24 +26,24 @@ public class AllomanticHediff : HediffWithComps {
     public override string LabelBase =>
         base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");
 
-    public SeverityCalculator severityCalculator => GetComp<SeverityCalculator>();
+    public SeverityCalculator? severityCalculator => GetComp<SeverityCalculator>();
 
     public event Action<AllomanticHediff, AbstractAbility>? OnSourceAdded;
     public event Action<AllomanticHediff, AbstractAbility>? OnSourceRemoved;
 
-    public override void PostRemoved() {
+    /*public override void PostRemoved() {
         base.PostRemoved();
-        Log.Warning($"{pawn.NameFullColored} has lost {def.defName} hediff");
-    }
+        Logger.Verbose($"{pawn.NameFullColored} has lost {def.defName} hediff");
+    }*/
 
     public void AddSource(AbstractAbility sourceAbility) {
         if (sourceAbilities.Contains(sourceAbility)) {
             return;
         }
 
-        Log.Warning(
+        /*Logger.Verbose(
             $"{sourceAbility.pawn.NameFullColored} applying {def.defName} hediff to {pawn.NameFullColored} with Status={sourceAbility.status}"
-        );
+        );*/
 
         sourceAbilities.Add(sourceAbility);
         OnSourceAdded?.Invoke(this, sourceAbility);
@@ -54,9 +54,9 @@ public class AllomanticHediff : HediffWithComps {
             return;
         }
 
-        Log.Warning(
+        /*Logger.Verbose(
             $"{sourceAbility.pawn.NameFullColored} is no longer casting {sourceAbility.def.defName} on {pawn.NameFullColored}, Removing source for {def.defName} hediff"
-        );
+        );*/
 
         sourceAbilities.Remove(sourceAbility);
         OnSourceRemoved?.Invoke(this, sourceAbility);
@@ -64,12 +64,15 @@ public class AllomanticHediff : HediffWithComps {
 
     public override void TickInterval(int delta) {
         SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);
-        if (def.defName != surge?.def.defName) {
-            surge?.Burn(
-                severityCalculator.RecalculateSeverity,
+        if (def.defName != surge?.def.defName && surge != null) {
+            surge.Burn(
+                severityCalculator!.RecalculateSeverity,
                 GenTicks.TicksPerRealSecond,
                 () => {
-                    pawn.genes.GetAllomanticGenes().ForEach(g => g.TryBurnMetalForInvestiture(g.BurnRate));
+                    pawn.genes.GetAllomanticGenes()
+                        .Where(g => g.Burning)
+                        .ToList()
+                        .ForEach(g => g.BurnTickInterval());
                     severityCalculator.RecalculateSeverity();
                 }
             );
@@ -82,7 +85,7 @@ public class AllomanticHediff : HediffWithComps {
         }
 
         if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) {
-            severityCalculator.RecalculateSeverity();
+            severityCalculator?.RecalculateSeverity();
         }
 
         base.TickInterval(delta);

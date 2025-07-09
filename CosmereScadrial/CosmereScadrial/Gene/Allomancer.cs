@@ -7,6 +7,7 @@ using CosmereResources;
 using CosmereScadrial.Allomancy;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Extension;
+using CosmereScadrial.Thing;
 using CosmereScadrial.Util;
 using RimWorld;
 using UnityEngine;
@@ -32,6 +33,12 @@ public class Allomancer : Metalborn {
             if (metal.IsOneOf(MetalDefOf.Duralumin, MetalDefOf.Nicrosil)) return false;
             if (pawn.IsAsleep()) return false;
             if (pawn.IsShieldedAgainstInvestiture()) return false;
+            if (
+                pawn.CurJobDef?.defName == RimWorld.JobDefOf.Ingest.defName &&
+                pawn.CurJob.targetA.Thing is AllomanticVial
+            ) {
+                return false;
+            }
 
             return Value < (double)targetValue;
         }
@@ -92,14 +99,12 @@ public class Allomancer : Metalborn {
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower)
                 .Learn(sources.Count * Constants.AllomancyXPPerTick * GenTicks.TickLongInterval);
         }
-
-        if (shouldConsumeVialNow && pawn.HasVial(metal)) {
-            pawn.TryConsumeVial(metal);
-        }
     }
 
-    private void BurnTickInterval() {
+    public void BurnTickInterval() {
         if (BurnRate <= 0) return;
+
+        pawn.TryConsumeVialIfNeeded(metal);
 
         if (TryBurnMetalForInvestiture(BurnRate)) return;
 

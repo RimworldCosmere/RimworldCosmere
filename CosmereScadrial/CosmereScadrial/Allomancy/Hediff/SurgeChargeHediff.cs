@@ -31,13 +31,12 @@ public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : Alloman
     public void Burn(Action? callback = null, int endInTicks = -1, Action? endCallback = null) {
         if (this.endInTicks > -1) return;
 
-        foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
-            float rate = gene.BurnRate;
-            if (rate <= 0f) continue;
-
-            foreach (AllomanticBurnSource source in gene.Sources) {
-                pawn.GetAllomanticAbility(source.Def)?.UpdateStatus(BurningStatus.Duralumin);
-            }
+        foreach (AllomanticBurnSource source in pawn.genes.GetAllomanticGenes()
+                     .Where(g => g.Burning)
+                     .SelectMany(g => g.Sources)
+                     .Where(s => s.Def.metal != metal)
+                     .ToList()) {
+            pawn.GetAllomanticAbility(source.Def)?.UpdateStatus(BurningStatus.Duralumin);
         }
 
         callback?.Invoke();
@@ -47,19 +46,20 @@ public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : Alloman
     }
 
     public void PostBurn() {
-        pawn.genes.GetAllomanticGenes().ForEach(g => g.WipeReserve());
+        pawn.genes.GetAllomanticGenes().Where(g => g.Burning).ToList().ForEach(g => g.WipeReserve());
 
         FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
 
-        foreach (AbstractAbility? sourceAbility in sourceAbilities.ToList()) {
+        foreach (AbstractAbility? sourceAbility in sourceAbilities.Where(a => a.atLeastPassive).ToList()) {
             Allomancer? sourceGene = sourceAbility.pawn.genes.GetAllomanticGeneForMetal(sourceAbility.metal);
+            if (sourceGene == null || !sourceGene.Burning) continue;
             if (
                 sourceAbility.def.IsOneOf(
                     AbilityDefOf.Cosmere_Scadrial_Ability_Duralumin,
                     AbilityDefOf.Cosmere_Scadrial_Ability_Nicrosil
                 )
             ) {
-                sourceGene?.WipeReserve();
+                sourceGene.WipeReserve();
             }
 
             sourceAbility.UpdateStatus(BurningStatus.Off);

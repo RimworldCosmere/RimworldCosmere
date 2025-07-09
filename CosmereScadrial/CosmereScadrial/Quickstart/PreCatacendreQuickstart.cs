@@ -36,7 +36,6 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
             ScadrianUtility.PrepareDevPawn(pawn);
             pawn.Name = new NameSingle("Vin Venture");
             pawn.gender = Gender.Female;
-            Find.Selector.Select(pawn);
 
             Pawn grandfather = GeneratePawn(Gender.Male, XenotypeDefOf.Cosmere_Scadrial_Xenotype_Noble);
             grandfather.Name = new NameSingle("Vin Pat Grandfather");
@@ -86,6 +85,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Male;
             pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
             pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
+            Find.Selector.Select(pawn);
         }
 
         //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Atium);

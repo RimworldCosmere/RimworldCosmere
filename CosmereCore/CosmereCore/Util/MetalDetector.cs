@@ -11,6 +11,7 @@ namespace CosmereCore.Util;
 
 public static class MetalDetector {
     private static readonly Dictionary<RecipeDef, bool> MetalRecipeCache = new Dictionary<RecipeDef, bool>();
+    private static readonly Dictionary<Thing, float> MetalThingCache = new Dictionary<Thing, float>();
 
     public static bool IsCapableOfHavingMetal(ThingDef? thingDef) {
         return thingDef?.category is ThingCategory.Item
@@ -31,15 +32,23 @@ public static class MetalDetector {
         return GetMetal(thing, depth, allowAluminum) > 0f;
     }
 
-    /// <summary>
-    ///     This isn't entirely accurate at getting the metal mass of an item, but its a rough implementation.
-    /// </summary>
-    public static float GetMetal(Thing? thing, int depth = 0, bool allowAluminum = false) {
+    private static float CalculateMetal(Thing? thing, int depth = 0, bool allowAluminum = false) {
         if (!IsCapableOfHavingMetal(thing?.def)) return 0f;
         if (thing?.def == null || depth > 25) return 0f;
 
         List<MetalDef> metals = GetLinkedMetals(thing.def, allowAluminum);
-        if (metals.Count > 0 || thing.def.IsMetal) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
+        if (metals.Count > 0 || thing.def.IsMetal) {
+            if (thing.def.category != ThingCategory.Building) {
+                return thing.GetStatValue(RimWorld.StatDefOf.Mass);
+            }
+
+            if (thing.def.defName.StartsWith("Mineable")) {
+                return thing.def.building.mineableYield *
+                       10 *
+                       metals.First().Item.GetStatValueAbstract(RimWorld.StatDefOf.Mass);
+            }
+        }
+
         //if (thing.Stuff != null && (thing.Stuff.IsMetal || GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0)) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
         if (thing.def.defName is "ChunkSlagSteel" or "ChunkMechanoidSlag") {
             return thing.GetStatValue(RimWorld.StatDefOf.Mass);
@@ -87,6 +96,19 @@ public static class MetalDetector {
         }
 
         return 0f;
+    }
+
+    /// <summary>
+    ///     This isn't entirely accurate at getting the metal mass of an item, but its a rough implementation.
+    /// </summary>
+    public static float GetMetal(Thing thing, int depth = 0, bool allowAluminum = false) {
+        if (thing?.def == null) return 0f;
+        if (!MetalThingCache.TryGetValue(thing, out float value)) {
+            value = CalculateMetal(thing, depth, allowAluminum);
+            MetalThingCache.Add(thing, value);
+        }
+
+        return value;
     }
 
     public static float GetMetalForThingDefCountClass(ThingDefCountClass def, int depth, bool allowAluminum = false) {

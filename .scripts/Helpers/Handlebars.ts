@@ -1,28 +1,43 @@
 import Handlebars from 'handlebars';
-import {toLower, upperFirst} from "lodash";
 
 require('handlebars-helpers')();
 
+declare global {
+    interface String {
+        toTitleCase(): string;
+
+        toDefName(): string;
+
+        capitalize(): string;
+    }
+}
+
+String.prototype.toTitleCase = function (this: string): string {
+    return this
+        .toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+String.prototype.toDefName = function (this: string): string {
+    return this.toTitleCase().replace(/\s/g, '');
+}
+String.prototype.capitalize = function (this: string): string {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 Handlebars.registerHelper('log', (...args: any[]) => console.log(...args));
-
-export const toTitleCase = (string: string) => string
-    .toLowerCase()
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-export const toDefName = (string: string) => toTitleCase(string).replace(/\s/g, '');
-
 Handlebars.registerHelper('lower', (string: string) => {
-    return toLower(string);
+    return string.toLowerCase();
 });
 Handlebars.registerHelper('capitalize', (string: string) => {
-    return upperFirst(string);
+    return string.capitalize();
 });
 Handlebars.registerHelper('title', (string: string) => {
-    return toTitleCase(string);
+    return string.toTitleCase();
 });
 Handlebars.registerHelper('defName', (string: string) => {
-    return toDefName(string);
+    return string.toDefName();
 });
 Handlebars.registerHelper('join', (strings: (number | string)[], character: string) => {
     return strings?.join(character);

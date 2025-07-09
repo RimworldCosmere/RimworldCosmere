@@ -4,6 +4,9 @@
         <randomChosen>false</randomChosen>
         <canGenerateInGeneSet>false</canGenerateInGeneSet>
         <passOnDirectly>false</passOnDirectly>
+        <biostatCpx>500</biostatCpx>
+        <biostatMet>500</biostatMet>
+        <biostatArc>500</biostatArc>
     </GeneDef>
     <GeneDef Name="AbstractAllomancyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
         <geneClass>CosmereScadrial.Gene.Allomancer</geneClass>
@@ -29,7 +32,7 @@
         <showGizmoOnWorldView>true</showGizmoOnWorldView>
         <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
     </GeneDef>
-    <GeneDef>
+    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
         <defName>Cosmere_Scadrial_Gene_DormantMetalborn</defName>
         <geneClass>CosmereScadrial.Gene.DormantMetalborn</geneClass>
         <label>dormant Connection</label>
@@ -43,8 +46,5 @@
             </li>
         </forcedTraits>
         <iconPath>UI/Icons/Genes/Investiture/Allomancy/Ettmetal</iconPath>
-        <passOnDirectly>false</passOnDirectly>
-        <canGenerateInGeneSet>false</canGenerateInGeneSet>
-        <randomChosen>false</randomChosen>
     </GeneDef>
 </Defs>

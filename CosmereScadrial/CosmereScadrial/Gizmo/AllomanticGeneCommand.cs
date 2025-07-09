@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using CosmereFramework.Extension;
 using CosmereScadrial.Gene;
 using RimWorld;
 using UnityEngine;
@@ -21,6 +22,10 @@ public class AllomanticGeneCommand(
 
     private new Allomancer gene => (Allomancer)base.gene;
     protected override int IncrementDivisor => 5;
+
+    protected override bool IsDraggable =>
+        base.IsDraggable &&
+        !metal.IsOneOf(MetallicArtsMetalDefOf.Duralumin, MetallicArtsMetalDefOf.Nicrosil);
 
     private string setVialCountTooltip => setVialCountTooltipCache ??=
         "CS_SetVialCountTooltip".Translate(coloredPawn, coloredMetal, pawn.Named("pawn")).Resolve();

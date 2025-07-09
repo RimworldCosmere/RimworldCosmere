@@ -72,7 +72,8 @@ public abstract class CosmereGeneCommand(
     protected Pawn pawn => gene.pawn;
 
     protected virtual int IncrementDivisor => 5;
-    protected override bool IsDraggable => gene.pawn.IsColonistPlayerControlled || gene.pawn.IsPrisonerOfColony;
+    protected virtual bool IsPlayerOwned => gene.pawn.IsColonistPlayerControlled || gene.pawn.IsPrisonerOfColony;
+    protected override bool IsDraggable => IsPlayerOwned;
     protected override string BarLabel => $"{gene.Value / gene.Max:P1}";
     protected override int Increments => gene.MaxForDisplay / IncrementDivisor;
     public override bool Visible => pawn.Faction.IsPlayer;
@@ -97,7 +98,7 @@ public abstract class CosmereGeneCommand(
     protected abstract Texture2D GetIcon();
 
     protected virtual void DrawTopBar(ref bool mouseOver) {
-        if (!IsDraggable) return;
+        if (!IsPlayerOwned) return;
 
         Rect abilityRect = new Rect(
             topBarRect!.Value.x,

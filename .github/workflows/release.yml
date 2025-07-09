@@ -70,6 +70,8 @@ jobs:
         run: |
           npm install -g @steamdown/cli tsx
           cd .scripts && npm i
+      - name: Run generators
+        run: npm --prefix .scripts start -- -d -f
 
       - name: Install Mod Dependencies
         run: dotnet restore $MOD/$MOD
@@ -107,7 +109,6 @@ jobs:
           [[ -n "$LABEL" ]] && BUILD_VERSION+="-${LABEL}"
 
           echo "Running script generation"
-          npm start --prefix .scripts -- -d -f --dryRun
 
           echo "Building $MOD@$BUILD_VERSION ($CONFIG)"
 

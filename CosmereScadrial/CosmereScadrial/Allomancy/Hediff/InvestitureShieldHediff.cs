@@ -5,19 +5,21 @@ using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
 using CosmereScadrial.Gene;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace CosmereScadrial.Allomancy.Hediff;
 
 public class InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability)
     : AllomanticHediff(hediffDef, pawn, ability) {
-    public override void Tick() {
-        base.Tick();
+    public override void TickInterval(int delta) {
+        base.TickInterval(delta);
 
         MetallicArtsMetalDef? metal = sourceAbilities.FirstOrDefault()?.metal;
         if (metal == null) return;
 
         List<Allomancer> genes = pawn.genes.GetAllomanticGenes();
+        genes.RemoveWhere(x => Mathf.Approximately(x.Value, 0f));
         if (metal == MetallicArtsMetalDefOf.Aluminum) {
             genes.RemoveWhere(x => x.metal == MetallicArtsMetalDefOf.Aluminum);
         }
@@ -35,6 +37,7 @@ public class InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbi
         );
     }
 
+    // @todo Add translations
     private string GetMessage(MetallicArtsMetalDef metal, List<MetallicArtsMetalDef> metalsToWipe) {
         string metalsToWipeString = FormatDefList(metalsToWipe);
         if (metal.Equals(MetallicArtsMetalDefOf.Aluminum)) {

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CosmereCore.Extension;
 using CosmereCore.Need;
 using CosmereFramework.Extension;
+using CosmereResources;
 using CosmereScadrial.Allomancy;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Extension;
@@ -24,7 +26,17 @@ public class Allomancer : Metalborn {
     public int requestedVialStock = 3;
     private List<AllomanticBurnSource> sources = [];
     private float? timeDilationFactor;
-    public bool shouldConsumeVialNow => Value < (double)targetValue;
+
+    public bool shouldConsumeVialNow {
+        get {
+            if (metal.IsOneOf(MetalDefOf.Duralumin, MetalDefOf.Nicrosil)) return false;
+            if (pawn.IsAsleep()) return false;
+            if (pawn.IsShieldedAgainstInvestiture()) return false;
+
+            return Value < (double)targetValue;
+        }
+    }
+
     public bool Burning => BurnRate > 0f;
     public float BurnRate => sources.Sum(s => s.Rate);
     private int burnTickRate => Mathf.RoundToInt(GenTicks.TickRareInterval / timeDilationFactor!.Value);
@@ -33,9 +45,6 @@ public class Allomancer : Metalborn {
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
 
     private RecordDef metalBurntRecord => cachedMetalBurntRecord ??= RecordDefOf.GetMetalBurnRecordForMetal(metal);
-
-    private RecordDef timeSpentBurningRecord =>
-        cachedTimeSpentBurningRecord ??= RecordDefOf.GetTimeSpentBurningForMetal(metal);
 
     public override float Value {
         get => currentReserve;

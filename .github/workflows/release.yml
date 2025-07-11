@@ -201,21 +201,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-      - name: Release
-        env:
-          GH_TOKEN: ${{ secrets.PAT }}
-        run: |
-          npm install @semantic-release/git semantic-release-replace-plugin -D
-          npx semantic-release
-  publish:
-    needs: prepare
-    if: github.event.release.tag_name != ''
-    runs-on: ubuntu-latest
-    env:
-      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Download all zip artifacts
         uses: actions/download-artifact@v4
         with:
@@ -226,17 +211,42 @@ jobs:
         run: |
           echo "Zips downloaded:"
           find ./zips -name "*.zip"
-      - name: Get latest commit message
-        id: commit
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
         run: |
-          BODY=$(git log -1 --pretty=%B | sed 's/"/\\"/g')
-          echo "body=$BODY" >> "$GITHUB_OUTPUT"
-      - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: "Cosmere Mods Release - ${{ github.ref_name }}"
-          body: ${{ steps.commit.outputs.body }}
-          files: ./zips/**/*.zip
-          prerelease: ${{ contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
-          make_latest: ${{ !(contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha')) }}
+          npm install @semantic-release/git semantic-release-replace-plugin -D
+          npx semantic-release
+  #publish:
+  #  needs: prepare
+  #  if: github.event.release.tag_name != ''
+  #  runs-on: ubuntu-latest
+  #  env:
+  #    BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  #  steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v3
+  #   - name: Download all zip artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       pattern: '*-zip'
+  #       path: ./zips
+  #       merge-multiple: true
+  #   - name: List all zip files
+  #     run: |
+  #       echo "Zips downloaded:"
+  #       find ./zips -name "*.zip"
+  #   - name: Get latest commit message
+  #     id: commit
+  #      run: |
+  #       BODY=$(git log -1 --pretty=%B | sed 's/"/\\"/g')
+  #       echo "body=$BODY" >> "$GITHUB_OUTPUT"
+  #   - name: Create GitHub release
+  #     uses: softprops/action-gh-release@v2
+  #     with:
+  #       tag_name: ${{ github.ref_name }}
+  #       name: "Cosmere Mods Release - ${{ github.ref_name }}"
+  #       body: ${{ steps.commit.outputs.body }}
+  #       files: ./zips/**/*.zip
+  #       prerelease: ${{ contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
+  #       make_latest: ${{ !(contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha')) }}

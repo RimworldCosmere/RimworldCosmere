@@ -1,9 +1,10 @@
 name: Publish Cosmere Mods to GitHub
 
 on:
+  release:
+    types:
+      - published
   push:
-    tags:
-      - '*'
     branches:
       - 'main'
       - 'beta'
@@ -22,9 +23,9 @@ jobs:
       mods: ${{ steps.set-mods.outputs.mods }}
     steps:
       - name: Validate Git tag format
-        if: github.ref_type == 'tag'
+        if: github.event.release.tag_name != ''
         run: |
-          TAG="${{ github.ref_name }}"
+          TAG="${{ github.event.release.tag_name }}"
           VERSION=${TAG#v}  # strip leading 'v' if present
 
           echo "Checking tag format: $VERSION"
@@ -95,10 +96,10 @@ jobs:
           fi
 
       - name: Build Mod
-        if: ${{ github.ref_type == 'tag' }}
+        if: ${{ github.event.release.tag_name != '' }}
         run: |
-          TAG="${{ github.ref_name }}"          # e.g. v1.6.0-beta or 1.6.0.1
-          VERSION="${TAG#v}"                    # strip leading 'v'
+          TAG="${{ github.event.release.tag_name }}" # e.g. v1.6.0-beta or 1.6.0.1
+          VERSION="${TAG#v}"                         # strip leading 'v'
 
           # Extract components with known-good format
           REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)(-alpha|-beta)?(\.[0-9]+)?$'
@@ -176,7 +177,7 @@ jobs:
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
       - name: Upload with SteamCMD
-        if: ${{ github.ref_type == 'tag' && !endsWith(github.ref_name, '-beta') && !endsWith(github.ref_name, '-alpha') }}
+        if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
         run: |
           sudo apt update
           sudo apt install -y lib32gcc-s1
@@ -208,33 +209,28 @@ jobs:
           npx semantic-release
   publish:
     needs: prepare
-    if: github.ref_type == 'tag'
+    if: github.event.release.tag_name != ''
     runs-on: ubuntu-latest
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Download all zip artifacts
         uses: actions/download-artifact@v4
         with:
           pattern: '*-zip'
           path: ./zips
           merge-multiple: true
-
       - name: List all zip files
         run: |
           echo "Zips downloaded:"
           find ./zips -name "*.zip"
-
       - name: Get latest commit message
         id: commit
         run: |
           BODY=$(git log -1 --pretty=%B | sed 's/"/\\"/g')
           echo "body=$BODY" >> "$GITHUB_OUTPUT"
-
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:

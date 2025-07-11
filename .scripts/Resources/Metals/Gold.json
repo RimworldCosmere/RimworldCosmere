@@ -1,0 +1,87 @@
+{
+  "name": "gold",
+  "description": "Gold is a dense, soft, and radiant metal long valued for its rarity and beauty. Resistant to tarnish and corrosion, it has held significance in both trade and symbolism throughout history.",
+  "godMetal": false,
+  "color": [
+    206,
+    172,
+    55
+  ],
+  "colorTwo": [
+    136,
+    101,
+    23
+  ],
+  "marketValue": 20,
+  "beauty": 20,
+  "allomancy": {
+    "userName": "augur",
+    "description": "Shows alternate versions of {PAWN}, based on different pasts. Reflecting on these visions will grant a mood buff.",
+    "group": "temporal",
+    "axis": "internal",
+    "polarity": "pulling",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Gold"
+    ]
+  },
+  "feruchemy": {
+    "userName": "bloodmaker",
+    "description": "Stores health, allowing fast healing when tapped.",
+    "group": "hybrid",
+    "attribute": "health",
+    "customHediffClass": true,
+    "store": {
+      "description": "This pawn is storing health into a gold metalmind, weakening their body’s immune and regenerative systems. They recover from injuries more slowly and are more vulnerable to disease while storing, sacrificing present vitality for future survival.",
+      "statFactors": {
+        "InjuryHealingFactor": -0.045,
+        "ImmunityGainSpeed": -0.045,
+        "PainShockThreshold": -0.045,
+        "ToxicResistance": -0.045,
+        "ToxicEnvironmentResistance": -0.045,
+        "IncomingDamageFactor": 0.048,
+        "StaggerDurationFactor": 0.048
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping a gold metalmind, accelerating their body’s natural healing to supernatural levels. Wounds close within hours, infections are purged, and the body fights off disease with startling speed. The effect can be life-saving — but drains reserves quickly.",
+      "statFactors": {
+        "InjuryHealingFactor": 0.045,
+        "ImmunityGainSpeed": 0.045,
+        "PainShockThreshold": 0.045,
+        "ToxicResistance": 0.045,
+        "ToxicEnvironmentResistance": 0.045,
+        "IncomingDamageFactor": -0.048,
+        "StaggerDurationFactor": -0.048
+      }
+    }
+  },
+  "buildable": {
+    "commonality": 0.05,
+    "defense": {
+      "sharp": 0.1,
+      "blunt": 0.1,
+      "heat": 0,
+      "coldInsulation": 0,
+      "heatInsulation": 0
+    },
+    "offense": {
+      "sharp": 0,
+      "blunt": 0
+    },
+    "stuffStatFactors": {
+      "MarketValue": 20,
+      "MaxHitPoints": 0.2,
+      "Beauty": 20,
+      "Flammability": 0.5
+    }
+  },
+  "mining": {
+    "hitPoints": 1500,
+    "yield": 40,
+    "commonality": 0.3,
+    "sizeRange": [
+      2,
+      8
+    ]
+  }
+}

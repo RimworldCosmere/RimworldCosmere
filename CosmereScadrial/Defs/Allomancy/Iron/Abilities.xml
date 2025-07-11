@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
-        <defName>Cosmere_Ability_Iron_Aura</defName>
-        <label>iron aura</label>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <defName>Cosmere_Scadrial_Ability_IronAura</defName>
+        <label>iron sight</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
 Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
 These lines shimmer with the tension of potential force, visible only to those burning Iron.</description>
         <metal>Iron</metal>
-        <hediff>Cosmere_Hediff_IronAura</hediff>
+        <hediff>Cosmere_Scadrial_Hediff_IronAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
-        <defName>Cosmere_Ability_Iron_Pull</defName>
-        <abilityClass>CosmereScadrial.Abilities.Allomancy.ExternalPhysicalTargetAbility</abilityClass>
-        <label>iron pull target</label>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
+        <defName>Cosmere_Scadrial_Ability_IronPull</defName>
+        <abilityClass>CosmereScadrial.Allomancy.Ability.ExternalPhysicalTargetAbility</abilityClass>
+        <label>iron pull</label>
         <description>Burning iron allows the Allomancer to pull on nearby sources of metal, drawing them—or themselves—closer. The lighter object moves, unless anchored by greater mass.</description>
         <cooldownTicksRange>
             <min>20</min>
@@ -26,9 +26,10 @@ These lines shimmer with the tension of potential force, visible only to those b
             <noiseRadius>0</noiseRadius>
             <drawAimPie>false</drawAimPie>
             <targetParams>
+                <canTargetSelf>true</canTargetSelf>
                 <canTargetPlants>false</canTargetPlants>
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

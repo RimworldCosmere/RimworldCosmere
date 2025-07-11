@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="ResourceBase">
+        <defName>Coal</defName>
+        <label>Coal</label>
+        <description>A dense, naturally occurring fossil fuel formed from ancient plant matter. Burns hot and slow, making it an efficient fuel source for smelting and power generation. It is commonly found underground in rich, dark seams.</description>
+        <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <texPath>Item/Resource/Coal</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.8</commonality>
+            <color>(60, 60, 60)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>1.4</MarketValue>
+            <Mass>0.3</Mass>
+        </statBases>
+        <soundInteract>Stone_Drop</soundInteract>
+        <soundDrop>Stone_Drop</soundDrop>
+        <useHitPoints>false</useHitPoints>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+            <li>Cosmere_Resource_ThingCategory_CoalOrCharcoal</li>
+        </thingCategories>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        <deepCommonality>4</deepCommonality>
+        <deepCountPerPortion>45</deepCountPerPortion>
+        <deepLumpSizeRange>20~35</deepLumpSizeRange>
+    </ThingDef>
+    <ThingDef ParentName="ResourceBase">
+        <defName>Charcoal</defName>
+        <label>Charcoal</label>
+        <description>A lightweight, carbon-rich fuel created by burning wood in a low-oxygen environment. Easier to produce than coal and ideal for early metallurgy, though it burns faster and less hot by comparison.</description>
+        <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <texPath>Item/Resource/Charcoal</texPath>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.8</commonality>
+            <color>(60, 60, 60)</color>
+        </stuffProps>
+        <statBases>
+            <MarketValue>1.4</MarketValue>
+            <Mass>0.3</Mass>
+        </statBases>
+        <soundInteract>Stone_Drop</soundInteract>
+        <soundDrop>Stone_Drop</soundDrop>
+        <useHitPoints>false</useHitPoints>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+            <li>Cosmere_Resource_ThingCategory_CoalOrCharcoal</li>
+        </thingCategories>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        <deepCommonality>0</deepCommonality>
+    </ThingDef>
+</Defs>

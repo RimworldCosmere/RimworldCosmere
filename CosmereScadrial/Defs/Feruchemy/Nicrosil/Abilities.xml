@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundNicrosil</defName>
+        <label>compound nicrosil</label>
+        <description>Compounding nicrosil leaves the soul hollow. The power within fades, connections dim, and Investiture slips away — all to store the essence of magic itself. With enough loss, the metalmind becomes a vessel of unimaginable potential.</description>
+        <metal>Nicrosil</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundNicrosil</hediff>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

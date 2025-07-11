@@ -1,6 +1,9 @@
-﻿<?xml version='1.0' encoding='UTF-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <Defs>
-  <GeneDef Name="Cosmere_ScadrialGeneBase" Abstract="True">
+  <GeneDef Name="Cosmere_Scadrial_RaceGeneBase" Abstract="True">
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <biostatArc>0</biostatArc>
     <geneClass>Gene</geneClass>
     <displayCategory>Cosmere_Scadrial</displayCategory>
   </GeneDef>

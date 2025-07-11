@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_TimeBubble_Cadmium</defName>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
+        <defName>Cosmere_Scadrial_Hediff_TimeBubbleCadmium</defName>
         <label>cadmium time bubble</label>
         <description>This pawn is inside a Cadmium time bubble, causing them to experience time more slowly — actions are sluggish, and needs decay more slowly.</description>
         <isBad>false</isBad>
@@ -28,12 +28,13 @@
                     <ReadingSpeed>0.33333</ReadingSpeed>
                     <ImmunityGainSpeed>0.33333</ImmunityGainSpeed>
                     <WorkSpeedGlobal>0.33333</WorkSpeedGlobal>
+                    <Cosmere_Time_Dilation_Factor>0.33333</Cosmere_Time_Dilation_Factor>
                 </statFactors>
             </li>
         </stages>
     </HediffDef>
-    <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_TimeBubble_Bendalloy</defName>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
+        <defName>Cosmere_Scadrial_Hediff_TimeBubbleBendalloy</defName>
         <label>bendalloy time bubble</label>
         <description>This pawn is inside a Bendalloy time bubble, accelerating their actions and needs.</description>
         <isBad>false</isBad>
@@ -59,6 +60,7 @@
                     <ReadingSpeed>3.0</ReadingSpeed>
                     <ImmunityGainSpeed>3.0</ImmunityGainSpeed>
                     <WorkSpeedGlobal>3.0</WorkSpeedGlobal>
+                    <Cosmere_Time_Dilation_Factor>3.0</Cosmere_Time_Dilation_Factor>
                 </statFactors>
             </li>
         </stages>

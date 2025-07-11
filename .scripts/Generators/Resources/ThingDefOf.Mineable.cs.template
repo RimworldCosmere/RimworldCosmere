@@ -1,0 +1,12 @@
+#nullable disable
+using CosmereResources.Def;
+using RimWorld;
+using Verse;
+
+namespace CosmereResources;
+
+public static partial class ThingDefOf {        
+    {{#each metals as | metal |}}
+    public static ThingDef Mineable{{defName metal.name}};
+    {{/each}}
+}

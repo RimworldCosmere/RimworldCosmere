@@ -1,0 +1,74 @@
+{
+  "name": "iron",
+  "description": "Iron is a robust elemental metal, celebrated for its exceptional strength and versatility. Essential in construction, tool-making, and weaponry, iron forms the backbone of many modern and ancient applications.",
+  "godMetal": false,
+  "color": [
+    121,
+    113,
+    111
+  ],
+  "colorTwo": [
+    94,
+    77,
+    76
+  ],
+  "marketValue": 1.3,
+  "beauty": 1,
+  "allomancy": {
+    "userName": "lurcher",
+    "description": "Grants sight to metals around {PAWN} and can pull on metals. Useful for drawing weapons or finding hidden metals.",
+    "group": "physical",
+    "axis": "external",
+    "polarity": "pulling",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_IronAura",
+      "Cosmere_Scadrial_Ability_IronPull"
+    ]
+  },
+  "feruchemy": {
+    "userName": "skimmer",
+    "group": "physical",
+    "description": "Stores weight, allowing the user to become lighter or heavier.",
+    "attribute": "weight",
+    "store": {
+      "description": "This pawn is storing physical weight in an iron metalmind, becoming unnaturally light. They move slightly faster and become easier to knock around, but they store their mass for future use. Stored weight makes them poor at resisting external force — like explosions or Allomantic pushes.",
+      "statFactors": {
+        "Mass": -0.0499
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping an iron metalmind, dramatically increasing their weight. They move more slowly but become far harder to move or stagger, and deal greater impact force when colliding with objects. They resist external force and can push through enemies with mass alone.",
+      "statFactors": {
+        "Mass": 0.1
+      }
+    }
+  },
+  "buildable": {
+    "commonality": 0.4,
+    "defense": {
+      "sharp": 0.7,
+      "blunt": 0.25,
+      "heat": 0.40,
+      "coldInsulation": 1.5,
+      "heatInsulation": 0
+    },
+    "offense": {
+      "sharp": 1,
+      "blunt": 1
+    },
+    "stuffStatFactors": {
+      "MaxHitPoints": 0.8,
+      "Beauty": 0.9,
+      "Flammability": 0.4
+    }
+  },
+  "mining": {
+    "hitPoints": 1500,
+    "yield": 40,
+    "commonality": 0.8,
+    "sizeRange": [
+      35,
+      65
+    ]
+  }
+}

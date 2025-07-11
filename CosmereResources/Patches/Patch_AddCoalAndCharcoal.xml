@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationAdd">
+        <order>Prepend</order>
+        <xpath>/Defs/ThingDef/comps/li[contains(@Class,'CompProperties_Refuelable')]/fuelFilter[contains(thingDefs, "WoodLog")]/thingDefs</xpath>
+        <value>
+          <li>WoodLog</li>
+          <li>Coal</li>
+          <li>Charcoal</li>
+        </value>
+      </li>
+      <!-- Descriptions -->
+      <li Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName = "FueledSmithy"]/description</xpath>
+        <value>
+          <description>A station for smithing non-mechanical weapons and tools. Fueled by wood, coal, and charcoal.</description>
+        </value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName = "FueledStove"]/description</xpath>
+        <value>
+          <description>A stove with an attached countertop for preparing meals. Fueled by wood, coal, and charcoal.</description>
+        </value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName = "TorchLamp"]/description</xpath>
+        <value>
+          <description>A wooden torch for lighting an area. People need light to move and work at full speed. Can be automatically refueled with wood, coal, and charcoal. Produces a small amount of heat.</description>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <!-- Vanilla Expanded Stone Campfire -->
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>Defs/ThingDef[defName="Stone_Campfire"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="Stone_Campfire"]/recipes</xpath>
+          <value>
+            <li>Make_CharcoalFromWood</li>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/WorkGiverDef[defName="DoBillsCookCampfire"]/fixedBillGiverDefs</xpath>
+          <value>
+            <li>Stone_Campfire</li>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/GenStepDef/genStep[@Class="GenStep_PreciousLump"]/mineables</xpath>
+    <value>
+      <li>MineableCoal</li>
+    </value>
+  </Operation>
+</Patch>

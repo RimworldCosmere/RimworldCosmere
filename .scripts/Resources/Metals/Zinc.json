@@ -1,0 +1,61 @@
+{
+  "name": "zinc",
+  "description": "Zinc is a cool, bluish-silver metal with a distinctive character. It not only protects other metals from corrosion through galvanization but also plays a crucial role in modern alloy production.",
+  "godMetal": false,
+  "color": [
+    128,
+    142,
+    129
+  ],
+  "colorTwo": [
+    187,
+    189,
+    187
+  ],
+  "marketValue": 1.3,
+  "beauty": 1,
+  "allomancy": {
+    "userName": "rioter",
+    "description": "Allows {PAWN} to riot emotions, pushing others to feel stronger emotions.",
+    "group": "mental",
+    "axis": "external",
+    "polarity": "pushing",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_ZincAura",
+      "Cosmere_Scadrial_Ability_ZincTarget"
+    ]
+  },
+  "feruchemy": {
+    "userName": "sparker",
+    "description": "Stores mental speed, allowing faster thought processes.",
+    "group": "cognitive",
+    "attribute": "mental speed",
+    "store": {
+      "description": "This pawn is storing mental speed in a zinc metalmind, dulling their cognition to a sluggish pace. Reactions are delayed, thoughts come slowly, and decision-making is impaired. While this frees up zinc for later tapping, it severely hampers their performance in mentally intensive tasks.",
+      "statFactors": {
+        "ReadingSpeed": -0.05,
+        "HackingSpeed": -0.05,
+        "GlobalLearningFactor": -0.05,
+        "ResearchSpeed": -0.05
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping a zinc metalmind, dramatically enhancing their mental speed. Their thoughts race, reflexes sharpen, and decisions come swiftly. This heightened cognitive state improves work involving research, crafting, and strategic reaction time, but may come with increased mental strain if maintained for too long.",
+      "statFactors": {
+        "ReadingSpeed": 0.1,
+        "HackingSpeed": 0.1,
+        "GlobalLearningFactor": 0.1,
+        "ResearchSpeed": 0.1
+      }
+    }
+  },
+  "mining": {
+    "hitPoints": 1360,
+    "yield": 40,
+    "commonality": 0.6,
+    "sizeRange": [
+      30,
+      55
+    ]
+  }
+}

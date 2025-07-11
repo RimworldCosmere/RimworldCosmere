@@ -6,9 +6,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereScadrial", "CosmereS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereCore", "CosmereCore\CosmereCore\CosmereCore.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereFramework", "CosmereFramework\CosmereFramework\CosmereFramework.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereFramework", "CosmereFramework\CosmereFramework\CosmereFramework.csproj", "{8A92DBAF-9F90-4A16-89E1-B16A11740017}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereMetals", "CosmereMetals\CosmereMetals\CosmereMetals.csproj", "{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereResources", "CosmereResources\CosmereResources\CosmereResources.csproj", "{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +16,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}.Release|Any CPU.Build.0 = Debug|Any CPU
 		
 		{6FB30E55-8B7A-4E51-99D6-D110854999AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6FB30E55-8B7A-4E51-99D6-D110854999AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -31,9 +27,11 @@ Global
 		{5F1D8C6D-E127-4001-A575-E56D99DF271F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F1D8C6D-E127-4001-A575-E56D99DF271F}.Release|Any CPU.Build.0 = Debug|Any CPU
 		
-        {69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-        {69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-        {69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-        {69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Release|Any CPU.Build.0 = Debug|Any CPU
+								{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+								{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+								{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+								{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{8A92DBAF-9F90-4A16-89E1-B16A11740017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A92DBAF-9F90-4A16-89E1-B16A11740017}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

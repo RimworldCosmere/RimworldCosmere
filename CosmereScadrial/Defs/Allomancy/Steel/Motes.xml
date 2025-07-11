@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs> 
+    <ThingDef ParentName="MoteGlowDistorted">
+        <defName>Cosmere_Scadrial_Steel_Bubble</defName>
+        <label>steel bubble</label>
+        <thingClass>MoteAttached</thingClass>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
+        <mote>
+            <fadeInTime>0.2</fadeInTime>
+            <fadeOutTime>0.5</fadeOutTime>
+            <solidTime>999999</solidTime>
+            <needsMaintenance>true</needsMaintenance>
+        </mote>
+        <graphicData>
+            <texPath>Things/Mote/Black</texPath>
+            <shaderType>MoteLargeDistortionWave</shaderType>
+            <drawSize>5</drawSize>
+            <shaderParameters>
+                <_DistortionTex>/Things/Mote/PsychicDistortionCurrents</_DistortionTex>
+                <_NoiseTex>/Things/Mote/PsycastNoise</_NoiseTex>
+                <_distortionIntensity>0.025</_distortionIntensity>
+                <_brightnessMultiplier>1.2</_brightnessMultiplier>
+                <_noiseIntensity>3</_noiseIntensity>
+                <_ageToNoiseRatio>0</_ageToNoiseRatio>
+            </shaderParameters>
+        </graphicData>
+    </ThingDef>
+</Defs>

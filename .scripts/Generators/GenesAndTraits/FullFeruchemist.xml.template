@@ -1,52 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
-        <defName>Cosmere_FullFeruchemist</defName>
-        <label>full feruchemist</label>
-        <description>A rare individual who can use all Feruchemical metals.</description>
-        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/FullFeruchemist</iconPath>
-        <displayCategory>Cosmere_Scadrial_Feruchemy</displayCategory>
-        <displayOrderInCategory>1</displayOrderInCategory>
-        <forcedTraits>
-            <li>
-                <def>Cosmere_FullFeruchemist</def>
-            </li>
-        </forcedTraits>
-        <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
-                <metals>
-                    {{#each metals}}
-                    <li>{{capitalize this.Name}}</li>
-                    {{/each}}
-                </metals>
-            </li>{{#if rightClickAbilities}}
-            <li Class="CosmereScadrial.DefModExtensions.RightClickAbilities">
-                <abilities>
-                    {{#each rightClickAbilities}}
-                    <li>{{this}}</li>
-                    {{/each}}
-                </abilities>
-            </li>{{/if}}
-        </modExtensions>
-        <abilities>
-            {{#each abilities}}
-            <li>{{this}}</li>
-            {{/each}}
-        </abilities>
-    </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
-        <defName>Cosmere_FullFeruchemist</defName>
+        <defName>Cosmere_Scadrial_Trait_FullFeruchemist</defName>
         <label>full feruchemist</label>
         <description>A rare individual who can use all Feruchemical metals.</description>
+
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metals>
                     {{#each metals}}
-                    <li>{{capitalize this.Name}}</li>
+                    <li>{{capitalize name}}</li>
                     {{/each}}
                 </metals>
             </li>
         </modExtensions>
+
+        <forcedPassions>
+            <li>Cosmere_Scadrial_Skill_FeruchemicPower</li>
+        </forcedPassions>
+
         <degreeDatas>
             <li>
                 <label>full feruchemist</label>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="CosmereResourceBase" ParentName="ResourceBase" Abstract="True">
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <tradeability>All</tradeability>
+        <stackLimit>150</stackLimit>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+            <li>Cosmere_Resource_ThingCategory_Metal</li>
+        </thingCategories>
+        <burnableByRecipe>false</burnableByRecipe>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+        <burnableByRecipe>false</burnableByRecipe>
+        
+        <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>1</drawSize>
+        </graphicData>
+        
+        <stuffProps>
+            <isAirtight>true</isAirtight>
+            <appearance>Metal</appearance>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Metals</li>
+            </categories>
+            <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
+            <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+            <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+            <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
+        </stuffProps>
+        
+        <statBases>
+            <Mass>0.5</Mass>
+            <Beauty>-4</Beauty>
+            <MarketValue>1</MarketValue>
+        </statBases>
+        <soundInteract>Metal_Drop</soundInteract>
+        <soundDrop>Metal_Drop</soundDrop>
+    </ThingDef>
+</Defs>

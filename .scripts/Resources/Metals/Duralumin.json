@@ -1,0 +1,49 @@
+{
+  "name": "duralumin",
+  "description": "Duralumin is a lightweight yet remarkably strong alloy made by combining Aluminium with Copper. Its excellent strength-to-weight ratio makes it indispensable in advanced engineering and high-performance designs.",
+  "godMetal": false,
+  "color": [
+    127,
+    113,
+    115
+  ],
+  "marketValue": 20,
+  "beauty": 1,
+  "allomancy": {
+    "userName": "gnat (duralumin)",
+    "description": "Enhances the next Investiture-related ability {PAWN} uses drastically, but is consumed entirely.",
+    "group": "enhancement",
+    "axis": "internal",
+    "polarity": "pushing",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Duralumin"
+    ]
+  },
+  "feruchemy": {
+    "userName": "connector",
+    "description": "Stores connection, useful for adjusting social ties or affiliations.",
+    "group": "spiritual",
+    "attribute": "Connection",
+    "store": {
+      "stages": 1,
+      "description": "This pawn is storing Connection in a duralumin metalmind, severing bonds with people, places, and concepts. They become spiritually untethered — less grounded, less known. This may reduce social or cultural influence but allows deep storage of spiritual ties."
+    },
+    "tap": {
+      "stages": 1,
+      "description": "This pawn is tapping a duralumin metalmind, intensifying their Connection to others. Bonds strengthen, allegiances deepen, and ties to people or places become nearly unbreakable. Useful for bonding, commanding, or interacting with spiritual systems."
+    }
+  },
+  "alloy": {
+    "type": "complex",
+    "ingredients": [
+      {
+        "item": "aluminum",
+        "count": 9
+      },
+      {
+        "item": "copper",
+        "count": 1
+      }
+    ]
+  }
+}

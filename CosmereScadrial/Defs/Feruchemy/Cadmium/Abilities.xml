@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundCadmium</defName>
+        <label>compound cadmium</label>
+        <description>Compounding cadmium turns every breath into a struggle. Lungs burn, vision narrows, and the world grows faint — but the stolen air flows into the metalmind. Store enough, and one day you’ll breathe freely while others choke.</description>
+        <metal>Cadmium</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundCadmium</hediff>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

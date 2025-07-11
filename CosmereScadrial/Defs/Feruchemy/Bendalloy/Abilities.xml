@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundBendalloy</defName>
+        <label>compound bendalloy</label>
+        <description>Compounding bendalloy hollows the body. Stomach cramps, energy fades, and hunger gnaws at the bones — but every pang is captured in metal. With enough sacrifice, a single moment can become a feast that lasts for days.</description>
+        <metal>Bendalloy</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundBendalloy</hediff>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

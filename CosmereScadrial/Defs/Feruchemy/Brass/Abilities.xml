@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundBrass</defName>
+        <label>compound brass</label>
+        <description>Compounding brass chills the soul. Fingers go numb, breath fogs in warm air, and the body trembles — all to trap heat within metal. Endure the cold long enough, and the Allomancer can unleash a blazing storm from a single spark.</description>
+        <metal>Brass</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundBrass</hediff>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

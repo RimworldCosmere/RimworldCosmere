@@ -1,69 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
-            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
-
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <ProjectGuid>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</ProjectGuid>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>CosmereFramework</RootNamespace>
         <AssemblyName>CosmereFramework</AssemblyName>
+        <Description>Framework for Cosmere releated Rimworld Mods.</Description>
+
+        <Authors>CryptikLemur</Authors>
+        <Product>RimworldCosmere</Product>
+        <CurrentDate>$([System.DateTime]::Now.ToString(yyyy/MM/dd HH:mm:ss))</CurrentDate>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <OutputType>Library</OutputType>
+        <OutDir>..\Assemblies\</OutDir>
+        <Nullable>enable</Nullable>
+        <EnableNETAnalyzers>True</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <WarningLevel>4</WarningLevel>
+        <ErrorReport>prompt</ErrorReport>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>
+
+        <RimWorldDir Condition="'$(RimWorldDir)' == ''">$([System.Environment]::GetEnvironmentVariable('RIMWORLD_DIR'))</RimWorldDir>
+        <WorkshopDir Condition="'$(WorkshopDir)' == ''">$([System.Environment]::GetEnvironmentVariable('WORKSHOP_DIR'))</WorkshopDir>
+        <RimWorldDir Condition="'$(RimWorldDir)' == ''">..\..\..\</RimWorldDir>
+        <WorkshopDir Condition="'$(WorkshopDir)' == ''">..\..\..\..\..\workshop\content\294100</WorkshopDir>
+
+        <RimWorldManagedPath>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+        <FileAlignment>512</FileAlignment>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugSymbols>false</DebugSymbols>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <DefineConstants>TRACE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <Reference>
+            <Private>False</Private>
+        </Reference>
+        <ProjectReference>
+            <Private>False</Private>
+        </ProjectReference>
+        <PackageReference>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+    </ItemDefinitionGroup>
+
     <ItemGroup>
-        <Reference Include="FloatSubMenu">
-            <HintPath>$(WorkshopDir)/2864015430/1.5/Assemblies/FloatSubMenu.dll</HintPath>
-        </Reference>
-        <Reference Include="HugsLib">
-            <HintPath>$(WorkshopDir)/818773962/Assemblies/HugsLib.dll</HintPath>
-        </Reference>
-        <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Data.Linq"/>
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518-beta"/>
+        <PackageReference Include="Lib.Harmony" Version="2.3.6"/>
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
+            <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
-
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-
-    <UsingTask TaskName="WriteBuildInfo" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
-        <ParameterGroup>
-            <OutputPath ParameterType="System.String" Required="true"/>
-            <Revision ParameterType="System.String" Required="true"/>
-            <BuildTime ParameterType="System.String" Required="true"/>
-        </ParameterGroup>
-        <Task>
-            <Code Type="Fragment" Language="cs">
-                <![CDATA[
-        System.IO.File.WriteAllText(OutputPath,
-@"namespace CosmereFramework {
-    public static class BuildInfo {
-        public const string REVISION = """+Revision+@""";
-        
-        public const string BUILD_TIME = """+BuildTime+@""";
-    }
-}
-");
-      ]]>
-            </Code>
-        </Task>
-    </UsingTask>
-
-    <Target Name="InjectBuildInfo" BeforeTargets="BeforeBuild">
-        <Exec Command="git rev-parse --short HEAD > $(ProjectDir)..\..\BuildMetadata.tmp" ContinueOnError="true"/>
-        <ReadLinesFromFile File="$(ProjectDir)..\..\BuildMetadata.tmp">
-            <Output TaskParameter="Lines" PropertyName="GitRevision"/>
-        </ReadLinesFromFile>
-        <Delete Files="$(ProjectDir)..\..\BuildMetadata.tmp"/>
-
-        <PropertyGroup>
-            <GitRevision Condition="'$(GitRevision)' == ''">DEV</GitRevision>
-            <BuildDateTime>$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))</BuildDateTime>
-            <BuildInfoPath>$(ProjectDir)..\CosmereFramework\BuildInfo.cs</BuildInfoPath>
-        </PropertyGroup>
-
-        <WriteBuildInfo
-                OutputPath="$(BuildInfoPath)"
-                Revision="$(GitRevision)"
-                BuildTime="$(BuildDateTime)"/>
-    </Target>
-
 </Project>

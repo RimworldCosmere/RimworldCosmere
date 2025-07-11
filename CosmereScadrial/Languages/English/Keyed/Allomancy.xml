@@ -1,10 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-    <CannotBurn>{0_labelShort} doesn't have enough {1_label} to burn, and no vial to replenish {0_possessive} reserves.</CannotBurn>
-    <CannotFlareAsleep>{0_labelShort} cannot flare {1_label} while they are sleeping.</CannotFlareAsleep>
-    
-    <MenuNoReserves>Not enough {0} to burn</MenuNoReserves>
-    <MenuCannotFlareAsleep>Cannot flare while sleeping</MenuCannotFlareAsleep>
-    <MenuCannotShoot>Not capable</MenuCannotShoot>
-    <TargetShielded>{0} is shielded against Investiture</TargetShielded>
+	<CS_SetVialCountTooltip>Click to change the number of {METAL} vials {PAWN} will keep in {pawn_possessive} inventory.</CS_SetVialCountTooltip>
+    <CS_BurnRate>Burn Rate: {RATE}/second</CS_BurnRate>
+	<CS_CurrentVialStock>Keeping {COUNT} vials in inventory</CS_CurrentVialStock>
+	<CS_ConsumeVialBelow>Consume a vial below</CS_ConsumeVialBelow>
+    <CS_NeverConsumeVial>Never consume a vial</CS_NeverConsumeVial>
+    <CS_SetVialLevelTooltip>Drag the bar to configure when {PAWN} will consume a {METAL} vial.</CS_SetVialLevelTooltip>
+	<CS_ChangeVialStock>Click to vial to change the number of {METAL} vials {PAWN} will keep in {pawn_possessive} inventory.</CS_ChangeVialStock>
+	<CS_SetVialCountSlider>{PAWN} will keep {COUNT} {METAL} vials in {pawn_possessive} inventory.</CS_SetVialCountSlider>
+	<CS_WipeReserves>{PAWN} is burning {METAL} and has wiped {pawn_possessive} reserves of {METALS}.</CS_WipeReserves>
+	<CS_WipeReservesByLurcher>{PAWN} is the target of a lurcher, and is loosing all of {pawn_possessive} reserves of {METALS}.</CS_WipeReservesByLurcher>
 </LanguageData>

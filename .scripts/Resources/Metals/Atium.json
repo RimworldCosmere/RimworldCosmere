@@ -1,0 +1,53 @@
+{
+  "name": "atium",
+  "description": "Atium is the god metal of the Shard Ruin. It grants its user visions of others' immediate futures, offering immense strategic advantage in combat and prediction.",
+  "godMetal": true,
+  "stackable": false,
+  "drawSize": 1,
+  "marketValue": 10000,
+  "beauty": 100,
+  "color": [
+    60,
+    60,
+    60
+  ],
+  "allomancy": {
+    "userName": "seer",
+    "description": "Allows {PAWN} a glimpse into the immediate future of others.",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Atium"
+    ]
+  },
+  "feruchemy": {
+    "userName": "chronist",
+    "description": "Stores age, granting youth or aging when tapped.",
+    "attribute": "youth",
+    "customHediffClass": true,
+    "store": {
+      "description": "This pawn is storing youth in an atium metalmind, aging their body unnaturally. Their joints ache, their reflexes slow, and their strength wanes. They sacrifice vitality now to reclaim it later — if they survive.",
+      "capacityMods": {
+        "Consciousness": {
+          "factor": -0.01
+        },
+        "Manipulation": {
+          "factor": -0.01
+        },
+        "Sight": {
+          "factor": -0.02
+        },
+        "Hearing": {
+          "factor": -0.02
+        }
+      },
+      "statFactors": {
+        "MoveSpeed": -0.01,
+        "ImmunityGainSpeed": -0.02,
+        "PainShockThreshold": -0.01,
+        "LifespanFactor": -0.03
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping an atium metalmind, reversing the effects of time. Their body becomes younger, stronger, and faster — regaining agility, endurance, and resilience as if years were stripped away."
+    }
+  }
+}

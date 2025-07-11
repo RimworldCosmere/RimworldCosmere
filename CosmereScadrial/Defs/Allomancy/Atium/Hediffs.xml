@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_AtiumBuff</defName>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
+        <defName>Cosmere_Scadrial_Hediff_AtiumBuff</defName>
         <label>burning atium</label>
         <description>The Allomancer is burning atium, perceiving the near future and reacting with impossible speed and precision.</description>    
         <stages>
@@ -15,5 +15,10 @@
                 </statFactors>
             </li>
         </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Atium</metal>
+            </li>
+        </modExtensions>
     </HediffDef>
 </Defs>

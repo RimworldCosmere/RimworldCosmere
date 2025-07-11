@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <JobDef>
-        <defName>Cosmere_Job_MaintainAllomanticTarget</defName>
-        <driverClass>CosmereScadrial.Jobs.MaintainAllomanticTarget</driverClass>
+        <defName>Cosmere_Scadrial_Job_MaintainAllomanticTarget</defName>
+        <driverClass>CosmereScadrial.JobDriver.MaintainAllomanticTarget</driverClass>
         <reportString>Maintaining Allomantic Effect on TargetA.</reportString>
+        <suspendable>true</suspendable>
     </JobDef>
     <JobDef>
-        <defName>Cosmere_Job_CastAllomanticAbilityAtTarget</defName>
-        <driverClass>CosmereScadrial.Jobs.CastAllomanticAbilityAtTarget</driverClass>
+        <defName>Cosmere_Scadrial_Job_CastAllomanticAbilityAtTarget</defName>
+        <driverClass>CosmereScadrial.JobDriver.CastAllomanticAbilityAtTarget</driverClass>
         <reportString>Casting Allomantic Ability on TargetA.</reportString>
+        <suspendable>true</suspendable>
     </JobDef>
 </Defs>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="RockBase">
+        <defName>Mineable{{defName metal.name}}</defName>
+        <label>{{title metal.name}} Ore</label>
+        <description>{{#if metal.mining.Description}}{{metal.mining.Description}}{{else}}Unrefined {{capitalize metal.name}} ore mined directly from the earth.{{/if}}</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>{{rgb metal.color}}</color>
+            {{#if metal.colorTwo}}<colorTwo>{{rgb metal.colorTwo}}</colorTwo>{{/if}}
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>{{metal.mining.hitPoints}}</MaxHitPoints>
+        </statBases>
+        <deepCommonality>{{metal.mining.commonality}}</deepCommonality>
+        <deepCountPerPortion>{{metal.mining.yield}}</deepCountPerPortion>
+        <deepLumpSizeRange>{{range metal.mining.sizeRange}}</deepLumpSizeRange>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <veinMineable>true</veinMineable>
+            <mineableThing>{{capitalize metal.name}}</mineableThing>
+            <mineableYield>{{metal.mining.yield}}</mineableYield>
+            <mineableScatterCommonality>{{metal.mining.commonality}}</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>{{range metal.mining.sizeRange}}</mineableScatterLumpSizeRange>
+        </building>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>{{defName metal.name}}</metal>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

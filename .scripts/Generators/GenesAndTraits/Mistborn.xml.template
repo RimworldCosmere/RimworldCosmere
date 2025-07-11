@@ -1,52 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
-        <defName>Cosmere_Mistborn</defName>
-        <label>mistborn</label>
-        <description>A rare individual who can burn all Allomantic metals.</description>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Mistborn</iconPath>
-        <displayCategory>Cosmere_Scadrial_Allomancy</displayCategory>
-        <displayOrderInCategory>1</displayOrderInCategory>
-        <forcedTraits>
-            <li>
-                <def>Cosmere_Mistborn</def>
-            </li>
-        </forcedTraits>
-        <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
-                <metals>
-                    {{#each metals}}
-                    <li>{{capitalize this.Name}}</li>
-                    {{/each}}
-                </metals>
-            </li>{{#if rightClickAbilities}}
-            <li Class="CosmereScadrial.DefModExtensions.RightClickAbilities">
-                <abilities>
-                    {{#each rightClickAbilities}}
-                    <li>{{this}}</li>
-                    {{/each}}
-                </abilities>
-            </li>{{/if}}
-        </modExtensions>
-        <abilities>
-            {{#each abilities}}
-            <li>{{this}}</li>
-            {{/each}}
-        </abilities>
-    </GeneDef>
     <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
-        <defName>Cosmere_Mistborn</defName>
+        <defName>Cosmere_Scadrial_Trait_Mistborn</defName>
         <label>mistborn</label>
         <description>A rare individual who can burn all Allomantic metals.</description>
+
         <modExtensions>
-            <li Class="CosmereMetals.ModExtensions.MetalsLinked">
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
                 <metals>
                     {{#each metals}}
-                    <li>{{capitalize this.Name}}</li>
+                    <li>{{capitalize name}}</li>
                     {{/each}}
                 </metals>
             </li>
         </modExtensions>
+
+        <forcedPassions>
+            <li>Cosmere_Scadrial_Skill_AllomanticPower</li>
+        </forcedPassions>
+
         <degreeDatas>
             <li>
                 <label>Mistborn</label>

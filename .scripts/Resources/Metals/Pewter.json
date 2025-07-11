@@ -1,0 +1,65 @@
+{
+  "name": "pewter",
+  "description": "Pewter is a refined alloy formed by blending Tin with Copper. Known for its soft, workable nature and a muted, classic luster, pewter has been a favored material for decorative and utilitarian objects since ancient times.",
+  "godMetal": false,
+  "color": [
+    141,
+    151,
+    166
+  ],
+  "marketValue": 1.9,
+  "beauty": 1,
+  "allomancy": {
+    "userName": "thug",
+    "description": "Enhances {PAWN}'s physical strength and durability.",
+    "group": "physical",
+    "axis": "internal",
+    "polarity": "pushing",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Pewter"
+    ]
+  },
+  "feruchemy": {
+    "userName": "brute",
+    "description": "Stores physical strength, tapping grants bursts of power.",
+    "group": "physical",
+    "attribute": "strength",
+    "store": {
+      "description": "This pawn is storing strength into a pewter metalmind, leaving their body frail and sluggish. They tire easily, move slowly, and struggle with physical tasks — but bank immense power for future use.",
+      "statFactors": {
+        "ToxicEnvironmentResistance": -0.03,
+        "StaggerDurationFactor": 0.03,
+        "PainShockThreshold": -0.03,
+        "MiningSpeed": -0.045,
+        "DeepDrillingSpeed": -0.045,
+        "MeleeDamageFactor": -0.045,
+        "CarryingCapacity": -0.04
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping a pewter metalmind, enhancing their strength, endurance, and physical resilience. Their blows hit harder, they shrug off injuries more easily, and their muscles propel them faster across the battlefield.",
+      "statFactors": {
+        "ToxicEnvironmentResistance": 0.06,
+        "StaggerDurationFactor": -0.06,
+        "PainShockThreshold": 0.06,
+        "MiningSpeed": 0.09,
+        "DeepDrillingSpeed": 0.09,
+        "MeleeDamageFactor": 0.09,
+        "CarryingCapacity": 0.08
+      }
+    }
+  },
+  "alloy": {
+    "type": "simple",
+    "ingredients": [
+      {
+        "item": "tin",
+        "count": 8
+      },
+      {
+        "item": "copper",
+        "count": 2
+      }
+    ]
+  }
+}

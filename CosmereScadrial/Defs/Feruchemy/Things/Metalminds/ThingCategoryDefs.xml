@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingCategoryDef>
+        <defName>Cosmere_Scadrial_ThingCategory_Metalmind</defName>
+        <label>metalmind</label>
+        <parent>Manufactured</parent>
+        <resourceReadoutRoot>true</resourceReadoutRoot>
+        <iconPath>UI/Icons/Genes/Investiture/Feruchemy/FullFeruchemist</iconPath>
+    </ThingCategoryDef>
+</Defs>

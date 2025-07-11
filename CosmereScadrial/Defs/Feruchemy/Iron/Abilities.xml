@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundIron</defName>
+        <label>compound iron</label>
+        <description>To compound iron is to become an anchor. Limbs turn leaden, the body impossibly heavy — yet every step channels mass into the metalmind. With enough time, the Allomancer can store the weight of mountains, ready to unleash crushing force at will.</description>
+        <metal>Iron</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundIron</hediff>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

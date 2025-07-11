@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CS_CannotBurn>{PAWN} doesn't have enough {METAL} to burn, and no vial to replenish {PAWN_possessive} reserves.</CS_CannotBurn>
+    <CS_CannotFlareAsleep>{PAWN} cannot flare {METAL} while they are sleeping.</CS_CannotFlareAsleep>
+    <CS_CannotShoot>{PAWN} is not capable of shooting</CS_CannotShoot>
+    <CS_TargetShielded>{PAWN} is shielded against Investiture</CS_TargetShielded>
+    <CS_NoClipsToThrow>{PAWN} has no clips to use</CS_NoClipsToThrow>
+    <CS_ToggleAutomaticBurning>Shift-click to toggle auto-burning</CS_ToggleAutomaticBurning>
+    <CS_PressToFlare>Ctrl-click to {FLARE}</CS_PressToFlare>
+	<CS_AlreadyMistborn>{PAWN} is already a Mistborn. Consuming Lerasium won't do anything.</CS_AlreadyMistborn>
+	<CS_CannotUseMetal>{PAWN} does not have the genes required to burn {METAL}.</CS_CannotUseMetal>
+	<CS_MetalCost>Metal Cost</CS_MetalCost>
+	<CS_Flare>flare</CS_Flare>
+	<CS_Deflare>de-flare</CS_Deflare>
+	<CS_WillBurnWhileDowned>Auto-Burning while downed</CS_WillBurnWhileDowned>
+	<CS_NoVials>No {METAL_label} vials to give</CS_NoVials>
+	<CS_ToggleGizmoSize>Click to toggle the size of this gizmo</CS_ToggleGizmoSize>
+</LanguageData>

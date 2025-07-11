@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_ZincAura</defName>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
+        <defName>Cosmere_Scadrial_Hediff_ZincAura</defName>
         <label>burning zinc: aura</label>
         <description>Subtly fanning the emotional flames of all nearby minds by burning Zinc.</description>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
-                <hediffFriendly>Cosmere_Hediff_Rioted_Buff</hediffFriendly>
-                <hediffHostile>Cosmere_Hediff_Rioted_Debuff</hediffHostile>
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
+                <hediffFriendly>Cosmere_Scadrial_Hediff_RiotedBuff</hediffFriendly>
+                <hediffHostile>Cosmere_Scadrial_Hediff_RiotedDebuff</hediffHostile>
+                <moteDef>Cosmere_Mote_Zinc_Aura</moteDef>
                 <verb>rioted</verb>
             </li>
         </comps>
@@ -24,18 +25,23 @@
                 </statFactors>
             </li>
         </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Zinc</metal>
+            </li>
+        </modExtensions>
     </HediffDef>
     
-    <HediffDef Name="AbstractZincHediff" ParentName="AbstractAllomanticHediff" Abstract="True">
+    <HediffDef Name="AbstractZincHediff" ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff" Abstract="True">
         <label>rioted</label>
         <description>This pawn has been rioted by a nearby Allomancer burning Zinc. Their emotions feel more erratic and displaced.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
     </HediffDef>
     <HediffDef ParentName="AbstractZincHediff">
-        <defName>Cosmere_Hediff_Rioted_Buff</defName>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties">
-                <baseTicks>3600</baseTicks>
+        <defName>Cosmere_Scadrial_Hediff_RiotedBuff</defName>
+        <comps Inherit="False">
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.SeverityCalculatorProperties">
+                <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_Rioted</thought>
@@ -58,9 +64,9 @@
         </stages>
     </HediffDef>
     <HediffDef ParentName="AbstractZincHediff">
-        <defName>Cosmere_Hediff_Rioted_Debuff</defName>
+        <defName>Cosmere_Scadrial_Hediff_RiotedDebuff</defName>
         <comps>
-            <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties">
+            <li Class="CosmereScadrial.Comp.Hediff.DisappearsScaledProperties">
                 <baseTicks>3600</baseTicks>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
@@ -102,7 +108,7 @@
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <minSeverity>2</minSeverity>
                 <statOffsets>
-                    <CosmereCore_MentalBreakAddFactor>0.05</CosmereCore_MentalBreakAddFactor>
+                    <Cosmere_Mental_Break_Add_Factor>0.05</Cosmere_Mental_Break_Add_Factor>
                 </statOffsets>
                 <statFactors>
                     <SocialImpact>0.8</SocialImpact>

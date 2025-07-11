@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundSteel</defName>
+        <label>compound steel</label>
+        <description>Steel compounding grinds the world to a crawl. Muscles resist motion, limbs feel heavy, and each step takes effort — but every second, speed floods into the metalmind. With patience and pain, the Allomancer becomes a storm waiting to be unleashed.</description>
+        <metal>Steel</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundSteel</hediff>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

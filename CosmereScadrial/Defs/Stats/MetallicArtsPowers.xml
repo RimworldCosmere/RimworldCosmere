@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <StatDef Name="Cosmere_Scadrial_StatDef_AbstractPowerStat" Abstract="True">
+        <category>Cosmere</category>
+        <minValue>0</minValue>
+        <defaultBaseValue>0</defaultBaseValue>
+        <toStringStyle>PercentZero</toStringStyle>
+        <maxValue>1</maxValue>
+        <scenarioRandomizable>false</scenarioRandomizable>
+        <showOnDefaultValue>false</showOnDefaultValue>
+        <showIfUndefined>false</showIfUndefined>
+    </StatDef>
+    
+    <StatDef ParentName="Cosmere_Scadrial_StatDef_AbstractPowerStat">
+        <defName>Cosmere_Scadrial_Stat_AllomanticPower</defName>
+        <label>allomantic strength</label>
+        <description>Affects potency and range of allomantic abilities.</description>
+        <displayPriorityInCategory>100</displayPriorityInCategory>
+        <disableIfSkillDisabled>Cosmere_Scadrial_Skill_AllomanticPower</disableIfSkillDisabled>
+        <immutable>true</immutable>
+        <cacheable>true</cacheable>
+        <parts>
+            <li Class="CosmereScadrial.StatPart.IngestedGodMetalGranter">
+                <allomancy>true</allomancy>
+            </li>
+            <li Class="CosmereScadrial.StatPart.GenerationalDecay">
+                <allomancy>true</allomancy>
+            </li>
+        </parts>
+    </StatDef>
+    
+    <StatDef ParentName="Cosmere_Scadrial_StatDef_AbstractPowerStat">
+        <defName>Cosmere_Scadrial_Stat_FeruchemicPower</defName>
+        <label>feruchemic strength</label>
+        <description>Affects potency and range of feruchemic abilities.</description>
+        <displayPriorityInCategory>101</displayPriorityInCategory>
+        <disableIfSkillDisabled>Cosmere_Scadrial_Skill_FeruchemicPower</disableIfSkillDisabled>
+        <immutable>true</immutable>
+        <cacheable>true</cacheable>
+        <parts>
+            <li Class="CosmereScadrial.StatPart.IngestedGodMetalGranter">
+                <feruchemy>true</feruchemy>
+            </li>
+            <li Class="CosmereScadrial.StatPart.GenerationalDecay">
+                <feruchemy>true</feruchemy>
+            </li>
+        </parts>
+    </StatDef>
+</Defs>

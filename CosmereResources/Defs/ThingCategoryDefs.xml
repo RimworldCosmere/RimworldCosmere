@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingCategoryDef>
+        <defName>Cosmere_Resource_ThingCategory_CoalOrCharcoal</defName>
+        <label>coal or charcoal</label>
+        <childThingDefs>
+            <li>Coal</li>
+            <li>Charcoal</li>
+        </childThingDefs>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Resource_ThingCategory_Metal</defName>
+        <label>cosmere metals</label>
+    </ThingCategoryDef>
+</Defs>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Defs.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
-        <defName>Cosmere_Ability_Tin</defName>
-        <label>tin</label>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+        <defName>Cosmere_Scadrial_Ability_Tin</defName>
+        <label>burn tin</label>
         <description>Burn tin to enhance senses.</description>
         <metal>Tin</metal>
-        <hediff>Cosmere_Hediff_TinBuff</hediff>
-        <dragHediff>Cosmere_Hediff_TinDrag</dragHediff>
+        <hediff>Cosmere_Scadrial_Hediff_TinBuff</hediff>
+        <dragHediff>Cosmere_Scadrial_Hediff_TinDrag</dragHediff>
         <beuPerTick>0.0004</beuPerTick>
-    </CosmereScadrial.Defs.AllomanticAbilityDef>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

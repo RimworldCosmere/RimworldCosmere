@@ -9,14 +9,9 @@ using Verse;
 namespace CosmereFramework.Window;
 
 public class SettingsWindow {
-    [TweakValue("AAA_CS_SettingsWindow")]
-    public static float TabHeight = 55f;
-
-    [TweakValue("AAA_CS_SettingsWindow")]
-    public static Padding TabPadding = new Padding(8f, 10f);
-
-    [TweakValue("AAA_CS_SettingsWindow")]
-    public static Padding ContentPadding = new Padding(16f);
+    private static readonly float TabHeight = 55f;
+    private static readonly Padding TabPadding = new Padding(8f, 10f);
+    private static readonly Padding ContentPadding = new Padding(16f);
 
     private readonly List<CosmereModSettings> allModSettings;
 

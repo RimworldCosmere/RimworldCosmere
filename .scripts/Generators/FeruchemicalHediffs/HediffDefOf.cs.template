@@ -1,0 +1,14 @@
+#nullable disable
+using RimWorld;
+using Verse;
+
+namespace CosmereScadrial;
+
+public static partial class HediffDefOf {
+    {{#each metals as | metal |}}
+    public static HediffDef Cosmere_Scadrial_Hediff_Compound{{defName metal.name}};
+    public static HediffDef Cosmere_Scadrial_Hediff_Store{{defName metal.name}};
+    public static HediffDef Cosmere_Scadrial_Hediff_Tap{{defName metal.name}};
+
+    {{/each}}
+}

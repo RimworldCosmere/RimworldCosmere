@@ -1,0 +1,58 @@
+{
+  "name": "brass",
+  "description": "Brass is a warm, golden alloy produced by blending Copper with zinc. Praised for its attractive appearance and excellent workability, brass finds extensive use in both decorative applications and practical components.",
+  "godMetal": false,
+  "color": [
+    175,
+    148,
+    91
+  ],
+  "marketValue": 1.9,
+  "beauty": 2,
+  "allomancy": {
+    "userName": "soother",
+    "description": "Allows {PAWN} to soothe emotions, calming people or manipulating moods.",
+    "group": "mental",
+    "axis": "external",
+    "polarity": "pulling",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_BrassAura",
+      "Cosmere_Scadrial_Ability_BrassTarget"
+    ]
+  },
+  "feruchemy": {
+    "userName": "firesoul",
+    "description": "Stores warmth, useful for surviving cold environments or heating up.",
+    "group": "cognitive",
+    "attribute": "warmth",
+    "store": {
+      "description": "This pawn is storing body heat into a brass metalmind, passively absorbing thermal energy. Their body resists high temperatures and fire damage far better than normal, allowing them to function in burning envbrassments with reduced risk of heatstroke.",
+      "statFactors": {
+        "Flammability": -0.02,
+        "ComfyTemperatureMax": 2,
+        "ComfyTemperatureMin": -0.1
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping a brass metalmind, releasing stored heat into their body. They become much more vulnerable to high temperatures and fire, and risk heatstroke if not careful — but can survive extreme cold with ease.",
+      "statFactors": {
+        "Flammability": 0.02,
+        "ComfyTemperatureMax": -0.1,
+        "ComfyTemperatureMin": 2
+      }
+    }
+  },
+  "alloy": {
+    "type": "simple",
+    "ingredients": [
+      {
+        "item": "copper",
+        "count": 5
+      },
+      {
+        "item": "zinc",
+        "count": 5
+      }
+    ]
+  }
+}

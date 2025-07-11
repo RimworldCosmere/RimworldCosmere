@@ -1,0 +1,14 @@
+{
+  "name": "trellium",
+  "description": "An alien, corrupted metal aligned with Trell's influence. It resists typical Investiture detection and interferes with other magic systems. Often associated with Hemalurgic constructs, Trellium's strange red hue and unique properties hint at a Shardic power foreign to Scadrial.",
+  "godMetal": true,
+  "stackable": false,
+  "drawSize": 1,
+  "marketValue": 10000,
+  "beauty": 100,
+  "color": [
+    148,
+    0,
+    37
+  ]
+}

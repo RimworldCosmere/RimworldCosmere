@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs> 
+    <ThingDef Abstract="True" Name="CosmereScadrialTimeBubble" ParentName="MoteGlowDistorted">
+        <defName>Cosmere_Scadrial_TimeBubble</defName>
+        <label>Time Bubble</label>
+        <thingClass>MoteAttached</thingClass>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
+        <mote>
+            <fadeInTime>0.2</fadeInTime>
+            <fadeOutTime>0.5</fadeOutTime>
+            <solidTime>999999</solidTime>
+            <needsMaintenance>true</needsMaintenance>
+        </mote>
+        <graphicData>
+            <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>
+            <drawSize>1</drawSize>
+        </graphicData>
+    </ThingDef>
+    
+    <ThingDef ParentName="CosmereScadrialTimeBubble">
+        <defName>Cosmere_Scadrial_Thing_TimeBubbleCadmium</defName>
+        <label>Cadmium Time Bubble</label>
+        <graphicData>
+            <texPath>Effects/CadmiumTimeBubble</texPath>
+        </graphicData>
+    </ThingDef>
+    
+    <ThingDef ParentName="CosmereScadrialTimeBubble">
+        <defName>Cosmere_Scadrial_Thing_TimeBubbleBendalloy</defName>
+        <label>Bendalloy Time Bubble</label>
+        <graphicData>
+            <texPath>Effects/BendalloyTimeBubble</texPath>
+        </graphicData>
+    </ThingDef>
+    
+    <ThingDef ParentName="CosmereScadrialTimeBubble">
+        <defName>Cosmere_Scadrial_Thing_TimeBubbleWarp</defName>
+        <label>Time Bubble Distortion</label>
+        <graphicData>
+            <texPath>Things/Mote/Black</texPath>
+            <shaderType>MoteLargeDistortionWave</shaderType>
+            <shaderParameters>
+                <_DistortionTex>/Things/Mote/PsychicDistortionCurrents</_DistortionTex>
+                <_NoiseTex>/Things/Mote/PsycastNoise</_NoiseTex>
+                <_distortionIntensity>0.025</_distortionIntensity>
+                <_brightnessMultiplier>1.25</_brightnessMultiplier>
+                <_noiseIntensity>5</_noiseIntensity>
+                <_ageToNoiseRatio>0</_ageToNoiseRatio>
+            </shaderParameters>
+        </graphicData>
+    </ThingDef>
+</Defs>

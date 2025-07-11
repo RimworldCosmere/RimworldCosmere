@@ -1,0 +1,56 @@
+{
+  "name": "bendalloy",
+  "description": "Bendalloy is a mysterious and dynamic alloy created by precisely combining cadmium, zinc, and silver. Its shifting hues and volatile properties make it a material of both scientific intrigue and advanced technological potential.",
+  "godMetal": false,
+  "color": [
+    117,
+    144,
+    108
+  ],
+  "marketValue": 100,
+  "beauty": 3,
+  "allomancy": {
+    "userName": "slider",
+    "description": "Allows {PAWN} to speed up time in a bubble around the user.",
+    "group": "temporal",
+    "axis": "external",
+    "polarity": "pushing",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Bendalloy"
+    ]
+  },
+  "feruchemy": {
+    "userName": "subsumer",
+    "description": "Stores nutrition, allowing users to go without food.",
+    "group": "hybrid",
+    "attribute": "nutrition",
+    "store": {
+      "description": "This pawn is storing nutrition in a bendalloy metalmind. Their metabolism speeds up dramatically, burning through food reserves at an accelerated rate. They become hungry faster and must eat more to maintain energy — but the nutrition is preserved for future emergencies.",
+      "hungerRateFactor": 0.2
+    },
+    "tap": {
+      "description": "This pawn is tapping an atium metalmind, reversing the effects of time. Their body becomes younger, stronger, and faster — regaining agility, endurance, and resilience as if years were stripped away.",
+      "hungerRateFactor": -0.05,
+      "statFactors": {
+        "MaxNutrition": 0.05
+      }
+    }
+  },
+  "alloy": {
+    "type": "complex",
+    "ingredients": [
+      {
+        "item": "cadmium",
+        "count": 5
+      },
+      {
+        "item": "zinc",
+        "count": 2
+      },
+      {
+        "item": "silver",
+        "count": 3
+      }
+    ]
+  }
+}

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_BrassAura</defName>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
+        <defName>Cosmere_Scadrial_Hediff_BrassAura</defName>
         <label>burning brass: aura</label>
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
-                <hediff>Cosmere_Hediff_Soothed</hediff>
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
+                <hediff>Cosmere_Scadrial_Hediff_Soothed</hediff>
+                <moteDef>Cosmere_Mote_Brass_Aura</moteDef>
                 <verb>soothed</verb>
             </li>
         </comps>
@@ -24,16 +25,21 @@
                 </statFactors>
             </li>
         </stages>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Brass</metal>
+            </li>
+        </modExtensions>
     </HediffDef>
     
-    <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_Soothed</defName>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
+        <defName>Cosmere_Scadrial_Hediff_Soothed</defName>
         <label>soothed</label>
         <description>This pawn has been soothed by a nearby Allomancer burning brass. Their emotions feel more stable and calm.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
-        <comps>
-            <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties">
-                <baseTicks>3600</baseTicks>
+        <comps Inherit="False">
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.SeverityCalculatorProperties">
+                <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_Soothed</thought>
@@ -55,7 +61,7 @@
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <minSeverity>2</minSeverity>
                 <statOffsets>
-                    <CosmereCore_MentalBreakRemoveFactor>0.05</CosmereCore_MentalBreakRemoveFactor>
+                    <Cosmere_Mental_Break_Remove_Factor>0.05</Cosmere_Mental_Break_Remove_Factor>
                 </statOffsets>
                 <statFactors>
                     <PainShockThreshold>1.15</PainShockThreshold>

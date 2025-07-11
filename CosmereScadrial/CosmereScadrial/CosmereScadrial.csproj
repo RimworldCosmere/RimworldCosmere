@@ -1,59 +1,63 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
-            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
-
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <ProjectGuid>{6FB30E55-8B7A-4E51-99D6-D110854999AB}</ProjectGuid>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <Authors>CryptikLemur</Authors>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <OutDir>..\Assemblies\</OutDir>
+        <Nullable>enable</Nullable>
+        <EnableNETAnalyzers>True</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <WarningLevel>4</WarningLevel>
+        <ErrorReport>prompt</ErrorReport>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>
+
+        <RimWorldDir Condition="'$(RimWorldDir)' == ''">$([System.Environment]::GetEnvironmentVariable('RIMWORLD_DIR'))</RimWorldDir>
+        <WorkshopDir Condition="'$(WorkshopDir)' == ''">$([System.Environment]::GetEnvironmentVariable('WORKSHOP_DIR'))</WorkshopDir>
+        <RimWorldDir Condition="'$(RimWorldDir)' == ''">..\..\..\</RimWorldDir>
+        <WorkshopDir Condition="'$(WorkshopDir)' == ''">..\..\..\..\..\workshop\content\294100</WorkshopDir>
+
+        <RimWorldManagedPath>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+        <FileAlignment>512</FileAlignment>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
         <RootNamespace>CosmereScadrial</RootNamespace>
         <AssemblyName>CosmereScadrial</AssemblyName>
-        <ModScript>generate:mod:scadrial</ModScript>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugSymbols>false</DebugSymbols>
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <DefineConstants>TRACE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <Reference>
+            <Private>False</Private>
+        </Reference>
+        <ProjectReference>
+            <Private>False</Private>
+        </ProjectReference>
+        <PackageReference>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+    </ItemDefinitionGroup>
 
     <ItemGroup>
-        <Reference Include="FloatSubMenu">
-            <HintPath>$(WorkshopDir)/2864015430/1.5/Assemblies/FloatSubMenu.dll</HintPath>
-        </Reference>
-        <Reference Include="HugsLib">
-            <HintPath>$(WorkshopDir)/818773962/Assemblies/HugsLib.dll</HintPath>
-        </Reference>
-        <Reference Include="Microsoft.CSharp"/>
-        <Reference Include="System"/>
-        <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-            <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-            <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Xml"/>
-        <Reference Include="UnityEngine.InputLegacyModule">
-            <HintPath>$(RimWorldManagedPath)/UnityEngine.InputLegacyModule.dll</HintPath>
-        </Reference>
-    </ItemGroup>
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518-beta"/>
+        <PackageReference Include="Lib.Harmony" Version="2.3.6"/>
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
+            <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\CosmereCore\CosmereCore\CosmereCore.csproj">
-            <Project>{5f1d8c6d-e127-4001-a575-e56d99df271f}</Project>
-            <Name>CosmereCore</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj">
-            <Project>{36bc41f6-78cd-4676-bd0e-21e2ac2e5e5c}</Project>
-            <Name>CosmereFramework</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\..\CosmereMetals\CosmereMetals\CosmereMetals.csproj">
-            <Project>{69b78f0c-63e1-47a1-9fd4-b5cce63d727f}</Project>
-            <Name>CosmereMetals</Name>
-        </ProjectReference>
+        <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj"/>
+        <ProjectReference Include="..\..\CosmereResources\CosmereResources\CosmereResources.csproj"/>
+        <ProjectReference Include="..\..\CosmereCore\CosmereCore\CosmereCore.csproj"/>
     </ItemGroup>
-
-    <ItemGroup>
-        <None Include="packages.config"/>
-    </ItemGroup>
-
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-           Other similar extension points exist, see Microsoft.Common.targets.
-    -->
 </Project>

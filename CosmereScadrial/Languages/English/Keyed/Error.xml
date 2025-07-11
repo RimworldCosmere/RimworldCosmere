@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CS_Error_MissingRequirement>{0} can't be on a pawn that doesn't have {0}</CS_Error_MissingRequirement>
+    <CS_Error_CannotModifyInvestiture>Modifying investiture on on an hediff tree that doesnt have investiture</CS_Error_CannotModifyInvestiture>
+</LanguageData>

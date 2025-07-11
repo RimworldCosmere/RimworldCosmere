@@ -1,21 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <StatDef>
-        <defName>CosmereCore_MentalBreakAddFactor</defName>
+        <defName>Cosmere_Mental_Break_Add_Factor</defName>
         <label>mental break induction chance</label>
         <description>A multiplier that affects the chance to cause a pawn to experiencing a mental break.</description>
-        <category>PawnMisc</category>
+        <category>PawnHealth</category>
         <defaultBaseValue>0</defaultBaseValue>
         <toStringStyle>PercentZero</toStringStyle>
         <displayPriorityInCategory>1000</displayPriorityInCategory>
     </StatDef>
     <StatDef>
-        <defName>CosmereCore_MentalBreakRemoveFactor</defName>
+        <defName>Cosmere_Mental_Break_Remove_Factor</defName>
         <label>mental break recovery chance</label>
         <description>A multiplier that affects the chance to calm a pawn experiencing a mental break.</description>
-        <category>PawnMisc</category>
+        <category>PawnHealth</category>
         <defaultBaseValue>0</defaultBaseValue>
         <toStringStyle>PercentZero</toStringStyle>
         <displayPriorityInCategory>1001</displayPriorityInCategory>
+    </StatDef>
+    <StatDef>
+        <defName>Cosmere_Time_Dilation_Factor</defName>
+        <label>time dilation rate</label>
+        <description>A multiplier that affects the rate at which time passes. Above 1 speeds up, below slows down.</description>
+        <category>Cosmere</category>
+        <defaultBaseValue>1</defaultBaseValue>
+        <alwaysHide>true</alwaysHide>
+        <toStringStyle>PercentZero</toStringStyle>
+        <displayPriorityInCategory>1000</displayPriorityInCategory>
+    </StatDef>
+    <StatDef>
+        <defName>Cosmere_Investiture</defName>
+        <label>investiture</label>
+        <description>A amount of Investiture in an object or creature.</description>
+        <category>Cosmere</category>
+        <minValue>0</minValue>
+        <maxValue>1000000</maxValue>
+        <valueIfMissing>0</valueIfMissing>
+        <scenarioRandomizable>false</scenarioRandomizable>
+        <defaultBaseValue>0</defaultBaseValue>
+        <toStringStyle>Integer</toStringStyle>
+        <formatString>{0} BEUs</formatString>
+        <displayPriorityInCategory>1000</displayPriorityInCategory>
+        <parts>
+            <li Class="CosmereCore.StatPart.NeedInvestiture" />
+            <li Class="CosmereCore.StatPart.GearAndInventoryInvestiture" />
+        </parts>
     </StatDef>
 </Defs>

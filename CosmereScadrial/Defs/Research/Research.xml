@@ -1,18 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<ResearchTabDef>
-		<defName>Cosmere_Scadrial</defName>
-		<label>cosmere - scadrial</label>
-	</ResearchTabDef>
-
 	<ResearchProjectDef>
-		<defName>Cosmere_Allomancy</defName>
-		<label>allomancy</label>
-		<tab>Cosmere_Scadrial</tab>
-		<description>Do strange but awesome things with metals. You might have to eat them first...</description>
-		<baseCost>600</baseCost>
+		<defName>Cosmere_Scadrial_MetallicArts</defName>
+		<label>metallic arts</label>
+		<tab>Cosmere</tab>
+		<description>The arcane foundation of Scadrial’s power. This research unlocks the framework for all Metallic Arts—Allomancy, Feruchemy, and Hemalurgy—granting colonists the potential to tap into Investiture through metal.</description>
+		<baseCost>100</baseCost>
+		<tags>
+			<li>ClassicStart</li>
+		</tags>
 		<techLevel>Neolithic</techLevel>
 		<researchViewX>0.00</researchViewX>
-		<researchViewY>0.00</researchViewY>
+		<researchViewY>2.10</researchViewY>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_Allomancy</defName>
+		<label>allomancy</label>
+		<tab>Cosmere</tab>
+		<description>Harness the power of metal to enhance the body and mind. Allomancers consume metal vials to unlock supernatural abilities such as strength, speed, and influence over others. This research enables the use of Allomantic genes, abilities, and resources.</description>
+		<baseCost>600</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>1.40</researchViewY>
+		<prerequisites>
+            <li>Cosmere_Scadrial_MetallicArts</li>
+        </prerequisites>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_Feruchemy</defName>
+		<label>feruchemy</label>
+		<tab>Cosmere</tab>
+		<description>Master the art of balance through storage and retrieval. Feruchemists store their own attributes—such as health, speed, and senses—within metal and draw upon them when needed. Unlocks Feruchemical mechanics, metalminds, and corresponding genetics.</description>
+		<baseCost>600</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>2.10</researchViewY>
+		<prerequisites>
+			<li>Cosmere_Scadrial_MetallicArts</li>
+		</prerequisites>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Scadrial_Hemalurgy</defName>
+		<label>hemalurgy</label>
+		<tab>Cosmere</tab>
+		<description>NOT IMPLEMENTED YET: The darkest of the Metallic Arts. Hemalurgy transfers power from one being to another through the violent act of spiking. This research unveils forbidden knowledge: how to craft and implant hemalurgic spikes, and the means to extract abilities—at a cost.</description>
+		<baseCost>60000</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>2.80</researchViewY>
+		<prerequisites>
+			<li>Cosmere_Scadrial_MetallicArts</li>
+		</prerequisites>
 	</ResearchProjectDef>
 </Defs>

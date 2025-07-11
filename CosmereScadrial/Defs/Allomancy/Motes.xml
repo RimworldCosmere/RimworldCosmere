@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="MoteGlowDistorted">
-        <defName>Cosmere_Mote_Allomancy_Aura</defName>
+    <ThingDef Name="CosmereMoteAllomancyAura" ParentName="MoteGlowDistorted" Abstract="True">
         <thingClass>MoteAttached</thingClass>
         <altitudeLayer>MoteOverhead</altitudeLayer>
-        <label>allomancy aura</label>
         <graphicData>
             <texPath>Effects/AllomancyAura</texPath>
             <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>
-            <shaderType>PsyfocusMeditationPulse</shaderType>
-            <!--<texPath>Things/Mote/Transparent</texPath>-->
+            <shaderType>RitualSmokeNoMask</shaderType>
             <shaderParameters>
-                <_distortionIntensity>0.0055</_distortionIntensity>
-                <_brightnessMultiplier>1.15</_brightnessMultiplier>
-                <_pulseSpeed>0.75</_pulseSpeed>
+                <_SmokeTex1>/Things/Mote/RitualEffects/Smoke1_Thick</_SmokeTex1>
+                <_SmokeTex2>/Things/Mote/RitualEffects/Smoke2_Thick</_SmokeTex2>
+                <_MaskTex>/Things/Mote/RitualEffects/GlowRayMask</_MaskTex>
+                <_DistortionTex>/Things/Mote/RitualEffects/DistortionSoft</_DistortionTex>
+                <_ScrollSpeed>0.1</_ScrollSpeed>
+                <_AgeSecs>2</_AgeSecs>
+                <_Thickness>3</_Thickness>
+                <_Distortion>1</_Distortion>
+                <_VerticalScale>.2</_VerticalScale>
             </shaderParameters>
-            <drawSize>2.35</drawSize>
+            <drawSize>1</drawSize>
         </graphicData>
         <mote>
-            <growthRate>0.02</growthRate> <!-- for pulsing size -->
+            <growthRate>0.02</growthRate>
             <fadeInTime>0.2</fadeInTime>
             <fadeOutTime>0.5</fadeOutTime>
             <solidTime>999999</solidTime>

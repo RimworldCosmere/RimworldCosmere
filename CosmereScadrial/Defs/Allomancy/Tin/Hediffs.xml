@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_TinBuff</defName>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
+        <defName>Cosmere_Scadrial_Hediff_TinBuff</defName>
         <label>burning tin</label>
         <description>Empowered senses from burning Tin.</description>
         <stages>
             <li>
-                <painFactor>1.25</painFactor>
+                <minSeverity>0.5</minSeverity>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <painFactor>1.25</painFactor>
                 <capMods>
                     <li>
                         <capacity>Sight</capacity>
-                        <offset>0.5</offset>
+                        <postFactor>1.2</postFactor>
                     </li>
                     <li>
                         <capacity>Hearing</capacity>
-                        <offset>0.5</offset>
+                        <postFactor>1.2</postFactor>
                     </li>
                 </capMods>
                 <statOffsets>
@@ -28,18 +29,42 @@
                     <AimingDelayFactor>0.5</AimingDelayFactor>
                 </statFactors>
             </li>
+            <li>
+                <minSeverity>1.8</minSeverity>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <painFactor>2.0</painFactor>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <postFactor>1.5</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>1.5</postFactor>
+                    </li>
+                </capMods>
+                <statOffsets>
+                    <MentalBreakThreshold>-.20</MentalBreakThreshold>
+                    <PainShockThreshold>-.5</PainShockThreshold>
+                    <ComfyTemperatureMin>4</ComfyTemperatureMin>
+                    <ComfyTemperatureMax>-4</ComfyTemperatureMax>
+                </statOffsets>
+                <statFactors>
+                    <AimingDelayFactor>0.25</AimingDelayFactor>
+                </statFactors>
+            </li>
         </stages>
     </HediffDef>
     
     <HediffDef>
-        <defName>Cosmere_Hediff_TinDrag</defName>
+        <defName>Cosmere_Scadrial_Hediff_TinDrag</defName>
         <label>tin overstim</label>
         <description>The aftereffects of pushing the senses beyond its limits using tin. The mind is crashing.</description>
         <hediffClass>HediffWithComps</hediffClass>
         <isBad>true</isBad>
         <tendable>false</tendable>
         <comps>
-            <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties" />
+            <li Class="CosmereScadrial.Comp.Hediff.DisappearsScaledProperties" />
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_TinDrag</thought>
                 <moodOffset>-2</moodOffset>

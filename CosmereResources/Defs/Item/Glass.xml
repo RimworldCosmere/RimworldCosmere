@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <StuffCategoryDef>
+        <defName>Cosmere_Resource_StuffCategory_Glass</defName>
+        <label>Glass</label>
+    </StuffCategoryDef>  
+    
+    <StuffAppearanceDef>
+        <defName>Cosmere_Resource_StuffAppearance_Glass</defName>
+    </StuffAppearanceDef>
+
+    <ThingDef ParentName="ResourceBase">
+        <defName>Cosmere_Resource_Thing_Glass</defName>
+        <label>Glass</label>
+        <description>A brittle but versatile material, prized for its transparency and aesthetic appeal. Often used in windows, decorative furniture, and delicate instruments. While it offers little protection or structural strength, it excels in beauty and trade value.</description>
+        <graphicData>
+            <texPath>Item/Glass</texPath>
+            <graphicClass>Graphic_StackCount</graphicClass>
+        </graphicData>
+        <soundInteract>Standard_Drop</soundInteract>
+        <soundDrop>Standard_Drop</soundDrop>
+        <statBases>
+            <MaxHitPoints>20</MaxHitPoints>
+            <MarketValue>10</MarketValue>
+            <Mass>3.5</Mass>
+        </statBases>
+        <thingCategories>
+            <li>Manufactured</li>
+        </thingCategories>
+        <stuffProps>
+            <stuffAdjective>glass</stuffAdjective>
+            <categories>
+                <li>Cosmere_Resource_StuffCategory_Glass</li>
+            </categories>
+            <color>(220,220,240)</color>
+            <constructEffect>ConstructMetal</constructEffect>
+            <soundImpactMelee>MeleeHit_Metal_Sharp</soundImpactMelee>
+            <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
+            <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+            <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+            <appearance>Cosmere_Resource_StuffAppearance_Glass</appearance>
+            <statFactors>
+                <MaxHitPoints>0.3</MaxHitPoints>
+                <Flammability>0.2</Flammability>
+            </statFactors>
+        </stuffProps>
+        <recipeMaker>
+            <workAmount>750</workAmount>
+            <workSpeedStat>SmeltingSpeed</workSpeedStat>
+            <workSkill>Crafting</workSkill>
+            <requiredGiverWorkType>Smithing</requiredGiverWorkType>
+            <effectWorking>Smith</effectWorking>
+            <soundWorking>Recipe_Smelt</soundWorking>
+            <researchPrerequisite>Cosmere_Glass</researchPrerequisite>
+            <skillRequirements>
+                <Crafting>3</Crafting>
+            </skillRequirements>
+            <recipeUsers>
+                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_Forge</li>
+                <li>ElectricSmithy</li>
+                <li>FueledSmithy</li>
+                <li>Campfire</li>
+            </recipeUsers>
+            <productCount>4</productCount>
+            <defaultIngredientFilter>
+                <categories>
+                    <li>StoneChunks</li>
+                </categories>
+            </defaultIngredientFilter>
+        </recipeMaker>
+        <stuffCategories>
+            <li>Stony</li>
+        </stuffCategories>
+        <costStuffCount>1</costStuffCount>
+    </ThingDef>
+</Defs>

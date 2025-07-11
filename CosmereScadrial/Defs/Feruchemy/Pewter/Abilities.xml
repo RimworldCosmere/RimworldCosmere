@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundPewter</defName>
+        <label>compound pewter</label>
+        <description>Compounding pewter chains the body in fatigue. Strength drains, limbs tremble, and every movement feels like dragging stone — all to store boundless power in metal. With enough strain, the Allomancer will move mountains with a single blow.</description>
+        <metal>Pewter</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundPewter</hediff>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

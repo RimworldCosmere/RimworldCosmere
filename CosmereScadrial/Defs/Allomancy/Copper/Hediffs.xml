@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_CopperAura</defName>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
+        <defName>Cosmere_Scadrial_Hediff_CopperAura</defName>
         <label>emitting coppercloud</label>
         <description>The Allomancer is burning copper, generating a Coppercloud that conceals Allomantic pulses within its radius.</description>
         <comps>
-            <li Class="CosmereScadrial.Abilities.Allomancy.Hediffs.Comps.AllomancyAuraHediffGiverProperties">
-                <hediff>Cosmere_Hediff_CopperClouded</hediff>
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
+                <hediff>Cosmere_Scadrial_Hediff_CopperCloud</hediff>
+                <moteDef>Cosmere_Scadrial_Mote_CopperCloud</moteDef>
                 <verb>enshrouded</verb>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+                <metal>Copper</metal>
+            </li>
+        </modExtensions>
     </HediffDef>
     
-    <HediffDef ParentName="AbstractAllomanticHediff">
-        <defName>Cosmere_Hediff_CopperClouded</defName>
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
+        <defName>Cosmere_Scadrial_Hediff_CopperCloud</defName>
         <label>enshrouded in copper</label>
         <description>This pawn has been enshrouded by a nearby Allomancer burning copper. They are more resilient to sources of Investiture.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps>
-            <li Class="CosmereScadrial.Comps.Hediffs.DisappearsScaledProperties">
-                <baseTicks>600</baseTicks> <!-- 10 seconds -->
-            </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
-                <thought>Cosmere_Thought_CopperClouded</thought>
+                <thought>Cosmere_Thought_Copper_Clouded</thought>
                 <moodOffset>1</moodOffset>
             </li>
         </comps>
@@ -32,23 +35,14 @@
                 <statFactors>
                     <PainShockThreshold>1.15</PainShockThreshold>
                     <MentalBreakThreshold>1.15</MentalBreakThreshold>
-                    <RestRateMultiplier>1.15</RestRateMultiplier>
-                    <RestFallRateFactor>0.85</RestFallRateFactor>
-                    <JoyFallRateFactor>0.85</JoyFallRateFactor>
                 </statFactors>
             </li>
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <minSeverity>2</minSeverity>
-                <statOffsets>
-                    <CosmereCore_MentalBreakRemoveFactor>0.05</CosmereCore_MentalBreakRemoveFactor>
-                </statOffsets>
                 <statFactors>
                     <PainShockThreshold>1.15</PainShockThreshold>
                     <MentalBreakThreshold>1.15</MentalBreakThreshold>
-                    <RestRateMultiplier>1.15</RestRateMultiplier>
-                    <RestFallRateFactor>0.85</RestFallRateFactor>
-                    <JoyFallRateFactor>0.85</JoyFallRateFactor>
                 </statFactors>
             </li>
         </stages>

@@ -1,0 +1,55 @@
+{
+  "name": "electrum",
+  "description": "Electrum is an alloy of gold and silver, characterized by its soft, pale, and luminous hue. This unique blend of precious metals has captivated civilizations for millennia with its subtle brilliance and inherent value.",
+  "godMetal": false,
+  "color": [
+    182,
+    156,
+    82
+  ],
+  "marketValue": 15,
+  "beauty": 1,
+  "allomancy": {
+    "userName": "oracle",
+    "description": "Shows {PAWN}'s possible futures, useful for avoiding danger.",
+    "group": "temporal",
+    "axis": "internal",
+    "polarity": "pushing",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Electrum"
+    ]
+  },
+  "feruchemy": {
+    "userName": "pinnacle",
+    "description": "Stores determination or willpower.",
+    "group": "hybrid",
+    "attribute": "determination",
+    "store": {
+      "description": "This pawn is storing determination in an electrum metalmind. Their will falters, and their resistance to pain, fear, and mental strain weakens. They’re more likely to break under pressure — but the strength they lose now will return in full.",
+      "statFactors": {
+        "PainShockThreshold": -0.045,
+        "MentalBreakThreshold": -0.045
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping an electrum metalmind, flooding their spirit with raw determination. Their pain tolerance surges, their focus sharpens, and they can shrug off mental strain with ease. Breaking them now would take a miracle.",
+      "statFactors": {
+        "PainShockThreshold": 0.045,
+        "MentalBreakThreshold": 0.045
+      }
+    }
+  },
+  "alloy": {
+    "type": "simple",
+    "ingredients": [
+      {
+        "item": "gold",
+        "count": 5
+      },
+      {
+        "item": "silver",
+        "count": 5
+      }
+    ]
+  }
+}

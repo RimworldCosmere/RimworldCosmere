@@ -1,0 +1,58 @@
+{
+  "name": "copper",
+  "description": "Copper is a soft, reddish metal prized for its conductivity and malleability. It has been a staple in crafting and electrical applications across civilizations for centuries.",
+  "godMetal": false,
+  "color": [
+    185,
+    129,
+    80
+  ],
+  "colorTwo": [
+    90,
+    58,
+    43
+  ],
+  "marketValue": 1,
+  "beauty": 1,
+  "allomancy": {
+    "userName": "smoker",
+    "description": "Creates a 'coppercloud' around {PAWN} that hides any Investiture-related activity.",
+    "group": "mental",
+    "axis": "internal",
+    "polarity": "pulling",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_CopperAura"
+    ]
+  },
+  "feruchemy": {
+    "userName": "archivist",
+    "description": "Stores memories, allowing perfect recall of stored knowledge.",
+    "group": "cognitive",
+    "attribute": "memories",
+    "store": {
+      "description": "This pawn is storing memories in a copper metalmind, causing their thoughts to blur. Learning slows, task focus falters, and they struggle to retain information — all sacrificed in the name of long-term clarity.",
+      "statFactors": {
+        "GlobalLearningFactor": -0.05,
+        "ResearchSpeed": -0.05,
+        "MentalBreakThreshold": 0.02
+      }
+    },
+    "tap": {
+      "description": "This pawn is tapping a copper metalmind, unlocking stored memories with razor-sharp clarity. Their mind is focused, efficient, and highly receptive — making research, learning, and complex tasks faster and easier.",
+      "statFactors": {
+        "GlobalLearningFactor": 0.05,
+        "ResearchSpeed": 0.05,
+        "MentalBreakThreshold": -0.02
+      }
+    }
+  },
+  "mining": {
+    "hitPoints": 1440,
+    "yield": 50,
+    "commonality": 0.9,
+    "sizeRange": [
+      40,
+      70
+    ]
+  }
+}

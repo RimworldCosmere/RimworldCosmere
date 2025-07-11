@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereCore.Defs.ShardDef>
+    <CosmereCore.Def.ShardDef>
         <defName>Ruin</defName>
         <label>ruin</label>
         <planet>Scadrial</planet>
@@ -8,8 +8,8 @@
         <mutuallyExclusiveWith>
             <li>Harmony</li>
         </mutuallyExclusiveWith>
-    </CosmereCore.Defs.ShardDef>
-    <CosmereCore.Defs.ShardDef>
+    </CosmereCore.Def.ShardDef>
+    <CosmereCore.Def.ShardDef>
         <defName>Preservation</defName>
         <label>preservation</label>
         <planet>Scadrial</planet>
@@ -17,8 +17,8 @@
         <mutuallyExclusiveWith>
             <li>Harmony</li>
         </mutuallyExclusiveWith>
-    </CosmereCore.Defs.ShardDef>
-    <CosmereCore.Defs.ShardDef>
+    </CosmereCore.Def.ShardDef>
+    <CosmereCore.Def.ShardDef>
         <defName>Harmony</defName>
         <label>harmony</label>
         <planet>Scadrial</planet>
@@ -27,5 +27,5 @@
             <li>Ruin</li>
             <li>Preservation</li>
         </mutuallyExclusiveWith>
-    </CosmereCore.Defs.ShardDef>
+    </CosmereCore.Def.ShardDef>
 </Defs>

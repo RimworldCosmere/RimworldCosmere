@@ -1,12 +1,11 @@
-import { shouldSkipGeneration } from './cache';
+import {shouldSkipGeneration} from './cache';
 import './Helpers/Handlebars';
-import { MetalRegistry } from './Metals/MetalRegistry';
+import {MetalRegistry} from './Metals/MetalRegistry';
 
-export async function bootstrap() {
-  MetalRegistry.LoadMetalRegistry();
-  
-  const genName = process.argv[2];
-  const generator = await import((`./Generators/${genName}`)).then((x) => x.default);
-  
-  return {generator, genName, shouldSkip: shouldSkipGeneration(genName)}
+export async function bootstrap(name: string) {
+    MetalRegistry.LoadMetalRegistry();
+
+    const generator = await import((`./Generators/${name}`)).then((x) => x.default);
+
+    return {generator, shouldSkip: shouldSkipGeneration(name)}
 }

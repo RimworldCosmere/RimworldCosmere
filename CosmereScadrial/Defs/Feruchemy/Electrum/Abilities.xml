@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="Cosmere_Scadrial_Ability_AbstractCompoundAbility">
+        <defName>Cosmere_Scadrial_Ability_CompoundElectrum</defName>
+        <label>compound electrum</label>
+        <description>Compounding electrum dims the will. Confidence fades, determination wavers, and resolve slips through trembling hands — but each moment of weakness strengthens the metalmind. In time, it will hold enough willpower to defy despair itself.</description>
+        <metal>Electrum</metal>
+        <hediff>Cosmere_Scadrial_Hediff_CompoundElectrum</hediff>
+    </CosmereScadrial.Def.AllomanticAbilityDef>
+</Defs>

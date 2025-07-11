@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ResearchProjectDef>
+		<defName>Cosmere_Simple_Alloys</defName>
+		<label>simple alloys</label>
+		<description>Combining base metals to create stronger, more useful materials. Unlocks basic alloys like steel and bronze for construction, crafting, and equipment.</description>
+		<baseCost>300</baseCost>
+		<techLevel>Medieval</techLevel>
+		<researchViewX>0.00</researchViewX>
+		<researchViewY>5.60</researchViewY>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Complex_Alloys</defName>
+		<label>complex alloys</label>
+		<description>Advanced metallurgy techniques enable the forging of rare and potent alloys. Unlocks high-tier materials used in specialized tools, weapons, and metal refinement.</description>
+		<baseCost>1200</baseCost>
+		<techLevel>Industrial</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>5.60</researchViewY>
+		<prerequisites>
+			<li>Smithing</li>
+			<li>Cosmere_Simple_Alloys</li>
+		</prerequisites>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_God_Metals</defName>
+		<tab>Cosmere</tab>
+		<label>god metals</label>
+		<description>Rare and divine, the God Metals transcend ordinary Investiture. This research unlocks the secrets of metals like Atium, Lerasium, and Harmonium—granting powerful abilities, unique crafting recipes, and pivotal roles in ascension, rebirth, and destiny.</description>
+		<baseCost>3600</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>0.00</researchViewX>
+		<researchViewY>0.70</researchViewY>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_God_Metal_Alloys</defName>
+		<tab>Cosmere</tab>
+		<label>god metal alloys</label>
+		<description>The fusion of god metals with base metals unlocks powers once thought myth. By alloying lerasium, atium, and other divine substances, it becomes possible to forge new identities, rewrite spiritual DNA, and grant access to the Metallic Arts in ways no mortal bloodline could. Few possess the knowledge — or the audacity — to attempt it.</description>
+		<baseCost>3200</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>0.70</researchViewY>
+		<prerequisites>
+			<li>Cosmere_Simple_Alloys</li>
+			<li>Cosmere_God_Metals</li>
+		</prerequisites>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
+		<defName>Cosmere_Glass</defName>
+		<label>glass</label>
+		<description>A versatile material made from sand and heat. Unlocks glass production and allows construction of fragile but beautiful objects like windows, lenses, and decorative structures.</description>
+		<baseCost>1800</baseCost>
+		<techLevel>Medieval</techLevel>
+		<researchViewX>1.00</researchViewX>
+		<researchViewY>2.80</researchViewY>
+	</ResearchProjectDef>
+</Defs>

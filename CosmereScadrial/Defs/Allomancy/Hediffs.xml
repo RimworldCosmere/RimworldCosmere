@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef Name="AbstractBurnHediff" ParentName="AbstractCosmereHediff" Abstract="True">
+    <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractBurnHediff" ParentName="AbstractCosmereHediff" Abstract="True">
         <isBad>false</isBad>
         <tendable>false</tendable>
         <displayWound>false</displayWound>
         <everCurableByItem>false</everCurableByItem>
         <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
     </HediffDef>
-    <HediffDef Name="AbstractAllomanticHediff" ParentName="AbstractBurnHediff" Abstract="True">
-        <hediffClass>CosmereScadrial.Abilities.Allomancy.Hediffs.AllomanticHediff</hediffClass>
+    <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff" ParentName="Cosmere_Scadrial_Hediff_AbstractBurnHediff" Abstract="True">
+        <alwaysShowSeverity>true</alwaysShowSeverity>
+        <hediffClass>CosmereScadrial.Allomancy.Hediff.AllomanticHediff</hediffClass>
+        <comps>
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.SeverityCalculatorProperties" />
+        </comps>
     </HediffDef>
-    <HediffDef Name="AbstractTargetHostileBurnHediff" ParentName="AbstractAllomanticHediff" Abstract="True">
+    <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractTargetHostileBurnHediff" ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff" Abstract="True">
         <isBad>true</isBad>
-    </HediffDef>
-    
-    <HediffDef>
-        <defName>Cosmere_Scadrial_Burning_Metals</defName>
-        <label>allomancy</label>
-        <description>Currently burning or flaring the following metals:</description>
-        <countsAsAddedPartOrImplant>false</countsAsAddedPartOrImplant>
-        <hediffClass>CosmereScadrial.Abilities.Allomancy.Hediffs.BurningMetals</hediffClass>
-        <isBad>false</isBad>
-        <tendable>false</tendable>
-        <displayWound>false</displayWound>
-        <everCurableByItem>false</everCurableByItem>
     </HediffDef>
 </Defs>

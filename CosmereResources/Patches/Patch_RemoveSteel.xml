@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="MineableSteel"]/building/mineableScatterCommonality</xpath>
+        <value>
+            <mineableScatterCommonality>0</mineableScatterCommonality>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="Steel"]/deepCommonality</xpath>
+        <value>
+            <deepCommonality>0</deepCommonality>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationRemove">
+        <xpath>Defs/ThingDef[defName="SimpleResearchBench"]/costList</xpath>
+    </Operation>
+    <Operation Class="PatchOperationSequence">
+        <operations>
+            <li Class="PatchOperationAdd">
+                <xpath>Defs/ThingDef[( @ParentName="BenchBase" or @ParentName="BuildingBase" )][costList/Steel][not(researchPrerequisites)]</xpath>
+                <value>
+                    <researchPrerequisites></researchPrerequisites>
+                </value>
+            </li>
+            <li Class="PatchOperationAdd">
+                <xpath>Defs/ThingDef[( @ParentName="BenchBase" or @ParentName="BuildingBase" )][costList/Steel]/researchPrerequisites</xpath>
+                <order>Append</order>
+                <value>
+                    <li>Cosmere_Simple_Alloys</li>
+                </value>
+            </li>
+        </operations>
+    </Operation>
+</Patch>

@@ -1,9 +1,9 @@
 using Verse;
 
-namespace CosmereScadrial {
-    public interface MultiTypeHediff {
-        HediffDef getHediff();
-        HediffDef getFriendlyHediff();
-        HediffDef getHostileHediff();
-    }
+namespace CosmereScadrial;
+
+public interface IMultiTypeHediff {
+    HediffDef? GetHediff();
+    HediffDef? GetFriendlyHediff();
+    HediffDef? GetHostileHediff();
 }

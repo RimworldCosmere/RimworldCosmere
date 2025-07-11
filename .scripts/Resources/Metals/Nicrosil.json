@@ -1,0 +1,50 @@
+{
+  "name": "nicrosil",
+  "description": "Nicrosil is a high-performance alloy crafted from nickel and chromium. Renowned for its exceptional corrosion resistance and structural integrity, nicrosil excels in challenging environments where durability is paramount.",
+  "godMetal": false,
+  "color": [
+    141,
+    139,
+    135
+  ],
+  "marketValue": 20,
+  "beauty": 2,
+  "allomancy": {
+    "userName": "nicroburst",
+    "description": "Allows {PAWN} to boosts another pawn's next Investiture-related ability drastically, at the downside of completely draining them after.",
+    "group": "enhancement",
+    "axis": "external",
+    "polarity": "pushing",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Nicrosil"
+    ]
+  },
+  "feruchemy": {
+    "userName": "soulbearer",
+    "description": "Stores Investiture, enabling storage of magical energy.",
+    "group": "spiritual",
+    "attribute": "Investiture",
+    "customHediffClass": true,
+    "store": {
+      "stages": 1,
+      "description": "This pawn is storing their Investiture in a nicrosil metalmind. Their spiritual connection weakens, reducing their ability to use magical or investiture-based abilities. The power they sacrifice now is preserved for future use — but for now, they feel hollow."
+    },
+    "tap": {
+      "stages": 1,
+      "description": "This pawn is tapping a nicrosil metalmind, enhancing their spiritual potential. Investiture flows through them more freely, amplifying their magical abilities and allowing for prolonged or more potent effects. They burn brighter — but it drains quickly."
+    }
+  },
+  "alloy": {
+    "type": "complex",
+    "ingredients": [
+      {
+        "item": "nickel",
+        "count": 8
+      },
+      {
+        "item": "chromium",
+        "count": 2
+      }
+    ]
+  }
+}

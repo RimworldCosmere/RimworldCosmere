@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RecordDef>
+        <defName>Cosmere_Scadrial_Record_IngestedLerasium</defName>
+        <label>Lerasium Beads ingested</label>
+        <description>The number of Lerasium Beads I have ingested.</description>
+        <type>Int</type>
+        <displayOrder>1100</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Scadrial_Record_IngestedLerasiumAlloy</defName>
+        <label>Lerasium-Alloy Beads ingested</label>
+        <description>The number of Lerasium-Alloy Beads I have ingested.</description>
+        <type>Int</type>
+        <displayOrder>1101</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Scadrial_Record_IngestedLeratium</defName>
+        <label>Leratium Beads ingested</label>
+        <description>The number of Leratium Beads I have ingested.</description>
+        <type>Int</type>
+        <displayOrder>1102</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Scadrial_Record_IngestedLeratiumAlloy</defName>
+        <label>Leratium-Alloy Beads ingested</label>
+        <description>The number of Leratium-Alloy Beads I have ingested.</description>
+        <type>Int</type>
+        <displayOrder>1103</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Scadrial_Record_IngestedVial</defName>
+        <label>Allomantic Vials ingested</label>
+        <description>The number of Allomantic Vials I have ingested.</description>
+        <type>Int</type>
+        <displayOrder>1104</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Scadrial_Record_IngestedRawMetal</defName>
+        <label>Allomantic metal ingested</label>
+        <description>The number of Allomantic Metals I have ingested.</description>
+        <type>Int</type>
+        <displayOrder>1105</displayOrder>
+    </RecordDef>
+</Defs>

@@ -1,0 +1,71 @@
+{
+  "name": "aluminum",
+  "description": "Aluminum is a lightweight, silvery-white metal known for its corrosion resistance and flexibility. Its low density and high strength-to-weight ratio make it ideal for structural and high-tech uses.",
+  "godMetal": false,
+  "color": [
+    163,
+    163,
+    163
+  ],
+  "colorTwo": [
+    194,
+    194,
+    194
+  ],
+  "marketValue": 10,
+  "beauty": 2,
+  "allomancy": {
+    "userName": "gnat (aluminum)",
+    "description": "Shields {PAWN} from investiture. Also wipes away all other investiture reserves.",
+    "group": "enhancement",
+    "axis": "internal",
+    "polarity": "pulling",
+    "abilities": [
+      "Cosmere_Scadrial_Ability_Aluminum"
+    ]
+  },
+  "feruchemy": {
+    "userName": "trueself",
+    "description": "Stores identity, allowing anonymous interactions or forgery.",
+    "group": "spiritual",
+    "attribute": "Identity",
+    "store": {
+      "description": "This pawn is storing nutrition in a aluminum metalmind. Their metabolism speeds up dramatically, burning through food reserves at an accelerated rate. They become hungry faster and must eat more to maintain energy — but the nutrition is preserved for future emergencies.",
+      "stages": 1
+    },
+    "tap": {
+      "description": "This pawn is tapping an aluminum metalmind, solidifying their Identity. Their investiture is tightly bound to them, resisting foreign influence and making keyed metalminds nearly impossible to access by others.",
+      "stages": 1
+    }
+  },
+  "buildable": {
+    "commonality": 0.3,
+    "defense": {
+      "sharp": 0.9,
+      "blunt": 0.25,
+      "heat": 0.40,
+      "coldInsulation": 0,
+      "heatInsulation": 0
+    },
+    "offense": {
+      "sharp": 2,
+      "blunt": 1,
+      "cooldown": 0.8
+    },
+    "stuffStatFactors": {
+      "Mass": 0.6,
+      "MaxHitPoints": 0.9,
+      "Beauty": 3,
+      "Flammability": 0.4
+    }
+  },
+  "mining": {
+    "hitPoints": 1700,
+    "yield": 25,
+    "commonality": 0.2,
+    "sizeRange": [
+      20,
+      30
+    ]
+  }
+}

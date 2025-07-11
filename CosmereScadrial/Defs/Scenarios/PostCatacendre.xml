@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-  <ScenarioDef Name="Cosmere_PostCatacendre">
+  <ScenarioDef Name="Cosmere_PostCatacendre" ParentName="ScenarioBase">
     <defName>Cosmere_Scadrial_PostCatacendre</defName>
     <label>Cosmere - Scadrial: Post-Catacendre</label>
     <description>After the Catacendre, the old world has ended. Harmony watches over a new Scadrial. You are Scadrian settlers and Terris scholars forging a fresh future among the stars and storms.</description>
@@ -17,21 +17,21 @@
           <customSummary>Start with four colonists: a mix of Scadrians and Terris, each reflecting the resilience and legacy of post-Catacendre Scadrial.</customSummary>
           <overrideKinds>
             <li>
-              <xenotype>Cosmere_Scadrian</xenotype>
-              <pawnKind>Cosmere_ScadrianPerson</pawnKind>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Scadrian</pawnKind>
             </li>
             <li>
-              <xenotype>Cosmere_Terris</xenotype>
-              <pawnKind>Cosmere_TerrisPerson</pawnKind>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Terris</pawnKind>
             </li>
           </overrideKinds>
           <xenotypeCounts>
             <li>
-              <xenotype>Cosmere_Scadrian</xenotype>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
               <count>2</count>
             </li>
             <li>
-              <xenotype>Cosmere_Terris</xenotype>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
               <count>2</count>
             </li>
           </xenotypeCounts>
@@ -87,7 +87,7 @@
       </parts>
     </scenario>
     <modExtensions>
-      <li Class="CosmereCore.ModExtensions.Shards">
+      <li Class="CosmereCore.DefModExtension.Shards">
         <shards><li>Harmony</li></shards>
         <allowChange>False</allowChange>
       </li>

@@ -84,14 +84,14 @@ public class Feruchemist : Metalborn {
         if (!canStore && isStoring && !isCompounding) Reset();
 
         if (effectiveSeverity > 0f) {
-            if (targetValue < 50 && canStore) {
-                if (pawn.health.hediffSet.HasHediff(tapHediffDef)) pawn.health.RemoveHediff(tapHediff);
-
-                pawn.health.GetOrAddHediff(storeHediffDef).Severity = effectiveSeverity;
-            } else if (targetValue > 50 && canTap) {
+            if (targetValue < 50 && canTap) {
                 if (pawn.health.hediffSet.HasHediff(storeHediffDef)) pawn.health.RemoveHediff(storeHediff);
 
                 pawn.health.GetOrAddHediff(tapHediffDef).Severity = effectiveSeverity;
+            } else if (targetValue > 50 && canStore) {
+                if (pawn.health.hediffSet.HasHediff(tapHediffDef)) pawn.health.RemoveHediff(tapHediff);
+
+                pawn.health.GetOrAddHediff(storeHediffDef).Severity = effectiveSeverity;
             }
         }
 

@@ -175,6 +175,10 @@ jobs:
       - name: Upload with SteamCMD
         if: ${{ github.ref_type == 'tag' && !endsWith(github.ref_name, '-beta') && !endsWith(github.ref_name, '-alpha') }}
         run: |
+          sudo apt update
+          sudo apt install -y lib32gcc-s1
+          mkdir -p ~/steamcmd
+          curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
           ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
 
       - name: Upload zip artifact

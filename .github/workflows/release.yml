@@ -1,6 +1,13 @@
 name: Publish Cosmere Mods to GitHub
 
-on: push
+on:
+  push:
+    branches:
+      - 'main'   # keep this if you want to keep branch pushes
+      - 'beta'   # keep this if you want to keep branch pushes
+      - 'alpha'   # keep this if you want to keep branch pushes
+    tags:
+      - '**'   # or '**' to catch all tags, not just v-prefixed ones
 
 permissions:
   contents: write # to be able to publish a GitHub release

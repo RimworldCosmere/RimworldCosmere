@@ -6,6 +6,5 @@
         <description>Compounding copper clouds the mind. Names slip away, memories blur, and focus shatters — but each lost moment is etched into the metalmind. With time, the Allomancer can recall every lesson, every detail, with perfect clarity and terrifying speed.</description>
         <metal>Copper</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundCopper</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

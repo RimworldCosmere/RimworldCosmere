@@ -6,6 +6,5 @@
         <description>Compounding zinc drags thought into molasses. Words lose meaning, time stretches, and decisions take effort — all to store razor-edged clarity for the future. With enough patience, the Allomancer can compress hours of cognition into a single perfect instant.</description>
         <metal>Zinc</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundZinc</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

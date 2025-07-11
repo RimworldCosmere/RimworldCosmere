@@ -6,6 +6,5 @@
         <description>Compounding bronze drowns the mind in exhaustion. Eyes flutter, limbs weaken, and each heartbeat feels distant — all to trap alertness within the metalmind. Sleep now, so that one day you may run for days without rest.</description>
         <metal>Bronze</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundBronze</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

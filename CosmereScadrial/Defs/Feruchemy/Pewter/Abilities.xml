@@ -6,6 +6,5 @@
         <description>Compounding pewter chains the body in fatigue. Strength drains, limbs tremble, and every movement feels like dragging stone — all to store boundless power in metal. With enough strain, the Allomancer will move mountains with a single blow.</description>
         <metal>Pewter</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundPewter</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

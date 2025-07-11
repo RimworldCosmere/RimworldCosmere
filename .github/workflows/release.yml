@@ -58,6 +58,9 @@ jobs:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       MOD: ${{ matrix.mod }}
       TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
+      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
+      #STEAM_TFA_SEED: ${{ secrets.STEAM_TFA_SEED }}
 
     steps:
       - name: Checkout

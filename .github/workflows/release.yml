@@ -203,9 +203,8 @@ jobs:
         with:
           node-version: "lts/*"
       - name: Release
-        if: ${{ github.ref_type == 'branch' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GH_TOKEN: ${{ secrets.PAT }}
         run: |
           npm install @semantic-release/git semantic-release-replace-plugin -D
           npx semantic-release

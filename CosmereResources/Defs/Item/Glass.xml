@@ -48,7 +48,6 @@
             <workAmount>750</workAmount>
             <workSpeedStat>SmeltingSpeed</workSpeedStat>
             <workSkill>Crafting</workSkill>
-            <requiredGiverWorkType>Smithing</requiredGiverWorkType>
             <effectWorking>Smith</effectWorking>
             <soundWorking>Recipe_Smelt</soundWorking>
             <researchPrerequisite>Cosmere_Glass</researchPrerequisite>

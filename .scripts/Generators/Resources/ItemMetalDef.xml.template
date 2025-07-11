@@ -11,7 +11,7 @@
             {{#if (eq metal.alloy.type "simple")}}
             <li>Cosmere_Simple_Alloys</li>
             {{/if}}
-            {{#if (eq metal.alloy.type "simple")}}
+            {{#if (eq metal.alloy.type "complex")}}
             <li>Cosmere_Complex_Alloys</li>
             {{/if}}
             {{#if (eq metal.alloy.type "god")}}

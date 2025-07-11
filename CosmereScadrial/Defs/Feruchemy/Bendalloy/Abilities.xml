@@ -6,6 +6,5 @@
         <description>Compounding bendalloy hollows the body. Stomach cramps, energy fades, and hunger gnaws at the bones — but every pang is captured in metal. With enough sacrifice, a single moment can become a feast that lasts for days.</description>
         <metal>Bendalloy</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundBendalloy</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

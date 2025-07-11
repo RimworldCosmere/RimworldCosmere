@@ -35,6 +35,9 @@
         "Breathing": {
           "factor": -0.035
         }
+      },
+      "statFactors": {
+        "VacuumResistance:Ludeon.RimWorld.Odyssey": -0.05
       }
     },
     "tap": {
@@ -43,6 +46,9 @@
         "Breathing": {
           "factor": 0.035
         }
+      },
+      "statFactors": {
+        "VacuumResistance:Ludeon.RimWorld.Odyssey": 0.05
       }
     }
   },

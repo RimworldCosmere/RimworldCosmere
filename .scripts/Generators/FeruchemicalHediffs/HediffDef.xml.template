@@ -24,8 +24,8 @@
                 {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getStatForStage this ../hungerRateFactor}}</hungerRateFactor>{{/if}}{{#if ../capacityMods}}
                 <capMods>
                     {{#each ../capacityMods}}
-                    <li>
-                        <capacity>{{@key}}</capacity>
+                    <li{{{mayRequire @key}}}>
+                        <capacity>{{withoutRequire @key}}</capacity>
                         {{#if factor}}
                         <postFactor>{{getStatForStage @time factor}}</postFactor>
                         {{/if}}
@@ -36,13 +36,13 @@
                 {{/if}}{{#if ../statFactors}}
                 <statFactors>
                     {{#each ../statFactors as |value attribute| }}
-                    <{{attribute}}>{{getStatForStage @time value}}</{{attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getStatForStage @time value}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statFactors>
                 {{/if}}{{#if ../statOffsets}}
                 <statOffsets>
                     {{#each ../statOffsets as |value attribute| }}
-                    <{{attribute}}>{{getStatForStage @time value}}</{{attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getStatForStage @time value}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statOffsets>
                 {{/if}}
@@ -70,8 +70,8 @@
                 {{/if}}{{#if ../hungerRateFactor}}<hungerRateFactor>{{getStatForStage this ../hungerRateFactor}}</hungerRateFactor>{{/if}}{{#if ../capacityMods}}
                 <capMods>
                     {{#each ../capacityMods}}
-                    <li>
-                        <capacity>{{@key}}</capacity>
+                    <li{{{mayRequire @key}}}>
+                        <capacity>{{withoutRequire @key}}</capacity>
                         {{#if this.factor}}
                         <postFactor>{{getStatForStage @time this.factor}}</postFactor>
                         {{/if}}
@@ -82,13 +82,13 @@
                 {{/if}}{{#if ../statFactors}}
                 <statFactors>
                     {{#each ../statFactors as |value attribute| }}
-                    <{{attribute}}>{{getStatForStage @time value}}</{{attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getStatForStage @time value}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statFactors>
                 {{/if}}{{#if ../statOffsets}}
                 <statOffsets>
                     {{#each ../statOffsets as |value attribute| }}
-                    <{{attribute}}>{{getStatForStage @time value}}</{{attribute}}>
+                    <{{withoutRequire attribute}}{{{mayRequire attribute}}}>{{getStatForStage @time value}}</{{withoutRequire attribute}}>
                     {{/each}}
                 </statOffsets>
                 {{/if}}

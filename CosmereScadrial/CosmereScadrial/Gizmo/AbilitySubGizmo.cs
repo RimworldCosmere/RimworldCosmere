@@ -20,7 +20,10 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
     private static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
     private static readonly Texture2D Border = ColorLibrary.Grey.ToSolidColorTexture();
     private static readonly Texture2D AutoBurnBorder = ColorLibrary.LightBlue.ToSolidColorTexture();
+    private static readonly Texture2D AutoBurnBorder1 = ContentFinder<Texture2D>.Get("UI/Widgets/Border1");
+    private static readonly Texture2D AutoBurnBorder2 = ContentFinder<Texture2D>.Get("UI/Widgets/Border2");
 
+    private int autoBurnBorder = 1;
     private AcceptanceReport cachedReport;
     private bool disabled => !cachedReport.Accepted;
     private string? disabledReason => cachedReport.Reason;
@@ -41,7 +44,20 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
         return ability.GizmoEnabled();
     }
 
-    public override GizmoResult OnGUI(Rect rect) {
+    private Texture2D GetBorder(ulong iteration) {
+        if (!ability.willBurnWhileDowned) return Border;
+
+        if (iteration % 10 == 0) {
+            autoBurnBorder = autoBurnBorder == 1 ? 2 : 1;
+        }
+
+        if (autoBurnBorder == 1) return AutoBurnBorder1;
+        if (autoBurnBorder == 2) return AutoBurnBorder2;
+
+        return AutoBurnBorder;
+    }
+
+    public override GizmoResult OnGUI(Rect rect, ulong iteration) {
         cachedReport = GizmoEnabled();
 
         GizmoRenderParms parms = new GizmoRenderParms { shrunk = true, lowLight = false, highLight = false };
@@ -57,7 +73,7 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
             icon,
             background,
             !disabled ? null : TexUI.GrayscaleGUI,
-            borderTexture: ability.willBurnWhileDowned ? AutoBurnBorder : Border
+            borderTexture: GetBorder(iteration)
         );
 
         if (Widgets.ButtonInvisible(rect)) isClicked = true;

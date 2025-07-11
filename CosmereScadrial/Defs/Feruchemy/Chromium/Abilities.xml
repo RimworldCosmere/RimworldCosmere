@@ -6,6 +6,5 @@
         <description>Compounding chromium bends chance until it snaps. Misfortune builds — tools break, paths mislead, luck turns sour. But every unlucky moment fuels the metalmind, storing fortune like a coiled spring. When released, the world will seem to bend in your favor.</description>
         <metal>Chromium</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundChromium</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

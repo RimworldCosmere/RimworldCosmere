@@ -26,6 +26,18 @@ String.prototype.capitalize = function (this: string): string {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+Handlebars.registerHelper('mayRequire', (value: string) => {
+    if (!value.includes(':')) return "";
+
+    const split = value.split(':');
+
+    return ` MayRequire="${split[1]}"`;
+});
+Handlebars.registerHelper('withoutRequire', (value: string) => {
+    if (!value.includes(':')) return value;
+
+    return value.split(':')[0];
+});
 Handlebars.registerHelper('log', (...args: any[]) => console.log(...args));
 Handlebars.registerHelper('lower', (string: string) => {
     return string.toLowerCase();

@@ -6,6 +6,5 @@
         <description>Compounding cadmium turns every breath into a struggle. Lungs burn, vision narrows, and the world grows faint — but the stolen air flows into the metalmind. Store enough, and one day you’ll breathe freely while others choke.</description>
         <metal>Cadmium</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundCadmium</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

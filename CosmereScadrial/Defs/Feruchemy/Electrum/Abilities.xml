@@ -6,6 +6,5 @@
         <description>Compounding electrum dims the will. Confidence fades, determination wavers, and resolve slips through trembling hands — but each moment of weakness strengthens the metalmind. In time, it will hold enough willpower to defy despair itself.</description>
         <metal>Electrum</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundElectrum</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

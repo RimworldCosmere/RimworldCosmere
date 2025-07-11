@@ -6,6 +6,5 @@
         <description>Compounding brass chills the soul. Fingers go numb, breath fogs in warm air, and the body trembles — all to trap heat within metal. Endure the cold long enough, and the Allomancer can unleash a blazing storm from a single spark.</description>
         <metal>Brass</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundBrass</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

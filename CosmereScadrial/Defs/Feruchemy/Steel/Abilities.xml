@@ -6,6 +6,5 @@
         <description>Steel compounding grinds the world to a crawl. Muscles resist motion, limbs feel heavy, and each step takes effort — but every second, speed floods into the metalmind. With patience and pain, the Allomancer becomes a storm waiting to be unleashed.</description>
         <metal>Steel</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundSteel</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

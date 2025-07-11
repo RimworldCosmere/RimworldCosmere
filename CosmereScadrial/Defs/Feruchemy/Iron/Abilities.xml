@@ -6,6 +6,5 @@
         <description>To compound iron is to become an anchor. Limbs turn leaden, the body impossibly heavy — yet every step channels mass into the metalmind. With enough time, the Allomancer can store the weight of mountains, ready to unleash crushing force at will.</description>
         <metal>Iron</metal>
         <hediff>Cosmere_Scadrial_Hediff_CompoundIron</hediff>
-        <iconPath>UI/Icons/PassionMajor</iconPath>
     </CosmereScadrial.Def.AllomanticAbilityDef>
 </Defs>

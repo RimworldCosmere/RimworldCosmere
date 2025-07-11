@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
     <CS_Settings_Category_Incidents>Incident Settings</CS_Settings_Category_Incidents>
-    <CS_Settings_Category_Pawn>Pawn Settings</CS_Settings_Category_Pawn>
+    <CS_Settings_Category_Pawns>Pawn Settings</CS_Settings_Category_Pawns>
     <CS_Settings_MistsFrequency>Mists Frequency: </CS_Settings_MistsFrequency>
     <CS_Settings_PawnsKeepVialOnDown>Pawns keep vials on down: </CS_Settings_PawnsKeepVialOnDown>
     <CS_Settings_PawnsKeepMetalmindsOnDown>Pawns keep metalminds on down: </CS_Settings_PawnsKeepMetalmindsOnDown>

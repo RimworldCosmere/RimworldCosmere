@@ -32,7 +32,6 @@
             <workAmount>{{#if metal.godMetal}}3000{{else}}1500{{/if}}</workAmount>
             <workSpeedStat>SmeltingSpeed</workSpeedStat>
             <workSkill>Crafting</workSkill>
-            <requiredGiverWorkType>Smithing</requiredGiverWorkType>
             <effectWorking>Smelt</effectWorking>
             <productCount>{{ metal.alloy.product.count }}</productCount>
             <soundWorking>Recipe_Smelt</soundWorking>

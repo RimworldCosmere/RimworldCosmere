@@ -6,8 +6,8 @@
 		<description>Combining base metals to create stronger, more useful materials. Unlocks basic alloys like steel and bronze for construction, crafting, and equipment.</description>
 		<baseCost>300</baseCost>
 		<techLevel>Medieval</techLevel>
-		<researchViewX>0.00</researchViewX>
-		<researchViewY>5.60</researchViewY>
+		<researchViewX>3.00</researchViewX>
+		<researchViewY>4.20</researchViewY>
 	</ResearchProjectDef>
 	<ResearchProjectDef>
 		<defName>Cosmere_Complex_Alloys</defName>
@@ -15,10 +15,9 @@
 		<description>Advanced metallurgy techniques enable the forging of rare and potent alloys. Unlocks high-tier materials used in specialized tools, weapons, and metal refinement.</description>
 		<baseCost>1200</baseCost>
 		<techLevel>Industrial</techLevel>
-		<researchViewX>1.00</researchViewX>
-		<researchViewY>5.60</researchViewY>
+		<researchViewX>4.00</researchViewX>
+		<researchViewY>4.20</researchViewY>
 		<prerequisites>
-			<li>Smithing</li>
 			<li>Cosmere_Simple_Alloys</li>
 		</prerequisites>
 	</ResearchProjectDef>
@@ -53,6 +52,6 @@
 		<baseCost>1800</baseCost>
 		<techLevel>Medieval</techLevel>
 		<researchViewX>1.00</researchViewX>
-		<researchViewY>2.80</researchViewY>
+		<researchViewY>4.20</researchViewY>
 	</ResearchProjectDef>
 </Defs>

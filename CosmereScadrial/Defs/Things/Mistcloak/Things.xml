@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+    <ThingDef ParentName="ApparelMakeableBase">
+        <defName>Cosmere_Scadrial_Apparel_Mistcloak</defName>
+        <label>mistcloak</label>
+        <description>A flowing cloak of ribbons designed to confuse observers and blend into the mist. Traditionally worn by Mistborn.</description>
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <texPath>Things/Pawn/Humanlike/Apparel/Mistcloak/Mistcloak</texPath>
+        </graphicData>
+        <techLevel>Neolithic</techLevel>
+		<tradeability>Sellable</tradeability>
+        <costStuffCount>60</costStuffCount>
+        <stuffCategories>
+            <li>Fabric</li>
+            <li>Leathery</li>
+        </stuffCategories>
+		<thingCategories Inherit='False'>
+			<li>Apparel</li>
+		</thingCategories>
+        <statBases>
+            <MaxHitPoints>240</MaxHitPoints>
+            <WorkToMake>8000</WorkToMake>
+            <Mass>2</Mass>
+            <StuffEffectMultiplierArmor>0.2</StuffEffectMultiplierArmor>
+            <StuffEffectMultiplierInsulation_Cold>5.00</StuffEffectMultiplierInsulation_Cold>
+            <StuffEffectMultiplierInsulation_Heat>5.00</StuffEffectMultiplierInsulation_Heat>
+           	<EquipDelay>1.5</EquipDelay>
+            <Cosmere_Scadrial_Stat_AllomanticPower>2.0</Cosmere_Scadrial_Stat_AllomanticPower>
+        </statBases>
+        <apparel>
+            <bodyPartGroups>
+                <li>Torso</li>
+                <li>Shoulders</li>
+                <li>Arms</li>
+            </bodyPartGroups>
+            <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Mistcloak/Mistcloak</wornGraphicPath>
+            <anyTechLevelCanUseForWarmth>true</anyTechLevelCanUseForWarmth>
+            <layers>
+                <li>Shell</li>
+            </layers>
+            <tags>
+                <li>IndustrialBasic</li>
+                <li>Neolithic</li>
+            </tags>
+            <defaultOutfitTags>
+                <li>Worker</li>
+                <li>Soldier</li>
+            </defaultOutfitTags>
+            <canBeDesiredForIdeo>false</canBeDesiredForIdeo>
+        </apparel>
+        <tradeTags>
+            <li>BasicClothing</li>
+        </tradeTags>
+        <recipeMaker>
+            <displayPriority>100</displayPriority>
+        </recipeMaker>
+		<colorGenerator Class="ColorGenerator_StandardApparel" />
+    </ThingDef>
+</Defs>

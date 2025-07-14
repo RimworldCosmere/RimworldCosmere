@@ -1,7 +1,7 @@
 using CosmereCore.Extension;
-using CosmereCore.Util;
 using RimWorld;
 using Verse;
+using StatUtility = CosmereFramework.Util.StatUtility;
 
 namespace CosmereCore.StatPart;
 
@@ -23,10 +23,11 @@ public class GearAndInventoryInvestiture : RimWorld.StatPart {
     }
 
     private bool TryGetValue(StatRequest req, out float value) {
-        return InvestitureStatUtility.TryGetPawnInvestitureStat(
+        return StatUtility.TryGetPawnStat(
             req,
-            x => InvestitureStatUtility.GearAndInventoryInvestiture(x),
-            _ => 0f,
+            parentStat,
+            StatUtility.GearAndInventoryStat,
+            StatUtility.StatBase,
             out value
         );
     }

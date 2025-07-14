@@ -9,3 +9,8 @@ node_modules
 **/*.generated.*
 Cosmere.sln.DotSettings.user
 **/Assemblies
+Assets/Library
+Assets/Logs
+Assets/Packages
+Assets/ProjectSettings
+Assets/Temp

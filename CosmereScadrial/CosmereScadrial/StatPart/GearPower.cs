@@ -1,12 +1,11 @@
 using CosmereCore.Extension;
-using CosmereCore.Need;
 using RimWorld;
 using Verse;
 using StatUtility = CosmereFramework.Util.StatUtility;
 
-namespace CosmereCore.StatPart;
+namespace CosmereScadrial.StatPart;
 
-public class NeedInvestiture : RimWorld.StatPart {
+public class GearPower : RimWorld.StatPart {
     public override void TransformValue(StatRequest req, ref float val) {
         if (TryGetValue(req, out float value)) {
             val += value;
@@ -15,7 +14,9 @@ public class NeedInvestiture : RimWorld.StatPart {
 
     public override string? ExplanationPart(StatRequest req) {
         if (TryGetValue(req, out float value)) {
-            return "CC_StatsReport_NeedInvestiture".Translate() + ": " + value.ToStringBreathEquivalentUnits();
+            return "CS_StatsReport_GearPower".Translate() +
+                   ": " +
+                   value.ToStringBreathEquivalentUnitsRaw();
         }
 
         return null;
@@ -25,7 +26,7 @@ public class NeedInvestiture : RimWorld.StatPart {
         return StatUtility.TryGetPawnStat(
             req,
             parentStat,
-            StatUtility.NeedLevel<Investiture>,
+            StatUtility.GearStat,
             StatUtility.StatBase,
             out value
         );

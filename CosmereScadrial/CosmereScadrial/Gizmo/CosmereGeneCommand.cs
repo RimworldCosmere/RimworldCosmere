@@ -12,6 +12,11 @@ using Verse;
 
 namespace CosmereScadrial.Gizmo;
 
+public enum Status {
+    Green,
+    Red
+}
+
 [StaticConstructorOnStartup]
 public abstract class CosmereGeneCommand(
     Gene_Resource gene,
@@ -28,7 +33,9 @@ public abstract class CosmereGeneCommand(
 
     protected static readonly Texture2D EmptyBarTex = new Color(0.03f, 0.035f, 0.05f).ToSolidColorTexture();
     protected static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
-
+    
+    protected static readonly Texture2D StatusGreen = ContentFinder<Texture2D>.Get("UI/Widgets/StatusGreen");
+    protected static readonly Texture2D StatusRed = ContentFinder<Texture2D>.Get("UI/Widgets/StatusGreen");
 
     private static readonly Texture2D PlusIcon = ContentFinder<Texture2D>.Get("UI/Buttons/Plus");
     private static readonly Texture2D MinusIcon = ContentFinder<Texture2D>.Get("UI/Buttons/Minus");
@@ -81,6 +88,10 @@ public abstract class CosmereGeneCommand(
 
     protected override string Title => metal.LabelCap;
     protected bool shrunk => gene.gizmoShrunk;
+
+    protected virtual bool shouldShowStatus => false;
+
+    protected virtual Status status => Status.Red;
 
     protected override float Width {
         get {
@@ -187,7 +198,7 @@ public abstract class CosmereGeneCommand(
     }
 
     protected virtual Rect DrawIconBox(ref bool mouseOverElement) {
-        const float toggleSizeButtonSize = 14f;
+        const float statusRectSize = 14f;
         Rect rect = new Rect(mainRect!.Value.x, mainRect.Value.y, mainRect.Value.height, mainRect.Value.height);
         UIUtil.DrawIcon(
             rect,
@@ -213,25 +224,18 @@ public abstract class CosmereGeneCommand(
             }
         }
 
-        Rect toggleShrunk = new Rect(
+        if (!shouldShowStatus) {
+            return rect;
+        }
+        
+        Rect statusRect = new Rect(
             rect.xMin,
             rect.yMin + 2,
-            toggleSizeButtonSize,
-            toggleSizeButtonSize
-        );
-        TooltipHandler.TipRegion(
-            toggleShrunk,
-            () => "CS_ToggleGizmoSize".Translate(),
-            Gen.HashCombineInt(GetHashCode(), 97519827)
+            statusRectSize,
+            statusRectSize
         );
 
-        if (Widgets.ButtonImageFitted(toggleShrunk, shrunk ? PlusIcon : MinusIcon)) {
-            gene.gizmoShrunk = !shrunk;
-        }
-
-        if (Mouse.IsOver(toggleShrunk)) {
-            mouseOverElement = true;
-        }
+        Widgets.DrawTextureFitted(statusRect, status == Status.Green ? StatusGreen : StatusRed, 1f);
 
         return rect;
     }

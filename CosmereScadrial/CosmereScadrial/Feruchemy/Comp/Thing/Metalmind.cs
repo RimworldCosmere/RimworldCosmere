@@ -22,9 +22,10 @@ public class Metalmind : ThingComp {
     public Pawn? owner { get; private set; }
     private new MetalmindProperties props => (MetalmindProperties)base.props;
 
+    public bool equipped = false;
     public float maxAmount => props.maxAmount;
-    public bool canStore => storedAmount < maxAmount;
-    public bool canTap => storedAmount > 0;
+    public bool canStore => equipped ? storedAmount < maxAmount : false;
+    public bool canTap => equipped ? storedAmount > 0 : false;
 
     public float StoredAmount => storedAmount;
 
@@ -46,6 +47,10 @@ public class Metalmind : ThingComp {
     }
 
     public void AddStored(float amount) {
+        if (!canStore) {
+            return;
+        }
+        
         if (owner == null) {
             owner = parent.holdingOwner.Owner as Pawn;
         } else if (!owner.Equals(parent.holdingOwner.Owner)) {
@@ -56,6 +61,10 @@ public class Metalmind : ThingComp {
     }
 
     public void ConsumeStored(float amount) {
+        if (!canTap) {
+            return;
+        }
+        
         if (owner == null) {
             owner = parent.holdingOwner.Owner as Pawn;
         } else if (!owner.Equals(parent.holdingOwner.Owner)) {
@@ -69,6 +78,7 @@ public class Metalmind : ThingComp {
         base.PostExposeData();
 
         Scribe_Values.Look(ref storedAmount, "storedAmount");
+        Scribe_Values.Look(ref equipped, "equipped");
 
         // Optionally restore cachedMetal if needed (but can be recomputed)
         if (Scribe.mode == LoadSaveMode.PostLoadInit) {

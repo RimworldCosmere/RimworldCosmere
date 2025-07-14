@@ -15,4 +15,6 @@ public class JobDefOf {
     public static JobDef Cosmere_Scadrial_Job_CastAllomanticAbilityAtTarget;
     public static JobDef Cosmere_Scadrial_Job_FollowGoldHallucination;
     public static JobDef Cosmere_Scadrial_Job_GivePatientVial;
+    public static JobDef Cosmere_Scadrial_Job_EquipMetalmind;
+    public static JobDef Cosmere_Scadrial_Job_UnequipMetalmind;
 }

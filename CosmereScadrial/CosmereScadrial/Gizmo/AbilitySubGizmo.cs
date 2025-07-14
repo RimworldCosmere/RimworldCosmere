@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using CosmereFramework.Extension;
 using CosmereFramework.Util;
@@ -19,16 +20,27 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
     private static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
     private static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
     private static readonly Texture2D Border = ColorLibrary.Grey.ToSolidColorTexture();
-    private static readonly Texture2D AutoBurnBorder = ColorLibrary.LightBlue.ToSolidColorTexture();
-    private static readonly Texture2D AutoBurnBorder1 = ContentFinder<Texture2D>.Get("UI/Widgets/Border1");
-    private static readonly Texture2D AutoBurnBorder2 = ContentFinder<Texture2D>.Get("UI/Widgets/Border2");
 
-    private int autoBurnBorder = 1;
+    private static readonly List<Texture2D> AutoBurnBorders = [
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B1"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B2"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B3"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B4"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B5"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B6"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B7"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B8"),
+    ];
+
     private AcceptanceReport cachedReport;
+    private int currentAutoBorderIndex;
+
+    private ulong iteration;
     private bool disabled => !cachedReport.Accepted;
     private string? disabledReason => cachedReport.Reason;
 
-    private Texture2D icon => disabled ? ability.def.disabledIcon : ability.def.uiIcon;
+    private Texture2D icon => disabled ? ability.def.disabledIcon :
+        ability.paused ? ability.def.pausedIcon : ability.def.uiIcon;
 
     private Texture2D background => ability.status switch {
         null => BgTexOff,
@@ -43,20 +55,20 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
         return ability.GizmoEnabled();
     }
 
-    private Texture2D GetBorder(ulong iteration) {
-        if (!ability.willBurnWhileDowned) return Border;
-
-        if (iteration % 10 == 0) {
-            autoBurnBorder = autoBurnBorder == 1 ? 2 : 1;
+    private Texture2D GetBorder() {
+        if (!ability.willBurnWhileDowned || AutoBurnBorders.NullOrEmpty()) {
+            return Border;
         }
 
-        if (autoBurnBorder == 1) return AutoBurnBorder1;
-        if (autoBurnBorder == 2) return AutoBurnBorder2;
+        // Change frame every 10 ticks
+        if (iteration++ % 10 == 0) {
+            currentAutoBorderIndex = (currentAutoBorderIndex + 1) % AutoBurnBorders.Count;
+        }
 
-        return AutoBurnBorder;
+        return AutoBurnBorders[currentAutoBorderIndex];
     }
 
-    public override GizmoResult OnGUI(Rect rect, ulong iteration) {
+    public override GizmoResult OnGUI(Rect rect) {
         cachedReport = GizmoEnabled();
 
         GizmoRenderParms parms = new GizmoRenderParms { shrunk = true, lowLight = false, highLight = false };
@@ -72,7 +84,7 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
             icon,
             background,
             !disabled ? null : TexUI.GrayscaleGUI,
-            borderTexture: GetBorder(iteration)
+            borderTexture: GetBorder()
         );
 
         if (Widgets.ButtonInvisible(rect)) isClicked = true;

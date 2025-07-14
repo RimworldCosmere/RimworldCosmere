@@ -18,6 +18,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     protected int flareStartTick = -1;
     public GlobalTargetInfo? globalTarget;
     public LocalTargetInfo? localTarget;
+    public bool paused;
     public BurningStatus? status;
     public bool willBurnWhileDowned;
 

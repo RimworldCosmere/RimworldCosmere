@@ -24,6 +24,7 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
     public float hediffSeverityFactor = 1f;
     public MetallicArtsMetalDef metal = null!;
     public float minSeverityForDrag = 1f;
+    public Texture2D pausedIcon = BaseContent.BadTex;
     public bool toggleable = false;
 
     public override TaggedString LabelCap {
@@ -77,6 +78,7 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
                     uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
                              metal.invertedIcon!;
                     disabledIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
+                    pausedIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Pause"));
                 }
             );
         } else {

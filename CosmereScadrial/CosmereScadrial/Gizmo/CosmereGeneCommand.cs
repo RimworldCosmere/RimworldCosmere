@@ -58,7 +58,6 @@ public abstract class CosmereGeneCommand(
 
     protected Rect? iconRect;
     protected bool initialized;
-    protected ulong iteration;
     protected Rect? labelRect;
     protected Rect? mainRect;
     protected Rect? outerRect;
@@ -119,7 +118,7 @@ public abstract class CosmereGeneCommand(
             topBarRect.Value.height
         );
         foreach (SubGizmo subgizmo in subgizmos) {
-            GizmoResult result = subgizmo.OnGUI(abilityRect, iteration);
+            GizmoResult result = subgizmo.OnGUI(abilityRect);
             switch (result.State) {
                 case GizmoState.Interacted:
                     subgizmo.ProcessInput(result.InteractEvent);
@@ -284,7 +283,6 @@ public abstract class CosmereGeneCommand(
     }
 
     public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {
-        iteration++;
         Initialize();
         bool mouseOver = false;
 

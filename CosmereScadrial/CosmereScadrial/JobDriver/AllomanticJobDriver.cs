@@ -8,8 +8,9 @@ using Verse.AI;
 namespace CosmereScadrial.JobDriver;
 
 public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
+    private ILoadReferenceable cachedSource;
     protected virtual Pawn targetPawn => TargetA.Pawn;
-    protected virtual AbstractAbility ability => (AbstractAbility)job.source;
+    protected virtual AbstractAbility ability => (AbstractAbility)(job?.source ?? cachedSource);
     protected virtual Allomancer gene => ability.gene;
     protected virtual bool targetIsPawn => targetPawn != null;
 
@@ -32,6 +33,16 @@ public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
     }
 
     protected virtual bool ShouldStopJob() {
-        return pawn.Downed || pawn.Dead || !pawn.CanUseMetal(ability.metal);
+        return pawn.Downed || pawn.Dead || !pawn.CanUseMetal(gene.metal);
+    }
+
+    public override void ExposeData() {
+        base.ExposeData();
+
+        Scribe_References.Look(ref cachedSource, "cachedSource");
+
+        if (Scribe.mode == LoadSaveMode.PostLoadInit && cachedSource != null) {
+            job.source = cachedSource;
+        }
     }
 }

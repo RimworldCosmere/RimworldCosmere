@@ -38,12 +38,12 @@ public abstract partial class AbstractAbility {
         }
 
         Job? job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, targetInfo);
+        job.source = this;
         job.ability = this;
         job.verbToUse = verb;
         job.playerForced = true;
         job.targetA = targetInfo;
         job.targetB = destination;
-        job.source = this;
         job.count = (int)(status ?? BurningStatus.Burning);
 
         return job;

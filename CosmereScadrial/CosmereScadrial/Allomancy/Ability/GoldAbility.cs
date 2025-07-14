@@ -36,6 +36,7 @@ public class GoldAbility : AbilitySelfTarget {
         if (!pawn.CurJob.def.Equals(JobDefOf.Cosmere_Scadrial_Job_FollowGoldHallucination) && hallucination != null) {
             pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
             job = JobMaker.MakeJob(JobDefOf.Cosmere_Scadrial_Job_FollowGoldHallucination, hallucination);
+            job.source = this;
             job.ability = this;
             job.verbToUse = verb;
             job.playerForced = true;

@@ -77,7 +77,6 @@ public class Feruchemist : Metalborn {
     }
 
     public override void TickInterval(int delta) {
-        if (Find.Selector.IsSelected(pawn)) Logger.Info($"Target Value for {metal.LabelCap}: {targetValue}");
         base.TickInterval(delta);
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;

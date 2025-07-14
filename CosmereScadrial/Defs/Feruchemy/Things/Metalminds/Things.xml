@@ -62,6 +62,7 @@
             <Mass>0.005</Mass>
             <MaxHitPoints>75</MaxHitPoints>
             <WorkToMake>750</WorkToMake>
+            <Cosmere_Investiture>.1</Cosmere_Investiture>
         </statBases>
     </ThingDef>
 
@@ -83,6 +84,7 @@
             <Mass>0.015</Mass>
             <MaxHitPoints>150</MaxHitPoints>
             <WorkToMake>2250</WorkToMake>
+            <Cosmere_Investiture>.2</Cosmere_Investiture>
         </statBases>
     </ThingDef>
 
@@ -104,6 +106,7 @@
             <Mass>0.03</Mass>
             <MaxHitPoints>300</MaxHitPoints>
             <WorkToMake>5000</WorkToMake>
+            <Cosmere_Investiture>.3</Cosmere_Investiture>
         </statBases>
     </ThingDef>
 </Defs>

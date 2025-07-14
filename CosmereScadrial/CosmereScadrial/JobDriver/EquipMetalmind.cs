@@ -25,12 +25,14 @@ public class EquipMetalmind : Verse.AI.JobDriver {
     }
 
     protected override IEnumerable<Toil> MakeNewToils() {
-        this.FailOnDespawnedNullOrForbidden(TargetIndex.B);
-        
+        this.FailOn(() => !GetActor().health.capacities.CapableOf(PawnCapacityDefOf.Manipulation));
+        this.FailOn(() => MassUtility.CountToPickUpUntilOverEncumbered(pawn, job.targetA.Thing) == 0);
+        this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+
+        yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch)
+            .FailOnSomeonePhysicallyInteracting(TargetIndex.A);
+        yield return Toils_General.Wait(50).WithProgressBarToilDelay(TargetIndex.A);
         yield return Toils_Haul.TakeToInventory(TargetIndex.A, job.count);
-        yield return Toils_General.Wait(25).WithProgressBarToilDelay(TargetIndex.A);
-        yield return Toils_General.Do(() => {
-            metalmindComp!.equipped = true;
-        });
+        yield return Toils_General.Do(() => { metalmindComp!.equipped = true; });
     }
 }

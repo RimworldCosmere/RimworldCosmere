@@ -12,8 +12,8 @@ using Logger = CosmereFramework.Logger;
 namespace CosmereScadrial.Allomancy.Ability;
 
 public abstract partial class AbstractAbility : RimWorld.Ability {
-    public readonly Allomancer gene;
     protected Mote? burningMote;
+    private Allomancer? cachedGene;
 
     protected int flareStartTick = -1;
     public GlobalTargetInfo? globalTarget;
@@ -24,11 +24,11 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     // protected AbstractAbility() { }
 
     protected AbstractAbility(Pawn pawn) : base(pawn) {
-        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
+        // gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
     }
 
     protected AbstractAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) {
-        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
+        // gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
     }
 
     protected AbstractAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
@@ -36,7 +36,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             status = BurningStatus.Off;
         }
 
-        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
         Initialize();
     }
 
@@ -45,9 +44,10 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             status = BurningStatus.Off;
         }
 
-        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
         Initialize();
     }
+
+    public Allomancer gene => cachedGene ??= pawn.genes.GetAllomanticGeneForMetal(metal)!;
 
     public BurningStatus? nextStatus { get; private set; }
 

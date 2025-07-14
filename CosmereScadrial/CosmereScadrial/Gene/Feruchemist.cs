@@ -5,6 +5,7 @@ using CosmereScadrial.Gizmo;
 using CosmereScadrial.Util;
 using UnityEngine;
 using Verse;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereScadrial.Gene;
 
@@ -52,14 +53,16 @@ public class Feruchemist : Metalborn {
     private float effectiveSeverity {
         get {
             float delta = targetValue - 50f;
-            if (Mathf.Abs(delta) < 1f) return 0f; // Deadzone from 49–51
+            if (Mathf.Abs(delta) < 2f) return 0f; // Deadzone: 49–51
 
             float exponent = 2.5f;
             float maxSeverity = 19f;
-            float normalized = Mathf.Abs(delta) / 50f; // [0, 1]
-            return 1 + Mathf.Pow(normalized, exponent) * maxSeverity; // [1, 20]
+
+            float normalized = Mathf.Abs(delta) / 50f; // [0,1]
+            return 1f + Mathf.Pow(normalized, exponent) * maxSeverity; // [1,20]
         }
     }
+
 
     public override void Reset() {
         targetValue = 50f;
@@ -74,6 +77,7 @@ public class Feruchemist : Metalborn {
     }
 
     public override void TickInterval(int delta) {
+        if (Find.Selector.IsSelected(pawn)) Logger.Info($"Target Value for {metal.LabelCap}: {targetValue}");
         base.TickInterval(delta);
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;

@@ -97,7 +97,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
 
         if (pawns.TryPopFront(out pawn)) {
             PrepareColonistAsMisting(pawn, false, true, MetalDefOf.Steel);
-            PrepareColonistAsFerring(pawn, false, true, MetalDefOf.Iron);
+            PrepareColonistAsFerring(pawn, true, true, MetalDefOf.Iron);
             pawn.Name = new NameTriple("Waxillium", "Wax", "Ladrian");
             pawn.gender = Gender.Male;
         }

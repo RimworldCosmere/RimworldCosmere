@@ -33,7 +33,6 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
     private Texture2D background => ability.status switch {
         null => BgTexOff,
         BurningStatus.Off => BgTexOff,
-        BurningStatus.Passive => BgTexBurning,
         BurningStatus.Burning => BgTexBurning,
         BurningStatus.Flaring => BgTexFlaring,
         BurningStatus.Duralumin => BgTexFlaring,
@@ -137,12 +136,12 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
             return;
         }
 
-        if (ability.atLeastPassive) {
+        if (ability.atLeastBurning) {
             bool isFlaring = ability.status == BurningStatus.Flaring;
-            bool isBurningOrPassive = ability.status is BurningStatus.Burning or BurningStatus.Passive;
+            bool isBurning = ability.status is BurningStatus.Burning;
 
             if (ev.control) {
-                if (isBurningOrPassive) {
+                if (isBurning) {
                     ability.SetNextStatus(BurningStatus.Flaring);
                 } else if (isFlaring) {
                     ability.SetNextStatus(BurningStatus.Burning);

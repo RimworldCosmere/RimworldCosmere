@@ -58,7 +58,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
         set => base.def = value;
     }
 
-    public bool atLeastPassive => status >= BurningStatus.Passive;
+    public bool atLeastBurning => status >= BurningStatus.Burning;
 
     public MetallicArtsMetalDef metal => def.metal;
 
@@ -112,7 +112,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     protected virtual float GetMoteScale() {
         return status switch {
             BurningStatus.Off => 0f,
-            BurningStatus.Passive => 0.5f,
             BurningStatus.Burning => 1f,
             BurningStatus.Flaring => 2f,
             BurningStatus.Duralumin => 10f,
@@ -127,7 +126,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     public float GetDesiredBurnRateForStatus(BurningStatus? burningStatus) {
         return (burningStatus ?? status ?? BurningStatus.Off) switch {
             BurningStatus.Off => 0,
-            BurningStatus.Passive => def.beuPerTick / 2,
             BurningStatus.Burning => def.beuPerTick,
             BurningStatus.Flaring => def.beuPerTick * 2,
             BurningStatus.Duralumin => 0.00000001f,
@@ -138,7 +136,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     public float GetStrength(BurningStatus? burningStatus = null) {
         float statusValue = (burningStatus ?? status ?? BurningStatus.Off) switch {
             BurningStatus.Off => 0f,
-            BurningStatus.Passive => 0.5f,
             BurningStatus.Burning => 1f,
             BurningStatus.Flaring => 2f,
             BurningStatus.Duralumin => pawn.GetAllomanticReservePercent(MetalDefOf.Duralumin) * 10f,

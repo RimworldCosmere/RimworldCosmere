@@ -14,7 +14,7 @@ namespace CosmereScadrial.Gizmo;
 
 public enum Status {
     Green,
-    Red
+    Red,
 }
 
 [StaticConstructorOnStartup]
@@ -33,7 +33,7 @@ public abstract class CosmereGeneCommand(
 
     protected static readonly Texture2D EmptyBarTex = new Color(0.03f, 0.035f, 0.05f).ToSolidColorTexture();
     protected static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
-    
+
     protected static readonly Texture2D StatusGreen = ContentFinder<Texture2D>.Get("UI/Widgets/StatusGreen");
     protected static readonly Texture2D StatusRed = ContentFinder<Texture2D>.Get("UI/Widgets/StatusGreen");
 
@@ -197,8 +197,21 @@ public abstract class CosmereGeneCommand(
         return cachedTooltipDescription = "";
     }
 
-    protected virtual Rect DrawIconBox(ref bool mouseOverElement) {
+    protected virtual void DrawIconBoxButtons(Rect rect, ref bool mouseOverElement) {
         const float statusRectSize = 14f;
+        if (!shouldShowStatus) return;
+
+        Rect statusRect = new Rect(
+            rect.xMin,
+            rect.yMin + 2,
+            statusRectSize,
+            statusRectSize
+        );
+
+        Widgets.DrawTextureFitted(statusRect, status == Status.Green ? StatusGreen : StatusRed, 1f);
+    }
+
+    protected virtual Rect DrawIconBox(ref bool mouseOverElement) {
         Rect rect = new Rect(mainRect!.Value.x, mainRect.Value.y, mainRect.Value.height, mainRect.Value.height);
         UIUtil.DrawIcon(
             rect,
@@ -208,10 +221,6 @@ public abstract class CosmereGeneCommand(
             offset: new Vector2(0, -4f),
             doBorder: false
         );
-
-        if (Widgets.ButtonInvisible(rect)) {
-            gene.gizmoShrunk = !shrunk;
-        }
 
         if (!Title.NullOrEmpty()) {
             using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter)) {
@@ -224,18 +233,11 @@ public abstract class CosmereGeneCommand(
             }
         }
 
-        if (!shouldShowStatus) {
-            return rect;
-        }
-        
-        Rect statusRect = new Rect(
-            rect.xMin,
-            rect.yMin + 2,
-            statusRectSize,
-            statusRectSize
-        );
+        DrawIconBoxButtons(rect, ref mouseOverElement);
 
-        Widgets.DrawTextureFitted(statusRect, status == Status.Green ? StatusGreen : StatusRed, 1f);
+        if (!mouseOverElement && Widgets.ButtonInvisible(rect)) {
+            gene.gizmoShrunk = !shrunk;
+        }
 
         return rect;
     }

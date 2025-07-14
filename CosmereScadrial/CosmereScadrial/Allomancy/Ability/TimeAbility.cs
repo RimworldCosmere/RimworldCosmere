@@ -63,7 +63,7 @@ public class TimeAbility : AbilitySelfTarget {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!atLeastPassive) return;
+        if (!atLeastBurning) return;
 
         bubble?.Maintain();
         bubbleWithDistortion?.Maintain();

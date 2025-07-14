@@ -75,10 +75,8 @@ public class AllomanticGeneCommand(
         return metal.allomancy!.invertedIcon;
     }
 
-    protected override Rect DrawIconBox(ref bool mouseOverElement) {
+    protected override void DrawIconBoxButtons(Rect rect, ref bool mouseOverElement) {
         const float configureButtonSize = 20f;
-
-        Rect rect = base.DrawIconBox(ref mouseOverElement);
 
         Rect configureRect = new Rect(
             rect.xMax - configureButtonSize,
@@ -102,7 +100,5 @@ public class AllomanticGeneCommand(
         }
 
         if (Mouse.IsOver(configureRect)) mouseOverElement = true;
-
-        return rect;
     }
 }

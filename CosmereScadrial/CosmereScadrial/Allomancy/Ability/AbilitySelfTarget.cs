@@ -7,6 +7,7 @@ using Verse;
 namespace CosmereScadrial.Allomancy.Ability;
 
 public class AbilitySelfTarget : AbstractAbility {
+    public bool paused;
     public AbilitySelfTarget(Pawn pawn) : base(pawn) { }
 
     public AbilitySelfTarget(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
@@ -33,26 +34,40 @@ public class AbilitySelfTarget : AbstractAbility {
     public override void AbilityTick() {
         base.AbilityTick();
 
-        if (willBurnWhileDowned && pawn.Downed && !pawn.Dead && !atLeastPassive) {
+        if (willBurnWhileDowned && pawn.Downed && !pawn.Dead && !atLeastBurning) {
             if (gene.CanLowerReserve(gene.GetMetalNeededForBreathEquivalentUnits(def.beuPerTick))) {
-                UpdateStatus(BurningStatus.Passive);
+                UpdateStatus(BurningStatus.Burning);
             }
         }
 
-        if (!atLeastPassive) {
+        if (!atLeastBurning) {
+            return;
+        }
+
+        if (pawn.IsAsleep() && status == BurningStatus.Flaring && !def.canBurnWhileAsleep) {
+            UpdateStatus(BurningStatus.Burning);
+        }
+
+        if (paused && !pawn.IsAsleep()) {
+            paused = false;
+            gene.UpdateBurnSource((def, GetDesiredBurnRateForStatus(status)));
+            OnEnable();
+            if (status == BurningStatus.Flaring) OnFlare();
             return;
         }
 
         if (pawn.Downed) {
-            if (status > BurningStatus.Passive && (!def.canBurnWhileDowned || !willBurnWhileDowned)) {
+            if (status > BurningStatus.Burning && (!def.canBurnWhileDowned || !willBurnWhileDowned)) {
                 UpdateStatus(BurningStatus.Off);
             } else if (status == BurningStatus.Off && willBurnWhileDowned) {
-                UpdateStatus(BurningStatus.Passive);
+                UpdateStatus(BurningStatus.Burning);
             }
-        } else if (pawn.IsAsleep() && status > BurningStatus.Passive) {
-            UpdateStatus(def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off);
-        } else if (!pawn.IsAsleep() && status == BurningStatus.Passive) {
-            UpdateStatus(BurningStatus.Burning);
+        }
+
+        if (!paused && pawn.IsAsleep() && status >= BurningStatus.Burning && !def.canBurnWhileAsleep) {
+            paused = true;
+            gene.UpdateBurnSource((def, GetDesiredBurnRateForStatus(BurningStatus.Off)));
+            OnDisable();
         }
     }
 
@@ -63,16 +78,15 @@ public class AbilitySelfTarget : AbstractAbility {
 
     protected override void OnDisable() {
         base.OnDisable();
-        ApplyDrag(pawn, flareDuration / 3000f);
+        OnDeFlare();
         RemoveHediff(pawn);
-        flareStartTick = -1;
     }
 
     protected override void OnFlare() {
         base.OnFlare();
         flareStartTick = Find.TickManager.TicksGame;
-        GetOrAddHediff(pawn);
         RemoveDrag(pawn);
+        OnEnable();
     }
 
     protected override void OnDeFlare() {

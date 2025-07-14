@@ -1,4 +1,3 @@
-using CosmereFramework.Extension;
 using CosmereScadrial.Allomancy.Hediff;
 using RimWorld;
 using Verse;
@@ -23,14 +22,8 @@ public class GoldAbility : AbilitySelfTarget {
     public override void AbilityTick() {
         base.AbilityTick();
 
-        if (!atLeastPassive) {
+        if (!atLeastBurning) {
             return;
-        }
-
-        if (pawn.IsAsleep() && status > BurningStatus.Passive) {
-            UpdateStatus(BurningStatus.Passive);
-        } else if (!pawn.IsAsleep() && status == BurningStatus.Passive) {
-            UpdateStatus(BurningStatus.Burning);
         }
 
         if (!pawn.CurJob.def.Equals(JobDefOf.Cosmere_Scadrial_Job_FollowGoldHallucination) && hallucination != null) {

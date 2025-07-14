@@ -5,4 +5,6 @@
     <CS_NoMetalminds>No Metalminds</CS_NoMetalminds>
     <CS_NoFeruchemicProperties>No Feruchemic properties.</CS_NoFeruchemicProperties>
     <CS_NotFerring>not a {FERRING}</CS_NotFerring>
+    <CS_MetalmindOwner>Owner</CS_MetalmindOwner>
+    <CS_MetalmindStored>{METAL} Stored</CS_MetalmindStored>
 </LanguageData>

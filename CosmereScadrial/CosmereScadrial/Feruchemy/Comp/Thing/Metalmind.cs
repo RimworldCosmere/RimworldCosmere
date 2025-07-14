@@ -18,11 +18,11 @@ public class MetalmindProperties : CompProperties {
 
 public class Metalmind : ThingComp {
     private MetalDef? cachedMetal;
+
+    public bool equipped = true;
     private float storedAmount;
     public Pawn? owner { get; private set; }
     private new MetalmindProperties props => (MetalmindProperties)base.props;
-
-    public bool equipped = false;
     public float maxAmount => props.maxAmount;
     public bool canStore => equipped ? storedAmount < maxAmount : false;
     public bool canTap => equipped ? storedAmount > 0 : false;
@@ -50,7 +50,7 @@ public class Metalmind : ThingComp {
         if (!canStore) {
             return;
         }
-        
+
         if (owner == null) {
             owner = parent.holdingOwner.Owner as Pawn;
         } else if (!owner.Equals(parent.holdingOwner.Owner)) {
@@ -64,7 +64,7 @@ public class Metalmind : ThingComp {
         if (!canTap) {
             return;
         }
-        
+
         if (owner == null) {
             owner = parent.holdingOwner.Owner as Pawn;
         } else if (!owner.Equals(parent.holdingOwner.Owner)) {
@@ -98,7 +98,7 @@ public class Metalmind : ThingComp {
     public override string CompInspectStringExtra() {
         StringBuilder sb = new StringBuilder();
         TaggedString coloredOwner = owner?.NameFullColored ?? "None".Colorize(ColoredText.DateTimeColor);
-        sb.AppendLine("CS_MetalmindOwner".Translate(coloredOwner.Named("OWNER")).Resolve());
+        sb.AppendLine("CS_MetalmindOwner".Translate() + ": " + coloredOwner);
         NamedArgument coloredMetal = metal.coloredLabel.Named("METAL");
         sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {storedAmount:F1} / {maxAmount}");
 

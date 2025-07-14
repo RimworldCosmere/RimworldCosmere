@@ -1,4 +1,3 @@
-using CosmereFramework.Extension;
 using RimWorld.Planet;
 using Verse;
 using Verse.AI;
@@ -54,10 +53,6 @@ public abstract partial class AbstractAbility {
 
         if (!def.canFlare && desiredStatus is BurningStatus.Flaring or BurningStatus.Duralumin) {
             desiredStatus = BurningStatus.Burning;
-        }
-
-        if (pawn.IsAsleep() && desiredStatus >= BurningStatus.Burning) {
-            desiredStatus = def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off;
         }
 
         if (pawn.Downed && !willBurnWhileDowned) {

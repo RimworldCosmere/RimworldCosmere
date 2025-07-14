@@ -87,7 +87,7 @@ public class Allomancer : Metalborn {
         if (!timeDilationFactor.HasValue) UpdateTimeDilationFactor();
 
         if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta) && pawn.IsAsleep()) {
-            RemoveFromReserve(SleepDecayAmountPerRareInterval / Mathf.Max(0, Mathf.Log(skill.Level + 1, 2f)));
+            // RemoveFromReserve(SleepDecayAmountPerRareInterval / Mathf.Max(0, Mathf.Log(skill.Level + 1, 2f)));
         }
 
         if (sources.Count > 0 && pawn.IsHashIntervalTick(burnTickRate, delta)) {

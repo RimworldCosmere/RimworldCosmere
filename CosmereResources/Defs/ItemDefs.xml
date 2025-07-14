@@ -3,8 +3,6 @@
     <ThingDef Name="CosmereResourceBase" ParentName="ResourceBase" Abstract="True">
         <useHitPoints>false</useHitPoints>
         <healthAffectsPrice>false</healthAffectsPrice>
-        <tradeability>All</tradeability>
-        <stackLimit>150</stackLimit>
         <thingCategories>
             <li>ResourcesRaw</li>
             <li>Cosmere_Resource_ThingCategory_Metal</li>

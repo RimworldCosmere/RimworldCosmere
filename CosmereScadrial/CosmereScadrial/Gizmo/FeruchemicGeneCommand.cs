@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Def;
 using CosmereScadrial.Extension;
@@ -32,7 +33,30 @@ public class FeruchemicGeneCommand(
         return metal.feruchemy!.invertedIcon;
     }
 
+    protected override void DrawTopBar(ref bool mouseOver) {
+        if (gene.metalminds.Count > 0) {
+            base.DrawTopBar(ref mouseOver);
+            return;
+        }
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter)) Widgets.Label(topBarRect!.Value, "CS_NoMetalminds".Translate());
+    }
+
+    protected override Rect GetTopBarRect() {
+        if (gene.metalminds.Count > 0) return base.GetTopBarRect();
+        
+        return new Rect(
+            iconRect!.Value.x + iconRect.Value.width + Padding.x,
+            iconRect.Value.y,
+            mainRect!.Value.width - (iconRect.Value.width + Padding.x),
+            mainRect!.Value.height - Padding.y
+        );
+    }
+
     protected override void DrawBottomBar(ref bool mouseOverElement) {
+        if (gene.metalminds.Count == 0) {
+            return;
+        }
+        
         base.DrawBottomBar(ref mouseOverElement);
 
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter)) Widgets.Label(bottomBarRect!.Value, BarLabel);

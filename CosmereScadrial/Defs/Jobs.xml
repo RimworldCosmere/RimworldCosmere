@@ -6,4 +6,16 @@
         <reportString>giving TargetA to TargetB.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>
+    <JobDef>
+        <defName>Cosmere_Scadrial_Job_EquipMetalmind</defName>
+        <driverClass>CosmereScadrial.JobDriver.EquipMetalmind</driverClass>
+        <reportString>equipping TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+    <JobDef>
+        <defName>Cosmere_Scadrial_Job_UnequipMetalmind</defName>
+        <driverClass>CosmereScadrial.JobDriver.UnequipMetalmind</driverClass>
+        <reportString>unequipping TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
 </Defs>

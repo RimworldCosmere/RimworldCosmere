@@ -22,7 +22,6 @@ public class Allomancer : Metalborn {
     private const float SleepDecayAmountPerRareInterval = .0025f;
 
     private RecordDef? cachedMetalBurntRecord;
-    private RecordDef? cachedTimeSpentBurningRecord;
     private float currentReserve;
     public int requestedVialStock = 3;
     private List<AllomanticBurnSource> sources = [];

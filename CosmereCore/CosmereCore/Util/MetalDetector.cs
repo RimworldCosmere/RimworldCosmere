@@ -101,7 +101,7 @@ public static class MetalDetector {
     /// <summary>
     ///     This isn't entirely accurate at getting the metal mass of an item, but its a rough implementation.
     /// </summary>
-    public static float GetMetal(Thing thing, int depth = 0, bool allowAluminum = false) {
+    public static float GetMetal(Thing? thing, int depth = 0, bool allowAluminum = false) {
         if (thing?.def == null) return 0f;
         if (!MetalThingCache.TryGetValue(thing, out float value)) {
             value = CalculateMetal(thing, depth, allowAluminum);

@@ -132,19 +132,24 @@ jobs:
           fi
 
       - name: Copy mod assets into AssetBuilder
+        id: copyassets
         run: |
           destDir="AssetBuilder/Assets/Data/$BUNDLE_NAME"
           srcDir="RimworldCosmere/$MOD/Assets"
           
-          echo "Copying $srcDir → $destDir"
-          mkdir -p "$destDir"
-          cp -r "$srcDir/"* "$destDir"
-        env:
-          MOD: ${{ matrix.mod }}
-          BUNDLE_NAME: ${{ env.BUNDLE_NAME }}
+           if [ -d "$srcDir" ]; then
+            echo "Copying assets from $srcDir to $destDir"
+            mkdir -p "$destDir"
+            cp -r "$srcDir/"* "$destDir"
+            echo "hasAssets=true" >> $GITHUB_OUTPUT
+          else
+            echo "No assets to copy for $MOD (missing $srcDir)"
+            echo "hasAssets=false" >> $GITHUB_OUTPUT
+          fi
 
 
       - name: Build AssetBundles
+        if: steps.copyassets.outputs.hasAssets == 'true'
         uses: game-ci/unity-builder@v4
         continue-on-error: false
         timeout-minutes: 30
@@ -162,11 +167,12 @@ jobs:
           customParameters: "--assetBundleName=${{ env.BUNDLE_NAME }}"
 
       - name: Print Unity Editor log on failure
-        #if: failure()
+        if: steps.copyassets.outputs.hasAssets == 'true' && failure()
         run: |
           cat /home/runner/.config/unity3d/Editor.log || true
 
       - name: Copy and rename bundle output
+        if: steps.copyassets.outputs.hasAssets == 'true'
         working-directory: RimworldCosmere
         run: |
           ls -lha ../AssetBuilder ../AssetBuilder/Assets ../AssetBuilder/Assets/AssetBundles
@@ -184,10 +190,6 @@ jobs:
           mkdir -p "$destDir"
           cp "$srcBundle" "$destBundle"
           cp "$srcManifest" "$destManifest"
-        env:
-          MOD: ${{ matrix.mod }}
-          BUNDLE_NAME: ${{ env.BUNDLE_NAME }}
-
 
       - name: Build Mod
         working-directory: RimworldCosmere

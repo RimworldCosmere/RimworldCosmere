@@ -1,4 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-    <CS_SetTapStoreRate>Drag the bar to set the Store vs Tap rate. \n\nDragging to the left will store. \nDragging to the right will tap.</CS_SetTapStoreRate>
+    <CS_CannotEquip>Cannot Equip</CS_CannotEquip>
+    <CS_SetTapStoreRate>Drag the bar to set the Store vs Tap rate. \n\nDragging to the right will store. \nDragging to the left will tap.</CS_SetTapStoreRate>
+    <CS_NoMetalminds>No Metalminds</CS_NoMetalminds>
+    <CS_NoFeruchemicProperties>No Feruchemic properties.</CS_NoFeruchemicProperties>
+    <CS_NotFerring>not a {FERRING}</CS_NotFerring>
+    <CS_MetalmindOwner>Owner</CS_MetalmindOwner>
+    <CS_MetalmindStored>{METAL} Stored</CS_MetalmindStored>
 </LanguageData>

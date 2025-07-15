@@ -19,7 +19,7 @@ public class AbilityOtherTarget : AbstractAbility {
     public override void AbilityTick() {
         base.AbilityTick();
 
-        if (!atLeastPassive) {
+        if (!atLeastBurning) {
             return;
         }
 

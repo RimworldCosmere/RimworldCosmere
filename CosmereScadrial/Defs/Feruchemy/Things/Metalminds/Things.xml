@@ -17,14 +17,16 @@
         <tradeability>Sellable</tradeability>
         <stackLimit>1</stackLimit>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_Metals</li>
+            <li>Cosmere_Resources_StuffCategory_BaseAllomanticMetals</li>
         </stuffCategories>
         <costStuffCount>20</costStuffCount>
         <smeltable>true</smeltable>
         <tradeTags>
             <li>Feruchemy</li>
+            <li>Clothing</li>
         </tradeTags>
         <recipeMaker>
+            <unfinishedThingDef>UnfinishedApparel</unfinishedThingDef>
             <researchPrerequisites>
                 <li>Smithing</li>
                 <li>Cosmere_Scadrial_Feruchemy</li>
@@ -37,10 +39,20 @@
                 <li>FueledSmithy</li>
                 <li>Cosmere_Scadrial_Table_Forge</li>
             </recipeUsers>
+            <defaultIngredientFilter>
+                <categories>
+                    <li>Cosmere_Resource_ThingCategory_BasicMetal</li>
+                    <li>Cosmere_Resource_ThingCategory_GodMetal</li>
+                </categories>
+            </defaultIngredientFilter>
         </recipeMaker>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_Metalmind</orderedTakeGroup>
         <comps>
+            <li Class="CompProperties_Forbiddable"/>
+            <li><compClass>CompColorable</compClass></li>
             <li Class="CosmereCore.Comp.Thing.PreventDropOnDownedProperties"/>
+            <li><compClass>CompQuality</compClass></li>
+            <li Class="CompProperties_Styleable" />
         </comps>
     </ThingDef>
 
@@ -62,6 +74,7 @@
             <Mass>0.005</Mass>
             <MaxHitPoints>75</MaxHitPoints>
             <WorkToMake>750</WorkToMake>
+            <Cosmere_Investiture>.1</Cosmere_Investiture>
         </statBases>
     </ThingDef>
 
@@ -83,6 +96,7 @@
             <Mass>0.015</Mass>
             <MaxHitPoints>150</MaxHitPoints>
             <WorkToMake>2250</WorkToMake>
+            <Cosmere_Investiture>.2</Cosmere_Investiture>
         </statBases>
     </ThingDef>
 
@@ -104,6 +118,7 @@
             <Mass>0.03</Mass>
             <MaxHitPoints>300</MaxHitPoints>
             <WorkToMake>5000</WorkToMake>
+            <Cosmere_Investiture>.3</Cosmere_Investiture>
         </statBases>
     </ThingDef>
 </Defs>

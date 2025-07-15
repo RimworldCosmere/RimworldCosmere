@@ -5,6 +5,7 @@ using CosmereScadrial.Gizmo;
 using CosmereScadrial.Util;
 using UnityEngine;
 using Verse;
+using Logger = CosmereFramework.Logger;
 
 namespace CosmereScadrial.Gene;
 
@@ -52,14 +53,16 @@ public class Feruchemist : Metalborn {
     private float effectiveSeverity {
         get {
             float delta = targetValue - 50f;
-            if (Mathf.Abs(delta) < 1f) return 0f; // Deadzone from 49–51
+            if (Mathf.Abs(delta) < 2f) return 0f; // Deadzone: 49–51
 
             float exponent = 2.5f;
             float maxSeverity = 19f;
-            float normalized = Mathf.Abs(delta) / 50f; // [0, 1]
-            return 1 + Mathf.Pow(normalized, exponent) * maxSeverity; // [1, 20]
+
+            float normalized = Mathf.Abs(delta) / 50f; // [0,1]
+            return 1f + Mathf.Pow(normalized, exponent) * maxSeverity; // [1,20]
         }
     }
+
 
     public override void Reset() {
         targetValue = 50f;
@@ -84,14 +87,14 @@ public class Feruchemist : Metalborn {
         if (!canStore && isStoring && !isCompounding) Reset();
 
         if (effectiveSeverity > 0f) {
-            if (targetValue < 50 && canStore) {
-                if (pawn.health.hediffSet.HasHediff(tapHediffDef)) pawn.health.RemoveHediff(tapHediff);
-
-                pawn.health.GetOrAddHediff(storeHediffDef).Severity = effectiveSeverity;
-            } else if (targetValue > 50 && canTap) {
+            if (targetValue < 50 && canTap) {
                 if (pawn.health.hediffSet.HasHediff(storeHediffDef)) pawn.health.RemoveHediff(storeHediff);
 
                 pawn.health.GetOrAddHediff(tapHediffDef).Severity = effectiveSeverity;
+            } else if (targetValue > 50 && canStore) {
+                if (pawn.health.hediffSet.HasHediff(tapHediffDef)) pawn.health.RemoveHediff(tapHediff);
+
+                pawn.health.GetOrAddHediff(storeHediffDef).Severity = effectiveSeverity;
             }
         }
 

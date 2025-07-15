@@ -25,7 +25,7 @@
             <MarketValue>8</MarketValue>
         </statBases>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_Metals</li>
+            <li>Cosmere_Resources_StuffCategory_BaseAllomanticMetals</li>
         </stuffCategories>
         <costList>
             <Cosmere_Resource_Thing_Glass>1</Cosmere_Resource_Thing_Glass>
@@ -33,7 +33,7 @@
         </costList>
         <costStuffCount>1</costStuffCount>
         <recipeMaker>
-            <workAmount>600</workAmount>
+            <workAmount>1200</workAmount>
             <workSpeedStat>DrugCookingSpeed</workSpeedStat>
             <effectWorking>Cook</effectWorking>
             <soundWorking>Recipe_CookMeal</soundWorking>
@@ -43,17 +43,14 @@
                 <li>Cosmere_Scadrial_Allomancy</li>
             </researchPrerequisites>
             <productCount>8</productCount>
-            <skillRequirements>
-                <Crafting>3</Crafting>
-            </skillRequirements>
             <recipeUsers Inherit="False">
                 <li>Cosmere_Scadrial_Table_Forge</li>
             </recipeUsers>
             <defaultIngredientFilter>
-                <thingDefs>
-                    <li>Cosmere_Resource_Thing_Glass</li>
-                    <li>Cosmere_Resource_Thing_Alcohol</li>
-                </thingDefs>
+                <categories>
+                    <li>Cosmere_Resource_ThingCategory_BasicMetal</li>
+                    <li>Cosmere_Resource_ThingCategory_GodMetal</li>
+                </categories>
             </defaultIngredientFilter>
         </recipeMaker>
         <stackLimit>150</stackLimit>

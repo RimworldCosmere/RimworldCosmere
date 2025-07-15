@@ -115,7 +115,7 @@ public class Investiture : RimWorld.Need {
         string? coloredLevel = $"{CurLevel:F0}".Colorize(color);
         string? coloredHeightening = tier.Colorize(color);
 
-        return "CS_Current_Investiture".Translate(
+        return "CC_Need_CurrentInvestiture".Translate(
                 coloredLevel.Named("LEVEL"),
                 coloredHeightening.Named("HEIGHT")
             )
@@ -139,16 +139,19 @@ public class Investiture : RimWorld.Need {
 
 
         Rect tooltipRect = rectForTooltip ?? rect;
-        if (Mouse.IsOver(tooltipRect))
+        if (Mouse.IsOver(tooltipRect)) {
             Widgets.DrawHighlight(tooltipRect);
+        }
 
-        if (doTooltip && Mouse.IsOver(tooltipRect))
+        if (doTooltip && Mouse.IsOver(tooltipRect)) {
             TooltipHandler.TipRegion(tooltipRect, new TipSignal((Func<string>)GetTipString, tooltipRect.GetHashCode()));
+        }
 
         float labelHeight = 14f;
         float labelMargin = customMargin >= 0.0 ? customMargin : labelHeight + 15f;
-        if (rect.height < 50.0)
+        if (rect.height < 50.0) {
             labelHeight *= Mathf.InverseLerp(0.0f, 50f, rect.height);
+        }
 
         if (drawLabel) {
             using (new TextBlock(GameFont.Small, TextAnchor.LowerLeft)) {
@@ -179,15 +182,22 @@ public class Investiture : RimWorld.Need {
         if (DebugSettings.ShowDevGizmos) {
             float lineHeight = Text.LineHeight;
             Rect rect2 = new Rect(valueRect.xMax - lineHeight, valueRect.y - lineHeight, lineHeight, lineHeight);
-            if (Widgets.ButtonImage(rect2.ContractedBy(4f), TexButton.Plus))
+            if (Widgets.ButtonImage(rect2.ContractedBy(4f), TexButton.Plus)) {
                 OffsetDebugPercent(0.1f);
-            if (Mouse.IsOver(rect2))
+            }
+
+            if (Mouse.IsOver(rect2)) {
                 TooltipHandler.TipRegion(rect2, (TipSignal)"+ 10%");
+            }
+
             Rect rect3 = new Rect(rect2.xMin - lineHeight, valueRect.y - lineHeight, lineHeight, lineHeight);
-            if (Widgets.ButtonImage(rect3.ContractedBy(4f), TexButton.Minus))
+            if (Widgets.ButtonImage(rect3.ContractedBy(4f), TexButton.Minus)) {
                 OffsetDebugPercent(-0.1f);
-            if (Mouse.IsOver(rect3))
+            }
+
+            if (Mouse.IsOver(rect3)) {
                 TooltipHandler.TipRegion(rect3, (TipSignal)"- 10%");
+            }
         }
 
         valueRect.width += 20f;

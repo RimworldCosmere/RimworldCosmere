@@ -5,13 +5,19 @@
         <label>{{title metal.name}}</label>
         <description>{{metal.description}}</description>
 
-        <thingCategories/>
+        <thingCategories>
+            {{#if metal.godMetal }}
+            <li>Cosmere_Resource_ThingCategory_GodMetal</li>
+            {{else}}
+            <li>Cosmere_Resource_ThingCategory_BasicMetal</li>
+            {{/if}}
+        </thingCategories>
         <researchPrerequisites>
             {{#if metal.alloy }}
             {{#if (eq metal.alloy.type "simple")}}
             <li>Cosmere_Simple_Alloys</li>
             {{/if}}
-            {{#if (eq metal.alloy.type "simple")}}
+            {{#if (eq metal.alloy.type "complex")}}
             <li>Cosmere_Complex_Alloys</li>
             {{/if}}
             {{#if (eq metal.alloy.type "god")}}
@@ -32,7 +38,6 @@
             <workAmount>{{#if metal.godMetal}}3000{{else}}1500{{/if}}</workAmount>
             <workSpeedStat>SmeltingSpeed</workSpeedStat>
             <workSkill>Crafting</workSkill>
-            <requiredGiverWorkType>Smithing</requiredGiverWorkType>
             <effectWorking>Smelt</effectWorking>
             <productCount>{{ metal.alloy.product.count }}</productCount>
             <soundWorking>Recipe_Smelt</soundWorking>
@@ -69,17 +74,21 @@
             <texPath>Item/Resource/{{defName metal.name}}</texPath>
         </graphicData>
 
-        {{# with metal.buildable }}
         <stuffProps>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Metals</li>
+                {{#if metal.allomancy }}
+                <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
+                {{#if metal.allomancy.userName}}
+                <li>Cosmere_Resources_StuffCategory_BaseAllomanticMetals</li>{{/if}}{{/if}}
+                {{#if metal.buildable }}
+                <li>Metallic</li>
+                {{/if}}
+            </categories>
+            {{# with metal.buildable }}
             <commonality>{{#if commonality}}{{commonality}}{{else}}0.0{{/if}}</commonality>
             <color>{{rgb ../metal.color}}</color>
             <constructEffect>ConstructMetal</constructEffect>
-            <categories>
-                {{#if ../metal.allomancy }}
-                <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
-                {{/if}}
-                <li>Metallic</li>
-            </categories>
             {{#if (or stuffStatFactors (and offense offense.cooldown)) }}
             <statFactors>
                 {{#each stuffStatFactors as |value key| }}
@@ -88,8 +97,8 @@
                 {{#if (and offense offense.cooldown) }}<MeleeWeapon_CooldownMultiplier>{{ offense.cooldown }}</MeleeWeapon_CooldownMultiplier>{{/if}}
             </statFactors>
             {{/if}}
+            {{/with}}
         </stuffProps>
-        {{/with}}
 
         <statBases>
             <Beauty>{{metal.beauty}}</Beauty>

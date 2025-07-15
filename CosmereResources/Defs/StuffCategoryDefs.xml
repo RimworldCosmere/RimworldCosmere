@@ -10,18 +10,39 @@
     </StuffCategoryDef>
     <StuffCategoryDef>
         <defName>Cosmere_Resources_StuffCategory_AllomanticMetals</defName>
-        <label>cosmere allomantic metals</label>
-        <noun>cosmere allomantic metal</noun>
+        <label>allomantic metals</label>
+        <noun>allomantic metal</noun>
+        <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+        <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+        <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+    </StuffCategoryDef>
+    <StuffCategoryDef>
+        <defName>Cosmere_Resources_StuffCategory_BaseAllomanticMetals</defName>
+        <label>allomantic metals</label>
+        <noun>allomantic metal</noun>
         <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
         <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
         <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
     </StuffCategoryDef>
     <StuffCategoryDef>
         <defName>Cosmere_Resources_StuffCategory_CoalOrCharcoal</defName>
-        <label>coal or charcoal</label>
-        <noun>coal or charcoal</noun>
+        <label>coal or Charcoal</label>
+        <noun>coal or Charcoal</noun>
         <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
         <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
         <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
     </StuffCategoryDef>
+    <StuffCategoryDef>
+        <defName>Cosmere_Resource_StuffCategory_Glass</defName>
+        <label>glass</label>
+        <noun>glass</noun>
+        <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+        <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+        <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+        <label>Glass</label>
+    </StuffCategoryDef>  
+    
+    <StuffAppearanceDef>
+        <defName>Cosmere_Resource_StuffAppearance_Glass</defName>
+    </StuffAppearanceDef>
 </Defs>

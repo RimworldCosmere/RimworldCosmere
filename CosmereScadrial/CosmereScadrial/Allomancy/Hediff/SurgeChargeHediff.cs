@@ -50,7 +50,7 @@ public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : Alloman
 
         FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
 
-        foreach (AbstractAbility? sourceAbility in sourceAbilities.Where(a => a.atLeastPassive).ToList()) {
+        foreach (AbstractAbility? sourceAbility in sourceAbilities.Where(a => a.atLeastBurning).ToList()) {
             Allomancer? sourceGene = sourceAbility.pawn.genes.GetAllomanticGeneForMetal(sourceAbility.metal);
             if (sourceGene == null || !sourceGene.Burning) continue;
             if (

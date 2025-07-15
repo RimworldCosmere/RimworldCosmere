@@ -12,23 +12,24 @@ using Logger = CosmereFramework.Logger;
 namespace CosmereScadrial.Allomancy.Ability;
 
 public abstract partial class AbstractAbility : RimWorld.Ability {
-    public readonly Allomancer gene;
     protected Mote? burningMote;
+    private Allomancer? cachedGene;
 
     protected int flareStartTick = -1;
     public GlobalTargetInfo? globalTarget;
     public LocalTargetInfo? localTarget;
+    public bool paused;
     public BurningStatus? status;
     public bool willBurnWhileDowned;
 
     // protected AbstractAbility() { }
 
     protected AbstractAbility(Pawn pawn) : base(pawn) {
-        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
+        // gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
     }
 
     protected AbstractAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) {
-        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
+        // gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
     }
 
     protected AbstractAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
@@ -36,7 +37,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             status = BurningStatus.Off;
         }
 
-        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
         Initialize();
     }
 
@@ -45,9 +45,10 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
             status = BurningStatus.Off;
         }
 
-        gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
         Initialize();
     }
+
+    public Allomancer gene => cachedGene ??= pawn.genes.GetAllomanticGeneForMetal(metal)!;
 
     public BurningStatus? nextStatus { get; private set; }
 
@@ -58,7 +59,7 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
         set => base.def = value;
     }
 
-    public bool atLeastPassive => status >= BurningStatus.Passive;
+    public bool atLeastBurning => status >= BurningStatus.Burning;
 
     public MetallicArtsMetalDef metal => def.metal;
 
@@ -112,7 +113,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     protected virtual float GetMoteScale() {
         return status switch {
             BurningStatus.Off => 0f,
-            BurningStatus.Passive => 0.5f,
             BurningStatus.Burning => 1f,
             BurningStatus.Flaring => 2f,
             BurningStatus.Duralumin => 10f,
@@ -127,7 +127,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     public float GetDesiredBurnRateForStatus(BurningStatus? burningStatus) {
         return (burningStatus ?? status ?? BurningStatus.Off) switch {
             BurningStatus.Off => 0,
-            BurningStatus.Passive => def.beuPerTick / 2,
             BurningStatus.Burning => def.beuPerTick,
             BurningStatus.Flaring => def.beuPerTick * 2,
             BurningStatus.Duralumin => 0.00000001f,
@@ -138,7 +137,6 @@ public abstract partial class AbstractAbility : RimWorld.Ability {
     public float GetStrength(BurningStatus? burningStatus = null) {
         float statusValue = (burningStatus ?? status ?? BurningStatus.Off) switch {
             BurningStatus.Off => 0f,
-            BurningStatus.Passive => 0.5f,
             BurningStatus.Burning => 1f,
             BurningStatus.Flaring => 2f,
             BurningStatus.Duralumin => pawn.GetAllomanticReservePercent(MetalDefOf.Duralumin) * 10f,

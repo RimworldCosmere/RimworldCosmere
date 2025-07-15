@@ -96,7 +96,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Gold);
 
         if (pawns.TryPopFront(out pawn)) {
-            PrepareColonistAsMisting(pawn, true, true, MetalDefOf.Steel);
+            PrepareColonistAsMisting(pawn, false, true, MetalDefOf.Steel);
             PrepareColonistAsFerring(pawn, true, true, MetalDefOf.Iron);
             pawn.Name = new NameTriple("Waxillium", "Wax", "Ladrian");
             pawn.gender = Gender.Male;

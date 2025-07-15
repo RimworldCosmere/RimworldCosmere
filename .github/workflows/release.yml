@@ -1,12 +1,20 @@
 name: Publish Cosmere Mods to GitHub
 
-on: push
+on:
+  release:
+    types:
+      - published
+  push:
+    branches:
+      - 'main'
+      - 'beta'
+      - 'alpha'
 
-permissions:
-  contents: write # to be able to publish a GitHub release
-  issues: write # to be able to comment on released issues
-  pull-requests: write # to be able to comment on released pull requests
-  id-token: write # to enable use of OIDC for npm provenance
+#permissions:
+#  contents: write # to be able to publish a GitHub release
+#  issues: write # to be able to comment on released issues
+#  pull-requests: write # to be able to comment on released pull requests
+#  id-token: write # to enable use of OIDC for npm provenance
 
 jobs:
   get-mods:
@@ -15,9 +23,9 @@ jobs:
       mods: ${{ steps.set-mods.outputs.mods }}
     steps:
       - name: Validate Git tag format
-        if: github.ref_type == 'tag'
+        if: github.event.release.tag_name != ''
         run: |
-          TAG="${{ github.ref_name }}"
+          TAG="${{ github.event.release.tag_name }}"
           VERSION=${TAG#v}  # strip leading 'v' if present
 
           echo "Checking tag format: $VERSION"
@@ -50,11 +58,45 @@ jobs:
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       MOD: ${{ matrix.mod }}
+      BUNDLE_NAME: ${{ matrix.mod }}
       TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
+      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Set BUNDLE_NAME
+        run: |
+          short="${MOD#Cosmere}"
+          echo "BUNDLE_NAME=CryptikLemur.Cosmere.$short" >> $GITHUB_ENV
+        env:
+          MOD: ${{ matrix.mod }}
+
+      - name: Checkout RimworldCosmere
+        uses: actions/checkout@v4
+        with:
+          path: 'RimworldCosmere'
+
+      - name: Checkout AssetBuilder
+        uses: actions/checkout@v4
+        with:
+          repository: 'emipa606/AssetBuilder'
+          path: 'AssetBuilder'
+
+      - uses: actions/cache@v4
+        with:
+          path: 'AssetBuilder/Library'
+          key:
+            Library-${{ matrix.target-platform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.target-platform }}-
+            Library-
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v2
@@ -66,29 +108,96 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - name: Install steamdown + steam-totp
+      - name: Install steamdown + steam-totp + Generator Dependencies
+        working-directory: RimworldCosmere
         run: |
           npm install -g @steamdown/cli tsx
           cd .scripts && npm i
+
       - name: Run generators
+        working-directory: RimworldCosmere
         run: npm --prefix .scripts start -- -d -f
 
       - name: Install Mod Dependencies
+        working-directory: RimworldCosmere
         run: dotnet restore $MOD/$MOD
 
       - name: Set build configuration
+        working-directory: RimworldCosmere
         run: |
-          if [[ "${{ github.ref_type }}" == "tag" && "${{ github.ref_name }}" == "main" ]]; then
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
             echo "BUILD=Release" >> $GITHUB_ENV
           else
             echo "BUILD=Debug" >> $GITHUB_ENV
           fi
 
-      - name: Build Mod
-        if: ${{ github.ref_type == 'tag' }}
+      - name: Copy mod assets into AssetBuilder
+        id: copyassets
         run: |
-          TAG="${{ github.ref_name }}"          # e.g. v1.6.0-beta or 1.6.0.1
-          VERSION="${TAG#v}"                    # strip leading 'v'
+          destDir="AssetBuilder/Assets/Data/$BUNDLE_NAME"
+          srcDir="RimworldCosmere/$MOD/Assets"
+          
+           if [ -d "$srcDir" ]; then
+            echo "Copying assets from $srcDir to $destDir"
+            mkdir -p "$destDir"
+            cp -r "$srcDir/"* "$destDir"
+            echo "hasAssets=true" >> $GITHUB_OUTPUT
+          else
+            echo "No assets to copy for $MOD (missing $srcDir)"
+            echo "hasAssets=false" >> $GITHUB_OUTPUT
+          fi
+
+
+      - name: Build AssetBundles
+        if: steps.copyassets.outputs.hasAssets == 'true'
+        uses: game-ci/unity-builder@v4
+        continue-on-error: false
+        timeout-minutes: 30
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 2022.3.35f1
+          targetPlatform: StandaloneWindows64
+          projectPath: AssetBuilder
+          versioning: None
+          allowDirtyBuild: true
+          buildMethod: ModAssetBundleBuilder.BuildBundles
+          customParameters: "--assetBundleName=${{ env.BUNDLE_NAME }}"
+
+      - name: Print Unity Editor log on failure
+        if: steps.copyassets.outputs.hasAssets == 'true' && failure()
+        run: |
+          cat /home/runner/.config/unity3d/Editor.log || true
+
+      - name: Copy and rename bundle output
+        if: steps.copyassets.outputs.hasAssets == 'true'
+        working-directory: RimworldCosmere
+        run: |
+          ls -lha ../AssetBuilder ../AssetBuilder/Assets ../AssetBuilder/Assets/AssetBundles
+          # Strip the "Cosmere" prefix
+          modLowerShort=$(echo "$MOD" | sed 's/^Cosmere//' | tr '[:upper:]' '[:lower:]')
+          bundleNameLower=$(echo "$BUNDLE_NAME" | tr '[:upper:]' '[:lower:]')
+          
+          srcBundle="../AssetBuilder/Assets/AssetBundles/$bundleNameLower"
+          srcManifest="$srcBundle.manifest"
+          
+          destDir="$MOD/AssetBundles"
+          destBundle="$destDir/resource_cosmere_$modLowerShort"
+          destManifest="$destBundle.manifest"
+          
+          echo "Copying $srcBundle to $destBundle"
+          mkdir -p "$destDir"
+          cp "$srcBundle" "$destBundle"
+          cp "$srcManifest" "$destManifest"
+
+      - name: Build Mod
+        working-directory: RimworldCosmere
+        if: ${{ github.event.release.tag_name != '' }}
+        run: |
+          TAG="${{ github.event.release.tag_name }}" # e.g. v1.6.0-beta or 1.6.0.1
+          VERSION="${TAG#v}"                         # strip leading 'v'
 
           # Extract components with known-good format
           REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)(-alpha|-beta)?(\.[0-9]+)?$'
@@ -122,10 +231,12 @@ jobs:
 
       - name: Build Mod
         if: ${{ github.ref_type != 'tag' }}
+        working-directory: RimworldCosmere
         run: dotnet build $MOD/$MOD --configuration Debug --no-restore
 
       - name: Prepare upload directory
         id: prepare
+        working-directory: RimworldCosmere
         run: |
           FILE_ID=$(cat "$MOD/About/PublishedFileId.txt")
           DESCRIPTION_FILE="$TEMP_DIR/steam_description.txt"
@@ -166,8 +277,13 @@ jobs:
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
       - name: Upload with SteamCMD
-        if: ${{ env.BRANCH_NAME == 'main' && github.ref_type == 'tag' }}
+        working-directory: RimworldCosmere
+        if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
         run: |
+          sudo apt update
+          sudo apt install -y lib32gcc-s1
+          mkdir -p ~/steamcmd
+          curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
           ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
 
       - name: Upload zip artifact
@@ -175,6 +291,7 @@ jobs:
         with:
           name: ${{ matrix.mod }}-zip
           path: ${{ github.workspace }}/${{ matrix.mod }}-${{ env.BRANCH_NAME }}.zip
+  
   semantic-release:
     needs: prepare
     if: github.ref_type != 'tag'
@@ -186,48 +303,52 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-      - name: Release
-        if: ${{ github.ref_type == 'branch' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npm install @semantic-release/git semantic-release-replace-plugin -D
-          npx semantic-release
-  publish:
-    needs: prepare
-    if: github.ref_type == 'tag'
-    runs-on: ubuntu-latest
-    env:
-      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
       - name: Download all zip artifacts
         uses: actions/download-artifact@v4
         with:
           pattern: '*-zip'
           path: ./zips
           merge-multiple: true
-
       - name: List all zip files
         run: |
           echo "Zips downloaded:"
           find ./zips -name "*.zip"
-
-      - name: Get latest commit message
-        id: commit
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
         run: |
-          BODY=$(git log -1 --pretty=%B | sed 's/"/\\"/g')
-          echo "body=$BODY" >> "$GITHUB_OUTPUT"
-
-      - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: "Cosmere Mods Release - ${{ github.ref_name }}"
-          body: ${{ steps.commit.outputs.body }}
-          files: ./zips/**/*.zip
-          prerelease: ${{ contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
-          make_latest: ${{ !(contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha')) }}
+          npm install @semantic-release/git semantic-release-replace-plugin -D
+          npx semantic-release
+  #publish:
+  #  needs: prepare
+  #  if: github.event.release.tag_name != ''
+  #  runs-on: ubuntu-latest
+  #  env:
+  #    BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  #  steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v3
+  #   - name: Download all zip artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       pattern: '*-zip'
+  #       path: ./zips
+  #       merge-multiple: true
+  #   - name: List all zip files
+  #     run: |
+  #       echo "Zips downloaded:"
+  #       find ./zips -name "*.zip"
+  #   - name: Get latest commit message
+  #     id: commit
+  #      run: |
+  #       BODY=$(git log -1 --pretty=%B | sed 's/"/\\"/g')
+  #       echo "body=$BODY" >> "$GITHUB_OUTPUT"
+  #   - name: Create GitHub release
+  #     uses: softprops/action-gh-release@v2
+  #     with:
+  #       tag_name: ${{ github.ref_name }}
+  #       name: "Cosmere Mods Release - ${{ github.ref_name }}"
+  #       body: ${{ steps.commit.outputs.body }}
+  #       files: ./zips/**/*.zip
+  #       prerelease: ${{ contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
+  #       make_latest: ${{ !(contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha')) }}

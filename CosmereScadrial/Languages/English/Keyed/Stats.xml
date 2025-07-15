@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 	<CS_StatsReport_MetalmindInvestiture>Stored Investiture</CS_StatsReport_MetalmindInvestiture>
+	<CS_StatsReport_GearPower>Power from Gear</CS_StatsReport_GearPower>
 	<CS_StatsReport_GenerationalDecay>Inherited: {TOTAL} &lt;- Maternal {MATERNAL} Paternal {PATERNAL}</CS_StatsReport_GenerationalDecay>
 	<CS_StatsReport_GenerationalDecay_Unknown>Unknown Lineage: {TOTAL}</CS_StatsReport_GenerationalDecay_Unknown>
 	<CS_StatsReport_IngestedLerasium>Ingested Lerasium</CS_StatsReport_IngestedLerasium>

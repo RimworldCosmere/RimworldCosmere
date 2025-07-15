@@ -1,8 +1,8 @@
 using CosmereCore.Extension;
 using CosmereCore.Need;
-using CosmereCore.Util;
 using RimWorld;
 using Verse;
+using StatUtility = CosmereFramework.Util.StatUtility;
 
 namespace CosmereCore.StatPart;
 
@@ -22,10 +22,11 @@ public class NeedInvestiture : RimWorld.StatPart {
     }
 
     private bool TryGetValue(StatRequest req, out float value) {
-        return InvestitureStatUtility.TryGetPawnInvestitureStat(
+        return StatUtility.TryGetPawnStat(
             req,
-            x => x.needs?.TryGetNeed<Investiture>()?.CurLevel ?? 0,
-            x => x.statBases.Find(x => x.stat.Equals(parentStat)).value,
+            parentStat,
+            StatUtility.NeedLevel<Investiture>,
+            StatUtility.StatBase,
             out value
         );
     }

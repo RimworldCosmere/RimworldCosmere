@@ -5,8 +5,8 @@ using Verse;
 namespace CosmereScadrial.StatPart;
 
 public class IngestedGodMetalGranter : RimWorld.StatPart {
-    public bool allomancy = false;
-    public bool feruchemy = false;
+    private bool allomancy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower);
+    private bool feruchemy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower);
 
     public override void TransformValue(StatRequest req, ref float val) {
         if (!req.HasThing || req.Thing is not Pawn pawn) {

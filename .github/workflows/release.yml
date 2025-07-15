@@ -149,6 +149,7 @@ jobs:
       - name: Copy and rename bundle output
         working-directory: RimworldCosmere
         run: |
+          ls -lha ../AssetBuilder ../AssetBuilder/Assets ../AssetBuilder/Assets/AssetBundles
           # Strip the "Cosmere" prefix
           modLowerShort=$(echo "$MOD" | sed 's/^Cosmere//' | tr '[:upper:]' '[:lower:]')
           
@@ -159,7 +160,7 @@ jobs:
           destBundle="$destDir/resource_cosmere_$modLowerShort"
           destManifest="$destBundle.manifest"
           
-          echo "Copying bundle to $destBundle"
+          echo "Copying $srcBundle to $destBundle"
           mkdir -p "$destDir"
           cp "$srcBundle" "$destBundle"
           cp "$srcManifest" "$destManifest"

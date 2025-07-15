@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingCategoryDef>
-        <defName>Cosmere_Currency</defName>
-        <label>cosmere currency</label>
-        <parent>Manufactured</parent>
-        <resourceReadoutRoot>true</resourceReadoutRoot>
-        <iconPath>UI/Icons/Currency/Boxing</iconPath>
-    </ThingCategoryDef>
-
-    <OrderedTakeGroupDef>
-        <defName>Cosmere_Currency</defName>
-        <label>cosmere currency</label>
-        <max>50</max>
-    </OrderedTakeGroupDef>
-    
     <ThingDef Name="CosmereScadrialCurrencyBase" ParentName="ResourceBase" Abstract="True">
         <graphicData>
             <graphicClass>Graphic_StackCount</graphicClass>

@@ -24,4 +24,15 @@
         <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
         <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
     </StuffCategoryDef>
+    <StuffCategoryDef>
+        <defName>Cosmere_Resource_StuffCategory_Glass</defName>
+        <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+        <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+        <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+        <label>Glass</label>
+    </StuffCategoryDef>  
+    
+    <StuffAppearanceDef>
+        <defName>Cosmere_Resource_StuffAppearance_Glass</defName>
+    </StuffAppearanceDef>
 </Defs>

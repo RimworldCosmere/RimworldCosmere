@@ -17,7 +17,7 @@
         <tradeability>Sellable</tradeability>
         <stackLimit>1</stackLimit>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_Metals</li>
+            <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
         </stuffCategories>
         <costStuffCount>20</costStuffCount>
         <smeltable>true</smeltable>

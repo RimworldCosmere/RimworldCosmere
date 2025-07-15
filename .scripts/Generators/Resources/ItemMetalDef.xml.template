@@ -68,17 +68,20 @@
             <texPath>Item/Resource/{{defName metal.name}}</texPath>
         </graphicData>
 
-        {{# with metal.buildable }}
         <stuffProps>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Metals</li>
+                {{#if metal.allomancy }}
+                <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
+                {{/if}}
+                {{#if metal.buildable }}
+                <li>Metallic</li>
+                {{/if}}
+            </categories>
+            {{# with metal.buildable }}
             <commonality>{{#if commonality}}{{commonality}}{{else}}0.0{{/if}}</commonality>
             <color>{{rgb ../metal.color}}</color>
             <constructEffect>ConstructMetal</constructEffect>
-            <categories>
-                {{#if ../metal.allomancy }}
-                <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
-                {{/if}}
-                <li>Metallic</li>
-            </categories>
             {{#if (or stuffStatFactors (and offense offense.cooldown)) }}
             <statFactors>
                 {{#each stuffStatFactors as |value key| }}
@@ -87,8 +90,8 @@
                 {{#if (and offense offense.cooldown) }}<MeleeWeapon_CooldownMultiplier>{{ offense.cooldown }}</MeleeWeapon_CooldownMultiplier>{{/if}}
             </statFactors>
             {{/if}}
+            {{/with}}
         </stuffProps>
-        {{/with}}
 
         <statBases>
             <Beauty>{{metal.beauty}}</Beauty>

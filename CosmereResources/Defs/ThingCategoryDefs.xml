@@ -7,4 +7,18 @@
         <resourceReadoutRoot>false</resourceReadoutRoot>
         <iconPath>Item/Resource/Steel/Steel_c</iconPath>
     </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Resource_ThingCategory_BasicMetal</defName>
+        <label>metals</label>
+        <parent>Cosmere_Resource_ThingCategory_Metal</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Steel/Steel_c</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Resource_ThingCategory_GodMetal</defName>
+        <label>God Metals</label>
+        <parent>Cosmere_Resource_ThingCategory_Metal</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Lerasium</iconPath>
+    </ThingCategoryDef>
 </Defs>

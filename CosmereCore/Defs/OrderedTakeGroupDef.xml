@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <OrderedTakeGroupDef>
+        <defName>Cosmere_Currency</defName>
+        <label>cosmere currency</label>
+        <max>50</max>
+    </OrderedTakeGroupDef>
+</Defs>

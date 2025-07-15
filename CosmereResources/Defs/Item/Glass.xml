@@ -1,14 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <StuffCategoryDef>
-        <defName>Cosmere_Resource_StuffCategory_Glass</defName>
-        <label>Glass</label>
-    </StuffCategoryDef>  
-    
-    <StuffAppearanceDef>
-        <defName>Cosmere_Resource_StuffAppearance_Glass</defName>
-    </StuffAppearanceDef>
-
     <ThingDef ParentName="ResourceBase">
         <defName>Cosmere_Resource_Thing_Glass</defName>
         <label>Glass</label>
@@ -24,7 +15,7 @@
             <MarketValue>10</MarketValue>
             <Mass>3.5</Mass>
         </statBases>
-        <thingCategories>
+        <thingCategories Inherit="False">
             <li>Manufactured</li>
         </thingCategories>
         <stuffProps>

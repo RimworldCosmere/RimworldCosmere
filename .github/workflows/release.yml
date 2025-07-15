@@ -178,8 +178,9 @@ jobs:
           ls -lha ../AssetBuilder ../AssetBuilder/Assets ../AssetBuilder/Assets/AssetBundles
           # Strip the "Cosmere" prefix
           modLowerShort=$(echo "$MOD" | sed 's/^Cosmere//' | tr '[:upper:]' '[:lower:]')
+          bundleNameLower=$(echo "$BUNDLE_NAME" | tr '[:upper:]' '[:lower:]')
           
-          srcBundle="../AssetBuilder/Assets/AssetBundles/$BUNDLE_NAME"
+          srcBundle="../AssetBuilder/Assets/AssetBundles/$bundleNameLower"
           srcManifest="$srcBundle.manifest"
           
           destDir="$MOD/AssetBundles"

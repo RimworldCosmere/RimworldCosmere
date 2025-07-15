@@ -1,4 +1,5 @@
 *.pdb
 *.xcf
+Assets
 CosmereCore
 .gitignore

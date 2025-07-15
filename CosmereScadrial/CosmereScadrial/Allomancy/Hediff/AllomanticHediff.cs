@@ -64,9 +64,9 @@ public class AllomanticHediff : HediffWithComps {
 
     public override void TickInterval(int delta) {
         SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);
-        if (def.defName != surge?.def.defName && surge != null) {
+        if (def.defName != surge?.def.defName && surge != null && severityCalculator != null) {
             surge.Burn(
-                severityCalculator!.RecalculateSeverity,
+                severityCalculator.RecalculateSeverity,
                 GenTicks.TicksPerRealSecond,
                 () => {
                     pawn.genes.GetAllomanticGenes()

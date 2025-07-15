@@ -6,10 +6,10 @@ using Verse;
 namespace CosmereScadrial.StatPart;
 
 public class GenerationalDecay : RimWorld.StatPart {
-    public const float MinimumValue = 0.1f;
-    public const float GenerationalMultiplier = 0.5f;
-    public bool allomancy = false;
-    public bool feruchemy = false;
+    private const float MinimumValue = 0.1f;
+    private const float GenerationalMultiplier = 0.5f;
+    private bool allomancy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower);
+    private bool feruchemy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_FeruchemicPower);
 
     private StatDef stat => allomancy
         ? StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower

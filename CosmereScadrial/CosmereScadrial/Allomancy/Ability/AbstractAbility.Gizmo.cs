@@ -5,7 +5,7 @@ namespace CosmereScadrial.Allomancy.Ability;
 
 public abstract partial class AbstractAbility {
     public override bool GizmoDisabled(out string reason) {
-        if (!atLeastPassive) return base.GizmoDisabled(out reason);
+        if (!atLeastBurning) return base.GizmoDisabled(out reason);
 
         reason = "";
         return false;

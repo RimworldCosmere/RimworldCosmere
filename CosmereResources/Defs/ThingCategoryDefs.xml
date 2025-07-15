@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingCategoryDef>
-        <defName>Cosmere_Resource_ThingCategory_CoalOrCharcoal</defName>
-        <label>coal or charcoal</label>
-        <childThingDefs>
-            <li>Coal</li>
-            <li>Charcoal</li>
-        </childThingDefs>
+        <defName>Cosmere_Resource_ThingCategory_Metal</defName>
+        <label>metals</label>
+        <parent>ResourcesRaw</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Steel/Steel_c</iconPath>
     </ThingCategoryDef>
     <ThingCategoryDef>
-        <defName>Cosmere_Resource_ThingCategory_Metal</defName>
-        <label>cosmere metals</label>
+        <defName>Cosmere_Resource_ThingCategory_BasicMetal</defName>
+        <label>metals</label>
+        <parent>Cosmere_Resource_ThingCategory_Metal</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Steel/Steel_c</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Resource_ThingCategory_GodMetal</defName>
+        <label>God Metals</label>
+        <parent>Cosmere_Resource_ThingCategory_Metal</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Lerasium</iconPath>
     </ThingCategoryDef>
 </Defs>

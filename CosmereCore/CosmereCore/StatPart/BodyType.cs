@@ -1,5 +1,6 @@
 using RimWorld;
 using Verse;
+using StatUtility = CosmereFramework.Util.StatUtility;
 
 namespace CosmereCore.StatPart;
 
@@ -21,7 +22,7 @@ public class BodyType : RimWorld.StatPart {
     }
 
     private bool TryGetBodyType(StatRequest req, out float bodyType) {
-        return PawnOrCorpseStatUtility.TryGetPawnOrCorpseStat(req, GetBodyTypeMultiplier, _ => 0f, out bodyType);
+        return StatUtility.TryGetPawnStat(req, GetBodyTypeMultiplier, _ => 0f, out bodyType);
     }
 
     private float GetBodyTypeMultiplier(Pawn pawn) {

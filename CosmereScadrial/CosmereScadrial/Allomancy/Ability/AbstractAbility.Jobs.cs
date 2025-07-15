@@ -1,4 +1,3 @@
-using CosmereFramework.Extension;
 using RimWorld.Planet;
 using Verse;
 using Verse.AI;
@@ -38,12 +37,12 @@ public abstract partial class AbstractAbility {
         }
 
         Job? job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, targetInfo);
+        job.source = this;
         job.ability = this;
         job.verbToUse = verb;
         job.playerForced = true;
         job.targetA = targetInfo;
         job.targetB = destination;
-        job.source = this;
         job.count = (int)(status ?? BurningStatus.Burning);
 
         return job;
@@ -54,10 +53,6 @@ public abstract partial class AbstractAbility {
 
         if (!def.canFlare && desiredStatus is BurningStatus.Flaring or BurningStatus.Duralumin) {
             desiredStatus = BurningStatus.Burning;
-        }
-
-        if (pawn.IsAsleep() && desiredStatus >= BurningStatus.Burning) {
-            desiredStatus = def.canBurnWhileAsleep ? BurningStatus.Passive : BurningStatus.Off;
         }
 
         if (pawn.Downed && !willBurnWhileDowned) {

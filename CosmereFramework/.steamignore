@@ -1,4 +1,6 @@
 *.pdb
 *.xcf
+Assets
+Docs
 CosmereFramework
 .gitignore

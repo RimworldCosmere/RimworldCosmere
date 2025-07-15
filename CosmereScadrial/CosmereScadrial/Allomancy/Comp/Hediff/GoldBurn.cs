@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using CosmereScadrial.Allomancy.Ability;
 using CosmereScadrial.Allomancy.Hediff;
 using RimWorld;
 using Verse;
@@ -49,13 +51,14 @@ public class GoldBurn : HediffComp {
             Thought_Memory? thought = memories.GetFirstMemoryOfDef(random);
             if (thought == null) {
                 memories.TryGainMemoryFast(random);
-            } else if (thought.CurStageIndex < random.stages.Count) {
+            } else if (thought.CurStageIndex < random.stages.Count - 1) {
                 thought.SetForcedStage(thought.CurStageIndex + 1);
             }
         }
 
         // 3. Mental break chance
         if (Rand.Chance(0.0025f) && Pawn.mindState != null && !Pawn.InMentalState) {
+            parent.sourceAbilities.ToList().ForEach(x => x.UpdateStatus(BurningStatus.Off));
             Pawn.mindState.mentalStateHandler.TryStartMentalState(
                 MentalStateDefOf.Wander_OwnRoom,
                 "Gold vision triggered a break",

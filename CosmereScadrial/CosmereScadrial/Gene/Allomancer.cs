@@ -22,7 +22,6 @@ public class Allomancer : Metalborn {
     private const float SleepDecayAmountPerRareInterval = .0025f;
 
     private RecordDef? cachedMetalBurntRecord;
-    private RecordDef? cachedTimeSpentBurningRecord;
     private float currentReserve;
     public int requestedVialStock = 3;
     private List<AllomanticBurnSource> sources = [];
@@ -88,7 +87,7 @@ public class Allomancer : Metalborn {
         if (!timeDilationFactor.HasValue) UpdateTimeDilationFactor();
 
         if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta) && pawn.IsAsleep()) {
-            RemoveFromReserve(SleepDecayAmountPerRareInterval / Mathf.Max(0, Mathf.Log(skill.Level + 1, 2f)));
+            // RemoveFromReserve(SleepDecayAmountPerRareInterval / Mathf.Max(0, Mathf.Log(skill.Level + 1, 2f)));
         }
 
         if (sources.Count > 0 && pawn.IsHashIntervalTick(burnTickRate, delta)) {

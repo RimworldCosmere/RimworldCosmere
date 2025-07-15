@@ -71,7 +71,7 @@ jobs:
       - name: Checkout AssetBuilder
         uses: actions/checkout@v4
         with:
-          repository: 'https://github.com/emipa606/AssetBuilder'
+          repository: 'emipa606/AssetBuilder'
           path: 'AssetBuilder'
 
       - name: Setup Dotnet

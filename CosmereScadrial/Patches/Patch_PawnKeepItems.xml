@@ -3,7 +3,7 @@
     <Operation Class="CosmereFramework.Patch.Operation.UseSetting">
         <modId>CosmereScadrial</modId>
         <key>pawnsKeepMetalmindsWhenDowned</key>
-        <expect>false</expect>
+        <expect>true</expect>
         <apply Class="PatchOperationAdd">
             <xpath>Defs/ThingDef[@Name="Cosmere_Scadrial_Thing_AllomanticVialBase"]/comps/li[@Class="CosmereCore.Comp.Thing.PreventDropOnDownedProperties"]</xpath>
             <value>
@@ -14,7 +14,7 @@
     <Operation Class="CosmereFramework.Patch.Operation.UseSetting">
         <modId>CosmereScadrial</modId>
         <key>pawnsKeepVialsWhenDowned</key>
-        <expect>false</expect>
+        <expect>true</expect>
         <apply Class="PatchOperationAdd">
             <xpath>Defs/ThingDef[@Name="Cosmere_Scadrial_Thing_MetalmindBase"]/comps/li[@Class="CosmereCore.Comp.Thing.PreventDropOnDownedProperties"]</xpath>
             <value>

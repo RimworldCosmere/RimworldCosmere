@@ -58,11 +58,19 @@ jobs:
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       MOD: ${{ matrix.mod }}
+      BUNDLE_NAME: ${{ matrix.mod }}
       TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
       STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
       STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
 
     steps:
+      - name: Set BUNDLE_NAME
+        run: |
+          short="${MOD#Cosmere}"
+          echo "BUNDLE_NAME=CryptikLemur.Cosmere.$short" >> $GITHUB_ENV
+        env:
+          MOD: ${{ matrix.mod }}
+
       - name: Checkout RimworldCosmere
         uses: actions/checkout@v4
         with:
@@ -84,7 +92,7 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - name: Install steamdown + steam-totp
+      - name: Install steamdown + steam-totp + Generator Dependencies
         working-directory: RimworldCosmere
         run: |
           npm install -g @steamdown/cli tsx
@@ -101,11 +109,55 @@ jobs:
       - name: Set build configuration
         working-directory: RimworldCosmere
         run: |
-          if [[ "${{ github.ref_type }}" == "tag" && "${{ github.ref_name }}" == "main" ]]; then
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
             echo "BUILD=Release" >> $GITHUB_ENV
           else
             echo "BUILD=Debug" >> $GITHUB_ENV
           fi
+
+      - name: Build AssetBundles
+        uses: game-ci/unity-builder@v4
+        continue-on-error: false
+        timeout-minutes: 10
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 2022.3.35f1
+          targetPlatform: StandaloneWindows64
+          projectPath: AssetBuilder
+          versioning: None
+          allowDirtyBuild: true
+          buildMethod: ModAssetBundleBuilder.BuildBundles
+          customParameters: --assetBundleName=$BUNDLE_NAME
+
+      - name: Print Unity Editor log on failure
+        if: failure()
+        run: |
+          cat /home/runner/.config/unity3d/Editor.log || true
+
+      - name: Copy and rename bundle output
+        working-directory: RimworldCosmere
+        run: |
+          # Strip the "Cosmere" prefix
+          modLowerShort=$(echo "$MOD" | sed 's/^Cosmere//' | tr '[:upper:]' '[:lower:]')
+          
+          srcBundle="../AssetBuilder/Assets/AssetBundles/$BUNDLE_NAME"
+          srcManifest="$srcBundle.manifest"
+          
+          destDir="$MOD/AssetBundles"
+          destBundle="$destDir/resource_cosmere_$modLowerShort"
+          destManifest="$destBundle.manifest"
+          
+          echo "Copying bundle to $destBundle"
+          mkdir -p "$destDir"
+          cp "$srcBundle" "$destBundle"
+          cp "$srcManifest" "$destManifest"
+        env:
+          MOD: ${{ matrix.mod }}
+          BUNDLE_NAME: ${{ env.BUNDLE_NAME }}
+
 
       - name: Build Mod
         working-directory: RimworldCosmere

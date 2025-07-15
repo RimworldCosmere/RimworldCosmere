@@ -146,7 +146,7 @@ jobs:
           versioning: None
           allowDirtyBuild: true
           buildMethod: ModAssetBundleBuilder.BuildBundles
-          customParameters: --assetBundleName=$BUNDLE_NAME
+          customParameters: "--assetBundleName=${{ env.BUNDLE_NAME }}"
 
       - name: Print Unity Editor log on failure
         #if: failure()

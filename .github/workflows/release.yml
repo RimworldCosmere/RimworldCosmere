@@ -82,6 +82,15 @@ jobs:
           repository: 'emipa606/AssetBuilder'
           path: 'AssetBuilder'
 
+      - uses: actions/cache@v3
+        with:
+          path: 'AssetBuilder/Library'
+          key:
+            Library-${{ matrix.target-platform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.target-platform }}-
+            Library-
+
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v2
         with:

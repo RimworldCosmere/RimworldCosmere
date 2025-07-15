@@ -131,6 +131,19 @@ jobs:
             echo "BUILD=Debug" >> $GITHUB_ENV
           fi
 
+      - name: Copy mod assets into AssetBuilder
+        run: |
+          destDir="AssetBuilder/Assets/Data/$BUNDLE_NAME"
+          srcDir="RimworldCosmere/$MOD/Assets"
+          
+          echo "Copying $srcDir → $destDir"
+          mkdir -p "$destDir"
+          cp -r "$srcDir/"* "$destDir"
+        env:
+          MOD: ${{ matrix.mod }}
+          BUNDLE_NAME: ${{ env.BUNDLE_NAME }}
+
+
       - name: Build AssetBundles
         uses: game-ci/unity-builder@v4
         continue-on-error: false

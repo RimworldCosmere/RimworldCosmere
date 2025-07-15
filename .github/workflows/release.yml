@@ -61,11 +61,18 @@ jobs:
       TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
       STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
       STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
-      #STEAM_TFA_SEED: ${{ secrets.STEAM_TFA_SEED }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout RimworldCosmere
+        uses: actions/checkout@v4
+        with:
+          path: 'RimworldCosmere'
+
+      - name: Checkout AssetBuilder
+        uses: actions/checkout@v4
+        with:
+          repository: 'https://github.com/emipa606/AssetBuilder'
+          path: 'AssetBuilder'
 
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v2
@@ -78,16 +85,21 @@ jobs:
           node-version: "lts/*"
 
       - name: Install steamdown + steam-totp
+        working-directory: RimworldCosmere
         run: |
           npm install -g @steamdown/cli tsx
           cd .scripts && npm i
+
       - name: Run generators
+        working-directory: RimworldCosmere
         run: npm --prefix .scripts start -- -d -f
 
       - name: Install Mod Dependencies
+        working-directory: RimworldCosmere
         run: dotnet restore $MOD/$MOD
 
       - name: Set build configuration
+        working-directory: RimworldCosmere
         run: |
           if [[ "${{ github.ref_type }}" == "tag" && "${{ github.ref_name }}" == "main" ]]; then
             echo "BUILD=Release" >> $GITHUB_ENV
@@ -96,6 +108,7 @@ jobs:
           fi
 
       - name: Build Mod
+        working-directory: RimworldCosmere
         if: ${{ github.event.release.tag_name != '' }}
         run: |
           TAG="${{ github.event.release.tag_name }}" # e.g. v1.6.0-beta or 1.6.0.1
@@ -133,10 +146,12 @@ jobs:
 
       - name: Build Mod
         if: ${{ github.ref_type != 'tag' }}
+        working-directory: RimworldCosmere
         run: dotnet build $MOD/$MOD --configuration Debug --no-restore
 
       - name: Prepare upload directory
         id: prepare
+        working-directory: RimworldCosmere
         run: |
           FILE_ID=$(cat "$MOD/About/PublishedFileId.txt")
           DESCRIPTION_FILE="$TEMP_DIR/steam_description.txt"
@@ -177,6 +192,7 @@ jobs:
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
       - name: Upload with SteamCMD
+        working-directory: RimworldCosmere
         if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
         run: |
           sudo apt update
@@ -190,6 +206,7 @@ jobs:
         with:
           name: ${{ matrix.mod }}-zip
           path: ${{ github.workspace }}/${{ matrix.mod }}-${{ env.BRANCH_NAME }}.zip
+  
   semantic-release:
     needs: prepare
     if: github.ref_type != 'tag'

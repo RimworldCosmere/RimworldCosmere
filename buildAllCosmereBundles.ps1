@@ -84,6 +84,7 @@ foreach ($mod in $mods)
         if ($process.ExitCode -ne 0)
         {
             Write-Host "    Unity failed for $mod (exit code $( $process.ExitCode )). Skipping bundle move."
+            Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $destPath
             continue
         }
 
@@ -120,6 +121,7 @@ foreach ($mod in $mods)
 
         $currentHash | Out-File -Encoding ASCII -FilePath $hashFile
         Write-Host "    Done with Cosmere$mod."
+        Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $destPath
     }
     else
     {

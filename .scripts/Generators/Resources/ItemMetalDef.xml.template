@@ -5,7 +5,13 @@
         <label>{{title metal.name}}</label>
         <description>{{metal.description}}</description>
 
-        <thingCategories/>
+        <thingCategories>
+            {{#if metal.godMetal }}
+            <li>Cosmere_Resource_ThingCategory_GodMetal</li>
+            {{else}}
+            <li>Cosmere_Resource_ThingCategory_BasicMetal</li>
+            {{/if}}
+        </thingCategories>
         <researchPrerequisites>
             {{#if metal.alloy }}
             {{#if (eq metal.alloy.type "simple")}}
@@ -73,7 +79,8 @@
                 <li>Cosmere_Resources_StuffCategory_Metals</li>
                 {{#if metal.allomancy }}
                 <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
-                {{/if}}
+                {{#if metal.allomancy.userName}}
+                <li>Cosmere_Resources_StuffCategory_BaseAllomanticMetals</li>{{/if}}{{/if}}
                 {{#if metal.buildable }}
                 <li>Metallic</li>
                 {{/if}}

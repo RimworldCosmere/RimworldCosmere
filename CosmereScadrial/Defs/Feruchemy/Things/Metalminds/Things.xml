@@ -17,14 +17,16 @@
         <tradeability>Sellable</tradeability>
         <stackLimit>1</stackLimit>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
+            <li>Cosmere_Resources_StuffCategory_BaseAllomanticMetals</li>
         </stuffCategories>
         <costStuffCount>20</costStuffCount>
         <smeltable>true</smeltable>
         <tradeTags>
             <li>Feruchemy</li>
+            <li>Clothing</li>
         </tradeTags>
         <recipeMaker>
+            <unfinishedThingDef>UnfinishedApparel</unfinishedThingDef>
             <researchPrerequisites>
                 <li>Smithing</li>
                 <li>Cosmere_Scadrial_Feruchemy</li>
@@ -37,10 +39,20 @@
                 <li>FueledSmithy</li>
                 <li>Cosmere_Scadrial_Table_Forge</li>
             </recipeUsers>
+            <defaultIngredientFilter>
+                <categories>
+                    <li>Cosmere_Resource_ThingCategory_BasicMetal</li>
+                    <li>Cosmere_Resource_ThingCategory_GodMetal</li>
+                </categories>
+            </defaultIngredientFilter>
         </recipeMaker>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_Metalmind</orderedTakeGroup>
         <comps>
+            <li Class="CompProperties_Forbiddable"/>
+            <li><compClass>CompColorable</compClass></li>
             <li Class="CosmereCore.Comp.Thing.PreventDropOnDownedProperties"/>
+            <li><compClass>CompQuality</compClass></li>
+            <li Class="CompProperties_Styleable" />
         </comps>
     </ThingDef>
 

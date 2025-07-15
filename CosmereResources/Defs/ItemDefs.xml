@@ -3,9 +3,7 @@
     <ThingDef Name="CosmereResourceBase" ParentName="ResourceBase" Abstract="True">
         <useHitPoints>false</useHitPoints>
         <healthAffectsPrice>false</healthAffectsPrice>
-        <thingCategories>
-            <li>Cosmere_Resource_ThingCategory_Metal</li>
-        </thingCategories>
+        <thingCategories />
         <burnableByRecipe>false</burnableByRecipe>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>

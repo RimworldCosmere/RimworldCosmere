@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 3668851831
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8185efbba053826ef44ea358a7c92e7b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2612ac43db082a73502ee80f2eceb73f
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 8185efbba053826ef44ea358a7c92e7b
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Data/CryptikLemur.Cosmere.Core/Textures/CosmereCore.png
+Dependencies: []

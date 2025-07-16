@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef Name="CosmereMoteAllomancyAura" ParentName="MoteGlowDistorted" Abstract="True">
+    <ThingDef Name="CosmereMoteAllomancyAura" ParentName="MoteBase" Abstract="True">
         <thingClass>MoteAttached</thingClass>
         <altitudeLayer>MoteOverhead</altitudeLayer>
         <drawerType>RealtimeOnly</drawerType>
         <graphicData>
             <texPath>Empty</texPath>
-            <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>
+            <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CirclePulse</shaderType>
             <shaderParameters>
                 <_Radius>1</_Radius> <!-- The radius of the shader circle, in % of image size, so 1 means the total area of the drawSize is used-->
-                <_BorderWidth>0.002</_BorderWidth> <!-- The width of the border that shows the area-->
-                <_Color>(1,1,1,1)</_Color> <!-- The color of the pulse -->
-                <_Color2>(1,1,1,0.2)</_Color2> <!-- The color of the border -->
-                <_PulseTime>5</_PulseTime> <!-- Time in seconds for a pulse to fully finish-->
+                <_BorderWidth>0.0005</_BorderWidth> <!-- The width of the border that shows the area-->
+                <_PulseTime>10</_PulseTime> <!-- Time in seconds for a pulse to fully finish-->
                 <_Speed>1</_Speed> <!-- The speed of the pulse, positive goes outward, negative goes inwards-->
-                <_TrailLength>0.05</_TrailLength> <!-- The length of the trail of the pulse -->
+                <_TrailLength>0.1</_TrailLength> <!-- The length of the trail of the pulse -->
             </shaderParameters>
             <drawSize>1</drawSize>
         </graphicData>
         <mote>
-            <growthRate>0.02</growthRate>
             <fadeInTime>0.2</fadeInTime>
             <fadeOutTime>0.5</fadeOutTime>
             <solidTime>999999</solidTime>

@@ -4,8 +4,11 @@
         <defName>Cosmere_Scadrial_Mote_CopperCloud</defName>
         <label>coppercloud</label>
         <graphicData>
-            <color>(185, 129, 80)</color>
-            <colorTwo>(90, 58, 43)</colorTwo>
+            <shaderParameters>
+                <_Speed>-1</_Speed>
+                <_Color>(0.725, 0.506, 0.314, 1)</_Color>
+                <_Color2>(0.353, 0.227, 0.169, 0.2)</_Color2>
+            </shaderParameters>
         </graphicData>
     </ThingDef>
 </Defs>

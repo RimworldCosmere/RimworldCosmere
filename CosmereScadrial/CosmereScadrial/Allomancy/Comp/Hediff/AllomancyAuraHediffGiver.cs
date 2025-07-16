@@ -40,6 +40,7 @@ public class AllomancyAuraHediffGiverProperties : HediffCompProperties, IMultiTy
 }
 
 public class AllomancyAuraHediffGiver : HediffComp {
+    private readonly List<Pawn> pawnsWithHediff = [];
     private Mote? mote;
 
     private new AllomancyAuraHediffGiverProperties props => (AllomancyAuraHediffGiverProperties)base.props;
@@ -77,6 +78,16 @@ public class AllomancyAuraHediffGiver : HediffComp {
         foreach (Pawn? pawn in nearbyPawns) {
             TryAct(pawn);
         }
+
+        foreach (Pawn pawn in pawnsWithHediff.ToList()) {
+            if (nearbyPawns.Contains(pawn)) continue;
+            AllomanticHediff? hediff = HediffUtility.GetOrAddHediff(Pawn, pawn, ability, props);
+            if (hediff != null) {
+                hediff.RemoveSource(ability);
+            }
+
+            pawnsWithHediff.Remove(pawn);
+        }
     }
 
     public override void CompPostPostRemoved() {
@@ -98,7 +109,10 @@ public class AllomancyAuraHediffGiver : HediffComp {
         }
 
         CreateMote()?.Maintain();
-        if (mote != null) mote.Scale = moteScale;
+        if (mote != null) {
+            mote.Graphic.drawSize = new Vector2(moteScale, moteScale);
+            // mote.Scale = moteScale;
+        }
     }
 
     private Mote? CreateMote() {
@@ -108,14 +122,12 @@ public class AllomancyAuraHediffGiver : HediffComp {
             return mote;
         }
 
-        mote = MoteMaker.MakeAttachedOverlay(
+        return mote ??= MoteMaker.MakeAttachedOverlay(
             base.parent.pawn,
             props.moteDef,
             Vector3.zero,
             moteScale
         );
-
-        return mote;
     }
 
     private void TryAct(Pawn? target) {
@@ -125,6 +137,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
         AllomanticHediff? hediff = HediffUtility.GetOrAddHediff(Pawn, target, ability, props);
         if (hediff == null) return;
+        pawnsWithHediff.Add(target);
 
         // Reset the Disappears timer
         if (hediff.TryGetComp<DisappearsScaled>(out DisappearsScaled? disappearsComp)) {

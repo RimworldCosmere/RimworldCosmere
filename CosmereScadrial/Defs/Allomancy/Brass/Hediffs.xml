@@ -6,7 +6,7 @@
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
         <comps>
             <li Class="CosmereScadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
-                <hediff>Cosmere_Scadrial_Hediff_Soothed</hediff>
+                <hediff>Cosmere_Scadrial_Hediff_Soothed</hediff> 
                 <moteDef>Cosmere_Mote_Brass_Aura</moteDef>
                 <verb>soothed</verb>
             </li>

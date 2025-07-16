@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <Defs>
     <ThingDef ParentName="CosmereMoteAllomancyAura">
         <defName>Cosmere_Mote_Zinc_Aura</defName>
         <label>zinc aura</label>
         <graphicData>
-            <color>(128, 142, 129)</color>
-            <colorTwo>(187, 189, 187)</colorTwo>
+            <shaderParameters>
+                <_PulseTime>5</_PulseTime>
+                <_Speed>-1</_Speed>
+                <_TrailLength>0.05</_TrailLength>
+                <_Color>(0.769, 0.318, 0.263, 1)</_Color>
+                <_Color2>(0.902, 0.184, 0.141, 0.2)</_Color2>
+            </shaderParameters>
         </graphicData>
     </ThingDef>
 </Defs>

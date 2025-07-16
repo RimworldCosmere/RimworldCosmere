@@ -65,9 +65,9 @@
     </HediffDef>
     <HediffDef ParentName="AbstractZincHediff">
         <defName>Cosmere_Scadrial_Hediff_RiotedDebuff</defName>
-        <comps>
-            <li Class="CosmereScadrial.Comp.Hediff.DisappearsScaledProperties">
-                <baseTicks>3600</baseTicks>
+        <comps Inherit="False">
+            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.SeverityCalculatorProperties">
+                <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_Rioted</thought>

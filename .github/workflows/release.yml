@@ -80,7 +80,7 @@ jobs:
       - name: Checkout AssetBuilder
         uses: actions/checkout@v4
         with:
-          repository: 'emipa606/AssetBuilder'
+          repository: 'RimworldCosmere/AssetBuilder'
           path: 'AssetBuilder'
 
       - uses: actions/cache@v4

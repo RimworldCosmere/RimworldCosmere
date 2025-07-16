@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial;
+namespace CosmereCore;
 
 [DefOf]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -11,8 +11,8 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ThingCategoryDefOf {
-    public static ThingCategoryDef Cosmere_Scadrial_ThingCategory_Allomancy;
-    public static ThingCategoryDef Cosmere_Scadrial_ThingCategory_Feruchemy;
+    public static ThingCategoryDef Cosmere;
+    public static ThingCategoryDef Cosmere_Currency;
 
     static ThingCategoryDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingCategoryDefOf));

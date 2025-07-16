@@ -52,6 +52,6 @@ public class CosmereFramework : Mod {
 [StaticConstructorOnStartup]
 public static class ModStartup {
     static ModStartup() {
-        Startup.Initialize("Cryptiklemur.Cosmere.Framework");
+        Startup.Initialize("CryptikLemur.Cosmere.Framework");
     }
 }

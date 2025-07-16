@@ -8,7 +8,7 @@
     
     <ThingDef ParentName="ResourceBase" Name="Cosmere_Scadrial_Thing_MetalmindBase" Abstract="True">
         <thingCategories>
-            <li>Cosmere_Scadrial_ThingCategory_Metalmind</li>
+            <li>Cosmere_Scadrial_ThingCategory_Feruchemy</li>
         </thingCategories>
         <graphicData>
             <graphicClass>Graphic_Single</graphicClass>

@@ -4,7 +4,11 @@
         <defName>Cosmere_Mote_Brass_Aura</defName>
         <label>brass aura</label>
         <graphicData>
-            <color>(175, 148, 91)</color>
+            <!--<color>(175, 148, 91)</color>-->
+            <shaderParameters>
+                <_Color>(175, 148, 91,1)</_Color> <!-- The color of the pulse -->
+                <_Color2>(175, 148, 91,0.2)</_Color2> <!-- The color of the border -->
+            </shaderParameters>
         </graphicData>
     </ThingDef>
 </Defs>

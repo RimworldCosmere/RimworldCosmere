@@ -23,7 +23,7 @@ public class MetalmindInvestiture : RimWorld.StatPart {
     }
 
     private bool TryGetValue(StatRequest req, out float value) {
-        if (!req.Thing?.def?.thingCategories?.Contains(ThingCategoryDefOf.Cosmere_Scadrial_ThingCategory_Metalmind) ??
+        if (!req.Thing?.def?.thingCategories?.Contains(ThingCategoryDefOf.Cosmere_Scadrial_ThingCategory_Feruchemy) ??
             true) {
             value = 0;
             return false;

@@ -3,20 +3,19 @@
     <ThingDef Name="CosmereMoteAllomancyAura" ParentName="MoteGlowDistorted" Abstract="True">
         <thingClass>MoteAttached</thingClass>
         <altitudeLayer>MoteOverhead</altitudeLayer>
+        <drawerType>RealtimeOnly</drawerType>
         <graphicData>
-            <texPath>Effects/AllomancyAura</texPath>
+            <texPath>Empty</texPath>
             <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>
-            <shaderType>RitualSmokeNoMask</shaderType>
+            <shaderType>CirclePulse</shaderType>
             <shaderParameters>
-                <_SmokeTex1>/Things/Mote/RitualEffects/Smoke1_Thick</_SmokeTex1>
-                <_SmokeTex2>/Things/Mote/RitualEffects/Smoke2_Thick</_SmokeTex2>
-                <_MaskTex>/Things/Mote/RitualEffects/GlowRayMask</_MaskTex>
-                <_DistortionTex>/Things/Mote/RitualEffects/DistortionSoft</_DistortionTex>
-                <_ScrollSpeed>0.1</_ScrollSpeed>
-                <_AgeSecs>2</_AgeSecs>
-                <_Thickness>3</_Thickness>
-                <_Distortion>1</_Distortion>
-                <_VerticalScale>.2</_VerticalScale>
+                <_Radius>1</_Radius> <!-- The radius of the shader circle, in % of image size, so 1 means the total area of the drawSize is used-->
+                <_BorderWidth>0.002</_BorderWidth> <!-- The width of the border that shows the area-->
+                <_Color>(1,1,1,1)</_Color> <!-- The color of the pulse -->
+                <_Color2>(1,1,1,0.2)</_Color2> <!-- The color of the border -->
+                <_PulseTime>5</_PulseTime> <!-- Time in seconds for a pulse to fully finish-->
+                <_Speed>1</_Speed> <!-- The speed of the pulse, positive goes outward, negative goes inwards-->
+                <_TrailLength>0.05</_TrailLength> <!-- The length of the trail of the pulse -->
             </shaderParameters>
             <drawSize>1</drawSize>
         </graphicData>

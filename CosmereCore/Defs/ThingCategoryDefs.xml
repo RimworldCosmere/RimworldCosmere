@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingCategoryDef>
+        <defName>Cosmere</defName>
+        <label>cosmere</label>
+        <parent>Root</parent>
+        <resourceReadoutRoot>true</resourceReadoutRoot>
+        <iconPath>UI/Icons/Cosmere</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
         <defName>Cosmere_Currency</defName>
-        <label>cosmere currency</label>
-        <parent>Manufactured</parent>
+        <label>currency</label>
+        <parent>Cosmere</parent>
         <resourceReadoutRoot>true</resourceReadoutRoot>
         <iconPath>UI/Icons/Currency/Boxing</iconPath>
     </ThingCategoryDef>

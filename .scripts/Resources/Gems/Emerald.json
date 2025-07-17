@@ -1,0 +1,35 @@
+{
+  "name": "emerald",
+  "descriptions": {
+    "raw": "With a lush green hue, emeralds evoke life, prosperity, and stability. Known to hold Investiture well in certain systems, they are treasured in trade and ornamentation. Ancient lore links them to growth and endurance, making them a common token of longevity and wealth.",
+    "cut": "Shaped with care, this cut emerald gleams with a vibrant green. Symbolic of growth and endurance, it is often set into items of great significance.",
+    "sphere": "A smooth emerald sphere with a deep green luster. Capable of storing Stormlight, and traditionally associated with growth, sustenance, and Soulcasting organic matter."
+  },
+  "color": [
+    93,
+    245,
+    66
+  ],
+  "colorTwo": [
+    103,
+    255,
+    96
+  ],
+  "glowColor": [
+    93,
+    245,
+    66
+  ],
+  "baseStormlight": 5,
+  "baseMarketValue": 25,
+  "baseBeauty": 25,
+  "mining": {
+    "hitPoints": 1500,
+    "yield": 1,
+    "commonality": 0.01,
+    "sizeRange": [
+      1,
+      4
+    ]
+  }
+}

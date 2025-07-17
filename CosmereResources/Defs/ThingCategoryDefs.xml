@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingCategoryDef>
+        <defName>Cosmere_Resource_ThingCategory_Gem</defName>
+        <label>Gems</label>
+        <parent>ResourcesRaw</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Emerald/CutEmerald</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Resource_ThingCategory_RawGem</defName>
+        <label>Cosmere_Resource_ThingCategory_Gem</label>
+        <parent>ResourcesRaw</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Emerald/RawEmerald</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Resource_ThingCategory_CutGem</defName>
+        <label>Cosmere_Resource_ThingCategory_Gem</label>
+        <parent>ResourcesRaw</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Emerald/CutEmerald</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
         <defName>Cosmere_Resource_ThingCategory_Metal</defName>
         <label>Metals</label>
         <parent>ResourcesRaw</parent>

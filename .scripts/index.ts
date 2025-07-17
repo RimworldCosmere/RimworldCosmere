@@ -28,11 +28,12 @@ async function Main() {
         await deleteGeneratedFiles(path.resolve(__dirname, '..', 'CosmereFramework'))
         await deleteGeneratedFiles(path.resolve(__dirname, '..', 'CosmereResources'))
         await deleteGeneratedFiles(path.resolve(__dirname, '..', 'CosmereScadrial'))
+        await deleteGeneratedFiles(path.resolve(__dirname, '..', 'CosmereRoshar'))
     }
 
     console.dir(options);
 
-    for (const genName of ['GenesAndTraits', 'MetallicArtsMetals', 'Resources', 'FeruchemicalHediffs']) {
+    for (const genName of ['GenesAndTraits', 'MetallicArtsMetals', 'Resources', 'FeruchemicalHediffs', 'GemstoneSpheres']) {
         const {generator, shouldSkip} = await bootstrap(genName);
 
         if (shouldSkip) {

@@ -1,0 +1,13 @@
+#nullable disable
+using RimWorld;
+using Verse;
+
+namespace CosmereRoshar;
+
+public static partial class ThingDefOf {        
+    {{#each gems as | gem |}}
+    public static ThingDef Cosmere_Roshar_Thing_{{defName gem.name}}Chip;
+    public static ThingDef Cosmere_Roshar_Thing_{{defName gem.name}}Mark;
+    public static ThingDef Cosmere_Roshar_Thing_{{defName gem.name}}Broam;
+    {{/each}}
+}

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- {{defName gem.name}} Chip -->
+    <ThingDef ParentName="CosmereGemBase">
+        <defName>Cosmere_Roshar_Thing_{{defName gem.name}}Chip</defName>
+        <label>{{title gem.name}} Chip</label>
+        <description>{{gem.descriptions.sphere}}</description>
+
+        <thingCategories>
+            <li>Cosmere_Currency</li>
+            <li>Cosmere_Resource_ThingCategory_Sphere</li>
+        </thingCategories>
+
+        <graphicData>
+            {{# unless gem.stackable}}
+            <graphicClass>Graphic_Single</graphicClass>
+            {{/unless}}
+            <drawSize>.3</drawSize>
+            <texPath>Item/Resource/Sphere/{{defName gem.name}}</texPath>
+        </graphicData>
+
+        <statBases>
+            <Beauty>{{multiply gem.baseBeauty 2}}</Beauty>
+            <MarketValue>{{multiply gem.baseMarketValue 2}}</MarketValue>
+            <Cosmere_Investiture>{{multiply gem.baseStormlight 2}}</Cosmere_Investiture>
+        </statBases>
+
+        <costList>
+            <Cut{{defName gem.name}}>1</Cut{{defName gem.name}}>
+        </costList>
+
+        <recipeMaker>
+            <label>{{title gem.name}} Chip</label>
+            <productCount>20</productCount>
+            <targetCountAdjustment>20</targetCountAdjustment>
+            <bulkRecipeCount>100</bulkRecipeCount>
+            <useIngredientsForColor>true</useIngredientsForColor>
+            <workAmount>1600</workAmount>
+            <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+            <effectWorking>CutStone</effectWorking>
+            <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+            <workSkill>Crafting</workSkill> <!-- custom skill? -->
+            <researchPrerequisites>
+                <li>Cosmere_Gem_Cutting</li>
+                <li>Cosmere_Roshar_Sphere_Production</li>
+            </researchPrerequisites>
+            <recipeUsers>
+                <li>Cosmere_Roshar_Table_Gemcutting</li>
+            </recipeUsers>
+            <displayPriority>200</displayPriority>
+        </recipeMaker>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.GemsLinked">
+                <gem>{{defName gem.name}}</gem>
+            </li>
+        </modExtensions>
+        <comps>
+            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <drainRate>0.1</drainRate>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <!-- {{defName gem.name}} Mark -->
+    <ThingDef ParentName="CosmereGemBase">
+        <defName>Cosmere_Roshar_Thing_{{defName gem.name}}Mark</defName>
+        <label>{{title gem.name}} Mark</label>
+        <description>{{gem.descriptions.sphere}}</description>
+
+        <thingCategories>
+            <li>Cosmere_Currency</li>
+            <li>Cosmere_Resource_ThingCategory_Sphere</li>
+        </thingCategories>
+
+        <graphicData>
+            {{# unless gem.stackable}}
+            <graphicClass>Graphic_Single</graphicClass>
+            {{/unless}}
+            <drawSize>.5</drawSize>
+            <texPath>Item/Resource/Sphere/{{defName gem.name}}</texPath>
+        </graphicData>
+
+        <statBases>
+            <Beauty>{{multiply gem.baseBeauty 10}}</Beauty>
+            <MarketValue>{{multiply gem.baseMarketValue 10}}</MarketValue>
+            <Cosmere_Investiture>{{multiply gem.baseStormlight 10}}</Cosmere_Investiture>
+        </statBases>
+
+        <costList>
+            <Cut{{defName gem.name}}>1</Cut{{defName gem.name}}>
+        </costList>
+
+        <recipeMaker>
+            <label>{{title gem.name}} Mark</label>
+            <productCount>4</productCount>
+            <targetCountAdjustment>4</targetCountAdjustment>
+            <bulkRecipeCount>16</bulkRecipeCount>
+            <useIngredientsForColor>true</useIngredientsForColor>
+            <workAmount>1600</workAmount>
+            <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+            <effectWorking>CutStone</effectWorking>
+            <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+            <workSkill>Crafting</workSkill> <!-- custom skill? -->
+            <researchPrerequisites>
+                <li>Cosmere_Gem_Cutting</li>
+                <li>Cosmere_Roshar_Sphere_Production</li>
+            </researchPrerequisites>
+            <recipeUsers>
+                <li>Cosmere_Roshar_Table_Gemcutting</li>
+            </recipeUsers>
+            <displayPriority>200</displayPriority>
+        </recipeMaker>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.GemsLinked">
+                <gem>{{defName gem.name}}</gem>
+            </li>
+        </modExtensions>
+        <comps>
+            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <drainRate>0.1</drainRate>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <!-- {{defName gem.name}} Broam -->
+    <ThingDef ParentName="CosmereGemBase">
+        <defName>Cosmere_Roshar_Thing_{{defName gem.name}}Broam</defName>
+        <label>{{title gem.name}} Broam</label>
+        <description>{{gem.descriptions.sphere}}</description>
+
+        <thingCategories>
+            <li>Cosmere_Currency</li>
+            <li>Cosmere_Resource_ThingCategory_Sphere</li>
+        </thingCategories>
+
+        <graphicData>
+            {{# unless gem.stackable}}
+            <graphicClass>Graphic_Single</graphicClass>
+            {{/unless}}
+            <drawSize>.7</drawSize>
+            <texPath>Item/Resource/Sphere/{{defName gem.name}}</texPath>
+        </graphicData>
+
+        <statBases>
+            <Beauty>{{multiply gem.baseBeauty 40}}</Beauty>
+            <MarketValue>{{multiply gem.baseMarketValue 40}}</MarketValue>
+            <Cosmere_Investiture>{{multiply gem.baseStormlight 40}}</Cosmere_Investiture>
+        </statBases>
+
+        <costList>
+            <Cut{{defName gem.name}}>1</Cut{{defName gem.name}}>
+        </costList>
+
+        <recipeMaker>
+            <label>{{title gem.name}} Broam</label>
+            <productCount>1</productCount>
+            <targetCountAdjustment>1</targetCountAdjustment>
+            <bulkRecipeCount>4</bulkRecipeCount>
+            <useIngredientsForColor>true</useIngredientsForColor>
+            <workAmount>1600</workAmount>
+            <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+            <effectWorking>CutStone</effectWorking>
+            <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+            <workSkill>Crafting</workSkill> <!-- custom skill? -->
+            <researchPrerequisites>
+                <li>Cosmere_Gem_Cutting</li>
+                <li>Cosmere_Roshar_Sphere_Production</li>
+            </researchPrerequisites>
+            <recipeUsers>
+                <li>Cosmere_Roshar_Table_Gemcutting</li>
+            </recipeUsers>
+            <displayPriority>200</displayPriority>
+        </recipeMaker>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.GemsLinked">
+                <gem>{{defName gem.name}}</gem>
+            </li>
+        </modExtensions>
+        <comps>
+            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <drainRate>0.1</drainRate>
+            </li>
+        </comps>
+    </ThingDef>
+</Defs>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ResearchProjectDef>
+        <defName>Cosmere_Roshar_SphereProduction</defName>
+        <label>sphere production</label>
+        <tab>Cosmere</tab>
+        <description>By replicating Rosharan techniques, your colonists have learned to produce gemstone spheres—polished, standardized orbs capable of holding Stormlight. Though originally used as both currency and power sources, these spheres serve as versatile vessels for light, energy, and craftwork across shardworlds.</description>
+        <baseCost>300</baseCost>
+        <techLevel>Neolithic</techLevel>
+        <researchViewX>0.00</researchViewX>
+        <researchViewY>4.20</researchViewY>
+    </ResearchProjectDef>
+</Defs>

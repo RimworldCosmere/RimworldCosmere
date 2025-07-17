@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="RockBase">
+        <defName>Mineable{{defName gem.name}}</defName>
+        <label>Raw {{title gem.name}}</label>
+        <description>{{#if gem.descriptions.mining}}{{gem.descriptions.mining}}{{else}}Raw {{capitalize gem.name}} mined directly from the earth.{{/if}}</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>{{rgb gem.color}}</color>
+            {{#if gem.colorTwo}}<colorTwo>{{rgb gem.colorTwo}}</colorTwo>{{/if}}
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>{{gem.mining.hitPoints}}</MaxHitPoints>
+        </statBases>
+        <deepCommonality>{{gem.mining.commonality}}</deepCommonality>
+        <deepCountPerPortion>{{gem.mining.yield}}</deepCountPerPortion>
+        <deepLumpSizeRange>{{range gem.mining.sizeRange}}</deepLumpSizeRange>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <veinMineable>true</veinMineable>
+            <mineableThing>{{capitalize gem.name}}</mineableThing>
+            <mineableYield>{{gem.mining.yield}}</mineableYield>
+            <mineableScatterCommonality>{{gem.mining.commonality}}</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>{{range gem.mining.sizeRange}}</mineableScatterLumpSizeRange>
+        </building>
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.GemsLinked">
+                <gem>{{defName gem.name}}</gem>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

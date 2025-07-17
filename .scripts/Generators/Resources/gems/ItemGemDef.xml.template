@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Raw {{defName gem.name}} -->
+    <ThingDef ParentName="CosmereGemBase">
+        <defName>Raw{{defName gem.name}}</defName>
+        <label>Raw {{title gem.name}}</label>
+        <description>{{gem.descriptions.raw}}</description>
+
+        <thingCategories>
+            <li>Cosmere_Resource_ThingCategory_RawGem</li>
+        </thingCategories>
+
+        <graphicData>
+            {{# unless gem.stackable}}
+            <graphicClass>Graphic_Single</graphicClass>
+            {{/unless}}
+            <drawSize>{{gem.drawSize}}</drawSize>
+            <texPath>Item/Resource/Raw{{defName gem.name}}</texPath>
+        </graphicData>
+
+        <statBases>
+            <Beauty>{{gem.baseBeauty}}</Beauty>
+            <MarketValue>{{gem.baseMarketValue}}</MarketValue>
+            <Cosmere_Investiture>{{gem.baseStormlight}}</Cosmere_Investiture>
+        </statBases>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.GemsLinked">
+                <gem>{{defName gem.name}}</gem>
+            </li>
+        </modExtensions>
+        <comps>
+            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <drainRate>0.5</drainRate>
+            </li>
+            <li Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>
+        </comps>
+    </ThingDef>
+
+    <!-- Cut {{defName gem.name}} -->
+    <ThingDef ParentName="CosmereGemBase">
+        <defName>Cut{{defName gem.name}}</defName>
+        <label>Cut {{title gem.name}}</label>
+        <description>{{gem.descriptions.cut}}</description>
+
+        <thingCategories>
+            <li>Cosmere_Resource_ThingCategory_CutGem</li>
+        </thingCategories>
+
+        <graphicData>
+            {{# unless gem.stackable}}
+            <graphicClass>Graphic_Single</graphicClass>
+            {{/unless}}
+            <drawSize>{{gem.drawSize}}</drawSize>
+            <texPath>Item/Resource/Cut{{defName gem.name}}</texPath>
+        </graphicData>
+
+        <costList>
+            <Raw{{defName gem.name}}>1</Raw{{defName gem.name}}>
+        </costList>
+
+        <recipeMaker>
+            <label>Cut {{title gem.name}} gemstone</label>
+            <productCount>1</productCount>
+            <targetCountAdjustment>1</targetCountAdjustment>
+            <bulkRecipeCount>4</bulkRecipeCount>
+            <useIngredientsForColor>true</useIngredientsForColor>
+            <workAmount>1600</workAmount>
+            <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+            <effectWorking>CutStone</effectWorking>
+            <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+            <workSkill>Crafting</workSkill> <!-- custom skill? -->
+            <researchPrerequisites>
+                <li>Cosmere_Gem_Cutting</li>
+            </researchPrerequisites>
+            <recipeUsers>
+                <li>TableStonecutter</li>
+                <li MayRequire="cryptiklemur.cosmere.roshar">Cosmere_Roshar_Table_Gemcutting</li>
+            </recipeUsers>
+            <displayPriority>200</displayPriority>
+        </recipeMaker>
+
+        <statBases>
+            <Beauty>{{multiply gem.baseBeauty 4}}</Beauty>
+            <MarketValue>{{multiply gem.baseMarketValue 4}}</MarketValue>
+            <Cosmere_Investiture>{{multiply gem.baseStormlight 4}}</Cosmere_Investiture>
+        </statBases>
+
+        <modExtensions>
+            <li Class="CosmereResources.DefModExtension.GemsLinked">
+                <gem>{{defName gem.name}}</gem>
+            </li>
+        </modExtensions>
+        <comps>
+            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <drainRate>0.25</drainRate>
+            </li>
+            <li Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>
+        </comps>
+    </ThingDef>
+
+    <!-- Todo Perfect {{defName gem.name}} -->
+</Defs>

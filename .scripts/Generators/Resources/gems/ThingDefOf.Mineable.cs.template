@@ -1,0 +1,11 @@
+#nullable disable
+using RimWorld;
+using Verse;
+
+namespace CosmereResources;
+
+public static partial class ThingDefOf {        
+    {{#each gems as | gem |}}
+    public static ThingDef Mineable{{defName gem.name}};
+    {{/each}}
+}

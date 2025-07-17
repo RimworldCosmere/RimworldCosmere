@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 	<ResearchProjectDef>
+		<defName>Cosmere_Gem_Cutting</defName>
+		<label>gem cutting</label>
+		<description>Through careful study and refined technique, your colonists have learned to cut raw gemstones into precise, faceted forms. Cut gems fetch higher prices in trade and can be used in advanced crafting, ceremonial objects, or specialized fabrials on certain shardworlds.</description>
+		<baseCost>300</baseCost>
+		<techLevel>Medieval</techLevel>
+		<researchViewX>4.00</researchViewX>
+		<researchViewY>4.20</researchViewY>
+	</ResearchProjectDef>
+	<ResearchProjectDef>
 		<defName>Cosmere_Simple_Alloys</defName>
 		<label>simple alloys</label>
 		<description>Combining base metals to create stronger, more useful materials. Unlocks basic alloys like steel and bronze for construction, crafting, and equipment.</description>

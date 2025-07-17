@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingCategoryDef>
+        <defName>Cosmere_Resource_ThingCategory_Sphere</defName>
+        <label>Spheres</label>
+        <parent>Cosmere_Resource_ThingCategory_Gem</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Sphere/Emerald</iconPath>
+    </ThingCategoryDef>
+</Defs>

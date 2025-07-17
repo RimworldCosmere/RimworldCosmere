@@ -16,18 +16,18 @@ export class MetalInfo {
     public marketValue: number;
     public maxAmount: number = 100;
     public genesToGrant: Record<string, string[]> = {};
-    public allomancy?: MetalAllomancyInfo
-    public feruchemy?: MetalFeruchemyInfo;
-    public buildable?: MetalBuildableInfo;
-    public mining?: MetalMiningInfo;
-    public alloy?: MetalAlloyInfo;
+    public allomancy?: AllomancyInfo
+    public feruchemy?: FeruchemyInfo;
+    public buildable?: BuildableInfo;
+    public mining?: MiningInfo;
+    public alloy?: AlloyInfo;
 
     constructor(self: Partial<MetalInfo>) {
         Object.assign(this, self);
     }
 }
 
-export class MetalAllomancyInfo {
+export class AllomancyInfo {
     public userName?: string;
     public description: string;
     public group: AllomancyGroup | 'None' = 'None';
@@ -35,12 +35,12 @@ export class MetalAllomancyInfo {
     public polarity: Polarity | 'None' = 'None';
     public abilities: string[] = [];
 
-    constructor(self: Partial<MetalAllomancyInfo>) {
+    constructor(self: Partial<AllomancyInfo>) {
         Object.assign(this, self);
     }
 }
 
-export class MetalFeruchemyInfo {
+export class FeruchemyInfo {
     public userName?: string;
     public description: string;
     public group: FeruchemyGroup | 'None' = 'None';
@@ -50,7 +50,7 @@ export class MetalFeruchemyInfo {
     public store?: FeruchemyAbilityInfo;
     public tap?: FeruchemyAbilityInfo;
 
-    constructor(self: Partial<MetalFeruchemyInfo>) {
+    constructor(self: Partial<FeruchemyInfo>) {
         Object.assign(this, self);
         this.store = self.store ? new FeruchemyAbilityInfo(self.store) : undefined;
         this.tap = self.tap ? new FeruchemyAbilityInfo(self.tap) : undefined;
@@ -71,7 +71,7 @@ export class FeruchemyAbilityInfo {
     }
 }
 
-export class MetalBuildableInfo {
+export class BuildableInfo {
     public commonality: number;
     public defense?: {
         sharp?: number;
@@ -88,19 +88,19 @@ export class MetalBuildableInfo {
     }
     public stuffStatFactors?: Record<string, number>;
 
-    constructor(self: Partial<MetalBuildableInfo>) {
+    constructor(self: Partial<BuildableInfo>) {
         Object.assign(this, self);
     }
 }
 
-export class MetalMiningInfo {
+export class MiningInfo {
     public description?: string;
     public hitPoints: number;
     public yield: number;
     public commonality: number;
     public sizeRange: [number, number];
 
-    constructor(self: Partial<MetalMiningInfo>) {
+    constructor(self: Partial<MiningInfo>) {
         Object.assign(this, self);
     }
 }
@@ -119,20 +119,20 @@ interface AlloyInput {
     };
 }
 
-export class MetalAlloyInfo {
-    public ingredients: MetalAlloyIngredient[];
+export class AlloyInfo {
+    public ingredients: AlloyIngredient[];
     public stuff?: string[];
     public stuffCount?: number;
-    public product: MetalAlloyProduct;
+    public product: AlloyProduct;
     public type: 'simple' | 'complex' | 'god';
 
     public constructor({type, ingredients, stuff, stuffCount, product = {count: 10}}: AlloyInput) {
         this.type = type;
-        this.ingredients = ingredients.map(i => new MetalAlloyIngredient({
+        this.ingredients = ingredients.map(i => new AlloyIngredient({
             items: i.item ? (Array.isArray(i.item) ? i.item : [i.item]) : undefined,
             count: i.count,
         }));
-        this.product = new MetalAlloyProduct({
+        this.product = new AlloyProduct({
             item: product.item,
             count: product.count,
         });
@@ -141,21 +141,21 @@ export class MetalAlloyInfo {
     }
 }
 
-export class MetalAlloyIngredient {
+export class AlloyIngredient {
     public items?: string[];
     public stuffs?: string[];
     public count: number;
 
-    constructor(self: Partial<MetalAlloyIngredient>) {
+    constructor(self: Partial<AlloyIngredient>) {
         Object.assign(this, self);
     }
 }
 
-export class MetalAlloyProduct {
+export class AlloyProduct {
     public item: string;
     public count: number;
 
-    constructor(self: Partial<MetalAlloyProduct>) {
+    constructor(self: Partial<AlloyProduct>) {
         Object.assign(this, self);
     }
 }

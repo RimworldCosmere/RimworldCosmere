@@ -8,7 +8,8 @@
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
         <allowedArchonexusCount>80</allowedArchonexusCount>
         <burnableByRecipe>false</burnableByRecipe>
-        
+    </ThingDef>
+    <ThingDef Name="CosmereMetalBase" ParentName="CosmereResourceBase" Abstract="True">
         <graphicData>
             <graphicClass>Graphic_StackCount</graphicClass>
             <drawSize>1</drawSize>
@@ -17,6 +18,7 @@
         <stuffProps>
             <isAirtight>true</isAirtight>
             <appearance>Metal</appearance>
+            <constructEffect>ConstructMetal</constructEffect>
             <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
             <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
             <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
@@ -30,5 +32,28 @@
         </statBases>
         <soundInteract>Metal_Drop</soundInteract>
         <soundDrop>Metal_Drop</soundDrop>
+    </ThingDef>
+    <ThingDef Name="CosmereGemBase" ParentName="CosmereResourceBase" Abstract="True">
+        <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>1</drawSize>
+        </graphicData>
+        
+        <soundInteract>Gem_Drop</soundInteract>
+        <soundDrop>Gem_Drop</soundDrop>
+        <stuffProps>
+            <isAirtight>false</isAirtight>
+            <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Gems</li>
+            </categories>
+
+            <!-- Should have "Gem" related things for the stuff below -->
+            <appearance>Metal</appearance>
+            <constructEffect>ConstructMetal</constructEffect>
+            <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
+            <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+            <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+        </stuffProps>
     </ThingDef>
 </Defs>

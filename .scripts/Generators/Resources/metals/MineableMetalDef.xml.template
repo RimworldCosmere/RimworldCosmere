@@ -3,7 +3,7 @@
     <ThingDef ParentName="RockBase">
         <defName>Mineable{{defName metal.name}}</defName>
         <label>{{title metal.name}} Ore</label>
-        <description>{{#if metal.mining.Description}}{{metal.mining.Description}}{{else}}Unrefined {{capitalize metal.name}} ore mined directly from the earth.{{/if}}</description>
+        <description>{{#if metal.mining.description}}{{metal.mining.description}}{{else}}Unrefined {{capitalize metal.name}} ore mined directly from the earth.{{/if}}</description>
         <graphicData>
             <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
             <graphicClass>Graphic_Single</graphicClass>

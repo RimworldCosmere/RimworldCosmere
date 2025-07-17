@@ -1,0 +1,35 @@
+{
+  "name": "diamond",
+  "descriptions": {
+    "raw": "Clear and unyielding, diamonds are symbols of purity and precision across the Cosmere. Often used in highcraft or as currency among the more refined cultures, they are valued not only for their brilliance but for their hardness and clarity. A favorite among jewelers and scholars alike.",
+    "cut": "A flawlessly cut diamond, brilliant and razor-sharp in its facets. Favored in fine craftwork and noble regalia, it reflects light—and wealth—with stunning clarity.",
+    "sphere": "A polished diamond sphere, clear and sharply faceted. Can be used to hold Stormlight, and is often employed in illumination-based fabrials or delicate precision work."
+  },
+  "color": [
+    217,
+    112,
+    33
+  ],
+  "colorTwo": [
+    247,
+    142,
+    73
+  ],
+  "glowColor": [
+    220,
+    220,
+    220
+  ],
+  "baseStormlight": 5,
+  "baseMarketValue": 0.5,
+  "baseBeauty": 0.5,
+  "mining": {
+    "hitPoints": 1500,
+    "yield": 5,
+    "commonality": 0.3,
+    "sizeRange": [
+      8,
+      16
+    ]
+  }
+}

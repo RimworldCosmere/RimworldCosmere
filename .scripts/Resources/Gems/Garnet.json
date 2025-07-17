@@ -1,0 +1,35 @@
+{
+  "name": "garnet",
+  "descriptions": {
+    "raw": "Deep and crimson, garnets are often associated with blood, strength, and sacrifice. In some cultures, they are believed to resonate with a person’s willpower or passion. Durable and richly colored, they are often used in ceremonial blades and noble adornments.",
+    "cut": "This garnet has been masterfully faceted, its deep red core glowing like a coal under pressure. It’s prized for its bold appearance and strength in symbolism.",
+    "sphere": "A dark red garnet sphere, dense and weighty. Known to hold Stormlight well, garnets are valued for their role in flesh-related Soulcasting and medical applications."
+  },
+  "color": [
+    214,
+    224,
+    16
+  ],
+  "colorTwo": [
+    214,
+    224,
+    16
+  ],
+  "glowColor": [
+    214,
+    224,
+    16
+  ],
+  "baseStormlight": 5,
+  "baseMarketValue": 2.5,
+  "baseBeauty": 2.5,
+  "mining": {
+    "hitPoints": 1500,
+    "yield": 4,
+    "commonality": 0.2,
+    "sizeRange": [
+      5,
+      11
+    ]
+  }
+}

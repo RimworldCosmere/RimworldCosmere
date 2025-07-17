@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereResources.Def.GemDef Name="Cosmere_Gem_{{defName gem.name}}">
+        <defName>{{defName gem.name}}</defName>
+        <label>{{title gem.name}}</label>
+        <description>{{gem.descriptions.raw}}</description>
+        <color>{{rgb gem.color}}</color>{{#if gem.colorTwo}}
+        <colorTwo>{{rgb gem.colorTwo}}</colorTwo>{{/if}}{{#if gem.glowColor}}
+        <glowColor>{{rgb gem.glowColor}}</glowColor>{{/if}}
+    </CosmereResources.Def.GemDef>
+</Defs>

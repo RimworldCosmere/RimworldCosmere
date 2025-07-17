@@ -67,6 +67,10 @@ public class AllomancyAuraHediffGiver : HediffComp {
         base.CompPostTickInterval(ref severityAdjustment, delta);
         float radius = props.radius * base.parent.Severity;
 
+        if (debugMode && Find.Selector.IsSelected(parent.pawn)) {
+            CircleRenderer.TryAdd(this, new CircleToRender(parent.pawn, radius, parent.metal.transparentLineColor));
+        }
+
         if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) {
             return;
         }
@@ -97,21 +101,10 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
     public override void CompPostTick(ref float severityAdjustment) {
         base.CompPostTick(ref severityAdjustment);
-        if (debugMode && Find.Selector.IsSelected(parent.pawn)) {
-            CircleRenderer.TryAdd(
-                this,
-                new CircleToRender(
-                    parent.pawn,
-                    props.radius * base.parent.Severity,
-                    parent.metal.transparentLineColor
-                )
-            );
-        }
 
         CreateMote()?.Maintain();
         if (mote != null) {
             mote.Graphic.drawSize = new Vector2(moteScale, moteScale);
-            // mote.Scale = moteScale;
         }
     }
 

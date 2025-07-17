@@ -8,7 +8,7 @@
             <li Class="CosmereScadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
                 <hediffFriendly>Cosmere_Scadrial_Hediff_RiotedBuff</hediffFriendly>
                 <hediffHostile>Cosmere_Scadrial_Hediff_RiotedDebuff</hediffHostile>
-                <moteDef>Cosmere_Mote_Zinc_Aura</moteDef>
+                <moteDef>Cosmere_Scadrial_Mote_ZincAura</moteDef>
                 <verb>rioted</verb>
             </li>
         </comps>

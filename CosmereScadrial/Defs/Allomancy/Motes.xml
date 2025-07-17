@@ -2,8 +2,7 @@
 <Defs>
     <ThingDef Name="CosmereMoteAllomancyAura" ParentName="MoteBase" Abstract="True">
         <thingClass>MoteAttached</thingClass>
-        <altitudeLayer>MoteOverhead</altitudeLayer>
-        <drawerType>RealtimeOnly</drawerType>
+        <altitudeLayer>MoteLow</altitudeLayer>
         <graphicData>
             <texPath>Empty</texPath>
             <graphicClass>Graphic_Single</graphicClass>

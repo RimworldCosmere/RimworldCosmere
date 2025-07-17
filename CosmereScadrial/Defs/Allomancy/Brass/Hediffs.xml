@@ -7,7 +7,7 @@
         <comps>
             <li Class="CosmereScadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
                 <hediff>Cosmere_Scadrial_Hediff_Soothed</hediff> 
-                <moteDef>Cosmere_Mote_Brass_Aura</moteDef>
+                <moteDef>Cosmere_Scadrial_Mote_BrassAura</moteDef>
                 <verb>soothed</verb>
             </li>
         </comps>

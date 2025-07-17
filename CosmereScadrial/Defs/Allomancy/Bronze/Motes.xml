@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="CosmereMoteAllomancyAura">
-        <defName>Cosmere_Scadrial_Mote_BrassAura</defName>
-        <label>brass aura</label>
+        <defName>Cosmere_Scadrial_Mote_BronzeAura</defName>
+        <label>bronze aura</label>
         <graphicData>
             <shaderParameters>
                 <_PulseTime>10</_PulseTime>
                 <_Speed>1</_Speed>
                 <_TrailLength>0.05</_TrailLength>
-                <_Color>(0.686, 0.580, 0.357, 1)</_Color>
-                <_Color2>(0.686, 0.580, 0.357, 0.2)</_Color2>
+                <_Color>(0.749, 0.627, 0.541, 1)</_Color>
+                <_Color2>(0.749, 0.627, 0.541, 0.2)</_Color2>
             </shaderParameters>
         </graphicData>
     </ThingDef>

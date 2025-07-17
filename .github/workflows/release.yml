@@ -172,27 +172,6 @@ jobs:
         run: |
           cat /home/runner/.config/unity3d/Editor.log || true
 
-      - name: Copy and rename bundle output
-        if: steps.copyassets.outputs.hasAssets == 'true'
-        working-directory: RimworldCosmere
-        run: |
-          ls -lha ../AssetBuilder ../AssetBuilder/Assets ../AssetBuilder/Assets/AssetBundles
-          # Strip the "Cosmere" prefix
-          modLowerShort=$(echo "$MOD" | sed 's/^Cosmere//' | tr '[:upper:]' '[:lower:]')
-          bundleNameLower=$(echo "$BUNDLE_NAME" | tr '[:upper:]' '[:lower:]')
-          
-          srcBundle="../AssetBuilder/Assets/AssetBundles/$bundleNameLower"
-          srcManifest="$srcBundle.manifest"
-          
-          destDir="$MOD/AssetBundles"
-          destBundle="$destDir/resource_cosmere_$modLowerShort"
-          destManifest="$destBundle.manifest"
-          
-          echo "Copying $srcBundle to $destBundle"
-          mkdir -p "$destDir"
-          cp "$srcBundle" "$destBundle"
-          cp "$srcManifest" "$destManifest"
-
       - name: Build Mod
         working-directory: RimworldCosmere
         if: ${{ github.event.release.tag_name != '' }}

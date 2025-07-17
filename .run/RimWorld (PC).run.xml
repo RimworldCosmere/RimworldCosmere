@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="true" name="RimWorld" type="RimworldRunConfiguration" factoryName="RimworldRunConfiguration" focusToolWindowBeforeRun="true">
+    <option name="commandLineOptions" value="-popupwindow -screen-width 1600 -screen-height 900 -screen-fullscreen 0 -screen-monitor 0" />
+    <option name="modListPath" value="" />
+    <option name="saveFilePath" value="" />
+    <option name="scriptName" value="D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="false" run_configuration_name="Build Asset Bundles" run_configuration_type="PowerShellRunType" />
+      <option name="RunConfigurationTask" enabled="false" run_configuration_name="start -- -d -f" run_configuration_type="js.build_tools.npm" />
+      <option name="Build Solution" enabled="true" />
+    </method>
+  </configuration>
+</component>

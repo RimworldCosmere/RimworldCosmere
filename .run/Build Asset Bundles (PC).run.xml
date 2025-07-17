@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Build Asset Bundles (PC)" type="PowerShellRunType" factoryName="PowerShell" scriptUrl="$PROJECT_DIR$/../RimworldCosmere\buildAllCosmereBundles.ps1" executablePath="C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe">
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,8 +1,15 @@
+if ($IsWindows) {
+    $unityPath = "C:\Program Files\Unity\Hub\Editor\2022.3.35f1\Editor\Unity.exe"
+} elseif ($IsMacOS) {
+    $unityPath = "/Applications/Unity/Hub/Editor/2022.3.35f1/Unity.app/Contents/MacOS/Unity"
+} else {
+    throw "Unsupported platform. Only Windows and macOS are supported."
+}
+
 $cleanPath = "..\AssetBuilder\Assets\Data"
 $assetOutput = "..\AssetBuilder\Assets\AssetBundles"
-Write-Host "Cleaning $cleanPath and $assetOutput..."
-Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$cleanPath\*"
-Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$assetOutput\*"
+Write-Host "Cleaning $cleanPath"
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$cleanPath\*" | Out-Null
 
 # List of modules to process
 $mods = @("Core", "Resources", "Framework", "Scadrial")
@@ -65,15 +72,14 @@ foreach ($mod in $mods)
 
         Write-Host "    Changes detected. Continuing with build."
 
-        Write-Host "    Copying $srcAssets -> $destPath"
+        Write-Host "    Copying $srcAssets\* -> $destPath"
         New-Item -ItemType Directory -Force -Path $destPath | Out-Null
         Copy-Item "$srcAssets\*" -Destination $destPath -Recurse -Force
 
-        $unityPath = "C:\Program Files\Unity\Hub\Editor\2022.3.35f1\Editor\Unity.exe"
         $unityArgs = @(
             "-batchmode",
             "-quit",
-            "-projectPath", "..\AssetBuilder",
+            '-projectPath="..\AssetBuilder"',
             "-executeMethod", "ModAssetBundleBuilder.BuildBundles",
             "--assetBundleName=$bundleName"
         )
@@ -84,44 +90,48 @@ foreach ($mod in $mods)
         if ($process.ExitCode -ne 0)
         {
             Write-Host "    Unity failed for $mod (exit code $( $process.ExitCode )). Skipping bundle move."
-            Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $destPath
+            exit
+            Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $destPath | Out-Null
             continue
         }
 
         if (Test-Path $finalOutput)
         {
             Write-Host "    Cleaning $finalOutput"
-            Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$finalOutput\*"
+            Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$finalOutput\*" | Out-Null
         }
         else
         {
             New-Item -ItemType Directory -Path $finalOutput | Out-Null
         }
 
-        $bundleFile = "$assetOutput\$bundleName"
-        $manifestFile = "$assetOutput\$bundleName.manifest"
+        $platforms = @("windows", "mac", "linux")
+        $foundAny = $false
+        foreach ($platform in $platforms) {
+            $platformOutput = "$assetOutput\$platform\$bundleName_$platform"
+            $platformManifest = "$platformOutput.manifest"
 
-        if (Test-Path $bundleFile)
-        {
-            Move-Item $bundleFile "$finalOutput/$bundleOutput" -Force
-        }
-        else
-        {
-            Write-Host "    Warning: $bundleFile not found."
+            if (Test-Path $platformOutput) {
+                Move-Item $platformOutput "$finalOutput/${bundleOutput}_$platform" -Force
+                $foundAny = $true
+            } else {
+                Write-Host "    Warning: $platformOutput not found."
+            }
+
+            if (Test-Path $platformManifest) {
+                Move-Item $platformManifest "$finalOutput/${bundleOutput}_$platform.manifest" -Force
+            } else {
+                Write-Host "    Warning: $platformManifest not found."
+            }
         }
 
-        if (Test-Path $manifestFile)
-        {
-            Move-Item $manifestFile "$finalOutput\$bundleOutput.manifest" -Force
-        }
-        else
-        {
-            Write-Host "    Warning: $manifestFile not found."
+        if (-not $foundAny) {
+            Write-Host "    Warning: No asset bundles found for any platform."
         }
 
         $currentHash | Out-File -Encoding ASCII -FilePath $hashFile
         Write-Host "    Done with Cosmere$mod."
-        Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $destPath
+        Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $destPath | Out-Null
     }
     else
     {

@@ -165,7 +165,7 @@ jobs:
           versioning: None
           allowDirtyBuild: true
           buildMethod: ModAssetBundleBuilder.BuildBundles
-          customParameters: "--assetBundleName=${{ env.BUNDLE_NAME }}"
+          customParameters: "--assetBundleName=${{ env.BUNDLE_NAME }} --outputLocation=../RimworldCosmere/${{ matrix.mod }}/AssetBundles"
 
       - name: Print Unity Editor log on failure
         if: steps.copyassets.outputs.hasAssets == 'true' && failure()

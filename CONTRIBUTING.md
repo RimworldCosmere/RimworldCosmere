@@ -7,10 +7,13 @@ development environment, add new shardworlds, and follow our commit and release 
 
 ### Requirements
 
-- .Net SDK 9.0
-- .Net Framework 4.8
-- Unity Editor 2022.3.35f1 (located in `C:\Program Files\Unity\Hub\Editor\2022.3.35f1\Editor\Unity.exe`)
-- Node.js v24
+- [.Net SDK 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+- [.Net Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
+- [Unity Hub](https://unity.com/download)
+- [Unity Editor 2022.3.35f1](https://unity.com/releases/editor/whats-new/2022.3.35) (located in
+  `C:\Program Files\Unity\Hub\Editor\2022.3.35f1\Editor\Unity.exe`)
+- [Node.js v24](https://nodejs.org/en/download/current)
+- [Powershell 7](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows)
 
 To develop locally:
 

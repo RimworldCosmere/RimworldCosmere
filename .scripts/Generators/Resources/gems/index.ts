@@ -8,8 +8,8 @@ const gemDefTemplate = compileTemplate(__dirname, 'GemDef.xml.template');
 const gemDefOutputDir = resolve(RESOURCES_MOD_DIR, 'Defs', 'Gem');
 
 const gemDefOfTemplate = compileTemplate(__dirname, 'GemDefOf.cs.template');
-const thingDefOfMineableTemplate = compileTemplate(__dirname, 'ThingDefOf.Mineable.cs.template');
-const thingDefOfItemTemplate = compileTemplate(__dirname, 'ThingDefOf.Item.cs.template');
+const thingDefOfMineableTemplate = compileTemplate(__dirname, 'ThingDefOf.Gems.Mineable.cs.template');
+const thingDefOfItemTemplate = compileTemplate(__dirname, 'ThingDefOf.Gems.Item.cs.template');
 const CosmereResources = resolve(RESOURCES_MOD_DIR, 'CosmereResources');
 
 const mineableTemplate = compileTemplate(__dirname, 'MineableGemDef.xml.template');
@@ -31,12 +31,12 @@ export default function generate() {
     for (const gem of mineable) {
         writeGeneratedFile(mineableOutputDir, gem.name.toDefName() + '.generated.xml', mineableTemplate({gem}));
     }
-    writeGeneratedFile(CosmereResources, 'ThingDefOf.Mineable.generated.cs', thingDefOfMineableTemplate({gems: mineable}));
+    writeGeneratedFile(CosmereResources, 'ThingDefOf.Gems.Mineable.generated.cs', thingDefOfMineableTemplate({gems: mineable}));
 
     const items = Object.values(GemRegistry.Gems);
     for (const gem of items) {
         writeGeneratedFile(itemOutputDir, gem.name.toDefName() + '.generated.xml', itemTemplate({gem}));
     }
-    writeGeneratedFile(CosmereResources, 'ThingDefOf.Items.generated.cs', thingDefOfItemTemplate({gems: items}));
+    writeGeneratedFile(CosmereResources, 'ThingDefOf.Gems.Items.generated.cs', thingDefOfItemTemplate({gems: items}));
 }
 

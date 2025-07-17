@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="Human"]/comps</xpath>
+        <value>
+            <li Class="CosmereRoshar.CompProperties_PawnStats">
+                <compClass>CosmereRoshar.PawnStats</compClass>
+                <Req_0_1>FirstIdeal</Req_0_1>
+                <Req_1_2>SecondIdeal</Req_1_2>
+                <Req_2_3>ThirdIdeal</Req_2_3>
+                <Req_3_4>FourthIdeal</Req_3_4>
+                <Req_4_5>FifthIdeal</Req_4_5>
+            </li>
+            <li Class="CosmereRoshar.CompProperties_Stormlight">
+                <maxStormlight>3000</maxStormlight>
+                <drainRate>0.01</drainRate>
+            </li>
+        </value>
+    </Operation>
+</Patch>

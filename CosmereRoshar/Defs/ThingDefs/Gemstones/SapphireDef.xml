@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- RAW Sapphire -->
+    <ThingDef ParentName="RockBase">
+        <defName>whtwl_MineableRawSapphire</defName>
+        <label>Raw Sapphire</label>
+        <description>Something about Sapphire.</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(16,200,225)</color>
+            <colorTwo>(16,200,225)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>1500</MaxHitPoints>
+        </statBases>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <mineableThing>whtwl_RawSapphire</mineableThing>
+            <mineableYield>2</mineableYield>
+            <mineableScatterCommonality>0.05</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>2~5</mineableScatterLumpSizeRange>
+            <veinMineable>true</veinMineable>
+        </building>
+    </ThingDef>
+    <ThingDef ParentName="whtwl_GemstoneBase">
+        <defName>whtwl_RawSapphire</defName>
+        <label>Raw Sapphire</label>
+        <description>Something about Sapphire.</description>
+        <graphicData>
+            <texPath>Things/Item/Spheres/RawSapphire</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1</drawSize>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.00</commonality>
+            <appearance>Metal</appearance>  <!-- change -->
+            <color>(16,200,225)</color>
+            <constructEffect>ConstructMetal</constructEffect>
+            <statOffsets>
+                <Beauty>2</Beauty>
+            </statOffsets>
+        </stuffProps>
+        <comps>
+            <li Class="CosmereRoshar.CompProperties_Stormlight">
+                <maxStormlight>5</maxStormlight>
+                <drainRate>0.5</drainRate>
+            </li>
+            <li Class="CosmereRoshar.CompProperties_RawGemstone">
+                <compClass>CosmereRoshar.CompRawGemstone</compClass>
+                <spawnChance>100</spawnChance>
+            </li>
+        </comps>
+    </ThingDef>
+
+
+    <!-- CUT Sapphire -->
+    <RecipeDef ParentName="whtwl_MakeCutGemsBase">
+        <defName>whtwl_Make_CutSapphire</defName>
+        <label>make cut Sapphire gemstone</label>
+        <description>Cuts raw Sapphire into refined cut rubies.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>whtwl_RawSapphire</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>whtwl_RawSapphire</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <whtwl_CutSapphire>1</whtwl_CutSapphire>
+        </products>
+        <researchPrerequisites>
+            <li>whtwl_GemCutting</li>
+        </researchPrerequisites>
+    </RecipeDef>
+
+    <ThingDef ParentName="whtwl_GemstoneBase">
+        <defName>whtwl_CutSapphire</defName>
+        <label>Cut Sapphire</label>
+        <description>Something about Cut Sapphire.</description>
+        <graphicData>
+            <texPath>Things/Item/Spheres/CutSapphire</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>0.7</drawSize>
+        </graphicData>
+        <stuffProps>
+            <constructEffect>ConstructMetal</constructEffect>
+            <statOffsets>
+                <Beauty>2</Beauty>
+            </statOffsets>
+            <color>(16,200,225)</color>     
+        </stuffProps>
+        <comps>
+            <li Class="CosmereRoshar.CompProperties_Stormlight">
+                <maxStormlight>50</maxStormlight>
+                <drainRate>0.5</drainRate>
+            </li>
+            <li Class="CosmereRoshar.CompProperties_CutGemstone">
+                <compClass>CosmereRoshar.CompCutGemstone</compClass>
+            </li>
+            <li Class="CompProperties_Glower">
+                <glowRadius>0</glowRadius>
+                <glowColor>(16,200,225,0)</glowColor>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <!-- SPHERE Sapphire -->
+    <RecipeDef ParentName="whtwl_MakeCutGemsBase">
+        <defName>whtwl_Make_SapphireSphere</defName>
+        <label>make Sapphire sphere</label>
+        <description>make Sapphire sphere out of cut Sapphire.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>whtwl_CutSapphire</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>whtwl_CutSapphire</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <whtwl_Sphere_Sapphire>1</whtwl_Sphere_Sapphire>
+        </products>
+        <researchPrerequisites>
+            <li>whtwl_SphereProduction</li>
+        </researchPrerequisites>
+    </RecipeDef>
+    <ThingDef ParentName="Sphere_Base">
+        <defName>whtwl_Sphere_Sapphire</defName>
+        <label>sapphire sphere</label>
+        <description>A sapphire sphere, very valuable and useful for soulcasting.</description>
+        <graphicData>
+            <texPath>Things/Item/Spheres/Sphere_Sapphire</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>0.3</drawSize>
+        </graphicData>
+        <comps>
+            <li Class="CosmereRoshar.CompProperties_Stormlight">
+                <maxStormlight>50</maxStormlight>
+                <drainRate>0.5</drainRate>
+            </li>
+            <li Class="CosmereRoshar.CompProperties_GemSphere">
+                <compClass>CosmereRoshar.CompGemSphere</compClass>
+            </li>
+            <li Class="CompProperties_Glower">
+                <glowRadius>0</glowRadius>
+                <glowColor>(16,200,225,0)</glowColor>
+            </li>
+        </comps>
+        <statBases>
+            <MarketValue>25</MarketValue>
+            <Mass>0.008</Mass>
+        </statBases>
+        <stuffProps>
+            <statOffsets>
+                <Beauty>8</Beauty>
+            </statOffsets>
+            <statFactors>
+                <Beauty>8</Beauty>
+            </statFactors>
+        </stuffProps>
+    </ThingDef>
+
+</Defs>

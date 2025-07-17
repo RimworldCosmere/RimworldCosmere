@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <StuffCategoryDef>
+        <defName>whtwl_gemstuff</defName>
+        <label>gem</label>
+        <noun>gem</noun>
+        <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+        <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+        <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+    </StuffCategoryDef>
+
+    <ThingDef Name="whtwl_GemstoneBase" ParentName="ResourceBase" Abstract="True">
+        <defName>whtwl_RawGemstone</defName>
+        <label>Raw Gemstone</label>
+        <description>Something about Gemstones.</description>
+        <soundInteract>Silver_Drop</soundInteract>
+        <soundDrop>Silver_Drop</soundDrop>
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <deepCommonality>0.5</deepCommonality>
+        <deepCountPerPortion>8</deepCountPerPortion>
+        <deepLumpSizeRange>1~4</deepLumpSizeRange>
+        <tickerType>Normal</tickerType>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+        </thingCategories>
+        <statBases>
+            <Mass>0.008</Mass>
+        </statBases>
+        <stackLimit>25</stackLimit>
+        <smallVolume>false</smallVolume>
+        <burnableByRecipe>false</burnableByRecipe>
+        <smeltable>false</smeltable>
+        <possessionCount>1</possessionCount>
+        <stuffProps>
+            <commonality>0.00</commonality>
+            <categories>
+                <li>whtwl_gemstuff</li>  
+            </categories>
+            <constructEffect>ConstructMetal</constructEffect>
+            <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
+            <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+            <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+            <soundImpactMelee>Pawn_Melee_Punch_HitBuilding_Metal</soundImpactMelee>
+        </stuffProps>
+    </ThingDef>
+
+
+    <!-- CUT GEM MAKER -->
+    <RecipeDef Name="whtwl_MakeCutGemsBase" Abstract="True">
+        <jobString>Cutting gems from raw gems.</jobString>
+        <workAmount>1600</workAmount>
+        <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+        <effectWorking>CutStone</effectWorking>
+        <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+        <targetCountAdjustment>1</targetCountAdjustment>
+        <workSkill>Crafting</workSkill> <!-- custom skill -->
+        <workSkillLearnFactor>0</workSkillLearnFactor>
+        <recipeUsers>
+            <li>whtwl_TableGemcutting</li>
+        </recipeUsers>
+    </RecipeDef>
+
+    <!-- SPHERE  MAKER -->
+    <RecipeDef Name="whtwl_MakeSphere" Abstract="True">
+        <jobString>Making spheres from cut gems.</jobString>
+        <workAmount>1600</workAmount>
+        <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+        <effectWorking>CutStone</effectWorking>
+        <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+        <targetCountAdjustment>1</targetCountAdjustment>
+        <workSkill>Crafting</workSkill> <!-- custom skill -->
+        <workSkillLearnFactor>0</workSkillLearnFactor>
+        <recipeUsers>
+            <li>whtwl_TableGemcutting</li>
+        </recipeUsers>
+    </RecipeDef>
+
+    <!-- SPHERE BASE -->
+    <ThingDef Name="Sphere_Base" ParentName="ResourceBase" Abstract="True">
+        <defName>whtwl_Sphere_Base</defName>
+        <label>sphere</label>
+        <description>A small gemstone encased in glass, used as currency on Rimshar. Can hold
+            Stormlight.</description>
+        <stackLimit>25</stackLimit>
+        <tickerType>Normal</tickerType>
+        <thingCategories>
+            <li>ResourcesRaw</li>
+        </thingCategories>
+        <tradeability>All</tradeability>
+        <statBases>
+            <Mass>0.008</Mass>
+        </statBases>
+        <stuffProps>
+            <commonality>0.00</commonality>
+            <categories>
+                <li>whtwl_gemstuff</li>                      <!-- make custom category -->
+            </categories>
+            <constructEffect>ConstructMetal</constructEffect>
+            <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
+            <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+            <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+            <soundImpactMelee>Pawn_Melee_Punch_HitBuilding_Metal</soundImpactMelee>
+        </stuffProps>
+        <alwaysHaulable>true</alwaysHaulable>
+        <selectable>true</selectable>
+        <possessionCount>40</possessionCount>
+        <tradeTags>
+            <li>Currency</li>
+        </tradeTags>
+    </ThingDef>
+
+
+  
+</Defs>

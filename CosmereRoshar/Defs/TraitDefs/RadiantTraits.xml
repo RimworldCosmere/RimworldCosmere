@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- WIND RUNNER -->
+  <TraitDef>
+    <defName>whtwl_Radiant_Windrunner</defName>
+    <label>Radiant</label>
+    <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
+      abilities.</description>
+
+    <degreeDatas>
+      <li>
+        <label>Nahel-Touched</label>
+        <description>{PAWN_nameDef} has unknowingly begun walking the path of the Knights Radiant. A
+          mysterious presence watches over them. </description>
+        <degree>0</degree>
+        <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Oathbound Protector</label>
+        <description>{PAWN_nameDef} has spoken the Second Ideal, vowing to protect those who cannot
+          protect themselves. Their bond with their spren strengthens, and their control over
+          Stormlight grows.</description>
+        <degree>1</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_LashingUpward</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Windsworn Knight</label>
+        <description>{PAWN_nameDef} has sworn to protect even those they despise, solidifying their
+          Radiant path. They now wield full control over Gravitation, soaring freely through the
+          air.</description>
+        <degree>2</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_LashingUpward</li>
+          <li>whtwl_WindRunnerFlight</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Stormforged Guardian</label>
+        <description>{PAWN_nameDef} has confronted the limits of their protection, realizing they
+          cannot save everyone. They now wield a living Shardblade, a weapon of pure Investiture
+          tied to their soul.</description>
+        <degree>3</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SummonShardblade</li>
+          <li>whtwl_LashingUpward</li>
+          <li>whtwl_WindRunnerFlight</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Master Windrunner</label>
+        <description>{PAWN_nameDef} has embraced the final Ideal of the Windrunners, becoming a true
+          master of protection and leadership. Their bond grants them the ability to manifest
+          Shardplate.</description>
+        <degree>4</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SummonShardblade</li>
+          <li>whtwl_LashingUpward</li>
+          <li>whtwl_WindRunnerFlight</li>
+        </abilities>
+      </li>
+    </degreeDatas>
+    <commonality>0.0</commonality>
+  </TraitDef>
+
+  <!-- TRUTHWATCHER -->
+  <TraitDef>
+    <defName>whtwl_Radiant_Truthwatcher</defName>
+    <label>Radiant</label>
+    <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
+      abilities.</description>
+
+    <degreeDatas>
+      <li>
+        <label>Nahel-Touched</label>
+        <description>{PAWN_nameDef} has begun to glimpse hidden truths. Strange visions and whispers
+          dance at the edges of their perception, but they do not yet understand their purpose.</description>
+        <degree>0</degree>
+        <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Oathbound Seer</label>
+        <description>{PAWN_nameDef} has sworn their first true Ideal, deepening their connection to
+          the hidden fabric of the world. They begin to see truths others overlook and can now heal
+          wounds with the power of Stormlight.</description>
+        <degree>1</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SurgeOfGrowth</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Watcher of Truths</label>
+        <description>{PAWN_nameDef} has accepted the responsibility of uncovering the unknown. Their
+          visions sharpen, allowing them to glimpse possible futures.</description>
+        <degree>2</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SurgeOfGrowth</li>
+          <li>whtwl_SurgeOfHealing</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Illuminated Scholar</label>
+        <description>{PAWN_nameDef} has sworn to reveal truth even when painful. Their bond
+          strengthens, allowing them to heal even the gravely wounded with incredible speed.</description>
+        <degree>3</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SurgeOfGrowth</li>
+          <li>whtwl_SurgeOfHealing</li>
+          <li>whtwl_SummonShardblade</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Master Truthwatcher</label>
+        <description>{PAWN_nameDef} has embraced their final Ideal, becoming a true master of
+          growth. Their visions expand beyond mortal limits and their healing touches the very soul.</description>
+        <degree>4</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SurgeOfGrowth</li>
+          <li>whtwl_SurgeOfHealing</li>
+          <li>whtwl_SummonShardblade</li>
+        </abilities>
+      </li>
+    </degreeDatas>
+    <commonality>0.0</commonality>
+  </TraitDef>
+
+
+  <!-- EDGE DANCER -->
+  <TraitDef>
+    <defName>whtwl_Radiant_Edgedancer</defName>
+    <label>Radiant</label>
+    <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
+      abilities.</description>
+
+    <degreeDatas>
+      <li>
+        <label>Nahel-Touched</label>
+        <description>{PAWN_nameDef} has formed a budding bond with a cultivationspren. Though the
+          connection is faint, they feel a subtle pull toward the forgotten and the overlooked. The
+          winds of grace begin to stir beneath their feet.</description>
+        <degree>0</degree>
+        <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Rememberer</label>
+        <description>{PAWN_nameDef} has sworn the Second Ideal: "I will remember those who have been
+          forgotten." They now wield the Surge of Progression, granting them the power to heal
+          wounds and nurture life, guided by empathy and memory.</description>
+        <degree>1</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SurgeOfHealing</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Voice of the Ignored</label>
+        <description>{PAWN_nameDef} has sworn the Third Ideal: "I will listen to those who have been
+          ignored." With quick feet and deeper healing, they dance through the world unseen,
+          becoming a guardian of the voiceless.</description>
+        <degree>2</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SurgeOfHealing</li>
+          <li>whtwl_SurgeOfAbrasion</li>
+          <li>whtwl_SummonShardblade</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Voice of the Ignored</label>
+        <description>{PAWN_nameDef} has sworn the Third Ideal: "I will listen to those who have been
+          ignored." With quick feet and deeper healing, they dance through the world unseen,
+          becoming a guardian of the voiceless.</description>
+        <degree>3</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SurgeOfHealing</li>
+          <li>whtwl_SurgeOfAbrasion</li>
+          <li>whtwl_SummonShardblade</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Voice of the Ignored</label>
+        <description>{PAWN_nameDef} has sworn the Third Ideal: "I will listen to those who have been
+          ignored." With quick feet and deeper healing, they dance through the world unseen,
+          becoming a guardian of the voiceless.</description>
+        <degree>4</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SurgeOfHealing</li>
+          <li>whtwl_SurgeOfAbrasion</li>
+          <li>whtwl_SummonShardblade</li>
+        </abilities>
+      </li>
+    </degreeDatas>
+    <commonality>0.0</commonality>
+  </TraitDef>
+
+  <!-- SKY BREAKER -->
+  <TraitDef>
+    <defName>whtwl_Radiant_Skybreaker</defName>
+    <label>Radiant</label>
+    <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
+      abilities.</description>
+
+    <degreeDatas>
+      <li>
+        <label>Initiate of Justice</label>
+        <description>{PAWN_nameDef} has taken their first step down a path of order. They have
+          committed themselves to the pursuit of justice and stand ready to be judged by the law
+          they seek to uphold.</description>
+        <degree>0</degree>
+        <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Seeker of the Law</label>
+        <description>{PAWN_nameDef} has sworn the Second Ideal: "I swear to seek justice, to let it
+          guide me, until I find a more perfect Ideal." They can now wield the
+          Surge of Gravitation, hunting the unjust with righteous purpose.</description>
+        <degree>1</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_SurgeOfDivision</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Sworn Enforcer</label>
+        <description>{PAWN_nameDef} has sworn the Third Ideal, binding themselves to a code or
+          person they believe represents justice. As a full Skybreaker, they now wield both
+          Gravitation and the destructive power of Division.</description>
+        <degree>2</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_WindRunnerFlight</li>
+          <li>whtwl_SurgeOfDivision</li>
+        </abilities>
+      </li>
+      <li>
+        <label>Master of Crusade</label>
+        <description>{PAWN_nameDef} has completed their personal crusade and sworn the Fourth Ideal.
+          As a master Skybreaker.</description> <!-- , they may now take squires of their own,
+        bearing the full weight of
+          law and judgment in their hand-->
+        <degree>3</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_WindRunnerFlight</li>
+          <li>whtwl_SurgeOfDivision</li>
+          <li>whtwl_SummonShardblade</li>
+          <!-- <li>whtwl_SkybreakerSquireBonding</li> -->
+        </abilities>
+      </li>
+      <li>
+        <label>Embodiment of Law</label>
+        <description>{PAWN_nameDef} has sworn the Fifth Ideal: "I. Am. The Law." No longer bound by
+          external codes, they *are* the law itself—an autonomous judge, jury, and executioner.
+          Their presence alone bends lesser wills to order.</description>
+        <degree>4</degree>
+        <commonality>0</commonality>
+        <abilities>
+          <li>whtwl_BreathStormlight</li>
+          <li>whtwl_WindRunnerFlight</li>
+          <li>whtwl_SurgeOfDivision</li>
+          <li>whtwl_SummonShardblade</li>
+          <!-- <li>whtwl_SkybreakerSquireBonding</li>
+      <li>whtwl_AbsoluteAuthority</li> hypothetical ultimate ability -->
+        </abilities>
+      </li>
+    </degreeDatas>
+    <commonality>0.0</commonality>
+  </TraitDef>
+</Defs>

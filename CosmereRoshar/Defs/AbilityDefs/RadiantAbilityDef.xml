@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <AbilityCategoryDef>
+    <defName>whtwl_Radiant</defName>
+    <label>Radiant</label>
+    <description>Abilities granted to those who have bonded a spren, allowing them to wield the fundamental forces of Roshar. These abilities are fueled by Stormlight.</description>
+  </AbilityCategoryDef>
+
+  <AbilityDef Name="RadiantBase" Abstract="True">
+    <abilityClass>CosmereRoshar.RadiantAbility</abilityClass> <!-- Custom ability class -->
+    <category>whtwl_Radiant</category> <!-- Custom category for Radiant abilities -->
+    <statBases>
+      <Ability_Duration>0</Ability_Duration> <!-- Base duration -->
+    </statBases>
+    <warmupSound>PsycastCastLoop</warmupSound> <!-- Custom sound for radiant abilities -->
+    <verbProperties>
+      <verbClass>CosmereRoshar.Verb_CastRadiant</verbClass> <!-- Custom verb class -->
+      <range>24.9</range>
+      <requireLineOfSight>True</requireLineOfSight>
+      <warmupTime>1</warmupTime>
+      <targetParams>
+        <thingCategory>Item</thingCategory>
+        <mapObjectTargetsMustBeAutoAttackable>False</mapObjectTargetsMustBeAutoAttackable>
+      </targetParams>
+    </verbProperties>
+  </AbilityDef>
+
+<!-- TOGGLE STORMLIGHT -->
+<AbilityDef ParentName="RadiantBase">
+    <defName>whtwl_BreathStormlight</defName>
+    <label>Breath Stormlight</label>
+    <description>Draw Stormlight into your body, fueling your Radiant powers and enhancing your physical abilities. While infused, you move faster, heal quickly, and feel an unnatural surge of energy.</description>
+    <level>1</level>
+    <iconPath>Things/Ability/lucid_inhale_sl</iconPath> 
+    <hotKey>Misc5</hotKey>
+    <hostile>false</hostile>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <verbProperties>
+        <warmupTime>0.5</warmupTime>
+        <range>0</range> 
+        <targetParams>
+            <canTargetSelf>true</canTargetSelf>
+        </targetParams>
+    </verbProperties>
+    <comps>
+        <li Class="CosmereRoshar.CompProperties_AbilityToggleStormlight">
+            <compClass>CosmereRoshar.CompAbilityEffect_AbilityToggleStormlight</compClass>
+        </li>
+    </comps>
+</AbilityDef>
+
+<!-- SUMMON BLADE -->
+<AbilityDef ParentName="RadiantBase">
+    <defName>whtwl_SummonShardblade</defName>
+    <label>Summon Shardblade</label>
+    <description>Call forth a mighty Shardblade from the Spiritual Realm, a weapon capable of cutting through anything except living beings. It severs the soul upon contact.</description>
+    <level>1</level>
+    <iconPath>Things/Ability/lucid_summon_blade</iconPath> 
+    <hotKey>Misc1</hotKey>
+    <hostile>false</hostile>
+    <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
+    <verbProperties>
+        <warmupTime>0.5</warmupTime>
+        <range>0</range> 
+        <targetParams>
+            <canTargetSelf>true</canTargetSelf>
+        </targetParams>
+    </verbProperties>
+    <comps>
+        <li Class="CosmereRoshar.CompProperties_AbilitySpawnEquipment">
+            <compClass>CosmereRoshar.CompAbilityEffect_SpawnEquipment</compClass>
+            <thingDef>whtwl_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
+        </li>
+        <li Class="CompProperties_AbilityFleckOnTarget">
+            <fleckDef>PsycastPsychicEffect</fleckDef>
+        </li>
+    </comps>
+</AbilityDef>
+
+<!-- UNBOND BLADE -->
+<AbilityDef ParentName="RadiantBase">
+    <defName>whtwl_UnbondBlade</defName>
+    <label>sever bond with Shardblade</label>
+    <description>Release your bond with the Shardblade. Once severed, the Blade will no longer respond to your summons.</description>
+    <level>1</level>
+    <iconPath>Things/Apparel/ArmorFront-1</iconPath> 
+    <hotKey>Misc2</hotKey>
+    <hostile>false</hostile>
+    <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
+    
+
+    <verbProperties>
+        <warmupTime>0.5</warmupTime>
+        <range>0</range> 
+        <targetParams>
+            <canTargetSelf>true</canTargetSelf>
+        </targetParams>
+    </verbProperties>
+
+    <comps>
+        <li Class="CosmereRoshar.CompProperties_AbilityBreakBond">
+            <compClass>CosmereRoshar.CompAbilityEffect_BreakBondWithSword</compClass>
+            <thingDef>whtwl_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
+        </li>
+    </comps>
+</AbilityDef>
+
+<!-- LASHING -->
+<ThingDef ParentName="PawnFlyerBase">
+  <defName>whtwl_lashingUp</defName>
+  <label>custom upward flyer</label>
+  <thingClass>PawnFlyer</thingClass>
+    <pawnFlyer>
+      <!-- Use your custom worker if you want (or the default PawnFlyerWorker) -->
+      <workerClass>CosmereRoshar.PawnFlyerWorker_LashUp</workerClass>
+
+      <!-- Minimum flight time (in seconds) -->
+      <flightDurationMin>0.5</flightDurationMin>
+
+      <!-- Speed (cells per second) -->
+      <flightSpeed>7</flightSpeed>
+
+      <!-- Forward offset factor if you want a 3D effect (set to 0 if not) -->
+      <heightFactor>2</heightFactor>
+
+    </pawnFlyer>
+</ThingDef>
+
+<AbilityDef ParentName="RadiantBase">
+    <defName>whtwl_LashingUpward</defName>
+    <label>lash up</label>
+    <description>Temporarily alter an object's gravitational pull, causing it to fall toward the sky instead of the ground.</description>
+    <level>1</level>
+    <iconPath>Things/Ability/lucid_lashing</iconPath> 
+    <hotKey>Misc3</hotKey>
+    <hostile>false</hostile>
+    <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
+    
+
+    <verbProperties>
+        <range>2</range>
+        <targetParams>
+            <canTargetSelf>false</canTargetSelf>
+            <canTargetAnimals>true</canTargetAnimals>
+            <canTargetPawns>true</canTargetPawns>
+            <canTargetItems>true</canTargetItems>
+        </targetParams>
+    </verbProperties>
+
+    <comps>
+        <li Class="CosmereRoshar.CompProperties_AbilityLashUpward">
+            <compClass>CosmereRoshar.CompAbilityEffect_AbilityLashUpward</compClass>
+            <thingDef>whtwl_lashingUp</thingDef> 
+            <stormLightCost>500</stormLightCost>
+        </li>
+    </comps>
+</AbilityDef>
+
+
+
+<!-- FLIGHT -->
+<ThingDef ParentName="PawnFlyerBase">
+  <defName>whtwl_WindRunnerFlight</defName>
+  <label>custom upward flyer</label>
+  <thingClass>PawnFlyer</thingClass>
+    <pawnFlyer>
+      <!-- Use your custom worker if you want (or the default PawnFlyerWorker) -->
+      <workerClass>CosmereRoshar.PawnFlyerWorker_WindRunnerFlight</workerClass>
+
+      <!-- Minimum flight time (in seconds) -->
+      <flightDurationMin>0.5</flightDurationMin>
+
+      <!-- Speed (cells per second) -->
+      <flightSpeed>10</flightSpeed>
+
+      <!-- Forward offset factor if you want a 3D effect (set to 0 if not) -->
+      <heightFactor>1</heightFactor>
+    </pawnFlyer>
+</ThingDef>
+<AbilityDef ParentName="RadiantBase">
+    <defName>whtwl_WindRunnerFlight</defName>
+    <label>Fly to location</label>
+    <description>Use Stormlight to manipulate gravity, launching yourself into the air and soaring toward your target destination at high speed.</description>
+    <level>1</level>
+    <iconPath>Things/Ability/lucid_flight</iconPath> 
+    <hotKey>Misc4</hotKey>
+    <hostile>false</hostile>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+
+    <verbProperties>
+        <range>-1</range>
+        <targetParams>
+            <canTargetSelf>false</canTargetSelf>
+            <canTargetLocations>true</canTargetLocations>
+            <canTargetPawns>true</canTargetPawns>
+            <canTargetItems>false</canTargetItems>
+        </targetParams>
+    </verbProperties>
+    <comps>
+        <li Class="CosmereRoshar.CompProperties_AbilityWindRunnerFlight">
+            <compClass>CosmereRoshar.CompAbilityEffect_AbilityWindRunnerFlight</compClass>
+            <thingDef>whtwl_WindRunnerFlight</thingDef> <!-- Ensure this matches your XML weapon defName -->
+            <stormLightCost>15</stormLightCost>
+        </li>
+    </comps>
+</AbilityDef>
+
+<!-- PLANT GROWTH -->
+<AbilityDef ParentName="RadiantBase">
+    <defName>whtwl_SurgeOfGrowth</defName>
+    <label>boost plantgrowth</label>
+    <description>Encourage rapid plant growth using Stormlight, causing vegetation to flourish in moments.</description>
+    <level>1</level>
+    <iconPath>Things/Ability/lucid_grow_plant</iconPath> 
+    <hotKey>Misc3</hotKey>
+    <hostile>false</hostile>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <verbProperties>
+        <warmupTime>0.5</warmupTime>
+        <range>4</range> 
+        <targetParams>
+            <canTargetSelf>true</canTargetSelf>
+        </targetParams>
+    </verbProperties>
+    <comps>
+        <li Class="CosmereRoshar.CompProperties_AbilitySurgePlantGrowth">
+            <compClass>CosmereRoshar.CompAbilityEffect_SurgePlantGrowth</compClass>
+            <stormLightCost>25</stormLightCost>
+        </li>
+    </comps>
+</AbilityDef>
+
+<!-- HEALING -->
+<AbilityDef ParentName="RadiantBase">
+    <defName>whtwl_SurgeOfHealing</defName>
+    <label>heal</label>
+    <description>Channel Stormlight into a wounded creature, accelerating natural healing and even restoring severe injuries. Does not restore severed limbs unless wielded by a master Knight-Radiant.</description>
+    <level>1</level>
+    <iconPath>Things/Ability/lucid_heal</iconPath> 
+    <hotKey>Misc4</hotKey>
+    <hostile>false</hostile>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <verbProperties>
+        <warmupTime>0.5</warmupTime>
+        <range>2</range> 
+        <targetParams>
+            <canTargetSelf>true</canTargetSelf>
+        </targetParams>
+    </verbProperties>
+    <comps>
+        <li Class="CosmereRoshar.CompProperties_AbilitySurgeHeal">
+            <compClass>CosmereRoshar.CompAbilityEffect_SurgeHeal</compClass>
+            <stormLightCost>50</stormLightCost>
+        </li>
+    </comps>
+</AbilityDef>
+
+<!-- ABRASION -->
+<AbilityDef ParentName="RadiantBase">
+    <defName>whtwl_SurgeOfAbrasion</defName>
+    <label>abrasion</label>
+    <description>Focus stormlight to your feet, increasing friction, greatly increasing movement speed and dodge abilities.</description>
+    <level>1</level>
+    <iconPath>Things/Ability/lucid_abrasion</iconPath> 
+    <hotKey>Misc4</hotKey>
+    <hostile>false</hostile>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <verbProperties>
+        <warmupTime>0.5</warmupTime>
+        <range>1</range> 
+        <targetParams>
+            <canTargetSelf>true</canTargetSelf>
+        </targetParams>
+    </verbProperties>
+    <comps>
+        <li Class="CosmereRoshar.CompProperties_AbilitySurgeAbrasion">
+            <compClass>CosmereRoshar.CompAbilityEffect_SurgeAbrasion</compClass>
+        </li>
+    </comps>
+</AbilityDef>
+
+<!-- DIVISION -->
+<AbilityDef ParentName="RadiantBase">
+    <defName>whtwl_SurgeOfDivision</defName>
+    <label>division</label>
+    <description>power over destruction and decay, use carefully</description>
+    <level>1</level>
+    <iconPath>Things/Ability/lucid_division</iconPath> 
+    <hotKey>Misc4</hotKey>
+    <hostile>true</hostile>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <verbProperties>
+        <warmupTime>0.5</warmupTime>
+        <range>1</range> 
+        <targetParams>
+            <canTargetSelf>false</canTargetSelf>
+        </targetParams>
+    </verbProperties>
+    <comps>
+        <li Class="CosmereRoshar.CompProperties_AbilitySurgeDivision">
+            <compClass>CosmereRoshar.CompAbilityEffect_SurgeDivision</compClass>
+             <stormLightCost>500</stormLightCost>
+        </li>
+    </comps>
+</AbilityDef>
+</Defs>

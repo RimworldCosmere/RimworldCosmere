@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- GEMSTONE WORKBENCHES-->
+    <WorkGiverDef>
+        <defName>DoBillsGemcut</defName>
+        <label>make stuff with gems</label>
+        <giverClass>WorkGiver_DoBill</giverClass>
+        <workType>Crafting</workType>
+        <priorityInType>90</priorityInType>
+        <fixedBillGiverDefs>
+            <li>whtwl_TableGemcutting</li>
+        </fixedBillGiverDefs>
+        <verb>stonecut</verb>
+        <gerund>cutting gems at</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+    </WorkGiverDef>
+
+    <ThingDef ParentName="BenchBase">
+        <defName>whtwl_TableGemcutting</defName>
+        <label>gemcutters's table</label>
+        <description>A work table with saws and chisels for cutting stone chunks into usable blocks.</description>
+        <thingClass>Building_WorkTable_HeatPush</thingClass>
+        <graphicData>
+            <texPath>Things/Workbench/whtwl_Gemcutter</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(3.5,1.5)</drawSize>
+            <shaderType>CutoutComplex</shaderType>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+        <castEdgeShadows>true</castEdgeShadows>
+        <staticSunShadowHeight>0.20</staticSunShadowHeight>
+        <costStuffCount>75</costStuffCount>
+        <costList>
+            <Steel>30</Steel>
+        </costList>
+        <stuffCategories>
+            <li>Metallic</li>
+            <li>Woody</li>
+        </stuffCategories>
+        <altitudeLayer>Building</altitudeLayer>
+        <fillPercent>0.5</fillPercent>
+        <useHitPoints>True</useHitPoints>
+        <statBases>
+            <WorkToBuild>2000</WorkToBuild>
+            <MaxHitPoints>180</MaxHitPoints>
+            <Flammability>1.0</Flammability>
+            <Cleanliness>-5</Cleanliness>
+        </statBases>
+        <size>(3,1)</size>
+        <designationCategory>Production</designationCategory>
+        <uiOrder>2300</uiOrder>
+        <passability>PassThroughOnly</passability>
+        <pathCost>50</pathCost>
+        <hasInteractionCell>True</hasInteractionCell>
+        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+        <surfaceType>Item</surfaceType>
+        <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+        <inspectorTabs>
+            <li>ITab_Bills</li>
+        </inspectorTabs>
+        <building>
+            <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+            <paintable>true</paintable>
+        </building>
+        <comps>
+            <li Class="CompProperties_AffectedByFacilities">
+                <linkableFacilities>
+                    <li>ToolCabinet</li>
+                </linkableFacilities>
+            </li>
+        </comps>
+        <researchPrerequisites>
+            <li>whtwl_GemCutting</li>
+        </researchPrerequisites>
+        <designationHotKey>Misc9</designationHotKey>
+        <placeWorkers>
+            <li>PlaceWorker_ShowFacilitiesConnections</li>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+    </ThingDef>
+
+
+    <!-- ALLOY WORKBENCH-->
+    <WorkGiverDef>
+        <defName>whtwl_DoBillsAlloy</defName>
+        <label>make alloys out of stuff</label>
+        <giverClass>WorkGiver_DoBill</giverClass>
+        <workType>Crafting</workType>
+        <priorityInType>90</priorityInType>
+        <fixedBillGiverDefs>
+            <li>whtwl_TableAlloys</li>
+        </fixedBillGiverDefs>
+        <verb>stonecut</verb>
+        <gerund>making alloys at</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+    </WorkGiverDef>
+
+    <ThingDef ParentName="BenchBase">
+        <defName>whtwl_TableAlloys</defName>
+        <label>alloy table</label>
+        <description>A work station to create alloys from raw materials.</description>
+        <thingClass>Building_WorkTable_HeatPush</thingClass>
+        <graphicData>
+            <texPath>Things/Workbench/whtwl_Alloymaker</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(3.5,1.5)</drawSize>
+            <shaderType>CutoutComplex</shaderType>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+        <castEdgeShadows>true</castEdgeShadows>
+        <staticSunShadowHeight>0.20</staticSunShadowHeight>
+        <costStuffCount>75</costStuffCount>
+        <costList>
+            <Steel>30</Steel>
+        </costList>
+        <stuffCategories>
+            <li>Metallic</li>
+            <li>Woody</li>
+        </stuffCategories>
+        <altitudeLayer>Building</altitudeLayer>
+        <fillPercent>0.5</fillPercent>
+        <useHitPoints>True</useHitPoints>
+        <statBases>
+            <WorkToBuild>2000</WorkToBuild>
+            <MaxHitPoints>180</MaxHitPoints>
+            <Flammability>1.0</Flammability>
+            <Cleanliness>-5</Cleanliness>
+        </statBases>
+        <size>(3,1)</size>
+        <designationCategory>Production</designationCategory>
+        <uiOrder>2300</uiOrder>
+        <passability>PassThroughOnly</passability>
+        <pathCost>50</pathCost>
+        <hasInteractionCell>True</hasInteractionCell>
+        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+        <surfaceType>Item</surfaceType>
+        <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+        <inspectorTabs>
+            <li>ITab_Bills</li>
+        </inspectorTabs>
+        <building>
+            <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+            <paintable>true</paintable>
+        </building>
+        <comps>
+            <li Class="CompProperties_AffectedByFacilities">
+                <linkableFacilities>
+                    <li>ToolCabinet</li>
+                </linkableFacilities>
+            </li>
+        </comps>
+        <researchPrerequisites>
+            <li>whtwl_Research_Alloys</li>
+        </researchPrerequisites>
+        <designationHotKey>Misc9</designationHotKey>
+        <placeWorkers>
+            <li>PlaceWorker_ShowFacilitiesConnections</li>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+    </ThingDef>
+
+
+    <!-- FABRIALS WORKBENCH-->
+    <WorkGiverDef>
+        <defName>whtwl_DoBillsFabrial</defName>
+        <label>make fabrial</label>
+        <giverClass>WorkGiver_DoBill</giverClass>
+        <workType>Crafting</workType>
+        <priorityInType>90</priorityInType>
+        <fixedBillGiverDefs>
+            <li>whtwl_TableFabrials</li>
+        </fixedBillGiverDefs>
+        <verb>stonecut</verb>
+        <gerund>making fabrial at</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+    </WorkGiverDef>
+
+    <ThingDef ParentName="BenchBase">
+        <defName>whtwl_TableFabrials</defName>
+        <label>fabrial workbench</label>
+        <description>A work station to create fabrials.</description>
+        <thingClass>Building_WorkTable_HeatPush</thingClass>
+        <graphicData>
+            <texPath>Things/Workbench/whtwl_Gemcutter</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(3.5,1.5)</drawSize>
+            <shaderType>CutoutComplex</shaderType>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+        <castEdgeShadows>true</castEdgeShadows>
+        <staticSunShadowHeight>0.20</staticSunShadowHeight>
+        <costStuffCount>75</costStuffCount>
+        <costList>
+            <Steel>30</Steel>
+        </costList>
+        <stuffCategories>
+            <li>Metallic</li>
+            <li>Woody</li>
+        </stuffCategories>
+        <altitudeLayer>Building</altitudeLayer>
+        <fillPercent>0.5</fillPercent>
+        <useHitPoints>True</useHitPoints>
+        <statBases>
+            <WorkToBuild>2000</WorkToBuild>
+            <MaxHitPoints>180</MaxHitPoints>
+            <Flammability>1.0</Flammability>
+            <Cleanliness>-5</Cleanliness>
+        </statBases>
+        <size>(3,1)</size>
+        <designationCategory>Production</designationCategory>
+        <uiOrder>2300</uiOrder>
+        <passability>PassThroughOnly</passability>
+        <pathCost>50</pathCost>
+        <hasInteractionCell>True</hasInteractionCell>
+        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+        <surfaceType>Item</surfaceType>
+        <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+        <inspectorTabs>
+            <li>ITab_Bills</li>
+        </inspectorTabs>
+        <building>
+            <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+            <paintable>true</paintable>
+        </building>
+        <comps>
+            <li Class="CompProperties_AffectedByFacilities">
+                <linkableFacilities>
+                    <li>ToolCabinet</li>
+                </linkableFacilities>
+            </li>
+        </comps>
+        <researchPrerequisites>
+            <li>whtwl_Research_SprenTrapping</li>
+        </researchPrerequisites>
+        <designationHotKey>Misc9</designationHotKey>
+        <placeWorkers>
+            <li>PlaceWorker_ShowFacilitiesConnections</li>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+    </ThingDef>
+</Defs>

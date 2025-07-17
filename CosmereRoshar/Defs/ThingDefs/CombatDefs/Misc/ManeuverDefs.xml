@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+<ManeuverDef>
+  <defName>whtwl_Maneuver_SoulCut</defName>
+  <requiredCapacity>whtwl_SoulCut</requiredCapacity>
+  <verb>
+    <verbClass>Verb_MeleeAttackDamage</verbClass>
+    <meleeDamageDef>whtwl_SoulCut</meleeDamageDef>
+  </verb>
+  <logEntryDef>MeleeAttack</logEntryDef>
+  <combatLogRulesHit>Maneuver_Slash_MeleeHit</combatLogRulesHit>
+  <combatLogRulesDeflect>Maneuver_Slash_MeleeDeflect</combatLogRulesDeflect>
+  <combatLogRulesMiss>Maneuver_Slash_MeleeMiss</combatLogRulesMiss>
+  <combatLogRulesDodge>Maneuver_Slash_MeleeDodge</combatLogRulesDodge>
+</ManeuverDef>
+
+<ManeuverDef>
+  <defName>whtwl_Maneuver_SoulStab</defName>
+  <requiredCapacity>whtwl_SoulStab</requiredCapacity>
+  <verb>
+    <verbClass>Verb_MeleeAttackDamage</verbClass>
+    <meleeDamageDef>whtwl_SoulStab</meleeDamageDef>
+  </verb>
+  <logEntryDef>MeleeAttack</logEntryDef>
+  <combatLogRulesHit>Maneuver_Stab_MeleeHit</combatLogRulesHit>
+  <combatLogRulesDeflect>Maneuver_Stab_MeleeDeflect</combatLogRulesDeflect>
+  <combatLogRulesMiss>Maneuver_Stab_MeleeMiss</combatLogRulesMiss>
+  <combatLogRulesDodge>Maneuver_Stab_MeleeDodge</combatLogRulesDodge>
+</ManeuverDef>
+</Defs>

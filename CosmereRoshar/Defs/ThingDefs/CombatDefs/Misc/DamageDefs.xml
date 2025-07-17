@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+<DamageDef Name="whtwl_SoulDamage">
+    <defName>whtwl_SoulDamage</defName>
+    <workerClass>DamageWorker_SoulDamage</workerClass>
+    <label>soul</label>
+    <hasForcefulImpact>false</hasForcefulImpact>
+    <makesBlood>false</makesBlood>
+    <canInterruptJobs>false</canInterruptJobs>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} eyes burned out while falling to the ground.</deathMessage>
+    <hediff>Burn</hediff>
+    <armorCategory>Sharp</armorCategory>
+    <minDamageToFragment>150</minDamageToFragment>
+    <defaultDamage>100</defaultDamage>
+    <defaultArmorPenetration>100</defaultArmorPenetration>
+    <canUseDeflectMetalEffect>false</canUseDeflectMetalEffect>
+</DamageDef>
+	
+<DamageDef ParentName="whtwl_SoulDamage">
+  <defName>whtwl_SoulCut</defName>
+  <label>soul cut</label>
+  <workerClass>DamageWorker_SoulDamage</workerClass>
+  <hediff>Cut</hediff>  <!-- Applies cut wounds like normal blades -->
+  <hediffSkin>Cut</hediffSkin>  <!-- Skin layer injury -->
+  <hediffSolid>Crack</hediffSolid>  <!-- Bone damage -->
+  <impactSoundType>Slice</impactSoundType>
+  <armorCategory>Sharp</armorCategory>  <!-- Makes it work like a normal sword -->
+  <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>  <!-- Cuts through all layers -->
+  <overkillPctToDestroyPart>0~0.1</overkillPctToDestroyPart>  <!-- Required to destroy limbs properly -->
+</DamageDef>
+<DamageDef ParentName="whtwl_SoulDamage">
+  <defName>whtwl_SoulStab</defName>
+  <label>soul stab</label>
+  <workerClass>DamageWorker_SoulDamage</workerClass>  <!-- Use the correct class -->
+  <hediff>Stab</hediff>  <!-- Creates stab wounds -->
+  <hediffSolid>Crack</hediffSolid>  <!-- Bone damage -->
+  <impactSoundType>Slice</impactSoundType>
+  <armorCategory>Sharp</armorCategory>  <!-- Correct armor handling -->
+  <stabChanceOfForcedInternal>0.6</stabChanceOfForcedInternal>  <!-- Stab wounds can hit internal organs -->
+  <overkillPctToDestroyPart>0.4~1.0</overkillPctToDestroyPart>
+</DamageDef>
+</Defs>

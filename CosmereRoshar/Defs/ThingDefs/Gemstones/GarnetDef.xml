@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="RockBase">
+        <defName>whtwl_MineableRawGarnet</defName>
+        <label>Raw Garnet</label>
+        <description>Something about Garnet.</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <color>(214,224,16)</color>
+            <colorTwo>(214,224,16)</colorTwo>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>1500</MaxHitPoints>
+        </statBases>
+        <building>
+            <isResourceRock>true</isResourceRock>
+            <mineableThing>whtwl_RawGarnet</mineableThing>
+            <mineableYield>4</mineableYield>
+            <mineableScatterCommonality>0.2</mineableScatterCommonality>
+            <mineableScatterLumpSizeRange>5~11</mineableScatterLumpSizeRange>
+            <veinMineable>true</veinMineable>
+        </building>
+    </ThingDef>
+
+    <ThingDef ParentName="whtwl_GemstoneBase">
+        <defName>whtwl_RawGarnet</defName>
+        <label>Raw Garnet</label>
+        <description>Something about Garnet.</description>
+        <graphicData>
+            <texPath>Things/Item/Spheres/RawGarnet</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1</drawSize>
+        </graphicData>
+        <stuffProps>
+            <commonality>0.00</commonality>
+            <appearance>Metal</appearance>  <!-- change -->
+            <color>(214,224,16)</color>
+            <constructEffect>ConstructMetal</constructEffect>
+            <statOffsets>
+                <Beauty>5</Beauty>
+            </statOffsets>
+        </stuffProps>
+        <comps>
+            <li Class="CosmereRoshar.CompProperties_Stormlight">
+                <maxStormlight>5</maxStormlight>
+                <drainRate>0.5</drainRate>
+            </li>
+            <li Class="CosmereRoshar.CompProperties_RawGemstone">
+                <compClass>CosmereRoshar.CompRawGemstone</compClass>
+                <spawnChance>50</spawnChance>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <!-- CUT GEMS -->
+    <RecipeDef ParentName="whtwl_MakeCutGemsBase">
+        <defName>whtwl_Make_CutGarnet</defName>
+        <label>make cut Garnet gemstone</label>
+        <description>Cuts raw Garnet into refined cut garnets.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>whtwl_RawGarnet</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>whtwl_RawGarnet</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <whtwl_CutGarnet>1</whtwl_CutGarnet>
+        </products>
+        <researchPrerequisites>
+            <li>whtwl_GemCutting</li>
+        </researchPrerequisites>
+    </RecipeDef>
+
+    <ThingDef ParentName="whtwl_GemstoneBase">
+        <defName>whtwl_CutGarnet</defName>
+        <label>Cut Garnet</label>
+        <description>Something about Cut Garnet.</description>
+        <graphicData>
+            <texPath>Things/Item/Spheres/CutGarnet</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>0.7</drawSize>
+        </graphicData>
+        <stuffProps>
+            <appearance>Metal</appearance>           <!-- change -->
+            <color>(214,224,16)</color>             <!-- change -->
+            <constructEffect>ConstructMetal</constructEffect>
+            <statOffsets>
+                <Beauty>4</Beauty>
+            </statOffsets>
+            <categories>
+                <li>whtwl_gemstuff</li>  
+            </categories>
+        </stuffProps>
+        <comps>
+            <li Class="CosmereRoshar.CompProperties_Stormlight">
+                <maxStormlight>50</maxStormlight>
+                <drainRate>0.5</drainRate>
+            </li>
+            <li Class="CosmereRoshar.CompProperties_CutGemstone">
+                <compClass>CosmereRoshar.CompCutGemstone</compClass>
+            </li>
+            <li Class="CompProperties_Glower">
+                <glowRadius>0</glowRadius>
+                <glowColor>(214,224,16,0)</glowColor>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <!-- SPHERE Garnet -->
+    <RecipeDef ParentName="whtwl_MakeCutGemsBase">
+        <defName>whtwl_Make_GarnetSphere</defName>
+        <label>make Garnet sphere</label>
+        <description>make Garnet sphere out of cut Garnet.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>whtwl_CutGarnet</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>whtwl_CutGarnet</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <whtwl_Sphere_Garnet>1</whtwl_Sphere_Garnet>
+        </products>
+        <researchPrerequisites>
+            <li>whtwl_SphereProduction</li>
+        </researchPrerequisites>
+    </RecipeDef>
+
+    <ThingDef ParentName="Sphere_Base">
+        <defName>whtwl_Sphere_Garnet</defName>
+        <label>garnet sphere</label>
+        <description>An garnet sphere, uncommon and useful for soulcasting.</description>
+        <graphicData>
+            <texPath>Things/Item/Spheres/Sphere_Garnet</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>0.3</drawSize>
+        </graphicData>
+        <comps>
+            <li Class="CosmereRoshar.CompProperties_Stormlight">
+                <maxStormlight>50</maxStormlight>
+                <drainRate>0.5</drainRate>
+            </li>
+            <li Class="CosmereRoshar.CompProperties_GemSphere">
+                <compClass>CosmereRoshar.CompGemSphere</compClass>
+            </li>
+            <li Class="CompProperties_Glower">
+                <glowRadius>0</glowRadius>
+                <glowColor>(214,224,16,0)</glowColor>
+            </li>
+        </comps>
+        <statBases>
+            <MarketValue>5</MarketValue>
+            <Mass>0.008</Mass>
+        </statBases>
+        <stuffProps>
+            <statOffsets>
+                <Beauty>4</Beauty>
+            </statOffsets>
+            <statFactors>
+                <Beauty>4</Beauty>
+            </statFactors>
+        </stuffProps>
+    </ThingDef>
+</Defs>

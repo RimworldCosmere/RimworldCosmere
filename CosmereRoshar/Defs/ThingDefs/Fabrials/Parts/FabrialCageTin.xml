@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <RecipeDef ParentName="whtwl_MakeFabrialPartBase">
+        <defName>whtwl_Make_FabrialCage_Tin</defName>
+        <label>Tin Fabrial Cage</label>
+        <description>Make fabrial cage out of Tin.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>whtwl_RawTin</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>whtwl_RawTin</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <whtwl_FabrialCage_Tin>1</whtwl_FabrialCage_Tin>
+        </products>
+    </RecipeDef>
+
+
+    <ThingDef ParentName="ResourceBase">
+        <defName>whtwl_FabrialCage_Tin</defName>
+        <label>Tin Fabrial cage</label>
+        <description>The part that holds the gemstone in a fabrial.</description>
+        <graphicData>
+            <texPath>Things/Item/Fabrials/Gemholder_top_without_ruby</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <colorTwo>(36, 54, 68)</colorTwo>
+            <drawSize>1</drawSize>
+        </graphicData>
+        <statBases>
+            <Mass>0.008</Mass>
+        </statBases>
+        <stuffProps>
+            <commonality>0.00</commonality>
+            <appearance>Metal</appearance>  <!-- change -->
+            <color>(36, 54, 68)</color>
+            <constructEffect>ConstructMetal</constructEffect>
+            <statOffsets>
+                <Beauty>5</Beauty>
+            </statOffsets>
+        </stuffProps>
+        <comps>
+            <li Class="CosmereRoshar.CompProperties_FabrialCage">
+                <compClass>CosmereRoshar.CompFabrialCage</compClass>
+            </li>
+        </comps>
+    </ThingDef>
+
+</Defs>

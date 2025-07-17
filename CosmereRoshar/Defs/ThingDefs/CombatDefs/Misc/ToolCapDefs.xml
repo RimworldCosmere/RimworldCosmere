@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+<ToolCapacityDef>
+  <defName>whtwl_SoulCut</defName>
+  <label>soul cut</label>
+</ToolCapacityDef>
+<ToolCapacityDef>
+  <defName>whtwl_SoulStab</defName>
+  <label>soul stab</label>
+</ToolCapacityDef>
+</Defs>

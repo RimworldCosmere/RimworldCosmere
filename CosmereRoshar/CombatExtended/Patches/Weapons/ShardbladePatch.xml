@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="whtwl_MeleeWeapon_Shardblade"]/tools</xpath>
+        <value>
+            <tools>
+                <li Class="CombatExtended.ToolCE">
+                    <label>point</label>
+                    <capacities>
+                        <li>whtwl_SoulStab</li>
+                    </capacities>
+                    <power>100</power>
+                    <cooldownTime>1.6</cooldownTime>
+                    <armorPenetrationBlunt>100.0</armorPenetrationBlunt>
+                    <armorPenetrationSharp>100.0</armorPenetrationSharp>
+                    <linkedBodyPartsGroup>Point</linkedBodyPartsGroup>
+                </li>
+                <li Class="CombatExtended.ToolCE">
+                    <label>edge</label>
+                    <capacities>
+                        <li>whtwl_SoulCut</li>
+                    </capacities>
+                    <power>100</power>
+                    <cooldownTime>1.6</cooldownTime>
+                    <armorPenetrationBlunt>100.0</armorPenetrationBlunt>
+                    <armorPenetrationSharp>100.0</armorPenetrationSharp>
+                    <linkedBodyPartsGroup>Blade</linkedBodyPartsGroup>
+                </li>
+            </tools>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="whtwl_MeleeWeapon_Shardblade"]/statBases</xpath>
+        <value>
+            <Bulk>1</Bulk>
+            <MeleeCounterParryBonus>0.1</MeleeCounterParryBonus>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="whtwl_MeleeWeapon_Shardblade"]</xpath>
+        <value>
+            <equippedStatOffsets>
+                <MeleeCritChance>50.0</MeleeCritChance>
+                <MeleeParryChance>0.75</MeleeParryChance>
+                <MeleeDodgeChance>0.75</MeleeDodgeChance>
+            </equippedStatOffsets>
+        </value>
+    </Operation>
+</Patch>

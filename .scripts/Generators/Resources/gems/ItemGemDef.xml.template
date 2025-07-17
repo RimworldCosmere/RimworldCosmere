@@ -21,7 +21,6 @@
         <statBases>
             <Beauty>{{gem.baseBeauty}}</Beauty>
             <MarketValue>{{gem.baseMarketValue}}</MarketValue>
-            <Cosmere_Investiture>{{gem.baseStormlight}}</Cosmere_Investiture>
         </statBases>
 
         <modExtensions>
@@ -31,6 +30,7 @@
         </modExtensions>
         <comps>
             <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <maxInvestiture>{{gem.baseStormlight}}</maxInvestiture>
                 <drainRate>0.5</drainRate>
             </li>
             <li Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>
@@ -83,7 +83,6 @@
         <statBases>
             <Beauty>{{multiply gem.baseBeauty 4}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 4}}</MarketValue>
-            <Cosmere_Investiture>{{multiply gem.baseStormlight 4}}</Cosmere_Investiture>
         </statBases>
 
         <modExtensions>
@@ -93,6 +92,7 @@
         </modExtensions>
         <comps>
             <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <maxInvestiture>{{multiply gem.baseStormlight 4}}</maxInvestiture>
                 <drainRate>0.25</drainRate>
             </li>
             <li Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>

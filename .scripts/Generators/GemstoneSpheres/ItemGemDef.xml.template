@@ -23,7 +23,6 @@
             <Mass>0.00002</Mass>
             <Beauty>{{multiply gem.baseBeauty 2}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 2}}</MarketValue>
-            <Cosmere_Investiture>{{multiply gem.baseStormlight 2}}</Cosmere_Investiture>
         </statBases>
 
         <costList>
@@ -58,6 +57,7 @@
         </modExtensions>
         <comps>
             <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <maxInvestiture>{{multiply gem.baseStormlight 2}}</maxInvestiture>
                 <drainRate>0.1</drainRate>
             </li>
         </comps>
@@ -86,7 +86,6 @@
             <Mass>0.0001</Mass>
             <Beauty>{{multiply gem.baseBeauty 10}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 10}}</MarketValue>
-            <Cosmere_Investiture>{{multiply gem.baseStormlight 10}}</Cosmere_Investiture>
         </statBases>
 
         <costList>
@@ -121,6 +120,7 @@
         </modExtensions>
         <comps>
             <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <maxInvestiture>{{multiply gem.baseStormlight 10}}</maxInvestiture>
                 <drainRate>0.1</drainRate>
             </li>
         </comps>
@@ -149,7 +149,6 @@
             <Mass>0.0004</Mass>
             <Beauty>{{multiply gem.baseBeauty 40}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 40}}</MarketValue>
-            <Cosmere_Investiture>{{multiply gem.baseStormlight 40}}</Cosmere_Investiture>
         </statBases>
 
         <costList>
@@ -184,6 +183,7 @@
         </modExtensions>
         <comps>
             <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <maxInvestiture>{{multiply gem.baseStormlight 40}}</maxInvestiture>
                 <drainRate>0.1</drainRate>
             </li>
         </comps>

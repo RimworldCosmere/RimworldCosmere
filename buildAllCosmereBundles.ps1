@@ -5,7 +5,7 @@ Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$cleanPath\*"
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$assetOutput\*"
 
 # List of modules to process
-$mods = @("Core", "Resources", "Framework", "Scadrial")
+$mods = @("Core", "Resources", "Framework", "Scadrial", "Roshar")
 
 function Get-FolderHash($folderPath)
 {

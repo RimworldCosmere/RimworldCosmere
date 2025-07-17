@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CosmereCore.Def.ShardDef>
+        <defName>Honor</defName>
+        <label>honor</label>
+        <planet>Roshar</planet>
+        <description>Honor represents oaths, bonds, and the unyielding structure of law and tradition. This Shard governs the ideals of duty and unity—power channeled through commitment and sworn word. Its influence brings order, but at a cost: Honor demands adherence, even when the path is difficult.</description>
+        <mutuallyExclusiveWith>
+            <li>Retribution</li>
+        </mutuallyExclusiveWith>
+    </CosmereCore.Def.ShardDef>
+    <CosmereCore.Def.ShardDef>
+        <defName>Cultivation</defName>
+        <label>cultivation</label>
+        <planet>Roshar</planet>
+        <description>Cultivation is the Shard of growth, change, and long-term planning. Gentle yet deliberate, its power lies in shaping potential—pruning what must be cut and nurturing what must thrive. It rarely acts swiftly, preferring subtle guidance toward transformation.</description>
+    </CosmereCore.Def.ShardDef>
+    <CosmereCore.Def.ShardDef>
+        <defName>Odium</defName>
+        <label>odium</label>
+        <planet>Roshar</planet>
+        <description>Odium embodies passion taken to its extreme—fury, hatred, and divine wrath. More than simple rage, it is the force of pure intent, unshackled by mercy or restraint. Odium seeks supremacy not through chaos, but through the destruction of rival Shards and ideals.</description>
+        <mutuallyExclusiveWith>
+            <li>Retribution</li>
+        </mutuallyExclusiveWith>
+    </CosmereCore.Def.ShardDef>
+    <CosmereCore.Def.ShardDef>
+        <defName>Retribution</defName>
+        <label>retribution</label>
+        <planet>Roshar</planet>
+        <description>A terrifying union of Odium’s wrath and Honor’s oath-bound rigidity, Retribution enforces severe consequence and cosmic reckoning. Now unleashed from Roshar, it pursues broken vows and punishes transgression—driving the Cosmere towards a reckoning no world can ignore.</description>
+        <mutuallyExclusiveWith>
+            <li>Honor</li>
+            <li>Odium</li>
+        </mutuallyExclusiveWith>
+    </CosmereCore.Def.ShardDef>
+</Defs>

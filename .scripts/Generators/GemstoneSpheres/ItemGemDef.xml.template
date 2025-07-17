@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <!-- {{defName gem.name}} Chip -->
-    <ThingDef ParentName="CosmereGemBase">
+    <ThingDef ParentName="CosmereRosharCurrencyBase">
         <defName>Cosmere_Roshar_Thing_{{defName gem.name}}Chip</defName>
         <label>{{title gem.name}} Chip</label>
         <description>{{gem.descriptions.sphere}}</description>
@@ -20,6 +20,7 @@
         </graphicData>
 
         <statBases>
+            <Mass>0.00002</Mass>
             <Beauty>{{multiply gem.baseBeauty 2}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 2}}</MarketValue>
             <Cosmere_Investiture>{{multiply gem.baseStormlight 2}}</Cosmere_Investiture>
@@ -63,7 +64,7 @@
     </ThingDef>
 
     <!-- {{defName gem.name}} Mark -->
-    <ThingDef ParentName="CosmereGemBase">
+    <ThingDef ParentName="CosmereRosharCurrencyBase">
         <defName>Cosmere_Roshar_Thing_{{defName gem.name}}Mark</defName>
         <label>{{title gem.name}} Mark</label>
         <description>{{gem.descriptions.sphere}}</description>
@@ -82,6 +83,7 @@
         </graphicData>
 
         <statBases>
+            <Mass>0.0001</Mass>
             <Beauty>{{multiply gem.baseBeauty 10}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 10}}</MarketValue>
             <Cosmere_Investiture>{{multiply gem.baseStormlight 10}}</Cosmere_Investiture>
@@ -125,7 +127,7 @@
     </ThingDef>
 
     <!-- {{defName gem.name}} Broam -->
-    <ThingDef ParentName="CosmereGemBase">
+    <ThingDef ParentName="CosmereRosharCurrencyBase">
         <defName>Cosmere_Roshar_Thing_{{defName gem.name}}Broam</defName>
         <label>{{title gem.name}} Broam</label>
         <description>{{gem.descriptions.sphere}}</description>
@@ -144,6 +146,7 @@
         </graphicData>
 
         <statBases>
+            <Mass>0.0004</Mass>
             <Beauty>{{multiply gem.baseBeauty 40}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 40}}</MarketValue>
             <Cosmere_Investiture>{{multiply gem.baseStormlight 40}}</Cosmere_Investiture>

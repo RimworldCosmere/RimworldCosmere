@@ -96,6 +96,9 @@
                 <drainRate>0.25</drainRate>
             </li>
             <li Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>
+            <li>
+                <compClass>CompQuality</compClass>
+            </li>
         </comps>
     </ThingDef>
 

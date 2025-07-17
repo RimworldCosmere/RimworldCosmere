@@ -20,5 +20,8 @@
             <li>Cosmere_Currency</li>
         </tradeTags>
         <orderedTakeGroup>Cosmere_Currency</orderedTakeGroup>
+        <comps>
+            <li><compClass>CompQuality</compClass></li>
+        </comps>
     </ThingDef>
 </Defs>

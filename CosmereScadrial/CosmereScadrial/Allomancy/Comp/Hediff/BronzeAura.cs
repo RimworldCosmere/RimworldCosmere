@@ -2,12 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using CosmereCore.Extension;
 using CosmereFramework.Comp.Map;
+using CosmereScadrial.Util;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace CosmereScadrial.Allomancy.Comp.Hediff;
 
 public class BronzeAuraProperties : LineDrawingAuraProperties {
+    public ThingDef moteDef;
+
     public BronzeAuraProperties() {
         compClass = typeof(BronzeAura);
     }
@@ -16,6 +20,11 @@ public class BronzeAuraProperties : LineDrawingAuraProperties {
 }
 
 public class BronzeAura : LineDrawingAura {
+    private Mote? mote;
+    private float moteScale => MoteUtility.GetMoteSize(props.moteDef, props.radius, parent.Severity);
+
+    private new BronzeAuraProperties props => (BronzeAuraProperties)base.props;
+
     protected override IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map) {
         return cell.GetThingList(map).Where(t => t.GetInvestiture() > 0);
     }
@@ -39,6 +48,30 @@ public class BronzeAura : LineDrawingAura {
             cachedLineMaterial ??= props.lineMaterial,
             fade,
             thickness
+        );
+    }
+
+    public override void CompPostTick(ref float severityAdjustment) {
+        CreateMote()?.Maintain();
+        if (mote != null) {
+            mote.Graphic.drawSize = new Vector2(moteScale, moteScale);
+        }
+
+        base.CompPostTick(ref severityAdjustment);
+        //ThingDef
+    }
+
+
+    private Mote? CreateMote() {
+        if (mote?.Destroyed == false) {
+            return mote;
+        }
+
+        return mote ??= MoteMaker.MakeAttachedOverlay(
+            parent.pawn,
+            props.moteDef,
+            Vector3.zero,
+            moteScale
         );
     }
 }

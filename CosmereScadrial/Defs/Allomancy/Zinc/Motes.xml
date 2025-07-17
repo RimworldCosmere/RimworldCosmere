@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="CosmereMoteAllomancyAura">
-        <defName>Cosmere_Mote_Zinc_Aura</defName>
+        <defName>Cosmere_Scadrial_Mote_ZincAura</defName>
         <label>zinc aura</label>
         <graphicData>
             <shaderParameters>

@@ -12,6 +12,9 @@ namespace CosmereScadrial;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class ThingDefOf {
     public static ThingDef Cosmere_Scadrial_Mote_CopperCloud;
+    public static ThingDef Cosmere_Scadrial_Mote_BrassAura;
+    public static ThingDef Cosmere_Scadrial_Mote_BronzeAura;
+    public static ThingDef Cosmere_Scadrial_Mote_ZincAura;
     public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleCadmium;
     public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleBendalloy;
     public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleWarp;

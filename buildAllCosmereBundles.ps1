@@ -113,8 +113,8 @@ foreach ($mod in $mods)
 
         if ($process.ExitCode -ne 0)
         {
-            Write-Host "    Unity failed for $mod (exit code $( $process.ExitCode )). Skipping bundle move."
-            continue
+            Write-Host "    Unity failed for $mod (exit code $( $process.ExitCode )). Crashing build."
+            exit
         }
 
         $currentHash | Out-File -Encoding ASCII -FilePath $hashFile

@@ -14,7 +14,8 @@ public abstract class AbstractQuickstart {
 
     public abstract StorytellerDef storyteller { get; }
     public abstract DifficultyDef difficulty { get; }
-    public abstract ScenarioDef? scenario { get; }
+
+    public virtual ScenarioDef? scenario { get; } = null;
     public virtual void PostStart() { }
     public virtual void PostLoaded() { }
     public virtual void PostApplyConfiguration() { }

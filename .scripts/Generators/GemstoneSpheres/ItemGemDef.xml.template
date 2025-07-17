@@ -23,6 +23,7 @@
             <Mass>0.00002</Mass>
             <Beauty>{{multiply gem.baseBeauty 2}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 2}}</MarketValue>
+            <Cosmere_Roshar_Stat_SphereSize>0.2</Cosmere_Roshar_Stat_SphereSize>
         </statBases>
 
         <costList>
@@ -31,8 +32,8 @@
 
         <recipeMaker>
             <label>{{title gem.name}} Chip</label>
-            <productCount>20</productCount>
-            <targetCountAdjustment>20</targetCountAdjustment>
+            <productCount>5</productCount>
+            <targetCountAdjustment>5</targetCountAdjustment>
             <bulkRecipeCount>100</bulkRecipeCount>
             <useIngredientsForColor>true</useIngredientsForColor>
             <workAmount>1600</workAmount>
@@ -86,6 +87,7 @@
             <Mass>0.0001</Mass>
             <Beauty>{{multiply gem.baseBeauty 10}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 10}}</MarketValue>
+            <Cosmere_Roshar_Stat_SphereSize>1</Cosmere_Roshar_Stat_SphereSize>
         </statBases>
 
         <costList>
@@ -94,9 +96,9 @@
 
         <recipeMaker>
             <label>{{title gem.name}} Mark</label>
-            <productCount>4</productCount>
-            <targetCountAdjustment>4</targetCountAdjustment>
-            <bulkRecipeCount>16</bulkRecipeCount>
+            <productCount>1</productCount>
+            <targetCountAdjustment>1</targetCountAdjustment>
+            <bulkRecipeCount>4</bulkRecipeCount>
             <useIngredientsForColor>true</useIngredientsForColor>
             <workAmount>1600</workAmount>
             <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -149,10 +151,11 @@
             <Mass>0.0004</Mass>
             <Beauty>{{multiply gem.baseBeauty 40}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 40}}</MarketValue>
+            <Cosmere_Roshar_Stat_SphereSize>4</Cosmere_Roshar_Stat_SphereSize>
         </statBases>
 
         <costList>
-            <Cut{{defName gem.name}}>1</Cut{{defName gem.name}}>
+            <Cut{{defName gem.name}}>4</Cut{{defName gem.name}}>
         </costList>
 
         <recipeMaker>

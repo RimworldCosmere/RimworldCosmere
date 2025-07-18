@@ -8,9 +8,14 @@ elseif ($IsMacOS)
     $unityPath = "/Applications/Unity/Hub/Editor/2022.3.35f1/Unity.app/Contents/MacOS/Unity"
     $buildTarget = "mac"
 }
-else
+
+if (($null -eq $unityPath) -or (-not (Test-Path -Path $unityPath -PathType Leaf)))
 {
     $unityPath = $Env:UNITY_PATH
+}
+
+if ($null -eq $buildTarget)
+{
     $buildTarget = $Env:UNITY_BUILD_TARGET;
 }
 

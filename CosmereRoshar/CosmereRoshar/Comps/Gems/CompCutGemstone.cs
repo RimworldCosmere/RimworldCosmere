@@ -16,7 +16,7 @@ namespace CosmereRoshar {
 
     public class CompCutGemstone : ThingComp {
         public CompProperties_CutGemstone GemstoneProps => (CompProperties_CutGemstone)props;
-        public CompProperties_Stormlight StormlightProps => (CompProperties_Stormlight)props;
+        public StormlightProperties StormlightProps => (StormlightProperties)props;
         private CompStormlight stormlightComp;
         public bool HasSprenInside => capturedSpren != Spren.None;
         public int gemstoneQuality;
@@ -43,7 +43,6 @@ namespace CosmereRoshar {
             //parent.def.BaseMarketValue = (parent.def.BaseMarketValue * gemstoneSize) + gemstoneQuality * 5;
 
             if (stormlightComp != null) {
-                stormlightComp.StormlightContainerQuality = gemstoneQuality;
                 stormlightComp.StormlightContainerSize = gemstoneSize;
                 stormlightComp.calculateMaximumGlowRadius(gemstoneQuality, gemstoneSize);
             }
@@ -163,7 +162,7 @@ namespace CosmereRoshar {
                     icon = TexCommand.DesirePower,
                     action = () => {
                         this.gemstoneQuality = (this.gemstoneQuality % 5) + 1;
-                        stormlightComp.StormlightContainerQuality = gemstoneQuality;
+                        // stormlightComp.StormlightContainerQuality = gemstoneQuality;
                         stormlightComp.StormlightContainerSize = gemstoneSize;
                         stormlightComp.calculateMaximumGlowRadius(gemstoneQuality, gemstoneSize);
                     }
@@ -179,7 +178,7 @@ namespace CosmereRoshar {
                             this.gemstoneSize = 20;
                         else if (this.gemstoneSize == 20)
                             this.gemstoneSize = 1;
-                        stormlightComp.StormlightContainerQuality = gemstoneQuality;
+                        // stormlightComp.StormlightContainerQuality = gemstoneQuality;
                         stormlightComp.StormlightContainerSize = gemstoneSize;
                         stormlightComp.calculateMaximumGlowRadius(gemstoneQuality, gemstoneSize);
                     }

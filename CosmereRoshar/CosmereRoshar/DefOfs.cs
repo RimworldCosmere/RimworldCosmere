@@ -38,36 +38,6 @@ namespace CosmereRoshar {
         public static ThingDef whtwl_FabrialCage_Pewter;
         public static ThingDef whtwl_BasicFabrial_Augmenter; 
 
-        //RAW GEMS
-        public static ThingDef whtwl_RawDiamond;
-        public static ThingDef whtwl_RawGarnet;
-        public static ThingDef whtwl_RawRuby;
-        public static ThingDef whtwl_RawSapphire;
-        public static ThingDef whtwl_RawEmerald;
-
-        //CUT GEMS
-        public static ThingDef whtwl_CutDiamond;
-        public static ThingDef whtwl_CutGarnet;
-        public static ThingDef whtwl_CutRuby;
-        public static ThingDef whtwl_CutSapphire;
-        public static ThingDef whtwl_CutEmerald;
-
-        //SPHERED GEMS
-        public static ThingDef whtwl_Sphere_Diamond;
-        public static ThingDef whtwl_Sphere_Garnet;
-        public static ThingDef whtwl_Sphere_Ruby;
-        public static ThingDef whtwl_Sphere_Sapphire;
-        public static ThingDef whtwl_Sphere_Emerald;
-
-        // METALS
-        public static ThingDef whtwl_AlloyPewter;
-        public static ThingDef whtwl_AlloyBrass;
-        public static ThingDef whtwl_AlloyBronze;
-        public static ThingDef whtwl_RawTin;
-        public static ThingDef whtwl_RawZinc;
-        public static ThingDef whtwl_RawCopper;
-        public static ThingDef whtwl_RawAntimony;
-
         // FABRIALS
         public static ThingDef whtwl_Apparel_Fabrial_Painrial_Diminisher;
 
@@ -109,11 +79,11 @@ namespace CosmereRoshar {
             get {
                 return new List<ThingDef>
                 {
-                CosmereRosharDefs.whtwl_RawDiamond,
-                CosmereRosharDefs.whtwl_RawGarnet,
-                CosmereRosharDefs.whtwl_RawRuby,
-                CosmereRosharDefs.whtwl_RawSapphire,
-                CosmereRosharDefs.whtwl_RawEmerald
+                CosmereResources.ThingDefOf.RawDiamond,
+                CosmereResources.ThingDefOf.RawGarnet,
+                CosmereResources.ThingDefOf.RawRuby,
+                CosmereResources.ThingDefOf.RawSapphire,
+                CosmereResources.ThingDefOf.RawEmerald
             };
             }
         }
@@ -121,11 +91,11 @@ namespace CosmereRoshar {
             get {
                 return new List<ThingDef>
                 {
-                CosmereRosharDefs.whtwl_CutDiamond,
-                CosmereRosharDefs.whtwl_CutGarnet,
-                CosmereRosharDefs.whtwl_CutRuby,
-                CosmereRosharDefs.whtwl_CutSapphire,
-                CosmereRosharDefs.whtwl_CutEmerald
+                CosmereResources.ThingDefOf.CutDiamond,
+                CosmereResources.ThingDefOf.CutGarnet,
+                CosmereResources.ThingDefOf.CutRuby,
+                CosmereResources.ThingDefOf.CutSapphire,
+                CosmereResources.ThingDefOf.CutEmerald
             };
             }
         }

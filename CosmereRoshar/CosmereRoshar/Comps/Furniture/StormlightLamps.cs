@@ -149,7 +149,7 @@ namespace CosmereRoshar {
 
             //    CompStormlight comp = sphereComp.GetComp<CompStormlight>();
             //    if (comp != null) {
-            //        comp.Initialize(new CompProperties_Stormlight {
+            //        comp.Initialize(new StormlightProperties {
             //            maxStormlight = 1000f,
             //            drainRate = 0.01f
             //        });

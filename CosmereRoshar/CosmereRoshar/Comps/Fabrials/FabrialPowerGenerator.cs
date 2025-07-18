@@ -57,11 +57,11 @@ namespace CosmereRoshar {
         private List<ThingDef> filterList = new List<ThingDef>();
         public List<ThingDef> FilterList => filterList;
         private List<ThingDef> allowedGems = new List<ThingDef>() {
-            CosmereRosharDefs.whtwl_CutDiamond,
-            CosmereRosharDefs.whtwl_CutGarnet,
-            CosmereRosharDefs.whtwl_CutRuby,
-            CosmereRosharDefs.whtwl_CutSapphire,
-            CosmereRosharDefs.whtwl_CutEmerald
+            CosmereResources.ThingDefOf.CutDiamond,
+            CosmereResources.ThingDefOf.CutGarnet,
+            CosmereResources.ThingDefOf.CutRuby,
+            CosmereResources.ThingDefOf.CutSapphire,
+            CosmereResources.ThingDefOf.CutEmerald
         };
         public List<ThingDef> AllowedSpheres => this.allowedGems;
 

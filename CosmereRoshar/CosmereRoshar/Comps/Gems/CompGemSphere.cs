@@ -11,7 +11,7 @@ namespace CosmereRoshar {
     public enum GemSize { None, Chip, Mark, Broam };
     public class CompGemSphere : ThingComp {
         public CompProperties_GemSphere GemstoneProps => (CompProperties_GemSphere)props;
-        public CompProperties_Stormlight StormlightProps => (CompProperties_Stormlight)props;
+        public StormlightProperties StormlightProps => (StormlightProperties)props;
         private CompStormlight stormlightComp;
         private int gemstoneQuality;
         private int gemstoneSize;
@@ -39,7 +39,7 @@ namespace CosmereRoshar {
 
             //Log.Message($"Base Value {parent.def.BaseMarketValue}");
             if (stormlightComp != null) {
-                stormlightComp.StormlightContainerQuality = gemstoneQuality;
+                // stormlightComp.StormlightContainerQuality = gemstoneQuality;
                 stormlightComp.StormlightContainerSize = gemstoneSize;
                 stormlightComp.calculateMaximumGlowRadius(gemstoneQuality, gemstoneSize);
             }

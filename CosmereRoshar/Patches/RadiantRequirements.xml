@@ -11,8 +11,8 @@
                 <Req_3_4>FourthIdeal</Req_3_4>
                 <Req_4_5>FifthIdeal</Req_4_5>
             </li>
-            <li Class="CosmereRoshar.CompProperties_Stormlight">
-                <maxStormlight>3000</maxStormlight>
+            <li Class="CosmereRoshar.StormlightProperties">
+                <maxInvestiture>3000</maxInvestiture>
                 <drainRate>0.01</drainRate>
             </li>
         </value>

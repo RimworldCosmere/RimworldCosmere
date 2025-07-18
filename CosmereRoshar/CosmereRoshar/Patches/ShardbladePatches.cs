@@ -35,23 +35,4 @@ namespace CosmereRoshar {
             }
         }
     }
-
-    [HarmonyPatch(typeof(Mineable), "TrySpawnYield")]
-    [HarmonyPatch(new Type[] { typeof(Map), typeof(bool), typeof(Pawn) })]
-    public static class PatchSpawnYieldAfterMining {
-        static void Postfix(Map map, bool moteOnWaste, Pawn pawn) {
-
-            if (map != null) {
-                ThingDef sphereThing = StormlightUtilities.RollForRandomGemSpawn();
-                if (sphereThing != null) {
-                    Thing sphere = ThingMaker.MakeThing(sphereThing);
-                    IntVec3 dropPosition = pawn.Position;
-                    GenPlace.TryPlaceThing(sphere, dropPosition, map, ThingPlaceMode.Direct);
-                }
-            }
-
-        }
-
-    }
-
 }

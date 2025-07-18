@@ -45,11 +45,11 @@ namespace CosmereRoshar {
         public override void Print(SectionLayer layer) {
             base.Print(layer);
             if (compBasicFabrialDiminisher.HasGemstone) {
-                if (compBasicFabrialDiminisher.insertedGemstone.def == CosmereRosharDefs.whtwl_CutRuby) { this.def.graphicData.attachments[0].Graphic.Print(layer, this, 0f); }
-                else if (compBasicFabrialDiminisher.insertedGemstone.def == CosmereRosharDefs.whtwl_CutDiamond) { this.def.graphicData.attachments[1].Graphic.Print(layer, this, 0f); }
-                else if (compBasicFabrialDiminisher.insertedGemstone.def == CosmereRosharDefs.whtwl_CutGarnet) { this.def.graphicData.attachments[2].Graphic.Print(layer, this, 0f); }
-                else if (compBasicFabrialDiminisher.insertedGemstone.def == CosmereRosharDefs.whtwl_CutEmerald) { this.def.graphicData.attachments[3].Graphic.Print(layer, this, 0f); }
-                else if (compBasicFabrialDiminisher.insertedGemstone.def == CosmereRosharDefs.whtwl_CutSapphire) { this.def.graphicData.attachments[4].Graphic.Print(layer, this, 0f); }
+                if (compBasicFabrialDiminisher.insertedGemstone.def ==      CosmereResources.ThingDefOf.CutRuby) { this.def.graphicData.attachments[0].Graphic.Print(layer, this, 0f); }
+                else if (compBasicFabrialDiminisher.insertedGemstone.def == CosmereResources.ThingDefOf.CutDiamond) { this.def.graphicData.attachments[1].Graphic.Print(layer, this, 0f); }
+                else if (compBasicFabrialDiminisher.insertedGemstone.def == CosmereResources.ThingDefOf.CutGarnet) { this.def.graphicData.attachments[2].Graphic.Print(layer, this, 0f); }
+                else if (compBasicFabrialDiminisher.insertedGemstone.def == CosmereResources.ThingDefOf.CutEmerald) { this.def.graphicData.attachments[3].Graphic.Print(layer, this, 0f); }
+                else if (compBasicFabrialDiminisher.insertedGemstone.def == CosmereResources.ThingDefOf.CutSapphire) { this.def.graphicData.attachments[4].Graphic.Print(layer, this, 0f); }
             }
         }
     }
@@ -65,11 +65,11 @@ namespace CosmereRoshar {
         private List<ThingDef> filterList = new List<ThingDef>();
         public List<ThingDef> FilterList => filterList;
         private List<ThingDef> allowedGems = new List<ThingDef>() {
-            CosmereRosharDefs.whtwl_CutDiamond,
-            CosmereRosharDefs.whtwl_CutGarnet,
-            CosmereRosharDefs.whtwl_CutRuby,
-            CosmereRosharDefs.whtwl_CutSapphire,
-            CosmereRosharDefs.whtwl_CutEmerald
+            CosmereResources.ThingDefOf.CutDiamond,
+            CosmereResources.ThingDefOf.CutGarnet,
+            CosmereResources.ThingDefOf.CutRuby,
+            CosmereResources.ThingDefOf.CutSapphire,
+            CosmereResources.ThingDefOf.CutEmerald
         };
         public List<ThingDef> AllowedSpheres => this.allowedGems;
 

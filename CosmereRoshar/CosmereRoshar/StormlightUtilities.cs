@@ -84,7 +84,7 @@ namespace CosmereRoshar {
 
             foreach (IntVec3 cell in GenRadial.RadialCellsAround(position, radius, true)) {
                 foreach (Thing thing in cell.GetThingList(map)) {
-                    if (thing.def == ThingDefOf.Fire || thing.def.category == ThingCategory.Building && thing.TryGetComp<CompRefuelable>()?.Props.fuelConsumptionPerTickInRain > 0f) {
+                    if (thing.def == RimWorld.ThingDefOf.Fire || thing.def.category == ThingCategory.Building && thing.TryGetComp<CompRefuelable>()?.Props.fuelConsumptionPerTickInRain > 0f) {
                         return true;
                     }
                     if (thing.def.defName.Contains("Torch") || thing.def.defName.Contains("Campfire")) {
@@ -100,7 +100,7 @@ namespace CosmereRoshar {
             int numberOfFires = 0;
             foreach (IntVec3 cell in GenRadial.RadialCellsAround(position, radius, true)) {
                 foreach (Thing thing in cell.GetThingList(map)) {
-                    if (thing.def == ThingDefOf.Fire || thing.def.category == ThingCategory.Building && thing.TryGetComp<CompRefuelable>()?.Props.fuelConsumptionPerTickInRain > 0f) {
+                    if (thing.def == RimWorld.ThingDefOf.Fire || thing.def.category == ThingCategory.Building && thing.TryGetComp<CompRefuelable>()?.Props.fuelConsumptionPerTickInRain > 0f) {
                         numberOfFires++;
                     }
                     else if (thing.def.defName.Contains("Torch") || thing.def.defName.Contains("Campfire")) {
@@ -165,11 +165,11 @@ namespace CosmereRoshar {
         }
 
         public static bool isThingCutGemstone(Thing thing) {
-            return thing.def == CosmereRosharDefs.whtwl_CutRuby
-                         || thing.def == CosmereRosharDefs.whtwl_CutEmerald
-                         || thing.def == CosmereRosharDefs.whtwl_CutDiamond
-                         || thing.def == CosmereRosharDefs.whtwl_CutSapphire
-                         || thing.def == CosmereRosharDefs.whtwl_CutGarnet;
+            return thing.def == CosmereResources.ThingDefOf.CutRuby
+                || thing.def == CosmereResources.ThingDefOf.CutEmerald
+                || thing.def == CosmereResources.ThingDefOf.CutDiamond
+                || thing.def == CosmereResources.ThingDefOf.CutSapphire
+                || thing.def == CosmereResources.ThingDefOf.CutGarnet;
         }
 
         static public Trait GetRadiantTrait(Pawn pawn) {
@@ -178,11 +178,11 @@ namespace CosmereRoshar {
 
         private static readonly List<ThingDef> gems = new List<ThingDef>
         {
-        CosmereRosharDefs. whtwl_RawDiamond,
-        CosmereRosharDefs. whtwl_RawGarnet,
-        CosmereRosharDefs. whtwl_RawRuby,
-        CosmereRosharDefs. whtwl_RawSapphire,
-        CosmereRosharDefs. whtwl_RawEmerald
+        CosmereResources.ThingDefOf.RawDiamond,
+        CosmereResources.ThingDefOf.RawGarnet,
+        CosmereResources.ThingDefOf.RawRuby,
+        CosmereResources.ThingDefOf.RawSapphire,
+        CosmereResources.ThingDefOf.RawEmerald
       };
 
         private static readonly System.Random rng = new System.Random();

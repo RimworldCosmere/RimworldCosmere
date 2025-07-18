@@ -66,7 +66,7 @@ namespace CosmereRoshar {
 
             if (pawn.Spawned && base.Casting) {
                 if (moteCast == null || moteCast.Destroyed) {
-                    moteCast = MoteMaker.MakeAttachedOverlay(pawn, ThingDefOf.Mote_CastPsycast, MoteCastOffset, MoteCastScale, base.verb.verbProps.warmupTime - MoteCastFadeTime);
+                    moteCast = MoteMaker.MakeAttachedOverlay(pawn, RimWorld.ThingDefOf.Mote_CastPsycast, MoteCastOffset, MoteCastScale, base.verb.verbProps.warmupTime - MoteCastFadeTime);
                 }
                 else {
                     moteCast.Maintain();

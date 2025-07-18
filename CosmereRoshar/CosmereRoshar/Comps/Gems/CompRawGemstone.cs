@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 namespace CosmereRoshar {
     public class CompRawGemstone : ThingComp {
         public CompProperties_RawGemstone GemstoneProps => (CompProperties_RawGemstone)props;
-        public CompProperties_Stormlight StormlightProps => (CompProperties_Stormlight)props;
+        public StormlightProperties StormlightProps => (StormlightProperties)props;
         private CompStormlight stormlightComp;
         public int gemstoneSize;
 

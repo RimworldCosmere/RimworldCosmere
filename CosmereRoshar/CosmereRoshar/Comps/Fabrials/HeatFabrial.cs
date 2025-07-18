@@ -85,7 +85,7 @@ namespace CosmereRoshar {
 
         public void AddGemstone(ThingWithComps gemstone) {
             var gemstoneComp = gemstone.GetComp<CompCutGemstone>();
-            if (gemstoneComp != null && gemstoneComp.parent.def == CosmereRosharDefs.whtwl_CutRuby) {
+            if (gemstoneComp != null && gemstoneComp.parent.def == CosmereResources.ThingDefOf.CutRuby) {
                 insertedGemstone = gemstoneComp.parent;
             }
         }
@@ -111,7 +111,7 @@ namespace CosmereRoshar {
         public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn) {
             var cutGemstone = GenClosest.ClosestThing_Global(
                    selPawn.Position,
-                   selPawn.Map.listerThings.AllThings.Where(thing => thing.def == CosmereRosharDefs.whtwl_CutRuby), 500f);
+                   selPawn.Map.listerThings.AllThings.Where(thing => thing.def == CosmereResources.ThingDefOf.CutRuby), 500f);
 
             Action replaceGemAction = null;
             string replaceGemText = "No suitable gem available";

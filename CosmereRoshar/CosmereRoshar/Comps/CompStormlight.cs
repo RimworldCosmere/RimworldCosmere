@@ -12,30 +12,39 @@ namespace CosmereRoshar {
         public bool isActivatedOnPawn = false;
 
         private float m_CurrentStormlight;
-        public CompProperties_Stormlight Props => (CompProperties_Stormlight)props;
+        public StormlightProperties Props => (StormlightProperties)props;
         public CompGlower GlowerComp => parent.GetComp<CompGlower>();
         public bool HasStormlight => m_CurrentStormlight > 0f;
         public float Stormlight => m_CurrentStormlight;
         public int StackCount => parent.stackCount;
-        public float MaxStormlightPerItem => Props.maxStormlight;
+        public float MaxStormlightPerItem => Props.maxInvestiture;
         public float CurrentMaxStormlight = 0f;
         public bool m_BreathStormlight = false;
         public float drainFactor = 1f;
-
+        
         // Surges
         private bool m_AbrasionActive = false;
         public bool AbrasionActive => m_AbrasionActive;
 
         // Modifiers
         public float StormlightContainerSize = 1f;
-        public float StormlightContainerQuality = 1f;
         public float MaximumGlowRadius = 8.0f;
 
         private bool lightTurnedOn = false;
-        private int tick = 0;
         private bool thisGlows = false;
 
+        private QualityCategory quality => parent.TryGetComp<CompQuality>()?.Quality ?? QualityCategory.Normal;
 
+        private float qualityMultiplier => quality switch {
+            QualityCategory.Awful => .25f,
+            QualityCategory.Poor => .5f,
+            QualityCategory.Normal => 1,
+            QualityCategory.Good => 1.2f,
+            QualityCategory.Excellent => 1.6f,
+            QualityCategory.Masterwork => 2f,
+            QualityCategory.Legendary => 5f,
+            _ => throw new ArgumentOutOfRangeException(),
+        };
 
         public void toggleBreathStormlight() {
             m_BreathStormlight = !m_BreathStormlight;
@@ -56,18 +65,41 @@ namespace CosmereRoshar {
             Scribe_Values.Look(ref isActivatedOnPawn, "isActivatedOnPawn", false);
             Scribe_Values.Look(ref CurrentMaxStormlight, "CurrentMaxStormlight", 0f);
             Scribe_Values.Look(ref StormlightContainerSize, "StormlightContainerSize", 1f);
-            Scribe_Values.Look(ref StormlightContainerQuality, "StormlightContainerQuality", 1f);
+            // Scribe_Values.Look(ref quality, "StormlightContainerQuality", 1f);
             Scribe_Values.Look(ref MaximumGlowRadius, "MaximumGlowRadius", 1f);
             Scribe_Values.Look(ref drainFactor, "drainFactor", 1f);
         }
 
         private void adjustMaximumStormlight() {
-            float qualityFactor = 25f;
-            CurrentMaxStormlight = (MaxStormlightPerItem * StormlightContainerSize) - qualityFactor;
-            CurrentMaxStormlight += StormlightContainerQuality * qualityFactor;
+            CurrentMaxStormlight = (MaxStormlightPerItem * StormlightContainerSize);
             CurrentMaxStormlight *= Math.Max(StackCount,1);
         }
 
+      
+
+        
+        public override void CompTickInterval(int delta) {
+            if (isActivatedOnPawn == false && this.parent is Pawn _pawn) {
+                return;
+            }
+            if (!GenTicks.IsTickIntervalDelta(GenTicks.TicksPerRealSecond, delta)) return;
+                base.CompTickInterval(delta);
+                drainStormLight();
+                if (parent is Pawn pawn && pawn.RaceProps.Humanlike) {
+                    handleRadiantStuff(pawn);
+                }
+                adjustMaximumStormlight();
+            handleGlow();
+        }
+
+
+        // This method adds additional text to the inspect pane.
+        public override string CompInspectStringExtra() {
+            if (isActivatedOnPawn == false && this.parent is Pawn _pawn) {
+                return "";
+            }
+            return "Stormlight: " + m_CurrentStormlight.ToString("F0") + " / " + CurrentMaxStormlight.ToString("F0") + "\ntime remaining: " + getTimeRemaining();
+        }
         public string getTimeRemaining() {
             
             float stormlightPerHour = (50.0f * this.GetDrainRate(this.drainFactor));
@@ -82,33 +114,7 @@ namespace CosmereRoshar {
             hoursLeft %= 24;
             return daysLeft.ToString() + "d " + hoursLeft.ToString() + "h";
         }
-
-        public override void CompTick() {
-            if (isActivatedOnPawn == false && this.parent is Pawn _pawn) {
-                return;
-            }
-
-            if (tick == 0) {
-                base.CompTick();
-                drainStormLight();
-                if (parent is Pawn pawn && pawn.RaceProps.Humanlike) {
-                    handleRadiantStuff(pawn);
-                }
-                adjustMaximumStormlight();
-            }
-            handleGlow();
-            tick = (tick + 1) % 50;
-        }
-
-
-        // This method adds additional text to the inspect pane.
-        public override string CompInspectStringExtra() {
-            if (isActivatedOnPawn == false && this.parent is Pawn _pawn) {
-                return "";
-            }
-            return "Stormlight: " + m_CurrentStormlight.ToString("F0") + " / " + CurrentMaxStormlight.ToString("F0") + "\ntime remaining: " + getTimeRemaining();
-        }
-
+        
         private void toggleGlow(bool on) {
             if (parent.Map != null) {
                 if (on && thisGlows == false) {
@@ -152,18 +158,6 @@ namespace CosmereRoshar {
         }
 
         private void radiantHeal(Pawn pawn) {
-
-            // HEDDIFS THAT ATTACK LUNGS
-            //if (pawn != null) {
-            //    var hediffs = pawn.health.hediffSet.hediffs;
-            //    for (int i = 0; i < hediffs.Count; i++) {
-            //        if (hediffs[i] != null && hediffs[i].Part.def.tags?.Contains(BodyPartTagDefOf.BreathingSource) == true && hediffs[i] is Hediff_Injury) {
-            //            pawn.health.RemoveHediff(hediffs[i]);
-            //            Log.Message("Removed lung hediff");
-            //        }
-            //    }
-            //}
-            //THE CODE ABOVE CAUSES ERRORS^^^^
 
             // HEAL MISSING PARTS
             var missingParts = pawn.health.hediffSet.hediffs.OfType<Hediff_MissingPart>().OrderByDescending(h => h.Severity).ToList();
@@ -254,7 +248,7 @@ namespace CosmereRoshar {
                         if (infuseStormlight(drawnLight)) return;
                     }
                 }
-                else if ((thing.def.defName.StartsWith("whtwl_Cut") || thing.def.defName.StartsWith("whtwl_Raw")) && !thing.Position.Roofed(thing.Map)) {
+                else if ((thing.def.defName.StartsWith("Cut") || thing.def.defName.StartsWith("Raw")) && !thing.Position.Roofed(thing.Map)) {
                     var stormlightComp = thing.TryGetComp<CompStormlight>();
                     if (stormlightComp != null) {
                         float drawnLight = stormlightComp.drawStormlight(absorbAmount);
@@ -312,12 +306,12 @@ namespace CosmereRoshar {
 
 
         public float GetDrainRate(float factor) {
-            return (Props.drainRate / StormlightContainerQuality) * factor;
+            return (Props.drainRate / qualityMultiplier) * factor;
         }
 
         public void drainStormLight() {
             if (m_CurrentStormlight > 0) {
-                m_CurrentStormlight -= (Props.drainRate / StormlightContainerQuality) * drainFactor;
+                m_CurrentStormlight -= GetDrainRate(drainFactor);
                 if (m_CurrentStormlight < 0)
                     m_CurrentStormlight = 0;
             }
@@ -350,12 +344,21 @@ namespace CosmereRoshar {
 }
 
 namespace CosmereRoshar {
-    public class CompProperties_Stormlight : CompProperties {
-        public float maxStormlight;
+    public class StormlightProperties : CompProperties {
+        public float maxInvestiture;
         public float drainRate;
 
-        public CompProperties_Stormlight() {
+        public StormlightProperties() {
             this.compClass = typeof(CompStormlight);
+        }
+        public override IEnumerable<string> ConfigErrors(ThingDef parentDef) {
+            foreach (string configError in base.ConfigErrors(parentDef)) {
+                yield return configError;
+            }
+
+            if (maxInvestiture <= 0) {
+                yield return "maxInvestiture must be greater than 0.";
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
     public override int mapSize => 100;
     public override TaggedString description => "Used to test True Desolation pawns";
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
+
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
     //public override ScenarioDef? scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
@@ -30,7 +31,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
 
         if (pawns.TryPopFront(out Pawn pawn)) {
             pawn.Name = new NameTriple("Dalinar", "Dalinar", "Kholin");
-            pawn.gender = Gender.Male; 
+            pawn.gender = Gender.Male;
         }
 
         if (pawns.TryPopFront(out pawn)) {

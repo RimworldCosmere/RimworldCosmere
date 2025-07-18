@@ -4,7 +4,7 @@
 // using UnityEngine;
 // using Verse;
 //
-// namespace CosmereRoshar.Comp.Thing;
+// namespace CosmereRoshar;
 //
 // public class StormlightProperties : CompProperties {
 //     public float drainRate = 0f;
@@ -50,3 +50,4 @@
 //         return "Stormlight: " + storedInvestiture.ToString("F0") + " / " + maxInvestiture.ToString("F0");
 //     }
 // }
+

@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using RimWorld;
-using Verse;
 using UnityEngine;
-using System.Reflection;
-using RimWorld.QuestGen;
-using System.Linq;
-using System;
+using Verse;
 
 namespace CosmereRoshar {
-
-
     public class Graphic_ShardBladeVariants : Graphic_Collection {
         public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo) {
-            return GraphicDatabase.Get<Graphic_ShardBladeVariants>(path, newShader, drawSize, newColor, newColorTwo, data);
+            return GraphicDatabase.Get<Graphic_ShardBladeVariants>(
+                path,
+                newShader,
+                drawSize,
+                newColor,
+                newColorTwo,
+                data
+            );
         }
 
         public override Material MatAt(Rot4 rot, Thing thing = null) {
@@ -25,7 +26,13 @@ namespace CosmereRoshar {
         }
 
 
-        public override void DrawWorker(Vector3 loc, Rot4 rot, ThingDef thingDef, Thing thing, float extraRotation) {
+        public override void DrawWorker(
+            Vector3 loc,
+            Rot4 rot,
+            ThingDef thingDef,
+            Thing thing,
+            float extraRotation
+        ) {
             int id = StormlightUtilities.GetGraphicId(thing);
             Graphic graphic = subGraphics[id];
             graphic.DrawWorker(loc, rot, thingDef, thing, extraRotation);
@@ -46,23 +53,24 @@ namespace CosmereRoshar {
     }
 
     public class CompShardblade : ThingComp {
-        public CompProperties_Shardblade Props => props as CompProperties_Shardblade;
-        public Pawn swordOwner = null;
         public int graphicId = -1;
-        private bool isSpawned = false;
+        private bool isSpawned;
+        public Pawn swordOwner;
+        public CompProperties_Shardblade Props => props as CompProperties_Shardblade;
 
 
         public override void Initialize(CompProperties props) {
             this.props = props;
             if (graphicId == -1) {
-                graphicId = (Props.bladesInExistence % 4) + 1;
+                graphicId = Props.bladesInExistence % 4 + 1;
                 Props.bladesInExistence++;
             }
         }
+
         public override void PostExposeData() {
             base.PostExposeData();
-            Scribe_References.Look(ref swordOwner, "swordOwner", saveDestroyedThings: false);
-            Scribe_Values.Look(ref isSpawned, "isSpawned", false);
+            Scribe_References.Look(ref swordOwner, "swordOwner");
+            Scribe_Values.Look(ref isSpawned, "isSpawned");
             Scribe_Values.Look(ref graphicId, "graphicId", -1);
         }
 
@@ -75,7 +83,8 @@ namespace CosmereRoshar {
                 pawn.abilities.GainAbility(CosmereRosharDefs.whtwl_SummonShardblade);
                 Trait trait = StormlightUtilities.GetRadiantTrait(pawn);
 
-                if (trait == null) { //radiants does not get this ability
+                if (trait == null) {
+                    //radiants does not get this ability
                     pawn.abilities.GainAbility(CosmereRosharDefs.whtwl_UnbondBlade);
                 }
             }
@@ -83,12 +92,17 @@ namespace CosmereRoshar {
 
         public void bondWithPawn(Pawn pawn, bool isBladeSpawned) {
             swordOwner = pawn;
-            ThingWithComps blade = this.parent as ThingWithComps;
-            CompAbilityEffect_SpawnEquipment abilityComp = pawn.GetAbilityComp<CompAbilityEffect_SpawnEquipment>(CosmereRosharDefs.whtwl_SummonShardblade.defName);
+            ThingWithComps blade = parent;
+            CompAbilityEffect_SpawnEquipment abilityComp =
+                pawn.GetAbilityComp<CompAbilityEffect_SpawnEquipment>(CosmereRosharDefs.whtwl_SummonShardblade.defName);
             handleSwordAbility(pawn, abilityComp);
             if (abilityComp == null) {
-                abilityComp = pawn.GetAbilityComp<CompAbilityEffect_SpawnEquipment>(CosmereRosharDefs.whtwl_SummonShardblade.defName);
+                abilityComp =
+                    pawn.GetAbilityComp<CompAbilityEffect_SpawnEquipment>(
+                        CosmereRosharDefs.whtwl_SummonShardblade.defName
+                    );
             }
+
             abilityComp.bladeObject = blade;
             isSpawned = isBladeSpawned;
         }
@@ -99,6 +113,7 @@ namespace CosmereRoshar {
                 Log.Error("[stormlight mod] Pawn has no traits system!");
                 return;
             }
+
             Trait trait = StormlightUtilities.GetRadiantTrait(pawn);
             if (trait != null) {
                 pawn.story.traits.allTraits.Remove(trait);
@@ -114,6 +129,7 @@ namespace CosmereRoshar {
                     pawn.AllComps.Remove(glowComp);
                 }
             }
+
             pawn.abilities.RemoveAbility(CosmereRosharDefs.whtwl_SummonShardblade);
             pawn.abilities.RemoveAbility(CosmereRosharDefs.whtwl_UnbondBlade);
         }
@@ -125,14 +141,20 @@ namespace CosmereRoshar {
                 swordOwner = null;
             }
         }
+
         public bool isBladeSpawned() {
             return isSpawned;
         }
+
         public void summon() {
-            if (swordOwner == null || isSpawned == true) {
+            if (swordOwner == null || isSpawned) {
                 return;
             }
-            CompAbilityEffect_SpawnEquipment abilityComp = swordOwner.GetAbilityComp<CompAbilityEffect_SpawnEquipment>(CosmereRosharDefs.whtwl_SummonShardblade.defName);
+
+            CompAbilityEffect_SpawnEquipment abilityComp =
+                swordOwner.GetAbilityComp<CompAbilityEffect_SpawnEquipment>(
+                    CosmereRosharDefs.whtwl_SummonShardblade.defName
+                );
             if (abilityComp != null && abilityComp.bladeObject != null) {
                 swordOwner.equipment.AddEquipment(abilityComp.bladeObject);
                 isSpawned = true;
@@ -141,19 +163,24 @@ namespace CosmereRoshar {
 
         public void dismissBlade(Pawn pawn) {
             ThingWithComps droppedWeapon;
-            bool success = pawn.equipment.TryDropEquipment(pawn.equipment.Primary, out droppedWeapon, pawn.Position, forbid: false);
+            bool success = pawn.equipment.TryDropEquipment(
+                pawn.equipment.Primary,
+                out droppedWeapon,
+                pawn.Position,
+                false
+            );
             isSpawned = false;
             //dismissal vs dropping is handled by harmony patch in ShardbladePatches.cs
         }
-
     }
 }
+
 namespace CosmereRoshar {
     public class CompProperties_Shardblade : CompProperties {
-        public int bladesInExistence = 0;
+        public int bladesInExistence;
+
         public CompProperties_Shardblade() {
-            this.compClass = typeof(CompShardblade);
+            compClass = typeof(CompShardblade);
         }
     }
 }
-

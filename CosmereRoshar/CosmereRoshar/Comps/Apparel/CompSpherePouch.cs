@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using RimWorld;
 using Verse;
-using UnityEngine;
-using System.Reflection;
 
 namespace CosmereRoshar {
     public class CompSpherePouch : ThingComp {
+        private readonly List<int> spheresToRemove = new List<int>(); //  spheres to remove
         public List<Thing> storedSpheres = new List<Thing>(); //  List of sphere stacks inside the pouch
-        private List<int> spheresToRemove = new List<int>();  //  spheres to remove
 
         public bool Empty => storedSpheres.Count == 0;
 
 
         public CompProperties_SpherePouch Props => (CompProperties_SpherePouch)props;
+
         public override void PostExposeData() {
             base.PostExposeData();
             Scribe_Collections.Look(ref storedSpheres, "storedSpheres", LookMode.Deep);
@@ -27,6 +26,7 @@ namespace CosmereRoshar {
                     total += comp.Stormlight;
                 }
             }
+
             return total;
         }
 
@@ -38,6 +38,7 @@ namespace CosmereRoshar {
                     total += comp.MaxStormlightPerItem;
                 }
             }
+
             return total;
         }
 
@@ -49,14 +50,18 @@ namespace CosmereRoshar {
             Thing sphere = null;
             int selectedIndex = 0;
             for (int i = 0; i < storedSpheres.Count; i++) {
-                if (sphere == null || (storedSpheres[i].TryGetComp<CompStormlight>().Stormlight > sphere.TryGetComp<CompStormlight>().Stormlight)) {
+                if (sphere == null ||
+                    storedSpheres[i].TryGetComp<CompStormlight>().Stormlight >
+                    sphere.TryGetComp<CompStormlight>().Stormlight) {
                     sphere = storedSpheres[i];
                     selectedIndex = i;
                 }
             }
+
             if (addToRemoveList && !spheresToRemove.Any(i => i == selectedIndex)) {
                 spheresToRemove.Add(selectedIndex);
             }
+
             return sphere;
         }
 
@@ -68,11 +73,15 @@ namespace CosmereRoshar {
                     storedSpheres.RemoveAt(i);
                 }
             }
+
             spheresToRemove.Clear();
         }
 
         public override string CompInspectStringExtra() {
-            return "Stormlight: " + GetTotalStoredStormlight().ToString("F0") + " / " + GetTotalMaximumStormlight().ToString("F0");
+            return "Stormlight: " +
+                   GetTotalStoredStormlight().ToString("F0") +
+                   " / " +
+                   GetTotalMaximumStormlight().ToString("F0");
         }
 
         public void InfuseStormlight(float amount) {
@@ -96,6 +105,7 @@ namespace CosmereRoshar {
                     if (absorbed >= amount) break; // Stop once fully absorbed
                 }
             }
+
             return absorbed;
         }
 
@@ -112,7 +122,6 @@ namespace CosmereRoshar {
                 IntVec3 dropPosition = pawn.Position; // Drop at the pawn's current position
                 GenPlace.TryPlaceThing(sphere, dropPosition, pawn.Map, ThingPlaceMode.Near);
             }
-
         }
 
         public bool RemoveSphereFromPouch(Thing sphere, Map map, IntVec3 dropPosition) {
@@ -120,6 +129,7 @@ namespace CosmereRoshar {
                 storedSpheres.Remove(sphere);
                 return GenPlace.TryPlaceThing(sphere, dropPosition, map, ThingPlaceMode.Near);
             }
+
             return false;
         }
 
@@ -129,13 +139,15 @@ namespace CosmereRoshar {
                 return false;
             }
 
-            if (storedSpheres.Count >= Props.maxCapacity) { // Adjust max capacity as needed
+            if (storedSpheres.Count >= Props.maxCapacity) {
+                // Adjust max capacity as needed
                 return false;
             }
 
             storedSpheres.Add(sphere);
             return true;
         }
+
         public static CompSpherePouch GetWornSpherePouch(Pawn pawn) {
             if (pawn.apparel == null) return null;
 
@@ -145,18 +157,19 @@ namespace CosmereRoshar {
                     return pouch; // Found a Sphere Pouch!
                 }
             }
+
             return null; // Pawn is not wearing a Sphere Pouch
         }
     }
 }
+
 namespace CosmereRoshar {
     public class CompProperties_SpherePouch : CompProperties {
-        public int maxCapacity;
         public List<ThingDef> allowedSpheres;
+        public int maxCapacity;
 
         public CompProperties_SpherePouch() {
-            this.compClass = typeof(CompSpherePouch);
+            compClass = typeof(CompSpherePouch);
         }
     }
 }
-

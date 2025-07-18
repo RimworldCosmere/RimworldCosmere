@@ -10,11 +10,11 @@ namespace CosmereRoshar;
 
 public static class StormlightUtilities {
     private static readonly List<ThingDef> gems = new List<ThingDef> {
-        CosmereRosharDefs.whtwl_RawDiamond,
-        CosmereRosharDefs.whtwl_RawGarnet,
-        CosmereRosharDefs.whtwl_RawRuby,
-        CosmereRosharDefs.whtwl_RawSapphire,
-        CosmereRosharDefs.whtwl_RawEmerald,
+        CosmereResources.ThingDefOf.RawDiamond,
+        CosmereResources.ThingDefOf.RawGarnet,
+        CosmereResources.ThingDefOf.RawRuby,
+        CosmereResources.ThingDefOf.RawSapphire,
+        CosmereResources.ThingDefOf.RawEmerald,
     };
 
     private static readonly Random rng = new Random();
@@ -193,13 +193,13 @@ public static class StormlightUtilities {
         return false;
     }
 
-        public static bool isThingCutGemstone(Thing thing) {
-            return thing.def == CosmereResources.ThingDefOf.CutRuby
-                || thing.def == CosmereResources.ThingDefOf.CutEmerald
-                || thing.def == CosmereResources.ThingDefOf.CutDiamond
-                || thing.def == CosmereResources.ThingDefOf.CutSapphire
-                || thing.def == CosmereResources.ThingDefOf.CutGarnet;
-        }
+    public static bool isThingCutGemstone(Thing thing) {
+        return thing.def == CosmereResources.ThingDefOf.CutRuby ||
+               thing.def == CosmereResources.ThingDefOf.CutEmerald ||
+               thing.def == CosmereResources.ThingDefOf.CutDiamond ||
+               thing.def == CosmereResources.ThingDefOf.CutSapphire ||
+               thing.def == CosmereResources.ThingDefOf.CutGarnet;
+    }
 
     public static Trait GetRadiantTrait(Pawn pawn) {
         return pawn.story.traits.allTraits.FirstOrDefault(t => CosmereRosharUtilities.RadiantTraits.Contains(t.def));

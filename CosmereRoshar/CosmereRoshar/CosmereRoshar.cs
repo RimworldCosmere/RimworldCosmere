@@ -1,7 +1,8 @@
 ﻿#nullable disable
 using CosmereFramework;
-using Verse;
 using CosmereRoshar.Settings;
+using Verse;
+
 namespace CosmereRoshar;
 
 public class CosmereRoshar(ModContentPack content) : Mod(content) {

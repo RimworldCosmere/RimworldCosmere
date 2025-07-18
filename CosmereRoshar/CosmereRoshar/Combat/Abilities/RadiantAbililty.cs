@@ -239,9 +239,7 @@ public class Command_RadiantAbility : Command {
                 return;
             }
 
-            if (abilityDivisionSurge()) {
-                return;
-            }
+            if (abilityDivisionSurge()) { }
         }
     }
 

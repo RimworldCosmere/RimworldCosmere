@@ -1,36 +1,44 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using CosmereRoshar.Comp.Thing;
+using RimWorld;
 using Verse;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using System.Reflection.Emit;
-using System.Security.Cryptography;
-using Verse.AI;
 
 namespace CosmereRoshar {
-    public enum GemSize { None, Chip, Mark, Broam };
+    public enum GemSize {
+        None,
+        Chip,
+        Mark,
+        Broam,
+    }
+
     public class CompGemSphere : ThingComp {
-        public CompProperties_GemSphere GemstoneProps => (CompProperties_GemSphere)props;
-        public StormlightProperties StormlightProps => (StormlightProperties)props;
-        private CompStormlight stormlightComp;
         private int gemstoneQuality;
         private int gemstoneSize;
         public bool inheritGemstone = false;
         public int inheritGemstoneQuality = 1;
         public int inheritGemstoneSize = 1;
+        private CompStormlight stormlightComp;
+        public CompProperties_GemSphere GemstoneProps => (CompProperties_GemSphere)props;
+        public StormlightProperties StormlightProps => (StormlightProperties)props;
         public string GetFullLabel => TransformLabel(parent.Label);
+
         public override void Initialize(CompProperties props) {
             base.Initialize(props);
 
             stormlightComp = parent.GetComp<CompStormlight>();
             if (inheritGemstone == false) {
-                List<int> sizeList = new List<int>() { 1, 5, 20 };
-                List<int> qualityList = new List<int>() { 1, 2, 3, 4, 5 };
+                List<int> sizeList = new List<int> { 1, 5, 20 };
+                List<int> qualityList = new List<int> { 1, 2, 3, 4, 5 };
 
-                gemstoneQuality = StormlightUtilities.RollForRandomIntFromList(qualityList);   //make better roller later with lower prob for bigger size
-                gemstoneSize = StormlightUtilities.RollForRandomIntFromList(sizeList);         //make better roller later with lower prob for bigger size
-            }
-            else {
+                gemstoneQuality =
+                    StormlightUtilities
+                        .RollForRandomIntFromList(
+                            qualityList
+                        ); //make better roller later with lower prob for bigger size
+                gemstoneSize =
+                    StormlightUtilities
+                        .RollForRandomIntFromList(sizeList); //make better roller later with lower prob for bigger size
+            } else {
                 gemstoneQuality = inheritGemstoneQuality;
                 gemstoneSize = inheritGemstoneSize;
             }
@@ -61,10 +69,11 @@ namespace CosmereRoshar {
         public override bool AllowStackWith(Thing other) {
             CompGemSphere comp = other.TryGetComp<CompGemSphere>();
             if (comp != null) {
-                if (comp.gemstoneQuality != this.gemstoneQuality || comp.gemstoneSize != this.gemstoneSize) {
+                if (comp.gemstoneQuality != gemstoneQuality || comp.gemstoneSize != gemstoneSize) {
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -81,9 +90,8 @@ namespace CosmereRoshar {
                 case 20:
                     sizeLabel = " broam";
                     break;
-                default:
-                    break;
             }
+
             switch (gemstoneQuality) {
                 case 1:
                     qualityLabel = "flawed ";
@@ -100,10 +108,8 @@ namespace CosmereRoshar {
                 case 5:
                     qualityLabel = "perfect ";
                     break;
-
-                default:
-                    break;
             }
+
             return qualityLabel + label + sizeLabel;
         }
 
@@ -120,15 +126,12 @@ namespace CosmereRoshar {
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra() {
             if (CosmereRoshar.DevOptionAutofillSpheres && stormlightComp != null) {
-
                 yield return new Command_Action {
                     defaultLabel = "Fill sphere with 10 stormlight",
                     defaultDesc = "Debug/Dev feature.",
                     //icon = ContentFinder<Texture2D>.Get("UI/Icons/SomeIcon"), 
                     icon = TexCommand.DesirePower,
-                    action = () => {
-                        stormlightComp.infuseStormlight(10f);
-                    }
+                    action = () => { stormlightComp.infuseStormlight(10f); },
                 };
 
                 yield return new Command_Action {
@@ -136,9 +139,7 @@ namespace CosmereRoshar {
                     defaultDesc = "Debug/Dev feature.",
                     //icon = ContentFinder<Texture2D>.Get("UI/Icons/SomeIcon"), 
                     icon = TexCommand.DesirePower,
-                    action = () => {
-                        stormlightComp.infuseStormlight(100f);
-                    }
+                    action = () => { stormlightComp.infuseStormlight(100f); },
                 };
 
                 yield return new Command_Action {
@@ -146,11 +147,10 @@ namespace CosmereRoshar {
                     defaultDesc = "Debug/Dev feature.",
                     //icon = ContentFinder<Texture2D>.Get("UI/Icons/SomeIcon"), 
                     icon = TexCommand.DesirePower,
-                    action = () => {
-                        stormlightComp.infuseStormlight(stormlightComp.CurrentMaxStormlight);
-                    }
+                    action = () => { stormlightComp.infuseStormlight(stormlightComp.CurrentMaxStormlight); },
                 };
             }
+
             yield break;
         }
     }
@@ -159,7 +159,7 @@ namespace CosmereRoshar {
 namespace CosmereRoshar {
     public class CompProperties_GemSphere : CompProperties {
         public CompProperties_GemSphere() {
-            this.compClass = typeof(CompGemSphere);
+            compClass = typeof(CompGemSphere);
         }
     }
 }

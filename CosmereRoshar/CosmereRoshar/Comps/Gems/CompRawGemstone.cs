@@ -1,22 +1,21 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using CosmereRoshar.Comp.Thing;
 using Verse;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using System.Security.Cryptography;
 
 namespace CosmereRoshar {
     public class CompRawGemstone : ThingComp {
+        public int gemstoneSize;
+        private CompStormlight stormlightComp;
         public CompProperties_RawGemstone GemstoneProps => (CompProperties_RawGemstone)props;
         public StormlightProperties StormlightProps => (StormlightProperties)props;
-        private CompStormlight stormlightComp;
-        public int gemstoneSize;
 
         public override void Initialize(CompProperties props) {
             base.Initialize(props);
             stormlightComp = parent.GetComp<CompStormlight>();
-            List<int> sizeList = new List<int>() { 1, 5, 20 };
-            gemstoneSize = StormlightUtilities.RollForRandomIntFromList(sizeList);   //make better roller later with lower prob for bigger size
+            List<int> sizeList = new List<int> { 1, 5, 20 };
+            gemstoneSize =
+                StormlightUtilities
+                    .RollForRandomIntFromList(sizeList); //make better roller later with lower prob for bigger size
 
             if (stormlightComp != null) {
                 stormlightComp.StormlightContainerSize = gemstoneSize;
@@ -31,10 +30,11 @@ namespace CosmereRoshar {
         public override bool AllowStackWith(Thing other) {
             CompRawGemstone comp = other.TryGetComp<CompRawGemstone>();
             if (comp != null) {
-                if (comp.gemstoneSize != this.gemstoneSize) {
+                if (comp.gemstoneSize != gemstoneSize) {
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -60,8 +60,9 @@ namespace CosmereRoshar {
 namespace CosmereRoshar {
     public class CompProperties_RawGemstone : CompProperties {
         public int spawnChance;
+
         public CompProperties_RawGemstone() {
-            this.compClass = typeof(CompRawGemstone);
+            compClass = typeof(CompRawGemstone);
         }
     }
 }

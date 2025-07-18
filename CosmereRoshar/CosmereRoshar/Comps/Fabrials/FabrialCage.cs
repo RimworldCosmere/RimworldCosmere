@@ -1,11 +1,4 @@
-﻿using RimWorld;
-using Verse;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using HarmonyLib;
-using UnityEngine;
-using Verse.AI;
+﻿using Verse;
 
 namespace CosmereRoshar {
     public class CompFabrialCage : ThingComp {
@@ -19,13 +12,13 @@ namespace CosmereRoshar {
         public override void PostExposeData() {
             base.PostExposeData();
         }
-
     }
 }
+
 namespace CosmereRoshar {
     public class CompProperties_FabrialCage : CompProperties {
         public CompProperties_FabrialCage() {
-            this.compClass = typeof(CompFabrialCage); 
+            compClass = typeof(CompFabrialCage);
         }
     }
 }

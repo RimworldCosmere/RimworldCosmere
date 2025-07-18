@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "tsx ./index.ts",
+    "start": "npx tsx ./index.ts",
     "lint": "eslint \"**/*.ts\"",
     "typecheck": "tsc --noEmit"
   },

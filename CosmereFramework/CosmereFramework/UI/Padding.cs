@@ -6,6 +6,10 @@ using Vector4 = System.Numerics.Vector4;
 namespace CosmereFramework.UI;
 
 public struct Padding {
+    public static readonly Padding Zero = new Padding(0);
+    public static readonly Padding One = new Padding(1);
+    public static readonly Padding Four = new Padding(4);
+
     public float top { get; set; }
     public float right { get; set; }
     public float bottom { get; set; }

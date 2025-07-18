@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using CosmereFramework.Listing;
 using CosmereFramework.Settings;
 using CosmereFramework.UI;
-using LudeonTK;
 using UnityEngine;
 using Verse;
 
@@ -15,7 +15,7 @@ public class SettingsWindow {
 
     private readonly List<CosmereModSettings> allModSettings;
 
-    private readonly Listing_Standard mainListing = new Listing_Standard { verticalSpacing = 6f };
+    private readonly ListingForm listing = new ListingForm { verticalSpacing = 6f };
 
     private CosmereModSettings selectedTab;
 
@@ -56,8 +56,6 @@ public class SettingsWindow {
             Texture2D.grayTexture
         );
 
-        mainListing.Begin(listingRect);
-        selectedTab.DoTabContents(listingRect, mainListing);
-        mainListing.End();
+        listing.Contain(listingRect, selectedTab.DoTabContents);
     }
 }

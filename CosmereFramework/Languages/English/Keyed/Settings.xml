@@ -1,12 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
     <CF_Settings_Category_Debug>Debug Settings</CF_Settings_Category_Debug>
-    <CF_Settings_LogLevel>Log Level: </CF_Settings_LogLevel>
-    <CF_Settings_DebugMode>Debug Mode: </CF_Settings_DebugMode>
+    <CF_Settings_LogLevel_Label>Log Level: </CF_Settings_LogLevel_Label>
+    <CF_Settings_LogLevel_Tooltip>Determines what gets logged. Should probably be Info</CF_Settings_LogLevel_Tooltip>
+    
+    <CF_Settings_DebugMode_Label>Debug Mode: </CF_Settings_DebugMode_Label>
     <CF_Settings_DebugMode_Tooltip>Provides extra debugging features: </CF_Settings_DebugMode_Tooltip>
-    <CF_Settings_Quickstarter>Quickstarter: </CF_Settings_Quickstarter>
+    
+    <CF_Settings_Quickstarter_Label>Quickstarter: </CF_Settings_Quickstarter_Label>
+    <CF_Settings_Quickstarter_Label>When in dev mode, will immediately launch into the given Quickstarter. Very useful for testing.</CF_Settings_Quickstarter_Label>
     <CF_Settings_Quickstarter_Placeholder>Select a Quickstarter </CF_Settings_Quickstarter_Placeholder>
     <CF_Settings_Quickstarter_FailedToFind>Failed to find Quickstarter</CF_Settings_Quickstarter_FailedToFind>
+    
     <CF_Quickstart_Name>Quickstart: </CF_Quickstart_Name>
     <CF_Quickstart_MapSize>Map Size: </CF_Quickstart_MapSize>
     <CF_Quickstart_Difficulty>Difficulty: </CF_Quickstart_Difficulty>

@@ -20,7 +20,7 @@
         <building>
             <isResourceRock>true</isResourceRock>
             <veinMineable>true</veinMineable>
-            <mineableThing>{{capitalize gem.name}}</mineableThing>
+            <mineableThing>Raw{{defName gem.name}}</mineableThing>
             <mineableYield>{{gem.mining.yield}}</mineableYield>
             <mineableScatterCommonality>{{gem.mining.commonality}}</mineableScatterCommonality>
             <mineableScatterLumpSizeRange>{{range gem.mining.sizeRange}}</mineableScatterLumpSizeRange>

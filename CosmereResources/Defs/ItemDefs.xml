@@ -39,8 +39,8 @@
             <drawSize>1</drawSize>
         </graphicData>
         
-        <soundInteract>Gem_Drop</soundInteract>
-        <soundDrop>Gem_Drop</soundDrop>
+        <soundInteract>Metal_Drop</soundInteract>
+        <soundDrop>Metal_Drop</soundDrop>
         <stuffProps>
             <isAirtight>false</isAirtight>
             <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
@@ -55,5 +55,7 @@
             <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
             <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
         </stuffProps>
+        <!--<soundInteract>Gem_Drop</soundInteract>
+        <soundDrop>Gem_Drop</soundDrop>-->
     </ThingDef>
 </Defs>

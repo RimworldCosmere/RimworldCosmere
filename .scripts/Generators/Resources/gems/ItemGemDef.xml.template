@@ -15,10 +15,11 @@
             <graphicClass>Graphic_Single</graphicClass>
             {{/unless}}
             <drawSize>{{gem.drawSize}}</drawSize>
-            <texPath>Item/Resource/Raw{{defName gem.name}}</texPath>
+            <texPath>Item/Resource/{{defName gem.name}}/Raw{{defName gem.name}}</texPath>
         </graphicData>
 
         <statBases>
+            <Mass>0.0006</Mass>
             <Beauty>{{gem.baseBeauty}}</Beauty>
             <MarketValue>{{gem.baseMarketValue}}</MarketValue>
         </statBases>
@@ -29,11 +30,11 @@
             </li>
         </modExtensions>
         <comps>
-            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+            <li MayRequire="CryptikLemur.Cosmere.Roshar" Class="CosmereRoshar.Comp.Thing.StormlightProperties">
                 <maxInvestiture>{{gem.baseStormlight}}</maxInvestiture>
                 <drainRate>0.5</drainRate>
             </li>
-            <li Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>
+            <li MayRequire="CryptikLemur.Cosmere.Roshar" Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>
         </comps>
     </ThingDef>
 
@@ -52,7 +53,7 @@
             <graphicClass>Graphic_Single</graphicClass>
             {{/unless}}
             <drawSize>{{gem.drawSize}}</drawSize>
-            <texPath>Item/Resource/Cut{{defName gem.name}}</texPath>
+            <texPath>Item/Resource/{{defName gem.name}}/Cut{{defName gem.name}}</texPath>
         </graphicData>
 
         <costList>
@@ -81,6 +82,7 @@
         </recipeMaker>
 
         <statBases>
+            <Mass>0.0004</Mass>
             <Beauty>{{multiply gem.baseBeauty 4}}</Beauty>
             <MarketValue>{{multiply gem.baseMarketValue 4}}</MarketValue>
         </statBases>
@@ -91,11 +93,11 @@
             </li>
         </modExtensions>
         <comps>
-            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+            <li MayRequire="CryptikLemur.Cosmere.Roshar" Class="CosmereRoshar.Comp.Thing.StormlightProperties">
                 <maxInvestiture>{{multiply gem.baseStormlight 4}}</maxInvestiture>
                 <drainRate>0.25</drainRate>
             </li>
-            <li Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>
+            <li MayRequire="CryptikLemur.Cosmere.Roshar" Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>
             <li>
                 <compClass>CompQuality</compClass>
             </li>

@@ -1,19 +1,21 @@
-﻿using RimWorld;
+﻿using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Need;
+using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities.Implementations;
 
 /// Surge regrowth plants
-public class CompProperties_AbilitySurgePlantGrowth : CompProperties_AbilityEffect {
+public class CompPropertiesAbilitySurgePlantGrowth : CompProperties_AbilityEffect {
     public float stormLightCost;
 
-    public CompProperties_AbilitySurgePlantGrowth() {
-        compClass = typeof(CompAbilityEffect_SurgePlantGrowth);
+    public CompPropertiesAbilitySurgePlantGrowth() {
+        compClass = typeof(CompAbilityEffectSurgePlantGrowth);
     }
 }
 
-public class CompAbilityEffect_SurgePlantGrowth : CompAbilityEffect {
-    public new CompProperties_AbilitySurgePlantGrowth Props => props as CompProperties_AbilitySurgePlantGrowth;
+public class CompAbilityEffectSurgePlantGrowth : CompAbilityEffect {
+    public new CompPropertiesAbilitySurgePlantGrowth props => ((AbilityComp)this).props as CompPropertiesAbilitySurgePlantGrowth;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         if (!target.IsValid || target.Thing == null || !target.Thing.Spawned) {
@@ -26,32 +28,26 @@ public class CompAbilityEffect_SurgePlantGrowth : CompAbilityEffect {
             return;
         }
 
-        if (caster.GetComp<CompStormlight>() == null) {
+        if (caster.GetComp<Stormlight>() == null) {
             Log.Message("[plant growth] null!");
             return;
         }
 
-        growthFunction(target.Thing);
+        GrowthFunction(target.Thing);
     }
 
 
-    private void growthFunction(Thing targetThing) {
-        Map map = targetThing.Map;
-        IntVec3 cell = targetThing.Position;
-
-        Plant targetPlant = targetThing as Plant;
+    private void GrowthFunction(Thing targetThing) {
+        Plant? targetPlant = targetThing as Plant;
         if (targetPlant == null) {
             return;
         }
 
         Pawn caster = parent.pawn;
-        if (caster != null) {
-            CompStormlight casterComp = caster.GetComp<CompStormlight>();
-            if (casterComp != null && casterComp.Stormlight >= Props.stormLightCost) {
-                targetPlant.Growth = 1;
-                RadiantUtility.GiveRadiantXP(caster, 50f);
-                casterComp.drawStormlight(Props.stormLightCost);
-            }
-        }
+        Stormlight? stormlight = caster?.TryGetComp<Stormlight>();
+        if (stormlight == null || !(stormlight.currentStormlight >= props.stormLightCost)) return;
+        targetPlant.Growth = 1;
+        RadiantUtility.GiveRadiantXp(caster, 50f);
+        stormlight.DrawStormlight(props.stormLightCost);
     }
 }

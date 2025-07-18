@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Comps.Apparel;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.ITabs;
 
-public class ITab_SpherePouch : ITab {
+public class TabSpherePouch : ITab {
     private static readonly Vector2 WinSize = new Vector2(300f, 480f);
     private Vector2 scrollPosition = Vector2.zero;
 
-    public ITab_SpherePouch() {
+    public TabSpherePouch() {
         size = WinSize;
         labelKey = "whtwl_TabSpherePouch"; // Localization key
     }
@@ -18,26 +20,26 @@ public class ITab_SpherePouch : ITab {
 
     public override bool IsVisible {
         get {
-            if (SelPawn == null) return false;
+            if (selPawn == null) return false;
 
             // Check if the pawn has a Sphere Pouch equipped 
-            return SelPawn.apparel?.WornApparel?.Any(a => a.TryGetComp<CompSpherePouch>() != null) ?? false;
+            return selPawn.apparel?.WornApparel?.Any(a => a.TryGetComp<CompSpherePouch>() != null) ?? false;
         }
     }
 
-    private Pawn SelPawn => SelThing as Pawn;
+    private Pawn selPawn => SelThing as Pawn;
 
-    private CompSpherePouch PouchSpheres {
+    private CompSpherePouch pouchSpheres {
         get {
-            return SelPawn.apparel?.WornApparel.Select(a => a.GetComp<CompSpherePouch>())
+            return selPawn.apparel?.WornApparel.Select(a => a.GetComp<CompSpherePouch>())
                 .FirstOrDefault(comp => comp != null);
         }
     }
 
     protected override void FillTab() {
-        if (PouchSpheres == null) return;
+        if (pouchSpheres == null) return;
 
-        List<Thing> pouchContents = PouchSpheres.storedSpheres;
+        List<Thing> pouchContents = pouchSpheres.storedSpheres;
 
         Rect rect = new Rect(0f, 0f, WinSize.x, WinSize.y).ContractedBy(10f);
         Widgets.BeginGroup(rect);
@@ -58,14 +60,14 @@ public class ITab_SpherePouch : ITab {
 
             if (Widgets.ButtonImage(buttonRect, TexCommand.RemoveRoutePlannerWaypoint)) {
                 //change icon later to something better
-                PouchSpheres.RemoveSphereFromPouch(i, SelPawn);
+                pouchSpheres.RemoveSphereFromPouch(i, selPawn);
                 break;
             }
 
             if (Mouse.IsOver(rowRect)) {
-                CompStormlight comp = item.TryGetComp<CompStormlight>();
+                Stormlight comp = item.TryGetComp<Stormlight>();
                 if (comp != null) {
-                    string tooltip = $"Stormlight: {comp.Stormlight} / {comp.CurrentMaxStormlight}";
+                    string tooltip = $"Stormlight: {comp.currentStormlight} / {comp.currentMaxStormlight}";
                     Rect tooltipRect = new Rect(0f, 0f, 150f, 30f);
                     Widgets.Label(
                         new Rect(
@@ -88,14 +90,14 @@ public class ITab_SpherePouch : ITab {
         Rect addButtonRect = new Rect(0f, rect.height - 35f, rect.width, 30f);
         if (Widgets.ButtonText(addButtonRect, "Add Sphere")) {
             ThingDef matchingSphereDef =
-                PouchSpheres.Props.allowedSpheres.FirstOrDefault(def => SelPawn.Map.listerThings.ThingsOfDef(def).Any()
+                pouchSpheres.props.allowedSpheres.FirstOrDefault(def => selPawn.Map.listerThings.ThingsOfDef(def).Any()
                 );
             Thing sphere = GenClosest.ClosestThing_Global(
-                SelPawn.Position,
-                SelPawn.Map.listerThings.ThingsOfDef(matchingSphereDef),
+                selPawn.Position,
+                selPawn.Map.listerThings.ThingsOfDef(matchingSphereDef),
                 50f
             );
-            if (sphere != null && PouchSpheres.AddSphereToPouch(sphere as ThingWithComps)) {
+            if (sphere != null && pouchSpheres.AddSphereToPouch(sphere as ThingWithComps)) {
                 sphere.DeSpawn();
             }
         }

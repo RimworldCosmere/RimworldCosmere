@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CosmereRoshar.Comp;
+using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Comps.Gems;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Comps.Fabrials;
 
 public interface IGemstoneHandler {
     void RemoveGemstone();
     void AddGemstone(ThingWithComps gemstone);
 }
 
-public class Building_Heatrial_Advanced : Building {
+public class BuildingHeatrialAdvanced : Building {
     public CompFlickable compFlickerable;
     public CompGlower compGlower;
     public CompHeatrial compHeatrial;
@@ -26,8 +29,8 @@ public class Building_Heatrial_Advanced : Building {
     }
 
     public override void TickRare() {
-        compHeatrial.checkPower(compFlickerable.SwitchIsOn);
-        if (compHeatrial.PowerOn) {
+        compHeatrial.CheckPower(compFlickerable.SwitchIsOn);
+        if (compHeatrial.powerOn) {
             float ambientTemperature = AmbientTemperature;
             float num = ambientTemperature < 20f ? 1f :
                 !(ambientTemperature > 120f) ? Mathf.InverseLerp(120f, 20f, ambientTemperature) : 0f;
@@ -38,11 +41,11 @@ public class Building_Heatrial_Advanced : Building {
             }
         }
 
-        toggleGlow(compHeatrial.PowerOn);
-        compHeatrial.usePower();
+        ToggleGlow(compHeatrial.powerOn);
+        compHeatrial.UsePower();
     }
 
-    private void toggleGlow(bool on) {
+    private void ToggleGlow(bool on) {
         if (Map != null) {
             if (on) {
                 Map.glowGrid.RegisterGlower(compGlower);
@@ -55,9 +58,9 @@ public class Building_Heatrial_Advanced : Building {
 
 public class CompHeatrial : ThingComp, IGemstoneHandler {
     public Thing insertedGemstone;
-    public bool PowerOn;
-    public CompProperties_Heatrial Props => (CompProperties_Heatrial)props;
-    public CompGlower GlowerComp => parent.GetComp<CompGlower>();
+    public bool powerOn;
+    public CompPropertiesHeatrial props => (CompPropertiesHeatrial)base.props;
+    public CompGlower glowerComp => parent.GetComp<CompGlower>();
 
     public void AddGemstone(ThingWithComps gemstone) {
         CompCutGemstone? gemstoneComp = gemstone.GetComp<CompCutGemstone>();
@@ -83,22 +86,22 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
         base.PostExposeData();
     }
 
-    public void checkPower(bool flickeredOn) {
+    public void CheckPower(bool flickeredOn) {
         if (insertedGemstone != null) {
-            CompStormlight? stormlightComp = (insertedGemstone as ThingWithComps).GetComp<CompStormlight>();
+            Stormlight? stormlightComp = (insertedGemstone as ThingWithComps).GetComp<Stormlight>();
             if (stormlightComp != null) {
-                PowerOn = stormlightComp.HasStormlight && flickeredOn;
+                powerOn = stormlightComp.hasStormlight && flickeredOn;
                 return;
             }
         }
 
-        PowerOn = false;
+        powerOn = false;
     }
 
-    public void usePower() {
-        if (PowerOn &&
+    public void UsePower() {
+        if (powerOn &&
             insertedGemstone != null &&
-            insertedGemstone.TryGetComp<CompStormlight>() is CompStormlight stormlightComp) {
+            insertedGemstone.TryGetComp<Stormlight>() is Stormlight stormlightComp) {
             //stormlightComp.drainStormLight(7f);
         }
     }
@@ -108,9 +111,9 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
 
         if (insertedGemstone != null) {
             ThingWithComps gemstone = insertedGemstone as ThingWithComps;
-            gemName = gemstone.GetComp<CompCutGemstone>().GetFullLabel +
+            gemName = gemstone.GetComp<CompCutGemstone>().getFullLabel +
                       "(" +
-                      gemstone.GetComp<CompStormlight>().Stormlight.ToString("F0") +
+                      gemstone.GetComp<Stormlight>().currentStormlight.ToString("F0") +
                       ")";
         }
 
@@ -128,7 +131,7 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
         string replaceGemText = "No suitable gem available";
         if (cutGemstone != null) {
             replaceGemAction = () => {
-                Job job = JobMaker.MakeJob(CosmereRosharDefs.whtwl_RefuelFabrial, parent, cutGemstone);
+                Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -140,8 +143,8 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
     }
 }
 
-public class CompProperties_Heatrial : CompProperties {
-    public CompProperties_Heatrial() {
+public class CompPropertiesHeatrial : CompProperties {
+    public CompPropertiesHeatrial() {
         compClass = typeof(CompHeatrial);
     }
 }

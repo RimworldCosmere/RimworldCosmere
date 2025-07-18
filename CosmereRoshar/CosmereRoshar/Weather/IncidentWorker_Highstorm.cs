@@ -1,9 +1,9 @@
 ﻿using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Weather;
 
-public class IncidentWorker_Highstorm : IncidentWorker {
+public class IncidentWorkerHighstorm : IncidentWorker {
     protected override bool TryExecuteWorker(IncidentParms parms) {
         Map map = parms.target as Map ?? Find.AnyPlayerHomeMap;
         if (map == null) {

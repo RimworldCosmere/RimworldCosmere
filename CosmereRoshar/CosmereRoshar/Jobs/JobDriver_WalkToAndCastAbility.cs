@@ -7,19 +7,19 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Jobs;
 
-public class Job_CastAbilityOnTarget : Job {
+public class JobCastAbilityOnTarget : Job {
     public Ability abilityToCast;
 
-    public Job_CastAbilityOnTarget() { }
+    public JobCastAbilityOnTarget() { }
 
-    public Job_CastAbilityOnTarget(JobDef def, LocalTargetInfo targetA, Ability ability) : base(def, targetA) {
+    public JobCastAbilityOnTarget(JobDef def, LocalTargetInfo targetA, Ability ability) : base(def, targetA) {
         abilityToCast = ability;
     }
 }
 
-public class Toils_Cast_Ability {
+public class ToilsCastAbility {
     public static Toil FollowAndCastAbility(TargetIndex targetInd, TargetIndex standPositionInd, Action hitAction) {
         Toil followAndAttack = ToilMaker.MakeToil();
         followAndAttack.tickAction = delegate {
@@ -56,7 +56,7 @@ public class Toils_Cast_Ability {
     }
 }
 
-public class JobDriver_CastAbilityOnTarget : JobDriver {
+public class JobDriverCastAbilityOnTarget : JobDriver {
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         if (job.targetA.Thing is IAttackTarget target) {
             pawn.Map.attackTargetReservationManager.Reserve(pawn, job, target);
@@ -92,7 +92,7 @@ public class JobDriver_CastAbilityOnTarget : JobDriver {
         );
 
         yield return Toils_Misc.ThrowColonistAttackingMote(TargetIndex.A);
-        yield return Toils_Cast_Ability.FollowAndCastAbility(
+        yield return ToilsCastAbility.FollowAndCastAbility(
                 TargetIndex.A,
                 TargetIndex.B,
                 delegate {
@@ -100,7 +100,7 @@ public class JobDriver_CastAbilityOnTarget : JobDriver {
                     if (job.reactingToMeleeThreat && thing is Pawn p && !p.Awake()) {
                         EndJobWith(JobCondition.InterruptForced);
                     } else if (pawn.CurJob != null && pawn.jobs.curDriver == this) {
-                        if (job is Job_CastAbilityOnTarget abilityJob &&
+                        if (job is JobCastAbilityOnTarget abilityJob &&
                             abilityJob.abilityToCast != null &&
                             abilityJob.abilityToCast.CanCast) {
                             abilityJob.abilityToCast.Activate(TargetThingA, TargetThingA);

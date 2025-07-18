@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using CosmereRoshar.Comps.Apparel;
+using CosmereRoshar.Comps.Furniture;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Jobs;
 
-public class Toils_Resphere_Lamp {
+public class ToilsResphereLamp {
     //public static Toil SwapInNewSpheres(Pawn pawn, Thing lamp, Thing sphere) {
     //    Toil toil = ToilMaker.MakeToil("SwapInNewSpheres");
     //    toil.initAction = delegate {
@@ -89,33 +91,33 @@ public class Toils_Resphere_Lamp {
     }
 }
 
-public class JobDriver_AddSphereToLamp : JobDriver_Refuel {
+public class JobDriverAddSphereToLamp : JobDriver_Refuel {
     private const TargetIndex LampIndex = TargetIndex.A;
     private const TargetIndex SphereIndex = TargetIndex.B;
 
     public const int RespheringDuration = 240;
 
-    protected StormlightLamps LampComp => Lamp.TryGetComp<StormlightLamps>();
+    protected StormlightLamps lampComp => lamp.TryGetComp<StormlightLamps>();
 
-    protected Thing Lamp => job.GetTarget(LampIndex).Thing;
-    protected Thing Sphere => job.GetTarget(SphereIndex).Thing;
+    protected Thing lamp => job.GetTarget(LampIndex).Thing;
+    protected Thing sphere => job.GetTarget(SphereIndex).Thing;
 
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        return pawn.Reserve(Lamp, job, 1, -1, null, errorOnFailed) &&
-               pawn.Reserve(Sphere, job, 1, -1, null, errorOnFailed);
+        return pawn.Reserve(lamp, job, 1, -1, null, errorOnFailed) &&
+               pawn.Reserve(sphere, job, 1, -1, null, errorOnFailed);
     }
 
     protected override IEnumerable<Toil> MakeNewToils() {
         this.FailOnDespawnedNullOrForbidden(LampIndex);
 
-        AddFailCondition(() => Sphere == null);
-        AddFailCondition(() => Lamp == null);
+        AddFailCondition(() => sphere == null);
+        AddFailCondition(() => lamp == null);
 
-        yield return Toils_General.DoAtomic(delegate { job.count = LampComp.GetNumberOfSpheresToReplace(); });
+        yield return Toils_General.DoAtomic(delegate { job.count = lampComp.GetNumberOfSpheresToReplace(); });
 
         if (IsSphereInPouch()) {
-            yield return Toils_Resphere_Lamp.DropSphereFromPouch(GetSpherePouch(), SphereIndex);
+            yield return ToilsResphereLamp.DropSphereFromPouch(GetSpherePouch(), SphereIndex);
         }
 
         yield return Toils_Goto.GotoThing(SphereIndex, PathEndMode.ClosestTouch)
@@ -129,12 +131,12 @@ public class JobDriver_AddSphereToLamp : JobDriver_Refuel {
             .FailOnDestroyedNullOrForbidden(LampIndex)
             .FailOnCannotTouch(LampIndex, PathEndMode.Touch)
             .WithProgressBarToilDelay(LampIndex);
-        yield return Toils_Resphere_Lamp.SwapInNewSpheres(SphereIndex, LampIndex); //custom toil
+        yield return ToilsResphereLamp.SwapInNewSpheres(SphereIndex, LampIndex); //custom toil
     }
 
     private bool IsSphereInPouch() {
         CompSpherePouch spherePouch = CompSpherePouch.GetWornSpherePouch(pawn);
-        if (spherePouch != null && spherePouch.PouchContainsSpecificSphere(Sphere)) {
+        if (spherePouch != null && spherePouch.PouchContainsSpecificSphere(sphere)) {
             return true;
         }
 

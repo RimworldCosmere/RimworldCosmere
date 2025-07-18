@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Comps.Gems;
+using CosmereRoshar.ITabs;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Comps.Fabrials;
 
-public class Building_SprenTrapper : Building {
+public class BuildingSprenTrapper : Building {
     public CompGlower compGlower;
     public CompSprenTrapper compTrapper;
     public Dictionary<string, List<Spren>> gemstonePossibleSprenDict = new Dictionary<string, List<Spren>>();
@@ -29,38 +31,37 @@ public class Building_SprenTrapper : Building {
         compGlower = GetComp<CompGlower>();
         gemstonePossibleSprenDict.Add(
             CosmereResources.ThingDefOf.CutDiamond.defName,
-            new List<Spren> { Spren.Logic, Spren.Light, Spren.Exhaustion }
+            [Spren.Logic, Spren.Light, Spren.Exhaustion]
         );
         gemstonePossibleSprenDict.Add(
             CosmereResources.ThingDefOf.CutGarnet.defName,
-            new List<Spren> { Spren.Rain, Spren.Exhaustion, Spren.Pain }
+            [Spren.Rain, Spren.Exhaustion, Spren.Pain]
         );
         gemstonePossibleSprenDict.Add(
             CosmereResources.ThingDefOf.CutSapphire.defName,
-            new List<Spren> { Spren.Wind, Spren.Motion, Spren.Cold }
+            [Spren.Wind, Spren.Motion, Spren.Cold]
         );
         gemstonePossibleSprenDict.Add(
             CosmereResources.ThingDefOf.CutRuby.defName,
-            new List<Spren> { Spren.Flame, Spren.Anger }
+            [Spren.Flame, Spren.Anger]
         );
         gemstonePossibleSprenDict.Add(
             CosmereResources.ThingDefOf.CutEmerald.defName,
-            new List<Spren> { Spren.Flame, Spren.Life, Spren.Cultivation, Spren.Rain, Spren.Glory }
+            [Spren.Flame, Spren.Life, Spren.Cultivation, Spren.Rain, Spren.Glory]
         );
     }
 
     public override void TickRare() {
         CaptureLoop();
-        toggleGlow();
+        ToggleGlow();
         TriggerPrint();
         compTrapper.DrainStormlight();
     }
 
-    private void toggleGlow() {
+    private void ToggleGlow() {
         if (Map != null) {
-            if (compTrapper.HasGemstone) {
-                if (!compTrapper.sprenCaptured &&
-                    !compTrapper.insertedGemstone.TryGetComp<CompStormlight>().HasStormlight) {
+            if (compTrapper.hasGemstone) {
+                if (!compTrapper.sprenCaptured && !compTrapper.insertedGemstone.TryGetComp<Stormlight>().hasStormlight) {
                     compGlower.GlowColor = ColorInt.FromHdrColor(Color.red);
                 } else if (compTrapper.sprenCaptured) {
                     compGlower.GlowColor = ColorInt.FromHdrColor(Color.green);
@@ -80,21 +81,20 @@ public class Building_SprenTrapper : Building {
             List<Spren> sprenList;
             gemstonePossibleSprenDict.TryGetValue(compTrapper.insertedGemstone.def.defName, out sprenList);
             foreach (Spren spren in sprenList) {
-                compTrapper.tryCaptureSpren(spren);
-                compTrapper.checkTrapperState();
+                compTrapper.TryCaptureSpren(spren);
+                compTrapper.CheckTrapperState();
                 if (compTrapper.sprenCaptured) break;
             }
         }
 
-        compTrapper.checkTrapperState();
+        compTrapper.CheckTrapperState();
     }
 
     //Add light system for trapped, empty, e.g.
     public override void Print(SectionLayer layer) {
         layerTest = layer;
-        if (compTrapper.HasGemstone) {
-            if (!compTrapper.sprenCaptured &&
-                !compTrapper.insertedGemstone.TryGetComp<CompStormlight>().HasStormlight) {
+        if (compTrapper.hasGemstone) {
+            if (!compTrapper.sprenCaptured && !compTrapper.insertedGemstone.TryGetComp<Stormlight>().hasStormlight) {
                 def.graphicData.attachments[0].Graphic.Print(layer, this, 0f);
             } else if (!compTrapper.sprenCaptured) {
                 def.graphicData.attachments[1].Graphic.Print(layer, this, 0f);
@@ -116,33 +116,35 @@ public class Building_SprenTrapper : Building {
 }
 
 public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
-    private List<ThingDef> filterList = new List<ThingDef>();
-    public Thing insertedGemstone;
+    private List<ThingDef> filterListInt = [];
+    public ThingWithComps? insertedGemstone;
 
-    private List<GemSize> sizeFilterList = new List<GemSize> {
+    private List<GemSize> sizeFilterListInt = [
         GemSize.Chip,
         GemSize.Mark,
         GemSize.Broam,
-    };
+    ];
 
     public bool sprenCaptured;
 
 
-    public CompProperties_SprenTrapper Props => (CompProperties_SprenTrapper)props;
-    public bool HasGemstone => insertedGemstone != null;
+    public new CompPropertiesSprenTrapper props => (CompPropertiesSprenTrapper)base.props;
 
-    public float StormlightThresholdForRefuel { get; set; }
-    public List<GemSize> SizeFilterList => sizeFilterList;
+    public bool hasGemstone => insertedGemstone != null;
 
-    public List<ThingDef> FilterList => filterList;
+    public float stormlightThresholdForRefuel { get; set; }
 
-    public List<ThingDef> AllowedSpheres { get; } = new List<ThingDef> {
+    public List<GemSize> sizeFilterList => sizeFilterListInt;
+
+    public List<ThingDef> filterList => filterListInt;
+
+    public List<ThingDef> allowedSpheres { get; } = [
         CosmereResources.ThingDefOf.CutDiamond,
         CosmereResources.ThingDefOf.CutGarnet,
         CosmereResources.ThingDefOf.CutRuby,
         CosmereResources.ThingDefOf.CutSapphire,
         CosmereResources.ThingDefOf.CutEmerald,
-    };
+    ];
 
     public void AddGemstone(ThingWithComps gemstone) {
         CompCutGemstone? gemstoneComp = gemstone.GetComp<CompCutGemstone>();
@@ -179,33 +181,33 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
         base.PostExposeData();
         Scribe_Deep.Look(ref insertedGemstone, "insertedGemstone");
         Scribe_Values.Look(ref sprenCaptured, "sprenCaptured");
-        Scribe_Collections.Look(ref sizeFilterList, "sizeFilterList", LookMode.Value);
-        Scribe_Collections.Look(ref filterList, "filterList", LookMode.Def);
+        Scribe_Collections.Look(ref sizeFilterListInt, "sizeFilterList", LookMode.Value);
+        Scribe_Collections.Look(ref filterListInt, "filterList", LookMode.Def);
     }
 
-    public void tryCaptureSpren(Spren targetSpren) {
+    public void TryCaptureSpren(Spren targetSpren) {
         if (insertedGemstone == null || targetSpren == Spren.None || sprenCaptured) return;
         switch (targetSpren) {
             case Spren.Flame:
-                tryCaptureFlameSpren();
+                TryCaptureFlameSpren();
                 break;
             case Spren.Cold:
-                tryCaptureColdSpren();
+                TryCaptureColdSpren();
                 break;
             case Spren.Pain:
-                tryCapturePainSpren();
+                TryCapturePainSpren();
                 break;
             case Spren.Life:
-                tryCaptureLifeSpren();
+                TryCaptureLifeSpren();
                 break;
             case Spren.Logic:
-                tryCaptureLogicSpren();
+                TryCaptureLogicSpren();
                 break;
         }
     }
 
-    private void displayCaptureMessage(Spren spren) {
-        (parent as Building_SprenTrapper).TriggerPrint();
+    private void DisplayCaptureMessage(Spren spren) {
+        (parent as BuildingSprenTrapper).TriggerPrint();
         Messages.Message(
             $"One of your traps captured a {spren.ToStringSafe()}spren!",
             parent,
@@ -213,43 +215,43 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
         );
     }
 
-    private float getProbability(CompStormlight stormlightComp, float probabilityFactor, float baseMaxNormalizedValue) {
+    private float GetProbability(Stormlight stormlight, float probabilityFactor, float baseMaxNormalizedValue) {
         float baseProbability = StormlightUtilities.SprenBaseCaptureProbability(
-            stormlightComp.Stormlight,
+            stormlight.currentStormlight,
             0f,
-            stormlightComp.CurrentMaxStormlight
+            stormlight.currentMaxStormlight
         );
         float probability = StormlightUtilities.Normalize(baseProbability, 0f, 100f, 0f, baseMaxNormalizedValue);
         return probability * probabilityFactor;
     }
 
-    private void tryCaptureFlameSpren() {
+    private void TryCaptureFlameSpren() {
         if (StormlightUtilities.IsAnyFireNearby(parent as Building)) {
-            CompStormlight? stormlightcomp = insertedGemstone.TryGetComp<CompStormlight>();
+            Stormlight? stormlightcomp = insertedGemstone.TryGetComp<Stormlight>();
             if (stormlightcomp != null) {
                 float probabilityFactor = StormlightUtilities.GetNumberOfFiresNearby(parent as Building, 3f);
-                float probability = getProbability(stormlightcomp, probabilityFactor, 0.1f);
+                float probability = GetProbability(stormlightcomp, probabilityFactor, 0.1f);
 
                 if (Rand.Chance(probability)) {
                     insertedGemstone.TryGetComp<CompCutGemstone>().capturedSpren = Spren.Flame;
                     stormlightcomp.RemoveAllStormlight();
-                    displayCaptureMessage(Spren.Flame);
+                    DisplayCaptureMessage(Spren.Flame);
                 }
             }
         }
     }
 
-    private void tryCaptureColdSpren() {
+    private void TryCaptureColdSpren() {
         float averageSuroundingTemperature = StormlightUtilities.GetAverageSuroundingTemperature(parent as Building);
         if (averageSuroundingTemperature < 0f) {
-            CompStormlight? stormlightcomp = insertedGemstone.TryGetComp<CompStormlight>();
+            Stormlight? stormlightcomp = insertedGemstone.TryGetComp<Stormlight>();
             if (stormlightcomp != null) {
                 float probabilityFactor = Mathf.Abs(averageSuroundingTemperature);
-                float probability = getProbability(stormlightcomp, probabilityFactor, 0.01f);
+                float probability = GetProbability(stormlightcomp, probabilityFactor, 0.01f);
 
                 if (Rand.Chance(probability)) {
                     insertedGemstone.TryGetComp<CompCutGemstone>().capturedSpren = Spren.Cold;
-                    displayCaptureMessage(Spren.Cold);
+                    DisplayCaptureMessage(Spren.Cold);
                     stormlightcomp.RemoveAllStormlight();
                 }
             }
@@ -257,50 +259,50 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
     }
 
 
-    private void tryCapturePainSpren() {
+    private void TryCapturePainSpren() {
         float sumOfPain = StormlightUtilities.GetSuroundingPain(parent as Building);
         if (sumOfPain > 0f) {
-            CompStormlight? stormlightcomp = insertedGemstone.TryGetComp<CompStormlight>();
+            Stormlight? stormlightcomp = insertedGemstone.TryGetComp<Stormlight>();
             if (stormlightcomp != null) {
                 float probabilityFactor = sumOfPain * 5;
-                float probability = getProbability(stormlightcomp, probabilityFactor, 0.01f);
+                float probability = GetProbability(stormlightcomp, probabilityFactor, 0.01f);
 
                 if (Rand.Chance(probability)) {
                     insertedGemstone.TryGetComp<CompCutGemstone>().capturedSpren = Spren.Pain;
-                    displayCaptureMessage(Spren.Pain);
+                    DisplayCaptureMessage(Spren.Pain);
                     stormlightcomp.RemoveAllStormlight();
                 }
             }
         }
     }
 
-    private void tryCaptureLifeSpren() {
+    private void TryCaptureLifeSpren() {
         float sumOfPlants = StormlightUtilities.GetSuroundingPlants(parent as Building);
         if (sumOfPlants > 0) {
-            CompStormlight? stormlightcomp = insertedGemstone.TryGetComp<CompStormlight>();
+            Stormlight? stormlightcomp = insertedGemstone.TryGetComp<Stormlight>();
             if (stormlightcomp != null) {
                 float probabilityFactor = sumOfPlants;
-                float probability = getProbability(stormlightcomp, probabilityFactor, 0.01f);
+                float probability = GetProbability(stormlightcomp, probabilityFactor, 0.01f);
 
                 if (Rand.Chance(probability)) {
                     insertedGemstone.TryGetComp<CompCutGemstone>().capturedSpren = Spren.Life;
-                    displayCaptureMessage(Spren.Life);
+                    DisplayCaptureMessage(Spren.Life);
                     stormlightcomp.RemoveAllStormlight();
                 }
             }
         }
     }
 
-    private void tryCaptureLogicSpren() {
+    private void TryCaptureLogicSpren() {
         bool researchDoneNearby = StormlightUtilities.ResearchBeingDoneNearby(parent as Building);
         if (researchDoneNearby) {
-            CompStormlight? stormlightcomp = insertedGemstone.TryGetComp<CompStormlight>();
+            Stormlight? stormlightcomp = insertedGemstone.TryGetComp<Stormlight>();
             if (stormlightcomp != null) {
                 float probabilityFactor = 2f;
-                float probability = getProbability(stormlightcomp, probabilityFactor, 0.0005f);
+                float probability = GetProbability(stormlightcomp, probabilityFactor, 0.0005f);
                 if (Rand.Chance(probability)) {
                     insertedGemstone.TryGetComp<CompCutGemstone>().capturedSpren = Spren.Logic;
-                    displayCaptureMessage(Spren.Logic);
+                    DisplayCaptureMessage(Spren.Logic);
                     stormlightcomp.RemoveAllStormlight();
                 }
             }
@@ -308,9 +310,8 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
     }
 
 
-    public void checkTrapperState() {
-        if (insertedGemstone != null &&
-            insertedGemstone.TryGetComp<CompCutGemstone>() is CompCutGemstone compCutGemstone) {
+    public void CheckTrapperState() {
+        if (insertedGemstone?.TryGetComp<CompCutGemstone>() is { } compCutGemstone) {
             if (compCutGemstone.capturedSpren != Spren.None) {
                 sprenCaptured = true;
                 return;
@@ -321,16 +322,12 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
     }
 
     public void DrainStormlight() {
-        if (insertedGemstone != null) {
-            CompStormlight? stormlightcomp = insertedGemstone.TryGetComp<CompStormlight>();
-            if (stormlightcomp != null) {
-                stormlightcomp.drainStormLight();
-                stormlightcomp.drainStormLight();
-                stormlightcomp.drainStormLight();
-                stormlightcomp.drainStormLight();
-                stormlightcomp.drainStormLight();
-            }
-        }
+        if (!(insertedGemstone?.TryGetComp(out Stormlight stormlight) ?? false)) return;
+        stormlight.DrainStormLight();
+        stormlight.DrainStormLight();
+        stormlight.DrainStormLight();
+        stormlight.DrainStormLight();
+        stormlight.DrainStormLight();
     }
 
     public void InstallCage(ThingWithComps cage) { }
@@ -339,13 +336,9 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
     public override string CompInspectStringExtra() {
         string gemName = "No gem in fabrial.";
 
-        if (insertedGemstone != null) {
-            ThingWithComps gemstone = insertedGemstone as ThingWithComps;
-            gemName = gemstone.GetComp<CompCutGemstone>().GetFullLabel +
-                      "(" +
-                      gemstone.GetComp<CompStormlight>().Stormlight.ToString("F0") +
-                      ")";
-        }
+        if (insertedGemstone == null) return gemName;
+        ThingWithComps gemstone = insertedGemstone;
+        gemName = gemstone.GetComp<CompCutGemstone>().getFullLabel + "(" + gemstone.GetComp<Stormlight>().currentStormlight.ToString("F0") + ")";
 
         return gemName;
     }
@@ -354,21 +347,21 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
         Thing? cutGemstone = GenClosest.ClosestThing_Global(
             selPawn.Position,
             selPawn.Map.listerThings.AllThings.Where(thing =>
-                StormlightUtilities.isThingCutGemstone(thing) &&
-                thing.TryGetComp<CompCutGemstone>().HasSprenInside == false &&
-                thing.TryGetComp<CompStormlight>().HasStormlight &&
-                FilterList.Contains(thing.def) &&
-                SizeFilterList.Contains(thing.TryGetComp<CompCutGemstone>()?.GetGemSize() ?? GemSize.None)
+                StormlightUtilities.IsThingCutGemstone(thing)
+                && thing.TryGetComp<CompCutGemstone>().hasSprenInside == false
+                && thing.TryGetComp<Stormlight>().hasStormlight
+                && filterList.Contains(thing.def)
+                && sizeFilterList.Contains(thing.TryGetComp<CompCutGemstone>()?.GetGemSize() ?? GemSize.None)
             ),
             500f
         );
 
 
-        Action replaceGemAction = null;
+        Action? replaceGemAction = null;
         string replaceGemText = "No suitable gem available";
         if (cutGemstone != null) {
             replaceGemAction = () => {
-                Job job = JobMaker.MakeJob(CosmereRosharDefs.whtwl_RefuelFabrial, parent, cutGemstone);
+                Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -379,18 +372,17 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
         yield return new FloatMenuOption(replaceGemText, replaceGemAction);
 
 
-        Action removeGemAction = null;
-        string removeGemText = "Remove Gemstone";
+        Action? removeGemAction = null;
         if (insertedGemstone != null) {
             removeGemAction = () => {
-                Job job = JobMaker.MakeJob(CosmereRosharDefs.whtwl_RemoveFromFabrial, parent);
+                Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRemoveFromFabrial, parent);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
             };
         }
 
-        yield return new FloatMenuOption(removeGemText, removeGemAction);
+        yield return new FloatMenuOption("Remove Gemstone", removeGemAction);
     }
 
 
@@ -404,13 +396,13 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
             defaultDesc = "Click to choose which gems are allowed in this trap.",
             //icon = ContentFinder<Texture2D>.Get("UI/Icons/SomeIcon"), 
             icon = TexCommand.SelectShelf,
-            action = () => { Find.WindowStack.Add(new Dialog_SphereFilter<CompSprenTrapper>(this)); },
+            action = () => { Find.WindowStack.Add(new DialogSphereFilter<CompSprenTrapper>(this)); },
         };
     }
 }
 
-public class CompProperties_SprenTrapper : CompProperties {
-    public CompProperties_SprenTrapper() {
+public class CompPropertiesSprenTrapper : CompProperties {
+    public CompPropertiesSprenTrapper() {
         compClass = typeof(CompSprenTrapper);
     }
 }

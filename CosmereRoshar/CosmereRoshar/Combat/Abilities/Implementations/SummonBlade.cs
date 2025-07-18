@@ -1,21 +1,22 @@
-﻿using RimWorld;
+﻿using CosmereRoshar.Comps.WeaponsAndArmor;
+using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities.Implementations;
 
 /// SUMMON BLADE ABILITY
-public class CompProperties_AbilitySpawnEquipment : CompProperties_AbilityEffect {
+public class CompPropertiesAbilitySpawnEquipment : CompProperties_AbilityEffect {
     public ThingDef thingDef; // The weapon to spawn
 
 
-    public CompProperties_AbilitySpawnEquipment() {
-        compClass = typeof(CompAbilityEffect_SpawnEquipment);
+    public CompPropertiesAbilitySpawnEquipment() {
+        compClass = typeof(CompAbilityEffectSpawnEquipment);
     }
 }
 
-public class CompAbilityEffect_SpawnEquipment : CompAbilityEffect {
+public class CompAbilityEffectSpawnEquipment : CompAbilityEffect {
     public ThingWithComps bladeObject;
-    public new CompProperties_AbilitySpawnEquipment Props => (CompProperties_AbilitySpawnEquipment)props;
+    public new CompPropertiesAbilitySpawnEquipment props => (CompPropertiesAbilitySpawnEquipment)((AbilityComp)this).props;
 
 
     public override void PostExposeData() {
@@ -29,20 +30,20 @@ public class CompAbilityEffect_SpawnEquipment : CompAbilityEffect {
             target = new LocalTargetInfo(parent.pawn); // Default to the caster
         }
 
-        if (Props.thingDef == null) {
+        if (props.thingDef == null) {
             Log.Error("[CosmereRoshar] SpawnEquipment failed: thingDef not set.");
             return;
         }
 
         Pawn pawn = parent.pawn;
-        checkAndDropWeapon(ref pawn);
-        toggleBlade(ref pawn);
+        CheckAndDropWeapon(ref pawn);
+        ToggleBlade(ref pawn);
     }
 
-    private void checkAndDropWeapon(ref Pawn pawn) {
+    private void CheckAndDropWeapon(ref Pawn pawn) {
         if (pawn == null) return;
         if (pawn.equipment.Primary != null) {
-            if (pawn.equipment.Primary.def.defName.Equals(Props.thingDef.ToString())) return;
+            if (pawn.equipment.Primary.def.defName.Equals(props.thingDef.ToString())) return;
 
             // Drop the existing weapon
             ThingWithComps droppedWeapon;
@@ -50,14 +51,14 @@ public class CompAbilityEffect_SpawnEquipment : CompAbilityEffect {
         }
     }
 
-    private void toggleBlade(ref Pawn pawn) {
-        CompAbilityEffect_SpawnEquipment abilityComp =
-            pawn.GetAbilityComp<CompAbilityEffect_SpawnEquipment>(CosmereRosharDefs.whtwl_SummonShardblade.defName);
+    private void ToggleBlade(ref Pawn pawn) {
+        CompAbilityEffectSpawnEquipment abilityComp =
+            pawn.GetAbilityComp<CompAbilityEffectSpawnEquipment>(CosmereRosharDefs.WhtwlSummonShardblade.defName);
         if (abilityComp == null) return;
         if (abilityComp.bladeObject == null) {
             Log.Warning("[CosmereRoshar] toggleBlade: bladeObject is null, attempting recovery from equipment...");
             abilityComp.bladeObject = pawn.equipment?.AllEquipmentListForReading
-                .FirstOrDefault(e => e.def.defName == CosmereRosharDefs.whtwl_MeleeWeapon_Shardblade.defName);
+                .FirstOrDefault(e => e.def.defName == CosmereRosharDefs.WhtwlMeleeWeaponShardblade.defName);
 
             if (abilityComp.bladeObject == null) {
                 Log.Error("[CosmereRoshar] toggleBlade: Failed to recover bladeObject, aborting toggle.");
@@ -68,27 +69,27 @@ public class CompAbilityEffect_SpawnEquipment : CompAbilityEffect {
         CompShardblade blade = abilityComp.bladeObject.GetComp<CompShardblade>();
         if (blade == null) return;
 
-        if (blade.isBladeSpawned() == false) {
+        if (blade.IsBladeSpawned() == false) {
             Log.Message($"[CosmereRoshar] Radiant {pawn.Name} summoned shard blade!");
-            blade.summon();
+            blade.Summon();
         } else {
             Log.Message($"[CosmereRoshar] Radiant {pawn.Name} dismissed the blade");
-            blade.dismissBlade(pawn);
+            blade.DismissBlade(pawn);
         }
     }
 }
 
 /// BREAK BOND ABILITY
-public class CompProperties_AbilityBreakBond : CompProperties_AbilityEffect {
+public class CompPropertiesAbilityBreakBond : CompProperties_AbilityEffect {
     public ThingDef thingDef;
 
-    public CompProperties_AbilityBreakBond() {
-        compClass = typeof(CompAbilityEffect_BreakBondWithSword);
+    public CompPropertiesAbilityBreakBond() {
+        compClass = typeof(CompAbilityEffectBreakBondWithSword);
     }
 }
 
-public class CompAbilityEffect_BreakBondWithSword : CompAbilityEffect {
-    public new CompProperties_AbilityBreakBond Props => (CompProperties_AbilityBreakBond)props;
+public class CompAbilityEffectBreakBondWithSword : CompAbilityEffect {
+    public new CompPropertiesAbilityBreakBond props => (CompPropertiesAbilityBreakBond)((AbilityComp)this).props;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         if (target == null || target.Cell == null) {
@@ -96,25 +97,25 @@ public class CompAbilityEffect_BreakBondWithSword : CompAbilityEffect {
             target = new LocalTargetInfo(parent.pawn); // Default to the caster
         }
 
-        if (Props.thingDef == null) {
+        if (props.thingDef == null) {
             Log.Error("[CosmereRoshar] break bond failed: thingDef not set.");
             return;
         }
 
         Pawn pawn = parent.pawn;
-        checkAndDropWeapon(ref pawn);
+        CheckAndDropWeapon(ref pawn);
     }
 
-    private void checkAndDropWeapon(ref Pawn pawn) {
+    private void CheckAndDropWeapon(ref Pawn pawn) {
         if (pawn.equipment.Primary != null) {
             Log.Message("[CosmereRoshar] try to break bond.");
 
-            if (pawn.equipment.Primary.def.defName.Equals(Props.thingDef.ToString())) {
+            if (pawn.equipment.Primary.def.defName.Equals(props.thingDef.ToString())) {
                 CompShardblade blade = pawn.equipment.Primary.GetComp<CompShardblade>();
-                blade.severBond(pawn);
+                blade.SeverBond(pawn);
             } else {
                 Log.Error(
-                    $"[CosmereRoshar] eq name is '{pawn.equipment.Primary.def.defName}', thingDef is '{Props.thingDef}'"
+                    $"[CosmereRoshar] eq name is '{pawn.equipment.Primary.def.defName}', thingDef is '{props.thingDef}'"
                 );
             }
         }

@@ -3,7 +3,9 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-public class DamageWorker_SoulDamage : DamageWorker_AddInjury {
+namespace CosmereRoshar.Combat.Weapon;
+
+public class DamageWorkerSoulDamage : DamageWorker_AddInjury {
 
     protected override BodyPartRecord ChooseHitPart(DamageInfo dinfo, Pawn pawn) {
         // Randomly select a not-missing and outside body part

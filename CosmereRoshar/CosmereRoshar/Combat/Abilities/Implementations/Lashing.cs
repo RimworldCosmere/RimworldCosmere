@@ -1,43 +1,45 @@
-﻿using HarmonyLib;
+﻿using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Need;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities.Implementations;
 
 [HarmonyPatch(typeof(PawnFlyer))]
 [HarmonyPatch("RespawnPawn")]
-public class Patch_PP {
-    private static Pawn flyingPawn;
+public class PatchPp {
+    private static Pawn FlyingPawn;
 
-    private static void Prefix(ThingOwner<Thing> ___innerContainer) {
-        if (___innerContainer.InnerListForReading.Count <= 0) {
+    private static void Prefix(ThingOwner<Thing> innerContainer) {
+        if (innerContainer.InnerListForReading.Count <= 0) {
             return;
         }
 
-        flyingPawn = ___innerContainer.InnerListForReading[0] as Pawn;
+        FlyingPawn = innerContainer.InnerListForReading[0] as Pawn;
     }
 
-    private static void Postfix(AbilityDef ___triggeringAbility) {
-        if (___triggeringAbility != null && flyingPawn != null) {
-            if (___triggeringAbility.defName == CosmereRosharDefs.whtwl_LashingUpward.defName) {
-                flyingPawn.TakeDamage(new DamageInfo(DamageDefOf.Blunt, 75));
+    private static void Postfix(AbilityDef triggeringAbility) {
+        if (triggeringAbility != null && FlyingPawn != null) {
+            if (triggeringAbility.defName == CosmereRosharDefs.WhtwlLashingUpward.defName) {
+                FlyingPawn.TakeDamage(new DamageInfo(DamageDefOf.Blunt, 75));
             }
         }
     }
 }
 
 /// LASH UP ABILITY
-public class CompProperties_AbilityLashUpward : CompProperties_AbilityEffect {
+public class CompPropertiesAbilityLashUpward : CompProperties_AbilityEffect {
     public float stormLightCost;
     public ThingDef thingDef;
 
-    public CompProperties_AbilityLashUpward() {
-        compClass = typeof(CompAbilityEffect_AbilityLashUpward);
+    public CompPropertiesAbilityLashUpward() {
+        compClass = typeof(CompAbilityEffectAbilityLashUpward);
     }
 }
 
-public class CompAbilityEffect_AbilityLashUpward : CompAbilityEffect {
-    public new CompProperties_AbilityLashUpward Props => props as CompProperties_AbilityLashUpward;
+public class CompAbilityEffectAbilityLashUpward : CompAbilityEffect {
+    public new CompPropertiesAbilityLashUpward props => ((AbilityComp)this).props as CompPropertiesAbilityLashUpward;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target
@@ -47,7 +49,7 @@ public class CompAbilityEffect_AbilityLashUpward : CompAbilityEffect {
         }
 
         // 2) Validate the "flyer" ThingDef
-        if (Props.thingDef == null) {
+        if (props.thingDef == null) {
             Log.Error("[LashUpward] No valid flyer ThingDef to spawn!");
             return;
         }
@@ -57,20 +59,19 @@ public class CompAbilityEffect_AbilityLashUpward : CompAbilityEffect {
             return;
         }
 
-        if (caster.GetComp<CompStormlight>() == null ||
-            caster.GetComp<CompStormlight>().Stormlight < Props.stormLightCost) {
+        if (caster.TryGetComp<Stormlight>()?.currentStormlight < props.stormLightCost) {
             //Log.Message($"[LashUpward] not enough stormlight!");
             return;
         }
 
-        caster.GetComp<CompStormlight>().drawStormlight(Props.stormLightCost);
+        caster.GetComp<Stormlight>().DrawStormlight(props.stormLightCost);
 
         // 3) Fling the target
-        flightFunction(target.Thing);
+        FlightFunction(target.Thing);
     }
 
 
-    private void flightFunction(Thing targetThing) {
+    private void FlightFunction(Thing targetThing) {
         Map map = targetThing.Map;
         IntVec3 cell = targetThing.Position;
 
@@ -82,7 +83,7 @@ public class CompAbilityEffect_AbilityLashUpward : CompAbilityEffect {
         //Log.Message($"TargetPawn: {targetPawn.Name}");
         // Create the custom flyer
         PawnFlyer flyer = PawnFlyer.MakeFlyer(
-            Props.thingDef, // must have the <pawnFlyer> XML extension
+            props.thingDef, // must have the <pawnFlyer> XML extension
             targetPawn, // the Pawn to fly
             cell, // an IntVec3 on the same map
             null, // optional visual effect
@@ -96,7 +97,7 @@ public class CompAbilityEffect_AbilityLashUpward : CompAbilityEffect {
         GenSpawn.Spawn(flyer, cell, map);
         Pawn caster = parent.pawn;
         if (caster != null) {
-            RadiantUtility.GiveRadiantXP(caster, 50f);
+            RadiantUtility.GiveRadiantXp(caster, 50f);
         }
     }
 }

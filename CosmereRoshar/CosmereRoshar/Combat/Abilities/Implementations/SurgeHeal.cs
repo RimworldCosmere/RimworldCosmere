@@ -1,22 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CosmereRoshar.Comp;
 using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Comps;
+using CosmereRoshar.Need;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities.Implementations;
 
 /// Surge regrowth plants
-public class CompProperties_AbilitySurgeHeal : CompProperties_AbilityEffect {
+public class CompPropertiesAbilitySurgeHeal : CompProperties_AbilityEffect {
     public float stormLightCost;
 
-    public CompProperties_AbilitySurgeHeal() {
-        compClass = typeof(CompAbilityEffect_SurgeHeal);
+    public CompPropertiesAbilitySurgeHeal() {
+        compClass = typeof(CompAbilityEffectSurgeHeal);
     }
 }
 
-public class CompAbilityEffect_SurgeHeal : CompAbilityEffect {
-    public new CompProperties_AbilitySurgeHeal Props => props as CompProperties_AbilitySurgeHeal;
+public class CompAbilityEffectSurgeHeal : CompAbilityEffect {
+    public new CompPropertiesAbilitySurgeHeal props => ((AbilityComp)this).props as CompPropertiesAbilitySurgeHeal;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target
@@ -30,18 +33,18 @@ public class CompAbilityEffect_SurgeHeal : CompAbilityEffect {
             return;
         }
 
-        if (caster.GetComp<CompStormlight>() == null) {
-            Log.Warning("[heal] CompStormlight is null!");
+        if (caster.GetComp<Stormlight>() == null) {
+            Log.Warning("[heal] Stormlight is null!");
             return;
         }
 
 
         // 3) heal target
-        healFunction(target.Thing);
+        HealFunction(target.Thing);
     }
 
 
-    private void healFunction(Thing targetThing) {
+    private void HealFunction(Thing targetThing) {
         Map map = targetThing.Map;
 
         Pawn targetPawn = targetThing as Pawn;
@@ -49,63 +52,62 @@ public class CompAbilityEffect_SurgeHeal : CompAbilityEffect {
             return;
         }
 
-        radiantHeal(targetPawn);
+        RadiantHeal(targetPawn);
     }
 
-    private void healMissingParts(Pawn pawn, Need_RadiantProgress radiantNeed, CompStormlight casterComp, Pawn caster) {
-        if (radiantNeed != null && radiantNeed.IdealLevel >= 3) {
+    private void HealMissingParts(Pawn pawn, NeedRadiantProgress radiantNeed, Stormlight stormlight, Pawn caster) {
+        if (radiantNeed is { idealLevel: >= 3 }) {
             List<Hediff_MissingPart> missingParts = pawn.health.hediffSet.hediffs.OfType<Hediff_MissingPart>()
                 .OrderByDescending(h => h.Severity)
                 .ToList();
             foreach (Hediff_MissingPart? injury in missingParts) {
                 float cost = 175f; // More severe wounds cost more stormlight
-                if (casterComp.Stormlight < cost) {
+                if (stormlight.currentStormlight < cost) {
                     break;
                 }
 
                 pawn.health.hediffSet.hediffs.Remove(injury);
-                casterComp.drawStormlight(cost);
-                RadiantUtility.GiveRadiantXP(caster, 20f);
+                stormlight.DrawStormlight(cost);
+                RadiantUtility.GiveRadiantXp(caster, 20f);
             }
         } else {
             Log.Message("Ideal level to low to heal missing part");
         }
     }
 
-    private void healInjuries(Pawn pawn, Need_RadiantProgress radiantNeed, CompStormlight casterComp, Pawn caster) {
+    private void HealInjuries(Pawn pawn, NeedRadiantProgress radiantNeed, Stormlight stormlight, Pawn caster) {
         List<Hediff_Injury> injuries = pawn.health.hediffSet.hediffs.OfType<Hediff_Injury>()
             .OrderByDescending(h => h.Severity)
             .ToList();
         bool stillInjured = true;
-        while (stillInjured && casterComp.HasStormlight) {
+        while (stillInjured && stormlight.hasStormlight) {
             stillInjured = false;
             foreach (Hediff_Injury? injury in injuries) {
                 float cost = 1f;
-                if (casterComp.Stormlight < cost) {
+                if (stormlight.currentStormlight < cost) {
                     break;
                 }
 
-                float healAmount = 0.008f + radiantNeed.IdealLevel * 2f / 10f;
+                float healAmount = 0.008f + radiantNeed.idealLevel * 2f / 10f;
                 injury.Heal(healAmount);
-                casterComp.drawStormlight(cost);
-                RadiantUtility.GiveRadiantXP(caster, 5f);
+                stormlight.DrawStormlight(cost);
+                RadiantUtility.GiveRadiantXp(caster, 5f);
                 if (injury.Severity > 0) stillInjured = true;
             }
         }
     }
 
-    private void radiantHeal(Pawn pawn) {
+    private void RadiantHeal(Pawn pawn) {
         Pawn caster = parent.pawn;
-        CompStormlight casterComp = caster.GetComp<CompStormlight>();
-        if (casterComp != null) {
-            Need_RadiantProgress radiantNeed = caster.needs.TryGetNeed<Need_RadiantProgress>();
-            if (radiantNeed == null) {
-                Log.Error("[HealSurge] need was null");
-                return;
-            }
-
-            healMissingParts(pawn, radiantNeed, casterComp, caster);
-            healInjuries(pawn, radiantNeed, casterComp, caster);
+        if (caster.TryGetComp(out Stormlight stormlight)) return;
+        
+        NeedRadiantProgress radiantNeed = caster.needs.TryGetNeed<NeedRadiantProgress>();
+        if (radiantNeed == null) {
+            Log.Error("[HealSurge] need was null");
+            return;
         }
+
+        HealMissingParts(pawn, radiantNeed, stormlight, caster);
+        HealInjuries(pawn, radiantNeed, stormlight, caster);
     }
 }

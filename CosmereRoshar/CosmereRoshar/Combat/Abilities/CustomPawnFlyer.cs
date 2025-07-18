@@ -1,11 +1,11 @@
 ﻿using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities;
 
-public class PawnFlyerWorker_LashUp : PawnFlyerWorker {
-    public static float maxHeight = 20f;
+public class PawnFlyerWorkerLashUp : PawnFlyerWorker {
+    public static float MaxHeight = 20f;
 
-    public PawnFlyerWorker_LashUp(PawnFlyerProperties props) : base(props) { }
+    public PawnFlyerWorkerLashUp(PawnFlyerProperties props) : base(props) { }
 
     // Then override these two methods:
     public override float AdjustedProgress(float baseProgress) {
@@ -16,12 +16,12 @@ public class PawnFlyerWorker_LashUp : PawnFlyerWorker {
     public override float GetHeight(float progress) {
         // E.g. a simple parabola from 0..20..0
         float p = 4f * progress * (1f - progress); // peak at p=0.5
-        return maxHeight * p;
+        return MaxHeight * p;
     }
 }
 
-public class PawnFlyerWorker_WindRunnerFlight : PawnFlyerWorker {
-    public PawnFlyerWorker_WindRunnerFlight(PawnFlyerProperties props) : base(props) { }
+public class PawnFlyerWorkerWindRunnerFlight : PawnFlyerWorker {
+    public PawnFlyerWorkerWindRunnerFlight(PawnFlyerProperties props) : base(props) { }
 
     // Then override these two methods:
     public override float AdjustedProgress(float baseProgress) {

@@ -4,304 +4,302 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar {
-    public class Radiant_Requirements : IExposable {
-        public int Count;
-        public bool IsSatisfied;
-        public float Value;
+namespace CosmereRoshar.Patches;
 
-        public void ExposeData() {
-            Scribe_Values.Look(ref IsSatisfied, "IsSatisfied");
-            Scribe_Values.Look(ref Value, "Value");
-            Scribe_Values.Look(ref Count, "Count");
-        }
+public class RadiantRequirements : IExposable {
+    public int count;
+    public bool isSatisfied;
+    public float value;
+
+    public void ExposeData() {
+        Scribe_Values.Look(ref isSatisfied, "IsSatisfied");
+        Scribe_Values.Look(ref value, "Value");
+        Scribe_Values.Look(ref count, "Count");
     }
+}
 
-    public class RequirementMapEntry : IExposable {
-        public Dictionary<string, Radiant_Requirements> innerDict;
-        public string outerKey;
+public class RequirementMapEntry : IExposable {
+    public Dictionary<string, RadiantRequirements> innerDict;
+    public string outerKey;
 
-        public void ExposeData() {
-            Scribe_Values.Look(ref outerKey, "outerKey");
-            Scribe_Collections.Look(ref innerDict, "innerDict", LookMode.Value, LookMode.Deep);
-        }
+    public void ExposeData() {
+        Scribe_Values.Look(ref outerKey, "outerKey");
+        Scribe_Collections.Look(ref innerDict, "innerDict", LookMode.Value, LookMode.Deep);
     }
+}
 
-    public class CompProperties_PawnStats : CompProperties {
-        public string Req_0_1;
-        public string Req_1_2;
-        public string Req_2_3;
-        public string Req_3_4;
-        public string Req_4_5;
+public class CompPropertiesPawnStats : CompProperties {
+    public string req01;
+    public string req12;
+    public string req23;
+    public string req34;
+    public string req45;
 
 
-        public CompProperties_PawnStats() {
-            compClass = typeof(PawnStats);
-        }
+    public CompPropertiesPawnStats() {
+        compClass = typeof(PawnStats);
     }
+}
 
-    public class PawnStats : ThingComp {
-        public int doCheckWhenThisIsZero;
-        public bool EnemyPatientDied;
-        public bool EnemyPatientSaved;
-        public bool hasFormedBond;
-        public bool PatientDied;
-        public List<Pawn> PatientList = new List<Pawn>();
-        public bool PatientSaved;
+public class PawnStats : ThingComp {
+    public int doCheckWhenThisIsZero;
+    public bool enemyPatientDied;
+    public bool enemyPatientSaved;
+    public bool hasFormedBond;
+    public bool patientDied;
+    public List<Pawn> patientList = new List<Pawn>();
+    public bool patientSaved;
 
-        public Dictionary<string, Dictionary<string, Radiant_Requirements>> requirementMap =
-            new Dictionary<string, Dictionary<string, Radiant_Requirements>>();
+    public Dictionary<string, Dictionary<string, RadiantRequirements>> requirementMap =
+        new Dictionary<string, Dictionary<string, RadiantRequirements>>();
 
-        private List<RequirementMapEntry> requirementMapSerialized = new List<RequirementMapEntry>();
-        public new CompProperties_PawnStats Props => props as CompProperties_PawnStats;
+    private List<RequirementMapEntry> requirementMapSerialized = new List<RequirementMapEntry>();
+    public new CompPropertiesPawnStats props => base.props as CompPropertiesPawnStats;
 
 
-        public override void PostExposeData() {
-            Scribe_Collections.Look(ref PatientList, "PatientList", LookMode.Reference);
-            Scribe_Values.Look(ref PatientDied, "PatientDied");
-            Scribe_Values.Look(ref PatientSaved, "PatientSaved");
-            Scribe_Values.Look(ref EnemyPatientDied, "EnemyPatientDied");
-            Scribe_Values.Look(ref EnemyPatientSaved, "EnemyPatientSaved");
-            Scribe_Values.Look(ref hasFormedBond, "hasFormedBond");
-            if (Scribe.mode == LoadSaveMode.Saving) {
-                requirementMapSerialized.Clear();
-                foreach (KeyValuePair<string, Dictionary<string, Radiant_Requirements>> outerPair in requirementMap) {
-                    requirementMapSerialized.Add(
-                        new RequirementMapEntry {
-                            outerKey = outerPair.Key,
-                            innerDict = outerPair.Value,
-                        }
-                    );
-                }
+    public override void PostExposeData() {
+        Scribe_Collections.Look(ref patientList, "PatientList", LookMode.Reference);
+        Scribe_Values.Look(ref patientDied, "PatientDied");
+        Scribe_Values.Look(ref patientSaved, "PatientSaved");
+        Scribe_Values.Look(ref enemyPatientDied, "EnemyPatientDied");
+        Scribe_Values.Look(ref enemyPatientSaved, "EnemyPatientSaved");
+        Scribe_Values.Look(ref hasFormedBond, "hasFormedBond");
+        if (Scribe.mode == LoadSaveMode.Saving) {
+            requirementMapSerialized.Clear();
+            foreach (KeyValuePair<string, Dictionary<string, RadiantRequirements>> outerPair in requirementMap) {
+                requirementMapSerialized.Add(
+                    new RequirementMapEntry {
+                        outerKey = outerPair.Key,
+                        innerDict = outerPair.Value,
+                    }
+                );
             }
+        }
 
-            Scribe_Collections.Look(ref requirementMapSerialized, "requirementMapSerialized", LookMode.Deep);
+        Scribe_Collections.Look(ref requirementMapSerialized, "requirementMapSerialized", LookMode.Deep);
 
-            if (Scribe.mode == LoadSaveMode.LoadingVars) {
-                requirementMap.Clear();
-                if (requirementMapSerialized != null) {
-                    foreach (RequirementMapEntry? entry in requirementMapSerialized) {
-                        if (entry != null && entry.outerKey != null) {
-                            requirementMap[entry.outerKey] = entry.innerDict;
-                        }
+        if (Scribe.mode == LoadSaveMode.LoadingVars) {
+            requirementMap.Clear();
+            if (requirementMapSerialized != null) {
+                foreach (RequirementMapEntry? entry in requirementMapSerialized) {
+                    if (entry != null && entry.outerKey != null) {
+                        requirementMap[entry.outerKey] = entry.innerDict;
                     }
                 }
             }
         }
+    }
 
 
-        public override void Initialize(CompProperties props) {
-            base.Initialize(props);
+    public override void Initialize(CompProperties props) {
+        base.Initialize(props);
 
-            //WINDRUNNER
-            string? windrunnerDefName = CosmereRosharDefs.whtwl_Radiant_Windrunner.defName;
-            requirementMap.Add(windrunnerDefName, new Dictionary<string, Radiant_Requirements>());
-            requirementMap[windrunnerDefName].Add(Props.Req_0_1, new Radiant_Requirements());
-            requirementMap[windrunnerDefName].Add(Props.Req_1_2, new Radiant_Requirements());
-            requirementMap[windrunnerDefName].Add(Props.Req_2_3, new Radiant_Requirements());
-            requirementMap[windrunnerDefName].Add(Props.Req_3_4, new Radiant_Requirements());
-
-
-            //TRUTHWATCHER
-            string? truthwatcherDefName = CosmereRosharDefs.whtwl_Radiant_Truthwatcher.defName;
-            requirementMap.Add(truthwatcherDefName, new Dictionary<string, Radiant_Requirements>());
-            requirementMap[truthwatcherDefName].Add(Props.Req_0_1, new Radiant_Requirements());
-            requirementMap[truthwatcherDefName].Add(Props.Req_1_2, new Radiant_Requirements());
-            requirementMap[truthwatcherDefName].Add(Props.Req_2_3, new Radiant_Requirements());
-            requirementMap[truthwatcherDefName].Add(Props.Req_3_4, new Radiant_Requirements());
-            requirementMap[truthwatcherDefName][Props.Req_2_3].IsSatisfied = true; // for now it is true default
-            requirementMap[truthwatcherDefName][Props.Req_3_4].IsSatisfied = true; // for now it is true default
+        //WINDRUNNER
+        string? windrunnerDefName = CosmereRosharDefs.WhtwlRadiantWindrunner.defName;
+        requirementMap.Add(windrunnerDefName, new Dictionary<string, RadiantRequirements>());
+        requirementMap[windrunnerDefName].Add(this.props.req01, new RadiantRequirements());
+        requirementMap[windrunnerDefName].Add(this.props.req12, new RadiantRequirements());
+        requirementMap[windrunnerDefName].Add(this.props.req23, new RadiantRequirements());
+        requirementMap[windrunnerDefName].Add(this.props.req34, new RadiantRequirements());
 
 
-            //EDGEDANCER
-            string? edgedancerDefName = CosmereRosharDefs.whtwl_Radiant_Edgedancer.defName;
-            requirementMap.Add(edgedancerDefName, new Dictionary<string, Radiant_Requirements>());
-            requirementMap[edgedancerDefName].Add(Props.Req_0_1, new Radiant_Requirements());
-            requirementMap[edgedancerDefName].Add(Props.Req_1_2, new Radiant_Requirements());
-            requirementMap[edgedancerDefName][Props.Req_1_2].IsSatisfied = true; // for now it is true default
+        //TRUTHWATCHER
+        string? truthwatcherDefName = CosmereRosharDefs.WhtwlRadiantTruthwatcher.defName;
+        requirementMap.Add(truthwatcherDefName, new Dictionary<string, RadiantRequirements>());
+        requirementMap[truthwatcherDefName].Add(this.props.req01, new RadiantRequirements());
+        requirementMap[truthwatcherDefName].Add(this.props.req12, new RadiantRequirements());
+        requirementMap[truthwatcherDefName].Add(this.props.req23, new RadiantRequirements());
+        requirementMap[truthwatcherDefName].Add(this.props.req34, new RadiantRequirements());
+        requirementMap[truthwatcherDefName][this.props.req23].isSatisfied = true; // for now it is true default
+        requirementMap[truthwatcherDefName][this.props.req34].isSatisfied = true; // for now it is true default
 
-            //SKYBREAKER
-            string? skybreakerDefName = CosmereRosharDefs.whtwl_Radiant_Skybreaker.defName;
-            requirementMap.Add(skybreakerDefName, new Dictionary<string, Radiant_Requirements>());
-            requirementMap[skybreakerDefName].Add(Props.Req_0_1, new Radiant_Requirements());
-            requirementMap[skybreakerDefName].Add(Props.Req_1_2, new Radiant_Requirements());
-            requirementMap[skybreakerDefName].Add(Props.Req_2_3, new Radiant_Requirements());
-            requirementMap[skybreakerDefName].Add(Props.Req_3_4, new Radiant_Requirements());
-            requirementMap[skybreakerDefName][Props.Req_0_1].IsSatisfied = true; // for now it is true default
-            requirementMap[skybreakerDefName][Props.Req_1_2].IsSatisfied = true; // for now it is true default
-            requirementMap[skybreakerDefName][Props.Req_2_3].IsSatisfied = true; // for now it is true default
-            requirementMap[skybreakerDefName][Props.Req_3_4].IsSatisfied = true; // for now it is true default
+
+        //EDGEDANCER
+        string? edgedancerDefName = CosmereRosharDefs.WhtwlRadiantEdgedancer.defName;
+        requirementMap.Add(edgedancerDefName, new Dictionary<string, RadiantRequirements>());
+        requirementMap[edgedancerDefName].Add(this.props.req01, new RadiantRequirements());
+        requirementMap[edgedancerDefName].Add(this.props.req12, new RadiantRequirements());
+        requirementMap[edgedancerDefName][this.props.req12].isSatisfied = true; // for now it is true default
+
+        //SKYBREAKER
+        string? skybreakerDefName = CosmereRosharDefs.WhtwlRadiantSkybreaker.defName;
+        requirementMap.Add(skybreakerDefName, new Dictionary<string, RadiantRequirements>());
+        requirementMap[skybreakerDefName].Add(this.props.req01, new RadiantRequirements());
+        requirementMap[skybreakerDefName].Add(this.props.req12, new RadiantRequirements());
+        requirementMap[skybreakerDefName].Add(this.props.req23, new RadiantRequirements());
+        requirementMap[skybreakerDefName].Add(this.props.req34, new RadiantRequirements());
+        requirementMap[skybreakerDefName][this.props.req01].isSatisfied = true; // for now it is true default
+        requirementMap[skybreakerDefName][this.props.req12].isSatisfied = true; // for now it is true default
+        requirementMap[skybreakerDefName][this.props.req23].isSatisfied = true; // for now it is true default
+        requirementMap[skybreakerDefName][this.props.req34].isSatisfied = true; // for now it is true default
+    }
+
+    public RadiantRequirements GetRequirements(TraitDef trait, string req) {
+        if (requirementMap[trait.defName].ContainsKey(req)) {
+            return requirementMap?[trait.defName]?[req];
         }
 
-        public Radiant_Requirements GetRequirements(TraitDef trait, string req) {
-            if (requirementMap[trait.defName].ContainsKey(req)) {
-                return requirementMap?[trait.defName]?[req];
+        return requirementMap[trait.defName][props.req01];
+    }
+
+    public RadiantRequirements GetRequirementsEntry() {
+        return requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][props.req01];
+    }
+}
+
+
+public static class WhtwlRadiantNeedLevelupChecker {
+    public static void UpdateIsSatisfiedReq1_2(PawnStats pawnStats) {
+        RadiantRequirements? windrunnerRequirement =
+            pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props.req12];
+        if (windrunnerRequirement.count >= 1 && pawnStats.patientSaved) {
+            windrunnerRequirement.isSatisfied = true;
+        }
+
+        RadiantRequirements? truthwatcherRequirement =
+            pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantTruthwatcher.defName][pawnStats.props.req12];
+        if (truthwatcherRequirement.count >= 1 && pawnStats.patientSaved) {
+            truthwatcherRequirement.isSatisfied = true;
+        }
+    }
+
+    public static void UpdateIsSatisfiedReq2_3(PawnStats pawnStats) {
+        //helped enemy in need
+        RadiantRequirements? windrunnerRequirement =
+            pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props.req23];
+        if (windrunnerRequirement.count >= 1 && pawnStats.enemyPatientSaved) {
+            windrunnerRequirement.isSatisfied = true;
+        }
+    }
+
+    public static void UpdateIsSatisfiedReq3_4(PawnStats pawnStats) {
+        //ally with bond died even tho tried to save
+        RadiantRequirements? windrunnerRequirement =
+            pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props.req34];
+        windrunnerRequirement.isSatisfied = true;
+    }
+
+    public static void UpdateIsSatisfiedReq4_5(PawnStats pawnStats) {
+        //??
+    }
+}
+
+
+//Initial requirements, must have suffered crisis
+[HarmonyPatch(typeof(MentalBreaker), nameof(MentalBreaker.MentalBreakerTickInterval))]
+public static class WhtwlMentalBreakExperiences {
+    private static bool ColonistFound = false;
+
+    private static void Postfix(MentalBreaker instance, int delta, Pawn pawn) {
+        if (pawn.IsHashIntervalTick(100)) {
+            if (pawn.NonHumanlikeOrWildMan()) return;
+            if (pawn.IsColonist == false) return;
+            PawnStats pawnStats = pawn.GetComp<PawnStats>();
+            if (pawnStats != null && pawnStats.hasFormedBond == false) {
+                float increment = 0f;
+                if (instance.BreakExtremeIsImminent) {
+                    increment = 2.5f * CosmereRoshar.bondChanceMultiplier;
+                } else if (instance.BreakMajorIsImminent) {
+                    increment = 0.9f * CosmereRoshar.bondChanceMultiplier;
+                } else if (instance.BreakMinorIsImminent) {
+                    increment = 0.5f * CosmereRoshar.bondChanceMultiplier;
+                }
+
+                if (increment > 0f) {
+                    pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props
+                        .req01].value += increment;
+                }
+
+                pawnStats.doCheckWhenThisIsZero = (pawnStats.doCheckWhenThisIsZero + 1) % 100;
             }
-
-            return requirementMap[trait.defName][Props.Req_0_1];
-        }
-
-        public Radiant_Requirements GetRequirementsEntry() {
-            return requirementMap[CosmereRosharDefs.whtwl_Radiant_Windrunner.defName][Props.Req_0_1];
         }
     }
 }
 
 
-namespace CosmereRoshar {
-    public static class Whtwl_RadiantNeedLevelupChecker {
-        public static void UpdateIsSatisfiedReq1_2(PawnStats pawnStats) {
-            Radiant_Requirements? windrunnerRequirement =
-                pawnStats.requirementMap[CosmereRosharDefs.whtwl_Radiant_Windrunner.defName][pawnStats.Props.Req_1_2];
-            if (windrunnerRequirement.Count >= 1 && pawnStats.PatientSaved) {
-                windrunnerRequirement.IsSatisfied = true;
+////second requirements, must help people in need
+[HarmonyPatch(typeof(TendUtility), nameof(TendUtility.DoTend))]
+public static class WhtwlHelpSomeoneInNeed {
+    private static void Postfix(Pawn doctor, Pawn patient, Medicine medicine) {
+        if (doctor == null || patient.NonHumanlikeOrWildMan() || doctor == patient) {
+            return;
+        }
+
+        PawnStats pawnStats = doctor.GetComp<PawnStats>();
+
+        if (pawnStats != null) {
+            // WINDRUNNER
+            RadiantRequirements? windrunnerRequirement12 =
+                pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][
+                    pawnStats.props.req12];
+            if (!pawnStats.patientList.Contains(patient)) {
+                pawnStats.patientList.Add(patient);
             }
 
-            Radiant_Requirements? truthwatcherRequirement =
-                pawnStats.requirementMap[CosmereRosharDefs.whtwl_Radiant_Truthwatcher.defName][pawnStats.Props.Req_1_2];
-            if (truthwatcherRequirement.Count >= 1 && pawnStats.PatientSaved) {
-                truthwatcherRequirement.IsSatisfied = true;
+            windrunnerRequirement12.count += 1;
+
+            //2_3
+            if (patient.IsPrisoner) {
+                RadiantRequirements? windrunnerRequirement23 =
+                    pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props
+                        .req23];
+                windrunnerRequirement23.count += 1;
             }
-        }
 
-        public static void UpdateIsSatisfiedReq2_3(PawnStats pawnStats) {
-            //helped enemy in need
-            Radiant_Requirements? windrunnerRequirement =
-                pawnStats.requirementMap[CosmereRosharDefs.whtwl_Radiant_Windrunner.defName][pawnStats.Props.Req_2_3];
-            if (windrunnerRequirement.Count >= 1 && pawnStats.EnemyPatientSaved) {
-                windrunnerRequirement.IsSatisfied = true;
-            }
-        }
-
-        public static void UpdateIsSatisfiedReq3_4(PawnStats pawnStats) {
-            //ally with bond died even tho tried to save
-            Radiant_Requirements? windrunnerRequirement =
-                pawnStats.requirementMap[CosmereRosharDefs.whtwl_Radiant_Windrunner.defName][pawnStats.Props.Req_3_4];
-            windrunnerRequirement.IsSatisfied = true;
-        }
-
-        public static void UpdateIsSatisfiedReq4_5(PawnStats pawnStats) {
-            //??
-        }
-    }
-
-
-    //Initial requirements, must have suffered crisis
-    [HarmonyPatch(typeof(MentalBreaker), nameof(MentalBreaker.MentalBreakerTickInterval))]
-    public static class Whtwl_MentalBreakExperiences {
-        private static bool colonistFound = false;
-
-        private static void Postfix(MentalBreaker __instance, int delta, Pawn ___pawn) {
-            if (___pawn.IsHashIntervalTick(100)) {
-                if (___pawn.NonHumanlikeOrWildMan()) return;
-                if (___pawn.IsColonist == false) return;
-                PawnStats pawnStats = ___pawn.GetComp<PawnStats>();
-                if (pawnStats != null && pawnStats.hasFormedBond == false) {
-                    float increment = 0f;
-                    if (__instance.BreakExtremeIsImminent) {
-                        increment = 2.5f * CosmereRoshar.BondChanceMultiplier;
-                    } else if (__instance.BreakMajorIsImminent) {
-                        increment = 0.9f * CosmereRoshar.BondChanceMultiplier;
-                    } else if (__instance.BreakMinorIsImminent) {
-                        increment = 0.5f * CosmereRoshar.BondChanceMultiplier;
-                    }
-
-                    if (increment > 0f) {
-                        pawnStats.requirementMap[CosmereRosharDefs.whtwl_Radiant_Windrunner.defName][pawnStats.Props
-                            .Req_0_1].Value += increment;
-                    }
-
-                    pawnStats.doCheckWhenThisIsZero = (pawnStats.doCheckWhenThisIsZero + 1) % 100;
-                }
+            // TRUTHWATCHER
+            RadiantRequirements? truthwatcherRequirement =
+                pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantTruthwatcher.defName][pawnStats.props
+                    .req12];
+            truthwatcherRequirement.count += 1;
+            if (truthwatcherRequirement.count >= 25 && pawnStats.patientSaved) {
+                truthwatcherRequirement.isSatisfied = true;
             }
         }
     }
+}
 
+//add class to check for eligible that both can use, and call from both!
 
-    ////second requirements, must help people in need
-    [HarmonyPatch(typeof(TendUtility), nameof(TendUtility.DoTend))]
-    public static class Whtwl_HelpSomeoneInNeed {
-        private static void Postfix(Pawn doctor, Pawn patient, Medicine medicine) {
-            if (doctor == null || patient.NonHumanlikeOrWildMan() || doctor == patient) {
+[HarmonyPatch(typeof(Pawn_HealthTracker))]
+[HarmonyPatch("HealthTick")]
+public static class PatchPawnHealthTrackerHealthTick {
+    private static void Postfix(Pawn_HealthTracker instance, Pawn pawn) {
+        if (pawn.IsHashIntervalTick(100)) {
+            if (pawn == null || pawn.NonHumanlikeOrWildMan()) {
                 return;
             }
 
-            PawnStats pawnStats = doctor.GetComp<PawnStats>();
+            PawnStats pawnStats = pawn.GetComp<PawnStats>();
 
-            if (pawnStats != null) {
-                // WINDRUNNER
-                Radiant_Requirements? windrunnerRequirement1_2 =
-                    pawnStats.requirementMap[CosmereRosharDefs.whtwl_Radiant_Windrunner.defName][
-                        pawnStats.Props.Req_1_2];
-                if (!pawnStats.PatientList.Contains(patient)) {
-                    pawnStats.PatientList.Add(patient);
+            List<Pawn> patientsToRemove = new List<Pawn>();
+            foreach (Pawn patient in pawnStats.patientList) {
+                if (patient == null) {
+                    patientsToRemove.Add(patient);
+                    continue;
                 }
 
-                windrunnerRequirement1_2.Count += 1;
+                if (patient.health.Dead && patient.IsPrisoner == false) {
+                    pawnStats.patientDied = true;
+                    pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props
+                        .req34].isSatisfied = true;
+                    patientsToRemove.Add(patient);
+                } else if (NeedsNoTending(patient)) {
+                    pawnStats.patientSaved = true;
+                    if (patient.IsPrisoner) {
+                        pawnStats.enemyPatientSaved = true;
+                    }
 
-                //2_3
-                if (patient.IsPrisoner) {
-                    Radiant_Requirements? windrunnerRequirement2_3 =
-                        pawnStats.requirementMap[CosmereRosharDefs.whtwl_Radiant_Windrunner.defName][pawnStats.Props
-                            .Req_2_3];
-                    windrunnerRequirement2_3.Count += 1;
+                    patientsToRemove.Add(patient);
                 }
+            }
 
-                // TRUTHWATCHER
-                Radiant_Requirements? truthwatcherRequirement =
-                    pawnStats.requirementMap[CosmereRosharDefs.whtwl_Radiant_Truthwatcher.defName][pawnStats.Props
-                        .Req_1_2];
-                truthwatcherRequirement.Count += 1;
-                if (truthwatcherRequirement.Count >= 25 && pawnStats.PatientSaved) {
-                    truthwatcherRequirement.IsSatisfied = true;
-                }
+            foreach (Pawn? patient in patientsToRemove) {
+                pawnStats.patientList.Remove(patient);
             }
         }
     }
 
-    //add class to check for eligible that both can use, and call from both!
-
-    [HarmonyPatch(typeof(Pawn_HealthTracker))]
-    [HarmonyPatch("HealthTick")]
-    public static class Patch_Pawn_HealthTracker_HealthTick {
-        private static void Postfix(Pawn_HealthTracker __instance, Pawn ___pawn) {
-            if (___pawn.IsHashIntervalTick(100)) {
-                if (___pawn == null || ___pawn.NonHumanlikeOrWildMan()) {
-                    return;
-                }
-
-                PawnStats pawnStats = ___pawn.GetComp<PawnStats>();
-
-                List<Pawn> patientsToRemove = new List<Pawn>();
-                foreach (Pawn patient in pawnStats.PatientList) {
-                    if (patient == null) {
-                        patientsToRemove.Add(patient);
-                        continue;
-                    }
-
-                    if (patient.health.Dead && patient.IsPrisoner == false) {
-                        pawnStats.PatientDied = true;
-                        pawnStats.requirementMap[CosmereRosharDefs.whtwl_Radiant_Windrunner.defName][pawnStats.Props
-                            .Req_3_4].IsSatisfied = true;
-                        patientsToRemove.Add(patient);
-                    } else if (NeedsNoTending(patient)) {
-                        pawnStats.PatientSaved = true;
-                        if (patient.IsPrisoner) {
-                            pawnStats.EnemyPatientSaved = true;
-                        }
-
-                        patientsToRemove.Add(patient);
-                    }
-                }
-
-                foreach (Pawn? patient in patientsToRemove) {
-                    pawnStats.PatientList.Remove(patient);
-                }
-            }
-        }
-
-        private static bool NeedsNoTending(Pawn pawn) {
-            return !pawn.health.HasHediffsNeedingTendByPlayer() && !HealthAIUtility.ShouldSeekMedicalRest(pawn);
-        }
+    private static bool NeedsNoTending(Pawn pawn) {
+        return !pawn.health.HasHediffsNeedingTendByPlayer() && !HealthAIUtility.ShouldSeekMedicalRest(pawn);
     }
 }

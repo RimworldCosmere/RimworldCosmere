@@ -1,24 +1,22 @@
 ﻿using Verse;
 
-namespace CosmereRoshar {
-    public class CompFabrialCage : ThingComp {
-        public CompProperties_FabrialCage Props => (CompProperties_FabrialCage)props;
+namespace CosmereRoshar.Comps.Fabrials;
+
+public class CompFabrialCage : ThingComp {
+    public CompPropertiesFabrialCage props => (CompPropertiesFabrialCage)base.props;
 
 
-        public override void PostSpawnSetup(bool respawningAfterLoad) {
-            base.PostSpawnSetup(respawningAfterLoad);
-        }
+    public override void PostSpawnSetup(bool respawningAfterLoad) {
+        base.PostSpawnSetup(respawningAfterLoad);
+    }
 
-        public override void PostExposeData() {
-            base.PostExposeData();
-        }
+    public override void PostExposeData() {
+        base.PostExposeData();
     }
 }
 
-namespace CosmereRoshar {
-    public class CompProperties_FabrialCage : CompProperties {
-        public CompProperties_FabrialCage() {
-            compClass = typeof(CompFabrialCage);
-        }
+public class CompPropertiesFabrialCage : CompProperties {
+    public CompPropertiesFabrialCage() {
+        compClass = typeof(CompFabrialCage);
     }
 }

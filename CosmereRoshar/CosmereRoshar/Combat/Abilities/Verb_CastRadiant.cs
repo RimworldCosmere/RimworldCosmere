@@ -1,8 +1,8 @@
 ﻿using RimWorld;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities;
 
-public class Verb_CastRadiant : Verb_CastAbility {
+public class VerbCastRadiant : Verb_CastAbility {
     //public override bool IsApplicableTo(LocalTargetInfo target, bool showMessages = false) {
     //    // Check if ability can be applied
     //    if (!base.IsApplicableTo(target, showMessages)) {

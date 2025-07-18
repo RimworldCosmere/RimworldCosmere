@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using CosmereRoshar.Comps.Fabrials;
+using CosmereRoshar.Comps.Gems;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Jobs;
 
-public class Toils_Refuel_Fabrial {
+public class ToilsRefuelFabrial {
     public static Toil SwapInNewGemstone(TargetIndex gemInd, TargetIndex fabrialInd) {
         Toil toil = ToilMaker.MakeToil();
         toil.initAction = delegate {
@@ -13,21 +15,21 @@ public class Toils_Refuel_Fabrial {
             Thing gemstone = pawn.CurJob.GetTarget(gemInd).Thing;
 
 
-            if (isHeatrial(fabrial)) {
-                doRemoveToil(fabrial.TryGetComp<CompHeatrial>());
-                doReplaceToil(fabrial.TryGetComp<CompHeatrial>(), gemstone);
-            } else if (isSprenTrapper(fabrial)) {
-                doRemoveToil(fabrial.TryGetComp<CompSprenTrapper>());
-                doReplaceToil(fabrial.TryGetComp<CompSprenTrapper>(), gemstone);
-            } else if (isBasicAugmenterFabrial(fabrial)) {
-                doRemoveToil(fabrial.TryGetComp<CompBasicFabrialAugumenter>());
-                doReplaceToil(fabrial.TryGetComp<CompBasicFabrialAugumenter>(), gemstone);
-            } else if (isBasicDiminisherFabrial(fabrial)) {
-                doRemoveToil(fabrial.TryGetComp<CompBasicFabrialDiminisher>());
-                doReplaceToil(fabrial.TryGetComp<CompBasicFabrialDiminisher>(), gemstone);
-            } else if (isFabrialPowerGenerator(fabrial)) {
-                doRemoveToil(fabrial.TryGetComp<CompFabrialPowerGenerator>());
-                doReplaceToil(fabrial.TryGetComp<CompFabrialPowerGenerator>(), gemstone);
+            if (IsHeatrial(fabrial)) {
+                DoRemoveToil(fabrial.TryGetComp<CompHeatrial>());
+                DoReplaceToil(fabrial.TryGetComp<CompHeatrial>(), gemstone);
+            } else if (IsSprenTrapper(fabrial)) {
+                DoRemoveToil(fabrial.TryGetComp<CompSprenTrapper>());
+                DoReplaceToil(fabrial.TryGetComp<CompSprenTrapper>(), gemstone);
+            } else if (IsBasicAugmenterFabrial(fabrial)) {
+                DoRemoveToil(fabrial.TryGetComp<CompBasicFabrialAugumenter>());
+                DoReplaceToil(fabrial.TryGetComp<CompBasicFabrialAugumenter>(), gemstone);
+            } else if (IsBasicDiminisherFabrial(fabrial)) {
+                DoRemoveToil(fabrial.TryGetComp<CompBasicFabrialDiminisher>());
+                DoReplaceToil(fabrial.TryGetComp<CompBasicFabrialDiminisher>(), gemstone);
+            } else if (IsFabrialPowerGenerator(fabrial)) {
+                DoRemoveToil(fabrial.TryGetComp<CompFabrialPowerGenerator>());
+                DoReplaceToil(fabrial.TryGetComp<CompFabrialPowerGenerator>(), gemstone);
             }
         };
 
@@ -57,16 +59,16 @@ public class Toils_Refuel_Fabrial {
             Pawn pawn = toil.actor;
             Thing fabrial = pawn.CurJob.GetTarget(fabrialInd).Thing;
 
-            if (isHeatrial(fabrial)) {
-                doRemoveToil(fabrial.TryGetComp<CompHeatrial>());
-            } else if (isSprenTrapper(fabrial)) {
-                doRemoveToil(fabrial.TryGetComp<CompSprenTrapper>());
-            } else if (isBasicAugmenterFabrial(fabrial)) {
-                doRemoveToil(fabrial.TryGetComp<CompBasicFabrialAugumenter>());
-            } else if (isBasicDiminisherFabrial(fabrial)) {
-                doRemoveToil(fabrial.TryGetComp<CompBasicFabrialDiminisher>());
-            } else if (isFabrialPowerGenerator(fabrial)) {
-                doRemoveToil(fabrial.TryGetComp<CompFabrialPowerGenerator>());
+            if (IsHeatrial(fabrial)) {
+                DoRemoveToil(fabrial.TryGetComp<CompHeatrial>());
+            } else if (IsSprenTrapper(fabrial)) {
+                DoRemoveToil(fabrial.TryGetComp<CompSprenTrapper>());
+            } else if (IsBasicAugmenterFabrial(fabrial)) {
+                DoRemoveToil(fabrial.TryGetComp<CompBasicFabrialAugumenter>());
+            } else if (IsBasicDiminisherFabrial(fabrial)) {
+                DoRemoveToil(fabrial.TryGetComp<CompBasicFabrialDiminisher>());
+            } else if (IsFabrialPowerGenerator(fabrial)) {
+                DoRemoveToil(fabrial.TryGetComp<CompFabrialPowerGenerator>());
             }
         };
 
@@ -75,71 +77,71 @@ public class Toils_Refuel_Fabrial {
     }
 
 
-    private static void doReplaceToil<T>(T fabComp, Thing gemstone) where T : IGemstoneHandler {
+    private static void DoReplaceToil<T>(T fabComp, Thing gemstone) where T : IGemstoneHandler {
         fabComp.AddGemstone(gemstone as ThingWithComps);
     }
 
-    private static void doRemoveToil<T>(T fabComp) where T : IGemstoneHandler {
+    private static void DoRemoveToil<T>(T fabComp) where T : IGemstoneHandler {
         fabComp.RemoveGemstone();
     }
 
-    private static bool isGemstone(Thing gemstone) {
+    private static bool IsGemstone(Thing gemstone) {
         CompCutGemstone fabComp = gemstone.TryGetComp<CompCutGemstone>();
         return fabComp != null;
     }
 
-    private static bool isFabrialCage(Thing gemstone) {
+    private static bool IsFabrialCage(Thing gemstone) {
         CompFabrialCage fabComp = gemstone.TryGetComp<CompFabrialCage>();
         return fabComp != null;
     }
 
-    private static bool isHeatrial(Thing fabrial) {
+    private static bool IsHeatrial(Thing fabrial) {
         CompHeatrial fabComp = fabrial.TryGetComp<CompHeatrial>();
         return fabComp != null;
     }
 
-    private static bool isSprenTrapper(Thing fabrial) {
+    private static bool IsSprenTrapper(Thing fabrial) {
         CompSprenTrapper fabComp = fabrial.TryGetComp<CompSprenTrapper>();
         return fabComp != null;
     }
 
-    private static bool isBasicAugmenterFabrial(Thing fabrial) {
+    private static bool IsBasicAugmenterFabrial(Thing fabrial) {
         CompBasicFabrialAugumenter fabComp = fabrial.TryGetComp<CompBasicFabrialAugumenter>();
         return fabComp != null;
     }
 
-    private static bool isBasicDiminisherFabrial(Thing fabrial) {
+    private static bool IsBasicDiminisherFabrial(Thing fabrial) {
         CompBasicFabrialDiminisher fabComp = fabrial.TryGetComp<CompBasicFabrialDiminisher>();
         return fabComp != null;
     }
 
-    private static bool isFabrialPowerGenerator(Thing fabrial) {
+    private static bool IsFabrialPowerGenerator(Thing fabrial) {
         CompFabrialPowerGenerator fabComp = fabrial.TryGetComp<CompFabrialPowerGenerator>();
         return fabComp != null;
     }
 }
 
-public class JobDriver_AddGemToFabrial : JobDriver {
+public class JobDriverAddGemToFabrial : JobDriver {
     private const TargetIndex FabrialIndex = TargetIndex.A;
     private const TargetIndex GemIndex = TargetIndex.B;
     public const int ReGemmingDuration = 240;
 
 
-    protected Thing Fabrial => job.GetTarget(FabrialIndex).Thing;
-    protected Thing Gemstone => job.GetTarget(GemIndex).Thing;
+    protected Thing fabrial => job.GetTarget(FabrialIndex).Thing;
+    protected Thing gemstone => job.GetTarget(GemIndex).Thing;
 
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        return pawn.Reserve(Fabrial, job, 1, -1, null, errorOnFailed) &&
-               pawn.Reserve(Gemstone, job, 1, -1, null, errorOnFailed);
+        return pawn.Reserve(fabrial, job, 1, -1, null, errorOnFailed) &&
+               pawn.Reserve(gemstone, job, 1, -1, null, errorOnFailed);
     }
 
 
     protected override IEnumerable<Toil> MakeNewToils() {
         this.FailOnDespawnedNullOrForbidden(FabrialIndex);
 
-        AddFailCondition(() => Fabrial == null);
-        AddFailCondition(() => Gemstone == null);
+        AddFailCondition(() => fabrial == null);
+        AddFailCondition(() => gemstone == null);
 
         yield return Toils_General.DoAtomic(delegate { job.count = 1; });
 
@@ -154,27 +156,27 @@ public class JobDriver_AddGemToFabrial : JobDriver {
             .FailOnDestroyedNullOrForbidden(FabrialIndex)
             .FailOnCannotTouch(FabrialIndex, PathEndMode.Touch)
             .WithProgressBarToilDelay(FabrialIndex);
-        yield return Toils_Refuel_Fabrial.SwapInNewGemstone(GemIndex, FabrialIndex); //custom toil
+        yield return ToilsRefuelFabrial.SwapInNewGemstone(GemIndex, FabrialIndex); //custom toil
     }
 }
 
-public class JobDriver_RemoveGemFromFabrial : JobDriver {
+public class JobDriverRemoveGemFromFabrial : JobDriver {
     private const TargetIndex FabrialIndex = TargetIndex.A;
     public const int JobDuration = 75;
 
 
-    protected Thing Fabrial => job.GetTarget(FabrialIndex).Thing;
+    protected Thing fabrial => job.GetTarget(FabrialIndex).Thing;
 
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        return pawn.Reserve(Fabrial, job, 1, -1, null, errorOnFailed);
+        return pawn.Reserve(fabrial, job, 1, -1, null, errorOnFailed);
     }
 
 
     protected override IEnumerable<Toil> MakeNewToils() {
         this.FailOnDespawnedNullOrForbidden(FabrialIndex);
 
-        AddFailCondition(() => Fabrial == null);
+        AddFailCondition(() => fabrial == null);
 
         yield return Toils_General.DoAtomic(delegate { job.count = 1; });
 
@@ -183,6 +185,6 @@ public class JobDriver_RemoveGemFromFabrial : JobDriver {
             .FailOnDestroyedNullOrForbidden(FabrialIndex)
             .FailOnCannotTouch(FabrialIndex, PathEndMode.Touch)
             .WithProgressBarToilDelay(FabrialIndex);
-        yield return Toils_Refuel_Fabrial.RemoveGemstone(FabrialIndex); //custom toil
+        yield return ToilsRefuelFabrial.RemoveGemstone(FabrialIndex); //custom toil
     }
 }

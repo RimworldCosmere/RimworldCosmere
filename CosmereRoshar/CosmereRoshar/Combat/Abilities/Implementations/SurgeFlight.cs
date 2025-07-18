@@ -1,22 +1,25 @@
 ﻿using System;
+using CosmereRoshar.Comp;
 using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Comps;
+using CosmereRoshar.Need;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities.Implementations;
 
 /// WIND RUNNER FLIGHT
-public class CompProperties_AbilityWindRunnerFlight : CompProperties_AbilityEffect {
+public class CompPropertiesAbilityWindRunnerFlight : CompProperties_AbilityEffect {
     public float stormLightCost;
     public ThingDef thingDef;
 
-    public CompProperties_AbilityWindRunnerFlight() {
-        compClass = typeof(CompAbilityEffect_AbilityWindRunnerFlight);
+    public CompPropertiesAbilityWindRunnerFlight() {
+        compClass = typeof(CompAbilityEffectAbilityWindRunnerFlight);
     }
 }
 
-public class CompAbilityEffect_AbilityWindRunnerFlight : CompAbilityEffect {
-    public new CompProperties_AbilityWindRunnerFlight Props => props as CompProperties_AbilityWindRunnerFlight;
+public class CompAbilityEffectAbilityWindRunnerFlight : CompAbilityEffect {
+    public new CompPropertiesAbilityWindRunnerFlight props => ((AbilityComp)this).props as CompPropertiesAbilityWindRunnerFlight;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target
@@ -26,7 +29,7 @@ public class CompAbilityEffect_AbilityWindRunnerFlight : CompAbilityEffect {
         }
 
         // 2) Validate the "flyer" ThingDef
-        if (Props.thingDef == null) {
+        if (props.thingDef == null) {
             Log.Error("[flight] No valid flyer ThingDef to spawn!");
             return;
         }
@@ -39,20 +42,20 @@ public class CompAbilityEffect_AbilityWindRunnerFlight : CompAbilityEffect {
         double distance = Math.Sqrt(
             Math.Pow(target.Cell.x - caster.Position.x, 2) + Math.Pow(target.Cell.z - caster.Position.z, 2)
         );
-        float totalCost = (float)(Props.stormLightCost * distance);
+        float totalCost = (float)(props.stormLightCost * distance);
 
-        if (caster.GetComp<CompStormlight>() == null || caster.GetComp<CompStormlight>().Stormlight < totalCost) {
+        if (caster.GetComp<Stormlight>() == null || caster.GetComp<Stormlight>().currentStormlight < totalCost) {
             return;
         }
 
-        caster.GetComp<CompStormlight>().drawStormlight(totalCost);
+        caster.GetComp<Stormlight>().DrawStormlight(totalCost);
 
         // 3) Fling the target
-        flightFunction(caster.Map, target.Cell, distance);
+        FlightFunction(caster.Map, target.Cell, distance);
     }
 
 
-    private void flightFunction(Map map, IntVec3 cell, double distance) {
+    private void FlightFunction(Map map, IntVec3 cell, double distance) {
         Pawn targetPawn = parent.pawn;
         if (targetPawn == null) {
             return;
@@ -60,7 +63,7 @@ public class CompAbilityEffect_AbilityWindRunnerFlight : CompAbilityEffect {
 
         //Log.Message($"TargetPawn: {targetPawn.Name}");
         PawnFlyer flyer = PawnFlyer.MakeFlyer(
-            Props.thingDef, // must have the <pawnFlyer> XML extension
+            props.thingDef, // must have the <pawnFlyer> XML extension
             targetPawn, // the Pawn to fly
             cell, // an IntVec3 on the same map
             null, // optional visual effect
@@ -71,6 +74,6 @@ public class CompAbilityEffect_AbilityWindRunnerFlight : CompAbilityEffect {
             LocalTargetInfo.Invalid
         );
         GenSpawn.Spawn(flyer, cell, map);
-        RadiantUtility.GiveRadiantXP(targetPawn, (float)distance / 10f);
+        RadiantUtility.GiveRadiantXp(targetPawn, (float)distance / 10f);
     }
 }

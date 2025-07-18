@@ -6,51 +6,51 @@ namespace CosmereRoshar;
 
 [DefOf]
 public static class CosmereRosharDefs {
-    public static NeedDef whtwl_RadiantProgress;
+    public static NeedDef WhtwlRadiantProgress;
 
-    public static TraitDef whtwl_Radiant_Windrunner;
-    public static TraitDef whtwl_Radiant_Truthwatcher;
-    public static TraitDef whtwl_Radiant_Edgedancer;
-    public static TraitDef whtwl_Radiant_Skybreaker;
+    public static TraitDef WhtwlRadiantWindrunner;
+    public static TraitDef WhtwlRadiantTruthwatcher;
+    public static TraitDef WhtwlRadiantEdgedancer;
+    public static TraitDef WhtwlRadiantSkybreaker;
 
-    public static AbilityDef whtwl_SummonShardblade;
-    public static AbilityDef whtwl_UnbondBlade;
-    public static AbilityDef whtwl_BreathStormlight;
-    public static AbilityDef whtwl_SurgeOfHealing;
-    public static AbilityDef whtwl_SurgeOfGrowth;
-    public static AbilityDef whtwl_SurgeOfAbrasion;
-    public static AbilityDef whtwl_SurgeOfDivision;
-    public static AbilityDef whtwl_LashingUpward;
-    public static AbilityDef whtwl_WindRunnerFlight;
+    public static AbilityDef WhtwlSummonShardblade;
+    public static AbilityDef WhtwlUnbondBlade;
+    public static AbilityDef WhtwlBreathStormlight;
+    public static AbilityDef WhtwlSurgeOfHealing;
+    public static AbilityDef WhtwlSurgeOfGrowth;
+    public static AbilityDef WhtwlSurgeOfAbrasion;
+    public static AbilityDef WhtwlSurgeOfDivision;
+    public static AbilityDef WhtwlLashingUpward;
+    public static AbilityDef WhtwlWindRunnerFlight;
 
     //JobDef
-    public static JobDef whtwl_RefuelSphereLamp;
-    public static JobDef whtwl_RefuelFabrial;
-    public static JobDef whtwl_RemoveFromFabrial;
-    public static JobDef whtwl_CastAbilityOnTarget;
+    public static JobDef WhtwlRefuelSphereLamp;
+    public static JobDef WhtwlRefuelFabrial;
+    public static JobDef WhtwlRemoveFromFabrial;
+    public static JobDef WhtwlCastAbilityOnTarget;
 
     //ThingDef
-    public static ThingDef whtwl_Apparel_SpherePouch;
-    public static ThingDef whtwl_SphereLamp_Wall;
-    public static ThingDef whtwl_FabrialCage_Pewter;
-    public static ThingDef whtwl_BasicFabrial_Augmenter;
+    public static ThingDef WhtwlApparelSpherePouch;
+    public static ThingDef WhtwlSphereLampWall;
+    public static ThingDef WhtwlFabrialCagePewter;
+    public static ThingDef WhtwlBasicFabrialAugmenter;
 
     // FABRIALS
-    public static ThingDef whtwl_Apparel_Fabrial_Painrial_Diminisher;
+    public static ThingDef WhtwlApparelFabrialPainrialDiminisher;
 
     // WEAPONS
-    public static ThingDef whtwl_MeleeWeapon_Shardblade;
+    public static ThingDef WhtwlMeleeWeaponShardblade;
 
 
     // HEDIFF
-    public static HediffDef whtwl_painrial_agument;
-    public static HediffDef whtwl_painrial_diminisher;
-    public static HediffDef whtwl_apparel_painrial_diminisher_hediff;
+    public static HediffDef WhtwlPainrialAgument;
+    public static HediffDef WhtwlPainrialDiminisher;
+    public static HediffDef WhtwlApparelPainrialDiminisherHediff;
 
-    public static HediffDef whtwl_logirial_agument;
-    public static HediffDef whtwl_logirial_diminisher;
+    public static HediffDef WhtwlLogirialAgument;
+    public static HediffDef WhtwlLogirialDiminisher;
 
-    public static HediffDef whtwl_surge_abrasion;
+    public static HediffDef WhtwlSurgeAbrasion;
 
 
     static CosmereRosharDefs() {
@@ -59,15 +59,15 @@ public static class CosmereRosharDefs {
 }
 
 public static class CosmereRosharUtilities {
-    public static List<TraitDef> RadiantTraits =>
+    public static List<TraitDef> radiantTraits =>
         new List<TraitDef> {
-            CosmereRosharDefs.whtwl_Radiant_Windrunner,
-            CosmereRosharDefs.whtwl_Radiant_Truthwatcher,
-            CosmereRosharDefs.whtwl_Radiant_Edgedancer,
-            CosmereRosharDefs.whtwl_Radiant_Skybreaker,
+            CosmereRosharDefs.WhtwlRadiantWindrunner,
+            CosmereRosharDefs.WhtwlRadiantTruthwatcher,
+            CosmereRosharDefs.WhtwlRadiantEdgedancer,
+            CosmereRosharDefs.WhtwlRadiantSkybreaker,
         };
 
-    public static List<ThingDef> RawGems =>
+    public static List<ThingDef> rawGems =>
         new List<ThingDef> {
             CosmereResources.ThingDefOf.RawDiamond,
             CosmereResources.ThingDefOf.RawGarnet,
@@ -76,7 +76,7 @@ public static class CosmereRosharUtilities {
             CosmereResources.ThingDefOf.RawEmerald,
         };
 
-    public static List<ThingDef> CutGems =>
+    public static List<ThingDef> cutGems =>
         new List<ThingDef> {
             CosmereResources.ThingDefOf.CutDiamond,
             CosmereResources.ThingDefOf.CutGarnet,

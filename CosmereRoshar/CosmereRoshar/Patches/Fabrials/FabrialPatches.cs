@@ -1,41 +1,43 @@
 ﻿using System.Collections.Generic;
+using CosmereRoshar.Comps.Fabrials;
+using CosmereRoshar.Comps.Gems;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Patches.Fabrials;
 
 [HarmonyPatch(typeof(Plant), "get_GrowthRate")]
 public static class CultivationSprenPatch {
-    private static readonly List<Building> activeLifeSprenBuildings = new List<Building>();
+    private static readonly List<Building> ActiveLifeSprenBuildings = new List<Building>();
 
 
     public static void RegisterBuilding(Building building) {
-        if (building.GetComp<CompBasicFabrialAugumenter>()?.CurrentSpren == Spren.Life) {
-            activeLifeSprenBuildings.Add(building);
-        } else if (building.GetComp<CompBasicFabrialDiminisher>()?.CurrentSpren == Spren.Life) {
-            activeLifeSprenBuildings.Add(building);
+        if (building.GetComp<CompBasicFabrialAugumenter>()?.currentSpren == Spren.Life) {
+            ActiveLifeSprenBuildings.Add(building);
+        } else if (building.GetComp<CompBasicFabrialDiminisher>()?.currentSpren == Spren.Life) {
+            ActiveLifeSprenBuildings.Add(building);
         }
     }
 
     public static void UnregisterBuilding(Building building) {
-        activeLifeSprenBuildings.Remove(building);
+        ActiveLifeSprenBuildings.Remove(building);
     }
 
-    public static void Postfix(Plant __instance, ref float __result) {
-        if (__instance.Spawned && IsNearLifeSprenBuilding(__instance) == 1) {
+    public static void Postfix(Plant instance, ref float result) {
+        if (instance.Spawned && IsNearLifeSprenBuilding(instance) == 1) {
             bool resting = true;
-            if (!(GenLocalDate.DayPercent(__instance) < 0.25f)) {
-                resting = GenLocalDate.DayPercent(__instance) > 0.8f;
+            if (!(GenLocalDate.DayPercent(instance) < 0.25f)) {
+                resting = GenLocalDate.DayPercent(instance) > 0.8f;
             }
 
-            if (__instance.LifeStage != PlantLifeStage.Growing || resting) {
-                __result *= 1f;
+            if (instance.LifeStage != PlantLifeStage.Growing || resting) {
+                result *= 1f;
             } else {
-                __result *= 1.25f;
+                result *= 1.25f;
             }
-        } else if (__instance.Spawned && IsNearLifeSprenBuilding(__instance) == 2) {
-            __result *= 0.25f;
+        } else if (instance.Spawned && IsNearLifeSprenBuilding(instance) == 2) {
+            result *= 0.25f;
         }
     }
 
@@ -44,17 +46,17 @@ public static class CultivationSprenPatch {
         if (map == null) return 0;
         IntVec3 plantPos = plant.Position;
 
-        foreach (Building? thing in activeLifeSprenBuildings) {
-            if (thing is Building_Fabrial_Basic_Augmenter building &&
+        foreach (Building? thing in ActiveLifeSprenBuildings) {
+            if (thing is BuildingFabrialBasicAugmenter building &&
                 plantPos.DistanceTo(building.Position) <= 5f) {
                 CompBasicFabrialAugumenter? comp = building.GetComp<CompBasicFabrialAugumenter>();
-                if (comp != null && comp.PowerOn && comp.CurrentSpren == Spren.Life) {
+                if (comp != null && comp.powerOn && comp.currentSpren == Spren.Life) {
                     return 1;
                 }
-            } else if (thing is Building_Fabrial_Basic_Diminisher diminisher &&
+            } else if (thing is BuildingFabrialBasicDiminisher diminisher &&
                        plantPos.DistanceTo(diminisher.Position) <= 5f) {
                 CompBasicFabrialDiminisher? comp = diminisher.GetComp<CompBasicFabrialDiminisher>();
-                if (comp != null && comp.PowerOn && comp.CurrentSpren == Spren.Life) {
+                if (comp != null && comp.powerOn && comp.currentSpren == Spren.Life) {
                     return 2;
                 }
             }

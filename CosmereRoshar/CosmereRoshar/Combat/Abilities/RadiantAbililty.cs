@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using CosmereRoshar.Combat.Abilities.Implementations;
+using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Comps.WeaponsAndArmor;
+using CosmereRoshar.Jobs;
+using CosmereRoshar.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities;
 
 public class RadiantAbility : Ability {
     private static readonly float MoteCastFadeTime = 0.4f;
@@ -20,7 +25,7 @@ public class RadiantAbility : Ability {
 
     public override IEnumerable<Command> GetGizmos() {
         if (gizmo == null) {
-            gizmo = new Command_RadiantAbility(this, pawn);
+            gizmo = new CommandRadiantAbility(this, pawn);
         }
 
         yield return gizmo;
@@ -79,11 +84,11 @@ public class RadiantAbility : Ability {
     }
 }
 
-public class Command_RadiantAbility : Command {
+public class CommandRadiantAbility : Command {
     private readonly Ability ability;
     private readonly Pawn pawn;
 
-    public Command_RadiantAbility(Ability ability, Pawn pawn) {
+    public CommandRadiantAbility(Ability ability, Pawn pawn) {
         this.ability = ability;
         this.pawn = pawn;
         defaultLabel = ability.def.label;
@@ -92,9 +97,9 @@ public class Command_RadiantAbility : Command {
     }
 
     private bool AbriasionCheck() {
-        if (ability.def == CosmereRosharDefs.whtwl_SurgeOfAbrasion) {
-            CompStormlight? comp = pawn.GetComp<CompStormlight>();
-            if (comp != null && comp.AbrasionActive) {
+        if (ability.def == CosmereRosharDefs.WhtwlSurgeOfAbrasion) {
+            Stormlight? comp = pawn.GetComp<Stormlight>();
+            if (comp is { abrasionActive: true }) {
                 return true;
             }
         }
@@ -103,14 +108,9 @@ public class Command_RadiantAbility : Command {
     }
 
     private bool BreathStormlightCheck() {
-        if (ability.def == CosmereRosharDefs.whtwl_BreathStormlight) {
-            CompStormlight? comp = pawn.GetComp<CompStormlight>();
-            if (comp != null && comp.m_BreathStormlight) {
-                return true;
-            }
-        }
-
-        return false;
+        if (ability.def != CosmereRosharDefs.WhtwlBreathStormlight) return false;
+        
+        return pawn.TryGetComp<Stormlight>() is { breathStormlight: true };
     }
 
     protected override GizmoResult GizmoOnGUIInt(Rect butRect, GizmoRenderParms parms) {
@@ -202,49 +202,49 @@ public class Command_RadiantAbility : Command {
 
     public override void ProcessInput(Event ev) {
         base.ProcessInput(ev);
-        bool hasRadiantTrait = pawn.story.traits.HasTrait(CosmereRosharDefs.whtwl_Radiant_Windrunner) ||
-                               pawn.story.traits.HasTrait(CosmereRosharDefs.whtwl_Radiant_Truthwatcher) ||
-                               pawn.story.traits.HasTrait(CosmereRosharDefs.whtwl_Radiant_Edgedancer) ||
-                               pawn.story.traits.HasTrait(CosmereRosharDefs.whtwl_Radiant_Skybreaker);
+        bool hasRadiantTrait = pawn.story.traits.HasTrait(CosmereRosharDefs.WhtwlRadiantWindrunner) ||
+                               pawn.story.traits.HasTrait(CosmereRosharDefs.WhtwlRadiantTruthwatcher) ||
+                               pawn.story.traits.HasTrait(CosmereRosharDefs.WhtwlRadiantEdgedancer) ||
+                               pawn.story.traits.HasTrait(CosmereRosharDefs.WhtwlRadiantSkybreaker);
 
         if (pawn.Drafted &&
             (hasRadiantTrait ||
-             pawn.GetAbilityComp<CompAbilityEffect_SpawnEquipment>(CosmereRosharDefs.whtwl_SummonShardblade.defName) !=
+             pawn.GetAbilityComp<CompAbilityEffectSpawnEquipment>(CosmereRosharDefs.WhtwlSummonShardblade.defName) !=
              null)) {
-            if (abilityToggleStormlight()) {
+            if (AbilityToggleStormlight()) {
                 return;
             }
 
-            if (abilitySummonShardblade()) {
+            if (AbilitySummonShardblade()) {
                 return;
             }
 
-            if (abilityLashingUpward()) {
+            if (AbilityLashingUpward()) {
                 return;
             }
 
-            if (abilityWindRunnerFlight()) {
+            if (AbilityWindRunnerFlight()) {
                 return;
             }
 
-            if (abilityHealSurge()) {
+            if (AbilityHealSurge()) {
                 return;
             }
 
-            if (abilityPlantGrowSurge()) {
+            if (AbilityPlantGrowSurge()) {
                 return;
             }
 
-            if (abilityAbrasionSurge()) {
+            if (AbilityAbrasionSurge()) {
                 return;
             }
 
-            if (abilityDivisionSurge()) { }
+            if (AbilityDivisionSurge()) { }
         }
     }
 
-    private bool abilityPlantGrowSurge() {
-        if (ability.def == CosmereRosharDefs.whtwl_SurgeOfGrowth) {
+    private bool AbilityPlantGrowSurge() {
+        if (ability.def == CosmereRosharDefs.WhtwlSurgeOfGrowth) {
             TargetingParameters tp = new TargetingParameters {
                 canTargetPawns = false,
                 canTargetAnimals = false,
@@ -267,8 +267,8 @@ public class Command_RadiantAbility : Command {
         return false;
     }
 
-    private bool abilityAbrasionSurge() {
-        if (ability.def == CosmereRosharDefs.whtwl_SurgeOfAbrasion) {
+    private bool AbilityAbrasionSurge() {
+        if (ability.def == CosmereRosharDefs.WhtwlSurgeOfAbrasion) {
             ability.Activate(pawn, pawn);
             return true;
         }
@@ -276,8 +276,8 @@ public class Command_RadiantAbility : Command {
         return false;
     }
 
-    private bool abilityDivisionSurge() {
-        if (ability.def == CosmereRosharDefs.whtwl_SurgeOfDivision) {
+    private bool AbilityDivisionSurge() {
+        if (ability.def == CosmereRosharDefs.WhtwlSurgeOfDivision) {
             TargetingParameters tp = new TargetingParameters {
                 canTargetPawns = true,
                 canTargetAnimals = true,
@@ -297,8 +297,8 @@ public class Command_RadiantAbility : Command {
         return false;
     }
 
-    private bool abilityHealSurge() {
-        if (ability.def == CosmereRosharDefs.whtwl_SurgeOfHealing) {
+    private bool AbilityHealSurge() {
+        if (ability.def == CosmereRosharDefs.WhtwlSurgeOfHealing) {
             TargetingParameters tp = new TargetingParameters {
                 canTargetPawns = true,
                 canTargetAnimals = true,
@@ -318,8 +318,8 @@ public class Command_RadiantAbility : Command {
         return false;
     }
 
-    private bool abilityToggleStormlight() {
-        if (ability.def == CosmereRosharDefs.whtwl_BreathStormlight) {
+    private bool AbilityToggleStormlight() {
+        if (ability.def == CosmereRosharDefs.WhtwlBreathStormlight) {
             ability.Activate(pawn, pawn);
             return true;
         }
@@ -327,8 +327,8 @@ public class Command_RadiantAbility : Command {
         return false;
     }
 
-    private bool abilitySummonShardblade() {
-        if (ability.def == CosmereRosharDefs.whtwl_SummonShardblade) {
+    private bool AbilitySummonShardblade() {
+        if (ability.def == CosmereRosharDefs.WhtwlSummonShardblade) {
             ability.Activate(pawn, pawn);
             return true;
         }
@@ -336,8 +336,8 @@ public class Command_RadiantAbility : Command {
         return false;
     }
 
-    private bool abilityLashingUpward() {
-        if (ability.def == CosmereRosharDefs.whtwl_LashingUpward) {
+    private bool AbilityLashingUpward() {
+        if (ability.def == CosmereRosharDefs.WhtwlLashingUpward) {
             TargetingParameters tp = new TargetingParameters {
                 canTargetPawns = true,
                 canTargetAnimals = false,
@@ -357,140 +357,126 @@ public class Command_RadiantAbility : Command {
         return false;
     }
 
-    private bool abilityWindRunnerFlight() {
-        if (ability.def == CosmereRosharDefs.whtwl_WindRunnerFlight) {
-            float cost = pawn
-                .GetAbilityComp<CompAbilityEffect_AbilityWindRunnerFlight>(
-                    CosmereRosharDefs.whtwl_WindRunnerFlight.defName
-                )
-                .Props.stormLightCost;
-            float distance = pawn.GetComp<CompStormlight>().Stormlight / cost;
-            TargetingParameters tp = new TargetingParameters {
-                canTargetPawns = true,
-                canTargetAnimals = true,
-                canTargetItems = true,
-                canTargetBuildings = true,
-                canTargetLocations = true,
-                mustBeSelectable = false,
-                validator = info => {
-                    return info.IsValid &&
-                           pawn != null &&
-                           pawn.Spawned &&
-                           pawn.Position.InHorDistOf(info.Cell, distance);
-                },
-            };
-            StartCustomTargeting(pawn, distance, tp, false);
-            return true;
-        }
-
-        return false;
+    private bool AbilityWindRunnerFlight() {
+        if (ability.def != CosmereRosharDefs.WhtwlWindRunnerFlight) return false;
+        
+        float cost = pawn
+            .GetAbilityComp<CompAbilityEffectAbilityWindRunnerFlight>(
+                CosmereRosharDefs.WhtwlWindRunnerFlight.defName
+            )
+            .props.stormLightCost;
+        float distance = pawn.GetComp<Stormlight>().currentStormlight / cost;
+        TargetingParameters tp = new TargetingParameters {
+            canTargetPawns = true,
+            canTargetAnimals = true,
+            canTargetItems = true,
+            canTargetBuildings = true,
+            canTargetLocations = true,
+            mustBeSelectable = false,
+            validator = info => info.IsValid &&
+                                pawn.Spawned &&
+                                pawn.Position.InHorDistOf(info.Cell, distance),
+        };
+        StartCustomTargeting(pawn, distance, tp, false);
+        return true;
     }
 
+    private void StartCustomTargeting(Pawn caster, float maxDistance, TargetingParameters tp, bool triggerAsJob = true) {
+        Find.Targeter.BeginTargeting(
+            tp,
+            MainAction,
+            HighlightAction,
+            TargetValidator,
+            caster,
+            null, // optional cleanup
+            null, // or use a custom icon
+            true,
+            OnGuiAction,
+            OnUpdateAction
+        );
+        return;
 
-    public void StartCustomTargeting(Pawn caster, float maxDistance, TargetingParameters tp, bool triggerAsJob = true) {
+        // This function checks if the user is allowed to pick 'info'
+        // Return 'true' if valid, 'false' if not
+        bool TargetValidator(LocalTargetInfo info) {
+            // Must be valid and within maxDistance
+            return info.IsValid && caster.Spawned;
+        }
+
+        // This runs each frame to highlight the hovered cell/thing
+        void HighlightAction(LocalTargetInfo info) {
+            // If it's valid, highlight it in green
+            if (info.IsValid) {
+                GenDraw.DrawTargetHighlight(info);
+            }
+        }
+
+        // Called each GUI frame after the default crosshair is drawn
+        // e.g. you can add a label if out of range
+        void OnGuiAction(LocalTargetInfo info) {
+            if (info.IsValid && !TargetValidator(info)) {
+                Widgets.MouseAttachedLabel("Out of range");
+            }
+        }
+
+        // Called each frame. We’ll draw a radius ring to show the cast range
+        void OnUpdateAction(LocalTargetInfo info) {
+            GlowCircleRenderer.DrawCustomCircle(caster, maxDistance, Color.cyan);
+        }
+
         // The main action to do once a valid target is chosen
-        Action<LocalTargetInfo> mainAction = chosenTarget => {
-            Job job = new Job_CastAbilityOnTarget(CosmereRosharDefs.whtwl_CastAbilityOnTarget, chosenTarget, ability);
+        void MainAction(LocalTargetInfo chosenTarget) {
+            Job job = new JobCastAbilityOnTarget(CosmereRosharDefs.WhtwlCastAbilityOnTarget, chosenTarget, ability);
             if (triggerAsJob) {
                 pawn.jobs.TryTakeOrderedJob(job);
             } else {
                 ability.Activate(chosenTarget, chosenTarget);
             }
-        };
+        }
+    }
 
-        // This runs each frame to highlight the hovered cell/thing
-        Action<LocalTargetInfo> highlightAction = info => {
-            // If it's valid, highlight it in green
-            if (info.IsValid) {
-                GenDraw.DrawTargetHighlight(info);
-            }
-        };
-
-        // This function checks if the user is allowed to pick 'info'
-        // Return 'true' if valid, 'false' if not
-        Func<LocalTargetInfo, bool> targetValidator = info => {
-            // Must be valid and within maxDistance
-            return info.IsValid &&
-                   caster.Spawned;
-        };
-
-        // Called each GUI frame after the default crosshair is drawn
-        // e.g. you can add a label if out of range
-        Action<LocalTargetInfo> onGuiAction = info => {
-            if (info.IsValid && !targetValidator(info)) {
-                Widgets.MouseAttachedLabel("Out of range");
-            }
-        };
-
-        // Called each frame. We’ll draw a radius ring to show the cast range
-        Action<LocalTargetInfo> onUpdateAction = info => {
-            GlowCircleRenderer.DrawCustomCircle(caster, maxDistance, Color.cyan);
-        };
-
+    public void StartCustomTargeting(Pawn caster, float maxDistance, TargetingParameters tp, Color color) {
         Find.Targeter.BeginTargeting(
             tp,
-            mainAction,
-            highlightAction,
-            targetValidator,
+            MainAction,
+            HighlightAction,
+            TargetValidator,
             caster,
             null, // optional cleanup
             null, // or use a custom icon
             true,
-            onGuiAction,
-            onUpdateAction
+            OnGuiAction,
+            OnUpdateAction
         );
-    }
-
-    public void StartCustomTargeting(Pawn caster, float maxDistance, TargetingParameters tp, Color color) {
-        // The main action to do once a valid target is chosen
-        Action<LocalTargetInfo> mainAction = chosenTarget => {
-            Vector3 mouseMapPos = UI.MouseMapPosition();
-            IntVec3 centerCell = mouseMapPos.ToIntVec3();
-            List<Plant> plantsInRadius = new List<Plant>();
-
-            foreach (IntVec3 cell in GenRadial.RadialCellsAround(centerCell, maxDistance, true)) {
-                if (cell.InBounds(pawn.Map)) {
-                    foreach (Thing thing in cell.GetThingList(pawn.Map)) {
-                        // Check if the Thing is a Plant
-                        if (thing is Plant plant) {
-                            ability.Activate(plant, plant);
-                        }
-                    }
-                }
-            }
-        };
+        return;
 
         // This runs each frame to highlight the hovered cell/thing
-        Action<LocalTargetInfo> highlightAction = info => {
+        void HighlightAction(LocalTargetInfo info) {
             // If it's valid, highlight it in green
             if (info.IsValid) {
                 GenDraw.DrawTargetHighlight(info);
             }
-        };
+        }
 
         // This function checks if the user is allowed to pick 'info'
         // Return 'true' if valid, 'false' if not
-        Func<LocalTargetInfo, bool> targetValidator = info => {
+        bool TargetValidator(LocalTargetInfo info) {
             // Must be valid and within maxDistance
-            return info.IsValid &&
-                   caster.Spawned &&
-                   caster.Position.InHorDistOf(info.Cell, maxDistance);
-        };
+            return info.IsValid && caster.Spawned && caster.Position.InHorDistOf(info.Cell, maxDistance);
+        }
 
         // Called each GUI frame after the default crosshair is drawn
         // e.g. you can add a label if out of range
-        Action<LocalTargetInfo> onGuiAction = info => {
-            if (info.IsValid && !targetValidator(info)) {
+        void OnGuiAction(LocalTargetInfo info) {
+            if (info.IsValid && !TargetValidator(info)) {
                 Widgets.MouseAttachedLabel("Out of range");
             }
-        };
+        }
 
         // Called each frame. We’ll draw a radius ring to show the cast range
-        Action<LocalTargetInfo> onUpdateAction = info => {
+        void OnUpdateAction(LocalTargetInfo info) {
             Vector3 mousePos = UI.MouseMapPosition();
-            double distance = Math.Sqrt(
-                Math.Pow(mousePos.x - caster.Position.x, 2) + Math.Pow(mousePos.z - caster.Position.z, 2)
-            );
+            double distance = Math.Sqrt(Math.Pow(mousePos.x - caster.Position.x, 2) + Math.Pow(mousePos.z - caster.Position.z, 2));
             if (distance - 0.5f > maxDistance) {
                 color = Color.red;
             } else {
@@ -498,20 +484,24 @@ public class Command_RadiantAbility : Command {
             }
 
             GlowCircleRenderer.DrawCustomCircle(UI.MouseMapPosition(), maxDistance, color);
-        };
+        }
 
-        Find.Targeter.BeginTargeting(
-            tp,
-            mainAction,
-            highlightAction,
-            targetValidator,
-            caster,
-            null, // optional cleanup
-            null, // or use a custom icon
-            true,
-            onGuiAction,
-            onUpdateAction
-        );
+        // The main action to do once a valid target is chosen
+        void MainAction(LocalTargetInfo chosenTarget) {
+            Vector3 mouseMapPos = UI.MouseMapPosition();
+            IntVec3 centerCell = mouseMapPos.ToIntVec3();
+            List<Plant> plantsInRadius = [];
+
+            foreach (IntVec3 cell in GenRadial.RadialCellsAround(centerCell, maxDistance, true)) {
+                if (!cell.InBounds(pawn.Map)) continue;
+                foreach (Thing thing in cell.GetThingList(pawn.Map)) {
+                    // Check if the Thing is a Plant
+                    if (thing is Plant plant) {
+                        ability.Activate(plant, plant);
+                    }
+                }
+            }
+        }
     }
 
     public override bool InheritInteractionsFrom(Gizmo other) {

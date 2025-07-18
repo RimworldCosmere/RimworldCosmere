@@ -1,16 +1,17 @@
-﻿using RimWorld;
+﻿using CosmereRoshar.Comp.Thing;
+using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities.Implementations;
 
-public class CompProperties_AbilitySurgeAbrasion : CompProperties_AbilityEffect {
-    public CompProperties_AbilitySurgeAbrasion() {
-        compClass = typeof(CompAbilityEffect_SurgeAbrasion);
+public class CompPropertiesAbilitySurgeAbrasion : CompProperties_AbilityEffect {
+    public CompPropertiesAbilitySurgeAbrasion() {
+        compClass = typeof(CompAbilityEffectSurgeAbrasion);
     }
 }
 
-public class CompAbilityEffect_SurgeAbrasion : CompAbilityEffect {
-    public new CompProperties_AbilitySurgeAbrasion Props => props as CompProperties_AbilitySurgeAbrasion;
+public class CompAbilityEffectSurgeAbrasion : CompAbilityEffect {
+    public new CompPropertiesAbilitySurgeAbrasion props => ((AbilityComp)this).props as CompPropertiesAbilitySurgeAbrasion;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target
@@ -26,11 +27,11 @@ public class CompAbilityEffect_SurgeAbrasion : CompAbilityEffect {
             return;
         }
 
-        if (caster.GetComp<CompStormlight>() == null) {
+        if (caster.GetComp<Stormlight>() == null) {
             Log.Error("[Abrasion surge] no stormlight comp!");
             return;
         }
 
-        caster.GetComp<CompStormlight>().toggleAbrasion();
+        caster.GetComp<Stormlight>().ToggleAbrasion();
     }
 }

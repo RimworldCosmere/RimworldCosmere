@@ -2,7 +2,7 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Patches;
 
 [StaticConstructorOnStartup]
 public static class HarmonyPatcher {
@@ -25,28 +25,28 @@ public static class HarmonyPatcher {
 }
 
 [StaticConstructorOnStartup]
-public static class Highstorm_StorytellerPatch {
-    private const int intervalTicks = 8 * 60000; // 1 in-game days
-    private const int warningOffsetTicks = 60000; // Half a day (0.5 * 60000 ticks)
-    private static int lastHighstormTick = 0;
+public static class HighstormStorytellerPatch {
+    private const int IntervalTicks = 8 * 60000; // 1 in-game days
+    private const int WarningOffsetTicks = 60000; // Half a day (0.5 * 60000 ticks)
+    private static int LastHighstormTick = 0;
 
 
-    static Highstorm_StorytellerPatch() {
+    static HighstormStorytellerPatch() {
         Harmony harmony = new Harmony("com.lucidMods.HighstormPatch");
         harmony.Patch(
             AccessTools.Method(typeof(Storyteller), "StorytellerTick"),
-            postfix: new HarmonyMethod(typeof(Highstorm_StorytellerPatch), nameof(StorytellerTick_Postfix))
+            postfix: new HarmonyMethod(typeof(HighstormStorytellerPatch), nameof(StorytellerTick_Postfix))
         );
     }
 
-    private static void StorytellerTick_Postfix(Storyteller __instance) {
+    private static void StorytellerTick_Postfix(Storyteller instance) {
         int currentTick = Find.TickManager.TicksGame;
 
-        if (currentTick % intervalTicks == intervalTicks - warningOffsetTicks) {
+        if (currentTick % IntervalTicks == IntervalTicks - WarningOffsetTicks) {
             ShowWarning();
         }
 
-        if (currentTick % intervalTicks == 0) {
+        if (currentTick % IntervalTicks == 0) {
             TryTriggerHighstorm();
         }
     }

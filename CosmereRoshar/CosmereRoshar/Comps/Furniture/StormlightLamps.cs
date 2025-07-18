@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CosmereRoshar.Comp;
+using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Comps.Apparel;
+using CosmereRoshar.Comps.Gems;
+using CosmereRoshar.ITabs;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Comps.Furniture;
 
 public class StormlightLamps : ThingComp, IFilterableComp {
     private bool deregisterAfterNewSphere = true;
@@ -14,9 +19,9 @@ public class StormlightLamps : ThingComp, IFilterableComp {
 
 
     private bool lightEnabled = true;
-    public float m_CurrentStormlight;
+    public float mCurrentStormlight;
 
-    private List<GemSize> sizeFilterList = new List<GemSize> {
+    private List<GemSize> sizeFilterListInt = new List<GemSize> {
         GemSize.Chip,
         GemSize.Mark,
         GemSize.Broam,
@@ -25,39 +30,39 @@ public class StormlightLamps : ThingComp, IFilterableComp {
     public List<Thing> storedSpheres = new List<Thing>(); // List of sphere stacks inside the pouch
 
 
-    public CompProperties_SphereLamp Props => (CompProperties_SphereLamp)props;
-    public CompGlower GlowerComp => parent.GetComp<CompGlower>();
+    public CompPropertiesSphereLamp props => (CompPropertiesSphereLamp)base.props;
+    public CompGlower glowerComp => parent.GetComp<CompGlower>();
 
-    public float StormlightThresholdForRefuel { get; set; }
+    public float stormlightThresholdForRefuel { get; set; }
 
-    public bool Empty => storedSpheres.Count == 0;
-    public List<ThingDef> FilterList { get; private set; } = new List<ThingDef>();
+    public bool empty => storedSpheres.Count == 0;
+    public List<ThingDef> filterList { get; private set; } = new List<ThingDef>();
 
-    public List<ThingDef> AllowedSpheres => Props.allowedSpheres;
-    public List<GemSize> SizeFilterList => sizeFilterList;
+    public List<ThingDef> allowedSpheres => props.allowedSpheres;
+    public List<GemSize> sizeFilterList => sizeFilterListInt;
 
 
     public override void PostSpawnSetup(bool respawningAfterLoad) {
         base.PostSpawnSetup(respawningAfterLoad);
-        if (FilterList == null && Props.allowedSpheres != null) {
-            FilterList = Props.allowedSpheres.ToList();
+        if (filterList == null && props.allowedSpheres != null) {
+            filterList = props.allowedSpheres.ToList();
         }
     }
 
     public override void PostExposeData() {
         base.PostExposeData();
         Scribe_Collections.Look(ref storedSpheres, "storedSpheres", LookMode.Deep);
-        Scribe_Collections.Look(ref sizeFilterList, "SizeFilterList", LookMode.Deep);
+        Scribe_Collections.Look(ref sizeFilterListInt, "SizeFilterList", LookMode.Deep);
     }
 
     public bool IsFull() {
-        if (Empty) {
+        if (empty) {
             return false;
         }
 
         ThingWithComps sphere = storedSpheres.ElementAt(0) as ThingWithComps;
-        CompStormlight comp = sphere.GetComp<CompStormlight>();
-        return storedSpheres.Count() >= Props.maxCapacity && comp.HasStormlight;
+        Stormlight comp = sphere.GetComp<Stormlight>();
+        return storedSpheres.Count() >= props.maxCapacity && comp.hasStormlight;
     }
 
     public int GetNumberOfSpheresToReplace() {
@@ -77,42 +82,42 @@ public class StormlightLamps : ThingComp, IFilterableComp {
             defaultDesc = "Click to choose which spheres are allowed in this lamp.",
             //icon = ContentFinder<Texture2D>.Get("UI/Icons/SomeIcon"), 
             icon = TexCommand.DesirePower,
-            action = () => { Find.WindowStack.Add(new Dialog_SphereFilter<StormlightLamps>(this)); },
+            action = () => { Find.WindowStack.Add(new DialogSphereFilter<StormlightLamps>(this)); },
         };
     }
 
 
     public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn) {
-        foreach (ThingDef? element in FilterList) {
+        foreach (ThingDef? element in filterList) {
             Log.Message($"{element.defName}");
         }
 
-        foreach (GemSize element in sizeFilterList) {
+        foreach (GemSize element in sizeFilterListInt) {
             Log.Message($"{element.ToStringSafe()}");
         }
 
         Action removeSphereAction = null;
 
-        if (storedSpheres.Count() > 0) {
+        if (storedSpheres.Count > 0) {
             removeSphereAction = () => { RemoveSphereFromLamp(0); };
         }
 
         yield return new FloatMenuOption("Remove Sphere", removeSphereAction);
 
 
-        Thing sphere = null;
+        Thing? sphere = null;
         CompSpherePouch spherePouch = CompSpherePouch.GetWornSpherePouch(selPawn);
-        ThingDef matchingSphereDef = FilterList.Find(def => selPawn.Map.listerThings.ThingsOfDef(def).Any());
+        ThingDef matchingSphereDef = filterList.Find(def => selPawn.Map.listerThings.ThingsOfDef(def).Any());
         Thing? closestSphere = GenClosest.ClosestThing_Global(
             selPawn.Position,
             selPawn.Map.listerThings.AllThings
                 .Where(thing =>
-                    FilterList.Contains(thing.def) &&
-                    SizeFilterList.Contains(thing.TryGetComp<CompGemSphere>()?.GetGemSize() ?? GemSize.None)
+                    filterList.Contains(thing.def) &&
+                    sizeFilterList.Contains(thing.TryGetComp<CompGemSphere>()?.GetGemSize() ?? GemSize.None)
                 ),
             500f
         );
-        if (spherePouch != null && !spherePouch.Empty) {
+        if (!spherePouch.empty) {
             sphere = spherePouch.GetSphereWithMostStormlight(true);
         } else if (matchingSphereDef != null && closestSphere != null) {
             sphere = closestSphere;
@@ -121,15 +126,15 @@ public class StormlightLamps : ThingComp, IFilterableComp {
         Action replaceSphereAction = null;
         string replaceSphereText = "No suitable sphere available";
         if (sphere != null) {
-            CompStormlight sphereComp = sphere.TryGetComp<CompStormlight>();
+            Stormlight stormlight = sphere.TryGetComp<Stormlight>();
 
-            if (sphereComp.Stormlight < StormlightThresholdForRefuel) {
+            if (stormlight.currentStormlight < stormlightThresholdForRefuel) {
                 replaceSphereText = "Your available spheres is below the minimum stormlight threshold";
-            } else if (FilterList.Count == 0) {
+            } else if (filterList.Count == 0) {
                 replaceSphereText = "No available spheres in list filter";
             } else {
                 replaceSphereAction = () => {
-                    Job job = JobMaker.MakeJob(CosmereRosharDefs.whtwl_RefuelSphereLamp, parent, sphere);
+                    Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelSphereLamp, parent, sphere);
                     if (job.TryMakePreToilReservations(selPawn, true)) {
                         selPawn.jobs.TryTakeOrderedJob(job);
                     }
@@ -147,7 +152,7 @@ public class StormlightLamps : ThingComp, IFilterableComp {
         //    Thing sphere = ThingMaker.MakeThing(ThingDef.Named("Sphere_Emerald"));
         //    ThingWithComps sphereComp = sphere as ThingWithComps;
 
-        //    CompStormlight comp = sphereComp.GetComp<CompStormlight>();
+        //    Stormlight comp = sphereComp.GetComp<Stormlight>();
         //    if (comp != null) {
         //        comp.Initialize(new StormlightProperties {
         //            maxStormlight = 1000f,
@@ -164,9 +169,9 @@ public class StormlightLamps : ThingComp, IFilterableComp {
     public float DrawStormlight(float amount) {
         float absorbed = 0;
         foreach (ThingWithComps sphere in storedSpheres) {
-            CompStormlight comp = sphere.GetComp<CompStormlight>();
-            if (comp != null && comp.HasStormlight) {
-                float drawn = comp.drawStormlight(amount - absorbed);
+            Stormlight comp = sphere.GetComp<Stormlight>();
+            if (comp != null && comp.hasStormlight) {
+                float drawn = comp.DrawStormlight(amount - absorbed);
                 absorbed += drawn;
                 if (absorbed >= amount) break; // Stop once fully absorbed
             }
@@ -178,22 +183,22 @@ public class StormlightLamps : ThingComp, IFilterableComp {
     public void CheckStormlightFuel() {
         float total = 0;
         foreach (ThingWithComps sphere in storedSpheres) {
-            CompStormlight comp = sphere.GetComp<CompStormlight>();
+            Stormlight comp = sphere.GetComp<Stormlight>();
             comp.CompTick();
             if (comp != null) {
-                total += comp.Stormlight;
+                total += comp.currentStormlight;
             }
         }
 
-        m_CurrentStormlight = total;
-        toggleGlow(total > 0f);
+        mCurrentStormlight = total;
+        ToggleGlow(total > 0f);
     }
 
     public override string CompInspectStringExtra() {
         string sphereName = "No sphere in lamp.";
         if (storedSpheres.Count > 0) {
             ThingWithComps sphere = storedSpheres.First() as ThingWithComps;
-            sphereName = sphere.GetComp<CompGemSphere>().GetFullLabel + "(" + m_CurrentStormlight.ToString("F0") + ")";
+            sphereName = sphere.GetComp<CompGemSphere>().getFullLabel + "(" + mCurrentStormlight.ToString("F0") + ")";
         }
 
         return sphereName;
@@ -201,9 +206,9 @@ public class StormlightLamps : ThingComp, IFilterableComp {
 
     public void InfuseStormlight(float amount) {
         foreach (ThingWithComps sphere in storedSpheres) {
-            CompStormlight comp = sphere.GetComp<CompStormlight>();
+            Stormlight comp = sphere.GetComp<Stormlight>();
             if (comp != null) {
-                comp.infuseStormlight(amount);
+                comp.InfuseStormlight(amount);
             }
         }
     }
@@ -213,17 +218,17 @@ public class StormlightLamps : ThingComp, IFilterableComp {
             return false;
         }
 
-        if (storedSpheres.Count >= Props.maxCapacity) {
+        if (storedSpheres.Count >= props.maxCapacity) {
             // Adjust max capacity as needed
             return false;
         }
 
-        CompStormlight stormlightComp = sphere.GetComp<CompStormlight>();
-        if (stormlightComp == null) return false;
+        Stormlight stormlight = sphere.GetComp<Stormlight>();
+        if (stormlight == null) return false;
 
         storedSpheres.Add(sphere);
-        GlowerComp.GlowColor = stormlightComp.GlowerComp.GlowColor;
-        GlowerComp.GlowRadius = stormlightComp.MaximumGlowRadius;
+        glowerComp.GlowColor = stormlight.glowerComp.GlowColor;
+        glowerComp.GlowRadius = stormlight.maximumGlowRadius;
 
         deregisterAfterNewSphere = true;
         return true;
@@ -261,28 +266,28 @@ public class StormlightLamps : ThingComp, IFilterableComp {
         return sphere;
     }
 
-    private void toggleGlow(bool toggleOn) {
+    private void ToggleGlow(bool toggleOn) {
         if (parent.Map != null && lightEnabled != toggleOn) {
             lightEnabled = toggleOn;
             if (toggleOn) {
-                parent.Map.glowGrid.RegisterGlower(GlowerComp);
+                parent.Map.glowGrid.RegisterGlower(glowerComp);
             } else {
-                parent.Map.glowGrid.DeRegisterGlower(GlowerComp);
+                parent.Map.glowGrid.DeRegisterGlower(glowerComp);
             }
         }
 
         if (!lightEnabled && deregisterAfterNewSphere) {
             deregisterAfterNewSphere = false;
-            parent.Map.glowGrid.DeRegisterGlower(GlowerComp);
+            parent.Map.glowGrid.DeRegisterGlower(glowerComp);
         }
     }
 }
 
-public class CompProperties_SphereLamp : CompProperties {
+public class CompPropertiesSphereLamp : CompProperties {
     public List<ThingDef> allowedSpheres;
     public int maxCapacity;
 
-    public CompProperties_SphereLamp() {
+    public CompPropertiesSphereLamp() {
         compClass = typeof(StormlightLamps);
     }
 }

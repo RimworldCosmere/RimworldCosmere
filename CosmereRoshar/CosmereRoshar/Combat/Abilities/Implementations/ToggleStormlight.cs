@@ -1,17 +1,19 @@
-﻿using CosmereRoshar.Comp.Thing;
+﻿using CosmereRoshar.Comp;
+using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Comps;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities.Implementations;
 
-public class CompProperties_AbilityToggleStormlight : CompProperties_AbilityEffect {
-    public CompProperties_AbilityToggleStormlight() {
-        compClass = typeof(CompAbilityEffect_AbilityToggleStormlight);
+public class CompPropertiesAbilityToggleStormlight : CompProperties_AbilityEffect {
+    public CompPropertiesAbilityToggleStormlight() {
+        compClass = typeof(CompAbilityEffectAbilityToggleStormlight);
     }
 }
 
-public class CompAbilityEffect_AbilityToggleStormlight : CompAbilityEffect {
-    public new CompProperties_AbilityToggleStormlight Props => props as CompProperties_AbilityToggleStormlight;
+public class CompAbilityEffectAbilityToggleStormlight : CompAbilityEffect {
+    public new CompPropertiesAbilityToggleStormlight props => ((AbilityComp)this).props as CompPropertiesAbilityToggleStormlight;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target
@@ -27,11 +29,11 @@ public class CompAbilityEffect_AbilityToggleStormlight : CompAbilityEffect {
             return;
         }
 
-        if (caster.GetComp<CompStormlight>() == null) {
+        if (caster.GetComp<Stormlight>() == null) {
             Log.Error("[Toggle Stormlight] no stormlight comp!");
             return;
         }
 
-        caster.GetComp<CompStormlight>().toggleBreathStormlight();
+        caster.GetComp<Stormlight>().ToggleBreathStormlight();
     }
 }

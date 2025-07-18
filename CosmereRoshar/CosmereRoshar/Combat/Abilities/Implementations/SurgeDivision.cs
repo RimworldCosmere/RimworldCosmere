@@ -1,19 +1,21 @@
 ﻿using System.Collections.Generic;
+using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Need;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Combat.Abilities.Implementations;
 
-public class CompProperties_AbilitySurgeDivision : CompProperties_AbilityEffect {
+public class CompPropertiesAbilitySurgeDivision : CompProperties_AbilityEffect {
     public float stormLightCost;
 
-    public CompProperties_AbilitySurgeDivision() {
-        compClass = typeof(CompAbilityEffect_SurgeDivision);
+    public CompPropertiesAbilitySurgeDivision() {
+        compClass = typeof(CompAbilityEffectSurgeDivision);
     }
 }
 
-public class CompAbilityEffect_SurgeDivision : CompAbilityEffect {
-    public new CompProperties_AbilitySurgeDivision Props => props as CompProperties_AbilitySurgeDivision;
+public class CompAbilityEffectSurgeDivision : CompAbilityEffect {
+    public new CompPropertiesAbilitySurgeDivision props => ((AbilityComp)this).props as CompPropertiesAbilitySurgeDivision;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target
@@ -28,19 +30,19 @@ public class CompAbilityEffect_SurgeDivision : CompAbilityEffect {
             return;
         }
 
-        if (caster.GetComp<CompStormlight>() == null) {
+        if (caster.GetComp<Stormlight>() == null) {
             Log.Error("[Division surge] no stormlight comp!");
             return;
         }
 
-        tryToUseDivision(target.Thing as Pawn, caster);
+        TryToUseDivision(target.Thing as Pawn, caster);
     }
 
-    private void tryToUseDivision(Pawn victim, Pawn caster) {
-        if (victim == null || caster.GetComp<CompStormlight>().Stormlight < Props.stormLightCost) return;
-        List<Thing> thingsIgnoredByExplosion = new List<Thing> { caster };
+    private void TryToUseDivision(Pawn victim, Pawn caster) {
+        if (victim == null || caster.TryGetComp<Stormlight>().currentStormlight < props.stormLightCost) return;
+        List<Thing> thingsIgnoredByExplosion = [caster];
         if (StormlightUtilities.RollTheDice(1, 25, 2) &&
-            caster.GetComp<CompStormlight>().Stormlight >= Props.stormLightCost * 1.5f) {
+            caster.GetComp<Stormlight>().currentStormlight >= props.stormLightCost * 1.5f) {
             //GenExplosion.DoExplosion(victim.Position, caster.Map, 1.0f, DamageDefOf.Vaporize, caster, -1, -1f, null, null, null, null, null, 0f, 1, null, applyDamageToExplosionCellsNeighbors: false, null, 0f, 1, 0f, damageFalloff: false, null, thingsIgnoredByExplosion, null);
             GenExplosion.DoExplosion(
                 victim.Position,
@@ -69,11 +71,11 @@ public class CompAbilityEffect_SurgeDivision : CompAbilityEffect {
                 null,
                 thingsIgnoredByExplosion
             );
-            caster.GetComp<CompStormlight>().drawStormlight(Props.stormLightCost * 1.5f);
+            caster.GetComp<Stormlight>().DrawStormlight(props.stormLightCost * 1.5f);
         } else {
             victim.TryAttachFire(Rand.Range(0.95f, 0.99f), caster);
-            RadiantUtility.GiveRadiantXP(caster, 50f);
-            caster.GetComp<CompStormlight>().drawStormlight(Props.stormLightCost);
+            RadiantUtility.GiveRadiantXp(caster, 50f);
+            caster.GetComp<Stormlight>().DrawStormlight(props.stormLightCost);
         }
     }
 }

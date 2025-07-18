@@ -1,57 +1,61 @@
-﻿using CosmereRoshar.Comp.Thing;
+﻿using CosmereRoshar.Comp;
+using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Comps;
+using CosmereRoshar.Comps.WeaponsAndArmor;
+using CosmereRoshar.Need;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Patches;
 
 [HarmonyPatch(typeof(TraitSet), "GainTrait")]
 public static class RadiantGainTraitPatch {
-    private static void Postfix(Pawn ___pawn, Trait trait) {
+    private static void Postfix(Pawn pawn, Trait trait) {
         if (StormlightUtilities.IsRadiant(trait)) {
-            if (___pawn != null && ___pawn.RaceProps.Humanlike) {
-                Log.Message($"{___pawn.Name} has become Radiant!");
-                givePawnStormlight(___pawn);
+            if (pawn != null && pawn.RaceProps.Humanlike) {
+                Log.Message($"{pawn.Name} has become Radiant!");
+                GivePawnStormlight(pawn);
                 //givePawnGlow(___pawn);
                 if (trait.Degree >= 2) {
-                    givePawnShardbladeComp(___pawn);
+                    GivePawnShardbladeComp(pawn);
                 }
 
                 if (trait.Degree == 0) {
-                    ___pawn.needs.AddOrRemoveNeedsAsAppropriate();
-                    Need_RadiantProgress progress = ___pawn.needs?.TryGetNeed<Need_RadiantProgress>();
+                    pawn.needs.AddOrRemoveNeedsAsAppropriate();
+                    NeedRadiantProgress progress = pawn.needs?.TryGetNeed<NeedRadiantProgress>();
                     if (progress != null) {
-                        progress.GainXP(0);
+                        progress.GainXp(0);
                     }
                 }
             }
         }
     }
 
-    private static void givePawnShardbladeComp(Pawn pawn) {
+    private static void GivePawnShardbladeComp(Pawn pawn) {
         ThingDef stuffDef = DefDatabase<ThingDef>.GetNamed("whtwl_ShardMaterial");
         ThingDef shardThing = DefDatabase<ThingDef>.GetNamed("whtwl_MeleeWeapon_Shardblade");
         ThingWithComps blade = (ThingWithComps)ThingMaker.MakeThing(shardThing, stuffDef);
 
         CompShardblade comp = blade.GetComp<CompShardblade>();
         if (comp != null) {
-            comp.Initialize(new CompProperties_Shardblade());
-            comp.bondWithPawn(pawn, false);
+            comp.Initialize(new CompPropertiesShardblade());
+            comp.BondWithPawn(pawn, false);
             Log.Message($"{pawn.Name} gained shardbalde storage!");
         }
     }
 
-    private static void givePawnStormlight(Pawn pawn) {
-        CompStormlight stormlightComp = pawn.GetComp<CompStormlight>();
-        if (stormlightComp != null && stormlightComp.isActivatedOnPawn == false) {
-            stormlightComp.isActivatedOnPawn = true;
-            stormlightComp.CompInspectStringExtra();
+    private static void GivePawnStormlight(Pawn pawn) {
+        Stormlight stormlight = pawn.GetComp<Stormlight>();
+        if (stormlight != null && stormlight.isActivatedOnPawn == false) {
+            stormlight.isActivatedOnPawn = true;
+            stormlight.CompInspectStringExtra();
             Log.Message($"{pawn.Name} gained Stormlight storage!");
         }
     }
 
-    private static void givePawnGlow(Pawn pawn) {
+    private static void GivePawnGlow(Pawn pawn) {
         if (pawn.GetComp<CompGlower>() == null) {
             CompGlower glowerComp = new CompGlower();
             pawn.AllComps.Add(glowerComp);
@@ -71,11 +75,11 @@ public static class RadiantGainTraitPatch {
 
 [HarmonyPatch(typeof(Pawn_PathFollower), "CostToMoveIntoCell")]
 [HarmonyPatch(new[] { typeof(Pawn), typeof(IntVec3) })]
-public static class Patch_Pawn_Movement {
-    private static void Postfix(Pawn pawn, IntVec3 c, ref float __result) {
+public static class PatchPawnMovement {
+    private static void Postfix(Pawn pawn, IntVec3 c, ref float result) {
         if (pawn == null || pawn.health?.hediffSet == null) return;
-        if (pawn.health.hediffSet.HasHediff(CosmereRosharDefs.whtwl_surge_abrasion)) {
-            __result = c.x != pawn.Position.x && c.z != pawn.Position.z
+        if (pawn.health.hediffSet.HasHediff(CosmereRosharDefs.WhtwlSurgeAbrasion)) {
+            result = c.x != pawn.Position.x && c.z != pawn.Position.z
                 ? pawn.TicksPerMoveDiagonal
                 : pawn.TicksPerMoveCardinal;
         }

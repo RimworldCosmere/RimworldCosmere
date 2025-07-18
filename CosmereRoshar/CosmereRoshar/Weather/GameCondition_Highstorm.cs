@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Comps.Apparel;
+using CosmereRoshar.Comps.Fabrials;
+using CosmereRoshar.Comps.Furniture;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace CosmereRoshar.Weather;
 
 public class HighstormExtension : DefModExtension {
     public int stormDuration;
@@ -11,8 +15,8 @@ public class HighstormExtension : DefModExtension {
     public float windStrength;
 }
 
-public class GameCondition_Highstorm : GameCondition {
-    private Random m_Rand = new Random();
+public class GameConditionHighstorm : GameCondition {
+    private Random mRand = new Random();
 
     public override void End() {
         base.End();
@@ -27,7 +31,7 @@ public class GameCondition_Highstorm : GameCondition {
         base.GameConditionTick();
         HighstormExtension? ext = def.GetModExtension<HighstormExtension>();
         if (ext == null) return;
-        if (CosmereRoshar.EnableHighstormPushing && StormShelterManager.FirstTickOfHighstorm) {
+        if (CosmereRoshar.enableHighstormPushing && StormShelterManager.FirstTickOfHighstorm) {
             Map currentMap = Find.CurrentMap;
             if (currentMap != null) {
                 StormShelterManager.RebuildShelterCache(currentMap);
@@ -37,33 +41,33 @@ public class GameCondition_Highstorm : GameCondition {
         }
 
         if (Find.TickManager.TicksGame % 8 == 0) {
-            tryToInfuseThings();
-            if (CosmereRoshar.Settings.enableHighstormPushing) {
-                moveItem();
+            TryToInfuseThings();
+            if (CosmereRoshar.settings.enableHighstormPushing) {
+                MoveItem();
             }
         }
     }
 
-    public void tryToInfuseThings() {
+    public void TryToInfuseThings() {
         List<Thing> things = SingleMap.listerThings.ThingsInGroup(ThingRequestGroup.Everything);
         foreach (Thing thing in things) {
             if (thing.Position.Roofed(thing.Map)) {
                 continue;
             }
 
-            if (thing.TryGetComp<CompStormlight>() is CompStormlight stormlightComp) {
-                stormlightComp.infuseStormlight(5f);
-            } else if (thing.def == CosmereRosharDefs.whtwl_Apparel_SpherePouch && !thing.Position.Roofed(thing.Map)) {
+            if (thing.TryGetComp<Stormlight>() is Stormlight stormlightComp) {
+                stormlightComp.InfuseStormlight(5f);
+            } else if (thing.def == CosmereRosharDefs.WhtwlApparelSpherePouch && !thing.Position.Roofed(thing.Map)) {
                 CompSpherePouch? pouch = thing.TryGetComp<CompSpherePouch>();
                 if (pouch != null) {
                     pouch.InfuseStormlight(5f);
                 }
-            } else if (thing.def == CosmereRosharDefs.whtwl_SphereLamp_Wall && !thing.Position.Roofed(thing.Map)) {
+            } else if (thing.def == CosmereRosharDefs.WhtwlSphereLampWall && !thing.Position.Roofed(thing.Map)) {
                 StormlightLamps? lamp = thing.TryGetComp<StormlightLamps>();
                 if (lamp != null) {
                     lamp.InfuseStormlight(5f);
                 }
-            } else if (thing.def == CosmereRosharDefs.whtwl_Apparel_Fabrial_Painrial_Diminisher &&
+            } else if (thing.def == CosmereRosharDefs.WhtwlApparelFabrialPainrialDiminisher &&
                        !thing.Position.Roofed(thing.Map)) {
                 CompApparelFabrialDiminisher? comp = thing.TryGetComp<CompApparelFabrialDiminisher>();
                 if (comp != null) {
@@ -73,7 +77,7 @@ public class GameCondition_Highstorm : GameCondition {
         }
     }
 
-    public void destoyIfCollide(Thing item, Map itemMap, IntVec3 newPos) {
+    public void DestoyIfCollide(Thing item, Map itemMap, IntVec3 newPos) {
         List<Thing> thingsHere = itemMap.thingGrid.ThingsListAtFast(newPos).ListFullCopy();
         foreach (Thing thing in thingsHere) {
             if (thing is Plant plant && plant.def.plant != null && plant.def.plant.harvestedThingDef != null) {
@@ -100,7 +104,7 @@ public class GameCondition_Highstorm : GameCondition {
                             item
                         )
                     );
-                    if (CosmereRoshar.EnableHighstormPushing && building.Destroyed) {
+                    if (CosmereRoshar.enableHighstormPushing && building.Destroyed) {
                         StormShelterManager.RebuildShelterCache(itemMap);
                     }
                 }
@@ -123,7 +127,7 @@ public class GameCondition_Highstorm : GameCondition {
     }
 
 
-    public void moveItem() {
+    public void MoveItem() {
         // Copy the list to avoid modifying during enumeration
         List<Thing> items = SingleMap.listerThings
             .ThingsInGroup(ThingRequestGroup.HaulableEver)
@@ -140,7 +144,7 @@ public class GameCondition_Highstorm : GameCondition {
 
             // push logic
             IntVec3 newPos = item.Position + IntVec3.West;
-            destoyIfCollide(item, itemMap, newPos);
+            DestoyIfCollide(item, itemMap, newPos);
             if (!newPos.Walkable(itemMap)) {
                 continue;
             }

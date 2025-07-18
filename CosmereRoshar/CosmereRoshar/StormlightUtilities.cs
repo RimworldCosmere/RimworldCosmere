@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CosmereRoshar.Comps.Gems;
+using CosmereRoshar.Comps.WeaponsAndArmor;
+using CosmereRoshar.Patches;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -9,7 +12,7 @@ using Random = System.Random;
 namespace CosmereRoshar;
 
 public static class StormlightUtilities {
-    private static readonly List<ThingDef> gems = new List<ThingDef> {
+    private static readonly List<ThingDef> Gems = new List<ThingDef> {
         CosmereResources.ThingDefOf.RawDiamond,
         CosmereResources.ThingDefOf.RawGarnet,
         CosmereResources.ThingDefOf.RawRuby,
@@ -17,7 +20,7 @@ public static class StormlightUtilities {
         CosmereResources.ThingDefOf.RawEmerald,
     };
 
-    private static readonly Random rng = new Random();
+    private static readonly Random Rng = new Random();
 
     public static void SpeakOaths(
         Pawn pawn,
@@ -35,7 +38,7 @@ public static class StormlightUtilities {
                 () => {
                     pawn.story.traits.GainTrait(new Trait(traitDef));
                     pawnStats.hasFormedBond = true;
-                    pawnStats.requirementMap[traitDef.defName][pawnStats.Props.Req_0_1].IsSatisfied = true;
+                    pawnStats.requirementMap[traitDef.defName][pawnStats.props.req01].isSatisfied = true;
                 },
                 declineText,
                 () => { },
@@ -50,10 +53,10 @@ public static class StormlightUtilities {
     }
 
     public static bool IsRadiant(Trait trait) {
-        return trait.def == CosmereRosharDefs.whtwl_Radiant_Windrunner ||
-               trait.def == CosmereRosharDefs.whtwl_Radiant_Truthwatcher ||
-               trait.def == CosmereRosharDefs.whtwl_Radiant_Edgedancer ||
-               trait.def == CosmereRosharDefs.whtwl_Radiant_Skybreaker;
+        return trait.def == CosmereRosharDefs.WhtwlRadiantWindrunner ||
+               trait.def == CosmereRosharDefs.WhtwlRadiantTruthwatcher ||
+               trait.def == CosmereRosharDefs.WhtwlRadiantEdgedancer ||
+               trait.def == CosmereRosharDefs.WhtwlRadiantSkybreaker;
     }
 
     public static bool IsRadiant(Pawn pawn) {
@@ -62,12 +65,12 @@ public static class StormlightUtilities {
         if (pawn == null) return false;
 
         Trait trait =
-            pawn.story.traits.allTraits.FirstOrDefault(t => CosmereRosharUtilities.RadiantTraits.Contains(t.def));
+            pawn.story.traits.allTraits.FirstOrDefault(t => CosmereRosharUtilities.radiantTraits.Contains(t.def));
         if (trait != null) {
-            return trait.def == CosmereRosharDefs.whtwl_Radiant_Windrunner ||
-                   trait.def == CosmereRosharDefs.whtwl_Radiant_Truthwatcher ||
-                   trait.def == CosmereRosharDefs.whtwl_Radiant_Edgedancer ||
-                   trait.def == CosmereRosharDefs.whtwl_Radiant_Skybreaker;
+            return trait.def == CosmereRosharDefs.WhtwlRadiantWindrunner ||
+                   trait.def == CosmereRosharDefs.WhtwlRadiantTruthwatcher ||
+                   trait.def == CosmereRosharDefs.WhtwlRadiantEdgedancer ||
+                   trait.def == CosmereRosharDefs.WhtwlRadiantSkybreaker;
         }
 
         return false;
@@ -80,8 +83,8 @@ public static class StormlightUtilities {
         return comp.graphicId;
     }
 
-    public static float Normalize(float value, float v_min, float v_max, float t_min, float t_max) {
-        return (value - v_min) / (v_max - v_min) * (t_max - t_min) + t_min;
+    public static float Normalize(float value, float vMin, float vMax, float tMin, float tMax) {
+        return (value - vMin) / (vMax - vMin) * (tMax - tMin) + tMin;
     }
 
     public static float SprenBaseCaptureProbability(float currentStormlight, float minStormlight, float maxStormlight) {
@@ -193,7 +196,7 @@ public static class StormlightUtilities {
         return false;
     }
 
-    public static bool isThingCutGemstone(Thing thing) {
+    public static bool IsThingCutGemstone(Thing thing) {
         return thing.def == CosmereResources.ThingDefOf.CutRuby ||
                thing.def == CosmereResources.ThingDefOf.CutEmerald ||
                thing.def == CosmereResources.ThingDefOf.CutDiamond ||
@@ -202,12 +205,12 @@ public static class StormlightUtilities {
     }
 
     public static Trait GetRadiantTrait(Pawn pawn) {
-        return pawn.story.traits.allTraits.FirstOrDefault(t => CosmereRosharUtilities.RadiantTraits.Contains(t.def));
+        return pawn.story.traits.allTraits.FirstOrDefault(t => CosmereRosharUtilities.radiantTraits.Contains(t.def));
     }
 
     public static ThingDef RollForRandomGemSpawn() {
-        foreach (ThingDef? gem in gems) {
-            if (RollTheDice(0, gem.GetCompProperties<CompProperties_RawGemstone>().spawnChance, 1)) {
+        foreach (ThingDef? gem in Gems) {
+            if (RollTheDice(0, gem.GetCompProperties<CompPropertiesRawGemstone>().spawnChance, 1)) {
                 return gem;
             }
         }
@@ -216,20 +219,20 @@ public static class StormlightUtilities {
     }
 
     public static bool RollTheDice(int min, int max, int lowerThreshold) {
-        return rng.Next(min, max) <= lowerThreshold;
+        return Rng.Next(min, max) <= lowerThreshold;
     }
 
     public static int RollTheDice(int min, int max) {
-        return rng.Next(min, max);
+        return Rng.Next(min, max);
     }
 
     public static string RollForRandomString(List<string> stringList) {
-        int i = rng.Next(stringList.Count);
+        int i = Rng.Next(stringList.Count);
         return stringList[i];
     }
 
     public static int RollForRandomIntFromList(List<int> intList) {
-        int i = rng.Next(intList.Count);
+        int i = Rng.Next(intList.Count);
         return intList[i];
     }
 
@@ -298,19 +301,19 @@ public static class StormlightUtilities {
 public static class StormShelterManager {
     // For each cell, store which region index it belongs to. 
     // If it doesn't belong to any region, it won't be in this dictionary.
-    private static readonly Dictionary<IntVec3, int> cellToRegionIndex
+    private static readonly Dictionary<IntVec3, int> CellToRegionIndex
         = new Dictionary<IntVec3, int>();
 
     public static bool FirstTickOfHighstorm = true;
 
-    private static readonly List<RegionInfo> regions
+    private static readonly List<RegionInfo> Regions
         = new List<RegionInfo>();
 
 
     public static void RebuildShelterCache(Map map) {
         // Clear old data
-        cellToRegionIndex.Clear();
-        regions.Clear();
+        CellToRegionIndex.Clear();
+        Regions.Clear();
 
         // Loop through each cell in the map
         foreach (IntVec3 cell in map.AllCells) {
@@ -320,7 +323,7 @@ public static class StormShelterManager {
             }
 
             // If this cell is already assigned to a region, skip
-            if (cellToRegionIndex.ContainsKey(cell)) {
+            if (CellToRegionIndex.ContainsKey(cell)) {
                 continue;
             }
 
@@ -339,28 +342,28 @@ public static class StormShelterManager {
                 cells = newRegionCells,
                 isShelter = isShelter,
             };
-            regions.Add(newRegion);
+            Regions.Add(newRegion);
 
             // For each cell in this region, record its region index
-            int regionIndex = regions.Count - 1;
+            int regionIndex = Regions.Count - 1;
             foreach (IntVec3 c in newRegionCells) {
-                cellToRegionIndex[c] = regionIndex;
+                CellToRegionIndex[c] = regionIndex;
             }
         }
     }
 
     public static bool IsInsideShelter(IntVec3 pos) {
-        if (!cellToRegionIndex.TryGetValue(pos, out int idx)) {
+        if (!CellToRegionIndex.TryGetValue(pos, out int idx)) {
             // Not in any known roofed region
             return false;
         }
 
-        return regions[idx].isShelter;
+        return Regions[idx].isShelter;
     }
 
     public static void ClearCache() {
-        cellToRegionIndex.Clear();
-        regions.Clear();
+        CellToRegionIndex.Clear();
+        Regions.Clear();
     }
 
     private static HashSet<IntVec3> FloodFillRoofedArea(IntVec3 start, Map map) {

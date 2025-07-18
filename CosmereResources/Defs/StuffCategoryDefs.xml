@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <StuffCategoryDef>
+        <defName>Cosmere_Resources_StuffCategory_Gems</defName>
+        <label>cosmere gems</label>
+        <noun>cosmere gem</noun>
+        <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+        <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+        <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+    </StuffCategoryDef>
+    <StuffCategoryDef>
         <defName>Cosmere_Resources_StuffCategory_Metals</defName>
         <label>cosmere metals</label>
         <noun>cosmere metal</noun>

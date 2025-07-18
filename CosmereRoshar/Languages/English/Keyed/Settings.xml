@@ -1,4 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-    <CR_Settings_Example>Example Setting</CR_Settings_Example>
+    <CR_Settings_Category_Highstorm>Highstorms &amp; Everstorms</CR_Settings_Category_Highstorm>
+    <CR_Settings_Highstorm_Pushing_Label>Move Items &amp; Pawns:</CR_Settings_Highstorm_Pushing_Label>
+    <CR_Settings_Highstorm_Pushing_Tooltip>Storms push items and pawns that are caught outside in the open</CR_Settings_Highstorm_Pushing_Tooltip>
+    <CR_Settings_Highstorm_Damage_Label>Damage Visitors &amp; Animals:</CR_Settings_Highstorm_Damage_Label>
+    <CR_Settings_Highstorm_Damage_Tooltip>Turn off if you don't want all your wildlife to die, and your visitors to hate you</CR_Settings_Highstorm_Damage_Tooltip>
+
+	<CR_Settings_Category_Stormlight>Stormlight</CR_Settings_Category_Stormlight>
+	<CR_Settings_Stormlight_EnablePawnGlow_Label>Pawn Stormlight Glow:</CR_Settings_Stormlight_EnablePawnGlow_Label>
+	<CR_Settings_Stormlight_EnablePawnGlow_Tooltip>Currently Broken</CR_Settings_Stormlight_EnablePawnGlow_Tooltip>
+
+	<CR_Settings_Category_Surgebinding>Surgebinding</CR_Settings_Category_Surgebinding>
+	<CR_Settings_Stormlight_BondChanceMultiplier_Label>Bond Chance Multiplier:</CR_Settings_Stormlight_BondChanceMultiplier_Label>
+	<CR_Settings_Stormlight_BondChanceMultiplier_Tooltip>Multiplier for the chance that a pawn will bond a spren</CR_Settings_Stormlight_BondChanceMultiplier_Tooltip>
+
+    <CR_Settings_Category_Development>Development</CR_Settings_Category_Development>
+	<CR_Settings_Development_AutofillSpheres_Label>Autofill Spheres:</CR_Settings_Development_AutofillSpheres_Label>
+	<CR_Settings_Development_AutofillSpheres_Tooltip>Should spheres get auto-filled</CR_Settings_Development_AutofillSpheres_Tooltip>
 </LanguageData>

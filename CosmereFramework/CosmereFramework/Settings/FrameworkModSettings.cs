@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CosmereFramework.Extension;
+using CosmereFramework.Listing;
 using CosmereFramework.Quickstart;
 using CosmereFramework.Util;
 using UnityEngine;
@@ -21,95 +23,62 @@ public class FrameworkModSettings : CosmereModSettings {
 
     public override string Name => "Framework";
 
-    public override void DoTabContents(Rect inRect, Listing_Standard mainListing) {
-        using (new TextBlock(GameFont.Medium)) mainListing.Label("CF_Settings_Category_Debug".Translate());
-        using (new TextBlock(GameFont.Small)) {
-            mainListing.GapLine();
-            mainListing.Gap();
-        }
+    public override void DoTabContents(Rect inRect, ListingForm listing) {
+        listing.Fieldset(
+            "CF_Settings_Category_Debug".Translate(),
+            fieldset => {
+                fieldset.Field(
+                    "CF_Settings_LogLevel_Label".Translate(),
+                    "CF_Settings_LogLevel_Tooltip".Translate(),
+                    sub => UIUtil.IntEnumDropdown(sub, logLevel, v => logLevel = v, false)
+                );
 
-        float expectedHeight = CategoryPadding * 2 + (SubListingRowHeight + SubListingSpacing) * 1;
-        MakeSubListing(
-            mainListing,
-            expectedHeight,
-            (sub, width) => {
-                sub.ColumnWidth = SubListingLabelWidth;
-                Rect rect = sub.GetRect(SubListingRowHeight);
-                Widgets.Label(rect, "CF_Settings_LogLevel".Translate());
+                if (!Prefs.DevMode) return;
 
-                sub.NewColumn();
-                sub.ColumnWidth = Mathf.Min(100, width - SubListingLabelWidth - ListingColumnSpacing);
-                UIUtil.IntEnumDropdown(sub, logLevel, v => logLevel = v, false);
-            }
-        );
+                fieldset.Field(
+                    "CF_Settings_DebugMode_Label".Translate(),
+                    "CF_Settings_DebugMode_Tooltip".Translate(),
+                    sub => sub.Checkbox(ref debugMode)
+                );
 
-        if (!Prefs.DevMode) return;
-        {
-            MakeSubListing(
-                mainListing,
-                expectedHeight,
-                (sub, width) => {
-                    sub.ColumnWidth = SubListingLabelWidth;
-                    Rect rect = sub.GetRect(SubListingRowHeight);
-                    Widgets.Label(rect, "CF_Settings_DebugMode".Translate());
-
-                    sub.NewColumn();
-                    sub.ColumnWidth = Mathf.Min(100, width - SubListingLabelWidth - ListingColumnSpacing);
-                    sub.CheckboxLabeled("", ref debugMode, "CF_Settings_DebugMode_Tooltip".Translate());
-                }
-            );
-
-            MakeSubListing(
-                mainListing,
-                expectedHeight,
-                (sub, width) => {
-                    sub.ColumnWidth = SubListingLabelWidth;
-                    Rect rect = sub.GetRect(SubListingRowHeight);
-                    Widgets.Label(rect, "CF_Settings_Quickstarter".Translate());
-                    sub.Gap(SubListingSpacing);
-
-                    sub.NewColumn();
-                    sub.ColumnWidth = Mathf.Min(400, width - SubListingLabelWidth - ListingColumnSpacing);
-                    UIUtil.Dropdown(
+                fieldset.Field(
+                    "CF_Settings_Quickstarter_Label".Translate(),
+                    "CF_Settings_Quickstarter_Tooltip".Translate(),
+                    sub => UIUtil.Dropdown(
                         sub,
                         GetQuickstartScenarioLabel,
                         quickstartName,
                         "CF_Settings_Quickstarter_Placeholder".Translate(),
                         quickstarters,
                         val => quickstartName = val
-                    );
-                }
-            );
+                    ),
+                    new FieldOptions { minimumColumnWidth = 400 }
+                );
 
-            MakeSubListing(
-                mainListing,
-                inRect.height - mainListing.CurHeight,
-                (sub, width) => {
-                    sub.ColumnWidth = SubListingLabelWidth;
-                    Rect rect = sub.GetRect(SubListingRowHeight);
-                    Widgets.Label(rect, "");
-                    sub.Gap(SubListingSpacing);
+                fieldset.Field(
+                    "",
+                    sub => {
+                        if (string.IsNullOrEmpty(quickstartName)) {
+                            return;
+                        }
 
-                    sub.NewColumn();
-                    sub.ColumnWidth = 400;
-                    if (string.IsNullOrEmpty(quickstartName)) {
-                        return;
-                    }
+                        Type? type = Type.GetType(quickstartName!);
+                        if (type == null) {
+                            Rect errorRect = sub.GetRect(FieldOptions.RowHeight);
+                            Widgets.Label(errorRect, "CF_Settings_Quickstarter_FailedToFind".Translate());
+                            return;
+                        }
 
-                    Type? type = Type.GetType(quickstartName!);
-                    if (type == null) {
-                        Rect errorRect = sub.GetRect(SubListingRowHeight);
-                        Widgets.Label(errorRect, "CF_Settings_Quickstarter_FailedToFind".Translate());
-                        return;
-                    }
+                        AbstractQuickstart? quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
+                        TaggedString description = quickstart.GetDescription();
 
-                    AbstractQuickstart? quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
-                    TaggedString description = quickstart.GetDescription();
-
-                    Widgets.Label(sub.GetRect(Text.CalcHeight(description, sub.ColumnWidth)), description);
-                }
-            );
-        }
+                        Widgets.Label(sub.GetRect(Text.CalcHeight(description, sub.ColumnWidth)), description);
+                    },
+                    new FieldOptions { minimumColumnWidth = 400, height = inRect.height - listing.CurHeight }
+                );
+            },
+            SubListingOptions.WithoutTopPadding()
+        );
     }
 
     private string? GetQuickstartScenarioLabel(string? quickstarter) {

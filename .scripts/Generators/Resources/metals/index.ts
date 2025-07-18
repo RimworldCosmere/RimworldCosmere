@@ -13,10 +13,10 @@ const thingDefOfItemTemplate = compileTemplate(__dirname, 'ThingDefOf.Metal.Item
 const CosmereResources = resolve(RESOURCES_MOD_DIR, 'CosmereResources');
 
 const mineableTemplate = compileTemplate(__dirname, 'MineableMetalDef.xml.template');
-const mineableOutputDir = resolve(RESOURCES_MOD_DIR, 'Defs', 'Mineable');
+const mineableOutputDir = resolve(RESOURCES_MOD_DIR, 'Defs', 'Thing', 'Metal', 'Mineable');
 
 const itemTemplate = compileTemplate(__dirname, 'ItemMetalDef.xml.template');
-const itemOutputDir = resolve(RESOURCES_MOD_DIR, 'Defs', 'Item', 'Metals');
+const itemOutputDir = resolve(RESOURCES_MOD_DIR, 'Defs', 'Thing', 'Metal', 'Item');
 
 export default function generate() {
     const metals = Object.values(MetalRegistry.Metals);

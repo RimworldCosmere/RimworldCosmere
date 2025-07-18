@@ -13,10 +13,10 @@ const thingDefOfItemTemplate = compileTemplate(__dirname, 'ThingDefOf.Gems.Item.
 const CosmereResources = resolve(RESOURCES_MOD_DIR, 'CosmereResources');
 
 const mineableTemplate = compileTemplate(__dirname, 'MineableGemDef.xml.template');
-const mineableOutputDir = resolve(RESOURCES_MOD_DIR, 'Defs', 'Mineable');
+const mineableOutputDir = resolve(RESOURCES_MOD_DIR, 'Defs', 'Thing', 'Gem', 'Mineable');
 
 const itemTemplate = compileTemplate(__dirname, 'ItemGemDef.xml.template');
-const itemOutputDir = resolve(RESOURCES_MOD_DIR, 'Defs', 'Item', 'Gems');
+const itemOutputDir = resolve(RESOURCES_MOD_DIR, 'Defs', 'Thing', 'Gem', 'Item');
 
 export default function generate() {
     const gems = Object.values(GemRegistry.Gems);

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using CosmereRoshar.Comps.Apparel;
-using CosmereRoshar.Comps.Furniture;
+using CosmereRoshar.Comp.Apparel;
+using CosmereRoshar.Comp.Furniture;
 using RimWorld;
 using Verse;
 using Verse.AI;

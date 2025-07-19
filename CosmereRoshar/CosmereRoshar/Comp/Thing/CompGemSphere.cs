@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using CosmereRoshar.Comp;
-using CosmereRoshar.Comp.Thing;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Comps.Gems;
+namespace CosmereRoshar.Comp.Thing;
 
 public enum GemSize {
     None,
@@ -68,7 +66,7 @@ public class CompGemSphere : ThingComp {
         }
     }
 
-    public override bool AllowStackWith(Thing other) {
+    public override bool AllowStackWith(Verse.Thing other) {
         CompGemSphere comp = other.TryGetComp<CompGemSphere>();
         if (comp != null) {
             if (comp.gemstoneQuality != gemstoneQuality || comp.gemstoneSize != gemstoneSize) {

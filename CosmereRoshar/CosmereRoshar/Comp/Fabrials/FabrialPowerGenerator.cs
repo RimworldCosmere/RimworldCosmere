@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps.Gems;
 using CosmereRoshar.ITabs;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Comps.Fabrials;
+namespace CosmereRoshar.Comp.Fabrials;
 
 public class BuildingFabrialPowerGenerator : Building {
     public CompFabrialPowerGenerator compFabrialPowerGenerator;
@@ -94,8 +93,8 @@ public class CompFabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterabl
 
     public void RemoveGemstone() {
         if (insertedGemstone == null) return;
-        
-        Thing gemstoneToDrop = insertedGemstone;
+
+        Verse.Thing gemstoneToDrop = insertedGemstone;
         insertedGemstone = null;
         IntVec3 dropPosition = parent.Position;
         dropPosition.z -= 1;
@@ -127,20 +126,20 @@ public class CompFabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterabl
 
     public void UsePower() {
         if (!(insertedGemstone?.TryGetComp(out Stormlight stormlight) ?? false)) return;
-        
+
         stormlight.drainFactor = powerOn ? 4f : 1f;
         stormlight.CompTick();
     }
 
     public override string CompInspectStringExtra() {
         if (insertedGemstone == null) return "No gem in fabrial.";
-        
+
         return "Spren: " +
-                  insertedGemstone.GetComp<CompCutGemstone>().capturedSpren +
-                  "\nStormlight: " +
-                  insertedGemstone.GetComp<Stormlight>().currentStormlight.ToString("F0") +
-                  "\ntime remaining: " +
-                  GetTimeRemaining();
+               insertedGemstone.GetComp<CompCutGemstone>().capturedSpren +
+               "\nStormlight: " +
+               insertedGemstone.GetComp<Stormlight>().currentStormlight.ToString("F0") +
+               "\ntime remaining: " +
+               GetTimeRemaining();
     }
 
     private string GetTimeRemaining() {
@@ -161,7 +160,7 @@ public class CompFabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterabl
     }
 
     public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn) {
-        Thing? cutGemstone = GenClosest.ClosestThing_Global(
+        Verse.Thing? cutGemstone = GenClosest.ClosestThing_Global(
             selPawn.Position,
             selPawn.Map.listerThings.AllThings.Where(thing =>
                 StormlightUtilities.IsThingCutGemstone(thing) &&

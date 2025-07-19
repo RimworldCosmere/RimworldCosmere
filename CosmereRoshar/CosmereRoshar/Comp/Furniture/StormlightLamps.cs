@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp;
+using CosmereRoshar.Comp.Apparel;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps.Apparel;
-using CosmereRoshar.Comps.Gems;
 using CosmereRoshar.ITabs;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Comps.Furniture;
+namespace CosmereRoshar.Comp.Furniture;
 
 public class StormlightLamps : ThingComp, IFilterableComp {
     private bool deregisterAfterNewSphere = true;
@@ -27,7 +25,7 @@ public class StormlightLamps : ThingComp, IFilterableComp {
         GemSize.Broam,
     };
 
-    public List<Thing> storedSpheres = new List<Thing>(); // List of sphere stacks inside the pouch
+    public List<Verse.Thing> storedSpheres = new List<Verse.Thing>(); // List of sphere stacks inside the pouch
 
 
     public CompPropertiesSphereLamp props => (CompPropertiesSphereLamp)base.props;
@@ -105,10 +103,10 @@ public class StormlightLamps : ThingComp, IFilterableComp {
         yield return new FloatMenuOption("Remove Sphere", removeSphereAction);
 
 
-        Thing? sphere = null;
+        Verse.Thing? sphere = null;
         CompSpherePouch spherePouch = CompSpherePouch.GetWornSpherePouch(selPawn);
         ThingDef matchingSphereDef = filterList.Find(def => selPawn.Map.listerThings.ThingsOfDef(def).Any());
-        Thing? closestSphere = GenClosest.ClosestThing_Global(
+        Verse.Thing? closestSphere = GenClosest.ClosestThing_Global(
             selPawn.Position,
             selPawn.Map.listerThings.AllThings
                 .Where(thing =>

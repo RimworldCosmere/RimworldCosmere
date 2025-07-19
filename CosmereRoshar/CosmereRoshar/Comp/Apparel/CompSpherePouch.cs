@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using CosmereRoshar.Comp;
 using CosmereRoshar.Comp.Thing;
 using Verse;
 
-namespace CosmereRoshar.Comps.Apparel;
+namespace CosmereRoshar.Comp.Apparel;
 
 public class CompSpherePouch : ThingComp {
     private readonly List<int> spheresToRemove = new List<int>(); //  spheres to remove
-    public List<Thing> storedSpheres = new List<Thing>(); //  List of sphere stacks inside the pouch
+    public List<Verse.Thing> storedSpheres = new List<Verse.Thing>(); //  List of sphere stacks inside the pouch
 
     public bool empty => storedSpheres.Count == 0;
 
@@ -44,12 +43,12 @@ public class CompSpherePouch : ThingComp {
         return total;
     }
 
-    public bool PouchContainsSpecificSphere(Thing sphere) {
+    public bool PouchContainsSpecificSphere(Verse.Thing sphere) {
         return storedSpheres.Contains(sphere);
     }
 
-    public Thing GetSphereWithMostStormlight(bool addToRemoveList = false) {
-        Thing sphere = null;
+    public Verse.Thing GetSphereWithMostStormlight(bool addToRemoveList = false) {
+        Verse.Thing sphere = null;
         int selectedIndex = 0;
         for (int i = 0; i < storedSpheres.Count; i++) {
             if (sphere == null ||
@@ -126,7 +125,7 @@ public class CompSpherePouch : ThingComp {
         }
     }
 
-    public bool RemoveSphereFromPouch(Thing sphere, Map map, IntVec3 dropPosition) {
+    public bool RemoveSphereFromPouch(Verse.Thing sphere, Map map, IntVec3 dropPosition) {
         if (storedSpheres.Contains(sphere)) {
             storedSpheres.Remove(sphere);
             return GenPlace.TryPlaceThing(sphere, dropPosition, map, ThingPlaceMode.Near);

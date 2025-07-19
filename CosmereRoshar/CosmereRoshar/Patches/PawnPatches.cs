@@ -1,33 +1,25 @@
 ﻿using CosmereRoshar.Combat.Abilities.Implementations;
-using CosmereRoshar.Comps.WeaponsAndArmor;
+using CosmereRoshar.Comp.WeaponsAndArmor;
 using HarmonyLib;
 using Verse;
 
 namespace CosmereRoshar.Patches;
 
-[HarmonyPatch(typeof(Pawn), "Kill")]
+[HarmonyPatch(typeof(Pawn), nameof(Pawn.Kill))]
 public static class PatchPawnKill {
-    private static void Prefix(Pawn instance, DamageInfo? dinfo) {
-        if (instance != null && instance.RaceProps.Humanlike) {
-            CompAbilityEffectSpawnEquipment abilityComp =
-                instance.GetAbilityComp<CompAbilityEffectSpawnEquipment>(
-                    CosmereRosharDefs.WhtwlSummonShardblade.defName
-                );
-            if (abilityComp == null) return;
-            if (abilityComp.bladeObject != null) {
-                {
-                    CompShardblade shardBladeComp = abilityComp.bladeObject.GetComp<CompShardblade>();
-                    if (shardBladeComp != null) {
-                        shardBladeComp.Summon();
-                        shardBladeComp.DismissBlade(instance);
-                        shardBladeComp.Summon();
-                        shardBladeComp.DismissBlade(instance);
-                        shardBladeComp.Summon();
-                        shardBladeComp.SeverBond(instance);
-                        shardBladeComp.DismissBlade(instance);
-                    }
-                }
-            }
-        }
+    private static void Prefix(Pawn? instance, DamageInfo? dinfo) {
+        if (instance == null || !instance.RaceProps.Humanlike) return;
+
+        SpawnEquipment? abilityComp =
+            instance.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.WhtwlSummonShardblade.defName);
+
+        if (!(abilityComp?.bladeObject?.TryGetComp(out ShardBlade blade) ?? false)) return;
+        blade.Summon();
+        blade.DismissBlade(instance);
+        blade.Summon();
+        blade.DismissBlade(instance);
+        blade.Summon();
+        blade.SeverBond(instance);
+        blade.DismissBlade(instance);
     }
 }

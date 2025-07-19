@@ -1,6 +1,6 @@
 ﻿using Verse;
 
-namespace CosmereRoshar.Comps.Fabrials;
+namespace CosmereRoshar.Comp.Fabrials;
 
 public class CompFabrialCage : ThingComp {
     public CompPropertiesFabrialCage props => (CompPropertiesFabrialCage)base.props;

@@ -1,7 +1,5 @@
 ﻿using System;
-using CosmereRoshar.Comp;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps;
 using CosmereRoshar.Need;
 using RimWorld;
 using Verse;
@@ -9,21 +7,21 @@ using Verse;
 namespace CosmereRoshar.Combat.Abilities.Implementations;
 
 /// WIND RUNNER FLIGHT
-public class CompPropertiesAbilityWindRunnerFlight : CompProperties_AbilityEffect {
+public class SurgeGravitationProperties : CompProperties_AbilityEffect {
     public float stormLightCost;
-    public ThingDef thingDef;
+    public ThingDef? thingDef;
 
-    public CompPropertiesAbilityWindRunnerFlight() {
-        compClass = typeof(CompAbilityEffectAbilityWindRunnerFlight);
+    public SurgeGravitationProperties() {
+        compClass = typeof(SurgeGravitation);
     }
 }
 
-public class CompAbilityEffectAbilityWindRunnerFlight : CompAbilityEffect {
-    public new CompPropertiesAbilityWindRunnerFlight props => ((AbilityComp)this).props as CompPropertiesAbilityWindRunnerFlight;
+public class SurgeGravitation : CompAbilityEffect {
+    public new SurgeGravitationProperties props => (SurgeGravitationProperties)base.props;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target
-        if (target == null || target.Cell == null) {
+        if (target == null) {
             Log.Warning("[flight] Invalid target.");
             return;
         }
@@ -44,11 +42,12 @@ public class CompAbilityEffectAbilityWindRunnerFlight : CompAbilityEffect {
         );
         float totalCost = (float)(props.stormLightCost * distance);
 
-        if (caster.GetComp<Stormlight>() == null || caster.GetComp<Stormlight>().currentStormlight < totalCost) {
+        if (!caster.TryGetComp(out Stormlight stormlight)) return;
+        if (stormlight.currentStormlight < totalCost) {
             return;
         }
 
-        caster.GetComp<Stormlight>().DrawStormlight(totalCost);
+        stormlight.DrawStormlight(totalCost);
 
         // 3) Fling the target
         FlightFunction(caster.Map, target.Cell, distance);

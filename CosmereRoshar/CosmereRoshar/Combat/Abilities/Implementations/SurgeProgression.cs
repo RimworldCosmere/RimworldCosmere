@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps;
 using CosmereRoshar.Need;
 using RimWorld;
 using Verse;
@@ -10,16 +8,16 @@ using Verse;
 namespace CosmereRoshar.Combat.Abilities.Implementations;
 
 /// Surge regrowth plants
-public class CompPropertiesAbilitySurgeHeal : CompProperties_AbilityEffect {
+public class SurgeProgressionProperties : CompProperties_AbilityEffect {
     public float stormLightCost;
 
-    public CompPropertiesAbilitySurgeHeal() {
-        compClass = typeof(CompAbilityEffectSurgeHeal);
+    public SurgeProgressionProperties() {
+        compClass = typeof(SurgeProgression);
     }
 }
 
-public class CompAbilityEffectSurgeHeal : CompAbilityEffect {
-    public new CompPropertiesAbilitySurgeHeal props => ((AbilityComp)this).props as CompPropertiesAbilitySurgeHeal;
+public class SurgeProgression : CompAbilityEffect {
+    public new SurgeProgressionProperties props => (SurgeProgressionProperties)base.props;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target
@@ -45,10 +43,7 @@ public class CompAbilityEffectSurgeHeal : CompAbilityEffect {
 
 
     private void HealFunction(Thing targetThing) {
-        Map map = targetThing.Map;
-
-        Pawn targetPawn = targetThing as Pawn;
-        if (targetPawn == null) {
+        if (targetThing is not Pawn targetPawn) {
             return;
         }
 
@@ -100,7 +95,7 @@ public class CompAbilityEffectSurgeHeal : CompAbilityEffect {
     private void RadiantHeal(Pawn pawn) {
         Pawn caster = parent.pawn;
         if (caster.TryGetComp(out Stormlight stormlight)) return;
-        
+
         NeedRadiantProgress radiantNeed = caster.needs.TryGetNeed<NeedRadiantProgress>();
         if (radiantNeed == null) {
             Log.Error("[HealSurge] need was null");

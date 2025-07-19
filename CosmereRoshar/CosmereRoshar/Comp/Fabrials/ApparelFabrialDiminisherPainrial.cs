@@ -1,14 +1,13 @@
 ﻿using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps.Gems;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Comps.Fabrials;
+namespace CosmereRoshar.Comp.Fabrials;
 
 public class CompApparelFabrialDiminisher : ThingComp {
-    public Thing insertedGemstone;
+    public Verse.Thing insertedGemstone;
     public bool powerOn;
     public CompPropertiesApparelFabrialDiminisher props => (CompPropertiesApparelFabrialDiminisher)base.props;
     public bool hasGemstone => insertedGemstone != null;
@@ -86,7 +85,6 @@ public class CompPropertiesApparelFabrialDiminisher : CompProperties {
     }
 }
 
-
 public class HediffCompFabrialPainDiminisher : HediffComp {
     public override string CompLabelInBracketsExtra {
         get {
@@ -160,13 +158,12 @@ public class HediffCompPropertiesFabrialPainDiminisher : HediffCompProperties {
     }
 }
 
-
 [HarmonyPatch(typeof(WorkGiver_DoBill), "JobOnThing")]
 public static class PatchJobOnThingBlockBadGems {
     private static bool Prefix(
         ref Job result,
         Pawn pawn,
-        Thing thing,
+        Verse.Thing thing,
         bool forced,
         WorkGiver_DoBill instance
     ) {
@@ -182,7 +179,7 @@ public static class PatchJobOnThingBlockBadGems {
 
             bool hasValidGem = false;
 
-            foreach (Thing gem in pawn.Map.listerThings.ThingsOfDef(ThingDef.Named("whtwl_CutEmerald"))) {
+            foreach (Verse.Thing gem in pawn.Map.listerThings.ThingsOfDef(ThingDef.Named("whtwl_CutEmerald"))) {
                 if (!pawn.CanReserveAndReach(gem, PathEndMode.ClosestTouch, Danger.Deadly)) {
                     continue;
                 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using CosmereRoshar.Comp.Apparel;
+using CosmereRoshar.Comp.Fabrials;
+using CosmereRoshar.Comp.Furniture;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps.Apparel;
-using CosmereRoshar.Comps.Fabrials;
-using CosmereRoshar.Comps.Furniture;
 using RimWorld;
 using Verse;
 
@@ -109,7 +109,7 @@ public class GameConditionHighstorm : GameCondition {
                     }
                 }
             } else if (thing is Pawn pawn) {
-                if (pawn.Dead == false) {
+                if (!pawn.Dead) {
                     DamageInfo damage = new DamageInfo(
                         DamageDefOf.Blunt,
                         10, // Damage amount

@@ -1,19 +1,18 @@
-﻿using CosmereRoshar.Comp;
-using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps;
+﻿using CosmereRoshar.Comp.Thing;
 using RimWorld;
 using Verse;
 
 namespace CosmereRoshar.Combat.Abilities.Implementations;
 
-public class CompPropertiesAbilityToggleStormlight : CompProperties_AbilityEffect {
-    public CompPropertiesAbilityToggleStormlight() {
-        compClass = typeof(CompAbilityEffectAbilityToggleStormlight);
+public class ToggleStormlightProperties : CompProperties_AbilityEffect {
+    public ToggleStormlightProperties() {
+        compClass = typeof(ToggleStormlight);
     }
 }
 
-public class CompAbilityEffectAbilityToggleStormlight : CompAbilityEffect {
-    public new CompPropertiesAbilityToggleStormlight props => ((AbilityComp)this).props as CompPropertiesAbilityToggleStormlight;
+public class ToggleStormlight : CompAbilityEffect {
+    public new ToggleStormlightProperties props =>
+        ((AbilityComp)this).props as ToggleStormlightProperties;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target

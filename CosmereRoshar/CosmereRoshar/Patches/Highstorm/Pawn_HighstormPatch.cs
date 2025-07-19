@@ -1,7 +1,5 @@
 ﻿using System;
-using CosmereRoshar.Comp;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps;
 using CosmereRoshar.Weather;
 using HarmonyLib;
 using RimWorld;
@@ -183,7 +181,7 @@ public static class PawnHighstormPushPatch {
 
         // Storm always blows from east -> pushes pawns west
         IntVec3 newPos = instance.Position + IntVec3.West;
-        if (isRadiant == false &&
+        if (!isRadiant &&
             instance.Map != null &&
             newPos.Walkable(instance.Map) &&
             newPos.IsValid &&

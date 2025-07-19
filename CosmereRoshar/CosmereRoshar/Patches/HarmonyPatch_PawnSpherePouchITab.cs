@@ -1,4 +1,4 @@
-﻿using CosmereRoshar.Comps.Apparel;
+﻿using CosmereRoshar.Comp.Apparel;
 using CosmereRoshar.ITabs;
 using HarmonyLib;
 using RimWorld;

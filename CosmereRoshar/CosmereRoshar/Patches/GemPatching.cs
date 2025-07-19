@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using CosmereRoshar.Comps.Fabrials;
-using CosmereRoshar.Comps.Gems;
+using CosmereRoshar.Comp.Fabrials;
+using CosmereRoshar.Comp.Thing;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -24,10 +24,10 @@ public static class GemCraftingPatch {
         ThingWithComps cutGem =
             ingredients.FirstOrDefault(t => CosmereRosharUtilities.cutGems.Contains(t.def)) as ThingWithComps;
         if (rawGem != null) {
-            CompRawGemstone compRawGemstone = rawGem.GetComp<CompRawGemstone>();
-            if (compRawGemstone != null) {
+            RawGemstone rawGemstone = rawGem.GetComp<RawGemstone>();
+            if (rawGemstone != null) {
                 foreach (Thing? product in result) {
-                    SetCutGemStats(product.TryGetComp<CompCutGemstone>(), compRawGemstone);
+                    SetCutGemStats(product.TryGetComp<CompCutGemstone>(), rawGemstone);
                     yield return product;
                 }
             }
@@ -47,9 +47,9 @@ public static class GemCraftingPatch {
         }
     }
 
-    private static void SetCutGemStats(CompCutGemstone productComp, CompRawGemstone ingredientComp) {
+    private static void SetCutGemStats(CompCutGemstone productComp, RawGemstone ingredient) {
         if (productComp != null) {
-            productComp.maximumGemstoneSize = ingredientComp.gemstoneSize;
+            productComp.maximumGemstoneSize = ingredient.gemstoneSize;
         }
     }
 

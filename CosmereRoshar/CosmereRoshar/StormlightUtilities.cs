@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comps.Gems;
-using CosmereRoshar.Comps.WeaponsAndArmor;
+using CosmereRoshar.Combat.Abilities.Implementations;
+using CosmereRoshar.Comp.Thing;
 using CosmereRoshar.Patches;
 using HarmonyLib;
 using RimWorld;
@@ -76,11 +76,10 @@ public static class StormlightUtilities {
         return false;
     }
 
-    public static int GetGraphicId(Thing thing) {
+    public static int GetGraphicId(ThingWithComps? thing) {
         if (thing == null) return 0;
-        CompShardblade comp = thing.TryGetComp<CompShardblade>();
-        if (comp == null) return 0;
-        return comp.graphicId;
+
+        return !thing.TryGetComp(out ShardBlade comp) ? 0 : comp.graphicId;
     }
 
     public static float Normalize(float value, float vMin, float vMax, float tMin, float tMax) {
@@ -204,13 +203,13 @@ public static class StormlightUtilities {
                thing.def == CosmereResources.ThingDefOf.CutGarnet;
     }
 
-    public static Trait GetRadiantTrait(Pawn pawn) {
+    public static Trait? GetRadiantTrait(Pawn pawn) {
         return pawn.story.traits.allTraits.FirstOrDefault(t => CosmereRosharUtilities.radiantTraits.Contains(t.def));
     }
 
     public static ThingDef RollForRandomGemSpawn() {
         foreach (ThingDef? gem in Gems) {
-            if (RollTheDice(0, gem.GetCompProperties<CompPropertiesRawGemstone>().spawnChance, 1)) {
+            if (RollTheDice(0, gem.GetCompProperties<RawGemstoneProperties>().spawnChance, 1)) {
                 return gem;
             }
         }

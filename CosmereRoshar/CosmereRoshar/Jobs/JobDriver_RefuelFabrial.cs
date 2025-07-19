@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using CosmereRoshar.Comps.Fabrials;
-using CosmereRoshar.Comps.Gems;
+using CosmereRoshar.Comp.Fabrials;
+using CosmereRoshar.Comp.Thing;
 using Verse;
 using Verse.AI;
 

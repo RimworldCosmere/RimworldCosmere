@@ -6,16 +6,16 @@ using Verse;
 namespace CosmereRoshar.Combat.Abilities.Implementations;
 
 /// Surge regrowth plants
-public class CompPropertiesAbilitySurgePlantGrowth : CompProperties_AbilityEffect {
+public class SurgePlantGrowthProperties : CompProperties_AbilityEffect {
     public float stormLightCost;
 
-    public CompPropertiesAbilitySurgePlantGrowth() {
-        compClass = typeof(CompAbilityEffectSurgePlantGrowth);
+    public SurgePlantGrowthProperties() {
+        compClass = typeof(SurgePlantGrowth);
     }
 }
 
-public class CompAbilityEffectSurgePlantGrowth : CompAbilityEffect {
-    public new CompPropertiesAbilitySurgePlantGrowth props => ((AbilityComp)this).props as CompPropertiesAbilitySurgePlantGrowth;
+public class SurgePlantGrowth : CompAbilityEffect {
+    public new SurgePlantGrowthProperties props => (SurgePlantGrowthProperties)base.props;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         if (!target.IsValid || target.Thing == null || !target.Thing.Spawned) {

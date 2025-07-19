@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CosmereRoshar.Comp.Apparel;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps.Apparel;
 using RimWorld;
 using UnityEngine;
 using Verse;

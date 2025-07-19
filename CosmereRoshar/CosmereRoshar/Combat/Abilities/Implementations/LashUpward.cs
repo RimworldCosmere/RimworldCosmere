@@ -1,45 +1,22 @@
 ﻿using CosmereRoshar.Comp.Thing;
 using CosmereRoshar.Need;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace CosmereRoshar.Combat.Abilities.Implementations;
 
-[HarmonyPatch(typeof(PawnFlyer))]
-[HarmonyPatch("RespawnPawn")]
-public class PatchPp {
-    private static Pawn FlyingPawn;
-
-    private static void Prefix(ThingOwner<Thing> innerContainer) {
-        if (innerContainer.InnerListForReading.Count <= 0) {
-            return;
-        }
-
-        FlyingPawn = innerContainer.InnerListForReading[0] as Pawn;
-    }
-
-    private static void Postfix(AbilityDef triggeringAbility) {
-        if (triggeringAbility != null && FlyingPawn != null) {
-            if (triggeringAbility.defName == CosmereRosharDefs.WhtwlLashingUpward.defName) {
-                FlyingPawn.TakeDamage(new DamageInfo(DamageDefOf.Blunt, 75));
-            }
-        }
-    }
-}
-
 /// LASH UP ABILITY
-public class CompPropertiesAbilityLashUpward : CompProperties_AbilityEffect {
+public class LashUpwardProperties : CompProperties_AbilityEffect {
     public float stormLightCost;
     public ThingDef thingDef;
 
-    public CompPropertiesAbilityLashUpward() {
-        compClass = typeof(CompAbilityEffectAbilityLashUpward);
+    public LashUpwardProperties() {
+        compClass = typeof(LashUpward);
     }
 }
 
-public class CompAbilityEffectAbilityLashUpward : CompAbilityEffect {
-    public new CompPropertiesAbilityLashUpward props => ((AbilityComp)this).props as CompPropertiesAbilityLashUpward;
+public class LashUpward : CompAbilityEffect {
+    public new LashUpwardProperties props => (LashUpwardProperties)base.props;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target

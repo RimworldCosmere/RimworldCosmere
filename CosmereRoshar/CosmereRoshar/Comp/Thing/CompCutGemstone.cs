@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using CosmereRoshar.Comp;
-using CosmereRoshar.Comp.Thing;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Comps.Gems;
+namespace CosmereRoshar.Comp.Thing;
 
 public class SphereRuby : ThingDef { }
 
@@ -61,7 +59,7 @@ public class CompCutGemstone : ThingComp {
         }
     }
 
-    public override bool AllowStackWith(Thing other) {
+    public override bool AllowStackWith(Verse.Thing other) {
         CompCutGemstone comp = other.TryGetComp<CompCutGemstone>();
         if (comp != null) {
             if (comp.gemstoneQuality != gemstoneQuality || comp.gemstoneSize != gemstoneSize) {

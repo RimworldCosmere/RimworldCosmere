@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps.Gems;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Comps.Fabrials;
+namespace CosmereRoshar.Comp.Fabrials;
 
 public interface IGemstoneHandler {
     void RemoveGemstone();
@@ -57,7 +55,7 @@ public class BuildingHeatrialAdvanced : Building {
 }
 
 public class CompHeatrial : ThingComp, IGemstoneHandler {
-    public Thing insertedGemstone;
+    public Verse.Thing insertedGemstone;
     public bool powerOn;
     public CompPropertiesHeatrial props => (CompPropertiesHeatrial)base.props;
     public CompGlower glowerComp => parent.GetComp<CompGlower>();
@@ -71,7 +69,7 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
 
     public void RemoveGemstone() {
         if (insertedGemstone != null) {
-            Thing gemstoneToDrop = insertedGemstone;
+            Verse.Thing gemstoneToDrop = insertedGemstone;
             insertedGemstone = null;
             IntVec3 dropPosition = parent.Position;
             GenPlace.TryPlaceThing(gemstoneToDrop, dropPosition, parent.Map, ThingPlaceMode.Near);
@@ -121,7 +119,7 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
     }
 
     public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn) {
-        Thing? cutGemstone = GenClosest.ClosestThing_Global(
+        Verse.Thing? cutGemstone = GenClosest.ClosestThing_Global(
             selPawn.Position,
             selPawn.Map.listerThings.AllThings.Where(thing => thing.def == CosmereResources.ThingDefOf.CutRuby),
             500f

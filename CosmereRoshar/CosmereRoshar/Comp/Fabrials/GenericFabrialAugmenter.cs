@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps.Gems;
 using CosmereRoshar.ITabs;
 using CosmereRoshar.Patches.Fabrials;
 using RimWorld;
@@ -11,7 +9,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Comps.Fabrials;
+namespace CosmereRoshar.Comp.Fabrials;
 
 public class BuildingFabrialBasicAugmenter : Building {
     public CompBasicFabrialAugumenter compBasicFabrialAugumenter;
@@ -48,7 +46,7 @@ public class BuildingFabrialBasicAugmenter : Building {
     public override void Print(SectionLayer layer) {
         base.Print(layer);
         if (compBasicFabrialAugumenter.insertedGemstone == null) return;
-        
+
         if (compBasicFabrialAugumenter.insertedGemstone.def == CosmereResources.ThingDefOf.CutRuby) {
             def.graphicData.attachments[0].Graphic.Print(layer, this, 0f);
         } else if (compBasicFabrialAugumenter.insertedGemstone.def == CosmereResources.ThingDefOf.CutDiamond) {
@@ -62,7 +60,6 @@ public class BuildingFabrialBasicAugmenter : Building {
         }
     }
 }
-
 
 public class CompPropertiesBasicFabrialAugmenter : CompProperties {
     public CompPropertiesBasicFabrialAugmenter() {
@@ -85,7 +82,8 @@ public class CompBasicFabrialAugumenter : ThingComp, IGemstoneHandler, IFilterab
     public CompGlower? glowerComp => parent.TryGetComp<CompGlower>();
     public bool hasGemstone => insertedGemstone != null;
 
-    public Spren currentSpren => hasGemstone ? insertedGemstone.TryGetComp<CompCutGemstone>()?.capturedSpren ?? Spren.None : Spren.None;
+    public Spren currentSpren =>
+        hasGemstone ? insertedGemstone.TryGetComp<CompCutGemstone>()?.capturedSpren ?? Spren.None : Spren.None;
 
     public List<ThingDef> filterList => filterListInt;
 
@@ -108,7 +106,7 @@ public class CompBasicFabrialAugumenter : ThingComp, IGemstoneHandler, IFilterab
 
     public void RemoveGemstone() {
         if (insertedGemstone == null) return;
-        
+
         IntVec3 dropPosition = parent.Position;
         dropPosition.z -= 1;
         GenPlace.TryPlaceThing(insertedGemstone, dropPosition, parent.Map, ThingPlaceMode.Near);
@@ -169,10 +167,10 @@ public class CompBasicFabrialAugumenter : ThingComp, IGemstoneHandler, IFilterab
 
     private void DoFlameSprenPower() {
         if (!powerOn || insertedGemstone == null) return;
-        
+
         CompCutGemstone? gemstoneComp = insertedGemstone.TryGetComp<CompCutGemstone>();
         if (gemstoneComp == null) return;
-        
+
         float maxEnergy = gemstoneComp.gemstoneSize * 3; //3, 15, 60
         float targetTemp = gemstoneComp.gemstoneSize; //1, 5, 20
         if (targetTemp < 20f) targetTemp *= 1.25f;
@@ -190,10 +188,10 @@ public class CompBasicFabrialAugumenter : ThingComp, IGemstoneHandler, IFilterab
 
     private void DoColdSprenPower() {
         if (!powerOn || parent.IsOutside()) return;
-        
+
         CompCutGemstone? gemstoneComp = insertedGemstone.TryGetComp<CompCutGemstone>();
         if (gemstoneComp == null) return;
-        
+
         int gemstoneSize = gemstoneComp.gemstoneSize * 3; //3, 15, 60
         float targetTemp = -5f;
         float currentTemp = parent.GetRoom().Temperature;
@@ -221,12 +219,12 @@ public class CompBasicFabrialAugumenter : ThingComp, IGemstoneHandler, IFilterab
 
     private void DoLogicSprenPower() {
         if (!powerOn) return;
-        
+
         IntVec3 position = parent.Position;
         Map map = parent.Map;
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, 5f, true);
-        
-        
+
+
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
             if (
@@ -241,13 +239,13 @@ public class CompBasicFabrialAugumenter : ThingComp, IGemstoneHandler, IFilterab
 
     public override string CompInspectStringExtra() {
         if (insertedGemstone == null) return "No gem in fabrial.";
-        
+
         return "Spren: " +
-                  insertedGemstone.GetComp<CompCutGemstone>().capturedSpren +
-                  "\nStormlight: " +
-                  insertedGemstone.GetComp<Stormlight>().currentStormlight.ToString("F0") +
-                  "\ntime remaining: " +
-                  GetTimeRemaining();
+               insertedGemstone.GetComp<CompCutGemstone>().capturedSpren +
+               "\nStormlight: " +
+               insertedGemstone.GetComp<Stormlight>().currentStormlight.ToString("F0") +
+               "\ntime remaining: " +
+               GetTimeRemaining();
     }
 
     private string GetTimeRemaining() {
@@ -268,7 +266,7 @@ public class CompBasicFabrialAugumenter : ThingComp, IGemstoneHandler, IFilterab
     }
 
     public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn) {
-        Thing? cutGemstone = GenClosest.ClosestThing_Global(
+        Verse.Thing? cutGemstone = GenClosest.ClosestThing_Global(
             selPawn.Position,
             selPawn.Map.listerThings.AllThings.Where(thing =>
                 StormlightUtilities.IsThingCutGemstone(thing) &&

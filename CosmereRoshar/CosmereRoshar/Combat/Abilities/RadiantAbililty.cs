@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CosmereRoshar.Combat.Abilities.Implementations;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps.WeaponsAndArmor;
+using CosmereRoshar.Comp.WeaponsAndArmor;
 using CosmereRoshar.Jobs;
 using CosmereRoshar.Utility;
 using RimWorld;
@@ -109,7 +109,7 @@ public class CommandRadiantAbility : Command {
 
     private bool BreathStormlightCheck() {
         if (ability.def != CosmereRosharDefs.WhtwlBreathStormlight) return false;
-        
+
         return pawn.TryGetComp<Stormlight>() is { breathStormlight: true };
     }
 
@@ -207,40 +207,42 @@ public class CommandRadiantAbility : Command {
                                pawn.story.traits.HasTrait(CosmereRosharDefs.WhtwlRadiantEdgedancer) ||
                                pawn.story.traits.HasTrait(CosmereRosharDefs.WhtwlRadiantSkybreaker);
 
-        if (pawn.Drafted &&
-            (hasRadiantTrait ||
-             pawn.GetAbilityComp<CompAbilityEffectSpawnEquipment>(CosmereRosharDefs.WhtwlSummonShardblade.defName) !=
-             null)) {
-            if (AbilityToggleStormlight()) {
-                return;
-            }
-
-            if (AbilitySummonShardblade()) {
-                return;
-            }
-
-            if (AbilityLashingUpward()) {
-                return;
-            }
-
-            if (AbilityWindRunnerFlight()) {
-                return;
-            }
-
-            if (AbilityHealSurge()) {
-                return;
-            }
-
-            if (AbilityPlantGrowSurge()) {
-                return;
-            }
-
-            if (AbilityAbrasionSurge()) {
-                return;
-            }
-
-            if (AbilityDivisionSurge()) { }
+        if (!pawn.Drafted ||
+            !hasRadiantTrait &&
+            pawn.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.WhtwlSummonShardblade.defName) ==
+            null) {
+            return;
         }
+
+        if (AbilityToggleStormlight()) {
+            return;
+        }
+
+        if (AbilitySummonShardblade()) {
+            return;
+        }
+
+        if (AbilityLashingUpward()) {
+            return;
+        }
+
+        if (AbilityWindRunnerFlight()) {
+            return;
+        }
+
+        if (AbilityHealSurge()) {
+            return;
+        }
+
+        if (AbilityPlantGrowSurge()) {
+            return;
+        }
+
+        if (AbilityAbrasionSurge()) {
+            return;
+        }
+
+        if (AbilityDivisionSurge()) { }
     }
 
     private bool AbilityPlantGrowSurge() {
@@ -359,11 +361,11 @@ public class CommandRadiantAbility : Command {
 
     private bool AbilityWindRunnerFlight() {
         if (ability.def != CosmereRosharDefs.WhtwlWindRunnerFlight) return false;
-        
+
         float cost = pawn
-            .GetAbilityComp<CompAbilityEffectAbilityWindRunnerFlight>(
+            .GetAbilityComp<SurgeGravitation>(
                 CosmereRosharDefs.WhtwlWindRunnerFlight.defName
-            )
+            )!
             .props.stormLightCost;
         float distance = pawn.GetComp<Stormlight>().currentStormlight / cost;
         TargetingParameters tp = new TargetingParameters {
@@ -381,7 +383,12 @@ public class CommandRadiantAbility : Command {
         return true;
     }
 
-    private void StartCustomTargeting(Pawn caster, float maxDistance, TargetingParameters tp, bool triggerAsJob = true) {
+    private void StartCustomTargeting(
+        Pawn caster,
+        float maxDistance,
+        TargetingParameters tp,
+        bool triggerAsJob = true
+    ) {
         Find.Targeter.BeginTargeting(
             tp,
             MainAction,
@@ -476,7 +483,9 @@ public class CommandRadiantAbility : Command {
         // Called each frame. We’ll draw a radius ring to show the cast range
         void OnUpdateAction(LocalTargetInfo info) {
             Vector3 mousePos = UI.MouseMapPosition();
-            double distance = Math.Sqrt(Math.Pow(mousePos.x - caster.Position.x, 2) + Math.Pow(mousePos.z - caster.Position.z, 2));
+            double distance = Math.Sqrt(
+                Math.Pow(mousePos.x - caster.Position.x, 2) + Math.Pow(mousePos.z - caster.Position.z, 2)
+            );
             if (distance - 0.5f > maxDistance) {
                 color = Color.red;
             } else {

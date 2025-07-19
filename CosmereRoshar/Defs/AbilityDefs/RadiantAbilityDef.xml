@@ -7,14 +7,14 @@
   </AbilityCategoryDef>
 
   <AbilityDef Name="RadiantBase" Abstract="True">
-    <abilityClass>CosmereRoshar.RadiantAbility</abilityClass> <!-- Custom ability class -->
+    <abilityClass>CosmereRoshar.Combat.Abilities.RadiantAbility</abilityClass> <!-- Custom ability class -->
     <category>whtwl_Radiant</category> <!-- Custom category for Radiant abilities -->
     <statBases>
       <Ability_Duration>0</Ability_Duration> <!-- Base duration -->
     </statBases>
     <warmupSound>PsycastCastLoop</warmupSound> <!-- Custom sound for radiant abilities -->
     <verbProperties>
-      <verbClass>CosmereRoshar.Verb_CastRadiant</verbClass> <!-- Custom verb class -->
+      <verbClass>CosmereRoshar.Combat.Abilities.VerbCastRadiant</verbClass> <!-- Custom verb class -->
       <range>24.9</range>
       <requireLineOfSight>True</requireLineOfSight>
       <warmupTime>1</warmupTime>
@@ -43,7 +43,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.CompProperties_AbilityToggleStormlight">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.ToggleStormlight">
             <compClass>CosmereRoshar.CompAbilityEffect_AbilityToggleStormlight</compClass>
         </li>
     </comps>
@@ -67,7 +67,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.CompProperties_AbilitySpawnEquipment">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SpawnEquipment">
             <compClass>CosmereRoshar.CompAbilityEffect_SpawnEquipment</compClass>
             <thingDef>whtwl_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
         </li>
@@ -98,7 +98,7 @@
     </verbProperties>
 
     <comps>
-        <li Class="CosmereRoshar.CompProperties_AbilityBreakBond">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.BreakBond">
             <compClass>CosmereRoshar.CompAbilityEffect_BreakBondWithSword</compClass>
             <thingDef>whtwl_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
         </li>
@@ -148,7 +148,7 @@
     </verbProperties>
 
     <comps>
-        <li Class="CosmereRoshar.CompProperties_AbilityLashUpward">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.LashUpward">
             <compClass>CosmereRoshar.CompAbilityEffect_AbilityLashUpward</compClass>
             <thingDef>whtwl_lashingUp</thingDef> 
             <stormLightCost>500</stormLightCost>
@@ -197,7 +197,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.CompProperties_AbilityWindRunnerFlight">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.WindRunnerFlight">
             <compClass>CosmereRoshar.CompAbilityEffect_AbilityWindRunnerFlight</compClass>
             <thingDef>whtwl_WindRunnerFlight</thingDef> <!-- Ensure this matches your XML weapon defName -->
             <stormLightCost>15</stormLightCost>
@@ -223,7 +223,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.CompProperties_AbilitySurgePlantGrowth">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgePlantGrowth">
             <compClass>CosmereRoshar.CompAbilityEffect_SurgePlantGrowth</compClass>
             <stormLightCost>25</stormLightCost>
         </li>
@@ -248,7 +248,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.CompProperties_AbilitySurgeHeal">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeProgression">
             <compClass>CosmereRoshar.CompAbilityEffect_SurgeHeal</compClass>
             <stormLightCost>50</stormLightCost>
         </li>
@@ -273,7 +273,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.CompProperties_AbilitySurgeAbrasion">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeAbrasion">
             <compClass>CosmereRoshar.CompAbilityEffect_SurgeAbrasion</compClass>
         </li>
     </comps>
@@ -297,7 +297,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.CompProperties_AbilitySurgeDivision">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeDivision">
             <compClass>CosmereRoshar.CompAbilityEffect_SurgeDivision</compClass>
              <stormLightCost>500</stormLightCost>
         </li>

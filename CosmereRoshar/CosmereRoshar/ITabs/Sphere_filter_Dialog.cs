@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CosmereRoshar.Comps.Gems;
+using CosmereRoshar.Comp.Thing;
 using UnityEngine;
 using Verse;
 

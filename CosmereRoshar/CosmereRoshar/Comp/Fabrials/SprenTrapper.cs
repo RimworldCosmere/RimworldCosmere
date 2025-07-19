@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps.Gems;
 using CosmereRoshar.ITabs;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Comps.Fabrials;
+namespace CosmereRoshar.Comp.Fabrials;
 
 public class BuildingSprenTrapper : Building {
     public CompGlower compGlower;
@@ -61,7 +60,8 @@ public class BuildingSprenTrapper : Building {
     private void ToggleGlow() {
         if (Map != null) {
             if (compTrapper.hasGemstone) {
-                if (!compTrapper.sprenCaptured && !compTrapper.insertedGemstone.TryGetComp<Stormlight>().hasStormlight) {
+                if (!compTrapper.sprenCaptured &&
+                    !compTrapper.insertedGemstone.TryGetComp<Stormlight>().hasStormlight) {
                     compGlower.GlowColor = ColorInt.FromHdrColor(Color.red);
                 } else if (compTrapper.sprenCaptured) {
                     compGlower.GlowColor = ColorInt.FromHdrColor(Color.green);
@@ -77,7 +77,7 @@ public class BuildingSprenTrapper : Building {
     }
 
     private void CaptureLoop() {
-        if (compTrapper.insertedGemstone != null && compTrapper.sprenCaptured == false) {
+        if (compTrapper.insertedGemstone != null && !compTrapper.sprenCaptured) {
             List<Spren> sprenList;
             gemstonePossibleSprenDict.TryGetValue(compTrapper.insertedGemstone.def.defName, out sprenList);
             foreach (Spren spren in sprenList) {
@@ -155,7 +155,7 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
 
     public void RemoveGemstone() {
         if (insertedGemstone != null) {
-            Thing gemstoneToDrop = insertedGemstone;
+            Verse.Thing gemstoneToDrop = insertedGemstone;
             insertedGemstone = null;
             IntVec3 dropPosition = parent.Position;
             dropPosition.z -= 1;
@@ -338,20 +338,23 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
 
         if (insertedGemstone == null) return gemName;
         ThingWithComps gemstone = insertedGemstone;
-        gemName = gemstone.GetComp<CompCutGemstone>().getFullLabel + "(" + gemstone.GetComp<Stormlight>().currentStormlight.ToString("F0") + ")";
+        gemName = gemstone.GetComp<CompCutGemstone>().getFullLabel +
+                  "(" +
+                  gemstone.GetComp<Stormlight>().currentStormlight.ToString("F0") +
+                  ")";
 
         return gemName;
     }
 
     public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn) {
-        Thing? cutGemstone = GenClosest.ClosestThing_Global(
+        Verse.Thing? cutGemstone = GenClosest.ClosestThing_Global(
             selPawn.Position,
             selPawn.Map.listerThings.AllThings.Where(thing =>
-                StormlightUtilities.IsThingCutGemstone(thing)
-                && thing.TryGetComp<CompCutGemstone>().hasSprenInside == false
-                && thing.TryGetComp<Stormlight>().hasStormlight
-                && filterList.Contains(thing.def)
-                && sizeFilterList.Contains(thing.TryGetComp<CompCutGemstone>()?.GetGemSize() ?? GemSize.None)
+                StormlightUtilities.IsThingCutGemstone(thing) &&
+                !thing.TryGetComp<CompCutGemstone>().hasSprenInside &&
+                thing.TryGetComp<Stormlight>().hasStormlight &&
+                filterList.Contains(thing.def) &&
+                sizeFilterList.Contains(thing.TryGetComp<CompCutGemstone>()?.GetGemSize() ?? GemSize.None)
             ),
             500f
         );

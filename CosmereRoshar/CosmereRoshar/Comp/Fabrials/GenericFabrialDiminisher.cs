@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comps.Gems;
 using CosmereRoshar.ITabs;
 using CosmereRoshar.Patches.Fabrials;
 using RimWorld;
@@ -11,7 +9,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Comps.Fabrials;
+namespace CosmereRoshar.Comp.Fabrials;
 
 public class BuildingFabrialBasicDiminisher : Building {
     public CompBasicFabrialDiminisher compBasicFabrialDiminisher;
@@ -35,7 +33,7 @@ public class BuildingFabrialBasicDiminisher : Building {
     private void ToggleGlow(bool on) {
         if (Map != null) {
             if (on) {
-                Stormlight? stormlightComp = (compBasicFabrialDiminisher.insertedGemstone as ThingWithComps)
+                Stormlight? stormlightComp = compBasicFabrialDiminisher.insertedGemstone
                     .GetComp<Stormlight>();
                 compGlower.GlowRadius = stormlightComp.maximumGlowRadius;
                 compGlower.GlowColor = stormlightComp.glowerComp.GlowColor;
@@ -86,7 +84,8 @@ public class CompBasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterab
     public CompGlower glowerComp => parent.GetComp<CompGlower>();
     public bool hasGemstone => insertedGemstone != null;
 
-    public Spren currentSpren => hasGemstone ? insertedGemstone.TryGetComp<CompCutGemstone>()?.capturedSpren ?? Spren.None : Spren.None;
+    public Spren currentSpren =>
+        hasGemstone ? insertedGemstone.TryGetComp<CompCutGemstone>()?.capturedSpren ?? Spren.None : Spren.None;
 
     public List<ThingDef> filterList => filterListInt;
 
@@ -109,7 +108,7 @@ public class CompBasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterab
 
     public void RemoveGemstone() {
         if (insertedGemstone == null) return;
-        Thing gemstoneToDrop = insertedGemstone;
+        Verse.Thing gemstoneToDrop = insertedGemstone;
         insertedGemstone = null;
         IntVec3 dropPosition = parent.Position;
         dropPosition.z -= 1;
@@ -149,7 +148,7 @@ public class CompBasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterab
     }
 
     public void UsePower() {
-        if (!powerOn || !(insertedGemstone?.TryGetComp<Stormlight>(out Stormlight stormlight) ?? false)) {
+        if (!powerOn || !(insertedGemstone?.TryGetComp(out Stormlight stormlight) ?? false)) {
             return;
         }
 
@@ -186,7 +185,7 @@ public class CompBasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterab
 
     private void DoColdSprenPower() {
         if (!powerOn || parent.IsOutside()) return;
-        
+
         int gemstoneSize = insertedGemstone.TryGetComp<CompCutGemstone>().gemstoneSize * 3; //3, 15, 60
         float targetTemp = tempWhenTurnedOn;
         float currentTemp = parent.GetRoom().Temperature;
@@ -197,7 +196,7 @@ public class CompBasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterab
 
     private void DoPainSprenPower() {
         if (!powerOn) return;
-        
+
         IntVec3 position = parent.Position;
         Map map = parent.Map;
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, 5f, true);
@@ -229,13 +228,13 @@ public class CompBasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterab
 
     public override string CompInspectStringExtra() {
         if (insertedGemstone == null) return "No gem in fabrial.";
-        
+
         return "Spren: " +
-                  insertedGemstone.GetComp<CompCutGemstone>().capturedSpren +
-                  "\nStormlight: " +
-                  insertedGemstone.GetComp<Stormlight>().currentStormlight.ToString("F0") +
-                  "\ntime remaining: " +
-                  GetTimeRemaining();
+               insertedGemstone.GetComp<CompCutGemstone>().capturedSpren +
+               "\nStormlight: " +
+               insertedGemstone.GetComp<Stormlight>().currentStormlight.ToString("F0") +
+               "\ntime remaining: " +
+               GetTimeRemaining();
     }
 
     private string GetTimeRemaining() {
@@ -256,7 +255,7 @@ public class CompBasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterab
     }
 
     public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn) {
-        Thing? cutGemstone = GenClosest.ClosestThing_Global(
+        Verse.Thing? cutGemstone = GenClosest.ClosestThing_Global(
             selPawn.Position,
             selPawn.Map.listerThings.AllThings.Where(thing =>
                 StormlightUtilities.IsThingCutGemstone(thing) &&

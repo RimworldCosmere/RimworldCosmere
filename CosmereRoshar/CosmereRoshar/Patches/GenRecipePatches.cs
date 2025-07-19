@@ -33,7 +33,7 @@ public static class GenRecipePatches {
             yield break;
         }
 
-        firstResult.SetStuffDirect(dominantIngredient.def);
+        firstResult.SetStuffDirect(dominantIngredient.Stuff);
 
         yield return firstResult;
     }

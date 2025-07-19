@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef Name="Cosmere_Roshar_Thing_Sphere" ParentName="Cosmere_Roshar_Thing_CurrencyBase" Abstract="True">
-        <thingClass>CosmereRoshar.Thing.Sphere</thingClass>
         <thingCategories>
             <li>Cosmere_Currency</li>
             <li>Cosmere_Resource_ThingCategory_Sphere</li>

@@ -226,9 +226,8 @@ public static class Cosmere_Roshar_HelpSomeoneInNeed {
             return;
         }
 
-        PawnStats pawnStats = doctor.GetComp<PawnStats>();
+        if (doctor?.TryGetComp(out PawnStats pawnStats) != true) return;
 
-        if (pawnStats == null) return;
         // WINDRUNNER
         RadiantRequirements? windrunnerRequirement12 =
             pawnStats.requirementMap[CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner.defName][

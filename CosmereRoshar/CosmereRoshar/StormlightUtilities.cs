@@ -101,7 +101,7 @@ public static class StormlightUtilities {
         Map map = building.Map;
 
         foreach (IntVec3 cell in GenRadial.RadialCellsAround(position, radius, true)) {
-            foreach (Thing thing in cell.GetThingList(map)) {
+            foreach (Verse.Thing thing in cell.GetThingList(map)) {
                 if (thing.def == RimWorld.ThingDefOf.Fire ||
                     thing.def.category == ThingCategory.Building &&
                     thing.TryGetComp<CompRefuelable>()?.Props.fuelConsumptionPerTickInRain > 0f) {
@@ -122,7 +122,7 @@ public static class StormlightUtilities {
         Map map = building.Map;
         int numberOfFires = 0;
         foreach (IntVec3 cell in GenRadial.RadialCellsAround(position, radius, true)) {
-            foreach (Thing thing in cell.GetThingList(map)) {
+            foreach (Verse.Thing thing in cell.GetThingList(map)) {
                 if (thing.def == RimWorld.ThingDefOf.Fire ||
                     thing.def.category == ThingCategory.Building &&
                     thing.TryGetComp<CompRefuelable>()?.Props.fuelConsumptionPerTickInRain > 0f) {
@@ -170,7 +170,7 @@ public static class StormlightUtilities {
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
         foreach (IntVec3 cell in cells) {
             if (cell.InBounds(map)) {
-                foreach (Thing thing in cell.GetThingList(map)) {
+                foreach (Verse.Thing thing in cell.GetThingList(map)) {
                     if (thing is Plant plant) {
                         plants++;
                     }
@@ -195,7 +195,7 @@ public static class StormlightUtilities {
         return false;
     }
 
-    public static bool IsThingCutGemstone(Thing thing) {
+    public static bool IsThingCutGemstone(Verse.Thing thing) {
         return thing.def == CosmereResources.ThingDefOf.CutRuby ||
                thing.def == CosmereResources.ThingDefOf.CutEmerald ||
                thing.def == CosmereResources.ThingDefOf.CutDiamond ||
@@ -236,10 +236,10 @@ public static class StormlightUtilities {
     }
 
 
-    public static void SetThingGraphic(Thing thing, string texPath, float drawSize = 1.5f) {
+    public static void SetThingGraphic(Verse.Thing thing, string texPath, float drawSize = 1.5f) {
         if (thing == null || thing.def == null) return;
 
-        Graphic newGraphic = GraphicDatabase.Get<Graphic_Single>(
+        Verse.Graphic newGraphic = GraphicDatabase.Get<Graphic_Single>(
             texPath,
             ShaderDatabase.Cutout,
             new Vector2(drawSize, drawSize),
@@ -247,7 +247,7 @@ public static class StormlightUtilities {
         );
 
         // Set internal field directly
-        AccessTools.Field(typeof(Thing), "graphicInt").SetValue(thing, newGraphic);
+        AccessTools.Field(typeof(Verse.Thing), "graphicInt").SetValue(thing, newGraphic);
 
         // Force refresh
         thing.Notify_ColorChanged();
@@ -261,7 +261,7 @@ public static class StormlightUtilities {
 
         foreach (IntVec3 cell in cells) {
             if (cell.InBounds(map)) {
-                foreach (Thing thing in cell.GetThingList(map)) {
+                foreach (Verse.Thing thing in cell.GetThingList(map)) {
                     if (thing is Plant plant && plant.Growth > 0.05f && plant.Growth < 1.0f && plant.GrowthRate > 0f) {
                         return true;
                     }
@@ -280,7 +280,7 @@ public static class StormlightUtilities {
         return !pawn.skills.GetSkill(SkillDefOf.Medicine).TotallyDisabled;
     }
 
-    public static bool ShouldBeMovedByStorm(this Thing thing) {
+    public static bool ShouldBeMovedByStorm(this Verse.Thing thing) {
         if (!thing.Spawned || thing.Map == null) {
             return false;
         }

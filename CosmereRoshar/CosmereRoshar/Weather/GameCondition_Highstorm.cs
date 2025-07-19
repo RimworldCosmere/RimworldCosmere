@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CosmereRoshar.Comp.Apparel;
 using CosmereRoshar.Comp.Fabrials;
 using CosmereRoshar.Comp.Furniture;
@@ -49,41 +50,30 @@ public class GameConditionHighstorm : GameCondition {
     }
 
     public void TryToInfuseThings() {
-        List<Thing> things = SingleMap.listerThings.ThingsInGroup(ThingRequestGroup.Everything);
-        foreach (Thing thing in things) {
-            if (thing.Position.Roofed(thing.Map)) {
-                continue;
-            }
-
-            if (thing.TryGetComp<Stormlight>() is Stormlight stormlightComp) {
-                stormlightComp.InfuseStormlight(5f);
+        List<Verse.Thing> things = SingleMap.listerThings.ThingsInGroup(ThingRequestGroup.Everything)
+            .Where(t => t.Position.Roofed(t.Map))
+            .ToList();
+        foreach (Verse.Thing thing in things) {
+            if (thing.TryGetComp(out Stormlight stormlight)) {
+                stormlight.InfuseStormlight(5f);
             } else if (thing.def == CosmereRosharDefs.WhtwlApparelSpherePouch && !thing.Position.Roofed(thing.Map)) {
-                CompSpherePouch? pouch = thing.TryGetComp<CompSpherePouch>();
-                if (pouch != null) {
-                    pouch.InfuseStormlight(5f);
-                }
+                thing.TryGetComp<CompSpherePouch>()?.InfuseStormlight(5f);
             } else if (thing.def == CosmereRosharDefs.WhtwlSphereLampWall && !thing.Position.Roofed(thing.Map)) {
-                StormlightLamps? lamp = thing.TryGetComp<StormlightLamps>();
-                if (lamp != null) {
-                    lamp.InfuseStormlight(5f);
-                }
+                thing.TryGetComp<StormlightLamps>()?.InfuseStormlight(5f);
             } else if (thing.def == CosmereRosharDefs.WhtwlApparelFabrialPainrialDiminisher &&
                        !thing.Position.Roofed(thing.Map)) {
-                CompApparelFabrialDiminisher? comp = thing.TryGetComp<CompApparelFabrialDiminisher>();
-                if (comp != null) {
-                    comp.InfuseStormlight(5f);
-                }
+                thing.TryGetComp<FabrialDiminisher>()?.InfuseStormlight(5f);
             }
         }
     }
 
-    public void DestoyIfCollide(Thing item, Map itemMap, IntVec3 newPos) {
-        List<Thing> thingsHere = itemMap.thingGrid.ThingsListAtFast(newPos).ListFullCopy();
-        foreach (Thing thing in thingsHere) {
+    public void DestoyIfCollide(Verse.Thing item, Map itemMap, IntVec3 newPos) {
+        List<Verse.Thing> thingsHere = itemMap.thingGrid.ThingsListAtFast(newPos).ListFullCopy();
+        foreach (Verse.Thing thing in thingsHere) {
             if (thing is Plant plant && plant.def.plant != null && plant.def.plant.harvestedThingDef != null) {
                 // Harvest yield
                 int woodCount = 5;
-                Thing wood = ThingMaker.MakeThing(plant.def.plant.harvestedThingDef);
+                Verse.Thing wood = ThingMaker.MakeThing(plant.def.plant.harvestedThingDef);
                 wood.stackCount = woodCount;
 
                 // Destroy the plant
@@ -129,11 +119,11 @@ public class GameConditionHighstorm : GameCondition {
 
     public void MoveItem() {
         // Copy the list to avoid modifying during enumeration
-        List<Thing> items = SingleMap.listerThings
+        List<Verse.Thing> items = SingleMap.listerThings
             .ThingsInGroup(ThingRequestGroup.HaulableEver)
             .ListFullCopy();
 
-        foreach (Thing item in items) {
+        foreach (Verse.Thing item in items) {
             Map itemMap = item.Map;
             if (itemMap == null) continue;
             //if (item.Position.Roofed(itemMap)) continue;

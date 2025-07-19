@@ -1,4 +1,4 @@
-﻿using CosmereRoshar.Comp.WeaponsAndArmor;
+﻿using CosmereRoshar.Extensions;
 using RimWorld;
 using Verse;
 

@@ -90,9 +90,7 @@
         <glowRadius>3</glowRadius>
         <glowColor>(255,150,100,0)</glowColor>
       </li>
-      <li Class="CosmereRoshar.CompProperties_SprenTrapper">
-        <compClass>CosmereRoshar.CompSprenTrapper</compClass>
-      </li>
+      <li><compClass>CosmereRoshar.Comp.Fabrials.SprenTrapper</compClass></li>
     </comps>
     <designationCategory>whtwl_DesignationFabrials</designationCategory>
     <designationHotKey>Misc3</designationHotKey>
@@ -187,9 +185,7 @@
         <overlightRadius>5.0</overlightRadius>
         <glowColor>(255,150,100,0)</glowColor>
       </li>
-      <li Class="CosmereRoshar.CompProperties_BasicFabrialAugmenter">
-        <compClass>CosmereRoshar.CompBasicFabrialAugumenter</compClass>
-      </li>
+      <li><compClass>CosmereRoshar.Comp.Fabrials.BasicFabrialAugmenter</compClass></li>
     </comps>
     <designationCategory>whtwl_DesignationFabrials</designationCategory>
     <designationHotKey>Misc3</designationHotKey>
@@ -285,9 +281,7 @@
         <overlightRadius>5.0</overlightRadius>
         <glowColor>(255,150,100,0)</glowColor>
       </li>
-      <li Class="CosmereRoshar.CompProperties_BasicFabrialDiminisher">
-        <compClass>CosmereRoshar.CompBasicFabrialDiminisher</compClass>
-      </li>
+      <li><compClass>CosmereRoshar.Comp.Fabrials.BasicFabrialDiminisher</compClass></li>
     </comps>
     <designationCategory>whtwl_DesignationFabrials</designationCategory>
     <designationHotKey>Misc3</designationHotKey>
@@ -350,9 +344,7 @@
         <glowRadius>2</glowRadius>
         <glowColor>(255,150,100,0)</glowColor>
       </li>
-      <li Class="CosmereRoshar.CompProperties_FabrialPowerGenerator">
-        <compClass>CosmereRoshar.CompFabrialPowerGenerator</compClass>
-      </li>
+      <li><compClass>CosmereRoshar.Comp.Fabrials.FabrialPowerGenerator</compClass></li>
       <li Class="CompProperties_Stunnable">
         <useLargeEMPEffecter>true</useLargeEMPEffecter>
         <affectedDamageDefs>

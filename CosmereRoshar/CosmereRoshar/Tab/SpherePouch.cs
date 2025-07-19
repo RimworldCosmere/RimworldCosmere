@@ -6,13 +6,13 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.ITabs;
+namespace CosmereRoshar.Tab;
 
-public class TabSpherePouch : ITab {
+public class SpherePouch : ITab {
     private static readonly Vector2 WinSize = new Vector2(300f, 480f);
     private Vector2 scrollPosition = Vector2.zero;
 
-    public TabSpherePouch() {
+    public SpherePouch() {
         size = WinSize;
         labelKey = "whtwl_TabSpherePouch"; // Localization key
     }
@@ -39,7 +39,7 @@ public class TabSpherePouch : ITab {
     protected override void FillTab() {
         if (pouchSpheres == null) return;
 
-        List<Thing> pouchContents = pouchSpheres.storedSpheres;
+        List<Verse.Thing> pouchContents = pouchSpheres.storedSpheres;
 
         Rect rect = new Rect(0f, 0f, WinSize.x, WinSize.y).ContractedBy(10f);
         Widgets.BeginGroup(rect);
@@ -52,7 +52,7 @@ public class TabSpherePouch : ITab {
         Widgets.BeginScrollView(scrollRect, ref scrollPosition, viewRect);
         float y = 30f;
         for (int i = 0; i < pouchContents.Count; i++) {
-            Thing item = pouchContents[i];
+            Verse.Thing item = pouchContents[i];
             Rect rowRect = new Rect(0f, y, viewRect.width, 28f);
             Widgets.DrawHighlightIfMouseover(rowRect);
             Widgets.Label(new Rect(5f, y + 5f, viewRect.width - 10f, 24f), item.LabelCap);
@@ -92,7 +92,7 @@ public class TabSpherePouch : ITab {
             ThingDef matchingSphereDef =
                 pouchSpheres.props.allowedSpheres.FirstOrDefault(def => selPawn.Map.listerThings.ThingsOfDef(def).Any()
                 );
-            Thing sphere = GenClosest.ClosestThing_Global(
+            Verse.Thing sphere = GenClosest.ClosestThing_Global(
                 selPawn.Position,
                 selPawn.Map.listerThings.ThingsOfDef(matchingSphereDef),
                 50f

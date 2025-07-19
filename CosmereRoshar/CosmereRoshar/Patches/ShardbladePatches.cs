@@ -4,9 +4,11 @@ using Verse;
 
 namespace CosmereRoshar.Patches;
 
-[HarmonyPatch(typeof(Pawn_EquipmentTracker), nameof(Pawn_EquipmentTracker.TryDropEquipment))]
-public static class ShardbladePatchDrop {
-    private static void Postfix(Pawn pawn, ThingWithComps eq, ThingWithComps resultingEq, IntVec3 pos) {
+[HarmonyPatch(typeof(Pawn_EquipmentTracker))]
+public static class ShardbladePatches {
+    [HarmonyPatch(nameof(Pawn_EquipmentTracker.TryDropEquipment))]
+    [HarmonyPostfix]
+    private static void PostfixTryDropEquipment(Pawn pawn, ThingWithComps eq, ThingWithComps resultingEq, IntVec3 pos) {
         if (eq != null && pawn != null) {
             if (eq.def == CosmereRosharDefs.WhtwlMeleeWeaponShardblade) {
                 ShardBlade blade = eq.GetComp<ShardBlade>();
@@ -19,12 +21,10 @@ public static class ShardbladePatchDrop {
             }
         }
     }
-}
 
-// @TODO Move to CosmereRoshar/Patches/PawnEquipmentTrackerPatches.cs
-[HarmonyPatch(typeof(Pawn_EquipmentTracker), nameof(Pawn_EquipmentTracker.AddEquipment))]
-public static class ShardbladePatchePickup {
-    private static void Postfix(Pawn pawn, ThingWithComps? newEq) {
+    [HarmonyPatch(nameof(Pawn_EquipmentTracker.AddEquipment))]
+    [HarmonyPostfix]
+    private static void PostfixAddEquipment(Pawn pawn, ThingWithComps? newEq) {
         if (newEq == null) return;
         if (!newEq.def.Equals(CosmereRosharDefs.WhtwlMeleeWeaponShardblade)) return;
         if (!newEq.TryGetComp(out ShardBlade blade)) return;

@@ -42,7 +42,7 @@ public class SurgeProgression : CompAbilityEffect {
     }
 
 
-    private void HealFunction(Thing targetThing) {
+    private void HealFunction(Verse.Thing targetThing) {
         if (targetThing is not Pawn targetPawn) {
             return;
         }

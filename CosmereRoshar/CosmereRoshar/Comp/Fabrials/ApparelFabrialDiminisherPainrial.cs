@@ -6,11 +6,9 @@ using Verse.AI;
 
 namespace CosmereRoshar.Comp.Fabrials;
 
-public class CompApparelFabrialDiminisher : ThingComp {
-    public Verse.Thing insertedGemstone;
+public class FabrialDiminisher : ThingComp {
+    public ThingWithComps? insertedGemstone;
     public bool powerOn;
-    public CompPropertiesApparelFabrialDiminisher props => (CompPropertiesApparelFabrialDiminisher)base.props;
-    public bool hasGemstone => insertedGemstone != null;
 
     public override void PostExposeData() {
         base.PostExposeData();
@@ -30,68 +28,47 @@ public class CompApparelFabrialDiminisher : ThingComp {
         }
     }
 
-    public override void PostSpawnSetup(bool respawningAfterLoad) {
-        base.PostSpawnSetup(respawningAfterLoad);
-    }
-
     public override void CompTick() {
         CheckPower();
     }
 
     public void InfuseStormlight(float amount) {
-        if (hasGemstone) {
-            Stormlight? stormlightComp = (insertedGemstone as ThingWithComps).GetComp<Stormlight>();
-            stormlightComp.InfuseStormlight(amount);
-        }
+        insertedGemstone?.TryGetComp<Stormlight>()?.InfuseStormlight(amount);
     }
 
     public bool CheckPower() {
-        if (insertedGemstone != null) {
-            Stormlight? stormlightComp = (insertedGemstone as ThingWithComps).GetComp<Stormlight>();
-            if (stormlightComp != null) {
-                powerOn = stormlightComp.hasStormlight;
-                if (powerOn) {
-                    stormlightComp.drainFactor = 0.25f;
-                    stormlightComp.CompTick();
-                }
-            } else {
-                powerOn = false;
-            }
-        } else {
-            powerOn = false;
+        if (insertedGemstone == null || !insertedGemstone.TryGetComp(out Stormlight stormlight)) {
+            return powerOn = false;
         }
+
+        powerOn = stormlight.hasStormlight;
+        if (!powerOn) return powerOn;
+
+        stormlight.drainFactor = 0.25f;
+        stormlight.CompTick();
 
         return powerOn;
     }
 
     public override string CompInspectStringExtra() {
-        string gemName = "No gem in fabrial.";
+        if (insertedGemstone == null) return "No gem in fabrial.";
 
-        if (insertedGemstone != null) {
-            ThingWithComps gemstone = insertedGemstone as ThingWithComps;
-            gemName = "Spren: " +
-                      gemstone.GetComp<CompCutGemstone>().capturedSpren +
-                      "\nStormlight: " +
-                      gemstone.GetComp<Stormlight>().currentStormlight.ToString("F0");
-        }
-
-        return gemName;
+        ThingWithComps gemstone = insertedGemstone;
+        return "Spren: " +
+               gemstone.GetComp<CompCutGemstone>().capturedSpren +
+               "\nStormlight: " +
+               gemstone.GetComp<Stormlight>().currentStormlight.ToString("F0");
     }
 }
 
-public class CompPropertiesApparelFabrialDiminisher : CompProperties {
-    public CompPropertiesApparelFabrialDiminisher() {
-        compClass = typeof(CompApparelFabrialDiminisher);
-    }
-}
-
+// Todo Move to an Hediff namespace
 public class HediffCompFabrialPainDiminisher : HediffComp {
     public override string CompLabelInBracketsExtra {
         get {
-            CompApparelFabrialDiminisher? comp = Pawn?.apparel?.WornApparel?
-                .FirstOrDefault(app => app.GetComp<CompApparelFabrialDiminisher>() != null)
+            FabrialDiminisher? comp = Pawn?.apparel?.WornApparel?
+                .FirstOrDefault(app => app.GetComp<FabrialDiminisher>() != null)
                 ?
-                .GetComp<CompApparelFabrialDiminisher>();
+                .GetComp<FabrialDiminisher>();
 
             if (comp?.insertedGemstone?.TryGetComp<Stormlight>() is Stormlight stormlight) {
                 return $"Stormlight: {stormlight.currentStormlight:F0}";
@@ -108,7 +85,7 @@ public class HediffCompFabrialPainDiminisher : HediffComp {
         }
 
         foreach (RimWorld.Apparel? apparel in pawn.apparel.WornApparel) {
-            CompApparelFabrialDiminisher? comp = apparel.GetComp<CompApparelFabrialDiminisher>();
+            FabrialDiminisher? comp = apparel.GetComp<FabrialDiminisher>();
             if (comp == null) {
                 continue;
             }
@@ -128,7 +105,7 @@ public class HediffCompFabrialPainDiminisher : HediffComp {
         }
 
         foreach (RimWorld.Apparel? apparel in pawn.apparel.WornApparel) {
-            CompApparelFabrialDiminisher? comp = apparel.GetComp<CompApparelFabrialDiminisher>();
+            FabrialDiminisher? comp = apparel.GetComp<FabrialDiminisher>();
             if (comp == null) {
                 continue;
             }
@@ -152,16 +129,11 @@ public class HediffCompFabrialPainDiminisher : HediffComp {
     }
 }
 
-public class HediffCompPropertiesFabrialPainDiminisher : HediffCompProperties {
-    public HediffCompPropertiesFabrialPainDiminisher() {
-        compClass = typeof(HediffCompFabrialPainDiminisher);
-    }
-}
-
+// Move to the patch namespace
 [HarmonyPatch(typeof(WorkGiver_DoBill), "JobOnThing")]
 public static class PatchJobOnThingBlockBadGems {
     private static bool Prefix(
-        ref Job result,
+        ref Verse.AI.Job result,
         Pawn pawn,
         Verse.Thing thing,
         bool forced,

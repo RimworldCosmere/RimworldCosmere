@@ -37,7 +37,7 @@ public class SurgePlantGrowth : CompAbilityEffect {
     }
 
 
-    private void GrowthFunction(Thing targetThing) {
+    private void GrowthFunction(Verse.Thing targetThing) {
         Plant? targetPlant = targetThing as Plant;
         if (targetPlant == null) {
             return;

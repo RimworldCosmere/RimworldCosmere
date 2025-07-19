@@ -5,31 +5,10 @@ using Verse;
 namespace CosmereRoshar.Patches;
 
 [StaticConstructorOnStartup]
-public static class HarmonyPatcher {
-    static HarmonyPatcher() {
-        Harmony harmony = new Harmony("com.lucidMods.stormlightArchives");
-        harmony.PatchAll();
-    }
-
-    ////for debugging purposes
-    //[HarmonyPatch(typeof(ThingWithComps), "PostMake")]
-    //public static class Patch_SpherePouch_SpawnWithSpheres {
-    //    public static void Postfix(ThingWithComps __instance) {
-    //        if (__instance.TryGetComp<CompSpherePouch>() is CompSpherePouch pouchComp) {
-    //            Thing sphere = ThingMaker.MakeThing(ThingDef.Named("whtwl_Sphere_Garnet"));
-    //            pouchComp.storedSpheres.Add(sphere); 
-    //            pouchComp.InfuseStormlight(500f);
-    //        }
-    //    }
-    //}
-}
-
-[StaticConstructorOnStartup]
 public static class HighstormStorytellerPatch {
     private const int IntervalTicks = 8 * 60000; // 1 in-game days
     private const int WarningOffsetTicks = 60000; // Half a day (0.5 * 60000 ticks)
     private static int LastHighstormTick = 0;
-
 
     static HighstormStorytellerPatch() {
         Harmony harmony = new Harmony("com.lucidMods.HighstormPatch");

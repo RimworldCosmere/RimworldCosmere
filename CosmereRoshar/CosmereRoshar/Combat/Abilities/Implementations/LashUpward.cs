@@ -48,11 +48,11 @@ public class LashUpward : CompAbilityEffect {
     }
 
 
-    private void FlightFunction(Thing targetThing) {
+    private void FlightFunction(Verse.Thing targetThing) {
         Map map = targetThing.Map;
         IntVec3 cell = targetThing.Position;
 
-        Pawn targetPawn = targetThing as Pawn;
+        Pawn? targetPawn = targetThing as Pawn;
         if (targetPawn == null) {
             return;
         }

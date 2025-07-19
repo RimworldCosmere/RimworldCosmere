@@ -1,14 +1,14 @@
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comp.WeaponsAndArmor;
+using CosmereRoshar.Extensions;
 using RimWorld;
 using Verse;
 
 namespace CosmereRoshar.Combat.Abilities.Implementations;
 
-public class ShardbladeProperties : CompProperties {
+public class ShardBladeProperties : CompProperties {
     public int bladesInExistence;
 
-    public ShardbladeProperties() {
+    public ShardBladeProperties() {
         compClass = typeof(ShardBlade);
     }
 }
@@ -17,7 +17,7 @@ public class ShardBlade : ThingComp {
     public int graphicId = -1;
     private bool isSpawned;
     public Pawn? swordOwner;
-    private new ShardbladeProperties props => (ShardbladeProperties)base.props;
+    private new ShardBladeProperties props => (ShardBladeProperties)base.props;
 
     public override void Initialize(CompProperties props) {
         base.Initialize(props);

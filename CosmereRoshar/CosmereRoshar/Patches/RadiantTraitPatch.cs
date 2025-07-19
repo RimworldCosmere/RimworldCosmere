@@ -8,6 +8,7 @@ using Verse.AI;
 
 namespace CosmereRoshar.Patches;
 
+// @TODO rename to TraitSetPatches
 [HarmonyPatch(typeof(TraitSet), "GainTrait")]
 public static class RadiantGainTraitPatch {
     private static void Postfix(Pawn? pawn, Trait trait) {
@@ -35,7 +36,7 @@ public static class RadiantGainTraitPatch {
         ThingWithComps blade = (ThingWithComps)ThingMaker.MakeThing(shardThing, stuffDef);
 
         if (!blade.TryGetComp(out ShardBlade comp)) return;
-        comp.Initialize(new ShardbladeProperties());
+        comp.Initialize(new ShardBladeProperties());
         comp.BondWithPawn(pawn, false);
         Log.Message($"{pawn.Name} gained shardbalde storage!");
     }

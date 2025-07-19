@@ -60,9 +60,7 @@
       </li>
     </tools>
     <comps>
-      <li Class="CosmereRoshar.CompProperties_Shardblade">
-        <compClass>CosmereRoshar.CompShardblade</compClass>
-      </li>
+      <li Class="CosmereRoshar.Combat.Abilities.Implementations.ShardBladeProperties" />
     </comps>
   </ThingDef>
 </Defs>

@@ -9,11 +9,11 @@ namespace CosmereRoshar.Patches;
 
 [HarmonyPatch(typeof(GenRecipe), "MakeRecipeProducts")]
 public static class GemCraftingPatch {
-    public static IEnumerable<Thing> Postfix(
-        IEnumerable<Thing> result,
+    public static IEnumerable<Verse.Thing> Postfix(
+        IEnumerable<Verse.Thing> result,
         RecipeDef recipeDef,
         Pawn worker,
-        List<Thing> ingredients,
+        List<Verse.Thing> ingredients,
         IBillGiver billGiver,
         Precept_ThingStyle precept = null,
         ThingStyleDef style = null,
@@ -26,7 +26,7 @@ public static class GemCraftingPatch {
         if (rawGem != null) {
             RawGemstone rawGemstone = rawGem.GetComp<RawGemstone>();
             if (rawGemstone != null) {
-                foreach (Thing? product in result) {
+                foreach (Verse.Thing? product in result) {
                     SetCutGemStats(product.TryGetComp<CompCutGemstone>(), rawGemstone);
                     yield return product;
                 }
@@ -34,34 +34,33 @@ public static class GemCraftingPatch {
         } else if (cutGem != null) {
             CompCutGemstone compCutGemstone = cutGem.GetComp<CompCutGemstone>();
             if (compCutGemstone != null) {
-                foreach (Thing? product in result) {
-                    SetSphereGemStats(product.TryGetComp<CompGemSphere>(), compCutGemstone);
-                    SetGemInFabrial(product.TryGetComp<CompApparelFabrialDiminisher>(), compCutGemstone);
+                foreach (Verse.Thing? product in result) {
+                    SetSphereGemStats(product.TryGetComp<GemSphere>(), compCutGemstone);
+                    SetGemInFabrial(product.TryGetComp<FabrialDiminisher>(), compCutGemstone);
                     yield return product;
                 }
             }
         } else {
-            foreach (Thing? product in result) {
+            foreach (Verse.Thing? product in result) {
                 yield return product;
             }
         }
     }
 
-    private static void SetCutGemStats(CompCutGemstone productComp, RawGemstone ingredient) {
+    private static void SetCutGemStats(CompCutGemstone? productComp, RawGemstone ingredient) {
         if (productComp != null) {
             productComp.maximumGemstoneSize = ingredient.gemstoneSize;
         }
     }
 
-    private static void SetSphereGemStats(CompGemSphere productComp, CompCutGemstone ingredientComp) {
-        if (productComp != null) {
-            productComp.inheritGemstoneSize = ingredientComp.gemstoneSize;
-            productComp.inheritGemstoneQuality = ingredientComp.gemstoneQuality;
-            productComp.inheritGemstone = true;
-        }
+    private static void SetSphereGemStats(GemSphere? product, CompCutGemstone ingredientComp) {
+        if (product == null) return;
+        product.inheritGemstoneSize = ingredientComp.gemstoneSize;
+        product.inheritGemstoneQuality = ingredientComp.gemstoneQuality;
+        product.inheritGemstone = true;
     }
 
-    private static void SetGemInFabrial(CompApparelFabrialDiminisher productComp, CompCutGemstone ingredientComp) {
+    private static void SetGemInFabrial(FabrialDiminisher? productComp, CompCutGemstone ingredientComp) {
         if (productComp != null) {
             productComp.insertedGemstone = ingredientComp.parent;
         }

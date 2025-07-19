@@ -1,13 +1,15 @@
 ﻿using CosmereRoshar.Combat.Abilities.Implementations;
-using CosmereRoshar.Comp.WeaponsAndArmor;
+using CosmereRoshar.Extensions;
 using HarmonyLib;
 using Verse;
 
 namespace CosmereRoshar.Patches;
 
-[HarmonyPatch(typeof(Pawn), nameof(Pawn.Kill))]
+[HarmonyPatch(typeof(Pawn))]
 public static class PatchPawnKill {
-    private static void Prefix(Pawn? instance, DamageInfo? dinfo) {
+    [HarmonyPatch(nameof(Pawn.Kill))]
+    [HarmonyPrefix]
+    private static void PrefixKill(Pawn? instance, DamageInfo? dinfo) {
         if (instance == null || !instance.RaceProps.Humanlike) return;
 
         SpawnEquipment? abilityComp =

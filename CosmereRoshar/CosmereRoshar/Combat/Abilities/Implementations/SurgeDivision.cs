@@ -42,7 +42,7 @@ public class SurgeDivision : CompAbilityEffect {
         if (victim == null) return;
         if (!caster.TryGetComp(out Stormlight stormlight)) return;
         if (stormlight.currentStormlight < props.stormLightCost) return;
-        List<Thing> thingsIgnoredByExplosion = [caster];
+        List<Verse.Thing> thingsIgnoredByExplosion = [caster];
         if (
             !StormlightUtilities.RollTheDice(1, 25, 2) ||
             !(stormlight.currentStormlight >= props.stormLightCost * 1.5f)

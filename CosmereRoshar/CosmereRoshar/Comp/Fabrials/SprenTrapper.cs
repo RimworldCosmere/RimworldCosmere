@@ -2,120 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.ITabs;
+using CosmereRoshar.Dialog;
+using CosmereRoshar.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.AI;
 
 namespace CosmereRoshar.Comp.Fabrials;
 
-public class BuildingSprenTrapper : Building {
-    public CompGlower compGlower;
-    public CompSprenTrapper compTrapper;
-    public Dictionary<string, List<Spren>> gemstonePossibleSprenDict = new Dictionary<string, List<Spren>>();
-    private SectionLayer layerTest;
-
-
-    public override void Destroy(DestroyMode mode = DestroyMode.Vanish) {
-        base.Destroy(mode);
-        if (compTrapper != null) {
-            compTrapper.RemoveGemstone();
-        }
-    }
-
-    public override void SpawnSetup(Map map, bool respawningAfterLoad) {
-        base.SpawnSetup(map, respawningAfterLoad);
-        compTrapper = GetComp<CompSprenTrapper>();
-        compGlower = GetComp<CompGlower>();
-        gemstonePossibleSprenDict.Add(
-            CosmereResources.ThingDefOf.CutDiamond.defName,
-            [Spren.Logic, Spren.Light, Spren.Exhaustion]
-        );
-        gemstonePossibleSprenDict.Add(
-            CosmereResources.ThingDefOf.CutGarnet.defName,
-            [Spren.Rain, Spren.Exhaustion, Spren.Pain]
-        );
-        gemstonePossibleSprenDict.Add(
-            CosmereResources.ThingDefOf.CutSapphire.defName,
-            [Spren.Wind, Spren.Motion, Spren.Cold]
-        );
-        gemstonePossibleSprenDict.Add(
-            CosmereResources.ThingDefOf.CutRuby.defName,
-            [Spren.Flame, Spren.Anger]
-        );
-        gemstonePossibleSprenDict.Add(
-            CosmereResources.ThingDefOf.CutEmerald.defName,
-            [Spren.Flame, Spren.Life, Spren.Cultivation, Spren.Rain, Spren.Glory]
-        );
-    }
-
-    public override void TickRare() {
-        CaptureLoop();
-        ToggleGlow();
-        TriggerPrint();
-        compTrapper.DrainStormlight();
-    }
-
-    private void ToggleGlow() {
-        if (Map != null) {
-            if (compTrapper.hasGemstone) {
-                if (!compTrapper.sprenCaptured &&
-                    !compTrapper.insertedGemstone.TryGetComp<Stormlight>().hasStormlight) {
-                    compGlower.GlowColor = ColorInt.FromHdrColor(Color.red);
-                } else if (compTrapper.sprenCaptured) {
-                    compGlower.GlowColor = ColorInt.FromHdrColor(Color.green);
-                } else {
-                    compGlower.GlowColor = ColorInt.FromHdrColor(Color.blue);
-                }
-
-                Map.glowGrid.RegisterGlower(compGlower);
-            } else {
-                Map.glowGrid.DeRegisterGlower(compGlower);
-            }
-        }
-    }
-
-    private void CaptureLoop() {
-        if (compTrapper.insertedGemstone != null && !compTrapper.sprenCaptured) {
-            List<Spren> sprenList;
-            gemstonePossibleSprenDict.TryGetValue(compTrapper.insertedGemstone.def.defName, out sprenList);
-            foreach (Spren spren in sprenList) {
-                compTrapper.TryCaptureSpren(spren);
-                compTrapper.CheckTrapperState();
-                if (compTrapper.sprenCaptured) break;
-            }
-        }
-
-        compTrapper.CheckTrapperState();
-    }
-
-    //Add light system for trapped, empty, e.g.
-    public override void Print(SectionLayer layer) {
-        layerTest = layer;
-        if (compTrapper.hasGemstone) {
-            if (!compTrapper.sprenCaptured && !compTrapper.insertedGemstone.TryGetComp<Stormlight>().hasStormlight) {
-                def.graphicData.attachments[0].Graphic.Print(layer, this, 0f);
-            } else if (!compTrapper.sprenCaptured) {
-                def.graphicData.attachments[1].Graphic.Print(layer, this, 0f);
-            } else {
-                def.graphicData.attachments[2].Graphic.Print(layer, this, 0f);
-            }
-        } else {
-            base.Print(layer);
-        }
-    }
-
-    public void TriggerPrint() {
-        if (layerTest != null) {
-            Print(layerTest);
-        } else {
-            Log.Message("Layer was null");
-        }
-    }
-}
-
-public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
+public class SprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
     private List<ThingDef> filterListInt = [];
     public ThingWithComps? insertedGemstone;
 
@@ -127,8 +22,6 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
 
     public bool sprenCaptured;
 
-
-    public new CompPropertiesSprenTrapper props => (CompPropertiesSprenTrapper)base.props;
 
     public bool hasGemstone => insertedGemstone != null;
 
@@ -364,7 +257,7 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
         string replaceGemText = "No suitable gem available";
         if (cutGemstone != null) {
             replaceGemAction = () => {
-                Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
+                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -378,7 +271,7 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
         Action? removeGemAction = null;
         if (insertedGemstone != null) {
             removeGemAction = () => {
-                Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRemoveFromFabrial, parent);
+                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRemoveFromFabrial, parent);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -399,13 +292,7 @@ public class CompSprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
             defaultDesc = "Click to choose which gems are allowed in this trap.",
             //icon = ContentFinder<Texture2D>.Get("UI/Icons/SomeIcon"), 
             icon = TexCommand.SelectShelf,
-            action = () => { Find.WindowStack.Add(new DialogSphereFilter<CompSprenTrapper>(this)); },
+            action = () => { Find.WindowStack.Add(new SphereFilter<SprenTrapper>(this)); },
         };
-    }
-}
-
-public class CompPropertiesSprenTrapper : CompProperties {
-    public CompPropertiesSprenTrapper() {
-        compClass = typeof(CompSprenTrapper);
     }
 }

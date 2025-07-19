@@ -1,12 +1,10 @@
-﻿using System.Linq;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Comp.WeaponsAndArmor;
+namespace CosmereRoshar.Graphic;
 
 public class GraphicShardBladeVariants : Graphic_Collection {
-    public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo) {
+    public override Verse.Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo) {
         return GraphicDatabase.Get<GraphicShardBladeVariants>(
             path,
             newShader,
@@ -35,20 +33,11 @@ public class GraphicShardBladeVariants : Graphic_Collection {
         float extraRotation
     ) {
         int id = StormlightUtilities.GetGraphicId(thing as ThingWithComps);
-        Graphic graphic = subGraphics[id];
+        Verse.Graphic graphic = subGraphics[id];
         graphic.DrawWorker(loc, rot, thingDef, thing, extraRotation);
     }
 
     public override string ToString() {
         return "StackCount(path=" + path + ", count=" + subGraphics.Length + ")";
-    }
-}
-
-public static class AbilityExtensions {
-    public static T? GetAbilityComp<T>(this Pawn pawn, string abilityDefName) where T : CompAbilityEffect {
-        if (pawn.abilities == null) return null;
-
-        Ability ability = pawn.abilities.GetAbility(DefDatabase<AbilityDef>.GetNamed(abilityDefName));
-        return ability?.comps?.OfType<T>().FirstOrDefault();
     }
 }

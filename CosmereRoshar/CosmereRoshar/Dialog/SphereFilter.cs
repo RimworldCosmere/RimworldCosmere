@@ -3,7 +3,7 @@ using CosmereRoshar.Comp.Thing;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.ITabs;
+namespace CosmereRoshar.Dialog;
 
 public interface IFilterableComp {
     List<ThingDef> allowedSpheres { get; }
@@ -11,11 +11,11 @@ public interface IFilterableComp {
     List<GemSize> sizeFilterList { get; }
 }
 
-public class DialogSphereFilter<T> : Window where T : ThingComp, IFilterableComp {
+public class SphereFilter<T> : Window where T : ThingComp, IFilterableComp {
     private readonly T thing;
     private Vector2 scrollPosition;
 
-    public DialogSphereFilter(T comp) {
+    public SphereFilter(T comp) {
         thing = comp;
         forcePause = false;
         //absorbInputAroundWindow = true;

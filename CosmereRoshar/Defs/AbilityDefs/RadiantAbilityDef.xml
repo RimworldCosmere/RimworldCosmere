@@ -43,8 +43,8 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.ToggleStormlight">
-            <compClass>CosmereRoshar.CompAbilityEffect_AbilityToggleStormlight</compClass>
+        <li>
+            <compClass>CosmereRoshar.Combat.Abilities.Implementations.ToggleStormlight</compClass>
         </li>
     </comps>
 </AbilityDef>
@@ -68,7 +68,6 @@
     </verbProperties>
     <comps>
         <li Class="CosmereRoshar.Combat.Abilities.Implementations.SpawnEquipment">
-            <compClass>CosmereRoshar.CompAbilityEffect_SpawnEquipment</compClass>
             <thingDef>whtwl_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
         </li>
         <li Class="CompProperties_AbilityFleckOnTarget">
@@ -99,7 +98,6 @@
 
     <comps>
         <li Class="CosmereRoshar.Combat.Abilities.Implementations.BreakBond">
-            <compClass>CosmereRoshar.CompAbilityEffect_BreakBondWithSword</compClass>
             <thingDef>whtwl_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
         </li>
     </comps>
@@ -149,7 +147,6 @@
 
     <comps>
         <li Class="CosmereRoshar.Combat.Abilities.Implementations.LashUpward">
-            <compClass>CosmereRoshar.CompAbilityEffect_AbilityLashUpward</compClass>
             <thingDef>whtwl_lashingUp</thingDef> 
             <stormLightCost>500</stormLightCost>
         </li>
@@ -198,7 +195,6 @@
     </verbProperties>
     <comps>
         <li Class="CosmereRoshar.Combat.Abilities.Implementations.WindRunnerFlight">
-            <compClass>CosmereRoshar.CompAbilityEffect_AbilityWindRunnerFlight</compClass>
             <thingDef>whtwl_WindRunnerFlight</thingDef> <!-- Ensure this matches your XML weapon defName -->
             <stormLightCost>15</stormLightCost>
         </li>
@@ -224,7 +220,6 @@
     </verbProperties>
     <comps>
         <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgePlantGrowth">
-            <compClass>CosmereRoshar.CompAbilityEffect_SurgePlantGrowth</compClass>
             <stormLightCost>25</stormLightCost>
         </li>
     </comps>
@@ -249,7 +244,6 @@
     </verbProperties>
     <comps>
         <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeProgression">
-            <compClass>CosmereRoshar.CompAbilityEffect_SurgeHeal</compClass>
             <stormLightCost>50</stormLightCost>
         </li>
     </comps>
@@ -274,7 +268,6 @@
     </verbProperties>
     <comps>
         <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeAbrasion">
-            <compClass>CosmereRoshar.CompAbilityEffect_SurgeAbrasion</compClass>
         </li>
     </comps>
 </AbilityDef>
@@ -298,7 +291,6 @@
     </verbProperties>
     <comps>
         <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeDivision">
-            <compClass>CosmereRoshar.CompAbilityEffect_SurgeDivision</compClass>
              <stormLightCost>500</stormLightCost>
         </li>
     </comps>

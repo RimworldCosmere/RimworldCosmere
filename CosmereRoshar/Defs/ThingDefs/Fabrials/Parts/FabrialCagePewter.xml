@@ -50,9 +50,7 @@
             </statOffsets>
         </stuffProps>
         <comps>
-            <li Class="CosmereRoshar.CompProperties_FabrialCage">
-                <compClass>CosmereRoshar.CompFabrialCage</compClass>
-            </li>
+            <li><compClass>CosmereRoshar.Comp.Fabrials.FabrialCage</compClass></li>
         </comps>
     </ThingDef>
 

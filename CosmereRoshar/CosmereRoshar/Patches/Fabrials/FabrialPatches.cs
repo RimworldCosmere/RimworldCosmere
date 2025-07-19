@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CosmereRoshar.Comp.Fabrials;
 using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Thing;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -13,9 +14,9 @@ public static class CultivationSprenPatch {
 
 
     public static void RegisterBuilding(Building building) {
-        if (building.GetComp<CompBasicFabrialAugumenter>()?.currentSpren == Spren.Life) {
+        if (building.GetComp<BasicFabrialAugmenter>()?.currentSpren == Spren.Life) {
             ActiveLifeSprenBuildings.Add(building);
-        } else if (building.GetComp<CompBasicFabrialDiminisher>()?.currentSpren == Spren.Life) {
+        } else if (building.GetComp<BasicFabrialDiminisher>()?.currentSpren == Spren.Life) {
             ActiveLifeSprenBuildings.Add(building);
         }
     }
@@ -49,13 +50,13 @@ public static class CultivationSprenPatch {
         foreach (Building? thing in ActiveLifeSprenBuildings) {
             if (thing is BuildingFabrialBasicAugmenter building &&
                 plantPos.DistanceTo(building.Position) <= 5f) {
-                CompBasicFabrialAugumenter? comp = building.GetComp<CompBasicFabrialAugumenter>();
+                BasicFabrialAugmenter? comp = building.GetComp<BasicFabrialAugmenter>();
                 if (comp != null && comp.powerOn && comp.currentSpren == Spren.Life) {
                     return 1;
                 }
             } else if (thing is BuildingFabrialBasicDiminisher diminisher &&
                        plantPos.DistanceTo(diminisher.Position) <= 5f) {
-                CompBasicFabrialDiminisher? comp = diminisher.GetComp<CompBasicFabrialDiminisher>();
+                BasicFabrialDiminisher? comp = diminisher.GetComp<BasicFabrialDiminisher>();
                 if (comp != null && comp.powerOn && comp.currentSpren == Spren.Life) {
                     return 2;
                 }

@@ -11,8 +11,7 @@ public class ToggleStormlightProperties : CompProperties_AbilityEffect {
 }
 
 public class ToggleStormlight : CompAbilityEffect {
-    public new ToggleStormlightProperties props =>
-        ((AbilityComp)this).props as ToggleStormlightProperties;
+    public new ToggleStormlightProperties props => (ToggleStormlightProperties)base.props;
 
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // 1) Validate target

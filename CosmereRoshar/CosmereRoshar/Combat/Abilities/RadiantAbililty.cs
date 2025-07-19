@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using CosmereRoshar.Combat.Abilities.Implementations;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Comp.WeaponsAndArmor;
-using CosmereRoshar.Jobs;
+using CosmereRoshar.Extensions;
+using CosmereRoshar.Job;
 using CosmereRoshar.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.AI;
 
 namespace CosmereRoshar.Combat.Abilities;
 
@@ -433,7 +432,11 @@ public class CommandRadiantAbility : Command {
 
         // The main action to do once a valid target is chosen
         void MainAction(LocalTargetInfo chosenTarget) {
-            Job job = new JobCastAbilityOnTarget(CosmereRosharDefs.WhtwlCastAbilityOnTarget, chosenTarget, ability);
+            Verse.AI.Job job = new CastAbilityOnTarget(
+                CosmereRosharDefs.WhtwlCastAbilityOnTarget,
+                chosenTarget,
+                ability
+            );
             if (triggerAsJob) {
                 pawn.jobs.TryTakeOrderedJob(job);
             } else {
@@ -503,7 +506,7 @@ public class CommandRadiantAbility : Command {
 
             foreach (IntVec3 cell in GenRadial.RadialCellsAround(centerCell, maxDistance, true)) {
                 if (!cell.InBounds(pawn.Map)) continue;
-                foreach (Thing thing in cell.GetThingList(pawn.Map)) {
+                foreach (Verse.Thing thing in cell.GetThingList(pawn.Map)) {
                     // Check if the Thing is a Plant
                     if (thing is Plant plant) {
                         ability.Activate(plant, plant);

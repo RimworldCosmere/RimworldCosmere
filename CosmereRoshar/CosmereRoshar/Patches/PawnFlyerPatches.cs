@@ -8,7 +8,7 @@ namespace CosmereRoshar.Patches;
 public static class PawnFlyerPatches {
     [HarmonyPatch("RespawnPawn")]
     [HarmonyPrefix]
-    private static void Prefix(ThingOwner<Thing> innerContainer, out Pawn? __state) {
+    private static void Prefix(ThingOwner<Verse.Thing> innerContainer, out Pawn? __state) {
         if (innerContainer.InnerListForReading.Count <= 0) {
             __state = null;
             return;

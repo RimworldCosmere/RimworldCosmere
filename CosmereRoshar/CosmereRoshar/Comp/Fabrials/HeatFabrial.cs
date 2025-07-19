@@ -5,7 +5,6 @@ using CosmereRoshar.Comp.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.AI;
 
 namespace CosmereRoshar.Comp.Fabrials;
 
@@ -129,7 +128,7 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
         string replaceGemText = "No suitable gem available";
         if (cutGemstone != null) {
             replaceGemAction = () => {
-                Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
+                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }

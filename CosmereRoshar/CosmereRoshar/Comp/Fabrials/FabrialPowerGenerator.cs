@@ -2,63 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.ITabs;
+using CosmereRoshar.Dialog;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.AI;
 
 namespace CosmereRoshar.Comp.Fabrials;
 
-public class BuildingFabrialPowerGenerator : Building {
-    public CompFabrialPowerGenerator compFabrialPowerGenerator;
-    public CompFlickable compFlickerable;
-    public CompGlower compGlower;
-    public CompPowerPlant compPowerPlant;
-
-
-    public override void SpawnSetup(Map map, bool respawningAfterLoad) {
-        base.SpawnSetup(map, respawningAfterLoad);
-        compFabrialPowerGenerator = GetComp<CompFabrialPowerGenerator>();
-        compFlickerable = GetComp<CompFlickable>();
-        compGlower = GetComp<CompGlower>();
-        compPowerPlant = GetComp<CompPowerPlant>();
-    }
-
-    protected override void Tick() {
-        compFabrialPowerGenerator.CheckPower(compFlickerable.SwitchIsOn);
-        if (!compFabrialPowerGenerator.powerOn) {
-            compPowerPlant.PowerOutput = 0f;
-        } else {
-            compPowerPlant.PowerOutput = 1000f;
-        } //maybe add quality of stone affects power output later
-
-        ToggleGlow(compFabrialPowerGenerator.powerOn);
-        compFabrialPowerGenerator.UsePower();
-    }
-
-    private void ToggleGlow(bool on) {
-        if (Map != null) {
-            if (on) {
-                Stormlight? stormlightComp = compFabrialPowerGenerator.insertedGemstone
-                    .GetComp<Stormlight>();
-                compGlower.GlowRadius = stormlightComp.maximumGlowRadius;
-                compGlower.GlowColor = stormlightComp.glowerComp.GlowColor;
-                Map.glowGrid.RegisterGlower(compGlower);
-            } else {
-                Map.glowGrid.DeRegisterGlower(compGlower);
-            }
-        }
-    }
-}
-
-public class CompPropertiesFabrialPowerGenerator : CompProperties {
-    public CompPropertiesFabrialPowerGenerator() {
-        compClass = typeof(CompFabrialPowerGenerator);
-    }
-}
-
-public class CompFabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableComp {
+public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableComp {
     private List<ThingDef> filterListInt = [];
     public ThingWithComps? insertedGemstone;
     public bool powerOn;
@@ -69,7 +20,6 @@ public class CompFabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterabl
         GemSize.Broam,
     ];
 
-    public new CompPropertiesFabrialPowerGenerator props => (CompPropertiesFabrialPowerGenerator)base.props;
     public CompGlower? glowerComp => parent.TryGetComp<CompGlower>();
     public bool hasGemstone => insertedGemstone != null;
     public List<ThingDef> filterList => filterListInt;
@@ -176,7 +126,7 @@ public class CompFabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterabl
         string replaceGemText = "No suitable gem available";
         if (cutGemstone != null) {
             replaceGemAction = () => {
-                Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
+                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -190,7 +140,7 @@ public class CompFabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterabl
         Action? removeGemAction = null;
         if (insertedGemstone != null) {
             removeGemAction = () => {
-                Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRemoveFromFabrial, parent);
+                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRemoveFromFabrial, parent);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -209,7 +159,7 @@ public class CompFabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterabl
             defaultLabel = "Set Gem Filters",
             defaultDesc = "Click to choose which gems are allowed in this fabrial.",
             icon = TexCommand.SelectShelf,
-            action = () => { Find.WindowStack.Add(new DialogSphereFilter<CompFabrialPowerGenerator>(this)); },
+            action = () => { Find.WindowStack.Add(new SphereFilter<FabrialPowerGenerator>(this)); },
         };
     }
 }

@@ -11,14 +11,20 @@ public enum GemSize {
     Broam,
 }
 
-public class CompGemSphere : ThingComp {
+public class GemSphereProperties : CompProperties {
+    public GemSphereProperties() {
+        compClass = typeof(GemSphere);
+    }
+}
+
+public class GemSphere : ThingComp {
     private int gemstoneQuality;
     private int gemstoneSize;
     public bool inheritGemstone = false;
     public int inheritGemstoneQuality = 1;
     public int inheritGemstoneSize = 1;
     private Stormlight stormlight;
-    public CompPropertiesGemSphere gemstoneProps => (CompPropertiesGemSphere)props;
+    public GemSphereProperties gemstoneProps => (GemSphereProperties)props;
     public StormlightProperties stormlightProps => (StormlightProperties)props;
     public string getFullLabel => TransformLabel(parent.Label);
 
@@ -26,7 +32,7 @@ public class CompGemSphere : ThingComp {
         base.Initialize(props);
 
         stormlight = parent.GetComp<Stormlight>();
-        if (inheritGemstone == false) {
+        if (!inheritGemstone) {
             List<int> sizeList = new List<int> { 1, 5, 20 };
             List<int> qualityList = new List<int> { 1, 2, 3, 4, 5 };
 
@@ -67,7 +73,7 @@ public class CompGemSphere : ThingComp {
     }
 
     public override bool AllowStackWith(Verse.Thing other) {
-        CompGemSphere comp = other.TryGetComp<CompGemSphere>();
+        GemSphere comp = other.TryGetComp<GemSphere>();
         if (comp != null) {
             if (comp.gemstoneQuality != gemstoneQuality || comp.gemstoneSize != gemstoneSize) {
                 return false;
@@ -152,11 +158,5 @@ public class CompGemSphere : ThingComp {
         }
 
         yield break;
-    }
-}
-
-public class CompPropertiesGemSphere : CompProperties {
-    public CompPropertiesGemSphere() {
-        compClass = typeof(CompGemSphere);
     }
 }

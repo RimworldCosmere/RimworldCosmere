@@ -25,14 +25,14 @@ public static class RadiantGainTraitPatch {
 
         pawn.needs.AddOrRemoveNeedsAsAppropriate();
 
-        if (!pawn.needs.TryGetNeed(out NeedRadiantProgress progress)) return;
+        if (!pawn.needs.TryGetNeed(out RadiantProgress progress)) return;
         progress.GainXp(0);
     }
 
     // @todo Can we somehow avoid programatically giving the comp to the pawn?
     private static void GivePawnShardbladeComp(Pawn pawn) {
-        ThingDef stuffDef = DefDatabase<ThingDef>.GetNamed("whtwl_ShardMaterial");
-        ThingDef shardThing = DefDatabase<ThingDef>.GetNamed("whtwl_MeleeWeapon_Shardblade");
+        ThingDef stuffDef = DefDatabase<ThingDef>.GetNamed("Cosmere_Roshar_ShardMaterial");
+        ThingDef shardThing = DefDatabase<ThingDef>.GetNamed("Cosmere_Roshar_MeleeWeapon_Shardblade");
         ThingWithComps blade = (ThingWithComps)ThingMaker.MakeThing(shardThing, stuffDef);
 
         if (!blade.TryGetComp(out ShardBlade comp)) return;
@@ -73,7 +73,7 @@ public static class RadiantGainTraitPatch {
 public static class PatchPawnMovement {
     private static void Postfix(Pawn? pawn, IntVec3 c, ref float result) {
         if (pawn?.health?.hediffSet == null) return;
-        if (pawn.health.hediffSet.HasHediff(CosmereRosharDefs.WhtwlSurgeAbrasion)) {
+        if (pawn.health.hediffSet.HasHediff(CosmereRosharDefs.Cosmere_Roshar_SurgeAbrasion)) {
             result = c.x != pawn.Position.x && c.z != pawn.Position.z
                 ? pawn.TicksPerMoveDiagonal
                 : pawn.TicksPerMoveCardinal;

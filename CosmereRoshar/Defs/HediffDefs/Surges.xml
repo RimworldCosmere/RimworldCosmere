@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef>
-        <defName>whtwl_surge_abrasion</defName>
+        <defName>Cosmere_Roshar_surge_abrasion</defName>
         <label>AbrasionSurge</label>
         <labelNoun>Abrasion Surge Activated</labelNoun>
         <description>{PAWN_nameDef} is using abrasion.</description>

@@ -3,7 +3,7 @@
 
   <!-- WIND RUNNER -->
   <TraitDef>
-    <defName>whtwl_Radiant_Windrunner</defName>
+    <defName>Cosmere_Roshar_Radiant_Windrunner</defName>
     <label>Radiant</label>
     <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
       abilities.</description>
@@ -16,7 +16,7 @@
         <degree>0</degree>
         <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
         <abilities>
-          <li>whtwl_BreathStormlight</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
         </abilities>
       </li>
       <li>
@@ -27,8 +27,8 @@
         <degree>1</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_LashingUpward</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_LashingUpward</li>
         </abilities>
       </li>
       <li>
@@ -39,9 +39,9 @@
         <degree>2</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_LashingUpward</li>
-          <li>whtwl_WindRunnerFlight</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_LashingUpward</li>
+          <li>Cosmere_Roshar_WindRunnerFlight</li>
         </abilities>
       </li>
       <li>
@@ -52,10 +52,10 @@
         <degree>3</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SummonShardblade</li>
-          <li>whtwl_LashingUpward</li>
-          <li>whtwl_WindRunnerFlight</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SummonShardblade</li>
+          <li>Cosmere_Roshar_LashingUpward</li>
+          <li>Cosmere_Roshar_WindRunnerFlight</li>
         </abilities>
       </li>
       <li>
@@ -66,10 +66,10 @@
         <degree>4</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SummonShardblade</li>
-          <li>whtwl_LashingUpward</li>
-          <li>whtwl_WindRunnerFlight</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SummonShardblade</li>
+          <li>Cosmere_Roshar_LashingUpward</li>
+          <li>Cosmere_Roshar_WindRunnerFlight</li>
         </abilities>
       </li>
     </degreeDatas>
@@ -78,7 +78,7 @@
 
   <!-- TRUTHWATCHER -->
   <TraitDef>
-    <defName>whtwl_Radiant_Truthwatcher</defName>
+    <defName>Cosmere_Roshar_Radiant_Truthwatcher</defName>
     <label>Radiant</label>
     <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
       abilities.</description>
@@ -91,7 +91,7 @@
         <degree>0</degree>
         <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
         <abilities>
-          <li>whtwl_BreathStormlight</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
         </abilities>
       </li>
       <li>
@@ -102,8 +102,8 @@
         <degree>1</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SurgeOfGrowth</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SurgeOfGrowth</li>
         </abilities>
       </li>
       <li>
@@ -113,9 +113,9 @@
         <degree>2</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SurgeOfGrowth</li>
-          <li>whtwl_SurgeOfHealing</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SurgeOfGrowth</li>
+          <li>Cosmere_Roshar_SurgeOfHealing</li>
         </abilities>
       </li>
       <li>
@@ -125,10 +125,10 @@
         <degree>3</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SurgeOfGrowth</li>
-          <li>whtwl_SurgeOfHealing</li>
-          <li>whtwl_SummonShardblade</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SurgeOfGrowth</li>
+          <li>Cosmere_Roshar_SurgeOfHealing</li>
+          <li>Cosmere_Roshar_SummonShardblade</li>
         </abilities>
       </li>
       <li>
@@ -138,10 +138,10 @@
         <degree>4</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SurgeOfGrowth</li>
-          <li>whtwl_SurgeOfHealing</li>
-          <li>whtwl_SummonShardblade</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SurgeOfGrowth</li>
+          <li>Cosmere_Roshar_SurgeOfHealing</li>
+          <li>Cosmere_Roshar_SummonShardblade</li>
         </abilities>
       </li>
     </degreeDatas>
@@ -151,7 +151,7 @@
 
   <!-- EDGE DANCER -->
   <TraitDef>
-    <defName>whtwl_Radiant_Edgedancer</defName>
+    <defName>Cosmere_Roshar_Radiant_Edgedancer</defName>
     <label>Radiant</label>
     <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
       abilities.</description>
@@ -165,7 +165,7 @@
         <degree>0</degree>
         <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
         <abilities>
-          <li>whtwl_BreathStormlight</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
         </abilities>
       </li>
       <li>
@@ -176,8 +176,8 @@
         <degree>1</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SurgeOfHealing</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SurgeOfHealing</li>
         </abilities>
       </li>
       <li>
@@ -188,10 +188,10 @@
         <degree>2</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SurgeOfHealing</li>
-          <li>whtwl_SurgeOfAbrasion</li>
-          <li>whtwl_SummonShardblade</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SurgeOfHealing</li>
+          <li>Cosmere_Roshar_SurgeOfAbrasion</li>
+          <li>Cosmere_Roshar_SummonShardblade</li>
         </abilities>
       </li>
       <li>
@@ -202,10 +202,10 @@
         <degree>3</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SurgeOfHealing</li>
-          <li>whtwl_SurgeOfAbrasion</li>
-          <li>whtwl_SummonShardblade</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SurgeOfHealing</li>
+          <li>Cosmere_Roshar_SurgeOfAbrasion</li>
+          <li>Cosmere_Roshar_SummonShardblade</li>
         </abilities>
       </li>
       <li>
@@ -216,10 +216,10 @@
         <degree>4</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SurgeOfHealing</li>
-          <li>whtwl_SurgeOfAbrasion</li>
-          <li>whtwl_SummonShardblade</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SurgeOfHealing</li>
+          <li>Cosmere_Roshar_SurgeOfAbrasion</li>
+          <li>Cosmere_Roshar_SummonShardblade</li>
         </abilities>
       </li>
     </degreeDatas>
@@ -228,7 +228,7 @@
 
   <!-- SKY BREAKER -->
   <TraitDef>
-    <defName>whtwl_Radiant_Skybreaker</defName>
+    <defName>Cosmere_Roshar_Radiant_Skybreaker</defName>
     <label>Radiant</label>
     <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
       abilities.</description>
@@ -242,7 +242,7 @@
         <degree>0</degree>
         <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
         <abilities>
-          <li>whtwl_BreathStormlight</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
         </abilities>
       </li>
       <li>
@@ -253,8 +253,8 @@
         <degree>1</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_SurgeOfDivision</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_SurgeOfDivision</li>
         </abilities>
       </li>
       <li>
@@ -265,9 +265,9 @@
         <degree>2</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_WindRunnerFlight</li>
-          <li>whtwl_SurgeOfDivision</li>
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_WindRunnerFlight</li>
+          <li>Cosmere_Roshar_SurgeOfDivision</li>
         </abilities>
       </li>
       <li>
@@ -279,11 +279,11 @@
         <degree>3</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_WindRunnerFlight</li>
-          <li>whtwl_SurgeOfDivision</li>
-          <li>whtwl_SummonShardblade</li>
-          <!-- <li>whtwl_SkybreakerSquireBonding</li> -->
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_WindRunnerFlight</li>
+          <li>Cosmere_Roshar_SurgeOfDivision</li>
+          <li>Cosmere_Roshar_SummonShardblade</li>
+          <!-- <li>Cosmere_Roshar_SkybreakerSquireBonding</li> -->
         </abilities>
       </li>
       <li>
@@ -294,12 +294,12 @@
         <degree>4</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>whtwl_BreathStormlight</li>
-          <li>whtwl_WindRunnerFlight</li>
-          <li>whtwl_SurgeOfDivision</li>
-          <li>whtwl_SummonShardblade</li>
-          <!-- <li>whtwl_SkybreakerSquireBonding</li>
-      <li>whtwl_AbsoluteAuthority</li> hypothetical ultimate ability -->
+          <li>Cosmere_Roshar_BreathStormlight</li>
+          <li>Cosmere_Roshar_WindRunnerFlight</li>
+          <li>Cosmere_Roshar_SurgeOfDivision</li>
+          <li>Cosmere_Roshar_SummonShardblade</li>
+          <!-- <li>Cosmere_Roshar_SkybreakerSquireBonding</li>
+      <li>Cosmere_Roshar_AbsoluteAuthority</li> hypothetical ultimate ability -->
         </abilities>
       </li>
     </degreeDatas>

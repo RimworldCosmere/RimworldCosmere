@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <RecipeDef ParentName="Cosmere_Roshar_MakeFabrialPartBase">
+        <defName>Cosmere_Roshar_Make_FabrialCage_Pewter</defName>
+        <label>Pewter Fabrial Cage</label>
+        <description>Make fabrial cage out of pewter.</description>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Cosmere_Roshar_AlloyPewter</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Cosmere_Roshar_AlloyPewter</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <products>
+            <Cosmere_Roshar_FabrialCage_Pewter>1</Cosmere_Roshar_FabrialCage_Pewter>
+        </products>
+    </RecipeDef>
+
+
+    <ThingDef ParentName="ResourceBase">
+        <defName>Cosmere_Roshar_FabrialCage_Pewter</defName>
+        <label>Pewter Fabrial cage</label>
+        <description>The part that holds the gemstone in a fabrial.</description>
+        <graphicData>
+            <texPath>Things/Item/Fabrials/Gemholder_top_without_ruby</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <colorTwo>(36, 54, 68)</colorTwo>
+            <drawSize>1</drawSize>
+        </graphicData>
+        <statBases>
+            <Mass>0.008</Mass>
+        </statBases>
+        <stuffProps>
+            <commonality>0.00</commonality>
+            <appearance>Metal</appearance>  <!-- change -->
+            <color>(36, 54, 68)</color>
+            <constructEffect>ConstructMetal</constructEffect>
+            <statOffsets>
+                <Beauty>5</Beauty>
+            </statOffsets>
+        </stuffProps>
+        <comps>
+            <li><compClass>CosmereRoshar.Comp.Fabrials.FabrialCage</compClass></li>
+        </comps>
+    </ThingDef>
+
+</Defs>

@@ -4,7 +4,7 @@ using System.Linq;
 using CosmereRoshar.Comp.Thing;
 using CosmereRoshar.Dialog;
 using CosmereRoshar.Patches.Fabrials;
-using CosmereRoshar.Thing;
+using CosmereRoshar.Thing.Building;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -44,7 +44,7 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
         CompCutGemstone? gemstoneComp = gemstone.GetComp<CompCutGemstone>();
         if (gemstoneComp == null) return;
         insertedGemstone = gemstoneComp.parent;
-        CultivationSprenPatch.RegisterBuilding((BuildingFabrialBasicAugmenter)parent);
+        CultivationSprenPatch.RegisterBuilding((FabrialBasicAugmenter)parent);
     }
 
     public void RemoveGemstone() {
@@ -53,7 +53,7 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
         IntVec3 dropPosition = parent.Position;
         dropPosition.z -= 1;
         GenPlace.TryPlaceThing(insertedGemstone, dropPosition, parent.Map, ThingPlaceMode.Near);
-        CultivationSprenPatch.UnregisterBuilding((BuildingFabrialBasicAugmenter)parent);
+        CultivationSprenPatch.UnregisterBuilding((FabrialBasicAugmenter)parent);
         insertedGemstone = null;
     }
 
@@ -152,10 +152,10 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
             Pawn pawn = cell.GetFirstPawn(map);
             if (
                 pawn != null &&
-                pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.WhtwlPainrialAgument) == null &&
+                pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.Cosmere_Roshar_PainrialAugment) == null &&
                 pawn.Position.InHorDistOf(position, 5f)
             ) {
-                pawn.health.AddHediff(CosmereRosharDefs.WhtwlPainrialAgument);
+                pawn.health.AddHediff(CosmereRosharDefs.Cosmere_Roshar_PainrialAugment);
             }
         }
     }
@@ -172,10 +172,10 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
             Pawn pawn = cell.GetFirstPawn(map);
             if (
                 pawn != null &&
-                pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.WhtwlLogirialAgument) == null &&
+                pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.Cosmere_Roshar_LogirialAugment) == null &&
                 pawn.Position.InHorDistOf(position, 5f)
             ) {
-                pawn.health.AddHediff(CosmereRosharDefs.WhtwlLogirialAgument);
+                pawn.health.AddHediff(CosmereRosharDefs.Cosmere_Roshar_LogirialAugment);
             }
         }
     }
@@ -231,7 +231,11 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
         string replaceGemText = "No suitable gem available";
         if (cutGemstone != null) {
             replaceGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
+                Verse.AI.Job job = JobMaker.MakeJob(
+                    CosmereRosharDefs.Cosmere_Roshar_RefuelFabrial,
+                    parent,
+                    cutGemstone
+                );
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -245,7 +249,7 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
         Action? removeGemAction = null;
         if (insertedGemstone != null) {
             removeGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRemoveFromFabrial, parent);
+                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.Cosmere_Roshar_RemoveFromFabrial, parent);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }

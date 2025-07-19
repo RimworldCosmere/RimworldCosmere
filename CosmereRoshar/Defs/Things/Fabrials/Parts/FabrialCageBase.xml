@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <RecipeDef Name="Cosmere_Roshar_MakeFabrialPartBase" Abstract="True">
+        <jobString>Making fabrial part out of stuff.</jobString>
+        <workAmount>1600</workAmount>
+        <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+        <effectWorking>CutStone</effectWorking>
+        <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+        <targetCountAdjustment>1</targetCountAdjustment>
+        <workSkill>Crafting</workSkill> <!-- custom skill -->
+        <workSkillLearnFactor>0</workSkillLearnFactor>
+        <recipeUsers>
+            <li>Cosmere_Roshar_TableFabrials</li>  
+        </recipeUsers>
+        <researchPrerequisites>
+            <li>Cosmere_Roshar_Research_Alloys</li>
+            <li>Cosmere_Roshar_Research_BasicArtifabriary</li>
+        </researchPrerequisites>
+    </RecipeDef>
+</Defs>

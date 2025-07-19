@@ -1,87 +1,62 @@
-﻿using System.Collections.Generic;
+﻿using System.Diagnostics.CodeAnalysis;
 using RimWorld;
 using Verse;
 
 namespace CosmereRoshar;
 
 [DefOf]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnassignedField.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class CosmereRosharDefs {
-    public static NeedDef WhtwlRadiantProgress;
+    public static NeedDef Cosmere_Roshar_RadiantProgress;
 
-    public static TraitDef WhtwlRadiantWindrunner;
-    public static TraitDef WhtwlRadiantTruthwatcher;
-    public static TraitDef WhtwlRadiantEdgedancer;
-    public static TraitDef WhtwlRadiantSkybreaker;
+    public static TraitDef Cosmere_Roshar_RadiantWindrunner;
+    public static TraitDef Cosmere_Roshar_RadiantTruthwatcher;
+    public static TraitDef Cosmere_Roshar_RadiantEdgedancer;
+    public static TraitDef Cosmere_Roshar_RadiantSkybreaker;
 
-    public static AbilityDef WhtwlSummonShardblade;
-    public static AbilityDef WhtwlUnbondBlade;
-    public static AbilityDef WhtwlBreathStormlight;
-    public static AbilityDef WhtwlSurgeOfHealing;
-    public static AbilityDef WhtwlSurgeOfGrowth;
-    public static AbilityDef WhtwlSurgeOfAbrasion;
-    public static AbilityDef WhtwlSurgeOfDivision;
-    public static AbilityDef WhtwlLashingUpward;
-    public static AbilityDef WhtwlWindRunnerFlight;
+    public static AbilityDef Cosmere_Roshar_SummonShardblade;
+    public static AbilityDef Cosmere_Roshar_UnbondBlade;
+    public static AbilityDef Cosmere_Roshar_BreathStormlight;
+    public static AbilityDef Cosmere_Roshar_SurgeOfHealing;
+    public static AbilityDef Cosmere_Roshar_SurgeOfGrowth;
+    public static AbilityDef Cosmere_Roshar_SurgeOfAbrasion;
+    public static AbilityDef Cosmere_Roshar_SurgeOfDivision;
+    public static AbilityDef Cosmere_Roshar_LashingUpward;
+    public static AbilityDef Cosmere_Roshar_WindRunnerFlight;
 
     //JobDef
-    public static JobDef WhtwlRefuelSphereLamp;
-    public static JobDef WhtwlRefuelFabrial;
-    public static JobDef WhtwlRemoveFromFabrial;
-    public static JobDef WhtwlCastAbilityOnTarget;
+    public static JobDef Cosmere_Roshar_RefuelSphereLamp;
+    public static JobDef Cosmere_Roshar_RefuelFabrial;
+    public static JobDef Cosmere_Roshar_RemoveFromFabrial;
+    public static JobDef Cosmere_Roshar_CastAbilityOnTarget;
 
     //ThingDef
-    public static ThingDef WhtwlApparelSpherePouch;
-    public static ThingDef WhtwlSphereLampWall;
-    public static ThingDef WhtwlFabrialCagePewter;
-    public static ThingDef WhtwlBasicFabrialAugmenter;
+    public static ThingDef Cosmere_Roshar_ApparelSpherePouch;
+    public static ThingDef Cosmere_Roshar_SphereLampWall;
+    public static ThingDef Cosmere_Roshar_FabrialCagePewter;
+    public static ThingDef Cosmere_Roshar_BasicFabrialAugmenter;
 
     // FABRIALS
-    public static ThingDef WhtwlApparelFabrialPainrialDiminisher;
+    public static ThingDef Cosmere_Roshar_ApparelFabrialPainrialDiminisher;
 
     // WEAPONS
-    public static ThingDef WhtwlMeleeWeaponShardblade;
+    public static ThingDef Cosmere_Roshar_MeleeWeaponShardblade;
 
 
     // HEDIFF
-    public static HediffDef WhtwlPainrialAgument;
-    public static HediffDef WhtwlPainrialDiminisher;
-    public static HediffDef WhtwlApparelPainrialDiminisherHediff;
+    public static HediffDef Cosmere_Roshar_PainrialAugment;
+    public static HediffDef Cosmere_Roshar_PainrialDiminisher;
+    public static HediffDef Cosmere_Roshar_ApparelPainrialDiminisherHediff;
 
-    public static HediffDef WhtwlLogirialAgument;
-    public static HediffDef WhtwlLogirialDiminisher;
+    public static HediffDef Cosmere_Roshar_LogirialAugment;
+    public static HediffDef Cosmere_Roshar_LogirialDiminisher;
 
-    public static HediffDef WhtwlSurgeAbrasion;
-
+    public static HediffDef Cosmere_Roshar_SurgeAbrasion;
 
     static CosmereRosharDefs() {
         DefOfHelper.EnsureInitializedInCtor(typeof(CosmereRosharDefs));
     }
-}
-
-public static class CosmereRosharUtilities {
-    public static List<TraitDef> radiantTraits =>
-        new List<TraitDef> {
-            CosmereRosharDefs.WhtwlRadiantWindrunner,
-            CosmereRosharDefs.WhtwlRadiantTruthwatcher,
-            CosmereRosharDefs.WhtwlRadiantEdgedancer,
-            CosmereRosharDefs.WhtwlRadiantSkybreaker,
-        };
-
-    public static List<ThingDef> rawGems =>
-        new List<ThingDef> {
-            CosmereResources.ThingDefOf.RawDiamond,
-            CosmereResources.ThingDefOf.RawGarnet,
-            CosmereResources.ThingDefOf.RawRuby,
-            CosmereResources.ThingDefOf.RawSapphire,
-            CosmereResources.ThingDefOf.RawEmerald,
-        };
-
-    public static List<ThingDef> cutGems =>
-        new List<ThingDef> {
-            CosmereResources.ThingDefOf.CutDiamond,
-            CosmereResources.ThingDefOf.CutGarnet,
-            CosmereResources.ThingDefOf.CutRuby,
-            CosmereResources.ThingDefOf.CutSapphire,
-            CosmereResources.ThingDefOf.CutEmerald,
-        };
 }

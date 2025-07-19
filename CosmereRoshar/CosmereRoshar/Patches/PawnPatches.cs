@@ -13,7 +13,7 @@ public static class PatchPawnKill {
         if (instance == null || !instance.RaceProps.Humanlike) return;
 
         SpawnEquipment? abilityComp =
-            instance.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.WhtwlSummonShardblade.defName);
+            instance.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName);
 
         if (!(abilityComp?.bladeObject?.TryGetComp(out ShardBlade blade) ?? false)) return;
         blade.Summon();

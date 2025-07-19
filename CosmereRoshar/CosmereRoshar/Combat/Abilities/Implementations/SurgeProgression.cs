@@ -50,8 +50,8 @@ public class SurgeProgression : CompAbilityEffect {
         RadiantHeal(targetPawn);
     }
 
-    private void HealMissingParts(Pawn pawn, NeedRadiantProgress radiantNeed, Stormlight stormlight, Pawn caster) {
-        if (radiantNeed is { idealLevel: >= 3 }) {
+    private void HealMissingParts(Pawn pawn, RadiantProgress radiant, Stormlight stormlight, Pawn caster) {
+        if (radiant is { idealLevel: >= 3 }) {
             List<Hediff_MissingPart> missingParts = pawn.health.hediffSet.hediffs.OfType<Hediff_MissingPart>()
                 .OrderByDescending(h => h.Severity)
                 .ToList();
@@ -70,7 +70,7 @@ public class SurgeProgression : CompAbilityEffect {
         }
     }
 
-    private void HealInjuries(Pawn pawn, NeedRadiantProgress radiantNeed, Stormlight stormlight, Pawn caster) {
+    private void HealInjuries(Pawn pawn, RadiantProgress radiant, Stormlight stormlight, Pawn caster) {
         List<Hediff_Injury> injuries = pawn.health.hediffSet.hediffs.OfType<Hediff_Injury>()
             .OrderByDescending(h => h.Severity)
             .ToList();
@@ -83,7 +83,7 @@ public class SurgeProgression : CompAbilityEffect {
                     break;
                 }
 
-                float healAmount = 0.008f + radiantNeed.idealLevel * 2f / 10f;
+                float healAmount = 0.008f + radiant.idealLevel * 2f / 10f;
                 injury.Heal(healAmount);
                 stormlight.DrawStormlight(cost);
                 RadiantUtility.GiveRadiantXp(caster, 5f);
@@ -96,13 +96,13 @@ public class SurgeProgression : CompAbilityEffect {
         Pawn caster = parent.pawn;
         if (caster.TryGetComp(out Stormlight stormlight)) return;
 
-        NeedRadiantProgress radiantNeed = caster.needs.TryGetNeed<NeedRadiantProgress>();
-        if (radiantNeed == null) {
+        RadiantProgress radiant = caster.needs.TryGetNeed<RadiantProgress>();
+        if (radiant == null) {
             Log.Error("[HealSurge] need was null");
             return;
         }
 
-        HealMissingParts(pawn, radiantNeed, stormlight, caster);
-        HealInjuries(pawn, radiantNeed, stormlight, caster);
+        HealMissingParts(pawn, radiant, stormlight, caster);
+        HealInjuries(pawn, radiant, stormlight, caster);
     }
 }

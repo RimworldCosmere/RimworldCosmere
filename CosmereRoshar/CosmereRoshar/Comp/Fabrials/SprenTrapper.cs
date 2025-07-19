@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CosmereRoshar.Comp.Thing;
 using CosmereRoshar.Dialog;
-using CosmereRoshar.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -100,7 +99,7 @@ public class SprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
     }
 
     private void DisplayCaptureMessage(Spren spren) {
-        (parent as BuildingSprenTrapper).TriggerPrint();
+        (parent as global::CosmereRoshar.Thing.Building.SprenTrapper).TriggerPrint();
         Messages.Message(
             $"One of your traps captured a {spren.ToStringSafe()}spren!",
             parent,
@@ -257,7 +256,11 @@ public class SprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
         string replaceGemText = "No suitable gem available";
         if (cutGemstone != null) {
             replaceGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
+                Verse.AI.Job job = JobMaker.MakeJob(
+                    CosmereRosharDefs.Cosmere_Roshar_RefuelFabrial,
+                    parent,
+                    cutGemstone
+                );
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -271,7 +274,7 @@ public class SprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
         Action? removeGemAction = null;
         if (insertedGemstone != null) {
             removeGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRemoveFromFabrial, parent);
+                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.Cosmere_Roshar_RemoveFromFabrial, parent);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }

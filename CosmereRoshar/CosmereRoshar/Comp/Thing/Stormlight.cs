@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp.Apparel;
-using CosmereRoshar.Comp.Furniture;
 using CosmereRoshar.Need;
 using RimWorld;
 using UnityEngine;
@@ -88,7 +86,7 @@ public class Stormlight : ThingComp {
         base.PostExposeData();
         Scribe_Values.Look(ref abrasionActiveInt, "abrasionActiveInt");
         Scribe_Values.Look(ref currentStormlightInt, "currentStormlightInt");
-        Scribe_Values.Look(ref breathStormlightInt, CosmereRosharDefs.WhtwlBreathStormlight.defName);
+        Scribe_Values.Look(ref breathStormlightInt, CosmereRosharDefs.Cosmere_Roshar_BreathStormlight.defName);
         Scribe_Values.Look(ref isActivatedOnPawn, "isActivatedOnPawn");
         Scribe_Values.Look(ref currentMaxStormlight, "CurrentMaxStormlight");
         Scribe_Values.Look(ref stormlightContainerSize, "StormlightContainerSize", 1f);
@@ -264,10 +262,10 @@ public class Stormlight : ThingComp {
         }
 
         //  Absorb Stormlight from pouch
-        CompSpherePouch pouchComp = pawn.apparel?.WornApparel?.Find(a => a.GetComp<CompSpherePouch>() != null)
-            ?.GetComp<CompSpherePouch>();
-        if (pouchComp != null && pouchComp.GetTotalStoredStormlight() > 0) {
-            float drawn = pouchComp.DrawStormlight(absorbAmount);
+        SpherePouch pouch = pawn.apparel?.WornApparel?.Find(a => a.GetComp<SpherePouch>() != null)
+            ?.GetComp<SpherePouch>();
+        if (pouch != null && pouch.GetTotalStoredStormlight() > 0) {
+            float drawn = pouch.DrawStormlight(absorbAmount);
             RadiantUtility.GiveRadiantXp(pawn, 0.1f);
             if (InfuseStormlight(drawn)) return;
         }
@@ -295,8 +293,8 @@ public class Stormlight : ThingComp {
             float drawnLight;
             if (thing.TryGetComp(out Stormlight stormlight)) {
                 drawnLight = stormlight.DrawStormlight(absorbAmount);
-            } else if (thing.TryGetComp(out CompSpherePouch pouch)) {
-                drawnLight = pouch.DrawStormlight(absorbAmount);
+            } else if (thing.TryGetComp(out SpherePouch pouchComp)) {
+                drawnLight = pouchComp.DrawStormlight(absorbAmount);
             } else if (thing.TryGetComp(out StormlightLamps lamp)) {
                 drawnLight = lamp.DrawStormlight(absorbAmount);
             } else {
@@ -316,12 +314,13 @@ public class Stormlight : ThingComp {
         }
 
         if (abrasionActiveInt) {
-            if (pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.WhtwlSurgeAbrasion) == null) {
-                pawn.health.AddHediff(CosmereRosharDefs.WhtwlSurgeAbrasion);
+            if (pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.Cosmere_Roshar_SurgeAbrasion) == null) {
+                pawn.health.AddHediff(CosmereRosharDefs.Cosmere_Roshar_SurgeAbrasion);
                 drainFactor += 500f;
             }
         } else {
-            if (pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.WhtwlSurgeAbrasion) is { } hediff) {
+            if (pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.Cosmere_Roshar_SurgeAbrasion) is
+                { } hediff) {
                 pawn.health.RemoveHediff(hediff);
             }
 

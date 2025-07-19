@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp.Apparel;
 using CosmereRoshar.Comp.Thing;
 using RimWorld;
 using UnityEngine;
@@ -14,7 +13,7 @@ public class SpherePouch : ITab {
 
     public SpherePouch() {
         size = WinSize;
-        labelKey = "whtwl_TabSpherePouch"; // Localization key
+        labelKey = "Cosmere_Roshar_TabSpherePouch"; // Localization key
     }
 
 
@@ -23,15 +22,15 @@ public class SpherePouch : ITab {
             if (selPawn == null) return false;
 
             // Check if the pawn has a Sphere Pouch equipped 
-            return selPawn.apparel?.WornApparel?.Any(a => a.TryGetComp<CompSpherePouch>() != null) ?? false;
+            return selPawn.apparel?.WornApparel?.Any(a => a.TryGetComp<Comp.Thing.SpherePouch>() != null) ?? false;
         }
     }
 
     private Pawn selPawn => SelThing as Pawn;
 
-    private CompSpherePouch pouchSpheres {
+    private Comp.Thing.SpherePouch? pouchSpheres {
         get {
-            return selPawn.apparel?.WornApparel.Select(a => a.GetComp<CompSpherePouch>())
+            return selPawn.apparel?.WornApparel.Select(a => a.GetComp<Comp.Thing.SpherePouch>())
                 .FirstOrDefault(comp => comp != null);
         }
     }
@@ -39,7 +38,7 @@ public class SpherePouch : ITab {
     protected override void FillTab() {
         if (pouchSpheres == null) return;
 
-        List<Verse.Thing> pouchContents = pouchSpheres.storedSpheres;
+        List<ThingWithComps> pouchContents = pouchSpheres.storedSpheres;
 
         Rect rect = new Rect(0f, 0f, WinSize.x, WinSize.y).ContractedBy(10f);
         Widgets.BeginGroup(rect);

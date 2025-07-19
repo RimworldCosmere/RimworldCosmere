@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CosmereRoshar.Comp.Fabrials;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Thing;
+using CosmereRoshar.Thing.Building;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -48,13 +48,13 @@ public static class CultivationSprenPatch {
         IntVec3 plantPos = plant.Position;
 
         foreach (Building? thing in ActiveLifeSprenBuildings) {
-            if (thing is BuildingFabrialBasicAugmenter building &&
+            if (thing is FabrialBasicAugmenter building &&
                 plantPos.DistanceTo(building.Position) <= 5f) {
                 BasicFabrialAugmenter? comp = building.GetComp<BasicFabrialAugmenter>();
                 if (comp != null && comp.powerOn && comp.currentSpren == Spren.Life) {
                     return 1;
                 }
-            } else if (thing is BuildingFabrialBasicDiminisher diminisher &&
+            } else if (thing is FabrialBasicDiminisher diminisher &&
                        plantPos.DistanceTo(diminisher.Position) <= 5f) {
                 BasicFabrialDiminisher? comp = diminisher.GetComp<BasicFabrialDiminisher>();
                 if (comp != null && comp.powerOn && comp.currentSpren == Spren.Life) {

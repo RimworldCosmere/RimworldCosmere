@@ -1,8 +1,7 @@
-﻿using CosmereRoshar.Comp.Apparel;
-using CosmereRoshar.Tab;
-using HarmonyLib;
+﻿using HarmonyLib;
 using RimWorld;
 using Verse;
+using SpherePouch = CosmereRoshar.Comp.Thing.SpherePouch;
 
 namespace CosmereRoshar.Patches;
 
@@ -15,9 +14,9 @@ public static class PawnApparelPatches {
         Pawn pawn = instance.pawn;
         if (pawn == null || newApparel == null) return;
 
-        if (newApparel.TryGetComp<CompSpherePouch>() == null) return;
-        if (pawn.def.inspectorTabsResolved.Exists(tab => tab is SpherePouch)) return;
+        if (newApparel.TryGetComp<SpherePouch>() == null) return;
+        if (pawn.def.inspectorTabsResolved.Exists(tab => tab is Tab.SpherePouch)) return;
 
-        pawn.def.inspectorTabsResolved.Add(new SpherePouch());
+        pawn.def.inspectorTabsResolved.Add(new Tab.SpherePouch());
     }
 }

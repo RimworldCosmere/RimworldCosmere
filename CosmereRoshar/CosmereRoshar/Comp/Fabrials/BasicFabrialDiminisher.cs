@@ -4,7 +4,7 @@ using System.Linq;
 using CosmereRoshar.Comp.Thing;
 using CosmereRoshar.Dialog;
 using CosmereRoshar.Patches.Fabrials;
-using CosmereRoshar.Thing;
+using CosmereRoshar.Thing.Building;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -45,7 +45,7 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         CompCutGemstone? gemstoneComp = gemstone.GetComp<CompCutGemstone>();
         if (gemstoneComp == null) return;
         insertedGemstone = gemstoneComp.parent;
-        CultivationSprenPatch.RegisterBuilding((BuildingFabrialBasicDiminisher)parent);
+        CultivationSprenPatch.RegisterBuilding((FabrialBasicDiminisher)parent);
     }
 
     public void RemoveGemstone() {
@@ -55,14 +55,14 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         IntVec3 dropPosition = parent.Position;
         dropPosition.z -= 1;
         GenPlace.TryPlaceThing(gemstoneToDrop, dropPosition, parent.Map, ThingPlaceMode.Near);
-        CultivationSprenPatch.UnregisterBuilding((BuildingFabrialBasicDiminisher)parent);
+        CultivationSprenPatch.UnregisterBuilding((FabrialBasicDiminisher)parent);
     }
 
 
     public override void PostSpawnSetup(bool respawningAfterLoad) {
         base.PostSpawnSetup(respawningAfterLoad);
         if (insertedGemstone != null) {
-            CultivationSprenPatch.RegisterBuilding((BuildingFabrialBasicDiminisher)parent);
+            CultivationSprenPatch.RegisterBuilding((FabrialBasicDiminisher)parent);
         }
     }
 
@@ -145,9 +145,10 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
             if (pawn != null &&
-                pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.WhtwlPainrialDiminisher) == null &&
+                pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.Cosmere_Roshar_PainrialDiminisher) ==
+                null &&
                 pawn.Position.InHorDistOf(position, 5f)) {
-                pawn.health.AddHediff(CosmereRosharDefs.WhtwlPainrialDiminisher);
+                pawn.health.AddHediff(CosmereRosharDefs.Cosmere_Roshar_PainrialDiminisher);
             }
         }
     }
@@ -160,10 +161,10 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
             if (pawn != null &&
-                pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.WhtwlLogirialDiminisher) ==
+                pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.Cosmere_Roshar_LogirialDiminisher) ==
                 null &&
                 pawn.Position.InHorDistOf(position, 5f)) {
-                pawn.health.AddHediff(CosmereRosharDefs.WhtwlLogirialDiminisher);
+                pawn.health.AddHediff(CosmereRosharDefs.Cosmere_Roshar_LogirialDiminisher);
             }
         }
     }
@@ -218,7 +219,11 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         string replaceGemText = "No suitable gem available";
         if (cutGemstone != null) {
             replaceGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
+                Verse.AI.Job job = JobMaker.MakeJob(
+                    CosmereRosharDefs.Cosmere_Roshar_RefuelFabrial,
+                    parent,
+                    cutGemstone
+                );
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -232,7 +237,7 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         Action? removeGemAction = null;
         if (insertedGemstone != null) {
             removeGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRemoveFromFabrial, parent);
+                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.Cosmere_Roshar_RemoveFromFabrial, parent);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }

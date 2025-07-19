@@ -40,12 +40,12 @@ public class ShardBlade : ThingComp {
 
     private void HandleSwordAbility(Pawn pawn, SpawnEquipment? abilityComp) {
         if (abilityComp != null) return;
-        pawn.abilities.GainAbility(CosmereRosharDefs.WhtwlSummonShardblade);
+        pawn.abilities.GainAbility(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade);
         Trait? trait = StormlightUtilities.GetRadiantTrait(pawn);
 
         if (trait == null) {
             //radiants does not get this ability
-            pawn.abilities.GainAbility(CosmereRosharDefs.WhtwlUnbondBlade);
+            pawn.abilities.GainAbility(CosmereRosharDefs.Cosmere_Roshar_UnbondBlade);
         }
     }
 
@@ -53,10 +53,10 @@ public class ShardBlade : ThingComp {
         swordOwner = pawn;
         ThingWithComps blade = parent;
         SpawnEquipment? abilityComp =
-            pawn.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.WhtwlSummonShardblade.defName);
+            pawn.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName);
         HandleSwordAbility(pawn, abilityComp);
         abilityComp ??= pawn.GetAbilityComp<SpawnEquipment>(
-            CosmereRosharDefs.WhtwlSummonShardblade.defName
+            CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName
         );
 
         abilityComp!.bladeObject = blade;
@@ -86,8 +86,8 @@ public class ShardBlade : ThingComp {
             }
         }
 
-        pawn.abilities.RemoveAbility(CosmereRosharDefs.WhtwlSummonShardblade);
-        pawn.abilities.RemoveAbility(CosmereRosharDefs.WhtwlUnbondBlade);
+        pawn.abilities.RemoveAbility(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade);
+        pawn.abilities.RemoveAbility(CosmereRosharDefs.Cosmere_Roshar_UnbondBlade);
     }
 
 
@@ -108,7 +108,7 @@ public class ShardBlade : ThingComp {
 
         SpawnEquipment? abilityComp =
             swordOwner.GetAbilityComp<SpawnEquipment>(
-                CosmereRosharDefs.WhtwlSummonShardblade.defName
+                CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName
             );
         if (abilityComp?.bladeObject == null) return;
         swordOwner.equipment.AddEquipment(abilityComp.bladeObject);

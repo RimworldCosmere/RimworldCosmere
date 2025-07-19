@@ -128,7 +128,11 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
         string replaceGemText = "No suitable gem available";
         if (cutGemstone != null) {
             replaceGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
+                Verse.AI.Job job = JobMaker.MakeJob(
+                    CosmereRosharDefs.Cosmere_Roshar_RefuelFabrial,
+                    parent,
+                    cutGemstone
+                );
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }

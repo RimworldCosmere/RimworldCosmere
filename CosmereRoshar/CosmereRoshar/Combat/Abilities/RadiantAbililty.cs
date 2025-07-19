@@ -96,7 +96,7 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool AbriasionCheck() {
-        if (ability.def == CosmereRosharDefs.WhtwlSurgeOfAbrasion) {
+        if (ability.def == CosmereRosharDefs.Cosmere_Roshar_SurgeOfAbrasion) {
             Stormlight? comp = pawn.GetComp<Stormlight>();
             if (comp is { abrasionActive: true }) {
                 return true;
@@ -107,7 +107,7 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool BreathStormlightCheck() {
-        if (ability.def != CosmereRosharDefs.WhtwlBreathStormlight) return false;
+        if (ability.def != CosmereRosharDefs.Cosmere_Roshar_BreathStormlight) return false;
 
         return pawn.TryGetComp<Stormlight>() is { breathStormlight: true };
     }
@@ -201,14 +201,14 @@ public class CommandRadiantAbility : Command {
 
     public override void ProcessInput(Event ev) {
         base.ProcessInput(ev);
-        bool hasRadiantTrait = pawn.story.traits.HasTrait(CosmereRosharDefs.WhtwlRadiantWindrunner) ||
-                               pawn.story.traits.HasTrait(CosmereRosharDefs.WhtwlRadiantTruthwatcher) ||
-                               pawn.story.traits.HasTrait(CosmereRosharDefs.WhtwlRadiantEdgedancer) ||
-                               pawn.story.traits.HasTrait(CosmereRosharDefs.WhtwlRadiantSkybreaker);
+        bool hasRadiantTrait = pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner) ||
+                               pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher) ||
+                               pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer) ||
+                               pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker);
 
         if (!pawn.Drafted ||
             !hasRadiantTrait &&
-            pawn.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.WhtwlSummonShardblade.defName) ==
+            pawn.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName) ==
             null) {
             return;
         }
@@ -245,7 +245,7 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool AbilityPlantGrowSurge() {
-        if (ability.def == CosmereRosharDefs.WhtwlSurgeOfGrowth) {
+        if (ability.def == CosmereRosharDefs.Cosmere_Roshar_SurgeOfGrowth) {
             TargetingParameters tp = new TargetingParameters {
                 canTargetPawns = false,
                 canTargetAnimals = false,
@@ -269,7 +269,7 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool AbilityAbrasionSurge() {
-        if (ability.def == CosmereRosharDefs.WhtwlSurgeOfAbrasion) {
+        if (ability.def == CosmereRosharDefs.Cosmere_Roshar_SurgeOfAbrasion) {
             ability.Activate(pawn, pawn);
             return true;
         }
@@ -278,7 +278,7 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool AbilityDivisionSurge() {
-        if (ability.def == CosmereRosharDefs.WhtwlSurgeOfDivision) {
+        if (ability.def == CosmereRosharDefs.Cosmere_Roshar_SurgeOfDivision) {
             TargetingParameters tp = new TargetingParameters {
                 canTargetPawns = true,
                 canTargetAnimals = true,
@@ -299,7 +299,7 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool AbilityHealSurge() {
-        if (ability.def == CosmereRosharDefs.WhtwlSurgeOfHealing) {
+        if (ability.def == CosmereRosharDefs.Cosmere_Roshar_SurgeOfHealing) {
             TargetingParameters tp = new TargetingParameters {
                 canTargetPawns = true,
                 canTargetAnimals = true,
@@ -320,7 +320,7 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool AbilityToggleStormlight() {
-        if (ability.def == CosmereRosharDefs.WhtwlBreathStormlight) {
+        if (ability.def == CosmereRosharDefs.Cosmere_Roshar_BreathStormlight) {
             ability.Activate(pawn, pawn);
             return true;
         }
@@ -329,7 +329,7 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool AbilitySummonShardblade() {
-        if (ability.def == CosmereRosharDefs.WhtwlSummonShardblade) {
+        if (ability.def == CosmereRosharDefs.Cosmere_Roshar_SummonShardblade) {
             ability.Activate(pawn, pawn);
             return true;
         }
@@ -338,7 +338,7 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool AbilityLashingUpward() {
-        if (ability.def == CosmereRosharDefs.WhtwlLashingUpward) {
+        if (ability.def == CosmereRosharDefs.Cosmere_Roshar_LashingUpward) {
             TargetingParameters tp = new TargetingParameters {
                 canTargetPawns = true,
                 canTargetAnimals = false,
@@ -359,11 +359,11 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool AbilityWindRunnerFlight() {
-        if (ability.def != CosmereRosharDefs.WhtwlWindRunnerFlight) return false;
+        if (ability.def != CosmereRosharDefs.Cosmere_Roshar_WindRunnerFlight) return false;
 
         float cost = pawn
             .GetAbilityComp<SurgeGravitation>(
-                CosmereRosharDefs.WhtwlWindRunnerFlight.defName
+                CosmereRosharDefs.Cosmere_Roshar_WindRunnerFlight.defName
             )!
             .props.stormLightCost;
         float distance = pawn.GetComp<Stormlight>().currentStormlight / cost;
@@ -433,7 +433,7 @@ public class CommandRadiantAbility : Command {
         // The main action to do once a valid target is chosen
         void MainAction(LocalTargetInfo chosenTarget) {
             Verse.AI.Job job = new CastAbilityOnTarget(
-                CosmereRosharDefs.WhtwlCastAbilityOnTarget,
+                CosmereRosharDefs.Cosmere_Roshar_CastAbilityOnTarget,
                 chosenTarget,
                 ability
             );

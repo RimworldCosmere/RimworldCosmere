@@ -4,7 +4,7 @@ using Verse;
 
 namespace CosmereRoshar.Patches;
 
-[HarmonyPatch(typeof(PawnFlyer))]
+[HarmonyPatch(typeof(RimWorld.PawnFlyer))]
 public static class PawnFlyerPatches {
     [HarmonyPatch("RespawnPawn")]
     [HarmonyPrefix]
@@ -21,7 +21,7 @@ public static class PawnFlyerPatches {
     [HarmonyPostfix]
     private static void Postfix(AbilityDef? triggeringAbility, Pawn? __state) {
         if (__state == null || triggeringAbility == null) return;
-        if (triggeringAbility.Equals(CosmereRosharDefs.WhtwlLashingUpward)) {
+        if (triggeringAbility.Equals(CosmereRosharDefs.Cosmere_Roshar_LashingUpward)) {
             __state.TakeDamage(new DamageInfo(DamageDefOf.Blunt, 75));
         }
     }

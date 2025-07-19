@@ -1,6 +1,5 @@
 ﻿using System;
 using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Weather;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -40,7 +39,7 @@ public static class PawnHighstormPushPatch {
             }
 
             if (Find.TickManager.TicksGame % 100 == 0 && StormlightUtilities.IsPawnEligibleForDoctoring(instance)) {
-                TryToBondPawn(instance, CosmereRosharDefs.WhtwlRadiantWindrunner);
+                TryToBondPawn(instance, CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner);
             }
 
             return;
@@ -55,15 +54,15 @@ public static class PawnHighstormPushPatch {
             if ((instance.Map.weatherManager.curWeather.defName == "Fog" ||
                  instance.Map.weatherManager.curWeather.defName == "FoggyRain") &&
                 StormlightUtilities.IsPawnEligibleForDoctoring(instance)) {
-                TryToBondPawn(instance, CosmereRosharDefs.WhtwlRadiantTruthwatcher);
+                TryToBondPawn(instance, CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher);
             } else if ((instance.Map.weatherManager.curWeather.defName == "Rain" ||
                         instance.Map.weatherManager.curWeather.defName == "Clear") &&
                        StormlightUtilities.IsNearGrowingPlants(instance) &&
                        StormlightUtilities.IsPawnEligibleForDoctoring(instance)) {
-                TryToBondPawn(instance, CosmereRosharDefs.WhtwlRadiantEdgedancer);
+                TryToBondPawn(instance, CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer);
             } else if (instance.Map.weatherManager.curWeather.defName == "DryThunderstorm" ||
                        instance.Map.weatherManager.curWeather.defName == "RainyThunderstorm") {
-                TryToBondPawn(instance, CosmereRosharDefs.WhtwlRadiantSkybreaker);
+                TryToBondPawn(instance, CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker);
             }
         }
     }
@@ -84,7 +83,7 @@ public static class PawnHighstormPushPatch {
             if (upperNumber <= 1) upperNumber = 2;
             int number = MRand.Next(1, upperNumber);
             if (number == 1) {
-                if (traitDef == CosmereRosharDefs.WhtwlRadiantWindrunner) {
+                if (traitDef == CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner) {
                     StormlightUtilities.SpeakOaths(
                         pawn,
                         pawnStats,
@@ -92,7 +91,7 @@ public static class PawnHighstormPushPatch {
                         $"{pawn.NameShortColored} " + WindrunnerBondText,
                         "A Whisper in the Mind.."
                     );
-                } else if (traitDef == CosmereRosharDefs.WhtwlRadiantTruthwatcher) {
+                } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher) {
                     StormlightUtilities.SpeakOaths(
                         pawn,
                         pawnStats,
@@ -100,7 +99,7 @@ public static class PawnHighstormPushPatch {
                         $"{pawn.NameShortColored} " + TruthwatcherBondText,
                         "A Whisper in the Mind.."
                     );
-                } else if (traitDef == CosmereRosharDefs.WhtwlRadiantEdgedancer) {
+                } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer) {
                     StormlightUtilities.SpeakOaths(
                         pawn,
                         pawnStats,
@@ -108,7 +107,7 @@ public static class PawnHighstormPushPatch {
                         $"{pawn.NameShortColored} " + EdgedancerBondText,
                         "A Whisper in the Mind.."
                     );
-                } else if (traitDef == CosmereRosharDefs.WhtwlRadiantSkybreaker) {
+                } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker) {
                     StormlightUtilities.SpeakOaths(
                         pawn,
                         pawnStats,
@@ -124,7 +123,7 @@ public static class PawnHighstormPushPatch {
 
     private static bool IsHighstormActive(Map map) {
         // Checks if our custom GameCondition is present
-        GameConditionHighstorm? condition = map.gameConditionManager.GetActiveCondition<GameConditionHighstorm>();
+        GameCondition.Highstorm? condition = map.gameConditionManager.GetActiveCondition<GameCondition.Highstorm>();
         return condition != null;
     }
 

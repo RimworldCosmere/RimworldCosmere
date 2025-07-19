@@ -3,6 +3,7 @@ using System.Linq;
 using CosmereRoshar.Combat.Abilities.Implementations;
 using CosmereRoshar.Comp.Thing;
 using CosmereRoshar.Patches;
+using CosmereRoshar.Utility;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -53,10 +54,10 @@ public static class StormlightUtilities {
     }
 
     public static bool IsRadiant(Trait trait) {
-        return trait.def == CosmereRosharDefs.WhtwlRadiantWindrunner ||
-               trait.def == CosmereRosharDefs.WhtwlRadiantTruthwatcher ||
-               trait.def == CosmereRosharDefs.WhtwlRadiantEdgedancer ||
-               trait.def == CosmereRosharDefs.WhtwlRadiantSkybreaker;
+        return trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner ||
+               trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher ||
+               trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer ||
+               trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker;
     }
 
     public static bool IsRadiant(Pawn pawn) {
@@ -67,10 +68,10 @@ public static class StormlightUtilities {
         Trait trait =
             pawn.story.traits.allTraits.FirstOrDefault(t => CosmereRosharUtilities.radiantTraits.Contains(t.def));
         if (trait != null) {
-            return trait.def == CosmereRosharDefs.WhtwlRadiantWindrunner ||
-                   trait.def == CosmereRosharDefs.WhtwlRadiantTruthwatcher ||
-                   trait.def == CosmereRosharDefs.WhtwlRadiantEdgedancer ||
-                   trait.def == CosmereRosharDefs.WhtwlRadiantSkybreaker;
+            return trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner ||
+                   trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher ||
+                   trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer ||
+                   trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker;
         }
 
         return false;

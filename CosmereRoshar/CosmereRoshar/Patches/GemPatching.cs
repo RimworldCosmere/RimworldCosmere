@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CosmereRoshar.Comp.Fabrials;
 using CosmereRoshar.Comp.Thing;
+using CosmereRoshar.Utility;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -36,7 +37,7 @@ public static class GemCraftingPatch {
             if (compCutGemstone != null) {
                 foreach (Verse.Thing? product in result) {
                     SetSphereGemStats(product.TryGetComp<GemSphere>(), compCutGemstone);
-                    SetGemInFabrial(product.TryGetComp<FabrialDiminisher>(), compCutGemstone);
+                    SetGemInFabrial(product.TryGetComp<ApparelFabrialDiminisher>(), compCutGemstone);
                     yield return product;
                 }
             }
@@ -60,7 +61,7 @@ public static class GemCraftingPatch {
         product.inheritGemstone = true;
     }
 
-    private static void SetGemInFabrial(FabrialDiminisher? productComp, CompCutGemstone ingredientComp) {
+    private static void SetGemInFabrial(ApparelFabrialDiminisher? productComp, CompCutGemstone ingredientComp) {
         if (productComp != null) {
             productComp.insertedGemstone = ingredientComp.parent;
         }

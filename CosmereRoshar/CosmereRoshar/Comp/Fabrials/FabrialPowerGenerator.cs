@@ -126,7 +126,11 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
         string replaceGemText = "No suitable gem available";
         if (cutGemstone != null) {
             replaceGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRefuelFabrial, parent, cutGemstone);
+                Verse.AI.Job job = JobMaker.MakeJob(
+                    CosmereRosharDefs.Cosmere_Roshar_RefuelFabrial,
+                    parent,
+                    cutGemstone
+                );
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -140,7 +144,7 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
         Action? removeGemAction = null;
         if (insertedGemstone != null) {
             removeGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.WhtwlRemoveFromFabrial, parent);
+                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.Cosmere_Roshar_RemoveFromFabrial, parent);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }

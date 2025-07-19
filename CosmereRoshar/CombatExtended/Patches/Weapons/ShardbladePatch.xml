@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
     <Operation Class="PatchOperationReplace">
-        <xpath>Defs/ThingDef[defName="whtwl_MeleeWeapon_Shardblade"]/tools</xpath>
+        <xpath>Defs/ThingDef[defName="Cosmere_Roshar_MeleeWeapon_Shardblade"]/tools</xpath>
         <value>
             <tools>
                 <li Class="CombatExtended.ToolCE">
                     <label>point</label>
                     <capacities>
-                        <li>whtwl_SoulStab</li>
+                        <li>Cosmere_Roshar_SoulStab</li>
                     </capacities>
                     <power>100</power>
                     <cooldownTime>1.6</cooldownTime>
@@ -18,7 +18,7 @@
                 <li Class="CombatExtended.ToolCE">
                     <label>edge</label>
                     <capacities>
-                        <li>whtwl_SoulCut</li>
+                        <li>Cosmere_Roshar_SoulCut</li>
                     </capacities>
                     <power>100</power>
                     <cooldownTime>1.6</cooldownTime>
@@ -30,14 +30,14 @@
         </value>
     </Operation>
     <Operation Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="whtwl_MeleeWeapon_Shardblade"]/statBases</xpath>
+        <xpath>Defs/ThingDef[defName="Cosmere_Roshar_MeleeWeapon_Shardblade"]/statBases</xpath>
         <value>
             <Bulk>1</Bulk>
             <MeleeCounterParryBonus>0.1</MeleeCounterParryBonus>
         </value>
     </Operation>
     <Operation Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="whtwl_MeleeWeapon_Shardblade"]</xpath>
+        <xpath>Defs/ThingDef[defName="Cosmere_Roshar_MeleeWeapon_Shardblade"]</xpath>
         <value>
             <equippedStatOffsets>
                 <MeleeCritChance>50.0</MeleeCritChance>

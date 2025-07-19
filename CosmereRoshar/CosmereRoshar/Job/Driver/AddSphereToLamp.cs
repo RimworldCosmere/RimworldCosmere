@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using CosmereRoshar.Comp.Apparel;
-using CosmereRoshar.Comp.Furniture;
+using CosmereRoshar.Comp.Thing;
 using CosmereRoshar.Job.Toil;
 using RimWorld;
 using Verse;
@@ -52,7 +51,7 @@ public class AddSphereToLamp : JobDriver_Refuel {
     }
 
     private bool IsSphereInPouch() {
-        CompSpherePouch spherePouch = CompSpherePouch.GetWornSpherePouch(pawn);
+        SpherePouch spherePouch = SpherePouch.GetWornSpherePouch(pawn);
         if (spherePouch != null && spherePouch.PouchContainsSpecificSphere(sphere)) {
             return true;
         }
@@ -60,7 +59,7 @@ public class AddSphereToLamp : JobDriver_Refuel {
         return false;
     }
 
-    private CompSpherePouch GetSpherePouch() {
-        return CompSpherePouch.GetWornSpherePouch(pawn);
+    private SpherePouch GetSpherePouch() {
+        return SpherePouch.GetWornSpherePouch(pawn);
     }
 }

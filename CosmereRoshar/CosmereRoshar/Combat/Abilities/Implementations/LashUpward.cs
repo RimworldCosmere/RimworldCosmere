@@ -59,7 +59,7 @@ public class LashUpward : CompAbilityEffect {
 
         //Log.Message($"TargetPawn: {targetPawn.Name}");
         // Create the custom flyer
-        PawnFlyer flyer = PawnFlyer.MakeFlyer(
+        RimWorld.PawnFlyer flyer = RimWorld.PawnFlyer.MakeFlyer(
             props.thingDef, // must have the <pawnFlyer> XML extension
             targetPawn, // the Pawn to fly
             cell, // an IntVec3 on the same map

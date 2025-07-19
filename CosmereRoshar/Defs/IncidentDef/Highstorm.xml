@@ -1,7 +1,7 @@
 <Defs>
 	<IncidentDef>
-		<defName>whtwl_HighstormIncident</defName>
-		<workerClass>CosmereRoshar.IncidentWorker_Highstorm</workerClass>
+		<defName>Cosmere_Roshar_HighstormIncident</defName>
+		<workerClass>CosmereRoshar.Incident.Worker.Highstorm</workerClass>
 		<targetTags>
 			<li>Map_PlayerHome</li>
 		</targetTags>
@@ -13,13 +13,13 @@
 	</IncidentDef>
 	
 	<GameConditionDef>
-		<defName>whtwl_HighstormCondition</defName>
-		<conditionClass>CosmereRoshar.GameCondition_Highstorm</conditionClass>
+		<defName>Cosmere_Roshar_HighstormCondition</defName>
+		<conditionClass>CosmereRoshar.GameCondition.Highstorm</conditionClass>
 		<label>Highstorm</label>
 		<description>Deadly wind and rain from the east.</description>
 
 		<modExtensions>
-			<li Class="CosmereRoshar.HighstormExtension">
+			<li Class="CosmereRoshar.ModExtension.Highstorm">
 			   <windStrength>2.5</windStrength>
 				<windDirection>West</windDirection>
 				<stormDuration>10000</stormDuration>  
@@ -28,7 +28,7 @@
 	</GameConditionDef>
 	
 	<WeatherDef>
-		<defName>whtwl_HighstormWeather</defName>
+		<defName>Cosmere_Roshar_HighstormWeather</defName>
 		<label>Highstorm fucking shit up</label>
 		<isBad>true</isBad>
 		<description>RUN YOU FOOOLS.</description>

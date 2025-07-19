@@ -1,5 +1,4 @@
-using CosmereRoshar.Comp.Apparel;
-using CosmereRoshar.Comp.Furniture;
+using CosmereRoshar.Comp.Thing;
 using Verse;
 using Verse.AI;
 
@@ -74,11 +73,11 @@ public class ResphereLamp {
         return toil;
     }
 
-    public static Verse.AI.Toil DropSphereFromPouch(CompSpherePouch pouch, TargetIndex sphereInd) {
+    public static Verse.AI.Toil DropSphereFromPouch(SpherePouch pouch, TargetIndex sphereInd) {
         Verse.AI.Toil toil = ToilMaker.MakeToil();
         toil.initAction = delegate {
             Pawn pawn = toil.actor;
-            Verse.Thing sphere = pawn.CurJob.GetTarget(sphereInd).Thing;
+            if (pawn.CurJob.GetTarget(sphereInd).Thing is not ThingWithComps sphere) return;
             pouch.RemoveSphereFromPouch(sphere, pawn.Map, pawn.Position);
         };
         toil.defaultCompleteMode = ToilCompleteMode.Instant;

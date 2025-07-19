@@ -39,7 +39,7 @@ public static class HighstormStorytellerPatch {
         };
 
         bool success = Find.Storyteller.incidentQueue.Add(
-            DefDatabase<IncidentDef>.GetNamed("whtwl_HighstormIncident"),
+            DefDatabase<IncidentDef>.GetNamed("Cosmere_Roshar_HighstormIncident"),
             Find.TickManager.TicksGame,
             parms
         );

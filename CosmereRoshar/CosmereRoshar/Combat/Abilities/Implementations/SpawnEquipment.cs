@@ -49,11 +49,11 @@ public class SpawnEquipment : CompAbilityEffect {
 
     private void ToggleBlade(ref Pawn pawn) {
         SpawnEquipment abilityComp =
-            pawn.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.WhtwlSummonShardblade.defName);
+            pawn.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName);
         if (abilityComp.bladeObject == null) {
             Log.Warning("[CosmereRoshar] toggleBlade: bladeObject is null, attempting recovery from equipment...");
             abilityComp.bladeObject = pawn.equipment?.AllEquipmentListForReading
-                .FirstOrDefault(e => e.def.defName == CosmereRosharDefs.WhtwlMeleeWeaponShardblade.defName);
+                .FirstOrDefault(e => e.def.defName == CosmereRosharDefs.Cosmere_Roshar_MeleeWeaponShardblade.defName);
 
             if (abilityComp.bladeObject == null) {
                 Log.Error("[CosmereRoshar] toggleBlade: Failed to recover bladeObject, aborting toggle.");

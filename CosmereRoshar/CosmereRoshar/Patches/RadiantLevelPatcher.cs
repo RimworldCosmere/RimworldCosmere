@@ -95,7 +95,7 @@ public class PawnStats : ThingComp {
         base.Initialize(props);
 
         //WINDRUNNER
-        string? windrunnerDefName = CosmereRosharDefs.WhtwlRadiantWindrunner.defName;
+        string? windrunnerDefName = CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner.defName;
         requirementMap.Add(windrunnerDefName, new Dictionary<string, RadiantRequirements>());
         requirementMap[windrunnerDefName].Add(this.props.req01, new RadiantRequirements());
         requirementMap[windrunnerDefName].Add(this.props.req12, new RadiantRequirements());
@@ -104,7 +104,7 @@ public class PawnStats : ThingComp {
 
 
         //TRUTHWATCHER
-        string? truthwatcherDefName = CosmereRosharDefs.WhtwlRadiantTruthwatcher.defName;
+        string? truthwatcherDefName = CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher.defName;
         requirementMap.Add(truthwatcherDefName, new Dictionary<string, RadiantRequirements>());
         requirementMap[truthwatcherDefName].Add(this.props.req01, new RadiantRequirements());
         requirementMap[truthwatcherDefName].Add(this.props.req12, new RadiantRequirements());
@@ -115,14 +115,14 @@ public class PawnStats : ThingComp {
 
 
         //EDGEDANCER
-        string? edgedancerDefName = CosmereRosharDefs.WhtwlRadiantEdgedancer.defName;
+        string? edgedancerDefName = CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer.defName;
         requirementMap.Add(edgedancerDefName, new Dictionary<string, RadiantRequirements>());
         requirementMap[edgedancerDefName].Add(this.props.req01, new RadiantRequirements());
         requirementMap[edgedancerDefName].Add(this.props.req12, new RadiantRequirements());
         requirementMap[edgedancerDefName][this.props.req12].isSatisfied = true; // for now it is true default
 
         //SKYBREAKER
-        string? skybreakerDefName = CosmereRosharDefs.WhtwlRadiantSkybreaker.defName;
+        string? skybreakerDefName = CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker.defName;
         requirementMap.Add(skybreakerDefName, new Dictionary<string, RadiantRequirements>());
         requirementMap[skybreakerDefName].Add(this.props.req01, new RadiantRequirements());
         requirementMap[skybreakerDefName].Add(this.props.req12, new RadiantRequirements());
@@ -143,21 +143,21 @@ public class PawnStats : ThingComp {
     }
 
     public RadiantRequirements GetRequirementsEntry() {
-        return requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][props.req01];
+        return requirementMap[CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner.defName][props.req01];
     }
 }
 
-
-public static class WhtwlRadiantNeedLevelupChecker {
+public static class Cosmere_Roshar_RadiantNeedLevelupChecker {
     public static void UpdateIsSatisfiedReq1_2(PawnStats pawnStats) {
         RadiantRequirements? windrunnerRequirement =
-            pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props.req12];
+            pawnStats.requirementMap[CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner.defName][pawnStats.props.req12];
         if (windrunnerRequirement.count >= 1 && pawnStats.patientSaved) {
             windrunnerRequirement.isSatisfied = true;
         }
 
         RadiantRequirements? truthwatcherRequirement =
-            pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantTruthwatcher.defName][pawnStats.props.req12];
+            pawnStats.requirementMap[CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher.defName][
+                pawnStats.props.req12];
         if (truthwatcherRequirement.count >= 1 && pawnStats.patientSaved) {
             truthwatcherRequirement.isSatisfied = true;
         }
@@ -166,7 +166,7 @@ public static class WhtwlRadiantNeedLevelupChecker {
     public static void UpdateIsSatisfiedReq2_3(PawnStats pawnStats) {
         //helped enemy in need
         RadiantRequirements? windrunnerRequirement =
-            pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props.req23];
+            pawnStats.requirementMap[CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner.defName][pawnStats.props.req23];
         if (windrunnerRequirement.count >= 1 && pawnStats.enemyPatientSaved) {
             windrunnerRequirement.isSatisfied = true;
         }
@@ -175,7 +175,7 @@ public static class WhtwlRadiantNeedLevelupChecker {
     public static void UpdateIsSatisfiedReq3_4(PawnStats pawnStats) {
         //ally with bond died even tho tried to save
         RadiantRequirements? windrunnerRequirement =
-            pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props.req34];
+            pawnStats.requirementMap[CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner.defName][pawnStats.props.req34];
         windrunnerRequirement.isSatisfied = true;
     }
 
@@ -184,18 +184,17 @@ public static class WhtwlRadiantNeedLevelupChecker {
     }
 }
 
-
 //Initial requirements, must have suffered crisis
 [HarmonyPatch(typeof(MentalBreaker), nameof(MentalBreaker.MentalBreakerTickInterval))]
-public static class WhtwlMentalBreakExperiences {
+public static class Cosmere_Roshar_MentalBreakExperiences {
     private static bool ColonistFound = false;
 
     private static void Postfix(MentalBreaker instance, int delta, Pawn pawn) {
         if (pawn.IsHashIntervalTick(100)) {
             if (pawn.NonHumanlikeOrWildMan()) return;
-            if (pawn.IsColonist == false) return;
+            if (!pawn.IsColonist) return;
             PawnStats pawnStats = pawn.GetComp<PawnStats>();
-            if (pawnStats != null && pawnStats.hasFormedBond == false) {
+            if (pawnStats != null && !pawnStats.hasFormedBond) {
                 float increment = 0f;
                 if (instance.BreakExtremeIsImminent) {
                     increment = 2.5f * CosmereRoshar.bondChanceMultiplier;
@@ -206,7 +205,7 @@ public static class WhtwlMentalBreakExperiences {
                 }
 
                 if (increment > 0f) {
-                    pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props
+                    pawnStats.requirementMap[CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner.defName][pawnStats.props
                         .req01].value += increment;
                 }
 
@@ -216,10 +215,9 @@ public static class WhtwlMentalBreakExperiences {
     }
 }
 
-
 ////second requirements, must help people in need
 [HarmonyPatch(typeof(TendUtility), nameof(TendUtility.DoTend))]
-public static class WhtwlHelpSomeoneInNeed {
+public static class Cosmere_Roshar_HelpSomeoneInNeed {
     private static void Postfix(Pawn doctor, Pawn patient, Medicine medicine) {
         if (doctor == null || patient.NonHumanlikeOrWildMan() || doctor == patient) {
             return;
@@ -230,7 +228,7 @@ public static class WhtwlHelpSomeoneInNeed {
         if (pawnStats != null) {
             // WINDRUNNER
             RadiantRequirements? windrunnerRequirement12 =
-                pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][
+                pawnStats.requirementMap[CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner.defName][
                     pawnStats.props.req12];
             if (!pawnStats.patientList.Contains(patient)) {
                 pawnStats.patientList.Add(patient);
@@ -241,14 +239,14 @@ public static class WhtwlHelpSomeoneInNeed {
             //2_3
             if (patient.IsPrisoner) {
                 RadiantRequirements? windrunnerRequirement23 =
-                    pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props
+                    pawnStats.requirementMap[CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner.defName][pawnStats.props
                         .req23];
                 windrunnerRequirement23.count += 1;
             }
 
             // TRUTHWATCHER
             RadiantRequirements? truthwatcherRequirement =
-                pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantTruthwatcher.defName][pawnStats.props
+                pawnStats.requirementMap[CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher.defName][pawnStats.props
                     .req12];
             truthwatcherRequirement.count += 1;
             if (truthwatcherRequirement.count >= 25 && pawnStats.patientSaved) {
@@ -278,9 +276,9 @@ public static class PatchPawnHealthTrackerHealthTick {
                     continue;
                 }
 
-                if (patient.health.Dead && patient.IsPrisoner == false) {
+                if (patient.health.Dead && !patient.IsPrisoner) {
                     pawnStats.patientDied = true;
-                    pawnStats.requirementMap[CosmereRosharDefs.WhtwlRadiantWindrunner.defName][pawnStats.props
+                    pawnStats.requirementMap[CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner.defName][pawnStats.props
                         .req34].isSatisfied = true;
                     patientsToRemove.Add(patient);
                 } else if (NeedsNoTending(patient)) {

@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <JobDef>
-        <defName>whtwl_RefuelSphereLamp</defName>
+        <defName>Cosmere_Roshar_RefuelSphereLamp</defName>
         <label>Add Stormlight Sphere</label>
-        <driverClass>CosmereRoshar.JobDriver_AddSphereToLamp</driverClass>
+        <driverClass>CosmereRoshar.Job.Driver.AddSphereToLamp</driverClass>
         <reportString>Adding a Stormlight Sphere...</reportString>
         <playerInterruptible>true</playerInterruptible>
         <checkOverrideOnDamage>Never</checkOverrideOnDamage>
     </JobDef>
 
     <JobDef>
-        <defName>whtwl_RefuelFabrial</defName>
+        <defName>Cosmere_Roshar_RefuelFabrial</defName>
         <label>Refuel fabial</label>
-        <driverClass>CosmereRoshar.JobDriver_AddGemToFabrial</driverClass>
+        <driverClass>CosmereRoshar.Job.Driver.AddGemToFabrial</driverClass>
         <reportString>Adding gem to fabrial..</reportString>
         <playerInterruptible>true</playerInterruptible>
         <checkOverrideOnDamage>Never</checkOverrideOnDamage>
     </JobDef>
 
     <JobDef>
-        <defName>whtwl_RemoveFromFabrial</defName>
+        <defName>Cosmere_Roshar_RemoveFromFabrial</defName>
         <label>Remove gem from fabial</label>
-        <driverClass>CosmereRoshar.JobDriver_RemoveGemFromFabrial</driverClass>
+        <driverClass>CosmereRoshar.Job.Driver.RemoveGemFromFabrial</driverClass>
         <reportString>Removing gem from fabrial..</reportString>
         <playerInterruptible>true</playerInterruptible>
         <checkOverrideOnDamage>Never</checkOverrideOnDamage>
     </JobDef>
 
     <JobDef>
-        <defName>whtwl_CastAbilityOnTarget</defName>
-        <driverClass>CosmereRoshar.JobDriver_CastAbilityOnTarget</driverClass>
+        <defName>Cosmere_Roshar_CastAbilityOnTarget</defName>
+        <driverClass>CosmereRoshar.Job.Driver.CastAbilityOnTarget</driverClass>
         <reportString>casting ability on Target</reportString>
         <casualInterruptible>true</casualInterruptible>
     </JobDef>

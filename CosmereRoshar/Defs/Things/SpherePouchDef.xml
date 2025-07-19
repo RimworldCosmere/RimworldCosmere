@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ThingDef ParentName="ApparelBase">
+    <defName>Cosmere_Roshar_Apparel_SpherePouch</defName>
+    <label>sphere pouch</label>
+    <description>A leather pouch used to carry infused spheres, allowing Radiants to easily draw Stormlight.</description>
+    <thingClass>Apparel</thingClass>
+    <graphicData>
+      <texPath>Things/Apparel/SpherePouch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <tickerType>Normal</tickerType>
+    <techLevel>Animal</techLevel>
+    <statBases>
+      <Mass>3</Mass>
+      <WorkToMake>14000</WorkToMake>
+      <Flammability>0.4</Flammability>
+      <EquipDelay>2</EquipDelay>
+    </statBases>
+    <thingSetMakerTags>
+      <li>RewardStandardQualitySuper</li>
+    </thingSetMakerTags>
+    <recipeMaker>
+      <researchPrerequisite>ComplexClothing</researchPrerequisite>
+      <displayPriority>210</displayPriority>
+      <recipeUsers>
+        <li>ElectricTailoringBench</li>
+        <li>HandTailoringBench</li>
+      </recipeUsers>
+    </recipeMaker>
+    <costStuffCount>70</costStuffCount>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <thingCategories>
+      <li>ApparelUtility</li>
+    </thingCategories>
+    <apparel>
+      <countsAsClothingForNudity>false</countsAsClothingForNudity>
+      <careIfWornByCorpse>false</careIfWornByCorpse>
+      <careIfDamaged>false</careIfDamaged>
+      <wearPerDay>0</wearPerDay>
+      <bodyPartGroups>
+        <li>Waist</li>
+      </bodyPartGroups>
+      <layers>
+        <li>Belt</li>
+      </layers>
+      <tags>
+        <li>BeltDefense</li>
+      </tags>
+      <developmentalStageFilter>Child, Adult</developmentalStageFilter>
+    </apparel>
+    <comps>
+      <li Class="CosmereRoshar.Comp.Thing.SpherePouchProperties">
+        <maxCapacity>100</maxCapacity>
+        <allowedSpheres>
+          <li>Cosmere_Roshar_Sphere_Diamond</li>
+          <li>Cosmere_Roshar_Sphere_Garnet</li>
+          <li>Cosmere_Roshar_Sphere_Ruby</li>
+          <li>Cosmere_Roshar_Sphere_Sapphire</li>
+		  <li>Cosmere_Roshar_Sphere_Emerald</li>
+        </allowedSpheres>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>Armor</li>
+    </tradeTags>
+  </ThingDef>
+</Defs>

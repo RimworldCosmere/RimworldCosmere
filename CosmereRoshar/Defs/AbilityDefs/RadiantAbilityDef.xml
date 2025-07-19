@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <AbilityCategoryDef>
-    <defName>whtwl_Radiant</defName>
+    <defName>Cosmere_Roshar_Radiant</defName>
     <label>Radiant</label>
     <description>Abilities granted to those who have bonded a spren, allowing them to wield the fundamental forces of Roshar. These abilities are fueled by Stormlight.</description>
   </AbilityCategoryDef>
 
   <AbilityDef Name="RadiantBase" Abstract="True">
     <abilityClass>CosmereRoshar.Combat.Abilities.RadiantAbility</abilityClass> <!-- Custom ability class -->
-    <category>whtwl_Radiant</category> <!-- Custom category for Radiant abilities -->
+    <category>Cosmere_Roshar_Radiant</category> <!-- Custom category for Radiant abilities -->
     <statBases>
       <Ability_Duration>0</Ability_Duration> <!-- Base duration -->
     </statBases>
@@ -27,7 +27,7 @@
 
 <!-- TOGGLE STORMLIGHT -->
 <AbilityDef ParentName="RadiantBase">
-    <defName>whtwl_BreathStormlight</defName>
+    <defName>Cosmere_Roshar_BreathStormlight</defName>
     <label>Breath Stormlight</label>
     <description>Draw Stormlight into your body, fueling your Radiant powers and enhancing your physical abilities. While infused, you move faster, heal quickly, and feel an unnatural surge of energy.</description>
     <level>1</level>
@@ -51,7 +51,7 @@
 
 <!-- SUMMON BLADE -->
 <AbilityDef ParentName="RadiantBase">
-    <defName>whtwl_SummonShardblade</defName>
+    <defName>Cosmere_Roshar_SummonShardblade</defName>
     <label>Summon Shardblade</label>
     <description>Call forth a mighty Shardblade from the Spiritual Realm, a weapon capable of cutting through anything except living beings. It severs the soul upon contact.</description>
     <level>1</level>
@@ -67,8 +67,8 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SpawnEquipment">
-            <thingDef>whtwl_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SpawnEquipmentProperties">
+            <thingDef>Cosmere_Roshar_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
         </li>
         <li Class="CompProperties_AbilityFleckOnTarget">
             <fleckDef>PsycastPsychicEffect</fleckDef>
@@ -78,7 +78,7 @@
 
 <!-- UNBOND BLADE -->
 <AbilityDef ParentName="RadiantBase">
-    <defName>whtwl_UnbondBlade</defName>
+    <defName>Cosmere_Roshar_UnbondBlade</defName>
     <label>sever bond with Shardblade</label>
     <description>Release your bond with the Shardblade. Once severed, the Blade will no longer respond to your summons.</description>
     <level>1</level>
@@ -97,20 +97,20 @@
     </verbProperties>
 
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.BreakBond">
-            <thingDef>whtwl_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.BreakBondProperties">
+            <thingDef>Cosmere_Roshar_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
         </li>
     </comps>
 </AbilityDef>
 
 <!-- LASHING -->
 <ThingDef ParentName="PawnFlyerBase">
-  <defName>whtwl_lashingUp</defName>
+  <defName>Cosmere_Roshar_lashingUp</defName>
   <label>custom upward flyer</label>
   <thingClass>PawnFlyer</thingClass>
     <pawnFlyer>
       <!-- Use your custom worker if you want (or the default PawnFlyerWorker) -->
-      <workerClass>CosmereRoshar.PawnFlyerWorker_LashUp</workerClass>
+      <workerClass>CosmereRoshar.PawnFlyer.Worker.LashUp</workerClass>
 
       <!-- Minimum flight time (in seconds) -->
       <flightDurationMin>0.5</flightDurationMin>
@@ -125,7 +125,7 @@
 </ThingDef>
 
 <AbilityDef ParentName="RadiantBase">
-    <defName>whtwl_LashingUpward</defName>
+    <defName>Cosmere_Roshar_LashingUpward</defName>
     <label>lash up</label>
     <description>Temporarily alter an object's gravitational pull, causing it to fall toward the sky instead of the ground.</description>
     <level>1</level>
@@ -146,8 +146,8 @@
     </verbProperties>
 
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.LashUpward">
-            <thingDef>whtwl_lashingUp</thingDef> 
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.LashUpwardProperties">
+            <thingDef>Cosmere_Roshar_lashingUp</thingDef> 
             <stormLightCost>500</stormLightCost>
         </li>
     </comps>
@@ -157,12 +157,12 @@
 
 <!-- FLIGHT -->
 <ThingDef ParentName="PawnFlyerBase">
-  <defName>whtwl_WindRunnerFlight</defName>
+  <defName>Cosmere_Roshar_WindRunnerFlight</defName>
   <label>custom upward flyer</label>
   <thingClass>PawnFlyer</thingClass>
     <pawnFlyer>
       <!-- Use your custom worker if you want (or the default PawnFlyerWorker) -->
-      <workerClass>CosmereRoshar.PawnFlyerWorker_WindRunnerFlight</workerClass>
+      <workerClass>CosmereRoshar.PawnFlyer.Worker.Flight</workerClass>
 
       <!-- Minimum flight time (in seconds) -->
       <flightDurationMin>0.5</flightDurationMin>
@@ -175,7 +175,7 @@
     </pawnFlyer>
 </ThingDef>
 <AbilityDef ParentName="RadiantBase">
-    <defName>whtwl_WindRunnerFlight</defName>
+    <defName>Cosmere_Roshar_WindRunnerFlight</defName>
     <label>Fly to location</label>
     <description>Use Stormlight to manipulate gravity, launching yourself into the air and soaring toward your target destination at high speed.</description>
     <level>1</level>
@@ -194,8 +194,8 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.WindRunnerFlight">
-            <thingDef>whtwl_WindRunnerFlight</thingDef> <!-- Ensure this matches your XML weapon defName -->
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeGravitationProperties">
+            <thingDef>Cosmere_Roshar_WindRunnerFlight</thingDef> <!-- Ensure this matches your XML weapon defName -->
             <stormLightCost>15</stormLightCost>
         </li>
     </comps>
@@ -203,7 +203,7 @@
 
 <!-- PLANT GROWTH -->
 <AbilityDef ParentName="RadiantBase">
-    <defName>whtwl_SurgeOfGrowth</defName>
+    <defName>Cosmere_Roshar_SurgeOfGrowth</defName>
     <label>boost plantgrowth</label>
     <description>Encourage rapid plant growth using Stormlight, causing vegetation to flourish in moments.</description>
     <level>1</level>
@@ -219,7 +219,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgePlantGrowth">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgePlantGrowthProperties">
             <stormLightCost>25</stormLightCost>
         </li>
     </comps>
@@ -227,7 +227,7 @@
 
 <!-- HEALING -->
 <AbilityDef ParentName="RadiantBase">
-    <defName>whtwl_SurgeOfHealing</defName>
+    <defName>Cosmere_Roshar_SurgeOfHealing</defName>
     <label>heal</label>
     <description>Channel Stormlight into a wounded creature, accelerating natural healing and even restoring severe injuries. Does not restore severed limbs unless wielded by a master Knight-Radiant.</description>
     <level>1</level>
@@ -243,7 +243,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeProgression">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeProgressionProperties">
             <stormLightCost>50</stormLightCost>
         </li>
     </comps>
@@ -251,7 +251,7 @@
 
 <!-- ABRASION -->
 <AbilityDef ParentName="RadiantBase">
-    <defName>whtwl_SurgeOfAbrasion</defName>
+    <defName>Cosmere_Roshar_SurgeOfAbrasion</defName>
     <label>abrasion</label>
     <description>Focus stormlight to your feet, increasing friction, greatly increasing movement speed and dodge abilities.</description>
     <level>1</level>
@@ -267,14 +267,14 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeAbrasion">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeAbrasionProperties">
         </li>
     </comps>
 </AbilityDef>
 
 <!-- DIVISION -->
 <AbilityDef ParentName="RadiantBase">
-    <defName>whtwl_SurgeOfDivision</defName>
+    <defName>Cosmere_Roshar_SurgeOfDivision</defName>
     <label>division</label>
     <description>power over destruction and decay, use carefully</description>
     <level>1</level>
@@ -290,7 +290,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeDivision">
+        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeDivisionProperties">
              <stormLightCost>500</stormLightCost>
         </li>
     </comps>

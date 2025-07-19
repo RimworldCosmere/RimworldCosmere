@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <HediffDef>
-        <defName>whtwl_painrial_agument</defName>
+        <defName>Cosmere_Roshar_Painrial_Augment</defName>
         <label>painrial nearby</label>
         <labelNoun>PainrialAugmenter</labelNoun>
         <description>Pawn is close to painrial augmenter.</description>
@@ -21,7 +21,7 @@
         </comps>
     </HediffDef>
     <HediffDef>
-        <defName>whtwl_painrial_diminisher</defName>
+        <defName>Cosmere_Roshar_Painrial_Diminisher</defName>
         <label>painrial nearby</label>
         <labelNoun>PainrialDiminisher</labelNoun>
         <description>Pawn is close to painrial diminisher.</description>
@@ -42,7 +42,7 @@
     </HediffDef>
 
     <HediffDef>
-        <defName>whtwl_apparel_painrial_diminisher_hediff</defName>
+        <defName>Cosmere_Roshar_Apparel_Painrial_Diminisher_Hediff</defName>
         <label>wearing painrial</label>
         <labelNoun>PainrialDiminisherApparel</labelNoun>
         <description>Pawn is wearing a painrial diminisher.</description>
@@ -55,12 +55,11 @@
             </li>
         </stages>
         <comps>
-            <li Class="CosmereRoshar.HediffCompProperties_FabrialPainDiminisher">
-            </li>
+            <li><compClass>CosmereRoshar.Comp.Hediff.Fabrial.PainDiminisher</compClass></li>
         </comps>
     </HediffDef>
     <HediffDef>
-        <defName>whtwl_logirial_agument</defName>
+        <defName>Cosmere_Roshar_Logirial_Augment</defName>
         <label>logirial nearby</label>
         <labelNoun>LogirialAugmenter</labelNoun>
         <description>Pawn is close to logirial augmenter.</description>
@@ -82,7 +81,7 @@
         </comps>
     </HediffDef>
         <HediffDef>
-        <defName>whtwl_logirial_diminisher</defName>
+        <defName>Cosmere_Roshar_Logirial_Diminisher</defName>
         <label>logirial nearby</label>
         <labelNoun>LogirialDiminisher</labelNoun>
         <description>Pawn is close to logirial diminisher.</description>

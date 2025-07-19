@@ -46,7 +46,8 @@
                 <Crafting>3</Crafting>
             </skillRequirements>
             <recipeUsers>
-                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_Forge</li>
+                <li>Cosmere_Resources_Table_Forge</li>
+                <li>Cosmere_Resources_Table_AlloyMaker</li>
                 <li>ElectricSmithy</li>
                 <li>FueledSmithy</li>
                 <li>Campfire</li>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="Cosmere_Resource_BaseWorkbench">
+        <defName>Cosmere_Resources_Table_AlloyMaker</defName>
+        <thingClass>Building_WorkTable_HeatPush</thingClass>
+        <label>alloy table</label>
+        <description>A work station to create alloys from raw materials.</description>
+        <graphicData>
+            <texPath>Things/Building/Production/AlloyMaker/AlloyMaker</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(3.5,1.5)</drawSize>
+            <shaderType>CutoutComplex</shaderType>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+
+        <castEdgeShadows>true</castEdgeShadows>
+        <staticSunShadowHeight>0.20</staticSunShadowHeight>
+        <size>(3, 1)</size>
+        
+        <stuffCategories>
+            <li>Stony</li>
+            <li>Metallic</li>
+            <li>Woody</li>
+        </stuffCategories>
+        <costList>
+            <WoodLog>25</WoodLog>
+        </costList>
+        <costStuffCount>35</costStuffCount>
+        
+        <statBases>
+            <WorkToBuild>1000</WorkToBuild>
+            <MaxHitPoints>90</MaxHitPoints>
+            <Flammability>1.5</Flammability>
+            <Cleanliness>-8</Cleanliness>
+        </statBases>
+        
+        <uiOrder>2302</uiOrder>
+        <comps>
+            <li Class="CompProperties_Glower">
+                <glowRadius>4</glowRadius>
+                <glowColor>(255,120,60,0)</glowColor>
+                <overlightRadius>2</overlightRadius>
+            </li>
+            <li Class="CompProperties_Refuelable">
+                <fuelFilter>
+                    <thingDefs>
+                        <li>WoodLog</li>
+                        <li>Coal</li>
+                        <li>Charcoal</li>
+                    </thingDefs>
+                </fuelFilter>
+                <fuelCapacity>200</fuelCapacity>
+                <fuelConsumptionRate>2</fuelConsumptionRate>
+                <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+                <initialFuelPercent>0</initialFuelPercent>
+                <autoRefuelPercent>0.2</autoRefuelPercent>
+                <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+            </li>
+            <li Class="CompProperties_HeatPusher">
+                <heatPerSecond>6</heatPerSecond>
+                <heatPushMaxTemperature>50</heatPushMaxTemperature>
+            </li>
+        </comps>
+        <researchPrerequisites>
+            <li>Cosmere_Simple_Alloys</li>
+        </researchPrerequisites>
+    </ThingDef>
+</Defs>

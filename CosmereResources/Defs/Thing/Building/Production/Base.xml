@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="Cosmere_Resource_BaseWorkbench" ParentName="BenchBase" Abstract="True">
+        <thingClass>Building_WorkTable</thingClass>
+        <castEdgeShadows>true</castEdgeShadows>
+        <fillPercent>0.5</fillPercent>
+        <useHitPoints>True</useHitPoints>
+        
+        <statBases>
+            <WorkToBuild>2000</WorkToBuild>
+            <MaxHitPoints>180</MaxHitPoints>
+            <Flammability>1.0</Flammability>
+            <Cleanliness>-5</Cleanliness>
+        </statBases>
+        
+        <designationCategory>Production</designationCategory>
+        <hasInteractionCell>True</hasInteractionCell>
+        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+        
+        <passability>PassThroughOnly</passability>
+        <pathCost>50</pathCost>
+        <surfaceType>Item</surfaceType>
+        <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+        <inspectorTabs>
+            <li>ITab_Bills</li>
+        </inspectorTabs>
+        <building>
+            <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+            <paintable>true</paintable>
+        </building>
+        <placeWorkers>
+            <li>PlaceWorker_ShowFacilitiesConnections</li>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+        
+        <comps>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_AffectedByFacilities">
+                <linkableFacilities>
+                    <li>ToolCabinet</li>
+                </linkableFacilities>
+            </li>
+        </comps>
+    </ThingDef>
+</Defs>

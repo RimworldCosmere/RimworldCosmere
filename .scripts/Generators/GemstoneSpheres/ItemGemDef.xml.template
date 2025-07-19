@@ -33,8 +33,6 @@
         <recipeMaker>
             <label>{{title gem.name}} Chip</label>
             <productCount>5</productCount>
-            <targetCountAdjustment>5</targetCountAdjustment>
-            <bulkRecipeCount>100</bulkRecipeCount>
             <useIngredientsForColor>true</useIngredientsForColor>
             <workAmount>1600</workAmount>
             <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -43,10 +41,10 @@
             <workSkill>Crafting</workSkill> <!-- custom skill? -->
             <researchPrerequisites>
                 <li>Cosmere_Gem_Cutting</li>
-                <li>Cosmere_Roshar_Sphere_Production</li>
+                <li>Cosmere_Roshar_SphereProduction</li>
             </researchPrerequisites>
             <recipeUsers>
-                <li>Cosmere_Roshar_Table_Gemcutting</li>
+                <li>Cosmere_Resources_Table_GemCutter</li>
             </recipeUsers>
             <displayPriority>200</displayPriority>
         </recipeMaker>
@@ -97,8 +95,6 @@
         <recipeMaker>
             <label>{{title gem.name}} Mark</label>
             <productCount>1</productCount>
-            <targetCountAdjustment>1</targetCountAdjustment>
-            <bulkRecipeCount>4</bulkRecipeCount>
             <useIngredientsForColor>true</useIngredientsForColor>
             <workAmount>1600</workAmount>
             <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -107,10 +103,10 @@
             <workSkill>Crafting</workSkill> <!-- custom skill? -->
             <researchPrerequisites>
                 <li>Cosmere_Gem_Cutting</li>
-                <li>Cosmere_Roshar_Sphere_Production</li>
+                <li>Cosmere_Roshar_SphereProduction</li>
             </researchPrerequisites>
             <recipeUsers>
-                <li>Cosmere_Roshar_Table_Gemcutting</li>
+                <li>Cosmere_Resources_Table_GemCutter</li>
             </recipeUsers>
             <displayPriority>200</displayPriority>
         </recipeMaker>
@@ -161,8 +157,6 @@
         <recipeMaker>
             <label>{{title gem.name}} Broam</label>
             <productCount>1</productCount>
-            <targetCountAdjustment>1</targetCountAdjustment>
-            <bulkRecipeCount>4</bulkRecipeCount>
             <useIngredientsForColor>true</useIngredientsForColor>
             <workAmount>1600</workAmount>
             <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -171,10 +165,10 @@
             <workSkill>Crafting</workSkill> <!-- custom skill? -->
             <researchPrerequisites>
                 <li>Cosmere_Gem_Cutting</li>
-                <li>Cosmere_Roshar_Sphere_Production</li>
+                <li>Cosmere_Roshar_SphereProduction</li>
             </researchPrerequisites>
             <recipeUsers>
-                <li>Cosmere_Roshar_Table_Gemcutting</li>
+                <li>Cosmere_Resources_Table_GemCutter</li>
             </recipeUsers>
             <displayPriority>200</displayPriority>
         </recipeMaker>

@@ -37,7 +37,7 @@
             <recipeUsers Inherit="False">
                 <li>ElectricSmithy</li>
                 <li>FueledSmithy</li>
-                <li>Cosmere_Scadrial_Table_Forge</li>
+                <li>Cosmere_Resources_Table_Forge</li>
             </recipeUsers>
             <defaultIngredientFilter>
                 <categories>

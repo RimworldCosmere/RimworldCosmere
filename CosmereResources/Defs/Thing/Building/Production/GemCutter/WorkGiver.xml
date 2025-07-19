@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <WorkGiverDef>
+        <defName>Cosmere_DoBillsGemCutting</defName>
+        <label>cutting gems</label>
+        <giverClass>WorkGiver_DoBill</giverClass>
+        <workType>Crafting</workType>
+        <priorityInType>90</priorityInType>
+        <fixedBillGiverDefs>
+            <li>Cosmere_Resources_Table_GemCutter</li>
+        </fixedBillGiverDefs>
+        <verb>cutting</verb>
+        <gerund>cutting gems at</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+    </WorkGiverDef>
+</Defs>

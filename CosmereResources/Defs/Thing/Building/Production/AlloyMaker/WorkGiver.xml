@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <WorkGiverDef>
-        <defName>Cosmere_DoBillsAllomanticRefining</defName>
-        <label>allomantic refining</label>
+        <defName>Cosmere_DoBillsAlloy</defName>
+        <label>smelting alloys</label>
         <giverClass>WorkGiver_DoBill</giverClass>
         <workType>Crafting</workType>
         <priorityInType>90</priorityInType>
         <fixedBillGiverDefs>
-            <li>Cosmere_Scadrial_Table_Forge</li>
+            <li>Cosmere_Resources_Table_AlloyMaker</li>
+            <li>Cosmere_Resources_Table_Forge</li>
         </fixedBillGiverDefs>
-        <verb>refine</verb>
-        <gerund>refining allomantic metals at</gerund>
+        <verb>alloying</verb>
+        <gerund>making alloys at</gerund>
         <requiredCapacities>
             <li>Manipulation</li>
         </requiredCapacities>

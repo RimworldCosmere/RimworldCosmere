@@ -44,7 +44,7 @@
             </researchPrerequisites>
             <productCount>8</productCount>
             <recipeUsers Inherit="False">
-                <li>Cosmere_Scadrial_Table_Forge</li>
+                <li>Cosmere_Resources_Table_Forge</li>
             </recipeUsers>
             <defaultIngredientFilter>
                 <categories>

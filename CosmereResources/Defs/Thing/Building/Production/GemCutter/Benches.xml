@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="Cosmere_Resources_Table_GemCutter" ParentName="Cosmere_Resource_BaseWorkbench">
+        <defName>Cosmere_Resources_Table_GemCutter</defName>
+        <label>Gem Cutter's table</label>
+        <description>A work table with saws and chisels for cutting stone chunks into usable blocks.</description>
+        <graphicData>
+            <texPath>Things/Building/Production/GemCutter/GemCutter</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(3.5,1.5)</drawSize>
+            <shaderType>CutoutComplex</shaderType>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+
+        <castEdgeShadows>true</castEdgeShadows>
+        <staticSunShadowHeight>0.20</staticSunShadowHeight>
+        <size>(3, 1)</size>
+        
+        <stuffCategories>
+            <li>Stony</li>
+            <li>Metallic</li>
+            <li>Woody</li>
+        </stuffCategories>
+        <costList>
+            <WoodLog>25</WoodLog>
+        </costList>
+        <costStuffCount>75</costStuffCount>
+        
+        <uiOrder>2301</uiOrder>
+        <researchPrerequisites>
+            <li>Cosmere_Roshar_GemCutting</li>
+        </researchPrerequisites>
+    </ThingDef>
+</Defs>

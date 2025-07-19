@@ -30,7 +30,7 @@
             <Charcoal>100</Charcoal>
         </products>
         <recipeUsers>
-            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_Forge</li>
+            <li>Cosmere_Resources_Table_Forge</li>
             <li>ElectricSmithy</li>
             <li>FueledSmithy</li>
             <li>Campfire</li>
@@ -65,7 +65,7 @@
             <Coal>5</Coal>
         </products>
         <recipeUsers>
-            <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_Forge</li>
+            <li>Cosmere_Resources_Table_Forge</li>
             <li>ElectricSmithy</li>
             <li>FueledSmithy</li>
         </recipeUsers>

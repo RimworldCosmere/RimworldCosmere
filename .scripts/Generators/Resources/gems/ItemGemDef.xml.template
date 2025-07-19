@@ -63,8 +63,6 @@
         <recipeMaker>
             <label>Cut {{title gem.name}} gemstone</label>
             <productCount>1</productCount>
-            <targetCountAdjustment>1</targetCountAdjustment>
-            <bulkRecipeCount>4</bulkRecipeCount>
             <useIngredientsForColor>true</useIngredientsForColor>
             <workAmount>1600</workAmount>
             <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -76,7 +74,7 @@
             </researchPrerequisites>
             <recipeUsers>
                 <li>TableStonecutter</li>
-                <li MayRequire="cryptiklemur.cosmere.roshar">Cosmere_Roshar_Table_Gemcutting</li>
+                <li>Cosmere_Resources_Table_GemCutter</li>
             </recipeUsers>
             <displayPriority>200</displayPriority>
         </recipeMaker>

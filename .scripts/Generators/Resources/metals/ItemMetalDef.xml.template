@@ -54,7 +54,8 @@
             </researchPrerequisites>
             <recipeUsers>
                 <li>ElectricSmelter</li>
-                <li MayRequire="cryptiklemur.cosmere.scadrial">Cosmere_Scadrial_Table_Forge</li>
+                <li>Cosmere_Resources_Table_AlloyMaker</li>
+                <li>Cosmere_Resources_Table_Forge</li>
             </recipeUsers>
             <displayPriority>200</displayPriority>
         </recipeMaker>

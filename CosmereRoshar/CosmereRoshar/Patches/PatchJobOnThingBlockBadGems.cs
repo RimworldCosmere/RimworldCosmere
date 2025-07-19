@@ -9,11 +9,9 @@ namespace CosmereRoshar.Patches;
 [HarmonyPatch(typeof(WorkGiver_DoBill), "JobOnThing")]
 public static class PatchJobOnThingBlockBadGems {
     private static bool Prefix(
-        ref Verse.AI.Job result,
+        ref Verse.AI.Job __result,
         Pawn pawn,
-        Verse.Thing thing,
-        bool forced,
-        WorkGiver_DoBill instance
+        Verse.Thing thing
     ) {
         IBillGiver billGiver = thing as IBillGiver;
         if (billGiver == null || !billGiver.BillStack.AnyShouldDoNow) {
@@ -41,7 +39,7 @@ public static class PatchJobOnThingBlockBadGems {
             }
 
             if (!hasValidGem) {
-                result = null;
+                __result = null;
                 return false;
             }
         }

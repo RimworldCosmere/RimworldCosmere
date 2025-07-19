@@ -9,9 +9,13 @@ using Verse.AI;
 namespace CosmereRoshar.Patches;
 
 // @TODO rename to TraitSetPatches
-[HarmonyPatch(typeof(TraitSet), "GainTrait")]
+[HarmonyPatch(typeof(TraitSet), nameof(TraitSet.GainTrait))]
 public static class RadiantGainTraitPatch {
-    private static void Postfix(Pawn? pawn, Trait trait) {
+    private static readonly AccessTools.FieldRef<TraitSet, Pawn> pawnRef =
+        AccessTools.FieldRefAccess<Pawn>(typeof(TraitSet), "pawn");
+
+    private static void Postfix(TraitSet __instance, Trait trait) {
+        Pawn? pawn = pawnRef(__instance);
         if (!StormlightUtilities.IsRadiant(trait)) return;
         if (pawn?.needs == null || !pawn.RaceProps.Humanlike) return;
         Log.Message($"{pawn.Name} has become Radiant!");
@@ -71,10 +75,10 @@ public static class RadiantGainTraitPatch {
 [HarmonyPatch(typeof(Pawn_PathFollower), "CostToMoveIntoCell")]
 [HarmonyPatch([typeof(Pawn), typeof(IntVec3)])]
 public static class PatchPawnMovement {
-    private static void Postfix(Pawn? pawn, IntVec3 c, ref float result) {
+    private static void Postfix(Pawn? pawn, IntVec3 c, ref float __result) {
         if (pawn?.health?.hediffSet == null) return;
         if (pawn.health.hediffSet.HasHediff(CosmereRosharDefs.Cosmere_Roshar_SurgeAbrasion)) {
-            result = c.x != pawn.Position.x && c.z != pawn.Position.z
+            __result = c.x != pawn.Position.x && c.z != pawn.Position.z
                 ? pawn.TicksPerMoveDiagonal
                 : pawn.TicksPerMoveCardinal;
         }

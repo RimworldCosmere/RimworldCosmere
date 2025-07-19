@@ -3,7 +3,7 @@
 
   <!-- WIND RUNNER -->
   <TraitDef>
-    <defName>Cosmere_Roshar_Radiant_Windrunner</defName>
+    <defName>Cosmere_Roshar_Trait_RadiantWindrunner</defName>
     <label>Radiant</label>
     <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
       abilities.</description>
@@ -78,7 +78,7 @@
 
   <!-- TRUTHWATCHER -->
   <TraitDef>
-    <defName>Cosmere_Roshar_Radiant_Truthwatcher</defName>
+    <defName>Cosmere_Roshar_Trait_RadiantTruthwatcher</defName>
     <label>Radiant</label>
     <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
       abilities.</description>
@@ -151,7 +151,7 @@
 
   <!-- EDGE DANCER -->
   <TraitDef>
-    <defName>Cosmere_Roshar_Radiant_Edgedancer</defName>
+    <defName>Cosmere_Roshar_Trait_RadiantEdgedancer</defName>
     <label>Radiant</label>
     <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
       abilities.</description>
@@ -228,7 +228,7 @@
 
   <!-- SKY BREAKER -->
   <TraitDef>
-    <defName>Cosmere_Roshar_Radiant_Skybreaker</defName>
+    <defName>Cosmere_Roshar_Trait_RadiantSkybreaker</defName>
     <label>Radiant</label>
     <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
       abilities.</description>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="CosmereGemBase">
+        <defName>CutGem</defName>
+        <label>Cut Gem</label>
+        <description>A flawlessly cut gem, brilliant and razor-sharp in its facets. Favored in fine craftwork and noble regalia, it reflects light with stunning clarity.</description>
+
+        <thingCategories>
+            <li>Cosmere_Resource_ThingCategory_CutGem</li>
+        </thingCategories>
+
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <drawSize>1</drawSize>
+            <texPath>Item/Resource/Diamond/CutDiamond</texPath>
+        </graphicData>
+
+        <stuffCategories>
+            <li>Cosmere_Resources_StuffCategory_RawGems</li>
+        </stuffCategories>
+        <costStuffCount>1</costStuffCount>
+
+        <recipeMaker>
+            <workAmount>1600</workAmount>
+            <label>cut gem</label>
+            <productCount>1</productCount>
+            <useIngredientsForColor>true</useIngredientsForColor>
+            <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+            <effectWorking>CutStone</effectWorking>
+            <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+            <workSkill>Crafting</workSkill> <!-- custom skill? -->
+            <researchPrerequisites>
+                <li>Cosmere_Gem_Cutting</li>
+            </researchPrerequisites>
+            <recipeUsers>
+                <li>Cosmere_Resources_Table_GemCutter</li>
+            </recipeUsers>
+            <displayPriority>200</displayPriority>
+        </recipeMaker>
+
+        <statBases>
+            <Mass>0.0004</Mass>
+            <Beauty>2</Beauty>
+            <MarketValue>2</MarketValue>
+        </statBases>
+
+        <stuffProps>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Gems</li>
+                <li>Cosmere_Resources_StuffCategory_CutGems</li>
+            </categories>
+        </stuffProps>
+        
+        <comps>
+            <li MayRequire="CryptikLemur.Cosmere.Roshar" Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <maxInvestiture>20</maxInvestiture>
+                <drainRate>0.25</drainRate>
+            </li>
+            <!--<li MayRequire="CryptikLemur.Cosmere.Roshar" Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>-->
+            <li>
+                <compClass>CompQuality</compClass>
+            </li>
+        </comps>
+    </ThingDef>
+</Defs>

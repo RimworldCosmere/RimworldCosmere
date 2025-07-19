@@ -10,8 +10,8 @@ namespace CosmereRoshar.Patches;
 public static class PawnApparelPatches {
     [HarmonyPatch(nameof(Pawn_ApparelTracker.Wear))]
     [HarmonyPostfix]
-    public static void PostfixWear(Pawn_ApparelTracker instance, Apparel? newApparel) {
-        Pawn pawn = instance.pawn;
+    public static void PostfixWear(Pawn_ApparelTracker __instance, Apparel? newApparel) {
+        Pawn pawn = __instance.pawn;
         if (pawn == null || newApparel == null) return;
 
         if (newApparel.TryGetComp<SpherePouch>() == null) return;

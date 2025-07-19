@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef Name="CosmereRosharCurrencyBase" ParentName="ResourceBase" Abstract="True">
+    <ThingDef Name="Cosmere_Roshar_Thing_CurrencyBase" ParentName="ResourceBase" Abstract="True">
         <graphicData>
             <graphicClass>Graphic_StackCount</graphicClass>
             <drawSize>0.5</drawSize>

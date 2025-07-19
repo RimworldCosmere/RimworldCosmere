@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using CosmereRoshar.Comp.Fabrials;
 using CosmereRoshar.Comp.Thing;
 using CosmereRoshar.Thing.Building;
@@ -12,7 +13,6 @@ namespace CosmereRoshar.Patches.Fabrials;
 public static class CultivationSprenPatch {
     private static readonly List<Building> ActiveLifeSprenBuildings = new List<Building>();
 
-
     public static void RegisterBuilding(Building building) {
         if (building.GetComp<BasicFabrialAugmenter>()?.currentSpren == Spren.Life) {
             ActiveLifeSprenBuildings.Add(building);
@@ -25,20 +25,25 @@ public static class CultivationSprenPatch {
         ActiveLifeSprenBuildings.Remove(building);
     }
 
-    public static void Postfix(Plant instance, ref float result) {
-        if (instance.Spawned && IsNearLifeSprenBuilding(instance) == 1) {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public static void Postfix(Plant __instance, ref float __result) {
+        if (__instance.Spawned && IsNearLifeSprenBuilding(__instance) == 1) {
             bool resting = true;
-            if (!(GenLocalDate.DayPercent(instance) < 0.25f)) {
-                resting = GenLocalDate.DayPercent(instance) > 0.8f;
+            if (!(GenLocalDate.DayPercent(__instance) < 0.25f)) {
+                resting = GenLocalDate.DayPercent(__instance) > 0.8f;
             }
 
-            if (instance.LifeStage != PlantLifeStage.Growing || resting) {
-                result *= 1f;
-            } else {
-                result *= 1.25f;
+            if (__instance.LifeStage != PlantLifeStage.Growing || resting) {
+                __result *= 1f;
+                return;
             }
-        } else if (instance.Spawned && IsNearLifeSprenBuilding(instance) == 2) {
-            result *= 0.25f;
+
+            __result *= 1.25f;
+            return;
+        }
+
+        if (__instance.Spawned && IsNearLifeSprenBuilding(__instance) == 2) {
+            __result *= 0.25f;
         }
     }
 
@@ -51,13 +56,13 @@ public static class CultivationSprenPatch {
             if (thing is FabrialBasicAugmenter building &&
                 plantPos.DistanceTo(building.Position) <= 5f) {
                 BasicFabrialAugmenter? comp = building.GetComp<BasicFabrialAugmenter>();
-                if (comp != null && comp.powerOn && comp.currentSpren == Spren.Life) {
+                if (comp is { powerOn: true, currentSpren: Spren.Life }) {
                     return 1;
                 }
             } else if (thing is FabrialBasicDiminisher diminisher &&
                        plantPos.DistanceTo(diminisher.Position) <= 5f) {
                 BasicFabrialDiminisher? comp = diminisher.GetComp<BasicFabrialDiminisher>();
-                if (comp != null && comp.powerOn && comp.currentSpren == Spren.Life) {
+                if (comp is { powerOn: true, currentSpren: Spren.Life }) {
                     return 2;
                 }
             }

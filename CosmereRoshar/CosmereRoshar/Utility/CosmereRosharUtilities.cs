@@ -6,10 +6,10 @@ namespace CosmereRoshar.Utility;
 
 public static class CosmereRosharUtilities {
     public static List<TraitDef> radiantTraits => [
-        CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner,
-        CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher,
-        CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer,
-        CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker,
+        CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner,
+        CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantTruthwatcher,
+        CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantEdgedancer,
+        CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantSkybreaker,
     ];
 
     public static List<ThingDef> rawGems => [
@@ -21,10 +21,6 @@ public static class CosmereRosharUtilities {
     ];
 
     public static List<ThingDef> cutGems => [
-        CosmereResources.ThingDefOf.CutDiamond,
-        CosmereResources.ThingDefOf.CutGarnet,
-        CosmereResources.ThingDefOf.CutRuby,
-        CosmereResources.ThingDefOf.CutSapphire,
-        CosmereResources.ThingDefOf.CutEmerald,
+        CosmereResources.ThingDefOf.CutGem,
     ];
 }

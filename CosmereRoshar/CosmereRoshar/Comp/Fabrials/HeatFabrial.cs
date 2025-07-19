@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CosmereResources;
+using CosmereResources.Extension;
 using CosmereRoshar.Comp.Thing;
 using RimWorld;
 using UnityEngine;
@@ -61,7 +63,7 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
 
     public void AddGemstone(ThingWithComps gemstone) {
         CompCutGemstone? gemstoneComp = gemstone.GetComp<CompCutGemstone>();
-        if (gemstoneComp != null && gemstoneComp.parent.def == CosmereResources.ThingDefOf.CutRuby) {
+        if (gemstoneComp != null && gemstoneComp.parent.IsCutGemOfType(GemDefOf.Ruby)) {
             insertedGemstone = gemstoneComp.parent;
         }
     }
@@ -120,7 +122,7 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
     public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn) {
         Verse.Thing? cutGemstone = GenClosest.ClosestThing_Global(
             selPawn.Position,
-            selPawn.Map.listerThings.AllThings.Where(thing => thing.def == CosmereResources.ThingDefOf.CutRuby),
+            selPawn.Map.listerThings.AllThings.Where(thing => thing.IsCutGemOfType(GemDefOf.Ruby)),
             500f
         );
 

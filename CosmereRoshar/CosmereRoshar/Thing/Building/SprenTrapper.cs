@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CosmereResources;
 using CosmereRoshar.Comp.Thing;
 using UnityEngine;
 using Verse;
@@ -7,7 +8,7 @@ namespace CosmereRoshar.Thing.Building;
 
 public class SprenTrapper : Verse.Building {
     public CompGlower compGlower;
-    public Dictionary<string, List<Spren>> gemstonePossibleSprenDict = new Dictionary<string, List<Spren>>();
+    public Dictionary<string, List<Spren>> gemstonePossibleSprenDict = [];
     private SectionLayer layerTest;
     public Comp.Fabrials.SprenTrapper trapper;
 
@@ -24,23 +25,23 @@ public class SprenTrapper : Verse.Building {
         trapper = GetComp<Comp.Fabrials.SprenTrapper>();
         compGlower = GetComp<CompGlower>();
         gemstonePossibleSprenDict.Add(
-            CosmereResources.ThingDefOf.CutDiamond.defName,
+            GemDefOf.Diamond.defName,
             [Spren.Logic, Spren.Light, Spren.Exhaustion]
         );
         gemstonePossibleSprenDict.Add(
-            CosmereResources.ThingDefOf.CutGarnet.defName,
+            GemDefOf.Garnet.defName,
             [Spren.Rain, Spren.Exhaustion, Spren.Pain]
         );
         gemstonePossibleSprenDict.Add(
-            CosmereResources.ThingDefOf.CutSapphire.defName,
+            GemDefOf.Sapphire.defName,
             [Spren.Wind, Spren.Motion, Spren.Cold]
         );
         gemstonePossibleSprenDict.Add(
-            CosmereResources.ThingDefOf.CutRuby.defName,
+            GemDefOf.Ruby.defName,
             [Spren.Flame, Spren.Anger]
         );
         gemstonePossibleSprenDict.Add(
-            CosmereResources.ThingDefOf.CutEmerald.defName,
+            GemDefOf.Emerald.defName,
             [Spren.Flame, Spren.Life, Spren.Cultivation, Spren.Rain, Spren.Glory]
         );
     }
@@ -73,9 +74,8 @@ public class SprenTrapper : Verse.Building {
 
     private void CaptureLoop() {
         if (trapper.insertedGemstone != null && !trapper.sprenCaptured) {
-            List<Spren> sprenList;
-            gemstonePossibleSprenDict.TryGetValue(trapper.insertedGemstone.def.defName, out sprenList);
-            foreach (Spren spren in sprenList) {
+            gemstonePossibleSprenDict.TryGetValue(trapper.insertedGemstone.Stuff.defName, out List<Spren> sprenList);
+            foreach (Spren spren in sprenList ?? []) {
                 trapper.TryCaptureSpren(spren);
                 trapper.CheckTrapperState();
                 if (trapper.sprenCaptured) break;

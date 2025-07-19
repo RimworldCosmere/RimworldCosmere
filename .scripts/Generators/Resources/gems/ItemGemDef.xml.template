@@ -3,7 +3,7 @@
     <!-- Raw {{defName gem.name}} -->
     <ThingDef ParentName="CosmereGemBase">
         <defName>Raw{{defName gem.name}}</defName>
-        <label>Raw {{title gem.name}}</label>
+        <label>{{title gem.name}}</label>
         <description>{{gem.descriptions.raw}}</description>
 
         <thingCategories>
@@ -24,6 +24,14 @@
             <MarketValue>{{gem.baseMarketValue}}</MarketValue>
         </statBases>
 
+
+        <stuffProps>
+            <categories>
+                <li>Cosmere_Resources_StuffCategory_Gems</li>
+                <li>Cosmere_Resources_StuffCategory_RawGems</li>
+            </categories>
+        </stuffProps>
+
         <modExtensions>
             <li Class="CosmereResources.DefModExtension.GemsLinked">
                 <gem>{{defName gem.name}}</gem>
@@ -34,12 +42,12 @@
                 <maxInvestiture>{{gem.baseStormlight}}</maxInvestiture>
                 <drainRate>0.5</drainRate>
             </li>
-            <li MayRequire="CryptikLemur.Cosmere.Roshar" Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>
+            <!--<li MayRequire="CryptikLemur.Cosmere.Roshar" Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>-->
         </comps>
     </ThingDef>
 
     <!-- Cut {{defName gem.name}} -->
-    <ThingDef ParentName="CosmereGemBase">
+    <!--<ThingDef ParentName="CosmereGemBase">
         <defName>Cut{{defName gem.name}}</defName>
         <label>Cut {{title gem.name}}</label>
         <description>{{gem.descriptions.cut}}</description>
@@ -68,7 +76,7 @@
             <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
             <effectWorking>CutStone</effectWorking>
             <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
-            <workSkill>Crafting</workSkill> <!-- custom skill? -->
+            <workSkill>Crafting</workSkill>
             <researchPrerequisites>
                 <li>Cosmere_Gem_Cutting</li>
             </researchPrerequisites>
@@ -100,7 +108,7 @@
                 <compClass>CompQuality</compClass>
             </li>
         </comps>
-    </ThingDef>
+    </ThingDef>-->
 
     <!-- Todo Perfect {{defName gem.name}} -->
 </Defs>

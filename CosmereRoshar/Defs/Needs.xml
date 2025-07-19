@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <NeedDef>
-        <defName>Cosmere_Roshar_RadiantProgress</defName>
+        <defName>Cosmere_Roshar_Need_RadiantProgress</defName>
         <needClass>CosmereRoshar.Need.RadiantProgress</needClass>
         <label>Nahel-Bond Quality</label>
         <description>This need represents the pawn's connection to their bonded spren and their journey toward becoming a full Knight Radiant. As they progress, they unlock greater abilities and deepen their bond, ultimately reaching their full potential.</description>

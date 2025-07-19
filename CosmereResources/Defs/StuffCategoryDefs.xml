@@ -2,16 +2,32 @@
 <Defs>
     <StuffCategoryDef>
         <defName>Cosmere_Resources_StuffCategory_Gems</defName>
-        <label>cosmere gems</label>
-        <noun>cosmere gem</noun>
+        <label>gems</label>
+        <noun>gem</noun>
+        <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+        <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+        <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+    </StuffCategoryDef>
+    <StuffCategoryDef>
+        <defName>Cosmere_Resources_StuffCategory_RawGems</defName>
+        <label>raw gems</label>
+        <noun>raw gem</noun>
+        <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+        <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+        <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+    </StuffCategoryDef>
+    <StuffCategoryDef>
+        <defName>Cosmere_Resources_StuffCategory_CutGems</defName>
+        <label>cut gems</label>
+        <noun>cut gem</noun>
         <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
         <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
         <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
     </StuffCategoryDef>
     <StuffCategoryDef>
         <defName>Cosmere_Resources_StuffCategory_Metals</defName>
-        <label>cosmere metals</label>
-        <noun>cosmere metal</noun>
+        <label>metals</label>
+        <noun>metal</noun>
         <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
         <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
         <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>

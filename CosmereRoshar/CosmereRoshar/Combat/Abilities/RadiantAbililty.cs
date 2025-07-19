@@ -201,10 +201,10 @@ public class CommandRadiantAbility : Command {
 
     public override void ProcessInput(Event ev) {
         base.ProcessInput(ev);
-        bool hasRadiantTrait = pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner) ||
-                               pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher) ||
-                               pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer) ||
-                               pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker);
+        bool hasRadiantTrait = pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner) ||
+                               pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantTruthwatcher) ||
+                               pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantEdgedancer) ||
+                               pawn.story.traits.HasTrait(CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantSkybreaker);
 
         if (!pawn.Drafted ||
             !hasRadiantTrait &&

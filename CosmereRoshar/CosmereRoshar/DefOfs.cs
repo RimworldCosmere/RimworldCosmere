@@ -10,12 +10,12 @@ namespace CosmereRoshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class CosmereRosharDefs {
-    public static NeedDef Cosmere_Roshar_RadiantProgress;
+    public static NeedDef Cosmere_Roshar_Need_RadiantProgress;
 
-    public static TraitDef Cosmere_Roshar_RadiantWindrunner;
-    public static TraitDef Cosmere_Roshar_RadiantTruthwatcher;
-    public static TraitDef Cosmere_Roshar_RadiantEdgedancer;
-    public static TraitDef Cosmere_Roshar_RadiantSkybreaker;
+    public static TraitDef Cosmere_Roshar_Trait_RadiantWindrunner;
+    public static TraitDef Cosmere_Roshar_Trait_RadiantTruthwatcher;
+    public static TraitDef Cosmere_Roshar_Trait_RadiantEdgedancer;
+    public static TraitDef Cosmere_Roshar_Trait_RadiantSkybreaker;
 
     public static AbilityDef Cosmere_Roshar_SummonShardblade;
     public static AbilityDef Cosmere_Roshar_UnbondBlade;

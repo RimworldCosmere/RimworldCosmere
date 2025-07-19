@@ -18,7 +18,7 @@ public static class HighstormStorytellerPatch {
         );
     }
 
-    private static void StorytellerTick_Postfix(Storyteller instance) {
+    private static void StorytellerTick_Postfix() {
         int currentTick = Find.TickManager.TicksGame;
 
         if (currentTick % IntervalTicks == IntervalTicks - WarningOffsetTicks) {

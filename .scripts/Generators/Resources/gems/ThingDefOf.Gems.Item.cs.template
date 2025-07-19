@@ -7,6 +7,6 @@ namespace CosmereResources;
 public static partial class ThingDefOf {        
     {{#each gems as | gem |}}
     public static ThingDef Raw{{defName gem.name}};
-    public static ThingDef Cut{{defName gem.name}};
+    //public static ThingDef Cut{{defName gem.name}};
     {{/each}}
 }

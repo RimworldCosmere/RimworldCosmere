@@ -8,25 +8,26 @@ namespace CosmereRoshar.Patches;
 public static class ShardbladePatches {
     [HarmonyPatch(nameof(Pawn_EquipmentTracker.TryDropEquipment))]
     [HarmonyPostfix]
-    private static void PostfixTryDropEquipment(Pawn pawn, ThingWithComps eq, ThingWithComps resultingEq, IntVec3 pos) {
-        if (eq != null && pawn != null) {
-            if (eq.def == CosmereRosharDefs.Cosmere_Roshar_MeleeWeaponShardblade) {
-                ShardBlade blade = eq.GetComp<ShardBlade>();
-                if (blade != null) {
-                    if (blade.IsBonded(pawn)) {
-                        eq.DeSpawn();
-                        Log.Message($"Despawning blade bonded with {pawn.NameShortColored}");
-                    }
-                }
-            }
-        }
+    private static void PostfixTryDropEquipment(
+        Pawn_EquipmentTracker __instance,
+        ThingWithComps? eq,
+        ThingWithComps resultingEq,
+        IntVec3 pos
+    ) {
+        Pawn? pawn = __instance.pawn;
+        if (eq == null || pawn == null) return;
+        if (!eq.TryGetComp(out ShardBlade blade)) return;
+        if (!blade.IsBonded(pawn)) return;
+
+        eq.DeSpawn();
+        Log.Message($"Despawning blade bonded with {pawn.NameShortColored}");
     }
 
     [HarmonyPatch(nameof(Pawn_EquipmentTracker.AddEquipment))]
     [HarmonyPostfix]
-    private static void PostfixAddEquipment(Pawn pawn, ThingWithComps? newEq) {
+    private static void PostfixAddEquipment(Pawn_EquipmentTracker __instance, ThingWithComps? newEq) {
+        Pawn? pawn = __instance.pawn;
         if (newEq == null) return;
-        if (!newEq.def.Equals(CosmereRosharDefs.Cosmere_Roshar_MeleeWeaponShardblade)) return;
         if (!newEq.TryGetComp(out ShardBlade blade)) return;
         if (!blade.IsBonded(null)) return;
         if (StormlightUtilities.PawnHasAbility(pawn, CosmereRosharDefs.Cosmere_Roshar_SummonShardblade)) return;

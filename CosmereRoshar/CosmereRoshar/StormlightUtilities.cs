@@ -54,10 +54,10 @@ public static class StormlightUtilities {
     }
 
     public static bool IsRadiant(Trait trait) {
-        return trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner ||
-               trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher ||
-               trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer ||
-               trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker;
+        return trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner ||
+               trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantTruthwatcher ||
+               trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantEdgedancer ||
+               trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantSkybreaker;
     }
 
     public static bool IsRadiant(Pawn pawn) {
@@ -68,10 +68,10 @@ public static class StormlightUtilities {
         Trait trait =
             pawn.story.traits.allTraits.FirstOrDefault(t => CosmereRosharUtilities.radiantTraits.Contains(t.def));
         if (trait != null) {
-            return trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner ||
-                   trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher ||
-                   trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer ||
-                   trait.def == CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker;
+            return trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner ||
+                   trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantTruthwatcher ||
+                   trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantEdgedancer ||
+                   trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantSkybreaker;
         }
 
         return false;
@@ -197,11 +197,7 @@ public static class StormlightUtilities {
     }
 
     public static bool IsThingCutGemstone(Verse.Thing thing) {
-        return thing.def == CosmereResources.ThingDefOf.CutRuby ||
-               thing.def == CosmereResources.ThingDefOf.CutEmerald ||
-               thing.def == CosmereResources.ThingDefOf.CutDiamond ||
-               thing.def == CosmereResources.ThingDefOf.CutSapphire ||
-               thing.def == CosmereResources.ThingDefOf.CutGarnet;
+        return thing.def.Equals(CosmereResources.ThingDefOf.CutGem);
     }
 
     public static Trait? GetRadiantTrait(Pawn pawn) {

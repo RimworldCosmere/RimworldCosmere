@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="Cosmere_Roshar_Thing_Sphere" ParentName="Cosmere_Roshar_Thing_CurrencyBase" Abstract="True">
+        <thingClass>CosmereRoshar.Thing.Sphere</thingClass>
+        <thingCategories>
+            <li>Cosmere_Currency</li>
+            <li>Cosmere_Resource_ThingCategory_Sphere</li>
+        </thingCategories>
+
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutComplex</shaderType>
+            <texPath>Item/Resource/Sphere/Diamond</texPath>
+        </graphicData>
+
+        <stuffCategories>
+            <li>Cosmere_Resources_StuffCategory_CutGems</li>
+        </stuffCategories>
+        
+        <recipeMaker>
+            <useIngredientsForColor>true</useIngredientsForColor>
+            <workAmount>1600</workAmount>
+            <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+            <effectWorking>CutStone</effectWorking>
+            <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+            <workSkill>Crafting</workSkill> <!-- custom skill? -->
+            <researchPrerequisites>
+                <li>Cosmere_Gem_Cutting</li>
+                <li>Cosmere_Roshar_SphereProduction</li>
+            </researchPrerequisites>
+            <recipeUsers>
+                <li>Cosmere_Resources_Table_GemCutter</li>
+            </recipeUsers>
+        </recipeMaker>
+    </ThingDef>
+    
+    <!--  Chip -->
+    <ThingDef ParentName="Cosmere_Roshar_Thing_Sphere">
+        <defName>Cosmere_Roshar_Thing_Chip</defName>
+        <label>Chip</label>
+        <description>A small polished sphere, clear and sharply faceted. Can be used to hold Stormlight, and is often employed in illumination-based fabrials or delicate precision work.</description>
+        
+        <graphicData>
+            <drawSize>.3</drawSize>
+        </graphicData>
+
+        <statBases>
+            <Mass>0.00002</Mass>
+            <Beauty>1</Beauty>
+            <MarketValue>1</MarketValue>
+            <Cosmere_Roshar_Stat_SphereSize>0.2</Cosmere_Roshar_Stat_SphereSize>
+        </statBases>
+
+        <costStuffCount>1</costStuffCount>
+        <recipeMaker>
+            <label>Chip</label>
+            <productCount>5</productCount>
+            <displayPriority>1</displayPriority>
+        </recipeMaker>
+
+        <comps>
+            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <maxInvestiture>10</maxInvestiture>
+                <drainRate>0.1</drainRate>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <!-- Mark -->
+    <ThingDef ParentName="Cosmere_Roshar_Thing_Sphere">
+        <defName>Cosmere_Roshar_Thing_Mark</defName>
+        <label>Mark</label>
+        <description>A medium-sized polished sphere, clear and sharply faceted. Can be used to hold Stormlight, and is often employed in illumination-based fabrials or delicate precision work.</description>
+
+        <graphicData>
+            <drawSize>.5</drawSize>
+        </graphicData>
+
+        <statBases>
+            <Mass>0.0001</Mass>
+            <Beauty>5</Beauty>
+            <MarketValue>5</MarketValue>
+            <Cosmere_Roshar_Stat_SphereSize>1</Cosmere_Roshar_Stat_SphereSize>
+        </statBases>
+        
+        <costStuffCount>1</costStuffCount>
+
+        <recipeMaker>
+            <label>Mark</label>
+            <productCount>1</productCount>
+            <displayPriority>2</displayPriority>
+        </recipeMaker>
+
+        <comps>
+            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <maxInvestiture>50</maxInvestiture>
+                <drainRate>0.1</drainRate>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <!-- Broam -->
+    <ThingDef ParentName="Cosmere_Roshar_Thing_Sphere">
+        <defName>Cosmere_Roshar_Thing_Broam</defName>
+        <label>Broam</label>
+        <description>A large polished sphere, clear and sharply faceted. Can be used to hold Stormlight, and is often employed in illumination-based fabrials or delicate precision work.</description>
+
+        <graphicData>
+            <drawSize>.7</drawSize>
+        </graphicData>
+
+        <statBases>
+            <Mass>0.0004</Mass>
+            <Beauty>20</Beauty>
+            <MarketValue>20</MarketValue>
+            <Cosmere_Roshar_Stat_SphereSize>4</Cosmere_Roshar_Stat_SphereSize>
+        </statBases>
+
+        <costStuffCount>4</costStuffCount>
+
+        <recipeMaker>
+            <label>Broam</label>
+            <productCount>1</productCount>
+            <displayPriority>3</displayPriority>
+        </recipeMaker>
+
+        <comps>
+            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+                <maxInvestiture>200</maxInvestiture>
+                <drainRate>0.1</drainRate>
+            </li>
+        </comps>
+    </ThingDef>
+</Defs>

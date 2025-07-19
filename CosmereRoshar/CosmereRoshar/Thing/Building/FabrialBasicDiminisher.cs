@@ -1,3 +1,5 @@
+using CosmereResources;
+using CosmereResources.Extension;
 using CosmereRoshar.Comp.Fabrials;
 using CosmereRoshar.Comp.Thing;
 using RimWorld;
@@ -40,18 +42,18 @@ public class FabrialBasicDiminisher : Verse.Building {
 
     public override void Print(SectionLayer layer) {
         base.Print(layer);
-        if (basicFabrialDiminisher.hasGemstone) {
-            if (basicFabrialDiminisher.insertedGemstone.def == CosmereResources.ThingDefOf.CutRuby) {
-                def.graphicData.attachments[0].Graphic.Print(layer, this, 0f);
-            } else if (basicFabrialDiminisher.insertedGemstone.def == CosmereResources.ThingDefOf.CutDiamond) {
-                def.graphicData.attachments[1].Graphic.Print(layer, this, 0f);
-            } else if (basicFabrialDiminisher.insertedGemstone.def == CosmereResources.ThingDefOf.CutGarnet) {
-                def.graphicData.attachments[2].Graphic.Print(layer, this, 0f);
-            } else if (basicFabrialDiminisher.insertedGemstone.def == CosmereResources.ThingDefOf.CutEmerald) {
-                def.graphicData.attachments[3].Graphic.Print(layer, this, 0f);
-            } else if (basicFabrialDiminisher.insertedGemstone.def == CosmereResources.ThingDefOf.CutSapphire) {
-                def.graphicData.attachments[4].Graphic.Print(layer, this, 0f);
-            }
+        if (basicFabrialDiminisher.insertedGemstone == null) return;
+
+        if (basicFabrialDiminisher.insertedGemstone.IsCutGemOfType(GemDefOf.Ruby)) {
+            def.graphicData.attachments[0].Graphic.Print(layer, this, 0f);
+        } else if (basicFabrialDiminisher.insertedGemstone.IsCutGemOfType(GemDefOf.Diamond)) {
+            def.graphicData.attachments[1].Graphic.Print(layer, this, 0f);
+        } else if (basicFabrialDiminisher.insertedGemstone.IsCutGemOfType(GemDefOf.Garnet)) {
+            def.graphicData.attachments[2].Graphic.Print(layer, this, 0f);
+        } else if (basicFabrialDiminisher.insertedGemstone.IsCutGemOfType(GemDefOf.Emerald)) {
+            def.graphicData.attachments[3].Graphic.Print(layer, this, 0f);
+        } else if (basicFabrialDiminisher.insertedGemstone.IsCutGemOfType(GemDefOf.Sapphire)) {
+            def.graphicData.attachments[4].Graphic.Print(layer, this, 0f);
         }
     }
 }

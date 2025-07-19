@@ -25,11 +25,9 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
     public List<ThingDef> filterList => filterListInt;
 
     public List<ThingDef> allowedSpheres { get; } = [
-        CosmereResources.ThingDefOf.CutDiamond,
-        CosmereResources.ThingDefOf.CutGarnet,
-        CosmereResources.ThingDefOf.CutRuby,
-        CosmereResources.ThingDefOf.CutSapphire,
-        CosmereResources.ThingDefOf.CutEmerald,
+        ThingDefOf.Cosmere_Roshar_Thing_Chip,
+        ThingDefOf.Cosmere_Roshar_Thing_Mark,
+        ThingDefOf.Cosmere_Roshar_Thing_Broam,
     ];
 
     public List<GemSize> sizeFilterList => sizeFilterListInt;

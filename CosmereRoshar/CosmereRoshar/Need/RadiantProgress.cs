@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CosmereRoshar.Patches;
-using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -71,19 +70,19 @@ public class RadiantProgress : RimWorld.Need {
 
         switch (idealLevel) {
             case 1:
-                Cosmere_Roshar_RadiantNeedLevelupChecker.UpdateIsSatisfiedReq1_2(pawnStats);
+                Cosmere_Roshar_Radiant_NeedLevelupChecker.UpdateIsSatisfiedReq1_2(pawnStats);
                 eligible = pawnStats.GetRequirements(trait.def, pawnStats.props.req12).isSatisfied;
                 break;
             case 2:
-                Cosmere_Roshar_RadiantNeedLevelupChecker.UpdateIsSatisfiedReq2_3(pawnStats);
+                Cosmere_Roshar_Radiant_NeedLevelupChecker.UpdateIsSatisfiedReq2_3(pawnStats);
                 eligible = pawnStats.GetRequirements(trait.def, pawnStats.props.req23).isSatisfied;
                 break;
             case 3:
-                Cosmere_Roshar_RadiantNeedLevelupChecker.UpdateIsSatisfiedReq3_4(pawnStats);
+                Cosmere_Roshar_Radiant_NeedLevelupChecker.UpdateIsSatisfiedReq3_4(pawnStats);
                 eligible = pawnStats.GetRequirements(trait.def, pawnStats.props.req34).isSatisfied;
                 break;
             //case 4:
-            //    Cosmere_Roshar_RadiantNeedLevelupChecker.UpdateIsSatisfiedReq4_5(pawnStats);
+            //    Cosmere_Roshar_Radiant_NeedLevelupChecker.UpdateIsSatisfiedReq4_5(pawnStats);
             //    eligible = pawnStats.GetRequirements(trait.def, pawnStats.Props.Req_4_5).IsSatisfied; 
             //    break;
             default:
@@ -109,41 +108,6 @@ public class RadiantProgress : RimWorld.Need {
         if (degree == 1) return LevelExperiencedSquire; // Experienced Squire
         if (degree == 0) return LevelNewSquire; // New Squire
         return LevelNewSquire; // Bonded (Base Level)
-    }
-}
-
-[HarmonyPatch(typeof(Pawn_NeedsTracker), "ShouldHaveNeed")]
-public static class PatchRadiantProgressNeed {
-    public static void Postfix(Pawn_NeedsTracker instance, NeedDef nd, ref bool result, Pawn pawn) {
-        //if (nd == CosmereRosharDefs.Cosmere_Roshar_RadiantProgress) {
-        //    __result = ___pawn.story?.traits?.allTraits.FirstOrDefault(t => CosmereRosharUtilities.RadiantTraits.Contains(t.def)) != null;
-        //}
-
-        if (nd == CosmereRosharDefs.Cosmere_Roshar_RadiantProgress &&
-            pawn.story?.traits?.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner) == true) {
-            result = true;
-        } else if (nd == CosmereRosharDefs.Cosmere_Roshar_RadiantProgress &&
-                   pawn.story?.traits?.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher) == true) {
-            result = true;
-        } else if (nd == CosmereRosharDefs.Cosmere_Roshar_RadiantProgress &&
-                   pawn.story?.traits?.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer) == true) {
-            result = true;
-        } else if (nd == CosmereRosharDefs.Cosmere_Roshar_RadiantProgress &&
-                   pawn.story?.traits?.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker) == true) {
-            result = true;
-        } else if (nd == CosmereRosharDefs.Cosmere_Roshar_RadiantProgress &&
-                   pawn.story?.traits?.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner) == false) {
-            result = false;
-        } else if (nd == CosmereRosharDefs.Cosmere_Roshar_RadiantProgress &&
-                   pawn.story?.traits?.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher) == false) {
-            result = false;
-        } else if (nd == CosmereRosharDefs.Cosmere_Roshar_RadiantProgress &&
-                   pawn.story?.traits?.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer) == false) {
-            result = false;
-        } else if (nd == CosmereRosharDefs.Cosmere_Roshar_RadiantProgress &&
-                   pawn.story?.traits?.HasTrait(CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker) == false) {
-            result = false;
-        }
     }
 }
 

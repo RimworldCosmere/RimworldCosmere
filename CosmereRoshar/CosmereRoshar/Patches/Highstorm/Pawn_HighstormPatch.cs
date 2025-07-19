@@ -7,7 +7,7 @@ using Verse;
 namespace CosmereRoshar.Patches.Highstorm;
 
 [HarmonyPatch(typeof(Pawn))]
-[HarmonyPatch("Tick")]
+[HarmonyPatch("TickInterval")]
 public static class PawnHighstormPushPatch {
     private static readonly Random MRand = new Random();
 
@@ -25,45 +25,44 @@ public static class PawnHighstormPushPatch {
 
     private static readonly float InitialBondMaxNumber = 100000f;
 
-    private static void Postfix(Pawn instance) {
-        if (Find.TickManager.TicksGame % 20 != 0) return;
+    private static void Postfix(Pawn __instance, int delta) {
+        if (__instance.IsHashIntervalTick(GenTicks.TicksPerRealSecond / 3, delta)) return;
 
-        if (!IsPawnValidForStorm(instance)) {
+        if (!IsPawnValidForStorm(__instance)) {
             return;
         }
 
-        if (IsHighstormActive(instance.Map)) {
-            DamageAndMovePawn(instance);
-            if (StormlightUtilities.IsRadiant(instance)) {
+        if (IsHighstormActive(__instance.Map)) {
+            DamageAndMovePawn(__instance);
+            if (StormlightUtilities.IsRadiant(__instance)) {
                 return;
             }
 
-            if (Find.TickManager.TicksGame % 100 == 0 && StormlightUtilities.IsPawnEligibleForDoctoring(instance)) {
-                TryToBondPawn(instance, CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner);
+            if (Find.TickManager.TicksGame % 100 == 0 && StormlightUtilities.IsPawnEligibleForDoctoring(__instance)) {
+                TryToBondPawn(__instance, CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner);
             }
 
             return;
         }
 
         StormShelterManager.FirstTickOfHighstorm = true;
-        if (StormlightUtilities.IsRadiant(instance)) {
+        if (StormlightUtilities.IsRadiant(__instance)) {
             return;
         }
 
-        if (Find.TickManager.TicksGame % 100 == 0) {
-            if ((instance.Map.weatherManager.curWeather.defName == "Fog" ||
-                 instance.Map.weatherManager.curWeather.defName == "FoggyRain") &&
-                StormlightUtilities.IsPawnEligibleForDoctoring(instance)) {
-                TryToBondPawn(instance, CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher);
-            } else if ((instance.Map.weatherManager.curWeather.defName == "Rain" ||
-                        instance.Map.weatherManager.curWeather.defName == "Clear") &&
-                       StormlightUtilities.IsNearGrowingPlants(instance) &&
-                       StormlightUtilities.IsPawnEligibleForDoctoring(instance)) {
-                TryToBondPawn(instance, CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer);
-            } else if (instance.Map.weatherManager.curWeather.defName == "DryThunderstorm" ||
-                       instance.Map.weatherManager.curWeather.defName == "RainyThunderstorm") {
-                TryToBondPawn(instance, CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker);
-            }
+        if (__instance.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
+        switch (__instance.Map.weatherManager.curWeather.defName) {
+            case "Fog" or "FoggyRain" when
+                StormlightUtilities.IsPawnEligibleForDoctoring(__instance):
+                TryToBondPawn(__instance, CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantTruthwatcher);
+                break;
+            case "Rain" or "Clear" when
+                StormlightUtilities.IsNearGrowingPlants(__instance) &&
+                StormlightUtilities.IsPawnEligibleForDoctoring(__instance):
+                TryToBondPawn(__instance, CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantEdgedancer);
+                break;
+            case "DryThunderstorm" or "RainyThunderstorm":
+                TryToBondPawn(__instance, CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantSkybreaker); break;
         }
     }
 
@@ -72,53 +71,52 @@ public static class PawnHighstormPushPatch {
     }
 
     private static void TryToBondPawn(Pawn pawn, TraitDef traitDef) {
-        if (pawn != null && pawn.RaceProps.Humanlike) {
-            if (StormlightUtilities.GetRadiantTrait(pawn) != null) return;
+        if (!pawn.RaceProps.Humanlike) return;
+        if (StormlightUtilities.GetRadiantTrait(pawn) != null) return;
 
-            PawnStats pawnStats = pawn.GetComp<PawnStats>();
-            if (pawnStats == null) return;
+        PawnStats pawnStats = pawn.GetComp<PawnStats>();
+        if (pawnStats == null) return;
 
-            int upperNumber = GetUpperNumber(pawnStats.GetRequirementsEntry().value);
+        int upperNumber = GetUpperNumber(pawnStats.GetRequirementsEntry().value);
 
-            if (upperNumber <= 1) upperNumber = 2;
-            int number = MRand.Next(1, upperNumber);
-            if (number == 1) {
-                if (traitDef == CosmereRosharDefs.Cosmere_Roshar_RadiantWindrunner) {
-                    StormlightUtilities.SpeakOaths(
-                        pawn,
-                        pawnStats,
-                        traitDef,
-                        $"{pawn.NameShortColored} " + WindrunnerBondText,
-                        "A Whisper in the Mind.."
-                    );
-                } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_RadiantTruthwatcher) {
-                    StormlightUtilities.SpeakOaths(
-                        pawn,
-                        pawnStats,
-                        traitDef,
-                        $"{pawn.NameShortColored} " + TruthwatcherBondText,
-                        "A Whisper in the Mind.."
-                    );
-                } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_RadiantEdgedancer) {
-                    StormlightUtilities.SpeakOaths(
-                        pawn,
-                        pawnStats,
-                        traitDef,
-                        $"{pawn.NameShortColored} " + EdgedancerBondText,
-                        "A Whisper in the Mind.."
-                    );
-                } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_RadiantSkybreaker) {
-                    StormlightUtilities.SpeakOaths(
-                        pawn,
-                        pawnStats,
-                        traitDef,
-                        $"{pawn.NameShortColored} " + SkybreakerBondText,
-                        "A Whisper in the Mind.."
-                    );
-                }
-            }
-            //else { Log.Message($"{pawn.NameShortColored} tried to bond, failed with number: {number} of {upperNumber}, crisis value: {pawnStats.GetRequirementsEntry().Value}"); }
+        if (upperNumber <= 1) upperNumber = 2;
+        int number = MRand.Next(1, upperNumber);
+        if (number != 1) return;
+
+        if (traitDef == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner) {
+            StormlightUtilities.SpeakOaths(
+                pawn,
+                pawnStats,
+                traitDef,
+                $"{pawn.NameShortColored} " + WindrunnerBondText,
+                "A Whisper in the Mind.."
+            );
+        } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantTruthwatcher) {
+            StormlightUtilities.SpeakOaths(
+                pawn,
+                pawnStats,
+                traitDef,
+                $"{pawn.NameShortColored} " + TruthwatcherBondText,
+                "A Whisper in the Mind.."
+            );
+        } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantEdgedancer) {
+            StormlightUtilities.SpeakOaths(
+                pawn,
+                pawnStats,
+                traitDef,
+                $"{pawn.NameShortColored} " + EdgedancerBondText,
+                "A Whisper in the Mind.."
+            );
+        } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantSkybreaker) {
+            StormlightUtilities.SpeakOaths(
+                pawn,
+                pawnStats,
+                traitDef,
+                $"{pawn.NameShortColored} " + SkybreakerBondText,
+                "A Whisper in the Mind.."
+            );
         }
+        //else { Log.Message($"{pawn.NameShortColored} tried to bond, failed with number: {number} of {upperNumber}, crisis value: {pawnStats.GetRequirementsEntry().Value}"); }
     }
 
     private static bool IsHighstormActive(Map map) {
@@ -128,10 +126,6 @@ public static class PawnHighstormPushPatch {
     }
 
     private static bool IsPawnValidForStorm(Pawn pawn) {
-        if (pawn == null) {
-            return false;
-        }
-
         if (pawn.Dead || pawn.Destroyed || !pawn.Spawned) {
             return false;
         }
@@ -148,11 +142,7 @@ public static class PawnHighstormPushPatch {
             return false;
         }
 
-        if (pawn.Position.Roofed(pawn.Map)) {
-            return false;
-        }
-
-        return true;
+        return !pawn.Position.Roofed(pawn.Map);
     }
 
     private static bool CheckIfSheltered(Pawn pawn) {
@@ -165,15 +155,7 @@ public static class PawnHighstormPushPatch {
             return;
         }
 
-        bool isRadiant = false;
-        if (instance.story != null && instance.RaceProps.Humanlike) {
-            foreach (Trait t in instance.story.traits.allTraits) {
-                if (StormlightUtilities.IsRadiant(t)) {
-                    isRadiant = true;
-                }
-            }
-        }
-
+        bool isRadiant = instance.story?.traits.allTraits.Any(StormlightUtilities.IsRadiant) ?? false;
         if (CosmereRoshar.enableHighstormDamage || instance.RaceProps.Humanlike && instance.Faction.IsPlayer) {
             instance.TakeDamage(new DamageInfo(DamageDefOf.Blunt, 1));
         }

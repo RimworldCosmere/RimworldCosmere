@@ -43,7 +43,7 @@ public class Stormlight : ThingComp {
     // Modifiers
     public float stormlightContainerSize = 1f;
     private bool thisGlows;
-    public bool breathStormlight => breathStormlight;
+    public bool breathStormlight => breathStormlightInt;
     public float currentStormlight => currentStormlightInt;
 
     private new StormlightProperties props => (StormlightProperties)base.props;

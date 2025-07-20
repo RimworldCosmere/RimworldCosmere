@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 
-namespace CosmereFramework.Comp.Map;
+namespace Cosmere.Framework.Comp.Map;
 
 public abstract class Renderer<T>(Verse.Map map) : MapComponent(map) {
     public static Dictionary<object, HashSet<T>> ToRender = [];

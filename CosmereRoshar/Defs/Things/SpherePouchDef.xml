@@ -53,7 +53,7 @@
       <developmentalStageFilter>Child, Adult</developmentalStageFilter>
     </apparel>
     <comps>
-      <li Class="CosmereRoshar.Comp.Thing.SpherePouchProperties">
+      <li Class="Cosmere.Roshar.Comp.Thing.SpherePouchProperties">
         <maxCapacity>100</maxCapacity>
         <allowedSpheres>
           <li>Cosmere_Roshar_Thing_DiamondChip</li>

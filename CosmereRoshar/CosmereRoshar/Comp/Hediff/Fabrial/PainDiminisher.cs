@@ -1,9 +1,9 @@
-using CosmereRoshar.Comp.Fabrials;
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Roshar.Comp.Fabrials;
+using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Comp.Hediff.Fabrial;
+namespace Cosmere.Roshar.Comp.Hediff.Fabrial;
 
 public class PainDiminisher : HediffComp {
     public override string CompLabelInBracketsExtra {
@@ -55,7 +55,7 @@ public class PainDiminisher : HediffComp {
 
             if (!comp.CheckPower()) {
                 Verse.Hediff? hediff = pawn.health.hediffSet.GetFirstHediffOfDef(
-                    CosmereRosharDefs.Cosmere_Roshar_ApparelPainrialDiminisherHediff
+                    Defs.Cosmere_Roshar_ApparelPainrialDiminisherHediff
                 );
                 if (hediff != null) {
                     pawn.health.RemoveHediff(hediff);

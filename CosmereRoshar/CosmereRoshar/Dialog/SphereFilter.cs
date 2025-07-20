@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Roshar.Comp.Thing;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Dialog;
+namespace Cosmere.Roshar.Dialog;
 
 public interface IFilterableComp {
     List<ThingDef> allowedSpheres { get; }

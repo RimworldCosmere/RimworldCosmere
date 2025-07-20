@@ -1,15 +1,15 @@
 using System;
-using CosmereResources;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Resources;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
-using Logger = CosmereFramework.Logger;
+using Logger = Cosmere.Framework.Logger;
 
-namespace CosmereScadrial.Allomancy.Ability;
+namespace Cosmere.Scadrial.Allomancy.Ability;
 
 public abstract partial class AbstractAbility : RimWorld.Ability {
     protected Mote? burningMote;

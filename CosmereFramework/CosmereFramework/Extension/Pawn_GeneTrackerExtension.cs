@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class Pawn_GeneTrackerExtension {
     public static void RemoveGene(this Pawn_GeneTracker genes, GeneDef geneDef) {

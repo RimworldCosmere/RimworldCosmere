@@ -1,9 +1,9 @@
-using CosmereRoshar.Comp.Fabrials;
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Roshar.Comp.Fabrials;
+using Cosmere.Roshar.Comp.Thing;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Job.Toil;
+namespace Cosmere.Roshar.Job.Toil;
 
 public class RefuelFabrial {
     public static Verse.AI.Toil SwapInNewGemstone(TargetIndex gemInd, TargetIndex fabrialInd) {

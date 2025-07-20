@@ -1,19 +1,27 @@
 using System.Collections.Generic;
-using CosmereCore.Need;
-using CosmereFramework.Extension;
-using CosmereFramework.Quickstart;
+using System.Linq;
+using System.Reflection;
+using Cosmere.Core.Need;
+using Cosmere.Framework.Extension;
+using Cosmere.Framework.Quickstart;
 using RimWorld;
 using Verse;
+using TraitDefOf = Cosmere.Core.TraitDefOf;
 
-namespace CosmereRoshar.Quickstart;
+namespace Cosmere.Roshar.Quickstart;
 
 public class TrueDesolationQuickstart : AbstractQuickstart {
+    //public override ScenarioDef? scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
+
+    private readonly Assembly? scadrial = LoadedModManager.RunningMods
+        .FirstOrDefault(m => m.PackageId == "CryptikLemur.Cosmere.Scadrial")
+        ?.assemblies.loadedAssemblies.FirstOrDefault();
+
     public override int mapSize => 100;
     public override TaggedString description => "Used to test True Desolation pawns";
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
 
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
-    //public override ScenarioDef? scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
     public override void PostStart() {
         DebugSettings.godMode = true;
@@ -30,25 +38,36 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         if (pawns.Count == 0) return;
 
         if (pawns.TryPopFront(out Pawn pawn)) {
-            pawn.Name = new NameTriple("Dalinar", "Dalinar", "Kholin");
+            pawn.story.TryAddTrait(TraitDefOf.Cosmere_Invested);
+            pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
+            pawn.story.TryAddTrait(Defs.Cosmere_Roshar_Trait_RadiantWindrunner, 4);
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            if (pawn.needs.TryGetNeed<Investiture>() is not { } investiture) return;
-            investiture.CurLevel = 50000;
+            pawn.story.TryAddTrait(TraitDefOf.Cosmere_Invested);
+            pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kohlin");
+            pawn.gender = Gender.Male;
+            pawn.story.TryAddTrait(Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher, 3);
+        }
+
+        if (pawns.TryPopFront(out pawn)) {
+            pawn.story.TryAddTrait(TraitDefOf.Cosmere_Invested);
+            if (pawn.needs.TryGetNeed(out Investiture investiture)) {
+                investiture.CurLevel = 50000;
+            }
 
             pawn.Name = new NameSingle("Wit");
             pawn.gender = Gender.Male;
-        }
+            if (ModsConfig.IsActive("CryptikLemur.Cosmere.Scadrial")) {
+                scadrial?
+                    .GetType("CosmereScadrial.Utility.GeneUtility")
+                    ?.GetMethod("AddMistborn", BindingFlags.Public | BindingFlags.Static)
+                    ?.Invoke(null, [pawn, false, true]);
+            }
 
-        //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Atium);
-        //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);
-        //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Gold);
-
-        if (pawns.TryPopFront(out pawn)) {
-            pawn.Name = new NameTriple("Jasnah", "Jas", "Kohlin");
-            pawn.gender = Gender.Female;
+            // Should be Lightweaver
+            pawn.story.TryAddTrait(Defs.Cosmere_Roshar_Trait_RadiantWindrunner, 3);
         }
     }
 }

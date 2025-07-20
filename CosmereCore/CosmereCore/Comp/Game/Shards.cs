@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using CosmereCore.Def;
+using Cosmere.Core.Def;
 using Verse;
 
-namespace CosmereCore.Comp.Game;
+namespace Cosmere.Core.Comp.Game;
 
 public class Shards : GameComponent {
     public HashSet<ShardDef> enabledShardDefs = new HashSet<ShardDef>();

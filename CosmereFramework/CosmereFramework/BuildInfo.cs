@@ -1,4 +1,4 @@
-namespace CosmereFramework;
+namespace Cosmere.Framework;
 
 public static class BuildInfo {
     public const string Revision = "1.6.27";

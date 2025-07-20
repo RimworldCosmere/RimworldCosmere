@@ -1,11 +1,11 @@
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Comp.Ability;
+namespace Cosmere.Scadrial.Allomancy.Comp.Ability;
 
 public class MetalCostProperties : CompProperties_AbilityEffect {
     public MetalCostProperties() {

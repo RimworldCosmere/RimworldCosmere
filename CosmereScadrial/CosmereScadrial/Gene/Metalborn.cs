@@ -1,15 +1,15 @@
 using System;
 using System.Linq;
-using CosmereCore.Util;
-using CosmereResources.DefModExtension;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Util;
+using Cosmere.Core.Util;
+using Cosmere.Resources.DefModExtension;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Gene;
+namespace Cosmere.Scadrial.Gene;
 
 public abstract class Metalborn : Gene_Resource {
     internal bool gizmoShrunk = true;

@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Util;
-using CosmereFramework.Extension;
-using CosmereScadrial.Def;
-using CosmereScadrial.Gene;
+using Cosmere.Core.Util;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = CosmereFramework.Logger;
+using Logger = Cosmere.Framework.Logger;
 
-namespace CosmereScadrial.Util;
+namespace Cosmere.Scadrial.Util;
 
 public static class GeneUtility {
     private static bool isHarmony => ShardUtility.AreAnyEnabled(ShardDefOf.Harmony);

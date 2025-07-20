@@ -1,10 +1,10 @@
-using CosmereResources.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Resources.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Records.Worker;
+namespace Cosmere.Scadrial.Records.Worker;
 
 public class TimeSpentTappingWorker : RecordWorker {
     private MetalDef? metalCache;

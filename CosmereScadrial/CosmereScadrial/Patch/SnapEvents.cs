@@ -1,9 +1,9 @@
-using CosmereScadrial.Util;
+using Cosmere.Scadrial.Util;
 using HarmonyLib;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.Patch;
+namespace Cosmere.Scadrial.Patch;
 
 [HarmonyPatch]
 public static class SnapEvents {

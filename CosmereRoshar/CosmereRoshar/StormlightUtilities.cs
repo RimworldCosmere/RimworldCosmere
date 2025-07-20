@@ -1,24 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using CosmereRoshar.Combat.Abilities.Implementations;
-using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Patches;
-using CosmereRoshar.Utility;
+using Cosmere.Roshar.Combat.Abilities.Implementations;
+using Cosmere.Roshar.Comp.Thing;
+using Cosmere.Roshar.Patches;
+using Cosmere.Roshar.Utility;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Enumerable = System.Linq.Enumerable;
 using Random = System.Random;
 
-namespace CosmereRoshar;
+namespace Cosmere.Roshar;
 
 public static class StormlightUtilities {
     private static readonly List<ThingDef> Gems = new List<ThingDef> {
-        CosmereResources.ThingDefOf.RawDiamond,
-        CosmereResources.ThingDefOf.RawGarnet,
-        CosmereResources.ThingDefOf.RawRuby,
-        CosmereResources.ThingDefOf.RawSapphire,
-        CosmereResources.ThingDefOf.RawEmerald,
+        Resources.ThingDefOf.RawDiamond,
+        Resources.ThingDefOf.RawGarnet,
+        Resources.ThingDefOf.RawRuby,
+        Resources.ThingDefOf.RawSapphire,
+        Resources.ThingDefOf.RawEmerald,
     };
 
     private static readonly Random Rng = new Random();
@@ -54,10 +54,10 @@ public static class StormlightUtilities {
     }
 
     public static bool IsRadiant(Trait trait) {
-        return trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner ||
-               trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantTruthwatcher ||
-               trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantEdgedancer ||
-               trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantSkybreaker;
+        return trait.def == Defs.Cosmere_Roshar_Trait_RadiantWindrunner ||
+               trait.def == Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher ||
+               trait.def == Defs.Cosmere_Roshar_Trait_RadiantEdgedancer ||
+               trait.def == Defs.Cosmere_Roshar_Trait_RadiantSkybreaker;
     }
 
     public static bool IsRadiant(Pawn pawn) {
@@ -66,12 +66,12 @@ public static class StormlightUtilities {
         if (pawn == null) return false;
 
         Trait trait =
-            pawn.story.traits.allTraits.FirstOrDefault(t => CosmereRosharUtilities.radiantTraits.Contains(t.def));
+            pawn.story.traits.allTraits.FirstOrDefault(t => Constants.radiantTraits.Contains(t.def));
         if (trait != null) {
-            return trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner ||
-                   trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantTruthwatcher ||
-                   trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantEdgedancer ||
-                   trait.def == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantSkybreaker;
+            return trait.def == Defs.Cosmere_Roshar_Trait_RadiantWindrunner ||
+                   trait.def == Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher ||
+                   trait.def == Defs.Cosmere_Roshar_Trait_RadiantEdgedancer ||
+                   trait.def == Defs.Cosmere_Roshar_Trait_RadiantSkybreaker;
         }
 
         return false;
@@ -146,7 +146,7 @@ public static class StormlightUtilities {
             temps.Add(cell.GetTemperature(building.Map));
         }
 
-        return temps.Average();
+        return Enumerable.Average(temps);
     }
 
     public static float GetSuroundingPain(Building building, float radius = 5f) {
@@ -161,7 +161,7 @@ public static class StormlightUtilities {
             }
         }
 
-        return pains.Sum();
+        return Enumerable.Sum(pains);
     }
 
     public static float GetSuroundingPlants(Building building, float radius = 5f) {
@@ -197,11 +197,11 @@ public static class StormlightUtilities {
     }
 
     public static bool IsThingCutGemstone(Verse.Thing thing) {
-        return thing.def.Equals(CosmereResources.ThingDefOf.CutGem);
+        return thing.def.Equals(Resources.ThingDefOf.CutGem);
     }
 
     public static Trait? GetRadiantTrait(Pawn pawn) {
-        return pawn.story.traits.allTraits.FirstOrDefault(t => CosmereRosharUtilities.radiantTraits.Contains(t.def));
+        return pawn.story.traits.allTraits.FirstOrDefault(t => Constants.radiantTraits.Contains(t.def));
     }
 
     public static ThingDef RollForRandomGemSpawn() {
@@ -439,7 +439,7 @@ public static class StormShelterManager {
             return false;
         }
 
-        int maxX = area.Max(p => p.x);
+        int maxX = Enumerable.Max(area, p => p.x);
         foreach (IntVec3 pos in area) {
             if (pos.x != maxX) {
                 continue;

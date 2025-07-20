@@ -6,7 +6,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class PawnExtension {
     public static void MaintainProximityTo(

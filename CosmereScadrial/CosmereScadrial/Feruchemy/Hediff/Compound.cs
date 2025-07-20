@@ -1,10 +1,10 @@
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Hediff;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using Verse;
 
-namespace CosmereScadrial.Feruchemy.Hediff;
+namespace Cosmere.Scadrial.Feruchemy.Hediff;
 
 public class Compound : AllomanticHediff {
     protected readonly AbstractAbility ability;

@@ -1,8 +1,8 @@
-﻿using CosmereCore.Need;
+﻿using Cosmere.Core.Need;
 using RimWorld;
 using Verse;
 
-namespace CosmereCore.Util;
+namespace Cosmere.Core.Util;
 
 public static class InvestitureUtility {
     // ReSharper disable once InconsistentNaming

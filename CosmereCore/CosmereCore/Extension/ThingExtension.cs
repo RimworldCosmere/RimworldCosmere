@@ -1,8 +1,8 @@
-using CosmereCore.Util;
+using Cosmere.Core.Util;
 using RimWorld;
 using Verse;
 
-namespace CosmereCore.Extension;
+namespace Cosmere.Core.Extension;
 
 public static class ThingExtension {
     public static bool IsCapableOfHavingMetal(this Thing thing) {

@@ -1,17 +1,23 @@
 using System.Collections.Generic;
-using CosmereFramework.Extension;
-using CosmereScadrial.Allomancy.Ability;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Allomancy.Ability;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.JobDriver;
+namespace Cosmere.Scadrial.JobDriver;
 
 public class FollowGoldHallucination : AllomanticJobDriver {
     protected virtual Pawn hallucination => TargetA.Pawn;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        return pawn.Reserve(pawn, job, errorOnFailed: errorOnFailed, maxPawns: int.MaxValue, stackCount: 1,
-            ignoreOtherReservations: true);
+        return pawn.Reserve(
+            pawn,
+            job,
+            errorOnFailed: errorOnFailed,
+            maxPawns: int.MaxValue,
+            stackCount: 1,
+            ignoreOtherReservations: true
+        );
     }
 
     protected override IEnumerable<Toil> MakeNewToils() {

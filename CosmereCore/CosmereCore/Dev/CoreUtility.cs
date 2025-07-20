@@ -1,8 +1,8 @@
-﻿using CosmereCore.Need;
+﻿using Cosmere.Core.Need;
 using LudeonTK;
 using Verse;
 
-namespace CosmereCore.Dev;
+namespace Cosmere.Core.Dev;
 
 [StaticConstructorOnStartup]
 public static class CoreUtility {

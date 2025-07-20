@@ -2,7 +2,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Extensions;
+namespace Cosmere.Roshar.Extensions;
 
 public static class AbilityExtensions {
     public static T? GetAbilityComp<T>(this Pawn pawn, string abilityDefName) where T : CompAbilityEffect {

@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Ability;
+namespace Cosmere.Scadrial.Allomancy.Ability;
 
 public class CoinshotAbility : AbilityOtherTarget {
     public CoinshotAbility(Pawn pawn) : base(pawn) {

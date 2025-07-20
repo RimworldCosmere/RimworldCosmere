@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Graphic;
+namespace Cosmere.Roshar.Graphic;
 
 public class ShardBladeVariants : Graphic_Collection {
     public override Verse.Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo) {

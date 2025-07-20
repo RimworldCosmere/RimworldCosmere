@@ -26,7 +26,7 @@
     <possessionCount>1</possessionCount>
     <graphicData>
       <texPath>Things/Weapon</texPath>
-      <graphicClass>CosmereRoshar.Graphic.ShardBladeVariants</graphicClass>
+      <graphicClass>Cosmere.Roshar.Graphic.ShardBladeVariants</graphicClass>
       <drawSize>1.5</drawSize>
     </graphicData>
     <weaponTags>
@@ -60,7 +60,7 @@
       </li>
     </tools>
     <comps>
-      <li Class="CosmereRoshar.Combat.Abilities.Implementations.ShardBladeProperties" />
+      <li Class="Cosmere.Roshar.Combat.Abilities.Implementations.ShardBladeProperties" />
     </comps>
   </ThingDef>
 </Defs>

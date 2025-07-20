@@ -1,6 +1,6 @@
 using RimWorld;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class Pawn_StoryTrackerExtension {
     public static Trait TryAddTrait(

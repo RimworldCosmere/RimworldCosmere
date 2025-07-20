@@ -1,9 +1,9 @@
-using CosmereCore.Extension;
+using Cosmere.Core.Extension;
 using RimWorld;
 using Verse;
-using StatUtility = CosmereFramework.Util.StatUtility;
+using StatUtility = Cosmere.Framework.Util.StatUtility;
 
-namespace CosmereScadrial.StatPart;
+namespace Cosmere.Scadrial.StatPart;
 
 public class GearPower : RimWorld.StatPart {
     public override void TransformValue(StatRequest req, ref float val) {

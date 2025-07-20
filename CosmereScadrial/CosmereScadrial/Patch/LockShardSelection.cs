@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.DefModExtension;
-using CosmereCore.Util;
-using CosmereFramework;
+using Cosmere.Core.DefModExtension;
+using Cosmere.Core.Util;
+using Cosmere.Framework;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Patch;
+namespace Cosmere.Scadrial.Patch;
 
 [HarmonyPatch(typeof(PageUtility), nameof(PageUtility.StitchedPages))]
 public static class LockShardSelection {
@@ -18,7 +18,7 @@ public static class LockShardSelection {
         if (shards == null) return;
 
         if (shards.shards.Count == 0) {
-            Logger.Message($"[CosmereScadrial] No matching shard system found for {def!.defName}", LogLevel.Warning);
+            Logger.Message($"No matching shard system found for {def!.defName}", LogLevel.Warning);
             return;
         }
 

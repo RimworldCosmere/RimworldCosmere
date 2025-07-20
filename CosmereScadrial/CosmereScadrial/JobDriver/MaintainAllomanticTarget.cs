@@ -1,19 +1,25 @@
 using System.Collections.Generic;
-using CosmereFramework.Extension;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Hediff;
-using CosmereScadrial.Comp.Hediff;
-using CosmereScadrial.Util;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Comp.Hediff;
+using Cosmere.Scadrial.Util;
 using Verse;
 using Verse.AI;
-using HediffUtility = CosmereScadrial.Util.HediffUtility;
+using HediffUtility = Cosmere.Scadrial.Util.HediffUtility;
 
-namespace CosmereScadrial.JobDriver;
+namespace Cosmere.Scadrial.JobDriver;
 
 public class MaintainAllomanticTarget : AllomanticJobDriver {
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        return pawn.Reserve(targetPawn, job, errorOnFailed: errorOnFailed, maxPawns: int.MaxValue, stackCount: 1,
-            ignoreOtherReservations: true);
+        return pawn.Reserve(
+            targetPawn,
+            job,
+            errorOnFailed: errorOnFailed,
+            maxPawns: int.MaxValue,
+            stackCount: 1,
+            ignoreOtherReservations: true
+        );
     }
 
     protected override IEnumerable<Toil> MakeNewToils() {
@@ -34,8 +40,11 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
                 }
 
                 // Maintain proximity
-                pawn.MaintainProximityTo(TargetA, job.followRadius,
-                    targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell);
+                pawn.MaintainProximityTo(
+                    TargetA,
+                    job.followRadius,
+                    targetIsPawn ? PathEndMode.Touch : PathEndMode.OnCell
+                );
 
                 // If we aren't close enough to the pawn, update burnrate to 0, and get closer
                 if (pawn.DistanceTo(targetPawn) > ability.def.verbProperties.range) {

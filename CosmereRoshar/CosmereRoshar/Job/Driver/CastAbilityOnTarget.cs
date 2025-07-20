@@ -2,12 +2,12 @@
 // Verse.AI.JobDriver_AttackMelee
 
 using System.Collections.Generic;
-using CosmereRoshar.Job.Toil;
+using Cosmere.Roshar.Job.Toil;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Job.Driver;
+namespace Cosmere.Roshar.Job.Driver;
 
 public class CastAbilityOnTarget : JobDriver {
     public override bool TryMakePreToilReservations(bool errorOnFailed) {

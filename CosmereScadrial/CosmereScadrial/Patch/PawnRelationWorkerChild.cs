@@ -1,9 +1,9 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using Verse;
-using GeneUtility = CosmereScadrial.Util.GeneUtility;
+using GeneUtility = Cosmere.Scadrial.Util.GeneUtility;
 
-namespace CosmereScadrial.Patch;
+namespace Cosmere.Scadrial.Patch;
 
 [HarmonyPatch(typeof(PawnRelationWorker_Child), "CreateRelation")]
 public static class PawnRelationWorkerChild {

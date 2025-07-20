@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Patch;
+namespace Cosmere.Scadrial.Patch;
 
 [HarmonyPatch(typeof(StorytellerUtility), nameof(StorytellerUtility.DefaultThreatPointsNow))]
 [HarmonyPatch([typeof(IIncidentTarget)])]

@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Text;
-using CosmereFramework.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Gizmo;
+namespace Cosmere.Scadrial.Gizmo;
 
 [StaticConstructorOnStartup]
 public class AllomanticGeneCommand(

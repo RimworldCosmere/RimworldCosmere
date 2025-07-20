@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public record FormFieldOptions {
     public float columnSpacing = ListingStandardExtension.ColumnSpacing;

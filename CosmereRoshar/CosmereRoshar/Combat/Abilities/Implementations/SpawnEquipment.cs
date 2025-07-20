@@ -1,8 +1,8 @@
-﻿using CosmereRoshar.Extensions;
+﻿using Cosmere.Roshar.Extensions;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Combat.Abilities.Implementations;
+namespace Cosmere.Roshar.Combat.Abilities.Implementations;
 
 /// SUMMON BLADE ABILITY
 public class SpawnEquipmentProperties : CompProperties_AbilityEffect {
@@ -25,12 +25,12 @@ public class SpawnEquipment : CompAbilityEffect {
     public override void Apply(LocalTargetInfo target, LocalTargetInfo dest) {
         // @todo This doesnt do anything
         if (target == null) {
-            Log.Warning("[CosmereRoshar] SpawnEquipment target is null, defaulting to caster.");
+            Log.Warning("[Roshar] SpawnEquipment target is null, defaulting to caster.");
             target = new LocalTargetInfo(parent.pawn); // Default to the caster
         }
 
         if (props.thingDef == null) {
-            Log.Error("[CosmereRoshar] SpawnEquipment failed: thingDef not set.");
+            Log.Error("[Roshar] SpawnEquipment failed: thingDef not set.");
             return;
         }
 
@@ -49,14 +49,14 @@ public class SpawnEquipment : CompAbilityEffect {
 
     private void ToggleBlade(ref Pawn pawn) {
         SpawnEquipment abilityComp =
-            pawn.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName);
+            pawn.GetAbilityComp<SpawnEquipment>(Defs.Cosmere_Roshar_SummonShardblade.defName);
         if (abilityComp.bladeObject == null) {
-            Log.Warning("[CosmereRoshar] toggleBlade: bladeObject is null, attempting recovery from equipment...");
+            Log.Warning("[Roshar] toggleBlade: bladeObject is null, attempting recovery from equipment...");
             abilityComp.bladeObject = pawn.equipment?.AllEquipmentListForReading
-                .FirstOrDefault(e => e.def.defName == CosmereRosharDefs.Cosmere_Roshar_MeleeWeaponShardblade.defName);
+                .FirstOrDefault(e => e.def.defName == Defs.Cosmere_Roshar_MeleeWeaponShardblade.defName);
 
             if (abilityComp.bladeObject == null) {
-                Log.Error("[CosmereRoshar] toggleBlade: Failed to recover bladeObject, aborting toggle.");
+                Log.Error("[Roshar] toggleBlade: Failed to recover bladeObject, aborting toggle.");
                 return;
             }
         }
@@ -64,10 +64,10 @@ public class SpawnEquipment : CompAbilityEffect {
         if (!abilityComp.bladeObject.TryGetComp(out ShardBlade blade)) return;
 
         if (!blade.IsBladeSpawned()) {
-            Log.Message($"[CosmereRoshar] Radiant {pawn.Name} summoned shard blade!");
+            Log.Message($"[Roshar] Radiant {pawn.Name} summoned shard blade!");
             blade.Summon();
         } else {
-            Log.Message($"[CosmereRoshar] Radiant {pawn.Name} dismissed the blade");
+            Log.Message($"[Cosmere.Roshar] Radiant {pawn.Name} dismissed the blade");
             blade.DismissBlade(pawn);
         }
     }

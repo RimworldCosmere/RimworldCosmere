@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Thing;
+namespace Cosmere.Scadrial.Thing;
 
 public class AllomanticVial : ThingWithComps {
     public virtual MetallicArtsMetalDef metal => DefDatabase<MetallicArtsMetalDef>.GetNamed(Stuff.defName);

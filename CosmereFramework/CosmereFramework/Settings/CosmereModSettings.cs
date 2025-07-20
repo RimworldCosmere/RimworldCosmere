@@ -1,8 +1,8 @@
-using CosmereFramework.Listing;
+using Cosmere.Framework.Listing;
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.Settings;
+namespace Cosmere.Framework.Settings;
 
 public abstract class CosmereModSettings : IExposable {
     public abstract string Name { get; }

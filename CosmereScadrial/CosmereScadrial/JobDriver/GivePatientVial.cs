@@ -3,7 +3,7 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.JobDriver;
+namespace Cosmere.Scadrial.JobDriver;
 
 public class GivePatientVial : Verse.AI.JobDriver {
     private const float FeedDurationMultiplier = 1.5f;
@@ -38,16 +38,23 @@ public class GivePatientVial : Verse.AI.JobDriver {
             .FailOn(() => vialHolder != vialHolderInventory?.pawn || vialHolder.IsForbidden(pawn));
         Toil carryVialToPatient = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch);
         // ISSUE: reference to a compiler-generated method
-        yield return Toils_Jump.JumpIf(carryVialFromInventory,
-            () => pawn.inventory != null && pawn.inventory.Contains(TargetThingA));
+        yield return Toils_Jump.JumpIf(
+            carryVialFromInventory,
+            () => pawn.inventory != null && pawn.inventory.Contains(TargetThingA)
+        );
         yield return Toils_Haul.CheckItemCarriedByOtherPawn(vial, TargetIndex.C, goToVialHolder);
         yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).FailOnForbidden(TargetIndex.A);
         yield return Toils_Ingest.PickupIngestible(TargetIndex.A, deliveree);
         yield return Toils_Jump.Jump(carryVialToPatient);
         yield return goToVialHolder;
         yield return Toils_General.Wait(25).WithProgressBarToilDelay(TargetIndex.C);
-        yield return Toils_Haul.TakeFromOtherInventory(vial, pawn.inventory.innerContainer,
-            vialHolderInventory?.innerContainer, job.count, TargetIndex.A);
+        yield return Toils_Haul.TakeFromOtherInventory(
+            vial,
+            pawn.inventory.innerContainer,
+            vialHolderInventory?.innerContainer,
+            job.count,
+            TargetIndex.A
+        );
         yield return carryVialFromInventory;
         yield return carryVialToPatient;
         yield return Toils_Ingest.ChewIngestible(deliveree, FeedDurationMultiplier, TargetIndex.A)

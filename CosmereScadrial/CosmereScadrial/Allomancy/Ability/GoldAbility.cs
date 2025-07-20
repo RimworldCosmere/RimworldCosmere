@@ -1,9 +1,9 @@
-using CosmereScadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Allomancy.Hediff;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.Allomancy.Ability;
+namespace Cosmere.Scadrial.Allomancy.Ability;
 
 public class GoldAbility : AbilitySelfTarget {
     private Pawn? hallucination;

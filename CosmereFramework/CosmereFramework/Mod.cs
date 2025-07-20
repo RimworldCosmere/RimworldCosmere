@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Settings;
-using CosmereFramework.Window;
+using Cosmere.Framework.Settings;
+using Cosmere.Framework.Window;
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework;
+namespace Cosmere.Framework;
 
 public enum LogLevel {
     // ReSharper disable once UnusedMember.Global
@@ -18,7 +18,7 @@ public enum LogLevel {
     Verbose,
 }
 
-public class CosmereFramework : Mod {
+public class Mod : Verse.Mod {
     internal static List<CosmereModSettings> allModSettings = typeof(CosmereModSettings).AllSubclassesNonAbstract()
         .Select(Activator.CreateInstance)
         .Cast<CosmereModSettings>()
@@ -26,7 +26,7 @@ public class CosmereFramework : Mod {
 
     private SettingsWindow? settingsWindow;
 
-    public CosmereFramework(ModContentPack content) : base(content) {
+    public Mod(ModContentPack content) : base(content) {
         GetSettings<CosmereSettings>();
     }
 

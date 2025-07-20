@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.Comp.Map;
+namespace Cosmere.Framework.Comp.Map;
 
 public record struct LineToRender {
     public readonly Verse.Thing from;

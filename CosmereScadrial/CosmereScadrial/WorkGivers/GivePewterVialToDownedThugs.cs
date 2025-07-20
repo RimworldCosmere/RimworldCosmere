@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereResources;
-using CosmereResources.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Resources;
+using Cosmere.Resources.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.WorkGivers;
+namespace Cosmere.Scadrial.WorkGivers;
 
 public class GivePewterVialToDownedThugs : WorkGiver_Scanner {
     private MetalDef pewter => MetalDefOf.Pewter;

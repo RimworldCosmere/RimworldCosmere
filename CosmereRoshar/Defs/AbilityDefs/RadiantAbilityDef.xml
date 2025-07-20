@@ -7,14 +7,14 @@
   </AbilityCategoryDef>
 
   <AbilityDef Name="RadiantBase" Abstract="True">
-    <abilityClass>CosmereRoshar.Combat.Abilities.RadiantAbility</abilityClass> <!-- Custom ability class -->
+    <abilityClass>Cosmere.Roshar.Combat.Abilities.RadiantAbility</abilityClass> <!-- Custom ability class -->
     <category>Cosmere_Roshar_Radiant</category> <!-- Custom category for Radiant abilities -->
     <statBases>
       <Ability_Duration>0</Ability_Duration> <!-- Base duration -->
     </statBases>
     <warmupSound>PsycastCastLoop</warmupSound> <!-- Custom sound for radiant abilities -->
     <verbProperties>
-      <verbClass>CosmereRoshar.Combat.Abilities.VerbCastRadiant</verbClass> <!-- Custom verb class -->
+      <verbClass>Cosmere.Roshar.Combat.Abilities.VerbCastRadiant</verbClass> <!-- Custom verb class -->
       <range>24.9</range>
       <requireLineOfSight>True</requireLineOfSight>
       <warmupTime>1</warmupTime>
@@ -44,7 +44,7 @@
     </verbProperties>
     <comps>
         <li>
-            <compClass>CosmereRoshar.Combat.Abilities.Implementations.ToggleStormlight</compClass>
+            <compClass>Cosmere.Roshar.Combat.Abilities.Implementations.ToggleStormlight</compClass>
         </li>
     </comps>
 </AbilityDef>
@@ -67,7 +67,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SpawnEquipmentProperties">
+        <li Class="Cosmere.Roshar.Combat.Abilities.Implementations.SpawnEquipmentProperties">
             <thingDef>Cosmere_Roshar_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
         </li>
         <li Class="CompProperties_AbilityFleckOnTarget">
@@ -97,7 +97,7 @@
     </verbProperties>
 
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.BreakBondProperties">
+        <li Class="Cosmere.Roshar.Combat.Abilities.Implementations.BreakBondProperties">
             <thingDef>Cosmere_Roshar_MeleeWeapon_Shardblade</thingDef> <!-- Ensure this matches your XML weapon defName -->
         </li>
     </comps>
@@ -110,7 +110,7 @@
   <thingClass>PawnFlyer</thingClass>
     <pawnFlyer>
       <!-- Use your custom worker if you want (or the default PawnFlyerWorker) -->
-      <workerClass>CosmereRoshar.PawnFlyer.Worker.LashUp</workerClass>
+      <workerClass>Cosmere.Roshar.PawnFlyer.Worker.LashUp</workerClass>
 
       <!-- Minimum flight time (in seconds) -->
       <flightDurationMin>0.5</flightDurationMin>
@@ -146,7 +146,7 @@
     </verbProperties>
 
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.LashUpwardProperties">
+        <li Class="Cosmere.Roshar.Combat.Abilities.Implementations.LashUpwardProperties">
             <thingDef>Cosmere_Roshar_lashingUp</thingDef> 
             <stormLightCost>500</stormLightCost>
         </li>
@@ -162,7 +162,7 @@
   <thingClass>PawnFlyer</thingClass>
     <pawnFlyer>
       <!-- Use your custom worker if you want (or the default PawnFlyerWorker) -->
-      <workerClass>CosmereRoshar.PawnFlyer.Worker.Flight</workerClass>
+      <workerClass>Cosmere.Roshar.PawnFlyer.Worker.Flight</workerClass>
 
       <!-- Minimum flight time (in seconds) -->
       <flightDurationMin>0.5</flightDurationMin>
@@ -194,7 +194,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeGravitationProperties">
+        <li Class="Cosmere.Roshar.Combat.Abilities.Implementations.SurgeGravitationProperties">
             <thingDef>Cosmere_Roshar_WindRunnerFlight</thingDef> <!-- Ensure this matches your XML weapon defName -->
             <stormLightCost>15</stormLightCost>
         </li>
@@ -219,7 +219,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgePlantGrowthProperties">
+        <li Class="Cosmere.Roshar.Combat.Abilities.Implementations.SurgePlantGrowthProperties">
             <stormLightCost>25</stormLightCost>
         </li>
     </comps>
@@ -243,7 +243,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeProgressionProperties">
+        <li Class="Cosmere.Roshar.Combat.Abilities.Implementations.SurgeProgressionProperties">
             <stormLightCost>50</stormLightCost>
         </li>
     </comps>
@@ -267,7 +267,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeAbrasionProperties">
+        <li Class="Cosmere.Roshar.Combat.Abilities.Implementations.SurgeAbrasionProperties">
         </li>
     </comps>
 </AbilityDef>
@@ -290,7 +290,7 @@
         </targetParams>
     </verbProperties>
     <comps>
-        <li Class="CosmereRoshar.Combat.Abilities.Implementations.SurgeDivisionProperties">
+        <li Class="Cosmere.Roshar.Combat.Abilities.Implementations.SurgeDivisionProperties">
              <stormLightCost>500</stormLightCost>
         </li>
     </comps>

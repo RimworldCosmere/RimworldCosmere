@@ -1,8 +1,8 @@
-﻿using CosmereRoshar.Combat.Abilities.Implementations;
+﻿using Cosmere.Roshar.Combat.Abilities.Implementations;
 using HarmonyLib;
 using Verse;
 
-namespace CosmereRoshar.Patches;
+namespace Cosmere.Roshar.Patches;
 
 [HarmonyPatch(typeof(Pawn_EquipmentTracker))]
 public static class ShardbladePatches {
@@ -30,7 +30,7 @@ public static class ShardbladePatches {
         if (newEq == null) return;
         if (!newEq.TryGetComp(out ShardBlade blade)) return;
         if (!blade.IsBonded(null)) return;
-        if (StormlightUtilities.PawnHasAbility(pawn, CosmereRosharDefs.Cosmere_Roshar_SummonShardblade)) return;
+        if (StormlightUtilities.PawnHasAbility(pawn, Defs.Cosmere_Roshar_SummonShardblade)) return;
         Log.Message($"[stormlight mod] {pawn.Name} picked up an unbounded shardblade!");
         blade.BondWithPawn(pawn, true);
     }

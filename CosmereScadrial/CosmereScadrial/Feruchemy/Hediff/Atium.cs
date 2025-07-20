@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using CosmereResources;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Resources;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = CosmereFramework.Logger;
+using Logger = Cosmere.Framework.Logger;
 
-namespace CosmereScadrial.Feruchemy.Hediff;
+namespace Cosmere.Scadrial.Feruchemy.Hediff;
 
 public class Atium : HediffWithComps {
     private const int TicksPerDay = GenDate.TicksPerDay;
@@ -59,7 +59,9 @@ public class Atium : HediffWithComps {
         float ageYears = pawn.ageTracker.AgeBiologicalYearsFloat;
         if (!isTapping ||
             !(ageYears <= 55f) ||
-            !pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta) && Rand.Chance(1 / 100f)) return;
+            !pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta) && Rand.Chance(1 / 100f)) {
+            return;
+        }
 
         // Remove age-related Hediffs
         AgeConditions.Shuffle();

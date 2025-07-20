@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp.Fabrials;
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Roshar.Comp.Fabrials;
+using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.GameCondition;
+namespace Cosmere.Roshar.GameCondition;
 
 public class Highstorm : RimWorld.GameCondition {
     private Random mRand = new Random();
@@ -24,7 +24,7 @@ public class Highstorm : RimWorld.GameCondition {
         base.GameConditionTick();
         ModExtension.Highstorm? ext = def.GetModExtension<ModExtension.Highstorm>();
         if (ext == null) return;
-        if (CosmereRoshar.enableHighstormPushing && StormShelterManager.FirstTickOfHighstorm) {
+        if (Mod.enableHighstormPushing && StormShelterManager.FirstTickOfHighstorm) {
             Map currentMap = Find.CurrentMap;
             if (currentMap != null) {
                 StormShelterManager.RebuildShelterCache(currentMap);
@@ -35,7 +35,7 @@ public class Highstorm : RimWorld.GameCondition {
 
         if (Find.TickManager.TicksGame % 8 == 0) {
             TryToInfuseThings();
-            if (CosmereRoshar.settings.enableHighstormPushing) {
+            if (Mod.settings.enableHighstormPushing) {
                 MoveItem();
             }
         }
@@ -48,13 +48,13 @@ public class Highstorm : RimWorld.GameCondition {
         foreach (Verse.Thing thing in things) {
             if (thing.TryGetComp(out Stormlight stormlight)) {
                 stormlight.InfuseStormlight(5f);
-            } else if (thing.def == CosmereRosharDefs.Cosmere_Roshar_ApparelSpherePouch &&
+            } else if (thing.def == Defs.Cosmere_Roshar_ApparelSpherePouch &&
                        !thing.Position.Roofed(thing.Map)) {
                 thing.TryGetComp<SpherePouch>()?.InfuseStormlight(5f);
-            } else if (thing.def == CosmereRosharDefs.Cosmere_Roshar_SphereLampWall &&
+            } else if (thing.def == Defs.Cosmere_Roshar_SphereLampWall &&
                        !thing.Position.Roofed(thing.Map)) {
                 thing.TryGetComp<StormlightLamps>()?.InfuseStormlight(5f);
-            } else if (thing.def == CosmereRosharDefs.Cosmere_Roshar_ApparelFabrialPainrialDiminisher &&
+            } else if (thing.def == Defs.Cosmere_Roshar_ApparelFabrialPainrialDiminisher &&
                        !thing.Position.Roofed(thing.Map)) {
                 thing.TryGetComp<ApparelFabrialDiminisher>()?.InfuseStormlight(5f);
             }
@@ -88,7 +88,7 @@ public class Highstorm : RimWorld.GameCondition {
                             item
                         )
                     );
-                    if (CosmereRoshar.enableHighstormPushing && building.Destroyed) {
+                    if (Mod.enableHighstormPushing && building.Destroyed) {
                         StormShelterManager.RebuildShelterCache(itemMap);
                     }
                 }

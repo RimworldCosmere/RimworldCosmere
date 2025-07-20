@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereResources;
-using CosmereResources.Def;
-using CosmereResources.DefModExtension;
+using Cosmere.Resources;
+using Cosmere.Resources.Def;
+using Cosmere.Resources.DefModExtension;
 using RimWorld;
 using Verse;
-using ThingDefOf = CosmereResources.ThingDefOf;
+using ThingDefOf = Cosmere.Resources.ThingDefOf;
 
-namespace CosmereCore.Util;
+namespace Cosmere.Core.Util;
 
 public static class MetalDetector {
     private static readonly Dictionary<RecipeDef, bool> MetalRecipeCache = new Dictionary<RecipeDef, bool>();

@@ -1,27 +1,28 @@
 using System.Reflection;
-using CosmereFramework.Settings;
+using Cosmere.Framework.Settings;
 using Verse;
 
-namespace CosmereFramework;
+namespace Cosmere.Framework;
 
 public sealed class CosmereSettings : ModSettings {
     public override void ExposeData() {
-        foreach (CosmereModSettings modSettings in CosmereFramework.cosmereSettings) {
+        foreach (CosmereModSettings modSettings in Framework.Mod.cosmereSettings) {
             modSettings.ExposeData();
         }
     }
 
     public static bool TryGetRaw(string modId, string key, out object? value) {
         CosmereModSettings? modSettings =
-            CosmereFramework.cosmereSettings.FirstOrDefault(m => m.GetType().Assembly.GetName().Name.Contains(modId));
+            Framework.Mod.cosmereSettings.FirstOrDefault(m => m.GetType().Assembly.GetName().Name.Contains(modId));
 
         value = null;
         if (modSettings == null) return false;
 
         FieldInfo? field = modSettings.GetType()
             .GetField(key, BindingFlags.Public | BindingFlags.Instance);
-        if (field == null)
+        if (field == null) {
             return false;
+        }
 
         value = field.GetValue(modSettings);
         return true;

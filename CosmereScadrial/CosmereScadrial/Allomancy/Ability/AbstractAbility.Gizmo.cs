@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using CosmereScadrial.Extension;
+using Cosmere.Scadrial.Extension;
 
-namespace CosmereScadrial.Allomancy.Ability;
+namespace Cosmere.Scadrial.Allomancy.Ability;
 
 public abstract partial class AbstractAbility {
     public override bool GizmoDisabled(out string reason) {

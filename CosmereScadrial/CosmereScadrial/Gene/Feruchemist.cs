@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Feruchemy.Comp.Thing;
-using CosmereScadrial.Gizmo;
-using CosmereScadrial.Util;
+using Cosmere.Scadrial.Feruchemy.Comp.Thing;
+using Cosmere.Scadrial.Gizmo;
+using Cosmere.Scadrial.Util;
 using UnityEngine;
 using Verse;
-using Logger = CosmereFramework.Logger;
 
-namespace CosmereScadrial.Gene;
+namespace Cosmere.Scadrial.Gene;
 
 public class Feruchemist : Metalborn {
     public static readonly float AmountPerRareTick = 1 / 18f;

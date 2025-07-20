@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Verse;
 
-namespace CosmereScadrial.Gene;
+namespace Cosmere.Scadrial.Gene;
 
 public class DormantMetalborn : Verse.Gene {
     public List<GeneDef> genesToAdd = [];

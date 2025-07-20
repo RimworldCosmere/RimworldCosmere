@@ -4,7 +4,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class ThingExtension {
     public static bool CanBeEquipped(this Thing thing) {

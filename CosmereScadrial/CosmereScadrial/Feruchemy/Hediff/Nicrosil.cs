@@ -1,12 +1,12 @@
-using CosmereCore.Need;
-using CosmereResources;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Core.Need;
+using Cosmere.Resources;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using UnityEngine;
 using Verse;
-using Logger = CosmereFramework.Logger;
+using Logger = Cosmere.Framework.Logger;
 
-namespace CosmereScadrial.Feruchemy.Hediff;
+namespace Cosmere.Scadrial.Feruchemy.Hediff;
 
 public class Nicrosil : HediffWithComps {
     protected bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapNicrosil);

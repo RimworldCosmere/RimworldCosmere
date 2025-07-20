@@ -1,6 +1,6 @@
 using Verse;
 
-namespace CosmereRoshar.PawnFlyer.Worker;
+namespace Cosmere.Roshar.PawnFlyer.Worker;
 
 public class Flight(PawnFlyerProperties props) : PawnFlyerWorker(props) {
     // Then override these two methods:

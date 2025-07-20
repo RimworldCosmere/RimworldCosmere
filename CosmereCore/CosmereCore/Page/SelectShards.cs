@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Def;
-using CosmereCore.Util;
+using Cosmere.Core.Def;
+using Cosmere.Core.Util;
 using UnityEngine;
 using Verse;
 
-namespace CosmereCore.Page;
+namespace Cosmere.Core.Page;
 
 public class SelectShards : RimWorld.Page {
     private Vector2 scrollPos = Vector2.zero;
@@ -25,8 +25,10 @@ public class SelectShards : RimWorld.Page {
             Widgets.Label(inRect.TopPartPixels(TopMargin), "CC_SelectShard_Label".Translate());
 
         List<IGrouping<string?, ShardDef>> grouped = DefDatabase<ShardDef>.AllDefsListForReading.GroupBy(s => s.planet)
-            .OrderBy(g => g.Key == "N/A" ? 0 : 1)
-            .ThenBy(g => g.Key)
+            .OrderBy(g => g.Key == "N/A" ? 0 : 1
+            )
+            .ThenBy(g => g.Key
+            )
             .ToList();
 
         float totalHeight = grouped.Sum(g => g.Count() * RowHeight + PlanetHeaderHeight);

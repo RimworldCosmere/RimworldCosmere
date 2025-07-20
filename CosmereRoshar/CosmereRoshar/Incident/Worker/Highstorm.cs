@@ -1,7 +1,7 @@
 ﻿using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Incident.Worker;
+namespace Cosmere.Roshar.Incident.Worker;
 
 public class Highstorm : IncidentWorker {
     protected override bool TryExecuteWorker(IncidentParms parms) {

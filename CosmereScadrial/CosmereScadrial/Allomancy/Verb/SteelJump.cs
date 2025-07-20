@@ -1,7 +1,7 @@
-using CosmereScadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Ability;
 using RimWorld;
 
-namespace CosmereScadrial.Allomancy.Verb;
+namespace Cosmere.Scadrial.Allomancy.Verb;
 
 public class SteelJump : Verb_CastAbilityJump {
     private new AbstractAbility ability => (AbstractAbility)verbTracker.directOwner;

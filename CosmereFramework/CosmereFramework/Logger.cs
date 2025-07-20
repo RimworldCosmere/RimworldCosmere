@@ -5,10 +5,10 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using Verse;
-using static CosmereFramework.CosmereFramework;
+using static Cosmere.Framework.Mod;
 using Debug = UnityEngine.Debug;
 
-namespace CosmereFramework;
+namespace Cosmere.Framework;
 
 public static class Logger {
     private static readonly Dictionary<LogLevel, Color> LOGColors = new Dictionary<LogLevel, Color> {
@@ -38,7 +38,7 @@ public static class Logger {
             for (int i = 0; i < stackTrace.FrameCount; i++) {
                 StackFrame? frame = stackTrace.GetFrame(i); // 1 = immediate caller
                 MethodBase? method = frame?.GetMethod();
-                if (method?.DeclaringType?.FullName?.Contains("CosmereFramework.Logger") ?? false) {
+                if (method?.DeclaringType?.FullName?.Contains("Cosmere.Framework.Logger") ?? false) {
                     continue;
                 }
 

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using Verse;
-using ThingDefOf = CosmereResources.ThingDefOf;
+using ThingDefOf = Cosmere.Resources.ThingDefOf;
 
-namespace CosmereCore.Util;
+namespace Cosmere.Core.Util;
 
 public static class InvestitureDetector {
     public static bool HasInvestiture(Thing thing) {

@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using CosmereFramework.Extension;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Hediff;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Hediff;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Def;
+namespace Cosmere.Scadrial.Def;
 
 public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
     public bool applyDragOnTarget = false;

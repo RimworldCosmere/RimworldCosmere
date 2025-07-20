@@ -2,7 +2,7 @@ using System;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.StatPart;
+namespace Cosmere.Scadrial.StatPart;
 
 public class PoweredOrFueled : RimWorld.StatPart {
     private Tuple<bool, bool, bool> GetPowerAndFuel(StatRequest req) {

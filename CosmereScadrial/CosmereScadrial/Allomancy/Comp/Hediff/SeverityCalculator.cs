@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Hediff;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Comp.Hediff;
+namespace Cosmere.Scadrial.Allomancy.Comp.Hediff;
 
 public class SeverityCalculatorProperties : HediffCompProperties {
     public float decayAmount = 0.05f;

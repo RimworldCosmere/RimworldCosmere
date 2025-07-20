@@ -4,7 +4,7 @@
         <defName>Cosmere_Scadrial_Hediff_InvestitureShield</defName>
         <label>shielded from investiture</label>
         <description>The Allomancer is immune to external investiture (via Aluminum or Chromium). All other metal reserves were instantly consumed on activation.</description>
-        <hediffClass>CosmereScadrial.Allomancy.Hediff.InvestitureShieldHediff</hediffClass>
+        <hediffClass>Cosmere.Scadrial.Allomancy.Hediff.InvestitureShieldHediff</hediffClass>
         <comps>
         </comps>
     </HediffDef>

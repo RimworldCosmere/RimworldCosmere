@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using CosmereFramework.Extension;
-using CosmereFramework.Util;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Gene;
+using Cosmere.Framework.Extension;
+using Cosmere.Framework.Util;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
 
-namespace CosmereScadrial.Gizmo;
+namespace Cosmere.Scadrial.Gizmo;
 
 [StaticConstructorOnStartup]
 public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility ability)

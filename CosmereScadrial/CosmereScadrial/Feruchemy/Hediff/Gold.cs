@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework;
-using CosmereResources;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Framework;
+using Cosmere.Resources;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using Verse;
 
-namespace CosmereScadrial.Feruchemy.Hediff;
+namespace Cosmere.Scadrial.Feruchemy.Hediff;
 
 public class Gold : HediffWithComps {
     protected bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapGold);

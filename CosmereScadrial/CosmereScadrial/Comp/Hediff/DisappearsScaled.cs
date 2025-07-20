@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Comp.Hediff;
+namespace Cosmere.Scadrial.Comp.Hediff;
 
 public class DisappearsScaledProperties : HediffCompProperties {
     public int baseTicks = GenDate.TicksPerHour;

@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CosmereFramework.Extension;
-using CosmereFramework.Util;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Def;
-using CosmereScadrial.Gene;
+using Cosmere.Framework.Extension;
+using Cosmere.Framework.Util;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Gizmo;
+namespace Cosmere.Scadrial.Gizmo;
 
 public enum Status {
     Green,

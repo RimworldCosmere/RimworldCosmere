@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Page;
+using Cosmere.Core.Page;
 using HarmonyLib;
 using RimWorld;
 using Verse;
-using Shards = CosmereCore.DefModExtension.Shards;
+using DefModExtension_Shards = Cosmere.Core.DefModExtension.Shards;
 
-namespace CosmereCore.Patch;
+namespace Cosmere.Core.Patch;
 
 [HarmonyPatch(typeof(PageUtility), nameof(PageUtility.StitchedPages))]
 public static class InsertShardSelection {
@@ -15,7 +15,7 @@ public static class InsertShardSelection {
             string? scenarioName = Find.Scenario?.name;
             ScenarioDef? def =
                 DefDatabase<ScenarioDef>.AllDefsListForReading.FirstOrDefault(x => x.label == scenarioName);
-            Shards? shards = def?.GetModExtension<Shards>();
+            DefModExtension_Shards? shards = def?.GetModExtension<DefModExtension_Shards>();
 
             return shards == null || shards.allowChange;
         }

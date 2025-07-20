@@ -1,10 +1,10 @@
 ﻿using System;
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Roshar.Comp.Thing;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Patches.Highstorm;
+namespace Cosmere.Roshar.Patches.Highstorm;
 
 [HarmonyPatch(typeof(Pawn))]
 [HarmonyPatch("TickInterval")]
@@ -39,7 +39,7 @@ public static class PawnHighstormPushPatch {
             }
 
             if (Find.TickManager.TicksGame % 100 == 0 && StormlightUtilities.IsPawnEligibleForDoctoring(__instance)) {
-                TryToBondPawn(__instance, CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner);
+                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_RadiantWindrunner);
             }
 
             return;
@@ -54,15 +54,15 @@ public static class PawnHighstormPushPatch {
         switch (__instance.Map.weatherManager.curWeather.defName) {
             case "Fog" or "FoggyRain" when
                 StormlightUtilities.IsPawnEligibleForDoctoring(__instance):
-                TryToBondPawn(__instance, CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantTruthwatcher);
+                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher);
                 break;
             case "Rain" or "Clear" when
                 StormlightUtilities.IsNearGrowingPlants(__instance) &&
                 StormlightUtilities.IsPawnEligibleForDoctoring(__instance):
-                TryToBondPawn(__instance, CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantEdgedancer);
+                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_RadiantEdgedancer);
                 break;
             case "DryThunderstorm" or "RainyThunderstorm":
-                TryToBondPawn(__instance, CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantSkybreaker); break;
+                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_RadiantSkybreaker); break;
         }
     }
 
@@ -83,7 +83,7 @@ public static class PawnHighstormPushPatch {
         int number = MRand.Next(1, upperNumber);
         if (number != 1) return;
 
-        if (traitDef == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantWindrunner) {
+        if (traitDef == Defs.Cosmere_Roshar_Trait_RadiantWindrunner) {
             StormlightUtilities.SpeakOaths(
                 pawn,
                 pawnStats,
@@ -91,7 +91,7 @@ public static class PawnHighstormPushPatch {
                 $"{pawn.NameShortColored} " + WindrunnerBondText,
                 "A Whisper in the Mind.."
             );
-        } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantTruthwatcher) {
+        } else if (traitDef == Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher) {
             StormlightUtilities.SpeakOaths(
                 pawn,
                 pawnStats,
@@ -99,7 +99,7 @@ public static class PawnHighstormPushPatch {
                 $"{pawn.NameShortColored} " + TruthwatcherBondText,
                 "A Whisper in the Mind.."
             );
-        } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantEdgedancer) {
+        } else if (traitDef == Defs.Cosmere_Roshar_Trait_RadiantEdgedancer) {
             StormlightUtilities.SpeakOaths(
                 pawn,
                 pawnStats,
@@ -107,7 +107,7 @@ public static class PawnHighstormPushPatch {
                 $"{pawn.NameShortColored} " + EdgedancerBondText,
                 "A Whisper in the Mind.."
             );
-        } else if (traitDef == CosmereRosharDefs.Cosmere_Roshar_Trait_RadiantSkybreaker) {
+        } else if (traitDef == Defs.Cosmere_Roshar_Trait_RadiantSkybreaker) {
             StormlightUtilities.SpeakOaths(
                 pawn,
                 pawnStats,
@@ -156,7 +156,7 @@ public static class PawnHighstormPushPatch {
         }
 
         bool isRadiant = instance.story?.traits.allTraits.Any(StormlightUtilities.IsRadiant) ?? false;
-        if (CosmereRoshar.enableHighstormDamage || instance.RaceProps.Humanlike && instance.Faction.IsPlayer) {
+        if (Mod.enableHighstormDamage || instance.RaceProps.Humanlike && instance.Faction.IsPlayer) {
             instance.TakeDamage(new DamageInfo(DamageDefOf.Blunt, 1));
         }
 

@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
-using CosmereScadrial.Util;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
+using Cosmere.Scadrial.Util;
 using LudeonTK;
 using RimWorld;
 using Verse;
-using GeneUtility = CosmereScadrial.Util.GeneUtility;
+using GeneUtility = Cosmere.Scadrial.Util.GeneUtility;
 
-namespace CosmereScadrial.Dev;
+namespace Cosmere.Scadrial.Dev;
 
 [StaticConstructorOnStartup]
 public static class ScadrianUtility {

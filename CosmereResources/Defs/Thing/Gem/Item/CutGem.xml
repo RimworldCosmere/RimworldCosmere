@@ -53,11 +53,11 @@
         </stuffProps>
         
         <comps>
-            <li MayRequire="CryptikLemur.Cosmere.Roshar" Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+            <li MayRequire="CryptikLemur.Cosmere.Roshar" Class="Cosmere.Roshar.Comp.Thing.StormlightProperties">
                 <maxInvestiture>20</maxInvestiture>
                 <drainRate>0.25</drainRate>
             </li>
-            <!--<li MayRequire="CryptikLemur.Cosmere.Roshar" Class="CosmereRoshar.Comp.Thing.RawGemstoneProperties"/>-->
+            <!--<li MayRequire="CryptikLemur.Cosmere.Roshar" Class="Cosmere.Roshar.Comp.Thing.RawGemstoneProperties"/>-->
             <li>
                 <compClass>CompQuality</compClass>
             </li>

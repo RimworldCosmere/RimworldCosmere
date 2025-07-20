@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Tab;
+namespace Cosmere.Roshar.Tab;
 
 public class SpherePouch : ITab {
     private static readonly Vector2 WinSize = new Vector2(300f, 480f);

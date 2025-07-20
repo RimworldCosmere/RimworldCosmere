@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Util;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Comp.Game;
-using CosmereScadrial.Allomancy.Hediff;
-using CosmereScadrial.Def;
-using CosmereScadrial.Util;
+using Cosmere.Core.Util;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Comp.Game;
+using Cosmere.Scadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.JobDriver;
+namespace Cosmere.Scadrial.JobDriver;
 
 public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
     private Material lineMaterial => MaterialPool.MatFrom(

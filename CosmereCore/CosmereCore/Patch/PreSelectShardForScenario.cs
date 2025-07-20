@@ -1,11 +1,11 @@
-﻿using CosmereCore.Util;
-using CosmereFramework;
+﻿using Cosmere.Core.Util;
+using Cosmere.Framework;
 using HarmonyLib;
 using RimWorld;
 using Verse;
-using Shards = CosmereCore.DefModExtension.Shards;
+using Shards = Cosmere.Core.DefModExtension.Shards;
 
-namespace CosmereCore.Patch;
+namespace Cosmere.Core.Patch;
 
 [HarmonyPatch(typeof(Scenario), nameof(Scenario.PreConfigure))]
 public static class PreSelectShardForScenario {
@@ -18,7 +18,7 @@ public static class PreSelectShardForScenario {
         if (shards == null) return;
 
         if (shards.shards.Count == 0) {
-            Logger.Message($"[CosmereCore] No matching shard system found for {def?.defName}");
+            Logger.Message($"[Core] No matching shard system found for {def?.defName}");
             return;
         }
 

@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Extension;
-using CosmereCore.Need;
-using CosmereFramework.Extension;
-using CosmereResources;
-using CosmereScadrial.Allomancy;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Thing;
-using CosmereScadrial.Util;
+using Cosmere.Core.Extension;
+using Cosmere.Core.Need;
+using Cosmere.Framework.Extension;
+using Cosmere.Resources;
+using Cosmere.Scadrial.Allomancy;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Thing;
+using Cosmere.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = CosmereFramework.Logger;
+using Logger = Cosmere.Framework.Logger;
 
-namespace CosmereScadrial.Gene;
+namespace Cosmere.Scadrial.Gene;
 
 public class Allomancer : Metalborn {
     public const float MinMetalAmount = 0;
@@ -79,7 +79,7 @@ public class Allomancer : Metalborn {
     }
 
     private void UpdateTimeDilationFactor() {
-        timeDilationFactor = pawn.GetStatValue(CosmereCore.StatDefOf.Cosmere_Time_Dilation_Factor);
+        timeDilationFactor = pawn.GetStatValue(Core.StatDefOf.Cosmere_Time_Dilation_Factor);
     }
 
     public override void TickInterval(int delta) {

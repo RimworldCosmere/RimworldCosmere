@@ -1,9 +1,9 @@
-using CosmereFramework.Extension;
-using CosmereResources.Def;
+using Cosmere.Framework.Extension;
+using Cosmere.Resources.Def;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Def;
+namespace Cosmere.Scadrial.Def;
 
 public enum AllomancyAxis {
     None,

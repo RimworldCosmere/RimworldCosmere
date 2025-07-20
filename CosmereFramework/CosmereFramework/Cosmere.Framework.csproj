@@ -1,9 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
+        <Description>Framework for Cosmere releated Rimworld Mods.</Description>
+
         <Authors>CryptikLemur</Authors>
+        <Product>RimworldCosmere</Product>
+        <CurrentDate>$([System.DateTime]::Now.ToString(yyyy/MM/dd HH:mm:ss))</CurrentDate>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <OutputType>Library</OutputType>
         <OutDir>..\Assemblies\</OutDir>
         <Nullable>enable</Nullable>
         <EnableNETAnalyzers>True</EnableNETAnalyzers>
@@ -26,8 +31,7 @@
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <RootNamespace>CosmereCore</RootNamespace>
-        <AssemblyName>CosmereCore</AssemblyName>
+        <PackageId>Cosmere.Framework</PackageId>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -50,13 +54,10 @@
     </ItemDefinitionGroup>
 
     <ItemGroup>
-        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518"/>
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4523"/>
         <PackageReference Include="Lib.Harmony" Version="2.3.6"/>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-
-        <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\CosmereFramework.csproj"/>
-        <ProjectReference Include="..\..\CosmereResources\CosmereResources\CosmereResources.csproj"/>
     </ItemGroup>
 </Project>

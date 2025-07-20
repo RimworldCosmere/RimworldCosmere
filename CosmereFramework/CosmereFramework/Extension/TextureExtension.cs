@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class TextureExtension {
     public static Texture2D Overlay(this Texture2D orig, Texture2D overlay, float alpha = 1f) {
@@ -35,7 +35,12 @@ public static class TextureExtension {
 
     private static Texture2D MakeTexture(int width, int height, Action<RenderTexture> draw) {
         RenderTexture? render = RenderTexture.GetTemporary(
-            width, height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
+            width,
+            height,
+            0,
+            RenderTextureFormat.Default,
+            RenderTextureReadWrite.Linear
+        );
 
         // Apply drawing function
         draw(render);

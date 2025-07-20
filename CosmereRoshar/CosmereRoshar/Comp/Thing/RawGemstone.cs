@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Verse;
 
-namespace CosmereRoshar.Comp.Thing;
+namespace Cosmere.Roshar.Comp.Thing;
 
 public class RawGemstoneProperties : CompProperties {
     public int spawnChance;

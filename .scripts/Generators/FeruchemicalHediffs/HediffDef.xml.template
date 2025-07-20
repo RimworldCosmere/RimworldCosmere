@@ -5,7 +5,7 @@
         <label>compounding {{metal.name}}</label>
         <description>Rapidly stores {{metal.feruchemy.attribute}} by burning a metalmind of {{title metal.name}} .</description>
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
                 <metal>{{defName metal.name}}</metal>
             </li>
         </modExtensions>
@@ -13,7 +13,7 @@
     {{#with metal.feruchemy.store}}
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_Store{{defName ../metal.name}}</defName>{{#if ../metal.feruchemy.customHediffClass}}
-        <hediffClass>CosmereScadrial.Feruchemy.Hediff.{{defName ../metal.name}}</hediffClass>{{/if}}
+        <hediffClass>Cosmere.Scadrial.Feruchemy.Hediff.{{defName ../metal.name}}</hediffClass>{{/if}}
         <label>storing {{title ../metal.name}}</label>
         <description>{{description}}</description>
         <stages>
@@ -50,7 +50,7 @@
             {{/times}}
         </stages>
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
                 <metal>{{defName ../metal.name}}</metal>
             </li>
         </modExtensions>
@@ -59,7 +59,7 @@
     {{#with metal.feruchemy.tap}}
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_FeruchemyBase">
         <defName>Cosmere_Scadrial_Hediff_Tap{{defName ../metal.name}}</defName>
-        {{#if ../metal.feruchemy.customHediffClass}}<hediffClass>CosmereScadrial.Feruchemy.Hediff.{{defName ../metal.name}}</hediffClass>{{/if}}
+        {{#if ../metal.feruchemy.customHediffClass}}<hediffClass>Cosmere.Scadrial.Feruchemy.Hediff.{{defName ../metal.name}}</hediffClass>{{/if}}
         <label>tapping {{title ../metal.name}}</label>
         <description>{{description}}</description>
         <stages>
@@ -96,7 +96,7 @@
             {{/times}}
         </stages>
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
                 <metal>{{defName ../metal.name}}</metal>
             </li>
         </modExtensions>

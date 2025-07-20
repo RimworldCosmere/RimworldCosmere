@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Extension;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Util;
+namespace Cosmere.Scadrial.Util;
 
 public static class MetalbornUtility {
     public static bool HasAnyMetalbornGene(Pawn? pawn) {

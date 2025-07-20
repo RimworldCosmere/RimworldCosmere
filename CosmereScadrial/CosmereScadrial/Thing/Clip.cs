@@ -1,9 +1,9 @@
-using CosmereScadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Ability;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Thing;
+namespace Cosmere.Scadrial.Thing;
 
 public class Clip : Bullet {
     private int cachedDamageAmount;
@@ -26,8 +26,16 @@ public class Clip : Bullet {
         cachedDamageAmount =
             Mathf.CeilToInt(def.projectile.GetDamageAmount(1f, null) * GetAbility(pawn).GetStrength());
 
-        base.Launch(launcher, origin, usedTarget, intendedTarget, hitFlags, preventFriendlyFire, equipment,
-            targetCoverDef);
+        base.Launch(
+            launcher,
+            origin,
+            usedTarget,
+            intendedTarget,
+            hitFlags,
+            preventFriendlyFire,
+            equipment,
+            targetCoverDef
+        );
     }
 
     private CoinshotAbility GetAbility(Pawn pawn) {

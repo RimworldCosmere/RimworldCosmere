@@ -1,9 +1,9 @@
-using CosmereResources.Def;
-using CosmereScadrial.Def;
+using Cosmere.Resources.Def;
+using Cosmere.Scadrial.Def;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Extension;
+namespace Cosmere.Scadrial.Extension;
 
 public static class MetalDefExtension {
     public static MetallicArtsMetalDef ToMetallicArts(this MetalDef def) {

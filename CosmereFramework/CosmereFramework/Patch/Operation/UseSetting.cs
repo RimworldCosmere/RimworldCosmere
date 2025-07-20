@@ -1,10 +1,10 @@
 #nullable disable
 using System;
 using System.Xml;
-using CosmereFramework.Extension;
+using Cosmere.Framework.Extension;
 using Verse;
 
-namespace CosmereFramework.Patch.Operation;
+namespace Cosmere.Framework.Patch.Operation;
 
 public class UseSetting : PatchOperation {
     public PatchOperation apply;
@@ -23,8 +23,9 @@ public class UseSetting : PatchOperation {
             _ => settingValue?.ToString() ?? "",
         };
 
-        if (!string.Equals(valueStr, expect, StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(valueStr, expect, StringComparison.OrdinalIgnoreCase)) {
             return true;
+        }
 
         return apply.ReplaceTokens(key, valueStr).Apply(xml);
     }

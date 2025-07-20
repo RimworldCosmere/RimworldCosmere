@@ -1,8 +1,8 @@
 #nullable disable
-using CosmereScadrial.Def;
+using Cosmere.Scadrial.Def;
 using RimWorld;
 
-namespace CosmereScadrial;
+namespace Cosmere.Scadrial;
 
 public static partial class MetallicArtsMetalDefOf {
     {{#each metals as | metal |}}

@@ -1,16 +1,16 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereScadrial", "CosmereScadrial\CosmereScadrial\CosmereScadrial.csproj", "{6FB30E55-8B7A-4E51-99D6-D110854999AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Scadrial", "CosmereScadrial\CosmereScadrial\Cosmere.Scadrial.csproj", "{6FB30E55-8B7A-4E51-99D6-D110854999AB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5F1D8C6D-E127-4001-A575-E56D99DF271F} = {5F1D8C6D-E127-4001-A575-E56D99DF271F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereCore", "CosmereCore\CosmereCore\CosmereCore.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Core", "CosmereCore\CosmereCore\Cosmere.Core.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereFramework", "CosmereFramework\CosmereFramework\CosmereFramework.csproj", "{8A92DBAF-9F90-4A16-89E1-B16A11740017}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Framework", "CosmereFramework\CosmereFramework\Cosmere.Framework.csproj", "{8A92DBAF-9F90-4A16-89E1-B16A11740017}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereResources", "CosmereResources\CosmereResources\CosmereResources.csproj", "{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Resources", "CosmereResources\CosmereResources\Cosmere.Resources.csproj", "{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmereRoshar", "CosmereRoshar\CosmereRoshar\CosmereRoshar.csproj", "{158A91D6-55E5-4686-B132-73B43CB1D20C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Roshar", "CosmereRoshar\CosmereRoshar\Cosmere.Roshar.csproj", "{158A91D6-55E5-4686-B132-73B43CB1D20C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

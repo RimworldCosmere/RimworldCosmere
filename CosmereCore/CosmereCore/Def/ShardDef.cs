@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CosmereCore.Def;
+namespace Cosmere.Core.Def;
 
 public class ShardDef : Verse.Def {
     public List<ShardDef> mutuallyExclusiveWith = new List<ShardDef>();

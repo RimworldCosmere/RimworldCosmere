@@ -3,7 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereCore.Patch;
+namespace Cosmere.Core.Patch;
 
 [HarmonyPatch(typeof(CharacterCardUtility), nameof(CharacterCardUtility.PawnCardSize))]
 public static class CharacterCardUtilitySizePatch {

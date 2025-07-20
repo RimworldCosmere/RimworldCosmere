@@ -2,9 +2,9 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = CosmereFramework.Logger;
+using Logger = Cosmere.Framework.Logger;
 
-namespace CosmereScadrial.Patch;
+namespace Cosmere.Scadrial.Patch;
 
 [HarmonyPatch]
 public static class AtiumElectrumSteelPatches {

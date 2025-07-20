@@ -1,6 +1,6 @@
 using Verse;
 
-namespace CosmereCore.Comp.Thing;
+namespace Cosmere.Core.Comp.Thing;
 
 public class PreventDropOnDownedProperties : CompProperties {
     public bool preventDrop = true;

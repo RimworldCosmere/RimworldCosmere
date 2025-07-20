@@ -22,7 +22,7 @@
         </forcedTraits>
 
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
                 <metal>{{capitalize metal.name}}</metal>
             </li>
         </modExtensions>

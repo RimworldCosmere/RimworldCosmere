@@ -1,10 +1,10 @@
-using CosmereFramework.Listing;
-using CosmereFramework.Settings;
-using CosmereFramework.Util;
+using Cosmere.Framework.Listing;
+using Cosmere.Framework.Settings;
+using Cosmere.Framework.Util;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Settings;
+namespace Cosmere.Scadrial.Settings;
 
 public enum MistsFrequency {
     Daily,

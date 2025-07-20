@@ -20,9 +20,9 @@
         <immutable>true</immutable>
         <cacheable>true</cacheable>
         <parts>
-            <li Class="CosmereScadrial.StatPart.IngestedGodMetalGranter" />
-            <li Class="CosmereScadrial.StatPart.GenerationalDecay" />
-            <li Class="CosmereScadrial.StatPart.GearPower" />
+            <li Class="Cosmere.Scadrial.StatPart.IngestedGodMetalGranter" />
+            <li Class="Cosmere.Scadrial.StatPart.GenerationalDecay" />
+            <li Class="Cosmere.Scadrial.StatPart.GearPower" />
         </parts>
     </StatDef>
     
@@ -35,9 +35,9 @@
         <immutable>true</immutable>
         <cacheable>true</cacheable>
         <parts>
-            <li Class="CosmereScadrial.StatPart.IngestedGodMetalGranter" />
-            <li Class="CosmereScadrial.StatPart.GenerationalDecay" />
-            <li Class="CosmereScadrial.StatPart.GearPower" />
+            <li Class="Cosmere.Scadrial.StatPart.IngestedGodMetalGranter" />
+            <li Class="Cosmere.Scadrial.StatPart.GenerationalDecay" />
+            <li Class="Cosmere.Scadrial.StatPart.GearPower" />
         </parts>
     </StatDef>
 </Defs>

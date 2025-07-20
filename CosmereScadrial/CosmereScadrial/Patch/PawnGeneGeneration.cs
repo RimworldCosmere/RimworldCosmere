@@ -1,8 +1,8 @@
 ﻿using HarmonyLib;
 using Verse;
-using GeneUtility = CosmereScadrial.Util.GeneUtility;
+using GeneUtility = Cosmere.Scadrial.Util.GeneUtility;
 
-namespace CosmereScadrial.Patch;
+namespace Cosmere.Scadrial.Patch;
 
 [HarmonyPatch]
 public static class PawnGeneGeneration {

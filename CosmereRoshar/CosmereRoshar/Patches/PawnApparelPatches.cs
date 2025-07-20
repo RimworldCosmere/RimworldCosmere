@@ -1,9 +1,10 @@
-﻿using HarmonyLib;
+﻿using Cosmere.Roshar.Tab;
+using HarmonyLib;
 using RimWorld;
 using Verse;
-using SpherePouch = CosmereRoshar.Comp.Thing.SpherePouch;
+using Thing_SpherePouch = Cosmere.Roshar.Comp.Thing.SpherePouch;
 
-namespace CosmereRoshar.Patches;
+namespace Cosmere.Roshar.Patches;
 
 //Give pawn sphere tab when pouch is equipped
 [HarmonyPatch(typeof(Pawn_ApparelTracker))]
@@ -14,9 +15,9 @@ public static class PawnApparelPatches {
         Pawn pawn = __instance.pawn;
         if (pawn == null || newApparel == null) return;
 
-        if (newApparel.TryGetComp<SpherePouch>() == null) return;
-        if (pawn.def.inspectorTabsResolved.Exists(tab => tab is Tab.SpherePouch)) return;
+        if (newApparel.TryGetComp<Thing_SpherePouch>() == null) return;
+        if (pawn.def.inspectorTabsResolved.Exists(tab => tab is SpherePouch)) return;
 
-        pawn.def.inspectorTabsResolved.Add(new Tab.SpherePouch());
+        pawn.def.inspectorTabsResolved.Add(new SpherePouch());
     }
 }

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Job.Toil;
+using Cosmere.Roshar.Comp.Thing;
+using Cosmere.Roshar.Job.Toil;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Job.Driver;
+namespace Cosmere.Roshar.Job.Driver;
 
 public class AddSphereToLamp : JobDriver_Refuel {
     private const TargetIndex LampIndex = TargetIndex.A;

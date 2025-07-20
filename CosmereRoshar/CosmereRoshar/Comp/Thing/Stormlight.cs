@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Need;
+using Cosmere.Roshar.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Comp.Thing;
+namespace Cosmere.Roshar.Comp.Thing;
 
 public class StormlightProperties : CompProperties {
     public float drainRate;
@@ -86,7 +86,7 @@ public class Stormlight : ThingComp {
         base.PostExposeData();
         Scribe_Values.Look(ref abrasionActiveInt, "abrasionActiveInt");
         Scribe_Values.Look(ref currentStormlightInt, "currentStormlightInt");
-        Scribe_Values.Look(ref breathStormlightInt, CosmereRosharDefs.Cosmere_Roshar_BreathStormlight.defName);
+        Scribe_Values.Look(ref breathStormlightInt, Defs.Cosmere_Roshar_BreathStormlight.defName);
         Scribe_Values.Look(ref isActivatedOnPawn, "isActivatedOnPawn");
         Scribe_Values.Look(ref currentMaxStormlight, "CurrentMaxStormlight");
         Scribe_Values.Look(ref stormlightContainerSize, "StormlightContainerSize", 1f);
@@ -173,7 +173,7 @@ public class Stormlight : ThingComp {
         if (glowerComp == null) return;
 
         if (pawn?.Spawned ?? false) {
-            if (!CosmereRoshar.enablePawnGlow) {
+            if (!Mod.enablePawnGlow) {
                 glowerComp.Props.glowRadius = 0;
                 glowerComp.Props.overlightRadius = 0;
                 parent.Map.glowGrid.DeRegisterGlower(glowerComp);
@@ -314,12 +314,12 @@ public class Stormlight : ThingComp {
         }
 
         if (abrasionActiveInt) {
-            if (pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.Cosmere_Roshar_SurgeAbrasion) == null) {
-                pawn.health.AddHediff(CosmereRosharDefs.Cosmere_Roshar_SurgeAbrasion);
+            if (pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_SurgeAbrasion) == null) {
+                pawn.health.AddHediff(Defs.Cosmere_Roshar_SurgeAbrasion);
                 drainFactor += 500f;
             }
         } else {
-            if (pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.Cosmere_Roshar_SurgeAbrasion) is
+            if (pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_SurgeAbrasion) is
                 { } hediff) {
                 pawn.health.RemoveHediff(hediff);
             }

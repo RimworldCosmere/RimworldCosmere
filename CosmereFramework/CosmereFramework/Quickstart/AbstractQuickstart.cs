@@ -3,19 +3,19 @@ using System.Text;
 using RimWorld;
 using Verse;
 
-namespace CosmereFramework.Quickstart;
+namespace Cosmere.Framework.Quickstart;
 
 public abstract class AbstractQuickstart {
     private TaggedString? cachedDescription;
 
     public abstract TaggedString description { get; }
     public virtual bool pauseAfterLoad => true;
-    public abstract int mapSize { get; }
+    public virtual int mapSize => 75;
 
-    public abstract StorytellerDef storyteller { get; }
-    public abstract DifficultyDef difficulty { get; }
+    public virtual StorytellerDef storyteller => StorytellerDefOf.Cassandra;
+    public virtual DifficultyDef difficulty => DifficultyDefOf.Easy;
 
-    public virtual ScenarioDef? scenario { get; } = null;
+    public virtual ScenarioDef scenario => ScenarioDefOf.Crashlanded;
     public virtual void PostStart() { }
     public virtual void PostLoaded() { }
     public virtual void PostApplyConfiguration() { }

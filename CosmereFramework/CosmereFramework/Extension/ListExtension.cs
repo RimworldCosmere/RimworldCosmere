@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class ListExtension {
     public static bool TryPopFront<T>(this List<T> list, out T element) {

@@ -3,7 +3,7 @@ using System.Xml;
 using HarmonyLib;
 using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class PatchExtension {
     public static PatchOperation ReplaceTokens(this PatchOperation operation, string token, string value) {

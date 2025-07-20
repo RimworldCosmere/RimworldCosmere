@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Gizmo;
+namespace Cosmere.Scadrial.Gizmo;
 
 [StaticConstructorOnStartup]
 public class FeruchemicGeneCommand(
@@ -38,12 +37,14 @@ public class FeruchemicGeneCommand(
             base.DrawTopBar(ref mouseOver);
             return;
         }
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter)) Widgets.Label(topBarRect!.Value, "CS_NoMetalminds".Translate());
+
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter))
+            Widgets.Label(topBarRect!.Value, "CS_NoMetalminds".Translate());
     }
 
     protected override Rect GetTopBarRect() {
         if (gene.metalminds.Count > 0) return base.GetTopBarRect();
-        
+
         return new Rect(
             iconRect!.Value.x + iconRect.Value.width + Padding.x,
             iconRect.Value.y,
@@ -56,7 +57,7 @@ public class FeruchemicGeneCommand(
         if (gene.metalminds.Count == 0) {
             return;
         }
-        
+
         base.DrawBottomBar(ref mouseOverElement);
 
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter)) Widgets.Label(bottomBarRect!.Value, BarLabel);

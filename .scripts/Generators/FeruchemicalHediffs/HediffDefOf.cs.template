@@ -2,7 +2,7 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial;
+namespace Cosmere.Scadrial;
 
 public static partial class HediffDefOf {
     {{#each metals as | metal |}}

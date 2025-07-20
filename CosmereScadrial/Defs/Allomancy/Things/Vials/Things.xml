@@ -7,7 +7,7 @@
     </OrderedTakeGroupDef>
     
     <ThingDef Name="Cosmere_Scadrial_Thing_AllomanticVialBase" ParentName="ResourceBase" Abstract="True">
-        <thingClass>CosmereScadrial.Thing.AllomanticVial</thingClass>
+        <thingClass>Cosmere.Scadrial.Thing.AllomanticVial</thingClass>
         <graphicData>
             <texPath>Things/Item/AllomanticVial</texPath>
             <graphicClass>Graphic_StackCount</graphicClass>
@@ -75,7 +75,7 @@
         </ingestible>
         <orderedTakeGroup>Cosmere_Scadrial_OrderedTakeGroup_AllomanticVial</orderedTakeGroup>
         <comps>
-            <li Class="CosmereCore.Comp.Thing.PreventDropOnDownedProperties"/>
+            <li Class="Cosmere.Core.Comp.Thing.PreventDropOnDownedProperties"/>
         </comps>
     </ThingDef>
     

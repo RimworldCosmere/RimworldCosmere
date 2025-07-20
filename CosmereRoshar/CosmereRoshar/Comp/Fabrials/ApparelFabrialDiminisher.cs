@@ -1,7 +1,7 @@
-﻿using CosmereRoshar.Comp.Thing;
+﻿using Cosmere.Roshar.Comp.Thing;
 using Verse;
 
-namespace CosmereRoshar.Comp.Fabrials;
+namespace Cosmere.Roshar.Comp.Fabrials;
 
 public class ApparelFabrialDiminisher : ThingComp {
     public ThingWithComps? insertedGemstone;
@@ -16,9 +16,9 @@ public class ApparelFabrialDiminisher : ThingComp {
     public override void Notify_Equipped(Pawn pawn) {
         base.Notify_Equipped(pawn);
 
-        if (!pawn.health.hediffSet.HasHediff(CosmereRosharDefs.Cosmere_Roshar_ApparelPainrialDiminisherHediff)) {
+        if (!pawn.health.hediffSet.HasHediff(Defs.Cosmere_Roshar_ApparelPainrialDiminisherHediff)) {
             Verse.Hediff? hediff = HediffMaker.MakeHediff(
-                CosmereRosharDefs.Cosmere_Roshar_ApparelPainrialDiminisherHediff,
+                Defs.Cosmere_Roshar_ApparelPainrialDiminisherHediff,
                 pawn
             );
             pawn.health.AddHediff(hediff);

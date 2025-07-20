@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Need;
-using CosmereFramework.Extension;
-using CosmereFramework.Quickstart;
-using CosmereResources;
-using CosmereResources.Def;
-using CosmereScadrial.Def;
-using CosmereScadrial.Dev;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Core.Need;
+using Cosmere.Framework.Extension;
+using Cosmere.Framework.Quickstart;
+using Cosmere.Resources;
+using Cosmere.Resources.Def;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Dev;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
-using GeneUtility = CosmereScadrial.Util.GeneUtility;
+using GeneUtility = Cosmere.Scadrial.Util.GeneUtility;
 
-namespace CosmereScadrial.Quickstart;
+namespace Cosmere.Scadrial.Quickstart;
 
 public class PreCatacendreQuickstart : AbstractQuickstart {
     public override int mapSize => 100;

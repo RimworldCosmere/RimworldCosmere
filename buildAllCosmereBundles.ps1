@@ -100,6 +100,7 @@ foreach ($mod in $mods)
         Write-Host "    Changes detected. Continuing with build."
 
         Write-Host "    Copying $srcAssets\* -> $destPath"
+        Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$destPath" | Out-Null
         New-Item -ItemType Directory -Force -Path $destPath | Out-Null
         Copy-Item "$srcAssets\*" -Destination $destPath -Recurse -Force
 
@@ -121,6 +122,7 @@ foreach ($mod in $mods)
             Write-Host "    Unity failed for $mod (exit code $( $process.ExitCode )). Crashing build."
             exit
         }
+        Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$destPath" | Out-Null
 
         $currentHash | Out-File -Encoding ASCII -FilePath $hashFile
         Write-Host "    Done with Cosmere$mod."

@@ -1,10 +1,10 @@
 using System;
-using CosmereFramework.Extension;
-using CosmereFramework.UI;
+using Cosmere.Framework.Extension;
+using Cosmere.Framework.UI;
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.Listing;
+namespace Cosmere.Framework.Listing;
 
 public record SubListingOptions {
     public const float Padding = 5f;

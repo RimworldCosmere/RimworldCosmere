@@ -140,14 +140,14 @@
         </statBases>
 
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
                 <metal>{{defName metal.name}}</metal>
             </li>
         </modExtensions>
         <comps>
             {{#each metal.genesToGrant}}
             {{#each this}}
-            <li Class="CosmereFramework.Comp.Thing.GiveGeneProperties" MayRequire="{{@../key}}">
+            <li Class="Cosmere.Framework.Comp.Thing.GiveGeneProperties" MayRequire="{{@../key}}">
                 <geneDef>{{this}}</geneDef>
             </li>
             {{/each}}

@@ -42,8 +42,8 @@
         <formatString>{0} BEUs</formatString>
         <displayPriorityInCategory>1000</displayPriorityInCategory>
         <parts>
-            <li Class="CosmereCore.StatPart.NeedInvestiture" />
-            <li Class="CosmereCore.StatPart.GearAndInventoryInvestiture" />
+            <li Class="Cosmere.Core.StatPart.NeedInvestiture" />
+            <li Class="Cosmere.Core.StatPart.GearAndInventoryInvestiture" />
         </parts>
     </StatDef>
 </Defs>

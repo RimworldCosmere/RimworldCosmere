@@ -1,9 +1,9 @@
-﻿using CosmereRoshar.Combat.Abilities.Implementations;
-using CosmereRoshar.Extensions;
+﻿using Cosmere.Roshar.Combat.Abilities.Implementations;
+using Cosmere.Roshar.Extensions;
 using HarmonyLib;
 using Verse;
 
-namespace CosmereRoshar.Patches;
+namespace Cosmere.Roshar.Patches;
 
 [HarmonyPatch(typeof(Pawn))]
 public static class PatchPawnKill {
@@ -13,7 +13,7 @@ public static class PatchPawnKill {
         if (__instance == null || !__instance.RaceProps.Humanlike) return;
 
         SpawnEquipment? abilityComp =
-            __instance.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName);
+            __instance.GetAbilityComp<SpawnEquipment>(Defs.Cosmere_Roshar_SummonShardblade.defName);
 
         if (!(abilityComp?.bladeObject?.TryGetComp(out ShardBlade blade) ?? false)) return;
         blade.Summon();

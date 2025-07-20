@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Extension;
-using CosmereFramework.Comp.Map;
-using CosmereScadrial.Util;
+using Cosmere.Core.Extension;
+using Cosmere.Framework.Comp.Map;
+using Cosmere.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Comp.Hediff;
+namespace Cosmere.Scadrial.Allomancy.Comp.Hediff;
 
 public class BronzeAuraProperties : LineDrawingAuraProperties {
     public ThingDef moteDef;

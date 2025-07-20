@@ -5,9 +5,9 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using Logger = CosmereFramework.Logger;
+using Logger = Cosmere.Framework.Logger;
 
-namespace CosmereCore.Comp.Hediff;
+namespace Cosmere.Core.Comp.Hediff;
 
 public class MentalBreakHandlerProperties : HediffCompProperties {
     public MentalBreakHandlerProperties() {
@@ -15,11 +15,12 @@ public class MentalBreakHandlerProperties : HediffCompProperties {
     }
 }
 
+// @todo Come back to this. Its probably broken. There are no stats starting with Cosmere_Core_
 public class MentalBreakHandler : HediffComp {
     private List<StatDef>? customStatDefsCache;
 
     protected virtual List<StatDef> customStatDefs => customStatDefsCache ??= DefDatabase<StatDef>
-        .AllDefsListForReading.Where(x => x.defName.StartsWith("CosmereCore_"))
+        .AllDefsListForReading.Where(x => x.defName.StartsWith("Cosmere_Core_"))
         .ToList();
 
     public override void CompPostTick(ref float severityAdjustment) {
@@ -28,7 +29,7 @@ public class MentalBreakHandler : HediffComp {
         if (!Pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
 
         foreach (StatDef? stat in customStatDefs) {
-            string methodName = $"Handle{stat.defName.Replace("CosmereCore_", "")}";
+            string methodName = $"Handle{stat.defName.Replace("Cosmere_Core_", "")}";
             MethodInfo? method = GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (method != null) {

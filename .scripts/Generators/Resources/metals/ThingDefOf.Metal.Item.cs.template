@@ -1,9 +1,8 @@
 #nullable disable
-using CosmereResources.Def;
 using RimWorld;
 using Verse;
 
-namespace CosmereResources;
+namespace Cosmere.Resources;
 
 public static partial class ThingDefOf {        
     {{#each metals as | metal |}}

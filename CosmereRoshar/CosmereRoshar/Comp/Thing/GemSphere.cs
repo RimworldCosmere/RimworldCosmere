@@ -2,7 +2,7 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Comp.Thing;
+namespace Cosmere.Roshar.Comp.Thing;
 
 public enum GemSize {
     None,
@@ -131,7 +131,7 @@ public class GemSphere : ThingComp {
     }
 
     public override IEnumerable<Gizmo> CompGetGizmosExtra() {
-        if (CosmereRoshar.devOptionAutofillSpheres && stormlight != null) {
+        if (Mod.devOptionAutofillSpheres && stormlight != null) {
             yield return new Command_Action {
                 defaultLabel = "Fill sphere with 10 stormlight",
                 defaultDesc = "Debug/Dev feature.",

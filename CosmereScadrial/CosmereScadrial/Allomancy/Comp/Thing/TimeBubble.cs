@@ -1,11 +1,11 @@
 using System.Linq;
-using CosmereScadrial.Allomancy.Hediff;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
+using Cosmere.Scadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Comp.Thing;
+namespace Cosmere.Scadrial.Allomancy.Comp.Thing;
 
 public class TimeBubbleProperties : CompProperties_ThingContainer {
     public int applyEveryXTicks = 60;
@@ -61,10 +61,13 @@ public class TimeBubble : ThingComp {
 
     private float GetSeverity(Pawn pawn) {
         Verse.Hediff? hediff = pawn.health?.hediffSet?.hediffs.FirstOrDefault(x => {
-            return x is AllomanticHediff hediff &&
-                   hediff.sourceAbilities.Any(ability => ability.metal.Equals(metal));
-        });
+                return x is AllomanticHediff hediff &&
+                       hediff.sourceAbilities.Any(ability => ability.metal.Equals(metal));
+            }
+        );
 
-        return hediff is not AllomanticHediff allomanticHediff ? 0f : allomanticHediff.severityCalculator?.severity ?? 0f;
+        return hediff is not AllomanticHediff allomanticHediff
+            ? 0f
+            : allomanticHediff.severityCalculator?.severity ?? 0f;
     }
 }

@@ -1,7 +1,7 @@
 #nullable disable
 using Verse;
 
-namespace CosmereScadrial;
+namespace Cosmere.Scadrial;
 
 public static partial class HediffDefOf {
     public static HediffDef Cosmere_Scadrial_Hediff_BrassAura;

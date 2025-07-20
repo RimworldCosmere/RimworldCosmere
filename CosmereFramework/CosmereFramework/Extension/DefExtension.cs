@@ -1,7 +1,7 @@
 using System.Linq;
 using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class DefExtension {
     public static bool IsOneOf(this Def def, params Def[] defs) {

@@ -1,4 +1,4 @@
-namespace CosmereScadrial.Allomancy.Ability;
+namespace Cosmere.Scadrial.Allomancy.Ability;
 
 public enum BurningStatus {
     Off,

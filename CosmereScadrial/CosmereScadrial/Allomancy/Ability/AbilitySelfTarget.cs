@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Extension;
+using Cosmere.Framework.Extension;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Ability;
+namespace Cosmere.Scadrial.Allomancy.Ability;
 
 public class AbilitySelfTarget : AbstractAbility {
     public AbilitySelfTarget(Pawn pawn) : base(pawn) { }

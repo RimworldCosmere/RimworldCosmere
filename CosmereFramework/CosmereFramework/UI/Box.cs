@@ -1,8 +1,8 @@
-using CosmereFramework.Extension;
+using Cosmere.Framework.Extension;
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.UI;
+namespace Cosmere.Framework.UI;
 
 public static class Box {
     public static Rect Create(

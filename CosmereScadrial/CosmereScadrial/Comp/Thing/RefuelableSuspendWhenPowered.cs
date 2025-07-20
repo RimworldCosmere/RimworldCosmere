@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Comp.Thing;
+namespace Cosmere.Scadrial.Comp.Thing;
 
 public class RefuelableSuspendWhenPoweredProperties : CompProperties_Refuelable {
     public RefuelableSuspendWhenPoweredProperties() {

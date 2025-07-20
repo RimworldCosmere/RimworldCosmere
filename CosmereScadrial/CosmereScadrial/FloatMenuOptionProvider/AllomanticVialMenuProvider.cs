@@ -1,15 +1,15 @@
 ﻿using System;
-using CosmereCore.Extension;
-using CosmereFramework.Extension;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
-using CosmereScadrial.Thing;
+using Cosmere.Core.Extension;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
+using Cosmere.Scadrial.Thing;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.FloatMenuOptionProvider;
+namespace Cosmere.Scadrial.FloatMenuOptionProvider;
 
 public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
     private static readonly StatDef AllomanticPower = StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower;

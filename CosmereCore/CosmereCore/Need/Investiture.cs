@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using CosmereCore.Extension;
+using Cosmere.Core.Extension;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereCore.Need;
+namespace Cosmere.Core.Need;
 
 public class Investiture : RimWorld.Need {
     private const int MaxInvestiture = 1000000;

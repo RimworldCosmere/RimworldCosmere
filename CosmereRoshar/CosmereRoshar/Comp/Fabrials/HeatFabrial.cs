@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereResources;
-using CosmereResources.Extension;
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Resources;
+using Cosmere.Resources.Extension;
+using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Comp.Fabrials;
+namespace Cosmere.Roshar.Comp.Fabrials;
 
 public interface IGemstoneHandler {
     void RemoveGemstone();
@@ -131,7 +131,7 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
         if (cutGemstone != null) {
             replaceGemAction = () => {
                 Verse.AI.Job job = JobMaker.MakeJob(
-                    CosmereRosharDefs.Cosmere_Roshar_RefuelFabrial,
+                    Defs.Cosmere_Roshar_RefuelFabrial,
                     parent,
                     cutGemstone
                 );

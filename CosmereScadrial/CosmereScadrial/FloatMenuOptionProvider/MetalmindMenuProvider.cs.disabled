@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Extension;
+using Cosmere.Core.Extension;
 using CosmereFramework;
 using CosmereFramework.Extension;
 using CosmereResources;

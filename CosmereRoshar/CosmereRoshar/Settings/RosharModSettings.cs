@@ -1,10 +1,10 @@
-using CosmereFramework.Extension;
-using CosmereFramework.Listing;
-using CosmereFramework.Settings;
+using Cosmere.Framework.Extension;
+using Cosmere.Framework.Listing;
+using Cosmere.Framework.Settings;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Settings;
+namespace Cosmere.Roshar.Settings;
 
 public class RosharModSettings : CosmereModSettings {
     public float bondChanceMultiplier;

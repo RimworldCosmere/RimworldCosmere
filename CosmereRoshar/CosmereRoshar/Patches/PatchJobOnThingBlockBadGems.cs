@@ -1,10 +1,10 @@
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Roshar.Comp.Thing;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Patches;
+namespace Cosmere.Roshar.Patches;
 
 [HarmonyPatch(typeof(WorkGiver_DoBill), "JobOnThing")]
 public static class PatchJobOnThingBlockBadGems {

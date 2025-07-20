@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using CosmereFramework.Attribute;
+using Cosmere.Framework.Attribute;
 using HarmonyLib;
 using Verse;
 
-namespace CosmereFramework;
+namespace Cosmere.Framework;
 
 [StaticConstructorOnStartup]
 public static class Profiler {

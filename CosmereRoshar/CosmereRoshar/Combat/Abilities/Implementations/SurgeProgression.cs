@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Need;
+using Cosmere.Roshar.Comp.Thing;
+using Cosmere.Roshar.Need;
+using Cosmere.Roshar.Utility;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Combat.Abilities.Implementations;
+namespace Cosmere.Roshar.Combat.Abilities.Implementations;
 
 /// Surge regrowth plants
 public class SurgeProgressionProperties : CompProperties_AbilityEffect {

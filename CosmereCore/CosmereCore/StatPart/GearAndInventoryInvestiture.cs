@@ -1,9 +1,9 @@
-using CosmereCore.Extension;
+using Cosmere.Core.Extension;
 using RimWorld;
 using Verse;
-using StatUtility = CosmereFramework.Util.StatUtility;
+using StatUtility = Cosmere.Framework.Util.StatUtility;
 
-namespace CosmereCore.StatPart;
+namespace Cosmere.Core.StatPart;
 
 public class GearAndInventoryInvestiture : RimWorld.StatPart {
     public override void TransformValue(StatRequest req, ref float val) {

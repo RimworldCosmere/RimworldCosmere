@@ -1,9 +1,9 @@
-using CosmereCore.Extension;
-using CosmereScadrial.Feruchemy.Comp.Thing;
+using Cosmere.Core.Extension;
+using Cosmere.Scadrial.Feruchemy.Comp.Thing;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.StatPart;
+namespace Cosmere.Scadrial.StatPart;
 
 public class MetalmindInvestiture : RimWorld.StatPart {
     public override void TransformValue(StatRequest req, ref float val) {

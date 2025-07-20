@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Extension;
-using CosmereFramework.Listing;
-using CosmereFramework.Quickstart;
-using CosmereFramework.Util;
+using Cosmere.Framework.Extension;
+using Cosmere.Framework.Listing;
+using Cosmere.Framework.Quickstart;
+using Cosmere.Framework.Util;
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.Settings;
+namespace Cosmere.Framework.Settings;
 
 public class FrameworkModSettings : CosmereModSettings {
     private readonly Dictionary<string, string> quickstarters = typeof(AbstractQuickstart).AllSubclassesNonAbstract()

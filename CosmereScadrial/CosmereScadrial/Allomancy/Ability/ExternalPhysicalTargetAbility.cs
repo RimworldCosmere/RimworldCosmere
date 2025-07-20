@@ -1,8 +1,8 @@
-using CosmereCore.Util;
+using Cosmere.Core.Util;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Ability;
+namespace Cosmere.Scadrial.Allomancy.Ability;
 
 public class ExternalPhysicalTargetAbility : AbilityOtherTarget {
     public ExternalPhysicalTargetAbility(Pawn pawn) : base(pawn) { }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.UI;
+using Cosmere.Framework.UI;
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.Util;
+namespace Cosmere.Framework.Util;
 
 public static class UIUtil {
     public static void DrawIcon(
@@ -75,8 +75,9 @@ public static class UIUtil {
         bool allowNone = true,
         string? placeholder = null
     ) where T : Enum {
-        if (Enum.GetUnderlyingType(typeof(T)) != typeof(int))
+        if (Enum.GetUnderlyingType(typeof(T)) != typeof(int)) {
             throw new ArgumentException($"Enum type {typeof(T)} must have int as its underlying type.");
+        }
 
         int intValue = (int)(object)currentValue;
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Verse;
 
-namespace CosmereFramework.Util;
+namespace Cosmere.Framework.Util;
 
 [StaticConstructorOnStartup]
 public class DelayedActionScheduler {
@@ -11,10 +11,12 @@ public class DelayedActionScheduler {
     static DelayedActionScheduler() { }
 
     public static void Schedule(Action action, int delayTicks) {
-        Scheduled.Add(new ScheduledAction {
-            ticksLeft = delayTicks,
-            action = action,
-        });
+        Scheduled.Add(
+            new ScheduledAction {
+                ticksLeft = delayTicks,
+                action = action,
+            }
+        );
     }
 
     public static void Tick() {
@@ -23,8 +25,11 @@ public class DelayedActionScheduler {
             item.ticksLeft--;
             if (item.ticksLeft > 0) continue;
 
-            item.action?.Invoke();
-            Scheduled.RemoveAt(i);
+            try {
+                item.action?.Invoke();
+            } finally {
+                Scheduled.RemoveAt(i);
+            }
         }
     }
 

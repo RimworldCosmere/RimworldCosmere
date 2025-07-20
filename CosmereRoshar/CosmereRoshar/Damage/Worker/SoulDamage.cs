@@ -3,7 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Damage.Worker;
+namespace Cosmere.Roshar.Damage.Worker;
 
 public class SoulDamage : DamageWorker_AddInjury {
     protected override BodyPartRecord ChooseHitPart(DamageInfo dinfo, Pawn pawn) {

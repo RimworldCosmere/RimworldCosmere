@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Comp.Map;
-using CosmereFramework.Extension;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Hediff;
-using CosmereScadrial.Comp.Hediff;
-using CosmereScadrial.Util;
+using Cosmere.Framework.Comp.Map;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Comp.Hediff;
+using Cosmere.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using HediffUtility = CosmereScadrial.Util.HediffUtility;
-using static CosmereFramework.CosmereFramework;
+using static Cosmere.Framework.Mod;
+using HediffUtility = Cosmere.Scadrial.Util.HediffUtility;
 
-namespace CosmereScadrial.Allomancy.Comp.Hediff;
+namespace Cosmere.Scadrial.Allomancy.Comp.Hediff;
 
 public class AllomancyAuraHediffGiverProperties : HediffCompProperties, IMultiTypeHediff {
     public HediffDef? hediff;

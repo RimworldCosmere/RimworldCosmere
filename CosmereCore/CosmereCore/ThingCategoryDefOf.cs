@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using RimWorld;
 using Verse;
 
-namespace CosmereCore;
+namespace Cosmere.Core;
 
 [DefOf]
 [SuppressMessage("ReSharper", "InconsistentNaming")]

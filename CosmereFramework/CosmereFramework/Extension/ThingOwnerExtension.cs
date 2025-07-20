@@ -1,6 +1,6 @@
 using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class ThingOwnerExtension {
     public static int TotalStackCountOfDef(this ThingOwner<Thing> owner, ThingDef def, ThingDef stuff) {

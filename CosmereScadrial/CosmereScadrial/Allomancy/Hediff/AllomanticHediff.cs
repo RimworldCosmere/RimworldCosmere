@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CosmereCore.Extension;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Comp.Hediff;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Util;
+using Cosmere.Core.Extension;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Comp.Hediff;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Util;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Hediff;
+namespace Cosmere.Scadrial.Allomancy.Hediff;
 
 public class AllomanticHediff : HediffWithComps {
     public readonly MetallicArtsMetalDef metal;

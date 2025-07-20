@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereResources;
+using Cosmere.Resources;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
 
-namespace CosmereScadrial.IncidentWorker;
+namespace Cosmere.Scadrial.IncidentWorker;
 
 public class AtiumCaravan : RimWorld.IncidentWorker {
     protected override bool CanFireNowSub(IncidentParms parms) {
@@ -41,7 +41,7 @@ public class AtiumCaravan : RimWorld.IncidentWorker {
         // Give a few pawns Atium
         foreach (Pawn? p in attackers.Take(2)) // First two
         {
-            Verse.Thing atium = ThingMaker.MakeThing(CosmereResources.ThingDefOf.Atium);
+            Verse.Thing atium = ThingMaker.MakeThing(Resources.ThingDefOf.Atium);
             atium.stackCount = Rand.RangeInclusive(1, 3);
             p.inventory?.TryAddItemNotForSale(atium);
         }

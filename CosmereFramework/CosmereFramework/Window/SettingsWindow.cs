@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Listing;
-using CosmereFramework.Settings;
-using CosmereFramework.UI;
+using Cosmere.Framework.Listing;
+using Cosmere.Framework.Settings;
+using Cosmere.Framework.UI;
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.Window;
+namespace Cosmere.Framework.Window;
 
 public class SettingsWindow {
     private static readonly float TabHeight = 55f;

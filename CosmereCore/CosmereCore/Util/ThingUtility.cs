@@ -1,7 +1,7 @@
-using CosmereCore.Comp.Thing;
+using Cosmere.Core.Comp.Thing;
 using Verse;
 
-namespace CosmereCore.Util;
+namespace Cosmere.Core.Util;
 
 public static class ThingUtility {
     public static bool ShouldDrop(Thing thing) {

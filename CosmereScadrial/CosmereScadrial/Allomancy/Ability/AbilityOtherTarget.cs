@@ -1,9 +1,9 @@
-using CosmereFramework.Extension;
+using Cosmere.Framework.Extension;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.Allomancy.Ability;
+namespace Cosmere.Scadrial.Allomancy.Ability;
 
 public class AbilityOtherTarget : AbstractAbility {
     private Job? job;

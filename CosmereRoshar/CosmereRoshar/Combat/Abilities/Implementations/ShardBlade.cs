@@ -1,9 +1,9 @@
-using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Extensions;
+using Cosmere.Roshar.Comp.Thing;
+using Cosmere.Roshar.Extensions;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Combat.Abilities.Implementations;
+namespace Cosmere.Roshar.Combat.Abilities.Implementations;
 
 public class ShardBladeProperties : CompProperties {
     public int bladesInExistence;
@@ -40,12 +40,12 @@ public class ShardBlade : ThingComp {
 
     private void HandleSwordAbility(Pawn pawn, SpawnEquipment? abilityComp) {
         if (abilityComp != null) return;
-        pawn.abilities.GainAbility(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade);
+        pawn.abilities.GainAbility(Defs.Cosmere_Roshar_SummonShardblade);
         Trait? trait = StormlightUtilities.GetRadiantTrait(pawn);
 
         if (trait == null) {
             //radiants does not get this ability
-            pawn.abilities.GainAbility(CosmereRosharDefs.Cosmere_Roshar_UnbondBlade);
+            pawn.abilities.GainAbility(Defs.Cosmere_Roshar_UnbondBlade);
         }
     }
 
@@ -53,10 +53,10 @@ public class ShardBlade : ThingComp {
         swordOwner = pawn;
         ThingWithComps blade = parent;
         SpawnEquipment? abilityComp =
-            pawn.GetAbilityComp<SpawnEquipment>(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName);
+            pawn.GetAbilityComp<SpawnEquipment>(Defs.Cosmere_Roshar_SummonShardblade.defName);
         HandleSwordAbility(pawn, abilityComp);
         abilityComp ??= pawn.GetAbilityComp<SpawnEquipment>(
-            CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName
+            Defs.Cosmere_Roshar_SummonShardblade.defName
         );
 
         abilityComp!.bladeObject = blade;
@@ -86,8 +86,8 @@ public class ShardBlade : ThingComp {
             }
         }
 
-        pawn.abilities.RemoveAbility(CosmereRosharDefs.Cosmere_Roshar_SummonShardblade);
-        pawn.abilities.RemoveAbility(CosmereRosharDefs.Cosmere_Roshar_UnbondBlade);
+        pawn.abilities.RemoveAbility(Defs.Cosmere_Roshar_SummonShardblade);
+        pawn.abilities.RemoveAbility(Defs.Cosmere_Roshar_UnbondBlade);
     }
 
 
@@ -108,7 +108,7 @@ public class ShardBlade : ThingComp {
 
         SpawnEquipment? abilityComp =
             swordOwner.GetAbilityComp<SpawnEquipment>(
-                CosmereRosharDefs.Cosmere_Roshar_SummonShardblade.defName
+                Defs.Cosmere_Roshar_SummonShardblade.defName
             );
         if (abilityComp?.bladeObject == null) return;
         swordOwner.equipment.AddEquipment(abilityComp.bladeObject);

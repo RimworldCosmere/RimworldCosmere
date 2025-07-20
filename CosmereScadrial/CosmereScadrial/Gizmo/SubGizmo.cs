@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Gizmo;
+namespace Cosmere.Scadrial.Gizmo;
 
 public abstract class SubGizmo(Verse.Gizmo parent) {
     protected readonly Verse.Gizmo parent = parent;

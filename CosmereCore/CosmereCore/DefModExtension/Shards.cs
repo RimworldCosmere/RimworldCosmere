@@ -1,7 +1,7 @@
 #nullable disable
 using System.Collections.Generic;
 
-namespace CosmereCore.DefModExtension;
+namespace Cosmere.Core.DefModExtension;
 
 public class Shards : Verse.DefModExtension {
     public bool allowChange = true;

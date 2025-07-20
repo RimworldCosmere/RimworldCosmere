@@ -1,8 +1,8 @@
-using CosmereCore.Util;
+using Cosmere.Core.Util;
 using RimWorld;
 using Verse;
 
-namespace CosmereCore.StatPart;
+namespace Cosmere.Core.StatPart;
 
 public class BuildingMaterial : RimWorld.StatPart {
     private const int baseMultiplier = 200;

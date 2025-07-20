@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Extension;
+using Cosmere.Framework.Extension;
 using HarmonyLib;
 using Verse;
 
-namespace CosmereRoshar.Patches;
+namespace Cosmere.Roshar.Patches;
 
 [HarmonyPatch(typeof(GenRecipe))]
 public static class GenRecipePatches {

@@ -2,7 +2,7 @@ using RimWorld.Planet;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.Allomancy.Ability;
+namespace Cosmere.Scadrial.Allomancy.Ability;
 
 public abstract partial class AbstractAbility {
     public override void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo dest) {

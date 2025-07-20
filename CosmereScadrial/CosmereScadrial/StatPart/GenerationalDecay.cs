@@ -1,9 +1,9 @@
-using CosmereScadrial.Extension;
+using Cosmere.Scadrial.Extension;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.StatPart;
+namespace Cosmere.Scadrial.StatPart;
 
 public class GenerationalDecay : RimWorld.StatPart {
     private const float MinimumValue = 0.1f;

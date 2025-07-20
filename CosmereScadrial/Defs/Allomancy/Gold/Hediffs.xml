@@ -5,7 +5,7 @@
         <label>burning gold</label>
         <description>The Allomancer is burning gold, experiencing visions of what they might have become. These revelations are powerful... and dangerous.</description>
         <comps>
-            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.GoldBurnProperties"/>
+            <li Class="Cosmere.Scadrial.Allomancy.Comp.Hediff.GoldBurnProperties"/>
         </comps>
     </HediffDef>
     

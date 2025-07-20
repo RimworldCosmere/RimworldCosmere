@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Verse;
 
-namespace CosmereScadrial;
+namespace Cosmere.Scadrial;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]

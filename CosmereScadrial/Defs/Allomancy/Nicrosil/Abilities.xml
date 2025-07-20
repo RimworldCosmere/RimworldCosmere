@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
+    <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_Nicrosil</defName>
         <description>Nicrosil flares another Allomancer’s active metals, dramatically amplifying their power. Only affects those already burning metals.</description>
         <label>supercharge target</label>
@@ -16,5 +16,5 @@
                 <canTargetPlants>false</canTargetPlants>
             </targetParams>
         </verbProperties>
-    </CosmereScadrial.Def.AllomanticAbilityDef>
+    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

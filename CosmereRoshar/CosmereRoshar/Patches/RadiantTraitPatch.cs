@@ -1,12 +1,12 @@
-﻿using CosmereRoshar.Combat.Abilities.Implementations;
-using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Need;
+﻿using Cosmere.Roshar.Combat.Abilities.Implementations;
+using Cosmere.Roshar.Comp.Thing;
+using Cosmere.Roshar.Need;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Patches;
+namespace Cosmere.Roshar.Patches;
 
 // @TODO rename to TraitSetPatches
 [HarmonyPatch(typeof(TraitSet), nameof(TraitSet.GainTrait))]
@@ -77,7 +77,7 @@ public static class RadiantGainTraitPatch {
 public static class PatchPawnMovement {
     private static void Postfix(Pawn? pawn, IntVec3 c, ref float __result) {
         if (pawn?.health?.hediffSet == null) return;
-        if (pawn.health.hediffSet.HasHediff(CosmereRosharDefs.Cosmere_Roshar_SurgeAbrasion)) {
+        if (pawn.health.hediffSet.HasHediff(Defs.Cosmere_Roshar_SurgeAbrasion)) {
             __result = c.x != pawn.Position.x && c.z != pawn.Position.z
                 ? pawn.TicksPerMoveDiagonal
                 : pawn.TicksPerMoveCardinal;

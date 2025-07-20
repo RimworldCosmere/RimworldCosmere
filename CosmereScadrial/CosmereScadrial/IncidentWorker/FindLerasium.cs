@@ -2,7 +2,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.IncidentWorker;
+namespace Cosmere.Scadrial.IncidentWorker;
 
 public class FindLerasium : RimWorld.IncidentWorker {
     protected override bool CanFireNowSub(IncidentParms parms) {
@@ -15,7 +15,7 @@ public class FindLerasium : RimWorld.IncidentWorker {
             .RandomElementWithFallback();
         if (chosenPawn == null) return false;
 
-        Verse.Thing? bead = ThingMaker.MakeThing(CosmereResources.ThingDefOf.Lerasium);
+        Verse.Thing? bead = ThingMaker.MakeThing(Resources.ThingDefOf.Lerasium);
         GenPlace.TryPlaceThing(bead, chosenPawn.Position, map, ThingPlaceMode.Near);
 
         Find.LetterStack.ReceiveLetter(

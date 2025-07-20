@@ -50,7 +50,7 @@
         <comps>
             <li Class="CompProperties_Forbiddable"/>
             <li><compClass>CompColorable</compClass></li>
-            <li Class="CosmereCore.Comp.Thing.PreventDropOnDownedProperties"/>
+            <li Class="Cosmere.Core.Comp.Thing.PreventDropOnDownedProperties"/>
             <li><compClass>CompQuality</compClass></li>
             <li Class="CompProperties_Styleable" />
         </comps>
@@ -64,7 +64,7 @@
             <texPath>Things/Pawn/Equipment/Earring</texPath>
         </graphicData>
         <comps>
-            <li Class="CosmereScadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+            <li Class="Cosmere.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
                 <maxAmount>25</maxAmount>
             </li>
         </comps>
@@ -86,7 +86,7 @@
             <texPath>Things/Pawn/Equipment/Bracelet</texPath>
         </graphicData>
         <comps>
-            <li Class="CosmereScadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+            <li Class="Cosmere.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
                 <maxAmount>75</maxAmount>
             </li>
         </comps>
@@ -108,7 +108,7 @@
             <texPath>Things/Pawn/Equipment/Band</texPath>
         </graphicData>
         <comps>
-            <li Class="CosmereScadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+            <li Class="Cosmere.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
                 <maxAmount>150</maxAmount>
             </li>
         </comps>

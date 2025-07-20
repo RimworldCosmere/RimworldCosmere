@@ -7,7 +7,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereCore.Patch;
+namespace Cosmere.Core.Patch;
 
 [HarmonyPatch(typeof(VersionControl), nameof(VersionControl.DrawInfoInCorner))]
 internal static class DrawInfoInCorner {
@@ -26,7 +26,7 @@ internal static class DrawInfoInCorner {
 
     [HarmonyPostfix]
     private static void Postfix() {
-        cosmereMods ??= typeof(Mod).AllSubclassesNonAbstract()
+        cosmereMods ??= typeof(Verse.Mod).AllSubclassesNonAbstract()
             .Where(m => m.Name.Contains("Cosmere"))
             .Select(m =>
                 m.Name.Colorize(ColoredText.ExpectationsColor) +
@@ -35,7 +35,7 @@ internal static class DrawInfoInCorner {
             )
             .ToList();
 
-        Version? version = typeof(CosmereCore).Assembly.GetName().Version;
+        Version? version = typeof(Mod).Assembly.GetName().Version;
         string text = $"RimworldCosmere v{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
 
         Rect rect;

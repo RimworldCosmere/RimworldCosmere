@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.JobDriver;
+namespace Cosmere.Scadrial.JobDriver;
 
 public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
     private ILoadReferenceable cachedSource;

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Hediff;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Comp.Hediff;
+namespace Cosmere.Scadrial.Allomancy.Comp.Hediff;
 
 public class GoldBurnProperties : HediffCompProperties {
     public GoldBurnProperties() {

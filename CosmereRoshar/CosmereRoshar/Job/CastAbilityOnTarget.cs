@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Job;
+namespace Cosmere.Roshar.Job;
 
 public class CastAbilityOnTarget : Verse.AI.Job {
     public Ability abilityToCast;

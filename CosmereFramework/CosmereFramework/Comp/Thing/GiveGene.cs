@@ -1,8 +1,8 @@
-using CosmereFramework.Extension;
+using Cosmere.Framework.Extension;
 using RimWorld;
 using Verse;
 
-namespace CosmereFramework.Comp.Thing;
+namespace Cosmere.Framework.Comp.Thing;
 
 public class GiveGeneProperties : CompProperties {
     public GeneDef? geneDef;

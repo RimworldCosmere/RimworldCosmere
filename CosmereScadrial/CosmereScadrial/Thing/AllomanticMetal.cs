@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
 using RimWorld;
 using Verse;
-using GeneUtility = CosmereScadrial.Util.GeneUtility;
+using GeneUtility = Cosmere.Scadrial.Util.GeneUtility;
 
-namespace CosmereScadrial.Thing;
+namespace Cosmere.Scadrial.Thing;
 
 public class AllomanticMetal : AllomanticVial {
     public override MetallicArtsMetalDef metal => DefDatabase<MetallicArtsMetalDef>.GetNamed(def.defName);

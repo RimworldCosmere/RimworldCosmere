@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using CosmereCore.Comp.Game;
-using CosmereCore.Def;
+using Cosmere.Core.Comp.Game;
+using Cosmere.Core.Def;
 using Verse;
 
-namespace CosmereCore.Util;
+namespace Cosmere.Core.Util;
 
 public static class ShardUtility {
     public static Shards shards => Current.Game.GetComponent<Shards>();

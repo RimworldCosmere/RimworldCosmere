@@ -3,7 +3,7 @@
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/StatDef[defName="Cosmere_Investiture"]/parts</xpath>
         <value>
-            <li Class="CosmereScadrial.StatPart.MetalmindInvestiture" />
+            <li Class="Cosmere.Scadrial.StatPart.MetalmindInvestiture" />
         </value>
     </Operation>
 </Patch>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereCore.Def.ShardDef>
+    <Cosmere.Core.Def.ShardDef>
         <defName>Honor</defName>
         <label>honor</label>
         <planet>Roshar</planet>
@@ -8,14 +8,14 @@
         <mutuallyExclusiveWith>
             <li>Retribution</li>
         </mutuallyExclusiveWith>
-    </CosmereCore.Def.ShardDef>
-    <CosmereCore.Def.ShardDef>
+    </Cosmere.Core.Def.ShardDef>
+    <Cosmere.Core.Def.ShardDef>
         <defName>Cultivation</defName>
         <label>cultivation</label>
         <planet>Roshar</planet>
         <description>Cultivation is the Shard of growth, change, and long-term planning. Gentle yet deliberate, its power lies in shaping potential—pruning what must be cut and nurturing what must thrive. It rarely acts swiftly, preferring subtle guidance toward transformation.</description>
-    </CosmereCore.Def.ShardDef>
-    <CosmereCore.Def.ShardDef>
+    </Cosmere.Core.Def.ShardDef>
+    <Cosmere.Core.Def.ShardDef>
         <defName>Odium</defName>
         <label>odium</label>
         <planet>Roshar</planet>
@@ -23,8 +23,8 @@
         <mutuallyExclusiveWith>
             <li>Retribution</li>
         </mutuallyExclusiveWith>
-    </CosmereCore.Def.ShardDef>
-    <CosmereCore.Def.ShardDef>
+    </Cosmere.Core.Def.ShardDef>
+    <Cosmere.Core.Def.ShardDef>
         <defName>Retribution</defName>
         <label>retribution</label>
         <planet>Roshar</planet>
@@ -33,5 +33,5 @@
             <li>Honor</li>
             <li>Odium</li>
         </mutuallyExclusiveWith>
-    </CosmereCore.Def.ShardDef>
+    </Cosmere.Core.Def.ShardDef>
 </Defs>

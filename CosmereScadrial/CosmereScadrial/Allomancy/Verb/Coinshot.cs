@@ -1,12 +1,12 @@
 using System.Linq;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Allomancy.Hediff;
-using CosmereScadrial.Util;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Util;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.Allomancy.Verb;
+namespace Cosmere.Scadrial.Allomancy.Verb;
 
 public class Coinshot : Verb_Shoot {
     private CoinshotAbility ability => (CoinshotAbility)verbTracker.directOwner;

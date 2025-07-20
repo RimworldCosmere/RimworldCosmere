@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Dialog;
+using Cosmere.Roshar.Comp.Thing;
+using Cosmere.Roshar.Dialog;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Comp.Fabrials;
+namespace Cosmere.Roshar.Comp.Fabrials;
 
 public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableComp {
     private List<ThingDef> filterListInt = [];
@@ -125,7 +125,7 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
         if (cutGemstone != null) {
             replaceGemAction = () => {
                 Verse.AI.Job job = JobMaker.MakeJob(
-                    CosmereRosharDefs.Cosmere_Roshar_RefuelFabrial,
+                    Defs.Cosmere_Roshar_RefuelFabrial,
                     parent,
                     cutGemstone
                 );
@@ -142,7 +142,7 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
         Action? removeGemAction = null;
         if (insertedGemstone != null) {
             removeGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.Cosmere_Roshar_RemoveFromFabrial, parent);
+                Verse.AI.Job job = JobMaker.MakeJob(Defs.Cosmere_Roshar_RemoveFromFabrial, parent);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }

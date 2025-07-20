@@ -1,6 +1,6 @@
 ﻿using RimWorld;
 
-namespace CosmereRoshar.Combat.Abilities;
+namespace Cosmere.Roshar.Combat.Abilities;
 
 public class VerbCastRadiant : Verb_CastAbility {
     //public override bool IsApplicableTo(LocalTargetInfo target, bool showMessages = false) {

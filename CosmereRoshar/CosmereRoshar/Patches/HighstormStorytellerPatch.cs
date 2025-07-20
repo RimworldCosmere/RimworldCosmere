@@ -2,7 +2,7 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Patches;
+namespace Cosmere.Roshar.Patches;
 
 [StaticConstructorOnStartup]
 public static class HighstormStorytellerPatch {
@@ -45,7 +45,7 @@ public static class HighstormStorytellerPatch {
         );
 
         if (success) {
-            Log.Message("[CosmereRoshar] Highstorm triggered!");
+            Log.Message("[Cosmere.Roshar] Highstorm triggered!");
         }
     }
 

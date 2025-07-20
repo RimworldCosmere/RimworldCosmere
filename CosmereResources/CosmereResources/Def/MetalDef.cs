@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace CosmereResources.Def;
+namespace Cosmere.Resources.Def;
 
 public class MetalDef : Verse.Def {
     private Material? cachedSolidLineColor;

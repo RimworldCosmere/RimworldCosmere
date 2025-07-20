@@ -1,10 +1,10 @@
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
-using CosmereScadrial.Thing;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
+using Cosmere.Scadrial.Thing;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.JobGiver;
+namespace Cosmere.Scadrial.JobGiver;
 
 public class IngestVial : ThinkNode_JobGiver {
     public override float GetPriority(Pawn pawn) {

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using CosmereRoshar.Job.Toil;
+using Cosmere.Roshar.Job.Toil;
 using Verse.AI;
 
-namespace CosmereRoshar.Job.Driver;
+namespace Cosmere.Roshar.Job.Driver;
 
 public class AddGemToFabrial : JobDriver {
     private const TargetIndex FabrialIndex = TargetIndex.A;

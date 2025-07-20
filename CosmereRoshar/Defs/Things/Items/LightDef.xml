@@ -91,7 +91,7 @@
       <li>Placeworker_AttachedToWall</li>
     </placeWorkers>
     <comps>
-      <li Class="CosmereRoshar.Comp.Thing.StormlightLampsProperties">
+      <li Class="Cosmere.Roshar.Comp.Thing.StormlightLampsProperties">
         <maxCapacity>1</maxCapacity>
         <allowedSpheres>
           <li>Cosmere_Roshar_Sphere_Diamond</li>

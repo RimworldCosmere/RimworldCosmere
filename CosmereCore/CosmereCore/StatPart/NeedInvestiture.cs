@@ -1,10 +1,10 @@
-using CosmereCore.Extension;
-using CosmereCore.Need;
+using Cosmere.Core.Extension;
+using Cosmere.Core.Need;
 using RimWorld;
 using Verse;
-using StatUtility = CosmereFramework.Util.StatUtility;
+using StatUtility = Cosmere.Framework.Util.StatUtility;
 
-namespace CosmereCore.StatPart;
+namespace Cosmere.Core.StatPart;
 
 public class NeedInvestiture : RimWorld.StatPart {
     public override void TransformValue(StatRequest req, ref float val) {

@@ -58,7 +58,7 @@
         </recipeMaker>
 
         <comps>
-            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+            <li Class="Cosmere.Roshar.Comp.Thing.StormlightProperties">
                 <maxInvestiture>10</maxInvestiture>
                 <drainRate>0.1</drainRate>
             </li>
@@ -91,7 +91,7 @@
         </recipeMaker>
 
         <comps>
-            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+            <li Class="Cosmere.Roshar.Comp.Thing.StormlightProperties">
                 <maxInvestiture>50</maxInvestiture>
                 <drainRate>0.1</drainRate>
             </li>
@@ -124,7 +124,7 @@
         </recipeMaker>
 
         <comps>
-            <li Class="CosmereRoshar.Comp.Thing.StormlightProperties">
+            <li Class="Cosmere.Roshar.Comp.Thing.StormlightProperties">
                 <maxInvestiture>200</maxInvestiture>
                 <drainRate>0.1</drainRate>
             </li>

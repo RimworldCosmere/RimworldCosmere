@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using CosmereResources.Def;
-using CosmereResources.DefModExtension;
+using Cosmere.Resources.Def;
+using Cosmere.Resources.DefModExtension;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Feruchemy.Comp.Thing;
+namespace Cosmere.Scadrial.Feruchemy.Comp.Thing;
 
 public class MetalmindProperties : CompProperties {
     public float maxAmount;

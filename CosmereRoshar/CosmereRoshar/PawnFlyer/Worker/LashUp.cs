@@ -1,6 +1,6 @@
 using Verse;
 
-namespace CosmereRoshar.PawnFlyer.Worker;
+namespace Cosmere.Roshar.PawnFlyer.Worker;
 
 public class LashUp(PawnFlyerProperties props) : PawnFlyerWorker(props) {
     private const float MaxHeight = 20f;

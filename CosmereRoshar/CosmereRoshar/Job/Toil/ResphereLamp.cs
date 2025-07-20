@@ -1,8 +1,8 @@
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Roshar.Comp.Thing;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Job.Toil;
+namespace Cosmere.Roshar.Job.Toil;
 
 public class ResphereLamp {
     //public static Toil SwapInNewSpheres(Pawn pawn, Thing lamp, Thing sphere) {

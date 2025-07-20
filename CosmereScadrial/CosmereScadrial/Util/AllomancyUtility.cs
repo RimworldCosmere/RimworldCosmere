@@ -1,7 +1,7 @@
-using CosmereScadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Allomancy.Hediff;
 using Verse;
 
-namespace CosmereScadrial.Util;
+namespace Cosmere.Scadrial.Util;
 
 public static class AllomancyUtility {
     public static SurgeChargeHediff? GetSurgeBurn(Pawn pawn) {

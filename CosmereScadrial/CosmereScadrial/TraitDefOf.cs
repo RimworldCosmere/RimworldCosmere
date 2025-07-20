@@ -1,10 +1,10 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
-using CosmereResources.Def;
+using Cosmere.Resources.Def;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial;
+namespace Cosmere.Scadrial;
 
 [DefOf]
 [SuppressMessage("ReSharper", "InconsistentNaming")]

@@ -5,14 +5,14 @@
         <label>emitting coppercloud</label>
         <description>The Allomancer is burning copper, generating a Coppercloud that conceals Allomantic pulses within its radius.</description>
         <comps>
-            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
+            <li Class="Cosmere.Scadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
                 <hediff>Cosmere_Scadrial_Hediff_CopperCloud</hediff>
                 <moteDef>Cosmere_Scadrial_Mote_CopperCloud</moteDef>
                 <verb>enshrouded</verb>
             </li>
         </comps>
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Def;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Hediff;
+namespace Cosmere.Scadrial.Allomancy.Hediff;
 
 public class InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability)
     : AllomanticHediff(hediffDef, pawn, ability) {

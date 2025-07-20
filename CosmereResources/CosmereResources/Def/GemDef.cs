@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace CosmereResources.Def;
+namespace Cosmere.Resources.Def;
 
 public class GemDef : Verse.Def {
     public ThingDef? cachedItem;

@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class AbilityExtension {
     public static AcceptanceReport GizmoEnabled(this Ability ability) {

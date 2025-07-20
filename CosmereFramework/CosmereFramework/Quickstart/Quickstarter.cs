@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
-using CosmereFramework.Settings;
-using CosmereFramework.Util;
+using Cosmere.Framework.Settings;
+using Cosmere.Framework.Util;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
 using Verse.Profile;
 
-namespace CosmereFramework.Quickstart;
+namespace Cosmere.Framework.Quickstart;
 
 [StaticConstructorOnStartup]
 public class Quickstarter {
@@ -16,7 +16,7 @@ public class Quickstarter {
 
     static Quickstarter() {
         if (!Prefs.DevMode) return;
-        string? quickstartName = CosmereFramework.GetModSettings<FrameworkModSettings>().quickstartName;
+        string? quickstartName = Mod.GetModSettings<FrameworkModSettings>().quickstartName;
         if (quickstartName == null) return;
 
         Type? type = Type.GetType(quickstartName);
@@ -53,7 +53,7 @@ public class Quickstarter {
                         Quickstart.PostLoaded();
                         if (Quickstart.pauseAfterLoad) Find.TickManager.Pause();
                     },
-                    10
+                    GenTicks.TicksPerRealSecond
                 );
             },
             "GeneratingMap",
@@ -68,7 +68,7 @@ public class Quickstarter {
         Current.ProgramState = ProgramState.Entry;
         Current.Game = new Game {
             InitData = new GameInitData(),
-            Scenario = Quickstart.scenario?.scenario,
+            Scenario = Quickstart.scenario.scenario,
         };
         Find.Scenario.PreConfigure();
         Current.Game.storyteller = new Storyteller(Quickstart.storyteller, Quickstart.difficulty);

@@ -1,6 +1,6 @@
 ﻿using Verse;
 
-namespace CosmereRoshar.Comp.Fabrials;
+namespace Cosmere.Roshar.Comp.Fabrials;
 
 public class FabrialCage : ThingComp {
     public override void PostSpawnSetup(bool respawningAfterLoad) {

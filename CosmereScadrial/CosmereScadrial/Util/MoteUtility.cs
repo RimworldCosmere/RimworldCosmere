@@ -1,6 +1,6 @@
 using Verse;
 
-namespace CosmereScadrial.Util;
+namespace Cosmere.Scadrial.Util;
 
 public static class MoteUtility {
     public static float GetMoteSize(ThingDef moteDef, float radius, float multiplier) {

@@ -1,13 +1,13 @@
 ﻿#nullable disable
-using CosmereFramework;
-using CosmereRoshar.Settings;
+using Cosmere.Framework;
+using Cosmere.Roshar.Settings;
 using Verse;
 
-namespace CosmereRoshar;
+namespace Cosmere.Roshar;
 
-public class CosmereRoshar(ModContentPack content) : Mod(content) {
+public class Mod(ModContentPack content) : Verse.Mod(content) {
     public static RosharModSettings settings =>
-        CosmereFramework.CosmereFramework.GetModSettings<RosharModSettings>();
+        Framework.Mod.GetModSettings<RosharModSettings>();
 
     public static bool enableHighstormPushing => settings.enableHighstormPushing;
     public static bool enableHighstormDamage => settings.enableHighstormDamage;

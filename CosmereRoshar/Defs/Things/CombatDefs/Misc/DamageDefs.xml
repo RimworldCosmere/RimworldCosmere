@@ -2,7 +2,7 @@
 <Defs>
 <DamageDef Name="Cosmere_Roshar_SoulDamage">
     <defName>Cosmere_Roshar_SoulDamage</defName>
-    <workerClass>CosmereRoshar.Damage.Worker.SoulDamage</workerClass>
+    <workerClass>Cosmere.Roshar.Damage.Worker.SoulDamage</workerClass>
     <label>soul</label>
     <hasForcefulImpact>false</hasForcefulImpact>
     <makesBlood>false</makesBlood>
@@ -20,7 +20,7 @@
 <DamageDef ParentName="Cosmere_Roshar_SoulDamage">
   <defName>Cosmere_Roshar_SoulCut</defName>
   <label>soul cut</label>
-  <workerClass>CosmereRoshar.Damage.Worker.SoulDamage</workerClass>
+  <workerClass>Cosmere.Roshar.Damage.Worker.SoulDamage</workerClass>
   <hediff>Cut</hediff>  <!-- Applies cut wounds like normal blades -->
   <hediffSkin>Cut</hediffSkin>  <!-- Skin layer injury -->
   <hediffSolid>Crack</hediffSolid>  <!-- Bone damage -->
@@ -32,7 +32,7 @@
 <DamageDef ParentName="Cosmere_Roshar_SoulDamage">
   <defName>Cosmere_Roshar_SoulStab</defName>
   <label>soul stab</label>
-  <workerClass>CosmereRoshar.Damage.Worker.SoulDamage</workerClass>  <!-- Use the correct class -->
+  <workerClass>Cosmere.Roshar.Damage.Worker.SoulDamage</workerClass>  <!-- Use the correct class -->
   <hediff>Stab</hediff>  <!-- Creates stab wounds -->
   <hediffSolid>Crack</hediffSolid>  <!-- Bone damage -->
   <impactSoundType>Slice</impactSoundType>

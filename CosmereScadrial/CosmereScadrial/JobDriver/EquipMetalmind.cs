@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using CosmereScadrial.Feruchemy.Comp.Thing;
+using Cosmere.Scadrial.Feruchemy.Comp.Thing;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.JobDriver;
+namespace Cosmere.Scadrial.JobDriver;
 
 public class EquipMetalmind : Verse.AI.JobDriver {
     private Verse.Thing metalmind => job.targetA.Thing;

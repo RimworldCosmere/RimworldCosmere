@@ -5,9 +5,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using Verse;
-using ThingUtility = CosmereCore.Util.ThingUtility;
+using Util_ThingUtility = Cosmere.Core.Util.ThingUtility;
 
-namespace CosmereCore.Patch;
+namespace Cosmere.Core.Patch;
 
 [HarmonyPatch(typeof(Pawn_InventoryTracker), "DropAllNearPawnHelper")]
 [HarmonyPatch([typeof(IntVec3), typeof(bool), typeof(bool), typeof(bool)])]
@@ -15,7 +15,7 @@ public static class PawnInventoryTrackerDropAllNearPawnHelperTranspiler {
     [HarmonyTranspiler]
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il) {
         MethodInfo? addRange = AccessTools.Method(typeof(List<Thing>), nameof(List<Thing>.AddRange));
-        MethodInfo? shouldDrop = AccessTools.Method(typeof(ThingUtility), nameof(ThingUtility.ShouldDrop));
+        MethodInfo? shouldDrop = AccessTools.Method(typeof(Util_ThingUtility), nameof(Util_ThingUtility.ShouldDrop));
         ConstructorInfo? funcCtor = typeof(Func<Thing, bool>).GetConstructor([typeof(object), typeof(IntPtr)]);
 
         MethodInfo where = typeof(Enumerable)

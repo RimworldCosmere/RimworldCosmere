@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using CosmereFramework.Comp.Map;
-using CosmereFramework.Extension;
-using CosmereScadrial.Allomancy.Hediff;
-using CosmereScadrial.Def;
+using Cosmere.Framework.Comp.Map;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Allomancy.Hediff;
+using Cosmere.Scadrial.Def;
 using UnityEngine;
 using Verse;
-using static CosmereFramework.CosmereFramework;
-using LineRenderer = CosmereFramework.Comp.Map.LineRenderer;
+using static Cosmere.Framework.Mod;
+using LineRenderer = Cosmere.Framework.Comp.Map.LineRenderer;
 
-namespace CosmereScadrial.Allomancy.Comp.Hediff;
+namespace Cosmere.Scadrial.Allomancy.Comp.Hediff;
 
 public abstract class LineDrawingAuraProperties : HediffCompProperties {
     public virtual float radius { get; set; } = 15;

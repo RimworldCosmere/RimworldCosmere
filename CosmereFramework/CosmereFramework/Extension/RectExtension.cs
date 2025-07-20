@@ -1,7 +1,7 @@
-using CosmereFramework.UI;
+using Cosmere.Framework.UI;
 using UnityEngine;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class RectExtension {
     public static Rect ContractedBy(this Rect rect, Padding padding) {

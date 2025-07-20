@@ -1,6 +1,6 @@
 ﻿using Verse;
 
-namespace CosmereScadrial;
+namespace Cosmere.Scadrial;
 
 public static class Constants {
     /**

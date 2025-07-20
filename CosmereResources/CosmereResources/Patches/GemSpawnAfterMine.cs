@@ -1,9 +1,9 @@
-using CosmereResources.Def;
+using Cosmere.Resources.Def;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace CosmereResources.Patches;
+namespace Cosmere.Resources.Patches;
 
 [HarmonyPatch]
 public static class GemSpawnAfterMine {

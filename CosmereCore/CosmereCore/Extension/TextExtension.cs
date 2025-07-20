@@ -1,7 +1,7 @@
-using CosmereCore.Need;
+using Cosmere.Core.Need;
 using UnityEngine;
 
-namespace CosmereCore.Extension;
+namespace Cosmere.Core.Extension;
 
 public static class TextExtension {
     public static string ToStringBreathEquivalentUnits(this float breathEquivalentUnits) {

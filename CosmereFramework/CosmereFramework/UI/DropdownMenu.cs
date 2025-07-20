@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.UI;
+namespace Cosmere.Framework.UI;
 
 /**
  * @todo Implement better dropdown logic

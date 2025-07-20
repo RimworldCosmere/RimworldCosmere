@@ -1,12 +1,12 @@
 using System;
-using CosmereFramework.Extension;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.JobGiver;
+namespace Cosmere.Scadrial.JobGiver;
 
 public class KeepVialInStock : ThinkNode_JobGiver {
     protected override Job? TryGiveJob(Pawn pawn) {

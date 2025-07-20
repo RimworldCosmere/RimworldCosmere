@@ -1,8 +1,8 @@
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Thing.Building;
+namespace Cosmere.Roshar.Thing.Building;
 
 public class FabrialPowerGenerator : Verse.Building {
     public CompFlickable compFlickerable;

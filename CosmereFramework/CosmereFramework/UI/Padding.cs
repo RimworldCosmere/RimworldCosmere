@@ -3,7 +3,7 @@ using UnityEngine;
 using Vector2 = System.Numerics.Vector2;
 using Vector4 = System.Numerics.Vector4;
 
-namespace CosmereFramework.UI;
+namespace Cosmere.Framework.UI;
 
 public struct Padding {
     public static readonly Padding Zero = new Padding(0);

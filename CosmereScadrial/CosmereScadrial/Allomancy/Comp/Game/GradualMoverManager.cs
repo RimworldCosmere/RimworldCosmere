@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Extension;
-using CosmereScadrial.Def;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Def;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using Logger = CosmereFramework.Logger;
+using Logger = Cosmere.Framework.Logger;
 
-namespace CosmereScadrial.Allomancy.Comp.Game;
+namespace Cosmere.Scadrial.Allomancy.Comp.Game;
 
 public class GradualMoverManager(Verse.Game game) : GameComponent {
     private readonly List<MovementData> activeMovements = new List<MovementData>();

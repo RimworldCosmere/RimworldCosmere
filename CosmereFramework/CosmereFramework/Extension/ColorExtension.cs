@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class ColorExtension {
     public static Texture2D ToSolidColorTexture(this Color color) {

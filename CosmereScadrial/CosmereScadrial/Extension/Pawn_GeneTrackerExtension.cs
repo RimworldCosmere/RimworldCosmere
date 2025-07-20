@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereResources.Def;
-using CosmereScadrial.Gene;
+using Cosmere.Resources.Def;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Extension;
+namespace Cosmere.Scadrial.Extension;
 
 public static class Pawn_GeneTrackerExtension {
     public static Allomancer? GetAllomanticGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {

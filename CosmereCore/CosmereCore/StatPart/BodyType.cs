@@ -1,8 +1,8 @@
 using RimWorld;
 using Verse;
-using StatUtility = CosmereFramework.Util.StatUtility;
+using StatUtility = Cosmere.Framework.Util.StatUtility;
 
-namespace CosmereCore.StatPart;
+namespace Cosmere.Core.StatPart;
 
 public class BodyType : RimWorld.StatPart {
     private const int baseWeight = 60;

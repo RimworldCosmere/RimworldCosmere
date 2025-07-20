@@ -1,9 +1,9 @@
 #nullable disable
 using System;
-using CosmereScadrial.Def;
+using Cosmere.Scadrial.Def;
 using Verse;
 
-namespace CosmereScadrial.Allomancy;
+namespace Cosmere.Scadrial.Allomancy;
 
 public struct AllomanticBurnSource : IExposable, IEquatable<AllomanticBurnSource> {
     public AllomanticAbilityDef Def;

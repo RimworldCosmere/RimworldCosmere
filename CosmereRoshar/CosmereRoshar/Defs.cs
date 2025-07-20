@@ -2,14 +2,15 @@
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar;
+namespace Cosmere.Roshar;
 
+//@todo Split into DefOf per type
 [DefOf]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public static class CosmereRosharDefs {
+public static class Defs {
     public static NeedDef Cosmere_Roshar_Need_RadiantProgress;
 
     public static TraitDef Cosmere_Roshar_Trait_RadiantWindrunner;
@@ -56,7 +57,7 @@ public static class CosmereRosharDefs {
 
     public static HediffDef Cosmere_Roshar_SurgeAbrasion;
 
-    static CosmereRosharDefs() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(CosmereRosharDefs));
+    static Defs() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(Defs));
     }
 }

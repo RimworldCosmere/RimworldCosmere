@@ -2,7 +2,7 @@
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Utility;
+namespace Cosmere.Roshar.Utility;
 
 public static class GlowCircleRenderer {
     private static Dictionary<Color, Material> CachedMaterials = new Dictionary<Color, Material>();

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Dialog;
-using CosmereRoshar.Patches.Fabrials;
-using CosmereRoshar.Thing.Building;
+using Cosmere.Roshar.Comp.Thing;
+using Cosmere.Roshar.Dialog;
+using Cosmere.Roshar.Patches.Fabrials;
+using Cosmere.Roshar.Thing.Building;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Comp.Fabrials;
+namespace Cosmere.Roshar.Comp.Fabrials;
 
 public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableComp {
     private List<ThingDef> filterListInt = [];
@@ -143,10 +143,10 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
             if (pawn != null &&
-                pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.Cosmere_Roshar_PainrialDiminisher) ==
+                pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_PainrialDiminisher) ==
                 null &&
                 pawn.Position.InHorDistOf(position, 5f)) {
-                pawn.health.AddHediff(CosmereRosharDefs.Cosmere_Roshar_PainrialDiminisher);
+                pawn.health.AddHediff(Defs.Cosmere_Roshar_PainrialDiminisher);
             }
         }
     }
@@ -159,10 +159,10 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
             if (pawn != null &&
-                pawn.health.hediffSet.GetFirstHediffOfDef(CosmereRosharDefs.Cosmere_Roshar_LogirialDiminisher) ==
+                pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_LogirialDiminisher) ==
                 null &&
                 pawn.Position.InHorDistOf(position, 5f)) {
-                pawn.health.AddHediff(CosmereRosharDefs.Cosmere_Roshar_LogirialDiminisher);
+                pawn.health.AddHediff(Defs.Cosmere_Roshar_LogirialDiminisher);
             }
         }
     }
@@ -218,7 +218,7 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         if (cutGemstone != null) {
             replaceGemAction = () => {
                 Verse.AI.Job job = JobMaker.MakeJob(
-                    CosmereRosharDefs.Cosmere_Roshar_RefuelFabrial,
+                    Defs.Cosmere_Roshar_RefuelFabrial,
                     parent,
                     cutGemstone
                 );
@@ -235,7 +235,7 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         Action? removeGemAction = null;
         if (insertedGemstone != null) {
             removeGemAction = () => {
-                Verse.AI.Job job = JobMaker.MakeJob(CosmereRosharDefs.Cosmere_Roshar_RemoveFromFabrial, parent);
+                Verse.AI.Job job = JobMaker.MakeJob(Defs.Cosmere_Roshar_RemoveFromFabrial, parent);
                 if (job.TryMakePreToilReservations(selPawn, true)) {
                     selPawn.jobs.TryTakeOrderedJob(job);
                 }

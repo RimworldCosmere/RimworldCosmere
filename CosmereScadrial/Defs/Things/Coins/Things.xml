@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef Name="CosmereScadrialCurrencyBase" ParentName="ResourceBase" Abstract="True">
+    <ThingDef Name="Cosmere_Scadrial_Thing_CurrencyBase" ParentName="ResourceBase" Abstract="True">
         <graphicData>
             <graphicClass>Graphic_StackCount</graphicClass>
             <drawSize>0.5</drawSize>
@@ -21,7 +21,7 @@
         <orderedTakeGroup>Cosmere_Currency</orderedTakeGroup>
     </ThingDef>
     
-    <ThingDef ParentName="CosmereScadrialCurrencyBase">
+    <ThingDef ParentName="Cosmere_Scadrial_Thing_CurrencyBase">
         <defName>Cosmere_Scadrial_Thing_Boxing</defName>
         <label>boxing</label>
         <description>A gold-colored coin used as currency across the Final Empire.</description>
@@ -33,13 +33,13 @@
             <Mass>0.002</Mass>
         </statBases>
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
                 <metal>Gold</metal>
             </li>
         </modExtensions>
     </ThingDef>
 
-    <ThingDef Name="CosmereClip" ParentName="CosmereScadrialCurrencyBase">
+    <ThingDef Name="CosmereClip" ParentName="Cosmere_Scadrial_Thing_CurrencyBase">
         <defName>Cosmere_Scadrial_Thing_Clip</defName>
         <label>clip</label>
         <description>A copper-colored coin used for small transactions and useful for Coinshots.</description>
@@ -51,7 +51,7 @@
             <Mass>0.001</Mass>
         </statBases>
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>
@@ -59,7 +59,7 @@
     
     <ThingDef ParentName="BaseBullet">
         <defName>Cosmere_Scadrial_Thing_ClipProjectile</defName>
-        <thingClass>CosmereScadrial.Thing.Clip</thingClass>
+        <thingClass>Cosmere.Scadrial.Thing.Clip</thingClass>
         <label>clip</label>
         <graphicData>
             <texPath>Things/Projectile/Clip</texPath>

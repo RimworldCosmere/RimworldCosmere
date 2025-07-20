@@ -3,7 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Comp.Thing;
+namespace Cosmere.Roshar.Comp.Thing;
 
 public class SpherePouchProperties : CompProperties {
     public List<ThingDef>? allowedSpheres;

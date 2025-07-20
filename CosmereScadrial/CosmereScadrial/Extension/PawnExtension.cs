@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereFramework.Extension;
-using CosmereResources;
-using CosmereResources.Def;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Def;
-using CosmereScadrial.Gene;
-using CosmereScadrial.Thing;
+using Cosmere.Framework.Extension;
+using Cosmere.Resources;
+using Cosmere.Resources.Def;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Def;
+using Cosmere.Scadrial.Gene;
+using Cosmere.Scadrial.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.Extension;
+namespace Cosmere.Scadrial.Extension;
 
 public static class PawnExtension {
     public static AcceptanceReport CanUseMetal(this Pawn pawn, MetalDef metal) {

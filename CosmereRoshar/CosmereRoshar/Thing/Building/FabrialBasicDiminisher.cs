@@ -1,11 +1,11 @@
-using CosmereResources;
-using CosmereResources.Extension;
-using CosmereRoshar.Comp.Fabrials;
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Resources;
+using Cosmere.Resources.Extension;
+using Cosmere.Roshar.Comp.Fabrials;
+using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Thing.Building;
+namespace Cosmere.Roshar.Thing.Building;
 
 public class FabrialBasicDiminisher : Verse.Building {
     public BasicFabrialDiminisher basicFabrialDiminisher;

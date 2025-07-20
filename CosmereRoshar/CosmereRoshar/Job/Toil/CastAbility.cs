@@ -3,7 +3,7 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace CosmereRoshar.Job.Toil;
+namespace Cosmere.Roshar.Job.Toil;
 
 public class CastAbility {
     public static Verse.AI.Toil FollowAndCastAbility(

@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.Rendering;
+using Verse;
 
-namespace CosmereFramework.Extension;
+namespace Cosmere.Framework.Extension;
 
 public static class ShaderExtension {
     public static void LogShaderParameters(this Shader shader) {
         int propertyCount = shader.GetPropertyCount();
-        Verse.Log.Message($"Shader: {shader.name} has {propertyCount} properties");
+        Log.Message($"Shader: {shader.name} has {propertyCount} properties");
 
         for (int i = 0; i < propertyCount; i++) {
             string name = shader.GetPropertyName(i);
@@ -33,7 +34,7 @@ public static class ShaderExtension {
                     break;
             }
 
-            Verse.Log.Message(
+            Log.Message(
                 $"Property {i}: {name} type={type} description={description} default={defaultValue}"
             );
         }

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using CosmereResources;
-using CosmereRoshar.Comp.Thing;
+using Cosmere.Resources;
+using Cosmere.Roshar.Comp.Thing;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Thing.Building;
+namespace Cosmere.Roshar.Thing.Building;
 
 public class SprenTrapper : Verse.Building {
     public CompGlower compGlower;

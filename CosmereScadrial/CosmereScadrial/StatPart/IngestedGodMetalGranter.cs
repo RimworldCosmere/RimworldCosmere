@@ -1,8 +1,8 @@
-using CosmereScadrial.Extension;
+using Cosmere.Scadrial.Extension;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.StatPart;
+namespace Cosmere.Scadrial.StatPart;
 
 public class IngestedGodMetalGranter : RimWorld.StatPart {
     private bool allomancy => parentStat.Equals(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower);

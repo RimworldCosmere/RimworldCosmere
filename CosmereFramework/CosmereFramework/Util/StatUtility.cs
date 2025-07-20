@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace CosmereFramework.Util;
+namespace Cosmere.Framework.Util;
 
 public static class StatUtility {
     public static bool TryGetPawnStat(

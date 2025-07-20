@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using CosmereRoshar.Comp.Fabrials;
-using CosmereRoshar.Comp.Thing;
-using CosmereRoshar.Thing.Building;
+using Cosmere.Roshar.Comp.Fabrials;
+using Cosmere.Roshar.Comp.Thing;
+using Cosmere.Roshar.Thing.Building;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Patches.Fabrials;
+namespace Cosmere.Roshar.Patches.Fabrials;
 
 [HarmonyPatch(typeof(Plant), "get_GrowthRate")]
 public static class CultivationSprenPatch {

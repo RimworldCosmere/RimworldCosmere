@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using CosmereResources.Def;
+using Cosmere.Resources.Def;
 
-namespace CosmereResources.DefModExtension;
+namespace Cosmere.Resources.DefModExtension;
 
 public class GemsLinked : Verse.DefModExtension {
     // ReSharper disable once InconsistentNaming

@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereScadrial.Util;
+using Cosmere.Scadrial.Util;
 using RimWorld;
 using Verse;
-using static CosmereFramework.CosmereFramework;
-using HediffUtility = CosmereScadrial.Util.HediffUtility;
+using static Cosmere.Framework.Mod;
+using HediffUtility = Cosmere.Scadrial.Util.HediffUtility;
 
-namespace CosmereScadrial.Allomancy.Ability;
+namespace Cosmere.Scadrial.Allomancy.Ability;
 
 public class TimeAbility : AbilitySelfTarget {
     private const int BaseRadius = 3;

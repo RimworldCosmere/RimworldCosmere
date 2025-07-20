@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using CosmereCore.Extension;
-using CosmereFramework.Comp.Map;
-using CosmereScadrial.Def;
+using Cosmere.Core.Extension;
+using Cosmere.Framework.Comp.Map;
+using Cosmere.Scadrial.Def;
 using UnityEngine;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Comp.Hediff;
+namespace Cosmere.Scadrial.Allomancy.Comp.Hediff;
 
 public class PhysicalExternalAuraProperties : LineDrawingAuraProperties {
     public PhysicalExternalAuraProperties() {

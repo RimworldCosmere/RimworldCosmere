@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using CosmereRoshar.Patches;
+using Cosmere.Roshar.Patches;
+using Cosmere.Roshar.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace CosmereRoshar.Need;
+namespace Cosmere.Roshar.Need;
 
 public class RadiantProgress : RimWorld.Need {
     private const float LevelNewSquire = 500f;
@@ -70,15 +71,15 @@ public class RadiantProgress : RimWorld.Need {
 
         switch (idealLevel) {
             case 1:
-                Cosmere_Roshar_Radiant_NeedLevelupChecker.UpdateIsSatisfiedReq1_2(pawnStats);
+                RadiantNeedLevelupChecker.UpdateIsSatisfiedReq1_2(pawnStats);
                 eligible = pawnStats.GetRequirements(trait.def, pawnStats.props.req12).isSatisfied;
                 break;
             case 2:
-                Cosmere_Roshar_Radiant_NeedLevelupChecker.UpdateIsSatisfiedReq2_3(pawnStats);
+                RadiantNeedLevelupChecker.UpdateIsSatisfiedReq2_3(pawnStats);
                 eligible = pawnStats.GetRequirements(trait.def, pawnStats.props.req23).isSatisfied;
                 break;
             case 3:
-                Cosmere_Roshar_Radiant_NeedLevelupChecker.UpdateIsSatisfiedReq3_4(pawnStats);
+                RadiantNeedLevelupChecker.UpdateIsSatisfiedReq3_4(pawnStats);
                 eligible = pawnStats.GetRequirements(trait.def, pawnStats.props.req34).isSatisfied;
                 break;
             //case 4:
@@ -108,19 +109,5 @@ public class RadiantProgress : RimWorld.Need {
         if (degree == 1) return LevelExperiencedSquire; // Experienced Squire
         if (degree == 0) return LevelNewSquire; // New Squire
         return LevelNewSquire; // Bonded (Base Level)
-    }
-}
-
-public static class RadiantUtility {
-    public static void GiveRadiantXp(Pawn pawn, float amount) {
-        if (pawn == null) {
-            return;
-        }
-
-        RadiantProgress progress = pawn.needs?.TryGetNeed<RadiantProgress>();
-        if (progress != null) {
-            progress.GainXp(amount);
-            progress.UpdateRadiantTrait(pawn);
-        }
     }
 }

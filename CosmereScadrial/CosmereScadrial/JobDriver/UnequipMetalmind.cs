@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using CosmereScadrial.Feruchemy.Comp.Thing;
-using RimWorld;
+using Cosmere.Scadrial.Feruchemy.Comp.Thing;
 using Verse;
 using Verse.AI;
 
-namespace CosmereScadrial.JobDriver;
+namespace Cosmere.Scadrial.JobDriver;
 
 public class UnequipMetalmind : Verse.AI.JobDriver {
     private Verse.Thing metalmind => job.targetA.Thing;
@@ -14,7 +13,7 @@ public class UnequipMetalmind : Verse.AI.JobDriver {
         if (!pawn.Reserve(metalmind, job, 1, 1, errorOnFailed: errorOnFailed)) {
             return false;
         }
-        
+
         if (metalmind?.holdingOwner?.Owner != pawn) {
             return false;
         }
@@ -30,10 +29,8 @@ public class UnequipMetalmind : Verse.AI.JobDriver {
 
     protected override IEnumerable<Toil> MakeNewToils() {
         this.FailOnDespawnedNullOrForbidden(TargetIndex.B);
-        
+
         yield return Toils_General.Wait(25).WithProgressBarToilDelay(TargetIndex.A);
-        yield return Toils_General.Do(() => {
-            metalmindComp!.equipped = false;
-        });
+        yield return Toils_General.Do(() => { metalmindComp!.equipped = false; });
     }
 }

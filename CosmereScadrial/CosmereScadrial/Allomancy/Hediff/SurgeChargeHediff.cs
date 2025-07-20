@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
-using CosmereFramework.Extension;
-using CosmereScadrial.Allomancy.Ability;
-using CosmereScadrial.Extension;
-using CosmereScadrial.Gene;
+using Cosmere.Framework.Extension;
+using Cosmere.Scadrial.Allomancy.Ability;
+using Cosmere.Scadrial.Extension;
+using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
 
-namespace CosmereScadrial.Allomancy.Hediff;
+namespace Cosmere.Scadrial.Allomancy.Hediff;
 
 public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : AllomanticHediff(d, p, a) {
     public Action? endCallback;

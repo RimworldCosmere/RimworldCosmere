@@ -1,6 +1,6 @@
 using Verse;
 
-namespace CosmereRoshar.ModExtension;
+namespace Cosmere.Roshar.ModExtension;
 
 public class Highstorm : DefModExtension {
     public int stormDuration;

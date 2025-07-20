@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CosmereRoshar.Dialog;
+using Cosmere.Roshar.Dialog;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Comp.Thing;
+namespace Cosmere.Roshar.Comp.Thing;
 
 public class StormlightLampsProperties : CompProperties {
     public List<ThingDef>? allowedSpheres;
@@ -152,7 +152,7 @@ public class StormlightLamps : ThingComp, IFilterableComp {
             } else {
                 replaceSphereAction = () => {
                     Verse.AI.Job job = JobMaker.MakeJob(
-                        CosmereRosharDefs.Cosmere_Roshar_RefuelSphereLamp,
+                        Defs.Cosmere_Roshar_RefuelSphereLamp,
                         parent,
                         sphere
                     );

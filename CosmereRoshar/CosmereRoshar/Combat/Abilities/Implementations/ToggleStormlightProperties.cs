@@ -1,8 +1,8 @@
-﻿using CosmereRoshar.Comp.Thing;
+﻿using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
 using Verse;
 
-namespace CosmereRoshar.Combat.Abilities.Implementations;
+namespace Cosmere.Roshar.Combat.Abilities.Implementations;
 
 public class ToggleStormlightProperties : CompProperties_AbilityEffect {
     public ToggleStormlightProperties() {

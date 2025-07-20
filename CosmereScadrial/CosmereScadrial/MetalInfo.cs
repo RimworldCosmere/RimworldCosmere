@@ -1,7 +1,7 @@
 ﻿#nullable disable
 using UnityEngine;
 
-namespace CosmereScadrial;
+namespace Cosmere.Scadrial;
 
 public class MetalRegistryData {
     public MetalInfo[] metals;

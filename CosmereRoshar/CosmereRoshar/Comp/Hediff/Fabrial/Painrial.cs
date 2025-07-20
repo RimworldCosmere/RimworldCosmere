@@ -1,3 +1,3 @@
-﻿namespace CosmereRoshar.Comp.Hediff.Fabrial;
+﻿namespace Cosmere.Roshar.Comp.Hediff.Fabrial;
 
 internal class HediffPainrial { }

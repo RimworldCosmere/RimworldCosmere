@@ -1,3 +1,3 @@
-﻿namespace CosmereScadrial.DefModExtension;
+﻿namespace Cosmere.Scadrial.DefModExtension;
 
 public class PoweredOrFueled : Verse.DefModExtension { }

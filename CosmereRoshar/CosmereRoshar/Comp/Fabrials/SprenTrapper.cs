@@ -283,8 +283,8 @@ public class SprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
     }
 
 
-    public override IEnumerable<Gizmo> CompGetGizmosExtra() {
-        foreach (Gizmo gizmo in base.CompGetGizmosExtra()) {
+    public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
+        foreach (Verse.Gizmo gizmo in base.CompGetGizmosExtra()) {
             yield return gizmo;
         }
 

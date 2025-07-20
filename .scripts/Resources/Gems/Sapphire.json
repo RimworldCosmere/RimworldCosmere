@@ -6,19 +6,19 @@
     "sphere": "A deep blue sapphire sphere, cool and steady in appearance. Sapphires are capable of holding Stormlight and are commonly used in fabrials that manipulate or purify water."
   },
   "color": [
-    16,
-    200,
-    225
+    15,
+    53,
+    98
   ],
   "colorTwo": [
-    16,
-    200,
-    225
+    62,
+    93,
+    129
   ],
   "glowColor": [
-    16,
-    200,
-    225
+    159,
+    174,
+    192
   ],
   "baseStormlight": 5,
   "baseMarketValue": 12.5,

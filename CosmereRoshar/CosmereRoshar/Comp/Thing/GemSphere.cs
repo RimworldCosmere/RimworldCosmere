@@ -130,7 +130,7 @@ public class GemSphere : ThingComp {
         base.CompTick();
     }
 
-    public override IEnumerable<Gizmo> CompGetGizmosExtra() {
+    public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
         if (Mod.devOptionAutofillSpheres && stormlight != null) {
             yield return new Command_Action {
                 defaultLabel = "Fill sphere with 10 stormlight",

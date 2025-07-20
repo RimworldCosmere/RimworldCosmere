@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <GeneDef Name="Cosmere_Roshar_Gene_BaseSurgeGroup" Abstract="True">
+        <randomChosen>false</randomChosen>
+        <canGenerateInGeneSet>false</canGenerateInGeneSet>
+        <passOnDirectly>false</passOnDirectly>
+        <biostatCpx>500</biostatCpx>
+        <biostatMet>500</biostatMet>
+        <biostatArc>500</biostatArc>
+    </GeneDef>
+    <GeneDef Name="Cosmere_Roshar_Gene_BaseRadiantOrder" ParentName="Cosmere_Roshar_Gene_BaseSurgeGroup" Abstract="True">
+        <geneClass>Cosmere.Roshar.Gene.Surgebinder</geneClass>
+        <resourceGizmoType>Cosmere.Roshar.Gizmo.RadiantOrderCommand</resourceGizmoType>
+        <resourceGizmoThresholds>
+            <li>0.2</li>
+            <li>0.4</li>
+            <li>0.6</li>
+            <li>0.8</li>
+        </resourceGizmoThresholds>
+        <showGizmoOnWorldView>true</showGizmoOnWorldView>
+        <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+    </GeneDef>
+    <!-- @TODO Fushed Brands -->
+</Defs>

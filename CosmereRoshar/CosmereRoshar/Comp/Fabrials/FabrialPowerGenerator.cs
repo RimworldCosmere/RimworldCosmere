@@ -152,8 +152,8 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
         yield return new FloatMenuOption("Remove Gemstone", removeGemAction);
     }
 
-    public override IEnumerable<Gizmo> CompGetGizmosExtra() {
-        foreach (Gizmo gizmo in base.CompGetGizmosExtra()) {
+    public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
+        foreach (Verse.Gizmo gizmo in base.CompGetGizmosExtra()) {
             yield return gizmo;
         }
 

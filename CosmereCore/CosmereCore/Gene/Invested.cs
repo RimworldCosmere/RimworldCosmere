@@ -28,7 +28,7 @@ public abstract class Invested : Gene_Resource {
         targetValue = 0.5f;
     }
 
-    protected abstract void PostAddOrRemove();
+    protected virtual void PostAddOrRemove() { }
 
     public override void PostAdd() {
         base.PostAdd();

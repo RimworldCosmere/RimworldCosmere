@@ -127,7 +127,7 @@ public class CompCutGemstone : ThingComp {
         return "";
     }
 
-    public override IEnumerable<Gizmo> CompGetGizmosExtra() {
+    public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
         if (Mod.devOptionAutofillSpheres && stormlight != null) {
             yield return new Command_Action {
                 defaultLabel = "Fill gem with 10 stormlight",

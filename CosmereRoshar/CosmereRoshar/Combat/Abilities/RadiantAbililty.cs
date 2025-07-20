@@ -516,7 +516,7 @@ public class CommandRadiantAbility : Command {
         }
     }
 
-    public override bool InheritInteractionsFrom(Gizmo other) {
+    public override bool InheritInteractionsFrom(Verse.Gizmo other) {
         return false;
     }
 }

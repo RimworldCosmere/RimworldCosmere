@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Roshar.Def.RadiantOrderDef>
+        <defName>Windrunner</defName>
+        <gemstone>Sapphire</gemstone>
+        <description>Surgebinders who command Gravitation and Adhesion. Swift, loyal, and bound by oaths to protect, they fly through the air and strike like the storm.</description>
+        <surges>
+            <li>Adhesion</li>
+            <li>Gravitation</li>
+        </surges>
+        <ideals>
+            <li>
+                <label>first ideal</label>
+                <quotes>
+                    <li>Life before death, strength before weakness, journey before destination.</li>
+                </quotes>
+            </li>
+            <li>
+                <label>second ideal</label>
+                <quotes>
+                    <li>I will protect those who cannot protect themselves.</li>
+                </quotes>
+            </li>
+            <li>
+                <label>third ideal</label>
+                <quotes>
+                    <li>I will protect even those I hate, so long as it is right.</li>
+                    <li>I will protect those I hate. Even...even if the one I hate most is... myself.</li>
+                    <li>I've got to protect people, you know? Even from myself.</li>
+                </quotes>
+                <abilities>
+                    <!--<li>Cosmere_Roshar_Ability_SpawnShardblade</li>-->
+                </abilities>
+            </li>
+            <li>
+                <label>fourth ideal</label>
+                <quotes>
+                    <li>I accept that there will be those I cannot protect!</li>
+                </quotes>
+                <abilities>
+                    <!--<li>Cosmere_Roshar_Ability_SpawnShardplate</li>-->
+                </abilities>
+            </li>
+            <li>
+                <label>fifth ideal</label>
+                <quotes>
+                    <li>I will protect myself, so that I may continue to protect others.</li>
+                </quotes>
+            </li>
+        </ideals>
+    </Cosmere.Roshar.Def.RadiantOrderDef>
+</Defs>

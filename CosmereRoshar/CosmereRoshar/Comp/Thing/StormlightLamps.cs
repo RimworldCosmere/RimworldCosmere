@@ -89,8 +89,8 @@ public class StormlightLamps : ThingComp, IFilterableComp {
         return 1; //make more advanced later
     }
 
-    public override IEnumerable<Gizmo> CompGetGizmosExtra() {
-        foreach (Gizmo gizmo in base.CompGetGizmosExtra()) {
+    public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
+        foreach (Verse.Gizmo gizmo in base.CompGetGizmosExtra()) {
             yield return gizmo;
         }
 

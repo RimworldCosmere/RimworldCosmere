@@ -53,7 +53,7 @@ public class Quickstarter {
                         Quickstart.PostLoaded();
                         if (Quickstart.pauseAfterLoad) Find.TickManager.Pause();
                     },
-                    GenTicks.TicksPerRealSecond
+                    GenTicks.TicksPerRealSecond / 2
                 );
             },
             "GeneratingMap",
@@ -83,8 +83,6 @@ public class Quickstarter {
         Find.GameInitData.ChooseRandomStartingTile();
         Find.GameInitData.mapSize = Quickstart.mapSize;
         Find.Scenario.PostIdeoChosen();
-        Find.GameInitData.PrepForMapGen();
-        Find.Scenario.PreMapGenerate();
 
         Quickstart.PostApplyConfiguration();
     }

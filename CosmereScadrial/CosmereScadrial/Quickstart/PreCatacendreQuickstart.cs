@@ -36,7 +36,8 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
     public override void PrepareColonists(List<Pawn> pawns) {
         if (pawns.Count == 0) return;
 
-        if (pawns.TryPopFront(out Pawn pawn)) {
+        Pawn pawn;
+        if (pawns.TryPopFront(out pawn)) {
             ScadrianUtility.PrepareDevPawn(pawn);
             pawn.Name = new NameSingle("Vin Venture");
             pawn.gender = Gender.Female;
@@ -72,8 +73,9 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            if (pawn.needs.TryGetNeed<Investiture>() is not { } investiture) return;
-            investiture.CurLevel = 10;
+            if (pawn.needs.TryGetNeed(out Investiture investiture)) {
+                investiture.CurLevel = 10;
+            }
 
             ScadrianUtility.PrepareDevPawn(pawn);
             GeneUtility.AddFullFeruchemist(pawn, false, true);
@@ -90,10 +92,6 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
             pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
             pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
         }
-
-        //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Atium);
-        //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Steel);
-        //if (pawns.TryPopFront(out pawn)) PrepareColonistAsTwinborn(pawn, true, true, true, MetalDefOf.Gold);
 
         if (pawns.TryPopFront(out pawn)) {
             PrepareColonistAsMisting(pawn, false, true, MetalDefOf.Steel);

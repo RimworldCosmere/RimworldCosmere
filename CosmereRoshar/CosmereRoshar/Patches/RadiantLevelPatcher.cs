@@ -227,7 +227,7 @@ public static class PatchPawnHealthTrackerHealthTick {
 
     [HarmonyPatch(nameof(Pawn_HealthTracker.HealthTickInterval))]
     private static void Postfix(Pawn_HealthTracker __instance, int delta) {
-        if (!GenTicks.IsTickIntervalDelta(GenTicks.TicksPerRealSecond, delta)) return;
+        if (!GenTicks.IsTickIntervalDelta(GenTicks.TickLongInterval, delta)) return;
         Pawn? pawn = pawnRef(__instance);
         if (pawn == null || pawn.NonHumanlikeOrWildMan()) {
             return;

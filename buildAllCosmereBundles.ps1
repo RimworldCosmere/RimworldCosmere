@@ -34,33 +34,15 @@ if ( [string]::IsNullOrEmpty($buildTarget))
 }
 
 
-$cleanPath = "..\AssetBuilder\Assets\Data"
-$assetOutput = "..\AssetBuilder\Assets\AssetBundles"
+$cleanPath = "$PSScriptRoot\..\AssetBuilder\Assets\Data"
+$assetOutput = "$PSScriptRoot\..\AssetBuilder\Assets\AssetBundles"
 Write-Host "Cleaning $cleanPath"
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$cleanPath\*" | Out-Null
 
 function Get-FolderHash($folderPath)
 {
-    $hashAlgorithm = [System.Security.Cryptography.SHA256]::Create()
-    $allFiles = Get-ChildItem -Recurse -File $folderPath | Sort-Object FullName
-
-    $stream = New-Object System.IO.MemoryStream
-
-    foreach ($file in $allFiles)
-    {
-        $relativePath = Resolve-Path $file.FullName -Relative | Out-String
-        $bytes = [System.Text.Encoding]::UTF8.GetBytes($relativePath.Trim())
-        $stream.Write($bytes, 0, $bytes.Length)
-
-        $fileBytes = [System.IO.File]::ReadAllBytes($file.FullName)
-        $stream.Write($fileBytes, 0, $fileBytes.Length)
-    }
-
-    $stream.Position = 0
-    $finalHash = $hashAlgorithm.ComputeHash($stream)
-    $stream.Dispose()
-
-    return [System.BitConverter]::ToString($finalHash) -replace "-", ""
+    $hashString = (Get-ChildItem -Path $folderPath -Recurse -File | Get-FileHash -Algorithm SHA256).Hash | Out-String
+    return (Get-FileHash -Algorithm SHA256 -InputStream ([IO.MemoryStream]::new([System.Text.Encoding]::UTF8.GetBytes($hashString)))).Hash
 }
 
 
@@ -73,14 +55,15 @@ foreach ($mod in $mods)
     Write-Host "--------------------------------------"
     Write-Host "Processing Cosmere$mod..."
 
-    $srcAssets = "..\RimworldCosmere\Cosmere$mod\Assets"
+    $srcAssets = "$PSScriptRoot\Cosmere$mod\Assets"
     $bundleName = "CryptikLemur.Cosmere.$mod"
-    $destPath = "..\AssetBuilder\Assets\Data\$bundleName"
-    $finalOutput = "..\RimworldCosmere\Cosmere$mod\AssetBundles"
-    $hashFile = "..\RimworldCosmere\Cosmere$mod\.lastassetbuildhash"
+    $destPath = "$PSScriptRoot\..\AssetBuilder\Assets\Data\$bundleName"
+    $finalOutput = "$PSScriptRoot\Cosmere$mod\AssetBundles"
+    $hashFile = "$PSScriptRoot\Cosmere$mod\.lastassetbuildhash"
 
     if (Test-Path $srcAssets)
     {
+        Write-Host "    Fetching FolderHash for $srcAssets"
         $currentHash = Get-FolderHash $srcAssets
         $previousHash = if (Test-Path $hashFile)
         {
@@ -91,6 +74,7 @@ foreach ($mod in $mods)
             ""
         }
 
+        Write-Host "    Testing $currentHash vs $previousHash"
         if ($currentHash -eq $previousHash)
         {
             Write-Host "    No changes detected in Cosmere$mod. Skipping build."

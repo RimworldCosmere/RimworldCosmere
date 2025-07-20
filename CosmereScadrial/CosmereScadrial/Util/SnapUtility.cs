@@ -8,7 +8,7 @@ public class SnapUtility {
         if (IsSnapped(pawn)) return;
 
 
-        Thought_Memory memory = ThoughtMaker.MakeThought(ThoughtDefOf.Cosmere_Scadrial_Snapped, 1);
+        Thought_Memory memory = ThoughtMaker.MakeThought(ThoughtDefOf.Cosmere_Scadrial_Snapped, 0);
         memory.permanent = true;
         memory.moodOffset = 1;
         memory.moodPowerFactor = 0f;

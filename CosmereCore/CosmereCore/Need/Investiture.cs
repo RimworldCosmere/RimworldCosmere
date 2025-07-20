@@ -1,7 +1,6 @@
 ﻿using System;
 using Cosmere.Core.Extension;
 using Cosmere.Framework.Extension;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -58,9 +57,6 @@ public class Investiture : RimWorld.Need {
         }
     }
 
-    public override bool ShowOnNeedList =>
-        pawn != null && pawn.story.traits.HasTrait(TraitDef.Named("Cosmere_Invested"));
-
     // ReSharper disable once InconsistentNaming
     public static int GetBreathEquivalentUnitsFromDegree(int degree) {
         return BreathEquivalentUnitThresholds[degree];
@@ -78,16 +74,11 @@ public class Investiture : RimWorld.Need {
     }
 
     public override void SetInitialLevel() {
-        CurLevel = 0f; // start uninvested
+        CurLevel = 1f;
     }
 
     public override void NeedInterval() {
-        if (IsFrozen) return;
-
-        if (pawn.story?.traits == null) return;
-
-        int degree = GetDegreeFromBreathEquivalentUnits((int)CurLevel);
-        pawn.story.TryAddTrait(TraitDefOf.Cosmere_Invested, degree);
+        pawn.story?.TryAddTrait(TraitDefOf.Cosmere_Invested, GetDegreeFromBreathEquivalentUnits((int)CurLevel));
 
         // It should only fall in specific cases. I'll need to figure this out
         // e.g. 

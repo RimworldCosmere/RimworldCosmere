@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CC_Settings_Category_Connection>Connection</CC_Settings_Category_Connection>
+    <CC_Settings_Connection_ShowDormantConnection_Label>Show Dormant Connection</CC_Settings_Connection_ShowDormantConnection_Label>
+    <CC_Settings_Connection_ShowDormantConnection_Tooltip>Pawns will show that they have a dormant Connection in their inspect window. Won't show what it exactly is.</CC_Settings_Connection_ShowDormantConnection_Tooltip>
+</LanguageData>

@@ -1,6 +1,8 @@
 using System.Linq;
+using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Util;
 using Cosmere.Framework;
+using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Settings;
 using Cosmere.Scadrial.Util;
 using RimWorld;
@@ -42,8 +44,12 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
             foreach (Pawn? pawn in map.mapPawns.AllPawnsSpawned.Where(p =>
                          p.RaceProps.Humanlike && !p.Dead && !p.Position.Roofed(map)
                      )) {
-                if (SnapUtility.IsSnapped(pawn)) continue;
-                if (!pawn.genes.HasActiveGene(GeneDefOf.Cosmere_Scadrial_Gene_DormantMetalborn)) continue;
+                if (pawn.IsSnapped()) continue;
+                if (!pawn.TryGetComp(out DormantConnection dormantConnection) ||
+                    !dormantConnection.hasDormantConnections) {
+                    continue;
+                }
+
                 if (!Rand.Chance(1f / 16f)) continue;
 
                 SnapUtility.TrySnap(pawn, "the mists");

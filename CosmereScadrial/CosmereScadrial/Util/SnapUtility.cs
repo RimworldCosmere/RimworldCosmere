@@ -1,3 +1,4 @@
+using Cosmere.Scadrial.Extension;
 using RimWorld;
 using Verse;
 
@@ -5,8 +6,7 @@ namespace Cosmere.Scadrial.Util;
 
 public class SnapUtility {
     public static void TrySnap(Pawn pawn, string? cause = "", bool withMessage = true) {
-        if (IsSnapped(pawn)) return;
-
+        if (pawn.IsSnapped()) return;
 
         Thought_Memory memory = ThoughtMaker.MakeThought(ThoughtDefOf.Cosmere_Scadrial_Snapped, 0);
         memory.permanent = true;
@@ -26,9 +26,5 @@ public class SnapUtility {
                 pawn
             )
         );
-    }
-
-    public static bool IsSnapped(Pawn pawn) {
-        return pawn.needs?.mood?.thoughts?.memories?.GetFirstMemoryOfDef(ThoughtDefOf.Cosmere_Scadrial_Snapped) != null;
     }
 }

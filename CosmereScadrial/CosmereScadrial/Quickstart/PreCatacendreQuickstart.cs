@@ -99,6 +99,10 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
             pawn.Name = new NameTriple("Waxillium", "Wax", "Ladrian");
             pawn.gender = Gender.Male;
         }
+
+        if (pawns.TryPopFront(out pawn)) {
+            PrepareColonistAsMisting(pawn, false, false, MetalDefOf.Steel);
+        }
     }
 
     private Pawn GeneratePawn(Gender gender, XenotypeDef xenotype) {

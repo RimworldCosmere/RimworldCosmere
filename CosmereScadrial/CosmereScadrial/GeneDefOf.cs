@@ -12,8 +12,6 @@ namespace Cosmere.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class GeneDefOf {
-    public static GeneDef Cosmere_Scadrial_Gene_DormantMetalborn;
-
     // Genes for custom races
     public static GeneDef Cosmere_Scadrial_Gene_NobleHeritage;
     public static GeneDef Cosmere_Scadrial_Gene_NobleHighSocial;

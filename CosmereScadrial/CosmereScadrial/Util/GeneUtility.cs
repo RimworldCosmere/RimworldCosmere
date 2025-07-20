@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Util;
 using Cosmere.Framework.Extension;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Gene;
+using Cosmere.Scadrial.Extension;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -149,6 +150,7 @@ public static class GeneUtility {
         if (gene == null) return;
         if (pawn.genes.HasActiveGene(gene)) return;
 
+        if (!pawn.TryGetComp(out DormantConnection dormantConnection)) snapped = true;
         if (snapped) {
             SnapUtility.TrySnap(pawn);
         } else if (canSnap && Rand.Chance(1f / 16f)) {
@@ -159,12 +161,7 @@ public static class GeneUtility {
         if (snapped) {
             pawn.genes.TryAddGene(gene);
         } else {
-            GeneDef? geneWrapperDef = GeneDefOf.Cosmere_Scadrial_Gene_DormantMetalborn;
-            if (pawn.genes.GetGene(geneWrapperDef) is not DormantMetalborn geneWrapper) {
-                geneWrapper = (DormantMetalborn)pawn.genes.TryAddGene(geneWrapperDef);
-            }
-
-            geneWrapper.genesToAdd.Add(gene);
+            dormantConnection.AddHiddenGene(gene, p => p.IsSnapped());
         }
     }
 

@@ -65,6 +65,10 @@ public static class PawnExtension {
         );
     }
 
+    public static bool IsSnapped(this Pawn pawn) {
+        return pawn.needs?.mood?.thoughts?.memories?.GetFirstMemoryOfDef(ThoughtDefOf.Cosmere_Scadrial_Snapped) != null;
+    }
+
     public static void TryConsumeVialIfNeeded(this Pawn pawn, MetalDef metal) {
         Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
         if (gene == null || !pawn.HasVial(metal) || !gene.shouldConsumeVialNow) return;

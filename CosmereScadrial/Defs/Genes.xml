@@ -32,19 +32,4 @@
         <showGizmoOnWorldView>true</showGizmoOnWorldView>
         <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
     </GeneDef>
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
-        <defName>Cosmere_Scadrial_Gene_DormantMetalborn</defName>
-        <geneClass>Cosmere.Scadrial.Gene.DormantMetalborn</geneClass>
-        <label>dormant Connection</label>
-        <labelShortAdj>Dormant Connection</labelShortAdj>
-        <description>This pawn is attuned to a Shard’s power, though they’ve yet to tap it. A traumatic event may awaken their abilities.</description>
-        <displayCategory>Cosmere_Scadrial</displayCategory>
-        <displayOrderInCategory>10</displayOrderInCategory>
-        <forcedTraits>
-            <li>
-                <def>Cosmere_Scadrial_Trait_DormantMetalborn</def>
-            </li>
-        </forcedTraits>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Ettmetal</iconPath>
-    </GeneDef>
 </Defs>

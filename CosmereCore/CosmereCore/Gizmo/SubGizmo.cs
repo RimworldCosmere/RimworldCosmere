@@ -1,10 +1,17 @@
 using UnityEngine;
 using Verse;
 
-namespace Cosmere.Scadrial.Gizmo;
+namespace Cosmere.Core.Gizmo;
 
-public abstract class SubGizmo(Verse.Gizmo parent) {
-    protected readonly Verse.Gizmo parent = parent;
+public abstract class SubGizmo {
+    protected readonly Verse.Gizmo? parent;
+
+    public SubGizmo() { }
+
+    public SubGizmo(Verse.Gizmo parent) {
+        this.parent = parent;
+    }
+
     public abstract GizmoResult OnGUI(Rect rect);
     public abstract void ProcessInput(Event ev);
 

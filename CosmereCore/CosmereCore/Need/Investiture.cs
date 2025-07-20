@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using Cosmere.Core.Extension;
+using Cosmere.Framework.Extension;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -11,7 +11,7 @@ public class Investiture : RimWorld.Need {
     private const int MaxInvestiture = 1000000;
 
     // These thresholds match the canon Heightenings from Warbreaker
-    public static readonly int[] BreathEquivalentUnitThresholds = {
+    public static readonly int[] BreathEquivalentUnitThresholds = [
         1, // Degree 0: Invested
         100, // 1st Heightening
         200, // 2nd
@@ -23,9 +23,9 @@ public class Investiture : RimWorld.Need {
         6000, // 8th
         10000, // 9th
         50000, // 10th
-    };
+    ];
 
-    public static readonly string[] HeighteningLabels = {
+    public static readonly string[] HeighteningLabels = [
         "Unheightened",
         "1st Heightening",
         "2nd Heightening",
@@ -37,10 +37,10 @@ public class Investiture : RimWorld.Need {
         "8th Heightening",
         "9th Heightening",
         "10th Heightening",
-    };
+    ];
 
     public Investiture(Pawn pawn) : base(pawn) {
-        threshPercents = new List<float> { 0.1f, 0.25f, 0.5f, 0.75f };
+        threshPercents = [0.1f, 0.25f, 0.5f, 0.75f];
     }
 
     public override float MaxLevel => MaxInvestiture;
@@ -83,6 +83,11 @@ public class Investiture : RimWorld.Need {
 
     public override void NeedInterval() {
         if (IsFrozen) return;
+
+        if (pawn.story?.traits == null) return;
+
+        int degree = GetDegreeFromBreathEquivalentUnits((int)CurLevel);
+        pawn.story.TryAddTrait(TraitDefOf.Cosmere_Invested, degree);
 
         // It should only fall in specific cases. I'll need to figure this out
         // e.g. 

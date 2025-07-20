@@ -1,59 +1,21 @@
-using System;
 using System.Linq;
-using Cosmere.Core.Util;
+using Cosmere.Core.Gene;
 using Cosmere.Resources.DefModExtension;
 using Cosmere.Scadrial.Def;
 using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Util;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Scadrial.Gene;
 
-public abstract class Metalborn : Gene_Resource {
-    internal bool gizmoShrunk = true;
+public abstract class Metalborn : Invested {
     public MetallicArtsMetalDef metal => def.GetModExtension<MetalsLinked>().Metals.First()!.ToMetallicArts();
-
-    public override float InitialResourceMax => 1f;
-    public override float MinLevelForAlert => .15f;
-    public override float MaxLevelOffset => .1f;
 
     protected override Color BarColor => metal.color.SaturationChanged(1f);
     protected override Color BarHighlightColor => metal.color.SaturationChanged(2f);
 
-    public override float Max => throw new NotImplementedException();
-    public override float Value => throw new NotImplementedException();
-
-    public override float ValuePercent => Max > 0 ? Value / Max : 0;
-
-    public override int ValueForDisplay => PostProcessValue(Value);
-    public override int MaxForDisplay => PostProcessValue(Max);
-
-    public override void ExposeData() {
-        base.ExposeData();
-        Scribe_Values.Look(ref gizmoShrunk, "gizmoShrunk");
-    }
-
-    public override void Reset() {
-        targetValue = 0.5f;
-    }
-
-    protected abstract void PostAddOrRemove();
-
-    public override void PostAdd() {
-        base.PostAdd();
-        PostAddOrRemove();
-
+    protected override void PostAddOrRemove() {
         MetalbornUtility.HandleMetalbornTrait(pawn);
-        InvestitureUtility.AssignHeighteningFromBEUs(pawn);
-    }
-
-    public override void PostRemove() {
-        base.PostRemove();
-        PostAddOrRemove();
-
-        MetalbornUtility.HandleMetalbornTrait(pawn);
-        InvestitureUtility.AssignHeighteningFromBEUs(pawn);
     }
 }

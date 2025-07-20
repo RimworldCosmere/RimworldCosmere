@@ -16,11 +16,10 @@ public class FeruchemicGeneCommand(
     List<IGeneResourceDrain> drainGenes,
     Color barColor,
     Color barHighlightColor
-) : CosmereGeneCommand(gene, drainGenes, barColor, barHighlightColor) {
+) : ScadrialGeneCommand<Feruchemist>(gene, drainGenes, barColor, barHighlightColor) {
     private string? setTapStoreRateTooltipCache;
     protected override float abilityIconSize => Height / 2f;
     protected override float baseWidth => GetWidthForAbilityCount(2);
-    private new Feruchemist gene => (Feruchemist)base.gene;
 
     protected override int IncrementDivisor => 100 / 5;
     protected override FloatRange DragRange => new FloatRange(0.0f, 1f);
@@ -70,23 +69,22 @@ public class FeruchemicGeneCommand(
         if (Mouse.IsOver(bottomBarRect!.Value)) mouseOverElement = true;
     }
 
-    protected override void Initialize() {
-        if (initialized) return;
-        Type type = typeof(CharacterCardUtility);
-
-        if (pawn.IsMisting(metal)) {
-            AllomanticAbilityDef? def = metal.GetCompoundAbility();
-            if (def == null) return;
-            AbstractAbility ability = (AbstractAbility)Activator.CreateInstance(
-                typeof(AbilitySelfTarget),
-                pawn,
-                null,
-                def
-            );
-            subgizmos.Add(new AbilitySubGizmo(this, gene, ability));
+    protected override IEnumerable<AbilitySubGizmo> GetSubGizmos() {
+        foreach (AbilitySubGizmo abilitySubGizmo in base.GetSubGizmos()) {
+            yield return abilitySubGizmo;
         }
 
-        base.Initialize();
+        if (!pawn.IsMisting(metal)) yield break;
+
+        AllomanticAbilityDef? def = metal.GetCompoundAbility();
+        if (def == null) yield break;
+        AbstractAbility ability = (AbstractAbility)Activator.CreateInstance(
+            typeof(AbilitySelfTarget),
+            pawn,
+            null,
+            def
+        );
+        yield return new AbilitySubGizmo(this, gene, ability);
     }
 
     public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {

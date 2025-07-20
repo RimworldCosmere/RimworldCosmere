@@ -65,7 +65,7 @@ public class Feruchemist : Metalborn {
 
     public override void Reset() {
         targetValue = 50f;
-        if (gizmo != null) gizmo.targetValuePct = .5f;
+        if (gizmo != null) gizmo.targetValuePercent = .5f;
         if (pawn.health.hediffSet.HasHediff(storeHediffDef)) pawn.health.RemoveHediff(storeHediff);
         if (pawn.health.hediffSet.HasHediff(tapHediffDef)) pawn.health.RemoveHediff(tapHediff);
     }

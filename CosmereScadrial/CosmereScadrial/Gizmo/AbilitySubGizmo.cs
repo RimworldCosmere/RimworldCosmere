@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Cosmere.Core.Gizmo;
 using Cosmere.Framework.Extension;
 using Cosmere.Framework.Util;
 using Cosmere.Scadrial.Allomancy.Ability;
@@ -14,8 +15,7 @@ using Verse.Sound;
 namespace Cosmere.Scadrial.Gizmo;
 
 [StaticConstructorOnStartup]
-public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility ability)
-    : SubGizmo(parent) {
+public class AbilitySubGizmo : SubGizmo {
     private static readonly Texture2D BgTexOff = GenColor.FromHex("000000").ToSolidColorTexture();
     private static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
     private static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
@@ -32,10 +32,23 @@ public class AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility
         ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B8"),
     ];
 
+    private readonly AbstractAbility ability;
+    private readonly Metalborn gene;
+
     private AcceptanceReport cachedReport;
     private int currentAutoBorderIndex;
 
     private ulong iteration;
+
+    public AbilitySubGizmo(Verse.Gizmo parent) : base(parent) { }
+
+    public AbilitySubGizmo() { }
+
+    public AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility ability) : base(parent) {
+        this.gene = gene;
+        this.ability = ability;
+    }
+
     private bool disabled => !cachedReport.Accepted;
     private string? disabledReason => cachedReport.Reason;
 

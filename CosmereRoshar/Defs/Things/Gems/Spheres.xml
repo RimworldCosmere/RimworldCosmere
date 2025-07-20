@@ -2,7 +2,6 @@
 <Defs>
     <ThingDef Name="Cosmere_Roshar_Thing_Sphere" ParentName="Cosmere_Roshar_Thing_CurrencyBase" Abstract="True">
         <thingCategories>
-            <li>Cosmere_Currency</li>
             <li>Cosmere_Resource_ThingCategory_Sphere</li>
         </thingCategories>
 

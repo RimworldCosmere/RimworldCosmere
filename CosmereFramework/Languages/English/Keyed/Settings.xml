@@ -8,7 +8,7 @@
     <CF_Settings_DebugMode_Tooltip>Provides extra debugging features: </CF_Settings_DebugMode_Tooltip>
     
     <CF_Settings_Quickstarter_Label>Quickstarter: </CF_Settings_Quickstarter_Label>
-    <CF_Settings_Quickstarter_Label>When in dev mode, will immediately launch into the given Quickstarter. Very useful for testing.</CF_Settings_Quickstarter_Label>
+    <CF_Settings_Quickstarter_Tooltip>When in dev mode, will immediately launch into the given Quickstarter. Very useful for testing.</CF_Settings_Quickstarter_Tooltip>
     <CF_Settings_Quickstarter_Placeholder>Select a Quickstarter </CF_Settings_Quickstarter_Placeholder>
     <CF_Settings_Quickstarter_FailedToFind>Failed to find Quickstarter</CF_Settings_Quickstarter_FailedToFind>
     

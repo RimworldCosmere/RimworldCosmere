@@ -12,7 +12,6 @@
             <li>Items</li>
             <li>Manufactured</li>
             <li>Cosmere_Currency</li>
-            <li>Cosmere_Resource_ThingCategory_Sphere</li>
         </thingCategories>
         <alwaysHaulable>true</alwaysHaulable>
         <stackLimit>1000</stackLimit>

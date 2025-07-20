@@ -1,16 +1,13 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using Cosmere.Core.Gene;
 using Cosmere.Framework.Extension;
 using Cosmere.Framework.Util;
-using Cosmere.Scadrial.Allomancy.Ability;
-using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Cosmere.Scadrial.Gizmo;
+namespace Cosmere.Core.Gizmo;
 
 public enum Status {
     Green,
@@ -18,12 +15,13 @@ public enum Status {
 }
 
 [StaticConstructorOnStartup]
-public abstract class CosmereGeneCommand(
+public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
     Gene_Resource gene,
     List<IGeneResourceDrain> drainGenes,
     Color barColor,
     Color barHighlightColor
-) : GeneGizmo_Resource(gene, drainGenes, barColor, barHighlightColor) {
+) : GeneGizmo_Resource(gene, drainGenes, barColor, barHighlightColor)
+    where TSubGizmo : SubGizmo, new() where TGene : Invested {
     protected static readonly Vector2 Padding = new Vector2(2f, 4f);
 
     protected static readonly Texture2D BarTex = new Color(0.34f, 0.42f, 0.43f).ToSolidColorTexture();
@@ -51,7 +49,6 @@ public abstract class CosmereGeneCommand(
     protected string? cachedTooltipDescription;
 
     protected string? cachedTooltipFooter;
-    protected NamedArgument coloredMetal;
     protected NamedArgument coloredPawn;
 
     protected bool draggingBar;
@@ -62,8 +59,8 @@ public abstract class CosmereGeneCommand(
     protected Rect? mainRect;
     protected Rect? outerRect;
 
-    protected List<SubGizmo> subgizmos = [];
-    internal float targetValuePct;
+    protected List<TSubGizmo> subgizmos = [];
+    public float targetValuePercent;
     protected Rect? topBarRect;
 
     protected override bool DraggingBar {
@@ -74,8 +71,7 @@ public abstract class CosmereGeneCommand(
     protected virtual float baseWidth => GetWidthForAbilityCount(2);
     protected virtual float abilityIconSize => Height / 2f;
 
-    protected new Metalborn gene => (Metalborn)base.gene;
-    internal MetallicArtsMetalDef metal => gene.metal;
+    protected new TGene gene => (TGene)base.gene;
     protected Pawn pawn => gene.pawn;
 
     protected virtual int IncrementDivisor => 5;
@@ -85,7 +81,6 @@ public abstract class CosmereGeneCommand(
     protected override int Increments => gene.MaxForDisplay / IncrementDivisor;
     public override bool Visible => pawn.Faction.IsPlayer;
 
-    protected override string Title => metal.LabelCap;
     protected bool shrunk => gene.gizmoShrunk;
 
     protected virtual bool shouldShowStatus => false;
@@ -156,14 +151,14 @@ public abstract class CosmereGeneCommand(
                 barDragTex,
                 ref draggingBar,
                 ValuePercent,
-                ref targetValuePct,
+                ref targetValuePercent,
                 GetBarThresholds(),
                 Increments,
                 DragRange.min,
                 DragRange.max
             );
-            targetValuePct = Mathf.Clamp(targetValuePct, DragRange.min, DragRange.max);
-            Target = targetValuePct;
+            targetValuePercent = Mathf.Clamp(targetValuePercent, DragRange.min, DragRange.max);
+            Target = targetValuePercent;
         }
     }
 
@@ -190,7 +185,7 @@ public abstract class CosmereGeneCommand(
 
         if (!gene.def.resourceDescription.NullOrEmpty()) {
             return cachedTooltipDescription =
-                "\n" + gene.def.resourceDescription.Formatted(coloredPawn, coloredMetal).Resolve();
+                "\n" + gene.def.resourceDescription.Formatted(coloredPawn).Resolve();
         }
 
         return cachedTooltipDescription = "";
@@ -215,7 +210,7 @@ public abstract class CosmereGeneCommand(
         UIUtil.DrawIcon(
             rect,
             cachedIcon ??= GetIcon(),
-            Verse.Command.BGTex,
+            Command.BGTex,
             TexUI.GrayscaleGUI,
             offset: new Vector2(0, -4f),
             doBorder: false
@@ -241,27 +236,19 @@ public abstract class CosmereGeneCommand(
         return rect;
     }
 
+    protected abstract IEnumerable<TSubGizmo> GetSubGizmos();
+
     protected virtual void Initialize() {
         if (initialized) return;
 
         initialized = true;
-        targetValuePct = Mathf.Clamp(Target, DragRange.min, DragRange.max);
+        targetValuePercent = Mathf.Clamp(Target, DragRange.min, DragRange.max);
         barTex = BarColor == new Color() ? BarTex : BarColor.ToSolidColorTexture();
         barHighlightTex = BarHighlightColor == new Color() ? BarHighlightTex : BarHighlightColor.ToSolidColorTexture();
         barDragTex = BarDragColor == new Color() ? DragBarTex : BarDragColor.ToSolidColorTexture();
         coloredPawn = pawn.NameShortColored.Named("PAWN");
-        coloredMetal = metal.coloredLabel.Named("METAL");
 
-        subgizmos.AddRange(
-            gene.def.abilities?
-                .OrderBy(x => x.uiOrder)
-                .Select(x => pawn.abilities.GetAbility(x))
-                .Cast<AbstractAbility>()
-                .Where(x => x.GizmosVisible())
-                .Select(x => new AbilitySubGizmo(this, gene, x))
-                .ToList<SubGizmo>() ??
-            []
-        );
+        subgizmos.AddRange(GetSubGizmos());
     }
 
     protected virtual Rect GetTopBarRect() {

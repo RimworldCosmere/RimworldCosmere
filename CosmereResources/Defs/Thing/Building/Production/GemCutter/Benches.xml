@@ -33,7 +33,7 @@
         
         <uiOrder>2301</uiOrder>
         <researchPrerequisites>
-            <li>Cosmere_Roshar_GemCutting</li>
+            <li>Cosmere_Gem_Cutting</li>
         </researchPrerequisites>
     </ThingDef>
 </Defs>

@@ -14,13 +14,12 @@ public class AllomanticGeneCommand(
     List<IGeneResourceDrain> drainGenes,
     Color barColor,
     Color barHighlightColor
-) : CosmereGeneCommand(gene, drainGenes, barColor, barHighlightColor) {
+) : ScadrialGeneCommand<Allomancer>(gene, drainGenes, barColor, barHighlightColor) {
     private static readonly Texture2D VialIcon =
         ContentFinder<Texture2D>.Get("Things/Item/AllomanticVial/AllomanticVial_c");
 
     private string? setVialCountTooltipCache;
 
-    private new Allomancer gene => (Allomancer)base.gene;
     protected override int IncrementDivisor => 5;
 
     protected override bool IsDraggable =>

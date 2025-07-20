@@ -7,11 +7,11 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace Cosmere.Scadrial.Patch;
+namespace Cosmere.Core.Patch;
 
 [HarmonyPatch(typeof(PageUtility), nameof(PageUtility.StitchedPages))]
 public static class LockShardSelection {
-    private static void Prefix(ref IEnumerable<Page> pages) {
+    private static void Prefix(ref IEnumerable<RimWorld.Page> pages) {
         string? scenarioName = Find.Scenario?.name;
         ScenarioDef? def = DefDatabase<ScenarioDef>.AllDefsListForReading.FirstOrDefault(x => x.label == scenarioName);
         Shards? shards = def?.GetModExtension<Shards>();

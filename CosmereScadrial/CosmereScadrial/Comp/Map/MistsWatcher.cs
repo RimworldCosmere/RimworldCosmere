@@ -1,4 +1,3 @@
-using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Util;
 using Cosmere.Framework;
 using Cosmere.Scadrial.Settings;
@@ -43,7 +42,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
                          p.RaceProps.Humanlike && !p.Dead && !p.Position.Roofed(map)
                      )) {
                 if (pawn.IsSnapped()) continue;
-                if (!pawn.TryGetComp(out DormantConnection dormantConnection) ||
+                if (!pawn.TryGetComp(out Core.Comp.Thing.DormantConnection dormantConnection) ||
                     !dormantConnection.hasDormantConnections) {
                     continue;
                 }

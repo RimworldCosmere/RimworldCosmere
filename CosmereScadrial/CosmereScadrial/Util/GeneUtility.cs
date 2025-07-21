@@ -1,5 +1,4 @@
-﻿using Cosmere.Core.Comp.Thing;
-using Cosmere.Core.Util;
+﻿using Cosmere.Core.Util;
 using Cosmere.Scadrial.Def;
 using RimWorld;
 using UnityEngine;
@@ -146,7 +145,7 @@ public static class GeneUtility {
         if (gene == null) return;
         if (pawn.genes.HasActiveGene(gene)) return;
 
-        if (!pawn.TryGetComp(out DormantConnection dormantConnection)) snapped = true;
+        if (!pawn.TryGetComp(out Core.Comp.Thing.DormantConnection dormantConnection)) snapped = true;
         if (snapped) {
             SnapUtility.TrySnap(pawn);
         } else if (canSnap && Rand.Chance(1f / 16f)) {
@@ -157,7 +156,7 @@ public static class GeneUtility {
         if (snapped) {
             pawn.genes.TryAddGene(gene);
         } else {
-            dormantConnection.AddHiddenGene(gene, p => p.IsSnapped());
+            dormantConnection.AddHiddenGene(gene);
         }
     }
 

@@ -1,33 +1,46 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cosmere.Core.Settings;
 using Verse;
 
 namespace Cosmere.Core.Comp.Thing;
 
+public struct HiddenGeneData : IExposable {
+    public GeneDef gene;
+    public int interval;
+
+    public void ExposeData() {
+        Scribe_Defs.Look(ref gene, "gene");
+        Scribe_Values.Look(ref interval, "interval");
+    }
+}
+
 public class DormantConnection : ThingComp {
-    private Dictionary<GeneDef, (int, Func<Pawn, bool>)> hiddenGenes = [];
+    private Dictionary<GeneDef, int> hiddenGenes = [];
     public bool hasDormantConnections => hiddenGenes.Count > 0;
     private Pawn pawn => (Pawn)parent;
 
     public override void CompTickInterval(int delta) {
         base.CompTickInterval(delta);
 
-        foreach ((GeneDef? gene, (int interval, Func<Pawn, bool> callback)) in hiddenGenes) {
+        foreach ((GeneDef? gene, int interval) in hiddenGenes.ToList()) {
             if (!pawn.IsHashIntervalTick(interval, delta)) continue;
-            if (!callback(pawn)) continue;
+            if (!GetGeneCallback(gene)(pawn, gene)) continue;
 
             pawn.genes.AddGene(gene, true);
             hiddenGenes.Remove(gene);
         }
     }
 
-    public void AddHiddenGene(GeneDef geneDef, (int, Func<Pawn, bool>) intervalAndFunc) {
-        hiddenGenes.Add(geneDef, intervalAndFunc);
+    private static Func<Pawn, GeneDef, bool> GetGeneCallback(GeneDef gene) {
+        if (!gene.HasModExtension<DefModExtension.DormantConnection>()) return (_, _) => false;
+
+        return gene.GetModExtension<DefModExtension.DormantConnection>().Handler.callback;
     }
 
-    public void AddHiddenGene(GeneDef geneDef, Func<Pawn, bool> func) {
-        hiddenGenes.Add(geneDef, (1, func));
+    public void AddHiddenGene(GeneDef geneDef, int interval = 1) {
+        hiddenGenes.Add(geneDef, interval);
     }
 
     public override void PostExposeData() {

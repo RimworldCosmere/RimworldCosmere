@@ -7,6 +7,11 @@
         <biostatCpx>500</biostatCpx>
         <biostatMet>500</biostatMet>
         <biostatArc>500</biostatArc>
+        <modExtensions>
+            <li Class="Cosmere.Core.DefModExtension.DormantConnection">
+                <callbackHandler>Cosmere.Scadrial.DormantConnection.Callback.Snapped</callbackHandler>
+            </li>
+        </modExtensions>
     </GeneDef>
     <GeneDef Name="AbstractAllomancyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
         <geneClass>Cosmere.Scadrial.Gene.Allomancer</geneClass>

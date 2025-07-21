@@ -50,16 +50,6 @@
     </ResearchProjectDef>
 
     <!-- ARTIFABRIALS -->
-    <ResearchProjectDef>
-        <defName>Cosmere_Roshar_Research_Alloys</defName>
-        <label>Metal Alloys</label>
-        <description>make alloys out of stuff.</description>
-        <tab>Cosmere</tab>
-        <baseCost>450</baseCost>
-        <techLevel>Industrial</techLevel>
-        <researchViewX>0.00</researchViewX>
-        <researchViewY>0.00</researchViewY>
-    </ResearchProjectDef>
 
     <ResearchProjectDef>
         <defName>Cosmere_Roshar_Research_BasicArtifabriary</defName>
@@ -70,7 +60,6 @@
         <techLevel>Industrial</techLevel>
         <prerequisites>
             <li>Cosmere_Roshar_Research_SprenTrapping</li>
-            <li>Cosmere_Roshar_Research_Alloys</li>
         </prerequisites>
         <researchViewX>6.00</researchViewX>
         <researchViewY>4.00</researchViewY>

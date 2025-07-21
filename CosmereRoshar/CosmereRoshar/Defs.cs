@@ -35,27 +35,28 @@ public static class Defs {
     public static JobDef Cosmere_Roshar_CastAbilityOnTarget;
 
     //ThingDef
-    public static ThingDef Cosmere_Roshar_ApparelSpherePouch;
-    public static ThingDef Cosmere_Roshar_SphereLampWall;
-    public static ThingDef Cosmere_Roshar_FabrialCagePewter;
-    public static ThingDef Cosmere_Roshar_BasicFabrialAugmenter;
+    public static ThingDef Cosmere_Roshar_Apparel_SpherePouch;
+    public static ThingDef Cosmere_Roshar_SphereLamp_Wall;
+    public static ThingDef Cosmere_Roshar_FabrialCage_Pewter;
+    public static ThingDef Cosmere_Roshar_FabrialCage_Tin;
+    public static ThingDef Cosmere_Roshar_BasicFabrial_Augmenter;
 
     // FABRIALS
-    public static ThingDef Cosmere_Roshar_ApparelFabrialPainrialDiminisher;
+    public static ThingDef Cosmere_Roshar_Apparel_Fabrial_Painrial_Diminisher;
 
     // WEAPONS
-    public static ThingDef Cosmere_Roshar_MeleeWeaponShardblade;
+    public static ThingDef Cosmere_Roshar_MeleeWeapon_Shardblade;
 
 
     // HEDIFF
-    public static HediffDef Cosmere_Roshar_PainrialAugment;
-    public static HediffDef Cosmere_Roshar_PainrialDiminisher;
-    public static HediffDef Cosmere_Roshar_ApparelPainrialDiminisherHediff;
+    public static HediffDef Cosmere_Roshar_Painrial_Augment;
+    public static HediffDef Cosmere_Roshar_Painrial_Diminisher;
+    public static HediffDef Cosmere_Roshar_Apparel_Painrial_Diminisher_Hediff;
 
-    public static HediffDef Cosmere_Roshar_LogirialAugment;
-    public static HediffDef Cosmere_Roshar_LogirialDiminisher;
+    public static HediffDef Cosmere_Roshar_Logirial_Augment;
+    public static HediffDef Cosmere_Roshar_Logirial_Diminisher;
 
-    public static HediffDef Cosmere_Roshar_SurgeAbrasion;
+    public static HediffDef Cosmere_Roshar_Surge_Abrasion;
 
     static Defs() {
         DefOfHelper.EnsureInitializedInCtor(typeof(Defs));

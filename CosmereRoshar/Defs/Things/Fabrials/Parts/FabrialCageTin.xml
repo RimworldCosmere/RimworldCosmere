@@ -9,7 +9,7 @@
             <li>
                 <filter>
                     <thingDefs>
-                        <li>Cosmere_Roshar_RawTin</li>
+                        <li>Tin</li>
                     </thingDefs>
                 </filter>
                 <count>1</count>
@@ -17,7 +17,7 @@
         </ingredients>
         <fixedIngredientFilter>
             <thingDefs>
-                <li>Cosmere_Roshar_RawTin</li>
+                <li>Tin</li>
             </thingDefs>
         </fixedIngredientFilter>
         <products>

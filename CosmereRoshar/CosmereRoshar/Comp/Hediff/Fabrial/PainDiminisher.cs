@@ -55,7 +55,7 @@ public class PainDiminisher : HediffComp {
 
             if (!comp.CheckPower()) {
                 Verse.Hediff? hediff = pawn.health.hediffSet.GetFirstHediffOfDef(
-                    Defs.Cosmere_Roshar_ApparelPainrialDiminisherHediff
+                    Defs.Cosmere_Roshar_Apparel_Painrial_Diminisher_Hediff
                 );
                 if (hediff != null) {
                     pawn.health.RemoveHediff(hediff);

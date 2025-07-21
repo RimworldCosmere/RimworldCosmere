@@ -48,13 +48,13 @@ public class Highstorm : RimWorld.GameCondition {
         foreach (Verse.Thing thing in things) {
             if (thing.TryGetComp(out Stormlight stormlight)) {
                 stormlight.InfuseStormlight(5f);
-            } else if (thing.def == Defs.Cosmere_Roshar_ApparelSpherePouch &&
+            } else if (thing.def == Defs.Cosmere_Roshar_Apparel_SpherePouch &&
                        !thing.Position.Roofed(thing.Map)) {
                 thing.TryGetComp<SpherePouch>()?.InfuseStormlight(5f);
-            } else if (thing.def == Defs.Cosmere_Roshar_SphereLampWall &&
+            } else if (thing.def == Defs.Cosmere_Roshar_SphereLamp_Wall &&
                        !thing.Position.Roofed(thing.Map)) {
                 thing.TryGetComp<StormlightLamps>()?.InfuseStormlight(5f);
-            } else if (thing.def == Defs.Cosmere_Roshar_ApparelFabrialPainrialDiminisher &&
+            } else if (thing.def == Defs.Cosmere_Roshar_Apparel_Fabrial_Painrial_Diminisher &&
                        !thing.Position.Roofed(thing.Map)) {
                 thing.TryGetComp<ApparelFabrialDiminisher>()?.InfuseStormlight(5f);
             }

@@ -314,12 +314,12 @@ public class Stormlight : ThingComp {
         }
 
         if (abrasionActiveInt) {
-            if (pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_SurgeAbrasion) == null) {
-                pawn.health.AddHediff(Defs.Cosmere_Roshar_SurgeAbrasion);
+            if (pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_Surge_Abrasion) == null) {
+                pawn.health.AddHediff(Defs.Cosmere_Roshar_Surge_Abrasion);
                 drainFactor += 500f;
             }
         } else {
-            if (pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_SurgeAbrasion) is
+            if (pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_Surge_Abrasion) is
                 { } hediff) {
                 pawn.health.RemoveHediff(hediff);
             }

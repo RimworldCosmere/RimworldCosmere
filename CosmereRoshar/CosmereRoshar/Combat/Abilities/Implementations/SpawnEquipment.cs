@@ -53,7 +53,7 @@ public class SpawnEquipment : CompAbilityEffect {
         if (abilityComp.bladeObject == null) {
             Log.Warning("[Roshar] toggleBlade: bladeObject is null, attempting recovery from equipment...");
             abilityComp.bladeObject = pawn.equipment?.AllEquipmentListForReading
-                .FirstOrDefault(e => e.def.defName == Defs.Cosmere_Roshar_MeleeWeaponShardblade.defName);
+                .FirstOrDefault(e => e.def.defName == Defs.Cosmere_Roshar_MeleeWeapon_Shardblade.defName);
 
             if (abilityComp.bladeObject == null) {
                 Log.Error("[Roshar] toggleBlade: Failed to recover bladeObject, aborting toggle.");

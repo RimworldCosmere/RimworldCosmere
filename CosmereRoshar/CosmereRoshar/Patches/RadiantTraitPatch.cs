@@ -77,7 +77,7 @@ public static class RadiantGainTraitPatch {
 public static class PatchPawnMovement {
     private static void Postfix(Pawn? pawn, IntVec3 c, ref float __result) {
         if (pawn?.health?.hediffSet == null) return;
-        if (pawn.health.hediffSet.HasHediff(Defs.Cosmere_Roshar_SurgeAbrasion)) {
+        if (pawn.health.hediffSet.HasHediff(Defs.Cosmere_Roshar_Surge_Abrasion)) {
             __result = c.x != pawn.Position.x && c.z != pawn.Position.z
                 ? pawn.TicksPerMoveDiagonal
                 : pawn.TicksPerMoveCardinal;

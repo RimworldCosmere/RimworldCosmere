@@ -16,9 +16,9 @@ public class ApparelFabrialDiminisher : ThingComp {
     public override void Notify_Equipped(Pawn pawn) {
         base.Notify_Equipped(pawn);
 
-        if (!pawn.health.hediffSet.HasHediff(Defs.Cosmere_Roshar_ApparelPainrialDiminisherHediff)) {
+        if (!pawn.health.hediffSet.HasHediff(Defs.Cosmere_Roshar_Apparel_Painrial_Diminisher_Hediff)) {
             Verse.Hediff? hediff = HediffMaker.MakeHediff(
-                Defs.Cosmere_Roshar_ApparelPainrialDiminisherHediff,
+                Defs.Cosmere_Roshar_Apparel_Painrial_Diminisher_Hediff,
                 pawn
             );
             pawn.health.AddHediff(hediff);

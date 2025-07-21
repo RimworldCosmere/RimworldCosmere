@@ -150,10 +150,10 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
             Pawn pawn = cell.GetFirstPawn(map);
             if (
                 pawn != null &&
-                pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_PainrialAugment) == null &&
+                pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_Painrial_Augment) == null &&
                 pawn.Position.InHorDistOf(position, 5f)
             ) {
-                pawn.health.AddHediff(Defs.Cosmere_Roshar_PainrialAugment);
+                pawn.health.AddHediff(Defs.Cosmere_Roshar_Painrial_Augment);
             }
         }
     }
@@ -170,10 +170,10 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
             Pawn pawn = cell.GetFirstPawn(map);
             if (
                 pawn != null &&
-                pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_LogirialAugment) == null &&
+                pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_Logirial_Augment) == null &&
                 pawn.Position.InHorDistOf(position, 5f)
             ) {
-                pawn.health.AddHediff(Defs.Cosmere_Roshar_LogirialAugment);
+                pawn.health.AddHediff(Defs.Cosmere_Roshar_Logirial_Augment);
             }
         }
     }

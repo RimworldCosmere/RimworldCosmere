@@ -143,10 +143,10 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
             if (pawn != null &&
-                pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_PainrialDiminisher) ==
+                pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_Painrial_Diminisher) ==
                 null &&
                 pawn.Position.InHorDistOf(position, 5f)) {
-                pawn.health.AddHediff(Defs.Cosmere_Roshar_PainrialDiminisher);
+                pawn.health.AddHediff(Defs.Cosmere_Roshar_Painrial_Diminisher);
             }
         }
     }
@@ -159,10 +159,10 @@ public class BasicFabrialDiminisher : ThingComp, IGemstoneHandler, IFilterableCo
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
             if (pawn != null &&
-                pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_LogirialDiminisher) ==
+                pawn.health.hediffSet.GetFirstHediffOfDef(Defs.Cosmere_Roshar_Logirial_Diminisher) ==
                 null &&
                 pawn.Position.InHorDistOf(position, 5f)) {
-                pawn.health.AddHediff(Defs.Cosmere_Roshar_LogirialDiminisher);
+                pawn.health.AddHediff(Defs.Cosmere_Roshar_Logirial_Diminisher);
             }
         }
     }

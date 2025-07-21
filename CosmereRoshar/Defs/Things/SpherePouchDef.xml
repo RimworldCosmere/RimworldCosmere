@@ -56,13 +56,9 @@
       <li Class="Cosmere.Roshar.Comp.Thing.SpherePouchProperties">
         <maxCapacity>100</maxCapacity>
         <allowedSpheres>
-          <li>Cosmere_Roshar_Thing_DiamondChip</li>
-          <li>Cosmere_Roshar_Thing_DiamondMark</li>
-          <li>Cosmere_Roshar_Thing_DiamondBroam</li>
-          <li>Cosmere_Roshar_Sphere_Garnet</li>
-          <li>Cosmere_Roshar_Sphere_Ruby</li>
-          <li>Cosmere_Roshar_Sphere_Sapphire</li>
-		  <li>Cosmere_Roshar_Sphere_Emerald</li>
+          <li>Cosmere_Roshar_Thing_Chip</li>
+          <li>Cosmere_Roshar_Thing_Mark</li>
+          <li>Cosmere_Roshar_Thing_Broam</li>
         </allowedSpheres>
       </li>
     </comps>

@@ -4,9 +4,9 @@ using System.Reflection;
 using Cosmere.Core.Need;
 using Cosmere.Framework.Extension;
 using Cosmere.Framework.Quickstart;
+using Cosmere.Roshar.Gene;
 using RimWorld;
 using Verse;
-using TraitDefOf = Cosmere.Core.TraitDefOf;
 
 namespace Cosmere.Roshar.Quickstart;
 
@@ -38,21 +38,22 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         if (pawns.Count == 0) return;
 
         if (pawns.TryPopFront(out Pawn pawn)) {
-            pawn.story.TryAddTrait(TraitDefOf.Cosmere_Invested);
+            pawn.story.TryAddTrait(Core.TraitDefOf.Cosmere_Invested);
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
-            pawn.story.TryAddTrait(Defs.Cosmere_Roshar_Trait_RadiantWindrunner, 4);
+            Surgebinder gene = (Surgebinder)pawn.genes.TryAddGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
+            gene.currentIdeal = 4;
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.story.TryAddTrait(TraitDefOf.Cosmere_Invested);
+            pawn.story.TryAddTrait(Core.TraitDefOf.Cosmere_Invested);
             pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kohlin");
             pawn.gender = Gender.Male;
             pawn.story.TryAddTrait(Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher, 3);
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.story.TryAddTrait(TraitDefOf.Cosmere_Invested);
+            pawn.story.TryAddTrait(Core.TraitDefOf.Cosmere_Invested);
             if (pawn.needs.TryGetNeed(out Investiture investiture)) {
                 investiture.CurLevel = 50000;
             }

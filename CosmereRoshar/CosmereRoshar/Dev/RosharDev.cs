@@ -1,3 +1,5 @@
+using Cosmere.Core.Need;
+using Cosmere.Framework.Extension;
 using LudeonTK;
 using RimWorld;
 using Verse;
@@ -13,12 +15,11 @@ public static class RosharDev {
     )]
     public static void PrepareDevPawn(Pawn pawn) {
         if (pawn.genes == null) return;
-        if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn)) {
-            GeneUtility.AddMistborn(pawn, false, true);
-            Messages.Message($"Made {pawn.NameFullColored} a mistborn", pawn, MessageTypeDefOf.PositiveEvent);
-        }
 
-        FillAllReserves(pawn);
-        GiveAllAllomanticVials(pawn);
+        if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Roshar_Trait_RadiantWindrunner)) {
+            pawn.genes.TryAddGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
+            Messages.Message($"Made {pawn.NameFullColored} a Windrunner", pawn, MessageTypeDefOf.PositiveEvent);
+            pawn.needs.TryGetNeed<Investiture>().CurLevel += 20000;
+        }
     }
 }

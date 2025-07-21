@@ -6,8 +6,8 @@ using Verse;
 
 namespace Cosmere.Roshar;
 
-public static partial class GeneDefOf {        
+public static partial class TraitDefOf {        
     {{#each orders}}
-    public static GeneDef Cosmere_Roshar_Gene_Radiant{{defName name}};
+    public static TraitDef Cosmere_Roshar_Trait_Radiant{{defName name}};
     {{/each}}
 }

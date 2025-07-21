@@ -19,6 +19,7 @@ const geneDefTemplate = compileTemplate(__dirname, 'GeneDef.xml.template')
 const geneDefOutputDir = resolve(ROSHAR_MOD_DIR, 'Defs', 'Genes');
 
 const geneDefOfTemplate = compileTemplate(__dirname, 'GeneDefOf.cs.template')
+const traitDefOfTemplate = compileTemplate(__dirname, 'TraitDefOf.cs.template')
 
 export default function () {
     const surges = Object.values(SurgeRegistry.Surges);
@@ -36,4 +37,5 @@ export default function () {
 
     writeGeneratedFile(CosmereRoshar, 'RadiantOrderDefOf.generated.cs', radiantOrderDefOfTemplate({orders}));
     writeGeneratedFile(CosmereRoshar, 'GeneDefOf.RadiantOrders.generated.cs', geneDefOfTemplate({orders}));
+    writeGeneratedFile(CosmereRoshar, 'TraitDefOf.RadiantOrders.generated.cs', traitDefOfTemplate({orders}));
 }

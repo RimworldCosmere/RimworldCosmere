@@ -7,22 +7,9 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Hediff;
 
-public class AllomanticHediff : AbstractHediff<Allomancer> {
-    public readonly MetallicArtsMetalDef metal;
-
-    public AllomanticHediff(
-        HediffDef hediffDef,
-        Pawn pawn,
-        IAbility<Allomancer, IHediff<Allomancer>> allomancyAbility
-    ) : base(
-        hediffDef,
-        pawn,
-        allomancyAbility
-    ) {
-        def = hediffDef;
-        this.pawn = pawn;
-        metal = allomancyAbility.gene.metal;
-    }
+public class AllomanticHediff(HediffDef hediffDef, Pawn pawn, IAbility<Allomancer, IHediff<Allomancer>> ability)
+    : AbstractHediff<Allomancer>(hediffDef, pawn, ability) {
+    public MetallicArtsMetalDef metal => gene.metal;
 
     public override void TickInterval(int delta) {
         SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);

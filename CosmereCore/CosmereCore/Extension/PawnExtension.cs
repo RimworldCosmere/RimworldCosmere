@@ -14,7 +14,7 @@ public static class PawnExtension {
 
     public static IHediff<TGene>? GetOrAddHediff<TGene>(
         this Pawn pawn,
-        IAbility<TGene, IHediff<TGene>>? ability,
+        IAbility<TGene, IHediff<TGene>> ability,
         HediffDef? hediffDef
     ) where TGene : Invested {
         if (hediffDef == null || ability == null) return null;

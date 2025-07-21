@@ -14,6 +14,7 @@ public interface IHediff<TGene> where TGene : Invested {
     public HashSet<IAbility<TGene, IHediff<TGene>>> sourceAbilities { get; }
     public float extraSeverity { get; set; }
     public float Severity { get; set; }
+    public TGene gene { get; }
     public void AddSource(IAbility<TGene, IHediff<TGene>> sourceAbility);
 
     public void RemoveSource(IAbility<TGene, IHediff<TGene>> sourceAbility);
@@ -26,20 +27,20 @@ public abstract class AbstractHediff(HediffDef hediffDef, Pawn pawn, AbstractAbi
     : AbstractHediff<Invested>(hediffDef, pawn, ability);
 
 public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> where TGene : Invested {
-    public AbstractHediff(HediffDef hediffDef, Pawn pawn, IAbility<TGene, IHediff<TGene>> allomancyAbility) {
+    public AbstractHediff(HediffDef hediffDef, Pawn pawn, IAbility<TGene, IHediff<TGene>> ability) {
         def = hediffDef;
         this.pawn = pawn;
-        sourceAbilities.Add(allomancyAbility);
+        gene = ability.gene;
     }
 
     public override string LabelBase =>
         base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");
 
     public SeverityCalculator<TGene>? severityCalculator => GetComp<SeverityCalculator<TGene>>();
+    public TGene gene { get; protected set; }
 
     public float extraSeverity { get; set; } = 0f;
-    public HashSet<IAbility<TGene, IHediff<TGene>>> sourceAbilities => [];
-
+    public HashSet<IAbility<TGene, IHediff<TGene>>> sourceAbilities { get; } = [];
 
     public void AddSource(IAbility<TGene, IHediff<TGene>> sourceAbility) {
         sourceAbilities.Add(sourceAbility);

@@ -152,7 +152,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     }
 
     public virtual float GetDesiredBurnRateForStatus(Status? desiredStatus) {
-        return (desiredStatus ?? status).power;
+        return (desiredStatus ?? status).power * def.beuPerTick;
     }
 
     public void SetNextStatus(Status desiredStatus, bool overrideNextStatus = false) {

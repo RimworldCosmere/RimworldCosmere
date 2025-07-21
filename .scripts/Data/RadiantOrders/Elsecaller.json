@@ -1,0 +1,49 @@
+{
+	"name": "elsecaller",
+	"description": "Surgebinders who command Transformation and Transportation. Elsecallers are seekers of knowledge and truth, devoted to mastering the self and understanding the cosmos. Of all the Radiants, they walk closest to the Cognitive Realm by choice.",
+	"surges": [
+		"transformation",
+		"transportation"
+	],
+	"gemstone": "emerald",
+	"ideals": [
+		{
+			"label": "first ideal",
+			"description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
+			"quotes": [
+				"Life before death, strength before weakness, journey before destination."
+			]
+		},
+		{
+			"label": "second ideal",
+			"description": "The Elsecaller commits to understanding themselves — not just their strengths, but their limits and flaws.",
+			"quotes": [
+				"I will know myself, so I may better know the world."
+			]
+		},
+		{
+			"label": "third ideal",
+			"description": "They vow to pursue truth, even when it challenges who they are or what they believe.",
+			"quotes": [
+				"I will not run from truth, even when it burns me.",
+				"To transform the world, I must first transform myself."
+			],
+			"abilities": []
+		},
+		{
+			"label": "fourth ideal",
+			"description": "The Elsecaller becomes both navigator and scholar — embracing responsibility for their knowledge and where it leads them.",
+			"quotes": [
+				"I walk the path between thought and form, and I choose where it leads."
+			],
+			"abilities": []
+		},
+		{
+			"label": "fifth ideal",
+			"description": "They embody mastery — of self, of spirit, and of journey — and bear the burden of that understanding.",
+			"quotes": [
+				"I will become what I must, to guide others through what is."
+			]
+		}
+	]
+}

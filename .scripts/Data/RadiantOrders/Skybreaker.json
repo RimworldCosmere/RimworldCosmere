@@ -1,0 +1,48 @@
+{
+	"name": "skybreaker",
+	"description": "Surgebinders who command Gravitation and Division. Stern and unyielding, Skybreakers seek justice above all — even when it demands judgment without mercy.",
+	"surges": [
+		"gravitation",
+		"division"
+	],
+	"gemstone": "heliodor",
+	"ideals": [
+		{
+			"label": "first ideal",
+			"description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
+			"quotes": [
+				"Life before death, strength before weakness, journey before destination."
+			]
+		},
+		{
+			"label": "second ideal",
+			"description": "The Skybreaker swears to follow the law, placing it above personal judgment or emotion. Justice is external, not internal.",
+			"quotes": [
+				"I will seek justice, to be just in all things."
+			]
+		},
+		{
+			"label": "third ideal",
+			"description": "The Skybreaker binds themselves to a specific code or legal structure, following it to the letter, even when it conflicts with their own desires.",
+			"quotes": [
+				"I will follow the law."
+			],
+			"abilities": []
+		},
+		{
+			"label": "fourth ideal",
+			"description": "The Skybreaker becomes the law — no longer just a follower, but an arbiter who can pass judgment when existing structures fail.",
+			"quotes": [
+				"I am the law."
+			],
+			"abilities": []
+		},
+		{
+			"label": "fifth ideal",
+			"description": "The Skybreaker accepts full moral responsibility for enforcing justice — acknowledging their role in shaping what justice means.",
+			"quotes": [
+				"I will choose who to save — and who to kill — and bear the weight of that choice."
+			]
+		}
+	]
+}

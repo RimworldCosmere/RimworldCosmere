@@ -102,7 +102,7 @@ public class PawnStats : ThingComp {
 
 
         //TRUTHWATCHER
-        string? truthwatcherDefName = Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher.defName;
+        string? truthwatcherDefName = Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher.defName;
         requirementMap.Add(truthwatcherDefName, new Dictionary<string, RadiantRequirements>());
         requirementMap[truthwatcherDefName].Add(this.props.req01, new RadiantRequirements());
         requirementMap[truthwatcherDefName].Add(this.props.req12, new RadiantRequirements());
@@ -113,14 +113,14 @@ public class PawnStats : ThingComp {
 
 
         //EDGEDANCER
-        string? edgedancerDefName = Defs.Cosmere_Roshar_Trait_RadiantEdgedancer.defName;
+        string? edgedancerDefName = Defs.Cosmere_Roshar_Trait_Radiant_Edgedancer.defName;
         requirementMap.Add(edgedancerDefName, new Dictionary<string, RadiantRequirements>());
         requirementMap[edgedancerDefName].Add(this.props.req01, new RadiantRequirements());
         requirementMap[edgedancerDefName].Add(this.props.req12, new RadiantRequirements());
         requirementMap[edgedancerDefName][this.props.req12].isSatisfied = true; // for now it is true default
 
         //SKYBREAKER
-        string? skybreakerDefName = Defs.Cosmere_Roshar_Trait_RadiantSkybreaker.defName;
+        string? skybreakerDefName = Defs.Cosmere_Roshar_Trait_Radiant_Skybreaker.defName;
         requirementMap.Add(skybreakerDefName, new Dictionary<string, RadiantRequirements>());
         requirementMap[skybreakerDefName].Add(this.props.req01, new RadiantRequirements());
         requirementMap[skybreakerDefName].Add(this.props.req12, new RadiantRequirements());
@@ -209,7 +209,7 @@ public static class Cosmere_Roshar_HelpSomeoneInNeed {
 
         // TRUTHWATCHER
         RadiantRequirements? truthwatcherRequirement =
-            pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher.defName][pawnStats.props
+            pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher.defName][pawnStats.props
                 .req12];
         truthwatcherRequirement.count += 1;
         if (truthwatcherRequirement.count >= 25 && pawnStats.patientSaved) {

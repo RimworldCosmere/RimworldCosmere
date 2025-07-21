@@ -1,0 +1,49 @@
+{
+	"name": "truthwatcher",
+	"description": "Surgebinders who command Progression and Illumination. Truthwatchers are quiet observers and careful healers, guided by insight few others can see. They seek knowledge not to control, but to protect.",
+	"surges": [
+		"progression",
+		"illumination"
+	],
+	"gemstone": "zircon",
+	"ideals": [
+		{
+			"label": "first ideal",
+			"description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
+			"quotes": [
+				"Life before death, strength before weakness, journey before destination."
+			]
+		},
+		{
+			"label": "second ideal",
+			"description": "The Truthwatcher begins to accept the burden of knowledge — and the obligation to use it carefully.",
+			"quotes": [
+				"I will speak the truth I see, even when others will not listen."
+			]
+		},
+		{
+			"label": "third ideal",
+			"description": "They swear to protect truth and life alike, healing what they can, revealing only what must be known.",
+			"quotes": [
+				"I will guard truth like a flame in the dark.",
+				"What I know, I will use to protect."
+			],
+			"abilities": []
+		},
+		{
+			"label": "fourth ideal",
+			"description": "The Truthwatcher accepts that truth is not always kind — but still must be faced, shared, and sometimes hidden with wisdom.",
+			"quotes": [
+				"I will not flinch from what must be known."
+			],
+			"abilities": []
+		},
+		{
+			"label": "fifth ideal",
+			"description": "They become a vessel of revelation — guiding others not with force, but through healing, light, and clarity.",
+			"quotes": [
+				"I am truth, and in truth, I protect."
+			]
+		}
+	]
+}

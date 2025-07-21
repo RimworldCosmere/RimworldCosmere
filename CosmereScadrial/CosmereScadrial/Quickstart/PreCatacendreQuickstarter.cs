@@ -15,7 +15,7 @@ using GeneUtility = Cosmere.Scadrial.Util.GeneUtility;
 
 namespace Cosmere.Scadrial.Quickstart;
 
-public class PreCatacendreQuickstart : AbstractQuickstart {
+public class PreCatacendreQuickstarter : AbstractQuickstart {
     public override int mapSize => 100;
     public override TaggedString description => "Used to test Pre-catacendre pawns";
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;

@@ -1,0 +1,52 @@
+
+
+{
+  "name": "stoneward",
+  "description": "Surgebinders who wield Cohesion and Tension. Stonewards are the bulwarks of the Knights Radiant — dependable, unyielding, and always at the front lines when others falter. They are builders and defenders, known for their endurance and loyalty.",
+  "surges": [
+    "cohesion",
+    "tension"
+  ],
+  "gemstone": "topaz",
+  "ideals": [
+    {
+      "label": "first ideal",
+      "description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
+      "quotes": [
+        "Life before death, strength before weakness, journey before destination."
+      ]
+    },
+    {
+      "label": "second ideal",
+      "description": "The Stoneward swears to stand when others fall — to be unwavering in the face of hardship.",
+      "quotes": [
+        "I will be there when I am needed.",
+        "I will not break, no matter the pressure."
+      ]
+    },
+    {
+      "label": "third ideal",
+      "description": "They promise to endure through suffering, to serve without reward, and to remain true in even the longest fights.",
+      "quotes": [
+        "I will not retreat from pain, nor falter in patience.",
+        "My strength is not for myself alone."
+      ],
+      "abilities": []
+    },
+    {
+      "label": "fourth ideal",
+      "description": "The Stoneward accepts the burden of inspiring others — becoming the example that holds the line when all seems lost.",
+      "quotes": [
+        "When others fall, I will remain standing."
+      ],
+      "abilities": []
+    },
+    {
+      "label": "fifth ideal",
+      "description": "They embody the eternal stone — unmovable, faithful, and unshaken even by the end of the world.",
+      "quotes": [
+        "I am the foundation others may stand upon."
+      ]
+    }
+  ]
+}

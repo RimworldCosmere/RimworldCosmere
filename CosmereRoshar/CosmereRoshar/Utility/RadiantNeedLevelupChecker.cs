@@ -12,7 +12,7 @@ public static class RadiantNeedLevelupChecker {
         }
 
         RadiantRequirements? truthwatcherRequirement =
-            pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher.defName][
+            pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher.defName][
                 pawnStats.props.req12];
         if (truthwatcherRequirement.count >= 1 && pawnStats.patientSaved) {
             truthwatcherRequirement.isSatisfied = true;

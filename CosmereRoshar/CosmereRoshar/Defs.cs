@@ -14,9 +14,9 @@ public static class Defs {
     public static NeedDef Cosmere_Roshar_Need_RadiantProgress;
 
     public static TraitDef Cosmere_Roshar_Trait_Radiant_Windrunner;
-    public static TraitDef Cosmere_Roshar_Trait_RadiantTruthwatcher;
-    public static TraitDef Cosmere_Roshar_Trait_RadiantEdgedancer;
-    public static TraitDef Cosmere_Roshar_Trait_RadiantSkybreaker;
+    public static TraitDef Cosmere_Roshar_Trait_Radiant_Truthwatcher;
+    public static TraitDef Cosmere_Roshar_Trait_Radiant_Edgedancer;
+    public static TraitDef Cosmere_Roshar_Trait_Radiant_Skybreaker;
 
     public static AbilityDef Cosmere_Roshar_SummonShardblade;
     public static AbilityDef Cosmere_Roshar_UnbondBlade;

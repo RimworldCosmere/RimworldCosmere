@@ -54,15 +54,15 @@ public static class PawnHighstormPushPatch {
         switch (__instance.Map.weatherManager.curWeather.defName) {
             case "Fog" or "FoggyRain" when
                 StormlightUtilities.IsPawnEligibleForDoctoring(__instance):
-                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher);
+                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher);
                 break;
             case "Rain" or "Clear" when
                 StormlightUtilities.IsNearGrowingPlants(__instance) &&
                 StormlightUtilities.IsPawnEligibleForDoctoring(__instance):
-                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_RadiantEdgedancer);
+                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Edgedancer);
                 break;
             case "DryThunderstorm" or "RainyThunderstorm":
-                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_RadiantSkybreaker); break;
+                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Skybreaker); break;
         }
     }
 
@@ -91,7 +91,7 @@ public static class PawnHighstormPushPatch {
                 $"{pawn.NameShortColored} " + WindrunnerBondText,
                 "A Whisper in the Mind.."
             );
-        } else if (traitDef == Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher) {
+        } else if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher) {
             StormlightUtilities.SpeakOaths(
                 pawn,
                 pawnStats,
@@ -99,7 +99,7 @@ public static class PawnHighstormPushPatch {
                 $"{pawn.NameShortColored} " + TruthwatcherBondText,
                 "A Whisper in the Mind.."
             );
-        } else if (traitDef == Defs.Cosmere_Roshar_Trait_RadiantEdgedancer) {
+        } else if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Edgedancer) {
             StormlightUtilities.SpeakOaths(
                 pawn,
                 pawnStats,
@@ -107,7 +107,7 @@ public static class PawnHighstormPushPatch {
                 $"{pawn.NameShortColored} " + EdgedancerBondText,
                 "A Whisper in the Mind.."
             );
-        } else if (traitDef == Defs.Cosmere_Roshar_Trait_RadiantSkybreaker) {
+        } else if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Skybreaker) {
             StormlightUtilities.SpeakOaths(
                 pawn,
                 pawnStats,

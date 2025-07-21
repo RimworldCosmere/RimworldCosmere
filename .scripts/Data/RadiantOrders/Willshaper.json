@@ -1,0 +1,50 @@
+{
+	"name": "willshaper",
+	"description": "Surgebinders who wield Transportation and Cohesion. Willshapers are adventurers and builders, guided by a deep respect for freedom and individuality. They reshape both stone and society to uplift the oppressed.",
+	"surges": [
+		"transportation",
+		"cohesion"
+	],
+	"gemstone": "amethyst",
+	"ideals": [
+		{
+			"label": "first ideal",
+			"description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
+			"quotes": [
+				"Life before death, strength before weakness, journey before destination."
+			]
+		},
+		{
+			"label": "second ideal",
+			"description": "The Willshaper swears to protect freedom — their own and others’. They will not be caged, nor allow others to be.",
+			"quotes": [
+				"I will seek freedom for those who have none.",
+				"I will not be bound by chains, nor stand by while others are."
+			]
+		},
+		{
+			"label": "third ideal",
+			"description": "They commit to building a world where people can choose their own paths, even when it's difficult to allow it.",
+			"quotes": [
+				"I will fight not just for survival, but for choice.",
+				"They deserve to decide who they are — even if I disagree."
+			],
+			"abilities": []
+		},
+		{
+			"label": "fourth ideal",
+			"description": "The Willshaper accepts the burden of being a disruptor — shattering walls, forging bridges, and reshaping broken systems.",
+			"quotes": [
+				"I will shape the world until it no longer cages the broken."
+			],
+			"abilities": []
+		},
+		{
+			"label": "fifth ideal",
+			"description": "They become an embodiment of freedom and will — the storm that tears down tyranny and the architect of a better world.",
+			"quotes": [
+				"I am will, unshackled. I shape not what is, but what must be."
+			]
+		}
+	]
+}

@@ -1,0 +1,50 @@
+{
+	"name": "bondsmith",
+	"description": "Surgebinders who wield Tension and Adhesion. Bondsmiths are rare and powerful Radiants who unify people, forge oaths, and embody the spirit of connection. They are the soul of the Knights Radiant — leaders, diplomats, and anchors of unity.",
+	"surges": [
+		"tension",
+		"adhesion"
+	],
+	"gemstone": "sapphire",
+	"ideals": [
+		{
+			"label": "first ideal",
+			"description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
+			"quotes": [
+				"Life before death, strength before weakness, journey before destination."
+			]
+		},
+		{
+			"label": "second ideal",
+			"description": "The Bondsmith begins to bind others — forging connection, not through command, but trust.",
+			"quotes": [
+				"I will unite instead of divide.",
+				"I will bring men together."
+			]
+		},
+		{
+			"label": "third ideal",
+			"description": "They swear to act as the bridge between factions, people, or ideas — even when standing in the middle is the hardest place to be.",
+			"quotes": [
+				"I will take upon myself the responsibility of connection.",
+				"I will hold the center when all else breaks apart."
+			],
+			"abilities": []
+		},
+		{
+			"label": "fourth ideal",
+			"description": "The Bondsmith accepts the burden of unity — to mend broken trusts, to restore oaths, and to speak for the voiceless.",
+			"quotes": [
+				"I will be the voice that echoes in silence, the bond that endures."
+			],
+			"abilities": []
+		},
+		{
+			"label": "fifth ideal",
+			"description": "They become the spiritual anchor of the Radiants — the heart of honor, uniting all others with unshakable purpose.",
+			"quotes": [
+				"I am Unity."
+			]
+		}
+	]
+}

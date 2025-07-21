@@ -1,5 +1,5 @@
 using Cosmere.Roshar.Comp.Thing;
-using Cosmere.Roshar.Extensions;
+using Cosmere.Roshar.Extension;
 using RimWorld;
 using Verse;
 

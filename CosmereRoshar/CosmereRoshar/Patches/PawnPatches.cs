@@ -1,5 +1,5 @@
 ﻿using Cosmere.Roshar.Combat.Abilities.Implementations;
-using Cosmere.Roshar.Extensions;
+using Cosmere.Roshar.Extension;
 using HarmonyLib;
 using Verse;
 

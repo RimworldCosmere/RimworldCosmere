@@ -4,6 +4,7 @@ using System.Reflection;
 using Cosmere.Core.Need;
 using Cosmere.Framework.Extension;
 using Cosmere.Framework.Quickstart;
+using Cosmere.Roshar.Extension;
 using Cosmere.Roshar.Gene;
 using RimWorld;
 using Verse;
@@ -40,14 +41,13 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         if (pawns.TryPopFront(out Pawn pawn)) {
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
-            Surgebinder gene = (Surgebinder)pawn.genes.TryAddGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
-            gene.currentIdeal = 4;
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner, 4);
         }
 
         if (pawns.TryPopFront(out pawn)) {
             pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kohlin");
             pawn.gender = Gender.Male;
-            pawn.story.TryAddTrait(Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher, 3);
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher, 3);
         }
 
         if (pawns.TryPopFront(out pawn)) {
@@ -64,9 +64,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
                     ?.Invoke(null, [pawn, false, true]);
             }
 
-            // Should be Lightweaver
-            Surgebinder gene = (Surgebinder)pawn.genes.TryAddGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
-            gene.currentIdeal = 3;
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver, 3);
         }
     }
 }

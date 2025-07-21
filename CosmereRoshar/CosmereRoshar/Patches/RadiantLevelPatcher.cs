@@ -93,7 +93,7 @@ public class PawnStats : ThingComp {
         base.Initialize(props);
 
         //WINDRUNNER
-        string? windrunnerDefName = Defs.Cosmere_Roshar_Trait_RadiantWindrunner.defName;
+        string? windrunnerDefName = Defs.Cosmere_Roshar_Trait_Radiant_Windrunner.defName;
         requirementMap.Add(windrunnerDefName, new Dictionary<string, RadiantRequirements>());
         requirementMap[windrunnerDefName].Add(this.props.req01, new RadiantRequirements());
         requirementMap[windrunnerDefName].Add(this.props.req12, new RadiantRequirements());
@@ -141,7 +141,7 @@ public class PawnStats : ThingComp {
     }
 
     public RadiantRequirements GetRequirementsEntry() {
-        return requirementMap[Defs.Cosmere_Roshar_Trait_RadiantWindrunner.defName][props.req01];
+        return requirementMap[Defs.Cosmere_Roshar_Trait_Radiant_Windrunner.defName][props.req01];
     }
 }
 
@@ -170,7 +170,7 @@ public static class Cosmere_Roshar_MentalBreakExperiences {
         }
 
         if (increment > 0f) {
-            pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_RadiantWindrunner.defName][pawnStats.props
+            pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_Radiant_Windrunner.defName][pawnStats.props
                 .req01].value += increment;
         }
 
@@ -190,7 +190,7 @@ public static class Cosmere_Roshar_HelpSomeoneInNeed {
 
         // WINDRUNNER
         RadiantRequirements? windrunnerRequirement12 =
-            pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_RadiantWindrunner.defName][
+            pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_Radiant_Windrunner.defName][
                 pawnStats.props.req12];
         if (!pawnStats.patientList.Contains(patient)) {
             pawnStats.patientList.Add(patient);
@@ -201,7 +201,7 @@ public static class Cosmere_Roshar_HelpSomeoneInNeed {
         //2_3
         if (patient.IsPrisoner) {
             RadiantRequirements? windrunnerRequirement23 =
-                pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_RadiantWindrunner.defName][pawnStats
+                pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_Radiant_Windrunner.defName][pawnStats
                     .props
                     .req23];
             windrunnerRequirement23.count += 1;
@@ -244,7 +244,7 @@ public static class PatchPawnHealthTrackerHealthTick {
 
             if (patient.health.Dead && !patient.IsPrisoner) {
                 pawnStats.patientDied = true;
-                pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_RadiantWindrunner.defName][pawnStats
+                pawnStats.requirementMap[Defs.Cosmere_Roshar_Trait_Radiant_Windrunner.defName][pawnStats
                     .props
                     .req34].isSatisfied = true;
                 patientsToRemove.Add(patient);

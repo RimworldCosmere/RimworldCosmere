@@ -11,14 +11,11 @@
         </abilities>
 
         <resourceDescription>{{order.description}}</resourceDescription>
-        <forcedTraits>
-            <li>
-                <def>Cosmere_Roshar_Trait_Radiant{{defName order.name}}</def>
-            </li>
-        </forcedTraits>
+        <iconPath>UI/Surgebinding/Order/{{defName order.name}}</iconPath>
         <modExtensions>
             <li Class="Cosmere.Roshar.DefModExtension.RadiantOrder">
                 <order>{{defName order.name}}</order>
+                <trait>Cosmere_Roshar_Trait_Radiant{{defName order.name}}</trait>
             </li>
         </modExtensions>
     </GeneDef>
@@ -29,15 +26,10 @@
         <description>{{order.description}}</description>
 
         <degreeDatas>
-
             {{#each order.ideals}}
             <li>
                 <label>{{title label}}</label>
-                <quotes>
-                    {{#each quotes}}
-                    <li>{{this}}</li>
-                    {{/each}}
-                </quotes>
+                <description>{{title description}}</description>
                 <degree>{{@index}}</degree>
                 <commonality>0</commonality>
             </li>

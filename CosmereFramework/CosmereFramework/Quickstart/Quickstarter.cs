@@ -49,7 +49,12 @@ public class Quickstarter {
                 PageUtility.InitGameStart();
                 DelayedActionScheduler.Schedule(
                     () => {
-                        Quickstart.PrepareColonists(Find.World.PlayerPawnsForStoryteller.ToList());
+                        Quickstart.PrepareColonists(
+                            Find.World.PlayerPawnsForStoryteller.Where(p =>
+                                    p.Spawned && p.Map != null && p.story != null && p.needs != null
+                                )
+                                .ToList()
+                        );
                         Quickstart.PostLoaded();
                         if (Quickstart.pauseAfterLoad) Find.TickManager.Pause();
                     },

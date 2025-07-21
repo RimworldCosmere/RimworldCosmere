@@ -6,7 +6,7 @@ namespace Cosmere.Roshar.Utility;
 
 public static class Constants {
     public static List<TraitDef> radiantTraits => [
-        Defs.Cosmere_Roshar_Trait_RadiantWindrunner,
+        Defs.Cosmere_Roshar_Trait_Radiant_Windrunner,
         Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher,
         Defs.Cosmere_Roshar_Trait_RadiantEdgedancer,
         Defs.Cosmere_Roshar_Trait_RadiantSkybreaker,

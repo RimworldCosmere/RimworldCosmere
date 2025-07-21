@@ -38,7 +38,6 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         if (pawns.Count == 0) return;
 
         if (pawns.TryPopFront(out Pawn pawn)) {
-            pawn.story.TryAddTrait(Core.TraitDefOf.Cosmere_Invested);
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
             Surgebinder gene = (Surgebinder)pawn.genes.TryAddGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
@@ -46,14 +45,12 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.story.TryAddTrait(Core.TraitDefOf.Cosmere_Invested);
             pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kohlin");
             pawn.gender = Gender.Male;
             pawn.story.TryAddTrait(Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher, 3);
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.story.TryAddTrait(Core.TraitDefOf.Cosmere_Invested);
             if (pawn.needs.TryGetNeed(out Investiture investiture)) {
                 investiture.CurLevel = 50000;
             }
@@ -68,7 +65,8 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             }
 
             // Should be Lightweaver
-            pawn.story.TryAddTrait(Defs.Cosmere_Roshar_Trait_RadiantWindrunner, 3);
+            Surgebinder gene = (Surgebinder)pawn.genes.TryAddGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
+            gene.currentIdeal = 3;
         }
     }
 }

@@ -39,7 +39,7 @@ public static class PawnHighstormPushPatch {
             }
 
             if (Find.TickManager.TicksGame % 100 == 0 && StormlightUtilities.IsPawnEligibleForDoctoring(__instance)) {
-                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_RadiantWindrunner);
+                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Windrunner);
             }
 
             return;
@@ -83,7 +83,7 @@ public static class PawnHighstormPushPatch {
         int number = MRand.Next(1, upperNumber);
         if (number != 1) return;
 
-        if (traitDef == Defs.Cosmere_Roshar_Trait_RadiantWindrunner) {
+        if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Windrunner) {
             StormlightUtilities.SpeakOaths(
                 pawn,
                 pawnStats,

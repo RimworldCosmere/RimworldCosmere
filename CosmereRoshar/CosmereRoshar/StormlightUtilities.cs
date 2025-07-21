@@ -54,7 +54,7 @@ public static class StormlightUtilities {
     }
 
     public static bool IsRadiant(Trait trait) {
-        return trait.def == Defs.Cosmere_Roshar_Trait_RadiantWindrunner ||
+        return trait.def == Defs.Cosmere_Roshar_Trait_Radiant_Windrunner ||
                trait.def == Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher ||
                trait.def == Defs.Cosmere_Roshar_Trait_RadiantEdgedancer ||
                trait.def == Defs.Cosmere_Roshar_Trait_RadiantSkybreaker;
@@ -68,7 +68,7 @@ public static class StormlightUtilities {
         Trait trait =
             pawn.story.traits.allTraits.FirstOrDefault(t => Constants.radiantTraits.Contains(t.def));
         if (trait != null) {
-            return trait.def == Defs.Cosmere_Roshar_Trait_RadiantWindrunner ||
+            return trait.def == Defs.Cosmere_Roshar_Trait_Radiant_Windrunner ||
                    trait.def == Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher ||
                    trait.def == Defs.Cosmere_Roshar_Trait_RadiantEdgedancer ||
                    trait.def == Defs.Cosmere_Roshar_Trait_RadiantSkybreaker;

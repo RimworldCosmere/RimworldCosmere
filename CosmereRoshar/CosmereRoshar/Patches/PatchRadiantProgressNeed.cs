@@ -19,7 +19,7 @@ public static class PatchRadiantProgressNeed {
         if (pawn.story?.traits == null) return;
 
         __result =
-            pawn.story.traits.HasTrait(Defs.Cosmere_Roshar_Trait_RadiantWindrunner) ||
+            pawn.story.traits.HasTrait(Defs.Cosmere_Roshar_Trait_Radiant_Windrunner) ||
             pawn.story.traits.HasTrait(Defs.Cosmere_Roshar_Trait_RadiantTruthwatcher) ||
             pawn.story.traits.HasTrait(Defs.Cosmere_Roshar_Trait_RadiantEdgedancer) ||
             pawn.story.traits.HasTrait(Defs.Cosmere_Roshar_Trait_RadiantSkybreaker);

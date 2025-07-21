@@ -14,12 +14,12 @@ public static class RosharDev {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void PrepareDevPawn(Pawn pawn) {
-        if (pawn.genes == null) return;
+        if (pawn.genes == null || pawn.story == null) return;
 
-        if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Roshar_Trait_RadiantWindrunner)) {
-            pawn.genes.TryAddGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
-            Messages.Message($"Made {pawn.NameFullColored} a Windrunner", pawn, MessageTypeDefOf.PositiveEvent);
-            pawn.needs.TryGetNeed<Investiture>().CurLevel += 20000;
-        }
+        if (pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Roshar_Trait_RadiantWindrunner)) return;
+
+        pawn.genes.TryAddGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
+        Messages.Message($"Made {pawn.NameFullColored} a Windrunner", pawn, MessageTypeDefOf.PositiveEvent);
+        pawn.needs.TryGetNeed<Investiture>().CurLevel += 20000;
     }
 }

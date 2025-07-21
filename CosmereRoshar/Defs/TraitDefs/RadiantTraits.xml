@@ -3,7 +3,7 @@
 
   <!-- WIND RUNNER -->
   <TraitDef>
-    <defName>Cosmere_Roshar_Trait_RadiantWindrunner</defName>
+    <defName>Cosmere_Roshar_Trait_Radiant_Windrunner</defName>
     <label>Radiant</label>
     <description>{PAWN_nameDef} has been chosen by ancient forces and gifted with mystical
       abilities.</description>

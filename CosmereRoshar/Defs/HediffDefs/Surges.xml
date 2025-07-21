@@ -12,7 +12,7 @@
             <li>
                 <label>Abrasion</label>
                 <statOffsets>
-                    <JumpRange>2.5</JumpRange>
+                    <JumpRange MayRequire="Ludeon.RimWorld.Royalty">2.5</JumpRange>
                     <MeleeWeapon_DamageMultiplier>2.0</MeleeWeapon_DamageMultiplier>
                     <IncomingDamageFactor>-0.75</IncomingDamageFactor>
                     <MeleeDodgeChance>0.75</MeleeDodgeChance>

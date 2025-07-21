@@ -12,7 +12,7 @@
     <statBases>
       <Ability_Duration>0</Ability_Duration> <!-- Base duration -->
     </statBases>
-    <warmupSound>PsycastCastLoop</warmupSound> <!-- Custom sound for radiant abilities -->
+    <!--<warmupSound>PsycastCastLoop</warmupSound>--> <!-- Custom sound for radiant abilities -->
     <verbProperties>
       <verbClass>Cosmere.Roshar.Combat.Abilities.VerbCastRadiant</verbClass> <!-- Custom verb class -->
       <range>24.9</range>

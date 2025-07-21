@@ -12,6 +12,7 @@ export class RadiantOrderInfo {
 
 export class RadiantOrderIdeal {
     public label: string;
+    public description: string;
     public quotes: string[];
     public abilities: string[];
 

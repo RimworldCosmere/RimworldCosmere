@@ -4,13 +4,14 @@ using RimWorld;
 
 namespace Cosmere.Roshar.Def;
 
-public record Ideal {
+public class Ideal {
     public List<AbilityDef> abilities;
     public string label;
     public List<string> quotes;
 }
 
 public class RadiantOrderDef : Verse.Def {
+    public List<AbilityDef> abilities;
     public GemDef gemstone;
     public List<Ideal> ideals;
     public List<SurgeDef> surges;

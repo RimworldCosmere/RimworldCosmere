@@ -13,7 +13,7 @@ namespace Cosmere.Roshar;
 public static class Defs {
     public static NeedDef Cosmere_Roshar_Need_RadiantProgress;
 
-    public static TraitDef Cosmere_Roshar_Trait_RadiantWindrunner;
+    public static TraitDef Cosmere_Roshar_Trait_Radiant_Windrunner;
     public static TraitDef Cosmere_Roshar_Trait_RadiantTruthwatcher;
     public static TraitDef Cosmere_Roshar_Trait_RadiantEdgedancer;
     public static TraitDef Cosmere_Roshar_Trait_RadiantSkybreaker;

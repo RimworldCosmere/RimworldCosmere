@@ -1,13 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Core.Need;
-using Cosmere.Framework.Extension;
 using Cosmere.Framework.Quickstart;
 using Cosmere.Resources;
 using Cosmere.Resources.Def;
 using Cosmere.Scadrial.Def;
 using Cosmere.Scadrial.Dev;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;

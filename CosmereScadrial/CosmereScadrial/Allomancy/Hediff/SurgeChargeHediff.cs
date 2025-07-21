@@ -1,15 +1,13 @@
 using System;
-using System.Linq;
-using Cosmere.Framework.Extension;
+using Cosmere.Core.Ability;
 using Cosmere.Scadrial.Allomancy.Ability;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Hediff;
 
-public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : AllomanticHediff(d, p, a) {
+public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility<Allomancer> a) : AllomanticHediff(d, p, a) {
     public Action? endCallback;
 
     public int endInTicks = -1;
@@ -50,7 +48,9 @@ public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility a) : Alloman
 
         FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
 
-        foreach (AbstractAbility? sourceAbility in sourceAbilities.Where(a => a.atLeastBurning).ToList()) {
+        foreach (AbstractAllomancyAbility? sourceAbility in sourceAbilities.Cast<AbstractAllomancyAbility>()
+                     .Where(a => a.atLeastBurning)
+                     .ToList()) {
             Allomancer? sourceGene = sourceAbility.pawn.genes.GetAllomanticGeneForMetal(sourceAbility.metal);
             if (sourceGene == null || !sourceGene.Burning) continue;
             if (

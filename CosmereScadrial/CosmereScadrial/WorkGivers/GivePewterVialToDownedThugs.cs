@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Resources;
 using Cosmere.Resources.Def;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;

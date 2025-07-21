@@ -41,7 +41,7 @@ public class GoldAbility : AbilitySelfTarget {
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
 
-        hediff = GetOrAddHediff(pawn);
+        hediff = (AllomanticHediff?)GetOrAddHediff(pawn);
         if (hediff != null) hediff.extraSeverity += 0.06f;
     }
 

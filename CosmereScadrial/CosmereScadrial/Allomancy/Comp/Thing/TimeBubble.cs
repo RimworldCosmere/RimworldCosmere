@@ -1,7 +1,6 @@
-using System.Linq;
+using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Extension;
 using RimWorld;
 using Verse;
 
@@ -60,9 +59,12 @@ public class TimeBubble : ThingComp {
     }
 
     private float GetSeverity(Pawn pawn) {
-        Verse.Hediff? hediff = pawn.health?.hediffSet?.hediffs.FirstOrDefault(x => {
+        Verse.Hediff? hediff = Enumerable.FirstOrDefault(
+            pawn.health?.hediffSet?.hediffs,
+            x => {
                 return x is AllomanticHediff hediff &&
-                       hediff.sourceAbilities.Any(ability => ability.metal.Equals(metal));
+                       hediff.sourceAbilities.Cast<AbstractAllomancyAbility>()
+                           .Any(ability => ability.metal.Equals(metal));
             }
         );
 

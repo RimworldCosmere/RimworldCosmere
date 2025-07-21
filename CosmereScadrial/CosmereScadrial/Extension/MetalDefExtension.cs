@@ -2,6 +2,7 @@ using Cosmere.Resources.Def;
 using Cosmere.Scadrial.Def;
 using RimWorld;
 using Verse;
+using AbilityDef = RimWorld.AbilityDef;
 
 namespace Cosmere.Scadrial.Extension;
 

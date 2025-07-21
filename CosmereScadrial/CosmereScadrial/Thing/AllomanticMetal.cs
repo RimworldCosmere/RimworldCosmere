@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Extension;
 using RimWorld;
 using Verse;
 using GeneUtility = Cosmere.Scadrial.Util.GeneUtility;

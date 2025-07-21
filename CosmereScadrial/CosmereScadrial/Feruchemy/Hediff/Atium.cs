@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Cosmere.Resources;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;

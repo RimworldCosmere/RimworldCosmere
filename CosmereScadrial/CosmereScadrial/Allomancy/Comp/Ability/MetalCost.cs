@@ -1,6 +1,5 @@
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
@@ -14,7 +13,7 @@ public class MetalCostProperties : CompProperties_AbilityEffect {
 }
 
 public class MetalCost : CompAbilityEffect {
-    private new AbstractAbility parent => (AbstractAbility)base.parent;
+    private new AbstractAllomancyAbility parent => (AbstractAllomancyAbility)base.parent;
     private MetallicArtsMetalDef metal => parent.def.metal.ToMetallicArts();
     private Allomancer gene => parent.pawn.genes.GetAllomanticGeneForMetal(metal)!;
 

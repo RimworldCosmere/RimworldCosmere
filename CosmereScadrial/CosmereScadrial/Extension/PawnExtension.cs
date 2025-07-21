@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Framework.Extension;
 using Cosmere.Resources;
 using Cosmere.Resources.Def;
 using Cosmere.Scadrial.Allomancy.Ability;
@@ -109,8 +106,8 @@ public static class PawnExtension {
         return gene?.GetReservePercent() ?? 0f;
     }
 
-    public static AbstractAbility? GetAllomanticAbility(this Pawn pawn, AllomanticAbilityDef def) {
-        return (AbstractAbility)pawn.abilities.GetAbility(def);
+    public static AbstractAllomancyAbility? GetAllomanticAbility(this Pawn pawn, AllomanticAbilityDef def) {
+        return (AbstractAllomancyAbility)pawn.abilities.GetAbility(def);
     }
 
     public static List<MetallicArtsMetalDef> GetAllBurningMetals(this Pawn pawn) {

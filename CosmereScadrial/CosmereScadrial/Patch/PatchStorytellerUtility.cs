@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using HarmonyLib;
 using RimWorld;

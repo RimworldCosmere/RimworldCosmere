@@ -39,4 +39,14 @@ public abstract class Invested : Gene_Resource {
         base.PostRemove();
         PostAddOrRemove();
     }
+
+    /// <summary>
+    ///     Tells the caller if the pawn is capable of using the given amount
+    ///     of BEUs (Investiture).
+    /// </summary>
+    /// <param name="breathEquivalentUnits"></param>
+    /// <returns>true if the pawn has enough resource in the gene to use this</returns>
+    public virtual bool CanUse(float breathEquivalentUnits) {
+        return true;
+    }
 }

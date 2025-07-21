@@ -7,5 +7,6 @@
         <metal>Bronze</metal>
         <hediff>Cosmere_Scadrial_Hediff_BronzeAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

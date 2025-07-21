@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Core.Gizmo;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Def;
@@ -36,7 +34,7 @@ public abstract class ScadrialGeneCommand<TGene>(
         return gene.def.abilities?
                    .OrderBy(x => x.uiOrder)
                    .Select(x => pawn.abilities.GetAbility(x))
-                   .Cast<AbstractAbility>()
+                   .Cast<AbstractAllomancyAbility>()
                    .Where(x => x.GizmosVisible())
                    .Select(x => new AbilitySubGizmo(this, gene, x)) ??
                [];

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Core.Util;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Comp.Game;

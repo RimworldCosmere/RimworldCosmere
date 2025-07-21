@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Scadrial.Feruchemy.Comp.Thing;
+﻿using Cosmere.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.Scadrial.Gizmo;
 using Cosmere.Scadrial.Util;
 using UnityEngine;

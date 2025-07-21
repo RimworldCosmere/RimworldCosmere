@@ -1,4 +1,3 @@
-using System.Linq;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
 using Cosmere.Scadrial.Util;

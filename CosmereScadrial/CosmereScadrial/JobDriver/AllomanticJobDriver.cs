@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Cosmere.Scadrial.Allomancy.Ability;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using Verse;
 using Verse.AI;
@@ -10,7 +8,7 @@ namespace Cosmere.Scadrial.JobDriver;
 public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
     private ILoadReferenceable cachedSource;
     protected virtual Pawn? targetPawn => TargetA.Pawn;
-    protected virtual AbstractAbility ability => (AbstractAbility)(job?.source ?? cachedSource);
+    protected virtual AbstractAllomancyAbility ability => (AbstractAllomancyAbility)(job?.source ?? cachedSource);
     protected virtual Allomancer gene => ability.gene;
     protected virtual bool targetIsPawn => targetPawn != null;
 

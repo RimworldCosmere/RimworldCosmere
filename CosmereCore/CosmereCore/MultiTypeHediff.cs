@@ -1,6 +1,6 @@
 using Verse;
 
-namespace Cosmere.Scadrial;
+namespace Cosmere.Core;
 
 public interface IMultiTypeHediff {
     HediffDef? GetHediff();

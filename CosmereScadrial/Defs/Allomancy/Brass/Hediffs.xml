@@ -38,7 +38,8 @@
         <description>This pawn has been soothed by a nearby Allomancer burning brass. Their emotions feel more stable and calm.</description>
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps Inherit="False">
-            <li Class="Cosmere.Scadrial.Allomancy.Comp.Hediff.SeverityCalculatorProperties">
+            <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
+               <compClass>Cosmere.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
                 <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">

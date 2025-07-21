@@ -1,16 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
+using Cosmere.Core;
+using Cosmere.Core.Ability;
 using Cosmere.Framework.Comp.Map;
-using Cosmere.Framework.Extension;
-using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
 using Cosmere.Scadrial.Comp.Hediff;
+using Cosmere.Scadrial.Gene;
 using Cosmere.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using static Cosmere.Framework.Mod;
-using HediffUtility = Cosmere.Scadrial.Util.HediffUtility;
 
 namespace Cosmere.Scadrial.Allomancy.Comp.Hediff;
 
@@ -49,7 +47,8 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
     private bool isAtLeastPassive => parent.Severity >= 0.5f;
 
-    private AbstractAbility? ability => parent.sourceAbilities.FirstOrDefault(_ => true);
+    private IAbility<Allomancer, AllomanticHediff>? ability =>
+        (IAbility<Allomancer, AllomanticHediff>?)parent.sourceAbilities.FirstOrDefault(_ => true);
 
     private float moteScale =>
         props.moteDef == null ? 1f : MoteUtility.GetMoteSize(props.moteDef, props.radius, parent.Severity);
@@ -85,8 +84,8 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
         foreach (Pawn pawn in pawnsWithHediff.ToList()) {
             if (nearbyPawns.Contains(pawn)) continue;
-            AllomanticHediff? hediff = HediffUtility.GetOrAddHediff(Pawn, pawn, ability, props);
-            if (hediff != null) {
+            AllomanticHediff? hediff = (AllomanticHediff?)pawn.GetOrAddHediff(Pawn, ability, props);
+            if (hediff != null && ability != null) {
                 hediff.RemoveSource(ability);
             }
 
@@ -128,7 +127,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
             return;
         }
 
-        AllomanticHediff? hediff = HediffUtility.GetOrAddHediff(Pawn, target, ability, props);
+        AllomanticHediff? hediff = (AllomanticHediff?)target.GetOrAddHediff(Pawn, ability, props);
         if (hediff == null) return;
         pawnsWithHediff.Add(target);
 

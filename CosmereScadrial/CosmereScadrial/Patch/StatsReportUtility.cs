@@ -1,4 +1,3 @@
-using System.Linq;
 using Cosmere.Resources.Def;
 using Cosmere.Resources.DefModExtension;
 using HarmonyLib;

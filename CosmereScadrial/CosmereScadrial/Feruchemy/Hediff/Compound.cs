@@ -1,17 +1,21 @@
+using Cosmere.Core.Ability;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using Verse;
 
 namespace Cosmere.Scadrial.Feruchemy.Hediff;
 
 public class Compound : AllomanticHediff {
-    protected readonly AbstractAbility ability;
+    protected readonly AbstractAbility<Allomancer> ability;
     protected readonly Allomancer? allomancer;
     protected readonly Feruchemist? feruchemist;
 
-    public Compound(HediffDef hediffDef, Pawn pawn, AbstractAbility ability) : base(hediffDef, pawn, ability) {
+    public Compound(HediffDef hediffDef, Pawn pawn, AbstractAbility<Allomancer> ability) : base(
+        hediffDef,
+        pawn,
+        ability
+    ) {
         this.ability = ability;
         allomancer = pawn.genes.GetAllomanticGeneForMetal(metal);
         feruchemist = pawn.genes.GetFeruchemicGeneForMetal(metal);

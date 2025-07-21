@@ -1,12 +1,9 @@
-using System.Collections.Generic;
-using Cosmere.Framework.Extension;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
 using Cosmere.Scadrial.Comp.Hediff;
 using Cosmere.Scadrial.Util;
 using Verse;
 using Verse.AI;
-using HediffUtility = Cosmere.Scadrial.Util.HediffUtility;
 
 namespace Cosmere.Scadrial.JobDriver;
 
@@ -71,7 +68,7 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
     }
 
     protected override bool ShouldStopJob() {
-        if (targetIsPawn && (targetPawn.Dead || targetPawn.Downed)) {
+        if (targetIsPawn && targetPawn != null && (targetPawn.Dead || targetPawn.Downed)) {
             return true;
         }
 
@@ -84,7 +81,7 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
     }
 
     protected virtual void MaintainEffectOnTarget() {
-        AllomanticHediff? hediff = HediffUtility.GetOrAddHediff(pawn, targetPawn, ability, ability.def);
+        AllomanticHediff? hediff = (AllomanticHediff?)targetPawn.GetOrAddHediff(pawn, ability, ability.def);
 
         hediff?.TryGetComp<DisappearsScaled>()?.CompPostMake();
     }

@@ -7,6 +7,6 @@
         <metal>Duralumin</metal>
         <hediff>Cosmere_Scadrial_Hediff_SurgeCharge</hediff>
         <beuPerTick>0.00000001</beuPerTick>
-        <canFlare>false</canFlare>
+        <maxPower>1</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

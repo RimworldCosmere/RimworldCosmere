@@ -40,7 +40,8 @@
     <HediffDef ParentName="AbstractZincHediff">
         <defName>Cosmere_Scadrial_Hediff_RiotedBuff</defName>
         <comps Inherit="False">
-            <li Class="Cosmere.Scadrial.Allomancy.Comp.Hediff.SeverityCalculatorProperties">
+            <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
+               <compClass>Cosmere.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
                 <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
@@ -66,7 +67,8 @@
     <HediffDef ParentName="AbstractZincHediff">
         <defName>Cosmere_Scadrial_Hediff_RiotedDebuff</defName>
         <comps Inherit="False">
-            <li Class="Cosmere.Scadrial.Allomancy.Comp.Hediff.SeverityCalculatorProperties">
+            <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
+                <compClass>Cosmere.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
                 <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">

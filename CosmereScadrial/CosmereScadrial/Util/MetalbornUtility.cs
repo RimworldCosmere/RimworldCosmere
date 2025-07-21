@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Framework.Extension;
-using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Extension;
+﻿using Cosmere.Scadrial.Def;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;

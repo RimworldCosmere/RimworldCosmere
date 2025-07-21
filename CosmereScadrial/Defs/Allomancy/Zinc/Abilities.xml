@@ -8,8 +8,9 @@
 Friendly individuals feel surges of courage and determination, sharpening their reflexes and fueling their will to fight.
 Hostile or neutral targets grow tense, anxious, or unstable — their emotions stretched toward breaking.</description>
         <metal>Zinc</metal>
-        <canBurnWhileAsleep>true</canBurnWhileAsleep>
+        <canUseWhileAsleep>true</canUseWhileAsleep>
         <hediff>Cosmere_Scadrial_Hediff_ZincAura</hediff>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
     <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_ZincTarget</defName>
@@ -30,5 +31,6 @@ A carefully timed burst against an enemy may stoke fear, anger, or confusion —
                 <canTargetMechs>false</canTargetMechs>
             </targetParams>
         </verbProperties>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

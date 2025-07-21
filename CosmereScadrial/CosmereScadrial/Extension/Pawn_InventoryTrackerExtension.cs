@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Resources.Def;
 using Cosmere.Scadrial.Gene;
 using Cosmere.Scadrial.Thing;

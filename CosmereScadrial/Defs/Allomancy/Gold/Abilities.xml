@@ -10,7 +10,7 @@
             <min>60000</min> <!-- 1 in-game day -->
             <max>60000</max>
         </cooldownTicksRange>
-        <canFlare>false</canFlare>
+        <maxPower>1</maxPower>
         <abilityClass>Cosmere.Scadrial.Allomancy.Ability.GoldAbility</abilityClass>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

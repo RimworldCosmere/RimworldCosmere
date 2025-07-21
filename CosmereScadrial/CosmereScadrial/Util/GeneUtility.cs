@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Core.Comp.Thing;
+﻿using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Util;
-using Cosmere.Framework.Extension;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Extension;
 using RimWorld;
 using UnityEngine;
 using Verse;

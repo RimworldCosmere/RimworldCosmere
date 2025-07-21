@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
@@ -78,13 +76,13 @@ public class FeruchemicGeneCommand(
 
         AllomanticAbilityDef? def = metal.GetCompoundAbility();
         if (def == null) yield break;
-        AbstractAbility ability = (AbstractAbility)Activator.CreateInstance(
+        AbstractAllomancyAbility allomancyAbility = (AbstractAllomancyAbility)Activator.CreateInstance(
             typeof(AbilitySelfTarget),
             pawn,
             null,
             def
         );
-        yield return new AbilitySubGizmo(this, gene, ability);
+        yield return new AbilitySubGizmo(this, gene, allomancyAbility);
     }
 
     public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {

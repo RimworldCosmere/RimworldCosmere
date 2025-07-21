@@ -11,7 +11,9 @@
         <alwaysShowSeverity>true</alwaysShowSeverity>
         <hediffClass>Cosmere.Scadrial.Allomancy.Hediff.AllomanticHediff</hediffClass>
         <comps>
-            <li Class="Cosmere.Scadrial.Allomancy.Comp.Hediff.SeverityCalculatorProperties" />
+            <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
+               <compClass>Cosmere.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
+            </li>
         </comps>
     </HediffDef>
     <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractTargetHostileBurnHediff" ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff" Abstract="True">

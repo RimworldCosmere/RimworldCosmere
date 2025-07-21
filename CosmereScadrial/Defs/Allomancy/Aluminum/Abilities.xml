@@ -5,8 +5,9 @@
         <label>shield against investiture</label>
         <description>Burning aluminum shields the Allomancer from external investiture effects and instantly wipes all other reserves.</description>
         <metal>Aluminum</metal>
-        <canBurnWhileAsleep>true</canBurnWhileAsleep>
+        <canUseWhileAsleep>true</canUseWhileAsleep>
         <hediff>Cosmere_Scadrial_Hediff_InvestitureShield</hediff>
         <beuPerTick>0.0008</beuPerTick>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

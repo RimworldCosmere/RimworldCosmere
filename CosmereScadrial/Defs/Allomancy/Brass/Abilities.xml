@@ -5,8 +5,9 @@
         <label>soothing aura</label>
         <description>Suppress emotional outbursts and calm the minds of others using Brass. Has a chance to break mental states when flaring.</description>
         <metal>Brass</metal>
-        <canBurnWhileAsleep>true</canBurnWhileAsleep>
+        <canUseWhileAsleep>true</canUseWhileAsleep>
         <hediff>Cosmere_Scadrial_Hediff_BrassAura</hediff>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
     <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_BrassTarget</defName>
@@ -23,5 +24,6 @@
                 <canTargetPlants>false</canTargetPlants>
             </targetParams>
         </verbProperties>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

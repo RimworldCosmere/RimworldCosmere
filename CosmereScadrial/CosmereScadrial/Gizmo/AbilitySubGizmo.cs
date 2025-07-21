@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using Cosmere.Core.Gizmo;
-using Cosmere.Framework.Extension;
 using Cosmere.Framework.Util;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Gene;
@@ -32,7 +30,7 @@ public class AbilitySubGizmo : SubGizmo {
         ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B8"),
     ];
 
-    private readonly AbstractAbility ability;
+    private readonly AbstractAllomancyAbility ability;
     private readonly Metalborn gene;
 
     private AcceptanceReport cachedReport;
@@ -44,7 +42,7 @@ public class AbilitySubGizmo : SubGizmo {
 
     public AbilitySubGizmo() { }
 
-    public AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAbility ability) : base(parent) {
+    public AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAllomancyAbility ability) : base(parent) {
         this.gene = gene;
         this.ability = ability;
     }
@@ -55,8 +53,7 @@ public class AbilitySubGizmo : SubGizmo {
     private Texture2D icon => disabled ? ability.def.disabledIcon :
         ability.paused ? ability.def.pausedIcon : ability.def.uiIcon;
 
-    private Texture2D background => ability.status switch {
-        null => BgTexOff,
+    private Texture2D background => ability.status.power switch {
         BurningStatus.Off => BgTexOff,
         BurningStatus.Burning => BgTexBurning,
         BurningStatus.Flaring => BgTexFlaring,
@@ -69,7 +66,7 @@ public class AbilitySubGizmo : SubGizmo {
     }
 
     private Texture2D GetBorder() {
-        if (!ability.willBurnWhileDowned || AutoBurnBorders.NullOrEmpty()) {
+        if (!ability.willUseWhileDowned || AutoBurnBorders.NullOrEmpty()) {
             return Border;
         }
 
@@ -108,7 +105,7 @@ public class AbilitySubGizmo : SubGizmo {
             TaggedString flareOrDeflare =
                 (ability.status == BurningStatus.Flaring ? "CS_Deflare" : "CS_Flare").Translate();
             desc.AppendLine("\n");
-            if (ability.def.canFlare) {
+            if (ability.def.maxPower > 1) {
                 desc.AppendLine(
                     "CS_PressToFlare"
                         .Translate(flareOrDeflare.Named("FLARE"), gene.metal.label.Named("METAL"))
@@ -116,7 +113,7 @@ public class AbilitySubGizmo : SubGizmo {
                 );
             }
 
-            if (ability.def.canBurnWhileDowned) {
+            if (ability.def.canUseWhileDowned) {
                 desc.AppendLine(
                     "CS_ToggleAutomaticBurning".Translate()
                         .Colorize(ColoredText.GeneColor)
@@ -157,13 +154,13 @@ public class AbilitySubGizmo : SubGizmo {
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
 
         if (ev.shift) {
-            ability.willBurnWhileDowned = !ability.willBurnWhileDowned;
+            ability.willUseWhileDowned = !ability.willUseWhileDowned;
             return;
         }
 
         if (ability.atLeastBurning) {
-            bool isFlaring = ability.status == BurningStatus.Flaring;
-            bool isBurning = ability.status is BurningStatus.Burning;
+            bool isFlaring = ability.status.power == BurningStatus.Flaring;
+            bool isBurning = ability.status.power is BurningStatus.Burning;
 
             if (ev.control) {
                 if (isBurning) {
@@ -196,7 +193,7 @@ public class AbilitySubGizmo : SubGizmo {
                     t => {
                         if (!ability.ValidateGlobalTarget(t)) return false;
 
-                        ability.QueueCastingJob(t, ev.control);
+                        ability.QueueCastingJob(t, ev.control ? BurningStatus.Flaring : BurningStatus.Burning);
                         return true;
                     },
                     true,
@@ -207,7 +204,11 @@ public class AbilitySubGizmo : SubGizmo {
                 );
             }
         } else {
-            ability.QueueCastingJob(ability.pawn, LocalTargetInfo.Invalid, ev.control);
+            ability.QueueCastingJob(
+                ability.pawn,
+                LocalTargetInfo.Invalid,
+                ev.control ? BurningStatus.Flaring : BurningStatus.Burning
+            );
         }
     }
 }

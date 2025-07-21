@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Authors>CryptikLemur</Authors>
         <TargetFramework>net48</TargetFramework>
@@ -47,6 +46,15 @@
             <ExcludeAssets>runtime</ExcludeAssets>
         </PackageReference>
     </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <Using Include="System.Linq"/>
+        <Using Include="System.Collections.Generic"/>
+        <Using Include="Cosmere.Framework.Extension"/>
+        <Using Include="Cosmere.Resources.Extension"/>
+        <Using Include="Cosmere.Core.Extension"/>
+        <Using Include="Cosmere.Scadrial.Extension"/>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4523"/>

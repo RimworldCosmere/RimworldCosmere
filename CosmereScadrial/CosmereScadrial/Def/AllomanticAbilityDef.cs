@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using Cosmere.Framework.Extension;
+using Cosmere.Core;
+using Cosmere.Core.Def;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -10,50 +9,16 @@ namespace Cosmere.Scadrial.Def;
 
 public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
     public bool applyDragOnTarget = false;
-    public bool autoBurnWhileDownedByDefault = true;
-    public float beuPerTick = Constants.DefaultBreathEquivalentUnitsPerTick;
-    public ThingDef? burningMote;
-    public bool canBurnWhileAsleep = false;
-    public bool canBurnWhileDowned = false;
-    public bool canFlare = true;
-    public Texture2D disabledIcon = BaseContent.BadTex;
     public HediffDef? dragHediff;
-    public HediffDef? hediff;
-    public HediffDef? hediffFriendly;
-    public HediffDef? hediffHostile;
-    public float hediffSeverityFactor = 1f;
     public MetallicArtsMetalDef metal = null!;
     public float minSeverityForDrag = 1f;
-    public Texture2D pausedIcon = BaseContent.BadTex;
-    public bool toggleable = false;
-
-    public override TaggedString LabelCap {
-        get {
-            if (label.NullOrEmpty()) return (TaggedString)(string)null!;
-            if (cachedLabelCap.NullOrEmpty()) cachedLabelCap = (TaggedString)GenText.ToTitleCaseSmart(label);
-
-            return cachedLabelCap;
-        }
-    }
-
-    public HediffDef? GetHediff() {
-        return hediff;
-    }
-
-    public HediffDef? GetFriendlyHediff() {
-        return hediffFriendly;
-    }
-
-    public HediffDef? GetHostileHediff() {
-        return hediffHostile;
-    }
 
     public override IEnumerable<string> ConfigErrors() {
         label ??= metal.label;
         foreach (string? error in base.ConfigErrors()) yield return error;
 
-        if (!typeof(AbstractAbility).IsAssignableFrom(abilityClass)) {
-            yield return $"Invalid ability class {abilityClass}. Must inherit from {typeof(AbstractAbility)}.";
+        if (!typeof(AbstractAllomancyAbility).IsAssignableFrom(abilityClass)) {
+            yield return $"Invalid ability class {abilityClass}. Must inherit from {typeof(AbstractAllomancyAbility)}.";
         }
 
         if (hediff != null && !typeof(AllomanticHediff).IsAssignableFrom(hediff.hediffClass)) {

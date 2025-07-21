@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Cosmere.Framework.Extension;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Verse;
 using Verse.AI;

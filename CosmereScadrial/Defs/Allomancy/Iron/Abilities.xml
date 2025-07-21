@@ -9,6 +9,7 @@ These lines shimmer with the tension of potential force, visible only to those b
         <metal>Iron</metal>
         <hediff>Cosmere_Scadrial_Hediff_IronAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
     <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_IronPull</defName>
@@ -31,5 +32,6 @@ These lines shimmer with the tension of potential force, visible only to those b
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

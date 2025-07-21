@@ -1,12 +1,13 @@
 using System;
 using System.Linq;
-using Cosmere.Scadrial.Allomancy.Ability;
-using Cosmere.Scadrial.Allomancy.Hediff;
+using Cosmere.Core.Ability;
+using Cosmere.Core.Gene;
+using Cosmere.Core.Hediff;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Cosmere.Scadrial.Allomancy.Comp.Hediff;
+namespace Cosmere.Core.Comp.Hediff;
 
 public class SeverityCalculatorProperties : HediffCompProperties {
     public float decayAmount = 0.05f;
@@ -16,18 +17,14 @@ public class SeverityCalculatorProperties : HediffCompProperties {
     public bool onTickInterval = false;
     public bool shouldDecay = false;
     public int tickInterval = GenTicks.TickRareInterval;
-
-    public SeverityCalculatorProperties() {
-        compClass = typeof(SeverityCalculator);
-    }
 }
 
-public class SeverityCalculator : HediffComp {
+public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
     private float desiredSeverity = -1;
 
     private new SeverityCalculatorProperties props => (SeverityCalculatorProperties)base.props;
 
-    private new AllomanticHediff parent => (AllomanticHediff)base.parent;
+    private new IHediff<TGene> parent => (IHediff<TGene>)base.parent;
     public float severity => parent.sourceAbilities.Sum(x => x.GetStrength()) + parent.extraSeverity;
 
     public override string CompLabelInBracketsExtra =>
@@ -60,24 +57,34 @@ public class SeverityCalculator : HediffComp {
     }
 
 
-    private void OnSourceRemoved(AllomanticHediff hediff, AbstractAbility sourceAbility) {
+    private void OnSourceRemoved(
+        IHediff<TGene> hediff,
+        IAbility<TGene, IHediff<TGene>> sourceAbility
+    ) {
         parent.OnSourceAdded -= OnSourceAdded;
         parent.OnSourceRemoved -= OnSourceRemoved;
     }
 
-    private void OnSourceAdded(AllomanticHediff hediff, AbstractAbility sourceAbility) {
+    private void OnSourceAdded(
+        IHediff<TGene> hediff,
+        IAbility<TGene, IHediff<TGene>> sourceAbility
+    ) {
         if (desiredSeverity >= 0) {
             desiredSeverity += sourceAbility.GetStrength();
         }
 
-        sourceAbility.OnStatusChanged += OnStatusChange;
+        sourceAbility.OnStatusChangedEvent += OnStatusChange;
         if (props.onStatusChange) {
             RecalculateSeverity();
         }
     }
 
-    private void OnStatusChange(AbstractAbility sourceAbility, BurningStatus oldStatus, BurningStatus newStatus) {
-        if (newStatus == BurningStatus.Off) {
+    private void OnStatusChange(
+        IAbility<TGene, IHediff<TGene>> sourceAbility,
+        Status oldStatus,
+        Status newStatus
+    ) {
+        if (newStatus.active == Active.Off) {
             parent.RemoveSource(sourceAbility);
         }
 

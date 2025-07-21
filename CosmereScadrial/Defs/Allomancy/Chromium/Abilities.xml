@@ -15,5 +15,6 @@
                 <canTargetPlants>false</canTargetPlants>
             </targetParams>
         </verbProperties>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

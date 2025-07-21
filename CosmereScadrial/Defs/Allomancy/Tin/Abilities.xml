@@ -8,5 +8,6 @@
         <hediff>Cosmere_Scadrial_Hediff_TinBuff</hediff>
         <dragHediff>Cosmere_Scadrial_Hediff_TinDrag</dragHediff>
         <beuPerTick>0.0004</beuPerTick>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

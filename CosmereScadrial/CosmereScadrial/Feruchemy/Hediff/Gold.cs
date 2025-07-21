@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Framework;
 using Cosmere.Resources;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using Verse;
 

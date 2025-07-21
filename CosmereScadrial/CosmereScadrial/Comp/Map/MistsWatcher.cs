@@ -1,8 +1,6 @@
-using System.Linq;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Util;
 using Cosmere.Framework;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Settings;
 using Cosmere.Scadrial.Util;
 using RimWorld;

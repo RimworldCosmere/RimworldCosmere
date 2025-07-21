@@ -1,10 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
+using Cosmere.Core.Ability;
 using Cosmere.Scadrial.Util;
 using RimWorld;
 using Verse;
 using static Cosmere.Framework.Mod;
-using HediffUtility = Cosmere.Scadrial.Util.HediffUtility;
 
 namespace Cosmere.Scadrial.Allomancy.Ability;
 
@@ -14,21 +12,13 @@ public class TimeAbility : AbilitySelfTarget {
     private Mote? bubble;
     private Mote? bubbleWithDistortion;
 
-    public TimeAbility(Pawn pawn) : base(pawn) {
-        status = BurningStatus.Off;
-    }
+    public TimeAbility(Pawn pawn) : base(pawn) { }
 
-    public TimeAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) {
-        status = BurningStatus.Off;
-    }
+    public TimeAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
 
-    public TimeAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
-        status = BurningStatus.Off;
-    }
+    public TimeAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    public TimeAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
-        status = BurningStatus.Off;
-    }
+    public TimeAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) { }
 
     private ThingDef moteDef => metal.Equals(MetallicArtsMetalDefOf.Cadmium)
         ? ThingDefOf.Cosmere_Scadrial_Thing_TimeBubbleCadmium
@@ -82,11 +72,11 @@ public class TimeAbility : AbilitySelfTarget {
         foreach (Pawn? pawnInBubble in pawnsInBubble.Where(otherPawn =>
                      !otherPawn.Position.InHorDistOf(bubble.Position, radius)
                  )) {
-            HediffUtility.RemoveHediff(pawnInBubble, this, hediffToApply);
+            pawnInBubble.RemoveHediff(this, hediffToApply);
         }
 
         if (!pawn.Position.InHorDistOf(bubble.Position, radius)) {
-            UpdateStatus(BurningStatus.Off);
+            UpdateStatus(Active.Off);
             return;
         }
 
@@ -94,7 +84,7 @@ public class TimeAbility : AbilitySelfTarget {
 
         foreach (Pawn? targetPawn in GenRadial.RadialDistinctThingsAround(bubble.Position, bubble.Map, radius, true)
                      .OfType<Pawn>()) {
-            HediffUtility.GetOrAddHediff(targetPawn, this, hediffToApply);
+            targetPawn.GetOrAddHediff(this, hediffToApply);
             pawnsInBubble.AddDistinct(targetPawn);
         }
     }

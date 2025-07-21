@@ -1,12 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Core.Extension;
-using Cosmere.Core.Need;
-using Cosmere.Framework.Extension;
+﻿using Cosmere.Core.Need;
 using Cosmere.Resources;
 using Cosmere.Scadrial.Allomancy;
-using Cosmere.Scadrial.Allomancy.Ability;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Thing;
 using Cosmere.Scadrial.Util;
 using RimWorld;
@@ -87,7 +81,7 @@ public class Allomancer : Metalborn {
         if (!timeDilationFactor.HasValue) UpdateTimeDilationFactor();
 
         if (pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta) && pawn.IsAsleep()) {
-            // RemoveFromReserve(SleepDecayAmountPerRareInterval / Mathf.Max(0, Mathf.Log(skill.Level + 1, 2f)));
+            RemoveFromReserve(SleepDecayAmountPerRareInterval / Mathf.Max(0, Mathf.Log(skill.Level + 1, 2f)));
         }
 
         if (sources.Count > 0 && pawn.IsHashIntervalTick(burnTickRate, delta)) {
@@ -113,7 +107,7 @@ public class Allomancer : Metalborn {
 
     private void RemoveAllSources() {
         foreach (AllomanticBurnSource source in sources.ToList()) {
-            pawn.GetAllomanticAbility(source.Def)?.UpdateStatus(BurningStatus.Off);
+            pawn.GetAllomanticAbility(source.Def)?.UpdateStatus(Core.Ability.Active.Off);
             sources.Remove(source);
         }
     }

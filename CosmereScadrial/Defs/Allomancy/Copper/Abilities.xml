@@ -5,8 +5,9 @@
         <label>coppercloud</label>
         <description>Creates a Coppercloud around the Allomancer, hiding Allomantic activity from external senses.</description>
         <metal>Copper</metal>
-        <canBurnWhileAsleep>true</canBurnWhileAsleep>
+        <canUseWhileAsleep>true</canUseWhileAsleep>
         <hediff>Cosmere_Scadrial_Hediff_CopperAura</hediff>
         <beuPerTick>0.0002</beuPerTick>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

@@ -1,11 +1,10 @@
-using Cosmere.Framework.Extension;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace Cosmere.Scadrial.Allomancy.Ability;
 
-public class AbilityOtherTarget : AbstractAbility {
+public class AbilityOtherTarget : AbstractAllomancyAbility {
     private Job? job;
 
     public AbilityOtherTarget(Pawn pawn) : base(pawn) { }
@@ -48,12 +47,12 @@ public class AbilityOtherTarget : AbstractAbility {
         flareStartTick = -1;
     }
 
-    protected override void OnFlare() {
+    protected override void OnPowerUp() {
         flareStartTick = Find.TickManager.TicksGame;
         RemoveDrag(def.applyDragOnTarget ? localTarget?.Pawn : pawn);
     }
 
-    protected override void OnDeFlare() {
+    protected override void OnPowerDown() {
         ApplyDrag(def.applyDragOnTarget ? localTarget?.Pawn : pawn, flareDuration / 3000f / 2);
         flareStartTick = -1;
     }

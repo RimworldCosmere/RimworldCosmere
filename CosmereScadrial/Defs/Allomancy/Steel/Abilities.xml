@@ -7,6 +7,7 @@
         <metal>Steel</metal>
         <hediff>Cosmere_Scadrial_Hediff_SteelAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
     <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_SteelJump</defName>
@@ -35,6 +36,7 @@
             <li Class="Cosmere.Scadrial.Allomancy.Comp.Ability.MetalCostProperties" />
         </comps>
         <beuPerTick>0.002</beuPerTick>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
     <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Scadrial_Ability_SteelBubble</defName>
@@ -42,8 +44,9 @@
         <description>Creates a swirling field of Steel lines that subtly deflect projectiles, making the Allomancer harder to hit with ranged attacks.</description>
         <metal>Steel</metal>
         <hediff>Cosmere_Scadrial_Hediff_SteelBubble</hediff>
-        <burningMote>Cosmere_Scadrial_Steel_Bubble</burningMote>
+        <activeMote>Cosmere_Scadrial_Steel_Bubble</activeMote>
         <beuPerTick>0.0004</beuPerTick>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
     <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_SteelPush</defName>
@@ -67,6 +70,7 @@
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
     <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetHostileBurnAbility">
         <defName>Cosmere_Scadrial_Ability_SteelCoinshot</defName>
@@ -90,5 +94,6 @@
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
+        <maxPower>2</maxPower>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

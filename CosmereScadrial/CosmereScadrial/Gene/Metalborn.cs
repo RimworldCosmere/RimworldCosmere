@@ -1,8 +1,6 @@
-using System.Linq;
 using Cosmere.Core.Gene;
 using Cosmere.Resources.DefModExtension;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Util;
 using UnityEngine;
 using Verse;

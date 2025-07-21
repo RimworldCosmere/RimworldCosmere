@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
+using Cosmere.Core.Ability;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
@@ -10,12 +8,12 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Hediff;
 
-public class InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility ability)
+public class InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility<Allomancer> ability)
     : AllomanticHediff(hediffDef, pawn, ability) {
     public override void TickInterval(int delta) {
         base.TickInterval(delta);
 
-        MetallicArtsMetalDef? metal = sourceAbilities.FirstOrDefault()?.metal;
+        MetallicArtsMetalDef? metal = sourceAbilities.Cast<AbstractAllomancyAbility>().FirstOrDefault()?.metal;
         if (metal == null) return;
 
         List<Allomancer> genes = pawn.genes.GetAllomanticGenes();

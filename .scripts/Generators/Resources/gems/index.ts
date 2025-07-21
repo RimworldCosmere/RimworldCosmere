@@ -1,7 +1,7 @@
 import {resolve} from 'node:path';
 
 import {compileTemplate, writeGeneratedFile} from '../../../Helpers';
-import {GemRegistry} from '../../../Gems/GemRegistry';
+import {GemRegistry} from '../../../Models/Gems/GemRegistry';
 import {RESOURCES_MOD_DIR} from '../../../constants';
 
 const gemDefTemplate = compileTemplate(__dirname, 'GemDef.xml.template');

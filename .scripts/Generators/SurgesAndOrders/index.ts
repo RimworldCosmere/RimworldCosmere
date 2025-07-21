@@ -1,8 +1,8 @@
 import {resolve} from 'node:path';
 import {compileTemplate, writeGeneratedFile} from '../../Helpers';
-import {SurgeRegistry} from '../../Surges/SurgeRegistry';
 import {ROSHAR_MOD_DIR} from '../../constants';
-import {RadiantOrderRegistry} from "../../RadiantOrders/RadiantOrderRegistry";
+import { SurgeRegistry } from '../../Models/Surges/SurgeRegistry';
+import { RadiantOrderRegistry } from '../../Models/RadiantOrders/RadiantOrderRegistry';
 
 const surgeDefTemplate = compileTemplate(__dirname, 'SurgeDef.xml.template')
 const surgeDefOutputDir = resolve(ROSHAR_MOD_DIR, 'Defs', 'Surges');

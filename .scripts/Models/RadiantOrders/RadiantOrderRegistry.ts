@@ -1,13 +1,12 @@
 import {RadiantOrderIdeal, RadiantOrderInfo} from "./RadiantOrderInfo";
 import {upperFirst} from 'lodash';
-import {loadAllJsonSync} from "../Helpers";
-import {resolve} from "node:path";
+import {loadAllData} from "../../Helpers";
 
 export class RadiantOrderRegistry {
     public static RadiantOrders: Record<string, RadiantOrderInfo> = {};
 
     public static LoadRegistry() {
-        const radiantOrders = loadAllJsonSync(resolve(__dirname, '..', 'Resources', 'RadiantOrders'));
+        const radiantOrders = loadAllData('RadiantOrders');
         RadiantOrderRegistry.RadiantOrders = radiantOrders.reduce((curr: any, radiantOrder: Record<string, any>) => {
             if (radiantOrder.disabled) return curr;
 

@@ -1,8 +1,8 @@
 import {resolve} from 'node:path';
 
 import {compileTemplate, writeGeneratedFile} from '../../../Helpers';
-import {MetalRegistry} from '../../../Metals/MetalRegistry';
 import {RESOURCES_MOD_DIR} from '../../../constants';
+import { MetalRegistry } from '../../../Models/Metals/MetalRegistry';
 
 const metalDefTemplate = compileTemplate(__dirname, 'MetalDef.xml.template');
 const metalDefOutputDir = resolve(RESOURCES_MOD_DIR, 'Defs', 'Metal');

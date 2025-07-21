@@ -32,3 +32,7 @@ export function loadAllJsonSync(directoryPath: string): Record<string, any>[] {
 
     return jsonObjects;
 }
+
+export function loadAllData(type: string): Record<string, any>[] {
+    return loadAllJsonSync(resolve(__dirname, '..', 'Data', type));
+}

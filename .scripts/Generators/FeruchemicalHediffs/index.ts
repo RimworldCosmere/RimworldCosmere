@@ -1,8 +1,8 @@
 import {resolve} from 'node:path';
 
 import {compileTemplate, writeGeneratedFile} from '../../Helpers';
-import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {SCADRIAL_MOD_DIR} from '../../constants';
+import { MetalRegistry } from '../../Models/Metals/MetalRegistry';
 
 const defOfTemplate = compileTemplate(__dirname, 'HediffDefOf.cs.template');
 const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');

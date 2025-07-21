@@ -1,9 +1,9 @@
 import {resolve} from 'node:path';
 
 import {compileTemplate, writeGeneratedFile} from '../../Helpers';
-import {MetalRegistry} from '../../Metals/MetalRegistry';
 import {SCADRIAL_MOD_DIR} from '../../constants';
 import {upperFirst} from "lodash";
+import { MetalRegistry } from '../../Models/Metals/MetalRegistry';
 
 const defOfTemplate = compileTemplate(__dirname, 'DefOf.cs.template');
 const defOfOutputDir = resolve(SCADRIAL_MOD_DIR, 'CosmereScadrial');

@@ -1,9 +1,9 @@
 import {shouldSkipGeneration} from './cache';
 import './Helpers/Handlebars';
-import {MetalRegistry} from './Metals/MetalRegistry';
-import {GemRegistry} from "./Gems/GemRegistry";
-import {SurgeRegistry} from "./Surges/SurgeRegistry";
-import {RadiantOrderRegistry} from "./RadiantOrders/RadiantOrderRegistry";
+import { GemRegistry } from './Models/Gems/GemRegistry';
+import { MetalRegistry } from './Models/Metals/MetalRegistry';
+import { RadiantOrderRegistry } from './Models/RadiantOrders/RadiantOrderRegistry';
+import { SurgeRegistry } from './Models/Surges/SurgeRegistry';
 
 export async function bootstrap(name: string) {
     MetalRegistry.LoadRegistry();

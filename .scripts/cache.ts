@@ -42,8 +42,8 @@ function saveCache(generator: string, cache: CacheRecord) {
     fs.writeFileSync(CACHE_FILE(generator), JSON.stringify(cache, null, 2));
 }
 
-function getMetalFiles() {
-    const directoryPath = resolve(__dirname, 'Resources', 'Metals');
+function getDataFiles(type: string) {
+    const directoryPath = resolve(__dirname, 'Data', type);
     const files = readdirSync(directoryPath);
 
     return files.filter(x => x.endsWith('.json')).map(x => resolve(directoryPath, x));
@@ -51,7 +51,10 @@ function getMetalFiles() {
 
 export function shouldSkipGeneration(generator: string): boolean {
     const files = [
-        ...getMetalFiles(),
+        ...getDataFiles('Metals'),
+        ...getDataFiles('Gems'),
+        ...getDataFiles('RadiantOrders'),
+        ...getDataFiles('Surges'),
         path.resolve(__dirname, 'Generators', generator, 'index.ts'),
         ...getTemplateFilesFor(generator)
     ];

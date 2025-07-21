@@ -1,13 +1,12 @@
 import {AllomancyInfo, AlloyInfo, BuildableInfo, FeruchemyInfo, MetalInfo, MiningInfo} from "./MetalInfo";
 import {upperFirst} from 'lodash';
-import {loadAllJsonSync} from "../Helpers";
-import {resolve} from "node:path";
+import {loadAllData} from "../../Helpers";
 
 export class MetalRegistry {
     public static Metals: Record<string, MetalInfo> = {};
 
     public static LoadRegistry() {
-        const metals = loadAllJsonSync(resolve(__dirname, '..', 'Resources', 'Metals'));
+        const metals = loadAllData('Metals');
         MetalRegistry.Metals = metals.reduce((curr: any, metal: Record<string, any>) => {
             if (metal.disabled) return curr;
 

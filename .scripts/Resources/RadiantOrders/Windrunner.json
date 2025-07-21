@@ -1,0 +1,47 @@
+{
+  "name": "windrunner",
+  "description": "Surgebinders who command Gravitation and Adhesion. Swift, loyal, and bound by oaths to protect, they fly through the air and strike like the storm.",
+  "surges": [
+    "adhesion",
+    "gravitation"
+  ],
+  "gemstone": "sapphire",
+  "ideals": [
+    {
+      "label": "first ideal",
+      "quotes": [
+        "Life before death, strength before weakness, journey before destination."
+      ]
+    },
+    {
+      "label": "second ideal",
+      "quotes": [
+        "I will protect those who cannot protect themselves."
+      ]
+    },
+    {
+      "label": "third ideal",
+      "quotes": [
+        "I will protect even those I hate, so long as it is right.",
+        "I will protect those I hate. Even...even if the one I hate most is... myself.",
+        "I've got to protect people, you know? Even from myself."
+      ],
+      "abilities": [
+      ]
+    },
+    {
+      "label": "fourth ideal",
+      "quotes": [
+        "I accept that there will be those I cannot protect!"
+      ],
+      "abilities": [
+      ]
+    },
+    {
+      "label": "fifth ideal",
+      "quotes": [
+        "I will protect myself, so that I may continue to protect others."
+      ]
+    }
+  ]
+}

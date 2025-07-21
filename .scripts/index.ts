@@ -33,7 +33,7 @@ async function Main() {
 
     console.dir(options);
 
-    for (const genName of ['GenesAndTraits', 'MetallicArtsMetals', 'Resources', 'FeruchemicalHediffs']) {
+    for (const genName of ['GenesAndTraits', 'MetallicArtsMetals', 'Resources', 'FeruchemicalHediffs', 'SurgesAndOrders']) {
         const {generator, shouldSkip} = await bootstrap(genName);
 
         if (shouldSkip) {

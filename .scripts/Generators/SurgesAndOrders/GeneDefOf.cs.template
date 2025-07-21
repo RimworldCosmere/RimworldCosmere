@@ -1,0 +1,13 @@
+#nullable disable
+using System.Diagnostics.CodeAnalysis;
+using Cosmere.Roshar.Def;
+using RimWorld;
+using Verse;
+
+namespace Cosmere.Roshar;
+
+public static partial class GeneDefOf {        
+    {{#each orders}}
+    public static GeneDef {{defName name}};
+    {{/each}}
+}

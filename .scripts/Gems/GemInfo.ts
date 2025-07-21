@@ -1,8 +1,3 @@
-export type AllomancyGroup = 'physical' | 'mental' | 'enhancement' | 'temporal';
-export type FeruchemyGroup = 'physical' | 'cognitive' | 'spiritual' | 'hybrid';
-export type Axis = 'internal' | 'external';
-export type Polarity = 'pushing' | 'pulling';
-
 export class GemInfo {
     public name: string;
     public descriptions: { raw: string; cut: string; sphere: string; mining?: string; };

@@ -15,10 +15,6 @@
             </li>
         </modExtensions>
 
-        <forcedPassions>
-            <li>Cosmere_Scadrial_Skill_AllomanticPower</li>
-        </forcedPassions>
-
         <degreeDatas>
             <li>
                 <label>Mistborn</label>

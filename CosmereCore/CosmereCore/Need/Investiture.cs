@@ -38,11 +38,24 @@ public class Investiture : RimWorld.Need {
         "10th Heightening",
     ];
 
+    private int unlockedHeightening;
+
     public Investiture(Pawn pawn) : base(pawn) {
         threshPercents = [0.1f, 0.25f, 0.5f, 0.75f];
     }
 
-    public override float MaxLevel => MaxInvestiture;
+    public override float MaxLevel {
+        get {
+            for (int i = unlockedHeightening + 1; i < BreathEquivalentUnitThresholds.Length; i++) {
+                if (CurLevel < BreathEquivalentUnitThresholds[i]) {
+                    return BreathEquivalentUnitThresholds[i];
+                }
+            }
+
+            // If we've hit the last one, cap at the highest defined
+            return MaxInvestiture;
+        }
+    }
 
     public override float CurLevel {
         get => base.CurLevel;
@@ -209,5 +222,10 @@ public class Investiture : RimWorld.Need {
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter)) {
             Widgets.Label(valueRect, colored);
         }
+    }
+
+    public override void ExposeData() {
+        base.ExposeData();
+        Scribe_Values.Look(ref unlockedHeightening, "unlockedHeightening");
     }
 }

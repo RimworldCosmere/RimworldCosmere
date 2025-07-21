@@ -12,7 +12,6 @@
 	<CS_MetalCost>Metal Cost</CS_MetalCost>
 	<CS_Flare>flare</CS_Flare>
 	<CS_Deflare>de-flare</CS_Deflare>
-	<CS_WillBurnWhileDowned>Auto-Burning while downed</CS_WillBurnWhileDowned>
 	<CS_NoVials>No {METAL_label} vials to give</CS_NoVials>
 	<CS_ToggleGizmoSize>Click to toggle the size of this gizmo</CS_ToggleGizmoSize>
 </LanguageData>

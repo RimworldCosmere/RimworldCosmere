@@ -3,23 +3,7 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Ability;
 
-public class CoinshotAbility : AbilityOtherTarget {
-    public CoinshotAbility(Pawn pawn) : base(pawn) {
-        status = BurningStatus.Off;
-    }
-
-    public CoinshotAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) {
-        status = BurningStatus.Off;
-    }
-
-    public CoinshotAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
-        status = BurningStatus.Off;
-    }
-
-    public CoinshotAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
-        status = BurningStatus.Off;
-    }
-
+public class CoinshotAbility(Pawn pawn, AbilityDef def) : AllomancyAbility(pawn, def) {
     protected sealed override bool toggleable => false;
 
     public override bool GizmoDisabled(out string reason) {

@@ -8,7 +8,7 @@ namespace Cosmere.Scadrial.JobDriver;
 public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
     private ILoadReferenceable cachedSource;
     protected virtual Pawn? targetPawn => TargetA.Pawn;
-    protected virtual AbstractAllomancyAbility ability => (AbstractAllomancyAbility)(job?.source ?? cachedSource);
+    protected virtual AllomancyAbility ability => (AllomancyAbility)(job?.source ?? cachedSource);
     protected virtual Allomancer gene => ability.gene;
     protected virtual bool targetIsPawn => targetPawn != null;
 
@@ -27,7 +27,7 @@ public abstract class AllomanticJobDriver : Verse.AI.JobDriver {
     }
 
     protected virtual void UpdateBurnRate(float desiredBurnRate) {
-        gene.UpdateBurnSource((ability.def, desiredBurnRate));
+        gene.UpdateDrainSource((ability.def, desiredBurnRate));
     }
 
     protected virtual bool ShouldStopJob() {

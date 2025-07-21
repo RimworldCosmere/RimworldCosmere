@@ -27,7 +27,7 @@ public abstract class LineDrawingAura : HediffComp {
     protected new AllomanticHediff parent => (AllomanticHediff)base.parent;
     protected MetallicArtsMetalDef metal => parent.metal;
     protected float radius => props.radius * parent.Severity;
-    protected bool atLeastPassive => parent.sourceAbilities.Cast<AbstractAllomancyAbility>().Any(a => a.atLeastBurning);
+    protected bool atLeastPassive => parent.sourceAbilities.Cast<AllomancyAbility>().Any(a => a.atLeastBurning);
 
     protected abstract IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map);
     protected abstract LineToRender GetLineToRender(Verse.Thing thing);

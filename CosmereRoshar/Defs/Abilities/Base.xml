@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <AbilityCategoryDef>
-        <defName>Allomancy</defName>
-        <label>allomancy</label>
-        <displayOrder>1</displayOrder>
+        <defName>Surgebinding</defName>
+        <label>surgebinding</label>
+        <displayOrder>2</displayOrder>
     </AbilityCategoryDef>
     
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef Name="AbstractBurnAbility" Abstract="True">
-        <abilityClass>Cosmere.Scadrial.Allomancy.Ability.AllomancyAbility</abilityClass>
-        <gizmoClass>Cosmere.Scadrial.Gizmo.AllomanticAbilityCommand</gizmoClass>
+    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
         <stunTargetWhileCasting>False</stunTargetWhileCasting>
         <aiCanUse>true</aiCanUse>
         <ai_IsOffensive>true</ai_IsOffensive>
+        <gizmoClass>Cosmere.Roshar.Gizmo.SurgebindingAbilityCommand</gizmoClass>
         <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
         <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
-        <category>Allomancy</category>
+        <category>Surgebinding</category>
         <verbProperties>
             <verbClass>Verb_CastAbility</verbClass>
             <warmupTime>0</warmupTime>
@@ -29,9 +28,10 @@
                 <canTargetMechs>false</canTargetMechs>
             </targetParams>
         </verbProperties>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
-    
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef Name="AbstractSelfBurnAbility" ParentName="AbstractBurnAbility" Abstract="True">
+    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
+    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_SelfCastAbility"
+                                              ParentName="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
+        <abilityClass>Cosmere.Roshar.Ability.AbilitySelfTarget</abilityClass>
         <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
         <targetRequired>false</targetRequired>
         <targetWorldCell>false</targetWorldCell>
@@ -48,10 +48,11 @@
                 <canTargetSelf>true</canTargetSelf>
             </targetParams>
         </verbProperties>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
-    
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef Name="AbstractTargetBurnAbility" ParentName="AbstractBurnAbility" Abstract="True">
-        <jobDef>Cosmere_Scadrial_Job_CastAllomanticAbilityAtTarget</jobDef>
+    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
+    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_TargetCastAbility"
+                                              ParentName="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
+        <abilityClass>Cosmere.Roshar.Ability.AbilityOtherTarget</abilityClass>
+        <jobDef>Cosmere_Roshar_Job_CastSurgebindingAbilityAtTarget</jobDef> <!-- Need to create -->
         <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
         <targetRequired>true</targetRequired>
         <targetWorldCell>false</targetWorldCell>
@@ -75,25 +76,25 @@
                 <canTargetBuildings>true</canTargetBuildings>
             </targetParams>
         </verbProperties>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
+    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
     
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef Name="AbstractTargetHostileBurnAbility" ParentName="AbstractTargetBurnAbility" Abstract="True">
+    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_HostileTargetCastAbility" ParentName="Cosmere_Roshar_Ability_TargetCastAbility" Abstract="True">
         <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
         <hostile>true</hostile>
         <verbProperties>
             <violent>true</violent>
         </verbProperties>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
+    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
     
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef Name="AbstractToggleSelfBurnAbility" ParentName="AbstractSelfBurnAbility" Abstract="True">
+    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_ToggleSelfCastAbility" ParentName="Cosmere_Roshar_Ability_SelfCastAbility" Abstract="True">
         <toggleable>true</toggleable>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef Name="AbstractToggleTargetBurnAbility" ParentName="AbstractTargetBurnAbility" Abstract="True">
+    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
+    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_ToggleTargetCastAbility" ParentName="Cosmere_Roshar_Ability_TargetCastAbility" Abstract="True">
         <toggleable>true</toggleable>
-        <jobDef>Cosmere_Scadrial_Job_MaintainAllomanticTarget</jobDef>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef Name="AbstractToggleTargetHostileBurnAbility" ParentName="AbstractTargetHostileBurnAbility" Abstract="True">
+        <jobDef>Cosmere_Roshar_Job_MaintainSurgebindingTarget</jobDef>
+    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
+    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_ToggleHostileTargetCastAbility" ParentName="Cosmere_Roshar_Ability_HostileTargetCastAbility" Abstract="True">
         <toggleable>true</toggleable>
-        <jobDef>Cosmere_Scadrial_Job_MaintainAllomanticTarget</jobDef>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
+        <jobDef>Cosmere_Roshar_Job_MaintainSurgebindingTarget</jobDef> 
+    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
 </Defs>

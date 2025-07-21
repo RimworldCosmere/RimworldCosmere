@@ -1,6 +1,7 @@
-﻿using Cosmere.Core.Need;
+﻿using Cosmere.Core.Investiture;
+using Cosmere.Core.Need;
 using Cosmere.Resources;
-using Cosmere.Scadrial.Allomancy;
+using Cosmere.Scadrial.Def;
 using Cosmere.Scadrial.Thing;
 using Cosmere.Scadrial.Util;
 using RimWorld;
@@ -11,14 +12,12 @@ using Logger = Cosmere.Framework.Logger;
 namespace Cosmere.Scadrial.Gene;
 
 public class Allomancer : Metalborn {
-    public const float MinMetalAmount = 0;
     public const float MaxMetalAmount = 1f;
     private const float SleepDecayAmountPerRareInterval = .0025f;
 
     private RecordDef? cachedMetalBurntRecord;
     private float currentReserve;
     public int requestedVialStock = 3;
-    private List<AllomanticBurnSource> sources = [];
     private float? timeDilationFactor;
 
     public bool shouldConsumeVialNow {
@@ -41,7 +40,6 @@ public class Allomancer : Metalborn {
     public float BurnRate => sources.Sum(s => s.Rate);
     private int burnTickRate => Mathf.RoundToInt(GenTicks.TickRareInterval / timeDilationFactor!.Value);
     public override float Max => Mathf.Max(1, MaxMetalAmount * Mathf.Log(skill.Level + 1, 2f));
-    public List<AllomanticBurnSource> Sources => sources;
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
 
     private RecordDef metalBurntRecord => cachedMetalBurntRecord ??= RecordDefOf.GetMetalBurnRecordForMetal(metal);
@@ -106,8 +104,8 @@ public class Allomancer : Metalborn {
     }
 
     private void RemoveAllSources() {
-        foreach (AllomanticBurnSource source in sources.ToList()) {
-            pawn.GetAllomanticAbility(source.Def)?.UpdateStatus(Core.Ability.Active.Off);
+        foreach (DrainSource source in sources.ToList()) {
+            pawn.GetAllomanticAbility((AllomanticAbilityDef)source.Def)?.UpdateStatus(Core.Ability.Active.Off);
             sources.Remove(source);
         }
     }
@@ -134,41 +132,7 @@ public class Allomancer : Metalborn {
         return AcceptanceReport.WasAccepted;
     }
 
-    public void UpdateBurnSource(AllomanticBurnSource source) {
-        if (source.Rate <= 0f || sources.Contains(source)) {
-            sources.Remove(source);
-        }
-
-        if (source.Rate > 0) {
-            sources.Add(source);
-        }
-    }
-
-    public bool CanLowerReserve(float amount) {
-        return Value >= amount;
-    }
-
-    public void RemoveFromReserve(float amount) {
-        Value = Mathf.Max(MinMetalAmount, Value - amount);
-    }
-
-    public void AddToReserve(float amount) {
-        Value = Mathf.Min(Max, Value + amount);
-    }
-
-    public void SetReserve(float amount) {
-        Value = Mathf.Clamp(amount, MinMetalAmount, Max);
-    }
-
-    public float GetReservePercent() {
-        return Mathf.Approximately(Max, 0) ? 0 : Value / Max;
-    }
-
-    public void WipeReserve() {
-        SetReserve(0);
-    }
-
-    public void FillReserve() {
-        SetReserve(Max);
+    public override bool CanLowerReserve(float breathEquivalentUnits) {
+        return Value >= GetMetalNeededForBreathEquivalentUnits(breathEquivalentUnits);
     }
 }

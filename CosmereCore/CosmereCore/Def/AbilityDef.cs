@@ -55,7 +55,8 @@ public class AbilityDef : RimWorld.AbilityDef, IMultiTypeHediff {
         if (string.IsNullOrEmpty(iconPath)) {
             string abilityName = defName.Replace("Cosmere_Scadrial_Ability_", "");
             LongEventHandler.ExecuteWhenFinished(() => {
-                    uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false);
+                    uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
+                             BaseContent.BadTex;
                     disabledIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
                     pausedIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Pause"));
                 }

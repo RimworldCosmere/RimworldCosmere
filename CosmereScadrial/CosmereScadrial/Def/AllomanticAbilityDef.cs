@@ -1,4 +1,3 @@
-using Cosmere.Core;
 using Cosmere.Core.Def;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
@@ -7,7 +6,7 @@ using Verse;
 
 namespace Cosmere.Scadrial.Def;
 
-public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
+public class AllomanticAbilityDef : AbilityDef {
     public bool applyDragOnTarget = false;
     public HediffDef? dragHediff;
     public MetallicArtsMetalDef metal = null!;
@@ -17,8 +16,8 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
         label ??= metal.label;
         foreach (string? error in base.ConfigErrors()) yield return error;
 
-        if (!typeof(AbstractAllomancyAbility).IsAssignableFrom(abilityClass)) {
-            yield return $"Invalid ability class {abilityClass}. Must inherit from {typeof(AbstractAllomancyAbility)}.";
+        if (!typeof(AllomancyAbility).IsAssignableFrom(abilityClass)) {
+            yield return $"Invalid ability class {abilityClass}. Must inherit from {typeof(AllomancyAbility)}.";
         }
 
         if (hediff != null && !typeof(AllomanticHediff).IsAssignableFrom(hediff.hediffClass)) {
@@ -33,7 +32,7 @@ public class AllomanticAbilityDef : AbilityDef, IMultiTypeHediff {
             yield return "hediffHostile.hediffClass is not AllomanticHediff";
         }
 
-        if (metal == null) yield return "metal is null";
+        if (metal is null) yield return "metal is null";
     }
 
     public override void PostLoad() {

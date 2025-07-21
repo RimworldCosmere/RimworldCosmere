@@ -1,12 +1,18 @@
 using System;
+using System.Collections.Generic;
+using Cosmere.Core.Investiture;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.Gene;
 
 public abstract class Invested : Gene_Resource {
     internal bool gizmoShrunk = true;
+    protected List<DrainSource> sources = [];
+    public List<DrainSource> Sources => sources;
 
+    public virtual float minimumAmount => 0;
     public override float InitialResourceMax => 1f;
     public override float MinLevelForAlert => .15f;
     public override float MaxLevelOffset => .1f;
@@ -40,13 +46,41 @@ public abstract class Invested : Gene_Resource {
         PostAddOrRemove();
     }
 
-    /// <summary>
-    ///     Tells the caller if the pawn is capable of using the given amount
-    ///     of BEUs (Investiture).
-    /// </summary>
-    /// <param name="breathEquivalentUnits"></param>
-    /// <returns>true if the pawn has enough resource in the gene to use this</returns>
-    public virtual bool CanUse(float breathEquivalentUnits) {
-        return true;
+    public virtual bool CanLowerReserve(float breathEquivalentUnits) {
+        return Value >= breathEquivalentUnits;
+    }
+
+    public void UpdateDrainSource(DrainSource source) {
+        if (source.Rate <= 0f || sources.Contains(source)) {
+            sources.Remove(source);
+        }
+
+        if (source.Rate > 0) {
+            sources.Add(source);
+        }
+    }
+
+    public void RemoveFromReserve(float amount) {
+        Value = Mathf.Max(minimumAmount, Value - amount);
+    }
+
+    public void AddToReserve(float amount) {
+        Value = Mathf.Min(Max, Value + amount);
+    }
+
+    public void SetReserve(float amount) {
+        Value = Mathf.Clamp(amount, minimumAmount, Max);
+    }
+
+    public float GetReservePercent() {
+        return Mathf.Approximately(Max, 0) ? 0 : Value / Max;
+    }
+
+    public void WipeReserve() {
+        SetReserve(0);
+    }
+
+    public void FillReserve() {
+        SetReserve(Max);
     }
 }

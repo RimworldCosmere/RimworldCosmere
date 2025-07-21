@@ -106,8 +106,12 @@ public static class PawnExtension {
         return gene?.GetReservePercent() ?? 0f;
     }
 
-    public static AbstractAllomancyAbility? GetAllomanticAbility(this Pawn pawn, AllomanticAbilityDef def) {
-        return (AbstractAllomancyAbility)pawn.abilities.GetAbility(def);
+    public static AllomancyAbility? GetAllomanticAbility(this Pawn pawn, AbilityDef def) {
+        return (AllomancyAbility)pawn.abilities.GetAbility((AllomanticAbilityDef)def);
+    }
+
+    public static AllomancyAbility? GetAllomanticAbility(this Pawn pawn, AllomanticAbilityDef def) {
+        return (AllomancyAbility)pawn.abilities.GetAbility(def);
     }
 
     public static List<MetallicArtsMetalDef> GetAllBurningMetals(this Pawn pawn) {

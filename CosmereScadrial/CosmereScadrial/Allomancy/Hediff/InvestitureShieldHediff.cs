@@ -13,7 +13,7 @@ public class InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbi
     public override void TickInterval(int delta) {
         base.TickInterval(delta);
 
-        MetallicArtsMetalDef? metal = sourceAbilities.Cast<AbstractAllomancyAbility>().FirstOrDefault()?.metal;
+        MetallicArtsMetalDef? metal = sourceAbilities.Cast<AllomancyAbility>().FirstOrDefault()?.metal;
         if (metal == null) return;
 
         List<Allomancer> genes = pawn.genes.GetAllomanticGenes();

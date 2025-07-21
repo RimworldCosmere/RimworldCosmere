@@ -1,5 +1,4 @@
 using Cosmere.Core.Extension;
-using Cosmere.Core.Need;
 using RimWorld;
 using Verse;
 using StatUtility = Cosmere.Framework.Util.StatUtility;
@@ -25,7 +24,7 @@ public class NeedInvestiture : RimWorld.StatPart {
         return StatUtility.TryGetPawnStat(
             req,
             parentStat,
-            StatUtility.NeedLevel<Investiture>,
+            StatUtility.NeedLevel<Need.Investiture>,
             StatUtility.StatBase,
             out value
         );

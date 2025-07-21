@@ -1,4 +1,3 @@
-using Cosmere.Core.Need;
 using UnityEngine;
 
 namespace Cosmere.Core.Extension;
@@ -9,8 +8,12 @@ public static class TextExtension {
     }
 
     public static string ToStringBreathEquivalentUnits(this int breathEquivalentUnits) {
-        int degree = Investiture.GetDegreeFromBreathEquivalentUnits(breathEquivalentUnits);
-        string tier = Investiture.HeighteningLabels[Mathf.Clamp(degree, 0, Investiture.HeighteningLabels.Length - 1)];
+        int degree = Need.Investiture.GetDegreeFromBreathEquivalentUnits(breathEquivalentUnits);
+        string tier = Need.Investiture.HeighteningLabels[Mathf.Clamp(
+            degree,
+            0,
+            Need.Investiture.HeighteningLabels.Length - 1
+        )];
 
         return $"{tier} ({breathEquivalentUnits} BEUs)";
     }

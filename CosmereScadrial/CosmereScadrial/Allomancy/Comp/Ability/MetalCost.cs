@@ -13,7 +13,7 @@ public class MetalCostProperties : CompProperties_AbilityEffect {
 }
 
 public class MetalCost : CompAbilityEffect {
-    private new AbstractAllomancyAbility parent => (AbstractAllomancyAbility)base.parent;
+    private new AllomancyAbility parent => (AllomancyAbility)base.parent;
     private MetallicArtsMetalDef metal => parent.def.metal.ToMetallicArts();
     private Allomancer gene => parent.pawn.genes.GetAllomanticGeneForMetal(metal)!;
 

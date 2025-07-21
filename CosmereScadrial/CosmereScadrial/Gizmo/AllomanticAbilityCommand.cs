@@ -4,6 +4,6 @@ using Verse;
 
 namespace Cosmere.Scadrial.Gizmo;
 
-public class AllomanticAbilityCommand(AbstractAllomancyAbility ability, Pawn pawn) : Command_Ability(ability, pawn) {
+public class AllomanticAbilityCommand(AllomancyAbility ability, Pawn pawn) : Command_Ability(ability, pawn) {
     public override bool Visible => false;
 }

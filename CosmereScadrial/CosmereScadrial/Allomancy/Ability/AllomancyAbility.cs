@@ -8,22 +8,10 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Ability;
 
-public abstract class AbstractAllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
+public class AllomancyAbility(Pawn pawn, AbilityDef def) : AbstractAbility<Allomancer, AllomanticHediff>(pawn, def) {
     private const int DURALUMIN_BURN_POWER = 10;
 
     protected int flareStartTick = -1;
-
-
-    protected AbstractAllomancyAbility() { }
-    protected AbstractAllomancyAbility(Pawn pawn) : base(pawn) { }
-    protected AbstractAllomancyAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
-    protected AbstractAllomancyAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
-
-    protected AbstractAllomancyAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(
-        pawn,
-        sourcePrecept,
-        def
-    ) { }
 
     public override Allomancer gene => cachedGene ??= pawn.genes.GetAllomanticGeneForMetal(metal)!;
     public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
@@ -49,19 +37,36 @@ public abstract class AbstractAllomancyAbility : AbstractAbility<Allomancer, All
     }
 
     protected override void OnStatusChanged(Status oldStatus, Status newStatus) {
-        gene.UpdateBurnSource((def, GetDesiredBurnRateForStatus(newStatus)));
+        gene.UpdateDrainSource((def, GetDesiredBurnRateForStatus(newStatus)));
         base.OnStatusChanged(oldStatus, newStatus);
     }
 
-    protected override void OnEnable() { }
-
-    protected override void OnDisable() {
-        nextStatus = null;
+    protected override void OnEnable() {
+        base.OnEnable();
     }
 
-    protected override void OnPowerUp() { }
+    protected override void OnDisable() {
+        base.OnDisable();
+    }
 
-    protected override void OnPowerDown() { }
+    protected override void OnPowerUp() {
+        base.OnPowerUp();
+        flareStartTick = Find.TickManager.TicksGame;
+        Pawn target = localTarget.HasValue ? localTarget.Value.Pawn ?? pawn : pawn;
+        if (target == pawn || def.applyDragOnTarget) {
+            RemoveDrag(target);
+        }
+    }
+
+    protected override void OnPowerDown() {
+        base.OnPowerDown();
+        Pawn target = localTarget.HasValue ? localTarget.Value.Pawn ?? pawn : pawn;
+        if (target == pawn || def.applyDragOnTarget) {
+            ApplyDrag(target, flareDuration / 3000f / 2);
+        }
+
+        flareStartTick = -1;
+    }
 
     public new bool GizmosVisible() {
         if (!base.GizmosVisible()) return false;
@@ -70,7 +75,6 @@ public abstract class AbstractAllomancyAbility : AbstractAbility<Allomancer, All
 
         return pawn.genes.HasAllomanticGeneForMetal(metal) && pawn.genes.HasFeruchemicGeneForMetal(metal);
     }
-
 
     protected void ApplyDrag(Pawn? targetPawn, float severity) {
         if (targetPawn == null || def.dragHediff == null || severity < def.minSeverityForDrag) return;

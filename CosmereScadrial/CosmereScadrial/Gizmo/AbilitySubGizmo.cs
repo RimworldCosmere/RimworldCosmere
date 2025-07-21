@@ -30,7 +30,7 @@ public class AbilitySubGizmo : SubGizmo {
         ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B8"),
     ];
 
-    private readonly AbstractAllomancyAbility ability;
+    private readonly AllomancyAbility ability;
     private readonly Metalborn gene;
 
     private AcceptanceReport cachedReport;
@@ -42,7 +42,7 @@ public class AbilitySubGizmo : SubGizmo {
 
     public AbilitySubGizmo() { }
 
-    public AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AbstractAllomancyAbility ability) : base(parent) {
+    public AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AllomancyAbility ability) : base(parent) {
         this.gene = gene;
         this.ability = ability;
     }

@@ -1,4 +1,3 @@
-using System;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Def;
 using Cosmere.Scadrial.Gene;
@@ -76,12 +75,7 @@ public class FeruchemicGeneCommand(
 
         AllomanticAbilityDef? def = metal.GetCompoundAbility();
         if (def == null) yield break;
-        AbstractAllomancyAbility allomancyAbility = (AbstractAllomancyAbility)Activator.CreateInstance(
-            typeof(AbilitySelfTarget),
-            pawn,
-            null,
-            def
-        );
+        AllomancyAbility allomancyAbility = (AllomancyAbility)AbilityUtility.MakeAbility(def, pawn);
         yield return new AbilitySubGizmo(this, gene, allomancyAbility);
     }
 

@@ -11,7 +11,7 @@ using Verse;
 
 namespace Cosmere.Roshar.Combat.Abilities;
 
-public class RadiantAbility : Ability {
+public class RadiantAbility : RimWorld.Ability {
     private static readonly float MoteCastFadeTime = 0.4f;
     private static readonly float MoteCastScale = 1f;
     private static readonly Vector3 MoteCastOffset = new Vector3(0f, 0f, 0.48f);
@@ -84,10 +84,10 @@ public class RadiantAbility : Ability {
 }
 
 public class CommandRadiantAbility : Command {
-    private readonly Ability ability;
+    private readonly RimWorld.Ability ability;
     private readonly Pawn pawn;
 
-    public CommandRadiantAbility(Ability ability, Pawn pawn) {
+    public CommandRadiantAbility(RimWorld.Ability ability, Pawn pawn) {
         this.ability = ability;
         this.pawn = pawn;
         defaultLabel = ability.def.label;

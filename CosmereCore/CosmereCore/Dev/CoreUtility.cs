@@ -1,5 +1,4 @@
-﻿using Cosmere.Core.Need;
-using LudeonTK;
+﻿using LudeonTK;
 using Verse;
 
 namespace Cosmere.Core.Dev;
@@ -13,7 +12,7 @@ public static class CoreUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void FillPawnInvestiture(Pawn pawn) {
-        if (pawn.needs.TryGetNeed<Investiture>() is not { } investiture) return;
+        if (pawn.needs.TryGetNeed<Need.Investiture>() is not { } investiture) return;
         investiture.CurLevel = investiture.MaxLevel;
     }
 
@@ -24,7 +23,7 @@ public static class CoreUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void WipePawnInvestiture(Pawn pawn) {
-        if (pawn.needs.TryGetNeed<Investiture>() is not { } investiture) return;
+        if (pawn.needs.TryGetNeed<Need.Investiture>() is not { } investiture) return;
         investiture.CurLevel = 0;
     }
 }

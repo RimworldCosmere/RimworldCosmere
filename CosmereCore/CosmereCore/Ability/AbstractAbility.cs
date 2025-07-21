@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cosmere.Core.Extension;
 using Cosmere.Core.Gene;
 using Cosmere.Core.Hediff;
+using Cosmere.Framework.Extension;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -21,9 +23,11 @@ public interface IAbility<out TGene, out THediff> where TGene : Invested where T
     public event Action<IAbility<TGene, THediff>, Status, Status>? OnStatusChangedEvent;
 }
 
-public abstract class AbstractAbility : AbstractAbility<Invested, AbstractHediff<Invested>>;
+public abstract class AbstractAbility(Pawn pawn, RimWorld.AbilityDef def)
+    : AbstractAbility<Invested, AbstractHediff<Invested>>(pawn, def);
 
-public abstract class AbstractAbility<TGene> : AbstractAbility<TGene, AbstractHediff<TGene>> where TGene : Invested;
+public abstract class AbstractAbility<TGene>(Pawn pawn, RimWorld.AbilityDef def)
+    : AbstractAbility<TGene, AbstractHediff<TGene>>(pawn, def) where TGene : Invested;
 
 public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbility<TGene, THediff>
     where TGene : Invested where THediff : IHediff<TGene> {
@@ -31,26 +35,13 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     protected TGene? cachedGene;
 
     public GlobalTargetInfo? globalTarget;
+    protected Job? job;
     public LocalTargetInfo? localTarget;
     public bool paused;
     public Status status = Active.Off;
     public bool willUseWhileDowned;
 
-    protected AbstractAbility() { }
-
-    protected AbstractAbility(Pawn pawn) : base(pawn) { }
-
-    protected AbstractAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
-
-    protected AbstractAbility(Pawn pawn, RimWorld.AbilityDef def) : base(pawn, def) {
-        Initialize();
-    }
-
-    protected AbstractAbility(Pawn pawn, Precept sourcePrecept, RimWorld.AbilityDef def) : base(
-        pawn,
-        sourcePrecept,
-        def
-    ) {
+    public AbstractAbility(Pawn pawn, RimWorld.AbilityDef def) : base(pawn, def) {
         Initialize();
     }
 
@@ -58,7 +49,18 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
     public Status? nextStatus { get; protected set; }
 
-    public override AcceptanceReport CanCast => gene.CanUse(def.beuPerTick);
+    public override AcceptanceReport CanCast => gene.CanLowerReserve(def.beuPerTick);
+
+    public override string Tooltip {
+        get {
+            string tooltip = base.Tooltip;
+            if (!willUseWhileDowned) return tooltip;
+            List<string> tooltipByLine = tooltip.Split('\n').ToList();
+            tooltipByLine.Insert(1, "CC_WillUseWhileDowned".Translate().Colorize(ColorLibrary.Green));
+
+            return tooltipByLine.ToStringList("\n");
+        }
+    }
 
     public new AbilityDef def {
         get => (AbilityDef)base.def;
@@ -147,6 +149,50 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         base.AbilityTick();
 
         activeMote?.Maintain();
+        HandleAutoBurn();
+    }
+
+    protected virtual void HandleAutoBurn() {
+        if (willUseWhileDowned && pawn.Downed && !pawn.Dead && status.isActive) {
+            if (gene.CanLowerReserve(def.beuPerTick)) {
+                UpdateStatus(Active.On);
+            }
+        }
+
+        if (!status.isActive) {
+            return;
+        }
+
+        if (pawn.IsAsleep()) {
+            if (!def.canUseWhileAsleep) {
+                UpdateStatus(Active.Off);
+            } else if (status.isPoweredUp) {
+                UpdateStatus(Active.On);
+            }
+        } else {
+            if (paused) {
+                paused = false;
+                gene.UpdateDrainSource((def, GetDesiredBurnRateForStatus(status)));
+                OnEnable();
+                if (status.isPoweredUp) OnPowerUp();
+                return;
+            }
+        }
+
+
+        if (pawn.Downed) {
+            if (status.isPoweredUp && (!def.canUseWhileDowned || !willUseWhileDowned)) {
+                UpdateStatus(Active.Off);
+            } else if (status == Active.Off && willUseWhileDowned) {
+                UpdateStatus(Active.On);
+            }
+        }
+
+        if (!paused && pawn.IsAsleep() && status.isActive && !def.canUseWhileAsleep) {
+            paused = true;
+            gene.UpdateDrainSource((def, GetDesiredBurnRateForStatus(Active.Off)));
+            OnDisable();
+        }
     }
 
     protected virtual float GetMoteScale() {
@@ -175,6 +221,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         // When Disabling (and possibly deflaring)
         if (status.active == Active.Off && oldStatus.active != Active.Off) {
             OnDisable();
+            Cleanup();
         }
 
         // When enabling 
@@ -210,13 +257,31 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         yield break;
     }
 
-    protected virtual void OnEnable() { }
+    protected virtual void OnEnable() {
+        GetOrAddHediff(localTarget.HasValue ? localTarget.Value.Pawn : pawn);
+    }
 
     protected virtual void OnDisable() {
         nextStatus = null;
+        OnPowerDown();
+        if (localTarget == pawn) {
+            RemoveHediff(pawn);
+        }
     }
 
-    protected virtual void OnPowerUp() { }
+    protected virtual void Cleanup() {
+        if (job != null) {
+            pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
+            job = null;
+        }
+
+        localTarget = null;
+        globalTarget = null;
+    }
+
+    protected virtual void OnPowerUp() {
+        OnEnable();
+    }
 
     protected virtual void OnPowerDown() { }
 
@@ -299,6 +364,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         job.targetA = targetInfo;
         job.targetB = destination;
         job.count = status.power;
+        job.followRadius = def.verbProperties.range / 2f;
 
         return job;
     }

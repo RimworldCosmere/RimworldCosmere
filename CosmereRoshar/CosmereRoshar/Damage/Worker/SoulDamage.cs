@@ -18,7 +18,7 @@ public class SoulDamage : DamageWorker_AddInjury {
         DamageResult result
     ) {
         if (dinfo.HitPart != null && !pawn.health.hediffSet.PartIsMissing(dinfo.HitPart)) {
-            Hediff hediff = HediffMaker.MakeHediff(HediffDefOf.MissingBodyPart, pawn, dinfo.HitPart);
+            Verse.Hediff hediff = HediffMaker.MakeHediff(HediffDefOf.MissingBodyPart, pawn, dinfo.HitPart);
             hediff.Severity =
                 dinfo.HitPart.def.GetMaxHealth(pawn) + 1; // Set severity beyond max health to ensure removal
             pawn.health.AddHediff(hediff);

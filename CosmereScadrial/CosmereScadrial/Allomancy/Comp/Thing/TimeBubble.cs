@@ -63,7 +63,7 @@ public class TimeBubble : ThingComp {
             pawn.health?.hediffSet?.hediffs,
             x => {
                 return x is AllomanticHediff hediff &&
-                       hediff.sourceAbilities.Cast<AbstractAllomancyAbility>()
+                       hediff.sourceAbilities.Cast<AllomancyAbility>()
                            .Any(ability => ability.metal.Equals(metal));
             }
         );

@@ -7,7 +7,7 @@ using Verse;
 namespace Cosmere.Core.Need;
 
 public class Investiture : RimWorld.Need {
-    private const int MaxInvestiture = 1000000;
+    public const int MaxInvestiture = 1000000;
 
     // These thresholds match the canon Heightenings from Warbreaker
     public static readonly int[] BreathEquivalentUnitThresholds = [

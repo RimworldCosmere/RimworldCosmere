@@ -1,4 +1,5 @@
 using Cosmere.Core.Ability;
+using Cosmere.Core.Hediff;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
 using Cosmere.Scadrial.Gene;
@@ -7,11 +8,11 @@ using Verse;
 namespace Cosmere.Scadrial.Feruchemy.Hediff;
 
 public class Compound : AllomanticHediff {
-    protected readonly AbstractAbility<Allomancer> ability;
+    protected readonly IAbility<Allomancer, IHediff<Allomancer>> ability;
     protected readonly Allomancer? allomancer;
     protected readonly Feruchemist? feruchemist;
 
-    public Compound(HediffDef hediffDef, Pawn pawn, AbstractAbility<Allomancer> ability) : base(
+    public Compound(HediffDef hediffDef, Pawn pawn, IAbility<Allomancer, IHediff<Allomancer>> ability) : base(
         hediffDef,
         pawn,
         ability

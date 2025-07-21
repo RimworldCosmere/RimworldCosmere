@@ -1,6 +1,5 @@
 using Cosmere.Core.Need;
 using Cosmere.Resources;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using UnityEngine;
 using Verse;
@@ -21,7 +20,7 @@ public class Nicrosil : HediffWithComps {
     private bool shouldResetNicrosil {
         get {
             float nextCurLevel = Mathf.Clamp(investiture!.CurLevel - changePerTick, 0, investiture.MaxLevel);
-            if (isTapping && nextCurLevel >= investiture.MaxLevel) return true;
+            if (isTapping && nextCurLevel >= Investiture.MaxInvestiture) return true;
 
             return isStoring && nextCurLevel <= 0;
         }

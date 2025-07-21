@@ -19,12 +19,12 @@ public class Feruchemist : Metalborn {
             .ToList() ??
         [];
 
-    private float ActualMax => metalminds.Sum(m => m.maxAmount);
-    private float ActualValue => metalminds.Sum(m => m.StoredAmount);
+    private float actualMax => metalminds.Sum(m => m.maxAmount);
+    private float actualValue => metalminds.Sum(m => m.StoredAmount);
 
     public override float InitialResourceMax => 100f;
     public override float Max => 100f;
-    public override float Value => ActualMax <= 0f ? 0f : ActualValue / ActualMax * Max;
+    public override float Value => actualMax <= 0f ? 0f : actualValue / actualMax * Max;
 
     private HediffDef tapHediffDef =>
         DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Tap" + metal.defName);

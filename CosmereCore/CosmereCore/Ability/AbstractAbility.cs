@@ -8,12 +8,14 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using AbilityDef = Cosmere.Core.Def.AbilityDef;
 using Logger = Cosmere.Framework.Logger;
 
 namespace Cosmere.Core.Ability;
 
 public interface IAbility<out TGene, out THediff> where TGene : Invested where THediff : IHediff<TGene> {
     public TGene gene { get; }
+    public AbilityDef def { get; set; }
     public void UpdateStatus(Status? nextStatus = null);
     public float GetStrength(Status? nextStatus = null);
     public event Action<IAbility<TGene, THediff>, Status, Status>? OnStatusChangedEvent;
@@ -40,11 +42,15 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
     protected AbstractAbility(Pawn pawn, Precept sourcePrecept) : base(pawn, sourcePrecept) { }
 
-    protected AbstractAbility(Pawn pawn, AbilityDef def) : base(pawn, def) {
+    protected AbstractAbility(Pawn pawn, RimWorld.AbilityDef def) : base(pawn, def) {
         Initialize();
     }
 
-    protected AbstractAbility(Pawn pawn, Precept sourcePrecept, AbilityDef def) : base(pawn, sourcePrecept, def) {
+    protected AbstractAbility(Pawn pawn, Precept sourcePrecept, RimWorld.AbilityDef def) : base(
+        pawn,
+        sourcePrecept,
+        def
+    ) {
         Initialize();
     }
 
@@ -52,12 +58,12 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
     public Status? nextStatus { get; protected set; }
 
-    public new Def.AbilityDef def {
-        get => (Def.AbilityDef)base.def;
+    public override AcceptanceReport CanCast => gene.CanUse(def.beuPerTick);
+
+    public new AbilityDef def {
+        get => (AbilityDef)base.def;
         set => base.def = value;
     }
-
-    public override AcceptanceReport CanCast => gene.CanUse(def.beuPerTick);
 
     public virtual TGene gene { get; }
 

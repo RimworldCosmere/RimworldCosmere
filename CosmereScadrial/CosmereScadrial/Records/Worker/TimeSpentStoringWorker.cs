@@ -13,7 +13,7 @@ public class TimeSpentStoringWorker : RecordWorker {
         DefDatabase<MetalDef>.GetNamed(def.defName.Replace("Cosmere_Scadrial_Record_TimeSpentStoring_", ""));
 
     public override bool ShouldMeasureTimeNow(Pawn? pawn) {
-        if (!pawn?.genes?.HasFeruchemicGeneForMetal(metal) ?? true) {
+        if (pawn?.genes == null || !pawn.genes.HasFeruchemicGeneForMetal(metal)) {
             return false;
         }
 

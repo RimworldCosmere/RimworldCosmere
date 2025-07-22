@@ -44,7 +44,7 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
                 );
 
                 // If we aren't close enough to the pawn, update burnrate to 0, and get closer
-                if (pawn.DistanceTo(targetPawn) > ability.def.verbProperties.range) {
+                if (pawn.DistanceTo(targetPawn!) > ability.def.verbProperties.range) {
                     UpdateBurnRate(0f);
                     return;
                 }
@@ -81,7 +81,7 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
     }
 
     protected virtual void MaintainEffectOnTarget() {
-        AllomanticHediff? hediff = (AllomanticHediff?)targetPawn.GetOrAddHediff(pawn, ability, ability.def);
+        AllomanticHediff? hediff = (AllomanticHediff?)targetPawn!.GetOrAddHediff(pawn, ability, ability.def);
 
         hediff?.TryGetComp<DisappearsScaled>()?.CompPostMake();
     }

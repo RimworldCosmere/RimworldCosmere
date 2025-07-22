@@ -19,7 +19,7 @@ public abstract class ScadrialGeneCommand<TGene>(
     internal MetallicArtsMetalDef metal => gene.metal;
     protected override string Title => metal.LabelCap;
 
-    protected virtual string GetTooltipDescription() {
+    protected override string GetTooltipDescription() {
         if (cachedTooltipDescription != null) return cachedTooltipDescription;
 
         if (!gene.def.resourceDescription.NullOrEmpty()) {

@@ -16,7 +16,7 @@ public class PreCatacendreQuickstarter : AbstractQuickstart {
     public override TaggedString description => "Used to test Pre-catacendre pawns";
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
-    public override ScenarioDef? scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
+    public override ScenarioDef scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
     public override void PostStart() {
         DebugSettings.godMode = true;

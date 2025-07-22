@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Core.Extension;
 using Cosmere.Framework.Comp.Map;
 using Cosmere.Scadrial.Util;
 using RimWorld;
@@ -9,6 +6,7 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Comp.Hediff;
 
+#nullable disable
 public class BronzeAuraProperties : LineDrawingAuraProperties {
     public ThingDef moteDef;
 
@@ -18,6 +16,7 @@ public class BronzeAuraProperties : LineDrawingAuraProperties {
 
     public override Color lineColor => MetallicArtsMetalDefOf.Bronze.color;
 }
+#nullable restore
 
 public class BronzeAura : LineDrawingAura {
     private Mote? mote;

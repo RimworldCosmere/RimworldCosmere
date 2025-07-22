@@ -1,8 +1,10 @@
+using System;
 using Cosmere.Core.Gene;
 using Cosmere.Core.Need;
 using Cosmere.Framework.Extension;
 using Cosmere.Roshar.Def;
 using Cosmere.Roshar.DefModExtension;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -30,6 +32,26 @@ public class Surgebinder : Invested {
 
     private void OnIdealChange() {
         pawn.story.TryAddTrait(radiantOrder.trait, currentIdealInt);
+        UpdateAbilities();
+    }
+
+    internal void UpdateAbilities() {
+        foreach (AbilityDef abilityDef in radiantOrderDef.abilities) {
+            pawn.abilities.GainAbility(abilityDef);
+        }
+
+        foreach (SurgeDef surgeDef in radiantOrderDef.surges) {
+            foreach (AbilityDef surgeDefAbility in surgeDef.abilities) {
+                pawn.abilities.GainAbility(surgeDefAbility);
+            }
+        }
+
+        for (var i = 0; i < Math.Min(currentIdealInt, radiantOrderDef.surges.Count); i++) {
+            var ideal = radiantOrderDef.ideals[i];
+            foreach (AbilityDef idealAbility in ideal.abilities) {
+                pawn.abilities.GainAbility(idealAbility);
+            }
+        }
     }
 
     public override void ExposeData() {

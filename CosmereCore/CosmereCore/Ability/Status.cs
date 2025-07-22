@@ -1,6 +1,10 @@
 namespace Cosmere.Core.Ability;
 
 public record struct Status(Active active, int power) {
+    public static Status PowerOne => new Status(Active.On, 1);
+    public static Status PowerTwo => new Status(Active.On, 2);
+    public static Status PowerTen => new Status(Active.On, 10);
+
     public bool isActive => active.Equals(Active.On);
     public bool isPoweredUp => power > 1;
 

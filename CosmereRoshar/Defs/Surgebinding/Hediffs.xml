@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef Name="Cosmere_Roshar_Hediff_BaseHediff" ParentName="Cosmere_Core_Hediff_BaseHediff" Abstract="True">
+        <isBad>false</isBad>
+        <tendable>false</tendable>
+        <displayWound>false</displayWound>
+        <everCurableByItem>false</everCurableByItem>
+        <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
+    </HediffDef>
+    <HediffDef Name="Cosmere_Roshar_Hediff_BaseSurgebindingHediff" ParentName="Cosmere_Roshar_Hediff_BaseHediff" Abstract="True">
+        <alwaysShowSeverity>true</alwaysShowSeverity>
+        <hediffClass>Cosmere.Roshar.Surgebinding.Hediff.SurgebindingHediff</hediffClass>
+        <comps>
+            <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
+                <compClass>Cosmere.Roshar.Comp.Hediff.SeverityCalculator</compClass>
+            </li>
+        </comps>
+    </HediffDef>
+</Defs>

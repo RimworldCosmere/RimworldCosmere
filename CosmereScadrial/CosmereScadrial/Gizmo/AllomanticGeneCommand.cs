@@ -1,4 +1,5 @@
 using System.Text;
+using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
@@ -26,6 +27,16 @@ public class AllomanticGeneCommand(
 
     private string setVialCountTooltip => setVialCountTooltipCache ??=
         "CS_SetVialCountTooltip".Translate(coloredPawn, coloredMetal, pawn.Named("pawn")).Resolve();
+
+    protected override IEnumerable<AllomanticAbilitySubGizmo> GetSubGizmos() {
+        return gene.def.abilities?
+                   .OrderBy(x => x.uiOrder)
+                   .Select(x => pawn.abilities.GetAbility(x))
+                   .Cast<AllomancyAbility>()
+                   .Where(x => x.GizmosVisible())
+                   .Select(x => new AllomanticAbilitySubGizmo(this, gene, x)) ??
+               [];
+    }
 
     protected override string GetTooltipHeader() {
         float rate = gene.BurnRate * GenTicks.TicksPerRealSecond;

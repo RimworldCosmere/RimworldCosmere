@@ -1,5 +1,5 @@
-using Cosmere.Framework.Extension;
 using Cosmere.Resources.Def;
+using Cosmere.Roshar.Def;
 using Cosmere.Roshar.Gene;
 using RimWorld;
 using Verse;
@@ -19,13 +19,23 @@ public static class Pawn_GeneTrackerExtension {
         return gene;
     }
 
-    public static Surgebinder? GetSurgebindingGeneForGem(this Pawn_GeneTracker genes, GemDef gem) {
-        GeneDef? geneDef = gem.GetSurgebindingGene();
+    public static Surgebinder? GetSurgebindingGeneForGem(this Pawn_GeneTracker genes, GemDef def) {
+        GeneDef? geneDef = def.GetSurgebindingGene();
 
         return geneDef == null ? null : (Surgebinder)genes.GetGene(geneDef);
     }
 
-    public static bool HasSurgebindingGeneForGem(this Pawn_GeneTracker genes, GemDef gem) {
-        return genes.HasActiveGene(gem.GetSurgebindingGene());
+    public static bool HasSurgebindingGeneForGem(this Pawn_GeneTracker genes, GemDef def) {
+        return genes.HasActiveGene(def.GetSurgebindingGene());
+    }
+
+    public static Surgebinder? GetSurgebindingGeneForOrder(this Pawn_GeneTracker genes, RadiantOrderDef def) {
+        GeneDef geneDef = def.GetSurgebindingGene();
+
+        return (Surgebinder)genes.GetGene(geneDef);
+    }
+
+    public static bool HasSurgebindingGeneForOrder(this Pawn_GeneTracker genes, RadiantOrderDef def) {
+        return genes.HasActiveGene(def.GetSurgebindingGene());
     }
 }

@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Core.Extension;
 using Cosmere.Core.Gene;
 using Cosmere.Core.Hediff;
-using Cosmere.Framework.Extension;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -216,6 +212,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     }
 
     protected virtual void OnStatusChanged(Status oldStatus, Status newStatus) {
+        gene.UpdateDrainSource((def, GetDesiredBurnRateForStatus(newStatus)));
         // OnStatusChanged needs to be called in these orders so that the SeverityCalculator can be updated properly
 
         // When Disabling (and possibly deflaring)

@@ -1,5 +1,4 @@
 using Cosmere.Core.Gizmo;
-using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Def;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
@@ -14,7 +13,8 @@ public abstract class ScadrialGeneCommand<TGene>(
     List<IGeneResourceDrain> drainGenes,
     Color barColor,
     Color barHighlightColor
-) : CosmereGeneCommand<AbilitySubGizmo, TGene>(gene, drainGenes, barColor, barHighlightColor) where TGene : Metalborn {
+) : CosmereGeneCommand<AllomanticAbilitySubGizmo, TGene>(gene, drainGenes, barColor, barHighlightColor)
+    where TGene : Metalborn {
     protected NamedArgument coloredMetal;
     internal MetallicArtsMetalDef metal => gene.metal;
     protected override string Title => metal.LabelCap;
@@ -28,16 +28,6 @@ public abstract class ScadrialGeneCommand<TGene>(
         }
 
         return cachedTooltipDescription = "";
-    }
-
-    protected override IEnumerable<AbilitySubGizmo> GetSubGizmos() {
-        return gene.def.abilities?
-                   .OrderBy(x => x.uiOrder)
-                   .Select(x => pawn.abilities.GetAbility(x))
-                   .Cast<AllomancyAbility>()
-                   .Where(x => x.GizmosVisible())
-                   .Select(x => new AbilitySubGizmo(this, gene, x)) ??
-               [];
     }
 
     protected override void Initialize() {

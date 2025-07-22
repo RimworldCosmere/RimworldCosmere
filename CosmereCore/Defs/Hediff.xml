@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef Name="AbstractCosmereHediff" Abstract="True">
+    <HediffDef Name="Cosmere_Core_Hediff_BaseHediff" Abstract="True">
         <comps>
             <li Class="Cosmere.Core.Comp.Hediff.MentalBreakHandlerProperties" />
         </comps>

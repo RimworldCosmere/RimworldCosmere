@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Text;
 using Cosmere.Core.Gene;
-using Cosmere.Framework.Extension;
 using Cosmere.Framework.Util;
 using RimWorld;
 using UnityEngine;
@@ -126,6 +124,10 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
 
             abilityRect.x += abilityIconSize + Padding.x;
         }
+    }
+
+    public void ClearCache() {
+        initialized = false;
     }
 
     protected virtual void DrawBottomBar(ref bool mouseOver) {

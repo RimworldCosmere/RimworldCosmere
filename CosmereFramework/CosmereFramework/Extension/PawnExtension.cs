@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -49,5 +47,27 @@ public static class PawnExtension {
             )
             .Where(c => c.InBounds(pawn.Map))
             .ToList();
+    }
+
+    public static bool TryGetAbility<T>(this Pawn pawn, AbilityDef def, out T ability)
+        where T : Ability {
+        ability = (T)pawn.abilities.GetAbility(def);
+
+        return ability != null;
+    }
+
+    public static bool TryGetAbility<T, TDef>(this Pawn pawn, AbilityDef def, out T ability)
+        where T : Ability where TDef : AbilityDef {
+        ability = (T)pawn.abilities.GetAbility((TDef)def);
+
+        return ability != null;
+    }
+
+    public static T? GetAbility<T, TDef>(this Pawn pawn, AbilityDef def) where T : Ability where TDef : AbilityDef {
+        return (T)pawn.abilities.GetAbility((TDef)def);
+    }
+
+    public static T? GetAbility<T, TDef>(this Pawn pawn, TDef def) where T : Ability where TDef : AbilityDef {
+        return (T)pawn.abilities.GetAbility(def);
     }
 }

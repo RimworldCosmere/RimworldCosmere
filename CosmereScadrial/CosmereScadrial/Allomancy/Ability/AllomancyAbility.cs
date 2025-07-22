@@ -36,11 +36,6 @@ public class AllomancyAbility(Pawn pawn, AbilityDef def) : AbstractAbility<Allom
         return statusValue * pawn.GetRawAllomanticPower();
     }
 
-    protected override void OnStatusChanged(Status oldStatus, Status newStatus) {
-        gene.UpdateDrainSource((def, GetDesiredBurnRateForStatus(newStatus)));
-        base.OnStatusChanged(oldStatus, newStatus);
-    }
-
     protected override void OnEnable() {
         base.OnEnable();
     }

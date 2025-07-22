@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using Cosmere.Core.Gizmo;
 using Cosmere.Roshar.Def;
 using Cosmere.Roshar.DefModExtension;
 using Cosmere.Roshar.Gene;
+using Cosmere.Roshar.Surgebinding.Ability;
 using RimWorld;
 using UnityEngine;
 
@@ -13,7 +13,7 @@ public class RadiantOrderCommand(
     List<IGeneResourceDrain> drainGenes,
     Color barColor,
     Color barHighlightColor
-) : CosmereGeneCommand<AbilitySubGizmo, Surgebinder>(gene, drainGenes, barColor, barHighlightColor) {
+) : CosmereGeneCommand<SurgebindingAbilitySubGizmo, Surgebinder>(gene, drainGenes, barColor, barHighlightColor) {
     private RadiantOrder radiantOrder => gene.def.GetModExtension<RadiantOrder>();
     private RadiantOrderDef radiantOrderDef => radiantOrder.order;
 
@@ -24,7 +24,12 @@ public class RadiantOrderCommand(
     /**
      * Loop through the radiantOrderDef, based on the gene.currentIdeal, and create the abilities and build the gizmos
      */
-    protected override IEnumerable<AbilitySubGizmo> GetSubGizmos() {
-        return [];
+    protected override IEnumerable<SurgebindingAbilitySubGizmo> GetSubGizmos() {
+        foreach (AbilityDef abilityDef in radiantOrderDef.abilities) {
+            if (!pawn.TryGetAbility(abilityDef, out SurgebindingAbility ability)) continue;
+            if (!ability.GizmosVisible()) continue;
+
+            yield return new SurgebindingAbilitySubGizmo(this, gene, ability);
+        }
     }
 }

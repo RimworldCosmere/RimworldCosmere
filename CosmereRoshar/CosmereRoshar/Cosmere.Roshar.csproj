@@ -49,6 +49,15 @@
     </ItemDefinitionGroup>
 
     <ItemGroup>
+        <Using Include="System.Linq"/>
+        <Using Include="System.Collections.Generic"/>
+        <Using Include="Cosmere.Framework.Extension"/>
+        <Using Include="Cosmere.Resources.Extension"/>
+        <Using Include="Cosmere.Core.Extension"/>
+        <Using Include="Cosmere.Roshar.Extension"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4523"/>
         <PackageReference Include="Lib.Harmony" Version="2.3.6"/>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
@@ -58,5 +67,10 @@
         <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\Cosmere.Framework.csproj"/>
         <ProjectReference Include="..\..\CosmereResources\CosmereResources\Cosmere.Resources.csproj"/>
         <ProjectReference Include="..\..\CosmereCore\CosmereCore\Cosmere.Core.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Ability\"/>
+        <Folder Include="Hediff\"/>
     </ItemGroup>
 </Project>

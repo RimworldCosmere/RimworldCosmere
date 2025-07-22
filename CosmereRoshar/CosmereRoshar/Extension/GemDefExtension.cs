@@ -9,6 +9,6 @@ public static class GemDefExtension {
         RadiantOrderDef? order =
             DefDatabase<RadiantOrderDef>.AllDefsListForReading.FirstOrDefault(x => x.gemstone.Equals(gemDef));
 
-        return order is null ? null : DefDatabase<GeneDef>.GetNamed("Cosmere_Roshar_Gene_Radiant" + order.defName);
+        return order?.GetSurgebindingGene();
     }
 }

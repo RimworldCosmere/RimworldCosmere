@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Roshar.Def.RadiantOrderDef Name="Cosmere_Roshar_RadiantOrder_Base" Abstract="True">
+        <abilities>
+            <li>Cosmere_Roshar_Ability_BreathStormlight</li>
+        </abilities>
+    </Cosmere.Roshar.Def.RadiantOrderDef>
+</Defs>

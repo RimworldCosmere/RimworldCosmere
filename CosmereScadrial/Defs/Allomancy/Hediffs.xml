@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractBurnHediff" ParentName="AbstractCosmereHediff" Abstract="True">
+    <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractBurnHediff" ParentName="Cosmere_Core_Hediff_BaseHediff" Abstract="True">
         <isBad>false</isBad>
         <tendable>false</tendable>
         <displayWound>false</displayWound>

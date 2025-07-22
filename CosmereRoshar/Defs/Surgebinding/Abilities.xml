@@ -10,7 +10,7 @@
         <stunTargetWhileCasting>False</stunTargetWhileCasting>
         <aiCanUse>true</aiCanUse>
         <ai_IsOffensive>true</ai_IsOffensive>
-        <gizmoClass>Cosmere.Roshar.Gizmo.SurgebindingAbilityCommand</gizmoClass>
+        <abilityClass>Cosmere.Roshar.Surgebinding.Ability.SurgebindingAbility</abilityClass>
         <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
         <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
         <category>Surgebinding</category>
@@ -31,7 +31,6 @@
     </Cosmere.Roshar.Def.SurgebinderAbilityDef>
     <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_SelfCastAbility"
                                               ParentName="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
-        <abilityClass>Cosmere.Roshar.Ability.AbilitySelfTarget</abilityClass>
         <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
         <targetRequired>false</targetRequired>
         <targetWorldCell>false</targetWorldCell>
@@ -51,7 +50,6 @@
     </Cosmere.Roshar.Def.SurgebinderAbilityDef>
     <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_TargetCastAbility"
                                               ParentName="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
-        <abilityClass>Cosmere.Roshar.Ability.AbilityOtherTarget</abilityClass>
         <jobDef>Cosmere_Roshar_Job_CastSurgebindingAbilityAtTarget</jobDef> <!-- Need to create -->
         <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
         <targetRequired>true</targetRequired>

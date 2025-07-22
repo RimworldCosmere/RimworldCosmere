@@ -66,17 +66,17 @@ public class FeruchemicGeneCommand(
         if (Mouse.IsOver(bottomBarRect!.Value)) mouseOverElement = true;
     }
 
-    protected override IEnumerable<AbilitySubGizmo> GetSubGizmos() {
-        foreach (AbilitySubGizmo abilitySubGizmo in base.GetSubGizmos()) {
-            yield return abilitySubGizmo;
-        }
-
+    protected override IEnumerable<AllomanticAbilitySubGizmo> GetSubGizmos() {
         if (!pawn.IsMisting(metal)) yield break;
 
         AllomanticAbilityDef? def = metal.GetCompoundAbility();
         if (def == null) yield break;
         AllomancyAbility allomancyAbility = (AllomancyAbility)AbilityUtility.MakeAbility(def, pawn);
-        yield return new AbilitySubGizmo(this, gene, allomancyAbility);
+        yield return new AllomanticAbilitySubGizmo(
+            this,
+            allomancyAbility.gene,
+            allomancyAbility
+        );
     }
 
     public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {

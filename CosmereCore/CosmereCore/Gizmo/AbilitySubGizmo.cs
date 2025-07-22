@@ -1,25 +1,24 @@
-using System;
 using System.Text;
-using Cosmere.Core.Gizmo;
+using Cosmere.Core.Ability;
+using Cosmere.Core.Gene;
+using Cosmere.Core.Hediff;
 using Cosmere.Framework.Util;
-using Cosmere.Scadrial.Allomancy.Ability;
-using Cosmere.Scadrial.Gene;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
 
-namespace Cosmere.Scadrial.Gizmo;
+namespace Cosmere.Core.Gizmo;
 
 [StaticConstructorOnStartup]
-public class AbilitySubGizmo : SubGizmo {
-    private static readonly Texture2D BgTexOff = GenColor.FromHex("000000").ToSolidColorTexture();
-    private static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
-    private static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
-    private static readonly Texture2D Border = ColorLibrary.Grey.ToSolidColorTexture();
+public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested where THediff : AbstractHediff<TGene> {
+    protected static readonly Texture2D BgTexOff = GenColor.FromHex("000000").ToSolidColorTexture();
+    protected static readonly Texture2D BgTexBurning = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
+    protected static readonly Texture2D BgTexFlaring = ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
+    protected static readonly Texture2D Border = ColorLibrary.Grey.ToSolidColorTexture();
 
-    private static readonly List<Texture2D> AutoBurnBorders = [
+    protected static readonly List<Texture2D> AutoBurnBorders = [
         ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B1"),
         ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B2"),
         ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B3"),
@@ -30,35 +29,33 @@ public class AbilitySubGizmo : SubGizmo {
         ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B8"),
     ];
 
-    private readonly AllomancyAbility ability;
-    private readonly Metalborn gene;
+    protected readonly AbstractAbility<TGene, THediff> ability;
+    protected readonly TGene gene;
 
-    private AcceptanceReport cachedReport;
-    private int currentAutoBorderIndex;
+    protected AcceptanceReport cachedReport;
+    protected int currentAutoBorderIndex;
 
-    private ulong iteration;
-
-    public AbilitySubGizmo(Verse.Gizmo parent) : base(parent) { }
+    protected ulong iteration;
 
     public AbilitySubGizmo() { }
 
-    public AbilitySubGizmo(Verse.Gizmo parent, Metalborn gene, AllomancyAbility ability) : base(parent) {
+    public AbilitySubGizmo(Verse.Gizmo parent) : base(parent) { }
+
+    public AbilitySubGizmo(Verse.Gizmo parent, TGene gene, AbstractAbility<TGene, THediff> ability) : base(parent) {
         this.gene = gene;
         this.ability = ability;
     }
 
-    private bool disabled => !cachedReport.Accepted;
-    private string? disabledReason => cachedReport.Reason;
+    protected bool disabled => !cachedReport.Accepted;
+    protected string? disabledReason => cachedReport.Reason;
 
     private Texture2D icon => disabled ? ability.def.disabledIcon :
         ability.paused ? ability.def.pausedIcon : ability.def.uiIcon;
 
     private Texture2D background => ability.status.power switch {
-        BurningStatus.Off => BgTexOff,
-        BurningStatus.Burning => BgTexBurning,
-        BurningStatus.Flaring => BgTexFlaring,
-        BurningStatus.Duralumin => BgTexFlaring,
-        _ => throw new ArgumentOutOfRangeException(),
+        0 => BgTexOff,
+        1 => BgTexBurning,
+        _ => BgTexFlaring,
     };
 
     private AcceptanceReport GizmoEnabled() {
@@ -76,6 +73,36 @@ public class AbilitySubGizmo : SubGizmo {
         }
 
         return AutoBurnBorders[currentAutoBorderIndex];
+    }
+
+    protected virtual string GetTooltip() {
+        StringBuilder desc = new StringBuilder(ability.Tooltip);
+
+        if (ability.def.maxPower > 1) {
+            desc.AppendLine(GetPowerUpDisplay());
+        }
+
+        if (ability.def.canUseWhileDowned) {
+            desc.AppendLine(
+                "CC_Gizmo_ToggleAutomaticCast".Translate()
+                    .Colorize(ColoredText.GeneColor)
+            );
+        }
+
+        if (!disabledReason.NullOrEmpty()) {
+            desc.AppendLine("\n");
+            desc.AppendLine(
+                ("DisabledCommand".Translate() + ": " + disabledReason).Colorize(ColorLibrary.RedReadable)
+            );
+        }
+
+        return desc.ToString();
+    }
+
+    protected virtual TaggedString GetPowerUpDisplay() {
+        return ability.status.power > 1
+            ? "CC_Gizmo_PressToPowerDown".Translate()
+            : "CC_Gizmo_PressToPowerUp".Translate();
     }
 
     public override GizmoResult OnGUI(Rect rect) {
@@ -100,34 +127,7 @@ public class AbilitySubGizmo : SubGizmo {
         if (Widgets.ButtonInvisible(rect)) isClicked = true;
 
         if (isMouseOver) {
-            StringBuilder desc = new StringBuilder(ability.Tooltip);
-
-            TaggedString flareOrDeflare =
-                (ability.status == BurningStatus.Flaring ? "CS_Deflare" : "CS_Flare").Translate();
-            desc.AppendLine("\n");
-            if (ability.def.maxPower > 1) {
-                desc.AppendLine(
-                    "CS_PressToFlare"
-                        .Translate(flareOrDeflare.Named("FLARE"), gene.metal.label.Named("METAL"))
-                        .Colorize(ColoredText.GeneColor)
-                );
-            }
-
-            if (ability.def.canUseWhileDowned) {
-                desc.AppendLine(
-                    "CS_ToggleAutomaticBurning".Translate()
-                        .Colorize(ColoredText.GeneColor)
-                );
-            }
-
-            if (!disabledReason.NullOrEmpty()) {
-                desc.AppendLine("\n");
-                desc.AppendLine(
-                    ("DisabledCommand".Translate() + ": " + disabledReason).Colorize(ColorLibrary.RedReadable)
-                );
-            }
-
-            TooltipHandler.TipRegion(rect, (TipSignal)desc.ToString());
+            TooltipHandler.TipRegion(rect, GetTooltip, Gen.HashCombineInt(GetHashCode(), 749141947));
         }
 
         if (!isClicked) {
@@ -158,18 +158,15 @@ public class AbilitySubGizmo : SubGizmo {
             return;
         }
 
-        if (ability.atLeastBurning) {
-            bool isFlaring = ability.status.power == BurningStatus.Flaring;
-            bool isBurning = ability.status.power is BurningStatus.Burning;
-
+        if (ability.status.isActive) {
             if (ev.control) {
-                if (isBurning) {
-                    ability.SetNextStatus(BurningStatus.Flaring);
-                } else if (isFlaring) {
-                    ability.SetNextStatus(BurningStatus.Burning);
+                if (ability.status.power == 1) {
+                    ability.SetNextStatus(Ability.Status.PowerTwo);
+                } else if (ability.status.isPoweredUp) {
+                    ability.SetNextStatus(Ability.Status.PowerOne);
                 }
             } else {
-                ability.SetNextStatus(BurningStatus.Off);
+                ability.SetNextStatus(Active.Off);
             }
 
             ability.UpdateStatus(ability.nextStatus!.Value);
@@ -179,7 +176,7 @@ public class AbilitySubGizmo : SubGizmo {
 
         if (ability.def.targetRequired) {
             Find.DesignatorManager.Deselect();
-            ability.SetNextStatus(ev.control ? BurningStatus.Flaring : BurningStatus.Burning, true);
+            ability.SetNextStatus(ev.control ? Ability.Status.PowerTwo : Ability.Status.PowerOne, true);
             if (!ability.def.targetWorldCell) {
                 float originalRange = ability.verb.verbProps.range;
                 ability.verb.verbProps.range = originalRange * ability.GetStrength(ability.nextStatus);
@@ -193,7 +190,7 @@ public class AbilitySubGizmo : SubGizmo {
                     t => {
                         if (!ability.ValidateGlobalTarget(t)) return false;
 
-                        ability.QueueCastingJob(t, ev.control ? BurningStatus.Flaring : BurningStatus.Burning);
+                        ability.QueueCastingJob(t, ev.control ? Ability.Status.PowerTwo : Ability.Status.PowerOne);
                         return true;
                     },
                     true,
@@ -207,7 +204,7 @@ public class AbilitySubGizmo : SubGizmo {
             ability.QueueCastingJob(
                 ability.pawn,
                 LocalTargetInfo.Invalid,
-                ev.control ? BurningStatus.Flaring : BurningStatus.Burning
+                ev.control ? Ability.Status.PowerTwo : Ability.Status.PowerOne
             );
         }
     }

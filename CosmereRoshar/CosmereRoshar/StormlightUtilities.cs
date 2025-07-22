@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using Cosmere.Roshar.Combat.Abilities.Implementations;
+﻿using Cosmere.Roshar.Combat.Abilities.Implementations;
 using Cosmere.Roshar.Comp.Thing;
-using Cosmere.Roshar.Patches;
 using Cosmere.Roshar.Utility;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Enumerable = System.Linq.Enumerable;
 using Random = System.Random;
 
 namespace Cosmere.Roshar;
@@ -25,7 +22,6 @@ public static class StormlightUtilities {
 
     public static void SpeakOaths(
         Pawn pawn,
-        PawnStats pawnStats,
         TraitDef traitDef,
         string mainText,
         string titleText,
@@ -38,8 +34,7 @@ public static class StormlightUtilities {
                 acceptText,
                 () => {
                     pawn.story.traits.GainTrait(new Trait(traitDef));
-                    pawnStats.hasFormedBond = true;
-                    pawnStats.requirementMap[traitDef.defName][pawnStats.props.req01].isSatisfied = true;
+                    pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_BondsFormed, 1);
                 },
                 declineText,
                 () => { },
@@ -146,7 +141,7 @@ public static class StormlightUtilities {
             temps.Add(cell.GetTemperature(building.Map));
         }
 
-        return Enumerable.Average(temps);
+        return temps.Average();
     }
 
     public static float GetSuroundingPain(Building building, float radius = 5f) {
@@ -161,7 +156,7 @@ public static class StormlightUtilities {
             }
         }
 
-        return Enumerable.Sum(pains);
+        return pains.Sum();
     }
 
     public static float GetSuroundingPlants(Building building, float radius = 5f) {
@@ -274,7 +269,7 @@ public static class StormlightUtilities {
             return false;
         }
 
-        return !pawn.skills.GetSkill(SkillDefOf.Medicine).TotallyDisabled;
+        return !pawn.skills.GetSkill(RimWorld.SkillDefOf.Medicine).TotallyDisabled;
     }
 
     public static bool ShouldBeMovedByStorm(this Verse.Thing thing) {
@@ -439,7 +434,7 @@ public static class StormShelterManager {
             return false;
         }
 
-        int maxX = Enumerable.Max(area, p => p.x);
+        int maxX = area.Max(p => p.x);
         foreach (IntVec3 pos in area) {
             if (pos.x != maxX) {
                 continue;

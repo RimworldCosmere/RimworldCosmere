@@ -68,9 +68,4 @@
         <ProjectReference Include="..\..\CosmereResources\CosmereResources\Cosmere.Resources.csproj"/>
         <ProjectReference Include="..\..\CosmereCore\CosmereCore\Cosmere.Core.csproj"/>
     </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Ability\"/>
-        <Folder Include="Hediff\"/>
-    </ItemGroup>
 </Project>

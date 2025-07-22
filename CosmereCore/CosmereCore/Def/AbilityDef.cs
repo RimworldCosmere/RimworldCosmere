@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Cosmere.Framework.Extension;
 using UnityEngine;
 using Verse;
 
@@ -53,7 +51,7 @@ public class AbilityDef : RimWorld.AbilityDef, IMultiTypeHediff {
 
     public override void PostLoad() {
         if (string.IsNullOrEmpty(iconPath)) {
-            string abilityName = defName.Replace("Cosmere_Scadrial_Ability_", "");
+            string abilityName = this.ParseDefName().ElementAt(3);
             LongEventHandler.ExecuteWhenFinished(() => {
                     uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
                              BaseContent.BadTex;

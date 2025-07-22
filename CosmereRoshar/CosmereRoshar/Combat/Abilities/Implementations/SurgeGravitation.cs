@@ -1,6 +1,5 @@
 ﻿using System;
 using Cosmere.Roshar.Comp.Thing;
-using Cosmere.Roshar.Utility;
 using RimWorld;
 using Verse;
 
@@ -73,6 +72,6 @@ public class SurgeGravitation : CompAbilityEffect {
             LocalTargetInfo.Invalid
         );
         GenSpawn.Spawn(flyer, cell, map);
-        RadiantUtility.GiveRadiantXp(targetPawn, (float)distance / 10f);
+        targetPawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .25f);
     }
 }

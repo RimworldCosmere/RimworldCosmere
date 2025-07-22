@@ -11,8 +11,6 @@ namespace Cosmere.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class Defs {
-    public static NeedDef Cosmere_Roshar_Need_RadiantProgress;
-
     public static TraitDef Cosmere_Roshar_Trait_Radiant_Windrunner;
     public static TraitDef Cosmere_Roshar_Trait_Radiant_Truthwatcher;
     public static TraitDef Cosmere_Roshar_Trait_Radiant_Edgedancer;
@@ -35,7 +33,6 @@ public static class Defs {
     public static JobDef Cosmere_Roshar_CastAbilityOnTarget;
 
     //ThingDef
-    public static ThingDef Cosmere_Roshar_Apparel_SpherePouch;
     public static ThingDef Cosmere_Roshar_SphereLamp_Wall;
     public static ThingDef Cosmere_Roshar_FabrialCage_Pewter;
     public static ThingDef Cosmere_Roshar_FabrialCage_Tin;

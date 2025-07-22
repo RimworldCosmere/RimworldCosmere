@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_PatientsSaved</defName>
+        <label>patients saved</label>
+        <description>The number of downed pawns I have saved.</description>
+        <type>Int</type>
+        <displayOrder>1200</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_EnemyPatientsSaved</defName>
+        <label>patients saved</label>
+        <description>The number of downed hostile pawns I have saved.</description>
+        <type>Int</type>
+        <displayOrder>1201</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_BondsFormed</defName>
+        <label>Nahel bonds formed</label>
+        <description>The number of spren I have bonded with.</description>
+        <type>Int</type>
+        <displayOrder>1202</displayOrder>
+    </RecordDef>
+    <RecordDef>
+        <defName>Cosmere_Roshar_Record_PatientsDied</defName>
+        <label>patients lost</label>
+        <description>The number of downed pawns I have lost.</description>
+        <type>Int</type>
+        <displayOrder>1203</displayOrder>
+    </RecordDef>
+</Defs>

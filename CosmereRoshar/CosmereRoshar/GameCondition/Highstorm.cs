@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Roshar.Comp.Fabrials;
 using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
@@ -14,9 +12,7 @@ public class Highstorm : RimWorld.GameCondition {
     public override void End() {
         base.End();
         StormShelterManager.ClearCache();
-        if (SingleMap != null) {
-            SingleMap.weatherManager.TransitionTo(WeatherDefOf.FoggyRain);
-        }
+        SingleMap?.weatherManager.TransitionTo(WeatherDefOf.FoggyRain);
     }
 
 
@@ -48,7 +44,7 @@ public class Highstorm : RimWorld.GameCondition {
         foreach (Verse.Thing thing in things) {
             if (thing.TryGetComp(out Stormlight stormlight)) {
                 stormlight.InfuseStormlight(5f);
-            } else if (thing.def == Defs.Cosmere_Roshar_Apparel_SpherePouch &&
+            } else if (thing.def == ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch &&
                        !thing.Position.Roofed(thing.Map)) {
                 thing.TryGetComp<SpherePouch>()?.InfuseStormlight(5f);
             } else if (thing.def == Defs.Cosmere_Roshar_SphereLamp_Wall &&

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
   <ThingDef ParentName="ApparelBase">
+    <thingClass>Cosmere.Framework.Thing.ApparelWithStorage</thingClass>
     <defName>Cosmere_Roshar_Apparel_SpherePouch</defName>
     <label>sphere pouch</label>
     <description>A leather pouch used to carry infused spheres, allowing Radiants to easily draw Stormlight.</description>
-    <thingClass>Apparel</thingClass>
     <graphicData>
       <texPath>Things/Apparel/SpherePouch</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -52,7 +52,28 @@
       </tags>
       <developmentalStageFilter>Child, Adult</developmentalStageFilter>
     </apparel>
+    <inspectorTabs>
+      <li>Cosmere.Framework.InspectorTab.ApparelStorage</li>
+    </inspectorTabs>
     <comps>
+      <li Class="Cosmere.Framework.Comp.Thing.ApparelStorageProperties">
+        <defaultStorageSettings>
+          <filter>
+            <allowedHitPointsConfigurable>false</allowedHitPointsConfigurable>
+            <categories>
+              <li>Cosmere_Roshar_ThingCategory_Sphere</li>
+            </categories>
+          </filter>
+        </defaultStorageSettings>
+        <fixedStorageSettings>
+          <filter>
+            <allowedHitPointsConfigurable>false</allowedHitPointsConfigurable>
+            <categories>
+              <li>Cosmere_Roshar_ThingCategory_Sphere</li>
+            </categories>
+          </filter>
+        </fixedStorageSettings>
+      </li>
       <li Class="Cosmere.Roshar.Comp.Thing.SpherePouchProperties">
         <maxCapacity>100</maxCapacity>
         <allowedSpheres>
@@ -61,6 +82,7 @@
           <li>Cosmere_Roshar_Thing_Broam</li>
         </allowedSpheres>
       </li>
+      <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties" />
     </comps>
     <tradeTags>
       <li>Armor</li>

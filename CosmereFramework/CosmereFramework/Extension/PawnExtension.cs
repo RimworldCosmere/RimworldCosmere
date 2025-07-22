@@ -31,7 +31,7 @@ public static class PawnExtension {
                driver.asleep;
     }
 
-    public static float DistanceTo(this Pawn pawn, Thing thing) {
+    public static float DistanceTo(this Pawn pawn, Verse.Thing thing) {
         return pawn.DistanceTo(thing.Position);
     }
 

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Cosmere.Roshar.Comp.Thing;
-using Cosmere.Roshar.Utility;
+﻿using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
 using Verse;
 
@@ -48,7 +46,7 @@ public class SurgeDivision : CompAbilityEffect {
             !(stormlight.currentStormlight >= props.stormLightCost * 1.5f)
         ) {
             victim.TryAttachFire(Rand.Range(0.95f, 0.99f), caster);
-            RadiantUtility.GiveRadiantXp(caster, 50f);
+            caster.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .25f);
             stormlight.DrawStormlight(props.stormLightCost);
             return;
         }

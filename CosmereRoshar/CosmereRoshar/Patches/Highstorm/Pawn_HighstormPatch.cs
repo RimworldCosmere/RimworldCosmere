@@ -1,8 +1,9 @@
-﻿using System;
-using Cosmere.Roshar.Comp.Thing;
+﻿using Cosmere.Roshar.Comp.Thing;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
+using Random = System.Random;
 
 namespace Cosmere.Roshar.Patches.Highstorm;
 
@@ -74,19 +75,17 @@ public static class PawnHighstormPushPatch {
         if (!pawn.RaceProps.Humanlike) return;
         if (StormlightUtilities.GetRadiantTrait(pawn) != null) return;
 
-        PawnStats pawnStats = pawn.GetComp<PawnStats>();
-        if (pawnStats == null) return;
+        PawnTracker pawnTracker = pawn.GetComp<PawnTracker>();
+        if (pawnTracker == null) return;
 
-        int upperNumber = GetUpperNumber(pawnStats.GetRequirementsEntry().value);
+        int upperNumber = Mathf.RoundToInt(GetUpperNumber(pawnTracker.bondChance) * Mod.bondChanceMultiplier);
 
         if (upperNumber <= 1) upperNumber = 2;
-        int number = MRand.Next(1, upperNumber);
-        if (number != 1) return;
+        if (Rand.Chance(1f / upperNumber)) return;
 
         if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Windrunner) {
             StormlightUtilities.SpeakOaths(
                 pawn,
-                pawnStats,
                 traitDef,
                 $"{pawn.NameShortColored} " + WindrunnerBondText,
                 "A Whisper in the Mind.."
@@ -94,7 +93,6 @@ public static class PawnHighstormPushPatch {
         } else if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher) {
             StormlightUtilities.SpeakOaths(
                 pawn,
-                pawnStats,
                 traitDef,
                 $"{pawn.NameShortColored} " + TruthwatcherBondText,
                 "A Whisper in the Mind.."
@@ -102,7 +100,6 @@ public static class PawnHighstormPushPatch {
         } else if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Edgedancer) {
             StormlightUtilities.SpeakOaths(
                 pawn,
-                pawnStats,
                 traitDef,
                 $"{pawn.NameShortColored} " + EdgedancerBondText,
                 "A Whisper in the Mind.."
@@ -110,7 +107,6 @@ public static class PawnHighstormPushPatch {
         } else if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Skybreaker) {
             StormlightUtilities.SpeakOaths(
                 pawn,
-                pawnStats,
                 traitDef,
                 $"{pawn.NameShortColored} " + SkybreakerBondText,
                 "A Whisper in the Mind.."

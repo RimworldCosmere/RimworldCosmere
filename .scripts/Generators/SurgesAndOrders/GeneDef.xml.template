@@ -10,6 +10,7 @@
             {{/each}}
         </abilities>
 
+        <resourceLabel>{{title order.name}}</resourceLabel>
         <resourceDescription>{{order.description}}</resourceDescription>
         <iconPath>UI/Surgebinding/Order/{{defName order.name}}</iconPath>
         <modExtensions>

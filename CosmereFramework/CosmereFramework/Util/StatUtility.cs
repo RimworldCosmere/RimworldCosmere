@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -170,7 +169,7 @@ public static class StatUtility {
     public static float InventoryStat(StatDef statDef, Pawn pawn) {
         float num = 0f;
         for (int i = 0; i < pawn.inventory.innerContainer.Count; i++) {
-            Thing thing = pawn.inventory.innerContainer[i];
+            Verse.Thing thing = pawn.inventory.innerContainer[i];
             num += thing.stackCount * thing.GetStatValue(statDef);
         }
 

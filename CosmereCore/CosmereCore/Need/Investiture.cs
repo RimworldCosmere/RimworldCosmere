@@ -1,6 +1,6 @@
 ﻿using System;
-using Cosmere.Core.Extension;
-using Cosmere.Framework.Extension;
+using Cosmere.Core.Comp.Thing;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -53,12 +53,14 @@ public class Investiture : RimWorld.Need {
             }
 
             // If we've hit the last one, cap at the highest defined
-            return MaxInvestiture;
+            return investitureHolder.maxInvestiture;
         }
     }
 
+    private InvestitureHolder investitureHolder => pawn.GetComp<InvestitureHolder>();
+
     public override float CurLevel {
-        get => base.CurLevel;
+        get => investitureHolder.currentInvestiture;
         set {
             pawn.records.AddTo(
                 value > base.CurLevel
@@ -66,9 +68,11 @@ public class Investiture : RimWorld.Need {
                     : RecordDefOf.Cosmere_Core_Record_InvestitureSpent,
                 value
             );
-            base.CurLevel = value;
+            investitureHolder.currentInvestiture = value;
         }
     }
+
+    public bool IsMaxLevel => Mathf.Approximately(CurLevel, investitureHolder.maxInvestiture);
 
     // ReSharper disable once InconsistentNaming
     public static int GetBreathEquivalentUnitsFromDegree(int degree) {
@@ -92,6 +96,20 @@ public class Investiture : RimWorld.Need {
 
     public override void NeedInterval() {
         pawn.story?.TryAddTrait(TraitDefOf.Cosmere_Invested, GetDegreeFromBreathEquivalentUnits((int)CurLevel));
+
+        if (!pawn.TryGetComp(out CompGlower glower)) {
+            glower = new CompGlower();
+            glower.parent = pawn;
+            glower.Initialize(
+                new CompProperties_Glower {
+                    glowRadius = Mathf.Clamp(CurLevel, 0f, 3f),
+                    overlightRadius = 2f,
+                    glowColor = new ColorInt(new Color(.25f, .95f, .95f, .2f)),
+                }
+            );
+        }
+
+        glower.GlowRadius = Mathf.Clamp(CurLevel, 0f, 3f);
 
         // It should only fall in specific cases. I'll need to figure this out
         // e.g. 

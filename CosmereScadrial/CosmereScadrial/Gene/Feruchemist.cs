@@ -20,7 +20,7 @@ public class Feruchemist : Metalborn {
         [];
 
     private float actualMax => metalminds.Sum(m => m.maxAmount);
-    private float actualValue => metalminds.Sum(m => m.StoredAmount);
+    private float actualValue => metalminds.Sum(m => m.storedAmount);
 
     public override float InitialResourceMax => 100f;
     public override float Max => 100f;

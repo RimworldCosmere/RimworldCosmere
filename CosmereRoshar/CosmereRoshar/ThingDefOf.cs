@@ -14,6 +14,7 @@ public static class ThingDefOf {
     public static ThingDef Cosmere_Roshar_Thing_Chip;
     public static ThingDef Cosmere_Roshar_Thing_Mark;
     public static ThingDef Cosmere_Roshar_Thing_Broam;
+    public static ThingDef Cosmere_Roshar_Apparel_SpherePouch;
 
     static ThingDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));

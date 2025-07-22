@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef Name="Cosmere_Roshar_Thing_Sphere" ParentName="Cosmere_Roshar_Thing_CurrencyBase" Abstract="True">
         <thingCategories>
-            <li>Cosmere_Resource_ThingCategory_Sphere</li>
+            <li>Cosmere_Roshar_ThingCategory_Sphere</li>
         </thingCategories>
 
         <graphicData>
@@ -57,9 +57,9 @@
         </recipeMaker>
 
         <comps>
-            <li Class="Cosmere.Roshar.Comp.Thing.StormlightProperties">
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
                 <maxInvestiture>10</maxInvestiture>
-                <drainRate>0.1</drainRate>
+                <drainRate>0.025</drainRate>
             </li>
         </comps>
     </ThingDef>
@@ -90,9 +90,9 @@
         </recipeMaker>
 
         <comps>
-            <li Class="Cosmere.Roshar.Comp.Thing.StormlightProperties">
-                <maxInvestiture>50</maxInvestiture>
-                <drainRate>0.1</drainRate>
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <maxInvestiture>59</maxInvestiture>
+                <drainRate>0.025</drainRate>
             </li>
         </comps>
     </ThingDef>
@@ -123,9 +123,9 @@
         </recipeMaker>
 
         <comps>
-            <li Class="Cosmere.Roshar.Comp.Thing.StormlightProperties">
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
                 <maxInvestiture>200</maxInvestiture>
-                <drainRate>0.1</drainRate>
+                <drainRate>0.025</drainRate>
             </li>
         </comps>
     </ThingDef>

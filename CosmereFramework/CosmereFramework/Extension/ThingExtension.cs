@@ -1,25 +1,23 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Framework.Extension;
 
 public static class ThingExtension {
-    public static bool CanBeEquipped(this Thing thing) {
+    public static bool CanBeEquipped(this Verse.Thing thing) {
         return thing.TryGetComp<CompEquippable>() != null || thing.def.IsApparel || thing.def.IsWeapon;
     }
 
-    public static IEnumerable<Thing> ThingsSharingPosition(this Thing thing) {
+    public static IEnumerable<Verse.Thing> ThingsSharingPosition(this Verse.Thing thing) {
         return thing.Map.thingGrid.ThingsAt(thing.Position).Where(x => !x.Equals(thing));
     }
 
-    public static IEnumerable<T> ThingsSharingPosition<T>(this Thing thing) {
+    public static IEnumerable<T> ThingsSharingPosition<T>(this Verse.Thing thing) {
         return thing.ThingsSharingPosition().OfType<T>();
     }
 
-    public static bool CanBeEquippedBy(this Thing thing, Pawn pawn) {
+    public static bool CanBeEquippedBy(this Verse.Thing thing, Pawn pawn) {
         if (thing.def.apparel != null) {
             return pawn.apparel.CanWearWithoutDroppingAnything(thing.def) && !HasConflictInApparelSlot(pawn, thing);
         }
@@ -31,7 +29,7 @@ public static class ThingExtension {
         return false;
     }
 
-    public static int GetMaxAmountToPickupForPawn(this Thing thing, Pawn pawn, int desired) {
+    public static int GetMaxAmountToPickupForPawn(this Verse.Thing thing, Pawn pawn, int desired) {
         try {
             int max = thing.def.orderedTakeGroup?.max ?? thing.stackCount;
             int maxRemaining = max - pawn.inventory?.Count(thing.def) ?? 0;
@@ -46,7 +44,7 @@ public static class ThingExtension {
     }
 
 
-    private static bool HasConflictInApparelSlot(Pawn pawn, Thing apparelThing) {
+    private static bool HasConflictInApparelSlot(Pawn pawn, Verse.Thing apparelThing) {
         ApparelProperties? newApparel = apparelThing.def.apparel;
         if (newApparel == null) {
             return false;
@@ -63,7 +61,7 @@ public static class ThingExtension {
         return false;
     }
 
-    private static bool HasConflictInEquipmentSlot(Pawn pawn, Thing thing) {
+    private static bool HasConflictInEquipmentSlot(Pawn pawn, Verse.Thing thing) {
         return thing.TryGetComp<CompEquippable>() != null && pawn.equipment?.Primary != null;
     }
 }

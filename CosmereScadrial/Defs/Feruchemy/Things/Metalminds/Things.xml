@@ -53,6 +53,7 @@
             <li Class="Cosmere.Core.Comp.Thing.PreventDropOnDownedProperties"/>
             <li><compClass>CompQuality</compClass></li>
             <li Class="CompProperties_Styleable" />
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties" />
         </comps>
     </ThingDef>
 

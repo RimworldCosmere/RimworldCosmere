@@ -40,7 +40,7 @@ public class CastAbility {
                 }
             }
         };
-        followAndAttack.activeSkill = () => SkillDefOf.Melee;
+        followAndAttack.activeSkill = () => RimWorld.SkillDefOf.Melee;
         followAndAttack.defaultCompleteMode = ToilCompleteMode.Never;
         return followAndAttack;
     }

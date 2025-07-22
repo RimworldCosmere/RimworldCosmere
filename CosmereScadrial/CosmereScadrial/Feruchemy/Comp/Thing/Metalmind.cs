@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Cosmere.Core.Comp.Thing;
 using Cosmere.Resources.Def;
 using Cosmere.Resources.DefModExtension;
 using UnityEngine;
@@ -19,14 +20,22 @@ public class Metalmind : ThingComp {
     private MetalDef? cachedMetal;
 
     public bool equipped = true;
-    private float storedAmount;
+
+    private float storedAmountInt;
     public Pawn? owner { get; private set; }
     private new MetalmindProperties props => (MetalmindProperties)base.props;
     public float maxAmount => props.maxAmount;
-    public bool canStore => equipped ? storedAmount < maxAmount : false;
-    public bool canTap => equipped ? storedAmount > 0 : false;
+    public bool canStore => equipped && storedAmount < maxAmount;
+    public bool canTap => equipped && storedAmount > 0;
+    private InvestitureHolder investitureHolder => parent.GetComp<InvestitureHolder>();
 
-    public float StoredAmount => storedAmount;
+    public float storedAmount {
+        get => storedAmountInt;
+        private set {
+            storedAmountInt = value;
+            investitureHolder.currentInvestiture = value;
+        }
+    }
 
     public MetalDef metal {
         get {
@@ -43,6 +52,10 @@ public class Metalmind : ThingComp {
 
             throw new Exception("Metalmind doesn't have a metal");
         }
+    }
+
+    public override void PostPostMake() {
+        investitureHolder.maxInvestiture = maxAmount;
     }
 
     public void AddStored(float amount) {
@@ -76,7 +89,7 @@ public class Metalmind : ThingComp {
     public override void PostExposeData() {
         base.PostExposeData();
 
-        Scribe_Values.Look(ref storedAmount, "storedAmount");
+        Scribe_Values.Look(ref storedAmountInt, "storedAmount");
         Scribe_Values.Look(ref equipped, "equipped");
 
         // Optionally restore cachedMetal if needed (but can be recomputed)
@@ -99,7 +112,7 @@ public class Metalmind : ThingComp {
         TaggedString coloredOwner = owner?.NameFullColored ?? "None".Colorize(ColoredText.DateTimeColor);
         sb.AppendLine("CS_MetalmindOwner".Translate() + ": " + coloredOwner);
         NamedArgument coloredMetal = metal.coloredLabel.Named("METAL");
-        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {storedAmount:F1} / {maxAmount}");
+        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {storedAmountInt:F1} / {maxAmount}");
 
         return sb.ToString();
     }

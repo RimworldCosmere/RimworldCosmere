@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Cosmere.Framework;
 using Cosmere.Roshar.Comp.Thing;
-using Cosmere.Roshar.Need;
-using Cosmere.Roshar.Utility;
+using Cosmere.Roshar.Gene;
 using RimWorld;
 using Verse;
 
@@ -51,8 +49,8 @@ public class SurgeProgression : CompAbilityEffect {
         RadiantHeal(targetPawn);
     }
 
-    private void HealMissingParts(Pawn pawn, RadiantProgress radiant, Stormlight stormlight, Pawn caster) {
-        if (radiant is { idealLevel: >= 3 }) {
+    private void HealMissingParts(Pawn pawn, Surgebinder radiant, Stormlight stormlight, Pawn caster) {
+        if (radiant is { currentIdeal: >= 3 }) {
             List<Hediff_MissingPart> missingParts = pawn.health.hediffSet.hediffs.OfType<Hediff_MissingPart>()
                 .OrderByDescending(h => h.Severity)
                 .ToList();
@@ -64,14 +62,14 @@ public class SurgeProgression : CompAbilityEffect {
 
                 pawn.health.hediffSet.hediffs.Remove(injury);
                 stormlight.DrawStormlight(cost);
-                RadiantUtility.GiveRadiantXp(caster, 20f);
+                caster.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .25f);
             }
         } else {
             Log.Message("Ideal level to low to heal missing part");
         }
     }
 
-    private void HealInjuries(Pawn pawn, RadiantProgress radiant, Stormlight stormlight, Pawn caster) {
+    private void HealInjuries(Pawn pawn, Surgebinder radiant, Stormlight stormlight, Pawn caster) {
         List<Hediff_Injury> injuries = pawn.health.hediffSet.hediffs.OfType<Hediff_Injury>()
             .OrderByDescending(h => h.Severity)
             .ToList();
@@ -84,10 +82,10 @@ public class SurgeProgression : CompAbilityEffect {
                     break;
                 }
 
-                float healAmount = 0.008f + radiant.idealLevel * 2f / 10f;
+                float healAmount = 0.008f + radiant.currentIdeal * 2f / 10f;
                 injury.Heal(healAmount);
                 stormlight.DrawStormlight(cost);
-                RadiantUtility.GiveRadiantXp(caster, 5f);
+                caster.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .05f);
                 if (injury.Severity > 0) stillInjured = true;
             }
         }
@@ -97,9 +95,9 @@ public class SurgeProgression : CompAbilityEffect {
         Pawn caster = parent.pawn;
         if (caster.TryGetComp(out Stormlight stormlight)) return;
 
-        RadiantProgress radiant = caster.needs.TryGetNeed<RadiantProgress>();
+        Surgebinder radiant = caster.genes.GetFirstGeneOfType<Surgebinder>();
         if (radiant == null) {
-            Log.Error("[HealSurge] need was null");
+            Logger.Error("Pawn isn't a surgebinder!");
             return;
         }
 

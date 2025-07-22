@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Roshar.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -213,7 +210,7 @@ public class Stormlight : ThingComp {
 
             pawn.health.hediffSet.hediffs.Remove(injury);
             currentStormlightInt -= cost;
-            RadiantUtility.GiveRadiantXp(pawn, 20f);
+            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .25f);
         }
 
 
@@ -229,7 +226,7 @@ public class Stormlight : ThingComp {
 
             pawn.health.hediffSet.hediffs.Remove(addiction);
             currentStormlightInt -= cost;
-            RadiantUtility.GiveRadiantXp(pawn, 12f);
+            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .12f);
         }
 
         // HEAL INJURIES
@@ -244,7 +241,7 @@ public class Stormlight : ThingComp {
 
             injury.Heal(10.0f);
             currentStormlightInt -= cost;
-            RadiantUtility.GiveRadiantXp(pawn, 0.5f);
+            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .05f);
         }
     }
 
@@ -266,7 +263,7 @@ public class Stormlight : ThingComp {
             ?.GetComp<SpherePouch>();
         if (pouch != null && pouch.GetTotalStoredStormlight() > 0) {
             float drawn = pouch.DrawStormlight(absorbAmount);
-            RadiantUtility.GiveRadiantXp(pawn, 0.1f);
+            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .01f);
             if (InfuseStormlight(drawn)) return;
         }
 
@@ -280,7 +277,7 @@ public class Stormlight : ThingComp {
                 if (sphere is not { currentStormlightInt: > 0 }) continue;
                 float drawn = Math.Min(absorbAmount, sphere.currentStormlightInt);
                 sphere.InfuseStormlight(-drawn); // Remove from sphere
-                RadiantUtility.GiveRadiantXp(pawn, 0.1f);
+                pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .01f);
                 if (InfuseStormlight(drawn)) return;
             }
         }
@@ -301,7 +298,7 @@ public class Stormlight : ThingComp {
                 return;
             }
 
-            RadiantUtility.GiveRadiantXp(pawn, 0.1f);
+            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .01f);
             if (InfuseStormlight(drawnLight)) return;
         }
     }

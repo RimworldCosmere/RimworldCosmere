@@ -3,17 +3,7 @@
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/ThingDef[defName="Human"]/comps</xpath>
         <value>
-            <li Class="Cosmere.Roshar.Patches.CompPropertiesPawnStats">
-                <req01>FirstIdeal</req01>
-                <req12>SecondIdeal</req12>
-                <req23>ThirdIdeal</req23>
-                <req34>FourthIdeal</req34>
-                <req45>FifthIdeal</req45>
-            </li>
-            <li Class="Cosmere.Roshar.Comp.Thing.StormlightProperties">
-                <maxInvestiture>3000</maxInvestiture>
-                <drainRate>0.01</drainRate>
-            </li>
+            <li><compClass>Cosmere.Roshar.Comp.Thing.PawnTracker</compClass></li>
         </value>
     </Operation>
 </Patch>

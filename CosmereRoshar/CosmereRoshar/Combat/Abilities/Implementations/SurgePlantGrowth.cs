@@ -1,5 +1,4 @@
 ﻿using Cosmere.Roshar.Comp.Thing;
-using Cosmere.Roshar.Utility;
 using RimWorld;
 using Verse;
 
@@ -47,7 +46,7 @@ public class SurgePlantGrowth : CompAbilityEffect {
         Stormlight? stormlight = caster?.TryGetComp<Stormlight>();
         if (stormlight == null || !(stormlight.currentStormlight >= props.stormLightCost)) return;
         targetPlant.Growth = 1;
-        RadiantUtility.GiveRadiantXp(caster, 50f);
+        caster!.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .25f);
         stormlight.DrawStormlight(props.stormLightCost);
     }
 }

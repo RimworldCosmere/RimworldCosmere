@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <SkillDef>
+        <defName>Cosmere_Roshar_Skill_SurgebindingPower</defName>
+        <description>Represents the strength and control of a pawn’s Surgebinding abilities.</description>
+        <skillLabel>surgebinding</skillLabel>
+        <pawnCreatorSummaryVisible>false</pawnCreatorSummaryVisible>
+        <usuallyDefinedInBackstories>false</usuallyDefinedInBackstories>
+        <neverDisabledBasedOnWorkTypes>true</neverDisabledBasedOnWorkTypes>
+    </SkillDef>
+</Defs>

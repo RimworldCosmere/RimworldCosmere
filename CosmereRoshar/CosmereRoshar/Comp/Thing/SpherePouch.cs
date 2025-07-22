@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -25,12 +23,26 @@ public class SpherePouchProperties : CompProperties {
 
 public class SpherePouch : ThingComp {
     private readonly List<int> spheresToRemove = []; //  spheres to remove
+
+    public Pawn? previousHolder;
     public List<ThingWithComps> storedSpheres = []; //  List of sphere stacks inside the pouch
 
     public bool empty => storedSpheres.Count == 0;
 
-
     public new SpherePouchProperties props => (SpherePouchProperties)base.props;
+
+    public override void CompTickInterval(int delta) {
+        base.CompTickInterval(delta);
+        if (parent.ParentHolder?.ParentHolder is not Pawn pawn) {
+            previousHolder?.def.inspectorTabsResolved.RemoveWhere(x => x is Tab.SpherePouch);
+            return;
+        }
+
+        previousHolder = pawn;
+
+        if (pawn.def.inspectorTabsResolved.Exists(t => t is Tab.SpherePouch)) return;
+        pawn.def.inspectorTabsResolved.Add(new Tab.SpherePouch());
+    }
 
     public override void PostExposeData() {
         base.PostExposeData();

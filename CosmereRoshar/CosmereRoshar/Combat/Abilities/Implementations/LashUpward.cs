@@ -1,5 +1,4 @@
 ﻿using Cosmere.Roshar.Comp.Thing;
-using Cosmere.Roshar.Utility;
 using RimWorld;
 using Verse;
 
@@ -73,8 +72,6 @@ public class LashUpward : CompAbilityEffect {
 
         GenSpawn.Spawn(flyer, cell, map);
         Pawn caster = parent.pawn;
-        if (caster != null) {
-            RadiantUtility.GiveRadiantXp(caster, 50f);
-        }
+        caster?.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .25f);
     }
 }

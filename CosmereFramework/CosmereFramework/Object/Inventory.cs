@@ -2,9 +2,14 @@ using Verse;
 
 namespace Cosmere.Framework.Object;
 
-public class Inventory(IThingHolder owner) : IThingHolder, IExposable {
+public class Inventory : IThingHolder, IExposable {
     public ThingOwner<Verse.Thing> innerContainer;
-    public IThingHolder owner = owner;
+    public IThingHolder owner;
+
+    public Inventory(IThingHolder owner) {
+        this.owner = owner;
+        innerContainer = new ThingOwner<Verse.Thing>(this, false);
+    }
 
     public void ExposeData() {
         Scribe_Deep.Look(ref innerContainer, "innerContainer", this);

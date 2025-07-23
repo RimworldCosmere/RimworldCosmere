@@ -13,7 +13,7 @@
     <techLevel>Animal</techLevel>
     <statBases>
       <Mass>3</Mass>
-      <WorkToMake>14000</WorkToMake>
+      <WorkToMake>1400</WorkToMake>
       <Flammability>0.4</Flammability>
       <EquipDelay>2</EquipDelay>
     </statBases>
@@ -22,6 +22,7 @@
     </thingSetMakerTags>
     <recipeMaker>
       <researchPrerequisite>ComplexClothing</researchPrerequisite>
+      <workSkill>Crafting</workSkill>
       <displayPriority>210</displayPriority>
       <recipeUsers>
         <li>ElectricTailoringBench</li>
@@ -57,7 +58,10 @@
     </inspectorTabs>
     <comps>
       <li Class="Cosmere.Framework.Comp.Thing.ApparelStorageProperties">
+        <tabName>Spheres</tabName>
+        <maxItems>100</maxItems>
         <defaultStorageSettings>
+          <priority>Critical</priority>
           <filter>
             <allowedHitPointsConfigurable>false</allowedHitPointsConfigurable>
             <categories>
@@ -73,14 +77,6 @@
             </categories>
           </filter>
         </fixedStorageSettings>
-      </li>
-      <li Class="Cosmere.Roshar.Comp.Thing.SpherePouchProperties">
-        <maxCapacity>100</maxCapacity>
-        <allowedSpheres>
-          <li>Cosmere_Roshar_Thing_Chip</li>
-          <li>Cosmere_Roshar_Thing_Mark</li>
-          <li>Cosmere_Roshar_Thing_Broam</li>
-        </allowedSpheres>
       </li>
       <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties" />
     </comps>

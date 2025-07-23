@@ -66,4 +66,8 @@
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="WorkGivers\"/>
+    </ItemGroup>
 </Project>

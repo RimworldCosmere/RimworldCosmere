@@ -68,7 +68,7 @@ public class Investiture : RimWorld.Need {
                     : RecordDefOf.Cosmere_Core_Record_InvestitureSpent,
                 value
             );
-            investitureHolder.currentInvestiture = value;
+            investitureHolder.currentInvestitureSelf = value;
         }
     }
 

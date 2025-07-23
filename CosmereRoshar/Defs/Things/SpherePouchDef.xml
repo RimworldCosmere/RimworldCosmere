@@ -54,11 +54,11 @@
       <developmentalStageFilter>Child, Adult</developmentalStageFilter>
     </apparel>
     <inspectorTabs>
-      <li>Cosmere.Framework.InspectorTab.ApparelStorage</li>
+      <li>Cosmere.Roshar.Tab.SpherePouch</li>
     </inspectorTabs>
     <comps>
       <li Class="Cosmere.Framework.Comp.Thing.ApparelStorageProperties">
-        <tabName>Spheres</tabName>
+        <tabName>CRO_InspectorTab_SpherePouch</tabName>
         <maxItems>100</maxItems>
         <defaultStorageSettings>
           <priority>Critical</priority>
@@ -78,7 +78,10 @@
           </filter>
         </fixedStorageSettings>
       </li>
-      <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties" />
+      <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+          <maxBasedOnInventory>true</maxBasedOnInventory>
+          <maxInvestiture>0</maxInvestiture>
+      </li>
     </comps>
     <tradeTags>
       <li>Armor</li>

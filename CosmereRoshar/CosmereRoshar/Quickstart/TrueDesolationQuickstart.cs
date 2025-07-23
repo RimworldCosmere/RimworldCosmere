@@ -37,6 +37,12 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner, 4);
+            pawn.apparel.Wear(
+                (Apparel)ThingMaker.MakeThing(
+                    ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch,
+                    GenStuff.RandomStuffFor(ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch)
+                )
+            );
         }
 
         if (pawns.TryPopFront(out pawn)) {

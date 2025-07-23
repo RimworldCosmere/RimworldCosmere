@@ -18,4 +18,8 @@ public class JobDefOf {
     public static JobDef Cosmere_Scadrial_Job_GivePatientVial;
     //public static JobDef Cosmere_Scadrial_Job_EquipMetalmind;
     //public static JobDef Cosmere_Scadrial_Job_UnequipMetalmind;
+
+    static JobDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));
+    }
 }

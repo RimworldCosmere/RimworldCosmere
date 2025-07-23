@@ -61,6 +61,20 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
     public float targetValuePercent;
     protected Rect? topBarRect;
 
+    protected virtual bool useResourceLabelForTooltip => true;
+    protected virtual bool useResourceLabelForTitle => true;
+
+    protected override string Title {
+        get {
+            string title = (useResourceLabelForTitle ? gene.ResourceLabel : gene.Label).CapitalizeFirst();
+            if (Find.Selector.SelectedPawns.Count != 1) {
+                title = $"{title} ({gene.pawn.LabelShort})";
+            }
+
+            return title;
+        }
+    }
+
     protected override bool DraggingBar {
         get => draggingBar;
         set => draggingBar = value;
@@ -175,7 +189,9 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
     }
 
     protected virtual string GetTooltipHeader() {
-        return $"{gene.ResourceLabel.CapitalizeFirst().Colorize(ColoredText.TipSectionTitleColor)}: {BarLabel}";
+        string? label = useResourceLabelForTooltip ? gene.ResourceLabel : gene.Label;
+
+        return $"{label.CapitalizeFirst().Colorize(ColoredText.TipSectionTitleColor)}: {BarLabel}";
     }
 
     protected virtual string GetTooltipFooter() {

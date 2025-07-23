@@ -16,6 +16,7 @@ public class RadiantOrderCommand(
 ) : CosmereGeneCommand<SurgebindingAbilitySubGizmo, Surgebinder>(gene, drainGenes, barColor, barHighlightColor) {
     private RadiantOrder radiantOrder => gene.def.GetModExtension<RadiantOrder>();
     private RadiantOrderDef radiantOrderDef => radiantOrder.order;
+    protected override bool useResourceLabelForTitle => false;
 
     protected override Texture2D GetIcon() {
         return gene.def.Icon;

@@ -28,7 +28,7 @@
         <RimWorldManagedPath>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
         <FileAlignment>512</FileAlignment>
         <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
+        <DebugType>embedded</DebugType>
         <Optimize>false</Optimize>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
         <PackageId>Cosmere.Framework</PackageId>
@@ -65,9 +65,5 @@
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="WorkGivers\"/>
     </ItemGroup>
 </Project>

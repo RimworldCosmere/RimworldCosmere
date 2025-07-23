@@ -33,7 +33,7 @@ public class Metalmind : ThingComp {
         get => storedAmountInt;
         private set {
             storedAmountInt = value;
-            investitureHolder.currentInvestiture = value;
+            investitureHolder.currentInvestitureSelf = value;
         }
     }
 
@@ -55,7 +55,7 @@ public class Metalmind : ThingComp {
     }
 
     public override void PostPostMake() {
-        investitureHolder.maxInvestiture = maxAmount;
+        investitureHolder.maxInvestitureSelf = maxAmount;
     }
 
     public void AddStored(float amount) {

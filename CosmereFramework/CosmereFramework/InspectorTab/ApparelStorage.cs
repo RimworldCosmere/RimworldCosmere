@@ -4,13 +4,12 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
-using Verse.AI;
 using Verse.Sound;
 
 namespace Cosmere.Framework.InspectorTab;
 
 public class ApparelStorage : ITab_Storage {
-    private static readonly Vector2 WinSize = new Vector2(600f, 580f);
+    private static readonly Vector2 WinSize = new Vector2(700f, 480f);
     private static readonly List<Verse.Thing> workingInvList = [];
     private Vector2 scrollPosition = Vector2.zero;
     private float scrollViewHeight;
@@ -67,14 +66,14 @@ public class ApparelStorage : ITab_Storage {
 
     protected override void FillTab() {
         base.FillTab();
-        Rect rect = new Rect(WinSize.x / 2, TopAreaHeight, WinSize.x / 2, WinSize.y - 85).ContractedBy(10f);
+        Rect rect = new Rect(300, TopAreaHeight, WinSize.x - 300, WinSize.y - TopAreaHeight).ContractedBy(10f);
 
         using (new TextBlock(GameFont.Small, Color.white)) {
             Widgets.BeginGroup(rect);
-            Rect outRect = new Rect(0, 0, rect.width, rect.height);
-            Rect viewRect = new Rect(0, 0, rect.width - 16f, scrollViewHeight);
             float curY = 0f;
-            Widgets.ListSeparator(ref curY, viewRect.width, "Inventory".Translate());
+            Widgets.ListSeparator(ref curY, rect.width, "Inventory".Translate());
+            Rect outRect = new Rect(0, curY, rect.width, rect.height);
+            Rect viewRect = new Rect(0, curY, rect.width - 16f, scrollViewHeight);
             Widgets.BeginScrollView(outRect, ref scrollPosition, viewRect);
 
             workingInvList.Clear();
@@ -84,21 +83,14 @@ public class ApparelStorage : ITab_Storage {
             }
 
             workingInvList.Clear();
-            /*
-            if (Event.current.type == EventType.Layout) {
-                size.y = curY + 70f > 450f
-                    ? Mathf.Min(curY + 70f, Verse.UI.screenHeight - 35 - 165f - 30f)
-                    : 450f;
+            Widgets.EndScrollView();
 
+            if (Event.current.type == EventType.Layout) {
                 scrollViewHeight = curY + 20f;
             }
-            */
 
-            Widgets.EndScrollView();
+            Widgets.EndGroup();
         }
-
-
-        Widgets.EndGroup();
     }
 
     private void DrawThingRow(ref float y, float width, Verse.Thing thing) {
@@ -184,32 +176,8 @@ public class ApparelStorage : ITab_Storage {
 
 
     private void InterfaceDrop(Verse.Thing t) {
-        switch (t) {
-            case Apparel apparel
-                when SelPawn?.apparel != null && SelPawn.apparel.WornApparel.Contains(apparel):
-                SelPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.RemoveApparel, apparel), JobTag.Misc);
-                break;
-            case ThingWithComps thingWithComps
-                when SelPawn?.equipment != null &&
-                     SelPawn.equipment.AllEquipmentListForReading.Contains(thingWithComps):
-                SelPawn.jobs.TryTakeOrderedJob(
-                    JobMaker.MakeJob(JobDefOf.DropEquipment, thingWithComps),
-                    JobTag.Misc
-                );
-                break;
-            default: {
-                if (!t.def.destroyOnDrop) {
-                    SelPawn?.inventory.innerContainer.TryDrop(
-                        t,
-                        SelPawn.Position,
-                        SelPawn.Map,
-                        ThingPlaceMode.Near,
-                        out Verse.Thing _
-                    );
-                }
+        if (t.def.destroyOnDrop) return;
 
-                break;
-            }
-        }
+        SelStorage.inventory.innerContainer.TryDrop(t, SelPawn.Position, SelPawn.Map, ThingPlaceMode.Near, out _);
     }
 }

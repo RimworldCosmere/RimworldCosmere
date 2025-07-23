@@ -6,9 +6,9 @@ public class Inventory : IThingHolder, IExposable {
     public ThingOwner<Verse.Thing> innerContainer;
     public IThingHolder owner;
 
-    public Inventory(IThingHolder owner) {
+    public Inventory(IThingHolder owner, int maxCapacity) {
         this.owner = owner;
-        innerContainer = new ThingOwner<Verse.Thing>(this, false);
+        innerContainer = new ThingOwnerWithCapacity<Verse.Thing>(this, maxCapacity);
     }
 
     public void ExposeData() {

@@ -3,7 +3,9 @@
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/ThingDef[@Name="BasePawn"]/comps</xpath>
         <value>
-            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties" />
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <showMax>false</showMax>
+            </li>
         </value>
     </Operation>
 </Patch>

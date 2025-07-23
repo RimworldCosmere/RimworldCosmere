@@ -26,9 +26,8 @@ public static class PawnExtension {
     }
 
     public static bool IsAsleep(this Pawn pawn) {
-        return pawn.CurJob?.def == JobDefOf.LayDown &&
-               pawn.jobs.curDriver is JobDriver_LayDown driver &&
-               driver.asleep;
+        return pawn.CurJob?.def == RimWorld.JobDefOf.LayDown &&
+               pawn.jobs.curDriver is JobDriver_LayDown { asleep: true };
     }
 
     public static float DistanceTo(this Pawn pawn, Verse.Thing thing) {

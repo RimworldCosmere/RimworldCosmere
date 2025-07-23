@@ -5,14 +5,10 @@ using Verse;
 
 namespace Cosmere.Framework.Thing;
 
-public class ApparelWithStorage : Apparel, IThingHolder, IHaulDestination, IHaulEnroute {
+public class ApparelWithStorage : Apparel, IThingHolder, IHaulDestination {
     public Inventory inventory;
     private StorageSettings settings;
     private ApparelStorage? storageCompCache;
-
-    public ApparelWithStorage() {
-        inventory = new Inventory(this);
-    }
 
     private ApparelStorage storageComp {
         get {
@@ -44,12 +40,14 @@ public class ApparelWithStorage : Apparel, IThingHolder, IHaulDestination, IHaul
     public bool HaulDestinationEnabled => StorageTabVisible;
 
     public bool Accepts(Verse.Thing t) {
-        return GetStoreSettings().AllowedToAccept(t);
-    }
+        int currentInventoryRemaining = storageComp.maxItems - inventory.innerContainer.TotalStackCount;
+
+        return currentInventoryRemaining > 0 && GetStoreSettings().AllowedToAccept(t);
+    } /*
 
     public int SpaceRemainingFor(ThingDef stuff) {
         return storageComp.maxItems - inventory.innerContainer.Count;
-    }
+    }*/
 
     public void GetChildHolders(List<IThingHolder> outChildren) {
         outChildren.Add(inventory);
@@ -59,8 +57,14 @@ public class ApparelWithStorage : Apparel, IThingHolder, IHaulDestination, IHaul
         return inventory.innerContainer;
     }
 
+    public override void ExposeData() {
+        base.ExposeData();
+        Scribe_Deep.Look(ref inventory, "inventory", this, storageComp.maxItems);
+    }
+
     public override void PostMake() {
         base.PostMake();
+        inventory = new Inventory(this, storageComp.maxItems);
         settings = new StorageSettings(this);
         if (storageComp.defaultStorageSettings != null) {
             settings.CopyFrom(storageComp.defaultStorageSettings);

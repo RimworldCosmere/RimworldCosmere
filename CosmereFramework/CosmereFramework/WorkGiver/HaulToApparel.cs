@@ -23,7 +23,7 @@ public class HaulToApparel : WorkGiver_HaulGeneral {
         }
 
         if (haulDestination is not ApparelWithStorage apparelWithStorage) return null;
-        if (!p.Spawned && !p.Equals(apparelWithStorage.SpawnedParentOrMe)) return null;
+        if (!apparelWithStorage.Spawned && !p.Equals(apparelWithStorage.SpawnedParentOrMe)) return null;
 
         ThingOwner interactableThingOwner = apparelWithStorage.TryGetInnerInteractableThingOwner();
         Job job = JobMaker.MakeJob(JobDefOf.Cosmere_HaulToApparelWithStorage, t, apparelWithStorage);

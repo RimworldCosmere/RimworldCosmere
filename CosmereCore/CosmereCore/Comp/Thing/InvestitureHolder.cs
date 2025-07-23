@@ -22,16 +22,14 @@ public class InvestitureHolder : ThingComp {
 
     public float maxInvestitureSelf;
 
-    public float currentInvestiture => currentInvestitureSelf +
+    public float currentInvestiture => currentInvestitureSelf * parent.stackCount +
                                        children.Sum(x => x.TryGetComp<InvestitureHolder>().currentInvestiture);
 
-    public float maxInvestiture => maxInvestitureSelf +
+    public float maxInvestiture => maxInvestitureSelf * parent.stackCount +
                                    children.Sum(x => x.TryGetComp<InvestitureHolder>().maxInvestiture);
 
-    private IEnumerable<Verse.Thing> children {
+    public IEnumerable<Verse.Thing> children {
         get {
-            if (parent is not IHaulDestination) yield break;
-
             switch (parent) {
                 case ApparelWithStorage apparelWithStorage:
                     foreach (Verse.Thing? thing in apparelWithStorage.inventory.innerContainer) {
@@ -70,6 +68,17 @@ public class InvestitureHolder : ThingComp {
 
     private new InvestitureHolderProperties props => (InvestitureHolderProperties)base.props;
 
+    public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish) {
+        base.PostDeSpawn(map, mode);
+    }
+
+    public override bool AllowStackWith(Verse.Thing other) {
+        return Mathf.Approximately(
+            other.TryGetComp<InvestitureHolder>().currentInvestitureSelf,
+            currentInvestitureSelf
+        );
+    }
+
     public override void PostPostMake() {
         base.PostPostMake();
         maxInvestitureSelf = props.maxInvestiture;
@@ -78,7 +87,7 @@ public class InvestitureHolder : ThingComp {
     public override string CompInspectStringExtra() {
         StringBuilder sb = new StringBuilder();
         sb.Append("CC_Stored_Investiture".Translate());
-        sb.AppendFormat(": {0:F0}", currentInvestitureSelf);
+        sb.AppendFormat(": {0:F0}", currentInvestiture);
         if (props.showMax) {
             sb.AppendFormat(" / {0:F0}", maxInvestiture);
         }
@@ -99,8 +108,27 @@ public class InvestitureHolder : ThingComp {
         currentInvestitureSelf -= props.drainRate;
     }
 
+    public override void PreAbsorbStack(Verse.Thing otherStack, int count) {
+        currentInvestitureSelf += GetCurrentInvestiture(otherStack) * count;
+    }
+
+    public override void PostSplitOff(Verse.Thing piece) {
+        if (piece.stackCount == parent.stackCount) return;
+
+        float investitureToSwap = currentInvestitureSelf / parent.stackCount * piece.stackCount;
+
+        piece.TryGetComp<InvestitureHolder>().currentInvestitureSelf = investitureToSwap;
+        currentInvestitureSelf -= investitureToSwap;
+    }
+
+    public static float GetCurrentInvestiture(Verse.Thing thing, bool self = true) {
+        if (!thing.TryGetComp(out InvestitureHolder investiture)) return 0f;
+
+        return self ? investiture.currentInvestitureSelf : investiture.currentInvestiture;
+    }
+
     public override void PostExposeData() {
         base.PostExposeData();
-        Scribe_Values.Look(ref currentInvestitureSelf, "currentInvestitureSelf", 0f, true);
+        Scribe_Values.Look(ref currentInvestitureSelf, "currentInvestitureSelf");
     }
 }

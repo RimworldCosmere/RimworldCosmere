@@ -1,4 +1,5 @@
-﻿using LudeonTK;
+﻿using Cosmere.Core.Comp.Thing;
+using LudeonTK;
 using Verse;
 
 namespace Cosmere.Core.Dev;
@@ -8,22 +9,40 @@ public static class CoreUtility {
     [DebugAction(
         "Cosmere/Core",
         "Fill Investiture",
-        actionType = DebugActionType.ToolMapForPawns,
+        actionType = DebugActionType.ToolMap,
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
-    public static void FillPawnInvestiture(Pawn pawn) {
-        if (pawn.needs.TryGetNeed<Need.Investiture>() is not { } investiture) return;
-        investiture.CurLevel = investiture.MaxLevel;
+    public static void FillInvestiture() {
+        foreach (Thing item in Find.CurrentMap.thingGrid.ThingsListAt(UI.MouseCell())) {
+            FillInvestiture(item);
+        }
+    }
+
+    private static void FillInvestiture(Thing thing) {
+        if (!thing.TryGetComp(out InvestitureHolder investiture)) return;
+        investiture.currentInvestitureSelf = investiture.maxInvestitureSelf;
+        foreach (Thing child in investiture.children) {
+            FillInvestiture(child);
+        }
     }
 
     [DebugAction(
         "Cosmere/Core",
         "Wipe Investiture",
-        actionType = DebugActionType.ToolMapForPawns,
+        actionType = DebugActionType.ToolMap,
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
-    public static void WipePawnInvestiture(Pawn pawn) {
-        if (pawn.needs.TryGetNeed<Need.Investiture>() is not { } investiture) return;
-        investiture.CurLevel = 0;
+    public static void WipePawnInvestiture() {
+        foreach (Thing item in Find.CurrentMap.thingGrid.ThingsListAt(UI.MouseCell())) {
+            WipeInvestiture(item);
+        }
+    }
+
+    private static void WipeInvestiture(Thing thing) {
+        if (!thing.TryGetComp(out InvestitureHolder investiture)) return;
+        investiture.currentInvestitureSelf = 0;
+        foreach (Thing child in investiture.children) {
+            WipeInvestiture(child);
+        }
     }
 }

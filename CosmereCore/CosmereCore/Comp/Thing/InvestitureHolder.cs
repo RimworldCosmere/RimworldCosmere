@@ -19,6 +19,7 @@ public class InvestitureHolderProperties : CompProperties {
 
 public class InvestitureHolder : ThingComp {
     public float currentInvestitureSelf;
+    public float drainRate;
 
     public float maxInvestitureSelf;
 
@@ -28,48 +29,147 @@ public class InvestitureHolder : ThingComp {
     public float maxInvestiture => maxInvestitureSelf * parent.stackCount +
                                    children.Sum(x => x.TryGetComp<InvestitureHolder>().maxInvestiture);
 
-    public IEnumerable<Verse.Thing> children {
+    public List<Verse.Thing> children {
         get {
+            List<Verse.Thing> things = [];
             switch (parent) {
                 case ApparelWithStorage apparelWithStorage:
-                    foreach (Verse.Thing? thing in apparelWithStorage.inventory.innerContainer) {
+                    foreach (Verse.Thing? thing in apparelWithStorage.innerContainer ?? []) {
                         if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
-                        yield return thing;
+                        things.Add(thing);
                     }
 
                     break;
                 case IStorageGroupMember storageGroupMember:
                     foreach (Verse.Thing thing in storageGroupMember.Group.HeldThings) {
                         if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
-                        yield return thing;
+                        things.Add(thing);
                     }
 
                     break;
                 case Pawn pawn:
-                    foreach (Verse.Thing thing in pawn.inventory.innerContainer) {
+                    foreach (Verse.Thing thing in pawn.inventory?.innerContainer ?? []) {
                         if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
-                        yield return thing;
+                        things.Add(thing);
                     }
 
-                    foreach (ThingWithComps? thing in pawn.equipment.AllEquipmentListForReading) {
+                    foreach (ThingWithComps thing in pawn.equipment?.AllEquipmentListForReading ?? []) {
                         if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
-                        yield return thing;
+                        things.Add(thing);
                     }
 
-                    foreach (Verse.Thing? thing in pawn.apparel.GetDirectlyHeldThings()) {
+                    foreach (Apparel thing in pawn.apparel?.WornApparel ?? []) {
                         if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
-                        yield return thing;
+                        things.Add(thing);
                     }
 
                     break;
             }
+
+            return things;
         }
     }
 
     private new InvestitureHolderProperties props => (InvestitureHolderProperties)base.props;
+    public bool isFull => Mathf.Approximately(currentInvestiture, maxInvestiture);
 
-    public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish) {
-        base.PostDeSpawn(map, mode);
+    public override void Initialize(CompProperties props) {
+        base.Initialize(props);
+        drainRate = this.props.drainRate;
+    }
+
+    public bool ExudeInvestitureInto(Verse.Thing thing, float amountToDraw, out float amountDrawn) {
+        InvestitureHolder? thingInvestiture = thing.TryGetComp<InvestitureHolder>();
+        if (amountToDraw > currentInvestiture) {
+            amountToDraw = currentInvestiture;
+        }
+
+        if (amountToDraw > thingInvestiture.maxInvestiture) {
+            amountToDraw = thingInvestiture.maxInvestiture;
+        }
+
+        float amountToDrawFromEach = amountToDraw;
+        List<Verse.Thing> allChildren = children.ToList();
+        if (allChildren.Count > 0) {
+            amountToDrawFromEach /= allChildren.Count + 1;
+        }
+
+        currentInvestitureSelf -= amountToDrawFromEach;
+        amountDrawn = amountToDrawFromEach;
+        foreach (Verse.Thing? child in allChildren) {
+            child.TryGetComp<InvestitureHolder>()
+                .ExudeInvestitureInto(child, amountToDrawFromEach, out float amountDrawnFromChild);
+            amountDrawn += amountDrawnFromChild;
+        }
+
+        thingInvestiture.AddInvestiture(amountDrawn);
+
+        return true;
+    }
+
+    public void AddInvestiture(float amount, bool addToChildren = true) {
+        if (!addToChildren) {
+            currentInvestitureSelf += amount;
+            return;
+        }
+
+        float amountToAddToEach = amount;
+        List<Verse.Thing> allChildren = children.ToList();
+        if (allChildren.Count > 0) {
+            amountToAddToEach /= allChildren.Count + 1;
+        }
+
+        currentInvestitureSelf += amountToAddToEach;
+        foreach (Verse.Thing? child in allChildren) {
+            child.TryGetComp<InvestitureHolder>().AddInvestiture(amount, addToChildren);
+        }
+    }
+
+    public bool AbsorbInvestitureFrom(Verse.Thing thing, float amountToAbsorb, out float amountAbsorbed) {
+        InvestitureHolder? thingInvestiture = thing.TryGetComp<InvestitureHolder>();
+        if (amountToAbsorb > maxInvestiture) {
+            amountToAbsorb = maxInvestiture;
+        }
+
+        if (amountToAbsorb > thingInvestiture.currentInvestiture) {
+            amountToAbsorb = thingInvestiture.currentInvestiture;
+        }
+
+        float amountToAbsorbFromEach = amountToAbsorb;
+        List<Verse.Thing> allChildren = children.ToList();
+        if (allChildren.Count > 0) {
+            amountToAbsorbFromEach /= allChildren.Count + 1;
+        }
+
+        currentInvestitureSelf -= amountToAbsorbFromEach;
+        amountAbsorbed = amountToAbsorbFromEach;
+        foreach (Verse.Thing? child in allChildren) {
+            child.TryGetComp<InvestitureHolder>()
+                .ExudeInvestitureInto(child, amountToAbsorbFromEach, out float amountAbsorbedFromChild);
+            amountAbsorbed += amountAbsorbedFromChild;
+        }
+
+        thingInvestiture.RemoveInvestiture(amountAbsorbed);
+
+        return true;
+    }
+
+    public void RemoveInvestiture(float amount, bool addToChildren = true) {
+        if (!addToChildren) {
+            currentInvestitureSelf -= amount;
+            return;
+        }
+
+        float amountToRemoveFromEach = amount;
+        List<Verse.Thing> allChildren = children.ToList();
+        if (allChildren.Count > 0) {
+            amountToRemoveFromEach /= allChildren.Count + 1;
+        }
+
+        currentInvestitureSelf -= amountToRemoveFromEach;
+        foreach (Verse.Thing? child in allChildren) {
+            child.TryGetComp<InvestitureHolder>().RemoveInvestiture(amount, addToChildren);
+        }
     }
 
     public override bool AllowStackWith(Verse.Thing other) {
@@ -81,6 +181,8 @@ public class InvestitureHolder : ThingComp {
 
     public override void PostPostMake() {
         base.PostPostMake();
+        // TickerType has to be normal. Otherwise, CompTickInterval never ticks for things inside.
+        parent.def.tickerType = TickerType.Normal;
         maxInvestitureSelf = props.maxInvestiture;
     }
 
@@ -90,6 +192,10 @@ public class InvestitureHolder : ThingComp {
         sb.AppendFormat(": {0:F0}", currentInvestiture);
         if (props.showMax) {
             sb.AppendFormat(" / {0:F0}", maxInvestiture);
+        }
+
+        if (drainRate > 0.0 && currentInvestiture > 0.0) {
+            sb.AppendFormat(" (-{0:F4}/sec)", drainRate);
         }
 
         return sb.ToString();
@@ -102,23 +208,21 @@ public class InvestitureHolder : ThingComp {
     public override void CompTickInterval(int delta) {
         base.CompTickInterval(delta);
 
-        if (Mathf.Approximately(props.drainRate, 0)) return;
-        if (!GenTicks.IsTickIntervalDelta(GenTicks.TicksPerRealSecond, delta)) return;
+        if (!GenTicks.IsTickIntervalDelta(GenTicks.TickRareInterval, delta)) return;
+        if (Mathf.Approximately(drainRate, 0) || Mathf.Approximately(maxInvestiture, 0)) return;
 
-        currentInvestitureSelf -= props.drainRate;
+        currentInvestitureSelf -= drainRate;
+        foreach (Verse.Thing child in children ?? []) {
+            child.TryGetComp<InvestitureHolder>().CompTickInterval(delta);
+        }
     }
 
     public override void PreAbsorbStack(Verse.Thing otherStack, int count) {
-        currentInvestitureSelf += GetCurrentInvestiture(otherStack) * count;
+        // currentInvestitureSelf += GetCurrentInvestiture(otherStack) * count;
     }
 
     public override void PostSplitOff(Verse.Thing piece) {
-        if (piece.stackCount == parent.stackCount) return;
-
-        float investitureToSwap = currentInvestitureSelf / parent.stackCount * piece.stackCount;
-
-        piece.TryGetComp<InvestitureHolder>().currentInvestitureSelf = investitureToSwap;
-        currentInvestitureSelf -= investitureToSwap;
+        piece.TryGetComp<InvestitureHolder>().currentInvestitureSelf = currentInvestitureSelf;
     }
 
     public static float GetCurrentInvestiture(Verse.Thing thing, bool self = true) {

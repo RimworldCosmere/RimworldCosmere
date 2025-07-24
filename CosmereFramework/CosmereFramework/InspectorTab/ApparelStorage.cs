@@ -77,7 +77,7 @@ public class ApparelStorage : ITab_Storage {
             Widgets.BeginScrollView(outRect, ref scrollPosition, viewRect);
 
             workingInvList.Clear();
-            workingInvList.AddRange(SelStorage.inventory.innerContainer);
+            workingInvList.AddRange(SelStorage.innerContainer);
             foreach (Verse.Thing t in workingInvList) {
                 DrawThingRow(ref curY, viewRect.width, t);
             }
@@ -178,6 +178,6 @@ public class ApparelStorage : ITab_Storage {
     private void InterfaceDrop(Verse.Thing t) {
         if (t.def.destroyOnDrop) return;
 
-        SelStorage.inventory.innerContainer.TryDrop(t, SelPawn.Position, SelPawn.Map, ThingPlaceMode.Near, out _);
+        SelStorage.innerContainer.TryDrop(t, SelPawn.Position, SelPawn.Map, ThingPlaceMode.Near, out _);
     }
 }

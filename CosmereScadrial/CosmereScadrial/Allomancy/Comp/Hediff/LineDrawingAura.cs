@@ -32,7 +32,6 @@ public abstract class LineDrawingAura : HediffComp {
     protected abstract IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map);
     protected abstract LineToRender GetLineToRender(Verse.Thing thing);
 
-
     public override void CompPostPostRemoved() {
         base.CompPostPostRemoved();
         LineRenderer.TryRemove(this);

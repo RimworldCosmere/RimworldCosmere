@@ -53,24 +53,10 @@ public class HaulToApparel : JobDriver_HaulToContainer {
             }
         );
         this.FailOnForbidden(TargetIndex.B);
-        Toil getToHaulTarget = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch, true)
+        yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch, true)
             .FailOn(() => ThingToCarry.ParentHolder is MinifiedThing)
             .FailOnSelfAndParentsDespawnedOrNull(TargetIndex.A);
-        Toil uninstallIfMinifiable = Toils_Construct.UninstallIfMinifiable(TargetIndex.A)
-            .FailOnSomeonePhysicallyInteracting(TargetIndex.A)
-            .FailOn(() => ThingToCarry.ParentHolder is MinifiedThing)
-            .FailOnSelfAndParentsDespawnedOrNull(TargetIndex.A)
-            .FailOnDestroyedOrNull(TargetIndex.A);
-        Toil startCarryingThing = Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false, true, true);
-        Toil jumpIfAlsoCollectingNextTarget =
-            Toils_Haul.JumpIfAlsoCollectingNextTargetInQueue(getToHaulTarget, TargetIndex.A);
-        Toil carryToContainer = Toils_Haul.CarryHauledThingToContainer();
-        yield return Toils_Jump.JumpIf(jumpIfAlsoCollectingNextTarget, () => pawn.IsCarryingThing(ThingToCarry));
-        yield return getToHaulTarget;
-        yield return uninstallIfMinifiable;
-        yield return startCarryingThing;
-        yield return jumpIfAlsoCollectingNextTarget;
-        yield return carryToContainer;
+        yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false, true, true);
         Toil toil = Toils_General.Wait(Duration, TargetIndex.B);
         toil.WithProgressBarToilDelay(TargetIndex.B);
         EffecterDef workEffecter = WorkEffecter;
@@ -86,6 +72,5 @@ public class HaulToApparel : JobDriver_HaulToContainer {
         ModifyPrepareToil(toil);
         yield return toil;
         yield return Toils_Haul.DepositHauledThingInContainer(TargetIndex.B, TargetIndex.None);
-        yield return Toils_Haul.JumpToCarryToNextContainerIfPossible(carryToContainer, TargetIndex.None);
     }
 }

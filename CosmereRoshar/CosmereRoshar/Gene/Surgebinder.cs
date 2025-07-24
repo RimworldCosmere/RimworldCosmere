@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Gene;
 using Cosmere.Core.Need;
 using Cosmere.Roshar.Comp.Thing;
@@ -12,13 +13,6 @@ using Logger = Cosmere.Framework.Logger;
 namespace Cosmere.Roshar.Gene;
 
 public class Surgebinder : Invested {
-    private const float ExperienceMultiplier = 5f;
-    private const float LevelNewSquire = 2;
-    private const float LevelExperiencedSquire = 6;
-    private const float LevelKnightRadiant = 10;
-    private const float LevelKnightRadiantMaster = 14;
-    private const float MaxExperience = 18;
-
     private int currentIdealInt;
 
     public int currentIdeal {
@@ -43,7 +37,26 @@ public class Surgebinder : Invested {
     private void OnIdealChange() {
         pawn.story.TryAddTrait(radiantOrder.trait, currentIdealInt);
         UpdateAbilities();
+
+        // Give the pawn a bump.... i mean, give them some investiture
         investiture.CurLevel += Mathf.Pow(10, currentIdealInt);
+
+        // Update their drain rate
+        pawn.GetComp<InvestitureHolder>().drainRate = GetDrainRate();
+    }
+
+    private float GetDrainRate() {
+        if (currentIdeal >= 4) return 0f;
+
+        float totalDrainTimeInSeconds = (10 * 60).TicksToSeconds();
+
+        // This is the flat rate of investiture lost per real-time second
+        float baseRate = 1f / totalDrainTimeInSeconds;
+
+        // 1st = 1.0x, 2nd = 0.75x, 3rd = 0.5x, 4th = 0.25x, 5th = 0x
+        float idealMultiplier = 1f - currentIdeal / 4f;
+
+        return baseRate * idealMultiplier;
     }
 
     public override void TickInterval(int delta) {
@@ -53,7 +66,7 @@ public class Surgebinder : Invested {
         if (currentIdeal == 4) return;
         if (!radiantOrderDef.idealChecker.IsSatisfied(pawn, this, currentIdeal, currentIdeal + 1)) return;
 
-        currentIdeal++;
+        //currentIdeal++;
         Messages.Message(
             "CRO_Gene_LevelUp".Translate(
                     pawn.NameFullColored.Named("PAWN"),

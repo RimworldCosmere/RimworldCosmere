@@ -48,7 +48,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         if (pawns.TryPopFront(out pawn)) {
             pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kohlin");
             pawn.gender = Gender.Male;
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher, 3);
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher, 1);
         }
 
         if (pawns.TryPopFront(out pawn)) {
@@ -65,7 +65,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
                     ?.Invoke(null, [pawn, false, true]);
             }
 
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver, 3);
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver, 2);
         }
     }
 }

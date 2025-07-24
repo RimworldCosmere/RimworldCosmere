@@ -23,6 +23,9 @@ Here are a couple recommended mods that work really well with the Cosmere mods:
 * Thanks to everyone in the main RimWorld discord #mod-development channel (Especially `aelanna`) for helping with
   random questions
 
+**_This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
+Entertainment, LLC or Ludeon Studios._**
+
 ## Support Us
 
 https://rimworldcosmere.com

@@ -18,7 +18,6 @@ public static class Defs {
 
     public static AbilityDef Cosmere_Roshar_SummonShardblade;
     public static AbilityDef Cosmere_Roshar_UnbondBlade;
-    public static AbilityDef Cosmere_Roshar_BreathStormlight;
     public static AbilityDef Cosmere_Roshar_SurgeOfHealing;
     public static AbilityDef Cosmere_Roshar_SurgeOfGrowth;
     public static AbilityDef Cosmere_Roshar_SurgeOfAbrasion;

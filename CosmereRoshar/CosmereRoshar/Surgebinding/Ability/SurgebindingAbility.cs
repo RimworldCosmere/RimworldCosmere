@@ -23,4 +23,8 @@ public class SurgebindingAbility(Pawn pawn, AbilityDef def)
     public new bool GizmosVisible() {
         return base.GizmosVisible() && pawn.genes.HasSurgebindingGeneForOrder(radiantOrder);
     }
+
+    public override float GetDesiredBurnRateForStatus(Status? desiredStatus) {
+        return base.GetDesiredBurnRateForStatus(desiredStatus) / (gene.currentIdeal + 1);
+    }
 }

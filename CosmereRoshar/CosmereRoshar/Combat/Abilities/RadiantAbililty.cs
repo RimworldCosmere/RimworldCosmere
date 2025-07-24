@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using Cosmere.Roshar.Combat.Abilities.Implementations;
 using Cosmere.Roshar.Comp.Thing;
-using Cosmere.Roshar.Extension;
 using Cosmere.Roshar.Job;
 using Cosmere.Roshar.Utility;
 using RimWorld;
@@ -11,7 +9,7 @@ using Verse;
 
 namespace Cosmere.Roshar.Combat.Abilities;
 
-public class RadiantAbility : RimWorld.Ability {
+public class RadiantAbility : Ability {
     private static readonly float MoteCastFadeTime = 0.4f;
     private static readonly float MoteCastScale = 1f;
     private static readonly Vector3 MoteCastOffset = new Vector3(0f, 0f, 0.48f);
@@ -84,10 +82,10 @@ public class RadiantAbility : RimWorld.Ability {
 }
 
 public class CommandRadiantAbility : Command {
-    private readonly RimWorld.Ability ability;
+    private readonly Ability ability;
     private readonly Pawn pawn;
 
-    public CommandRadiantAbility(RimWorld.Ability ability, Pawn pawn) {
+    public CommandRadiantAbility(Ability ability, Pawn pawn) {
         this.ability = ability;
         this.pawn = pawn;
         defaultLabel = ability.def.label;
@@ -106,12 +104,6 @@ public class CommandRadiantAbility : Command {
         return false;
     }
 
-    private bool BreathStormlightCheck() {
-        if (ability.def != Defs.Cosmere_Roshar_BreathStormlight) return false;
-
-        return pawn.TryGetComp<Stormlight>() is { breathStormlight: true };
-    }
-
     protected override GizmoResult GizmoOnGUIInt(Rect butRect, GizmoRenderParms parms) {
         Text.Font = GameFont.Tiny;
 
@@ -120,7 +112,7 @@ public class CommandRadiantAbility : Command {
 
         Color bgColor = Color.white;
 
-        if (AbriasionCheck() || BreathStormlightCheck()) {
+        if (AbriasionCheck()) {
             bgColor = new Color(0.2f, 0.9f, 0.4f); // Green when active
         }
 
@@ -320,7 +312,7 @@ public class CommandRadiantAbility : Command {
     }
 
     private bool AbilityToggleStormlight() {
-        if (ability.def == Defs.Cosmere_Roshar_BreathStormlight) {
+        if (ability.def == AbilityDefOf.Cosmere_Roshar_Ability_BreatheStormlight) {
             ability.Activate(pawn, pawn);
             return true;
         }

@@ -36,6 +36,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     public bool paused;
     public Status status = Active.Off;
     public bool willUseWhileDowned;
+    public bool willUseWhileInjured;
 
     public AbstractAbility(Pawn pawn, RimWorld.AbilityDef def) : base(pawn, def) {
         Initialize();
@@ -49,12 +50,16 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
     public override string Tooltip {
         get {
-            string tooltip = base.Tooltip;
-            if (!willUseWhileDowned) return tooltip;
-            List<string> tooltipByLine = tooltip.Split('\n').ToList();
-            tooltipByLine.Insert(1, "CC_WillUseWhileDowned".Translate().Colorize(ColorLibrary.Green));
+            List<string> tooltipByLine = base.Tooltip.Split('\n').ToList();
+            if (willUseWhileDowned) {
+                tooltipByLine.Insert(1, "CC_WillUseWhileDowned".Translate().Colorize(ColorLibrary.Green));
+            }
 
-            return tooltipByLine.ToStringList("\n");
+            if (willUseWhileInjured) {
+                tooltipByLine.Insert(1, "CC_WillUseWhileInjured".Translate().Colorize(ColorLibrary.Green));
+            }
+
+            return string.Join("\n", tooltipByLine.ToArray());
         }
     }
 
@@ -68,7 +73,17 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     public event Action<IAbility<TGene, THediff>, Status, Status>? OnStatusChangedEvent;
 
     public virtual float GetStrength(Status? desiredStatus = null) {
-        return (desiredStatus ?? status).power * def.hediffSeverityFactor;
+        float baseStrength = (desiredStatus ?? status).power * def.hediffSeverityFactor;
+
+        if (pawn.IsAsleep()) {
+            return baseStrength * def.asleepStrengthFactor;
+        }
+
+        if (pawn.Downed) {
+            return baseStrength * def.downedStrengthFactor;
+        }
+
+        return baseStrength;
     }
 
     public void UpdateStatus(Status? newStatus = null) {
@@ -131,14 +146,15 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
             primaryVerb.Ability = this;
         }
 
+        willUseWhileDowned = def is { canUseWhileDowned: true, autoUseWhileDowned: true };
+        willUseWhileInjured = def is { autoUseWhileInjured: true };
+
         if (def.charges <= 0) {
             return;
         }
 
         maxCharges = def.charges;
         RemainingCharges = maxCharges;
-
-        willUseWhileDowned = def is { canUseWhileDowned: true, autoUseWhileDownedByDefault: true };
     }
 
     public override void AbilityTick() {
@@ -150,6 +166,12 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
     protected virtual void HandleAutoBurn() {
         if (willUseWhileDowned && pawn.Downed && !pawn.Dead && status.isActive) {
+            if (gene.CanLowerReserve(def.beuPerTick)) {
+                UpdateStatus(Active.On);
+            }
+        }
+
+        if (willUseWhileInjured && pawn.health.summaryHealth.SummaryHealthPercent < 1) {
             if (gene.CanLowerReserve(def.beuPerTick)) {
                 UpdateStatus(Active.On);
             }

@@ -1,4 +1,3 @@
-using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -8,7 +7,7 @@ public static class AbilityExtensions {
     public static T? GetAbilityComp<T>(this Pawn pawn, string abilityDefName) where T : CompAbilityEffect {
         if (pawn.abilities == null) return null;
 
-        RimWorld.Ability ability = pawn.abilities.GetAbility(DefDatabase<AbilityDef>.GetNamed(abilityDefName));
+        Ability ability = pawn.abilities.GetAbility(DefDatabase<AbilityDef>.GetNamed(abilityDefName));
         return ability?.comps?.OfType<T>().FirstOrDefault();
     }
 }

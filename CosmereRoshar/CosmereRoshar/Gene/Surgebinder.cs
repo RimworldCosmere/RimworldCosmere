@@ -102,7 +102,8 @@ public class Surgebinder : Invested {
             yield return abilityDef;
         }
 
-        foreach (AbilityDef surgeDefAbility in radiantOrderDef.surges.SelectMany(surgeDef => surgeDef.abilities)) {
+        foreach (AbilityDef surgeDefAbility in radiantOrderDef.surges.SelectMany(surgeDef => surgeDef.abilities
+                 )) {
             yield return surgeDefAbility;
         }
 

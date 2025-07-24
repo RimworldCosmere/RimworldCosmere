@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_Heal</defName>
+        <label>Radiant Healing</label>
+        <description>Stormlight surges through the body, mending flesh and bone with supernatural speed. The Radiant glows faintly, veins of light threading beneath the skin as wounds close and bruises fade. This healing is fast, but not infinite — it consumes Investiture and cannot restore what has been fully lost.\n\nWhere surgeons falter and poultices fail, Stormlight endures.</description>
+        <hediffClass>Cosmere.Roshar.Surgebinding.Hediff.Heal</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <InjuryHealingFactor>1.5</InjuryHealingFactor>
+                    <ImmunityGainSpeed>1.5</ImmunityGainSpeed>
+                    <PainShockThreshold>1.5</PainShockThreshold>
+                    <ToxicResistance>1.5</ToxicResistance>
+                    <ToxicEnvironmentResistance>1.5</ToxicEnvironmentResistance>
+                    <IncomingDamageFactor>0.5</IncomingDamageFactor>
+                    <StaggerDurationFactor>0.5</StaggerDurationFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

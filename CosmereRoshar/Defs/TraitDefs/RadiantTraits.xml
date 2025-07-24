@@ -16,7 +16,7 @@
         <degree>0</degree>
         <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
         </abilities>
       </li>
       <li>
@@ -27,7 +27,7 @@
         <degree>1</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_LashingUpward</li>
         </abilities>
       </li>
@@ -39,7 +39,7 @@
         <degree>2</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_LashingUpward</li>
           <li>Cosmere_Roshar_WindRunnerFlight</li>
         </abilities>
@@ -52,7 +52,7 @@
         <degree>3</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SummonShardblade</li>
           <li>Cosmere_Roshar_LashingUpward</li>
           <li>Cosmere_Roshar_WindRunnerFlight</li>
@@ -66,7 +66,7 @@
         <degree>4</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SummonShardblade</li>
           <li>Cosmere_Roshar_LashingUpward</li>
           <li>Cosmere_Roshar_WindRunnerFlight</li>
@@ -91,7 +91,7 @@
         <degree>0</degree>
         <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
         </abilities>
       </li>
       <li>
@@ -102,7 +102,7 @@
         <degree>1</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SurgeOfGrowth</li>
         </abilities>
       </li>
@@ -113,7 +113,7 @@
         <degree>2</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SurgeOfGrowth</li>
           <li>Cosmere_Roshar_SurgeOfHealing</li>
         </abilities>
@@ -125,7 +125,7 @@
         <degree>3</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SurgeOfGrowth</li>
           <li>Cosmere_Roshar_SurgeOfHealing</li>
           <li>Cosmere_Roshar_SummonShardblade</li>
@@ -138,7 +138,7 @@
         <degree>4</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SurgeOfGrowth</li>
           <li>Cosmere_Roshar_SurgeOfHealing</li>
           <li>Cosmere_Roshar_SummonShardblade</li>
@@ -165,7 +165,7 @@
         <degree>0</degree>
         <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
         </abilities>
       </li>
       <li>
@@ -176,7 +176,7 @@
         <degree>1</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SurgeOfHealing</li>
         </abilities>
       </li>
@@ -188,7 +188,7 @@
         <degree>2</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SurgeOfHealing</li>
           <li>Cosmere_Roshar_SurgeOfAbrasion</li>
           <li>Cosmere_Roshar_SummonShardblade</li>
@@ -202,7 +202,7 @@
         <degree>3</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SurgeOfHealing</li>
           <li>Cosmere_Roshar_SurgeOfAbrasion</li>
           <li>Cosmere_Roshar_SummonShardblade</li>
@@ -216,7 +216,7 @@
         <degree>4</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SurgeOfHealing</li>
           <li>Cosmere_Roshar_SurgeOfAbrasion</li>
           <li>Cosmere_Roshar_SummonShardblade</li>
@@ -242,7 +242,7 @@
         <degree>0</degree>
         <commonality>0</commonality> <!-- Ensures it is not assigned randomly -->
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
         </abilities>
       </li>
       <li>
@@ -253,7 +253,7 @@
         <degree>1</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_SurgeOfDivision</li>
         </abilities>
       </li>
@@ -265,7 +265,7 @@
         <degree>2</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_WindRunnerFlight</li>
           <li>Cosmere_Roshar_SurgeOfDivision</li>
         </abilities>
@@ -279,7 +279,7 @@
         <degree>3</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_WindRunnerFlight</li>
           <li>Cosmere_Roshar_SurgeOfDivision</li>
           <li>Cosmere_Roshar_SummonShardblade</li>
@@ -294,7 +294,7 @@
         <degree>4</degree>
         <commonality>0</commonality>
         <abilities>
-          <li>Cosmere_Roshar_BreathStormlight</li>
+          
           <li>Cosmere_Roshar_WindRunnerFlight</li>
           <li>Cosmere_Roshar_SurgeOfDivision</li>
           <li>Cosmere_Roshar_SummonShardblade</li>

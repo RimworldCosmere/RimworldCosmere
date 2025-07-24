@@ -25,30 +25,6 @@
     </verbProperties>
   </AbilityDef>
 
-<!-- TOGGLE STORMLIGHT -->
-<AbilityDef ParentName="RadiantBase">
-    <defName>Cosmere_Roshar_BreathStormlight</defName>
-    <label>Breath Stormlight</label>
-    <description>Draw Stormlight into your body, fueling your Radiant powers and enhancing your physical abilities. While infused, you move faster, heal quickly, and feel an unnatural surge of energy.</description>
-    <level>1</level>
-    <iconPath>Things/Ability/lucid_inhale_sl</iconPath> 
-    <hotKey>Misc5</hotKey>
-    <hostile>false</hostile>
-    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
-    <verbProperties>
-        <warmupTime>0.5</warmupTime>
-        <range>0</range> 
-        <targetParams>
-            <canTargetSelf>true</canTargetSelf>
-        </targetParams>
-    </verbProperties>
-    <comps>
-        <li>
-            <compClass>Cosmere.Roshar.Combat.Abilities.Implementations.ToggleStormlight</compClass>
-        </li>
-    </comps>
-</AbilityDef>
-
 <!-- SUMMON BLADE -->
 <AbilityDef ParentName="RadiantBase">
     <defName>Cosmere_Roshar_SummonShardblade</defName>

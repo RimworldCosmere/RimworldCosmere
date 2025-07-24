@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_Heal</defName>
+        <label>Heal</label>
+        <description>Unleash Stormlight to accelerate natural healing and repair injuries, both external and internal. Minor wounds vanish instantly, while deeper trauma mends over moments. Does not restore lost limbs or fix fatal conditions—this is not a miracle, only Radiance.</description>
+        <canUseWhileAsleep>true</canUseWhileAsleep>
+        <canUseWhileDowned>true</canUseWhileDowned>
+        <autoUseWhileInjured>true</autoUseWhileInjured>
+        <isAutocast>true</isAutocast>
+        <hediff>Cosmere_Roshar_Hediff_Heal</hediff>
+        <beuPerTick>1</beuPerTick>
+        <maxPower>1</maxPower>
+    </Cosmere.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

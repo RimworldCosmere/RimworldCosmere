@@ -27,11 +27,12 @@ public class Gold : HediffWithComps {
 
         List<Hediff_Injury> injuries = pawn.health.hediffSet.hediffs
             .OfType<Hediff_Injury>()
-            .Where(x => x.CanHealNaturally() && !x.IsPermanent())
+            .Where(i => i.CanBeHealedWithInvestiture())
             .ToList();
 
         foreach (Hediff_Injury injury in injuries) {
             injury.Heal(Severity);
+            return;
         }
     }
 }

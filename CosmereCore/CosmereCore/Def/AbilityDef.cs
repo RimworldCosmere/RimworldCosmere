@@ -5,15 +5,19 @@ namespace Cosmere.Core.Def;
 
 public class AbilityDef : RimWorld.AbilityDef, IMultiTypeHediff {
     public ThingDef? activeMote;
-    public bool autoUseWhileDownedByDefault = true;
+    public float asleepStrengthFactor = .5f;
+    public bool autoUseWhileDowned = true;
+    public bool autoUseWhileInjured = false;
     public float beuPerTick = Constants.DefaultBreathEquivalentUnitsPerTick;
     public bool canUseWhileAsleep = false;
     public bool canUseWhileDowned = false;
     public Texture2D disabledIcon = BaseContent.BadTex;
+    public float downedStrengthFactor = .25f;
     public HediffDef? hediff;
     public HediffDef? hediffFriendly;
     public HediffDef? hediffHostile;
     public float hediffSeverityFactor = 1f;
+    public bool isAutocast = false;
     public int maxPower = 1;
     public Texture2D pausedIcon = BaseContent.BadTex;
     public bool toggleable = false;

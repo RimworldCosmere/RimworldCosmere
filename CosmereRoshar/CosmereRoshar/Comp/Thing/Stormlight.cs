@@ -27,7 +27,6 @@ public class StormlightProperties : CompProperties {
 public class Stormlight : ThingComp {
     // Surges
     private bool abrasionActiveInt;
-    private bool breathStormlightInt;
     public float currentMaxStormlight;
 
     private float currentStormlightInt;
@@ -40,7 +39,6 @@ public class Stormlight : ThingComp {
     // Modifiers
     public float stormlightContainerSize = 1f;
     private bool thisGlows;
-    public bool breathStormlight => breathStormlightInt;
     public float currentStormlight => currentStormlightInt;
 
     private new StormlightProperties props => (StormlightProperties)base.props;
@@ -66,10 +64,6 @@ public class Stormlight : ThingComp {
         _ => throw new ArgumentOutOfRangeException(),
     };
 
-    public void ToggleBreathStormlight() {
-        breathStormlightInt = !breathStormlightInt;
-    }
-
     public void ToggleAbrasion() {
         abrasionActiveInt = !abrasionActiveInt;
     }
@@ -83,7 +77,6 @@ public class Stormlight : ThingComp {
         base.PostExposeData();
         Scribe_Values.Look(ref abrasionActiveInt, "abrasionActiveInt");
         Scribe_Values.Look(ref currentStormlightInt, "currentStormlightInt");
-        Scribe_Values.Look(ref breathStormlightInt, Defs.Cosmere_Roshar_BreathStormlight.defName);
         Scribe_Values.Look(ref isActivatedOnPawn, "isActivatedOnPawn");
         Scribe_Values.Look(ref currentMaxStormlight, "CurrentMaxStormlight");
         Scribe_Values.Look(ref stormlightContainerSize, "StormlightContainerSize", 1f);
@@ -248,7 +241,6 @@ public class Stormlight : ThingComp {
     private void RadiantAbsorbStormlight() {
         if (pawn?.Spawned ?? false) return;
         if (!pawn!.RaceProps.Humanlike) return;
-        if (!breathStormlight) return;
         if (InfuseStormlight(0)) return; //check if full.
 
         float absorbAmount = 25f; // How much Stormlight is drawn per tick

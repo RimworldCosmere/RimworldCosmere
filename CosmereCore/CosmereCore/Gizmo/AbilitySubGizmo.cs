@@ -63,7 +63,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
     }
 
     private Texture2D GetBorder() {
-        if (!ability.willUseWhileDowned || AutoBurnBorders.NullOrEmpty()) {
+        if (!ability.willUseWhileDowned || !ability.willUseWhileInjured || AutoBurnBorders.NullOrEmpty()) {
             return Border;
         }
 
@@ -79,12 +79,17 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
         StringBuilder desc = new StringBuilder(ability.Tooltip);
 
         if (ability.def.maxPower > 1) {
+            desc.AppendLine("\n");
             desc.AppendLine(GetPowerUpDisplay());
         }
 
-        if (ability.def.canUseWhileDowned) {
+        if (ability.def.autoUseWhileDowned || ability.def.autoUseWhileInjured) {
+            string key = ability.def.isAutocast
+                ? "CC_Gizmo_ToggleAutomaticCast_Click"
+                : "CC_Gizmo_ToggleAutomaticCast_ShiftClick";
+            desc.AppendLine("\n");
             desc.AppendLine(
-                "CC_Gizmo_ToggleAutomaticCast".Translate()
+                key.Translate()
                     .Colorize(ColoredText.GeneColor)
             );
         }
@@ -153,8 +158,13 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
         cachedReport = GizmoEnabled();
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
 
-        if (ev.shift) {
-            ability.willUseWhileDowned = !ability.willUseWhileDowned;
+        if (ev.shift || ability.def.isAutocast) {
+            if (ability.def.canUseWhileDowned) ability.willUseWhileDowned = !ability.willUseWhileDowned;
+            if (ability.def.autoUseWhileInjured) ability.willUseWhileInjured = !ability.willUseWhileInjured;
+            if (ability.def.isAutocast && ability.status.isActive) {
+                ability.UpdateStatus(Active.Off);
+            }
+
             return;
         }
 

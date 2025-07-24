@@ -14,8 +14,4 @@ public abstract class CosmereMod<TSettings> : Verse.Mod where TSettings : Cosmer
     }
 
     public static TSettings Settings => Mod.GetModSettings<TSettings>();
-
-    public override string SettingsCategory() {
-        return "Cosmere";
-    }
 }

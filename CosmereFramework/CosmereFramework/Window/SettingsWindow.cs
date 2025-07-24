@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Framework.Listing;
 using Cosmere.Framework.Settings;
 using Cosmere.Framework.UI;
@@ -14,6 +12,7 @@ public class SettingsWindow {
     private static readonly Padding ContentPadding = new Padding(16f);
 
     private readonly List<CosmereModSettings> allModSettings;
+    private readonly List<TabRecord> cachedTabs;
 
     private readonly ListingForm listing = new ListingForm { verticalSpacing = 6f };
 
@@ -22,34 +21,23 @@ public class SettingsWindow {
     public SettingsWindow(List<CosmereModSettings> allModSettings) {
         this.allModSettings = allModSettings;
         selectedTab = allModSettings.First();
+
+        cachedTabs = this.allModSettings.Select(modSettings => new TabRecord(
+                    modSettings.Name,
+                    delegate { selectedTab = modSettings; },
+                    () => selectedTab == modSettings
+                )
+            )
+            .ToList();
     }
 
     public void DoWindowContents(Rect inRect) {
-        float currentX = inRect.xMin;
-
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter)) {
-            foreach (CosmereModSettings modSettings in allModSettings) {
-                Vector2 size = Text.CalcSize(modSettings.Name);
-                float width = size.x + TabPadding.x * 2f;
-                Rect tabRect = new Rect(currentX, inRect.yMin, width, TabHeight);
-                bool isSelected = selectedTab == modSettings;
-
-                Widgets.DrawBox(tabRect, 1, Texture2D.grayTexture);
-                if (Widgets.ButtonInvisible(tabRect)) {
-                    selectedTab = modSettings;
-                }
-
-                using (new TextBlock(Mouse.IsOver(tabRect) || isSelected ? Color.yellow : Color.white)) {
-                    Widgets.Label(tabRect, modSettings.Name);
-                }
-
-                currentX += width + TabPadding.y;
-            }
-        }
+        Rect rect = new Rect(0, inRect.yMin + 40, inRect.width, TabDrawer.TabHeight);
+        TabDrawer.DrawTabs(rect, cachedTabs);
 
         Rect listingRect = Box.Create(
             inRect.xMin,
-            inRect.yMin + TabHeight,
+            inRect.yMin + 40,
             inRect.width,
             inRect.height - TabHeight - ContentPadding.y * 2,
             ContentPadding,

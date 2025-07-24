@@ -42,4 +42,8 @@ public class Mod : CosmereMod<FrameworkModSettings> {
         settingsWindow ??= new SettingsWindow(allModSettings);
         settingsWindow.DoWindowContents(inRect);
     }
+
+    public override string SettingsCategory() {
+        return "Cosmere";
+    }
 }

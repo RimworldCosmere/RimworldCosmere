@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+    <LoadCosmereMod>Loading Cosmere - Core</LoadCosmereMod>
     <CC_Current_Investiture>Represents this pawn’s connection to the Spiritual Realm. \n\nCurrent Level: {LEVEL}\nHeightening: {HEIGHT}</CC_Current_Investiture>
     <CC_SelectShard_Label>Choose which Shards are active in this game:</CC_SelectShard_Label>
     <CC_Need_CurrentInvestiture>Current Investiture</CC_Need_CurrentInvestiture>

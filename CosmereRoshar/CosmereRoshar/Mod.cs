@@ -5,20 +5,10 @@ using Verse;
 
 namespace Cosmere.Roshar;
 
-public class Mod(ModContentPack content) : Verse.Mod(content) {
-    public static RosharModSettings settings =>
-        Framework.Mod.GetModSettings<RosharModSettings>();
-
-    public static bool enableHighstormPushing => settings.enableHighstormPushing;
-    public static bool enableHighstormDamage => settings.enableHighstormDamage;
-    public static bool enablePawnGlow => settings.enablePawnGlow;
-    public static bool devOptionAutofillSpheres => settings.devOptionAutofillSpheres;
-    public static float bondChanceMultiplier => settings.bondChanceMultiplier;
-}
-
-[StaticConstructorOnStartup]
-public static class ModStartup {
-    static ModStartup() {
-        Startup.Initialize("Cryptiklemur.Cosmere.Roshar");
-    }
+public class Mod(ModContentPack content) : CosmereMod<RosharModSettings>(content, "Roshar") {
+    public static bool enableHighstormPushing => Settings.enableHighstormPushing;
+    public static bool enableHighstormDamage => Settings.enableHighstormDamage;
+    public static bool enablePawnGlow => Settings.enablePawnGlow;
+    public static bool devOptionAutofillSpheres => Settings.devOptionAutofillSpheres;
+    public static float bondChanceMultiplier => Settings.bondChanceMultiplier;
 }

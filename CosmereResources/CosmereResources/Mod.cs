@@ -1,15 +1,7 @@
 ﻿using Cosmere.Framework;
+using Cosmere.Resources.Settings;
 using Verse;
 
 namespace Cosmere.Resources;
 
-public class Mod(ModContentPack content) : Verse.Mod(content) {
-    public static Mod modMod => LoadedModManager.GetMod<Mod>();
-}
-
-[StaticConstructorOnStartup]
-public static class ModStartup {
-    static ModStartup() {
-        Startup.Initialize("Cryptiklemur.Cosmere.Metals");
-    }
-}
+public class Mod(ModContentPack content) : CosmereMod<ResourcesModSettings>(content, "Resources");

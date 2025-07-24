@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Framework.Settings;
 using Cosmere.Framework.Window;
 using UnityEngine;
@@ -18,15 +16,16 @@ public enum LogLevel {
     Verbose,
 }
 
-public class Mod : Verse.Mod {
+public class Mod : CosmereMod<FrameworkModSettings> {
     internal static List<CosmereModSettings> allModSettings = typeof(CosmereModSettings).AllSubclassesNonAbstract()
         .Select(Activator.CreateInstance)
         .Cast<CosmereModSettings>()
+        .Where(s => s.Enabled)
         .ToList();
 
     private SettingsWindow? settingsWindow;
 
-    public Mod(ModContentPack content) : base(content) {
+    public Mod(ModContentPack content) : base(content, "Framework") {
         GetSettings<CosmereSettings>();
     }
 
@@ -42,16 +41,5 @@ public class Mod : Verse.Mod {
     public override void DoSettingsWindowContents(Rect inRect) {
         settingsWindow ??= new SettingsWindow(allModSettings);
         settingsWindow.DoWindowContents(inRect);
-    }
-
-    public override string SettingsCategory() {
-        return "Cosmere";
-    }
-}
-
-[StaticConstructorOnStartup]
-public static class ModStartup {
-    static ModStartup() {
-        Startup.Initialize("CryptikLemur.Cosmere.Framework");
     }
 }

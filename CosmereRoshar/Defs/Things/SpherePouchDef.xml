@@ -59,7 +59,7 @@
     <comps>
       <li Class="Cosmere.Framework.Comp.Thing.ApparelStorageProperties">
         <tabName>CRO_InspectorTab_SpherePouch</tabName>
-        <maxItems>100</maxItems>
+        <maxItems>25</maxItems>
         <defaultStorageSettings>
           <priority>Critical</priority>
           <filter>
@@ -79,7 +79,6 @@
         </fixedStorageSettings>
       </li>
       <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
-          <maxBasedOnInventory>true</maxBasedOnInventory>
           <maxInvestiture>0</maxInvestiture>
       </li>
     </comps>

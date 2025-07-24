@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Hediff;
-using Cosmere.Core.Extension;
 using Cosmere.Core.Gene;
 using Verse;
 
@@ -82,7 +79,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
         List<Pawn> sourcePawns = null!;
 
         if (Scribe.mode == LoadSaveMode.Saving) {
-            sourcePawns = sourceAbilities.Cast<AbstractAbility>().Select(a => a.pawn).Distinct().ToList();
+            sourcePawns = sourceAbilities.Cast<RimWorld.Ability>().Select(a => a.pawn).Distinct().ToList();
         }
 
         Scribe_Collections.Look(ref sourcePawns, "sourcePawns", LookMode.Reference);

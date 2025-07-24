@@ -1,6 +1,8 @@
 using System.Reflection;
+using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Need;
 using Cosmere.Framework.Quickstart;
+using Cosmere.Framework.Thing;
 using RimWorld;
 using Verse;
 
@@ -37,12 +39,20 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner, 4);
-            pawn.apparel.Wear(
-                (Apparel)ThingMaker.MakeThing(
-                    ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch,
-                    GenStuff.RandomStuffFor(ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch)
-                )
+            ApparelWithStorage? pouch = (ApparelWithStorage)ThingMaker.MakeThing(
+                ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch,
+                GenStuff.RandomStuffFor(ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch)
             );
+            Verse.Thing? broam = ThingMaker.MakeThing(
+                ThingDefOf.Cosmere_Roshar_Thing_Broam,
+                Resources.ThingDefOf.RawEmerald
+            );
+            if (broam.TryGetComp(out InvestitureHolder broamInvestiture)) {
+                broamInvestiture.currentInvestitureSelf = broamInvestiture.maxInvestitureSelf;
+            }
+
+            pouch.innerContainer.TryAdd(broam);
+            pawn.apparel.Wear(pouch);
         }
 
         if (pawns.TryPopFront(out pawn)) {

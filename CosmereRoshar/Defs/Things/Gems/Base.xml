@@ -14,7 +14,7 @@
             <li>Cosmere_Currency</li>
         </thingCategories>
         <alwaysHaulable>true</alwaysHaulable>
-        <stackLimit>1000</stackLimit>
+        <stackLimit>200</stackLimit>
         <tradeTags>
             <li>Cosmere_Currency</li>
         </tradeTags>

@@ -4,14 +4,6 @@ using Verse;
 
 namespace Cosmere.Scadrial;
 
-public class Mod(ModContentPack content) : Verse.Mod(content) {
-    public static MistsFrequency mistsFrequency =>
-        Framework.Mod.GetModSettings<ScadrialModSettings>().mistsFrequency;
-}
-
-[StaticConstructorOnStartup]
-public static class ModStartup {
-    static ModStartup() {
-        Startup.Initialize("Cryptiklemur.Cosmere.Scadrial");
-    }
+public class Mod(ModContentPack content) : CosmereMod<ScadrialModSettings>(content, "Scadrial") {
+    public static MistsFrequency mistsFrequency => Settings.mistsFrequency;
 }

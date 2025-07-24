@@ -53,7 +53,9 @@
             <li Class="Cosmere.Core.Comp.Thing.PreventDropOnDownedProperties"/>
             <li><compClass>CompQuality</compClass></li>
             <li Class="CompProperties_Styleable" />
-            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties" />
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <maxInvestiture>0</maxInvestiture> <!-- Gets set by the MetalmindComp -->
+            </li>
         </comps>
     </ThingDef>
 

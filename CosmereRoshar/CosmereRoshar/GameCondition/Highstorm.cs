@@ -31,7 +31,7 @@ public class Highstorm : RimWorld.GameCondition {
 
         if (Find.TickManager.TicksGame % 8 == 0) {
             TryToInfuseThings();
-            if (Mod.settings.enableHighstormPushing) {
+            if (Mod.enableHighstormPushing) {
                 MoveItem();
             }
         }

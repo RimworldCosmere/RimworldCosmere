@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Cosmere.Framework.Settings;
 using Cosmere.Framework.Util;
 using RimWorld;
@@ -51,7 +50,7 @@ public class Quickstarter {
                     () => {
                         Quickstart.PrepareColonists(
                             Find.World.PlayerPawnsForStoryteller.Where(p =>
-                                    p.Spawned && p.Map != null && p.story != null && p.needs != null
+                                    p is { Spawned: true, Map: not null, story: not null, needs: not null }
                                 )
                                 .ToList()
                         );
@@ -61,7 +60,7 @@ public class Quickstarter {
                     GenTicks.TicksPerRealSecond / 2
                 );
             },
-            "GeneratingMap",
+            "CF_Quickstart_StartGame",
             true,
             GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap
         );

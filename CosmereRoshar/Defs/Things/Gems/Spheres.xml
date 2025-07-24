@@ -61,7 +61,7 @@
 
         <comps>
             <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
-                <maxInvestiture>10</maxInvestiture>
+                <maxInvestiture>4</maxInvestiture>
                 <drainRate>0.25</drainRate>
             </li>
         </comps>
@@ -94,7 +94,7 @@
 
         <comps>
             <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
-                <maxInvestiture>59</maxInvestiture>
+                <maxInvestiture>24</maxInvestiture>
                 <drainRate>0.025</drainRate>
             </li>
         </comps>
@@ -127,7 +127,7 @@
 
         <comps>
             <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
-                <maxInvestiture>200</maxInvestiture>
+                <maxInvestiture>60</maxInvestiture>
                 <drainRate>0.25</drainRate>
             </li>
         </comps>

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+	<LoadCosmereMod>Loading Cosmere - Scadrial</LoadCosmereMod>
     <CS_CannotBurn>{PAWN} doesn't have enough {METAL} to burn, and no vial to replenish {PAWN_possessive} reserves.</CS_CannotBurn>
     <CS_CannotFlareAsleep>{PAWN} cannot flare {METAL} while they are sleeping.</CS_CannotFlareAsleep>
     <CS_CannotShoot>{PAWN} is not capable of shooting</CS_CannotShoot>

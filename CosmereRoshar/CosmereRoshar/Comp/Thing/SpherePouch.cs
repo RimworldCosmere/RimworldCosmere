@@ -1,3 +1,4 @@
+using Cosmere.Roshar.Tab;
 using RimWorld;
 using Verse;
 
@@ -34,14 +35,14 @@ public class SpherePouch : ThingComp {
     public override void CompTickInterval(int delta) {
         base.CompTickInterval(delta);
         if (parent.ParentHolder?.ParentHolder is not Pawn pawn) {
-            previousHolder?.def.inspectorTabsResolved.RemoveWhere(x => x is Tab.SpherePouch);
+            previousHolder?.def.inspectorTabsResolved.RemoveWhere(x => x is SphereTab);
             return;
         }
 
         previousHolder = pawn;
 
-        if (pawn.def.inspectorTabsResolved.Exists(t => t is Tab.SpherePouch)) return;
-        pawn.def.inspectorTabsResolved.Add(new Tab.SpherePouch());
+        if (pawn.def.inspectorTabsResolved.Exists(t => t is SphereTab)) return;
+        pawn.def.inspectorTabsResolved.Add(new SphereTab());
     }
 
     public override void PostExposeData() {

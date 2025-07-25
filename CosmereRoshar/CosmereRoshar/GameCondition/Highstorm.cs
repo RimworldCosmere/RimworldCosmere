@@ -1,4 +1,4 @@
-using System;
+using Cosmere.Core.Comp.Thing;
 using Cosmere.Roshar.Comp.Fabrials;
 using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
@@ -7,7 +7,7 @@ using Verse;
 namespace Cosmere.Roshar.GameCondition;
 
 public class Highstorm : RimWorld.GameCondition {
-    private Random mRand = new Random();
+    private readonly Verse.Thing highstorm = ThingMaker.MakeThing(ThingDefOf.Cosmere_Roshar_Thing_Highstorm);
 
     public override void End() {
         base.End();
@@ -42,14 +42,12 @@ public class Highstorm : RimWorld.GameCondition {
             .Where(t => t.Position.Roofed(t.Map))
             .ToList();
         foreach (Verse.Thing thing in things) {
+            if (thing.TryGetComp(out InvestitureHolder investiture)) {
+                investiture.AbsorbInvestitureFrom(highstorm, 5f);
+            }
+
             if (thing.TryGetComp(out Stormlight stormlight)) {
                 stormlight.InfuseStormlight(5f);
-            } else if (thing.def == ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch &&
-                       !thing.Position.Roofed(thing.Map)) {
-                thing.TryGetComp<SpherePouch>()?.InfuseStormlight(5f);
-            } else if (thing.def == Defs.Cosmere_Roshar_SphereLamp_Wall &&
-                       !thing.Position.Roofed(thing.Map)) {
-                thing.TryGetComp<StormlightLamps>()?.InfuseStormlight(5f);
             } else if (thing.def == Defs.Cosmere_Roshar_Apparel_Fabrial_Painrial_Diminisher &&
                        !thing.Position.Roofed(thing.Map)) {
                 thing.TryGetComp<ApparelFabrialDiminisher>()?.InfuseStormlight(5f);

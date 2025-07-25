@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Abstract="True" Name="StormlightLampBase" ParentName="BuildingBase">
+        <minifiedDef>MinifiedThing</minifiedDef>
+        <thingClass>Building_Storage</thingClass>
+        <passability>PassThroughOnly</passability>
+        <fillPercent>0.20</fillPercent>
+        <pathCost>14</pathCost>
+        <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+        <designationCategory>Furniture</designationCategory>
+        <uiOrder>2800</uiOrder>
+        <rotatable>false</rotatable>
+        <uiIconOffset>(0, 0.03)</uiIconOffset>
+        <thingCategories>
+            <li>BuildingsFurniture</li>
+        </thingCategories>
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <damageData>
+                <rect>(0.2,0.2,0.6,0.6)</rect>
+            </damageData>
+        </graphicData>
+        <statBases>
+            <MaxHitPoints>50</MaxHitPoints>
+            <WorkToBuild>300</WorkToBuild>
+            <Flammability>1.0</Flammability>
+        </statBases>
+        <researchPrerequisites>
+            <li>Cosmere_Roshar_SphereLamps</li>
+        </researchPrerequisites>
+        <placeWorkers>
+            <li>PlaceWorker_GlowRadius</li>
+        </placeWorkers>
+        <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+        <inspectorTabs>
+            <li>Cosmere.Roshar.Tab.SphereTab</li>
+        </inspectorTabs>
+        <building>
+            <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+            <maxItemsInCell>25</maxItemsInCell>
+            <storageGroupTag>StormlightLamp</storageGroupTag>
+            <defaultStorageSettings>
+                <priority>Critical</priority>
+                <filter>
+                    <allowedHitPointsConfigurable>false</allowedHitPointsConfigurable>
+                    <categories>
+                        <li>Cosmere_Roshar_ThingCategory_Sphere</li>
+                    </categories>
+                </filter>
+            </defaultStorageSettings>
+            <fixedStorageSettings>
+                <filter>
+                    <allowedHitPointsConfigurable>false</allowedHitPointsConfigurable>
+                    <categories>
+                        <li>Cosmere_Roshar_ThingCategory_Sphere</li>
+                    </categories>
+                </filter>
+            </fixedStorageSettings>
+        </building>
+        <comps>
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <maxInvestiture>0</maxInvestiture>
+            </li>
+            <li Class="Cosmere.Roshar.Comp.Thing.SphereGlowerProperties" />
+            <li Class="CompProperties_MeditationFocus">
+                <statDef>MeditationFocusStrength</statDef>
+                <focusTypes>
+                    <li>Flame</li>
+                </focusTypes>
+                <offsets>
+                    <li Class="FocusStrengthOffset_Lit">
+                        <offset>0.1</offset>
+                    </li>
+                    <li Class="FocusStrengthOffset_BuildingDefsLit">
+                        <defs>
+                            <li>Cosmere_Roshar_Thing_SphereLampWall</li>
+                        </defs>
+                        <offsetPerBuilding>0.01</offsetPerBuilding>
+                        <radius>9.9</radius>
+                        <maxBuildings>8</maxBuildings>
+                        <explanationKey>MeditationFocusPerFlame</explanationKey>
+                        <explanationKeyAbstract>MeditationFocusPerFlameAbstract</explanationKeyAbstract>
+                        <drawRingRadius>false</drawRingRadius>
+                    </li>
+                </offsets>
+            </li>
+        </comps>
+    </ThingDef>
+
+
+    <ThingDef ParentName="StormlightLampBase">
+        <defName>Cosmere_Roshar_Thing_SphereLampWall</defName>
+        <label>sphere lamp</label>
+        <description>A wall-mounted lamp that lights an area using spheres. It is less powerful than a standing lamp, but can be mounted on walls.</description>
+        <rotatable>true</rotatable>
+        <tickerType>Normal</tickerType>
+        <graphicData>
+            <texPath>Things/Item/SphereLampWall-1</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawOffsetNorth>(0,0,0.7)</drawOffsetNorth>
+            <drawOffsetSouth>(0,0,-0.55)</drawOffsetSouth>
+            <drawOffsetWest>(-0.5,0, 0.1)</drawOffsetWest>
+            <drawOffsetEast>(0.5,0, 0.1)</drawOffsetEast>
+            <drawSize>1</drawSize>
+            <damageData>
+                <enabled>false</enabled>
+            </damageData>
+        </graphicData>
+        <uiIconPath>Things/Item/SphereLampWall-1</uiIconPath>
+        <altitudeLayer>BuildingOnTop</altitudeLayer>
+        <costStuffCount>15</costStuffCount>
+        <stuffCategories>
+            <li>Metallic</li>
+            <li>Woody</li>
+            <li>Stony</li>
+        </stuffCategories>
+        <statBases>
+            <WorkToBuild>330</WorkToBuild>
+            <MaxHitPoints>35</MaxHitPoints>
+            <Mass>2</Mass>
+        </statBases>
+        <uiOrder>2991</uiOrder>
+        <passability>Standable</passability>
+        <terrainAffordanceNeeded IsNull="True" />
+        <pathCost>0</pathCost>
+        <overrideMinifiedRot>North</overrideMinifiedRot>
+        <minifiedDrawOffset>(0, 0, 0.2)</minifiedDrawOffset>
+        <building>
+            <isEdifice>false</isEdifice>
+            <isAttachment>true</isAttachment>
+        </building>
+        <placeWorkers>
+            <li>Placeworker_AttachedToWall</li>
+        </placeWorkers>
+    </ThingDef>
+</Defs>

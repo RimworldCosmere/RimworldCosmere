@@ -1,5 +1,5 @@
+using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Util;
-using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.Extension;
@@ -13,7 +13,7 @@ public static class ThingExtension {
         return MetalDetector.GetMetal(thing);
     }
 
-    public static float GetInvestiture(this Thing thing) {
-        return thing.GetStatValue(StatDefOf.Cosmere_Investiture);
+    public static InvestitureHolder? GetInvestiture(this Thing thing) {
+        return thing.TryGetComp<InvestitureHolder>();
     }
 }

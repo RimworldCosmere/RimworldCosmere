@@ -54,11 +54,11 @@
       <developmentalStageFilter>Child, Adult</developmentalStageFilter>
     </apparel>
     <inspectorTabs>
-      <li>Cosmere.Roshar.Tab.SpherePouch</li>
+      <li>Cosmere.Roshar.Tab.SphereTab</li>
     </inspectorTabs>
     <comps>
       <li Class="Cosmere.Framework.Comp.Thing.ApparelStorageProperties">
-        <tabName>CRO_InspectorTab_SpherePouch</tabName>
+        <tabName>CRO_InspectorTab_SphereTab</tabName>
         <maxItems>25</maxItems>
         <defaultStorageSettings>
           <priority>Critical</priority>

@@ -8,18 +8,18 @@ using Verse.Sound;
 
 namespace Cosmere.Framework.InspectorTab;
 
-public class ApparelStorage : ITab_Storage {
+public class StorageWithInventory : ITab_Storage {
     private static readonly Vector2 WinSize = new Vector2(700f, 480f);
     private static readonly List<Verse.Thing> workingInvList = [];
     private Vector2 scrollPosition = Vector2.zero;
     private float scrollViewHeight;
 
-    public ApparelStorage() {
+    public StorageWithInventory() {
         size = WinSize;
         labelKey = "TabStorage";
     }
 
-    public ApparelStorage(string labelKey) {
+    public StorageWithInventory(string labelKey) {
         size = WinSize;
         this.labelKey = labelKey;
     }
@@ -32,9 +32,19 @@ public class ApparelStorage : ITab_Storage {
         }
     }
 
+    private IEnumerable<Verse.Thing> heldThings {
+        get {
+            if (SelThing is ApparelWithStorage apparelWithStorage) return apparelWithStorage.GetDirectlyHeldThings();
+            if (SelThing is ISlotGroupParent slotGroupParent) return slotGroupParent.GetSlotGroup().HeldThings;
+
+            return [];
+        }
+    }
+
     private Pawn? selPawn => SelThing as Pawn;
 
-    protected override IStoreSettingsParent SelStoreSettingsParent => SelStorage;
+    protected override IStoreSettingsParent? SelStoreSettingsParent => SelThing as IStoreSettingsParent;
+    // public override bool IsVisible => true;
 
     private bool CanControl {
         get {
@@ -77,7 +87,7 @@ public class ApparelStorage : ITab_Storage {
             Widgets.BeginScrollView(outRect, ref scrollPosition, viewRect);
 
             workingInvList.Clear();
-            workingInvList.AddRange(SelStorage.innerContainer);
+            workingInvList.AddRange(heldThings);
             foreach (Verse.Thing t in workingInvList) {
                 DrawThingRow(ref curY, viewRect.width, t);
             }
@@ -98,7 +108,7 @@ public class ApparelStorage : ITab_Storage {
         Widgets.InfoCardButton(rect.width - 24f, y, thing);
         rect.width -= 24f;
         bool disabled = false;
-        if (CanControl) {
+        if (CanControl && SelThing is ApparelWithStorage) {
             Rect rect2 = new Rect(rect.width - 24f, y, 24f, 24f);
             bool dropLocked = thing is Apparel apparel && SelPawn?.apparel != null && SelPawn.apparel.IsLocked(apparel);
             disabled = dropLocked;

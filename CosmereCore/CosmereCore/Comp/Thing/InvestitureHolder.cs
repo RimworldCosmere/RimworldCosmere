@@ -8,6 +8,7 @@ namespace Cosmere.Core.Comp.Thing;
 
 public class InvestitureHolderProperties : CompProperties {
     public float drainRate = 0f;
+    public bool isInfinite = false;
     public float? maxInvestiture;
     public bool maxIsInfinity = false;
     public bool shareInvestitureByDefault = true;
@@ -51,7 +52,7 @@ public class InvestitureHolder : ThingComp {
     public bool sharingInvestiture;
 
     public float currentInvestitureSelf {
-        get => currentInvestitureSelfInt;
+        get => props.isInfinite ? float.PositiveInfinity : currentInvestitureSelfInt;
         set => currentInvestitureSelfInt = Mathf.Max(0, Mathf.Min(value, maxInvestitureSelf));
     }
 
@@ -79,8 +80,8 @@ public class InvestitureHolder : ThingComp {
                     }
 
                     break;
-                case IStorageGroupMember storageGroupMember:
-                    foreach (Verse.Thing thing in storageGroupMember.Group.HeldThings) {
+                case ISlotGroupParent storageGroupParent:
+                    foreach (Verse.Thing thing in storageGroupParent.GetSlotGroup().HeldThings) {
                         if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
                         things.Add(thing);
                     }

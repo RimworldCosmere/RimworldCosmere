@@ -1,11 +1,12 @@
 using Cosmere.Framework.Comp.Thing;
+using Cosmere.Framework.InspectorTab;
 using Cosmere.Framework.Object;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Framework.Thing;
 
-public class ApparelWithStorage : Apparel, IThingHolder, IHaulDestination, IThingHolderTickable {
+public class ApparelWithStorage : Apparel, IHaulDestination, IThingHolderTickable {
     public ThingOwner<Verse.Thing> innerContainer;
     private StorageSettings settings;
     private ApparelStorage? storageCompCache;
@@ -82,7 +83,7 @@ public class ApparelWithStorage : Apparel, IThingHolder, IHaulDestination, IThin
 
     public override void Notify_Unequipped(Pawn pawn) {
         base.Notify_Unequipped(pawn);
-        pawn.def.inspectorTabsResolved.RemoveWhere(x => x is InspectorTab.ApparelStorage);
+        pawn.def.inspectorTabsResolved.RemoveWhere(x => x is StorageWithInventory);
     }
 
     public override void Notify_DebugSpawned() {
@@ -93,7 +94,7 @@ public class ApparelWithStorage : Apparel, IThingHolder, IHaulDestination, IThin
     public override void Notify_Equipped(Pawn pawn) {
         base.Notify_Equipped(pawn);
         factionInt = pawn.Faction;
-        pawn.def.inspectorTabsResolved.AddUnique(new InspectorTab.ApparelStorage(storageComp.tabName));
+        pawn.def.inspectorTabsResolved.AddUnique(new StorageWithInventory(storageComp.tabName));
         if (!Map.haulDestinationManager.AllHaulDestinations.Contains(this)) {
             Map.haulDestinationManager.AddHaulDestination(this);
         }

@@ -32,7 +32,6 @@ public static class Defs {
     public static JobDef Cosmere_Roshar_CastAbilityOnTarget;
 
     //ThingDef
-    public static ThingDef Cosmere_Roshar_SphereLamp_Wall;
     public static ThingDef Cosmere_Roshar_FabrialCage_Pewter;
     public static ThingDef Cosmere_Roshar_FabrialCage_Tin;
     public static ThingDef Cosmere_Roshar_BasicFabrial_Augmenter;

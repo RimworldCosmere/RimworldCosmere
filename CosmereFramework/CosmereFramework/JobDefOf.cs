@@ -11,7 +11,7 @@ namespace Cosmere.Framework;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class JobDefOf {
-    public static JobDef Cosmere_HaulToApparelWithStorage;
+    public static JobDef Cosmere_HaulToInnerStorage;
 
     static JobDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));

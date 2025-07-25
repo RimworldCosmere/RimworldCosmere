@@ -1,89 +1,89 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <Defs>
-  <ThingDef ParentName="ApparelBase">
-    <thingClass>Cosmere.Framework.Thing.ApparelWithStorage</thingClass>
-    <defName>Cosmere_Roshar_Apparel_SpherePouch</defName>
-    <label>sphere pouch</label>
-    <description>A leather pouch used to carry infused spheres, allowing Radiants to easily draw Stormlight.</description>
-    <graphicData>
-      <texPath>Things/Apparel/SpherePouch</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <tickerType>Normal</tickerType>
-    <techLevel>Animal</techLevel>
-    <statBases>
-      <Mass>3</Mass>
-      <WorkToMake>1400</WorkToMake>
-      <Flammability>0.4</Flammability>
-      <EquipDelay>2</EquipDelay>
-    </statBases>
-    <thingSetMakerTags>
-      <li>RewardStandardQualitySuper</li>
-    </thingSetMakerTags>
-    <recipeMaker>
-      <researchPrerequisite>ComplexClothing</researchPrerequisite>
-      <workSkill>Crafting</workSkill>
-      <displayPriority>210</displayPriority>
-      <recipeUsers>
-        <li>ElectricTailoringBench</li>
-        <li>HandTailoringBench</li>
-      </recipeUsers>
-    </recipeMaker>
-    <costStuffCount>70</costStuffCount>
-    <stuffCategories>
-      <li>Fabric</li>
-      <li>Leathery</li>
-    </stuffCategories>
-    <thingCategories>
-      <li>ApparelUtility</li>
-    </thingCategories>
-    <apparel>
-      <countsAsClothingForNudity>false</countsAsClothingForNudity>
-      <careIfWornByCorpse>false</careIfWornByCorpse>
-      <careIfDamaged>false</careIfDamaged>
-      <wearPerDay>0</wearPerDay>
-      <bodyPartGroups>
-        <li>Waist</li>
-      </bodyPartGroups>
-      <layers>
-        <li>Belt</li>
-      </layers>
-      <tags>
-        <li>BeltDefense</li>
-      </tags>
-      <developmentalStageFilter>Child, Adult</developmentalStageFilter>
-    </apparel>
-    <inspectorTabs>
-      <li>Cosmere.Roshar.Tab.SphereTab</li>
-    </inspectorTabs>
-    <comps>
-      <li Class="Cosmere.Framework.Comp.Thing.ApparelStorageProperties">
-        <tabName>CRO_InspectorTab_SphereTab</tabName>
-        <maxItems>25</maxItems>
-        <defaultStorageSettings>
-          <priority>Critical</priority>
-          <filter>
-            <allowedHitPointsConfigurable>false</allowedHitPointsConfigurable>
-            <categories>
-              <li>Cosmere_Roshar_ThingCategory_Sphere</li>
-            </categories>
-          </filter>
-        </defaultStorageSettings>
-        <fixedStorageSettings>
-          <filter>
-            <allowedHitPointsConfigurable>false</allowedHitPointsConfigurable>
-            <categories>
-              <li>Cosmere_Roshar_ThingCategory_Sphere</li>
-            </categories>
-          </filter>
-        </fixedStorageSettings>
-      </li>
-      <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
-          <maxInvestiture>0</maxInvestiture>
-      </li>
-    </comps>
-    <tradeTags>
-      <li>Armor</li>
-    </tradeTags>
-  </ThingDef>
+    <ThingDef ParentName="ApparelBase">
+        <defName>Cosmere_Roshar_Apparel_SpherePouch</defName>
+        <label>sphere pouch</label>
+        <description>A leather pouch used to carry infused spheres, allowing Radiants to easily draw Stormlight.</description>
+        <graphicData>
+            <texPath>Things/Apparel/SpherePouch</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+        </graphicData>
+        <tickerType>Normal</tickerType>
+        <techLevel>Animal</techLevel>
+        <statBases>
+            <Mass>3</Mass>
+            <WorkToMake>1400</WorkToMake>
+            <Flammability>0.4</Flammability>
+            <EquipDelay>2</EquipDelay>
+        </statBases>
+        <thingSetMakerTags>
+            <li>RewardStandardQualitySuper</li>
+        </thingSetMakerTags>
+        <recipeMaker>
+            <researchPrerequisite>ComplexClothing</researchPrerequisite>
+            <workSkill>Crafting</workSkill>
+            <displayPriority>210</displayPriority>
+            <recipeUsers>
+                <li>ElectricTailoringBench</li>
+                <li>HandTailoringBench</li>
+            </recipeUsers>
+        </recipeMaker>
+        <costStuffCount>70</costStuffCount>
+        <stuffCategories>
+            <li>Fabric</li>
+            <li>Leathery</li>
+        </stuffCategories>
+        <thingCategories>
+            <li>ApparelUtility</li>
+        </thingCategories>
+        <apparel>
+            <countsAsClothingForNudity>false</countsAsClothingForNudity>
+            <careIfWornByCorpse>false</careIfWornByCorpse>
+            <careIfDamaged>false</careIfDamaged>
+            <wearPerDay>0</wearPerDay>
+            <bodyPartGroups>
+                <li>Waist</li>
+            </bodyPartGroups>
+            <layers>
+                <li>Belt</li>
+            </layers>
+            <tags>
+                <li>BeltDefense</li>
+            </tags>
+            <developmentalStageFilter>Child, Adult</developmentalStageFilter>
+        </apparel>
+        <inspectorTabs>
+            <li>Cosmere.Roshar.Tab.SphereTab</li>
+        </inspectorTabs>
+        <comps>
+            <li Class="Cosmere.Framework.Comp.Thing.InnerStorageProperties">
+                <tabName>CRO_InspectorTab_SphereTab</tabName>
+                <maxItems>25</maxItems>
+                <defaultStorageSettings>
+                    <priority>Critical</priority>
+                    <filter>
+                        <allowedHitPointsConfigurable>false</allowedHitPointsConfigurable>
+                        <categories>
+                            <li>Cosmere_Roshar_ThingCategory_Sphere</li>
+                        </categories>
+                    </filter>
+                </defaultStorageSettings>
+                <fixedStorageSettings>
+                    <filter>
+                        <allowedHitPointsConfigurable>false</allowedHitPointsConfigurable>
+                        <categories>
+                            <li>Cosmere_Roshar_ThingCategory_Sphere</li>
+                        </categories>
+                    </filter>
+                </fixedStorageSettings>
+            </li>
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <maxInvestiture>0</maxInvestiture>
+            </li>
+        </comps>
+        <tradeTags>
+            <li>Armor</li>
+        </tradeTags>
+    </ThingDef>
 </Defs>

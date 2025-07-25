@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <WorkGiverDef>
-        <defName>Cosmere_HaulToApparel</defName>
-        <label>haul things to apparel</label>
-        <giverClass>Cosmere.Framework.WorkGiver.HaulToApparel</giverClass>
+        <defName>Cosmere_HaulToInnerStorage</defName>
+        <label>haul things to storage</label>
+        <giverClass>Cosmere.Framework.WorkGiver.HaulToInnerStorage</giverClass>
         <workType>BasicWorker</workType>
         <verb>haul</verb>
         <gerund>hauling</gerund>

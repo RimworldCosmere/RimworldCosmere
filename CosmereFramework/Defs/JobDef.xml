@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <JobDef>
-        <defName>Cosmere_HaulToApparelWithStorage</defName>
-        <driverClass>Cosmere.Framework.JobDriver.HaulToApparel</driverClass>
+        <defName>Cosmere_HaulToInnerStorage</defName>
+        <driverClass>Cosmere.Framework.JobDriver.HaulToInnerStorage</driverClass>
         <reportString>hauling TargetA.</reportString>
         <suspendable>false</suspendable>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>

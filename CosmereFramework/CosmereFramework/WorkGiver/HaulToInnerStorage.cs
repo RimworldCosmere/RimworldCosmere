@@ -1,4 +1,4 @@
-using Cosmere.Framework.Thing;
+using Cosmere.Framework.Comp.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -6,7 +6,7 @@ using Verse.AI;
 
 namespace Cosmere.Framework.WorkGiver;
 
-public class HaulToApparel : WorkGiver_HaulGeneral {
+public class HaulToInnerStorage : WorkGiver_HaulGeneral {
     public override Job? JobOnThing(Pawn p, Verse.Thing t, bool forced = false) {
         StoragePriority currentPriority = StoreUtility.CurrentStoragePriorityOf(t, forced);
         if (!StoreUtility.TryFindBestBetterStorageFor(
@@ -22,12 +22,11 @@ public class HaulToApparel : WorkGiver_HaulGeneral {
             return null;
         }
 
-        if (haulDestination is not ApparelWithStorage apparelWithStorage) return null;
-        if (!apparelWithStorage.Spawned && !p.Equals(apparelWithStorage.SpawnedParentOrMe)) return null;
+        if (haulDestination is not InnerStorage innerStorage) return null;
+        if (!innerStorage.parent.Spawned && !p.Equals(innerStorage.parent.SpawnedParentOrMe)) return null;
 
-        ThingOwner interactableThingOwner = apparelWithStorage.TryGetInnerInteractableThingOwner();
-        Job job = JobMaker.MakeJob(JobDefOf.Cosmere_HaulToApparelWithStorage, t, apparelWithStorage);
-        job.count = Mathf.Min(t.stackCount, interactableThingOwner.GetCountCanAccept(t));
+        Job job = JobMaker.MakeJob(JobDefOf.Cosmere_HaulToInnerStorage, t, innerStorage.parent);
+        job.count = Mathf.Min(t.stackCount, innerStorage.innerContainer.GetCountCanAccept(t));
         job.haulMode = HaulMode.ToContainer;
 
         return job;

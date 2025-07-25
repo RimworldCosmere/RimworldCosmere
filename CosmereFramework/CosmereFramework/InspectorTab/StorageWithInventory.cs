@@ -1,5 +1,5 @@
 using System;
-using Cosmere.Framework.Thing;
+using Cosmere.Framework.Comp.Thing;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -24,27 +24,11 @@ public class StorageWithInventory : ITab_Storage {
         this.labelKey = labelKey;
     }
 
-    private ApparelWithStorage SelStorage {
-        get {
-            if (SelThing is ApparelWithStorage storage) return storage;
+    private InnerStorage SelStorage => SelThing.TryGetComp<InnerStorage>();
 
-            return (ApparelWithStorage)selPawn?.apparel?.WornApparel?.FirstOrDefault(a => a is ApparelWithStorage)!;
-        }
-    }
+    private IEnumerable<Verse.Thing> heldThings => SelStorage.innerContainer ?? [];
 
-    private IEnumerable<Verse.Thing> heldThings {
-        get {
-            if (SelThing is ApparelWithStorage apparelWithStorage) return apparelWithStorage.GetDirectlyHeldThings();
-            if (SelThing is ISlotGroupParent slotGroupParent) return slotGroupParent.GetSlotGroup().HeldThings;
-
-            return [];
-        }
-    }
-
-    private Pawn? selPawn => SelThing as Pawn;
-
-    protected override IStoreSettingsParent? SelStoreSettingsParent => SelThing as IStoreSettingsParent;
-    // public override bool IsVisible => true;
+    protected override IStoreSettingsParent SelStoreSettingsParent => SelStorage;
 
     private bool CanControl {
         get {
@@ -108,7 +92,7 @@ public class StorageWithInventory : ITab_Storage {
         Widgets.InfoCardButton(rect.width - 24f, y, thing);
         rect.width -= 24f;
         bool disabled = false;
-        if (CanControl && SelThing is ApparelWithStorage) {
+        if (CanControl) {
             Rect rect2 = new Rect(rect.width - 24f, y, 24f, 24f);
             bool dropLocked = thing is Apparel apparel && SelPawn?.apparel != null && SelPawn.apparel.IsLocked(apparel);
             disabled = dropLocked;

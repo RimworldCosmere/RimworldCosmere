@@ -1,20 +1,16 @@
-using Cosmere.Framework.Thing;
+using Cosmere.Framework.Comp.Thing;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace Cosmere.Framework.JobDriver;
 
-public class HaulToApparel : JobDriver_HaulToContainer {
-    private ApparelWithStorage storage => (ApparelWithStorage)Container;
-
-    public override bool TryMakePreToilReservations(bool errorOnFailed) {
-        return base.TryMakePreToilReservations(errorOnFailed);
-    }
+public class HaulToInnerStorage : JobDriver_HaulToContainer {
+    private InnerStorage? storage => Container.TryGetComp<InnerStorage>();
 
     protected override IEnumerable<Toil> MakeNewToils() {
         this.FailOnDestroyedOrNull(TargetIndex.A);
-        this.FailOn(() => Container is not ApparelWithStorage);
+        this.FailOn(() => storage is null);
         this.FailOn(
             delegate {
                 Verse.Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.B).Thing;
@@ -22,7 +18,7 @@ public class HaulToApparel : JobDriver_HaulToContainer {
                     return true;
                 }
 
-                if (storage.Destroyed) {
+                if (storage!.parent.Destroyed) {
                     if (job.targetQueueB.NullOrEmpty()) {
                         return true;
                     }
@@ -42,14 +38,11 @@ public class HaulToApparel : JobDriver_HaulToContainer {
                     job.targetB = nextTarget;
                 }
 
-                ThingOwner thingOwner = storage.TryGetInnerInteractableThingOwner();
-                if (thingOwner != null && !thingOwner.CanAcceptAnyOf(ThingToCarry)) {
+                if (!storage.innerContainer.CanAcceptAnyOf(ThingToCarry)) {
                     return true;
                 }
 
-                if (!storage.Accepts(ThingToCarry)) return true;
-
-                return false;
+                return !storage.Accepts(ThingToCarry);
             }
         );
         this.FailOnForbidden(TargetIndex.B);

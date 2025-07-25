@@ -1,5 +1,5 @@
 using System.Text;
-using Cosmere.Framework.Thing;
+using Cosmere.Framework.Comp.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -72,36 +72,24 @@ public class InvestitureHolder : ThingComp {
     public List<Verse.Thing> children {
         get {
             List<Verse.Thing> things = [];
-            switch (parent) {
-                case ApparelWithStorage apparelWithStorage:
-                    foreach (Verse.Thing? thing in apparelWithStorage.innerContainer ?? []) {
-                        if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
-                        things.Add(thing);
-                    }
 
-                    break;
+            bool ThingWithInvestiture(Verse.Thing thing) {
+                return thing != parent && thing.HasComp<InvestitureHolder>();
+            }
+
+            if (parent.TryGetComp(out InnerStorage innerStorage)) {
+                things.AddRange(innerStorage.innerContainer.Where(ThingWithInvestiture));
+            }
+
+            switch (parent) {
                 case ISlotGroupParent storageGroupParent:
-                    foreach (Verse.Thing thing in storageGroupParent.GetSlotGroup().HeldThings) {
-                        if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
-                        things.Add(thing);
-                    }
+                    things.AddRange(storageGroupParent.GetSlotGroup().HeldThings.Where(ThingWithInvestiture));
 
                     break;
                 case Pawn pawn:
-                    foreach (Verse.Thing thing in pawn.inventory?.innerContainer ?? []) {
-                        if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
-                        things.Add(thing);
-                    }
-
-                    foreach (ThingWithComps thing in pawn.equipment?.AllEquipmentListForReading ?? []) {
-                        if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
-                        things.Add(thing);
-                    }
-
-                    foreach (Apparel thing in pawn.apparel?.WornApparel ?? []) {
-                        if (thing == parent || !thing.HasComp<InvestitureHolder>()) continue;
-                        things.Add(thing);
-                    }
+                    things.AddRange(pawn.inventory?.innerContainer?.Where(ThingWithInvestiture) ?? []);
+                    things.AddRange(pawn.equipment?.AllEquipmentListForReading?.Where(ThingWithInvestiture) ?? []);
+                    things.AddRange(pawn.apparel?.WornApparel?.Where(ThingWithInvestiture) ?? []);
 
                     break;
             }

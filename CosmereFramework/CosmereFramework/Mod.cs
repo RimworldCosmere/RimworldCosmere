@@ -25,11 +25,12 @@ public class Mod : CosmereMod<FrameworkModSettings> {
 
     private SettingsWindow? settingsWindow;
 
-    public Mod(ModContentPack content) : base(content, "Framework") {
+    public Mod(ModContentPack content) : base(content) {
         GetSettings<CosmereSettings>();
     }
 
     public static bool debugMode => GetModSettings<FrameworkModSettings>().debugMode;
+
     public static LogLevel logLevel => GetModSettings<FrameworkModSettings>().logLevel;
 
     public static List<CosmereModSettings> cosmereSettings => allModSettings;

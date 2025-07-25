@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Build Asset Bundles (Mac)" type="PowerShellRunType" factoryName="PowerShell" scriptUrl="$PROJECT_DIR$/../RimworldCosmere\buildAllCosmereBundles.ps1" workingDirectory="$PROJECT_DIR$" executablePath="/usr/local/bin/pwsh">
+  <configuration default="false" name="Build Asset Bundles (Mac)" type="PowerShellRunType" factoryName="PowerShell" scriptUrl="$PROJECT_DIR$/buildAllCosmereBundles.ps1" workingDirectory="$PROJECT_DIR$" executablePath="/usr/local/bin/pwsh">
     <envs />
     <method v="2" />
   </configuration>

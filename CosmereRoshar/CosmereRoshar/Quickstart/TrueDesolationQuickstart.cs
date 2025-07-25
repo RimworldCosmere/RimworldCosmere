@@ -16,7 +16,9 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         ?.assemblies.loadedAssemblies.FirstOrDefault();
 
     public override int mapSize => 100;
+
     public override TaggedString description => "Used to test True Desolation pawns";
+
     public override StorytellerDef storyteller => StorytellerDefOf.Cassandra;
 
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;

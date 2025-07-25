@@ -22,7 +22,9 @@ public class HaulToInnerStorage : WorkGiver_HaulGeneral {
             return null;
         }
 
+        Logger.Verbose($"{p.Name} wants to bring {t.LabelCap} to {haulDestination}");
         if (haulDestination is not InnerStorage innerStorage) return null;
+        Logger.Verbose($"Parent stored and not equal to pawn? Spawned={innerStorage.parent.Spawned} Thing={innerStorage.parent.SpawnedParentOrMe}");
         if (!innerStorage.parent.Spawned && !p.Equals(innerStorage.parent.SpawnedParentOrMe)) return null;
 
         Job job = JobMaker.MakeJob(JobDefOf.Cosmere_HaulToInnerStorage, t, innerStorage.parent);

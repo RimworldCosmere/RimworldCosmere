@@ -3,6 +3,7 @@ using Cosmere.Framework.Settings;
 using Cosmere.Framework.Util;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 using Verse.Profile;
 
@@ -11,9 +12,16 @@ namespace Cosmere.Framework.Quickstart;
 [StaticConstructorOnStartup]
 public class Quickstarter {
     private static bool Started;
-    private static readonly AbstractQuickstart? Quickstart;
+    private static bool Finished;
+    internal static Quickstarter? instance;
+    public readonly AbstractQuickstart? Quickstart;
+    private readonly StatusBox? statusBox;
 
     static Quickstarter() {
+        instance = new Quickstarter();
+    }
+
+    private Quickstarter() {
         if (!Prefs.DevMode) return;
         string? quickstartName = Mod.GetModSettings<FrameworkModSettings>().quickstartName;
         if (quickstartName == null) return;
@@ -25,22 +33,26 @@ public class Quickstarter {
         }
 
         Quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
+        statusBox = new StatusBox(this);
 
         LongEventHandler.ExecuteWhenFinished(() => {
                 if (Started) return;
+                Finished = false;
                 Started = true;
                 TryStartGame();
+                Finished = true;
             }
         );
     }
 
     private static string seed => GenText.RandomSeedString();
 
-    private static void TryStartGame() {
-        if (Quickstart == null) return;
-        if (Current.ProgramState != ProgramState.Entry) return;
-        if (Find.GameInitData != null || Current.Game != null) return;
+    public void OnGUI() {
+        if (Quickstart == null || Finished) return;
+        statusBox?.OnGUI();
+    }
 
+    private void TryStartGame() {
         LongEventHandler.QueueLongEvent(
             () => {
                 MemoryUtility.ClearAllMapsAndWorld();
@@ -48,7 +60,7 @@ public class Quickstarter {
                 PageUtility.InitGameStart();
                 DelayedActionScheduler.Schedule(
                     () => {
-                        Quickstart.PrepareColonists(
+                        Quickstart!.PrepareColonists(
                             Find.World.PlayerPawnsForStoryteller.Where(p =>
                                     p is { Spawned: true, Map: not null, story: not null, needs: not null }
                                 )
@@ -64,20 +76,19 @@ public class Quickstarter {
             true,
             GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap
         );
-        Quickstart.PostStart();
+        Quickstart!.PostStart();
     }
 
-    private static void ApplyConfiguration() {
-        if (Quickstart == null) return;
+    private void ApplyConfiguration() {
         Current.ProgramState = ProgramState.Entry;
         Current.Game = new Game {
             InitData = new GameInitData(),
-            Scenario = Quickstart.scenario.scenario,
+            Scenario = Quickstart!.scenario.scenario,
         };
         Find.Scenario.PreConfigure();
         Current.Game.storyteller = new Storyteller(Quickstart.storyteller, Quickstart.difficulty);
         Current.Game.World = WorldGenerator.GenerateWorld(
-            0.05f,
+            Quickstart.planetCoverage,
             seed,
             OverallRainfall.Normal,
             OverallTemperature.Normal,
@@ -89,5 +100,15 @@ public class Quickstarter {
         Find.Scenario.PostIdeoChosen();
 
         Quickstart.PostApplyConfiguration();
+    }
+
+    internal static void DrawDebugToolbarButton(WidgetRow widgets) {
+        const string quickstartButtonTooltip = "Click to quick-generate a new map.";
+        if (widgets.ButtonIcon(ContentFinder<Texture2D>.Get("UI/Debug/quickstartIcon"), quickstartButtonTooltip)) {
+            Current.ProgramState = ProgramState.Entry;
+            Current.Game = null;
+            Started = false;
+            instance = new Quickstarter();
+        }
     }
 }

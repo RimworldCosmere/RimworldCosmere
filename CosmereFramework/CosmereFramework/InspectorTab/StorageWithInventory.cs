@@ -39,8 +39,7 @@ public class StorageWithInventory : ITab_Storage {
                 }
 
                 if (
-                    SelPawn.IsPrisonerOfColony &&
-                    (PrisonBreakUtility.IsPrisonBreaking(SelPawn) || SelPawn.CurJob is { exitMapOnArrival: true })
+                    SelPawn.IsPrisonerOfColony && (PrisonBreakUtility.IsPrisonBreaking(SelPawn) || SelPawn.CurJob is { exitMapOnArrival: true })
                 ) {
                     return false;
                 }
@@ -111,8 +110,7 @@ public class StorageWithInventory : ITab_Storage {
                     SoundDefOf.Tick_High.PlayOneShotOnCamera();
                     InterfaceDrop(thing);
                 };
-                if (!ModsConfig.BiotechActive ||
-                    !MechanitorUtility.TryConfirmBandwidthLossFromDroppingThing(SelPawn, thing, action)) {
+                if (!ModsConfig.BiotechActive || !MechanitorUtility.TryConfirmBandwidthLossFromDroppingThing(SelPawn, thing, action)) {
                     action();
                 }
             }

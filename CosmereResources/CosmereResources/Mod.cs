@@ -4,4 +4,4 @@ using Verse;
 
 namespace Cosmere.Resources;
 
-public class Mod(ModContentPack content) : CosmereMod<ResourcesModSettings>(content, "Resources");
+public class Mod(ModContentPack content) : CosmereMod<ResourcesModSettings>(content);

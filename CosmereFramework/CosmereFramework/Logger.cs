@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -12,12 +11,19 @@ namespace Cosmere.Framework;
 
 public static class Logger {
     private static readonly Dictionary<LogLevel, Color> LOGColors = new Dictionary<LogLevel, Color> {
-        { LogLevel.None, Color.black },
-        { LogLevel.Important, Color.green },
-        { LogLevel.Error, Color.red },
-        { LogLevel.Warning, Color.yellow },
-        { LogLevel.Info, Color.blue },
-        { LogLevel.Verbose, Color.gray },
+        {
+            LogLevel.None, Color.black
+        }, {
+            LogLevel.Important, Color.green
+        }, {
+            LogLevel.Error, Color.red
+        }, {
+            LogLevel.Warning, Color.yellow
+        }, {
+            LogLevel.Info, Color.blue
+        }, {
+            LogLevel.Verbose, Color.gray
+        },
     };
 
     private static bool CurrentlyLoggingError;
@@ -43,16 +49,14 @@ public static class Logger {
                 }
 
                 string? mod = method?.DeclaringType?.Assembly.GetName().Name;
-                ns = mod?.Split('.')[0].Replace("Cosmere", "");
+                ns = mod?.Split('.')[1];
                 if (frame?.GetFileName() != null && mod != null) {
                     string filename = Regex.Replace(
                         frame.GetFileName()!,
-                        @"^.*?(RimworldCosmere\\RimworldCosmere\\|RimWorld\\Mods\\)+\\*",
+                        @"^.*?(RimworldCosmere[\\/]RimworldCosmere[\\/]|RimWorld[\\/]Mods[\\/])+[\\/]*",
                         ""
                     );
-                    filename = filename.Replace(mod, "").TrimStart('\\');
-                    if (filename == ".cs") filename = $"{mod}.cs";
-                    filename = filename.TrimStart('\\');
+                    filename = filename.Replace(mod.Replace(".", ""), "").TrimStart('\\').TrimStart('/').Replace(".cs", "");
 
                     stack = $"[{filename}:{frame.GetFileLineNumber()}]";
                 }
@@ -64,7 +68,7 @@ public static class Logger {
 
             if (level >= LogLevel.Error) CurrentlyLoggingError = true;
             Log.Message(
-                $"{ColoredMessage(LOGColors[level], $"[Cosmere - {ns}]{stack}[{level.ToString()}]")} {message}"
+                $"{ColoredMessage(LOGColors[level], $"[Cosmere.{ns}]{stack}[{level.ToString()}]")} {message}"
             );
             Log.ResetMessageCount();
         } catch (Exception e) {

@@ -11,6 +11,7 @@
             </damageData>
         </graphicData>
         <statBases>
+            <StyleDominance MayRequire="Ludeon.RimWorld.Ideology">5</StyleDominance>
             <WorkToBuild>300</WorkToBuild>
             <Flammability>1.0</Flammability>
         </statBases>
@@ -20,7 +21,13 @@
         <inspectorTabs>
             <li>Cosmere.Roshar.Tab.SphereTab</li>
         </inspectorTabs>
+        <placeWorkers>
+            <li>PlaceWorker_MeditationOffsetBuildingsNear</li>
+        </placeWorkers>
+        <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+        <designationCategory>Furniture</designationCategory>
         <comps Inherit="False">
+            <li Class="CompProperties_Styleable" />
             <li Class="Cosmere.Framework.Comp.Thing.InnerStorageProperties">
                 <tabName>CRO_InspectorTab_SphereTab</tabName>
                 <maxItems>25</maxItems>

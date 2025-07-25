@@ -74,7 +74,7 @@ If you’d like to contribute:
 | Cosmere Core       | Stable      | Needed for all content mods             |
 | Cosmere Metals     | Stable      | MetalDefs and worldgen integration      |
 | Cosmere - Scadrial | In Progress | Allomancy and Feruchemy mostly complete |
-| Cosmere - Roshar   | Planned     | Design stage                            |
+| Cosmere - Roshar   | In Progress | Radiant Orders and Fabrials in progress |
 | Cosmere - Nalthis  | Planned     | Design stage                            |
 | Cosmere - Sel      | Planned     | Design stage                            |
 
@@ -94,5 +94,5 @@ Dragonsteel for all of your work!
 Please do not redistribute standalone modules without credit and attribution.  
 This is a fan project not affiliated with Brandon Sanderson or Dragonsteel Entertainment.
 
-Besides adhearing to the above clause, this project has adopted the [MIT License](./License.md).
-We do not allow using our code to train LLM Models without express consent.
+Besides adhering to the above clause, this project has adopted the [MIT License](./LICENSE.md).
+We do not permit the use of our code to train LLM Models without express consent.

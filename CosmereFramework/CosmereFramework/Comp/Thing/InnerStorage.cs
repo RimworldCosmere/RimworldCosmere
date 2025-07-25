@@ -25,16 +25,19 @@ public class InnerStorageProperties : CompProperties {
 }
 
 public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable {
-    public ThingOwner<Verse.Thing> innerContainer;
-    private StorageSettings settings;
+    public ThingOwner<Verse.Thing>? innerContainer;
+    private StorageSettings? settings;
+
     private new InnerStorageProperties props => (InnerStorageProperties)base.props;
 
     public Verse.Map Map => parent.Map ?? ((Pawn?)parent.holdingOwner?.Owner.ParentHolder)?.Map!;
+
     public bool StorageTabVisible => true;
+
     public bool HaulDestinationEnabled => StorageTabVisible;
 
     public StorageSettings GetStoreSettings() {
-        return settings;
+        return settings!;
     }
 
     public StorageSettings GetParentStoreSettings() {
@@ -44,12 +47,13 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable {
     public void Notify_SettingsChanged() { }
 
     public bool Accepts(Verse.Thing t) {
-        int currentInventoryRemaining = props.maxItems - innerContainer.TotalStackCount;
+        int currentInventoryRemaining = props.maxItems - innerContainer!.TotalStackCount;
 
         return currentInventoryRemaining > 0 && GetStoreSettings().AllowedToAccept(t);
     }
 
-    public IntVec3 Position { get; }
+    public IntVec3 Position => parent.Position;
+
     public bool ShouldTickContents => true;
 
     public void GetChildHolders(List<IThingHolder> outChildren) {
@@ -57,7 +61,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable {
     }
 
     public ThingOwner GetDirectlyHeldThings() {
-        return innerContainer;
+        return innerContainer!;
     }
 
     public override void Initialize(CompProperties originalProps) {
@@ -75,7 +79,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable {
 
     public override void Notify_RecipeProduced(Pawn pawn) {
         base.Notify_RecipeProduced(pawn);
-        parent.SetFactionDirect(pawn.Faction);
+        if (parent.def.CanHaveFaction) parent.SetFactionDirect(pawn.Faction);
     }
 
     public override void Notify_Unequipped(Pawn pawn) {
@@ -85,7 +89,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable {
 
     public override void Notify_Equipped(Pawn pawn) {
         base.Notify_Equipped(pawn);
-        parent.SetFactionDirect(pawn.Faction);
+        if (parent.def.CanHaveFaction) parent.SetFactionDirect(pawn.Faction);
         pawn.def.inspectorTabsResolved.AddUnique(new StorageWithInventory(props.tabName));
         if (!Map.haulDestinationManager.AllHaulDestinations.Contains(this)) {
             Map.haulDestinationManager.AddHaulDestination(this);

@@ -194,9 +194,6 @@ public class InvestitureHolder : ThingComp {
         if (Mathf.Approximately(drainRate, 0) || Mathf.Approximately(maxInvestiture, 0)) return;
 
         currentInvestitureSelf -= drainRate;
-        foreach (Verse.Thing child in children ?? []) {
-            child.TryGetComp<InvestitureHolder>().CompTickInterval(delta);
-        }
     }
 
     public override void PreAbsorbStack(Verse.Thing otherStack, int count) {

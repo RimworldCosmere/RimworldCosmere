@@ -94,8 +94,15 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
         return innerContainer!;
     }
 
+    public override void CompTick() {
+        innerContainer?.DoTick();
+    }
+
     public override void Initialize(CompProperties originalProps) {
         base.Initialize(originalProps);
+        parent.DoTick();
+        // Ticker type HAS to be normal for the parent
+        parent.def.tickerType = TickerType.Normal;
         if (props.maxItems != -1) {
             innerContainer = new ThingOwnerWithCapacity<Verse.Thing>(this, props.maxItems);
         } else {

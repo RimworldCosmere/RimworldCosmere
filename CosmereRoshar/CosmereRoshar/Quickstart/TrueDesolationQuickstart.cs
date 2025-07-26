@@ -53,7 +53,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
                 broamInvestiture.currentInvestitureSelf = broamInvestiture.maxInvestitureSelf;
             }
 
-            pouch.TryGetComp<InnerStorage>().innerContainer.TryAdd(broam);
+            pouch.TryGetComp<InnerStorage>().innerContainer!.TryAdd(broam);
             pawn.apparel.Wear(pouch);
         }
 

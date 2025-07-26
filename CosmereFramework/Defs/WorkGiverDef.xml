@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <WorkGiverDef>
-        <defName>Cosmere_HaulToInnerStorage</defName>
-        <label>haul things to storage</label>
-        <giverClass>Cosmere.Framework.WorkGiver.HaulToInnerStorage</giverClass>
+        <defName>Cosmere_StoreInApparelInnerStorage</defName>
+        <label>putting things in apparel storage</label>
+        <giverClass>Cosmere.Framework.WorkGiver.StoreInApparelInnerStorage</giverClass>
         <workType>BasicWorker</workType>
-        <verb>haul</verb>
-        <gerund>hauling</gerund>
+        <verb>store</verb>
+        <gerund>storing</gerund>
         <priorityInType>10</priorityInType>
         <requiredCapacities>
             <li>Manipulation</li>

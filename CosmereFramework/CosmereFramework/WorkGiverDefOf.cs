@@ -1,7 +1,6 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
 using RimWorld;
-using Verse;
 
 namespace Cosmere.Framework;
 
@@ -10,11 +9,10 @@ namespace Cosmere.Framework;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class JobDefOf {
-    public static JobDef Cosmere_HaulToInnerStorage;
-    public static JobDef Cosmere_StoreInApparelInnerStorage;
+public class WorkGiverDefOf {
+    public static WorkGiverDef Cosmere_StoreInApparelInnerStorage;
 
-    static JobDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));
+    static WorkGiverDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(WorkGiverDefOf));
     }
 }

@@ -9,22 +9,25 @@ using Verse.Sound;
 namespace Cosmere.Framework.InspectorTab;
 
 public class StorageWithInventory : ITab_Storage {
-    private static readonly Vector2 WinSize = new Vector2(700f, 480f);
+    private static readonly Vector2 WinSize = new Vector2(800f, 480f);
     private static readonly List<Verse.Thing> workingInvList = [];
+    private readonly InnerStorage? storage;
     private Vector2 scrollPosition = Vector2.zero;
     private float scrollViewHeight;
+
 
     public StorageWithInventory() {
         size = WinSize;
         labelKey = "TabStorage";
     }
 
-    public StorageWithInventory(string labelKey) {
+    public StorageWithInventory(string labelKey, InnerStorage? storage = null) {
         size = WinSize;
         this.labelKey = labelKey;
+        this.storage = storage;
     }
 
-    private InnerStorage SelStorage => SelThing.TryGetComp<InnerStorage>();
+    private InnerStorage SelStorage => storage ?? SelThing.TryGetComp<InnerStorage>();
 
     private IEnumerable<Verse.Thing> heldThings => SelStorage.innerContainer ?? [];
 
@@ -39,7 +42,8 @@ public class StorageWithInventory : ITab_Storage {
                 }
 
                 if (
-                    SelPawn.IsPrisonerOfColony && (PrisonBreakUtility.IsPrisonBreaking(SelPawn) || SelPawn.CurJob is { exitMapOnArrival: true })
+                    SelPawn.IsPrisonerOfColony &&
+                    (PrisonBreakUtility.IsPrisonBreaking(SelPawn) || SelPawn.CurJob is { exitMapOnArrival: true })
                 ) {
                     return false;
                 }
@@ -110,7 +114,8 @@ public class StorageWithInventory : ITab_Storage {
                     SoundDefOf.Tick_High.PlayOneShotOnCamera();
                     InterfaceDrop(thing);
                 };
-                if (!ModsConfig.BiotechActive || !MechanitorUtility.TryConfirmBandwidthLossFromDroppingThing(SelPawn, thing, action)) {
+                if (!ModsConfig.BiotechActive ||
+                    !MechanitorUtility.TryConfirmBandwidthLossFromDroppingThing(SelPawn, thing, action)) {
                     action();
                 }
             }
@@ -165,7 +170,6 @@ public class StorageWithInventory : ITab_Storage {
 
         y += 28f;
     }
-
 
     private void InterfaceDrop(Verse.Thing t) {
         if (t.def.destroyOnDrop) return;

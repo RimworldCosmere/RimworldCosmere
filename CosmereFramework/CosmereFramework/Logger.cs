@@ -11,19 +11,12 @@ namespace Cosmere.Framework;
 
 public static class Logger {
     private static readonly Dictionary<LogLevel, Color> LOGColors = new Dictionary<LogLevel, Color> {
-        {
-            LogLevel.None, Color.black
-        }, {
-            LogLevel.Important, Color.green
-        }, {
-            LogLevel.Error, Color.red
-        }, {
-            LogLevel.Warning, Color.yellow
-        }, {
-            LogLevel.Info, Color.blue
-        }, {
-            LogLevel.Verbose, Color.gray
-        },
+        { LogLevel.None, Color.black },
+        { LogLevel.Important, Color.green },
+        { LogLevel.Error, Color.red },
+        { LogLevel.Warning, Color.yellow },
+        { LogLevel.Info, Color.blue },
+        { LogLevel.Verbose, Color.gray },
     };
 
     private static bool CurrentlyLoggingError;
@@ -56,7 +49,10 @@ public static class Logger {
                         @"^.*?(RimworldCosmere[\\/]RimworldCosmere[\\/]|RimWorld[\\/]Mods[\\/])+[\\/]*",
                         ""
                     );
-                    filename = filename.Replace(mod.Replace(".", ""), "").TrimStart('\\').TrimStart('/').Replace(".cs", "");
+                    filename = filename.Replace(mod.Replace(".", ""), "")
+                        .TrimStart('\\')
+                        .TrimStart('/')
+                        .Replace(".cs", "");
 
                     stack = $"[{filename}:{frame.GetFileLineNumber()}]";
                 }

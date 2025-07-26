@@ -1,4 +1,5 @@
 using Cosmere.Core.Comp.Thing;
+using Cosmere.Framework.Comp.Thing;
 using Cosmere.Resources;
 using Cosmere.Resources.Def;
 using RimWorld;
@@ -19,10 +20,16 @@ public class SphereGlowerProperties : CompProperties_Glower {
 public class SphereGlower : CompGlower {
     private IEnumerable<Verse.Thing> spheres {
         get {
-            if (parent is ISlotGroupParent slotGroupParent) return slotGroupParent.GetSlotGroup().HeldThings;
-            if (parent is IThingHolder thingHolder) return thingHolder.GetDirectlyHeldThings();
+            if (parent is ISlotGroupParent slotGroupParent) {
+                return slotGroupParent.GetSlotGroup().HeldThings.Where(IsSphere);
+            }
 
-            return [];
+            if (parent is IThingHolder thingHolder) return thingHolder.GetDirectlyHeldThings().Where(IsSphere);
+            if (parent.TryGetComp(out InnerStorage innerStorage)) {
+                return innerStorage.GetDirectlyHeldThings().Where(IsSphere);
+            }
+
+            return IsSphere(parent) ? [parent] : [];
         }
     }
 
@@ -73,10 +80,33 @@ public class SphereGlower : CompGlower {
         set { }
     }
 
-    protected override bool ShouldBeLitNow => spheres.Any(s => s.GetInvestiture()?.currentInvestiture > 0);
+    protected override bool ShouldBeLitNow =>
+        parent.Spawned && spheres.Any(s => s.GetInvestiture()?.currentInvestiture > 0);
+
+    private static bool IsSphere(Verse.Thing thing) {
+        return thing.def.IsOneOf(
+            ThingDefOf.Cosmere_Roshar_Thing_Broam,
+            ThingDefOf.Cosmere_Roshar_Thing_Mark,
+            ThingDefOf.Cosmere_Roshar_Thing_Chip
+        );
+    }
+
+    public override void ReceiveCompSignal(string signal) {
+        if (signal is not ("FlickedOn"
+            or "FlickedOff"
+            or "Cosmere_Investiture_Changed"
+            or "ScheduledOn"
+            or "ScheduledOff")) {
+            return;
+        }
+
+        UpdateLit(parent.Map);
+    }
 
     private static Color GetSphereColor(Verse.Thing sphere) {
-        GemDef? gem = DefDatabase<GemDef>.GetNamed(sphere.Stuff.defName ?? Resources.ThingDefOf.RawDiamond.defName);
+        GemDef? gem = DefDatabase<GemDef>.GetNamed(
+            sphere.Stuff?.defName.Replace("Raw", "") ?? Resources.ThingDefOf.RawDiamond.defName
+        );
 
         // Replace this with however your sphere stores color — possibly via a GemstoneDef
         return gem?.glowColor ?? gem?.color ?? GemDefOf.Diamond.glowColor ?? GemDefOf.Diamond.color;

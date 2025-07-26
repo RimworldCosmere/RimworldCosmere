@@ -24,13 +24,17 @@ public class InnerStorageProperties : CompProperties {
     }
 }
 
-public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable {
+public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, IHaulEnroute {
     public ThingOwner<Verse.Thing>? innerContainer;
     private StorageSettings? settings;
 
     private new InnerStorageProperties props => (InnerStorageProperties)base.props;
 
-    public Verse.Map Map => parent.Map ?? ((Pawn?)parent.holdingOwner?.Owner.ParentHolder)?.Map!;
+    public Pawn? ParentPawn => ParentThing as Pawn;
+
+    public ThingWithComps? ParentThing => parent is Apparel apparel ? apparel.Wearer : parent as Pawn;
+
+    public Verse.Map? Map => parent.MapHeld;
 
     public bool StorageTabVisible => true;
 
@@ -49,10 +53,27 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable {
     public bool Accepts(Verse.Thing t) {
         int currentInventoryRemaining = props.maxItems - innerContainer!.TotalStackCount;
 
-        return currentInventoryRemaining > 0 && GetStoreSettings().AllowedToAccept(t);
+        return innerContainer!.CanAcceptAnyOf(t) &&
+               currentInventoryRemaining > 0 &&
+               GetStoreSettings().AllowedToAccept(t);
     }
 
-    public IntVec3 Position => parent.Position;
+    public IntVec3 Position {
+        get {
+            if (parent is not Apparel apparel) return parent.SpawnedParentOrMe.Position;
+            if (apparel.Wearer is not { } wearer) return parent.SpawnedParentOrMe.Position;
+
+            return wearer.SpawnedParentOrMe.Position;
+        }
+    }
+
+    public int SpaceRemainingFor(ThingDef _) {
+        return props.maxItems - innerContainer!.TotalStackCount;
+    }
+
+    public string GetUniqueLoadID() {
+        return parent.GetUniqueLoadID();
+    }
 
     public bool ShouldTickContents => true;
 
@@ -73,6 +94,10 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable {
         }
     }
 
+    public override void PostSpawnSetup(bool respawningAfterLoad) {
+        AddHaulDestination();
+    }
+
     public override void PostExposeData() {
         Scribe_Deep.Look(ref innerContainer, "innerContainer", this, props.maxItems);
     }
@@ -90,8 +115,17 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable {
     public override void Notify_Equipped(Pawn pawn) {
         base.Notify_Equipped(pawn);
         if (parent.def.CanHaveFaction) parent.SetFactionDirect(pawn.Faction);
-        pawn.def.inspectorTabsResolved.AddUnique(new StorageWithInventory(props.tabName));
-        if (!Map.haulDestinationManager.AllHaulDestinations.Contains(this)) {
+        pawn.def.inspectorTabsResolved.AddUnique(new StorageWithInventory(props.tabName, this));
+
+        AddHaulDestination();
+    }
+
+    public int GetCountCanAccept(Verse.Thing thing) {
+        return innerContainer?.GetCountCanAccept(thing) ?? 0;
+    }
+
+    private void AddHaulDestination() {
+        if (Map != null && !Map.haulDestinationManager.AllHaulDestinations.Contains(this)) {
             Map.haulDestinationManager.AddHaulDestination(this);
         }
     }

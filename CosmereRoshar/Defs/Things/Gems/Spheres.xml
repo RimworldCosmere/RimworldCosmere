@@ -33,6 +33,9 @@
                 <li>Cosmere_Resources_Table_GemCutter</li>
             </recipeUsers>
         </recipeMaker>
+        <comps>
+            <li Class="Cosmere.Roshar.Comp.Thing.SphereGlowerProperties" />
+        </comps>
     </ThingDef>
     
     <!--  Chip -->

@@ -2,6 +2,7 @@ using System;
 using Cosmere.Resources.Def;
 using Cosmere.Roshar.Surgebinding.IdealChecker;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.Roshar.Def;
@@ -14,6 +15,7 @@ public class Ideal {
 
 public class RadiantOrderDef : Verse.Def {
     public List<AbilityDef> abilities;
+    public Color color;
     public GemDef gemstone;
 
     public AbstractIdealChecker idealChecker;

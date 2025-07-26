@@ -53,20 +53,23 @@ public class InvestitureHolder : ThingComp {
 
     public float currentInvestitureSelf {
         get => props.isInfinite ? float.PositiveInfinity : currentInvestitureSelfInt;
-        set => currentInvestitureSelfInt = Mathf.Max(0, Mathf.Min(value, maxInvestitureSelf));
+        set {
+            currentInvestitureSelfInt = Mathf.Max(0, Mathf.Min(value, maxInvestitureSelf));
+            parent.BroadcastCompSignal("Cosmere_Investiture_Changed");
+        }
     }
 
     public float currentInvestitureSelfStack => currentInvestitureSelf * parent.stackCount;
 
     public float maxInvestitureSelfStack => maxInvestitureSelf * parent.stackCount;
 
-    public float currentInvestiture => currentInvestitureSelf * parent.stackCount
-                                       + (props.valueBasedOnChildren
+    public float currentInvestiture => currentInvestitureSelf * parent.stackCount +
+                                       (props.valueBasedOnChildren
                                            ? children.Sum(x => x.TryGetComp<InvestitureHolder>().currentInvestiture)
                                            : 0);
 
-    public float maxInvestiture => maxInvestitureSelf * parent.stackCount
-                                   + (props.valueBasedOnChildren
+    public float maxInvestiture => maxInvestitureSelf * parent.stackCount +
+                                   (props.valueBasedOnChildren
                                        ? children.Sum(x => x.TryGetComp<InvestitureHolder>().maxInvestiture)
                                        : 0);
 
@@ -115,7 +118,8 @@ public class InvestitureHolder : ThingComp {
 
     public bool ExudeInvestitureInto(Verse.Thing thing, float amountToDraw, out float amountDrawn) {
         amountDrawn = 0;
-        return thing.TryGetComp(out InvestitureHolder investitureHolder) && investitureHolder.AbsorbInvestitureFrom(parent, amountToDraw, out amountDrawn);
+        return thing.TryGetComp(out InvestitureHolder investitureHolder) &&
+               investitureHolder.AbsorbInvestitureFrom(parent, amountToDraw, out amountDrawn);
     }
 
     public float AbsorbInvestitureFrom(Verse.Thing thing, float amountToAbsorb) {
@@ -138,8 +142,8 @@ public class InvestitureHolder : ThingComp {
                                  maxInvestitureSelfStack - currentInvestitureSelfStack,
                                  thingInvestiture.currentInvestitureSelfStack
                              )
-                         )
-                         * thing.stackCount;
+                         ) *
+                         thing.stackCount;
         if (amountAbsorbed > 0) {
             currentInvestitureSelf += amountAbsorbed;
             thingInvestiture.currentInvestitureSelf -= amountAbsorbed / thing.stackCount;

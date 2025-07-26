@@ -1,11 +1,14 @@
-
-
 {
   "name": "stoneward",
   "description": "Surgebinders who wield Cohesion and Tension. Stonewards are the bulwarks of the Knights Radiant — dependable, unyielding, and always at the front lines when others falter. They are builders and defenders, known for their endurance and loyalty.",
   "surges": [
     "cohesion",
     "tension"
+  ],
+  "color": [
+    210,
+    104,
+    64
   ],
   "gemstone": "topaz",
   "ideals": [

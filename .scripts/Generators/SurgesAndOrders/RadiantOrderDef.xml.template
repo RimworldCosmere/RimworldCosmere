@@ -5,6 +5,7 @@
         <label>{{title order.name}}</label>
         <description>{{order.description}}</description>
         <gemstone>{{defName order.gemstone}}</gemstone>
+        <color>{{rgb order.color}}</color>
         <surges>
             {{#each order.surges}}
             <li>{{defName this}}</li>

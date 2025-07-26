@@ -9,10 +9,9 @@ public abstract class CosmereMod<TSettings> : Verse.Mod where TSettings : Cosmer
         LongEventHandler.QueueLongEvent(
             () => {
                 Logger.Verbose(
-                    $"{content.PackageId} Build Rev: {BuildInfo.Revision} @ {BuildInfo.BuildTime}. DebugMode={Mod.debugMode} LogLevel={Mod.logLevel} Assembly={GetType().Assembly.GetName().FullName}"
+                    $"{content.PackageId} Build Rev: {BuildInfo.Revision} @ {BuildInfo.BuildTime}"
                 );
 
-                Harmony.DEBUG = true;
                 new Harmony(content.PackageId).PatchAll(GetType().Assembly);
             },
             "LoadCosmereMod",

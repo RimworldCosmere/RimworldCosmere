@@ -7,4 +7,10 @@
         <suspendable>false</suspendable>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>
+    <JobDef>
+        <defName>Cosmere_StoreInApparelInnerStorage</defName>
+        <driverClass>Cosmere.Framework.JobDriver.StoreInApparelInnerStorage</driverClass>
+        <reportString>storing TargetA.</reportString>
+        <suspendable>false</suspendable>
+    </JobDef>
 </Defs>

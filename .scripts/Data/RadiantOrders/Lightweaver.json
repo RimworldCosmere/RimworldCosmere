@@ -1,52 +1,57 @@
 {
-	"name": "lightweaver",
-	"description": "Surgebinders who command Illumination and Transformation. Lightweavers are artists, liars, and truth-speakers — weaving illusions from light and self-understanding from lies. Their strength lies not in vows, but in personal truths.",
-	"surges": [
-		"illumination",
-		"transformation"
-	],
-	"gemstone": "garnet",
-	"ideals": [
-		{
-			"label": "first ideal",
-			"description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
-			"quotes": [
-				"Life before death, strength before weakness, journey before destination."
-			]
-		},
-		{
-			"label": "first truth",
-			"description": "The Lightweaver's path is unique — they progress by speaking deep personal truths, not shared oaths. Each 'ideal' is a confession of self.",
-			"quotes": [
-				"I'm terrified of being insignificant.",
-				"I lied to them because I couldn’t admit I was broken."
-			]
-		},
-		{
-			"label": "second truth",
-			"description": "Another layer peeled away. The Lightweaver exposes a deeper truth about who they are, or what they’ve done.",
-			"quotes": [
-				"I killed my father.",
-				"I am not who I pretend to be."
-			],
-			"abilities": []
-		},
-		{
-			"label": "third truth",
-			"description": "With each truth, the illusion breaks — and so do the chains that bind the Lightweaver to a false self.",
-			"quotes": [
-				"I hate the person they think I am.",
-				"I want to be loved, but I don’t think I deserve it."
-			],
-			"abilities": []
-		},
-		{
-			"label": "fourth truth",
-			"description": "An admission not just of darkness, but of hope — a truth that sets a new path in motion.",
-			"quotes": [
-				"Maybe I can change.",
-				"I want to be someone better."
-			]
-		}
-	]
+  "name": "lightweaver",
+  "description": "Surgebinders who command Illumination and Transformation. Lightweavers are artists, liars, and truth-speakers — weaving illusions from light and self-understanding from lies. Their strength lies not in vows, but in personal truths.",
+  "surges": [
+    "illumination",
+    "transformation"
+  ],
+  "color": [
+    108,
+    1,
+    29
+  ],
+  "gemstone": "garnet",
+  "ideals": [
+    {
+      "label": "first ideal",
+      "description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
+      "quotes": [
+        "Life before death, strength before weakness, journey before destination."
+      ]
+    },
+    {
+      "label": "first truth",
+      "description": "The Lightweaver's path is unique — they progress by speaking deep personal truths, not shared oaths. Each 'ideal' is a confession of self.",
+      "quotes": [
+        "I'm terrified of being insignificant.",
+        "I lied to them because I couldn’t admit I was broken."
+      ]
+    },
+    {
+      "label": "second truth",
+      "description": "Another layer peeled away. The Lightweaver exposes a deeper truth about who they are, or what they’ve done.",
+      "quotes": [
+        "I killed my father.",
+        "I am not who I pretend to be."
+      ],
+      "abilities": []
+    },
+    {
+      "label": "third truth",
+      "description": "With each truth, the illusion breaks — and so do the chains that bind the Lightweaver to a false self.",
+      "quotes": [
+        "I hate the person they think I am.",
+        "I want to be loved, but I don’t think I deserve it."
+      ],
+      "abilities": []
+    },
+    {
+      "label": "fourth truth",
+      "description": "An admission not just of darkness, but of hope — a truth that sets a new path in motion.",
+      "quotes": [
+        "Maybe I can change.",
+        "I want to be someone better."
+      ]
+    }
+  ]
 }

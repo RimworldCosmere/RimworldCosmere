@@ -25,8 +25,8 @@ public class Surgebinder : Invested {
 
     public RadiantOrder radiantOrder => def.GetModExtension<RadiantOrder>();
     public RadiantOrderDef radiantOrderDef => radiantOrder.order;
-    protected override Color BarColor => radiantOrderDef.gemstone.color.SaturationChanged(1f);
-    protected override Color BarHighlightColor => radiantOrderDef.gemstone.color.SaturationChanged(2f);
+    protected override Color BarColor => radiantOrderDef.color.SaturationChanged(1f);
+    protected override Color BarHighlightColor => radiantOrderDef.color.SaturationChanged(2f);
     private Investiture investiture => pawn.needs.TryGetNeed<Investiture>();
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower);
     private PawnTracker tracker => pawn.TryGetComp<PawnTracker>();

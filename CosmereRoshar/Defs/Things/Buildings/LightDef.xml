@@ -27,6 +27,7 @@
         <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
         <designationCategory>Furniture</designationCategory>
         <comps Inherit="False">
+            <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Styleable" />
             <li Class="Cosmere.Framework.Comp.Thing.InnerStorageProperties">
                 <tabName>CRO_InspectorTab_SphereTab</tabName>

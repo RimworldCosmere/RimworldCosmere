@@ -1,55 +1,25 @@
-using Cosmere.Framework.Comp.Thing;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace Cosmere.Framework.JobDriver;
 
-public class HaulToInnerStorage : JobDriver_HaulToContainer {
-    private InnerStorage? storage => Container.TryGetComp<InnerStorage>();
-
-    protected override IEnumerable<Toil> MakeNewToils() {
-        this.FailOnDestroyedOrNull(TargetIndex.A);
-        this.FailOn(() => storage is null);
-        this.FailOn(
-            delegate {
-                Verse.Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.B).Thing;
-                if (thing == null) {
-                    return true;
-                }
-
-                if (storage!.parent.Destroyed) {
-                    if (job.targetQueueB.NullOrEmpty()) {
-                        return true;
-                    }
-
-                    if (!Toils_Haul.TryGetNextDestinationFromQueue(
-                            TargetIndex.C,
-                            TargetIndex.B,
-                            ThingDef,
-                            job,
-                            pawn,
-                            out Verse.Thing? nextTarget
-                        )) {
-                        return true;
-                    }
-
-                    job.targetQueueB.RemoveAll(target => target.Thing == nextTarget);
-                    job.targetB = nextTarget;
-                }
-
-                if (!storage.innerContainer.CanAcceptAnyOf(ThingToCarry)) {
-                    return true;
-                }
-
-                return !storage.Accepts(ThingToCarry);
-            }
-        );
-        this.FailOnForbidden(TargetIndex.B);
-        yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch, true)
+public class HaulToInnerStorage : InnerStorageJobDriver {
+    protected override IEnumerable<Toil> GetToils() {
+        Toil getToHaulTarget = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch, true)
             .FailOn(() => ThingToCarry.ParentHolder is MinifiedThing)
             .FailOnSelfAndParentsDespawnedOrNull(TargetIndex.A);
-        yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false, true, true);
+        Toil jumpIfAlsoCollectingNextTarget =
+            Toils_Haul.JumpIfAlsoCollectingNextTargetInQueue(getToHaulTarget, TargetIndex.A);
+        Toil startCarryingThing = Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false, true, true);
+        Toil carryToContainer = CarryHauledThingToContainer();
+
+        yield return Toils_Jump.JumpIf(jumpIfAlsoCollectingNextTarget, () => pawn.IsCarryingThing(ThingToCarry));
+        yield return getToHaulTarget;
+        yield return startCarryingThing;
+        yield return jumpIfAlsoCollectingNextTarget;
+        yield return carryToContainer;
+
         Toil toil = Toils_General.Wait(Duration, TargetIndex.B);
         toil.WithProgressBarToilDelay(TargetIndex.B);
         EffecterDef workEffecter = WorkEffecter;
@@ -65,5 +35,6 @@ public class HaulToInnerStorage : JobDriver_HaulToContainer {
         ModifyPrepareToil(toil);
         yield return toil;
         yield return Toils_Haul.DepositHauledThingInContainer(TargetIndex.B, TargetIndex.None);
+        yield return Toils_Haul.JumpToCarryToNextContainerIfPossible(carryToContainer, TargetIndex.C);
     }
 }

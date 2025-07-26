@@ -10,7 +10,7 @@ namespace Cosmere.Roshar.Comp.Thing;
 
 public class SphereGlowerProperties : CompProperties_Glower {
     public float maxRadius = 9f;
-    public float minRadius = 0.5f;
+    public float minRadius = 3f;
 
     public SphereGlowerProperties() {
         compClass = typeof(SphereGlower);

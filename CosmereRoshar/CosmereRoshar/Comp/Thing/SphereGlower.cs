@@ -100,6 +100,7 @@ public class SphereGlower : CompGlower {
     }
 
     public override void ReceiveCompSignal(string signal) {
+        if (parent?.Map == null) return;
         if (signal is not ("FlickedOn"
             or "FlickedOff"
             or "PowerTurnedOn"

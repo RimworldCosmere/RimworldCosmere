@@ -8,6 +8,8 @@ namespace Cosmere.Framework.Comp.Thing;
 
 public class InnerStorageProperties : CompProperties {
     public StorageSettings? defaultStorageSettings;
+    public bool dropItemsWhenDeconstructed = true;
+    public bool dropItemsWhenDestroyed = false;
     public StorageSettings? fixedStorageSettings;
     public int maxItems = -1;
     public bool oneStackOnly = false;
@@ -96,6 +98,25 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
 
     public override void CompTick() {
         innerContainer?.DoTick();
+    }
+
+    public override void PostDestroy(DestroyMode mode, Verse.Map previousMap) {
+        base.PostDestroy(mode, previousMap);
+        previousMap.haulDestinationManager.RemoveHaulDestination(this);
+        if (mode == DestroyMode.Deconstruct && props.dropItemsWhenDeconstructed) {
+            foreach (Verse.Thing thing in innerContainer?.ToList() ?? []) {
+                innerContainer!.TryDrop(
+                    thing,
+                    ParentThing!.Position,
+                    previousMap,
+                    ThingPlaceMode.Near,
+                    thing.stackCount,
+                    out _
+                );
+            }
+        }
+
+        innerContainer?.ClearAndDestroyContents(mode);
     }
 
     public override void Initialize(CompProperties originalProps) {

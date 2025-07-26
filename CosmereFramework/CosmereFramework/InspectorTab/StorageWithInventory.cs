@@ -115,6 +115,7 @@ public class StorageWithInventory : ITab_Storage {
                     InterfaceDrop(thing);
                 };
                 if (!ModsConfig.BiotechActive ||
+                    SelPawn == null ||
                     !MechanitorUtility.TryConfirmBandwidthLossFromDroppingThing(SelPawn, thing, action)) {
                     action();
                 }

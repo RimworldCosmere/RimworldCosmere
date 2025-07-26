@@ -5,21 +5,9 @@
     "cut": "This ruby has been carved to perfection, its fiery depths magnified by each facet. Often worn by those who value ambition, drive, and prestige.",
     "sphere": "A vibrant ruby sphere, warm-toned and finely polished. This gemstone can contain Stormlight and is favored in fabrials related to heat, fire, and energy."
   },
-  "color": [
-    225,
-    16,
-    16
-  ],
-  "colorTwo": [
-    250,
-    25,
-    25
-  ],
-  "glowColor": [
-    225,
-    16,
-    16
-  ],
+  "color": "e0115f",
+  "colorTwo": "700930",
+  "glowColor": "e0115f",
   "baseStormlight": 5,
   "baseMarketValue": 5,
   "baseBeauty": 5,

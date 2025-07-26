@@ -213,6 +213,20 @@ public class InvestitureHolder : ThingComp {
         return self ? investiture.currentInvestitureSelf : investiture.currentInvestiture;
     }
 
+    public void FillInvestiture() {
+        currentInvestitureSelf = maxInvestitureSelf;
+        foreach (Verse.Thing child in children ?? []) {
+            child.TryGetComp<InvestitureHolder>().FillInvestiture();
+        }
+    }
+
+    public void WipeInvestiture() {
+        currentInvestitureSelf = 0;
+        foreach (Verse.Thing child in children ?? []) {
+            child.TryGetComp<InvestitureHolder>().WipeInvestiture();
+        }
+    }
+
     public override void PostExposeData() {
         base.PostExposeData();
         Scribe_Values.Look(ref currentInvestitureSelfInt, "currentInvestitureSelfInt");

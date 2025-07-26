@@ -5,21 +5,9 @@
     "cut": "A cut sapphire with an ocean’s calm locked in crystal. It catches the light with serene grace and is commonly used in noble ornaments or philosophical emblems.",
     "sphere": "A deep blue sapphire sphere, cool and steady in appearance. Sapphires are capable of holding Stormlight and are commonly used in fabrials that manipulate or purify water."
   },
-  "color": [
-    15,
-    53,
-    98
-  ],
-  "colorTwo": [
-    62,
-    93,
-    129
-  ],
-  "glowColor": [
-    87,
-    114,
-    145
-  ],
+  "color": "0f52ba",
+  "colorTwo": "08295d",
+  "glowColor": "0f52ba",
   "baseStormlight": 5,
   "baseMarketValue": 12.5,
   "baseBeauty": 12.5,

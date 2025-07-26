@@ -9,6 +9,10 @@ declare global {
         toDefName(): string;
 
         capitalize(): string;
+
+        hexToRGB(): [number, number, number];
+
+        hexToRGBA(alpha: number): [number, number, number, number];
     }
 }
 
@@ -24,6 +28,24 @@ String.prototype.toDefName = function (this: string): string {
 }
 String.prototype.capitalize = function (this: string): string {
     return this.charAt(0).toUpperCase() + this.slice(1);
+}
+String.prototype.hexToRGB = function (this: string) {
+    let hex = this.replace('#', '');
+
+    // Handle 3-digit shorthand hex codes
+    if (hex.length === 3) {
+        hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+    }
+
+    // Extract and convert RGB components
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    return [r, g, b];
+};
+String.prototype.hexToRGBA = function (this: string, alpha: number) {
+    return this.hexToRGB().concat(alpha) as [number, number, number, number];
 }
 
 Handlebars.registerHelper('mayRequire', (value: string) => {
@@ -54,11 +76,19 @@ Handlebars.registerHelper('defName', (string: string) => {
 Handlebars.registerHelper('join', (strings: (number | string)[], character: string) => {
     return strings?.join(character);
 });
-Handlebars.registerHelper('rgb', (color: [number, number, number]) => {
+Handlebars.registerHelper('rgb', (color: Color) => {
+    if (typeof color === 'string') {
+        color = color.hexToRGB();
+    }
+
     return `(${color.join(', ')})`;
 });
-Handlebars.registerHelper('rgba', (color: [number, number, number], alpha: number) => {
-    return `(${color.join(', ')}, ${alpha})`;
+Handlebars.registerHelper('rgba', (color: Color, alpha: number) => {
+    if (typeof color === 'string') {
+        color = color.hexToRGBA(alpha);
+    }
+
+    return `(${color.join(', ')})`;
 });
 Handlebars.registerHelper('range', (range: [number, number]) => {
     return `${range.join("~")}`;

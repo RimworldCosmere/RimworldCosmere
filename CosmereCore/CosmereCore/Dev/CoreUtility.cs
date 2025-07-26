@@ -13,16 +13,8 @@ public static class CoreUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void FillInvestiture() {
-        foreach (Thing item in Find.CurrentMap.thingGrid.ThingsListAt(UI.MouseCell())) {
-            FillInvestiture(item);
-        }
-    }
-
-    private static void FillInvestiture(Thing thing) {
-        if (!thing.TryGetComp(out InvestitureHolder investiture)) return;
-        investiture.currentInvestitureSelf = investiture.maxInvestitureSelf;
-        foreach (Thing child in investiture.children) {
-            FillInvestiture(child);
+        foreach (Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(UI.MouseCell())) {
+            thing.TryGetComp<InvestitureHolder>()?.FillInvestiture();
         }
     }
 
@@ -33,16 +25,8 @@ public static class CoreUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void WipePawnInvestiture() {
-        foreach (Thing item in Find.CurrentMap.thingGrid.ThingsListAt(UI.MouseCell())) {
-            WipeInvestiture(item);
-        }
-    }
-
-    private static void WipeInvestiture(Thing thing) {
-        if (!thing.TryGetComp(out InvestitureHolder investiture)) return;
-        investiture.currentInvestitureSelf = 0;
-        foreach (Thing child in investiture.children) {
-            WipeInvestiture(child);
+        foreach (Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(UI.MouseCell())) {
+            thing.TryGetComp<InvestitureHolder>()?.WipeInvestiture();
         }
     }
 }

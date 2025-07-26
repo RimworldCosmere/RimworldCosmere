@@ -9,11 +9,19 @@ using Verse;
 namespace Cosmere.Roshar.Comp.Thing;
 
 public class SphereGlowerProperties : CompProperties_Glower {
-    public float maxRadius = 6f;
+    public float maxRadius = 9f;
     public float minRadius = 0.5f;
 
     public SphereGlowerProperties() {
         compClass = typeof(SphereGlower);
+    }
+
+    public override void PostLoadSpecial(ThingDef parent) {
+        glowRadius = maxRadius;
+        overlightRadius = 0f;
+        colorPickerEnabled = false;
+        darklightToggle = false;
+        overrideIsCavePlant = false;
     }
 }
 
@@ -94,7 +102,10 @@ public class SphereGlower : CompGlower {
     public override void ReceiveCompSignal(string signal) {
         if (signal is not ("FlickedOn"
             or "FlickedOff"
+            or "PowerTurnedOn"
+            or "PowerTurnedOff"
             or "Cosmere_Investiture_Changed"
+            or "Cosmere_InnerStorage_Changed"
             or "ScheduledOn"
             or "ScheduledOff")) {
             return;

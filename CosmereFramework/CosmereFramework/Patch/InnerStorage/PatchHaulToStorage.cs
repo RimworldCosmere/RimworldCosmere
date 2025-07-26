@@ -1,14 +1,13 @@
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
-using Cosmere.Framework.Comp.Thing;
 using Cosmere.Framework.Util;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Cosmere.Framework.Patch;
+namespace Cosmere.Framework.Patch.InnerStorage;
 
 [HarmonyPatch(typeof(HaulAIUtility), nameof(HaulAIUtility.HaulToStorageJob))]
 public static class PatchHaulToContainerJob {
@@ -39,7 +38,7 @@ public static class PatchHaulToContainerJob {
             typeof(StoreUtility),
             nameof(StoreUtility.TryFindBestBetterStorageFor)
         );
-        Type innerStorageType = typeof(InnerStorage);
+        Type innerStorageType = typeof(Comp.Thing.InnerStorage);
 
         List<CodeInstruction> code = instructions.ToList();
 

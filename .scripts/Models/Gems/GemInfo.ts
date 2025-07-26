@@ -1,9 +1,9 @@
 export class GemInfo {
     public name: string;
     public descriptions: { raw: string; cut: string; sphere: string; mining?: string; };
-    public color: [number, number, number];
-    public colorTwo?: [number, number, number];
-    public glowColor: [number, number, number];
+    public color: Color;
+    public colorTwo?: Color;
+    public glowColor: Color;
     public stackable: boolean = false;
     public drawSize: number = 1;
     public baseBeauty: number;

@@ -3,6 +3,7 @@ using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Need;
 using Cosmere.Framework.Comp.Thing;
 using Cosmere.Framework.Quickstart;
+using Cosmere.Resources.Def;
 using RimWorld;
 using Verse;
 
@@ -36,6 +37,13 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
 
     public override void PrepareColonists(List<Pawn> pawns) {
         if (pawns.Count == 0) return;
+
+        foreach (GemDef gemDef in DefDatabase<GemDef>.AllDefsListForReading) {
+            Verse.Thing? gem = ThingMaker.MakeThing(ThingDefOf.Cosmere_Roshar_Thing_Mark, gemDef.Item);
+            gem.stackCount = 25;
+            gem.TryGetComp<InvestitureHolder>().FillInvestiture();
+            GenPlace.TryPlaceThing(gem, pawns[0].Position, pawns[0].Map, ThingPlaceMode.Near);
+        }
 
         if (pawns.TryPopFront(out Pawn pawn)) {
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");

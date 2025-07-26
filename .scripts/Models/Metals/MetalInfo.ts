@@ -7,8 +7,8 @@ export class MetalInfo {
     public name: string;
     public description: string;
     public defName?: string;
-    public color: [number, number, number];
-    public colorTwo?: [number, number, number];
+    public color: Color;
+    public colorTwo?: Color;
     public godMetal: boolean = false;
     public stackable: boolean = true;
     public drawSize: number = 1;

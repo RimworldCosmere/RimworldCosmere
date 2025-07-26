@@ -1,6 +1,7 @@
 using Cosmere.Framework.InspectorTab;
 using Cosmere.Framework.Object;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.Framework.Comp.Thing;
@@ -9,6 +10,7 @@ public class InnerStorageProperties : CompProperties {
     public StorageSettings? defaultStorageSettings;
     public StorageSettings? fixedStorageSettings;
     public int maxItems = -1;
+    public bool oneStackOnly = false;
 
     [MustTranslate]
     public string tabName;
@@ -24,7 +26,8 @@ public class InnerStorageProperties : CompProperties {
     }
 }
 
-public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, IHaulEnroute {
+public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, IHaulEnroute,
+    IThingHolderEvents<Verse.Thing> {
     public ThingOwner<Verse.Thing>? innerContainer;
     private StorageSettings? settings;
 
@@ -32,7 +35,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
 
     public Pawn? ParentPawn => ParentThing as Pawn;
 
-    public ThingWithComps? ParentThing => parent is Apparel apparel ? apparel.Wearer : parent as Pawn;
+    public ThingWithComps? ParentThing => parent is Apparel apparel ? apparel.Wearer : parent;
 
     public Verse.Map? Map => parent.MapHeld;
 
@@ -58,14 +61,10 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
                GetStoreSettings().AllowedToAccept(t);
     }
 
-    public IntVec3 Position {
-        get {
-            if (parent is not Apparel apparel) return parent.SpawnedParentOrMe.Position;
-            if (apparel.Wearer is not { } wearer) return parent.SpawnedParentOrMe.Position;
-
-            return wearer.SpawnedParentOrMe.Position;
-        }
-    }
+    public IntVec3 Position =>
+        parent is not Apparel apparel || apparel.Wearer is not { } wearer
+            ? parent.SpawnedParentOrMe.Position
+            : wearer.SpawnedParentOrMe.Position;
 
     public int SpaceRemainingFor(ThingDef _) {
         return props.maxItems - innerContainer!.TotalStackCount;
@@ -73,6 +72,16 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
 
     public string GetUniqueLoadID() {
         return parent.GetUniqueLoadID();
+    }
+
+    public void Notify_ItemAdded(Verse.Thing item) {
+        parent.BroadcastCompSignal("Cosmere_InnerStorage_Added");
+        parent.BroadcastCompSignal("Cosmere_InnerStorage_Changed");
+    }
+
+    public void Notify_ItemRemoved(Verse.Thing item) {
+        parent.BroadcastCompSignal("Cosmere_InnerStorage_Removed");
+        parent.BroadcastCompSignal("Cosmere_InnerStorage_Changed");
     }
 
     public bool ShouldTickContents => true;
@@ -87,7 +96,12 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
 
     public override void Initialize(CompProperties originalProps) {
         base.Initialize(originalProps);
-        innerContainer = new ThingOwnerWithCapacity<Verse.Thing>(this, props.maxItems);
+        if (props.maxItems != -1) {
+            innerContainer = new ThingOwnerWithCapacity<Verse.Thing>(this, props.maxItems);
+        } else {
+            innerContainer = new ThingOwner<Verse.Thing>(this, props.oneStackOnly);
+        }
+
         settings = new StorageSettings(this);
         if (props.defaultStorageSettings != null) {
             settings.CopyFrom(props.defaultStorageSettings);
@@ -120,8 +134,24 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
         AddHaulDestination();
     }
 
+
+    public int GetSpaceRemainingWithEnroute(ThingDef stuff, Pawn? excludeEnrouteFor = null) {
+        if (Map == null) return 0;
+
+        int enroute1 = Map.enrouteManager.GetEnroute(this, stuff, excludeEnrouteFor);
+        return Mathf.Max(SpaceRemainingFor(stuff) - enroute1, 0);
+    }
+
     public int GetCountCanAccept(Verse.Thing thing) {
         return innerContainer?.GetCountCanAccept(thing) ?? 0;
+    }
+
+    public static explicit operator Verse.Thing(InnerStorage storage) {
+        return storage.parent;
+    }
+
+    public static implicit operator InnerStorage?(Verse.Thing thing) {
+        return thing.TryGetComp<InnerStorage>();
     }
 
     private void AddHaulDestination() {

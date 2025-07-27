@@ -28,15 +28,10 @@ public static class PatchHaulToContainerJob {
         ILGenerator generator
     ) {
         patched = false;
-        MethodInfo? logErrorMethod = AccessTools.Method(typeof(Log), nameof(Log.Error), [typeof(string)]);
         MethodInfo? haulMethod = AccessTools.Method(
             typeof(HaulUtility),
             nameof(HaulUtility.PawnHaulThingToInnerStorage),
             [typeof(Pawn), typeof(Verse.Thing), typeof(IHaulDestination)]
-        );
-        MethodInfo? tryFindStorage = AccessTools.Method(
-            typeof(StoreUtility),
-            nameof(StoreUtility.TryFindBestBetterStorageFor)
         );
         Type innerStorageType = typeof(Comp.Thing.InnerStorage);
 

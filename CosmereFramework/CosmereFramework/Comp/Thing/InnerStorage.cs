@@ -58,9 +58,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     public bool Accepts(Verse.Thing t) {
         int currentInventoryRemaining = props.maxItems - innerContainer!.TotalStackCount;
 
-        return innerContainer!.CanAcceptAnyOf(t) &&
-               currentInventoryRemaining > 0 &&
-               GetStoreSettings().AllowedToAccept(t);
+        return innerContainer!.CanAcceptAnyOf(t) && currentInventoryRemaining > 0 && GetStoreSettings().AllowedToAccept(t);
     }
 
     public IntVec3 Position =>

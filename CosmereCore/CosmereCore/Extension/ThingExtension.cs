@@ -13,7 +13,7 @@ public static class ThingExtension {
         return MetalDetector.GetMetal(thing);
     }
 
-    public static InvestitureHolder? GetInvestiture(this Thing thing) {
+    public static InvestitureHolder GetInvestiture(this Thing thing) {
         return thing.TryGetComp<InvestitureHolder>();
     }
 }

@@ -26,6 +26,8 @@ public class SphereGlowerProperties : CompProperties_Glower {
 }
 
 public class SphereGlower : CompGlower {
+    private bool FlickedOn = true;
+
     private IEnumerable<Verse.Thing> spheres {
         get {
             if (parent is ISlotGroupParent slotGroupParent) {
@@ -89,7 +91,7 @@ public class SphereGlower : CompGlower {
     }
 
     protected override bool ShouldBeLitNow =>
-        parent.Spawned && spheres.Any(s => s.GetInvestiture()?.currentInvestiture > 0);
+        parent.Spawned && FlickedOn && spheres.Any(s => s.GetInvestiture()?.currentInvestiture > 0);
 
     private static bool IsSphere(Verse.Thing thing) {
         return thing.def.IsOneOf(
@@ -111,6 +113,12 @@ public class SphereGlower : CompGlower {
             or "ScheduledOff")) {
             return;
         }
+
+        FlickedOn = signal switch {
+            "FlickedOff" => false,
+            "FlickedOn" => true,
+            _ => FlickedOn,
+        };
 
         UpdateLit(parent.Map);
     }

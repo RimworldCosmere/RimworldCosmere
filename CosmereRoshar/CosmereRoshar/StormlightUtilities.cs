@@ -263,30 +263,6 @@ public static class StormlightUtilities {
 
         return false;
     }
-
-    public static bool IsPawnEligibleForDoctoring(Pawn pawn) {
-        if (pawn == null || pawn.Dead || pawn.AnimalOrWildMan() || pawn.NonHumanlikeOrWildMan()) {
-            return false;
-        }
-
-        return !pawn.skills.GetSkill(RimWorld.SkillDefOf.Medicine).TotallyDisabled;
-    }
-
-    public static bool ShouldBeMovedByStorm(this Verse.Thing thing) {
-        if (!thing.Spawned || thing.Map == null) {
-            return false;
-        }
-
-        Room room = thing.GetRoom();
-
-        if (StormShelterManager.IsInsideShelter(thing.Position)) return false;
-        if (room == null) return true;
-        if (room.PsychologicallyOutdoors) return true;
-        if (!thing.Position.Roofed(thing.Map)) return true;
-
-        return false;
-    }
-    //bottom//
 }
 
 public static class StormShelterManager {

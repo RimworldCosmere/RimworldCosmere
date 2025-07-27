@@ -9,13 +9,13 @@
             <li>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
-                    <InjuryHealingFactor>1.5</InjuryHealingFactor>
-                    <ImmunityGainSpeed>1.5</ImmunityGainSpeed>
-                    <PainShockThreshold>1.5</PainShockThreshold>
-                    <ToxicResistance>1.5</ToxicResistance>
-                    <ToxicEnvironmentResistance>1.5</ToxicEnvironmentResistance>
-                    <IncomingDamageFactor>0.5</IncomingDamageFactor>
-                    <StaggerDurationFactor>0.5</StaggerDurationFactor>
+                    <InjuryHealingFactor>3</InjuryHealingFactor>
+                    <ImmunityGainSpeed>3</ImmunityGainSpeed>
+                    <PainShockThreshold>3</PainShockThreshold>
+                    <ToxicResistance>3</ToxicResistance>
+                    <ToxicEnvironmentResistance>3</ToxicEnvironmentResistance>
+                    <IncomingDamageFactor>0.75</IncomingDamageFactor>
+                    <StaggerDurationFactor>0.75</StaggerDurationFactor>
                 </statFactors>
             </li>
         </stages>

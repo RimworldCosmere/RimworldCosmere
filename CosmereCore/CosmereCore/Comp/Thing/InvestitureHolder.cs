@@ -13,6 +13,7 @@ public class InvestitureHolderProperties : CompProperties {
     public bool maxIsInfinity = false;
     public bool shareInvestitureByDefault = true;
     public bool showMax = true;
+    public float startingInvestiture = 1;
     public bool valueBasedOnChildren = true;
 
     public InvestitureHolderProperties() {
@@ -39,6 +40,11 @@ public class InvestitureHolderProperties : CompProperties {
         base.PostLoadSpecial(parent);
         if (maxIsInfinity) {
             showMax = false;
+            maxInvestiture = float.PositiveInfinity;
+        }
+
+        if (Mathf.Approximately(maxInvestiture.Value!, 0)) {
+            startingInvestiture = 0;
         }
     }
 }
@@ -108,6 +114,7 @@ public class InvestitureHolder : ThingComp {
 
     public override void Initialize(CompProperties props) {
         base.Initialize(props);
+        currentInvestitureSelfInt = this.props.startingInvestiture;
         drainRate = this.props.drainRate;
         sharingInvestiture = this.props.shareInvestitureByDefault;
     }

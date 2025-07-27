@@ -53,7 +53,7 @@ public class Investiture : RimWorld.Need {
             }
 
             // If we've hit the last one, cap at the highest defined
-            return investitureHolder.maxInvestiture;
+            return investitureHolder.maxInvestitureSelf;
         }
     }
 

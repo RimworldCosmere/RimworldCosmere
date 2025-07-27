@@ -14,4 +14,12 @@ public static class PawnExtension {
 
         return null;
     }
+
+    public static bool IsPawnEligibleForDoctoring(this Pawn pawn) {
+        if (pawn == null || pawn.Dead || pawn.AnimalOrWildMan() || pawn.NonHumanlikeOrWildMan()) {
+            return false;
+        }
+
+        return !pawn.skills.GetSkill(RimWorld.SkillDefOf.Medicine).TotallyDisabled;
+    }
 }

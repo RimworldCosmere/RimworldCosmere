@@ -3,15 +3,12 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Random = System.Random;
 
 namespace Cosmere.Roshar.Patches.Highstorm;
 
 [HarmonyPatch(typeof(Pawn))]
 [HarmonyPatch("TickInterval")]
 public static class PawnHighstormPushPatch {
-    private static readonly Random MRand = new Random();
-
     private static readonly string WindrunnerBondText =
         "pauses. A presence lingers at the edge of their awareness—watching, waiting. It has seen their struggles, their moments of strength, their failures. And yet, it remains.\r\n\r\nA faint whisper echoes in the back of their mind, words unbidden yet undeniable:\r\n\"Life before death. Strength before weakness. Journey before destination.\"";
 
@@ -34,12 +31,13 @@ public static class PawnHighstormPushPatch {
         }
 
         if (IsHighstormActive(__instance.Map)) {
-            DamageAndMovePawn(__instance);
+            // DamageAndMovePawn(__instance);
             if (StormlightUtilities.IsRadiant(__instance)) {
                 return;
             }
 
-            if (Find.TickManager.TicksGame % 100 == 0 && StormlightUtilities.IsPawnEligibleForDoctoring(__instance)) {
+            if (!__instance.IsHashIntervalTick(100, delta)) return;
+            if (__instance.IsPawnEligibleForDoctoring()) {
                 TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Windrunner);
             }
 
@@ -54,12 +52,12 @@ public static class PawnHighstormPushPatch {
         if (__instance.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
         switch (__instance.Map.weatherManager.curWeather.defName) {
             case "Fog" or "FoggyRain" when
-                StormlightUtilities.IsPawnEligibleForDoctoring(__instance):
+                __instance.IsPawnEligibleForDoctoring():
                 TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher);
                 break;
             case "Rain" or "Clear" when
                 StormlightUtilities.IsNearGrowingPlants(__instance) &&
-                StormlightUtilities.IsPawnEligibleForDoctoring(__instance):
+                __instance.IsPawnEligibleForDoctoring():
                 TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Edgedancer);
                 break;
             case "DryThunderstorm" or "RainyThunderstorm":
@@ -122,31 +120,20 @@ public static class PawnHighstormPushPatch {
     }
 
     private static bool IsPawnValidForStorm(Pawn pawn) {
-        if (pawn.Dead || pawn.Destroyed || !pawn.Spawned) {
-            return false;
-        }
-
-        if (pawn.Map == null) {
-            return false;
-        }
-
-        if (!pawn.Position.IsValid) {
-            return false;
-        }
-
-        if (!pawn.Position.InBounds(pawn.Map)) {
-            return false;
-        }
+        if (pawn.Dead || pawn.Destroyed || !pawn.Spawned) return false;
+        if (pawn.Map == null) return false;
+        if (!pawn.Position.IsValid) return false;
+        if (!pawn.Position.InBounds(pawn.Map)) return false;
 
         return !pawn.Position.Roofed(pawn.Map);
     }
 
-    private static bool CheckIfSheltered(Pawn pawn) {
+    /*private static bool CheckIfSheltered(Pawn pawn) {
         return !pawn.ShouldBeMovedByStorm();
-    }
+    }*/
 
 
-    private static void DamageAndMovePawn(Pawn instance) {
+    /*private static void DamageAndMovePawn(Pawn instance) {
         if (CheckIfSheltered(instance)) {
             return;
         }
@@ -170,5 +157,5 @@ public static class PawnHighstormPushPatch {
                 stormlightComp.InfuseStormlight(25f); // 25 units per check
             }
         }
-    }
+    }*/
 }

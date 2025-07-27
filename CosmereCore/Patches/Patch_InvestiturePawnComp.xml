@@ -5,8 +5,9 @@
         <value>
             <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
                 <showMax>false</showMax>
-				<maxIsInfinity>true</maxIsInfinity>
-				<valueBasedOnChildren>false</valueBasedOnChildren>
+                <maxInvestiture>1</maxInvestiture>
+                <startingInvestiture>1</startingInvestiture>
+                <valueBasedOnChildren>false</valueBasedOnChildren>
                 <shareInvestitureByDefault>false</shareInvestitureByDefault>
             </li>
         </value>

@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Hediff;
+using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Gene;
 using Verse;
 
@@ -34,6 +35,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
         base.LabelBase + (sourceAbilities.Count > 1 ? $" ({sourceAbilities.Count} sources)" : "");
 
     public SeverityCalculator<TGene>? severityCalculator => GetComp<SeverityCalculator<TGene>>();
+    protected InvestitureHolder investiture => pawn.GetInvestiture();
     public TGene gene { get; protected set; }
 
     public float extraSeverity { get; set; } = 0f;
@@ -57,7 +59,9 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
      */
     public override void TickInterval(int delta) {
         if (pawn.IsShieldedAgainstInvestiture() && !IsInvestitureShield()) {
-            foreach (AbstractAbility? ability in sourceAbilities.Cast<AbstractAbility>().ToList()) {
+            foreach (AbstractAbility? ability in sourceAbilities.Where(x => x is AbstractAbility)
+                         .Cast<AbstractAbility>()
+                         .ToList()) {
                 ability.UpdateStatus(Active.Off);
             }
         }

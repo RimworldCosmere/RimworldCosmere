@@ -1,5 +1,4 @@
 using Cosmere.Core.Ability;
-using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Hediff;
 using Cosmere.Roshar.Gene;
 using UnityEngine;
@@ -12,12 +11,10 @@ public class Heal(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<
     private const float MaxDrawDistance = 5f;
     private const float BaseAbsorbAmount = 1f;
 
-    private InvestitureHolder investiture => pawn.GetComp<InvestitureHolder>()!;
-
     public override void PostTickInterval(int delta) {
         base.PostTickInterval(delta);
 
-        if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
+        if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond / 2, delta)) return;
 
         List<Hediff_Injury> injuries = pawn.health.hediffSet.hediffs
             .OfType<Hediff_Injury>()

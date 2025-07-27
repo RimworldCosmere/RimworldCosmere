@@ -1,7 +1,5 @@
 using System;
-using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Gene;
-using Cosmere.Core.Need;
 using Cosmere.Roshar.Comp.Thing;
 using Cosmere.Roshar.Def;
 using Cosmere.Roshar.DefModExtension;
@@ -27,7 +25,6 @@ public class Surgebinder : Invested {
     public RadiantOrderDef radiantOrderDef => radiantOrder.order;
     protected override Color BarColor => radiantOrderDef.color.SaturationChanged(1f);
     protected override Color BarHighlightColor => radiantOrderDef.color.SaturationChanged(2f);
-    private Investiture investiture => pawn.needs.TryGetNeed<Investiture>();
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower);
     private PawnTracker tracker => pawn.TryGetComp<PawnTracker>();
 
@@ -42,7 +39,7 @@ public class Surgebinder : Invested {
         investiture.CurLevel += Mathf.Pow(10, currentIdealInt);
 
         // Update their drain rate
-        pawn.GetComp<InvestitureHolder>().drainRate = GetDrainRate();
+        investitureHolder.drainRate = GetDrainRate();
     }
 
     private float GetDrainRate() {
@@ -86,6 +83,7 @@ public class Surgebinder : Invested {
     }
 
     public override void PostRemove() {
+        skill.Level = 0;
         foreach (AbilityDef unlockedAbilityDef in GetUnlockedAbilityDefs()) {
             pawn.abilities.RemoveAbility(unlockedAbilityDef);
         }

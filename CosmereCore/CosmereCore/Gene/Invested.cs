@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Investiture;
 using RimWorld;
 using UnityEngine;
@@ -25,6 +25,9 @@ public abstract class Invested : Gene_Resource {
     public override int ValueForDisplay => PostProcessValue(Value);
     public override int MaxForDisplay => PostProcessValue(Max);
 
+    protected Need.Investiture investiture => pawn.needs.TryGetNeed<Need.Investiture>();
+    protected InvestitureHolder investitureHolder => pawn.TryGetComp<InvestitureHolder>();
+
     public override void ExposeData() {
         base.ExposeData();
         Scribe_Values.Look(ref gizmoShrunk, "gizmoShrunk");
@@ -39,11 +42,14 @@ public abstract class Invested : Gene_Resource {
     public override void PostAdd() {
         base.PostAdd();
         PostAddOrRemove();
+        investitureHolder.maxInvestitureSelf = float.PositiveInfinity;
     }
 
     public override void PostRemove() {
         base.PostRemove();
         PostAddOrRemove();
+        investitureHolder.currentInvestitureSelf = 1;
+        investitureHolder.maxInvestitureSelf = 1;
     }
 
     public virtual bool CanLowerReserve(float breathEquivalentUnits) {

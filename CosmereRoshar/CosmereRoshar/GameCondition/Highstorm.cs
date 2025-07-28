@@ -93,14 +93,13 @@ public class Highstorm : RimWorld.GameCondition {
 
             if (thing.ShouldBeMovedByStorm()) MoveItem(thing);
             if (thing?.Map == null) continue;
-            if (thing is not Pawn pawn ||
-                thing.Position.Roofed(thing.Map) ||
-                !pawn.TryGetComp(out InvestitureHolder investiture) ||
+            if (thing.Position.Roofed(thing.Map) ||
+                !thing.TryGetComp(out InvestitureHolder investiture) ||
                 investiture.isFull) {
                 continue;
             }
 
-            investiture.AbsorbInvestitureFrom(highstorm, investitureToAbsorb);
+             investiture.AbsorbInvestitureFrom(highstorm, investitureToAbsorb);
         }
     }
 

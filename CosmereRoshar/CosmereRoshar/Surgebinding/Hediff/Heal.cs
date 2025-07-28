@@ -36,7 +36,7 @@ public class Heal(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<
     }
 
     private void CheckIfDone(List<Verse.Hediff> hediffs) {
-        4sif (hediffs.Count != 0) return;
+        if (hediffs.Count != 0) return;
         if (!Mathf.Approximately(pawn.health.summaryHealth.SummaryHealthPercent, 1)) return;
 
         ability.UpdateStatus(Active.Off);

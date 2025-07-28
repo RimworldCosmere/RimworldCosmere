@@ -92,7 +92,7 @@ foreach ($mod in $mods)
             "-batchmode",
             "-quit",
             '-projectPath="..\AssetBuilder"',
-            "-executeMethod", "ModAssetBundleBuilder.BuildBundles",
+            "-executeMethod=ModAssetBundleBuilder.BuildBundles",
             "--assetBundleName=$bundleName",
             "--buildTarget=$buildTarget",
             "--outputLocation=$finalOutput"

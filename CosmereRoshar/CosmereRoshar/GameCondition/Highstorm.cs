@@ -140,27 +140,31 @@ public class Highstorm : RimWorld.GameCondition {
             }
         }
 
-        if (thing.Spawned) {
-            thing.DeSpawn();
-        }
-
-        if (!GenPlace.TryPlaceThing(thing, newPos, map, ThingPlaceMode.Near, out Verse.Thing newThing)) {
-            GenSpawn.Spawn(thing, oldPos, map);
-            return false;
-        }
-
         if (!newPos.InBounds(map)) return true;
+        
+        if (thing is not Pawn) {
+            if (thing.Spawned) {
+                thing.DeSpawn();
+            }
 
-        foreach (Verse.Thing t in newPos.GetThingList(map).ToList()) {
-            if (t == newThing) continue;
-            if (newThing.CanStackWith(t) && t.TryAbsorbStack(newThing, true)) return true;
-            if (t.def.saveCompressible && newThing.def.saveCompressible) {
-                if (MoveItem(t)) return true;
-
-                newThing.DeSpawn();
-                GenSpawn.Spawn(newThing, oldPos, map);
+            if (!GenPlace.TryPlaceThing(thing, newPos, map, ThingPlaceMode.Near, out Verse.Thing newThing)) {
+                GenSpawn.Spawn(thing, oldPos, map);
                 return false;
             }
+            
+            foreach (Verse.Thing t in newPos.GetThingList(map).ToList()) {
+                if (t == newThing) continue;
+                if (newThing.CanStackWith(t) && t.TryAbsorbStack(newThing, true)) return true;
+                if (t.def.saveCompressible && newThing.def.saveCompressible) {
+                    if (MoveItem(t)) return true;
+
+                    newThing.DeSpawn();
+                    GenSpawn.Spawn(newThing, oldPos, map);
+                    return false;
+                }
+            }
+        } else {
+            thing.Position = newPos;
         }
 
         FleckMaker.ThrowDustPuff(newPos, map, 1.5f);

@@ -108,40 +108,65 @@ public class Highstorm : RimWorld.GameCondition {
     ///     Moves items from right to left.
     /// </summary>
     /// @TODO MAJOR overhaul idea: Have a component that keeps track of how much shelter a cell has from any given direction
-    private void MoveItem(Verse.Thing thing) {
-        if (!Mod.enableHighstormPushing) return;
-        if (thing.IsBehindSolidThing(IntVec3.East, 2)) return;
-        if (thing is Mineable or Plant) return;
-        if (!thing.CanBeMoved() && !thing.def.useHitPoints) return;
+    private bool MoveItem(Verse.Thing thing) {
+        if (!Mod.enableHighstormPushing) return false;
+        if (thing.IsBehindSolidThing(IntVec3.East, 2)) return false;
+        if (thing is Mineable or Plant) return false;
+        if (!thing.CanBeMoved() && !thing.def.useHitPoints) return false;
 
         IntVec3 oldPos = thing.Position;
         IntVec3 newPos = oldPos + GetRandomStormOffset(thing is Pawn);
+        Map map = thing.Map;
+
+
         if (!CanMoveToNewPosition(thing, newPos)) {
-            // Damage both things, in newPos, and thing
-            if (!newPos.InBounds(thing.Map)) return;
+            if (!newPos.InBounds(map)) return false;
+
             foreach (Verse.Thing collidedThing in newPos.GetThingList(thing.Map).ToList()) {
                 DamageItem(collidedThing);
             }
 
             DamageItem(thing);
-            return;
+            return false;
         }
 
         if (thing.def.destroyOnDrop) {
             DamageItem(thing);
         }
 
-        if (newPos.DistanceToEdge(thing.Map) == 0) {
-            if (thing is not Pawn) thing.DeSpawn();
-        } else {
-            thing.Position = newPos;
-            foreach (Verse.Thing t in thing.Position.GetThingList(thing.Map).ToList()) {
-                if (t.CanStackWith(thing) && t.TryAbsorbStack(thing, true)) break;
-                if (t.def.saveCompressible && thing.def.saveCompressible) {
-                    thing.Position = oldPos;
-                }
+        if (newPos.DistanceToEdge(map) == 0) {
+            if (thing is not Pawn) {
+                thing.DeSpawn();
+                return true;
             }
         }
+
+        if (thing.Spawned) {
+            thing.DeSpawn();
+        }
+
+        if (!GenPlace.TryPlaceThing(thing, newPos, map, ThingPlaceMode.Near, out Verse.Thing newThing)) {
+            GenSpawn.Spawn(thing, oldPos, map);
+            return false;
+        }
+
+        if (!newPos.InBounds(map)) return true;
+
+        foreach (Verse.Thing t in newPos.GetThingList(map).ToList()) {
+            if (t == newThing) continue;
+            if (newThing.CanStackWith(t) && t.TryAbsorbStack(newThing, true)) return true;
+            if (t.def.saveCompressible && newThing.def.saveCompressible) {
+                if (MoveItem(t)) return true;
+
+                newThing.DeSpawn();
+                GenSpawn.Spawn(newThing, oldPos, map);
+                return false;
+            }
+        }
+
+        FleckMaker.ThrowDustPuff(newPos, map, 1.5f);
+
+        return true;
     }
 
     private bool CanMoveToNewPosition(Verse.Thing thing, IntVec3 newPos) {
@@ -209,6 +234,13 @@ public class Highstorm : RimWorld.GameCondition {
                 }
 
                 pawn.TakeDamage(damage);
+
+                break;
+            }
+            default: {
+                if (thing.Destroyed) break;
+
+                thing.TakeDamage(damage);
 
                 break;
             }

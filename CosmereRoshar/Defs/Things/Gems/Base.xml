@@ -13,12 +13,14 @@
             <li>Manufactured</li>
             <li>Cosmere_Currency</li>
         </thingCategories>
-        <alwaysHaulable>true</alwaysHaulable>
         <stackLimit>200</stackLimit>
         <tradeTags>
             <li>Cosmere_Currency</li>
         </tradeTags>
         <orderedTakeGroup>Cosmere_Currency</orderedTakeGroup>
+        <statBases>
+            <Beauty>0</Beauty>
+        </statBases>
         <comps>
             <li><compClass>CompQuality</compClass></li>
         </comps>

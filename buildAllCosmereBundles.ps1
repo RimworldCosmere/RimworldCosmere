@@ -56,7 +56,7 @@ foreach ($mod in $mods)
     Write-Host "Processing Cosmere$mod..."
 
     $srcAssets = "$PSScriptRoot\Cosmere$mod\Assets"
-    $bundleName = "CryptikLemur.Cosmere.$mod"
+    $bundleName = "Cosmere.$mod"
     $destPath = "$PSScriptRoot\..\AssetBuilder\Assets\Data\$bundleName"
     $finalOutput = "$PSScriptRoot\Cosmere$mod\AssetBundles"
     $hashFile = "$PSScriptRoot\Cosmere$mod\.lastassetbuildhash"

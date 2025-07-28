@@ -8,34 +8,35 @@ namespace Cosmere.Roshar.Surgebinding.Hediff;
 
 public class Heal(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability)
     : SurgebindingHediff(hediffDef, pawn, ability) {
-    private const float MaxDrawDistance = 5f;
-    private const float BaseAbsorbAmount = 1f;
-
     public override void PostTickInterval(int delta) {
         base.PostTickInterval(delta);
 
+        if (!gene.CanLowerReserve(ability.def.beuPerTick)) ability.UpdateStatus(Active.Off);
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond / 2, delta)) return;
 
-        List<Hediff_Injury> injuries = pawn.health.hediffSet.hediffs
-            .OfType<Hediff_Injury>()
-            .Where(i => i.CanBeHealedWithInvestiture())
+        List<Verse.Hediff> hediffs = pawn.health.hediffSet.hediffs
+            .Where(h => h.CanBeHealedByInvestiture())
             .ToList();
 
-        CheckIfDone(injuries);
+        CheckIfDone(hediffs);
 
-        foreach (Hediff_Injury injury in injuries) {
-            injury.Heal(Mathf.Lerp(0, 3, gene.currentIdeal + 1));
-            if (injury.ShouldRemove) {
-                injuries.Remove(injury);
+        foreach (Verse.Hediff hediff in hediffs) {
+            if (!hediff.TryHealWithInvestiture(ability.gene.currentIdealDisplay)) {
+                continue;
             }
 
-            CheckIfDone(injuries);
+            if (hediff.ShouldRemove) {
+                hediffs.Remove(hediff);
+            }
+
+            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, 5);
+            CheckIfDone(hediffs);
             return;
         }
     }
 
-    private void CheckIfDone(List<Hediff_Injury> injuries) {
-        if (injuries.Count != 0) return;
+    private void CheckIfDone(List<Verse.Hediff> hediffs) {
+        4sif (hediffs.Count != 0) return;
         if (!Mathf.Approximately(pawn.health.summaryHealth.SummaryHealthPercent, 1)) return;
 
         ability.UpdateStatus(Active.Off);

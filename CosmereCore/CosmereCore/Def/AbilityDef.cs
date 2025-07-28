@@ -6,7 +6,7 @@ namespace Cosmere.Core.Def;
 public class AbilityDef : RimWorld.AbilityDef, IMultiTypeHediff {
     public ThingDef? activeMote;
     public float asleepStrengthFactor = .5f;
-    public bool autoUseWhileDowned = true;
+    public bool autoUseWhileDowned = false;
     public bool autoUseWhileInjured = false;
     public float beuPerTick = Constants.DefaultBreathEquivalentUnitsPerTick;
     public bool canUseWhileAsleep = false;

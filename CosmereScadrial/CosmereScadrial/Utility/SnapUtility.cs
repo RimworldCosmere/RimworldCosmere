@@ -1,8 +1,7 @@
-using Cosmere.Scadrial.Extension;
 using RimWorld;
 using Verse;
 
-namespace Cosmere.Scadrial.Util;
+namespace Cosmere.Scadrial.Utility;
 
 public class SnapUtility {
     public static void TrySnap(Pawn pawn, string? cause = "", bool withMessage = true) {

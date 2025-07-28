@@ -30,7 +30,7 @@ public static class InvestitureDetector {
     }
 
     public static bool IsInsideCoppercloud(Thing thing) {
-        if (!ModsConfig.IsActive("cryptiklemur.cosmere.scadrial")) {
+        if (!ModsConfig.IsActive("Cosmere.Scadrial")) {
             return false;
         }
 
@@ -72,7 +72,7 @@ public static class InvestitureDetector {
     }
 
     public static bool IsBurningPullingEnhancementMetal(Pawn? pawn) {
-        if (!ModsConfig.IsActive("cryptiklemur.cosmere.scadrial") || pawn == null) {
+        if (!ModsConfig.IsActive("Cosmere.Scadrial") || pawn == null) {
             return false;
         }
 

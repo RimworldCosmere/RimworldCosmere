@@ -7,7 +7,7 @@ using Cosmere.Scadrial.Dev;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
-using GeneUtility = Cosmere.Scadrial.Util.GeneUtility;
+using GeneUtility = Cosmere.Scadrial.Utility.GeneUtility;
 
 namespace Cosmere.Scadrial.Quickstart;
 

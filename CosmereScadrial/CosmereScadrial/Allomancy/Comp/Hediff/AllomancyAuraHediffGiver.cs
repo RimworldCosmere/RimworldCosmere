@@ -4,7 +4,7 @@ using Cosmere.Framework.Comp.Map;
 using Cosmere.Scadrial.Allomancy.Hediff;
 using Cosmere.Scadrial.Comp.Hediff;
 using Cosmere.Scadrial.Gene;
-using Cosmere.Scadrial.Util;
+using Cosmere.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;

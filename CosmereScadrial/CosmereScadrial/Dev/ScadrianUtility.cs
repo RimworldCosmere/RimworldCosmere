@@ -1,10 +1,10 @@
 ﻿using Cosmere.Scadrial.Def;
 using Cosmere.Scadrial.Gene;
-using Cosmere.Scadrial.Util;
+using Cosmere.Scadrial.Utility;
 using LudeonTK;
 using RimWorld;
 using Verse;
-using GeneUtility = Cosmere.Scadrial.Util.GeneUtility;
+using GeneUtility = Cosmere.Scadrial.Utility.GeneUtility;
 
 namespace Cosmere.Scadrial.Dev;
 

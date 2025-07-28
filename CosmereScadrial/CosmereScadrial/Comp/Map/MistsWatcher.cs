@@ -1,7 +1,7 @@
 using Cosmere.Core.Util;
 using Cosmere.Framework;
 using Cosmere.Scadrial.Settings;
-using Cosmere.Scadrial.Util;
+using Cosmere.Scadrial.Utility;
 using RimWorld;
 using Verse;
 

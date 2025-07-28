@@ -1,4 +1,4 @@
-using Cosmere.Scadrial.Util;
+using Cosmere.Scadrial.Utility;
 using HarmonyLib;
 using Verse;
 using Verse.AI;

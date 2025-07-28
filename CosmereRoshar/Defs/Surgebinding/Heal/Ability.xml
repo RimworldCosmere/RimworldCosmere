@@ -7,6 +7,7 @@
         <canUseWhileAsleep>true</canUseWhileAsleep>
         <canUseWhileDowned>true</canUseWhileDowned>
         <autoUseWhileInjured>true</autoUseWhileInjured>
+        <autoUseWhileDowned>true</autoUseWhileDowned>
         <isAutocast>true</isAutocast>
         <hediff>Cosmere_Roshar_Hediff_Heal</hediff>
         <beuPerTick>1</beuPerTick>

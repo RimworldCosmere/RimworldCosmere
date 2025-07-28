@@ -1,3 +1,4 @@
+using System.Text;
 using Cosmere.Core.Gizmo;
 using Cosmere.Roshar.Def;
 using Cosmere.Roshar.DefModExtension;
@@ -5,6 +6,7 @@ using Cosmere.Roshar.Gene;
 using Cosmere.Roshar.Surgebinding.Ability;
 using RimWorld;
 using UnityEngine;
+using Verse;
 
 namespace Cosmere.Roshar.Gizmo;
 
@@ -20,6 +22,18 @@ public class RadiantOrderCommand(
 
     protected override Texture2D GetIcon() {
         return gene.def.Icon;
+    }
+
+    protected override string GetTooltipHeader() {
+        StringBuilder sb = new StringBuilder(base.GetTooltipHeader() + "\n");
+
+        TaggedString ideal = $"CF_Ordinal_{gene.currentIdealDisplay}_Long".Translate() +
+                             ' ' +
+                             "CRO_RadiantOrder_Ideal".Translate();
+
+        sb.AppendLine(ideal.Resolve().Colorize(ColorLibrary.GrassGreen));
+
+        return sb.ToString();
     }
 
     /**

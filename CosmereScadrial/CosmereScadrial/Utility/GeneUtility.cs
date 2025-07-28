@@ -5,7 +5,7 @@ using UnityEngine;
 using Verse;
 using Logger = Cosmere.Framework.Logger;
 
-namespace Cosmere.Scadrial.Util;
+namespace Cosmere.Scadrial.Utility;
 
 public static class GeneUtility {
     private static bool isHarmony => ShardUtility.AreAnyEnabled(ShardDefOf.Harmony);

@@ -2,7 +2,7 @@ using Cosmere.Core.Ability;
 using Cosmere.Core.Hediff;
 using Cosmere.Scadrial.Def;
 using Cosmere.Scadrial.Gene;
-using Cosmere.Scadrial.Util;
+using Cosmere.Scadrial.Utility;
 using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Hediff;

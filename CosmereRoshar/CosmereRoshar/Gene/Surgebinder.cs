@@ -11,6 +11,8 @@ using Logger = Cosmere.Framework.Logger;
 namespace Cosmere.Roshar.Gene;
 
 public class Surgebinder : Invested {
+    private static readonly List<int> SkillRequirements = [0, 2, 6, 10, 14];
+
     private int currentIdealInt;
 
     public int currentIdeal {
@@ -20,6 +22,8 @@ public class Surgebinder : Invested {
             OnIdealChange();
         }
     }
+
+    public int currentIdealDisplay => currentIdeal + 1;
 
     public RadiantOrder radiantOrder => def.GetModExtension<RadiantOrder>();
     public RadiantOrderDef radiantOrderDef => radiantOrder.order;
@@ -59,11 +63,30 @@ public class Surgebinder : Invested {
     public override void TickInterval(int delta) {
         base.TickInterval(delta);
 
-        if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval)) return;
+        TryLevelUp(delta);
+        TrySkillUp(delta);
+    }
+
+    /// <summary>
+    ///     The pawn slowly just levels up their Surgebinding skill from talking with their
+    ///     spren. 5 xp every 2000 ticks is pretty slow, but will eventually get pawns
+    ///     leveled up, and on their way to higher ideals
+    /// </summary>
+    /// <param name="delta"></param>
+    private void TrySkillUp(int delta) {
+        if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
+        if (currentIdeal >= 2) return;
+
+        skill.Learn(5, true, true);
+    }
+
+    private void TryLevelUp(int delta) {
+        if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
         if (currentIdeal == 4) return;
+        if (skill.Level < SkillRequirements[currentIdeal + 1]) return;
         if (!radiantOrderDef.idealChecker.IsSatisfied(pawn, this, currentIdeal, currentIdeal + 1)) return;
 
-        //currentIdeal++;
+        currentIdeal++;
         Messages.Message(
             "CRO_Gene_LevelUp".Translate(
                     pawn.NameFullColored.Named("PAWN"),

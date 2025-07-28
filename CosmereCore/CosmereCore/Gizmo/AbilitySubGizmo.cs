@@ -80,7 +80,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
 
         if (ability.def.maxPower > 1) {
             desc.AppendLine("\n");
-            desc.AppendLine(GetPowerUpDisplay());
+            desc.AppendLine(GetPowerUpDisplay().Resolve());
         }
 
         if (ability.def.autoUseWhileDowned || ability.def.autoUseWhileInjured) {

@@ -1,6 +1,6 @@
 ﻿using Cosmere.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.Scadrial.Gizmo;
-using Cosmere.Scadrial.Util;
+using Cosmere.Scadrial.Utility;
 using UnityEngine;
 using Verse;
 

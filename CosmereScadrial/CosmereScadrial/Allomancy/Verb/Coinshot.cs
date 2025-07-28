@@ -1,6 +1,6 @@
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
-using Cosmere.Scadrial.Util;
+using Cosmere.Scadrial.Utility;
 using RimWorld;
 using Verse;
 using Verse.AI;

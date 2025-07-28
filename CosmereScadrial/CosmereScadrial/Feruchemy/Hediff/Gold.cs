@@ -25,14 +25,12 @@ public class Gold : HediffWithComps {
 
         if (!isTapping) return;
 
-        List<Hediff_Injury> injuries = pawn.health.hediffSet.hediffs
-            .OfType<Hediff_Injury>()
-            .Where(i => i.CanBeHealedWithInvestiture())
+        List<Verse.Hediff> hediffs = pawn.health.hediffSet.hediffs
+            .Where(h => h.CanBeHealedByInvestiture())
             .ToList();
 
-        foreach (Hediff_Injury injury in injuries) {
-            injury.Heal(Severity);
-            return;
+        foreach (Verse.Hediff hediff in hediffs) {
+            if (hediff.TryHealWithInvestiture(Severity)) return;
         }
     }
 }

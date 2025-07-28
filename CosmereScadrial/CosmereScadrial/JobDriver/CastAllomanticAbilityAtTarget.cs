@@ -4,7 +4,7 @@ using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Comp.Game;
 using Cosmere.Scadrial.Allomancy.Hediff;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Util;
+using Cosmere.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;

@@ -1,6 +1,6 @@
+using System;
 using System.Reflection;
 using Cosmere.Core.Comp.Thing;
-using Cosmere.Core.Need;
 using Cosmere.Framework.Comp.Thing;
 using Cosmere.Framework.Quickstart;
 using Cosmere.Resources.Def;
@@ -13,7 +13,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
     //public override ScenarioDef? scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
     private readonly Assembly? scadrial = LoadedModManager.RunningMods
-        .FirstOrDefault(m => m.PackageId == "CryptikLemur.Cosmere.Scadrial")
+        .FirstOrDefault(m => m.PackageId.Equals("cosmere.scadrial", StringComparison.CurrentCultureIgnoreCase))
         ?.assemblies.loadedAssemblies.FirstOrDefault();
 
     public override int mapSize => 100;
@@ -46,9 +46,10 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out Pawn pawn)) {
+            pawn.GetInvestiture().currentInvestitureSelf = 500;
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner, 4);
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
             Apparel? pouch = (Apparel)ThingMaker.MakeThing(
                 ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch,
                 GenStuff.RandomStuffFor(ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch)
@@ -66,26 +67,27 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
+            pawn.GetInvestiture().currentInvestitureSelf = 500;
             pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kohlin");
             pawn.gender = Gender.Male;
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher, 1);
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher);
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            if (pawn.needs.TryGetNeed(out Investiture investiture)) {
-                investiture.CurLevel = 50000;
-            }
-
+            pawn.GetInvestiture().currentInvestitureSelf = 50000;
             pawn.Name = new NameSingle("Wit");
             pawn.gender = Gender.Male;
-            if (ModsConfig.IsActive("CryptikLemur.Cosmere.Scadrial")) {
-                scadrial?
-                    .GetType("CosmereScadrial.Utility.GeneUtility")
-                    ?.GetMethod("AddMistborn", BindingFlags.Public | BindingFlags.Static)
-                    ?.Invoke(null, [pawn, false, true]);
+            if (ModsConfig.IsActive("Cosmere.Scadrial") && scadrial != null) {
+                Type? geneUtility = scadrial.GetType("Cosmere.Scadrial.Utility.GeneUtility");
+                MethodInfo? addMistborn = geneUtility?.GetMethod(
+                    "AddMistborn",
+                    BindingFlags.Public | BindingFlags.Static
+                );
+
+                addMistborn?.Invoke(null, [pawn, false, false, null]);
             }
 
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver, 2);
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver);
         }
     }
 }

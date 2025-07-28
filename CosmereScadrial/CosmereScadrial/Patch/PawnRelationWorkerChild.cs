@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using Verse;
-using GeneUtility = Cosmere.Scadrial.Util.GeneUtility;
+using GeneUtility = Cosmere.Scadrial.Utility.GeneUtility;
 
 namespace Cosmere.Scadrial.Patch;
 

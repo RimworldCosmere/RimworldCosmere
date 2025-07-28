@@ -10,5 +10,6 @@
         <hediff>Cosmere_Scadrial_Hediff_PewterBuff</hediff>
         <dragHediff>Cosmere_Scadrial_Hediff_PewterDrag</dragHediff>
         <maxPower>2</maxPower>
+        <autoUseWhileDowned>true</autoUseWhileDowned>
     </Cosmere.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

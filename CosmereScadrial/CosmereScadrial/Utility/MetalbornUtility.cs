@@ -3,7 +3,7 @@ using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;
 
-namespace Cosmere.Scadrial.Util;
+namespace Cosmere.Scadrial.Utility;
 
 public static class MetalbornUtility {
     public static bool HasAnyMetalbornGene(Pawn? pawn) {

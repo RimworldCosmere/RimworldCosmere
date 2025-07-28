@@ -1,7 +1,7 @@
 using Cosmere.Core.Gene;
 using Cosmere.Resources.DefModExtension;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Util;
+using Cosmere.Scadrial.Utility;
 using UnityEngine;
 using Verse;
 

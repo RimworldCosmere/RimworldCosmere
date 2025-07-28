@@ -170,8 +170,9 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
             }
         }
 
-        if (willUseWhileInjured && pawn.health.summaryHealth.SummaryHealthPercent < 1) {
-            if (gene.CanLowerReserve(def.beuPerTick)) {
+        if (willUseWhileInjured && gene.CanLowerReserve(def.beuPerTick)) {
+            if (pawn.health.summaryHealth.SummaryHealthPercent < 1) UpdateStatus(Active.On);
+            if (pawn.health.hediffSet.hediffs.Count(h => h.CanBeHealedByInvestiture()) > 0) {
                 UpdateStatus(Active.On);
             }
         }

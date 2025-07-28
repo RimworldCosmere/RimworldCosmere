@@ -3,7 +3,7 @@ using Cosmere.Core.Need;
 using Cosmere.Resources;
 using Cosmere.Scadrial.Def;
 using Cosmere.Scadrial.Thing;
-using Cosmere.Scadrial.Util;
+using Cosmere.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;

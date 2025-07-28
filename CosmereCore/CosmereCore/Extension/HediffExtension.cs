@@ -43,18 +43,28 @@ public static class HediffExtension {
             }
         }
 
-        if (hediff.IsTooOldToHealFullyWithInvestiture()) {
-            if (hediff.IsTended()) {
-                if (removedPain) hediff.pawn.health.Notify_HediffChanged(hediff);
-                return removedPain;
-            }
-
-            hediff.Tended(.75f, healPower);
-        } else {
+        if (!hediff.IsTooOldToHealFullyWithInvestiture()) {
             hediff.Heal(Mathf.Lerp(0, 3, healPower));
         }
 
+
+        if (hediff is Hediff_MissingPart missingPart) {
+            if (!Rand.Chance(1 / 10f)) return false;
+            if (!missingPart.ParentIsMissing()) hediff.pawn.health.RemoveHediff(hediff);
+            return false;
+        }
+
+        if (hediff.IsTended()) {
+            hediff.pawn.health.Notify_HediffChanged(hediff);
+            return removedPain;
+        }
+
+        hediff.Tended(.75f, healPower);
         hediff.pawn.health.Notify_HediffChanged(hediff);
+
+        if (hediff.def.Equals(HediffDefOf.Malnutrition)) {
+            hediff.pawn.needs.food.CurLevel = 0.1f;
+        }
 
         if (doctor.Faction == Faction.OfPlayer &&
             patient.Faction != doctor.Faction &&

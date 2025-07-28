@@ -109,8 +109,6 @@ public class Stormlight : ThingComp {
 
 
     private void HandleRadiantStuff() {
-        RadiantHeal();
-        RadiantAbsorbStormlight();
         HandleSurges();
     }
 
@@ -187,114 +185,6 @@ public class Stormlight : ThingComp {
         maximumGlowRadius = (float)Math.Round(normalizedSize, 2) + quality / 5f;
         HandleGlow();
     }
-
-    private void RadiantHeal() {
-        if (pawn is null) return;
-
-        // HEAL MISSING PARTS
-        List<Hediff_MissingPart> missingParts = pawn.health.hediffSet.hediffs.OfType<Hediff_MissingPart>()
-            .OrderByDescending(h => h.Severity)
-            .ToList();
-        foreach (Hediff_MissingPart? injury in missingParts) {
-            const float cost = 250f; // More severe wounds cost more stormlight
-            if (currentStormlightInt < cost) {
-                break;
-            }
-
-            pawn.health.hediffSet.hediffs.Remove(injury);
-            currentStormlightInt -= cost;
-            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .25f);
-        }
-
-
-        // HEAL ADDICTIONS
-        List<Hediff_Addiction> addictions = pawn.health.hediffSet.hediffs.OfType<Hediff_Addiction>()
-            .OrderByDescending(h => h.Severity)
-            .ToList();
-        foreach (Hediff_Addiction? addiction in addictions) {
-            const float cost = 1000f;
-            if (currentStormlightInt < cost) {
-                break;
-            }
-
-            pawn.health.hediffSet.hediffs.Remove(addiction);
-            currentStormlightInt -= cost;
-            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .12f);
-        }
-
-        // HEAL INJURIES
-        List<Hediff_Injury> injuries = pawn.health.hediffSet.hediffs.OfType<Hediff_Injury>()
-            .OrderByDescending(h => h.Severity)
-            .ToList();
-        foreach (Hediff_Injury? injury in injuries) {
-            float cost = injury.Severity * 3f; // More severe wounds cost more stormlight
-            if (currentStormlightInt < cost) {
-                break;
-            }
-
-            injury.Heal(10.0f);
-            currentStormlightInt -= cost;
-            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .05f);
-        }
-    }
-
-    private void RadiantAbsorbStormlight() {
-        if (pawn?.Spawned ?? false) return;
-        if (!pawn!.RaceProps.Humanlike) return;
-        if (InfuseStormlight(0)) return; //check if full.
-
-        float absorbAmount = 25f; // How much Stormlight is drawn per tick
-        float maxDrawDistance = 3.0f; // Range to absorb from nearby spheres
-
-        if (maxStormlightPerItem - currentStormlightInt < absorbAmount) {
-            absorbAmount = maxStormlightPerItem - currentStormlightInt;
-        }
-
-        //  Absorb Stormlight from pouch
-        SpherePouch pouch = pawn.apparel?.WornApparel?.Find(a => a.GetComp<SpherePouch>() != null)
-            ?.GetComp<SpherePouch>();
-        if (pouch != null && pouch.GetTotalStoredStormlight() > 0) {
-            float drawn = pouch.DrawStormlight(absorbAmount);
-            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .01f);
-            if (InfuseStormlight(drawn)) return;
-        }
-
-
-        //  Absorb Stormlight from inventory
-        if (pawn.inventory != null) {
-            foreach (Verse.Thing item in pawn.inventory.innerContainer) {
-                ThingWithComps? thingWithComps = item as ThingWithComps;
-
-                Stormlight? sphere = thingWithComps?.TryGetComp<Stormlight>();
-                if (sphere is not { currentStormlightInt: > 0 }) continue;
-                float drawn = Math.Min(absorbAmount, sphere.currentStormlightInt);
-                sphere.InfuseStormlight(-drawn); // Remove from sphere
-                pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .01f);
-                if (InfuseStormlight(drawn)) return;
-            }
-        }
-
-        //  Absorb Stormlight from nearby spheres
-        List<Verse.Thing> nearbyThings = pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Everything)
-            .Where(t => t.Position.Roofed(t.Map))
-            .ToList();
-        foreach (Verse.Thing thing in nearbyThings) {
-            float drawnLight;
-            if (thing.TryGetComp(out Stormlight stormlight)) {
-                drawnLight = stormlight.DrawStormlight(absorbAmount);
-            } else if (thing.TryGetComp(out SpherePouch pouchComp)) {
-                drawnLight = pouchComp.DrawStormlight(absorbAmount);
-            } else if (thing.TryGetComp(out StormlightLamps lamp)) {
-                drawnLight = lamp.DrawStormlight(absorbAmount);
-            } else {
-                return;
-            }
-
-            pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .01f);
-            if (InfuseStormlight(drawnLight)) return;
-        }
-    }
-
 
     private void HandleSurges() {
         if (pawn == null) return;

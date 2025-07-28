@@ -178,6 +178,7 @@ public class Highstorm : RimWorld.GameCondition {
 
         foreach (Verse.Thing t in newPos.GetThingList(thing.Map).ToList()) {
             if (t.IsSolid()) return false;
+            if (thing is Pawn) continue;
             if (!t.def.saveCompressible || !thing.def.saveCompressible) continue;
             if (t.stackCount + thing.stackCount > thing.def.stackLimit) return false;
         }

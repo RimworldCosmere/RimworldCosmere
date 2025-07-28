@@ -176,14 +176,7 @@ public class Highstorm : RimWorld.GameCondition {
         if (!thing.CanBeMoved()) return false;
         if (!newPos.InBounds(thing.Map)) return true;
 
-        foreach (Verse.Thing t in newPos.GetThingList(thing.Map).ToList()) {
-            if (t.IsSolid()) return false;
-            if (thing is Pawn) continue;
-            if (!t.def.saveCompressible || !thing.def.saveCompressible) continue;
-            if (t.stackCount + thing.stackCount > thing.def.stackLimit) return false;
-        }
-
-        return true;
+        return !newPos.GetThingList(thing.Map).Any(t => t.IsSolid());
     }
 
     private void DamageItem(Verse.Thing thing) {

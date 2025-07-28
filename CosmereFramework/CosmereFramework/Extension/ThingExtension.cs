@@ -53,7 +53,7 @@ public static class ThingExtension {
             IntVec3 nextPos = thing.Position + direction * i;
             if (!nextPos.InBounds(thing.Map)) continue;
             List<Verse.Thing>? things = nextPos.GetThingList(thing.Map);
-            if (things.Any(x => x.IsSolidThing() && (predicate == null || predicate.Invoke(thing)))) {
+            if (things.Any(x => x.IsSolid() && (predicate == null || predicate.Invoke(thing)))) {
                 return true;
             }
         }
@@ -63,25 +63,25 @@ public static class ThingExtension {
 
     public static bool CanBeMoved(this Verse.Thing thing) {
         ThingDef? def = thing.def;
-        if (!thing.Spawned || thing.Destroyed) return false;
-        if (def.category == ThingCategory.Building || def.IsBlueprint) return false;
-        if (def.mineable) return false;
+        if (def.IsBlueprint) return false;
         if (thing.Map.terrainGrid.TerrainAt(thing.Position).passability == Traversability.Impassable) return false;
         if (thing is Pawn) return true;
-        if (thing.IsSolidThing()) return false;
+        if (thing.IsSolid()) return false;
         if (def.altitudeLayer >= AltitudeLayer.Item && def.altitudeLayer < AltitudeLayer.Weather) return true;
 
         return def.EverHaulable;
     }
 
-    private static bool IsSolidThing(this Verse.Thing thing) {
+    public static bool IsSolid(this Verse.Thing thing) {
+        if (!thing.Spawned || thing.Destroyed) return false;
         if (thing.def.EverHaulable) return false;
         if (thing.HitPoints == -1) return false;
         if (thing.def.blockWeather) return true;
         if (thing.def.blockWind) return true;
-        if (thing.def.building != null) return true;
+        if (thing is Building or Mineable) return true;
+        if (thing.def.passability == Traversability.Impassable) return true;
 
-        return false;
+        return thing.def.category == ThingCategory.Building;
     }
 
     private static bool HasConflictInApparelSlot(Pawn pawn, Verse.Thing apparelThing) {

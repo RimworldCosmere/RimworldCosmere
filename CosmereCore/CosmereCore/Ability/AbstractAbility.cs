@@ -100,7 +100,6 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
             return;
         }
 
-        Logger.Verbose($"Updating {pawn.NameFullColored}'s {def.defName} from {status} -> {newStatus}");
         Status? oldStatus = status;
         status = newStatus.Value;
 

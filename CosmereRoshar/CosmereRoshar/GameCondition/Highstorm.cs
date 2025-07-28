@@ -6,6 +6,11 @@ using Verse;
 
 namespace Cosmere.Roshar.GameCondition;
 
+/**
+ * @TODO Force the weather here?
+ * @TODO Draw a warning at the top
+ * @TODO Encorage pawns to go inside? Probably a workgiver?
+ */
 public class Highstorm : RimWorld.GameCondition {
     private const float totalInvestitureToAbsorbPerItem = 2000f;
 
@@ -57,6 +62,10 @@ public class Highstorm : RimWorld.GameCondition {
         highstorm.Destroy();
     }
 
+    public override float MinWindSpeed() {
+        return scaledCurve;
+    }
+
     public override void GameConditionTick() {
         base.GameConditionTick();
         ModExtension.Highstorm? ext = def.GetModExtension<ModExtension.Highstorm>();
@@ -98,13 +107,16 @@ public class Highstorm : RimWorld.GameCondition {
     /// <summary>
     ///     Moves items from right to left.
     /// </summary>
-    /// @TODO Maybe it should also check if the pawn is at least behind a wall
+    /// @TODO MAJOR overhaul idea: Have a component that keeps track of how much shelter a cell has from any given direction
     private void MoveItem(Verse.Thing thing) {
         if (!Mod.enableHighstormPushing) return;
-        if (thing.IsBehindSolidThing(IntVec3.East, 3)) return;
+        if (thing.IsBehindSolidThing(IntVec3.East, 2)) return;
+        if (thing is Mineable or Plant) return;
+        if (!thing.CanBeMoved() && !thing.def.useHitPoints) return;
 
-        IntVec3 newPos = thing.Position + GetRandomStormOffset(thing is Pawn);
-        if (thing.IsBehindSolidThing(IntVec3.West, 1) || !thing.CanBeMoved()) {
+        IntVec3 oldPos = thing.Position;
+        IntVec3 newPos = oldPos + GetRandomStormOffset(thing is Pawn);
+        if (!CanMoveToNewPosition(thing, newPos)) {
             // Damage both things, in newPos, and thing
             if (!newPos.InBounds(thing.Map)) return;
             foreach (Verse.Thing collidedThing in newPos.GetThingList(thing.Map).ToList()) {
@@ -123,7 +135,26 @@ public class Highstorm : RimWorld.GameCondition {
             if (thing is not Pawn) thing.DeSpawn();
         } else {
             thing.Position = newPos;
+            foreach (Verse.Thing t in thing.Position.GetThingList(thing.Map).ToList()) {
+                if (t.CanStackWith(thing) && t.TryAbsorbStack(thing, true)) break;
+                if (t.def.saveCompressible && thing.def.saveCompressible) {
+                    thing.Position = oldPos;
+                }
+            }
         }
+    }
+
+    private bool CanMoveToNewPosition(Verse.Thing thing, IntVec3 newPos) {
+        if (!thing.CanBeMoved()) return false;
+        if (!newPos.InBounds(thing.Map)) return true;
+
+        foreach (Verse.Thing t in newPos.GetThingList(thing.Map).ToList()) {
+            if (t.IsSolid()) return false;
+            if (!t.def.saveCompressible || !thing.def.saveCompressible) continue;
+            if (t.stackCount + thing.stackCount > thing.def.stackLimit) return false;
+        }
+
+        return true;
     }
 
     private void DamageItem(Verse.Thing thing) {
@@ -146,9 +177,10 @@ public class Highstorm : RimWorld.GameCondition {
                 Verse.Thing yield = ThingMaker.MakeThing(plant.def.plant.harvestedThingDef);
                 yield.stackCount = (int)plant.def.plant.harvestYield;
 
-                IntVec3 position = plant.Position;
+
                 // Do damage to the plant
                 if (plant.HitPoints - damage.Amount <= 0) {
+                    IntVec3 position = plant.Position;
                     plant.Kill(damage);
                     GenPlace.TryPlaceThing(yield, position, map, ThingPlaceMode.Near);
                 } else {

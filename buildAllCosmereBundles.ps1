@@ -33,19 +33,6 @@ if ( [string]::IsNullOrEmpty($buildTarget))
     exit
 }
 
-
-$cleanPath = "$PSScriptRoot\..\AssetBuilder\Assets\Data"
-$assetOutput = "$PSScriptRoot\..\AssetBuilder\Assets\AssetBundles"
-Write-Host "Cleaning $cleanPath"
-Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$cleanPath\*" | Out-Null
-
-function Get-FolderHash($folderPath)
-{
-    $hashString = (Get-ChildItem -Path $folderPath -Recurse -File | Get-FileHash -Algorithm SHA256).Hash | Out-String
-    return (Get-FileHash -Algorithm SHA256 -InputStream ([IO.MemoryStream]::new([System.Text.Encoding]::UTF8.GetBytes($hashString)))).Hash
-}
-
-
 # List of modules to process
 $mods = Get-ChildItem -Directory -Name |
         Where-Object { $_ -like 'Cosmere*' } |
@@ -56,49 +43,18 @@ foreach ($mod in $mods)
     Write-Host "Processing Cosmere$mod..."
 
     $srcAssets = "$PSScriptRoot\Cosmere$mod\Assets"
-    $bundleName = "Cosmere.$mod"
-    $destPath = "$PSScriptRoot\..\AssetBuilder\Assets\Data\$bundleName"
-    $finalOutput = "$PSScriptRoot\Cosmere$mod\AssetBundles"
-    $hashFile = "$PSScriptRoot\Cosmere$mod\.lastassetbuildhash"
-
     if (Test-Path $srcAssets)
     {
-        Write-Host "    Fetching FolderHash for $srcAssets"
-        $currentHash = Get-FolderHash $srcAssets
-        $previousHash = if (Test-Path $hashFile)
-        {
-            (Get-Content $hashFile -Raw).Trim()
-        }
-        else
-        {
-            ""
-        }
-
-        Write-Host "    Testing $currentHash vs $previousHash"
-        if ($currentHash -eq $previousHash)
-        {
-            Write-Host "    No changes detected in Cosmere$mod. Skipping build."
-            continue
-        }
-
-        Write-Host "    Changes detected. Continuing with build."
-
-        Write-Host "    Copying $srcAssets\* -> $destPath"
-        Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$destPath" | Out-Null
-        New-Item -ItemType Directory -Force -Path $destPath | Out-Null
-        Copy-Item "$srcAssets\*" -Destination $destPath -Recurse -Force
-
         $unityArgs = @(
             "-batchmode",
             "-quit",
-            '-projectPath="..\AssetBuilder"',
-            "-executeMethod=ModAssetBundleBuilder.BuildBundles",
-            "--assetBundleName=$bundleName",
-            "--buildTarget=$buildTarget",
-            "--outputLocation=$finalOutput"
+            '-projectPath "..\AssetBuilder"',
+            "-executeMethod ModAssetBundleBuilder.BuildBundles",
+            "-buildTarget=$buildTarget",
+            "-source=$PSScriptRoot\Cosmere$mod"
         )
 
-        Write-Host "    Building asset bundle: $bundleName"
+        Write-Host "    Building asset bundle: Cosmere.$mod"
         $process = Start-Process $unityPath -ArgumentList $unityArgs -Wait -PassThru
 
         if ($process.ExitCode -ne 0)
@@ -106,9 +62,7 @@ foreach ($mod in $mods)
             Write-Host "    Unity failed for $mod (exit code $( $process.ExitCode )). Crashing build."
             exit
         }
-        Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$destPath" | Out-Null
 
-        $currentHash | Out-File -Encoding ASCII -FilePath $hashFile
         Write-Host "    Done with Cosmere$mod."
     }
     else

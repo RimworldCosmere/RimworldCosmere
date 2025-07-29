@@ -1,6 +1,8 @@
 
 *A shared metals library for Cosmere-based mods in RimWorld.*
 
+​
+
 {{ asset mod 'About' 'about' }}
 
 - Adds/Replaces all **16 base metals** from Scadrial as *stuffable materials* with balanced stat modifiers.
@@ -16,6 +18,8 @@
     - Proper *StuffCategory* support
 - Designed to be used by other mods (e.g. Scadrial).
 - No major gameplay changes, besides steel — *vanilla-friendly and modular*.
+
+​
 
 {{ asset mod 'Compatibility' 'compatibility' }}
 

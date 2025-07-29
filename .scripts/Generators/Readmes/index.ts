@@ -21,6 +21,6 @@ export default function () {
         compiledReadme.push(donate({mod}).trimStart());
         compiledReadme.push(attributions({mod}).trimStart());
         
-        writeGeneratedFile(dir, 'README.md', compiledReadme.join('\n\n'));
+        writeGeneratedFile(dir, 'README.md', compiledReadme.join('\n\n​\n\n'));
     }
 }

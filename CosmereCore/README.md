@@ -7,7 +7,11 @@
 ***Spoilers abound. Be careful reading below. I've tried to mark things as spoilers, but I may miss things.***
 ***Also be weary traversing the issues, or reading through Discord***
 
+​
+
 *The foundational systems and definitions for all Cosmere-based RimWorld mods.*
+
+​
 
 # About
 
@@ -35,6 +39,8 @@ Included features:
   Adds a game component that allows players to configure which Shards are present in their world  
   (Used by mods like Scadrial, Roshar, Nalthis — each will auto-enable based on scenario)
 
+​
+
 # Compatibility
 
 - This is a *required core mod* for all other Cosmere expansions
@@ -42,10 +48,14 @@ Included features:
 - Requires Biotech (These mods all use too much of the gene and xenotype system to decouple)
 - Compatible with RimWorld 1.6 + Biotech, Ideology, Royalty, and Anomaly
 
+​
+
 # For Modders
 
 Cosmere Core defines shared traits, needs, and stats to ensure consistency across Shardworlds.  
 Mods can register new Shards via the provided game component and hook into the Investiture system.
+
+​
 
 # Recommendations
 
@@ -56,6 +66,8 @@ Here are a couple recommended mods that work really well with the Cosmere mods:
 * [Nice Health Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3328729902)
     * Storms! This is another awesome mod by Andromeda that makes the Health tab gorgeous
 
+​
+
 # Support &amp; Feedback
 
 Have a bug or suggestion? Leave a comment or suggestion in either location below — your feedback helps improve the
@@ -65,6 +77,8 @@ Cosmere.
 - [GitHub Source](https://github.com/RimworldCosmere/RimworldCosmere)
 - [Discord Community](https://discord.gg/jTcrKfXdYU)
 
+​
+
 # Support Us or Follow Along
 
 Follow along with our development at: https://rimworldcosmere.com
@@ -73,6 +87,8 @@ Contribute and donate so we can get more art and other commissions:
 
 * Recurring Donations: https://rimworldcosmere.com/#/portal/
 * One Time Donations: https://rimworldcosmere.com/#/portal/support
+
+​
 
 # Attributions
 

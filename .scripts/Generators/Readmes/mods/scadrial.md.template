@@ -2,6 +2,8 @@
 
 *Adds the Metallic Arts — Allomancy, Feruchemy, and >!Hemalurgy!< — to RimWorld.*
 
+​
+
 {{ asset mod 'About' 'about' }}
 
 - **Allomancy**
@@ -38,6 +40,8 @@
     - Choose whether Ruin & Preservation or Harmony govern your world
     - Xenotype restrictions, gene weighting, and thematic pawn randomization
 
+​
+
 {{ asset mod 'Compatibility' 'compatibility' }}
 
 - Requires Biotech
@@ -45,6 +49,8 @@
 - Designed for RimWorld 1.6
 - Safe to add at game start
 - Mid-save support is partial — best used in a new colony (you wont get all the metals)
+
+​
 
 {{ asset mod 'Tips' 'tips' }}
 

@@ -395,7 +395,7 @@ jobs:
           curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
           echo "${{ secrets.STEAM_VDF }}" | base64 -d > ~/steamcmd/config/config.vdf
           chmod 777 ~/steamcmd/config/config.vdf
-          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" +quit
+          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +quit
 
 
       - name: Upload with SteamCMD

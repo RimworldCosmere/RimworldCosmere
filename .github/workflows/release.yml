@@ -225,6 +225,7 @@ jobs:
       BUNDLE_NAME: ${{ matrix.mod }}
       TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
       STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
 
     steps:
       - name: Set BUNDLE_NAME
@@ -355,7 +356,7 @@ jobs:
           mkdir -p "$TEMP_DIR"
 
           echo "📄 Generating description..."
-          cat .github/README.header.md "$MOD/README.md" .github/README.footer.md | steamdown > "$DESCRIPTION_FILE"
+          cat "$MOD/README.md" | steamdown > "$DESCRIPTION_FILE"
 
           echo "🚫 Respecting .steamignore..."
           if [ -f "$MOD/.steamignore" ]; then

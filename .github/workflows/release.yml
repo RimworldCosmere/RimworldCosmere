@@ -68,14 +68,14 @@ jobs:
       MOD: ${{ matrix.mod }}
       BUNDLE_NAME: ${{ matrix.mod }}
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: true
-          # dotnet is needed later, so do not remove it
-          dotnet: false
+      #- name: Free Disk Space (Ubuntu)
+      #  uses: jlumbroso/free-disk-space@main
+      #  with:
+      #    # this might remove tools that are actually needed,
+      #    # if set to "true" but frees about 6 GB
+      #    tool-cache: true
+      #    # dotnet is needed later, so do not remove it
+      #    dotnet: false
 
       - name: Set BUNDLE_NAME
         run: |
@@ -350,7 +350,7 @@ jobs:
         id: prepare
         working-directory: RimworldCosmere
         run: |
-          FILE_ID=$(cat "$MOD/About/PublishedFileId.txt")
+          FILE_ID="$(cat About/PublishedFileId.txt 2>/dev/null || printf '')"
           DESCRIPTION_FILE="$TEMP_DIR/steam_description.txt"
 
           mkdir -p "$TEMP_DIR"

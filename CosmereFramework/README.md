@@ -56,4 +56,4 @@ Cosmere.
 **_This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
 Entertainment, LLC or Ludeon Studios._**
 
-# [Support Us](https://rimworldcosmere.com/#/portal/)
+[Support Us](https://rimworldcosmere.com/#/portal/)

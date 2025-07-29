@@ -69,9 +69,6 @@ jobs:
         # Build bundles for each platform separately.  Each matrix entry
         # will contain a mod and a platform (windows, mac, linux).
         platform: [ windows, mac, linux ]
-      # Force sequential execution because Unity builder cannot run
-      # multiple instances in parallel on the same runner.
-      max-parallel: 1
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       MOD: ${{ matrix.mod }}
@@ -124,34 +121,6 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 9.0.x
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-
-      - name: Install steamdown + steam-totp + Generator Dependencies
-        working-directory: RimworldCosmere
-        run: |
-          npm install -g @steamdown/cli tsx
-          cd .scripts && npm i
-
-      - name: Run generators
-        working-directory: RimworldCosmere
-        run: npm --prefix .scripts start -- -d -f
-
-      - name: Install Mod Dependencies
-        working-directory: RimworldCosmere
-        run: dotnet restore $MOD/$MOD
-
-      - name: Set build configuration
-        working-directory: RimworldCosmere
-        run: |
-          if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            echo "BUILD=Release" >> $GITHUB_ENV
-          else
-            echo "BUILD=Debug" >> $GITHUB_ENV
-          fi
 
       - name: Copy mod assets into AssetBuilder
         id: copyassets
@@ -265,16 +234,6 @@ jobs:
       STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
 
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: true
-          
-          # all of these default to true, but feel free to set to
-          # "false" if necessary for your workflow
-          dotnet: false
       - name: Set BUNDLE_NAME
         run: |
           short="${MOD#Cosmere}"

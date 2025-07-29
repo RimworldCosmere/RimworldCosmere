@@ -393,8 +393,6 @@ jobs:
 
       - name: Config SteamCMD
         run: |
-          sudo apt update
-          sudo apt install -y lib32gcc-s1
           mkdir -p ${{ steps.steam-setup.outputs.directory }}/config
           echo "${{ secrets.STEAM_VDF }}" | base64 -d > ${{ steps.steam-setup.outputs.directory }}/config/config.vdf
           chmod 777 ${{ steps.steam-setup.outputs.directory }}/config/config.vdf

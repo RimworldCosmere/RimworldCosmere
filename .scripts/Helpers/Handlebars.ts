@@ -1,4 +1,6 @@
 import Handlebars from 'handlebars';
+import {existsSync} from 'node:fs';
+import {resolve, join, basename} from 'node:path';
 
 require('handlebars-helpers')();
 
@@ -137,3 +139,31 @@ Handlebars.registerHelper({
         return Array.prototype.slice.call(arguments, 0, -1).some(Boolean);
     }
 });
+
+function getBaseRepoDir() {
+    let dir = __dirname;
+    while (true) {
+        if (basename(dir) === '.scripts') {
+            return resolve(dir, '..');
+        }
+        
+        let nextDir = resolve(dir, '..');
+        if (nextDir === dir) throw new Error("Can't find base repo dir.");
+        dir = nextDir;
+    }
+}
+
+Handlebars.registerHelper("asset", function (mod, title, image, imageFallback = true, titleFallback = true){
+    const assetsPath = join('.github', 'assets');
+    let imagePath = join(assetsPath, mod, image + '.png');
+    if (!existsSync(resolve(getBaseRepoDir(), imagePath))) {
+        if (imageFallback) {
+            imagePath = join(assetsPath, 'fallback', image + '.png');
+            if (!existsSync(resolve(getBaseRepoDir(), imagePath))) {
+                return `${titleFallback ? '# ' : ''}${title}`;
+            }
+        }
+    }
+    
+    return `![${title}](../${imagePath})`;
+})

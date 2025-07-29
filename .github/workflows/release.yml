@@ -23,12 +23,6 @@ jobs:
     outputs:
       mods: ${{ steps.set-mods.outputs.mods }}
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: true
       - name: Validate Git tag format
         if: github.event.release.tag_name != ''
         run: |

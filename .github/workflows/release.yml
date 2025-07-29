@@ -17,11 +17,18 @@ on:
 #  id-token: write # to enable use of OIDC for npm provenance
 
 jobs:
+  # Determine which Cosmere mods need to be built.
   get-mods:
     runs-on: ubuntu-latest
     outputs:
       mods: ${{ steps.set-mods.outputs.mods }}
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: true
       - name: Validate Git tag format
         if: github.event.release.tag_name != ''
         run: |
@@ -48,21 +55,27 @@ jobs:
           mods=$(find . -maxdepth 1 -type d -name "Cosmere*" -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "mods=$mods" >> "$GITHUB_OUTPUT"
 
-  prepare:
+
+  # The job runs sequentially across mods (max‑parallel: 1) so that
+  # Unity licence activation and asset copying do not step on each
+  # other.  Built bundles are zipped and uploaded as artifacts
+  # available to subsequent jobs.
+  build-assetbundles:
     needs: get-mods
     runs-on: ubuntu-latest
     strategy:
       matrix:
         mod: ${{ fromJson(needs.get-mods.outputs.mods) }}
-    
+        # Build bundles for each platform separately.  Each matrix entry
+        # will contain a mod and a platform (windows, mac, linux).
+        platform: [ windows, mac, linux ]
+      # Force sequential execution because Unity builder cannot run
+      # multiple instances in parallel on the same runner.
+      max-parallel: 1
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       MOD: ${{ matrix.mod }}
       BUNDLE_NAME: ${{ matrix.mod }}
-      TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
-      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
-      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
-
     steps:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
@@ -70,14 +83,13 @@ jobs:
           # this might remove tools that are actually needed,
           # if set to "true" but frees about 6 GB
           tool-cache: true
-          
-          # all of these default to true, but feel free to set to
-          # "false" if necessary for your workflow
+          # dotnet is needed later, so do not remove it
           dotnet: false
+
       - name: Set BUNDLE_NAME
         run: |
           short="${MOD#Cosmere}"
-          short="${short,,}"  # lowercase it
+          short="${short,,}"
           echo "BUNDLE_NAME=cosmere.$short" >> $GITHUB_ENV
         env:
           MOD: ${{ matrix.mod }}
@@ -96,10 +108,9 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: 'AssetBuilder/Library'
-          key:
-            Library-${{ matrix.target-platform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          key: Library-${{ matrix.mod }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-${{ matrix.target-platform }}-
+            Library-${{ matrix.mod }}-
             Library-
 
       - uses: actions/cache@v4
@@ -147,8 +158,7 @@ jobs:
         run: |
           destDir="AssetBuilder/Assets/Data/$BUNDLE_NAME"
           srcDir="RimworldCosmere/$MOD/Assets"
-          
-           if [ -d "$srcDir" ]; then
+          if [ -d "$srcDir" ]; then
             echo "Copying assets from $srcDir to $destDir"
             mkdir -p "$destDir"
             cp -r "$srcDir/"* "$destDir"
@@ -158,9 +168,11 @@ jobs:
             echo "hasAssets=false" >> $GITHUB_OUTPUT
           fi
 
-
+      # Build bundles for each target platform.  These steps mirror the
+      # original prepare job but live in a standalone job so they can
+      # complete before the mod build begins.
       - name: Build Windows AssetBundles
-        if: steps.copyassets.outputs.hasAssets == 'true'
+        if: steps.copyassets.outputs.hasAssets == 'true' && matrix.platform == 'windows'
         uses: game-ci/unity-builder@v4
         continue-on-error: false
         timeout-minutes: 30
@@ -176,8 +188,9 @@ jobs:
           allowDirtyBuild: true
           buildMethod: ModAssetBundleBuilder.BuildBundles
           customParameters: "-source=../RimworldCosmere/${{ matrix.mod }} -buildTarget=windows"
+
       - name: Build Mac AssetBundles
-        if: steps.copyassets.outputs.hasAssets == 'true'
+        if: steps.copyassets.outputs.hasAssets == 'true' && matrix.platform == 'mac'
         uses: game-ci/unity-builder@v4
         continue-on-error: false
         timeout-minutes: 30
@@ -193,8 +206,9 @@ jobs:
           allowDirtyBuild: true
           buildMethod: ModAssetBundleBuilder.BuildBundles
           customParameters: "-source=../RimworldCosmere/${{ matrix.mod }} -buildTarget=mac"
+
       - name: Build Linux AssetBundles
-        if: steps.copyassets.outputs.hasAssets == 'true'
+        if: steps.copyassets.outputs.hasAssets == 'true' && matrix.platform == 'linux'
         uses: game-ci/unity-builder@v4
         continue-on-error: false
         timeout-minutes: 30
@@ -210,6 +224,132 @@ jobs:
           allowDirtyBuild: true
           buildMethod: ModAssetBundleBuilder.BuildBundles
           customParameters: "-source=../RimworldCosmere/${{ matrix.mod }} -buildTarget=linux"
+
+      # Package the AssetBundles directory and upload it as an artifact.  The
+      # prepare job will download and extract this archive before building
+      # the mod.
+      - name: Archive asset bundles
+        if: steps.copyassets.outputs.hasAssets == 'true'
+        run: |
+          finalDir="RimworldCosmere/$MOD/AssetBundles"
+          if [ -d "$finalDir" ]; then
+            echo "Zipping built asset bundles from $finalDir"
+            zip -r "$MOD-assetbundles-${{ matrix.platform }}.zip" "$finalDir"
+          else
+            echo "Expected asset bundles directory $finalDir not found!"
+            exit 1
+          fi
+
+      - name: Upload asset bundles artifact
+        if: steps.copyassets.outputs.hasAssets == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          # Include platform in the artifact name so that prepare job can download
+          # all variants (windows, mac, linux).
+          name: ${{ matrix.mod }}-assetbundles-${{ matrix.platform }}
+          path: ${{ matrix.mod }}-assetbundles-${{ matrix.platform }}.zip
+
+  prepare:
+    needs: [ get-mods, build-assetbundles ]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mod: ${{ fromJson(needs.get-mods.outputs.mods) }}
+    
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      MOD: ${{ matrix.mod }}
+      BUNDLE_NAME: ${{ matrix.mod }}
+      TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
+      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
+
+    steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: true
+          
+          # all of these default to true, but feel free to set to
+          # "false" if necessary for your workflow
+          dotnet: false
+      - name: Set BUNDLE_NAME
+        run: |
+          short="${MOD#Cosmere}"
+          short="${short,,}"  # lowercase it
+          echo "BUNDLE_NAME=cosmere.$short" >> $GITHUB_ENV
+        env:
+          MOD: ${{ matrix.mod }}
+
+      - name: Checkout RimworldCosmere
+        uses: actions/checkout@v4
+        with:
+          path: 'RimworldCosmere'
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Install steamdown + steam-totp + Generator Dependencies
+        working-directory: RimworldCosmere
+        run: |
+          npm install -g @steamdown/cli tsx
+          cd .scripts && npm i
+
+      - name: Run generators
+        working-directory: RimworldCosmere
+        run: npm --prefix .scripts start -- -d -f
+
+      - name: Install Mod Dependencies
+        working-directory: RimworldCosmere
+        run: dotnet restore $MOD/$MOD
+
+      - name: Set build configuration
+        working-directory: RimworldCosmere
+        run: |
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            echo "BUILD=Release" >> $GITHUB_ENV
+          else
+            echo "BUILD=Debug" >> $GITHUB_ENV
+          fi
+
+      # Download and extract asset bundles built in the previous job.  The
+      # artifact contains a zip of the AssetBundles directory.  After
+      # extraction the bundles live under RimworldCosmere/$MOD/AssetBundles
+      # so that the packaging step will include them automatically.
+      - name: Download asset bundles
+        uses: actions/download-artifact@v4
+        with:
+          # Download all asset bundle artifacts for this mod (windows, mac and linux)
+          pattern: ${{ matrix.mod }}-assetbundles-*
+          path: RimworldCosmere/${{ matrix.mod }}
+          merge-multiple: true
+
+      - name: Extract asset bundles
+        working-directory: RimworldCosmere/${{ matrix.mod }}
+        run: |
+          shopt -s nullglob
+          for zipfile in ./*-assetbundles-*.zip; do
+            echo "Extracting $zipfile"
+            unzip -o "$zipfile" -d .
+            rm "$zipfile"
+          done
+          shopt -u nullglob
 
       - name: Build Mod
         working-directory: RimworldCosmere

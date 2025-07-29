@@ -149,7 +149,7 @@ jobs:
           fi
 
 
-      - name: Build AssetBundles
+      - name: Build Windows AssetBundles
         if: steps.copyassets.outputs.hasAssets == 'true'
         uses: game-ci/unity-builder@v4
         continue-on-error: false
@@ -165,12 +165,41 @@ jobs:
           versioning: None
           allowDirtyBuild: true
           buildMethod: ModAssetBundleBuilder.BuildBundles
-          customParameters: "-source=../RimworldCosmere/${{ matrix.mod }}"
-
-      - name: Print Unity Editor log on failure
-        if: steps.copyassets.outputs.hasAssets == 'true' && failure()
-        run: |
-          cat /home/runner/.config/unity3d/Editor.log || true
+          customParameters: "-source=../RimworldCosmere/${{ matrix.mod }} -buildTarget=windows"
+      - name: Build Mac AssetBundles
+        if: steps.copyassets.outputs.hasAssets == 'true'
+        uses: game-ci/unity-builder@v4
+        continue-on-error: false
+        timeout-minutes: 30
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 2022.3.35f1
+          targetPlatform: StandaloneOSX
+          projectPath: AssetBuilder
+          versioning: None
+          allowDirtyBuild: true
+          buildMethod: ModAssetBundleBuilder.BuildBundles
+          customParameters: "-source=../RimworldCosmere/${{ matrix.mod }} -buildTarget=mac"
+      - name: Build Linux AssetBundles
+        if: steps.copyassets.outputs.hasAssets == 'true'
+        uses: game-ci/unity-builder@v4
+        continue-on-error: false
+        timeout-minutes: 30
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 2022.3.35f1
+          targetPlatform: StandaloneLinux64
+          projectPath: AssetBuilder
+          versioning: None
+          allowDirtyBuild: true
+          buildMethod: ModAssetBundleBuilder.BuildBundles
+          customParameters: "-source=../RimworldCosmere/${{ matrix.mod }} -buildTarget=linux"
 
       - name: Build Mod
         working-directory: RimworldCosmere

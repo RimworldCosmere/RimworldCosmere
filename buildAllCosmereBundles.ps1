@@ -43,8 +43,21 @@ foreach ($mod in $mods)
     Write-Host "Processing Cosmere$mod..."
 
     $srcAssets = "$PSScriptRoot\Cosmere$mod\Assets"
+    $bundleOutput = "$PSScriptRoot\Cosmere$mod\AssetBundles"
     if (Test-Path $srcAssets)
     {
+        if (Test-Path $bundleOutput)
+        {
+            $srcTime = (Get-ChildItem -Recurse $srcAssets | Measure-Object LastWriteTime -Maximum).Maximum
+            $bundleTime = (Get-ChildItem -Recurse $bundleOutput | Measure-Object LastWriteTime -Maximum).Maximum
+
+            if ($bundleTime -gt $srcTime)
+            {
+                Write-Host "    Skipping Cosmere$mod - AssetBundles folder is newer than Assets."
+                continue
+            }
+        }
+
         $unityArgs = @(
             "-batchmode",
             "-quit",

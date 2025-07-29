@@ -1,6 +1,6 @@
-# Cosmere - Scadrial
+# ![Introduction](../.github/.assets/scadrial/intro.png)
 
-***This is very much an alpha, please be patient. File bug reports in GitHub or Discord***
+***This is very much a beta, please be patient. File bug reports in GitHub or Discord***
 
 *Adds the Metallic Arts — Allomancy, Feruchemy, and >!Hemalurgy!< — to RimWorld.*
 

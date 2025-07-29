@@ -67,7 +67,8 @@ jobs:
       - name: Set BUNDLE_NAME
         run: |
           short="${MOD#Cosmere}"
-          echo "BUNDLE_NAME=CryptikLemur.Cosmere.$short" >> $GITHUB_ENV
+          short="${short,,}"  # lowercase it
+          echo "BUNDLE_NAME=cosmere.$short" >> $GITHUB_ENV
         env:
           MOD: ${{ matrix.mod }}
 

@@ -51,7 +51,6 @@ jobs:
   prepare:
     needs: get-mods
     runs-on: ubuntu-latest
-    continue-on-error: true
     strategy:
       matrix:
         mod: ${{ fromJson(needs.get-mods.outputs.mods) }}

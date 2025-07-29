@@ -59,4 +59,11 @@ Cosmere.
 **_This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
 Entertainment, LLC or Ludeon Studios._**
 
-[Support Us](https://rimworldcosmere.com/#/portal/)
+# Support Us or Follow Along
+
+Follow along with our development at: https://rimworldcosmere.com
+
+Contribute and donate so we can get more art and other commissions: 
+
+* Recurring Donations: https://rimworldcosmere.com/#/portal/
+* One Time Donations: https://rimworldcosmere.com/#/portal/support

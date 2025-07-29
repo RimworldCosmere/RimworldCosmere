@@ -1,1 +1,8 @@
-﻿[{{ asset mod 'Support Us' 'support us' true false }}](https://rimworldcosmere.com/#/portal/)
+﻿{{ asset mod 'Support Us or Follow Along' 'support us' }}
+
+Follow along with our development at: https://rimworldcosmere.com
+
+Contribute and donate so we can get more art and other commissions: 
+
+* Recurring Donations: https://rimworldcosmere.com/#/portal/
+* One Time Donations: https://rimworldcosmere.com/#/portal/support

@@ -387,11 +387,26 @@ jobs:
           
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
+      - name: Setup SteamCMD
+        id: steam-setup
+        uses: CyberAndrii/setup-steamcmd@v1
+
+      - name: Config SteamCMD
+        run: |
+          sudo apt update
+          sudo apt install -y lib32gcc-s1
+          mkdir -p ${{ steps.steam-setup.outputs.directory }}/config
+          echo "${{ secrets.STEAM_VDF }}" | base64 -d > ${{ steps.steam-setup.outputs.directory }}/config/config.vdf
+          chmod 777 ${{ steps.steam-setup.outputs.directory }}/config/config.vdf
+
       - uses: CyberAndrii/steam-totp@v1
         name: Generate TOTP
         id: steam-totp
         with:
           shared_secret: ${{ secrets.STEAM_SHARED_SECRET }}
+
+      - name: Test SteamCMD
+        run: steamcmd +login "$STEAM_USERNAME" +set_steam_guard_code ${{ steps.steam-totp.outputs.code }} +quit
 
       - name: Download SteamCMD
         run: |
@@ -401,7 +416,7 @@ jobs:
           curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
           echo "${{ secrets.STEAM_VDF }}" | base64 -d > ~/steamcmd/config/config.vdf
           chmod 777 ~/steamcmd/config/config.vdf
-          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" +set_steam_guard_code ${{ steps.steam-totp.outputs.code }} +quit
+          steamcmd +login "$STEAM_USERNAME" +set_steam_guard_code ${{ steps.steam-totp.outputs.code }} +quit
 
 
       - name: Upload with SteamCMD

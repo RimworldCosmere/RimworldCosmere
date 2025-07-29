@@ -225,7 +225,6 @@ jobs:
       BUNDLE_NAME: ${{ matrix.mod }}
       TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
       STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
-      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
 
     steps:
       - name: Set BUNDLE_NAME
@@ -388,6 +387,12 @@ jobs:
           
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
+      - uses: CyberAndrii/steam-totp@v1
+        name: Generate TOTP
+        id: steam-totp
+        with:
+          shared_secret: ${{ secrets.STEAM_SHARED_SECRET }}
+
       - name: Download SteamCMD
         run: |
           sudo apt update
@@ -396,7 +401,7 @@ jobs:
           curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
           echo "${{ secrets.STEAM_VDF }}" | base64 -d > ~/steamcmd/config/config.vdf
           chmod 777 ~/steamcmd/config/config.vdf
-          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +quit
+          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" +set_steam_guard_code ${{ steps.steam-totp.outputs.code }} +quit
 
 
       - name: Upload with SteamCMD

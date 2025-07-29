@@ -33,7 +33,7 @@ Included features:
 - Requires Biotech (These mods all use too much of the gene and xenotype system to decouple)
 - Compatible with RimWorld 1.6 + Biotech, Ideology, Royalty, and Anomaly
 
-{{ asset mod 'For Modders' 'for modders' }}
+{{ asset mod 'For Modders' 'for_modders' }}
 
 Cosmere Core defines shared traits, needs, and stats to ensure consistency across Shardworlds.  
 Mods can register new Shards via the provided game component and hook into the Investiture system.

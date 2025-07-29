@@ -18,8 +18,8 @@ export default function () {
         compiledReadme.push(baseReadme({mod}).trimStart());
         compiledReadme.push(recommendedMods({mod}).trimStart());
         compiledReadme.push(support({mod}).trimStart());
-        compiledReadme.push(attributions({mod}).trimStart());
         compiledReadme.push(donate({mod}).trimStart());
+        compiledReadme.push(attributions({mod}).trimStart());
         
         writeGeneratedFile(dir, 'README.md', compiledReadme.join('\n\n'));
     }

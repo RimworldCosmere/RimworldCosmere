@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars';
 import {existsSync} from 'node:fs';
-import {resolve, join, basename} from 'node:path';
+import {sep, resolve, join, basename} from 'node:path';
 
 require('handlebars-helpers')();
 
@@ -165,5 +165,5 @@ Handlebars.registerHelper("asset", function (mod, title, image, imageFallback = 
         }
     }
     
-    return `![${title}](../${imagePath})`;
+    return `![${title}](../${imagePath.replaceAll(sep, "/")})`;
 })

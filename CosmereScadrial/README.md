@@ -1,4 +1,4 @@
-﻿![Introduction](../.github\assets\scadrial\intro.png)
+﻿![Introduction](../.github/assets/scadrial/intro.png)
 
 ### Part of the RimWorld: Cosmere Project
 
@@ -11,7 +11,7 @@
 
 *Adds the Metallic Arts — Allomancy, Feruchemy, and >!Hemalurgy!< — to RimWorld.*
 
-![About](../.github\assets\scadrial\about.png)
+![About](../.github/assets/scadrial/about.png)
 
 - **Allomancy**
     - Includes every base metal and >!Godmetal!<, each granting unique powers
@@ -47,7 +47,7 @@
     - Choose whether Ruin & Preservation or Harmony govern your world
     - Xenotype restrictions, gene weighting, and thematic pawn randomization
 
-![Compatibility](../.github\assets\scadrial\compatibility.png)
+![Compatibility](../.github/assets/scadrial/compatibility.png)
 
 - Requires Biotech
 - Compatible with Ideology, Royalty, and Anomaly
@@ -55,13 +55,13 @@
 - Safe to add at game start
 - Mid-save support is partial — best used in a new colony (you wont get all the metals)
 
-![Tips](../.github\assets\scadrial\tips.png)
+![Tips](../.github/assets/scadrial/tips.png)
 
 - Mistborn and Full Feruchemists are **extremely rare** by default
 - >!Use your Lerasium and Atium wisely. There are alloys...!<
 - >!Burning Lerasium or Leratium can change everything...!<
 
-![Recommendations](../.github\assets\scadrial\recommendations.png)
+![Recommendations](../.github/assets/scadrial/recommendations.png)
 
 Here are a couple recommended mods that work really well with the Cosmere mods:
 
@@ -70,7 +70,7 @@ Here are a couple recommended mods that work really well with the Cosmere mods:
 * [Nice Health Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3328729902)
     * Storms! This is another awesome mod by Andromeda that makes the Health tab gorgeous
 
-![Support &amp; Feedback](../.github\assets\scadrial\support.png)
+![Support &amp; Feedback](../.github/assets/scadrial/support.png)
 
 Have a bug or suggestion? Leave a comment or suggestion in either location below — your feedback helps improve the
 experience for everyone in the
@@ -79,7 +79,7 @@ Cosmere.
 - [GitHub Source](https://github.com/RimworldCosmere/RimworldCosmere)
 - [Discord Community](https://discord.gg/jTcrKfXdYU)
 
-![Attributions](../.github\assets\scadrial\attributions.png)
+![Attributions](../.github/assets/scadrial/attributions.png)
 
 * Big thanks to Sir Van (`sir_vann` On Discord) for in-game art
 * Another big thanks to Immortalus (`_immortalus` on Discord) for the Mod Previews and a bunch more art
@@ -89,4 +89,4 @@ Cosmere.
 **_This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
 Entertainment, LLC or Ludeon Studios._**
 
-# [![Support Us](../.github\assets\scadrial\support us.png)](https://rimworldcosmere.com/#/portal/)
+# [![Support Us](../.github/assets/scadrial/support us.png)](https://rimworldcosmere.com/#/portal/)

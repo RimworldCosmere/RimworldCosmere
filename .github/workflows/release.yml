@@ -404,22 +404,11 @@ jobs:
           shared_secret: ${{ secrets.STEAM_SHARED_SECRET }}
 
       - name: Test SteamCMD
-        run: steamcmd +login "$STEAM_USERNAME" +set_steam_guard_code ${{ steps.steam-totp.outputs.code }} +quit
-
-      - name: Download SteamCMD
-        run: |
-          sudo apt update
-          sudo apt install -y lib32gcc-s1
-          mkdir -p ~/steamcmd/config
-          curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
-          echo "${{ secrets.STEAM_VDF }}" | base64 -d > ~/steamcmd/config/config.vdf
-          chmod 777 ~/steamcmd/config/config.vdf
-          steamcmd +login "$STEAM_USERNAME" +set_steam_guard_code ${{ steps.steam-totp.outputs.code }} +quit
-
+        run: steamcmd +login "$STEAM_USERNAME" "$STEAM_PASSWORD" ${{ steps.steam-totp.outputs.code }} +quit
 
       - name: Upload with SteamCMD
         if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
-        run: ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
+        run: ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" ${{ steps.steam-totp.outputs.code }} +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
 
       - name: Upload zip artifact
         uses: actions/upload-artifact@v4

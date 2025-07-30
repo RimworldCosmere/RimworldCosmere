@@ -84,7 +84,7 @@ public class Surgebinder : Invested {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
         if (currentIdeal == 4) return;
         if (skill.Level < SkillRequirements[currentIdeal + 1]) return;
-        if (!radiantOrderDef.idealChecker.IsSatisfied(pawn, this, currentIdeal, currentIdeal + 1)) return;
+        if (!radiantOrderDef.idealChecker.IsSatisfied(pawn, this, currentIdeal + 1)) return;
 
         currentIdeal++;
         Messages.Message(

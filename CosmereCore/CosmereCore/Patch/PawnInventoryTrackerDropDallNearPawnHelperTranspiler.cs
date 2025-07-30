@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
@@ -14,9 +12,9 @@ namespace Cosmere.Core.Patch;
 public static class PawnInventoryTrackerDropAllNearPawnHelperTranspiler {
     [HarmonyTranspiler]
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il) {
-        MethodInfo? addRange = AccessTools.Method(typeof(List<Thing>), nameof(List<Thing>.AddRange));
+        MethodInfo? addRange = AccessTools.Method(typeof(List<Verse.Thing>), nameof(List<Verse.Thing>.AddRange));
         MethodInfo? shouldDrop = AccessTools.Method(typeof(Util_ThingUtility), nameof(Util_ThingUtility.ShouldDrop));
-        ConstructorInfo? funcCtor = typeof(Func<Thing, bool>).GetConstructor([typeof(object), typeof(IntPtr)]);
+        ConstructorInfo? funcCtor = typeof(Func<Verse.Thing, bool>).GetConstructor([typeof(object), typeof(IntPtr)]);
 
         MethodInfo where = typeof(Enumerable)
             .GetMethods(BindingFlags.Public | BindingFlags.Static)
@@ -25,7 +23,7 @@ public static class PawnInventoryTrackerDropAllNearPawnHelperTranspiler {
                 m.GetParameters().Length == 2 &&
                 m.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Func<,>)
             )
-            .MakeGenericMethod(typeof(Thing));
+            .MakeGenericMethod(typeof(Verse.Thing));
 
         foreach (CodeInstruction? instruction in instructions) {
             // Find: list.AddRange(arg)

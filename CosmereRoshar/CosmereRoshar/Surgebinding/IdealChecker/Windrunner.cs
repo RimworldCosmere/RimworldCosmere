@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Roshar.Def;
 using Cosmere.Roshar.Gene;
 using Verse;
@@ -5,7 +6,7 @@ using Verse;
 namespace Cosmere.Roshar.Surgebinding.IdealChecker;
 
 public class Windrunner(RadiantOrderDef def) : AbstractIdealChecker(def) {
-    public override bool IsSatisfied(Pawn pawn, Surgebinder surgebinder, int currentLevel, int nextLevel) {
+    public override bool IsSatisfied(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
         if (nextLevel == 1) {
             return pawn.records.GetValue(RecordDefOf.Cosmere_Roshar_Record_PatientsSaved) > 0;
         }
@@ -15,5 +16,9 @@ public class Windrunner(RadiantOrderDef def) : AbstractIdealChecker(def) {
         }
 
         return true;
+    }
+
+    public override bool Satisfy(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
+        throw new NotImplementedException();
     }
 }

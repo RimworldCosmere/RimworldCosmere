@@ -5,7 +5,7 @@ using ThingDefOf = Cosmere.Resources.ThingDefOf;
 namespace Cosmere.Core.Util;
 
 public static class InvestitureDetector {
-    public static bool HasInvestiture(Thing thing) {
+    public static bool HasInvestiture(Verse.Thing thing) {
         if (IsInsideCoppercloud(thing)) return false;
         if (IsShielded(thing)) return false;
 
@@ -16,7 +16,7 @@ public static class InvestitureDetector {
         return false;
     }
 
-    public static float GetInvestiture(Thing thing) {
+    public static float GetInvestiture(Verse.Thing thing) {
         if (thing is Pawn pawn) {
             RimWorld.Need? investNeed = pawn.needs?.TryGetNeed(NeedDefOf.Cosmere_Investiture);
             float investiture = investNeed?.CurLevel ?? 0f;
@@ -29,7 +29,7 @@ public static class InvestitureDetector {
         return 0f;
     }
 
-    public static bool IsInsideCoppercloud(Thing thing) {
+    public static bool IsInsideCoppercloud(Verse.Thing? thing) {
         if (!ModsConfig.IsActive("Cosmere.Scadrial")) {
             return false;
         }
@@ -48,14 +48,14 @@ public static class InvestitureDetector {
         return false;
     }
 
-    public static bool IsShielded(Thing thing) {
+    public static bool IsShielded(Verse.Thing thing) {
         if (IsInAluminumRoom(thing)) return true;
         if (IsBurningPullingEnhancementMetal(thing as Pawn)) return true;
 
         return false;
     }
 
-    public static bool IsInAluminumRoom(Thing thing) {
+    public static bool IsInAluminumRoom(Verse.Thing thing) {
         Room? room = thing.GetRoom();
         if (room == null || room.TouchesMapEdge) return false;
 

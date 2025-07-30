@@ -388,27 +388,17 @@ jobs:
           
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
-      - name: Setup SteamCMD
+      - uses: CyberAndrii/setup-steamcmd@v1
+        name: Setup SteamCMD
+        if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
         id: steam-setup
-        uses: CyberAndrii/setup-steamcmd@v1
-      
-      #      - name: Config SteamCMD
-      #        run: |
-      #          mkdir -p ${{ steps.steam-setup.outputs.directory }}/config
-      #          echo "${{ secrets.STEAM_VDF }}" | base64 -d > ${{ steps.steam-setup.outputs.directory }}/config/config.vdf
-      #          chmod 777 ${{ steps.steam-setup.outputs.directory }}/config/config.vdf
 
       - uses: CyberAndrii/steam-totp@v1
         name: Generate TOTP
+        if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
         id: steam-totp
         with:
           shared_secret: ${{ secrets.STEAM_SHARED_SECRET }}
-
-      - name: Test SteamCMD
-        run: |
-          echo "${{ steps.steam-totp.outputs.code }}"
-          steamcmd +login "$STEAM_USERNAME" "$STEAM_PASSWORD" "${{ steps.steam-totp.outputs.code }}" +quit
-
       - name: Upload with SteamCMD
         if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
         run: ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" ${{ steps.steam-totp.outputs.code }} +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit

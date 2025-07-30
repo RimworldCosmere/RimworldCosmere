@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Roshar.Def;
 using Cosmere.Roshar.Gene;
 using Verse;
@@ -5,7 +6,11 @@ using Verse;
 namespace Cosmere.Roshar.Surgebinding.IdealChecker;
 
 public class Bondsmith(RadiantOrderDef def) : AbstractIdealChecker(def) {
-    public override bool IsSatisfied(Pawn pawn, Surgebinder surgebinder, int currentLevel, int nextLevel) {
+    public override bool IsSatisfied(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
         return true;
+    }
+
+    public override bool Satisfy(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
+        throw new NotImplementedException();
     }
 }

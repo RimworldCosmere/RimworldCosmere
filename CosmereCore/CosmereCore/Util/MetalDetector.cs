@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Resources;
 using Cosmere.Resources.Def;
 using Cosmere.Resources.DefModExtension;
@@ -11,7 +9,7 @@ namespace Cosmere.Core.Util;
 
 public static class MetalDetector {
     private static readonly Dictionary<RecipeDef, bool> MetalRecipeCache = new Dictionary<RecipeDef, bool>();
-    private static readonly Dictionary<Thing, float> MetalThingCache = new Dictionary<Thing, float>();
+    private static readonly Dictionary<Verse.Thing, float> MetalThingCache = new Dictionary<Verse.Thing, float>();
 
     public static bool IsCapableOfHavingMetal(ThingDef? thingDef) {
         return thingDef?.category is ThingCategory.Item
@@ -28,11 +26,11 @@ public static class MetalDetector {
         return allowAluminum ? metals : metals.Where(x => !x.Equals(MetalDefOf.Aluminum)).ToList();
     }
 
-    public static bool HasMetal(Thing? thing, int depth = 0, bool allowAluminum = false) {
+    public static bool HasMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
         return GetMetal(thing, depth, allowAluminum) > 0f;
     }
 
-    private static float CalculateMetal(Thing? thing, int depth = 0, bool allowAluminum = false) {
+    private static float CalculateMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
         if (!IsCapableOfHavingMetal(thing?.def)) return 0f;
         if (thing?.def == null || depth > 25) return 0f;
 
@@ -101,7 +99,7 @@ public static class MetalDetector {
     /// <summary>
     ///     This isn't entirely accurate at getting the metal mass of an item, but its a rough implementation.
     /// </summary>
-    public static float GetMetal(Thing? thing, int depth = 0, bool allowAluminum = false) {
+    public static float GetMetal(Verse.Thing? thing, int depth = 0, bool allowAluminum = false) {
         if (thing?.def == null) return 0f;
         if (!MetalThingCache.TryGetValue(thing, out float value)) {
             value = CalculateMetal(thing, depth, allowAluminum);
@@ -112,7 +110,7 @@ public static class MetalDetector {
     }
 
     public static float GetMetalForThingDefCountClass(ThingDefCountClass def, int depth, bool allowAluminum = false) {
-        Thing? item = ThingMaker.MakeThing(def.thingDef);
+        Verse.Thing? item = ThingMaker.MakeThing(def.thingDef);
         float metalMass = GetMetal(item, depth + 1, allowAluminum);
         return metalMass * def.count;
     }

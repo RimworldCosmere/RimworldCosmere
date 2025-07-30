@@ -405,7 +405,9 @@ jobs:
           shared_secret: ${{ secrets.STEAM_SHARED_SECRET }}
 
       - name: Test SteamCMD
-        run: steamcmd +login "$STEAM_USERNAME" "$STEAM_PASSWORD" ${{ steps.steam-totp.outputs.code }} +quit
+        run: |
+          echo "${{ steps.steam-totp.outputs.code }}"
+          steamcmd +login "$STEAM_USERNAME" "$STEAM_PASSWORD" "${{ steps.steam-totp.outputs.code }}" +quit
 
       - name: Upload with SteamCMD
         if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}

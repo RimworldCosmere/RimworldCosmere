@@ -46,15 +46,21 @@ foreach ($mod in $mods)
     $bundleOutput = "$PSScriptRoot\Cosmere$mod\AssetBundles"
     if (Test-Path $srcAssets)
     {
-        if (Test-Path $bundleOutput)
-        {
-            $srcTime = (Get-ChildItem -Recurse $srcAssets | Measure-Object LastWriteTime -Maximum).Maximum
-            $bundleTime = (Get-ChildItem -Recurse $bundleOutput | Measure-Object LastWriteTime -Maximum).Maximum
+        if (Test-Path $bundleOutput -PathType Container) {
+            # Get only files, ignore directories
+            $srcFiles    = Get-ChildItem -Path $srcAssets    -Recurse -File
+            $bundleFiles = Get-ChildItem -Path $bundleOutput -Recurse -File
 
-            if ($bundleTime -gt $srcTime)
-            {
-                Write-Host "    Skipping Cosmere$mod - AssetBundles folder is newer than Assets."
-                continue
+            # Bail out if either side has no files
+            if ($srcFiles.Count -gt 0 -and $bundleFiles.Count -gt 0) {
+                $srcTime    = ($srcFiles    | Measure-Object -Property LastWriteTime -Maximum).Maximum
+                $bundleTime = ($bundleFiles | Measure-Object -Property LastWriteTime -Maximum).Maximum
+
+                # Skip if the bundle folder is up‑to‑date or newer
+                if ($bundleTime -ge $srcTime) {
+                    Write-Host "    Skipping Cosmere$mod – AssetBundles folder is newer than Assets."
+                    continue
+                }
             }
         }
 

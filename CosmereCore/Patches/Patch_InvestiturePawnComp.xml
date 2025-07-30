@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
-    <Operation Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[@Name="BasePawn"]/comps</xpath>
-        <value>
-            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
-                <showMax>false</showMax>
-                <maxInvestiture>1</maxInvestiture>
-                <startingInvestiture>1</startingInvestiture>
-                <valueBasedOnChildren>false</valueBasedOnChildren>
-                <shareInvestitureByDefault>false</shareInvestitureByDefault>
-            </li>
-        </value>
+    <Operation Class="PatchOperationConditional">
+        <success>Always</success>
+        <xpath>Defs/ThingDef[@Name="BasePawn"]/comps/li[@Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties"]</xpath>
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[@Name="BasePawn"]/comps</xpath>
+            <value>
+                <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                    <showMax>false</showMax>
+                    <maxInvestiture>1</maxInvestiture>
+                    <startingInvestiture>1</startingInvestiture>
+                    <valueBasedOnChildren>false</valueBasedOnChildren>
+                    <shareInvestitureByDefault>false</shareInvestitureByDefault>
+                </li>
+            </value>
+        </nomatch>
     </Operation>
 </Patch>

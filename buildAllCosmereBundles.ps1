@@ -33,6 +33,14 @@ if ( [string]::IsNullOrEmpty($buildTarget))
     exit
 }
 
+
+function Get-FolderHash($folderPath)
+{
+    $hashString = (Get-ChildItem -Path $folderPath -Recurse -File | Get-FileHash -Algorithm SHA256).Hash | Out-String
+    return (Get-FileHash -Algorithm SHA256 -InputStream ([IO.MemoryStream]::new([System.Text.Encoding]::UTF8.GetBytes($hashString)))).Hash
+}
+
+
 # List of modules to process
 $mods = Get-ChildItem -Directory -Name |
         Where-Object { $_ -like 'Cosmere*' } |
@@ -43,26 +51,27 @@ foreach ($mod in $mods)
     Write-Host "Processing Cosmere$mod..."
 
     $srcAssets = "$PSScriptRoot\Cosmere$mod\Assets"
-    $bundleOutput = "$PSScriptRoot\Cosmere$mod\AssetBundles"
+    $hashFile = "$PSScriptRoot\Cosmere$mod\AssetBundles\.lastassetbuildhash"
     if (Test-Path $srcAssets)
     {
-        if (Test-Path $bundleOutput -PathType Container) {
-            # Get only files, ignore directories
-            $srcFiles    = Get-ChildItem -Path $srcAssets    -Recurse -File
-            $bundleFiles = Get-ChildItem -Path $bundleOutput -Recurse -File
-
-            # Bail out if either side has no files
-            if ($srcFiles.Count -gt 0 -and $bundleFiles.Count -gt 0) {
-                $srcTime    = ($srcFiles    | Measure-Object -Property LastWriteTime -Maximum).Maximum
-                $bundleTime = ($bundleFiles | Measure-Object -Property LastWriteTime -Maximum).Maximum
-
-                # Skip if the bundle folder is up‑to‑date or newer
-                if ($bundleTime -ge $srcTime) {
-                    Write-Host "    Skipping Cosmere$mod – AssetBundles folder is newer than Assets."
-                    continue
-                }
-            }
+        $currentHash = Get-FolderHash $srcAssets
+        $previousHash = if (Test-Path $hashFile)
+        {
+            (Get-Content $hashFile -Raw).Trim()
         }
+        else
+        {
+            ""
+        }
+
+        Write-Host "    Testing $currentHash vs $previousHash"
+        if ($currentHash -eq $previousHash)
+        {
+            Write-Host "    No changes detected in Cosmere$mod. Skipping build."
+            continue
+        }
+
+        Write-Host "    Changes detected. Continuing with build."
 
         $unityArgs = @(
             "-batchmode",
@@ -82,6 +91,7 @@ foreach ($mod in $mods)
             exit
         }
 
+        $currentHash | Out-File -Encoding ASCII -FilePath $hashFile
         Write-Host "    Done with Cosmere$mod."
     }
     else

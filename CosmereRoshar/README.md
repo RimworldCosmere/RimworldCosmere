@@ -1,4 +1,4 @@
-﻿# Introduction
+﻿![Introduction](../.github/assets/roshar/intro.png)
 
 ### Part of the RimWorld: Cosmere Project
 
@@ -15,11 +15,11 @@
 
 ​
 
-# About
+![About](../.github/assets/roshar/about.png)
 
 ​
 
-# Compatibility
+![Compatibility](../.github/assets/roshar/compatibility.png)
 
 - Requires Biotech
 - Compatible with Ideology, Royalty, and Anomaly
@@ -29,11 +29,11 @@
 
 ​
 
-# Tips
+![Tips](../.github/assets/roshar/tips.png)
 
 ​
 
-# Recommendations
+![Recommendations](../.github/assets/roshar/recommendations.png)
 
 Here are a couple recommended mods that work really well with the Cosmere mods:
 
@@ -44,7 +44,7 @@ Here are a couple recommended mods that work really well with the Cosmere mods:
 
 ​
 
-# Support &amp; Feedback
+![Support &amp; Feedback](../.github/assets/roshar/support.png)
 
 Have a bug or suggestion? Leave a comment or suggestion in either location below — your feedback helps improve the
 experience for everyone in the
@@ -66,7 +66,7 @@ Contribute and donate so we can get more art and other commissions:
 
 ​
 
-# Attributions
+![Attributions](../.github/assets/roshar/attributions.png)
 
 * Big thanks to Sir Van (`sir_vann` On Discord) for in-game art
 * Another big thanks to Immortalus (`_immortalus` on Discord) for the Mod Previews and a bunch more art

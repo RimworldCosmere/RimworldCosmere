@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Resources;
-using Cosmere.Resources.Extension;
 using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
 using UnityEngine;
@@ -20,7 +17,7 @@ public class BuildingHeatrialAdvanced : Building {
     public CompGlower compGlower;
     public CompHeatrial compHeatrial;
 
-    public override void SpawnSetup(Map map, bool respawningAfterLoad) {
+    public override void SpawnSetup(Verse.Map map, bool respawningAfterLoad) {
         base.SpawnSetup(map, respawningAfterLoad);
         compHeatrial = GetComp<CompHeatrial>();
         compFlickerable = GetComp<CompFlickable>();

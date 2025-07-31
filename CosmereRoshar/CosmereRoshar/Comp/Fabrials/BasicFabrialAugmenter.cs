@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Roshar.Comp.Thing;
 using Cosmere.Roshar.Dialog;
 using Cosmere.Roshar.Patches.Fabrials;
@@ -144,7 +142,7 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
     private void DoPainSprenPower() {
         if (!powerOn) return;
         IntVec3 position = parent.Position;
-        Map map = parent.Map;
+        Verse.Map map = parent.Map;
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, 5f, true);
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
@@ -162,7 +160,7 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
         if (!powerOn) return;
 
         IntVec3 position = parent.Position;
-        Map map = parent.Map;
+        Verse.Map map = parent.Map;
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, 5f, true);
 
 

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Verse;
-using ThingDefOf = Cosmere.Resources.ThingDefOf;
 
 namespace Cosmere.Core.Util;
 
@@ -64,7 +63,7 @@ public static class InvestitureDetector {
                 Building? edifice = cell.GetEdifice(thing.Map);
                 if (edifice == null) continue;
 
-                if (!edifice.def.Equals(ThingDefOf.Aluminum)) return false;
+                if (!edifice.def.Equals(Resources.ThingDefOf.Aluminum)) return false;
             }
         }
 

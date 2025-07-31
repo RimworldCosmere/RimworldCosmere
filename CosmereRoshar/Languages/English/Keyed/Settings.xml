@@ -10,9 +10,13 @@
 	<CR_Settings_Stormlight_EnablePawnGlow_Label>Pawn Stormlight Glow:</CR_Settings_Stormlight_EnablePawnGlow_Label>
 	<CR_Settings_Stormlight_EnablePawnGlow_Tooltip>Currently Broken</CR_Settings_Stormlight_EnablePawnGlow_Tooltip>
 
-	<CR_Settings_Category_Surgebinding>Surgebinding</CR_Settings_Category_Surgebinding>
-	<CR_Settings_Stormlight_BondChanceMultiplier_Label>Bond Chance Multiplier:</CR_Settings_Stormlight_BondChanceMultiplier_Label>
-	<CR_Settings_Stormlight_BondChanceMultiplier_Tooltip>Multiplier for the chance that a pawn will bond a spren</CR_Settings_Stormlight_BondChanceMultiplier_Tooltip>
+	<CR_Settings_Category_NahelBond>Nahel Bonds</CR_Settings_Category_NahelBond>
+	<CR_Settings_NahelBond_BaseChance_Label>Base True Spren Spawn Chance:</CR_Settings_NahelBond_BaseChance_Label>
+	<CR_Settings_NahelBond_BaseChance_Tooltip>What is the base chance (before Difficulty modifiers) for spawning a True Spren</CR_Settings_NahelBond_BaseChance_Tooltip>
+	<CR_Settings_NahelBond_MinimumTicks_Label>True Spren Spawn Minimum Tick Interval:</CR_Settings_NahelBond_MinimumTicks_Label>
+	<CR_Settings_NahelBond_MinimumTicks_Tooltip>What is the minimum number of ticks that must pass between True Spren spawns</CR_Settings_NahelBond_MinimumTicks_Tooltip>
+	<CR_Settings_NahelBond_MinimumTicks_Label>True Spren Spawn Maximum Tick Interval:</CR_Settings_NahelBond_MinimumTicks_Label>
+	<CR_Settings_NahelBond_MinimumTicks_Tooltip>What is the maximum number of ticks that must pass between True Spren spawns</CR_Settings_NahelBond_MinimumTicks_Tooltip>
 
     <CR_Settings_Category_Development>Development</CR_Settings_Category_Development>
 	<CR_Settings_Development_AutofillSpheres_Label>Autofill Spheres:</CR_Settings_Development_AutofillSpheres_Label>

@@ -1,4 +1,3 @@
-using Cosmere.Framework.Extension;
 using Cosmere.Framework.Listing;
 using Cosmere.Framework.Settings;
 using UnityEngine;
@@ -7,12 +6,21 @@ using Verse;
 namespace Cosmere.Roshar.Settings;
 
 public class RosharModSettings : CosmereModSettings {
-    public float bondChanceMultiplier;
-    public string bondChanceMultiplierBuffer;
+    // Base chance should be about once every 2 hours
+    private const float twoHours = 432000;
+    public float baseNahelSprenSpawnChance = 1f / twoHours;
+    public float bondChanceMultiplier = 0;
     public bool devOptionAutofillSpheres;
     public bool enableHighstormDamage;
     public bool enableHighstormPushing;
+
     public bool enablePawnGlow;
+
+    // Should be at MOST every 8 hours
+    public float nahelSprenSpawnMaxIntervalTicks = twoHours * 4;
+
+    // Should at LEAST be every 30 minutes
+    public float nahelSprenSpawnMinIntervalTicks = twoHours / 4;
 
     public override string Name => "Roshar";
 
@@ -21,7 +29,9 @@ public class RosharModSettings : CosmereModSettings {
         Scribe_Values.Look(ref enablePawnGlow, "enablePawnGlow");
         Scribe_Values.Look(ref devOptionAutofillSpheres, "devOptionAutofillSpheres");
         Scribe_Values.Look(ref enableHighstormDamage, "enableHighstormDamage", true);
-        Scribe_Values.Look(ref bondChanceMultiplier, "bondChanceMultiplier", 1);
+        Scribe_Values.Look(ref baseNahelSprenSpawnChance, "baseNahelSprenSpawnChance", 1f / twoHours);
+        Scribe_Values.Look(ref nahelSprenSpawnMinIntervalTicks, "nahelSprenSpawnMinIntervalTicks", twoHours / 4);
+        Scribe_Values.Look(ref nahelSprenSpawnMaxIntervalTicks, "nahelSprenSpawnMaxIntervalTicks", twoHours * 4);
     }
 
 
@@ -58,12 +68,31 @@ public class RosharModSettings : CosmereModSettings {
         );
 
         listing.Fieldset(
-            "CR_Settings_Category_Surgebinding".Translate(),
+            "CR_Settings_Category_NahelBond".Translate(),
             fieldset => {
                 fieldset.Field(
-                    "CR_Settings_Stormlight_BondChanceMultiplier_Label".Translate(),
-                    "CR_Settings_Stormlight_BondChanceMultiplier_Tooltip".Translate(),
-                    sub => sub.TextFieldNumeric(ref bondChanceMultiplier, ref bondChanceMultiplierBuffer, 1, 10000)
+                    "CR_Settings_NahelBond_BaseChance_Label".Translate(),
+                    "CR_Settings_NahelBond_BaseChance_Tooltip".Translate(),
+                    sub => {
+                        string chanceBuffer = baseNahelSprenSpawnChance.ToString();
+                        sub.TextFieldNumeric(ref baseNahelSprenSpawnChance, ref chanceBuffer);
+                    }
+                );
+                fieldset.Field(
+                    "CR_Settings_NahelBond_MinimumTicks_Label".Translate(),
+                    "CR_Settings_NahelBond_MinimumTicks_Tooltip".Translate(),
+                    sub => {
+                        string intervalBuffer = nahelSprenSpawnMinIntervalTicks.ToString();
+                        sub.TextFieldNumeric(ref nahelSprenSpawnMinIntervalTicks, ref intervalBuffer);
+                    }
+                );
+                fieldset.Field(
+                    "CR_Settings_NahelBond_MaximumTicks_Label".Translate(),
+                    "CR_Settings_NahelBond_MaximumTicks_Tooltip".Translate(),
+                    sub => {
+                        string intervalBuffer = nahelSprenSpawnMaxIntervalTicks.ToString();
+                        sub.TextFieldNumeric(ref nahelSprenSpawnMaxIntervalTicks, ref intervalBuffer);
+                    }
                 );
             }
         );

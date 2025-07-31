@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Roshar.Comp.Thing;
 using Cosmere.Roshar.Dialog;
 using RimWorld;
@@ -49,7 +47,7 @@ public class SprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
             insertedGemstone = null;
             IntVec3 dropPosition = parent.Position;
             dropPosition.z -= 1;
-            Map? map = parent.Map;
+            Verse.Map? map = parent.Map;
 
             if (map == null) {
                 map = Find.CurrentMap;

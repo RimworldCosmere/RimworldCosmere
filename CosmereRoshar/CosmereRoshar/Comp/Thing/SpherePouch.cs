@@ -150,7 +150,7 @@ public class SpherePouch : ThingComp {
         GenPlace.TryPlaceThing(sphere, dropPosition, pawn.Map, ThingPlaceMode.Near);
     }
 
-    public bool RemoveSphereFromPouch(ThingWithComps sphere, Map map, IntVec3 dropPosition) {
+    public bool RemoveSphereFromPouch(ThingWithComps sphere, Verse.Map map, IntVec3 dropPosition) {
         if (!storedSpheres.Contains(sphere)) return false;
 
         storedSpheres.Remove(sphere);

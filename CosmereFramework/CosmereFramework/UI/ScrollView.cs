@@ -20,7 +20,7 @@ public readonly record struct ScrollView : IDisposable {
         outRectHeight = outRect.height;
         rect = new Rect(0f, 0f, outRect.width, Math.Max(height, outRectHeight));
         if (height - 0.1f >= outRect.height) {
-            rect.width -= 16f;
+            rect.width -= 20f;
         }
 
         height = 0f;

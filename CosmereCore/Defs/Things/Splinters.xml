@@ -25,7 +25,7 @@
         </mote>
     </ThingDef>
     
-    <ThingDef Name="Cosmere_Core_Thing_Splinter" ParentName="AnimalThingBase">
+    <ThingDef Name="Cosmere_Core_Race_Splinter" ParentName="AnimalThingBase" Abstract="True">
         <defName>Cosmere_Core_Race_Splinter</defName>
         <label>splinter</label>
         <thingClass>Cosmere.Core.Thing.Splinter</thingClass>
@@ -109,7 +109,7 @@
         </comps>
     </ThingDef>
     
-    <PawnKindDef Name="Cosmere_Core_PawnKind_Splinter" ParentName="AnimalKindBase">
+    <PawnKindDef Name="Cosmere_Core_PawnKind_Splinter" ParentName="AnimalKindBase" Abstract="True">
         <defName>Cosmere_Core_PawnKind_Splinter</defName>
         <label>splinter</label>
         <labelPlural>splinters</labelPlural>

@@ -25,7 +25,7 @@ public class ScadrialModSettings : CosmereModSettings {
         Scribe_Values.Look(ref pawnsKeepVialsWhenDowned, "pawnsKeepVialsWhenDowned", true);
     }
 
-    public override void DoTabContents(Rect inRect, ListingForm listing) {
+    public override void DoTabContents(ListingForm listing) {
         listing.Fieldset(
             "CS_Settings_Category_Incidents".Translate(),
             fieldset => {

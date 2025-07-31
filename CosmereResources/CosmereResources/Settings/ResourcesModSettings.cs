@@ -8,7 +8,7 @@ public class ResourcesModSettings : CosmereModSettings {
     public override bool Enabled => false;
     public override string Name => "Resources";
 
-    public override void DoTabContents(Rect inRect, ListingForm listing) {
+    public override void DoTabContents(ListingForm listing) {
         listing.Label("There are no settings for this!");
     }
 }

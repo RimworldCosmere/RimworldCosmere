@@ -5,7 +5,7 @@
     <CF_Settings_LogLevel_Tooltip>Determines what gets logged. Should probably be Info</CF_Settings_LogLevel_Tooltip>
     
     <CF_Settings_DebugMode_Label>Debug Mode: </CF_Settings_DebugMode_Label>
-    <CF_Settings_DebugMode_Tooltip>Provides extra debugging features: </CF_Settings_DebugMode_Tooltip>
+    <CF_Settings_DebugMode_Tooltip>Provides extra debugging features</CF_Settings_DebugMode_Tooltip>
     
     <CF_Settings_Quickstarter_Label>Quickstarter: </CF_Settings_Quickstarter_Label>
     <CF_Settings_Quickstarter_Tooltip>When in dev mode, will immediately launch into the given Quickstarter. Very useful for testing.</CF_Settings_Quickstarter_Tooltip>

@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using System;
 using Cosmere.Framework;
 using Cosmere.Roshar.Settings;
 using Verse;
@@ -12,7 +13,8 @@ public class Mod(ModContentPack content) : CosmereMod<RosharModSettings>(content
 
     public static bool enablePawnGlow => Settings.enablePawnGlow;
 
-    public static bool devOptionAutofillSpheres => Settings.devOptionAutofillSpheres;
+    [Obsolete]
+    public static bool devOptionAutofillSpheres => false;
 
     public static float bondChanceMultiplier => Settings.bondChanceMultiplier;
 }

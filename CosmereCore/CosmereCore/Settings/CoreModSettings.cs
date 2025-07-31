@@ -1,7 +1,5 @@
-using Cosmere.Framework.Extension;
 using Cosmere.Framework.Listing;
 using Cosmere.Framework.Settings;
-using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.Settings;
@@ -11,7 +9,7 @@ public class CoreModSettings : CosmereModSettings {
 
     public override string Name => "Core";
 
-    public override void DoTabContents(Rect inRect, ListingForm listing) {
+    public override void DoTabContents(ListingForm listing) {
         listing.Fieldset(
             "CC_Settings_Category_Connection".Translate(),
             fieldset => {

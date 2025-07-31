@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Framework.Extension;
 using Cosmere.Framework.Listing;
 using Cosmere.Framework.Quickstart;
 using Cosmere.Framework.Util;
@@ -23,7 +20,7 @@ public class FrameworkModSettings : CosmereModSettings {
 
     public override string Name => "Framework";
 
-    public override void DoTabContents(Rect inRect, ListingForm listing) {
+    public override void DoTabContents(ListingForm listing) {
         listing.Fieldset(
             "CF_Settings_Category_Debug".Translate(),
             fieldset => {
@@ -55,30 +52,35 @@ public class FrameworkModSettings : CosmereModSettings {
                     new FieldOptions { minimumColumnWidth = 400 }
                 );
 
+                TaggedString? description = GetDescription();
+                float descriptionHeight = Text.CalcHeight(description ?? "", listing.ColumnWidth);
+
                 fieldset.Field(
-                    "",
                     sub => {
-                        if (string.IsNullOrEmpty(quickstartName)) {
+                        if (string.IsNullOrEmpty(quickstartName)) return;
+                        if (description == null) {
+                            sub.Label("CF_Settings_Quickstarter_FailedToFind".Translate());
                             return;
                         }
 
-                        Type? type = Type.GetType(quickstartName!);
-                        if (type == null) {
-                            Rect errorRect = sub.GetRect(FieldOptions.RowHeight);
-                            Widgets.Label(errorRect, "CF_Settings_Quickstarter_FailedToFind".Translate());
-                            return;
-                        }
-
-                        AbstractQuickstart? quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
-                        TaggedString description = quickstart.GetDescription();
-
-                        Widgets.Label(sub.GetRect(Text.CalcHeight(description, sub.ColumnWidth)), description);
+                        using (new TextBlock(TextAnchor.UpperLeft)) sub.Label(description.Value);
                     },
-                    new FieldOptions { minimumColumnWidth = 400, height = inRect.height - listing.CurHeight }
+                    new FieldOptions { minimumColumnWidth = 400, height = descriptionHeight }
                 );
             },
-            SubListingOptions.WithoutTopPadding()
+            SubListingOptions.WithoutTopPadding().WithTextBlock(new TextBlock(TextAnchor.MiddleLeft))
         );
+    }
+
+    private TaggedString? GetDescription() {
+        if (string.IsNullOrEmpty(quickstartName)) return null;
+        Type? type = Type.GetType(quickstartName!);
+        if (type == null) {
+            return null;
+        }
+
+        AbstractQuickstart? quickstart = (AbstractQuickstart)Activator.CreateInstance(type);
+        return quickstart.GetDescription().Resolve();
     }
 
     private string? GetQuickstartScenarioLabel(string? quickstarter) {

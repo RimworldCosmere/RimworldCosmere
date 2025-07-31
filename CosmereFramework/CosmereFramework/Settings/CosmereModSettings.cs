@@ -1,5 +1,4 @@
 using Cosmere.Framework.Listing;
-using UnityEngine;
 using Verse;
 
 namespace Cosmere.Framework.Settings;
@@ -10,5 +9,5 @@ public abstract class CosmereModSettings : IExposable {
 
     public virtual void ExposeData() { }
 
-    public abstract void DoTabContents(Rect inRect, ListingForm listing);
+    public abstract void DoTabContents(ListingForm listing);
 }

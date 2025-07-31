@@ -1,5 +1,4 @@
 using System;
-using Cosmere.Framework.Extension;
 using Cosmere.Framework.UI;
 using UnityEngine;
 using Verse;
@@ -33,6 +32,12 @@ public record SubListingOptions {
 
         return this;
     }
+
+    public SubListingOptions WithTextBlock(TextBlock newTextBlock) {
+        textBlock = newTextBlock;
+
+        return this;
+    }
 }
 
 public record FieldOptions {
@@ -55,7 +60,31 @@ public record HeadingOptions {
 }
 
 public class ListingForm : Listing_Standard {
+    private readonly ScrollViewStatus scrollViewStatus = new ScrollViewStatus();
+    public ListingForm? parentListing;
+    public ScrollView? scrollView;
+
+    public float currentHeight {
+        get => scrollView?.height ?? CurHeight;
+        set {
+            if (scrollView != null) scrollView.Value.height = value;
+        }
+    }
+
     public new Rect listingRect => base.listingRect;
+
+    public override void Begin(Rect rect) {
+        ColumnWidth = rect.width - 36;
+        base.Begin(rect);
+        if (parentListing == null) {
+            scrollView = new ScrollView(new Rect(0, 0, rect.width, rect.height), scrollViewStatus);
+        }
+    }
+
+    public override void End() {
+        base.End();
+        if (parentListing == null) scrollView?.Dispose();
+    }
 
     public void Fieldset(
         TaggedString header,
@@ -74,26 +103,35 @@ public class ListingForm : Listing_Standard {
         End();
     }
 
-    public void Contain(Rect rect, Action<Rect, ListingForm> drawContents) {
-        Begin(rect);
-        drawContents(rect, this);
-        End();
-    }
-
     public void Heading(
         string text,
         HeadingOptions? options = null
     ) {
         options ??= new HeadingOptions();
+        using (options.textblock ?? new TextBlock(GameFont.Medium)) {
+            Pad(
+                () => {
+                    Label(text);
+                    if (options.lineSeparator) {
+                        GapLine(4);
+                        currentHeight += 4;
+                    }
+                },
+                options.padding
+            );
 
-        curY += options.padding.top;
-        curX += options.padding.left;
+            currentHeight += Text.CalcSize(text).y;
+        }
+    }
 
-        using (options.textblock ?? new TextBlock(GameFont.Medium)) Label(text);
-        if (options.lineSeparator) GapLine(4);
+    public virtual void Pad(Action content, Padding padding) {
+        curY += padding.top;
+        curX += padding.left;
+        content();
+        curY += padding.bottom;
+        curX -= padding.left;
 
-        curY += options.padding.bottom;
-        curX -= options.padding.left;
+        currentHeight += padding.top + padding.bottom;
     }
 
     protected virtual void SubListing(
@@ -112,14 +150,28 @@ public class ListingForm : Listing_Standard {
 
                 curY += options.padding.bottom;
                 curX -= options.padding.left;
+
+                currentHeight += options.padding.top + options.padding.bottom;
             } else {
                 Rect rect = GetRect(height.Value).ContractedBy(options.padding);
-                ListingForm subListing = new ListingForm { verticalSpacing = options.verticalSpacing };
+                ListingForm subListing = new ListingForm
+                    { verticalSpacing = options.verticalSpacing, parentListing = this };
+
                 subListing.Contain(rect, drawContents);
+                currentHeight += height.Value + options.verticalSpacing;
             }
         }
 
         Gap(verticalSpacing);
+        currentHeight += verticalSpacing;
+    }
+
+    public void Field(
+        Action<ListingForm> drawContents,
+        FieldOptions? fieldOptions = null,
+        SubListingOptions? subListingOptions = null
+    ) {
+        Field(null, null, drawContents, fieldOptions, subListingOptions);
     }
 
     public void Field(
@@ -132,7 +184,7 @@ public class ListingForm : Listing_Standard {
     }
 
     public void Field(
-        TaggedString label,
+        TaggedString? label,
         TaggedString? tooltip,
         Action<ListingForm> drawContents,
         FieldOptions? fieldOptions = null,
@@ -141,30 +193,41 @@ public class ListingForm : Listing_Standard {
         fieldOptions ??= new FieldOptions();
         subListingOptions ??= new SubListingOptions();
 
+        float height = subListingOptions.padding.top +
+                       subListingOptions.padding.bottom +
+                       fieldOptions.height +
+                       subListingOptions.verticalSpacing;
+
         SubListing(
             sub => {
-                if (tooltip.HasValue) TooltipHandler.TipRegion(sub.listingRect, tooltip.Value);
+                if (tooltip.HasValue) {
+                    TooltipHandler.TipRegion(new Rect(0, 0, sub.listingRect.width, height), tooltip.Value);
+                }
 
                 // Create the label
+                float originalWidth = sub.ColumnWidth;
                 sub.ColumnWidth = fieldOptions.labelWidth;
-                Rect rect = sub.GetRect(fieldOptions.height);
-                rect.width = fieldOptions.labelWidth;
-                Widgets.Label(rect, label);
+                using (subListingOptions.textBlock ?? new TextBlock(TextAnchor.MiddleLeft))
+                    sub.Label(label, fieldOptions.height);
 
                 // Split
                 sub.NewColumn();
+                sub.ColumnWidth = originalWidth;
 
                 // Create the field
                 sub.ColumnWidth = Mathf.Max(
                     fieldOptions.minimumColumnWidth,
-                    sub.listingRect.width - fieldOptions.labelWidth - fieldOptions.columnSpacing
+                    sub.ColumnWidth -
+                    fieldOptions.labelWidth -
+                    fieldOptions.columnSpacing -
+                    subListingOptions.padding.left -
+                    subListingOptions.padding.right -
+                    16
                 );
                 using (new TextBlock(TextAnchor.MiddleCenter)) drawContents(sub);
+                sub.ColumnWidth = originalWidth;
             },
-            subListingOptions.padding.top +
-            subListingOptions.padding.bottom +
-            fieldOptions.height +
-            subListingOptions.verticalSpacing,
+            height,
             subListingOptions.WithPadding(Padding.Zero)
         );
     }

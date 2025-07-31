@@ -1,5 +1,6 @@
 ﻿using System;
 using Cosmere.Framework.Settings;
+using Cosmere.Framework.UI;
 using Cosmere.Framework.Window;
 using UnityEngine;
 using Verse;
@@ -41,7 +42,7 @@ public class Mod : CosmereMod<FrameworkModSettings> {
 
     public override void DoSettingsWindowContents(Rect inRect) {
         settingsWindow ??= new SettingsWindow(allModSettings);
-        settingsWindow.DoWindowContents(inRect);
+        settingsWindow.DoWindowContents(inRect.ContractedBy(new Padding(32, 0, 0, 0)));
     }
 
     public override string SettingsCategory() {

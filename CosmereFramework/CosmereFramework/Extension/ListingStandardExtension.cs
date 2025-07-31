@@ -4,22 +4,7 @@ using Verse;
 
 namespace Cosmere.Framework.Extension;
 
-public record FormFieldOptions {
-    public float columnSpacing = ListingStandardExtension.ColumnSpacing;
-    public float height = ListingStandardExtension.SubListingRowHeight;
-    public float labelWidth = ListingStandardExtension.SubListingLabelWidth;
-    public float minimumColumnWidth = 100;
-}
-
 public static class ListingStandardExtension {
-    public const float SubListingPadding = 5f;
-    public const float SubListingInset = 30f;
-    public const float SubListingVerticalSpacing = 2f;
-    public const float SubListingRowHeight = 40f;
-    public const float SubListingLabelWidth = 150f;
-    public const float ColumnSpacing = 17f;
-    public const float ExpectedHeight = SubListingPadding * 2 + (SubListingRowHeight + SubListingVerticalSpacing) * 1;
-
     public static void Checkbox(
         this Listing_Standard listing,
         ref bool checkOn,

@@ -7,14 +7,11 @@ using Verse;
 namespace Cosmere.Framework.Window;
 
 public class SettingsWindow {
-    private static readonly float TabHeight = 55f;
-    private static readonly Padding TabPadding = new Padding(8f, 10f);
-    private static readonly Padding ContentPadding = new Padding(16f);
-
+    private static readonly Padding ContentPadding = new Padding(16);
     private readonly List<CosmereModSettings> allModSettings;
     private readonly List<TabRecord> cachedTabs;
 
-    private readonly ListingForm listing = new ListingForm { verticalSpacing = 6f };
+    private readonly ListingForm listing = new ListingForm { verticalSpacing = 6f, maxOneColumn = true };
 
     private CosmereModSettings selectedTab;
 
@@ -32,18 +29,18 @@ public class SettingsWindow {
     }
 
     public void DoWindowContents(Rect inRect) {
-        Rect rect = new Rect(0, inRect.yMin + 40, inRect.width, TabDrawer.TabHeight);
-        TabDrawer.DrawTabs(rect, cachedTabs);
+        TabDrawer.DrawTabs(new Rect(inRect.xMin, inRect.yMin, inRect.width, TabDrawer.TabHeight), cachedTabs);
 
-        Rect listingRect = Box.Create(
-            inRect.xMin,
-            inRect.yMin + 40,
-            inRect.width,
-            inRect.height - TabHeight - ContentPadding.y * 2,
-            ContentPadding,
-            Texture2D.grayTexture
+        listing.Contain(
+            Box.Create(
+                inRect.xMin,
+                inRect.yMin,
+                inRect.width,
+                inRect.height - TabDrawer.TabHeight,
+                ContentPadding,
+                Texture2D.grayTexture
+            ),
+            selectedTab.DoTabContents
         );
-
-        listing.Contain(listingRect, selectedTab.DoTabContents);
     }
 }

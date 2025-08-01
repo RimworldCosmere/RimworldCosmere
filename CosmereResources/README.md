@@ -1,4 +1,4 @@
-﻿# Introduction
+﻿![Introduction](../.github/assets/resources/intro.png)
 
 ### Part of the RimWorld: Cosmere Project
 
@@ -13,7 +13,7 @@
 
 ​
 
-# About
+![About](../.github/assets/resources/about.png)
 
 - Adds/Replaces all **16 base metals** from Scadrial as *stuffable materials* with balanced stat modifiers.
 - Also adds Nickel (for alloying), Coal/Charcoal, Glass, Alcohol, and retextures silver.
@@ -31,7 +31,7 @@
 
 ​
 
-# Compatibility
+![Compatibility](../.github/assets/resources/compatibility.png)
 
 - This is a *dependency mod* — most other Cosmere mods will require this.
 - Safe to add mid-save, though current maps wont contain new metals
@@ -39,7 +39,7 @@
 
 ​
 
-# Recommendations
+![Recommendations](../.github/assets/resources/recommendations.png)
 
 Here are a couple recommended mods that work really well with the Cosmere mods:
 
@@ -50,7 +50,7 @@ Here are a couple recommended mods that work really well with the Cosmere mods:
 
 ​
 
-# Support &amp; Feedback
+![Support &amp; Feedback](../.github/assets/resources/support.png)
 
 Have a bug or suggestion? Leave a comment or suggestion in either location below — your feedback helps improve the
 experience for everyone in the
@@ -72,7 +72,7 @@ Contribute and donate so we can get more art and other commissions:
 
 ​
 
-# Attributions
+![Attributions](../.github/assets/resources/attributions.png)
 
 * Big thanks to Sir Van (`sir_vann` On Discord) for in-game art
 * Another big thanks to Immortalus (`_immortalus` on Discord) for the Mod Previews and a bunch more art

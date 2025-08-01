@@ -1,4 +1,4 @@
-﻿# Introduction
+﻿![Introduction](../.github/assets/framework/intro.png)
 
 ### Part of the RimWorld: Cosmere Project
 
@@ -13,7 +13,7 @@
 
 ​
 
-# About
+![About](../.github/assets/framework/about.png)
 
 This mod provides internal C# utility classes used by other Cosmere mods.  
 It does **not** add any content, gameplay changes, or settings on its own.
@@ -22,7 +22,7 @@ If you’re seeing this listed as a requirement, it’s because another mod depe
 
 ​
 
-# Compatibility
+![Compatibility](../.github/assets/framework/compatibility.png)
 
 - No gameplay impact by itself
 - Safe to add or remove at any time (unless required by another mod)
@@ -38,7 +38,7 @@ You can find more documentation about what is in this mod, and what you can use 
 
 ​
 
-# Recommendations
+![Recommendations](../.github/assets/framework/recommendations.png)
 
 Here are a couple recommended mods that work really well with the Cosmere mods:
 
@@ -49,7 +49,7 @@ Here are a couple recommended mods that work really well with the Cosmere mods:
 
 ​
 
-# Support &amp; Feedback
+![Support &amp; Feedback](../.github/assets/framework/support.png)
 
 Have a bug or suggestion? Leave a comment or suggestion in either location below — your feedback helps improve the
 experience for everyone in the
@@ -71,7 +71,7 @@ Contribute and donate so we can get more art and other commissions:
 
 ​
 
-# Attributions
+![Attributions](../.github/assets/framework/attributions.png)
 
 * Big thanks to Sir Van (`sir_vann` On Discord) for in-game art
 * Another big thanks to Immortalus (`_immortalus` on Discord) for the Mod Previews and a bunch more art

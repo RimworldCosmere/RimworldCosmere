@@ -1,4 +1,4 @@
-﻿# Introduction
+﻿![Introduction](../.github/assets/fallback/intro.png)
 
 ### Part of the RimWorld: Cosmere Project
 
@@ -13,7 +13,7 @@
 
 ​
 
-# About
+![About](../.github/assets/fallback/about.png)
 
 This mod lays the groundwork for Investiture across the Cosmere. It introduces key mechanics and systems used by other
 Cosmere mods.
@@ -41,7 +41,7 @@ Included features:
 
 ​
 
-# Compatibility
+![Compatibility](../.github/assets/fallback/compatibility.png)
 
 - This is a *required core mod* for all other Cosmere expansions
 - Safe to add at game start
@@ -57,7 +57,7 @@ Mods can register new Shards via the provided game component and hook into the I
 
 ​
 
-# Recommendations
+![Recommendations](../.github/assets/fallback/recommendations.png)
 
 Here are a couple recommended mods that work really well with the Cosmere mods:
 
@@ -68,7 +68,7 @@ Here are a couple recommended mods that work really well with the Cosmere mods:
 
 ​
 
-# Support &amp; Feedback
+![Support &amp; Feedback](../.github/assets/fallback/support.png)
 
 Have a bug or suggestion? Leave a comment or suggestion in either location below — your feedback helps improve the
 experience for everyone in the
@@ -90,7 +90,7 @@ Contribute and donate so we can get more art and other commissions:
 
 ​
 
-# Attributions
+![Attributions](../.github/assets/fallback/attributions.png)
 
 * Big thanks to Sir Van (`sir_vann` On Discord) for in-game art
 * Another big thanks to Immortalus (`_immortalus` on Discord) for the Mod Previews and a bunch more art

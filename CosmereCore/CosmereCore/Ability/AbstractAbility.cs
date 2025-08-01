@@ -38,6 +38,8 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     public bool willUseWhileDowned;
     public bool willUseWhileInjured;
 
+    public AbstractAbility(Pawn pawn) : base(pawn) { }
+
     public AbstractAbility(Pawn pawn, RimWorld.AbilityDef def) : base(pawn, def) {
         Initialize();
     }

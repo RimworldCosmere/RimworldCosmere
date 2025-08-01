@@ -8,8 +8,10 @@ using Verse;
 
 namespace Cosmere.Roshar.Surgebinding.Ability;
 
-public class SurgebindingAbility(Pawn pawn, AbilityDef def)
-    : AbstractAbility<Surgebinder, SurgebindingHediff>(pawn, def) {
+public class SurgebindingAbility : AbstractAbility<Surgebinder, SurgebindingHediff> {
+    public SurgebindingAbility(Pawn pawn) : base(pawn) { }
+    public SurgebindingAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
+
     public RadiantOrderDef radiantOrder => def.radiantOrder ?? pawn.GetRadiantOrder()!;
     public GemDef gem => radiantOrder.gemstone;
 

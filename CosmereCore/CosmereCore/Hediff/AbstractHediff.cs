@@ -25,6 +25,9 @@ public abstract class AbstractHediff(HediffDef hediffDef, Pawn pawn, AbstractAbi
     : AbstractHediff<Invested>(hediffDef, pawn, ability);
 
 public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> where TGene : Invested {
+    private TGene geneInt;
+    public AbstractHediff() { }
+
     public AbstractHediff(HediffDef hediffDef, Pawn pawn, IAbility<TGene, IHediff<TGene>> ability) {
         def = hediffDef;
         this.pawn = pawn;
@@ -36,7 +39,11 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
 
     public SeverityCalculator<TGene>? severityCalculator => GetComp<SeverityCalculator<TGene>>();
     protected InvestitureHolder investiture => pawn.GetInvestiture();
-    public TGene gene { get; protected set; }
+
+    public TGene gene {
+        get => geneInt;
+        protected set => geneInt = value;
+    }
 
     public float extraSeverity { get; set; } = 0f;
     public HashSet<IAbility<TGene, IHediff<TGene>>> sourceAbilities { get; } = [];
@@ -81,6 +88,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
         base.ExposeData();
 
         List<Pawn> sourcePawns = null!;
+        Scribe_References.Look(ref geneInt, "gene");
 
         if (Scribe.mode == LoadSaveMode.Saving) {
             sourcePawns = sourceAbilities.Cast<RimWorld.Ability>().Select(a => a.pawn).Distinct().ToList();

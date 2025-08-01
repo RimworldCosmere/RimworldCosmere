@@ -7,8 +7,8 @@ namespace Cosmere.Roshar.Settings;
 public class RosharModSettings : CosmereModSettings {
     private const float hour = 216000;
 
-    private const float
-        baseTime = hour; // Should probably be like.... 8 hours. Triple speed makes 30 hours happen in < 5 minutes
+    // Should probably be like.... 8 hours. Triple speed makes 30 hours happen in < 5 minutes
+    private const float baseTime = hour / 4;
 
     public float bondChanceMultiplier = 0;
     public bool enableHighstormDamage;

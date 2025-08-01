@@ -30,7 +30,7 @@ public class InnerStorageProperties : CompProperties {
 
 public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, IHaulEnroute,
     IThingHolderEvents<Verse.Thing> {
-    public ThingOwner<Verse.Thing>? innerContainer;
+    public ThingOwnerWithCapacity<Verse.Thing> innerContainer;
     private StorageSettings? settings;
 
     private new InnerStorageProperties props => (InnerStorageProperties)base.props;
@@ -58,7 +58,9 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     public bool Accepts(Verse.Thing t) {
         int currentInventoryRemaining = props.maxItems - innerContainer!.TotalStackCount;
 
-        return innerContainer!.CanAcceptAnyOf(t) && currentInventoryRemaining > 0 && GetStoreSettings().AllowedToAccept(t);
+        return innerContainer!.CanAcceptAnyOf(t) &&
+               currentInventoryRemaining > 0 &&
+               GetStoreSettings().AllowedToAccept(t);
     }
 
     public IntVec3 Position =>
@@ -122,11 +124,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
         parent.DoTick();
         // Ticker type HAS to be normal for the parent
         parent.def.tickerType = TickerType.Normal;
-        if (props.maxItems != -1) {
-            innerContainer = new ThingOwnerWithCapacity<Verse.Thing>(this, props.maxItems);
-        } else {
-            innerContainer = new ThingOwner<Verse.Thing>(this, props.oneStackOnly);
-        }
+        innerContainer = new ThingOwnerWithCapacity<Verse.Thing>(this, props.maxItems, props.oneStackOnly);
 
         settings = new StorageSettings(this);
         if (props.defaultStorageSettings != null) {
@@ -139,7 +137,8 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     }
 
     public override void PostExposeData() {
-        Scribe_Deep.Look(ref innerContainer, "innerContainer", this, props.maxItems);
+        Scribe_Deep.Look(ref innerContainer, "innerContainer", this, props.maxItems, props.oneStackOnly);
+        Scribe_Deep.Look(ref settings, "storageSettings", this);
     }
 
     public override void Notify_RecipeProduced(Pawn pawn) {

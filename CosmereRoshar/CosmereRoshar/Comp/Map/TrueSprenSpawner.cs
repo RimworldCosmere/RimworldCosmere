@@ -4,7 +4,7 @@ using Verse;
 namespace Cosmere.Roshar.Comp.Map;
 
 public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
-    private readonly int lastSpawn = GenTicks.TicksAbs;
+    private int lastSpawn = GenTicks.TicksAbs;
     private SprenForPawn? spawnedSpren;
 
     public List<Pawn> pawns => Current.Game.CurrentMap.mapPawns.FreeColonistsAndPrisonersSpawned
@@ -45,11 +45,13 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
             spawnedAtTick = GenTicks.TicksGame,
             splinter = splinter,
         };
+        lastSpawn = GenTicks.TicksAbs;
     }
 
     public override void ExposeData() {
         base.ExposeData();
         Scribe_Values.Look(ref spawnedSpren, "spawnedSpren");
+        Scribe_Values.Look(ref lastSpawn, "lastSpawn");
     }
 
     private struct SprenForPawn : IExposable {

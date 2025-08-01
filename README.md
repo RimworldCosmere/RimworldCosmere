@@ -20,7 +20,7 @@ This is a modular monorepo. Each component exists as its own loadable mod:
 
 - **[Cosmere - Scadrial](CosmereScadrial)** – Allomancy, Feruchemy, >!Hemalurgy!<, Mistborn genes, vial systems,
   snapping, Skaa, Nobles, and Terris, and more
-- **Cosmere - Roshar** *(Coming Soon)* – Surgebinding, spren bonding, stormlight, Ideals, and many Xenotypes
+- **[Cosmere - Roshar](CosmereRoshar)** – Surgebinding, spren bonding, stormlight, Ideals, and many Xenotypes
 - **Cosmere - Nalthis** *(Coming Soon)* – Awakening, Breath economy, Commands, Divine Breaths, and the Returned
 - **Cosmere - Sel** *(Coming Soon)* – Elantrians, Aon Dor, and Forgery
 

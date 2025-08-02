@@ -26,7 +26,7 @@ public record Connection : IExposable {
 
     public float value {
         get => valueInt;
-        set => valueInt = Math.Max(0, value);
+        set => valueInt = Math.Max(0, Math.Min(1, value));
     }
 
     public bool objectOneIsThing => objectOne is Verse.Thing;
@@ -92,12 +92,44 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
         return connections[key];
     }
 
-    public void SetConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo, float value) {
-        GetConnection(targetOne, targetTwo).value = value;
+    public Connection SetConnectionValue(Connection connection, float value) {
+        float oldValue = connection.value;
+        connection.value = value;
+        if (connection.objectOneIsThing) {
+            if (connection.objectTwoIsThing) {
+                connection.thingOne!.Notify_SignalReceived(
+                    new Signal("cosmere_connectionChanged", connection.thingTwo, value, oldValue)
+                );
+            } else if (connection.objectTwoIsFaction) {
+                connection.thingOne!.Notify_SignalReceived(
+                    new Signal("cosmere_connectionChanged", connection.factionTwo, value, oldValue)
+                );
+            } else {
+                connection.thingOne!.Notify_SignalReceived(
+                    new Signal("cosmere_connectionChanged", connection.objectTwo.GetUniqueLoadID(), value, oldValue)
+                );
+            }
+        }
+
+        if (connection.objectTwoIsThing) {
+            connection.thingTwo!.Notify_SignalReceived(
+                new Signal("cosmere_connectionChanged", connection.objectOne.GetUniqueLoadID(), value, oldValue)
+            );
+        }
+
+        return connection;
     }
 
-    public void AdjustConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo, float delta) {
-        GetConnection(targetOne, targetTwo).value += delta;
+    public Connection SetConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo, float value) {
+        Connection conn = GetConnection(targetOne, targetTwo);
+
+        return SetConnectionValue(conn, value);
+    }
+
+    public Connection AdjustConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo, float delta) {
+        Connection conn = GetConnection(targetOne, targetTwo);
+
+        return SetConnectionValue(conn, conn.value + delta);
     }
 
     public IEnumerable<Connection> GetConnections(ILoadReferenceable target) {
@@ -150,51 +182,51 @@ public static class SpiritWebExtensions {
         return SpiritWeb.Instance.GetConnection(target, self);
     }
 
-    public static void InitializeConnection(this Verse.Thing self, ILoadReferenceable target) {
-        SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+    public static Connection InitializeConnection(this Verse.Thing self, ILoadReferenceable target) {
+        return SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
     }
 
-    public static void InitializeConnection(this Faction self, ILoadReferenceable target) {
-        SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+    public static Connection InitializeConnection(this Faction self, ILoadReferenceable target) {
+        return SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
     }
 
-    public static void InitializeConnection(this PlanetLayer self, ILoadReferenceable target) {
-        SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+    public static Connection InitializeConnection(this PlanetLayer self, ILoadReferenceable target) {
+        return SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
     }
 
-    public static void InitializeConnection(this Shard self, ILoadReferenceable target) {
-        SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+    public static Connection InitializeConnection(this Shard self, ILoadReferenceable target) {
+        return SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
     }
 
-    public static void SetConnection(this Verse.Thing self, ILoadReferenceable target, float value) {
-        SpiritWeb.Instance.SetConnection(target, self, value);
+    public static Connection SetConnection(this Verse.Thing self, ILoadReferenceable target, float value) {
+        return SpiritWeb.Instance.SetConnection(target, self, value);
     }
 
-    public static void SetConnection(this Faction self, ILoadReferenceable target, float value) {
-        SpiritWeb.Instance.SetConnection(target, self, value);
+    public static Connection SetConnection(this Faction self, ILoadReferenceable target, float value) {
+        return SpiritWeb.Instance.SetConnection(target, self, value);
     }
 
-    public static void SetConnection(this PlanetLayer self, ILoadReferenceable target, float value) {
-        SpiritWeb.Instance.SetConnection(target, self, value);
+    public static Connection SetConnection(this PlanetLayer self, ILoadReferenceable target, float value) {
+        return SpiritWeb.Instance.SetConnection(target, self, value);
     }
 
-    public static void SetConnection(this Shard self, ILoadReferenceable target, float value) {
-        SpiritWeb.Instance.SetConnection(target, self, value);
+    public static Connection SetConnection(this Shard self, ILoadReferenceable target, float value) {
+        return SpiritWeb.Instance.SetConnection(target, self, value);
     }
 
-    public static void AdjustConnection(this Verse.Thing self, ILoadReferenceable target, float delta) {
-        SpiritWeb.Instance.AdjustConnection(target, self, delta);
+    public static Connection AdjustConnection(this Verse.Thing self, ILoadReferenceable target, float delta) {
+        return SpiritWeb.Instance.AdjustConnection(target, self, delta);
     }
 
-    public static void AdjustConnection(this Faction self, ILoadReferenceable target, float delta) {
-        SpiritWeb.Instance.AdjustConnection(target, self, delta);
+    public static Connection AdjustConnection(this Faction self, ILoadReferenceable target, float delta) {
+        return SpiritWeb.Instance.AdjustConnection(target, self, delta);
     }
 
-    public static void AdjustConnection(this PlanetLayer self, ILoadReferenceable target, float delta) {
-        SpiritWeb.Instance.AdjustConnection(target, self, delta);
+    public static Connection AdjustConnection(this PlanetLayer self, ILoadReferenceable target, float delta) {
+        return SpiritWeb.Instance.AdjustConnection(target, self, delta);
     }
 
-    public static void AdjustConnection(this Shard self, ILoadReferenceable target, float delta) {
-        SpiritWeb.Instance.AdjustConnection(target, self, delta);
+    public static Connection AdjustConnection(this Shard self, ILoadReferenceable target, float delta) {
+        return SpiritWeb.Instance.AdjustConnection(target, self, delta);
     }
 }

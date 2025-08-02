@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThinkTreeDef>
+        <defName>Cosmere_BondToThing</defName>
+        <insertTag>Humanlike_PostMain</insertTag>
+        <insertPriority>100</insertPriority>
+        <thinkRoot Class="Cosmere.Core.ThinkNode.JobGiver.BondToThing"/>
+    </ThinkTreeDef>
+</Defs>

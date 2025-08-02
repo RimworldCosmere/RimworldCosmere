@@ -377,7 +377,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
             UpdateStatus(nextStatus.Value);
         }
 
-        Job? job = JobMaker.MakeJob(def.jobDef ?? JobDefOf.CastAbilityOnThing, targetInfo);
+        Job? job = JobMaker.MakeJob(def.jobDef ?? RimWorld.JobDefOf.CastAbilityOnThing, targetInfo);
         job.source = this;
         job.ability = this;
         job.verbToUse = verb;

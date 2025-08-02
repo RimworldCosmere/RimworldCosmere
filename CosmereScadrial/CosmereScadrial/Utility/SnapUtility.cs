@@ -13,7 +13,7 @@ public class SnapUtility {
         memory.moodPowerFactor = 0f;
         pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(memory);
 
-        if (!withMessage || !pawn.Faction.IsPlayer || pawn.Map == null) {
+        if (!withMessage || pawn.Faction == null || !pawn.Faction.IsPlayer || pawn.Map == null) {
             return;
         }
 

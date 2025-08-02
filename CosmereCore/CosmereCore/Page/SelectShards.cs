@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Core.Def;
+﻿using Cosmere.Core.Def;
 using Cosmere.Core.Util;
 using UnityEngine;
 using Verse;
@@ -69,7 +67,7 @@ public class SelectShards : RimWorld.Page {
                     if (toggled) {
                         ShardUtility.Enable(shard);
                     } else {
-                        ShardUtility.shards.enabledShardDefs.Remove(shard);
+                        ShardUtility.shards.enabledShards.Remove(shard);
                     }
                 }
 

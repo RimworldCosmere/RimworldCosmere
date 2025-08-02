@@ -21,12 +21,11 @@ public class Splinter : Pawn, IThingGlower {
     protected override void Tick() {
         base.Tick();
 
-        //if (previousPos != Position) GetComp<CompGlower>().ForceRegister(Map);
-        //previousPos = Position;
-
         if (mote?.Destroyed ?? false) {
             mote = null;
         }
+
+        if (Map == null) return;
 
         mote ??= MoteMaker.MakeAttachedOverlay(
             this,

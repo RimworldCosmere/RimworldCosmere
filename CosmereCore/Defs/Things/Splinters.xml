@@ -34,8 +34,8 @@
         <race>
             <hasGenders>true</hasGenders>
             <intelligence>Animal</intelligence>
-            <thinkTreeMain>Humanlike</thinkTreeMain>
-            <thinkTreeConstant>HumanlikeConstant</thinkTreeConstant>
+            <thinkTreeMain>Cosmere_Core_ThinkTree_Splinter</thinkTreeMain>
+            <thinkTreeConstant>Cosmere_Core_ThinkTree_SplinterConstant</thinkTreeConstant>
             <nameCategory>NoName</nameCategory>
             <foodType>None</foodType>
             <baseHungerRate>0</baseHungerRate>
@@ -45,7 +45,7 @@
             <canBePredatorPrey>false</canBePredatorPrey>
             <baseBodySize>1</baseBodySize>
       		<predator>false</predator>
-            <trainability>None</trainability>
+            <trainability>Advanced</trainability>
             <herdAnimal>false</herdAnimal>
             <lifeExpectancy>99999</lifeExpectancy>
             <petness>0</petness>
@@ -85,7 +85,7 @@
             <MarketValue>0</MarketValue>
             <ComfyTemperatureMin>-2000</ComfyTemperatureMin>
             <ComfyTemperatureMax>2000</ComfyTemperatureMax>
-            <MoveSpeed>15</MoveSpeed>
+            <MoveSpeed>8</MoveSpeed>
             <Flammability>0</Flammability>
             <IncomingDamageFactor>0</IncomingDamageFactor>
             <StaggerDurationFactor>0</StaggerDurationFactor>

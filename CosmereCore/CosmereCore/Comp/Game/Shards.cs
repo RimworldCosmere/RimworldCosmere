@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using Cosmere.Core.Def;
+﻿using Cosmere.Core.Def;
+using Cosmere.Core.Entity;
 using Verse;
 
 namespace Cosmere.Core.Comp.Game;
 
 public class Shards : GameComponent {
-    public HashSet<ShardDef> enabledShardDefs = new HashSet<ShardDef>();
+    public HashSet<Shard> enabledShards = [];
 
     public Shards(Verse.Game game) { }
 
     public override void ExposeData() {
-        Scribe_Collections.Look(ref enabledShardDefs, "enabledShardDefs", LookMode.Def);
+        Scribe_Collections.Look(ref enabledShards, "enabledShardDefs", LookMode.Def);
     }
 
     public void EnableShard(string defName, bool allowConflicts = false) {
@@ -23,11 +23,11 @@ public class Shards : GameComponent {
     public void EnableShard(ShardDef shard, bool allowConflicts = false) {
         if (!allowConflicts) {
             foreach (ShardDef? conflict in shard.mutuallyExclusiveWith) {
-                enabledShardDefs.Remove(conflict);
+                enabledShards.RemoveWhere(x => x.def.defName == conflict.defName);
             }
         }
 
-        enabledShardDefs.Add(shard);
+        enabledShards.Add(new Shard(shard));
     }
 
     public bool IsEnabled(string defName) {
@@ -36,6 +36,6 @@ public class Shards : GameComponent {
     }
 
     public bool IsEnabled(ShardDef shard) {
-        return enabledShardDefs.Contains(shard);
+        return enabledShards.FirstOrDefault(x => x.def.defName == shard.defName) != null;
     }
 }

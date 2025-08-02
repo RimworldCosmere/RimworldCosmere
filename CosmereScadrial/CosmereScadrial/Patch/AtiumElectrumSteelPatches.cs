@@ -87,9 +87,9 @@ public static class AtiumElectrumSteelPatches {
 
         // Clamp final value for safety
         baseHitChance = Mathf.Clamp(baseHitChance, 0.05f, 1f);
-        Logger.Verbose(
+        /*Logger.Verbose(
             $"{casterPawn.NameFullColored} chance to hit {targetPawn.NameFullColored} = {baseHitChance:P} casterAtiumSeverity={casterAtiumSeverity} targetAtiumSeverity={targetAtiumSeverity} targetSteelBubbleSeverity={targetSteelBubbleSeverity} targetElectrumSeverity={targetElectrumSeverity}"
-        );
+        );*/
         return Rand.Chance(baseHitChance);
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Core.DefModExtension;
+﻿using Cosmere.Core.DefModExtension;
 using Cosmere.Core.Util;
 using Cosmere.Framework;
 using HarmonyLib;
@@ -28,7 +26,7 @@ public static class LockShardSelection {
 
         Messages.Message(
             "CS_LockShardSelection".Translate(
-                string.Join(", ", ShardUtility.shards.enabledShardDefs.Select(x => x.label)).Named("SHARDS")
+                string.Join(", ", ShardUtility.shards.enabledShards.Select(x => x.label)).Named("SHARDS")
             ),
             MessageTypeDefOf.NeutralEvent
         );

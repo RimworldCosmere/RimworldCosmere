@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef Name="Cosmere_Roshar_Race_Spren" ParentName="Cosmere_Core_Race_Splinter" Abstract="True">
+    <ThingDef Name="Cosmere_Roshar_Race_Spren" ParentName="Cosmere_Core_Race_Splinter">
 		<thingClass>Cosmere.Roshar.Thing.Pawn.Animal.Spren</thingClass>
+        <defName>Cosmere_Roshar_Race_Spren</defName>
     </ThingDef>
     <PawnKindDef Name="Cosmere_Roshar_PawnKind_Spren" ParentName="Cosmere_Core_PawnKind_Splinter">
         <defName>Cosmere_Roshar_Race_Spren</defName>

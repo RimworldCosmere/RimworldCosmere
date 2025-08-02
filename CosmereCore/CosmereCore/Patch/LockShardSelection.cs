@@ -26,7 +26,7 @@ public static class LockShardSelection {
 
         Messages.Message(
             "CS_LockShardSelection".Translate(
-                string.Join(", ", ShardUtility.shards.enabledShards.Select(x => x.label)).Named("SHARDS")
+                string.Join(", ", ShardUtility.shards.enabledShards.Select(x => x.Label)).Named("SHARDS")
             ),
             MessageTypeDefOf.NeutralEvent
         );

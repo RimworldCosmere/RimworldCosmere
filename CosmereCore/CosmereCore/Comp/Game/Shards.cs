@@ -23,11 +23,21 @@ public class Shards : GameComponent {
     public void EnableShard(ShardDef shard, bool allowConflicts = false) {
         if (!allowConflicts) {
             foreach (ShardDef? conflict in shard.mutuallyExclusiveWith) {
-                enabledShards.RemoveWhere(x => x.def.defName == conflict.defName);
+                DisableShard(conflict);
             }
         }
 
         enabledShards.Add(new Shard(shard));
+    }
+
+    public void DisableShard(string defName) {
+        ShardDef? shard = DefDatabase<ShardDef>.GetNamedSilentFail(defName);
+        if (shard == null) return;
+        DisableShard(shard);
+    }
+
+    public void DisableShard(ShardDef shard) {
+        enabledShards.RemoveWhere(x => x.def.defName == shard.defName);
     }
 
     public bool IsEnabled(string defName) {

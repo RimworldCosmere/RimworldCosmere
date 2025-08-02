@@ -1,14 +1,34 @@
-﻿using Cosmere.Core.Entity;
+﻿using System;
+using Cosmere.Core.Entity;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
 namespace Cosmere.Core.Comp.Game;
 
-public record Connection {
+public record Connection : IExposable {
+    public const float STARTING_CONNECTION = 0.25f;
+
     public ILoadReferenceable objectOne;
     public ILoadReferenceable objectTwo;
-    public float value;
+    private float valueInt;
+
+    public Connection(ILoadReferenceable objectOne, ILoadReferenceable objectTwo) {
+        this.objectOne = objectOne;
+        this.objectTwo = objectTwo;
+    }
+
+    public Connection(ILoadReferenceable objectOne, ILoadReferenceable objectTwo, float value = 0) {
+        this.objectOne = objectOne;
+        this.objectTwo = objectTwo;
+        this.value = value;
+    }
+
+    public float value {
+        get => valueInt;
+        set => valueInt = Math.Max(0, value);
+    }
+
     public bool objectOneIsThing => objectOne is Verse.Thing;
     public bool objectTwoIsThing => objectTwo is Verse.Thing;
     public bool objectOneIsPlanetLayer => objectOne is PlanetLayer;
@@ -31,6 +51,12 @@ public record Connection {
                objectTwo.GetUniqueLoadID() == other.objectTwo.GetUniqueLoadID();
     }
 
+    public void ExposeData() {
+        Scribe_Values.Look(ref valueInt, "value");
+        Scribe_References.Look(ref objectOne, "objectOne");
+        Scribe_References.Look(ref objectTwo, "objectTwo");
+    }
+
     public virtual bool Equals(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
         return objectOne.GetUniqueLoadID() == targetOne.GetUniqueLoadID() &&
                objectTwo.GetUniqueLoadID() == targetTwo.GetUniqueLoadID();
@@ -42,8 +68,8 @@ public record Connection {
     }
 }
 
-public class SpiritWeb : GameComponent {
-    private List<Connection> connectionList = new List<Connection>();
+public class SpiritWeb(Verse.Game game) : GameComponent {
+    private List<Connection> connectionList = [];
 
     [Unsaved]
     private Dictionary<(string, string), Connection> connections =
@@ -60,11 +86,10 @@ public class SpiritWeb : GameComponent {
     public Connection GetConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
         (string, string) key = NormalizeKey(targetOne, targetTwo);
         if (!connections.TryGetValue(key, out Connection? value)) {
-            value = new Connection { objectOne = targetOne, objectTwo = targetTwo };
-            connections[key] = value;
+            connections[key] = new Connection(targetOne, targetTwo);
         }
 
-        return value;
+        return connections[key];
     }
 
     public void SetConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo, float value) {
@@ -123,5 +148,53 @@ public static class SpiritWebExtensions {
 
     public static Connection GetConnection(this Shard self, ILoadReferenceable target) {
         return SpiritWeb.Instance.GetConnection(target, self);
+    }
+
+    public static void InitializeConnection(this Verse.Thing self, ILoadReferenceable target) {
+        SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+    }
+
+    public static void InitializeConnection(this Faction self, ILoadReferenceable target) {
+        SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+    }
+
+    public static void InitializeConnection(this PlanetLayer self, ILoadReferenceable target) {
+        SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+    }
+
+    public static void InitializeConnection(this Shard self, ILoadReferenceable target) {
+        SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+    }
+
+    public static void SetConnection(this Verse.Thing self, ILoadReferenceable target, float value) {
+        SpiritWeb.Instance.SetConnection(target, self, value);
+    }
+
+    public static void SetConnection(this Faction self, ILoadReferenceable target, float value) {
+        SpiritWeb.Instance.SetConnection(target, self, value);
+    }
+
+    public static void SetConnection(this PlanetLayer self, ILoadReferenceable target, float value) {
+        SpiritWeb.Instance.SetConnection(target, self, value);
+    }
+
+    public static void SetConnection(this Shard self, ILoadReferenceable target, float value) {
+        SpiritWeb.Instance.SetConnection(target, self, value);
+    }
+
+    public static void AdjustConnection(this Verse.Thing self, ILoadReferenceable target, float delta) {
+        SpiritWeb.Instance.AdjustConnection(target, self, delta);
+    }
+
+    public static void AdjustConnection(this Faction self, ILoadReferenceable target, float delta) {
+        SpiritWeb.Instance.AdjustConnection(target, self, delta);
+    }
+
+    public static void AdjustConnection(this PlanetLayer self, ILoadReferenceable target, float delta) {
+        SpiritWeb.Instance.AdjustConnection(target, self, delta);
+    }
+
+    public static void AdjustConnection(this Shard self, ILoadReferenceable target, float delta) {
+        SpiritWeb.Instance.AdjustConnection(target, self, delta);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Cosmere.Core.Comp.Game;
+﻿using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Def;
 using Verse;
 
@@ -34,5 +33,13 @@ public static class ShardUtility {
 
     public static void Enable(ShardDef shard) {
         shards.EnableShard(shard);
+    }
+
+    public static void Disable(string shard) {
+        shards.DisableShard(shard);
+    }
+
+    public static void Disable(ShardDef shard) {
+        shards.DisableShard(shard);
     }
 }

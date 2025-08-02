@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using Cosmere.Core.Entity;
+using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
@@ -14,12 +15,16 @@ public record Connection {
     public bool objectTwoIsPlanetLayer => objectTwo is PlanetLayer;
     public bool objectOneIsFaction => objectOne is Faction;
     public bool objectTwoIsFaction => objectTwo is Faction;
+    public bool objectOneIsShard => objectOne is Shard;
+    public bool objectTwoIsShard => objectTwo is Shard;
     public Verse.Thing? thingOne => objectOne as Verse.Thing;
     public Verse.Thing? thingTwo => objectTwo as Verse.Thing;
     public PlanetLayer? planetLayerOne => objectOne as PlanetLayer;
     public PlanetLayer? planetLayerTwo => objectTwo as PlanetLayer;
     public Faction? factionOne => objectOne as Faction;
     public Faction? factionTwo => objectTwo as Faction;
+    public Shard? shardOne => objectOne as Shard;
+    public Shard? shardTwo => objectTwo as Shard;
 
     public virtual bool Equals(Connection other) {
         return objectOne.GetUniqueLoadID() == other.objectOne.GetUniqueLoadID() &&
@@ -113,6 +118,10 @@ public static class SpiritWebExtensions {
     }
 
     public static Connection GetConnection(this PlanetLayer self, ILoadReferenceable target) {
+        return SpiritWeb.Instance.GetConnection(target, self);
+    }
+
+    public static Connection GetConnection(this Shard self, ILoadReferenceable target) {
         return SpiritWeb.Instance.GetConnection(target, self);
     }
 }

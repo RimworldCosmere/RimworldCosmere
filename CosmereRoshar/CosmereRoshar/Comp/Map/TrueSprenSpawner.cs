@@ -1,15 +1,16 @@
-﻿using Cosmere.Core.Thing;
+﻿using Cosmere.Roshar.Gene;
+using Cosmere.Roshar.Thing.Pawn.Animal;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Roshar.Comp.Map;
 
 public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
-    private List<SprenForPawn> spawnedSpren = [];
+    private List<SprenForPawn> pawnSprens = [];
     private List<SpawnInfo> spawnInfo = [];
 
     public List<Pawn> pawns => Current.Game.CurrentMap.mapPawns.FreeColonistsAndPrisonersSpawned
-        // .Where(p => p.genes.GetFirstGeneOfType<Surgebinder>() == null)
+        .Where(p => p.genes.GetFirstGeneOfType<Surgebinder>() == null)
         .ToList();
 
     private static float baseSpawnChance =>
@@ -38,7 +39,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         foreach (Pawn pawn in pawns) {
             SpawnInfo spawnInfoForPawn = GetSpawnInfo(pawn);
             if (spawnInfoForPawn.ticksSinceLastSpawn < Mod.Settings.nahelSprenSpawnMinIntervalTicks) continue;
-            if (spawnedSpren.Any(sp => sp.pawn.Equals(pawn))) continue;
+            if (pawnSprens.Any(sp => sp.pawn.Equals(pawn) && sp.spren.Spawned)) continue;
             if (pawn.IsAsleep()) continue;
 
             if (!Rand.Chance(baseSpawnChance) &&
@@ -52,66 +53,73 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
 
     private void TryDespawnSpren() {
         foreach (SprenForPawn data in
-                 spawnedSpren.ToList().Where(data => !data.spren.Spawned || data.spren.Destroyed)) {
-            spawnedSpren.Remove(data);
-        }
+                 pawnSprens.ToList().Where(data => !data.spren.Spawned || data.spren.Destroyed)) { }
     }
 
     private void SpawnSpren(Pawn pawn, SpawnInfo spawnInfoForPawn) {
         PawnKindDef? kind = PawnKindDefOf.Cosmere_Roshar_Race_UnknownTrueSpren;
 
-        Splinter? splinter = (Splinter)PawnGenerator.GeneratePawn(
-            kind,
-            pawn.Faction,
-            Find.CurrentMap.Tile
-        );
-        GenSpawn.Spawn(
-            splinter,
-            CellFinder.RandomSpawnCellForPawnNear(pawn.Position, pawn.Map),
-            pawn.Map
-        );
-        splinter.training.Train(TrainableDefOf.Obedience, pawn, true);
-        splinter.playerSettings = new Pawn_PlayerSettings(splinter)
-            { Master = pawn, followDrafted = true, followFieldwork = true };
-        splinter.mindState.canFleeIndividual = false;
-        splinter.mindState.exitMapAfterTick =
-            GenTicks.TicksGame + GenTicks.SecondsToTicks(Rand.RangeInclusive(60 * 5, 60 * 15));
-        Find.Selector.Select(splinter);
-
-        spawnedSpren.Add(
-            new SprenForPawn {
+        TrueSpren spren;
+        SprenForPawn? sprenForPawn = pawnSprens.FirstOrDefault(sp => sp.pawn.Equals(pawn));
+        if (sprenForPawn == null) {
+            spren = (TrueSpren)PawnGenerator.GeneratePawn(
+                kind,
+                pawn.Faction,
+                Find.CurrentMap.Tile
+            );
+            sprenForPawn = new SprenForPawn {
                 pawn = pawn,
-                spawnedAtTick = GenTicks.TicksGame,
-                spren = splinter,
-            }
-        );
+                spren = spren,
+            };
+            pawnSprens.Add(sprenForPawn);
+        } else {
+            spren = sprenForPawn.spren;
+        }
 
-        spawnInfoForPawn.lastSpawn = GenTicks.TicksGame;
+        if (!spren.Spawned) {
+            spren.ForceSetStateToUnspawned();
+            spren.HitPoints = spren.MaxHitPoints;
+            GenSpawn.Spawn(
+                spren,
+                CellFinder.RandomSpawnCellForPawnNear(pawn.Position, pawn.Map),
+                pawn.Map
+            );
+            spren.SetFactionDirect(pawn.Faction);
+            spren.training.Train(TrainableDefOf.Obedience, pawn, true);
+            spren.playerSettings = new Pawn_PlayerSettings(spren)
+                { Master = pawn, followDrafted = true, followFieldwork = true };
+            spren.mindState.canFleeIndividual = false;
+        }
+
+        spren.mindState.exitMapAfterTick =
+            GenTicks.TicksGame + GenTicks.SecondsToTicks(Rand.RangeInclusive(60 * 5, 60 * 15));
+        Find.Selector.Select(spren);
+
+        spawnInfoForPawn.lastSpawn = spren.spawnedTick;
+        CameraJumper.TryJumpAndSelect(spren);
         Find.TickManager.Pause();
     }
 
     public override void ExposeData() {
         base.ExposeData();
 
-        Scribe_Collections.Look(ref spawnedSpren, "spawnedSpren");
-        Scribe_Collections.Look(ref spawnInfo, "spawnInfo");
+        Scribe_Collections.Look(ref pawnSprens, "spawnedSpren", LookMode.Deep);
+        Scribe_Collections.Look(ref spawnInfo, "spawnInfo", LookMode.Deep);
     }
 
-    private struct SprenForPawn : IExposable {
+    private class SprenForPawn : IExposable {
         public Pawn pawn;
-        public Splinter spren;
-        public int spawnedAtTick;
+        public TrueSpren spren;
 
         public void ExposeData() {
             Scribe_References.Look(ref pawn, "pawn");
-            Scribe_References.Look(ref spren, "splinter");
-            Scribe_Values.Look(ref spawnedAtTick, "spawnedAtTick");
+            Scribe_References.Look(ref spren, "spren");
         }
     }
 
-    private struct SpawnInfo : IExposable {
-        public Pawn pawn;
+    private class SpawnInfo : IExposable {
         public int lastSpawn;
+        public Pawn pawn;
         public int ticksSinceLastSpawn => GenTicks.TicksGame - lastSpawn;
 
         public void ExposeData() {

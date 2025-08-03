@@ -14,11 +14,13 @@ public static class ConnectionPatches {
     )]
     [HarmonyPostfix]
     public static void GeneratePawnPostfix(Pawn __result) {
+        if (__result.NonHumanlikeOrWildMan()) return;
+
         __result.InitializeConnection(__result.Tile.Layer);
         if (__result.Faction != null) {
             __result.InitializeConnection(__result.Faction);
-            foreach (Pawn pawn in Find.WorldPawns.AllPawnsAliveOrDead.Where(pawn => pawn.Faction == __result.Faction)) {
-                __result.InitializeConnection(pawn);
+            foreach (Pawn pawn in Find.WorldPawns.AllPawnsAlive.Where(pawn => pawn.Faction == __result.Faction)) {
+                if (!pawn.Destroyed) __result.InitializeConnection(pawn);
             }
         }
 

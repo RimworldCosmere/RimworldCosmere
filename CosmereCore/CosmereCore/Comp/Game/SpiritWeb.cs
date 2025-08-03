@@ -6,12 +6,14 @@ using Verse;
 
 namespace Cosmere.Core.Comp.Game;
 
-public record Connection : IExposable {
+public class Connection : IExposable {
     public const float STARTING_CONNECTION = 0.25f;
-
     public ILoadReferenceable objectOne;
     public ILoadReferenceable objectTwo;
+
     private float valueInt;
+
+    public Connection() { }
 
     public Connection(ILoadReferenceable objectOne, ILoadReferenceable objectTwo) {
         this.objectOne = objectOne;
@@ -46,10 +48,13 @@ public record Connection : IExposable {
     public Shard? shardOne => objectOne as Shard;
     public Shard? shardTwo => objectTwo as Shard;
 
+    /*
     public virtual bool Equals(Connection other) {
+        if (objectOne == null || objectTwo == null) return base.Equals(other);
+
         return objectOne.GetUniqueLoadID() == other.objectOne.GetUniqueLoadID() &&
                objectTwo.GetUniqueLoadID() == other.objectTwo.GetUniqueLoadID();
-    }
+    }*/
 
     public void ExposeData() {
         Scribe_Values.Look(ref valueInt, "value");
@@ -66,12 +71,18 @@ public record Connection : IExposable {
         return objectOne.GetUniqueLoadID() == target.GetUniqueLoadID() ||
                objectTwo.GetUniqueLoadID() == target.GetUniqueLoadID();
     }
+
+    public bool ShouldSave() {
+        if (thingOne is { Destroyed: true }) return false;
+        if (thingTwo is { Destroyed: true }) return false;
+
+        return value > 0;
+    }
 }
 
 public class SpiritWeb(Verse.Game game) : GameComponent {
     private List<Connection> connectionList = [];
 
-    [Unsaved]
     private Dictionary<(string, string), Connection> connections =
         new Dictionary<(string, string), Connection>();
 
@@ -85,8 +96,8 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
 
     public Connection GetConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
         (string, string) key = NormalizeKey(targetOne, targetTwo);
-        if (!connections.TryGetValue(key, out Connection? value)) {
-            connections[key] = new Connection(targetOne, targetTwo);
+        if (!connections.TryGetValue(key, out Connection? _)) {
+            connections[key] = new Connection(targetOne, targetTwo, Connection.STARTING_CONNECTION);
         }
 
         return connections[key];
@@ -150,7 +161,7 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
         base.ExposeData();
 
         if (Scribe.mode == LoadSaveMode.Saving) {
-            connectionList = connections.Values.Where(c => c.value != 0f).ToList();
+            connectionList = connections.Values.Where(c => c.ShouldSave()).ToList();
         }
 
         Scribe_Collections.Look(ref connectionList, "connections", LookMode.Deep);

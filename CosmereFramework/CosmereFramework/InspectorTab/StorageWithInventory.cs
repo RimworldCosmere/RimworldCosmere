@@ -175,6 +175,6 @@ public class StorageWithInventory : ITab_Storage {
     private void InterfaceDrop(Verse.Thing t) {
         if (t.def.destroyOnDrop) return;
 
-        SelStorage.innerContainer.TryDrop(t, SelPawn.Position, SelPawn.Map, ThingPlaceMode.Near, out _);
+        SelStorage.innerContainer.TryDrop(t, SelThing.Position, SelThing.Map, ThingPlaceMode.Near, out _);
     }
 }

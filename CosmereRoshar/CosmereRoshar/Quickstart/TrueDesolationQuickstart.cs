@@ -46,7 +46,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out Pawn pawn)) {
-            pawn.GetInvestiture().currentInvestitureSelf = 500;
+            pawn.GetInvestiture().currentInvestitureSelf = 1000;
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
@@ -67,7 +67,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.GetInvestiture().currentInvestitureSelf = 500;
+            pawn.GetInvestiture().currentInvestitureSelf = 1000;
             pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kohlin");
             pawn.gender = Gender.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher);
@@ -87,7 +87,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
                 addMistborn?.Invoke(null, [pawn, false, false, null]);
             }
 
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver);
+            //pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver);
         }
     }
 }

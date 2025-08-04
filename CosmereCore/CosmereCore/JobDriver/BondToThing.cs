@@ -11,9 +11,10 @@ public class BondToThing : Verse.AI.JobDriver {
     private const int MaxTicks = GenTicks.TicksPerRealSecond * 5;
 
     // ~1 every 11.1 in-game years (60000 ticks/day * 60 days/year)
-    private const float ConnectionPerInterval = 0.00025f;
+    private const float ConnectionPerInterval = 0.0025f;
     private int startTick;
     private Verse.Thing Target => job.targetB.Thing;
+    private Connection connection => pawn.GetConnection(Target);
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return pawn.Reserve(Target, job, 1, -1, null, errorOnFailed);
@@ -68,14 +69,7 @@ public class BondToThing : Verse.AI.JobDriver {
             }
         );
 
-        bondToil.WithProgressBar(
-            TargetIndex.B,
-            () => {
-                float current = pawn.GetConnection(Target).value;
-                float max = Target.TryGetComp<Comp.Thing.Connection>()?.maxConnection ?? 1f;
-                return Mathf.Clamp01(current / max);
-            }
-        );
+        bondToil.WithProgressBar(TargetIndex.B, () => Mathf.Clamp01(connection.value / 1f));
 
         yield return bondToil;
     }

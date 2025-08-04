@@ -39,7 +39,7 @@ public class Surgebinder : Invested {
         pawn.story.TryAddTrait(radiantOrder.trait, currentIdealInt);
         UpdateAbilities();
 
-        // Give the pawn a bump.... i mean, give them some investiture
+        // Give the pawn a bump.... I mean, give them some investiture
         investiture.CurLevel += Mathf.Pow(10, currentIdealInt);
 
         // Update their drain rate

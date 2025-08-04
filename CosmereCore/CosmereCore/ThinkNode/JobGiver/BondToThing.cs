@@ -1,7 +1,6 @@
 ﻿using Cosmere.Core.Comp.Game;
 using Verse;
 using Verse.AI;
-using Connection = Cosmere.Core.Comp.Thing.Connection;
 
 namespace Cosmere.Core.ThinkNode.JobGiver;
 
@@ -16,10 +15,12 @@ public class BondToThing : ThinkNode_JobGiver {
             .Where(t => t is Pawn)
             .Cast<Pawn>()
             .Where(t => {
-                    if (!t.TryGetComp(out Connection connection)) return false;
                     if (t.playerSettings?.Master != null && t.playerSettings.Master != pawn) return false;
+                    Connection conn = pawn.GetConnection(t);
+                    if (conn.objectOne.Equals(pawn) && !conn.canBondObjectTwo) return false;
+                    if (conn.objectTwo.Equals(pawn) && !conn.canBondObjectOne) return false;
 
-                    return connection.canBond && connection.maxConnection > pawn.GetConnection(t).value;
+                    return conn.value < 1f;
                 }
             )
             .ToList();

@@ -24,11 +24,11 @@
 		<race>
             <intelligence>ToolUser</intelligence>
 		</race>
-	    <comps>
-		    <li Class="Cosmere.Core.Comp.Thing.ConnectionProperties">
-			    <maxConnection>0.25</maxConnection>
+	    <modExtensions Inherit="False">
+		    <li Class="Cosmere.Core.DefModExtension.Connection">
+			    <canBond>true</canBond>
 		    </li>
-	    </comps>
+	    </modExtensions>
     </ThingDef>
     <PawnKindDef ParentName="Cosmere_Roshar_PawnKind_Spren">
         <defName>Cosmere_Roshar_Race_UnknownTrueSpren</defName>

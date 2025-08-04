@@ -7,7 +7,8 @@ using Verse;
 namespace Cosmere.Core.Comp.Game;
 
 public class Connection : IExposable {
-    public const float STARTING_CONNECTION = 0.25f;
+    public bool canBondObjectOne = true;
+    public bool canBondObjectTwo = true;
     public ILoadReferenceable objectOne;
     public ILoadReferenceable objectTwo;
 
@@ -20,10 +21,16 @@ public class Connection : IExposable {
         this.objectTwo = objectTwo;
     }
 
-    public Connection(ILoadReferenceable objectOne, ILoadReferenceable objectTwo, float value = 0) {
+    public Connection(
+        ILoadReferenceable objectOne,
+        ILoadReferenceable objectTwo,
+        bool canBondObjectOne = true,
+        bool canBondObjectTwo = true
+    ) {
         this.objectOne = objectOne;
         this.objectTwo = objectTwo;
-        this.value = value;
+        this.canBondObjectOne = canBondObjectOne;
+        this.canBondObjectTwo = canBondObjectTwo;
     }
 
     public float value {
@@ -48,18 +55,12 @@ public class Connection : IExposable {
     public Shard? shardOne => objectOne as Shard;
     public Shard? shardTwo => objectTwo as Shard;
 
-    /*
-    public virtual bool Equals(Connection other) {
-        if (objectOne == null || objectTwo == null) return base.Equals(other);
-
-        return objectOne.GetUniqueLoadID() == other.objectOne.GetUniqueLoadID() &&
-               objectTwo.GetUniqueLoadID() == other.objectTwo.GetUniqueLoadID();
-    }*/
-
     public void ExposeData() {
         Scribe_Values.Look(ref valueInt, "value");
         Scribe_References.Look(ref objectOne, "objectOne");
         Scribe_References.Look(ref objectTwo, "objectTwo");
+        Scribe_Values.Look(ref canBondObjectOne, "canBondObjectOne");
+        Scribe_Values.Look(ref canBondObjectTwo, "canBondObjectTwo");
     }
 
     public virtual bool Equals(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
@@ -81,6 +82,7 @@ public class Connection : IExposable {
 }
 
 public class SpiritWeb(Verse.Game game) : GameComponent {
+    public const string CHANGED_SIGNAL = "Cosmere_Connection_Changed";
     private List<Connection> connectionList = [];
 
     private Dictionary<(string, string), Connection> connections =
@@ -97,8 +99,27 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
     public Connection GetConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
         (string, string) key = NormalizeKey(targetOne, targetTwo);
         if (!connections.TryGetValue(key, out Connection? _)) {
-            connections[key] = new Connection(targetOne, targetTwo, Connection.STARTING_CONNECTION);
+            connections[key] = InitializeConnection(targetOne, targetTwo);
         }
+
+        return connections[key];
+    }
+
+    public Connection InitializeConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
+        bool canBondObjectOne = true;
+        bool canBondObjectTwo = true;
+        if (targetOne is Verse.Thing thingOne && thingOne.def.HasModExtension<DefModExtension.Connection>()) {
+            DefModExtension.Connection modExtension = thingOne.def.GetModExtension<DefModExtension.Connection>();
+            canBondObjectOne = modExtension.canBond;
+        }
+
+        if (targetTwo is Verse.Thing thingTwo && thingTwo.def.HasModExtension<DefModExtension.Connection>()) {
+            DefModExtension.Connection modExtension = thingTwo.def.GetModExtension<DefModExtension.Connection>();
+            canBondObjectTwo = modExtension.canBond;
+        }
+
+        (string, string) key = NormalizeKey(targetOne, targetTwo);
+        connections[key] = new Connection(targetOne, targetTwo, canBondObjectOne, canBondObjectTwo);
 
         return connections[key];
     }
@@ -109,22 +130,22 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
         if (connection.objectOneIsThing) {
             if (connection.objectTwoIsThing) {
                 connection.thingOne!.Notify_SignalReceived(
-                    new Signal("cosmere_connectionChanged", connection.thingTwo, value, oldValue)
+                    new Signal(CHANGED_SIGNAL, connection.thingTwo, value, oldValue)
                 );
             } else if (connection.objectTwoIsFaction) {
                 connection.thingOne!.Notify_SignalReceived(
-                    new Signal("cosmere_connectionChanged", connection.factionTwo, value, oldValue)
+                    new Signal(CHANGED_SIGNAL, connection.factionTwo, value, oldValue)
                 );
             } else {
                 connection.thingOne!.Notify_SignalReceived(
-                    new Signal("cosmere_connectionChanged", connection.objectTwo.GetUniqueLoadID(), value, oldValue)
+                    new Signal(CHANGED_SIGNAL, connection.objectTwo.GetUniqueLoadID(), value, oldValue)
                 );
             }
         }
 
         if (connection.objectTwoIsThing) {
             connection.thingTwo!.Notify_SignalReceived(
-                new Signal("cosmere_connectionChanged", connection.objectOne.GetUniqueLoadID(), value, oldValue)
+                new Signal(CHANGED_SIGNAL, connection.objectOne.GetUniqueLoadID(), value, oldValue)
             );
         }
 
@@ -194,19 +215,19 @@ public static class SpiritWebExtensions {
     }
 
     public static Connection InitializeConnection(this Verse.Thing self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+        return SpiritWeb.Instance.InitializeConnection(target, self);
     }
 
     public static Connection InitializeConnection(this Faction self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+        return SpiritWeb.Instance.InitializeConnection(target, self);
     }
 
     public static Connection InitializeConnection(this PlanetLayer self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+        return SpiritWeb.Instance.InitializeConnection(target, self);
     }
 
     public static Connection InitializeConnection(this Shard self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.SetConnection(target, self, Connection.STARTING_CONNECTION);
+        return SpiritWeb.Instance.InitializeConnection(target, self);
     }
 
     public static Connection SetConnection(this Verse.Thing self, ILoadReferenceable target, float value) {

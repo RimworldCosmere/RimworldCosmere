@@ -1,4 +1,5 @@
 ﻿using Cosmere.Core.Comp.Game;
+using Cosmere.Roshar.Comp.Map;
 using Cosmere.Roshar.Def;
 using RimWorld;
 using Verse;
@@ -31,6 +32,7 @@ public class TrueSpren : Spren {
             bond,
             MessageTypeDefOf.PositiveEvent
         );
+        Map.GetComponent<TrueSprenSpawner>().TryDespawnSpren(bond, this);
         Destroy();
     }
 

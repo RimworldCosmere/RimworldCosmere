@@ -21,7 +21,6 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
 
         base.MapComponentTick();
         TrySpawnSpren();
-        TryDespawnSpren();
     }
 
     private SpawnInfo GetSpawnInfo(Pawn pawn) {
@@ -51,9 +50,8 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         }
     }
 
-    private void TryDespawnSpren() {
-        foreach (SprenForPawn data in
-                 pawnSprens.ToList().Where(data => !data.spren.Spawned || data.spren.Destroyed)) { }
+    public void TryDespawnSpren(Pawn pawn, TrueSpren spren) {
+        pawnSprens.RemoveWhere(d => d.pawn.Equals(pawn) && d.spren.Equals(spren));
     }
 
     private void SpawnSpren(Pawn pawn, SpawnInfo spawnInfoForPawn) {

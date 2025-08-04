@@ -200,6 +200,7 @@ public class InvestitureHolder : ThingComp {
         if (!GenTicks.IsTickIntervalDelta(GenTicks.TickRareInterval, delta)) return;
         if (Mathf.Approximately(drainRate, 0) || Mathf.Approximately(maxInvestiture, 0)) return;
 
+        if (parent is Pawn && currentInvestitureSelf <= 1) return;
         currentInvestitureSelf -= drainRate;
     }
 

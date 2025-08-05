@@ -11,6 +11,9 @@ public class ChooseRadiantOrder() : Window {
     private const float FooterHeight = 68;
     private const float FooterButtonHeight = 32;
     private static readonly Padding Padding = new Padding(18);
+    private static readonly Color HeaderColor = new Color(0.8f, 0.8f, 0.8f, .4f);
+    private static readonly Color FooterColor = new Color(0.8f, 0.8f, 0.8f, .2f);
+    private static readonly Color LineColor = new Color(0.55f, 0.58f, 0.62f, .3f);
 
     private static readonly List<RadiantOrderDef> RadiantOrders = DefDatabase<RadiantOrderDef>.AllDefsListForReading
         .Where(x => !x.Equals(RadiantOrderDefOf.Bondsmith))
@@ -22,6 +25,8 @@ public class ChooseRadiantOrder() : Window {
     private float currentHeight;
     private int radiantOrderIndex;
     private Vector2 scrollPos;
+
+    public float? surgeHeight;
 
     public ChooseRadiantOrder(Pawn pawn) : this() {
         this.pawn = pawn;
@@ -35,8 +40,8 @@ public class ChooseRadiantOrder() : Window {
     public override Vector2 InitialSize => new Vector2(750, 800);
 
     private void DrawHeader(Rect rect) {
-        Widgets.DrawRectFast(rect, new Color(0.55f, 0.58f, 0.62f, .3f));
-        Widgets.DrawLineHorizontal(rect.x, rect.yMax - 1, rect.width, new Color(1f, 1f, 1f, 0.4f));
+        Widgets.DrawRectFast(rect, LineColor);
+        Widgets.DrawLineHorizontal(rect.x, rect.yMax - 1, rect.width, HeaderColor);
 
         Rect innerRect = rect.ContractedBy(Padding);
         Listing_Standard listing = new Listing_Standard { maxOneColumn = true };
@@ -56,7 +61,10 @@ public class ChooseRadiantOrder() : Window {
     }
 
     private float DrawBody(Rect rect) {
-        rect = rect.ContractedBy(75, 0);
+        rect = rect.ContractedBy(scrollViewStatus.scrollVisibile ? 55 : 75, 0);
+        if (scrollViewStatus.scrollVisibile) {
+            rect = new Rect(rect.x + 20, rect.y, rect.width - 20, rect.height);
+        }
 
         Listing_Standard listing = new Listing_Standard {
             maxOneColumn = true,
@@ -104,6 +112,7 @@ public class ChooseRadiantOrder() : Window {
         using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, Color.white))
             listing.Label(order.description);
 
+        listing.Gap(293 - listing.CurHeight);
         listing.Gap(36f);
 
         // Surge of Power Header
@@ -113,18 +122,20 @@ public class ChooseRadiantOrder() : Window {
         listing.Gap();
 
         // Two surge boxes side-by-side
-        Rect surgeRow = listing.GetRect(240f); // fixed height for surge blocks
+        Rect surgeRow = listing.GetRect(surgeHeight ??= 150); // fixed height for surge blocks
         surgeRow.SplitVerticallyWithMargin(out Rect leftBox, out Rect rightBox, 12f);
 
-        DrawSurgeBox(leftBox, order.surges[0]);
-        DrawSurgeBox(rightBox, order.surges[1]);
+        float leftHeight = DrawSurgeBox(leftBox, order.surges[0]);
+        float rightHeight = DrawSurgeBox(rightBox, order.surges[1]);
+
+        surgeHeight = Mathf.Max(150, leftHeight, rightHeight);
     }
 
-    private void DrawSurgeBox(Rect rect, SurgeDef surge) {
+    private float DrawSurgeBox(Rect rect, SurgeDef surge) {
         Widgets.DrawMenuSection(rect);
 
         Rect inner = rect.ContractedBy(18f);
-        Listing_Standard listing = new Listing_Standard();
+        Listing_Standard listing = new Listing_Standard { maxOneColumn = true, verticalSpacing = 0 };
         listing.Begin(inner);
 
         // Title
@@ -147,12 +158,12 @@ public class ChooseRadiantOrder() : Window {
         }
 
         listing.End();
+        listing.Gap();
+
+        return listing.CurHeight + 18 * 2;
     }
 
     private void DrawFooter(Rect rect) {
-        Widgets.DrawLineHorizontal(rect.x, rect.y, rect.width, new Color(1f, 1f, 1f, 0.4f));
-        Widgets.DrawRectFast(rect, new Color(0.55f, 0.58f, 0.62f, .3f));
-
         Rect innerRect = rect.ContractedBy(Padding);
         float third = innerRect.width / 3f;
 
@@ -191,12 +202,17 @@ public class ChooseRadiantOrder() : Window {
         );
         Rect footerRect = new Rect(inRect.x, inRect.y + inRect.height - FooterHeight, inRect.width, FooterHeight);
 
+        Widgets.DrawRectFast(headerRect, LineColor);
+        Widgets.DrawLineHorizontal(headerRect.x, headerRect.yMax - 1, headerRect.width, HeaderColor);
         DrawHeader(headerRect);
-        Widgets.DrawRectFast(bodyRect, Color.black);
+
+        // Widgets.DrawRectFast(bodyRect, Color.black);
         using (ScrollView sv = new ScrollView(bodyRect, scrollViewStatus)) {
             sv.height = DrawBody(sv.rect);
         }
 
+        Widgets.DrawLineHorizontal(footerRect.x, footerRect.y, footerRect.width, FooterColor);
+        Widgets.DrawRectFast(footerRect, LineColor);
         DrawFooter(footerRect);
     }
 }

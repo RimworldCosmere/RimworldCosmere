@@ -11,9 +11,10 @@ public class ChooseRadiantOrder() : Window {
     private const float FooterHeight = 68;
     private const float FooterButtonHeight = 32;
     private static readonly Padding Padding = new Padding(18);
-    private static readonly Color HeaderColor = new Color(0.8f, 0.8f, 0.8f, .4f);
-    private static readonly Color FooterColor = new Color(0.8f, 0.8f, 0.8f, .2f);
-    private static readonly Color LineColor = new Color(0.55f, 0.58f, 0.62f, .3f);
+    private static readonly Color HeaderColor = Widgets.MenuSectionBGFillColor;
+    private static readonly Color FooterColor = Widgets.MenuSectionBGFillColor;
+    private static readonly Color LineColor = new ColorInt(97, 108, 122).ToColor;
+    private static readonly Color BorderColor = new ColorInt(135, 135, 135).ToColor;
 
     private static readonly List<RadiantOrderDef> RadiantOrders = DefDatabase<RadiantOrderDef>.AllDefsListForReading
         .Where(x => !x.Equals(RadiantOrderDefOf.Bondsmith))
@@ -40,9 +41,6 @@ public class ChooseRadiantOrder() : Window {
     public override Vector2 InitialSize => new Vector2(750, 800);
 
     private void DrawHeader(Rect rect) {
-        Widgets.DrawRectFast(rect, LineColor);
-        Widgets.DrawLineHorizontal(rect.x, rect.yMax - 1, rect.width, HeaderColor);
-
         Rect innerRect = rect.ContractedBy(Padding);
         Listing_Standard listing = new Listing_Standard { maxOneColumn = true };
         listing.Begin(innerRect);
@@ -132,6 +130,7 @@ public class ChooseRadiantOrder() : Window {
     }
 
     private float DrawSurgeBox(Rect rect, SurgeDef surge) {
+        Widgets.DrawShadowAround(rect);
         Widgets.DrawMenuSection(rect);
 
         Rect inner = rect.ContractedBy(18f);
@@ -202,8 +201,12 @@ public class ChooseRadiantOrder() : Window {
         );
         Rect footerRect = new Rect(inRect.x, inRect.y + inRect.height - FooterHeight, inRect.width, FooterHeight);
 
-        Widgets.DrawRectFast(headerRect, LineColor);
-        Widgets.DrawLineHorizontal(headerRect.x, headerRect.yMax - 1, headerRect.width, HeaderColor);
+        using (new TextBlock(Widgets.MenuSectionBGFillColor)) GUI.DrawTexture(headerRect, BaseContent.WhiteTex);
+
+        using (new TextBlock(Widgets.MenuSectionBGFillColor))
+            Widgets.DrawLineHorizontal(headerRect.x, headerRect.yMax - 1, headerRect.width, BorderColor);
+        //Widgets.DrawRectFast(headerRect, LineColor);
+        //Widgets.DrawLineHorizontal(headerRect.x, headerRect.yMax - 1, headerRect.width, HeaderColor);
         DrawHeader(headerRect);
 
         // Widgets.DrawRectFast(bodyRect, Color.black);
@@ -211,8 +214,10 @@ public class ChooseRadiantOrder() : Window {
             sv.height = DrawBody(sv.rect);
         }
 
-        Widgets.DrawLineHorizontal(footerRect.x, footerRect.y, footerRect.width, FooterColor);
-        Widgets.DrawRectFast(footerRect, LineColor);
+        using (new TextBlock(Widgets.MenuSectionBGFillColor)) GUI.DrawTexture(footerRect, BaseContent.WhiteTex);
+
+        using (new TextBlock(Widgets.MenuSectionBGFillColor))
+            Widgets.DrawLineHorizontal(footerRect.x, footerRect.y, footerRect.width, BorderColor);
         DrawFooter(footerRect);
     }
 }

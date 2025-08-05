@@ -24,10 +24,11 @@ public class ChooseRadiantOrder() : Window {
 
     private readonly ScrollViewStatus scrollViewStatus = new ScrollViewStatus();
     private float currentHeight;
+    private string[]? quotes;
     private int radiantOrderIndex;
     private Vector2 scrollPos;
 
-    public float? surgeHeight;
+    private float? surgeHeight;
 
     public ChooseRadiantOrder(Pawn pawn) : this() {
         this.pawn = pawn;
@@ -38,7 +39,7 @@ public class ChooseRadiantOrder() : Window {
 
     protected override float Margin => 1f;
 
-    public override Vector2 InitialSize => new Vector2(750, 800);
+    public override Vector2 InitialSize => new Vector2(750, Mathf.Max(500, UI.screenHeight - 250));
 
     private void DrawHeader(Rect rect) {
         Rect innerRect = rect.ContractedBy(Padding);
@@ -59,7 +60,7 @@ public class ChooseRadiantOrder() : Window {
     }
 
     private float DrawBody(Rect rect) {
-        rect = rect.ContractedBy(scrollViewStatus.scrollVisibile ? 55 : 75, 0);
+        rect = rect.ContractedBy(scrollViewStatus.scrollVisibile ? 35 : 55, 0);
         if (scrollViewStatus.scrollVisibile) {
             rect = new Rect(rect.x + 20, rect.y, rect.width - 20, rect.height);
         }
@@ -99,8 +100,15 @@ public class ChooseRadiantOrder() : Window {
             listing.Label(order.LabelCap);
 
         // Quote
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.9f, 0.9f, 0.9f)))
-            listing.Label($"\"{order.ideals[0].quotes.RandomElement()}\"");
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(0.9f, 0.9f, 0.9f))) {
+            quotes ??= [
+                order.ideals[0].quotes.RandomElement(),
+                order.ideals[1].quotes.RandomElement(),
+            ];
+
+            listing.Label($"\"{quotes[0]}\"");
+            listing.Label($"\"{quotes[1]}\"");
+        }
 
         listing.Gap();
         listing.GapLine();
@@ -111,7 +119,19 @@ public class ChooseRadiantOrder() : Window {
             listing.Label(order.description);
 
         listing.Gap(293 - listing.CurHeight);
-        listing.Gap(36f);
+        listing.Gap(30f);
+
+        float spaceRemaining =
+            InitialSize.y -
+            HeaderHeight -
+            FooterHeight -
+            listing.CurHeight -
+            (scrollViewStatus.scrollVisibile ? 35 : 55);
+        if (surgeHeight != null) {
+            listing.Gap(Mathf.Abs(spaceRemaining - surgeHeight.Value));
+        }
+
+        //listing.Gap(Mathf.Abs(330 - listing.CurHeight + surgeHeight ?? 150));
 
         // Surge of Power Header
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, new Color(1f, 1f, 1f, 0.7f)))
@@ -141,25 +161,27 @@ public class ChooseRadiantOrder() : Window {
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, Color.white))
             listing.Label(surge.LabelCap);
 
-        listing.Gap();
+        listing.Gap(9);
 
         // Description
         using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, Color.white))
             listing.Label(surge.description);
 
-        listing.Gap();
+        if (surge.abilities.Count > 0) {
+            listing.Gap(9);
 
-        // Abilities
-        using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, new Color(0.85f, 0.85f, 0.85f))) {
-            foreach (AbilityDef? ability in surge.abilities) {
-                listing.Label($"• {ability.LabelCap}");
+            // Abilities
+            using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, new Color(0.85f, 0.85f, 0.85f))) {
+                foreach (AbilityDef? ability in surge.abilities) {
+                    listing.Label($"• {ability.LabelCap}");
+                }
             }
         }
 
         listing.End();
         listing.Gap();
 
-        return listing.CurHeight + 18 * 2;
+        return listing.CurHeight + 22;
     }
 
     private void DrawFooter(Rect rect) {
@@ -170,6 +192,8 @@ public class ChooseRadiantOrder() : Window {
                 new Rect(innerRect.x, innerRect.y, third - 36, FooterButtonHeight),
                 "Previous"
             )) {
+            surgeHeight = null;
+            quotes = null;
             radiantOrderIndex = (radiantOrderIndex - 1 + RadiantOrders.Count) % RadiantOrders.Count;
         }
 
@@ -187,6 +211,8 @@ public class ChooseRadiantOrder() : Window {
                 new Rect(36 + innerRect.x + third * 2, innerRect.y, third - 36, FooterButtonHeight),
                 "Next"
             )) {
+            surgeHeight = null;
+            quotes = null;
             radiantOrderIndex = (radiantOrderIndex + 1) % RadiantOrders.Count;
         }
     }

@@ -1,6 +1,7 @@
 export class SurgeInfo {
     public name: string;
-    public descriptions: { raw: string; cut: string; sphere: string; mining?: string; };
+    public description: string;
+    public abilityDescriptions: string[];
     public abilities: string[];
 
     constructor(self: Partial<SurgeInfo>) {

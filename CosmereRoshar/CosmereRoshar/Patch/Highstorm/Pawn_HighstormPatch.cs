@@ -1,7 +1,4 @@
-﻿using Cosmere.Roshar.Comp.Thing;
-using HarmonyLib;
-using RimWorld;
-using UnityEngine;
+﻿using HarmonyLib;
 using Verse;
 
 namespace Cosmere.Roshar.Patches.Highstorm;
@@ -26,91 +23,7 @@ public static class PawnHighstormPushPatch {
     private static void Postfix(Pawn __instance, int delta) {
         if (__instance.IsHashIntervalTick(GenTicks.TicksPerRealSecond / 3, delta)) return;
 
-        if (!IsPawnValidForStorm(__instance)) {
-            return;
-        }
-
-        if (IsHighstormActive(__instance.Map)) {
-            // DamageAndMovePawn(__instance);
-            if (StormlightUtilities.IsRadiant(__instance)) {
-                return;
-            }
-
-            if (!__instance.IsHashIntervalTick(100, delta)) return;
-            if (__instance.IsPawnEligibleForDoctoring()) {
-                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Windrunner);
-            }
-
-            return;
-        }
-
         StormShelterManager.FirstTickOfHighstorm = true;
-        if (StormlightUtilities.IsRadiant(__instance)) {
-            return;
-        }
-
-        if (__instance.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
-        switch (__instance.Map.weatherManager.curWeather.defName) {
-            case "Fog" or "FoggyRain" when
-                __instance.IsPawnEligibleForDoctoring():
-                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher);
-                break;
-            case "Rain" or "Clear" when
-                StormlightUtilities.IsNearGrowingPlants(__instance) &&
-                __instance.IsPawnEligibleForDoctoring():
-                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Edgedancer);
-                break;
-            case "DryThunderstorm" or "RainyThunderstorm":
-                TryToBondPawn(__instance, Defs.Cosmere_Roshar_Trait_Radiant_Skybreaker); break;
-        }
-    }
-
-    private static int GetUpperNumber(float crisisValue) {
-        return (int)(InitialBondMaxNumber - crisisValue * crisisValue * 0.01f);
-    }
-
-    private static void TryToBondPawn(Pawn pawn, TraitDef traitDef) {
-        if (!pawn.RaceProps.Humanlike) return;
-        if (StormlightUtilities.GetRadiantTrait(pawn) != null) return;
-
-        PawnTracker pawnTracker = pawn.GetComp<PawnTracker>();
-        if (pawnTracker == null) return;
-
-        int upperNumber = Mathf.RoundToInt(GetUpperNumber(pawnTracker.bondChance) * Mod.bondChanceMultiplier);
-
-        if (upperNumber <= 1) upperNumber = 2;
-        if (Rand.Chance(1f / upperNumber)) return;
-
-        if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Windrunner) {
-            StormlightUtilities.SpeakOaths(
-                pawn,
-                traitDef,
-                $"{pawn.NameShortColored} " + WindrunnerBondText,
-                "A Whisper in the Mind.."
-            );
-        } else if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher) {
-            StormlightUtilities.SpeakOaths(
-                pawn,
-                traitDef,
-                $"{pawn.NameShortColored} " + TruthwatcherBondText,
-                "A Whisper in the Mind.."
-            );
-        } else if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Edgedancer) {
-            StormlightUtilities.SpeakOaths(
-                pawn,
-                traitDef,
-                $"{pawn.NameShortColored} " + EdgedancerBondText,
-                "A Whisper in the Mind.."
-            );
-        } else if (traitDef == Defs.Cosmere_Roshar_Trait_Radiant_Skybreaker) {
-            StormlightUtilities.SpeakOaths(
-                pawn,
-                traitDef,
-                $"{pawn.NameShortColored} " + SkybreakerBondText,
-                "A Whisper in the Mind.."
-            );
-        }
-        //else { Log.Message($"{pawn.NameShortColored} tried to bond, failed with number: {number} of {upperNumber}, crisis value: {pawnStats.GetRequirementsEntry().Value}"); }
     }
 
     private static bool IsHighstormActive(Map map) {

@@ -1,5 +1,5 @@
 using Cosmere.Core.Need;
-using Cosmere.Framework.Extension;
+using Cosmere.Roshar.Utility;
 using LudeonTK;
 using RimWorld;
 using Verse;
@@ -21,5 +21,15 @@ public static class RosharDev {
         pawn.genes.TryAddGene(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
         Messages.Message($"Made {pawn.NameFullColored} a Windrunner", pawn, MessageTypeDefOf.PositiveEvent);
         pawn.needs.TryGetNeed<Investiture>().CurLevel += 20000;
+    }
+
+    [DebugAction(
+        "Cosmere/Roshar",
+        "Bond with Spren",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
+    public static void BondWithSpren(Pawn pawn) {
+        RadiantOrder.BondWithSpren(pawn);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Cosmere.Roshar.Gene;
+﻿using Cosmere.Roshar.Comp.Thing;
+using Cosmere.Roshar.Gene;
 using Cosmere.Roshar.Thing.Pawn.Animal;
 using RimWorld;
 using Verse;
@@ -10,7 +11,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
     private List<SpawnInfo> spawnInfo = [];
 
     public List<Pawn> pawns => Current.Game.CurrentMap.mapPawns.FreeColonistsAndPrisonersSpawned
-        .Where(p => p.genes.GetFirstGeneOfType<Surgebinder>() == null)
+        .Where(p => p.genes.GetFirstGeneOfType<Surgebinder>() == null && !p.HasComp<ChooseRadiantOrder>())
         .ToList();
 
     private static float baseSpawnChance =>

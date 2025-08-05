@@ -57,7 +57,7 @@ public static class HighstormStorytellerPatch {
         Find.LetterStack.ReceiveLetter(
             "Approaching Highstorm",
             "A Highstorm is approaching! Seek shelter immediately. The storm will arrive in a day.",
-            LetterDefOf.NeutralEvent,
+            RimWorld.LetterDefOf.NeutralEvent,
             new LookTargets(Find.CurrentMap.mapPawns.FreeColonists.RandomElement()) // Random colonist as a reference
         );
     }

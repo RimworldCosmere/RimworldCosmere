@@ -18,12 +18,6 @@ public enum LogLevel {
 }
 
 public class Mod : CosmereMod<FrameworkModSettings> {
-    internal static List<CosmereModSettings> allModSettings = typeof(CosmereModSettings).AllSubclassesNonAbstract()
-        .Select(Activator.CreateInstance)
-        .Cast<CosmereModSettings>()
-        .Where(s => s.Enabled)
-        .ToList();
-
     private SettingsWindow? settingsWindow;
 
     public Mod(ModContentPack content) : base(content) {
@@ -34,14 +28,19 @@ public class Mod : CosmereMod<FrameworkModSettings> {
 
     public static LogLevel logLevel => GetModSettings<FrameworkModSettings>().logLevel;
 
-    public static List<CosmereModSettings> cosmereSettings => allModSettings;
+    public static List<CosmereModSettings> cosmereSettings { get; } = typeof(CosmereModSettings)
+        .AllSubclassesNonAbstract()
+        .Select(Activator.CreateInstance)
+        .Cast<CosmereModSettings>()
+        .Where(s => s.Enabled)
+        .ToList();
 
     public static T GetModSettings<T>() where T : CosmereModSettings, new() {
         return (cosmereSettings.First(x => typeof(T).IsInstanceOfType(x)) as T)!;
     }
 
     public override void DoSettingsWindowContents(Rect inRect) {
-        settingsWindow ??= new SettingsWindow(allModSettings);
+        settingsWindow ??= new SettingsWindow(cosmereSettings);
         settingsWindow.DoWindowContents(inRect.ContractedBy(new Padding(32, 0, 0, 0)));
     }
 

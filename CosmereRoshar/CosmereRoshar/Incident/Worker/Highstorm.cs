@@ -18,7 +18,7 @@ public class Highstorm : IncidentWorker {
         SendStandardLetter(
             incDef.letterLabel,
             incDef.letterText,
-            incDef.letterDef ?? LetterDefOf.ThreatBig,
+            incDef.letterDef ?? RimWorld.LetterDefOf.ThreatBig,
             parms,
             null
         );

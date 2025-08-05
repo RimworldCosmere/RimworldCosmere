@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CRO_Bond_Spren_Title>Pawn Bonded Spren: {PAWN}</CRO_Bond_Spren_Title>
+    <CRO_Bond_Spren_Content>{PAWN} has bonded a spren and must now choose a Radiant Order.</CRO_Bond_Spren_Content>
+    <CRO_Choose_Radiant_Order_Button>Choose an Order</CRO_Choose_Radiant_Order_Button>
+    <CRO_Choose_Radiant_Order_Desc>Choose a Knights Radiant Order for {PAWN} to follow</CRO_Choose_Radiant_Order_Desc>
+    <CRO_Choose_Radiant_Order_Dialog_Title>Choose {PAWN}'s Radiant Order</CRO_Choose_Radiant_Order_Dialog_Title>
+    <CRO_Choose_Radiant_Order_Dialog_Subtitle>Select the Radiant Order that resonates with your pawn's spirit and ideals</CRO_Choose_Radiant_Order_Dialog_Subtitle>
+</LanguageData>

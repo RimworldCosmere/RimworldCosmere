@@ -11,7 +11,7 @@ public class BondToThing : Verse.AI.JobDriver {
     private const int MaxTicks = GenTicks.TicksPerRealSecond * 5;
 
     // ~1 every 11.1 in-game years (60000 ticks/day * 60 days/year)
-    private const float ConnectionPerInterval = 0.0025f;
+    private const float ConnectionPerInterval = 0.0005f;
     private int startTick;
     private Verse.Thing Target => job.targetB.Thing;
     private Connection connection => pawn.GetConnection(Target);

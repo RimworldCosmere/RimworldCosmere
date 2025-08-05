@@ -191,7 +191,6 @@ public class ChooseRadiantOrder() : Window {
         );
         Rect footerRect = new Rect(inRect.x, inRect.y + inRect.height - FooterHeight, inRect.width, FooterHeight);
 
-
         DrawHeader(headerRect);
         Widgets.DrawRectFast(bodyRect, Color.black);
         using (ScrollView sv = new ScrollView(bodyRect, scrollViewStatus)) {

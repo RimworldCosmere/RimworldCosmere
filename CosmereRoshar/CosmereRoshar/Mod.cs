@@ -15,6 +15,4 @@ public class Mod(ModContentPack content) : CosmereMod<RosharModSettings>(content
 
     [Obsolete]
     public static bool devOptionAutofillSpheres => false;
-
-    public static float bondChanceMultiplier => Settings.bondChanceMultiplier;
 }

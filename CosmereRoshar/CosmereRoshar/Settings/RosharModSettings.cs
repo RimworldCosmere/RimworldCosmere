@@ -8,16 +8,15 @@ public class RosharModSettings : CosmereModSettings {
     private const float hour = 216000;
 
     // Should probably be like.... 8 hours. Triple speed makes 30 hours happen in < 5 minutes
-    private const float baseTime = hour / 12;
+    private const float baseTime = hour * 8;
 
-    public float bondChanceMultiplier = 0;
     public bool enableHighstormDamage;
     public bool enableHighstormPushing;
 
     public bool enablePawnGlow;
 
     // Defaulting to every 2 hours
-    public float nahelSprenSpawnAverageIntervalTicks = hour * 2;
+    public float nahelSprenSpawnAverageIntervalTicks = baseTime;
 
     // Should be at MOST every 8 hours
     public float nahelSprenSpawnMaxIntervalTicks = baseTime * 8;

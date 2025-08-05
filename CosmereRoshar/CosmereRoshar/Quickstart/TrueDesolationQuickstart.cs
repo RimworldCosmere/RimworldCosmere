@@ -4,6 +4,7 @@ using Cosmere.Core.Comp.Thing;
 using Cosmere.Framework.Comp.Thing;
 using Cosmere.Framework.Quickstart;
 using Cosmere.Resources.Def;
+using Cosmere.Roshar.Utility;
 using RimWorld;
 using Verse;
 
@@ -87,6 +88,8 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
                 addMistborn?.Invoke(null, [pawn, false, false, null]);
             }
 
+
+            RadiantOrder.BondWithSpren(pawn);
             //pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver);
         }
     }

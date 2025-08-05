@@ -5,7 +5,7 @@ namespace Cosmere.Roshar.Dialog;
 
 public class ChooseRadiantOrder() : Window {
     private const float headerHeight = 100;
-    private const float footerHeight = 100;
+    private const float footerHeight = 70;
     private readonly Pawn pawn;
     private Vector2 scrollPos;
 
@@ -69,15 +69,15 @@ public class ChooseRadiantOrder() : Window {
         Rect innerRect = rect.ContractedBy(18f);
         float third = innerRect.width / 3f;
 
-        if (Widgets.ButtonText(new Rect(innerRect.x, innerRect.y, third, innerRect.height), "Previous")) {
+        if (Widgets.ButtonText(new Rect(innerRect.x, innerRect.y, third, 32), "Previous")) {
             // TODO
         }
 
-        if (Widgets.ButtonText(new Rect(innerRect.x + third, innerRect.y, third, innerRect.height), "Select")) {
+        /*if (Widgets.ButtonText(new Rect(innerRect.x + third, innerRect.y, third, innerRect.height), "Select")) {
             // TODO
-        }
+        }*/
 
-        if (Widgets.ButtonText(new Rect(innerRect.x + third * 2, innerRect.y, third, innerRect.height), "Next")) {
+        if (Widgets.ButtonText(new Rect(innerRect.x + third * 2, innerRect.y, third, 32), "Next")) {
             // TODO
         }
     }

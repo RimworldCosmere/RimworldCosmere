@@ -17,9 +17,11 @@ public class RadiantOrderDef : Verse.Def {
     public List<AbilityDef> abilities;
     public Color color;
     public GemDef gemstone;
+    public Texture2D icon;
 
     public AbstractIdealChecker idealChecker;
     public List<Ideal> ideals;
+    public Texture2D invertedIcon;
     public List<SurgeDef> surges;
 
     private Type idealCheckerClass =>
@@ -33,5 +35,14 @@ public class RadiantOrderDef : Verse.Def {
         base.PostLoad();
 
         idealChecker = (AbstractIdealChecker)Activator.CreateInstance(idealCheckerClass, this);
+        LongEventHandler.ExecuteWhenFinished(() => {
+                icon = ContentFinder<Texture2D>.Get(
+                    $"UI/Surgebinding/Order/{defName}"
+                );
+                if (icon != null) {
+                    invertedIcon = icon.CloneTexture().InvertColors();
+                }
+            }
+        );
     }
 }

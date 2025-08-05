@@ -18,12 +18,13 @@ public class ChooseOrder : ChoiceLetter {
     }
 
     private DiaOption OpenRadiantSelectionDialog() {
-        DiaOption option = new DiaOption("CRO_Choose_Radiant_Order_Button".Translate());
-        option.action = () => {
-            Find.WindowStack.Add(new ChooseRadiantOrder(lookTargets.PrimaryTarget.Pawn));
-            Find.LetterStack.RemoveLetter(this);
+        DiaOption option = new DiaOption("CRO_Choose_Radiant_Order_Button".Translate()) {
+            action = () => {
+                Find.WindowStack.Add(new ChooseRadiantOrder(lookTargets.PrimaryTarget.Pawn));
+                Find.LetterStack.RemoveLetter(this);
+            },
+            resolveTree = true,
         };
-        option.resolveTree = true;
 
         return option;
     }

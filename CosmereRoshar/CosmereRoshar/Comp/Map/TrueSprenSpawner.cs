@@ -20,6 +20,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
     public override void MapComponentTick() {
         if (baseSpawnChance == 0) return;
 
+
         base.MapComponentTick();
         TrySpawnSpren();
     }

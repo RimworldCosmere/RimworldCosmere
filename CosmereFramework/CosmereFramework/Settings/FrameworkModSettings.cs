@@ -1,7 +1,6 @@
 using System;
 using Cosmere.Framework.Listing;
 using Cosmere.Framework.Quickstart;
-using Cosmere.Framework.Util;
 using UnityEngine;
 using Verse;
 
@@ -20,14 +19,14 @@ public class FrameworkModSettings : CosmereModSettings {
 
     public override string Name => "Framework";
 
-    public override void DoTabContents(ListingForm listing) {
+    public override void DoTabContents(Form listing) {
         listing.Fieldset(
             "CF_Settings_Category_Debug".Translate(),
             fieldset => {
                 fieldset.Field(
                     "CF_Settings_LogLevel_Label".Translate(),
                     "CF_Settings_LogLevel_Tooltip".Translate(),
-                    sub => UIUtil.IntEnumDropdown(sub, logLevel, v => logLevel = v, false)
+                    sub => Util.UI.IntEnumDropdown(sub, logLevel, v => logLevel = v, false)
                 );
 
                 if (!Prefs.DevMode) return;
@@ -41,7 +40,7 @@ public class FrameworkModSettings : CosmereModSettings {
                 fieldset.Field(
                     "CF_Settings_Quickstarter_Label".Translate(),
                     "CF_Settings_Quickstarter_Tooltip".Translate(),
-                    sub => UIUtil.Dropdown(
+                    sub => Util.UI.Dropdown(
                         sub,
                         GetQuickstartScenarioLabel,
                         quickstartName,

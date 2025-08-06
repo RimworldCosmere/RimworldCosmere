@@ -59,9 +59,9 @@ public record HeadingOptions {
     public TextBlock? textblock;
 }
 
-public class ListingForm : Listing_Standard {
+public class Form : Listing_Standard {
     private readonly ScrollViewStatus scrollViewStatus = new ScrollViewStatus();
-    public ListingForm? parentListing;
+    public Form? parentListing;
     public ScrollView? scrollView;
 
     public float currentHeight {
@@ -88,7 +88,7 @@ public class ListingForm : Listing_Standard {
 
     public void Fieldset(
         TaggedString header,
-        Action<ListingForm> drawContents,
+        Action<Form> drawContents,
         SubListingOptions? subListingOptions = null,
         HeadingOptions? headingOptions = null,
         float? height = null
@@ -97,7 +97,7 @@ public class ListingForm : Listing_Standard {
         SubListing(drawContents, height, subListingOptions);
     }
 
-    public void Contain(Rect rect, Action<ListingForm> drawContents) {
+    public void Contain(Rect rect, Action<Form> drawContents) {
         Begin(rect);
         drawContents(this);
         End();
@@ -135,7 +135,7 @@ public class ListingForm : Listing_Standard {
     }
 
     protected virtual void SubListing(
-        Action<ListingForm> drawContents,
+        Action<Form> drawContents,
         float? height = null,
         SubListingOptions? options = null
     ) {
@@ -154,10 +154,10 @@ public class ListingForm : Listing_Standard {
                 currentHeight += options.padding.top + options.padding.bottom;
             } else {
                 Rect rect = GetRect(height.Value).ContractedBy(options.padding);
-                ListingForm subListing = new ListingForm
+                Form sub = new Form
                     { verticalSpacing = options.verticalSpacing, parentListing = this };
 
-                subListing.Contain(rect, drawContents);
+                sub.Contain(rect, drawContents);
                 currentHeight += height.Value + options.verticalSpacing;
             }
         }
@@ -167,7 +167,7 @@ public class ListingForm : Listing_Standard {
     }
 
     public void Field(
-        Action<ListingForm> drawContents,
+        Action<Form> drawContents,
         FieldOptions? fieldOptions = null,
         SubListingOptions? subListingOptions = null
     ) {
@@ -176,7 +176,7 @@ public class ListingForm : Listing_Standard {
 
     public void Field(
         TaggedString label,
-        Action<ListingForm> drawContents,
+        Action<Form> drawContents,
         FieldOptions? fieldOptions = null,
         SubListingOptions? subListingOptions = null
     ) {
@@ -186,7 +186,7 @@ public class ListingForm : Listing_Standard {
     public void Field(
         TaggedString? label,
         TaggedString? tooltip,
-        Action<ListingForm> drawContents,
+        Action<Form> drawContents,
         FieldOptions? fieldOptions = null,
         SubListingOptions? subListingOptions = null
     ) {

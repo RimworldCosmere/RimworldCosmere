@@ -8,7 +8,8 @@ namespace Cosmere.Framework.UI;
 public record struct Padding {
     public static readonly Padding Zero = new Padding(0);
     public static readonly Padding One = new Padding(1);
-    public static readonly Padding Four = new Padding(4);
+    public static readonly Padding Four = new Padding(UI.Spacing.Get(.25));
+    public static readonly Padding Spacing = new Padding(UI.Spacing.Get());
 
     public Padding(float value) {
         top = value;

@@ -9,5 +9,5 @@ public abstract class CosmereModSettings : IExposable {
 
     public virtual void ExposeData() { }
 
-    public abstract void DoTabContents(ListingForm listing);
+    public abstract void DoTabContents(Form listing);
 }

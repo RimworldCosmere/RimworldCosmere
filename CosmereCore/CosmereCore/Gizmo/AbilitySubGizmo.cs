@@ -2,12 +2,12 @@ using System.Text;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Gene;
 using Cosmere.Core.Hediff;
-using Cosmere.Framework.Util;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
+using UI = Cosmere.Framework.Util.UI;
 
 namespace Cosmere.Core.Gizmo;
 
@@ -121,7 +121,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
         MouseoverSounds.DoRegion(rect, SoundDefOf.Mouseover_Command);
         if (parms.highLight && !disabled) Widgets.DrawStrongHighlight(rect.ExpandedBy(4f));
 
-        UIUtil.DrawIcon(
+        UI.DrawIcon(
             rect,
             icon,
             background,

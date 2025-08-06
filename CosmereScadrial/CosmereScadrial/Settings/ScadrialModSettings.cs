@@ -1,8 +1,7 @@
 using Cosmere.Framework.Listing;
 using Cosmere.Framework.Settings;
-using Cosmere.Framework.Util;
-using UnityEngine;
 using Verse;
+using UI = Cosmere.Framework.Util.UI;
 
 namespace Cosmere.Scadrial.Settings;
 
@@ -25,14 +24,14 @@ public class ScadrialModSettings : CosmereModSettings {
         Scribe_Values.Look(ref pawnsKeepVialsWhenDowned, "pawnsKeepVialsWhenDowned", true);
     }
 
-    public override void DoTabContents(ListingForm listing) {
+    public override void DoTabContents(Form listing) {
         listing.Fieldset(
             "CS_Settings_Category_Incidents".Translate(),
             fieldset => {
                 fieldset.Field(
                     "CS_Settings_MistsFrequency_Label".Translate(),
                     "CS_Settings_MistsFrequency_Tooltip".Translate(),
-                    sub => UIUtil.IntEnumDropdown(sub, mistsFrequency, v => mistsFrequency = v, false)
+                    sub => UI.IntEnumDropdown(sub, mistsFrequency, v => mistsFrequency = v, false)
                 );
             },
             SubListingOptions.WithoutTopPadding()
@@ -44,13 +43,13 @@ public class ScadrialModSettings : CosmereModSettings {
                 fieldset.Field(
                     "CS_Settings_PawnsKeepVialOnDown_Label".Translate(),
                     "CS_Settings_PawnsKeepVialOnDown_Tooltip".Translate(),
-                    sub => UIUtil.BoolEnumDropdown(sub, pawnsKeepVialsWhenDowned, v => pawnsKeepVialsWhenDowned = v)
+                    sub => UI.BoolEnumDropdown(sub, pawnsKeepVialsWhenDowned, v => pawnsKeepVialsWhenDowned = v)
                 );
 
                 fieldset.Field(
                     "CS_Settings_PawnsKeepMetalmindsOnDown_Label".Translate(),
                     "CS_Settings_PawnsKeepMetalmindsOnDown_Tooltip".Translate(),
-                    sub => UIUtil.BoolEnumDropdown(
+                    sub => UI.BoolEnumDropdown(
                         sub,
                         pawnsKeepMetalmindsWhenDowned,
                         v => pawnsKeepMetalmindsWhenDowned = v

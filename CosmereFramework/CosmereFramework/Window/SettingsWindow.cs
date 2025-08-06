@@ -11,7 +11,7 @@ public class SettingsWindow {
     private readonly List<CosmereModSettings> allModSettings;
     private readonly List<TabRecord> cachedTabs;
 
-    private readonly ListingForm listing = new ListingForm { verticalSpacing = 6f, maxOneColumn = true };
+    private readonly Form listing = new Form { verticalSpacing = 6f, maxOneColumn = true };
 
     private CosmereModSettings selectedTab;
 

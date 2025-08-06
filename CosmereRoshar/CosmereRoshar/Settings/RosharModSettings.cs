@@ -40,7 +40,7 @@ public class RosharModSettings : CosmereModSettings {
     }
 
 
-    public override void DoTabContents(ListingForm listing) {
+    public override void DoTabContents(Form listing) {
         listing.Fieldset(
             "CR_Settings_Category_Highstorm".Translate(),
             fieldset => {

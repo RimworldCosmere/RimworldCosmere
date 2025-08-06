@@ -1,9 +1,9 @@
 using System.Text;
 using Cosmere.Core.Gene;
-using Cosmere.Framework.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using UI = Cosmere.Framework.Util.UI;
 
 namespace Cosmere.Core.Gizmo;
 
@@ -225,7 +225,7 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
 
     protected virtual Rect DrawIconBox(ref bool mouseOverElement) {
         Rect rect = new Rect(mainRect!.Value.x, mainRect.Value.y, mainRect.Value.height, mainRect.Value.height);
-        UIUtil.DrawIcon(
+        UI.DrawIcon(
             rect,
             cachedIcon ??= GetIcon(),
             Command.BGTex,

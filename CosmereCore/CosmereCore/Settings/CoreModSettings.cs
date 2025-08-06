@@ -9,7 +9,7 @@ public class CoreModSettings : CosmereModSettings {
 
     public override string Name => "Core";
 
-    public override void DoTabContents(ListingForm listing) {
+    public override void DoTabContents(Form listing) {
         listing.Fieldset(
             "CC_Settings_Category_Connection".Translate(),
             fieldset => {

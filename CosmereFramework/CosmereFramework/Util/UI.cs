@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Framework.UI;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Framework.Util;
 
-public static class UIUtil {
+public static class UI {
     public static void DrawIcon(
         Rect rect,
         Texture2D icon,

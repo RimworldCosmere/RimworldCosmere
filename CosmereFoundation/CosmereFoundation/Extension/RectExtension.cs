@@ -21,4 +21,27 @@ public static class RectExtension {
             rect.height + padding.top + padding.bottom
         );
     }
+
+    public static Rect With(
+        this Rect rect,
+        float? x = null,
+        float? y = null,
+        float? width = null,
+        float? height = null,
+        float? paddingX = 0,
+        float? paddingY = 0,
+        float? padding = 0
+    ) {
+        Rect newRect = new Rect(rect);
+        if (x.HasValue) newRect.x = x.Value;
+        if (y.HasValue) newRect.y = y.Value;
+        if (width.HasValue) newRect.width = width.Value;
+        if (height.HasValue) newRect.height = height.Value;
+
+        if (paddingX.HasValue) newRect = newRect.ContractedBy(new Padding(0, paddingX.Value));
+        if (paddingY.HasValue) newRect = newRect.ContractedBy(new Padding(paddingY.Value, 0));
+        if (padding.HasValue) newRect = newRect.ContractedBy(new Padding(padding.Value));
+
+        return newRect;
+    }
 }

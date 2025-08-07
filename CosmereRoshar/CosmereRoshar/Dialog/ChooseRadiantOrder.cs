@@ -27,7 +27,7 @@ public class ChooseRadiantOrder() : BaseWindow {
 
     protected override bool hasFooter => true;
 
-    protected virtual bool drawBorder {
+    protected override bool drawBorder {
         get => drawBorderInt;
         set => drawBorderInt = value;
     }
@@ -56,11 +56,12 @@ public class ChooseRadiantOrder() : BaseWindow {
             imageSize,
             imageSize
         );
+
         GUI.DrawTexture(centered, order.bannerIcon, ScaleMode.ScaleToFit);
         listing.Gap(Spacing.Get());
 
         // Quote
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.9f, 0.9f, 0.9f))) {
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, bodyTextColor)) {
             quotes ??= [
                 //order.ideals[0].quotes.RandomElement(),
                 order.ideals[1].quotes.RandomElement(),
@@ -76,7 +77,7 @@ public class ChooseRadiantOrder() : BaseWindow {
         listing.Gap(Spacing.Get());
 
         // Description
-        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, Color.white))
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, bodyTextColor))
             listing.Label(order.description);
 
         float spaceRemaining = bodyHeight - listing.CurHeight - bodyPadding - Spacing.Get();
@@ -85,7 +86,7 @@ public class ChooseRadiantOrder() : BaseWindow {
         }
 
         // Surge of Power Header
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, new Color(1f, 1f, 1f, 0.7f))) {
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, bodyTextColor)) {
             TaggedString str = "CRO_Bond_Choose_Surges".Translate(order.LabelCap.Named("ORDER"));
             listing.Label($"<b>{str}</b>");
         }
@@ -106,12 +107,12 @@ public class ChooseRadiantOrder() : BaseWindow {
 
     private float DrawSurgeBox(Rect rect, SurgeDef surge) {
         float imageSize = Spacing.Get(5);
-        Widgets.DrawShadowAround(rect);
+        DrawDropShadow(rect);
         if (drawBorder) {
             Widgets.DrawBoxSolid(rect, BorderColor);
         }
 
-        Widgets.DrawRectFast(rect.ContractedBy(Margin), SurgeColor);
+        GUI.DrawTexture(rect.ContractedBy(Margin), HeaderBackground, ScaleMode.StretchToFill);
 
         Vector2 titleSize;
         using (new TextBlock(GameFont.Medium)) titleSize = Text.CalcSize(surge.LabelCap);
@@ -147,7 +148,7 @@ public class ChooseRadiantOrder() : BaseWindow {
         GUI.DrawTexture(centered, surge.icon, ScaleMode.ScaleToFit);
         leftListing.Gap(Spacing.Get());
 
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, Color.white))
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, headerTextColor))
             leftListing.Label(surge.LabelCap);
         leftListing.End();
 
@@ -157,7 +158,7 @@ public class ChooseRadiantOrder() : BaseWindow {
         rightListing.Gap(rightPadding / 2);
 
         // Description
-        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, Color.white))
+        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, headerTextColor))
             rightListing.Label(surge.description);
 
         rightListing.End();
@@ -171,18 +172,18 @@ public class ChooseRadiantOrder() : BaseWindow {
 
         Rect innerRect = rect.ContractedBy(padding);
         float unit = innerRect.width / divisor;
-        Rect firstButtonRect = new Rect(innerRect.x, innerRect.y, unit * 1.5f, footerButtonHeight);
+        Rect firstButtonRect = new Rect(innerRect.x, innerRect.y + 4, unit, footerButtonHeight - 8);
         Rect secondButtonRect = new Rect(
             unit * 4 + Spacing.Get(1 + 1f / divisor),
-            innerRect.y,
+            innerRect.y - 4,
             unit * 4,
-            footerButtonHeight
+            footerButtonHeight + 8
         );
         Rect thirdButtonRect = new Rect(
-            innerRect.width - unit * 1.5f + Spacing.Get(1 + 1f / divisor),
-            innerRect.y,
-            unit * 1.5f,
-            footerButtonHeight
+            innerRect.width - unit * 1f + Spacing.Get(1 + 1f / divisor),
+            innerRect.y + 4,
+            unit,
+            footerButtonHeight - 8
         );
 
         if (Widgets.ButtonText(firstButtonRect, "Previous")) {

@@ -6,11 +6,12 @@ namespace Cosmere.Framework.Window;
 
 [StaticConstructorOnStartup]
 public abstract class BaseWindow : Verse.Window {
-    protected static readonly Color HeaderColor = Widgets.MenuSectionBGFillColor;
+    protected static readonly Color HeaderTextColor = new ColorInt(26, 58, 97).ToColor;
+    protected static readonly Texture2D HeaderBackground = ContentFinder<Texture2D>.Get("Window/BackgroundWide");
     protected static readonly Color BodyColor = Widgets.WindowBGFillColor;
     protected static readonly Color SurgeColor = Widgets.MenuSectionBGFillColor;
     protected static readonly Color FooterColor = Widgets.MenuSectionBGFillColor;
-    protected static readonly Color BorderColor = new ColorInt(69, 69, 69).ToColor;
+    protected static readonly Color BorderColor = new ColorInt(208, 164, 80).ToColor;
     protected static readonly Texture2D BorderTexture = BorderColor.ToSolidColorTexture();
     protected static readonly Texture2D CloseButton = ContentFinder<Texture2D>.Get("UI/Buttons/Abandon");
 
@@ -29,7 +30,7 @@ public abstract class BaseWindow : Verse.Window {
     protected virtual Vector2 initialWindowSize { get; }
 
     protected virtual bool hasFooter => false;
-    protected virtual bool drawBorder => false;
+    protected virtual bool drawBorder => true;
     protected virtual float headerHeight => Spacing.Get(6);
     protected virtual float footerHeight => hasFooter ? Spacing.Get(4) : 0;
     protected virtual float footerButtonHeight => Spacing.Get(2);
@@ -41,7 +42,7 @@ public abstract class BaseWindow : Verse.Window {
     public sealed override Vector2 InitialSize => initialWindowSize;
 
     protected virtual TextAnchor headerAlignment => TextAnchor.MiddleCenter;
-    protected virtual Color headerTextColor => Color.white;
+    protected virtual Color headerTextColor => HeaderTextColor;
     protected virtual GameFont titleFont => GameFont.Medium;
     protected virtual GameFont subtitleFont => GameFont.Small;
     protected abstract TaggedString GetTitle();
@@ -117,7 +118,7 @@ public abstract class BaseWindow : Verse.Window {
         Rect footerRect = new Rect(inRect.x, inRect.y + inRect.height - footerHeight, inRect.width, footerHeight);
 
         if (drawBorder) Widgets.DrawBox(headerRect, 1, BorderTexture);
-        Widgets.DrawRectFast(headerRect.ContractedBy(Margin), HeaderColor);
+        GUI.DrawTexture(headerRect.ContractedBy(Margin), HeaderBackground);
         DrawHeader(headerRect);
 
         if (CloseButtonFor(inRect.AtZero())) {

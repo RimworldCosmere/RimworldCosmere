@@ -6,9 +6,9 @@ TextureImporter:
   serializedVersion: 13
   mipmaps:
     mipMapMode: 1
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
-    linearTexture: 0
+    linearTexture: 1
     fadeOut: 0
     borderMipMap: 0
     mipMapsPreserveCoverage: 0
@@ -54,7 +54,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 2
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1

@@ -1,4 +1,5 @@
-﻿using Cosmere.Foundation.UI;
+﻿using Cosmere.Foundation.Listing;
+using Cosmere.Foundation.UI;
 using Cosmere.Foundation.Window;
 using Cosmere.Roshar.Def;
 using UnityEngine;
@@ -34,7 +35,7 @@ public class ChooseRadiantOrder() : BaseWindow {
 
     protected override Vector2 initialWindowSize => new Vector2(
         Spacing.Get(65),
-        Mathf.Max(Spacing.Get(31), UI.screenHeight - Spacing.Get(16))
+        Mathf.Max(Spacing.Get(30), UI.screenHeight - Spacing.Get(10))
     );
 
     protected override TaggedString GetTitle() {
@@ -45,20 +46,14 @@ public class ChooseRadiantOrder() : BaseWindow {
         return "CRO_Choose_Radiant_Order_Dialog_Subtitle".Translate();
     }
 
-    protected override void DrawBodyContent(Listing_Standard listing) {
+    protected override void DrawBodyContent(FoundationListing listing) {
         RadiantOrderDef? order = RadiantOrders[radiantOrderIndex];
         // Centered Image
         float imageSize = Spacing.Get(16);
         Rect imageRect = listing.GetRect(imageSize);
-        Rect centered = new Rect(
-            imageRect.x + (imageRect.width - imageSize) / 2f,
-            imageRect.y,
-            imageSize,
-            imageSize
-        );
 
-        GUI.DrawTexture(centered, order.bannerIcon, ScaleMode.ScaleToFit);
-        listing.Gap(Spacing.Get());
+        GUI.DrawTexture(imageRect.CenteredOnX(imageSize, imageSize), order.bannerIcon, ScaleMode.ScaleToFit);
+        listing.Gap();
 
         // Quote
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, bodyTextColor)) {
@@ -72,26 +67,36 @@ public class ChooseRadiantOrder() : BaseWindow {
             }
         }
 
-        listing.Gap(Spacing.Get());
-        listing.GapLine(Spacing.Get());
-        listing.Gap(Spacing.Get());
+        listing.Gap();
+        listing.GapLine(color: BorderColor);
+        listing.Gap();
 
         // Description
-        using (new TextBlock(GameFont.Small, TextAnchor.UpperLeft, bodyTextColor))
-            listing.Label(order.description);
+        using (new TextBlock(GameFont.Medium, TextAnchor.UpperLeft, bodyTextColor)) {
+            float width = listing.ListingRect.width - Spacing.Get(36);
+            float height = Text.CalcHeight(order.description, width);
+            Rect rect = listing.GetRect(height + 32).ContractedBy(36, 24);
+            Widgets.Label(rect, order.description);
+        }
 
-        float spaceRemaining = bodyHeight - listing.CurHeight - bodyPadding - Spacing.Get();
+        /*float spaceRemaining = bodyHeight - listing.CurHeight - bodyPadding - Spacing.Get();
         if (surgeHeight != null) {
             listing.Gap(Mathf.Max(0, spaceRemaining - surgeHeight.Value));
-        }
+        }*/
 
         // Surge of Power Header
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, bodyTextColor)) {
             TaggedString str = "CRO_Bond_Choose_Surges".Translate(order.LabelCap.Named("ORDER"));
-            listing.Label($"<b>{str}</b>");
+            Rect labelRect = listing.Label($"<b>{str}</b>");
+
+            DrawBorder(
+                labelRect.With(y: labelRect.yMax, height: 1),
+                1,
+                bottom: true
+            );
         }
 
-        listing.Gap(Spacing.Get());
+        listing.Gap();
 
         // Two surge boxes side-by-side
         Rect surgeRow = listing.GetRect(surgeHeight ??= DefaultSurgeHeight); // fixed height for surge blocks
@@ -100,7 +105,7 @@ public class ChooseRadiantOrder() : BaseWindow {
         float leftHeight = DrawSurgeBox(leftBox, order.surges[0]);
         float rightHeight = DrawSurgeBox(rightBox, order.surges[1]);
 
-        listing.Gap(Spacing.Get());
+        listing.Gap();
 
         surgeHeight = Mathf.Max(DefaultSurgeHeight, leftHeight, rightHeight);
     }
@@ -109,10 +114,10 @@ public class ChooseRadiantOrder() : BaseWindow {
         float imageSize = Spacing.Get(5);
         DrawDropShadow(rect);
         if (drawBorder) {
-            Widgets.DrawBoxSolid(rect, BorderColor);
+            //Widgets.DrawBoxSolid(rect, BorderColor);
         }
 
-        GUI.DrawTexture(rect.ContractedBy(Margin), HeaderBackground, ScaleMode.StretchToFill);
+        GUI.DrawTexture(rect.ContractedBy(0), HeaderBackground, ScaleMode.StretchToFill);
 
         Vector2 titleSize;
         using (new TextBlock(GameFont.Medium)) titleSize = Text.CalcSize(surge.LabelCap);
@@ -133,7 +138,7 @@ public class ChooseRadiantOrder() : BaseWindow {
         float rightPadding = (surgeHeight ?? DefaultSurgeHeight) - descriptionHeight - Spacing.Get(2);
 
         // Left Side
-        Listing_Standard leftListing = new Listing_Standard { maxOneColumn = true, verticalSpacing = 0 };
+        FoundationListing leftListing = new FoundationListing { maxOneColumn = true, verticalSpacing = 0 };
         leftListing.Begin(leftBox);
         leftListing.Gap(leftPadding / 2);
 
@@ -146,14 +151,14 @@ public class ChooseRadiantOrder() : BaseWindow {
             imageSize
         );
         GUI.DrawTexture(centered, surge.icon, ScaleMode.ScaleToFit);
-        leftListing.Gap(Spacing.Get());
+        leftListing.Gap();
 
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter, headerTextColor))
             leftListing.Label(surge.LabelCap);
         leftListing.End();
 
         // Right side
-        Listing_Standard rightListing = new Listing_Standard { maxOneColumn = true, verticalSpacing = 0 };
+        FoundationListing rightListing = new FoundationListing { maxOneColumn = true, verticalSpacing = 0 };
         rightListing.Begin(rightBox);
         rightListing.Gap(rightPadding / 2);
 
@@ -162,7 +167,7 @@ public class ChooseRadiantOrder() : BaseWindow {
             rightListing.Label(surge.description);
 
         rightListing.End();
-        rightListing.Gap(Spacing.Get());
+        rightListing.Gap();
 
         return Mathf.Max(leftListing.CurHeight, rightListing.CurHeight);
     }
@@ -172,7 +177,7 @@ public class ChooseRadiantOrder() : BaseWindow {
 
         Rect innerRect = rect.ContractedBy(padding);
         float unit = innerRect.width / divisor;
-        Rect firstButtonRect = new Rect(innerRect.x, innerRect.y + 4, unit, footerButtonHeight - 8);
+        Rect firstButtonRect = new Rect(innerRect.x, innerRect.y, unit, footerButtonHeight);
         Rect secondButtonRect = new Rect(
             unit * 4 + Spacing.Get(1 + 1f / divisor),
             innerRect.y - 4,
@@ -181,9 +186,9 @@ public class ChooseRadiantOrder() : BaseWindow {
         );
         Rect thirdButtonRect = new Rect(
             innerRect.width - unit * 1f + Spacing.Get(1 + 1f / divisor),
-            innerRect.y + 4,
+            innerRect.y,
             unit,
-            footerButtonHeight - 8
+            footerButtonHeight
         );
 
         if (Widgets.ButtonText(firstButtonRect, "Previous")) {
@@ -195,7 +200,7 @@ public class ChooseRadiantOrder() : BaseWindow {
         TaggedString joinString = "CRO_Choose_Radiant_Order_Dialog_Join".Translate(
             RadiantOrders[radiantOrderIndex].LabelCap.Named("ORDER")
         );
-        if (Widgets.ButtonText(secondButtonRect, joinString)) {
+        if (CTAButtonText(secondButtonRect, joinString)) {
             pawn.AllComps.RemoveWhere(x => x is Comp.Thing.ChooseRadiantOrder);
             pawn.genes.TryAddRadiantOrder(RadiantOrders[radiantOrderIndex].GetSurgebindingGene());
             Close();

@@ -44,4 +44,31 @@ public static class RectExtension {
 
         return newRect;
     }
+
+    public static Rect CenteredOnX(this Rect rect, float width, float height) {
+        return new Rect(
+            rect.x + (rect.width - width) / 2f,
+            rect.y,
+            width,
+            height
+        );
+    }
+
+    public static Rect CenteredOnY(this Rect rect, float width, float height) {
+        return new Rect(
+            rect.x,
+            rect.y + (rect.height - height) / 2f,
+            width,
+            height
+        );
+    }
+
+    public static Rect CenteredOn(this Rect rect, float width, float height) {
+        return new Rect(
+            rect.x + (rect.width - width) / 2f,
+            rect.y + (rect.height - height) / 2f,
+            width,
+            height
+        );
+    }
 }

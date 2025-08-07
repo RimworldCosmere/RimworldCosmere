@@ -1,6 +1,8 @@
-﻿using Cosmere.Foundation.UI;
+﻿using Cosmere.Foundation.Listing;
+using Cosmere.Foundation.UI;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace Cosmere.Foundation.Window;
 
@@ -28,6 +30,10 @@ public abstract class BaseWindow : Verse.Window {
     protected static float DropShadowContract = -7f;
     protected static float DropShadowX = 1f;
     protected static float DropShadowY = 1f;
+
+    public static Texture2D CTAButtonBGAtlas = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBG");
+    public static Texture2D CTAButtonBGAtlasMouseover = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBGMouseover");
+    public static Texture2D CTAButtonBGAtlasClick = ContentFinder<Texture2D>.Get("UI/Widgets/CTAButtonBGClick");
 
     private readonly ScrollViewStatus scrollViewStatus = new ScrollViewStatus();
 
@@ -69,7 +75,7 @@ public abstract class BaseWindow : Verse.Window {
 
     protected virtual void DrawHeader(Rect rect) {
         Rect innerRect = rect.ContractedBy(padding);
-        Listing_Standard listing = new Listing_Standard { maxOneColumn = true };
+        FoundationListing listing = new FoundationListing { maxOneColumn = true };
         listing.Begin(innerRect);
 
         using (new TextBlock(headerAlignment, headerTextColor)) {
@@ -77,11 +83,9 @@ public abstract class BaseWindow : Verse.Window {
         }
 
         listing.End();
-
-        Widgets.DrawBox(new Rect(rect.x, rect.yMax - 3, rect.width, 3), 3, BorderTexture);
     }
 
-    protected virtual void DrawHeaderContent(Listing_Standard listing, Rect innerRect) {
+    protected virtual void DrawHeaderContent(FoundationListing listing, Rect innerRect) {
         using (new TextBlock(titleFont)) listing.Label($"<b>{GetTitle()}</b>");
 
         TaggedString? subtitle = GetSubtitle();
@@ -91,12 +95,11 @@ public abstract class BaseWindow : Verse.Window {
     }
 
     protected virtual float DrawBody(Rect rect) {
-        //rect = rect.ContractedBy(bodyPadding, 0);
         if (scrollViewStatus.scrollVisibile) {
             rect = new Rect(rect.x + Spacing.Get(1.25), rect.y, rect.width - Spacing.Get(1.25), rect.height);
         }
 
-        Listing_Standard listing = new Listing_Standard { maxOneColumn = true, verticalSpacing = 0 };
+        FoundationListing listing = new FoundationListing { maxOneColumn = true, verticalSpacing = 0 };
 
         listing.Begin(rect);
         float originalWidth = listing.ColumnWidth;
@@ -106,14 +109,12 @@ public abstract class BaseWindow : Verse.Window {
         listing.Outdent(bodyPadding);
         listing.ColumnWidth = originalWidth;
         listing.End();
-        listing.Gap(Spacing.Get());
-
-        Widgets.DrawBox(new Rect(rect.x, rect.yMax - 3, rect.width, 3), 3, BorderTexture);
+        listing.Gap();
 
         return listing.CurHeight;
     }
 
-    protected abstract void DrawBodyContent(Listing_Standard listing);
+    protected abstract void DrawBodyContent(FoundationListing listing);
 
     protected virtual void DrawFooter(Rect rect) { }
 
@@ -145,35 +146,79 @@ public abstract class BaseWindow : Verse.Window {
         );
         Rect footerRect = new Rect(inRect.x, inRect.y + inRect.height - footerHeight, inRect.width, footerHeight);
 
-        if (drawBorder) Widgets.DrawBox(headerRect, 1, BorderTexture);
         GUI.DrawTexture(headerRect.ContractedBy(Margin), HeaderBackground);
         DrawHeader(headerRect);
+        DrawBorder(headerRect, 3, bottom: true);
 
         if (CloseButtonFor(inRect.AtZero())) {
             Close();
         }
 
         //Widgets.DrawRectFast(bodyRect, BodyColor);
-        if (drawBorder) {
+        /*if (drawBorder) {
             Widgets.DrawBoxSolid(new Rect(bodyRect.xMin, bodyRect.y, 1, bodyRect.height), BorderColor);
             Widgets.DrawBoxSolid(new Rect(bodyRect.xMax - 1, bodyRect.y, 1, bodyRect.height), BorderColor);
-        }
+        }*/
 
         using (ScrollView sv = new ScrollView(bodyRect, scrollViewStatus)) {
             using (new TextBlock(bodyFont)) sv.height = DrawBody(sv.rect);
         }
 
         if (hasFooter) {
-            if (drawBorder) Widgets.DrawBox(footerRect, 1, BorderTexture);
             GUI.DrawTexture(footerRect.ContractedBy(Margin), FooterBackground);
             DrawFooter(footerRect);
+            DrawBorder(footerRect.ContractedBy(Margin), 3, top: true);
         }
     }
+
+    protected virtual void DrawBorder(
+        Rect rect,
+        int thickness,
+        Texture2D? borderTexture = null,
+        bool top = false,
+        bool right = false,
+        bool bottom = false,
+        bool left = false
+    ) {
+        if (thickness <= 0) return;
+        Texture2D texture = borderTexture ?? BorderTexture;
+
+        if (top) Widgets.DrawBox(new Rect(rect.xMin, rect.yMin, rect.width, thickness), thickness, texture);
+        if (right) {
+            Widgets.DrawBox(new Rect(rect.xMax - thickness, rect.yMin, thickness, rect.height), thickness, texture);
+        }
+
+        if (bottom) {
+            Widgets.DrawBox(new Rect(rect.xMin, rect.yMax - thickness, rect.width, thickness), thickness, texture);
+        }
+
+        if (left) Widgets.DrawBox(new Rect(rect.xMin, rect.yMin, thickness, rect.height), thickness, texture);
+    }
+
 
     protected void DrawDropShadow(Rect rect) {
         Rect rect1 = rect.ContractedBy(DropShadowContract);
         rect1.x += DropShadowX;
         rect1.y += DropShadowY;
         Widgets.DrawAtlas(rect1, InvertedDropShadow);
+    }
+
+    public virtual bool CTAButtonText(Rect rect, string label) {
+        Texture2D atlas = CTAButtonBGAtlas;
+        if (Mouse.IsOver(rect)) {
+            atlas = CTAButtonBGAtlasMouseover;
+            if (Input.GetMouseButton(0)) {
+                atlas = CTAButtonBGAtlasClick;
+            }
+        }
+
+        Widgets.DrawAtlas(rect, atlas);
+        MouseoverSounds.DoRegion(rect);
+
+        using (new TextBlock(null, TextAnchor.MiddleCenter, rect.height >= Text.LineHeight * 2f, Color.white)) {
+            Widgets.Label(rect, label);
+        }
+
+        return Widgets.ButtonInvisible(rect, false);
     }
 }

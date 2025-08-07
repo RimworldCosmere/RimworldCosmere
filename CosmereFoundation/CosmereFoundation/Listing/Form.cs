@@ -59,7 +59,7 @@ public record HeadingOptions {
     public TextBlock? textblock;
 }
 
-public class Form : Listing_Standard {
+public class Form : FoundationListing {
     private readonly ScrollViewStatus scrollViewStatus = new ScrollViewStatus();
     public Form? parentListing;
     public ScrollView? scrollView;
@@ -70,8 +70,6 @@ public class Form : Listing_Standard {
             if (scrollView != null) scrollView.Value.height = value;
         }
     }
-
-    public new Rect listingRect => base.listingRect;
 
     public override void Begin(Rect rect) {
         ColumnWidth = rect.width - 36;

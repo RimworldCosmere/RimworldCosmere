@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Patch>
-    <Operation Class="Cosmere.Framework.Patch.Operation.UseSetting">
+    <Operation Class="Cosmere.Foundation.Patch.Operation.UseSetting">
         <modId>Cosmere.Scadrial</modId>
         <key>pawnsKeepMetalmindsWhenDowned</key>
         <expect>true</expect>
@@ -11,7 +11,7 @@
             </value>
         </apply>
     </Operation>
-    <Operation Class="Cosmere.Framework.Patch.Operation.UseSetting">
+    <Operation Class="Cosmere.Foundation.Patch.Operation.UseSetting">
         <modId>Cosmere.Scadrial</modId>
         <key>pawnsKeepVialsWhenDowned</key>
         <expect>true</expect>

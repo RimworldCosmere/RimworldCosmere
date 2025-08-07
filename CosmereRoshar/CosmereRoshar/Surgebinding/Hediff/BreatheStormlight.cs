@@ -4,7 +4,7 @@ using Cosmere.Core.Hediff;
 using Cosmere.Roshar.Gene;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Framework.Logger;
+using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Roshar.Surgebinding.Hediff;
 

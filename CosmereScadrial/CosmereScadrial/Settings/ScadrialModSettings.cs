@@ -1,7 +1,7 @@
-using Cosmere.Framework.Listing;
-using Cosmere.Framework.Settings;
+using Cosmere.Foundation.Listing;
+using Cosmere.Foundation.Settings;
 using Verse;
-using UI = Cosmere.Framework.Util.UI;
+using UI = Cosmere.Foundation.Util.UI;
 
 namespace Cosmere.Scadrial.Settings;
 

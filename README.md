@@ -12,7 +12,7 @@ This is a modular monorepo. Each component exists as its own loadable mod:
 
 ### Core Mods
 
-- **[Cosmere Framework](./CosmereFramework)** – Shared C# utilities and base helpers (no content)
+- **[Cosmere.Foundation](./CosmereFoundation)** – Shared C# utilities and base helpers (no content)
 - **[Cosmere Core](./CosmereCore)** – Shared stats, traits, needs, and the Investiture system
 - **[Cosmere Resources](./CosmereResources)** – Defines all base metals, alloys, and godmetals used across the Cosmere
 
@@ -24,7 +24,7 @@ This is a modular monorepo. Each component exists as its own loadable mod:
 - **Cosmere - Nalthis** *(Coming Soon)* – Awakening, Breath economy, Commands, Divine Breaths, and the Returned
 - **Cosmere - Sel** *(Coming Soon)* – Elantrians, Aon Dor, and Forgery
 
-Each module is optional, but relies on the shared foundation laid by the **Core**, **Framework**, and **Resources**
+Each module is optional, but relies on the shared foundation laid by the **Core**, **Foundation**, and **Resources**
 mods.
 
 ---
@@ -39,7 +39,7 @@ git clone https://github.com/RimworldCosmere/RimworldCosmere.git Mods
 
 Enable in the following order:
 
-1. Cosmere Framework
+1. Cosmere.Foundation
 2. Cosmere Resources
 3. Cosmere Core
 4. Any shard-world mod (e.g., Cosmere - Scadrial)
@@ -70,7 +70,7 @@ If you’d like to contribute:
 
 | Module             | Status      | Notes                                   |
 |--------------------|-------------|-----------------------------------------|
-| Cosmere Framework  | Stable      | Internal C# helpers only                |
+| Cosmere.Foundation  | Stable      | Internal C# helpers only                |
 | Cosmere Core       | Stable      | Needed for all content mods             |
 | Cosmere Metals     | Stable      | MetalDefs and worldgen integration      |
 | Cosmere - Scadrial | In Progress | Allomancy and Feruchemy mostly complete |

@@ -4,7 +4,7 @@ using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Framework.Logger;
+using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Scadrial.Feruchemy.Comp.Hediff;
 

@@ -147,7 +147,7 @@
         <comps>
             {{#each metal.genesToGrant}}
             {{#each this}}
-            <li Class="Cosmere.Framework.Comp.Thing.GiveGeneProperties" MayRequire="{{@../key}}">
+            <li Class="Cosmere.Foundation.Comp.Thing.GiveGeneProperties" MayRequire="{{@../key}}">
                 <geneDef>{{this}}</geneDef>
             </li>
             {{/each}}

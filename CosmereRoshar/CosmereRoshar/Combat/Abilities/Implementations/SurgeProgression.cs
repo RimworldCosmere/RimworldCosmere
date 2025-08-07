@@ -1,4 +1,4 @@
-﻿using Cosmere.Framework;
+﻿using Cosmere.Foundation;
 using Cosmere.Roshar.Comp.Thing;
 using Cosmere.Roshar.Gene;
 using RimWorld;

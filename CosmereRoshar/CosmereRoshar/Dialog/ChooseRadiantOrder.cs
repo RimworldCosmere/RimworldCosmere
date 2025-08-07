@@ -1,5 +1,5 @@
-﻿using Cosmere.Framework.UI;
-using Cosmere.Framework.Window;
+﻿using Cosmere.Foundation.UI;
+using Cosmere.Foundation.Window;
 using Cosmere.Roshar.Def;
 using UnityEngine;
 using Verse;

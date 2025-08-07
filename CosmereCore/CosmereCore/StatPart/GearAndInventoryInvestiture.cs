@@ -1,7 +1,7 @@
 using Cosmere.Core.Extension;
 using RimWorld;
 using Verse;
-using StatUtility = Cosmere.Framework.Util.StatUtility;
+using StatUtility = Cosmere.Foundation.Util.StatUtility;
 
 namespace Cosmere.Core.StatPart;
 

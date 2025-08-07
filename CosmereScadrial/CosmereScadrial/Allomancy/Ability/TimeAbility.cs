@@ -2,7 +2,7 @@ using Cosmere.Core.Ability;
 using Cosmere.Scadrial.Utility;
 using RimWorld;
 using Verse;
-using static Cosmere.Framework.Mod;
+using static Cosmere.Foundation.Mod;
 
 namespace Cosmere.Scadrial.Allomancy.Ability;
 

@@ -50,7 +50,7 @@ public class DormantConnection : ThingComp {
     }
 
     public override string CompInspectStringExtra() {
-        if (!Framework.Mod.GetModSettings<CoreModSettings>().showDormantConnection || hiddenGenes.Count == 0) {
+        if (!Foundation.Mod.GetModSettings<CoreModSettings>().showDormantConnection || hiddenGenes.Count == 0) {
             return base.CompInspectStringExtra();
         }
 

@@ -50,20 +50,20 @@
     <ItemGroup>
         <Using Include="System.Linq"/>
         <Using Include="System.Collections.Generic"/>
-        <Using Include="Cosmere.Framework.Extension"/>
+        <Using Include="Cosmere.Foundation.Extension"/>
         <Using Include="Cosmere.Resources.Extension"/>
         <Using Include="Cosmere.Core.Extension"/>
         <Using Include="Cosmere.Scadrial.Extension"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4535"/>
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4543"/>
         <PackageReference Include="Lib.Harmony" Version="2.3.6"/>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <ProjectReference Include="..\..\CosmereFramework\CosmereFramework\Cosmere.Framework.csproj"/>
+        <ProjectReference Include="..\..\CosmereFoundation\CosmereFoundation\Cosmere.Foundation.csproj"/>
         <ProjectReference Include="..\..\CosmereResources\CosmereResources\Cosmere.Resources.csproj"/>
         <ProjectReference Include="..\..\CosmereCore\CosmereCore\Cosmere.Core.csproj"/>
     </ItemGroup>

@@ -1,5 +1,5 @@
 ﻿using Cosmere.Core.Settings;
-using Cosmere.Framework;
+using Cosmere.Foundation;
 using Verse;
 
 namespace Cosmere.Core;

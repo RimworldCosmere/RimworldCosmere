@@ -16,7 +16,7 @@
             <displayName>Biotech</displayName>
         </li>
         <li>
-            <packageId>Cosmere.Framework</packageId>
+            <packageId>Cosmere.Foundation</packageId>
             <displayName>Cosmere - Framework</displayName>
             <steamWorkshopUrl>steam://url/CommunityFilePage/3474206890</steamWorkshopUrl>
             <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
@@ -30,7 +30,7 @@
     </modDependencies>
     <forceLoadAfter>
         <li>Ludeon.RimWorld.Biotech</li>
-        <li>Cosmere.Framework</li>
+        <li>Cosmere.Foundation</li>
         <li>Cosmere.Resources</li>
     </forceLoadAfter>
 </ModMetaData>

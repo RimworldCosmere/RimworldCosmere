@@ -7,7 +7,7 @@ using Cosmere.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Framework.Logger;
+using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Scadrial.Gene;
 

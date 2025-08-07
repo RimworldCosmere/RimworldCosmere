@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
 using Cosmere.Core.Comp.Thing;
-using Cosmere.Framework.Comp.Thing;
-using Cosmere.Framework.Quickstart;
+using Cosmere.Foundation.Comp.Thing;
+using Cosmere.Foundation.Quickstart;
 using Cosmere.Resources.Def;
 using Cosmere.Roshar.Utility;
 using RimWorld;

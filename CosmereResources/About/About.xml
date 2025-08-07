@@ -12,13 +12,13 @@
     <packageId>Cosmere.Resources</packageId>
     <modDependencies>
         <li>
-            <packageId>Cosmere.Framework</packageId>
+            <packageId>Cosmere.Foundation</packageId>
             <displayName>Cosmere - Framework</displayName>
             <steamWorkshopUrl>steam://url/CommunityFilePage/3474206890</steamWorkshopUrl>
             <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
         </li>
     </modDependencies>
     <forceLoadAfter>
-        <li>Cosmere.Framework</li>
+        <li>Cosmere.Foundation</li>
     </forceLoadAfter>
 </ModMetaData>

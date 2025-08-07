@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using Cosmere.Framework.Extension;
+using Cosmere.Foundation.Extension;
 using Cosmere.Scadrial.Def;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using Logger = Cosmere.Framework.Logger;
+using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Scadrial.Allomancy.Comp.Game;
 

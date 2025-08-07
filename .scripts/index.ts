@@ -25,7 +25,7 @@ async function Main() {
 
     if (options.delete) {
         await deleteGeneratedFiles(path.resolve(__dirname, '..', 'CosmereCore'))
-        await deleteGeneratedFiles(path.resolve(__dirname, '..', 'CosmereFramework'))
+        await deleteGeneratedFiles(path.resolve(__dirname, '..', 'CosmereFoundation'))
         await deleteGeneratedFiles(path.resolve(__dirname, '..', 'CosmereResources'))
         await deleteGeneratedFiles(path.resolve(__dirname, '..', 'CosmereScadrial'))
         await deleteGeneratedFiles(path.resolve(__dirname, '..', 'CosmereRoshar'))

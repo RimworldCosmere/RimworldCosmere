@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Scadrial", "Cosmere
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Core", "CosmereCore\CosmereCore\Cosmere.Core.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Framework", "CosmereFramework\CosmereFramework\Cosmere.Framework.csproj", "{8A92DBAF-9F90-4A16-89E1-B16A11740017}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Foundation", "CosmereFoundation\CosmereFoundation\Cosmere.Foundation.csproj", "{8A92DBAF-9F90-4A16-89E1-B16A11740017}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Resources", "CosmereResources\CosmereResources\Cosmere.Resources.csproj", "{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}"
 EndProject

@@ -7,7 +7,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using AbilityDef = Cosmere.Core.Def.AbilityDef;
-using Logger = Cosmere.Framework.Logger;
+using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Core.Ability;
 

@@ -1,6 +1,6 @@
 ﻿#nullable disable
 using System;
-using Cosmere.Framework;
+using Cosmere.Foundation;
 using Cosmere.Roshar.Settings;
 using Verse;
 

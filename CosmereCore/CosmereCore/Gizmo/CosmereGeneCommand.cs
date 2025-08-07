@@ -3,7 +3,7 @@ using Cosmere.Core.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using UI = Cosmere.Framework.Util.UI;
+using UI = Cosmere.Foundation.Util.UI;
 
 namespace Cosmere.Core.Gizmo;
 

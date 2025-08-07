@@ -1,4 +1,4 @@
-using Cosmere.Framework.Extension;
+using Cosmere.Foundation.Extension;
 using Cosmere.Resources.Def;
 using UnityEngine;
 using Verse;

@@ -3,7 +3,7 @@ using Cosmere.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Framework.Logger;
+using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Scadrial.Feruchemy.Hediff;
 

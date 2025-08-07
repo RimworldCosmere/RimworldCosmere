@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cosmere.Core.Extension;
-using CosmereFramework;
-using CosmereFramework.Extension;
+using CosmereFoundation;
+using CosmereFoundation.Extension;
 using CosmereResources;
 using CosmereResources.Def;
 using CosmereResources.DefModExtension;

@@ -85,7 +85,7 @@ Use `CosmereScadrial` as a reference for setting up a new shardworld.
 New mods should reference the following shared projects:
 
 - `CosmereCore`
-- `CosmereFramework`
+- `CosmereFoundation`
 - `CosmereResources` (optional but likely)
 
 ## Development Workflow

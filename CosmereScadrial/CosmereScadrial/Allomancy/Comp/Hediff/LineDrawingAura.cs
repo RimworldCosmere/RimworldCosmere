@@ -1,11 +1,11 @@
-using Cosmere.Framework.Comp.Map;
+using Cosmere.Foundation.Comp.Map;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
 using Cosmere.Scadrial.Def;
 using UnityEngine;
 using Verse;
-using static Cosmere.Framework.Mod;
-using LineRenderer = Cosmere.Framework.Comp.Map.LineRenderer;
+using static Cosmere.Foundation.Mod;
+using LineRenderer = Cosmere.Foundation.Comp.Map.LineRenderer;
 
 namespace Cosmere.Scadrial.Allomancy.Comp.Hediff;
 

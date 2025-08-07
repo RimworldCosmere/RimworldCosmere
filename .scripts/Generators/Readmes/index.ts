@@ -9,7 +9,7 @@ const support = compileTemplate(__dirname, 'support.md.template');
 
 
 export default function () {
-    const mods = ['framework', 'resources', 'core', 'scadrial', 'roshar'];
+    const mods = ['foundation', 'resources', 'core', 'scadrial', 'roshar'];
     for (const mod of mods) {
         const dir = resolve(__dirname, '..', '..', '..', 'Cosmere' + mod.capitalize());
         const baseReadme = compileTemplate(resolve(__dirname, 'mods'), mod + '.md.template');

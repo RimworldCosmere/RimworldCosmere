@@ -16,7 +16,6 @@ public class ChooseRadiantOrder() : BaseWindow {
         .ToList();
 
     private readonly Pawn pawn;
-    protected bool drawBorderInt;
 
     private string[]? quotes;
     private int radiantOrderIndex;
@@ -27,11 +26,6 @@ public class ChooseRadiantOrder() : BaseWindow {
     }
 
     protected override bool hasFooter => true;
-
-    protected override bool drawBorder {
-        get => drawBorderInt;
-        set => drawBorderInt = value;
-    }
 
     protected override Vector2 initialWindowSize => new Vector2(
         Spacing.Get(65),
@@ -212,15 +206,5 @@ public class ChooseRadiantOrder() : BaseWindow {
             quotes = null;
             radiantOrderIndex = (radiantOrderIndex + 1) % RadiantOrders.Count;
         }
-    }
-
-    public override void DoWindowContents(Rect inRect) {
-        base.DoWindowContents(inRect);
-
-        drawBorder = Event.current.keyCode switch {
-            KeyCode.Z => false,
-            KeyCode.X => true,
-            _ => drawBorder,
-        };
     }
 }

@@ -25,12 +25,16 @@ dotnet run --project tools/Cosmere.Tools.Cli generate
 # Generate specific generator
 dotnet run --project tools/Cosmere.Tools.Cli generate Resources
 
+# Clean up all generated files (no generation)
+dotnet run --project tools/Cosmere.Tools.Cli generate --clean
+
 # Available options
 dotnet run --project tools/Cosmere.Tools.Cli generate --help
 # -f, --force     Force generation ignoring changes
 # --dry-run       Show what would be generated
 # -d, --delete    Delete existing generated files first
 # -v, --verbose   Show detailed output
+# --clean         Delete all generated files and exit (no generation)
 
 # Legacy Node.js method (deprecated - will be removed)
 cd .scripts

@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="Build Asset Bundles (PC)" type="PowerShellRunType" factoryName="PowerShell" focusToolWindowBeforeRun="true" scriptUrl="$PROJECT_DIR$/buildAllCosmereBundles.ps1" executablePath="C:\Program Files\PowerShell\7\pwsh.exe">
-    <envs />
-    <method v="2" />
-  </configuration>
-</component>

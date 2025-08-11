@@ -18,61 +18,75 @@ public class SurgesAndOrdersGenerator : BaseGenerator
         var surges = await _dataLoader.LoadAllAsync<SurgeInfo>("Surges");
         var orders = await _dataLoader.LoadAllAsync<RadiantOrderInfo>("RadiantOrders");
         
-        var templatesDir = FileSystem.Path.Combine(".scripts", "Generators", "SurgesAndOrders");
+        var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "SurgesAndOrders");
         var rosharModDir = FileSystem.Path.Combine("CosmereRoshar");
         
-        // Generate Surge definitions
-        var surgeDefTemplate = CompileTemplate(templatesDir, "SurgeDef.xml.template");
-        var surgeDefOutputDir = FileSystem.Path.Combine(rosharModDir, "Defs", "Surges");
+        // Compile all templates in parallel
+        var surgeDefTemplateTask = CompileTemplateAsync(templatesDir, "SurgeDef.xml.template");
+        var surgeDefOfTemplateTask = CompileTemplateAsync(templatesDir, "SurgeDefOf.cs.template");
+        var radiantOrderDefTemplateTask = CompileTemplateAsync(templatesDir, "RadiantOrderDef.xml.template");
+        var radiantOrderDefOfTemplateTask = CompileTemplateAsync(templatesDir, "RadiantOrderDefOf.cs.template");
+        var geneDefTemplateTask = CompileTemplateAsync(templatesDir, "GeneDef.xml.template");
+        var geneDefOfTemplateTask = CompileTemplateAsync(templatesDir, "GeneDefOf.cs.template");
+        var traitDefOfTemplateTask = CompileTemplateAsync(templatesDir, "TraitDefOf.cs.template");
         
+        await Task.WhenAll(
+            surgeDefTemplateTask, surgeDefOfTemplateTask, radiantOrderDefTemplateTask,
+            radiantOrderDefOfTemplateTask, geneDefTemplateTask, geneDefOfTemplateTask, traitDefOfTemplateTask
+        );
+        
+        var surgeDefTemplate = surgeDefTemplateTask.Result;
+        var surgeDefOfTemplate = surgeDefOfTemplateTask.Result;
+        var radiantOrderDefTemplate = radiantOrderDefTemplateTask.Result;
+        var radiantOrderDefOfTemplate = radiantOrderDefOfTemplateTask.Result;
+        var geneDefTemplate = geneDefTemplateTask.Result;
+        var geneDefOfTemplate = geneDefOfTemplateTask.Result;
+        var traitDefOfTemplate = traitDefOfTemplateTask.Result;
+        
+        // Generate all files in parallel
+        var fileWriteTasks = new List<Task>();
+        
+        // Generate Surge definitions
+        var surgeDefOutputDir = FileSystem.Path.Combine(rosharModDir, "Defs", "Surges");
         foreach (var surge in surges)
         {
             var content = surgeDefTemplate(new { surge });
-            WriteGeneratedFile(surgeDefOutputDir, $"{ToDefName(surge.Name)}.generated.xml", content);
+            fileWriteTasks.Add(WriteGeneratedFileAsync(surgeDefOutputDir, $"{ToDefName(surge.Name)}.generated.xml", content));
         }
 
         // Generate SurgeDefOf
-        var surgeDefOfTemplate = CompileTemplate(templatesDir, "SurgeDefOf.cs.template");
         var surgeDefOfContent = surgeDefOfTemplate(new { surges });
-        WriteGeneratedFile(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "SurgeDefOf.generated.cs", surgeDefOfContent);
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "SurgeDefOf.generated.cs", surgeDefOfContent));
 
         // Generate Radiant Order definitions
-        var radiantOrderDefTemplate = CompileTemplate(templatesDir, "RadiantOrderDef.xml.template");
         var radiantOrderDefOutputDir = FileSystem.Path.Combine(rosharModDir, "Defs", "RadiantOrders");
-        
         foreach (var order in orders)
         {
             var content = radiantOrderDefTemplate(new { order });
-            WriteGeneratedFile(radiantOrderDefOutputDir, $"{ToDefName(order.Name)}.generated.xml", content);
+            fileWriteTasks.Add(WriteGeneratedFileAsync(radiantOrderDefOutputDir, $"{ToDefName(order.Name)}.generated.xml", content));
         }
 
         // Generate RadiantOrderDefOf
-        var radiantOrderDefOfTemplate = CompileTemplate(templatesDir, "RadiantOrderDefOf.cs.template");
         var radiantOrderDefOfContent = radiantOrderDefOfTemplate(new { orders });
-        WriteGeneratedFile(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "RadiantOrderDefOf.generated.cs", radiantOrderDefOfContent);
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "RadiantOrderDefOf.generated.cs", radiantOrderDefOfContent));
 
         // Generate Gene definitions for Radiant Orders
-        var geneDefTemplate = CompileTemplate(templatesDir, "GeneDef.xml.template");
         var geneDefOutputDir = FileSystem.Path.Combine(rosharModDir, "Defs", "Genes");
-        
         foreach (var order in orders)
         {
             var content = geneDefTemplate(new { order });
-            WriteGeneratedFile(geneDefOutputDir, $"{ToDefName(order.Name)}.generated.xml", content);
+            fileWriteTasks.Add(WriteGeneratedFileAsync(geneDefOutputDir, $"{ToDefName(order.Name)}.generated.xml", content));
         }
 
         // Generate DefOf classes for genes and traits
-        var geneDefOfTemplate = CompileTemplate(templatesDir, "GeneDefOf.cs.template");
         var geneDefOfContent = geneDefOfTemplate(new { orders });
-        WriteGeneratedFile(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "GeneDefOf.RadiantOrders.generated.cs", geneDefOfContent);
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "GeneDefOf.RadiantOrders.generated.cs", geneDefOfContent));
 
-        var traitDefOfTemplate = CompileTemplate(templatesDir, "TraitDefOf.cs.template");
         var traitDefOfContent = traitDefOfTemplate(new { orders });
-        WriteGeneratedFile(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "TraitDefOf.RadiantOrders.generated.cs", traitDefOfContent);
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "TraitDefOf.RadiantOrders.generated.cs", traitDefOfContent));
+        
+        // Wait for all file writes to complete
+        await Task.WhenAll(fileWriteTasks);
     }
 
-    private static string ToDefName(string name)
-    {
-        return name.Replace(" ", string.Empty);
-    }
 }

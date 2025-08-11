@@ -18,27 +18,35 @@ public class FeruchemicalHediffsGenerator : BaseGenerator
         var metals = await _dataLoader.LoadAllAsync<MetalInfo>("Metals");
         var feruchemicalMetals = metals.Where(m => m.Feruchemy?.UserName != null).ToList();
         
-        var templatesDir = FileSystem.Path.Combine(".scripts", "Generators", "FeruchemicalHediffs");
+        var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "FeruchemicalHediffs");
         var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
         
-        // Generate individual hediff definitions
-        var defTemplate = CompileTemplate(templatesDir, "HediffDef.xml.template");
+        // Compile templates in parallel
+        var defTemplateTask = CompileTemplateAsync(templatesDir, "HediffDef.xml.template");
+        var defOfTemplateTask = CompileTemplateAsync(templatesDir, "HediffDefOf.cs.template");
         
+        await Task.WhenAll(defTemplateTask, defOfTemplateTask);
+        
+        var defTemplate = defTemplateTask.Result;
+        var defOfTemplate = defOfTemplateTask.Result;
+        
+        // Generate all files in parallel
+        var fileWriteTasks = new List<Task>();
+        
+        // Generate individual hediff definitions
         foreach (var metal in feruchemicalMetals)
         {
             var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Feruchemy", ToDefName(metal.Name));
             var content = defTemplate(new { metal });
-            WriteGeneratedFile(outputDir, "Hediff.generated.xml", content);
+            fileWriteTasks.Add(WriteGeneratedFileAsync(outputDir, "Hediff.generated.xml", content));
         }
 
         // Generate HediffDefOf class
-        var defOfTemplate = CompileTemplate(templatesDir, "HediffDefOf.cs.template");
         var defOfContent = defOfTemplate(new { metals = feruchemicalMetals });
-        WriteGeneratedFile(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "HediffDefOf.Feruchemy.generated.cs", defOfContent);
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "HediffDefOf.Feruchemy.generated.cs", defOfContent));
+        
+        // Wait for all file writes to complete
+        await Task.WhenAll(fileWriteTasks);
     }
 
-    private static string ToDefName(string name)
-    {
-        return name.Replace(" ", string.Empty);
-    }
 }

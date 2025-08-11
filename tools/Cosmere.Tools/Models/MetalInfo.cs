@@ -1,4 +1,4 @@
-using System.Drawing;
+using Newtonsoft.Json;
 
 namespace Cosmere.Tools.Models;
 
@@ -39,8 +39,8 @@ public class MetalInfo
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string? DefName { get; set; }
-    public Color Color { get; set; }
-    public Color? ColorTwo { get; set; }
+    public ColorInfo Color { get; set; } = new();
+    public ColorInfo? ColorTwo { get; set; }
     public bool GodMetal { get; set; }
     public bool Stackable { get; set; } = true;
     public float DrawSize { get; set; } = 1f;
@@ -131,7 +131,10 @@ public class MiningInfo
 public class AlloyInfo
 {
     public List<AlloyIngredient> Ingredients { get; set; } = new();
+    
+    [JsonConverter(typeof(StringOrListConverter))]
     public List<string>? Stuff { get; set; }
+    
     public int? StuffCount { get; set; }
     public AlloyProduct Product { get; set; } = new();
     public string Type { get; set; } = "simple";

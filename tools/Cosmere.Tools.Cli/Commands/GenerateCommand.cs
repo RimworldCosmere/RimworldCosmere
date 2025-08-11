@@ -25,9 +25,19 @@ public static class GenerateCommand
             Description = "Delete all generated files before starting"
         };
 
+        var noCleanOption = new Option<bool>("--no-clean")
+        {
+            Description = "Skip deleting generated files before generation (files are deleted by default)"
+        };
+
         var verboseOption = new Option<bool>("--verbose")
         {
             Description = "Extra logs"
+        };
+
+        var cleanOption = new Option<bool>("--clean")
+        {
+            Description = "Delete all generated files and exit (no generation)"
         };
 
         var generatorArgument = new Argument<string?>("generator")
@@ -40,7 +50,9 @@ public static class GenerateCommand
         command.Options.Add(forceOption);
         command.Options.Add(dryRunOption);
         command.Options.Add(deleteOption);
+        command.Options.Add(noCleanOption);
         command.Options.Add(verboseOption);
+        command.Options.Add(cleanOption);
         command.Arguments.Add(generatorArgument);
 
         command.SetAction((ParseResult parseResult) =>
@@ -48,8 +60,13 @@ public static class GenerateCommand
             var force = parseResult.GetValue(forceOption);
             var dryRun = parseResult.GetValue(dryRunOption);
             var delete = parseResult.GetValue(deleteOption);
+            var noClean = parseResult.GetValue(noCleanOption);
             var verbose = parseResult.GetValue(verboseOption);
+            var clean = parseResult.GetValue(cleanOption);
             var generator = parseResult.GetValue(generatorArgument);
+            
+            // By default, always clean before generating unless --no-clean is specified
+            var shouldClean = !noClean || delete;
             var options = new GeneratorOptions
             {
                 Force = force,
@@ -63,14 +80,26 @@ public static class GenerateCommand
 
             try
             {
-                if (delete)
+                if (clean)
                 {
+                    DeleteGeneratedFilesAsync(fileSystem, verbose, dryRun).Wait();
+                    Console.WriteLine("Clean complete!");
+                    return 0;
+                }
+
+                // Always clean before generating unless --no-clean is specified
+                if (shouldClean)
+                {
+                    if (verbose)
+                    {
+                        Console.WriteLine("Cleaning existing generated files...");
+                    }
                     DeleteGeneratedFilesAsync(fileSystem, verbose, dryRun).Wait();
                 }
 
                 if (string.IsNullOrEmpty(generator))
                 {
-                    AnsiConsole.MarkupLine("[green]Running all generators...[/]");
+                    Console.WriteLine("Running all generators...");
                     registry.RunAllAsync().Wait();
                 }
                 else
@@ -78,25 +107,29 @@ public static class GenerateCommand
                     var gen = registry.GetGenerator(generator);
                     if (gen == null)
                     {
-                        AnsiConsole.MarkupLine($"[red]Generator '{generator}' not found.[/]");
-                        AnsiConsole.MarkupLine("[yellow]Available generators:[/]");
+                        Console.WriteLine($"Generator '{generator}' not found.");
+                        Console.WriteLine("Available generators:");
                         foreach (var name in registry.GetGeneratorNames())
                         {
-                            AnsiConsole.MarkupLine($"  - {name}");
+                            Console.WriteLine($"  - {name}");
                         }
                         return 1;
                     }
 
-                    AnsiConsole.MarkupLine($"[green]Running {generator} generator...[/]");
+                    Console.WriteLine($"Running {generator} generator...");
                     gen.GenerateAsync().Wait();
                 }
 
-                AnsiConsole.MarkupLine("[green]Generation complete![/]");
+                Console.WriteLine("Generation complete!");
                 return 0;
             }
             catch (Exception ex)
             {
-                AnsiConsole.MarkupLine($"[red]Error during generation: {ex.Message}[/]");
+                Console.WriteLine($"Error during generation: {ex.Message}");
+                if (verbose)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
                 return 1;
             }
         });

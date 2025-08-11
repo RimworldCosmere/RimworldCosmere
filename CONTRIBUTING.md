@@ -12,8 +12,7 @@ development environment, add new shardworlds, and follow our commit and release 
 - [Unity Hub](https://unity.com/download)
 - [Unity Editor 2022.3.35f1](https://unity.com/releases/editor/whats-new/2022.3.35) (located in
   `C:\Program Files\Unity\Hub\Editor\2022.3.35f1\Editor\Unity.exe`)
-- [Node.js v24](https://nodejs.org/en/download/current)
-- [Powershell 7](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows)
+- [Make](https://gnuwin32.sourceforge.net/packages/make.htm) (optional - Windows users can use `make.ps1` instead)
 
 To develop locally:
 
@@ -25,37 +24,31 @@ To develop locally:
     /AssetBuilder
     ```
 
-2. Navigate to `./.scripts/` and install dependencies:
+2. Generate code and build assets:
 
+    **Option A: Using Make (if installed):**
     ```bash
-    cd .scripts
-    npm install
+    make generatables  # Generate code and build assets
     ```
 
-    - Node.js v24 is required.
-
-3. Start the asset watcher:
-
-    ```bash
-    npm start -- -d -f
-    ```
-
-    - This can be added as a pre-build step in your IDE.
-    - If using Rider, a run configuration is already provided.
-    - The [GarethP RimWorld plugin](https://plugins.jetbrains.com/plugin/18442-rimworld) is recommended for Rider.
-
-4. From the root of this repo, run:
-
+    **Option B: Using PowerShell script (Windows):**
     ```powershell
-    ./buildAllCosmereBundles.ps1
+    .\make.ps1 generatables  # Generate code and build assets
     ```
 
-    - This can also be added as a pre-build step in your IDE.
-    - It generates the final bundles for each mod.
+    **Available commands:**
+    - `make help` or `.\make.ps1 help` - Show all available commands
+    - `make generatables` - Generate code and build assets (recommended for development)
+    - `make generate` - Generate code only
+    - `make build-assets` - Build Unity AssetBundles only
+    - `make all` - Full build pipeline (clean, generate, build, assets)
 
-5. Ensure generated files remain gitignored. Don’t check them in.
+3. For development, use the provided RimWorld run configurations in your IDE.
+    - The [GarethP RimWorld plugin](https://plugins.jetbrains.com/plugin/18442-rimworld) is highly recommended for Rider users as it provides RimWorld-specific tooling and run configurations.
 
-6. Symlink the mod folders you are working on into your RimWorld Mods directory.
+4. Ensure generated files remain gitignored. Don't check them in.
+
+5. Symlink the mod folders you are working on into your RimWorld Mods directory.
 
    Example (Windows PowerShell):
 
@@ -79,8 +72,7 @@ Use `CosmereScadrial` as a reference for setting up a new shardworld.
     Assets/Audio/
     ```
 
-5. Update `buildAllCosmereBundles.ps1` to include your mod in the `$mods` list on line 8.
-6. Copy a `.steamignore` file from another mod so that unneeded files are excluded from Steam uploads.
+5. Copy a `.steamignore` file from another mod so that unneeded files are excluded from Steam uploads.
 
 New mods should reference the following shared projects:
 

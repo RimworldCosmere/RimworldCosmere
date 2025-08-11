@@ -40,7 +40,7 @@ jobs:
           echo "✅ Tag format valid."
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Determine changed Cosmere mods
@@ -112,7 +112,7 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Setup Dotnet
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
 
@@ -249,7 +249,7 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Setup Dotnet
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
 
@@ -258,15 +258,13 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - name: Install steamdown + steam-totp + Generator Dependencies
+      - name: Install steamdown + steam-totp
         working-directory: RimworldCosmere
-        run: |
-          npm install -g @steamdown/cli tsx
-          cd .scripts && npm i
+        run: npm install -g @steamdown/cli tsx
 
-      - name: Run generators
+      - name: Run generators using make
         working-directory: RimworldCosmere
-        run: npm --prefix .scripts start -- -d -f
+        run: make generate
 
       - name: Install Mod Dependencies
         working-directory: RimworldCosmere
@@ -415,7 +413,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Node
         uses: actions/setup-node@v4
         with:

@@ -24,7 +24,7 @@ public class DataLoader
 
     public async Task<List<T>> LoadAllAsync<T>(string dataType)
     {
-        var dataDir = _fileSystem.Path.Combine(Environment.CurrentDirectory, ".scripts", "Data", dataType);
+        var dataDir = _fileSystem.Path.Combine(Environment.CurrentDirectory, "Resources", "Data", dataType);
         
         if (!_fileSystem.Directory.Exists(dataDir))
             return new List<T>();
@@ -47,7 +47,7 @@ public class DataLoader
 
     public async Task<T?> LoadAsync<T>(string dataType, string fileName)
     {
-        var filePath = _fileSystem.Path.Combine(Environment.CurrentDirectory, ".scripts", "Data", dataType, $"{fileName}.json");
+        var filePath = _fileSystem.Path.Combine(Environment.CurrentDirectory, "Resources", "Data", dataType, $"{fileName}.json");
         
         if (!_fileSystem.File.Exists(filePath))
             return default;

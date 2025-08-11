@@ -26,96 +26,142 @@ public class GenesAndTraitsGenerator : BaseGenerator
 
     private async Task GenerateAllomancyAsync(List<MetalInfo> metals)
     {
-        var allomancyMetals = metals.Where(m => !m.GodMetal && m.Allomancy != null).Concat(new[] { metals.First(m => m.Name == "Atium") }).ToList();
+        var allomancyMetals = metals.Where(m => !m.GodMetal && m.Allomancy != null).ToList();
+        var atium = metals.FirstOrDefault(m => m.Name.Equals("Atium", StringComparison.OrdinalIgnoreCase));
+        if (atium != null)
+        {
+            allomancyMetals.Add(atium);
+        }
         
-        var templatesDir = FileSystem.Path.Combine(".scripts", "Generators", "GenesAndTraits");
+        var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "GenesAndTraits");
         var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
         var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Allomancy");
         
-        var geneTemplate = CompileTemplate(templatesDir, "AllomancyGeneDef.xml.template");
-        var traitTemplate = CompileTemplate(templatesDir, "AllomancyTraitDef.xml.template");
-        var defOfTemplate = CompileTemplate(templatesDir, "DefOf.cs.template");
+        // Compile templates in parallel
+        var geneTemplateTask = CompileTemplateAsync(templatesDir, "AllomancyGeneDef.xml.template");
+        var traitTemplateTask = CompileTemplateAsync(templatesDir, "AllomancyTraitDef.xml.template");
+        var defOfTemplateTask = CompileTemplateAsync(templatesDir, "DefOf.cs.template");
         
+        await Task.WhenAll(geneTemplateTask, traitTemplateTask, defOfTemplateTask);
+        
+        var geneTemplate = geneTemplateTask.Result;
+        var traitTemplate = traitTemplateTask.Result;
+        var defOfTemplate = defOfTemplateTask.Result;
+        
+        // Generate metal files in parallel
+        var fileWriteTasks = new List<Task>();
         int order = 2;
+        
         foreach (var metal in allomancyMetals)
         {
             var defName = metal.DefName ?? ToDefName(metal.Name);
             var metalOutputDir = FileSystem.Path.Combine(outputDir, defName);
             
             var geneContent = geneTemplate(new { metal, defName, order = order++ });
-            WriteGeneratedFile(metalOutputDir, "Gene.generated.xml", geneContent);
+            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, "Gene.generated.xml", geneContent));
             
             var traitContent = traitTemplate(new { metal, defName, order = order++ });
-            WriteGeneratedFile(metalOutputDir, "Trait.generated.xml", traitContent);
+            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, "Trait.generated.xml", traitContent));
         }
 
         // Generate DefOf files
         var geneDefOfContent = defOfTemplate(new { type = "Misting", kind = "Gene", metals = allomancyMetals });
-        WriteGeneratedFile(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "GeneDefOf.Allomancy.generated.cs", geneDefOfContent);
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "GeneDefOf.Allomancy.generated.cs", geneDefOfContent));
         
         var traitDefOfContent = defOfTemplate(new { type = "Misting", kind = "Trait", metals = allomancyMetals });
-        WriteGeneratedFile(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "TraitDefOf.Allomancy.generated.cs", traitDefOfContent);
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "TraitDefOf.Allomancy.generated.cs", traitDefOfContent));
+        
+        // Wait for all file writes to complete
+        await Task.WhenAll(fileWriteTasks);
     }
 
     private async Task GenerateFeruchemyAsync(List<MetalInfo> metals)
     {
-        var feruchemyMetals = metals.Where(m => !m.GodMetal && m.Feruchemy != null).Concat(new[] { metals.First(m => m.Name == "Atium") }).ToList();
+        var feruchemyMetals = metals.Where(m => !m.GodMetal && m.Feruchemy != null).ToList();
+        var atium = metals.FirstOrDefault(m => m.Name.Equals("Atium", StringComparison.OrdinalIgnoreCase));
+        if (atium != null)
+        {
+            feruchemyMetals.Add(atium);
+        }
         
-        var templatesDir = FileSystem.Path.Combine(".scripts", "Generators", "GenesAndTraits");
+        var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "GenesAndTraits");
         var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
         var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Feruchemy");
         
-        var geneTemplate = CompileTemplate(templatesDir, "FeruchemyGeneDef.xml.template");
-        var traitTemplate = CompileTemplate(templatesDir, "FeruchemyTraitDef.xml.template");
-        var defOfTemplate = CompileTemplate(templatesDir, "DefOf.cs.template");
+        // Compile templates in parallel
+        var geneTemplateTask = CompileTemplateAsync(templatesDir, "FeruchemyGeneDef.xml.template");
+        var traitTemplateTask = CompileTemplateAsync(templatesDir, "FeruchemyTraitDef.xml.template");
+        var defOfTemplateTask = CompileTemplateAsync(templatesDir, "DefOf.cs.template");
         
+        await Task.WhenAll(geneTemplateTask, traitTemplateTask, defOfTemplateTask);
+        
+        var geneTemplate = geneTemplateTask.Result;
+        var traitTemplate = traitTemplateTask.Result;
+        var defOfTemplate = defOfTemplateTask.Result;
+        
+        // Generate metal files in parallel
+        var fileWriteTasks = new List<Task>();
         int order = 2;
+        
         foreach (var metal in feruchemyMetals)
         {
             var defName = metal.DefName ?? ToDefName(metal.Name);
             var metalOutputDir = FileSystem.Path.Combine(outputDir, defName);
             
             var geneContent = geneTemplate(new { metal, defName, order = order++ });
-            WriteGeneratedFile(metalOutputDir, "Gene.generated.xml", geneContent);
+            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, "Gene.generated.xml", geneContent));
             
             var traitContent = traitTemplate(new { metal, defName, order = order++ });
-            WriteGeneratedFile(metalOutputDir, "Trait.generated.xml", traitContent);
+            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, "Trait.generated.xml", traitContent));
         }
 
         // Generate DefOf files
         var geneDefOfContent = defOfTemplate(new { type = "Ferring", kind = "Gene", metals = feruchemyMetals });
-        WriteGeneratedFile(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "GeneDefOf.Feruchemy.generated.cs", geneDefOfContent);
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "GeneDefOf.Feruchemy.generated.cs", geneDefOfContent));
         
         var traitDefOfContent = defOfTemplate(new { type = "Ferring", kind = "Trait", metals = feruchemyMetals });
-        WriteGeneratedFile(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "TraitDefOf.Feruchemy.generated.cs", traitDefOfContent);
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "TraitDefOf.Feruchemy.generated.cs", traitDefOfContent));
+        
+        // Wait for all file writes to complete
+        await Task.WhenAll(fileWriteTasks);
     }
 
     private async Task GenerateMistbornAsync(List<MetalInfo> metals)
     {
-        var allomancyMetals = metals.Where(m => !m.GodMetal && m.Allomancy != null).Concat(new[] { metals.First(m => m.Name == "Atium") }).ToList();
+        var allomancyMetals = metals.Where(m => !m.GodMetal && m.Allomancy != null).ToList();
+        var atium = metals.FirstOrDefault(m => m.Name.Equals("Atium", StringComparison.OrdinalIgnoreCase));
+        if (atium != null)
+        {
+            allomancyMetals.Add(atium);
+        }
         var abilities = allomancyMetals.SelectMany(m => m.Allomancy?.Abilities ?? new List<string>()).ToList();
         
-        var templatesDir = FileSystem.Path.Combine(".scripts", "Generators", "GenesAndTraits");
+        var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "GenesAndTraits");
         var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
         var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Allomancy", "Mistborn");
         
-        var template = CompileTemplate(templatesDir, "Mistborn.xml.template");
+        var template = await CompileTemplateAsync(templatesDir, "Mistborn.xml.template");
         var content = template(new { metals = allomancyMetals, abilities, rightClickAbilities = new List<string>() });
-        WriteGeneratedFile(outputDir, "Trait.generated.xml", content);
+        await WriteGeneratedFileAsync(outputDir, "Trait.generated.xml", content);
     }
 
     private async Task GenerateFullFeruchemistAsync(List<MetalInfo> metals)
     {
-        var feruchemyMetals = metals.Where(m => !m.GodMetal && m.Feruchemy != null).Concat(new[] { metals.First(m => m.Name == "Atium") }).ToList();
+        var feruchemyMetals = metals.Where(m => !m.GodMetal && m.Feruchemy != null).ToList();
+        var atium = metals.FirstOrDefault(m => m.Name.Equals("Atium", StringComparison.OrdinalIgnoreCase));
+        if (atium != null)
+        {
+            feruchemyMetals.Add(atium);
+        }
         var abilities = feruchemyMetals.SelectMany(m => m.Feruchemy?.Abilities ?? new List<string>()).ToList();
         
-        var templatesDir = FileSystem.Path.Combine(".scripts", "Generators", "GenesAndTraits");
+        var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "GenesAndTraits");
         var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
         var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Feruchemy", "FullFeruchemist");
         
-        var template = CompileTemplate(templatesDir, "FullFeruchemist.xml.template");
+        var template = await CompileTemplateAsync(templatesDir, "FullFeruchemist.xml.template");
         var content = template(new { metals = feruchemyMetals, abilities, rightClickAbilities = new List<string>() });
-        WriteGeneratedFile(outputDir, "Trait.generated.xml", content);
+        await WriteGeneratedFileAsync(outputDir, "Trait.generated.xml", content);
     }
 
     private static bool IsDisabled(MetalInfo metal)
@@ -123,8 +169,4 @@ public class GenesAndTraitsGenerator : BaseGenerator
         return metal.GetType().GetProperty("Disabled")?.GetValue(metal) as bool? ?? false;
     }
 
-    private static string ToDefName(string name)
-    {
-        return name.Replace(" ", string.Empty);
-    }
 }

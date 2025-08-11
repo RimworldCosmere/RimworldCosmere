@@ -1,5 +1,6 @@
 using System.IO.Abstractions;
 using HandlebarsDotNet;
+using Cosmere.Tools.Models;
 
 namespace Cosmere.Tools.Generation;
 
@@ -19,11 +20,20 @@ public abstract class BaseGenerator : IGenerator
 
     protected virtual void RegisterHelpers()
     {
+        // String transformation helpers
         Handlebars.RegisterHelper("toDefName", (writer, context, parameters) =>
         {
             if (parameters[0] is string str)
             {
-                writer.WriteSafeString(str.Replace(" ", string.Empty));
+                writer.WriteSafeString(ToDefName(str));
+            }
+        });
+        
+        Handlebars.RegisterHelper("defName", (writer, context, parameters) =>
+        {
+            if (parameters[0] is string str)
+            {
+                writer.WriteSafeString(ToDefName(str));
             }
         });
         
@@ -34,6 +44,247 @@ public abstract class BaseGenerator : IGenerator
                 writer.WriteSafeString(char.ToUpper(str[0]) + str[1..]);
             }
         });
+        
+        Handlebars.RegisterHelper("capitalize", (writer, context, parameters) =>
+        {
+            if (parameters[0] is string str && !string.IsNullOrEmpty(str))
+            {
+                writer.WriteSafeString(char.ToUpper(str[0]) + str[1..]);
+            }
+        });
+        
+        Handlebars.RegisterHelper("lower", (writer, context, parameters) =>
+        {
+            if (parameters[0] is string str)
+            {
+                writer.WriteSafeString(str.ToLowerInvariant());
+            }
+        });
+        
+        Handlebars.RegisterHelper("title", (writer, context, parameters) =>
+        {
+            if (parameters[0] is string str)
+            {
+                writer.WriteSafeString(ToTitleCase(str));
+            }
+        });
+
+        // Collection helpers
+        Handlebars.RegisterHelper("join", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 && parameters[0] is IEnumerable<object> collection && parameters[1] is string separator)
+            {
+                var joined = string.Join(separator, collection.Select(x => x?.ToString() ?? ""));
+                writer.WriteSafeString(joined);
+            }
+        });
+        
+        Handlebars.RegisterHelper("count", (writer, context, parameters) =>
+        {
+            if (parameters[0] is IEnumerable<object> collection)
+            {
+                writer.WriteSafeString(collection.Count().ToString());
+            }
+        });
+
+        // Logic helpers
+        Handlebars.RegisterHelper("eq", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2)
+            {
+                writer.WriteSafeString((parameters[0]?.Equals(parameters[1]) == true).ToString().ToLower());
+            }
+        });
+        
+        Handlebars.RegisterHelper("ne", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2)
+            {
+                writer.WriteSafeString((parameters[0]?.Equals(parameters[1]) != true).ToString().ToLower());
+            }
+        });
+        
+        Handlebars.RegisterHelper("lt", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 && 
+                double.TryParse(parameters[0]?.ToString(), out var v1) && 
+                double.TryParse(parameters[1]?.ToString(), out var v2))
+            {
+                writer.WriteSafeString((v1 < v2).ToString().ToLower());
+            }
+        });
+        
+        Handlebars.RegisterHelper("gt", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 && 
+                double.TryParse(parameters[0]?.ToString(), out var v1) && 
+                double.TryParse(parameters[1]?.ToString(), out var v2))
+            {
+                writer.WriteSafeString((v1 > v2).ToString().ToLower());
+            }
+        });
+        
+        Handlebars.RegisterHelper("lte", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 && 
+                double.TryParse(parameters[0]?.ToString(), out var v1) && 
+                double.TryParse(parameters[1]?.ToString(), out var v2))
+            {
+                writer.WriteSafeString((v1 <= v2).ToString().ToLower());
+            }
+        });
+        
+        Handlebars.RegisterHelper("gte", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 && 
+                double.TryParse(parameters[0]?.ToString(), out var v1) && 
+                double.TryParse(parameters[1]?.ToString(), out var v2))
+            {
+                writer.WriteSafeString((v1 >= v2).ToString().ToLower());
+            }
+        });
+        
+        Handlebars.RegisterHelper("and", (writer, context, parameters) =>
+        {
+            var result = parameters.All(p => p != null && 
+                (p is bool b ? b : !string.IsNullOrEmpty(p.ToString())));
+            writer.WriteSafeString(result.ToString().ToLower());
+        });
+        
+        Handlebars.RegisterHelper("or", (writer, context, parameters) =>
+        {
+            var result = parameters.Any(p => p != null && 
+                (p is bool b ? b : !string.IsNullOrEmpty(p.ToString())));
+            writer.WriteSafeString(result.ToString().ToLower());
+        });
+        
+        Handlebars.RegisterHelper("isdefined", (writer, context, parameters) =>
+        {
+            writer.WriteSafeString((parameters.Length > 0 && parameters[0] != null).ToString().ToLower());
+        });
+
+        // Math helpers
+        Handlebars.RegisterHelper("multiply", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 && 
+                double.TryParse(parameters[0]?.ToString(), out var v1) && 
+                double.TryParse(parameters[1]?.ToString(), out var v2))
+            {
+                writer.WriteSafeString((v1 * v2).ToString("F6"));
+            }
+        });
+        
+        Handlebars.RegisterHelper("add", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 && 
+                double.TryParse(parameters[0]?.ToString(), out var v1) && 
+                double.TryParse(parameters[1]?.ToString(), out var v2))
+            {
+                writer.WriteSafeString((v1 + v2).ToString());
+            }
+        });
+        
+        Handlebars.RegisterHelper("getStatForStage", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 && 
+                int.TryParse(parameters[0]?.ToString(), out var stage) && 
+                double.TryParse(parameters[1]?.ToString(), out var step))
+            {
+                var result = 1 + step * (stage + 1);
+                writer.WriteSafeString(result.ToString("F8"));
+            }
+        });
+
+        // Color helpers
+        Handlebars.RegisterHelper("rgb", (writer, context, parameters) =>
+        {
+            if (parameters[0] is ColorInfo color)
+            {
+                writer.WriteSafeString($"({color.R}, {color.G}, {color.B})");
+            }
+        });
+        
+        Handlebars.RegisterHelper("rgba", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2 && parameters[0] is ColorInfo color && 
+                double.TryParse(parameters[1]?.ToString(), out var alpha))
+            {
+                writer.WriteSafeString($"({color.R}, {color.G}, {color.B}, {alpha})");
+            }
+        });
+
+        // Range helper
+        Handlebars.RegisterHelper("range", (writer, context, parameters) =>
+        {
+            if (parameters[0] is int[] range && range.Length >= 2)
+            {
+                writer.WriteSafeString($"{range[0]}~{range[1]}");
+            }
+        });
+
+        // Fallback helper
+        Handlebars.RegisterHelper("fallback", (writer, context, parameters) =>
+        {
+            if (parameters.Length >= 2)
+            {
+                var value = parameters[0];
+                var fallback = parameters[1];
+                writer.WriteSafeString((value ?? fallback)?.ToString() ?? "");
+            }
+        });
+
+        // MayRequire and WithoutRequire helpers
+        Handlebars.RegisterHelper("mayRequire", (writer, context, parameters) =>
+        {
+            if (parameters.Length > 0 && parameters[0] is string value)
+            {
+                if (value.Contains(':'))
+                {
+                    var parts = value.Split(':');
+                    writer.WriteSafeString($" MayRequire=\"{parts[1]}\"");
+                }
+            }
+        });
+        
+        Handlebars.RegisterHelper("withoutRequire", (writer, context, parameters) =>
+        {
+            if (parameters.Length > 0 && parameters[0] is string value)
+            {
+                if (value.Contains(':'))
+                {
+                    writer.WriteSafeString(value.Split(':')[0]);
+                }
+                else
+                {
+                    writer.WriteSafeString(value);
+                }
+            }
+        });
+
+        // Block helpers
+        Handlebars.RegisterHelper("times", (output, options, context, parameters) =>
+        {
+            if (parameters.Length > 0 && int.TryParse(parameters[0]?.ToString(), out var n))
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    options.Template(output, i);
+                }
+            }
+        });
+    }
+
+    protected static string ToDefName(string input)
+    {
+        return ToTitleCase(input).Replace(" ", string.Empty);
+    }
+
+    protected static string ToTitleCase(string input)
+    {
+        if (string.IsNullOrEmpty(input)) return input;
+        
+        return string.Join(" ", input.ToLowerInvariant().Split(' ')
+            .Select(word => word.Length > 0 ? char.ToUpper(word[0]) + word[1..] : word));
     }
 
     protected HandlebarsTemplate<object, object> CompileTemplate(string templateDir, string templateName)
@@ -41,6 +292,13 @@ public abstract class BaseGenerator : IGenerator
         var templatePath = FileSystem.Path.Combine(templateDir, templateName);
         var templateContent = FileSystem.File.ReadAllText(templatePath);
         return Handlebars.Compile(templateContent);
+    }
+
+    protected async Task<HandlebarsTemplate<object, object>> CompileTemplateAsync(string templateDir, string templateName)
+    {
+        var templatePath = FileSystem.Path.Combine(templateDir, templateName);
+        var templateContent = await FileSystem.File.ReadAllTextAsync(templatePath);
+        return await Task.Run(() => Handlebars.Compile(templateContent));
     }
 
     protected void WriteGeneratedFile(string dir, string fileName, string content)
@@ -57,6 +315,22 @@ public abstract class BaseGenerator : IGenerator
 
         FileSystem.Directory.CreateDirectory(FileSystem.Path.GetDirectoryName(fullPath)!);
         FileSystem.File.WriteAllText(fullPath, content);
+    }
+
+    protected async Task WriteGeneratedFileAsync(string dir, string fileName, string content)
+    {
+        var fullPath = FileSystem.Path.Combine(dir, fileName);
+        
+        if (Options.Verbose)
+        {
+            var relativePath = FileSystem.Path.GetRelativePath(Environment.CurrentDirectory, fullPath);
+            Console.WriteLine($"{(Options.DryRun ? "[DRY-RUN] " : "")}Generated file: {relativePath}");
+        }
+        
+        if (Options.DryRun) return;
+
+        FileSystem.Directory.CreateDirectory(FileSystem.Path.GetDirectoryName(fullPath)!);
+        await FileSystem.File.WriteAllTextAsync(fullPath, content);
     }
 
     public abstract Task GenerateAsync();

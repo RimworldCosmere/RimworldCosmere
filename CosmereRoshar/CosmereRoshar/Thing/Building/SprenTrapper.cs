@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.Resources;
 using Cosmere.Roshar.Comp.Thing;
 using UnityEngine;
@@ -20,7 +19,7 @@ public class SprenTrapper : Verse.Building {
         }
     }
 
-    public override void SpawnSetup(Map map, bool respawningAfterLoad) {
+    public override void SpawnSetup(Verse.Map map, bool respawningAfterLoad) {
         base.SpawnSetup(map, respawningAfterLoad);
         trapper = GetComp<Comp.Fabrials.SprenTrapper>();
         compGlower = GetComp<CompGlower>();

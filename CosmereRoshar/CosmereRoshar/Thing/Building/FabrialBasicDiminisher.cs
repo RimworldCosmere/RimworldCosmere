@@ -1,5 +1,4 @@
 using Cosmere.Resources;
-using Cosmere.Resources.Extension;
 using Cosmere.Roshar.Comp.Fabrials;
 using Cosmere.Roshar.Comp.Thing;
 using RimWorld;
@@ -13,7 +12,7 @@ public class FabrialBasicDiminisher : Verse.Building {
     public CompGlower compGlower;
 
 
-    public override void SpawnSetup(Map map, bool respawningAfterLoad) {
+    public override void SpawnSetup(Verse.Map map, bool respawningAfterLoad) {
         base.SpawnSetup(map, respawningAfterLoad);
         basicFabrialDiminisher = GetComp<BasicFabrialDiminisher>();
         compFlickerable = GetComp<CompFlickable>();

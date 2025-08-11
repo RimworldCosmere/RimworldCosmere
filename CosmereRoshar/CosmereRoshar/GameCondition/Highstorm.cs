@@ -71,7 +71,7 @@ public class Highstorm : RimWorld.GameCondition {
         ModExtension.Highstorm? ext = def.GetModExtension<ModExtension.Highstorm>();
         if (ext == null) return;
         if (StormShelterManager.FirstTickOfHighstorm) {
-            Map currentMap = Find.CurrentMap;
+            Verse.Map currentMap = Find.CurrentMap;
             if (currentMap != null) {
                 StormShelterManager.RebuildShelterCache(currentMap);
             }
@@ -99,7 +99,7 @@ public class Highstorm : RimWorld.GameCondition {
                 continue;
             }
 
-             investiture.AbsorbInvestitureFrom(highstorm, investitureToAbsorb);
+            investiture.AbsorbInvestitureFrom(highstorm, investitureToAbsorb);
         }
     }
 
@@ -115,7 +115,7 @@ public class Highstorm : RimWorld.GameCondition {
 
         IntVec3 oldPos = thing.Position;
         IntVec3 newPos = oldPos + GetRandomStormOffset(thing is Pawn);
-        Map map = thing.Map;
+        Verse.Map map = thing.Map;
 
 
         if (!CanMoveToNewPosition(thing, newPos)) {
@@ -141,7 +141,7 @@ public class Highstorm : RimWorld.GameCondition {
         }
 
         if (!newPos.InBounds(map)) return true;
-        
+
         if (thing is not Pawn) {
             if (thing.Spawned) {
                 thing.DeSpawn();
@@ -151,7 +151,7 @@ public class Highstorm : RimWorld.GameCondition {
                 GenSpawn.Spawn(thing, oldPos, map);
                 return false;
             }
-            
+
             foreach (Verse.Thing t in newPos.GetThingList(map).ToList()) {
                 if (t == newThing) continue;
                 if (newThing.CanStackWith(t) && t.TryAbsorbStack(newThing, true)) return true;
@@ -182,7 +182,7 @@ public class Highstorm : RimWorld.GameCondition {
     private void DamageItem(Verse.Thing thing) {
         if (!Mod.enableHighstormDamage) return;
 
-        Map? map = thing.Map;
+        Verse.Map? map = thing.Map;
         DamageInfo damage = new DamageInfo(
             DamageDefOf.TornadoScratch,
             Rand.Range(0f, 2f),

@@ -47,7 +47,7 @@ public static class CultivationSprenPatch {
     }
 
     private static int IsNearLifeSprenBuilding(Plant plant) {
-        Map? map = plant.Map;
+        Verse.Map? map = plant.Map;
         if (map == null) return 0;
         IntVec3 plantPos = plant.Position;
 

@@ -48,7 +48,7 @@ public class LashUpward : CompAbilityEffect {
 
 
     private void FlightFunction(Verse.Thing targetThing) {
-        Map map = targetThing.Map;
+        Verse.Map map = targetThing.Map;
         IntVec3 cell = targetThing.Position;
 
         Pawn? targetPawn = targetThing as Pawn;

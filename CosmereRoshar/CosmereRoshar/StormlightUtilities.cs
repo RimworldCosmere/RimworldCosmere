@@ -20,30 +20,6 @@ public static class StormlightUtilities {
 
     private static readonly Random Rng = new Random();
 
-    public static void SpeakOaths(
-        Pawn pawn,
-        TraitDef traitDef,
-        string mainText,
-        string titleText,
-        string acceptText = "Speak the words",
-        string declineText = "Say nothing"
-    ) {
-        Find.WindowStack.Add(
-            new Dialog_MessageBox(
-                mainText,
-                acceptText,
-                () => {
-                    pawn.story.traits.GainTrait(new Trait(traitDef));
-                    pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_BondsFormed, 1);
-                },
-                declineText,
-                () => { },
-                titleText
-            )
-        );
-    }
-
-
     public static bool PawnHasAbility(Pawn pawn, AbilityDef def) {
         return pawn.abilities?.abilities?.Any(ab => ab.def == def) == true;
     }
@@ -94,7 +70,7 @@ public static class StormlightUtilities {
 
     public static bool IsAnyFireNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Map map = building.Map;
+        Verse.Map map = building.Map;
 
         foreach (IntVec3 cell in GenRadial.RadialCellsAround(position, radius, true)) {
             foreach (Verse.Thing thing in cell.GetThingList(map)) {
@@ -115,7 +91,7 @@ public static class StormlightUtilities {
 
     public static int GetNumberOfFiresNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Map map = building.Map;
+        Verse.Map map = building.Map;
         int numberOfFires = 0;
         foreach (IntVec3 cell in GenRadial.RadialCellsAround(position, radius, true)) {
             foreach (Verse.Thing thing in cell.GetThingList(map)) {
@@ -134,7 +110,7 @@ public static class StormlightUtilities {
 
     public static float GetAverageSuroundingTemperature(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Map map = building.Map;
+        Verse.Map map = building.Map;
         List<float> temps = new List<float>();
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
         foreach (IntVec3 cell in cells) {
@@ -146,7 +122,7 @@ public static class StormlightUtilities {
 
     public static float GetSuroundingPain(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Map map = building.Map;
+        Verse.Map map = building.Map;
         List<float> pains = new List<float>();
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
         foreach (IntVec3 cell in cells) {
@@ -161,7 +137,7 @@ public static class StormlightUtilities {
 
     public static float GetSuroundingPlants(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Map map = building.Map;
+        Verse.Map map = building.Map;
         int plants = 0;
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
         foreach (IntVec3 cell in cells) {
@@ -179,7 +155,7 @@ public static class StormlightUtilities {
 
     public static bool ResearchBeingDoneNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Map map = building.Map;
+        Verse.Map map = building.Map;
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
@@ -229,7 +205,7 @@ public static class StormlightUtilities {
 
 
     public static void SetThingGraphic(Verse.Thing thing, string texPath, float drawSize = 1.5f) {
-        if (thing == null || thing.def == null) return;
+        if (thing?.def == null) return;
 
         Verse.Graphic newGraphic = GraphicDatabase.Get<Graphic_Single>(
             texPath,
@@ -248,13 +224,13 @@ public static class StormlightUtilities {
 
     public static bool IsNearGrowingPlants(Pawn pawn, float radius = 3f) {
         IntVec3 position = pawn.Position;
-        Map map = pawn.Map;
+        Verse.Map map = pawn.Map;
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
 
         foreach (IntVec3 cell in cells) {
             if (cell.InBounds(map)) {
                 foreach (Verse.Thing thing in cell.GetThingList(map)) {
-                    if (thing is Plant plant && plant.Growth > 0.05f && plant.Growth < 1.0f && plant.GrowthRate > 0f) {
+                    if (thing is Plant { Growth: > 0.05f and < 1.0f, GrowthRate: > 0f }) {
                         return true;
                     }
                 }
@@ -277,7 +253,7 @@ public static class StormShelterManager {
         = new List<RegionInfo>();
 
 
-    public static void RebuildShelterCache(Map map) {
+    public static void RebuildShelterCache(Verse.Map map) {
         // Clear old data
         CellToRegionIndex.Clear();
         Regions.Clear();
@@ -333,7 +309,7 @@ public static class StormShelterManager {
         Regions.Clear();
     }
 
-    private static HashSet<IntVec3> FloodFillRoofedArea(IntVec3 start, Map map) {
+    private static HashSet<IntVec3> FloodFillRoofedArea(IntVec3 start, Verse.Map map) {
         HashSet<IntVec3> visited = new HashSet<IntVec3>();
         Queue<IntVec3> queue = new Queue<IntVec3>();
 
@@ -405,7 +381,7 @@ public static class StormShelterManager {
     }
 
 
-    private static bool IsCShelter(HashSet<IntVec3> area, Map map) {
+    private static bool IsCShelter(HashSet<IntVec3> area, Verse.Map map) {
         if (area == null || area.Count == 0) {
             return false;
         }

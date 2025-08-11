@@ -50,7 +50,7 @@ public abstract class BaseWindow : Verse.Window {
     protected virtual Vector2 initialWindowSize { get; }
 
     protected virtual bool hasFooter { get; set; } = false;
-    protected virtual bool drawBorder { get; set; } = true;
+    protected virtual bool drawBorder { get; set; } = false;
     protected virtual float headerHeight => Spacing.Get(6);
     protected virtual float footerHeight => hasFooter ? Spacing.Get(4) : 0;
     protected virtual float footerButtonHeight => Spacing.Get(2);

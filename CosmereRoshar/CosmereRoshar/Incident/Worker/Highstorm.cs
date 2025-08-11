@@ -5,7 +5,7 @@ namespace Cosmere.Roshar.Incident.Worker;
 
 public class Highstorm : IncidentWorker {
     protected override bool TryExecuteWorker(IncidentParms parms) {
-        Map map = parms.target as Map ?? Find.AnyPlayerHomeMap;
+        Verse.Map map = parms.target as Verse.Map ?? Find.AnyPlayerHomeMap;
         if (map == null) {
             Log.Warning("Highstorm incident: No valid map found.");
             return false;

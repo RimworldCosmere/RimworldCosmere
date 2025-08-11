@@ -53,7 +53,7 @@ public class SurgeGravitation : CompAbilityEffect {
     }
 
 
-    private void FlightFunction(Map map, IntVec3 cell, double distance) {
+    private void FlightFunction(Verse.Map map, IntVec3 cell, double distance) {
         Pawn targetPawn = parent.pawn;
         if (targetPawn == null) {
             return;

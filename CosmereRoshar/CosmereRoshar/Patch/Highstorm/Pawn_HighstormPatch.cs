@@ -26,7 +26,7 @@ public static class PawnHighstormPushPatch {
         StormShelterManager.FirstTickOfHighstorm = true;
     }
 
-    private static bool IsHighstormActive(Map map) {
+    private static bool IsHighstormActive(Verse.Map map) {
         // Checks if our custom GameCondition is present
         GameCondition.Highstorm? condition = map.gameConditionManager.GetActiveCondition<GameCondition.Highstorm>();
         return condition != null;

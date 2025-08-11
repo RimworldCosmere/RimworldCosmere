@@ -29,35 +29,9 @@ mods.
 
 ---
 
-## Installation
-
-Clone locally, as your Mods directory for development:
-
-```bash
-git clone https://github.com/RimworldCosmere/RimworldCosmere.git Mods
-```
-
-Enable in the following order:
-
-1. Cosmere.Foundation
-2. Cosmere Resources
-3. Cosmere Core
-4. Any shard-world mod (e.g., Cosmere - Scadrial)
-
----
-
 ## For Developers
 
-This project uses:
-
-- C# (Harmony patches, XML Defs, custom comps and needs)
-- Custom XML and CS generators (`.scripts/`)
-- Modular load order system for shardworld-specific features
-
-To Run:
-
-- Set up your environment so `npm --prefix .scripts start -- -d -f` runs before your solution builds (Generated files
-  arent kept in source)
+Follow [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 If you’d like to contribute:
 

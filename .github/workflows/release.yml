@@ -87,22 +87,6 @@ jobs:
 
       - name: Checkout RimworldCosmere
         uses: actions/checkout@v4
-        with:
-          path: 'RimworldCosmere'
-
-      - name: Checkout AssetBuilder
-        uses: actions/checkout@v4
-        with:
-          repository: 'RimworldCosmere/AssetBuilder'
-          path: 'AssetBuilder'
-
-      - uses: actions/cache@v4
-        with:
-          path: 'AssetBuilder/Library'
-          key: Library-${{ matrix.mod }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-${{ matrix.mod }}-
-            Library-
 
       - uses: actions/cache@v4
         with:
@@ -116,77 +100,56 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      - name: Copy mod assets into AssetBuilder
-        id: copyassets
-        run: |
-          destDir="AssetBuilder/Assets/Data/$BUNDLE_NAME"
-          srcDir="RimworldCosmere/$MOD/Assets"
-          if [ -d "$srcDir" ]; then
-            echo "Copying assets from $srcDir to $destDir"
-            mkdir -p "$destDir"
-            cp -r "$srcDir/"* "$destDir"
-            echo "hasAssets=true" >> $GITHUB_OUTPUT
-          else
-            echo "No assets to copy for $MOD (missing $srcDir)"
-            echo "hasAssets=false" >> $GITHUB_OUTPUT
-          fi
+      - name: Setup Unity
+        uses: kuler90/setup-unity@v1
+        with:
+          unity-modules: android
 
-      # Build bundles for each target platform.  These steps mirror the
-      # original prepare job but live in a standalone job so they can
-      # complete before the mod build begins.
+      - name: Activate Unity
+        uses: kuler90/activate-unity@v1
+        with:
+          unity-username: ${{ secrets.UNITY_EMAIL }}
+          unity-password: ${{ secrets.UNITY_PASSWORD }}
+
+      - name: Install AssetBundleBuilder
+        run: dotnet tool install --global CryptikLemur.AssetBundleBuilder
+
+      # Build bundles for each target platform.
       - name: Build Windows AssetBundles
         if: steps.copyassets.outputs.hasAssets == 'true' && matrix.platform == 'windows'
-        uses: game-ci/unity-builder@v4
+        run: |
+          assetbundlebuilder \
+            2022.3.35f1 \
+            ${{ matrix.mod }}/Assets \
+            ${BUNDLE_NAME} \
+            ${{ matrix.mod }}/AssetBundles \
+            --target windows
         continue-on-error: false
         timeout-minutes: 30
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          unityVersion: 2022.3.35f1
-          targetPlatform: StandaloneWindows64
-          projectPath: AssetBuilder
-          versioning: None
-          allowDirtyBuild: true
-          buildMethod: ModAssetBundleBuilder.BuildBundles
-          customParameters: "-source=../RimworldCosmere/${{ matrix.mod }} -buildTarget=windows"
 
       - name: Build Mac AssetBundles
         if: steps.copyassets.outputs.hasAssets == 'true' && matrix.platform == 'mac'
-        uses: game-ci/unity-builder@v4
+        run: |
+          assetbundlebuilder \
+            2022.3.35f1 \
+            ${{ matrix.mod }}/Assets \
+            ${BUNDLE_NAME} \
+            ${{ matrix.mod }}/AssetBundles \
+            --target mac
         continue-on-error: false
         timeout-minutes: 30
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          unityVersion: 2022.3.35f1
-          targetPlatform: StandaloneOSX
-          projectPath: AssetBuilder
-          versioning: None
-          allowDirtyBuild: true
-          buildMethod: ModAssetBundleBuilder.BuildBundles
-          customParameters: "-source=../RimworldCosmere/${{ matrix.mod }} -buildTarget=mac"
 
       - name: Build Linux AssetBundles
         if: steps.copyassets.outputs.hasAssets == 'true' && matrix.platform == 'linux'
-        uses: game-ci/unity-builder@v4
+        run: |
+          assetbundlebuilder \
+            2022.3.35f1 \
+            ${{ matrix.mod }}/Assets \
+            ${BUNDLE_NAME} \
+            ${{ matrix.mod }}/AssetBundles \
+            --target linux
         continue-on-error: false
         timeout-minutes: 30
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          unityVersion: 2022.3.35f1
-          targetPlatform: StandaloneLinux64
-          projectPath: AssetBuilder
-          versioning: None
-          allowDirtyBuild: true
-          buildMethod: ModAssetBundleBuilder.BuildBundles
-          customParameters: "-source=../RimworldCosmere/${{ matrix.mod }} -buildTarget=linux"
 
       # Package the AssetBundles directory and upload it as an artifact.  The
       # prepare job will download and extract this archive before building

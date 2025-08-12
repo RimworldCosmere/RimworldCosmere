@@ -64,12 +64,13 @@ switch ($Command.ToLower()) {
         
         Write-Section "General Commands"
         Write-Host "  help          - Show this help message"
-        Write-Host "  all           - Full build pipeline"
-        Write-Host "  build         - Build everything (no clean) for IDE run"
-        Write-Host "  build-all     - Full build pipeline (alias for all)"
+        Write-Host "  all           - Full build pipeline (clean, generate, build everything)"
+        Write-Host "  generatables  - Generate code and build assets only (no solution build)"
+        Write-Host "  build         - Build everything (no clean) for IDE run configurations"
+        Write-Host "  build-all     - Full build pipeline (alias for all, use with IDE run configurations)"
         Write-Host "  run           - Full build and launch RimWorld"
-        Write-Host "  quick         - Quick development cycle"
-        Write-Host "  dev           - Development build"
+        Write-Host "  quick         - Quick development cycle (generate + build main solution)"
+        Write-Host "  dev           - Development build (generate + build main + build assets)"
         Write-Host "  setup         - Initial project setup"
         
         Write-Section "Code Generation"
@@ -85,8 +86,11 @@ switch ($Command.ToLower()) {
         
         Write-Section "Building"
         Write-Host "  build-main    - Build main solution"
+        Write-Host "  build-main-debug - Build main solution in debug mode"
         Write-Host "  build-tools   - Build Tools CLI"
+        Write-Host "  build-tools-debug - Build Tools CLI in debug mode"
         Write-Host "  build-assets  - Build Unity AssetBundles"
+        Write-Host "  build-assets-force - Force rebuild all AssetBundles"
         Write-Host "  build-debug   - Build in debug mode"
         
         Write-Section "Development Tools"
@@ -95,12 +99,34 @@ switch ($Command.ToLower()) {
         Write-Host "  format        - Format C# code"
         Write-Host "  test          - Run tests"
         Write-Host "  lint          - Run linting"
-        Write-Host "  precommit     - Pre-commit checks"
+        Write-Host "  precommit     - Pre-commit checks (generate, format, lint, test)"
+        Write-Host "  release-prep  - Prepare for release (full build + test)"
+        
+        Write-Section "Project Management"
+        Write-Host "  install-deps  - Install Node.js dependencies (legacy .scripts)"
+        Write-Host "  check-deps    - Check for outdated dependencies"
+        Write-Host "  status        - Show git status and solution info"
+        
+        Write-Section "Development Workflow"
+        Write-Host "  watch         - Watch for changes and auto-rebuild main solution"
+        
+        Write-Section "Debugging & Analysis"
+        Write-Host "  debug-main    - Build and prepare main solution for debugging"
+        Write-Host "  debug-tools   - Build tools in debug mode"
+        Write-Host "  profile       - Build with profiling enabled"
+        
+        Write-Section "Maintenance"
+        Write-Host "  clean-all     - Nuclear clean (build outputs + generated files)"
+        Write-Host "  rebuild       - Full rebuild from scratch"
+        Write-Host "  update-deps   - Update all dependencies"
+        
+        Write-Section "Legacy Support"
+        Write-Host "  legacy-generate - Use legacy Node.js generator"
+        Write-Host "  legacy-clean  - Clean using legacy method"
         
         Write-Section "Information"
         Write-Host "  info          - Show project information"
-        Write-Host "  versions      - Show tool versions"
-        Write-Host "  status        - Git and solution status"
+        Write-Host "  versions      - Show version information"
     }
     
     "all" {
@@ -238,6 +264,21 @@ switch ($Command.ToLower()) {
         Invoke-ToolsCli "build-assets --verbose"
     }
     
+    "build-main-debug" {
+        Write-Info "Building main solution (Debug)..."
+        Invoke-DotNet "build Cosmere.sln --configuration Debug --verbosity minimal"
+    }
+    
+    "build-tools-debug" {
+        Write-Info "Building Tools solution (Debug)..."
+        Invoke-DotNet "build Cosmere.Tools.sln --configuration Debug --verbosity minimal"
+    }
+    
+    "build-assets-force" {
+        Write-Info "Force building Unity AssetBundles..."
+        powershell.exe -ExecutionPolicy Bypass -File "./buildAllCosmereBundles.ps1"
+    }
+    
     "build-debug" {
         Write-Info "Building in debug mode..."
         Invoke-DotNet "build Cosmere.sln --configuration Debug --verbosity minimal"
@@ -311,6 +352,94 @@ switch ($Command.ToLower()) {
         Write-Host "  Quick iteration:     .\make.ps1 quick"
         Write-Host "  Full build:          .\make.ps1 all"
         Write-Host "  Clean slate:         .\make.ps1 clean; .\make.ps1 all"
+    }
+    
+    "release-prep" {
+        Write-Info "Preparing for release (full build + test)..."
+        & $PSCommandPath all
+        & $PSCommandPath test
+        Write-Success "Release preparation complete!"
+    }
+    
+    "install-deps" {
+        Write-Info "Installing Node.js dependencies..."
+        Set-Location .scripts
+        npm install
+        Set-Location ..
+        Write-Success "Node.js dependencies installed!"
+    }
+    
+    "check-deps" {
+        Write-Info "Checking .NET dependencies..."
+        Invoke-DotNet "list Cosmere.sln package --outdated"
+        Invoke-DotNet "list Cosmere.Tools.sln package --outdated"
+        Write-Info "Checking Node.js dependencies..."
+        Set-Location .scripts
+        try { npm outdated } catch { }
+        Set-Location ..
+    }
+    
+    "watch" {
+        Write-Info "Watching for changes... (Ctrl+C to stop)"
+        Invoke-DotNet "watch --project CosmereCore/CosmereCore/CosmereCore.csproj build"
+    }
+    
+    "debug-main" {
+        Write-Info "Preparing debug build..."
+        & $PSCommandPath build-main-debug
+        Write-Warning "Debug build ready. Attach debugger to RimWorld process."
+    }
+    
+    "debug-tools" {
+        Write-Info "Building tools for debugging..."
+        & $PSCommandPath build-tools-debug
+    }
+    
+    "profile" {
+        Write-Info "Building with profiling..."
+        Invoke-DotNet "build Cosmere.sln --configuration Release -p:DefineConstants=`"PROFILING`" --verbosity minimal"
+    }
+    
+    "clean-all" {
+        Write-Warning "Performing nuclear clean..."
+        & $PSCommandPath clean
+        & $PSCommandPath gen-clean
+        Get-ChildItem -Path . -Recurse -Directory -Name "bin" | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+        Get-ChildItem -Path . -Recurse -Directory -Name "obj" | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+        Write-Success "Nuclear clean complete!"
+    }
+    
+    "rebuild" {
+        Write-Info "Full rebuild from scratch..."
+        & $PSCommandPath clean-all
+        & $PSCommandPath restore
+        & $PSCommandPath generate
+        & $PSCommandPath build-main
+        & $PSCommandPath build-tools
+        Write-Success "Full rebuild complete!"
+    }
+    
+    "update-deps" {
+        Write-Info "Updating dependencies..."
+        Write-Warning "Run manually: dotnet add package <PackageName>"
+        Set-Location .scripts
+        npm update
+        Set-Location ..
+        Write-Success "Node.js dependencies updated!"
+    }
+    
+    "legacy-generate" {
+        Write-Warning "Using legacy Node.js generator..."
+        Set-Location .scripts
+        npm start -- -f -v
+        Set-Location ..
+    }
+    
+    "legacy-clean" {
+        Write-Warning "Using legacy Node.js clean..."
+        Set-Location .scripts
+        npm start -- -d -v
+        Set-Location ..
     }
     
     "versions" {

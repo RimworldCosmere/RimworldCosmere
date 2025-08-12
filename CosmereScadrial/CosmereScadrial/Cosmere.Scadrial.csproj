@@ -57,7 +57,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4543"/>
         <PackageReference Include="Lib.Harmony" Version="2.3.6"/>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -66,5 +65,15 @@
         <ProjectReference Include="..\..\CosmereFoundation\CosmereFoundation\Cosmere.Foundation.csproj"/>
         <ProjectReference Include="..\..\CosmereResources\CosmereResources\Cosmere.Resources.csproj"/>
         <ProjectReference Include="..\..\CosmereCore\CosmereCore\Cosmere.Core.csproj"/>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>..\..\Assembly-CSharp.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    <!-- The below condition will check if you've defined a reference called "Assembly-CSharp" and if that reference exists on disk.
+        If that reference does not exist, it will add Krafs Rimworld Ref to the project. If it does exist, Krafs won't be added
+        as a reference. This basically means that Krafs is treated as a fallback if Assembly-CSharp is not found -->
+    <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*"/>
     </ItemGroup>
 </Project>

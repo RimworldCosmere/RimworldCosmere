@@ -68,7 +68,7 @@ jobs:
           - platform: windows
             build-targets: StandaloneWindows64
           - platform: mac
-            build-targets: StandaloneOSX64
+            build-targets: StandaloneOSX
           - platform: linux
             build-targets: StandaloneLinux64
     env:

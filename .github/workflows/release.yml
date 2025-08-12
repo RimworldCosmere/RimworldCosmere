@@ -145,7 +145,7 @@ jobs:
 
       - name: Install AssetBundleBuilder
         if: steps.check-assets.outputs.has-assets == 'true'
-        run: dotnet tool install --global CryptikLemur.AssetBundleBuilder
+        run: dotnet tool install --global CryptikLemur.AssetBundleBuilder --version 1.0.2
 
       - name: Build AssetBundles
         if: steps.check-assets.outputs.has-assets == 'true'

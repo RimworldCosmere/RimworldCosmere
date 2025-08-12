@@ -100,23 +100,23 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      - name: Setup Unity
-        uses: kuler90/setup-unity@v1
+      - uses: RageAgainstThePixel/activate-unity-license@v1
         with:
-          unity-modules: android
-
-      - name: Activate Unity
-        uses: kuler90/activate-unity@v1
+          license: 'Personal'
+          username: ${{ secrets.UNITY_EMAIL }}
+          password: ${{ secrets.UNITY_PASSWORD }}
+          
+      - uses: RageAgainstThePixel/unity-setup@v1
         with:
-          unity-username: ${{ secrets.UNITY_EMAIL }}
-          unity-password: ${{ secrets.UNITY_PASSWORD }}
+          unity-version: 2022.3.35f1
+          build-targets: [StandaloneWindows64, StandaloneOSX, StandaloneLinux64]
 
       - name: Install AssetBundleBuilder
         run: dotnet tool install --global CryptikLemur.AssetBundleBuilder
 
       # Build bundles for each target platform.
       - name: Build Windows AssetBundles
-        if: steps.copyassets.outputs.hasAssets == 'true' && matrix.platform == 'windows'
+        if: steps.copyassets.outputs.hasAssets == 'true'
         run: |
           assetbundlebuilder \
             2022.3.35f1 \
@@ -128,7 +128,7 @@ jobs:
         timeout-minutes: 30
 
       - name: Build Mac AssetBundles
-        if: steps.copyassets.outputs.hasAssets == 'true' && matrix.platform == 'mac'
+        if: steps.copyassets.outputs.hasAssets == 'true'
         run: |
           assetbundlebuilder \
             2022.3.35f1 \
@@ -140,7 +140,7 @@ jobs:
         timeout-minutes: 30
 
       - name: Build Linux AssetBundles
-        if: steps.copyassets.outputs.hasAssets == 'true' && matrix.platform == 'linux'
+        if: steps.copyassets.outputs.hasAssets == 'true'
         run: |
           assetbundlebuilder \
             2022.3.35f1 \

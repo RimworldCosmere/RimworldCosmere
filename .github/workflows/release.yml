@@ -56,23 +56,22 @@ jobs:
   # available to subsequent jobs.
   build-assetbundles:
     needs: get-mods
+    runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 2
       matrix:
         mod: ${{ fromJson(needs.get-mods.outputs.mods) }}
-        # Build bundles for each platform separately.  Each matrix entry
-        # will contain a mod and a platform (windows, mac, linux).
+        platform: [windows, mac, linux]
         include:
-          - os: windows-latest
-            platform: windows
+          - platform: windows
+            os: windows-latest
             build-targets: StandaloneWindows64
-          - os: mac-latest
-            platform: mac
+          - platform: mac
+            os: macos-latest
             build-targets: StandaloneOSX
-          - os: ubuntu-latest
-            platform: linux
+          - platform: linux
+            os: ubuntu-latest
             build-targets: StandaloneLinux64
-    runs-on: ${{ matrix.os }}
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       MOD: ${{ matrix.mod }}

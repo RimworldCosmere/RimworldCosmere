@@ -96,7 +96,18 @@ jobs:
       - name: Checkout RimworldCosmere
         uses: actions/checkout@v4
 
+      - name: Check if Assets directory exists
+        id: check-assets
+        run: |
+          if [ -d "${{ matrix.mod }}/Assets" ]; then
+            echo "has-assets=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-assets=false" >> $GITHUB_OUTPUT
+            echo "⚠️ No Assets directory found for ${{ matrix.mod }}, skipping build"
+          fi
+
       - uses: actions/cache@v4
+        if: steps.check-assets.outputs.has-assets == 'true'
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -104,26 +115,40 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Setup Dotnet
+        if: steps.check-assets.outputs.has-assets == 'true'
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
+      
+      - name: Cache Unity installations
+        if: steps.check-assets.outputs.has-assets == 'true'
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/Unity
+          key: unity-${{ runner.os }}-2022.3.35f1-${{ matrix.build-targets }}
+          restore-keys: |
+            unity-${{ runner.os }}-2022.3.35f1-
+            unity-${{ runner.os }}-
           
       - uses: buildalon/unity-setup@v1
+        if: steps.check-assets.outputs.has-assets == 'true'
         with:
           unity-version: 2022.3.35f1
           build-targets: ${{ matrix.build-targets }}
 
       - uses: buildalon/activate-unity-license@v1
+        if: steps.check-assets.outputs.has-assets == 'true'
         with:
           license: 'Personal'
           username: ${{ secrets.UNITY_EMAIL }}
           password: ${{ secrets.UNITY_PASSWORD }}
 
       - name: Install AssetBundleBuilder
+        if: steps.check-assets.outputs.has-assets == 'true'
         run: dotnet tool install --global CryptikLemur.AssetBundleBuilder
 
       - name: Build AssetBundles
-        if: steps.copyassets.outputs.hasAssets == 'true'
+        if: steps.check-assets.outputs.has-assets == 'true'
         run: |
           assetbundlebuilder \
             2022.3.35f1 \
@@ -138,7 +163,7 @@ jobs:
       # prepare job will download and extract this archive before building
       # the mod.
       - name: Archive asset bundles
-        if: steps.copyassets.outputs.hasAssets == 'true'
+        if: steps.check-assets.outputs.has-assets == 'true'
         run: |
           finalDir="RimworldCosmere/$MOD/AssetBundles"
           if [ -d "$finalDir" ]; then
@@ -150,7 +175,7 @@ jobs:
           fi
 
       - name: Upload asset bundles artifact
-        if: steps.copyassets.outputs.hasAssets == 'true'
+        if: steps.check-assets.outputs.has-assets == 'true'
         uses: actions/upload-artifact@v4
         with:
           # Include platform in the artifact name so that prepare job can download

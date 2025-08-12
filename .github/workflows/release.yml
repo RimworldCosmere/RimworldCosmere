@@ -58,11 +58,19 @@ jobs:
     needs: get-mods
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 2
       matrix:
         mod: ${{ fromJson(needs.get-mods.outputs.mods) }}
         # Build bundles for each platform separately.  Each matrix entry
         # will contain a mod and a platform (windows, mac, linux).
         platform: [ windows, mac, linux ]
+        include:
+          - platform: windows
+            build-targets: StandaloneWindows64
+          - platform: mac
+            build-targets: StandaloneOSX64
+          - platform: linux
+            build-targets: StandaloneLinux64
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       MOD: ${{ matrix.mod }}
@@ -100,12 +108,12 @@ jobs:
         with:
           dotnet-version: 9.0.x
           
-      - uses: RageAgainstThePixel/unity-setup@v1
+      - uses: buildalon/unity-setup@v1
         with:
           unity-version: 2022.3.35f1
-          build-targets: StandaloneWindows64, StandaloneOSX, StandaloneLinux64
+          build-targets: ${{ matrix.build-targets }}
 
-      - uses: RageAgainstThePixel/activate-unity-license@v1
+      - uses: buildalon/activate-unity-license@v1
         with:
           license: 'Personal'
           username: ${{ secrets.UNITY_EMAIL }}
@@ -114,8 +122,7 @@ jobs:
       - name: Install AssetBundleBuilder
         run: dotnet tool install --global CryptikLemur.AssetBundleBuilder
 
-      # Build bundles for each target platform.
-      - name: Build Windows AssetBundles
+      - name: Build AssetBundles
         if: steps.copyassets.outputs.hasAssets == 'true'
         run: |
           assetbundlebuilder \
@@ -123,31 +130,7 @@ jobs:
             ${{ matrix.mod }}/Assets \
             ${BUNDLE_NAME} \
             ${{ matrix.mod }}/AssetBundles \
-            --target windows
-        continue-on-error: false
-        timeout-minutes: 30
-
-      - name: Build Mac AssetBundles
-        if: steps.copyassets.outputs.hasAssets == 'true'
-        run: |
-          assetbundlebuilder \
-            2022.3.35f1 \
-            ${{ matrix.mod }}/Assets \
-            ${BUNDLE_NAME} \
-            ${{ matrix.mod }}/AssetBundles \
-            --target mac
-        continue-on-error: false
-        timeout-minutes: 30
-
-      - name: Build Linux AssetBundles
-        if: steps.copyassets.outputs.hasAssets == 'true'
-        run: |
-          assetbundlebuilder \
-            2022.3.35f1 \
-            ${{ matrix.mod }}/Assets \
-            ${BUNDLE_NAME} \
-            ${{ matrix.mod }}/AssetBundles \
-            --target linux
+            --target ${{ matrix.platform }}
         continue-on-error: false
         timeout-minutes: 30
 
@@ -349,7 +332,7 @@ jobs:
           
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
-      - uses: CyberAndrii/setup-steamcmd@v1
+      - uses: buildalon/setup-steamcmd@v1
         name: Setup SteamCMD
         if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
         id: steam-setup

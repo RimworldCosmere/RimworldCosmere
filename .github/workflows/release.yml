@@ -125,7 +125,7 @@ jobs:
         with:
           unity-version: 2022.3.35f1
           build-targets: StandaloneWindows64 StandaloneOSX StandaloneLinux64
-          modules: windows-il2cpp mac-il2cpp linux-il2cpp
+          modules: windows-mono mac-mono linux-il2cpp
 
       - uses: buildalon/activate-unity-license@v1
         if: steps.check-assets.outputs.has-assets == 'true'

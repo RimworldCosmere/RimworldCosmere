@@ -109,7 +109,7 @@ jobs:
       - uses: RageAgainstThePixel/unity-setup@v1
         with:
           unity-version: 2022.3.35f1
-          build-targets: [StandaloneWindows64, StandaloneOSX, StandaloneLinux64]
+          build-targets: StandaloneWindows64, StandaloneOSX, StandaloneLinux64
 
       - name: Install AssetBundleBuilder
         run: dotnet tool install --global CryptikLemur.AssetBundleBuilder

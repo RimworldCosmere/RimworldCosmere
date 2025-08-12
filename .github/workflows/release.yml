@@ -99,17 +99,17 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
+          
+      - uses: RageAgainstThePixel/unity-setup@v1
+        with:
+          unity-version: 2022.3.35f1
+          build-targets: StandaloneWindows64, StandaloneOSX, StandaloneLinux64
 
       - uses: RageAgainstThePixel/activate-unity-license@v1
         with:
           license: 'Personal'
           username: ${{ secrets.UNITY_EMAIL }}
           password: ${{ secrets.UNITY_PASSWORD }}
-          
-      - uses: RageAgainstThePixel/unity-setup@v1
-        with:
-          unity-version: 2022.3.35f1
-          build-targets: StandaloneWindows64, StandaloneOSX, StandaloneLinux64
 
       - name: Install AssetBundleBuilder
         run: dotnet tool install --global CryptikLemur.AssetBundleBuilder

@@ -261,7 +261,7 @@ switch ($Command.ToLower()) {
     
     "build-assets" {
         Write-Info "Building Unity AssetBundles..."
-        Invoke-ToolsCli "build-assets --verbose"
+        dotnet script ./scripts/build-assets.csx
     }
     
     "build-main-debug" {
@@ -276,7 +276,7 @@ switch ($Command.ToLower()) {
     
     "build-assets-force" {
         Write-Info "Force building Unity AssetBundles..."
-        powershell.exe -ExecutionPolicy Bypass -File "./buildAllCosmereBundles.ps1"
+        dotnet script ./scripts/build-assets.csx -- --force
     }
     
     "build-debug" {
@@ -455,7 +455,7 @@ switch ($Command.ToLower()) {
         Write-Host ""
         Write-Section "Unity Information"
         Write-Host "  Target Version: 2022.3.35f1"
-        Write-Host "  AssetBuilder: ../AssetBuilder (sibling directory)"
+        Write-Host "  AssetBundleBuilder: CryptikLemur.AssetBundleBuilder (dotnet tool)"
     }
     
     default {

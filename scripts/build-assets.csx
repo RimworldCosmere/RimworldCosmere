@@ -1,5 +1,5 @@
-﻿// scripts/build-assets.csx
-// Run with: dotnet script ./scripts/build-assets.csx
+// scripts/build-assets.csx
+// Run with: dotnet script ./scripts/build-assets.csx [-- --force]
 
 #nullable enable
 #r "System.Runtime"
@@ -11,10 +11,14 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 
+// ---------- Parse arguments ----------
+var scriptArgs = Args.ToArray();
+var forceRebuild = scriptArgs.Contains("--force", StringComparer.OrdinalIgnoreCase);
+
 // ---------- Helpers ----------
 static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 static bool IsMacOS   => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-static string Q(string s) => $"\"{s}\"";
+static bool IsLinux   => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 
 static string GetFolderHash(string folderPath)
 {
@@ -57,43 +61,76 @@ static string FindScriptDir()
     return Path.GetDirectoryName(exec) ?? cwd;
 }
 
+static bool RunCommand(string command, string arguments, string? workingDir = null)
+{
+    var psi = new ProcessStartInfo
+    {
+        FileName = command,
+        Arguments = arguments,
+        UseShellExecute = false,
+        RedirectStandardOutput = true,
+        RedirectStandardError = true,
+        CreateNoWindow = true,
+        WorkingDirectory = workingDir ?? Directory.GetCurrentDirectory()
+    };
+
+    using var proc = Process.Start(psi);
+    if (proc == null) return false;
+    
+    proc.OutputDataReceived += (_, e) => { if (e.Data is not null) Console.WriteLine("    " + e.Data); };
+    proc.ErrorDataReceived  += (_, e) => { if (e.Data is not null) Console.Error.WriteLine("    " + e.Data); };
+    proc.BeginOutputReadLine();
+    proc.BeginErrorReadLine();
+    proc.WaitForExit();
+    
+    return proc.ExitCode == 0;
+}
+
 // ---------- Paths ----------
 var scriptDir = FindScriptDir();
 // repo root is one up from ./scripts
 var root = Path.GetFullPath(Path.Combine(scriptDir, ".."));
 
-// ---------- Unity path + target ----------
-string? unityPath = null;
-string? buildTarget = null;
+// ---------- Determine build target ----------
+// Priority: UNITY_BUILD_TARGET env var > OS detection
+var buildTarget = Environment.GetEnvironmentVariable("UNITY_BUILD_TARGET");
 
-if (IsWindows)
-{
-    unityPath   = @"C:\Program Files\Unity\Hub\Editor\2022.3.35f1\Editor\Unity.exe";
-    buildTarget = "windows";
-}
-else if (IsMacOS)
-{
-    unityPath   = "/Applications/Unity/Hub/Editor/2022.3.35f1/Unity.app/Contents/MacOS/Unity";
-    buildTarget = "mac";
-}
-
-// Fallbacks
-bool UnityExists(string p) => !string.IsNullOrWhiteSpace(p) && File.Exists(p);
-if (!UnityExists(unityPath ?? ""))
-    unityPath = Environment.GetEnvironmentVariable("UNITY_PATH");
-if (string.IsNullOrWhiteSpace(buildTarget))
-    buildTarget = Environment.GetEnvironmentVariable("UNITY_BUILD_TARGET");
-
-// Validate
-if (string.IsNullOrWhiteSpace(unityPath))
-{
-    Console.WriteLine("Could not find unityPath. On Windows/Mac, update to PowerShell 7; otherwise set UNITY_PATH.");
-    Environment.Exit(1);
-}
 if (string.IsNullOrWhiteSpace(buildTarget))
 {
-    Console.WriteLine("Could not find buildTarget. Set UNITY_BUILD_TARGET (windows, mac, linux).");
-    Environment.Exit(1);
+    // Auto-detect based on OS
+    if (IsMacOS)
+        buildTarget = "mac";
+    else if (IsLinux)
+        buildTarget = "linux";
+    else
+        buildTarget = "windows"; // Default fallback, or windows
+}
+
+Console.WriteLine($"Build target: {buildTarget}");
+Console.WriteLine($"Force rebuild: {forceRebuild}");
+
+// ---------- Install AssetBundleBuilder if needed ----------
+Console.WriteLine("Checking for AssetBundleBuilder tool...");
+var checkProc = Process.Start(new ProcessStartInfo
+{
+    FileName = "dotnet",
+    Arguments = "tool list --global",
+    UseShellExecute = false,
+    RedirectStandardOutput = true,
+    CreateNoWindow = true
+});
+checkProc?.WaitForExit();
+var toolOutput = checkProc?.StandardOutput.ReadToEnd() ?? "";
+
+if (!toolOutput.Contains("CryptikLemur.AssetBundleBuilder", StringComparison.OrdinalIgnoreCase))
+{
+    Console.WriteLine("Installing CryptikLemur.AssetBundleBuilder...");
+    if (!RunCommand("dotnet", "tool install --global CryptikLemur.AssetBundleBuilder --version 1.0.3"))
+    {
+        Console.WriteLine("Failed to install AssetBundleBuilder tool!");
+        Environment.Exit(1);
+    }
+    Console.WriteLine("AssetBundleBuilder installed successfully.");
 }
 
 // ---------- Discover mods (must contain About/) ----------
@@ -102,13 +139,17 @@ var modDirs = Directory.EnumerateDirectories(root, "*", SearchOption.TopDirector
     .OrderBy(d => d, StringComparer.OrdinalIgnoreCase)
     .ToArray();
 
-foreach (var d in modDirs) Console.WriteLine($"  {d}");
+Console.WriteLine($"Found {modDirs.Length} mods:");
+foreach (var d in modDirs) Console.WriteLine($"  {Path.GetFileName(d)}");
 
 // ---------- Build loop ----------
 foreach (var modDir in modDirs)
 {
     var modName   = Path.GetFileName(modDir); // e.g., "CosmereRoshar"
-    var shortMod  = modName.StartsWith("Cosmere", StringComparison.OrdinalIgnoreCase) ? modName.Substring("Cosmere".Length) : modName;
+    var shortMod  = modName.StartsWith("Cosmere", StringComparison.OrdinalIgnoreCase) 
+        ? modName.Substring("Cosmere".Length) 
+        : modName;
+    var bundleName = $"cosmere.{shortMod.ToLowerInvariant()}";
 
     Console.WriteLine("--------------------------------------");
     Console.WriteLine($"Processing {modName}...");
@@ -123,61 +164,48 @@ foreach (var modDir in modDirs)
         continue;
     }
 
+    // Check hash for incremental builds
     var currentHash  = GetFolderHash(srcAssets);
     var previousHash = File.Exists(hashFile) ? (File.ReadAllText(hashFile) ?? "").Trim() : "";
 
-    Console.WriteLine($"    Testing {currentHash} vs {previousHash}");
-    if (string.Equals(currentHash, previousHash, StringComparison.OrdinalIgnoreCase))
+    if (!forceRebuild)
     {
-        Console.WriteLine($"    No changes detected in {modName}. Skipping build.");
-        continue;
+        Console.WriteLine($"    Current hash:  {currentHash}");
+        Console.WriteLine($"    Previous hash: {previousHash}");
+        
+        if (string.Equals(currentHash, previousHash, StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine($"    No changes detected in {modName}. Skipping build.");
+            continue;
+        }
+    }
+    else
+    {
+        Console.WriteLine("    Force rebuild enabled - cleaning existing bundles.");
+        if (Directory.Exists(bundlesDir))
+        {
+            Directory.Delete(bundlesDir, true);
+        }
     }
 
-    Console.WriteLine("    Changes detected. Continuing with build.");
+    Console.WriteLine("    Changes detected or force rebuild. Building asset bundles...");
 
-    // Unity project: prefer sibling ../AssetBuilder; fallback to ./AssetBuilder inside repo
-    var unityProject = Path.GetFullPath(Path.Combine(root, "..", "AssetBuilder"));
-    if (!Directory.Exists(unityProject))
-        unityProject = Path.Combine(root, "AssetBuilder");
-
-    var args = new[]
+    // Build using AssetBundleBuilder
+    Console.WriteLine($"    Building asset bundle: {bundleName}");
+    
+    var buildArgs = $"2022.3.35f1 \"{srcAssets}\" {bundleName} \"{bundlesDir}\" --target {buildTarget}";
+    
+    if (!RunCommand("assetbundlebuilder", buildArgs, root))
     {
-        "-batchmode",
-        "-quit",
-        $"-projectPath {Q(unityProject)}",
-        "-executeMethod ModAssetBundleBuilder.BuildBundles",
-        $"-buildTarget={buildTarget}",
-        $"-source={Q(modDir)}"
-    };
-
-    Console.WriteLine($"    Building asset bundle: Cosmere.{shortMod}");
-    var psi = new ProcessStartInfo
-    {
-        FileName = unityPath!,
-        Arguments = string.Join(" ", args),
-        UseShellExecute = false,
-        RedirectStandardOutput = true,
-        RedirectStandardError = true,
-        CreateNoWindow = true,
-        WorkingDirectory = unityProject
-    };
-
-    using var proc = Process.Start(psi)!;
-    proc.OutputDataReceived += (_, e) => { if (e.Data is not null) Console.WriteLine("    " + e.Data); };
-    proc.ErrorDataReceived  += (_, e) => { if (e.Data is not null) Console.Error.WriteLine("    " + e.Data); };
-    proc.BeginOutputReadLine();
-    proc.BeginErrorReadLine();
-    proc.WaitForExit();
-
-    if (proc.ExitCode != 0)
-    {
-        Console.WriteLine($"    Unity failed for {shortMod} (exit code {proc.ExitCode}). Crashing build.");
-        Environment.Exit(proc.ExitCode);
+        Console.WriteLine($"    AssetBundleBuilder failed for {modName}!");
+        Environment.Exit(1);
     }
 
+    // Save hash for next build
     Directory.CreateDirectory(bundlesDir);
     File.WriteAllText(hashFile, currentHash, Encoding.ASCII);
     Console.WriteLine($"    Done with {modName}.");
 }
 
-Console.WriteLine("All bundles built.");
+Console.WriteLine("--------------------------------------");
+Console.WriteLine("All bundles built successfully!");

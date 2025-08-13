@@ -110,11 +110,11 @@ build-tools-debug: ## Build Tools CLI in debug mode
 
 build-assets: ## Build Unity AssetBundles
 	@echo "$(BLUE)Building Unity AssetBundles...$(NC)"
-	@dotnet run --project tools/Cosmere.Tools.Cli -- build-assets --verbose
+	@dotnet script ./scripts/build-assets.csx
 
 build-assets-force: ## Force rebuild all AssetBundles
 	@echo "$(BLUE)Force building Unity AssetBundles...$(NC)"
-	@powershell.exe -ExecutionPolicy Bypass -File "./buildAllCosmereBundles.ps1"
+	@dotnet script ./scripts/build-assets.csx -- --force
 
 ##@ Development Tools
 
@@ -250,4 +250,4 @@ versions: ## Show version information
 	@echo ""
 	@echo "$(BLUE)Unity Information:$(NC)"
 	@echo "  Target Version: 2022.3.35f1"
-	@echo "  AssetBuilder: ../AssetBuilder (sibling directory)"
+	@echo "  AssetBundleBuilder: CryptikLemur.AssetBundleBuilder (dotnet tool)"

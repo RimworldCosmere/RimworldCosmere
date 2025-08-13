@@ -10,18 +10,15 @@ development environment, add new shardworlds, and follow our commit and release 
 - [.Net SDK 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 - [.Net Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
 - [Unity Hub](https://unity.com/download)
-- [Unity Editor 2022.3.35f1](https://unity.com/releases/editor/whats-new/2022.3.35) (located in
-  `C:\Program Files\Unity\Hub\Editor\2022.3.35f1\Editor\Unity.exe`)
+- [Unity Editor 2022.3.35f1](https://unity.com/releases/editor/whats-new/2022.3.35)
 - [Make](https://gnuwin32.sourceforge.net/packages/make.htm) (optional - Windows users can use `make.ps1` instead)
 
 To develop locally:
 
-1. Clone [AssetBuilder](https://github.com/RimworldCosmere/AssetBuilder) into a sibling directory (not inside this
-   repo):
+1. Install the AssetBundleBuilder tool:
 
-    ```
-    /RimworldCosmere
-    /AssetBuilder
+    ```bash
+    dotnet tool install --global CryptikLemur.AssetBundleBuilder --version 1.0.3
     ```
 
 2. Generate code and build assets:
@@ -40,8 +37,10 @@ To develop locally:
     - `make help` or `.\make.ps1 help` - Show all available commands
     - `make generatables` - Generate code and build assets (recommended for development)
     - `make generate` - Generate code only
-    - `make build-assets` - Build Unity AssetBundles only
+    - `make build-assets` - Build Unity AssetBundles only (requires Unity 2022.3.35f1)
     - `make all` - Full build pipeline (clean, generate, build, assets)
+
+    **Note:** AssetBundle building requires Unity 2022.3.35f1 to be installed. The AssetBundleBuilder tool will automatically find and use your Unity installation.
 
 3. For development, use the provided RimWorld run configurations in your IDE.
     - The [GarethP RimWorld plugin](https://plugins.jetbrains.com/plugin/18442-rimworld) is highly recommended for Rider users as it provides RimWorld-specific tooling and run configurations.

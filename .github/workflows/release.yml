@@ -50,72 +50,28 @@ jobs:
           echo "mods=$mods" >> "$GITHUB_OUTPUT"
 
 
-  # The job runs sequentially across mods (max‑parallel: 1) so that
-  # Unity licence activation and asset copying do not step on each
-  # other.  Built bundles are zipped and uploaded as artifacts
-  # available to subsequent jobs.
+  # Build all asset bundles for all platforms in a single job
   build-assetbundles:
     needs: get-mods
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 1
-      matrix:
-        mod: ${{ fromJson(needs.get-mods.outputs.mods) }}
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-      MOD: ${{ matrix.mod }}
-      BUNDLE_NAME: ${{ matrix.mod }}
     steps:
-      #- name: Free Disk Space (Ubuntu)
-      #  uses: jlumbroso/free-disk-space@main
-      #  with:
-      #    # this might remove tools that are actually needed,
-      #    # if set to "true" but frees about 6 GB
-      #    tool-cache: true
-      #    # dotnet is needed later, so do not remove it
-      #    dotnet: false
-
-      - name: Set BUNDLE_NAME
-        run: |
-          short="${MOD#Cosmere}"
-          short="${short,,}"
-          echo "BUNDLE_NAME=cosmere.$short" >> $GITHUB_ENV
-        env:
-          MOD: ${{ matrix.mod }}
-
       - name: Checkout RimworldCosmere
         uses: actions/checkout@v4
 
-      - name: Check if Assets directory exists
-        id: check-assets
-        run: |
-          if [ -d "${{ matrix.mod }}/Assets" ]; then
-            echo "has-assets=true" >> $GITHUB_OUTPUT
-          else
-            echo "has-assets=false" >> $GITHUB_OUTPUT
-            echo "⚠️ No Assets directory found for ${{ matrix.mod }}, skipping build"
-          fi
-
-      - uses: actions/cache@v4
-        if: steps.check-assets.outputs.has-assets == 'true'
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
       - name: Setup Dotnet
-        if: steps.check-assets.outputs.has-assets == 'true'
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
+          
+      - name: Install dotnet-script
+        run: dotnet tool install --global dotnet-script
 
       - name: Install AssetBundleBuilder
-        if: steps.check-assets.outputs.has-assets == 'true'
         run: dotnet tool install --global CryptikLemur.AssetBundleBuilder --version 1.0.3
-      
+
       - name: Cache Unity installations
-        if: steps.check-assets.outputs.has-assets == 'true'
         uses: actions/cache@v4
         with:
           path: /home/runner/Unity
@@ -125,70 +81,49 @@ jobs:
             unity-${{ runner.os }}-
           
       - uses: buildalon/unity-setup@v1
-        if: steps.check-assets.outputs.has-assets == 'true'
         with:
           unity-version: 2022.3.35f1
           build-targets: StandaloneWindows64 StandaloneOSX StandaloneLinux64
           modules: windows-mono mac-mono linux-il2cpp
 
       - uses: buildalon/activate-unity-license@v1
-        if: steps.check-assets.outputs.has-assets == 'true'
         with:
           license: 'Personal'
           username: ${{ secrets.UNITY_EMAIL }}
           password: ${{ secrets.UNITY_PASSWORD }}
 
-      - name: Build AssetBundles for all platforms
-        if: steps.check-assets.outputs.has-assets == 'true'
+      - name: Build AssetBundles for Windows
         run: |
-          # Build for Windows
-          assetbundlebuilder \
-            2022.3.35f1 \
-            ${{ matrix.mod }}/Assets \
-            ${BUNDLE_NAME} \
-            ${{ matrix.mod }}/AssetBundles \
-            --target windows
+          export UNITY_BUILD_TARGET=windows
+          dotnet script ./scripts/build-assets.csx -- --force
           
-          # Build for macOS
-          assetbundlebuilder \
-            2022.3.35f1 \
-            ${{ matrix.mod }}/Assets \
-            ${BUNDLE_NAME} \
-            ${{ matrix.mod }}/AssetBundles \
-            --target mac
-          
-          # Build for Linux
-          assetbundlebuilder \
-            2022.3.35f1 \
-            ${{ matrix.mod }}/Assets \
-            ${BUNDLE_NAME} \
-            ${{ matrix.mod }}/AssetBundles \
-            --target linux
-        continue-on-error: false
-        timeout-minutes: 30
-
-      # Package the AssetBundles directory and upload it as an artifact.  The
-      # prepare job will download and extract this archive before building
-      # the mod.
-      - name: Archive asset bundles
-        if: steps.check-assets.outputs.has-assets == 'true'
+      - name: Build AssetBundles for macOS
         run: |
-          finalDir="$MOD/AssetBundles"
-          if [ -d "$finalDir" ]; then
-            echo "Zipping built asset bundles from $finalDir"
-            zip -r "$MOD-assetbundles.zip" "$finalDir"
-          else
-            echo "Expected asset bundles directory $finalDir not found!"
-            exit 1
-          fi
+          export UNITY_BUILD_TARGET=mac
+          dotnet script ./scripts/build-assets.csx -- --force
+          
+      - name: Build AssetBundles for Linux
+        run: |
+          export UNITY_BUILD_TARGET=linux
+          dotnet script ./scripts/build-assets.csx -- --force
 
-      - name: Upload asset bundles artifact
-        if: steps.check-assets.outputs.has-assets == 'true'
+      - name: Archive and upload asset bundles
+        run: |
+          for modDir in Cosmere*/; do
+            if [ -d "$modDir/AssetBundles" ]; then
+              modName=$(basename "$modDir")
+              echo "Archiving $modName asset bundles..."
+              cd "$modDir"
+              zip -r "../${modName}-assetbundles.zip" AssetBundles
+              cd ..
+            fi
+          done
+          
+      - name: Upload asset bundles artifacts
         uses: actions/upload-artifact@v4
         with:
-          # Asset bundles for all platforms in one artifact
-          name: ${{ matrix.mod }}-assetbundles
-          path: ${{ matrix.mod }}-assetbundles.zip
+          name: all-assetbundles
+          path: "*-assetbundles.zip"
 
   prepare:
     needs: [ get-mods, build-assetbundles ]
@@ -258,23 +193,24 @@ jobs:
           fi
 
       # Download and extract asset bundles built in the previous job.  The
-      # artifact contains a zip of the AssetBundles directory.  After
+      # artifact contains zips of all AssetBundles directories.  After
       # extraction the bundles live under RimworldCosmere/$MOD/AssetBundles
       # so that the packaging step will include them automatically.
       - name: Download asset bundles
         uses: actions/download-artifact@v4
         with:
-          # Download asset bundle artifact for this mod (all platforms)
-          name: ${{ matrix.mod }}-assetbundles
-          path: RimworldCosmere/${{ matrix.mod }}
+          name: all-assetbundles
+          path: RimworldCosmere
 
       - name: Extract asset bundles
-        working-directory: RimworldCosmere/${{ matrix.mod }}
+        working-directory: RimworldCosmere
         run: |
           if [ -f "$MOD-assetbundles.zip" ]; then
-            echo "Extracting $MOD-assetbundles.zip"
-            unzip -o "$MOD-assetbundles.zip"
+            echo "Extracting $MOD-assetbundles.zip to $MOD/"
+            unzip -o "$MOD-assetbundles.zip" -d "$MOD/"
             rm "$MOD-assetbundles.zip"
+          else
+            echo "No asset bundles found for $MOD (this is fine if mod has no Assets)"
           fi
 
       - name: Build Mod

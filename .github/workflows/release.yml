@@ -109,6 +109,10 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
+
+      - name: Install AssetBundleBuilder
+        if: steps.check-assets.outputs.has-assets == 'true'
+        run: dotnet tool install --global CryptikLemur.AssetBundleBuilder --version 1.0.3
       
       - name: Cache Unity installations
         if: steps.check-assets.outputs.has-assets == 'true'
@@ -133,10 +137,6 @@ jobs:
           license: 'Personal'
           username: ${{ secrets.UNITY_EMAIL }}
           password: ${{ secrets.UNITY_PASSWORD }}
-
-      - name: Install AssetBundleBuilder
-        if: steps.check-assets.outputs.has-assets == 'true'
-        run: dotnet tool install --global CryptikLemur.AssetBundleBuilder --version 1.0.3
 
       - name: Build AssetBundles for all platforms
         if: steps.check-assets.outputs.has-assets == 'true'

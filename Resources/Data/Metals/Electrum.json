@@ -43,11 +43,11 @@
     "type": "simple",
     "ingredients": [
       {
-        "item": "gold",
+        "items": ["gold"],
         "count": 5
       },
       {
-        "item": "silver",
+        "items": ["silver"],
         "count": 5
       }
     ]

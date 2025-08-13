@@ -95,7 +95,7 @@
                 {{#each stuffStatFactors as |value key| }}
                 <{{key}}>{{value}}</{{key}}>
                 {{/each}}
-                {{#if (and offense offense.cooldown) }}<MeleeWeapon_CooldownMultiplier>{{ offense.cooldown }}</MeleeWeapon_CooldownMultiplier>{{/if}}
+                {{#if offense.cooldown }}<MeleeWeapon_CooldownMultiplier>{{ offense.cooldown }}</MeleeWeapon_CooldownMultiplier>{{/if}}
             </statFactors>
             {{/if}}
             {{/with}}

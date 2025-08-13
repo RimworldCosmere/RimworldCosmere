@@ -1,5 +1,6 @@
 using System.IO.Abstractions;
 using Cosmere.Tools.Data;
+using Cosmere.Tools.Extensions;
 using Cosmere.Tools.Models;
 
 namespace Cosmere.Tools.Generation.Generators;
@@ -54,14 +55,14 @@ public class GenesAndTraitsGenerator : BaseGenerator
         
         foreach (var metal in allomancyMetals)
         {
-            var defName = metal.DefName ?? ToDefName(metal.Name);
+            var defName = metal.DefName ?? metal.Name.ToDefName();
             var metalOutputDir = FileSystem.Path.Combine(outputDir, defName);
             
             var geneContent = geneTemplate(new { metal, defName, order = order++ });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, "Gene.generated.xml", geneContent));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, metal.Name.ToDefName() + "Gene.generated.xml", geneContent));
             
             var traitContent = traitTemplate(new { metal, defName, order = order++ });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, "Trait.generated.xml", traitContent));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, metal.Name.ToDefName() + "Trait.generated.xml", traitContent));
         }
 
         // Generate DefOf files
@@ -105,14 +106,14 @@ public class GenesAndTraitsGenerator : BaseGenerator
         
         foreach (var metal in feruchemyMetals)
         {
-            var defName = metal.DefName ?? ToDefName(metal.Name);
+            var defName = metal.DefName ?? metal.Name.ToDefName();
             var metalOutputDir = FileSystem.Path.Combine(outputDir, defName);
             
             var geneContent = geneTemplate(new { metal, defName, order = order++ });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, "Gene.generated.xml", geneContent));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, metal.Name.ToDefName() + "Gene.generated.xml", geneContent));
             
             var traitContent = traitTemplate(new { metal, defName, order = order++ });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, "Trait.generated.xml", traitContent));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, metal.Name.ToDefName() + "Trait.generated.xml", traitContent));
         }
 
         // Generate DefOf files

@@ -37,11 +37,11 @@
     "type": "complex",
     "ingredients": [
       {
-        "item": "aluminum",
+        "items": ["aluminum"],
         "count": 9
       },
       {
-        "item": "copper",
+        "items": ["copper"],
         "count": 1
       }
     ]

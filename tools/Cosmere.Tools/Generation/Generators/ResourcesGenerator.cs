@@ -1,5 +1,6 @@
 using System.IO.Abstractions;
 using Cosmere.Tools.Data;
+using Cosmere.Tools.Extensions;
 using Cosmere.Tools.Models;
 using HandlebarsDotNet;
 
@@ -67,7 +68,7 @@ public class ResourcesGenerator : BaseGenerator
         foreach (var metal in enabledMetals)
         {
             var content = metalDefTemplate(new { metal });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(metalDefOutputDir, $"{ToDefName(metal.Name)}.generated.xml", content));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(metalDefOutputDir, $"{metal.Name.ToDefName()}Metal.generated.xml", content));
         }
 
         // Generate MetalDefOf
@@ -81,7 +82,7 @@ public class ResourcesGenerator : BaseGenerator
             foreach (var metal in mineableMetals)
             {
                 var content = mineableTemplate(new { metal });
-                fileWriteTasks.Add(WriteGeneratedFileAsync(mineableOutputDir, $"{ToDefName(metal.Name)}.generated.xml", content));
+                fileWriteTasks.Add(WriteGeneratedFileAsync(mineableOutputDir, $"{metal.Name.ToDefName()}Mineable.generated.xml", content));
             }
 
             var mineableDefOfContent = thingDefOfMineableTemplate(new { metals = mineableMetals });
@@ -93,7 +94,7 @@ public class ResourcesGenerator : BaseGenerator
         foreach (var metal in enabledMetals)
         {
             var content = itemTemplate(new { metal });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(itemOutputDir, $"{ToDefName(metal.Name)}.generated.xml", content));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(itemOutputDir, $"{metal.Name.ToDefName()}Item.generated.xml", content));
         }
 
         var itemDefOfContent = thingDefOfItemTemplate(new { metals = enabledMetals });
@@ -150,7 +151,7 @@ public class ResourcesGenerator : BaseGenerator
         foreach (var gem in enabledGems)
         {
             var content = gemDefTemplate(new { gem });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(gemDefOutputDir, $"{ToDefName(gem.Name)}.generated.xml", content));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(gemDefOutputDir, $"{gem.Name.ToDefName()}Gem.generated.xml", content));
         }
 
         // Generate GemDefOf
@@ -164,7 +165,7 @@ public class ResourcesGenerator : BaseGenerator
             foreach (var gem in mineableGems)
             {
                 var content = mineableTemplate(new { gem });
-                fileWriteTasks.Add(WriteGeneratedFileAsync(mineableOutputDir, $"{ToDefName(gem.Name)}.generated.xml", content));
+                fileWriteTasks.Add(WriteGeneratedFileAsync(mineableOutputDir, $"{gem.Name.ToDefName()}Mineable.generated.xml", content));
             }
 
             var mineableDefOfContent = thingDefOfMineableTemplate(new { gems = mineableGems });
@@ -176,7 +177,7 @@ public class ResourcesGenerator : BaseGenerator
         foreach (var gem in enabledGems)
         {
             var content = itemTemplate(new { gem });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(itemOutputDir, $"{ToDefName(gem.Name)}.generated.xml", content));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(itemOutputDir, $"{gem.Name.ToDefName()}Item.generated.xml", content));
         }
 
         var itemDefOfContent = thingDefOfItemTemplate(new { gems = enabledGems });

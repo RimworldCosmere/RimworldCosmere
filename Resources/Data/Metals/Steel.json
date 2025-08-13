@@ -87,13 +87,13 @@
     "type": "simple",
     "ingredients": [
       {
-        "item": [
+        "items": [
           "iron"
         ],
         "count": 8
       },
       {
-        "item": [
+        "items": [
           "coal"
         ],
         "count": 2

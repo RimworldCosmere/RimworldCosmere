@@ -38,11 +38,11 @@
     "type": "complex",
     "ingredients": [
       {
-        "item": "nickel",
+        "items": ["nickel"],
         "count": 8
       },
       {
-        "item": "chromium",
+        "items": ["chromium"],
         "count": 2
       }
     ]

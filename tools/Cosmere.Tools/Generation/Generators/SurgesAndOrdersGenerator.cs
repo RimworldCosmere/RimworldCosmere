@@ -1,5 +1,6 @@
 using System.IO.Abstractions;
 using Cosmere.Tools.Data;
+using Cosmere.Tools.Extensions;
 using Cosmere.Tools.Models;
 
 namespace Cosmere.Tools.Generation.Generators;
@@ -51,7 +52,7 @@ public class SurgesAndOrdersGenerator : BaseGenerator
         foreach (var surge in surges)
         {
             var content = surgeDefTemplate(new { surge });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(surgeDefOutputDir, $"{ToDefName(surge.Name)}.generated.xml", content));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(surgeDefOutputDir, $"{surge.Name.ToDefName()}Surge.generated.xml", content));
         }
 
         // Generate SurgeDefOf
@@ -63,7 +64,7 @@ public class SurgesAndOrdersGenerator : BaseGenerator
         foreach (var order in orders)
         {
             var content = radiantOrderDefTemplate(new { order });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(radiantOrderDefOutputDir, $"{ToDefName(order.Name)}.generated.xml", content));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(radiantOrderDefOutputDir, $"{order.Name.ToDefName()}Order.generated.xml", content));
         }
 
         // Generate RadiantOrderDefOf
@@ -75,7 +76,7 @@ public class SurgesAndOrdersGenerator : BaseGenerator
         foreach (var order in orders)
         {
             var content = geneDefTemplate(new { order });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(geneDefOutputDir, $"{ToDefName(order.Name)}.generated.xml", content));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(geneDefOutputDir, $"{order.Name.ToDefName()}Gene.generated.xml", content));
         }
 
         // Generate DefOf classes for genes and traits

@@ -18,11 +18,11 @@
     "type": "complex",
     "ingredients": [
       {
-        "item": "lerasium",
+        "items": ["lerasium"],
         "count": 1
       },
       {
-        "item": "atium",
+        "items": ["atium"],
         "count": 1
       }
     ],

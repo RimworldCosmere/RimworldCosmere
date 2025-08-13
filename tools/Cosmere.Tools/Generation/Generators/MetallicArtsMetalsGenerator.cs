@@ -1,5 +1,6 @@
 using System.IO.Abstractions;
 using Cosmere.Tools.Data;
+using Cosmere.Tools.Extensions;
 using Cosmere.Tools.Models;
 
 namespace Cosmere.Tools.Generation.Generators;
@@ -44,7 +45,7 @@ public class MetallicArtsMetalsGenerator : BaseGenerator
         foreach (var metal in metallicArtsMetals)
         {
             var content = metalTemplate(new { metal });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, $"{ToDefName(metal.Name)}.generated.xml", content));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(metalOutputDir, $"{metal.Name.ToDefName()}MetallicArtsMetal.generated.xml", content));
         }
 
         // Generate patches
@@ -52,7 +53,7 @@ public class MetallicArtsMetalsGenerator : BaseGenerator
         foreach (var metal in metallicArtsMetals)
         {
             var content = patchTemplate(new { metal });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(patchOutputDir, $"{ToDefName(metal.Name)}.generated.xml", content));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(patchOutputDir, $"{metal.Name.ToDefName()}Patch.generated.xml", content));
         }
 
         // Generate DefOf classes

@@ -40,15 +40,15 @@
     "type": "complex",
     "ingredients": [
       {
-        "item": "cadmium",
+        "items": ["cadmium"],
         "count": 5
       },
       {
-        "item": "zinc",
+        "items": ["zinc"],
         "count": 2
       },
       {
-        "item": "silver",
+        "items": ["silver"],
         "count": 3
       }
     ]

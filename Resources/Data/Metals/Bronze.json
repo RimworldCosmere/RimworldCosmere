@@ -60,11 +60,11 @@
     "type": "simple",
     "ingredients": [
       {
-        "item": "copper",
+        "items": ["copper"],
         "count": 9
       },
       {
-        "item": "tin",
+        "items": ["tin"],
         "count": 1
       }
     ]

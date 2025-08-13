@@ -20,7 +20,7 @@
     "stuffCount": "32",
     "ingredients": [
       {
-        "item": "leratium",
+        "items": ["leratium"],
         "count": 1
       }
     ],

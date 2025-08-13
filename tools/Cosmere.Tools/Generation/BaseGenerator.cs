@@ -1,4 +1,5 @@
 using System.IO.Abstractions;
+using Cosmere.Tools.Extensions;
 using HandlebarsDotNet;
 using Cosmere.Tools.Models;
 
@@ -25,7 +26,7 @@ public abstract class BaseGenerator : IGenerator
         {
             if (parameters[0] is string str)
             {
-                writer.WriteSafeString(ToDefName(str));
+                writer.WriteSafeString(str.ToDefName());
             }
         });
         
@@ -33,7 +34,7 @@ public abstract class BaseGenerator : IGenerator
         {
             if (parameters[0] is string str)
             {
-                writer.WriteSafeString(ToDefName(str));
+                writer.WriteSafeString(str.ToDefName());
             }
         });
         
@@ -47,9 +48,13 @@ public abstract class BaseGenerator : IGenerator
         
         Handlebars.RegisterHelper("capitalize", (writer, context, parameters) =>
         {
-            if (parameters[0] is string str && !string.IsNullOrEmpty(str))
+            if (parameters.Length > 0 && parameters[0] != null)
             {
-                writer.WriteSafeString(char.ToUpper(str[0]) + str[1..]);
+                var str = parameters[0].ToString();
+                if (!string.IsNullOrEmpty(str))
+                {
+                    writer.WriteSafeString(char.ToUpper(str[0]) + str[1..]);
+                }
             }
         });
         
@@ -65,7 +70,7 @@ public abstract class BaseGenerator : IGenerator
         {
             if (parameters[0] is string str)
             {
-                writer.WriteSafeString(ToTitleCase(str));
+                writer.WriteSafeString(str.ToTitleCase());
             }
         });
 
@@ -191,7 +196,9 @@ public abstract class BaseGenerator : IGenerator
                 double.TryParse(parameters[1]?.ToString(), out var step))
             {
                 var result = 1 + step * (stage + 1);
-                writer.WriteSafeString(result.ToString("F8"));
+                // Format with up to 8 decimal places, then trim trailing zeros
+                var formatted = result.ToString("F8").TrimEnd('0').TrimEnd('.');
+                writer.WriteSafeString(formatted);
             }
         });
 
@@ -262,29 +269,21 @@ public abstract class BaseGenerator : IGenerator
         });
 
         // Block helpers
-        Handlebars.RegisterHelper("times", (output, options, context, parameters) =>
+        Handlebars.RegisterHelper("times", (output, options, context, arguments) => 
         {
-            if (parameters.Length > 0 && int.TryParse(parameters[0]?.ToString(), out var n))
+            int count = Convert.ToInt32(arguments[0]);
+    
+            for (int i = 0; i < count; i++)
             {
-                for (int i = 0; i < n; i++)
-                {
-                    options.Template(output, i);
-                }
+                options.Data.CreateProperty("key", i, out _);
+                options.Data.CreateProperty("time", i, out _);
+                options.Data.CreateProperty("index", i, out _);
+                options.Data.CreateProperty("first", i == 0, out _);
+                options.Data.CreateProperty("last", i == (count - 1), out _);
+            
+                options.Template(output, context);
             }
         });
-    }
-
-    protected static string ToDefName(string input)
-    {
-        return ToTitleCase(input).Replace(" ", string.Empty);
-    }
-
-    protected static string ToTitleCase(string input)
-    {
-        if (string.IsNullOrEmpty(input)) return input;
-        
-        return string.Join(" ", input.ToLowerInvariant().Split(' ')
-            .Select(word => word.Length > 0 ? char.ToUpper(word[0]) + word[1..] : word));
     }
 
     protected HandlebarsTemplate<object, object> CompileTemplate(string templateDir, string templateName)

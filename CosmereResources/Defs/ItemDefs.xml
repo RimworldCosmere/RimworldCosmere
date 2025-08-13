@@ -35,7 +35,7 @@
     </ThingDef>
     <ThingDef Name="CosmereGemBase" ParentName="CosmereResourceBase" Abstract="True">
         <graphicData>
-            <graphicClass>Graphic_StackCount</graphicClass>
+            <graphicClass>Graphic_Single</graphicClass>
             <drawSize>1</drawSize>
         </graphicData>
         

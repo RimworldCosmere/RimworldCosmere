@@ -46,11 +46,11 @@
     "type": "simple",
     "ingredients": [
       {
-        "item": "copper",
+        "items": ["copper"],
         "count": 5
       },
       {
-        "item": "zinc",
+        "items": ["zinc"],
         "count": 5
       }
     ]

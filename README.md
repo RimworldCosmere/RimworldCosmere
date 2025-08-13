@@ -68,5 +68,21 @@ Dragonsteel for all of your work!
 Please do not redistribute standalone modules without credit and attribution.  
 This is a fan project not affiliated with Brandon Sanderson or Dragonsteel Entertainment.
 
-Besides adhering to the above clause, this project has adopted the [MIT License](./LICENSE.md).
+Besides adhering to the above clause, this project has adopted a dual license:
+
+This project uses dual licensing:
+
+- **Code**: All source code is licensed under the [MIT License](LICENSE.md)
+- **Assets**: All art, images, audio, and creative assets are licensed under [CC BY-SA 4.0](LICENSE-ASSETS.md)
+
 We do not permit the use of our code to train LLM Models without express consent.
+
+### Quick Reference
+
+| Content Type | License      | Attribution Required | Commercial Use | 
+|-------------|--------------|---------------------|----------------|
+| Source code (*.cs, *.js, etc.) | MIT          | Yes (keep license) | ✅ Allowed |
+| Images, sprites, textures | CC BY-SA 4.0 | Yes (credit author) | ✅ Allowed |
+| Audio, music, sound effects | CC-SA BY 4.0 | Yes (credit author) | ✅ Allowed |
+| 3D models, animations | CC BY-SA 4.0 | Yes (credit author) | ✅ Allowed |
+| Documentation, text | MIT          | Yes (keep license) | ✅ Allowed |

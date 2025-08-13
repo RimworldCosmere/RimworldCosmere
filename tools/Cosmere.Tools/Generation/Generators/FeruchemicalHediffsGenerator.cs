@@ -1,5 +1,6 @@
 using System.IO.Abstractions;
 using Cosmere.Tools.Data;
+using Cosmere.Tools.Extensions;
 using Cosmere.Tools.Models;
 
 namespace Cosmere.Tools.Generation.Generators;
@@ -36,9 +37,9 @@ public class FeruchemicalHediffsGenerator : BaseGenerator
         // Generate individual hediff definitions
         foreach (var metal in feruchemicalMetals)
         {
-            var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Feruchemy", ToDefName(metal.Name));
+            var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Feruchemy", metal.Name.ToDefName());
             var content = defTemplate(new { metal });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(outputDir, "Hediff.generated.xml", content));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(outputDir, metal.Name.ToDefName() + "Hediff.generated.xml", content));
         }
 
         // Generate HediffDefOf class

@@ -68,14 +68,6 @@ jobs:
       - name: Install dotnet-script
         run: dotnet tool install --global dotnet-script
 
-      - name: Cache Unity installations
-        uses: actions/cache@v4
-        with:
-          path: /home/runner/Unity
-          key: unity-${{ runner.os }}-2022.3.35f1-all-platforms
-          restore-keys: |
-            unity-${{ runner.os }}-2022.3.35f1-
-            unity-${{ runner.os }}-
           
       - uses: buildalon/unity-setup@v1
         with:
@@ -89,20 +81,8 @@ jobs:
           username: ${{ secrets.UNITY_EMAIL }}
           password: ${{ secrets.UNITY_PASSWORD }}
 
-      - name: Build AssetBundles for Windows
-        run: |
-          export UNITY_BUILD_TARGET=windows
-          dotnet script ./scripts/build-assets.csx -- --force
-          
-      - name: Build AssetBundles for macOS
-        run: |
-          export UNITY_BUILD_TARGET=mac
-          dotnet script ./scripts/build-assets.csx -- --force
-          
-      - name: Build AssetBundles for Linux
-        run: |
-          export UNITY_BUILD_TARGET=linux
-          dotnet script ./scripts/build-assets.csx -- --force
+      - name: Build AssetBundles for all platforms
+        run: make build-assets-all
 
       - name: Archive and upload asset bundles
         run: |

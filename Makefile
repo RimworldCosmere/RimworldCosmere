@@ -108,11 +108,21 @@ build-tools-debug: ## Build Tools CLI in debug mode
 	@echo "$(BLUE)Building Tools solution (Debug)...$(NC)"
 	@dotnet build Cosmere.Tools.sln --configuration Debug --verbosity minimal
 
-build-assets: ## Build Unity AssetBundles
+build-assets: ## Build Unity AssetBundles for current platform
 	@echo "$(BLUE)Building Unity AssetBundles...$(NC)"
 	@dotnet script ./scripts/build-assets.csx
 
-build-assets-force: ## Force rebuild all AssetBundles
+build-assets-all: ## Build Unity AssetBundles for all platforms (Windows, Mac, Linux)
+	@echo "$(BLUE)Building Unity AssetBundles for all platforms...$(NC)"
+	@echo "  Building for Windows..."
+	UNITY_BUILD_TARGET=windows dotnet script ./scripts/build-assets.csx
+	@echo "  Building for macOS..."
+	UNITY_BUILD_TARGET=mac dotnet script ./scripts/build-assets.csx
+	@echo "  Building for Linux..."
+	UNITY_BUILD_TARGET=linux dotnet script ./scripts/build-assets.csx
+	@echo "$(GREEN)✓ All platform bundles built!$(NC)"
+
+build-assets-force: ## Force rebuild all AssetBundles for current platform
 	@echo "$(BLUE)Force building Unity AssetBundles...$(NC)"
 	@dotnet script ./scripts/build-assets.csx -- --force
 

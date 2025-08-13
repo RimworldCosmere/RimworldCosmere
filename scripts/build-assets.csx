@@ -189,7 +189,7 @@ foreach (var modDir in modDirs)
 
     var srcAssets   = Path.Combine(modDir, "Assets");
     var bundlesDir  = Path.Combine(modDir, "AssetBundles");
-    var hashFile    = Path.Combine(bundlesDir, ".lastassetbuildhash");
+    var hashFile    = Path.Combine(bundlesDir, $".lastassetbuildhash.{buildTarget}");
 
     if (!Directory.Exists(srcAssets))
     {

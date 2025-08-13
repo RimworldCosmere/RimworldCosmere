@@ -89,8 +89,9 @@ switch ($Command.ToLower()) {
         Write-Host "  build-main-debug - Build main solution in debug mode"
         Write-Host "  build-tools   - Build Tools CLI"
         Write-Host "  build-tools-debug - Build Tools CLI in debug mode"
-        Write-Host "  build-assets  - Build Unity AssetBundles"
-        Write-Host "  build-assets-force - Force rebuild all AssetBundles"
+        Write-Host "  build-assets  - Build Unity AssetBundles for current platform"
+        Write-Host "  build-assets-all - Build Unity AssetBundles for all platforms (Windows, Mac, Linux)"
+        Write-Host "  build-assets-force - Force rebuild all AssetBundles for current platform"
         Write-Host "  build-debug   - Build in debug mode"
         
         Write-Section "Development Tools"
@@ -262,6 +263,29 @@ switch ($Command.ToLower()) {
     "build-assets" {
         Write-Info "Building Unity AssetBundles..."
         dotnet script ./scripts/build-assets.csx
+    }
+    
+    "build-assets-all" {
+        Write-Info "Building Unity AssetBundles for all platforms..."
+        
+        Write-Info "  Building for Windows..."
+        $env:UNITY_BUILD_TARGET = "windows"
+        dotnet script ./scripts/build-assets.csx
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        
+        Write-Info "  Building for macOS..."
+        $env:UNITY_BUILD_TARGET = "mac"
+        dotnet script ./scripts/build-assets.csx
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        
+        Write-Info "  Building for Linux..."
+        $env:UNITY_BUILD_TARGET = "linux"
+        dotnet script ./scripts/build-assets.csx
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        
+        # Clean up environment variable
+        $env:UNITY_BUILD_TARGET = $null
+        Write-Success "All platform bundles built!"
     }
     
     "build-main-debug" {

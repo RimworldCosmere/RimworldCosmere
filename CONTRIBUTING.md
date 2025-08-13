@@ -15,13 +15,7 @@ development environment, add new shardworlds, and follow our commit and release 
 
 To develop locally:
 
-1. Install the AssetBundleBuilder tool:
-
-    ```bash
-    dotnet tool install --global CryptikLemur.AssetBundleBuilder --version 1.0.3
-    ```
-
-2. Generate code and build assets:
+1. Generate code and build assets:
 
     **Option A: Using Make (if installed):**
     ```bash
@@ -42,12 +36,12 @@ To develop locally:
 
     **Note:** AssetBundle building requires Unity 2022.3.35f1 to be installed. The AssetBundleBuilder tool will automatically find and use your Unity installation.
 
-3. For development, use the provided RimWorld run configurations in your IDE.
+2. For development, use the provided RimWorld run configurations in your IDE.
     - The [GarethP RimWorld plugin](https://plugins.jetbrains.com/plugin/18442-rimworld) is highly recommended for Rider users as it provides RimWorld-specific tooling and run configurations.
 
-4. Ensure generated files remain gitignored. Don't check them in.
+3. Ensure generated files remain gitignored. Don't check them in.
 
-5. Symlink the mod folders you are working on into your RimWorld Mods directory.
+4. Symlink the mod folders you are working on into your RimWorld Mods directory.
 
    Example (Windows PowerShell):
 

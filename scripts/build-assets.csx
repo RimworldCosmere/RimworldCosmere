@@ -109,8 +109,10 @@ if (string.IsNullOrWhiteSpace(buildTarget))
 Console.WriteLine($"Build target: {buildTarget}");
 Console.WriteLine($"Force rebuild: {forceRebuild}");
 
-// ---------- Install AssetBundleBuilder if needed ----------
-Console.WriteLine("Checking for AssetBundleBuilder tool...");
+// ---------- Install/Update AssetBundleBuilder if needed ----------
+const string RequiredToolVersion = "1.1.0";
+Console.WriteLine($"Checking for AssetBundleBuilder tool (version {RequiredToolVersion})...");
+
 var checkProc = Process.Start(new ProcessStartInfo
 {
     FileName = "dotnet",
@@ -122,15 +124,46 @@ var checkProc = Process.Start(new ProcessStartInfo
 checkProc?.WaitForExit();
 var toolOutput = checkProc?.StandardOutput.ReadToEnd() ?? "";
 
-if (!toolOutput.Contains("CryptikLemur.AssetBundleBuilder", StringComparison.OrdinalIgnoreCase))
+// Parse the tool output to check for the tool and its version
+var hasCorrectVersion = false;
+var hasWrongVersion = false;
+var lines = toolOutput.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+foreach (var line in lines)
 {
-    Console.WriteLine("Installing CryptikLemur.AssetBundleBuilder...");
-    if (!RunCommand("dotnet", "tool install --global CryptikLemur.AssetBundleBuilder --version 1.0.3"))
+    if (line.Contains("cryptiklemur.assetbundlebuilder", StringComparison.OrdinalIgnoreCase))
+    {
+        if (line.Contains(RequiredToolVersion))
+        {
+            hasCorrectVersion = true;
+            Console.WriteLine($"  Found CryptikLemur.AssetBundleBuilder version {RequiredToolVersion}");
+        }
+        else
+        {
+            hasWrongVersion = true;
+            Console.WriteLine($"  Found CryptikLemur.AssetBundleBuilder but wrong version: {line.Trim()}");
+        }
+        break;
+    }
+}
+
+if (!hasCorrectVersion)
+{
+    if (hasWrongVersion)
+    {
+        Console.WriteLine($"Updating CryptikLemur.AssetBundleBuilder to version {RequiredToolVersion}...");
+        RunCommand("dotnet", "tool uninstall --global CryptikLemur.AssetBundleBuilder");
+    }
+    else
+    {
+        Console.WriteLine($"Installing CryptikLemur.AssetBundleBuilder version {RequiredToolVersion}...");
+    }
+    
+    if (!RunCommand("dotnet", $"tool install --global CryptikLemur.AssetBundleBuilder --version {RequiredToolVersion}"))
     {
         Console.WriteLine("Failed to install AssetBundleBuilder tool!");
         Environment.Exit(1);
     }
-    Console.WriteLine("AssetBundleBuilder installed successfully.");
+    Console.WriteLine("AssetBundleBuilder installed/updated successfully.");
 }
 
 // ---------- Discover mods (must contain About/) ----------

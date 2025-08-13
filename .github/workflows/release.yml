@@ -68,9 +68,6 @@ jobs:
       - name: Install dotnet-script
         run: dotnet tool install --global dotnet-script
 
-      - name: Install AssetBundleBuilder
-        run: dotnet tool install --global CryptikLemur.AssetBundleBuilder --version 1.0.3
-
       - name: Cache Unity installations
         uses: actions/cache@v4
         with:

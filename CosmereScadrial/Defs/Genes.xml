@@ -12,6 +12,9 @@
                 <callbackHandler>Cosmere.Scadrial.DormantConnection.Callback.Snapped</callbackHandler>
             </li>
         </modExtensions>
+        <statOffsets>
+            <MarketValue>20</MarketValue>
+        </statOffsets>
     </GeneDef>
     <GeneDef Name="AbstractAllomancyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
         <geneClass>Cosmere.Scadrial.Gene.Allomancer</geneClass>

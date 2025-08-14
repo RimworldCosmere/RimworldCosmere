@@ -110,7 +110,7 @@ Console.WriteLine($"Build target: {buildTarget}");
 Console.WriteLine($"Force rebuild: {forceRebuild}");
 
 // ---------- Install/Update AssetBundleBuilder if needed ----------
-const string RequiredToolVersion = "1.1.0";
+const string RequiredToolVersion = "1.2.0";
 Console.WriteLine($"Checking for AssetBundleBuilder tool (version {RequiredToolVersion})...");
 
 var checkProc = Process.Start(new ProcessStartInfo
@@ -197,8 +197,9 @@ foreach (var modDir in modDirs)
         continue;
     }
 
-    // Check hash for incremental builds
-    var currentHash  = GetFolderHash(srcAssets);
+    // Check hash for incremental builds (includes tool version)
+    var folderHash = GetFolderHash(srcAssets);
+    var currentHash = $"{folderHash}:{RequiredToolVersion}";
     var previousHash = File.Exists(hashFile) ? (File.ReadAllText(hashFile) ?? "").Trim() : "";
 
     if (!forceRebuild)

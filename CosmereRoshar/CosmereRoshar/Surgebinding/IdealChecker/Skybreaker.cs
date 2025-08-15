@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Roshar.Def;
 using Cosmere.Roshar.Gene;
 using Verse;
@@ -10,6 +11,6 @@ public class Skybreaker(RadiantOrderDef def) : AbstractIdealChecker(def) {
     }
 
     public override bool Satisfy(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }

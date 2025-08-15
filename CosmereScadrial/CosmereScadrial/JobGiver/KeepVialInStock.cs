@@ -1,6 +1,4 @@
 using System;
-using Cosmere.Foundation.Extension;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;

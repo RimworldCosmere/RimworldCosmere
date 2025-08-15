@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using Verse;
 
 namespace Cosmere.Foundation.Util;
 
 [StaticConstructorOnStartup]
 public class DelayedActionScheduler {
-    private static readonly List<ScheduledAction> Scheduled = new List<ScheduledAction>();
+    private static readonly List<ScheduledAction> Scheduled = [];
 
     static DelayedActionScheduler() { }
 

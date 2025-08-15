@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Verse;
+﻿using Verse;
 
 namespace Cosmere.Roshar.Comp.Thing;
 
@@ -19,7 +18,7 @@ public class RawGemstone : ThingComp {
     public override void Initialize(CompProperties props) {
         base.Initialize(props);
         // @todo Remove sizes
-        List<int> sizeList = new List<int> { 1, 5, 20 };
+        List<int> sizeList = [1, 5, 20];
         // make better roller later with lower prob for bigger size
         gemstoneSize = StormlightUtilities.RollForRandomIntFromList(sizeList);
 

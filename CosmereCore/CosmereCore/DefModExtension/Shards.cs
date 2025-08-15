@@ -1,6 +1,4 @@
 #nullable disable
-using System.Collections.Generic;
-
 namespace Cosmere.Core.DefModExtension;
 
 public class Shards : Verse.DefModExtension {

@@ -10,7 +10,7 @@ namespace Cosmere.Roshar.Patches.Fabrials;
 
 [HarmonyPatch(typeof(Plant), "get_GrowthRate")]
 public static class CultivationSprenPatch {
-    private static readonly List<Building> ActiveLifeSprenBuildings = new List<Building>();
+    private static readonly List<Building> ActiveLifeSprenBuildings = [];
 
     public static void RegisterBuilding(Building building) {
         if (building.GetComp<BasicFabrialAugmenter>()?.currentSpren == Spren.Life) {
@@ -47,7 +47,7 @@ public static class CultivationSprenPatch {
     }
 
     private static int IsNearLifeSprenBuilding(Plant plant) {
-        Verse.Map? map = plant.Map;
+        Map? map = plant.Map;
         if (map == null) return 0;
         IntVec3 plantPos = plant.Position;
 

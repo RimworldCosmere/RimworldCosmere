@@ -12,7 +12,7 @@ public class Atium : HediffWithComps {
     public const int MinAgeYears = 21;
     private const float AgeTicksPerGameTick = 43200f; // 5 years per hour at severity 5
 
-    private static readonly List<HediffDef> AgeConditions = new List<HediffDef> {
+    private static readonly List<HediffDef> AgeConditions = [
         DefDatabase<HediffDef>.GetNamed("BadBack"),
         DefDatabase<HediffDef>.GetNamed("Frail"),
         DefDatabase<HediffDef>.GetNamed("Cataract"),
@@ -23,7 +23,7 @@ public class Atium : HediffWithComps {
         DefDatabase<HediffDef>.GetNamed("HeartArteryBlockage"),
         DefDatabase<HediffDef>.GetNamed("Carcinoma"),
         DefDatabase<HediffDef>.GetNamed("OrganDecay"),
-    };
+    ];
 
     protected bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapAtium);
     protected bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreAtium);

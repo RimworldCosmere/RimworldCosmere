@@ -10,13 +10,13 @@ using Random = System.Random;
 namespace Cosmere.Roshar;
 
 public static class StormlightUtilities {
-    private static readonly List<ThingDef> Gems = new List<ThingDef> {
+    private static readonly List<ThingDef> Gems = [
         Resources.ThingDefOf.RawDiamond,
         Resources.ThingDefOf.RawGarnet,
         Resources.ThingDefOf.RawRuby,
         Resources.ThingDefOf.RawSapphire,
         Resources.ThingDefOf.RawEmerald,
-    };
+    ];
 
     private static readonly Random Rng = new Random();
 
@@ -70,7 +70,7 @@ public static class StormlightUtilities {
 
     public static bool IsAnyFireNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Verse.Map map = building.Map;
+        Map map = building.Map;
 
         foreach (IntVec3 cell in GenRadial.RadialCellsAround(position, radius, true)) {
             foreach (Verse.Thing thing in cell.GetThingList(map)) {
@@ -91,7 +91,7 @@ public static class StormlightUtilities {
 
     public static int GetNumberOfFiresNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Verse.Map map = building.Map;
+        Map map = building.Map;
         int numberOfFires = 0;
         foreach (IntVec3 cell in GenRadial.RadialCellsAround(position, radius, true)) {
             foreach (Verse.Thing thing in cell.GetThingList(map)) {
@@ -110,8 +110,8 @@ public static class StormlightUtilities {
 
     public static float GetAverageSuroundingTemperature(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Verse.Map map = building.Map;
-        List<float> temps = new List<float>();
+        Map map = building.Map;
+        List<float> temps = [];
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
         foreach (IntVec3 cell in cells) {
             temps.Add(cell.GetTemperature(building.Map));
@@ -122,8 +122,8 @@ public static class StormlightUtilities {
 
     public static float GetSuroundingPain(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Verse.Map map = building.Map;
-        List<float> pains = new List<float>();
+        Map map = building.Map;
+        List<float> pains = [];
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
@@ -137,7 +137,7 @@ public static class StormlightUtilities {
 
     public static float GetSuroundingPlants(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Verse.Map map = building.Map;
+        Map map = building.Map;
         int plants = 0;
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
         foreach (IntVec3 cell in cells) {
@@ -155,7 +155,7 @@ public static class StormlightUtilities {
 
     public static bool ResearchBeingDoneNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
-        Verse.Map map = building.Map;
+        Map map = building.Map;
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
@@ -224,7 +224,7 @@ public static class StormlightUtilities {
 
     public static bool IsNearGrowingPlants(Pawn pawn, float radius = 3f) {
         IntVec3 position = pawn.Position;
-        Verse.Map map = pawn.Map;
+        Map map = pawn.Map;
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
 
         foreach (IntVec3 cell in cells) {
@@ -250,10 +250,10 @@ public static class StormShelterManager {
     public static bool FirstTickOfHighstorm = true;
 
     private static readonly List<RegionInfo> Regions
-        = new List<RegionInfo>();
+        = [];
 
 
-    public static void RebuildShelterCache(Verse.Map map) {
+    public static void RebuildShelterCache(Map map) {
         // Clear old data
         CellToRegionIndex.Clear();
         Regions.Clear();
@@ -309,8 +309,8 @@ public static class StormShelterManager {
         Regions.Clear();
     }
 
-    private static HashSet<IntVec3> FloodFillRoofedArea(IntVec3 start, Verse.Map map) {
-        HashSet<IntVec3> visited = new HashSet<IntVec3>();
+    private static HashSet<IntVec3> FloodFillRoofedArea(IntVec3 start, Map map) {
+        HashSet<IntVec3> visited = [];
         Queue<IntVec3> queue = new Queue<IntVec3>();
 
         // 1) Must be in bounds & roofed
@@ -381,7 +381,7 @@ public static class StormShelterManager {
     }
 
 
-    private static bool IsCShelter(HashSet<IntVec3> area, Verse.Map map) {
+    private static bool IsCShelter(HashSet<IntVec3> area, Map map) {
         if (area == null || area.Count == 0) {
             return false;
         }

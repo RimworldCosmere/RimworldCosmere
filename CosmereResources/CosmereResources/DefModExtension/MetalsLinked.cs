@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Cosmere.Resources.Def;
+﻿using Cosmere.Resources.Def;
 
 namespace Cosmere.Resources.DefModExtension;
 

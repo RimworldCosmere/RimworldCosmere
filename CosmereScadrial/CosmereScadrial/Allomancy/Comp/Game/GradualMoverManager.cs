@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Foundation.Extension;
 using Cosmere.Scadrial.Def;
 using RimWorld;
 using UnityEngine;
@@ -11,7 +8,7 @@ using Logger = Cosmere.Foundation.Logger;
 namespace Cosmere.Scadrial.Allomancy.Comp.Game;
 
 public class GradualMoverManager(Verse.Game game) : GameComponent {
-    private readonly List<MovementData> activeMovements = new List<MovementData>();
+    private readonly List<MovementData> activeMovements = [];
 
     public override void GameComponentTick() {
         for (int i = activeMovements.Count - 1; i >= 0; i--) {

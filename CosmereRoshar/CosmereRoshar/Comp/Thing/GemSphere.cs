@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace Cosmere.Roshar.Comp.Thing;
@@ -33,8 +32,8 @@ public class GemSphere : ThingComp {
 
         stormlight = parent.GetComp<Stormlight>();
         if (!inheritGemstone) {
-            List<int> sizeList = new List<int> { 1, 5, 20 };
-            List<int> qualityList = new List<int> { 1, 2, 3, 4, 5 };
+            List<int> sizeList = [1, 5, 20];
+            List<int> qualityList = [1, 2, 3, 4, 5];
 
             gemstoneQuality =
                 StormlightUtilities

@@ -1,4 +1,3 @@
-using Cosmere.Core.Extension;
 using RimWorld;
 using Verse;
 using StatUtility = Cosmere.Foundation.Util.StatUtility;

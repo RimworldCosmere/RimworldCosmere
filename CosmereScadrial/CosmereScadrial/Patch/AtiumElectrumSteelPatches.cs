@@ -2,7 +2,6 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Scadrial.Patch;
 

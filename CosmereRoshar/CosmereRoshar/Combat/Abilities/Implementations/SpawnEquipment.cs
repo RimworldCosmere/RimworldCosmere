@@ -1,5 +1,4 @@
-﻿using Cosmere.Roshar.Extension;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace Cosmere.Roshar.Combat.Abilities.Implementations;

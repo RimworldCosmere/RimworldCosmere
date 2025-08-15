@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Verse;
 
 namespace Cosmere.Foundation.Comp.Map;
@@ -17,7 +15,7 @@ public abstract class Renderer<T>(Verse.Map map) : MapComponent(map) {
 
     public static void TryAdd(object source, T item) {
         if (!ToRender.ContainsKey(source)) {
-            ToRender[source] = new HashSet<T>();
+            ToRender[source] = [];
         }
 
         ToRender[source].Add(item);

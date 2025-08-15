@@ -1,8 +1,5 @@
 ﻿using System;
-using Cosmere.Core.Extension;
-using Cosmere.Foundation.Extension;
 using Cosmere.Scadrial.Def;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using Cosmere.Scadrial.Thing;
 using RimWorld;

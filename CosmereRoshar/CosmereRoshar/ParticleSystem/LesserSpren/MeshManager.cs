@@ -2,17 +2,17 @@
 using UnityEngine;
 using Verse;
 
-namespace Cosmere.Roshar.ParticleSystem;
+namespace Cosmere.Roshar.ParticleSystem.LesserSpren;
 
 public class MeshManager {
     private readonly float altitudeLayer;
     private readonly Func<Vector3, bool> isPositionValid;
-    private readonly Verse.Map map;
+    private readonly Map map;
     private readonly int totalColumns;
 
     public List<IntVec3> FinalValidCells = [];
 
-    public MeshManager(Verse.Map map, Func<Vector3, bool> isPositionValid) {
+    public MeshManager(Map map, Func<Vector3, bool> isPositionValid) {
         this.map = map;
         altitudeLayer = AltitudeLayer.VisEffects.AltitudeFor();
         this.isPositionValid = isPositionValid;

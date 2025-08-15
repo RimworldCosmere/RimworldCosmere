@@ -5,8 +5,8 @@
     <option name="saveFilePath" value="" />
     <option name="scriptName" value="D:\RimWorld\RimWorldWin64.exe" />
     <method v="2">
-        <option name="RunConfigurationTask" enabled="true" run_configuration_name="Build Generatables" run_configuration_type="PowerShellRunType"/>
       <option name="Build Solution" enabled="true" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Build Generatables" run_configuration_type="PowerShellRunType"/>
     </method>
   </configuration>
 </component>

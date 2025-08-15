@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Verse;
 
-namespace Cosmere.Roshar.ParticleSystem;
+namespace Cosmere.Roshar.ParticleSystem.LesserSpren;
 
 internal struct ParticleSystemConfig {
     public float particleSizeFactor;
@@ -17,7 +17,7 @@ internal struct ParticleSystemConfig {
 [StaticConstructorOnStartup]
 public static class Builder {
     private static readonly ParticleSystemConfig Config = new ParticleSystemConfig {
-        particleSizeFactor = .7f,
+        particleSizeFactor = 0.25f, // Reduced by half from 0.5f
         sunGlowThreshold = 0.3f,
         shapeRandomDirectionAmount = new FloatRange(0, 360),
         noiseOctaveCount = 2,

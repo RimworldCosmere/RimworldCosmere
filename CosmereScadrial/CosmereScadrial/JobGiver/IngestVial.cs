@@ -1,4 +1,3 @@
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using Cosmere.Scadrial.Thing;
 using Verse;

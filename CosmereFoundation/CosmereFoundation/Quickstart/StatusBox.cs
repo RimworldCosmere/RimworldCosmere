@@ -28,7 +28,12 @@ public class StatusBox(Quickstarter quickstarter) {
         Vector2 statusTextSize = Text.CalcSize(statusText);
         float boxWidth = Mathf.Max(RectSize.x, statusTextSize.x + RectPadding.x * 2f);
         float boxHeight = Mathf.Max(RectSize.y, statusTextSize.y + RectPadding.y * 2f);
-        Rect boxRect = new Rect((Verse.UI.screenWidth - boxWidth) / 2f, (Verse.UI.screenHeight / 2f - boxHeight) / 2f, boxWidth, boxHeight);
+        Rect boxRect = new Rect(
+            (Verse.UI.screenWidth - boxWidth) / 2f,
+            (Verse.UI.screenHeight / 2f - boxHeight) / 2f,
+            boxWidth,
+            boxHeight
+        );
         boxRect = boxRect.Rounded();
         return boxRect;
     }

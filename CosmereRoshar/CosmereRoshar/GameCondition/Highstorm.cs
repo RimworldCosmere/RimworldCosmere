@@ -22,14 +22,13 @@ public class Highstorm : RimWorld.GameCondition {
         new CurvePoint(1f, 0),
     ];
 
-    private static readonly List<(IntVec3 offset, float weight)> weightedOffsets =
-        new List<(IntVec3 offset, float weight)> {
-            (IntVec3.West, 5f),
-            (IntVec3.NorthWest, 3f),
-            (IntVec3.SouthWest, 3f),
-            (IntVec3.North, 1f),
-            (IntVec3.South, 1f),
-        };
+    private static readonly List<(IntVec3 offset, float weight)> weightedOffsets = [
+        (IntVec3.West, 5f),
+        (IntVec3.NorthWest, 3f),
+        (IntVec3.SouthWest, 3f),
+        (IntVec3.North, 1f),
+        (IntVec3.South, 1f),
+    ];
 
     private readonly Verse.Thing highstorm = ThingMaker.MakeThing(ThingDefOf.Cosmere_Roshar_Thing_Highstorm);
 
@@ -71,7 +70,7 @@ public class Highstorm : RimWorld.GameCondition {
         ModExtension.Highstorm? ext = def.GetModExtension<ModExtension.Highstorm>();
         if (ext == null) return;
         if (StormShelterManager.FirstTickOfHighstorm) {
-            Verse.Map currentMap = Find.CurrentMap;
+            Map currentMap = Find.CurrentMap;
             if (currentMap != null) {
                 StormShelterManager.RebuildShelterCache(currentMap);
             }
@@ -115,7 +114,7 @@ public class Highstorm : RimWorld.GameCondition {
 
         IntVec3 oldPos = thing.Position;
         IntVec3 newPos = oldPos + GetRandomStormOffset(thing is Pawn);
-        Verse.Map map = thing.Map;
+        Map map = thing.Map;
 
 
         if (!CanMoveToNewPosition(thing, newPos)) {
@@ -182,7 +181,7 @@ public class Highstorm : RimWorld.GameCondition {
     private void DamageItem(Verse.Thing thing) {
         if (!Mod.enableHighstormDamage) return;
 
-        Verse.Map? map = thing.Map;
+        Map? map = thing.Map;
         DamageInfo damage = new DamageInfo(
             DamageDefOf.TornadoScratch,
             Rand.Range(0f, 2f),

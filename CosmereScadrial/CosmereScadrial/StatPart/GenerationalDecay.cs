@@ -1,4 +1,3 @@
-using Cosmere.Scadrial.Extension;
 using RimWorld;
 using UnityEngine;
 using Verse;

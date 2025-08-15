@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Cosmere.Foundation.Extension;
+﻿namespace Cosmere.Foundation.Extension;
 
 public static class IntExtension {
     public static string ToOrdinal(this int number, bool shortForm = false) {
@@ -25,20 +23,18 @@ public static class IntExtension {
             _ => number.ToOrdinalShort(),
         };
     }
-        
-    public static string ToOrdinalShort(this int number) {
-        if( number <= 0 ) return number.ToString();
 
-        switch(number % 100)
-        {
+    public static string ToOrdinalShort(this int number) {
+        if (number <= 0) return number.ToString();
+
+        switch (number % 100) {
             case 11:
             case 12:
             case 13:
                 return number + "th";
         }
-    
-        switch(number % 10)
-        {
+
+        switch (number % 10) {
             case 1:
                 return number + "st";
             case 2:

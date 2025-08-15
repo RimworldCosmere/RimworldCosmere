@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using Cosmere.Core.Extension;
 using Cosmere.Foundation.Comp.Map;
 using Cosmere.Scadrial.Def;
 using UnityEngine;

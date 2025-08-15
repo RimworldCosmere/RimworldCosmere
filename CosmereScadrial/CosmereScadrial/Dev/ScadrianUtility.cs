@@ -91,7 +91,7 @@ public static class ScadrianUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void FillSpecificMetal(Pawn pawn) {
-        List<DebugMenuOption> options = new List<DebugMenuOption>();
+        List<DebugMenuOption> options = [];
 
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
             Allomancer gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;
@@ -118,7 +118,7 @@ public static class ScadrianUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void WipeSpecificMetal(Pawn pawn) {
-        List<DebugMenuOption> options = new List<DebugMenuOption>();
+        List<DebugMenuOption> options = [];
 
         foreach (MetallicArtsMetalDef? metal in DefDatabase<MetallicArtsMetalDef>.AllDefs) {
             Allomancer gene = pawn.genes.GetAllomanticGeneForMetal(metal)!;

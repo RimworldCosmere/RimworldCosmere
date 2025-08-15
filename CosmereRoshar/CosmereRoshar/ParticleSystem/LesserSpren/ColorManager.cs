@@ -2,7 +2,7 @@
 using Verse;
 using Logger = Cosmere.Foundation.Logger;
 
-namespace Cosmere.Roshar.ParticleSystem;
+namespace Cosmere.Roshar.ParticleSystem.LesserSpren;
 
 public static class ColorManager {
     public static readonly Color GreenEmission = new Color(0.4f, 1.0f, 0.4f);

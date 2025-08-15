@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace Cosmere.Roshar.Comp.Thing;
@@ -44,7 +43,7 @@ public class CompCutGemstone : ThingComp {
     public override void Initialize(CompProperties props) {
         base.Initialize(props);
         stormlight = parent.GetComp<Stormlight>();
-        List<int> sizeList = new List<int> { 1, 5, 20 };
+        List<int> sizeList = [1, 5, 20];
         sizeList.RemoveAll(n => n > maximumGemstoneSize);
         gemstoneQuality = StormlightUtilities.RollTheDice(1, 5);
         gemstoneSize =

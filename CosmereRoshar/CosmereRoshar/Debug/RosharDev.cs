@@ -4,7 +4,7 @@ using LudeonTK;
 using RimWorld;
 using Verse;
 
-namespace Cosmere.Roshar.Dev;
+namespace Cosmere.Roshar.Debug;
 
 public static class RosharDev {
     [DebugAction(

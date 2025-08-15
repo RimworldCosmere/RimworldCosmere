@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Xml;
-using Cosmere.Foundation.Extension;
 using Verse;
 
 namespace Cosmere.Foundation.Patch.Operation;

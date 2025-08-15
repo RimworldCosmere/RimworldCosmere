@@ -1,7 +1,6 @@
 // Assembly-CSharp, Version=1.5.9214.33606, Culture=neutral, PublicKeyToken=null
 // Verse.AI.JobDriver_AttackMelee
 
-using System.Collections.Generic;
 using Cosmere.Roshar.Job.Toil;
 using RimWorld;
 using Verse;

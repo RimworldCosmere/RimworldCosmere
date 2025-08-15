@@ -69,7 +69,7 @@ public static class Profiler {
         try {
             return a.GetTypes();
         } catch {
-            return Enumerable.Empty<Type>();
+            return [];
         }
     }
 

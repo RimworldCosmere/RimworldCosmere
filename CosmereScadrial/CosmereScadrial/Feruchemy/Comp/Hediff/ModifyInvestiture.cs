@@ -1,6 +1,5 @@
 using Cosmere.Core.Need;
 using Cosmere.Resources;
-using Cosmere.Scadrial.Extension;
 using Cosmere.Scadrial.Gene;
 using UnityEngine;
 using Verse;

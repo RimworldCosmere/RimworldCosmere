@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Spren Names -->
+  <SprenName_Wavespren>Wavespren</SprenName_Wavespren>
+  <SprenName_Riverspren>Riverspren</SprenName_Riverspren>
+  <SprenName_Rockspren>Rockspren</SprenName_Rockspren>
+  <SprenName_Sandspren>Sandspren</SprenName_Sandspren>
+  <SprenName_Grassspren>Grassspren</SprenName_Grassspren>
+  <SprenName_Windspren>Windspren</SprenName_Windspren>
+  <SprenName_Rainspren>Rainspren</SprenName_Rainspren>
+  <SprenName_Joyspren>Joyspren</SprenName_Joyspren>
+  <SprenName_Fearspren>Fearspren</SprenName_Fearspren>
+  <SprenName_Angerspren>Angerspren</SprenName_Angerspren>
+  <SprenName_Painspren>Painspren</SprenName_Painspren>
+  <SprenName_Exhaustionspren>Exhaustionspren</SprenName_Exhaustionspren>
+  <SprenName_Gloryspren>Gloryspren</SprenName_Gloryspren>
+  <SprenName_Shamespren>Shamespren</SprenName_Shamespren>
+  <SprenName_Flamespren>Flamespren</SprenName_Flamespren>
+  <SprenName_Coldspren>Coldspren</SprenName_Coldspren>
+  <SprenName_Deathspren>Deathspren</SprenName_Deathspren>
+  <SprenName_Decayspren>Decayspren</SprenName_Decayspren>
+  <SprenName_Lifespren>Lifespren</SprenName_Lifespren>
+  <SprenName_Rotspren>Rotspren</SprenName_Rotspren>
+  <SprenName_Hungerspren>Hungerspren</SprenName_Hungerspren>
+  <SprenName_Creationspren>Creationspren</SprenName_Creationspren>
+  <SprenName_Logicspren>Logicspren</SprenName_Logicspren>
+
+  <!-- Spren Capture Menu Options -->
+  <SprenCapture_NoSprenAvailable>No spren available for capture here</SprenCapture_NoSprenAvailable>
+  <SprenCapture_NoSuitableGem>No suitable gem for capturing {0}</SprenCapture_NoSuitableGem>
+  <SprenCapture_CaptureSpren>Capture {0}</SprenCapture_CaptureSpren>
+  <SprenCapture_CaptureSprenPickupGem>Capture {0} (pick up {1})</SprenCapture_CaptureSprenPickupGem>
+  <SprenCapture_IncompatibleGem>Capture {0} (incompatible gem)</SprenCapture_IncompatibleGem>
+  <SprenCapture_GemNeedsStormlight>Capture {0} (gem needs stormlight)</SprenCapture_GemNeedsStormlight>
+  <SprenCapture_CannotReach>Capture {0} (cannot reach)</SprenCapture_CannotReach>
+  <SprenCapture_CaptureAnySuitable>Capture any suitable spren</SprenCapture_CaptureAnySuitable>
+  <SprenCapture_CaptureAnySuitablePickupGem>Capture any suitable spren (pick up {0})</SprenCapture_CaptureAnySuitablePickupGem>
+  
+  <!-- Spren Capture Messages -->
+  <SprenCapture_AttemptCaptureSpecific>{0} will attempt to capture {1} near {2} using {3}</SprenCapture_AttemptCaptureSpecific>
+  <SprenCapture_AttemptCaptureAny>{0} will attempt to capture any suitable spren near {1} using {2}</SprenCapture_AttemptCaptureAny>
+</LanguageData>

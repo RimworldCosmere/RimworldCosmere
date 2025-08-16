@@ -15,12 +15,6 @@
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>
 
-        <RimWorldDir Condition="'$(RimWorldDir)' == ''">$([System.Environment]::GetEnvironmentVariable('RIMWORLD_DIR'))</RimWorldDir>
-        <WorkshopDir Condition="'$(WorkshopDir)' == ''">$([System.Environment]::GetEnvironmentVariable('WORKSHOP_DIR'))</WorkshopDir>
-        <RimWorldDir Condition="'$(RimWorldDir)' == ''">..\..\..\</RimWorldDir>
-        <WorkshopDir Condition="'$(WorkshopDir)' == ''">..\..\..\..\..\workshop\content\294100</WorkshopDir>
-
-        <RimWorldManagedPath>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
         <FileAlignment>512</FileAlignment>
         <DebugSymbols>true</DebugSymbols>
         <DebugType>embedded</DebugType>
@@ -66,7 +60,7 @@
         <ProjectReference Include="..\..\CosmereResources\CosmereResources\Cosmere.Resources.csproj"/>
 
         <!-- Include all DLLs from potential RimWorld installation paths -->
-        <!-- If none of these mastch your path, just copy one of them and change it to your path -->
+        <!-- If none of these match your path, just copy one of them and change it to your path -->
         <Reference Include="..\..\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('..\..\RimWorldWin64_Data\Managed')">
             <Private>False</Private>
         </Reference>

@@ -110,7 +110,7 @@ Console.WriteLine($"Build target: {buildTarget}");
 Console.WriteLine($"Force rebuild: {forceRebuild}");
 
 // ---------- Install/Update AssetBundleBuilder if needed ----------
-const string RequiredToolVersion = "1.2.0";
+const string RequiredToolVersion = "1.3.0";
 Console.WriteLine($"Checking for AssetBundleBuilder tool (version {RequiredToolVersion})...");
 
 var checkProc = Process.Start(new ProcessStartInfo

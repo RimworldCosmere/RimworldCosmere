@@ -100,11 +100,11 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
         innerContainer?.DoTick();
     }
 
-    public override void PostDestroy(DestroyMode mode, Verse.Map previousMap) {
+    public override void PostDestroy(DestroyMode mode, Verse.Map? previousMap) {
         base.PostDestroy(mode, previousMap);
-        previousMap.haulDestinationManager.RemoveHaulDestination(this);
+        previousMap?.haulDestinationManager?.RemoveHaulDestination(this);
         if (mode == DestroyMode.Deconstruct && props.dropItemsWhenDeconstructed) {
-            foreach (Verse.Thing thing in innerContainer?.ToList() ?? []) {
+            foreach (Verse.Thing thing in innerContainer.ToList()) {
                 innerContainer!.TryDrop(
                     thing,
                     ParentThing!.Position,
@@ -116,7 +116,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
             }
         }
 
-        innerContainer?.ClearAndDestroyContents(mode);
+        innerContainer.ClearAndDestroyContents(mode);
     }
 
     public override void Initialize(CompProperties originalProps) {

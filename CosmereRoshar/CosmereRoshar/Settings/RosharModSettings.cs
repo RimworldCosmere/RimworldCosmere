@@ -1,7 +1,5 @@
-using System;
 using Cosmere.Foundation.Listing;
 using Cosmere.Foundation.Settings;
-using Cosmere.Roshar.ParticleSystem.LesserSpren;
 using Verse;
 
 namespace Cosmere.Roshar.Settings;
@@ -12,8 +10,6 @@ public class RosharModSettings : CosmereModSettings {
     // Should probably be like.... 8 hours. Triple speed makes 30 hours happen in < 5 minutes
     private const float baseTime = hour * 8;
 
-    // Lesser Spren settings
-    public Dictionary<SprenType, bool> enabledSprenTypes = new Dictionary<SprenType, bool>();
 
     public bool enableHighstormDamage;
     public bool enableHighstormPushing;
@@ -29,18 +25,9 @@ public class RosharModSettings : CosmereModSettings {
     // Should at LEAST be every 30 minutes
     public float nahelSprenSpawnMinIntervalTicks = baseTime / 2;
 
-    public RosharModSettings() {
-        // Initialize spren settings with defaults - only Rockspren enabled
-        foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
-            enabledSprenTypes[sprenType] = sprenType == SprenType.Rockspren;
-        }
-    }
 
     public override string Name => "Roshar";
 
-    public bool IsSprenTypeEnabled(SprenType type) {
-        return enabledSprenTypes.TryGetValue(type, out bool enabled) && enabled;
-    }
 
     public override void ExposeData() {
         Scribe_Values.Look(ref enableHighstormPushing, "enableHighstormPushing", true);

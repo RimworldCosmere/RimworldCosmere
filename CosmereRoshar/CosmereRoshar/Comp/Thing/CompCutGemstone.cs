@@ -1,10 +1,13 @@
-﻿using RimWorld;
+﻿using System;
+using RimWorld;
 using Verse;
 
 namespace Cosmere.Roshar.Comp.Thing;
 
+[Obsolete]
 public class SphereRuby : ThingDef { }
 
+[Obsolete]
 public enum Spren {
     None,
     Flame,
@@ -22,6 +25,7 @@ public enum Spren {
     Logic,
 }
 
+[Obsolete]
 public class CompCutGemstone : ThingComp {
     public Spren capturedSpren = Spren.None;
     public int gemstoneQuality;
@@ -204,6 +208,7 @@ public class CompCutGemstone : ThingComp {
     }
 }
 
+[Obsolete]
 public class CompPropertiesCutGemstone : CompProperties {
     public CompPropertiesCutGemstone() {
         compClass = typeof(CompCutGemstone);

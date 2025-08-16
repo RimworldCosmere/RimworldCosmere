@@ -1,10 +1,12 @@
-﻿using System;
+﻿#pragma warning disable CS0414 // Field is assigned but its value is never used
+using System;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Roshar.Comp.Thing;
 
+[Obsolete("Shouldn't be used anymore")]
 public class StormlightProperties : CompProperties {
     public float drainRate;
     public float maxInvestiture;
@@ -24,6 +26,7 @@ public class StormlightProperties : CompProperties {
     }
 }
 
+[Obsolete("Shouldn't be used anymore")]
 public class Stormlight : ThingComp {
     // Surges
     private bool abrasionActiveInt;

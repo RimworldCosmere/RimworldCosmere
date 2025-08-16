@@ -31,8 +31,6 @@ public class StormlightLampsProperties : CompProperties {
 public class StormlightLamps : ThingComp, IFilterableComp {
     private bool deregisterAfterNewSphere = true;
 
-    private bool initSphereAdded = false;
-
     private bool lightEnabled = true;
     public float mCurrentStormlight;
 

@@ -19,7 +19,7 @@ public class SprenTrapper : Verse.Building {
         }
     }
 
-    public override void SpawnSetup(Verse.Map map, bool respawningAfterLoad) {
+    public override void SpawnSetup(Map map, bool respawningAfterLoad) {
         base.SpawnSetup(map, respawningAfterLoad);
         trapper = GetComp<Comp.Fabrials.SprenTrapper>();
         compGlower = GetComp<CompGlower>();
@@ -41,7 +41,10 @@ public class SprenTrapper : Verse.Building {
         );
         gemstonePossibleSprenDict.Add(
             GemDefOf.Emerald.defName,
-            [Spren.Flame, Spren.Life, Spren.Cultivation, Spren.Rain, Spren.Glory]
+            [
+                Spren.Flame, Spren.Life, Spren.Cultivation, Spren.Rain,
+                Spren.Glory,
+            ]
         );
     }
 
@@ -73,7 +76,10 @@ public class SprenTrapper : Verse.Building {
 
     private void CaptureLoop() {
         if (trapper.insertedGemstone != null && !trapper.sprenCaptured) {
-            gemstonePossibleSprenDict.TryGetValue(trapper.insertedGemstone.Stuff.defName, out List<Spren> sprenList);
+            gemstonePossibleSprenDict.TryGetValue(
+                trapper.insertedGemstone.Stuff.defName,
+                out List<Spren> sprenList
+            );
             foreach (Spren spren in sprenList ?? []) {
                 trapper.TryCaptureSpren(spren);
                 trapper.CheckTrapperState();

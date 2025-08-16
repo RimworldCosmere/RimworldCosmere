@@ -2,7 +2,7 @@
 using HarmonyLib;
 using Verse;
 
-namespace Cosmere.Roshar.Patches;
+namespace Cosmere.Roshar.Patch;
 
 [HarmonyPatch(typeof(Pawn))]
 public static class PatchPawnKill {

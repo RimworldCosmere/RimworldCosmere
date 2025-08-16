@@ -4,7 +4,7 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Cosmere.Roshar.Patches;
+namespace Cosmere.Roshar.Patch;
 
 //Initial requirements, must have suffered crisis
 [HarmonyPatch(typeof(MentalBreaker), nameof(MentalBreaker.MentalBreakerTickInterval))]

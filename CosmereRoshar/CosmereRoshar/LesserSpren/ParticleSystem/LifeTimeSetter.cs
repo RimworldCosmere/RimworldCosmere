@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Cosmere.Roshar.ParticleSystem.LesserSpren;
+namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
 
 public static class LifeTimeSetter {
     public static AnimationCurve GetMinLifetimeCurve() {

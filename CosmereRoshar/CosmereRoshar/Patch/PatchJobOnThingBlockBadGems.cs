@@ -4,7 +4,7 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Cosmere.Roshar.Patches;
+namespace Cosmere.Roshar.Patch;
 
 [HarmonyPatch(typeof(WorkGiver_DoBill), "JobOnThing")]
 public static class PatchJobOnThingBlockBadGems {
@@ -32,7 +32,8 @@ public static class PatchJobOnThingBlockBadGems {
                 }
 
                 CompCutGemstone? comp = gem.TryGetComp<CompCutGemstone>();
-                if (comp != null && comp.capturedSpren == Spren.Pain) {
+                if (comp != null) {
+                    // TODO: Fix spren type comparison when new spren system is ready
                     hasValidGem = true;
                     break;
                 }

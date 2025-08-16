@@ -2,7 +2,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace Cosmere.Roshar.Patches;
+namespace Cosmere.Roshar.Patch;
 
 [HarmonyPatch(typeof(RimWorld.PawnFlyer))]
 public static class PawnFlyerPatches {

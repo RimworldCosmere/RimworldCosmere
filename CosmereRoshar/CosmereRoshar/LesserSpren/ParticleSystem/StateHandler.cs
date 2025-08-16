@@ -1,6 +1,6 @@
 ﻿using Object = UnityEngine.Object;
 
-namespace Cosmere.Roshar.ParticleSystem.LesserSpren;
+namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
 
 public static class StateHandler {
     public static void DestroyParticleSystem(UnityEngine.ParticleSystem? particleSystem) {

@@ -1,8 +1,9 @@
 using System;
 using Cosmere.Foundation;
+using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using Verse;
 
-namespace Cosmere.Roshar.ParticleSystem.LesserSpren.SprenControllers;
+namespace Cosmere.Roshar.LesserSpren.SprenControllers;
 
 [StaticConstructorOnStartup]
 public static class SprenControllerRegistry {
@@ -28,12 +29,12 @@ public static class SprenControllerRegistry {
         Controllers[controller.sprenType] = controller;
     }
 
-    public static BaseSprenController GetController(SprenType sprenType) {
-        return Controllers.TryGetValue(sprenType, out BaseSprenController controller) ? controller : null;
+    public static BaseSprenController? GetController(SprenType sprenType) {
+        return Controllers.GetValueOrDefault(sprenType);
     }
 
     public static bool IsSprenTypeEnabled(SprenType sprenType) {
-        BaseSprenController controller = GetController(sprenType);
+        BaseSprenController? controller = GetController(sprenType);
         return controller?.isEnabled ?? false;
     }
 

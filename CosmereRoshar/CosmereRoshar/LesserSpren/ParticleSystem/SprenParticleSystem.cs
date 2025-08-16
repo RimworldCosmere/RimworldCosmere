@@ -1,10 +1,10 @@
 using Cosmere.Roshar.Debug;
-using Cosmere.Roshar.ParticleSystem.LesserSpren.SprenControllers;
+using Cosmere.Roshar.LesserSpren.SprenControllers;
 using UnityEngine;
 using Verse;
 using Logger = Cosmere.Foundation.Logger;
 
-namespace Cosmere.Roshar.ParticleSystem.LesserSpren;
+namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
 
 public class SprenParticleSystem {
     private const float UPDATE_INTERVAL = 5f; // Update dynamic spren every 5 seconds
@@ -15,7 +15,7 @@ public class SprenParticleSystem {
 
     public SprenParticleSystem(SprenType sprenType, int mapID) {
         SprenType = sprenType;
-        controller = SprenControllerRegistry.GetController(sprenType);
+        controller = SprenControllerRegistry.GetController(sprenType)!;
         IsStatic = sprenType.IsNatureSpren();
         ValidCells = [];
         SpawnAreaMesh = null; // Will be created on main thread

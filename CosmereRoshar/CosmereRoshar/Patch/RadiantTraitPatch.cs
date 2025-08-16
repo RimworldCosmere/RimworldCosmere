@@ -2,7 +2,7 @@
 using Verse;
 using Verse.AI;
 
-namespace Cosmere.Roshar.Patches;
+namespace Cosmere.Roshar.Patch;
 
 // @TODO Move to CosmereRoshar/Patches/PawnPathFollowerPatches.cs
 [HarmonyPatch(typeof(Pawn_PathFollower), "CostToMoveIntoCell")]

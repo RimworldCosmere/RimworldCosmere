@@ -1,7 +1,7 @@
 using HarmonyLib;
 using Verse;
 
-namespace Cosmere.Roshar.Patches;
+namespace Cosmere.Roshar.Patch;
 
 [HarmonyPatch(typeof(GenRecipe))]
 public static class GenRecipePatches {

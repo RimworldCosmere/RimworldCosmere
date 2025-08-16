@@ -2,7 +2,7 @@
 using UnityEngine;
 using Verse;
 
-namespace Cosmere.Roshar.ParticleSystem.LesserSpren;
+namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
 
 public class MeshManager {
     private readonly float altitudeLayer;

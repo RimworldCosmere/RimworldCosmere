@@ -79,4 +79,7 @@
     <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
         <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*"/>
     </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="ParticleSystem\LesserSpren\Builder.cs"/>
+    </ItemGroup>
 </Project>

@@ -1,30 +1,30 @@
-﻿using Cosmere.Roshar.ParticleSystem.LesserSpren.SprenControllers;
+﻿using Cosmere.Roshar.LesserSpren.SprenControllers;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Logger = Cosmere.Foundation.Logger;
 
-namespace Cosmere.Roshar.ParticleSystem.LesserSpren;
+namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
 
 public class CellValidator(Map map) {
-    private const int CACHE_REFRESH_INTERVAL = 7200; // Refresh cache every 7200 ticks (2 minutes)
+    private const int CacheRefreshInterval = 7200; // Refresh cache every 7200 ticks (2 minutes)
 
     private readonly Dictionary<SprenType, List<IntVec3>>
         cachedStaticCells = new Dictionary<SprenType, List<IntVec3>>();
 
     private readonly Map map = map;
-    private bool staticCellsCached;
     private int lastCacheRefreshTick;
+    private bool staticCellsCached;
 
     public bool IsCellValidForSprenType(IntVec3 position, SprenType sprenType) {
-        BaseSprenController controller = SprenControllerRegistry.GetController(sprenType);
-        return controller?.IsCellValid(position, map) ?? false;
+        BaseSprenController controller = SprenControllerRegistry.GetController(sprenType)!;
+        return controller.GetSprenSpawnInformation(position, map) != null;
     }
 
     // Terrain checking methods moved to individual spren controller classes
 
     public List<IntVec3> GetCellsForSprenType(SprenType sprenType) {
-        BaseSprenController controller = SprenControllerRegistry.GetController(sprenType);
+        BaseSprenController controller = SprenControllerRegistry.GetController(sprenType)!;
 
         // Check if cache needs refreshing for nature spren
         if (controller.isNatureSpren && ShouldRefreshCache()) {
@@ -36,7 +36,7 @@ public class CellValidator(Map map) {
         }
 
         List<IntVec3> validCells = [];
-        validCells.AddRange(map.AllCells.Where(cell => controller.IsCellValid(cell, map)));
+        validCells.AddRange(map.AllCells.Where(cell => controller.GetSprenSpawnInformation(cell, map) != null));
 
         if (controller.isNatureSpren) {
             cachedStaticCells[sprenType] = validCells;
@@ -60,7 +60,7 @@ public class CellValidator(Map map) {
 
     private bool ShouldRefreshCache() {
         return staticCellsCached &&
-               Find.TickManager?.TicksGame - lastCacheRefreshTick >= CACHE_REFRESH_INTERVAL;
+               Find.TickManager?.TicksGame - lastCacheRefreshTick >= CacheRefreshInterval;
     }
 
     private void RefreshStaticSprenCache() {

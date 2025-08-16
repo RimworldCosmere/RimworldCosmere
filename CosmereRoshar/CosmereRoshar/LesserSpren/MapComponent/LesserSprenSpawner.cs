@@ -1,33 +1,36 @@
-﻿using System.Threading.Tasks;
-using Cosmere.Roshar.Debug;
-using Cosmere.Roshar.ParticleSystem.LesserSpren;
-using Cosmere.Roshar.ParticleSystem.LesserSpren.SprenControllers;
+﻿using Cosmere.Roshar.Debug;
+using Cosmere.Roshar.LesserSpren.ParticleSystem;
+using Cosmere.Roshar.LesserSpren.SprenControllers;
 using Verse;
 using Logger = Cosmere.Foundation.Logger;
 
-namespace Cosmere.Roshar.Comp.Map;
+namespace Cosmere.Roshar.LesserSpren.MapComponent;
 
-public class LesserSprenSpawner : MapComponent {
+public class LesserSprenSpawner : Verse.MapComponent {
     private const float ParticleAlpha = 2.5f;
 
     private const float
         DynamicUpdateInterval = GenTicks.TickRareInterval; // Update dynamic spren every 250 ticks (about 4 seconds)
 
+    private readonly List<BaseSprenController> allControllers = [];
+
     private readonly int mapID;
     private readonly Dictionary<SprenType, MeshManager> meshManagers = new Dictionary<SprenType, MeshManager>();
-    private readonly List<SprenType> pendingInitialization = new List<SprenType>();
+    private readonly List<SprenType> pendingInitialization = [];
 
     private readonly Dictionary<SprenType, SprenParticleSystem> sprenSystems =
         new Dictionary<SprenType, SprenParticleSystem>();
 
-    private CellValidator cellValidator;
-    private Task fetchTask;
     private bool initialized;
     private int lastDynamicUpdateTick;
 
-    public LesserSprenSpawner(Verse.Map map) : base(map) {
+    public LesserSprenSpawner(Map map) : base(map) {
         mapID = map.GetHashCode();
         LongEventHandler.ExecuteWhenFinished(InitializeMapSystems);
+    }
+
+    public override void MapComponentDraw() {
+        SprenDebugOverlay.DrawOverlay();
     }
 
     public override void MapComponentTick() {
@@ -68,9 +71,9 @@ public class LesserSprenSpawner : MapComponent {
         // Don't do anything else until initialized
         if (!initialized) return;
 
-        // Update dynamic spren periodically
+        // Update all spren controllers periodically
         if (Find.TickManager.TicksGame - lastDynamicUpdateTick >= DynamicUpdateInterval) {
-            UpdateDynamicSpren();
+            UpdateAllSprenControllers();
             lastDynamicUpdateTick = Find.TickManager.TicksGame;
 
             // Update debug overlay with current particle positions for all active systems
@@ -95,39 +98,39 @@ public class LesserSprenSpawner : MapComponent {
                 kvp.Value.ReEmitParticles();
             }
         }
-
-        if (fetchTask is { IsCompleted: false }) return;
     }
 
-    private void UpdateDynamicSpren() {
-        IEnumerable<BaseSprenController> dynamicControllers = SprenControllerRegistry.GetEnabledDynamicControllers();
-
-        foreach (BaseSprenController controller in dynamicControllers) {
+    private void UpdateAllSprenControllers() {
+        // Update ALL controllers (both static and dynamic need periodic refreshes)
+        foreach (BaseSprenController controller in allControllers) {
             SprenType sprenType = controller.sprenType;
 
-            List<IntVec3> cells = cellValidator.GetDynamicSprenCells(sprenType);
+            // Update controller's cells (handles timing internally)
+            controller.UpdateCells(map);
 
-            if (cells.Count > 0) {
+            if (controller.validSpawnCells.Count > 0) {
                 // Create or update the spren system
                 if (!sprenSystems.ContainsKey(sprenType)) {
-                    CreateSprenSystem(sprenType);
+                    CreateSprenSystem(sprenType, controller);
+                } else {
+                    // Update existing system with new cells
+                    SprenParticleSystem? system = sprenSystems[sprenType];
+                    system.UpdateValidCells(controller.validSpawnCells);
+
+                    // Update debug overlay for dynamic spren
+                    SprenDebugOverlay.UpdateValidCells(sprenType, controller.validSpawnCells);
                 }
 
-                SprenParticleSystem? system = sprenSystems[sprenType];
-                system.UpdateValidCells(cells);
-
-                // Update debug overlay for dynamic spren
-                SprenDebugOverlay.UpdateValidCells(sprenType, cells);
-
                 if (!meshManagers.TryGetValue(sprenType, out MeshManager? value)) continue;
+                SprenParticleSystem? sprenSystem = sprenSystems[sprenType];
 
                 // Only update if particle system is initialized
-                if (system.ParticleSystem != null) {
-                    system.UpdateMesh(value);
-                    StateHandler.SetParticleSystemState(system.ParticleSystem, true);
+                if (sprenSystem.ParticleSystem != null) {
+                    sprenSystem.UpdateMesh(value);
+                    StateHandler.SetParticleSystemState(sprenSystem.ParticleSystem, true);
 
                     // Update debug overlay with actual particle positions
-                    SprenDebugOverlay.UpdateActualParticles(sprenType, system.ParticleSystem);
+                    SprenDebugOverlay.UpdateActualParticles(sprenType, sprenSystem.ParticleSystem);
                 }
             } else if (sprenSystems.TryGetValue(sprenType, out SprenParticleSystem? system)) {
                 if (system.ParticleSystem != null) {
@@ -140,46 +143,24 @@ public class LesserSprenSpawner : MapComponent {
         }
     }
 
-    private void CreateSprenSystem(SprenType sprenType) {
+    private void CreateSprenSystem(SprenType sprenType, BaseSprenController controller) {
         SprenParticleSystem system = new SprenParticleSystem(sprenType, mapID);
         sprenSystems[sprenType] = system;
 
+        // Update system with controller's cells
+        system.UpdateValidCells(controller.validSpawnCells);
+
         MeshManager meshManager = new MeshManager(
             map,
-            pos => cellValidator.IsCellValidForSprenType(pos.ToIntVec3(), sprenType)
+            pos => controller.validSpawnCells.Contains(pos.ToIntVec3())
         );
         meshManagers[sprenType] = meshManager;
 
+        // Update debug overlay
+        SprenDebugOverlay.UpdateValidCells(sprenType, controller.validSpawnCells);
+
         // Mark for initialization on main thread
         pendingInitialization.Add(sprenType);
-    }
-
-    private void FetchAllCells() {
-        fetchTask = Task.Run(() => {
-                // Cache static nature spren cells
-                cellValidator.CacheStaticSprenCells();
-
-                // Initialize static spren systems
-                IEnumerable<BaseSprenController> enabledNatureControllers =
-                    SprenControllerRegistry.GetEnabledNatureControllers();
-
-                foreach (BaseSprenController controller in enabledNatureControllers) {
-                    SprenType sprenType = controller.sprenType;
-
-                    List<IntVec3> cells = cellValidator.GetCellsForSprenType(sprenType);
-                    if (cells.Count <= 0) continue;
-                    CreateSprenSystem(sprenType);
-                    SprenParticleSystem? system = sprenSystems[sprenType];
-                    system.UpdateValidCells(cells);
-
-                    // Don't update mesh here - particle system doesn't exist yet!
-                    // Mesh will be updated on main thread after initialization
-
-                    // Update debug overlay
-                    SprenDebugOverlay.UpdateValidCells(sprenType, cells);
-                }
-            }
-        );
     }
 
 
@@ -198,12 +179,23 @@ public class LesserSprenSpawner : MapComponent {
     private void InitializeMapSystems() {
         if (initialized) return;
 
-        cellValidator = new CellValidator(map);
+        // Get all enabled controllers
+        allControllers.AddRange(SprenControllerRegistry.GetEnabledControllers());
+        Logger.Info($"[Spren] Initializing {allControllers.Count} spren controllers");
 
-        // Initialize static nature spren after a delay
-        FetchAllCells();
+        // Initialize cells for all controllers
+        foreach (BaseSprenController controller in allControllers) {
+            Logger.Info($"[Spren] Initializing cells for {controller.sprenType}");
+            controller.InitializeCells(map);
+
+            // Create spren system if controller has valid cells
+            if (controller.validSpawnCells.Count > 0) {
+                CreateSprenSystem(controller.sprenType, controller);
+            }
+        }
 
         initialized = true;
+        Logger.Info("[Spren] Map systems initialized");
     }
 
     public override void ExposeData() {

@@ -6,7 +6,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace Cosmere.Roshar.Patches.Fabrials;
+namespace Cosmere.Roshar.Patch.Fabrials;
 
 [HarmonyPatch(typeof(Plant), "get_GrowthRate")]
 public static class CultivationSprenPatch {

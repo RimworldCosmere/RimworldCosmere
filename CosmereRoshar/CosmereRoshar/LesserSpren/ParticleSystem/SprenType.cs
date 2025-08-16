@@ -1,4 +1,6 @@
-namespace Cosmere.Roshar.ParticleSystem.LesserSpren;
+using Verse;
+
+namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
 
 public enum SprenType {
     // Nature spren (static, terrain-based)
@@ -71,5 +73,10 @@ public static class SprenTypeExtensions {
                 or SprenType.Hungerspren => true,
             _ => false,
         };
+    }
+
+    public static string GetLocalizedName(this SprenType type) {
+        string translationKey = $"SprenName_{type}";
+        return translationKey.Translate();
     }
 }

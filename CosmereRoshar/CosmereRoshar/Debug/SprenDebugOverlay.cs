@@ -1,5 +1,5 @@
-using Cosmere.Roshar.ParticleSystem.LesserSpren;
-using Cosmere.Roshar.ParticleSystem.LesserSpren.SprenControllers;
+using Cosmere.Roshar.LesserSpren.ParticleSystem;
+using Cosmere.Roshar.LesserSpren.SprenControllers;
 using UnityEngine;
 using Verse;
 
@@ -38,14 +38,14 @@ public static class SprenDebugOverlay {
         ActiveSpawnCells[sprenType] = new List<IntVec3>(cells);
     }
 
-    public static void UpdateActualParticles(SprenType sprenType, UnityEngine.ParticleSystem particleSystem) {
+    public static void UpdateActualParticles(SprenType sprenType, ParticleSystem particleSystem) {
         if (particleSystem == null || particleSystem.particleCount == 0) {
             ActualParticlePositions[sprenType] = new List<Vector3>();
             return;
         }
 
-        UnityEngine.ParticleSystem.Particle[] particles =
-            new UnityEngine.ParticleSystem.Particle[particleSystem.particleCount];
+        ParticleSystem.Particle[] particles =
+            new ParticleSystem.Particle[particleSystem.particleCount];
         int numParticles = particleSystem.GetParticles(particles);
 
         ActualParticlePositions[sprenType] = particles.Take(numParticles)

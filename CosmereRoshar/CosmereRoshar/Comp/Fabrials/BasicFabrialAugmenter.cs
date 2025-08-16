@@ -1,7 +1,7 @@
 ﻿using System;
 using Cosmere.Roshar.Comp.Thing;
 using Cosmere.Roshar.Dialog;
-using Cosmere.Roshar.Patches.Fabrials;
+using Cosmere.Roshar.Patch.Fabrials;
 using Cosmere.Roshar.Thing.Building;
 using RimWorld;
 using UnityEngine;
@@ -24,7 +24,9 @@ public class BasicFabrialAugmenter : ThingComp, IGemstoneHandler, IFilterableCom
     public bool hasGemstone => insertedGemstone != null;
 
     public Spren currentSpren =>
-        hasGemstone ? insertedGemstone.TryGetComp<CompCutGemstone>()?.capturedSpren ?? Spren.None : Spren.None;
+        hasGemstone
+            ? insertedGemstone.TryGetComp<CompCutGemstone>()?.capturedSpren ?? Spren.None
+            : Spren.None;
 
     public List<ThingDef> filterList => filterListInt;
 

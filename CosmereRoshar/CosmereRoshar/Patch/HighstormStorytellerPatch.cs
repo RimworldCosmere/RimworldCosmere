@@ -2,23 +2,16 @@
 using RimWorld;
 using Verse;
 
-namespace Cosmere.Roshar.Patches;
+namespace Cosmere.Roshar.Patch;
 
-[StaticConstructorOnStartup]
+// TODO This could probably be a Component (Map or Game), instead of a patch. Or eventually, Trigger by the actual storm that's moving through the world
+[HarmonyPatch(typeof(Storyteller), nameof(Storyteller.StorytellerTick))]
 public static class HighstormStorytellerPatch {
     private const int IntervalTicks = 8 * 60000; // 1 in-game days
     private const int WarningOffsetTicks = 60000; // Half a day (0.5 * 60000 ticks)
-    private static int LastHighstormTick = 0;
 
-    static HighstormStorytellerPatch() {
-        Harmony harmony = new Harmony("com.lucidMods.HighstormPatch");
-        harmony.Patch(
-            AccessTools.Method(typeof(Storyteller), "StorytellerTick"),
-            postfix: new HarmonyMethod(typeof(HighstormStorytellerPatch), nameof(StorytellerTick_Postfix))
-        );
-    }
-
-    private static void StorytellerTick_Postfix() {
+    [HarmonyPostfix]
+    public static void StorytellerTick_Postfix() {
         int currentTick = Find.TickManager.TicksGame;
 
         if (currentTick % IntervalTicks == IntervalTicks - WarningOffsetTicks) {

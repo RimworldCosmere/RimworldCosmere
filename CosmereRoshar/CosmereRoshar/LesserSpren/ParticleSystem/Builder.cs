@@ -17,7 +17,7 @@ internal struct ParticleSystemConfig {
 [StaticConstructorOnStartup]
 public static class Builder {
     private static readonly ParticleSystemConfig Config = new ParticleSystemConfig {
-        particleSizeFactor = 0.25f, // Reduced by half from 0.5f
+        particleSizeFactor = 1f,
         shapeRandomDirectionAmount = new FloatRange(0, 360),
         noiseOctaveCount = 2,
         noiseFrequency = 1.5f,
@@ -27,21 +27,23 @@ public static class Builder {
 
     private static readonly Texture2D LesserSpren = ContentFinder<Texture2D>.Get("Things/Pawn/Animal/LesserSpren");
 
+    /*
     public static UnityEngine.ParticleSystem CreateLesserSprenParticleSystem(int mapID) {
-        return CreateLesserSprenParticleSystem(mapID, null);
-    }
+        return CreateLesserSprenParticleSystem(mapID, null, null);
+    }*/
 
     public static UnityEngine.ParticleSystem CreateLesserSprenParticleSystem(
         int mapID,
-        SprenSpawnInformation? spawnInfo
+        BaseSprenController controller,
+        SprenSpawnInformation spawnInfo
     ) {
-        GameObject fireflies = new GameObject($"firefly_system_{Mathf.Abs(mapID)}");
-        UnityEngine.ParticleSystem particleSys = fireflies.GetComponent<UnityEngine.ParticleSystem>() ??
-                                                 fireflies.AddComponent<UnityEngine.ParticleSystem>();
-        ParticleSystemRenderer renderer = fireflies.GetComponent<ParticleSystemRenderer>() ??
-                                          fireflies.AddComponent<ParticleSystemRenderer>();
+        GameObject spren = new GameObject($"lesser_spren_system_{Mathf.Abs(mapID)}");
+        UnityEngine.ParticleSystem particleSys = spren.GetComponent<UnityEngine.ParticleSystem>() ??
+                                                 spren.AddComponent<UnityEngine.ParticleSystem>();
+        ParticleSystemRenderer renderer = spren.GetComponent<ParticleSystemRenderer>() ??
+                                          spren.AddComponent<ParticleSystemRenderer>();
 
-        ConfigureParticleSystem(particleSys, spawnInfo);
+        ConfigureParticleSystem(particleSys, controller, spawnInfo);
         ConfigureShapeModule(particleSys, spawnInfo);
         ConfigureEmissionModule(particleSys);
         ConfigureNoiseModule(particleSys);
@@ -57,14 +59,15 @@ public static class Builder {
 
     private static void ConfigureParticleSystem(
         UnityEngine.ParticleSystem particleSys,
-        SprenSpawnInformation? spawnInfo = null
+        BaseSprenController controller,
+        SprenSpawnInformation spawnInfo
     ) {
         UnityEngine.ParticleSystem.MainModule mainModule = particleSys.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
         mainModule.loop = true;
         mainModule.duration = Rand.Value;
         mainModule.startSize = 1f;
-        mainModule.startLifetime = float.PositiveInfinity;
+        mainModule.startLifetime = controller.activeInfoRefreshInterval.max.TicksToSeconds();
 
         // Use spawn info movement speed if available, otherwise use default range
         float speed = spawnInfo?.movementSpeed ?? Random.Range(0.01f, 20f);
@@ -73,7 +76,7 @@ public static class Builder {
 
     private static void ConfigureShapeModule(
         UnityEngine.ParticleSystem particleSys,
-        SprenSpawnInformation? spawnInfo = null
+        SprenSpawnInformation spawnInfo
     ) {
         UnityEngine.ParticleSystem.ShapeModule shapeModule = particleSys.shape;
         shapeModule.enabled = true;
@@ -121,7 +124,7 @@ public static class Builder {
         sizeModule.enabled = true;
 
         AnimationCurve curve = new AnimationCurve();
-        curve.AddKey(0f, 1f * particleSizeFactor);
+        curve.AddKey(0f, .5f * particleSizeFactor);
         curve.AddKey(1f, 1f * particleSizeFactor);
 
         sizeModule.size = new UnityEngine.ParticleSystem.MinMaxCurve(1.0f, curve);
@@ -140,10 +143,10 @@ public static class Builder {
             ],
             [
                 new GradientAlphaKey(0f, 0f),
-                new GradientAlphaKey(0f, 0.05f),
+                new GradientAlphaKey(.5f, 0.005f),
                 new GradientAlphaKey(1f, 0.45f),
                 new GradientAlphaKey(1f, 0.55f),
-                new GradientAlphaKey(0f, 0.95f),
+                new GradientAlphaKey(0.5f, 0.995f),
                 new GradientAlphaKey(0f, 1f),
             ]
         );
@@ -153,12 +156,12 @@ public static class Builder {
     private static void ConfigureRenderer(
         UnityEngine.ParticleSystem particleSys,
         Material material,
-        Texture2D fireflyTexture
+        Texture2D lesserSprenTexture
     ) {
         ParticleSystemRenderer renderer = particleSys.GetComponent<ParticleSystemRenderer>();
         renderer.material = material;
-        material.SetTexture(Shader.PropertyToID("_MainTex"), fireflyTexture);
-        particleSys.Stop();
+        material.SetTexture(Shader.PropertyToID("_MainTex"), lesserSprenTexture);
+        //particleSys.Stop();
     }
 
     // FOR DEBUGGING

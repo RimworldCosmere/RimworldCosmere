@@ -10,12 +10,12 @@ public abstract class DynamicSprenController : BaseSprenController {
     public override bool isNatureSpren => false;
 
     // Dynamic spren have shorter refresh intervals to respond to changing conditions
-    protected override IntRange validInfoRefreshInterval => new IntRange(
+    public override IntRange validInfoRefreshInterval => new IntRange(
         GenTicks.SecondsToTicks(60), // 1 minute
         GenTicks.SecondsToTicks(120) // 2 minutes
     );
 
-    protected override IntRange activeInfoRefreshInterval => new IntRange(
+    public override IntRange activeInfoRefreshInterval => new IntRange(
         GenTicks.SecondsToTicks(10), // 10 seconds
         GenTicks.SecondsToTicks(20) // 20 seconds  
     );

@@ -10,12 +10,12 @@ public abstract class StaticSprenController : BaseSprenController {
     public override bool isNatureSpren => true;
 
     // Static spren have longer refresh intervals since terrain doesn't change often
-    protected override IntRange validInfoRefreshInterval => new IntRange(
+    public override IntRange validInfoRefreshInterval => new IntRange(
         GenTicks.SecondsToTicks(600), // 10 minutes
         GenTicks.SecondsToTicks(3600) // 60 minutes
     );
 
-    protected override IntRange activeInfoRefreshInterval => new IntRange(
+    public override IntRange activeInfoRefreshInterval => new IntRange(
         GenTicks.SecondsToTicks(240), // 4 minutes  
         GenTicks.SecondsToTicks(480) // 8 minutes
     );

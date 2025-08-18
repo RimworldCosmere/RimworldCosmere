@@ -18,8 +18,8 @@ public abstract class BaseSprenController {
     public virtual List<SprenSpawnInformation> validSpawnInfo => validSpawnInfoInt;
     public virtual List<SprenSpawnInformation> activeSpawnInfo => activeSpawnInfoInt;
 
-    protected abstract IntRange validInfoRefreshInterval { get; }
-    protected abstract IntRange activeInfoRefreshInterval { get; }
+    public abstract IntRange validInfoRefreshInterval { get; }
+    public abstract IntRange activeInfoRefreshInterval { get; }
 
     public virtual int minParticlesPerCell => 2;
     public virtual int maxParticlesPerCell => 4;

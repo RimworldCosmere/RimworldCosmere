@@ -20,8 +20,10 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     public float lastUpdateTime { get; set; }
 
     private float lastParticleEmissionTime { get; set; }
+    private float lastActiveRollTime { get; set; }
 
     private HashSet<SprenSpawnInformation> previousActiveInfo { get; set; } = [];
+    private List<SprenSpawnInformation> cachedActiveCells { get; set; } = [];
 
     public void InitializeOnMainThread() {
         if (spawnAreaMesh == null) {
@@ -36,9 +38,9 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
 
     private void CreateParticleSystem(int mapID) {
         // Get representative spawn information for particle system configuration
-        SprenSpawnInformation? representativeSpawnInfo = GetRepresentativeSpawnInfo();
+        SprenSpawnInformation representativeSpawnInfo = GetRepresentativeSpawnInfo()!;
         particleSystem =
-            Builder.CreateLesserSprenParticleSystem(mapID, representativeSpawnInfo);
+            Builder.CreateLesserSprenParticleSystem(mapID, controller, representativeSpawnInfo);
 
         // Ensure particle system is at world origin
         particleSystem.transform.position = Vector3.zero;
@@ -64,11 +66,12 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         main.startColor = controller.sprenColor;
 
         // Configure size from controller
-        main.startSize = main.startSize.constant * controller.sprenSizeMultiplier * 0.5f;
+        main.startSize = main.startSize.constant * controller.sprenSizeMultiplier;
 
         // Configure emission rate from controller
         UnityEngine.ParticleSystem.EmissionModule emission = ps.emission;
-        emission.rateOverTime = emission.rateOverTime.constant * controller.emissionRateMultiplier * 0.5f;
+        //emission.rateOverTime = emission.rateOverTime.constant * controller.emissionRateMultiplier;
+        emission.rateOverTime = 0f;
     }
 
     public void UpdateMesh(MeshManager meshManager) {
@@ -95,6 +98,7 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
 
         // Ensure the particle system is playing
         if (!particleSystem.isPlaying) {
+            Logger.Verbose($"[Spren] Starting particle system for {sprenType}");
             particleSystem.Play();
         }
     }
@@ -123,9 +127,14 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
             return;
         }
 
-        // With infinite lifetime, always clear and re-emit to avoid accumulation
-        particleSystem?.Clear();
-        previousActiveInfo = new HashSet<SprenSpawnInformation>(activeSpawnCells);
+        // Only clear if the active cells have changed significantly
+        HashSet<SprenSpawnInformation> currentSet = new HashSet<SprenSpawnInformation>(activeSpawnCells);
+        if (!currentSet.SetEquals(previousActiveInfo)) {
+            particleSystem?.Clear();
+            previousActiveInfo = currentSet;
+        }
+
+        Logger.Verbose($"[Spren] Emitting particles for {sprenType}: {activeSpawnCells.Count} active cells");
 
         List<UnityEngine.ParticleSystem.EmitParams> emitParamsList = [];
 
@@ -153,14 +162,20 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
                 );
 
                 emitParams.startSize = particleSystem!.main.startSize.constant;
+                emitParams.startLifetime = particleSystem!.main.startLifetime.constant;
 
                 emitParamsList.Add(emitParams);
             }
         }
 
+        ParticleSystemRenderer? test = particleSystem.GetComponent<ParticleSystemRenderer>();
         foreach (UnityEngine.ParticleSystem.EmitParams emitParams in emitParamsList) {
             particleSystem!.Emit(emitParams, 1);
         }
+
+        Logger.Verbose(
+            $"[Spren] Emitted {emitParamsList.Count} particles for {sprenType}, particle count: {particleSystem!.particleCount}"
+        );
 
         lastParticleEmissionTime = Time.time;
     }

@@ -1,6 +1,9 @@
-﻿using Cosmere.Roshar.Debug;
+﻿using System;
+using System.Text;
+using Cosmere.Roshar.Debug;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.Roshar.LesserSpren.SprenControllers;
+using UnityEngine;
 using Verse;
 using Logger = Cosmere.Foundation.Logger;
 
@@ -171,5 +174,96 @@ public class LesserSprenSpawner : Verse.MapComponent {
         if (initialized) {
             InitializeMapSystems();
         }
+    }
+
+    public string DebugStringAt(IntVec3 position) {
+        StringBuilder info = new StringBuilder();
+        info.AppendLine($"=== SPREN AT {position} ===");
+
+        bool foundValidSpren = false;
+
+        foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
+            BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
+            if (controller == null || !controller.isEnabled) continue;
+
+            bool shouldShow;
+            bool isValidAtPosition = false;
+            bool isInActiveCells = false;
+            bool isInDynamicCells = false;
+
+            if (controller.isNatureSpren) {
+                isValidAtPosition = controller.GetSprenSpawnInformation(position, map) != null;
+                shouldShow = isValidAtPosition;
+            } else {
+                isInActiveCells = controller.validSpawnInfo.Any(info => info.position == position);
+                List<SprenSpawnInformation> dynamicCells = controller.GetDynamicCells(map);
+                isInDynamicCells = dynamicCells.Any(i => i.position == position);
+                shouldShow = isInActiveCells || isInDynamicCells;
+            }
+
+            if (!shouldShow) continue;
+
+            foundValidSpren = true;
+            info.AppendLine($"\n{sprenType} ({(controller.isNatureSpren ? "Nature" : "Dynamic")}):");
+
+            if (controller.isNatureSpren) {
+                info.AppendLine($"  Valid at Position: {ColoredBool(isValidAtPosition)}");
+                info.AppendLine(
+                    $"  In Active Cells: {ColoredBool(controller.validSpawnInfo.Any(info => info.position == position))}"
+                );
+            } else {
+                info.AppendLine($"  In Active Cells: {ColoredBool(isInActiveCells)}");
+                info.AppendLine($"  In Dynamic Cells: {ColoredBool(isInDynamicCells)}");
+            }
+
+            AppendControllerSettings(info, controller);
+        }
+
+        if (!foundValidSpren) {
+            info.AppendLine("No valid spren at this position.");
+        }
+
+        return info.ToString();
+    }
+
+    private void AppendControllerSettings(StringBuilder info, BaseSprenController controller) {
+        info.AppendLine($"  Spawn Chance: {controller.cellSpawnChance:P1}");
+        info.AppendLine($"  Particles/Cell: {controller.minParticlesPerCell}-{controller.maxParticlesPerCell}");
+        info.AppendLine($"  Color: {ColoredColor(controller.sprenColor)}");
+        info.AppendLine($"  Size Mult: {ColoredMultiplier(controller.sprenSizeMultiplier, 1f)}x");
+        info.AppendLine($"  Emission Mult: {ColoredMultiplier(controller.emissionRateMultiplier, 1f)}x");
+        info.AppendLine($"  Speed Mult: {ColoredMultiplier(controller.sprenSpeedMultiplier, 1f)}x");
+    }
+
+    private static string ColoredBool(bool value) {
+        return value ? "<color=green>true</color>" : "<color=red>false</color>";
+    }
+
+    private static string ColoredColor(Color color) {
+        string hex = ColorUtility.ToHtmlStringRGBA(color);
+        return $"<color=#{hex}>{color}</color>";
+    }
+
+    private static string ColoredMultiplier(float multiplier, float baseline) {
+        float ratio = multiplier / baseline;
+        Color color;
+
+        if (ratio <= 0.25f) {
+            color = Color.red;
+        } else if (ratio <= 0.75f) {
+            float t = (ratio - 0.25f) / 0.5f;
+            color = Color.Lerp(Color.red, Color.yellow, t);
+        } else if (ratio <= 1.5f) {
+            float t = (ratio - 0.75f) / 0.75f;
+            color = Color.Lerp(Color.yellow, Color.green, t);
+        } else if (ratio <= 3.0f) {
+            float t = (ratio - 1.5f) / 1.5f;
+            color = Color.Lerp(Color.green, Color.blue, t);
+        } else {
+            color = Color.blue;
+        }
+
+        string hex = ColorUtility.ToHtmlStringRGB(color);
+        return $"<color=#{hex}>{multiplier:F2}</color>";
     }
 }

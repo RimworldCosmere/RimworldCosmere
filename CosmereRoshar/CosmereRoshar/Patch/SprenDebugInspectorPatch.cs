@@ -13,6 +13,6 @@ public static class SprenDebugInspectorPatch {
         LesserSprenSpawner? spawner = Find.CurrentMap?.GetComponent<LesserSprenSpawner>();
         if (spawner == null) return;
 
-        //__result += "\n" + spawner.DebugStringAt(UI.MouseCell());
+        __result += "\n" + spawner.DebugStringAt(UI.MouseCell());
     }
 }

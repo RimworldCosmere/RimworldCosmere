@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>Cosmere_Roshar_CaptureSpren</defName>
+        <label>Capture spren</label>
+        <driverClass>Cosmere.Roshar.Job.Driver.CaptureSpren</driverClass>
+        <reportString>capturing spren.</reportString>
+        <playerInterruptible>true</playerInterruptible>
+        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+    </JobDef>
+</Defs>

@@ -148,11 +148,8 @@ public class LesserSprenSpawner : Verse.MapComponent {
 
         // Get all enabled controllers
         allControllers.AddRange(SprenControllerRegistry.GetEnabledControllers());
-        Logger.Info($"[Spren] Initializing {allControllers.Count} spren controllers");
-
         // Initialize cells for all controllers
         foreach (BaseSprenController controller in allControllers) {
-            Logger.Info($"[Spren] Initializing cells for {controller.sprenType}");
             controller.InitializeInfo(map);
 
             // Create spren system if controller has valid cells
@@ -162,7 +159,6 @@ public class LesserSprenSpawner : Verse.MapComponent {
         }
 
         initialized = true;
-        Logger.Info("[Spren] Map systems initialized");
     }
 
     public override void ExposeData() {

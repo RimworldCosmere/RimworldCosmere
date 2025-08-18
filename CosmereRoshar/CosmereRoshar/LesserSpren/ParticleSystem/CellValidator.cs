@@ -2,7 +2,6 @@
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
 
@@ -64,8 +63,6 @@ public class CellValidator(Map map) {
     }
 
     private void RefreshStaticSprenCache() {
-        Logger.Info("[CellValidator] Refreshing static spren cache after 7200 ticks");
-
         // Clear existing cache
         cachedStaticCells.Clear();
         staticCellsCached = false;

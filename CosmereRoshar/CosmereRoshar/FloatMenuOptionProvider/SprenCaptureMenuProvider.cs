@@ -285,42 +285,19 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
     ///     Give the pawn a job to capture a specific spren type
     /// </summary>
     private static void GiveSprenCaptureJob(Pawn pawn, IntVec3 cell, Map map, SprenType sprenType, ThingWithComps gem) {
-        // TODO: Create actual spren capture job
-        // For now, just log the action
-        Messages.Message(
-            "SprenCapture_AttemptCaptureSpecific".Translate(
-                pawn.Name.ToStringShort,
-                sprenType.GetLocalizedName(),
-                cell.ToString(),
-                gem.Label
-            ),
-            pawn,
-            MessageTypeDefOf.NeutralEvent
-        );
-
-        // Placeholder: Move to the cell
-        Verse.AI.Job moveJob = JobMaker.MakeJob(JobDefOf.Goto, cell);
-        pawn.jobs.TryTakeOrderedJob(moveJob);
+        Verse.AI.Job captureJob = JobMaker.MakeJob(Defs.Cosmere_Roshar_CaptureSpren, cell, gem);
+        captureJob.targetC = new LocalTargetInfo(new IntVec3((int)sprenType, 0, 0)); // Store spren type in targetC.x
+        captureJob.count = 1; // Gem count for StartCarryThing
+        pawn.jobs.TryTakeOrderedJob(captureJob);
     }
 
     /// <summary>
     ///     Give the pawn a job to capture any suitable spren
     /// </summary>
     private static void GiveGeneralSprenCaptureJob(Pawn pawn, IntVec3 cell, Map map, ThingWithComps gem) {
-        // TODO: Create actual general spren capture job
-        // For now, just log the action
-        Messages.Message(
-            "SprenCapture_AttemptCaptureAny".Translate(
-                pawn.Name.ToStringShort,
-                cell.ToString(),
-                gem.Label
-            ),
-            pawn,
-            MessageTypeDefOf.NeutralEvent
-        );
-
-        // Placeholder: Move to the cell
-        Verse.AI.Job moveJob = JobMaker.MakeJob(JobDefOf.Goto, cell);
-        pawn.jobs.TryTakeOrderedJob(moveJob);
+        Verse.AI.Job captureJob = JobMaker.MakeJob(Defs.Cosmere_Roshar_CaptureSpren, cell, gem);
+        captureJob.targetC = new LocalTargetInfo(new IntVec3(-1, 0, 0)); // -1 indicates "any spren type"
+        captureJob.count = 1; // Gem count for StartCarryThing
+        pawn.jobs.TryTakeOrderedJob(captureJob);
     }
 }

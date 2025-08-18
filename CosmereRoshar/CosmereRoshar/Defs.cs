@@ -30,6 +30,7 @@ public static class Defs {
     public static JobDef Cosmere_Roshar_RefuelFabrial;
     public static JobDef Cosmere_Roshar_RemoveFromFabrial;
     public static JobDef Cosmere_Roshar_CastAbilityOnTarget;
+    public static JobDef Cosmere_Roshar_CaptureSpren;
 
     //ThingDef
     public static ThingDef Cosmere_Roshar_FabrialCage_Pewter;

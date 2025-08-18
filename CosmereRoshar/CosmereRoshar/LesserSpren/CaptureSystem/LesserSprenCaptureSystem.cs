@@ -8,7 +8,6 @@ using Cosmere.Roshar.LesserSpren.SprenControllers;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Roshar.LesserSpren.CaptureSystem;
 
@@ -59,20 +58,17 @@ public static class LesserSprenCaptureSystem {
     ) {
         // Validate gem can capture this spren type
         if (!CanGemCaptureSpren(gem, targetSprenType)) {
-            Logger.Verbose($"[SprenCapture] Gem cannot capture {targetSprenType}");
             return false;
         }
 
         // Check if there are active spren particles at this position
         if (!IsSprenActive(info, map, targetSprenType)) {
-            Logger.Verbose($"[SprenCapture] No active {targetSprenType} at position {info.position}");
             return false;
         }
 
         // Get investiture component
         InvestitureHolder? investiture = gem.TryGetComp<InvestitureHolder>();
         if (investiture == null || investiture.currentInvestiture <= 0) {
-            Logger.Verbose("[SprenCapture] Gem has no investiture");
             return false;
         }
 
@@ -146,9 +142,6 @@ public static class LesserSprenCaptureSystem {
         // Get or create the spren container component
         SprenContainer? sprenContainer = gem.TryGetComp<SprenContainer>();
         if (sprenContainer == null) {
-            // Need to add the component dynamically or use existing system
-            // For now, we'll log that capture succeeded
-            Logger.Important($"[SprenCapture] Would capture {sprenType} but gem lacks CompSprenContainer");
             return false;
         }
 
@@ -164,8 +157,6 @@ public static class LesserSprenCaptureSystem {
             gem,
             MessageTypeDefOf.PositiveEvent
         );
-
-        Logger.Important($"[SprenCapture] Successfully captured {sprenType} in {gem.Label}");
 
         return true;
     }
@@ -230,7 +221,6 @@ public static class LesserSprenCaptureSystem {
     ) {
         // Validate gem can capture this spren type
         if (!CanGemCaptureSpren(gem, targetSprenType)) {
-            Logger.Verbose($"[SprenCapture] Gem cannot capture {targetSprenType}");
             return false;
         }
 
@@ -238,7 +228,6 @@ public static class LesserSprenCaptureSystem {
         SprenSpawnInformation? closestSpren =
             FindClosestSprenWithinRadius(position, map, targetSprenType, radius);
         if (closestSpren == null) {
-            Logger.Verbose($"[SprenCapture] No {targetSprenType} within radius {radius} of position {position}");
             return false;
         }
 

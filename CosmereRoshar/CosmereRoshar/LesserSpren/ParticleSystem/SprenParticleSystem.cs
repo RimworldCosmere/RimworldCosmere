@@ -94,7 +94,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
 
         // Ensure the particle system is playing
         if (!particleSystem.isPlaying) {
-            Logger.Verbose($"[Spren] Starting particle system for {sprenType}");
             particleSystem.Play();
         }
     }
@@ -113,7 +112,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     public void EmitParticlesForActiveCells() {
         if (controller.activeSpawnInfo.Count == 0) return;
 
-        Logger.Verbose($"[Spren] Emitting particles for {sprenType}: {controller.activeSpawnInfo.Count} active cells");
 
         List<UnityEngine.ParticleSystem.EmitParams> emitParamsList = [];
 
@@ -147,10 +145,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         foreach (UnityEngine.ParticleSystem.EmitParams emitParams in emitParamsList) {
             particleSystem!.Emit(emitParams, 1);
         }
-
-        Logger.Verbose(
-            $"[Spren] Emitted {emitParamsList.Count} particles for {sprenType}, particle count: {particleSystem!.particleCount}"
-        );
 
         lastParticleEmissionTime = Time.time;
     }

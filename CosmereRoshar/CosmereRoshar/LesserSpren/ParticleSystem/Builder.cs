@@ -17,12 +17,12 @@ internal struct ParticleSystemConfig {
 [StaticConstructorOnStartup]
 public static class Builder {
     private static readonly ParticleSystemConfig Config = new ParticleSystemConfig {
-        particleSizeFactor = 1f,
+        particleSizeFactor = .5f,
         shapeRandomDirectionAmount = new FloatRange(0, 360),
         noiseOctaveCount = 2,
-        noiseFrequency = 1.5f,
+        noiseFrequency = 1f,
         noisePositionAmount = 0.5f,
-        noiseStrength = 15,
+        noiseStrength = 10,
     };
 
     private static readonly Texture2D LesserSpren = ContentFinder<Texture2D>.Get("Things/Pawn/Animal/LesserSpren");
@@ -67,7 +67,7 @@ public static class Builder {
         mainModule.loop = true;
         mainModule.duration = Rand.Value;
         mainModule.startSize = 1f;
-        mainModule.startLifetime = controller.activeInfoRefreshInterval.max.TicksToSeconds();
+        mainModule.startLifetime = new UnityEngine.ParticleSystem.MinMaxCurve(.25f, 2f);
 
         // Use spawn info movement speed if available, otherwise use default range
         float speed = spawnInfo?.movementSpeed ?? Random.Range(0.01f, 20f);
@@ -124,8 +124,8 @@ public static class Builder {
         sizeModule.enabled = true;
 
         AnimationCurve curve = new AnimationCurve();
-        curve.AddKey(0f, .5f * particleSizeFactor);
-        curve.AddKey(1f, 1f * particleSizeFactor);
+        curve.AddKey(0f, .25f * particleSizeFactor);
+        curve.AddKey(1f, .25f * particleSizeFactor);
 
         sizeModule.size = new UnityEngine.ParticleSystem.MinMaxCurve(1.0f, curve);
     }
@@ -143,10 +143,10 @@ public static class Builder {
             ],
             [
                 new GradientAlphaKey(0f, 0f),
-                new GradientAlphaKey(.5f, 0.005f),
+                new GradientAlphaKey(0f, 0.05f),
                 new GradientAlphaKey(1f, 0.45f),
                 new GradientAlphaKey(1f, 0.55f),
-                new GradientAlphaKey(0.5f, 0.995f),
+                new GradientAlphaKey(0f, 0.95f),
                 new GradientAlphaKey(0f, 1f),
             ]
         );

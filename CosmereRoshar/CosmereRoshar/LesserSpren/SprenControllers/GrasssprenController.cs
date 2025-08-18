@@ -8,7 +8,7 @@ namespace Cosmere.Roshar.LesserSpren.SprenControllers;
 
 public class GrasssprenController : StaticSprenController {
     public override SprenType sprenType => SprenType.Grassspren;
-    public override bool isEnabled => false;
+    public override bool isEnabled => true;
     public override float cellSpawnChance => 0.02f;
     public override int maxParticlesPerCell => 4;
     protected override float maxSpreadDistance => 0.1f;

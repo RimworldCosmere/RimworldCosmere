@@ -20,10 +20,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     public float lastUpdateTime { get; set; }
 
     private float lastParticleEmissionTime { get; set; }
-    private float lastActiveRollTime { get; set; }
-
-    private HashSet<SprenSpawnInformation> previousActiveInfo { get; set; } = [];
-    private List<SprenSpawnInformation> cachedActiveCells { get; set; } = [];
 
     public void InitializeOnMainThread() {
         if (spawnAreaMesh == null) {
@@ -103,11 +99,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         }
     }
 
-    private List<SprenSpawnInformation> GetActiveSpawnCells() {
-        float spawnChance = controller.cellSpawnChance;
-        return controller.validSpawnInfo.Where(_ => Random.value < spawnChance).ToList();
-    }
-
     private void UpdateParticleCount() {
         UnityEngine.ParticleSystem.MainModule main = particleSystem!.main;
         UnityEngine.ParticleSystem.EmissionModule emission = particleSystem.emission;
@@ -120,28 +111,16 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     }
 
     public void EmitParticlesForActiveCells() {
-        List<SprenSpawnInformation> activeSpawnCells = GetActiveSpawnCells();
-        if (activeSpawnCells.Count == 0) {
-            particleSystem?.Clear();
-            previousActiveInfo.Clear();
-            return;
-        }
+        if (controller.activeSpawnInfo.Count == 0) return;
 
-        // Only clear if the active cells have changed significantly
-        HashSet<SprenSpawnInformation> currentSet = new HashSet<SprenSpawnInformation>(activeSpawnCells);
-        if (!currentSet.SetEquals(previousActiveInfo)) {
-            particleSystem?.Clear();
-            previousActiveInfo = currentSet;
-        }
-
-        Logger.Verbose($"[Spren] Emitting particles for {sprenType}: {activeSpawnCells.Count} active cells");
+        Logger.Verbose($"[Spren] Emitting particles for {sprenType}: {controller.activeSpawnInfo.Count} active cells");
 
         List<UnityEngine.ParticleSystem.EmitParams> emitParamsList = [];
 
         int minParticles = controller.minParticlesPerCell;
         int maxParticles = controller.maxParticlesPerCell;
 
-        foreach (SprenSpawnInformation info in activeSpawnCells) {
+        foreach (SprenSpawnInformation info in controller.activeSpawnInfo) {
             int particlesForThisCell = Random.Range(minParticles, maxParticles + 1);
 
             for (int i = 0; i < particlesForThisCell; i++) {
@@ -161,14 +140,10 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
                     Random.Range(-0.5f, 0.5f)
                 );
 
-                emitParams.startSize = particleSystem!.main.startSize.constant;
-                emitParams.startLifetime = particleSystem!.main.startLifetime.constant;
-
                 emitParamsList.Add(emitParams);
             }
         }
 
-        ParticleSystemRenderer? test = particleSystem.GetComponent<ParticleSystemRenderer>();
         foreach (UnityEngine.ParticleSystem.EmitParams emitParams in emitParamsList) {
             particleSystem!.Emit(emitParams, 1);
         }
@@ -187,8 +162,8 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     public bool ShouldReEmitParticles() {
         if (particleSystem == null || controller.validSpawnInfo.Count == 0) return false;
 
-        // With infinite lifetime particles, only re-emit based on time interval
-        return Time.time - lastParticleEmissionTime >= ParticleEmissionInterval;
+        // Re-emit if particle count drops below minimum expected
+        return particleSystem.particleCount < controller.minParticlesPerCell;
     }
 
     public void Destroy() {

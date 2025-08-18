@@ -26,7 +26,6 @@
   <SprenName_Logicspren>Logicspren</SprenName_Logicspren>
 
   <!-- Spren Capture Menu Options -->
-  <SprenCapture_NoSprenAvailable>No spren available for capture here</SprenCapture_NoSprenAvailable>
   <SprenCapture_NoSuitableGem>No suitable gem for capturing {0}</SprenCapture_NoSuitableGem>
   <SprenCapture_CaptureSpren>Capture {0}</SprenCapture_CaptureSpren>
   <SprenCapture_CaptureSprenPickupGem>Capture {0} (pick up {1})</SprenCapture_CaptureSprenPickupGem>

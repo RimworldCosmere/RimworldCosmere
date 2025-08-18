@@ -41,13 +41,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
         );
 
         if (capturableSpren.Count == 0) {
-            options.Add(
-                new FloatMenuOption(
-                    "SprenCapture_NoSprenAvailable".Translate(),
-                    null
-                )
-            );
-            return options;
+            return [];
         }
 
         // Check if pawn has access to gems that can capture any of these spren

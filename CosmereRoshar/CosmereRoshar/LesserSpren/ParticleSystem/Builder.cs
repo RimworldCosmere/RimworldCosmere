@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Cosmere.Roshar.LesserSpren.SprenControllers;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
@@ -27,14 +28,21 @@ public static class Builder {
     private static readonly Texture2D LesserSpren = ContentFinder<Texture2D>.Get("Things/Pawn/Animal/LesserSpren");
 
     public static UnityEngine.ParticleSystem CreateLesserSprenParticleSystem(int mapID) {
+        return CreateLesserSprenParticleSystem(mapID, null);
+    }
+
+    public static UnityEngine.ParticleSystem CreateLesserSprenParticleSystem(
+        int mapID,
+        SprenSpawnInformation? spawnInfo
+    ) {
         GameObject fireflies = new GameObject($"firefly_system_{Mathf.Abs(mapID)}");
         UnityEngine.ParticleSystem particleSys = fireflies.GetComponent<UnityEngine.ParticleSystem>() ??
                                                  fireflies.AddComponent<UnityEngine.ParticleSystem>();
         ParticleSystemRenderer renderer = fireflies.GetComponent<ParticleSystemRenderer>() ??
                                           fireflies.AddComponent<ParticleSystemRenderer>();
 
-        ConfigureParticleSystem(particleSys);
-        ConfigureShapeModule(particleSys);
+        ConfigureParticleSystem(particleSys, spawnInfo);
+        ConfigureShapeModule(particleSys, spawnInfo);
         ConfigureEmissionModule(particleSys);
         ConfigureNoiseModule(particleSys);
         ConfigureVelocityOverLifetimeModule(particleSys);
@@ -47,34 +55,39 @@ public static class Builder {
         return particleSys;
     }
 
-    private static void ConfigureParticleSystem(UnityEngine.ParticleSystem particleSys) {
+    private static void ConfigureParticleSystem(
+        UnityEngine.ParticleSystem particleSys,
+        SprenSpawnInformation? spawnInfo = null
+    ) {
         UnityEngine.ParticleSystem.MainModule mainModule = particleSys.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
         mainModule.loop = true;
         mainModule.duration = Rand.Value;
         mainModule.startSize = 1f;
-        mainModule.startLifetime = new UnityEngine.ParticleSystem.MinMaxCurve(
-            1,
-            LifeTimeSetter.GetMinLifetimeCurve(),
-            LifeTimeSetter.GetMaxLifetimeCurve()
-        );
-        mainModule.startSpeed = new UnityEngine.ParticleSystem.MinMaxCurve(1f, Random.Range(0.01f, 20f));
+        mainModule.startLifetime = float.PositiveInfinity;
+
+        // Use spawn info movement speed if available, otherwise use default range
+        float speed = spawnInfo?.movementSpeed ?? Random.Range(0.01f, 20f);
+        mainModule.startSpeed = new UnityEngine.ParticleSystem.MinMaxCurve(1f, speed);
     }
 
-    private static void ConfigureShapeModule(UnityEngine.ParticleSystem particleSys) {
+    private static void ConfigureShapeModule(
+        UnityEngine.ParticleSystem particleSys,
+        SprenSpawnInformation? spawnInfo = null
+    ) {
         UnityEngine.ParticleSystem.ShapeModule shapeModule = particleSys.shape;
         shapeModule.enabled = true;
         shapeModule.shapeType = ParticleSystemShapeType.Mesh;
         shapeModule.meshShapeType = ParticleSystemMeshShapeType.Vertex;
-        shapeModule.randomDirectionAmount = Config.shapeRandomDirectionAmount.RandomInRange;
+
+        // Use spawn info random direction amount if available, otherwise use config default
+        float randomDirection = spawnInfo?.randomDirectionAmount ?? Config.shapeRandomDirectionAmount.RandomInRange;
+        shapeModule.randomDirectionAmount = randomDirection;
     }
 
     private static void ConfigureEmissionModule(UnityEngine.ParticleSystem particleSys) {
         UnityEngine.ParticleSystem.EmissionModule emissionModule = particleSys.emission;
-        emissionModule.rateOverTime = emissionModule.rateOverTime
-            with {
-                mode = ParticleSystemCurveMode.Constant,
-            };
+        emissionModule.rateOverTime = 0f; // Disable automatic emission since we emit manually
         emissionModule.enabled = true;
     }
 

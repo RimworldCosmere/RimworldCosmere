@@ -30,7 +30,7 @@ public static class LesserSprenCaptureSystem {
         if (sprenContainer != null && sprenContainer.hasCapturedSpren) return false;
 
         // Get the controller for this spren type
-        BaseSprenController controller = SprenControllerRegistry.GetController(sprenType);
+        BaseSprenController controller = SprenControllerRegistry.GetController(sprenType)!;
         if (!controller.canBeCaptured) return false;
 
         // Check if this gem type is compatible
@@ -40,11 +40,19 @@ public static class LesserSprenCaptureSystem {
         return controller.compatibleGemTypes.Contains(gemDef);
     }
 
+    public static bool TryCaptureSprenWithInfo(IntVec3 position, Map map, ThingWithComps gem, SprenType sprenType) {
+        BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
+        SprenSpawnInformation? info =
+            controller?.activeSpawnInfo.FirstOrDefault(info => info.position.Equals(position));
+
+        return info != null && TryCaptureSprenWithInfo(info, map, gem, sprenType);
+    }
+
     /// <summary>
     ///     Try to capture a spren particle at a specific position
     /// </summary>
-    public static bool TryCaptureSprenAtPosition(
-        IntVec3 position,
+    public static bool TryCaptureSprenWithInfo(
+        SprenSpawnInformation info,
         Map map,
         ThingWithComps gem,
         SprenType targetSprenType
@@ -56,8 +64,8 @@ public static class LesserSprenCaptureSystem {
         }
 
         // Check if there are active spren particles at this position
-        if (!IsSprenActiveAtPosition(position, map, targetSprenType)) {
-            Logger.Verbose($"[SprenCapture] No active {targetSprenType} at position {position}");
+        if (!IsSprenActive(info, map, targetSprenType)) {
+            Logger.Verbose($"[SprenCapture] No active {targetSprenType} at position {info.position}");
             return false;
         }
 
@@ -73,7 +81,7 @@ public static class LesserSprenCaptureSystem {
 
         if (Rand.Chance(captureChance)) {
             // Perform capture
-            return PerformCapture(gem, targetSprenType, position, map);
+            return PerformCapture(gem, targetSprenType, info, map);
         }
 
         // Drain some investiture on failed attempt
@@ -88,17 +96,29 @@ public static class LesserSprenCaptureSystem {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
         if (controller == null || !controller.isEnabled) return false;
 
-        return controller.activeSpawnCells.Any(activeCell => position.DistanceTo(activeCell) <= radius);
+        return controller.activeSpawnInfo.Any(info =>
+            map.Equals(info.map) && position.DistanceTo(info.position!.Value) <= radius
+        );
     }
 
     /// <summary>
     ///     Check if a specific spren type is active at a position
     /// </summary>
-    private static bool IsSprenActiveAtPosition(IntVec3 position, Map map, SprenType sprenType) {
+    private static bool IsSprenActive(SprenSpawnInformation info, Map map, SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
         if (controller == null || !controller.isEnabled) return false;
 
-        return controller.activeSpawnCells.Contains(position);
+        return controller.activeSpawnInfo.Contains(info);
+    }
+
+    /// <summary>
+    ///     Check if a specific spren type is active at a position
+    /// </summary>
+    private static bool IsSprenActive(IntVec3 position, Map map, SprenType sprenType) {
+        BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
+        if (controller == null || !controller.isEnabled) return false;
+
+        return controller.activeSpawnInfo.Any(info => info.position.Equals(position));
     }
 
     /// <summary>
@@ -122,7 +142,7 @@ public static class LesserSprenCaptureSystem {
     /// <summary>
     ///     Perform the actual capture
     /// </summary>
-    private static bool PerformCapture(ThingWithComps gem, SprenType sprenType, IntVec3 position, Map map) {
+    private static bool PerformCapture(ThingWithComps gem, SprenType sprenType, SprenSpawnInformation info, Map map) {
         // Get or create the spren container component
         SprenContainer? sprenContainer = gem.TryGetComp<SprenContainer>();
         if (sprenContainer == null) {
@@ -136,7 +156,7 @@ public static class LesserSprenCaptureSystem {
         sprenContainer.CaptureSpren(sprenType);
 
         // Remove the spren from the active spawn position
-        RemoveSprenFromPosition(position, map, sprenType);
+        RemoveSprenWithInfo(info, map, sprenType);
 
         // Show message to player
         Messages.Message(
@@ -153,11 +173,11 @@ public static class LesserSprenCaptureSystem {
     /// <summary>
     ///     Remove a spren from its spawn position after capture
     /// </summary>
-    private static void RemoveSprenFromPosition(IntVec3 position, Map map, SprenType sprenType) {
+    private static void RemoveSprenWithInfo(SprenSpawnInformation info, Map map, SprenType sprenType) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
         if (controller == null || !controller.isEnabled) return;
 
-        controller.activeSpawnCells.Remove(position);
+        controller.activeSpawnInfo.Remove(info);
 
         // The spawner will handle particle system refresh on its next update cycle
     }
@@ -190,7 +210,7 @@ public static class LesserSprenCaptureSystem {
 
         foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
-            if (controller is { canBeCaptured: true } && IsSprenActiveAtPosition(position, map, sprenType)) {
+            if (controller is { canBeCaptured: true } && IsSprenActive(position, map, sprenType)) {
                 capturableSpren.Add(sprenType);
             }
         }
@@ -215,14 +235,15 @@ public static class LesserSprenCaptureSystem {
         }
 
         // Find closest spren of this type within radius
-        IntVec3? closestSprenPosition = FindClosestSprenWithinRadius(position, map, targetSprenType, radius);
-        if (!closestSprenPosition.HasValue) {
+        SprenSpawnInformation? closestSpren =
+            FindClosestSprenWithinRadius(position, map, targetSprenType, radius);
+        if (closestSpren == null) {
             Logger.Verbose($"[SprenCapture] No {targetSprenType} within radius {radius} of position {position}");
             return false;
         }
 
         // Try to capture at the closest position
-        return TryCaptureSprenAtPosition(closestSprenPosition.Value, map, gem, targetSprenType);
+        return TryCaptureSprenWithInfo(closestSpren, map, gem, targetSprenType);
     }
 
     /// <summary>
@@ -263,26 +284,31 @@ public static class LesserSprenCaptureSystem {
         );
 
         return availableSpren.Where(sprenType => CanGemCaptureSpren(gem, sprenType))
-            .Any(sprenType => TryCaptureSprenAtPosition(position, map, gem, sprenType));
+            .Any(sprenType => TryCaptureSprenWithInfo(position, map, gem, sprenType));
     }
 
     /// <summary>
     ///     Find the closest spren of a specific type within radius
     /// </summary>
-    private static IntVec3? FindClosestSprenWithinRadius(IntVec3 position, Map map, SprenType sprenType, float radius) {
+    private static SprenSpawnInformation? FindClosestSprenWithinRadius(
+        IntVec3 position,
+        Map map,
+        SprenType sprenType,
+        float radius
+    ) {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
         if (controller == null || !controller.isEnabled) return null;
 
-        IntVec3? closestCell = null;
+        SprenSpawnInformation? closestInfo = null;
         float closestDistance = float.MaxValue;
 
-        foreach (IntVec3 activeCell in controller.activeSpawnCells) {
-            float distance = position.DistanceTo(activeCell);
+        foreach (SprenSpawnInformation? activeInfo in controller.activeSpawnInfo) {
+            float distance = position.DistanceTo(activeInfo.position!.Value);
             if (!(distance <= radius) || !(distance < closestDistance)) continue;
             closestDistance = distance;
-            closestCell = activeCell;
+            closestInfo = activeInfo;
         }
 
-        return closestCell;
+        return closestInfo;
     }
 }

@@ -31,6 +31,14 @@ public class LesserSprenSpawner : Verse.MapComponent {
 
     public override void MapComponentDraw() {
         SprenDebugOverlay.DrawOverlay();
+
+        // Handle particle re-emission during draw so it works even when paused
+        if (!initialized) return;
+        foreach (KeyValuePair<SprenType, SprenParticleSystem> kvp in sprenSystems) {
+            if (kvp.Value.ShouldReEmitParticles()) {
+                kvp.Value.EmitParticlesForActiveCells();
+            }
+        }
     }
 
     public override void MapComponentTick() {
@@ -42,26 +50,24 @@ public class LesserSprenSpawner : Verse.MapComponent {
         // Initialize any pending spren systems on main thread
         if (pendingInitialization.Count > 0) {
             foreach (SprenType sprenType in pendingInitialization.ToList()) {
-                if (sprenSystems.TryGetValue(sprenType, out SprenParticleSystem? system)) {
-                    system.InitializeOnMainThread();
+                if (!sprenSystems.TryGetValue(sprenType, out SprenParticleSystem? system)) continue;
 
-                    if (system.ParticleSystem != null) {
-                        ColorManager.SetParticleAlpha(system.ParticleSystem, ParticleAlpha);
-                        StateHandler.RestoreParticleSystemState(system.ParticleSystem);
+                system.InitializeOnMainThread();
 
-                        // Update the mesh now that particle system exists
-                        if (meshManagers.TryGetValue(sprenType, out MeshManager? meshManager)) {
-                            system.UpdateMesh(meshManager);
-                        }
+                if (system.particleSystem != null) {
+                    ColorManager.SetParticleAlpha(system.particleSystem, ParticleAlpha);
+                    StateHandler.RestoreParticleSystemState(system.particleSystem);
 
-                        // Update debug overlay with actual particle positions
-                        SprenDebugOverlay.UpdateActualParticles(sprenType, system.ParticleSystem);
-
-                        // Force the particle system to start playing
-                        system.ParticleSystem.Play();
-                    } else {
-                        Logger.Error($"[Spren] Failed to initialize particle system for {sprenType}");
+                    // Update the mesh now that particle system exists
+                    if (meshManagers.TryGetValue(sprenType, out MeshManager? meshManager)) {
+                        system.UpdateMesh(meshManager);
                     }
+
+
+                    // Force the particle system to start playing
+                    system.particleSystem.Play();
+                } else {
+                    Logger.Error($"[Spren] Failed to initialize particle system for {sprenType}");
                 }
             }
 
@@ -75,28 +81,6 @@ public class LesserSprenSpawner : Verse.MapComponent {
         if (Find.TickManager.TicksGame - lastDynamicUpdateTick >= DynamicUpdateInterval) {
             UpdateAllSprenControllers();
             lastDynamicUpdateTick = Find.TickManager.TicksGame;
-
-            // Update debug overlay with current particle positions for all active systems
-            if (SprenDebugOverlay.ShowOverlay && SprenDebugOverlay.ShowActualParticles) {
-                foreach (KeyValuePair<SprenType, SprenParticleSystem> kvp in sprenSystems) {
-                    if (kvp.Value.ParticleSystem != null) {
-                        SprenDebugOverlay.UpdateActualParticles(kvp.Key, kvp.Value.ParticleSystem);
-                    }
-                }
-            }
-        }
-
-        // Check for particle re-emission and active cell refresh for all systems (both static and dynamic)
-        foreach (KeyValuePair<SprenType, SprenParticleSystem> kvp in sprenSystems) {
-            // Check if we need to refresh active spawn cells (every 1800 ticks)
-            if (kvp.Value.ShouldRefreshActiveCells()) {
-                kvp.Value.RefreshActiveCells();
-            }
-
-            // Check if we need to re-emit particles (every 300 ticks)
-            if (kvp.Value.ShouldReEmitParticles()) {
-                kvp.Value.ReEmitParticles();
-            }
         }
     }
 
@@ -106,38 +90,25 @@ public class LesserSprenSpawner : Verse.MapComponent {
             SprenType sprenType = controller.sprenType;
 
             // Update controller's cells (handles timing internally)
-            controller.UpdateCells(map);
+            controller.UpdateInfo(map);
 
-            if (controller.validSpawnCells.Count > 0) {
+            if (controller.validSpawnInfo.Count > 0) {
                 // Create or update the spren system
                 if (!sprenSystems.ContainsKey(sprenType)) {
                     CreateSprenSystem(sprenType, controller);
-                } else {
-                    // Update existing system with new cells
-                    SprenParticleSystem? system = sprenSystems[sprenType];
-                    system.UpdateValidCells(controller.validSpawnCells);
-
-                    // Update debug overlay for dynamic spren
-                    SprenDebugOverlay.UpdateValidCells(sprenType, controller.validSpawnCells);
                 }
 
                 if (!meshManagers.TryGetValue(sprenType, out MeshManager? value)) continue;
                 SprenParticleSystem? sprenSystem = sprenSystems[sprenType];
 
                 // Only update if particle system is initialized
-                if (sprenSystem.ParticleSystem != null) {
+                if (sprenSystem.particleSystem != null) {
                     sprenSystem.UpdateMesh(value);
-                    StateHandler.SetParticleSystemState(sprenSystem.ParticleSystem, true);
-
-                    // Update debug overlay with actual particle positions
-                    SprenDebugOverlay.UpdateActualParticles(sprenType, sprenSystem.ParticleSystem);
+                    StateHandler.SetParticleSystemState(sprenSystem.particleSystem, true);
                 }
             } else if (sprenSystems.TryGetValue(sprenType, out SprenParticleSystem? system)) {
-                if (system.ParticleSystem != null) {
-                    StateHandler.SetParticleSystemState(system.ParticleSystem, false);
-
-                    // Clear particle positions in debug overlay when no active spren
-                    SprenDebugOverlay.UpdateActualParticles(sprenType, system.ParticleSystem);
+                if (system.particleSystem != null) {
+                    StateHandler.SetParticleSystemState(system.particleSystem, false);
                 }
             }
         }
@@ -147,17 +118,13 @@ public class LesserSprenSpawner : Verse.MapComponent {
         SprenParticleSystem system = new SprenParticleSystem(sprenType, mapID);
         sprenSystems[sprenType] = system;
 
-        // Update system with controller's cells
-        system.UpdateValidCells(controller.validSpawnCells);
 
         MeshManager meshManager = new MeshManager(
             map,
-            pos => controller.validSpawnCells.Contains(pos.ToIntVec3())
+            pos => controller.validSpawnInfo.Any(info => info.position.Equals(pos.ToIntVec3()))
         );
         meshManagers[sprenType] = meshManager;
 
-        // Update debug overlay
-        SprenDebugOverlay.UpdateValidCells(sprenType, controller.validSpawnCells);
 
         // Mark for initialization on main thread
         pendingInitialization.Add(sprenType);
@@ -186,10 +153,10 @@ public class LesserSprenSpawner : Verse.MapComponent {
         // Initialize cells for all controllers
         foreach (BaseSprenController controller in allControllers) {
             Logger.Info($"[Spren] Initializing cells for {controller.sprenType}");
-            controller.InitializeCells(map);
+            controller.InitializeInfo(map);
 
             // Create spren system if controller has valid cells
-            if (controller.validSpawnCells.Count > 0) {
+            if (controller.validSpawnInfo.Count > 0) {
                 CreateSprenSystem(controller.sprenType, controller);
             }
         }

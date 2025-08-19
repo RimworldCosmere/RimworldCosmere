@@ -51,7 +51,7 @@
 
     <ItemGroup>
         <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518"/>
-        <PackageReference Include="Lib.Harmony" Version="2.3.6"/>
+        <PackageReference Include="Lib.Harmony" Version="2.4.0"/>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

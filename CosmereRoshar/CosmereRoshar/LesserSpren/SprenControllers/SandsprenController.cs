@@ -24,8 +24,7 @@ public class SandsprenController : StaticSprenController {
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(
         IntVec3 position,
-        Map? map,
-        bool isDynamicCell = false
+        Map? map
     ) {
         // Return representative spawn info for particle system configuration
         if (!IsInBounds(position, map)) return null;

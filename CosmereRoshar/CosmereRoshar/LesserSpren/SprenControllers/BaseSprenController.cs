@@ -21,7 +21,6 @@ public abstract class BaseSprenController {
     public virtual Material sprenMaterial => GetConfiguredMaterial();
     public abstract SprenType sprenType { get; }
     public abstract bool isEnabled { get; }
-    public abstract bool isNatureSpren { get; }
     public virtual List<SprenSpawnInformation> validSpawnInfo => validSpawnInfoInt;
     public virtual List<SprenSpawnInformation> activeSpawnInfo => activeSpawnInfoInt;
 
@@ -110,20 +109,34 @@ public abstract class BaseSprenController {
         return true;
     }
 
-    protected abstract void RefreshValidInfo(Map map);
-    protected abstract void RefreshActiveInfo(Map map);
+    protected virtual void RefreshValidInfo(Map map) {
+        validSpawnInfoInt.Clear();
+
+        foreach (IntVec3 cell in map.AllCells) {
+            SprenSpawnInformation? spawnInfo = GetSprenSpawnInformation(cell, map);
+            if (spawnInfo != null) {
+                validSpawnInfoInt.Add(spawnInfo);
+            }
+        }
+    }
+
+    protected virtual void RefreshActiveInfo(Map map) {
+        activeSpawnInfoInt.Clear();
+
+        foreach (SprenSpawnInformation? info in validSpawnInfoInt) {
+            if (Rand.Chance(cellSpawnChance)) {
+                activeSpawnInfoInt.Add(info);
+            }
+        }
+    }
 
     public virtual string DebugStringAt(IntVec3 position) {
         return "";
     }
 
-    public abstract SprenSpawnInformation? GetSprenSpawnInformation(
-        IntVec3 position,
-        Map? map,
-        bool isDynamicCell = false
-    );
+    public abstract SprenSpawnInformation? GetSprenSpawnInformation(IntVec3 position, Map? map);
 
-    public virtual List<SprenSpawnInformation> GetDynamicCells(Map map) {
+    public virtual List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {
         return [];
     }
 

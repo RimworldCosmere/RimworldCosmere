@@ -81,11 +81,12 @@ public static class Builder {
     ) {
         UnityEngine.ParticleSystem.MainModule mainModule = particleSys.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
-        mainModule.loop = true;
-        mainModule.duration = Rand.Value;
         mainModule.startSize = 1f;
         mainModule.startLifetime =
             new UnityEngine.ParticleSystem.MinMaxCurve(controller.lifetime.min, controller.lifetime.max);
+
+        mainModule.duration = controller.lifetime.RandomInRange;
+        mainModule.loop = true;
 
         // Use spawn info movement speed if available, otherwise use default range
         float speed = spawnInfo?.movementSpeed ?? Random.Range(0.01f, 20f);

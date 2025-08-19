@@ -42,8 +42,7 @@ public class WindsprenController : StaticSprenController {
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(
         IntVec3 position,
-        Map? map,
-        bool isDynamicCell = false
+        Map? map
     ) {
         if (!IsInBounds(position, map)) return null;
 

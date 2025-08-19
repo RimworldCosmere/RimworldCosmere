@@ -39,14 +39,8 @@ public class RocksprenController : StaticSprenController {
         material.SetFloat("_PulseIntensity", 0.2f);
     }
 
-    public override SprenSpawnInformation? GetSprenSpawnInformation(
-        IntVec3 position,
-        Map? map,
-        bool isDynamicCell = false
-    ) {
-        // Return representative spawn info for particle system configuration
+    public override SprenSpawnInformation? GetSprenSpawnInformation(IntVec3 position, Map? map) {
         if (!IsInBounds(position, map)) return null;
-
 
         // Check terrain for rock (async terrain validation)
         TerrainDef? terrain = GetTerrain(position, map);

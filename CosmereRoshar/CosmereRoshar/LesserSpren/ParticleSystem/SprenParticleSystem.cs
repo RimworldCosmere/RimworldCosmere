@@ -9,18 +9,9 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
 
     private int mapID { get; } = mapID;
 
-    private SprenType sprenType { get; } = sprenType;
     public UnityEngine.ParticleSystem? particleSystem { get; private set; }
-    private Mesh? spawnAreaMesh { get; set; }
 
-    private float lastParticleEmissionTime { get; set; }
-
-    public void InitializeOnMainThread() {
-        if (spawnAreaMesh == null) {
-            spawnAreaMesh = new Mesh { name = $"SprenMesh_{sprenType}" };
-            spawnAreaMesh.MarkDynamic(); // Mark as frequently updated
-        }
-
+    public void Initialize() {
         if (particleSystem == null) {
             CreateParticleSystem(mapID);
         }
@@ -63,9 +54,9 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     }
 
     public void UpdateParticles() {
-        if (particleSystem == null || spawnAreaMesh == null) {
+        if (particleSystem == null) {
             Logger.Error(
-                $"[Spren] Cannot update mesh - ParticleSystem: {particleSystem != null}, Mesh: {spawnAreaMesh != null}"
+                $"[Spren] Cannot update particles - ParticleSystem: {particleSystem != null}"
             );
             return;
         }
@@ -82,7 +73,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         UpdateParticleCount();
 
         EmitParticlesForActiveCells();
-        lastParticleEmissionTime = Time.time;
 
         // Ensure the particle system is playing
         if (!particleSystem.isPlaying) {
@@ -137,19 +127,16 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         foreach (UnityEngine.ParticleSystem.EmitParams emitParams in emitParamsList) {
             particleSystem!.Emit(emitParams, 1);
         }
-
-        lastParticleEmissionTime = Time.time;
     }
 
     public bool ShouldReEmitParticles() {
         if (particleSystem == null || controller.validSpawnInfo.Count == 0) return false;
 
         // Re-emit if particle count drops below minimum expected
-        return particleSystem.particleCount < controller.minParticlesPerCell;
+        return particleSystem.particleCount < controller.activeSpawnInfo.Count * controller.minParticlesPerCell;
     }
 
     public void Destroy() {
         if (particleSystem is not null) Object.Destroy(particleSystem.gameObject);
-        if (spawnAreaMesh != null) Object.Destroy(spawnAreaMesh);
     }
 }

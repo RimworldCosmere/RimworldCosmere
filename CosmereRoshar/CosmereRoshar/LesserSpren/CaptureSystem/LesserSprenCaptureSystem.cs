@@ -92,9 +92,13 @@ public static class LesserSprenCaptureSystem {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
         if (controller == null || !controller.isEnabled) return false;
 
-        return controller.activeSpawnInfo.Any(info =>
-            map.Equals(info.map) && position.DistanceTo(info.position!.Value) <= radius
-        );
+        foreach (SprenSpawnInformation info in controller.activeSpawnInfo) {
+            if (info.map != map) continue;
+            if (position.Equals(info.position!.Value)) return true;
+            if (position.DistanceTo(info.position!.Value) <= radius) return true;
+        }
+
+        return false;
     }
 
     /// <summary>

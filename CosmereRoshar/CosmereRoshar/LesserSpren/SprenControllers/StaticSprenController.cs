@@ -7,8 +7,6 @@ namespace Cosmere.Roshar.LesserSpren.SprenControllers;
 ///     These spren are based on terrain and environmental features.
 /// </summary>
 public abstract class StaticSprenController : BaseSprenController {
-    public override bool isNatureSpren => true;
-
     // Static spren have longer refresh intervals since terrain doesn't change often
     public override IntRange validInfoRefreshInterval => new IntRange(
         GenTicks.SecondsToTicks(600), // 10 minutes
@@ -19,27 +17,4 @@ public abstract class StaticSprenController : BaseSprenController {
         GenTicks.SecondsToTicks(240), // 4 minutes  
         GenTicks.SecondsToTicks(480) // 8 minutes
     );
-
-    // Default implementation for static spren - scan all cells
-    protected override void RefreshValidInfo(Map map) {
-        validSpawnInfoInt.Clear();
-
-        foreach (IntVec3 cell in map.AllCells) {
-            SprenSpawnInformation? spawnInfo = GetSprenSpawnInformation(cell, map);
-            if (spawnInfo != null) {
-                validSpawnInfoInt.Add(spawnInfo);
-            }
-        }
-    }
-
-    // Default implementation for static spren - random selection from valid cells
-    protected override void RefreshActiveInfo(Map map) {
-        activeSpawnInfoInt.Clear();
-
-        foreach (SprenSpawnInformation? info in validSpawnInfoInt) {
-            if (Rand.Chance(cellSpawnChance)) {
-                activeSpawnInfoInt.Add(info);
-            }
-        }
-    }
 }

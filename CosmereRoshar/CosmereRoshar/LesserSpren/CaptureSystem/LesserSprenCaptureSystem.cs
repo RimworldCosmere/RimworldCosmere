@@ -122,7 +122,7 @@ public static class LesserSprenCaptureSystem {
     /// </summary>
     private static float CalculateCaptureChance(ThingWithComps gem, SprenType sprenType) {
         // Base chance
-        float baseChance = 0.5f;
+        const float baseChance = .75f;
 
         // Get rarity multiplier from controller
         BaseSprenController controller = SprenControllerRegistry.GetController(sprenType)!;

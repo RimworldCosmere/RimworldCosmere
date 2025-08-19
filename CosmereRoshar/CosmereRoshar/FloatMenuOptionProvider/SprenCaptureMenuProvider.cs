@@ -109,26 +109,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
                 ? "SprenCapture_CaptureSpren".Translate(sprenName)
                 : "SprenCapture_CaptureSprenPickupGem".Translate(sprenName, suitableGem.Label);
 
-            options.Add(
-                new FloatMenuOption(
-                    optionText,
-                    () => GiveSprenCaptureJob(pawn, cell, map, sprenType, suitableGem)
-                )
-            );
-        }
-
-        // Add general "capture any spren" option if multiple types available
-        if (capturableSpren.Count > 1) {
-            string generalOptionText = gemInInventory
-                ? "SprenCapture_CaptureAnySuitable".Translate()
-                : "SprenCapture_CaptureAnySuitablePickupGem".Translate(suitableGem.Label);
-
-            options.Add(
-                new FloatMenuOption(
-                    generalOptionText,
-                    () => GiveGeneralSprenCaptureJob(pawn, cell, map, suitableGem)
-                )
-            );
+            options.Add(new FloatMenuOption(optionText, () => GiveSprenCaptureJob(pawn, cell, sprenType, suitableGem)));
         }
 
         return options;
@@ -158,18 +139,6 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
         suitableGems.AddRange(mapGems);
 
         return suitableGems;
-    }
-
-    /// <summary>
-    ///     Find a suitable gem for spren capture (inventory first, then map) - Legacy method
-    /// </summary>
-    private static ThingWithComps? FindSuitableGemForCapture(Pawn pawn) {
-        // First check pawn's inventory
-        ThingWithComps? inventoryGem = FindSuitableGemInInventory(pawn);
-        if (inventoryGem != null) return inventoryGem;
-
-        // Then check available gems on the map
-        return FindSuitableGemOnMap(pawn);
     }
 
     /// <summary>
@@ -227,34 +196,6 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
     }
 
     /// <summary>
-    ///     Find a suitable gem on the map for spren capture
-    /// </summary>
-    private static ThingWithComps? FindSuitableGemOnMap(Pawn pawn) {
-        if (pawn.Map == null) return null;
-
-        // Look for gems within reasonable hauling distance
-        List<Verse.Thing> availableGems = pawn.Map.listerThings.AllThings
-            .Where(thing => thing is ThingWithComps gem &&
-                            IsGemSuitableForCapture(gem) &&
-                            pawn.CanReach(thing, PathEndMode.ClosestTouch, Danger.Deadly) &&
-                            !thing.IsForbidden(pawn)
-            )
-            .ToList();
-
-        // Return closest gem
-        if (availableGems.Count <= 0) return null;
-
-        Verse.Thing? closestGem = GenClosest.ClosestThing_Global_Reachable(
-            pawn.Position,
-            pawn.Map,
-            availableGems,
-            PathEndMode.ClosestTouch,
-            TraverseParms.For(pawn)
-        );
-        return closestGem as ThingWithComps;
-    }
-
-    /// <summary>
     ///     Check if a gem is suitable for capturing specific spren types
     /// </summary>
     private static bool IsGemSuitableForSprenTypes(ThingWithComps gem, List<SprenType> sprenTypes) {
@@ -291,19 +232,9 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
     /// <summary>
     ///     Give the pawn a job to capture a specific spren type
     /// </summary>
-    private static void GiveSprenCaptureJob(Pawn pawn, IntVec3 cell, Map map, SprenType sprenType, ThingWithComps gem) {
+    private static void GiveSprenCaptureJob(Pawn pawn, IntVec3 cell, SprenType sprenType, ThingWithComps gem) {
         Verse.AI.Job captureJob = JobMaker.MakeJob(Defs.Cosmere_Roshar_CaptureSpren, cell, gem);
         captureJob.targetC = new LocalTargetInfo(new IntVec3((int)sprenType, 0, 0)); // Store spren type in targetC.x
-        captureJob.count = 1; // Gem count for StartCarryThing
-        pawn.jobs.TryTakeOrderedJob(captureJob);
-    }
-
-    /// <summary>
-    ///     Give the pawn a job to capture any suitable spren
-    /// </summary>
-    private static void GiveGeneralSprenCaptureJob(Pawn pawn, IntVec3 cell, Map map, ThingWithComps gem) {
-        Verse.AI.Job captureJob = JobMaker.MakeJob(Defs.Cosmere_Roshar_CaptureSpren, cell, gem);
-        captureJob.targetC = new LocalTargetInfo(new IntVec3(-1, 0, 0)); // -1 indicates "any spren type"
         captureJob.count = 1; // Gem count for StartCarryThing
         pawn.jobs.TryTakeOrderedJob(captureJob);
     }

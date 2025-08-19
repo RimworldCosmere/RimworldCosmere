@@ -4,6 +4,7 @@ public enum SprenType {
     Wavespren,
     Riverspren,
     Rockspren,
+    Sandspren,
     Grassspren,
     Windspren,
     Joyspren,

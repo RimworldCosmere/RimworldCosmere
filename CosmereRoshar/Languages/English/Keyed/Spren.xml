@@ -32,8 +32,6 @@
   <SprenCapture_IncompatibleGem>Capture {0} (incompatible gem)</SprenCapture_IncompatibleGem>
   <SprenCapture_GemNeedsStormlight>Capture {0} (gem needs stormlight)</SprenCapture_GemNeedsStormlight>
   <SprenCapture_CannotReach>Capture {0} (cannot reach)</SprenCapture_CannotReach>
-  <SprenCapture_CaptureAnySuitable>Capture any suitable spren</SprenCapture_CaptureAnySuitable>
-  <SprenCapture_CaptureAnySuitablePickupGem>Capture any suitable spren (pick up {0})</SprenCapture_CaptureAnySuitablePickupGem>
   
   <!-- Spren Capture Messages -->
   <SprenCapture_AttemptCaptureSpecific>{0} will attempt to capture {1} near {2} using {3}</SprenCapture_AttemptCaptureSpecific>

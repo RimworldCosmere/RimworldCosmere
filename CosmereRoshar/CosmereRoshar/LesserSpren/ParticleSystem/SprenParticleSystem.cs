@@ -1,6 +1,5 @@
 using Cosmere.Roshar.LesserSpren.SprenControllers;
 using UnityEngine;
-using Verse;
 using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
@@ -50,9 +49,7 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     }
 
     private SprenSpawnInformation? GetRepresentativeSpawnInfo() {
-        // Get a default spawn info from the controller to configure the particle system
-        // We use an invalid position since this is just for getting movement parameters
-        return controller.GetSprenSpawnInformation(IntVec3.Invalid, null);
+        return controller.defaultSpawnInformation;
     }
 
     private void ConfigureForSprenType(UnityEngine.ParticleSystem ps) {

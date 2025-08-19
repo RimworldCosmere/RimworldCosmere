@@ -16,7 +16,6 @@ public class WindsprenController : StaticSprenController {
     protected override float maxSpreadDistance => 0.3f;
     protected override float movementSpeed => 2f;
     protected override float randomDirectionAmount => 0.1f;
-    public override float sprenSizeMultiplier => 1.5f; // Make them bigger
 
     public override List<GemDef> compatibleGemTypes => [
         GemDefOf.Emerald,
@@ -39,7 +38,6 @@ public class WindsprenController : StaticSprenController {
         material.SetInt("_FlowPattern", 1); // Wind pattern
         material.SetFloat("_FlowSpeed", 2.0f);
         material.SetFloat("_FlowDensity", 12f); // Much higher density
-        material.SetFloat("_AnimationSpeed", 1.5f); // Ensure animation is active
     }
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(
@@ -47,10 +45,6 @@ public class WindsprenController : StaticSprenController {
         Map? map,
         bool isDynamicCell = false
     ) {
-        if (position == IntVec3.Invalid || map == null) {
-            return null;
-        }
-
         if (!IsInBounds(position, map)) return null;
 
         // Check for wind turbine proximity first (highest priority)

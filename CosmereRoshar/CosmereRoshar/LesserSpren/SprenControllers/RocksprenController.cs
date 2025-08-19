@@ -1,4 +1,5 @@
-﻿using Cosmere.Resources;
+﻿using System.Text;
+using Cosmere.Resources;
 using Cosmere.Resources.Def;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using UnityEngine;
@@ -46,10 +47,6 @@ public class RocksprenController : StaticSprenController {
         bool isDynamicCell = false
     ) {
         // Return representative spawn info for particle system configuration
-        if (position == IntVec3.Invalid || map == null) {
-            return defaultSpawnInformation;
-        }
-
         if (!IsInBounds(position, map)) return null;
 
 
@@ -71,5 +68,30 @@ public class RocksprenController : StaticSprenController {
             .Any(defName => defName.StartsWith("Chunk") || defName.Equals("Filth_RubbleRock"));
 
         return thingChecks ? defaultSpawnInformation.With(map, position) : null;
+    }
+
+    public override string DebugStringAt(IntVec3 position) {
+        Map? map = Find.CurrentMap;
+        StringBuilder sb = new StringBuilder();
+
+        // Check terrain for rock (async terrain validation)
+        TerrainDef? terrain = GetTerrain(position, map);
+        if (terrain != null) {
+            // Terrain checks
+            bool hasRockTag = HasTerrainTag(terrain, "Rock");
+            sb.AppendLine("  hasRockTag: " + hasRockTag.ColoredBool());
+
+            bool hasRockName = TerrainNameContains(terrain, "rock", "stone", "granite", "marble", "slate", "rubble");
+            sb.AppendLine("  hasRockName: " + hasRockName.ColoredBool());
+        }
+
+        // Check for stone chunks at this position
+        bool thingChecks = map.thingGrid.ThingsListAt(position)
+            .Select(thing => thing.def.defName)
+            .Any(defName => defName.StartsWith("Chunk") || defName.Equals("Filth_RubbleRock"));
+
+        sb.AppendLine("  thingChecks: " + thingChecks.ColoredBool());
+
+        return sb.ToString();
     }
 }

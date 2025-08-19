@@ -20,7 +20,7 @@ public static class SprenDebugOverlay {
         if (!showOverlay || Find.CurrentMap == null) return;
 
         // Get all enabled controllers and draw their cells directly
-        foreach (BaseSprenController controller in SprenControllerRegistry.GetEnabledControllers()) {
+        foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
             SprenType sprenType = controller.sprenType;
 
             // Draw valid spawn cells (semi-transparent)

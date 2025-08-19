@@ -11,32 +11,14 @@ public abstract class BaseSprenController {
     protected static readonly Material DefaultMaterial = new Material(Verse.ShaderDatabase.TransparentPostLight);
     protected readonly List<SprenSpawnInformation> activeSpawnInfoInt = [];
     protected readonly List<SprenSpawnInformation> validSpawnInfoInt = [];
+
+    private Material? configuredMaterial;
     private bool infoInitialized;
     private int nextActiveInfoRefresh;
-
     private int nextValidInfoRefresh;
 
     public virtual Texture2D sprenTexture => DefaultTexture;
     public virtual Material sprenMaterial => GetConfiguredMaterial();
-
-    private Material? configuredMaterial;
-
-    private Material GetConfiguredMaterial() {
-        if (configuredMaterial == null) {
-            configuredMaterial = new Material(GetBaseMaterial());
-            ConfigureMaterial(configuredMaterial);
-        }
-
-        return configuredMaterial;
-    }
-
-    protected virtual Material GetBaseMaterial() {
-        return DefaultMaterial;
-    }
-
-    protected virtual void ConfigureMaterial(Material material) {
-        // Base implementation - override in derived classes for custom behavior
-    }
     public abstract SprenType sprenType { get; }
     public abstract bool isEnabled { get; }
     public abstract bool isNatureSpren { get; }
@@ -57,7 +39,7 @@ public abstract class BaseSprenController {
     protected virtual float randomDirectionAmount => 0.3f;
 
     // Default spawn information that uses the virtual properties
-    protected SprenSpawnInformation defaultSpawnInformation => new SprenSpawnInformation(
+    protected internal SprenSpawnInformation defaultSpawnInformation => new SprenSpawnInformation(
         null,
         null,
         cellSpawnChance,
@@ -76,6 +58,23 @@ public abstract class BaseSprenController {
     public virtual float sprenSizeMultiplier => 1f;
     public virtual float emissionRateMultiplier => 1f;
     public virtual float sprenSpeedMultiplier => 1f;
+
+    private Material GetConfiguredMaterial() {
+        if (configuredMaterial == null) {
+            configuredMaterial = new Material(GetBaseMaterial());
+            ConfigureMaterial(configuredMaterial);
+        }
+
+        return configuredMaterial;
+    }
+
+    protected virtual Material GetBaseMaterial() {
+        return DefaultMaterial;
+    }
+
+    protected virtual void ConfigureMaterial(Material material) {
+        // Base implementation - override in derived classes for custom behavior
+    }
 
     public virtual void InitializeInfo(Map map) {
         if (infoInitialized) return;
@@ -114,6 +113,10 @@ public abstract class BaseSprenController {
     protected abstract void RefreshValidInfo(Map map);
     protected abstract void RefreshActiveInfo(Map map);
 
+    public virtual string DebugStringAt(IntVec3 position) {
+        return "";
+    }
+
     public abstract SprenSpawnInformation? GetSprenSpawnInformation(
         IntVec3 position,
         Map? map,
@@ -137,7 +140,15 @@ public abstract class BaseSprenController {
         return map.terrainGrid.TerrainAt(position);
     }
 
-    protected static bool IsInBounds(IntVec3 position, Map map) {
-        return position.InBounds(map);
+    protected static bool IsInBounds(IntVec3 position, Map? map) {
+        return position != IntVec3.Invalid && map != null && position.InBounds(map);
+    }
+
+    public virtual void ResetForNewMap() {
+        validSpawnInfoInt.Clear();
+        activeSpawnInfoInt.Clear();
+        infoInitialized = false;
+        nextValidInfoRefresh = 0;
+        nextActiveInfoRefresh = 0;
     }
 }

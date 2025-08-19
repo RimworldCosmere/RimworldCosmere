@@ -25,6 +25,14 @@ public static class SprenControllerRegistry {
         }
     }
 
+    public static IEnumerable<BaseSprenController> enabledControllers => Controllers.Values.Where(c => c.isEnabled);
+
+    public static IEnumerable<BaseSprenController> enabledStaticControllers =>
+        enabledControllers.Where(v => v is StaticSprenController);
+
+    public static IEnumerable<BaseSprenController> enabledDynamicControllers =>
+        enabledControllers.Where(v => v is DynamicSprenController);
+
     private static void RegisterController(BaseSprenController controller) {
         Controllers[controller.sprenType] = controller;
     }
@@ -36,17 +44,5 @@ public static class SprenControllerRegistry {
     public static bool IsSprenTypeEnabled(SprenType sprenType) {
         BaseSprenController? controller = GetController(sprenType);
         return controller?.isEnabled ?? false;
-    }
-
-    public static IEnumerable<BaseSprenController> GetEnabledControllers() {
-        return Controllers.Values.Where(v => v.isEnabled);
-    }
-
-    public static IEnumerable<BaseSprenController> GetEnabledNatureControllers() {
-        return Controllers.Values.Where(v => v.isEnabled && v.isNatureSpren);
-    }
-
-    public static IEnumerable<BaseSprenController> GetEnabledDynamicControllers() {
-        return Controllers.Values.Where(v => v.isEnabled && !v.isNatureSpren);
     }
 }

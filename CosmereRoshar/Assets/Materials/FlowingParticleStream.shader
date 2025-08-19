@@ -25,7 +25,7 @@ Shader "Custom/FlowingParticleStream"
 
     SubShader
     {
-        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+        Tags { "RenderType"="Transparent" "Queue"="Transparent+150" "IGNOREPROJECTOR"="true" }
         Blend SrcAlpha OneMinusSrcAlpha
         Cull Off
         ZWrite Off
@@ -234,32 +234,20 @@ Shader "Custom/FlowingParticleStream"
                 
                 float totalIntensity = max(streamIntensity, particleIntensity);
                 
-                // Get base texture and color
+                // Simplified approach similar to reference shader
                 float3 baseColor = texColor.rgb * _Color.rgb * i.color.rgb;
                 float baseAlpha = texColor.a * _Color.a * i.color.a * _Alpha;
                 
-                // Calculate flow effects
+                // Add effects on top
                 float3 streamContrib = _StreamColor.rgb * streamIntensity * _Intensity;
                 float3 particleContrib = _ParticleColor.rgb * particleIntensity * _Intensity;
-                float3 effectsColor = (streamContrib + particleContrib) * i.color.rgb;
                 
-                // Blend base texture with flow effects
-                float3 finalColor;
-                float alpha;
-                
-                if (totalIntensity > 0.05) {
-                    // Where there are effects, blend them with the base
-                    finalColor = lerp(baseColor, baseColor + effectsColor, totalIntensity);
-                    alpha = max(baseAlpha, totalIntensity * _Alpha * i.color.a);
-                } else {
-                    // Where there are no effects, just show the base texture
-                    finalColor = baseColor;
-                    alpha = baseAlpha;
-                }
+                float3 finalColor = baseColor + (streamContrib + particleContrib) * i.color.rgb * totalIntensity;
                 
                 float edgeFade = 1.0 - pow(distFromCenter * 2.0, _FadeEdges);
                 edgeFade = saturate(edgeFade);
-                alpha *= edgeFade;
+                
+                float alpha = baseAlpha * edgeFade;
                 
                 return float4(finalColor, alpha);
             }

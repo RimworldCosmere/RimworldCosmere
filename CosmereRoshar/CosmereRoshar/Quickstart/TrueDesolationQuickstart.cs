@@ -4,7 +4,6 @@ using Cosmere.Core.Comp.Thing;
 using Cosmere.Foundation.Comp.Thing;
 using Cosmere.Foundation.Quickstart;
 using Cosmere.Resources.Def;
-using Cosmere.Roshar.Utility;
 using RimWorld;
 using Verse;
 
@@ -85,12 +84,12 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
                     BindingFlags.Public | BindingFlags.Static
                 );
 
-                addMistborn?.Invoke(null, [pawn, false, false, null]);
+                addMistborn?.Invoke(null, [pawn, false, true, "ingested Lerasium"]);
             }
 
 
-            RadiantOrder.BondWithSpren(pawn);
-            //pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver);
+            // RadiantOrder.BondWithSpren(pawn);
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver);
         }
     }
 }

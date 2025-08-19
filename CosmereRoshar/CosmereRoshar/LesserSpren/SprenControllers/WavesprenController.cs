@@ -30,11 +30,6 @@ public class WavesprenController : StaticSprenController {
         Map? map,
         bool isDynamicCell = false
     ) {
-        // Return representative spawn info for particle system configuration
-        if (position == IntVec3.Invalid || map == null) {
-            return defaultSpawnInformation;
-        }
-
         if (!IsInBounds(position, map)) return null;
 
         // Check if this is a water tile adjacent to land (shore)

@@ -47,9 +47,7 @@ public class CellValidator(Map map) {
     public void CacheStaticSprenCells() {
         if (staticCellsCached) return;
 
-        IEnumerable<BaseSprenController> natureControllers = SprenControllerRegistry.GetEnabledNatureControllers();
-
-        foreach (BaseSprenController controller in natureControllers) {
+        foreach (BaseSprenController controller in SprenControllerRegistry.enabledStaticControllers) {
             GetCellsForSprenType(controller.sprenType);
         }
 

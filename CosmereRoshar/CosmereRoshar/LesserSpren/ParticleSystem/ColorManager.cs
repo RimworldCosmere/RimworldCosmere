@@ -14,8 +14,6 @@ public static class ColorManager {
             Color newColor = new Color(currentColor.r, currentColor.g, currentColor.b, currentColor.a * alphaFactor);
             particleRenderer.material
                 .SetColor(Shader.PropertyToID("_Color"), newColor);
-
-            Logger.Verbose($"Set particle alpha: {currentColor} -> {newColor} (factor: {alphaFactor})");
         } else {
             Logger.Warning("No _Color property found on particle material!");
         }

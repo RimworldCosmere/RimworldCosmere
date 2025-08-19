@@ -3,7 +3,6 @@ using System.Text;
 using Cosmere.Roshar.Debug;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.Roshar.LesserSpren.SprenControllers;
-using UnityEngine;
 using Verse;
 using Logger = Cosmere.Foundation.Logger;
 
@@ -13,11 +12,8 @@ public class LesserSprenSpawner : Verse.MapComponent {
     private const float ParticleAlpha = 2.5f;
 
     private const float
-        DynamicUpdateInterval = GenTicks.TickRareInterval; // Update dynamic spren every 250 ticks (about 4 seconds)
+        UpdateInterval = GenTicks.TickRareInterval; // Update dynamic spren every 250 ticks (about 4 seconds)
 
-    private readonly List<BaseSprenController> allControllers = [];
-
-    private readonly int mapID;
     private readonly Dictionary<SprenType, MeshManager> meshManagers = new Dictionary<SprenType, MeshManager>();
     private readonly List<SprenType> pendingInitialization = [];
 
@@ -26,10 +22,10 @@ public class LesserSprenSpawner : Verse.MapComponent {
 
     private bool initialized;
     private int lastDynamicUpdateTick;
+    private int mapID;
 
     public LesserSprenSpawner(Map map) : base(map) {
         mapID = map.GetHashCode();
-        LongEventHandler.ExecuteWhenFinished(InitializeMapSystems);
     }
 
     public override void MapComponentDraw() {
@@ -80,16 +76,12 @@ public class LesserSprenSpawner : Verse.MapComponent {
         // Don't do anything else until initialized
         if (!initialized) return;
 
-        // Update all spren controllers periodically
-        if (Find.TickManager.TicksGame - lastDynamicUpdateTick >= DynamicUpdateInterval) {
-            UpdateAllSprenControllers();
-            lastDynamicUpdateTick = Find.TickManager.TicksGame;
-        }
+        UpdateAllSprenControllers();
     }
 
     private void UpdateAllSprenControllers() {
         // Update ALL controllers (both static and dynamic need periodic refreshes)
-        foreach (BaseSprenController controller in allControllers) {
+        foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
             SprenType sprenType = controller.sprenType;
 
             // Update controller's cells (handles timing internally)
@@ -135,26 +127,47 @@ public class LesserSprenSpawner : Verse.MapComponent {
         pendingInitialization.Add(sprenType);
     }
 
+    public override void MapGenerated() {
+        base.MapGenerated();
+
+        // Completely reset everything for new map
+        CleanupAllSystems();
+
+        mapID = map.GetHashCode();
+        initialized = false;
+        lastDynamicUpdateTick = 0;
+
+        Logger.Verbose($"Map generated, reinitializing spren systems for map ID: {mapID}");
+        LongEventHandler.ExecuteWhenFinished(InitializeMapSystems);
+    }
 
     public override void MapRemoved() {
         base.MapRemoved();
+        CleanupAllSystems();
+    }
 
+    private void CleanupAllSystems() {
         // Clean up all spren systems
         foreach (SprenParticleSystem? system in sprenSystems.Values) {
             system.Destroy();
         }
 
+        // Reset all controllers for new map
+        foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
+            controller.ResetForNewMap();
+        }
+
         sprenSystems.Clear();
         meshManagers.Clear();
+        pendingInitialization.Clear();
     }
 
     private void InitializeMapSystems() {
         if (initialized) return;
 
         // Get all enabled controllers
-        allControllers.AddRange(SprenControllerRegistry.GetEnabledControllers());
         // Initialize cells for all controllers
-        foreach (BaseSprenController controller in allControllers) {
+        foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
             controller.InitializeInfo(map);
 
             // Create spren system if controller has valid cells
@@ -173,14 +186,15 @@ public class LesserSprenSpawner : Verse.MapComponent {
 
         // We'll recreate particle systems on load rather than trying to save them
         if (Scribe.mode != LoadSaveMode.PostLoadInit) return;
+
+        // Reset initialization on load to wait for map to fully load again
         if (initialized) {
-            InitializeMapSystems();
+            initialized = false;
         }
     }
 
     public string DebugStringAt(IntVec3 position) {
         StringBuilder info = new StringBuilder();
-        info.AppendLine($"=== SPREN AT {position} ===");
 
         bool foundValidSpren = false;
 
@@ -195,7 +209,7 @@ public class LesserSprenSpawner : Verse.MapComponent {
             bool isInValidCells = controller.validSpawnInfo.Any(info => info.position == position);
 
             bool shouldShow = isValidAtPosition || isInActiveCells || isInValidCells;
-            
+
             if (controller.isNatureSpren) {
                 // For nature spren, also check if it would be valid even if not currently active
                 shouldShow = isValidAtPosition || isInValidCells;
@@ -211,14 +225,14 @@ public class LesserSprenSpawner : Verse.MapComponent {
             foundValidSpren = true;
             info.AppendLine($"\n{sprenType} ({(controller.isNatureSpren ? "Nature" : "Dynamic")}):");
 
-            info.AppendLine($"  Valid at Position: {ColoredBool(isValidAtPosition)}");
-            info.AppendLine($"  In Active Cells: {ColoredBool(isInActiveCells)}");
-            info.AppendLine($"  In Valid Cells: {ColoredBool(isInValidCells)}");
+            info.AppendLine($"  Valid at Position: {isValidAtPosition.ColoredBool()}");
+            info.AppendLine($"  In Active Cells: {isInActiveCells.ColoredBool()}");
+            info.AppendLine($"  In Valid Cells: {isInValidCells.ColoredBool()}");
 
             if (!controller.isNatureSpren) {
                 List<SprenSpawnInformation> dynamicCells = controller.GetDynamicCells(map);
                 bool isInDynamicCells = dynamicCells.Any(i => i.position == position);
-                info.AppendLine($"  In Dynamic Cells: {ColoredBool(isInDynamicCells)}");
+                info.AppendLine($"  In Dynamic Cells: {isInDynamicCells.ColoredBool()}");
             }
 
             // Show actual spawn information if available
@@ -230,53 +244,20 @@ public class LesserSprenSpawner : Verse.MapComponent {
             }
 
             AppendControllerSettings(info, controller);
+
+            string controllerDebug = controller.DebugStringAt(position);
+            if (!string.IsNullOrEmpty(controllerDebug)) info.Append(controllerDebug);
         }
 
-        if (!foundValidSpren) {
-            info.AppendLine("No valid spren at this position.");
-        }
-
-        return info.ToString();
+        return !foundValidSpren ? "" : info.ToString();
     }
 
     private void AppendControllerSettings(StringBuilder info, BaseSprenController controller) {
         info.AppendLine($"  Spawn Chance: {controller.cellSpawnChance:P1}");
         info.AppendLine($"  Particles/Cell: {controller.minParticlesPerCell}-{controller.maxParticlesPerCell}");
-        info.AppendLine($"  Color: {ColoredColor(controller.sprenColor)}");
-        info.AppendLine($"  Size Mult: {ColoredMultiplier(controller.sprenSizeMultiplier, 1f)}x");
-        info.AppendLine($"  Emission Mult: {ColoredMultiplier(controller.emissionRateMultiplier, 1f)}x");
-        info.AppendLine($"  Speed Mult: {ColoredMultiplier(controller.sprenSpeedMultiplier, 1f)}x");
-    }
-
-    private static string ColoredBool(bool value) {
-        return value ? "<color=green>true</color>" : "<color=red>false</color>";
-    }
-
-    private static string ColoredColor(Color color) {
-        string hex = ColorUtility.ToHtmlStringRGBA(color);
-        return $"<color=#{hex}>{color}</color>";
-    }
-
-    private static string ColoredMultiplier(float multiplier, float baseline) {
-        float ratio = multiplier / baseline;
-        Color color;
-
-        if (ratio <= 0.25f) {
-            color = Color.red;
-        } else if (ratio <= 0.75f) {
-            float t = (ratio - 0.25f) / 0.5f;
-            color = Color.Lerp(Color.red, Color.yellow, t);
-        } else if (ratio <= 1.5f) {
-            float t = (ratio - 0.75f) / 0.75f;
-            color = Color.Lerp(Color.yellow, Color.green, t);
-        } else if (ratio <= 3.0f) {
-            float t = (ratio - 1.5f) / 1.5f;
-            color = Color.Lerp(Color.green, Color.blue, t);
-        } else {
-            color = Color.blue;
-        }
-
-        string hex = ColorUtility.ToHtmlStringRGB(color);
-        return $"<color=#{hex}>{multiplier:F2}</color>";
+        info.AppendLine($"  Color: {controller.sprenColor.ColoredColor()}");
+        info.AppendLine($"  Size Mult: {controller.sprenSizeMultiplier.ColoredBreakpoints()}x");
+        info.AppendLine($"  Emission Mult: {controller.emissionRateMultiplier.ColoredBreakpoints()}x");
+        info.AppendLine($"  Speed Mult: {controller.sprenSpeedMultiplier.ColoredBreakpoints()}x");
     }
 }

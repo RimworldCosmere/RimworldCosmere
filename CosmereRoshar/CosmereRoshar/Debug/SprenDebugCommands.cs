@@ -12,8 +12,6 @@ public static class SprenDebugCommands {
 
         string status = SprenDebugOverlay.showOverlay ? "enabled" : "disabled";
         Messages.Message($"Spren debug overlay {status}", MessageTypeDefOf.NeutralEvent);
-
-        Logger.Info($"[Spren Debug] Overlay {status}");
     }
 
 }

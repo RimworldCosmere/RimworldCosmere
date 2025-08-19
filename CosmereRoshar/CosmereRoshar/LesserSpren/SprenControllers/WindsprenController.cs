@@ -10,12 +10,13 @@ namespace Cosmere.Roshar.LesserSpren.SprenControllers;
 public class WindsprenController : StaticSprenController {
     public override SprenType sprenType => SprenType.Windspren;
     public override bool isEnabled => true;
-    public override float cellSpawnChance => 0.005f;
-    public override int minParticlesPerCell => 1;
-    public override int maxParticlesPerCell => 2;
+    public override float cellSpawnChance => 0.02f; // Increased from 0.005f to 0.02f (2%)
+    public override int minParticlesPerCell => 2; // Increased from 1
+    public override int maxParticlesPerCell => 4; // Increased from 2
     protected override float maxSpreadDistance => 0.3f;
     protected override float movementSpeed => 2f;
     protected override float randomDirectionAmount => 0.1f;
+    public override float sprenSizeMultiplier => 1.5f; // Make them bigger
 
     public override List<GemDef> compatibleGemTypes => [
         GemDefOf.Emerald,
@@ -24,7 +25,22 @@ public class WindsprenController : StaticSprenController {
     ];
 
     public override float captureRarityMultiplier => 1.0f;
-    public override Color sprenColor => new Color(0.8f, 0.9f, 1.0f, 0.8f); // Light blue/white wind color
+    public override Color sprenColor => new Color(0.6f, 0.8f, 1.0f, 1.0f); // More saturated blue, full alpha
+
+    protected override Material GetBaseMaterial() {
+        return ShaderDatabase.FlowingParticleStreamMaterial;
+    }
+
+    protected override void ConfigureMaterial(Material material) {
+        base.ConfigureMaterial(material);
+        material.SetColor("_Color", sprenColor); // Set the blue color
+        material.SetColor("_StreamColor", sprenColor); // Set stream color too
+        material.SetColor("_ParticleColor", new Color(1f, 1f, 1f, 0.8f)); // White particles for contrast
+        material.SetInt("_FlowPattern", 1); // Wind pattern
+        material.SetFloat("_FlowSpeed", 2.0f);
+        material.SetFloat("_FlowDensity", 12f); // Much higher density
+        material.SetFloat("_AnimationSpeed", 1.5f); // Ensure animation is active
+    }
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(
         IntVec3 position,
@@ -32,7 +48,7 @@ public class WindsprenController : StaticSprenController {
         bool isDynamicCell = false
     ) {
         if (position == IntVec3.Invalid || map == null) {
-            return defaultSpawnInformation;
+            return null;
         }
 
         if (!IsInBounds(position, map)) return null;
@@ -94,26 +110,62 @@ public class WindsprenController : StaticSprenController {
 
     private static float GetWindTurbineMultiplier(IntVec3 position, Map map) {
         float maxMultiplier = 0f;
+        int turbinesFound = 0;
 
-        // Check within 2 block radius for wind turbines
-        foreach (IntVec3 checkCell in GenRadial.RadialCellsAround(position, 2, true)) {
+        // Check within larger radius for wind turbines
+        foreach (IntVec3 checkCell in GenRadial.RadialCellsAround(position, 7, false)) {
             if (!IsInBounds(checkCell, map)) continue;
 
             foreach (Verse.Thing thing in map.thingGrid.ThingsListAt(checkCell)) {
                 CompPowerPlantWind? windComp = thing.TryGetComp<CompPowerPlantWind>();
-                if (windComp != null) {
-                    // Get the current wind speed percentage (0-1)
-                    float windSpeed = windComp.PowerOutput / (float)(-(double)windComp.Props.PowerConsumption * 1.5);
+                if (windComp == null) continue;
 
-                    // Convert to multiplier: 1.0 at 0% wind, up to 5.0 at 100% wind
-                    float multiplier = 1.0f + windSpeed * 4.0f;
+                // Calculate direction from turbine to position
+                IntVec3 turbineToPos = position - checkCell;
+                float distance = turbineToPos.LengthHorizontal;
+                if (distance > 5f) continue;
 
-                    // Keep track of the highest multiplier from nearby turbines
-                    if (multiplier > maxMultiplier) {
-                        maxMultiplier = multiplier;
-                    }
+                // Get turbine's facing direction
+                Rot4 turbineRotation = thing.Rotation;
+                IntVec3 turbineFacing = turbineRotation.FacingCell;
+
+                // Check if position is aligned with turbine's facing direction (front or back)
+                // Normalize both vectors manually for dot product
+                Vector3 turbineToVec = new Vector3(turbineToPos.x, 0, turbineToPos.z).normalized;
+                Vector3 facingVec = new Vector3(turbineFacing.x, 0, turbineFacing.z).normalized;
+
+                float dotProduct = Vector3.Dot(turbineToVec, facingVec);
+                bool isAligned = Mathf.Abs(dotProduct) > 0.7f; // Allow some tolerance
+
+                if (!isAligned) continue;
+
+                turbinesFound++;
+
+                // Use the wind speed directly from the map
+                float windSpeed = map.windManager.WindSpeed;
+
+                Log.Message(
+                    $"Found wind turbine at {checkCell}, facing: {turbineFacing}, wind speed: {windSpeed:F2}, distance: {distance:F1}, aligned: {isAligned}"
+                );
+
+                // Convert to multiplier with distance falloff
+                float normalizedWind = windSpeed / 3.0f;
+                normalizedWind = Mathf.Clamp01(normalizedWind);
+                float distanceFalloff = 1.0f - distance / 5.0f; // Linear falloff over 5 cells
+                float multiplier = 1.0f + normalizedWind * 16.0f * distanceFalloff;
+
+                if (multiplier > maxMultiplier) {
+                    maxMultiplier = multiplier;
                 }
+
+                Log.Message($"Wind multiplier: {multiplier:F2} (distance falloff: {distanceFalloff:F2})");
             }
+        }
+
+        if (turbinesFound > 0) {
+            Log.Message(
+                $"Position {position}: Found {turbinesFound} aligned turbines, max multiplier: {maxMultiplier:F2}"
+            );
         }
 
         return maxMultiplier;

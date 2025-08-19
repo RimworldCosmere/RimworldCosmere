@@ -209,7 +209,7 @@ public static class StormlightUtilities {
 
         Verse.Graphic newGraphic = GraphicDatabase.Get<Graphic_Single>(
             texPath,
-            ShaderDatabase.Cutout,
+            Verse.ShaderDatabase.Cutout,
             new Vector2(drawSize, drawSize),
             Color.white
         );

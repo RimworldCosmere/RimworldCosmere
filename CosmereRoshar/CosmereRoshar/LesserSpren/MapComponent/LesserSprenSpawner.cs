@@ -93,9 +93,11 @@ public class LesserSprenSpawner : Verse.MapComponent {
             SprenType sprenType = controller.sprenType;
 
             // Update controller's cells (handles timing internally)
-            controller.UpdateInfo(map);
+            if (!controller.UpdateInfo(map)) {
+                continue;
+            }
 
-            if (controller.validSpawnInfo.Count > 0) {
+            if (controller.activeSpawnInfo.Count > 0) {
                 // Create or update the spren system
                 if (!sprenSystems.ContainsKey(sprenType)) {
                     CreateSprenSystem(sprenType, controller);
@@ -186,19 +188,22 @@ public class LesserSprenSpawner : Verse.MapComponent {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
             if (controller == null || !controller.isEnabled) continue;
 
-            bool shouldShow;
-            bool isValidAtPosition = false;
-            bool isInActiveCells = false;
-            bool isInDynamicCells = false;
+            // Get actual spawn information for this position
+            SprenSpawnInformation? positionSpawnInfo = controller.GetSprenSpawnInformation(position, map);
+            bool isValidAtPosition = positionSpawnInfo != null;
+            bool isInActiveCells = controller.activeSpawnInfo.Any(info => info.position == position);
+            bool isInValidCells = controller.validSpawnInfo.Any(info => info.position == position);
 
+            bool shouldShow = isValidAtPosition || isInActiveCells || isInValidCells;
+            
             if (controller.isNatureSpren) {
-                isValidAtPosition = controller.GetSprenSpawnInformation(position, map) != null;
-                shouldShow = isValidAtPosition;
+                // For nature spren, also check if it would be valid even if not currently active
+                shouldShow = isValidAtPosition || isInValidCells;
             } else {
-                isInActiveCells = controller.validSpawnInfo.Any(info => info.position == position);
+                // For dynamic spren, check dynamic cells
                 List<SprenSpawnInformation> dynamicCells = controller.GetDynamicCells(map);
-                isInDynamicCells = dynamicCells.Any(i => i.position == position);
-                shouldShow = isInActiveCells || isInDynamicCells;
+                bool isInDynamicCells = dynamicCells.Any(i => i.position == position);
+                shouldShow = shouldShow || isInDynamicCells;
             }
 
             if (!shouldShow) continue;
@@ -206,14 +211,22 @@ public class LesserSprenSpawner : Verse.MapComponent {
             foundValidSpren = true;
             info.AppendLine($"\n{sprenType} ({(controller.isNatureSpren ? "Nature" : "Dynamic")}):");
 
-            if (controller.isNatureSpren) {
-                info.AppendLine($"  Valid at Position: {ColoredBool(isValidAtPosition)}");
-                info.AppendLine(
-                    $"  In Active Cells: {ColoredBool(controller.validSpawnInfo.Any(info => info.position == position))}"
-                );
-            } else {
-                info.AppendLine($"  In Active Cells: {ColoredBool(isInActiveCells)}");
+            info.AppendLine($"  Valid at Position: {ColoredBool(isValidAtPosition)}");
+            info.AppendLine($"  In Active Cells: {ColoredBool(isInActiveCells)}");
+            info.AppendLine($"  In Valid Cells: {ColoredBool(isInValidCells)}");
+
+            if (!controller.isNatureSpren) {
+                List<SprenSpawnInformation> dynamicCells = controller.GetDynamicCells(map);
+                bool isInDynamicCells = dynamicCells.Any(i => i.position == position);
                 info.AppendLine($"  In Dynamic Cells: {ColoredBool(isInDynamicCells)}");
+            }
+
+            // Show actual spawn information if available
+            if (positionSpawnInfo != null) {
+                info.AppendLine($"  Actual Spawn Chance: {positionSpawnInfo.spawnChance:P2}");
+                info.AppendLine(
+                    $"  Actual Particles: {positionSpawnInfo.minParticles}-{positionSpawnInfo.maxParticles}"
+                );
             }
 
             AppendControllerSettings(info, controller);

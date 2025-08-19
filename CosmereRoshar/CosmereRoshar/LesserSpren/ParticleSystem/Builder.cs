@@ -25,7 +25,6 @@ public static class Builder {
         noiseStrength = 10,
     };
 
-    private static readonly Texture2D LesserSpren = ContentFinder<Texture2D>.Get("Things/Pawn/Animal/LesserSpren");
 
     /*
     public static UnityEngine.ParticleSystem CreateLesserSprenParticleSystem(int mapID) {
@@ -50,9 +49,7 @@ public static class Builder {
         ConfigureVelocityOverLifetimeModule(particleSys);
         ConfigureSizeOverLifetimeModule(particleSys, Config.particleSizeFactor);
         ConfigureColorOverLifetimeModule(particleSys);
-        Material material = new Material(ShaderDatabase.TransparentPostLight);
-        // ConfigureTrailModule(particleSys, material);
-        ConfigureRenderer(particleSys, material, LesserSpren);
+        ConfigureRenderer(particleSys, controller);
 
         return particleSys;
     }
@@ -67,7 +64,8 @@ public static class Builder {
         mainModule.loop = true;
         mainModule.duration = Rand.Value;
         mainModule.startSize = 1f;
-        mainModule.startLifetime = new UnityEngine.ParticleSystem.MinMaxCurve(.25f, 2f);
+        mainModule.startLifetime =
+            new UnityEngine.ParticleSystem.MinMaxCurve(controller.lifetime.min, controller.lifetime.max);
 
         // Use spawn info movement speed if available, otherwise use default range
         float speed = spawnInfo?.movementSpeed ?? Random.Range(0.01f, 20f);
@@ -153,25 +151,10 @@ public static class Builder {
         colorOverLifetimeModule.color = new UnityEngine.ParticleSystem.MinMaxGradient(gradient);
     }
 
-    private static void ConfigureRenderer(
-        UnityEngine.ParticleSystem particleSys,
-        Material material,
-        Texture2D lesserSprenTexture
-    ) {
+    private static void ConfigureRenderer(UnityEngine.ParticleSystem particleSys, BaseSprenController controller) {
         ParticleSystemRenderer renderer = particleSys.GetComponent<ParticleSystemRenderer>();
-        renderer.material = material;
-        material.SetTexture(Shader.PropertyToID("_MainTex"), lesserSprenTexture);
-        //particleSys.Stop();
-    }
-
-    // FOR DEBUGGING
-    private static void ConfigureTrailModule(UnityEngine.ParticleSystem particleSys, Material material) {
-        UnityEngine.ParticleSystem.TrailModule trailModule = particleSys.trails;
-        trailModule.enabled = true;
-        trailModule.mode = ParticleSystemTrailMode.PerParticle;
-        trailModule.dieWithParticles = true;
-        ParticleSystemRenderer pSR = particleSys.GetComponent<ParticleSystemRenderer>();
-        pSR.trailMaterial = material;
-        pSR.trailMaterial.SetColor(Shader.PropertyToID("_Color"), ColorManager.PurpleEmission);
+        renderer.material = controller.sprenMaterial;
+        renderer.material.SetColor(Shader.PropertyToID("_MainTex"), controller.sprenColor);
+        renderer.material.SetTexture(Shader.PropertyToID("_MainTex"), controller.sprenTexture);
     }
 }

@@ -5,13 +5,38 @@ using Verse;
 
 namespace Cosmere.Roshar.LesserSpren.SprenControllers;
 
+[StaticConstructorOnStartup]
 public abstract class BaseSprenController {
+    protected static readonly Texture2D DefaultTexture = ContentFinder<Texture2D>.Get("Things/Pawn/Animal/LesserSpren");
+    protected static readonly Material DefaultMaterial = new Material(Verse.ShaderDatabase.TransparentPostLight);
     protected readonly List<SprenSpawnInformation> activeSpawnInfoInt = [];
     protected readonly List<SprenSpawnInformation> validSpawnInfoInt = [];
     private bool infoInitialized;
     private int nextActiveInfoRefresh;
 
     private int nextValidInfoRefresh;
+
+    public virtual Texture2D sprenTexture => DefaultTexture;
+    public virtual Material sprenMaterial => GetConfiguredMaterial();
+
+    private Material? configuredMaterial;
+
+    private Material GetConfiguredMaterial() {
+        if (configuredMaterial == null) {
+            configuredMaterial = new Material(GetBaseMaterial());
+            ConfigureMaterial(configuredMaterial);
+        }
+
+        return configuredMaterial;
+    }
+
+    protected virtual Material GetBaseMaterial() {
+        return DefaultMaterial;
+    }
+
+    protected virtual void ConfigureMaterial(Material material) {
+        // Base implementation - override in derived classes for custom behavior
+    }
     public abstract SprenType sprenType { get; }
     public abstract bool isEnabled { get; }
     public abstract bool isNatureSpren { get; }
@@ -23,6 +48,7 @@ public abstract class BaseSprenController {
 
     public virtual int minParticlesPerCell => 2;
     public virtual int maxParticlesPerCell => 4;
+    public virtual FloatRange lifetime => new FloatRange(4f, 10f);
 
     public virtual float cellSpawnChance => 0.05f; // 5% default chance per valid cell to spawn spren
 
@@ -65,8 +91,8 @@ public abstract class BaseSprenController {
         infoInitialized = true;
     }
 
-    public virtual void UpdateInfo(Map map) {
-        if (!infoInitialized) return;
+    public virtual bool UpdateInfo(Map map) {
+        if (!infoInitialized) return false;
 
         int currentTick = Find.TickManager?.TicksGame ?? 0;
 
@@ -77,10 +103,12 @@ public abstract class BaseSprenController {
         }
 
         // Check if it's time to refresh active cells
-        if (currentTick >= nextActiveInfoRefresh) {
-            RefreshActiveInfo(map);
-            nextActiveInfoRefresh = currentTick + activeInfoRefreshInterval.RandomInRange;
-        }
+        if (currentTick < nextActiveInfoRefresh) return false;
+
+        RefreshActiveInfo(map);
+        nextActiveInfoRefresh = currentTick + activeInfoRefreshInterval.RandomInRange;
+
+        return true;
     }
 
     protected abstract void RefreshValidInfo(Map map);

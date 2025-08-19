@@ -6,15 +6,17 @@ using Verse;
 
 namespace Cosmere.Roshar.LesserSpren.SprenControllers;
 
+[StaticConstructorOnStartup]
 public class RocksprenController : StaticSprenController {
     public override SprenType sprenType => SprenType.Rockspren;
     public override bool isEnabled => true;
     public override float cellSpawnChance => 0.05f;
-    public override int minParticlesPerCell => 1;
-    public override int maxParticlesPerCell => 2;
+    public override int minParticlesPerCell => 2;
+    public override int maxParticlesPerCell => 3;
     protected override float maxSpreadDistance => 0.3f;
     protected override float movementSpeed => 2f;
     protected override float randomDirectionAmount => 0.1f;
+    public override float sprenSizeMultiplier => 1.5f;
 
     public override List<GemDef> compatibleGemTypes => [
         GemDefOf.Garnet,
@@ -24,6 +26,19 @@ public class RocksprenController : StaticSprenController {
 
     public override float captureRarityMultiplier => 1.0f;
     public override Color sprenColor => new Color(0.6f, 0.5f, 0.4f, 0.8f);
+
+    protected override Material GetBaseMaterial() {
+        return ShaderDatabase.CrystallineFacetMaterial;
+    }
+
+    protected override void ConfigureMaterial(Material material) {
+        base.ConfigureMaterial(material);
+        material.SetColor("_Color", sprenColor);
+        material.SetFloat("_FacetSize", 6f);
+        material.SetFloat("_FacetSharpness", 1.2f);
+        material.SetFloat("_PulseSpeed", 0.3f);
+        material.SetFloat("_PulseIntensity", 0.2f);
+    }
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(
         IntVec3 position,

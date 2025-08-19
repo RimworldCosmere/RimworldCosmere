@@ -24,6 +24,21 @@ public class GrasssprenController : StaticSprenController {
 
     public override Color sprenColor => new Color(0.2f, 0.8f, 0.3f, 0.9f);
 
+    protected override Material GetBaseMaterial() {
+        return ShaderDatabase.FlowingParticleStreamMaterial;
+    }
+
+    protected override void ConfigureMaterial(Material material) {
+        base.ConfigureMaterial(material);
+        material.SetColor("_Color", sprenColor); // Set the green color
+        material.SetColor("_StreamColor", new Color(0.4f, 1f, 0.5f, 0.8f)); // Lighter green streams
+        material.SetColor("_ParticleColor", new Color(0.9f, 1f, 0.9f, 0.8f)); // Light green particles
+        material.SetInt("_FlowPattern", 0); // Grass pattern
+        material.SetFloat("_FlowSpeed", 1.2f);
+        material.SetFloat("_FlowDensity", 8f); // Add some density
+        material.SetFloat("_AnimationSpeed", 1.0f); // Ensure animation is active
+    }
+
     public override SprenSpawnInformation? GetSprenSpawnInformation(
         IntVec3 position,
         Map? map,

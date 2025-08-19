@@ -176,17 +176,17 @@ public static class LesserSprenCaptureSystem {
     /// <summary>
     ///     Get all spren types that can be captured within radius of a position
     /// </summary>
-    public static List<SprenType> GetCapturableSprenWithinRadius(
+    public static List<BaseSprenController> GetCapturableSprenWithinRadius(
         IntVec3 position,
         Map map,
         float radius = DefaultCaptureRadius
     ) {
-        List<SprenType> capturableSpren = [];
+        List<BaseSprenController> capturableSpren = [];
 
         foreach (SprenType sprenType in Enum.GetValues(typeof(SprenType))) {
             BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
             if (controller is { canBeCaptured: true } && IsSprenActiveWithinRadius(position, map, sprenType, radius)) {
-                capturableSpren.Add(sprenType);
+                capturableSpren.Add(controller);
             }
         }
 
@@ -244,18 +244,13 @@ public static class LesserSprenCaptureSystem {
         ThingWithComps gem,
         float radius = DefaultCaptureRadius
     ) {
-        List<SprenType> availableSpren = GetCapturableSprenWithinRadius(position, map, radius);
+        List<BaseSprenController> availableSpren = GetCapturableSprenWithinRadius(position, map, radius);
 
         // Try to capture spren in order of preference (rarer spren first)
-        availableSpren.Sort((a, b) => {
-                BaseSprenController controllerA = SprenControllerRegistry.GetController(a)!;
-                BaseSprenController controllerB = SprenControllerRegistry.GetController(b)!;
-                return controllerA.captureRarityMultiplier.CompareTo(controllerB.captureRarityMultiplier);
-            }
-        );
+        availableSpren.Sort((a, b) => a.captureRarityMultiplier.CompareTo(b.captureRarityMultiplier));
 
-        return availableSpren.Where(sprenType => CanGemCaptureSpren(gem, sprenType))
-            .Any(sprenType => TryCaptureSprenWithinRadius(position, map, gem, sprenType, radius));
+        return availableSpren.Where(c => CanGemCaptureSpren(gem, c.sprenType))
+            .Any(c => TryCaptureSprenWithinRadius(position, map, gem, c.sprenType, radius));
     }
 
     /// <summary>

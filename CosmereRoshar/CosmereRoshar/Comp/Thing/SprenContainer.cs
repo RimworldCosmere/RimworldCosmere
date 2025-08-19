@@ -1,5 +1,6 @@
 ﻿using Cosmere.Roshar.LesserSpren.CaptureSystem;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
+using Cosmere.Roshar.LesserSpren.SprenControllers;
 using RimWorld;
 using Verse;
 
@@ -51,7 +52,7 @@ public class SprenContainer : ThingComp {
     }
 
     public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
-        if (Mod.devOptionAutofillSpheres) {
+        if (Foundation.Mod.debugMode) {
             yield return new Command_Action {
                 defaultLabel = "Debug: Test Spren Capture",
                 defaultDesc = "Test the spren capture system at this position",
@@ -67,7 +68,7 @@ public class SprenContainer : ThingComp {
                         return;
                     }
 
-                    List<SprenType> capturable = LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(
+                    List<BaseSprenController> capturable = LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(
                         position,
                         map
                     );

@@ -3,6 +3,7 @@ using Cosmere.Core.Comp.Thing;
 using Cosmere.Roshar.Comp.Thing;
 using Cosmere.Roshar.LesserSpren.CaptureSystem;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
+using Cosmere.Roshar.LesserSpren.SprenControllers;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -35,7 +36,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
         List<FloatMenuOption> options = [];
 
         // Get all capturable spren within radius of this cell first
-        List<SprenType> capturableSpren = LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(
+        List<BaseSprenController> capturableSpren = LesserSprenCaptureSystem.GetCapturableSprenWithinRadius(
             cell,
             map
         );
@@ -64,10 +65,10 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
         bool gemInInventory = FindSuitableGemInInventory(pawn) == suitableGem;
 
         // Create option for each capturable spren type
-        foreach (SprenType sprenType in capturableSpren) {
-            // BaseSprenController controller = SprenControllerRegistry.GetController(sprenType);
+        foreach (BaseSprenController? controller in capturableSpren) {
+            SprenType sprenType = controller.sprenType;
 
-            string sprenName = sprenType.GetLocalizedName();
+            string sprenName = controller.GetLocalizedName();
 
             // Check if the gem can capture this specific spren type
             if (!LesserSprenCaptureSystem.CanGemCaptureSpren(suitableGem, sprenType)) {
@@ -136,18 +137,24 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
     /// <summary>
     ///     Find suitable gems for capturing specific spren types (inventory first, then map)
     /// </summary>
-    private static List<ThingWithComps> FindSuitableGemsForSprenTypes(Pawn pawn, List<SprenType> sprenTypes) {
+    private static List<ThingWithComps> FindSuitableGemsForSprenTypes(
+        Pawn pawn,
+        List<BaseSprenController> controllers
+    ) {
         List<ThingWithComps> suitableGems = [];
 
         // First check pawn's inventory
-        ThingWithComps? inventoryGem = FindSuitableGemInInventoryForSprenTypes(pawn, sprenTypes);
+        ThingWithComps? inventoryGem = FindSuitableGemInInventory(pawn, controllers.Select(x => x.sprenType).ToList());
         if (inventoryGem != null) {
             suitableGems.Add(inventoryGem);
             return suitableGems; // Prioritize inventory gems
         }
 
         // Then check available gems on the map
-        List<ThingWithComps> mapGems = FindSuitableGemsOnMapForSprenTypes(pawn, sprenTypes);
+        List<ThingWithComps> mapGems = FindSuitableGemsOnMapForSprenTypes(
+            pawn,
+            controllers.Select(x => x.sprenType).ToList()
+        );
         suitableGems.AddRange(mapGems);
 
         return suitableGems;
@@ -168,7 +175,7 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
     /// <summary>
     ///     Find a suitable gem in pawn's inventory for capturing specific spren types
     /// </summary>
-    private static ThingWithComps? FindSuitableGemInInventoryForSprenTypes(Pawn pawn, List<SprenType> sprenTypes) {
+    private static ThingWithComps? FindSuitableGemInInventory(Pawn pawn, List<SprenType> sprenTypes) {
         if (pawn.inventory?.innerContainer == null) return null;
 
         foreach (Verse.Thing thing in pawn.inventory.innerContainer) {

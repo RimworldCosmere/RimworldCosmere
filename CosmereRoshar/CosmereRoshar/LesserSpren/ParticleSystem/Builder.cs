@@ -16,6 +16,8 @@ internal struct ParticleSystemConfig {
 
 [StaticConstructorOnStartup]
 public static class Builder {
+    private const float ParticleAlpha = 2.5f;
+
     private static readonly ParticleSystemConfig Config = new ParticleSystemConfig {
         particleSizeFactor = .5f,
         shapeRandomDirectionAmount = new FloatRange(0, 360),
@@ -42,6 +44,7 @@ public static class Builder {
         ParticleSystemRenderer renderer = spren.GetComponent<ParticleSystemRenderer>() ??
                                           spren.AddComponent<ParticleSystemRenderer>();
 
+        ConfigureAlpha(renderer);
         ConfigureParticleSystem(particleSys, controller, spawnInfo);
         ConfigureShapeModule(particleSys, spawnInfo);
         ConfigureEmissionModule(particleSys);
@@ -53,6 +56,23 @@ public static class Builder {
 
         return particleSys;
     }
+
+    private static void ConfigureAlpha(ParticleSystemRenderer renderer) {
+        if (!renderer.material.HasProperty("_Color")) return;
+        Color currentColor = renderer.material
+            .GetColor(Shader.PropertyToID("_Color"));
+
+        // Preserve the RGB values, only modify alpha
+        Color newColor = new Color(
+            currentColor.r,
+            currentColor.g,
+            currentColor.b,
+            currentColor.a * ParticleAlpha
+        );
+        renderer.material
+            .SetColor(Shader.PropertyToID("_Color"), newColor);
+    }
+
 
     private static void ConfigureParticleSystem(
         UnityEngine.ParticleSystem particleSys,
@@ -122,8 +142,9 @@ public static class Builder {
         sizeModule.enabled = true;
 
         AnimationCurve curve = new AnimationCurve();
-        curve.AddKey(0f, .25f * particleSizeFactor);
-        curve.AddKey(1f, .25f * particleSizeFactor);
+        curve.AddKey(0f, .35f * particleSizeFactor);
+        curve.AddKey(.5f, .45f * particleSizeFactor);
+        curve.AddKey(1f, .35f * particleSizeFactor);
 
         sizeModule.size = new UnityEngine.ParticleSystem.MinMaxCurve(1.0f, curve);
     }

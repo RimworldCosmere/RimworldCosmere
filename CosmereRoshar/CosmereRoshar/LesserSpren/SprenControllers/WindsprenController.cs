@@ -24,7 +24,7 @@ public class WindsprenController : StaticSprenController {
     ];
 
     public override float captureRarityMultiplier => 1.0f;
-    public override Color sprenColor => new Color(0.6f, 0.8f, 1.0f, 1.0f); // More saturated blue, full alpha
+    public override Color sprenColor => new Color(0.7f, 0.7f, 0.9f, 1.0f); // More saturated blue, full alpha
 
     protected override Material GetBaseMaterial() {
         return ShaderDatabase.FlowingParticleStreamMaterial;

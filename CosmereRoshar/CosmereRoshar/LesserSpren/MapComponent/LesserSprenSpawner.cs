@@ -14,7 +14,6 @@ public class LesserSprenSpawner : Verse.MapComponent {
     private const float
         UpdateInterval = GenTicks.TickRareInterval; // Update dynamic spren every 250 ticks (about 4 seconds)
 
-    private readonly Dictionary<SprenType, MeshManager> meshManagers = new Dictionary<SprenType, MeshManager>();
     private readonly List<SprenType> pendingInitialization = [];
 
     private readonly Dictionary<SprenType, SprenParticleSystem> sprenSystems =
@@ -54,17 +53,12 @@ public class LesserSprenSpawner : Verse.MapComponent {
                 system.InitializeOnMainThread();
 
                 if (system.particleSystem != null) {
-                    ColorManager.SetParticleAlpha(system.particleSystem, ParticleAlpha);
-                    StateHandler.RestoreParticleSystemState(system.particleSystem);
-
-                    // Update the mesh now that particle system exists
-                    if (meshManagers.TryGetValue(sprenType, out MeshManager? meshManager)) {
-                        system.UpdateMesh(meshManager);
-                    }
-
-
-                    // Force the particle system to start playing
+                    system.particleSystem.gameObject.SetActive(true);
                     system.particleSystem.Play();
+                    UnityEngine.ParticleSystem.MainModule mainModule = system.particleSystem.main;
+                    mainModule.simulationSpeed = 1f;
+
+                    system.UpdateParticles();
                 } else {
                     Logger.Error($"[Spren] Failed to initialize particle system for {sprenType}");
                 }
@@ -92,36 +86,28 @@ public class LesserSprenSpawner : Verse.MapComponent {
             if (controller.activeSpawnInfo.Count > 0) {
                 // Create or update the spren system
                 if (!sprenSystems.ContainsKey(sprenType)) {
-                    CreateSprenSystem(sprenType, controller);
+                    CreateSprenSystem(sprenType);
                 }
 
-                if (!meshManagers.TryGetValue(sprenType, out MeshManager? value)) continue;
                 SprenParticleSystem? sprenSystem = sprenSystems[sprenType];
 
                 // Only update if particle system is initialized
-                if (sprenSystem.particleSystem != null) {
-                    sprenSystem.UpdateMesh(value);
-                    StateHandler.SetParticleSystemState(sprenSystem.particleSystem, true);
-                }
+                if (sprenSystem?.particleSystem == null) continue;
+
+                sprenSystem.UpdateParticles();
+                sprenSystem.particleSystem.gameObject.SetActive(true);
+                sprenSystem.particleSystem.Play();
             } else if (sprenSystems.TryGetValue(sprenType, out SprenParticleSystem? system)) {
-                if (system.particleSystem != null) {
-                    StateHandler.SetParticleSystemState(system.particleSystem, false);
-                }
+                if (system.particleSystem == null) continue;
+                system.particleSystem.gameObject.SetActive(false);
+                system.particleSystem.Stop();
             }
         }
     }
 
-    private void CreateSprenSystem(SprenType sprenType, BaseSprenController controller) {
+    private void CreateSprenSystem(SprenType sprenType) {
         SprenParticleSystem system = new SprenParticleSystem(sprenType, mapID);
         sprenSystems[sprenType] = system;
-
-
-        MeshManager meshManager = new MeshManager(
-            map,
-            pos => controller.validSpawnInfo.Any(info => info.position.Equals(pos.ToIntVec3()))
-        );
-        meshManagers[sprenType] = meshManager;
-
 
         // Mark for initialization on main thread
         pendingInitialization.Add(sprenType);
@@ -158,7 +144,6 @@ public class LesserSprenSpawner : Verse.MapComponent {
         }
 
         sprenSystems.Clear();
-        meshManagers.Clear();
         pendingInitialization.Clear();
     }
 
@@ -172,7 +157,7 @@ public class LesserSprenSpawner : Verse.MapComponent {
 
             // Create spren system if controller has valid cells
             if (controller.validSpawnInfo.Count > 0) {
-                CreateSprenSystem(controller.sprenType, controller);
+                CreateSprenSystem(controller.sprenType);
             }
         }
 

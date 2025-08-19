@@ -1,6 +1,5 @@
 ﻿using System.Reflection.Emit;
 using System.Text;
-using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.Roshar.LesserSpren.SprenControllers;
 using HarmonyLib;
 using UnityEngine;
@@ -39,7 +38,7 @@ public static class MouseoverSprenInfoPatch {
         // Check each enabled spren controller directly for active spren at this position
         foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
             if (controller.activeSpawnInfo.Any(s => s.position.Equals(cell))) {
-                sprenNames.Add(controller.sprenType.GetLocalizedName());
+                sprenNames.Add(controller.GetLocalizedName());
             }
         }
 

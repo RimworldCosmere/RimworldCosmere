@@ -5,9 +5,6 @@ using Logger = Cosmere.Foundation.Logger;
 namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
 
 public class SprenParticleSystem(SprenType sprenType, int mapID) {
-    private const float UpdateInterval = 5f; // Update dynamic spren every 5 seconds
-    private const float ParticleEmissionInterval = 5f; // Re-emit particles every 5 seconds (real-time)
-
     private readonly BaseSprenController controller = SprenControllerRegistry.GetController(sprenType)!;
 
     private int mapID { get; } = mapID;
@@ -15,8 +12,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     private SprenType sprenType { get; } = sprenType;
     public UnityEngine.ParticleSystem? particleSystem { get; private set; }
     private Mesh? spawnAreaMesh { get; set; }
-    private bool isStatic { get; } = sprenType.IsNatureSpren();
-    public float lastUpdateTime { get; set; }
 
     private float lastParticleEmissionTime { get; set; }
 
@@ -67,7 +62,7 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         emission.rateOverTime = 0f;
     }
 
-    public void UpdateMesh(MeshManager meshManager) {
+    public void UpdateParticles() {
         if (particleSystem == null || spawnAreaMesh == null) {
             Logger.Error(
                 $"[Spren] Cannot update mesh - ParticleSystem: {particleSystem != null}, Mesh: {spawnAreaMesh != null}"
@@ -146,10 +141,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         lastParticleEmissionTime = Time.time;
     }
 
-    public bool ShouldUpdateDynamic() {
-        return !isStatic && Time.time - lastUpdateTime > UpdateInterval;
-    }
-
     public bool ShouldReEmitParticles() {
         if (particleSystem == null || controller.validSpawnInfo.Count == 0) return false;
 
@@ -158,9 +149,7 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     }
 
     public void Destroy() {
-        StateHandler.DestroyParticleSystem(particleSystem);
-        if (spawnAreaMesh != null) {
-            Object.Destroy(spawnAreaMesh);
-        }
+        if (particleSystem is not null) Object.Destroy(particleSystem.gameObject);
+        if (spawnAreaMesh != null) Object.Destroy(spawnAreaMesh);
     }
 }

@@ -151,4 +151,8 @@ public abstract class BaseSprenController {
         nextValidInfoRefresh = 0;
         nextActiveInfoRefresh = 0;
     }
+
+    public string GetLocalizedName() {
+        return $"SprenName_{sprenType}".Translate();
+    }
 }

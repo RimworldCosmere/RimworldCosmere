@@ -172,7 +172,7 @@ public static class LesserSprenCaptureSystem {
         BaseSprenController? controller = SprenControllerRegistry.GetController(sprenType);
         if (controller == null || !controller.isEnabled) return;
 
-        controller.activeSpawnInfo.Remove(info);
+        controller.RemoveActiveSpawnInfo(info);
 
         // The spawner will handle particle system refresh on its next update cycle
     }

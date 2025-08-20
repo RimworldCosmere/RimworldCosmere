@@ -19,8 +19,8 @@ public abstract class DynamicSprenController : BaseSprenController {
     protected override void RefreshValidInfo(Map map) { }
 
     protected override void RefreshActiveInfo(Map map) {
-        activeSpawnInfoInt.Clear();
+        activeSpawnInfoInt.RemoveWhere(info => GenTicks.TicksGame > info.cleanupTick);
 
-        activeSpawnInfo.AddRange(GetDynamicSpawnInfo(map));
+        activeSpawnInfoInt.AddRange(GetDynamicSpawnInfo(map).Where(i => Rand.Chance(i.spawnChance)));
     }
 }

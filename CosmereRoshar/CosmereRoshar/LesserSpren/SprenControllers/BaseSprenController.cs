@@ -9,8 +9,12 @@ namespace Cosmere.Roshar.LesserSpren.SprenControllers;
 public abstract class BaseSprenController {
     protected static readonly Texture2D DefaultTexture = ContentFinder<Texture2D>.Get("Things/Pawn/Animal/LesserSpren");
     protected static readonly Material DefaultMaterial = new Material(Verse.ShaderDatabase.TransparentPostLight);
-    protected readonly List<SprenSpawnInformation> activeSpawnInfoInt = [];
-    protected readonly List<SprenSpawnInformation> validSpawnInfoInt = [];
+
+    protected readonly HashSet<SprenSpawnInformation> activeSpawnInfoInt =
+        new HashSet<SprenSpawnInformation>(SprenSpawnInfoComparer.Instance);
+
+    protected readonly HashSet<SprenSpawnInformation> validSpawnInfoInt =
+        new HashSet<SprenSpawnInformation>(SprenSpawnInfoComparer.Instance);
 
     private Material? configuredMaterial;
     private bool infoInitialized;
@@ -21,8 +25,8 @@ public abstract class BaseSprenController {
     public virtual Material sprenMaterial => GetConfiguredMaterial();
     public abstract SprenType sprenType { get; }
     public abstract bool isEnabled { get; }
-    public virtual List<SprenSpawnInformation> validSpawnInfo => validSpawnInfoInt;
-    public virtual List<SprenSpawnInformation> activeSpawnInfo => activeSpawnInfoInt;
+    public virtual IReadOnlyCollection<SprenSpawnInformation> validSpawnInfo => validSpawnInfoInt;
+    public virtual IReadOnlyCollection<SprenSpawnInformation> activeSpawnInfo => activeSpawnInfoInt;
 
     public abstract IntRange validInfoRefreshInterval { get; }
     public abstract IntRange activeInfoRefreshInterval { get; }
@@ -121,7 +125,7 @@ public abstract class BaseSprenController {
     }
 
     protected virtual void RefreshActiveInfo(Map map) {
-        activeSpawnInfoInt.Clear();
+        activeSpawnInfoInt.RemoveWhere(info => GenTicks.TicksGame > info.cleanupTick);
 
         foreach (SprenSpawnInformation? info in validSpawnInfoInt) {
             if (Rand.Chance(cellSpawnChance)) {
@@ -163,6 +167,14 @@ public abstract class BaseSprenController {
         infoInitialized = false;
         nextValidInfoRefresh = 0;
         nextActiveInfoRefresh = 0;
+    }
+
+    public bool RemoveActiveSpawnInfo(SprenSpawnInformation info) {
+        return activeSpawnInfoInt.Remove(info);
+    }
+
+    public bool RemoveActiveSpawnInfoAt(IntVec3 position, Map map) {
+        return activeSpawnInfoInt.RemoveWhere(info => info.position == position && info.map == map) > 0;
     }
 
     public string GetLocalizedName() {

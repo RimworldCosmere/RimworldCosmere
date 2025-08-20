@@ -11,8 +11,9 @@ public class JoysprenController : DynamicSprenController {
     public override bool isEnabled => true;
     public override float cellSpawnChance => 0.3f;
     public override int minParticlesPerCell => 1;
-    public override int maxParticlesPerCell => 3;
-    public override List<SprenSpawnInformation> validSpawnInfo => activeSpawnInfo;
+    public override int maxParticlesPerCell => 2;
+    public override FloatRange lifetime => new FloatRange(1f, 4f);
+    public override IReadOnlyCollection<SprenSpawnInformation> validSpawnInfo => activeSpawnInfo;
 
     public override List<GemDef> compatibleGemTypes => [
         GemDefOf.Diamond,
@@ -33,6 +34,12 @@ public class JoysprenController : DynamicSprenController {
         IEnumerable<Pawn> happyPawns = map.mapPawns.FreeColonistsSpawned
             .Where(pawn => pawn?.needs?.mood?.CurLevel > 0.75f);
 
-        return happyPawns.Select(pawn => defaultSpawnInformation.With(map, pawn.Position)).ToList();
+        return happyPawns.Select(pawn => defaultSpawnInformation.With(
+                    map,
+                    pawn.Position,
+                    cleanupTick: GenTicks.TicksGame + lifetime.max.SecondsToTicks()
+                )
+            )
+            .ToList();
     }
 }

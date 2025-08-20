@@ -10,8 +10,10 @@ public record SprenSpawnInformation(
     int maxParticles,
     float maxSpreadDistance = 0.5f,
     float movementSpeed = 5f,
-    float randomDirectionAmount = 0.3f
+    float randomDirectionAmount = 0.3f,
+    int cleanupTick = -1
 ) {
+    public readonly int cleanupTick = cleanupTick;
     public readonly Map? map = map;
     public readonly int maxParticles = maxParticles;
     public readonly float maxSpreadDistance = maxSpreadDistance;
@@ -29,7 +31,8 @@ public record SprenSpawnInformation(
         int? maxParticles = null,
         float? maxSpreadDistance = null,
         float? movementSpeed = null,
-        float? randomDirectionAmount = null
+        float? randomDirectionAmount = null,
+        int? cleanupTick = null
     ) {
         return new SprenSpawnInformation(
             map ?? this.map,
@@ -39,7 +42,8 @@ public record SprenSpawnInformation(
             maxParticles ?? this.maxParticles,
             maxSpreadDistance ?? this.maxSpreadDistance,
             movementSpeed ?? this.movementSpeed,
-            randomDirectionAmount ?? this.randomDirectionAmount
+            randomDirectionAmount ?? this.randomDirectionAmount,
+            cleanupTick ?? this.cleanupTick
         );
     }
 }

@@ -12,7 +12,7 @@ public class RainsprenController : DynamicSprenController {
     public override float cellSpawnChance => 0.0005f;
     public override int minParticlesPerCell => 2;
     public override int maxParticlesPerCell => 5;
-    public override FloatRange lifetime => new FloatRange(5f, 10f);
+    public override FloatRange lifetime => new FloatRange(10f, 20f);
 
     public override List<GemDef> compatibleGemTypes => [
         GemDefOf.Sapphire,

@@ -1,6 +1,6 @@
 ﻿using System.Reflection.Emit;
 using System.Text;
-using Cosmere.Roshar.LesserSpren.SprenControllers;
+using Cosmere.Roshar.LesserSpren.SprenController;
 using HarmonyLib;
 using UnityEngine;
 using Verse;

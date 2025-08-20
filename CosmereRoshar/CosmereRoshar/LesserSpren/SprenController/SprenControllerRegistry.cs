@@ -3,7 +3,7 @@ using Cosmere.Foundation;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using Verse;
 
-namespace Cosmere.Roshar.LesserSpren.SprenControllers;
+namespace Cosmere.Roshar.LesserSpren.SprenController;
 
 [StaticConstructorOnStartup]
 public static class SprenControllerRegistry {

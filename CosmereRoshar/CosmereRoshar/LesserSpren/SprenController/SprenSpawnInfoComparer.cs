@@ -1,4 +1,4 @@
-namespace Cosmere.Roshar.LesserSpren.SprenControllers;
+namespace Cosmere.Roshar.LesserSpren.SprenController;
 
 public class SprenSpawnInfoComparer : IEqualityComparer<SprenSpawnInformation> {
     public static readonly SprenSpawnInfoComparer Instance = new SprenSpawnInfoComparer();

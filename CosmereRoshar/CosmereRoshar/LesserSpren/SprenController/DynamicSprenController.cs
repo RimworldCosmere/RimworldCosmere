@@ -1,6 +1,6 @@
 using Verse;
 
-namespace Cosmere.Roshar.LesserSpren.SprenControllers;
+namespace Cosmere.Roshar.LesserSpren.SprenController;
 
 /// <summary>
 ///     Abstract base class for dynamic spren that change based on game state.
@@ -22,6 +22,8 @@ public abstract class DynamicSprenController : BaseSprenController {
     protected override void RefreshActiveInfo(Map map) {
         activeSpawnInfoInt.RemoveWhere(info => GenTicks.TicksGame > info.cleanupTick);
 
-        activeSpawnInfoInt.AddRange(GetDynamicSpawnInfo(map).Where(i => Rand.Chance(i.spawnChance)));
+        foreach (SprenSpawnInformation? info in GetDynamicSpawnInfo(map).Where(i => Rand.Chance(i.spawnChance))) {
+            activeSpawnInfoInt.Add(info.With(cleanupTick: GenTicks.TicksGame + lifetime.max.SecondsToTicks()));
+        }
     }
 }

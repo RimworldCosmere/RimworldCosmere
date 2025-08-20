@@ -5,7 +5,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Cosmere.Roshar.LesserSpren.SprenControllers;
+namespace Cosmere.Roshar.LesserSpren.SprenController;
 
 public class FlamesprenController : DynamicSprenController {
     public override SprenType sprenType => SprenType.Flamespren;
@@ -62,8 +62,7 @@ public class FlamesprenController : DynamicSprenController {
                     thing.Position,
                     cellSpawnChance,
                     minParticles,
-                    maxParticles,
-                    cleanupTick: GenTicks.TicksGame + lifetime.RandomInRange.SecondsToTicks()
+                    maxParticles
                 )
             );
 
@@ -74,8 +73,7 @@ public class FlamesprenController : DynamicSprenController {
                     position: adjacentCell,
                     spawnChance: 0.0005f,
                     minParticles: 1,
-                    maxParticles: 1,
-                    cleanupTick: GenTicks.TicksGame + lifetime.RandomInRange.SecondsToTicks()
+                    maxParticles: 1
                 )
             );
         }

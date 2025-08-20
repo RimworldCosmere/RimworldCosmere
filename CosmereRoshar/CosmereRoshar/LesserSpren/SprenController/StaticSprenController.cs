@@ -1,6 +1,6 @@
 using Verse;
 
-namespace Cosmere.Roshar.LesserSpren.SprenControllers;
+namespace Cosmere.Roshar.LesserSpren.SprenController;
 
 /// <summary>
 ///     Abstract base class for static/nature spren that don't change frequently.

@@ -10,4 +10,7 @@ public enum SprenType : uint {
     Joyspren,
     Flamespren,
     Deathspren,
+    Rainspren,
+    Lifespren,
+    Fearspren,
 }

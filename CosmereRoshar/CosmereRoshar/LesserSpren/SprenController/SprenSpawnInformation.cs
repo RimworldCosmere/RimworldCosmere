@@ -1,6 +1,6 @@
 using Verse;
 
-namespace Cosmere.Roshar.LesserSpren.SprenControllers;
+namespace Cosmere.Roshar.LesserSpren.SprenController;
 
 public record SprenSpawnInformation(
     Map? map,

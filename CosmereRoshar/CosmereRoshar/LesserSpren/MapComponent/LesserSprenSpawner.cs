@@ -2,7 +2,7 @@
 using System.Text;
 using Cosmere.Roshar.Debug;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
-using Cosmere.Roshar.LesserSpren.SprenControllers;
+using Cosmere.Roshar.LesserSpren.SprenController;
 using Verse;
 
 namespace Cosmere.Roshar.LesserSpren.MapComponent;

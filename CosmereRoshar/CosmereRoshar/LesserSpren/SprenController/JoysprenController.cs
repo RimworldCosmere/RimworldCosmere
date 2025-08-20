@@ -4,7 +4,7 @@ using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using UnityEngine;
 using Verse;
 
-namespace Cosmere.Roshar.LesserSpren.SprenControllers;
+namespace Cosmere.Roshar.LesserSpren.SprenController;
 
 public class JoysprenController : DynamicSprenController {
     public override SprenType sprenType => SprenType.Joyspren;
@@ -33,11 +33,7 @@ public class JoysprenController : DynamicSprenController {
         IEnumerable<Pawn> happyPawns = map.mapPawns.FreeColonistsSpawned
             .Where(pawn => pawn?.needs?.mood?.CurLevel > 0.75f);
 
-        return happyPawns.Select(pawn => defaultSpawnInformation.With(
-                    map,
-                    pawn.Position,
-                    cleanupTick: GenTicks.TicksGame + lifetime.max.SecondsToTicks()
-                )
+        return happyPawns.Select(pawn => defaultSpawnInformation.With(map, pawn.Position)
             )
             .ToList();
     }

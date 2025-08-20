@@ -5,7 +5,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Cosmere.Roshar.LesserSpren.SprenControllers;
+namespace Cosmere.Roshar.LesserSpren.SprenController;
 
 public class DeathsprenController : DynamicSprenController {
     public override SprenType sprenType => SprenType.Deathspren;
@@ -28,7 +28,8 @@ public class DeathsprenController : DynamicSprenController {
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {
         return map?.listerThings.ThingsInGroup(ThingRequestGroup.Corpse)
                    .Where(corpse => corpse.GetRotStage() == RotStage.Fresh)
-                   .Select(corpse => defaultSpawnInformation.With(map, corpse.Position))
+                   .Select(corpse => defaultSpawnInformation.With(map, corpse.Position)
+                   )
                    .ToList() ??
                [];
     }

@@ -1,6 +1,6 @@
 ﻿using Cosmere.Roshar.LesserSpren.CaptureSystem;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
-using Cosmere.Roshar.LesserSpren.SprenControllers;
+using Cosmere.Roshar.LesserSpren.SprenController;
 using RimWorld;
 using Verse;
 

@@ -4,7 +4,7 @@ using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using UnityEngine;
 using Verse;
 
-namespace Cosmere.Roshar.LesserSpren.SprenControllers;
+namespace Cosmere.Roshar.LesserSpren.SprenController;
 
 public class SandsprenController : StaticSprenController {
     public override SprenType sprenType => SprenType.Sandspren;

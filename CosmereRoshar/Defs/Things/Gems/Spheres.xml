@@ -8,7 +8,7 @@
         <graphicData>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutComplex</shaderType>
-            <texPath>Item/Resource/Sphere/Diamond</texPath>
+            <texPath>Item/Resource/Sphere</texPath>
         </graphicData>
 
         <stuffCategories>

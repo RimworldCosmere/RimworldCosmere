@@ -1,4 +1,5 @@
 using Cosmere.Resources.Def;
+using Cosmere.Resources.DefModExtension;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -14,8 +15,9 @@ public static class GemSpawnAfterMine {
 
     [HarmonyPatch(typeof(Mineable), "TrySpawnYield")]
     [HarmonyPatch([typeof(Map), typeof(bool), typeof(Pawn)])]
-    private static void PostfixMineableTrySpawnYield(Map? map, bool moteOnWaste, Pawn pawn) {
+    private static void PostfixMineableTrySpawnYield(Mineable __instance, Map? map, bool moteOnWaste, Pawn pawn) {
         if (map == null) return;
+        if (__instance.def.HasModExtension<GemsLinked>()) return;
 
         GenPlace.TryPlaceThing(ThingMaker.MakeThing(randomGemDef), pawn.Position, map, ThingPlaceMode.Direct);
     }

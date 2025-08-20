@@ -28,8 +28,8 @@ public static class PawnFlyerPatches {
     private static void Postfix(RimWorld.PawnFlyer __instance, Pawn? __state) {
         AbilityDef? triggeringAbility = triggeringAbilityRef(__instance);
         if (__state == null || triggeringAbility == null) return;
-        if (triggeringAbility.Equals(Defs.Cosmere_Roshar_LashingUpward)) {
+        /*if (triggeringAbility.Equals(Defs.Cosmere_Roshar_LashingUpward)) {
             __state.TakeDamage(new DamageInfo(DamageDefOf.Blunt, 75));
-        }
+        }*/
     }
 }

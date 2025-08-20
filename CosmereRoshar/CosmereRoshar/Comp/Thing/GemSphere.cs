@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using Cosmere.Roshar.Utility;
+using RimWorld;
 using Verse;
 
 namespace Cosmere.Roshar.Comp.Thing;

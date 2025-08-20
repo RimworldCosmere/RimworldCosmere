@@ -1,6 +1,7 @@
 ﻿using System;
 using Cosmere.Roshar.Comp.Thing;
 using Cosmere.Roshar.Dialog;
+using Cosmere.Roshar.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;

@@ -26,11 +26,4 @@
         <playerInterruptible>true</playerInterruptible>
         <checkOverrideOnDamage>Never</checkOverrideOnDamage>
     </JobDef>
-
-    <JobDef>
-        <defName>Cosmere_Roshar_CastAbilityOnTarget</defName>
-        <driverClass>Cosmere.Roshar.Job.Driver.CastAbilityOnTarget</driverClass>
-        <reportString>casting ability on Target</reportString>
-        <casualInterruptible>true</casualInterruptible>
-    </JobDef>
 </Defs>

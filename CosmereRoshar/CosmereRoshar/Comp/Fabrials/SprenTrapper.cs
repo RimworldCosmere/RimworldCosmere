@@ -1,12 +1,14 @@
 ﻿using System;
 using Cosmere.Roshar.Comp.Thing;
 using Cosmere.Roshar.Dialog;
+using Cosmere.Roshar.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Roshar.Comp.Fabrials;
 
+[Obsolete("This is handled by Cosmere.Roshar.LesserSpren.CaptureSystem.LesserSprenCaptureSystem")]
 public class SprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
     private List<ThingDef> filterListInt = [];
     public ThingWithComps? insertedGemstone;

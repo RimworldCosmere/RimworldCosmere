@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using Cosmere.Roshar.Utility;
+using Verse;
 
 namespace Cosmere.Roshar.Comp.Thing;
 

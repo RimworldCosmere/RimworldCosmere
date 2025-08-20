@@ -1,5 +1,6 @@
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Roshar.Gene;
+using Cosmere.Roshar.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;

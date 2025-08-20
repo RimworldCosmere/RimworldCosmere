@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Defs>
-    <ThingDef ParentName="Cosmere_Roshar_Race_LesserSpren">
-        <defName>Cosmere_Roshar_Thing_Painspren</defName>
-        <label>Painspren</label>
-    </ThingDef>
-</Defs>

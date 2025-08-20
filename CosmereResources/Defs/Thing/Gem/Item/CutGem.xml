@@ -11,9 +11,9 @@
 
         <graphicData>
             <graphicClass>Graphic_Single</graphicClass>
-            <shaderType>CutoutComplex</shaderType>
+            <!--<shaderType>CutoutComplex</shaderType>-->
             <drawSize>1</drawSize>
-            <texPath>Item/Resource/Diamond/CutDiamond</texPath>
+            <texPath>Item/Resource/CutGem</texPath>
         </graphicData>
 
         <stuffCategories>

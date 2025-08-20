@@ -1,63 +1,20 @@
-﻿using Cosmere.Roshar.Combat.Abilities.Implementations;
-using Cosmere.Roshar.Comp.Thing;
-using Cosmere.Roshar.Utility;
-using HarmonyLib;
+﻿using System;
 using RimWorld;
-using UnityEngine;
 using Verse;
 using Random = System.Random;
 
-namespace Cosmere.Roshar;
+namespace Cosmere.Roshar.Utility;
 
 public static class StormlightUtilities {
-    private static readonly List<ThingDef> Gems = [
-        Resources.ThingDefOf.RawDiamond,
-        Resources.ThingDefOf.RawGarnet,
-        Resources.ThingDefOf.RawRuby,
-        Resources.ThingDefOf.RawSapphire,
-        Resources.ThingDefOf.RawEmerald,
-    ];
-
+    [Obsolete("Should use Verse.Rand")]
     private static readonly Random Rng = new Random();
 
-    public static bool PawnHasAbility(Pawn pawn, AbilityDef def) {
-        return pawn.abilities?.abilities?.Any(ab => ab.def == def) == true;
-    }
-
-    public static bool IsRadiant(Trait trait) {
-        return trait.def == Defs.Cosmere_Roshar_Trait_Radiant_Windrunner ||
-               trait.def == Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher ||
-               trait.def == Defs.Cosmere_Roshar_Trait_Radiant_Edgedancer ||
-               trait.def == Defs.Cosmere_Roshar_Trait_Radiant_Skybreaker;
-    }
-
-    public static bool IsRadiant(Pawn pawn) {
-        if (pawn.NonHumanlikeOrWildMan()) return false;
-        if (pawn.AnimalOrWildMan()) return false;
-        if (pawn == null) return false;
-
-        Trait trait =
-            pawn.story.traits.allTraits.FirstOrDefault(t => Constants.radiantTraits.Contains(t.def));
-        if (trait != null) {
-            return trait.def == Defs.Cosmere_Roshar_Trait_Radiant_Windrunner ||
-                   trait.def == Defs.Cosmere_Roshar_Trait_Radiant_Truthwatcher ||
-                   trait.def == Defs.Cosmere_Roshar_Trait_Radiant_Edgedancer ||
-                   trait.def == Defs.Cosmere_Roshar_Trait_Radiant_Skybreaker;
-        }
-
-        return false;
-    }
-
-    public static int GetGraphicId(ThingWithComps? thing) {
-        if (thing == null) return 0;
-
-        return !thing.TryGetComp(out ShardBlade comp) ? 0 : comp.graphicId;
-    }
 
     public static float Normalize(float value, float vMin, float vMax, float tMin, float tMax) {
         return (value - vMin) / (vMax - vMin) * (tMax - tMin) + tMin;
     }
 
+    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
     public static float SprenBaseCaptureProbability(float currentStormlight, float minStormlight, float maxStormlight) {
         float x = Normalize(currentStormlight, minStormlight, maxStormlight, 0f, 100f);
         const float a = 1.1585f;
@@ -68,6 +25,7 @@ public static class StormlightUtilities {
         return -(a / b) * x * (x - c) * (x - d);
     }
 
+    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
     public static bool IsAnyFireNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -89,6 +47,7 @@ public static class StormlightUtilities {
         return false;
     }
 
+    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
     public static int GetNumberOfFiresNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -108,6 +67,7 @@ public static class StormlightUtilities {
         return numberOfFires;
     }
 
+    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
     public static float GetAverageSuroundingTemperature(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -120,6 +80,7 @@ public static class StormlightUtilities {
         return temps.Average();
     }
 
+    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
     public static float GetSuroundingPain(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -135,6 +96,7 @@ public static class StormlightUtilities {
         return pains.Sum();
     }
 
+    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
     public static float GetSuroundingPlants(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -153,6 +115,7 @@ public static class StormlightUtilities {
         return plants;
     }
 
+    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
     public static bool ResearchBeingDoneNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -171,73 +134,17 @@ public static class StormlightUtilities {
         return thing.def.Equals(Resources.ThingDefOf.CutGem);
     }
 
-    public static Trait? GetRadiantTrait(Pawn pawn) {
-        return pawn.story.traits.allTraits.FirstOrDefault(t => Constants.radiantTraits.Contains(t.def));
-    }
 
-    public static ThingDef RollForRandomGemSpawn() {
-        foreach (ThingDef? gem in Gems) {
-            if (RollTheDice(0, gem.GetCompProperties<RawGemstoneProperties>().spawnChance, 1)) {
-                return gem;
-            }
-        }
-
-        return null;
-    }
-
-    public static bool RollTheDice(int min, int max, int lowerThreshold) {
-        return Rng.Next(min, max) <= lowerThreshold;
-    }
-
+    [Obsolete("Use Verse.Rand")]
     public static int RollTheDice(int min, int max) {
         return Rng.Next(min, max);
     }
 
-    public static string RollForRandomString(List<string> stringList) {
-        int i = Rng.Next(stringList.Count);
-        return stringList[i];
-    }
 
+    [Obsolete("Use Verse.Rand")]
     public static int RollForRandomIntFromList(List<int> intList) {
         int i = Rng.Next(intList.Count);
         return intList[i];
-    }
-
-
-    public static void SetThingGraphic(Verse.Thing thing, string texPath, float drawSize = 1.5f) {
-        if (thing?.def == null) return;
-
-        Verse.Graphic newGraphic = GraphicDatabase.Get<Graphic_Single>(
-            texPath,
-            Verse.ShaderDatabase.Cutout,
-            new Vector2(drawSize, drawSize),
-            Color.white
-        );
-
-        // Set internal field directly
-        AccessTools.Field(typeof(Verse.Thing), "graphicInt").SetValue(thing, newGraphic);
-
-        // Force refresh
-        thing.Notify_ColorChanged();
-    }
-
-
-    public static bool IsNearGrowingPlants(Pawn pawn, float radius = 3f) {
-        IntVec3 position = pawn.Position;
-        Map map = pawn.Map;
-        IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
-
-        foreach (IntVec3 cell in cells) {
-            if (cell.InBounds(map)) {
-                foreach (Verse.Thing thing in cell.GetThingList(map)) {
-                    if (thing is Plant { Growth: > 0.05f and < 1.0f, GrowthRate: > 0f }) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 }
 

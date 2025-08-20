@@ -5,7 +5,7 @@
         <label>Gems</label>
         <parent>ResourcesRaw</parent>
         <resourceReadoutRoot>false</resourceReadoutRoot>
-        <iconPath>Item/Resource/Emerald/CutEmerald</iconPath>
+        <iconPath>Item/Resource/CutGem</iconPath>
     </ThingCategoryDef>
     <ThingCategoryDef>
         <defName>Cosmere_Resource_ThingCategory_RawGem</defName>
@@ -19,7 +19,7 @@
         <label>Cut Gems</label>
         <parent>ResourcesRaw</parent>
         <resourceReadoutRoot>false</resourceReadoutRoot>
-        <iconPath>Item/Resource/Emerald/CutEmerald</iconPath>
+        <iconPath>Item/Resource/CutGem</iconPath>
     </ThingCategoryDef>
     <ThingCategoryDef>
         <defName>Cosmere_Resource_ThingCategory_Metal</defName>

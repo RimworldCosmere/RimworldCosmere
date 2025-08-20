@@ -9,4 +9,5 @@ public enum SprenType : uint {
     Windspren,
     Joyspren,
     Flamespren,
+    Deathspren,
 }

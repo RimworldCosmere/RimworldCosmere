@@ -26,9 +26,10 @@ public class DeathsprenController : DynamicSprenController {
     public override Color sprenColor => new Color(0.1f, 0.1f, 0.1f, 0.9f);
 
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {
-        return map.listerThings.ThingsInGroup(ThingRequestGroup.Corpse)
-            .Where(corpse => corpse.GetRotStage() == RotStage.Fresh)
-            .Select(corpse => defaultSpawnInformation.With(map, corpse.Position))
-            .ToList();
+        return map?.listerThings.ThingsInGroup(ThingRequestGroup.Corpse)
+                   .Where(corpse => corpse.GetRotStage() == RotStage.Fresh)
+                   .Select(corpse => defaultSpawnInformation.With(map, corpse.Position))
+                   .ToList() ??
+               [];
     }
 }

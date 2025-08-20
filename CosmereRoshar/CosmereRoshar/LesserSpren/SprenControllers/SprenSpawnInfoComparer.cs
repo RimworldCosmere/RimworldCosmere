@@ -12,7 +12,7 @@ public class SprenSpawnInfoComparer : IEqualityComparer<SprenSpawnInformation> {
         return x.position == y.position && x.map == y.map;
     }
 
-    public int GetHashCode(SprenSpawnInformation obj) {
+    public int GetHashCode(SprenSpawnInformation? obj) {
         if (obj == null) return 0;
 
         // Combine hash codes of position and map for unique identification

@@ -13,7 +13,6 @@ public class JoysprenController : DynamicSprenController {
     public override int minParticlesPerCell => 1;
     public override int maxParticlesPerCell => 2;
     public override FloatRange lifetime => new FloatRange(1f, 4f);
-    public override IReadOnlyCollection<SprenSpawnInformation> validSpawnInfo => activeSpawnInfo;
 
     public override List<GemDef> compatibleGemTypes => [
         GemDefOf.Diamond,

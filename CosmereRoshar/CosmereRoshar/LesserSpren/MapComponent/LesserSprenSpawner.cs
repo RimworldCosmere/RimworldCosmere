@@ -4,16 +4,10 @@ using Cosmere.Roshar.Debug;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.Roshar.LesserSpren.SprenControllers;
 using Verse;
-using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Roshar.LesserSpren.MapComponent;
 
-public class LesserSprenSpawner : Verse.MapComponent {
-    private const float ParticleAlpha = 2.5f;
-
-    private const float
-        UpdateInterval = GenTicks.TickRareInterval; // Update dynamic spren every 250 ticks (about 4 seconds)
-
+public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     private readonly List<SprenType> pendingInitialization = [];
 
     private readonly Dictionary<SprenType, SprenParticleSystem> sprenSystems =
@@ -21,24 +15,11 @@ public class LesserSprenSpawner : Verse.MapComponent {
 
     private bool initialized;
     private int lastDynamicUpdateTick;
-    private int mapID;
 
-    public LesserSprenSpawner(Map map) : base(map) {
-        mapID = map.GetHashCode();
-    }
+    private int mapID = map.GetHashCode();
 
     public override void MapComponentDraw() {
         SprenDebugOverlay.DrawOverlay();
-
-        // Handle particle re-emission during draw so it works even when paused
-        if (!initialized) return;
-        foreach (SprenParticleSystem? sprenSystem in sprenSystems.Values.Where(x => x.ShouldReEmitParticles())) {
-            sprenSystem.EmitParticlesForActiveCells();
-        }
-    }
-
-    public override void MapComponentTick() {
-        base.MapComponentTick();
 
         // Always process pending initializations, even before fully initialized
         // This allows the background task to queue systems for main thread init
@@ -49,21 +30,23 @@ public class LesserSprenSpawner : Verse.MapComponent {
                 if (!sprenSystems.TryGetValue(sprenType, out SprenParticleSystem? sprenSystem)) continue;
 
                 sprenSystem.Initialize();
-
-                if (sprenSystem.particleSystem != null) {
-                    sprenSystem.particleSystem.gameObject.SetActive(true);
-                    sprenSystem.particleSystem.Play();
-                    UnityEngine.ParticleSystem.MainModule mainModule = sprenSystem.particleSystem.main;
-                    mainModule.simulationSpeed = 1f;
-
-                    sprenSystem.UpdateParticles();
-                } else {
-                    Logger.Error($"[Spren] Failed to initialize particle system for {sprenType}");
-                }
+                pendingInitialization.Remove(sprenType);
+                return;
             }
 
             pendingInitialization.Clear();
         }
+
+        // Handle particle re-emission during draw so it works even when paused
+        if (!initialized) return;
+
+        foreach (SprenParticleSystem? sprenSystem in sprenSystems.Values.Where(s => s.ShouldReEmitParticles())) {
+            sprenSystem.EmitParticlesForActiveCells();
+        }
+    }
+
+    public override void MapComponentTick() {
+        base.MapComponentTick();
 
         // Don't do anything else until initialized
         if (!initialized) return;
@@ -122,7 +105,6 @@ public class LesserSprenSpawner : Verse.MapComponent {
         initialized = false;
         lastDynamicUpdateTick = 0;
 
-        Logger.Verbose($"Map generated, reinitializing spren systems for map ID: {mapID}");
         LongEventHandler.ExecuteWhenFinished(InitializeMapSystems);
     }
 
@@ -222,9 +204,6 @@ public class LesserSprenSpawner : Verse.MapComponent {
             // Show actual spawn information if available
             if (positionSpawnInfo != null) {
                 info.AppendLine($"  Actual Spawn Chance: {positionSpawnInfo.spawnChance:P2}");
-                info.AppendLine(
-                    $"  Actual Particles: {positionSpawnInfo.minParticles}-{positionSpawnInfo.maxParticles}"
-                );
             }
 
             AppendControllerSettings(info, controller);

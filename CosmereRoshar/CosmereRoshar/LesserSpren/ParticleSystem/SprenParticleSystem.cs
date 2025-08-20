@@ -1,11 +1,14 @@
 using Cosmere.Roshar.LesserSpren.SprenControllers;
 using UnityEngine;
+using Verse;
 using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
 
 public class SprenParticleSystem(SprenType sprenType, int mapID) {
     private readonly BaseSprenController controller = SprenControllerRegistry.GetController(sprenType)!;
+    private float? lastEmit;
+    public Dictionary<IntVec3, (int, float)> particleCache = [];
 
     private int mapID { get; } = mapID;
 
@@ -32,6 +35,14 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         // Ensure it's in world space
         UnityEngine.ParticleSystem.MainModule main = particleSystem.main;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
+
+        particleSystem.gameObject.SetActive(true);
+        particleSystem.Play();
+
+        UnityEngine.ParticleSystem.MainModule mainModule = particleSystem.main;
+        mainModule.simulationSpeed = 1f;
+
+        UpdateParticles();
     }
 
     private SprenSpawnInformation? GetRepresentativeSpawnInfo() {
@@ -91,28 +102,35 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
         emission.rateOverTime = 0f;
     }
 
+    public bool ShouldReEmitParticles() {
+        return lastEmit < (Time.time + particleSystem?.main.duration ?? 0);
+    }
+
     public void EmitParticlesForActiveCells() {
         if (controller.activeSpawnInfo.Count == 0) return;
-
 
         List<UnityEngine.ParticleSystem.EmitParams> emitParamsList = [];
 
         int minParticles = controller.minParticlesPerCell;
         int maxParticles = controller.maxParticlesPerCell;
 
+        particleCache.RemoveAll(p => Time.time > p.Value.Item2);
         foreach (SprenSpawnInformation info in controller.activeSpawnInfo) {
-            int particlesForThisCell = Random.Range(minParticles, maxParticles + 1);
+            IntVec3 position = info.position!.Value;
+            int existingParticles = particleCache.TryGetValue(position, (0, 0)).Item1;
+            if (existingParticles > minParticles) continue;
+            int particlesForThisCell = Random.Range(minParticles, maxParticles + 1) - existingParticles;
+            if (particlesForThisCell < 0) continue;
 
             for (int i = 0; i < particlesForThisCell; i++) {
                 UnityEngine.ParticleSystem.EmitParams emitParams = new UnityEngine.ParticleSystem.EmitParams();
 
-                Vector3 cellCenter = info.position!.Value.ToVector3Shifted();
                 Vector3 randomOffset = new Vector3(
                     Random.Range(-0.5f, 0.5f),
                     0f,
                     Random.Range(-0.5f, 0.5f)
                 );
-                emitParams.position = cellCenter + randomOffset;
+                emitParams.position = position.ToVector3Shifted() + randomOffset;
 
                 emitParams.velocity = new Vector3(
                     Random.Range(-0.5f, 0.5f),
@@ -122,18 +140,20 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
 
                 emitParamsList.Add(emitParams);
             }
+
+            if (particleCache.ContainsKey(position)) {
+                particleCache[position] = (particleCache[position].Item1 + particlesForThisCell,
+                    particleSystem!.main.duration + Time.time);
+            } else {
+                particleCache[position] = (particlesForThisCell, particleSystem!.main.duration + Time.time);
+            }
         }
 
         foreach (UnityEngine.ParticleSystem.EmitParams emitParams in emitParamsList) {
             particleSystem!.Emit(emitParams, 1);
         }
-    }
 
-    public bool ShouldReEmitParticles() {
-        if (particleSystem == null || controller.validSpawnInfo.Count == 0) return false;
-
-        // Re-emit if particle count drops below minimum expected
-        return particleSystem.particleCount < controller.activeSpawnInfo.Count * controller.minParticlesPerCell;
+        lastEmit = Time.time;
     }
 
     public void Destroy() {

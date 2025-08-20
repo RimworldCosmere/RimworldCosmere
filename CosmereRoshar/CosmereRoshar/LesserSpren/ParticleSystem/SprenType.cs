@@ -1,6 +1,6 @@
 namespace Cosmere.Roshar.LesserSpren.ParticleSystem;
 
-public enum SprenType {
+public enum SprenType : uint {
     Wavespren,
     Riverspren,
     Rockspren,
@@ -8,4 +8,5 @@ public enum SprenType {
     Grassspren,
     Windspren,
     Joyspren,
+    Flamespren,
 }

@@ -202,8 +202,8 @@ public static class Profiler {
     }
 
     private sealed class ProfilerFlushComponent(Game game) : GameComponent {
-        public override void GameComponentTick() {
-            if (GenTicks.IsTickInterval(GenTicks.TickRareInterval)) Flush();
+        public override void GameComponentUpdate() {
+            if ((int)Time.time % FlushSeconds == 0) Flush();
         }
     }
 

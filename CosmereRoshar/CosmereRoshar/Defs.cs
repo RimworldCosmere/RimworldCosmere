@@ -12,7 +12,6 @@ namespace Cosmere.Roshar;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class Defs {
     //JobDef
-    public static JobDef Cosmere_Roshar_RefuelSphereLamp;
     public static JobDef Cosmere_Roshar_RefuelFabrial;
     public static JobDef Cosmere_Roshar_RemoveFromFabrial;
     public static JobDef Cosmere_Roshar_CaptureSpren;

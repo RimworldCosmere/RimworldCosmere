@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <JobDef>
-        <defName>Cosmere_Roshar_RefuelSphereLamp</defName>
-        <label>Add Stormlight Sphere</label>
-        <driverClass>Cosmere.Roshar.Job.Driver.AddSphereToLamp</driverClass>
-        <reportString>Adding a Stormlight Sphere...</reportString>
-        <playerInterruptible>true</playerInterruptible>
-        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
-    </JobDef>
-
-    <JobDef>
         <defName>Cosmere_Roshar_RefuelFabrial</defName>
         <label>Refuel fabial</label>
         <driverClass>Cosmere.Roshar.Job.Driver.AddGemToFabrial</driverClass>

@@ -1,5 +1,3 @@
-using System;
-using System.Reflection;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Foundation.Comp.Thing;
 using Cosmere.Foundation.Quickstart;
@@ -11,10 +9,6 @@ namespace Cosmere.Roshar.Quickstart;
 
 public class TrueDesolationQuickstart : AbstractQuickstart {
     //public override ScenarioDef? scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
-
-    private readonly Assembly? scadrial = LoadedModManager.RunningMods
-        .FirstOrDefault(m => m.PackageId.Equals("cosmere.scadrial", StringComparison.CurrentCultureIgnoreCase))
-        ?.assemblies.loadedAssemblies.FirstOrDefault();
 
     public override int mapSize => 100;
 
@@ -46,7 +40,6 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
         if (pawns.TryPopFront(out Pawn pawn)) {
-            pawn.GetInvestiture().currentInvestitureSelf = 1000;
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner);
@@ -64,32 +57,24 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
 
             pouch.TryGetComp<InnerStorage>().innerContainer!.TryAdd(broam);
             pawn.apparel.Wear(pouch);
+            pawn.GetInvestiture().currentInvestitureSelf = 1000;
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.GetInvestiture().currentInvestitureSelf = 1000;
             pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kohlin");
             pawn.gender = Gender.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher);
+            pawn.GetInvestiture().currentInvestitureSelf = 1000;
         }
 
         if (pawns.TryPopFront(out pawn)) {
-            pawn.GetInvestiture().currentInvestitureSelf = 50000;
             pawn.Name = new NameSingle("Wit");
             pawn.gender = Gender.Male;
-            if (ModsConfig.IsActive("Cosmere.Scadrial") && scadrial != null) {
-                Type? geneUtility = scadrial.GetType("Cosmere.Scadrial.Utility.GeneUtility");
-                MethodInfo? addMistborn = geneUtility?.GetMethod(
-                    "AddMistborn",
-                    BindingFlags.Public | BindingFlags.Static
-                );
-
-                addMistborn?.Invoke(null, [pawn, false, true, "ingested Lerasium"]);
-            }
-
+            pawn.BecomeMistborn(cause: "ingested lerasium");
 
             // RadiantOrder.BondWithSpren(pawn);
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver);
+            pawn.GetInvestiture().currentInvestitureSelf = 50000;
         }
     }
 }

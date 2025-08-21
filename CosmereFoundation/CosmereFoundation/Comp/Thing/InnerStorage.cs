@@ -1,4 +1,3 @@
-using Cosmere.Foundation.InspectorTab;
 using Cosmere.Foundation.Object;
 using RimWorld;
 using UnityEngine;
@@ -33,7 +32,7 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
     public ThingOwnerWithCapacity<Verse.Thing> innerContainer;
     private StorageSettings? settings;
 
-    private new InnerStorageProperties props => (InnerStorageProperties)base.props;
+    public new InnerStorageProperties props => (InnerStorageProperties)base.props;
 
     public Pawn? ParentPawn => ParentThing as Pawn;
 
@@ -146,15 +145,10 @@ public class InnerStorage : ThingComp, IHaulDestination, IThingHolderTickable, I
         if (parent.def.CanHaveFaction) parent.SetFactionDirect(pawn.Faction);
     }
 
-    public override void Notify_Unequipped(Pawn pawn) {
-        base.Notify_Unequipped(pawn);
-        pawn.def.inspectorTabsResolved.RemoveWhere(x => x is StorageWithInventory);
-    }
 
     public override void Notify_Equipped(Pawn pawn) {
         base.Notify_Equipped(pawn);
         if (parent.def.CanHaveFaction) parent.SetFactionDirect(pawn.Faction);
-        pawn.def.inspectorTabsResolved.AddUnique(new StorageWithInventory(props.tabName, this));
 
         AddHaulDestination();
     }

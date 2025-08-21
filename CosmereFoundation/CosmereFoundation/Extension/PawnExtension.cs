@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -6,7 +7,12 @@ using Verse.AI;
 
 namespace Cosmere.Foundation.Extension;
 
+[StaticConstructorOnStartup]
 public static class PawnExtension {
+    private static readonly Assembly? Scadrial = LoadedModManager.RunningMods
+        .FirstOrDefault(m => m.PackageId.Equals("cosmere.scadrial", StringComparison.CurrentCultureIgnoreCase))
+        ?.assemblies.loadedAssemblies.FirstOrDefault();
+
     public static void MaintainProximityTo(
         this Pawn pawn,
         LocalTargetInfo target,
@@ -68,5 +74,53 @@ public static class PawnExtension {
 
     public static T? GetAbility<T, TDef>(this Pawn pawn, TDef def) where T : Ability where TDef : AbilityDef {
         return (T)pawn.abilities.GetAbility(def);
+    }
+
+    public static void BecomeMistborn(
+        this Pawn pawn,
+        bool canSnap = false,
+        bool snapped = true,
+        bool fillReserves = true,
+        string? cause = null
+    ) {
+        if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
+
+        Type? geneUtility = Scadrial.GetType("Cosmere.Scadrial.Utility.GeneUtility");
+        MethodInfo? addMistborn = geneUtility?.GetMethod(
+            "AddMistborn",
+            BindingFlags.Public | BindingFlags.Static
+        );
+
+        addMistborn?.Invoke(null, [pawn, canSnap, snapped, cause]);
+        pawn.SetAllomanticReserves(float.PositiveInfinity);
+    }
+
+    public static void BecomeFullFeruchemist(
+        this Pawn pawn,
+        bool canSnap = false,
+        bool snapped = true,
+        string? cause = null
+    ) {
+        if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
+
+        Type? geneUtility = Scadrial.GetType("Cosmere.Scadrial.Utility.GeneUtility");
+        MethodInfo? addFullFeruchemist = geneUtility?.GetMethod(
+            "AddFullFeruchemist",
+            BindingFlags.Public | BindingFlags.Static
+        );
+
+        addFullFeruchemist?.Invoke(null, [pawn, canSnap, snapped, cause]);
+    }
+
+    public static void SetAllomanticReserves(this Pawn pawn, float amount) {
+        if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
+
+        Type? extension = Scadrial.GetType("Cosmere.Scadrial.Extension.PawnExtension");
+        MethodInfo? setAllAllomanticReserves = extension?.GetMethod(
+            "SetAllAllomanticReserves",
+            BindingFlags.Public | BindingFlags.Static
+        );
+
+        setAllAllomanticReserves?.Invoke(null, [pawn, amount]);
     }
 }

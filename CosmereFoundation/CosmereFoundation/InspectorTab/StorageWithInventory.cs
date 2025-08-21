@@ -15,7 +15,6 @@ public class StorageWithInventory : ITab_Storage {
     private Vector2 scrollPosition = Vector2.zero;
     private float scrollViewHeight;
 
-
     public StorageWithInventory() {
         size = WinSize;
         labelKey = "TabStorage";
@@ -27,43 +26,42 @@ public class StorageWithInventory : ITab_Storage {
         this.storage = storage;
     }
 
-    private InnerStorage SelStorage => storage ?? SelThing.TryGetComp<InnerStorage>();
+    protected override bool StillValid => base.StillValid || true;
 
-    private IEnumerable<Verse.Thing> heldThings => SelStorage.innerContainer ?? [];
+    private InnerStorage selStorage => storage ?? SelThing.TryGetComp<InnerStorage>();
 
-    protected override IStoreSettingsParent SelStoreSettingsParent => SelStorage;
+    private IEnumerable<Verse.Thing> heldThings => selStorage.innerContainer ?? [];
 
-    private bool CanControl {
+    protected override IStoreSettingsParent SelStoreSettingsParent => selStorage;
+
+    private bool canControl {
         get {
-            if (SelPawn != null) {
-                if (SelPawn.Faction != Faction.OfPlayer && !SelPawn.IsPrisonerOfColony) return false;
-                if (SelPawn.IsPrisonerOfColony && SelPawn.Spawned && !SelPawn.Map.mapPawns.AnyFreeColonistSpawned) {
-                    return false;
-                }
-
-                if (
-                    SelPawn.IsPrisonerOfColony &&
-                    (PrisonBreakUtility.IsPrisonBreaking(SelPawn) || SelPawn.CurJob is { exitMapOnArrival: true })
-                ) {
-                    return false;
-                }
-
-                if (SelPawn.Downed || SelPawn.InMentalState || SelPawn.CarriedBy != null) return false;
+            if (SelPawn == null) return SelThing?.Faction == Faction.OfPlayer;
+            if (SelPawn.Faction != Faction.OfPlayer && !SelPawn.IsPrisonerOfColony) return false;
+            if (SelPawn.IsPrisonerOfColony && SelPawn.Spawned && !SelPawn.Map.mapPawns.AnyFreeColonistSpawned) {
+                return false;
             }
 
-            if (SelThing.Faction != Faction.OfPlayer) return false;
+            if (
+                SelPawn.IsPrisonerOfColony &&
+                (PrisonBreakUtility.IsPrisonBreaking(SelPawn) || SelPawn.CurJob is { exitMapOnArrival: true })
+            ) {
+                return false;
+            }
 
-            return true;
+            if (SelPawn.Downed || SelPawn.InMentalState || SelPawn.CarriedBy != null) return false;
+
+            return SelThing?.Faction == Faction.OfPlayer;
         }
     }
 
-    private bool CanControlColonist => CanControl && (SelPawn?.IsColonistPlayerControlled ?? false);
+    private bool canControlColonist => canControl && (SelPawn?.IsColonistPlayerControlled ?? false);
 
-    private float TopAreaHeight => IsPrioritySettingVisible ? 35 : 20;
+    private float topAreaHeight => IsPrioritySettingVisible ? 35 : 20;
 
     protected override void FillTab() {
         base.FillTab();
-        Rect rect = new Rect(300, TopAreaHeight, WinSize.x - 300, WinSize.y - TopAreaHeight).ContractedBy(10f);
+        Rect rect = new Rect(300, topAreaHeight, WinSize.x - 300, WinSize.y - topAreaHeight).ContractedBy(10f);
 
         using (new TextBlock(GameFont.Small, Color.white)) {
             Widgets.BeginGroup(rect);
@@ -95,7 +93,7 @@ public class StorageWithInventory : ITab_Storage {
         Widgets.InfoCardButton(rect.width - 24f, y, thing);
         rect.width -= 24f;
         bool disabled = false;
-        if (CanControl) {
+        if (canControl) {
             Rect rect2 = new Rect(rect.width - 24f, y, 24f, 24f);
             bool dropLocked = thing is Apparel apparel && SelPawn?.apparel != null && SelPawn.apparel.IsLocked(apparel);
             disabled = dropLocked;
@@ -124,7 +122,7 @@ public class StorageWithInventory : ITab_Storage {
             rect.width -= 24f;
         }
 
-        if (CanControlColonist) {
+        if (canControlColonist) {
             if (SelPawn != null && FoodUtility.WillIngestFromInventoryNow(SelPawn, thing)) {
                 Rect rect3 = new Rect(rect.width - 24f, y, 24f, 24f);
                 TooltipHandler.TipRegionByKey(rect3, "ConsumeThing", thing.LabelNoCount, thing);
@@ -175,6 +173,6 @@ public class StorageWithInventory : ITab_Storage {
     private void InterfaceDrop(Verse.Thing t) {
         if (t.def.destroyOnDrop) return;
 
-        SelStorage.innerContainer.TryDrop(t, SelThing.Position, SelThing.Map, ThingPlaceMode.Near, out _);
+        selStorage.innerContainer.TryDrop(t, SelThing.Position, SelThing.Map, ThingPlaceMode.Near, out _);
     }
 }

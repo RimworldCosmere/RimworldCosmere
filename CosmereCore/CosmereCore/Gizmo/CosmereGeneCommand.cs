@@ -105,7 +105,7 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
                 return Height + Padding.x / 2;
             }
 
-            return Mathf.Max(baseWidth, GetWidthForAbilityCount(gene.def.abilities?.Count ?? 0));
+            return Mathf.Max(baseWidth, GetWidthForAbilityCount(gene.abilities.Count));
         }
     }
 

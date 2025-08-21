@@ -12,6 +12,8 @@ namespace Cosmere.Roshar;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class AbilityDefOf {
     public static SurgebindingAbilityDef Cosmere_Roshar_Ability_BreatheStormlight;
+    public static SurgebindingAbilityDef Cosmere_Roshar_Ability_Heal;
+    public static SurgebindingAbilityDef Cosmere_Roshar_Ability_ToggleShardblade;
 
     static AbilityDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(AbilityDefOf));

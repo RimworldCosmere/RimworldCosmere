@@ -30,7 +30,9 @@
         "I will not retreat from pain, nor falter in patience.",
         "My strength is not for myself alone."
       ],
-      "abilities": []
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
+      ]
     },
     {
       "label": "fourth ideal",

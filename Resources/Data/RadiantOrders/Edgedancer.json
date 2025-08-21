@@ -29,7 +29,9 @@
         "I will remember those who cannot speak for themselves.",
         "I will be swift and gentle, like the wind through grass."
       ],
-      "abilities": []
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
+      ]
     },
     {
       "label": "fourth ideal",

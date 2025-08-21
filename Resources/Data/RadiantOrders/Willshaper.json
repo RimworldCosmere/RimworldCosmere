@@ -30,7 +30,9 @@
         "I will fight not just for survival, but for choice.",
         "They deserve to decide who they are — even if I disagree."
       ],
-      "abilities": []
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
+      ]
     },
     {
       "label": "fourth ideal",

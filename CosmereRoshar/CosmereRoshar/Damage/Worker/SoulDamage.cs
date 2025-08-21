@@ -1,5 +1,4 @@
-﻿using RimWorld;
-using Verse;
+﻿using Verse;
 
 namespace Cosmere.Roshar.Damage.Worker;
 
@@ -16,26 +15,24 @@ public class SoulDamage : DamageWorker_AddInjury {
         DamageResult result
     ) {
         if (dinfo.HitPart != null && !pawn.health.hediffSet.PartIsMissing(dinfo.HitPart)) {
-            Hediff hediff = HediffMaker.MakeHediff(HediffDefOf.MissingBodyPart, pawn, dinfo.HitPart);
+            Verse.Hediff hediff = HediffMaker.MakeHediff(RimWorld.HediffDefOf.MissingBodyPart, pawn, dinfo.HitPart);
             hediff.Severity =
                 dinfo.HitPart.def.GetMaxHealth(pawn) + 1; // Set severity beyond max health to ensure removal
             pawn.health.AddHediff(hediff);
 
             // Prevent bleeding by marking the part as not bleedable
-            Hediff_MissingPart missingPart = hediff as Hediff_MissingPart;
-            if (missingPart != null) {
+            if (hediff is Hediff_MissingPart missingPart) {
                 missingPart.IsFresh = false; // Prevents it from generating bleeding
             }
         }
 
-        List<BodyPartRecord> adjacentParts = dinfo.HitPart.GetDirectChildParts()
-            .Concat(dinfo.HitPart.parent != null ? [dinfo.HitPart.parent] : [])
-            .ToList();
+        List<BodyPartRecord> adjacentParts = dinfo.HitPart?.GetDirectChildParts()
+                                                 .Concat(dinfo.HitPart.parent != null ? [dinfo.HitPart.parent] : [])
+                                                 .ToList() ??
+                                             [];
 
-        foreach (BodyPartRecord part in adjacentParts) {
-            if (!pawn.health.hediffSet.PartIsMissing(part)) {
-                FinalizeAndAddInjury(pawn, totalDamage / 2, dinfo, result);
-            }
+        foreach (BodyPartRecord unused in adjacentParts.Where(part => !pawn.health.hediffSet.PartIsMissing(part))) {
+            FinalizeAndAddInjury(pawn, totalDamage / 2, dinfo, result);
         }
     }
 }

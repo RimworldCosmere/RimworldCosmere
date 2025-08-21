@@ -40,7 +40,7 @@ public class RadiantOrderCommand(
      * Loop through the radiantOrderDef, based on the gene.currentIdeal, and create the abilities and build the gizmos
      */
     protected override IEnumerable<SurgebindingAbilitySubGizmo> GetSubGizmos() {
-        foreach (AbilityDef abilityDef in radiantOrderDef.abilities) {
+        foreach (AbilityDef abilityDef in radiantOrderDef.GetAbilities(gene.currentIdeal)) {
             if (!pawn.TryGetAbility(abilityDef, out SurgebindingAbility ability)) continue;
             if (!ability.GizmosVisible()) continue;
 

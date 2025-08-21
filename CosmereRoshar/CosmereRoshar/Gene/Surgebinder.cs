@@ -31,6 +31,7 @@ public class Surgebinder : Invested {
     protected override Color BarHighlightColor => radiantOrderDef.color.SaturationChanged(2f);
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower);
     private PawnTracker tracker => pawn.TryGetComp<PawnTracker>();
+    public override List<AbilityDef> abilities => radiantOrderDef.GetAbilities(currentIdeal).ToList();
 
     public override float Max => investiture.MaxLevel;
     public override float Value => investiture.CurLevel;
@@ -107,32 +108,14 @@ public class Surgebinder : Invested {
 
     public override void PostRemove() {
         skill.Level = 0;
-        foreach (AbilityDef unlockedAbilityDef in GetUnlockedAbilityDefs()) {
+        foreach (AbilityDef unlockedAbilityDef in radiantOrderDef.GetAbilities(currentIdealInt)) {
             pawn.abilities.RemoveAbility(unlockedAbilityDef);
         }
     }
 
     internal void UpdateAbilities() {
-        foreach (AbilityDef unlockedAbilityDef in GetUnlockedAbilityDefs()) {
+        foreach (AbilityDef unlockedAbilityDef in radiantOrderDef.GetAbilities(currentIdealInt)) {
             pawn.abilities.GainAbility(unlockedAbilityDef);
-        }
-    }
-
-    private IEnumerable<AbilityDef> GetUnlockedAbilityDefs() {
-        foreach (AbilityDef abilityDef in radiantOrderDef.abilities) {
-            yield return abilityDef;
-        }
-
-        foreach (AbilityDef surgeDefAbility in radiantOrderDef.surges.SelectMany(surgeDef => surgeDef.abilities
-                 )) {
-            yield return surgeDefAbility;
-        }
-
-        for (int i = 0; i < Math.Min(currentIdealInt, radiantOrderDef.surges.Count); i++) {
-            Ideal? ideal = radiantOrderDef.ideals[i];
-            foreach (AbilityDef idealAbility in ideal.abilities) {
-                yield return idealAbility;
-            }
         }
     }
 

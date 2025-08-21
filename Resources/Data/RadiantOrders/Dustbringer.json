@@ -29,7 +29,9 @@
         "I will hold to my oaths, even when my anger burns hot.",
         "I will master the fire, not be consumed by it."
       ],
-      "abilities": []
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
+      ]
     },
     {
       "label": "fourth ideal",

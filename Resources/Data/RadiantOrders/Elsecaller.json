@@ -29,7 +29,9 @@
         "I will not run from truth, even when it burns me.",
         "To transform the world, I must first transform myself."
       ],
-      "abilities": []
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
+      ]
     },
     {
       "label": "fourth ideal",

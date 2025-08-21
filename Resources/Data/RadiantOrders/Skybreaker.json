@@ -28,7 +28,9 @@
       "quotes": [
         "I will follow the law."
       ],
-      "abilities": []
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
+      ]
     },
     {
       "label": "fourth ideal",

@@ -2,6 +2,8 @@
 
 * [ ] Shardblades
   * [ ] a non-radiant should drop their shardblade when they die
+  * [ ] User-selectable variants of graphics.
+    * We should allow the user to *pick* which shardblade they want their pawn to have
 * [ ] Shardplate
   * [ ] a non-radiant should drop their shardplate when they die
 * [ ] Create several scenarios

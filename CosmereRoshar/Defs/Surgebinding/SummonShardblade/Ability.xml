@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_ToggleShardblade</defName>
+        <label>summon Shardblade</label>
+        <description>Summon your bonded spren as a Shardblade. For Knights Radiant of the Third Ideal or higher, the blade appears instantly. Dead Shardblades require ten heartbeats to summon.</description>
+        <abilityClass>Cosmere.Roshar.Surgebinding.Ability.Shardblade</abilityClass>
+        <beuPerTick>0</beuPerTick>
+        <maxPower>1</maxPower>
+    </Cosmere.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

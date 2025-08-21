@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
+        <defName>Cosmere_Roshar_MeleeWeapon_Shardblade</defName>
+        <label>Shardblade</label>
+        <description>A massive blade of impossible sharpness, warm to the touch and faintly glowing with inner light. This ancient weapon can cut through nearly anything with ease—stone, steel, or soul. When bonded, it appears in the wielder's hand in moments. Feared and revered, a Shardblade is more than a weapon—it's a legacy.</description>
+        <possessionCount>1</possessionCount>
+        <graphicData>
+            <texPath>Things/Weapon/Shardblade/VariantA</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1.5</drawSize>
+        </graphicData>
+        <techLevel>Animal</techLevel>
+        <weaponTags>
+            <li>Cosmere_Roshar_Shardblade</li>
+        </weaponTags>
+        <smeltable>false</smeltable>
+        <statBases>
+            <Mass>0.1</Mass>
+            <MarketValue>100</MarketValue>
+        </statBases>
+        <equippedAngleOffset>-35</equippedAngleOffset>
+        <stuffCategories>
+            <li>Cosmere_Resources_StuffCategory_Gems</li>
+        </stuffCategories>
+        <tools>
+            <li>
+                <label>handle</label>
+                <capacities>
+                    <li>Blunt</li>
+                </capacities>
+                <power>9</power>
+                <cooldownTime>2</cooldownTime>
+            </li>
+            <li>
+                <label>point</label>
+                <capacities>
+                    <li>Stab</li>
+                </capacities>
+                <power>50</power> <!-- Devastating stab damage -->
+                <cooldownTime>2.6</cooldownTime>
+                <armorPenetration>1.5</armorPenetration> <!-- Cuts through everything -->
+            </li>
+            <li>
+                <label>edge</label>
+                <capacities>
+                    <li>Cut</li>
+                </capacities>
+                <power>45</power> <!-- Extreme cutting power -->
+                <cooldownTime>2</cooldownTime>
+                <armorPenetration>1.5</armorPenetration> <!-- Cuts through everything -->
+            </li>
+        </tools>
+        <!-- Todo, make craftable with Tanavastium & Koravellium maybe? Or Taravangium -->
+        <recipeMaker Inherit="False" IsNull="True"  />
+        <tradeTags>
+            <li>Shardblade</li>
+        </tradeTags>
+    </ThingDef>
+</Defs>

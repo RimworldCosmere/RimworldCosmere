@@ -32,6 +32,24 @@ public class RadiantOrderDef : Verse.Def {
         return DefDatabase<GeneDef>.GetNamed("Cosmere_Roshar_Gene_Radiant" + defName);
     }
 
+    public IEnumerable<AbilityDef> GetAbilities(int idealLevel = 4) {
+        foreach (AbilityDef abilityDef in abilities) {
+            yield return abilityDef;
+        }
+
+        foreach (AbilityDef surgeDefAbility in surges.SelectMany(surgeDef => surgeDef.abilities
+                 )) {
+            yield return surgeDefAbility;
+        }
+
+        for (int i = 0; i < Math.Min(idealLevel, ideals.Count); i++) {
+            Ideal? ideal = ideals[i];
+            foreach (AbilityDef idealAbility in ideal.abilities) {
+                yield return idealAbility;
+            }
+        }
+    }
+
     public override void PostLoad() {
         base.PostLoad();
 

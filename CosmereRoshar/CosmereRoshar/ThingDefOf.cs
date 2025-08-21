@@ -19,6 +19,7 @@ public static class ThingDefOf {
     public static ThingDef Cosmere_Roshar_Thing_Highstorm;
     public static ThingDef Cosmere_Roshar_Race_Spren;
     public static ThingDef Cosmere_Roshar_Race_UnknownTrueSpren;
+    public static ThingDef Cosmere_Roshar_MeleeWeapon_Shardblade;
 
     static ThingDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));

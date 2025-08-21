@@ -25,6 +25,8 @@ public abstract class Invested : Gene_Resource {
     public override int ValueForDisplay => PostProcessValue(Value);
     public override int MaxForDisplay => PostProcessValue(Max);
 
+    public virtual List<AbilityDef> abilities => def.abilities;
+
     protected Need.Investiture investiture => pawn.needs.TryGetNeed<Need.Investiture>();
     protected InvestitureHolder investitureHolder => pawn.TryGetComp<InvestitureHolder>();
 

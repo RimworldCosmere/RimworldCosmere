@@ -1,10 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Roshar;
 
 //@todo Split into DefOf per type
+[Obsolete("Move these to their own DefOfs")]
 [DefOf]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]

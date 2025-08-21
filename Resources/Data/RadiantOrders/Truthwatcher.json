@@ -29,7 +29,9 @@
         "I will guard truth like a flame in the dark.",
         "What I know, I will use to protect."
       ],
-      "abilities": []
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
+      ]
     },
     {
       "label": "fourth ideal",

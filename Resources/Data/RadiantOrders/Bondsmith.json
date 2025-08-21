@@ -30,7 +30,9 @@
         "I will take upon myself the responsibility of connection.",
         "I will hold the center when all else breaks apart."
       ],
-      "abilities": []
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
+      ]
     },
     {
       "label": "fourth ideal",

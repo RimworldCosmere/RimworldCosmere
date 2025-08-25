@@ -6,6 +6,6 @@
         <description>Summon your bonded spren as a Shardblade. For Knights Radiant of the Third Ideal or higher, the blade appears instantly. Dead Shardblades require ten heartbeats to summon.</description>
         <abilityClass>Cosmere.Roshar.Surgebinding.Ability.Shardblade</abilityClass>
         <beuPerTick>0</beuPerTick>
-        <maxPower>1</maxPower>
+        <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
     </Cosmere.Roshar.Def.SurgebindingAbilityDef>
 </Defs>

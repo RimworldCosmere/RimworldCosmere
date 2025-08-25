@@ -251,12 +251,12 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         }
 
         // When Flaring
-        if (status.power > oldStatus.power) {
+        if (status.power > 1 && status.power > oldStatus.power) {
             OnPowerUp();
         }
 
         // When de-flaring to burning
-        if (status.power < oldStatus.power) {
+        if (oldStatus.power > 1 && status.power < oldStatus.power) {
             OnPowerDown();
         }
 

@@ -1,5 +1,4 @@
 using RimWorld;
-using RimWorld.Planet;
 using Verse;
 using Verse.Sound;
 
@@ -20,7 +19,7 @@ public class Shardblade : SurgebindingAbility {
         return pawn.inventory?.innerContainer.InnerListForReading.Exists(t => t.def == ShardbladeDef) ?? false;
     }
 
-    public override void QueueCastingJob(GlobalTargetInfo targetInfo) {
+    protected override void OnEnable() {
         if (gene.currentIdeal >= 2) {
             SummonBladeInstantly();
             return;

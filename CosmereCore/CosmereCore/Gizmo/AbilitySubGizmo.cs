@@ -68,7 +68,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
         }
 
         // Change frame every 10 ticks
-        if (iteration++ % 10 == 0) {
+        if (iteration++ % 2 == 0) {
             currentAutoBorderIndex = (currentAutoBorderIndex + 1) % AutoBurnBorders.Count;
         }
 

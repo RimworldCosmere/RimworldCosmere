@@ -8,6 +8,9 @@
         <biostatMet>500</biostatMet>
         <biostatArc>500</biostatArc>
         <modExtensions>
+            <li Class="Cosmere.Core.DefModExtension.CollapsibleGizmo">
+                <defaultCollapsed>true</defaultCollapsed>
+            </li>
             <li Class="Cosmere.Core.DefModExtension.DormantConnection">
                 <callbackHandler>Cosmere.Scadrial.DormantConnection.Callback.Snapped</callbackHandler>
             </li>

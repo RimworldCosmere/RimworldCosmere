@@ -1,0 +1,4 @@
+[global]
+unity_version = "2022.3.35f1"
+exclude_patterns = ["*.tmp", "backup/*", "*.meta"]
+link_method = "junction"

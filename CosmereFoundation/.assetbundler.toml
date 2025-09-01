@@ -1,0 +1,11 @@
+[global]
+extends = "../"
+
+# Cosmere.Foundation
+[bundles.foundation]
+description = "Cosmere.Foundation"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_name = "cosmere.foundation"
+filename = "resource_[bundle_name]"
+exclude_patterns = ["*.shader"]

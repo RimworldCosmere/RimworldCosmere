@@ -39,6 +39,19 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             GenPlace.TryPlaceThing(gem, pawns[0].Position, pawns[0].Map, ThingPlaceMode.Near);
         }
 
+
+        ThingDef shardbladeDef = ThingDefOf.Cosmere_Roshar_MeleeWeapon_Shardblade;
+        ThingWithComps shardblade = (ThingWithComps)ThingMaker.MakeThing(
+            shardbladeDef,
+            DefDatabase<GemDef>.GetRandom().Item
+        );
+        GenPlace.TryPlaceThing(
+            shardblade,
+            pawns[0].Position,
+            pawns[0].Map,
+            ThingPlaceMode.Near
+        );
+
         if (pawns.TryPopFront(out Pawn pawn)) {
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
@@ -60,12 +73,12 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.GetInvestiture().currentInvestitureSelf = 1000;
         }
 
-        if (pawns.TryPopFront(out pawn)) {
+        /*if (pawns.TryPopFront(out pawn)) {
             pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kohlin");
             pawn.gender = Gender.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher);
             pawn.GetInvestiture().currentInvestitureSelf = 1000;
-        }
+        }*/
 
         if (pawns.TryPopFront(out pawn)) {
             pawn.Name = new NameSingle("Wit");

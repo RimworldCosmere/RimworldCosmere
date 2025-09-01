@@ -1,0 +1,22 @@
+[global]
+extends = "../"
+
+# Cosmere.Core
+[bundles.core_textures]
+description = "Cosmere.Core Textures"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_path = "cosmere.core"
+bundle_name = "cosmere.core_textures"
+filename = "resource_[bundle_name]_textures"
+exclude_patterns = ["*.shader"]
+
+[bundles.core_shaders]
+description = "Cosmere.Core Shaders"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_path = "cosmere.core"
+bundle_name = "cosmere.core_shaders"
+filename = "resource_[bundle_name]_shaders_[target]"
+include_patterns = ["*.shader"]
+targetless = false

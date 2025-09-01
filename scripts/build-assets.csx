@@ -91,26 +91,10 @@ var scriptDir = FindScriptDir();
 // repo root is one up from ./scripts
 var root = Path.GetFullPath(Path.Combine(scriptDir, ".."));
 
-// ---------- Determine build target ----------
-// Priority: UNITY_BUILD_TARGET env var > OS detection
-var buildTarget = Environment.GetEnvironmentVariable("UNITY_BUILD_TARGET");
-
-if (string.IsNullOrWhiteSpace(buildTarget))
-{
-    // Auto-detect based on OS
-    if (IsMacOS)
-        buildTarget = "mac";
-    else if (IsLinux)
-        buildTarget = "linux";
-    else
-        buildTarget = "windows"; // Default fallback, or windows
-}
-
-Console.WriteLine($"Build target: {buildTarget}");
 Console.WriteLine($"Force rebuild: {forceRebuild}");
 
 // ---------- Install/Update AssetBundleBuilder if needed ----------
-const string RequiredToolVersion = "1.4.0";
+const string RequiredToolVersion = "4.0.0";
 Console.WriteLine($"Checking for AssetBundleBuilder tool (version {RequiredToolVersion})...");
 
 var checkProc = Process.Start(new ProcessStartInfo
@@ -189,7 +173,7 @@ foreach (var modDir in modDirs)
 
     var srcAssets   = Path.Combine(modDir, "Assets");
     var bundlesDir  = Path.Combine(modDir, "AssetBundles");
-    var hashFile    = Path.Combine(bundlesDir, $".lastassetbuildhash.{buildTarget}");
+    var hashFile    = Path.Combine(bundlesDir, $".lastassetbuildhash");
 
     if (!Directory.Exists(srcAssets))
     {
@@ -227,9 +211,17 @@ foreach (var modDir in modDirs)
     // Build using AssetBundleBuilder
     Console.WriteLine($"    Building asset bundle: {bundleName}");
     
-    var buildArgs = $"2022.3.35f1 \"{srcAssets}\" {bundleName} \"{bundlesDir}\" --target {buildTarget}";
+    var buildArgs = $"-v";
     
-    if (!RunCommand("assetbundlebuilder", buildArgs, root))
+/*
+    if (!RunCommand("assetbundlebuilder", buildArgs, modDir))
+    {
+        Console.WriteLine($"    AssetBundleBuilder failed for {modName}!");
+        Environment.Exit(1);
+    }
+*/
+
+    if (!RunCommand("dotnet", $"run --project \"C:\\Users\\aequa\\projects\\RimworldCosmere\\AssetBuilder\\AssetBundleBuilder\" -- {buildArgs}", modDir))
     {
         Console.WriteLine($"    AssetBundleBuilder failed for {modName}!");
         Environment.Exit(1);

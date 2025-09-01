@@ -1,6 +1,7 @@
 # Things required for release:
 
 * [ ] Shardblades
+  * [ ] a non-radiant should need to bond to their shardblade before they can use it 
   * [ ] a non-radiant should drop their shardblade when they die
   * [ ] User-selectable variants of graphics.
     * We should allow the user to *pick* which shardblade they want their pawn to have

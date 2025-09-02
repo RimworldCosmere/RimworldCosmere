@@ -31,8 +31,8 @@ public abstract class BaseSprenController {
     public abstract IntRange validInfoRefreshInterval { get; }
     public abstract IntRange activeInfoRefreshInterval { get; }
 
-    public virtual int minParticlesPerCell => 2;
-    public virtual int maxParticlesPerCell => 4;
+    public virtual int minParticlesPerCell => 1;
+    public virtual int maxParticlesPerCell => 2;
     public virtual FloatRange lifetime => new FloatRange(4f, 10f);
 
     public virtual float cellSpawnChance => 0.05f; // 5% default chance per valid cell to spawn spren

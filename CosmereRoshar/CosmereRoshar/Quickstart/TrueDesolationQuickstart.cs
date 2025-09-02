@@ -10,7 +10,7 @@ namespace Cosmere.Roshar.Quickstart;
 public class TrueDesolationQuickstart : AbstractQuickstart {
     //public override ScenarioDef? scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
-    public override int mapSize => 100;
+    public override int mapSize => 300;
 
     public override TaggedString description => "Used to test True Desolation pawns";
 

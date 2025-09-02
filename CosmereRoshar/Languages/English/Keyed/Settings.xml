@@ -17,7 +17,13 @@
 	<CR_Settings_NahelBond_MinimumTicks_Tooltip>What is the minimum number of ticks that must pass between True Spren spawns (60ticks / second)</CR_Settings_NahelBond_MinimumTicks_Tooltip>
 	<CR_Settings_NahelBond_MaximumTicks_Label>True Spren Spawn Maximum Tick Interval:</CR_Settings_NahelBond_MaximumTicks_Label>
 	<CR_Settings_NahelBond_MaximumTicks_Tooltip>What is the maximum number of ticks that must pass between True Spren spawns (60ticks / second)</CR_Settings_NahelBond_MaximumTicks_Tooltip>
-
+    
+    <CR_Settings_Category_LesserSpren>Lesser Spren System</CR_Settings_Category_LesserSpren>
+    <CR_Settings_LesserSpren_Enabled_Label>Lesser Spren Particles Enabled</CR_Settings_LesserSpren_Enabled_Label>
+    <CR_Settings_LesserSpren_Enabled_Tooltip>Should the game render the lesser spren particles? If this is disabled, spren will still be capturable, you just won't be able to see them</CR_Settings_LesserSpren_Enabled_Tooltip>
+    <CR_Settings_LesserSpren_MaximumZoom_Label>Maximum Zoom to Spawn</CR_Settings_LesserSpren_MaximumZoom_Label>
+    <CR_Settings_LesserSpren_MaximumZoom_Tooltip>How far out will the game stop rendering lesser spren particles? Note, they will still spawn, you just wont be able to see them</CR_Settings_LesserSpren_MaximumZoom_Tooltip>
+    
     <CR_Settings_Category_Development>Development</CR_Settings_Category_Development>
 	<CR_Settings_Development_AutofillSpheres_Label>Autofill Spheres:</CR_Settings_Development_AutofillSpheres_Label>
 	<CR_Settings_Development_AutofillSpheres_Tooltip>Should spheres get auto-filled</CR_Settings_Development_AutofillSpheres_Tooltip>

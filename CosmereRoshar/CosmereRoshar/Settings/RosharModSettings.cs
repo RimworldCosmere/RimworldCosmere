@@ -10,11 +10,13 @@ public class RosharModSettings : CosmereModSettings {
     // Should probably be like.... 8 hours. Triple speed makes 30 hours happen in < 5 minutes
     private const float baseTime = hour * 8;
 
-
     public bool enableHighstormDamage;
     public bool enableHighstormPushing;
 
     public bool enablePawnGlow;
+    public float lesserSprenMaxZoomSpawn = 35f;
+
+    public bool lesserSprenSpawn = true;
 
     // Defaulting to every 2 hours
     public float nahelSprenSpawnAverageIntervalTicks = baseTime;
@@ -24,7 +26,6 @@ public class RosharModSettings : CosmereModSettings {
 
     // Should at LEAST be every 30 minutes
     public float nahelSprenSpawnMinIntervalTicks = baseTime / 2;
-
 
     public override string Name => "Roshar";
 
@@ -40,6 +41,8 @@ public class RosharModSettings : CosmereModSettings {
         );
         Scribe_Values.Look(ref nahelSprenSpawnMinIntervalTicks, "nahelSprenSpawnMinIntervalTicks", baseTime / 2);
         Scribe_Values.Look(ref nahelSprenSpawnMaxIntervalTicks, "nahelSprenSpawnMaxIntervalTicks", baseTime * 8);
+        Scribe_Values.Look(ref lesserSprenSpawn, "lesserSprenSpawn", true);
+        Scribe_Values.Look(ref lesserSprenMaxZoomSpawn, "lesserSprenMaxZoomSpawn", 35f);
     }
 
 
@@ -87,6 +90,22 @@ public class RosharModSettings : CosmereModSettings {
                         string intervalBuffer = nahelSprenSpawnMaxIntervalTicks.ToString();
                         sub.TextFieldNumeric(ref nahelSprenSpawnMaxIntervalTicks, ref intervalBuffer);
                     }
+                );
+            }
+        );
+
+        listing.Fieldset(
+            "CR_Settings_Category_LesserSpren".Translate(),
+            fieldset => {
+                fieldset.Field(
+                    "CR_Settings_LesserSpren_Enabled_Label".Translate(),
+                    "CR_Settings_LesserSpren_Enabled_Tooltip".Translate(),
+                    sub => sub.Checkbox(ref lesserSprenSpawn)
+                );
+                fieldset.Field(
+                    "CR_Settings_LesserSpren_MaximumZoom_Label".Translate(),
+                    "CR_Settings_LesserSpren_MaximumZoom_Tooltip".Translate(),
+                    sub => { lesserSprenMaxZoomSpawn = sub.Slider(lesserSprenMaxZoomSpawn, 0, 100); }
                 );
             }
         );

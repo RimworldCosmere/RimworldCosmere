@@ -107,16 +107,20 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     }
 
     public void EmitParticlesForActiveCells() {
-        if (controller.activeSpawnInfo.Count == 0) return;
+        if (controller.activeSpawnInfo.Count == 0 || !Mod.Settings.lesserSprenSpawn) return;
+        if (Current.CameraDriver.ZoomRootSize > Mod.Settings.lesserSprenMaxZoomSpawn) return;
 
         List<UnityEngine.ParticleSystem.EmitParams> emitParamsList = [];
 
         int minParticles = controller.minParticlesPerCell;
         int maxParticles = controller.maxParticlesPerCell;
 
+        CellRect rect = Current.CameraDriver.CurrentViewRect.ClipInsideMap(Find.CurrentMap).ExpandedBy(1);
+
         particleCache.RemoveAll(p => Time.time > p.Value.Item2);
         foreach (SprenSpawnInformation info in controller.activeSpawnInfo) {
             IntVec3 position = info.position!.Value;
+            if (!position.InBounds(Find.CurrentMap) || !rect.Contains(position)) continue;
             int existingParticles = particleCache.TryGetValue(position, (0, 0)).Item1;
             if (existingParticles > minParticles) continue;
             int particlesForThisCell = Random.Range(minParticles, maxParticles + 1) - existingParticles;

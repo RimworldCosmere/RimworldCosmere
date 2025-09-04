@@ -8,4 +8,4 @@ asset_directory = "./Assets"
 output_directory = "./AssetBundles"
 bundle_name = "cosmere.foundation"
 filename = "resource_[bundle_name]"
-exclude_patterns = ["*.shader"]
+include_patterns = ["*.png", "*.psd", "*.jpg", "*.jpeg"]

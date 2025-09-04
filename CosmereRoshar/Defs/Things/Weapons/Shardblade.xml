@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
-        <defName>Cosmere_Roshar_MeleeWeapon_Shardblade</defName>
+    <ThingDef Abstract="True" Name="Cosmere_Roshar_Thing_Shardblade" ParentName="BaseMeleeWeapon_Sharp_Quality">
         <label>Shardblade</label>
         <description>A massive blade of impossible sharpness, warm to the touch and faintly glowing with inner light. This ancient weapon can cut through nearly anything with ease—stone, steel, or soul. When bonded, it appears in the wielder's hand in moments. Feared and revered, a Shardblade is more than a weapon—it's a legacy.</description>
-        <possessionCount>1</possessionCount>
         <graphicData>
-            <texPath>Things/Weapon/Shardblade/VariantA</texPath>
+            <texPath>Things/Weapon/Shardblade/SwordC</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>1.5</drawSize>
+            <shaderType>CutoutLUT</shaderType>
+            <drawSize>(1.5, 1.5)</drawSize>
         </graphicData>
         <techLevel>Animal</techLevel>
         <weaponTags>
             <li>Cosmere_Roshar_Shardblade</li>
         </weaponTags>
+        <equippedAngleOffset>175</equippedAngleOffset>
         <smeltable>false</smeltable>
         <statBases>
             <Mass>0.1</Mass>
             <MarketValue>100</MarketValue>
         </statBases>
-        <equippedAngleOffset>-35</equippedAngleOffset>
         <stuffCategories>
             <li>Cosmere_Resources_StuffCategory_Gems</li>
         </stuffCategories>
@@ -56,5 +55,22 @@
         <tradeTags>
             <li>Shardblade</li>
         </tradeTags>
+        <comps>
+            <li Class="Cosmere.Core.Comp.Thing.CutoutLUTProperties">
+                <blendStrength>.75</blendStrength>
+                <blendMode>Sharp</blendMode>
+            </li>
+        </comps>
+    </ThingDef>
+    <ThingDef ParentName="Cosmere_Roshar_Thing_Shardblade">
+        <defName>Cosmere_Roshar_MeleeWeapon_RadiantShardblade</defName>
+        <thingClass>Cosmere.Roshar.Thing.Weapon.RadiantShardblade</thingClass>
+        <possessionCount>1</possessionCount>
+        <destroyOnDrop>true</destroyOnDrop>
+        <tradeability>None</tradeability>
+        <statBases>
+            <MarketValue>0</MarketValue>
+        </statBases>
+        <tradeTags Inherit="False" IsNull="True" />
     </ThingDef>
 </Defs>

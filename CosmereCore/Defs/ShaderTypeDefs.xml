@@ -4,4 +4,8 @@
         <defName>CirclePulse</defName>
         <shaderPath>CirclePulse</shaderPath>
     </ShaderTypeDef>
+    <ShaderTypeDef>
+        <defName>CutoutLUT</defName>
+        <shaderPath>CutoutLUT</shaderPath>
+    </ShaderTypeDef>
 </Defs>

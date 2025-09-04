@@ -9,7 +9,7 @@ output_directory = "./AssetBundles"
 bundle_name = "cosmere.roshar_textures"
 bundle_path = "cosmere.roshar"
 filename = "resource_[bundle_name]_textures"
-exclude_patterns = ["*.shader"]
+include_patterns = ["*.png", "*.psd", "*.jpg", "*.jpeg"]
 
 [bundles.roshar_shaders]
 description = "Cosmere.Roshar Shaders"

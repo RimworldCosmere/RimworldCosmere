@@ -221,7 +221,7 @@ foreach (var modDir in modDirs)
     }
 */
 
-    if (!RunCommand("dotnet", $"run --project \"C:\\Users\\aequa\\projects\\RimworldCosmere\\AssetBuilder\\AssetBundleBuilder\" -- {buildArgs}", modDir))
+    if (!RunCommand("assetbundlebuilder", buildArgs, modDir))
     {
         Console.WriteLine($"    AssetBundleBuilder failed for {modName}!");
         Environment.Exit(1);

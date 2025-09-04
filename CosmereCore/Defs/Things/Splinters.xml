@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef ParentName="MoteBase">
-        <defName>InvestitureGlow</defName>
+        <defName>Cosmere_Core_Mote_InvestitureGlow</defName>
         <graphicData>
             <graphicClass>Graphic_MoteWithAgeSecs</graphicClass>
             <texPath>Things/Mote/BrightFlash</texPath>

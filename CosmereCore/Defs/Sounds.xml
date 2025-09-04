@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <SoundDef>
+        <defName>Cosmere_Core_Sound_LoadingQuantumRiser</defName>  
+        <context>MapOnly</context>
+        <subSounds>
+            <li>
+                <onCamera>True</onCamera>      
+                <grains>
+                    <li Class="AudioGrain_Clip">
+                        <clipPath>LoadingQuantumRiser</clipPath>
+                    </li>
+                </grains>      
+                <volumeRange>45~55</volumeRange>      
+                <pitchRange>0.5~0.75</pitchRange>      
+                <!--<filters>
+                    <li Class="SoundFilterEcho">
+                        <delay>1112.654</delay>          
+                        <decayRatio>0.5433328</decayRatio>          
+                        <wetMix>0.1333435</wetMix>          
+                        <dryMix>1</dryMix>
+                    </li>
+                </filters>-->
+                <sustainLoop>False</sustainLoop>
+            </li>
+        </subSounds>
+    </SoundDef>
+</Defs>

@@ -3,20 +3,29 @@ using System.Text;
 using Cosmere.Roshar.Debug;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.Roshar.LesserSpren.SprenController;
+using HarmonyLib;
 using Verse;
+using Verse.Profile;
 
 namespace Cosmere.Roshar.LesserSpren.MapComponent;
 
+[HarmonyPatch]
 public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
-    private readonly List<SprenType> pendingInitialization = [];
+    private static readonly List<SprenType> PendingInitialization = [];
 
-    private readonly Dictionary<SprenType, SprenParticleSystem> sprenSystems =
+    private static readonly Dictionary<SprenType, SprenParticleSystem> SprenSystems =
         new Dictionary<SprenType, SprenParticleSystem>();
 
     private bool initialized;
     private int lastDynamicUpdateTick;
 
     private int mapID = map.GetHashCode();
+
+    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    [HarmonyPostfix]
+    public static void OnClearAllMapsAndWorld() {
+        CleanupAllSystems();
+    }
 
     public override void MapComponentDraw() {
         SprenDebugOverlay.DrawOverlay();
@@ -25,22 +34,22 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
         // This allows the background task to queue systems for main thread init
 
         // Initialize any pending spren systems on main thread
-        if (pendingInitialization.Count > 0) {
-            foreach (SprenType sprenType in pendingInitialization.ToList()) {
-                if (!sprenSystems.TryGetValue(sprenType, out SprenParticleSystem? sprenSystem)) continue;
+        if (PendingInitialization.Count > 0) {
+            foreach (SprenType sprenType in PendingInitialization.ToList()) {
+                if (!SprenSystems.TryGetValue(sprenType, out SprenParticleSystem? sprenSystem)) continue;
 
                 sprenSystem.Initialize();
-                pendingInitialization.Remove(sprenType);
+                PendingInitialization.Remove(sprenType);
                 return;
             }
 
-            pendingInitialization.Clear();
+            PendingInitialization.Clear();
         }
 
         // Handle particle re-emission during draw so it works even when paused
         if (!initialized) return;
 
-        foreach (SprenParticleSystem? sprenSystem in sprenSystems.Values.Where(s => s.ShouldReEmitParticles())) {
+        foreach (SprenParticleSystem? sprenSystem in SprenSystems.Values.Where(s => s.ShouldReEmitParticles())) {
             sprenSystem.EmitParticlesForActiveCells();
         }
     }
@@ -67,11 +76,11 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
             SprenParticleSystem? sprenSystem;
             if (controller.activeSpawnInfo.Count > 0) {
                 // Create or update the spren system
-                if (!sprenSystems.ContainsKey(sprenType)) {
+                if (!SprenSystems.ContainsKey(sprenType)) {
                     CreateSprenSystem(sprenType);
                 }
 
-                sprenSystem = sprenSystems[sprenType];
+                sprenSystem = SprenSystems[sprenType];
 
                 // Only update if particle system is initialized
                 if (sprenSystem?.particleSystem == null) continue;
@@ -79,7 +88,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
                 sprenSystem.UpdateParticles();
                 sprenSystem.particleSystem.gameObject.SetActive(true);
                 sprenSystem.particleSystem.Play();
-            } else if (sprenSystems.TryGetValue(sprenType, out sprenSystem)) {
+            } else if (SprenSystems.TryGetValue(sprenType, out sprenSystem)) {
                 if (sprenSystem.particleSystem == null) continue;
                 sprenSystem.particleSystem.gameObject.SetActive(false);
                 sprenSystem.particleSystem.Stop();
@@ -89,17 +98,14 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
 
     private void CreateSprenSystem(SprenType sprenType) {
         SprenParticleSystem system = new SprenParticleSystem(sprenType, mapID);
-        sprenSystems[sprenType] = system;
+        SprenSystems[sprenType] = system;
 
         // Mark for initialization on main thread
-        pendingInitialization.Add(sprenType);
+        PendingInitialization.Add(sprenType);
     }
 
     public override void MapGenerated() {
         base.MapGenerated();
-
-        // Completely reset everything for new map
-        CleanupAllSystems();
 
         mapID = map.GetHashCode();
         initialized = false;
@@ -108,14 +114,9 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
         LongEventHandler.ExecuteWhenFinished(InitializeMapSystems);
     }
 
-    public override void MapRemoved() {
-        base.MapRemoved();
-        CleanupAllSystems();
-    }
-
-    private void CleanupAllSystems() {
+    private static void CleanupAllSystems() {
         // Clean up all spren systems
-        foreach (SprenParticleSystem? system in sprenSystems.Values) {
+        foreach (SprenParticleSystem? system in SprenSystems.Values) {
             system.Destroy();
         }
 
@@ -124,8 +125,8 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
             controller.ResetForNewMap();
         }
 
-        sprenSystems.Clear();
-        pendingInitialization.Clear();
+        SprenSystems.Clear();
+        PendingInitialization.Clear();
     }
 
     private void InitializeMapSystems() {

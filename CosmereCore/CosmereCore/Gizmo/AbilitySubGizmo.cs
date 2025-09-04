@@ -118,7 +118,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
         bool isClicked = false;
         if (Mouse.IsOver(rect)) isMouseOver = true;
 
-        MouseoverSounds.DoRegion(rect, SoundDefOf.Mouseover_Command);
+        MouseoverSounds.DoRegion(rect, RimWorld.SoundDefOf.Mouseover_Command);
         if (parms.highLight && !disabled) Widgets.DrawStrongHighlight(rect.ExpandedBy(4f));
 
         UI.DrawIcon(
@@ -156,7 +156,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
 
     public override void ProcessInput(Event ev) {
         cachedReport = GizmoEnabled();
-        SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
+        RimWorld.SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
 
         if (ev.shift || ability.def.isAutocast) {
             if (ability.def.canUseWhileDowned) ability.willUseWhileDowned = !ability.willUseWhileDowned;

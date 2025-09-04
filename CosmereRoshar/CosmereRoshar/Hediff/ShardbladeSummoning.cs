@@ -5,9 +5,21 @@ using Verse.Sound;
 namespace Cosmere.Roshar.Hediff;
 
 public class ShardbladeSummoning : Verse.Hediff {
-    private int heartbeatCount;
     private readonly int ticksPerHeartbeat = 60; // 1 second per heartbeat
+    private int heartbeatCount;
     private int ticksSinceLastHeartbeat;
+
+    public override string TipStringExtra {
+        get {
+            string tip = base.TipStringExtra;
+            if (!tip.NullOrEmpty()) {
+                tip += "\n";
+            }
+
+            tip += $"Heartbeats: {heartbeatCount}/10";
+            return tip;
+        }
+    }
 
     public override void Tick() {
         base.Tick();
@@ -38,9 +50,9 @@ public class ShardbladeSummoning : Verse.Hediff {
             pawn.equipment.AddEquipment(shardblade);
         }
 
-        SoundDefOf.PsychicPulseGlobal.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
+        Core.SoundDefOf.Cosmere_Core_Sound_LoadingQuantumRiser.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
 
-        FleckMaker.Static(pawn.Position, pawn.Map, FleckDefOf.PsycastAreaEffect, 2f);
+        FleckMaker.Static(pawn.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
 
         Messages.Message(
             "CRO_ShardbladeSummoned".Translate(pawn.NameFullColored),
@@ -55,17 +67,5 @@ public class ShardbladeSummoning : Verse.Hediff {
         base.ExposeData();
         Scribe_Values.Look(ref heartbeatCount, "heartbeatCount");
         Scribe_Values.Look(ref ticksSinceLastHeartbeat, "ticksSinceLastHeartbeat");
-    }
-
-    public override string TipStringExtra {
-        get {
-            string tip = base.TipStringExtra;
-            if (!tip.NullOrEmpty()) {
-                tip += "\n";
-            }
-
-            tip += $"Heartbeats: {heartbeatCount}/10";
-            return tip;
-        }
     }
 }

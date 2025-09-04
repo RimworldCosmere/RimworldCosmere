@@ -10,10 +10,10 @@ namespace Cosmere.Core;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class ThingDefOf {
-    public static ThingDef Cosmere_Core_Mote_InvestitureGlow;
+public class SoundDefOf {
+    public static SoundDef Cosmere_Core_Sound_LoadingQuantumRiser;
 
-    static ThingDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));
+    static SoundDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(SoundDefOf));
     }
 }

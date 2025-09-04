@@ -49,15 +49,16 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
         List<ThingWithComps> suitableGems = FindSuitableGemsForSprenTypes(pawn, capturableSpren);
 
         if (suitableGems.Count == 0) {
+            return [];
             // Show which spren are available but can't be captured
-            string sprenList = string.Join(", ", capturableSpren.Select(s => s.GetLocalizedName()));
+            /*string sprenList = string.Join(", ", capturableSpren.Select(s => s.GetLocalizedName()));
             options.Add(
                 new FloatMenuOption(
                     "SprenCapture_NoSuitableGem".Translate(sprenList),
                     null
                 )
             );
-            return options;
+            return options;*/
         }
 
         // Use the best suitable gem (prioritize inventory, then closest)
@@ -72,12 +73,12 @@ public class SprenCaptureMenuProvider : RimWorld.FloatMenuOptionProvider {
 
             // Check if the gem can capture this specific spren type
             if (!LesserSprenCaptureSystem.CanGemCaptureSpren(suitableGem, sprenType)) {
-                options.Add(
+                /*options.Add(
                     new FloatMenuOption(
                         "SprenCapture_IncompatibleGem".Translate(sprenName),
                         null
                     )
-                );
+                );*/
                 continue;
             }
 

@@ -10,7 +10,7 @@ namespace Cosmere.Roshar.Quickstart;
 public class TrueDesolationQuickstart : AbstractQuickstart {
     //public override ScenarioDef? scenario => ScenarioDefOf.Cosmere_Scadrial_PreCatacendre;
 
-    public override int mapSize => 300;
+    public override int mapSize => 50;
 
     public override TaggedString description => "Used to test True Desolation pawns";
 
@@ -32,6 +32,14 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
     public override void PrepareColonists(List<Pawn> pawns) {
         if (pawns.Count == 0) return;
 
+        BackstoryDef? child = DefDatabase<BackstoryDef>.GetNamed("OptimisticChild30");
+        BackstoryDef? adult = DefDatabase<BackstoryDef>.GetNamed("CivilEngineer2");
+        pawns.ForEach(p => {
+                p.story.Childhood = child;
+                p.story.Adulthood = adult;
+            }
+        );
+
         foreach (GemDef gemDef in DefDatabase<GemDef>.AllDefsListForReading) {
             Verse.Thing? gem = ThingMaker.MakeThing(ThingDefOf.Cosmere_Roshar_Thing_Mark, gemDef.Item);
             gem.stackCount = 25;
@@ -40,7 +48,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         }
 
 
-        ThingDef shardbladeDef = ThingDefOf.Cosmere_Roshar_MeleeWeapon_Shardblade;
+        /*ThingDef shardbladeDef = ThingDefOf.Cosmere_Roshar_MeleeWeapon_RadiantShardblade;
         ThingWithComps shardblade = (ThingWithComps)ThingMaker.MakeThing(
             shardbladeDef,
             DefDatabase<GemDef>.GetRandom().Item
@@ -50,7 +58,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawns[0].Position,
             pawns[0].Map,
             ThingPlaceMode.Near
-        );
+        );*/
 
         if (pawns.TryPopFront(out Pawn pawn)) {
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
@@ -71,6 +79,9 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pouch.TryGetComp<InnerStorage>().innerContainer!.TryAdd(broam);
             pawn.apparel.Wear(pouch);
             pawn.GetInvestiture().currentInvestitureSelf = 1000;
+
+            Find.Selector.Select(pawn, false);
+            Find.CameraDriver.PanToMapLocAndSize(pawn.DrawPos, Find.CameraDriver.config.sizeRange.min);
         }
 
         /*if (pawns.TryPopFront(out pawn)) {
@@ -86,7 +97,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.BecomeMistborn(cause: "ingested lerasium");
 
             // RadiantOrder.BondWithSpren(pawn);
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver);
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver, 4);
             pawn.GetInvestiture().currentInvestitureSelf = 50000;
         }
     }

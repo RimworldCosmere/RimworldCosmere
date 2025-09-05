@@ -57,7 +57,8 @@ public static class CutoutLUTPatch {
             q: Quaternion.AngleAxis(num, Vector3.up)
         );
 
-        Graphics.DrawMesh(mesh, matrix, material, 0, null, 0, comp.mpb);
+        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock();
+        Graphics.DrawMesh(mesh, matrix, material, 0, null, 0, mpb);
 
         return false;
     }
@@ -83,7 +84,8 @@ public static class CutoutLUTPatch {
     ) {
         if (!__state.TryGetComp(out CutoutLUT comp)) return true;
 
-        Graphics.DrawMesh(mesh, loc, quat, mat, 0, null, 0, comp.mpb);
+        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock();
+        Graphics.DrawMesh(mesh, loc, quat, mat, 0, null, 0, mpb);
         return false;
     }
 
@@ -118,7 +120,8 @@ public static class CutoutLUTPatch {
         Vector3 position = loc;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
         Material material = __instance.MatSingleFor(thing);
-        Graphics.DrawMesh(mesh, position, rotation, material, 0, null, 0, comp.mpb);
+        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock();
+        Graphics.DrawMesh(mesh, position, rotation, material, 0, null, 0, mpb);
         return false;
     }
 

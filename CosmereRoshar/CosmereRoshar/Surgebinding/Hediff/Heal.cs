@@ -6,8 +6,17 @@ using Verse;
 
 namespace Cosmere.Roshar.Surgebinding.Hediff;
 
-public class Heal(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability)
-    : SurgebindingHediff(hediffDef, pawn, ability) {
+public class Heal : SurgebindingHediff {
+    public Heal() { }
+
+    public Heal(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) : base(
+        hediffDef,
+        pawn,
+        ability
+    ) {
+        this.ability = ability;
+    }
+
     public override void PostTickInterval(int delta) {
         base.PostTickInterval(delta);
 

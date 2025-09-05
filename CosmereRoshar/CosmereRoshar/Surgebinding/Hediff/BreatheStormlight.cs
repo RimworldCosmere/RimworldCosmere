@@ -8,10 +8,13 @@ using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Roshar.Surgebinding.Hediff;
 
-public class BreatheStormlight(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability)
-    : SurgebindingHediff(hediffDef, pawn, ability) {
+public class BreatheStormlight : SurgebindingHediff {
     private const float MaxDrawDistance = 5f;
     private const float BaseAbsorbAmount = 1f;
+    public BreatheStormlight() { }
+
+    public BreatheStormlight(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) :
+        base(hediffDef, pawn, ability) { }
 
     private InvestitureHolder investiture => pawn.GetComp<InvestitureHolder>()!;
 

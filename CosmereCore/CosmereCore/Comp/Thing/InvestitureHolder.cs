@@ -60,7 +60,10 @@ public class InvestitureHolder : ThingComp {
     public float currentInvestitureSelf {
         get => props.isInfinite ? float.PositiveInfinity : currentInvestitureSelfInt;
         set {
-            currentInvestitureSelfInt = Mathf.Max(0, Mathf.Min(value, maxInvestitureSelf));
+            currentInvestitureSelfInt = Mathf.Max(
+                0,
+                Mathf.Min(value, props.isInfinite ? float.PositiveInfinity : maxInvestitureSelf)
+            );
             parent.BroadcastCompSignal("Cosmere_Investiture_Changed");
         }
     }
@@ -234,6 +237,13 @@ public class InvestitureHolder : ThingComp {
 
     public override void PostExposeData() {
         base.PostExposeData();
-        Scribe_Values.Look(ref currentInvestitureSelfInt, "currentInvestitureSelfInt");
+        Scribe_Values.Look(ref currentInvestitureSelfInt, "currentInvestitureSelf", props.startingInvestiture);
+        Scribe_Values.Look(ref drainRate, "drainRate", props.drainRate);
+        Scribe_Values.Look(
+            ref maxInvestitureSelf,
+            "maxInvestitureSelf",
+            props.maxIsInfinity ? float.PositiveInfinity : props.maxInvestiture!.Value
+        );
+        Scribe_Values.Look(ref sharingInvestiture, "sharingInvestiture");
     }
 }

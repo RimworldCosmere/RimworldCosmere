@@ -11,7 +11,8 @@ using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Core.Ability;
 
-public interface IAbility<out TGene, out THediff> where TGene : Invested where THediff : IHediff<TGene> {
+public interface IAbility<out TGene, out THediff> : ILoadReferenceable
+    where TGene : Invested where THediff : IHediff<TGene> {
     public TGene gene { get; }
     public AbilityDef def { get; set; }
     public void UpdateStatus(Status? nextStatus = null);

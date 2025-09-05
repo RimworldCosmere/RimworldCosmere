@@ -7,8 +7,15 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Hediff;
 
-public class AllomanticHediff(HediffDef hediffDef, Pawn pawn, IAbility<Allomancer, IHediff<Allomancer>> ability)
-    : AbstractHediff<Allomancer>(hediffDef, pawn, ability) {
+public class AllomanticHediff : AbstractHediff<Allomancer> {
+    public AllomanticHediff() { }
+
+    public AllomanticHediff(HediffDef hediffDef, Pawn pawn, IAbility<Allomancer, IHediff<Allomancer>> ability) : base(
+        hediffDef,
+        pawn,
+        ability
+    ) { }
+
     public MetallicArtsMetalDef metal => gene.metal;
 
     public override void TickInterval(int delta) {

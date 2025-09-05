@@ -1,6 +1,7 @@
 ﻿using Cosmere.Core.Shader.Properties;
 using UnityEngine;
 using Verse;
+using Logger = Cosmere.Foundation.Logger;
 
 namespace Cosmere.Core.Comp.Thing;
 
@@ -19,7 +20,7 @@ public class CutoutLUTProperties : CompProperties {
     public Vector4 glowColor = Color.white;
     public float glowIntensity = 2f;
     public float materialIntesity = 1f;
-    public LUTPaletteMaterial[]? palettes;
+    public List<LUTPaletteMaterial> palettes = [];
     public bool useGlow = false;
     public bool useMarkers = false;
     public bool useWearDamage = false;
@@ -54,8 +55,9 @@ public class CutoutLUTProperties : CompProperties {
 
 [StaticConstructorOnStartup]
 public class CutoutLUT : ThingComp {
-    public readonly MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-    public LUTPaletteMaterial[]? palettes;
+    public static readonly MaterialPropertyBlock MPB = new MaterialPropertyBlock();
+
+    public List<LUTPaletteMaterial> palettes = [];
     private new CutoutLUTProperties props => (CutoutLUTProperties)base.props;
 
     private string maskPath {
@@ -69,70 +71,41 @@ public class CutoutLUT : ThingComp {
         }
     }
 
-    public override void PostPostMake() {
-        UpdateMaterialPropertyBlock();
-    }
-
-    public override void PostSpawnSetup(bool respawningAfterLoad) {
-        UpdateMaterialPropertyBlock();
-    }
-
-    public override void Notify_Equipped(Pawn pawn) {
-        UpdateMaterialPropertyBlock();
-    }
-
-    private void UpdateMaterialPropertyBlock() {
-        mpb.Clear();
-        if (palettes == null) {
-            if (props.palettes == null) {
-                return;
-            }
-
-            palettes = new LUTPaletteMaterial[32];
-            for (int i = 0; i < props.palettes.Length; i++) {
-                palettes[i] = props.palettes[i];
-            }
+    public MaterialPropertyBlock UpdateMaterialPropertyBlock() {
+        MPB.Clear();
+        if (palettes.Count == 0) {
+            palettes = props.palettes;
         }
 
-        mpb.SetFloat(CutoutLUTShaderProperties.BlendMode, (byte)props.blendMode);
-        mpb.SetFloat(CutoutLUTShaderProperties.BlendStrength, props.blendStrength);
-
-        mpb.SetLUTPalette(palettes);
-        mpb.SetFloat(CutoutLUTShaderProperties.MaterialIntensity, props.materialIntesity);
-
-        mpb.SetFloat(CutoutLUTShaderProperties.UseGreenChannel, props.useWearDamage ? 1 : 0);
-        mpb.SetFloat(CutoutLUTShaderProperties.WearDarkness, props.wearDarkness);
-
-        mpb.SetFloat(CutoutLUTShaderProperties.UseAlphaChannel, props.useMarkers ? 1 : 0);
-
-        mpb.SetFloat(CutoutLUTShaderProperties.UseBlueChannel, props.useGlow ? 1 : 0);
-        mpb.SetColor(CutoutLUTShaderProperties.GlowColor, props.glowColor);
-        mpb.SetFloat(CutoutLUTShaderProperties.GlowIntensity, props.glowIntensity);
-
-        mpb.SetColor(CutoutLUTShaderProperties.FallbackColor, props.fallbackColor);
-
-        Texture2D? maskTex = ContentFinder<Texture2D>.Get(maskPath);
-        if (maskTex != null) {
-            mpb.SetTexture(CutoutLUTShaderProperties.LUTTex, maskTex);
+        if (palettes.NullOrEmpty()) {
+            Logger.Error("palettes cannot be null or empty");
+            return MPB;
         }
+
+        MPB.SetFloat(CutoutLUTShaderProperties.BlendMode, (byte)props.blendMode);
+        MPB.SetFloat(CutoutLUTShaderProperties.BlendStrength, props.blendStrength);
+
+        MPB.SetLUTPalette(palettes);
+        MPB.SetFloat(CutoutLUTShaderProperties.MaterialIntensity, props.materialIntesity);
+
+        MPB.SetFloat(CutoutLUTShaderProperties.UseGreenChannel, props.useWearDamage ? 1 : 0);
+        MPB.SetFloat(CutoutLUTShaderProperties.WearDarkness, props.wearDarkness);
+
+        MPB.SetFloat(CutoutLUTShaderProperties.UseAlphaChannel, props.useMarkers ? 1 : 0);
+
+        MPB.SetFloat(CutoutLUTShaderProperties.UseBlueChannel, props.useGlow ? 1 : 0);
+        MPB.SetColor(CutoutLUTShaderProperties.GlowColor, props.glowColor);
+        MPB.SetFloat(CutoutLUTShaderProperties.GlowIntensity, props.glowIntensity);
+
+        MPB.SetColor(CutoutLUTShaderProperties.FallbackColor, props.fallbackColor);
+
+        MPB.SetTexture(CutoutLUTShaderProperties.LUTTex, ContentFinder<Texture2D>.Get(maskPath, false));
+
+        return MPB;
     }
 
     public override void PostExposeData() {
         base.PostExposeData();
-        List<LUTPaletteMaterial>? palettesList = palettes?.ToList();
-        Scribe_Collections.Look(ref palettesList, "palettes", LookMode.Deep);
-        if (Scribe.mode == LoadSaveMode.LoadingVars && palettesList != null) {
-            palettes = palettesList.ToArray();
-        }
-
-        if (Scribe.mode == LoadSaveMode.LoadingVars) {
-            LongEventHandler.ExecuteWhenFinished(() => {
-                    UpdateMaterialPropertyBlock();
-                    if (parent.SpawnedParentOrMe is not Pawn pawn) return;
-                    pawn.Drawer.renderer.EnsureGraphicsInitialized();
-                    pawn.Drawer.renderer.SetAllGraphicsDirty();
-                }
-            );
-        }
+        Scribe_Collections.Look(ref palettes, "palettes", LookMode.Deep);
     }
 }

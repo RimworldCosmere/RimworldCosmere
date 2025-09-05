@@ -14,12 +14,12 @@ public static class MaterialPropertyBlockExtensions {
         block.SetFloat(CutoutLUTShaderProperties.ColorCount, colors.Length);
     }
 
-    public static void SetLUTPalette(this MaterialPropertyBlock block, LUTPaletteMaterial[] palette) {
+    public static void SetLUTPalette(this MaterialPropertyBlock block, List<LUTPaletteMaterial> palette) {
         Vector4[] colors = new Vector4[32];
         float[] metallicValues = new float[32];
         float[] smoothnessValues = new float[32];
 
-        for (int i = 0; i < palette.Length && i < 32; i++) {
+        for (int i = 0; i < palette.Count && i < 32; i++) {
             colors[i] = palette[i].color;
             metallicValues[i] = palette[i].metallic;
             smoothnessValues[i] = palette[i].smoothness;
@@ -28,6 +28,6 @@ public static class MaterialPropertyBlockExtensions {
         block.SetVectorArray(CutoutLUTShaderProperties.Colors, colors);
         block.SetFloatArray(CutoutLUTShaderProperties.MetallicValues, metallicValues);
         block.SetFloatArray(CutoutLUTShaderProperties.SmoothnessValues, smoothnessValues);
-        block.SetFloat(CutoutLUTShaderProperties.ColorCount, palette.Length);
+        block.SetFloat(CutoutLUTShaderProperties.ColorCount, palette.Count);
     }
 }

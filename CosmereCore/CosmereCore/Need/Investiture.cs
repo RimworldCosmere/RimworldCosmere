@@ -90,9 +90,7 @@ public class Investiture : RimWorld.Need {
         return 0;
     }
 
-    public override void SetInitialLevel() {
-        CurLevel = 1f;
-    }
+    public override void SetInitialLevel() { }
 
     public override void NeedInterval() {
         pawn.story?.TryAddTrait(TraitDefOf.Cosmere_Invested, GetDegreeFromBreathEquivalentUnits((int)CurLevel));

@@ -9,7 +9,7 @@ namespace Cosmere.Scadrial.Feruchemy.Hediff;
 
 public class Atium : HediffWithComps {
     private const int TicksPerDay = GenDate.TicksPerDay;
-    public const int MinAgeYears = 21;
+    private const int MinAgeYears = 21;
     private const float AgeTicksPerGameTick = 43200f; // 5 years per hour at severity 5
 
     private static readonly List<HediffDef> AgeConditions = [
@@ -25,9 +25,9 @@ public class Atium : HediffWithComps {
         DefDatabase<HediffDef>.GetNamed("OrganDecay"),
     ];
 
-    protected bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapAtium);
-    protected bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreAtium);
-    protected Feruchemist? atium => pawn.genes.GetFeruchemicGeneForMetal(MetalDefOf.Atium);
+    private bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapAtium);
+    private bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreAtium);
+    private Feruchemist? atium => pawn.genes.GetFeruchemicGeneForMetal(MetalDefOf.Atium);
 
     public override void PostMake() {
         base.PostMake();
@@ -63,8 +63,8 @@ public class Atium : HediffWithComps {
 
         // Remove age-related Hediffs
         AgeConditions.Shuffle();
-        foreach (HediffDef def in AgeConditions) {
-            Verse.Hediff h = pawn.health.hediffSet.GetFirstHediffOfDef(def);
+        foreach (HediffDef conditionDef in AgeConditions) {
+            Verse.Hediff h = pawn.health.hediffSet.GetFirstHediffOfDef(conditionDef);
             if (h == null) continue;
             pawn.health.RemoveHediff(h);
             return;

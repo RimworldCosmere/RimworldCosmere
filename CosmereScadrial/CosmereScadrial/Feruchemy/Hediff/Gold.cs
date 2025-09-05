@@ -6,8 +6,8 @@ using Verse;
 namespace Cosmere.Scadrial.Feruchemy.Hediff;
 
 public class Gold : HediffWithComps {
-    protected bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapGold);
-    protected Feruchemist? gold => pawn.genes.GetFeruchemicGeneForMetal(MetalDefOf.Gold);
+    private bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapGold);
+    private Feruchemist? gold => pawn.genes.GetFeruchemicGeneForMetal(MetalDefOf.Gold);
 
     public override void PostMake() {
         base.PostMake();

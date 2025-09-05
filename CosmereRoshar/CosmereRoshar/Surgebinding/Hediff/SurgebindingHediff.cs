@@ -5,5 +5,9 @@ using Verse;
 
 namespace Cosmere.Roshar.Surgebinding.Hediff;
 
-public class SurgebindingHediff(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability)
-    : AbstractHediff<Surgebinder>(hediffDef, pawn, ability);
+public class SurgebindingHediff : AbstractHediff<Surgebinder> {
+    public SurgebindingHediff() { }
+
+    public SurgebindingHediff(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) :
+        base(hediffDef, pawn, ability) { }
+}

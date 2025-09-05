@@ -8,12 +8,12 @@ using Logger = Cosmere.Foundation.Logger;
 namespace Cosmere.Scadrial.Feruchemy.Hediff;
 
 public class Nicrosil : HediffWithComps {
-    protected bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapNicrosil);
-    protected bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreNicrosil);
-    protected Investiture? investiture => pawn?.needs?.TryGetNeed<Investiture>();
-    protected Feruchemist? nicrosil => pawn.genes.GetFeruchemicGeneForMetal(MetalDefOf.Nicrosil);
+    private bool isTapping => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_TapNicrosil);
+    private bool isStoring => def.Equals(HediffDefOf.Cosmere_Scadrial_Hediff_StoreNicrosil);
+    private Investiture? investiture => pawn?.needs?.TryGetNeed<Investiture>();
+    private Feruchemist? nicrosil => pawn.genes.GetFeruchemicGeneForMetal(MetalDefOf.Nicrosil);
 
-    protected float changePerTick => Feruchemist.AmountPerRareTick * Severity * (isTapping ? -1 : 1);
+    private float changePerTick => Feruchemist.AmountPerRareTick * Severity * (isTapping ? -1 : 1);
 
     // There's a little bit of a race condition here that i'm not 100% sure how to fix.
     // Continuing to store/tap nicrosil will slowly increase how much investiture you have 

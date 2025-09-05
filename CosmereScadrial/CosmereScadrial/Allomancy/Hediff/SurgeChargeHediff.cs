@@ -9,10 +9,12 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Hediff;
 
-public class SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility<Allomancer> a) : AllomanticHediff(d, p, a) {
+public class SurgeChargeHediff : AllomanticHediff {
     public Action? endCallback;
 
     public int endInTicks = -1;
+    public SurgeChargeHediff() { }
+    public SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility<Allomancer> a) : base(d, p, a) { }
 
     public override void Tick() {
         base.Tick();

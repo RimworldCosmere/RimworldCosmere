@@ -17,5 +17,5 @@ public abstract class Shardblade : ThingWithComps {
         base.Notify_Equipped(pawn);
     }
 
-    protected abstract LUTPaletteMaterial[] GetBladeMaterials();
+    protected abstract List<LUTPaletteMaterial> GetBladeMaterials();
 }

@@ -8,8 +8,15 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Hediff;
 
-public class InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility<Allomancer> ability)
-    : AllomanticHediff(hediffDef, pawn, ability) {
+public class InvestitureShieldHediff : AllomanticHediff {
+    public InvestitureShieldHediff() { }
+
+    public InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility<Allomancer> ability) : base(
+        hediffDef,
+        pawn,
+        ability
+    ) { }
+
     public override void TickInterval(int delta) {
         base.TickInterval(delta);
 

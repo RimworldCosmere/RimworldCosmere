@@ -8,16 +8,16 @@ using Verse;
 namespace Cosmere.Scadrial.Feruchemy.Hediff;
 
 public class Compound : AllomanticHediff {
-    protected readonly IAbility<Allomancer, IHediff<Allomancer>> ability;
-    protected readonly Allomancer? allomancer;
-    protected readonly Feruchemist? feruchemist;
+    private readonly Allomancer? allomancer;
+    private readonly Feruchemist? feruchemist;
+
+    public Compound() { }
 
     public Compound(HediffDef hediffDef, Pawn pawn, IAbility<Allomancer, IHediff<Allomancer>> ability) : base(
         hediffDef,
         pawn,
         ability
     ) {
-        this.ability = ability;
         allomancer = pawn.genes.GetAllomanticGeneForMetal(metal);
         feruchemist = pawn.genes.GetFeruchemicGeneForMetal(metal);
     }
@@ -45,7 +45,7 @@ public class Compound : AllomanticHediff {
         return feruchemist!.AddToStore(metalToBurn * 10f);
     }
 
-    protected void End() {
+    private void End() {
         ability.UpdateStatus(BurningStatus.Off);
     }
 }

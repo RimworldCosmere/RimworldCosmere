@@ -76,4 +76,13 @@ public class CutoutLUT : ThingComp {
 
         return graphic.maskPath.NullOrEmpty() ? graphic.path + Graphic_Single.MaskSuffix : graphic.maskPath;
     }
+
+    public override void PostExposeData() {
+        base.PostExposeData();
+        List<LUTPaletteMaterial>? palettesList = palettes?.ToList();
+        Scribe_Collections.Look(ref palettesList, "palettes", LookMode.Deep);
+        if (Scribe.mode == LoadSaveMode.LoadingVars && palettesList != null) {
+            palettes = palettesList.ToArray();
+        }
+    }
 }

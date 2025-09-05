@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using Verse;
 
 namespace Cosmere.Core.Shader.Properties;
 
-public readonly struct LUTPaletteMaterial(Color color, float metallic, float smoothness) {
-    public readonly Color color = color;
-    public readonly float metallic = Mathf.Clamp01(metallic);
-    public readonly float smoothness = Mathf.Clamp01(smoothness);
+public struct LUTPaletteMaterial(Color color, float metallic, float smoothness) : IExposable {
+    public Color color = color;
+    public float metallic = Mathf.Clamp01(metallic);
+    public float smoothness = Mathf.Clamp01(smoothness);
 
     public LUTPaletteMaterial(Color color, double metallic, double smoothness) : this(
         color,
@@ -24,6 +25,12 @@ public readonly struct LUTPaletteMaterial(Color color, float metallic, float smo
         (float)metallic,
         smoothness
     ) { }
+
+    public void ExposeData() {
+        Scribe_Values.Look(ref color, "color");
+        Scribe_Values.Look(ref metallic, "metallic");
+        Scribe_Values.Look(ref smoothness, "smoothness");
+    }
 }
 
 public static class CutoutLUTProperties {

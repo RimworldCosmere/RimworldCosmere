@@ -21,7 +21,6 @@ public class RadiantShardblade : Shardblade {
         Destroy();
     }
 
-
     protected override LUTPaletteMaterial[] GetBladeMaterials() {
         if (SpawnedParentOrMe is not Verse.Pawn pawn) return [];
 
@@ -38,7 +37,7 @@ public class RadiantShardblade : Shardblade {
             new LUTPaletteMaterial(colorThree, 0, 1),
             new LUTPaletteMaterial(def.GetColorForStuff(Resources.ThingDefOf.Gold), 1, 1),
             new LUTPaletteMaterial(def.GetColorForStuff(RimWorld.ThingDefOf.WoodLog), 0, 0),
-            new LUTPaletteMaterial(def.GetColorForStuff(Resources.ThingDefOf.Steel), 1, .4),
+            new LUTPaletteMaterial(def.GetColorForStuff(Resources.ThingDefOf.Steel), 0, .5),
         ];
     }
 }

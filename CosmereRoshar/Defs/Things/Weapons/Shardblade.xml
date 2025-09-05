@@ -4,7 +4,7 @@
         <label>Shardblade</label>
         <description>A massive blade of impossible sharpness, warm to the touch and faintly glowing with inner light. This ancient weapon can cut through nearly anything with ease—stone, steel, or soul. When bonded, it appears in the wielder's hand in moments. Feared and revered, a Shardblade is more than a weapon—it's a legacy.</description>
         <graphicData>
-            <texPath>Things/Weapon/Shardblade/SwordC</texPath>
+            <texPath>Things/Weapon/Shardblade/SwordD</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutLUT</shaderType>
             <drawSize>(1.5, 1.5)</drawSize>

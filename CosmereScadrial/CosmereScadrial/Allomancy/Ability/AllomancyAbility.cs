@@ -8,10 +8,12 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Ability;
 
-public class AllomancyAbility(Pawn pawn, AbilityDef def) : AbstractAbility<Allomancer, AllomanticHediff>(pawn, def) {
+public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
     private const int DURALUMIN_BURN_POWER = 10;
 
     protected int flareStartTick = -1;
+    public AllomancyAbility(Pawn pawn) : base(pawn) { }
+    public AllomancyAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override Allomancer gene => cachedGene ??= pawn.genes.GetAllomanticGeneForMetal(metal)!;
     public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;

@@ -3,7 +3,9 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Ability;
 
-public class CoinshotAbility(Pawn pawn, AbilityDef def) : AllomancyAbility(pawn, def) {
+public class CoinshotAbility : AllomancyAbility {
+    public CoinshotAbility(Pawn pawn) : base(pawn) { }
+    public CoinshotAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
     protected sealed override bool toggleable => false;
 
     public override bool GizmoDisabled(out string reason) {

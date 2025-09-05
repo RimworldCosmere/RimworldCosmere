@@ -32,12 +32,15 @@ public class RadiantShardblade : Shardblade {
         Color colorThree = order.gemstone.glowColor ?? colorTwo;
 
         return [
-            new LUTPaletteMaterial(colorOne, .3, 0.7),
-            new LUTPaletteMaterial(colorTwo, .8, .85),
-            new LUTPaletteMaterial(colorThree, 0, 1),
-            new LUTPaletteMaterial(def.GetColorForStuff(Resources.ThingDefOf.Gold), 1, 1),
-            new LUTPaletteMaterial(def.GetColorForStuff(RimWorld.ThingDefOf.WoodLog), 0, 0),
-            new LUTPaletteMaterial(def.GetColorForStuff(Resources.ThingDefOf.Steel), 0, .5),
+            new LUTPaletteMaterial { color = colorOne, metallic = .3f, smoothness = .7f },
+            new LUTPaletteMaterial { color = colorTwo, metallic = .8f, smoothness = .85f },
+            new LUTPaletteMaterial { color = colorThree, smoothness = 1 },
+            new LUTPaletteMaterial
+                { color = def.GetColorForStuff(Resources.ThingDefOf.Gold), metallic = 1, smoothness = 1 },
+            new LUTPaletteMaterial
+                { color = def.GetColorForStuff(RimWorld.ThingDefOf.WoodLog) },
+            new LUTPaletteMaterial
+                { color = def.GetColorForStuff(Resources.ThingDefOf.Steel), metallic = .5f, smoothness = 1 },
         ];
     }
 }

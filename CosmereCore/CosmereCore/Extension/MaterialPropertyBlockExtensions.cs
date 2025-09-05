@@ -10,8 +10,8 @@ public static class MaterialPropertyBlockExtensions {
             colorArray[i] = colors[i];
         }
 
-        block.SetVectorArray(CutoutLUTProperties.ColorsID, colorArray);
-        block.SetFloat(CutoutLUTProperties.ColorCountID, colors.Length);
+        block.SetVectorArray(CutoutLUTShaderProperties.Colors, colorArray);
+        block.SetFloat(CutoutLUTShaderProperties.ColorCount, colors.Length);
     }
 
     public static void SetLUTPalette(this MaterialPropertyBlock block, LUTPaletteMaterial[] palette) {
@@ -25,9 +25,9 @@ public static class MaterialPropertyBlockExtensions {
             smoothnessValues[i] = palette[i].smoothness;
         }
 
-        block.SetVectorArray(CutoutLUTProperties.ColorsID, colors);
-        block.SetFloatArray(CutoutLUTProperties.MetallicValuesID, metallicValues);
-        block.SetFloatArray(CutoutLUTProperties.SmoothnessValuesID, smoothnessValues);
-        block.SetFloat(CutoutLUTProperties.ColorCountID, palette.Length);
+        block.SetVectorArray(CutoutLUTShaderProperties.Colors, colors);
+        block.SetFloatArray(CutoutLUTShaderProperties.MetallicValues, metallicValues);
+        block.SetFloatArray(CutoutLUTShaderProperties.SmoothnessValues, smoothnessValues);
+        block.SetFloat(CutoutLUTShaderProperties.ColorCount, palette.Length);
     }
 }

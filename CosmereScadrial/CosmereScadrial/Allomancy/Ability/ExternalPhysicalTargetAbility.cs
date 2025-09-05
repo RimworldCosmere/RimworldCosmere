@@ -4,7 +4,9 @@ using Verse;
 
 namespace Cosmere.Scadrial.Allomancy.Ability;
 
-public class ExternalPhysicalTargetAbility(Pawn pawn, AbilityDef def) : AllomancyAbility(pawn, def) {
+public class ExternalPhysicalTargetAbility : AllomancyAbility {
+    public ExternalPhysicalTargetAbility(Pawn pawn) : base(pawn) { }
+    public ExternalPhysicalTargetAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
     protected sealed override bool toggleable => false;
 
     public override bool CanApplyOn(LocalTargetInfo targetInfo) {

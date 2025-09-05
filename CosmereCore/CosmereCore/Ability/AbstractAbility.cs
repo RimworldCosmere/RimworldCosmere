@@ -319,7 +319,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     public override void ExposeData() {
         base.ExposeData();
 
-        Scribe_Values.Look(ref status, "status");
+        Scribe_Deep.Look(ref status, "status");
 
         switch (Scribe.mode) {
             // Save/load logic

@@ -5,9 +5,11 @@ using Verse.AI;
 
 namespace Cosmere.Scadrial.Allomancy.Ability;
 
-public class GoldAbility(Pawn pawn, AbilityDef def) : AllomancyAbility(pawn, def) {
+public class GoldAbility : AllomancyAbility {
     private Pawn? hallucination;
     public AllomanticHediff? hediff;
+    public GoldAbility(Pawn pawn) : base(pawn) { }
+    public GoldAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override void AbilityTick() {
         base.AbilityTick();

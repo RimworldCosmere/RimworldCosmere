@@ -6,11 +6,13 @@ using static Cosmere.Foundation.Mod;
 
 namespace Cosmere.Scadrial.Allomancy.Ability;
 
-public class TimeAbility(Pawn pawn, AbilityDef def) : AllomancyAbility(pawn, def) {
+public class TimeAbility : AllomancyAbility {
     private const int BaseRadius = 3;
     private readonly List<Pawn> pawnsInBubble = [];
     private Mote? bubble;
     private Mote? bubbleWithDistortion;
+    public TimeAbility(Pawn pawn) : base(pawn) { }
+    public TimeAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     private ThingDef moteDef => metal.Equals(MetallicArtsMetalDefOf.Cadmium)
         ? ThingDefOf.Cosmere_Scadrial_Thing_TimeBubbleCadmium

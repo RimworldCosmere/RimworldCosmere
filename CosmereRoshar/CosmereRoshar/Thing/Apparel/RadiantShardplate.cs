@@ -20,9 +20,9 @@ public class RadiantShardplate : Shardplate {
 
     public override void Notify_Unequipped(Verse.Pawn pawn) {
         base.Notify_Unequipped(pawn);
-        Shardblade? ability =
-            (Shardblade)pawn.abilities.GetAbility(
-                AbilityDefOf.Cosmere_Roshar_Ability_ToggleShardblade
+        SurgebindingAbility? ability =
+            (SurgebindingAbility)pawn.abilities.GetAbility(
+                AbilityDefOf.Cosmere_Roshar_Ability_ToggleShardplate
             );
 
         ability.UpdateStatus(false);

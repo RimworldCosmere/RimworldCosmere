@@ -226,6 +226,9 @@ public class CutoutLUT : ThingComp {
         Mask? glowMask = GetMask(MaskType.Glow, graphic, material);
         Mask? specialMask = GetMask(MaskType.Special, graphic, material);
 
+        // Set shader keywords for variants
+        SetShaderKeywords(material);
+
         block.SetFloat(CutoutLUTShaderProperties.BlendMode, (byte)props.blendMode);
         block.SetFloat(CutoutLUTShaderProperties.BlendStrength, props.blendStrength);
 
@@ -274,6 +277,48 @@ public class CutoutLUT : ThingComp {
     public override void CompDrawWornExtras() {
         base.CompDrawWornExtras();
         if (lastMaterial != null && lastGraphic != null) UpdateMaterialPropertyBlock(MPB, lastGraphic, lastMaterial);
+    }
+
+    private void SetShaderKeywords(Material material) {
+        // Set blend mode keywords
+        material.DisableKeyword("BLEND_LINEAR");
+        material.DisableKeyword("BLEND_SMOOTH");
+        material.DisableKeyword("BLEND_SHARP");
+        material.DisableKeyword("BLEND_STEP");
+
+        switch (props.blendMode) {
+            case CutoutLUTBlendMode.Linear:
+                material.EnableKeyword("BLEND_LINEAR");
+                break;
+            case CutoutLUTBlendMode.Smooth:
+                material.EnableKeyword("BLEND_SMOOTH");
+                break;
+            case CutoutLUTBlendMode.Sharp:
+                material.EnableKeyword("BLEND_SHARP");
+                break;
+            case CutoutLUTBlendMode.Step:
+                material.EnableKeyword("BLEND_STEP");
+                break;
+        }
+
+        // Set mask feature keywords
+        if (props.useWear) {
+            material.EnableKeyword("USE_WEAR_MASK");
+        } else {
+            material.DisableKeyword("USE_WEAR_MASK");
+        }
+
+        if (props.useGlow) {
+            material.EnableKeyword("USE_GLOW_MASK");
+        } else {
+            material.DisableKeyword("USE_GLOW_MASK");
+        }
+
+        if (props.useSpecial) {
+            material.EnableKeyword("USE_SPECIAL_MASK");
+        } else {
+            material.DisableKeyword("USE_SPECIAL_MASK");
+        }
     }
 
     public override void PostExposeData() {

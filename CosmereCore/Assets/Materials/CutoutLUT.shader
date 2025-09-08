@@ -74,6 +74,14 @@ Shader "Unlit/Cutout_LUT" {
             #pragma vertex vert
             #pragma fragment frag
             #include "UnityCG.cginc"
+            
+            // Shader variants for blend modes
+            #pragma shader_feature _ BLEND_LINEAR BLEND_SMOOTH BLEND_SHARP BLEND_STEP
+            
+            // Shader variants for mask features
+            #pragma shader_feature _ USE_WEAR_MASK
+            #pragma shader_feature _ USE_GLOW_MASK  
+            #pragma shader_feature _ USE_SPECIAL_MASK
 
             sampler2D _MainTex;
             sampler2D _ColorMaskTex;
@@ -171,9 +179,8 @@ Shader "Unlit/Cutout_LUT" {
                 half metallicA = _MetallicValues[idxA];
                 half smoothnessA = _SmoothnessValues[idxA];
                 
-                // Optimized blend mode logic - reduce branching
-                half useBlending = step(half(0.5), _BlendMode);
-                if (useBlending > half(0.5)) {
+                // Compile-time blend mode optimization
+                #if defined(BLEND_LINEAR) || defined(BLEND_SMOOTH) || defined(BLEND_SHARP) || defined(BLEND_STEP)
                     int idxB = (int)clamp(idxA + 1, 0, _ColorCount - 1);
                     half4 colorB = _Colors[idxB];
                     half metallicB = _MetallicValues[idxB];
@@ -181,49 +188,50 @@ Shader "Unlit/Cutout_LUT" {
                     
                     half blend = saturate(frac(lutIndex) * _BlendStrength);
                     
-                    // Reduce branching with lerp-based blend mode selection
-                    half blendLinear = blend;
-                    half blendSmooth = smoothstep(0, 1, blend);
-                    half blendSharp = blend * blend;
-                    half blendStep = step(half(0.5), blend);
-                    
-                    // Select blend mode using step functions instead of branches
-                    half blendFinal = blendLinear;
-                    blendFinal = lerp(blendFinal, blendSmooth, step(half(1.5), _BlendMode));
-                    blendFinal = lerp(blendFinal, blendSharp, step(half(2.5), _BlendMode));
-                    blendFinal = lerp(blendFinal, blendStep, step(half(3.5), _BlendMode));
+                    half blendFinal;
+                    #ifdef BLEND_LINEAR
+                        blendFinal = blend;
+                    #elif BLEND_SMOOTH
+                        blendFinal = smoothstep(0, 1, blend);
+                    #elif BLEND_SHARP
+                        blendFinal = blend * blend;
+                    #elif BLEND_STEP
+                        blendFinal = step(half(0.5), blend);
+                    #endif
                     
                     lutColor = lerp(colorA, colorB, blendFinal);
                     metallic = lerp(metallicA, metallicB, blendFinal);
                     smoothness = lerp(smoothnessA, smoothnessB, blendFinal);
-                } else {
-                    // Mode 0: None - no blending
+                #else
+                    // No blending
                     lutColor = colorA;
                     metallic = metallicA;
                     smoothness = smoothnessA;
-                }
+                #endif
                 
                 // Apply base color
                 half4 result = baseColor * lutColor;
 
                 // APPLY WEAR/DAMAGE if enabled
                 half wearIntensity = half(0.0);
-                if (_UseWearMask > half(0.5) && wearAmount > half(0.01)) {
-                    // Use pre-computed zone size for optimization
-                    int damageZone = (int)(wearAmount * _WearLevelCount);
-                    int currentWearZone = (int)(_CurrentWearLevel * _WearLevelCount);
-                    
-                    // Only apply wear if current wear level >= this zone's level
-                    if (currentWearZone >= damageZone) {
-                        wearIntensity = _CurrentWearLevel;
-                        half3 wornColor = result.rgb * _WearDarkness;
-                        result.rgb = lerp(result.rgb, wornColor, wearIntensity);
+                #ifdef USE_WEAR_MASK
+                    if (wearAmount > half(0.01)) {
+                        // Use pre-computed zone size for optimization
+                        int damageZone = (int)(wearAmount * _WearLevelCount);
+                        int currentWearZone = (int)(_CurrentWearLevel * _WearLevelCount);
                         
-                        // Worn metals lose their shine
-                        metallic *= (half(1.0) - wearIntensity * half(0.7));
-                        smoothness *= (half(1.0) - wearIntensity * half(0.5));
+                        // Only apply wear if current wear level >= this zone's level
+                        if (currentWearZone >= damageZone) {
+                            wearIntensity = _CurrentWearLevel;
+                            half3 wornColor = result.rgb * _WearDarkness;
+                            result.rgb = lerp(result.rgb, wornColor, wearIntensity);
+                            
+                            // Worn metals lose their shine
+                            metallic *= (half(1.0) - wearIntensity * half(0.7));
+                            smoothness *= (half(1.0) - wearIntensity * half(0.5));
+                        }
                     }
-                }
+                #endif
 
                 // FAKE METALLIC EFFECTS
                 // 1. Metallic surfaces are more contrasty and slightly desaturated
@@ -256,33 +264,37 @@ Shader "Unlit/Cutout_LUT" {
                 result.rgb += rimLight * smoothness * (half(1.0) - metallic) * half(0.1) * _MaterialIntensity;
 
                 // APPLY GLOW EFFECTS if enabled - AFTER material effects
-                if (_UseGlowMask > half(0.5) && glowStrength > half(0.01)) {
-                    // Convert glow mask value to glow zone using glow level count
-                    int glowZone = (int)(glowStrength * _GlowLevelCount);
-                    
-                    // Only apply glow if current glow level >= this zone's level
-                    if (_CurrentGlowLevel >= glowZone) {
-                        // Calculate glow intensity based on current glow level and level count
-                        half actualGlowIntensity = _CurrentGlowLevel / _GlowLevelCount;
-                        result.rgb += _GlowColor.rgb * actualGlowIntensity * _GlowIntensity;
+                #ifdef USE_GLOW_MASK
+                    if (glowStrength > half(0.01)) {
+                        // Convert glow mask value to glow zone using glow level count
+                        int glowZone = (int)(glowStrength * _GlowLevelCount);
+                        
+                        // Only apply glow if current glow level >= this zone's level
+                        if (_CurrentGlowLevel >= glowZone) {
+                            // Calculate glow intensity based on current glow level and level count
+                            half actualGlowIntensity = _CurrentGlowLevel / _GlowLevelCount;
+                            result.rgb += _GlowColor.rgb * actualGlowIntensity * _GlowIntensity;
+                        }
                     }
-                }
+                #endif
 
                 // SPECIAL ZONES if enabled
-                if (_UseSpecialMask > half(0.5) && specialZone > half(0.01)) {
-                    if (specialZone > half(0.8)) {
-                        // Gem areas - extra sparkle
-                        half sparkle = frac(sin(dot(uv * half(100.0), half2(12.9898, 78.233))) * half(43758.5453));
-                        result.rgb += sparkle * half(0.5);
-                    } else if (specialZone > half(0.5)) {
-                        // Rune areas - pulsing glow
-                        half pulse = sin(_Time.y * half(3.0)) * half(0.5) + half(0.5);
-                        result.rgb += _GlowColor.rgb * pulse * half(0.3);
-                    } else if (specialZone > half(0.3)) {
-                        // Metal inlay - extra metallic shine
-                        result.rgb += shine * half(0.5);
+                #ifdef USE_SPECIAL_MASK
+                    if (specialZone > half(0.01)) {
+                        if (specialZone > half(0.8)) {
+                            // Gem areas - extra sparkle
+                            half sparkle = frac(sin(dot(uv * half(100.0), half2(12.9898, 78.233))) * half(43758.5453));
+                            result.rgb += sparkle * half(0.5);
+                        } else if (specialZone > half(0.5)) {
+                            // Rune areas - pulsing glow
+                            half pulse = sin(_Time.y * half(3.0)) * half(0.5) + half(0.5);
+                            result.rgb += _GlowColor.rgb * pulse * half(0.3);
+                        } else if (specialZone > half(0.3)) {
+                            // Metal inlay - extra metallic shine
+                            result.rgb += shine * half(0.5);
+                        }
                     }
-                }
+                #endif
 
                 return result;
             }

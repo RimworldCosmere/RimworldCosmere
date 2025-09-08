@@ -261,7 +261,7 @@ Shader "Unlit/Cutout_LUT" {
                     // Only apply glow if current glow level >= this zone's level
                     if (_CurrentGlowLevel >= glowZone) {
                         // Calculate glow intensity based on current glow level and level count
-                        float actualGlowIntensity = (_CurrentGlowLevel + 1.0) / _GlowLevelCount;
+                        float actualGlowIntensity = _CurrentGlowLevel / _GlowLevelCount;
                         result.rgb += _GlowColor.rgb * actualGlowIntensity * _GlowIntensity;
                     }
                 }

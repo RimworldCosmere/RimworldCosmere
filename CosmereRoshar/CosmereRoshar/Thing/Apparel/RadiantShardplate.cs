@@ -45,10 +45,13 @@ public class RadiantShardplate : Shardplate {
 
         LUTPaletteMaterial colorOne = new LUTPaletteMaterial
             { color = gemstone.color, metallic = .7f, smoothness = .7f };
+
+        if (def == ThingDefOf.Cosmere_Roshar_Apparel_RadiantShardhelm) return [colorOne];
+
         LUTPaletteMaterial colorTwo = !gemstone.colorTwo.HasValue
             ? colorOne
             : new LUTPaletteMaterial { color = gemstone.colorTwo.Value, metallic = .7f, smoothness = .7f };
 
-        return [colorOne, colorTwo, colorTwo, colorOne];
+        return [colorTwo, colorTwo, colorOne, colorTwo];
     }
 }

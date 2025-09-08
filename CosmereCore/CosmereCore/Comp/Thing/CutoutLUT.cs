@@ -237,6 +237,8 @@ public class CutoutLUT : ThingComp {
             block.SetFloat(CutoutLUTShaderProperties.WearDarkness, props.wearDarkness);
             block.SetFloat(CutoutLUTShaderProperties.CurrentWearLevel, currentWearLevel);
             block.SetFloat(CutoutLUTShaderProperties.WearLevelCount, props.wearLevelCount);
+            // Pre-compute reciprocal for optimization
+            block.SetFloat(CutoutLUTShaderProperties.WearZoneSize, 1.0f / props.wearLevelCount);
             if (wearMask.HasValue && wearMask.Value.mask != null) {
                 block.SetTexture(CutoutLUTShaderProperties.WearMaskTex, wearMask.Value.mask);
             }
@@ -248,6 +250,8 @@ public class CutoutLUT : ThingComp {
             block.SetFloat(CutoutLUTShaderProperties.GlowIntensity, props.glowIntensity);
             block.SetFloat(CutoutLUTShaderProperties.CurrentGlowLevel, currentGlowLevel);
             block.SetFloat(CutoutLUTShaderProperties.GlowLevelCount, props.glowLevelCount);
+            // Pre-compute reciprocal for optimization
+            block.SetFloat(CutoutLUTShaderProperties.GlowZoneSize, 1.0f / props.glowLevelCount);
             if (glowMask.HasValue && glowMask.Value.mask != null) {
                 block.SetTexture(CutoutLUTShaderProperties.GlowMaskTex, glowMask.Value.mask);
             }

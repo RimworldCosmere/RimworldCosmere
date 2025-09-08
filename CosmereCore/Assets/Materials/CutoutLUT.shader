@@ -73,33 +73,38 @@ Shader "Unlit/Cutout_LUT" {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #include "UnityCG.cginc"
 
             sampler2D _MainTex;
             sampler2D _ColorMaskTex;
             sampler2D _WearMaskTex;
             sampler2D _GlowMaskTex;
             sampler2D _SpecialMaskTex;
-            float _BlendStrength;
-            float _ColorCount;
-            float4 _FallbackColor;
-            float _BlendMode;
-            float _MaterialIntensity;
+            half _BlendStrength;
+            half _ColorCount;
+            half4 _FallbackColor;
+            half _BlendMode;
+            half _MaterialIntensity;
             
             // Multi-channel variables
-            float _UseWearMask;
-            float _UseGlowMask;
-            float _UseSpecialMask;
-            float _WearLevelCount;
-            float _GlowLevelCount;
-            float _CurrentWearLevel;
-            float _CurrentGlowLevel;
-            float _WearDarkness;
-            float4 _GlowColor;
-            float _GlowIntensity;
+            half _UseWearMask;
+            half _UseGlowMask;
+            half _UseSpecialMask;
+            half _WearLevelCount;
+            half _GlowLevelCount;
+            half _CurrentWearLevel;
+            half _CurrentGlowLevel;
+            half _WearDarkness;
+            half4 _GlowColor;
+            half _GlowIntensity;
             
-            uniform float4 _Colors[32];
-            uniform float _MetallicValues[32];
-            uniform float _SmoothnessValues[32];
+            // Pre-computed optimization values
+            half _WearZoneSize;
+            half _GlowZoneSize;
+            
+            uniform half4 _Colors[32];
+            uniform half _MetallicValues[32];
+            uniform half _SmoothnessValues[32];
 
             struct appdata {
                 float4 vertex : POSITION;
@@ -118,167 +123,164 @@ Shader "Unlit/Cutout_LUT" {
                 return o;
             }
 
-            float4 frag(v2f inp) : SV_Target {
-                float4 baseColor = tex2D(_MainTex, inp.texcoord.xy);
+            half4 frag(v2f inp) : SV_Target {
+                half2 uv = inp.texcoord.xy;
+                half4 baseColor = tex2D(_MainTex, uv);
 
                 // Early exit for fully transparent pixels
-                if (baseColor.a < 0.01) {
-                    discard;
-                }
+                clip(baseColor.a - half(0.01));
                 
                 // Early exit for black pixels
-                if (all(baseColor.rgb < 0.001)) {
+                if (all(baseColor.rgb < half3(0.001, 0.001, 0.001))) {
                     return baseColor;
                 }
 
                 // Sample separate mask textures
-                float4 colorSample = tex2D(_ColorMaskTex, inp.texcoord.xy);
-                float4 wearSample = tex2D(_WearMaskTex, inp.texcoord.xy);
-                float4 glowSample = tex2D(_GlowMaskTex, inp.texcoord.xy);
-                float4 specialSample = tex2D(_SpecialMaskTex, inp.texcoord.xy);
+                half4 colorSample = tex2D(_ColorMaskTex, uv);
+                half4 wearSample = tex2D(_WearMaskTex, uv);
+                half4 glowSample = tex2D(_GlowMaskTex, uv);
+                half4 specialSample = tex2D(_SpecialMaskTex, uv);
                 
                 // If ColorMaskTex sample equals MainTex sample, it means no separate color mask was provided
                 // (Unity defaults to using the same texture when none is specified)
                 // In this case, use inverted MainTex as the color mask
-                if (all(abs(colorSample.rgb - baseColor.rgb) < 0.001)) {
+                if (all(abs(colorSample.rgb - baseColor.rgb) < half3(0.001, 0.001, 0.001))) {
                     // Use inverted main texture as the color mask
-                    colorSample = float4(1.0 - baseColor.rgb, baseColor.a);
+                    colorSample = half4(half3(1.0, 1.0, 1.0) - baseColor.rgb, baseColor.a);
                 }
 
-                if (colorSample.a < 0.01) {
+                if (colorSample.a < half(0.01)) {
                     return baseColor * _FallbackColor;
                 }
                 
                 // EXTRACT DATA FROM SEPARATE MASKS
-                float colorIndex = colorSample.r;           // Red channel of color mask
-                float wearAmount = wearSample.r;            // Red channel of wear mask
-                float glowStrength = glowSample.r;          // Red channel of glow mask  
-                float specialZone = specialSample.r;        // Red channel of special mask
+                half colorIndex = colorSample.r;           // Red channel of color mask
+                half wearAmount = wearSample.r;            // Red channel of wear mask
+                half glowStrength = glowSample.r;          // Red channel of glow mask  
+                half specialZone = specialSample.r;        // Red channel of special mask
                                 
-                float lutIndex = colorIndex * (_ColorCount);
-                int idxA = (int)clamp(floor(lutIndex), 0.0, _ColorCount - 1.0);
+                half lutIndex = colorIndex * half(_ColorCount);
+                int idxA = (int)clamp(floor(lutIndex), 0, _ColorCount - 1);
 
-                float4 lutColor;
-                float metallic;
-                float smoothness;
+                half4 lutColor;
+                half metallic;
+                half smoothness;
 
-                if (_BlendMode < 0.5) {
-                    // Mode 0: None - no blending
-                    lutColor = _Colors[idxA];
-                    metallic = _MetallicValues[idxA];
-                    smoothness = _SmoothnessValues[idxA];
+                // Cache array values to reduce lookups
+                half4 colorA = _Colors[idxA];
+                half metallicA = _MetallicValues[idxA];
+                half smoothnessA = _SmoothnessValues[idxA];
+                
+                // Optimized blend mode logic - reduce branching
+                half useBlending = step(half(0.5), _BlendMode);
+                if (useBlending > half(0.5)) {
+                    int idxB = (int)clamp(idxA + 1, 0, _ColorCount - 1);
+                    half4 colorB = _Colors[idxB];
+                    half metallicB = _MetallicValues[idxB];
+                    half smoothnessB = _SmoothnessValues[idxB];
+                    
+                    half blend = saturate(frac(lutIndex) * _BlendStrength);
+                    
+                    // Reduce branching with lerp-based blend mode selection
+                    half blendLinear = blend;
+                    half blendSmooth = smoothstep(0, 1, blend);
+                    half blendSharp = blend * blend;
+                    half blendStep = step(half(0.5), blend);
+                    
+                    // Select blend mode using step functions instead of branches
+                    half blendFinal = blendLinear;
+                    blendFinal = lerp(blendFinal, blendSmooth, step(half(1.5), _BlendMode));
+                    blendFinal = lerp(blendFinal, blendSharp, step(half(2.5), _BlendMode));
+                    blendFinal = lerp(blendFinal, blendStep, step(half(3.5), _BlendMode));
+                    
+                    lutColor = lerp(colorA, colorB, blendFinal);
+                    metallic = lerp(metallicA, metallicB, blendFinal);
+                    smoothness = lerp(smoothnessA, smoothnessB, blendFinal);
                 } else {
-                    // All blend modes
-                    int idxB = (int)clamp(idxA + 1, 0.0, _ColorCount - 1.0);
-                    float blend = saturate(frac(lutIndex) * _BlendStrength);
-                    float blendFinal;
-                    
-                    if (_BlendMode < 1.5) {
-                        // Mode 1: Linear
-                        blendFinal = blend;
-                    } else if (_BlendMode < 2.5) {
-                        // Mode 2: Smooth
-                        blendFinal = smoothstep(0, 1, blend);
-                    } else if (_BlendMode < 3.5) {
-                        // Mode 3: Sharp
-                        blendFinal = blend * blend;
-                    } else {
-                        // Mode 4: Step
-                        blendFinal = step(0.5, blend);
-                    }
-                    
-                    lutColor = lerp(_Colors[idxA], _Colors[idxB], blendFinal);
-                    metallic = lerp(_MetallicValues[idxA], _MetallicValues[idxB], blendFinal);
-                    smoothness = lerp(_SmoothnessValues[idxA], _SmoothnessValues[idxB], blendFinal);
+                    // Mode 0: None - no blending
+                    lutColor = colorA;
+                    metallic = metallicA;
+                    smoothness = smoothnessA;
                 }
                 
                 // Apply base color
-                float4 result = baseColor * lutColor;
+                half4 result = baseColor * lutColor;
 
                 // APPLY WEAR/DAMAGE if enabled
-                if (_UseWearMask > 0.5 && wearAmount > 0.01) {
-                    // Convert wear mask value to damage zone using wear level count
+                half wearIntensity = half(0.0);
+                if (_UseWearMask > half(0.5) && wearAmount > half(0.01)) {
+                    // Use pre-computed zone size for optimization
                     int damageZone = (int)(wearAmount * _WearLevelCount);
-                    
-                    // Convert current wear level to zone using wear level count
                     int currentWearZone = (int)(_CurrentWearLevel * _WearLevelCount);
                     
                     // Only apply wear if current wear level >= this zone's level
                     if (currentWearZone >= damageZone) {
-                        // Use the actual wear level as intensity
-                        float wearIntensity = _CurrentWearLevel;
-                        float3 wornColor = result.rgb * _WearDarkness;
+                        wearIntensity = _CurrentWearLevel;
+                        half3 wornColor = result.rgb * _WearDarkness;
                         result.rgb = lerp(result.rgb, wornColor, wearIntensity);
                         
                         // Worn metals lose their shine
-                        metallic *= (1.0 - wearIntensity * 0.7);
-                        smoothness *= (1.0 - wearIntensity * 0.5);
+                        metallic *= (half(1.0) - wearIntensity * half(0.7));
+                        smoothness *= (half(1.0) - wearIntensity * half(0.5));
                     }
                 }
 
                 // FAKE METALLIC EFFECTS
                 // 1. Metallic surfaces are more contrasty and slightly desaturated
-                float3 grayscale = dot(result.rgb, float3(0.299, 0.587, 0.114));
-                result.rgb = lerp(result.rgb, grayscale, metallic * 0.2 * _MaterialIntensity);
+                half3 grayscale = Luminance(result.rgb);
+                result.rgb = lerp(result.rgb, grayscale, metallic * half(0.2) * _MaterialIntensity);
                 
                 // 2. Add contrast for metallic materials
-                float contrast = lerp(1.0, 1.3, metallic * _MaterialIntensity);
-                result.rgb = saturate((result.rgb - 0.5) * contrast + 0.5);
+                half contrast = lerp(half(1.0), half(1.3), metallic * _MaterialIntensity);
+                result.rgb = saturate((result.rgb - half(0.5)) * contrast + half(0.5));
                 
                 // 3. Fake "shine" based on position - metallic surfaces have hot spots
-                float wearReduction = 1.0;
-                if (_UseWearMask > 0.5 && wearAmount > 0.01) {
-                    int damageZone = (int)(wearAmount * _WearLevelCount);
-                    int currentWearZone = (int)(_CurrentWearLevel * _WearLevelCount);
-                    if (currentWearZone >= damageZone) {
-                        float wearIntensity = _CurrentWearLevel;
-                        wearReduction = (1.0 - wearIntensity);
-                    }
-                }
-                float2 shinePos = frac(inp.texcoord * 3.0);
-                float shine = pow(max(0, 1.0 - length(shinePos - 0.5) * 2.0), 4.0);
-                result.rgb += shine * metallic * smoothness * 0.3 * _MaterialIntensity * wearReduction;
+                // Consolidate wear reduction calculation to avoid redundancy
+                half wearReduction = half(1.0) - wearIntensity;
+                half2 shinePos = frac(uv * half(3.0));
+                half shine = pow(max(half(0.0), half(1.0) - length(shinePos - half(0.5)) * half(2.0)), half(4.0));
+                result.rgb += shine * metallic * smoothness * half(0.3) * _MaterialIntensity * wearReduction;
                 
                 // FAKE SMOOTHNESS EFFECTS  
                 // 1. Smooth surfaces have tighter, brighter highlights
-                float highlightSize = lerp(3.0, 8.0, smoothness);
-                float highlight = pow(saturate(sin(inp.texcoord.x * highlightSize) * 
-                                              sin(inp.texcoord.y * highlightSize)), 
-                                     lerp(1.0, 4.0, smoothness));
+                half highlightSize = lerp(half(3.0), half(8.0), smoothness);
+                half highlight = pow(saturate(sin(uv.x * highlightSize) * 
+                                              sin(uv.y * highlightSize)), 
+                                     lerp(half(1.0), half(4.0), smoothness));
                 
                 // 2. Combine highlight with metallic for final shine
-                result.rgb += highlight * smoothness * metallic * 0.2 * _MaterialIntensity * wearReduction;
+                result.rgb += highlight * smoothness * metallic * half(0.2) * _MaterialIntensity * wearReduction;
                 
                 // 3. Smooth non-metallic surfaces (like plastic) get a subtle rim light
-                float rimLight = pow(1.0 - saturate(dot(float2(0.5, 0.5), inp.texcoord - 0.5)), 2.0);
-                result.rgb += rimLight * smoothness * (1.0 - metallic) * 0.1 * _MaterialIntensity;
+                half rimLight = pow(half(1.0) - saturate(dot(half2(0.5, 0.5), uv - half(0.5))), half(2.0));
+                result.rgb += rimLight * smoothness * (half(1.0) - metallic) * half(0.1) * _MaterialIntensity;
 
                 // APPLY GLOW EFFECTS if enabled - AFTER material effects
-                if (_UseGlowMask > 0.5 && glowStrength > 0.01) {
+                if (_UseGlowMask > half(0.5) && glowStrength > half(0.01)) {
                     // Convert glow mask value to glow zone using glow level count
                     int glowZone = (int)(glowStrength * _GlowLevelCount);
                     
                     // Only apply glow if current glow level >= this zone's level
                     if (_CurrentGlowLevel >= glowZone) {
                         // Calculate glow intensity based on current glow level and level count
-                        float actualGlowIntensity = _CurrentGlowLevel / _GlowLevelCount;
+                        half actualGlowIntensity = _CurrentGlowLevel / _GlowLevelCount;
                         result.rgb += _GlowColor.rgb * actualGlowIntensity * _GlowIntensity;
                     }
                 }
 
                 // SPECIAL ZONES if enabled
-                if (_UseSpecialMask > 0.5 && specialZone > 0.01) {
-                    if (specialZone > 0.8) {
+                if (_UseSpecialMask > half(0.5) && specialZone > half(0.01)) {
+                    if (specialZone > half(0.8)) {
                         // Gem areas - extra sparkle
-                        float sparkle = frac(sin(dot(inp.texcoord * 100.0, float2(12.9898, 78.233))) * 43758.5453);
-                        result.rgb += sparkle * 0.5;
-                    } else if (specialZone > 0.5) {
+                        half sparkle = frac(sin(dot(uv * half(100.0), half2(12.9898, 78.233))) * half(43758.5453));
+                        result.rgb += sparkle * half(0.5);
+                    } else if (specialZone > half(0.5)) {
                         // Rune areas - pulsing glow
-                        float pulse = sin(_Time.y * 3.0) * 0.5 + 0.5;
-                        result.rgb += _GlowColor.rgb * pulse * 0.3;
-                    } else if (specialZone > 0.3) {
+                        half pulse = sin(_Time.y * half(3.0)) * half(0.5) + half(0.5);
+                        result.rgb += _GlowColor.rgb * pulse * half(0.3);
+                    } else if (specialZone > half(0.3)) {
                         // Metal inlay - extra metallic shine
-                        result.rgb += shine * 0.5;
+                        result.rgb += shine * half(0.5);
                     }
                 }
 

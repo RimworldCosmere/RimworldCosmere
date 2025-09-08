@@ -122,4 +122,14 @@ public static class CutoutLUTShaderProperties {
 
     /// <summary>Intensity multiplier for glow effects</summary>
     public static int GlowIntensity = UnityEngine.Shader.PropertyToID("_GlowIntensity");
+
+    // ========================================
+    // PRE-COMPUTED VALUES (OPTIMIZATION)
+    // ========================================
+
+    /// <summary>Pre-computed reciprocal of wear level count (1 / wearLevelCount)</summary>
+    public static int WearZoneSize = UnityEngine.Shader.PropertyToID("_WearZoneSize");
+
+    /// <summary>Pre-computed reciprocal of glow level count (1 / glowLevelCount)</summary>
+    public static int GlowZoneSize = UnityEngine.Shader.PropertyToID("_GlowZoneSize");
 }

@@ -31,7 +31,8 @@
         "My strength is not for myself alone."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade"
+          "Cosmere_Roshar_Ability_ToggleShardblade",
+          "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },
     {

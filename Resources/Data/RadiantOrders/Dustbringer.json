@@ -30,7 +30,8 @@
         "I will master the fire, not be consumed by it."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade"
+          "Cosmere_Roshar_Ability_ToggleShardblade",
+          "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },
     {

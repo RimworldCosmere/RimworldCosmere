@@ -8,6 +8,8 @@ namespace Cosmere.Roshar.Surgebinding.Ability;
 public class Shardblade : SurgebindingAbility {
     private static readonly ThingDef ShardbladeDef = ThingDefOf.Cosmere_Roshar_MeleeWeapon_RadiantShardblade;
 
+    private readonly List<ThingWithComps> previousEquipment = [];
+
     public Shardblade(Pawn pawn) : base(pawn) { }
     public Shardblade(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
@@ -21,6 +23,17 @@ public class Shardblade : SurgebindingAbility {
     }
 
     protected override void OnEnable() {
+        if (pawn.equipment != null) {
+            foreach (ThingWithComps equipment in pawn.equipment.AllEquipmentListForReading) {
+                if (pawn.inventory.innerContainer.TryAdd(equipment)) {
+                    previousEquipment.Add(equipment);
+                    equipment.DeSpawn();
+                } else {
+                    pawn.equipment.TryDropEquipment(equipment, out _, pawn.Position);
+                }
+            }
+        }
+
         if (gene.currentIdeal >= 2) {
             SummonBladeInstantly();
             return;
@@ -31,9 +44,14 @@ public class Shardblade : SurgebindingAbility {
 
     protected override void OnDisable() {
         base.OnDisable();
-        if (pawn.equipment?.Primary?.def != ShardbladeDef) return;
 
         pawn.equipment.Primary.Destroy();
+        pawn.equipment.bondedWeapon = null;
+        foreach (ThingWithComps equipment in previousEquipment) {
+            pawn.equipment.AddEquipment(equipment);
+        }
+
+        previousEquipment.Clear();
 
         SoundDefOf.Cosmere_Core_Sound_LoadingQuantumRiser.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
 
@@ -44,8 +62,6 @@ public class Shardblade : SurgebindingAbility {
         ThingWithComps shardblade = (ThingWithComps)ThingMaker.MakeThing(ShardbladeDef, radiantOrder.gemstone.Item);
 
         if (pawn.equipment != null) {
-            // @todo Maybe dont drop it, but put it in inventory?
-            pawn.equipment.DropAllEquipment(pawn.Position, false);
             pawn.equipment.AddEquipment(shardblade);
             pawn.equipment.bondedWeapon = shardblade;
         }

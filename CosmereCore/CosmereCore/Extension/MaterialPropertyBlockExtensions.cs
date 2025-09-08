@@ -4,17 +4,7 @@ using UnityEngine;
 namespace Cosmere.Core.Extension;
 
 public static class MaterialPropertyBlockExtensions {
-    public static void SetUnlitLUTPalette(this MaterialPropertyBlock block, Color[] colors) {
-        Vector4[] colorArray = new Vector4[32];
-        for (int i = 0; i < colors.Length && i < 32; i++) {
-            colorArray[i] = colors[i];
-        }
-
-        block.SetVectorArray(CutoutLUTShaderProperties.Colors, colorArray);
-        block.SetFloat(CutoutLUTShaderProperties.ColorCount, colors.Length);
-    }
-
-    public static void SetLUTPalette(this MaterialPropertyBlock block, List<LUTPaletteMaterial> palette) {
+    public static void SetLUTColorMask(this MaterialPropertyBlock block, List<LUTPaletteMaterial> palette) {
         Vector4[] colors = new Vector4[32];
         float[] metallicValues = new float[32];
         float[] smoothnessValues = new float[32];

@@ -23,6 +23,8 @@ public static class ThingDefOf {
 
     //public static ThingDef Cosmere_Roshar_MeleeWeapon_Shardblade;
     public static ThingDef Cosmere_Roshar_MeleeWeapon_RadiantShardblade;
+    public static ThingDef Cosmere_Roshar_Apparel_RadiantShardplate;
+    public static ThingDef Cosmere_Roshar_Apparel_RadiantShardhelm;
 
     static ThingDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));

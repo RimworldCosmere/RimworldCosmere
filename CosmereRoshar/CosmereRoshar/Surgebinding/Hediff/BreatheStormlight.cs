@@ -16,8 +16,6 @@ public class BreatheStormlight : SurgebindingHediff {
     public BreatheStormlight(HediffDef hediffDef, Pawn pawn, IAbility<Surgebinder, IHediff<Surgebinder>> ability) :
         base(hediffDef, pawn, ability) { }
 
-    private InvestitureHolder investiture => pawn.GetComp<InvestitureHolder>()!;
-
     public override void PostTickInterval(int delta) {
         base.PostTickInterval(delta);
 

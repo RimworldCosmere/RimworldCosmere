@@ -33,7 +33,8 @@
         "I want to be loved, but I don’t think I deserve it."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade"
+          "Cosmere_Roshar_Ability_ToggleShardblade",
+          "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },
     {

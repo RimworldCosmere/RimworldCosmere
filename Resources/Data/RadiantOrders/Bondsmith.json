@@ -31,7 +31,8 @@
         "I will hold the center when all else breaks apart."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade"
+          "Cosmere_Roshar_Ability_ToggleShardblade",
+          "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },
     {

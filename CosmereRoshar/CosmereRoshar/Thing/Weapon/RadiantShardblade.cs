@@ -21,7 +21,7 @@ public class RadiantShardblade : Shardblade {
         Destroy();
     }
 
-    protected override List<LUTPaletteMaterial> GetBladeMaterials() {
+    public override List<LUTPaletteMaterial> GetMaterials() {
         if (SpawnedParentOrMe is not Verse.Pawn pawn) return [];
 
         RadiantOrderDef? order = pawn.GetRadiantOrder();

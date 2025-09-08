@@ -31,7 +31,8 @@
         "They deserve to decide who they are — even if I disagree."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade"
+          "Cosmere_Roshar_Ability_ToggleShardblade",
+          "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },
     {

@@ -63,6 +63,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         if (pawns.TryPopFront(out Pawn pawn)) {
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
+            pawn.story.bodyType = BodyTypeDefOf.Male;
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner, 4);
             Apparel? pouch = (Apparel)ThingMaker.MakeThing(
                 ThingDefOf.Cosmere_Roshar_Apparel_SpherePouch,
@@ -94,6 +95,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
         if (pawns.TryPopFront(out pawn)) {
             pawn.Name = new NameSingle("Wit");
             pawn.gender = Gender.Male;
+            pawn.story.bodyType = BodyTypeDefOf.Male;
             pawn.BecomeMistborn(cause: "ingested lerasium");
 
             // RadiantOrder.BondWithSpren(pawn);

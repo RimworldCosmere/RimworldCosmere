@@ -1,9 +1,9 @@
 {
   "name": "amethyst",
   "descriptions": {
-    "raw": "Clear and unyielding, diamonds are symbols of purity and precision across the Cosmere. Often used in highcraft or as currency among the more refined cultures, they are valued not only for their brilliance but for their hardness and clarity. A favorite among jewelers and scholars alike.",
-    "cut": "A flawlessly cut diamond, brilliant and razor-sharp in its facets. Favored in fine craftwork and noble regalia, it reflects light—and wealth—with stunning clarity.",
-    "sphere": "A polished diamond sphere, clear and sharply faceted. Can be used to hold Stormlight, and is often employed in illumination-based fabrials or delicate precision work."
+    "raw": "Deep purple crystals that seem to hold twilight within their faceted depths. Prized across the Cosmere for their rich violet hue and mystical associations, amethyst is often favored by scholars and mystics who believe it enhances mental clarity and spiritual insight.",
+    "cut": "A perfectly cut amethyst, its deep purple facets catching light like captured starshine. Often used in ceremonial jewelry and scholarly implements, it radiates an aura of wisdom and mystery.",
+    "sphere": "A polished amethyst sphere, glowing with inner purple light. Can be used to hold Stormlight, and is particularly favored for fabrials requiring mental focus or enhanced perception."
   },
   "color": "9966cc",
   "colorTwo": "4d3366",

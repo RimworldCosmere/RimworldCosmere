@@ -11,6 +11,22 @@ namespace Cosmere.Core.Patch;
 public static class CutoutLUTPatch {
     #region PawnRenderUtility patches
 
+    [HarmonyPatch(typeof(PawnRenderNodeWorker), nameof(PawnRenderNodeWorker.GetMaterialPropertyBlock))]
+    [HarmonyPostfix]
+    public static MaterialPropertyBlock PawnRenderNodeWorkerGetMaterialPropertyBlockPrefix(
+        MaterialPropertyBlock block,
+        PawnRenderNode node,
+        Material material,
+        PawnDrawParms parms
+    ) {
+        if (node.apparel == null || !node.apparel.TryGetComp(out CutoutLUT comp)) return block;
+
+        node.PrimaryGraphic.MatSingle.shader = ShaderDatabase.CutoutLUT;
+        material.shader = ShaderDatabase.CutoutLUT;
+
+        return comp.UpdateMaterialPropertyBlock(block, node.PrimaryGraphic, material);
+    }
+
     [HarmonyPatch(typeof(PawnRenderUtility), nameof(PawnRenderUtility.DrawEquipmentAiming))]
     [HarmonyPrefix]
     public static bool PawnRenderUtilityDrawEquipmentAimingPrefix(Verse.Thing eq, Vector3 drawLoc, float aimAngle) {
@@ -57,7 +73,7 @@ public static class CutoutLUTPatch {
             q: Quaternion.AngleAxis(num, Vector3.up)
         );
 
-        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock();
+        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutLUT.MPB, eq.Graphic, material);
         Graphics.DrawMesh(mesh, matrix, material, 0, null, 0, mpb);
 
         return false;
@@ -84,7 +100,7 @@ public static class CutoutLUTPatch {
     ) {
         if (!__state.TryGetComp(out CutoutLUT comp)) return true;
 
-        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock();
+        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutLUT.MPB, __state.Graphic, mat);
         Graphics.DrawMesh(mesh, loc, quat, mat, 0, null, 0, mpb);
         return false;
     }
@@ -120,7 +136,7 @@ public static class CutoutLUTPatch {
         Vector3 position = loc;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
         Material material = __instance.MatSingleFor(thing);
-        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock();
+        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutLUT.MPB, __instance.SubGraphic, material);
         Graphics.DrawMesh(mesh, position, rotation, material, 0, null, 0, mpb);
         return false;
     }

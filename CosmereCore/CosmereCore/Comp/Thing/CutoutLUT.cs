@@ -226,10 +226,10 @@ public class CutoutLUT : ThingComp {
         Mask? glowMask = GetMask(MaskType.Glow, graphic, material);
         Mask? specialMask = GetMask(MaskType.Special, graphic, material);
 
-        // Set shader keywords for variants
         SetShaderKeywords(material);
 
-        block.SetFloat(CutoutLUTShaderProperties.BlendMode, (byte)props.blendMode);
+        //block.SetFloat(CutoutLUTShaderProperties.BlendMode, (byte)props.blendMode);
+        //block.SetFloat(CutoutLUTShaderProperties.BlendStrength, props.blendStrength);
         block.SetFloat(CutoutLUTShaderProperties.BlendStrength, props.blendStrength);
 
         block.SetLUTColorMask(palettes);
@@ -270,6 +270,19 @@ public class CutoutLUT : ThingComp {
         if (colorMask!.Value.mask != null) {
             block.SetTexture(CutoutLUTShaderProperties.ColorMaskTex, colorMask.Value.mask);
         }
+
+        // Set pre-computed values for performance optimization
+        block.SetVector(
+            CutoutLUTShaderProperties.HighlightParams,
+            new Vector4(
+                8.0f, // x: base highlight size (increased to reduce banding artifacts)
+                4.0f, // y: highlight power
+                0.1f, // z: highlight intensity (reduced to compensate for larger size)
+                0.0f // w: unused
+            )
+        );
+
+        block.SetVector(CutoutLUTShaderProperties.RimLightCenter, new Vector2(0.5f, 0.5f));
 
         return block;
     }

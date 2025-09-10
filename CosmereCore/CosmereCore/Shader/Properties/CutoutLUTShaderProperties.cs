@@ -73,9 +73,6 @@ public static class CutoutLUTShaderProperties {
     /// <summary>Fallback color when no mask is present</summary>
     public static int FallbackColor = UnityEngine.Shader.PropertyToID("_FallbackColor");
 
-    /// <summary>Blend mode for palette transitions (0=None, 1=Linear, 2=Smooth, 3=Sharp, 4=Step)</summary>
-    public static int BlendMode = UnityEngine.Shader.PropertyToID("_BlendMode");
-
     /// <summary>Intensity of metallic/smoothness effects (0-1)</summary>
     public static int MaterialIntensity = UnityEngine.Shader.PropertyToID("_MaterialIntensity");
 
@@ -132,4 +129,10 @@ public static class CutoutLUTShaderProperties {
 
     /// <summary>Pre-computed reciprocal of glow level count (1 / glowLevelCount)</summary>
     public static int GlowZoneSize = UnityEngine.Shader.PropertyToID("_GlowZoneSize");
+
+    /// <summary>Pre-computed sine/cosine values for highlight effects</summary>
+    public static int HighlightParams = UnityEngine.Shader.PropertyToID("_HighlightParams");
+
+    /// <summary>Pre-computed rim light direction vector</summary>
+    public static int RimLightCenter = UnityEngine.Shader.PropertyToID("_RimLightCenter");
 }

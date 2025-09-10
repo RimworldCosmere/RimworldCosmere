@@ -34,7 +34,6 @@ Shader "Unlit/Cutout_LUT" {
         _BlendStrength ("Blend Strength", Range(0, 2)) = 0
         _ColorCount ("Color Count", Float) = 32
         _FallbackColor ("Fallback Color", Color) = (1, 1, 1, 1)
-        _BlendMode ("Blend Mode", Float) = 2
         _MaterialIntensity ("Material Effect Intensity", Range(0, 1)) = 1
         
         // ========================================
@@ -76,12 +75,12 @@ Shader "Unlit/Cutout_LUT" {
             #include "UnityCG.cginc"
             
             // Shader variants for blend modes
-            #pragma shader_feature _ BLEND_LINEAR BLEND_SMOOTH BLEND_SHARP BLEND_STEP
+            #pragma multi_compile _ BLEND_LINEAR BLEND_SMOOTH BLEND_SHARP BLEND_STEP
             
             // Shader variants for mask features
-            #pragma shader_feature _ USE_WEAR_MASK
-            #pragma shader_feature _ USE_GLOW_MASK  
-            #pragma shader_feature _ USE_SPECIAL_MASK
+            #pragma multi_compile _ USE_WEAR_MASK
+            #pragma multi_compile _ USE_GLOW_MASK  
+            #pragma multi_compile _ USE_SPECIAL_MASK
 
             sampler2D _MainTex;
             sampler2D _ColorMaskTex;
@@ -91,7 +90,6 @@ Shader "Unlit/Cutout_LUT" {
             half _BlendStrength;
             half _ColorCount;
             half4 _FallbackColor;
-            half _BlendMode;
             half _MaterialIntensity;
             
             // Multi-channel variables
@@ -109,6 +107,8 @@ Shader "Unlit/Cutout_LUT" {
             // Pre-computed optimization values
             half _WearZoneSize;
             half _GlowZoneSize;
+            half4 _HighlightParams; // x: highlightSize, y: power, z: intensity, w: unused
+            half2 _RimLightCenter;  // Pre-computed rim light center
             
             uniform half4 _Colors[32];
             uniform half _MetallicValues[32];
@@ -143,19 +143,22 @@ Shader "Unlit/Cutout_LUT" {
                     return baseColor;
                 }
 
-                // Sample separate mask textures
+                // Sample mask textures conditionally to avoid unnecessary texture reads
                 half4 colorSample = tex2D(_ColorMaskTex, uv);
-                half4 wearSample = tex2D(_WearMaskTex, uv);
-                half4 glowSample = tex2D(_GlowMaskTex, uv);
-                half4 specialSample = tex2D(_SpecialMaskTex, uv);
+                half4 wearSample = half4(0,0,0,1);
+                half4 glowSample = half4(0,0,0,1);
+                half4 specialSample = half4(0,0,0,1);
                 
-                // If ColorMaskTex sample equals MainTex sample, it means no separate color mask was provided
-                // (Unity defaults to using the same texture when none is specified)
-                // In this case, use inverted MainTex as the color mask
-                if (all(abs(colorSample.rgb - baseColor.rgb) < half3(0.001, 0.001, 0.001))) {
-                    // Use inverted main texture as the color mask
-                    colorSample = half4(half3(1.0, 1.0, 1.0) - baseColor.rgb, baseColor.a);
-                }
+                #ifdef USE_WEAR_MASK
+                    wearSample = tex2D(_WearMaskTex, uv);
+                #endif
+                #ifdef USE_GLOW_MASK
+                    glowSample = tex2D(_GlowMaskTex, uv);
+                #endif
+                #ifdef USE_SPECIAL_MASK
+                    specialSample = tex2D(_SpecialMaskTex, uv);
+                #endif
+                
 
                 if (colorSample.a < half(0.01)) {
                     return baseColor * _FallbackColor;
@@ -163,12 +166,23 @@ Shader "Unlit/Cutout_LUT" {
                 
                 // EXTRACT DATA FROM SEPARATE MASKS
                 half colorIndex = colorSample.r;           // Red channel of color mask
-                half wearAmount = wearSample.r;            // Red channel of wear mask
-                half glowStrength = glowSample.r;          // Red channel of glow mask  
-                half specialZone = specialSample.r;        // Red channel of special mask
+                half wearAmount = half(0.0);
+                half glowStrength = half(0.0);
+                half specialZone = half(0.0);
+                
+                #ifdef USE_WEAR_MASK
+                    wearAmount = wearSample.r;             // Red channel of wear mask
+                #endif
+                #ifdef USE_GLOW_MASK
+                    glowStrength = glowSample.r;           // Red channel of glow mask
+                #endif
+                #ifdef USE_SPECIAL_MASK
+                    specialZone = specialSample.r;         // Red channel of special mask
+                #endif
                                 
-                half lutIndex = colorIndex * half(_ColorCount);
-                int idxA = (int)clamp(floor(lutIndex), 0, _ColorCount - 1);
+                half safeIndex = min(colorIndex, 1.0 - (1.0 / _ColorCount + 1e-5));
+                half lutIndex = safeIndex * _ColorCount;
+                int idxA = (int)floor(lutIndex);
 
                 half4 lutColor;
                 half metallic;
@@ -216,20 +230,14 @@ Shader "Unlit/Cutout_LUT" {
                 half wearIntensity = half(0.0);
                 #ifdef USE_WEAR_MASK
                     if (wearAmount > half(0.01)) {
-                        // Use pre-computed zone size for optimization
-                        int damageZone = (int)(wearAmount * _WearLevelCount);
-                        int currentWearZone = (int)(_CurrentWearLevel * _WearLevelCount);
+                        // Simple wear application - apply wear where mask is present and wear level is active
+                        wearIntensity = _CurrentWearLevel * wearAmount;
+                        half3 wornColor = result.rgb * _WearDarkness;
+                        result.rgb = lerp(result.rgb, wornColor, wearIntensity);
                         
-                        // Only apply wear if current wear level >= this zone's level
-                        if (currentWearZone >= damageZone) {
-                            wearIntensity = _CurrentWearLevel;
-                            half3 wornColor = result.rgb * _WearDarkness;
-                            result.rgb = lerp(result.rgb, wornColor, wearIntensity);
-                            
-                            // Worn metals lose their shine
-                            metallic *= (half(1.0) - wearIntensity * half(0.7));
-                            smoothness *= (half(1.0) - wearIntensity * half(0.5));
-                        }
+                        // Worn metals lose their shine
+                        metallic *= (half(1.0) - wearIntensity * half(0.7));
+                        smoothness *= (half(1.0) - wearIntensity * half(0.5));
                     }
                 #endif
 
@@ -249,32 +257,26 @@ Shader "Unlit/Cutout_LUT" {
                 half shine = pow(max(half(0.0), half(1.0) - length(shinePos - half(0.5)) * half(2.0)), half(4.0));
                 result.rgb += shine * metallic * smoothness * half(0.3) * _MaterialIntensity * wearReduction;
                 
-                // FAKE SMOOTHNESS EFFECTS  
+                // FAKE SMOOTHNESS EFFECTS - Using pre-computed values for performance
                 // 1. Smooth surfaces have tighter, brighter highlights
-                half highlightSize = lerp(half(3.0), half(8.0), smoothness);
+                half highlightSize = lerp(_HighlightParams.x, _HighlightParams.x * half(2.67), smoothness); // 3.0 to 8.0
                 half highlight = pow(saturate(sin(uv.x * highlightSize) * 
                                               sin(uv.y * highlightSize)), 
-                                     lerp(half(1.0), half(4.0), smoothness));
+                                     lerp(half(1.0), _HighlightParams.y, smoothness));
                 
                 // 2. Combine highlight with metallic for final shine
-                result.rgb += highlight * smoothness * metallic * half(0.2) * _MaterialIntensity * wearReduction;
+                result.rgb += highlight * smoothness * metallic * _HighlightParams.z * _MaterialIntensity * wearReduction;
                 
-                // 3. Smooth non-metallic surfaces (like plastic) get a subtle rim light
-                half rimLight = pow(half(1.0) - saturate(dot(half2(0.5, 0.5), uv - half(0.5))), half(2.0));
+                // 3. Smooth non-metallic surfaces (like plastic) get a subtle rim light - using pre-computed center
+                half rimLight = pow(half(1.0) - saturate(dot(_RimLightCenter, uv - half(0.5))), half(2.0));
                 result.rgb += rimLight * smoothness * (half(1.0) - metallic) * half(0.1) * _MaterialIntensity;
 
                 // APPLY GLOW EFFECTS if enabled - AFTER material effects
                 #ifdef USE_GLOW_MASK
                     if (glowStrength > half(0.01)) {
-                        // Convert glow mask value to glow zone using glow level count
-                        int glowZone = (int)(glowStrength * _GlowLevelCount);
-                        
-                        // Only apply glow if current glow level >= this zone's level
-                        if (_CurrentGlowLevel >= glowZone) {
-                            // Calculate glow intensity based on current glow level and level count
-                            half actualGlowIntensity = _CurrentGlowLevel / _GlowLevelCount;
-                            result.rgb += _GlowColor.rgb * actualGlowIntensity * _GlowIntensity;
-                        }
+                        // Simple glow application - glow where mask is present and glow level is active
+                        half actualGlowIntensity = _CurrentGlowLevel * glowStrength;
+                        result.rgb += _GlowColor.rgb * actualGlowIntensity * _GlowIntensity;
                     }
                 #endif
 

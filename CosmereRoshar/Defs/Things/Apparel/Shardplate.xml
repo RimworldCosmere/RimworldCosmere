@@ -58,6 +58,9 @@
             </layers>
             <tags>
                 <li>MedievalMilitary</li>
+                <li>SpacerMilitary</li>
+                <li>PrestigeCombatGear</li>
+                <li>RadiantArmor</li>
             </tags>
             <defaultOutfitTags>
                 <li>Soldier</li>
@@ -86,7 +89,7 @@
         <label>Radiant Shardhelm</label>
         <description>A protective helm formed from lesser spren who have pledged themselves to their Radiant. The helm flows seamlessly with thought and movement, providing enhanced perception and mental clarity while protecting the wearer's most vital area. Like living Shardplate, it reforms instantly when damaged through the spren's unwavering loyalty.</description>
         <graphicData>
-            <texPath>Things/Pawn/Apparel/Shardplate/Helmet</texPath>
+            <texPath>Things/Pawn/Apparel/Shardplate/Helmet/HelmA_South</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <shaderType>CutoutLUT</shaderType>
         </graphicData>
@@ -122,9 +125,10 @@
         </tradeTags>
         
         <apparel>
-            <wornGraphicPath>Things/Pawn/Apparel/Shardplate/Helmet/HelmetB</wornGraphicPath>
+            <wornGraphicPath>Things/Pawn/Apparel/Shardplate/Helmet/HelmA</wornGraphicPath>
             <renderSkipFlags>
                 <li>Hair</li>
+                <li>Beard</li>
             </renderSkipFlags>
             <bodyPartGroups>
                 <li>FullHead</li>
@@ -144,11 +148,11 @@
                 <li>Soldier</li>
                 <li>Spacefarer</li>
             </defaultOutfitTags>
-            <useDeflectMetalEffect>true</useDeflectMetalEffect>
+            <useDeflectMetalEffect>false</useDeflectMetalEffect>
         </apparel>
         <comps>
             <li Class="Cosmere.Core.Comp.Thing.CutoutLUTProperties">
-                <blendStrength>.75</blendStrength>
+                <blendStrength>2</blendStrength>
                 <blendMode>Sharp</blendMode>
                 <useWear>true</useWear>
                 <useGlow>true</useGlow>

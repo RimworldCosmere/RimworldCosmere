@@ -33,10 +33,7 @@ This directory contains comprehensive documentation for the proposed consolidati
 - **Follows RimWorld DLC pattern**
 
 ### Migration Timeline
-- Week 1: Foundation + Resources integration
-- Week 2: Scadrial + Roshar C# integration
-- Week 3: Build system updates + cleanup
-- Week 4: Testing and optimization
+All phases can be completed sequentially at your preferred pace, with each phase building on the previous one.
 
 ## Decision
 

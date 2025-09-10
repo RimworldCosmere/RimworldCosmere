@@ -4,7 +4,7 @@
 
 A phased approach to consolidate 5 separate C# projects into a single CosmereCore assembly while maintaining XML/Asset separation.
 
-## Phase 1: Foundation Integration (Week 1)
+## Phase 1: Foundation Integration
 
 ### Steps
 1. **Create backup branch**: `pre-consolidation-backup`
@@ -26,7 +26,7 @@ A phased approach to consolidate 5 separate C# projects into a single CosmereCor
 - [ ] Game loads without errors
 - [ ] Basic UI components work
 
-## Phase 2: Resources Integration (Week 1-2)
+## Phase 2: Resources Integration
 
 ### Steps
 1. **Move CosmereResources code**:
@@ -54,7 +54,7 @@ A phased approach to consolidate 5 separate C# projects into a single CosmereCor
 - [ ] Gem cutting works
 - [ ] No Resources references remain
 
-## Phase 3: Scadrial C# Integration (Week 2)
+## Phase 3: Scadrial C# Integration
 
 ### Steps
 1. **Create folder structure**:
@@ -79,7 +79,7 @@ A phased approach to consolidate 5 separate C# projects into a single CosmereCor
 - [ ] Hemalurgy spikes work
 - [ ] Mistborn gene functions
 
-## Phase 4: Roshar C# Integration (Week 2-3)
+## Phase 4: Roshar C# Integration
 
 ### Steps
 1. **Create folder structure**:
@@ -104,7 +104,7 @@ A phased approach to consolidate 5 separate C# projects into a single CosmereCor
 - [ ] Fabrials function
 - [ ] Radiant orders selectable
 
-## Phase 5: Build System Updates (Week 3)
+## Phase 5: Build System Updates
 
 ### Steps
 1. **Update .csproj files**:
@@ -129,7 +129,7 @@ A phased approach to consolidate 5 separate C# projects into a single CosmereCor
 - [ ] Code generation works
 - [ ] Release process functions
 
-## Phase 6: Cleanup (Week 3-4)
+## Phase 6: Cleanup
 
 ### Steps
 1. **Remove old projects**:
@@ -174,10 +174,7 @@ If issues arise at any phase:
 
 ## Timeline
 
-- **Week 1**: Phase 1-2 (Foundation + Resources)
-- **Week 2**: Phase 3-4 (World integrations)
-- **Week 3**: Phase 5-6 (Build system + Cleanup)
-- **Week 4**: Testing and optimization
+All phases can be completed in sequence at your preferred pace. Each phase builds on the previous one and includes validation steps to ensure stability.
 
 ## Risk Mitigation
 

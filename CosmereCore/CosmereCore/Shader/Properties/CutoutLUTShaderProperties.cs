@@ -124,11 +124,6 @@ public static class CutoutLUTShaderProperties {
     // PRE-COMPUTED VALUES (OPTIMIZATION)
     // ========================================
 
-    /// <summary>Pre-computed reciprocal of wear level count (1 / wearLevelCount)</summary>
-    public static int WearZoneSize = UnityEngine.Shader.PropertyToID("_WearZoneSize");
-
-    /// <summary>Pre-computed reciprocal of glow level count (1 / glowLevelCount)</summary>
-    public static int GlowZoneSize = UnityEngine.Shader.PropertyToID("_GlowZoneSize");
 
     /// <summary>Pre-computed sine/cosine values for highlight effects</summary>
     public static int HighlightParams = UnityEngine.Shader.PropertyToID("_HighlightParams");

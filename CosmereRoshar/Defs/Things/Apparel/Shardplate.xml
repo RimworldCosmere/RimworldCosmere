@@ -52,6 +52,11 @@
                 <li>Hands</li>
                 <li>Feet</li>
             </bodyPartGroups>
+            <drawData>
+                <defaultData>
+                    <layer>41</layer>
+                </defaultData>
+            </drawData>
             <layers>
                 <li>Middle</li>
                 <li>Shell</li>

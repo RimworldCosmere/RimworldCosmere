@@ -105,8 +105,6 @@ Shader "Unlit/Cutout_LUT" {
             half _GlowIntensity;
             
             // Pre-computed optimization values
-            half _WearZoneSize;
-            half _GlowZoneSize;
             half4 _HighlightParams; // x: highlightSize, y: power, z: intensity, w: unused
             half2 _RimLightCenter;  // Pre-computed rim light center
             

@@ -7,7 +7,7 @@
         <graphicData>
             <texPath>Things/Pawn/Apparel/Shardplate/Armor</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <shaderType>CutoutLUT</shaderType>
+            <shaderType>CutoutAdvanced</shaderType>
         </graphicData>
         <techLevel>Animal</techLevel>
         <smeltable>false</smeltable>
@@ -52,6 +52,9 @@
                 <li>Hands</li>
                 <li>Feet</li>
             </bodyPartGroups>
+            <renderSkipFlags>
+                <li>None</li>
+            </renderSkipFlags>
             <drawData>
                 <defaultData>
                     <layer>41</layer>
@@ -74,7 +77,7 @@
             <useDeflectMetalEffect>true</useDeflectMetalEffect>
         </apparel>
         <comps>
-            <li Class="Cosmere.Core.Comp.Thing.CutoutLUTProperties">
+            <li Class="Cosmere.Core.Comp.Thing.CutoutAdvancedProperties">
                 <blendStrength>.75</blendStrength>
                 <blendMode>Sharp</blendMode>
                 <useWear>true</useWear>
@@ -94,9 +97,9 @@
         <label>Radiant Shardhelm</label>
         <description>A protective helm formed from lesser spren who have pledged themselves to their Radiant. The helm flows seamlessly with thought and movement, providing enhanced perception and mental clarity while protecting the wearer's most vital area. Like living Shardplate, it reforms instantly when damaged through the spren's unwavering loyalty.</description>
         <graphicData>
-            <texPath>Things/Pawn/Apparel/Shardplate/Helmet/HelmA_South</texPath>
+            <texPath>Things/Pawn/Apparel/Shardplate/Helmet/HelmA_south</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <shaderType>CutoutLUT</shaderType>
+            <shaderType>CutoutAdvanced</shaderType>
         </graphicData>
         <techLevel>Animal</techLevel>
         <smeltable>false</smeltable>
@@ -156,11 +159,12 @@
             <useDeflectMetalEffect>false</useDeflectMetalEffect>
         </apparel>
         <comps>
-            <li Class="Cosmere.Core.Comp.Thing.CutoutLUTProperties">
+            <li Class="Cosmere.Core.Comp.Thing.CutoutAdvancedProperties">
                 <blendStrength>2</blendStrength>
                 <blendMode>Sharp</blendMode>
                 <useWear>true</useWear>
                 <useGlow>true</useGlow>
+                <glowIntensity>3</glowIntensity>
             </li>
         </comps>
         

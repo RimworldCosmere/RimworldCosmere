@@ -34,10 +34,10 @@ public struct LUTPaletteMaterial : IExposable {
 }
 
 /// <summary>
-///     Shader property IDs for the CutoutLUT shader system.
+///     Shader property IDs for the CutoutAdvanced shader system.
 ///     Provides multi-texture masking for palette swapping, wear effects, glow effects, and special zones.
 /// </summary>
-public static class CutoutLUTShaderProperties {
+public static class CutoutAdvancedShaderProperties {
     // ========================================
     // BASE TEXTURES
     // ========================================
@@ -70,8 +70,6 @@ public static class CutoutLUTShaderProperties {
     /// <summary>Array of palette colors</summary>
     public static int Colors = UnityEngine.Shader.PropertyToID("_Colors");
 
-    /// <summary>Fallback color when no mask is present</summary>
-    public static int FallbackColor = UnityEngine.Shader.PropertyToID("_FallbackColor");
 
     /// <summary>Intensity of metallic/smoothness effects (0-1)</summary>
     public static int MaterialIntensity = UnityEngine.Shader.PropertyToID("_MaterialIntensity");

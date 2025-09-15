@@ -8,29 +8,54 @@ using Verse;
 namespace Cosmere.Core.Patch;
 
 [HarmonyPatch]
-public static class CutoutLUTPatch {
-    #region PawnRenderUtility patches
-
-    [HarmonyPatch(typeof(PawnRenderNodeWorker), nameof(PawnRenderNodeWorker.GetMaterialPropertyBlock))]
+public static class CutoutAdvancedPatch {
+    [HarmonyPatch(
+        typeof(DynamicPawnRenderNodeSetup_Apparel),
+        nameof(DynamicPawnRenderNodeSetup_Apparel.GetDynamicNodes)
+    )]
     [HarmonyPostfix]
-    public static MaterialPropertyBlock PawnRenderNodeWorkerGetMaterialPropertyBlockPrefix(
-        MaterialPropertyBlock block,
-        PawnRenderNode node,
-        Material material,
-        PawnDrawParms parms
-    ) {
-        if (node.apparel == null || !node.apparel.TryGetComp(out CutoutLUT comp)) return block;
+    public static IEnumerable<(PawnRenderNode node, PawnRenderNode parent)>
+        DynamicPawnRenderNodeSetup_ApparelGetDynamicNodesPostfix(
+            this IEnumerable<(PawnRenderNode node, PawnRenderNode parent)> nodes
+        ) {
+        foreach ((PawnRenderNode?, PawnRenderNode) node in nodes) {
+            if (node.Item1?.apparel?.TryGetComp(out CutoutAdvanced _) ?? false) {
+                node.Item1.Props.subworkerClasses ??= [];
+                node.Item1.Props.subworkerClasses.Add(typeof(Gene.PawnRender.SubWorker.CutoutAdvanced));
+            }
 
-        node.PrimaryGraphic.MatSingle.shader = ShaderDatabase.CutoutLUT;
-        material.shader = ShaderDatabase.CutoutLUT;
-
-        return comp.UpdateMaterialPropertyBlock(block, node.PrimaryGraphic, material);
+            yield return node;
+        }
     }
+
+    [HarmonyPatch(
+        typeof(GenDraw),
+        nameof(GenDraw.DrawMeshNowOrLater),
+        typeof(Mesh),
+        typeof(Matrix4x4),
+        typeof(Material),
+        typeof(bool),
+        typeof(MaterialPropertyBlock)
+    )]
+    [HarmonyPrefix]
+    public static bool GenDrawDrawMeshNowOrLaterPrefix(
+        Mesh mesh,
+        Matrix4x4 matrix,
+        Material mat,
+        bool drawNow,
+        MaterialPropertyBlock? properties = null
+    ) {
+        if (mat.shader != ShaderDatabase.CutoutAdvanced) return true;
+        Graphics.DrawMesh(mesh, matrix, mat, 0, null, 0, properties);
+        return false;
+    }
+
+    #region PawnRenderUtility patches
 
     [HarmonyPatch(typeof(PawnRenderUtility), nameof(PawnRenderUtility.DrawEquipmentAiming))]
     [HarmonyPrefix]
     public static bool PawnRenderUtilityDrawEquipmentAimingPrefix(Verse.Thing eq, Vector3 drawLoc, float aimAngle) {
-        if (!eq.TryGetComp(out CutoutLUT comp)) return true;
+        if (!eq.TryGetComp(out CutoutAdvanced comp)) return true;
 
         float num = aimAngle - 90f;
         Mesh mesh;
@@ -73,7 +98,7 @@ public static class CutoutLUTPatch {
             q: Quaternion.AngleAxis(num, Vector3.up)
         );
 
-        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutLUT.MPB, eq.Graphic, material);
+        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutAdvanced.MPB, eq.Graphic, material);
         Graphics.DrawMesh(mesh, matrix, material, 0, null, 0, mpb);
 
         return false;
@@ -98,9 +123,9 @@ public static class CutoutLUTPatch {
         Quaternion quat,
         Material mat
     ) {
-        if (!__state.TryGetComp(out CutoutLUT comp)) return true;
+        if (!__state.TryGetComp(out CutoutAdvanced comp)) return true;
 
-        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutLUT.MPB, __state.Graphic, mat);
+        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutAdvanced.MPB, __state.Graphic, mat);
         Graphics.DrawMesh(mesh, loc, quat, mat, 0, null, 0, mpb);
         return false;
     }
@@ -123,7 +148,7 @@ public static class CutoutLUTPatch {
         Verse.Thing? thing,
         float extraRotation
     ) {
-        if (thing == null || !thing.TryGetComp(out CutoutLUT comp)) return true;
+        if (thing == null || !thing.TryGetComp(out CutoutAdvanced comp)) return true;
 
         Mesh mesh = __instance.MeshAt(rot);
 
@@ -136,7 +161,11 @@ public static class CutoutLUTPatch {
         Vector3 position = loc;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
         Material material = __instance.MatSingleFor(thing);
-        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(CutoutLUT.MPB, __instance.SubGraphic, material);
+        MaterialPropertyBlock mpb = comp.UpdateMaterialPropertyBlock(
+            CutoutAdvanced.MPB,
+            __instance.SubGraphic,
+            material
+        );
         Graphics.DrawMesh(mesh, position, rotation, material, 0, null, 0, mpb);
         return false;
     }

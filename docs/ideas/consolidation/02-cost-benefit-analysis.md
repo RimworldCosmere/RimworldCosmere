@@ -25,27 +25,22 @@
 - **Follows RimWorld Pattern**: Base game + DLCs all compile to single assemblies
 - **Mod Loading Compatibility**: Reduces potential mod compatibility issues
 - **Steam Workshop Efficiency**: Fewer files to sync and validate
-- **Consistent with Best Practices**: Most successful large mods use single assembly
+- **Consistent with Base Game**: RimWorld and its DLCs share the same code base
 
 ## Costs & Risks
 
 ### Code Organization Challenges
 - **Namespace Management**: 422 files in single project requires discipline
-- **Build Time**: Single large assembly takes longer to compile (~30-60s vs 10-15s per module)
-- **Git Merge Conflicts**: More developers working in same project increases conflict probability
-- **Learning Curve**: New contributors need to understand larger codebase structure
+- **Build Time**: Single large assembly takes longer to compile
+- **Git Merge Conflicts**: More developers working in same project increases conflict possibility
 
 ### Modularity Loss
-- **Feature Isolation**: Can't selectively disable Foundation/Resources features
-- **Testing Complexity**: Unit testing requires mocking more systems
 - **Code Coupling Risk**: Easier to create tight coupling without project boundaries
-- **Dependency Management**: All dependencies loaded even if not needed
+- **Dependency Management**: All dependencies loaded even if not needed.
 
 ### Development Workflow Impact
 - **IDE Performance**: Large projects can slow down IntelliSense and navigation
-- **Parallel Development**: Multiple developers may conflict more in single project
 - **Selective Compilation**: Can't compile just one module during development
-- **Refactoring Scope**: Changes potentially affect entire codebase
 
 ## Mitigation Strategies
 
@@ -63,16 +58,6 @@
 - Feature branches for isolated development
 - Clear coding guidelines
 - Regular refactoring sessions
-
-## Quantitative Analysis
-
-| Metric | Current (5 Assemblies) | Consolidated (1 Assembly) | Impact |
-|--------|------------------------|---------------------------|---------|
-| Load Time | ~2.5s | ~1.0s | -60% |
-| Memory Usage | ~45MB | ~35MB | -22% |
-| Build Time | ~15s (parallel) | ~45s | +200% |
-| Debug Complexity | High | Low | -70% |
-| Merge Conflicts | Low | Medium | +50% |
 
 ## Conclusion
 

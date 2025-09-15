@@ -213,6 +213,12 @@ foreach (var modDir in modDirs)
     
     var buildArgs = $"-v";
     
+    if (!RunCommand("dotnet", "run --project C:\\Users\\aequa\\projects\\RimworldCosmere\\AssetBuilder\\AssetBundleBuilder --no-build -- --ci --non-interactive --debug", modDir))
+    {
+        Console.WriteLine($"    AssetBundleBuilder failed for {modName}!");
+        Environment.Exit(1);
+    }
+
 /*
     if (!RunCommand("assetbundlebuilder", buildArgs, modDir))
     {
@@ -220,13 +226,6 @@ foreach (var modDir in modDirs)
         Environment.Exit(1);
     }
 */
-
-    if (!RunCommand("assetbundlebuilder", buildArgs, modDir))
-    {
-        Console.WriteLine($"    AssetBundleBuilder failed for {modName}!");
-        Environment.Exit(1);
-    }
-
     // Save hash for next build
     Directory.CreateDirectory(bundlesDir);
     File.WriteAllText(hashFile, currentHash, Encoding.ASCII);

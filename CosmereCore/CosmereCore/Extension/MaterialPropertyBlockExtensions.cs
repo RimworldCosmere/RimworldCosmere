@@ -15,9 +15,9 @@ public static class MaterialPropertyBlockExtensions {
             smoothnessValues[i] = palette[i].smoothness;
         }
 
-        block.SetVectorArray(CutoutLUTShaderProperties.Colors, colors);
-        block.SetFloatArray(CutoutLUTShaderProperties.MetallicValues, metallicValues);
-        block.SetFloatArray(CutoutLUTShaderProperties.SmoothnessValues, smoothnessValues);
-        block.SetFloat(CutoutLUTShaderProperties.ColorCount, palette.Count);
+        block.SetVectorArray(CutoutAdvancedShaderProperties.Colors, colors);
+        block.SetFloatArray(CutoutAdvancedShaderProperties.MetallicValues, metallicValues);
+        block.SetFloatArray(CutoutAdvancedShaderProperties.SmoothnessValues, smoothnessValues);
+        block.SetFloat(CutoutAdvancedShaderProperties.ColorCount, palette.Count);
     }
 }

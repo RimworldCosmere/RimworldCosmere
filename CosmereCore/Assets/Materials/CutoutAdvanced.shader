@@ -1,5 +1,5 @@
 ﻿// ========================================
-// CutoutLUT Shader
+// CutoutAdvanced Shader
 // ========================================
 // Multi-texture masking shader for palette swapping, wear, glow, and special effects.
 // Supports configurable levels for progressive wear and glow states.
@@ -17,7 +17,7 @@
 // - Example: 4 wear levels = zones 0-63, 64-127, 128-191, 192-255
 // ========================================
 
-Shader "Unlit/Cutout_LUT" {
+Shader "Unlit/CutoutAdvanced" {
     Properties {
         // ========================================
         // BASE TEXTURES
@@ -33,7 +33,6 @@ Shader "Unlit/Cutout_LUT" {
         // ========================================
         _BlendStrength ("Blend Strength", Range(0, 2)) = 0
         _ColorCount ("Color Count", Float) = 32
-        _FallbackColor ("Fallback Color", Color) = (1, 1, 1, 1)
         _MaterialIntensity ("Material Effect Intensity", Range(0, 1)) = 1
         
         // ========================================
@@ -59,16 +58,24 @@ Shader "Unlit/Cutout_LUT" {
         _GlowIntensity ("Glow Intensity", Range(0, 3)) = 2
     }
     SubShader {
+        Name "CutoutAdvanced"
         Tags {
             "IGNOREPROJECTOR"="true"
-            "QUEUE"="Transparent"
+            "QUEUE"="Transparent-100"
             "RenderType"="Transparent"
         }
         Pass {
+            Name ""
             Blend SrcAlpha OneMinusSrcAlpha, SrcAlpha OneMinusSrcAlpha
             ZClip On
             ZWrite Off
             Cull Off
+
+            Tags {
+                "IGNOREPROJECTOR"="true"
+                "QUEUE"="Transparent-100"
+                "RenderType"="Transparent"
+            }
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -87,65 +94,65 @@ Shader "Unlit/Cutout_LUT" {
             sampler2D _WearMaskTex;
             sampler2D _GlowMaskTex;
             sampler2D _SpecialMaskTex;
-            half _BlendStrength;
-            half _ColorCount;
-            half4 _FallbackColor;
-            half _MaterialIntensity;
+            float _BlendStrength;
+            float _ColorCount;
+            float _MaterialIntensity;
             
             // Multi-channel variables
-            half _UseWearMask;
-            half _UseGlowMask;
-            half _UseSpecialMask;
-            half _WearLevelCount;
-            half _GlowLevelCount;
-            half _CurrentWearLevel;
-            half _CurrentGlowLevel;
-            half _WearDarkness;
-            half4 _GlowColor;
-            half _GlowIntensity;
+            float _UseWearMask;
+            float _UseGlowMask;
+            float _UseSpecialMask;
+            float _WearLevelCount;
+            float _GlowLevelCount;
+            float _CurrentWearLevel;
+            float _CurrentGlowLevel;
+            float _WearDarkness;
+            float4 _GlowColor;
+            float _GlowIntensity;
             
             // Pre-computed optimization values
-            half4 _HighlightParams; // x: highlightSize, y: power, z: intensity, w: unused
-            half2 _RimLightCenter;  // Pre-computed rim light center
+            float4 _HighlightParams; // x: highlightSize, y: power, z: intensity, w: unused
+            float2 _RimLightCenter;  // Pre-computed rim light center
             
-            uniform half4 _Colors[32];
-            uniform half _MetallicValues[32];
-            uniform half _SmoothnessValues[32];
+            uniform float4 _Colors[32];
+            uniform float _MetallicValues[32];
+            uniform float _SmoothnessValues[32];
 
             struct appdata {
                 float4 vertex : POSITION;
-                float4 texcoord : TEXCOORD;
+                float4 color : COLOR;
+                float2 texcoord : TEXCOORD;
             };
 
             struct v2f {
                 float4 position : SV_POSITION;
                 float2 texcoord : TEXCOORD;
+                float4 color : COLOR;
             };
 
             v2f vert(appdata v) {
                 v2f o;
                 o.position = UnityObjectToClipPos(v.vertex);
                 o.texcoord = v.texcoord.xy;
+                o.color = v.color;
                 return o;
             }
 
-            half4 frag(v2f inp) : SV_Target {
-                half2 uv = inp.texcoord.xy;
-                half4 baseColor = tex2D(_MainTex, uv);
+            float4 frag(v2f inp) : SV_Target {
+                float2 uv = inp.texcoord.xy;
+                float4 baseColor = tex2D(_MainTex, uv);
 
-                // Early exit for fully transparent pixels
-                clip(baseColor.a - half(0.01));
-                
-                // Early exit for black pixels
-                if (all(baseColor.rgb < half3(0.001, 0.001, 0.001))) {
+                // Do NOT clip alpha early - do all calculations first like CutoutComplex
+
+                // Early exit for black pixels only (not alpha)
+                if (all(baseColor.rgb < float3(0.001, 0.001, 0.001))) {
                     return baseColor;
                 }
 
-                // Sample mask textures conditionally to avoid unnecessary texture reads
-                half4 colorSample = tex2D(_ColorMaskTex, uv);
-                half4 wearSample = half4(0,0,0,1);
-                half4 glowSample = half4(0,0,0,1);
-                half4 specialSample = half4(0,0,0,1);
+                float4 colorSample = tex2D(_ColorMaskTex, uv);
+                float4 wearSample = float4(0,0,0,1);
+                float4 glowSample = float4(0,0,0,1);
+                float4 specialSample = float4(0,0,0,1);
                 
                 #ifdef USE_WEAR_MASK
                     wearSample = tex2D(_WearMaskTex, uv);
@@ -158,15 +165,12 @@ Shader "Unlit/Cutout_LUT" {
                 #endif
                 
 
-                if (colorSample.a < half(0.01)) {
-                    return baseColor * _FallbackColor;
-                }
                 
                 // EXTRACT DATA FROM SEPARATE MASKS
-                half colorIndex = colorSample.r;           // Red channel of color mask
-                half wearAmount = half(0.0);
-                half glowStrength = half(0.0);
-                half specialZone = half(0.0);
+                float colorIndex = colorSample.r;           // Red channel of color mask
+                float wearAmount = float(0.0);
+                float glowStrength = float(0.0);
+                float specialZone = float(0.0);
                 
                 #ifdef USE_WEAR_MASK
                     wearAmount = wearSample.r;             // Red channel of wear mask
@@ -178,29 +182,29 @@ Shader "Unlit/Cutout_LUT" {
                     specialZone = specialSample.r;         // Red channel of special mask
                 #endif
                                 
-                half safeIndex = min(colorIndex, 1.0 - (1.0 / _ColorCount + 1e-5));
-                half lutIndex = safeIndex * _ColorCount;
+                float safeIndex = min(colorIndex, 1.0 - (1.0 / _ColorCount + 1e-5));
+                float lutIndex = safeIndex * _ColorCount;
                 int idxA = (int)floor(lutIndex);
 
-                half4 lutColor;
-                half metallic;
-                half smoothness;
+                float4 lutColor;
+                float metallic;
+                float smoothness;
 
                 // Cache array values to reduce lookups
-                half4 colorA = _Colors[idxA];
-                half metallicA = _MetallicValues[idxA];
-                half smoothnessA = _SmoothnessValues[idxA];
+                float4 colorA = _Colors[idxA];
+                float metallicA = _MetallicValues[idxA];
+                float smoothnessA = _SmoothnessValues[idxA];
                 
                 // Compile-time blend mode optimization
                 #if defined(BLEND_LINEAR) || defined(BLEND_SMOOTH) || defined(BLEND_SHARP) || defined(BLEND_STEP)
                     int idxB = (int)clamp(idxA + 1, 0, _ColorCount - 1);
-                    half4 colorB = _Colors[idxB];
-                    half metallicB = _MetallicValues[idxB];
-                    half smoothnessB = _SmoothnessValues[idxB];
+                    float4 colorB = _Colors[idxB];
+                    float metallicB = _MetallicValues[idxB];
+                    float smoothnessB = _SmoothnessValues[idxB];
                     
-                    half blend = saturate(frac(lutIndex) * _BlendStrength);
+                    float blend = saturate(frac(lutIndex) * _BlendStrength);
                     
-                    half blendFinal;
+                    float blendFinal;
                     #ifdef BLEND_LINEAR
                         blendFinal = blend;
                     #elif BLEND_SMOOTH
@@ -208,7 +212,7 @@ Shader "Unlit/Cutout_LUT" {
                     #elif BLEND_SHARP
                         blendFinal = blend * blend;
                     #elif BLEND_STEP
-                        blendFinal = step(half(0.5), blend);
+                        blendFinal = step(float(0.5), blend);
                     #endif
                     
                     lutColor = lerp(colorA, colorB, blendFinal);
@@ -221,80 +225,97 @@ Shader "Unlit/Cutout_LUT" {
                     smoothness = smoothnessA;
                 #endif
                 
-                // Apply base color
-                half4 result = baseColor * lutColor;
+                // Apply base color with vertex color like CutoutComplex
+                float4 result = baseColor * lutColor;
 
                 // APPLY WEAR/DAMAGE if enabled
-                half wearIntensity = half(0.0);
+                float wearIntensity = float(0.0);
                 #ifdef USE_WEAR_MASK
-                    if (wearAmount > half(0.01)) {
-                        // Simple wear application - apply wear where mask is present and wear level is active
-                        wearIntensity = _CurrentWearLevel * wearAmount;
-                        half3 wornColor = result.rgb * _WearDarkness;
+                    if (wearAmount > float(0.01)) {
+                        // If wear mask is at maximum brightness (255/255 = 1.0), always show wear at full intensity
+                        if (wearAmount >= float(0.99)) {
+                            wearIntensity = wearAmount; // Permanent full wear
+                        } else {
+                            // Normal wear application based on current wear level
+                            wearIntensity = _CurrentWearLevel * wearAmount;
+                        }
+                        
+                        float3 wornColor = result.rgb * _WearDarkness;
                         result.rgb = lerp(result.rgb, wornColor, wearIntensity);
                         
                         // Worn metals lose their shine
-                        metallic *= (half(1.0) - wearIntensity * half(0.7));
-                        smoothness *= (half(1.0) - wearIntensity * half(0.5));
+                        metallic *= (float(1.0) - wearIntensity * float(0.7));
+                        smoothness *= (float(1.0) - wearIntensity * float(0.5));
                     }
                 #endif
 
                 // FAKE METALLIC EFFECTS
                 // 1. Metallic surfaces are more contrasty and slightly desaturated
-                half3 grayscale = Luminance(result.rgb);
-                result.rgb = lerp(result.rgb, grayscale, metallic * half(0.2) * _MaterialIntensity);
+                float3 grayscale = Luminance(result.rgb);
+                result.rgb = lerp(result.rgb, grayscale, metallic * float(0.2) * _MaterialIntensity);
                 
                 // 2. Add contrast for metallic materials
-                half contrast = lerp(half(1.0), half(1.3), metallic * _MaterialIntensity);
-                result.rgb = saturate((result.rgb - half(0.5)) * contrast + half(0.5));
+                float contrast = lerp(float(1.0), float(1.3), metallic * _MaterialIntensity);
+                result.rgb = saturate((result.rgb - float(0.5)) * contrast + float(0.5));
                 
                 // 3. Fake "shine" based on position - metallic surfaces have hot spots
                 // Consolidate wear reduction calculation to avoid redundancy
-                half wearReduction = half(1.0) - wearIntensity;
-                half2 shinePos = frac(uv * half(3.0));
-                half shine = pow(max(half(0.0), half(1.0) - length(shinePos - half(0.5)) * half(2.0)), half(4.0));
-                result.rgb += shine * metallic * smoothness * half(0.3) * _MaterialIntensity * wearReduction;
+                float wearReduction = float(1.0) - wearIntensity;
+                float2 shinePos = frac(uv * float(3.0));
+                float shine = pow(max(float(0.0), float(1.0) - length(shinePos - float(0.5)) * float(2.0)), float(4.0));
+                result.rgb += shine * metallic * smoothness * float(0.3) * _MaterialIntensity * wearReduction;
                 
                 // FAKE SMOOTHNESS EFFECTS - Using pre-computed values for performance
                 // 1. Smooth surfaces have tighter, brighter highlights
-                half highlightSize = lerp(_HighlightParams.x, _HighlightParams.x * half(2.67), smoothness); // 3.0 to 8.0
-                half highlight = pow(saturate(sin(uv.x * highlightSize) * 
+                float highlightSize = lerp(_HighlightParams.x, _HighlightParams.x * float(2.67), smoothness); // 3.0 to 8.0
+                float highlight = pow(saturate(sin(uv.x * highlightSize) * 
                                               sin(uv.y * highlightSize)), 
-                                     lerp(half(1.0), _HighlightParams.y, smoothness));
+                                     lerp(float(1.0), _HighlightParams.y, smoothness));
                 
                 // 2. Combine highlight with metallic for final shine
                 result.rgb += highlight * smoothness * metallic * _HighlightParams.z * _MaterialIntensity * wearReduction;
                 
                 // 3. Smooth non-metallic surfaces (like plastic) get a subtle rim light - using pre-computed center
-                half rimLight = pow(half(1.0) - saturate(dot(_RimLightCenter, uv - half(0.5))), half(2.0));
-                result.rgb += rimLight * smoothness * (half(1.0) - metallic) * half(0.1) * _MaterialIntensity;
+                float rimLight = pow(float(1.0) - saturate(dot(_RimLightCenter, uv - float(0.5))), float(2.0));
+                result.rgb += rimLight * smoothness * (float(1.0) - metallic) * float(0.1) * _MaterialIntensity;
 
                 // APPLY GLOW EFFECTS if enabled - AFTER material effects
                 #ifdef USE_GLOW_MASK
-                    if (glowStrength > half(0.01)) {
-                        // Simple glow application - glow where mask is present and glow level is active
-                        half actualGlowIntensity = _CurrentGlowLevel * glowStrength;
+                    if (glowStrength > float(0.01)) {
+                        float actualGlowIntensity;
+                        // If glow mask is at maximum brightness (255/255 = 1.0), always glow at full intensity
+                        if (glowStrength >= float(0.99)) {
+                            actualGlowIntensity = glowStrength; // Permanent full glow
+                        } else {
+                            // Normal glow application based on current glow level
+                            actualGlowIntensity = _CurrentGlowLevel * glowStrength;
+                        }
                         result.rgb += _GlowColor.rgb * actualGlowIntensity * _GlowIntensity;
                     }
                 #endif
 
                 // SPECIAL ZONES if enabled
                 #ifdef USE_SPECIAL_MASK
-                    if (specialZone > half(0.01)) {
-                        if (specialZone > half(0.8)) {
+                    if (specialZone > float(0.01)) {
+                        if (specialZone > float(0.8)) {
                             // Gem areas - extra sparkle
-                            half sparkle = frac(sin(dot(uv * half(100.0), half2(12.9898, 78.233))) * half(43758.5453));
-                            result.rgb += sparkle * half(0.5);
-                        } else if (specialZone > half(0.5)) {
+                            float sparkle = frac(sin(dot(uv * float(100.0), float2(12.9898, 78.233))) * float(43758.5453));
+                            result.rgb += sparkle * float(0.5);
+                        } else if (specialZone > float(0.5)) {
                             // Rune areas - pulsing glow
-                            half pulse = sin(_Time.y * half(3.0)) * half(0.5) + half(0.5);
-                            result.rgb += _GlowColor.rgb * pulse * half(0.3);
-                        } else if (specialZone > half(0.3)) {
+                            float pulse = sin(_Time.y * float(3.0)) * float(0.5) + float(0.5);
+                            result.rgb += _GlowColor.rgb * pulse * float(0.3);
+                        } else if (specialZone > float(0.3)) {
                             // Metal inlay - extra metallic shine
-                            result.rgb += shine * half(0.5);
+                            result.rgb += shine * float(0.5);
                         }
                     }
                 #endif
+
+                // Alpha clipping at the very end like CutoutComplex
+                if (result.a < 0.5) {
+                    discard;
+                }
 
                 return result;
             }

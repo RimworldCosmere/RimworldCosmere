@@ -6,9 +6,9 @@ using Logger = Cosmere.Foundation.Logger;
 namespace Cosmere.Core.Comp.Thing;
 
 /// <summary>
-///     Blend modes for transitions between palette colors in CutoutLUT shader
+///     Blend modes for transitions between palette colors in CutoutAdvanced shader
 /// </summary>
-public enum CutoutLUTBlendMode : byte {
+public enum CutoutAdvancedBlendMode : byte {
     /// <summary>No blending - hard transitions</summary>
     None,
 
@@ -26,7 +26,7 @@ public enum CutoutLUTBlendMode : byte {
 }
 
 /// <summary>
-///     Component properties for CutoutLUT shader system.
+///     Component properties for CutoutAdvanced shader system.
 ///     Provides multi-texture masking for palette swapping, wear effects, glow effects, and special zones.
 ///     MASK TEXTURE NAMING CONVENTION:
 ///     - Color mask: [GraphicPath]_mcolor.png
@@ -37,19 +37,17 @@ public enum CutoutLUTBlendMode : byte {
 ///     Artist paints grayscale masks divided into level ranges.
 ///     Example for 4 levels: 0-63, 64-127, 128-191, 192-255
 /// </summary>
-public class CutoutLUTProperties : CompProperties {
+public class CutoutAdvancedProperties : CompProperties {
     // ========================================
     // COLOR PALETTE SYSTEM
     // ========================================
 
     /// <summary>Blend mode for palette color transitions</summary>
-    public CutoutLUTBlendMode blendMode = CutoutLUTBlendMode.Smooth;
+    public CutoutAdvancedBlendMode blendMode = CutoutAdvancedBlendMode.Smooth;
 
     /// <summary>Strength of blending between palette colors (0-2)</summary>
     public float blendStrength = 0.5f;
 
-    /// <summary>Fallback color when no color mask is present</summary>
-    public Color fallbackColor = Color.white;
 
     /// <summary>Color of glow emission</summary>
     public Color glowColor = Color.white;
@@ -93,8 +91,8 @@ public class CutoutLUTProperties : CompProperties {
     /// <summary>Number of wear levels painted in the mask (1-32)</summary>
     public int wearLevelCount = 4;
 
-    public CutoutLUTProperties() {
-        compClass = typeof(CutoutLUT);
+    public CutoutAdvancedProperties() {
+        compClass = typeof(CutoutAdvanced);
     }
 
     public override IEnumerable<string> ConfigErrors(ThingDef parentDef) {
@@ -121,7 +119,7 @@ public class CutoutLUTProperties : CompProperties {
 }
 
 /// <summary>
-///     Types of mask textures used by the CutoutLUT system
+///     Types of mask textures used by the CutoutAdvanced system
 /// </summary>
 public enum MaskType {
     /// <summary>Color palette selection mask</summary>
@@ -141,7 +139,7 @@ public enum MaskType {
 ///     Lazy-loading wrapper for mask textures.
 ///     Automatically loads textures using naming convention: [path]_m[type].png
 /// </summary>
-internal struct Mask(MaskType type, string path) {
+internal class Mask(MaskType type, string path) {
     /// <summary>Whether the texture has been loaded yet</summary>
     public bool loaded;
 
@@ -153,10 +151,15 @@ internal struct Mask(MaskType type, string path) {
     /// </summary>
     public Texture2D? mask {
         get {
-            if (loaded) return maskInt;
+            //if (loaded) return maskInt;
             maskInt = ContentFinder<Texture2D>.Get($"{path}_m{type.ToString().ToLower()}", false);
             if (type == MaskType.Color && maskInt == null) {
                 maskInt = ContentFinder<Texture2D>.Get($"{path}_m", false);
+            }
+
+            if (maskInt != null) {
+                maskInt.ignoreMipmapLimit = true;
+                maskInt.requestedMipmapLevel = 0;
             }
 
             loaded = true;
@@ -167,7 +170,7 @@ internal struct Mask(MaskType type, string path) {
 }
 
 [StaticConstructorOnStartup]
-public class CutoutLUT : ThingComp {
+public class CutoutAdvanced : ThingComp {
     public static readonly MaterialPropertyBlock MPB = new MaterialPropertyBlock();
 
     private readonly Dictionary<(MaskType, string), Mask?> maskCache = [];
@@ -177,7 +180,7 @@ public class CutoutLUT : ThingComp {
 
     public List<LUTPaletteMaterial> palettes = [];
 
-    public new CutoutLUTProperties props => (CutoutLUTProperties)base.props;
+    public new CutoutAdvancedProperties props => (CutoutAdvancedProperties)base.props;
 
     public Material? lastMaterial { get; set; }
 
@@ -212,6 +215,7 @@ public class CutoutLUT : ThingComp {
         lastGraphic = graphic;
         lastMaterial = material;
         block.Clear();
+        block.SetTexture(CutoutAdvancedShaderProperties.MainTex, material.mainTexture);
         if (palettes.Count == 0) {
             palettes = props.palettes;
         }
@@ -228,48 +232,45 @@ public class CutoutLUT : ThingComp {
 
         SetShaderKeywords(material);
 
-        //block.SetFloat(CutoutLUTShaderProperties.BlendMode, (byte)props.blendMode);
-        //block.SetFloat(CutoutLUTShaderProperties.BlendStrength, props.blendStrength);
-        block.SetFloat(CutoutLUTShaderProperties.BlendStrength, props.blendStrength);
+        //block.SetFloat(CutoutAdvancedShaderProperties.BlendMode, (byte)props.blendMode);
+        //block.SetFloat(CutoutAdvancedShaderProperties.BlendStrength, props.blendStrength);
+        block.SetFloat(CutoutAdvancedShaderProperties.BlendStrength, props.blendStrength);
 
+        material.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask!.mask);
+        block.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, colorMask!.mask);
         block.SetLUTColorMask(palettes);
-        block.SetFloat(CutoutLUTShaderProperties.MaterialIntensity, props.materialIntesity);
+        block.SetFloat(CutoutAdvancedShaderProperties.MaterialIntensity, props.materialIntesity);
 
-        block.SetFloat(CutoutLUTShaderProperties.UseWearMask, props.useWear ? 1 : 0);
+        block.SetFloat(CutoutAdvancedShaderProperties.UseWearMask, props.useWear ? 1 : 0);
         if (props.useWear) {
-            block.SetFloat(CutoutLUTShaderProperties.WearDarkness, props.wearDarkness);
-            block.SetFloat(CutoutLUTShaderProperties.CurrentWearLevel, currentWearLevel);
-            block.SetFloat(CutoutLUTShaderProperties.WearLevelCount, props.wearLevelCount);
-            if (wearMask.HasValue && wearMask.Value.mask != null) {
-                block.SetTexture(CutoutLUTShaderProperties.WearMaskTex, wearMask.Value.mask);
+            block.SetFloat(CutoutAdvancedShaderProperties.WearDarkness, props.wearDarkness);
+            block.SetFloat(CutoutAdvancedShaderProperties.CurrentWearLevel, currentWearLevel);
+            block.SetFloat(CutoutAdvancedShaderProperties.WearLevelCount, props.wearLevelCount);
+            if (wearMask?.mask != null) {
+                block.SetTexture(CutoutAdvancedShaderProperties.WearMaskTex, wearMask.mask);
             }
         }
 
-        block.SetFloat(CutoutLUTShaderProperties.UseGlowMask, props.useGlow ? 1 : 0);
+        block.SetFloat(CutoutAdvancedShaderProperties.UseGlowMask, props.useGlow ? 1 : 0);
         if (props.useGlow) {
-            block.SetColor(CutoutLUTShaderProperties.GlowColor, props.glowColor);
-            block.SetFloat(CutoutLUTShaderProperties.GlowIntensity, props.glowIntensity);
-            block.SetFloat(CutoutLUTShaderProperties.CurrentGlowLevel, currentGlowLevel);
-            block.SetFloat(CutoutLUTShaderProperties.GlowLevelCount, props.glowLevelCount);
-            if (glowMask.HasValue && glowMask.Value.mask != null) {
-                block.SetTexture(CutoutLUTShaderProperties.GlowMaskTex, glowMask.Value.mask);
+            block.SetColor(CutoutAdvancedShaderProperties.GlowColor, props.glowColor);
+            block.SetFloat(CutoutAdvancedShaderProperties.GlowIntensity, props.glowIntensity);
+            block.SetFloat(CutoutAdvancedShaderProperties.CurrentGlowLevel, currentGlowLevel);
+            block.SetFloat(CutoutAdvancedShaderProperties.GlowLevelCount, props.glowLevelCount);
+            if (glowMask?.mask != null) {
+                block.SetTexture(CutoutAdvancedShaderProperties.GlowMaskTex, glowMask.mask);
             }
         }
 
-        block.SetFloat(CutoutLUTShaderProperties.UseSpecialMask, props.useSpecial ? 1 : 0);
-        if (props.useSpecial && specialMask.HasValue && specialMask.Value.mask != null) {
-            block.SetTexture(CutoutLUTShaderProperties.SpecialMaskTex, specialMask.Value.mask);
+        block.SetFloat(CutoutAdvancedShaderProperties.UseSpecialMask, props.useSpecial ? 1 : 0);
+        if (props.useSpecial && specialMask?.mask != null) {
+            block.SetTexture(CutoutAdvancedShaderProperties.SpecialMaskTex, specialMask.mask);
         }
 
-        block.SetColor(CutoutLUTShaderProperties.FallbackColor, props.fallbackColor);
-
-        if (colorMask!.Value.mask != null) {
-            block.SetTexture(CutoutLUTShaderProperties.ColorMaskTex, colorMask.Value.mask);
-        }
 
         // Set pre-computed values for performance optimization
         block.SetVector(
-            CutoutLUTShaderProperties.HighlightParams,
+            CutoutAdvancedShaderProperties.HighlightParams,
             new Vector4(
                 8.0f, // x: base highlight size (increased to reduce banding artifacts)
                 4.0f, // y: highlight power
@@ -278,7 +279,7 @@ public class CutoutLUT : ThingComp {
             )
         );
 
-        block.SetVector(CutoutLUTShaderProperties.RimLightCenter, new Vector2(0.5f, 0.5f));
+        block.SetVector(CutoutAdvancedShaderProperties.RimLightCenter, new Vector2(0.5f, 0.5f));
 
         return block;
     }
@@ -296,16 +297,16 @@ public class CutoutLUT : ThingComp {
         material.DisableKeyword("BLEND_STEP");
 
         switch (props.blendMode) {
-            case CutoutLUTBlendMode.Linear:
+            case CutoutAdvancedBlendMode.Linear:
                 material.EnableKeyword("BLEND_LINEAR");
                 break;
-            case CutoutLUTBlendMode.Smooth:
+            case CutoutAdvancedBlendMode.Smooth:
                 material.EnableKeyword("BLEND_SMOOTH");
                 break;
-            case CutoutLUTBlendMode.Sharp:
+            case CutoutAdvancedBlendMode.Sharp:
                 material.EnableKeyword("BLEND_SHARP");
                 break;
-            case CutoutLUTBlendMode.Step:
+            case CutoutAdvancedBlendMode.Step:
                 material.EnableKeyword("BLEND_STEP");
                 break;
         }

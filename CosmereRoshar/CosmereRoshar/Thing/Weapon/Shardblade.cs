@@ -5,7 +5,7 @@ using Verse;
 namespace Cosmere.Roshar.Thing.Weapon;
 
 public abstract class Shardblade : ThingWithComps, IDynamicPalette {
-    private CutoutLUT cutoutLUT => GetComp<CutoutLUT>();
+    private CutoutAdvanced cutoutLUT => GetComp<CutoutAdvanced>();
 
     public abstract List<LUTPaletteMaterial> GetMaterials();
 

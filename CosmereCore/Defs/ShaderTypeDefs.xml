@@ -5,7 +5,7 @@
         <shaderPath>CirclePulse</shaderPath>
     </ShaderTypeDef>
     <ShaderTypeDef>
-        <defName>CutoutLUT</defName>
-        <shaderPath>CutoutLUT</shaderPath>
+        <defName>CutoutAdvanced</defName>
+        <shaderPath>CutoutAdvanced</shaderPath>
     </ShaderTypeDef>
 </Defs>

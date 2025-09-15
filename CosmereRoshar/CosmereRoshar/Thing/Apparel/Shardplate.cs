@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Cosmere.Roshar.Thing.Apparel;
 
 public abstract class Shardplate : RimWorld.Apparel, IDynamicPalette {
-    protected CutoutLUT cutoutLUT => GetComp<CutoutLUT>();
+    protected CutoutAdvanced cutoutLUT => GetComp<CutoutAdvanced>();
 
     public abstract List<LUTPaletteMaterial> GetMaterials();
 

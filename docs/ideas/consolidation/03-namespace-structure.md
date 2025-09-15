@@ -84,7 +84,7 @@ using Cosmere.Magic.Scadrial.Allomancy;
 - Place shared utilities in root `Cosmere.*` namespaces
 
 ### DON'T:
-- Cross-reference between `Cosmere.Magic.Roshar` and `Cosmere.Magic.Scadrial` directly
+- Cross-reference between `Cosmere.Magic.Roshar` and `Cosmere.Magic.Scadrial` directly without mod checks
 - Create world-specific code outside of `Cosmere.Magic.{World}`
 - Mix concerns within a single namespace
 - Create deeply nested namespaces (max 4 levels)
@@ -102,11 +102,51 @@ namespace Cosmere.Magic.Roshar.Surgebinding {
     }
 }
 
-// ❌ BAD: Direct cross-world reference
+// ✅ ACCEPTABLE: Cross-world reference with mod checks
+namespace Cosmere.Magic.Roshar.Surgebinding {
+    public void InteractWithAllomancy() {
+        // Always check if the other mod is loaded first
+        if (ModsConfig.IsActive("aequa.cosmere.scadrial")) {
+            var allomancyPower = GetAllomancyPower(); // Safe to reference
+        }
+    }
+}
+
+// ❌ BAD: Direct cross-world reference without mod checks
 namespace Cosmere.Magic.Roshar.Surgebinding {
     public void UseWith(Cosmere.Magic.Scadrial.Allomancy.Power power) {
-        // Never directly reference other magic systems
+        // Will crash if Scadrial mod is not loaded
     }
+}
+```
+
+## Mod Dependency Safety
+
+When referencing cross-world systems, always use one of these patterns:
+
+### Pattern 1: ModsConfig Check
+```csharp
+if (ModsConfig.IsActive("aequa.cosmere.scadrial")) {
+    // Safe to use Scadrial classes here
+}
+```
+
+### Pattern 2: Assembly Loading Check
+```csharp
+if (LoadedModManager.RunningMods.Any(m => m.PackageId == "aequa.cosmere.scadrial")) {
+    // Safe to use Scadrial classes here
+}
+```
+
+### Pattern 3: Try-Catch for Type Loading
+```csharp
+try {
+    var scadrialType = Type.GetType("Cosmere.Magic.Scadrial.SomeClass");
+    if (scadrialType != null) {
+        // Safe to use reflection-based access
+    }
+} catch (Exception) {
+    // Scadrial mod not available
 }
 ```
 

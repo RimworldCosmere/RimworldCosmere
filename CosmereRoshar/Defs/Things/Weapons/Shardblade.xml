@@ -6,7 +6,7 @@
         <graphicData>
             <texPath>Things/Weapon/Shardblade/SwordI</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <shaderType>CutoutLUT</shaderType>
+            <shaderType>CutoutAdvanced</shaderType>
             <drawSize>(1.5, 1.5)</drawSize>
         </graphicData>
         <techLevel>Animal</techLevel>
@@ -56,7 +56,7 @@
             <li>Shardblade</li>
         </tradeTags>
         <comps>
-            <li Class="Cosmere.Core.Comp.Thing.CutoutLUTProperties">
+            <li Class="Cosmere.Core.Comp.Thing.CutoutAdvancedProperties">
                 <blendStrength>0.75</blendStrength>
                 <blendMode>Smooth</blendMode>
             </li>

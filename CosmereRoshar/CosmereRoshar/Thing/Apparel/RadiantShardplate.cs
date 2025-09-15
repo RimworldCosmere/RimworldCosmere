@@ -63,6 +63,8 @@ public class RadiantShardplate : Shardplate {
             return [
                 colorThree,
                 colorTwo,
+                colorOne,
+                colorTwo,
             ];
         }
 

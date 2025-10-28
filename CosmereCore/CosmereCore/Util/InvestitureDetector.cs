@@ -63,7 +63,7 @@ public static class InvestitureDetector {
                 Building? edifice = cell.GetEdifice(thing.Map);
                 if (edifice == null) continue;
 
-                if (!edifice.def.Equals(Resources.ThingDefOf.Aluminum)) return false;
+                if (!edifice.Stuff?.Equals(ThingDefOf.Aluminum) ?? true) return false;
             }
         }
 

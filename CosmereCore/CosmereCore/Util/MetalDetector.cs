@@ -51,7 +51,7 @@ public static class MetalDetector {
         }
 
         if (thing.Stuff != null) {
-            if (thing.Stuff.IsMetal && !thing.Stuff.Equals(Resources.ThingDefOf.Aluminum) ||
+            if (thing.Stuff.IsMetal && !thing.Stuff.Equals(ThingDefOf.Aluminum) ||
                 GetLinkedMetals(thing.Stuff, allowAluminum).Count > 0) {
                 float mass = thing.Stuff.GetStatValueAbstract(RimWorld.StatDefOf.Mass, thing.Stuff);
 

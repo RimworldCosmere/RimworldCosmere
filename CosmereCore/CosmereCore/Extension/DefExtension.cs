@@ -3,7 +3,7 @@ using Verse;
 namespace Cosmere.Extension;
 
 public static class DefExtension {
-    public static bool IsOneOf(this Verse.Def def, params Def[] defs) {
+    public static bool IsOneOf(this Verse.Def def, params Verse.Def[] defs) {
         return defs.Any(def.Equals);
     }
 

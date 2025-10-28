@@ -9,11 +9,11 @@ public class FoundationListing : Listing_Standard {
     public float CurrentX => curX;
     public Rect ListingRect => listingRect;
 
-    public new void Gap(float? gapHeight = null) {
+    public void Gap(float? gapHeight = null) {
         curY += gapHeight ?? Spacing.Get();
     }
 
-    public new void GapLine(float? gapHeight = null, Color? color = null) {
+    public void GapLine(float? gapHeight = null, Color? color = null) {
         gapHeight ??= Spacing.Get();
         color ??= new Color(1f, 1f, 1f, 0.4f);
 

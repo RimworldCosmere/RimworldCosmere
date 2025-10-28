@@ -1,6 +1,5 @@
-using Cosmere.Resources;
-using Cosmere.Resources.Def;
-using Cosmere.Resources.DefModExtension;
+using Cosmere.Def;
+using Cosmere.DefModExtension;
 using RimWorld;
 using Verse;
 

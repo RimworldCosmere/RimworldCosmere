@@ -1,5 +1,5 @@
 using Cosmere.Core.Gene;
-using Cosmere.Resources.DefModExtension;
+using Cosmere.DefModExtension;
 using Cosmere.Scadrial.Def;
 using Cosmere.Scadrial.Utility;
 using UnityEngine;

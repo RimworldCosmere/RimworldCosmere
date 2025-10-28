@@ -47,7 +47,7 @@
         <Using Include="System.Collections.Generic"/>
         <Using Include="Cosmere.Extension"/>
         <!-- Temporarily commented for Phase 1 - Resources will be merged in Phase 2 -->
-        <!-- <Using Include="Cosmere.Resources.Extension"/> -->
+        <!-- <Using Include="Cosmere.Extension"/> -->
         <Using Include="Cosmere.Core.Extension"/>
     </ItemGroup>
 

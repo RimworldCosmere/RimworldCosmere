@@ -1,6 +1,6 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
-using Cosmere.Resources.Def;
+using Cosmere.Def;
 using RimWorld;
 using Verse;
 

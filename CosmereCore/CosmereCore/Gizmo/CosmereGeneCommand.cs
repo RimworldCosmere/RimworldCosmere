@@ -225,7 +225,7 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
 
     protected virtual Rect DrawIconBox(ref bool mouseOverElement) {
         Rect rect = new Rect(mainRect!.Value.x, mainRect.Value.y, mainRect.Value.height, mainRect.Value.height);
-        UI.DrawIcon(
+        Cosmere.Util.UI.DrawIcon(
             rect,
             cachedIcon ??= GetIcon(),
             Command.BGTex,

@@ -6,7 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Scadrial", "Cosmere
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Core", "CosmereCore\CosmereCore\Cosmere.Core.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Resources", "CosmereResources\CosmereResources\Cosmere.Resources.csproj", "{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Roshar", "CosmereRoshar\CosmereRoshar\Cosmere.Roshar.csproj", "{158A91D6-55E5-4686-B132-73B43CB1D20C}"
 EndProject
@@ -27,10 +26,6 @@ Global
 		{5F1D8C6D-E127-4001-A575-E56D99DF271F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F1D8C6D-E127-4001-A575-E56D99DF271F}.Release|Any CPU.Build.0 = Debug|Any CPU
 		
-								{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-								{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-								{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-								{69B78F0C-63E1-47A1-9FD4-B5CCE63D727F}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{158A91D6-55E5-4686-B132-73B43CB1D20C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{158A91D6-55E5-4686-B132-73B43CB1D20C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{158A91D6-55E5-4686-B132-73B43CB1D20C}.Release|Any CPU.ActiveCfg = Release|Any CPU

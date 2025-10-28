@@ -1,7 +1,7 @@
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Comp.Thing;
 using Cosmere.Quickstart;
-using Cosmere.Resources.Def;
+using Cosmere.Def;
 using RimWorld;
 using Verse;
 

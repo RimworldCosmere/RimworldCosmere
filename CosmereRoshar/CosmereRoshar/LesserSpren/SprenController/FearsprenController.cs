@@ -1,6 +1,6 @@
 using System.Text;
 using Cosmere.Resources;
-using Cosmere.Resources.Def;
+using Cosmere.Def;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using RimWorld;
 using UnityEngine;

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
 using Cosmere.Core.Comp.Thing;
-using Cosmere.Resources.Def;
-using Cosmere.Resources.DefModExtension;
+using Cosmere.Def;
+using Cosmere.DefModExtension;
 using UnityEngine;
 using Verse;
 

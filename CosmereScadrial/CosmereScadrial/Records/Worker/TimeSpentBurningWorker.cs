@@ -1,4 +1,4 @@
-using Cosmere.Resources.Def;
+using Cosmere.Def;
 using Cosmere.Scadrial.Gene;
 using RimWorld;
 using Verse;

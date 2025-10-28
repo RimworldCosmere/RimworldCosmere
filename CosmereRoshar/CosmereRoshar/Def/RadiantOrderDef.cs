@@ -1,5 +1,5 @@
 using System;
-using Cosmere.Resources.Def;
+using Cosmere.Def;
 using Cosmere.Roshar.Surgebinding.IdealChecker;
 using RimWorld;
 using UnityEngine;

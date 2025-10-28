@@ -1,6 +1,6 @@
 ﻿using Cosmere.Def;
 
-namespace Cosmere.Resources.DefModExtension;
+namespace Cosmere.DefModExtension;
 
 public class GemsLinked : Verse.DefModExtension {
     // ReSharper disable once InconsistentNaming

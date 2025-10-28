@@ -1,4 +1,4 @@
-﻿using Cosmere.Resources.Def;
+﻿using Cosmere.Def;
 using Cosmere.Roshar.LesserSpren.ParticleSystem;
 using UnityEngine;
 using Verse;

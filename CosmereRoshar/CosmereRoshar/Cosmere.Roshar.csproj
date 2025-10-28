@@ -46,7 +46,7 @@
         <Using Include="System.Linq"/>
         <Using Include="System.Collections.Generic"/>
         <Using Include="Cosmere.Extension"/>
-        <Using Include="Cosmere.Resources.Extension"/>
+        <Using Include="Cosmere.Extension"/>
         <Using Include="Cosmere.Core.Extension"/>
         <Using Include="Cosmere.Roshar.Extension"/>
     </ItemGroup>
@@ -57,7 +57,6 @@
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <ProjectReference Include="..\..\CosmereResources\CosmereResources\Cosmere.Resources.csproj"/>
         <ProjectReference Include="..\..\CosmereCore\CosmereCore\Cosmere.Core.csproj"/>
 
         <!-- Include all DLLs from potential RimWorld installation paths -->

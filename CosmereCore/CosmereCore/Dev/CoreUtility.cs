@@ -13,7 +13,7 @@ public static class CoreUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void FillInvestiture() {
-        foreach (Verse.Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(UI.MouseCell())) {
+        foreach (Verse.Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(Verse.UI.MouseCell())) {
             thing.TryGetComp<InvestitureHolder>()?.FillInvestiture();
         }
     }
@@ -25,7 +25,7 @@ public static class CoreUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void WipePawnInvestiture() {
-        foreach (Verse.Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(UI.MouseCell())) {
+        foreach (Verse.Thing thing in Find.CurrentMap.thingGrid.ThingsListAt(Verse.UI.MouseCell())) {
             thing.TryGetComp<InvestitureHolder>()?.WipeInvestiture();
         }
     }

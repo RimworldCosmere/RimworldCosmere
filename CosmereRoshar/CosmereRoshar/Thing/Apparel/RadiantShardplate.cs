@@ -1,5 +1,5 @@
 ﻿using Cosmere.Core.Shader.Properties;
-using Cosmere.Resources.Def;
+using Cosmere.Def;
 using Cosmere.Roshar.Def;
 using Cosmere.Roshar.Surgebinding.Ability;
 using UnityEngine;

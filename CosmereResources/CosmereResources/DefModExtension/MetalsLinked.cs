@@ -1,4 +1,4 @@
-﻿using Cosmere.Resources.Def;
+﻿using Cosmere.Def;
 
 namespace Cosmere.Resources.DefModExtension;
 

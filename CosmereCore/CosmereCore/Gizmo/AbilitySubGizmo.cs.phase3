@@ -121,7 +121,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
         MouseoverSounds.DoRegion(rect, RimWorld.SoundDefOf.Mouseover_Command);
         if (parms.highLight && !disabled) Widgets.DrawStrongHighlight(rect.ExpandedBy(4f));
 
-        UI.DrawIcon(
+        Cosmere.Util.UI.DrawIcon(
             rect,
             icon,
             background,

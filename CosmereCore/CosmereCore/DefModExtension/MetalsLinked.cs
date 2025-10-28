@@ -1,12 +1,12 @@
 ﻿using Cosmere.Def;
 
-namespace Cosmere.Resources.DefModExtension;
+namespace Cosmere.DefModExtension;
 
-public class GemsLinked : Verse.DefModExtension {
+public class MetalsLinked : Verse.DefModExtension {
     // ReSharper disable once InconsistentNaming
-    public List<GemDef> Gems => gems ?? (gem != null ? [gem] : []);
+    public List<MetalDef> Metals => metals ?? (metal != null ? [metal] : []);
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
-    private GemDef? gem;
-    private List<GemDef>? gems;
+    private MetalDef? metal;
+    private List<MetalDef>? metals;
 #pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
 }

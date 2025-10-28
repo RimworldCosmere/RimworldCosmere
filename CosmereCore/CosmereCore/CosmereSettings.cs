@@ -6,14 +6,14 @@ namespace Cosmere;
 
 public sealed class CosmereSettings : ModSettings {
     public override void ExposeData() {
-        foreach (CosmereModSettings modSettings in Foundation.Mod.cosmereSettings) {
+        foreach (CosmereModSettings modSettings in Cosmere.Mod.cosmereSettings) {
             modSettings.ExposeData();
         }
     }
 
     public static bool TryGetRaw(string modId, string key, out object? value) {
         CosmereModSettings? modSettings =
-            Foundation.Mod.cosmereSettings.FirstOrDefault(m => m.GetType().Assembly.GetName().Name.Contains(modId));
+            Cosmere.Mod.cosmereSettings.FirstOrDefault(m => m.GetType().Assembly.GetName().Name.Contains(modId));
 
         value = null;
         if (modSettings == null) return false;

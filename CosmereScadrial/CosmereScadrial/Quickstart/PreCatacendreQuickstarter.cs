@@ -1,5 +1,5 @@
 using Cosmere.Core.Need;
-using Cosmere.Foundation.Quickstart;
+using Cosmere.Quickstart;
 using Cosmere.Resources;
 using Cosmere.Resources.Def;
 using Cosmere.Scadrial.Def;

@@ -44,7 +44,7 @@
     <ItemGroup>
         <Using Include="System.Linq"/>
         <Using Include="System.Collections.Generic"/>
-        <Using Include="Cosmere.Foundation.Extension"/>
+        <Using Include="Cosmere.Extension"/>
         <Using Include="Cosmere.Resources.Extension"/>
         <Using Include="Cosmere.Core.Extension"/>
         <Using Include="Cosmere.Scadrial.Extension"/>
@@ -56,7 +56,6 @@
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <ProjectReference Include="..\..\CosmereFoundation\CosmereFoundation\Cosmere.Foundation.csproj"/>
         <ProjectReference Include="..\..\CosmereResources\CosmereResources\Cosmere.Resources.csproj"/>
         <ProjectReference Include="..\..\CosmereCore\CosmereCore\Cosmere.Core.csproj"/>
 

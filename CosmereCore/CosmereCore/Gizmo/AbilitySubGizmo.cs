@@ -7,7 +7,7 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
-using UI = Cosmere.Foundation.Util.UI;
+using UI = Cosmere.Util.UI;
 
 namespace Cosmere.Core.Gizmo;
 

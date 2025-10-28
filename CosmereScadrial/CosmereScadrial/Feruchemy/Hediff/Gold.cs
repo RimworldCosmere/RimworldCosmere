@@ -1,4 +1,4 @@
-using Cosmere.Foundation;
+using Cosmere;
 using Cosmere.Resources;
 using Cosmere.Scadrial.Gene;
 using Verse;

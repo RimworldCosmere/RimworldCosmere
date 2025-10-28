@@ -1,7 +1,7 @@
 ﻿using Cosmere.Core.Shader.Properties;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Foundation.Logger;
+using Logger = Cosmere.Logger;
 
 namespace Cosmere.Core.Comp.Thing;
 

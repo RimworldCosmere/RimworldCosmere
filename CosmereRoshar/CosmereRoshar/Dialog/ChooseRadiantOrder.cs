@@ -1,6 +1,6 @@
-﻿using Cosmere.Foundation.Listing;
-using Cosmere.Foundation.UI;
-using Cosmere.Foundation.Window;
+﻿using Cosmere.Listing;
+using Cosmere.UI;
+using Cosmere.Window;
 using Cosmere.Roshar.Def;
 using UnityEngine;
 using Verse;

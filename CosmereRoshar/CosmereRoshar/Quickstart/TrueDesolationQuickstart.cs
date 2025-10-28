@@ -1,6 +1,6 @@
 using Cosmere.Core.Comp.Thing;
-using Cosmere.Foundation.Comp.Thing;
-using Cosmere.Foundation.Quickstart;
+using Cosmere.Comp.Thing;
+using Cosmere.Quickstart;
 using Cosmere.Resources.Def;
 using RimWorld;
 using Verse;

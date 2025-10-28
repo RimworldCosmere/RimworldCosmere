@@ -1,4 +1,4 @@
-using Cosmere.Foundation;
+using Cosmere;
 using LudeonTK;
 using RimWorld;
 using Verse;

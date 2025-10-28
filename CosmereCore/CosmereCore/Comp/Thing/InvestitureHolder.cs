@@ -1,5 +1,5 @@
 using System.Text;
-using Cosmere.Foundation.Comp.Thing;
+using Cosmere.Comp.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;

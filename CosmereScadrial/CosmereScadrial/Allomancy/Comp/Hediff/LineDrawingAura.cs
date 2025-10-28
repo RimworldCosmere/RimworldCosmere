@@ -1,4 +1,4 @@
-using Cosmere.Foundation.Comp.Map;
+using Cosmere.Comp.Map;
 using Cosmere.Scadrial.Allomancy.Ability;
 using Cosmere.Scadrial.Allomancy.Hediff;
 using Cosmere.Scadrial.Def;

@@ -1,4 +1,4 @@
-﻿using Cosmere.Foundation;
+﻿using Cosmere;
 using Cosmere.Resources.Settings;
 using Verse;
 

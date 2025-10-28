@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-guid: db78eb9a904fe1444bd64d7f7195d19f
+guid: 1c4832acf0dd27d419b220adab7d51b2
 ShaderImporter:
   externalObjects: {}
   defaultTextures: []
   nonModifiableTextures: []
   userData: 
-  assetBundleName: cosmere.core
+  assetBundleName: cosmere.core_shaders
   assetBundleVariant: 

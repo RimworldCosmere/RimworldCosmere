@@ -3,7 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using Logger = Cosmere.Foundation.Logger;
+using Logger = Cosmere.Logger;
 
 namespace Cosmere.Core.Comp.Hediff;
 

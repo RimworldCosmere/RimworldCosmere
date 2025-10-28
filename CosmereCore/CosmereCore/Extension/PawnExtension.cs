@@ -1,109 +1,126 @@
 using System;
-using Cosmere.Core.Ability;
-using Cosmere.Core.Gene;
-using Cosmere.Core.Hediff;
-using Cosmere.Core.Util;
+using System.Reflection;
+using RimWorld;
+using UnityEngine;
 using Verse;
+using Verse.AI;
 
-namespace Cosmere.Core.Extension;
+namespace Cosmere.Extension;
 
+[StaticConstructorOnStartup]
 public static class PawnExtension {
-    public static bool IsShieldedAgainstInvestiture(this Pawn pawn) {
-        return InvestitureDetector.IsShielded(pawn);
-    }
+    private static readonly Assembly? Scadrial = LoadedModManager.RunningMods
+        .FirstOrDefault(m => m.PackageId.Equals("cosmere.scadrial", StringComparison.CurrentCultureIgnoreCase))
+        ?.assemblies.loadedAssemblies.FirstOrDefault();
 
-    public static IHediff<TGene>? GetOrAddHediff<TGene>(
+    public static void MaintainProximityTo(
         this Pawn pawn,
-        IAbility<TGene, IHediff<TGene>> ability,
-        HediffDef? hediffDef
-    ) where TGene : Invested {
-        if (hediffDef == null || ability == null) return null;
+        LocalTargetInfo target,
+        float maxDistance,
+        PathEndMode endMode
+    ) {
+        float distance = pawn.Position.DistanceTo(target.CenterVector3.ToIntVec3());
 
-        if (pawn.TryGetHediff<TGene, IHediff<TGene>>(hediffDef, out IHediff<TGene> hediff)) {
-            hediff.AddSource(ability);
-            return hediff;
+        if (distance > maxDistance && !pawn.pather.MovingNow) {
+            // Only re-path if not already moving, avoids constant path spam
+            pawn.pather.StartPath(target, endMode);
+        } else if (distance <= maxDistance && pawn.pather.MovingNow) {
+            // Stop if already within desired range
+            pawn.pather.StopDead();
+            pawn.jobs.curDriver.Notify_PatherArrived();
         }
-
-        IHediff<TGene> newHediff = pawn.CreateHediff(hediffDef, ability);
-
-        pawn.health.AddHediff(newHediff as HediffWithComps);
-
-        return newHediff;
     }
 
-    public static AbstractHediff<TGene>? GetOrAddHediff<TGene>(
+    public static bool IsAsleep(this Pawn pawn) {
+        return pawn.CurJob?.def == RimWorld.JobDefOf.LayDown &&
+               pawn.jobs.curDriver is JobDriver_LayDown { asleep: true };
+    }
+
+    public static float DistanceTo(this Pawn pawn, Verse.Thing thing) {
+        return pawn.DistanceTo(thing.Position);
+    }
+
+    public static float DistanceTo(this Pawn pawn, IntVec3 position) {
+        return pawn.Position.DistanceTo(position);
+    }
+
+    public static List<IntVec3> GetCellsAround(this Pawn pawn, float radius, bool useCenter = false) {
+        return GenRadial.RadialCellsAround(
+                pawn.Position,
+                Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius - .01f, radius)),
+                useCenter
+            )
+            .Where(c => c.InBounds(pawn.Map))
+            .ToList();
+    }
+
+    public static bool TryGetAbility<T>(this Pawn pawn, AbilityDef def, out T ability)
+        where T : Ability {
+        ability = (T)pawn.abilities.GetAbility(def);
+
+        return ability != null;
+    }
+
+    public static bool TryGetAbility<T, TDef>(this Pawn pawn, AbilityDef def, out T ability)
+        where T : Ability where TDef : AbilityDef {
+        ability = (T)pawn.abilities.GetAbility((TDef)def);
+
+        return ability != null;
+    }
+
+    public static T? GetAbility<T, TDef>(this Pawn pawn, AbilityDef def) where T : Ability where TDef : AbilityDef {
+        return (T)pawn.abilities.GetAbility((TDef)def);
+    }
+
+    public static T? GetAbility<T, TDef>(this Pawn pawn, TDef def) where T : Ability where TDef : AbilityDef {
+        return (T)pawn.abilities.GetAbility(def);
+    }
+
+    public static void BecomeMistborn(
         this Pawn pawn,
-        Pawn caster,
-        IAbility<TGene, IHediff<TGene>>? ability,
-        IMultiTypeHediff def
-    ) where TGene : Invested {
-        return (AbstractHediff<TGene>)pawn.GetOrAddHediff(ability, pawn.GetHediffDefForPawn(caster, def));
-    }
+        bool canSnap = false,
+        bool snapped = true,
+        bool fillReserves = true,
+        string? cause = null
+    ) {
+        if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
 
-    public static void RemoveHediff<TGene>(
-        this Pawn pawn,
-        Pawn caster,
-        IAbility<TGene, IHediff<TGene>>? ability,
-        IMultiTypeHediff def
-    ) where TGene : Invested {
-        pawn.RemoveHediff(ability, pawn.GetHediffDefForPawn(caster, def));
-    }
-
-    public static void RemoveHediff<TGene, THediff>(
-        this Pawn pawn,
-        IAbility<TGene, THediff>? ability,
-        HediffDef? hediffDef
-    ) where TGene : Invested where THediff : IHediff<TGene> {
-        if (hediffDef == null || ability == null) return;
-
-        if (!pawn.TryGetHediff<TGene, IHediff<TGene>>(hediffDef, out IHediff<TGene> hediff)) {
-            return;
-        }
-
-        hediff.RemoveSource((IAbility<TGene, IHediff<TGene>>)ability);
-    }
-
-    private static IHediff<TGene> CreateHediff<TGene>(
-        this Pawn pawn,
-        HediffDef def,
-        IAbility<TGene, IHediff<TGene>> ability
-    ) where TGene : Invested {
-        IHediff<TGene> newHediff =
-            (IHediff<TGene>)Activator.CreateInstance(def.hediffClass, def, pawn, ability);
-        ((HediffWithComps)newHediff).loadID = Find.UniqueIDsManager.GetNextHediffID();
-        newHediff.PostMake();
-        newHediff.AddSource(ability);
-
-        return newHediff;
-    }
-
-    private static bool TryGetHediff<TGene, THediff>(this Pawn pawn, HediffDef? def, out THediff hediff)
-        where TGene : Invested where THediff : class, IHediff<TGene> {
-        hediff = null!;
-        if (def == null) return false;
-
-        Verse.Hediff? uncastHediff = null;
-
-        pawn.health?.hediffSet?.TryGetHediff(
-            def,
-            out uncastHediff
+        Type? geneUtility = Scadrial.GetType("Cosmere.Scadrial.Utility.GeneUtility");
+        MethodInfo? addMistborn = geneUtility?.GetMethod(
+            "AddMistborn",
+            BindingFlags.Public | BindingFlags.Static
         );
-        if (uncastHediff == null) return false;
 
-        hediff = uncastHediff as THediff;
-
-        return true;
+        addMistborn?.Invoke(null, [pawn, canSnap, snapped, cause]);
+        pawn.SetAllomanticReserves(float.PositiveInfinity);
     }
 
-    private static HediffDef GetHediffDefForPawn(this Pawn pawn, Pawn caster, IMultiTypeHediff hediff) {
-        if (hediff.GetFriendlyHediff() != null && pawn.Faction == caster.Faction) {
-            return hediff.GetFriendlyHediff()!;
-        }
+    public static void BecomeFullFeruchemist(
+        this Pawn pawn,
+        bool canSnap = false,
+        bool snapped = true,
+        string? cause = null
+    ) {
+        if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
 
-        if (hediff.GetHostileHediff() != null && pawn.Faction != caster.Faction) {
-            return hediff.GetHostileHediff()!;
-        }
+        Type? geneUtility = Scadrial.GetType("Cosmere.Scadrial.Utility.GeneUtility");
+        MethodInfo? addFullFeruchemist = geneUtility?.GetMethod(
+            "AddFullFeruchemist",
+            BindingFlags.Public | BindingFlags.Static
+        );
 
-        return hediff.GetHediff()!;
+        addFullFeruchemist?.Invoke(null, [pawn, canSnap, snapped, cause]);
+    }
+
+    public static void SetAllomanticReserves(this Pawn pawn, float amount) {
+        if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
+
+        Type? extension = Scadrial.GetType("Cosmere.Scadrial.Extension.PawnExtension");
+        MethodInfo? setAllAllomanticReserves = extension?.GetMethod(
+            "SetAllAllomanticReserves",
+            BindingFlags.Public | BindingFlags.Static
+        );
+
+        setAllAllomanticReserves?.Invoke(null, [pawn, amount]);
     }
 }

@@ -1,5 +1,5 @@
-using Cosmere.Foundation.Listing;
-using Cosmere.Foundation.Settings;
+using Cosmere.Listing;
+using Cosmere.Settings;
 
 namespace Cosmere.Resources.Settings;
 

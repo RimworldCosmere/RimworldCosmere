@@ -1,4 +1,4 @@
-﻿using Cosmere.Foundation.InspectorTab;
+﻿using Cosmere.InspectorTab;
 
 namespace Cosmere.Roshar.Tab;
 

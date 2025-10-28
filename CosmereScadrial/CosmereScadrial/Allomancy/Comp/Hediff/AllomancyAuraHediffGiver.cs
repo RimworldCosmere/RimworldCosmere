@@ -1,6 +1,6 @@
 using Cosmere.Core;
 using Cosmere.Core.Ability;
-using Cosmere.Foundation.Comp.Map;
+using Cosmere.Comp.Map;
 using Cosmere.Scadrial.Allomancy.Hediff;
 using Cosmere.Scadrial.Comp.Hediff;
 using Cosmere.Scadrial.Gene;

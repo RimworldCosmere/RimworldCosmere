@@ -1,4 +1,4 @@
-﻿using Cosmere.Foundation;
+﻿using Cosmere;
 using Cosmere.Scadrial.Settings;
 using Verse;
 

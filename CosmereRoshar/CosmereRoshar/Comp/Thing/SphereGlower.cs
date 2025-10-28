@@ -1,5 +1,5 @@
 using Cosmere.Core.Comp.Thing;
-using Cosmere.Foundation.Comp.Thing;
+using Cosmere.Comp.Thing;
 using Cosmere.Resources;
 using Cosmere.Resources.Def;
 using RimWorld;

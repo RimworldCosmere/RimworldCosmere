@@ -64,6 +64,9 @@
         <Reference Include="..\..\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('..\..\RimWorldWin64_Data\Managed')">
             <Private>False</Private>
         </Reference>
+        <Reference Include="C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed')">
+            <Private>False</Private>
+        </Reference>
         <Reference Include="D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed')">
             <Private>False</Private>
         </Reference>

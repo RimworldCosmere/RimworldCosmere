@@ -1,7 +1,7 @@
 #nullable disable
 using System;
 
-namespace Cosmere.Attribute;
+namespace Cosmere.Attributes;
 
 public enum ProfileMode {
     Instrumentation = 0, // Full enter/exit timing
@@ -16,7 +16,7 @@ public sealed class Profile(
     string category = null,
     bool aggregate = true
 )
-    : System.Attribute {
+    : global::System.Attribute {
     public string label { get; } = label;
     public ProfileMode mode { get; } = mode;
     public float sampleProbability { get; } = sampleProbability;

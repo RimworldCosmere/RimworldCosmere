@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
-using Cosmere.Attribute;
+using Cosmere.Attributes;
 using HarmonyLib;
 using UnityEngine;
 using Verse;

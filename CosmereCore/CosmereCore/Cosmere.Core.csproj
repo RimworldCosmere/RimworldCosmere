@@ -46,9 +46,9 @@
         <Using Include="System.Linq"/>
         <Using Include="System.Collections.Generic"/>
         <Using Include="Cosmere.Extension"/>
-        <!-- Temporarily commented for Phase 1 - Resources will be merged in Phase 2 -->
-        <!-- <Using Include="Cosmere.Extension"/> -->
         <Using Include="Cosmere.Core.Extension"/>
+        <Using Include="Cosmere.System.Scadrial.Extension"/>
+        <Using Include="Cosmere.System.Roshar.Extension"/>
     </ItemGroup>
 
     <ItemGroup>

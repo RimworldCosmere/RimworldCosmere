@@ -21,7 +21,7 @@
     <defName>Cosmere_Roshar_SprenTrapper</defName>
     <label>Spren trapper</label>
     <description>A device that has a chance to trapped spren in a the gemstone placed inside.</description>
-    <thingClass>Cosmere.Roshar.Thing.Building.SprenTrapper</thingClass>
+    <thingClass>Cosmere.System.Roshar.Thing.Building.SprenTrapper</thingClass>
     <!-- <graphicData>
       <texPath>Things/Item/Fabrials/Trapper</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -90,7 +90,7 @@
         <glowRadius>3</glowRadius>
         <glowColor>(255,150,100,0)</glowColor>
       </li>
-      <li><compClass>Cosmere.Roshar.Comp.Fabrials.SprenTrapper</compClass></li>
+      <li><compClass>Cosmere.System.Roshar.Comp.Fabrials.SprenTrapper</compClass></li>
     </comps>
     <designationCategory>Cosmere_Roshar_DesignationFabrials</designationCategory>
     <designationHotKey>Misc3</designationHotKey>
@@ -105,7 +105,7 @@
     <defName>Cosmere_Roshar_BasicFabrial_Augmenter</defName>
     <label>Basic Augmenter</label>
     <description>A device that use a trapped spren in a gemstone encased in a pewter cage.</description>
-    <thingClass>Cosmere.Roshar.Thing.Building.FabrialBasicAugmenter</thingClass>
+    <thingClass>Cosmere.System.Roshar.Thing.Building.FabrialBasicAugmenter</thingClass>
     <graphicData>
       <texPath>Things/Item/Fabrials/Gemholder_without_gem</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -185,7 +185,7 @@
         <overlightRadius>5.0</overlightRadius>
         <glowColor>(255,150,100,0)</glowColor>
       </li>
-      <li><compClass>Cosmere.Roshar.Comp.Fabrials.BasicFabrialAugmenter</compClass></li>
+      <li><compClass>Cosmere.System.Roshar.Comp.Fabrials.BasicFabrialAugmenter</compClass></li>
     </comps>
     <designationCategory>Cosmere_Roshar_DesignationFabrials</designationCategory>
     <designationHotKey>Misc3</designationHotKey>
@@ -201,7 +201,7 @@
     <defName>Cosmere_Roshar_BasicFabrial_Diminisher</defName>
     <label>Basic Diminisher</label>
     <description>A device that use a trapped spren in a gemstone encased in a tin cage.</description>
-    <thingClass>Cosmere.Roshar.Thing.Building.FabrialBasicDiminisher</thingClass>
+    <thingClass>Cosmere.System.Roshar.Thing.Building.FabrialBasicDiminisher</thingClass>
     <graphicData>
       <texPath>Things/Item/Fabrials/Gemholder_without_gem</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -281,7 +281,7 @@
         <overlightRadius>5.0</overlightRadius>
         <glowColor>(255,150,100,0)</glowColor>
       </li>
-      <li><compClass>Cosmere.Roshar.Comp.Fabrials.BasicFabrialDiminisher</compClass></li>
+      <li><compClass>Cosmere.System.Roshar.Comp.Fabrials.BasicFabrialDiminisher</compClass></li>
     </comps>
     <designationCategory>Cosmere_Roshar_DesignationFabrials</designationCategory>
     <designationHotKey>Misc3</designationHotKey>
@@ -296,7 +296,7 @@
     <defName>Cosmere_Roshar_Fabrial_Power_Generator</defName>
     <label>Fabrial Power Generator</label>
     <description>A device that converts stormlight into electric power.</description>
-    <thingClass>Cosmere.Roshar.Thing.Building.FabrialPowerGenerator</thingClass>
+    <thingClass>Cosmere.System.Roshar.Thing.Building.FabrialPowerGenerator</thingClass>
     <graphicData>
       <texPath>Things/Item/Fabrials/PowerGenerator</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -344,7 +344,7 @@
         <glowRadius>2</glowRadius>
         <glowColor>(255,150,100,0)</glowColor>
       </li>
-      <li><compClass>Cosmere.Roshar.Comp.Fabrials.FabrialPowerGenerator</compClass></li>
+      <li><compClass>Cosmere.System.Roshar.Comp.Fabrials.FabrialPowerGenerator</compClass></li>
       <li Class="CompProperties_Stunnable">
         <useLargeEMPEffecter>true</useLargeEMPEffecter>
         <affectedDamageDefs>
@@ -402,7 +402,7 @@
       <li>Armor</li>
     </tradeTags>
     <comps>
-        <li><compClass>Cosmere.Roshar.Comp.Fabrials.ApparelFabrialDiminisher</compClass></li>
+        <li><compClass>Cosmere.System.Roshar.Comp.Fabrials.ApparelFabrialDiminisher</compClass></li>
     </comps>
   </ThingDef>
 

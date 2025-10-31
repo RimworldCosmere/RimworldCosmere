@@ -5,7 +5,7 @@
         <label>burning brass: aura</label>
         <description>Suppressing negative emotions and calming the minds of others from burning Brass.</description>
         <comps>
-            <li Class="Cosmere.Scadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
                 <hediff>Cosmere_Scadrial_Hediff_Soothed</hediff> 
                 <moteDef>Cosmere_Scadrial_Mote_BrassAura</moteDef>
                 <verb>soothed</verb>
@@ -39,7 +39,7 @@
         <defaultLabelColor>(0.8, 0.9, 1.0)</defaultLabelColor>
         <comps Inherit="False">
             <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
-               <compClass>Cosmere.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
+               <compClass>Cosmere.System.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
                 <shouldDecay>true</shouldDecay>
             </li>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">

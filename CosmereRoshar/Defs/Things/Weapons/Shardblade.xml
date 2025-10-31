@@ -64,7 +64,7 @@
     </ThingDef>
     <ThingDef ParentName="Cosmere_Roshar_Thing_Shardblade">
         <defName>Cosmere_Roshar_MeleeWeapon_RadiantShardblade</defName>
-        <thingClass>Cosmere.Roshar.Thing.Weapon.RadiantShardblade</thingClass>
+        <thingClass>Cosmere.System.Roshar.Thing.Weapon.RadiantShardblade</thingClass>
         <possessionCount>1</possessionCount>
         <destroyOnDrop>true</destroyOnDrop>
         <tradeability>None</tradeability>

@@ -1,7 +1,7 @@
 <Defs>
 	<IncidentDef>
 		<defName>Cosmere_Roshar_HighstormIncident</defName>
-		<workerClass>Cosmere.Roshar.Incident.Worker.Highstorm</workerClass>
+		<workerClass>Cosmere.System.Roshar.Incident.Worker.Highstorm</workerClass>
 		<targetTags>
 			<li>Map_PlayerHome</li>
 		</targetTags>
@@ -14,12 +14,12 @@
 	
 	<GameConditionDef>
 		<defName>Cosmere_Roshar_HighstormCondition</defName>
-		<conditionClass>Cosmere.Roshar.GameCondition.Highstorm</conditionClass>
+		<conditionClass>Cosmere.System.Roshar.GameCondition.Highstorm</conditionClass>
 		<label>Highstorm</label>
 		<description>Deadly wind and rain from the east.</description>
 
 		<modExtensions>
-			<li Class="Cosmere.Roshar.ModExtension.Highstorm">
+			<li Class="Cosmere.System.Roshar.ModExtension.Highstorm">
 			   <windStrength>2.5</windStrength>
 				<windDirection>West</windDirection>
 				<stormDuration>10000</stormDuration>  

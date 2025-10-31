@@ -34,7 +34,7 @@
             </recipeUsers>
         </recipeMaker>
         <comps>
-            <li Class="Cosmere.Roshar.Comp.Thing.SphereGlowerProperties" />
+            <li Class="Cosmere.System.Roshar.Comp.Thing.SphereGlowerProperties" />
         </comps>
     </ThingDef>
     

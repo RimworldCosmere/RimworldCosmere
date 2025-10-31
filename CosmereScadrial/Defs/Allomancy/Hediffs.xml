@@ -9,10 +9,10 @@
     </HediffDef>
     <HediffDef Name="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff" ParentName="Cosmere_Scadrial_Hediff_AbstractBurnHediff" Abstract="True">
         <alwaysShowSeverity>true</alwaysShowSeverity>
-        <hediffClass>Cosmere.Scadrial.Allomancy.Hediff.AllomanticHediff</hediffClass>
+        <hediffClass>Cosmere.System.Scadrial.Allomancy.Hediff.AllomanticHediff</hediffClass>
         <comps>
             <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
-               <compClass>Cosmere.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
+               <compClass>Cosmere.System.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
             </li>
         </comps>
     </HediffDef>

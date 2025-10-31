@@ -4,7 +4,7 @@
         <defName>Cosmere_Roshar_Hediff_ShardbladeSummoning</defName>
         <label>summoning Shardblade</label>
         <description>Counting ten heartbeats to summon a dead Shardblade.</description>
-        <hediffClass>Cosmere.Roshar.Hediff.ShardbladeSummoning</hediffClass>
+        <hediffClass>Cosmere.System.Roshar.Hediff.ShardbladeSummoning</hediffClass>
         <defaultLabelColor>(0.7, 0.7, 1.0)</defaultLabelColor>
         <isBad>false</isBad>
         <everCurableByItem>false</everCurableByItem>

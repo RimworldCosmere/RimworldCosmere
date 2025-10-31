@@ -6,11 +6,11 @@
         <displayOrder>2</displayOrder>
     </AbilityCategoryDef>
     
-    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
+    <Cosmere.System.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
         <stunTargetWhileCasting>False</stunTargetWhileCasting>
         <aiCanUse>true</aiCanUse>
         <ai_IsOffensive>true</ai_IsOffensive>
-        <abilityClass>Cosmere.Roshar.Surgebinding.Ability.SurgebindingAbility</abilityClass>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.SurgebindingAbility</abilityClass>
         <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
         <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
         <category>Surgebinding</category>
@@ -28,8 +28,8 @@
                 <canTargetMechs>false</canTargetMechs>
             </targetParams>
         </verbProperties>
-    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
-    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_SelfCastAbility"
+    </Cosmere.System.Roshar.Def.SurgebinderAbilityDef>
+    <Cosmere.System.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_SelfCastAbility"
                                               ParentName="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
         <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
         <targetRequired>false</targetRequired>
@@ -47,8 +47,8 @@
                 <canTargetSelf>true</canTargetSelf>
             </targetParams>
         </verbProperties>
-    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
-    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_TargetCastAbility"
+    </Cosmere.System.Roshar.Def.SurgebinderAbilityDef>
+    <Cosmere.System.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_TargetCastAbility"
                                               ParentName="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
         <jobDef>Cosmere_Roshar_Job_CastSurgebindingAbilityAtTarget</jobDef> <!-- Need to create -->
         <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
@@ -74,25 +74,25 @@
                 <canTargetBuildings>true</canTargetBuildings>
             </targetParams>
         </verbProperties>
-    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
+    </Cosmere.System.Roshar.Def.SurgebinderAbilityDef>
     
-    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_HostileTargetCastAbility" ParentName="Cosmere_Roshar_Ability_TargetCastAbility" Abstract="True">
+    <Cosmere.System.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_HostileTargetCastAbility" ParentName="Cosmere_Roshar_Ability_TargetCastAbility" Abstract="True">
         <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
         <hostile>true</hostile>
         <verbProperties>
             <violent>true</violent>
         </verbProperties>
-    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
+    </Cosmere.System.Roshar.Def.SurgebinderAbilityDef>
     
-    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_ToggleSelfCastAbility" ParentName="Cosmere_Roshar_Ability_SelfCastAbility" Abstract="True">
+    <Cosmere.System.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_ToggleSelfCastAbility" ParentName="Cosmere_Roshar_Ability_SelfCastAbility" Abstract="True">
         <toggleable>true</toggleable>
-    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
-    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_ToggleTargetCastAbility" ParentName="Cosmere_Roshar_Ability_TargetCastAbility" Abstract="True">
+    </Cosmere.System.Roshar.Def.SurgebinderAbilityDef>
+    <Cosmere.System.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_ToggleTargetCastAbility" ParentName="Cosmere_Roshar_Ability_TargetCastAbility" Abstract="True">
         <toggleable>true</toggleable>
         <jobDef>Cosmere_Roshar_Job_MaintainSurgebindingTarget</jobDef>
-    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
-    <Cosmere.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_ToggleHostileTargetCastAbility" ParentName="Cosmere_Roshar_Ability_HostileTargetCastAbility" Abstract="True">
+    </Cosmere.System.Roshar.Def.SurgebinderAbilityDef>
+    <Cosmere.System.Roshar.Def.SurgebinderAbilityDef Name="Cosmere_Roshar_Ability_ToggleHostileTargetCastAbility" ParentName="Cosmere_Roshar_Ability_HostileTargetCastAbility" Abstract="True">
         <toggleable>true</toggleable>
         <jobDef>Cosmere_Roshar_Job_MaintainSurgebindingTarget</jobDef> 
-    </Cosmere.Roshar.Def.SurgebinderAbilityDef>
+    </Cosmere.System.Roshar.Def.SurgebinderAbilityDef>
 </Defs>

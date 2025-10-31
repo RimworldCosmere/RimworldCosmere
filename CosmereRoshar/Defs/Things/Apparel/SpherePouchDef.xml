@@ -54,7 +54,7 @@
             <developmentalStageFilter>Child, Adult</developmentalStageFilter>
         </apparel>
         <inspectorTabs>
-            <li>Cosmere.Roshar.Tab.SphereTab</li>
+            <li>Cosmere.System.Roshar.Tab.SphereTab</li>
         </inspectorTabs>
         <comps>
             <li Class="Cosmere.Comp.Thing.InnerStorageProperties">

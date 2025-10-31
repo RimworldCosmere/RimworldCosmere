@@ -2,7 +2,7 @@
 <Defs>
     <IncidentDef>
         <defName>Cosmere_Scadrial_Incident_AtiumCaravan</defName>
-        <workerClass>Cosmere.Scadrial.IncidentWorker.AtiumCaravan</workerClass>
+        <workerClass>Cosmere.System.Scadrial.IncidentWorker.AtiumCaravan</workerClass>
         <category>ThreatBig</category>
         <letterLabel>Atium Caravan</letterLabel>
         <letterText>

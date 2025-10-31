@@ -86,7 +86,7 @@
             </li>
         </comps>
         
-        <thingClass>Cosmere.Roshar.Thing.Apparel.RadiantShardplate</thingClass>
+        <thingClass>Cosmere.System.Roshar.Thing.Apparel.RadiantShardplate</thingClass>
         <possessionCount>1</possessionCount>
         <destroyOnDrop>true</destroyOnDrop>
         <tradeability>None</tradeability>
@@ -168,7 +168,7 @@
             </li>
         </comps>
         
-        <thingClass>Cosmere.Roshar.Thing.Apparel.RadiantShardplate</thingClass>
+        <thingClass>Cosmere.System.Roshar.Thing.Apparel.RadiantShardplate</thingClass>
         <possessionCount>1</possessionCount>
         <destroyOnDrop>true</destroyOnDrop>
         <tradeability>None</tradeability>

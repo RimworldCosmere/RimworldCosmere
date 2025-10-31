@@ -55,7 +55,7 @@
             </li>
         </stages>
         <comps>
-            <li><compClass>Cosmere.Roshar.Comp.Hediff.Fabrial.PainDiminisher</compClass></li>
+            <li><compClass>Cosmere.System.Roshar.Comp.Hediff.Fabrial.PainDiminisher</compClass></li>
         </comps>
     </HediffDef>
     <HediffDef>

@@ -67,7 +67,7 @@
             <texPath>Things/Pawn/Equipment/Earring</texPath>
         </graphicData>
         <comps>
-            <li Class="Cosmere.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+            <li Class="Cosmere.System.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
                 <maxAmount>25</maxAmount>
             </li>
         </comps>
@@ -89,7 +89,7 @@
             <texPath>Things/Pawn/Equipment/Bracelet</texPath>
         </graphicData>
         <comps>
-            <li Class="Cosmere.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+            <li Class="Cosmere.System.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
                 <maxAmount>75</maxAmount>
             </li>
         </comps>
@@ -111,7 +111,7 @@
             <texPath>Things/Pawn/Equipment/Band</texPath>
         </graphicData>
         <comps>
-            <li Class="Cosmere.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+            <li Class="Cosmere.System.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
                 <maxAmount>150</maxAmount>
             </li>
         </comps>

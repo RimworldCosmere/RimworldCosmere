@@ -59,7 +59,7 @@
     
     <ThingDef ParentName="BaseBullet">
         <defName>Cosmere_Scadrial_Thing_ClipProjectile</defName>
-        <thingClass>Cosmere.Scadrial.Thing.Clip</thingClass>
+        <thingClass>Cosmere.System.Scadrial.Thing.Clip</thingClass>
         <label>clip</label>
         <graphicData>
             <texPath>Things/Projectile/Clip</texPath>

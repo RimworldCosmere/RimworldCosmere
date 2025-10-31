@@ -3,7 +3,7 @@
     <ThingDef>
         <defName>Cosmere_Roshar_Thing_Highstorm</defName>
         <label>Highstorm</label>
-        <thingClass>Cosmere.Roshar.Thing.Highstorm</thingClass>
+        <thingClass>Cosmere.System.Roshar.Thing.Highstorm</thingClass>
         <category>Ethereal</category>
         <tickerType>Never</tickerType>
         <pathfinderDangerous>true</pathfinderDangerous>

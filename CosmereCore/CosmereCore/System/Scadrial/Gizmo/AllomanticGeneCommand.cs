@@ -1,3 +1,4 @@
+using Cosmere;
 using System.Text;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Gene;

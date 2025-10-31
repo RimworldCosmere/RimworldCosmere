@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Shader.Properties;
 using UnityEngine;

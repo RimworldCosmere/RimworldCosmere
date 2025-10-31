@@ -1,3 +1,4 @@
+using Cosmere;
 namespace Cosmere.System.Scadrial.Allomancy.Ability;
 
 public struct BurningStatus {

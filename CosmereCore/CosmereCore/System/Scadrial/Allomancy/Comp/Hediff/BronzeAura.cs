@@ -1,3 +1,4 @@
+using Cosmere;
 using Cosmere.Comp.Map;
 using Cosmere.System.Scadrial.Utility;
 using RimWorld;
@@ -25,12 +26,12 @@ public class BronzeAura : LineDrawingAura {
     private new BronzeAuraProperties props => (BronzeAuraProperties)base.props;
 
     protected override IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map) {
-        return cell.GetThingList(map).Where(t => t.GetInvestiture()?.currentInvestiture > 0);
+        return cell.GetThingList(map).Where(t => t.GetInvestiture() > 0);
     }
 
     protected override LineToRender GetLineToRender(Verse.Thing thing) {
         float distance = (thing.DrawPos - parent.pawn.DrawPos).ToIntVec3().LengthHorizontal;
-        float investiture = thing.GetInvestiture()?.currentInvestiture ?? 0f;
+        float investiture = thing.GetInvestiture();
 
         // Fade is fully opaque (1.0) if the object is within 3 tiles,
         // then linearly fades out to a minimum of 0.3 as it approaches the edge of the radius.

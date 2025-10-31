@@ -125,7 +125,7 @@ public class SphereGlower : CompGlower {
 
     private static Color GetSphereColor(Verse.Thing sphere) {
         GemDef? gem = DefDatabase<GemDef>.GetNamed(
-            sphere.Stuff?.defName.Replace("Raw", "") ?? Resources.ThingDefOf.RawDiamond.defName
+            sphere.Stuff?.defName.Replace("Raw", "") ?? Cosmere.ThingDefOf.RawDiamond.defName
         );
 
         // Replace this with however your sphere stores color — possibly via a GemstoneDef

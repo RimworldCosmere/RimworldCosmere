@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Util;
 using RimWorld;
 using UnityEngine;
@@ -13,6 +14,10 @@ public static class PawnExtension {
     private static readonly Assembly? Scadrial = LoadedModManager.RunningMods
         .FirstOrDefault(m => m.PackageId.Equals("cosmere.scadrial", StringComparison.CurrentCultureIgnoreCase))
         ?.assemblies.loadedAssemblies.FirstOrDefault();
+
+    public static InvestitureHolder GetInvestiture(this Pawn pawn) {
+        return pawn.TryGetComp<InvestitureHolder>();
+    }
 
     public static bool IsShieldedAgainstInvestiture(this Pawn pawn) {
         return InvestitureDetector.IsShielded(pawn);

@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using Cosmere.Core.Shader.Properties;
 using Cosmere.System.Roshar.Def;
 using UnityEngine;
@@ -36,11 +37,11 @@ public class RadiantShardblade : Shardblade {
             new LUTPaletteMaterial { color = colorTwo, metallic = .8f, smoothness = .85f },
             new LUTPaletteMaterial { color = colorThree, smoothness = 1 },
             new LUTPaletteMaterial
-                { color = def.GetColorForStuff(Resources.ThingDefOf.Gold), metallic = 1, smoothness = 1 },
+                { color = def.GetColorForStuff(Cosmere.ThingDefOf.Gold), metallic = 1, smoothness = 1 },
             new LUTPaletteMaterial
                 { color = def.GetColorForStuff(RimWorld.ThingDefOf.WoodLog) },
             new LUTPaletteMaterial
-                { color = def.GetColorForStuff(Resources.ThingDefOf.Steel), metallic = .5f, smoothness = 1 },
+                { color = def.GetColorForStuff(Cosmere.ThingDefOf.Steel), metallic = .5f, smoothness = 1 },
         ];
     }
 }

@@ -1,3 +1,4 @@
+using Cosmere;
 using System;
 using Cosmere.Core.Gene;
 using Cosmere.System.Roshar.Comp.Thing;

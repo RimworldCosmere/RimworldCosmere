@@ -1,3 +1,4 @@
+using Cosmere;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Hediff;

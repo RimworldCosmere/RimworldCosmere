@@ -3,6 +3,7 @@ using Cosmere.Core.Util;
 using Cosmere.Def;
 using RimWorld;
 using Verse;
+using StatDefOf = Cosmere.Core.StatDefOf;
 
 namespace Cosmere.Extension;
 

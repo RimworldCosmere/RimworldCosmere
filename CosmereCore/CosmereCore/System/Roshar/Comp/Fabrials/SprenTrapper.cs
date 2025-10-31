@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using System;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Dialog;

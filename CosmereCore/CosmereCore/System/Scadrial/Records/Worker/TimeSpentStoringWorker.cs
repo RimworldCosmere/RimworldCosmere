@@ -1,3 +1,4 @@
+using Cosmere;
 using Cosmere.Def;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;

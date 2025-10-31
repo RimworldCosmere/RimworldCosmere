@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using HarmonyLib;
 using Verse;
 using GeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;

@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using System.Diagnostics.CodeAnalysis;
 using HarmonyLib;
 using RimWorld;

@@ -1,3 +1,4 @@
+using Cosmere;
 using Cosmere.Core.Gizmo;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;

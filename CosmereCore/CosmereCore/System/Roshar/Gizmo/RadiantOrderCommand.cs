@@ -1,3 +1,4 @@
+using Cosmere;
 using System.Text;
 using Cosmere.Core.Gizmo;
 using Cosmere.System.Roshar.Def;

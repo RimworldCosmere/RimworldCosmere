@@ -1,3 +1,4 @@
+using Cosmere;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.System.Roshar.LesserSpren.SprenController;
 using UnityEngine;

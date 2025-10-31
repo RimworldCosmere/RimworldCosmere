@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Utility;

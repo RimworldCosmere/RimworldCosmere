@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using System.Diagnostics.CodeAnalysis;
 using Cosmere.System.Roshar.Comp.Fabrials;
 using Cosmere.System.Roshar.Comp.Thing;

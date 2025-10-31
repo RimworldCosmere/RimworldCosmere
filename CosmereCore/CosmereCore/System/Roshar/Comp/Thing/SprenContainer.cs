@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using Cosmere.System.Roshar.LesserSpren.CaptureSystem;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.System.Roshar.LesserSpren.SprenController;
@@ -52,7 +53,7 @@ public class SprenContainer : ThingComp {
     }
 
     public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {
-        if (Foundation.Mod.debugMode) {
+        if (Cosmere.Mod.debugMode) {
             yield return new Command_Action {
                 defaultLabel = "Debug: Test Spren Capture",
                 defaultDesc = "Test the spren capture system at this position",

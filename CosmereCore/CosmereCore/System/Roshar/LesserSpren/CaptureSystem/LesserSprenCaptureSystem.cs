@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using System;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Def;

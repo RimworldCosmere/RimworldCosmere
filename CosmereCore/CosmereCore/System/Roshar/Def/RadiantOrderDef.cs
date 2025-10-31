@@ -1,3 +1,4 @@
+using Cosmere;
 using System;
 using Cosmere.Def;
 using Cosmere.System.Roshar.Surgebinding.IdealChecker;

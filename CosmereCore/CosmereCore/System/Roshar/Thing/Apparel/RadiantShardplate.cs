@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using Cosmere.Core.Shader.Properties;
 using Cosmere.Def;
 using Cosmere.System.Roshar.Def;

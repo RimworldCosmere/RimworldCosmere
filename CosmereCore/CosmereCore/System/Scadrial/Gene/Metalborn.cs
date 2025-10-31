@@ -1,3 +1,4 @@
+using Cosmere;
 using Cosmere.Core.Gene;
 using Cosmere.DefModExtension;
 using Cosmere.System.Scadrial.Def;

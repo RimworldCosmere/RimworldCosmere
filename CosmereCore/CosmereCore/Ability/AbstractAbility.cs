@@ -280,15 +280,11 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     }
 
     protected virtual void OnEnable() {
-        GetOrAddHediff(localTarget.HasValue ? localTarget.Value.Pawn : pawn);
     }
 
     protected virtual void OnDisable() {
         nextStatus = null;
         OnPowerDown();
-        if (localTarget == pawn) {
-            RemoveHediff(pawn);
-        }
     }
 
     protected virtual void Cleanup() {
@@ -306,16 +302,6 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     }
 
     protected virtual void OnPowerDown() { }
-
-    protected AbstractHediff<TGene>? GetOrAddHediff(Pawn targetPawn) {
-        return targetPawn.GetOrAddHediff(pawn, (IAbility<TGene, IHediff<TGene>>?)this, def);
-    }
-
-    protected void RemoveHediff(Pawn? targetPawn) {
-        if (targetPawn == null) return;
-
-        pawn.RemoveHediff(pawn, this as AbstractAbility<TGene, AbstractHediff<TGene>>, def);
-    }
 
     public override void ExposeData() {
         base.ExposeData();

@@ -90,6 +90,16 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
         flareStartTick -= (int)(existingSeverity * 3000f);
     }
 
+    protected AllomanticHediff? GetOrAddHediff(Pawn targetPawn) {
+        return Util.HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def.hediff);
+    }
+
+    protected void RemoveHediff(Pawn? targetPawn) {
+        if (targetPawn == null) return;
+
+        Util.HediffUtility.RemoveHediff(pawn, targetPawn, this, def.hediff);
+    }
+
     public override void ExposeData() {
         base.ExposeData();
 

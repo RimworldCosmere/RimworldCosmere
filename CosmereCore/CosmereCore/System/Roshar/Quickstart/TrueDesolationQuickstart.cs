@@ -1,3 +1,4 @@
+using Cosmere;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Comp.Thing;
 using Cosmere.Quickstart;
@@ -71,7 +72,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             );
             Verse.Thing? broam = ThingMaker.MakeThing(
                 ThingDefOf.Cosmere_Roshar_Thing_Broam,
-                Resources.ThingDefOf.RawEmerald
+                Cosmere.ThingDefOf.RawEmerald
             );
             if (broam.TryGetComp(out InvestitureHolder broamInvestiture)) {
                 broamInvestiture.currentInvestitureSelf = broamInvestiture.maxInvestitureSelf;

@@ -1,3 +1,4 @@
+using Cosmere;
 ﻿using System;
 using System.Text;
 using Cosmere.System.Roshar.Debug;

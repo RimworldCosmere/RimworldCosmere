@@ -1,3 +1,4 @@
+using Cosmere;
 using Cosmere.Comp.Map;
 using Cosmere.System.Scadrial.Def;
 using UnityEngine;

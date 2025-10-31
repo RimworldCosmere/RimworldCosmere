@@ -1,3 +1,4 @@
+using Cosmere;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Verse;
 using Verse.AI;

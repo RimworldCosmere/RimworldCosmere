@@ -1,3 +1,4 @@
+using Cosmere;
 using HarmonyLib;
 using RimWorld;
 
@@ -13,8 +14,8 @@ public static class DebugSpawnPatch {
                 ThingDefOf.Cosmere_Roshar_Thing_Mark,
                 ThingDefOf.Cosmere_Roshar_Thing_Chip
             ) &&
-            __instance.Stuff == Resources.ThingDefOf.CutGem) {
-            __instance.SetStuffDirect(GenStuff.RandomStuffFor(Resources.ThingDefOf.CutGem));
+            __instance.Stuff == Cosmere.ThingDefOf.CutGem) {
+            __instance.SetStuffDirect(GenStuff.RandomStuffFor(Cosmere.ThingDefOf.CutGem));
         }
     }
 }

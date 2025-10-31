@@ -13,6 +13,7 @@ namespace Cosmere;
 public class JobDefOf {
     public static JobDef Cosmere_HaulToInnerStorage;
     public static JobDef Cosmere_StoreInApparelInnerStorage;
+    public static JobDef Cosmere_BondToThing;
 
     static JobDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));

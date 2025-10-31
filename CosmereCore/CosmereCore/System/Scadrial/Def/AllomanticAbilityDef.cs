@@ -1,3 +1,4 @@
+using Cosmere;
 using Cosmere.Core.Def;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;

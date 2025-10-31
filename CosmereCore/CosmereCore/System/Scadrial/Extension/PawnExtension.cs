@@ -1,6 +1,7 @@
 using Cosmere;
 using Cosmere.Core;
 using Cosmere.Core.Ability;
+using Cosmere.Core.Hediff;
 using Cosmere.Def;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
@@ -148,19 +149,31 @@ public static class PawnExtension {
         return Mathf.Clamp(scaled, 0.1f, 5f);
     }
 
+    public static AllomanticHediff? GetOrAddHediff(this Pawn target, AllomancyAbility ability, HediffDef? hediffDef) {
+        return Util.HediffUtility.GetOrAddHediff(ability.pawn, target, ability, hediffDef);
+    }
+
     public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, AllomancyAbility ability, HediffDef? hediffDef) {
-        return Util.HediffUtility.GetOrAddHediff(target, ability, hediffDef);
+        return Util.HediffUtility.GetOrAddHediff(caster, target, ability, hediffDef);
     }
 
     public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, AllomancyAbility ability, IMultiTypeHediff def) {
         return Util.HediffUtility.GetOrAddHediff(caster, target, ability, def);
     }
 
-    public static void RemoveHediff(this Pawn target, Pawn caster, AllomancyAbility ability, HediffDef? hediffDef) {
-        Util.HediffUtility.RemoveHediff(target, ability, hediffDef);
+    public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, AllomancyAbility ability, Def.AllomanticAbilityDef abilityDef) {
+        return Util.HediffUtility.GetOrAddHediff(caster, target, ability, abilityDef.hediff);
     }
 
-    public static void RemoveHediff(this Pawn target, Pawn caster, AllomancyAbility ability, IMultiTypeHediff def) {
-        Util.HediffUtility.RemoveHediff(caster, target, ability, def);
+    public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, IAbility<Allomancer, AllomanticHediff> ability, IMultiTypeHediff def) {
+        return Util.HediffUtility.GetOrAddHediff(caster, target, (AllomancyAbility)ability, def);
+    }
+
+    public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, IAbility<Allomancer, IHediff<Allomancer>> ability, Def.AllomanticAbilityDef abilityDef) {
+        return Util.HediffUtility.GetOrAddHediff(caster, target, (AllomancyAbility)ability, abilityDef.hediff);
+    }
+
+    public static void RemoveHediff(this Pawn target, AllomancyAbility ability, HediffDef? hediffDef) {
+        Util.HediffUtility.RemoveHediff(ability.pawn, target, ability, hediffDef);
     }
 }

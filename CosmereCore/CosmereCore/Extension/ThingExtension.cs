@@ -20,10 +20,6 @@ public static class ThingExtension {
         return MetalDetector.GetMetal(thing);
     }
 
-    public static float GetInvestiture(this Verse.Thing thing) {
-        return thing.GetStatValue(StatDefOf.Cosmere_Investiture);
-    }
-
     public static bool CanBeEquipped(this Verse.Thing thing) {
         return thing.TryGetComp<CompEquippable>() != null || thing.def.IsApparel || thing.def.IsWeapon;
     }

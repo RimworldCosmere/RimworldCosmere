@@ -42,8 +42,8 @@ public class FearsprenController : DynamicSprenController {
 
             // Check if pawn is actively fleeing
             if (pawn.CurJobDef == RimWorld.JobDefOf.Flee ||
-                pawn.CurJobDef == RimWorld.RimWorld.JobDefOf.FleeAndCower ||
-                pawn.CurJobDef == RimWorld.RimWorld.RimWorld.JobDefOf.FleeAndCowerShort) {
+                pawn.CurJobDef == RimWorld.JobDefOf.FleeAndCower ||
+                pawn.CurJobDef == RimWorld.JobDefOf.FleeAndCowerShort) {
                 isFearful = true;
                 fearIntensity = 0.9f; // Very high chance for fleeing pawns
             }

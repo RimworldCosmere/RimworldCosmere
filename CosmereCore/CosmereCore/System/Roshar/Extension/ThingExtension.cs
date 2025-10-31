@@ -1,10 +1,16 @@
 using Cosmere;
 using Cosmere.System.Roshar.Utility;
+using Cosmere.Core.Comp.Thing;
 using Verse;
 
 namespace Cosmere.System.Roshar.Extension;
 
 public static class ThingExtension {
+    public static InvestitureHolder? GetInvestiture(this Verse.Thing thing) {
+        return thing.TryGetComp<InvestitureHolder>();
+    }
+
+
     public static bool ShouldBeMovedByStorm(this Verse.Thing thing) {
         if (!thing.Spawned || thing.Map == null) return false;
 

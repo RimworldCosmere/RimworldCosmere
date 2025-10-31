@@ -30,7 +30,7 @@
                 <li>Cosmere_Roshar_SphereProduction</li>
             </researchPrerequisites>
             <recipeUsers>
-                <li>Cosmere_Resources_Table_GemCutter</li>
+                <li>Cosmere_Core_Table_GemCutter</li>
             </recipeUsers>
         </recipeMaker>
         <comps>

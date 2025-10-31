@@ -18,7 +18,7 @@
         <prioritizeSustains>true</prioritizeSustains>
     </WorkGiverDef>
 
-    <ThingDef ParentName="Cosmere_Resources_Table_GemCutter">
+    <ThingDef ParentName="Cosmere_Core_Table_GemCutter">
         <defName>Cosmere_Roshar_TableFabrials</defName>
         <label>fabrial workbench</label>
         <description>A work station to create fabrials.</description>

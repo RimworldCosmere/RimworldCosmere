@@ -1,9 +1,9 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
-using Cosmere.Def;
+using Cosmere.Resources.Def;
 using RimWorld;
 
-namespace Cosmere;
+namespace Cosmere.Resources;
 
 [DefOf]
 [SuppressMessage("ReSharper", "InconsistentNaming")]

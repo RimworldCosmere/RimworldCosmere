@@ -2,7 +2,7 @@
 using RimWorld;
 using Verse;
 
-namespace Cosmere;
+namespace Cosmere.Resources;
 
 public static partial class ThingDefOf {        
     public static ThingDef MineableAluminum;

@@ -53,25 +53,23 @@ To develop locally:
 
 Use `CosmereScadrial` as a reference for setting up a new shardworld.
 
-1. Create your `CosmereX.CosmereX` mod class using the same pattern.
-2. For settings, see `CosmereScadrial.Settings`.
-3. For quickstarting colonists or scenarios, see `CosmereScadrial.Quickstart`.
-4. Organize assets in the following structure:
+1. Add C# code in `CosmereCore/CosmereCore/System/{WorldName}/` following the namespace pattern `Cosmere.System.{WorldName}.*`
+2. Create a `Mod.cs` in your world directory inheriting from `CosmereMod`
+3. For settings, see `Cosmere.System.Scadrial.Settings.ScadrialModSettings`
+4. For quickstarting, see `Cosmere.System.Scadrial.Quickstart.PreCatacendreQuickstarter`
+5. Create your world mod directory `Cosmere{WorldName}/` with:
+    - `About/About.xml` - Mod metadata
+    - `Defs/` - XML definitions
+    - `Assets/` - Unity assets (Textures, Materials, Audio, etc.)
+    - `loadFolders.xml` - Load order configuration
+    - `.steamignore` - Files to exclude from Steam
 
+6. Add global using statement to `CosmereCore/CosmereCore/Cosmere.Core.csproj`:
+    ```xml
+    <Using Include="Cosmere.System.{WorldName}.Extension"/>
     ```
-    Assets/Textures/
-    Assets/Materials/
-    Assets/Terrain/
-    Assets/Audio/
-    ```
 
-5. Copy a `.steamignore` file from another mod so that unneeded files are excluded from Steam uploads.
-
-New mods should reference the following shared projects:
-
-- `CosmereCore`
-- `CosmereFoundation`
-- `CosmereResources` (optional but likely)
+New world mods only need to depend on `CosmereCore` - all shared code is in the single assembly.
 
 ## Development Workflow
 

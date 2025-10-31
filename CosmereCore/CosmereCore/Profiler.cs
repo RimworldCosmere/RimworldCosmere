@@ -32,7 +32,7 @@ public static class Profiler {
     private static readonly Timer FlushTimer;
 
     static Profiler() {
-        Harmony harmony = new Harmony("Cosmere.Foundation.Profiler");
+        Harmony harmony = new Harmony("Cosmere.Profiler");
 
         foreach (MethodInfo method in profiledMethods) {
             Profile attr = method.GetCustomAttribute<Profile>()!;

@@ -185,9 +185,9 @@ The lesser spren particle system uses Unity ParticleSystem components to create 
 - **Event Spren** (dynamic): Flamespren, Deathspren, etc. - spawn based on game events (fires, corpses, births), updated every 250 ticks
 
 **Key Files:**
-- `CosmereRoshar/ParticleSystem/SprenConfig.cs` - Enable/disable individual spren types for development
-- `CosmereRoshar/Comp/Map/LesserSprenSpawner.cs` - Main spawning system
-- `CosmereRoshar/Map/CellValidator.cs` - Terrain detection and cell validation logic
+- `CosmereCore/CosmereCore/System/Roshar/LesserSpren/ParticleSystem/SprenConfig.cs` - Enable/disable individual spren types for development
+- `CosmereCore/CosmereCore/System/Roshar/LesserSpren/MapComponent/LesserSprenSpawner.cs` - Main spawning system
+- `CosmereCore/CosmereCore/System/Roshar/LesserSpren/Map/CellValidator.cs` - Terrain detection and cell validation logic
 
 **Development Tips:**
 - Use `SprenConfig.EnabledSprenTypes` to test individual spren types

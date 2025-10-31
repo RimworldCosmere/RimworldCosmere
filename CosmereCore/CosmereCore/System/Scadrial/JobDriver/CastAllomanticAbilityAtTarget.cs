@@ -1,4 +1,3 @@
-using Cosmere;
 using System;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Allomancy.Ability;

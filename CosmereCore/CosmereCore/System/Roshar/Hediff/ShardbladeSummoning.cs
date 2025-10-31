@@ -1,7 +1,7 @@
-using Cosmere;
 using RimWorld;
 using Verse;
 using Verse.Sound;
+using SoundDefOf = Cosmere.Core.SoundDefOf;
 
 namespace Cosmere.System.Roshar.Hediff;
 
@@ -33,7 +33,7 @@ public class ShardbladeSummoning : Verse.Hediff {
 
             // Optional: Play heartbeat sound
             if (heartbeatCount <= 10) {
-                SoundDefOf.Interact_Sow.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
+                RimWorld.SoundDefOf.Interact_Sow.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
             }
 
             if (heartbeatCount >= 10) {
@@ -51,7 +51,7 @@ public class ShardbladeSummoning : Verse.Hediff {
             pawn.equipment.AddEquipment(shardblade);
         }
 
-        Core.SoundDefOf.Cosmere_Core_Sound_LoadingQuantumRiser.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
+        SoundDefOf.Cosmere_Core_Sound_LoadingQuantumRiser.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
 
         FleckMaker.Static(pawn.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
 

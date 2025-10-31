@@ -1,7 +1,6 @@
-using Cosmere;
-﻿using Cosmere.Listing;
-using Cosmere.UI;
-using Cosmere.Window;
+using Cosmere.Core.Listing;
+using Cosmere.Core.UI;
+using Cosmere.Core.Window;
 using Cosmere.System.Roshar.Def;
 using UnityEngine;
 using Verse;
@@ -30,7 +29,7 @@ public class ChooseRadiantOrder() : BaseWindow {
 
     protected override Vector2 initialWindowSize => new Vector2(
         Spacing.Get(65),
-        Mathf.Max(Spacing.Get(30), Verse.UI.screenHeight - Spacing.Get(10))
+        Mathf.Max(Spacing.Get(30), UI.screenHeight - Spacing.Get(10))
     );
 
     protected override TaggedString GetTitle() {

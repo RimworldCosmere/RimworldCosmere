@@ -1,10 +1,11 @@
+using Cosmere.Core;
 using Cosmere.Core.Ability;
-using Cosmere;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using Verse;
+using HediffUtility = Cosmere.System.Scadrial.Util.HediffUtility;
 
 namespace Cosmere.System.Scadrial.Allomancy.Ability;
 
@@ -91,13 +92,13 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
     }
 
     protected AllomanticHediff? GetOrAddHediff(Pawn targetPawn) {
-        return Util.HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def.hediff);
+        return HediffUtility.GetOrAddHediff(pawn, targetPawn, this, def.hediff);
     }
 
     protected void RemoveHediff(Pawn? targetPawn) {
         if (targetPawn == null) return;
 
-        Util.HediffUtility.RemoveHediff(pawn, targetPawn, this, def.hediff);
+        HediffUtility.RemoveHediff(pawn, targetPawn, this, def.hediff);
     }
 
     public override void ExposeData() {

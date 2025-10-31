@@ -1,5 +1,4 @@
-using Cosmere;
-﻿using Cosmere.Core.Thing;
+using Cosmere.Core.Thing;
 
 namespace Cosmere.System.Roshar.Thing.Pawn.Animal;
 

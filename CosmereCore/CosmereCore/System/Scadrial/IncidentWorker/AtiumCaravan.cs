@@ -1,4 +1,4 @@
-using Cosmere;
+using Cosmere.Core;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
@@ -39,7 +39,7 @@ public class AtiumCaravan : RimWorld.IncidentWorker {
         // Give a few pawns Atium
         foreach (Pawn? p in attackers.Take(2)) // First two
         {
-            Verse.Thing atium = ThingMaker.MakeThing(Cosmere.ThingDefOf.Atium);
+            Verse.Thing atium = ThingMaker.MakeThing(Core.ThingDefOf.Atium);
             atium.stackCount = Rand.RangeInclusive(1, 3);
             p.inventory?.TryAddItemNotForSale(atium);
         }

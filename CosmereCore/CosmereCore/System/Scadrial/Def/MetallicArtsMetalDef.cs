@@ -1,5 +1,4 @@
-using Cosmere;
-using Cosmere.Def;
+using Cosmere.Core.Def;
 using UnityEngine;
 using Verse;
 

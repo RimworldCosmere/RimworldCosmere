@@ -1,5 +1,5 @@
 using System;
-using Cosmere;
+using Cosmere.Core;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using Verse;
 

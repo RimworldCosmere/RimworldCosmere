@@ -1,9 +1,8 @@
-using Cosmere;
 using Cosmere.Core.Ability;
 using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using Verse;
-using static Cosmere.Mod;
+using static Cosmere.Core.Mod;
 
 namespace Cosmere.System.Scadrial.Allomancy.Ability;
 

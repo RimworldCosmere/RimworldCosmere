@@ -1,10 +1,9 @@
-using Cosmere;
 using System;
-using Cosmere.Def;
+using Cosmere.Core.Def;
 using Cosmere.System.Roshar.Surgebinding.IdealChecker;
-using RimWorld;
 using UnityEngine;
 using Verse;
+using AbilityDef = RimWorld.AbilityDef;
 
 namespace Cosmere.System.Roshar.Def;
 

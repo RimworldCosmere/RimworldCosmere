@@ -1,7 +1,6 @@
-using Cosmere;
 using Cosmere.Core;
 using Cosmere.Core.Ability;
-using Cosmere.Comp.Map;
+using Cosmere.Core.Comp.Map;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Comp.Hediff;
 using Cosmere.System.Scadrial.Gene;
@@ -9,7 +8,7 @@ using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using static Cosmere.Mod;
+using static Cosmere.Core.Mod;
 
 namespace Cosmere.System.Scadrial.Allomancy.Comp.Hediff;
 

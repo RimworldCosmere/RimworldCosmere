@@ -1,5 +1,4 @@
-using Cosmere;
-using Cosmere.Comp.Map;
+using Cosmere.Core.Comp.Map;
 using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;

@@ -1,11 +1,10 @@
-using Cosmere;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Hediff;
 using Cosmere.System.Roshar.Gene;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Logger;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Surgebinding.Hediff;
 

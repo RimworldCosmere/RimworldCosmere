@@ -1,10 +1,9 @@
-using Cosmere;
-﻿using Cosmere.Core.Util;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Def;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Logger;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Utility;
 

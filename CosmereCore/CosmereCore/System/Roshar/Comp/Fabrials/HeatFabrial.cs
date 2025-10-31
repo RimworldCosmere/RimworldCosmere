@@ -1,5 +1,5 @@
 ﻿using System;
-using Cosmere;
+using Cosmere.Core;
 using Cosmere.System.Roshar.Comp.Thing;
 using RimWorld;
 using UnityEngine;

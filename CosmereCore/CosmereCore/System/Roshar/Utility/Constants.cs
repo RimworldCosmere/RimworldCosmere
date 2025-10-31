@@ -1,4 +1,3 @@
-using Cosmere;
 using RimWorld;
 using Verse;
 
@@ -8,14 +7,14 @@ public static class Constants {
     public static List<TraitDef> radiantTraits => [];
 
     public static List<ThingDef> rawGems => [
-        Cosmere.ThingDefOf.RawDiamond,
-        Cosmere.ThingDefOf.RawGarnet,
-        Cosmere.ThingDefOf.RawRuby,
-        Cosmere.ThingDefOf.RawSapphire,
-        Cosmere.ThingDefOf.RawEmerald,
+        Core.ThingDefOf.RawDiamond,
+        Core.ThingDefOf.RawGarnet,
+        Core.ThingDefOf.RawRuby,
+        Core.ThingDefOf.RawSapphire,
+        Core.ThingDefOf.RawEmerald,
     ];
 
     public static List<ThingDef> cutGems => [
-        Cosmere.ThingDefOf.CutGem,
+        Core.ThingDefOf.CutGem,
     ];
 }

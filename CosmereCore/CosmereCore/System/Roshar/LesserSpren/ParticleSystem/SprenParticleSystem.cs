@@ -1,8 +1,7 @@
-using Cosmere;
 using Cosmere.System.Roshar.LesserSpren.SprenController;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Logger;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 
@@ -162,6 +161,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     }
 
     public void Destroy() {
-        if (particleSystem is not null) UnityEngine.Object.Destroy(particleSystem.gameObject);
+        if (particleSystem is not null) Object.Destroy(particleSystem.gameObject);
     }
 }

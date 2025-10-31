@@ -1,5 +1,4 @@
-using Cosmere;
-using Cosmere.Comp.Map;
+using Cosmere.Core.Comp.Map;
 using Cosmere.System.Scadrial.Def;
 using UnityEngine;
 using Verse;

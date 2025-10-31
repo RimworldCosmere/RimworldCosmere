@@ -1,9 +1,9 @@
+using Cosmere.Core;
 using Cosmere.Core.Need;
-using Cosmere;
 using Cosmere.System.Scadrial.Gene;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Logger;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Comp.Hediff;
 

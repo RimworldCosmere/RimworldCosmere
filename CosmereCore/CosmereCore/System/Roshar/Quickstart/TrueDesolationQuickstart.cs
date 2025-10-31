@@ -1,8 +1,6 @@
-using Cosmere;
 using Cosmere.Core.Comp.Thing;
-using Cosmere.Comp.Thing;
-using Cosmere.Quickstart;
-using Cosmere.Def;
+using Cosmere.Core.Def;
+using Cosmere.Core.Quickstart;
 using RimWorld;
 using Verse;
 
@@ -72,7 +70,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             );
             Verse.Thing? broam = ThingMaker.MakeThing(
                 ThingDefOf.Cosmere_Roshar_Thing_Broam,
-                Cosmere.ThingDefOf.RawEmerald
+                Core.ThingDefOf.RawEmerald
             );
             if (broam.TryGetComp(out InvestitureHolder broamInvestiture)) {
                 broamInvestiture.currentInvestitureSelf = broamInvestiture.maxInvestitureSelf;

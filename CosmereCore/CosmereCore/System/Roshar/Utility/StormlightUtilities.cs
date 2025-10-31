@@ -1,5 +1,4 @@
-using Cosmere;
-﻿using System;
+using System;
 using RimWorld;
 using Verse;
 using Random = System.Random;
@@ -123,7 +122,7 @@ public static class StormlightUtilities {
         IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
         foreach (IntVec3 cell in cells) {
             Pawn pawn = cell.GetFirstPawn(map);
-            if (pawn != null && pawn.jobs?.curJob != null && pawn.jobs.curJob.def == RimWorld.JobDefOf.Research) {
+            if (pawn != null && pawn.jobs?.curJob != null && pawn.jobs.curJob.def == JobDefOf.Research) {
                 return true;
             }
         }
@@ -132,7 +131,7 @@ public static class StormlightUtilities {
     }
 
     public static bool IsThingCutGemstone(Verse.Thing thing) {
-        return thing.def.Equals(Cosmere.ThingDefOf.CutGem);
+        return thing.def.Equals(Core.ThingDefOf.CutGem);
     }
 
 

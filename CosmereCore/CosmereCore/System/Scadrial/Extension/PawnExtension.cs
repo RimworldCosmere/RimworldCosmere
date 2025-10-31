@@ -1,8 +1,7 @@
-using Cosmere;
 using Cosmere.Core;
 using Cosmere.Core.Ability;
+using Cosmere.Core.Def;
 using Cosmere.Core.Hediff;
-using Cosmere.Def;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Def;
@@ -12,6 +11,8 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using AbilityDef = RimWorld.AbilityDef;
+using HediffUtility = Cosmere.System.Scadrial.Util.HediffUtility;
 
 namespace Cosmere.System.Scadrial.Extension;
 
@@ -150,30 +151,55 @@ public static class PawnExtension {
     }
 
     public static AllomanticHediff? GetOrAddHediff(this Pawn target, AllomancyAbility ability, HediffDef? hediffDef) {
-        return Util.HediffUtility.GetOrAddHediff(ability.pawn, target, ability, hediffDef);
+        return HediffUtility.GetOrAddHediff(ability.pawn, target, ability, hediffDef);
     }
 
-    public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, AllomancyAbility ability, HediffDef? hediffDef) {
-        return Util.HediffUtility.GetOrAddHediff(caster, target, ability, hediffDef);
+    public static AllomanticHediff? GetOrAddHediff(
+        this Pawn target,
+        Pawn caster,
+        AllomancyAbility ability,
+        HediffDef? hediffDef
+    ) {
+        return HediffUtility.GetOrAddHediff(caster, target, ability, hediffDef);
     }
 
-    public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, AllomancyAbility ability, IMultiTypeHediff def) {
-        return Util.HediffUtility.GetOrAddHediff(caster, target, ability, def);
+    public static AllomanticHediff? GetOrAddHediff(
+        this Pawn target,
+        Pawn caster,
+        AllomancyAbility ability,
+        IMultiTypeHediff def
+    ) {
+        return HediffUtility.GetOrAddHediff(caster, target, ability, def);
     }
 
-    public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, AllomancyAbility ability, Def.AllomanticAbilityDef abilityDef) {
-        return Util.HediffUtility.GetOrAddHediff(caster, target, ability, abilityDef.hediff);
+    public static AllomanticHediff? GetOrAddHediff(
+        this Pawn target,
+        Pawn caster,
+        AllomancyAbility ability,
+        AllomanticAbilityDef abilityDef
+    ) {
+        return HediffUtility.GetOrAddHediff(caster, target, ability, abilityDef.hediff);
     }
 
-    public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, IAbility<Allomancer, AllomanticHediff> ability, IMultiTypeHediff def) {
-        return Util.HediffUtility.GetOrAddHediff(caster, target, (AllomancyAbility)ability, def);
+    public static AllomanticHediff? GetOrAddHediff(
+        this Pawn target,
+        Pawn caster,
+        IAbility<Allomancer, AllomanticHediff> ability,
+        IMultiTypeHediff def
+    ) {
+        return HediffUtility.GetOrAddHediff(caster, target, (AllomancyAbility)ability, def);
     }
 
-    public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, IAbility<Allomancer, IHediff<Allomancer>> ability, Def.AllomanticAbilityDef abilityDef) {
-        return Util.HediffUtility.GetOrAddHediff(caster, target, (AllomancyAbility)ability, abilityDef.hediff);
+    public static AllomanticHediff? GetOrAddHediff(
+        this Pawn target,
+        Pawn caster,
+        IAbility<Allomancer, IHediff<Allomancer>> ability,
+        AllomanticAbilityDef abilityDef
+    ) {
+        return HediffUtility.GetOrAddHediff(caster, target, (AllomancyAbility)ability, abilityDef.hediff);
     }
 
     public static void RemoveHediff(this Pawn target, AllomancyAbility ability, HediffDef? hediffDef) {
-        Util.HediffUtility.RemoveHediff(ability.pawn, target, ability, hediffDef);
+        HediffUtility.RemoveHediff(ability.pawn, target, ability, hediffDef);
     }
 }

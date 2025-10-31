@@ -1,4 +1,3 @@
-using Cosmere;
 using Cosmere.Core.Comp.Hediff;
 using Cosmere.System.Scadrial.Gene;
 

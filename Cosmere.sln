@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere.Core", "CosmereCore\CosmereCore\Cosmere.Core.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmere", "CosmereCore\CosmereCore\Cosmere.csproj", "{5F1D8C6D-E127-4001-A575-E56D99DF271F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

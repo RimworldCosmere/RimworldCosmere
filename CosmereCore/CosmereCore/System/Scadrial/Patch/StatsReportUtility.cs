@@ -1,6 +1,5 @@
-using Cosmere;
-using Cosmere.Def;
-using Cosmere.DefModExtension;
+using Cosmere.Core.Def;
+using Cosmere.Core.DefModExtension;
 using HarmonyLib;
 using RimWorld;
 using Verse;

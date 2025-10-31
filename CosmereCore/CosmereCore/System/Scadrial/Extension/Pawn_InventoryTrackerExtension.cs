@@ -1,5 +1,4 @@
-using Cosmere;
-using Cosmere.Def;
+using Cosmere.Core.Def;
 using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Thing;
 using Verse;

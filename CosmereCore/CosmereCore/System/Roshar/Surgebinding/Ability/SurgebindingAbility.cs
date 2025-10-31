@@ -1,11 +1,10 @@
-using Cosmere;
 using Cosmere.Core.Ability;
-using Cosmere.Def;
+using Cosmere.Core.Def;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.Surgebinding.Hediff;
-using RimWorld;
 using Verse;
+using AbilityDef = RimWorld.AbilityDef;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability;
 

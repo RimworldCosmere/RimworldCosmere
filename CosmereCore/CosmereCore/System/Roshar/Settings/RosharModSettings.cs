@@ -1,6 +1,5 @@
-using Cosmere;
-using Cosmere.Listing;
-using Cosmere.Settings;
+using Cosmere.Core.Listing;
+using Cosmere.Core.Settings;
 using Verse;
 
 namespace Cosmere.System.Roshar.Settings;

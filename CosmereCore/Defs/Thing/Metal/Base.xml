@@ -31,7 +31,7 @@
         <soundDrop>Metal_Drop</soundDrop>
     </ThingDef>
 
-    <ThingDef Name="CosmereMineableMetalBase" ParentName="MineableBase" Abstract="True">
+    <ThingDef Name="CosmereMineableMetalBase" ParentName="RockBase" Abstract="True">
         <statBases>
             <MaxHitPoints>1500</MaxHitPoints>
         </statBases>

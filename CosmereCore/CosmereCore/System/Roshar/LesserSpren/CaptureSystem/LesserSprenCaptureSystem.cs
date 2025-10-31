@@ -1,8 +1,7 @@
-using Cosmere;
-﻿using System;
+using System;
 using Cosmere.Core.Comp.Thing;
-using Cosmere.Def;
-using Cosmere.DefModExtension;
+using Cosmere.Core.Def;
+using Cosmere.Core.DefModExtension;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.System.Roshar.LesserSpren.SprenController;

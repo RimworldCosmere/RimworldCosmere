@@ -1,7 +1,7 @@
-using Cosmere;
-using Cosmere.Listing;
-using Cosmere.Settings;
+using Cosmere.Core.Listing;
+using Cosmere.Core.Settings;
 using Verse;
+using UI = Cosmere.Core.Util.UI;
 
 namespace Cosmere.System.Scadrial.Settings;
 
@@ -31,7 +31,7 @@ public class ScadrialModSettings : CosmereModSettings {
                 fieldset.Field(
                     "CS_Settings_MistsFrequency_Label".Translate(),
                     "CS_Settings_MistsFrequency_Tooltip".Translate(),
-                    sub => Cosmere.Util.UI.IntEnumDropdown(sub, mistsFrequency, v => mistsFrequency = v, false)
+                    sub => UI.IntEnumDropdown(sub, mistsFrequency, v => mistsFrequency = v, false)
                 );
             },
             SubListingOptions.WithoutTopPadding()
@@ -43,13 +43,13 @@ public class ScadrialModSettings : CosmereModSettings {
                 fieldset.Field(
                     "CS_Settings_PawnsKeepVialOnDown_Label".Translate(),
                     "CS_Settings_PawnsKeepVialOnDown_Tooltip".Translate(),
-                    sub => Cosmere.Util.UI.BoolEnumDropdown(sub, pawnsKeepVialsWhenDowned, v => pawnsKeepVialsWhenDowned = v)
+                    sub => UI.BoolEnumDropdown(sub, pawnsKeepVialsWhenDowned, v => pawnsKeepVialsWhenDowned = v)
                 );
 
                 fieldset.Field(
                     "CS_Settings_PawnsKeepMetalmindsOnDown_Label".Translate(),
                     "CS_Settings_PawnsKeepMetalmindsOnDown_Tooltip".Translate(),
-                    sub => Cosmere.Util.UI.BoolEnumDropdown(
+                    sub => UI.BoolEnumDropdown(
                         sub,
                         pawnsKeepMetalmindsWhenDowned,
                         v => pawnsKeepMetalmindsWhenDowned = v

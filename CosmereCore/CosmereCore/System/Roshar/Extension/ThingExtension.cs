@@ -1,6 +1,5 @@
-using Cosmere;
-using Cosmere.System.Roshar.Utility;
 using Cosmere.Core.Comp.Thing;
+using Cosmere.System.Roshar.Utility;
 using Verse;
 
 namespace Cosmere.System.Roshar.Extension;

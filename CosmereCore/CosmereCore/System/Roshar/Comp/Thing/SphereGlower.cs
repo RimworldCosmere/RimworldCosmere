@@ -1,7 +1,6 @@
+using Cosmere.Core;
 using Cosmere.Core.Comp.Thing;
-using Cosmere.Comp.Thing;
-using Cosmere;
-using Cosmere.Def;
+using Cosmere.Core.Def;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -125,7 +124,7 @@ public class SphereGlower : CompGlower {
 
     private static Color GetSphereColor(Verse.Thing sphere) {
         GemDef? gem = DefDatabase<GemDef>.GetNamed(
-            sphere.Stuff?.defName.Replace("Raw", "") ?? Cosmere.ThingDefOf.RawDiamond.defName
+            sphere.Stuff?.defName.Replace("Raw", "") ?? Core.ThingDefOf.RawDiamond.defName
         );
 
         // Replace this with however your sphere stores color — possibly via a GemstoneDef

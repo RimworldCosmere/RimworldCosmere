@@ -1,4 +1,3 @@
-using Cosmere;
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
 using Cosmere.Core.Def;

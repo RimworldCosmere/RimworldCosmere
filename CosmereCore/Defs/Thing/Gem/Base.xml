@@ -31,7 +31,7 @@
         <soundDrop>Silver_Drop</soundDrop>
     </ThingDef>
 
-    <ThingDef Name="CosmereMineableGemBase" ParentName="MineableBase" Abstract="True">
+    <ThingDef Name="CosmereMineableGemBase" ParentName="RockBase" Abstract="True">
         <statBases>
             <MaxHitPoints>800</MaxHitPoints>
         </statBases>

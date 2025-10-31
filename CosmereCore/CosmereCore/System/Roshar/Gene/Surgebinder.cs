@@ -1,4 +1,3 @@
-using Cosmere;
 using System;
 using Cosmere.Core.Gene;
 using Cosmere.System.Roshar.Comp.Thing;
@@ -7,7 +6,7 @@ using Cosmere.System.Roshar.DefModExtension;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Logger;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Gene;
 

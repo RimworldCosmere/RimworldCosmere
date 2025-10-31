@@ -1,7 +1,7 @@
+using Cosmere.Core;
+using Cosmere.Core.Def;
 using Cosmere.Core.Need;
-using Cosmere.Quickstart;
-using Cosmere;
-using Cosmere.Def;
+using Cosmere.Core.Quickstart;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Dev;
 using Cosmere.System.Scadrial.Gene;

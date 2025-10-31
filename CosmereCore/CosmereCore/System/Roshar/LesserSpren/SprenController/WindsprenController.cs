@@ -1,5 +1,5 @@
-using Cosmere;
-using Cosmere.Def;
+using Cosmere.Core;
+using Cosmere.Core.Def;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using RimWorld;
 using UnityEngine;

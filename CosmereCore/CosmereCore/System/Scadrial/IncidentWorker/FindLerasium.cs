@@ -1,4 +1,3 @@
-using Cosmere;
 using RimWorld;
 using Verse;
 
@@ -15,7 +14,7 @@ public class FindLerasium : RimWorld.IncidentWorker {
             .RandomElementWithFallback();
         if (chosenPawn == null) return false;
 
-        Verse.Thing? bead = ThingMaker.MakeThing(Cosmere.ThingDefOf.Lerasium);
+        Verse.Thing? bead = ThingMaker.MakeThing(Core.ThingDefOf.Lerasium);
         GenPlace.TryPlaceThing(bead, chosenPawn.Position, map, ThingPlaceMode.Near);
 
         Find.LetterStack.ReceiveLetter(

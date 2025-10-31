@@ -1,13 +1,13 @@
-﻿using Cosmere.Core.Investiture;
+﻿using Cosmere.Core;
+using Cosmere.Core.Investiture;
 using Cosmere.Core.Need;
-using Cosmere;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Thing;
 using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Logger = Cosmere.Logger;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Gene;
 

@@ -17,16 +17,16 @@ public enum LogLevel {
     Verbose,
 }
 
-public class Mod : CosmereMod<FoundationModSettings> {
+public class Mod : CosmereMod<CoreModSettings> {
     private SettingsWindow? settingsWindow;
 
     public Mod(ModContentPack content) : base(content) {
         GetSettings<CosmereSettings>();
     }
 
-    public static bool debugMode => GetModSettings<FoundationModSettings>().debugMode;
+    public static bool debugMode => GetModSettings<CoreModSettings>().debugMode;
 
-    public static LogLevel logLevel => GetModSettings<FoundationModSettings>().logLevel;
+    public static LogLevel logLevel => GetModSettings<CoreModSettings>().logLevel;
 
     public static List<CosmereModSettings> cosmereSettings { get; } = typeof(CosmereModSettings)
         .AllSubclassesNonAbstract()

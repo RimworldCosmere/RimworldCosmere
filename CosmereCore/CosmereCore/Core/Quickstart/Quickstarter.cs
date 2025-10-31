@@ -23,7 +23,7 @@ public class Quickstarter {
 
     private Quickstarter() {
         if (!Prefs.DevMode) return;
-        string? quickstartName = Mod.GetModSettings<FoundationModSettings>().quickstartName;
+        string? quickstartName = Mod.GetModSettings<CoreModSettings>().quickstartName;
         if (quickstartName == null) return;
 
         Type? type = Type.GetType(quickstartName);

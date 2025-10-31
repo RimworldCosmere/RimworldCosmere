@@ -13,7 +13,7 @@ public sealed class CosmereSettings : ModSettings {
 
     public static bool TryGetRaw(string modId, string key, out object? value) {
         CosmereModSettings? modSettings =
-            Core.Mod.cosmereSettings.FirstOrDefault(m => m.GetType().Assembly.GetName().Name.Contains(modId));
+            Core.Mod.cosmereSettings.FirstOrDefault(m => modId.EndsWith(m.Name));
 
         value = null;
         if (modSettings == null) return false;

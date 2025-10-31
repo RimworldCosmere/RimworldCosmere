@@ -197,8 +197,8 @@ The lesser spren particle system uses Unity ParticleSystem components to create 
 
 ## Available Resources
 
-### Gems (CosmereResources)
-Always check `CosmereResources/GemDefOf.generated.cs` for available gems before using them in code. Available gems:
+### Gems
+Always check `CosmereCore/CosmereCore/GemDefOf.generated.cs` for available gems before using them in code. Available gems:
 - Amethyst, Diamond, Emerald, Garnet, Heliodor, Ruby, Sapphire, Smokestone, Topaz, Zircon
 - **Do NOT use non-existent gems** like Aquamarine - they will cause compilation errors
 

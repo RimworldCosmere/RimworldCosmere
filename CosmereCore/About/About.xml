@@ -15,22 +15,8 @@
             <packageId>Ludeon.RimWorld.Biotech</packageId>
             <displayName>Biotech</displayName>
         </li>
-        <li>
-            <packageId>Cosmere.Foundation</packageId>
-            <displayName>Cosmere - Framework</displayName>
-            <steamWorkshopUrl>steam://url/CommunityFilePage/3474206890</steamWorkshopUrl>
-            <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
-        </li>
-        <li>
-            <packageId>Cosmere.Resources</packageId>
-            <displayName>Cosmere - Metals</displayName>
-            <steamWorkshopUrl>steam://url/CommunityFilePage/3474207432</steamWorkshopUrl>
-            <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
-        </li>
     </modDependencies>
     <forceLoadAfter>
         <li>Ludeon.RimWorld.Biotech</li>
-        <li>Cosmere.Foundation</li>
-        <li>Cosmere.Resources</li>
     </forceLoadAfter>
 </ModMetaData>

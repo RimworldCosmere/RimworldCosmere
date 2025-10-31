@@ -142,8 +142,6 @@ public static class GenerateCommand
         var directories = new[]
         {
             "CosmereCore",
-            "CosmereFoundation", 
-            "CosmereResources",
             "CosmereScadrial",
             "CosmereRoshar"
         };

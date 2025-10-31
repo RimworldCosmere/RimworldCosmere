@@ -28,7 +28,7 @@ public class ResourcesGenerator : BaseGenerator
         var mineableMetals = enabledMetals.Where(m => m.Mining != null).ToList();
         
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "Resources", "metals");
-        var resourcesModDir = FileSystem.Path.Combine("CosmereResources");
+        var resourcesModDir = FileSystem.Path.Combine("CosmereCore");
         
         // Compile all templates in parallel
         var templateTasks = new List<Task<HandlebarsTemplate<object, object>>>
@@ -73,7 +73,7 @@ public class ResourcesGenerator : BaseGenerator
 
         // Generate MetalDefOf
         var metalDefOfContent = metalDefOfTemplate(new { metals = enabledMetals });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereResources"), "MetalDefOf.generated.cs", metalDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereCore"), "MetalDefOf.generated.cs", metalDefOfContent));
 
         // Generate Mineable metals
         if (mineableMetals.Any() && mineableTemplate != null && thingDefOfMineableTemplate != null)
@@ -86,7 +86,7 @@ public class ResourcesGenerator : BaseGenerator
             }
 
             var mineableDefOfContent = thingDefOfMineableTemplate(new { metals = mineableMetals });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereResources"), "ThingDefOf.Metal.Mineable.generated.cs", mineableDefOfContent));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereCore"), "ThingDefOf.Metal.Mineable.generated.cs", mineableDefOfContent));
         }
 
         // Generate Item metals
@@ -98,7 +98,7 @@ public class ResourcesGenerator : BaseGenerator
         }
 
         var itemDefOfContent = thingDefOfItemTemplate(new { metals = enabledMetals });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereResources"), "ThingDefOf.Metal.Items.generated.cs", itemDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereCore"), "ThingDefOf.Metal.Items.generated.cs", itemDefOfContent));
         
         // Wait for all file writes to complete
         await Task.WhenAll(fileWriteTasks);
@@ -111,7 +111,7 @@ public class ResourcesGenerator : BaseGenerator
         var mineableGems = enabledGems.Where(g => g.Mining != null).ToList();
         
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "Resources", "gems");
-        var resourcesModDir = FileSystem.Path.Combine("CosmereResources");
+        var resourcesModDir = FileSystem.Path.Combine("CosmereCore");
         
         // Compile all templates in parallel
         var templateTasks = new List<Task<HandlebarsTemplate<object, object>>>
@@ -156,7 +156,7 @@ public class ResourcesGenerator : BaseGenerator
 
         // Generate GemDefOf
         var gemDefOfContent = gemDefOfTemplate(new { gems = enabledGems });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereResources"), "GemDefOf.generated.cs", gemDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereCore"), "GemDefOf.generated.cs", gemDefOfContent));
 
         // Generate Mineable gems
         if (mineableGems.Any() && mineableTemplate != null && thingDefOfMineableTemplate != null)
@@ -169,7 +169,7 @@ public class ResourcesGenerator : BaseGenerator
             }
 
             var mineableDefOfContent = thingDefOfMineableTemplate(new { gems = mineableGems });
-            fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereResources"), "ThingDefOf.Gems.Mineable.generated.cs", mineableDefOfContent));
+            fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereCore"), "ThingDefOf.Gems.Mineable.generated.cs", mineableDefOfContent));
         }
 
         // Generate Item gems
@@ -181,7 +181,7 @@ public class ResourcesGenerator : BaseGenerator
         }
 
         var itemDefOfContent = thingDefOfItemTemplate(new { gems = enabledGems });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereResources"), "ThingDefOf.Gems.Item.generated.cs", itemDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(resourcesModDir, "CosmereCore"), "ThingDefOf.Gems.Item.generated.cs", itemDefOfContent));
         
         // Wait for all file writes to complete
         await Task.WhenAll(fileWriteTasks);

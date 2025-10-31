@@ -12,7 +12,7 @@
                 <defaultCollapsed>true</defaultCollapsed>
             </li>
             <li Class="Cosmere.Core.DefModExtension.DormantConnection">
-                <callbackHandler>Cosmere.Scadrial.DormantConnection.Callback.Snapped</callbackHandler>
+                <callbackHandler>Cosmere.System.Scadrial.DormantConnection.Callback.Snapped</callbackHandler>
             </li>
         </modExtensions>
         <statOffsets>
@@ -20,8 +20,8 @@
         </statOffsets>
     </GeneDef>
     <GeneDef Name="AbstractAllomancyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
-        <geneClass>Cosmere.Scadrial.Gene.Allomancer</geneClass>
-        <resourceGizmoType>Cosmere.Scadrial.Gizmo.AllomanticGeneCommand</resourceGizmoType>
+        <geneClass>Cosmere.System.Scadrial.Gene.Allomancer</geneClass>
+        <resourceGizmoType>Cosmere.System.Scadrial.Gizmo.AllomanticGeneCommand</resourceGizmoType>
         <resourceGizmoThresholds>
             <li>0.2</li>
             <li>0.4</li>
@@ -32,8 +32,8 @@
         <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
     </GeneDef>
     <GeneDef Name="AbstractFeruchemyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
-        <geneClass>Cosmere.Scadrial.Gene.Feruchemist</geneClass>
-        <resourceGizmoType>Cosmere.Scadrial.Gizmo.FeruchemicGeneCommand</resourceGizmoType>
+        <geneClass>Cosmere.System.Scadrial.Gene.Feruchemist</geneClass>
+        <resourceGizmoType>Cosmere.System.Scadrial.Gizmo.FeruchemicGeneCommand</resourceGizmoType>
         <resourceGizmoThresholds>
             <li>0.2</li>
             <li>0.4</li>

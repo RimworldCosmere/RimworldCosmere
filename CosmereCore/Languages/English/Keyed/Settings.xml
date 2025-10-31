@@ -3,4 +3,22 @@
     <CC_Settings_Category_Connection>Connection</CC_Settings_Category_Connection>
     <CC_Settings_Connection_ShowDormantConnection_Label>Show Dormant Connection</CC_Settings_Connection_ShowDormantConnection_Label>
     <CC_Settings_Connection_ShowDormantConnection_Tooltip>Pawns will show that they have a dormant Connection in their inspect window. Won't show what it exactly is.</CC_Settings_Connection_ShowDormantConnection_Tooltip>
+    
+    <CC_Settings_Category_Debug>Debug Settings</CC_Settings_Category_Debug>
+    <CC_Settings_LogLevel_Label>Log Level: </CC_Settings_LogLevel_Label>
+    <CC_Settings_LogLevel_Tooltip>Determines what gets logged. Should probably be Info</CC_Settings_LogLevel_Tooltip>
+    
+    <CC_Settings_DebugMode_Label>Debug Mode: </CC_Settings_DebugMode_Label>
+    <CC_Settings_DebugMode_Tooltip>Provides extra debugging features</CC_Settings_DebugMode_Tooltip>
+    
+    <CC_Settings_Quickstarter_Label>Quickstarter: </CC_Settings_Quickstarter_Label>
+    <CC_Settings_Quickstarter_Tooltip>When in dev mode, will immediately launch into the given Quickstarter. Very useful for testing.</CC_Settings_Quickstarter_Tooltip>
+    <CC_Settings_Quickstarter_Placeholder>Select a Quickstarter </CC_Settings_Quickstarter_Placeholder>
+    <CC_Settings_Quickstarter_FailedToFind>Failed to find Quickstarter</CC_Settings_Quickstarter_FailedToFind>
+    
+    <CC_Quickstart_Name>Quickstart: </CC_Quickstart_Name>
+    <CC_Quickstart_MapSize>Map Size: </CC_Quickstart_MapSize>
+    <CC_Quickstart_Difficulty>Difficulty: </CC_Quickstart_Difficulty>
+    <CC_Quickstart_Scenario>Scenario: </CC_Quickstart_Scenario>
+    <CC_Quickstart_PauseAfterLoad>Pause After Load: </CC_Quickstart_PauseAfterLoad>
 </LanguageData>

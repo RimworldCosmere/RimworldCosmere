@@ -2,6 +2,6 @@
 <Defs>
     <LetterDef ParentName="PositiveEvent">
         <defName>Cosmere_Roshar_ChooseRadiantOrder</defName>
-        <letterClass>Cosmere.Roshar.LetterArrive.ChooseOrder</letterClass>
+        <letterClass>Cosmere.System.Roshar.LetterArrive.ChooseOrder</letterClass>
     </LetterDef>
 </Defs>

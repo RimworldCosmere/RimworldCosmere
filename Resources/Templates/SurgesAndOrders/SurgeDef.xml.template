@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <Cosmere.Roshar.Def.SurgeDef Name="Cosmere_Roshar_Surge_{{defName surge.name}}">
+    <Cosmere.System.Roshar.Def.SurgeDef Name="Cosmere_Roshar_Surge_{{defName surge.name}}">
         <defName>{{defName surge.name}}</defName>
         <label>{{title surge.name}}</label>
         <description>{{surge.description}}</description>
@@ -9,5 +9,5 @@
             <li>{{this}}</li>
             {{/each}}
         </abilities>
-    </Cosmere.Roshar.Def.SurgeDef>
+    </Cosmere.System.Roshar.Def.SurgeDef>
 </Defs>

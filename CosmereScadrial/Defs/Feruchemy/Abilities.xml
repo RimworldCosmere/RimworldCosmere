@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef Name="Cosmere_Scadrial_Ability_AbstractCompoundAbility" ParentName="AbstractToggleSelfBurnAbility" Abstract="True">
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef Name="Cosmere_Scadrial_Ability_AbstractCompoundAbility" ParentName="AbstractToggleSelfBurnAbility" Abstract="True">
         <maxPower>1</maxPower>
         <beuPerTick>0.00083333333333333333333333333333</beuPerTick>
         <canUseWhileAsleep>true</canUseWhileAsleep>
         <iconPath>UI/Icons/Abilities/Compound</iconPath>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

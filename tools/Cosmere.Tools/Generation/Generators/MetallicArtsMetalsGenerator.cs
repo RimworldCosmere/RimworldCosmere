@@ -20,7 +20,8 @@ public class MetallicArtsMetalsGenerator : BaseGenerator
         var metallicArtsMetals = metals.Where(m => m.Allomancy != null || m.Feruchemy != null).ToList();
         
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "MetallicArtsMetals");
-        var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
+        var scadrialXmlDir = FileSystem.Path.Combine("CosmereScadrial");
+        var scadrialCsDir = FileSystem.Path.Combine("CosmereCore", "CosmereCore", "System", "Scadrial");
         
         // Compile all templates in parallel
         var metalTemplateTask = CompileTemplateAsync(templatesDir, "MetallicArtsMetalDef.xml.template");
@@ -41,7 +42,7 @@ public class MetallicArtsMetalsGenerator : BaseGenerator
         var fileWriteTasks = new List<Task>();
         
         // Generate metallic arts metal definitions
-        var metalOutputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Things", "Metals");
+        var metalOutputDir = FileSystem.Path.Combine(scadrialXmlDir, "Defs", "Things", "Metals");
         foreach (var metal in metallicArtsMetals)
         {
             var content = metalTemplate(new { metal });
@@ -49,7 +50,7 @@ public class MetallicArtsMetalsGenerator : BaseGenerator
         }
 
         // Generate patches
-        var patchOutputDir = FileSystem.Path.Combine(scadrialModDir, "Patches", "Metals");
+        var patchOutputDir = FileSystem.Path.Combine(scadrialXmlDir, "Patches", "Metals");
         foreach (var metal in metallicArtsMetals)
         {
             var content = patchTemplate(new { metal });
@@ -58,14 +59,14 @@ public class MetallicArtsMetalsGenerator : BaseGenerator
 
         // Generate DefOf classes
         var metalDefOfContent = metalDefOfTemplate(new { metals = metallicArtsMetals });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "MetallicArtsMetalDefOf.generated.cs", metalDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(scadrialCsDir, "MetallicArtsMetalDefOf.generated.cs", metalDefOfContent));
 
         // Generate Records
         var recordsContent = recordsTemplate(new { metals = metallicArtsMetals });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "Defs"), "Records.generated.xml", recordsContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialXmlDir, "Defs"), "Records.generated.xml", recordsContent));
 
         var recordDefOfContent = recordDefOfTemplate(new { metals = metallicArtsMetals });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "RecordDefOf.generated.cs", recordDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(scadrialCsDir, "RecordDefOf.generated.cs", recordDefOfContent));
         
         // Wait for all file writes to complete
         await Task.WhenAll(fileWriteTasks);

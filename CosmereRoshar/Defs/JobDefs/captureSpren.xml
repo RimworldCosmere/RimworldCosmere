@@ -3,7 +3,7 @@
     <JobDef>
         <defName>Cosmere_Roshar_CaptureSpren</defName>
         <label>Capture spren</label>
-        <driverClass>Cosmere.Roshar.Job.Driver.CaptureSpren</driverClass>
+        <driverClass>Cosmere.System.Roshar.Job.Driver.CaptureSpren</driverClass>
         <reportString>capturing spren.</reportString>
         <playerInterruptible>true</playerInterruptible>
         <checkOverrideOnDamage>Never</checkOverrideOnDamage>

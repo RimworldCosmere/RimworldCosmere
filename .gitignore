@@ -15,3 +15,5 @@ Cosmere.sln.DotSettings.user
 CLAUDE.md
 .claude
 Assembly-CSharp.dll
+*.stackdump
+old

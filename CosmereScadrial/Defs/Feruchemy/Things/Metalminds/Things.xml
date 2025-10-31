@@ -17,7 +17,7 @@
         <tradeability>Sellable</tradeability>
         <stackLimit>1</stackLimit>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_BaseAllomanticMetals</li>
+            <li>Cosmere_Core_StuffCategory_BaseAllomanticMetals</li>
         </stuffCategories>
         <costStuffCount>20</costStuffCount>
         <smeltable>true</smeltable>
@@ -37,12 +37,12 @@
             <recipeUsers Inherit="False">
                 <li>ElectricSmithy</li>
                 <li>FueledSmithy</li>
-                <li>Cosmere_Resources_Table_Forge</li>
+                <li>Cosmere_Core_Table_Forge</li>
             </recipeUsers>
             <defaultIngredientFilter>
                 <categories>
-                    <li>Cosmere_Resource_ThingCategory_BasicMetal</li>
-                    <li>Cosmere_Resource_ThingCategory_GodMetal</li>
+                    <li>Cosmere_Core_ThingCategory_BasicMetal</li>
+                    <li>Cosmere_Core_ThingCategory_GodMetal</li>
                 </categories>
             </defaultIngredientFilter>
         </recipeMaker>
@@ -67,7 +67,7 @@
             <texPath>Things/Pawn/Equipment/Earring</texPath>
         </graphicData>
         <comps>
-            <li Class="Cosmere.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+            <li Class="Cosmere.System.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
                 <maxAmount>25</maxAmount>
             </li>
         </comps>
@@ -89,7 +89,7 @@
             <texPath>Things/Pawn/Equipment/Bracelet</texPath>
         </graphicData>
         <comps>
-            <li Class="Cosmere.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+            <li Class="Cosmere.System.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
                 <maxAmount>75</maxAmount>
             </li>
         </comps>
@@ -111,7 +111,7 @@
             <texPath>Things/Pawn/Equipment/Band</texPath>
         </graphicData>
         <comps>
-            <li Class="Cosmere.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
+            <li Class="Cosmere.System.Scadrial.Feruchemy.Comp.Thing.MetalmindProperties">
                 <maxAmount>150</maxAmount>
             </li>
         </comps>

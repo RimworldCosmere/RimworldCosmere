@@ -19,7 +19,7 @@
             <li>Cosmere_Roshar_SphereLamps</li>
         </researchPrerequisites>
         <inspectorTabs>
-            <li>Cosmere.Roshar.Tab.SphereTab</li>
+            <li>Cosmere.System.Roshar.Tab.SphereTab</li>
         </inspectorTabs>
         <placeWorkers>
             <li>PlaceWorker_MeditationOffsetBuildingsNear</li>
@@ -29,7 +29,7 @@
         <comps Inherit="False">
             <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Styleable" />
-            <li Class="Cosmere.Foundation.Comp.Thing.InnerStorageProperties">
+            <li Class="Cosmere.Core.Comp.Thing.InnerStorageProperties">
                 <tabName>CRO_InspectorTab_SphereTab</tabName>
                 <maxItems>25</maxItems>
                 <defaultStorageSettings>
@@ -53,7 +53,7 @@
             <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
                 <maxInvestiture>0</maxInvestiture>
             </li>
-            <li Class="Cosmere.Roshar.Comp.Thing.SphereGlowerProperties" />
+            <li Class="Cosmere.System.Roshar.Comp.Thing.SphereGlowerProperties" />
             <li Class="CompProperties_MeditationFocus">
                 <statDef>MeditationFocusStrength</statDef>
                 <focusTypes>

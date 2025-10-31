@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Scadrial_Ability_BronzeAura</defName>
         <label>bronze aura</label>
         <description>Allows the user to detect the rhythmic pulses of nearby Allomantic powers.</description>
@@ -8,5 +8,5 @@
         <hediff>Cosmere_Scadrial_Hediff_BronzeAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
         <maxPower>2</maxPower>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

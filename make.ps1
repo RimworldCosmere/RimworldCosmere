@@ -361,11 +361,10 @@ switch ($Command.ToLower()) {
         Write-ColoredLine "RimWorld Cosmere Development Environment" $Blue
         Write-Host ""
         Write-ColoredLine "Project Structure:" $Green
-        Write-Host "  CosmereFoundation    - Shared utilities and base classes"
-        Write-Host "  CosmereCore          - Core game mechanics and systems"
-        Write-Host "  CosmereResources     - Metals, gems, and materials"
-        Write-Host "  CosmereScadrial      - Allomancy, Feruchemy, Hemalurgy"
-        Write-Host "  CosmereRoshar        - Surgebinding and Radiant Orders"
+        Write-Host "  CosmereCore          - Single consolidated C# assembly (Cosmere.Core.dll)"
+        Write-Host "                         Contains all systems: framework, core mechanics, Scadrial, Roshar"
+        Write-Host "  CosmereScadrial      - XML defs and assets for Allomancy, Feruchemy, Hemalurgy"
+        Write-Host "  CosmereRoshar        - XML defs and assets for Surgebinding and Radiant Orders"
         Write-Host ""
         Write-ColoredLine "Tools:" $Green
         Write-Host "  Tools CLI            - Code generation and asset building"

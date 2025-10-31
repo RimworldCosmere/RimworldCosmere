@@ -3,7 +3,7 @@
     <JobDef>
         <defName>Cosmere_Roshar_RefuelFabrial</defName>
         <label>Refuel fabial</label>
-        <driverClass>Cosmere.Roshar.Job.Driver.AddGemToFabrial</driverClass>
+        <driverClass>Cosmere.System.Roshar.Job.Driver.AddGemToFabrial</driverClass>
         <reportString>Adding gem to fabrial..</reportString>
         <playerInterruptible>true</playerInterruptible>
         <checkOverrideOnDamage>Never</checkOverrideOnDamage>
@@ -12,7 +12,7 @@
     <JobDef>
         <defName>Cosmere_Roshar_RemoveFromFabrial</defName>
         <label>Remove gem from fabial</label>
-        <driverClass>Cosmere.Roshar.Job.Driver.RemoveGemFromFabrial</driverClass>
+        <driverClass>Cosmere.System.Roshar.Job.Driver.RemoveGemFromFabrial</driverClass>
         <reportString>Removing gem from fabrial..</reportString>
         <playerInterruptible>true</playerInterruptible>
         <checkOverrideOnDamage>Never</checkOverrideOnDamage>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Scadrial_Ability_ZincAura</defName>
         <label>rioting aura</label>
         <description>The Rioter subtly fans the emotional flames of all nearby minds.
@@ -11,8 +11,8 @@ Hostile or neutral targets grow tense, anxious, or unstable — their emotions s
         <canUseWhileAsleep>true</canUseWhileAsleep>
         <hediff>Cosmere_Scadrial_Hediff_ZincAura</hediff>
         <maxPower>2</maxPower>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_ZincTarget</defName>
         <label>riot target</label>
         <description>The Rioter channels Zinc to incite emotion in a single target.
@@ -32,5 +32,5 @@ A carefully timed burst against an enemy may stoke fear, anger, or confusion —
             </targetParams>
         </verbProperties>
         <maxPower>2</maxPower>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

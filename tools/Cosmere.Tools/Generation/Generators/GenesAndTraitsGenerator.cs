@@ -35,8 +35,9 @@ public class GenesAndTraitsGenerator : BaseGenerator
         }
         
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "GenesAndTraits");
-        var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
-        var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Allomancy");
+        var scadrialXmlDir = FileSystem.Path.Combine("CosmereScadrial");
+        var scadrialCsDir = FileSystem.Path.Combine("CosmereCore", "CosmereCore", "System", "Scadrial");
+        var outputDir = FileSystem.Path.Combine(scadrialXmlDir, "Defs", "Allomancy");
         
         // Compile templates in parallel
         var geneTemplateTask = CompileTemplateAsync(templatesDir, "AllomancyGeneDef.xml.template");
@@ -67,10 +68,10 @@ public class GenesAndTraitsGenerator : BaseGenerator
 
         // Generate DefOf files
         var geneDefOfContent = defOfTemplate(new { type = "Misting", kind = "Gene", metals = allomancyMetals });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "GeneDefOf.Allomancy.generated.cs", geneDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(scadrialCsDir, "GeneDefOf.Allomancy.generated.cs", geneDefOfContent));
         
         var traitDefOfContent = defOfTemplate(new { type = "Misting", kind = "Trait", metals = allomancyMetals });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "TraitDefOf.Allomancy.generated.cs", traitDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(scadrialCsDir, "TraitDefOf.Allomancy.generated.cs", traitDefOfContent));
         
         // Wait for all file writes to complete
         await Task.WhenAll(fileWriteTasks);
@@ -86,8 +87,9 @@ public class GenesAndTraitsGenerator : BaseGenerator
         }
         
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "GenesAndTraits");
-        var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
-        var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Feruchemy");
+        var scadrialXmlDir = FileSystem.Path.Combine("CosmereScadrial");
+        var scadrialCsDir = FileSystem.Path.Combine("CosmereCore", "CosmereCore", "System", "Scadrial");
+        var outputDir = FileSystem.Path.Combine(scadrialXmlDir, "Defs", "Feruchemy");
         
         // Compile templates in parallel
         var geneTemplateTask = CompileTemplateAsync(templatesDir, "FeruchemyGeneDef.xml.template");
@@ -118,10 +120,10 @@ public class GenesAndTraitsGenerator : BaseGenerator
 
         // Generate DefOf files
         var geneDefOfContent = defOfTemplate(new { type = "Ferring", kind = "Gene", metals = feruchemyMetals });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "GeneDefOf.Feruchemy.generated.cs", geneDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(scadrialCsDir, "GeneDefOf.Feruchemy.generated.cs", geneDefOfContent));
         
         var traitDefOfContent = defOfTemplate(new { type = "Ferring", kind = "Trait", metals = feruchemyMetals });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "TraitDefOf.Feruchemy.generated.cs", traitDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(scadrialCsDir, "TraitDefOf.Feruchemy.generated.cs", traitDefOfContent));
         
         // Wait for all file writes to complete
         await Task.WhenAll(fileWriteTasks);
@@ -138,8 +140,9 @@ public class GenesAndTraitsGenerator : BaseGenerator
         var abilities = allomancyMetals.SelectMany(m => m.Allomancy?.Abilities ?? new List<string>()).ToList();
         
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "GenesAndTraits");
-        var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
-        var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Allomancy", "Mistborn");
+        var scadrialXmlDir = FileSystem.Path.Combine("CosmereScadrial");
+        var scadrialCsDir = FileSystem.Path.Combine("CosmereCore", "CosmereCore", "System", "Scadrial");
+        var outputDir = FileSystem.Path.Combine(scadrialXmlDir, "Defs", "Allomancy", "Mistborn");
         
         var template = await CompileTemplateAsync(templatesDir, "Mistborn.xml.template");
         var content = template(new { metals = allomancyMetals, abilities, rightClickAbilities = new List<string>() });
@@ -157,8 +160,9 @@ public class GenesAndTraitsGenerator : BaseGenerator
         var abilities = feruchemyMetals.SelectMany(m => m.Feruchemy?.Abilities ?? new List<string>()).ToList();
         
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "GenesAndTraits");
-        var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
-        var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Feruchemy", "FullFeruchemist");
+        var scadrialXmlDir = FileSystem.Path.Combine("CosmereScadrial");
+        var scadrialCsDir = FileSystem.Path.Combine("CosmereCore", "CosmereCore", "System", "Scadrial");
+        var outputDir = FileSystem.Path.Combine(scadrialXmlDir, "Defs", "Feruchemy", "FullFeruchemist");
         
         var template = await CompileTemplateAsync(templatesDir, "FullFeruchemist.xml.template");
         var content = template(new { metals = feruchemyMetals, abilities, rightClickAbilities = new List<string>() });

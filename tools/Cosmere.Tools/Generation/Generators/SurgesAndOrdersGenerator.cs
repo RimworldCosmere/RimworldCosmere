@@ -20,7 +20,8 @@ public class SurgesAndOrdersGenerator : BaseGenerator
         var orders = await _dataLoader.LoadAllAsync<RadiantOrderInfo>("RadiantOrders");
         
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "SurgesAndOrders");
-        var rosharModDir = FileSystem.Path.Combine("CosmereRoshar");
+        var rosharXmlDir = FileSystem.Path.Combine("CosmereRoshar");
+        var rosharCsDir = FileSystem.Path.Combine("CosmereCore", "CosmereCore", "System", "Roshar");
         
         // Compile all templates in parallel
         var surgeDefTemplateTask = CompileTemplateAsync(templatesDir, "SurgeDef.xml.template");
@@ -48,7 +49,7 @@ public class SurgesAndOrdersGenerator : BaseGenerator
         var fileWriteTasks = new List<Task>();
         
         // Generate Surge definitions
-        var surgeDefOutputDir = FileSystem.Path.Combine(rosharModDir, "Defs", "Surges");
+        var surgeDefOutputDir = FileSystem.Path.Combine(rosharXmlDir, "Defs", "Surges");
         foreach (var surge in surges)
         {
             var content = surgeDefTemplate(new { surge });
@@ -57,10 +58,10 @@ public class SurgesAndOrdersGenerator : BaseGenerator
 
         // Generate SurgeDefOf
         var surgeDefOfContent = surgeDefOfTemplate(new { surges });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "SurgeDefOf.generated.cs", surgeDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(rosharCsDir, "SurgeDefOf.generated.cs", surgeDefOfContent));
 
         // Generate Radiant Order definitions
-        var radiantOrderDefOutputDir = FileSystem.Path.Combine(rosharModDir, "Defs", "RadiantOrders");
+        var radiantOrderDefOutputDir = FileSystem.Path.Combine(rosharXmlDir, "Defs", "RadiantOrders");
         foreach (var order in orders)
         {
             var content = radiantOrderDefTemplate(new { order });
@@ -69,10 +70,10 @@ public class SurgesAndOrdersGenerator : BaseGenerator
 
         // Generate RadiantOrderDefOf
         var radiantOrderDefOfContent = radiantOrderDefOfTemplate(new { orders });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "RadiantOrderDefOf.generated.cs", radiantOrderDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(rosharCsDir, "RadiantOrderDefOf.generated.cs", radiantOrderDefOfContent));
 
         // Generate Gene definitions for Radiant Orders
-        var geneDefOutputDir = FileSystem.Path.Combine(rosharModDir, "Defs", "Genes");
+        var geneDefOutputDir = FileSystem.Path.Combine(rosharXmlDir, "Defs", "Genes");
         foreach (var order in orders)
         {
             var content = geneDefTemplate(new { order });
@@ -81,10 +82,10 @@ public class SurgesAndOrdersGenerator : BaseGenerator
 
         // Generate DefOf classes for genes and traits
         var geneDefOfContent = geneDefOfTemplate(new { orders });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "GeneDefOf.RadiantOrders.generated.cs", geneDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(rosharCsDir, "GeneDefOf.RadiantOrders.generated.cs", geneDefOfContent));
 
         var traitDefOfContent = traitDefOfTemplate(new { orders });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(rosharModDir, "CosmereRoshar"), "TraitDefOf.RadiantOrders.generated.cs", traitDefOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(rosharCsDir, "TraitDefOf.RadiantOrders.generated.cs", traitDefOfContent));
         
         // Wait for all file writes to complete
         await Task.WhenAll(fileWriteTasks);

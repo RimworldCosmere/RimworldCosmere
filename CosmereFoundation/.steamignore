@@ -1,6 +1,0 @@
-*.pdb
-*.xcf
-Assets
-Docs
-CosmereFoundation
-.gitignore

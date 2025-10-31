@@ -12,8 +12,8 @@
         </modExtensions>
     </GeneDef>
     <GeneDef Name="Cosmere_Roshar_Gene_BaseRadiantOrder" ParentName="Cosmere_Roshar_Gene_BaseSurgeGroup" Abstract="True">
-        <geneClass>Cosmere.Roshar.Gene.Surgebinder</geneClass>
-        <resourceGizmoType>Cosmere.Roshar.Gizmo.RadiantOrderCommand</resourceGizmoType>
+        <geneClass>Cosmere.System.Roshar.Gene.Surgebinder</geneClass>
+        <resourceGizmoType>Cosmere.System.Roshar.Gizmo.RadiantOrderCommand</resourceGizmoType>
         <resourceLabel>stormlight</resourceLabel>
         <resourceGizmoThresholds>
             <li>0.2</li>

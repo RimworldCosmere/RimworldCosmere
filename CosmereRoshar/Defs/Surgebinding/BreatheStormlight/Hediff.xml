@@ -4,6 +4,6 @@
         <defName>Cosmere_Roshar_Hediff_BreatheStormlight</defName>
         <label>breathing stormlight</label>
         <description>This pawn is infused with Stormlight, a luminous Investiture that enhances their physical form. While infused, they heal rapidly from injuries, move with increased vigor, and may access the Surges granted by their Radiant bond.\n\nStormlight leaks slowly from the body over time, glowing softly at the skin and lips — a temporary but powerful state.</description>
-        <hediffClass>Cosmere.Roshar.Surgebinding.Hediff.BreatheStormlight</hediffClass>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.BreatheStormlight</hediffClass>
     </HediffDef>
 </Defs>

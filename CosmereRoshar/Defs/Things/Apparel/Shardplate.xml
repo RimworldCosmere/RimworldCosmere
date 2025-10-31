@@ -12,7 +12,7 @@
         <techLevel>Animal</techLevel>
         <smeltable>false</smeltable>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_Gems</li>
+            <li>Cosmere_Core_StuffCategory_Gems</li>
         </stuffCategories>
         <thingCategories>
             <li>ApparelArmor</li>
@@ -86,7 +86,7 @@
             </li>
         </comps>
         
-        <thingClass>Cosmere.Roshar.Thing.Apparel.RadiantShardplate</thingClass>
+        <thingClass>Cosmere.System.Roshar.Thing.Apparel.RadiantShardplate</thingClass>
         <possessionCount>1</possessionCount>
         <destroyOnDrop>true</destroyOnDrop>
         <tradeability>None</tradeability>
@@ -104,7 +104,7 @@
         <techLevel>Animal</techLevel>
         <smeltable>false</smeltable>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_Gems</li>
+            <li>Cosmere_Core_StuffCategory_Gems</li>
         </stuffCategories>
         <thingCategories>
             <li>ArmorHeadgear</li>
@@ -168,7 +168,7 @@
             </li>
         </comps>
         
-        <thingClass>Cosmere.Roshar.Thing.Apparel.RadiantShardplate</thingClass>
+        <thingClass>Cosmere.System.Roshar.Thing.Apparel.RadiantShardplate</thingClass>
         <possessionCount>1</possessionCount>
         <destroyOnDrop>true</destroyOnDrop>
         <tradeability>None</tradeability>

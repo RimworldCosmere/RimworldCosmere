@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <Cosmere.Scadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_{{defName metal.name}}">
+    <Cosmere.System.Scadrial.Def.MetallicArtsMetalDef ParentName="Cosmere_Metal_{{defName metal.name}}">
         <defName>{{defName metal.name}}</defName>{{#with metal.allomancy}}
         <allomancy>{{#if userName}}
             <userName>{{userName}}</userName>{{/if}}{{#if description}}
@@ -16,5 +16,5 @@
             <group>{{capitalize group}}</group>{{/if}}
         </feruchemy>
         {{else}}{{/with}}
-    </Cosmere.Scadrial.Def.MetallicArtsMetalDef>
+    </Cosmere.System.Scadrial.Def.MetallicArtsMetalDef>
 </Defs>

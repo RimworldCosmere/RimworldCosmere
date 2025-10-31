@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <Cosmere.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
         <defName>Cosmere_Roshar_Ability_BreatheStormlight</defName>
         <label>Breathe Stormlight</label>
         <description>This ability allows a Surgebinder to absorb nearby ambient Stormlight, replenishing their internal reserves. Whether pulled from spheres, infused objects, or storm-charged air, this act is the foundation of Rosharan Investiture. It accelerates healing, enhances physical prowess, and enables the use of Surges.\n\nUse this ability near accessible sources of Stormlight to draw power, preparing yourself for both radiant glory and the battles to come.</description>
@@ -8,5 +8,5 @@
         <hediff>Cosmere_Roshar_Hediff_BreatheStormlight</hediff>
         <beuPerTick>0</beuPerTick>
         <maxPower>1</maxPower>
-    </Cosmere.Roshar.Def.SurgebindingAbilityDef>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
 </Defs>

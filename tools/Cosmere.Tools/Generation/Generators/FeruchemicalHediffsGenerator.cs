@@ -20,7 +20,8 @@ public class FeruchemicalHediffsGenerator : BaseGenerator
         var feruchemicalMetals = metals.Where(m => m.Feruchemy?.UserName != null).ToList();
         
         var templatesDir = FileSystem.Path.Combine("Resources", "Templates", "FeruchemicalHediffs");
-        var scadrialModDir = FileSystem.Path.Combine("CosmereScadrial");
+        var scadrialXmlDir = FileSystem.Path.Combine("CosmereScadrial");
+        var scadrialCsDir = FileSystem.Path.Combine("CosmereCore", "CosmereCore", "System", "Scadrial");
         
         // Compile templates in parallel
         var defTemplateTask = CompileTemplateAsync(templatesDir, "HediffDef.xml.template");
@@ -37,14 +38,14 @@ public class FeruchemicalHediffsGenerator : BaseGenerator
         // Generate individual hediff definitions
         foreach (var metal in feruchemicalMetals)
         {
-            var outputDir = FileSystem.Path.Combine(scadrialModDir, "Defs", "Feruchemy", metal.Name.ToDefName());
+            var outputDir = FileSystem.Path.Combine(scadrialXmlDir, "Defs", "Feruchemy", metal.Name.ToDefName());
             var content = defTemplate(new { metal });
             fileWriteTasks.Add(WriteGeneratedFileAsync(outputDir, metal.Name.ToDefName() + "Hediff.generated.xml", content));
         }
 
         // Generate HediffDefOf class
         var defOfContent = defOfTemplate(new { metals = feruchemicalMetals });
-        fileWriteTasks.Add(WriteGeneratedFileAsync(FileSystem.Path.Combine(scadrialModDir, "CosmereScadrial"), "HediffDefOf.Feruchemy.generated.cs", defOfContent));
+        fileWriteTasks.Add(WriteGeneratedFileAsync(scadrialCsDir, "HediffDefOf.Feruchemy.generated.cs", defOfContent));
         
         // Wait for all file writes to complete
         await Task.WhenAll(fileWriteTasks);

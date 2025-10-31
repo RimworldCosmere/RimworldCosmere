@@ -13,7 +13,7 @@
         <resourceDescription>{{order.description}}</resourceDescription>
         <iconPath>UI/Surgebinding/Order/{{defName order.name}}</iconPath>
         <modExtensions>
-            <li Class="Cosmere.Roshar.DefModExtension.RadiantOrder">
+            <li Class="Cosmere.System.Roshar.DefModExtension.RadiantOrder">
                 <order>{{defName order.name}}</order>
                 <trait>Cosmere_Roshar_Trait_Radiant{{defName order.name}}</trait>
             </li>
@@ -37,7 +37,7 @@
         </degreeDatas>
 
         <modExtensions>
-            <li Class="Cosmere.Roshar.DefModExtension.RadiantOrder">
+            <li Class="Cosmere.System.Roshar.DefModExtension.RadiantOrder">
                 <order>{{defName order.name}}</order>
             </li>
         </modExtensions>

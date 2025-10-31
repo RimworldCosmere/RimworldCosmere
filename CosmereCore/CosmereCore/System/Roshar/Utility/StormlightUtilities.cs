@@ -1,0 +1,320 @@
+using System;
+using RimWorld;
+using Verse;
+using Random = System.Random;
+
+namespace Cosmere.System.Roshar.Utility;
+
+public static class StormlightUtilities {
+    [Obsolete("Should use Verse.Rand")]
+    private static readonly Random Rng = new Random();
+
+
+    public static float Normalize(float value, float vMin, float vMax, float tMin, float tMax) {
+        return (value - vMin) / (vMax - vMin) * (tMax - tMin) + tMin;
+    }
+
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
+    public static float SprenBaseCaptureProbability(float currentStormlight, float minStormlight, float maxStormlight) {
+        float x = Normalize(currentStormlight, minStormlight, maxStormlight, 0f, 100f);
+        const float a = 1.1585f;
+        const float b = 1690.6f;
+        const float c = 100f;
+        const float d = 1f;
+
+        return -(a / b) * x * (x - c) * (x - d);
+    }
+
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
+    public static bool IsAnyFireNearby(Building building, float radius = 5f) {
+        IntVec3 position = building.Position;
+        Map map = building.Map;
+
+        foreach (IntVec3 cell in GenRadial.RadialCellsAround(position, radius, true)) {
+            foreach (Verse.Thing thing in cell.GetThingList(map)) {
+                if (thing.def == RimWorld.ThingDefOf.Fire ||
+                    thing.def.category == ThingCategory.Building &&
+                    thing.TryGetComp<CompRefuelable>()?.Props.fuelConsumptionPerTickInRain > 0f) {
+                    return true;
+                }
+
+                if (thing.def.defName.Contains("Torch") || thing.def.defName.Contains("Campfire")) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
+    public static int GetNumberOfFiresNearby(Building building, float radius = 5f) {
+        IntVec3 position = building.Position;
+        Map map = building.Map;
+        int numberOfFires = 0;
+        foreach (IntVec3 cell in GenRadial.RadialCellsAround(position, radius, true)) {
+            foreach (Verse.Thing thing in cell.GetThingList(map)) {
+                if (thing.def == RimWorld.ThingDefOf.Fire ||
+                    thing.def.category == ThingCategory.Building &&
+                    thing.TryGetComp<CompRefuelable>()?.Props.fuelConsumptionPerTickInRain > 0f) {
+                    numberOfFires++;
+                } else if (thing.def.defName.Contains("Torch") || thing.def.defName.Contains("Campfire")) {
+                    numberOfFires++;
+                }
+            }
+        }
+
+        return numberOfFires;
+    }
+
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
+    public static float GetAverageSuroundingTemperature(Building building, float radius = 5f) {
+        IntVec3 position = building.Position;
+        Map map = building.Map;
+        List<float> temps = [];
+        IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
+        foreach (IntVec3 cell in cells) {
+            temps.Add(cell.GetTemperature(building.Map));
+        }
+
+        return temps.Average();
+    }
+
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
+    public static float GetSuroundingPain(Building building, float radius = 5f) {
+        IntVec3 position = building.Position;
+        Map map = building.Map;
+        List<float> pains = [];
+        IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
+        foreach (IntVec3 cell in cells) {
+            Pawn pawn = cell.GetFirstPawn(map);
+            if (pawn != null) {
+                pains.Add(pawn.health.hediffSet.PainTotal);
+            }
+        }
+
+        return pains.Sum();
+    }
+
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
+    public static float GetSuroundingPlants(Building building, float radius = 5f) {
+        IntVec3 position = building.Position;
+        Map map = building.Map;
+        int plants = 0;
+        IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
+        foreach (IntVec3 cell in cells) {
+            if (cell.InBounds(map)) {
+                foreach (Verse.Thing thing in cell.GetThingList(map)) {
+                    if (thing is Plant plant) {
+                        plants++;
+                    }
+                }
+            }
+        }
+
+        return plants;
+    }
+
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
+    public static bool ResearchBeingDoneNearby(Building building, float radius = 5f) {
+        IntVec3 position = building.Position;
+        Map map = building.Map;
+        IEnumerable<IntVec3>? cells = GenRadial.RadialCellsAround(position, radius, true);
+        foreach (IntVec3 cell in cells) {
+            Pawn pawn = cell.GetFirstPawn(map);
+            if (pawn != null && pawn.jobs?.curJob != null && pawn.jobs.curJob.def == JobDefOf.Research) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool IsThingCutGemstone(Verse.Thing thing) {
+        return thing.def.Equals(Core.ThingDefOf.CutGem);
+    }
+
+
+    [Obsolete("Use Verse.Rand")]
+    public static int RollTheDice(int min, int max) {
+        return Rng.Next(min, max);
+    }
+
+
+    [Obsolete("Use Verse.Rand")]
+    public static int RollForRandomIntFromList(List<int> intList) {
+        int i = Rng.Next(intList.Count);
+        return intList[i];
+    }
+}
+
+public static class StormShelterManager {
+    // For each cell, store which region index it belongs to. 
+    // If it doesn't belong to any region, it won't be in this dictionary.
+    private static readonly Dictionary<IntVec3, int> CellToRegionIndex
+        = new Dictionary<IntVec3, int>();
+
+    public static bool FirstTickOfHighstorm = true;
+
+    private static readonly List<RegionInfo> Regions
+        = [];
+
+
+    public static void RebuildShelterCache(Map map) {
+        // Clear old data
+        CellToRegionIndex.Clear();
+        Regions.Clear();
+
+        // Loop through each cell in the map
+        foreach (IntVec3 cell in map.AllCells) {
+            // We only care about roofed cells
+            if (!cell.Roofed(map)) {
+                continue;
+            }
+
+            // If this cell is already assigned to a region, skip
+            if (CellToRegionIndex.ContainsKey(cell)) {
+                continue;
+            }
+
+            Building b = cell.GetEdifice(map);
+            if (IsWallOrClosedDoor(b)) {
+                continue; // Don't BFS from a wall tile
+            }
+
+            // Not visited yet -> BFS to form a new region
+            HashSet<IntVec3> newRegionCells = FloodFillRoofedArea(cell, map);
+
+            // Check if this region is a c-shelter
+            bool isShelter = IsCShelter(newRegionCells, map);
+            // Store the region
+            RegionInfo newRegion = new RegionInfo {
+                cells = newRegionCells,
+                isShelter = isShelter,
+            };
+            Regions.Add(newRegion);
+
+            // For each cell in this region, record its region index
+            int regionIndex = Regions.Count - 1;
+            foreach (IntVec3 c in newRegionCells) {
+                CellToRegionIndex[c] = regionIndex;
+            }
+        }
+    }
+
+    public static bool IsInsideShelter(IntVec3 pos) {
+        if (!CellToRegionIndex.TryGetValue(pos, out int idx)) {
+            // Not in any known roofed region
+            return false;
+        }
+
+        return Regions[idx].isShelter;
+    }
+
+    public static void ClearCache() {
+        CellToRegionIndex.Clear();
+        Regions.Clear();
+    }
+
+    private static HashSet<IntVec3> FloodFillRoofedArea(IntVec3 start, Map map) {
+        HashSet<IntVec3> visited = [];
+        Queue<IntVec3> queue = new Queue<IntVec3>();
+
+        // 1) Must be in bounds & roofed
+        if (!start.InBounds(map) || !start.Roofed(map)) {
+            return visited;
+        }
+
+        // 2) Check that the start cell is not a wall/closed door
+        if (IsWallOrClosedDoor(start.GetEdifice(map))) {
+            return visited;
+        }
+
+        // Start BFS
+        visited.Add(start);
+        queue.Enqueue(start);
+
+        while (queue.Count > 0) {
+            IntVec3 current = queue.Dequeue();
+
+            // Check the 4 cardinal directions
+            foreach (IntVec3 dir in GenAdj.CardinalDirections) {
+                IntVec3 next = current + dir;
+
+                // a) Must be in bounds
+                if (!next.InBounds(map)) {
+                    continue;
+                }
+
+                // b) Already visited? skip
+                if (visited.Contains(next)) {
+                    continue;
+                }
+
+                // c) Must be roofed
+                if (!next.Roofed(map)) {
+                    continue;
+                }
+
+                // d) Must NOT be a wall or closed door
+                Building b = next.GetEdifice(map);
+                if (IsWallOrClosedDoor(b)) {
+                    continue;
+                }
+
+                // If we get here, 'next' is a valid floor/inside cell
+                visited.Add(next);
+                queue.Enqueue(next);
+            }
+        }
+
+        return visited;
+    }
+
+    private static bool IsWallOrClosedDoor(Building b) {
+        if (b == null) return false;
+
+        // If it's a solid wall
+        if (b.def.passability == Traversability.Impassable) {
+            return true;
+        }
+
+        // If it's a door that's closed
+        if (b.def.IsDoor && b is Building_Door door && !door.Open) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private static bool IsCShelter(HashSet<IntVec3> area, Map map) {
+        if (area == null || area.Count == 0) {
+            return false;
+        }
+
+        int maxX = area.Max(p => p.x);
+        foreach (IntVec3 pos in area) {
+            if (pos.x != maxX) {
+                continue;
+            }
+
+            IntVec3 east = pos + IntVec3.East;
+            if (!east.InBounds(map)) {
+                continue;
+            }
+
+            Building eastWall = east.GetEdifice(map);
+            if (eastWall == null || eastWall.def.passability != Traversability.Impassable) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private struct RegionInfo {
+        public HashSet<IntVec3> cells;
+        public bool isShelter;
+    }
+}

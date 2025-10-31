@@ -7,7 +7,7 @@
     </OrderedTakeGroupDef>
     
     <ThingDef Name="Cosmere_Scadrial_Thing_AllomanticVialBase" ParentName="ResourceBase" Abstract="True">
-        <thingClass>Cosmere.Scadrial.Thing.AllomanticVial</thingClass>
+        <thingClass>Cosmere.System.Scadrial.Thing.AllomanticVial</thingClass>
         <graphicData>
             <texPath>Things/Item/AllomanticVial</texPath>
             <graphicClass>Graphic_StackCount</graphicClass>
@@ -25,11 +25,11 @@
             <MarketValue>8</MarketValue>
         </statBases>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_BaseAllomanticMetals</li>
+            <li>Cosmere_Core_StuffCategory_BaseAllomanticMetals</li>
         </stuffCategories>
         <costList>
-            <Cosmere_Resource_Thing_Glass>1</Cosmere_Resource_Thing_Glass>
-            <Cosmere_Resource_Thing_Alcohol>1</Cosmere_Resource_Thing_Alcohol>
+            <Cosmere_Core_Thing_Glass>1</Cosmere_Core_Thing_Glass>
+            <Cosmere_Core_Thing_Alcohol>1</Cosmere_Core_Thing_Alcohol>
         </costList>
         <costStuffCount>1</costStuffCount>
         <recipeMaker>
@@ -44,12 +44,12 @@
             </researchPrerequisites>
             <productCount>8</productCount>
             <recipeUsers Inherit="False">
-                <li>Cosmere_Resources_Table_Forge</li>
+                <li>Cosmere_Core_Table_Forge</li>
             </recipeUsers>
             <defaultIngredientFilter>
                 <categories>
-                    <li>Cosmere_Resource_ThingCategory_BasicMetal</li>
-                    <li>Cosmere_Resource_ThingCategory_GodMetal</li>
+                    <li>Cosmere_Core_ThingCategory_BasicMetal</li>
+                    <li>Cosmere_Core_ThingCategory_GodMetal</li>
                 </categories>
             </defaultIngredientFilter>
         </recipeMaker>

@@ -5,12 +5,12 @@
         <label>seeking pulses</label>
         <description>The Allomancer is burning bronze, sensing the pulses of nearby Allomantic powers in its radius.</description>
         <comps>
-            <li Class="Cosmere.Scadrial.Allomancy.Comp.Hediff.BronzeAuraProperties">
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Hediff.BronzeAuraProperties">
                 <moteDef>Cosmere_Scadrial_Mote_BronzeAura</moteDef>
             </li>
         </comps>
         <modExtensions>
-            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Core.DefModExtension.MetalsLinked">
                 <metal>Bronze</metal>
             </li>
         </modExtensions>

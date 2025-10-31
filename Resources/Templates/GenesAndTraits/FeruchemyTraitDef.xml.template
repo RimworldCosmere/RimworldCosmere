@@ -6,7 +6,7 @@
         <description>{{metal.feruchemy.description}}</description>
 
         <modExtensions>
-            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Core.DefModExtension.MetalsLinked">
                 <metal>{{capitalize metal.name}}</metal>
             </li>
         </modExtensions>

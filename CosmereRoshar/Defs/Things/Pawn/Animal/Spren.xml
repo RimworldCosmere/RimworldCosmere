@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <ThingDef Name="Cosmere_Roshar_Race_Spren" ParentName="Cosmere_Core_Race_Splinter">
-		<thingClass>Cosmere.Roshar.Thing.Pawn.Animal.Spren</thingClass>
+		<thingClass>Cosmere.System.Roshar.Thing.Pawn.Animal.Spren</thingClass>
         <defName>Cosmere_Roshar_Race_Spren</defName>
     </ThingDef>
     <PawnKindDef Name="Cosmere_Roshar_PawnKind_Spren" ParentName="Cosmere_Core_PawnKind_Splinter">
@@ -10,7 +10,7 @@
     </PawnKindDef>
 
     <ThingDef Name="Cosmere_Roshar_Race_LesserSpren" ParentName="Cosmere_Core_Race_Splinter" Abstract="True">
-        <thingClass>Cosmere.Roshar.Thing.Pawn.Animal.LesserSpren</thingClass>
+        <thingClass>Cosmere.System.Roshar.Thing.Pawn.Animal.LesserSpren</thingClass>
 		<race IsNull="True" />
         <statBases>
 			<PawnBeauty>1</PawnBeauty>
@@ -19,7 +19,7 @@
     </ThingDef>
     
     <ThingDef ParentName="Cosmere_Roshar_Race_Spren">
-		<thingClass>Cosmere.Roshar.Thing.Pawn.Animal.TrueSpren</thingClass>
+		<thingClass>Cosmere.System.Roshar.Thing.Pawn.Animal.TrueSpren</thingClass>
         <defName>Cosmere_Roshar_Race_UnknownTrueSpren</defName>
 		<race>
             <intelligence>ToolUser</intelligence>

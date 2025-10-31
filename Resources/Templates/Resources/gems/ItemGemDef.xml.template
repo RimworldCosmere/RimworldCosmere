@@ -7,7 +7,7 @@
         <description>{{gem.descriptions.raw}}</description>
 
         <thingCategories>
-            <li>Cosmere_Resource_ThingCategory_RawGem</li>
+            <li>Cosmere_Core_ThingCategory_RawGem</li>
         </thingCategories>
 
         <graphicData>
@@ -27,18 +27,18 @@
 
         <stuffProps>
             <categories>
-                <li>Cosmere_Resources_StuffCategory_Gems</li>
-                <li>Cosmere_Resources_StuffCategory_RawGems</li>
+                <li>Cosmere_Core_StuffCategory_Gems</li>
+                <li>Cosmere_Core_StuffCategory_RawGems</li>
             </categories>
         </stuffProps>
 
         <modExtensions>
-            <li Class="Cosmere.Resources.DefModExtension.GemsLinked">
+            <li Class="Cosmere.Core.DefModExtension.GemsLinked">
                 <gem>{{defName gem.name}}</gem>
             </li>
         </modExtensions>
         <comps>
-            <li MayRequire="CryptikLemur.Cosmere.Roshar" Class="Cosmere.Roshar.Comp.Thing.StormlightProperties">
+            <li MayRequire="Cosmere.Roshar" Class="Cosmere.System.Roshar.Comp.Thing.StormlightProperties">
                 <maxInvestiture>{{gem.baseStormlight}}</maxInvestiture>
                 <drainRate>0.5</drainRate>
             </li>

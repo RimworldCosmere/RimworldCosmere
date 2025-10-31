@@ -1,0 +1,17 @@
+using Cosmere;
+namespace Cosmere.System.Roshar.LesserSpren.ParticleSystem;
+
+public enum SprenType : uint {
+    Wavespren,
+    Riverspren,
+    Rockspren,
+    Sandspren,
+    Grassspren,
+    Windspren,
+    Joyspren,
+    Flamespren,
+    Deathspren,
+    Rainspren,
+    Lifespren,
+    Fearspren,
+}

@@ -8,24 +8,24 @@ gameplay framework.
 
 ## Project Structure
 
-This is a modular monorepo. Each component exists as its own loadable mod:
+This is a modular monorepo with a consolidated single-assembly architecture for improved performance.
 
-### Core Mods
+### Core Assembly
 
-- **[Cosmere.Foundation](./CosmereFoundation)** – Shared C# utilities and base helpers (no content)
-- **[Cosmere Core](./CosmereCore)** – Shared stats, traits, needs, and the Investiture system
-- **[Cosmere Resources](./CosmereResources)** – Defines all base metals, alloys, and godmetals used across the Cosmere
+- **[Cosmere Core](./CosmereCore)** – Single C# assembly (`Cosmere.Core.dll`) containing all shared code:
+  - Base framework, utilities, and extension methods
+  - Investiture system, stats, traits, needs
+  - All metals, alloys, gems, and godmetals
+  - World-specific systems (Allomancy, Surgebinding) in `System.{World}` namespaces
 
-### Shard World Modules
+### World Modules (Content Only)
 
-- **[Cosmere - Scadrial](CosmereScadrial)** – Allomancy, Feruchemy, >!Hemalurgy!<, Mistborn genes, vial systems,
-  snapping, Skaa, Nobles, and Terris, and more
-- **[Cosmere - Roshar](CosmereRoshar)** – Surgebinding, spren bonding, stormlight, Ideals, and many Xenotypes
+- **[Cosmere - Scadrial](CosmereScadrial)** – XML definitions, textures, and assets for Allomancy, Feruchemy, >!Hemalurgy!<, Mistborn genes, vial systems, snapping, Skaa, Nobles, and Terris
+- **[Cosmere - Roshar](CosmereRoshar)** – XML definitions, textures, and assets for Surgebinding, spren bonding, stormlight, Ideals, and Radiant Orders
 - **Cosmere - Nalthis** *(Coming Soon)* – Awakening, Breath economy, Commands, Divine Breaths, and the Returned
 - **Cosmere - Sel** *(Coming Soon)* – Elantrians, Aon Dor, and Forgery
 
-Each module is optional, but relies on the shared foundation laid by the **Core**, **Foundation**, and **Resources**
-mods.
+World modules contain only XML defs and assets. All C# code is consolidated in CosmereCore for performance.
 
 ---
 
@@ -44,9 +44,7 @@ If you’d like to contribute:
 
 | Module             | Status      | Notes                                   |
 |--------------------|-------------|-----------------------------------------|
-| Cosmere.Foundation  | Stable      | Internal C# helpers only                |
-| Cosmere Core       | Stable      | Needed for all content mods             |
-| Cosmere Metals     | Stable      | MetalDefs and worldgen integration      |
+| Cosmere Core       | Stable      | Consolidated single assembly - required for all world mods |
 | Cosmere - Scadrial | In Progress | Allomancy and Feruchemy mostly complete |
 | Cosmere - Roshar   | In Progress | Radiant Orders and Fabrials in progress |
 | Cosmere - Nalthis  | Planned     | Design stage                            |

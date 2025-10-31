@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <Cosmere.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Scadrial_Ability_Cadmium</defName>
         <label>slow bubble</label>
         <description>Creates a stationary time bubble that slows movement, needs, and actions for everyone inside. The bubble disappears if the Allomancer leaves or stops burning cadmium.</description>
         <metal>Cadmium</metal>
         <canUseWhileAsleep>true</canUseWhileAsleep>
-        <abilityClass>Cosmere.Scadrial.Allomancy.Ability.TimeAbility</abilityClass>
+        <abilityClass>Cosmere.System.Scadrial.Allomancy.Ability.TimeAbility</abilityClass>
         <beuPerTick>.005</beuPerTick>
         <maxPower>2</maxPower>
-    </Cosmere.Scadrial.Def.AllomanticAbilityDef>
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

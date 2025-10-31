@@ -9,10 +9,10 @@
     </HediffDef>
     <HediffDef Name="Cosmere_Roshar_Hediff_BaseSurgebindingHediff" ParentName="Cosmere_Roshar_Hediff_BaseHediff" Abstract="True">
         <alwaysShowSeverity>true</alwaysShowSeverity>
-        <hediffClass>Cosmere.Roshar.Surgebinding.Hediff.SurgebindingHediff</hediffClass>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.SurgebindingHediff</hediffClass>
         <comps>
             <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
-                <compClass>Cosmere.Roshar.Comp.Hediff.SeverityCalculator</compClass>
+                <compClass>Cosmere.System.Roshar.Comp.Hediff.SeverityCalculator</compClass>
             </li>
         </comps>
     </HediffDef>

@@ -26,7 +26,7 @@ public class RadiantOrderDef : Verse.Def {
     public List<SurgeDef> surges;
 
     private Type idealCheckerClass =>
-        typeof(RadiantOrderDef).Assembly.GetType("Cosmere.Roshar.Surgebinding.IdealChecker." + defName);
+        typeof(RadiantOrderDef).Assembly.GetType("Cosmere.System.Roshar.Surgebinding.IdealChecker." + defName);
 
     public GeneDef GetSurgebindingGene() {
         return DefDatabase<GeneDef>.GetNamed("Cosmere_Roshar_Gene_Radiant" + defName);

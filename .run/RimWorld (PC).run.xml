@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="RimWorld (PC)" type="RimworldRunConfiguration" factoryName="RimworldRunConfiguration" focusToolWindowBeforeRun="true">
     <option name="commandLineOptions" value="-popupwindow -screen-width 1600 -screen-height 900 -screen-fullscreen 0 -screen-monitor 0" />
-    <option name="modListPath" value="$USER_HOME$/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/ModLists/cosmere-development.rml" />
+      <option name="modListPath" value=""/>
     <option name="saveFilePath" value="" />
     <option name="scriptName" value="D:\RimWorld\RimWorldWin64.exe" />
     <method v="2">

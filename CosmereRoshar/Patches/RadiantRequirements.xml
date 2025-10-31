@@ -3,7 +3,7 @@
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/ThingDef[defName="Human"]/comps</xpath>
         <value>
-            <li><compClass>Cosmere.Roshar.Comp.Thing.PawnTracker</compClass></li>
+            <li><compClass>Cosmere.System.Roshar.Comp.Thing.PawnTracker</compClass></li>
         </value>
     </Operation>
 </Patch>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <Cosmere.Roshar.Def.RadiantOrderDef Name="Cosmere_Roshar_RadiantOrder_{{defName order.name}}" ParentName="Cosmere_Roshar_RadiantOrder_Base">
+    <Cosmere.System.Roshar.Def.RadiantOrderDef Name="Cosmere_Roshar_RadiantOrder_{{defName order.name}}" ParentName="Cosmere_Roshar_RadiantOrder_Base">
         <defName>{{defName order.name}}</defName>
         <label>{{title order.name}}</label>
         <description>{{order.description}}</description>
@@ -33,5 +33,5 @@
             </li>
             {{/each}}
         </ideals>
-    </Cosmere.Roshar.Def.RadiantOrderDef>
+    </Cosmere.System.Roshar.Def.RadiantOrderDef>
 </Defs>

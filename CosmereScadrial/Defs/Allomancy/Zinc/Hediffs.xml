@@ -26,7 +26,7 @@
             </li>
         </stages>
         <modExtensions>
-            <li Class="Cosmere.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Core.DefModExtension.MetalsLinked">
                 <metal>Zinc</metal>
             </li>
         </modExtensions>

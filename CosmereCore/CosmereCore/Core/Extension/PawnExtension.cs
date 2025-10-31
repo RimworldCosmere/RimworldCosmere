@@ -6,6 +6,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using GeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;
 
 namespace Cosmere.Core.Extension;
 
@@ -94,14 +95,8 @@ public static class PawnExtension {
     ) {
         if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
 
-        Type? geneUtility = Scadrial.GetType("Cosmere.Scadrial.Utility.GeneUtility");
-        MethodInfo? addMistborn = geneUtility?.GetMethod(
-            "AddMistborn",
-            BindingFlags.Public | BindingFlags.Static
-        );
-
-        addMistborn?.Invoke(null, [pawn, canSnap, snapped, cause]);
-        pawn.SetAllomanticReserves(float.PositiveInfinity);
+        GeneUtility.AddMistborn(pawn, canSnap, snapped, cause);
+        pawn.SetAllAllomanticReserves(float.PositiveInfinity);
     }
 
     public static void BecomeFullFeruchemist(
@@ -112,24 +107,6 @@ public static class PawnExtension {
     ) {
         if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
 
-        Type? geneUtility = Scadrial.GetType("Cosmere.Scadrial.Utility.GeneUtility");
-        MethodInfo? addFullFeruchemist = geneUtility?.GetMethod(
-            "AddFullFeruchemist",
-            BindingFlags.Public | BindingFlags.Static
-        );
-
-        addFullFeruchemist?.Invoke(null, [pawn, canSnap, snapped, cause]);
-    }
-
-    public static void SetAllomanticReserves(this Pawn pawn, float amount) {
-        if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
-
-        Type? extension = Scadrial.GetType("Cosmere.Scadrial.Extension.PawnExtension");
-        MethodInfo? setAllAllomanticReserves = extension?.GetMethod(
-            "SetAllAllomanticReserves",
-            BindingFlags.Public | BindingFlags.Static
-        );
-
-        setAllAllomanticReserves?.Invoke(null, [pawn, amount]);
+        GeneUtility.AddFullFeruchemist(pawn, canSnap, snapped, cause);
     }
 }

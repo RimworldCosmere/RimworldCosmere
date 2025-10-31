@@ -14,7 +14,7 @@ public static class StormlightUtilities {
         return (value - vMin) / (vMax - vMin) * (tMax - tMin) + tMin;
     }
 
-    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
     public static float SprenBaseCaptureProbability(float currentStormlight, float minStormlight, float maxStormlight) {
         float x = Normalize(currentStormlight, minStormlight, maxStormlight, 0f, 100f);
         const float a = 1.1585f;
@@ -25,7 +25,7 @@ public static class StormlightUtilities {
         return -(a / b) * x * (x - c) * (x - d);
     }
 
-    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
     public static bool IsAnyFireNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -47,7 +47,7 @@ public static class StormlightUtilities {
         return false;
     }
 
-    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
     public static int GetNumberOfFiresNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -67,7 +67,7 @@ public static class StormlightUtilities {
         return numberOfFires;
     }
 
-    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
     public static float GetAverageSuroundingTemperature(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -80,7 +80,7 @@ public static class StormlightUtilities {
         return temps.Average();
     }
 
-    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
     public static float GetSuroundingPain(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -96,7 +96,7 @@ public static class StormlightUtilities {
         return pains.Sum();
     }
 
-    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
     public static float GetSuroundingPlants(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;
@@ -115,7 +115,7 @@ public static class StormlightUtilities {
         return plants;
     }
 
-    [Obsolete("This is handled by Cosmere.Roshar.LesserSpren")]
+    [Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren")]
     public static bool ResearchBeingDoneNearby(Building building, float radius = 5f) {
         IntVec3 position = building.Position;
         Map map = building.Map;

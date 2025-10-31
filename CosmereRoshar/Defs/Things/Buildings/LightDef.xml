@@ -29,7 +29,7 @@
         <comps Inherit="False">
             <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Styleable" />
-            <li Class="Cosmere.Comp.Thing.InnerStorageProperties">
+            <li Class="Cosmere.Core.Comp.Thing.InnerStorageProperties">
                 <tabName>CRO_InspectorTab_SphereTab</tabName>
                 <maxItems>25</maxItems>
                 <defaultStorageSettings>

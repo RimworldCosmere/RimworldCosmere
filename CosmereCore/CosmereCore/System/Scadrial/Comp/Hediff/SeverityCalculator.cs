@@ -8,7 +8,7 @@ namespace Cosmere.System.Scadrial.Comp.Hediff;
  * 
  * Usage:
  * <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
- *     <compClass>Cosmere.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
+ *     <compClass>Cosmere.System.Scadrial.Comp.Hediff.SeverityCalculator</compClass>
  * </li>
  */
 public class SeverityCalculator : SeverityCalculator<Allomancer>;

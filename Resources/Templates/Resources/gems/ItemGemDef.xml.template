@@ -33,12 +33,12 @@
         </stuffProps>
 
         <modExtensions>
-            <li Class="Cosmere.DefModExtension.GemsLinked">
+            <li Class="Cosmere.Core.DefModExtension.GemsLinked">
                 <gem>{{defName gem.name}}</gem>
             </li>
         </modExtensions>
         <comps>
-            <li MayRequire="CryptikLemur.Cosmere.Roshar" Class="Cosmere.Roshar.Comp.Thing.StormlightProperties">
+            <li MayRequire="Cosmere.Roshar" Class="Cosmere.System.Roshar.Comp.Thing.StormlightProperties">
                 <maxInvestiture>{{gem.baseStormlight}}</maxInvestiture>
                 <drainRate>0.5</drainRate>
             </li>

@@ -1,5 +1,4 @@
-using Cosmere;
-﻿using HarmonyLib;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 
@@ -39,7 +38,7 @@ public static class HighstormStorytellerPatch {
         );
 
         if (success) {
-            Log.Message("[Cosmere.Roshar] Highstorm triggered!");
+            Log.Message("[Cosmere.System.Roshar] Highstorm triggered!");
         }
     }
 

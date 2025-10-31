@@ -5,7 +5,7 @@
             <li Class="PatchOperationAdd">
                 <xpath>Defs/ThingDef[defName="{{defName metal.name}}"]</xpath>
                 <value>
-                    <thingClass>Cosmere.Scadrial.Thing.AllomanticMetal</thingClass>
+                    <thingClass>Cosmere.System.Scadrial.Thing.AllomanticMetal</thingClass>
                     <ingestible>
                         <preferability>NeverForNutrition</preferability>
                         <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>

@@ -20,7 +20,7 @@ These lines shimmer with the tension of potential force, visible only to those b
             </li>
         </stages>
         <modExtensions>
-            <li Class="Cosmere.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Core.DefModExtension.MetalsLinked">
                 <metal>Iron</metal>
             </li>
         </modExtensions>

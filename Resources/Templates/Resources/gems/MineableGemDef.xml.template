@@ -26,7 +26,7 @@
             <mineableScatterLumpSizeRange>{{range gem.mining.sizeRange}}</mineableScatterLumpSizeRange>
         </building>
         <modExtensions>
-            <li Class="Cosmere.DefModExtension.GemsLinked">
+            <li Class="Cosmere.Core.DefModExtension.GemsLinked">
                 <gem>{{defName gem.name}}</gem>
             </li>
         </modExtensions>

@@ -1,4 +1,3 @@
-using Cosmere;
 using Cosmere.Core.Comp.Hediff;
 using Cosmere.System.Roshar.Gene;
 
@@ -9,7 +8,7 @@ namespace Cosmere.System.Roshar.Comp.Hediff;
  * 
  * Usage:
  * <li Class="Cosmere.Core.Comp.Hediff.SeverityCalculatorProperties">
- *     <compClass>Cosmere.Roshar.Comp.Hediff.SeverityCalculator</compClass>
+ *     <compClass>Cosmere.System.Roshar.Comp.Hediff.SeverityCalculator</compClass>
  * </li>
  */
 public class SeverityCalculator : SeverityCalculator<Surgebinder>;

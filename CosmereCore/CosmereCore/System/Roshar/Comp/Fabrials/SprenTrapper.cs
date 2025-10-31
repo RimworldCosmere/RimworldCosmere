@@ -1,5 +1,4 @@
-using Cosmere;
-﻿using System;
+using System;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Dialog;
 using Cosmere.System.Roshar.Utility;
@@ -9,7 +8,7 @@ using Verse;
 
 namespace Cosmere.System.Roshar.Comp.Fabrials;
 
-[Obsolete("This is handled by Cosmere.Roshar.LesserSpren.CaptureSystem.LesserSprenCaptureSystem")]
+[Obsolete("This is handled by Cosmere.System.Roshar.LesserSpren.CaptureSystem.LesserSprenCaptureSystem")]
 public class SprenTrapper : ThingComp, IGemstoneHandler, IFilterableComp {
     private List<ThingDef> filterListInt = [];
     public ThingWithComps? insertedGemstone;

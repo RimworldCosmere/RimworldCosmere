@@ -4,7 +4,7 @@ using Cosmere.Roshar.Def;
 using RimWorld;
 using Verse;
 
-namespace Cosmere.Roshar;
+namespace Cosmere.System.Roshar;
 
 public static partial class GeneDefOf {        
     {{#each orders}}

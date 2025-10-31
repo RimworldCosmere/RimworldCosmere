@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using RimWorld;{{#if (eq kind "Gene")}}
 using Verse;{{/if}}
 
-namespace Cosmere.Scadrial;
+namespace Cosmere.System.Scadrial;
 
 public static partial class {{kind}}DefOf {
     {{#each metals as | metal |}}

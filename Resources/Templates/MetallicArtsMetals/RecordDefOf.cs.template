@@ -2,7 +2,7 @@
 using Cosmere.Scadrial.Def;
 using RimWorld;
 
-namespace Cosmere.Scadrial;
+namespace Cosmere.System.Scadrial;
 
 public static partial class RecordDefOf {
     {{#each metals as | metal |}}

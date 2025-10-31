@@ -12,7 +12,7 @@
             </li>
         </comps>
         <modExtensions>
-            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.DefModExtension.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>

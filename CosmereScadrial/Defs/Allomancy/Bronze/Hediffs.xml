@@ -10,7 +10,7 @@
             </li>
         </comps>
         <modExtensions>
-            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.DefModExtension.MetalsLinked">
                 <metal>Bronze</metal>
             </li>
         </modExtensions>

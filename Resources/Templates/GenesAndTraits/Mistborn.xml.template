@@ -6,7 +6,7 @@
         <description>A rare individual who can burn all Allomantic metals.</description>
 
         <modExtensions>
-            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.DefModExtension.MetalsLinked">
                 <metals>
                     {{#each metals}}
                     <li>{{capitalize name}}</li>

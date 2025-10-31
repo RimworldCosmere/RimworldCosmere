@@ -33,7 +33,7 @@
         </stuffProps>
 
         <modExtensions>
-            <li Class="Cosmere.Resources.DefModExtension.GemsLinked">
+            <li Class="Cosmere.DefModExtension.GemsLinked">
                 <gem>{{defName gem.name}}</gem>
             </li>
         </modExtensions>

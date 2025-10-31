@@ -140,7 +140,7 @@
         </statBases>
 
         <modExtensions>
-            <li Class="Cosmere.Resources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.DefModExtension.MetalsLinked">
                 <metal>{{defName metal.name}}</metal>
             </li>
         </modExtensions>

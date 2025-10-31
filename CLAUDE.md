@@ -192,7 +192,7 @@ The lesser spren particle system uses Unity ParticleSystem components to create 
 **Development Tips:**
 - Use `SprenConfig.EnabledSprenTypes` to test individual spren types
 - System initializes 30 seconds after map load to avoid performance issues
-- Use appropriate logging levels from Cosmere.Foundation Logger: `Verbose()`, `Info()`, `Important()`, `Warning()`, `Error()`
+- Use appropriate logging levels from Cosmere.CoreLogger: `Verbose()`, `Info()`, `Important()`, `Warning()`, `Error()`
 - Mesh errors indicate Unity objects created on wrong thread
 
 ## Available Resources

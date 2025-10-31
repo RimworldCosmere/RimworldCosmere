@@ -11,9 +11,9 @@ namespace Cosmere.Core;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ThingCategoryDefOf {
-    public static ThingCategoryDef Cosmere_Resource_ThingCategory_Metal;
-    public static ThingCategoryDef Cosmere_Resource_ThingCategory_BasicMetal;
-    public static ThingCategoryDef Cosmere_Resource_ThingCategory_GodMetal;
+    public static ThingCategoryDef Cosmere_Core_ThingCategory_Metal;
+    public static ThingCategoryDef Cosmere_Core_ThingCategory_BasicMetal;
+    public static ThingCategoryDef Cosmere_Core_ThingCategory_GodMetal;
 
     static ThingCategoryDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingCategoryDefOf));

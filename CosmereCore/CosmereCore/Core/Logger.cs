@@ -41,15 +41,13 @@ public static class Logger {
                     continue;
                 }
 
-                string? mod = method?.DeclaringType?.Assembly.GetName().Name;
-                ns = mod?.Split('.')[1];
-                if (frame?.GetFileName() != null && mod != null) {
+                if (frame?.GetFileName() != null) {
                     string filename = Regex.Replace(
                         frame.GetFileName()!,
                         @"^.*?(RimworldCosmere[\\/]RimworldCosmere[\\/]|RimWorld[\\/]Mods[\\/])+[\\/]*",
                         ""
                     );
-                    filename = filename.Replace(mod.Replace(".", ""), "")
+                    filename = filename.Replace("", "")
                         .TrimStart('\\')
                         .TrimStart('/')
                         .Replace(".cs", "");
@@ -64,7 +62,7 @@ public static class Logger {
 
             if (level >= LogLevel.Error) CurrentlyLoggingError = true;
             Log.Message(
-                $"{ColoredMessage(LOGColors[level], $"[Cosmere.{ns}]{stack}[{level.ToString()}]")} {message}"
+                $"{ColoredMessage(LOGColors[level], $"[Cosmere]{stack}[{level.ToString()}]")} {message}"
             );
             Log.ResetMessageCount();
         } catch (Exception e) {

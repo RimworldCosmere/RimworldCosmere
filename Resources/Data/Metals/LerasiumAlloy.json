@@ -16,7 +16,7 @@
   },
   "alloy": {
     "type": "god",
-    "stuff": "Cosmere_Resources_StuffCategory_AllomanticMetals",
+    "stuff": "Cosmere_Core_StuffCategory_AllomanticMetals",
     "stuffCount": "32",
     "ingredients": [
       {

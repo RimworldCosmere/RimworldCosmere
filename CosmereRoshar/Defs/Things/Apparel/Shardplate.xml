@@ -12,7 +12,7 @@
         <techLevel>Animal</techLevel>
         <smeltable>false</smeltable>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_Gems</li>
+            <li>Cosmere_Core_StuffCategory_Gems</li>
         </stuffCategories>
         <thingCategories>
             <li>ApparelArmor</li>
@@ -104,7 +104,7 @@
         <techLevel>Animal</techLevel>
         <smeltable>false</smeltable>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_Gems</li>
+            <li>Cosmere_Core_StuffCategory_Gems</li>
         </stuffCategories>
         <thingCategories>
             <li>ArmorHeadgear</li>

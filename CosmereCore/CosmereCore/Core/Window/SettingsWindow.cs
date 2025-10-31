@@ -17,9 +17,15 @@ public class SettingsWindow {
 
     public SettingsWindow(List<CosmereModSettings> allModSettings) {
         this.allModSettings = allModSettings;
-        selectedTab = allModSettings.First();
 
-        cachedTabs = this.allModSettings.Select(modSettings => new TabRecord(
+        // Ensure Core tab is first
+        var coreSettings = allModSettings.FirstOrDefault(s => s.Name == "Core");
+        selectedTab = coreSettings ?? allModSettings.First();
+
+        cachedTabs = this.allModSettings
+            .OrderBy(s => s.Name == "Core" ? 0 : 1)
+            .ThenBy(s => s.Name)
+            .Select(modSettings => new TabRecord(
                     modSettings.Name,
                     delegate { selectedTab = modSettings; },
                     () => selectedTab == modSettings

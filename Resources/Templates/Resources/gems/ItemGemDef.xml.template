@@ -7,7 +7,7 @@
         <description>{{gem.descriptions.raw}}</description>
 
         <thingCategories>
-            <li>Cosmere_Resource_ThingCategory_RawGem</li>
+            <li>Cosmere_Core_ThingCategory_RawGem</li>
         </thingCategories>
 
         <graphicData>
@@ -27,8 +27,8 @@
 
         <stuffProps>
             <categories>
-                <li>Cosmere_Resources_StuffCategory_Gems</li>
-                <li>Cosmere_Resources_StuffCategory_RawGems</li>
+                <li>Cosmere_Core_StuffCategory_Gems</li>
+                <li>Cosmere_Core_StuffCategory_RawGems</li>
             </categories>
         </stuffProps>
 

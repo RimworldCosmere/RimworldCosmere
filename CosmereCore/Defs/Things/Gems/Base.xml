@@ -9,7 +9,7 @@
         <allowedArchonexusCount>80</allowedArchonexusCount>
 
         <graphicData>
-            <graphicClass>Graphic_StackCount</graphicClass>
+            <graphicClass>Graphic_Single</graphicClass>
             <drawSize>1</drawSize>
         </graphicData>
 

@@ -7,9 +7,9 @@
 
         <thingCategories>
             {{#if metal.godMetal }}
-            <li>Cosmere_Resource_ThingCategory_GodMetal</li>
+            <li>Cosmere_Core_ThingCategory_GodMetal</li>
             {{else}}
-            <li>Cosmere_Resource_ThingCategory_BasicMetal</li>
+            <li>Cosmere_Core_ThingCategory_BasicMetal</li>
             {{/if}}
         </thingCategories>
         <researchPrerequisites>
@@ -77,11 +77,11 @@
 
         <stuffProps>
             <categories>
-                <li>Cosmere_Resources_StuffCategory_Metals</li>
+                <li>Cosmere_Core_StuffCategory_Metals</li>
                 {{#if metal.allomancy }}
-                <li>Cosmere_Resources_StuffCategory_AllomanticMetals</li>
+                <li>Cosmere_Core_StuffCategory_AllomanticMetals</li>
                 {{#if metal.allomancy.userName}}
-                <li>Cosmere_Resources_StuffCategory_BaseAllomanticMetals</li>{{/if}}{{/if}}
+                <li>Cosmere_Core_StuffCategory_BaseAllomanticMetals</li>{{/if}}{{/if}}
                 {{#if metal.buildable }}
                 <li>Metallic</li>
                 {{/if}}
@@ -147,7 +147,7 @@
         <comps>
             {{#each metal.genesToGrant}}
             {{#each this}}
-            <li Class="Cosmere.Foundation.Comp.Thing.GiveGeneProperties" MayRequire="{{@../key}}">
+            <li Class="Cosmere.CoreComp.Thing.GiveGeneProperties" MayRequire="{{@../key}}">
                 <geneDef>{{this}}</geneDef>
             </li>
             {{/each}}

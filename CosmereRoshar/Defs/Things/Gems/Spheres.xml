@@ -12,10 +12,10 @@
         </graphicData>
 
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_CutGems</li>
+            <li>Cosmere_Core_StuffCategory_CutGems</li>
         </stuffCategories>
         <costList>
-            <Cosmere_Resource_Thing_Glass>1</Cosmere_Resource_Thing_Glass>
+            <Cosmere_Core_Thing_Glass>1</Cosmere_Core_Thing_Glass>
         </costList>
         
         <recipeMaker>

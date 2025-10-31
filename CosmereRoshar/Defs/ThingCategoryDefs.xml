@@ -3,7 +3,7 @@
     <ThingCategoryDef>
         <defName>Cosmere_Roshar_ThingCategory_Sphere</defName>
         <label>Spheres</label>
-        <parent>Cosmere_Resource_ThingCategory_Gem</parent>
+        <parent>Cosmere_Core_ThingCategory_Gem</parent>
         <resourceReadoutRoot>false</resourceReadoutRoot>
         <iconPath>Item/Resource/Sphere/Emerald</iconPath>
     </ThingCategoryDef>

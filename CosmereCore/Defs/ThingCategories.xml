@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingCategoryDef>
+        <defName>Cosmere</defName>
+        <label>cosmere</label>
+        <parent>Root</parent>
+        <resourceReadoutRoot>true</resourceReadoutRoot>
+        <iconPath>UI/Icons/Cosmere</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Currency</defName>
+        <label>currency</label>
+        <parent>Cosmere</parent>
+        <resourceReadoutRoot>true</resourceReadoutRoot>
+        <iconPath>UI/Icons/Currency/Boxing</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Core_ThingCategory_Gem</defName>
+        <label>Gems</label>
+        <parent>ResourcesRaw</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/CutGem</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Core_ThingCategory_RawGem</defName>
+        <label>Raw Gems</label>
+        <parent>ResourcesRaw</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Emerald/RawEmerald</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Core_ThingCategory_CutGem</defName>
+        <label>Cut Gems</label>
+        <parent>ResourcesRaw</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/CutGem</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Core_ThingCategory_Metal</defName>
+        <label>Metals</label>
+        <parent>ResourcesRaw</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Steel/Steel_c</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Core_ThingCategory_BasicMetal</defName>
+        <label>Basic Metals</label>
+        <parent>Cosmere_Core_ThingCategory_Metal</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Steel/Steel_c</iconPath>
+    </ThingCategoryDef>
+    <ThingCategoryDef>
+        <defName>Cosmere_Core_ThingCategory_GodMetal</defName>
+        <label>God Metals</label>
+        <parent>Cosmere_Core_ThingCategory_Metal</parent>
+        <resourceReadoutRoot>false</resourceReadoutRoot>
+        <iconPath>Item/Resource/Lerasium</iconPath>
+    </ThingCategoryDef>
+</Defs>

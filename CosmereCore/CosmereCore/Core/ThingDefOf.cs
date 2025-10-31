@@ -17,8 +17,8 @@ public static partial class ThingDefOf {
     public static ThingDef Coal;
     public static ThingDef Charcoal;
     public static ThingDef CutGem;
-    public static ThingDef Cosmere_Resource_Thing_Alcohol;
-    public static ThingDef Cosmere_Resource_Thing_Glass;
+    public static ThingDef Cosmere_Core_Thing_Alcohol;
+    public static ThingDef Cosmere_Core_Thing_Glass;
 
     public static ThingDef Cosmere_Core_Table_Forge;
     public static ThingDef Cosmere_Core_Table_GemCutter;

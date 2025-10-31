@@ -20,7 +20,7 @@
             <MarketValue>100</MarketValue>
         </statBases>
         <stuffCategories>
-            <li>Cosmere_Resources_StuffCategory_Gems</li>
+            <li>Cosmere_Core_StuffCategory_Gems</li>
         </stuffCategories>
         <tools>
             <li>

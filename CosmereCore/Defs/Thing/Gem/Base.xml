@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="CosmereGemBase" ParentName="ResourceBase" Abstract="True">
+        <useHitPoints>false</useHitPoints>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <thingCategories />
+        <burnableByRecipe>false</burnableByRecipe>
+        <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+        <allowedArchonexusCount>80</allowedArchonexusCount>
+
+        <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>1</drawSize>
+        </graphicData>
+
+        <stuffProps>
+            <isAirtight>true</isAirtight>
+            <appearance>Smooth</appearance>
+            <soundImpactBullet>BulletImpact_Ground</soundImpactBullet>
+            <soundMeleeHitSharp>MeleeHit_Stone</soundMeleeHitSharp>
+            <soundMeleeHitBlunt>MeleeHit_Stone</soundMeleeHitBlunt>
+            <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
+        </stuffProps>
+
+        <statBases>
+            <Mass>0.0006</Mass>
+            <Beauty>0.5</Beauty>
+            <MarketValue>0.5</MarketValue>
+        </statBases>
+        <soundInteract>Silver_Drop</soundInteract>
+        <soundDrop>Silver_Drop</soundDrop>
+    </ThingDef>
+
+    <ThingDef Name="CosmereMineableGemBase" ParentName="MineableBase" Abstract="True">
+        <statBases>
+            <MaxHitPoints>800</MaxHitPoints>
+        </statBases>
+        <building>
+            <mineableYield>12</mineableYield>
+            <mineableNonMinedEfficiency>0.4</mineableNonMinedEfficiency>
+            <mineableDropChance>0.4</mineableDropChance>
+        </building>
+    </ThingDef>
+</Defs>

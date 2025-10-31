@@ -1,6 +1,6 @@
 #nullable disable
 using System.Diagnostics.CodeAnalysis;
-using Cosmere.Roshar.Def;
+using Cosmere.System.Roshar.Def;
 using RimWorld;
 
 namespace Cosmere.System.Roshar;

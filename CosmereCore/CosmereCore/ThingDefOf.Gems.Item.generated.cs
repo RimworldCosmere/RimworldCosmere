@@ -2,7 +2,7 @@
 using RimWorld;
 using Verse;
 
-namespace Cosmere.Resources;
+namespace Cosmere;
 
 public static partial class ThingDefOf {        
     public static ThingDef RawAmethyst;

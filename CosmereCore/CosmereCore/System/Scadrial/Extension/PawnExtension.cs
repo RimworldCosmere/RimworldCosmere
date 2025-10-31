@@ -1,6 +1,9 @@
 using Cosmere;
+using Cosmere.Core;
+using Cosmere.Core.Ability;
 using Cosmere.Def;
 using Cosmere.System.Scadrial.Allomancy.Ability;
+using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Thing;
@@ -143,5 +146,21 @@ public static class PawnExtension {
         float scaled = raw * 1.5f; // tweak this if severity is still too high or low
 
         return Mathf.Clamp(scaled, 0.1f, 5f);
+    }
+
+    public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, AllomancyAbility ability, HediffDef? hediffDef) {
+        return Util.HediffUtility.GetOrAddHediff(target, ability, hediffDef);
+    }
+
+    public static AllomanticHediff? GetOrAddHediff(this Pawn target, Pawn caster, AllomancyAbility ability, IMultiTypeHediff def) {
+        return Util.HediffUtility.GetOrAddHediff(caster, target, ability, def);
+    }
+
+    public static void RemoveHediff(this Pawn target, Pawn caster, AllomancyAbility ability, HediffDef? hediffDef) {
+        Util.HediffUtility.RemoveHediff(target, ability, hediffDef);
+    }
+
+    public static void RemoveHediff(this Pawn target, Pawn caster, AllomancyAbility ability, IMultiTypeHediff def) {
+        Util.HediffUtility.RemoveHediff(caster, target, ability, def);
     }
 }

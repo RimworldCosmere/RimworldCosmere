@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Cosmere.Core.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -13,6 +14,10 @@ public static class PawnExtension {
         .FirstOrDefault(m => m.PackageId.Equals("cosmere.scadrial", StringComparison.CurrentCultureIgnoreCase))
         ?.assemblies.loadedAssemblies.FirstOrDefault();
 
+    public static bool IsShieldedAgainstInvestiture(this Pawn pawn) {
+        return InvestitureDetector.IsShielded(pawn);
+    }
+
     public static void MaintainProximityTo(
         this Pawn pawn,
         LocalTargetInfo target,
@@ -22,10 +27,8 @@ public static class PawnExtension {
         float distance = pawn.Position.DistanceTo(target.CenterVector3.ToIntVec3());
 
         if (distance > maxDistance && !pawn.pather.MovingNow) {
-            // Only re-path if not already moving, avoids constant path spam
             pawn.pather.StartPath(target, endMode);
         } else if (distance <= maxDistance && pawn.pather.MovingNow) {
-            // Stop if already within desired range
             pawn.pather.StopDead();
             pawn.jobs.curDriver.Notify_PatherArrived();
         }

@@ -13,10 +13,11 @@ public class CoreModSettings : CosmereModSettings {
             q => q.AssemblyQualifiedName
         );
 
-    public bool showDormantConnection;
     public bool debugMode;
     public LogLevel logLevel = LogLevel.Verbose;
     public string? quickstartName;
+
+    public bool showDormantConnection;
 
     public override string Name => "Core";
 
@@ -34,30 +35,30 @@ public class CoreModSettings : CosmereModSettings {
         );
 
         listing.Fieldset(
-            "CF_Settings_Category_Debug".Translate(),
+            "CC_Settings_Category_Debug".Translate(),
             fieldset => {
                 fieldset.Field(
-                    "CF_Settings_LogLevel_Label".Translate(),
-                    "CF_Settings_LogLevel_Tooltip".Translate(),
+                    "CC_Settings_LogLevel_Label".Translate(),
+                    "CC_Settings_LogLevel_Tooltip".Translate(),
                     sub => Util.UI.IntEnumDropdown(sub, logLevel, v => logLevel = v, false)
                 );
 
                 if (!Prefs.DevMode) return;
 
                 fieldset.Field(
-                    "CF_Settings_DebugMode_Label".Translate(),
-                    "CF_Settings_DebugMode_Tooltip".Translate(),
+                    "CC_Settings_DebugMode_Label".Translate(),
+                    "CC_Settings_DebugMode_Tooltip".Translate(),
                     sub => sub.Checkbox(ref debugMode)
                 );
 
                 fieldset.Field(
-                    "CF_Settings_Quickstarter_Label".Translate(),
-                    "CF_Settings_Quickstarter_Tooltip".Translate(),
+                    "CC_Settings_Quickstarter_Label".Translate(),
+                    "CC_Settings_Quickstarter_Tooltip".Translate(),
                     sub => Util.UI.Dropdown(
                         sub,
                         GetQuickstartScenarioLabel,
                         quickstartName,
-                        "CF_Settings_Quickstarter_Placeholder".Translate(),
+                        "CC_Settings_Quickstarter_Placeholder".Translate(),
                         quickstarters,
                         val => quickstartName = val
                     ),
@@ -71,7 +72,7 @@ public class CoreModSettings : CosmereModSettings {
                     sub => {
                         if (string.IsNullOrEmpty(quickstartName)) return;
                         if (description == null) {
-                            sub.Label("CF_Settings_Quickstarter_FailedToFind".Translate());
+                            sub.Label("CC_Settings_Quickstarter_FailedToFind".Translate());
                             return;
                         }
 

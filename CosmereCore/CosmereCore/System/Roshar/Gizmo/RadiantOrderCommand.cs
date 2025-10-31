@@ -1,4 +1,3 @@
-using Cosmere;
 using System.Text;
 using Cosmere.Core.Gizmo;
 using Cosmere.System.Roshar.Def;
@@ -28,7 +27,7 @@ public class RadiantOrderCommand(
     protected override string GetTooltipHeader() {
         StringBuilder sb = new StringBuilder(base.GetTooltipHeader() + "\n");
 
-        TaggedString ideal = $"CF_Ordinal_{gene.currentIdealDisplay}_Long".Translate() +
+        TaggedString ideal = $"CC_Ordinal_{gene.currentIdealDisplay}_Long".Translate() +
                              ' ' +
                              "CRO_RadiantOrder_Ideal".Translate();
 

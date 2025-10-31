@@ -34,23 +34,23 @@ public abstract class AbstractQuickstart {
 
         StringBuilder builder = new StringBuilder();
         builder.AppendLine(
-            "CF_Quickstart_Name".Translate().Colorize(ColoredText.DateTimeColor) + GetType().Name
+            "CC_Quickstart_Name".Translate().Colorize(ColoredText.DateTimeColor) + GetType().Name
         );
         builder.AppendLine();
         builder.AppendLine(
-            "CF_Quickstart_MapSize".Translate().Colorize(ColoredText.TipSectionTitleColor) + $"{mapSize}x{mapSize}"
+            "CC_Quickstart_MapSize".Translate().Colorize(ColoredText.TipSectionTitleColor) + $"{mapSize}x{mapSize}"
         );
         builder.AppendLine(
-            "CF_Quickstart_Difficulty".Translate().Colorize(ColoredText.TipSectionTitleColor) +
+            "CC_Quickstart_Difficulty".Translate().Colorize(ColoredText.TipSectionTitleColor) +
             difficulty.LabelCap.ToString()
         );
         builder.AppendLine(
-            "CF_Quickstart_Scenario".Translate().Colorize(ColoredText.TipSectionTitleColor) +
+            "CC_Quickstart_Scenario".Translate().Colorize(ColoredText.TipSectionTitleColor) +
             (scenario?.LabelCap.ToString() ?? "None")
         );
 
         builder.AppendLine(
-            "CF_Quickstart_PauseAfterLoad".Translate().Colorize(ColoredText.TipSectionTitleColor) +
+            "CC_Quickstart_PauseAfterLoad".Translate().Colorize(ColoredText.TipSectionTitleColor) +
             (pauseAfterLoad ? "Yes" : "No")
         );
         builder.AppendLine();

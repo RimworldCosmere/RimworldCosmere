@@ -72,7 +72,7 @@ public class Quickstarter {
                     GenTicks.TicksPerRealSecond / 2
                 );
             },
-            "CF_Quickstart_StartGame",
+            "CC_Quickstart_StartGame",
             true,
             GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap
         );

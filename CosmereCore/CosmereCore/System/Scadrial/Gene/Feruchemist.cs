@@ -1,4 +1,3 @@
-using Cosmere;
 ﻿using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Gizmo;
 using Cosmere.System.Scadrial.Utility;

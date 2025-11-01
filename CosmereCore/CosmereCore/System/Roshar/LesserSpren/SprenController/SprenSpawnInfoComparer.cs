@@ -1,4 +1,3 @@
-using Cosmere;
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 public class SprenSpawnInfoComparer : IEqualityComparer<SprenSpawnInformation> {

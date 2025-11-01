@@ -1,4 +1,3 @@
-using Cosmere;
 namespace Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 
 public enum SprenType : uint {

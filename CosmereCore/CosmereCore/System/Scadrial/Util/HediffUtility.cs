@@ -1,5 +1,4 @@
 using System;
-using Cosmere;
 using Cosmere.Core;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
@@ -29,7 +28,12 @@ public static class HediffUtility {
         return newHediff;
     }
 
-    public static AllomanticHediff? GetOrAddHediff(Pawn caster, Pawn target, AllomancyAbility ability, HediffDef? hediffDef) {
+    public static AllomanticHediff? GetOrAddHediff(
+        Pawn caster,
+        Pawn target,
+        AllomancyAbility ability,
+        HediffDef? hediffDef
+    ) {
         if (hediffDef == null) return null;
 
         if (TryGetHediff(target, hediffDef, out AllomanticHediff hediff)) {
@@ -44,8 +48,12 @@ public static class HediffUtility {
         return newHediff;
     }
 
-    public static AllomanticHediff? GetOrAddHediff(Pawn caster, Pawn target, AllomancyAbility ability,
-        IMultiTypeHediff def) {
+    public static AllomanticHediff? GetOrAddHediff(
+        Pawn caster,
+        Pawn target,
+        AllomancyAbility ability,
+        IMultiTypeHediff def
+    ) {
         return GetOrAddHediff(caster, target, ability, GetHediffDefForPawn(caster, target, def));
     }
 

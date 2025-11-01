@@ -1,5 +1,4 @@
-using Cosmere;
-﻿using Cosmere.System.Roshar.Comp.Thing;
+using Cosmere.System.Roshar.Comp.Thing;
 using UnityEngine;
 using Verse;
 
@@ -11,7 +10,7 @@ public interface IFilterableComp {
     List<GemSize> sizeFilterList { get; }
 }
 
-public class SphereFilter<T> : Verse.Window where T : ThingComp, IFilterableComp {
+public class SphereFilter<T> : Window where T : ThingComp, IFilterableComp {
     private readonly T thing;
     private Vector2 scrollPosition;
 

@@ -1,10 +1,9 @@
-using Cosmere;
 using Cosmere.System.Roshar.Job.Toil;
 using Verse.AI;
 
 namespace Cosmere.System.Roshar.Job.Driver;
 
-public class AddGemToFabrial : Verse.AI.JobDriver {
+public class AddGemToFabrial : JobDriver {
     private const TargetIndex FabrialIndex = TargetIndex.A;
     private const TargetIndex GemIndex = TargetIndex.B;
     public const int ReGemmingDuration = 240;

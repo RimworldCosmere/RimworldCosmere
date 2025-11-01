@@ -1,4 +1,3 @@
-using Cosmere;
 using System;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Investiture;

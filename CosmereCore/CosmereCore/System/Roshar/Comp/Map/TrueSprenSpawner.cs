@@ -1,4 +1,3 @@
-using Cosmere;
 ﻿using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.Thing.Pawn.Animal;

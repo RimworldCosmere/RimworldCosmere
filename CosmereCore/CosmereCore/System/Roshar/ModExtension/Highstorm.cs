@@ -1,4 +1,3 @@
-using Cosmere;
 namespace Cosmere.System.Roshar.ModExtension;
 
 public class Highstorm : Verse.DefModExtension {

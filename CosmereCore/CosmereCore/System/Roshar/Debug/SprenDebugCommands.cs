@@ -1,4 +1,3 @@
-using Cosmere;
 using LudeonTK;
 using RimWorld;
 using Verse;
@@ -13,5 +12,4 @@ public static class SprenDebugCommands {
         string status = SprenDebugOverlay.showOverlay ? "enabled" : "disabled";
         Messages.Message($"Spren debug overlay {status}", MessageTypeDefOf.NeutralEvent);
     }
-
 }

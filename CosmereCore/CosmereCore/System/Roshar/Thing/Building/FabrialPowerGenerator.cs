@@ -1,4 +1,3 @@
-using Cosmere;
 using Cosmere.System.Roshar.Comp.Thing;
 using RimWorld;
 using Verse;
@@ -12,7 +11,7 @@ public class FabrialPowerGenerator : Verse.Building {
     public Comp.Fabrials.FabrialPowerGenerator fabrialPowerGenerator;
 
 
-    public override void SpawnSetup(Verse.Map map, bool respawningAfterLoad) {
+    public override void SpawnSetup(Map map, bool respawningAfterLoad) {
         base.SpawnSetup(map, respawningAfterLoad);
         fabrialPowerGenerator = GetComp<Comp.Fabrials.FabrialPowerGenerator>();
         compFlickerable = GetComp<CompFlickable>();

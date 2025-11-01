@@ -1,10 +1,9 @@
-using Cosmere;
 using Cosmere.System.Roshar.Job.Toil;
 using Verse.AI;
 
 namespace Cosmere.System.Roshar.Job.Driver;
 
-public class RemoveGemFromFabrial : Verse.AI.JobDriver {
+public class RemoveGemFromFabrial : JobDriver {
     private const TargetIndex FabrialIndex = TargetIndex.A;
     public const int JobDuration = 75;
 

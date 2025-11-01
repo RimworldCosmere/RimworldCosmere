@@ -1,5 +1,4 @@
-using Cosmere;
-﻿using System.Reflection.Emit;
+using System.Reflection.Emit;
 using System.Text;
 using Cosmere.System.Roshar.LesserSpren.SprenController;
 using HarmonyLib;
@@ -28,7 +27,7 @@ public static class MouseoverSprenInfoPatch {
     }
 
     public static void ShowSprenInfo(float yOffset) {
-        IntVec3 cell = Verse.UI.MouseCell();
+        IntVec3 cell = UI.MouseCell();
         Map map = Find.CurrentMap;
 
         if (map == null || !cell.InBounds(map)) return;
@@ -51,6 +50,6 @@ public static class MouseoverSprenInfoPatch {
         Vector2 botLeft = (Vector2)AccessTools.Field(typeof(MouseoverReadout), "BotLeft").GetValue(null);
 
         // Add spren info to the mouseover readout using the same Y offset pattern as vanilla
-        Widgets.Label(new Rect(botLeft.x, Verse.UI.screenHeight - botLeft.y - yOffset, 999f, 999f), sprenInfo);
+        Widgets.Label(new Rect(botLeft.x, UI.screenHeight - botLeft.y - yOffset, 999f, 999f), sprenInfo);
     }
 }

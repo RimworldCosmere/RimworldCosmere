@@ -1,4 +1,3 @@
-using Cosmere;
 using Cosmere.System.Roshar.LesserSpren.CaptureSystem;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using RimWorld;
@@ -7,7 +6,7 @@ using Verse.AI;
 
 namespace Cosmere.System.Roshar.Job.Driver;
 
-public class CaptureSpren : Verse.AI.JobDriver {
+public class CaptureSpren : JobDriver {
     private const TargetIndex CellIndex = TargetIndex.A;
     private const TargetIndex GemIndex = TargetIndex.B;
     private const int CaptureDuration = 180; // 3 seconds

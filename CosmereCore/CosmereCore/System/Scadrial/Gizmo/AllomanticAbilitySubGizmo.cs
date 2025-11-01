@@ -1,4 +1,3 @@
-using Cosmere;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Gizmo;
 using Cosmere.System.Scadrial.Allomancy.Ability;

@@ -1,4 +1,3 @@
-using Cosmere;
 #nullable disable
 using System;
 using Cosmere.System.Scadrial.Def;

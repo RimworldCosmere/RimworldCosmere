@@ -9,8 +9,4 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public static partial class MetallicArtsMetalDefOf {
-    static MetallicArtsMetalDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(MetallicArtsMetalDefOf));
-    }
-}
+public static partial class MetallicArtsMetalDefOf { }

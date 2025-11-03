@@ -10,9 +10,6 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class StatDefOf {
+    [MayRequire("Cosmere.Roshar")]
     public static StatDef Cosmere_Roshar_Stat_SphereSize;
-
-    static StatDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(StatDefOf));
-    }
 }

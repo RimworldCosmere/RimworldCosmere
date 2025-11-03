@@ -9,8 +9,4 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public static partial class TraitDefOf {
-    static TraitDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(TraitDefOf));
-    }
-}
+public static partial class TraitDefOf { }

@@ -68,7 +68,7 @@ public class Highstorm : RimWorld.GameCondition {
 
     public override void GameConditionTick() {
         base.GameConditionTick();
-        ModExtension.Highstorm? ext = def.GetModExtension<ModExtension.Highstorm>();
+        DefModExtension.Highstorm? ext = def.GetModExtension<DefModExtension.Highstorm>();
         if (ext == null) return;
         if (StormShelterManager.FirstTickOfHighstorm) {
             Map currentMap = Find.CurrentMap;

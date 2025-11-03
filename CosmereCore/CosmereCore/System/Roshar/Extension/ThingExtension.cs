@@ -9,7 +9,6 @@ public static class ThingExtension {
         return thing.TryGetComp<InvestitureHolder>();
     }
 
-
     public static bool ShouldBeMovedByStorm(this Verse.Thing thing) {
         if (!thing.Spawned || thing.Map == null) return false;
 

@@ -11,15 +11,17 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class JobDefOf {
+    [MayRequire("Cosmere.Scadrial")]
     public static JobDef Cosmere_Scadrial_Job_MaintainAllomanticTarget;
+
+    [MayRequire("Cosmere.Scadrial")]
     public static JobDef Cosmere_Scadrial_Job_CastAllomanticAbilityAtTarget;
+
+    [MayRequire("Cosmere.Scadrial")]
     public static JobDef Cosmere_Scadrial_Job_FollowGoldHallucination;
 
+    [MayRequire("Cosmere.Scadrial")]
     public static JobDef Cosmere_Scadrial_Job_GivePatientVial;
     //public static JobDef Cosmere_Scadrial_Job_EquipMetalmind;
     //public static JobDef Cosmere_Scadrial_Job_UnequipMetalmind;
-
-    static JobDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));
-    }
 }

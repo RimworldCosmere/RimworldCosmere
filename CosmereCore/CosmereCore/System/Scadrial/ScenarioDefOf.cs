@@ -10,10 +10,9 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ScenarioDefOf {
+    [MayRequire("Cosmere.Scadrial")]
     public static ScenarioDef Cosmere_Scadrial_PreCatacendre;
-    public static ScenarioDef Cosmere_Scadrial_PostCatacendre;
 
-    static ScenarioDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ScenarioDefOf));
-    }
+    [MayRequire("Cosmere.Scadrial")]
+    public static ScenarioDef Cosmere_Scadrial_PostCatacendre;
 }

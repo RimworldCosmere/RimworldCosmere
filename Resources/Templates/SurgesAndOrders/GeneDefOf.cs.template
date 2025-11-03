@@ -8,6 +8,7 @@ namespace Cosmere.System.Roshar;
 
 public static partial class GeneDefOf {        
     {{#each orders}}
+    [MayRequire("Cosmere.Roshar")]
     public static GeneDef Cosmere_Roshar_Gene_Radiant{{defName name}};
     {{/each}}
 }

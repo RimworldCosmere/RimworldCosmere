@@ -11,19 +11,36 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class ThingDefOf {
+    [MayRequire("Cosmere.Scadrial")]
     public static ThingDef Cosmere_Scadrial_Mote_CopperCloud;
-    public static ThingDef Cosmere_Scadrial_Mote_BrassAura;
-    public static ThingDef Cosmere_Scadrial_Mote_BronzeAura;
-    public static ThingDef Cosmere_Scadrial_Mote_ZincAura;
-    public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleCadmium;
-    public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleBendalloy;
-    public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleWarp;
-    public static ThingDef Cosmere_Scadrial_Thing_MetalmindEarring;
-    public static ThingDef Cosmere_Scadrial_Thing_MetalmindBracelet;
-    public static ThingDef Cosmere_Scadrial_Thing_MetalmindBand;
-    public static ThingDef Cosmere_Scadrial_Thing_AllomanticVial;
 
-    static ThingDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));
-    }
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Mote_BrassAura;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Mote_BronzeAura;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Mote_ZincAura;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleCadmium;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleBendalloy;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Thing_TimeBubbleWarp;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Thing_MetalmindEarring;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Thing_MetalmindBracelet;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Thing_MetalmindBand;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static ThingDef Cosmere_Scadrial_Thing_AllomanticVial;
 }

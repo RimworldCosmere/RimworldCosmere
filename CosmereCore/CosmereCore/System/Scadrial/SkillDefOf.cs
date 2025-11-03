@@ -10,10 +10,9 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class SkillDefOf {
+    [MayRequire("Cosmere.Scadrial")]
     public static SkillDef Cosmere_Scadrial_Skill_AllomanticPower;
-    public static SkillDef Cosmere_Scadrial_Skill_FeruchemicPower;
 
-    static SkillDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(SkillDefOf));
-    }
+    [MayRequire("Cosmere.Scadrial")]
+    public static SkillDef Cosmere_Scadrial_Skill_FeruchemicPower;
 }

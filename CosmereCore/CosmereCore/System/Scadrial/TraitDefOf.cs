@@ -12,15 +12,20 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class TraitDefOf {
+    [MayRequire("Cosmere.Scadrial")]
     public static TraitDef Cosmere_Scadrial_Trait_Metalborn;
-    public static TraitDef Cosmere_Scadrial_Trait_Allomancer;
-    public static TraitDef Cosmere_Scadrial_Trait_Feruchemist;
-    public static TraitDef Cosmere_Scadrial_Trait_Mistborn;
-    public static TraitDef Cosmere_Scadrial_Trait_FullFeruchemist;
 
-    static TraitDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(TraitDefOf));
-    }
+    [MayRequire("Cosmere.Scadrial")]
+    public static TraitDef Cosmere_Scadrial_Trait_Allomancer;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static TraitDef Cosmere_Scadrial_Trait_Feruchemist;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static TraitDef Cosmere_Scadrial_Trait_Mistborn;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static TraitDef Cosmere_Scadrial_Trait_FullFeruchemist;
 
     public static TraitDef GetMistingTraitForMetal(MetalDef def) {
         return DefDatabase<TraitDef>.GetNamed("Cosmere_Scadrial_Trait_Misting" + def.defName, false);

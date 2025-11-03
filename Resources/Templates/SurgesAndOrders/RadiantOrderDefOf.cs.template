@@ -12,6 +12,7 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class RadiantOrderDefOf {        
     {{#each orders }}
+    [MayRequire("Cosmere.Roshar")]
     public static RadiantOrderDef {{defName name}};
     {{/each}}
 

@@ -12,16 +12,23 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class RecordDefOf {
+    [MayRequire("Cosmere.Scadrial")]
     public static RecordDef Cosmere_Scadrial_Record_IngestedLerasium;
-    public static RecordDef Cosmere_Scadrial_Record_IngestedLerasiumAlloy;
-    public static RecordDef Cosmere_Scadrial_Record_IngestedLeratium;
-    public static RecordDef Cosmere_Scadrial_Record_IngestedLeratiumAlloy;
-    public static RecordDef Cosmere_Scadrial_Record_IngestedVial;
-    public static RecordDef Cosmere_Scadrial_Record_IngestedRawMetal;
 
-    static RecordDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
-    }
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedLerasiumAlloy;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedLeratium;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedLeratiumAlloy;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedVial;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedRawMetal;
 
     public static RecordDef GetMetalBurnRecordForMetal(MetalDef metal) {
         return DefDatabase<RecordDef>.GetNamed("Cosmere_Scadrial_Record_MetalBurnt_" + metal.defName);

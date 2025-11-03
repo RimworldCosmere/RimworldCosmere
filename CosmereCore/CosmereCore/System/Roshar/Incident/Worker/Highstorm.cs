@@ -25,7 +25,7 @@ public class Highstorm : IncidentWorker {
 
         // Start the Highstorm condition
         GameConditionDef stormDef = DefDatabase<GameConditionDef>.GetNamed("Cosmere_Roshar_HighstormCondition");
-        ModExtension.Highstorm? ext = stormDef.GetModExtension<ModExtension.Highstorm>();
+        DefModExtension.Highstorm? ext = stormDef.GetModExtension<DefModExtension.Highstorm>();
         int stormDuration = ext.stormDuration;
         RimWorld.GameCondition storm = GameConditionMaker.MakeCondition(stormDef, stormDuration);
         map.gameConditionManager.RegisterCondition(storm);

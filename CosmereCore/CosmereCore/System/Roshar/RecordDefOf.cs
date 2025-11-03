@@ -10,12 +10,15 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class RecordDefOf {
+    [MayRequire("Cosmere.Roshar")]
     public static RecordDef Cosmere_Roshar_Record_PatientsSaved;
-    public static RecordDef Cosmere_Roshar_Record_EnemyPatientsSaved;
-    public static RecordDef Cosmere_Roshar_Record_BondsFormed;
-    public static RecordDef Cosmere_Roshar_Record_PatientsDied;
 
-    static RecordDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
-    }
+    [MayRequire("Cosmere.Roshar")]
+    public static RecordDef Cosmere_Roshar_Record_EnemyPatientsSaved;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static RecordDef Cosmere_Roshar_Record_BondsFormed;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static RecordDef Cosmere_Roshar_Record_PatientsDied;
 }

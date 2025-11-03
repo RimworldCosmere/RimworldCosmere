@@ -11,11 +11,12 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ShardDefOf {
+    [MayRequire("Cosmere.Scadrial")]
     public static ShardDef Ruin;
-    public static ShardDef Preservation;
-    public static ShardDef Harmony;
 
-    static ShardDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ShardDefOf));
-    }
+    [MayRequire("Cosmere.Scadrial")]
+    public static ShardDef Preservation;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static ShardDef Harmony;
 }

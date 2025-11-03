@@ -11,12 +11,15 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ShardDefOf {
+    [MayRequire("Cosmere.Roshar")]
     public static ShardDef Honor;
-    public static ShardDef Cultivation;
-    public static ShardDef Odium;
-    public static ShardDef Retribution;
 
-    static ShardDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ShardDefOf));
-    }
+    [MayRequire("Cosmere.Roshar")]
+    public static ShardDef Cultivation;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static ShardDef Odium;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static ShardDef Retribution;
 }

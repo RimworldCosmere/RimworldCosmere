@@ -15,7 +15,7 @@ public class AllomanticGeneCommand(
     Color barHighlightColor
 ) : ScadrialGeneCommand<Allomancer>(gene, drainGenes, barColor, barHighlightColor) {
     private static readonly Texture2D VialIcon =
-        ContentFinder<Texture2D>.Get("Things/Item/AllomanticVial/AllomanticVial_c");
+        ContentFinder<Texture2D>.Get("Things/Item/AllomanticVial/AllomanticVial_c", false);
 
     private string? setVialCountTooltipCache;
 

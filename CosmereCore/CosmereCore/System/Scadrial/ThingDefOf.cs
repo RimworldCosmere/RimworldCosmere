@@ -11,6 +11,10 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class ThingDefOf {
+    static ThingDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));
+    }
+
     [MayRequire("Cosmere.Scadrial")]
     public static ThingDef Cosmere_Scadrial_Mote_CopperCloud;
 

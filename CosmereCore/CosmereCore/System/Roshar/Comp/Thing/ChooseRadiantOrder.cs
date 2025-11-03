@@ -5,7 +5,7 @@ namespace Cosmere.System.Roshar.Comp.Thing;
 
 [StaticConstructorOnStartup]
 public class ChooseRadiantOrder : ThingComp {
-    private static readonly Texture2D Icon = ContentFinder<Texture2D>.Get("UI/Icons/KnightsRadiant");
+    private static readonly Texture2D Icon = ContentFinder<Texture2D>.Get("UI/Icons/KnightsRadiant", false);
     private Pawn pawn => (Pawn)parent;
 
     public override IEnumerable<Verse.Gizmo> CompGetGizmosExtra() {

@@ -12,6 +12,10 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class TraitDefOf {
+    static TraitDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(TraitDefOf));
+    }
+
     [MayRequire("Cosmere.Scadrial")]
     public static TraitDef Cosmere_Scadrial_Trait_Metalborn;
 

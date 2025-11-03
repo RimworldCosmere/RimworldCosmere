@@ -7,7 +7,11 @@ namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 
 [StaticConstructorOnStartup]
 public abstract class BaseSprenController {
-    protected static readonly Texture2D DefaultTexture = ContentFinder<Texture2D>.Get("Things/Pawn/Animal/LesserSpren");
+    protected static readonly Texture2D DefaultTexture = ContentFinder<Texture2D>.Get(
+        "Things/Pawn/Animal/LesserSpren",
+        false
+    );
+
     protected static readonly Material DefaultMaterial = new Material(Verse.ShaderDatabase.TransparentPostLight);
 
     protected readonly HashSet<SprenSpawnInformation> activeSpawnInfoInt =

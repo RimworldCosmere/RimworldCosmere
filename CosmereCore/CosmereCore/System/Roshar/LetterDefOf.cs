@@ -11,6 +11,10 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class LetterDefOf {
+    static LetterDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(LetterDefOf));
+    }
+
     [MayRequire("Cosmere.Roshar")]
     public static LetterDef Cosmere_Roshar_ChooseRadiantOrder;
 }

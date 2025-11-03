@@ -11,6 +11,10 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class HediffDefOf {
+    static HediffDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));
+    }
+
     [MayRequire("Cosmere.Roshar")]
     public static HediffDef Cosmere_Roshar_Hediff_ShardbladeSummoning;
 }

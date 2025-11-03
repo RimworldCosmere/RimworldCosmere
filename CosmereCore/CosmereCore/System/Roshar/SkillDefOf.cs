@@ -10,6 +10,10 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class SkillDefOf {
+    static SkillDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(SkillDefOf));
+    }
+
     [MayRequire("Cosmere.Roshar")]
     public static SkillDef Cosmere_Roshar_Skill_SurgebindingPower;
 }

@@ -11,6 +11,10 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ThingDefOf {
+    static ThingDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));
+    }
+
     [MayRequire("Cosmere.Roshar")]
     public static ThingDef Cosmere_Roshar_Thing_Chip;
 

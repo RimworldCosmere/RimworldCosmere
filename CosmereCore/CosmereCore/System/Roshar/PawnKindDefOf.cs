@@ -11,6 +11,10 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class PawnKindDefOf {
+    static PawnKindDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(PawnKindDefOf));
+    }
+
     [MayRequire("Cosmere.Roshar")]
     public static PawnKindDef Cosmere_Roshar_Race_Spren;
 

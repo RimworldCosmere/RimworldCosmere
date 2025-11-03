@@ -12,6 +12,10 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class RecordDefOf {
+    static RecordDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
+    }
+
     [MayRequire("Cosmere.Scadrial")]
     public static RecordDef Cosmere_Scadrial_Record_IngestedLerasium;
 

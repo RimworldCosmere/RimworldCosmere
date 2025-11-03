@@ -81,7 +81,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.GetInvestiture().currentInvestitureSelf = 1000;
 
             Find.Selector.Select(pawn, false);
-            Find.CameraDriver.PanToMapLocAndSize(pawn.DrawPos, Find.CameraDriver.config.sizeRange.min);
+            //Find.CameraDriver.PanToMapLocAndSize(pawn.DrawPos, Find.CameraDriver.config.sizeRange.min);
         }
 
         /*if (pawns.TryPopFront(out pawn)) {

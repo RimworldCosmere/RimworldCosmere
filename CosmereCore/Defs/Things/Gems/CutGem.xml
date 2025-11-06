@@ -10,10 +10,9 @@
         </thingCategories>
 
         <graphicData>
-            <graphicClass>Graphic_Single</graphicClass>
-            <!--<shaderType>CutoutComplex</shaderType>-->
-            <drawSize>1</drawSize>
-            <texPath>Item/Resource/CutGem</texPath>
+            <graphicClass>Cosmere.Core.Graphic.GemStuff</graphicClass>
+            <drawSize>.5</drawSize>
+            <texPath>Item/Resource/Gems/Cut</texPath>
         </graphicData>
 
         <stuffCategories>
@@ -51,7 +50,7 @@
                 <li>Cosmere_Core_StuffCategory_CutGems</li>
             </categories>
         </stuffProps>
-        
+
         <comps>
             <li MayRequire="Cosmere.Roshar" Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
                 <maxInvestiture>24</maxInvestiture>

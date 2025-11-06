@@ -183,9 +183,9 @@ public class CutoutAdvanced : ThingComp {
 
     public Material? lastMaterial { get; set; }
 
-    public Graphic? lastGraphic { get; set; }
+    public Verse.Graphic? lastGraphic { get; set; }
 
-    private Mask? GetMask(MaskType type, Graphic graphic, Material material) {
+    private Mask? GetMask(MaskType type, Verse.Graphic graphic, Material material) {
         switch (type) {
             case MaskType.Wear when !props.useWear:
             case MaskType.Glow when !props.useGlow:
@@ -208,7 +208,7 @@ public class CutoutAdvanced : ThingComp {
 
     public MaterialPropertyBlock UpdateMaterialPropertyBlock(
         MaterialPropertyBlock block,
-        Graphic graphic,
+        Verse.Graphic graphic,
         Material material
     ) {
         lastGraphic = graphic;

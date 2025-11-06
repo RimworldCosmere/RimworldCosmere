@@ -108,13 +108,13 @@ public static class CutoutAdvancedPatch {
 
     #region Graphic patches
 
-    [HarmonyPatch(typeof(Graphic), nameof(Graphic.DrawWorker))]
+    [HarmonyPatch(typeof(Verse.Graphic), nameof(Verse.Graphic.DrawWorker))]
     [HarmonyPrefix]
     public static void GraphicDrawWorkerPrefix(out Verse.Thing __state, Verse.Thing thing) {
         __state = thing;
     }
 
-    [HarmonyPatch(typeof(Graphic), "DrawMeshInt")]
+    [HarmonyPatch(typeof(Verse.Graphic), "DrawMeshInt")]
     [HarmonyPrefix]
     public static bool GraphicDrawMeshInt(
         Verse.Thing __state,
@@ -137,7 +137,7 @@ public static class CutoutAdvancedPatch {
     private static MethodInfo GraphicsRandomRotatedGetRotInRack =>
         AccessTools.Method(typeof(Graphic_RandomRotated), "GetRotInRack");
 
-    [HarmonyPatch(typeof(Graphic_RandomRotated), nameof(Graphic.DrawWorker))]
+    [HarmonyPatch(typeof(Graphic_RandomRotated), nameof(Verse.Graphic.DrawWorker))]
     [HarmonyPrefix]
     public static bool GraphicRandomRotatedDrawWorkerPrefix(
         Graphic_RandomRotated __instance,

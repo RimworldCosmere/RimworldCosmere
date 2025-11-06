@@ -15,7 +15,7 @@
             <graphicClass>Graphic_Single</graphicClass>
             {{/unless}}
             <drawSize>{{gem.drawSize}}</drawSize>
-            <texPath>Item/Resource/{{defName gem.name}}/Raw{{defName gem.name}}</texPath>
+            <texPath>Item/Resource/Gems/Uncut/{{defName gem.name}}</texPath>
         </graphicData>
 
         <statBases>

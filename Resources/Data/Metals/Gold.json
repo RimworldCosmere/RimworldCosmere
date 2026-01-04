@@ -52,6 +52,9 @@
         "ToxicEnvironmentResistance": 0.045,
         "IncomingDamageFactor": -0.048,
         "StaggerDurationFactor": -0.048
+      },
+      "statOffsets": {
+        "regeneration": 1
       }
     }
   },

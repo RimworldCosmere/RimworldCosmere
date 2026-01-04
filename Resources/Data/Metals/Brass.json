@@ -28,17 +28,21 @@
     "store": {
       "description": "This pawn is storing body heat into a brass metalmind, passively absorbing thermal energy. Their body resists high temperatures and fire damage far better than normal, allowing them to function in burning envbrassments with reduced risk of heatstroke.",
       "statFactors": {
-        "Flammability": -0.02,
-        "ComfyTemperatureMax": 2,
-        "ComfyTemperatureMin": -0.1
+        "Flammability": -0.02
+      },
+      "statOffsets": {
+        "ComfyTemperatureMax": 5,
+        "ComfyTemperatureMin": 5
       }
     },
     "tap": {
       "description": "This pawn is tapping a brass metalmind, releasing stored heat into their body. They become much more vulnerable to high temperatures and fire, and risk heatstroke if not careful — but can survive extreme cold with ease.",
       "statFactors": {
-        "Flammability": 0.02,
-        "ComfyTemperatureMax": -0.1,
-        "ComfyTemperatureMin": 2
+        "Flammability": 0.02
+      },
+      "statOffsets": {
+        "ComfyTemperatureMax": -5,
+        "ComfyTemperatureMin": -5
       }
     }
   },

@@ -29,7 +29,7 @@
       "hungerRateFactor": 0.2
     },
     "tap": {
-      "description": "This pawn is tapping an atium metalmind, reversing the effects of time. Their body becomes younger, stronger, and faster — regaining agility, endurance, and resilience as if years were stripped away.",
+      "description": "This pawn is tapping a bendalloy metalmind, decreasing the need for food. Their metabolism slows down, burning through metal reserves in place of nutrients.",
       "hungerRateFactor": -0.05,
       "statFactors": {
         "MaxNutrition": 0.05

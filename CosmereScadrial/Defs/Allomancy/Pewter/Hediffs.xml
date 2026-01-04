@@ -6,8 +6,7 @@
         <description>Empowered strength, endurance, and resilience from burning Pewter.</description>
         <stages>
             <li>
-                <naturalHealingFactor>0.5</naturalHealingFactor>
-                <regeneration>5</regeneration>
+                <naturalHealingFactor>2</naturalHealingFactor>
                 <totalBleedFactor>-0.5</totalBleedFactor> <!-- Stops 50% of blood loss -->
                 <painFactor>-0.5</painFactor>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
@@ -37,7 +36,7 @@
             </li>
         </stages>
     </HediffDef>
-    
+
     <HediffDef>
         <defName>Cosmere_Scadrial_Hediff_PewterDrag</defName>
         <label>pewter drag</label>
@@ -46,7 +45,7 @@
         <isBad>true</isBad>
         <tendable>false</tendable>
         <comps>
-            <li Class="Cosmere.System.Scadrial.Comp.Hediff.DisappearsScaledProperties" />
+            <li Class="Cosmere.System.Scadrial.Comp.Hediff.DisappearsScaledProperties"/>
             <li Class="Verse.HediffCompProperties_ThoughtSetter">
                 <thought>Cosmere_Thought_PewterDrag</thought>
                 <moodOffset>-10</moodOffset>

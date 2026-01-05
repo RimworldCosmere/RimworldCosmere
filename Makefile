@@ -112,6 +112,10 @@ build-assets: ## Build Unity AssetBundles for current platform
 	@echo "$(BLUE)Building Unity AssetBundles...$(NC)"
 	@dotnet script ./scripts/build-assets.csx
 
+build-assets-verbose: ## Build Unity AssetBundles with verbose output
+	@echo "$(BLUE)Building Unity AssetBundles (verbose)...$(NC)"
+	@dotnet script ./scripts/build-assets.csx -- --verbose
+
 build-assets-all: ## Build Unity AssetBundles for all platforms (Windows, Mac, Linux)
 	@echo "$(BLUE)Building Unity AssetBundles for all platforms...$(NC)"
 	@echo "  Building for Windows..."
@@ -120,6 +124,16 @@ build-assets-all: ## Build Unity AssetBundles for all platforms (Windows, Mac, L
 	UNITY_BUILD_TARGET=mac dotnet script ./scripts/build-assets.csx
 	@echo "  Building for Linux..."
 	UNITY_BUILD_TARGET=linux dotnet script ./scripts/build-assets.csx
+	@echo "$(GREEN)✓ All platform bundles built!$(NC)"
+
+build-assets-all-verbose: ## Build Unity AssetBundles for all platforms with verbose output (for CI)
+	@echo "$(BLUE)Building Unity AssetBundles for all platforms (verbose)...$(NC)"
+	@echo "  Building for Windows..."
+	UNITY_BUILD_TARGET=windows dotnet script ./scripts/build-assets.csx -- --verbose
+	@echo "  Building for macOS..."
+	UNITY_BUILD_TARGET=mac dotnet script ./scripts/build-assets.csx -- --verbose
+	@echo "  Building for Linux..."
+	UNITY_BUILD_TARGET=linux dotnet script ./scripts/build-assets.csx -- --verbose
 	@echo "$(GREEN)✓ All platform bundles built!$(NC)"
 
 build-assets-force: ## Force rebuild all AssetBundles for current platform

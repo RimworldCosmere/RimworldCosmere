@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 // ---------- Parse arguments ----------
 var scriptArgs = Args.ToArray();
 var forceRebuild = scriptArgs.Contains("--force", StringComparer.OrdinalIgnoreCase);
+var verbose = scriptArgs.Contains("--verbose", StringComparer.OrdinalIgnoreCase) || scriptArgs.Contains("-v", StringComparer.OrdinalIgnoreCase);
 
 // ---------- Helpers ----------
 static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
@@ -210,15 +211,9 @@ foreach (var modDir in modDirs)
 
     // Build using AssetBundleBuilder
     Console.WriteLine($"    Building asset bundle: {bundleName}");
-    
-    var buildArgs = $"-v";
-/*    
-    if (!RunCommand("dotnet", "run --project C:\\Users\\aequa\\projects\\RimworldCosmere\\AssetBuilder\\AssetBundleBuilder --no-build -- --ci --non-interactive --debug", modDir))
-    {
-        Console.WriteLine($"    AssetBundleBuilder failed for {modName}!");
-        Environment.Exit(1);
-    }
-*/
+
+    // Build arguments: use --debug for verbose mode, otherwise -v for normal verbosity
+    var buildArgs = verbose ? "--debug --ci --non-interactive" : "-v";
 
     if (!RunCommand("assetbundlebuilder", buildArgs, modDir))
     {

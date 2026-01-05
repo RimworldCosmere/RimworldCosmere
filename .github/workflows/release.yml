@@ -95,7 +95,7 @@ jobs:
           grep "link_method" .assetbundler.toml
 
       - name: Build AssetBundles for all platforms
-        run: make build-assets-all
+        run: make build-assets-all-verbose
 
       - name: Archive and upload asset bundles
         run: |

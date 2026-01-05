@@ -243,31 +243,20 @@ jobs:
         working-directory: RimworldCosmere
         run: dotnet build Cosmere.sln --configuration Debug --no-restore
 
-      - name: Copy DLL to all mod directories
+      - name: Verify Cosmere.dll exists
         working-directory: RimworldCosmere
         run: |
-          # The build outputs Cosmere.dll to CosmereCore/CosmereCore/bin/{Debug|Release}/net48/
-          # We need to copy it to the Assemblies directory of each mod
+          # The csproj has <OutDir>..\Assemblies\</OutDir> so it builds directly to CosmereCore/Assemblies/
+          DLL_PATH="CosmereCore/Assemblies/Cosmere.dll"
 
-          BUILD_CONFIG="${BUILD:-Debug}"
-          DLL_SOURCE="CosmereCore/CosmereCore/bin/${BUILD_CONFIG}/net48/Cosmere.dll"
-
-          if [ ! -f "$DLL_SOURCE" ]; then
-            echo "❌ Error: Cosmere.dll not found at $DLL_SOURCE"
+          if [ ! -f "$DLL_PATH" ]; then
+            echo "❌ Error: Cosmere.dll not found at $DLL_PATH"
+            ls -la CosmereCore/Assemblies/ || echo "Assemblies directory doesn't exist"
             exit 1
           fi
 
-          echo "Copying Cosmere.dll from $DLL_SOURCE"
-
-          # Copy to all mod directories that have Assemblies folders
-          for modDir in Cosmere*/; do
-            if [ -f "$modDir/About/About.xml" ]; then
-              modName=$(basename "$modDir")
-              mkdir -p "$modDir/Assemblies"
-              cp "$DLL_SOURCE" "$modDir/Assemblies/Cosmere.dll"
-              echo "✓ Copied to $modDir/Assemblies/"
-            fi
-          done
+          echo "✓ Found Cosmere.dll at $DLL_PATH"
+          ls -lh "$DLL_PATH"
 
       - name: Prepare upload directory
         id: prepare

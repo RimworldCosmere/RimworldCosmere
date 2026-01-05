@@ -87,12 +87,12 @@ jobs:
           username: ${{ secrets.UNITY_EMAIL }}
           password: ${{ secrets.UNITY_PASSWORD }}
 
-      - name: Configure AssetBundleBuilder for Linux
+      - name: Configure AssetBundleBuilder for CI
         run: |
           # On Linux, junctions don't work - use symlinks instead
           sed -i 's/link_method = "junction"/link_method = "symlink"/' .assetbundler.toml
-          echo "Updated .assetbundler.toml to use symlinks:"
-          grep "link_method" .assetbundler.toml
+          echo "Updated .assetbundler.toml for CI environment:"
+          grep -E "link_method|unity_args" .assetbundler.toml
 
       - name: Build AssetBundles for all platforms
         run: make build-assets-all-verbose

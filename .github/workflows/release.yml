@@ -89,8 +89,8 @@ jobs:
 
       - name: Configure AssetBundleBuilder for CI
         run: |
-          # On Linux, junctions don't work - use symlinks instead
-          sed -i 's/link_method = "junction"/link_method = "symlink"/' .assetbundler.toml
+          # In CI, use copy instead of junction/symlink for reliability
+          sed -i 's/link_method = "junction"/link_method = "copy"/' .assetbundler.toml
           echo "Updated .assetbundler.toml for CI environment:"
           grep -E "link_method|unity_args" .assetbundler.toml
 

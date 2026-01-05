@@ -43,11 +43,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Determine changed Cosmere mods
+      - name: Determine Cosmere mods
         id: set-mods
         run: |
-          mods=$(find . -maxdepth 1 -type d -name "Cosmere*" -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          # Only include directories with About/About.xml (actual RimWorld mods)
+          mods=$(find . -maxdepth 1 -type d -name "Cosmere*" | while read dir; do
+            if [ -f "$dir/About/About.xml" ]; then
+              basename "$dir"
+            fi
+          done | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "mods=$mods" >> "$GITHUB_OUTPUT"
+          echo "Found mods: $mods"
 
 
   # Build all asset bundles for all platforms in a single job
@@ -152,13 +158,13 @@ jobs:
         working-directory: RimworldCosmere
         run: npm install -g @steamdown/cli tsx
 
-      - name: Run generators using make
+      - name: Run code generation
         working-directory: RimworldCosmere
         run: make generate
 
-      - name: Install Mod Dependencies
+      - name: Restore solution dependencies
         working-directory: RimworldCosmere
-        run: dotnet restore $MOD/$MOD
+        run: dotnet restore Cosmere.sln
 
       - name: Set build configuration
         working-directory: RimworldCosmere
@@ -190,7 +196,7 @@ jobs:
             echo "No asset bundles found for $MOD (this is fine if mod has no Assets)"
           fi
 
-      - name: Build Mod
+      - name: Build solution (tagged release)
         working-directory: RimworldCosmere
         if: ${{ github.event.release.tag_name != '' }}
         run: |
@@ -215,11 +221,9 @@ jobs:
           [[ -n "$REVISION" ]] && BUILD_VERSION+=".$REVISION"
           [[ -n "$LABEL" ]] && BUILD_VERSION+="-${LABEL}"
 
-          echo "Running script generation"
+          echo "Building Cosmere.sln@$BUILD_VERSION ($CONFIG)"
 
-          echo "Building $MOD@$BUILD_VERSION ($CONFIG)"
-
-          dotnet build $MOD/$MOD \
+          dotnet build Cosmere.sln \
             --configuration "$CONFIG" \
             -p:Version="$BUILD_VERSION" \
             -p:FileVersion="$BUILD_VERSION" \
@@ -227,22 +231,52 @@ jobs:
             -p:InformationalVersion="$BUILD_VERSION" \
             --no-restore
 
-      - name: Build Mod
+      - name: Build solution (non-tagged)
         if: ${{ github.ref_type != 'tag' }}
         working-directory: RimworldCosmere
-        run: dotnet build $MOD/$MOD --configuration Debug --no-restore
+        run: dotnet build Cosmere.sln --configuration Debug --no-restore
+
+      - name: Copy DLL to all mod directories
+        working-directory: RimworldCosmere
+        run: |
+          # The build outputs Cosmere.dll to CosmereCore/CosmereCore/bin/{Debug|Release}/net48/
+          # We need to copy it to the Assemblies directory of each mod
+
+          BUILD_CONFIG="${BUILD:-Debug}"
+          DLL_SOURCE="CosmereCore/CosmereCore/bin/${BUILD_CONFIG}/net48/Cosmere.dll"
+
+          if [ ! -f "$DLL_SOURCE" ]; then
+            echo "❌ Error: Cosmere.dll not found at $DLL_SOURCE"
+            exit 1
+          fi
+
+          echo "Copying Cosmere.dll from $DLL_SOURCE"
+
+          # Copy to all mod directories that have Assemblies folders
+          for modDir in Cosmere*/; do
+            if [ -f "$modDir/About/About.xml" ]; then
+              modName=$(basename "$modDir")
+              mkdir -p "$modDir/Assemblies"
+              cp "$DLL_SOURCE" "$modDir/Assemblies/Cosmere.dll"
+              echo "✓ Copied to $modDir/Assemblies/"
+            fi
+          done
 
       - name: Prepare upload directory
         id: prepare
         working-directory: RimworldCosmere
         run: |
-          FILE_ID="$(cat About/PublishedFileId.txt 2>/dev/null || printf '')"
+          FILE_ID="$(cat $MOD/About/PublishedFileId.txt 2>/dev/null || printf '')"
           DESCRIPTION_FILE="$TEMP_DIR/steam_description.txt"
 
           mkdir -p "$TEMP_DIR"
 
-          echo "📄 Generating description..."
-          cat "$MOD/README.md" | steamdown > "$DESCRIPTION_FILE"
+          echo "📄 Generating description for $MOD..."
+          if [ -f "$MOD/README.md" ]; then
+            cat "$MOD/README.md" | steamdown > "$DESCRIPTION_FILE"
+          else
+            echo "No description available." > "$DESCRIPTION_FILE"
+          fi
 
           echo "🚫 Respecting .steamignore..."
           if [ -f "$MOD/.steamignore" ]; then
@@ -265,13 +299,13 @@ jobs:
             echo '}'
           } > "$TEMP_DIR/workshop.vdf"
 
-          echo "✅ Generated workshop.vdf:"
+          echo "✅ Generated workshop.vdf for $MOD:"
           cat "$TEMP_DIR/workshop.vdf"
-          
+
           ZIP_PATH="${{ github.workspace }}/${MOD}-${BRANCH_NAME}.zip"
           cd "$TEMP_DIR"
           zip -r "$ZIP_PATH" .
-          
+
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
       - uses: buildalon/setup-steamcmd@v1

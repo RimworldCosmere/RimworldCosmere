@@ -1,0 +1,60 @@
+{
+  "name": "edgedancer",
+  "description": "Surgebinders who wield Abrasion and Progression. Edgedancers are graceful, quiet warriors who remember those the world forgets. They move like whispers and heal like hope.",
+  "surges": [
+    "abrasion",
+    "progression"
+  ],
+  "color": "fcf3ee",
+  "gemstone": "diamond",
+  "sprenType": "cultivationspren",
+  "sprenDescription": "A verdant, plant-like figure with vines and blossoms that shift with the seasons. Cultivationspren are nurturing, patient, and deeply empathetic toward the forgotten.",
+  "sprenNamePool": ["Wyndle", "Bramble", "Verdant", "Tendril", "Sprout", "Blossom", "Thicket", "Fern", "Rootweave", "Petalis", "Ivera", "Briar", "Lichen", "Canopy", "Seedling", "Wisteria", "Primrose", "Clover", "Frondis", "Trellis"],
+  "ideals": [
+    {
+      "stormlightMax": 100,
+      "label": "first ideal",
+      "description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
+      "quotes": [
+        "Life before death, strength before weakness, journey before destination."
+      ]
+    },
+    {
+      "stormlightMax": 300,
+      "label": "second ideal",
+      "description": "The Edgedancer swears to care for those overlooked, choosing to notice the ignored and remember the forgotten.",
+      "quotes": [
+        "I will listen to those who have been ignored."
+      ]
+    },
+    {
+      "stormlightMax": 700,
+      "label": "third ideal",
+      "description": "They vow to act on behalf of the voiceless, not just to remember, but to speak, move, and heal in their name.",
+      "quotes": [
+        "I will remember those who cannot speak for themselves.",
+        "I will be swift and gentle, like the wind through grass."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade",
+          "Cosmere_Roshar_Ability_ToggleShardplate"
+      ]
+    },
+    {
+      "label": "fourth ideal",
+      "description": "The Edgedancer becomes a living extension of mercy and motion, ever-present, ever-compassionate.",
+      "quotes": [
+        "I will not let the forgotten be lost again."
+      ],
+      "abilities": []
+    },
+    {
+      "stormlightMax": 3000,
+      "label": "fifth ideal",
+      "description": "They embody grace in defiance and healing in sorrow. Where others look away, the Edgedancer walks toward pain and erasure.",
+      "quotes": [
+        "Even if the world forgets them, I will not."
+      ]
+    }
+  ]
+}

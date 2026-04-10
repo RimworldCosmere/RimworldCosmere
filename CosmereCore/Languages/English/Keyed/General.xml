@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-    <CC_StatsReport_BodyType>Multiplier for body size "{0}"</CC_StatsReport_BodyType>
-    <CC_StatsReport_GearAndInventoryInvestiture>Investiture from Gear and Inventory</CC_StatsReport_GearAndInventoryInvestiture>
-    <CC_StatsReport_NeedInvestiture>Base Investiture</CC_StatsReport_NeedInvestiture>
+    <LoadCosmereMod>Loading Cosmere - Core</LoadCosmereMod>
     <CC_Current_Investiture>Represents this pawn’s connection to the Spiritual Realm. \n\nCurrent Level: {LEVEL}\nHeightening: {HEIGHT}</CC_Current_Investiture>
     <CC_SelectShard_Label>Choose which Shards are active in this game:</CC_SelectShard_Label>
     <CC_Need_CurrentInvestiture>Current Investiture</CC_Need_CurrentInvestiture>
+    <CC_PawnHasDormantConnection>{PAWN} has Dormant Connection</CC_PawnHasDormantConnection>
+    <CC_Stored_Investiture>Investiture</CC_Stored_Investiture>
+    <CC_Quickstart_StartGame>Jumping into Quickstart</CC_Quickstart_StartGame>
+    <CC_Ordinal_1_Long>First</CC_Ordinal_1_Long>
+    <CC_Ordinal_2_Long>Second</CC_Ordinal_2_Long>
+    <CC_Ordinal_3_Long>Third</CC_Ordinal_3_Long>
+    <CC_Ordinal_4_Long>Fourth</CC_Ordinal_4_Long>
+    <CC_Ordinal_5_Long>Fifth</CC_Ordinal_5_Long>
 </LanguageData>

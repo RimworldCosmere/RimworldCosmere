@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_Regrowth</defName>
+        <label>Regrowth</label>
+        <description>Progression energy flows from a Radiant's hands into this person's body, coaxing torn tissue to remember its shape. Cuts seal from the inside out. Swelling recedes. The sensation is warm and insistent, like sunlight pressing through skin. The healer must maintain contact and concentration, feeding Stormlight steadily until the body is whole again.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.Regrowth</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statFactors>
+                    <InjuryHealingFactor>3</InjuryHealingFactor>
+                    <ImmunityGainSpeed>3</ImmunityGainSpeed>
+                    <PainShockThreshold>3</PainShockThreshold>
+                    <ToxicResistance>3</ToxicResistance>
+                    <ToxicEnvironmentResistance>3</ToxicEnvironmentResistance>
+                    <IncomingDamageFactor>0.75</IncomingDamageFactor>
+                    <StaggerDurationFactor>0.75</StaggerDurationFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

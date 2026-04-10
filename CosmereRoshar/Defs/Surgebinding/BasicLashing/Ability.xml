@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_BasicLashing</defName>
+        <label>Basic Lashing</label>
+        <description>Change the direction gravity pulls you. The ground stops being down. You choose a new direction and fall toward it, the wind screaming past as the world tilts. Terrain means nothing when you are not touching it. Water, walls, open sky, all of it becomes a path.\n\nAt the Third Ideal and beyond, the lashing extends to nearby allies, pulling them skyward alongside you.\n\nThe lashing drinks Stormlight steadily. When it runs out, down remembers where it was.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Gravitation.BasicLashing</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_Lashed</hediff>
+        <beuPerTick>2</beuPerTick>
+        <maxPower>1</maxPower>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

@@ -1,0 +1,20 @@
+{
+  "name": "smokestone",
+  "descriptions": {
+    "raw": "Dark, clouded crystals with a brooding translucence, like storm clouds trapped in stone. Smokestone is valued less for brilliance and more for its quiet, understated character. Some say it absorbs light rather than reflecting it.",
+    "cut": "A carefully shaped smokestone, its grey-brown facets muted and subtle. It catches the light reluctantly, revealing hidden depth only at certain angles. Favored by those who prefer discretion over display.",
+    "sphere": "A polished smokestone sphere, dim and subdued. While it holds Stormlight as well as any gem, its muted glow makes infused smokestone easy to overlook, a trait some consider an advantage."
+  },
+  "color": "5f5d68",
+  "colorTwo": "302f34",
+  "glowColor": "5f5d68",
+  "baseStormlight": 3,
+  "baseMarketValue": 0.5,
+  "baseBeauty": 0.25,
+  "mining": {
+    "hitPoints": 1200,
+    "yield": 7,
+    "commonality": 0.35,
+    "sizeRange": [10, 18]
+  }
+}

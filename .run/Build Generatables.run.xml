@@ -1,0 +1,6 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Build Generatables" type="PowerShellRunType" factoryName="PowerShell" scriptUrl="$PROJECT_DIR$/make.ps1" scriptParameters="generatables" executablePath="powershell.exe">
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

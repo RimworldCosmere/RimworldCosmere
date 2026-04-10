@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "@semantic-release/git": "^10.0.1"
+  },
+  "dependencies": {
+    "steamcommunity": "^3.49.0"
   }
 }

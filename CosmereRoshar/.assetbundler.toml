@@ -1,0 +1,22 @@
+[global]
+extends = "../"
+
+# Cosmere.Roshar
+[bundles.roshar_textures]
+description = "Cosmere.Roshar Textures"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_name = "cosmere.roshar_textures"
+bundle_path = "cosmere.roshar"
+filename = "resource_[bundle_name]_textures"
+include_patterns = ["*.png", "*.psd", "*.jpg", "*.jpeg"]
+
+[bundles.roshar_shaders]
+description = "Cosmere.Roshar Shaders"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_name = "cosmere.roshar_shaders"
+bundle_path = "cosmere.roshar"
+filename = "resource_[bundle_name]_shaders_[target]"
+include_patterns = ["*.shader"]
+targetless = false

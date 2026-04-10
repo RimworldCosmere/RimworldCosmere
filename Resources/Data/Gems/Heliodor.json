@@ -1,0 +1,20 @@
+{
+  "name": "heliodor",
+  "descriptions": {
+    "raw": "Warm gold-green crystals that hold captured sunlight within their faceted depths. Heliodor radiates a steady, reassuring glow, as if promising warmth even in the deepest of storms. Valued for its clarity and brightness, it is often set into items meant to inspire trust.",
+    "cut": "A finely cut heliodor, its golden facets blazing with inner warmth. Often chosen for items of ceremony and leadership, it carries the quiet authority of dawn breaking over the plains.",
+    "sphere": "A polished heliodor sphere, warm and luminous. Capable of holding Stormlight, its golden radiance makes it a natural choice for fabrials that strengthen bonds or bolster resolve."
+  },
+  "color": "d1ee1d",
+  "colorTwo": "69770f",
+  "glowColor": "d1ee1d",
+  "baseStormlight": 5,
+  "baseMarketValue": 1.25,
+  "baseBeauty": 1.5,
+  "mining": {
+    "hitPoints": 1400,
+    "yield": 5,
+    "commonality": 0.25,
+    "sizeRange": [7, 15]
+  }
+}

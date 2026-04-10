@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Scadrial_Ability_IronAura</defName>
         <label>iron sight</label>
         <description>Reveals nearby sources of metal by tracing fine blue lines through the air.
@@ -9,10 +9,11 @@ These lines shimmer with the tension of potential force, visible only to those b
         <metal>Iron</metal>
         <hediff>Cosmere_Scadrial_Hediff_IronAura</hediff>
         <beuPerTick>0.0004</beuPerTick>
-    </CosmereScadrial.Def.AllomanticAbilityDef>
-    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
+        <maxPower>2</maxPower>
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractTargetBurnAbility">
         <defName>Cosmere_Scadrial_Ability_IronPull</defName>
-        <abilityClass>CosmereScadrial.Allomancy.Ability.ExternalPhysicalTargetAbility</abilityClass>
+        <abilityClass>Cosmere.System.Scadrial.Allomancy.Ability.ExternalPhysicalTargetAbility</abilityClass>
         <label>iron pull</label>
         <description>Burning iron allows the Allomancer to pull on nearby sources of metal, drawing them—or themselves—closer. The lighter object moves, unless anchored by greater mass.</description>
         <cooldownTicksRange>
@@ -31,5 +32,6 @@ These lines shimmer with the tension of potential force, visible only to those b
                 <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
             </targetParams>
         </verbProperties>
-    </CosmereScadrial.Def.AllomanticAbilityDef>
+        <maxPower>2</maxPower>
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

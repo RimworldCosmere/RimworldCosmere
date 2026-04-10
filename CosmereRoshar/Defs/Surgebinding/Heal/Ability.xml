@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_Heal</defName>
+        <label>Heal</label>
+        <description>Push Stormlight into your wounds and let the light do its work. Cuts seal shut. Bruises fade. Broken bones grind back into place with a sensation that is not quite pain. Deeper injuries take longer, and the light demands more of itself to mend them.\n\nThis is not a miracle. It will not return what has been fully lost.</description>
+        <canUseWhileAsleep>true</canUseWhileAsleep>
+        <canUseWhileDowned>true</canUseWhileDowned>
+        <autoUseWhileInjured>true</autoUseWhileInjured>
+        <autoUseWhileDowned>true</autoUseWhileDowned>
+        <isAutocast>true</isAutocast>
+        <hediff>Cosmere_Roshar_Hediff_Heal</hediff>
+        <beuPerTick>1</beuPerTick>
+        <maxPower>1</maxPower>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

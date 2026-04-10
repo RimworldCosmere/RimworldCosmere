@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CRO_ShardbladeSummoned>{0} has summoned their Shardblade.</CRO_ShardbladeSummoned>
+    <CRO_ShardbladeDismissed>{0} has dismissed their Shardblade.</CRO_ShardbladeDismissed>
+    <CRO_DeadBladeSummoning>{0} is counting ten heartbeats to summon a dead Shardblade.</CRO_DeadBladeSummoning>
+</LanguageData>

@@ -1,0 +1,37 @@
+using Cosmere.Core.Ability;
+using RimWorld;
+using Verse;
+
+namespace Cosmere.System.Roshar.Surgebinding.Ability.Adhesion;
+
+public class Bind : SurgebindingAbility {
+    public Bind(Pawn pawn) : base(pawn) { }
+    public Bind(Pawn pawn, AbilityDef def) : base(pawn, def) { }
+
+    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (5f + gene.currentIdeal * 2.5f));
+
+    public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
+        float cost = def.beuPerTick / (1 << gene.currentIdeal);
+        if (!gene.CanLowerReserve(cost)) return false;
+
+        Pawn? targetPawn = target.Pawn;
+        if (targetPawn == null || targetPawn.Dead) return false;
+
+        gene.RemoveFromReserve(cost);
+
+        HediffDef? hediffDef = def.hediff;
+        if (hediffDef == null) return false;
+
+        HediffWithComps hediff = (HediffWithComps)HediffMaker.MakeHediff(hediffDef, targetPawn);
+        HediffComp_Disappears? disappears = hediff.TryGetComp<HediffComp_Disappears>();
+        if (disappears != null) {
+            disappears.ticksToDisappear = durationTicks;
+        }
+
+        targetPawn.health.AddHediff(hediff);
+
+        FleckMaker.Static(targetPawn.Position, targetPawn.Map, FleckDefOf.PsycastAreaEffect);
+
+        return true;
+    }
+}

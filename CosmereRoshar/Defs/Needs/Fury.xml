@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <NeedDef>
+        <defName>Cosmere_Roshar_Need_Fury</defName>
+        <label>fury</label>
+        <needClass>Cosmere.System.Roshar.Need.Fury</needClass>
+        <major>true</major>
+        <fallPerDay>0</fallPerDay>
+        <baseLevel>0</baseLevel>
+        <developmentalStageFilter>15</developmentalStageFilter>
+        <minIntelligence>Humanlike</minIntelligence>
+        <listPriority>9998</listPriority>
+        <description>The destructive fury building within this Dustbringer. Must be controlled through discipline and channeling.</description>
+    </NeedDef>
+</Defs>

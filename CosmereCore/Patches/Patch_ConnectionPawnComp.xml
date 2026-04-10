@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationAddModExtension">
+        <xpath>Defs/ThingDef[@Name="BasePawn"]</xpath>
+        <value>
+            <li Class="Cosmere.Core.DefModExtension.Connection">
+                <canBond>false</canBond>
+            </li>
+        </value>
+    </Operation>
+</Patch>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_RigidizeClothing</defName>
+        <label>Rigidize Clothing</label>
+        <description>Push Stormlight into the fibers of your clothing and feel them stiffen beneath your fingers. Linen becomes hard as steel. A simple shirt turns rigid enough to stop a blade. The fabric does not change its appearance, but something about the way it moves tells you it is no longer just cloth.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Tension.RigidizeClothing</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_Rigidized</hediff>
+        <beuPerTick>2</beuPerTick>
+        <maxPower>1</maxPower>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

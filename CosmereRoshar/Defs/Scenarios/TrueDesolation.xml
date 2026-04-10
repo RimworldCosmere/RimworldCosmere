@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Roshar_Scenario_TrueDesolation</defName>
+    <label>Roshar: True Desolation</label>
+    <description>The Everstorm has come. The Fused ride its winds, ancient singers reborn with millennia of hatred and skill. The Knights Radiant are reforming, but they are few, untested, and divided. Honor is dead. His Ideals remain. Hold the line.</description>
+    <scenario>
+      <summary>Defend against the True Desolation with newly bonded Radiants.</summary>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Sholar</firstName>
+              <age>30</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantWindrunner</radiantOrder>
+              <idealLevel>1</idealLevel>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+                <li><def>Social</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Lirin</firstName>
+              <age>26</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantEdgedancer</radiantOrder>
+              <idealLevel>1</idealLevel>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Medicine</def><level>14</level></li>
+                <li><def>Melee</def><level>6</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Teren</firstName>
+              <age>28</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+                <li><def>Shooting</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Vasha</firstName>
+              <age>30</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Shooting</def><level>12</level></li>
+                <li><def>Melee</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Brightlord Dalim</firstName>
+              <age>40</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <skills>
+                <li><def>Social</def><level>12</level></li>
+                <li><def>Melee</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Kadash</firstName>
+              <age>35</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <skills>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Crafting</def><level>10</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>50</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineHerbal</thingDef>
+          <count>30</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>15</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_Spear</thingDef>
+          <stuff>Steel</stuff>
+          <count>3</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_LongSword</thingDef>
+          <stuff>Steel</stuff>
+          <count>1</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>500</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Roshar_Progression_TrueDesolation</progression>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>Two storms. The highstorm from the east, the Everstorm from the west. Between them, the land cracks. The Fused ride the Everstorm, ancient and terrible, and they remember every war they have ever fought. The Knights Radiant are reborn - but untested. This is the True Desolation. Honor is dead, but his ideals remain.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Honor</li>
+          <li>Cultivation</li>
+          <li>Odium</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <PawnKindDef>
+        <defName>Cosmere_Roshar_PawnKind_Lighteyes</defName>
+        <label>rosharan lighteyes</label>
+        <race>Human</race>
+        <xenotypeSet>
+            <xenotypeChances>
+                <Cosmere_Roshar_Xenotype_Lighteyes>1</Cosmere_Roshar_Xenotype_Lighteyes>
+            </xenotypeChances>
+        </xenotypeSet>
+        <combatPower>45</combatPower>
+        <gearHealthRange>
+            <min>0.3</min>
+            <max>0.9</max>
+        </gearHealthRange>
+        <initialResistanceRange>
+            <min>0.3</min>
+            <max>0.9</max>
+        </initialResistanceRange>
+        <initialWillRange>
+            <min>0.3</min>
+            <max>0.9</max>
+        </initialWillRange>
+        <inventoryOptions>
+            <skipChance>1</skipChance>
+        </inventoryOptions>
+    </PawnKindDef>
+
+    <PawnKindDef>
+        <defName>Cosmere_Roshar_PawnKind_Darkeyes</defName>
+        <label>rosharan darkeyes</label>
+        <race>Human</race>
+        <xenotypeSet>
+            <xenotypeChances>
+                <Cosmere_Roshar_Xenotype_Darkeyes>1</Cosmere_Roshar_Xenotype_Darkeyes>
+            </xenotypeChances>
+        </xenotypeSet>
+        <combatPower>45</combatPower>
+        <gearHealthRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </gearHealthRange>
+        <initialResistanceRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </initialResistanceRange>
+        <initialWillRange>
+            <min>0.2</min>
+            <max>0.8</max>
+        </initialWillRange>
+        <inventoryOptions>
+            <skipChance>1</skipChance>
+        </inventoryOptions>
+    </PawnKindDef>
+</Defs>

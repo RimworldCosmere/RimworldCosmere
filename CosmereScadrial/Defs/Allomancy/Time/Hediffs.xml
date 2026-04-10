@@ -20,8 +20,8 @@
                     <RestFallRateFactor>0.33333</RestFallRateFactor>
                     <RestRateMultiplier>0.33333</RestRateMultiplier>
                     <EatingSpeed>0.33333</EatingSpeed>
-                    <MeleeCooldownFactor>0.33333</MeleeCooldownFactor>
-                    <RangedCooldownFactor>0.33333</RangedCooldownFactor>
+                    <MeleeCooldownFactor>3</MeleeCooldownFactor>
+                    <RangedCooldownFactor>3</RangedCooldownFactor>
                     <MoveSpeed>0.33333</MoveSpeed>
                     <CrawlSpeed>0.33333</CrawlSpeed>
                     <CleaningSpeed>0.33333</CleaningSpeed>
@@ -52,8 +52,8 @@
                     <RestFallRateFactor>3.0</RestFallRateFactor>
                     <RestRateMultiplier>3.0</RestRateMultiplier>
                     <EatingSpeed>3.0</EatingSpeed>
-                    <MeleeCooldownFactor>3.0</MeleeCooldownFactor>
-                    <RangedCooldownFactor>3.0</RangedCooldownFactor>
+                    <MeleeCooldownFactor>0.33333</MeleeCooldownFactor>
+                    <RangedCooldownFactor>0.33333</RangedCooldownFactor>
                     <MoveSpeed>3.0</MoveSpeed>
                     <CrawlSpeed>3.0</CrawlSpeed>
                     <CleaningSpeed>3.0</CleaningSpeed>

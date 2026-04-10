@@ -2,7 +2,7 @@
 <Defs>
     <IncidentDef>
         <defName>Cosmere_Scadrial_Incident_AtiumCaravan</defName>
-        <workerClass>CosmereScadrial.IncidentWorker.AtiumCaravan</workerClass>
+        <workerClass>Cosmere.System.Scadrial.IncidentWorker.AtiumCaravan</workerClass>
         <category>ThreatBig</category>
         <letterLabel>Atium Caravan</letterLabel>
         <letterText>
@@ -13,6 +13,7 @@
         </targetTags>
         <letterDef>PositiveEvent</letterDef>
         <baseChance>0.02</baseChance>
+        <requireColonistsPresent>true</requireColonistsPresent>
     </IncidentDef>
 
 </Defs>

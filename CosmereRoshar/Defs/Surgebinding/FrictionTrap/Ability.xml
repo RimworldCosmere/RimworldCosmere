@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_TargetCastAbility">
+        <defName>Cosmere_Roshar_Ability_FrictionTrap</defName>
+        <label>Friction Trap</label>
+        <description>Drain all friction from a patch of ground. The surface becomes impossibly slick, as if coated in something that is not quite ice and not quite oil. Enemies who step onto it find their feet sliding out from under them with every stride, progress reduced to a slow, desperate shuffle. The zone persists from one minute at the First Ideal up to an hour at the Fifth.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Abrasion.FrictionTrap</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_FrictionTrapped</hediff>
+        <beuPerTick>12</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>2</minIdeal>
+        <hostile>true</hostile>
+        <verbProperties>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>18</range>
+            <requireLineOfSight>true</requireLineOfSight>
+            <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>false</canTargetPawns>
+                <canTargetLocations>true</canTargetLocations>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

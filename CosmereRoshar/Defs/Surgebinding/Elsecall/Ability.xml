@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_TargetCastAbility">
+        <defName>Cosmere_Roshar_Ability_Elsecall</defName>
+        <label>Elsecall</label>
+        <description>Step sideways into the Cognitive Realm and emerge somewhere else. The transition is instant, a flicker between one place and another with nothing in between. One moment you are here. The next, you are there. Range stretches with mastery of your oaths, from a few paces to anywhere you can see and beyond.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Transportation.Elsecall</abilityClass>
+        <jobDef>Cosmere_Roshar_Job_CastInstant</jobDef>
+        <beuPerTick>25</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>2</minIdeal>
+        <hostile>false</hostile>
+        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+        <verbProperties>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>9999</range>
+            <requireLineOfSight>false</requireLineOfSight>
+            <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>false</canTargetPawns>
+                <canTargetLocations>true</canTargetLocations>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="Cosmere_Roshar_Race_Spren" ParentName="Cosmere_Core_Race_Splinter">
+		<thingClass>Cosmere.System.Roshar.Thing.Pawn.Animal.Spren</thingClass>
+        <defName>Cosmere_Roshar_Race_Spren</defName>
+    </ThingDef>
+    <PawnKindDef Name="Cosmere_Roshar_PawnKind_Spren" ParentName="Cosmere_Core_PawnKind_Splinter">
+        <defName>Cosmere_Roshar_Race_Spren</defName>
+        <race>Cosmere_Roshar_Race_Spren</race>
+    </PawnKindDef>
+
+    <ThingDef Name="Cosmere_Roshar_Race_LesserSpren" ParentName="Cosmere_Core_Race_Splinter" Abstract="True">
+        <thingClass>Cosmere.System.Roshar.Thing.Pawn.Animal.LesserSpren</thingClass>
+		<race IsNull="True" />
+        <statBases>
+			<PawnBeauty>1</PawnBeauty>
+		</statBases>
+		<comps Inherit="False" />
+    </ThingDef>
+    
+    <ThingDef ParentName="Cosmere_Roshar_Race_Spren">
+		<thingClass>Cosmere.System.Roshar.Thing.Pawn.Animal.TrueSpren</thingClass>
+        <defName>Cosmere_Roshar_Race_UnknownTrueSpren</defName>
+	    <modExtensions Inherit="False">
+		    <li Class="Cosmere.Core.DefModExtension.Connection">
+			    <canBond>true</canBond>
+		    </li>
+	    </modExtensions>
+    </ThingDef>
+    <PawnKindDef ParentName="Cosmere_Roshar_PawnKind_Spren">
+        <defName>Cosmere_Roshar_Race_UnknownTrueSpren</defName>
+        <race>Cosmere_Roshar_Race_UnknownTrueSpren</race>
+    </PawnKindDef>
+</Defs>

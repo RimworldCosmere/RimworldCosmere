@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef>
+        <defName>Cosmere_Roshar_Thing_Highstorm</defName>
+        <label>Highstorm</label>
+        <thingClass>Cosmere.System.Roshar.Thing.Highstorm</thingClass>
+        <category>Ethereal</category>
+        <tickerType>Never</tickerType>
+        <pathfinderDangerous>true</pathfinderDangerous>
+        <graphicData>
+            <texPath>Things/Mote/Transparent</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+        </graphicData>
+        <altitudeLayer>Weather</altitudeLayer>
+        <useHitPoints>false</useHitPoints>
+        <comps>
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <maxIsInfinity>true</maxIsInfinity>
+                <isInfinite>true</isInfinite>
+            </li>
+        </comps>
+    </ThingDef>
+</Defs>

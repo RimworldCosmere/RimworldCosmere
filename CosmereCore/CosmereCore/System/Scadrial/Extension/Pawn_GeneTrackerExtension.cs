@@ -1,0 +1,46 @@
+using Cosmere.Core.Def;
+using Cosmere.System.Scadrial.Gene;
+using RimWorld;
+using Verse;
+
+namespace Cosmere.System.Scadrial.Extension;
+
+public static class Pawn_GeneTrackerExtension {
+    public static Allomancer? GetAllomanticGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {
+        GeneDef? geneDef = metal.GetMistingGene();
+
+        return geneDef == null ? null : (Allomancer)genes.GetGene(geneDef);
+    }
+
+    public static bool HasAllomanticGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {
+        return genes.HasActiveGene(metal.GetMistingGene());
+    }
+
+    public static Feruchemist? GetFeruchemicGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {
+        GeneDef? geneDef = metal.GetFerringGene();
+
+        return geneDef == null ? null : (Feruchemist)genes.GetGene(geneDef);
+    }
+
+    public static bool HasFeruchemicGeneForMetal(this Pawn_GeneTracker genes, MetalDef metal) {
+        return genes.HasActiveGene(metal.GetFerringGene());
+    }
+
+    public static List<Allomancer> GetAllomanticGenes(this Pawn_GeneTracker genes) {
+        List<Verse.Gene> all = genes.GenesListForReading;
+        List<Allomancer> result = new List<Allomancer>(all.Count);
+        for (int i = 0; i < all.Count; i++) {
+            if (all[i] is Allomancer a) result.Add(a);
+        }
+        return result;
+    }
+
+    public static List<Feruchemist> GetFeruchemicGenes(this Pawn_GeneTracker genes) {
+        List<Verse.Gene> all = genes.GenesListForReading;
+        List<Feruchemist> result = new List<Feruchemist>(all.Count);
+        for (int i = 0; i < all.Count; i++) {
+            if (all[i] is Feruchemist f) result.Add(f);
+        }
+        return result;
+    }
+}

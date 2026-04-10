@@ -10,13 +10,14 @@ on:
       - 'beta'
       - 'alpha'
 
-#permissions:
-#  contents: write # to be able to publish a GitHub release
-#  issues: write # to be able to comment on released issues
-#  pull-requests: write # to be able to comment on released pull requests
-#  id-token: write # to enable use of OIDC for npm provenance
+permissions:
+  contents: write # to be able to publish a GitHub release
+  issues: write # to be able to comment on released issues
+  pull-requests: write # to be able to comment on released pull requests
+  id-token: write # to enable use of OIDC for npm provenance
 
 jobs:
+  # Determine which Cosmere mods need to be built.
   get-mods:
     runs-on: ubuntu-latest
     outputs:
@@ -30,28 +31,96 @@ jobs:
 
           echo "Checking tag format: $VERSION"
 
-          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?(-alpha|-beta)?$ ]]; then
+          # Supports semantic-release formats:
+          # - 1.7.0 (stable)
+          # - 1.7.0-beta.1, 1.7.0-alpha.3 (prerelease with increment)
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta)\.[0-9]+)?$ ]]; then
             echo "❌ Invalid tag format: '$VERSION'"
-            echo "Expected: MAJOR.MINOR.PATCH[.REVISION][-alpha|-beta]"
+            echo "Expected: MAJOR.MINOR.PATCH or MAJOR.MINOR.PATCH-beta.N or MAJOR.MINOR.PATCH-alpha.N"
             exit 1
           fi
 
           echo "✅ Tag format valid."
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Determine changed Cosmere mods
+      - name: Determine Cosmere mods
         id: set-mods
         run: |
-          mods=$(find . -maxdepth 1 -type d -name "Cosmere*" -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          # Only include directories with About/About.xml (actual RimWorld mods)
+          mods=$(find . -maxdepth 1 -type d -name "Cosmere*" | while read dir; do
+            if [ -f "$dir/About/About.xml" ]; then
+              basename "$dir"
+            fi
+          done | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "mods=$mods" >> "$GITHUB_OUTPUT"
+          echo "Found mods: $mods"
 
-  prepare:
+
+  # Build all asset bundles for all platforms in a single job
+  build-assetbundles:
     needs: get-mods
     runs-on: ubuntu-latest
-    continue-on-error: true
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Checkout RimworldCosmere
+        uses: actions/checkout@v4
+
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+          
+      - name: Install dotnet-script
+        run: dotnet tool install --global dotnet-script
+
+          
+      - uses: buildalon/unity-setup@v1
+        with:
+          unity-version: 2022.3.35f1
+          build-targets: StandaloneWindows64 StandaloneOSX StandaloneLinux64
+          modules: windows-mono mac-mono linux-il2cpp
+
+      - uses: buildalon/activate-unity-license@v1
+        with:
+          license: 'Personal'
+          username: ${{ secrets.UNITY_EMAIL }}
+          password: ${{ secrets.UNITY_PASSWORD }}
+
+      - name: Configure AssetBundleBuilder for CI
+        run: |
+          # In CI, use copy instead of junction/symlink for reliability
+          sed -i 's/link_method = "junction"/link_method = "copy"/' .assetbundler.toml
+          echo "Updated .assetbundler.toml for CI environment:"
+          grep -E "link_method|unity_args" .assetbundler.toml
+
+      - name: Build AssetBundles for all platforms
+        run: make build-assets-all-verbose
+
+      - name: Archive and upload asset bundles
+        run: |
+          for modDir in Cosmere*/; do
+            if [ -d "$modDir/AssetBundles" ]; then
+              modName=$(basename "$modDir")
+              echo "Archiving $modName asset bundles..."
+              cd "$modDir"
+              zip -r "../${modName}-assetbundles.zip" AssetBundles
+              cd ..
+            fi
+          done
+          
+      - name: Upload asset bundles artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-assetbundles
+          path: "*-assetbundles.zip"
+
+  prepare:
+    needs: [ get-mods, build-assetbundles ]
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         mod: ${{ fromJson(needs.get-mods.outputs.mods) }}
@@ -68,7 +137,8 @@ jobs:
       - name: Set BUNDLE_NAME
         run: |
           short="${MOD#Cosmere}"
-          echo "BUNDLE_NAME=CryptikLemur.Cosmere.$short" >> $GITHUB_ENV
+          short="${short,,}"  # lowercase it
+          echo "BUNDLE_NAME=cosmere.$short" >> $GITHUB_ENV
         env:
           MOD: ${{ matrix.mod }}
 
@@ -76,21 +146,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: 'RimworldCosmere'
-
-      - name: Checkout AssetBuilder
-        uses: actions/checkout@v4
-        with:
-          repository: 'RimworldCosmere/AssetBuilder'
-          path: 'AssetBuilder'
-
-      - uses: actions/cache@v4
-        with:
-          path: 'AssetBuilder/Library'
-          key:
-            Library-${{ matrix.target-platform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-${{ matrix.target-platform }}-
-            Library-
 
       - uses: actions/cache@v4
         with:
@@ -100,7 +155,7 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Setup Dotnet
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
 
@@ -109,19 +164,17 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - name: Install steamdown + steam-totp + Generator Dependencies
+      - name: Install steamdown + steam-totp
         working-directory: RimworldCosmere
-        run: |
-          npm install -g @steamdown/cli tsx
-          cd .scripts && npm i
+        run: npm install -g @steamdown/cli tsx
 
-      - name: Run generators
+      - name: Run code generation
         working-directory: RimworldCosmere
-        run: npm --prefix .scripts start -- -d -f
+        run: make generate
 
-      - name: Install Mod Dependencies
+      - name: Restore solution dependencies
         working-directory: RimworldCosmere
-        run: dotnet restore $MOD/$MOD
+        run: dotnet restore Cosmere.sln
 
       - name: Set build configuration
         working-directory: RimworldCosmere
@@ -132,99 +185,95 @@ jobs:
             echo "BUILD=Debug" >> $GITHUB_ENV
           fi
 
-      - name: Copy mod assets into AssetBuilder
-        id: copyassets
+      # Download and extract asset bundles built in the previous job.  The
+      # artifact contains zips of all AssetBundles directories.  After
+      # extraction the bundles live under RimworldCosmere/$MOD/AssetBundles
+      # so that the packaging step will include them automatically.
+      - name: Download asset bundles
+        uses: actions/download-artifact@v4
+        with:
+          name: all-assetbundles
+          path: RimworldCosmere
+
+      - name: Extract asset bundles
+        working-directory: RimworldCosmere
         run: |
-          destDir="AssetBuilder/Assets/Data/$BUNDLE_NAME"
-          srcDir="RimworldCosmere/$MOD/Assets"
-          
-           if [ -d "$srcDir" ]; then
-            echo "Copying assets from $srcDir to $destDir"
-            mkdir -p "$destDir"
-            cp -r "$srcDir/"* "$destDir"
-            echo "hasAssets=true" >> $GITHUB_OUTPUT
+          if [ -f "$MOD-assetbundles.zip" ]; then
+            echo "Extracting $MOD-assetbundles.zip to $MOD/"
+            unzip -o "$MOD-assetbundles.zip" -d "$MOD/"
+            rm "$MOD-assetbundles.zip"
           else
-            echo "No assets to copy for $MOD (missing $srcDir)"
-            echo "hasAssets=false" >> $GITHUB_OUTPUT
+            echo "No asset bundles found for $MOD (this is fine if mod has no Assets)"
           fi
 
-
-      - name: Build AssetBundles
-        if: steps.copyassets.outputs.hasAssets == 'true'
-        uses: game-ci/unity-builder@v4
-        continue-on-error: false
-        timeout-minutes: 30
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          unityVersion: 2022.3.35f1
-          targetPlatform: StandaloneWindows64
-          projectPath: AssetBuilder
-          versioning: None
-          allowDirtyBuild: true
-          buildMethod: ModAssetBundleBuilder.BuildBundles
-          customParameters: "--assetBundleName=${{ env.BUNDLE_NAME }} --outputLocation=../RimworldCosmere/${{ matrix.mod }}/AssetBundles"
-
-      - name: Print Unity Editor log on failure
-        if: steps.copyassets.outputs.hasAssets == 'true' && failure()
-        run: |
-          cat /home/runner/.config/unity3d/Editor.log || true
-
-      - name: Build Mod
+      - name: Build solution (tagged release)
         working-directory: RimworldCosmere
         if: ${{ github.event.release.tag_name != '' }}
         run: |
-          TAG="${{ github.event.release.tag_name }}" # e.g. v1.6.0-beta or 1.6.0.1
+          TAG="${{ github.event.release.tag_name }}" # e.g. 1.7.0 or 1.7.0-beta.1
           VERSION="${TAG#v}"                         # strip leading 'v'
 
-          # Extract components with known-good format
-          REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)(-alpha|-beta)?(\.[0-9]+)?$'
+          # Extract components - supports semantic-release format: 1.7.0-beta.1
+          REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)(-(alpha|beta)\.([0-9]+))?$'
           [[ "$VERSION" =~ $REGEX ]]
 
           MAJOR="${BASH_REMATCH[1]}"
           MINOR="${BASH_REMATCH[2]}"
           PATCH="${BASH_REMATCH[3]}"
-          LABEL="${BASH_REMATCH[4]#-}"         # optional, strip leading dash
-          REVISION="${BASH_REMATCH[5]#.}"      # optional, strip leading dot
-          [[ -z "$REVISION" ]] && REVISION="0" # default REVISION to `0`
+          LABEL="${BASH_REMATCH[5]}"           # alpha or beta (empty for stable)
+          REVISION="${BASH_REMATCH[6]:-0}"     # prerelease increment, default 0
 
           CONFIG="Debug"
           [[ -z "$LABEL" && "${GITHUB_REF_NAME}" == "main" ]] && CONFIG="Release"
 
-          BUILD_VERSION="$MAJOR.$MINOR.$PATCH"
-          [[ -n "$REVISION" ]] && BUILD_VERSION+=".$REVISION"
-          [[ -n "$LABEL" ]] && BUILD_VERSION+="-${LABEL}"
+          # Build version: use full semantic version for dotnet
+          BUILD_VERSION="$VERSION"
 
-          echo "Running script generation"
+          echo "Building Cosmere.sln@$BUILD_VERSION ($CONFIG)"
 
-          echo "Building $MOD@$BUILD_VERSION ($CONFIG)"
-
-          dotnet build $MOD/$MOD \
+          dotnet build Cosmere.sln \
             --configuration "$CONFIG" \
             -p:Version="$BUILD_VERSION" \
-            -p:FileVersion="$BUILD_VERSION" \
+            -p:FileVersion="$MAJOR.$MINOR.$PATCH.$REVISION" \
             -p:AssemblyVersion="$MAJOR.$MINOR.$PATCH.0" \
             -p:InformationalVersion="$BUILD_VERSION" \
             --no-restore
 
-      - name: Build Mod
+      - name: Build solution (non-tagged)
         if: ${{ github.ref_type != 'tag' }}
         working-directory: RimworldCosmere
-        run: dotnet build $MOD/$MOD --configuration Debug --no-restore
+        run: dotnet build Cosmere.sln --configuration Debug --no-restore
+
+      - name: Verify Cosmere.dll exists
+        working-directory: RimworldCosmere
+        run: |
+          # The csproj has <OutDir>..\Assemblies\</OutDir> so it builds directly to CosmereCore/Assemblies/
+          DLL_PATH="CosmereCore/Assemblies/Cosmere.dll"
+
+          if [ ! -f "$DLL_PATH" ]; then
+            echo "❌ Error: Cosmere.dll not found at $DLL_PATH"
+            ls -la CosmereCore/Assemblies/ || echo "Assemblies directory doesn't exist"
+            exit 1
+          fi
+
+          echo "✓ Found Cosmere.dll at $DLL_PATH"
+          ls -lh "$DLL_PATH"
 
       - name: Prepare upload directory
         id: prepare
         working-directory: RimworldCosmere
         run: |
-          FILE_ID=$(cat "$MOD/About/PublishedFileId.txt")
+          FILE_ID="$(cat $MOD/About/PublishedFileId.txt 2>/dev/null || printf '')"
           DESCRIPTION_FILE="$TEMP_DIR/steam_description.txt"
 
           mkdir -p "$TEMP_DIR"
 
-          echo "📄 Generating description..."
-          cat .github/README.header.md "$MOD/README.md" .github/README.footer.md | steamdown > "$DESCRIPTION_FILE"
+          echo "📄 Generating description for $MOD..."
+          if [ -f "$MOD/README.md" ]; then
+            cat "$MOD/README.md" | steamdown > "$DESCRIPTION_FILE"
+          else
+            echo "No description available." > "$DESCRIPTION_FILE"
+          fi
 
           echo "🚫 Respecting .steamignore..."
           if [ -f "$MOD/.steamignore" ]; then
@@ -247,24 +296,29 @@ jobs:
             echo '}'
           } > "$TEMP_DIR/workshop.vdf"
 
-          echo "✅ Generated workshop.vdf:"
+          echo "✅ Generated workshop.vdf for $MOD:"
           cat "$TEMP_DIR/workshop.vdf"
-          
+
           ZIP_PATH="${{ github.workspace }}/${MOD}-${BRANCH_NAME}.zip"
           cd "$TEMP_DIR"
           zip -r "$ZIP_PATH" .
-          
+
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
-      - name: Upload with SteamCMD
-        working-directory: RimworldCosmere
+      - uses: buildalon/setup-steamcmd@v1
+        name: Setup SteamCMD
         if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
-        run: |
-          sudo apt update
-          sudo apt install -y lib32gcc-s1
-          mkdir -p ~/steamcmd
-          curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - -C ~/steamcmd
-          ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
+        id: steam-setup
+
+      - uses: CyberAndrii/steam-totp@v1
+        name: Generate TOTP
+        if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
+        id: steam-totp
+        with:
+          shared_secret: ${{ secrets.STEAM_SHARED_SECRET }}
+      - name: Upload with SteamCMD
+        if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
+        run: ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" ${{ steps.steam-totp.outputs.code }} +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
 
       - name: Upload zip artifact
         uses: actions/upload-artifact@v4
@@ -278,7 +332,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Node
         uses: actions/setup-node@v4
         with:

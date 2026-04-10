@@ -1,0 +1,31 @@
+{
+  "name": "leratium alloy",
+  "description": "Leratium alloyed with common metals transforms the ingester into a Ferring for the alloyed metal.",
+  "godMetal": true,
+  "stackable": false,
+  "drawSize": 1,
+  "marketValue": 8000,
+  "beauty": 80,
+  "color": [
+    132,
+    159,
+    106
+  ],
+  "feruchemy": {
+    "description": "Rewrites {PAWN}s spirit-web, granting them the powers of a Ferring"
+  },
+  "alloy": {
+    "type": "god",
+    "stuff": "Cosmere_Core_StuffCategory_AllomanticMetals",
+    "stuffCount": "32",
+    "ingredients": [
+      {
+        "items": ["leratium"],
+        "count": 1
+      }
+    ],
+    "product": {
+      "count": 8
+    }
+  }
+}

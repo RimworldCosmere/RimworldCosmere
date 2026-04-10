@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Roshar_Scenario_FallOfKholinar</defName>
+    <label>Stormlight: Oathbringer</label>
+    <description>Kholinar burns. Not with fire, but with a slow corruption that turns neighbor against neighbor. The Oathgate is guarded. The streets are death. You came to save the city. Now the mission is survival.</description>
+    <scenario>
+      <summary>Kaladin and Shallan fight to reach the Oathgate in a fallen Kholinar.</summary>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Kaladin</firstName>
+              <lastName>Stormblessed</lastName>
+              <age>22</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantWindrunner</radiantOrder>
+              <idealLevel>2</idealLevel>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>18</level></li>
+                <li><def>Medicine</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Shallan</firstName>
+              <lastName>Davar</lastName>
+              <age>19</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantLightweaver</radiantOrder>
+              <idealLevel>2</idealLevel>
+              <traits>
+                <li><def>FastLearner</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Artistic</def><level>16</level></li>
+                <li><def>Social</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Adolin</firstName>
+              <lastName>Kholin</lastName>
+              <age>26</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <traits>
+                <li><def>NaturalMood</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>18</level></li>
+                <li><def>Social</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Azure</firstName>
+              <age>30</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+                <li><def>Social</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Elhokar</firstName>
+              <lastName>Kholin</lastName>
+              <age>30</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantLightweaver</radiantOrder>
+              <idealLevel>0</idealLevel>
+              <traits>
+                <li><def>Nerves</def><degree>-1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>10</level></li>
+                <li><def>Melee</def><level>6</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Skar</firstName>
+              <age>30</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantWindrunner</radiantOrder>
+              <idealLevel>0</idealLevel>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Drehy</firstName>
+              <age>29</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantWindrunner</radiantOrder>
+              <idealLevel>0</idealLevel>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Noro</firstName>
+              <age>35</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Social</def><level>8</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>40</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineHerbal</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>10</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_LongSword</thingDef>
+          <stuff>Steel</stuff>
+          <count>3</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>200</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Roshar_Progression_FallOfKholinar</progression>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The city burns. Not with fire, but with something worse - a slow corruption that turns neighbor against neighbor. Shallan's spies report the Oathgate is guarded. Kaladin's scouts report the streets are death. Adolin sharpens his blade and says little. You came to save Kholinar. Now the mission is survival.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Honor</li>
+          <li>Cultivation</li>
+          <li>Odium</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

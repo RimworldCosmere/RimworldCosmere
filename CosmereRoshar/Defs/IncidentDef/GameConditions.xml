@@ -1,0 +1,21 @@
+<Defs>
+
+    <GameConditionDef>
+        <defName>Cosmere_Roshar_GameCondition_TheWeeping</defName>
+        <conditionClass>Cosmere.System.Roshar.GameCondition.TheWeeping</conditionClass>
+        <label>The Weeping</label>
+        <description>A season of constant gentle rain blankets the land. No highstorms come during the Weeping. Spheres left exposed grow dun as their Stormlight fades with no storms to recharge them.</description>
+        <defaultDroppingPct>0</defaultDroppingPct>
+        <canBePermanent>true</canBePermanent>
+    </GameConditionDef>
+
+    <GameConditionDef>
+        <defName>Cosmere_Roshar_GameCondition_SuppressionField</defName>
+        <conditionClass>Cosmere.System.Roshar.GameCondition.SuppressionField</conditionClass>
+        <label>Suppression Field</label>
+        <description>An unnatural field of corrupted Investiture permeates the area. Radiants burn through Stormlight at three times the normal rate, and their reserves drain steadily even at rest. The tower resists those who would protect it.</description>
+        <defaultDroppingPct>0</defaultDroppingPct>
+        <canBePermanent>true</canBePermanent>
+    </GameConditionDef>
+
+</Defs>

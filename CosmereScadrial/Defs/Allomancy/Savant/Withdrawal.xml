@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef Name="Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Abstract" Abstract="True">
+        <hediffClass>HediffWithComps</hediffClass>
+        <defaultLabelColor>(0.8, 0.4, 0.4)</defaultLabelColor>
+        <isBad>true</isBad>
+        <makesSickThought>false</makesSickThought>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <initialSeverity>0.05</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Tin</defName>
+        <label>tin withdrawal</label>
+        <description>Without tin burning, the world has become muffled and dim. Senses that were once razor-sharp now feel smothered.</description>
+        <stages>
+            <li>
+                <label>mild</label>
+                <minSeverity>0.01</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <offset>-0.05</offset>
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <offset>-0.05</offset>
+                    </li>
+                </capMods>
+                <statOffsets>
+                    <ShootingAccuracyPawn>-2</ShootingAccuracyPawn>
+                </statOffsets>
+            </li>
+            <li>
+                <label>moderate</label>
+                <minSeverity>0.4</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <offset>-0.10</offset>
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <offset>-0.10</offset>
+                    </li>
+                </capMods>
+                <statOffsets>
+                    <ShootingAccuracyPawn>-5</ShootingAccuracyPawn>
+                </statOffsets>
+            </li>
+            <li>
+                <label>severe</label>
+                <minSeverity>0.7</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <offset>-0.20</offset>
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <offset>-0.20</offset>
+                    </li>
+                </capMods>
+                <statOffsets>
+                    <ShootingAccuracyPawn>-8</ShootingAccuracyPawn>
+                </statOffsets>
+                <mentalBreakMtbDays>5</mentalBreakMtbDays>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Pewter</defName>
+        <label>pewter withdrawal</label>
+        <description>Without pewter, the body that once felt invincible now struggles under its own weight. Muscles ache and joints grind.</description>
+        <stages>
+            <li>
+                <label>mild</label>
+                <minSeverity>0.01</minSeverity>
+                <statFactors>
+                    <MoveSpeed>0.95</MoveSpeed>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.05</offset>
+                    </li>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <offset>-0.05</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>moderate</label>
+                <minSeverity>0.4</minSeverity>
+                <statFactors>
+                    <MoveSpeed>0.85</MoveSpeed>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.10</offset>
+                    </li>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <offset>-0.10</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>severe</label>
+                <minSeverity>0.7</minSeverity>
+                <statFactors>
+                    <MoveSpeed>0.75</MoveSpeed>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.20</offset>
+                    </li>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <offset>-0.20</offset>
+                    </li>
+                </capMods>
+                <mentalBreakMtbDays>5</mentalBreakMtbDays>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Brass</defName>
+        <label>brass withdrawal</label>
+        <description>Without the ability to Soothe, emotions crash in uncontrolled waves. The calm that brass provided has given way to raw instability.</description>
+        <stages>
+            <li>
+                <label>mild</label>
+                <minSeverity>0.01</minSeverity>
+                <statFactors>
+                    <MentalBreakThreshold>1.05</MentalBreakThreshold>
+                </statFactors>
+            </li>
+            <li>
+                <label>moderate</label>
+                <minSeverity>0.4</minSeverity>
+                <statFactors>
+                    <MentalBreakThreshold>1.10</MentalBreakThreshold>
+                    <SocialImpact>0.90</SocialImpact>
+                </statFactors>
+            </li>
+            <li>
+                <label>severe</label>
+                <minSeverity>0.7</minSeverity>
+                <statFactors>
+                    <MentalBreakThreshold>1.15</MentalBreakThreshold>
+                    <SocialImpact>0.80</SocialImpact>
+                </statFactors>
+                <mentalBreakMtbDays>3</mentalBreakMtbDays>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Zinc</defName>
+        <label>zinc withdrawal</label>
+        <description>Without zinc to Riot emotions outward, feelings turn inward and stagnate. A numb emptiness replaces the fire that once came so easily.</description>
+        <stages>
+            <li>
+                <label>mild</label>
+                <minSeverity>0.01</minSeverity>
+                <statFactors>
+                    <MentalBreakThreshold>1.05</MentalBreakThreshold>
+                </statFactors>
+            </li>
+            <li>
+                <label>moderate</label>
+                <minSeverity>0.4</minSeverity>
+                <statFactors>
+                    <MentalBreakThreshold>1.10</MentalBreakThreshold>
+                    <SocialImpact>0.90</SocialImpact>
+                </statFactors>
+            </li>
+            <li>
+                <label>severe</label>
+                <minSeverity>0.7</minSeverity>
+                <statFactors>
+                    <MentalBreakThreshold>1.15</MentalBreakThreshold>
+                    <SocialImpact>0.80</SocialImpact>
+                </statFactors>
+                <mentalBreakMtbDays>3</mentalBreakMtbDays>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Copper</defName>
+        <label>copper withdrawal</label>
+        <description>Without the coppercloud's mental shield, thoughts scatter and focus slips. The fortress of the mind has lost its walls.</description>
+        <stages>
+            <li>
+                <label>mild</label>
+                <minSeverity>0.01</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.03</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>moderate</label>
+                <minSeverity>0.4</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.06</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>severe</label>
+                <minSeverity>0.7</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.10</offset>
+                    </li>
+                </capMods>
+                <mentalBreakMtbDays>5</mentalBreakMtbDays>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticWithdrawal_Bronze</defName>
+        <label>bronze withdrawal</label>
+        <description>Without bronze, the rhythmic pulses of Allomantic activity have gone silent. The awareness that once filled the mind has left a hollow ringing.</description>
+        <stages>
+            <li>
+                <label>mild</label>
+                <minSeverity>0.01</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.03</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>moderate</label>
+                <minSeverity>0.4</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.06</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>severe</label>
+                <minSeverity>0.7</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.10</offset>
+                    </li>
+                </capMods>
+                <mentalBreakMtbDays>5</mentalBreakMtbDays>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

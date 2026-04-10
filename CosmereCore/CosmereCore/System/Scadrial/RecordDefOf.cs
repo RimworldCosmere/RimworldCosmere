@@ -1,0 +1,52 @@
+#nullable disable
+using System.Diagnostics.CodeAnalysis;
+using Cosmere.Core.Def;
+using RimWorld;
+using Verse;
+
+namespace Cosmere.System.Scadrial;
+
+[DefOf]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnassignedField.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
+public static partial class RecordDefOf {
+    static RecordDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
+    }
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedLerasium;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedLerasiumAlloy;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedLeratium;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedLeratiumAlloy;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedVial;
+
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_IngestedRawMetal;
+
+    public static RecordDef GetMetalBurnRecordForMetal(MetalDef metal) {
+        return DefDatabase<RecordDef>.GetNamed("Cosmere_Scadrial_Record_MetalBurnt_" + metal.defName);
+    }
+
+    public static RecordDef GetTimeSpentBurningForMetal(MetalDef metal) {
+        return DefDatabase<RecordDef>.GetNamed("Cosmere_Scadrial_Record_TimeSpentBurning_" + metal.defName);
+    }
+
+    public static RecordDef GetTimeSpentStoringForMetal(MetalDef metal) {
+        return DefDatabase<RecordDef>.GetNamed("Cosmere_Scadrial_Record_TimeSpentStoring_" + metal.defName);
+    }
+
+    public static RecordDef GetTimeSpentTappingForMetal(MetalDef metal) {
+        return DefDatabase<RecordDef>.GetNamed("Cosmere_Scadrial_Record_TimeSpentTapping_" + metal.defName);
+    }
+}

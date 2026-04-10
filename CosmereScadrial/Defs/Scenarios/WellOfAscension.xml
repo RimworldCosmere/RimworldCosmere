@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scadrial_Scenario_WellOfAscension</defName>
+    <label>Mistborn: Well of Ascension</label>
+    <description>The Lord Ruler is dead, and the world he held together is coming apart. Three armies converge on Luthadel. Elend Venture holds the city with idealism and a stack of political philosophy. Vin watches from the rooftops. The siege begins.</description>
+    <scenario>
+      <summary>Defend Luthadel against three armies as Elend's fragile kingdom fractures.</summary>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Elend</firstName>
+              <lastName>Venture</lastName>
+              <age>22</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Social</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Vin</firstName>
+              <age>17</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <mistborn>true</mistborn>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Nerves</def><degree>-1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>16</level></li>
+                <li><def>Shooting</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Sazed</firstName>
+              <age>36</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <fullFeruchemist>true</fullFeruchemist>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>16</level></li>
+                <li><def>Social</def><level>10</level></li>
+                <li><def>Melee</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Ladrian</firstName>
+              <nickName>Breeze</nickName>
+              <age>41</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingBrass</li>
+              </genes>
+              <traits>
+                <li><def>Greedy</def><degree>0</degree></li>
+                <li><def>Beauty</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>16</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Hammond</firstName>
+              <nickName>Ham</nickName>
+              <age>36</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingPewter</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+                <li><def>Social</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Clubs</firstName>
+              <age>56</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingCopper</li>
+              </genes>
+              <traits>
+                <li><def>Abrasive</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Crafting</def><level>14</level></li>
+                <li><def>Construction</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Spook</firstName>
+              <age>17</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingTin</li>
+              </genes>
+              <traits>
+                <li><def>FastLearner</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Shooting</def><level>8</level></li>
+                <li><def>Melee</def><level>6</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Demoux</firstName>
+              <age>25</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingPewter</li>
+              </genes>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Shooting</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Tindwyl</firstName>
+              <age>50</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <fullFeruchemist>true</fullFeruchemist>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Social</def><level>12</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>100</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineHerbal</thingDef>
+          <count>40</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>600</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>400</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_WellOfAscension</progression>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The armies have been spotted. Straff Venture from the north. Ashweather Cett from the west. Koloss from the east. Luthadel's walls are thick, but your forces are thin. Vin watches from the rooftops. Elend reads another book on governance. Breeze pours himself a drink. The siege begins.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Ruin</li>
+          <li>Preservation</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

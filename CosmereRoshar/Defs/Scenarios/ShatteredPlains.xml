@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Roshar_Scenario_ShatteredPlains</defName>
+    <label>Roshar: Shattered Plains</label>
+    <description>The Shattered Plains. A fractured wasteland of chasms and plateaus where warcamps wage an endless war of attrition for gemhearts. Bridge crews die by the dozen. Soldiers fight and bleed for stones. Somewhere in the chasms, something ancient waits.</description>
+    <scenario>
+      <summary>Run a warcamp on the Shattered Plains, hunting gemhearts.</summary>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Highprince Sadeas</firstName>
+              <age>50</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <traits>
+                <li><def>Abrasive</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>14</level></li>
+                <li><def>Melee</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Teleb</firstName>
+              <age>35</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+                <li><def>Shooting</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Ivis</firstName>
+              <age>30</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+                <li><def>Social</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Gaz</firstName>
+              <age>30</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>-1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>8</level></li>
+                <li><def>Melee</def><level>6</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Tukks</firstName>
+              <age>25</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Construction</def><level>10</level></li>
+                <li><def>Melee</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Malop</firstName>
+              <age>22</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <skills>
+                <li><def>Construction</def><level>10</level></li>
+                <li><def>Melee</def><level>6</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Shen</firstName>
+              <age>28</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>8</level></li>
+                <li><def>Plants</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Ardent Kabsal</firstName>
+              <age>30</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <skills>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Crafting</def><level>10</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>80</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineHerbal</thingDef>
+          <count>30</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>15</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_Spear</thingDef>
+          <stuff>Steel</stuff>
+          <count>4</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_LongSword</thingDef>
+          <stuff>Steel</stuff>
+          <count>2</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Cloth</thingDef>
+          <count>200</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>600</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>400</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Roshar_Progression_ShatteredPlains</progression>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The Plains stretch to the horizon, a fractured landscape of chasms and plateaus. Somewhere out there, chasmfiends grow gemhearts worth more than a man's life. Worth more than many men's lives. Your warcamp is established. The bridge crews are ready. When the scouts spot a chrysalis, you march.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Honor</li>
+          <li>Cultivation</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

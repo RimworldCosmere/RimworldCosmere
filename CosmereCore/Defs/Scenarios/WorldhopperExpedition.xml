@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scenario_WorldhopperExpedition</defName>
+    <label>Cosmere: Worldhopper Expedition</label>
+    <description>A deliberate expedition through the Cognitive Realm. Worldhoppers from Roshar, Scadrial, and beyond - each carrying the Investiture of their homeworld. Their mission: establish a foothold on an uncharted world. Their challenge: making incompatible traditions cooperate.</description>
+    <scenario>
+      <summary>Worldhoppers from multiple Shardworlds, diverse powers.</summary>
+      <parts>
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
+          <def>ConfigurePawnsXenotypes</def>
+          <pawnChoiceCount>8</pawnChoiceCount>
+          <customSummary>Begin with five worldhoppers: a Lighteyes, a Noble, a Terris keeper, and two others of your choosing. Each carries the Investiture of their homeworld.</customSummary>
+          <overrideKinds>
+            <li>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Noble</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Skaa</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Terris</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Scadrian</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <pawnKind>Cosmere_Roshar_PawnKind_Lighteyes</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <pawnKind>Cosmere_Roshar_PawnKind_Darkeyes</pawnKind>
+            </li>
+          </overrideKinds>
+          <xenotypeCounts>
+            <li>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <count>1</count>
+            </li>
+            <li>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <count>1</count>
+            </li>
+            <li>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <count>1</count>
+            </li>
+          </xenotypeCounts>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealFine</thingDef>
+          <count>50</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>30</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_Knife</thingDef>
+          <stuff>Steel</stuff>
+          <count>2</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Cloth</thingDef>
+          <count>100</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>500</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The perpendicularity stabilized long enough. Five of you stepped through, carrying the sum of two worlds' knowledge. The Cognitive Realm is behind you now. Ahead: uncharted land, unfamiliar skies, and the weight of everything you brought with you.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Ruin</li>
+          <li>Preservation</li>
+          <li>Honor</li>
+          <li>Cultivation</li>
+        </shards>
+        <allowChange>True</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

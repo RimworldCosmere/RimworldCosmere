@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- ===== Abstract Bases ===== -->
+    <HediffDef Name="Cosmere_Roshar_NW_BoonPassiveBase" Abstract="True">
+        <hediffClass>Cosmere.System.Roshar.Hediff.NightwatcherPassiveHediff</hediffClass>
+        <defaultLabelColor>(0.4, 0.9, 0.6)</defaultLabelColor>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <isBad>false</isBad>
+        <scenarioCanAdd>false</scenarioCanAdd>
+    </HediffDef>
+
+    <HediffDef Name="Cosmere_Roshar_NW_CursePassiveBase" Abstract="True">
+        <hediffClass>Cosmere.System.Roshar.Hediff.NightwatcherPassiveHediff</hediffClass>
+        <defaultLabelColor>(0.7, 0.3, 0.9)</defaultLabelColor>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <isBad>true</isBad>
+        <scenarioCanAdd>false</scenarioCanAdd>
+    </HediffDef>
+
+    <!-- ===== Tracker Hediffs (only used when boon/curse has no passive hediff) ===== -->
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NightwatcherBoon</defName>
+        <label>nightwatcher's boon</label>
+        <description>The Nightwatcher granted {PAWN_nameDef} a boon. It is permanent now, woven into {PAWN_possessive} Spiritweb like thread into cloth. It cannot be separated from who {PAWN_pronoun} is.</description>
+        <hediffClass>Cosmere.System.Roshar.Hediff.NightwatcherBoonHediff</hediffClass>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_CursePassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NightwatcherCurse</defName>
+        <label>nightwatcher's curse</label>
+        <description>The Nightwatcher laid a curse on {PAWN_nameDef}. It settled into {PAWN_possessive} Spiritweb like a splinter beneath the skin. No ordinary means will remove it.</description>
+        <hediffClass>Cosmere.System.Roshar.Hediff.NightwatcherCurseHediff</hediffClass>
+        <comps>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionCompProperties"/>
+        </comps>
+    </HediffDef>
+
+    <!-- ===== Boon Passive Hediffs ===== -->
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_Investiture</defName>
+        <label>Nightwatcher: stormlight affinity</label>
+        <description>{PAWN_nameDef}'s Spiritweb hums in time with the storms. {PAWN_pronoun} can hold far more Stormlight than before, and {PAWN_possessive} hands move with a delicate precision that wasn't there yesterday.</description>
+        <stages>
+            <li>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>0.05</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_Intellect</defName>
+        <label>Nightwatcher: sharpened mind</label>
+        <description>{PAWN_nameDef}'s mind is clearer now. Thoughts arrive sharp and fast, and research that once frustrated {PAWN_nameDef} flows like water downhill.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <ResearchSpeed>0.2</ResearchSpeed>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_Social</defName>
+        <label>Nightwatcher: voice of cultivation</label>
+        <description>{PAWN_nameDef} speaks and others listen. The words carry a warmth, a weight, that they did not have before. People find themselves agreeing before they realize they've been persuaded.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <NegotiationAbility>0.2</NegotiationAbility>
+                    <TradePriceImprovement>0.1</TradePriceImprovement>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_AwokenMind</defName>
+        <label>Nightwatcher: awakened mind</label>
+        <description>The Nightwatcher broke something open in {PAWN_nameDef}'s mind. Patterns emerge where there were none before. Research comes faster, and {PAWN_possessive} hands work with a surgeon's instinct during operations.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <ResearchSpeed>0.3</ResearchSpeed>
+                    <MedicalOperationSpeed>0.2</MedicalOperationSpeed>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_AlwaysWarm</defName>
+        <label>Nightwatcher: always warm</label>
+        <description>The cold does not touch {PAWN_nameDef}. {PAWN_pronoun} walks through freezing wind and feels nothing but comfort. An odd blessing, but a real one.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_AgelessBody</defName>
+        <label>Nightwatcher: slowed clock</label>
+        <description>Time has stopped for {PAWN_nameDef}. {PAWN_possessive} body holds at its current age, no longer declining, no longer wearing down. {PAWN_pronoun} rests more efficiently, shakes off sickness faster, and will not grow old. Cultivation's most patient gift.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <ImmunityGainSpeed>0.2</ImmunityGainSpeed>
+                </statOffsets>
+                <statFactors>
+                    <RestRateMultiplier>1.3</RestRateMultiplier>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>BloodFiltration</capacity>
+                        <offset>0.1</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+        <comps>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffCompProperties_AgelessBody"/>
+        </comps>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight</defName>
+        <label>Nightwatcher: lifelight</label>
+        <description>Cultivation rewrote {PAWN_nameDef}'s Spiritweb at its foundation. Food becomes Investiture directly, light pooling steadily beneath the skin. {PAWN_possessive} body heals faster, fights disease harder, and sustains itself with an efficiency that is not natural.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <ImmunityGainSpeed>0.15</ImmunityGainSpeed>
+                </statOffsets>
+                <capMods>
+                    <li>
+                        <capacity>BloodFiltration</capacity>
+                        <offset>0.1</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+        <comps>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffCompProperties_Lifelight">
+                <investiturePerDay>250</investiturePerDay>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <!-- ===== Curse Passive Hediffs ===== -->
+    <HediffDef ParentName="Cosmere_Roshar_NW_CursePassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CursePassive_ChronicPain</defName>
+        <label>Nightwatcher: old pain</label>
+        <description>{PAWN_nameDef} feels an ache now, deep and constant. It was not there before the Nightwatcher. It will not leave.</description>
+        <stages>
+            <li>
+                <painOffset>0.2</painOffset>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_CursePassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CursePassive_Slowness</defName>
+        <label>Nightwatcher: weighted steps</label>
+        <description>Every step {PAWN_nameDef} takes is heavier than it should be. Not pain, exactly. Just weight. As if the ground itself is reluctant to let {PAWN_nameDef} go.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MoveSpeed>0.7</MoveSpeed>
+                </statFactors>
+            </li>
+        </stages>
+        <comps>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionCompProperties"/>
+        </comps>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_CursePassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CursePassive_Sleepless</defName>
+        <label>Nightwatcher: sleepless dread</label>
+        <description>Sleep does not come easily to {PAWN_nameDef} anymore. Something stirs in the dark hours, something {PAWN_pronoun} cannot name. Rest is never enough.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <RestRateMultiplier>0.7</RestRateMultiplier>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_CursePassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CursePassive_ColorBlind</defName>
+        <label>Nightwatcher: grey world</label>
+        <description>{PAWN_nameDef} can still name colors. Can still point to red, to blue. But they look wrong now. Muted. Drained of something essential. The world is quieter than it used to be.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <WorkSpeedGlobal>0.95</WorkSpeedGlobal>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_CursePassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CursePassive_Brittle</defName>
+        <label>Nightwatcher: glass bones</label>
+        <description>{PAWN_nameDef}'s bones are fragile now. They look the same, feel the same, until something hits. A blow others would shrug off can break {PAWN_nameDef}.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <IncomingDamageFactor>1.25</IncomingDamageFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_CursePassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CursePassive_Haunted</defName>
+        <label>Nightwatcher: watcher's shadow</label>
+        <description>Something watches {PAWN_nameDef}. Always. At the edge of vision, in the silence between sounds. It never speaks. It never leaves. {PAWN_pronoun} has learned to live with the feeling, but {PAWN_pronoun} has never gotten used to it.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <MentalBreakThreshold>0.05</MentalBreakThreshold>
+                </statOffsets>
+            </li>
+        </stages>
+        <comps>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionCompProperties"/>
+        </comps>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_CursePassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CursePassive_Allergic</defName>
+        <label>Nightwatcher: verdant sensitivity</label>
+        <description>Plant-based food sits wrong in {PAWN_nameDef}'s stomach. Not dangerous, but deeply uncomfortable. The Nightwatcher has an odd sense of what constitutes a minor inconvenience.</description>
+        <stages>
+            <li>
+                <capMods>
+                    <li>
+                        <capacity>Eating</capacity>
+                        <offset>-0.15</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_CursePassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CursePassive_Voiceless</defName>
+        <label>Nightwatcher: silenced</label>
+        <description>{PAWN_nameDef}'s voice still works. The sounds come out. But the meaning does not carry. Words fall flat, stripped of weight and intent. People hear {PAWN_nameDef} speak and somehow do not listen.</description>
+        <comps>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionCompProperties"/>
+        </comps>
+        <stages>
+            <li>
+                <statFactors>
+                    <SocialImpact>0.2</SocialImpact>
+                    <NegotiationAbility>0.3</NegotiationAbility>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Talking</capacity>
+                        <setMax>0.1</setMax>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <!-- ===== Evolution Hediffs ===== -->
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CurseEvolved_Slowness</defName>
+        <label>Nightwatcher: cultivated endurance</label>
+        <description>Years of carrying invisible weight have changed {PAWN_nameDef}. The curse did not break. It bent, then hardened into something useful. {PAWN_pronoun} works with an efficiency born from years of struggling against resistance.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <WorkSpeedGlobal>1.2</WorkSpeedGlobal>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CurseEvolved_Haunted</defName>
+        <label>Nightwatcher: protected by the watcher</label>
+        <description>The watcher is still there. {PAWN_nameDef} can feel it. But after years, the presence has shifted. It no longer unsettles. It guards. Cultivation's eye has turned kind, and {PAWN_nameDef} moves through danger with a strange certainty that something is looking out for {PAWN_nameDef}.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <MeleeDodgeChance>0.08</MeleeDodgeChance>
+                    <ShootingAccuracyPawn>0.05</ShootingAccuracyPawn>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_NW_BoonPassiveBase">
+        <defName>Cosmere_Roshar_Hediff_NW_CurseEvolved_Voiceless</defName>
+        <label>Nightwatcher: the silent diplomat</label>
+        <description>Cultivation's lesson took years, but it is finished. Silence taught {PAWN_nameDef} what no voice ever could. {PAWN_pronoun} reads people now, understands them without needing to speak. Trade flows easily. Negotiation is natural. The silence became a gift.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <TradePriceImprovement>0.2</TradePriceImprovement>
+                    <NegotiationAbility>0.25</NegotiationAbility>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <!-- ===== Temporary Hediffs ===== -->
+    <HediffDef>
+        <defName>Cosmere_Roshar_Hediff_NW_NarcolepsyCollapse</defName>
+        <label>sudden collapse</label>
+        <description>Darkness took {PAWN_nameDef} without warning. One moment {PAWN_pronoun} was standing. The next, nothing.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <defaultLabelColor>(0.7, 0.3, 0.9)</defaultLabelColor>
+        <isBad>true</isBad>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <makesSickThought>false</makesSickThought>
+        <stages>
+            <li>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.1</setMax>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>10000~28000</disappearsAfterTicks>
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+        </comps>
+    </HediffDef>
+</Defs>

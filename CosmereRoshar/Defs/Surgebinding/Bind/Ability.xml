@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_HostileTargetCastAbility">
+        <defName>Cosmere_Roshar_Ability_Bind</defName>
+        <label>Bind</label>
+        <description>Fix an enemy to the ground with a surge of Adhesion. Their feet stick as if the stone itself has reached up to grab them. They can still swing a weapon, still shout, still breathe, but they cannot take a single step. The binding holds for a time that grows longer as your oaths deepen.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Adhesion.Bind</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_Bound</hediff>
+        <beuPerTick>12</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>2</minIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

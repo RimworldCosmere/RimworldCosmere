@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <!-- Gizmo -->
+    <Cosmere_Roshar_SeekNightwatcher_Label>Seek the Nightwatcher</Cosmere_Roshar_SeekNightwatcher_Label>
+    <Cosmere_Roshar_SeekNightwatcher_Desc>Send {PAWN_nameDef} on a journey to seek the Nightwatcher, daughter of Cultivation, who dwells in the peaks beyond the edge of the world. She will grant a boon, any wish, and in return, will take something of her own choosing.</Cosmere_Roshar_SeekNightwatcher_Desc>
+
+    <!-- Dialog: Opening Phase -->
+    <Cosmere_Roshar_NW_Opening_Title>The Nightwatcher</Cosmere_Roshar_NW_Opening_Title>
+    <Cosmere_Roshar_NW_Opening_Text>{PAWN_nameDef} has made the long journey into the mountains and descended into the valley where the Nightwatcher dwells. The air is still. The light is wrong. Something vast and patient turns its attention toward {PAWN_nameDef}.
+
+"I have come to ask a boon," {PAWN_pronoun} says.
+
+The Nightwatcher does not speak in words. But {PAWN_pronoun} understands, somehow, that she is listening.</Cosmere_Roshar_NW_Opening_Text>
+    <Cosmere_Roshar_NW_Opening_Ask>What do you wish for?</Cosmere_Roshar_NW_Opening_Ask>
+
+    <!-- Dialog: Boon Selection Phase -->
+    <Cosmere_Roshar_NW_Boon_Title>Choose Your Boon</Cosmere_Roshar_NW_Boon_Title>
+    <Cosmere_Roshar_NW_Boon_Confirm>Ask for This</Cosmere_Roshar_NW_Boon_Confirm>
+
+    <!-- Dialog: Curse Reveal Phase -->
+    <Cosmere_Roshar_NW_Curse_Title>And in Return...</Cosmere_Roshar_NW_Curse_Title>
+    <Cosmere_Roshar_NW_Curse_Text>The boon settles over {PAWN_nameDef} like a second skin. {PAWN_pronoun} can already feel it. The {BOON_label}. The change. It is real.
+
+Then the Nightwatcher reaches for something else.
+
+She does not ask permission. She never does.</Cosmere_Roshar_NW_Curse_Text>
+    <Cosmere_Roshar_NW_Curse_Accept>Accept and Return</Cosmere_Roshar_NW_Curse_Accept>
+
+    <!-- Result Letter -->
+    <Cosmere_Roshar_NW_Letter_Title>{PAWN_nameDef}: The Nightwatcher's Gift</Cosmere_Roshar_NW_Letter_Title>
+    <Cosmere_Roshar_NW_Letter_Text>{PAWN_nameDef} has returned from the Nightwatcher's valley. {PAWN_pronoun} carries something new, and something missing.
+
+Boon granted: {BOON}
+Curse taken: {CURSE}
+
+Both are permanent. Neither can be removed by ordinary means. This is the nature of Old Magic.</Cosmere_Roshar_NW_Letter_Text>
+
+    <!-- Cultivation Evolution -->
+    <Cosmere_Roshar_Nightwatcher_Evolution_Title>{PAWN_nameDef}: Cultivation's Touch</Cosmere_Roshar_Nightwatcher_Evolution_Title>
+    <Cosmere_Roshar_Nightwatcher_Evolution_Desc>{PAWN_nameDef}'s curse, the {CURSE}, has changed. Cultivation has been patient. She has been watching. And now, after years of carrying this weight, {PAWN_pronoun} has been shaped by it in ways even the Nightwatcher did not intend.
+
+The curse has not been lifted. But something within it has grown.</Cosmere_Roshar_Nightwatcher_Evolution_Desc>
+</LanguageData>

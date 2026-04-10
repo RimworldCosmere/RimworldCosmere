@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <GeneDef Name="Cosmere_Roshar_RaceDarkeyesGeneBase" ParentName="Cosmere_Roshar_RaceGeneBase" Abstract="True">
+        <iconPath>UI/Icons/Xenotype/Darkeyes</iconPath>
+    </GeneDef>
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceDarkeyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_DarkeyesHeritage</defName>
+        <label>darkeyes heritage</label>
+        <randomChosen>true</randomChosen>
+        <description>Dark-eyed and common-born. The darkeyes form the backbone of Vorin civilization - its soldiers, farmers, craftsmen, and merchants. What they lack in status, they make up for in resilience.</description>
+    </GeneDef>
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceDarkeyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_DarkeyesEndurance</defName>
+        <label>laborer's endurance</label>
+        <description>Generations of hard work have bred a body that endures. Less rest needed, more resistance to the elements, and a tolerance for pain that lighteyes rarely develop.</description>
+        <statOffsets>
+            <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+            <ComfyTemperatureMax>5</ComfyTemperatureMax>
+            <ImmunityGainSpeed>0.05</ImmunityGainSpeed>
+        </statOffsets>
+        <statFactors>
+            <RestFallRateFactor>0.92</RestFallRateFactor>
+            <WorkSpeedGlobal>1.08</WorkSpeedGlobal>
+        </statFactors>
+    </GeneDef>
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceDarkeyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_DarkeyesResilience</defName>
+        <label>common resilience</label>
+        <description>The darkeyes endure what would break their betters. A lifetime of hardship has forged something durable.</description>
+        <statOffsets>
+            <PainShockThreshold>0.05</PainShockThreshold>
+        </statOffsets>
+        <statFactors>
+            <InjuryHealingFactor>1.1</InjuryHealingFactor>
+        </statFactors>
+    </GeneDef>
+</Defs>

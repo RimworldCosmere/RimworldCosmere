@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Roshar_Scenario_UrithiruSiege</defName>
+    <label>Stormlight: Rhythm of War</label>
+    <description>The Sibling screams in silence. Urithiru's defenses have been corrupted, and a field of suppression drains Stormlight from every Radiant in the tower. The Fused walk freely where Knights once stood. Navani traces ancient schematics. Kaladin fights in corridors with flickering power. The tower of the Knights Radiant has fallen from within.</description>
+    <scenario>
+      <summary>Survive the occupation of Urithiru and restore the tower's defenses.</summary>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Navani</firstName>
+              <lastName>Kholin</lastName>
+              <age>50</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantBondsmith</radiantOrder>
+              <idealLevel>0</idealLevel>
+              <traits>
+                <li><def>Industriousness</def><degree>2</degree></li>
+                <li><def>Nerves</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>18</level></li>
+                <li><def>Crafting</def><level>16</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Kaladin</firstName>
+              <lastName>Stormblessed</lastName>
+              <age>23</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantWindrunner</radiantOrder>
+              <idealLevel>2</idealLevel>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>NaturalMood</def><degree>-2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>18</level></li>
+                <li><def>Medicine</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Lift</firstName>
+              <age>13</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantEdgedancer</radiantOrder>
+              <idealLevel>2</idealLevel>
+              <traits>
+                <li><def>NaturalMood</def><degree>2</degree></li>
+                <li><def>Gourmand</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Social</def><level>8</level></li>
+                <li><def>Cooking</def><level>6</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Teft</firstName>
+              <age>43</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantWindrunner</radiantOrder>
+              <idealLevel>2</idealLevel>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>DrugDesire</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Dabbid</firstName>
+              <age>25</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <skills>
+                <li><def>Crafting</def><level>6</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Rlain</firstName>
+              <age>30</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>8</level></li>
+                <li><def>Social</def><level>6</level></li>
+                <li><def>Intellectual</def><level>8</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>60</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>30</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_Spear</thingDef>
+          <stuff>Steel</stuff>
+          <count>2</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>500</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Roshar_Progression_UrithiruSiege</progression>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The Sibling screams in silence. The tower's defenses have been corrupted, and a field of suppression spreads through Urithiru's halls. Radiants stagger, their Stormlight draining. The Fused walk freely where Knights once stood. Navani's hands move across ancient schematics. Kaladin breathes in Stormlight that evaporates almost instantly. In the tower of the Knights Radiant, the Knights are falling.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Honor</li>
+          <li>Cultivation</li>
+          <li>Odium</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

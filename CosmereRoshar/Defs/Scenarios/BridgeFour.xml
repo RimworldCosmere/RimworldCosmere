@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Roshar_Scenario_BridgeFour</defName>
+    <label>Stormlight: The Way of Kings</label>
+    <description>Bridge Four has the worst survival rate in the warcamps. The men are broken, hollow, waiting to die. But there is a new bridgeleader - a man with dark eyes and darker history. He looks at the bridgemen, and he refuses to let them give up.</description>
+    <scenario>
+      <summary>Bridge Four rises from slavery under Kaladin's leadership.</summary>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Kaladin</firstName>
+              <lastName>Stormblessed</lastName>
+              <age>20</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <radiantOrder>Cosmere_Roshar_Gene_RadiantWindrunner</radiantOrder>
+              <idealLevel>0</idealLevel>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>NaturalMood</def><degree>-2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+                <li><def>Medicine</def><level>8</level></li>
+                <li><def>Social</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Teft</firstName>
+              <age>40</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>DrugDesire</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Medicine</def><level>6</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Rock</firstName>
+              <age>35</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+                <li><def>Gourmand</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Cooking</def><level>14</level></li>
+                <li><def>Melee</def><level>8</level></li>
+                <li><def>Social</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Sigzil</firstName>
+              <age>25</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <skills>
+                <li><def>Intellectual</def><level>12</level></li>
+                <li><def>Artistic</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Moash</firstName>
+              <age>25</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Construction</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Lopen</firstName>
+              <age>22</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>NaturalMood</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>12</level></li>
+                <li><def>Melee</def><level>4</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Skar</firstName>
+              <age>28</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>8</level></li>
+                <li><def>Shooting</def><level>6</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Drehy</firstName>
+              <age>27</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>8</level></li>
+                <li><def>Shooting</def><level>6</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineHerbal</thingDef>
+          <count>5</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>100</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Roshar_Progression_BridgeFour</progression>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>You carry the bridge. That is your purpose. You run toward the arrows, and if you survive, you set the bridge down so real soldiers can cross. Then you carry it back. Tomorrow, you do it again. Bridge Four has the worst survival rate in the warcamps. The men don't look up anymore. But there is a new bridgeleader. He looks up. He looks at you. And something in his eyes refuses to let you die.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Honor</li>
+          <li>Cultivation</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

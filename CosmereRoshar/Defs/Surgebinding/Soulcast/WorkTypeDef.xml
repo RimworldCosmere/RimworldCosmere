@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <WorkTypeDef>
+        <defName>Cosmere_Roshar_WorkType_Soulcasting</defName>
+        <labelShort>Soulcast</labelShort>
+        <pawnLabel>soulcaster</pawnLabel>
+        <gerundLabel>soulcasting</gerundLabel>
+        <description>Transform matter from one substance to another through the Surge of Transformation.</description>
+        <verb>soulcast</verb>
+        <naturalPriority>275</naturalPriority>
+        <alwaysStartActive>false</alwaysStartActive>
+    </WorkTypeDef>
+</Defs>

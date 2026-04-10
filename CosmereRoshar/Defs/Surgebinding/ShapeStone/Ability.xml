@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_SelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_ShapeStone</defName>
+        <label>Shape Stone</label>
+        <description>Touch stone and convince it to flow. The Surge of Cohesion loosens the bonds that hold rock rigid, letting you shape it like wet clay. Raise walls from bare ground or dissolve existing stone back into the earth. The rock does not resist. Under your hands, it moves as if it wants to be shaped.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Cohesion.ShapeStone</abilityClass>
+        <beuPerTick>8</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>2</minIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+
+    <JobDef>
+        <defName>Cosmere_Roshar_Job_ShapeStone</defName>
+        <driverClass>Cosmere.System.Roshar.Job.Driver.ShapeStone</driverClass>
+        <reportString>shaping stone at TargetA.</reportString>
+        <playerInterruptible>true</playerInterruptible>
+    </JobDef>
+</Defs>

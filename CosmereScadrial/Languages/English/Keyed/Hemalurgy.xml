@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <!-- Spike status -->
+    <CS_Hemalurgy_SpikeCharged>Charged</CS_Hemalurgy_SpikeCharged>
+    <CS_Hemalurgy_SpikeUncharged>Uncharged</CS_Hemalurgy_SpikeUncharged>
+    <CS_Hemalurgy_SpikeCategory>Stolen: {0}</CS_Hemalurgy_SpikeCategory>
+    <CS_Hemalurgy_SpikeStrength>Charge: {0}</CS_Hemalurgy_SpikeStrength>
+    <CS_Hemalurgy_SpikeCount>Implanted spikes: {0}</CS_Hemalurgy_SpikeCount>
+    <CS_Hemalurgy_DecayPrevented>Decay prevented (aluminum case)</CS_Hemalurgy_DecayPrevented>
+
+    <!-- Strength labels -->
+    <CS_Hemalurgy_StrengthStrong>strong</CS_Hemalurgy_StrengthStrong>
+    <CS_Hemalurgy_StrengthModerate>moderate</CS_Hemalurgy_StrengthModerate>
+    <CS_Hemalurgy_StrengthWeak>weak</CS_Hemalurgy_StrengthWeak>
+    <CS_Hemalurgy_StrengthFading>fading</CS_Hemalurgy_StrengthFading>
+
+    <!-- Steal type labels -->
+    <CS_Hemalurgy_StealStrength>strength</CS_Hemalurgy_StealStrength>
+    <CS_Hemalurgy_StealSenses>senses</CS_Hemalurgy_StealSenses>
+    <CS_Hemalurgy_StealEmotional>emotional fortitude</CS_Hemalurgy_StealEmotional>
+    <CS_Hemalurgy_StealMental>mental fortitude</CS_Hemalurgy_StealMental>
+    <CS_Hemalurgy_StealPhysAllomancy>physical allomancy</CS_Hemalurgy_StealPhysAllomancy>
+    <CS_Hemalurgy_StealMentAllomancy>mental allomancy</CS_Hemalurgy_StealMentAllomancy>
+    <CS_Hemalurgy_StealTempAllomancy>temporal allomancy</CS_Hemalurgy_StealTempAllomancy>
+    <CS_Hemalurgy_StealEnhAllomancy>enhancement allomancy</CS_Hemalurgy_StealEnhAllomancy>
+    <CS_Hemalurgy_StealPhysFeruchemy>physical feruchemy</CS_Hemalurgy_StealPhysFeruchemy>
+    <CS_Hemalurgy_StealCogFeruchemy>cognitive feruchemy</CS_Hemalurgy_StealCogFeruchemy>
+    <CS_Hemalurgy_StealHybFeruchemy>hybrid feruchemy</CS_Hemalurgy_StealHybFeruchemy>
+    <CS_Hemalurgy_StealSprFeruchemy>spiritual feruchemy</CS_Hemalurgy_StealSprFeruchemy>
+    <CS_Hemalurgy_StealInvestiture>investiture</CS_Hemalurgy_StealInvestiture>
+    <CS_Hemalurgy_StealRemoveAll>all powers (destructive)</CS_Hemalurgy_StealRemoveAll>
+    <CS_Hemalurgy_StealConnection>Connection/Identity</CS_Hemalurgy_StealConnection>
+    <CS_Hemalurgy_StealAny>any power</CS_Hemalurgy_StealAny>
+    <CS_Hemalurgy_StealAll>all abilities</CS_Hemalurgy_StealAll>
+
+    <!-- Procedure labels -->
+    <CS_Hemalurgy_ChargeSpikeLabel>charge hemalurgic spike</CS_Hemalurgy_ChargeSpikeLabel>
+    <CS_Hemalurgy_ChargeSpikeDesc>Drive a hemalurgic spike through the subject to capture a fragment of their spirit web. The metal of the spike determines what is stolen.</CS_Hemalurgy_ChargeSpikeDesc>
+    <CS_Hemalurgy_ImplantSpikeLabel>implant hemalurgic spike</CS_Hemalurgy_ImplantSpikeLabel>
+    <CS_Hemalurgy_ImplantSpikeDesc>Surgically implant a charged hemalurgic spike into the subject, transferring the stolen attribute. Each spike weakens the recipient's spirit web, opening them to Ruin's influence.</CS_Hemalurgy_ImplantSpikeDesc>
+    <CS_Hemalurgy_RemoveSpikeLabel>remove hemalurgic spike</CS_Hemalurgy_RemoveSpikeLabel>
+    <CS_Hemalurgy_RemoveSpikeDesc>Extract an implanted hemalurgic spike. The process is dangerous and the recipient will lose the stolen attribute.</CS_Hemalurgy_RemoveSpikeDesc>
+
+    <!-- Messages -->
+    <CS_Hemalurgy_ChargeSuccess>{SURGEON} drove a {METAL} spike through {DONOR}, stealing a fragment of their spirit web.</CS_Hemalurgy_ChargeSuccess>
+    <CS_Hemalurgy_ChargeFailed>{SURGEON} failed to properly charge the spike. The spike is ruined.</CS_Hemalurgy_ChargeFailed>
+    <CS_Hemalurgy_DonorDied>{DONOR} did not survive the hemalurgic procedure.</CS_Hemalurgy_DonorDied>
+    <CS_Hemalurgy_NothingToSteal>The spike found nothing to steal from {DONOR}.</CS_Hemalurgy_NothingToSteal>
+    <CS_Hemalurgy_NoUnchargedSpike>Requires an uncharged hemalurgic spike or needle.</CS_Hemalurgy_NoUnchargedSpike>
+    <CS_Hemalurgy_NoChargedSpike>Requires a charged hemalurgic spike or needle.</CS_Hemalurgy_NoChargedSpike>
+    <CS_Hemalurgy_CannotImplantAluminum>An aluminum spike carries only destruction. It cannot be implanted.</CS_Hemalurgy_CannotImplantAluminum>
+    <CS_Hemalurgy_ImplantSuccess>{SURGEON} implanted a charged {METAL} spike into {RECIPIENT}. The stolen power takes hold.</CS_Hemalurgy_ImplantSuccess>
+    <CS_Hemalurgy_SnappedByConnection>The spike's Connection floods through {PAWN}'s spirit web, cracking it open.</CS_Hemalurgy_SnappedByConnection>
+    <CS_Hemalurgy_ChargeCorpseSpike>Charge hemalurgic spike from {0}</CS_Hemalurgy_ChargeCorpseSpike>
+    <CS_Hemalurgy_CorpseTooOld>The spiritual residue has already faded from this corpse. There is nothing left to steal.</CS_Hemalurgy_CorpseTooOld>
+    <CS_Hemalurgy_CorpseAlreadySpiked>This corpse has already been stripped of its spiritual essence.</CS_Hemalurgy_CorpseAlreadySpiked>
+    <CS_Hemalurgy_NoBedForDonor>No available medical bed for {DONOR}.</CS_Hemalurgy_NoBedForDonor>
+    <CS_Hemalurgy_ChargeLiveSpike>Charge spike from {0}</CS_Hemalurgy_ChargeLiveSpike>
+    <CS_Hemalurgy_ImplantLiveSpike>Implant spike in {0}</CS_Hemalurgy_ImplantLiveSpike>
+    <CS_Hemalurgy_SpikeOption>{0} spike ({1})</CS_Hemalurgy_SpikeOption>
+    <CS_Hemalurgy_NeedleOption>{0} needle ({1})</CS_Hemalurgy_NeedleOption>
+
+    <!-- Ruin's influence -->
+    <CS_Hemalurgy_RuinsWhispers>whispers of Ruin</CS_Hemalurgy_RuinsWhispers>
+    <CS_Hemalurgy_RuinsUrges>urges of Ruin</CS_Hemalurgy_RuinsUrges>
+    <CS_Hemalurgy_RuinsControl>Ruin's grip</CS_Hemalurgy_RuinsControl>
+
+    <!-- Letters -->
+    <CS_Hemalurgy_LetterChargeLabel>Spike Charged</CS_Hemalurgy_LetterChargeLabel>
+    <CS_Hemalurgy_LetterImplantLabel>Spike Implanted</CS_Hemalurgy_LetterImplantLabel>
+</LanguageData>

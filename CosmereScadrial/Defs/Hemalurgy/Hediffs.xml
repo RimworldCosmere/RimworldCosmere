@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- Unified hemalurgic spikes hediff -->
+	<HediffDef>
+		<defName>Cosmere_Scadrial_Hediff_HemalurgicSpikes</defName>
+		<hediffClass>Cosmere.System.Scadrial.Hemalurgy.Hediff.HemalurgicSpikes</hediffClass>
+		<label>hemalurgic spikes</label>
+		<description>Hemalurgic spikes driven through a donor have captured fragments of their spirit web. Each spike grants stolen attributes or abilities, but weakens the recipient's own spirit web, opening cracks through which Ruin whispers.</description>
+		<isBad>false</isBad>
+		<tendable>false</tendable>
+		<everCurableByItem>false</everCurableByItem>
+		<countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
+		<makesSickThought>false</makesSickThought>
+		<initialSeverity>1</initialSeverity>
+		<maxSeverity>20</maxSeverity>
+		<stages>
+			<li>
+				<label>spiked</label>
+			</li>
+		</stages>
+	</HediffDef>
+
+	<!-- Drab condition -->
+	<HediffDef>
+		<defName>Cosmere_Scadrial_Hediff_Drab</defName>
+		<hediffClass>Cosmere.System.Scadrial.Hemalurgy.Hediff.Drab</hediffClass>
+		<label>drab</label>
+		<description>Their spirit web has been torn away, leaving them hollow. They move through the world without the vitality that Investiture gives to living things.</description>
+		<isBad>true</isBad>
+		<tendable>false</tendable>
+		<everCurableByItem>false</everCurableByItem>
+		<makesSickThought>false</makesSickThought>
+		<initialSeverity>1</initialSeverity>
+		<stages>
+			<li>
+				<label>spiritually hollow</label>
+				<statFactors>
+					<SocialImpact>0.5</SocialImpact>
+					<GlobalLearningFactor>0.75</GlobalLearningFactor>
+				</statFactors>
+				<statOffsets>
+					<MentalBreakThreshold>0.25</MentalBreakThreshold>
+					<SlaveSuppressionFallRate>-50</SlaveSuppressionFallRate>
+				</statOffsets>
+			</li>
+		</stages>
+	</HediffDef>
+
+	<!-- Ruin's Influence -->
+	<HediffDef>
+		<defName>Cosmere_Scadrial_Hediff_RuinsInfluence</defName>
+		<hediffClass>Cosmere.System.Scadrial.Hemalurgy.Hediff.RuinsInfluence</hediffClass>
+		<label>Ruin's influence</label>
+		<description>Each hemalurgic spike driven into the body weakens the spirit web, creating cracks through which Ruin whispers. The more spikes, the louder the voice, until the will is no longer entirely one's own.</description>
+		<isBad>true</isBad>
+		<tendable>false</tendable>
+		<everCurableByItem>false</everCurableByItem>
+		<makesSickThought>false</makesSickThought>
+		<initialSeverity>0.2</initialSeverity>
+		<maxSeverity>2.0</maxSeverity>
+		<stages>
+			<li>
+				<label>whispers</label>
+				<minSeverity>0.1</minSeverity>
+				<mentalStateGivers>
+					<li>
+						<mentalState>Wander_Sad</mentalState>
+						<mtbDays>60</mtbDays>
+					</li>
+				</mentalStateGivers>
+			</li>
+			<li>
+				<label>urges</label>
+				<minSeverity>0.5</minSeverity>
+				<mentalStateGivers>
+					<li>
+						<mentalState>Wander_Psychotic</mentalState>
+						<mtbDays>30</mtbDays>
+					</li>
+				</mentalStateGivers>
+				<statOffsets>
+					<MentalBreakThreshold>0.05</MentalBreakThreshold>
+				</statOffsets>
+			</li>
+			<li>
+				<label>grip</label>
+				<minSeverity>1.0</minSeverity>
+				<mentalStateGivers>
+					<li>
+						<mentalState>Berserk</mentalState>
+						<mtbDays>20</mtbDays>
+					</li>
+				</mentalStateGivers>
+				<statOffsets>
+					<MentalBreakThreshold>0.15</MentalBreakThreshold>
+				</statOffsets>
+			</li>
+		</stages>
+	</HediffDef>
+</Defs>

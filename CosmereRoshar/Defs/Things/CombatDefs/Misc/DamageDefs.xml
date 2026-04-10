@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+<DamageDef Name="Cosmere_Roshar_SoulDamage">
+    <defName>Cosmere_Roshar_SoulDamage</defName>
+    <workerClass>Cosmere.System.Roshar.Damage.Worker.SoulDamage</workerClass>
+    <label>soul</label>
+    <hasForcefulImpact>false</hasForcefulImpact>
+    <makesBlood>false</makesBlood>
+    <canInterruptJobs>false</canInterruptJobs>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} eyes burned out while falling to the ground.</deathMessage>
+    <hediff>Burn</hediff>
+    <armorCategory>Sharp</armorCategory>
+    <minDamageToFragment>150</minDamageToFragment>
+    <defaultDamage>100</defaultDamage>
+    <defaultArmorPenetration>100</defaultArmorPenetration>
+    <canUseDeflectMetalEffect>false</canUseDeflectMetalEffect>
+</DamageDef>
+	
+<DamageDef ParentName="Cosmere_Roshar_SoulDamage">
+  <defName>Cosmere_Roshar_SoulCut</defName>
+  <label>soul cut</label>
+  <workerClass>Cosmere.System.Roshar.Damage.Worker.SoulDamage</workerClass>
+  <hediff>Cut</hediff>  <!-- Applies cut wounds like normal blades -->
+  <hediffSkin>Cut</hediffSkin>  <!-- Skin layer injury -->
+  <hediffSolid>Crack</hediffSolid>  <!-- Bone damage -->
+  <impactSoundType>Slice</impactSoundType>
+  <overkillPctToDestroyPart>0~0.1</overkillPctToDestroyPart>  <!-- Required to destroy limbs properly -->
+</DamageDef>
+<DamageDef ParentName="Cosmere_Roshar_SoulDamage">
+  <defName>Cosmere_Roshar_SoulStab</defName>
+  <label>soul stab</label>
+  <workerClass>Cosmere.System.Roshar.Damage.Worker.SoulDamage</workerClass>  <!-- Use the correct class -->
+  <hediff>Stab</hediff>  <!-- Creates stab wounds -->
+  <hediffSolid>Crack</hediffSolid>  <!-- Bone damage -->
+  <impactSoundType>Slice</impactSoundType>
+  <stabChanceOfForcedInternal>0.6</stabChanceOfForcedInternal>  <!-- Stab wounds can hit internal organs -->
+  <overkillPctToDestroyPart>0.4~1.0</overkillPctToDestroyPart>
+</DamageDef>
+</Defs>

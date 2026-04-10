@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <LoadCosmereMod>Loading Cosmere - Roshar</LoadCosmereMod>
+    <CR_Example_General>Example</CR_Example_General>
+    <CRO_InspectorTab_SphereTab>Spheres</CRO_InspectorTab_SphereTab>
+    <CRO_RadiantOrder_Ideal>Ideal</CRO_RadiantOrder_Ideal>
+    <Cosmere_Roshar_TabSpherePouch>spheres</Cosmere_Roshar_TabSpherePouch>
+    <CRO_LightweavingDecoy_Inspect>Illusory decoy made of woven light.</CRO_LightweavingDecoy_Inspect>
+    <CRO_LightweavingDecoy_CasterLabel>Created by {PAWN}</CRO_LightweavingDecoy_CasterLabel>
+    <CRO_LightweavingDecoy_TimeLeft>Fading in: {0}</CRO_LightweavingDecoy_TimeLeft>
+</LanguageData>

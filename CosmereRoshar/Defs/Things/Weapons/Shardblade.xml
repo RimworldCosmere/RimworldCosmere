@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Abstract="True" Name="Cosmere_Roshar_Thing_Shardblade" ParentName="BaseMeleeWeapon_Sharp">
+        <label>Shardblade</label>
+        <description>A massive blade of impossible sharpness, warm to the touch and faintly glowing with inner light. This ancient weapon can cut through nearly anything with ease—stone, steel, or soul. When bonded, it appears in the wielder's hand in moments. Feared and revered, a Shardblade is more than a weapon—it's a legacy.</description>
+        <graphicData>
+            <texPath>Things/Weapon/Shardblade/SwordI</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutAdvanced</shaderType>
+            <drawSize>(1.5, 1.5)</drawSize>
+        </graphicData>
+        <techLevel>Animal</techLevel>
+        <weaponTags>
+            <li>Cosmere_Roshar_Shardblade</li>
+        </weaponTags>
+        <equippedAngleOffset>175</equippedAngleOffset>
+        <smeltable>false</smeltable>
+        <statBases>
+            <Mass>0.1</Mass>
+            <MarketValue>100</MarketValue>
+        </statBases>
+        <stuffCategories>
+            <li>Cosmere_Core_StuffCategory_Gems</li>
+        </stuffCategories>
+        <tools>
+            <li>
+                <label>handle</label>
+                <capacities>
+                    <li>Blunt</li>
+                </capacities>
+                <power>9</power>
+                <cooldownTime>2</cooldownTime>
+            </li>
+            <li>
+                <label>point</label>
+                <capacities>
+                    <li>Cosmere_Roshar_SoulStab</li>
+                </capacities>
+                <power>50</power>
+                <cooldownTime>2.6</cooldownTime>
+            </li>
+            <li>
+                <label>edge</label>
+                <capacities>
+                    <li>Cosmere_Roshar_SoulCut</li>
+                </capacities>
+                <power>45</power>
+                <cooldownTime>2</cooldownTime>
+            </li>
+        </tools>
+        <!-- Todo, make craftable with Tanavastium & Koravellium maybe? Or Taravangium -->
+        <recipeMaker Inherit="False" IsNull="True"  />
+        <tradeTags>
+            <li>Shardblade</li>
+        </tradeTags>
+        <comps>
+            <li Class="Cosmere.Core.Comp.Thing.CutoutAdvancedProperties">
+                <blendStrength>0.75</blendStrength>
+                <blendMode>Smooth</blendMode>
+            </li>
+        </comps>
+    </ThingDef>
+    <ThingDef ParentName="Cosmere_Roshar_Thing_Shardblade">
+        <defName>Cosmere_Roshar_MeleeWeapon_RadiantShardblade</defName>
+        <thingClass>Cosmere.System.Roshar.Thing.Weapon.RadiantShardblade</thingClass>
+        <possessionCount>1</possessionCount>
+        <destroyOnDrop>true</destroyOnDrop>
+        <tradeability>None</tradeability>
+        <tradeTags Inherit="False" IsNull="True" />
+    </ThingDef>
+    <ThingDef ParentName="Cosmere_Roshar_Thing_Shardblade">
+        <defName>Cosmere_Roshar_MeleeWeapon_DeadShardblade</defName>
+        <label>dead Shardblade</label>
+        <description>A massive blade of terrible beauty, once bonded to a living spren. Now the spren is a deadeye — trapped in a mindless state — and the blade has become inert. It still cuts with impossible sharpness, but it requires ten heartbeats to summon and will never again respond to its wielder's thoughts. Dead Shardblades are feared and coveted across Roshar.</description>
+        <thingClass>Cosmere.System.Roshar.Thing.Weapon.DeadShardblade</thingClass>
+        <drawerType>RealtimeOnly</drawerType>
+        <graphicData>
+            <texPath>Things/Weapon/Shardblade/SwordI</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <shaderType>CutoutAdvanced</shaderType>
+            <drawSize>(1.5, 1.5)</drawSize>
+        </graphicData>
+        <destroyOnDrop>false</destroyOnDrop>
+        <tradeability>Sellable</tradeability>
+    </ThingDef>
+</Defs>

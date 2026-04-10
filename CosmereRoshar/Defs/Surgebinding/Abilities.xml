@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <AbilityCategoryDef>
+        <defName>Surgebinding</defName>
+        <label>surgebinding</label>
+        <displayOrder>2</displayOrder>
+    </AbilityCategoryDef>
+    
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef Name="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
+        <stunTargetWhileCasting>False</stunTargetWhileCasting>
+        <aiCanUse>true</aiCanUse>
+        <ai_IsOffensive>true</ai_IsOffensive>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.SurgebindingAbility</abilityClass>
+        <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+        <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+        <category>Surgebinding</category>
+        <verbProperties>
+            <verbClass>Verb_CastAbility</verbClass>
+            <warmupTime>0</warmupTime>
+            <drawAimPie>false</drawAimPie>
+            <requireLineOfSight>false</requireLineOfSight>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>false</canTargetPawns>
+                <canTargetBuildings>false</canTargetBuildings>
+                <canTargetAnimals>false</canTargetAnimals>
+                <canTargetHumans>false</canTargetHumans>
+                <canTargetMechs>false</canTargetMechs>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef Name="Cosmere_Roshar_Ability_SelfCastAbility"
+                                              ParentName="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
+        <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
+        <targetRequired>false</targetRequired>
+        <targetWorldCell>false</targetWorldCell>
+        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+        <hostile>false</hostile>
+        <verbProperties>
+            <targetable>false</targetable>
+            <range>0</range>
+            <drawAimPie>false</drawAimPie>
+            <requireLineOfSight>false</requireLineOfSight>
+            <nonInterruptingSelfCast>true</nonInterruptingSelfCast>
+            <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>true</canTargetSelf>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef Name="Cosmere_Roshar_Ability_TargetCastAbility"
+                                              ParentName="Cosmere_Roshar_Ability_BaseAbility" Abstract="True">
+        <jobDef>Cosmere_Roshar_Job_CastSurgebindingAbilityAtTarget</jobDef> <!-- Need to create -->
+        <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
+        <targetRequired>true</targetRequired>
+        <targetWorldCell>false</targetWorldCell>
+        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+        <hostile>false</hostile>
+        <verbProperties>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>18</range>
+            <requireLineOfSight>true</requireLineOfSight>
+            <violent>false</violent>
+            <noiseRadius>0</noiseRadius>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetPlants>true</canTargetPlants>
+                <canTargetAnimals>true</canTargetAnimals>
+                <canTargetHumans>true</canTargetHumans>
+                <canTargetMechs>true</canTargetMechs>
+                <canTargetItems>true</canTargetItems>
+                <canTargetBuildings>true</canTargetBuildings>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+    
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef Name="Cosmere_Roshar_Ability_HostileTargetCastAbility" ParentName="Cosmere_Roshar_Ability_TargetCastAbility" Abstract="True">
+        <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
+        <hostile>true</hostile>
+        <verbProperties>
+            <violent>true</violent>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+    
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef Name="Cosmere_Roshar_Ability_ToggleSelfCastAbility" ParentName="Cosmere_Roshar_Ability_SelfCastAbility" Abstract="True">
+        <toggleable>true</toggleable>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef Name="Cosmere_Roshar_Ability_ToggleTargetCastAbility" ParentName="Cosmere_Roshar_Ability_TargetCastAbility" Abstract="True">
+        <toggleable>true</toggleable>
+        <jobDef>Cosmere_Roshar_Job_MaintainSurgebindingTarget</jobDef>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef Name="Cosmere_Roshar_Ability_ToggleHostileTargetCastAbility" ParentName="Cosmere_Roshar_Ability_HostileTargetCastAbility" Abstract="True">
+        <toggleable>true</toggleable>
+        <jobDef>Cosmere_Roshar_Job_MaintainSurgebindingTarget</jobDef> 
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

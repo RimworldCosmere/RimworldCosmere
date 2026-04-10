@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_CultivationsPerpendicularity</defName>
+        <label>Open Cultivation's Perpendicularity</label>
+        <description>Open a perpendicularity that resonates with Cultivation rather than Honor. The Investiture that floods through feels different. Greener, somehow. Warmer. It carries the force of growth and renewal, mending wounds with the patient insistence of roots splitting stone. Allies nearby heal rapidly, and dun spheres drink in the light. This power draws on life itself, not Stormlight, and the distinction matters.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Adhesion.CultivationsPerpendicularity</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_CultivationsPerpendicularityBlessing</hediff>
+        <beuPerTick>8</beuPerTick>
+        <maxPower>1</maxPower>
+        <radiantOrder>Bondsmith</radiantOrder>
+        <minIdeal>2</minIdeal>
+        <orderMinIdeal>
+            <li><order>Bondsmith</order><minIdeal>2</minIdeal></li>
+        </orderMinIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

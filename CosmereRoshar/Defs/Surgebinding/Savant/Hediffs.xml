@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef Name="Cosmere_Roshar_Hediff_SurgeSavant_Abstract" Abstract="True">
+        <hediffClass>HediffWithComps</hediffClass>
+        <defaultLabelColor>(0.4, 0.8, 1.0)</defaultLabelColor>
+        <isBad>false</isBad>
+        <makesSickThought>false</makesSickThought>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <everCurableByItem>false</everCurableByItem>
+        <initialSeverity>0.2</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <stages>
+            <li>
+                <label>attuned</label>
+                <minSeverity>0.1</minSeverity>
+            </li>
+            <li>
+                <label>dependent</label>
+                <minSeverity>0.4</minSeverity>
+            </li>
+            <li>
+                <label>savant</label>
+                <minSeverity>0.8</minSeverity>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavant_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavant_Adhesion</defName>
+        <label>adhesion savant</label>
+        <description>{PAWN_nameDef} has drawn on Adhesion so deeply that the Surge of pressure and vacuum has become woven into {PAWN_possessive} spirit web. {PAWN_pronoun} instinctively manipulates the bonds between things, but {PAWN_pronoun} grows restless without the constant flow of Stormlight.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavant_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavant_Gravitation</defName>
+        <label>gravitation savant</label>
+        <description>{PAWN_nameDef} has lashed so relentlessly that gravity itself bends to {PAWN_possessive} will without conscious thought. {PAWN_possessive} sense of direction is permanently altered - up and down are merely suggestions - but without Stormlight, {PAWN_pronoun} feels impossibly heavy.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavant_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavant_Division</defName>
+        <label>division savant</label>
+        <description>{PAWN_nameDef} has channeled Division until the capacity to destroy and degrade matter has scarred {PAWN_possessive} spirit web. {PAWN_pronoun} perceives the inherent entropy in all things, but without Stormlight to contain it, that destructive awareness turns inward.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavant_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavant_Abrasion</defName>
+        <label>abrasion savant</label>
+        <description>{PAWN_nameDef} has slicked surfaces so frequently that friction has become almost foreign to {PAWN_objectPronoun}. {PAWN_pronoun} moves with an unsettling fluidity, but {PAWN_possessive} grip on the world - physical and metaphorical - grows tenuous without Stormlight.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavant_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavant_Progression</defName>
+        <label>progression savant</label>
+        <description>{PAWN_nameDef} has drawn on Progression so extensively that growth and healing have become extensions of {PAWN_possessive} will. Life responds to {PAWN_possessive} touch, but without the surge of Stormlight, {PAWN_possessive} own body feels stagnant and unnatural.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavant_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavant_Illumination</defName>
+        <label>illumination savant</label>
+        <description>{PAWN_nameDef} has bent light and sound so often that illusions flicker at the edges of {PAWN_possessive} vision even when {PAWN_pronoun} is not actively weaving. The line between the real and the fabricated has grown thin for {PAWN_objectPronoun}.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavant_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavant_Transformation</defName>
+        <label>transformation savant</label>
+        <description>{PAWN_nameDef} has Soulcast so relentlessly that {PAWN_possessive} perception of matter itself has shifted. {PAWN_pronoun} instinctively senses the nature of objects and the Cognitive aspect of things, but the constant weight of transformation has reshaped {PAWN_possessive} spirit web in ways not entirely comfortable.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavant_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavant_Transportation</defName>
+        <label>transportation savant</label>
+        <description>{PAWN_nameDef} has Elsecalled so frequently that the boundary between realms has worn thin in {PAWN_possessive} perception. {PAWN_pronoun} exists half in this world and half beyond it, and without Stormlight, the pull toward the Cognitive Realm grows disconcerting.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavant_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavant_Cohesion</defName>
+        <label>cohesion savant</label>
+        <description>{PAWN_nameDef} has shaped stone and solid matter so many times that {PAWN_possessive} hands remember the work without {PAWN_possessive} mind directing them. Stone responds to {PAWN_possessive} touch with unnatural ease, but without the surge of Stormlight, even simple materials feel resistant and alien.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavant_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavant_Tension</defName>
+        <label>tension savant</label>
+        <description>{PAWN_nameDef} has hardened surfaces and reinforced materials so extensively that rigidity has become {PAWN_possessive} natural state. {PAWN_possessive} movements carry an unsettling solidity, and without Stormlight flowing through {PAWN_objectPronoun}, {PAWN_pronoun} feels brittle rather than strong.</description>
+    </HediffDef>
+</Defs>

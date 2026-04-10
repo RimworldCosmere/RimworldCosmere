@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Scadrial_Ability_Electrum</defName>
         <label>see my future</label>
         <description>The Allomancer burns electrum, glimpsing their own possible futures.</description>
         <metal>Electrum</metal>
         <hediff>Cosmere_Scadrial_Hediff_ElectrumBuff</hediff>
-    </CosmereScadrial.Def.AllomanticAbilityDef>
+        <maxPower>2</maxPower>
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

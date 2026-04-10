@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <WorkGiverDef>
+        <defName>Cosmere_Roshar_WorkGiver_Soulcast</defName>
+        <label>soulcast</label>
+        <giverClass>Cosmere.System.Roshar.Job.WorkGiver.SoulcastWorkGiver</giverClass>
+        <workType>Cosmere_Roshar_WorkType_Soulcasting</workType>
+        <verb>soulcast</verb>
+        <gerund>soulcasting</gerund>
+        <priorityInType>95</priorityInType>
+        <scanCells>true</scanCells>
+        <scanThings>false</scanThings>
+    </WorkGiverDef>
+</Defs>

@@ -29,6 +29,20 @@
       </li>
     </degreeDatas>
   </TraitDef>
+  <TraitDef>
+    <defName>Cosmere_Scadrial_Trait_Drab</defName>
+    <label>drab</label>
+    <description>This person's spirit web has been stripped bare. Whatever connection they once held to the power of Preservation is gone, torn away by hemalurgic violence.</description>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>Drab</label>
+        <description>Spiritually hollow. Their Investiture was stolen, leaving them diminished in ways that go beyond the physical.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+      </li>
+    </degreeDatas>
+  </TraitDef>
   <TraitDef ParentName="AbstractMetallicArtsInvestitureTrait">
     <defName>Cosmere_Scadrial_Trait_Feruchemist</defName>
     <label>Feruchemist</label>
@@ -37,21 +51,6 @@
       <li>
         <label>Feruchemist</label>
         <description>This person is a Feruchemist.</description>
-        <degree>0</degree>
-        <commonality>0</commonality>
-      </li>
-    </degreeDatas>
-  </TraitDef>
-  
-  <TraitDef>
-    <defName>Cosmere_Scadrial_Trait_DormantMetalborn</defName>
-    <label>Dormant Connection</label>
-    <description>This pawn is attuned to a Shard’s power, though they’ve yet to tap it. A traumatic event may awaken their abilities.</description>
-    <commonality>0</commonality>
-    <degreeDatas>
-      <li>
-        <label>Dormant Connection</label>
-        <description>This pawn is attuned to a Shard’s power, though they’ve yet to tap it. A traumatic event may awaken their abilities.</description>
         <degree>0</degree>
         <commonality>0</commonality>
       </li>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <GeneDef Name="Cosmere_Roshar_RaceLighteyesGeneBase" ParentName="Cosmere_Roshar_RaceGeneBase" Abstract="True">
+        <iconPath>UI/Icons/Xenotype/Lighteyes</iconPath>
+    </GeneDef>
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceLighteyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_LighteyesHeritage</defName>
+        <label>lighteyes heritage</label>
+        <randomChosen>true</randomChosen>
+        <description>Born with the light-colored eyes that mark the ruling caste across Vorin nations. Lighteyes are expected to lead, to fight, and to carry the weight of their station.</description>
+    </GeneDef>
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceLighteyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_LighteyesSocial</defName>
+        <label>highborn bearing</label>
+        <description>Carries the practiced poise and authority of the lighteyed caste. Commands attention in conversation and negotiation alike.</description>
+        <statOffsets>
+            <SocialImpact>0.25</SocialImpact>
+            <TradePriceImprovement>0.05</TradePriceImprovement>
+        </statOffsets>
+    </GeneDef>
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceLighteyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_LighteyesEducation</defName>
+        <label>caste education</label>
+        <description>Raised with access to tutors, texts, and military training. Learns faster than those denied such privilege.</description>
+        <statOffsets>
+            <GlobalLearningFactor>0.15</GlobalLearningFactor>
+        </statOffsets>
+    </GeneDef>
+</Defs>

@@ -1,0 +1,60 @@
+{
+  "name": "dustbringer",
+  "description": "Surgebinders who wield Division and Abrasion. Dustbringers embrace power others fear, learning self-mastery through destruction. They seek to understand their own nature by controlling what could burn down the world.",
+  "surges": [
+    "division",
+    "abrasion"
+  ],
+  "color": "b02d2c",
+  "gemstone": "ruby",
+  "sprenType": "ashspren",
+  "sprenDescription": "A flickering form wreathed in embers and ash, constantly smoldering. Ashspren are volatile yet deeply concerned with self-mastery and controlled destruction.",
+  "sprenNamePool": ["Spark", "Cinder", "Crucible", "Pyre", "Ignis", "Scoria", "Char", "Embera", "Kindel", "Smolder", "Furnace", "Molten", "Calcine", "Ashveil", "Brimstone", "Kiln", "Sinter", "Flamewick", "Inferna", "Burnish"],
+  "ideals": [
+    {
+      "stormlightMax": 100,
+      "label": "first ideal",
+      "description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
+      "quotes": [
+        "Life before death, strength before weakness, journey before destination."
+      ]
+    },
+    {
+      "stormlightMax": 300,
+      "label": "second ideal",
+      "description": "The Dustbringer acknowledges the destructive nature of their power and accepts responsibility for controlling it.",
+      "quotes": [
+        "I will learn to control the power within me."
+      ]
+    },
+    {
+      "stormlightMax": 700,
+      "label": "third ideal",
+      "description": "They swear to use their strength with discipline, choosing when not to destroy even when they could.",
+      "quotes": [
+        "I will hold to my oaths, even when my anger burns hot.",
+        "I will master the fire, not be consumed by it."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade",
+          "Cosmere_Roshar_Ability_ToggleShardplate"
+      ]
+    },
+    {
+      "label": "fourth ideal",
+      "description": "They claim command over their full destructive capability, guided by principle, not passion.",
+      "quotes": [
+        "I am not the flame. I am the hand that controls it."
+      ],
+      "abilities": []
+    },
+    {
+      "stormlightMax": 3000,
+      "label": "fifth ideal",
+      "description": "They embrace both peace and wrath, becoming a weapon when needed, but never without purpose.",
+      "quotes": [
+        "I bring destruction, so that others may be preserved."
+      ]
+    }
+  ]
+}

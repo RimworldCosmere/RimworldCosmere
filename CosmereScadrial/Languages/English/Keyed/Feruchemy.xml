@@ -7,4 +7,7 @@
     <CS_NotFerring>not a {FERRING}</CS_NotFerring>
     <CS_MetalmindOwner>Owner</CS_MetalmindOwner>
     <CS_MetalmindStored>{METAL} Stored</CS_MetalmindStored>
+    <CS_Feruchemy_ImplantedCount>Implanted metalminds: {0}</CS_Feruchemy_ImplantedCount>
+    <CS_Feruchemy_ImplantSuccess>{SURGEON} grafted a {METAL} metalmind beneath {RECIPIENT}'s skin. The metal settles into place.</CS_Feruchemy_ImplantSuccess>
+    <CS_Feruchemy_NoMetalmind>Requires a metalmind to implant.</CS_Feruchemy_NoMetalmind>
 </LanguageData>

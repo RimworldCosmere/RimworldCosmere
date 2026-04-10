@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CRO_Soulcast_NotEnoughInvestiture>not enough Investiture</CRO_Soulcast_NotEnoughInvestiture>
+    <CRO_Soulcast_Cost>{0} Investiture</CRO_Soulcast_Cost>
+    <CRO_Soulcast_CostWithChance>{0} Investiture, {1} chance</CRO_Soulcast_CostWithChance>
+    <CRO_Soulcast_Resisted>{PAWN} resisted the transformation.</CRO_Soulcast_Resisted>
+
+    <CRO_Soulcast_Category_Into>Soulcast into...</CRO_Soulcast_Category_Into>
+    <CRO_Soulcast_Category_Structure>Soulcast structure...</CRO_Soulcast_Category_Structure>
+    <CRO_Soulcast_Category_AirToWall>Soulcast air to wall...</CRO_Soulcast_Category_AirToWall>
+    <CRO_Soulcast_Category_Terraform>Soulcast ground/water to...</CRO_Soulcast_Category_Terraform>
+    <CRO_Soulcast_Category_Sculpture>Soulcast to sculpture...</CRO_Soulcast_Category_Sculpture>
+    <CRO_Soulcast_ToAir>Soulcast to air</CRO_Soulcast_ToAir>
+    <CRO_Soulcast_CreateGeyser>Steam geyser</CRO_Soulcast_CreateGeyser>
+
+    <CRO_Soulcast_PawnWarningTitle>Soulcast Living Being</CRO_Soulcast_PawnWarningTitle>
+    <CRO_Soulcast_PawnWarning>WARNING: This will kill {PAWN} by transmuting them into a {MATERIAL} sculpture.\n\nSuccess chance: {CHANCE}\n\nThis cannot be undone. Proceed?</CRO_Soulcast_PawnWarning>
+</LanguageData>

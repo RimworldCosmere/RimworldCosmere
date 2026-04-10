@@ -1,0 +1,12 @@
+#nullable disable
+using Cosmere.System.Scadrial.Def;
+using RimWorld;
+
+namespace Cosmere.System.Scadrial;
+
+public static partial class MetallicArtsMetalDefOf {
+    {{#each metals as | metal |}}
+    [MayRequire("Cosmere.Scadrial")]
+    public static MetallicArtsMetalDef {{defName metal.name}};
+    {{/each}}
+}

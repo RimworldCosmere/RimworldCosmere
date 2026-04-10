@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+    <defName>Cosmere_Scadrial_Progression_HeroOfAges</defName>
+    <label>Hero of Ages Progression</label>
+    <events>
+      <li>
+        <key>mists_kill</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>5</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Mists Turn Hostile</title>
+            <text>It started quietly. A colonist left out past dusk, shivering in the mist. By morning they were bedridden - feverish, pale, gasping. The mists have changed. What was once a passive shroud now strikes at the living, leaving some untouched and others writhing in agony. Sazed records the symptoms in his journal with a hand that does not quite hold steady. The mists are not random. They are selecting.</text>
+            <letterDef>NegativeEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>spooks_enhancement</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>20</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SetSkillAction">
+            <pawnName>Spook</pawnName>
+            <skill>Melee</skill>
+            <level>14</level>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Spook's Flaring</title>
+            <text>Spook has been burning tin constantly - not just burning it, but flaring it, pushing his senses far beyond what any Tineye should endure. His skin blisters at the touch of cloth. Sound is agony. Light is a blade. But in the dark, in the quiet spaces between heartbeats, he sees everything. Hears everything. He wraps himself in bandages and keeps fighting. The boy who hid behind Kelsier's shadow has become something dangerous in his own right.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>ruin_speaks</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>30</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Ruin's Voice</title>
+            <text>The words appear scratched into metal - the only medium Ruin cannot alter. "I have watched you build. I have watched you plan. I have been patient." The message is unsigned, but everyone knows who wrote it. Ruin speaks now, openly, to those with hemalurgic spikes. Whispers that sound like reason. Suggestions that feel like your own thoughts. Marsh, wherever he is, has gone silent. Vin stares at the horizon and grips her vials tighter.</text>
+            <letterDef>NegativeEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>sazeds_revelation</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>60</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SetSkillAction">
+            <pawnName>Sazed</pawnName>
+            <skill>Intellectual</skill>
+            <level>20</level>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Sazed's Revelation</title>
+            <text>He has read every religion stored in his copperminds. Every doctrine, every creation myth, every promise of salvation. He rejected them all - too broken by grief, too hollowed by loss. But now, turning the pages one final time, Sazed sees what he missed. The faiths are not competitors. They are pieces. Fragments of a single truth, scattered across centuries by Preservation itself. The Hero of Ages is not a warrior. The Hero is the one who holds both forces in balance. Sazed sets down his coppermind and, for the first time in months, weeps - not from sorrow, but from understanding.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>the_catacendre</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>75</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.EventOccurredTrigger">
+            <eventKey>sazeds_revelation</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Catacendre</title>
+            <text>Vin holds Preservation's power. Elend stands against Ruin's army. They fight not to win - victory was never possible against a god. They fight to buy time. And in that purchased moment, Sazed takes up both powers. Ruin and Preservation, destruction and creation, held together in the hands of a Terris steward who once kept the faiths of a hundred dead religions. The world unmakes itself and is reborn. The ash clears. Green things grow. A new sun rises over a new Scadrial. Harmony looks down upon the world he has remade and knows the cost of what was given.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+    </events>
+  </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+</Defs>

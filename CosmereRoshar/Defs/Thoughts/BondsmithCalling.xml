@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_HearingGodspren</defName>
+        <thoughtClass>Thought_Situational</thoughtClass>
+        <workerClass>Cosmere.System.Roshar.Thought.BondsmithCallingMoodWorker</workerClass>
+        <stages>
+            <li>
+                <label>hearing a godspren's voice</label>
+                <description>A vast, ancient presence speaks to me. It fills me with purpose and clarity.</description>
+                <baseMoodEffect>8</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+</Defs>

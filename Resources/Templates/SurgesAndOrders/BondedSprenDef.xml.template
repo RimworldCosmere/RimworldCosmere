@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    {{#each orders}}
+    <ThingDef ParentName="Cosmere_Roshar_Race_BondedSpren">
+        <defName>Cosmere_Roshar_Race_{{defName sprenType}}</defName>
+        <label>{{title sprenType}}</label>
+        <description>{{sprenDescription}}</description>
+    </ThingDef>
+
+    <PawnKindDef ParentName="Cosmere_Roshar_PawnKind_BondedSpren">
+        <defName>Cosmere_Roshar_Race_{{defName sprenType}}</defName>
+        <label>{{title sprenType}}</label>
+        <labelPlural>{{title sprenType}}</labelPlural>
+        <race>Cosmere_Roshar_Race_{{defName sprenType}}</race>
+        <lifeStages>
+            <li>
+                <bodyGraphicData>
+                    <texPath>Things/Pawn/Animal/Spren/{{defName sprenType}}</texPath>
+                    <graphicClass>Graphic_Single</graphicClass>
+                    <drawSize>1</drawSize>
+                    <shadowData><volume>(0, 0, 0)</volume></shadowData>
+                </bodyGraphicData>
+            </li>
+        </lifeStages>
+    </PawnKindDef>
+    {{/each}}
+</Defs>

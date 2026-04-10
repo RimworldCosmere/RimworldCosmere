@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_ToggleSelfCastAbility">
+        <defName>Cosmere_Roshar_Ability_WindsprenShield</defName>
+        <label>Windspren Shield</label>
+        <description>Bind the air itself into a swirling barrier around you. The wind howls in a tight circle, catching arrows mid-flight and turning blades aside. Those standing close feel it too, the pressure of something solid that is not quite there, sheltering them from harm.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Adhesion.WindsprenShield</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_WindsprenShielded</hediff>
+        <beuPerTick>2</beuPerTick>
+        <maxPower>1</maxPower>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

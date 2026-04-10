@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CRO_SpeakOath_Confirm>Speak the Oath</CRO_SpeakOath_Confirm>
+    <CRO_SpeakOath_Later>Not yet</CRO_SpeakOath_Later>
+    <CRO_SpeakOath_Title>{PAWN} is ready to speak the {IDEAL} as a {ORDER}</CRO_SpeakOath_Title>
+    <CRO_SpeakOath_Text>{PAWN}, a {ORDER}, is ready to speak their next {IDEALLABEL}:\n\n"{OATH}"\n\nDo you wish them to speak the words?</CRO_SpeakOath_Text>
+    <CRO_SpeakOath_Gizmo>Speak Oath</CRO_SpeakOath_Gizmo>
+    <CRO_SpeakTruth_Gizmo>Speak Truth</CRO_SpeakTruth_Gizmo>
+    <CRO_SpeakOath_GizmoDesc>Speak the {IDEAL}:\n\n"{OATH}"</CRO_SpeakOath_GizmoDesc>
+    <CRO_BondStrained_Title>{PAWN}'s spren bond is strained</CRO_BondStrained_Title>
+    <CRO_BondStrained_Text>{PAWN}'s bond with their spren as a {ORDER} is weakening. Their spren seems distant and troubled.\n\nResume actions aligned with their oaths to strengthen the bond.</CRO_BondStrained_Text>
+
+    <CRO_BondFractured_Title>{PAWN}'s spren bond is fracturing</CRO_BondFractured_Title>
+    <CRO_BondFractured_Text>{PAWN}'s bond with their spren as a {ORDER} is seriously damaged. Their investiture regeneration is halved and their abilities are weakening.\n\nThis is urgent — {PAWN} must act in accordance with their oaths immediately, or the bond may break entirely.</CRO_BondFractured_Text>
+
+    <CRO_BondBreaking_Title>{PAWN}'s spren bond is about to break</CRO_BondBreaking_Title>
+    <CRO_BondBreaking_Text>{PAWN}'s bond with their spren as a {ORDER} is on the verge of shattering. If nothing changes, the bond will break and their spren may become a deadeye.\n\nThis is critical — {PAWN} must immediately perform actions aligned with their oaths or the bond will be lost.</CRO_BondBreaking_Text>
+
+    <CRO_BondRegression_Title>{PAWN} has fallen from the {IDEAL}</CRO_BondRegression_Title>
+    <CRO_BondRegression_Text>{PAWN}'s bond with their spren as a {ORDER} has weakened significantly. They have lost the power of the {IDEAL} and regressed to a lower level of connection.\n\nTheir abilities and powers have diminished accordingly.</CRO_BondRegression_Text>
+
+    <CRO_BondDeath_Title>{PAWN}'s spren has become a deadeye</CRO_BondDeath_Title>
+    <CRO_BondDeath_Text>{PAWN} has broken their oath so completely that their spren bond as a {ORDER} has shattered. Their spren is now a deadeye — a hollow, mindless shell of what it once was, condemned to wander Shadesmar with scratched-out eyes. {PAWN} has lost all Radiant powers and can never bond this spren again.</CRO_BondDeath_Text>
+
+    <CRO_DeadBlade_Text>A dead Shardblade has materialized where {PAWN} once stood as a {ORDER}. The blade is inert — it can still cut, but requires ten heartbeats to summon and its spren will never again respond to its wielder.</CRO_DeadBlade_Text>
+    <CRO_FuryBreak>{PAWN} has lost control of their fury!</CRO_FuryBreak>
+    <CRO_BreakBond_Gizmo>Break Bond</CRO_BreakBond_Gizmo>
+    <CRO_BreakBond_GizmoDesc>Deliberately sever your bond with your spren. This cannot be undone.</CRO_BreakBond_GizmoDesc>
+    <CRO_BreakBond_DialogTitle>Break Spren Bond</CRO_BreakBond_DialogTitle>
+    <CRO_BreakBond_DialogText>Are you sure you want to break {PAWN}'s bond with their spren?\n\nThis will permanently destroy the bond. {PAWN}'s spren will become a deadeye, all Radiant powers will be lost, and {PAWN} will suffer a lasting mood penalty.\n\nThis cannot be undone.</CRO_BreakBond_DialogText>
+    <CRO_BreakBond_Sever>Sever Bond</CRO_BreakBond_Sever>
+    <CRO_BreakBond_Cancel>Cancel</CRO_BreakBond_Cancel>
+
+    <CRO_RadiantOrder_Tab_Overview>Overview</CRO_RadiantOrder_Tab_Overview>
+    <CRO_RadiantOrder_Tab_Ideals>Ideals</CRO_RadiantOrder_Tab_Ideals>
+    <CRO_RadiantOrder_Tab_Traits>Traits</CRO_RadiantOrder_Tab_Traits>
+    <CRO_RadiantOrder_InfoButton>View Radiant Order info</CRO_RadiantOrder_InfoButton>
+    <CRO_RadiantOrder_FavorableTraits>Favorable Traits (1.25x progression)</CRO_RadiantOrder_FavorableTraits>
+    <CRO_RadiantOrder_IncompatibleTraits>Incompatible Traits (blocks at 3rd Ideal)</CRO_RadiantOrder_IncompatibleTraits>
+    <CRO_RadiantOrder_PawnHasTrait>{PAWN} has this!</CRO_RadiantOrder_PawnHasTrait>
+    <CRO_RadiantOrder_Achieved>Achieved</CRO_RadiantOrder_Achieved>
+    <CRO_RadiantOrder_InProgress>In Progress</CRO_RadiantOrder_InProgress>
+    <CRO_RadiantOrder_Ready>Ready to speak!</CRO_RadiantOrder_Ready>
+    <CRO_RadiantOrder_Locked>Blocked by trait</CRO_RadiantOrder_Locked>
+    <CRO_RadiantOrder_Unlocks>Unlocks: {ABILITIES}</CRO_RadiantOrder_Unlocks>
+    <CRO_RadiantOrder_MysteryHint>The deeper meaning of this oath will reveal itself in time.</CRO_RadiantOrder_MysteryHint>
+    <CRO_RadiantOrder_ProgressRecap>What {PAWN} achieved:</CRO_RadiantOrder_ProgressRecap>
+    <CRO_RadiantOrder_NextIdeal>Next: {IDEAL}</CRO_RadiantOrder_NextIdeal>
+    <CRO_RadiantOrder_BondsmithCap>No available godspren ({COUNT}/3 bonded)</CRO_RadiantOrder_BondsmithCap>
+    <CRO_RadiantOrder_BondsmithSpren>Requires bonding a unique godspren</CRO_RadiantOrder_BondsmithSpren>
+    <CRO_SpeakOath_ViewOath>View Oath</CRO_SpeakOath_ViewOath>
+    <CRO_SpeakOath_SpeakTheWords>Speak the Words</CRO_SpeakOath_SpeakTheWords>
+    <CRO_SpeakOath_NotYet>Not Yet</CRO_SpeakOath_NotYet>
+    <CRO_RadiantOrder_OathLabel>{IDEAL} of the {ORDER}</CRO_RadiantOrder_OathLabel>
+</LanguageData>

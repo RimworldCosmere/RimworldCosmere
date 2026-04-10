@@ -5,7 +5,7 @@
         <label>Snapped</label>
         <thoughtClass>Thought_Memory</thoughtClass>
         <stackLimit>1</stackLimit>
-        <durationDays>999999</durationDays> <!-- Infinite duration -->
+        <durationDays>999999</durationDays>
         <showBubble>false</showBubble>
         <stages>
             <li>

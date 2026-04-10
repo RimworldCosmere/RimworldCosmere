@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Roshar_Scenario_TheWeeping</defName>
+    <label>Roshar: The Weeping</label>
+    <description>The Weeping has come. Four weeks of steady rain without a single highstorm. The gemstones are dull, the Stormlight spent. Whatever powers you carried are silent now. You must survive on skill, steel, and stubbornness alone - until the storms return.</description>
+    <scenario>
+      <summary>Survive the Weeping with no Stormlight and no highstorms.</summary>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Torain</firstName>
+              <age>32</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+                <li><def>Shooting</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Hesina</firstName>
+              <age>28</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Shooting</def><level>10</level></li>
+                <li><def>Medicine</def><level>6</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Brightlord Aladar</firstName>
+              <age>45</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <skills>
+                <li><def>Melee</def><level>8</level></li>
+                <li><def>Social</def><level>12</level></li>
+                <li><def>Intellectual</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Vedan</firstName>
+              <age>35</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <traits>
+                <li><def>Industriousness</def><degree>2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Construction</def><level>12</level></li>
+                <li><def>Crafting</def><level>10</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>30</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineHerbal</thingDef>
+          <count>15</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>10</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_Spear</thingDef>
+          <stuff>Steel</stuff>
+          <count>2</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Bow_Short</thingDef>
+          <count>1</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>200</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Roshar_Progression_TheWeeping</progression>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The rain falls soft and steady. There is no thunder, no wind, no fury - and no Stormlight. The gemstones are dull. The Radiants among you feel the absence like a missing limb. The Weeping has come, and with it, four weeks of vulnerability. You must endure.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Honor</li>
+          <li>Cultivation</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

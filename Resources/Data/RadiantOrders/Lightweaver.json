@@ -1,0 +1,65 @@
+{
+  "name": "lightweaver",
+  "description": "Surgebinders who command Illumination and Transformation. Lightweavers are artists, liars, and truth-speakers, weaving illusions from light and self-understanding from lies. Their strength lies not in vows, but in personal truths.",
+  "surges": [
+    "illumination",
+    "transformation"
+  ],
+  "color": "6c011d",
+  "gemstone": "garnet",
+  "sprenType": "cryptic",
+  "sprenDescription": "A bizarre figure whose head is a constantly shifting pattern of impossible geometry. Cryptics are endlessly curious, fascinated by lies and truths alike.",
+  "sprenNamePool": ["Pattern", "Design", "Mosaic", "Tessera", "Fractal", "Motif", "Cipher", "Lattice", "Helix", "Mandala", "Theorem", "Tangent", "Filigree", "Arabesque", "Meander", "Rune", "Enigma", "Labyrinth", "Intrica", "Weave"],
+  "ideals": [
+    {
+      "stormlightMax": 100,
+      "label": "first truth",
+      "description": "The Lightweaver’s path is unique. They progress by speaking deep personal truths, not shared oaths. Each ‘ideal’ is a confession of self.",
+      "quotes": [
+        "I’m terrified of being insignificant.",
+        "I lied to them because I couldn’t admit I was broken."
+      ]
+    },
+    {
+      "stormlightMax": 300,
+      "label": "second truth",
+      "description": "Another layer peeled away. The Lightweaver exposes a deeper truth about who they are, or what they’ve done.",
+      "quotes": [
+        "I killed my father.",
+        "I am not who I pretend to be."
+      ],
+      "abilities": []
+    },
+    {
+      "stormlightMax": 700,
+      "label": "third truth",
+      "description": "With each truth, the illusion breaks, and so do the chains that bind the Lightweaver to a false self.",
+      "quotes": [
+        "I hate the person they think I am.",
+        "I want to be loved, but I don’t think I deserve it."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade",
+          "Cosmere_Roshar_Ability_ToggleShardplate"
+      ]
+    },
+    {
+      "label": "fourth truth",
+      "description": "An admission not just of darkness, but of hope, a truth that sets a new path in motion.",
+      "quotes": [
+        "Maybe I can change.",
+        "I want to be someone better."
+      ]
+    },
+    {
+      "stormlightMax": 3000,
+      "label": "fifth truth",
+      "description": "The final truth, complete self-acceptance. Not just of flaws and failures, but of the potential for growth and the courage to embrace who you truly are.",
+      "quotes": [
+        "I accept all that I am, and all that I can become.",
+        "I am worthy of love, including my own.",
+        "My past does not define me, but it helped shape who I am."
+      ]
+    }
+  ]
+}

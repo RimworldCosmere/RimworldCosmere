@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_TargetCastAbility">
+        <defName>Cosmere_Roshar_Ability_Regrowth</defName>
+        <label>Regrowth</label>
+        <description>Press your hands against someone's wounds and push Progression into them. Feel the Stormlight leave you and enter their body, seeking out every torn muscle and shattered bone. The healing is deliberate and sustained - you must maintain your focus and your reserves until the body remembers what it means to be whole.\n\nThis is the healer's art. It demands patience and Stormlight in equal measure.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Progression.Regrowth</abilityClass>
+        <hediff>Cosmere_Roshar_Hediff_Regrowth</hediff>
+        <beuPerTick>1</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <hostile>false</hostile>
+        <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+        <verbProperties>
+            <targetable>true</targetable>
+            <warmupTime>0</warmupTime>
+            <range>18</range>
+            <requireLineOfSight>false</requireLineOfSight>
+            <violent>false</violent>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetHumans>true</canTargetHumans>
+                <canTargetAnimals>true</canTargetAnimals>
+                <canTargetLocations>false</canTargetLocations>
+            </targetParams>
+        </verbProperties>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

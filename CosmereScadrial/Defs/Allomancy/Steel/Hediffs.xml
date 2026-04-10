@@ -7,7 +7,7 @@
 Each line points toward a metal object — coin, armor, blade — waiting to be pushed.
 These lines shimmer with the tension of potential force, visible only to those burning Steel.</description>
         <comps>
-            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.PhysicalExternalAuraProperties" />
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Hediff.PhysicalExternalAuraProperties" />
         </comps>
         <stages>
             <li>
@@ -19,7 +19,7 @@ These lines shimmer with the tension of potential force, visible only to those b
             </li>
         </stages>
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Core.DefModExtension.MetalsLinked">
                 <metal>Steel</metal>
             </li>
         </modExtensions>
@@ -31,7 +31,7 @@ These lines shimmer with the tension of potential force, visible only to those b
     </HediffDef>
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
         <defName>Cosmere_Scadrial_Hediff_SteelJump</defName>
-        <label>Burning steel: bubble</label>
+        <label>burning steel: jumping</label>
         <description>This pawn is in mid-air, having pushed off the ground with Allomantic Steel. They are temporarily immune to ground-based hazards and cannot be targeted in melee.</description>
         <comps>
             <li Class="HediffCompProperties_Disappears">

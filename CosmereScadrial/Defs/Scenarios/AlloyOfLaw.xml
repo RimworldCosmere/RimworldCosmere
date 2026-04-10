@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scadrial_Scenario_AlloyOfLaw</defName>
+    <label>Mistborn: The Alloy of Law</label>
+    <description>Three hundred years after the Catacendre. Waxillium Ladrian left the Roughs to reclaim his noble house, but civilization's comforts cannot dull the instincts of a lawman. When the Vanishers begin their campaign of theft and kidnapping, Wax picks up his guns again.</description>
+    <scenario>
+      <summary>Wax and Wayne take on the Vanishers in the post-Catacendre Roughs.</summary>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Waxillium</firstName>
+              <nickName>Wax</nickName>
+              <lastName>Ladrian</lastName>
+              <age>42</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingSteel</li>
+                <li>Cosmere_Scadrial_Gene_FerringIron</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Shooting</def><level>16</level></li>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Intellectual</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Wayne</firstName>
+              <age>30</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingBendalloy</li>
+                <li>Cosmere_Scadrial_Gene_FerringGold</li>
+              </genes>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+                <li><def>Social</def><level>14</level></li>
+                <li><def>Crafting</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Marasi</firstName>
+              <lastName>Colms</lastName>
+              <age>25</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingCadmium</li>
+              </genes>
+              <skills>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Shooting</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Steris</firstName>
+              <lastName>Harms</lastName>
+              <age>28</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <traits>
+                <li><def>Industriousness</def><degree>2</degree></li>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>12</level></li>
+                <li><def>Social</def><level>10</level></li>
+                <li><def>Crafting</def><level>8</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Ranette</firstName>
+              <age>30</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <traits>
+                <li><def>Abrasive</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Crafting</def><level>16</level></li>
+                <li><def>Shooting</def><level>10</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealFine</thingDef>
+          <count>50</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>30</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_Revolver</thingDef>
+          <count>2</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Gun_BoltActionRifle</thingDef>
+          <count>1</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>500</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_AlloyOfLaw</progression>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>Wax holsters his Sterrion. The Roughs stretch to the horizon - dusty, vast, and full of people who would rather not be found. Wayne adjusts his hat. Marasi checks her notes. Steris has already drafted a contingency plan for seventeen possible emergencies. The eighteenth, she notes, is an acceptable risk.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Harmony</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

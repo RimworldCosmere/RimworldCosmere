@@ -1,0 +1,31 @@
+[global]
+extends = "../"
+
+# Cosmere.Core
+[bundles.core_textures]
+description = "Cosmere.Core Textures"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_path = "cosmere.core"
+bundle_name = "cosmere.core_textures"
+filename = "resource_[bundle_name]_textures"
+include_patterns = ["*.png", "*.psd", "*.jpg", "*.jpeg"]
+
+[bundles.core_sounds]
+description = "Cosmere.Core Sounds"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_path = "cosmere.core"
+bundle_name = "cosmere.core_sounds"
+filename = "resource_[bundle_name]_sounds"
+include_patterns = ["*.wav", "*.mp3", "*.ogg"]
+
+[bundles.core_shaders]
+description = "Cosmere.Core Shaders"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_path = "cosmere.core"
+bundle_name = "cosmere.core_shaders"
+filename = "resource_[bundle_name]_shaders_[target]"
+include_patterns = ["*.shader"]
+targetless = false

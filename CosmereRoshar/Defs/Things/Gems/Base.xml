@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="Cosmere_Roshar_Thing_CurrencyBase" ParentName="ResourceBase" Abstract="True">
+        <graphicData>
+            <graphicClass>Graphic_StackCount</graphicClass>
+            <drawSize>0.5</drawSize>
+        </graphicData>
+        <healthAffectsPrice>false</healthAffectsPrice>
+        <soundInteract>Silver_Drop</soundInteract>
+        <soundDrop>Silver_Drop</soundDrop>
+        <thingCategories>
+            <li>Items</li>
+            <li>Manufactured</li>
+            <li>Cosmere_Currency</li>
+        </thingCategories>
+        <stackLimit>200</stackLimit>
+        <tradeTags>
+            <li>Cosmere_Currency</li>
+        </tradeTags>
+        <orderedTakeGroup>Cosmere_Currency</orderedTakeGroup>
+        <statBases>
+            <Beauty>0</Beauty>
+        </statBases>
+        <comps>
+            <li><compClass>CompQuality</compClass></li>
+        </comps>
+    </ThingDef>
+</Defs>

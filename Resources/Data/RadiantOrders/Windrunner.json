@@ -1,0 +1,62 @@
+{
+  "name": "windrunner",
+  "description": "Surgebinders who command Gravitation and Adhesion. Swift, loyal, and bound by oaths to protect, they fly through the air and strike like the storm.",
+  "surges": [
+    "adhesion",
+    "gravitation"
+  ],
+  "color": "0f3562",
+  "gemstone": "sapphire",
+  "sprenType": "honorspren",
+  "sprenDescription": "A small, luminous figure of blue-white light with a humanoid shape. Honorspren are fiercely loyal, idealistic, and deeply protective of their bonded Radiant.",
+  "sprenNamePool": ["Syl", "Phendorana", "Notum", "Yunfah", "Riah", "Vaiu", "Seris", "Vendel", "Zephara", "Aerin", "Skycrest", "Pheris", "Toriel", "Windara", "Kalani", "Galah", "Aethal", "Veran", "Brightgust", "Oathwyn"],
+  "ideals": [
+    {
+      "stormlightMax": 100,
+      "label": "first ideal",
+      "description": "The universal Ideal shared by all Radiants. A pledge to value life, seek strength for the right reasons, and walk a path of purpose over outcome.",
+      "quotes": [
+        "Life before death, strength before weakness, journey before destination."
+      ]
+    },
+    {
+      "stormlightMax": 300,
+      "label": "second ideal",
+      "description": "The Windrunner accepts their duty as a guardian, vowing to defend the innocent and powerless without hesitation.",
+      "quotes": [
+        "I will protect those who cannot protect themselves."
+      ]
+    },
+    {
+      "stormlightMax": 700,
+      "label": "third ideal",
+      "description": "The Windrunner expands their protection to all, even enemies and the undeserving, recognizing that justice demands compassion without bias.",
+      "quotes": [
+        "I will protect even those I hate, so long as it is right.",
+        "I will protect those I hate. Even...even if the one I hate most is... myself.",
+        "I've got to protect people, you know? Even from myself."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade",
+          "Cosmere_Roshar_Ability_ToggleShardplate"
+      ]
+    },
+    {
+      "label": "fourth ideal",
+      "description": "A painful admission that not all can be saved. The Windrunner accepts their limits and continues to act despite inevitable failure.",
+      "quotes": [
+        "I accept that there will be those I cannot protect!"
+      ],
+      "abilities": [
+      ]
+    },
+    {
+      "stormlightMax": 3000,
+      "label": "fifth ideal",
+      "description": "The culmination of the Windrunner's journey: acknowledging their own worth, and the necessity of self-preservation in the service of others.",
+      "quotes": [
+        "I will protect myself, so that I may continue to protect others."
+      ]
+    }
+  ]
+}

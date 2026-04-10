@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scadrial_Scenario_LordRuler</defName>
+    <label>Mistborn: The Lord Ruler</label>
+    <description>You are Rashek. You held the power of Preservation at the Well of Ascension and used it to reshape the world. You moved the planet, raised the ashmounts, and transformed the Terris people. Now the power fades, but you remain - Mistborn and Feruchemist both, immortal and unyielding. A thousand years of rule begins with a single settlement.</description>
+    <scenario>
+      <summary>Build an empire as the immortal Lord Ruler.</summary>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Rashek</firstName>
+              <lastName>Sliver</lastName>
+              <nickName>Lord Ruler</nickName>
+              <age>30</age>
+              <chronologicalAge>1050</chronologicalAge>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <mistborn>true</mistborn>
+              <fullFeruchemist>true</fullFeruchemist>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Nerves</def><degree>2</degree></li>
+                <li><def>Abrasive</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>18</level></li>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Social</def><level>14</level></li>
+                <li><def>Shooting</def><level>12</level></li>
+                <li><def>Crafting</def><level>12</level></li>
+                <li><def>Construction</def><level>12</level></li>
+                <li><def>Medicine</def><level>12</level></li>
+                <li><def>Cooking</def><level>12</level></li>
+                <li><def>Mining</def><level>12</level></li>
+                <li><def>Plants</def><level>12</level></li>
+                <li><def>Animals</def><level>12</level></li>
+                <li><def>Artistic</def><level>12</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_Spear</thingDef>
+          <stuff>Steel</stuff>
+          <count>1</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>200</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>200</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_LordRuler</progression>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The power fades, but what remains is enough. You have moved the planet, raised mountains of fire, and remade the very people who walk the land. You are Rashek, the Lord Ruler, Sliver of Infinity. A thousand years begins now. Your empire will be built by your hand alone - at first. The skaa will come. The nobility will rise. And through it all, you will endure. You must. Ruin stirs beneath the world, and only you stand between it and annihilation.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Ruin</li>
+          <li>Preservation</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

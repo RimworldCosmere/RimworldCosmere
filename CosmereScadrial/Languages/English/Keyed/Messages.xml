@@ -15,8 +15,51 @@
     
     <CS_PawnSnapped_Title>Pawn Snapped!</CS_PawnSnapped_Title>
     <CS_PawnSnapped_Message>{PAWN} has snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Message>
-    
+    <CS_PawnSnapped_WitnessedDeath>{PAWN} witnessed the death of a loved one, and the trauma broke something open within them. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_WitnessedDeath>
+    <CS_PawnSnapped_Prisoner>{PAWN} endured brutal treatment as a prisoner. The pain and desperation triggered a snap, granting access to the Metallic Arts!</CS_PawnSnapped_Prisoner>
+    <CS_PawnSnapped_FirstKill>{PAWN} took a life for the first time. The shock of the act broke through a barrier within them. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_FirstKill>
+    <CS_PawnSnapped_Starvation>{PAWN} teetered on the edge of starvation. In their desperate struggle to survive, something within them broke open. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Starvation>
+    <CS_PawnSnapped_Downed>{PAWN} collapsed in the heat of battle. As consciousness faded, something awakened within them. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Downed>
+    <CS_PawnSnapped_LimbLoss>{PAWN} lost a part of themselves, and the trauma of that loss broke something open within them. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_LimbLoss>
+    <CS_PawnSnapped_RoofCollapse>{PAWN} was buried under a collapsed roof. Trapped and desperate, something within them shattered. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_RoofCollapse>
+    <CS_PawnSnapped_FailedSurgery>{PAWN} endured a botched surgery. The shock and violation of it broke through a barrier within them. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_FailedSurgery>
+    <CS_PawnSnapped_OrganHarvest>{PAWN} had an organ torn from their body. The violation shattered something deep within them. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_OrganHarvest>
+    <CS_PawnSnapped_SocialFight>{PAWN} was beaten by someone they knew. The betrayal and pain broke something open within them. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_SocialFight>
+    <CS_PawnSnapped_Breakup>{PAWN} was devastated by the end of a relationship. The emotional wound cracked their spirit web. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Breakup>
+    <CS_PawnSnapped_Arrest>{PAWN} was arrested by their own people. The betrayal shattered something within them. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Arrest>
+    <CS_PawnSnapped_Lightning>{PAWN} was struck by lightning and survived. Raw energy coursed through them, cracking their spirit web wide open. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Lightning>
+    <CS_PawnSnapped_ColonyDestruction>{PAWN} watched helplessly as the colony was torn apart around them. The anguish and loss broke something within. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_ColonyDestruction>
+    <CS_PawnSnapped_Temperature>{PAWN} was pushed to the edge by extreme temperatures. As their body began to fail, something within them broke open. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Temperature>
+    <CS_PawnSnapped_Withdrawal>{PAWN} was wracked by the agony of withdrawal. Their body tearing itself apart cracked their spirit web. They have snapped and gained access to the Metallic Arts!</CS_PawnSnapped_Withdrawal>
+
     <CS_LockShardSelection>Shard System has been pre-selected: {SHARDS}</CS_LockShardSelection>
     
     <CS_Coinshot_NoClips>{PAWN} has no clips to throw!</CS_Coinshot_NoClips>
+
+    <Cosmere_Scadrial_CopperRaidReduction>The coppercloud masked the colony's presence, reducing the raid's threat by {0}%.</Cosmere_Scadrial_CopperRaidReduction>
+    <Cosmere_Scadrial_CopperRaidReduction_WithConfusion>The coppercloud masked the colony's presence, reducing the raid's threat by {0}%. {1} raiders arrived disoriented, confused by what they found.</Cosmere_Scadrial_CopperRaidReduction_WithConfusion>
+
+    <Cosmere_Scadrial_BronzeDetection_Title>Bronze Seeker Detection</Cosmere_Scadrial_BronzeDetection_Title>
+    <Cosmere_Scadrial_BronzeDetection_Caravan>Your Bronze Seeker senses the pulse of metals in this land. The following resources lie beneath the surface:\n\n{0}</Cosmere_Scadrial_BronzeDetection_Caravan>
+    <Cosmere_Scadrial_BronzeDetection_Colony>Your Bronze Seeker reveals deep resources beneath the colony: {0}</Cosmere_Scadrial_BronzeDetection_Colony>
+    <Cosmere_Scadrial_BronzeDetection_Adjacent>Your Bronze Seeker senses metal deposits in {0} nearby tiles:\n\n{1}</Cosmere_Scadrial_BronzeDetection_Adjacent>
+    <Cosmere_Scadrial_BronzeDetection_AdjacentEntry>Tile {0}: {1}</Cosmere_Scadrial_BronzeDetection_AdjacentEntry>
+
+    <CS_Savant_Allomancy_Stage1_Title>{PAWN} is becoming attuned to {POWER}</CS_Savant_Allomancy_Stage1_Title>
+    <CS_Savant_Allomancy_Stage1_Message>{PAWN} has burned {POWER} so frequently that it has begun reshaping {PAWN_possessive} spirit web. Allomantic abilities with {POWER} are growing stronger, but the metal's grip tightens.</CS_Savant_Allomancy_Stage1_Message>
+
+    <CS_Savant_Allomancy_Stage2_Title>{PAWN} is dependent on {POWER}</CS_Savant_Allomancy_Stage2_Title>
+    <CS_Savant_Allomancy_Stage2_Message>{PAWN}'s body and spirit have become dependent on {POWER}. The enhanced power comes at a cost - without the metal burning, withdrawal will set in.</CS_Savant_Allomancy_Stage2_Message>
+
+    <CS_Savant_Allomancy_Stage3_Title>{PAWN} has become a {POWER} savant</CS_Savant_Allomancy_Stage3_Title>
+    <CS_Savant_Allomancy_Stage3_Message>{PAWN} has burned {POWER} so extensively that it has permanently altered {PAWN_possessive} spirit web. The metal's power is extraordinary, but it has left permanent marks on {PAWN_possessive} body and mind.</CS_Savant_Allomancy_Stage3_Message>
+
+    <CS_Savant_Feruchemy_Stage1_Title>{PAWN} is becoming attuned to {POWER}</CS_Savant_Feruchemy_Stage1_Title>
+    <CS_Savant_Feruchemy_Stage1_Message>{PAWN} has stored and tapped {POWER} so frequently that the metalmind responds more readily. Feruchemical abilities are growing, but the bond to the metal deepens.</CS_Savant_Feruchemy_Stage1_Message>
+
+    <CS_Savant_Feruchemy_Stage2_Title>{PAWN} is dependent on {POWER}</CS_Savant_Feruchemy_Stage2_Title>
+    <CS_Savant_Feruchemy_Stage2_Message>{PAWN}'s spirit web has become deeply intertwined with {POWER}. Enhanced Feruchemical power flows through the metalminds, but storing now takes a heavier toll.</CS_Savant_Feruchemy_Stage2_Message>
+
+    <CS_Savant_Feruchemy_Stage3_Title>{PAWN} has become a {POWER} feruchemy savant</CS_Savant_Feruchemy_Stage3_Title>
+    <CS_Savant_Feruchemy_Stage3_Message>{PAWN} has used {POWER} metalminds so extensively that the art has permanently altered {PAWN_possessive} spirit web. Feruchemical power is extraordinary, but it has left permanent marks.</CS_Savant_Feruchemy_Stage3_Message>
 </LanguageData>

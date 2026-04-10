@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef Name="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract" Abstract="True">
+        <hediffClass>HediffWithComps</hediffClass>
+        <defaultLabelColor>(0.9, 0.65, 0.2)</defaultLabelColor>
+        <isBad>false</isBad>
+        <makesSickThought>false</makesSickThought>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <everCurableByItem>false</everCurableByItem>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Tin</defName>
+        <label>tin savant physiology</label>
+        <description>{PAWN_nameDef}'s spirit web has been permanently reshaped by tin. {PAWN_possessive} senses operate at a heightened baseline - colors are more vivid, sounds sharper, textures more distinct - but this sensitivity brings with it an agonizing vulnerability to pain.</description>
+        <stages>
+            <li>
+                <painFactor>1.4</painFactor>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <offset>0.15</offset>
+                    </li>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <offset>0.15</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Pewter</defName>
+        <label>pewter savant physiology</label>
+        <description>{PAWN_nameDef}'s body has been permanently enhanced by pewter. {PAWN_possessive} muscles are denser and {PAWN_possessive} reflexes sharper than any natural human, but the constant strain on {PAWN_possessive} body has weakened {PAWN_possessive} immune response.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MoveSpeed>1.10</MoveSpeed>
+                    <MeleeHitChance>1.10</MeleeHitChance>
+                    <ImmunityGainSpeed>0.75</ImmunityGainSpeed>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Brass</defName>
+        <label>brass savant physiology</label>
+        <description>{PAWN_nameDef}'s constant Soothing has permanently attuned {PAWN_possessive} spirit web to emotional suppression. {PAWN_pronoun} reads and influences others with uncanny ease, but the boundary between {PAWN_possessive} own emotions and those {PAWN_pronoun} manipulates has eroded, leaving {PAWN_objectPronoun} emotionally unstable.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <SocialImpact>1.15</SocialImpact>
+                    <NegotiationAbility>1.15</NegotiationAbility>
+                    <MentalBreakThreshold>1.10</MentalBreakThreshold>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Zinc</defName>
+        <label>zinc savant physiology</label>
+        <description>{PAWN_nameDef}'s relentless Rioting has permanently reshaped {PAWN_possessive} spirit web. {PAWN_pronoun} can inflame the passions of others with a word, but years of stoking foreign emotions have left {PAWN_possessive} own feelings muted and distant.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <SocialImpact>1.15</SocialImpact>
+                    <NegotiationAbility>1.15</NegotiationAbility>
+                    <MentalBreakThreshold>1.10</MentalBreakThreshold>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Copper</defName>
+        <label>copper savant physiology</label>
+        <description>{PAWN_nameDef}'s mind has been fortified by years of maintaining a coppercloud. {PAWN_possessive} thoughts are shielded and {PAWN_possessive} pain tolerance remarkable, but the constant dampening has dimmed {PAWN_possessive} overall mental acuity.</description>
+        <stages>
+            <li>
+                <painFactor>0.90</painFactor>
+                <statFactors>
+                    <MentalBreakThreshold>0.90</MentalBreakThreshold>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.08</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Bronze</defName>
+        <label>bronze savant physiology</label>
+        <description>{PAWN_nameDef}'s relentless Seeking has permanently sharpened {PAWN_possessive} consciousness. {PAWN_pronoun} can pierce copperclouds and detect Allomantic pulses that would be invisible to lesser Seekers. The rhythms of Investiture hum constantly in {PAWN_possessive} awareness.</description>
+        <stages>
+            <li>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>0.05</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Steel</defName>
+        <label>steel savant physiology</label>
+        <description>{PAWN_nameDef}'s body has been subtly reshaped by years of steel Pushing. Faint blue lines flicker permanently at the edges of {PAWN_possessive} vision, revealing nearby metal. The constant outward force has left {PAWN_possessive} frame lighter but more fragile.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MaxHitPoints>0.90</MaxHitPoints>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Iron</defName>
+        <label>iron savant physiology</label>
+        <description>{PAWN_nameDef}'s body has grown denser from years of iron Pulling. {PAWN_possessive} frame carries more weight, grounding {PAWN_objectPronoun} against forces that would move others, and {PAWN_possessive} instinctive reactions in close combat have quickened from constant awareness of metallic objects.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MeleeWeapon_CooldownMultiplier>0.85</MeleeWeapon_CooldownMultiplier>
+                    <Mass>1.15</Mass>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Gold</defName>
+        <label>gold savant physiology</label>
+        <description>Glimpses of {PAWN_nameDef}'s past selves bleed through unbidden, layering memories of lives unlived over {PAWN_possessive} waking mind. This expanded self-awareness has sharpened {PAWN_possessive} consciousness and capacity for learning, but the weight of paths not taken strains {PAWN_possessive} mental stability.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <GlobalLearningFactor>1.10</GlobalLearningFactor>
+                    <MentalBreakThreshold>1.10</MentalBreakThreshold>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>0.10</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Electrum</defName>
+        <label>electrum savant physiology</label>
+        <description>Branching futures flicker constantly before {PAWN_nameDef}'s eyes. Shadows of possible selves dodge, strike, and falter in an endless cascade. The prescience sharpens {PAWN_possessive} combat reflexes, but the overwhelming noise of unrealized timelines fractures {PAWN_possessive} focus on mundane tasks.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MeleeHitChance>1.15</MeleeHitChance>
+                    <MeleeDodgeChance>1.15</MeleeDodgeChance>
+                    <WorkSpeedGlobal>0.90</WorkSpeedGlobal>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Atium</defName>
+        <label>atium savant physiology</label>
+        <description>{PAWN_nameDef}'s spirit web bears the scars of atium's temporal gift. {PAWN_pronoun} moves with an extraordinary prescience in combat, reading opponents' movements before they occur, but the strain of touching Ruin's own metal has aged {PAWN_possessive} body beyond its years.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MeleeHitChance>1.20</MeleeHitChance>
+                    <MeleeDodgeChance>1.20</MeleeDodgeChance>
+                    <MoveSpeed>1.10</MoveSpeed>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Cadmium</defName>
+        <label>cadmium savant physiology</label>
+        <description>{PAWN_nameDef}'s perception of time has permanently shifted from years of cadmium burning. {PAWN_pronoun} slips into restful states with ease, and {PAWN_possessive} body conserves energy as if still wrapped in a time bubble, but {PAWN_pronoun} struggles to keep pace with the world around {PAWN_objectPronoun}.</description>
+        <stages>
+            <li>
+                <hungerRateFactor>0.90</hungerRateFactor>
+                <statFactors>
+                    <RestRateMultiplier>1.15</RestRateMultiplier>
+                    <WorkSpeedGlobal>0.85</WorkSpeedGlobal>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Bendalloy</defName>
+        <label>bendalloy savant physiology</label>
+        <description>{PAWN_nameDef} exists in a state of perpetual acceleration. {PAWN_possessive} hands move faster than thought and {PAWN_possessive} work is swift, but the metabolic cost is relentless. {PAWN_possessive} body burns through food at an alarming rate and {PAWN_pronoun} can never seem to rest deeply enough.</description>
+        <stages>
+            <li>
+                <hungerRateFactor>1.20</hungerRateFactor>
+                <statFactors>
+                    <WorkSpeedGlobal>1.10</WorkSpeedGlobal>
+                    <RestRateMultiplier>0.85</RestRateMultiplier>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Aluminum</defName>
+        <label>aluminum savant physiology</label>
+        <description>{PAWN_nameDef}'s spirit web has been scoured smooth by aluminum. The metal's wiping influence has left a permanent mark - {PAWN_possessive} connection to Investiture is muted, granting a natural resistance to its effects but dulling {PAWN_possessive} own Allomantic potential.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <PsychicSensitivity>0.75</PsychicSensitivity>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>0.05</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Duralumin</defName>
+        <label>duralumin savant physiology</label>
+        <description>{PAWN_nameDef}'s spirit web has been warped by repeated duralumin surges. The amplification pathways are permanently widened, allowing for greater bursts of power, but {PAWN_possessive} Allomantic reserves destabilize more readily under the strain.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MentalBreakThreshold>1.08</MentalBreakThreshold>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>0.05</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Chromium</defName>
+        <label>chromium savant physiology</label>
+        <description>{PAWN_nameDef}'s touch carries a permanent void. Years of leeching have shaped {PAWN_possessive} spirit web into a sink for Investiture, passively dampening the Allomantic abilities of those nearby. The constant outward drain leaves {PAWN_possessive} own reserves less efficient.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <PsychicSensitivity>0.85</PsychicSensitivity>
+                    <SurgerySuccessChanceFactor>1.08</SurgerySuccessChanceFactor>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_Nicrosil</defName>
+        <label>nicrosil savant physiology</label>
+        <description>{PAWN_nameDef}'s spirit web radiates amplification. Years of boosting others have permanently attuned {PAWN_possessive} Investiture to flow outward, passively enhancing the Allomantic abilities of nearby allies. The constant outward flow leaves {PAWN_possessive} own reserves draining faster.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <SocialImpact>1.10</SocialImpact>
+                    <PsychicSensitivity>1.15</PsychicSensitivity>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

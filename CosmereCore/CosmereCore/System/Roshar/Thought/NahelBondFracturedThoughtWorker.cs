@@ -1,0 +1,21 @@
+using Cosmere.Core.Comp.Game;
+using Cosmere.System.Roshar.Gene;
+using RimWorld;
+using Verse;
+
+namespace Cosmere.System.Roshar.Thought;
+
+public class NahelBondFracturedThoughtWorker : ThoughtWorker {
+    protected override ThoughtState CurrentStateInternal(Pawn p) {
+        Surgebinder? surgebinder = p.genes?.GetFirstGeneOfType<Surgebinder>();
+        if (surgebinder == null) return ThoughtState.Inactive;
+
+        ILoadReferenceable? bondTarget = surgebinder.GetBondTarget();
+        if (bondTarget == null) return ThoughtState.Inactive;
+
+        float connection = SpiritWeb.Instance.GetConnectionValue(p, bondTarget);
+        if (connection >= 0.15f && connection < 0.4f) return ThoughtState.ActiveAtStage(0);
+
+        return ThoughtState.Inactive;
+    }
+}

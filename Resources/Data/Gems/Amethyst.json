@@ -1,0 +1,20 @@
+{
+  "name": "amethyst",
+  "descriptions": {
+    "raw": "Deep purple crystals that seem to hold twilight within their faceted depths. Prized across the Cosmere for their rich violet hue and mystical associations, amethyst is often favored by scholars and mystics who believe it enhances mental clarity and spiritual insight.",
+    "cut": "A perfectly cut amethyst, its deep purple facets catching light like captured starshine. Often used in ceremonial jewelry and scholarly implements, it radiates an aura of wisdom and mystery.",
+    "sphere": "A polished amethyst sphere, glowing with inner purple light. Can be used to hold Stormlight, and is particularly favored for fabrials requiring mental focus or enhanced perception."
+  },
+  "color": "9966cc",
+  "colorTwo": "4d3366",
+  "glowColor": "9966cc",
+  "baseStormlight": 4,
+  "baseMarketValue": 0.75,
+  "baseBeauty": 2,
+  "mining": {
+    "hitPoints": 1400,
+    "yield": 6,
+    "commonality": 0.3,
+    "sizeRange": [8, 16]
+  }
+}

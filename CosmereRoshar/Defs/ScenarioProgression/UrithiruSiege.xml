@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+    <defName>Cosmere_Roshar_Progression_UrithiruSiege</defName>
+    <label>Urithiru Siege Progression</label>
+    <events>
+      <li>
+        <key>the_suppression</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>1</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Suppression</title>
+            <text>The field hums through the tower - invisible, inescapable. Stormlight bleeds from gemstones. Radiants feel their power draining. The enemy has turned Urithiru's own defenses against its guardians.</text>
+            <letterDef>NegativeEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>kaladin_alone</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>5</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Kaladin Alone</title>
+            <text>Kaladin moves through the corridors like a ghost. The suppression field flickers his Stormlight - a breath of power, then nothing. He fights the Fused in darkness, with spear and instinct where Surgebinding fails. The other Radiants are captured or hiding. Kaladin is the last one standing, and his light keeps going out.</text>
+            <letterDef>NegativeEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>navanis_research</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>10</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SetSkillAction">
+            <pawnName>Navani</pawnName>
+            <skill>Intellectual</skill>
+            <level>20</level>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Tower's Secrets</title>
+            <text>The tower speaks in patterns. Navani listens. She traces ancient schematics, connects fabrials to light. The answers are here, buried in ten thousand years of silence. The Sibling resists her at first - trust does not come easily to a being who has been betrayed before. But Navani is patient, and her questions are the right ones.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>tefts_struggle</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>15</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Teft's Struggle</title>
+            <text>Without Stormlight, the old cravings return. Teft sits in the dark, hands shaking, fighting a war that has nothing to do with the Fused. He has sworn oaths. He has stood with Bridge Four. But the firemoss whispers, and without the light to burn it away, the whisper becomes a roar.</text>
+            <letterDef>NegativeEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>dabbids_courage</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>20</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Dabbid's Courage</title>
+            <text>Dabbid does not speak. But he moves through the tower unseen, carrying water and bandages to those in hiding. The enemy does not notice him. They never notice the quiet ones. In a tower full of Radiants and Fused, the bravest soul may be the one with no powers at all.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>lifts_resistance</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>25</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Lift's Resistance</title>
+            <text>Lift is different. Where other Radiants flicker and fade, she burns steady. Cultivation's touch runs deeper than the suppression field can reach. She converts food to Stormlight - always has - and the enemy cannot take that from her. She slides through corridors on frictionless feet, a thirteen-year-old thorn in the side of an occupying army.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>kaladins_fourth_ideal</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>40</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+            <minThreats>3</minThreats>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
+            <pawnName>Kaladin</pawnName>
+            <targetIdeal>3</targetIdeal>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Fourth Ideal</title>
+            <text>The words have haunted him since Hearthstone. Since the bridgecrew. Since every person he could not save. "I accept that there will be those I cannot protect." The Stormlight floods back. The suppression shatters around Kaladin like breaking glass. Shardplate forms from windspren - living, radiant, an armor born of oaths kept and grief accepted.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>navanis_bond</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>50</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.EventOccurredTrigger">
+            <eventKey>navanis_research</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
+            <pawnName>Navani</pawnName>
+            <targetIdeal>1</targetIdeal>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Navani's Bond</title>
+            <text>Navani speaks the First Ideal, and the tower answers. The Sibling's light blazes through every corridor, every stairwell, every forgotten chamber. The suppression shatters. Navani Kholin is a Bondsmith, bonded to the tower itself. The Knights Radiant stand in Urithiru once more.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>liberation</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>55</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.EventOccurredTrigger">
+            <eventKey>navanis_bond</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Liberation</title>
+            <text>The Fused feel it - the shift. The tower is no longer theirs. Light blazes from every window, every gemstone, every fabrial that Navani's hands have touched. The Knights Radiant, restored to full power, rise. The final battle for Urithiru begins.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+        </actions>
+      </li>
+    </events>
+  </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+</Defs>

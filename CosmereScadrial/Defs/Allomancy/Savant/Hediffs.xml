@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef Name="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract" Abstract="True">
+        <hediffClass>HediffWithComps</hediffClass>
+        <defaultLabelColor>(0.9, 0.75, 0.3)</defaultLabelColor>
+        <isBad>false</isBad>
+        <makesSickThought>false</makesSickThought>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <everCurableByItem>false</everCurableByItem>
+        <initialSeverity>0.2</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <stages>
+            <li>
+                <label>attuned</label>
+                <minSeverity>0.1</minSeverity>
+            </li>
+            <li>
+                <label>dependent</label>
+                <minSeverity>0.4</minSeverity>
+            </li>
+            <li>
+                <label>savant</label>
+                <minSeverity>0.8</minSeverity>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Tin</defName>
+        <label>tin savant</label>
+        <description>{PAWN_nameDef} has burned tin so extensively that it has become woven into {PAWN_possessive} spirit web. {PAWN_possessive} senses are permanently heightened, but {PAWN_pronoun} suffers without the metal's influence.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Pewter</defName>
+        <label>pewter savant</label>
+        <description>{PAWN_nameDef} has burned pewter for so long that {PAWN_possessive} body has grown dependent on its strength. Without it, {PAWN_possessive} muscles feel like wet cloth and {PAWN_possessive} bones ache under their own weight.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Brass</defName>
+        <label>brass savant</label>
+        <description>{PAWN_nameDef} has Soothed so many emotions that {PAWN_pronoun} can no longer distinguish {PAWN_possessive} own feelings from those {PAWN_pronoun} suppresses in others. The boundaries of self have blurred.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Zinc</defName>
+        <label>zinc savant</label>
+        <description>{PAWN_nameDef} has Rioted emotions so frequently that {PAWN_possessive} own emotional responses have dulled. {PAWN_pronoun} feels the passions of others more vividly than {PAWN_possessive} own.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Copper</defName>
+        <label>copper savant</label>
+        <description>{PAWN_nameDef} has maintained a coppercloud for so long that {PAWN_possessive} mind has become a fortress of silence. Without copper burning, {PAWN_possessive} thoughts scatter like ash in the wind.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Bronze</defName>
+        <label>bronze savant</label>
+        <description>{PAWN_nameDef} has Sought Allomantic pulses so relentlessly that {PAWN_pronoun} can now detect them even through copperclouds. The rhythms of burning metal have become a constant hum in {PAWN_possessive} awareness.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Steel</defName>
+        <label>steel savant</label>
+        <description>{PAWN_nameDef} has Pushed on metal so extensively that faint blue lines flicker at the edges of {PAWN_possessive} vision even when not burning steel. Every piece of metal whispers its position.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Iron</defName>
+        <label>iron savant</label>
+        <description>{PAWN_nameDef} has Pulled on metal so often that {PAWN_pronoun} instinctively senses nearby metal even without burning iron. The weight and position of every metallic object registers in {PAWN_possessive} mind.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Gold</defName>
+        <label>gold savant</label>
+        <description>{PAWN_nameDef} has burned gold so deeply that glimpses of past selves bleed through unbidden. Shadows of who {PAWN_pronoun} might have been linger at the corners of {PAWN_possessive} perception.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Electrum</defName>
+        <label>electrum savant</label>
+        <description>{PAWN_nameDef} has burned electrum until branching futures have become visible without conscious effort. Possible selves flicker ahead of {PAWN_objectPronoun}, each one a path not yet taken.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Atium</defName>
+        <label>atium savant</label>
+        <description>{PAWN_nameDef} has burned atium so recklessly that temporal awareness has scarred {PAWN_possessive} spirit web. {PAWN_pronoun} perceives combat with an unnatural prescience, but each use exacts a toll on {PAWN_possessive} body.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Cadmium</defName>
+        <label>cadmium savant</label>
+        <description>{PAWN_nameDef} has slowed time around {PAWN_objectPronoun}self so frequently that {PAWN_possessive} perception of time's passage has permanently shifted. Moments stretch and compress without warning.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Bendalloy</defName>
+        <label>bendalloy savant</label>
+        <description>{PAWN_nameDef} has accelerated time so often that {PAWN_pronoun} exists in a state of perpetual urgency. The world outside {PAWN_possessive} speed bubble feels unbearably slow.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Aluminum</defName>
+        <label>aluminum savant</label>
+        <description>{PAWN_nameDef} has burned aluminum so thoroughly that {PAWN_possessive} spirit web has been smoothed and scoured. Internal Allomantic reserves drain faster, as if the metal itself remembers its purpose.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Duralumin</defName>
+        <label>duralumin savant</label>
+        <description>{PAWN_nameDef} has channeled duralumin surges so many times that {PAWN_possessive} spirit web craves amplification. Burning any metal without duralumin feels muted and insufficient.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Chromium</defName>
+        <label>chromium savant</label>
+        <description>{PAWN_nameDef} has leeched Allomantic reserves so extensively that {PAWN_possessive} touch passively dampens Investiture in those nearby. Other Allomancers sense an unsettling void around {PAWN_objectPronoun}.</description>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Scadrial_Hediff_AllomanticSavant_Abstract">
+        <defName>Cosmere_Scadrial_Hediff_AllomanticSavant_Nicrosil</defName>
+        <label>nicrosil savant</label>
+        <description>{PAWN_nameDef} has amplified others' Allomantic abilities so frequently that {PAWN_possessive} touch passively boosts the Investiture of allies. Other Allomancers burn brighter in {PAWN_possessive} presence.</description>
+    </HediffDef>
+</Defs>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef>
+        <defName>Cosmere_Roshar_Hediff_UrithuruBlessing</defName>
+        <label>Urithiru's blessing</label>
+        <description>The Sibling's power runs through this Bondsmith and out into the world around them. It is the tower's heartbeat made manifest, a steady pulse of warmth that sharpens minds and quickens hands. Everyone in the colony feels it, that sense that something greater is watching over them, lending its strength.</description>
+        <hediffClass>Verse.HediffWithComps</hediffClass>
+        <isBad>false</isBad>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <maxSeverity>1.0</maxSeverity>
+        <stages>
+            <li>
+                <minSeverity>0</minSeverity>
+                <label>tower's touch</label>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statOffsets>
+                    <WorkSpeedGlobal>0.25</WorkSpeedGlobal>
+                    <ResearchSpeed>0.5</ResearchSpeed>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

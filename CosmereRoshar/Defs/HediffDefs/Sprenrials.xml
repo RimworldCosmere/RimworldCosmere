@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef>
+        <defName>Cosmere_Roshar_Painrial_Augment</defName>
+        <label>painrial nearby</label>
+        <labelNoun>PainrialAugmenter</labelNoun>
+        <description>Pawn is close to painrial augmenter.</description>
+        <isBad>true</isBad>
+        <hediffClass>HediffWithComps</hediffClass>
+        <stages>
+            <li>
+                <painOffset>0.5</painOffset>
+            </li>
+        </stages>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>500</disappearsAfterTicks>
+                <showRemainingTime>false</showRemainingTime>
+                <canUseDecimalsShortForm>true</canUseDecimalsShortForm>
+            </li>
+        </comps>
+    </HediffDef>
+    <HediffDef>
+        <defName>Cosmere_Roshar_Painrial_Diminisher</defName>
+        <label>painrial nearby</label>
+        <labelNoun>PainrialDiminisher</labelNoun>
+        <description>Pawn is close to painrial diminisher.</description>
+        <isBad>false</isBad>
+        <hediffClass>HediffWithComps</hediffClass>
+        <stages>
+            <li>
+                <painOffset>-0.5</painOffset>
+            </li>
+        </stages>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>500</disappearsAfterTicks>
+                <showRemainingTime>false</showRemainingTime>
+                <canUseDecimalsShortForm>true</canUseDecimalsShortForm>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <HediffDef>
+        <defName>Cosmere_Roshar_Apparel_Painrial_Diminisher_Hediff</defName>
+        <label>wearing painrial</label>
+        <labelNoun>PainrialDiminisherApparel</labelNoun>
+        <description>Pawn is wearing a painrial diminisher.</description>
+        <isBad>false</isBad>
+         <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
+        <hediffClass>HediffWithComps</hediffClass>
+        <stages>
+            <li>
+                <painOffset>-0.5</painOffset>
+            </li>
+        </stages>
+        <comps>
+            <li><compClass>Cosmere.System.Roshar.Comp.Hediff.Fabrial.PainDiminisher</compClass></li>
+        </comps>
+    </HediffDef>
+    <HediffDef>
+        <defName>Cosmere_Roshar_Logirial_Augment</defName>
+        <label>logirial nearby</label>
+        <labelNoun>LogirialAugmenter</labelNoun>
+        <description>Pawn is close to logirial augmenter.</description>
+        <isBad>false</isBad>
+        <hediffClass>HediffWithComps</hediffClass>
+        <stages>
+            <li>
+                <statOffsets>
+                    <ResearchSpeed>1.125</ResearchSpeed>
+                </statOffsets>
+            </li>
+        </stages>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>500</disappearsAfterTicks>
+                <showRemainingTime>false</showRemainingTime>
+                <canUseDecimalsShortForm>true</canUseDecimalsShortForm>
+            </li>
+        </comps>
+    </HediffDef>
+        <HediffDef>
+        <defName>Cosmere_Roshar_Logirial_Diminisher</defName>
+        <label>logirial nearby</label>
+        <labelNoun>LogirialDiminisher</labelNoun>
+        <description>Pawn is close to logirial diminisher.</description>
+        <isBad>false</isBad>
+        <hediffClass>HediffWithComps</hediffClass>
+        <stages>
+            <li>
+                <statOffsets>
+                    <ResearchSpeed>-0.5</ResearchSpeed>
+                </statOffsets>
+            </li>
+        </stages>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>500</disappearsAfterTicks>
+                <showRemainingTime>false</showRemainingTime>
+                <canUseDecimalsShortForm>true</canUseDecimalsShortForm>
+            </li>
+        </comps>
+    </HediffDef>
+</Defs>

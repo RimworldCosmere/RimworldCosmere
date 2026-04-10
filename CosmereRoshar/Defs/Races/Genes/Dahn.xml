@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Dahn ranks for lighteyes. Only one can be active at a time. -->
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceLighteyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_Dahn_High</defName>
+        <label>high dahn (1st-2nd)</label>
+        <description>A highprince or member of the royal household. The highest echelon of lighteyed society. They command armies, hold territory, and answer only to the crown. Manual labor is beneath their station.</description>
+        <exclusionTags>
+            <li>RosharRank</li>
+        </exclusionTags>
+        <statOffsets>
+            <SocialImpact>0.6</SocialImpact>
+            <TradePriceImprovement>0.10</TradePriceImprovement>
+        </statOffsets>
+        <disabledWorkTags>PlantWork, Mining, Hauling</disabledWorkTags>
+    </GeneDef>
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceLighteyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_Dahn_Mid</defName>
+        <label>mid dahn (3rd-5th)</label>
+        <description>A military officer, lesser noble, or established lighteyed house. Respected and influential, though not untouchable. Manual labor is beneath them, but necessity sometimes overrules propriety.</description>
+        <exclusionTags>
+            <li>RosharRank</li>
+        </exclusionTags>
+        <statOffsets>
+            <SocialImpact>0.3</SocialImpact>
+            <TradePriceImprovement>0.05</TradePriceImprovement>
+        </statOffsets>
+    </GeneDef>
+
+    <GeneDef ParentName="Cosmere_Roshar_RaceLighteyesGeneBase">
+        <defName>Cosmere_Roshar_Gene_Dahn_Low</defName>
+        <label>low dahn (6th-10th)</label>
+        <description>A minor lighteyes with little land or influence. The distinction between a tenth dahn lighteyes and a first nahn darkeyes is razor-thin. Status is technically higher, but respect must still be earned.</description>
+        <exclusionTags>
+            <li>RosharRank</li>
+        </exclusionTags>
+        <statOffsets>
+            <SocialImpact>0.1</SocialImpact>
+        </statOffsets>
+    </GeneDef>
+</Defs>

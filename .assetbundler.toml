@@ -1,0 +1,16 @@
+[global]
+unity_version = "2022.3.35f1"
+exclude_patterns = ["*.meta"]
+link_method = "junction"
+skip_existing_meta = false
+# Unity args for batch builds (especially important for CI)
+unity_args = ["-nographics", "-disable-assembly-updater"]
+[[global.texture_types]]
+name = "Masks"
+type = "singlechannel"
+patterns = ["*_m.*", "*_mcolor.*", "*_mwear.*", "*_mglow.*"]
+mipmap_enabled = false
+srgb_texture = false
+alpha_source = "None"
+alpha_is_transparency = false
+textureCompression = "Compressed"

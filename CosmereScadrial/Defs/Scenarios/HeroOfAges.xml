@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scadrial_Scenario_HeroOfAges</defName>
+    <label>Mistborn: Hero of Ages</label>
+    <description>Ruin is free. The ash falls heavier each day, smothering crops and choking rivers. The mists linger past dawn, killing those they touch. Elend and Vin lead what remains of civilization while Sazed searches for an answer he no longer believes exists.</description>
+    <scenario>
+      <summary>Survive the end of the world as Ruin's power grows unchecked.</summary>
+      <parts>
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
+          <def>Cosmere_ScenPart_NamedPawns</def>
+          <pawns>
+            <li>
+              <firstName>Elend</firstName>
+              <lastName>Venture</lastName>
+              <age>23</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <mistborn>true</mistborn>
+              <traits>
+                <li><def>Kind</def><degree>0</degree></li>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+                <li><def>Intellectual</def><level>14</level></li>
+                <li><def>Social</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Vin</firstName>
+              <age>18</age>
+              <gender>Female</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <mistborn>true</mistborn>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>18</level></li>
+                <li><def>Shooting</def><level>12</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Sazed</firstName>
+              <age>37</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <fullFeruchemist>true</fullFeruchemist>
+              <traits>
+                <li><def>NaturalMood</def><degree>-2</degree></li>
+              </traits>
+              <skills>
+                <li><def>Intellectual</def><level>16</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Spook</firstName>
+              <age>18</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingTin</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>FastLearner</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>10</level></li>
+                <li><def>Shooting</def><level>10</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Ladrian</firstName>
+              <nickName>Breeze</nickName>
+              <age>42</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingBrass</li>
+              </genes>
+              <traits>
+                <li><def>Greedy</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Social</def><level>16</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Hammond</firstName>
+              <nickName>Ham</nickName>
+              <age>37</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingPewter</li>
+              </genes>
+              <traits>
+                <li><def>Tough</def><degree>0</degree></li>
+                <li><def>Kind</def><degree>0</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>14</level></li>
+              </skills>
+            </li>
+            <li>
+              <firstName>Demoux</firstName>
+              <age>26</age>
+              <gender>Male</gender>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <genes>
+                <li>Cosmere_Scadrial_Gene_MistingPewter</li>
+              </genes>
+              <traits>
+                <li><def>Nerves</def><degree>1</degree></li>
+              </traits>
+              <skills>
+                <li><def>Melee</def><level>12</level></li>
+              </skills>
+            </li>
+          </pawns>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>80</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineHerbal</thingDef>
+          <count>30</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>15</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>400</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="Cosmere.Core.ScenarioPart.ScenPart_ScenarioProgression">
+          <def>Cosmere_ScenPart_ScenarioProgression</def>
+          <progression>Cosmere_Scadrial_Progression_HeroOfAges</progression>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The red sun hangs low. Ash drifts like snow, but there is no beauty in it. The koloss are loose, the Inquisitors hunt freely, and Ruin's influence grows. Your colony may be the last bastion of civilization left standing. Hold. Endure. And pray that someone, somewhere, finds the answer.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Ruin</li>
+          <li>Preservation</li>
+        </shards>
+        <allowChange>False</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

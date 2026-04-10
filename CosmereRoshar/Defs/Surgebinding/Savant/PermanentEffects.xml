@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef Name="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract" Abstract="True">
+        <hediffClass>HediffWithComps</hediffClass>
+        <defaultLabelColor>(0.4, 0.8, 1.0)</defaultLabelColor>
+        <isBad>false</isBad>
+        <makesSickThought>false</makesSickThought>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <everCurableByItem>false</everCurableByItem>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavantPermanent_Adhesion</defName>
+        <label>adhesion savant physiology</label>
+        <description>{PAWN_nameDef}'s spirit web has been permanently reshaped by Adhesion. The Connection surge has deepened {PAWN_possessive} empathy to an overwhelming degree - {PAWN_pronoun} binds words and relationships with instinctive mastery, but cannot emotionally detach from the suffering of those around {PAWN_objectPronoun}.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <SocialImpact>1.20</SocialImpact>
+                    <NegotiationAbility>1.15</NegotiationAbility>
+                </statFactors>
+                <statOffsets>
+                    <MentalBreakThreshold>0.05</MentalBreakThreshold>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavantPermanent_Gravitation</defName>
+        <label>gravitation savant physiology</label>
+        <description>{PAWN_nameDef}'s sense of "down" has become permanently unstable. {PAWN_pronoun} moves with fluid confidence born of treating gravity as a suggestion, but the disconnect leaves {PAWN_objectPronoun} prone to stumbling and poor balance in close combat.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MoveSpeed>1.15</MoveSpeed>
+                    <MeleeDodgeChance>0.85</MeleeDodgeChance>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavantPermanent_Division</defName>
+        <label>division savant physiology</label>
+        <description>{PAWN_nameDef}'s spirit web bears the permanent mark of Division. The destructive surge has bled into {PAWN_possessive} psyche - {PAWN_pronoun} strikes with devastating precision, understanding how things come apart at a fundamental level, but {PAWN_possessive} emotional range has been heavily dampened. Joy and sorrow alike feel distant and muted.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MeleeHitChance>1.15</MeleeHitChance>
+                    <ShootingAccuracyPawn>1.15</ShootingAccuracyPawn>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.05</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abrasion</defName>
+        <label>abrasion savant physiology</label>
+        <description>{PAWN_nameDef}'s body has begun to resist friction at a spiritual level. {PAWN_pronoun} is extraordinarily difficult to strike or hold, but the same slipperiness makes gripping objects unreliable and {PAWN_possessive} body slides and shifts during sleep, preventing deep rest.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MeleeDodgeChance>1.15</MeleeDodgeChance>
+                    <RestRateMultiplier>0.85</RestRateMultiplier>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.15</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavantPermanent_Progression</defName>
+        <label>progression savant physiology</label>
+        <description>{PAWN_nameDef}'s body has become hyper-responsive to biological processes. {PAWN_possessive} wounds knit with unnatural speed and {PAWN_possessive} immune system operates at a heightened baseline, but the uncontrolled growth surge drives a ravenous hunger as {PAWN_possessive} body constantly tries to grow and regenerate.</description>
+        <stages>
+            <li>
+                <hungerRateFactor>1.25</hungerRateFactor>
+                <statFactors>
+                    <InjuryHealingFactor>1.20</InjuryHealingFactor>
+                    <ImmunityGainSpeed>1.10</ImmunityGainSpeed>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavantPermanent_Illumination</defName>
+        <label>illumination savant physiology</label>
+        <description>{PAWN_nameDef}'s senses have been permanently sharpened by years of bending light, but the boundary between illusion and reality has blurred. {PAWN_pronoun} perceives more of the spectrum than ordinary humans, yet lingering afterimages and light distortions cause significant disorientation.</description>
+        <stages>
+            <li>
+                <capMods>
+                    <li>
+                        <capacity>Sight</capacity>
+                        <offset>0.15</offset>
+                    </li>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.10</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavantPermanent_Transformation</defName>
+        <label>transformation savant physiology</label>
+        <description>{PAWN_nameDef}'s body has begun taking on physical characteristics of the substances {PAWN_pronoun} most frequently Soulcasts. {PAWN_possessive} skin carries a faint texture - stone-like, wood-grain, or metallic sheen - granting natural resilience but an unsettling appearance that others find deeply disturbing.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <ConstructionSpeedFactor>1.15</ConstructionSpeedFactor>
+                    <WorkSpeedGlobal>1.10</WorkSpeedGlobal>
+                    <ArmorRating_Sharp>1.10</ArmorRating_Sharp>
+                    <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+                    <SocialImpact>0.80</SocialImpact>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavantPermanent_Transportation</defName>
+        <label>transportation savant physiology</label>
+        <description>{PAWN_nameDef}'s perception has been permanently split between the Physical and Cognitive Realms. {PAWN_pronoun} navigates with remarkable speed, but occasionally "sees" into Shadesmar - overlapping realities fracture {PAWN_possessive} focus and make the mundane world feel unreliable.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <MoveSpeed>1.15</MoveSpeed>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.15</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavantPermanent_Cohesion</defName>
+        <label>cohesion savant physiology</label>
+        <description>{PAWN_nameDef} has developed an intuitive sense for material structure at a molecular level. {PAWN_pronoun} builds and mines with preternatural efficiency, but {PAWN_possessive} body has begun to feel rigid and stone-like - movement is labored and sleep uncomfortable.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <ConstructionSpeedFactor>1.15</ConstructionSpeedFactor>
+                    <MiningSpeed>1.15</MiningSpeed>
+                    <MoveSpeed>0.90</MoveSpeed>
+                    <BedRestEffectiveness>0.85</BedRestEffectiveness>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_SurgeSavantPermanent_Abstract">
+        <defName>Cosmere_Roshar_Hediff_SurgeSavantPermanent_Tension</defName>
+        <label>tension savant physiology</label>
+        <description>{PAWN_nameDef}'s body has taken on a perpetual rigidity from Tension. {PAWN_possessive} skin and muscle carry a residual hardness that grants natural armor and remarkable pain tolerance, but {PAWN_possessive} joints have stiffened permanently - fine manipulation is difficult and movement is sluggish.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <ArmorRating_Sharp>1.15</ArmorRating_Sharp>
+                    <ArmorRating_Blunt>1.15</ArmorRating_Blunt>
+                    <PainShockThreshold>1.15</PainShockThreshold>
+                    <MoveSpeed>0.90</MoveSpeed>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.15</offset>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

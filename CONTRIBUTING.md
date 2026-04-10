@@ -10,52 +10,38 @@ development environment, add new shardworlds, and follow our commit and release 
 - [.Net SDK 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 - [.Net Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
 - [Unity Hub](https://unity.com/download)
-- [Unity Editor 2022.3.35f1](https://unity.com/releases/editor/whats-new/2022.3.35) (located in
-  `C:\Program Files\Unity\Hub\Editor\2022.3.35f1\Editor\Unity.exe`)
-- [Node.js v24](https://nodejs.org/en/download/current)
-- [Powershell 7](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows)
+- [Unity Editor 2022.3.35f1](https://unity.com/releases/editor/whats-new/2022.3.35)
+- [Make](https://gnuwin32.sourceforge.net/packages/make.htm) (optional - Windows users can use `make.ps1` instead)
 
 To develop locally:
 
-1. Clone [AssetBuilder](https://github.com/RimworldCosmere/AssetBuilder) into a sibling directory (not inside this
-   repo):
+1. Generate code and build assets:
 
-    ```
-    /RimworldCosmere
-    /AssetBuilder
-    ```
-
-2. Navigate to `./.scripts/` and install dependencies:
-
+    **Option A: Using Make (if installed):**
     ```bash
-    cd .scripts
-    npm install
+    make generatables  # Generate code and build assets
     ```
 
-    - Node.js v24 is required.
-
-3. Start the asset watcher:
-
-    ```bash
-    npm start -- -d -f
-    ```
-
-    - This can be added as a pre-build step in your IDE.
-    - If using Rider, a run configuration is already provided.
-    - The [GarethP RimWorld plugin](https://plugins.jetbrains.com/plugin/18442-rimworld) is recommended for Rider.
-
-4. From the root of this repo, run:
-
+    **Option B: Using PowerShell script (Windows):**
     ```powershell
-    ./buildAllCosmereBundles.ps1
+    .\make.ps1 generatables  # Generate code and build assets
     ```
 
-    - This can also be added as a pre-build step in your IDE.
-    - It generates the final bundles for each mod.
+    **Available commands:**
+    - `make help` or `.\make.ps1 help` - Show all available commands
+    - `make generatables` - Generate code and build assets (recommended for development)
+    - `make generate` - Generate code only
+    - `make build-assets` - Build Unity AssetBundles only (requires Unity 2022.3.35f1)
+    - `make all` - Full build pipeline (clean, generate, build, assets)
 
-5. Ensure generated files remain gitignored. Don’t check them in.
+    **Note:** AssetBundle building requires Unity 2022.3.35f1 to be installed. The AssetBundleBuilder tool will automatically find and use your Unity installation.
 
-6. Symlink the mod folders you are working on into your RimWorld Mods directory.
+2. For development, use the provided RimWorld run configurations in your IDE.
+    - The [GarethP RimWorld plugin](https://plugins.jetbrains.com/plugin/18442-rimworld) is highly recommended for Rider users as it provides RimWorld-specific tooling and run configurations.
+
+3. Ensure generated files remain gitignored. Don't check them in.
+
+4. Symlink the mod folders you are working on into your RimWorld Mods directory.
 
    Example (Windows PowerShell):
 
@@ -67,26 +53,23 @@ To develop locally:
 
 Use `CosmereScadrial` as a reference for setting up a new shardworld.
 
-1. Create your `CosmereX.CosmereX` mod class using the same pattern.
-2. For settings, see `CosmereScadrial.Settings`.
-3. For quickstarting colonists or scenarios, see `CosmereScadrial.Quickstart`.
-4. Organize assets in the following structure:
+1. Add C# code in `CosmereCore/CosmereCore/System/{WorldName}/` following the namespace pattern `Cosmere.System.{WorldName}.*`
+2. Create a `Mod.cs` in your world directory inheriting from `CosmereMod`
+3. For settings, see `Cosmere.System.Scadrial.Settings.ScadrialModSettings`
+4. For quickstarting, see `Cosmere.System.Scadrial.Quickstart.PreCatacendreQuickstarter`
+5. Create your world mod directory `Cosmere{WorldName}/` with:
+    - `About/About.xml` - Mod metadata
+    - `Defs/` - XML definitions
+    - `Assets/` - Unity assets (Textures, Materials, Audio, etc.)
+    - `loadFolders.xml` - Load order configuration
+    - `.steamignore` - Files to exclude from Steam
 
+6. Add global using statement to `CosmereCore/CosmereCore/Cosmere.Core.csproj`:
+    ```xml
+    <Using Include="Cosmere.System.{WorldName}.Extension"/>
     ```
-    Assets/Textures/
-    Assets/Materials/
-    Assets/Terrain/
-    Assets/Audio/
-    ```
 
-5. Update `buildAllCosmereBundles.ps1` to include your mod in the `$mods` list on line 8.
-6. Copy a `.steamignore` file from another mod so that unneeded files are excluded from Steam uploads.
-
-New mods should reference the following shared projects:
-
-- `CosmereCore`
-- `CosmereFramework`
-- `CosmereResources` (optional but likely)
+New world mods only need to depend on `CosmereCore` - all shared code is in the single assembly.
 
 ## Development Workflow
 

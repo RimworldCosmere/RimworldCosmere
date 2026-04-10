@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>Cosmere_Scenario_Crashlanded</defName>
+    <label>Cosmere: Crashlanded</label>
+    <description>Three travelers from across the Cosmere - their vessel torn apart in transit through the Cognitive Realm. They carry fragments of knowledge from different worlds, different Investitures. What they build here will be shaped by every tradition they carry.</description>
+    <scenario>
+      <summary>Cosmere survivors, mixed origins, standard start.</summary>
+      <parts>
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
+          <def>ConfigurePawnsXenotypes</def>
+          <pawnChoiceCount>6</pawnChoiceCount>
+          <customSummary>Begin with three colonists drawn from across the Cosmere. Nobles, Skaa, Terris, Scadrians, Lighteyes, Darkeyes - the choice is yours.</customSummary>
+          <overrideKinds>
+            <li>
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Noble</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Skaa</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Terris</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <pawnKind>Cosmere_Scadrial_PawnKind_Scadrian</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <pawnKind>Cosmere_Roshar_PawnKind_Lighteyes</pawnKind>
+            </li>
+            <li>
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <pawnKind>Cosmere_Roshar_PawnKind_Darkeyes</pawnKind>
+            </li>
+          </overrideKinds>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>DropPods</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSurvivalPack</thingDef>
+          <count>40</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineHerbal</thingDef>
+          <count>20</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>15</count>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_Knife</thingDef>
+          <stuff>Steel</stuff>
+          <count>1</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>Steel</thingDef>
+          <count>300</count>
+        </li>
+
+        <li Class="ScenPart_ScatterThingsNearPlayerStart">
+          <def>ScatterThingsNearPlayerStart</def>
+          <thingDef>WoodLog</thingDef>
+          <count>200</count>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>The perpendicularity collapsed mid-transit. Your vessel - if it could be called that - is scattered across the landscape. Three of you survived. The Investiture in your veins still hums. This world is unfamiliar, but survival is a universal language.</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+      </parts>
+    </scenario>
+    <modExtensions>
+      <li Class="Cosmere.Core.DefModExtension.Shards">
+        <shards>
+          <li>Ruin</li>
+          <li>Preservation</li>
+          <li>Honor</li>
+          <li>Cultivation</li>
+        </shards>
+        <allowChange>True</allowChange>
+      </li>
+    </modExtensions>
+  </ScenarioDef>
+</Defs>

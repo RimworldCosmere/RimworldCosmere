@@ -7,10 +7,21 @@
         <biostatCpx>500</biostatCpx>
         <biostatMet>500</biostatMet>
         <biostatArc>500</biostatArc>
+        <modExtensions>
+            <li Class="Cosmere.Core.DefModExtension.CollapsibleGizmo">
+                <defaultCollapsed>true</defaultCollapsed>
+            </li>
+            <li Class="Cosmere.Core.DefModExtension.DormantConnection">
+                <callbackHandler>Cosmere.System.Scadrial.DormantConnection.Callback.Snapped</callbackHandler>
+            </li>
+        </modExtensions>
+        <statOffsets>
+            <MarketValue>20</MarketValue>
+        </statOffsets>
     </GeneDef>
     <GeneDef Name="AbstractAllomancyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
-        <geneClass>CosmereScadrial.Gene.Allomancer</geneClass>
-        <resourceGizmoType>CosmereScadrial.Gizmo.AllomanticGeneCommand</resourceGizmoType>
+        <geneClass>Cosmere.System.Scadrial.Gene.Allomancer</geneClass>
+        <resourceGizmoType>Cosmere.System.Scadrial.Gizmo.AllomanticGeneCommand</resourceGizmoType>
         <resourceGizmoThresholds>
             <li>0.2</li>
             <li>0.4</li>
@@ -21,8 +32,8 @@
         <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
     </GeneDef>
     <GeneDef Name="AbstractFeruchemyInvestitureGene" ParentName="AbstractMetallicArtsInvestitureGene" Abstract="True">
-        <geneClass>CosmereScadrial.Gene.Feruchemist</geneClass>
-        <resourceGizmoType>CosmereScadrial.Gizmo.FeruchemicGeneCommand</resourceGizmoType>
+        <geneClass>Cosmere.System.Scadrial.Gene.Feruchemist</geneClass>
+        <resourceGizmoType>Cosmere.System.Scadrial.Gizmo.FeruchemicGeneCommand</resourceGizmoType>
         <resourceGizmoThresholds>
             <li>0.2</li>
             <li>0.4</li>
@@ -31,20 +42,5 @@
         </resourceGizmoThresholds>
         <showGizmoOnWorldView>true</showGizmoOnWorldView>
         <showGizmoWhenDrafted>true</showGizmoWhenDrafted>
-    </GeneDef>
-    <GeneDef ParentName="AbstractMetallicArtsInvestitureGene">
-        <defName>Cosmere_Scadrial_Gene_DormantMetalborn</defName>
-        <geneClass>CosmereScadrial.Gene.DormantMetalborn</geneClass>
-        <label>dormant Connection</label>
-        <labelShortAdj>Dormant Connection</labelShortAdj>
-        <description>This pawn is attuned to a Shard’s power, though they’ve yet to tap it. A traumatic event may awaken their abilities.</description>
-        <displayCategory>Cosmere_Scadrial</displayCategory>
-        <displayOrderInCategory>10</displayOrderInCategory>
-        <forcedTraits>
-            <li>
-                <def>Cosmere_Scadrial_Trait_DormantMetalborn</def>
-            </li>
-        </forcedTraits>
-        <iconPath>UI/Icons/Genes/Investiture/Allomancy/Ettmetal</iconPath>
     </GeneDef>
 </Defs>

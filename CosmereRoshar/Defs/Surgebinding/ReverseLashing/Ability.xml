@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.System.Roshar.Def.SurgebindingAbilityDef ParentName="Cosmere_Roshar_Ability_HostileTargetCastAbility">
+        <defName>Cosmere_Roshar_Ability_ReverseLashing</defName>
+        <label>Reverse Lashing</label>
+        <description>Lash an enemy toward the sky. Gravity reverses for them in an instant and they rocket upward, arms flailing, before the lashing fades and the ground reclaims them. The landing is not kind. They hit hard enough to crack bone, and the shock of it leaves them stunned.</description>
+        <abilityClass>Cosmere.System.Roshar.Surgebinding.Ability.Gravitation.ReverseLashing</abilityClass>
+        <beuPerTick>18</beuPerTick>
+        <maxPower>1</maxPower>
+        <cooldownTicksRange>300~300</cooldownTicksRange>
+        <minIdeal>1</minIdeal>
+    </Cosmere.System.Roshar.Def.SurgebindingAbilityDef>
+</Defs>

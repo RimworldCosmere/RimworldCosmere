@@ -1,0 +1,20 @@
+{
+  "name": "topaz",
+  "descriptions": {
+    "raw": "Rich amber crystals with a warm, honeyed luster. Topaz is a sturdy, reliable gem, often associated with endurance and steadfastness. Its warm orange tones evoke hearthfire and the long patience of stone.",
+    "cut": "A precisely cut topaz, its amber facets catching light like liquid fire held still. Common in functional jewelry and practical adornments, it represents resilience without ostentation.",
+    "sphere": "A polished topaz sphere, glowing with a deep amber warmth. Capable of holding Stormlight, it is often used in fabrials requiring sustained energy and patient, steady application."
+  },
+  "color": "ffc87c",
+  "colorTwo": "80643e",
+  "glowColor": "ffc87c",
+  "baseStormlight": 5,
+  "baseMarketValue": 1.5,
+  "baseBeauty": 1,
+  "mining": {
+    "hitPoints": 1600,
+    "yield": 4,
+    "commonality": 0.25,
+    "sizeRange": [6, 14]
+  }
+}

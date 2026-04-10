@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="ResourceBase">
+        <defName>Cosmere_Roshar_Thing_Gemheart</defName>
+        <label>gemheart</label>
+        <description>A massive gemstone torn from the chrysalis of a chasmfiend. It pulses faintly with residual Stormlight, its facets catching light in ways that smaller gems cannot. Gemhearts are the spoils of plateau runs on the Shattered Plains - worth more than most soldiers will earn in a lifetime. They serve as fuel for Soulcasting, reservoirs for Stormlight, and objects of staggering trade value.</description>
+        <graphicData>
+            <texPath>Things/Item/Resource/Gemheart</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1.0</drawSize>
+        </graphicData>
+        <stackLimit>5</stackLimit>
+        <statBases>
+            <MarketValue>800</MarketValue>
+            <Mass>2.5</Mass>
+            <Beauty>30</Beauty>
+        </statBases>
+        <thingCategories>
+            <li>Exotic</li>
+        </thingCategories>
+        <tradeTags>
+            <li>ExoticMisc</li>
+        </tradeTags>
+        <comps>
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <maxInvestiture>500</maxInvestiture>
+                <startingInvestiture>250</startingInvestiture>
+                <shareInvestitureByDefault>true</shareInvestitureByDefault>
+            </li>
+        </comps>
+    </ThingDef>
+</Defs>

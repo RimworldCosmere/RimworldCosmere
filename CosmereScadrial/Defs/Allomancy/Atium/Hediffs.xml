@@ -16,7 +16,7 @@
             </li>
         </stages>
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Core.DefModExtension.MetalsLinked">
                 <metal>Atium</metal>
             </li>
         </modExtensions>

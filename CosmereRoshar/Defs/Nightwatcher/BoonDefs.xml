@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Tier 1: Minor Boons -->
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_Lighteyes</defName>
+        <label>eyes of light</label>
+        <description>The Nightwatcher's gift is subtle - a change in the color of {PAWN_nameDef}'s eyes. In the morning light, they shine. Where once dark irises marked {PAWN_nameDef} as common, now pale eyes speak of station. The caste system bends to Cultivation's will. Lighteyes.</description>
+        <powerTier>1</powerTier>
+        <applicatorClass>Cosmere.System.Roshar.LighteyesApplicator</applicatorClass>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_SkillCrafting</defName>
+        <label>nimble hands</label>
+        <description>{PAWN_nameDef}'s fingers move with a certainty that wasn't there before. Tools fit {PAWN_possessive} grip like old friends. Materials bend where {PAWN_pronoun} wants them to, as if they were always meant to.</description>
+        <powerTier>1</powerTier>
+        <skillBoosts>
+            <li><skill>Crafting</skill><levels>10</levels></li>
+            <li><skill>Construction</skill><levels>6</levels></li>
+        </skillBoosts>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_SkillIntellect</defName>
+        <label>sharpened mind</label>
+        <description>{PAWN_nameDef} thinks faster now. Problems that used to take hours resolve in moments, as if {PAWN_pronoun} already knew the answers and simply had to remember them.</description>
+        <powerTier>1</powerTier>
+        <skillBoosts>
+            <li><skill>Intellectual</skill><levels>10</levels></li>
+        </skillBoosts>
+        <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_Intellect</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_StatStormlight</defName>
+        <label>stormlight touched</label>
+        <description>Something of Cultivation lingers in {PAWN_nameDef}. {PAWN_pronoun} can hold more Stormlight than {PAWN_possessive} body should allow, and {PAWN_possessive} hands move with a precision that feels borrowed from someone far more practiced.</description>
+        <powerTier>1</powerTier>
+        <investitureBonus>200</investitureBonus>
+        <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_Investiture</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_TraitKind</defName>
+        <label>touched by cultivation</label>
+        <description>The Nightwatcher changed something in {PAWN_nameDef}. Not {PAWN_possessive} mind, not {PAWN_possessive} body. Something deeper. Compassion comes easily now, even when it costs {PAWN_nameDef} something to give it.</description>
+        <powerTier>1</powerTier>
+        <grantTrait>Kind</grantTrait>
+        <grantTraitDegree>0</grantTraitDegree>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_TraitNaturalMood</defName>
+        <label>windswept spirit</label>
+        <description>A quiet has settled over {PAWN_nameDef}. The anxieties that once circled {PAWN_possessive} thoughts have grown distant. They are not gone. They are simply harder to reach.</description>
+        <powerTier>1</powerTier>
+        <grantTrait>NaturalMood</grantTrait>
+        <grantTraitDegree>1</grantTraitDegree>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_CombatReflexes</defName>
+        <label>hunter's gift</label>
+        <description>{PAWN_nameDef}'s instincts are sharper now. The hesitation before a fight is gone, replaced by something fluid and certain. {PAWN_pronoun} reacts before {PAWN_pronoun} thinks, and the reactions are always right.</description>
+        <powerTier>1</powerTier>
+        <skillBoosts>
+            <li><skill>Shooting</skill><levels>10</levels></li>
+            <li><skill>Melee</skill><levels>10</levels></li>
+        </skillBoosts>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_Whimsy_Sunlight</defName>
+        <label>always warm</label>
+        <description>It was a strange thing to ask for. The Nightwatcher seemed amused. But now {PAWN_nameDef} is never cold. Wind passes through {PAWN_nameDef} without bite, and {PAWN_pronoun} has not shivered since that night in the valley.</description>
+        <powerTier>1</powerTier>
+        <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_AlwaysWarm</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <!-- Tier 2: Moderate Boons -->
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_HealChronic</defName>
+        <label>mended body</label>
+        <description>The Nightwatcher reached into {PAWN_nameDef} and found the old wounds, the places where the body had given up on healing. She smoothed them out. What was broken is mended now. Not perfect, but whole.</description>
+        <powerTier>2</powerTier>
+        <applicatorClass>Cosmere.System.Roshar.HealChronicApplicator</applicatorClass>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_TraitFastLearner</defName>
+        <label>cultivated intellect</label>
+        <description>Cultivation planted something in {PAWN_nameDef}'s mind. A seed. {PAWN_pronoun} learns faster than anyone should, picking up skills the way a sponge takes water. Knowledge sticks where it used to slide away.</description>
+        <powerTier>2</powerTier>
+        <grantTrait>FastLearner</grantTrait>
+        <grantTraitDegree>0</grantTraitDegree>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_Investiture</defName>
+        <label>stormlight affinity</label>
+        <description>The Nightwatcher reshaped {PAWN_nameDef}'s Spiritweb, aligning it with the rhythm of the storms. {PAWN_pronoun} can hold far more Stormlight now, and {PAWN_possessive} Connection to Surgebinding has deepened in ways that are difficult to explain.</description>
+        <powerTier>2</powerTier>
+        <investitureBonus>500</investitureBonus>
+        <surgebindingConnectionBoost>0.2</surgebindingConnectionBoost>
+        <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_Investiture</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_SocialBoost</defName>
+        <label>voice of cultivation</label>
+        <description>{PAWN_nameDef} speaks and people listen. Not because {PAWN_possessive} voice is louder, but because the words land exactly where they need to. Deals close. Arguments settle. People trust {PAWN_nameDef} without quite knowing why.</description>
+        <powerTier>2</powerTier>
+        <skillBoosts>
+            <li><skill>Social</skill><levels>10</levels></li>
+        </skillBoosts>
+        <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_Social</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_GriefRelief</defName>
+        <label>forgotten sorrow</label>
+        <description>The grief is still there. {PAWN_nameDef} knows this. But the Nightwatcher took it and put it somewhere {PAWN_pronoun} cannot reach. {PAWN_pronoun} remembers that {PAWN_pronoun} should feel sorrow, but the feeling itself is gone. It is a mercy. It is also, somehow, a loss.</description>
+        <powerTier>2</powerTier>
+        <removeTrait>Neurotic</removeTrait>
+        <grantTrait>Tough</grantTrait>
+        <grantTraitDegree>0</grantTraitDegree>
+        <applicatorClass>Cosmere.System.Roshar.GriefReliefApplicator</applicatorClass>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_Misting</defName>
+        <label>metalborn spark - misting</label>
+        <description>The Nightwatcher reaches into {PAWN_nameDef}'s Spiritweb and twists something fundamental. A new Connection forms - to Preservation, to a metal, to something that was never meant to be {PAWN_possessive}. {PAWN_pronoun} can feel it now: a single metal, calling to be burned.</description>
+        <powerTier>2</powerTier>
+        <requiresMod>Cosmere.Scadrial</requiresMod>
+        <metalSelectionType>allomancy</metalSelectionType>
+        <applicatorClass>Cosmere.System.Roshar.MistingApplicator</applicatorClass>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_Ferring</defName>
+        <label>metalborn spark - ferring</label>
+        <description>The Nightwatcher reshaped {PAWN_nameDef}'s soul. Where there was nothing, now there is a reservoir - a place to store, a place to draw from. One metal answers {PAWN_possessive} call, and {PAWN_possessive} metalminds will remember what {PAWN_pronoun} gives them.</description>
+        <powerTier>2</powerTier>
+        <requiresMod>Cosmere.Scadrial</requiresMod>
+        <metalSelectionType>feruchemy</metalSelectionType>
+        <applicatorClass>Cosmere.System.Roshar.FerringApplicator</applicatorClass>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <!-- Tier 3: Major Boons -->
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_Mistborn</defName>
+        <label>mistborn</label>
+        <description>This was no small thing to ask. The Nightwatcher hesitated - not from reluctance, but from the sheer weight of what {PAWN_nameDef} demanded. Then she reached into {PAWN_possessive} Spiritweb and cracked it wide open. Every metal sings now. Iron and steel, tin and pewter, all of them. {PAWN_nameDef} burns with Preservation's full gift. The mists will recognize {PAWN_nameDef}.</description>
+        <powerTier>3</powerTier>
+        <requiresMod>Cosmere.Scadrial</requiresMod>
+        <applicatorClass>Cosmere.System.Roshar.MistbornApplicator</applicatorClass>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_FullFeruchemist</defName>
+        <label>full feruchemist</label>
+        <description>Cultivation understands growth, and what she gave {PAWN_nameDef} is the ultimate expression of it. Every metal now holds a piece of {PAWN_nameDef} - speed, strength, memory, warmth, youth. {PAWN_pronoun} can pour {PAWN_possessive} attributes into metal and draw them back tenfold. The Terris would weep to see it given so freely.</description>
+        <powerTier>3</powerTier>
+        <requiresMod>Cosmere.Scadrial</requiresMod>
+        <applicatorClass>Cosmere.System.Roshar.FullFeruchemistApplicator</applicatorClass>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_Lifelight</defName>
+        <label>lifelight</label>
+        <description>Cultivation rewrote something fundamental in {PAWN_nameDef}. Food converts directly into Investiture now, light pooling beneath {PAWN_possessive} skin like warmth from a fire. {PAWN_possessive} body heals faster, fights harder, sustains itself with an efficiency that shouldn't be possible. This is the rarest of Cultivation's gifts.</description>
+        <powerTier>3</powerTier>
+        <investitureBonus>300</investitureBonus>
+        <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_Psylink</defName>
+        <label>awakened mind</label>
+        <description>The Nightwatcher cracked {PAWN_nameDef}'s Spiritweb wide open. Investiture floods in like water through broken stone. {PAWN_possessive} Connection to Cultivation runs deep now, and {PAWN_possessive} capacity for Stormlight has expanded beyond anything natural. The rhythms of Roshar hum through {PAWN_possessive} bones. Spren will notice.</description>
+        <powerTier>3</powerTier>
+        <investitureBonus>500</investitureBonus>
+        <surgebindingConnectionBoost>0.4</surgebindingConnectionBoost>
+        <skillBoosts>
+            <li><skill>Cosmere_Roshar_Skill_SurgebindingPower</skill><levels>10</levels></li>
+        </skillBoosts>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+        <defName>NW_Boon_AgelessBody</defName>
+        <label>slowed clock</label>
+        <description>Time stopped for {PAWN_nameDef}. Not dramatically, not with any fanfare. {PAWN_possessive} body simply holds where it is now, no longer aging, no longer declining. {PAWN_pronoun} needs less rest. Disease struggles to take hold. {PAWN_pronoun} will not grow old. Cultivation is patient, and this is her most patient gift.</description>
+        <powerTier>3</powerTier>
+        <hediff>Cosmere_Roshar_Hediff_NW_BoonPassive_AgelessBody</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
+</Defs>

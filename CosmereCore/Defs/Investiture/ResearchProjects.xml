@@ -8,6 +8,6 @@
 		<baseCost>600</baseCost>
 		<techLevel>Neolithic</techLevel>
 		<researchViewX>0.00</researchViewX>
-		<researchViewY>0.00</researchViewY>
+		<researchViewY>2.50</researchViewY>
 	</ResearchProjectDef>
 </Defs>

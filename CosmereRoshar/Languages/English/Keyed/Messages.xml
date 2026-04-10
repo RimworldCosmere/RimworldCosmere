@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CR_Example_Messages>Example Message</CR_Example_Messages>
+    <CR_Highstorm_Warning_Title>Highstorm Approaching</CR_Highstorm_Warning_Title>
+    <CR_Highstorm_Warning_Message>The windspren have gone still. A highstorm approaches from the east and will strike within the day. Ensure all colonists and livestock are sheltered behind solid walls.</CR_Highstorm_Warning_Message>
+    <CR_Highstorm_Alert_Label>Highstorm Approaching</CR_Highstorm_Alert_Label>
+    <CR_Highstorm_Alert_Explanation>A highstorm approaches from the east. All buildings must have solid walls or doors on their eastern side to provide shelter. Those caught in the open risk death.</CR_Highstorm_Alert_Explanation>
+    <CR_Weeping_Start_Title>The Weeping Begins</CR_Weeping_Start_Title>
+    <CR_Weeping_Start_Message>A steady, gentle rain has settled over the land. The Weeping has begun. For the coming weeks, the skies will weep softly, but no highstorms will come.</CR_Weeping_Start_Message>
+    <CR_Weeping_End_Title>The Weeping Ends</CR_Weeping_End_Title>
+    <CR_Weeping_End_Message>The constant rain has lifted. The Weeping has passed, and with it, the reprieve. The highstorms will return.</CR_Weeping_End_Message>
+
+    <CS_Savant_Surgebinding_Stage1_Title>{PAWN} is becoming attuned to {POWER}</CS_Savant_Surgebinding_Stage1_Title>
+    <CS_Savant_Surgebinding_Stage1_Message>{PAWN} has used the Surge of {POWER} so frequently that Stormlight flows through that surge more naturally. The connection to {POWER} deepens.</CS_Savant_Surgebinding_Stage1_Message>
+
+    <CS_Savant_Surgebinding_Stage2_Title>{PAWN} is dependent on {POWER}</CS_Savant_Surgebinding_Stage2_Title>
+    <CS_Savant_Surgebinding_Stage2_Message>{PAWN}'s spiritweb has been reshaped by the Surge of {POWER}. The surge answers with greater force, but the bond has become a chain.</CS_Savant_Surgebinding_Stage2_Message>
+
+    <CS_Savant_Surgebinding_Stage3_Title>{PAWN} has become a {POWER} surge savant</CS_Savant_Surgebinding_Stage3_Title>
+    <CS_Savant_Surgebinding_Stage3_Message>{PAWN} has drawn so deeply on the Surge of {POWER} that it has permanently scarred {PAWN_possessive} spiritweb. The surge's power is transcendent, but it has left permanent marks on body and soul.</CS_Savant_Surgebinding_Stage3_Message>
+</LanguageData>

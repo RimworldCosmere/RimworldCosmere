@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+    <defName>Cosmere_Roshar_Progression_ShatteredPlains</defName>
+    <label>Shattered Plains Progression</label>
+    <events>
+      <li>
+        <key>first_hunt</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>5</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>First Hunt</title>
+            <text>Scouts report a chasmfiend chrysalis on a nearby plateau. The gemheart is still intact - but not for long. The bridge crews assemble. The soldiers check their weapons. This is what you came for.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>bridge_runs</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>15</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Bridge Runs</title>
+            <text>The bridge crews have run three times this week. The numbers thin. No one speaks their names anymore - it is easier that way. The gemhearts are worth it, the officers say. The bridgemen say nothing.</text>
+            <letterDef>NegativeEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>shardblade_appears</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>30</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+            <minThreats>3</minThreats>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>A Shardblade</title>
+            <text>In the chaos of the plateau assault, something catches the light. A blade, abandoned in the chasms, impossibly sharp and perfectly preserved. A Shardblade. Worth a kingdom. Worth a war.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>plateau_assault</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>50</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+            <minThreats>4</minThreats>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Plateau Assault</title>
+            <text>The enemy strikes during a hunt. You must hold the warcamp and claim the gemheart. Split your forces or lose everything.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>the_chasmfiend</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>60</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+            <minThreats>5</minThreats>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Chasmfiend</title>
+            <text>The ground shakes. A chasmfiend - not a chrysalis, not a corpse, but a living greatshell the size of a building - has been driven toward the warcamp by the highstorm. It is angry, and it is hungry.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+        </actions>
+      </li>
+    </events>
+  </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+</Defs>

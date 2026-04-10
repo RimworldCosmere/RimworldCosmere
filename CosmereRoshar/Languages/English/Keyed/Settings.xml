@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CR_Settings_Category_Highstorm>Highstorms &amp; Everstorms</CR_Settings_Category_Highstorm>
+    <CR_Settings_Highstorm_Enabled_Label>Enable Highstorms:</CR_Settings_Highstorm_Enabled_Label>
+    <CR_Settings_Highstorm_Enabled_Tooltip>Whether highstorms occur. When disabled, no highstorms will be scheduled.</CR_Settings_Highstorm_Enabled_Tooltip>
+    <CR_Settings_Highstorm_Pushing_Label>Move Items &amp; Pawns:</CR_Settings_Highstorm_Pushing_Label>
+    <CR_Settings_Highstorm_Pushing_Tooltip>Storms push items and pawns that are caught outside in the open</CR_Settings_Highstorm_Pushing_Tooltip>
+    <CR_Settings_Highstorm_Damage_Label>Damage Visitors &amp; Animals:</CR_Settings_Highstorm_Damage_Label>
+    <CR_Settings_Highstorm_Damage_Tooltip>Turn off if you don't want all your wildlife to die, and your visitors to hate you</CR_Settings_Highstorm_Damage_Tooltip>
+    <CR_Settings_Highstorm_MinInterval_Label>Minimum Storm Interval (Days):</CR_Settings_Highstorm_MinInterval_Label>
+    <CR_Settings_Highstorm_MinInterval_Tooltip>Minimum number of days between highstorms.</CR_Settings_Highstorm_MinInterval_Tooltip>
+    <CR_Settings_Highstorm_MaxInterval_Label>Maximum Storm Interval (Days):</CR_Settings_Highstorm_MaxInterval_Label>
+    <CR_Settings_Highstorm_MaxInterval_Tooltip>Maximum number of days between highstorms.</CR_Settings_Highstorm_MaxInterval_Tooltip>
+    <CR_Settings_Highstorm_EnableWeeping_Label>Enable The Weeping:</CR_Settings_Highstorm_EnableWeeping_Label>
+    <CR_Settings_Highstorm_EnableWeeping_Tooltip>If enabled, highstorms pause for the last 14 days of each year.</CR_Settings_Highstorm_EnableWeeping_Tooltip>
+    <CR_Settings_Highstorm_Duration_Label>Storm Duration (Ticks):</CR_Settings_Highstorm_Duration_Label>
+    <CR_Settings_Highstorm_Duration_Tooltip>Base duration of each highstorm in ticks. 2500 ticks per in-game hour. Default is 20000 (8 hours).</CR_Settings_Highstorm_Duration_Tooltip>
+
+	<CR_Settings_Category_Stormlight>Stormlight</CR_Settings_Category_Stormlight>
+	<CR_Settings_Stormlight_EnablePawnGlow_Label>Pawn Stormlight Glow:</CR_Settings_Stormlight_EnablePawnGlow_Label>
+	<CR_Settings_Stormlight_EnablePawnGlow_Tooltip>Currently Broken</CR_Settings_Stormlight_EnablePawnGlow_Tooltip>
+
+	<CR_Settings_Category_NahelBond>Nahel Bonds</CR_Settings_Category_NahelBond>
+	<CR_Settings_NahelBond_AverageTicks_Label>Average Spren Spawn Minimum Tick Interval:</CR_Settings_NahelBond_AverageTicks_Label>
+	<CR_Settings_NahelBond_AverageTicks_Tooltip>What is the average number of ticks that must pass between True Spren spawns (60ticks / second)</CR_Settings_NahelBond_AverageTicks_Tooltip>
+	<CR_Settings_NahelBond_MinimumTicks_Label>True Spren Spawn Minimum Tick Interval:</CR_Settings_NahelBond_MinimumTicks_Label>
+	<CR_Settings_NahelBond_MinimumTicks_Tooltip>What is the minimum number of ticks that must pass between True Spren spawns (60ticks / second)</CR_Settings_NahelBond_MinimumTicks_Tooltip>
+	<CR_Settings_NahelBond_MaximumTicks_Label>True Spren Spawn Maximum Tick Interval:</CR_Settings_NahelBond_MaximumTicks_Label>
+	<CR_Settings_NahelBond_MaximumTicks_Tooltip>What is the maximum number of ticks that must pass between True Spren spawns (60ticks / second)</CR_Settings_NahelBond_MaximumTicks_Tooltip>
+    
+    <CR_Settings_Category_LesserSpren>Lesser Spren System</CR_Settings_Category_LesserSpren>
+    <CR_Settings_LesserSpren_Enabled_Label>Lesser Spren Particles Enabled</CR_Settings_LesserSpren_Enabled_Label>
+    <CR_Settings_LesserSpren_Enabled_Tooltip>Should the game render the lesser spren particles? If this is disabled, spren will still be capturable, you just won't be able to see them</CR_Settings_LesserSpren_Enabled_Tooltip>
+    <CR_Settings_LesserSpren_MaximumZoom_Label>Maximum Zoom to Spawn</CR_Settings_LesserSpren_MaximumZoom_Label>
+    <CR_Settings_LesserSpren_MaximumZoom_Tooltip>How far out will the game stop rendering lesser spren particles? Note, they will still spawn, you just wont be able to see them</CR_Settings_LesserSpren_MaximumZoom_Tooltip>
+    
+    <CR_Settings_Category_Development>Development</CR_Settings_Category_Development>
+	<CR_Settings_Development_AutofillSpheres_Label>Autofill Spheres:</CR_Settings_Development_AutofillSpheres_Label>
+	<CR_Settings_Development_AutofillSpheres_Tooltip>Should spheres get auto-filled</CR_Settings_Development_AutofillSpheres_Tooltip>
+
+    <CR_Settings_Category_IdealProgression>Ideal Progression</CR_Settings_Category_IdealProgression>
+    <CR_Settings_IdealProgression_Difficulty_Label>Progression Difficulty:</CR_Settings_IdealProgression_Difficulty_Label>
+    <CR_Settings_IdealProgression_Difficulty_Tooltip>Multiplier for Ideal progression requirements. Lower values make advancement easier, higher values make it harder. (0.5x - 2.0x)</CR_Settings_IdealProgression_Difficulty_Tooltip>
+    <CR_Settings_IdealProgression_ShowRequirements_Label>Show Ideal Requirements:</CR_Settings_IdealProgression_ShowRequirements_Label>
+    <CR_Settings_IdealProgression_ShowRequirements_Tooltip>Display the specific requirements a Radiant must meet to speak their next Ideal</CR_Settings_IdealProgression_ShowRequirements_Tooltip>
+</LanguageData>

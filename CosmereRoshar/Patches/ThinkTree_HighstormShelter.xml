@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- Humanlike: Insert highstorm shelter-seeking after PostDuty hook, before prisoner/work behavior -->
+    <Operation Class="PatchOperationInsert">
+        <xpath>/Defs/ThinkTreeDef[defName="Humanlike"]/thinkRoot/subNodes/li[@Class="ThinkNode_SubtreesByTag"][insertTag="Humanlike_PostDuty"]</xpath>
+        <value>
+            <li Class="ThinkNode_Priority">
+                <subNodes>
+                    <li Class="Cosmere.System.Roshar.Job.ThinkNode.ConditionalHighstormActive">
+                        <subNodes>
+                            <li Class="Cosmere.System.Roshar.Job.JobGiver.SeekHighstormShelter" />
+                        </subNodes>
+                    </li>
+                </subNodes>
+            </li>
+        </value>
+    </Operation>
+
+    <!-- Animal: Insert highstorm shelter-seeking after PreMain hook for colony animals -->
+    <Operation Class="PatchOperationInsert">
+        <xpath>/Defs/ThinkTreeDef[defName="Animal"]/thinkRoot/subNodes/li[@Class="ThinkNode_SubtreesByTag"][insertTag="Animal_PreMain"]</xpath>
+        <value>
+            <li Class="ThinkNode_Priority">
+                <subNodes>
+                    <li Class="Cosmere.System.Roshar.Job.ThinkNode.ConditionalHighstormActive">
+                        <subNodes>
+                            <li Class="ThinkNode_ConditionalOfPlayerFaction">
+                                <subNodes>
+                                    <li Class="Cosmere.System.Roshar.Job.JobGiver.SeekHighstormShelter" />
+                                </subNodes>
+                            </li>
+                        </subNodes>
+                    </li>
+                </subNodes>
+            </li>
+        </value>
+    </Operation>
+</Patch>

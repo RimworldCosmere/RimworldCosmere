@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <TraitDef Name="Cosmere_Roshar_Trait_BaseRadiantOrder" Abstract="True">
+        <commonality>0</commonality>
+    </TraitDef>
+</Defs>

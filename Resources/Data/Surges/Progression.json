@@ -1,0 +1,9 @@
+{
+  "name": "progression",
+  "description": "Progression governs growth and healing, enabling rapid plant growth or the mending of wounds. It represents life in motion, the ongoing journey of becoming, whether through healing the body or nurturing what lies dormant into full bloom.",
+  "abilities": [
+    "Cosmere_Roshar_Ability_Bloom",
+    "Cosmere_Roshar_Ability_Lifesurge",
+    "Cosmere_Roshar_Ability_Regrowth"
+  ]
+}

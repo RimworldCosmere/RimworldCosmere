@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef ParentName="Cosmere_Roshar_Hediff_BaseSurgebindingHediff">
+        <defName>Cosmere_Roshar_Hediff_SiblingBlessing</defName>
+        <label>Sibling's blessing</label>
+        <description>There is a presence in the back of this person's mind, warm and attentive. The Sibling's power has settled into them. Work comes easily, as if their hands already know what to do. Thoughts are sharper than they have any right to be. It feels like being held by something vast and benevolent that wants them to succeed.</description>
+        <hediffClass>Cosmere.System.Roshar.Surgebinding.Hediff.SurgebindingHediff</hediffClass>
+        <stages>
+            <li>
+                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
+                <statOffsets>
+                    <WorkSpeedGlobal>0.3</WorkSpeedGlobal>
+                    <ResearchSpeed>0.5</ResearchSpeed>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+</Defs>

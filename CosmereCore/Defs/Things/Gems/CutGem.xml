@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="CosmereGemBase">
+        <defName>CutGem</defName>
+        <label>Cut Gem</label>
+        <description>A flawlessly cut gem, brilliant and razor-sharp in its facets. Favored in fine craftwork and noble regalia, it reflects light with stunning clarity.</description>
+
+        <thingCategories>
+            <li>Cosmere_Core_ThingCategory_CutGem</li>
+        </thingCategories>
+
+        <graphicData>
+            <graphicClass>Cosmere.Core.Graphic.GemStuff</graphicClass>
+            <drawSize>.5</drawSize>
+            <texPath>Item/Resource/Gems/Cut</texPath>
+        </graphicData>
+
+        <stuffCategories>
+            <li>Cosmere_Core_StuffCategory_RawGems</li>
+        </stuffCategories>
+        <costStuffCount>1</costStuffCount>
+
+        <recipeMaker>
+            <workAmount>1600</workAmount>
+            <label>cut gem</label>
+            <productCount>1</productCount>
+            <useIngredientsForColor>true</useIngredientsForColor>
+            <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+            <effectWorking>CutStone</effectWorking>
+            <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+            <workSkill>Crafting</workSkill> <!-- custom skill? -->
+            <researchPrerequisites>
+                <li>Cosmere_Gem_Cutting</li>
+            </researchPrerequisites>
+            <recipeUsers>
+                <li>Cosmere_Core_Table_GemCutter</li>
+            </recipeUsers>
+            <displayPriority>200</displayPriority>
+        </recipeMaker>
+
+        <statBases>
+            <Mass>0.0004</Mass>
+            <Beauty>2</Beauty>
+            <MarketValue>2</MarketValue>
+        </statBases>
+
+        <stuffProps>
+            <categories>
+                <li>Cosmere_Core_StuffCategory_Gems</li>
+                <li>Cosmere_Core_StuffCategory_CutGems</li>
+            </categories>
+        </stuffProps>
+
+        <comps>
+            <li MayRequire="Cosmere.Roshar" Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <maxInvestiture>24</maxInvestiture>
+                <drainRate>0.005</drainRate>
+            </li>
+            <li MayRequire="Cosmere.Roshar">
+                <compClass>Cosmere.System.Roshar.Comp.Thing.SprenContainer</compClass>
+            </li>
+            <li>
+                <compClass>CompQuality</compClass>
+            </li>
+        </comps>
+    </ThingDef>
+</Defs>

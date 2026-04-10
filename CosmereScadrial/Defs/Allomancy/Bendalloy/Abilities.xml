@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <CosmereScadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
+    <Cosmere.System.Scadrial.Def.AllomanticAbilityDef ParentName="AbstractToggleSelfBurnAbility">
         <defName>Cosmere_Scadrial_Ability_Bendalloy</defName>
         <label>speed bubble</label>
         <description>Creates a stationary time bubble that speeds up time for those inside. The bubble disappears if the Allomancer leaves or stops burning bendalloy.</description>
         <metal>Bendalloy</metal>
-        <canBurnWhileAsleep>true</canBurnWhileAsleep>
-        <abilityClass>CosmereScadrial.Allomancy.Ability.TimeAbility</abilityClass>
+        <canUseWhileAsleep>true</canUseWhileAsleep>
+        <abilityClass>Cosmere.System.Scadrial.Allomancy.Ability.TimeAbility</abilityClass>
         <beuPerTick>.01</beuPerTick>
-    </CosmereScadrial.Def.AllomanticAbilityDef>
+        <maxPower>2</maxPower>
+    </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

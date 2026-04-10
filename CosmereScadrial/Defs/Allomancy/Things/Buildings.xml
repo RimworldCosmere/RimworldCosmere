@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="BuildingBase">
+        <defName>Cosmere_Scadrial_Thing_VialCabinet</defName>
+        <label>vial cabinet</label>
+        <description>A wooden case lined with rows of drilled slots, each sized to hold a single allomantic vial upright. The kind of thing you'd find in any Mistborn crew's safehouse, stocked and ready for the night's work.</description>
+        <thingClass>Building_Storage</thingClass>
+        <graphicData>
+            <texPath>Things/Building/VialCabinet</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1</drawSize>
+        </graphicData>
+        <altitudeLayer>Building</altitudeLayer>
+        <size>(1,1)</size>
+        <passability>PassThroughOnly</passability>
+        <fillPercent>0.4</fillPercent>
+        <pathCost>14</pathCost>
+        <canOverlapZones>false</canOverlapZones>
+        <rotatable>false</rotatable>
+        <designationCategory>Furniture</designationCategory>
+        <inspectorTabs>
+            <li>ITab_Storage</li>
+        </inspectorTabs>
+        <stuffCategories>
+            <li>Woody</li>
+            <li>Metallic</li>
+        </stuffCategories>
+        <costStuffCount>30</costStuffCount>
+        <building>
+            <maxItemsInCell>200</maxItemsInCell>
+            <fixedStorageSettings>
+                <filter>
+                    <categories>
+                        <li>Cosmere_Scadrial_ThingCategory_Allomancy</li>
+                    </categories>
+                </filter>
+            </fixedStorageSettings>
+            <defaultStorageSettings>
+                <priority>Important</priority>
+                <filter>
+                    <categories>
+                        <li>Cosmere_Scadrial_ThingCategory_Allomancy</li>
+                    </categories>
+                </filter>
+            </defaultStorageSettings>
+        </building>
+        <researchPrerequisites>
+            <li>Cosmere_Scadrial_Allomancy</li>
+        </researchPrerequisites>
+        <statBases>
+            <MaxHitPoints>100</MaxHitPoints>
+            <WorkToBuild>1500</WorkToBuild>
+            <Mass>8</Mass>
+            <Flammability>1.0</Flammability>
+        </statBases>
+    </ThingDef>
+</Defs>

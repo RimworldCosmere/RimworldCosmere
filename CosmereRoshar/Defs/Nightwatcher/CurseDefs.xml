@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- curseWeights: [tier1weight, tier2weight, tier3weight] -->
+
+    <!-- Tier 1-eligible Curses -->
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_Forgetfulness</defName>
+        <label>faded memories</label>
+        <description>{PAWN_nameDef}'s mind reaches for things and finds them a moment too late. Names slip away. Facts blur. It is not painful, just frustrating, like trying to hold water in cupped hands.</description>
+        <curseWeights>
+            <li>2</li>
+            <li>1</li>
+            <li>1</li>
+        </curseWeights>
+        <minBoonTier>1</minBoonTier>
+        <penaltySkill>Intellectual</penaltySkill>
+        <penaltySkillLevels>4</penaltySkillLevels>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_Sleepless</defName>
+        <label>sleepless dread</label>
+        <description>Sleep comes to {PAWN_nameDef} grudgingly, if at all. The edges of dreams are sharp, and the hours before dawn stretch on forever. {PAWN_pronoun} wakes tired. Always tired.</description>
+        <curseWeights>
+            <li>2</li>
+            <li>2</li>
+            <li>1</li>
+        </curseWeights>
+        <minBoonTier>1</minBoonTier>
+        <hediff>Cosmere_Roshar_Hediff_NW_CursePassive_Sleepless</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_Slowness</defName>
+        <label>weighted steps</label>
+        <description>Every step {PAWN_nameDef} takes costs more than it should. Not pain. Just weight, as if the world itself pushes back a little harder than it does for everyone else.</description>
+        <curseWeights>
+            <li>2</li>
+            <li>1</li>
+            <li>1</li>
+        </curseWeights>
+        <minBoonTier>1</minBoonTier>
+        <hediff>Cosmere_Roshar_Hediff_NW_CursePassive_Slowness</hediff>
+        <cultivationEvolutionDays>1095</cultivationEvolutionDays>
+        <evolutionHediff>Cosmere_Roshar_Hediff_NW_CurseEvolved_Slowness</evolutionHediff>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_TraitAbrasive</defName>
+        <label>cutting tongue</label>
+        <description>{PAWN_nameDef}'s words come out with edges now. {PAWN_pronoun} does not always mean it. Sometimes {PAWN_pronoun} does. The troubling part is that {PAWN_pronoun} can no longer tell the difference.</description>
+        <curseWeights>
+            <li>2</li>
+            <li>2</li>
+            <li>1</li>
+        </curseWeights>
+        <minBoonTier>1</minBoonTier>
+        <forceTrait>Abrasive</forceTrait>
+        <forceTraitDegree>0</forceTraitDegree>
+        <stripTrait>Kind</stripTrait>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_ChronicPain</defName>
+        <label>old pain</label>
+        <description>There is an ache in {PAWN_nameDef} now, settled deep in the bones. It was not there before the Nightwatcher. It will not go away.</description>
+        <curseWeights>
+            <li>2</li>
+            <li>2</li>
+            <li>1</li>
+        </curseWeights>
+        <minBoonTier>1</minBoonTier>
+        <hediff>Cosmere_Roshar_Hediff_NW_CursePassive_ChronicPain</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_Allergic</defName>
+        <label>verdant sensitivity</label>
+        <description>Plant-based food turns {PAWN_nameDef}'s stomach now. Not dangerous. Just wrong, in a way that is difficult to describe. The Nightwatcher seemed to find this one amusing.</description>
+        <curseWeights>
+            <li>2</li>
+            <li>1</li>
+            <li>1</li>
+        </curseWeights>
+        <minBoonTier>1</minBoonTier>
+        <hediff>Cosmere_Roshar_Hediff_NW_CursePassive_Allergic</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_ColorBlind</defName>
+        <label>grey world</label>
+        <description>The colors are still there. {PAWN_nameDef} can name them, can point to them. But they are muted now, drained of something essential. The world looks like a painting left too long in the rain.</description>
+        <curseWeights>
+            <li>3</li>
+            <li>1</li>
+            <li>0</li>
+        </curseWeights>
+        <minBoonTier>1</minBoonTier>
+        <hediff>Cosmere_Roshar_Hediff_NW_CursePassive_ColorBlind</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <!-- Tier 2-eligible Curses -->
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_SocialPariah</defName>
+        <label>stranger's face</label>
+        <description>People look at {PAWN_nameDef} differently now. Not with hostility. Something worse. A blankness, as if they can never quite place {PAWN_nameDef}. Conversations die quickly. Friendships struggle to take root.</description>
+        <curseWeights>
+            <li>0</li>
+            <li>2</li>
+            <li>1</li>
+        </curseWeights>
+        <minBoonTier>2</minBoonTier>
+        <penaltySkill>Social</penaltySkill>
+        <penaltySkillLevels>4</penaltySkillLevels>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_Narcolepsy</defName>
+        <label>sudden stillness</label>
+        <description>It happens without warning. One moment {PAWN_nameDef} is there. The next, {PAWN_pronoun} is gone, pulled under into a dark, dreamless nothing. {PAWN_pronoun} wakes moments later, disoriented, on the ground.</description>
+        <curseWeights>
+            <li>0</li>
+            <li>1</li>
+            <li>2</li>
+        </curseWeights>
+        <minBoonTier>2</minBoonTier>
+        <applicatorClass>Cosmere.System.Roshar.NarcolepsyApplicator</applicatorClass>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_Compulsion</defName>
+        <label>compelled hand</label>
+        <description>One task calls to {PAWN_nameDef} above all others. {PAWN_pronoun} cannot say why. {PAWN_pronoun} simply finds {PAWN_possessive} hands doing it, again and again, while other work goes undone.</description>
+        <curseWeights>
+            <li>0</li>
+            <li>2</li>
+            <li>2</li>
+        </curseWeights>
+        <minBoonTier>2</minBoonTier>
+        <forceTrait>Industriousness</forceTrait>
+        <forceTraitDegree>-1</forceTraitDegree>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_Haunted</defName>
+        <label>watcher's shadow</label>
+        <description>Something watches {PAWN_nameDef}. {PAWN_pronoun} feels it at the edge of {PAWN_possessive} vision, in the silence between sounds. It never speaks. It never leaves. {PAWN_pronoun} knows it is there the way {PAWN_pronoun} knows the ground is beneath {PAWN_possessive} feet.</description>
+        <curseWeights>
+            <li>0</li>
+            <li>2</li>
+            <li>2</li>
+        </curseWeights>
+        <minBoonTier>2</minBoonTier>
+        <hediff>Cosmere_Roshar_Hediff_NW_CursePassive_Haunted</hediff>
+        <cultivationEvolutionDays>730</cultivationEvolutionDays>
+        <evolutionHediff>Cosmere_Roshar_Hediff_NW_CurseEvolved_Haunted</evolutionHediff>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_Brittle</defName>
+        <label>glass bones</label>
+        <description>{PAWN_nameDef}'s bones are fragile now, though they look the same. A fall that should bruise instead fractures. A blow that others endure becomes something far worse for {PAWN_nameDef}.</description>
+        <curseWeights>
+            <li>0</li>
+            <li>1</li>
+            <li>2</li>
+        </curseWeights>
+        <minBoonTier>2</minBoonTier>
+        <hediff>Cosmere_Roshar_Hediff_NW_CursePassive_Brittle</hediff>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_Loveless</defName>
+        <label>severed heart</label>
+        <description>Something warm has gone quiet inside {PAWN_nameDef}. Not dead. Just distant. {PAWN_pronoun} can form relationships, can go through the motions. But they never quite take root the way they should.</description>
+        <curseWeights>
+            <li>0</li>
+            <li>2</li>
+            <li>2</li>
+        </curseWeights>
+        <minBoonTier>2</minBoonTier>
+        <forceTrait>Psychopath</forceTrait>
+        <forceTraitDegree>0</forceTraitDegree>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <!-- Tier 3-eligible Curses -->
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_MemoryLoss</defName>
+        <label>lost name</label>
+        <description>Who {PAWN_nameDef} was before is gone. The skills, the knowledge, the careful craft of years, all wiped clean. {PAWN_pronoun} starts again from nothing, frightened and disoriented. The Nightwatcher was not being cruel. She simply did not understand what she was taking.</description>
+        <curseWeights>
+            <li>0</li>
+            <li>0</li>
+            <li>2</li>
+        </curseWeights>
+        <minBoonTier>3</minBoonTier>
+        <forceTrait>Neurotic</forceTrait>
+        <forceTraitDegree>1</forceTraitDegree>
+        <applicatorClass>Cosmere.System.Roshar.MemoryLossApplicator</applicatorClass>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_Voiceless</defName>
+        <label>silenced</label>
+        <description>{PAWN_nameDef}'s voice still works. The sounds come out fine. But the meaning does not carry. {PAWN_pronoun} has been silenced in a way that bypasses the throat entirely, as if the Nightwatcher reached in and severed something between thought and speech.</description>
+        <curseWeights>
+            <li>0</li>
+            <li>0</li>
+            <li>3</li>
+        </curseWeights>
+        <minBoonTier>3</minBoonTier>
+        <hediff>Cosmere_Roshar_Hediff_NW_CursePassive_Voiceless</hediff>
+        <penaltySkill>Social</penaltySkill>
+        <penaltySkillLevels>8</penaltySkillLevels>
+        <cultivationEvolutionDays>1460</cultivationEvolutionDays>
+        <evolutionHediff>Cosmere_Roshar_Hediff_NW_CurseEvolved_Voiceless</evolutionHediff>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+
+    <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+        <defName>NW_Curse_ForcedSavant</defName>
+        <label>spirit web scarring</label>
+        <description>The Nightwatcher's gift came with a price woven into {PAWN_nameDef}'s spirit web. One of {PAWN_possessive} powers has been pushed far beyond safe limits - the Investiture has been carved so deeply into {PAWN_possessive} soul that it can never be removed. The power is undeniable, but so is the cost.</description>
+        <curseWeights>
+            <li>0</li>
+            <li>1</li>
+            <li>2</li>
+        </curseWeights>
+        <minBoonTier>2</minBoonTier>
+        <applicatorClass>Cosmere.System.Roshar.SavantCurseApplicator</applicatorClass>
+    </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
+</Defs>

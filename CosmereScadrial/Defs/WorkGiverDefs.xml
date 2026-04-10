@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <WorkGiverDef>
-        <defName>DoctorGiveThugsVial</defName>
+        <defName>Cosmere_Scadrial_WorkGiver_DoctorGiveThugsVial</defName>
         <label>give thug patients pewter vials</label>
-        <giverClass>CosmereScadrial.WorkGivers.GivePewterVialToDownedThugs</giverClass>
+        <giverClass>Cosmere.System.Scadrial.WorkGivers.GivePewterVialToDownedThugs</giverClass>
         <workType>Doctor</workType>
         <verb>give vial</verb>
-        <gerund>giving vial ofs</gerund>
+        <gerund>giving vial of</gerund>
         <priorityInType>80</priorityInType>
         <requiredCapacities>
             <li>Manipulation</li>

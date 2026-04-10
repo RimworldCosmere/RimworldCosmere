@@ -1,0 +1,18 @@
+#nullable disable
+using Cosmere.System.Scadrial.Def;
+using RimWorld;
+
+namespace Cosmere.System.Scadrial;
+
+public static partial class RecordDefOf {
+    {{#each metals as | metal |}}
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_TimeSpentBurning_{{defName metal.name}};
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_TimeSpentStoring_{{defName metal.name}};
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_TimeSpentTapping_{{defName metal.name}};
+    [MayRequire("Cosmere.Scadrial")]
+    public static RecordDef Cosmere_Scadrial_Record_MetalBurnt_{{defName metal.name}};
+    {{/each}}
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+    <defName>Cosmere_Scadrial_Progression_FinalEmpire</defName>
+    <label>The Final Empire Progression</label>
+    <events>
+      <li>
+        <key>vins_awakening</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>7</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Vin's Awakening</title>
+            <text>Vin had always Pulled and Pushed without knowing what she did. Luck, she called it. Street instinct. But tonight Kelsier showed her the truth. The metals sang in her stomach, and the mists answered. She burned tin, and the world sharpened to a razor's edge. She burned pewter, and her body became a weapon. She is not merely a street urchin. She is Mistborn.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>marsh_departure</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>25</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Marsh's Infiltration</title>
+            <text>Marsh stands at the edge of camp, pack slung over one shoulder. "The Steel Ministry won't infiltrate itself," he says, his voice as flat as ever. Kelsier clasps his brother's arm. No words pass between them - none are needed. Marsh walks into the mists alone. His mission: to become an obligator, to learn the Ministry's secrets from within. It is the most dangerous part of the plan, and the one Marsh insisted on taking.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>skaa_army</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>45</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.PawnCountTrigger">
+            <minCount>8</minCount>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Skaa Rebellion Stirs</title>
+            <text>Word has spread through the underground. Yeden's rebels grow bolder by the day, and Ham's training has turned frightened skaa into something resembling soldiers. They march in formation now. They hold their weapons with intent rather than desperation. The numbers are still thin, but the spirit is there - a fire that has not burned on Scadrial in a thousand years.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>kelsiers_sacrifice</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>60</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+            <minThreats>2</minThreats>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>I Am the One Thing You Can Never Kill</title>
+            <text>Kelsier stood before the Steel Inquisitor in the public square. The skaa watched from behind shuttered windows. He fought as only a Mistborn could - iron and steel screaming through the air, pewter fueling impossible strength. But the Inquisitor was stronger. The blow came. Kelsier fell. And then something extraordinary happened. The skaa did not cower. They did not flee. They looked at the body of the Survivor of Hathsin, and they remembered his smile. "I am hope," he had told them. And hope, it turns out, cannot be killed so easily.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>the_collapse</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>75</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.EventOccurredTrigger">
+            <eventKey>kelsiers_sacrifice</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Collapse</title>
+            <text>The Lord Ruler is dead. Vin stood before him - a girl of sixteen, ash-stained and bleeding - and she pulled free the bracelets at his wrists. A thousand years of tyranny ended in a single moment. The skaa pour into the streets. Noble keeps burn. The Steel Ministry fractures. The Final Empire, that monolith of ash and oppression, crumbles at last. But as the mists settle over a world without its god, a new question rises: what comes next?</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+    </events>
+  </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+</Defs>

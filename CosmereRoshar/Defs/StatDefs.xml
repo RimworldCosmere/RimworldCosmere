@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <StatDef>
+        <defName>Cosmere_Roshar_Stat_SphereSize</defName>
+        <label>size of the sphere</label>
+        <description>Sphere size multiplier</description>
+        <category>BasicsNonPawn</category>
+        <defaultBaseValue>0</defaultBaseValue>
+        <toStringStyle>FloatThree</toStringStyle>
+        <displayPriorityInCategory>80</displayPriorityInCategory>
+    </StatDef>
+</Defs>

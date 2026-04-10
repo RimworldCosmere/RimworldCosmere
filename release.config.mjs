@@ -19,12 +19,12 @@ export default {
             {
                 "replacements": [
                     {
-                        "files": ["CosmereFramework/CosmereFramework/BuildInfo.cs"],
+                        "files": ["CosmereCore/CosmereCore/Core/BuildInfo.cs"],
                         "from": "Revision = \".*\";",
                         "to": "Revision = \"${nextRelease.version}\";",
                         "results": [
                             {
-                                "file": "CosmereFramework/CosmereFramework/BuildInfo.cs",
+                                "file": "CosmereCore/CosmereCore/Core/BuildInfo.cs",
                                 "hasChanged": true,
                                 "numMatches": 1,
                                 "numReplacements": 1
@@ -33,12 +33,12 @@ export default {
                         "countMatches": true
                     },
                     {
-                        "files": ["CosmereFramework/CosmereFramework/BuildInfo.cs"],
+                        "files": ["CosmereCore/CosmereCore/Core/BuildInfo.cs"],
                         "from": "BuildTime = \".*\";",
                         "to": "BuildTime = \"${(new Date()).toISOString()}\";",
                         "results": [
                             {
-                                "file": "CosmereFramework/CosmereFramework/BuildInfo.cs",
+                                "file": "CosmereCore/CosmereCore/Core/BuildInfo.cs",
                                 "hasChanged": true,
                                 "numMatches": 1,
                                 "numReplacements": 1
@@ -52,7 +52,7 @@ export default {
         [
             "@semantic-release/git",
             {
-                "assets": ["CosmereFramework/CosmereFramework/BuildInfo.cs"]
+                "assets": ["CosmereCore/CosmereCore/Core/BuildInfo.cs"]
             }
         ]
     ],

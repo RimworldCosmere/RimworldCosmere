@@ -3,14 +3,14 @@
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
         <defName>Cosmere_Scadrial_Hediff_BronzeAura</defName>
         <label>seeking pulses</label>
-        <description>The Allomancer is burning bronze, sensing the pulses of nearby Allomantic powers in its radius.</description>
+        <description>The Allomancer is burning bronze, sensing the pulses of nearby Allomantic powers in its radius. Also reveals deep mineral deposits beneath the colony and detects resources in nearby world tiles.</description>
         <comps>
-            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.BronzeAuraProperties">
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Hediff.BronzeAuraProperties">
                 <moteDef>Cosmere_Scadrial_Mote_BronzeAura</moteDef>
             </li>
         </comps>
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Core.DefModExtension.MetalsLinked">
                 <metal>Bronze</metal>
             </li>
         </modExtensions>

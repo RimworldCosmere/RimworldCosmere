@@ -3,16 +3,16 @@
     <HediffDef ParentName="Cosmere_Scadrial_Hediff_AbstractAllomanticHediff">
         <defName>Cosmere_Scadrial_Hediff_CopperAura</defName>
         <label>emitting coppercloud</label>
-        <description>The Allomancer is burning copper, generating a Coppercloud that conceals Allomantic pulses within its radius.</description>
+        <description>The Allomancer is burning copper, generating a Coppercloud that conceals Allomantic pulses within its radius. The coppercloud masks the colony's allomantic signature, reducing the threat level of incoming raids.</description>
         <comps>
-            <li Class="CosmereScadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
+            <li Class="Cosmere.System.Scadrial.Allomancy.Comp.Hediff.AllomancyAuraHediffGiverProperties">
                 <hediff>Cosmere_Scadrial_Hediff_CopperCloud</hediff>
                 <moteDef>Cosmere_Scadrial_Mote_CopperCloud</moteDef>
                 <verb>enshrouded</verb>
             </li>
         </comps>
         <modExtensions>
-            <li Class="CosmereResources.DefModExtension.MetalsLinked">
+            <li Class="Cosmere.Core.DefModExtension.MetalsLinked">
                 <metal>Copper</metal>
             </li>
         </modExtensions>
@@ -37,13 +37,37 @@
                     <MentalBreakThreshold>1.15</MentalBreakThreshold>
                 </statFactors>
             </li>
+        </stages>
+    </HediffDef>
+    <HediffDef>
+        <defName>Cosmere_Scadrial_Hediff_CopperConfusion</defName>
+        <label>coppercloud disorientation</label>
+        <description>The raiders seem confused, as if they expected to find something different here. The coppercloud has masked the colony's true nature, leaving them disoriented and unprepared.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <isBad>true</isBad>
+        <tendable>false</tendable>
+        <displayWound>false</displayWound>
+        <defaultLabelColor>(0.7, 0.5, 0.3)</defaultLabelColor>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <disappearsAfterTicks>30000~60000</disappearsAfterTicks>
+            </li>
+        </comps>
+        <stages>
             <li>
-                <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
-                <minSeverity>2</minSeverity>
+                <statOffsets>
+                    <MeleeHitChance>-4</MeleeHitChance>
+                    <ShootingAccuracyPawn>-4</ShootingAccuracyPawn>
+                </statOffsets>
                 <statFactors>
-                    <PainShockThreshold>1.15</PainShockThreshold>
-                    <MentalBreakThreshold>1.15</MentalBreakThreshold>
+                    <MoveSpeed>0.85</MoveSpeed>
                 </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.05</offset>
+                    </li>
+                </capMods>
             </li>
         </stages>
     </HediffDef>

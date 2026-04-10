@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+    <defName>Cosmere_Roshar_Progression_BridgeFour</defName>
+    <label>Bridge Four Progression</label>
+    <events>
+      <li>
+        <key>side_carry</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>5</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Side Carry</title>
+            <text>Kaladin demonstrates the side carry. It is such a small thing - holding the bridge to the side instead of overhead. But for the first time, Bridge Four survives a run without losses. The men look at Kaladin, and they see something they had forgotten: hope.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>syl_appears</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>9</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Syl</title>
+            <text>A small figure of light dances near Kaladin's head. He swats at it. It giggles. It is a windspren - or something like one. It follows him. It speaks to him. It has a name: Syl.</text>
+            <letterDef>NeutralEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>training_begins</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>12</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Training Begins</title>
+            <text>Kaladin teaches Bridge Four to fight with staves. They are clumsy, uncertain. But they try. For the first time, they try.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>kaladins_second_ideal</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>20</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+            <minThreats>2</minThreats>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
+            <pawnName>Kaladin</pawnName>
+            <targetIdeal>1</targetIdeal>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Second Ideal</title>
+            <text>"I will protect those who cannot protect themselves." The words hang in the air. Stormlight floods Kaladin, drawn from every sphere in the camp. Syl sharpens, brightens, becomes something more. Bridge Four watches their leader glow.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>shallan_arrives</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>30</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Shallan Davar</title>
+            <text>A lighteyes woman arrives, her red hair bright against the grey stone. She carries sketchbooks and secrets in equal measure. She calls herself Shallan Davar, and she has questions that no one here can answer.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>moashs_discontent</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>40</days>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>Moash's Discontent</title>
+            <text>Moash grows quieter. The anger he carries sharpens into something colder. He watches the lighteyes officers with an expression that does not invite conversation.</text>
+            <letterDef>NegativeEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>kaladins_third_ideal</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>50</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+            <minThreats>3</minThreats>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.EventOccurredTrigger">
+            <eventKey>kaladins_second_ideal</eventKey>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
+            <pawnName>Kaladin</pawnName>
+            <targetIdeal>2</targetIdeal>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Third Ideal</title>
+            <text>"I will protect even those I hate, so long as it is right." Syl blazes with light and becomes a Shardblade in Kaladin's hands. Stormlight erupts around him. Bridge Four watches their leader rise into the sky, armored in light. The man who was a slave is now a Knight Radiant.</text>
+            <letterDef>PositiveEvent</letterDef>
+          </li>
+        </actions>
+      </li>
+      <li>
+        <key>battle_of_tower</key>
+        <triggers>
+          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+            <days>60</days>
+          </li>
+          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+            <minThreats>4</minThreats>
+          </li>
+        </triggers>
+        <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+            <title>The Battle of the Tower</title>
+            <text>The horns sound across the plateaus. This is not a skirmish - this is the battle that will define the war. Bridge Four stands ready. Kaladin burns with Stormlight. The Tower awaits.</text>
+            <letterDef>ThreatBig</letterDef>
+          </li>
+        </actions>
+      </li>
+    </events>
+  </Cosmere.Core.ScenarioPart.ScenarioProgressionDef>
+</Defs>

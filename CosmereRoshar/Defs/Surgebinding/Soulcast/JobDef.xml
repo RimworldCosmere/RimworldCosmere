@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>Cosmere_Roshar_Job_Soulcast</defName>
+        <driverClass>Cosmere.System.Roshar.Job.Driver.Soulcast</driverClass>
+        <reportString>soulcasting TargetA.</reportString>
+        <playerInterruptible>true</playerInterruptible>
+        <neverFleeFromEnemies>false</neverFleeFromEnemies>
+    </JobDef>
+</Defs>

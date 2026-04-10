@@ -15,7 +15,7 @@
     <Operation Class="PatchOperationInsert">
         <xpath>/Defs/TraderKindDef/stockGenerators/li[@Class="StockGenerator_SingleDef" and thingDef="Silver"]</xpath>
         <value>
-            <li Class="StockGenerator_SingleDef" MayRequire="CryptikLemur.Cosmere.Scadrial">
+            <li Class="StockGenerator_SingleDef" MayRequire="Cosmere.Scadrial">
                 <thingDef>Cosmere_Scadrial_Thing_Clip</thingDef>
                 <countRange>200~3000</countRange>
             </li>
@@ -24,7 +24,7 @@
     <Operation Class="PatchOperationInsert">
         <xpath>/Defs/TraderKindDef/stockGenerators/li[@Class="StockGenerator_SingleDef" and thingDef="Silver"]</xpath>
         <value>
-            <li Class="StockGenerator_SingleDef" MayRequire="CryptikLemur.Cosmere.Scadrial">
+            <li Class="StockGenerator_SingleDef" MayRequire="Cosmere.Scadrial">
                 <thingDef>Cosmere_Scadrial_Thing_Boxing</thingDef>
                 <countRange>50~200</countRange>
             </li>

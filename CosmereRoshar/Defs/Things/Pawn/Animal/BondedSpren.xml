@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef Name="Cosmere_Roshar_Race_BondedSpren" ParentName="BasePawn" Abstract="True">
+        <thingClass>Cosmere.System.Roshar.Thing.Pawn.Animal.BondedSpren</thingClass>
+        <label>bonded spren</label>
+        <description>A sapient spren of the Cognitive Realm, bonded to a Knight Radiant through the Nahel Bond.</description>
+        <race>
+            <intelligence>Humanlike</intelligence>
+            <thinkTreeMain>Humanlike</thinkTreeMain>
+            <thinkTreeConstant>HumanlikeConstant</thinkTreeConstant>
+            <body>Cosmere_Roshar_Body_TrueSpren</body>
+            <renderTree>Cosmere_Roshar_RenderTree_BondedSpren</renderTree>
+            <baseBodySize>0.5</baseBodySize>
+            <baseHealthScale>1</baseHealthScale>
+            <hasGenders>true</hasGenders>
+            <nameCategory>HumanStandard</nameCategory>
+            <foodType>None</foodType>
+            <baseHungerRate>0</baseHungerRate>
+            <needsRest>false</needsRest>
+            <makesFootprints>false</makesFootprints>
+            <canBePredatorPrey>false</canBePredatorPrey>
+            <predator>false</predator>
+            <trainability>None</trainability>
+            <herdAnimal>false</herdAnimal>
+            <lifeExpectancy>99999</lifeExpectancy>
+            <alwaysAwake>true</alwaysAwake>
+            <isImmuneToInfections>true</isImmuneToInfections>
+            <bleedRateFactor>0</bleedRateFactor>
+            <disableMating>true</disableMating>
+            <hasMeat>false</hasMeat>
+            <hediffGiverSets />
+            <soundMeleeHitPawn>Pawn_Melee_Punch_HitPawn</soundMeleeHitPawn>
+            <soundMeleeHitBuilding>Pawn_Melee_Punch_HitBuilding</soundMeleeHitBuilding>
+            <soundMeleeMiss>Pawn_Melee_Punch_Miss</soundMeleeMiss>
+            <lifeStageAges>
+                <li>
+                    <def>HumanlikeAdult</def>
+                    <minAge>0</minAge>
+                </li>
+            </lifeStageAges>
+        </race>
+        <inspectorTabs Inherit="False">
+            <li>ITab_Pawn_Social</li>
+            <li>ITab_Pawn_Log</li>
+            <li>Cosmere.System.Roshar.Tab.ITab_SprenBond</li>
+        </inspectorTabs>
+        <statBases>
+            <MoveSpeed>9.2</MoveSpeed>
+            <Wildness>0</Wildness>
+            <MaxHitPoints>Infinity</MaxHitPoints>
+            <IncomingDamageFactor>0</IncomingDamageFactor>
+            <Flammability>0</Flammability>
+            <StaggerDurationFactor>0</StaggerDurationFactor>
+            <MentalBreakThreshold>0.01</MentalBreakThreshold>
+            <FilthRate>0</FilthRate>
+            <LifespanFactor>Infinity</LifespanFactor>
+            <ComfyTemperatureMin>-2000</ComfyTemperatureMin>
+            <ComfyTemperatureMax>2000</ComfyTemperatureMax>
+            <MarketValue>0</MarketValue>
+            <PawnBeauty>20</PawnBeauty>
+            <MeleeDodgeChance>1000</MeleeDodgeChance>
+            <MeleeHitChance>0</MeleeHitChance>
+            <MeleeDamageFactor>0</MeleeDamageFactor>
+            <CarryingCapacity>0</CarryingCapacity>
+        </statBases>
+        <tools>
+            <li>
+                <label>touch</label>
+                <capacities>
+                    <li>Blunt</li>
+                </capacities>
+                <power>0</power>
+                <cooldownTime>9999</cooldownTime>
+                <chanceFactor>0</chanceFactor>
+                <linkedBodyPartsGroup>RightHand</linkedBodyPartsGroup>
+            </li>
+        </tools>
+        <comps Inherit="False">
+            <li><compClass>CompAttachBase</compClass></li>
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <isInfinite>true</isInfinite>
+                <maxIsInfinity>true</maxIsInfinity>
+                <showMax>false</showMax>
+            </li>
+            <li Class="CompProperties_Glower">
+                <glowRadius>1</glowRadius>
+                <glowColor>(217, 217, 230)</glowColor>
+            </li>
+            <li Class="Cosmere.System.Roshar.Comp.Thing.CompSprenGlowerProperties">
+                <baseGlowRadius>1</baseGlowRadius>
+                <glowColor>(217, 217, 230)</glowColor>
+            </li>
+            <li Class="Cosmere.System.Roshar.Comp.Thing.CompSprenBondProperties" />
+        </comps>
+    </ThingDef>
+
+    <PawnKindDef Name="Cosmere_Roshar_PawnKind_BondedSpren" Abstract="True">
+        <label>bonded spren</label>
+        <labelPlural>bonded spren</labelPlural>
+        <defaultFactionDef>Ancients</defaultFactionDef>
+        <combatPower>0</combatPower>
+        <canArriveManhunter>false</canArriveManhunter>
+        <ecoSystemWeight>0</ecoSystemWeight>
+        <wildGroupSize>0~0</wildGroupSize>
+        <immuneToTraps>true</immuneToTraps>
+        <immuneToGameConditionEffects>true</immuneToGameConditionEffects>
+        <initialResistanceRange>0~0</initialResistanceRange>
+        <initialWillRange>0~0</initialWillRange>
+    </PawnKindDef>
+</Defs>

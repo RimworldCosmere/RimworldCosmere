@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_NahelBondHealthy</defName>
+        <workerClass>Cosmere.System.Roshar.Thought.NahelBondHealthyThoughtWorker</workerClass>
+        <stages>
+            <li>
+                <label>strong Nahel bond</label>
+                <description>My bond with my spren is strong. I can feel its warmth in the back of my mind.</description>
+                <baseMoodEffect>5</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_NahelBondFractured</defName>
+        <workerClass>Cosmere.System.Roshar.Thought.NahelBondFracturedThoughtWorker</workerClass>
+        <stages>
+            <li>
+                <label>fractured Nahel bond</label>
+                <description>The bond with my spren is fracturing. I can feel it weakening with every broken oath.</description>
+                <baseMoodEffect>-5</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_NahelBondBreaking</defName>
+        <workerClass>Cosmere.System.Roshar.Thought.NahelBondBreakingThoughtWorker</workerClass>
+        <stages>
+            <li>
+                <label>breaking Nahel bond</label>
+                <description>My bond is on the verge of shattering. The emptiness is creeping in.</description>
+                <baseMoodEffect>-10</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_SprenMood</defName>
+        <workerClass>Cosmere.System.Roshar.Thought.SprenMoodWorker</workerClass>
+        <stages>
+            <li>
+                <label>cognitive realm being</label>
+                <description>I exist in the Cognitive Realm. Mortal concerns do not trouble me.</description>
+                <baseMoodEffect>100</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>Cosmere_Roshar_Thought_NahelBondOpinion</defName>
+        <thoughtClass>Thought_SituationalSocial</thoughtClass>
+        <workerClass>Cosmere.System.Roshar.Thought.NahelBondOpinionWorker</workerClass>
+        <stackLimit>1</stackLimit>
+        <stages>
+            <li>
+                <label>strong Nahel bond</label>
+                <baseOpinionOffset>100</baseOpinionOffset>
+            </li>
+            <li>
+                <label>strained Nahel bond</label>
+                <baseOpinionOffset>50</baseOpinionOffset>
+            </li>
+            <li>
+                <label>fractured Nahel bond</label>
+                <baseOpinionOffset>20</baseOpinionOffset>
+            </li>
+            <li>
+                <label>breaking Nahel bond</label>
+                <baseOpinionOffset>-20</baseOpinionOffset>
+            </li>
+        </stages>
+    </ThoughtDef>
+</Defs>

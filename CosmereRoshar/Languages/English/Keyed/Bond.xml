@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CRO_Bond_Spren_Title>Pawn Bonded Spren: {PAWN}</CRO_Bond_Spren_Title>
+    <CRO_Bond_Spren_Content>{PAWN} has bonded a spren and must now choose a Radiant Order.</CRO_Bond_Spren_Content>
+    <CRO_Choose_Radiant_Order_Button>Choose an Order</CRO_Choose_Radiant_Order_Button>
+    <CRO_Choose_Radiant_Order_Desc>Choose a Knights Radiant Order for {PAWN} to follow</CRO_Choose_Radiant_Order_Desc>
+    <CRO_Choose_Radiant_Order_Dialog_Title>Choose {PAWN}'s Radiant Order</CRO_Choose_Radiant_Order_Dialog_Title>
+    <CRO_Choose_Radiant_Order_Dialog_Subtitle>Select the Radiant Order that resonates with your pawn's spirit and ideals</CRO_Choose_Radiant_Order_Dialog_Subtitle>
+    <CRO_Bond_Choose_Surges>Associated Surges</CRO_Bond_Choose_Surges>
+    <CRO_Choose_Radiant_Order_Dialog_Join>Join the {ORDER} Order</CRO_Choose_Radiant_Order_Dialog_Join>
+    <CRO_NahelBond_Inspect>Nahel bonded to {PAWN}</CRO_NahelBond_Inspect>
+    <CRO_SprenDismiss>Dismiss spren</CRO_SprenDismiss>
+    <CRO_SprenDismiss_Desc>Dismiss your bonded spren to the Cognitive Realm.</CRO_SprenDismiss_Desc>
+    <CRO_SprenSummon>Summon spren</CRO_SprenSummon>
+    <CRO_SprenSummon_Desc>Summon your bonded spren from the Cognitive Realm.</CRO_SprenSummon_Desc>
+    <CRO_SprenSummon_NoMap>Must be on a map to summon spren.</CRO_SprenSummon_NoMap>
+    <CRO_SprenCooldown>Cooldown active</CRO_SprenCooldown>
+    <CRO_SprenAutonomous_On>Autonomous mode active</CRO_SprenAutonomous_On>
+    <CRO_SprenAutonomous_Hint>Shift-click to toggle autonomous mode</CRO_SprenAutonomous_Hint>
+    <CRO_BondStage_Healthy>Healthy</CRO_BondStage_Healthy>
+    <CRO_BondStage_Strained>Strained</CRO_BondStage_Strained>
+    <CRO_BondStage_Fractured>Fractured</CRO_BondStage_Fractured>
+    <CRO_BondStage_Breaking>Breaking</CRO_BondStage_Breaking>
+    <CRO_NahelBond_SocialTooltip_Header>Nahel Bond</CRO_NahelBond_SocialTooltip_Header>
+    <CRO_NahelBond_SocialTooltip_Strength>Bond Strength: {0}%</CRO_NahelBond_SocialTooltip_Strength>
+    <CRO_NahelBond_SocialTooltip_Stage>Bond Status: {0}</CRO_NahelBond_SocialTooltip_Stage>
+    <CRO_NahelBond_SocialTooltip_Personality>Spren Personality:</CRO_NahelBond_SocialTooltip_Personality>
+    <CRO_Spren_Tab>Spren</CRO_Spren_Tab>
+    <CRO_Spren_Rename>Rename</CRO_Spren_Rename>
+    <CRO_NameSpren_Title>Name Your Spren</CRO_NameSpren_Title>
+    <CRO_NameSpren_Named>Your spren is now known as {NAME}.</CRO_NameSpren_Named>
+    <CRO_Spren_BondedSpren>Bonded spren: {SPREN}</CRO_Spren_BondedSpren>
+    <CRO_SprenBond_BondedTo>Bonded to {PAWN}</CRO_SprenBond_BondedTo>
+    <CRO_SprenBond_Strength>Bond Strength:</CRO_SprenBond_Strength>
+    <CRO_SprenBond_Status>Status: {0}</CRO_SprenBond_Status>
+    <CRO_SprenBond_Dismissed>Dismissed to Cognitive Realm</CRO_SprenBond_Dismissed>
+    <CRO_SprenBond_Personality>Personality</CRO_SprenBond_Personality>
+    <CRO_SprenBond_NoTraits>No distinct personality traits</CRO_SprenBond_NoTraits>
+    <CRO_IdealRegressed_Title>{PAWN}'s Ideal Has Regressed</CRO_IdealRegressed_Title>
+    <CRO_IdealRegressed_Text>{PAWN}'s bond with the {ORDER} has weakened. Their Ideal has regressed from the {OLDIDEAL}th to the {NEWIDEAL}th Ideal. Violations of their Order's tenets have eroded the Nahel Bond.</CRO_IdealRegressed_Text>
+    <CRO_SprenBond_StrengthTooltip>Bond strength reflects the health of the Nahel Bond.\n\nFactors reducing bond strength:</CRO_SprenBond_StrengthTooltip>
+    <CRO_SprenBond_StrengthFull>The bond is at full strength. No negative factors.</CRO_SprenBond_StrengthFull>
+</LanguageData>

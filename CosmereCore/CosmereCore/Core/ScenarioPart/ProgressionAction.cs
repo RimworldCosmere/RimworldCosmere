@@ -237,6 +237,26 @@ public class SetGameConditionAction : ProgressionAction {
     }
 }
 
+public class RemoveGameConditionAction : ProgressionAction {
+    public string gameCondition = "";
+
+    public override void Execute(GameComponent_ScenarioProgression comp) {
+        GameConditionDef? def = DefDatabase<GameConditionDef>.GetNamedSilentFail(gameCondition);
+        if (def == null) {
+            Logger.Warning($"ScenarioProgression: GameCondition '{gameCondition}' not found");
+            return;
+        }
+
+        Map? map = Find.CurrentMap;
+        if (map == null) return;
+
+        RimWorld.GameCondition? active = map.gameConditionManager.GetActiveCondition(def);
+        if (active != null) {
+            active.End();
+        }
+    }
+}
+
 public class TriggerIncidentAction : ProgressionAction {
     public string incident = "";
 

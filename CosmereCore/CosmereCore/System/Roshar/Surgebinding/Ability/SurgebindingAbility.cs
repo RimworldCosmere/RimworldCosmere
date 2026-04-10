@@ -55,9 +55,14 @@ public class SurgebindingAbility : AbstractAbility<Surgebinder, SurgebindingHedi
 
     public override float GetDesiredBurnRateForStatus(Status? desiredStatus) {
         float rate = base.GetDesiredBurnRateForStatus(desiredStatus) / (1 << gene.currentIdeal);
-        if (surgeDef == null) return rate;
-        int stage = SavantUtility.GetSurgebindingSavantStage(pawn, surgeDef);
-        return rate * SavantUtility.GetSurgebindingCostMultiplier(stage);
+        if (surgeDef != null) {
+            int stage = SavantUtility.GetSurgebindingSavantStage(pawn, surgeDef);
+            rate *= SavantUtility.GetSurgebindingCostMultiplier(stage);
+        }
+        if (pawn.Map != null) {
+            rate *= GameCondition.SuppressionField.GetCostMultiplier(pawn.Map);
+        }
+        return rate;
     }
 
     protected override void OnEnable() {

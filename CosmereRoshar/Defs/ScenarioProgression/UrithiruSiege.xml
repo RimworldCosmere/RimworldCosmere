@@ -12,6 +12,10 @@
           </li>
         </triggers>
         <actions>
+          <li Class="Cosmere.Core.ScenarioPart.SetGameConditionAction">
+            <gameCondition>Cosmere_Roshar_GameCondition_SuppressionField</gameCondition>
+            <durationDays>60</durationDays>
+          </li>
           <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
             <title>The Suppression</title>
             <text>The field hums through the tower - invisible, inescapable. Stormlight bleeds from gemstones. Radiants feel their power draining. The enemy has turned Urithiru's own defenses against its guardians.</text>
@@ -132,6 +136,9 @@
           </li>
         </triggers>
         <actions>
+          <li Class="Cosmere.Core.ScenarioPart.RemoveGameConditionAction">
+            <gameCondition>Cosmere_Roshar_GameCondition_SuppressionField</gameCondition>
+          </li>
           <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
             <pawnName>Navani</pawnName>
             <targetIdeal>1</targetIdeal>

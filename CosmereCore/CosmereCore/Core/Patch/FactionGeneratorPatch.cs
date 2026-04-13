@@ -7,16 +7,8 @@ using Verse;
 
 namespace Cosmere.Core.Patch;
 
-/// <summary>
-/// Filters factions based on the current scenario.
-/// Scadrial scenarios only show/generate Scadrial factions, Roshar scenarios only show/generate Roshar factions.
-/// </summary>
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class FactionGeneratorPatch {
-    /// <summary>
-    /// Checks if a faction should be allowed for the current scenario.
-    /// Cosmere scenarios only allow their matching Cosmere factions - no vanilla factions.
-    /// </summary>
     public static bool IsFactionAllowedForScenario(FactionDef faction) {
         Scenario scenario = Find.Scenario;
         if (scenario == null) {
@@ -24,18 +16,12 @@ public static class FactionGeneratorPatch {
         }
 
         string scenarioName = scenario.name ?? "";
-
-        // Determine which Cosmere world this scenario belongs to based on label prefixes
-        // Scadrial: "Mistborn:" or contains "Scadrial"
-        // Roshar: "Stormlight:" or "Roshar:"
-        // Combined: "Cosmere:" (worldhopper scenarios that include both worlds)
         bool isScadrialScenario = scenarioName.StartsWith("Mistborn:") ||
                                    scenarioName.Contains("Scadrial");
         bool isRosharScenario = scenarioName.StartsWith("Stormlight:") ||
                                  scenarioName.StartsWith("Roshar:");
         bool isCombinedCosmereScenario = scenarioName.StartsWith("Cosmere:");
 
-        // If not a Cosmere scenario, allow all factions
         if (!isScadrialScenario && !isRosharScenario && !isCombinedCosmereScenario) {
             return true;
         }
@@ -44,27 +30,21 @@ public static class FactionGeneratorPatch {
         bool isScadrialFaction = defName.Contains("Scadrial");
         bool isRosharFaction = defName.Contains("Roshar");
         bool isCosmereFaction = isScadrialFaction || isRosharFaction;
-
-        // Check DLC faction settings
         CoreModSettings settings = Mod.GetModSettings<CoreModSettings>();
 
-        // Filter Empire if setting enabled
         if (settings.disableEmpireInCosmereScenarios && defName == "Empire") {
             return false;
         }
 
-        // Filter Odyssey factions if setting enabled
         if (settings.disableOdysseyFactionsInCosmereScenarios &&
             (defName == "MechanoidHive" || defName == "InsectGeneline")) {
             return false;
         }
 
-        // Combined Cosmere scenarios (worldhoppers) allow all Cosmere factions
         if (isCombinedCosmereScenario) {
             return isCosmereFaction;
         }
 
-        // Single-world Cosmere scenarios only allow matching Cosmere factions
         if (isScadrialScenario) {
             return isScadrialFaction;
         }
@@ -77,9 +57,6 @@ public static class FactionGeneratorPatch {
     }
 }
 
-/// <summary>
-/// Filters the configurable factions list shown during world generation.
-/// </summary>
 [HarmonyPatch(typeof(FactionGenerator), nameof(FactionGenerator.ConfigurableFactions), MethodType.Getter)]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class FactionGeneratorConfigurableFactionsPatch {
@@ -87,10 +64,10 @@ public static class FactionGeneratorConfigurableFactionsPatch {
         Scenario scenario = Find.Scenario;
         string scenarioName = scenario?.name ?? "(null)";
         Logger.Verbose($"FactionGeneratorPatch: Filtering factions for scenario '{scenarioName}'");
-        __result = FilterFactions(__result, scenarioName);
+        __result = FilterFactions(__result);
     }
 
-    private static IEnumerable<FactionDef> FilterFactions(IEnumerable<FactionDef> factions, string scenarioName) {
+    private static IEnumerable<FactionDef> FilterFactions(IEnumerable<FactionDef> factions) {
         foreach (FactionDef faction in factions) {
             bool allowed = FactionGeneratorPatch.IsFactionAllowedForScenario(faction);
             Logger.Verbose($"FactionGeneratorPatch: {faction.defName} -> {(allowed ? "allowed" : "filtered")}");
@@ -101,10 +78,6 @@ public static class FactionGeneratorConfigurableFactionsPatch {
     }
 }
 
-/// <summary>
-/// Prevents automatic faction generation for factions that don't match the scenario.
-/// Patches CreateFactionAndAddToManager to skip factions from the wrong world.
-/// </summary>
 [HarmonyPatch(typeof(FactionGenerator), nameof(FactionGenerator.CreateFactionAndAddToManager), typeof(RimWorld.Planet.PlanetLayer), typeof(FactionDef))]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class FactionGeneratorCreateFactionPatch {

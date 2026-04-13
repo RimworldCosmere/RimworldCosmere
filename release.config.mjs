@@ -22,14 +22,6 @@ export default {
                         "files": ["CosmereCore/CosmereCore/Core/BuildInfo.cs"],
                         "from": "Revision = \".*\";",
                         "to": "Revision = \"${nextRelease.version}\";",
-                        "results": [
-                            {
-                                "file": "CosmereCore/CosmereCore/Core/BuildInfo.cs",
-                                "hasChanged": true,
-                                "numMatches": 1,
-                                "numReplacements": 1
-                            }
-                        ],
                         "countMatches": true
                     },
                     {

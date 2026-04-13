@@ -30,13 +30,13 @@ public class GrasssprenController : StaticSprenController {
 
     protected override void ConfigureMaterial(Material material) {
         base.ConfigureMaterial(material);
-        material.SetColor("_Color", sprenColor); // Set the green color
-        material.SetColor("_StreamColor", new Color(0.4f, 1f, 0.5f, 0.8f)); // Lighter green streams
-        material.SetColor("_ParticleColor", new Color(0.9f, 1f, 0.9f, 0.8f)); // Light green particles
-        material.SetInt("_FlowPattern", 0); // Grass pattern
+        material.SetColor("_Color", sprenColor);
+        material.SetColor("_StreamColor", new Color(0.4f, 1f, 0.5f, 0.8f));
+        material.SetColor("_ParticleColor", new Color(0.9f, 1f, 0.9f, 0.8f));
+        material.SetInt("_FlowPattern", 0);
         material.SetFloat("_FlowSpeed", 1.2f);
-        material.SetFloat("_FlowDensity", 8f); // Add some density
-        material.SetFloat("_AnimationSpeed", 1.0f); // Ensure animation is active
+        material.SetFloat("_FlowDensity", 8f);
+        material.SetFloat("_AnimationSpeed", 1.0f);
     }
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(
@@ -45,10 +45,8 @@ public class GrasssprenController : StaticSprenController {
     ) {
         if (!IsInBounds(position, map)) return null;
 
-        // Check terrain for grass
         TerrainDef? terrain = GetTerrain(position, map!);
         if (terrain != null) {
-            // Terrain checks for grass-related terrain
             bool hasGrassTag = HasTerrainTag(terrain, "Grass");
             bool hasGrassName = TerrainNameContains(terrain, "grass", "meadow", "field", "pasture");
             bool hasFertile = HasTerrainTag(terrain, "Fertile");
@@ -58,7 +56,6 @@ public class GrasssprenController : StaticSprenController {
             }
         }
 
-        // Check for plants at this position
         bool hasPlants = map!.thingGrid.ThingsListAt(position)
             .Any(thing => thing.def.category == ThingCategory.Plant);
 

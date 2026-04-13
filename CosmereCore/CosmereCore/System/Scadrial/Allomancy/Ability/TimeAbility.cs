@@ -1,4 +1,5 @@
 using Cosmere.Core.Ability;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using Verse;
@@ -38,8 +39,8 @@ public class TimeAbility : AllomancyAbility {
 
     protected override void OnDisable() {
         base.OnDisable();
-        if (!bubble?.Destroyed ?? false) bubble?.Destroy();
-        if (!bubbleWithDistortion?.Destroyed ?? false) bubbleWithDistortion?.Destroy();
+        if (bubble != null && !bubble.Destroyed) bubble.Destroy();
+        if (bubbleWithDistortion != null && !bubbleWithDistortion.Destroyed) bubbleWithDistortion.Destroy();
     }
 
 

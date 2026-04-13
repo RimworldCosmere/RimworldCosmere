@@ -212,11 +212,11 @@ public class Dialog_NightwatcherEncounter : Window {
             float btnX = inRect.x + (inRect.width - btnW) / 2f;
             if (Widgets.ButtonText(new Rect(btnX, y, btnW, 36f),
                     "Cosmere_Roshar_NW_Boon_Confirm".Translate())) {
+                Dictionary<string, object>? context = null;
                 if (selectedMetal != null) {
-                    MistingApplicator.SelectedMetal = selectedMetal;
-                    FerringApplicator.SelectedMetal = selectedMetal;
+                    context = new Dictionary<string, object> { ["SelectedMetal"] = selectedMetal };
                 }
-                NightwatcherSystem.ApplyBoon(pawn, selectedBoon!);
+                NightwatcherSystem.ApplyBoon(pawn, selectedBoon!, context);
                 drawnCurse = NightwatcherSystem.DrawCurse(selectedBoon!);
                 phase = Phase.CurseReveal;
             }

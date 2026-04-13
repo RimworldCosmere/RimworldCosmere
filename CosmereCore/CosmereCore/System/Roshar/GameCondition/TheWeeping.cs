@@ -9,9 +9,12 @@ public class TheWeeping : RimWorld.GameCondition {
     private const int DrainTickInterval = 250;
     private const float SpheresDrainPerInterval = 0.5f;
 
+    private static WeatherDef? cachedRain;
+    private static WeatherDef Rain => cachedRain ??= DefDatabase<WeatherDef>.GetNamed("Rain");
+
     public override void Init() {
         base.Init();
-        SingleMap?.weatherManager.TransitionTo(WeatherDefOf.Rain);
+        SingleMap?.weatherManager.TransitionTo(Rain);
     }
 
     public override void GameConditionTick() {
@@ -21,9 +24,9 @@ public class TheWeeping : RimWorld.GameCondition {
         Map? map = SingleMap;
         if (map == null) return;
 
-        if (map.weatherManager.curWeather != WeatherDefOf.Rain &&
+        if (map.weatherManager.curWeather != Rain &&
             map.weatherManager.curWeather != WeatherDefOf.FoggyRain) {
-            map.weatherManager.TransitionTo(WeatherDefOf.Rain);
+            map.weatherManager.TransitionTo(Rain);
         }
 
         DrainExposedSpheres(map);

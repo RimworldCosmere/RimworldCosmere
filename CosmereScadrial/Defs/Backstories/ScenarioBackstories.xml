@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Terris Childhood for scenario pawns -->
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Terris_Childhood</defName>
+    <slot>Childhood</slot>
+    <title>Terris youth</title>
+    <titleShort>Terris</titleShort>
+    <description>[PAWN_nameDef] grew up among the Terris people in the mountains. The Terris taught knowledge preservation and peaceful ways, but [PAWN_pronoun] also learned the fierce determination that lay beneath their gentle exterior.</description>
+    <spawnCategories>
+      <li>Offworld</li>
+    </spawnCategories>
+    <skillGains>
+      <Intellectual>4</Intellectual>
+      <Social>2</Social>
+    </skillGains>
+  </BackstoryDef>
+
+  <!-- Lord Ruler adulthood -->
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_LordRuler</defName>
+    <slot>Adulthood</slot>
+    <title>Sliver of Infinity</title>
+    <titleShort>Lord Ruler</titleShort>
+    <description>[PAWN_nameDef] held the power of a god at the Well of Ascension. [PAWN_pronoun] moved the planet, raised the ashmounts, and remade the world in [PAWN_possessive] image. A thousand years of absolute rule followed. [PAWN_pronoun] is both Mistborn and Full Feruchemist, functionally immortal through Compounding.</description>
+    <spawnCategories>
+      <li>Offworld</li>
+    </spawnCategories>
+    <skillGains>
+      <Melee>8</Melee>
+      <Intellectual>6</Intellectual>
+      <Social>6</Social>
+    </skillGains>
+    <bodyTypeGlobal>Male</bodyTypeGlobal>
+  </BackstoryDef>
+
+  <!-- Kelsier's Survivor of Hathsin backstory -->
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_SurvivorOfHathsin</defName>
+    <slot>Adulthood</slot>
+    <title>Survivor of Hathsin</title>
+    <titleShort>Survivor</titleShort>
+    <description>[PAWN_nameDef] survived the Pits of Hathsin, a death sentence from which none had returned. The horrors of the Pits broke something within [PAWN_objective], and in that breaking, [PAWN_pronoun] Snapped. [PAWN_pronoun] emerged a Mistborn, driven by an unyielding hatred of the Lord Ruler and a dream of revolution.</description>
+    <spawnCategories>
+      <li>Offworld</li>
+    </spawnCategories>
+    <skillGains>
+      <Melee>6</Melee>
+      <Social>6</Social>
+      <Crafting>4</Crafting>
+    </skillGains>
+  </BackstoryDef>
+
+  <!-- Skaa Childhood -->
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Skaa_Childhood</defName>
+    <slot>Childhood</slot>
+    <title>Skaa laborer's child</title>
+    <titleShort>Skaa</titleShort>
+    <description>[PAWN_nameDef] was born to skaa workers in the Final Empire. Life was hard labor under the ash, but [PAWN_pronoun] learned to survive and to hide [PAWN_possessive] true thoughts from the nobles.</description>
+    <spawnCategories>
+      <li>Offworld</li>
+    </spawnCategories>
+    <skillGains>
+      <Plants>2</Plants>
+      <Construction>2</Construction>
+    </skillGains>
+  </BackstoryDef>
+
+  <!-- Noble Childhood -->
+  <BackstoryDef>
+    <defName>Cosmere_Scadrial_Backstory_Noble_Childhood</defName>
+    <slot>Childhood</slot>
+    <title>Noble scion</title>
+    <titleShort>Noble</titleShort>
+    <description>[PAWN_nameDef] was raised in the keeps of the Final Empire's nobility. [PAWN_pronoun] learned politics, etiquette, and the subtle art of House intrigue from an early age.</description>
+    <spawnCategories>
+      <li>Offworld</li>
+    </spawnCategories>
+    <skillGains>
+      <Social>4</Social>
+      <Intellectual>2</Intellectual>
+    </skillGains>
+  </BackstoryDef>
+
+</Defs>

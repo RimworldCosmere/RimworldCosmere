@@ -7,7 +7,7 @@
         <label>eyes of light</label>
         <description>The Nightwatcher's gift is subtle - a change in the color of {PAWN_nameDef}'s eyes. In the morning light, they shine. Where once dark irises marked {PAWN_nameDef} as common, now pale eyes speak of station. The caste system bends to Cultivation's will. Lighteyes.</description>
         <powerTier>1</powerTier>
-        <applicatorClass>Cosmere.System.Roshar.LighteyesApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.LighteyesApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
@@ -85,7 +85,7 @@
         <label>mended body</label>
         <description>The Nightwatcher reached into {PAWN_nameDef} and found the old wounds, the places where the body had given up on healing. She smoothed them out. What was broken is mended now. Not perfect, but whole.</description>
         <powerTier>2</powerTier>
-        <applicatorClass>Cosmere.System.Roshar.HealChronicApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.HealChronicApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
@@ -126,7 +126,7 @@
         <removeTrait>Neurotic</removeTrait>
         <grantTrait>Tough</grantTrait>
         <grantTraitDegree>0</grantTraitDegree>
-        <applicatorClass>Cosmere.System.Roshar.GriefReliefApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.GriefReliefApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
@@ -136,7 +136,7 @@
         <powerTier>2</powerTier>
         <requiresMod>Cosmere.Scadrial</requiresMod>
         <metalSelectionType>allomancy</metalSelectionType>
-        <applicatorClass>Cosmere.System.Roshar.MistingApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.MistingApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
@@ -146,7 +146,7 @@
         <powerTier>2</powerTier>
         <requiresMod>Cosmere.Scadrial</requiresMod>
         <metalSelectionType>feruchemy</metalSelectionType>
-        <applicatorClass>Cosmere.System.Roshar.FerringApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.FerringApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <!-- Tier 3: Major Boons -->
@@ -157,7 +157,7 @@
         <description>This was no small thing to ask. The Nightwatcher hesitated - not from reluctance, but from the sheer weight of what {PAWN_nameDef} demanded. Then she reached into {PAWN_possessive} Spiritweb and cracked it wide open. Every metal sings now. Iron and steel, tin and pewter, all of them. {PAWN_nameDef} burns with Preservation's full gift. The mists will recognize {PAWN_nameDef}.</description>
         <powerTier>3</powerTier>
         <requiresMod>Cosmere.Scadrial</requiresMod>
-        <applicatorClass>Cosmere.System.Roshar.MistbornApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.MistbornApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>
@@ -166,7 +166,7 @@
         <description>Cultivation understands growth, and what she gave {PAWN_nameDef} is the ultimate expression of it. Every metal now holds a piece of {PAWN_nameDef} - speed, strength, memory, warmth, youth. {PAWN_pronoun} can pour {PAWN_possessive} attributes into metal and draw them back tenfold. The Terris would weep to see it given so freely.</description>
         <powerTier>3</powerTier>
         <requiresMod>Cosmere.Scadrial</requiresMod>
-        <applicatorClass>Cosmere.System.Roshar.FullFeruchemistApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.FullFeruchemistApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherBoonDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherBoonDef>

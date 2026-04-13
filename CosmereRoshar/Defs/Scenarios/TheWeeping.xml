@@ -6,6 +6,10 @@
     <description>The Weeping has come. Four weeks of steady rain without a single highstorm. The gemstones are dull, the Stormlight spent. Whatever powers you carried are silent now. You must survive on skill, steel, and stubbornness alone - until the storms return.</description>
     <scenario>
       <summary>Survive the Weeping with no Stormlight and no highstorms.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Roshar_Faction_WeepingSurvivors</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

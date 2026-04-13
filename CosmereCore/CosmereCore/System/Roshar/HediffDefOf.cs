@@ -10,7 +10,7 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class HediffDefOf {
+public static partial class HediffDefOf {
     static HediffDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(HediffDefOf));
     }
@@ -38,4 +38,25 @@ public class HediffDefOf {
 
     [MayRequire("Cosmere.Roshar")]
     public static HediffDef Cosmere_Roshar_Surge_Abrasion;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static HediffDef Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static HediffDef Cosmere_Roshar_Hediff_UrithuruBlessing;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static HediffDef Cosmere_Roshar_Hediff_LightweavingDecoy;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static HediffDef Cosmere_Roshar_Hediff_NightwatcherBoon;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static HediffDef Cosmere_Roshar_Hediff_NightwatcherCurse;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static HediffDef Cosmere_Roshar_Hediff_NW_BoonPassive_AgelessBody;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static HediffDef Cosmere_Roshar_Hediff_NW_NarcolepsyCollapse;
 }

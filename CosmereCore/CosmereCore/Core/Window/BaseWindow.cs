@@ -154,12 +154,6 @@ public abstract class BaseWindow : Verse.Window {
             Close();
         }
 
-        //Widgets.DrawRectFast(bodyRect, BodyColor);
-        /*if (drawBorder) {
-            Widgets.DrawBoxSolid(new Rect(bodyRect.xMin, bodyRect.y, 1, bodyRect.height), BorderColor);
-            Widgets.DrawBoxSolid(new Rect(bodyRect.xMax - 1, bodyRect.y, 1, bodyRect.height), BorderColor);
-        }*/
-
         using (ScrollView sv = new ScrollView(bodyRect, scrollViewStatus)) {
             using (new TextBlock(bodyFont)) sv.height = DrawBody(sv.rect);
         }

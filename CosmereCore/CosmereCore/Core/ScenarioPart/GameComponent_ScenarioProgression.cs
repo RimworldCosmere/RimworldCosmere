@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
@@ -78,7 +79,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
         for (int i = 0; i < evt.actions.Count; i++) {
             try {
                 evt.actions[i].Execute(this);
-            } catch (global::System.Exception ex) {
+            } catch (Exception ex) {
                 Logger.Warning($"ScenarioProgression: Failed to execute action for event '{evt.key}': {ex.Message}");
             }
         }

@@ -29,9 +29,12 @@ public static class Profiler {
 
     // Aggregation buckets (ticks are long; keep totals big)
     private static readonly ConcurrentDictionary<MethodBase, Agg> Aggs = new ConcurrentDictionary<MethodBase, Agg>();
-    private static readonly Timer FlushTimer = null!;
+
+    private static bool Initialized;
 
     static Profiler() {
+        if (!Mod.debugMode) return;
+
         try {
             Harmony harmony = new Harmony("Cosmere.Profiler");
 
@@ -48,8 +51,10 @@ public static class Profiler {
                     finalizer: new HarmonyMethod(typeof(Profiler), nameof(CleanupProfiling))
                 );
             }
+
+            Initialized = true;
         } catch (Exception ex) {
-            Log.Error($"[Cosmere] Profiler initialization failed: {ex}");
+            Logger.Error($"Profiler initialization failed: {ex}");
         }
     }
 
@@ -69,7 +74,8 @@ public static class Profiler {
     private static IEnumerable<Type> SafeGetTypes(Assembly a) {
         try {
             return a.GetTypes();
-        } catch {
+        } catch (Exception ex) {
+            Logger.Verbose($"Failed to get types from assembly {a.FullName}: {ex.Message}");
             return [];
         }
     }
@@ -79,7 +85,8 @@ public static class Profiler {
             return t.GetMethods(
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
             );
-        } catch {
+        } catch (Exception ex) {
+            Logger.Verbose($"Failed to get methods from type {t.FullName}: {ex.Message}");
             return [];
         }
     }
@@ -209,10 +216,13 @@ public static class Profiler {
         string? category = null,
         bool aggregate = true
     ) {
+        if (!Initialized) return default;
         return new ScopeTimer(label, mode, sampleProbability, category, aggregate);
     }
 
-    private sealed class ProfilerFlushComponent(Game game) : GameComponent {
+#pragma warning disable CS9113
+    private sealed class ProfilerFlushComponent(Game _) : GameComponent {
+#pragma warning restore CS9113
         public override void GameComponentUpdate() {
             if ((int)Time.time % FlushSeconds == 0) Flush();
         }
@@ -334,7 +344,7 @@ public static class Profiler {
                 double ms = sw.ElapsedTicks * (1000.0 / Stopwatch.Frequency) * weight;
                 string modeString = mode == ProfileMode.Sampling ? "SAMP" : "INST";
                 string cat = string.IsNullOrEmpty(category) ? "" : $" [{category}]";
-                Log.Message($"{modeString}{cat} {label}: {ms:F3}ms");
+                Logger.Verbose($"{modeString}{cat} {label}: {ms:F3}ms");
             }
         }
     }
@@ -355,11 +365,20 @@ internal class MethodComparer : IEqualityComparer<MethodInfo> {
         ParameterInfo[] yp = y.GetParameters();
         if (xp.Length != yp.Length) return false;
 
-        return !xp.Where((t, i) => t.ParameterType != yp[i].ParameterType).Any();
+        for (int i = 0; i < xp.Length; i++) {
+            if (xp[i].ParameterType != yp[i].ParameterType) return false;
+        }
+
+        return true;
     }
 
     public int GetHashCode(MethodInfo obj) {
         int h = HashCode.Combine(obj.Name, obj.DeclaringType, obj.ReturnType);
-        return obj.GetParameters().Aggregate(h, (current, p) => HashCode.Combine(current, p.ParameterType));
+        ParameterInfo[] parameters = obj.GetParameters();
+        for (int i = 0; i < parameters.Length; i++) {
+            h = HashCode.Combine(h, parameters[i].ParameterType);
+        }
+
+        return h;
     }
 }

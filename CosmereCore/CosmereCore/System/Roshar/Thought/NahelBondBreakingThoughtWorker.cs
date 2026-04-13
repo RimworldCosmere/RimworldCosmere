@@ -13,7 +13,7 @@ public class NahelBondBreakingThoughtWorker : ThoughtWorker {
         ILoadReferenceable? bondTarget = surgebinder.GetBondTarget();
         if (bondTarget == null) return ThoughtState.Inactive;
 
-        float connection = SpiritWeb.Instance.GetConnectionValue(p, bondTarget);
+        float connection = SpiritWeb.Instance?.GetConnectionValue(p, bondTarget) ?? 0f;
         if (connection >= 0.0f && connection < 0.15f) return ThoughtState.ActiveAtStage(0);
 
         return ThoughtState.Inactive;

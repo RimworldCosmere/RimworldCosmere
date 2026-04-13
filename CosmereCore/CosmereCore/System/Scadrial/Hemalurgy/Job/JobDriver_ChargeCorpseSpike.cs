@@ -42,7 +42,8 @@ public class JobDriver_ChargeCorpseSpike : Verse.AI.JobDriver {
             if (spikeComp == null || spikeComp.isCharged) return;
 
             Pawn donor = corpse.InnerPawn;
-            MetallicArtsMetalDef metal = spikeComp.metal;
+            MetallicArtsMetalDef? metal = spikeComp.metal;
+            if (metal == null) return;
             HemalurgicStealType stealType = HemalurgicConstants.GetStealType(metal);
             bool isThinNeedle = carried.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
             float strengthMultiplier = HemalurgicConstants.CorpseChargeMultiplier;

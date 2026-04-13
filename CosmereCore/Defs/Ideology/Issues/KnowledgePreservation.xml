@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ISSUE: KNOWLEDGE PRESERVATION ========== -->
+    <!-- Attitudes toward preserving and sharing knowledge -->
+
+    <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_KnowledgePreservation</defName>
+        <label>knowledge preservation</label>
+        <iconPath>UI/Ideology/Cosmere/Knowledge</iconPath>
+    </IssueDef>
+
+    <!-- History Events -->
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_CompletedResearch</defName>
+        <label>completed research</label>
+    </HistoryEventDef>
+
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_TaughtSkill</defName>
+        <label>taught a skill</label>
+    </HistoryEventDef>
+
+    <!-- ========== PRECEPTS ========== -->
+
+    <!-- Sacred Duty: Terris Worldbringers -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Knowledge_SacredDuty</defName>
+        <issue>Cosmere_KnowledgePreservation</issue>
+        <label>sacred duty</label>
+        <description>Knowledge must be preserved against all darkness. Every fact, every technique, every history - all must be remembered and passed on.</description>
+        <impact>High</impact>
+        <displayOrderInIssue>0</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <requiredMemes>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </requiredMemes>
+        <statFactors>
+            <GlobalLearningFactor>1.15</GlobalLearningFactor>
+            <ResearchSpeed>1.10</ResearchSpeed>
+        </statFactors>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_CompletedResearch</eventDef>
+                <thought>Cosmere_CompletedResearch_SacredDuty</thought>
+            </li>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_TaughtSkill</eventDef>
+                <thought>Cosmere_TaughtSkill_SacredDuty</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Important: Most religions -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Knowledge_Important</defName>
+        <issue>Cosmere_KnowledgePreservation</issue>
+        <label>important</label>
+        <description>Knowledge and wisdom should be preserved and shared. Learning makes us stronger.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>10</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+            <li>Cosmere_Structure_Sliverism</li>
+            <li>Cosmere_Structure_Pathianism</li>
+        </associatedMemes>
+        <statFactors>
+            <GlobalLearningFactor>1.05</GlobalLearningFactor>
+        </statFactors>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_CompletedResearch</eventDef>
+                <thought>Cosmere_CompletedResearch_Important</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Practical: Most others -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Knowledge_Practical</defName>
+        <issue>Cosmere_KnowledgePreservation</issue>
+        <label>practical concern</label>
+        <description>Knowledge is useful for survival and prosperity, but not sacred in itself.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>20</displayOrderInIssue>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Survivorism</li>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Structure_Jaggenism</li>
+            <li>Cosmere_Structure_Passions</li>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+            <li>Cosmere_Structure_StoneShamanism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- Power Tool: Steel Ministry, Trellism - knowledge is power to control -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Knowledge_PowerTool</defName>
+        <issue>Cosmere_KnowledgePreservation</issue>
+        <label>tool of control</label>
+        <description>Knowledge is power. Control what people know, and you control them. Some secrets must be kept from the masses.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>30</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_Trellism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ========== THOUGHTS ========== -->
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_CompletedResearch_SacredDuty</defName>
+        <durationDays>5</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>preserved knowledge</label>
+                <description>I have added to our store of knowledge. Future generations will benefit from what I learned.</description>
+                <baseMoodEffect>8</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_TaughtSkill_SacredDuty</defName>
+        <durationDays>3</durationDays>
+        <stackLimit>5</stackLimit>
+        <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+        <stages>
+            <li>
+                <label>passed on knowledge</label>
+                <description>I taught another. The chain of knowledge continues unbroken.</description>
+                <baseMoodEffect>5</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_CompletedResearch_Important</defName>
+        <durationDays>3</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>discovered knowledge</label>
+                <description>Our research yielded new understanding. This will serve us well.</description>
+                <baseMoodEffect>4</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

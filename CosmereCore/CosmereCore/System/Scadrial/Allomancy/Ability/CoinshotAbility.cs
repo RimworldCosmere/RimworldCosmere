@@ -16,16 +16,16 @@ public class CoinshotAbility : AllomancyAbility {
         return true;
     }
 
-    public override bool CanApplyOn(LocalTargetInfo targetInfo) {
-        if (!base.CanApplyOn(targetInfo)) return false;
+    public override bool CanApplyOn(LocalTargetInfo target) {
+        if (!base.CanApplyOn(target)) return false;
         SkillRecord? shooting = pawn.skills.GetSkill(RimWorld.SkillDefOf.Shooting);
         if (shooting.TotallyDisabled) return false;
 
         return pawn.inventory?.innerContainer.Contains(ThingDefOf.Cosmere_Scadrial_Thing_Clip) ?? false;
     }
 
-    public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
-        localTarget = targetInfo;
+    public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
+        localTarget = target;
 
         return base.Activate(localTarget.Value, dest);
     }

@@ -10,7 +10,7 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class AbilityDefOf {
+public static class AbilityDefOf {
     [MayRequire("Cosmere.Roshar")]
     public static SurgebindingAbilityDef Cosmere_Roshar_Ability_BreatheStormlight;
 
@@ -22,6 +22,9 @@ public class AbilityDefOf {
 
     [MayRequire("Cosmere.Roshar")]
     public static SurgebindingAbilityDef Cosmere_Roshar_Ability_ToggleShardplate;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static SurgebindingAbilityDef Cosmere_Roshar_Ability_Invisibility;
 
     static AbilityDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(AbilityDefOf));

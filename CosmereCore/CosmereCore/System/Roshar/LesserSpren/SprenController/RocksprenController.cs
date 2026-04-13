@@ -42,10 +42,8 @@ public class RocksprenController : StaticSprenController {
     public override SprenSpawnInformation? GetSprenSpawnInformation(IntVec3 position, Map? map) {
         if (!IsInBounds(position, map)) return null;
 
-        // Check terrain for rock (async terrain validation)
         TerrainDef? terrain = GetTerrain(position, map!);
         if (terrain != null) {
-            // Terrain checks
             bool hasRockTag = HasTerrainTag(terrain, "Rock");
             bool hasRockName = TerrainNameContains(terrain, "rock", "stone", "granite", "marble", "slate", "rubble");
 
@@ -54,7 +52,6 @@ public class RocksprenController : StaticSprenController {
             }
         }
 
-        // Check for stone chunks at this position
         bool thingChecks = map!.thingGrid.ThingsListAt(position)
             .Select(thing => thing.def.defName)
             .Any(defName => defName.StartsWith("Chunk") || defName.Equals("Filth_RubbleRock"));

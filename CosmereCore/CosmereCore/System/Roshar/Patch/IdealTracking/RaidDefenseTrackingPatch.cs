@@ -1,3 +1,4 @@
+using System.Reflection;
 using Cosmere.System.Roshar.Gene;
 using HarmonyLib;
 using RimWorld;
@@ -6,8 +7,13 @@ using Verse.AI.Group;
 
 namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
-[HarmonyPatch(typeof(Lord), nameof(Lord.Cleanup))]
+[HarmonyPatch]
 public static class RaidDefenseTrackingPatch {
+    static MethodBase TargetMethod() {
+        return typeof(Lord).GetMethod("Cleanup", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+    }
+
+    [HarmonyPrefix]
     private static void Prefix(Lord __instance) {
         if (__instance.Map == null) return;
         if (__instance.faction == null || !__instance.faction.HostileTo(Faction.OfPlayer)) return;

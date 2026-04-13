@@ -1,8 +1,6 @@
 using Cosmere.Core;
-using Cosmere.Core.Ability;
 using Cosmere.Core.Def;
 using Cosmere.Core.Savant;
-using Cosmere.Core.Hediff;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Def;
@@ -13,7 +11,8 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using AbilityDef = RimWorld.AbilityDef;
-using HediffUtility = Cosmere.System.Scadrial.Util.HediffUtility;
+using GeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;
+using HediffUtility = Cosmere.System.Scadrial.Utility.HediffUtility;
 
 namespace Cosmere.System.Scadrial.Extension;
 
@@ -31,19 +30,19 @@ public static class PawnExtension {
     }
 
     public static bool IsMistborn(this Pawn pawn) {
-        return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn);
+        return pawn.story?.traits?.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn) == true;
     }
 
     public static bool IsFullFeruchemist(this Pawn pawn) {
-        return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_FullFeruchemist);
+        return pawn.story?.traits?.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_FullFeruchemist) == true;
     }
 
     public static bool IsAllomancer(this Pawn pawn) {
-        return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Allomancer);
+        return pawn.story?.traits?.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Allomancer) == true;
     }
 
     public static bool IsFeruchemist(this Pawn pawn) {
-        return pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Feruchemist);
+        return pawn.story?.traits?.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Feruchemist) == true;
     }
 
     public static bool IsMisting(this Pawn pawn, MetalDef metal) {
@@ -113,7 +112,7 @@ public static class PawnExtension {
 
     public static float GetAllomanticReservePercent(this Pawn pawn, MetalDef metal) {
         Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
-        return gene?.GetReservePercent() ?? 0f;
+        return gene?.ValuePercent ?? 0f;
     }
 
     public static AllomancyAbility? GetAllomanticAbility(this Pawn pawn, AbilityDef def) {
@@ -161,56 +160,45 @@ public static class PawnExtension {
         return result;
     }
 
-    public static AllomanticHediff? GetOrAddHediff(this Pawn target, AllomancyAbility ability, HediffDef? hediffDef) {
-        return HediffUtility.GetOrAddHediff(ability.pawn, target, ability, hediffDef);
-    }
-
     public static AllomanticHediff? GetOrAddHediff(
         this Pawn target,
-        Pawn caster,
         AllomancyAbility ability,
-        HediffDef? hediffDef
+        HediffDef? hediffDef,
+        Pawn? caster = null
     ) {
-        return HediffUtility.GetOrAddHediff(caster, target, ability, hediffDef);
+        return HediffUtility.GetOrAddHediff(caster ?? ability.pawn, target, ability, hediffDef);
     }
 
     public static AllomanticHediff? GetOrAddHediff(
         this Pawn target,
-        Pawn caster,
         AllomancyAbility ability,
-        IMultiTypeHediff def
+        IMultiTypeHediff def,
+        Pawn? caster = null
     ) {
-        return HediffUtility.GetOrAddHediff(caster, target, ability, def);
-    }
-
-    public static AllomanticHediff? GetOrAddHediff(
-        this Pawn target,
-        Pawn caster,
-        AllomancyAbility ability,
-        AllomanticAbilityDef abilityDef
-    ) {
-        return HediffUtility.GetOrAddHediff(caster, target, ability, abilityDef.hediff);
-    }
-
-    public static AllomanticHediff? GetOrAddHediff(
-        this Pawn target,
-        Pawn caster,
-        IAbility<Allomancer, AllomanticHediff> ability,
-        IMultiTypeHediff def
-    ) {
-        return HediffUtility.GetOrAddHediff(caster, target, (AllomancyAbility)ability, def);
-    }
-
-    public static AllomanticHediff? GetOrAddHediff(
-        this Pawn target,
-        Pawn caster,
-        IAbility<Allomancer, IHediff<Allomancer>> ability,
-        AllomanticAbilityDef abilityDef
-    ) {
-        return HediffUtility.GetOrAddHediff(caster, target, (AllomancyAbility)ability, abilityDef.hediff);
+        return HediffUtility.GetOrAddHediff(caster ?? ability.pawn, target, ability, def);
     }
 
     public static void RemoveHediff(this Pawn target, AllomancyAbility ability, HediffDef? hediffDef) {
         HediffUtility.RemoveHediff(ability.pawn, target, ability, hediffDef);
+    }
+
+    public static void BecomeMistborn(
+        this Pawn pawn,
+        bool canSnap = false,
+        bool snapped = true,
+        bool fillReserves = true,
+        string? cause = null
+    ) {
+        GeneUtility.AddMistborn(pawn, canSnap, snapped, cause);
+        pawn.SetAllAllomanticReserves(float.PositiveInfinity);
+    }
+
+    public static void BecomeFullFeruchemist(
+        this Pawn pawn,
+        bool canSnap = false,
+        bool snapped = true,
+        string? cause = null
+    ) {
+        GeneUtility.AddFullFeruchemist(pawn, canSnap, snapped, cause);
     }
 }

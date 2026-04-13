@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_ChurchOfSurvivor</defName>
+        <label>Church of the Survivor</label>
+        <description>The underground faith of the skaa. Hope forged in defiance. The Survivor stood against the Lord Ruler and proved that even gods can bleed. His church whispers hope to the oppressed.</description>
+        <iconPath>UI/Ideology/Cosmere/ChurchOfSurvivor</iconPath>
+        <deityCount>1</deityCount>
+        <worshipRoomLabel>meeting house</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)->[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packIdeoName]</li>
+                <li>memeLeaderNoun->survivor</li>
+                <li>memeLeaderNoun->preacher</li>
+                <li>memeLeaderNoun->hope-bringer</li>
+                <li>memeLeaderAdjective->defiant</li>
+                <li>memeLeaderAdjective->survivor's</li>
+                <li>memeLeaderAdjective->mist-blessed</li>
+                <li>memeMoralist->preacher</li>
+                <li>memeMoralist->elder</li>
+                <li>memeMoralist->keeper of hope</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+                <li><def>TheistFounder</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_theist</key><value>true</value></li>
+                <li><key>structure_cosmere_churchofsurvivor</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <fixedDeityNameTypes>
+            <li>
+                <name>The Survivor</name>
+                <type>defiant savior</type>
+            </li>
+            <li>
+                <name>Kelsier</name>
+                <type>liberator</type>
+            </li>
+            <li>
+                <name>The Lord of the Mists</name>
+                <type>the one who survived</type>
+            </li>
+            <li>
+                <name>He Who Stood</name>
+                <type>breaker of chains</type>
+            </li>
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>Church of the Survivor</ideoName>
+                <adjective>survivor</adjective>
+                <member>survivor</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The Rebellion</ideoName>
+                <adjective>rebel</adjective>
+                <member>rebel</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Kelsier's Faithful</ideoName>
+                <adjective>faithful</adjective>
+                <member>faithful</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Skaa Faith</ideoName>
+                <adjective>free</adjective>
+                <member>freed one</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

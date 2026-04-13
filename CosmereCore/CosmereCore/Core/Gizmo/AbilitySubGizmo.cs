@@ -10,6 +10,7 @@ using Verse.Sound;
 
 namespace Cosmere.Core.Gizmo;
 
+[StaticConstructorOnStartup]
 public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested where THediff : AbstractHediff<TGene> {
     private static Texture2D? bgTexOff;
     private static Texture2D? bgTexBurning;
@@ -67,7 +68,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
     }
 
     private Texture2D GetBorder() {
-        if (!ability.willUseWhileDowned || !ability.willUseWhileInjured || AutoBurnBorders.NullOrEmpty()) {
+        if ((!ability.willUseWhileDowned && !ability.willUseWhileInjured) || AutoBurnBorders.NullOrEmpty()) {
             return Border;
         }
 
@@ -203,7 +204,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
                     t => {
                         if (!ability.ValidateGlobalTarget(t)) return false;
 
-                        ability.QueueCastingJob(t, ev.control ? Ability.Status.PowerTwo : Ability.Status.PowerOne);
+                        ability.QueueCastingJob(t, ev.control ? Ability.Status.PowerTwo.power : Ability.Status.PowerOne.power);
                         return true;
                     },
                     true,
@@ -217,7 +218,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
             ability.QueueCastingJob(
                 ability.pawn,
                 LocalTargetInfo.Invalid,
-                ev.control ? Ability.Status.PowerTwo : Ability.Status.PowerOne
+                ev.control ? Ability.Status.PowerTwo.power : Ability.Status.PowerOne.power
             );
         }
     }

@@ -26,20 +26,47 @@ public class SphereGlowerProperties : CompProperties_Glower {
 
 public class SphereGlower : CompGlower {
     private bool FlickedOn = true;
+    private List<Verse.Thing> cachedSpheres = [];
+    private bool spheresCacheDirty = true;
 
-    private IEnumerable<Verse.Thing> spheres {
+    private List<Verse.Thing> spheres {
         get {
-            if (parent is ISlotGroupParent slotGroupParent) {
-                return slotGroupParent.GetSlotGroup().HeldThings.Where(IsSphere);
-            }
-
-            if (parent is IThingHolder thingHolder) return thingHolder.GetDirectlyHeldThings().Where(IsSphere);
-            if (parent.TryGetComp(out InnerStorage innerStorage)) {
-                return innerStorage.GetDirectlyHeldThings().Where(IsSphere);
-            }
-
-            return IsSphere(parent) ? [parent] : [];
+            if (!spheresCacheDirty) return cachedSpheres;
+            cachedSpheres.Clear();
+            RebuildSphereCache();
+            spheresCacheDirty = false;
+            return cachedSpheres;
         }
+    }
+
+    private void RebuildSphereCache() {
+        if (parent is ISlotGroupParent slotGroupParent) {
+            SlotGroup? slotGroup = slotGroupParent.GetSlotGroup();
+            if (slotGroup != null) {
+                foreach (Verse.Thing thing in slotGroup.HeldThings) {
+                    if (IsSphere(thing)) cachedSpheres.Add(thing);
+                }
+            }
+            return;
+        }
+
+        if (parent is IThingHolder thingHolder) {
+            ThingOwner things = thingHolder.GetDirectlyHeldThings();
+            for (int i = 0; i < things.Count; i++) {
+                if (IsSphere(things[i])) cachedSpheres.Add(things[i]);
+            }
+            return;
+        }
+
+        if (parent.TryGetComp(out InnerStorage innerStorage)) {
+            ThingOwner things = innerStorage.GetDirectlyHeldThings();
+            for (int i = 0; i < things.Count; i++) {
+                if (IsSphere(things[i])) cachedSpheres.Add(things[i]);
+            }
+            return;
+        }
+
+        if (IsSphere(parent)) cachedSpheres.Add(parent);
     }
 
     private new SphereGlowerProperties props => (SphereGlowerProperties)base.props;
@@ -48,9 +75,10 @@ public class SphereGlower : CompGlower {
         get {
             float total = 0f;
             float max = 0f;
+            List<Verse.Thing> currentSpheres = spheres;
 
-            foreach (Verse.Thing? sphere in spheres) {
-                if (!sphere.TryGetComp(out InvestitureHolder investiture) ||
+            for (int i = 0; i < currentSpheres.Count; i++) {
+                if (!currentSpheres[i].TryGetComp(out InvestitureHolder investiture) ||
                     investiture.currentInvestiture <= 0.0) {
                     continue;
                 }
@@ -61,7 +89,6 @@ public class SphereGlower : CompGlower {
 
             if (max <= 0.0) return 0f;
 
-            // Lerp between 0.5 and max radius based on percent fill
             float percent = Mathf.Clamp01(total / max);
             return Mathf.Lerp(props.minRadius, props.maxRadius, percent);
         }
@@ -72,13 +99,14 @@ public class SphereGlower : CompGlower {
         get {
             Color blended = Color.black;
             float totalWeight = 0f;
+            List<Verse.Thing> currentSpheres = spheres;
 
-            foreach (Verse.Thing? sphere in spheres) {
-                InvestitureHolder? investiture = sphere.GetInvestiture();
+            for (int i = 0; i < currentSpheres.Count; i++) {
+                InvestitureHolder? investiture = currentSpheres[i].GetInvestiture();
                 if (investiture == null || investiture.currentInvestiture <= 0f) continue;
 
                 float weight = investiture.currentInvestiture;
-                Color sphereColor = GetSphereColor(sphere);
+                Color sphereColor = GetSphereColor(currentSpheres[i]);
 
                 blended += sphereColor * weight;
                 totalWeight += weight;
@@ -89,8 +117,17 @@ public class SphereGlower : CompGlower {
         set { }
     }
 
-    protected override bool ShouldBeLitNow =>
-        parent.Spawned && FlickedOn && spheres.Any(s => s.GetInvestiture()?.currentInvestiture > 0);
+    protected override bool ShouldBeLitNow {
+        get {
+            if (!parent.Spawned || !FlickedOn) return false;
+            List<Verse.Thing> currentSpheres = spheres;
+            for (int i = 0; i < currentSpheres.Count; i++) {
+                InvestitureHolder? inv = currentSpheres[i].GetInvestiture();
+                if (inv != null && inv.currentInvestiture > 0) return true;
+            }
+            return false;
+        }
+    }
 
     private static bool IsSphere(Verse.Thing thing) {
         return thing.def.IsOneOf(
@@ -119,6 +156,7 @@ public class SphereGlower : CompGlower {
             _ => FlickedOn,
         };
 
+        spheresCacheDirty = true;
         UpdateLit(parent.Map);
     }
 

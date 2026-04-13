@@ -6,6 +6,10 @@
     <description>Bridge Four has the worst survival rate in the warcamps. The men are broken, hollow, waiting to die. But there is a new bridgeleader - a man with dark eyes and darker history. He looks at the bridgemen, and he refuses to let them give up.</description>
     <scenario>
       <summary>Bridge Four rises from slavery under Kaladin's leadership.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Roshar_Faction_BridgeFour</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

@@ -5,16 +5,9 @@ using DecoyAbility = Cosmere.System.Roshar.Surgebinding.Ability.Illumination.Lig
 namespace Cosmere.System.Roshar.Surgebinding.Hediff.Illumination;
 
 public class LightweavingDecoy : Verse.Hediff {
-    private static HediffDef? cachedDef;
-
     public Verse.Pawn? caster;
 
-    public static HediffDef Def =>
-        cachedDef ??= DefDatabase<HediffDef>.GetNamed("Cosmere_Roshar_Hediff_LightweavingDecoy");
-
-    public override void Tick() {
-        base.Tick();
-    }
+    public static HediffDef Def => HediffDefOf.Cosmere_Roshar_Hediff_LightweavingDecoy;
 
     public override string TipStringExtra {
         get {

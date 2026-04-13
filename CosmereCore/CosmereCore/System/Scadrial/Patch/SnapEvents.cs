@@ -112,7 +112,7 @@ public static class SnapEvents {
     public static void SnapFromTemperature(Need_Food __instance) {
         Pawn pawn = needPawn(__instance);
         if (pawn.Dead) return;
-        HediffSet hediffSet = pawn.health?.hediffSet;
+        HediffSet? hediffSet = pawn.health?.hediffSet;
         if (hediffSet == null) return;
 
         Hediff hypo = hediffSet.GetFirstHediffOfDef(RimWorld.HediffDefOf.Hypothermia);

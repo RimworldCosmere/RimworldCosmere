@@ -1,9 +1,17 @@
+using HarmonyLib;
 using UnityEngine;
 using Verse;
+using Verse.Profile;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
 
+[HarmonyPatch]
 public static class SoulcastOverlay {
+    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    [HarmonyPostfix]
+    public static void OnClearAllMapsAndWorld() {
+        Clear();
+    }
     private static readonly List<OverlayEntry> entries = [];
 
     public static void Add(IntVec3 cell, ThingDef? materialDef, TerrainDef? terrainDef, SoulcastMode mode = SoulcastMode.ConvertDrop) {

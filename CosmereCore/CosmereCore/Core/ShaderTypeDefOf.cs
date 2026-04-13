@@ -10,7 +10,7 @@ namespace Cosmere.Core;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class ShaderTypeDefOf {
+public static class ShaderTypeDefOf {
     public static ShaderTypeDef CutoutAdvanced;
 
     static ShaderTypeDefOf() {

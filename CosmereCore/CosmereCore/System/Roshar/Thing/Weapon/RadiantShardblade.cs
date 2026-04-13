@@ -1,3 +1,4 @@
+using Cosmere.Core.Ability;
 using Cosmere.Core.Shader.Properties;
 using Cosmere.System.Roshar.Def;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class RadiantShardblade : Shardblade {
                 AbilityDefOf.Cosmere_Roshar_Ability_ToggleShardblade
             );
 
-        ability.UpdateStatus(false);
+        ability.UpdateStatus(Active.Off);
     }
 
     public override void SpawnSetup(Map map, bool respawningAfterLoad) {

@@ -37,9 +37,8 @@ public class Feruchemist : Metalborn {
                 if (comp != null && comp.metal == metal) cachedMetalminds.Add(comp);
             }
 
-            ImplantedMetalminds? implantHediff = (ImplantedMetalminds?)pawn.health.hediffSet.GetFirstHediffOfDef(
-                DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_ImplantedMetalminds")
-            );
+            ImplantedMetalminds? implantHediff =
+                pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds) as ImplantedMetalminds;
             if (implantHediff != null) {
                 for (int i = 0; i < implantHediff.metalminds.Count; i++) {
                     ImplantedMetalmindData data = implantHediff.metalminds[i];

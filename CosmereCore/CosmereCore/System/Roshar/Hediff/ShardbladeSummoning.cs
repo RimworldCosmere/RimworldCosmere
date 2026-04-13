@@ -43,7 +43,7 @@ public class ShardbladeSummoning : Verse.Hediff {
     }
 
     private void CompleteSummoning() {
-        ThingDef shardbladeDef = DefDatabase<ThingDef>.GetNamed("Cosmere_Roshar_MeleeWeapon_Shardblade");
+        ThingDef shardbladeDef = ThingDefOf.Cosmere_Roshar_MeleeWeapon_DeadShardblade;
         ThingWithComps shardblade = (ThingWithComps)ThingMaker.MakeThing(shardbladeDef, RimWorld.ThingDefOf.Steel);
 
         if (pawn.equipment != null) {

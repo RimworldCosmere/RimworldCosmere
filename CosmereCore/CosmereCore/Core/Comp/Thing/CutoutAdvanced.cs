@@ -4,23 +4,11 @@ using Verse;
 
 namespace Cosmere.Core.Comp.Thing;
 
-/// <summary>
-///     Blend modes for transitions between palette colors in CutoutAdvanced shader
-/// </summary>
 public enum CutoutAdvancedBlendMode : byte {
-    /// <summary>No blending - hard transitions</summary>
     None,
-
-    /// <summary>Linear interpolation between colors</summary>
     Linear,
-
-    /// <summary>Smooth curve interpolation (smoothstep)</summary>
     Smooth,
-
-    /// <summary>Sharp curve interpolation (quadratic)</summary>
     Sharp,
-
-    /// <summary>Hard step at 50% threshold</summary>
     Step,
 }
 
@@ -37,57 +25,17 @@ public enum CutoutAdvancedBlendMode : byte {
 ///     Example for 4 levels: 0-63, 64-127, 128-191, 192-255
 /// </summary>
 public class CutoutAdvancedProperties : CompProperties {
-    // ========================================
-    // COLOR PALETTE SYSTEM
-    // ========================================
-
-    /// <summary>Blend mode for palette color transitions</summary>
     public CutoutAdvancedBlendMode blendMode = CutoutAdvancedBlendMode.Smooth;
-
-    /// <summary>Strength of blending between palette colors (0-2)</summary>
     public float blendStrength = 0.5f;
-
-
-    /// <summary>Color of glow emission</summary>
     public Color glowColor = Color.white;
-
-    /// <summary>Intensity multiplier for glow effects (0-3)</summary>
     public float glowIntensity = 2f;
-
-    /// <summary>Number of glow levels painted in the mask (1-32)</summary>
     public int glowLevelCount = 4;
-
-    /// <summary>Intensity of metallic/smoothness material effects (0-1)</summary>
     public float materialIntesity = 1f;
-
-    /// <summary>List of palette colors with metallic/smoothness values</summary>
     public List<LUTPaletteMaterial> palettes = [];
-
-    // ========================================
-    // GLOW SYSTEM  
-    // ========================================
-
-    /// <summary>Enable glow/emission effects</summary>
     public bool useGlow = false;
-
-    // ========================================
-    // SPECIAL ZONES SYSTEM
-    // ========================================
-
-    /// <summary>Enable special effect zones (gems, runes, etc.)</summary>
     public bool useSpecial = false;
-
-    // ========================================
-    // WEAR SYSTEM
-    // ========================================
-
-    /// <summary>Enable wear/damage effects</summary>
     public bool useWear = false;
-
-    /// <summary>How dark worn areas become (0=no change, 1=black)</summary>
     public float wearDarkness = 0.4f;
-
-    /// <summary>Number of wear levels painted in the mask (1-32)</summary>
     public int wearLevelCount = 4;
 
     public CutoutAdvancedProperties() {
@@ -117,20 +65,10 @@ public class CutoutAdvancedProperties : CompProperties {
     }
 }
 
-/// <summary>
-///     Types of mask textures used by the CutoutAdvanced system
-/// </summary>
 public enum MaskType {
-    /// <summary>Color palette selection mask</summary>
     Color,
-
-    /// <summary>Wear/damage zones mask</summary>
     Wear,
-
-    /// <summary>Glow/emission zones mask</summary>
     Glow,
-
-    /// <summary>Special effect zones mask</summary>
     Special,
 }
 
@@ -139,7 +77,6 @@ public enum MaskType {
 ///     Automatically loads textures using naming convention: [path]_m[type].png
 /// </summary>
 internal class Mask(MaskType type, string path) {
-    /// <summary>Whether the texture has been loaded yet</summary>
     public bool loaded;
 
     private Texture2D? maskInt;
@@ -150,7 +87,6 @@ internal class Mask(MaskType type, string path) {
     /// </summary>
     public Texture2D? mask {
         get {
-            //if (loaded) return maskInt;
             maskInt = ContentFinder<Texture2D>.Get($"{path}_m{type.ToString().ToLower()}", false);
             if (type == MaskType.Color && maskInt == null) {
                 maskInt = ContentFinder<Texture2D>.Get($"{path}_m", false);

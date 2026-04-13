@@ -37,7 +37,7 @@ public class OpenPerpendicularity : SurgebindingAbility {
         }
 
         if (AuraMoteDef != null) {
-            float moteScale = Cosmere.System.Scadrial.Utility.MoteUtility.GetMoteSize(
+            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(
                 AuraMoteDef, BaseRadius, GetStrength()
             );
             auraMote = MoteMaker.MakeAttachedOverlay(pawn, AuraMoteDef, Vector3.zero, moteScale);
@@ -69,7 +69,7 @@ public class OpenPerpendicularity : SurgebindingAbility {
 
         auraMote?.Maintain();
         if (auraMote != null && AuraMoteDef != null) {
-            float moteScale = Cosmere.System.Scadrial.Utility.MoteUtility.GetMoteSize(
+            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(
                 AuraMoteDef, BaseRadius, GetStrength()
             );
             auraMote.Graphic.drawSize = new Vector2(moteScale, moteScale);

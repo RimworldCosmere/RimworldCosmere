@@ -11,12 +11,12 @@ using Verse;
 
 namespace FloatSubMenus {
     internal class FloatMenuFilter {
-        private List<FloatMenuOption> options;
-        private List<FloatMenuOption> filtered;
+        private List<FloatMenuOption> options = null!;
+        private List<FloatMenuOption> filtered = null!;
         private FloatMenuSizeMode sizeMode = FloatMenuSizeMode.Undefined;
-        private FloatMenu initialized;
+        private FloatMenu? initialized;
         private bool updateSize;
-        private (Func<FloatMenuOption, bool> predicate, bool reset, bool recursive) delayed;
+        private (Func<FloatMenuOption, bool>? predicate, bool reset, bool recursive) delayed;
 
         public IEnumerable<FloatMenuOption> Unfiltered => options;
         public IEnumerable<FloatMenuOption> Filtered => filtered;
@@ -31,8 +31,8 @@ namespace FloatSubMenus {
             }
 
             filtered.Clear();
-            foreach (var option in options) {
-                var sub = recursive ? option as FloatSubMenu : null;
+            foreach (FloatMenuOption option in options) {
+                FloatSubMenu? sub = recursive ? option as FloatSubMenu : null;
                 bool match = reset || predicate(option);
                 if (match || (sub?.AnyMatches(predicate, recursive) ?? false)) {
                     filtered.Add(option);
@@ -42,13 +42,13 @@ namespace FloatSubMenus {
             updateSize = true;
         }
 
-        public void Update(FloatMenu floatMenu, Action onInit = null, Action onResize = null) {
+        public void Update(FloatMenu floatMenu, Action? onInit = null, Action? onResize = null) {
             if (initialized != floatMenu) Init(floatMenu, onInit);
             if (updateSize) UpdateSize(floatMenu, onResize);
         }
 
-        protected void Init(FloatMenu floatMenu, Action action) {
-            var listField = Traverse.Create(floatMenu).Field<List<FloatMenuOption>>("options");
+        protected void Init(FloatMenu floatMenu, Action? action) {
+            Traverse<List<FloatMenuOption>> listField = Traverse.Create(floatMenu).Field<List<FloatMenuOption>>("options");
             options = listField.Value;
             listField.Value = filtered = options.ToList();
             initialized = floatMenu;
@@ -59,8 +59,8 @@ namespace FloatSubMenus {
             }
         }
 
-        protected void UpdateSize(FloatMenu floatMenu, Action action) {
-            var mode = floatMenu.SizeMode;
+        protected void UpdateSize(FloatMenu floatMenu, Action? action) {
+            FloatMenuSizeMode mode = floatMenu.SizeMode;
             if (sizeMode != mode) {
                 options.ForEach(x => x.SetSizeMode(mode));
                 sizeMode = mode;

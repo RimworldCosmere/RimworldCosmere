@@ -5,6 +5,7 @@ using Cosmere.Core.Def;
 using Cosmere.Core.DefModExtension;
 using UnityEngine;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 
@@ -41,7 +42,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         }
     }
 
-    public MetalDef metal {
+    public MetalDef? metal {
         get {
             if (cachedMetal != null) return cachedMetal;
             if (parent.def.GetModExtension<MetalsLinked>() is { } metalsLinked) {
@@ -54,7 +55,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
             if (cachedMetal != null) return cachedMetal;
 
-            throw new Exception("Metalmind doesn't have a metal");
+            Logger.Error("Metalmind doesn't have a metal");
+            return null;
         }
     }
 
@@ -64,28 +66,26 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     public void AddStored(float amount) {
         if (!canStore) return;
-
-        IThingHolder? currentOwner = parent.holdingOwner?.Owner;
-        if (owner == null) {
-            owner = currentOwner as Pawn;
-        } else if (currentOwner != null && !owner.Equals(currentOwner)) {
-            return;
-        }
+        if (!ValidateOwner()) return;
 
         storedAmount = Mathf.Clamp(storedAmount + amount, 0, maxAmount);
     }
 
     public void ConsumeStored(float amount) {
         if (!canTap) return;
+        if (!ValidateOwner()) return;
 
+        storedAmount = Mathf.Clamp(storedAmount - amount, 0, maxAmount);
+    }
+
+    private bool ValidateOwner() {
         IThingHolder? currentOwner = parent.holdingOwner?.Owner;
         if (owner == null) {
             owner = currentOwner as Pawn;
-        } else if (currentOwner != null && !owner.Equals(currentOwner)) {
-            return;
+            return true;
         }
 
-        storedAmount = Mathf.Clamp(storedAmount - amount, 0, maxAmount);
+        return currentOwner == null || owner.Equals(currentOwner);
     }
 
     public override void PostExposeData() {
@@ -108,7 +108,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         StringBuilder sb = new StringBuilder();
         TaggedString coloredOwner = owner?.NameFullColored ?? "None".Colorize(ColoredText.DateTimeColor);
         sb.AppendLine("CS_MetalmindOwner".Translate() + ": " + coloredOwner);
-        NamedArgument coloredMetal = metal.coloredLabel.Named("METAL");
+        NamedArgument coloredMetal = metal?.coloredLabel.Named("METAL") ?? "unknown".Named("METAL");
         sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {storedAmountInt:F1} / {maxAmount}");
 
         return sb.ToString();

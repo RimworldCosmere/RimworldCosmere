@@ -1,3 +1,4 @@
+using Cosmere.Core.Ability;
 using Cosmere.Core.Def;
 using Cosmere.Core.Shader.Properties;
 using Cosmere.System.Roshar.Def;
@@ -8,7 +9,6 @@ using Verse;
 namespace Cosmere.System.Roshar.Thing.Apparel;
 
 public class RadiantShardplate : Shardplate {
-    private float colorTime = 0f;
     private RadiantOrderDef? radiantOrderInt;
     private Color[] storedColors = new Color[4];
 
@@ -25,7 +25,7 @@ public class RadiantShardplate : Shardplate {
                 AbilityDefOf.Cosmere_Roshar_Ability_ToggleShardplate
             );
 
-        ability.UpdateStatus(false);
+        ability.UpdateStatus(Active.Off);
     }
 
     public override void SpawnSetup(Map map, bool respawningAfterLoad) {

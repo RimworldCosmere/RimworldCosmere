@@ -80,8 +80,10 @@ public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
         IAbility<TGene, IHediff<TGene>> sourceAbility
     ) {
         MarkSeverityDirty();
-        parent.OnSourceAdded -= OnSourceAdded;
-        parent.OnSourceRemoved -= OnSourceRemoved;
+        if (parent.sourceAbilities.Count == 0) {
+            parent.OnSourceAdded -= OnSourceAdded;
+            parent.OnSourceRemoved -= OnSourceRemoved;
+        }
     }
 
     private void OnSourceAdded(
@@ -109,7 +111,7 @@ public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
         }
 
         MarkSeverityDirty();
-        if (newStatus > oldStatus || props is { shouldDecay: false, onStatusChange: true }) {
+        if (newStatus.power > oldStatus.power || props is { shouldDecay: false, onStatusChange: true }) {
             desiredSeverity = -1;
             RecalculateSeverity();
             return;

@@ -9,7 +9,7 @@ namespace Cosmere.Core;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class WorkGiverDefOf {
+public static class WorkGiverDefOf {
     public static WorkGiverDef Cosmere_StoreInApparelInnerStorage;
 
     static WorkGiverDefOf() {

@@ -7,7 +7,6 @@ namespace Cosmere.Core.Thing;
 public class Splinter : Pawn, IThingGlower {
     private readonly ThingDef moteDef = ThingDefOf.Cosmere_Core_Mote_InvestitureGlow;
     private Mote? mote;
-    private IntVec3 previousPos;
 
     public bool ShouldBeLitNow() {
         return true;

@@ -18,7 +18,7 @@ public static class IntExtension {
                 7 => "seventh",
                 8 => "eighth",
                 9 => "ninth",
-                10 => "tenth",
+                _ => "tenth",
             },
             _ => number.ToOrdinalShort(),
         };

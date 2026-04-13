@@ -32,7 +32,7 @@ public class StrainedBond : HediffWithComps {
             return;
         }
 
-        float connection = SpiritWeb.Instance.GetConnectionValue(pawn, bondTarget);
+        float connection = SpiritWeb.Instance?.GetConnectionValue(pawn, bondTarget) ?? 0f;
 
         if (connection >= 1.0f) {
             pawn.health.RemoveHediff(this);
@@ -50,9 +50,9 @@ public class StrainedBond : HediffWithComps {
 
         float recoveryPerTick = BaseRecoveryPerDay / GenDate.TicksPerDay * GenTicks.TickLongInterval;
         float recovery = recoveryPerTick * idealMultiplier * personalityMultiplier;
-        SpiritWeb.Instance.AdjustConnection(pawn, bondTarget, recovery);
+        SpiritWeb.Instance?.AdjustConnection(pawn, bondTarget, recovery);
 
-        connection = SpiritWeb.Instance.GetConnectionValue(pawn, bondTarget);
+        connection = SpiritWeb.Instance?.GetConnectionValue(pawn, bondTarget) ?? 0f;
 
         if (connection >= 0.7f) {
             pawn.health.RemoveHediff(this);

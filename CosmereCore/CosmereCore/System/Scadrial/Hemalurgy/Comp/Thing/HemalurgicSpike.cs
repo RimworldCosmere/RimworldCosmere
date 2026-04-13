@@ -3,6 +3,7 @@ using System.Text;
 using Cosmere.Core.Def;
 using Cosmere.System.Scadrial.Def;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 
@@ -19,7 +20,7 @@ public class HemalurgicSpike : ThingComp {
 
     public bool isCharged => chargeData is { isValid: true };
 
-    public MetallicArtsMetalDef metal {
+    public MetallicArtsMetalDef? metal {
         get {
             if (cachedMetal != null) return cachedMetal;
             if (parent.Stuff != null) {
@@ -27,11 +28,15 @@ public class HemalurgicSpike : ThingComp {
                     DefDatabase<MetalDef>.GetNamed(parent.Stuff.defName)
                 );
             }
-            return cachedMetal!;
+
+            if (cachedMetal != null) return cachedMetal;
+
+            Logger.Error("HemalurgicSpike doesn't have a metal");
+            return null;
         }
     }
 
-    public HemalurgicStealType stealType => HemalurgicConstants.GetStealType(metal);
+    public HemalurgicStealType stealType => metal != null ? HemalurgicConstants.GetStealType(metal) : default;
 
     public bool isInAluminumCase {
         get {

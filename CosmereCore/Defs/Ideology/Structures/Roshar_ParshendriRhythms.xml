@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_ParshendriRhythms</defName>
+        <label>Parshendi Rhythms</label>
+        <description>The world sings. We listen. The singers hear the rhythms that permeate Roshar. Each emotion has its own rhythm, and the highstorms carry the songs of the world. To attune to a rhythm is to touch something eternal.</description>
+        <iconPath>UI/Ideology/Cosmere/ParshendriRhythms</iconPath>
+        <deityCount>1</deityCount>
+        <worshipRoomLabel>rhythm circle</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)->[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packIdeoName]</li>
+                <li>memeLeaderNoun->rhythm keeper</li>
+                <li>memeLeaderNoun->storm singer</li>
+                <li>memeLeaderNoun->elder listener</li>
+                <li>memeLeaderAdjective->attuned</li>
+                <li>memeLeaderAdjective->singing</li>
+                <li>memeLeaderAdjective->storm's</li>
+                <li>memeMoralist->rhythm keeper</li>
+                <li>memeMoralist->singer</li>
+                <li>memeMoralist->listener</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_cosmere_parshendrirhythms</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <fixedDeityNameTypes>
+            <li>
+                <name>The Rider of Storms</name>
+                <type>the storm</type>
+            </li>
+            <li>
+                <name>Old Father</name>
+                <type>bringer of forms</type>
+            </li>
+            <li>
+                <name>The Storm</name>
+                <type>eternal singer</type>
+            </li>
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>Listener Faith</ideoName>
+                <adjective>listener</adjective>
+                <member>listener</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Way of Rhythms</ideoName>
+                <adjective>attuned</adjective>
+                <member>singer</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Song of Roshar</ideoName>
+                <adjective>singing</adjective>
+                <member>rhythm-keeper</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

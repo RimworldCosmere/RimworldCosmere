@@ -79,7 +79,7 @@ public class Designator_Soulcast : Designator {
             if (!ability.pawn.CanReach(new LocalTargetInfo(cell), PathEndMode.Touch, Danger.Deadly)) continue;
             if (!SoulcastOverlay.TryGetData(cell, out _, out _, out _)) continue;
 
-            JobDef soulcastJobDef = DefDatabase<JobDef>.GetNamed("Cosmere_Roshar_Job_Soulcast");
+            JobDef soulcastJobDef = JobDefOf.Cosmere_Roshar_Job_Soulcast;
             Verse.AI.Job job = JobMaker.MakeJob(soulcastJobDef, cell);
             job.ability = ability;
             job.playerForced = true;

@@ -23,37 +23,32 @@ public class RainsprenController : DynamicSprenController {
 
     public override float captureRarityMultiplier => 1.3f;
 
-    // Visual configuration
     public override Color sprenColor => new Color(0.4f, 0.6f, 0.9f, 0.6f);
 
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {
-        // Only spawn if it's raining
         WeatherDef? currentWeather = map?.weatherManager.curWeather;
         if (currentWeather == null || currentWeather.rainRate <= 0f) {
             return [];
         }
 
         List<SprenSpawnInformation> cells = [];
-        // Sample random outdoor cells across the map during rain
-        int cellsToCheck = map!.AllCells.Count() / 10; // Check a sample of cells
+        int cellsToCheck = map!.AllCells.Count() / 10;
         for (int i = 0; i < cellsToCheck; i++) {
             IntVec3 randomCell = CellFinder.RandomCell(map);
             if (!IsInBounds(randomCell, map)) continue;
             if (randomCell.Roofed(map)) continue;
             float rainIntensityMultiplier = Mathf.Clamp(currentWeather.rainRate * 2f, 0.3f, 1.5f);
-            var weatherCheck = new {
-                spawnChance = cellSpawnChance * rainIntensityMultiplier,
-                minParticles = Mathf.RoundToInt(minParticlesPerCell * rainIntensityMultiplier),
-                maxParticles = Mathf.RoundToInt(maxParticlesPerCell * rainIntensityMultiplier),
-            };
+            float spawnChance = cellSpawnChance * rainIntensityMultiplier;
+            int minParticles = Mathf.RoundToInt(minParticlesPerCell * rainIntensityMultiplier);
+            int maxParticles = Mathf.RoundToInt(maxParticlesPerCell * rainIntensityMultiplier);
 
             cells.Add(
                 defaultSpawnInformation.With(
                     map,
                     randomCell,
-                    weatherCheck.spawnChance,
-                    weatherCheck.minParticles,
-                    weatherCheck.maxParticles
+                    spawnChance,
+                    minParticles,
+                    maxParticles
                 )
             );
         }
@@ -64,17 +59,16 @@ public class RainsprenController : DynamicSprenController {
     public override SprenSpawnInformation? GetSprenSpawnInformation(IntVec3 position, Map? map) {
         if (!IsInBounds(position, map)) return null;
 
-        // Check weather conditions
         WeatherDef currentWeather = map!.weatherManager.curWeather;
         if (currentWeather == null || currentWeather.rainRate <= 0f) return null;
         if (position.Roofed(map)) return null;
 
         float rainIntensityMultiplier = Mathf.Clamp(currentWeather.rainRate * 2f, 0.3f, 1.5f);
-        var weatherCheck = new {
-            spawnChance = cellSpawnChance * rainIntensityMultiplier,
-            minParticles = Mathf.RoundToInt(minParticlesPerCell * rainIntensityMultiplier),
-            maxParticles = Mathf.RoundToInt(maxParticlesPerCell * rainIntensityMultiplier),
-        };
+        (float spawnChance, int minParticles, int maxParticles) weatherCheck = (
+            spawnChance: cellSpawnChance * rainIntensityMultiplier,
+            minParticles: Mathf.RoundToInt(minParticlesPerCell * rainIntensityMultiplier),
+            maxParticles: Mathf.RoundToInt(maxParticlesPerCell * rainIntensityMultiplier)
+        );
 
         return defaultSpawnInformation.With(
             map,

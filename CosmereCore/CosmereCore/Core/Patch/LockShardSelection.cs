@@ -23,9 +23,12 @@ public static class LockShardSelection {
             ShardUtility.Enable(shard);
         }
 
+        Comp.Game.Shards? gameShards = ShardUtility.shards;
+        if (gameShards == null) return;
+
         Messages.Message(
             "CS_LockShardSelection".Translate(
-                string.Join(", ", ShardUtility.shards.enabledShards.Select(x => x.Label)).Named("SHARDS")
+                string.Join(", ", gameShards.enabledShards.Values.Select(x => x.Label)).Named("SHARDS")
             ),
             MessageTypeDefOf.NeutralEvent
         );

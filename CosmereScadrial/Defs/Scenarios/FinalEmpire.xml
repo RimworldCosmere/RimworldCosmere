@@ -6,6 +6,10 @@
     <description>Kelsier has assembled his crew. Thieves, con artists, and half-bloods, every one of them. Their target: the Final Empire itself. The Lord Ruler has reigned for a thousand years. No one has challenged him and survived. But Kelsier smiles anyway.</description>
     <scenario>
       <summary>Kelsier's crew plots the fall of the Final Empire.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_KelsiersCrew</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

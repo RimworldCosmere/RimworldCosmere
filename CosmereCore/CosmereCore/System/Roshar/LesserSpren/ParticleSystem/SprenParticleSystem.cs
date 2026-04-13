@@ -21,7 +21,6 @@ public class SprenParticleSystem(SprenType sprenType, int mapID) {
     }
 
     private void CreateParticleSystem(int mapID) {
-        // Get representative spawn information for particle system configuration
         SprenSpawnInformation representativeSpawnInfo = GetRepresentativeSpawnInfo()!;
         particleSystem =
             Builder.CreateLesserSprenParticleSystem(mapID, controller, representativeSpawnInfo);

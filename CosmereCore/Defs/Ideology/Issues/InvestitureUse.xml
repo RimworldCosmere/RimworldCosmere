@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ISSUE: INVESTITURE USE ========== -->
+    <!-- General attitudes toward magic and divine power -->
+
+    <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_InvestitureUse</defName>
+        <label>investiture</label>
+        <iconPath>UI/Ideology/Cosmere/Investiture</iconPath>
+    </IssueDef>
+
+    <!-- History Events -->
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_UsedInvestiture</defName>
+        <label>used Investiture</label>
+    </HistoryEventDef>
+
+    <!-- ========== PRECEPTS ========== -->
+
+    <!-- Divine Gift: Theistic religions -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Investiture_DivineGift</defName>
+        <issue>Cosmere_InvestitureUse</issue>
+        <label>divine gift</label>
+        <description>Investiture flows from the Shards themselves. To use it is to touch divinity.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>0</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+            <li>Cosmere_Structure_Vorinism</li>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Structure_Sliverism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_UsedInvestiture</eventDef>
+                <thought>Cosmere_UsedInvestiture_DivineGift</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Natural Force: Animistic views -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Investiture_NaturalForce</defName>
+        <issue>Cosmere_InvestitureUse</issue>
+        <label>natural force</label>
+        <description>Investiture is woven into the fabric of the world, like wind or stone. It is neither good nor evil, simply present.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>10</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- Tool of Power: Pragmatic or dark views -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Investiture_ToolOfPower</defName>
+        <issue>Cosmere_InvestitureUse</issue>
+        <label>tool of power</label>
+        <description>Investiture is power, plain and simple. Those who wield it rule over those who do not.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>20</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_Trellism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_UsedInvestiture</eventDef>
+                <thought>Cosmere_UsedInvestiture_ToolOfPower</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Survival Tool: Survivorism -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Investiture_SurvivalTool</defName>
+        <issue>Cosmere_InvestitureUse</issue>
+        <label>survival tool</label>
+        <description>Investiture kept the skaa rebellion alive. It is a tool for those who fight to survive against overwhelming odds.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>30</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Survivorism</li>
+            <li>Cosmere_Structure_Jaggenism</li>
+            <li>Cosmere_Structure_Passions</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ========== THOUGHTS ========== -->
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_UsedInvestiture_DivineGift</defName>
+        <durationDays>1</durationDays>
+        <stackLimit>1</stackLimit>
+        <stages>
+            <li>
+                <label>touched divinity</label>
+                <description>I channeled Investiture. For a moment, I touched the power of the Shards themselves.</description>
+                <baseMoodEffect>3</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_UsedInvestiture_ToolOfPower</defName>
+        <durationDays>1</durationDays>
+        <stackLimit>1</stackLimit>
+        <stages>
+            <li>
+                <label>wielded power</label>
+                <description>I used Investiture. Power flows through me, setting me above the common rabble.</description>
+                <baseMoodEffect>2</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

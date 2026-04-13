@@ -16,7 +16,8 @@ public class BondToThing : ThinkNode_JobGiver {
             .Cast<Pawn>()
             .Where(t => {
                     if (t.playerSettings?.Master != null && t.playerSettings.Master != pawn) return false;
-                    Connection conn = pawn.GetConnection(t);
+                    Connection? conn = pawn.GetConnection(t);
+                    if (conn == null) return false;
                     if (conn.objectOne.Equals(pawn) && !conn.canBondObjectTwo) return false;
                     if (conn.objectTwo.Equals(pawn) && !conn.canBondObjectOne) return false;
 

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Cosmere Category -->
+
+    <IdeoPresetCategoryDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere</defName>
+        <label>cosmere</label>
+        <description>Religions and belief systems from Brandon Sanderson's Cosmere universe. Each ideoligion is based on the faiths of Scadrial, Roshar, and other worlds touched by the Shards.</description>
+        <groupLabel>Cosmere</groupLabel>
+    </IdeoPresetCategoryDef>
+
+    <!-- Scadrial Religions -->
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_SteelMinistry</defName>
+        <label>Steel Ministry</label>
+        <description>The Lord Ruler is eternal. The nobility are chosen. The skaa are blessed through service. An oppressive theocracy that enforces strict caste divisions and demands absolute obedience to the Sliver of Infinity.</description>
+        <categoryDef>Cosmere</categoryDef>
+        <memes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Hierarchist</li>
+            <li>Cosmere_Invested</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_ChurchOfSurvivor</defName>
+        <label>Church of the Survivor</label>
+        <description>He survived the Pits. He defied the Lord Ruler. He died so we could live. The Church of the Survivor venerates Kelsier as a martyr who gave hope to the oppressed and proved that even gods can fall.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Defiant</li>
+            <li>Cosmere_Invested</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_TerrisWorldbringer</defName>
+        <label>Terris Worldbringers</label>
+        <description>Knowledge preserved is knowledge eternal. The Worldbringers are keepers of memory and wisdom, trained in the ancient Terris tradition of storing and preserving all knowledge against the darkness.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+            <li>Cosmere_Keeper</li>
+            <li>Cosmere_Invested</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_Survivorism</defName>
+        <label>Survivorism</label>
+        <description>The Survivor lives. He watches over the forgotten. Survivorism teaches that Kelsier's spirit endures, guiding those who fight against oppression with cunning, defiance, and unbreakable will.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_Survivorism</li>
+            <li>Cosmere_Defiant</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_Sliverism</defName>
+        <label>Sliverism</label>
+        <description>Those who held Infinity walk among us still. Sliverism venerates all who have touched the power of Preservation or Ruin, believing their wisdom transcends mortal understanding.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_Sliverism</li>
+            <li>Cosmere_Invested</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_Trellism</defName>
+        <label>Trellism</label>
+        <description>The red star rises. The faceless god approaches. Trellism is a shadowy faith devoted to Trell, whose influence creeps across Scadrial through the Set and other hidden agents.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_Trellism</li>
+            <li>Cosmere_Hierarchist</li>
+            <li>Darkness</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_Jaggenism</defName>
+        <label>Jaggenism</label>
+        <description>The Sovereign came from the north bearing gifts of warmth and life. Jaggenism venerates the masked figure who saved the southern peoples from the cold with the Bands of Mourning.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_Jaggenism</li>
+            <li>Cosmere_Invested</li>
+            <li>Loyalist</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_Pathianism</defName>
+        <label>Pathianism</label>
+        <description>Harmony guides but does not command. Pathianism teaches that each person must forge their own path while remaining part of a greater community, balancing independence with mutual aid.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_Pathianism</li>
+            <li>Cosmere_Invested</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <!-- Rosharan Religions -->
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_Vorinism</defName>
+        <label>Vorinism</label>
+        <description>The Almighty judges. The Heralds defend. Men prepare for war while women preserve knowledge. Vorinism is the dominant faith of the Vorin kingdoms, teaching preparation for the coming Desolation.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_Vorinism</li>
+            <li>Cosmere_Oathbound</li>
+            <li>Cosmere_Hierarchist</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_StoneShamanism</defName>
+        <label>Stone Shamanism</label>
+        <description>The stone is sacred. To walk upon it is sacrilege. The Shin revere stone as forbidden ground and abhor violence, tending the soil in peaceful Shinovar.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+            <li>Cosmere_Keeper</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_Passions</defName>
+        <label>The Passions</label>
+        <description>Feel deeply. Live boldly. Trade wisely. The Thaylen faith holds that strong emotion is divine, and every passion from love to anger can be sacred when truly felt.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_Passions</li>
+            <li>Cosmere_Passionate</li>
+        </memes>
+    </IdeoPresetDef>
+
+    <IdeoPresetDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Preset_ParshendriRhythms</defName>
+        <label>Parshendi Rhythms</label>
+        <description>The world sings. We listen. The Singers hear the rhythms that permeate Roshar. Each emotion has its own rhythm, and to attune is to touch something eternal.</description>
+        <categoryDef>Cosmere</categoryDef>
+        
+        <memes>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+            <li>Cosmere_Passionate</li>
+            <li>Collectivist</li>
+        </memes>
+    </IdeoPresetDef>
+
+</Defs>

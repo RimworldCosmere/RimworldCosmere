@@ -23,7 +23,7 @@ public class WavesprenController : StaticSprenController {
     ];
 
     public override float captureRarityMultiplier => 1.0f;
-    public override Color sprenColor => new Color(0.3f, 0.6f, 0.9f, 0.8f); // Blue water color
+    public override Color sprenColor => new Color(0.3f, 0.6f, 0.9f, 0.8f);
 
     public override SprenSpawnInformation? GetSprenSpawnInformation(
         IntVec3 position,
@@ -31,31 +31,26 @@ public class WavesprenController : StaticSprenController {
     ) {
         if (!IsInBounds(position, map)) return null;
 
-        // Check if this is a water tile adjacent to land (shore)
         TerrainDef? terrain = GetTerrain(position, map!);
         if (terrain == null) return null;
 
-        // Must be water terrain
         bool isWater = HasTerrainTag(terrain, "Water") ||
                        TerrainNameContains(terrain, "water", "ocean", "sea", "lake", "river", "marsh", "swamp");
 
         if (!isWater) return null;
 
-        // Check if adjacent to land (shore detection)
         bool isShore = IsAdjacentToLand(position, map!);
 
         return isShore ? defaultSpawnInformation.With(map, position) : null;
     }
 
     private static bool IsAdjacentToLand(IntVec3 position, Map map) {
-        // Check all 8 adjacent cells for land terrain
         foreach (IntVec3 adjCell in GenAdj.CellsAdjacent8Way(new TargetInfo(position, map))) {
             if (!IsInBounds(adjCell, map)) continue;
 
             TerrainDef? adjTerrain = GetTerrain(adjCell, map);
             if (adjTerrain == null) continue;
 
-            // If adjacent cell is NOT water, it's land
             bool isAdjWater = HasTerrainTag(adjTerrain, "Water") ||
                               TerrainNameContains(
                                   adjTerrain,
@@ -69,10 +64,10 @@ public class WavesprenController : StaticSprenController {
                               );
 
             if (!isAdjWater) {
-                return true; // Found adjacent land tile
+                return true;
             }
         }
 
-        return false; // No adjacent land found
+        return false;
     }
 }

@@ -10,8 +10,10 @@ public interface IDormantConnectionCallback {
 public class DormantConnection : Verse.DefModExtension {
     public Type callbackHandler = null!;
 
+    private IDormantConnectionCallback? cachedHandler;
+
     public IDormantConnectionCallback? Handler =>
-        Activator.CreateInstance(callbackHandler) as IDormantConnectionCallback;
+        cachedHandler ??= Activator.CreateInstance(callbackHandler) as IDormantConnectionCallback;
 
     public override IEnumerable<string> ConfigErrors() {
         if (callbackHandler == null) {

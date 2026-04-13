@@ -43,5 +43,5 @@ public class BoonSkillBoost : IExposable {
 }
 
 public interface IBoonApplicator {
-    void Apply(Verse.Pawn pawn, NightwatcherBoonDef def);
+    void Apply(Verse.Pawn pawn, NightwatcherBoonDef def, Dictionary<string, object>? context = null);
 }

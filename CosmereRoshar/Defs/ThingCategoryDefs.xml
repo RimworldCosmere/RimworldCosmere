@@ -5,6 +5,6 @@
         <label>Spheres</label>
         <parent>Cosmere_Core_ThingCategory_Gem</parent>
         <resourceReadoutRoot>false</resourceReadoutRoot>
-        <iconPath>Item/Resource/Sphere/Broam/Emerald</iconPath>
+        <iconPath>Item/Resource/Sphere/Mark/Diamond</iconPath>
     </ThingCategoryDef>
 </Defs>

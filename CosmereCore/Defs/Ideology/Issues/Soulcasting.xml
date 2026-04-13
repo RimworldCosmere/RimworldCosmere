@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ISSUE: SOULCASTING ========== -->
+    <!-- Attitudes toward transforming matter through Soulcasting -->
+
+    <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Soulcasting</defName>
+        <label>soulcasting</label>
+        <iconPath>UI/Ideology/Cosmere/Soulcasting</iconPath>
+    </IssueDef>
+
+    <!-- History Events -->
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_PerformedSoulcasting</defName>
+        <label>soulcast matter</label>
+    </HistoryEventDef>
+
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SoulcastLivingBeing</defName>
+        <label>soulcast a living being</label>
+    </HistoryEventDef>
+
+    <!-- ========== PRECEPTS ========== -->
+
+    <!-- Divine Art: Vorinism - Soulcasters are sacred tools -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Soulcasting_DivineArt</defName>
+        <issue>Cosmere_Soulcasting</issue>
+        <label>divine art</label>
+        <description>Soulcasting is a gift from the Almighty, allowing us to reshape His creation. It should be used reverently.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>0</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_PerformedSoulcasting</eventDef>
+                <thought>Cosmere_PerformedSoulcasting_DivineArt</thought>
+            </li>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_SoulcastLivingBeing</eventDef>
+                <thought>Cosmere_SoulcastLiving_DivineArt</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Practical Tool: Most others -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Soulcasting_PracticalTool</defName>
+        <issue>Cosmere_Soulcasting</issue>
+        <label>practical tool</label>
+        <description>Soulcasting transforms matter into useful resources. A valuable skill for survival and prosperity.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>10</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Passions</li>
+            <li>Cosmere_Structure_Jaggenism</li>
+            <li>Cosmere_Structure_Survivorism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_SoulcastLivingBeing</eventDef>
+                <thought>Cosmere_SoulcastLiving_Practical</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Troubling: Stone Shamanism - changing nature's form is questionable -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Soulcasting_Troubling</defName>
+        <issue>Cosmere_Soulcasting</issue>
+        <label>troubling</label>
+        <description>To force stone to become grain, or wood to become metal - this violates the natural identity of things.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>20</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_PerformedSoulcasting</eventDef>
+                <thought>Cosmere_PerformedSoulcasting_Troubling</thought>
+            </li>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_SoulcastLivingBeing</eventDef>
+                <thought>Cosmere_SoulcastLiving_Troubling</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Unknown: Scadrial religions -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Soulcasting_Unknown</defName>
+        <issue>Cosmere_Soulcasting</issue>
+        <label>unknown practice</label>
+        <description>This strange Rosharan art of transforming matter is foreign to our traditions.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>30</displayOrderInIssue>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+            <li>Cosmere_Structure_Sliverism</li>
+            <li>Cosmere_Structure_Trellism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ========== THOUGHTS ========== -->
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_PerformedSoulcasting_DivineArt</defName>
+        <durationDays>3</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>reshaped creation</label>
+                <description>I used the divine art of Soulcasting to transform matter. A sacred act of creation.</description>
+                <baseMoodEffect>4</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SoulcastLiving_DivineArt</defName>
+        <durationDays>10</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>soulcast a living being</label>
+                <description>I transformed a living soul into something else. Even in divine service, this weighs on me.</description>
+                <baseMoodEffect>-5</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SoulcastLiving_Practical</defName>
+        <durationDays>5</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>soulcast living being</label>
+                <description>I transformed a living creature into something else. It had to be done.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_PerformedSoulcasting_Troubling</defName>
+        <durationDays>3</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>violated natural forms</label>
+                <description>I forced matter to change its nature through Soulcasting. It feels wrong.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SoulcastLiving_Troubling</defName>
+        <durationDays>15</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>destroyed a soul's form</label>
+                <description>I soulcast a living being, destroying their natural form forever. A grave violation.</description>
+                <baseMoodEffect>-10</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

@@ -6,6 +6,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Patch.InnerStorage;
 
@@ -17,7 +18,7 @@ public static class PatchTryOpportunisticJob {
     public static bool Prepare() {
         LongEventHandler.ExecuteWhenFinished(() => {
                 if (patchedCount != 2) {
-                    Log.Warning("Pawn_JobTracker.TryOpportunisticJob transpiler could not be applied.");
+                    Logger.Warning("Pawn_JobTracker.TryOpportunisticJob transpiler could not be applied.");
                 }
             }
         );
@@ -55,8 +56,8 @@ public static class PatchTryOpportunisticJob {
             if (!code[i].opcode.Equals(OpCodes.Isinst)) continue;
             if (!code[i].operand.Equals(typeof(ISlotGroupParent))) continue;
             if (patchedCount > 2) {
-                Log.Warning(
-                    "[Cosmere] Found more than one call to `isinst ISlotGroupParent` in HaulAIUtility.HaulToStorageJob. This is most likely due to another mod, and may result in unpredictable behavior."
+                Logger.Warning(
+                    "Found more than one call to `isinst ISlotGroupParent` in HaulAIUtility.HaulToStorageJob. This is most likely due to another mod, and may result in unpredictable behavior."
                 );
                 continue;
             }

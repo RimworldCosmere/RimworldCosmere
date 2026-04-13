@@ -6,6 +6,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Patch.InnerStorage;
 
@@ -16,7 +17,7 @@ public static class PatchHaulToContainerJob {
     [HarmonyPrepare]
     public static bool Prepare() {
         LongEventHandler.ExecuteWhenFinished(() => {
-                if (!patched) Log.Warning("HaulAIUtility.HaulToStorageJob transpiler could not be applied.");
+                if (!patched) Logger.Warning("HaulAIUtility.HaulToStorageJob transpiler could not be applied.");
             }
         );
         return true;
@@ -46,8 +47,8 @@ public static class PatchHaulToContainerJob {
             if (!code[i].opcode.Equals(OpCodes.Isinst)) continue;
             if (!code[i].operand.Equals(typeof(ISlotGroupParent))) continue;
             if (patched) {
-                Log.Warning(
-                    "[Cosmere] Found more than one call to `isinst ISlotGroupParent` in HaulAIUtility.HaulToStorageJob. This is most likely due to another mod, and may result in unpredictable behavior."
+                Logger.Warning(
+                    "Found more than one call to `isinst ISlotGroupParent` in HaulAIUtility.HaulToStorageJob. This is most likely due to another mod, and may result in unpredictable behavior."
                 );
                 continue;
             }

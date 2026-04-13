@@ -68,10 +68,29 @@ public class Surgebinder : Invested {
 
     public override string ResourceLabel {
         get {
-            HediffDef? lifelightDef = DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight");
+            HediffDef lifelightDef = HediffDefOf.Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight;
             if (lifelightDef != null && pawn.health?.hediffSet?.HasHediff(lifelightDef) == true)
                 return "lifelight";
             return def.resourceLabel;
+        }
+    }
+
+    public override string investitureLabel {
+        get {
+            HediffDef lifelightDef = HediffDefOf.Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight;
+            if (lifelightDef != null && pawn.health?.hediffSet?.HasHediff(lifelightDef) == true)
+                return "Lifelight";
+            return "Stormlight";
+        }
+    }
+
+    public override float maxInvestitureLevel {
+        get {
+            if (currentIdeal >= 0 && currentIdeal < radiantOrderDef.ideals.Count) {
+                int stormlightMax = radiantOrderDef.ideals[currentIdeal].stormlightMax;
+                if (stormlightMax > 0) return stormlightMax;
+            }
+            return 1f;
         }
     }
 
@@ -115,7 +134,7 @@ public class Surgebinder : Invested {
 
         ILoadReferenceable? bondTarget = GetBondTarget();
         if (bondTarget != null) {
-            SpiritWeb.Instance.SetConnection(pawn, bondTarget, 0.6f);
+            SpiritWeb.Instance?.SetConnection(pawn, bondTarget, 0.6f);
         }
 
         OnIdealChange();
@@ -138,7 +157,7 @@ public class Surgebinder : Invested {
 
     public void CatastrophicBondDeath() {
         int idealBeforeDeath = currentIdeal;
-        bool isBondsmith = radiantOrderDef.defName == "Bondsmith";
+        bool isBondsmith = radiantOrderDef == RadiantOrderDefOf.Bondsmith;
         Logger.Important($"CatastrophicBondDeath: {pawn.NameShortColored}, ideal={idealBeforeDeath}, bondsmith={isBondsmith}");
 
         Comp.Game.RadiantTracker tracker = Current.Game.GetComponent<Comp.Game.RadiantTracker>();
@@ -281,7 +300,7 @@ public class Surgebinder : Invested {
     }
 
     private void ApplyUrithuruBlessing() {
-        HediffDef blessingDef = DefDatabase<HediffDef>.GetNamed("Cosmere_Roshar_Hediff_UrithuruBlessing");
+        HediffDef blessingDef = HediffDefOf.Cosmere_Roshar_Hediff_UrithuruBlessing;
         Verse.Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(blessingDef);
         if (existing == null) {
             existing = HediffMaker.MakeHediff(blessingDef, pawn);
@@ -328,16 +347,16 @@ public class Surgebinder : Invested {
         ILoadReferenceable? bondTarget = GetBondTarget();
         if (bondTarget == null) return;
 
-        float connection = SpiritWeb.Instance.GetConnectionValue(pawn, bondTarget);
+        float connection = SpiritWeb.Instance?.GetConnectionValue(pawn, bondTarget) ?? 0f;
 
         Verse.Hediff? existing = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond);
 
         if (connection < 1.0f && existing == null) {
             Verse.Hediff hediff = HediffMaker.MakeHediff(HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond, pawn);
             hediff.Severity = 1f - connection;
-            pawn.health.AddHediff(hediff);
+            pawn.health?.AddHediff(hediff);
         } else if (connection >= 1.0f && existing != null) {
-            pawn.health.RemoveHediff(existing);
+            pawn.health?.RemoveHediff(existing);
         }
     }
 
@@ -413,7 +432,7 @@ public class Surgebinder : Invested {
     private void SendOathNotification(int nextIdeal) {
         Ideal ideal = radiantOrderDef.ideals[nextIdeal];
         string oathText = ideal.quotes.Count > 0 ? ideal.quotes[0] : "";
-        bool isTruth = radiantOrderDef.defName == "Lightweaver";
+        bool isTruth = radiantOrderDef == RadiantOrderDefOf.Lightweaver;
         string idealLabel = isTruth ? "Truth" : "Ideal";
 
         string title = "CRO_SpeakOath_Title".Translate(
@@ -696,7 +715,7 @@ public class Surgebinder : Invested {
             pawn.abilities.GainAbility(unlockedAbilityDef);
         }
 
-        if (radiantOrderDef.defName == "Bondsmith" && !string.IsNullOrEmpty(godsprenName) && currentIdealInt >= 2) {
+        if (radiantOrderDef == RadiantOrderDefOf.Bondsmith && !string.IsNullOrEmpty(godsprenName) && currentIdealInt >= 2) {
             AddBondsmithSprenAbility();
         }
     }

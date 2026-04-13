@@ -1,8 +1,10 @@
+using Cosmere.Core.Ability;
+
 namespace Cosmere.System.Scadrial.Allomancy.Ability;
 
-public struct BurningStatus {
-    public const int Off = 0;
-    public const int Burning = 1;
-    public const int Flaring = 2;
-    public const int Duralumin = 10;
+public static class BurningStatus {
+    public static readonly Status Off = new Status(Active.Off, 0);
+    public static readonly Status Burning = new Status(Active.On, 1);
+    public static readonly Status Flaring = new Status(Active.On, 2);
+    public static readonly Status Duralumin = new Status(Active.On, 10);
 }

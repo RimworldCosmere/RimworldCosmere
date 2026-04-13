@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_Passions</defName>
+        <label>The Passions</label>
+        <description>Feel deeply. Live boldly. Trade wisely. The Passions are followed primarily by the Thaylens, who believe that strong emotion is divine. Every passion from love to anger to ambition can be sacred when truly felt.</description>
+        <iconPath>UI/Ideology/Cosmere/Passions</iconPath>
+        <deityCount>0</deityCount>
+        <worshipRoomLabel>passion hall</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)->[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packIdeoName]</li>
+                <li>memeLeaderNoun->passion speaker</li>
+                <li>memeLeaderNoun->high merchant</li>
+                <li>memeLeaderNoun->elder</li>
+                <li>memeLeaderAdjective->passionate</li>
+                <li>memeLeaderAdjective->burning</li>
+                <li>memeLeaderAdjective->true</li>
+                <li>memeMoralist->speaker</li>
+                <li>memeMoralist->trader-priest</li>
+                <li>memeMoralist->guide</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_cosmere_passions</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <symbolPacks>
+            <li>
+                <ideoName>The Passions</ideoName>
+                <adjective>passionate</adjective>
+                <member>passionate</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Way of Feeling</ideoName>
+                <adjective>feeling</adjective>
+                <member>devotee</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Thaylen Faith</ideoName>
+                <adjective>Thaylen</adjective>
+                <member>Thaylen faithful</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Passion's Path</ideoName>
+                <adjective>fervent</adjective>
+                <member>fervent one</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

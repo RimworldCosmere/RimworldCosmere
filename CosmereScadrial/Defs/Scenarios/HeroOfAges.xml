@@ -6,6 +6,10 @@
     <description>Ruin is free. The ash falls heavier each day, smothering crops and choking rivers. The mists linger past dawn, killing those they touch. Elend and Vin lead what remains of civilization while Sazed searches for an answer he no longer believes exists.</description>
     <scenario>
       <summary>Survive the end of the world as Ruin's power grows unchecked.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_NewEmpire</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

@@ -37,22 +37,11 @@ public class CompSprenBond : ThingComp {
         if (personalityTraitPool != null) return personalityTraitPool;
 
         personalityTraitPool = [];
-
-        TraitDef? kind = DefDatabase<TraitDef>.GetNamedSilentFail("Kind");
-        TraitDef? abrasive = DefDatabase<TraitDef>.GetNamedSilentFail("Abrasive");
-        TraitDef? nerves = DefDatabase<TraitDef>.GetNamedSilentFail("Nerves");
-        TraitDef? naturalMood = DefDatabase<TraitDef>.GetNamedSilentFail("NaturalMood");
-        TraitDef? tough = DefDatabase<TraitDef>.GetNamedSilentFail("Tough");
-        TraitDef? industriousness = DefDatabase<TraitDef>.GetNamedSilentFail("Industriousness");
-        TraitDef? speedOffset = DefDatabase<TraitDef>.GetNamedSilentFail("SpeedOffset");
-
-        if (kind != null) personalityTraitPool.Add(kind);
-        if (abrasive != null) personalityTraitPool.Add(abrasive);
-        if (nerves != null) personalityTraitPool.Add(nerves);
-        if (naturalMood != null) personalityTraitPool.Add(naturalMood);
-        if (tough != null) personalityTraitPool.Add(tough);
-        if (industriousness != null) personalityTraitPool.Add(industriousness);
-        if (speedOffset != null) personalityTraitPool.Add(speedOffset);
+        string[] traitNames = ["Kind", "Abrasive", "Nerves", "NaturalMood", "Tough", "Industriousness", "SpeedOffset"];
+        for (int i = 0; i < traitNames.Length; i++) {
+            TraitDef? trait = DefDatabase<TraitDef>.GetNamedSilentFail(traitNames[i]);
+            if (trait != null) personalityTraitPool.Add(trait);
+        }
 
         return personalityTraitPool;
     }

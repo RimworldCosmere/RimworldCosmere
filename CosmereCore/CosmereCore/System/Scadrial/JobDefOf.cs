@@ -10,7 +10,7 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class JobDefOf {
+public static class JobDefOf {
     static JobDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));
     }

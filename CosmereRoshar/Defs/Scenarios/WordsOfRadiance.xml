@@ -6,6 +6,10 @@
     <description>Dalinar gazes east, toward the center of the Shattered Plains. He has seen visions of the past - the Knights Radiant, the Desolations, the truth of what Roshar faces. The expedition to the center of the Plains will answer questions that have haunted him. Or it will kill them all.</description>
     <scenario>
       <summary>Dalinar's expedition to the center of the Shattered Plains.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Roshar_Faction_HouseKholin</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

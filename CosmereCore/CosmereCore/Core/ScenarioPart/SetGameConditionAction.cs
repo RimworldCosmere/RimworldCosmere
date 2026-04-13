@@ -1,0 +1,23 @@
+using RimWorld;
+using Verse;
+
+namespace Cosmere.Core.ScenarioPart;
+
+public class SetGameConditionAction : ProgressionAction {
+    public string gameCondition = "";
+    public int durationDays = 1;
+
+    public override void Execute(GameComponent_ScenarioProgression comp) {
+        GameConditionDef? def = DefDatabase<GameConditionDef>.GetNamedSilentFail(gameCondition);
+        if (def == null) {
+            Logger.Warning($"ScenarioProgression: GameCondition '{gameCondition}' not found");
+            return;
+        }
+
+        Map? map = Find.CurrentMap;
+        if (map == null) return;
+
+        GameCondition condition = GameConditionMaker.MakeCondition(def, durationDays * GenDate.TicksPerDay);
+        map.gameConditionManager.RegisterCondition(condition);
+    }
+}

@@ -57,7 +57,7 @@ public class LiveSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
 
             bool isNeedle = spike.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
             string label = isNeedle ? "CS_Hemalurgy_NeedleOption" : "CS_Hemalurgy_SpikeOption";
-            string metalLabel = comp.metal.LabelCap;
+            string metalLabel = comp.metal?.LabelCap ?? "unknown";
             HemalurgicStealType stealType = comp.stealType;
             string stealLabel = HemalurgicConstants.GetStealTypeLabel(stealType);
             string spikeLabel = label.Translate(metalLabel, stealLabel);

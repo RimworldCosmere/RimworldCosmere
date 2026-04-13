@@ -4,6 +4,7 @@ using System.Reflection.Emit;
 using Cosmere.Core.Quickstart;
 using HarmonyLib;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Patch;
 
@@ -14,7 +15,7 @@ public static class QuickstarterPatches {
     [HarmonyPrepare]
     public static bool Prepare() {
         LongEventHandler.ExecuteWhenFinished(() => {
-                if (!patchedDrawButtons) Log.Warning("DebugWindowOpener.DrawButtons could not be applied.");
+                if (!patchedDrawButtons) Logger.Warning("DebugWindowOpener.DrawButtons could not be applied.");
             }
         );
         return true;

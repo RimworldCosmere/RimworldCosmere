@@ -26,13 +26,10 @@ public class SandsprenController : StaticSprenController {
         IntVec3 position,
         Map? map
     ) {
-        // Return representative spawn info for particle system configuration
         if (!IsInBounds(position, map)) return null;
 
-        // Check terrain for rock (async terrain validation)
         TerrainDef? terrain = GetTerrain(position, map!);
         if (terrain != null) {
-            // Terrain checks
             bool hasRockTag = HasTerrainTag(terrain, "Rock");
             bool hasRockName = TerrainNameContains(terrain, "rock", "stone", "granite", "marble", "slate", "rubble");
 
@@ -41,7 +38,6 @@ public class SandsprenController : StaticSprenController {
             }
         }
 
-        // Check for stone chunks at this position
         bool thingChecks = map!.thingGrid.ThingsListAt(position)
             .Select(thing => thing.def.defName)
             .Any(defName => defName.StartsWith("Sand") || defName.Contains("Sandstone"));

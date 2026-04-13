@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Core;
 using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Utility;
@@ -24,14 +25,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     private bool enabled {
         get {
             if (!Mod.enableHighstorms) return false;
-            if (cachedEnabled.HasValue) return cachedEnabled.Value;
-            try {
-                bool result = ShardUtility.AreAnyEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation, ShardDefOf.Odium);
-                if (result) cachedEnabled = true;
-                return result;
-            } catch {
-                return false;
-            }
+            return ShardUtility.CachedAreAnyEnabled(ref cachedEnabled, ShardDefOf.Honor, ShardDefOf.Cultivation, ShardDefOf.Odium);
         }
     }
 
@@ -45,7 +39,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         base.FinalizeInit();
 
         if (stormActive) {
-            GameCondition.Highstorm activeCondition = null;
+            GameCondition.Highstorm? activeCondition = null;
             List<RimWorld.GameCondition> conditions = map.gameConditionManager.ActiveConditions;
             for (int i = 0; i < conditions.Count; i++) {
                 if (conditions[i] is GameCondition.Highstorm hs) {
@@ -135,7 +129,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
             warningShown = false;
             seasonalIntensity = GetSeasonalIntensityMultiplier(map);
             Logger.Verbose(
-                $"[Highstorm] First storm scheduled at tick {nextHighstormTick} ({maxDays} days from now)"
+                $"First storm scheduled at tick {nextHighstormTick} ({maxDays} days from now)"
             );
             return;
         }
@@ -153,7 +147,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         seasonalIntensity = GetSeasonalIntensityMultiplier(map);
 
         Logger.Verbose(
-            $"[Highstorm] Next scheduled at tick {nextHighstormTick} (interval {intervalTicks}, last at {lastHighstormTick})"
+            $"Next scheduled at tick {nextHighstormTick} (interval {intervalTicks}, last at {lastHighstormTick})"
         );
     }
 
@@ -169,7 +163,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         if (success) {
             stormActive = true;
         } else {
-            Logger.Warning("[Highstorm] Incident failed to execute, will retry next schedule.");
+            Logger.Warning("Incident failed to execute, will retry next schedule.");
         }
 
         lastHighstormTick = Find.TickManager.TicksGame;
@@ -194,7 +188,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         Scribe_Values.Look(ref weepingActive, "weepingActive");
     }
 
-    public static string GetStatusText(Verse.Map map) {
+    public static string? GetStatusText(Verse.Map map) {
         HighstormScheduler scheduler = map.GetComponent<HighstormScheduler>();
         if (scheduler == null || scheduler.nextHighstormTick < 0) return null;
 
@@ -211,7 +205,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
         return $"Highstorm: {hours:F1} hours";
     }
 
-    public static string GetTooltipText(Verse.Map map) {
+    public static string? GetTooltipText(Verse.Map map) {
         HighstormScheduler scheduler = map.GetComponent<HighstormScheduler>();
         if (scheduler == null || scheduler.nextHighstormTick < 0) return null;
 
@@ -232,7 +226,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     }
 
     private bool IsTickDuringWeeping(int tick) {
-        long absTick = (long)tick + map.Tile * 0;
+        long absTick = (long)tick;
         int dayOfYear = (int)((absTick / GenDate.TicksPerDay) % DaysPerYear);
         return dayOfYear >= WeepingStartDay;
     }

@@ -45,7 +45,6 @@ public static class MetalDetector {
             }
         }
 
-        //if (thing.GemStuff != null && (thing.GemStuff.IsMetal || GetLinkedMetals(thing.GemStuff, allowAluminum).Count > 0)) return thing.GetStatValue(RimWorld.StatDefOf.Mass);
         if (thing.def.defName is "ChunkSlagSteel" or "ChunkMechanoidSlag") {
             return thing.GetStatValue(RimWorld.StatDefOf.Mass);
         }

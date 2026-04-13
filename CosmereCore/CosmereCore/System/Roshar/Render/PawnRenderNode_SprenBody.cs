@@ -11,7 +11,7 @@ public class PawnRenderNode_SprenBody : PawnRenderNode {
         : base(pawn, props, tree) {
     }
 
-    public override Graphic GraphicFor(Verse.Pawn pawn) {
+    public override Graphic? GraphicFor(Verse.Pawn pawn) {
         PawnKindDef kindDef = pawn.kindDef;
         if (kindDef.lifeStages == null || kindDef.lifeStages.Count == 0) return null;
 
@@ -39,8 +39,8 @@ public class PawnRenderNode_SprenBody : PawnRenderNode {
         );
     }
 
-    public override GraphicMeshSet MeshSetFor(Verse.Pawn pawn) {
-        Graphic graphic = GraphicFor(pawn);
+    public override GraphicMeshSet? MeshSetFor(Verse.Pawn pawn) {
+        Graphic? graphic = GraphicFor(pawn);
         if (graphic == null) return null;
         return MeshPool.GetMeshSetForSize(graphic.drawSize.x, graphic.drawSize.y);
     }

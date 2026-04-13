@@ -19,7 +19,7 @@ public class SettingsWindow {
         this.allModSettings = allModSettings;
 
         // Ensure Core tab is first
-        var coreSettings = allModSettings.FirstOrDefault(s => s.Name == "Core");
+        CosmereModSettings? coreSettings = allModSettings.FirstOrDefault(s => s.Name == "Core");
         selectedTab = coreSettings ?? allModSettings.First();
 
         cachedTabs = this.allModSettings

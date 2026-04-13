@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ISSUE: GENDER ROLES ========== -->
+    <!-- Vorin-style gender role attitudes -->
+
+    <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_GenderRoles</defName>
+        <label>gender roles</label>
+        <iconPath>UI/Ideology/Cosmere/GenderRoles</iconPath>
+    </IssueDef>
+
+    <!-- ========== PRECEPTS ========== -->
+
+    <!-- Vorin Strict: Men fight, women read/write/manage -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Gender_VorinStrict</defName>
+        <issue>Cosmere_GenderRoles</issue>
+        <label>Vorin tradition</label>
+        <description>Men bear weapons and do physical labor. Women handle writing, reading, scholarship, and financial matters. Each gender has its proper sphere, ordained by the Almighty.</description>
+        <impact>High</impact>
+        <displayOrderInIssue>0</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.3</defaultSelectionWeight>
+        <requiredMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </requiredMemes>
+        <comps>
+            <li Class="PreceptComp_SituationalThought">
+                <thought>Cosmere_Gender_VorinStrict_ProperRoles</thought>
+                <description>Living by Vorin gender traditions</description>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Vorin Moderate: Traditions respected but not absolute -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Gender_VorinModerate</defName>
+        <issue>Cosmere_GenderRoles</issue>
+        <label>traditional guidance</label>
+        <description>The old ways provide guidance. Men tend toward physical work, women toward scholarly pursuits, but necessity sometimes demands flexibility.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>10</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- Equal: Most other religions -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Gender_Equal</defName>
+        <issue>Cosmere_GenderRoles</issue>
+        <label>no distinction</label>
+        <description>People should pursue work that suits their talents, regardless of gender.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>20</displayOrderInIssue>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Structure_Survivorism</li>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+            <li>Cosmere_Structure_Sliverism</li>
+            <li>Cosmere_Structure_Trellism</li>
+            <li>Cosmere_Structure_Jaggenism</li>
+            <li>Cosmere_Structure_Passions</li>
+            <li>Cosmere_Structure_StoneShamanism</li>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ========== THOUGHTS ========== -->
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Gender_VorinStrict_ProperRoles</defName>
+        <workerClass>Cosmere.Core.Ideology.ThoughtWorker_Precept_VorinRoles</workerClass>
+        <stages>
+            <li>
+                <label>proper Vorin roles</label>
+                <description>I am fulfilling my proper role as the Almighty intended.</description>
+                <baseMoodEffect>3</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

@@ -50,7 +50,7 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         yield return toil;
     }
 
-    // @todo Add distance from target to equation of push strength
+    // TODO: Add distance from target to equation of push strength
     /// <summary>
     ///     Right now, if thing hits a cell that isnt walkable, it stops.
     ///     Instead, it should add the mass of the thing in the way, and recalculate, the previous call, pushing both if the

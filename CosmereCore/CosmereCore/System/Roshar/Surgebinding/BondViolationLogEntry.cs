@@ -4,10 +4,10 @@ using Verse;
 namespace Cosmere.System.Roshar.Surgebinding;
 
 public class BondViolationLogEntry : LogEntry {
-    internal Pawn pawn;
-    internal string orderLabel;
-    internal string reason;
-    internal string severityLabel;
+    internal Pawn pawn = null!;
+    internal string orderLabel = "";
+    internal string reason = "";
+    internal string severityLabel = "";
 
     public BondViolationLogEntry() { }
 

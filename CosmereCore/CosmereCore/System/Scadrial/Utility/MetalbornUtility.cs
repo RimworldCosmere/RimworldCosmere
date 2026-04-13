@@ -59,6 +59,7 @@ public static class MetalbornUtility {
     }
 
     private static void HandleCombinedTrait(Pawn pawn, TraitDef traitDef) {
+        if (pawn.genes == null) return;
         bool allomancy = traitDef == TraitDefOf.Cosmere_Scadrial_Trait_Mistborn;
         List<MetallicArtsMetalDef> allDefs = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading;
         bool hasAllGenes = true;

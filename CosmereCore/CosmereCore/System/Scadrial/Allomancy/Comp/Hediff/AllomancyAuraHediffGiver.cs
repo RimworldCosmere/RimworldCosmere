@@ -2,9 +2,11 @@ using Cosmere.Core;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Map;
 using Cosmere.Core.Hediff;
+using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Comp.Hediff;
 using Cosmere.System.Scadrial.Gene;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;
@@ -97,7 +99,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
         foreach (Pawn pawn in pawnsWithHediff) {
             if (nearbyPawns.Contains(pawn)) continue;
             if (ability != null) {
-                AllomanticHediff? hediff = (AllomanticHediff?)pawn.GetOrAddHediff(Pawn, ability, props);
+                AllomanticHediff? hediff = (AllomanticHediff?)pawn.GetOrAddHediff((AllomancyAbility)ability!, props, Pawn);
                 hediff?.RemoveSource(ability);
             }
             toRemove.Add(pawn);
@@ -141,7 +143,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
             return;
         }
 
-        AllomanticHediff? hediff = (AllomanticHediff?)target.GetOrAddHediff(Pawn, ability, props);
+        AllomanticHediff? hediff = (AllomanticHediff?)target.GetOrAddHediff((AllomancyAbility)ability!, props, Pawn);
         if (hediff == null) return;
         pawnsWithHediff.Add(target);
 

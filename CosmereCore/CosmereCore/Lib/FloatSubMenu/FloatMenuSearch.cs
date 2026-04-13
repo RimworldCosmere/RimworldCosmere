@@ -30,7 +30,7 @@ namespace FloatSubMenus {
 
             this.subMenus = subMenus;
 
-            var traverse = Traverse.Create(this);
+            Traverse traverse = Traverse.Create(this);
             widthField  = traverse.Field<float>("cachedRequiredWidth");
             heightField = traverse.Field<float>("cachedRequiredHeight");
         }

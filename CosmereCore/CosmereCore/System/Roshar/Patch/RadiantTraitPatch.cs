@@ -4,7 +4,6 @@ using Verse.AI;
 
 namespace Cosmere.System.Roshar.Patch;
 
-// @TODO Move to CosmereRoshar/Patches/PawnPathFollowerPatches.cs
 [HarmonyPatch(typeof(Pawn_PathFollower), "CostToMoveIntoCell")]
 [HarmonyPatch([typeof(Pawn), typeof(IntVec3)])]
 public static class PatchPawnMovement {

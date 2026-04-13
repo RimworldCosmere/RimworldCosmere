@@ -10,7 +10,7 @@ namespace Cosmere.System.Scadrial.Patch;
 public static class PatchRaidPostProcess {
     [HarmonyPostfix]
     public static void Postfix(IncidentParms parms, List<Pawn> pawns) {
-        Map map = parms.target as Map;
+        Map? map = parms.target as Map;
         if (map == null) return;
 
         float copperStrength = AllomancyUtility.GetCoppercloudStrength(map);

@@ -6,6 +6,10 @@
     <description>The Sibling screams in silence. Urithiru's defenses have been corrupted, and a field of suppression drains Stormlight from every Radiant in the tower. The Fused walk freely where Knights once stood. Navani traces ancient schematics. Kaladin fights in corridors with flickering power. The tower of the Knights Radiant has fallen from within.</description>
     <scenario>
       <summary>Survive the occupation of Urithiru and restore the tower's defenses.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Roshar_Faction_TowerDefenders</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

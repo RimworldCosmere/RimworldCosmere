@@ -12,9 +12,9 @@ public class BondToThing : Verse.AI.JobDriver {
 
     // ~1 every 11.1 in-game years (60000 ticks/day * 60 days/year)
     private const float ConnectionPerInterval = 0.0005f;
-    private int startTick;
+    private new int startTick;
     private Verse.Thing Target => job.targetB.Thing;
-    private Connection connection => pawn.GetConnection(Target);
+    private Connection? connection => pawn.GetConnection(Target);
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) {
         return pawn.Reserve(Target, job, 1, -1, null, errorOnFailed);
@@ -24,8 +24,8 @@ public class BondToThing : Verse.AI.JobDriver {
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
         this.FailOn(() => Target is not { Spawned: true });
 
-        Connection conn = pawn.GetConnection(Target);
-        this.FailOn(() => conn.value >= 1);
+        Connection? conn = pawn.GetConnection(Target);
+        this.FailOn(() => conn == null || conn.value >= 1);
 
         //yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
 
@@ -51,7 +51,7 @@ public class BondToThing : Verse.AI.JobDriver {
                 pawn.AdjustConnection(Target, ConnectionPerInterval);
                 pawn.rotationTracker.FaceTarget(Target);
 
-                if (conn.value >= 1f) {
+                if (conn != null && conn.value >= 1f) {
                     EndJobWith(JobCondition.Succeeded);
                 }
             },
@@ -69,7 +69,7 @@ public class BondToThing : Verse.AI.JobDriver {
             }
         );
 
-        bondToil.WithProgressBar(TargetIndex.B, () => Mathf.Clamp01(connection.value / 1f));
+        bondToil.WithProgressBar(TargetIndex.B, () => Mathf.Clamp01((connection?.value ?? 0f) / 1f));
 
         yield return bondToil;
     }

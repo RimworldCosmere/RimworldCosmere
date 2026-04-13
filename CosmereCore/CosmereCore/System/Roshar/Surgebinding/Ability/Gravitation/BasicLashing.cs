@@ -1,8 +1,10 @@
 using Cosmere.Core.Ability;
 using Cosmere.System.Roshar.Surgebinding.Utility;
+using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
+using Verse.Profile;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Gravitation;
 
@@ -11,7 +13,6 @@ public class BasicLashing : SurgebindingAbility {
 
     private const int GroupRadius = 5;
     private readonly List<Pawn> lashedAllies = [];
-    private bool worldTargetingActive;
 
     public BasicLashing(Pawn pawn) : base(pawn) { }
     public BasicLashing(Pawn pawn, AbilityDef def) : base(pawn, def) { }
@@ -144,5 +145,13 @@ public class BasicLashing : SurgebindingAbility {
         );
 
         return true;
+    }
+
+    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    public static class BasicLashingStateClearer {
+        [HarmonyPostfix]
+        public static void Postfix() {
+            FlyingPawns.Clear();
+        }
     }
 }

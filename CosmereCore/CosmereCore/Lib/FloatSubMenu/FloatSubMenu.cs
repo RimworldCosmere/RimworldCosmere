@@ -34,11 +34,11 @@ namespace FloatSubMenus {
 
         private readonly List<FloatMenuOption> subOptions;
         private readonly float extraPartWidthOuter;
-        private readonly Func<Rect, bool> extraPartOnGUIOuter;
+        private readonly Func<Rect, bool>? extraPartOnGUIOuter;
 
-        private FloatSubMenuInner subMenu = null;
-        private FloatMenuFilter filter = null;
-        private Action parentCloseCallback = null;
+        private FloatSubMenuInner? subMenu = null;
+        private FloatMenuFilter? filter = null;
+        private Action? parentCloseCallback = null;
         private bool parentSetUp = false;
         private bool subMenuOptionChosen = false;
         private bool subOptionsInitialized = false;
@@ -66,10 +66,10 @@ namespace FloatSubMenus {
         public static FloatMenuOption CompatCreate(string label,
                                                    List<FloatMenuOption> subOptions,
                                                    MenuOptionPriority priority = MenuOptionPriority.Default,
-                                                   Thing revalidateClickTarget = null,
+                                                   Thing? revalidateClickTarget = null,
                                                    float extraPartWidth = 0,
-                                                   Func<Rect, bool> extraPartOnGUI = null,
-                                                   WorldObject revalidateWorldClickTarget = null,
+                                                   Func<Rect, bool>? extraPartOnGUI = null,
+                                                   WorldObject? revalidateWorldClickTarget = null,
                                                    bool playSelectionSound = true,
                                                    int orderInPriority = 0) {
             if (Compat) {
@@ -111,10 +111,10 @@ namespace FloatSubMenus {
         public static FloatMenuOption CompatMMMCreate(string label,
                                                       List<FloatMenuOption> subOptions,
                                                       MenuOptionPriority priority = MenuOptionPriority.Default,
-                                                      Thing revalidateClickTarget = null,
+                                                      Thing? revalidateClickTarget = null,
                                                       float extraPartWidth = 0,
-                                                      Func<Rect, bool> extraPartOnGUI = null,
-                                                      WorldObject revalidateWorldClickTarget = null,
+                                                      Func<Rect, bool>? extraPartOnGUI = null,
+                                                      WorldObject? revalidateWorldClickTarget = null,
                                                       bool playSelectionSound = true,
                                                       int orderInPriority = 0) {
             if (CompatMMM) {
@@ -146,10 +146,10 @@ namespace FloatSubMenus {
         public FloatSubMenu(string label,
                             List<FloatMenuOption> subOptions,
                             MenuOptionPriority priority = MenuOptionPriority.Default,
-                            Thing revalidateClickTarget = null,
+                            Thing? revalidateClickTarget = null,
                             float extraPartWidth = 0,
-                            Func<Rect, bool> extraPartOnGUI = null,
-                            WorldObject revalidateWorldClickTarget = null,
+                            Func<Rect, bool>? extraPartOnGUI = null,
+                            WorldObject? revalidateWorldClickTarget = null,
                             bool playSelectionSound = true,
                             int orderInPriority = 0)
             : base(label: label,
@@ -181,13 +181,13 @@ namespace FloatSubMenus {
         public static FloatMenuOption CompatCreate(string label,
                                                    List<FloatMenuOption> subOptions,
                                                    ThingDef shownItemForIcon,
-                                                   ThingStyleDef thingStyle = null,
+                                                   ThingStyleDef? thingStyle = null,
                                                    bool forceBasicStyle = false,
                                                    MenuOptionPriority priority = MenuOptionPriority.Default,
-                                                   Thing revalidateClickTarget = null,
+                                                   Thing? revalidateClickTarget = null,
                                                    float extraPartWidth = 0,
-                                                   Func<Rect, bool> extraPartOnGUI = null,
-                                                   WorldObject revalidateWorldClickTarget = null,
+                                                   Func<Rect, bool>? extraPartOnGUI = null,
+                                                   WorldObject? revalidateWorldClickTarget = null,
                                                    bool playSelectionSound = true,
                                                    int orderInPriority = 0,
                                                    int? graphicIndexOverride = null) {
@@ -243,13 +243,13 @@ namespace FloatSubMenus {
         public static FloatMenuOption CompatMMMCreate(string label,
                                                       List<FloatMenuOption> subOptions,
                                                       ThingDef shownItemForIcon,
-                                                      ThingStyleDef thingStyle = null,
+                                                      ThingStyleDef? thingStyle = null,
                                                       bool forceBasicStyle = false,
                                                       MenuOptionPriority priority = MenuOptionPriority.Default,
-                                                      Thing revalidateClickTarget = null,
+                                                      Thing? revalidateClickTarget = null,
                                                       float extraPartWidth = 0,
-                                                      Func<Rect, bool> extraPartOnGUI = null,
-                                                      WorldObject revalidateWorldClickTarget = null,
+                                                      Func<Rect, bool>? extraPartOnGUI = null,
+                                                      WorldObject? revalidateWorldClickTarget = null,
                                                       bool playSelectionSound = true,
                                                       int orderInPriority = 0,
                                                       int? graphicIndexOverride = null) {
@@ -295,13 +295,13 @@ namespace FloatSubMenus {
         public FloatSubMenu(string label,
                             List<FloatMenuOption> subOptions,
                             ThingDef shownItemForIcon,
-                            ThingStyleDef thingStyle = null, 
+                            ThingStyleDef? thingStyle = null, 
                             bool forceBasicStyle = false, 
                             MenuOptionPriority priority = MenuOptionPriority.Default,
-                            Thing revalidateClickTarget = null,
+                            Thing? revalidateClickTarget = null,
                             float extraPartWidth = 0,
-                            Func<Rect, bool> extraPartOnGUI = null,
-                            WorldObject revalidateWorldClickTarget = null,
+                            Func<Rect, bool>? extraPartOnGUI = null,
+                            WorldObject? revalidateWorldClickTarget = null,
                             bool playSelectionSound = true,
                             int orderInPriority = 0, 
                             int? graphicIndexOverride = null)
@@ -345,10 +345,10 @@ namespace FloatSubMenus {
                                                    Texture2D itemIcon,
                                                    Color iconColor,
                                                    MenuOptionPriority priority = MenuOptionPriority.Default,
-                                                   Thing revalidateClickTarget = null,
+                                                   Thing? revalidateClickTarget = null,
                                                    float extraPartWidth = 0,
-                                                   Func<Rect, bool> extraPartOnGUI = null,
-                                                   WorldObject revalidateWorldClickTarget = null,
+                                                   Func<Rect, bool>? extraPartOnGUI = null,
+                                                   WorldObject? revalidateWorldClickTarget = null,
                                                    bool playSelectionSound = true,
                                                    int orderInPriority = 0,
                                                    HorizontalJustification iconJustification = HorizontalJustification.Left,
@@ -405,10 +405,10 @@ namespace FloatSubMenus {
                                                       Texture2D itemIcon,
                                                       Color iconColor,
                                                       MenuOptionPriority priority = MenuOptionPriority.Default,
-                                                      Thing revalidateClickTarget = null,
+                                                      Thing? revalidateClickTarget = null,
                                                       float extraPartWidth = 0,
-                                                      Func<Rect, bool> extraPartOnGUI = null,
-                                                      WorldObject revalidateWorldClickTarget = null,
+                                                      Func<Rect, bool>? extraPartOnGUI = null,
+                                                      WorldObject? revalidateWorldClickTarget = null,
                                                       bool playSelectionSound = true,
                                                       int orderInPriority = 0,
                                                       HorizontalJustification iconJustification = HorizontalJustification.Left,
@@ -455,10 +455,10 @@ namespace FloatSubMenus {
                             Texture2D itemIcon,
                             Color iconColor,
                             MenuOptionPriority priority = MenuOptionPriority.Default,
-                            Thing revalidateClickTarget = null,
+                            Thing? revalidateClickTarget = null,
                             float extraPartWidth = 0,
-                            Func<Rect, bool> extraPartOnGUI = null,
-                            WorldObject revalidateWorldClickTarget = null,
+                            Func<Rect, bool>? extraPartOnGUI = null,
+                            WorldObject? revalidateWorldClickTarget = null,
                             bool playSelectionSound = true,
                             int orderInPriority = 0,
                             HorizontalJustification iconJustification = HorizontalJustification.Left, 
@@ -548,7 +548,7 @@ namespace FloatSubMenus {
         public List<FloatMenuOption> Options {
             get {
                 if (!subOptionsInitialized) {
-                    var mode = subOptions.Count > 60 ? FloatMenuSizeMode.Tiny : FloatMenuSizeMode.Normal;
+                    FloatMenuSizeMode mode = subOptions.Count > 60 ? FloatMenuSizeMode.Tiny : FloatMenuSizeMode.Normal;
                     subOptions.ForEach(o => o.SetSizeMode(mode));
                     subOptions.Sort(OptionPriorityCmp);
                     subOptionsInitialized = true;
@@ -578,7 +578,7 @@ namespace FloatSubMenus {
         }
 
         internal static bool ShouldReplaceDistanceFor(FloatMenu menu, ref float distance) {
-            var set = OpenMenuSet.For(menu);
+            OpenMenuSet? set = OpenMenuSet.For(menu);
             if (set != null) {
                 distance = set.MinDistance;
                 return true;
@@ -691,27 +691,27 @@ namespace FloatSubMenus {
                 }
             }
 
-            public static OpenMenuSet For(FloatMenu menu) =>
-                sets.TryGetValue(menu, out var set) ? set : null;
+            public static OpenMenuSet? For(FloatMenu menu) =>
+                sets.TryGetValue(menu, out OpenMenuSet? set) ? set : null;
 
             public static void Open(FloatMenu parent, FloatSubMenuInner child) {
-                if (sets.TryGetValue(parent, out var set)) {
+                if (sets.TryGetValue(parent, out OpenMenuSet? set)) {
                     set.Add(child);
                 } else {
                     new OpenMenuSet(parent, child);
                 }
-                var list = sets[parent].menus.Select(m => m.ID).ToStringSafeEnumerable();
+                string list = sets[parent].menus.Select(m => m.ID).ToStringSafeEnumerable();
             }
 
             public static void Close(FloatMenu menu) {
-                if (sets.TryGetValue(menu, out var set)) {
+                if (sets.TryGetValue(menu, out OpenMenuSet? set)) {
                     set.Remove(menu);
                 }
             }
 
             public float MinDistance {
                 get {
-                    var pos = UI.MousePositionOnUIInverted;
+                    Vector2 pos = UI.MousePositionOnUIInverted;
                     if (!cacheValid || pos != cachedPosition) {
                         cacheValid = true;
                         cachedPosition = pos;
@@ -742,7 +742,7 @@ namespace FloatSubMenus {
 
             protected override void SetInitialSizeAndPosition() {
                 Vector2 pos = UI.MousePositionOnUIInverted + mouseOffset;
-                var size = InitialSize;
+                Vector2 size = InitialSize;
                 float x = Mathf.Min(pos.x, UI.screenWidth - size.x);
                 float y = Mathf.Min(pos.y, UI.screenHeight - size.y);
                 windowRect = new Rect(x, y, size.x, size.y);
@@ -754,7 +754,7 @@ namespace FloatSubMenus {
             }
 
             public override void PreClose() {
-                foreach (var sub in options.OfType<FloatSubMenu>()) {
+                foreach (FloatSubMenu sub in options.OfType<FloatSubMenu>()) {
                     sub.CloseSubMenu();
                 }
                 OpenMenuSet.Close(this);

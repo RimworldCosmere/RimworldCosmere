@@ -11,3 +11,7 @@ Cosmere.sln.DotSettings.user
 **/Assemblies
 **/AssetBundles
 **/.lastassetbuildhash
+.env
+Assembly-CSharp.dll
+*.stackdump
+old

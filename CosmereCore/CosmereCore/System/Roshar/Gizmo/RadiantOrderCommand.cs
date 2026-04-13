@@ -55,7 +55,7 @@ public class RadiantOrderCommand(
         HashSet<AbilityDef> shown = [];
 
         foreach (AbilityDef abilityDef in radiantOrderDef.abilities) {
-            if (!pawn.TryGetAbility(abilityDef, out SurgebindingAbility ability)) continue;
+            if (!pawn.TryGetAbility(abilityDef, out SurgebindingAbility? ability) || ability == null) continue;
             if (!ability.GizmosVisible()) continue;
             shown.Add(abilityDef);
             yield return new SurgebindingAbilitySubGizmo(this, gene, ability);
@@ -64,7 +64,7 @@ public class RadiantOrderCommand(
         for (int i = 0; i <= global::System.Math.Min(gene.currentIdeal, radiantOrderDef.ideals.Count - 1); i++) {
             Ideal ideal = radiantOrderDef.ideals[i];
             foreach (AbilityDef idealAbility in ideal.abilities) {
-                if (!pawn.TryGetAbility(idealAbility, out SurgebindingAbility ability)) continue;
+                if (!pawn.TryGetAbility(idealAbility, out SurgebindingAbility? ability) || ability == null) continue;
                 if (!ability.GizmosVisible()) continue;
                 shown.Add(idealAbility);
                 yield return new SurgebindingAbilitySubGizmo(this, gene, ability);

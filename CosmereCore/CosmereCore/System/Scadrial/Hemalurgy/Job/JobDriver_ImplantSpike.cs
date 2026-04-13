@@ -130,7 +130,7 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
             bool isThinNeedle = carried.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
 
             ImplantedSpikeData spikeData = new ImplantedSpikeData {
-                metalDefName = spikeComp.metal.defName,
+                metalDefName = spikeComp.metal?.defName ?? "Unknown",
                 stealType = charge.stealType,
                 stolenDefName = charge.stolenDefName,
                 stolenDefNames = [..charge.stolenDefNames],
@@ -156,7 +156,7 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
             Messages.Message(
                 "CS_Hemalurgy_ImplantSuccess".Translate(
                     pawn.Named("SURGEON"),
-                    spikeComp.metal.Named("METAL"),
+                    (spikeComp.metal?.Named("METAL") ?? "unknown".Named("METAL")),
                     recipient.Named("RECIPIENT")
                 ),
                 recipient, MessageTypeDefOf.PositiveEvent

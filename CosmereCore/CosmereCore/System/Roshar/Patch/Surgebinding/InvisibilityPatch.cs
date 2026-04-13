@@ -27,7 +27,7 @@ public static class InvisibilityBreakOnAttackPatch {
         if (!Invisibility.InvisiblePawns.Contains(casterPawn)) return;
 
         RimWorld.Ability? invisAbility = casterPawn.abilities?.GetAbility(
-            DefDatabase<AbilityDef>.GetNamed("Cosmere_Roshar_Ability_Invisibility")
+            AbilityDefOf.Cosmere_Roshar_Ability_Invisibility
         );
         if (invisAbility is Invisibility { status.isActive: true } invis) {
             invis.UpdateStatus(Active.Off);

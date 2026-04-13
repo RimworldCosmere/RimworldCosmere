@@ -9,6 +9,7 @@ namespace Cosmere.System.Scadrial.JobGiver;
 public class KeepVialInStock : ThinkNode_JobGiver {
     protected override Job? TryGiveJob(Pawn pawn) {
         if (pawn.Downed || pawn.IsAsleep()) return null;
+        if (pawn.genes == null) return null;
 
         foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
             int inStock =

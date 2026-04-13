@@ -54,7 +54,7 @@ public class BuildingHeatrialAdvanced : Building {
 public class CompHeatrial : ThingComp, IGemstoneHandler {
     public Verse.Thing? insertedGemstone;
     public bool powerOn;
-    public CompPropertiesHeatrial props => (CompPropertiesHeatrial)base.props;
+    public new CompPropertiesHeatrial props => (CompPropertiesHeatrial)base.props;
     public CompGlower glowerComp => parent.GetComp<CompGlower>();
 
     public void AddGemstone(ThingWithComps gemstone) {

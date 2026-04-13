@@ -19,7 +19,7 @@ public class EntropicAura : SurgebindingAbility {
         return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
     }
 
-    private static readonly ThingDef? AuraMoteDef = DefDatabase<ThingDef>.GetNamedSilentFail("Cosmere_Roshar_Thing_EntropicAura");
+    private static readonly ThingDef? AuraMoteDef = ThingDefOf.Cosmere_Roshar_Thing_EntropicAura;
     private Mote? auraMote;
 
     private float radius => BaseRadius + gene.currentIdeal;
@@ -30,7 +30,7 @@ public class EntropicAura : SurgebindingAbility {
         base.OnEnable();
         SurgebindingHediffUtility.GetOrAddHediff(pawn, this, def.hediff);
         if (AuraMoteDef != null) {
-            float moteScale = Cosmere.System.Scadrial.Utility.MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
+            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
             auraMote = MoteMaker.MakeAttachedOverlay(pawn, AuraMoteDef, Vector3.zero, moteScale);
         }
     }
@@ -48,7 +48,7 @@ public class EntropicAura : SurgebindingAbility {
         base.AbilityTick();
         auraMote?.Maintain();
         if (auraMote != null && AuraMoteDef != null) {
-            float moteScale = Cosmere.System.Scadrial.Utility.MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
+            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
             auraMote.Graphic.drawSize = new Vector2(moteScale, moteScale);
         }
 

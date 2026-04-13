@@ -4,6 +4,12 @@
     <CC_Settings_Connection_ShowDormantConnection_Label>Show Dormant Connection</CC_Settings_Connection_ShowDormantConnection_Label>
     <CC_Settings_Connection_ShowDormantConnection_Tooltip>Pawns will show that they have a dormant Connection in their inspect window. Won't show what it exactly is.</CC_Settings_Connection_ShowDormantConnection_Tooltip>
     
+    <CC_Settings_Category_FactionFiltering>Faction Filtering</CC_Settings_Category_FactionFiltering>
+    <CC_Settings_DisableEmpire_Label>Disable Empire in Cosmere Scenarios</CC_Settings_DisableEmpire_Label>
+    <CC_Settings_DisableEmpire_Tooltip>When enabled, the Empire faction (Royalty DLC) will not appear during Cosmere scenario world generation.</CC_Settings_DisableEmpire_Tooltip>
+    <CC_Settings_DisableOdyssey_Label>Disable Odyssey Factions in Cosmere Scenarios</CC_Settings_DisableOdyssey_Label>
+    <CC_Settings_DisableOdyssey_Tooltip>When enabled, Mechanoid Hive and Insect Geneline factions (Odyssey DLC) will not appear during Cosmere scenario world generation.</CC_Settings_DisableOdyssey_Tooltip>
+
     <CC_Settings_Category_Debug>Debug Settings</CC_Settings_Category_Debug>
     <CC_Settings_LogLevel_Label>Log Level: </CC_Settings_LogLevel_Label>
     <CC_Settings_LogLevel_Tooltip>Determines what gets logged. Should probably be Info</CC_Settings_LogLevel_Tooltip>

@@ -6,6 +6,10 @@
     <description>The Lord Ruler is dead, and the world he held together is coming apart. Three armies converge on Luthadel. Elend Venture holds the city with idealism and a stack of political philosophy. Vin watches from the rooftops. The siege begins.</description>
     <scenario>
       <summary>Defend Luthadel against three armies as Elend's fragile kingdom fractures.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_NewKingdom</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

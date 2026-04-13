@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RecipeDef>
+        <defName>Cosmere_Roshar_Recipe_SplitGemheart</defName>
+        <label>split gemheart</label>
+        <description>Carefully split a chasmfiend gemheart into several cut gems. The size and quality of a gemheart yields far more than ordinary stone - a skilled cutter can extract four to six gems from a single heart.</description>
+        <jobString>Splitting gemheart.</jobString>
+        <workerClass>Cosmere.System.Roshar.RecipeWorker.SplitGemheart</workerClass>
+        <workAmount>4800</workAmount>
+        <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+        <workSkill>Crafting</workSkill>
+        <effectWorking>CutStone</effectWorking>
+        <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Cosmere_Roshar_Thing_Gemheart</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <thingDefs>
+                <li>Cosmere_Roshar_Thing_Gemheart</li>
+            </thingDefs>
+        </fixedIngredientFilter>
+        <defaultIngredientFilter>
+            <thingDefs>
+                <li>Cosmere_Roshar_Thing_Gemheart</li>
+            </thingDefs>
+        </defaultIngredientFilter>
+        <skillRequirements>
+            <Crafting>6</Crafting>
+        </skillRequirements>
+        <researchPrerequisites>
+            <li>Cosmere_Gem_Cutting</li>
+        </researchPrerequisites>
+        <recipeUsers>
+            <li>Cosmere_Core_Table_GemCutter</li>
+        </recipeUsers>
+        <displayPriority>210</displayPriority>
+        <uiIconThing>Cosmere_Roshar_Thing_Gemheart</uiIconThing>
+    </RecipeDef>
+</Defs>

@@ -11,6 +11,16 @@ namespace Cosmere.System.Roshar.Patch;
 public static class NahelBondTooltipPatch {
     private static PawnRelationDef? nahelBondDef;
 
+    private static readonly AccessTools.FieldRef<object, List<PawnRelationDef>> RelationsRef =
+        AccessTools.FieldRefAccess<List<PawnRelationDef>>(
+            AccessTools.Inner(typeof(SocialCardUtility), "CachedSocialTabEntry"), "relations"
+        );
+
+    private static readonly AccessTools.FieldRef<object, Pawn> OtherPawnRef =
+        AccessTools.FieldRefAccess<Pawn>(
+            AccessTools.Inner(typeof(SocialCardUtility), "CachedSocialTabEntry"), "otherPawn"
+        );
+
     static MethodBase TargetMethod() {
         return AccessTools.Method(typeof(SocialCardUtility), "GetPawnRowTooltip");
     }
@@ -19,9 +29,8 @@ public static class NahelBondTooltipPatch {
         nahelBondDef ??= DefDatabase<PawnRelationDef>.GetNamedSilentFail("Cosmere_Roshar_Relation_NahelBond");
         if (nahelBondDef == null) return;
 
-        Traverse entryTraverse = Traverse.Create(entry);
-        List<PawnRelationDef> relations = entryTraverse.Field("relations").GetValue<List<PawnRelationDef>>();
-        Verse.Pawn otherPawn = entryTraverse.Field("otherPawn").GetValue<Verse.Pawn>();
+        List<PawnRelationDef> relations = RelationsRef(entry);
+        Pawn otherPawn = OtherPawnRef(entry);
         if (relations == null || otherPawn == null) return;
 
         bool hasNahelBond = false;
@@ -34,7 +43,10 @@ public static class NahelBondTooltipPatch {
 
         if (!hasNahelBond) return;
 
-        float connection = SpiritWeb.Instance.GetConnectionValue(selPawnForSocialInfo, otherPawn);
+        SpiritWeb? spiritWeb = SpiritWeb.Instance;
+        if (spiritWeb == null) return;
+
+        float connection = spiritWeb.GetConnectionValue(selPawnForSocialInfo, otherPawn);
         int percentage = (int)(connection * 100f);
         string stage = connection switch {
             >= 0.7f => "CRO_BondStage_Healthy".Translate(),

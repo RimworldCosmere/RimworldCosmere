@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== SCADRIAL RITUALS ========== -->
+
+    <!-- ===== STEEL MINISTRY ===== -->
+
+    <!-- Execution Rite: Sacrifice a prisoner to honor the Lord Ruler -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_ExecutionRite</defName>
+        <label>execution rite</label>
+        <description>A ritualistic execution where an Obligator oversees the death of a prisoner or criminal. The assembled faithful watch as divine justice is carried out in the name of the Lord Ruler.</description>
+        <issue>Ritual</issue>
+        <impact>High</impact>
+        <iconPath>UI/Ideology/Cosmere/SteelMinistry</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>SacrificePrisoner</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- Steel Ministry Festival: Celebration of the Lord Ruler's ascension -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_AscensionDay</defName>
+        <label>ascension day</label>
+        <description>A solemn festival commemorating the day the Lord Ruler took up the power at the Well of Ascension. Faithful gather to hear speeches about his eternal wisdom and the proper order of things.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/SteelMinistry</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <requiredMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- ===== CHURCH OF THE SURVIVOR ===== -->
+
+    <!-- Liberation Day: Celebrating Kelsier's rebellion -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_LiberationDay</defName>
+        <label>liberation day</label>
+        <description>A joyous celebration of freedom and defiance. The faithful gather to share stories of the Survivor's rebellion, to remember those who fell fighting oppression, and to renew their commitment to helping the downtrodden.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/ChurchOfSurvivor</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <requiredMemes>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- Survivor's Vigil: Honoring the dead who fought for freedom -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_SurvivorsVigil</defName>
+        <label>survivor's vigil</label>
+        <description>A quiet gathering where the faithful light candles and share memories of those who died fighting for freedom. The Survivor watches over all who resist oppression.</description>
+        <issue>Ritual</issue>
+        <impact>Low</impact>
+        <iconPath>UI/Ideology/Cosmere/ChurchOfSurvivor</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationSkyLanterns</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <associatedMemes>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Structure_Survivorism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ===== SURVIVORISM ===== -->
+
+    <!-- Defiance Gathering: Rallying against oppression -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_DefianceGathering</defName>
+        <label>defiance gathering</label>
+        <description>A rousing assembly where followers share tales of resistance and renew their vows to never submit to tyranny. The spirit of the Survivor burns in all who attend.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/Survivorism</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <requiredMemes>
+            <li>Cosmere_Structure_Survivorism</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- ===== PATHIANISM ===== -->
+
+    <!-- Harmony's Gathering: Peaceful community celebration -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_HarmonysGathering</defName>
+        <label>Harmony's gathering</label>
+        <description>A peaceful assembly where the community comes together to strengthen bonds and seek balance. Harmony guides but does not command, and so the faithful choose to gather of their own will.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/Pathianism</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <requiredMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- ===== TERRIS WORLDBRINGER ===== -->
+
+    <!-- Knowledge Sharing: Teaching and preserving wisdom -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_KnowledgeSharing</defName>
+        <label>knowledge sharing</label>
+        <description>A gathering where Keepers share preserved knowledge with the community. Stories, histories, and techniques are passed down, ensuring that wisdom survives against all darkness.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/TerrisWorldbringer</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <requiredMemes>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- ===== TRELLISM ===== -->
+
+    <!-- Shadow Communion: Dark rites in honor of Trell -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_ShadowCommunion</defName>
+        <label>shadow communion</label>
+        <description>A secretive gathering held in darkness. The faithful commune with the faceless god, seeking his favor and guidance. Red light flickers as whispered prayers rise to Trell.</description>
+        <issue>Ritual</issue>
+        <impact>High</impact>
+        <iconPath>UI/Ideology/Cosmere/Trellism</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>SmokeCircle</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_Trellism</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- ===== JAGGENISM ===== -->
+
+    <!-- Sovereign's Blessing: Honoring the masked figure who brought warmth -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_SovereignsBlessing</defName>
+        <label>Sovereign's blessing</label>
+        <description>A ceremony of gratitude for the Sovereign who brought warmth and aid to the southern peoples. The faithful gather around a warm fire, sharing food and remembering his gifts.</description>
+        <issue>Ritual</issue>
+        <impact>Medium</impact>
+        <iconPath>UI/Ideology/Cosmere/Jaggenism</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>BurnCircle</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_Jaggenism</li>
+        </requiredMemes>
+    </PreceptDef>
+
+    <!-- ===== SLIVERISM ===== -->
+
+    <!-- Infinity Meditation: Contemplating those who held divine power -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Ritual_InfinityMeditation</defName>
+        <label>infinity meditation</label>
+        <description>A contemplative gathering where the faithful meditate on the nature of Shards and those who held them. Through quiet reflection, they seek to understand the cosmic forces that shape all things.</description>
+        <issue>Ritual</issue>
+        <impact>Low</impact>
+        <iconPath>UI/Ideology/Cosmere/Sliverism</iconPath>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>CelebrationPartyChat</ritualPatternBase>
+        <allowDuplicates>false</allowDuplicates>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+        <selectionWeight>1.0</selectionWeight>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+        <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+        <requiredMemes>
+            <li>Cosmere_Structure_Sliverism</li>
+        </requiredMemes>
+    </PreceptDef>
+
+</Defs>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Base player faction for Scadrial scenarios -->
+  <FactionDef ParentName="PlayerFactionBase" Name="Cosmere_Scadrial_PlayerFactionBase" Abstract="True">
+    <isPlayer>true</isPlayer>
+    <techLevel>Industrial</techLevel>
+    <factionNameMaker>NamerFactionOutlander</factionNameMaker>
+    <settlementNameMaker>NamerSettlementOutlander</settlementNameMaker>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <allowedCultures><li>Astropolitan</li></allowedCultures>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>Offworld</li>
+        </categories>
+      </li>
+    </backstoryFilters>
+    <startingResearchTags>
+      <li>ClassicStart</li>
+    </startingResearchTags>
+  </FactionDef>
+
+  <!-- Lord Ruler Scenario: The Final Empire with Steel Ministry religion -->
+  <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
+    <defName>Cosmere_Scadrial_Faction_FinalEmpire</defName>
+    <label>The Final Empire</label>
+    <description>The thousand-year empire of the Lord Ruler, maintained through the Steel Ministry's iron grip on society.</description>
+    <fixedName>The Final Empire</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>subject</pawnSingular>
+    <pawnsPlural>subjects</pawnsPlural>
+    <leaderTitle>Lord Ruler</leaderTitle>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Steel Ministry</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The official religion of the Final Empire, enforcing the worship of the Lord Ruler as the Sliver of Infinity.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_SteelMinistry</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Kelsier's Crew Scenario: The rebellion with Church of the Survivor -->
+  <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
+    <defName>Cosmere_Scadrial_Faction_KelsiersCrew</defName>
+    <label>Kelsier's Crew</label>
+    <description>The legendary crew assembled by the Survivor of Hathsin to overthrow the Final Empire.</description>
+    <fixedName>Kelsier's Crew</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>crewmember</pawnSingular>
+    <pawnsPlural>crew</pawnsPlural>
+    <leaderTitle>Survivor</leaderTitle>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Church of the Survivor</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Followers of Kelsier, the Survivor of Hathsin, who gave hope to the oppressed and proved that even gods can fall.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_ChurchOfSurvivor</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Well of Ascension: Elend's fledgling kingdom -->
+  <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
+    <defName>Cosmere_Scadrial_Faction_NewKingdom</defName>
+    <label>New Kingdom of the Central Dominance</label>
+    <description>The fragile new government established after the Lord Ruler's fall, led by the idealistic Elend Venture.</description>
+    <fixedName>New Kingdom</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>citizen</pawnSingular>
+    <pawnsPlural>citizens</pawnsPlural>
+    <leaderTitle>King</leaderTitle>
+    <leaderTitleFemale>Queen</leaderTitleFemale>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Church of the Survivor</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The faith of the revolution, venerating Kelsier as a martyr who showed the skaa their worth.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_ChurchOfSurvivor</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Hero of Ages: The New Empire fighting Ruin -->
+  <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
+    <defName>Cosmere_Scadrial_Faction_NewEmpire</defName>
+    <label>New Empire</label>
+    <description>The united forces of humanity standing against Ruin's apocalypse, led by Emperor Elend Venture.</description>
+    <fixedName>New Empire</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>soldier</pawnSingular>
+    <pawnsPlural>soldiers</pawnsPlural>
+    <leaderTitle>Emperor</leaderTitle>
+    <leaderTitleFemale>Empress</leaderTitleFemale>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Church of the Survivor</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">In these final days, the people cling to the memory of Kelsier, who first showed them hope.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_ChurchOfSurvivor</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Pre-Catacendre: Escaped refugees -->
+  <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
+    <defName>Cosmere_Scadrial_Faction_Refugees</defName>
+    <label>The Refugees</label>
+    <description>Escaped skaa, Terris stewards, and disillusioned nobles fleeing the tyranny of the Final Empire.</description>
+    <fixedName>The Refugees</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>refugee</pawnSingular>
+    <pawnsPlural>refugees</pawnsPlural>
+    <leaderTitle>Elder</leaderTitle>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Survivorism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The early faith of those who escaped oppression, believing in Kelsier's message of defiance and hope.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Survivorism</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Post-Catacendre: Harmony's faithful -->
+  <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
+    <defName>Cosmere_Scadrial_Faction_NewScadrial</defName>
+    <label>New Scadrial</label>
+    <description>Settlers in the world remade by Harmony, building a new civilization under the watchful guidance of the joined god.</description>
+    <fixedName>New Scadrial</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>settler</pawnSingular>
+    <pawnsPlural>settlers</pawnsPlural>
+    <leaderTitle>Governor</leaderTitle>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Pathianism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Harmony guides but does not command. Each person must forge their own path while remaining part of a greater community.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Pathianism</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Alloy of Law: House Ladrian -->
+  <FactionDef ParentName="Cosmere_Scadrial_PlayerFactionBase">
+    <defName>Cosmere_Scadrial_Faction_HouseLadrian</defName>
+    <label>House Ladrian</label>
+    <description>The noble house of Waxillium Ladrian, once prominent in Elendel society, now rebuilding its fortunes.</description>
+    <fixedName>House Ladrian</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>retainer</pawnSingular>
+    <pawnsPlural>retainers</pawnsPlural>
+    <leaderTitle>Lord</leaderTitle>
+    <leaderTitleFemale>Lady</leaderTitleFemale>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Pathianism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Like most of post-Catacendre Scadrial, House Ladrian follows Harmony's guidance while forging their own path.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Pathianism</li>
+    </forcedMemes>
+  </FactionDef>
+
+</Defs>

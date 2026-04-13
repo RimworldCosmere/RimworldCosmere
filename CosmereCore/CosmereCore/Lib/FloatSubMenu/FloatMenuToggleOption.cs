@@ -9,17 +9,17 @@ using Verse;
 
 namespace FloatSubMenus {
     public class FloatMenuToggleOption : FloatMenuOption {
-        public Func<bool> checkOn;
-        public Func<bool> checkDimmed;
+        public Func<bool> checkOn = null!;
+        public Func<bool> checkDimmed = null!;
 
         public FloatMenuToggleOption(string label,
                                      Action toggle,
                                      Func<bool> checkOn,
                                      Func<bool> checkDimmed,
                                      MenuOptionPriority priority = MenuOptionPriority.Default,
-                                     Action<Rect> mouseoverGuiAction = null,
-                                     Thing revalidateClickTarget = null,
-                                     WorldObject revalidateWorldClickTarget = null,
+                                     Action<Rect>? mouseoverGuiAction = null,
+                                     Thing? revalidateClickTarget = null,
+                                     WorldObject? revalidateWorldClickTarget = null,
                                      bool playSelectionSound = true,
                                      int orderInPriority = 0)
             : base(label,
@@ -39,12 +39,12 @@ namespace FloatSubMenus {
                                      Func<bool> checkOn,
                                      Func<bool> checkDimmed,
                                      ThingDef shownItemForIcon,
-                                     ThingStyleDef thingStyle = null,
+                                     ThingStyleDef? thingStyle = null,
                                      bool forceBasicStyle = false,
                                      MenuOptionPriority priority = MenuOptionPriority.Default,
-                                     Action<Rect> mouseoverGuiAction = null,
-                                     Thing revalidateClickTarget = null,
-                                     WorldObject revalidateWorldClickTarget = null,
+                                     Action<Rect>? mouseoverGuiAction = null,
+                                     Thing? revalidateClickTarget = null,
+                                     WorldObject? revalidateWorldClickTarget = null,
                                      bool playSelectionSound = true,
                                      int orderInPriority = 0, int? 
                                      graphicIndexOverride = null)
@@ -76,9 +76,9 @@ namespace FloatSubMenus {
                                      Texture2D itemIcon,
                                      Color iconColor,
                                      MenuOptionPriority priority = MenuOptionPriority.Default,
-                                     Action<Rect> mouseoverGuiAction = null,
-                                     Thing revalidateClickTarget = null,
-                                     WorldObject revalidateWorldClickTarget = null,
+                                     Action<Rect>? mouseoverGuiAction = null,
+                                     Thing? revalidateClickTarget = null,
+                                     WorldObject? revalidateWorldClickTarget = null,
                                      bool playSelectionSound = true,
                                      int orderInPriority = 0,
                                      HorizontalJustification iconJustification = HorizontalJustification.Left)

@@ -14,15 +14,14 @@ using Logger = Cosmere.Core.Logger;
 namespace Cosmere.System.Roshar;
 
 public static class NightwatcherSystem {
-    private const string BoonHediffDefName = "Cosmere_Roshar_Hediff_NightwatcherBoon";
-    private const string CurseHediffDefName = "Cosmere_Roshar_Hediff_NightwatcherCurse";
 
     public static bool IsEligible(Verse.Pawn pawn) {
         if (!pawn.IsColonist) return false;
         if (pawn.Dead || pawn.Downed) return false;
         CompNightwatcher? comp = pawn.TryGetComp<CompNightwatcher>();
         if (comp == null || comp.HasVisited) return false;
-        return Current.Game.GetComponent<Shards>()?.IsEnabled("Cultivation") ?? false;
+        return ShardDefOf.Cultivation != null &&
+               (Current.Game.GetComponent<Shards>()?.IsEnabled(ShardDefOf.Cultivation) ?? false);
     }
 
     public static void InitiateSeek(Verse.Pawn pawn) {
@@ -34,12 +33,12 @@ public static class NightwatcherSystem {
         if (def.initialSeverity <= 0f) def.initialSeverity = 1f;
     }
 
-    public static void ApplyBoon(Verse.Pawn pawn, NightwatcherBoonDef boon) {
+    public static void ApplyBoon(Verse.Pawn pawn, NightwatcherBoonDef boon, Dictionary<string, object>? context = null) {
         if (boon.hediff != null) {
             EnsureHediffPersistence(boon.hediff);
             pawn.health.AddHediff(HediffMaker.MakeHediff(boon.hediff, pawn));
         } else {
-            HediffDef? boonHediffDef = DefDatabase<HediffDef>.GetNamedSilentFail(BoonHediffDefName);
+            HediffDef? boonHediffDef = HediffDefOf.Cosmere_Roshar_Hediff_NightwatcherBoon;
             if (boonHediffDef != null) {
                 EnsureHediffPersistence(boonHediffDef);
                 NightwatcherBoonHediff boonHediff = (NightwatcherBoonHediff)HediffMaker.MakeHediff(boonHediffDef, pawn);
@@ -95,7 +94,7 @@ public static class NightwatcherSystem {
             }
         }
 
-        boon.Applicator?.Apply(pawn, boon);
+        boon.Applicator?.Apply(pawn, boon, context);
 
         Core.Comp.Game.SpiritWeb? web = Current.Game.GetComponent<Core.Comp.Game.SpiritWeb>();
         Comp.Game.CultivationEntity? cultivation = Comp.Game.CultivationEntity.Instance;
@@ -116,7 +115,7 @@ public static class NightwatcherSystem {
                 evoComp?.Initialize(curse);
             }
         } else {
-            HediffDef? curseHediffDef = DefDatabase<HediffDef>.GetNamedSilentFail(CurseHediffDefName);
+            HediffDef? curseHediffDef = HediffDefOf.Cosmere_Roshar_Hediff_NightwatcherCurse;
             if (curseHediffDef != null) {
                 EnsureHediffPersistence(curseHediffDef);
                 NightwatcherCurseHediff curseHediff = (NightwatcherCurseHediff)HediffMaker.MakeHediff(curseHediffDef, pawn);

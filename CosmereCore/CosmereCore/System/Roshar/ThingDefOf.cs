@@ -39,7 +39,6 @@ public static class ThingDefOf {
     [MayRequire("Cosmere.Roshar")]
     public static ThingDef Cosmere_Roshar_Race_UnknownTrueSpren;
 
-    //public static ThingDef Cosmere_Roshar_MeleeWeapon_Shardblade;
     [MayRequire("Cosmere.Roshar")]
     public static ThingDef Cosmere_Roshar_MeleeWeapon_RadiantShardblade;
 
@@ -54,4 +53,22 @@ public static class ThingDefOf {
 
     [MayRequire("Cosmere.Roshar")]
     public static ThingDef Cosmere_Roshar_Mote_OathBurst;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static ThingDef Cosmere_Roshar_Thing_Gemheart;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static ThingDef Cosmere_Roshar_Thing_SurgePortal;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static ThingDef Cosmere_Roshar_Thing_WindsprenShieldAura;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static ThingDef Cosmere_Roshar_Thing_EntropicAura;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static ThingDef Cosmere_Roshar_Thing_BloomAura;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static ThingDef Cosmere_Roshar_Thing_LifesurgePulse;
 }

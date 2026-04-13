@@ -1,94 +1,18 @@
-﻿using System;
-using Cosmere.Core.Entity;
 using RimWorld;
-using RimWorld.Planet;
 using Verse;
 
 namespace Cosmere.Core.Comp.Game;
 
-public class Connection : IExposable {
-    public bool canBondObjectOne = true;
-    public bool canBondObjectTwo = true;
-    public ILoadReferenceable objectOne = null!;
-    public ILoadReferenceable objectTwo = null!;
-
-    private float valueInt;
-
-    public Connection() { }
-
-    public Connection(ILoadReferenceable objectOne, ILoadReferenceable objectTwo) {
-        this.objectOne = objectOne;
-        this.objectTwo = objectTwo;
-    }
-
-    public Connection(
-        ILoadReferenceable objectOne,
-        ILoadReferenceable objectTwo,
-        bool canBondObjectOne = true,
-        bool canBondObjectTwo = true
-    ) {
-        this.objectOne = objectOne;
-        this.objectTwo = objectTwo;
-        this.canBondObjectOne = canBondObjectOne;
-        this.canBondObjectTwo = canBondObjectTwo;
-    }
-
-    public float value {
-        get => valueInt;
-        set => valueInt = Math.Max(0, Math.Min(1, value));
-    }
-
-    public bool objectOneIsThing => objectOne is Verse.Thing;
-    public bool objectTwoIsThing => objectTwo is Verse.Thing;
-    public bool objectOneIsPlanetLayer => objectOne is PlanetLayer;
-    public bool objectTwoIsPlanetLayer => objectTwo is PlanetLayer;
-    public bool objectOneIsFaction => objectOne is Faction;
-    public bool objectTwoIsFaction => objectTwo is Faction;
-    public bool objectOneIsShard => objectOne is Shard;
-    public bool objectTwoIsShard => objectTwo is Shard;
-    public Verse.Thing? thingOne => objectOne as Verse.Thing;
-    public Verse.Thing? thingTwo => objectTwo as Verse.Thing;
-    public PlanetLayer? planetLayerOne => objectOne as PlanetLayer;
-    public PlanetLayer? planetLayerTwo => objectTwo as PlanetLayer;
-    public Faction? factionOne => objectOne as Faction;
-    public Faction? factionTwo => objectTwo as Faction;
-    public Shard? shardOne => objectOne as Shard;
-    public Shard? shardTwo => objectTwo as Shard;
-
-    public void ExposeData() {
-        Scribe_Values.Look(ref valueInt, "value");
-        Scribe_References.Look(ref objectOne, "objectOne");
-        Scribe_References.Look(ref objectTwo, "objectTwo");
-        Scribe_Values.Look(ref canBondObjectOne, "canBondObjectOne");
-        Scribe_Values.Look(ref canBondObjectTwo, "canBondObjectTwo");
-    }
-
-    public virtual bool Equals(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
-        return objectOne.GetUniqueLoadID() == targetOne.GetUniqueLoadID() &&
-               objectTwo.GetUniqueLoadID() == targetTwo.GetUniqueLoadID();
-    }
-
-    public bool OneObjectMatches(ILoadReferenceable target) {
-        return objectOne.GetUniqueLoadID() == target.GetUniqueLoadID() ||
-               objectTwo.GetUniqueLoadID() == target.GetUniqueLoadID();
-    }
-
-    public bool ShouldSave() {
-        if (thingOne is { Destroyed: true }) return false;
-        if (thingTwo is { Destroyed: true }) return false;
-
-        return value > 0;
-    }
-}
-
+#pragma warning disable CS9113 // Parameter 'game' is unread - required by GameComponent base class
 public class SpiritWeb(Verse.Game game) : GameComponent {
+#pragma warning restore CS9113
     public const string CHANGED_SIGNAL = "Cosmere_Connection_Changed";
     private List<Connection> connectionList = [];
 
     private Dictionary<(string, string), Connection> connections =
         new Dictionary<(string, string), Connection>();
 
-    public static SpiritWeb Instance => Current.Game.GetComponent<SpiritWeb>();
+    public static SpiritWeb? Instance => Current.Game?.GetComponent<SpiritWeb>();
 
     private static (string, string) NormalizeKey(ILoadReferenceable one, ILoadReferenceable two) {
         return string.CompareOrdinal(one.GetUniqueLoadID(), two.GetUniqueLoadID()) < 0
@@ -96,7 +20,7 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
             : (two.GetUniqueLoadID(), one.GetUniqueLoadID());
     }
 
-    public Connection GetConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
+    public Connection GetOrCreateConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo) {
         (string, string) key = NormalizeKey(targetOne, targetTwo);
         if (!connections.TryGetValue(key, out Connection? _)) {
             connections[key] = InitializeConnection(targetOne, targetTwo);
@@ -144,22 +68,32 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
         }
 
         if (connection.objectTwoIsThing) {
-            connection.thingTwo!.Notify_SignalReceived(
-                new Signal(CHANGED_SIGNAL, connection.objectOne.GetUniqueLoadID(), value, oldValue)
-            );
+            if (connection.objectOneIsThing) {
+                connection.thingTwo!.Notify_SignalReceived(
+                    new Signal(CHANGED_SIGNAL, connection.thingOne, value, oldValue)
+                );
+            } else if (connection.objectOneIsFaction) {
+                connection.thingTwo!.Notify_SignalReceived(
+                    new Signal(CHANGED_SIGNAL, connection.factionOne, value, oldValue)
+                );
+            } else {
+                connection.thingTwo!.Notify_SignalReceived(
+                    new Signal(CHANGED_SIGNAL, connection.objectOne.GetUniqueLoadID(), value, oldValue)
+                );
+            }
         }
 
         return connection;
     }
 
     public Connection SetConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo, float value) {
-        Connection conn = GetConnection(targetOne, targetTwo);
+        Connection conn = GetOrCreateConnection(targetOne, targetTwo);
 
         return SetConnectionValue(conn, value);
     }
 
     public Connection AdjustConnection(ILoadReferenceable targetOne, ILoadReferenceable targetTwo, float delta) {
-        Connection conn = GetConnection(targetOne, targetTwo);
+        Connection conn = GetOrCreateConnection(targetOne, targetTwo);
 
         return SetConnectionValue(conn, conn.value + delta);
     }
@@ -171,7 +105,7 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
     }
 
     public float GetConnectionValue(ILoadReferenceable a, ILoadReferenceable b) {
-        return GetConnection(a, b).value;
+        return GetOrCreateConnection(a, b).value;
     }
 
     public bool HasConnection(ILoadReferenceable a, ILoadReferenceable b) {
@@ -194,71 +128,5 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
                 connections[key] = conn;
             }
         }
-    }
-}
-
-public static class SpiritWebExtensions {
-    public static Connection GetConnection(this Verse.Thing self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.GetConnection(target, self);
-    }
-
-    public static Connection GetConnection(this Faction self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.GetConnection(target, self);
-    }
-
-    public static Connection GetConnection(this PlanetLayer self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.GetConnection(target, self);
-    }
-
-    public static Connection GetConnection(this Shard self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.GetConnection(target, self);
-    }
-
-    public static Connection InitializeConnection(this Verse.Thing self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.InitializeConnection(target, self);
-    }
-
-    public static Connection InitializeConnection(this Faction self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.InitializeConnection(target, self);
-    }
-
-    public static Connection InitializeConnection(this PlanetLayer self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.InitializeConnection(target, self);
-    }
-
-    public static Connection InitializeConnection(this Shard self, ILoadReferenceable target) {
-        return SpiritWeb.Instance.InitializeConnection(target, self);
-    }
-
-    public static Connection SetConnection(this Verse.Thing self, ILoadReferenceable target, float value) {
-        return SpiritWeb.Instance.SetConnection(target, self, value);
-    }
-
-    public static Connection SetConnection(this Faction self, ILoadReferenceable target, float value) {
-        return SpiritWeb.Instance.SetConnection(target, self, value);
-    }
-
-    public static Connection SetConnection(this PlanetLayer self, ILoadReferenceable target, float value) {
-        return SpiritWeb.Instance.SetConnection(target, self, value);
-    }
-
-    public static Connection SetConnection(this Shard self, ILoadReferenceable target, float value) {
-        return SpiritWeb.Instance.SetConnection(target, self, value);
-    }
-
-    public static Connection AdjustConnection(this Verse.Thing self, ILoadReferenceable target, float delta) {
-        return SpiritWeb.Instance.AdjustConnection(target, self, delta);
-    }
-
-    public static Connection AdjustConnection(this Faction self, ILoadReferenceable target, float delta) {
-        return SpiritWeb.Instance.AdjustConnection(target, self, delta);
-    }
-
-    public static Connection AdjustConnection(this PlanetLayer self, ILoadReferenceable target, float delta) {
-        return SpiritWeb.Instance.AdjustConnection(target, self, delta);
-    }
-
-    public static Connection AdjustConnection(this Shard self, ILoadReferenceable target, float delta) {
-        return SpiritWeb.Instance.AdjustConnection(target, self, delta);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using RimWorld;
 using Verse;
 
@@ -89,7 +90,7 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
             if (orderGeneDef != null) {
                 try {
                     pawn.genes?.TryAddRadiantOrder(orderGeneDef, template.idealLevel);
-                } catch (global::System.Exception ex) {
+                } catch (Exception ex) {
                     Logger.Warning($"NamedPawnArrival: Failed to add radiant order: {ex.Message}");
                 }
             }

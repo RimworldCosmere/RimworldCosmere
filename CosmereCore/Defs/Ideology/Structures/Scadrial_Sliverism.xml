@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_Sliverism</defName>
+        <label>Sliverism</label>
+        <description>He held the power. That is enough. Sliverism venerates the Lord Ruler not for his tyranny, but for his divine nature. Rashek held the power of creation, however briefly, and that touch of infinity demands reverence.</description>
+        <iconPath>UI/Ideology/Cosmere/Sliverism</iconPath>
+        <deityCount>1</deityCount>
+        <worshipRoomLabel>sanctum</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)->[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packIdeoName]</li>
+                <li>memeLeaderNoun->hierarch</li>
+                <li>memeLeaderNoun->keeper of truth</li>
+                <li>memeLeaderNoun->sliver's voice</li>
+                <li>memeLeaderAdjective->eternal</li>
+                <li>memeLeaderAdjective->infinite</li>
+                <li>memeLeaderAdjective->sliver's</li>
+                <li>memeMoralist->scholar</li>
+                <li>memeMoralist->adherent</li>
+                <li>memeMoralist->devotee</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+                <li><def>TheistFounder</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_theist</key><value>true</value></li>
+                <li><key>structure_cosmere_sliverism</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <fixedDeityNameTypes>
+            <li>
+                <name>The Lord Ruler</name>
+                <type>Sliver of Infinity</type>
+            </li>
+            <li>
+                <name>Rashek</name>
+                <type>he who held the power</type>
+            </li>
+            <li>
+                <name>The Sliver of Infinity</name>
+                <type>the mortal god</type>
+            </li>
+            <li>
+                <name>He Who Held the Power</name>
+                <type>the transformed</type>
+            </li>
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>Sliverism</ideoName>
+                <adjective>Sliverist</adjective>
+                <member>Sliverist</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The Sliver's Faith</ideoName>
+                <adjective>sliver's</adjective>
+                <member>adherent</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Children of Rashek</ideoName>
+                <adjective>Rashekite</adjective>
+                <member>devotee</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

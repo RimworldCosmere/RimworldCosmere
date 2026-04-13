@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_StoneShamanism</defName>
+        <label>Stone Shamanism</label>
+        <description>Do not walk on stone. Do not shed blood. Tend the soil. The Shin revere the stone as sacred and forbidden. To walk upon it is sacrilege. To harm another is shameful. They live in Shinovar, the only place on Roshar where earth covers the stone.</description>
+        <iconPath>UI/Ideology/Cosmere/StoneShamanism</iconPath>
+        <deityCount>1</deityCount>
+        <worshipRoomLabel>grove</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)->[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packIdeoName]</li>
+                <li>memeLeaderNoun->high shaman</li>
+                <li>memeLeaderNoun->stone tender</li>
+                <li>memeLeaderNoun->elder</li>
+                <li>memeLeaderAdjective->sacred</li>
+                <li>memeLeaderAdjective->stone's</li>
+                <li>memeLeaderAdjective->soil's</li>
+                <li>memeMoralist->shaman</li>
+                <li>memeMoralist->tender</li>
+                <li>memeMoralist->elder</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_cosmere_stoneshamanism</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <fixedDeityNameTypes>
+            <li>
+                <name>The Stone</name>
+                <type>the sacred earth</type>
+            </li>
+            <li>
+                <name>The Sacred Earth</name>
+                <type>the unchanging</type>
+            </li>
+            <li>
+                <name>The Unchanging</name>
+                <type>foundation of all</type>
+            </li>
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>Stone Shamanism</ideoName>
+                <adjective>Shin</adjective>
+                <member>shaman</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Shin Faith</ideoName>
+                <adjective>stone</adjective>
+                <member>stone-sworn</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Way of Stone</ideoName>
+                <adjective>sacred</adjective>
+                <member>Shin faithful</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

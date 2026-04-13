@@ -9,7 +9,7 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class AbilityDefOf {
+public static class AbilityDefOf {
     [MayRequire("Cosmere.Scadrial")]
     public static AbilityDef Cosmere_Scadrial_Ability_BrassAura;
 

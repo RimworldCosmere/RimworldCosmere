@@ -3,9 +3,7 @@ using Verse;
 
 namespace Cosmere.Core.UI;
 
-/**
- * @todo Implement better dropdown logic
- */
+// TODO: Implement better dropdown logic
 public class DropdownMenu : FloatMenu {
     private readonly Rect dropdownRect;
 

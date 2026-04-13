@@ -40,7 +40,4 @@ public class Lightweaver(RadiantOrderDef def) : AbstractIdealChecker(def) {
         };
     }
 
-    public override bool Satisfy(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
-        return base.Satisfy(pawn, surgebinder, nextLevel);
-    }
 }

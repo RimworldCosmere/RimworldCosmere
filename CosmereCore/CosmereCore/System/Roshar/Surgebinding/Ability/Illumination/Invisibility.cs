@@ -1,6 +1,8 @@
 using Cosmere.Core.Ability;
+using HarmonyLib;
 using RimWorld;
 using Verse;
+using Verse.Profile;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Illumination;
 
@@ -22,5 +24,13 @@ public class Invisibility : SurgebindingAbility {
     protected override void OnDisable() {
         base.OnDisable();
         InvisiblePawns.Remove(pawn);
+    }
+
+    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    public static class InvisibilityStateClearer {
+        [HarmonyPostfix]
+        public static void Postfix() {
+            InvisiblePawns.Clear();
+        }
     }
 }

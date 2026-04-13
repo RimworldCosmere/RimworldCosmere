@@ -24,9 +24,9 @@ public static class ConnectionPatches {
             }
         }
 
-        // @TODO: Layers will eventually be tied to specific shards. We should loop over the shards
+        // TODO: Layers will eventually be tied to specific shards. We should loop over the shards
         // For the layer they are on, and give connection to ONLY those shards
-        foreach (Shard? shard in Current.Game.GetComponent<Shards>().enabledShards) {
+        foreach (Shard? shard in Current.Game.GetComponent<Shards>().enabledShards.Values) {
             __result.InitializeConnection(shard);
         }
     }

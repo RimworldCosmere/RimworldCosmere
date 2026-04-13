@@ -57,7 +57,7 @@ public static class Pawn_GeneTrackerExtension {
         CompSprenBond? bond = spren.TryGetComp<CompSprenBond>();
         bond?.SetupBond(radiant);
 
-        SpiritWeb.Instance.SetConnection(radiant, spren, 1f);
+        SpiritWeb.Instance?.SetConnection(radiant, spren, 1f);
 
         if (showNamingDialog && Current.ProgramState == ProgramState.Playing) {
             Find.WindowStack.Add(new Cosmere.System.Roshar.Dialog.NameSprenDialog(spren));

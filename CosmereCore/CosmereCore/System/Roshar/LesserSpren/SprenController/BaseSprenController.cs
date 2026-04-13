@@ -79,9 +79,7 @@ public abstract class BaseSprenController {
         return DefaultMaterial;
     }
 
-    protected virtual void ConfigureMaterial(Material material) {
-        // Base implementation - override in derived classes for custom behavior
-    }
+    protected virtual void ConfigureMaterial(Material material) { }
 
     public virtual void InitializeInfo(Map map) {
         if (infoInitialized) return;
@@ -89,7 +87,6 @@ public abstract class BaseSprenController {
         RefreshValidInfo(map);
         RefreshActiveInfo(map);
 
-        // Schedule initial refresh times
         int currentTick = Find.TickManager?.TicksGame ?? 0;
         nextValidInfoRefresh = currentTick + validInfoRefreshInterval.RandomInRange;
         nextActiveInfoRefresh = currentTick + activeInfoRefreshInterval.RandomInRange;
@@ -102,13 +99,11 @@ public abstract class BaseSprenController {
 
         int currentTick = Find.TickManager?.TicksGame ?? 0;
 
-        // Check if it's time to refresh valid cells
         if (currentTick >= nextValidInfoRefresh) {
             RefreshValidInfo(map);
             nextValidInfoRefresh = currentTick + validInfoRefreshInterval.RandomInRange;
         }
 
-        // Check if it's time to refresh active cells
         if (currentTick < nextActiveInfoRefresh) return false;
 
         RefreshActiveInfo(map);

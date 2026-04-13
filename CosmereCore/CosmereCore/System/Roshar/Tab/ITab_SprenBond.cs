@@ -65,7 +65,7 @@ public class ITab_SprenBond : ITab {
             }
             y += 28f;
 
-            float connection = SpiritWeb.Instance.GetConnectionValue(radiant, spren);
+            float connection = SpiritWeb.Instance?.GetConnectionValue(radiant, spren) ?? 0f;
             int percentage = (int)(connection * 100f);
             string stage = connection switch {
                 >= 0.7f => "CRO_BondStage_Healthy".Translate(),

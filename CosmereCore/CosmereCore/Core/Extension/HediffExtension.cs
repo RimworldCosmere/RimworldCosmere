@@ -9,7 +9,7 @@ public static class HediffExtension {
     }
 
     public static bool CanBeHealedByInvestiture(this Verse.Hediff hediff) {
-        if (hediff is Hediff_Injury or Hediff_MissingPart) return true;
+        if (hediff is Hediff_Injury) return true;
         if (hediff.def.chronic) return false;
         if (hediff.def.defName.StartsWith("Cosmere_Roshar_Hediff_NW_")) return false;
         if (hediff.def.makesSickThought) return true;

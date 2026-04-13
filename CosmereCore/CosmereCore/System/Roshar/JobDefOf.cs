@@ -29,4 +29,10 @@ public static class JobDefOf {
 
     [MayRequire("Cosmere.Roshar")]
     public static JobDef Cosmere_Roshar_WaitInHighstormShelter;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static JobDef Cosmere_Roshar_Job_Soulcast;
+
+    [MayRequire("Cosmere.Roshar")]
+    public static JobDef Cosmere_Roshar_Job_ShapeStone;
 }

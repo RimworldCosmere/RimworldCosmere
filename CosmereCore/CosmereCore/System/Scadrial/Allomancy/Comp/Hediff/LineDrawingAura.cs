@@ -30,7 +30,7 @@ public abstract class LineDrawingAura : HediffComp {
     protected new AllomanticHediff parent => (AllomanticHediff)base.parent;
     protected MetallicArtsMetalDef metal => parent.metal;
     protected float radius => props.radius * parent.Severity;
-    protected bool atLeastPassive {
+    protected bool atLeastBurning {
         get {
             foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in parent.sourceAbilities) {
                 if (sa is AllomancyAbility a && a.atLeastBurning) return true;
@@ -49,7 +49,7 @@ public abstract class LineDrawingAura : HediffComp {
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
-        if (!atLeastPassive || !Find.Selector.IsSelected(parent.pawn)) {
+        if (!atLeastBurning || !Find.Selector.IsSelected(parent.pawn)) {
             LineRenderer.TryClear(this);
             return;
         }

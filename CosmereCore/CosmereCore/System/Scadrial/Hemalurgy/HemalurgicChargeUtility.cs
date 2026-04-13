@@ -43,7 +43,7 @@ public static class HemalurgicChargeUtility {
                 chargeData.stolenDefName = selectedGene.defName;
                 Verse.Gene? activeGene = donor.genes?.GetGene(selectedGene);
                 if (activeGene != null) {
-                    donor.genes.RemoveGene(activeGene);
+                    donor.genes?.RemoveGene(activeGene);
                     genesWereStolen = true;
                 }
                 break;
@@ -82,15 +82,13 @@ public static class HemalurgicChargeUtility {
         Messages.Message(
             "CS_Hemalurgy_ChargeSuccess".Translate(
                 surgeon.Named("SURGEON"),
-                spikeComp.metal.Named("METAL"),
+                (spikeComp.metal?.Named("METAL") ?? "unknown".Named("METAL")),
                 donor.Named("DONOR")
             ),
             donor, MessageTypeDefOf.PositiveEvent
         );
 
-        if (surgeon != null) {
-            TaleRecorder.RecordTale(TaleDefOf.DidSurgery, surgeon, donor);
-        }
+        TaleRecorder.RecordTale(TaleDefOf.DidSurgery, surgeon, donor);
     }
 
     public static void StealInvestiture(Pawn donor, HemalurgicChargeData chargeData) {
@@ -110,7 +108,7 @@ public static class HemalurgicChargeUtility {
             surgebinder.currentIdeal = 0;
             ILoadReferenceable? bondTarget = surgebinder.GetBondTarget();
             if (bondTarget != null) {
-                Core.Comp.Game.SpiritWeb.Instance.SetConnection(donor, bondTarget, 0.1f);
+                Core.Comp.Game.SpiritWeb.Instance?.SetConnection(donor, bondTarget, 0.1f);
                 Verse.Hediff? strainedBond = donor.health.hediffSet.GetFirstHediffOfDef(
                     Roshar.HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond
                 );

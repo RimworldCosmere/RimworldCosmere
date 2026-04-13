@@ -11,30 +11,13 @@ public static class StatUtility {
         Func<ThingDef, float> pawnDefStatGetter,
         out float stat
     ) {
-        if (req.HasThing) {
-            if (req.Thing is Pawn arg) {
-                stat = pawnStatGetter(arg);
-                return true;
-            }
-
-            if (req.Thing is Corpse corpse) {
-                stat = pawnStatGetter(corpse.InnerPawn);
-                return true;
-            }
-        } else if (req.Def is ThingDef thingDef) {
-            if (thingDef.category == ThingCategory.Pawn) {
-                stat = pawnDefStatGetter(thingDef);
-                return true;
-            }
-
-            if (thingDef.IsCorpse) {
-                stat = pawnDefStatGetter(thingDef.ingestible.sourceDef);
-                return true;
-            }
-        }
-
-        stat = 0f;
-        return false;
+        return TryGetPawnStatCore(
+            req,
+            (_, p) => pawnStatGetter(p),
+            (_, d) => pawnDefStatGetter(d),
+            null,
+            out stat
+        );
     }
 
     public static bool TryGetPawnStat(
@@ -44,30 +27,13 @@ public static class StatUtility {
         Func<StatDef, ThingDef, float> pawnDefStatGetter,
         out float stat
     ) {
-        if (req.HasThing) {
-            if (req.Thing is Pawn arg) {
-                stat = pawnStatGetter(statDef, arg);
-                return true;
-            }
-
-            if (req.Thing is Corpse corpse) {
-                stat = pawnStatGetter(statDef, corpse.InnerPawn);
-                return true;
-            }
-        } else if (req.Def is ThingDef thingDef) {
-            if (thingDef.category == ThingCategory.Pawn) {
-                stat = pawnDefStatGetter(statDef, thingDef);
-                return true;
-            }
-
-            if (thingDef.IsCorpse) {
-                stat = pawnDefStatGetter(statDef, thingDef.ingestible.sourceDef);
-                return true;
-            }
-        }
-
-        stat = 0f;
-        return false;
+        return TryGetPawnStatCore(
+            req,
+            (s, p) => pawnStatGetter(s!, p),
+            (s, d) => pawnDefStatGetter(s!, d),
+            statDef,
+            out stat
+        );
     }
 
     public static bool TryGetPawnStat(
@@ -77,14 +43,46 @@ public static class StatUtility {
         Func<StatDef, ThingDef, float> pawnDefStatGetter,
         out float stat
     ) {
+        return TryGetPawnStatCore(
+            req,
+            (_, p) => pawnStatGetter(p),
+            (s, d) => pawnDefStatGetter(s!, d),
+            statDef,
+            out stat
+        );
+    }
+
+    public static bool TryGetPawnStat(
+        StatRequest req,
+        StatDef statDef,
+        Func<StatDef, Pawn, float> pawnStatGetter,
+        Func<ThingDef, float> pawnDefStatGetter,
+        out float stat
+    ) {
+        return TryGetPawnStatCore(
+            req,
+            (s, p) => pawnStatGetter(s!, p),
+            (_, d) => pawnDefStatGetter(d),
+            statDef,
+            out stat
+        );
+    }
+
+    private static bool TryGetPawnStatCore(
+        StatRequest req,
+        Func<StatDef?, Pawn, float> pawnStatGetter,
+        Func<StatDef?, ThingDef, float> pawnDefStatGetter,
+        StatDef? statDef,
+        out float stat
+    ) {
         if (req.HasThing) {
-            if (req.Thing is Pawn arg) {
-                stat = pawnStatGetter(arg);
+            if (req.Thing is Pawn pawn) {
+                stat = pawnStatGetter(statDef, pawn);
                 return true;
             }
 
             if (req.Thing is Corpse corpse) {
-                stat = pawnStatGetter(corpse.InnerPawn);
+                stat = pawnStatGetter(statDef, corpse.InnerPawn);
                 return true;
             }
         } else if (req.Def is ThingDef thingDef) {
@@ -95,39 +93,6 @@ public static class StatUtility {
 
             if (thingDef.IsCorpse) {
                 stat = pawnDefStatGetter(statDef, thingDef.ingestible.sourceDef);
-                return true;
-            }
-        }
-
-        stat = 0f;
-        return false;
-    }
-
-    public static bool TryGetPawnStat(
-        StatRequest req,
-        StatDef statDef,
-        Func<StatDef, Pawn, float> pawnStatGetter,
-        Func<ThingDef, float> pawnDefStatGetter,
-        out float stat
-    ) {
-        if (req.HasThing) {
-            if (req.Thing is Pawn arg) {
-                stat = pawnStatGetter(statDef, arg);
-                return true;
-            }
-
-            if (req.Thing is Corpse corpse) {
-                stat = pawnStatGetter(statDef, corpse.InnerPawn);
-                return true;
-            }
-        } else if (req.Def is ThingDef thingDef) {
-            if (thingDef.category == ThingCategory.Pawn) {
-                stat = pawnDefStatGetter(thingDef);
-                return true;
-            }
-
-            if (thingDef.IsCorpse) {
-                stat = pawnDefStatGetter(thingDef.ingestible.sourceDef);
                 return true;
             }
         }

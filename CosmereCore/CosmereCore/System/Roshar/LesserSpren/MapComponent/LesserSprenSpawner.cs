@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using Cosmere.System.Roshar.Debug;
+using Cosmere.System.Roshar.Dev;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.System.Roshar.LesserSpren.SprenController;
 using HarmonyLib;

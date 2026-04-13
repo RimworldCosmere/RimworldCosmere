@@ -183,7 +183,7 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
     }
 
     private void SpawnGemheart() {
-        ThingDef? gemheartDef = DefDatabase<ThingDef>.GetNamedSilentFail("Cosmere_Roshar_Thing_Gemheart");
+        ThingDef? gemheartDef = ThingDefOf.Cosmere_Roshar_Thing_Gemheart;
         if (gemheartDef == null) {
             Logger.Warning("[GemheartHunt] Gemheart ThingDef not found");
             return;

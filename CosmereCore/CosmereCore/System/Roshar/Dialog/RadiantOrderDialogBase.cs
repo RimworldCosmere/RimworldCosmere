@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cosmere.Core.Extension;
 using Cosmere.Core.Listing;
@@ -9,6 +10,7 @@ using Cosmere.System.Roshar.Settings;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 using TraitRequirement = Verse.TraitRequirement;
 
 namespace Cosmere.System.Roshar.Dialog;
@@ -460,7 +462,11 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
             TraitRequirement trait = traits[i];
             int degree = trait.degree ?? 0;
             TraitDegreeData? degreeData = null;
-            try { degreeData = trait.def?.DataAtDegree(degree); } catch { }
+            try {
+                degreeData = trait.def?.DataAtDegree(degree);
+            } catch (Exception ex) {
+                Logger.Verbose($"RadiantOrderDialogBase: DataAtDegree({degree}) failed for trait '{trait.def?.defName}': {ex.Message}");
+            }
             string traitLabel = degreeData?.label ?? trait.def?.label ?? trait.def?.defName ?? "Unknown";
             traitLabel = traitLabel.CapitalizeFirst();
 

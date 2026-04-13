@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ISSUE: SPREN BONDS ========== -->
+    <!-- Attitudes toward Nahel bonds with spren -->
+
+    <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SprenBonds</defName>
+        <label>spren bonds</label>
+        <iconPath>UI/Ideology/Cosmere/SprenBonds</iconPath>
+    </IssueDef>
+
+    <!-- History Events -->
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_BondedSpren</defName>
+        <label>bonded a spren</label>
+    </HistoryEventDef>
+
+    <!-- ========== PRECEPTS ========== -->
+
+    <!-- Sacred Duty: Vorinism - Radiants are chosen defenders -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SprenBonds_SacredDuty</defName>
+        <issue>Cosmere_SprenBonds</issue>
+        <label>sacred duty</label>
+        <description>To bond a spren is to accept a sacred calling. The Knights Radiant are defenders of all, chosen by the Almighty's servants.</description>
+        <impact>High</impact>
+        <displayOrderInIssue>0</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <requiredMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </requiredMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_BondedSpren</eventDef>
+                <thought>Cosmere_BondedSpren_SacredDuty</thought>
+            </li>
+            <li Class="PreceptComp_KnowsMemoryThought">
+                <eventDef>Cosmere_BondedSpren</eventDef>
+                <thought>Cosmere_KnowBondedSpren_SacredDuty</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Personal Choice: Passions, most others -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SprenBonds_PersonalChoice</defName>
+        <issue>Cosmere_SprenBonds</issue>
+        <label>personal choice</label>
+        <description>Bonding a spren is a deeply personal decision between the individual and the spren. Neither sacred nor profane, it simply is.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>10</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Passions</li>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_BondedSpren</eventDef>
+                <thought>Cosmere_BondedSpren_PersonalChoice</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Ancient Wisdom: Stone Shamanism -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SprenBonds_AncientWisdom</defName>
+        <issue>Cosmere_SprenBonds</issue>
+        <label>ancient wisdom</label>
+        <description>The spren have existed since before humans walked Roshar. To bond one is to touch something ancient and holy.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>20</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_BondedSpren</eventDef>
+                <thought>Cosmere_BondedSpren_AncientWisdom</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Unknown: Scadrial religions - foreign concept -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SprenBonds_Unknown</defName>
+        <issue>Cosmere_SprenBonds</issue>
+        <label>unknown practice</label>
+        <description>This strange bonding with spirit-creatures is foreign to our traditions.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>30</displayOrderInIssue>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Structure_Survivorism</li>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+            <li>Cosmere_Structure_Sliverism</li>
+            <li>Cosmere_Structure_Trellism</li>
+            <li>Cosmere_Structure_Jaggenism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ========== THOUGHTS ========== -->
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_BondedSpren_SacredDuty</defName>
+        <durationDays>30</durationDays>
+        <stackLimit>1</stackLimit>
+        <stages>
+            <li>
+                <label>accepted sacred calling</label>
+                <description>A spren chose me. I have accepted the sacred duty of a Knight Radiant. I will protect those who cannot protect themselves.</description>
+                <baseMoodEffect>15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_KnowBondedSpren_SacredDuty</defName>
+        <thoughtClass>Thought_MemorySocial</thoughtClass>
+        <durationDays>60</durationDays>
+        <stackLimit>100</stackLimit>
+        <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+        <stages>
+            <li>
+                <label>bonded Knight Radiant</label>
+                <baseOpinionOffset>25</baseOpinionOffset>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_BondedSpren_PersonalChoice</defName>
+        <durationDays>15</durationDays>
+        <stackLimit>1</stackLimit>
+        <stages>
+            <li>
+                <label>bonded a spren</label>
+                <description>I have formed a Nahel bond. The spren and I chose each other freely.</description>
+                <baseMoodEffect>8</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_BondedSpren_AncientWisdom</defName>
+        <durationDays>30</durationDays>
+        <stackLimit>1</stackLimit>
+        <stages>
+            <li>
+                <label>touched ancient wisdom</label>
+                <description>A spren from the dawn of Roshar has chosen to bond with me. I carry ancient wisdom within my soul.</description>
+                <baseMoodEffect>12</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

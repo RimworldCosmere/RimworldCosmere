@@ -7,14 +7,13 @@ namespace Cosmere.System.Scadrial.JobGiver;
 
 public class IngestVial : ThinkNode_JobGiver {
     public override float GetPriority(Pawn pawn) {
+        if (pawn.genes == null) return 0f;
         return pawn.genes.GetAllomanticGenes().Any(x => x.shouldConsumeVialNow) ? 200f : 0f;
     }
 
-    /**
-     * @TODO Support multi-vials. Will have to re-enable multivials in the script generation when i get to that point
-     */
     protected override Job? TryGiveJob(Pawn pawn) {
         if (pawn.Downed) return null;
+        if (pawn.genes == null) return null;
 
         foreach (Allomancer gene in pawn.genes.GetAllomanticGenes()) {
             if (!gene.shouldConsumeVialNow) continue;

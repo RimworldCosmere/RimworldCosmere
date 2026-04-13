@@ -1,4 +1,5 @@
 using System.Text;
+using Cosmere.Core.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -79,7 +80,10 @@ public class InvestitureHolder : ThingComp {
             if (!props.valueBasedOnChildren) return total;
             List<Verse.Thing> childList = children;
             for (int i = 0; i < childList.Count; i++) {
-                total += childList[i].TryGetComp<InvestitureHolder>().currentInvestiture;
+                InvestitureHolder? holder = childList[i].TryGetComp<InvestitureHolder>();
+                if (holder != null) {
+                    total += holder.currentInvestiture;
+                }
             }
 
             return total;
@@ -92,7 +96,10 @@ public class InvestitureHolder : ThingComp {
             if (!props.valueBasedOnChildren) return total;
             List<Verse.Thing> childList = children;
             for (int i = 0; i < childList.Count; i++) {
-                total += childList[i].TryGetComp<InvestitureHolder>().maxInvestiture;
+                InvestitureHolder? holder = childList[i].TryGetComp<InvestitureHolder>();
+                if (holder != null) {
+                    total += holder.maxInvestiture;
+                }
             }
 
             return total;
@@ -109,43 +116,51 @@ public class InvestitureHolder : ThingComp {
             List<Verse.Thing> things = [];
 
             if (parent.TryGetComp(out InnerStorage innerStorage)) {
-                foreach (Verse.Thing thing in innerStorage.innerContainer) {
-                    if (thing != parent && thing.HasComp<InvestitureHolder>()) {
-                        things.Add(thing);
+                ThingOwner container = innerStorage.innerContainer;
+                for (int i = 0; i < container.Count; i++) {
+                    if (container[i] != parent && container[i].HasComp<InvestitureHolder>()) {
+                        things.Add(container[i]);
                     }
                 }
             }
 
             switch (parent) {
-                case ISlotGroupParent storageGroupParent:
-                    foreach (Verse.Thing thing in storageGroupParent.GetSlotGroup().HeldThings) {
-                        if (thing != parent && thing.HasComp<InvestitureHolder>()) {
-                            things.Add(thing);
-                        }
-                    }
-
-                    break;
-                case Pawn pawn:
-                    if (pawn.inventory?.innerContainer != null) {
-                        foreach (Verse.Thing thing in pawn.inventory.innerContainer) {
+                case ISlotGroupParent storageGroupParent: {
+                    SlotGroup? slotGroup = storageGroupParent.GetSlotGroup();
+                    if (slotGroup != null) {
+                        foreach (Verse.Thing thing in slotGroup.HeldThings) {
                             if (thing != parent && thing.HasComp<InvestitureHolder>()) {
                                 things.Add(thing);
                             }
                         }
                     }
 
+                    break;
+                }
+                case Pawn pawn:
+                    if (pawn.inventory?.innerContainer != null) {
+                        ThingOwner invContainer = pawn.inventory.innerContainer;
+                        for (int i = 0; i < invContainer.Count; i++) {
+                            if (invContainer[i] != parent && invContainer[i].HasComp<InvestitureHolder>()) {
+                                things.Add(invContainer[i]);
+                            }
+                        }
+                    }
+
                     if (pawn.equipment?.AllEquipmentListForReading != null) {
-                        foreach (Verse.ThingWithComps eq in pawn.equipment.AllEquipmentListForReading) {
-                            if (eq != parent && eq.HasComp<InvestitureHolder>()) {
-                                things.Add(eq);
+                        List<Verse.ThingWithComps> equipment = pawn.equipment.AllEquipmentListForReading;
+                        for (int i = 0; i < equipment.Count; i++) {
+                            if (equipment[i] != parent && equipment[i].HasComp<InvestitureHolder>()) {
+                                things.Add(equipment[i]);
                             }
                         }
                     }
 
                     if (pawn.apparel?.WornApparel != null) {
-                        foreach (RimWorld.Apparel apparel in pawn.apparel.WornApparel) {
-                            if (apparel != parent && apparel.HasComp<InvestitureHolder>()) {
-                                things.Add(apparel);
+                        List<RimWorld.Apparel> apparel = pawn.apparel.WornApparel;
+                        for (int i = 0; i < apparel.Count; i++) {
+                            if (apparel[i] != parent && apparel[i].HasComp<InvestitureHolder>()) {
+                                things.Add(apparel[i]);
                             }
                         }
                     }
@@ -186,6 +201,11 @@ public class InvestitureHolder : ThingComp {
 
     public bool AbsorbInvestitureFrom(Verse.Thing thing, float amountToAbsorb, out float amountAbsorbed) {
         InvestitureHolder? thingInvestiture = thing.TryGetComp<InvestitureHolder>();
+        if (thingInvestiture == null) {
+            amountAbsorbed = 0f;
+            return false;
+        }
+
         if (amountToAbsorb > maxInvestiture) {
             amountToAbsorb = maxInvestiture;
         }
@@ -200,10 +220,9 @@ public class InvestitureHolder : ThingComp {
                                  maxInvestitureSelfStack - currentInvestitureSelfStack,
                                  thingInvestiture.currentInvestitureSelfStack
                              )
-                         ) *
-                         thing.stackCount;
+                         );
         if (amountAbsorbed > 0) {
-            currentInvestitureSelf += amountAbsorbed;
+            currentInvestitureSelf += amountAbsorbed / parent.stackCount;
             thingInvestiture.currentInvestitureSelf -= amountAbsorbed / thing.stackCount;
         }
 
@@ -216,40 +235,30 @@ public class InvestitureHolder : ThingComp {
     }
 
     public override bool AllowStackWith(Verse.Thing other) {
-        return Mathf.Approximately(
-            other.TryGetComp<InvestitureHolder>().currentInvestitureSelf,
-            currentInvestitureSelf
-        );
+        InvestitureHolder? otherHolder = other.TryGetComp<InvestitureHolder>();
+        if (otherHolder == null) return false;
+
+        return Mathf.Approximately(otherHolder.currentInvestitureSelf, currentInvestitureSelf);
     }
 
     public override void PostPostMake() {
         base.PostPostMake();
-        // TickerType has to be normal. Otherwise, CompTickInterval never ticks for things inside.
-        parent.def.tickerType = TickerType.Normal;
+        if (parent.def.tickerType != TickerType.Normal) {
+            parent.def.tickerType = TickerType.Normal;
+        }
         maxInvestitureSelf = props.maxIsInfinity ? float.PositiveInfinity : props.maxInvestiture!.Value;
     }
-
-    private static HediffDef? lifelightDef;
 
     private string GetInvestitureLabel() {
         if (parent is not Pawn pawn || pawn.genes == null) {
             return "CC_Stored_Investiture".Translate();
         }
 
-        bool isRadiant = pawn.genes.GenesListForReading.Any(
-            g => g.def.defName.StartsWith("Cosmere_Roshar_Gene_Radiant")
-        );
-        bool isScadrian = pawn.genes.GenesListForReading.Any(
-            g => g.def.defName.StartsWith("Cosmere_Scadrial")
-        );
-
-        if (isRadiant && isScadrian) return "CC_Stored_Investiture".Translate();
-        if (isRadiant) {
-            lifelightDef ??= DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight");
-            if (lifelightDef != null && pawn.health?.hediffSet?.HasHediff(lifelightDef) == true)
-                return "Lifelight";
-            return "Stormlight";
+        Invested? investedGene = pawn.genes.GetFirstGeneOfType<Invested>();
+        if (investedGene != null && !string.IsNullOrEmpty(investedGene.investitureLabel)) {
+            return investedGene.investitureLabel;
         }
+
         return "CC_Stored_Investiture".Translate();
     }
 
@@ -283,11 +292,17 @@ public class InvestitureHolder : ThingComp {
     }
 
     public override void PreAbsorbStack(Verse.Thing otherStack, int count) {
-        // currentInvestitureSelf += GetCurrentInvestiture(otherStack) * count;
+        float otherInvestiture = GetCurrentInvestiture(otherStack);
+        if (otherInvestiture > 0) {
+            currentInvestitureSelf += otherInvestiture * count;
+        }
     }
 
     public override void PostSplitOff(Verse.Thing piece) {
-        piece.TryGetComp<InvestitureHolder>().currentInvestitureSelf = currentInvestitureSelf;
+        InvestitureHolder? pieceHolder = piece.TryGetComp<InvestitureHolder>();
+        if (pieceHolder != null) {
+            pieceHolder.currentInvestitureSelf = currentInvestitureSelf;
+        }
     }
 
     public static float GetCurrentInvestiture(Verse.Thing thing, bool self = true) {
@@ -299,14 +314,14 @@ public class InvestitureHolder : ThingComp {
     public void FillInvestiture() {
         currentInvestitureSelf = maxInvestitureSelf;
         foreach (Verse.Thing child in children ?? []) {
-            child.TryGetComp<InvestitureHolder>().FillInvestiture();
+            child.TryGetComp<InvestitureHolder>()?.FillInvestiture();
         }
     }
 
     public void WipeInvestiture() {
         currentInvestitureSelf = 0;
         foreach (Verse.Thing child in children ?? []) {
-            child.TryGetComp<InvestitureHolder>().WipeInvestiture();
+            child.TryGetComp<InvestitureHolder>()?.WipeInvestiture();
         }
     }
 

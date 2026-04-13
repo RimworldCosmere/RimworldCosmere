@@ -6,6 +6,10 @@
     <description>Kholinar burns. Not with fire, but with a slow corruption that turns neighbor against neighbor. The Oathgate is guarded. The streets are death. You came to save the city. Now the mission is survival.</description>
     <scenario>
       <summary>Kaladin and Shallan fight to reach the Oathgate in a fallen Kholinar.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Roshar_Faction_KholinarExpedition</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

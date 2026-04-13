@@ -15,12 +15,20 @@ public abstract class Invested : Gene_Resource {
     public List<DrainSource> Sources => sources;
 
     public virtual float minimumAmount => 0;
+    public virtual string investitureLabel => "";
+    public virtual float maxInvestitureLevel => -1f;
     public override float InitialResourceMax => 1f;
     public override float MinLevelForAlert => .15f;
     public override float MaxLevelOffset => .1f;
 
-    public override float Max => throw new NotImplementedException();
-    public override float Value => throw new NotImplementedException();
+    public override float Max {
+        get => throw new NotImplementedException("Subclass must override Max");
+    }
+
+    public override float Value {
+        get => throw new NotImplementedException("Subclass must override Value");
+        set => throw new NotImplementedException("Subclass must override Value");
+    }
 
     public override float ValuePercent => Max > 0 ? Value / Max : 0;
 
@@ -65,10 +73,7 @@ public abstract class Invested : Gene_Resource {
     }
 
     public void UpdateDrainSource(DrainSource source) {
-        if (source.Rate <= 0f || sources.Contains(source)) {
-            sources.Remove(source);
-        }
-
+        sources.Remove(source);
         if (source.Rate > 0) {
             sources.Add(source);
         }
@@ -84,10 +89,6 @@ public abstract class Invested : Gene_Resource {
 
     public void SetReserve(float amount) {
         Value = Mathf.Clamp(amount, minimumAmount, Max);
-    }
-
-    public float GetReservePercent() {
-        return Mathf.Approximately(Max, 0) ? 0 : Value / Max;
     }
 
     public void WipeReserve() {

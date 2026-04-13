@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Base player faction for Roshar scenarios -->
+  <FactionDef ParentName="PlayerFactionBase" Name="Cosmere_Roshar_PlayerFactionBase" Abstract="True">
+    <isPlayer>true</isPlayer>
+    <techLevel>Medieval</techLevel>
+    <factionNameMaker>NamerFactionOutlander</factionNameMaker>
+    <settlementNameMaker>NamerSettlementOutlander</settlementNameMaker>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <allowedCultures><li>Astropolitan</li></allowedCultures>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>Offworld</li>
+        </categories>
+      </li>
+    </backstoryFilters>
+    <startingResearchTags>
+      <li>ClassicStart</li>
+    </startingResearchTags>
+  </FactionDef>
+
+  <!-- Bridge Four: Former bridgemen rising under Kaladin -->
+  <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
+    <defName>Cosmere_Roshar_Faction_BridgeFour</defName>
+    <label>Bridge Four</label>
+    <description>Former bridgemen of Sadeas's army, now united under Kaladin Stormblessed. They were slaves. They became soldiers. They will become something more.</description>
+    <fixedName>Bridge Four</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>bridgeman</pawnSingular>
+    <pawnsPlural>bridgemen</pawnsPlural>
+    <leaderTitle>Captain</leaderTitle>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The faith of Vorin kingdoms, teaching that men prepare for war while women preserve knowledge. Yet among the bridgemen, old distinctions blur.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- House Kholin: Dalinar's unified forces -->
+  <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
+    <defName>Cosmere_Roshar_Faction_HouseKholin</defName>
+    <label>House Kholin</label>
+    <description>The most powerful of Alethkar's highprince houses, led by the Blackthorn himself. Honor. Unity. These are the words Dalinar Kholin lives by.</description>
+    <fixedName>House Kholin</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>soldier</pawnSingular>
+    <pawnsPlural>soldiers</pawnsPlural>
+    <leaderTitle>Highprince</leaderTitle>
+    <leaderTitleFemale>Brightness</leaderTitleFemale>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The dominant faith of Alethkar, centered on the Almighty and the ten Heralds. House Kholin holds to the old codes.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Generic Warcamp: Shattered Plains operations -->
+  <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
+    <defName>Cosmere_Roshar_Faction_Warcamp</defName>
+    <label>The Warcamp</label>
+    <description>An Alethi warcamp on the Shattered Plains, dedicated to the endless war against the Parshendi and the hunt for gemhearts.</description>
+    <fixedName>The Warcamp</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>soldier</pawnSingular>
+    <pawnsPlural>soldiers</pawnsPlural>
+    <leaderTitle>Highprince</leaderTitle>
+    <leaderTitleFemale>Brightness</leaderTitleFemale>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The Vorin faith drives the warcamps - glory in battle, adherence to tradition, and the pursuit of gemhearts.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Knights Radiant: Reformed order -->
+  <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
+    <defName>Cosmere_Roshar_Faction_KnightsRadiant</defName>
+    <label>Knights Radiant</label>
+    <description>The ancient order returns. Bonded to spren, sworn to Ideals, the Knights Radiant stand against the coming Desolation.</description>
+    <fixedName>Knights Radiant</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>Radiant</pawnSingular>
+    <pawnsPlural>Radiants</pawnsPlural>
+    <leaderTitle>Radiant</leaderTitle>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The Radiants serve Honor's memory. They speak the Ideals. Life before death. Strength before weakness. Journey before destination.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Weeping Survivors: Enduring without Stormlight -->
+  <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
+    <defName>Cosmere_Roshar_Faction_WeepingSurvivors</defName>
+    <label>Weeping Survivors</label>
+    <description>A small group enduring the Weeping - four weeks without highstorms, without Stormlight, without hope. Only faith remains.</description>
+    <fixedName>Weeping Survivors</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>survivor</pawnSingular>
+    <pawnsPlural>survivors</pawnsPlural>
+    <leaderTitle>Elder</leaderTitle>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">In the Weeping's darkness, the Vorin faith endures. The Almighty watches. The storms will return.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Kholinar Rescue: Mission to save the city -->
+  <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
+    <defName>Cosmere_Roshar_Faction_KholinarExpedition</defName>
+    <label>Kholinar Expedition</label>
+    <description>A strike team sent to retake the Oathgate in fallen Kholinar. They came to save a city. They fight to survive.</description>
+    <fixedName>Kholinar Expedition</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>operative</pawnSingular>
+    <pawnsPlural>operatives</pawnsPlural>
+    <leaderTitle>Commander</leaderTitle>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The expedition carries Alethkar's faith into the heart of corruption. The Almighty watch over them.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+  </FactionDef>
+
+  <!-- Tower Defenders: Urithiru resistance -->
+  <FactionDef ParentName="Cosmere_Roshar_PlayerFactionBase">
+    <defName>Cosmere_Roshar_Faction_TowerDefenders</defName>
+    <label>Tower Defenders</label>
+    <description>The last resistance in occupied Urithiru. The Sibling is corrupted, Stormlight fails, but a handful of Radiants and their allies fight on.</description>
+    <fixedName>Tower Defenders</fixedName>
+    <basicMemberKind>Colonist</basicMemberKind>
+    <pawnSingular>defender</pawnSingular>
+    <pawnsPlural>defenders</pawnsPlural>
+    <leaderTitle>Commander</leaderTitle>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">In the tower of the Knights Radiant, faith in the Almighty remains - even as Honor lies dead.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+  </FactionDef>
+
+</Defs>

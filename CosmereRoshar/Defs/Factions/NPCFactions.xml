@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Base for Roshar NPC factions -->
+  <FactionDef ParentName="FactionBase" Name="Cosmere_Roshar_NPCFactionBase" Abstract="True">
+    <techLevel>Medieval</techLevel>
+    <factionNameMaker>NamerFactionTribal</factionNameMaker>
+    <settlementNameMaker>NamerSettlementTribal</settlementNameMaker>
+    <allowedCultures><li>Astropolitan</li></allowedCultures>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>Offworld</li>
+        </categories>
+      </li>
+    </backstoryFilters>
+    <settlementTexturePath>World/WorldObjects/DefaultSettlement</settlementTexturePath>
+    <allowedArrivalTemperatureRange>-40~45</allowedArrivalTemperatureRange>
+    <maxPawnCostPerTotalPointsCurve>
+      <points>
+        <li>(0,35)</li>
+        <li>(70, 50)</li>
+        <li>(700, 100)</li>
+        <li>(1300, 150)</li>
+        <li>(100000, 10000)</li>
+      </points>
+    </maxPawnCostPerTotalPointsCurve>
+  </FactionDef>
+
+  <!-- Listeners/Parshendi: The singer people, neutral -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Listeners</defName>
+    <label>listener tribe</label>
+    <description>The listeners are singers who have maintained their free will, unlike the parshmen enslaved by the Alethi. They live in the chasms and plateaus of the Shattered Plains, following the ancient rhythms of Roshar.\n\nThey are wary of outsiders but not inherently hostile - unless provoked.</description>
+    <pawnSingular>listener</pawnSingular>
+    <pawnsPlural>listeners</pawnsPlural>
+    <listOrderPriority>55</listOrderPriority>
+    <settlementGenerationWeight>0.8</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Warlord</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/Village</factionIconPath>
+    <colorSpectrum>
+      <li>(0.4, 0.2, 0.2)</li>
+      <li>(0.6, 0.3, 0.3)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>3</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>55</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Parshendi Rhythms</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The listeners follow the rhythms of Roshar, seeking meaning in song and pattern.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_ParshendriRhythms</li>
+    </forcedMemes>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Tribesperson>10</Tribesperson>
+          <Tribal_Archer>8</Tribal_Archer>
+          <Tribal_Berserker>6</Tribal_Berserker>
+          <Tribal_ChiefMelee>4</Tribal_ChiefMelee>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Tribesperson>15</Tribesperson>
+          <Tribal_Archer>5</Tribal_Archer>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Tribesperson>15</Tribesperson>
+          <Tribal_Archer>8</Tribal_Archer>
+          <Tribal_ChiefMelee>4</Tribal_ChiefMelee>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>TribeRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Alethi Warcamps: Hostile military factions -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_AlethiWarcamp</defName>
+    <label>Alethi warcamp</label>
+    <description>An Alethi highprince's warcamp on the Shattered Plains. The Alethi live for war and glory, fighting endlessly against the Parshendi for gemhearts.\n\nThey view outsiders as potential rivals or subjects to be conquered. Honor demands they fight.</description>
+    <pawnSingular>soldier</pawnSingular>
+    <pawnsPlural>soldiers</pawnsPlural>
+    <listOrderPriority>60</listOrderPriority>
+    <settlementGenerationWeight>0.9</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Highprince</leaderTitle>
+    <leaderTitleFemale>Brightness</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/TownRough</factionIconPath>
+    <naturalEnemy>true</naturalEnemy>
+    <permanentEnemy>false</permanentEnemy>
+    <colorSpectrum>
+      <li>(0.2, 0.3, 0.5)</li>
+      <li>(0.3, 0.4, 0.7)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>5</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>60</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Vorinism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The dominant faith of Alethkar, centered on the Almighty and the ten Heralds.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Vorinism</li>
+    </forcedMemes>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>12</Mercenary_Slasher>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>10</Villager>
+          <Town_Guard>12</Town_Guard>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>10</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Slasher>10</Mercenary_Slasher>
+          <Mercenary_Elite>5</Mercenary_Elite>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Thaylen Merchants: Friendly traders -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_ThaylenMerchants</defName>
+    <label>Thaylen merchants</label>
+    <description>Traders from Thaylenah, a coastal nation of merchants and sailors. The Thaylens are famous for their long eyebrows and their shrewd business sense.\n\nThey follow the Passions, believing that strong emotions drive success. They welcome trade with anyone who has coin.</description>
+    <pawnSingular>merchant</pawnSingular>
+    <pawnsPlural>merchants</pawnsPlural>
+    <listOrderPriority>50</listOrderPriority>
+    <settlementGenerationWeight>0.7</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <leaderTitle>Merchant Prince</leaderTitle>
+    <leaderTitleFemale>Merchant Princess</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.5, 0.4, 0.6)</li>
+      <li>(0.7, 0.6, 0.8)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>3</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>50</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">The Passions</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Thaylens follow the Passions, believing strong emotions drive success and honor.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_Passions</li>
+    </forcedMemes>
+    <caravanTraderKinds>
+      <li>Caravan_Outlander_BulkGoods</li>
+      <li>Caravan_Outlander_Exotic</li>
+      <li>Caravan_Outlander_CombatSupplier</li>
+    </caravanTraderKinds>
+    <visitorTraderKinds>
+      <li>Visitor_Outlander_Standard</li>
+    </visitorTraderKinds>
+    <baseTraderKinds>
+      <li>Base_Outlander_Standard</li>
+    </baseTraderKinds>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Gunner>8</Mercenary_Gunner>
+          <Mercenary_Elite>5</Mercenary_Elite>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>8</Town_Guard>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <Town_Trader>1</Town_Trader>
+        </traders>
+        <carriers>
+          <Muffalo>8</Muffalo>
+          <Alpaca>4</Alpaca>
+          <Elephant>2</Elephant>
+        </carriers>
+        <guards>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Gunner>8</Mercenary_Gunner>
+          <Mercenary_Elite>4</Mercenary_Elite>
+        </guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Shin: Peaceful stone worshippers -->
+  <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
+    <defName>Cosmere_Roshar_Faction_Shin</defName>
+    <label>Shin farmers</label>
+    <description>The Shin live in Shinovar, the only land on Roshar with soil and grass. They follow Stone Shamanism, believing stone is sacred and those who walk on it are warriors deserving of contempt.\n\nThey are deeply peaceful farmers and herders, though they train their warriors well for when defense is needed.</description>
+    <pawnSingular>Shin</pawnSingular>
+    <pawnsPlural>Shin</pawnsPlural>
+    <listOrderPriority>45</listOrderPriority>
+    <techLevel>Neolithic</techLevel>
+    <settlementGenerationWeight>0.5</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <leaderTitle>Farmer</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/Village</factionIconPath>
+    <colorSpectrum>
+      <li>(0.3, 0.5, 0.3)</li>
+      <li>(0.5, 0.7, 0.4)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>45</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Stone Shamanism</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Stone is sacred. To walk on stone is to be a warrior, deserving of contempt. Farmers are the most honored.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_StoneShamanism</li>
+    </forcedMemes>
+    <caravanTraderKinds>
+      <li>Caravan_Neolithic_BulkGoods</li>
+    </caravanTraderKinds>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Tribesperson>10</Tribesperson>
+          <Tribal_Archer>5</Tribal_Archer>
+          <Tribal_ChiefMelee>8</Tribal_ChiefMelee>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Tribesperson>20</Tribesperson>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <Tribal_Trader>1</Tribal_Trader>
+        </traders>
+        <carriers>
+          <Muffalo>5</Muffalo>
+        </carriers>
+        <guards>
+          <Tribesperson>8</Tribesperson>
+          <Tribal_ChiefMelee>4</Tribal_ChiefMelee>
+        </guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Tribesperson>20</Tribesperson>
+          <Tribal_ChiefMelee>5</Tribal_ChiefMelee>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>TribeRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+</Defs>

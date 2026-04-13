@@ -1,7 +1,9 @@
 using System;
 using Cosmere.Core.Ability;
+using HarmonyLib;
 using RimWorld;
 using Verse;
+using Verse.Profile;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Tension;
 
@@ -60,9 +62,9 @@ public class Harden : SurgebindingAbility {
         if (!status.isActive) return;
 
         for (int i = hardenedStructures.Count - 1; i >= 0; i--) {
-            Building building = hardenedStructures[i];
+            Building? building = hardenedStructures[i];
             if (building == null || building.Destroyed) {
-                HardenedBuildings.Remove(building);
+                if (building != null) HardenedBuildings.Remove(building);
                 hardenedStructures.RemoveAt(i);
             }
         }
@@ -92,5 +94,13 @@ public class Harden : SurgebindingAbility {
     public override void ExposeData() {
         base.ExposeData();
         Scribe_Collections.Look(ref hardenedStructures, "hardenedStructures", LookMode.Reference);
+    }
+
+    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    public static class HardenStateClearer {
+        [HarmonyPostfix]
+        public static void Postfix() {
+            HardenedBuildings.Clear();
+        }
     }
 }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_Trellism</defName>
+        <label>Trellism</label>
+        <description>Something whispers from beyond. Trell offers freedom from Harmony's watchful eye. Autonomy is the highest virtue, and the outer god promises liberation from a universe that has grown too ordered.</description>
+        <iconPath>UI/Ideology/Cosmere/Trellism</iconPath>
+        <deityCount>1</deityCount>
+        <worshipRoomLabel>sanctum</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)->[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packIdeoName]</li>
+                <li>memeLeaderNoun->voice of trell</li>
+                <li>memeLeaderNoun->faceless one</li>
+                <li>memeLeaderNoun->liberator</li>
+                <li>memeLeaderAdjective->free</li>
+                <li>memeLeaderAdjective->autonomous</li>
+                <li>memeLeaderAdjective->unbound</li>
+                <li>memeMoralist->acolyte</li>
+                <li>memeMoralist->whisperer</li>
+                <li>memeMoralist->freed one</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_theist</key><value>true</value></li>
+                <li><key>structure_cosmere_trellism</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <fixedDeityNameTypes>
+            <li>
+                <name>Trell</name>
+                <type>the outer god</type>
+            </li>
+            <li>
+                <name>The Other</name>
+                <type>the free one</type>
+            </li>
+            <li>
+                <name>The Faceless God</name>
+                <type>the unbound</type>
+            </li>
+            <li>
+                <name>The Autonomous</name>
+                <type>liberator from harmony</type>
+            </li>
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>Trellism</ideoName>
+                <adjective>Trellist</adjective>
+                <member>Trellist</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The Red Faith</ideoName>
+                <adjective>red</adjective>
+                <member>adherent</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Trell's Chosen</ideoName>
+                <adjective>chosen</adjective>
+                <member>the freed</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

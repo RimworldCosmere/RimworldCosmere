@@ -1,6 +1,5 @@
 ﻿using Cosmere.Core;
 using Cosmere.Core.Investiture;
-using Cosmere.Core.Need;
 using Cosmere.Core.Savant;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Thing;
@@ -86,10 +85,7 @@ public class Allomancer : Metalborn {
     public bool TryBurnMetalForInvestiture(float requiredBreathEquivalentUnits) {
         float metalNeeded = GetMetalNeededForBreathEquivalentUnits(requiredBreathEquivalentUnits);
         if (!CanLowerReserve(metalNeeded)) return false;
-        Investiture need = pawn.needs.TryGetNeed<Investiture>();
-        need.CurLevel += requiredBreathEquivalentUnits;
         RemoveFromReserve(metalNeeded);
-        need.CurLevel -= requiredBreathEquivalentUnits;
 
         pawn.records.AddTo(metalBurntRecord, metalNeeded);
 

@@ -45,12 +45,6 @@ public class AbilityDef : RimWorld.AbilityDef, IMultiTypeHediff {
 
     public override IEnumerable<string> ConfigErrors() {
         foreach (string? error in base.ConfigErrors()) yield return error;
-
-        // Until i can figure out why the generic makes this check dumb, gonna skip it
-        /*if (!abilityClass.InheritsOrImplements(typeof(AbstractAbility))) {
-            yield return
-                $"Invalid ability class {abilityClass}. Must inherit from {typeof(AbstractAbility)}.";
-        }*/
     }
 
     public override void PostLoad() {

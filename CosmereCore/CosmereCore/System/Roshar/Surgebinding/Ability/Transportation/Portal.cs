@@ -23,7 +23,7 @@ public class Portal : SurgebindingAbility {
         return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
     }
 
-    private ThingDef PortalDef => DefDatabase<ThingDef>.GetNamed("Cosmere_Roshar_Thing_SurgePortal");
+    private ThingDef PortalDef => ThingDefOf.Cosmere_Roshar_Thing_SurgePortal;
 
     protected override void OnEnable() {
         base.OnEnable();

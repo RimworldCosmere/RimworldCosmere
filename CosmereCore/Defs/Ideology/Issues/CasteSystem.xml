@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ISSUE: CASTE SYSTEM ========== -->
+    <!-- Attitudes toward social hierarchy and birthright -->
+
+    <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_CasteSystem</defName>
+        <label>social hierarchy</label>
+        <iconPath>UI/Ideology/Cosmere/CasteSystem</iconPath>
+    </IssueDef>
+
+    <!-- ========== PRECEPTS ========== -->
+
+    <!-- Divine Order: Steel Ministry, Vorinism - hierarchy is sacred -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Caste_DivineOrder</defName>
+        <issue>Cosmere_CasteSystem</issue>
+        <label>divine order</label>
+        <description>Social hierarchy is ordained by the divine. Those born to rule should rule; those born to serve should serve.</description>
+        <impact>High</impact>
+        <displayOrderInIssue>0</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <requiredMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </requiredMemes>
+        <associatedMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SituationalThought">
+                <thought>Cosmere_Caste_DivineOrder_HasLeader</thought>
+                <description>Colony has proper leadership</description>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Natural Roles: Stone Shamanism - roles based on calling, not birth -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Caste_NaturalRoles</defName>
+        <issue>Cosmere_CasteSystem</issue>
+        <label>natural roles</label>
+        <description>Each person has a natural calling. The farmer tends soil, the warrior bears steel, but none is above another.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>10</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_StoneShamanism</li>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- Merit-Based: Pathianism, Jaggenism - earned through deeds -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Caste_MeritBased</defName>
+        <issue>Cosmere_CasteSystem</issue>
+        <label>merit-based</label>
+        <description>Status should be earned through skill and deed, not inherited by birth. All can rise through effort.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>20</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+            <li>Cosmere_Structure_Jaggenism</li>
+            <li>Cosmere_Structure_Passions</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- Rejected: Church of Survivor, Survivorism - all castes are equal -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Caste_Rejected</defName>
+        <issue>Cosmere_CasteSystem</issue>
+        <label>rejected</label>
+        <description>Caste systems are tools of oppression. No one is born greater than another. The skaa proved this when they overthrew the Lord Ruler.</description>
+        <impact>High</impact>
+        <displayOrderInIssue>30</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Structure_Survivorism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SituationalThought">
+                <thought>Cosmere_Caste_Rejected_Equality</thought>
+                <description>Living as equals</description>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Indifferent: Default -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Caste_Indifferent</defName>
+        <issue>Cosmere_CasteSystem</issue>
+        <label>indifferent</label>
+        <description>Social structures are practical matters, neither sacred nor profane.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>40</displayOrderInIssue>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Sliverism</li>
+            <li>Cosmere_Structure_Trellism</li>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ========== THOUGHTS ========== -->
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Caste_DivineOrder_HasLeader</defName>
+        <workerClass>Cosmere.Core.Ideology.ThoughtWorker_Precept_HasFactionLeader</workerClass>
+        <stages>
+            <li>
+                <label>proper hierarchy</label>
+                <description>Our colony has proper leadership as the divine intended.</description>
+                <baseMoodEffect>3</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Caste_Rejected_Equality</defName>
+        <workerClass>Cosmere.Core.Ideology.ThoughtWorker_Precept_NoFactionLeader</workerClass>
+        <stages>
+            <li>
+                <label>living as equals</label>
+                <description>We live as equals here. No nobles above, no skaa below.</description>
+                <baseMoodEffect>2</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

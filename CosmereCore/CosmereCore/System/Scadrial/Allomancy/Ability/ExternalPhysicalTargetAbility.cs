@@ -9,21 +9,21 @@ public class ExternalPhysicalTargetAbility : AllomancyAbility {
     public ExternalPhysicalTargetAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
     protected sealed override bool toggleable => false;
 
-    public override bool CanApplyOn(LocalTargetInfo targetInfo) {
-        if (targetInfo.Equals(pawn)) return true;
+    public override bool CanApplyOn(LocalTargetInfo target) {
+        if (target.Equals(pawn)) return true;
 
-        if (!base.CanApplyOn(targetInfo) ||
-            !targetInfo.HasThing ||
-            !MetalDetector.IsCapableOfHavingMetal(targetInfo.Thing.def)) {
+        if (!base.CanApplyOn(target) ||
+            !target.HasThing ||
+            !MetalDetector.IsCapableOfHavingMetal(target.Thing.def)) {
             return false;
         }
 
-        return MetalDetector.GetMetal(targetInfo.Thing) > 0f;
+        return MetalDetector.GetMetal(target.Thing) > 0f;
     }
 
-    public override bool Activate(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
-        localTarget = targetInfo;
+    public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
+        localTarget = target;
 
-        return !localTarget.Value.HasThing && base.Activate(localTarget.Value, dest);
+        return base.Activate(localTarget.Value, dest);
     }
 }

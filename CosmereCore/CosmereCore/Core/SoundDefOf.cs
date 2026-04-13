@@ -10,7 +10,7 @@ namespace Cosmere.Core;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class SoundDefOf {
+public static class SoundDefOf {
     public static SoundDef Cosmere_Core_Sound_LoadingQuantumRiser;
 
     static SoundDefOf() {

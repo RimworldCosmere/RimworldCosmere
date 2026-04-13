@@ -6,18 +6,25 @@
     <description>You are Rashek. You held the power of Preservation at the Well of Ascension and used it to reshape the world. You moved the planet, raised the ashmounts, and transformed the Terris people. Now the power fades, but you remain - Mistborn and Feruchemist both, immortal and unyielding. A thousand years of rule begins with a single settlement.</description>
     <scenario>
       <summary>Build an empire as the immortal Lord Ruler.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_FinalEmpire</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>
           <pawns>
             <li>
-              <firstName>Rashek</firstName>
-              <lastName>Sliver</lastName>
-              <nickName>Lord Ruler</nickName>
+              <firstName>Lord</firstName>
+              <lastName>Ruler</lastName>
+              <nickName>Rashek</nickName>
               <age>30</age>
               <chronologicalAge>1050</chronologicalAge>
               <gender>Male</gender>
+              <childhood>Cosmere_Scadrial_Backstory_Terris_Childhood</childhood>
+              <adulthood>Cosmere_Scadrial_Backstory_LordRuler</adulthood>
               <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
+              <noRandomTraits>true</noRandomTraits>
               <mistborn>true</mistborn>
               <fullFeruchemist>true</fullFeruchemist>
               <traits>
@@ -39,6 +46,24 @@
                 <li><def>Animals</def><level>12</level></li>
                 <li><def>Artistic</def><level>12</level></li>
               </skills>
+              <inventory>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Iron</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Steel</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Tin</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Pewter</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Zinc</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Brass</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Copper</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_AllomanticVial</thing><stuff>Bronze</stuff><count>10</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Iron</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Steel</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Tin</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Pewter</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Zinc</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Brass</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Copper</stuff><count>1</count></li>
+                <li><thing>Cosmere_Scadrial_Thing_MetalmindBand</thing><stuff>Bronze</stuff><count>1</count></li>
+              </inventory>
             </li>
           </pawns>
         </li>

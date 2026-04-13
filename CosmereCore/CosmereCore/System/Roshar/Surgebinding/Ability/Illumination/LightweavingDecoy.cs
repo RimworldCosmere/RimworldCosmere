@@ -1,6 +1,9 @@
+using System;
 using Cosmere.Core.Ability;
+using HarmonyLib;
 using RimWorld;
 using Verse;
+using Verse.Profile;
 using DecoyHediff = Cosmere.System.Roshar.Surgebinding.Hediff.Illumination.LightweavingDecoy;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Illumination;
@@ -11,15 +14,7 @@ public class LightweavingDecoy : SurgebindingAbility {
     public LightweavingDecoy(Pawn pawn) : base(pawn) { }
     public LightweavingDecoy(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private int decoyCount {
-        get {
-            int ideal = gene.currentIdeal;
-            if (ideal >= 4) return 4;
-            if (ideal >= 3) return 3;
-            if (ideal >= 2) return 2;
-            return 1;
-        }
-    }
+    private int decoyCount => Math.Clamp(gene.currentIdeal, 1, 4);
 
     protected override void OnEnable() {
         base.OnEnable();
@@ -140,6 +135,14 @@ public class LightweavingDecoy : SurgebindingAbility {
                 source.equipment.Primary.Stuff
             );
             target.equipment.AddEquipment(weapon);
+        }
+    }
+
+    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    public static class LightweavingDecoyStateClearer {
+        [HarmonyPostfix]
+        public static void Postfix() {
+            ActiveDecoys.Clear();
         }
     }
 }

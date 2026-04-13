@@ -1,17 +1,19 @@
 using Cosmere.Core.Ability;
 using Cosmere.System.Roshar.Surgebinding.Hediff;
 using Cosmere.System.Roshar.Surgebinding.Utility;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Profile;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Adhesion;
 
 public class WindsprenShield : SurgebindingAbility {
     public static readonly HashSet<Pawn> ShieldedPawns = [];
+
     private const int BaseRadius = 3;
-    private static readonly ThingDef? AuraMoteDef =
-        DefDatabase<ThingDef>.GetNamedSilentFail("Cosmere_Roshar_Thing_WindsprenShieldAura");
+    private static readonly ThingDef? AuraMoteDef = ThingDefOf.Cosmere_Roshar_Thing_WindsprenShieldAura;
 
     private readonly List<Pawn> pawnsInArea = [];
     private Mote? auraMote;
@@ -33,7 +35,7 @@ public class WindsprenShield : SurgebindingAbility {
         SurgebindingHediffUtility.GetOrAddHediff(pawn, this, hediffToApply);
 
         if (AuraMoteDef != null) {
-            float moteScale = Cosmere.System.Scadrial.Utility.MoteUtility.GetMoteSize(
+            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(
                 AuraMoteDef, BaseRadius, GetStrength()
             );
             auraMote = MoteMaker.MakeAttachedOverlay(pawn, AuraMoteDef, Vector3.zero, moteScale);
@@ -66,7 +68,7 @@ public class WindsprenShield : SurgebindingAbility {
 
         auraMote?.Maintain();
         if (auraMote != null && AuraMoteDef != null) {
-            float moteScale = Cosmere.System.Scadrial.Utility.MoteUtility.GetMoteSize(
+            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(
                 AuraMoteDef, BaseRadius, GetStrength()
             );
             auraMote.Graphic.drawSize = new Vector2(moteScale, moteScale);
@@ -104,6 +106,14 @@ public class WindsprenShield : SurgebindingAbility {
 
             SurgebindingHediffUtility.GetOrAddHediff(targetPawn, this, hediffToApply);
             pawnsInArea.AddDistinct(targetPawn);
+        }
+    }
+
+    [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
+    public static class WindsprenShieldStateClearer {
+        [HarmonyPostfix]
+        public static void Postfix() {
+            ShieldedPawns.Clear();
         }
     }
 }

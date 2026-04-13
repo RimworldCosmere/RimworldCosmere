@@ -48,7 +48,7 @@ public class ImplantSpike : Recipe_Surgery {
         bool isThinNeedle = spikeComp.parent.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
 
         ImplantedSpikeData spikeData = new ImplantedSpikeData {
-            metalDefName = spikeComp.metal.defName,
+            metalDefName = spikeComp.metal?.defName ?? "Unknown",
             stealType = charge.stealType,
             stolenDefName = charge.stolenDefName,
             stolenDefNames = [..charge.stolenDefNames],
@@ -66,7 +66,7 @@ public class ImplantSpike : Recipe_Surgery {
         Messages.Message(
             "CS_Hemalurgy_ImplantSuccess".Translate(
                 billDoer.Named("SURGEON"),
-                spikeComp.metal.Named("METAL"),
+                (spikeComp.metal?.Named("METAL") ?? "unknown".Named("METAL")),
                 pawn.Named("RECIPIENT")
             ),
             pawn, MessageTypeDefOf.PositiveEvent

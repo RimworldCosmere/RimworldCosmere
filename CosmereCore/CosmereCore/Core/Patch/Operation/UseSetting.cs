@@ -2,6 +2,7 @@
 using System;
 using System.Xml;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Patch.Operation;
 
@@ -13,7 +14,7 @@ public class UseSetting : PatchOperation {
 
     protected override bool ApplyWorker(XmlDocument xml) {
         if (!CosmereSettings.TryGetRaw(modId, key, out object settingValue)) {
-            Log.Warning($"[Cosmere] PatchOperationUseSetting: Missing setting '{key}' in mod '{modId}'");
+            Logger.Warning($"PatchOperationUseSetting: Missing setting '{key}' in mod '{modId}'");
             return false;
         }
 

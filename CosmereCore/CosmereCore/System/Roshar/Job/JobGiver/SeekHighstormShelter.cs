@@ -5,7 +5,7 @@ using Verse.AI;
 namespace Cosmere.System.Roshar.Job.JobGiver;
 
 public class SeekHighstormShelter : ThinkNode_JobGiver {
-    protected override Verse.AI.Job TryGiveJob(Pawn pawn) {
+    protected override Verse.AI.Job? TryGiveJob(Pawn pawn) {
         if (pawn.Map == null || !pawn.Spawned) return null;
         if (StormlightUtilities.IsHighstormImmune(pawn)) return null;
         if (StormShelterManager.IsInsideShelter(pawn.Position)) return null;

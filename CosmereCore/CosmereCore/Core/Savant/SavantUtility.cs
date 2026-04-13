@@ -5,30 +5,58 @@ using Verse;
 
 namespace Cosmere.Core.Savant;
 
+public readonly struct SavantProfile {
+    public readonly int Stage1Ticks;
+    public readonly int Stage2Ticks;
+    public readonly int Stage3Ticks;
+    public readonly float Stage1Power;
+    public readonly float Stage2Power;
+    public readonly float Stage3Power;
+
+    public SavantProfile(
+        int stage1Ticks, int stage2Ticks, int stage3Ticks,
+        float stage1Power, float stage2Power, float stage3Power
+    ) {
+        Stage1Ticks = stage1Ticks;
+        Stage2Ticks = stage2Ticks;
+        Stage3Ticks = stage3Ticks;
+        Stage1Power = stage1Power;
+        Stage2Power = stage2Power;
+        Stage3Power = stage3Power;
+    }
+
+    public int GetStage(float ticks) {
+        if (ticks >= Stage3Ticks) return 3;
+        if (ticks >= Stage2Ticks) return 2;
+        if (ticks >= Stage1Ticks) return 1;
+        return 0;
+    }
+
+    public float GetPowerMultiplier(int stage) {
+        return stage switch {
+            1 => Stage1Power,
+            2 => Stage2Power,
+            3 => Stage3Power,
+            _ => 1f,
+        };
+    }
+}
+
 public static class SavantUtility {
-    public const int AllomancyStage1Ticks = 180000;
-    public const int AllomancyStage2Ticks = 600000;
-    public const int AllomancyStage3Ticks = 1800000;
+    public static readonly SavantProfile AllomancyProfile = new(
+        stage1Ticks: 180000, stage2Ticks: 600000, stage3Ticks: 1800000,
+        stage1Power: 1.20f, stage2Power: 1.40f, stage3Power: 1.75f
+    );
 
-    public const int FeruchemyStage1Ticks = 300000;
-    public const int FeruchemyStage2Ticks = 900000;
-    public const int FeruchemyStage3Ticks = 2400000;
+    public static readonly SavantProfile FeruchemyProfile = new(
+        stage1Ticks: 300000, stage2Ticks: 900000, stage3Ticks: 2400000,
+        stage1Power: 1.15f, stage2Power: 1.35f, stage3Power: 1.60f
+    );
 
-    public const int SurgebindingStage1Ticks = 420000;
-    public const int SurgebindingStage2Ticks = 1200000;
-    public const int SurgebindingStage3Ticks = 3000000;
-
-    public const float Stage1PowerAllomancy = 1.20f;
-    public const float Stage2PowerAllomancy = 1.40f;
-    public const float Stage3PowerAllomancy = 1.75f;
-
-    public const float Stage1PowerFeruchemy = 1.15f;
-    public const float Stage2PowerFeruchemy = 1.35f;
-    public const float Stage3PowerFeruchemy = 1.60f;
-
-    public const float Stage1PowerSurgebinding = 1.15f;
-    public const float Stage2PowerSurgebinding = 1.30f;
-    public const float Stage3PowerSurgebinding = 1.50f;
+    public static readonly SavantProfile SurgebindingProfile = new(
+        stage1Ticks: 420000, stage2Ticks: 1200000, stage3Ticks: 3000000,
+        stage1Power: 1.15f, stage2Power: 1.30f, stage3Power: 1.50f
+    );
 
     public const float Stage1CostSurgebinding = 0.90f;
     public const float Stage2CostSurgebinding = 0.80f;
@@ -67,53 +95,13 @@ public static class SavantUtility {
         return CanBeSavant(metal) && !IsDependencyMetal(metal);
     }
 
-    public static int GetAllomanticStage(float ticks) {
-        if (ticks >= AllomancyStage3Ticks) return 3;
-        if (ticks >= AllomancyStage2Ticks) return 2;
-        if (ticks >= AllomancyStage1Ticks) return 1;
-        return 0;
-    }
+    public static int GetAllomanticStage(float ticks) => AllomancyProfile.GetStage(ticks);
+    public static int GetFeruchemicalStage(float ticks) => FeruchemyProfile.GetStage(ticks);
+    public static int GetSurgebindingStage(float ticks) => SurgebindingProfile.GetStage(ticks);
 
-    public static int GetFeruchemicalStage(float ticks) {
-        if (ticks >= FeruchemyStage3Ticks) return 3;
-        if (ticks >= FeruchemyStage2Ticks) return 2;
-        if (ticks >= FeruchemyStage1Ticks) return 1;
-        return 0;
-    }
-
-    public static int GetSurgebindingStage(float ticks) {
-        if (ticks >= SurgebindingStage3Ticks) return 3;
-        if (ticks >= SurgebindingStage2Ticks) return 2;
-        if (ticks >= SurgebindingStage1Ticks) return 1;
-        return 0;
-    }
-
-    public static float GetAllomanticPowerMultiplier(int stage) {
-        return stage switch {
-            1 => Stage1PowerAllomancy,
-            2 => Stage2PowerAllomancy,
-            3 => Stage3PowerAllomancy,
-            _ => 1f,
-        };
-    }
-
-    public static float GetFeruchemicalPowerMultiplier(int stage) {
-        return stage switch {
-            1 => Stage1PowerFeruchemy,
-            2 => Stage2PowerFeruchemy,
-            3 => Stage3PowerFeruchemy,
-            _ => 1f,
-        };
-    }
-
-    public static float GetSurgebindingPowerMultiplier(int stage) {
-        return stage switch {
-            1 => Stage1PowerSurgebinding,
-            2 => Stage2PowerSurgebinding,
-            3 => Stage3PowerSurgebinding,
-            _ => 1f,
-        };
-    }
+    public static float GetAllomanticPowerMultiplier(int stage) => AllomancyProfile.GetPowerMultiplier(stage);
+    public static float GetFeruchemicalPowerMultiplier(int stage) => FeruchemyProfile.GetPowerMultiplier(stage);
+    public static float GetSurgebindingPowerMultiplier(int stage) => SurgebindingProfile.GetPowerMultiplier(stage);
 
     public static float GetSurgebindingCostMultiplier(int stage) {
         return stage switch {

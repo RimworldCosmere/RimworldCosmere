@@ -29,7 +29,7 @@ public struct DrainSource : IExposable, IEquatable<DrainSource> {
     }
 
     public override int GetHashCode() {
-        return HashCode.Combine(Def, Rate);
+        return Def?.GetHashCode() ?? 0;
     }
 
     public static implicit operator (AbilityDef def, float rate)(DrainSource source) {

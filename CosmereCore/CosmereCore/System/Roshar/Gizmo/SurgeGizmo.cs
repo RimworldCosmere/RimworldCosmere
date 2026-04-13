@@ -36,7 +36,7 @@ public class SurgeGizmo : Verse.Gizmo {
                     if (gene.currentIdeal < minIdeal) continue;
                 }
 
-                if (!gene.pawn.TryGetAbility(abilityDef, out SurgebindingAbility ability)) continue;
+                if (!gene.pawn.TryGetAbility(abilityDef, out SurgebindingAbility? ability) || ability == null) continue;
                 if (!ability.GizmosVisible()) continue;
                 count++;
             }
@@ -68,7 +68,7 @@ public class SurgeGizmo : Verse.Gizmo {
                 if (gene.currentIdeal < minIdeal) continue;
             }
 
-            if (!pawn.TryGetAbility(abilityDef, out SurgebindingAbility ability)) continue;
+            if (!pawn.TryGetAbility(abilityDef, out SurgebindingAbility? ability) || ability == null) continue;
             if (!ability.GizmosVisible()) continue;
 
             subgizmos.Add(new SurgebindingAbilitySubGizmo(this, gene, ability));

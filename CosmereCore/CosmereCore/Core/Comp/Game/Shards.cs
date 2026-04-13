@@ -5,14 +5,14 @@ using Verse;
 namespace Cosmere.Core.Comp.Game;
 
 public class Shards : GameComponent {
-    public HashSet<Shard> enabledShards = [];
+    public Dictionary<string, Shard> enabledShards = [];
     private List<ShardDef> savedShardDefs = [];
 
     public Shards(Verse.Game game) { }
 
     public override void ExposeData() {
         if (Scribe.mode == LoadSaveMode.Saving) {
-            savedShardDefs = enabledShards.Select(s => s.def).ToList();
+            savedShardDefs = enabledShards.Values.Select(s => s.def).ToList();
         }
 
         Scribe_Collections.Look(ref savedShardDefs, "enabledShardDefs", LookMode.Def);
@@ -22,7 +22,7 @@ public class Shards : GameComponent {
             enabledShards = [];
             for (int i = 0; i < savedShardDefs.Count; i++) {
                 if (savedShardDefs[i] != null) {
-                    enabledShards.Add(new Shard(savedShardDefs[i]));
+                    enabledShards[savedShardDefs[i].defName] = new Shard(savedShardDefs[i]);
                 }
             }
         }
@@ -42,7 +42,7 @@ public class Shards : GameComponent {
             }
         }
 
-        enabledShards.Add(new Shard(shard));
+        enabledShards[shard.defName] = new Shard(shard);
     }
 
     public void DisableShard(string defName) {
@@ -52,15 +52,14 @@ public class Shards : GameComponent {
     }
 
     public void DisableShard(ShardDef shard) {
-        enabledShards.RemoveWhere(x => x.def.defName == shard.defName);
+        enabledShards.Remove(shard.defName);
     }
 
     public bool IsEnabled(string defName) {
-        ShardDef? shard = DefDatabase<ShardDef>.GetNamedSilentFail(defName);
-        return shard != null && IsEnabled(shard);
+        return enabledShards.ContainsKey(defName);
     }
 
     public bool IsEnabled(ShardDef shard) {
-        return enabledShards.FirstOrDefault(x => x.def.defName == shard.defName) != null;
+        return enabledShards.ContainsKey(shard.defName);
     }
 }

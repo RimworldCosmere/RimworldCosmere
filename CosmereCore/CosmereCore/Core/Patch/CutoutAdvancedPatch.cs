@@ -8,6 +8,7 @@ using Verse;
 
 namespace Cosmere.Core.Patch;
 
+[StaticConstructorOnStartup]
 [HarmonyPatch]
 public static class CutoutAdvancedPatch {
     private static Material? DrawNowMaterial;
@@ -114,8 +115,6 @@ public static class CutoutAdvancedPatch {
         return false;
     }
 
-    #region PawnRenderUtility patches
-
     [HarmonyPatch(typeof(PawnRenderUtility), nameof(PawnRenderUtility.DrawEquipmentAiming))]
     [HarmonyPrefix]
     public static bool PawnRenderUtilityDrawEquipmentAimingPrefix(Verse.Thing eq, Vector3 drawLoc, float aimAngle) {
@@ -168,10 +167,6 @@ public static class CutoutAdvancedPatch {
         return false;
     }
 
-    #endregion
-
-    #region Graphic patches
-
     [HarmonyPatch(typeof(Verse.Graphic), nameof(Verse.Graphic.DrawWorker))]
     [HarmonyPrefix]
     public static void GraphicDrawWorkerPrefix(out Verse.Thing __state, Verse.Thing thing) {
@@ -193,10 +188,6 @@ public static class CutoutAdvancedPatch {
         Graphics.DrawMesh(mesh, loc, quat, mat, 0, null, 0, mpb);
         return false;
     }
-
-    #endregion
-
-    #region Graphic_RandomRotated Patches
 
     private static MethodInfo GraphicsRandomRotatedGetRotInRack =>
         AccessTools.Method(typeof(Graphic_RandomRotated), "GetRotInRack");
@@ -234,5 +225,4 @@ public static class CutoutAdvancedPatch {
         return false;
     }
 
-    #endregion
 }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_Pathianism</defName>
+        <label>Pathianism</label>
+        <description>Harmony guides. Community sustains. Self-reliance strengthens. Pathianism emerged from the ashes of the Catacendre, teaching that Harmony watches over all but expects each person to forge their own path. It values both independence and mutual aid.</description>
+        <iconPath>UI/Ideology/Cosmere/Pathianism</iconPath>
+        <deityCount>1</deityCount>
+        <worshipRoomLabel>chapel</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)->[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packIdeoName]</li>
+                <li>memeLeaderNoun->priest</li>
+                <li>memeLeaderNoun->pathkeeper</li>
+                <li>memeLeaderNoun->guide</li>
+                <li>memeLeaderAdjective->harmony's</li>
+                <li>memeLeaderAdjective->guiding</li>
+                <li>memeLeaderAdjective->walking</li>
+                <li>memeMoralist->pathkeeper</li>
+                <li>memeMoralist->guide</li>
+                <li>memeMoralist->elder</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+                <li><def>TheistFounder</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_theist</key><value>true</value></li>
+                <li><key>structure_cosmere_pathianism</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <fixedDeityNameTypes>
+            <li>
+                <name>Harmony</name>
+                <type>god of balance</type>
+            </li>
+            <li>
+                <name>Sazed</name>
+                <type>the ascended</type>
+            </li>
+            <li>
+                <name>The Joined God</name>
+                <type>preserver and destroyer</type>
+            </li>
+            <li>
+                <name>The Path</name>
+                <type>guide of all</type>
+            </li>
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>Pathianism</ideoName>
+                <adjective>Pathian</adjective>
+                <member>Pathian</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Way of Harmony</ideoName>
+                <adjective>harmonious</adjective>
+                <member>walker</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>The Path</ideoName>
+                <adjective>path's</adjective>
+                <member>pathkeeper</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

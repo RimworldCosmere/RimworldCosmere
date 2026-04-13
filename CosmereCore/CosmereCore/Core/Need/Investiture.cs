@@ -1,6 +1,6 @@
 ﻿using System;
 using Cosmere.Core.Comp.Thing;
-using Cosmere.System.Roshar.Gene;
+using Cosmere.Core.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -8,17 +8,11 @@ using Verse;
 namespace Cosmere.Core.Need;
 
 public class Investiture : RimWorld.Need {
-    private static HediffDef? lifelightDef;
-
     public string InvestitureLabel {
         get {
-            lifelightDef ??= DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight");
-            if (lifelightDef != null && pawn.health?.hediffSet?.HasHediff(lifelightDef) == true)
-                return "Lifelight";
-
-            bool isRadiant = pawn.genes?.GetFirstGeneOfType<Surgebinder>() != null;
-            if (isRadiant) return "Stormlight";
-
+            Invested? investedGene = pawn.genes?.GetFirstGeneOfType<Invested>();
+            if (investedGene != null && !string.IsNullOrEmpty(investedGene.investitureLabel))
+                return investedGene.investitureLabel;
             return LabelCap;
         }
     }
@@ -62,15 +56,9 @@ public class Investiture : RimWorld.Need {
 
     public override float MaxLevel {
         get {
-            Cosmere.System.Roshar.Gene.Surgebinder? surgebinder =
-                pawn.genes?.GetFirstGeneOfType<Cosmere.System.Roshar.Gene.Surgebinder>();
-            if (surgebinder != null) {
-                int idealIndex = surgebinder.currentIdeal;
-                if (idealIndex >= 0 && idealIndex < surgebinder.radiantOrderDef.ideals.Count) {
-                    int stormlightMax = surgebinder.radiantOrderDef.ideals[idealIndex].stormlightMax;
-                    if (stormlightMax > 0) return stormlightMax;
-                }
-                return 1f;
+            Invested? investedGene = pawn.genes?.GetFirstGeneOfType<Invested>();
+            if (investedGene != null && investedGene.maxInvestitureLevel > 0) {
+                return investedGene.maxInvestitureLevel;
             }
 
             for (int i = unlockedHeightening + 1; i < BreathEquivalentUnitThresholds.Length; i++) {
@@ -136,27 +124,6 @@ public class Investiture : RimWorld.Need {
         }
 
         cachedGlower!.GlowRadius = Mathf.Clamp(CurLevel, 0f, 3f);
-
-        // It should only fall in specific cases. I'll need to figure this out
-        // e.g. 
-        //   * Allomancers should slowly lose their investiture over the day
-        //   * Feruchemists lose it at all (their abilities make them lose it)
-        //   * Radiants should quickly lose their investiture over the day, based on their level
-
-        /*
-         * Pseudo code
-                if (HasGene("Allomancer"))
-                {
-                    CurLevel -= FallPerTick * 150f; // 150 ticks between calls
-                    CurLevel = Mathf.Clamp01(CurLevel);
-                }
-
-                if (HasGene("Radiant"))
-                {
-                    CurLevel -= FallPerTick * 40f; // 40 ticks between calls
-                    CurLevel = Mathf.Clamp01(CurLevel);
-                }
-         */
     }
 
     public override string GetTipString() {

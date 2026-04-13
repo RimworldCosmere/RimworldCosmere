@@ -6,6 +6,10 @@
     <description>Three hundred years after the Catacendre. Waxillium Ladrian left the Roughs to reclaim his noble house, but civilization's comforts cannot dull the instincts of a lawman. When the Vanishers begin their campaign of theft and kidnapping, Wax picks up his guns again.</description>
     <scenario>
       <summary>Wax and Wayne take on the Vanishers in the post-Catacendre Roughs.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Scadrial_Faction_HouseLadrian</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

@@ -19,6 +19,10 @@ public class CoreModSettings : CosmereModSettings {
 
     public bool showDormantConnection;
 
+    // Faction filtering settings
+    public bool disableEmpireInCosmereScenarios;
+    public bool disableOdysseyFactionsInCosmereScenarios;
+
     public override string Name => "Core";
 
     public override void DoTabContents(Form listing) {
@@ -29,6 +33,23 @@ public class CoreModSettings : CosmereModSettings {
                     "CC_Settings_Connection_ShowDormantConnection_Label".Translate(),
                     "CC_Settings_Connection_ShowDormantConnection_Tooltip".Translate(),
                     sub => sub.Checkbox(ref showDormantConnection)
+                );
+            },
+            SubListingOptions.WithoutTopPadding()
+        );
+
+        listing.Fieldset(
+            "CC_Settings_Category_FactionFiltering".Translate(),
+            fieldset => {
+                fieldset.Field(
+                    "CC_Settings_DisableEmpire_Label".Translate(),
+                    "CC_Settings_DisableEmpire_Tooltip".Translate(),
+                    sub => sub.Checkbox(ref disableEmpireInCosmereScenarios)
+                );
+                fieldset.Field(
+                    "CC_Settings_DisableOdyssey_Label".Translate(),
+                    "CC_Settings_DisableOdyssey_Tooltip".Translate(),
+                    sub => sub.Checkbox(ref disableOdysseyFactionsInCosmereScenarios)
                 );
             },
             SubListingOptions.WithoutTopPadding()
@@ -108,5 +129,7 @@ public class CoreModSettings : CosmereModSettings {
         Scribe_Values.Look(ref logLevel, "logLevel", LogLevel.Verbose);
         Scribe_Values.Look(ref debugMode, "debugMode");
         Scribe_Values.Look(ref quickstartName, "quickstartName");
+        Scribe_Values.Look(ref disableEmpireInCosmereScenarios, "disableEmpireInCosmereScenarios", false);
+        Scribe_Values.Look(ref disableOdysseyFactionsInCosmereScenarios, "disableOdysseyFactionsInCosmereScenarios", false);
     }
 }

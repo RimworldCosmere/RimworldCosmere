@@ -120,9 +120,9 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         Status? oldStatus = status;
         status = newStatus.Value;
 
-        if (oldStatus == false && def.activeMote != null) {
+        if (!oldStatus.Value.isActive && def.activeMote != null) {
             activeMote ??= MoteMaker.MakeAttachedOverlay(pawn, def.activeMote, Vector3.zero, GetMoteScale());
-        } else if (newStatus == false) {
+        } else if (!newStatus.Value.isActive) {
             activeMote?.Destroy();
             activeMote = null;
         }
@@ -148,7 +148,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
                     comps.Add(abilityComp);
                     abilityComp.Initialize(def.comps[index]);
                 } catch (Exception ex) {
-                    Log.Error("Could not instantiate or initialize an AbilityComp: " + ex);
+                    Logger.Error("Could not instantiate or initialize an AbilityComp: " + ex);
                     comps.Remove(abilityComp);
                 }
             }
@@ -303,7 +303,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     }
 
     public override bool GizmoDisabled(out string reason) {
-        if (!status) return base.GizmoDisabled(out reason);
+        if (!status.isActive) return base.GizmoDisabled(out reason);
 
         reason = "";
         return false;
@@ -384,14 +384,14 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
     public void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo destination, int power) {
         localTarget = targetInfo;
-        SetNextStatus(power);
+        SetNextStatus((Status)power);
 
         base.QueueCastingJob(targetInfo, destination);
     }
 
     public void QueueCastingJob(GlobalTargetInfo targetInfo, int power) {
         globalTarget = targetInfo;
-        SetNextStatus(power);
+        SetNextStatus((Status)power);
 
         base.QueueCastingJob(targetInfo);
     }

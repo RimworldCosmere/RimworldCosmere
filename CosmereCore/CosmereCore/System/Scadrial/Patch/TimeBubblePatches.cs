@@ -7,6 +7,9 @@ namespace Cosmere.System.Scadrial.Patch;
 
 [HarmonyPatch]
 public static class TimeBubblePatches {
+    private static readonly AccessTools.FieldRef<Pawn_NeedsTracker, Pawn> PawnField =
+        AccessTools.FieldRefAccess<Pawn_NeedsTracker, Pawn>("pawn");
+
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Pawn_NeedsTracker), nameof(Pawn_NeedsTracker.NeedsTrackerTickInterval))]
     public static bool Prefix(Pawn_NeedsTracker __instance, int delta) {
@@ -14,7 +17,7 @@ public static class TimeBubblePatches {
         const int CadmiumMultiplier = 3;
         const int BendalloyDivisor = 3;
 
-        Pawn? pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
+        Pawn? pawn = PawnField(__instance);
         if (pawn?.health == null || pawn.Dead) return true;
 
 

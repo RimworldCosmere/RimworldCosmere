@@ -182,7 +182,7 @@ public class Soulcast : SurgebindingAbility {
         ThingDef? blockDef = SoulcastMaterials.GetBlocksForChunk(thing.def);
         if (blockDef != null && material == blockDef) {
             float cost = BaseCost * 0.5f;
-            ReplaceDropWithCount(thing, blockDef, StonecuttingYield, cost);
+            DestroyAndSpawn(thing, blockDef, StonecuttingYield, cost);
             return;
         }
 
@@ -239,123 +239,106 @@ public class Soulcast : SurgebindingAbility {
         if (thing.Destroyed) return;
 
         if (thing is Fire) {
-            float fireCost = BaseCost * 0.5f;
-            if (!gene.CanLowerReserve(fireCost)) return;
-            gene.RemoveFromReserve(fireCost);
-            FleckMaker.Static(thing.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
+            if (!TryPayCost(BaseCost * 0.5f)) return;
+            SpawnFleck(thing.Position, pawn.Map);
             thing.Destroy();
             return;
         }
 
         if (thing.def == RimWorld.ThingDefOf.SteamGeyser) {
-            if (!gene.CanLowerReserve(GeyserRemoveCost)) return;
-            gene.RemoveFromReserve(GeyserRemoveCost);
+            if (!TryPayCost(GeyserRemoveCost)) return;
             IntVec3 pos = thing.Position;
             Verse.Map map = thing.Map;
             thing.Destroy();
             map.terrainGrid.SetTerrain(pos, TerrainDefOf.Soil);
-            FleckMaker.Static(pos, map, FleckDefOf.PsycastAreaEffect);
+            SpawnFleck(pos, map);
             return;
         }
 
-        float cost = BaseCost;
-        if (!gene.CanLowerReserve(cost)) return;
-        gene.RemoveFromReserve(cost);
-        FleckMaker.Static(thing.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
+        if (!TryPayCost(BaseCost)) return;
+        SpawnFleck(thing.Position, pawn.Map);
         thing.Destroy();
     }
 
-    private void ReplaceDrop(Verse.Thing target, ThingDef outputDef, float cost) {
-        ReplaceDropWithCount(target, outputDef, target.stackCount, cost);
+    private bool TryPayCost(float cost) {
+        if (!gene.CanLowerReserve(cost)) return false;
+        gene.RemoveFromReserve(cost);
+        return true;
     }
 
-    private void ReplaceDropWithCount(Verse.Thing target, ThingDef outputDef, int count, float cost) {
-        if (!gene.CanLowerReserve(cost) || target.Destroyed) return;
-        gene.RemoveFromReserve(cost);
-        IntVec3 pos = target.Position;
-        Verse.Map map = target.Map;
-        target.Destroy();
-        Verse.Thing result = ThingMaker.MakeThing(outputDef);
-        result.stackCount = Mathf.Max(1, count);
-        GenSpawn.Spawn(result, pos, map);
+    private bool TryPayCost(float cost, Verse.Thing target) {
+        return !target.Destroyed && TryPayCost(cost);
+    }
+
+    private void SpawnFleck(IntVec3 pos, Verse.Map map) {
         FleckMaker.Static(pos, map, FleckDefOf.PsycastAreaEffect);
     }
 
     private void DestroyAndSpawn(Verse.Thing target, ThingDef outputDef, int count, float cost) {
-        if (!gene.CanLowerReserve(cost) || target.Destroyed) return;
-        gene.RemoveFromReserve(cost);
+        if (!TryPayCost(cost, target)) return;
         IntVec3 pos = target.Position;
         Verse.Map map = target.Map;
-        FleckMaker.Static(pos, map, FleckDefOf.PsycastAreaEffect);
         target.Destroy();
         Verse.Thing result = ThingMaker.MakeThing(outputDef);
         result.stackCount = Mathf.Max(1, count);
         GenSpawn.Spawn(result, pos, map);
+        SpawnFleck(pos, map);
+    }
+
+    private void ReplaceDrop(Verse.Thing target, ThingDef outputDef, float cost) {
+        DestroyAndSpawn(target, outputDef, target.stackCount, cost);
     }
 
     private void ReplaceMineable(Verse.Thing target, ThingDef newMineableDef, float cost) {
-        if (!gene.CanLowerReserve(cost) || target.Destroyed) return;
-        gene.RemoveFromReserve(cost);
+        if (!TryPayCost(cost, target)) return;
         IntVec3 pos = target.Position;
         Verse.Map map = target.Map;
         target.Destroy();
-        Verse.Thing newRock = ThingMaker.MakeThing(newMineableDef);
-        GenSpawn.Spawn(newRock, pos, map);
-        FleckMaker.Static(pos, map, FleckDefOf.PsycastAreaEffect);
+        GenSpawn.Spawn(ThingMaker.MakeThing(newMineableDef), pos, map);
+        SpawnFleck(pos, map);
     }
 
     private void ChangeStuff(Verse.Thing target, ThingDef newStuff, float cost) {
-        if (!gene.CanLowerReserve(cost) || target.Destroyed) return;
-        gene.RemoveFromReserve(cost);
+        if (!TryPayCost(cost, target)) return;
         target.SetStuffDirect(newStuff);
         target.HitPoints = target.MaxHitPoints;
         target.Notify_ColorChanged();
-        FleckMaker.Static(target.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
+        SpawnFleck(target.Position, pawn.Map);
     }
 
     private void DoFortify(IntVec3 cell, Verse.Map map, ThingDef stuffDef, float cost) {
-        if (!gene.CanLowerReserve(cost)) return;
         if (!cell.Standable(map) || cell.GetFirstBuilding(map) != null) return;
-        gene.RemoveFromReserve(cost);
-        Verse.Thing wall = ThingMaker.MakeThing(RimWorld.ThingDefOf.Wall, stuffDef);
-        GenSpawn.Spawn(wall, cell, map);
-        FleckMaker.Static(cell, map, FleckDefOf.PsycastAreaEffect);
+        if (!TryPayCost(cost)) return;
+        GenSpawn.Spawn(ThingMaker.MakeThing(RimWorld.ThingDefOf.Wall, stuffDef), cell, map);
+        SpawnFleck(cell, map);
     }
 
     private void DoTerraform(IntVec3 cell, Verse.Map map, TerrainDef newTerrain, float cost) {
-        if (!gene.CanLowerReserve(cost)) return;
-        gene.RemoveFromReserve(cost);
-        List<Verse.Thing> toDestroy = [];
+        if (!TryPayCost(cost)) return;
         List<Verse.Thing> thingsOnCell = cell.GetThingList(map);
-        for (int i = 0; i < thingsOnCell.Count; i++) {
-            if (thingsOnCell[i] is Fire) toDestroy.Add(thingsOnCell[i]);
-        }
-        for (int i = 0; i < toDestroy.Count; i++) {
-            toDestroy[i].Destroy();
+        for (int i = thingsOnCell.Count - 1; i >= 0; i--) {
+            if (thingsOnCell[i] is Fire fire) fire.Destroy();
         }
         map.snowGrid.SetDepth(cell, 0f);
         map.terrainGrid.SetTerrain(cell, newTerrain);
-        FleckMaker.Static(cell, map, FleckDefOf.PsycastAreaEffect);
+        SpawnFleck(cell, map);
     }
 
     private void DoSpawnGeyser(IntVec3 cell, Verse.Map map) {
-        if (!gene.CanLowerReserve(GeyserCost)) return;
-        gene.RemoveFromReserve(GeyserCost);
-        Verse.Thing geyser = ThingMaker.MakeThing(RimWorld.ThingDefOf.SteamGeyser);
-        GenSpawn.Spawn(geyser, cell, map);
-        FleckMaker.Static(cell, map, FleckDefOf.PsycastAreaEffect);
+        if (!TryPayCost(GeyserCost)) return;
+        GenSpawn.Spawn(ThingMaker.MakeThing(RimWorld.ThingDefOf.SteamGeyser), cell, map);
+        SpawnFleck(cell, map);
     }
 
     private void SoulcastPawn(Verse.Pawn target, ThingDef stuffDef, float cost) {
-        if (!gene.CanLowerReserve(cost) || target.Dead || target.Destroyed) return;
-        gene.RemoveFromReserve(cost);
+        if (target.Dead || target.Destroyed || !TryPayCost(cost)) return;
         float hitChance = GetSoulcastHitChance(target);
         if (!Rand.Chance(hitChance)) {
             Messages.Message(
                 "CRO_Soulcast_Resisted".Translate(target.LabelShortCap.Named("PAWN")),
                 target, MessageTypeDefOf.NegativeEvent
             );
-            FleckMaker.Static(target.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
+            SpawnFleck(target.Position, pawn.Map);
             return;
         }
         IntVec3 pos = target.Position;
@@ -364,22 +347,19 @@ public class Soulcast : SurgebindingAbility {
         Verse.Thing? corpse = pos.GetThingList(map).Find(t => t is Corpse);
         corpse?.Destroy();
         ThingDef sculptureDef = DefDatabase<ThingDef>.GetNamed("SculptureLarge");
-        Verse.Thing sculpture = ThingMaker.MakeThing(sculptureDef, stuffDef);
-        GenSpawn.Spawn(sculpture, pos, map);
-        FleckMaker.Static(pos, map, FleckDefOf.PsycastAreaEffect);
+        GenSpawn.Spawn(ThingMaker.MakeThing(sculptureDef, stuffDef), pos, map);
+        SpawnFleck(pos, map);
     }
 
     private void SoulcastCorpse(Corpse target, ThingDef stuffDef, float cost) {
-        if (!gene.CanLowerReserve(cost) || target.Destroyed) return;
-        gene.RemoveFromReserve(cost);
+        if (!TryPayCost(cost, target)) return;
         IntVec3 pos = target.Position;
         Verse.Map map = target.Map;
         Verse.Pawn? innerPawn = target.InnerPawn;
         target.Destroy();
         ThingDef sculptureDef = DefDatabase<ThingDef>.GetNamed("SculptureSmall");
-        Verse.Thing sculpture = ThingMaker.MakeThing(sculptureDef, stuffDef);
-        GenSpawn.Spawn(sculpture, pos, map);
-        FleckMaker.Static(pos, map, FleckDefOf.PsycastAreaEffect);
+        GenSpawn.Spawn(ThingMaker.MakeThing(sculptureDef, stuffDef), pos, map);
+        SpawnFleck(pos, map);
 
         ThoughtDef? burialThought = DefDatabase<ThoughtDef>.GetNamedSilentFail("Cosmere_Roshar_Thought_SoulcastBurial");
         if (burialThought != null && innerPawn != null) {

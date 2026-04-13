@@ -2,6 +2,7 @@
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Graphic;
 
@@ -42,7 +43,7 @@ public class GemStuff : Verse.Graphic {
 
     public override Verse.Graphic GetColoredVersion(UnityEngine.Shader newShader, Color newColor, Color newColorTwo) {
         if (newColorTwo != Color.white) {
-            Log.ErrorOnce("Cannot use Graphic_Appearances.GetColoredVersion with a non-white colorTwo.", 9910251);
+            Logger.Error("Cannot use Graphic_Appearances.GetColoredVersion with a non-white colorTwo.");
         }
 
         return GraphicDatabase.Get<GemStuff>(path, newShader, drawSize, newColor, Color.white, data);

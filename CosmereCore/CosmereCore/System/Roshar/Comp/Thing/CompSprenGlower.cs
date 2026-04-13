@@ -34,7 +34,7 @@ public class CompSprenGlower : ThingComp {
         CompSprenBond? bond = parent.TryGetComp<CompSprenBond>();
         if (bond?.BondedRadiant == null) return;
 
-        float connection = SpiritWeb.Instance.GetConnectionValue(bond.BondedRadiant, parent);
+        float connection = SpiritWeb.Instance?.GetConnectionValue(bond.BondedRadiant, parent) ?? 0f;
         float targetRadius = Mathf.Lerp(0.2f, Props.baseGlowRadius, connection);
 
         if (Mathf.Abs(currentRadius - targetRadius) < 0.05f) return;

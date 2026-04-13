@@ -16,7 +16,7 @@ public static class StormlightUtilities {
     }
 
     public static bool IsHighstormImmune(Verse.Pawn pawn) {
-        Surgebinder surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
+        Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) return false;
 
         if (surgebinder.radiantOrderDef.defName == "Windrunner" && surgebinder.currentIdeal >= 1) return true;

@@ -40,7 +40,6 @@ public class FearsprenController : DynamicSprenController {
             bool isFearful = false;
             float fearIntensity = cellSpawnChance; // Base spawn chance
 
-            // Check if pawn is actively fleeing
             if (pawn.CurJobDef == RimWorld.JobDefOf.Flee ||
                 pawn.CurJobDef == RimWorld.JobDefOf.FleeAndCower ||
                 pawn.CurJobDef == RimWorld.JobDefOf.FleeAndCowerShort) {
@@ -48,7 +47,6 @@ public class FearsprenController : DynamicSprenController {
                 fearIntensity = 0.9f; // Very high chance for fleeing pawns
             }
 
-            // Check mental break risk (stress/fear indicator)
             float currentMood = pawn.needs.mood.CurLevel;
             float extremeBreakThreshold = pawn.mindState.mentalBreaker.BreakThresholdExtreme;
             float majorBreakThreshold = pawn.mindState.mentalBreaker.BreakThresholdMajor;
@@ -101,7 +99,6 @@ public class FearsprenController : DynamicSprenController {
         debug.AppendLine($"  Current Job: {pawn.CurJob?.def?.defName ?? "None"}");
         debug.AppendLine($"  Is Fleeing: {(pawn.CurJob?.def == RimWorld.JobDefOf.Flee ? "Yes" : "No")}");
 
-        // Calculate fear intensity for this pawn
         bool isFearful = false;
         float fearIntensity = cellSpawnChance;
 

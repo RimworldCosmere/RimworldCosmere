@@ -1,4 +1,4 @@
-using System.Reflection;
+using System;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,28 +12,45 @@ public class MentalBreakHandlerProperties : HediffCompProperties {
     }
 }
 
-// @todo Come back to this. Its probably broken. There are no stats starting with Cosmere_Core_
 public class MentalBreakHandler : HediffComp {
-    private List<StatDef>? customStatDefsCache;
+    private static List<StatDef>? customStatDefsCache;
+    private static bool cacheInitialized;
 
-    protected virtual List<StatDef> customStatDefs => customStatDefsCache ??= DefDatabase<StatDef>
-        .AllDefsListForReading.Where(x => x.defName.StartsWith("Cosmere_Core_"))
-        .ToList();
+    private const string StatPrefix = "Cosmere_Mental_Break_";
+
+    private static List<StatDef> customStatDefs {
+        get {
+            if (!cacheInitialized) {
+                customStatDefsCache = [];
+                List<StatDef> allStats = DefDatabase<StatDef>.AllDefsListForReading;
+                for (int i = 0; i < allStats.Count; i++) {
+                    if (allStats[i].defName.StartsWith(StatPrefix)) {
+                        customStatDefsCache.Add(allStats[i]);
+                    }
+                }
+                cacheInitialized = true;
+            }
+            return customStatDefsCache!;
+        }
+    }
+
+    private static readonly Dictionary<string, Action<MentalBreakHandler, float>> Handlers = new() {
+        ["Add_Factor"] = (h, v) => h.HandleMentalBreakAddFactor(v),
+        ["Remove_Factor"] = (h, v) => h.HandleMentalBreakRemoveFactor(v),
+    };
 
     public override void CompPostTick(ref float severityAdjustment) {
         base.CompPostTick(ref severityAdjustment);
 
+        if (customStatDefs.Count == 0) return;
         if (!Pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond)) return;
 
-        foreach (StatDef? stat in customStatDefs) {
-            string methodName = $"Handle{stat.defName.Replace("Cosmere_Core_", "")}";
-            MethodInfo? method = GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
-
-            if (method != null) {
+        for (int i = 0; i < customStatDefs.Count; i++) {
+            StatDef stat = customStatDefs[i];
+            string handlerName = stat.defName.Replace(StatPrefix, "");
+            if (Handlers.TryGetValue(handlerName, out Action<MentalBreakHandler, float>? handler)) {
                 float value = Pawn.GetStatValue(stat);
-                method.Invoke(this, [value]);
-            } else {
-                Logger.Warning($"No handler for stat {stat.defName} defined in {GetType().Name}");
+                handler(this, value);
             }
         }
     }

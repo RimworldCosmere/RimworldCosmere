@@ -126,7 +126,7 @@
             <li>2</li>
         </curseWeights>
         <minBoonTier>2</minBoonTier>
-        <applicatorClass>Cosmere.System.Roshar.NarcolepsyApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.NarcolepsyApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
@@ -199,7 +199,7 @@
         <minBoonTier>3</minBoonTier>
         <forceTrait>Neurotic</forceTrait>
         <forceTraitDegree>1</forceTraitDegree>
-        <applicatorClass>Cosmere.System.Roshar.MemoryLossApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.MemoryLossApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
 
     <Cosmere.System.Roshar.Def.NightwatcherCurseDef>
@@ -229,6 +229,6 @@
             <li>2</li>
         </curseWeights>
         <minBoonTier>2</minBoonTier>
-        <applicatorClass>Cosmere.System.Roshar.SavantCurseApplicator</applicatorClass>
+        <applicatorClass>Cosmere.System.Roshar.Nightwatcher.SavantCurseApplicator</applicatorClass>
     </Cosmere.System.Roshar.Def.NightwatcherCurseDef>
 </Defs>

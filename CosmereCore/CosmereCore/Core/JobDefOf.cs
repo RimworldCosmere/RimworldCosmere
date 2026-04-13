@@ -10,7 +10,7 @@ namespace Cosmere.Core;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class JobDefOf {
+public static class JobDefOf {
     public static JobDef Cosmere_HaulToInnerStorage;
     public static JobDef Cosmere_StoreInApparelInnerStorage;
     public static JobDef Cosmere_BondToThing;

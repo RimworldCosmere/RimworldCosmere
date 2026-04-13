@@ -6,6 +6,10 @@
     <description>The Everstorm has come. The Fused ride its winds, ancient singers reborn with millennia of hatred and skill. The Knights Radiant are reforming, but they are few, untested, and divided. Honor is dead. His Ideals remain. Hold the line.</description>
     <scenario>
       <summary>Defend against the True Desolation with newly bonded Radiants.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Roshar_Faction_KnightsRadiant</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

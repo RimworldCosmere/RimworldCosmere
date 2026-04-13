@@ -11,7 +11,7 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Progression;
 public class Bloom : SurgebindingAbility {
     private const int BaseRadius = 4;
     private const int PlantGrowthIntervalTicks = 60;
-    private static readonly ThingDef? AuraMoteDef = DefDatabase<ThingDef>.GetNamedSilentFail("Cosmere_Roshar_Thing_BloomAura");
+    private static readonly ThingDef? AuraMoteDef = ThingDefOf.Cosmere_Roshar_Thing_BloomAura;
     private readonly List<Pawn> pawnsInArea = [];
     private Mote? auraMote;
 
@@ -33,7 +33,7 @@ public class Bloom : SurgebindingAbility {
         }
 
         if (AuraMoteDef != null) {
-            float moteScale = Cosmere.System.Scadrial.Utility.MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
+            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
             auraMote = MoteMaker.MakeAttachedOverlay(pawn, AuraMoteDef, Vector3.zero, moteScale);
         }
     }
@@ -63,7 +63,7 @@ public class Bloom : SurgebindingAbility {
 
         auraMote?.Maintain();
         if (auraMote != null && AuraMoteDef != null) {
-            float moteScale = Cosmere.System.Scadrial.Utility.MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
+            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
             auraMote.Graphic.drawSize = new Vector2(moteScale, moteScale);
         }
 

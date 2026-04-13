@@ -29,6 +29,7 @@ public class SurgeChargeHediff : AllomanticHediff {
 
     public void Burn(Action? callback = null, int endInTicks = -1, Action? endCallback = null) {
         if (this.endInTicks > -1) return;
+        if (pawn.genes == null) return;
 
         List<Allomancer> genes = pawn.genes.GetAllomanticGenes();
         for (int i = 0; i < genes.Count; i++) {
@@ -47,6 +48,7 @@ public class SurgeChargeHediff : AllomanticHediff {
     }
 
     public void PostBurn() {
+        if (pawn.genes == null) return;
         List<Allomancer> postGenes = pawn.genes.GetAllomanticGenes();
         for (int i = 0; i < postGenes.Count; i++) {
             if (postGenes[i].Burning) {
@@ -58,6 +60,7 @@ public class SurgeChargeHediff : AllomanticHediff {
 
         foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in sourceAbilities) {
             if (sa is not AllomancyAbility sourceAbility || !sourceAbility.atLeastBurning) continue;
+            if (sourceAbility.pawn.genes == null) continue;
             Allomancer? sourceGene = sourceAbility.pawn.genes.GetAllomanticGeneForMetal(sourceAbility.metal);
             if (sourceGene == null || !sourceGene.Burning) continue;
             if (

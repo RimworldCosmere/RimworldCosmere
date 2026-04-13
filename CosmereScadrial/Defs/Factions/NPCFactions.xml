@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Base for Scadrial NPC factions -->
+  <FactionDef ParentName="FactionBase" Name="Cosmere_Scadrial_NPCFactionBase" Abstract="True">
+    <techLevel>Industrial</techLevel>
+    <factionNameMaker>NamerFactionOutlander</factionNameMaker>
+    <settlementNameMaker>NamerSettlementOutlander</settlementNameMaker>
+    <allowedCultures><li>Astropolitan</li></allowedCultures>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>Offworld</li>
+        </categories>
+      </li>
+    </backstoryFilters>
+    <settlementTexturePath>World/WorldObjects/DefaultSettlement</settlementTexturePath>
+    <allowedArrivalTemperatureRange>-40~45</allowedArrivalTemperatureRange>
+    <maxPawnCostPerTotalPointsCurve>
+      <points>
+        <li>(0,35)</li>
+        <li>(70, 50)</li>
+        <li>(700, 100)</li>
+        <li>(1300, 150)</li>
+        <li>(100000, 10000)</li>
+      </points>
+    </maxPawnCostPerTotalPointsCurve>
+  </FactionDef>
+
+  <!-- Steel Ministry: Hostile theocratic enforcers of the Lord Ruler -->
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_SteelMinistry</defName>
+    <label>Steel Ministry</label>
+    <description>The Steel Ministry serves as the religious and enforcement arm of the Final Empire. Obligators oversee contracts and maintain records, while the terrifying Steel Inquisitors hunt down those who defy the Lord Ruler's will.\n\nThey view all outsiders as potential heretics to be brought into compliance - or eliminated.</description>
+    <pawnSingular>obligator</pawnSingular>
+    <pawnsPlural>obligators</pawnsPlural>
+    <listOrderPriority>50</listOrderPriority>
+    <settlementGenerationWeight>0.8</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>High Prelan</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/TownRough</factionIconPath>
+    <naturalEnemy>true</naturalEnemy>
+    <permanentEnemy>false</permanentEnemy>
+    <colorSpectrum>
+      <li>(0.3, 0.3, 0.35)</li>
+      <li>(0.5, 0.5, 0.55)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>3</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>50</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Steel Ministry</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The official religion of the Final Empire, enforcing the worship of the Lord Ruler as the Sliver of Infinity.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_SteelMinistry</li>
+    </forcedMemes>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>8</Mercenary_Slasher>
+          <Mercenary_Gunner>8</Mercenary_Gunner>
+          <Mercenary_Elite>5</Mercenary_Elite>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>10</Villager>
+          <Town_Guard>15</Town_Guard>
+          <Mercenary_Elite>5</Mercenary_Elite>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Noble Houses: Wealthy merchant-nobles, can be friendly or hostile -->
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_NobleHouses</defName>
+    <label>noble house</label>
+    <description>The noble houses of the Final Empire control vast plantations and business enterprises. They scheme against each other in the Great Game of politics while exploiting the skaa beneath them.\n\nThey may trade with outsiders when profitable, but their allegiance is always to their own interests.</description>
+    <pawnSingular>nobleman</pawnSingular>
+    <pawnsPlural>nobles</pawnsPlural>
+    <listOrderPriority>45</listOrderPriority>
+    <settlementGenerationWeight>1</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>High Lord</leaderTitle>
+    <leaderTitleFemale>High Lady</leaderTitleFemale>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.6, 0.5, 0.2)</li>
+      <li>(0.8, 0.7, 0.3)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>5</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>45</configurationListOrderPriority>
+    <caravanTraderKinds>
+      <li>Caravan_Outlander_BulkGoods</li>
+      <li>Caravan_Outlander_Exotic</li>
+    </caravanTraderKinds>
+    <visitorTraderKinds>
+      <li>Visitor_Outlander_Standard</li>
+    </visitorTraderKinds>
+    <baseTraderKinds>
+      <li>Base_Outlander_Standard</li>
+    </baseTraderKinds>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Slasher>10</Mercenary_Slasher>
+          <Mercenary_Gunner>10</Mercenary_Gunner>
+          <Mercenary_Elite>8</Mercenary_Elite>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Villager>10</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <Town_Trader>1</Town_Trader>
+        </traders>
+        <carriers>
+          <Muffalo>6</Muffalo>
+          <Alpaca>3</Alpaca>
+        </carriers>
+        <guards>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Gunner>8</Mercenary_Gunner>
+          <Mercenary_Elite>5</Mercenary_Elite>
+        </guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Villager>15</Villager>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Elite>5</Mercenary_Elite>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- Skaa Rebels: Freedom fighters against the Final Empire -->
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_SkaaRebels</defName>
+    <label>skaa rebellion</label>
+    <description>Escaped skaa who have fled the plantations and noble keeps to live free in the wilderness. They remember the Survivor's message: that the Lord Ruler can be defied.\n\nThey welcome those who oppose the Final Empire and offer shelter to any who flee oppression.</description>
+    <pawnSingular>rebel</pawnSingular>
+    <pawnsPlural>rebels</pawnsPlural>
+    <listOrderPriority>40</listOrderPriority>
+    <techLevel>Medieval</techLevel>
+    <settlementGenerationWeight>0.7</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>rebellion leader</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/Village</factionIconPath>
+    <colorSpectrum>
+      <li>(0.5, 0.3, 0.2)</li>
+      <li>(0.7, 0.5, 0.3)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>3</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>40</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Church of the Survivor</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Followers of Kelsier, the Survivor of Hathsin, who gave hope to the oppressed.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_ChurchOfSurvivor</li>
+    </forcedMemes>
+    <caravanTraderKinds>
+      <li>Caravan_Neolithic_BulkGoods</li>
+    </caravanTraderKinds>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Tribesperson>10</Tribesperson>
+          <Tribal_Archer>8</Tribal_Archer>
+          <Tribal_Berserker>5</Tribal_Berserker>
+          <Tribal_ChiefMelee>3</Tribal_ChiefMelee>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Tribesperson>15</Tribesperson>
+          <Tribal_Archer>5</Tribal_Archer>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <Tribal_Trader>1</Tribal_Trader>
+        </traders>
+        <carriers>
+          <Muffalo>4</Muffalo>
+        </carriers>
+        <guards>
+          <Tribesperson>8</Tribesperson>
+          <Tribal_Archer>6</Tribal_Archer>
+          <Tribal_ChiefMelee>2</Tribal_ChiefMelee>
+        </guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Tribesperson>15</Tribesperson>
+          <Tribal_Archer>8</Tribal_Archer>
+          <Tribal_ChiefMelee>3</Tribal_ChiefMelee>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>TribeRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+</Defs>

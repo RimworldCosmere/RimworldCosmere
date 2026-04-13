@@ -53,6 +53,9 @@
             <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
                 <maxInvestiture>0</maxInvestiture>
             </li>
+            <li Class="Cosmere.System.Roshar.Comp.Thing.StormlightNodeProperties">
+                <connectRange>6</connectRange>
+            </li>
             <li Class="Cosmere.System.Roshar.Comp.Thing.SphereGlowerProperties" />
             <li Class="CompProperties_MeditationFocus">
                 <statDef>MeditationFocusStrength</statDef>
@@ -121,6 +124,7 @@
         </building>
         <placeWorkers>
             <li>Placeworker_AttachedToWall</li>
+            <li>Cosmere.System.Roshar.PlaceWorker.PlaceWorker_StormlightNode</li>
         </placeWorkers>
     </ThingDef>
 </Defs>

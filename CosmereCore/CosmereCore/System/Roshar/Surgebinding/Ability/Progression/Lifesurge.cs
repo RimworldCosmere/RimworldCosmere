@@ -6,7 +6,7 @@ using Verse;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Progression;
 
 public class Lifesurge : SurgebindingAbility {
-    private static readonly ThingDef? PulseMoteDef = DefDatabase<ThingDef>.GetNamedSilentFail("Cosmere_Roshar_Thing_LifesurgePulse");
+    private static readonly ThingDef? PulseMoteDef = ThingDefOf.Cosmere_Roshar_Thing_LifesurgePulse;
 
     private const float LimbRegenCostMultiplier = 2f;
     private const float WoundHealCostFraction = 0.1f;
@@ -15,7 +15,6 @@ public class Lifesurge : SurgebindingAbility {
     private static readonly int[] DurationSeconds = [10, 15, 20, 25, 30];
     private static readonly int[] MaxWoundsToHeal = [1, 3, 5, int.MaxValue, int.MaxValue];
 
-    private static HediffDef? cachedWoundInfection;
 
     public Lifesurge(Pawn pawn) : base(pawn) { }
     public Lifesurge(Pawn pawn, AbilityDef def) : base(pawn, def) { }
@@ -132,8 +131,6 @@ public class Lifesurge : SurgebindingAbility {
     }
 
     private void CureDiseases(Pawn targetPawn, int ideal) {
-        cachedWoundInfection ??= DefDatabase<HediffDef>.GetNamedSilentFail("WoundInfection");
-
         List<Verse.Hediff> toRemove = [];
         List<Verse.Hediff> hediffs = targetPawn.health.hediffSet.hediffs;
 
@@ -143,7 +140,7 @@ public class Lifesurge : SurgebindingAbility {
             if (hediff is Hediff_MissingPart) continue;
             if (hediff is Hediff_Injury) continue;
 
-            if (ideal >= 2 && cachedWoundInfection != null && hediff.def == cachedWoundInfection) {
+            if (ideal >= 2 && RimWorld.HediffDefOf.WoundInfection != null && hediff.def == RimWorld.HediffDefOf.WoundInfection) {
                 toRemove.Add(hediff);
                 continue;
             }

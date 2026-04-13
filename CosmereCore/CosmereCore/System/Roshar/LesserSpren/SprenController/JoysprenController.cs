@@ -23,7 +23,6 @@ public class JoysprenController : DynamicSprenController {
 
     public override float captureRarityMultiplier => 0.7f;
 
-    // Visual configuration
     public override Color sprenColor => new Color(1f, 0.9f, 0.3f, 0.8f);
 
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {

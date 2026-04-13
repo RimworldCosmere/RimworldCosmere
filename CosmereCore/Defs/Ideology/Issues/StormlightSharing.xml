@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ISSUE: STORMLIGHT SHARING ========== -->
+    <!-- Attitudes toward sharing or hoarding Stormlight -->
+
+    <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_StormlightSharing</defName>
+        <label>stormlight sharing</label>
+        <iconPath>UI/Ideology/Cosmere/StormlightSharing</iconPath>
+    </IssueDef>
+
+    <!-- History Events -->
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SharedStormlight</defName>
+        <label>shared stormlight</label>
+    </HistoryEventDef>
+
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_HoardedStormlight</defName>
+        <label>hoarded stormlight during crisis</label>
+    </HistoryEventDef>
+
+    <!-- ========== PRECEPTS ========== -->
+
+    <!-- Freely Given: Parshendi, Pathianism philosophy -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Stormlight_FreelyGiven</defName>
+        <issue>Cosmere_StormlightSharing</issue>
+        <label>freely given</label>
+        <description>The highstorms give Stormlight to all. To hoard it is to defy the natural order.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>0</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+            <li>Cosmere_Structure_StoneShamanism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_SharedStormlight</eventDef>
+                <thought>Cosmere_SharedStormlight_FreelyGiven</thought>
+            </li>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_HoardedStormlight</eventDef>
+                <thought>Cosmere_HoardedStormlight_FreelyGiven</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Earned: Vorinism - spheres are currency, earn your light -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Stormlight_Earned</defName>
+        <issue>Cosmere_StormlightSharing</issue>
+        <label>earned through labor</label>
+        <description>Stormlight is valuable. Like any resource, it should be earned through honest labor and trade.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>10</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+            <li>Cosmere_Structure_Passions</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- Hoarded: Those who seek power -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Stormlight_Hoarded</defName>
+        <issue>Cosmere_StormlightSharing</issue>
+        <label>hoarded for power</label>
+        <description>Stormlight is power. Keep it close, share it sparingly, use it to advance your position.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>20</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Trellism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_SharedStormlight</eventDef>
+                <thought>Cosmere_SharedStormlight_Hoarded</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Indifferent: Scadrial religions -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Stormlight_Indifferent</defName>
+        <issue>Cosmere_StormlightSharing</issue>
+        <label>indifferent</label>
+        <description>This light from Rosharan storms is simply another resource, neither sacred nor profane.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>30</displayOrderInIssue>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Structure_Survivorism</li>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+            <li>Cosmere_Structure_Sliverism</li>
+            <li>Cosmere_Structure_Jaggenism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ========== THOUGHTS ========== -->
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SharedStormlight_FreelyGiven</defName>
+        <durationDays>3</durationDays>
+        <stackLimit>5</stackLimit>
+        <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+        <stages>
+            <li>
+                <label>shared the storm's gift</label>
+                <description>I shared Stormlight freely, as the storms intend.</description>
+                <baseMoodEffect>4</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_HoardedStormlight_FreelyGiven</defName>
+        <durationDays>5</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>hoarded stormlight</label>
+                <description>I kept Stormlight when others needed it. The storms give freely, but I did not.</description>
+                <baseMoodEffect>-6</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SharedStormlight_Hoarded</defName>
+        <durationDays>3</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>wasted stormlight</label>
+                <description>I gave away Stormlight that could have been mine. Such weakness.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

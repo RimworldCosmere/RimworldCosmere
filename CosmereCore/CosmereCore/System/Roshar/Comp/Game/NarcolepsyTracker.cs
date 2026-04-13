@@ -11,7 +11,7 @@ public class NarcolepsyTracker : GameComponent {
 
     private List<Verse.Pawn> trackedPawns = [];
     private List<int> nextCollapseTicks = [];
-    private HediffDef? collapseDef;
+
 
     public NarcolepsyTracker(Verse.Game game) {
         instance = this;
@@ -34,7 +34,7 @@ public class NarcolepsyTracker : GameComponent {
 
     public override void GameComponentTick() {
         if (GenTicks.TicksGame % 2500 != 0) return;
-        collapseDef ??= DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Roshar_Hediff_NW_NarcolepsyCollapse");
+        HediffDef? collapseDef = HediffDefOf.Cosmere_Roshar_Hediff_NW_NarcolepsyCollapse;
         if (collapseDef == null) return;
 
         int currentTick = GenTicks.TicksGame;

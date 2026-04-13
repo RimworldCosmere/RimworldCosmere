@@ -29,7 +29,7 @@ public class SoulcastWorkGiver : WorkGiver_Scanner {
         SoulcastAbility? ability = FindSoulcastAbility(pawn);
         if (ability == null) return null;
 
-        JobDef soulcastJobDef = DefDatabase<JobDef>.GetNamed("Cosmere_Roshar_Job_Soulcast");
+        JobDef soulcastJobDef = JobDefOf.Cosmere_Roshar_Job_Soulcast;
         Verse.AI.Job job = JobMaker.MakeJob(soulcastJobDef, cell);
         job.ability = ability;
         return job;

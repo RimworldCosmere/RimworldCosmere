@@ -15,8 +15,8 @@ public static class ScenarioDefOf {
     }
 
     [MayRequire("Cosmere.Scadrial")]
-    public static ScenarioDef Cosmere_Scadrial_PreCatacendre;
+    public static ScenarioDef Cosmere_Scadrial_Scenario_PreCatacendre;
 
     [MayRequire("Cosmere.Scadrial")]
-    public static ScenarioDef Cosmere_Scadrial_PostCatacendre;
+    public static ScenarioDef Cosmere_Scadrial_Scenario_PostCatacendre;
 }

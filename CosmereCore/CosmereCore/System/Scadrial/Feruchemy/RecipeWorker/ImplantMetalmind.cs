@@ -38,7 +38,7 @@ public class ImplantMetalmind : Recipe_Surgery {
         }
 
         ImplantedMetalmindData data = new ImplantedMetalmindData {
-            metalDefName = metalmindComp.metal.defName,
+            metalDefName = metalmindComp.metal?.defName ?? "Unknown",
             metalmindType = metalmindComp.parent.def.defName,
             storedAmount = metalmindComp.storedAmount,
             maxAmount = metalmindComp.maxAmount,
@@ -50,7 +50,7 @@ public class ImplantMetalmind : Recipe_Surgery {
         Messages.Message(
             "CS_Feruchemy_ImplantSuccess".Translate(
                 billDoer.Named("SURGEON"),
-                metalmindComp.metal.Named("METAL"),
+                (metalmindComp.metal?.Named("METAL") ?? "unknown".Named("METAL")),
                 pawn.Named("RECIPIENT")
             ),
             pawn, MessageTypeDefOf.PositiveEvent
@@ -58,12 +58,11 @@ public class ImplantMetalmind : Recipe_Surgery {
     }
 
     private void AddToUnifiedHediff(Pawn pawn, ImplantedMetalmindData data, BodyPartRecord part) {
-        ImplantedMetalminds? hediff = (ImplantedMetalminds?)pawn.health.hediffSet.GetFirstHediffOfDef(
-            DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_ImplantedMetalminds")
-        );
+        ImplantedMetalminds? hediff =
+            pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds) as ImplantedMetalminds;
         if (hediff == null) {
             hediff = (ImplantedMetalminds)HediffMaker.MakeHediff(
-                DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_ImplantedMetalminds"), pawn, part
+                HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds, pawn, part
             );
             pawn.health.AddHediff(hediff, part);
         }

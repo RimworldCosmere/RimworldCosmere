@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ISSUE: OATHS & PROMISES ========== -->
+    <!-- Attitudes toward keeping one's word -->
+
+    <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Oaths</defName>
+        <label>oaths and promises</label>
+        <iconPath>UI/Ideology/Cosmere/Oaths</iconPath>
+    </IssueDef>
+
+    <!-- History Events -->
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SworeIdeal</defName>
+        <label>swore a Radiant Ideal</label>
+    </HistoryEventDef>
+
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_BrokeOath</defName>
+        <label>broke a sworn oath</label>
+    </HistoryEventDef>
+
+    <!-- ========== PRECEPTS ========== -->
+
+    <!-- Absolute: Vorinism - Ideals are everything -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Oaths_Absolute</defName>
+        <issue>Cosmere_Oaths</issue>
+        <label>absolute</label>
+        <description>An oath once sworn is binding until death. To break one's word is to break one's soul.</description>
+        <impact>High</impact>
+        <displayOrderInIssue>0</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <requiredMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </requiredMemes>
+        <associatedMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_SworeIdeal</eventDef>
+                <thought>Cosmere_SworeIdeal_Absolute</thought>
+            </li>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_BrokeOath</eventDef>
+                <thought>Cosmere_BrokeOath_Absolute</thought>
+            </li>
+            <li Class="PreceptComp_KnowsMemoryThought">
+                <eventDef>Cosmere_BrokeOath</eventDef>
+                <thought>Cosmere_KnowBrokeOath_Absolute</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Important: Most religions -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Oaths_Important</defName>
+        <issue>Cosmere_Oaths</issue>
+        <label>important</label>
+        <description>A person's word matters greatly. Breaking a promise brings shame, though circumstances can sometimes justify it.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>10</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+            <li>Cosmere_Structure_Survivorism</li>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+            <li>Cosmere_Structure_StoneShamanism</li>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_SworeIdeal</eventDef>
+                <thought>Cosmere_SworeIdeal_Important</thought>
+            </li>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_BrokeOath</eventDef>
+                <thought>Cosmere_BrokeOath_Important</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Flexible: Passions - emotion matters more than rigid vows -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Oaths_Flexible</defName>
+        <issue>Cosmere_Oaths</issue>
+        <label>flexible</label>
+        <description>Oaths made in one moment may not serve in another. The heart's truth matters more than rigid vows.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>20</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Passions</li>
+            <li>Cosmere_Structure_Jaggenism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- Meaningless: Trellism - only power matters -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Oaths_Meaningless</defName>
+        <issue>Cosmere_Oaths</issue>
+        <label>meaningless</label>
+        <description>Words are tools, nothing more. An oath binds only the foolish.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>30</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Trellism</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ========== THOUGHTS ========== -->
+
+    <!-- Absolute oaths thoughts -->
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SworeIdeal_Absolute</defName>
+        <durationDays>15</durationDays>
+        <stackLimit>5</stackLimit>
+        <stages>
+            <li>
+                <label>swore sacred Ideal</label>
+                <description>I have sworn an Ideal. These words bind my very soul to their truth.</description>
+                <baseMoodEffect>10</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_BrokeOath_Absolute</defName>
+        <durationDays>60</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>oathbreaker</label>
+                <description>I broke my sworn word. My soul is fractured. I am less than I was.</description>
+                <baseMoodEffect>-20</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_KnowBrokeOath_Absolute</defName>
+        <thoughtClass>Thought_MemorySocial</thoughtClass>
+        <durationDays>60</durationDays>
+        <stackLimit>100</stackLimit>
+        <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+        <stages>
+            <li>
+                <label>oathbreaker</label>
+                <baseOpinionOffset>-40</baseOpinionOffset>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <!-- Important oaths thoughts -->
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_SworeIdeal_Important</defName>
+        <durationDays>10</durationDays>
+        <stackLimit>5</stackLimit>
+        <stages>
+            <li>
+                <label>swore an Ideal</label>
+                <description>I have sworn a sacred oath. My word means something.</description>
+                <baseMoodEffect>6</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_BrokeOath_Important</defName>
+        <durationDays>20</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>broke my word</label>
+                <description>I broke a promise. It weighs on me, though I hope it was for good reason.</description>
+                <baseMoodEffect>-8</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

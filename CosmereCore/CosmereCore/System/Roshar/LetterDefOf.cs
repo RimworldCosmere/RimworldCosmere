@@ -10,7 +10,7 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
-public class LetterDefOf {
+public static class LetterDefOf {
     static LetterDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(LetterDefOf));
     }

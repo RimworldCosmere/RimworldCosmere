@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Structure_Survivorism</defName>
+        <label>Survivorism</label>
+        <description>Organized worship of Kelsier, refined over three centuries since the Catacendre. The Survivor watches over his faithful from the Cognitive Realm, and his church endures.</description>
+        <iconPath>UI/Ideology/Cosmere/Survivorism</iconPath>
+        <deityCount>1</deityCount>
+        <worshipRoomLabel>chapel</worshipRoomLabel>
+        <generalRules>
+            <rulesStrings>
+                <li>r_ideoName(p=99)->[globalAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[memeAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packAdjective] [packIdeoName]</li>
+                <li>r_ideoName(p=99)->[packIdeoName]</li>
+                <li>memeLeaderNoun->high priest</li>
+                <li>memeLeaderNoun->elder</li>
+                <li>memeLeaderNoun->exarch</li>
+                <li>memeLeaderAdjective->survivor's</li>
+                <li>memeLeaderAdjective->ascendant</li>
+                <li>memeLeaderAdjective->defiant</li>
+                <li>memeMoralist->priest</li>
+                <li>memeMoralist->preacher</li>
+                <li>memeMoralist->elder</li>
+            </rulesStrings>
+        </generalRules>
+        <descriptionMaker>
+            <patterns>
+                <li><def>TheistMyth</def></li>
+                <li><def>TheistFounder</def></li>
+            </patterns>
+            <constants>
+                <li><key>structure_theist</key><value>true</value></li>
+                <li><key>structure_cosmere_survivorism</key><value>true</value></li>
+            </constants>
+        </descriptionMaker>
+        <fixedDeityNameTypes>
+            <li>
+                <name>Kelsier</name>
+                <type>the Ascendant</type>
+            </li>
+            <li>
+                <name>The Survivor</name>
+                <type>lord of scars</type>
+            </li>
+            <li>
+                <name>The Ascendant</name>
+                <type>the defiant</type>
+            </li>
+            <li>
+                <name>Lord of Scars</name>
+                <type>who broke the chains</type>
+            </li>
+        </fixedDeityNameTypes>
+        <symbolPacks>
+            <li>
+                <ideoName>Survivorism</ideoName>
+                <adjective>Survivorist</adjective>
+                <member>Survivorist</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Church of the Survivor Reborn</ideoName>
+                <adjective>faithful</adjective>
+                <member>faithful</member>
+                <prefix>true</prefix>
+            </li>
+            <li>
+                <ideoName>Kelsier's Church</ideoName>
+                <adjective>Kelsierite</adjective>
+                <member>Kelsierite</member>
+                <prefix>true</prefix>
+            </li>
+        </symbolPacks>
+    </MemeDef>
+</Defs>

@@ -31,7 +31,6 @@ public class RiversprenController : StaticSprenController {
     ) {
         if (!IsInBounds(position, map)) return null;
 
-        // Check terrain for river tag
         TerrainDef? terrain = GetTerrain(position, map!);
         if (terrain == null) return null;
 

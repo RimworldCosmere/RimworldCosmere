@@ -125,7 +125,8 @@ public class JobDriver_ChargeLiveSpike : Verse.AI.JobDriver {
                 return;
             }
 
-            MetallicArtsMetalDef metal = spikeComp.metal;
+            MetallicArtsMetalDef? metal = spikeComp.metal;
+            if (metal == null) return;
             HemalurgicStealType stealType = HemalurgicConstants.GetStealType(metal);
             bool isThinNeedle = carried.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
             float strengthMultiplier = 1f;

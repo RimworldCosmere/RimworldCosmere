@@ -1,3 +1,4 @@
+using System;
 using RimWorld;
 using Verse;
 
@@ -182,7 +183,7 @@ public class ScenPart_NamedPawns : ScenPart {
 
         try {
             pawn.genes?.TryAddRadiantOrder(orderGeneDef, template.idealLevel);
-        } catch (global::System.Exception ex) {
+        } catch (Exception ex) {
             Logger.Warning($"ScenPart_NamedPawns: Failed to add radiant order '{template.radiantOrder}': {ex.Message}");
         }
     }
@@ -198,7 +199,7 @@ public class ScenPart_NamedPawns : ScenPart {
             if (template.fullFeruchemist) {
                 Cosmere.System.Scadrial.Utility.GeneUtility.AddFullFeruchemist(pawn, false, true);
             }
-        } catch (global::System.Exception ex) {
+        } catch (Exception ex) {
             Logger.Warning($"ScenPart_NamedPawns: Failed to add metalborn genes: {ex.Message}");
         }
     }

@@ -56,8 +56,8 @@ public class RemoveMetalmind : Recipe_Surgery {
     }
 
     private ImplantedMetalminds? GetMetalmindsHediff(Pawn pawn) {
-        return (ImplantedMetalminds?)pawn.health.hediffSet.GetFirstHediffOfDef(
-            DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_ImplantedMetalminds")
-        );
+        return pawn.health.hediffSet.GetFirstHediffOfDef(
+            HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds
+        ) as ImplantedMetalminds;
     }
 }

@@ -31,7 +31,8 @@ public class ChargeSpike : Recipe_Surgery {
             return;
         }
 
-        MetallicArtsMetalDef metal = spikeComp.metal;
+        MetallicArtsMetalDef? metal = spikeComp.metal;
+        if (metal == null) return;
         HemalurgicStealType stealType = HemalurgicConstants.GetStealType(metal);
         bool isThinNeedle = spikeComp.parent.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
         float strengthMultiplier = isThinNeedle ? HemalurgicConstants.ThinNeedleStrengthMultiplier : 1f;

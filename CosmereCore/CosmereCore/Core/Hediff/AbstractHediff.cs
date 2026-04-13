@@ -63,15 +63,13 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
     public event Action<AbstractHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceAdded;
     public event Action<AbstractHediff<TGene>, IAbility<TGene, IHediff<TGene>>>? OnSourceRemoved;
 
-    /**
-     * @TODO This needs to support Nicrosil and Duralumin ACROSS the cosmere. Need to figure that out.
-     */
     public override void TickInterval(int delta) {
         if (pawn.IsShieldedAgainstInvestiture() && !IsInvestitureShield()) {
-            foreach (AbstractAbility? ability in sourceAbilities.Where(x => x is AbstractAbility)
-                         .Cast<AbstractAbility>()
-                         .ToList()) {
-                ability.UpdateStatus(Active.Off);
+            IAbility<TGene, IHediff<TGene>>[] snapshot = [.. sourceAbilities];
+            for (int i = 0; i < snapshot.Length; i++) {
+                if (snapshot[i] is AbstractAbility abilityToDisable) {
+                    abilityToDisable.UpdateStatus(Active.Off);
+                }
             }
         }
 
@@ -94,7 +92,13 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
         Scribe_References.Look(ref ability, "ability");
 
         if (Scribe.mode == LoadSaveMode.Saving) {
-            sourcePawns = sourceAbilities.Cast<RimWorld.Ability>().Select(a => a.pawn).Distinct().ToList();
+            HashSet<Pawn> seen = [];
+            sourcePawns = [];
+            foreach (IAbility<TGene, IHediff<TGene>> source in sourceAbilities) {
+                if (source is RimWorld.Ability abilityRef && seen.Add(abilityRef.pawn)) {
+                    sourcePawns.Add(abilityRef.pawn);
+                }
+            }
         }
 
         Scribe_Collections.Look(ref sourcePawns, "sourcePawns", LookMode.Reference);
@@ -115,9 +119,7 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
                     continue;
                 }
 
-                // If this pawn has any Allomantic ability, we re-attach it
                 sourceAbilities.Add(aa);
-                // Optional: maybe only add one matching ability type, if you can correlate them
                 break;
             }
         }
@@ -128,9 +130,10 @@ public abstract class AbstractHediff<TGene> : HediffWithComps, IHediff<TGene> wh
         stringBuilder.AppendLine(base.DebugString());
 
         stringBuilder.AppendLine("Severity Sources:");
-        foreach (AbstractAbility? ability in sourceAbilities.Cast<AbstractAbility>()) {
+        foreach (IAbility<TGene, IHediff<TGene>> source in sourceAbilities) {
+            if (source is not AbstractAbility sourceAbility) continue;
             stringBuilder.AppendLine(
-                $"  {ability.pawn.NameShortColored} -> {ability.def.LabelCap}: {ability.GetStrength():0.0000}"
+                $"  {sourceAbility.pawn.NameShortColored} -> {sourceAbility.def.LabelCap}: {sourceAbility.GetStrength():0.0000}"
             );
         }
 

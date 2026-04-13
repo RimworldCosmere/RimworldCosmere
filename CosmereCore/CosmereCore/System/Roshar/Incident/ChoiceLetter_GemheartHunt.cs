@@ -6,7 +6,7 @@ using Verse;
 namespace Cosmere.System.Roshar.Incident;
 
 public class ChoiceLetter_GemheartHunt : ChoiceLetter {
-    public Map map;
+    public Map map = null!;
 
     public override bool CanDismissWithRightClick => false;
 

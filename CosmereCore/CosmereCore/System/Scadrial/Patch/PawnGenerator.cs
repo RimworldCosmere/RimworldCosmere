@@ -15,7 +15,7 @@ public static class PawnGenerator {
         Scenario? scenario = Find.Scenario;
         if (scenario == null) return true;
 
-        if (scenario.name == ScenarioDefOf.Cosmere_Scadrial_PreCatacendre.label) {
+        if (scenario.name == ScenarioDefOf.Cosmere_Scadrial_Scenario_PreCatacendre.label) {
             __result = new[] {
                 XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris,
                 XenotypeDefOf.Cosmere_Scadrial_Xenotype_Skaa,
@@ -25,7 +25,7 @@ public static class PawnGenerator {
             return false;
         }
 
-        if (scenario.name == ScenarioDefOf.Cosmere_Scadrial_PostCatacendre.label) {
+        if (scenario.name == ScenarioDefOf.Cosmere_Scadrial_Scenario_PostCatacendre.label) {
             __result = new[] {
                 XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris,
                 XenotypeDefOf.Cosmere_Scadrial_Xenotype_Scadrian,

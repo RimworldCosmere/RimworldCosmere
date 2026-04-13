@@ -12,7 +12,7 @@ using Verse.Sound;
 
 namespace FloatSubMenus {
     public class FloatMenuDivider : FloatMenuOption {
-        private readonly string label;
+        private readonly string? label;
 
         private readonly Traverse<float> widthField;
         private readonly Traverse<float> heightField;
@@ -29,10 +29,10 @@ namespace FloatSubMenus {
         private static readonly Color ColorTextDisabled = new Color(0.9f, 0.9f, 0.9f);
 #endif
 
-        public FloatMenuDivider(string label = null) : base(" ", NoAction) {
+        public FloatMenuDivider(string? label = null) : base(" ", NoAction) {
             this.label = label;
 
-            var traverse = Traverse.Create(this);
+            Traverse traverse = Traverse.Create(this);
             widthField  = traverse.Field<float>("cachedRequiredWidth");
             heightField = traverse.Field<float>("cachedRequiredHeight");
 

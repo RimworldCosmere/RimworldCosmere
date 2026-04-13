@@ -23,7 +23,7 @@ public static class ViolationUtility {
             }
         }
 
-        SpiritWeb.Instance.AdjustConnection(pawn, bondTarget, -severity * multiplier);
+        SpiritWeb.Instance?.AdjustConnection(pawn, bondTarget, -severity * multiplier);
 
         string violationReason = reason ?? "unknown action";
         string severityLabel = severity switch {

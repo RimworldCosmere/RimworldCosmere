@@ -21,9 +21,17 @@ public static class Logger {
 
     private static bool CurrentlyLoggingError;
 
+    private static LogLevel GetCurrentLogLevel() {
+        try {
+            return logLevel;
+        } catch {
+            return LogLevel.Verbose;
+        }
+    }
+
     public static void Message(string message, LogLevel level = LogLevel.Info) {
         try {
-            if (level > logLevel || level == LogLevel.None) return;
+            if (level > GetCurrentLogLevel() || level == LogLevel.None) return;
             switch (level) {
                 case LogLevel.Error
                     when DebugSettings.pauseOnError && Current.ProgramState == ProgramState.Playing:
@@ -31,7 +39,6 @@ public static class Logger {
                 case >= LogLevel.Warning when Prefs.OpenLogOnWarnings: Log.TryOpenLogWindow(); break;
             }
 
-            string? ns = "None";
             string stack = "";
             StackTrace stackTrace = new StackTrace(1, true);
             for (int i = 0; i < stackTrace.FrameCount; i++) {

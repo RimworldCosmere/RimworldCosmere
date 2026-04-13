@@ -52,7 +52,8 @@ public static class ThingExtension {
             return thing is { Spawned: true, Map: not null }
                 ? Math.Min(val1, thing.Map.reservationManager.CanReserveStack(pawn, thing, 10))
                 : val1;
-        } catch (Exception) {
+        } catch (Exception ex) {
+            Logger.Verbose($"GetMaxAmountToPickupForPawn: {ex.Message}");
             return desired;
         }
     }

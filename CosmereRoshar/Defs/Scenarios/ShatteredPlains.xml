@@ -6,6 +6,10 @@
     <description>The Shattered Plains. A fractured wasteland of chasms and plateaus where warcamps wage an endless war of attrition for gemhearts. Bridge crews die by the dozen. Soldiers fight and bleed for stones. Somewhere in the chasms, something ancient waits.</description>
     <scenario>
       <summary>Run a warcamp on the Shattered Plains, hunting gemhearts.</summary>
+      <playerFaction>
+        <def>PlayerFaction</def>
+        <factionDef>Cosmere_Roshar_Faction_Warcamp</factionDef>
+      </playerFaction>
       <parts>
         <li Class="Cosmere.Core.ScenarioPart.ScenPart_NamedPawns">
           <def>Cosmere_ScenPart_NamedPawns</def>

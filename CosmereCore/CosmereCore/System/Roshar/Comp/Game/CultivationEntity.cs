@@ -3,11 +3,9 @@ using Verse;
 namespace Cosmere.System.Roshar.Comp.Game;
 
 public class CultivationEntity : GameComponent, ILoadReferenceable {
-    public static CultivationEntity? Instance { get; private set; }
+    public static CultivationEntity? Instance => Current.Game?.GetComponent<CultivationEntity>();
 
-    public CultivationEntity(Verse.Game game) {
-        Instance = this;
-    }
+    public CultivationEntity(Verse.Game game) { }
 
     public string GetUniqueLoadID() => "Cosmere_CultivationEntity";
 

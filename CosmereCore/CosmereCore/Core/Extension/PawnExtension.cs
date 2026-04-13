@@ -1,20 +1,13 @@
-using System;
-using System.Reflection;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using GeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;
 
 namespace Cosmere.Core.Extension;
 
-[StaticConstructorOnStartup]
 public static class PawnExtension {
-    private static readonly Assembly? Scadrial = LoadedModManager.RunningMods
-        .FirstOrDefault(m => m.PackageId.Equals("cosmere.scadrial", StringComparison.CurrentCultureIgnoreCase))
-        ?.assemblies.loadedAssemblies.FirstOrDefault();
 
     public static InvestitureHolder GetInvestiture(this Pawn pawn) {
         return pawn.TryGetComp<InvestitureHolder>();
@@ -56,57 +49,22 @@ public static class PawnExtension {
     public static List<IntVec3> GetCellsAround(this Pawn pawn, float radius, bool useCenter = false) {
         return GenRadial.RadialCellsAround(
                 pawn.Position,
-                Mathf.Round(Math.Min(GenRadial.MaxRadialPatternRadius - .01f, radius)),
+                Mathf.Round(Mathf.Min(GenRadial.MaxRadialPatternRadius - .01f, radius)),
                 useCenter
             )
             .Where(c => c.InBounds(pawn.Map))
             .ToList();
     }
 
-    public static bool TryGetAbility<T>(this Pawn pawn, AbilityDef def, out T ability)
+    public static bool TryGetAbility<T>(this Pawn pawn, AbilityDef def, out T? ability)
         where T : RimWorld.Ability {
-        ability = (T)pawn.abilities.GetAbility(def);
-
+        ability = pawn.abilities.GetAbility(def) as T;
         return ability != null;
     }
 
-    public static bool TryGetAbility<T, TDef>(this Pawn pawn, AbilityDef def, out T ability)
-        where T : RimWorld.Ability where TDef : AbilityDef {
-        ability = (T)pawn.abilities.GetAbility((TDef)def);
-
-        return ability != null;
+    public static T? GetAbility<T>(this Pawn pawn, AbilityDef def)
+        where T : RimWorld.Ability {
+        return pawn.abilities.GetAbility(def) as T;
     }
 
-    public static T? GetAbility<T, TDef>(this Pawn pawn, AbilityDef def)
-        where T : RimWorld.Ability where TDef : AbilityDef {
-        return (T)pawn.abilities.GetAbility((TDef)def);
-    }
-
-    public static T? GetAbility<T, TDef>(this Pawn pawn, TDef def) where T : RimWorld.Ability where TDef : AbilityDef {
-        return (T)pawn.abilities.GetAbility(def);
-    }
-
-    public static void BecomeMistborn(
-        this Pawn pawn,
-        bool canSnap = false,
-        bool snapped = true,
-        bool fillReserves = true,
-        string? cause = null
-    ) {
-        if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
-
-        GeneUtility.AddMistborn(pawn, canSnap, snapped, cause);
-        pawn.SetAllAllomanticReserves(float.PositiveInfinity);
-    }
-
-    public static void BecomeFullFeruchemist(
-        this Pawn pawn,
-        bool canSnap = false,
-        bool snapped = true,
-        string? cause = null
-    ) {
-        if (!ModsConfig.IsActive("Cosmere.Scadrial") || Scadrial == null) return;
-
-        GeneUtility.AddFullFeruchemist(pawn, canSnap, snapped, cause);
-    }
 }

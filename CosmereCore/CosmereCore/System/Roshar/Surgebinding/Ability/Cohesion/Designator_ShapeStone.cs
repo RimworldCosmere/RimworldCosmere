@@ -49,7 +49,7 @@ public class Designator_ShapeStone : Designator {
     }
 
     private void QueueJobAt(IntVec3 cell) {
-        JobDef jobDef = DefDatabase<JobDef>.GetNamed("Cosmere_Roshar_Job_ShapeStone");
+        JobDef jobDef = JobDefOf.Cosmere_Roshar_Job_ShapeStone;
         Verse.AI.Job job = JobMaker.MakeJob(jobDef, new LocalTargetInfo(cell));
         job.ability = ability;
         job.playerForced = true;

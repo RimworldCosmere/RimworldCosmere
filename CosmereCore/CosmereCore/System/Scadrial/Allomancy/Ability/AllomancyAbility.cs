@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Core;
 using Cosmere.Core.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
@@ -5,7 +6,7 @@ using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using Verse;
-using HediffUtility = Cosmere.System.Scadrial.Util.HediffUtility;
+using HediffUtility = Cosmere.System.Scadrial.Utility.HediffUtility;
 
 namespace Cosmere.System.Scadrial.Allomancy.Ability;
 
@@ -16,7 +17,19 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
     public AllomancyAbility(Pawn pawn) : base(pawn) { }
     public AllomancyAbility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    public override Allomancer gene => cachedGene ??= pawn.genes.GetAllomanticGeneForMetal(metal)!;
+    public override Allomancer gene {
+        get {
+            if (cachedGene != null) return cachedGene;
+            Allomancer? found = pawn.genes?.GetAllomanticGeneForMetal(metal);
+            if (found == null) {
+                throw new InvalidOperationException(
+                    $"AllomancyAbility on {pawn.LabelShort} could not find Allomancer gene for {metal?.defName}");
+            }
+
+            cachedGene = found;
+            return cachedGene;
+        }
+    }
     public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
     public new AllomanticAbilityDef def {
@@ -72,7 +85,6 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
 
         Verse.Hediff? drag = targetPawn.health.GetOrAddHediff(def.dragHediff);
         drag.Severity = severity;
-        //Logger.Warning($"Applying {def.dragHediff.defName} drag to {targetPawn.NameFullColored} with Severity={severity}");
     }
 
     protected void RemoveDrag(Pawn? targetPawn) {

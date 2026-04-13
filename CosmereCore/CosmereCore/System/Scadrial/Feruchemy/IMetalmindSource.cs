@@ -6,7 +6,7 @@ public interface IMetalmindSource {
     bool canStore { get; }
     bool canTap { get; }
     bool equipped { get; }
-    Cosmere.Core.Def.MetalDef metal { get; }
+    Cosmere.Core.Def.MetalDef? metal { get; }
     void AddStored(float amount);
     void ConsumeStored(float amount);
 }

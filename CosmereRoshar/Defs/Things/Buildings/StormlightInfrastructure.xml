@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <DesignationCategoryDef>
+        <defName>Cosmere_Roshar_DesignationStormlight</defName>
+        <label>stormlight</label>
+        <order>2</order>
+        <specialDesignatorClasses>
+            <li>Designator_Cancel</li>
+            <li>Designator_Deconstruct</li>
+            <li>Cosmere.System.Roshar.Comp.Map.Designator_DeconstructStormlightConduit</li>
+        </specialDesignatorClasses>
+        <preferredColumn>2</preferredColumn>
+    </DesignationCategoryDef>
+
+    <!-- Stormlight Receiver -->
+    <ThingDef ParentName="BuildingBase">
+        <defName>Cosmere_Roshar_Thing_StormlightReceiver</defName>
+        <label>stormlight receiver</label>
+        <description>A broad array of gemstone-laced panels designed to catch the fury of a highstorm. When the stormwall passes, the receiver drinks deep of its Investiture, channeling raw Stormlight into the connected network. Best placed outdoors and unsheltered for maximum absorption - though the storms exact their toll on anything left exposed.</description>
+        <thingClass>Building</thingClass>
+        <graphicData>
+            <texPath>Things/Building/StormlightReceiver</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(2,2)</drawSize>
+        </graphicData>
+        <altitudeLayer>Building</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <pathCost>30</pathCost>
+        <blockWind>false</blockWind>
+        <rotatable>false</rotatable>
+        <fillPercent>0.3</fillPercent>
+        <size>(2,2)</size>
+        <tickerType>Normal</tickerType>
+        <statBases>
+            <WorkToBuild>2400</WorkToBuild>
+            <MaxHitPoints>200</MaxHitPoints>
+            <Mass>20</Mass>
+            <Flammability>0.5</Flammability>
+        </statBases>
+        <building>
+            <destroySound>BuildingDestroyed_Metal_Medium</destroySound>
+        </building>
+        <costList>
+            <Steel>100</Steel>
+            <ComponentIndustrial>2</ComponentIndustrial>
+            <Cosmere_Roshar_Thing_Gemheart>1</Cosmere_Roshar_Thing_Gemheart>
+        </costList>
+        <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+        <comps>
+            <li Class="Cosmere.System.Roshar.Comp.Thing.StormlightReceiverProperties">
+                <baseAbsorptionRate>5.0</baseAbsorptionRate>
+            </li>
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <maxInvestiture>1000</maxInvestiture>
+                <startingInvestiture>0</startingInvestiture>
+                <drainRate>0.01</drainRate>
+            </li>
+            <li Class="Cosmere.System.Roshar.Comp.Thing.StormlightBuildingGlowerProperties">
+                <minRadius>1</minRadius>
+                <maxRadius>6</maxRadius>
+            </li>
+        </comps>
+        <placeWorkers>
+            <li>Cosmere.System.Roshar.PlaceWorker.PlaceWorker_StormlightNode</li>
+        </placeWorkers>
+        <designationCategory>Cosmere_Roshar_DesignationStormlight</designationCategory>
+        <researchPrerequisites>
+            <li>Cosmere_Roshar_StormlightInfrastructure</li>
+        </researchPrerequisites>
+        <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    </ThingDef>
+
+    <!-- Stormlight Battery -->
+    <ThingDef ParentName="BuildingBase">
+        <defName>Cosmere_Roshar_Thing_StormlightBattery</defName>
+        <label>stormlight battery</label>
+        <description>A sealed chamber of polished gemstone, purpose-built to hold Stormlight against the slow erosion of time. Connected to a conduit network, it serves as a reservoir - filling when the storms are generous, sustaining the colony's fabrials when the sky is dark.</description>
+        <thingClass>Building</thingClass>
+        <graphicData>
+            <texPath>Things/Building/StormlightBattery</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(1,1)</drawSize>
+        </graphicData>
+        <altitudeLayer>Building</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <pathCost>30</pathCost>
+        <blockWind>true</blockWind>
+        <rotatable>false</rotatable>
+        <fillPercent>0.4</fillPercent>
+        <size>(1,1)</size>
+        <tickerType>Normal</tickerType>
+        <statBases>
+            <WorkToBuild>1800</WorkToBuild>
+            <MaxHitPoints>150</MaxHitPoints>
+            <Mass>15</Mass>
+            <Flammability>0.3</Flammability>
+        </statBases>
+        <building>
+            <destroySound>BuildingDestroyed_Metal_Medium</destroySound>
+        </building>
+        <costList>
+            <Cosmere_Roshar_Thing_Gemheart>1</Cosmere_Roshar_Thing_Gemheart>
+        </costList>
+        <costStuffCount>75</costStuffCount>
+        <stuffCategories>
+            <li>Metallic</li>
+            <li>Stony</li>
+        </stuffCategories>
+        <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+        <comps>
+            <li Class="Cosmere.System.Roshar.Comp.Thing.StormlightBatteryProperties" />
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <maxInvestiture>3000</maxInvestiture>
+                <startingInvestiture>0</startingInvestiture>
+                <drainRate>0.001</drainRate>
+            </li>
+            <li Class="Cosmere.System.Roshar.Comp.Thing.StormlightBuildingGlowerProperties">
+                <minRadius>1</minRadius>
+                <maxRadius>4</maxRadius>
+            </li>
+        </comps>
+        <placeWorkers>
+            <li>Cosmere.System.Roshar.PlaceWorker.PlaceWorker_StormlightNode</li>
+        </placeWorkers>
+        <designationCategory>Cosmere_Roshar_DesignationStormlight</designationCategory>
+        <researchPrerequisites>
+            <li>Cosmere_Roshar_StormlightInfrastructure</li>
+        </researchPrerequisites>
+        <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    </ThingDef>
+
+    <!-- Stormlight Charger -->
+    <ThingDef ParentName="BuildingBase">
+        <defName>Cosmere_Roshar_Thing_StormlightCharger</defName>
+        <label>stormlight charger</label>
+        <description>A workstation fitted with channels of gemstone-laced metal that draw Stormlight from the connected network and press it into gems and spheres placed within. A quiet alternative to leaving one's wealth out in the storm.</description>
+        <thingClass>Building</thingClass>
+        <graphicData>
+            <texPath>Things/Building/StormlightCharger</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(2,1)</drawSize>
+        </graphicData>
+        <altitudeLayer>Building</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <pathCost>30</pathCost>
+        <blockWind>true</blockWind>
+        <rotatable>false</rotatable>
+        <fillPercent>0.4</fillPercent>
+        <size>(2,1)</size>
+        <tickerType>Normal</tickerType>
+        <statBases>
+            <WorkToBuild>1500</WorkToBuild>
+            <MaxHitPoints>120</MaxHitPoints>
+            <Mass>10</Mass>
+            <Flammability>0.5</Flammability>
+        </statBases>
+        <building>
+            <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+        </building>
+        <costList>
+            <WoodLog>25</WoodLog>
+            <CutGem>2</CutGem>
+        </costList>
+        <costStuffCount>50</costStuffCount>
+        <stuffCategories>
+            <li>Metallic</li>
+            <li>Stony</li>
+        </stuffCategories>
+        <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+        <comps>
+            <li Class="Cosmere.System.Roshar.Comp.Thing.StormlightChargerProperties">
+                <chargeRate>2.0</chargeRate>
+                <connectRange>6</connectRange>
+            </li>
+            <li Class="Cosmere.Core.Comp.Thing.InvestitureHolderProperties">
+                <maxInvestiture>500</maxInvestiture>
+                <startingInvestiture>0</startingInvestiture>
+                <drainRate>0.005</drainRate>
+                <valueBasedOnChildren>true</valueBasedOnChildren>
+            </li>
+            <li Class="Cosmere.System.Roshar.Comp.Thing.SphereGlowerProperties">
+                <minRadius>2</minRadius>
+                <maxRadius>7</maxRadius>
+            </li>
+            <li Class="Cosmere.Core.Comp.Thing.InnerStorageProperties">
+                <tabName>CRO_InspectorTab_SphereTab</tabName>
+                <maxItems>25</maxItems>
+                <defaultStorageSettings>
+                    <priority>Critical</priority>
+                    <filter>
+                        <categories>
+                            <li>Cosmere_Roshar_ThingCategory_Sphere</li>
+                        </categories>
+                    </filter>
+                </defaultStorageSettings>
+                <fixedStorageSettings>
+                    <filter>
+                        <categories>
+                            <li>Cosmere_Roshar_ThingCategory_Sphere</li>
+                        </categories>
+                    </filter>
+                </fixedStorageSettings>
+            </li>
+        </comps>
+        <inspectorTabs>
+            <li>Cosmere.System.Roshar.Tab.SphereTab</li>
+        </inspectorTabs>
+        <placeWorkers>
+            <li>Cosmere.System.Roshar.PlaceWorker.PlaceWorker_StormlightNode</li>
+        </placeWorkers>
+        <designationCategory>Cosmere_Roshar_DesignationStormlight</designationCategory>
+        <researchPrerequisites>
+            <li>Cosmere_Roshar_StormlightInfrastructure</li>
+        </researchPrerequisites>
+        <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    </ThingDef>
+
+    <!-- Stormlight Conduit (base) -->
+    <ThingDef ParentName="BuildingBase" Name="Cosmere_Roshar_StormlightConduitBase">
+        <defName>Cosmere_Roshar_Thing_StormlightConduit</defName>
+        <label>stormlight conduit</label>
+        <description>A thin channel of gemstone-laced material laid into the floor. It carries Stormlight between connected buildings - receivers, batteries, and chargers - forming the veins of a colony's Investiture network. Can be placed beneath walls and furniture.</description>
+        <thingClass>Building</thingClass>
+        <noRightClickDraftAttack>true</noRightClickDraftAttack>
+        <graphicData>
+            <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <linkType>Transmitter</linkType>
+            <linkFlags>
+                <li>Custom1</li>
+            </linkFlags>
+            <color>(120, 180, 240, 255)</color>
+            <damageData>
+                <rect>(0,0.35,1,0.3)</rect>
+            </damageData>
+        </graphicData>
+        <uiIconPath>Things/Building/Linked/PowerConduit_MenuIcon</uiIconPath>
+        <uiIconScale>0.7</uiIconScale>
+        <drawerType>MapMeshOnly</drawerType>
+        <altitudeLayer>Conduits</altitudeLayer>
+        <drawStyleCategory>Conduits</drawStyleCategory>
+        <passability>Standable</passability>
+        <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+        <resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
+        <tickerType>Normal</tickerType>
+        <rotatable>false</rotatable>
+        <selectable>true</selectable>
+        <neverMultiSelect>true</neverMultiSelect>
+        <clearBuildingArea>false</clearBuildingArea>
+        <statBases>
+            <WorkToBuild>35</WorkToBuild>
+            <MaxHitPoints>80</MaxHitPoints>
+            <Flammability>0.7</Flammability>
+            <Beauty>-2</Beauty>
+        </statBases>
+        <building>
+            <isInert>true</isInert>
+            <isEdifice>false</isEdifice>
+            <canConstructInCorner>true</canConstructInCorner>
+            <ai_chillDestination>false</ai_chillDestination>
+            <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+            <blueprintGraphicData>
+                <texPath>Things/Building/Linked/PowerConduit_Blueprint_Atlas</texPath>
+            </blueprintGraphicData>
+        </building>
+        <costList>
+            <CutGem>1</CutGem>
+        </costList>
+        <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+        <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+        <constructEffect>ConstructMetal</constructEffect>
+        <comps>
+            <li Class="Cosmere.System.Roshar.Comp.Thing.StormlightConduitProperties" />
+        </comps>
+        <placeWorkers>
+            <li>Cosmere.System.Roshar.PlaceWorker.PlaceWorker_StormlightConduit</li>
+        </placeWorkers>
+        <designationCategory>Cosmere_Roshar_DesignationStormlight</designationCategory>
+        <researchPrerequisites>
+            <li>Cosmere_Roshar_StormlightInfrastructure</li>
+        </researchPrerequisites>
+        <replaceTags>
+            <li>Cosmere_StormlightConduit</li>
+        </replaceTags>
+    </ThingDef>
+
+    <!-- Hidden Stormlight Conduit -->
+    <ThingDef ParentName="Cosmere_Roshar_StormlightConduitBase">
+        <defName>Cosmere_Roshar_Thing_StormlightConduitHidden</defName>
+        <label>hidden stormlight conduit</label>
+        <description>Concealed channels of gemstone-laced material, embedded deep enough to vanish beneath the floor. Tougher and costlier than standard conduits, but invisible once laid.</description>
+        <graphicData>
+            <color>(0,0,0,0)</color>
+            <shaderType>Transparent</shaderType>
+        </graphicData>
+        <uiIconPath>Things/Building/Linked/HiddenConduit_MenuIcon</uiIconPath>
+        <statBases>
+            <MaxHitPoints>100</MaxHitPoints>
+            <WorkToBuild>280</WorkToBuild>
+            <Flammability>0</Flammability>
+            <Beauty>0</Beauty>
+        </statBases>
+        <costList>
+            <CutGem>2</CutGem>
+        </costList>
+        <constructEffect>ConstructDirt</constructEffect>
+        <building>
+            <ai_neverTrashThis>true</ai_neverTrashThis>
+            <isTargetable>false</isTargetable>
+            <expandHomeArea>false</expandHomeArea>
+            <canBeDamagedByAttacks>false</canBeDamagedByAttacks>
+        </building>
+    </ThingDef>
+
+    <!-- Weatherproof Stormlight Conduit -->
+    <ThingDef ParentName="Cosmere_Roshar_StormlightConduitBase">
+        <defName>Cosmere_Roshar_Thing_StormlightConduitWeatherproof</defName>
+        <label>weatherproof stormlight conduit</label>
+        <description>Reinforced conduit channels sealed against rain, mud, and the scouring winds of highstorms. More expensive, but designed to survive where standard conduits would crack.</description>
+        <graphicData>
+            <texPath>Things/Building/Linked/WaterproofConduit_Atlas</texPath>
+            <color>(120, 180, 240, 255)</color>
+        </graphicData>
+        <uiIconPath>Things/Building/Linked/WaterproofConduit_MenuIcon</uiIconPath>
+        <terrainAffordanceNeeded>WaterproofConduitable</terrainAffordanceNeeded>
+        <costList>
+            <CutGem>2</CutGem>
+        </costList>
+    </ThingDef>
+
+    <!-- Research -->
+    <ResearchProjectDef>
+        <defName>Cosmere_Roshar_StormlightInfrastructure</defName>
+        <label>stormlight infrastructure</label>
+        <description>Advanced fabrial techniques for collecting, storing, and distributing Stormlight through purpose-built infrastructure. Receivers harvest Stormlight from highstorms. Conduits channel it through walls. Batteries store it. Chargers fill gems and spheres.</description>
+        <baseCost>800</baseCost>
+        <techLevel>Medieval</techLevel>
+        <prerequisites>
+            <li>Cosmere_Gem_Cutting</li>
+        </prerequisites>
+        <tab>Cosmere</tab>
+        <researchViewX>4.00</researchViewX>
+        <researchViewY>3.50</researchViewY>
+    </ResearchProjectDef>
+
+</Defs>

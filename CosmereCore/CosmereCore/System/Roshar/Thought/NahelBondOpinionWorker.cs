@@ -15,7 +15,7 @@ public class NahelBondOpinionWorker : ThoughtWorker {
 
         if (!p.relations.DirectRelationExists(nahelBondDef, other)) return false;
 
-        float connection = SpiritWeb.Instance.GetConnectionValue(p, other);
+        float connection = SpiritWeb.Instance?.GetConnectionValue(p, other) ?? 0f;
 
         if (connection >= 0.7f) return ThoughtState.ActiveAtStage(0);
         if (connection >= 0.4f) return ThoughtState.ActiveAtStage(1);

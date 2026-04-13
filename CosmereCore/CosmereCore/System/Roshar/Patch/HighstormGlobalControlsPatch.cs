@@ -5,6 +5,7 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Patch;
 
@@ -20,8 +21,8 @@ public static class HighstormGlobalControlsPatch {
     [HarmonyPrepare]
     public static bool Prepare() {
         LongEventHandler.ExecuteWhenFinished(() => {
-            if (!patchedReadout) Log.Warning("[Cosmere] GlobalControls.GlobalControlsOnGUI highstorm readout transpiler could not be applied.");
-            if (!patchedToggle) Log.Warning("[Cosmere] PlaySettings.DoPlaySettingsGlobalControls highstorm toggle transpiler could not be applied.");
+            if (!patchedReadout) Logger.Warning("GlobalControls.GlobalControlsOnGUI highstorm readout transpiler could not be applied.");
+            if (!patchedToggle) Logger.Warning("PlaySettings.DoPlaySettingsGlobalControls highstorm toggle transpiler could not be applied.");
         });
         return true;
     }
@@ -67,7 +68,7 @@ public static class HighstormGlobalControlsPatch {
         Map map = Find.CurrentMap;
         if (map == null) return;
 
-        string statusText = HighstormScheduler.GetStatusText(map);
+        string? statusText = HighstormScheduler.GetStatusText(map);
         if (statusText == null) return;
 
         Rect rect = new Rect(leftX - 100f, curBaseY - 26f, 293f, 26f);
@@ -75,7 +76,7 @@ public static class HighstormGlobalControlsPatch {
         Widgets.Label(rect, statusText);
         Text.Anchor = TextAnchor.UpperLeft;
 
-        string tooltip = HighstormScheduler.GetTooltipText(map);
+        string? tooltip = HighstormScheduler.GetTooltipText(map);
         if (tooltip != null) {
             TooltipHandler.TipRegion(rect, tooltip);
         }

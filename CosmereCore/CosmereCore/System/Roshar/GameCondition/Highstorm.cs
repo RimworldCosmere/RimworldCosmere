@@ -6,15 +6,12 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Logger = Cosmere.Core.Logger;
-using Log = Verse.Log;
 
 namespace Cosmere.System.Roshar.GameCondition;
 
-/**
- * @TODO Force the weather here?
- * @TODO Draw a warning at the top
- * @TODO Encorage pawns to go inside? Probably a workgiver?
- */
+// TODO: Force the weather here?
+// TODO: Draw a warning at the top
+// TODO: Encourage pawns to go inside? Probably a workgiver?
 public class Highstorm : RimWorld.GameCondition {
     private const float totalInvestitureToAbsorbPerItem = 2000f;
 
@@ -38,12 +35,15 @@ public class Highstorm : RimWorld.GameCondition {
         (IntVec3.South, 1f),
     ];
 
+    private static readonly float TotalOffsetWeight = 13f;
+
     private readonly Verse.Thing highstorm = ThingMaker.MakeThing(ThingDefOf.Cosmere_Roshar_Thing_Highstorm);
 
     private const float ShelterThreshold = 0.4f;
 
     private readonly int tickInterval = 30;
     private float scaledCurve;
+    private readonly List<Verse.Thing> exposedThings = [];
 
     public float CurrentIntensity => scaledCurve;
     public bool IsDangerousPhase => scaledCurve >= ShelterThreshold;
@@ -51,19 +51,17 @@ public class Highstorm : RimWorld.GameCondition {
     private float investitureToAbsorb => totalInvestitureToAbsorbPerItem / Duration * tickInterval * scaledCurve;
 
     private static IntVec3 GetRandomStormOffset(bool timesTwo) {
-        float totalWeight = weightedOffsets.Sum(entry => entry.weight);
-        float choice = Rand.Range(0f, totalWeight);
+        float choice = Rand.Range(0f, TotalOffsetWeight);
         int multiplier = timesTwo ? 2 : 1;
 
         float cumulative = 0f;
-        foreach ((IntVec3 offset, float weight) in weightedOffsets) {
-            cumulative += weight;
+        for (int i = 0; i < weightedOffsets.Count; i++) {
+            cumulative += weightedOffsets[i].weight;
             if (choice <= cumulative) {
-                return offset * multiplier;
+                return weightedOffsets[i].offset * multiplier;
             }
         }
 
-        // fallback — shouldn't hit
         return IntVec3.West * multiplier;
     }
 
@@ -83,7 +81,7 @@ public class Highstorm : RimWorld.GameCondition {
         base.GameConditionTick();
         DefModExtension.Highstorm? ext = def.GetModExtension<DefModExtension.Highstorm>();
         if (ext == null) {
-            Log.ErrorOnce("[Highstorm] DefModExtension.Highstorm is null on GameConditionDef!", 9823741);
+            Logger.Error("DefModExtension.Highstorm is null on GameConditionDef!");
             return;
         }
 
@@ -107,7 +105,7 @@ public class Highstorm : RimWorld.GameCondition {
         scaledCurve = baseIntensity * seasonalMultiplier;
 
         if (SingleMap == null) {
-            Log.ErrorOnce("[Highstorm] SingleMap is null, cannot process storm!", 9823742);
+            Logger.Error("SingleMap is null, cannot process storm!");
             return;
         }
 
@@ -116,17 +114,17 @@ public class Highstorm : RimWorld.GameCondition {
 
     private void ProcessItemsInHighstorm() {
         List<Verse.Thing> allThings = SingleMap.listerThings.AllThings;
-        List<Verse.Thing> exposed = [];
+        exposedThings.Clear();
 
         for (int i = 0; i < allThings.Count; i++) {
             Verse.Thing thing = allThings[i];
             if (thing.Map != null && thing.ShouldBeMovedByStorm()) {
-                exposed.Add(thing);
+                exposedThings.Add(thing);
             }
         }
 
-        for (int i = 0; i < exposed.Count; i++) {
-            Verse.Thing thing = exposed[i];
+        for (int i = 0; i < exposedThings.Count; i++) {
+            Verse.Thing thing = exposedThings[i];
             if (!Rand.Chance(scaledCurve)) continue;
             if (thing?.Map == null) continue;
 
@@ -150,7 +148,7 @@ public class Highstorm : RimWorld.GameCondition {
     /// <summary>
     ///     Moves items from right to left.
     /// </summary>
-    /// @TODO MAJOR overhaul idea: Have a component that keeps track of how much shelter a cell has from any given direction
+    /// TODO: MAJOR overhaul idea: Have a component that keeps track of how much shelter a cell has from any given direction
     private bool MoveItem(Verse.Thing thing) {
         if (!Mod.enableHighstormPushing) return false;
         if (thing.IsBehindSolidThing(IntVec3.East, 2)) return false;
@@ -223,7 +221,12 @@ public class Highstorm : RimWorld.GameCondition {
         if (!thing.CanBeMoved()) return false;
         if (!newPos.InBounds(thing.Map)) return true;
 
-        return !newPos.GetThingList(thing.Map).Any(t => t.IsSolid());
+        List<Verse.Thing> thingsAtPos = newPos.GetThingList(thing.Map);
+        for (int i = 0; i < thingsAtPos.Count; i++) {
+            if (thingsAtPos[i].IsSolid()) return false;
+        }
+
+        return true;
     }
 
     private static float GetBuildingDamageMultiplier(Building building) {

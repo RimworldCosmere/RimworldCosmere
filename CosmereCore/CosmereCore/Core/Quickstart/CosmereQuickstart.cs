@@ -60,16 +60,6 @@ public class CosmereQuickstart : AbstractQuickstart {
             }
         }
 
-        // foreach (GemDef gemDef in DefDatabase<GemDef>.AllDefsListForReading) {
-        //     Verse.Thing gem = ThingMaker.MakeThing(
-        //         System.Roshar.ThingDefOf.Cosmere_Roshar_Thing_Mark,
-        //         gemDef.Item
-        //     );
-        //     gem.stackCount = 25;
-        //     gem.TryGetComp<InvestitureHolder>().FillInvestiture();
-        //     GenPlace.TryPlaceThing(gem, pawns[0].Position, pawns[0].Map, ThingPlaceMode.Near);
-        // }
-
         if (pawns.TryPopFront(out Pawn pawn)) {
             pawn.Name = new NameSingle("Wit");
             pawn.gender = Gender.Male;

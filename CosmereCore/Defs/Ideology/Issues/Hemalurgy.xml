@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- ========== ISSUE: HEMALURGY ========== -->
+    <!-- Attitudes toward the use of hemalurgic spikes -->
+
+    <IssueDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Hemalurgy</defName>
+        <label>hemalurgy</label>
+        <iconPath>UI/Ideology/Cosmere/Hemalurgy</iconPath>
+    </IssueDef>
+
+    <!-- History Events -->
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_ReceivedHemalurgicSpike</defName>
+        <label>received hemalurgic spike</label>
+    </HistoryEventDef>
+
+    <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_PerformedHemalurgy</defName>
+        <label>performed hemalurgy on another</label>
+    </HistoryEventDef>
+
+    <!-- ========== PRECEPTS ========== -->
+
+    <!-- Sacred: Steel Ministry view - hemalurgy is divine power -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Hemalurgy_Sacred</defName>
+        <issue>Cosmere_Hemalurgy</issue>
+        <label>sacred art</label>
+        <description>Hemalurgy is a sacred gift from Ruin, granting power to those worthy of bearing it.</description>
+        <impact>High</impact>
+        <displayOrderInIssue>0</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <requiredMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </requiredMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_ReceivedHemalurgicSpike</eventDef>
+                <thought>Cosmere_ReceivedSpike_Sacred</thought>
+            </li>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_PerformedHemalurgy</eventDef>
+                <thought>Cosmere_PerformedHemalurgy_Sacred</thought>
+            </li>
+            <li Class="PreceptComp_KnowsMemoryThought">
+                <eventDef>Cosmere_PerformedHemalurgy</eventDef>
+                <thought>Cosmere_KnowHemalurgy_Sacred</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Necessary Evil: Survivorism - Kelsier used spikes, but it's dark -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Hemalurgy_NecessaryEvil</defName>
+        <issue>Cosmere_Hemalurgy</issue>
+        <label>necessary evil</label>
+        <description>Hemalurgy is a tool of Ruin, dangerous but sometimes necessary in the fight for survival.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>10</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Survivorism</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_ReceivedHemalurgicSpike</eventDef>
+                <thought>Cosmere_ReceivedSpike_NecessaryEvil</thought>
+            </li>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_PerformedHemalurgy</eventDef>
+                <thought>Cosmere_PerformedHemalurgy_NecessaryEvil</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Forbidden: Pathianism, Church of Survivor - reject Ruin's influence -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Hemalurgy_Forbidden</defName>
+        <issue>Cosmere_Hemalurgy</issue>
+        <label>forbidden</label>
+        <description>Hemalurgy carries the taint of Ruin. To use it is to open oneself to corruption.</description>
+        <impact>Medium</impact>
+        <displayOrderInIssue>20</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Pathianism</li>
+            <li>Cosmere_Structure_ChurchOfSurvivor</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_ReceivedHemalurgicSpike</eventDef>
+                <thought>Cosmere_ReceivedSpike_Forbidden</thought>
+            </li>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_PerformedHemalurgy</eventDef>
+                <thought>Cosmere_PerformedHemalurgy_Forbidden</thought>
+            </li>
+            <li Class="PreceptComp_KnowsMemoryThought">
+                <eventDef>Cosmere_PerformedHemalurgy</eventDef>
+                <thought>Cosmere_KnowHemalurgy_Forbidden</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Abhorrent: Most Rosharan religions, some others -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Hemalurgy_Abhorrent</defName>
+        <issue>Cosmere_Hemalurgy</issue>
+        <label>abhorrent</label>
+        <description>Driving metal through living souls to steal their essence is an act of purest evil.</description>
+        <impact>High</impact>
+        <displayOrderInIssue>30</displayOrderInIssue>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+            <li>Cosmere_Structure_StoneShamanism</li>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </associatedMemes>
+        <comps>
+            <li Class="PreceptComp_UnwillingToDo">
+                <eventDef>Cosmere_PerformedHemalurgy</eventDef>
+            </li>
+            <li Class="PreceptComp_SelfTookMemoryThought">
+                <eventDef>Cosmere_ReceivedHemalurgicSpike</eventDef>
+                <thought>Cosmere_ReceivedSpike_Abhorrent</thought>
+            </li>
+            <li Class="PreceptComp_KnowsMemoryThought">
+                <eventDef>Cosmere_PerformedHemalurgy</eventDef>
+                <thought>Cosmere_KnowHemalurgy_Abhorrent</thought>
+            </li>
+            <li Class="PreceptComp_KnowsMemoryThought">
+                <eventDef>Cosmere_PerformedHemalurgy</eventDef>
+                <thought>Cosmere_KnowHemalurgy_Abhorrent_Social</thought>
+            </li>
+        </comps>
+    </PreceptDef>
+
+    <!-- Unknown: Default for non-Scadrian religions -->
+    <PreceptDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_Hemalurgy_Unknown</defName>
+        <issue>Cosmere_Hemalurgy</issue>
+        <label>unknown practice</label>
+        <description>This strange art of metal and soul is foreign to our traditions.</description>
+        <impact>Low</impact>
+        <displayOrderInIssue>40</displayOrderInIssue>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <associatedMemes>
+            <li>Cosmere_Structure_Passions</li>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </associatedMemes>
+    </PreceptDef>
+
+    <!-- ========== THOUGHTS ========== -->
+
+    <!-- Sacred thoughts -->
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_ReceivedSpike_Sacred</defName>
+        <durationDays>10</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>blessed with hemalurgy</label>
+                <description>I have received the sacred gift of hemalurgy. Ruin's power flows through me.</description>
+                <baseMoodEffect>8</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_PerformedHemalurgy_Sacred</defName>
+        <durationDays>6</durationDays>
+        <stackLimit>1</stackLimit>
+        <stages>
+            <li>
+                <label>performed sacred hemalurgy</label>
+                <description>I have performed the sacred rite of hemalurgy. Through steel and blood, power is transferred.</description>
+                <baseMoodEffect>6</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_KnowHemalurgy_Sacred</defName>
+        <thoughtClass>Thought_MemorySocial</thoughtClass>
+        <durationDays>15</durationDays>
+        <stackLimit>100</stackLimit>
+        <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+        <stages>
+            <li>
+                <label>performed sacred hemalurgy</label>
+                <baseOpinionOffset>15</baseOpinionOffset>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <!-- Necessary Evil thoughts -->
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_ReceivedSpike_NecessaryEvil</defName>
+        <durationDays>6</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>received hemalurgic spike</label>
+                <description>I bear a hemalurgic spike now. The power is useful, but Ruin's whispers concern me.</description>
+                <baseMoodEffect>-2</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_PerformedHemalurgy_NecessaryEvil</defName>
+        <durationDays>6</durationDays>
+        <stackLimit>1</stackLimit>
+        <stages>
+            <li>
+                <label>performed hemalurgy</label>
+                <description>I did what had to be done. Hemalurgy is dark work, but sometimes darkness is necessary.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <!-- Forbidden thoughts -->
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_ReceivedSpike_Forbidden</defName>
+        <durationDays>15</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>tainted by hemalurgy</label>
+                <description>A hemalurgic spike pierces my soul. I can feel Ruin's corruption trying to take hold.</description>
+                <baseMoodEffect>-8</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_PerformedHemalurgy_Forbidden</defName>
+        <durationDays>15</durationDays>
+        <stackLimit>1</stackLimit>
+        <stages>
+            <li>
+                <label>performed forbidden hemalurgy</label>
+                <description>I violated our teachings and performed hemalurgy. Harmony forgive me.</description>
+                <baseMoodEffect>-10</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_KnowHemalurgy_Forbidden</defName>
+        <thoughtClass>Thought_MemorySocial</thoughtClass>
+        <durationDays>30</durationDays>
+        <stackLimit>100</stackLimit>
+        <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+        <stages>
+            <li>
+                <label>performed forbidden hemalurgy</label>
+                <baseOpinionOffset>-15</baseOpinionOffset>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <!-- Abhorrent thoughts -->
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_ReceivedSpike_Abhorrent</defName>
+        <durationDays>30</durationDays>
+        <stackLimit>3</stackLimit>
+        <stages>
+            <li>
+                <label>violated by hemalurgy</label>
+                <description>Someone drove a spike through my soul. The violation is unforgivable.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_KnowHemalurgy_Abhorrent</defName>
+        <thoughtClass>Thought_Memory</thoughtClass>
+        <durationDays>15</durationDays>
+        <stackLimit>5</stackLimit>
+        <stackedEffectMultiplier>0.75</stackedEffectMultiplier>
+        <stages>
+            <li>
+                <label>hemalurgy performed</label>
+                <description>Someone performed hemalurgy among us. Such evil should never be tolerated.</description>
+                <baseMoodEffect>-8</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_KnowHemalurgy_Abhorrent_Social</defName>
+        <thoughtClass>Thought_MemorySocial</thoughtClass>
+        <durationDays>60</durationDays>
+        <stackLimit>100</stackLimit>
+        <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+        <stages>
+            <li>
+                <label>performed abhorrent hemalurgy</label>
+                <baseOpinionOffset>-30</baseOpinionOffset>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+</Defs>

@@ -37,10 +37,12 @@ export async function publish(pluginConfig, context) {
     await uploadWorkshopItem({
       steamCmdPath: context.env.STEAMCMD_PATH ?? '~/steamcmd/steamcmd.sh',
       steamUsername: context.env.STEAM_USERNAME,
+      steamConfigPath: context.env.STEAM_CONFIG_VDF,
       stagePath,
       publishedFileId: mod.workshopIds[state.target],
       changenote: context.nextRelease.notes || context.nextRelease.version,
       description,
+      logger: context.logger,
     });
 
     context.logger.log(`Published ${mod.name} to ${state.target} workshop item ${mod.workshopIds[state.target]}`);

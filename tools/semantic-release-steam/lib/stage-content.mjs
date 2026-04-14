@@ -1,22 +1,25 @@
-import { mkdtemp, access } from 'node:fs/promises';
+import { access, mkdtemp } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { execa } from 'execa';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+
+const execFileAsync = promisify(execFile);
 
 export async function stageModContent({ modPath }) {
-    const stagePath = await mkdtemp(join(tmpdir(), 'steam-release-'));
-    const ignorePath = join(modPath, '.steamignore');
+  const stagePath = await mkdtemp(join(tmpdir(), 'steam-release-'));
+  const ignorePath = join(modPath, '.steamignore');
+  const args = ['-av'];
 
-    const args = ['-av'];
-    try {
-        await access(ignorePath, constants.F_OK);
-        args.push(`--exclude-from=${ignorePath}`, '--exclude=.steamignore');
-    } catch {
-        // no .steamignore, proceed without exclude
-    }
+  try {
+    await access(ignorePath, constants.F_OK);
+    args.push(`--exclude-from=${ignorePath}`, '--exclude=.steamignore');
+  } catch {
+  }
 
-    args.push(`${modPath}/`, stagePath);
-    await execa('rsync', args);
-    return stagePath;
+  args.push(`${modPath}/`, stagePath);
+  await execFileAsync('rsync', args);
+
+  return stagePath;
 }

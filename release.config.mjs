@@ -1,4 +1,10 @@
-﻿/**
+﻿import { readFileSync } from 'node:fs';
+
+const publishedFileIds = JSON.parse(
+    readFileSync(new URL('./PublishedFileIds.json', import.meta.url), 'utf8'),
+);
+
+/**
  * @type {import('semantic-release').GlobalConfig}
  */
 export default {
@@ -48,39 +54,30 @@ export default {
             }
         ],
         [
-            './tools/semantic-release-steam/index.mjs',
+            "./tools/semantic-release-steam/index.mjs",
             {
-                branchTargets: {
-                    main: 'stable',
-                    beta: 'beta',
+                "branchTargets": {
+                    "main": "stable",
+                    "beta": "beta"
                 },
-                mods: [
+                "mods": [
                     {
-                        name: 'CosmereCore',
-                        path: 'CosmereCore',
-                        workshopIds: {
-                            stable: 'REPLACE_STABLE_ID',
-                            beta: 'REPLACE_BETA_ID',
-                        },
+                        "name": "CosmereCore",
+                        "path": "CosmereCore",
+                        "workshopIds": publishedFileIds.CosmereCore,
                     },
                     {
-                        name: 'CosmereScadrial',
-                        path: 'CosmereScadrial',
-                        workshopIds: {
-                            stable: 'REPLACE_STABLE_ID',
-                            beta: 'REPLACE_BETA_ID',
-                        },
+                        "name": "CosmereScadrial",
+                        "path": "CosmereScadrial",
+                        "workshopIds": publishedFileIds.CosmereScadrial,
                     },
                     {
-                        name: 'CosmereRoshar',
-                        path: 'CosmereRoshar',
-                        workshopIds: {
-                            stable: 'REPLACE_STABLE_ID',
-                            beta: 'REPLACE_BETA_ID',
-                        },
-                    },
-                ],
-            },
+                        "name": "CosmereRoshar",
+                        "path": "CosmereRoshar",
+                        "workshopIds": publishedFileIds.CosmereRoshar,
+                    }
+                ]
+            }
         ]
     ],
     tagFormat: "${version}",

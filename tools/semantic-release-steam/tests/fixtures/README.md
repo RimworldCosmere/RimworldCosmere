@@ -1,3 +1,3 @@
 # Test Fixture
 
-This is a test description.
+This file is used for steam description conversion tests.

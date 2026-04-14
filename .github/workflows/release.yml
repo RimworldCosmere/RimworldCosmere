@@ -130,6 +130,8 @@ jobs:
       MOD: ${{ matrix.mod }}
       BUNDLE_NAME: ${{ matrix.mod }}
       TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
+      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
 
     steps:
       - name: Set BUNDLE_NAME
@@ -258,50 +260,17 @@ jobs:
           ls -lh "$DLL_PATH"
 
       - name: Prepare upload directory
-        id: prepare
         working-directory: RimworldCosmere
         run: |
-          FILE_ID="$(cat $MOD/About/PublishedFileId.txt 2>/dev/null || printf '')"
-          DESCRIPTION_FILE="$TEMP_DIR/steam_description.txt"
-
           mkdir -p "$TEMP_DIR"
 
-          echo "📄 Generating description for $MOD..."
-          if [ -f "$MOD/README.md" ]; then
-            cat "$MOD/README.md" | steamdown > "$DESCRIPTION_FILE"
-          else
-            echo "No description available." > "$DESCRIPTION_FILE"
-          fi
-
-          echo "🚫 Respecting .steamignore..."
-          if [ -f "$MOD/.steamignore" ]; then
-            rsync -av --exclude-from="$MOD/.steamignore" --exclude=".steamignore" "$MOD/" "$TEMP_DIR"
-          else
-            rsync -av "$MOD/" "$TEMP_DIR"
-          fi
-
-          CHANGE_NOTE=$(git log -1 --pretty=%B | sed 's/"/\\"/g')
-          ESCAPED_DESCRIPTION=$(sed 's/"/\\"/g' "$DESCRIPTION_FILE")
-
-          {
-            echo '"workshopitem"'
-            echo '{'
-            echo '  "appid" "294100"'
-            echo "  \"publishedfileid\" \"$FILE_ID\""
-            echo "  \"contentfolder\" \"$TEMP_DIR\""
-            echo "  \"changenote\" \"$CHANGE_NOTE\""
-            echo "  \"description\" \"$ESCAPED_DESCRIPTION\""
-            echo '}'
-          } > "$TEMP_DIR/workshop.vdf"
-
-          echo "✅ Generated workshop.vdf for $MOD:"
-          cat "$TEMP_DIR/workshop.vdf"
-
           ZIP_PATH="${{ github.workspace }}/${MOD}-${BRANCH_NAME}.zip"
-          cd "$TEMP_DIR"
+          cd "$MOD"
           zip -r "$ZIP_PATH" .
 
-          echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
+          echo "✅ Generated zip artifact for $MOD at $ZIP_PATH"
+          ls -lh "$ZIP_PATH"
+
 
       - name: Upload zip artifact
         uses: actions/upload-artifact@v4
@@ -320,26 +289,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
+      - name: Set up SteamCMD
+        uses: buildalon/setup-steamcmd@v1
+      - name: Restore Steam config
+        run: |
+          CONFIG_DIR="$RUNNER_TEMP/steam-config"
+          mkdir -p "$CONFIG_DIR"
+          printf '%s' "${{ secrets.STEAM_CONFIG_VDF_B64 }}" | base64 -d > "$CONFIG_DIR/config.vdf"
+          echo "STEAM_CONFIG_VDF=$CONFIG_DIR/config.vdf" >> "$GITHUB_ENV"
       - name: Download all zip artifacts
         uses: actions/download-artifact@v4
         with:
           pattern: '*-zip'
           path: ./zips
           merge-multiple: true
-      - uses: buildalon/setup-steamcmd@v1
-        name: Setup SteamCMD
-      - name: Restore Steam config
-        env:
-          STEAM_CONFIG_VDF_B64: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
-        run: |
-          mkdir -p "$HOME/.steam/steam/config"
-          printf '%s' "$STEAM_CONFIG_VDF_B64" | base64 -d > "$HOME/.steam/steam/config/config.vdf"
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.PAT }}
           STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
-          STEAM_CONFIG_VDF: ${{ env.HOME }}/.steam/steam/config/config.vdf
-          STEAMCMD_PATH: ${{ env.HOME }}/steamcmd/steamcmd.sh
+          STEAM_CONFIG_VDF: ${{ env.STEAM_CONFIG_VDF }}
+          STEAMCMD_PATH: ${{ env.STEAMCMDDIR }}/steamcmd.sh
         run: |
-          npm install @semantic-release/git semantic-release-replace-plugin execa steamdown -D
+          npm install @semantic-release/git semantic-release-replace-plugin steamdown -D
           npx semantic-release

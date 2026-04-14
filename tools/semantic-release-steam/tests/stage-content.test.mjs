@@ -6,16 +6,16 @@ import { join } from 'node:path';
 import { stageModContent } from '../lib/stage-content.mjs';
 
 test('stages mod content while excluding .steamignore matches', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'steam-stage-'));
-    const modDir = join(root, 'CosmereCore');
-    mkdirSync(join(modDir, 'About'), { recursive: true });
-    writeFileSync(join(modDir, 'About', 'About.xml'), '<ModMetaData />');
-    writeFileSync(join(modDir, '.steamignore'), 'Secrets.txt\n');
-    writeFileSync(join(modDir, 'Secrets.txt'), 'skip me');
-    writeFileSync(join(modDir, 'Keep.txt'), 'keep me');
+  const root = mkdtempSync(join(tmpdir(), 'steam-stage-'));
+  const modDir = join(root, 'CosmereCore');
+  mkdirSync(join(modDir, 'About'), { recursive: true });
+  writeFileSync(join(modDir, 'About', 'About.xml'), '<ModMetaData />');
+  writeFileSync(join(modDir, '.steamignore'), 'Secrets.txt\n');
+  writeFileSync(join(modDir, 'Secrets.txt'), 'skip me');
+  writeFileSync(join(modDir, 'Keep.txt'), 'keep me');
 
-    const stagedPath = await stageModContent({ modPath: modDir });
+  const stagedPath = await stageModContent({ modPath: modDir });
 
-    assert.equal(existsSync(join(stagedPath, 'Keep.txt')), true);
-    assert.equal(existsSync(join(stagedPath, 'Secrets.txt')), false);
+  assert.equal(existsSync(join(stagedPath, 'Keep.txt')), true);
+  assert.equal(existsSync(join(stagedPath, 'Secrets.txt')), false);
 });

@@ -46,6 +46,41 @@ export default {
             {
                 "assets": ["CosmereCore/CosmereCore/Core/BuildInfo.cs"]
             }
+        ],
+        [
+            './tools/semantic-release-steam/index.mjs',
+            {
+                branchTargets: {
+                    main: 'stable',
+                    beta: 'beta',
+                },
+                mods: [
+                    {
+                        name: 'CosmereCore',
+                        path: 'CosmereCore',
+                        workshopIds: {
+                            stable: 'REPLACE_STABLE_ID',
+                            beta: 'REPLACE_BETA_ID',
+                        },
+                    },
+                    {
+                        name: 'CosmereScadrial',
+                        path: 'CosmereScadrial',
+                        workshopIds: {
+                            stable: 'REPLACE_STABLE_ID',
+                            beta: 'REPLACE_BETA_ID',
+                        },
+                    },
+                    {
+                        name: 'CosmereRoshar',
+                        path: 'CosmereRoshar',
+                        workshopIds: {
+                            stable: 'REPLACE_STABLE_ID',
+                            beta: 'REPLACE_BETA_ID',
+                        },
+                    },
+                ],
+            },
         ]
     ],
     tagFormat: "${version}",

@@ -69,28 +69,45 @@ jobs:
       - name: Checkout RimworldCosmere
         uses: actions/checkout@v5
 
+      - name: Restore AssetBundles cache
+        id: assetbundle-cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            CosmereCore/AssetBundles
+            CosmereRoshar/AssetBundles
+            CosmereScadrial/AssetBundles
+          key: ${{ runner.os }}-assetbundles-${{ hashFiles('.assetbundler.toml', 'Cosmere*/.assetbundler.toml', 'scripts/build-assets.csx', 'Makefile', 'Cosmere*/Assets/**') }}
+
       - name: Setup Dotnet
+        if: steps.assetbundle-cache.outputs.cache-hit != 'true'
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-          
+
       - name: Install dotnet-script
+        if: steps.assetbundle-cache.outputs.cache-hit != 'true'
         run: dotnet tool install --global dotnet-script
 
-          
+
       - uses: buildalon/unity-setup@v1
+        if: steps.assetbundle-cache.outputs.cache-hit != 'true'
         with:
           unity-version: 2022.3.35f1
           build-targets: StandaloneWindows64 StandaloneOSX StandaloneLinux64
           modules: windows-mono mac-mono linux-il2cpp
+          cache-installation: 'true'
+          auto-update-hub: 'false'
 
       - uses: buildalon/activate-unity-license@v1
+        if: steps.assetbundle-cache.outputs.cache-hit != 'true'
         with:
           license: 'Personal'
           username: ${{ secrets.UNITY_EMAIL }}
           password: ${{ secrets.UNITY_PASSWORD }}
 
       - name: Configure AssetBundleBuilder for CI
+        if: steps.assetbundle-cache.outputs.cache-hit != 'true'
         run: |
           # In CI, use copy instead of junction/symlink for reliability
           sed -i 's/link_method = "junction"/link_method = "copy"/' .assetbundler.toml
@@ -98,10 +115,14 @@ jobs:
           grep -E "link_method|unity_args" .assetbundler.toml
 
       - name: Build AssetBundles for all platforms
+        if: steps.assetbundle-cache.outputs.cache-hit != 'true'
         run: make build-assets-all-verbose
 
       - name: Archive and upload asset bundles
         run: |
+          if [ "${{ steps.assetbundle-cache.outputs.cache-hit }}" = 'true' ]; then
+            echo "Reusing cached AssetBundles"
+          fi
           for modDir in Cosmere*/; do
             if [ -d "$modDir/AssetBundles" ]; then
               modName=$(basename "$modDir")
@@ -111,6 +132,7 @@ jobs:
               cd ..
             fi
           done
+
           
       - name: Upload asset bundles artifacts
         uses: actions/upload-artifact@v4
@@ -131,7 +153,6 @@ jobs:
       BUNDLE_NAME: ${{ matrix.mod }}
       TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
       STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
-      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
 
     steps:
       - name: Set BUNDLE_NAME
@@ -293,10 +314,9 @@ jobs:
         uses: buildalon/setup-steamcmd@v1
       - name: Restore Steam config
         run: |
-          CONFIG_DIR="$RUNNER_TEMP/steam-config"
-          mkdir -p "$CONFIG_DIR"
-          printf '%s' "${{ secrets.STEAM_CONFIG_VDF_B64 }}" | base64 -d > "$CONFIG_DIR/config.vdf"
-          echo "STEAM_CONFIG_VDF=$CONFIG_DIR/config.vdf" >> "$GITHUB_ENV"
+          mkdir -p "$STEAM_DIR/config"
+          printf '%s' "${{ secrets.STEAM_CONFIG_VDF_B64 }}" | base64 -d > "$STEAM_DIR/config/config.vdf"
+          echo "STEAM_CONFIG_VDF=$STEAM_DIR/config/config.vdf" >> "$GITHUB_ENV"
       - name: Download all zip artifacts
         uses: actions/download-artifact@v5
         with:

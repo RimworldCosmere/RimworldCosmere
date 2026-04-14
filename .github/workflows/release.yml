@@ -331,6 +331,51 @@ jobs:
             echo "Steam config missing"
             exit 1
           fi
+      - name: Validate RememberedMachineID
+        run: |
+          python - <<'PY'
+          import os
+          import re
+          import sys
+          from pathlib import Path
+
+          config_path = Path(os.environ['STEAM_CONFIG_VDF'])
+          lines = config_path.read_text(encoding='utf-8').splitlines()
+          stack = []
+          pending_key = None
+
+          for raw_line in lines:
+            line = raw_line.strip()
+            if not line or line.startswith('//'):
+              continue
+            if line == '{':
+              if pending_key is None:
+                continue
+              stack.append(pending_key)
+              pending_key = None
+              continue
+            if line == '}':
+              if stack:
+                stack.pop()
+              pending_key = None
+              continue
+
+            parts = re.findall(r'"([^"\\]*(?:\\.[^"\\]*)*)"', line)
+            if len(parts) == 1:
+              pending_key = parts[0]
+              continue
+            if len(parts) >= 2:
+              key, value = parts[0], parts[1]
+              if stack == ['InstallConfigStore', 'Authentication'] and key == 'RememberedMachineID':
+                if value:
+                  print(f'RememberedMachineID present with length {len(value)}')
+                  sys.exit(0)
+                print('RememberedMachineID is present but empty', file=sys.stderr)
+                sys.exit(1)
+
+          print('RememberedMachineID not found under InstallConfigStore.Authentication', file=sys.stderr)
+          sys.exit(1)
+          PY
       - name: Prove SteamCMD reads config.vdf
         run: |
           cp "$STEAM_CONFIG_VDF" "$STEAM_CONFIG_VDF.backup"

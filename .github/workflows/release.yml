@@ -130,8 +130,6 @@ jobs:
       MOD: ${{ matrix.mod }}
       BUNDLE_NAME: ${{ matrix.mod }}
       TEMP_DIR: "/tmp/${{ matrix.mod }}_upload"
-      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
-      STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
 
     steps:
       - name: Set BUNDLE_NAME
@@ -305,21 +303,6 @@ jobs:
 
           echo "vdfpath=$TEMP_DIR/workshop.vdf" >> "$GITHUB_OUTPUT"
 
-      - uses: buildalon/setup-steamcmd@v1
-        name: Setup SteamCMD
-        if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
-        id: steam-setup
-
-      - uses: CyberAndrii/steam-totp@v1
-        name: Generate TOTP
-        if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
-        id: steam-totp
-        with:
-          shared_secret: ${{ secrets.STEAM_SHARED_SECRET }}
-      - name: Upload with SteamCMD
-        if: ${{ github.event_name == 'release' && !endsWith(github.event.release.tag_name, '-beta') && !endsWith(github.event.release.tag_name, '-alpha') }}
-        run: ~/steamcmd/steamcmd.sh +login "$STEAM_USERNAME" "$STEAM_PASSWORD" ${{ steps.steam-totp.outputs.code }} +workshop_build_item "${{ steps.prepare.outputs.vdfpath }}" +quit
-
       - name: Upload zip artifact
         uses: actions/upload-artifact@v4
         with:
@@ -343,9 +326,20 @@ jobs:
           pattern: '*-zip'
           path: ./zips
           merge-multiple: true
+      - uses: buildalon/setup-steamcmd@v1
+        name: Setup SteamCMD
+      - name: Restore Steam config
+        env:
+          STEAM_CONFIG_VDF_B64: ${{ secrets.STEAM_CONFIG_VDF_B64 }}
+        run: |
+          mkdir -p "$HOME/.steam/steam/config"
+          printf '%s' "$STEAM_CONFIG_VDF_B64" | base64 -d > "$HOME/.steam/steam/config/config.vdf"
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.PAT }}
+          STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+          STEAM_CONFIG_VDF: ${{ env.HOME }}/.steam/steam/config/config.vdf
+          STEAMCMD_PATH: ${{ env.HOME }}/steamcmd/steamcmd.sh
         run: |
-          npm install @semantic-release/git semantic-release-replace-plugin -D
+          npm install @semantic-release/git semantic-release-replace-plugin execa steamdown -D
           npx semantic-release

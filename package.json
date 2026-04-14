@@ -1,6 +1,11 @@
 {
+  "scripts": {
+    "test:steam-release": "node --test tools/semantic-release-steam/tests/*.test.mjs",
+    "check:steam-release": "node tools/semantic-release-steam/tests/run-config-check.mjs"
+  },
   "devDependencies": {
-    "@semantic-release/git": "^10.0.1"
+    "@semantic-release/git": "^10.0.1",
+    "execa": "^9.0.0"
   },
   "dependencies": {
     "steamcommunity": "^3.49.0"

@@ -43,7 +43,7 @@ jobs:
           echo "✅ Tag format valid."
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Determine Cosmere mods
@@ -67,7 +67,7 @@ jobs:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
       - name: Checkout RimworldCosmere
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Dotnet
         uses: actions/setup-dotnet@v4
@@ -143,11 +143,11 @@ jobs:
           MOD: ${{ matrix.mod }}
 
       - name: Checkout RimworldCosmere
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: 'RimworldCosmere'
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -190,7 +190,7 @@ jobs:
       # extraction the bundles live under RimworldCosmere/$MOD/AssetBundles
       # so that the packaging step will include them automatically.
       - name: Download asset bundles
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: all-assetbundles
           path: RimworldCosmere
@@ -284,7 +284,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -298,17 +298,26 @@ jobs:
           printf '%s' "${{ secrets.STEAM_CONFIG_VDF_B64 }}" | base64 -d > "$CONFIG_DIR/config.vdf"
           echo "STEAM_CONFIG_VDF=$CONFIG_DIR/config.vdf" >> "$GITHUB_ENV"
       - name: Download all zip artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           pattern: '*-zip'
           path: ./zips
           merge-multiple: true
+      - name: Extract built mod artifacts
+        run: |
+          for artifact in ./zips/*.zip; do
+            [ -f "$artifact" ] || continue
+            filename=$(basename "$artifact")
+            mod_name="${filename%-${GITHUB_REF_NAME}.zip}"
+            mkdir -p "./${mod_name}"
+            unzip -o "$artifact" -d "./${mod_name}"
+          done
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.PAT }}
           STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
           STEAM_CONFIG_VDF: ${{ env.STEAM_CONFIG_VDF }}
-          STEAMCMD_PATH: ${{ env.STEAMCMDDIR }}/steamcmd.sh
+          STEAMCMD_PATH: ${{ env.STEAM_CMD }}/steamcmd.sh
         run: |
           npm install @semantic-release/git semantic-release-replace-plugin steamdown -D
           npx semantic-release

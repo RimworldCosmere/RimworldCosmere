@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { stageModContent } from '../lib/stage-content.mjs';
@@ -18,4 +18,11 @@ test('stages mod content while excluding .steamignore matches', async () => {
 
   assert.equal(existsSync(join(stagedPath, 'Keep.txt')), true);
   assert.equal(existsSync(join(stagedPath, 'Secrets.txt')), false);
+});
+
+test('roshar steamignore keeps CombatExtended compatibility patches publishable', () => {
+  const ignorePath = '/mnt/c/Users/aequa/projects/RimworldCosmere/RimworldCosmere/CosmereRoshar/.steamignore';
+  const ignoreEntries = readFileSync(ignorePath, 'utf8').split(/\r?\n/).filter(Boolean);
+
+  assert.equal(ignoreEntries.includes('CombatExtended'), false);
 });

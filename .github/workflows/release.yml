@@ -135,7 +135,7 @@ jobs:
 
           
       - name: Upload asset bundles artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: all-assetbundles
           path: "*-assetbundles.zip"
@@ -294,7 +294,7 @@ jobs:
 
 
       - name: Upload zip artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ matrix.mod }}-zip
           path: ${{ github.workspace }}/${{ matrix.mod }}-${{ env.BRANCH_NAME }}.zip
@@ -331,6 +331,28 @@ jobs:
             echo "Steam config missing"
             exit 1
           fi
+      - name: Prove SteamCMD reads config.vdf
+        run: |
+          cp "$STEAM_CONFIG_VDF" "$STEAM_CONFIG_VDF.backup"
+          restore_config() {
+            cp "$STEAM_CONFIG_VDF.backup" "$STEAM_CONFIG_VDF"
+            rm -f "$STEAM_CONFIG_VDF.backup"
+          }
+          trap restore_config EXIT
+          printf 'not a valid steam vdf\n' > "$STEAM_CONFIG_VDF"
+          set +e
+          "$STEAM_CMD/steamcmd.sh" +quit > /tmp/steamcmd-proof.stdout 2> /tmp/steamcmd-proof.stderr
+          status=$?
+          set -e
+          echo "SteamCMD proof exit code: $status"
+          echo '--- proof stdout ---'
+          cat /tmp/steamcmd-proof.stdout
+          echo '--- proof stderr ---'
+          cat /tmp/steamcmd-proof.stderr
+          echo '--- steam logs mentioning config.vdf ---'
+          grep -Rni 'config.vdf' "$STEAM_DIR/logs" || true
+          restore_config
+          trap - EXIT
       - name: Steam login preflight
         env:
           STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}

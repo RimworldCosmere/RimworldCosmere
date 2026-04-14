@@ -2,7 +2,5 @@
 <loadFolders>
     <v1.6>
         <li>/</li>
-        <li IfModActive="Cosmere.Scadrial">/Scadrial</li>
-        <li IfModActive="Cosmere.Roshar">/Roshar</li>
     </v1.6>
 </loadFolders>

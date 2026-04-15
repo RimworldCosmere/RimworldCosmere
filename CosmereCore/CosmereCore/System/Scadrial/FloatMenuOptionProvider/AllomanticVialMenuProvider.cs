@@ -91,6 +91,7 @@ public class AllomanticVialMenuProvider : RimWorld.FloatMenuOptionProvider {
         if (clickedThing is not AllomanticVial vial) return null;
         Pawn? pawn = context.FirstSelectedPawn;
         if (pawn is null) return null;
+        if (vial.metal is null) return null;
         MetallicArtsMetalDef metal = vial.metal;
         MetallicArtsMetalDef? stuffMetal = vial.Stuff != null
             ? DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(vial.Stuff.defName)

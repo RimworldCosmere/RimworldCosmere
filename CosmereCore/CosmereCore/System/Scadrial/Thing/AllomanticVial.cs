@@ -7,11 +7,11 @@ namespace Cosmere.System.Scadrial.Thing;
 public class AllomanticVial : ThingWithComps {
     private MetallicArtsMetalDef? cachedMetal;
 
-    public virtual MetallicArtsMetalDef metal =>
-        cachedMetal ??= DefDatabase<MetallicArtsMetalDef>.GetNamed(Stuff.defName);
+    public virtual MetallicArtsMetalDef? metal =>
+        cachedMetal ??= DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff?.defName);
 
     public bool IsForMetal(MetallicArtsMetalDef metalCheck) {
-        return metal.Equals(metalCheck);
+        return metal?.Equals(metalCheck) ?? false;
     }
 
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn) {
@@ -24,6 +24,8 @@ public class AllomanticVial : ThingWithComps {
 
     protected override void PostIngested(Pawn ingester) {
         base.PostIngested(ingester);
+
+        if (metal == null) return;
 
         ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(Constants.VialMetalAmount);
 

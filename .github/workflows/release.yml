@@ -333,9 +333,9 @@ jobs:
           fi
       - name: Validate RememberedMachineID
         run: |
-          grep -n 'RememberedMachineID' "$STEAM_CONFIG_VDF"
-          grep -Eq '"RememberedMachineID"[[:space:]]+".+"' "$STEAM_CONFIG_VDF"
-          echo 'RememberedMachineID present with a non-empty value'
+          grep -n -A3 '"RememberedMachineID"' "$STEAM_CONFIG_VDF"
+          grep -A3 '"RememberedMachineID"' "$STEAM_CONFIG_VDF" | grep -Eq '"[^"]+"[[:space:]]+"[^"]+"'
+          echo 'RememberedMachineID block contains a non-empty value'
       - name: Prove SteamCMD reads config.vdf
         run: |
           cp "$STEAM_CONFIG_VDF" "$STEAM_CONFIG_VDF.backup"

@@ -13,10 +13,10 @@
     - Store and tap traits like strength, speed, health, or senses
     - Full Feruchemists can master the entire suite of metalminds
     - Custom storage mechanics and UI integration for charge tracking
-    - > !Pawns with both Allomantic and Feruchemical powers in one metal can Compound!!<
+    - >!Pawns with both Allomantic and Feruchemical powers in one metal can Compound!!<
 
 - **>!Hemalurgy - Coming Soon!<**
-    - > !Dark, dangerous, and very real. Use at your own moral peril. WIP but coming soon.!<
+    - >!Dark, dangerous, and very real. Use at your own moral peril. WIP but coming soon.!<
 
 - **Genetics-Based Metalborn**
     - Allomantic and Feruchemical powers are inheritable via genes
@@ -51,5 +51,5 @@
 ![Tips](../.github/assets/scadrial/tips.png)
 
 - Mistborn and Full Feruchemists are **extremely rare** by default
-- > !Use your Lerasium and Atium wisely. There are alloys...!<
-- > !Burning Lerasium or Leratium can change everything...!<
+- >!Use your Lerasium and Atium wisely. There are alloys...!<
+- >!Burning Lerasium or Leratium can change everything...!<

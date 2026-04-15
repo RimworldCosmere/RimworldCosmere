@@ -33,7 +33,9 @@ public static class MetalDetector {
         if (thing?.def == null || depth > 25) return 0f;
 
         List<MetalDef> metals = GetLinkedMetals(thing.def, allowAluminum);
-        if (metals.Count > 0 || thing.def.IsMetal) {
+        if (metals.Count > 0 ||
+            thing.def.IsMetal &&
+            (allowAluminum || !thing.def.Equals(ThingDefOf.Aluminum))) {
             if (thing.def.category != ThingCategory.Building) {
                 return thing.GetStatValue(RimWorld.StatDefOf.Mass);
             }

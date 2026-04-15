@@ -19,14 +19,16 @@ test('publish skips unsupported branches', async () => {
   assert.equal(result, undefined);
 });
 
-test('publish passes configured description parts to the description builder', async () => {
-  const calls = [];
+test('publish compiles README and passes the branch asset base URL to the description builder', async () => {
+  const descriptionCalls = [];
+  const readmeCalls = [];
 
   const result = await plugin.publish(
     {
       branchTargets: { beta: 'beta' },
-      descriptionHeader: 'Header\n\n',
-      descriptionFooter: 'Footer\n',
+      descriptionHeader: 'Header',
+      descriptionFooter: 'Footer',
+      assetBaseUrlTemplate: 'https://raw.githubusercontent.com/RimworldCosmere/RimworldCosmere/{branch}',
       mods: [
         {
           name: 'CosmereCore',
@@ -44,8 +46,11 @@ test('publish passes configured description parts to the description builder', a
       },
       nextRelease: { version: '2.0.0-beta.1', notes: '' },
       logger: { log() {} },
+      writeCompiledReadme: async options => {
+        readmeCalls.push(options);
+      },
       buildSteamDescription: async options => {
-        calls.push(options);
+        descriptionCalls.push(options);
         return 'built description';
       },
       stageModContent: async () => '/tmp/stage',
@@ -54,11 +59,17 @@ test('publish passes configured description parts to the description builder', a
   );
 
   assert.equal(result, undefined);
-  assert.deepEqual(calls, [
+  assert.deepEqual(readmeCalls, [
     {
       modPath: '/repo/CosmereCore',
-      header: 'Header\n\n',
-      footer: 'Footer\n',
+      header: 'Header',
+      footer: 'Footer',
+    },
+  ]);
+  assert.deepEqual(descriptionCalls, [
+    {
+      modPath: '/repo/CosmereCore',
+      assetBaseUrl: 'https://raw.githubusercontent.com/RimworldCosmere/RimworldCosmere/beta',
     },
   ]);
 });

@@ -23,7 +23,8 @@ Included features:
 - **New StatDefs**
     - `MentalBreakAddFactor`: Modifies how likely a pawn is to suffer a mental break
     - `MentalBreakRemoveFactor`: Modifies how likely a pawn is to be calmed from one
-    - `Cosmere_Time_Dilation_Factor`: Used mostly by Scadrial Bendalloy and Cadmium burners. Used to tweak a few things that don't natively have stats (Burn rate of metals for example)
+    - `Cosmere_Time_Dilation_Factor`: Used mostly by Scadrial Bendalloy and Cadmium burners. Used to tweak a few things
+      that don't natively have stats (Burn rate of metals for example)
     - `Cosmere_Investiture`: How much investiture a pawn has!
 
 - **Investiture Need**  
@@ -50,7 +51,7 @@ Included features:
 
 ​
 
-# For Modders
+![For Modders](../.github/assets/fallback/for modders.png)
 
 Cosmere Core defines shared traits, needs, and stats to ensure consistency across Shardworlds.  
 Mods can register new Shards via the provided game component and hook into the Investiture system.
@@ -79,11 +80,11 @@ Cosmere.
 
 ​
 
-# Support Us or Follow Along
+![Support Us or Follow Along](../.github/assets/fallback/support us.png)
 
 Follow along with our development at: https://rimworldcosmere.com
 
-Contribute and donate so we can get more art and other commissions: 
+Contribute and donate so we can get more art and other commissions:
 
 * Recurring Donations: https://rimworldcosmere.com/#/portal/
 * One Time Donations: https://rimworldcosmere.com/#/portal/support

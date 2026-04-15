@@ -3,7 +3,7 @@ import { constants } from 'node:fs';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
 
-export async function buildSteamDescription({ modPath }) {
+export async function buildSteamDescription({ modPath, header = '', footer = '' }) {
   const readmePath = join(modPath, 'README.md');
 
   try {
@@ -12,7 +12,7 @@ export async function buildSteamDescription({ modPath }) {
     return 'No description available.';
   }
 
-  const markdown = await readFile(readmePath, 'utf8');
+  const markdown = `${header}${await readFile(readmePath, 'utf8')}${footer}`;
 
   return await new Promise((resolve, reject) => {
     const child = spawn('steamdown', [], { stdio: ['pipe', 'pipe', 'pipe'] });

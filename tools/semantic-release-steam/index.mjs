@@ -28,13 +28,20 @@ export async function publish(pluginConfig, context) {
   }
 
   const cwd = context.cwd ?? process.cwd();
+  const buildDescription = context.buildSteamDescription ?? buildSteamDescription;
+  const stageContent = context.stageModContent ?? stageModContent;
+  const uploadItem = context.uploadWorkshopItem ?? uploadWorkshopItem;
 
   for (const mod of state.mods) {
     const modPath = resolve(cwd, mod.path);
-    const stagePath = await stageModContent({ modPath });
-    const description = await buildSteamDescription({ modPath });
+    const stagePath = await stageContent({ modPath });
+    const description = await buildDescription({
+      modPath,
+      header: pluginConfig.descriptionHeader ?? '',
+      footer: pluginConfig.descriptionFooter ?? '',
+    });
 
-    await uploadWorkshopItem({
+    await uploadItem({
       steamCmdPath: context.env.STEAMCMD_PATH ?? '~/steamcmd/steamcmd.sh',
       steamUsername: context.env.STEAM_USERNAME,
       steamConfigPath: context.env.STEAM_CONFIG_VDF,

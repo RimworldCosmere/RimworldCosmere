@@ -317,52 +317,13 @@ jobs:
           mkdir -p "$STEAM_DIR/config"
           printf '%s' "${{ secrets.STEAM_CONFIG_VDF_B64 }}" | base64 -d > "$STEAM_DIR/config/config.vdf"
           echo "STEAM_CONFIG_VDF=$STEAM_DIR/config/config.vdf" >> "$GITHUB_ENV"
-      - name: Debug Steam config
-        run: |
-          echo "STEAM_CMD=$STEAM_CMD"
-          echo "STEAM_DIR=$STEAM_DIR"
-          echo "STEAM_CONFIG_VDF=$STEAM_CONFIG_VDF"
-          ls -la "$STEAM_DIR"
-          ls -la "$STEAM_DIR/config"
-          if [ -f "$STEAM_CONFIG_VDF" ]; then
-            echo "Steam config present"
-            wc -c "$STEAM_CONFIG_VDF"
-          else
-            echo "Steam config missing"
-            exit 1
-          fi
-      - name: Validate RememberedMachineID
-        run: |
-          grep -n -A3 '"RememberedMachineID"' "$STEAM_CONFIG_VDF"
-          grep -A3 '"RememberedMachineID"' "$STEAM_CONFIG_VDF" | grep -Eq '"[^"]+"[[:space:]]+"[^"]+"'
-          echo 'RememberedMachineID block contains a non-empty value'
-      - name: Prove SteamCMD reads config.vdf
-        run: |
-          cp "$STEAM_CONFIG_VDF" "$STEAM_CONFIG_VDF.backup"
-          restore_config() {
-            cp "$STEAM_CONFIG_VDF.backup" "$STEAM_CONFIG_VDF"
-            rm -f "$STEAM_CONFIG_VDF.backup"
-          }
-          trap restore_config EXIT
-          printf 'not a valid steam vdf\n' > "$STEAM_CONFIG_VDF"
-          set +e
-          "$STEAM_CMD/steamcmd.sh" +quit > /tmp/steamcmd-proof.stdout 2> /tmp/steamcmd-proof.stderr
-          status=$?
-          set -e
-          echo "SteamCMD proof exit code: $status"
-          echo '--- proof stdout ---'
-          cat /tmp/steamcmd-proof.stdout
-          echo '--- proof stderr ---'
-          cat /tmp/steamcmd-proof.stderr
-          echo '--- steam logs mentioning config.vdf ---'
-          grep -Rni 'config.vdf' "$STEAM_DIR/logs" || true
-          restore_config
-          trap - EXIT
+
       - name: Steam login preflight
         env:
           STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
         run: |
           "$STEAM_CMD/steamcmd.sh" +@ShutdownOnFailedCommand 1 +@NoPromptForPassword 1 +login "$STEAM_USERNAME" +quit
+
       - name: Download all zip artifacts
         uses: actions/download-artifact@v5
         with:

@@ -38,5 +38,5 @@ Contribute and donate so we can get more art and other commissions:
 * Thanks to everyone in the main RimWorld discord #mod-development channel (Especially 'aelanna') for helping with
   random questions
 
-**_This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
-Entertainment, LLC or Ludeon Studios._**
+_This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
+Entertainment, LLC or Ludeon Studios._

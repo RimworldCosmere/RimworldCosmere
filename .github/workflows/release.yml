@@ -187,7 +187,7 @@ jobs:
 
       - name: Install steamdown + steam-totp
         working-directory: RimworldCosmere
-        run: npm install -g @steamdown/cli tsx
+        run: npm install -g @steamdown/cli@1.0.0-beta.2 tsx
 
       - name: Run code generation
         working-directory: RimworldCosmere
@@ -346,5 +346,5 @@ jobs:
           STEAM_CONFIG_VDF: ${{ env.STEAM_CONFIG_VDF }}
           STEAMCMD_PATH: ${{ env.STEAM_CMD }}/steamcmd.sh
         run: |
-          npm install @semantic-release/git semantic-release-replace-plugin steamdown -D
+          npm install @semantic-release/git semantic-release-replace-plugin @steamdown/cli@1.0.0-beta.2 -D
           npx semantic-release

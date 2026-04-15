@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import plugin from '../index.mjs';
+
+const releaseWorkflow = readFileSync(new URL('../../../.github/workflows/release.yml', import.meta.url), 'utf8');
 
 test('publish skips unsupported branches', async () => {
   const result = await plugin.publish(
@@ -73,3 +76,12 @@ test('publish compiles README and passes the branch asset base URL to the descri
     },
   ]);
 });
+
+test('release workflow pins steamdown cli beta 2 for image rendering', () => {
+  assert.match(releaseWorkflow, /npm install -g @steamdown\/cli@1\.0\.0-beta\.2 tsx/);
+  assert.match(
+    releaseWorkflow,
+    /npm install @semantic-release\/git semantic-release-replace-plugin @steamdown\/cli@1\.0\.0-beta\.2 -D/,
+  );
+});
+

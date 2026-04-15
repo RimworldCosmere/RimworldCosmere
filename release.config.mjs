@@ -3,6 +3,8 @@
 const publishedFileIds = JSON.parse(
     readFileSync(new URL('./PublishedFileIds.json', import.meta.url), 'utf8'),
 );
+const descriptionHeader = readFileSync(new URL('./.github/README.header.md', import.meta.url), 'utf8');
+const descriptionFooter = readFileSync(new URL('./.github/README.footer.md', import.meta.url), 'utf8');
 
 /**
  * @type {import('semantic-release').GlobalConfig}
@@ -60,6 +62,8 @@ export default {
                     "main": "stable",
                     "beta": "beta"
                 },
+                "descriptionHeader": descriptionHeader,
+                "descriptionFooter": descriptionFooter,
                 "mods": [
                     {
                         "name": "CosmereCore",

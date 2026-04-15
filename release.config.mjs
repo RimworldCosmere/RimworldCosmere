@@ -64,6 +64,7 @@ export default {
                 },
                 "descriptionHeader": descriptionHeader,
                 "descriptionFooter": descriptionFooter,
+                "assetBaseUrlTemplate": "https://raw.githubusercontent.com/RimworldCosmere/RimworldCosmere/{branch}",
                 "mods": [
                     {
                         "name": "CosmereCore",

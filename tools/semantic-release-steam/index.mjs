@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import { verifySteamPublishConfig } from './lib/config.mjs';
 import { buildSteamDescription } from './lib/description.mjs';
+import { writeCompiledReadme } from './lib/readme.mjs';
 import { stageModContent } from './lib/stage-content.mjs';
 import { uploadWorkshopItem } from './lib/steamcmd.mjs';
 
@@ -31,14 +32,22 @@ export async function publish(pluginConfig, context) {
   const buildDescription = context.buildSteamDescription ?? buildSteamDescription;
   const stageContent = context.stageModContent ?? stageModContent;
   const uploadItem = context.uploadWorkshopItem ?? uploadWorkshopItem;
+  const compileReadme = context.writeCompiledReadme ?? writeCompiledReadme;
+  const assetBaseUrl = pluginConfig.assetBaseUrlTemplate
+    ? pluginConfig.assetBaseUrlTemplate.replace('{branch}', context.branch.name)
+    : '';
 
   for (const mod of state.mods) {
     const modPath = resolve(cwd, mod.path);
-    const stagePath = await stageContent({ modPath });
-    const description = await buildDescription({
+    await compileReadme({
       modPath,
       header: pluginConfig.descriptionHeader ?? '',
       footer: pluginConfig.descriptionFooter ?? '',
+    });
+    const stagePath = await stageContent({ modPath });
+    const description = await buildDescription({
+      modPath,
+      assetBaseUrl,
     });
 
     await uploadItem({

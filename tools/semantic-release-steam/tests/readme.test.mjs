@@ -26,7 +26,7 @@ test('writeCompiledReadme composes header template and footer with zero-width-sp
 
   assert.equal(
     readFileSync(join(modPath, 'README.md'), 'utf8'),
-    `![Introduction](../.github/assets/scadrial/intro.png)\n${zwsp}\n![About](../.github/assets/scadrial/about.png)\nBody\n\n${zwsp}\n![Support](../.github/assets/scadrial/support_us.png)`,
+    `![Introduction](../.github/assets/scadrial/intro.png)\n${zwsp}\n\n![About](../.github/assets/scadrial/about.png)\nBody\n\n${zwsp}\n\n![Support](../.github/assets/scadrial/support_us.png)`,
   );
 });
 

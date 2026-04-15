@@ -44,9 +44,11 @@ async function replaceFallbackAssets(markdown, modPath) {
   return markdown;
 }
 
+const zeroWidthSpace = '\u200B';
+
 export async function compileReadme({ modPath, header, footer }) {
-  const template = await readFile(join(modPath, 'README.template.md'), 'utf8');
-  const markdown = `${header}\nZWSP\n${template}\nZWSP\n${footer}`;
+  const template = (await readFile(join(modPath, 'README.template.md'), 'utf8')).replace(/^\uFEFF/, '');
+  const markdown = `${header}\n${zeroWidthSpace}\n${template}\n${zeroWidthSpace}\n${footer}`;
   return await replaceFallbackAssets(markdown, modPath);
 }
 

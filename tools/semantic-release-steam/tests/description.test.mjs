@@ -10,7 +10,7 @@ test('returns fallback description when README is missing', async () => {
   assert.equal(description, 'No description available.');
 });
 
-test('buildSteamDescription renders compiled README.md with absolute asset URLs', async () => {
+test('buildSteamDescription renders README images with steamdown img tags', async () => {
   const rootPath = mkdtempSync(join(tmpdir(), 'steam-description-'));
   const modPath = join(rootPath, 'CosmereScadrial');
   const binPath = join(rootPath, 'bin');
@@ -20,7 +20,10 @@ test('buildSteamDescription renders compiled README.md with absolute asset URLs'
   mkdirSync(binPath, { recursive: true });
 
   writeFileSync(join(modPath, 'README.md'), '![Introduction](../.github/assets/scadrial/intro.png)\n\nBody\n');
-  writeFileSync(join(binPath, 'steamdown'), '#!/usr/bin/env node\nprocess.stdin.pipe(process.stdout);\n');
+  writeFileSync(
+    join(binPath, 'steamdown'),
+    "#!/usr/bin/env node\nprocess.stdout.write('[img]https://raw.githubusercontent.com/RimworldCosmere/RimworldCosmere/beta/.github/assets/scadrial/intro.png[/img]\\n\\nBody\\n');\n",
+  );
   chmodSync(join(binPath, 'steamdown'), 0o755);
 
   process.env.PATH = `${binPath}:${originalPath}`;
@@ -32,7 +35,7 @@ test('buildSteamDescription renders compiled README.md with absolute asset URLs'
     });
     assert.equal(
       description,
-      '![Introduction](https://raw.githubusercontent.com/RimworldCosmere/RimworldCosmere/beta/.github/assets/scadrial/intro.png)\n\nBody\n',
+      '[img]https://raw.githubusercontent.com/RimworldCosmere/RimworldCosmere/beta/.github/assets/scadrial/intro.png[/img]\n\nBody\n',
     );
   } finally {
     process.env.PATH = originalPath;

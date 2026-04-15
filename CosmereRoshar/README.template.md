@@ -14,4 +14,9 @@
 
 ![Tips](../.github/assets/roshar/tips.png)
 
+- Build roofs and real shelter early. Highstorms are not scenery.
+- Keep infused spheres or other Stormlight sources on hand before sending Radiants into a fight.
+- Treat the Nahel bond with care. Broken oaths should have consequences.
+- Start a fresh colony if you want the full Roshar experience while systems are still in beta.
+
 ​

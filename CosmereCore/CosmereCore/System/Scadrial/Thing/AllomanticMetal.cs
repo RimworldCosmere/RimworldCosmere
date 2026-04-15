@@ -9,10 +9,12 @@ namespace Cosmere.System.Scadrial.Thing;
 public class AllomanticMetal : AllomanticVial {
     private MetallicArtsMetalDef? cachedMetal;
 
-    public override MetallicArtsMetalDef metal =>
-        cachedMetal ??= DefDatabase<MetallicArtsMetalDef>.GetNamed(def.defName);
+    public override MetallicArtsMetalDef? metal =>
+        cachedMetal ??= DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(def.defName);
 
     protected override void PostIngested(Pawn ingester) {
+        if (metal is null) return;
+
         if (metal.godMetal) {
             if (metal.Equals(MetallicArtsMetalDefOf.Lerasium)) {
                 GeneUtility.AddMistborn(ingester, false, true, "ingested Lerasium");

@@ -14,11 +14,4 @@ Global
 		{5F1D8C6D-E127-4001-A575-E56D99DF271F}.Release|Any CPU.Build.0 = Release|Any CPU
 
 	EndGlobalSection
-	GlobalSection(RiderSharedRunConfigurations) = postSolution
-		File = .claude\worktrees\agent-ac8065a0\.run\Build Asset Bundles (Mac).run.xml
-		File = .claude\worktrees\agent-ac8065a0\.run\Build Asset Bundles (PC).run.xml
-		File = .claude\worktrees\agent-ac8065a0\.run\MacOS.run.xml
-		File = .claude\worktrees\agent-ac8065a0\.run\RimWorld (PC).run.xml
-		File = .claude\worktrees\agent-ac8065a0\.run\start -- -d -f.run.xml
-	EndGlobalSection
 EndGlobal

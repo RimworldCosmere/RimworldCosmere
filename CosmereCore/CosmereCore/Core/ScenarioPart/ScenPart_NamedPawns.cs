@@ -8,6 +8,17 @@ public class ScenPart_NamedPawns : ScenPart {
     public List<NamedPawnDef> pawns = [];
     private int generationCounter;
 
+    public override void PostIdeoChosen() {
+        base.PostIdeoChosen();
+        if (pawns.Count == 0) return;
+
+        Find.GameInitData.startingPawnCount = pawns.Count;
+        StartingPawnUtility.ClearAllStartingPawns();
+        for (int i = 0; i < pawns.Count; i++) {
+            StartingPawnUtility.AddNewPawn();
+        }
+    }
+
     public override void Notify_PawnGenerated(Pawn pawn, PawnGenerationContext context, bool redressed) {
         if (context != PawnGenerationContext.PlayerStarter) return;
         if (pawns.Count == 0) return;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using FloatSubMenus;
 using RimWorld;
@@ -22,6 +23,7 @@ public class ImplantSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         if (surgeon == target) return null;
 
         if (!ResearchProjectDef.Named("Cosmere_Scadrial_Hemalurgy").IsFinished) return null;
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Harmony)) return null;
 
         List<Verse.Thing> chargedSpikes = FindAllChargedSpikes(surgeon);
         if (chargedSpikes.Count == 0) {

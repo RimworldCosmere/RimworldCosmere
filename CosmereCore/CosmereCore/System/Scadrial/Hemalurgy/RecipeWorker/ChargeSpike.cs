@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Dialog;
@@ -13,7 +14,12 @@ public class ChargeSpike : Recipe_Surgery {
         if (!base.AvailableOnNow(thing, part)) return false;
         if (thing is not Pawn) return false;
         if (!ResearchProjectDef.Named("Cosmere_Scadrial_Hemalurgy").IsFinished) return false;
+        if (!IsHemalurgyEnabled()) return false;
         return true;
+    }
+
+    private static bool IsHemalurgyEnabled() {
+        return ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Harmony);
     }
 
     public override IEnumerable<BodyPartRecord> GetPartsToApplyOn(Pawn pawn, RecipeDef recipe) {
@@ -25,6 +31,8 @@ public class ChargeSpike : Recipe_Surgery {
     }
 
     public override void ApplyOnPawn(Pawn donor, BodyPartRecord part, Pawn billDoer, List<Verse.Thing> ingredients, Bill bill) {
+        if (!IsHemalurgyEnabled()) return;
+
         HemalurgicSpike? spikeComp = FindUnchargedSpike(ingredients);
         if (spikeComp == null) {
             Messages.Message("CS_Hemalurgy_NoUnchargedSpike".Translate(), donor, MessageTypeDefOf.RejectInput);

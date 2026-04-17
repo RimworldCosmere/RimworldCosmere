@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Dialog;
 using FloatSubMenus;
@@ -23,6 +24,7 @@ public class LiveSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         if (surgeon == target) return null;
 
         if (!ResearchProjectDef.Named("Cosmere_Scadrial_Hemalurgy").IsFinished) return null;
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Harmony)) return null;
 
         List<Verse.Thing> availableSpikes = FindAllUnchargedSpikes(surgeon);
         if (availableSpikes.Count == 0) {

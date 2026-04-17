@@ -53,57 +53,61 @@ public class HemalurgicSpikes : HediffWithComps {
     private void RebuildStage() {
         cachedStage = new HediffStage { label = "hemalurgic spikes" };
 
-        int strengthCount = 0;
-        int sensesCount = 0;
-        int emotionalCount = 0;
-        int mentalCount = 0;
+        float strengthWeight = 0f;
+        float sensesWeight = 0f;
+        float emotionalWeight = 0f;
+        float mentalWeight = 0f;
 
         for (int i = 0; i < spikes.Count; i++) {
             ImplantedSpikeData spike = spikes[i];
             float mult = spike.chargeStrength;
             switch (spike.stealType) {
                 case HemalurgicStealType.HumanStrength:
-                    strengthCount++;
+                    strengthWeight += mult;
                     break;
                 case HemalurgicStealType.HumanSenses:
-                    sensesCount++;
+                    sensesWeight += mult;
                     break;
                 case HemalurgicStealType.EmotionalFortitude:
-                    emotionalCount++;
+                    emotionalWeight += mult;
                     break;
                 case HemalurgicStealType.MentalFortitude:
-                    mentalCount++;
+                    mentalWeight += mult;
                     break;
             }
         }
 
         List<StatModifier> factors = [];
         List<StatModifier> offsets = [];
+        List<PawnCapacityModifier> capMods = [];
 
-        if (strengthCount > 0) {
-            factors.Add(new StatModifier { stat = StatDef.Named("MeleeDamageFactor"), value = 1f + strengthCount * 0.15f });
-            factors.Add(new StatModifier { stat = StatDef.Named("MoveSpeed"), value = 1f + strengthCount * 0.10f });
-            factors.Add(new StatModifier { stat = StatDef.Named("ArmorRating_Sharp"), value = 1f + strengthCount * 0.05f });
-            factors.Add(new StatModifier { stat = StatDef.Named("ArmorRating_Blunt"), value = 1f + strengthCount * 0.05f });
+        if (strengthWeight > 0f) {
+            factors.Add(new StatModifier { stat = StatDef.Named("MeleeDamageFactor"), value = 1f + strengthWeight * 0.15f });
+            factors.Add(new StatModifier { stat = StatDef.Named("MoveSpeed"), value = 1f + strengthWeight * 0.10f });
+            factors.Add(new StatModifier { stat = StatDef.Named("ArmorRating_Sharp"), value = 1f + strengthWeight * 0.05f });
+            factors.Add(new StatModifier { stat = StatDef.Named("ArmorRating_Blunt"), value = 1f + strengthWeight * 0.05f });
         }
 
-        if (sensesCount > 0) {
-            offsets.Add(new StatModifier { stat = StatDef.Named("ShootingAccuracyPawn"), value = sensesCount * 3f });
-            factors.Add(new StatModifier { stat = StatDef.Named("AimingDelayFactor"), value = 1f - sensesCount * 0.05f });
+        if (sensesWeight > 0f) {
+            capMods.Add(new PawnCapacityModifier { capacity = PawnCapacityDefOf.Sight, postFactor = 1f + sensesWeight * 0.20f });
+            capMods.Add(new PawnCapacityModifier { capacity = PawnCapacityDefOf.Hearing, postFactor = 1f + sensesWeight * 0.20f });
+            offsets.Add(new StatModifier { stat = StatDef.Named("ShootingAccuracyPawn"), value = sensesWeight * 3f });
+            factors.Add(new StatModifier { stat = StatDef.Named("AimingDelayFactor"), value = 1f - sensesWeight * 0.05f });
         }
 
-        if (emotionalCount > 0) {
-            offsets.Add(new StatModifier { stat = StatDef.Named("MentalBreakThreshold"), value = emotionalCount * -0.10f });
-            factors.Add(new StatModifier { stat = StatDef.Named("SocialImpact"), value = 1f + emotionalCount * 0.10f });
+        if (emotionalWeight > 0f) {
+            offsets.Add(new StatModifier { stat = StatDef.Named("MentalBreakThreshold"), value = emotionalWeight * -0.10f });
+            factors.Add(new StatModifier { stat = StatDef.Named("SocialImpact"), value = 1f + emotionalWeight * 0.10f });
         }
 
-        if (mentalCount > 0) {
-            factors.Add(new StatModifier { stat = StatDef.Named("GlobalLearningFactor"), value = 1f + mentalCount * 0.15f });
-            factors.Add(new StatModifier { stat = StatDef.Named("ResearchSpeed"), value = 1f + mentalCount * 0.10f });
+        if (mentalWeight > 0f) {
+            factors.Add(new StatModifier { stat = StatDef.Named("GlobalLearningFactor"), value = 1f + mentalWeight * 0.15f });
+            factors.Add(new StatModifier { stat = StatDef.Named("ResearchSpeed"), value = 1f + mentalWeight * 0.10f });
         }
 
         if (factors.Count > 0) cachedStage.statFactors = factors;
         if (offsets.Count > 0) cachedStage.statOffsets = offsets;
+        if (capMods.Count > 0) cachedStage.capMods = capMods;
     }
 
     public override string GetTooltip(Pawn pawn, bool showHediffsDebugInfo) {

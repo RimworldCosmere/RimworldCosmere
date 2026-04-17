@@ -54,7 +54,7 @@
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
                     <PainShockThreshold>1.15</PainShockThreshold>
-                    <MentalBreakThreshold>1.15</MentalBreakThreshold>
+                    <MentalBreakThreshold>0.85</MentalBreakThreshold>
                     <MoveSpeed>1.15</MoveSpeed>
                     <MeleeHitChance>1.15</MeleeHitChance>
                     <ShootingAccuracyPawn>1.15</ShootingAccuracyPawn>
@@ -83,7 +83,7 @@
                     <SocialImpact>0.8</SocialImpact>
                     <NegotiationAbility>0.8</NegotiationAbility>
                     <PainShockThreshold>0.8</PainShockThreshold>
-                    <MentalBreakThreshold>0.8</MentalBreakThreshold>
+                    <MentalBreakThreshold>1.2</MentalBreakThreshold>
                     <RestFallRateFactor>1.15</RestFallRateFactor>
                     <JoyFallRateFactor>1.15</JoyFallRateFactor>
                 </statFactors>
@@ -116,7 +116,7 @@
                     <SocialImpact>0.8</SocialImpact>
                     <NegotiationAbility>0.8</NegotiationAbility>
                     <PainShockThreshold>0.8</PainShockThreshold>
-                    <MentalBreakThreshold>0.8</MentalBreakThreshold>
+                    <MentalBreakThreshold>1.2</MentalBreakThreshold>
                     <RestFallRateFactor>1.15</RestFallRateFactor>
                     <JoyFallRateFactor>1.15</JoyFallRateFactor>
                 </statFactors>

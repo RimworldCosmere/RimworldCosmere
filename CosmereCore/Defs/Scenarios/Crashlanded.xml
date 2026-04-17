@@ -12,27 +12,27 @@
           <pawnChoiceCount>6</pawnChoiceCount>
           <customSummary>Begin with three colonists drawn from across the Cosmere. Nobles, Skaa, Terris, Scadrians, Lighteyes, Darkeyes - the choice is yours.</customSummary>
           <overrideKinds>
-            <li>
+            <li MayRequire="Cosmere.Scadrial">
               <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
               <pawnKind>Cosmere_Scadrial_PawnKind_Noble</pawnKind>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Scadrial">
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
               <pawnKind>Cosmere_Scadrial_PawnKind_Skaa</pawnKind>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Scadrial">
               <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
               <pawnKind>Cosmere_Scadrial_PawnKind_Terris</pawnKind>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Scadrial">
               <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
               <pawnKind>Cosmere_Scadrial_PawnKind_Scadrian</pawnKind>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Roshar">
               <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
               <pawnKind>Cosmere_Roshar_PawnKind_Lighteyes</pawnKind>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Roshar">
               <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
               <pawnKind>Cosmere_Roshar_PawnKind_Darkeyes</pawnKind>
             </li>

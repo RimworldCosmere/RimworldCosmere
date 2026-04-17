@@ -1,6 +1,5 @@
 ﻿using Cosmere.System.Roshar.Comp.Game;
 using Cosmere.System.Roshar.Comp.Thing;
-using Cosmere.System.Scadrial.Hemalurgy;
 using Verse;
 
 namespace Cosmere.System.Roshar.Utility;
@@ -8,7 +7,9 @@ namespace Cosmere.System.Roshar.Utility;
 public static class RadiantOrder {
     public static bool BondWithSpren(Pawn pawn, bool showLetter = true) {
         if (pawn.IsSurgebinder()) return false;
-        if (pawn.health.hediffSet.HasHediff(HemalurgicDefOf.Cosmere_Scadrial_Hediff_Drab)) return false;
+
+        HediffDef? drabHediff = DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Drab");
+        if (drabHediff != null && pawn.health.hediffSet.HasHediff(drabHediff)) return false;
 
         RadiantTracker? tracker = Current.Game?.GetComponent<RadiantTracker>();
         if (tracker != null && !tracker.HasAnyAvailableOrder(pawn)) return false;

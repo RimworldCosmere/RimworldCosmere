@@ -30,12 +30,14 @@ public static class Pawn_GeneTrackerExtension {
             forceGenerateNewPawn: true
         ));
 
+        SanitizeSpren(spren);
+
         string name = customName ?? orderDef.sprenNamePool.RandomElement();
         spren.Name = new NameSingle(name);
 
         if (spren.story != null) {
-            spren.story.bodyType ??= BodyTypeDefOf.Thin;
-            spren.story.headType ??= DefDatabase<HeadTypeDef>.AllDefsListForReading[0];
+            spren.story.bodyType = BodyTypeDefOf.Thin;
+            spren.story.headType = DefDatabase<HeadTypeDef>.AllDefsListForReading[0];
             spren.story.Title = orderDef.sprenLabel;
         }
 
@@ -72,6 +74,20 @@ public static class Pawn_GeneTrackerExtension {
         }
 
         return spren;
+    }
+
+    private static void SanitizeSpren(Verse.Pawn spren) {
+        if (spren.inventory != null) {
+            spren.inventory.DestroyAll();
+        }
+
+        if (spren.equipment != null) {
+            spren.equipment.DestroyAllEquipment();
+        }
+
+        if (spren.apparel != null) {
+            spren.apparel.DestroyAll();
+        }
     }
 
     public static Surgebinder? TryAddRadiantOrder(

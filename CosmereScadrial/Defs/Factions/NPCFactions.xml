@@ -55,6 +55,13 @@
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
       <li>Cosmere_Structure_SteelMinistry</li>
     </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.5</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Noble>0.4</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Terris>0.1</Cosmere_Scadrial_Xenotype_Terris>
+      </xenotypeChances>
+    </xenotypeSet>
     <pawnGroupMakers>
       <li>
         <kindDef>Combat</kindDef>
@@ -115,6 +122,13 @@
     <baseTraderKinds>
       <li>Base_Outlander_Standard</li>
     </baseTraderKinds>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.6</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.3</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Terris>0.1</Cosmere_Scadrial_Xenotype_Terris>
+      </xenotypeChances>
+    </xenotypeSet>
     <pawnGroupMakers>
       <li>
         <kindDef>Combat</kindDef>
@@ -188,6 +202,13 @@
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
       <li>Cosmere_Structure_ChurchOfSurvivor</li>
     </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.75</Cosmere_Scadrial_Xenotype_Skaa>
+        <Cosmere_Scadrial_Xenotype_Terris>0.15</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.1</Cosmere_Scadrial_Xenotype_Scadrian>
+      </xenotypeChances>
+    </xenotypeSet>
     <caravanTraderKinds>
       <li>Caravan_Neolithic_BulkGoods</li>
     </caravanTraderKinds>

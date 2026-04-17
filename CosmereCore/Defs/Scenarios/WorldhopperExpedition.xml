@@ -12,41 +12,41 @@
           <pawnChoiceCount>8</pawnChoiceCount>
           <customSummary>Begin with five worldhoppers: a Lighteyes, a Noble, a Terris keeper, and two others of your choosing. Each carries the Investiture of their homeworld.</customSummary>
           <overrideKinds>
-            <li>
+            <li MayRequire="Cosmere.Scadrial">
               <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
               <pawnKind>Cosmere_Scadrial_PawnKind_Noble</pawnKind>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Scadrial">
               <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
               <pawnKind>Cosmere_Scadrial_PawnKind_Skaa</pawnKind>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Scadrial">
               <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
               <pawnKind>Cosmere_Scadrial_PawnKind_Terris</pawnKind>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Scadrial">
               <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
               <pawnKind>Cosmere_Scadrial_PawnKind_Scadrian</pawnKind>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Roshar">
               <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
               <pawnKind>Cosmere_Roshar_PawnKind_Lighteyes</pawnKind>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Roshar">
               <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
               <pawnKind>Cosmere_Roshar_PawnKind_Darkeyes</pawnKind>
             </li>
           </overrideKinds>
           <xenotypeCounts>
-            <li>
+            <li MayRequire="Cosmere.Roshar">
               <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
               <count>1</count>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Scadrial">
               <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
               <count>1</count>
             </li>
-            <li>
+            <li MayRequire="Cosmere.Scadrial">
               <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
               <count>1</count>
             </li>

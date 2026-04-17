@@ -1,9 +1,11 @@
 using Cosmere.Core.Ability;
 using Cosmere.Core.Def;
 using Cosmere.Core.Savant;
+using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.Surgebinding.Hediff;
+using RimWorld;
 using Verse;
 using AbilityDef = RimWorld.AbilityDef;
 
@@ -43,7 +45,18 @@ public class SurgebindingAbility : AbstractAbility<Surgebinder, SurgebindingHedi
     }
 
     public new bool GizmosVisible() {
-        return base.GizmosVisible() && pawn.genes.HasSurgebindingGeneForOrder(radiantOrder);
+        return base.GizmosVisible()
+               && pawn.genes.HasSurgebindingGeneForOrder(radiantOrder)
+               && ShardUtility.AreAnyEnabled(ShardDefOf.Honor);
+    }
+
+    public override AcceptanceReport CanCast {
+        get {
+            if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) {
+                return "Honor is not present.";
+            }
+            return base.CanCast;
+        }
     }
 
     public override float GetStrength(Status? desiredStatus = null) {

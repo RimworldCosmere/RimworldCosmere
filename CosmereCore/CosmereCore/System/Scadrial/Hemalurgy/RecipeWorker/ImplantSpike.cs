@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cosmere.Core.Comp.Thing;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Hediff;
 using RimWorld;
@@ -13,7 +14,12 @@ public class ImplantSpike : Recipe_Surgery {
         if (!base.AvailableOnNow(thing, part)) return false;
         if (thing is not Pawn) return false;
         if (!ResearchProjectDef.Named("Cosmere_Scadrial_Hemalurgy").IsFinished) return false;
+        if (!IsHemalurgyEnabled()) return false;
         return true;
+    }
+
+    private static bool IsHemalurgyEnabled() {
+        return ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Harmony);
     }
 
     public override IEnumerable<BodyPartRecord> GetPartsToApplyOn(Pawn pawn, RecipeDef recipe) {
@@ -25,6 +31,8 @@ public class ImplantSpike : Recipe_Surgery {
     }
 
     public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer, List<Verse.Thing> ingredients, Bill bill) {
+        if (!IsHemalurgyEnabled()) return;
+
         HemalurgicSpike? spikeComp = FindChargedSpike(ingredients);
         if (spikeComp == null) {
             Messages.Message("CS_Hemalurgy_NoChargedSpike".Translate(), pawn, MessageTypeDefOf.RejectInput);

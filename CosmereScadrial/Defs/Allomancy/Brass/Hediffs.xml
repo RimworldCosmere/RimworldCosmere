@@ -52,7 +52,7 @@
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <statFactors>
                     <PainShockThreshold>1.15</PainShockThreshold>
-                    <MentalBreakThreshold>1.15</MentalBreakThreshold>
+                    <MentalBreakThreshold>0.85</MentalBreakThreshold>
                     <RestRateMultiplier>1.15</RestRateMultiplier>
                     <RestFallRateFactor>0.85</RestFallRateFactor>
                     <JoyFallRateFactor>0.85</JoyFallRateFactor>
@@ -66,7 +66,7 @@
                 </statOffsets>
                 <statFactors>
                     <PainShockThreshold>1.15</PainShockThreshold>
-                    <MentalBreakThreshold>1.15</MentalBreakThreshold>
+                    <MentalBreakThreshold>0.85</MentalBreakThreshold>
                     <RestRateMultiplier>1.15</RestRateMultiplier>
                     <RestFallRateFactor>0.85</RestFallRateFactor>
                     <JoyFallRateFactor>0.85</JoyFallRateFactor>

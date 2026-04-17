@@ -50,6 +50,14 @@
               <xenotype>Cosmere_Scadrial_Xenotype_Terris</xenotype>
               <count>1</count>
             </li>
+            <li MayRequire="Cosmere.Scadrial">
+              <xenotype>Cosmere_Scadrial_Xenotype_Scadrian</xenotype>
+              <count>1</count>
+            </li>
+            <li MayRequire="Cosmere.Roshar">
+              <xenotype>Cosmere_Roshar_Xenotype_Darkeyes</xenotype>
+              <count>1</count>
+            </li>
           </xenotypeCounts>
         </li>
 

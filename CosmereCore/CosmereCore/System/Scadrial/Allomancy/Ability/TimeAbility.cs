@@ -69,7 +69,7 @@ public class TimeAbility : AllomancyAbility {
             }
         }
 
-        if (!pawn.Position.InHorDistOf(bubble.Position, radius)) {
+        if (!pawn.Spawned || pawn.MapHeld != bubble.Map || !pawn.Position.InHorDistOf(bubble.Position, radius)) {
             UpdateStatus(Active.Off);
             return;
         }

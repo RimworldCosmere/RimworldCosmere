@@ -1,5 +1,6 @@
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Def;
+using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Comp.Game;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
@@ -11,6 +12,7 @@ namespace Cosmere.System.Roshar.Extension;
 
 public static class Pawn_GeneTrackerExtension {
     public static Verse.Pawn? SpawnBondedSpren(this Verse.Pawn radiant, RadiantOrderDef orderDef, string? customName = null, bool showNamingDialog = false) {
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) return null;
         if (orderDef.defName == "Bondsmith") return null;
         if (orderDef.sprenNamePool.Count == 0) return null;
 
@@ -80,6 +82,8 @@ public static class Pawn_GeneTrackerExtension {
         string? sprenName = null,
         bool showNamingDialog = false
     ) {
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) return null;
+
         Verse.Pawn pawn = genes.pawn;
         RadiantOrderDef? orderDef = geneDef.GetModExtension<DefModExtension.RadiantOrder>()?.order;
         if (orderDef != null && pawn != null) {

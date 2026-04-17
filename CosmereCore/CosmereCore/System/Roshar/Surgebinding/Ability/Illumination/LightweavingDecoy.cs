@@ -73,9 +73,40 @@ public class LightweavingDecoy : SurgebindingAbility {
             forceGenerateNewPawn: true
         ));
 
+        SanitizeDecoy(decoy);
         CopyAppearance(pawn, decoy);
 
         decoy.Name = new NameSingle(pawn.Name?.ToStringShort + " (Decoy)");
+
+        GenSpawn.Spawn(decoy, cell, map);
+
+        DecoyHediff hediff = (DecoyHediff)HediffMaker.MakeHediff(DecoyHediff.Def, decoy);
+        hediff.caster = pawn;
+        hediff.Severity = 1f;
+        decoy.health.AddHediff(hediff);
+
+        return decoy;
+    }
+
+    private static void SanitizeDecoy(Verse.Pawn decoy) {
+        if (decoy.inventory != null) {
+            decoy.inventory.DestroyAll();
+        }
+
+        if (decoy.equipment != null) {
+            decoy.equipment.DestroyAllEquipment();
+        }
+
+        if (decoy.apparel != null) {
+            decoy.apparel.DestroyAll();
+        }
+
+        if (decoy.story?.traits != null) {
+            List<Trait> allTraits = [..decoy.story.traits.allTraits];
+            for (int i = 0; i < allTraits.Count; i++) {
+                decoy.story.traits.RemoveTrait(allTraits[i]);
+            }
+        }
 
         if (decoy.skills != null) {
             List<SkillRecord> allSkills = decoy.skills.skills;
@@ -85,18 +116,22 @@ public class LightweavingDecoy : SurgebindingAbility {
             }
         }
 
-        GenSpawn.Spawn(decoy, cell, map);
-
-        DecoyHediff hediff = (DecoyHediff)HediffMaker.MakeHediff(DecoyHediff.Def, decoy);
-        hediff.caster = pawn;
-        hediff.Severity = 1f;
-        decoy.health.AddHediff(hediff);
-
-        if (decoy.drafter != null) {
-            decoy.drafter.Drafted = true;
+        if (decoy.relations != null) {
+            List<DirectPawnRelation> rels = [..decoy.relations.DirectRelations];
+            for (int i = 0; i < rels.Count; i++) {
+                decoy.relations.RemoveDirectRelation(rels[i]);
+            }
         }
 
-        return decoy;
+        if (decoy.needs != null) {
+            decoy.needs.AllNeeds.Clear();
+        }
+
+        if (decoy.workSettings != null) {
+            decoy.workSettings.DisableAll();
+        }
+
+        decoy.playerSettings = new Pawn_PlayerSettings(decoy);
     }
 
     private static void CopyAppearance(Verse.Pawn source, Verse.Pawn target) {
@@ -143,6 +178,27 @@ public class LightweavingDecoy : SurgebindingAbility {
         [HarmonyPostfix]
         public static void Postfix() {
             ActiveDecoys.Clear();
+        }
+    }
+
+    [HarmonyPatch(typeof(Verse.Pawn), nameof(Verse.Pawn.PreApplyDamage))]
+    public static class VanishOnDamage {
+        [HarmonyPrefix]
+        public static bool Prefix(Verse.Pawn __instance, ref DamageInfo dinfo, out bool absorbed) {
+            absorbed = false;
+            if (!DecoyHediff.IsDecoy(__instance)) return true;
+
+            absorbed = true;
+            if (__instance.Spawned) {
+                FleckMaker.Static(__instance.Position, __instance.Map, FleckDefOf.PsycastAreaEffect);
+                __instance.DeSpawn(DestroyMode.Vanish);
+            }
+
+            RemoveDecoy(__instance);
+            if (!__instance.Destroyed) {
+                __instance.Discard(true);
+            }
+            return false;
         }
     }
 }

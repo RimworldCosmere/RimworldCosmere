@@ -1,3 +1,4 @@
+using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.LetterArrive;
 using Cosmere.System.Roshar.Surgebinding.Hediff;
@@ -68,10 +69,20 @@ public class BondsmithCallingChecker : GameComponent {
     }
 
     private bool MeetsCallingCriteria(Pawn pawn, string sprenName, Verse.Map map) {
+        if (!IsGodsprenAvailable(sprenName)) return false;
         return sprenName switch {
             "Stormfather" => MeetsStormfatherCriteria(pawn, map),
             "Nightwatcher" => MeetsNightwatcherCriteria(pawn),
             "Sibling" => MeetsSiblingCriteria(pawn),
+            _ => false,
+        };
+    }
+
+    private static bool IsGodsprenAvailable(string sprenName) {
+        return sprenName switch {
+            "Stormfather" => ShardUtility.AreAnyEnabled(ShardDefOf.Honor),
+            "Nightwatcher" => ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation),
+            "Sibling" => ShardUtility.AreAllEnabled(ShardDefOf.Honor, ShardDefOf.Cultivation),
             _ => false,
         };
     }

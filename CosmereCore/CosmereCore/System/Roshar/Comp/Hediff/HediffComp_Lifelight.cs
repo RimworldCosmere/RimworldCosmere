@@ -1,4 +1,5 @@
 using Cosmere.Core.Comp.Thing;
+using Cosmere.Core.Util;
 using RimWorld;
 using Verse;
 
@@ -17,6 +18,8 @@ public class HediffComp_Lifelight : HediffComp {
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
         if (!GenTicks.IsTickIntervalDelta(GenDate.TicksPerDay, delta)) return;
+
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation)) return;
 
         Verse.Pawn pawn = parent.pawn;
         if (pawn?.needs?.food == null) return;

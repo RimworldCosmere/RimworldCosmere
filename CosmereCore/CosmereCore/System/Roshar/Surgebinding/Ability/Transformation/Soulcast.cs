@@ -40,6 +40,11 @@ public class Soulcast : SurgebindingAbility {
             if (found != null) target = new LocalTargetInfo(found);
         }
 
+        if (target.HasThing && IsBondedSpren(target.Thing)) {
+            Messages.Message("Cannot soulcast a bonded spren.", MessageTypeDefOf.RejectInput, false);
+            return;
+        }
+
         switch (storedMode.Value) {
             case SoulcastMode.ConvertDrop:
                 if (storedMaterial != null && target.HasThing) DoConvertDrop(target.Thing, storedMaterial);
@@ -70,6 +75,7 @@ public class Soulcast : SurgebindingAbility {
         for (int i = 0; i < things.Count; i++) {
             Verse.Thing thing = things[i];
             if (thing.Destroyed) continue;
+            if (IsBondedSpren(thing)) continue;
             bool valid = mode switch {
                 SoulcastMode.ConvertDrop => thing.def.category == ThingCategory.Item
                                            || thing.def.plant != null
@@ -83,6 +89,10 @@ public class Soulcast : SurgebindingAbility {
             if (valid) return thing;
         }
         return null;
+    }
+
+    private static bool IsBondedSpren(Verse.Thing thing) {
+        return thing is Verse.Pawn p && p.TryGetComp<Cosmere.System.Roshar.Comp.Thing.CompSprenBond>() != null;
     }
 
     private void ShowMaterialPicker() {
@@ -215,10 +225,6 @@ public class Soulcast : SurgebindingAbility {
         }
 
         if (target.Thing is Verse.Pawn targetPawn) {
-            if (targetPawn.TryGetComp<Cosmere.System.Roshar.Comp.Thing.CompSprenBond>() != null) {
-                Messages.Message("Cannot soulcast a bonded spren.", MessageTypeDefOf.RejectInput, false);
-                return;
-            }
             float hitChance = GetSoulcastHitChance(targetPawn);
             Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
                 "CRO_Soulcast_PawnWarning".Translate(

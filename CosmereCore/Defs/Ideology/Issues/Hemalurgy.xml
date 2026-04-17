@@ -32,7 +32,7 @@
         <impact>High</impact>
         <displayOrderInIssue>0</displayOrderInIssue>
         <displayOrderInImpact>100</displayOrderInImpact>
-        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <defaultSelectionWeight>10</defaultSelectionWeight>
         <requiredMemes>
             <li>Cosmere_Structure_SteelMinistry</li>
         </requiredMemes>
@@ -91,6 +91,10 @@
             <li>Cosmere_Structure_Pathianism</li>
             <li>Cosmere_Structure_ChurchOfSurvivor</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_Sliverism</li>
+        </conflictingMemes>
         <comps>
             <li Class="PreceptComp_SelfTookMemoryThought">
                 <eventDef>Cosmere_ReceivedHemalurgicSpike</eventDef>
@@ -122,6 +126,11 @@
             <li>Cosmere_Structure_StoneShamanism</li>
             <li>Cosmere_Structure_TerrisWorldbringer</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_Survivorism</li>
+            <li>Cosmere_Structure_Sliverism</li>
+        </conflictingMemes>
         <comps>
             <li Class="PreceptComp_UnwillingToDo">
                 <eventDef>Cosmere_PerformedHemalurgy</eventDef>
@@ -154,6 +163,10 @@
             <li>Cosmere_Structure_Passions</li>
             <li>Cosmere_Structure_ParshendriRhythms</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_Sliverism</li>
+        </conflictingMemes>
     </PreceptDef>
 
     <!-- ========== THOUGHTS ========== -->

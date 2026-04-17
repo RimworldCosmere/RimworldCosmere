@@ -36,9 +36,7 @@ public class NightwatcherValley : RimWorld.Planet.WorldObject {
 
     private void TriggerEncounterForCaravan(Caravan caravan) {
         Shards? shards = Current.Game.GetComponent<Shards>();
-        if (shards != null && !shards.IsEnabled("Cultivation")) {
-            shards.EnableShard("Cultivation");
-        }
+        if (shards == null || !shards.IsEnabled("Cultivation")) return;
 
         List<Verse.Pawn> pawns = caravan.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {
@@ -54,6 +52,9 @@ public class NightwatcherValley : RimWorld.Planet.WorldObject {
     public override IEnumerable<Verse.Gizmo> GetCaravanGizmos(Caravan caravan) {
         foreach (Verse.Gizmo g in base.GetCaravanGizmos(caravan))
             yield return g;
+
+        Shards? shards = Current.Game.GetComponent<Shards>();
+        if (shards == null || !shards.IsEnabled("Cultivation")) yield break;
 
         List<Verse.Pawn> pawns = caravan.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {

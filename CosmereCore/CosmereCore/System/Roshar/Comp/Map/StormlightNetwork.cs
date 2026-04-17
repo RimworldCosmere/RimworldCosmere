@@ -13,7 +13,7 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
 
     private bool? cachedEnabled;
 
-    private bool enabled => ShardUtility.CachedAreAnyEnabled(ref cachedEnabled, ShardDefOf.Honor, ShardDefOf.Cultivation, ShardDefOf.Odium);
+    private bool enabled => ShardUtility.CachedAreAnyEnabled(ref cachedEnabled, ShardDefOf.Honor);
 
     public void MarkDirty() {
         dirty = true;

@@ -25,7 +25,7 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
     private bool enabled {
         get {
             if (!Mod.enableHighstorms) return false;
-            return ShardUtility.CachedAreAnyEnabled(ref cachedEnabled, ShardDefOf.Honor, ShardDefOf.Cultivation, ShardDefOf.Odium);
+            return ShardUtility.CachedAreAnyEnabled(ref cachedEnabled, ShardDefOf.Honor);
         }
     }
 

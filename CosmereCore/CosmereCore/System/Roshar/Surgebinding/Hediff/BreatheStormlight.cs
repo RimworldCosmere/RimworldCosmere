@@ -22,11 +22,20 @@ public class BreatheStormlight : SurgebindingHediff {
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
         if (investiture.isFull) return;
 
-        float amountDrawn = pawn.apparel.WornApparel.Sum(TryAbsorbFromThing);
-        amountDrawn += pawn.equipment.AllEquipmentListForReading.Sum(TryAbsorbFromThing);
-        amountDrawn += pawn.inventory.innerContainer.Sum(TryAbsorbFromThing);
-        amountDrawn += pawn.GetCellsAround(MaxDrawDistance)
-            .Sum(cell => cell.GetThingList(pawn.Map).Sum(TryAbsorbFromThing));
+        float amountDrawn = 0f;
+        if (pawn.apparel?.WornApparel != null) {
+            amountDrawn += pawn.apparel.WornApparel.Sum(TryAbsorbFromThing);
+        }
+        if (pawn.equipment?.AllEquipmentListForReading != null) {
+            amountDrawn += pawn.equipment.AllEquipmentListForReading.Sum(TryAbsorbFromThing);
+        }
+        if (pawn.inventory?.innerContainer != null) {
+            amountDrawn += pawn.inventory.innerContainer.Sum(TryAbsorbFromThing);
+        }
+        if (pawn.Spawned && pawn.Map != null) {
+            amountDrawn += pawn.GetCellsAround(MaxDrawDistance)
+                .Sum(cell => cell.GetThingList(pawn.Map).Sum(TryAbsorbFromThing));
+        }
 
         Logger.Verbose($"{pawn.NameFullColored} as absorbed {amountDrawn:F2} stormlight.");
     }

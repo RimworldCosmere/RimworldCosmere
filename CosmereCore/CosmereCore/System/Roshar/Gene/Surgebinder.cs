@@ -197,7 +197,21 @@ public class Surgebinder : Invested {
             }
 
             if (!bondedSpren.Dead && !bondedSpren.Destroyed) {
+                IntVec3 deathPos = bondedSpren.PositionHeld;
+                Verse.Map? deathMap = bondedSpren.MapHeld;
                 bondedSpren.Kill(null);
+                if (deathMap != null) {
+                    List<Verse.Thing> atCell = deathPos.GetThingList(deathMap);
+                    for (int i = atCell.Count - 1; i >= 0; i--) {
+                        if (atCell[i] is Corpse corpse && corpse.InnerPawn == bondedSpren) {
+                            corpse.Destroy();
+                            break;
+                        }
+                    }
+                }
+                if (!bondedSpren.Destroyed) {
+                    bondedSpren.Destroy();
+                }
             }
 
             bondedSpren = null;

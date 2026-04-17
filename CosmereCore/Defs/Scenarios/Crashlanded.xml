@@ -37,6 +37,20 @@
               <pawnKind>Cosmere_Roshar_PawnKind_Darkeyes</pawnKind>
             </li>
           </overrideKinds>
+          <xenotypeCounts>
+            <li MayRequire="Cosmere.Scadrial">
+              <xenotype>Cosmere_Scadrial_Xenotype_Skaa</xenotype>
+              <count>1</count>
+            </li>
+            <li MayRequire="Cosmere.Scadrial">
+              <xenotype>Cosmere_Scadrial_Xenotype_Noble</xenotype>
+              <count>1</count>
+            </li>
+            <li MayRequire="Cosmere.Roshar">
+              <xenotype>Cosmere_Roshar_Xenotype_Lighteyes</xenotype>
+              <count>1</count>
+            </li>
+          </xenotypeCounts>
         </li>
 
         <li Class="ScenPart_PlayerPawnsArriveMethod">

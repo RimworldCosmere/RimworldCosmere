@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Cosmere.Core.Util;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -8,32 +9,27 @@ namespace Cosmere.System.Scadrial.Patch;
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 [HarmonyPatch(typeof(Verse.PawnGenerator), nameof(Verse.PawnGenerator.GetXenotypeForGeneratedPawn))]
 public static class PawnGenerator {
+    [HarmonyPriority(Priority.Low)]
     private static bool Prefix(PawnGenerationRequest request, ref XenotypeDef __result) {
-        // Allow forced xenotype to override
         if (request.ForcedXenotype != null) return true;
 
-        Scenario? scenario = Find.Scenario;
-        if (scenario == null) return true;
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation, ShardDefOf.Harmony)) return true;
 
-        if (scenario.name == ScenarioDefOf.Cosmere_Scadrial_Scenario_PreCatacendre.label) {
+        bool preCatacendre = ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Preservation);
+
+        if (preCatacendre) {
             __result = new[] {
                 XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris,
                 XenotypeDefOf.Cosmere_Scadrial_Xenotype_Skaa,
                 XenotypeDefOf.Cosmere_Scadrial_Xenotype_Noble,
             }.RandomElement();
-
             return false;
         }
 
-        if (scenario.name == ScenarioDefOf.Cosmere_Scadrial_Scenario_PostCatacendre.label) {
-            __result = new[] {
-                XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris,
-                XenotypeDefOf.Cosmere_Scadrial_Xenotype_Scadrian,
-            }.RandomElement();
-
-            return false;
-        }
-
-        return true; // Fallback to vanilla
+        __result = new[] {
+            XenotypeDefOf.Cosmere_Scadrial_Xenotype_Terris,
+            XenotypeDefOf.Cosmere_Scadrial_Xenotype_Scadrian,
+        }.RandomElement();
+        return false;
     }
 }

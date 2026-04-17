@@ -315,8 +315,16 @@ public class Soulcast : SurgebindingAbility {
     private void DoFortify(IntVec3 cell, Verse.Map map, ThingDef stuffDef, float cost) {
         if (!cell.Standable(map) || cell.GetFirstBuilding(map) != null) return;
         if (!TryPayCost(cost)) return;
-        GenSpawn.Spawn(ThingMaker.MakeThing(RimWorld.ThingDefOf.Wall, stuffDef), cell, map);
+        Verse.Thing wall = ThingMaker.MakeThing(RimWorld.ThingDefOf.Wall, stuffDef);
+        wall.SetFactionDirect(pawn.Faction ?? Faction.OfPlayer);
+        GenSpawn.Spawn(wall, cell, map);
         SpawnFleck(cell, map);
+    }
+
+    private void SpawnClaimedSculpture(ThingDef sculptureDef, ThingDef stuffDef, IntVec3 pos, Verse.Map map) {
+        Verse.Thing sculpture = ThingMaker.MakeThing(sculptureDef, stuffDef);
+        sculpture.SetFactionDirect(pawn.Faction ?? Faction.OfPlayer);
+        GenSpawn.Spawn(sculpture, pos, map);
     }
 
     private void DoTerraform(IntVec3 cell, Verse.Map map, TerrainDef newTerrain, float cost) {
@@ -353,7 +361,7 @@ public class Soulcast : SurgebindingAbility {
         Verse.Thing? corpse = pos.GetThingList(map).Find(t => t is Corpse);
         corpse?.Destroy();
         ThingDef sculptureDef = DefDatabase<ThingDef>.GetNamed("SculptureLarge");
-        GenSpawn.Spawn(ThingMaker.MakeThing(sculptureDef, stuffDef), pos, map);
+        SpawnClaimedSculpture(sculptureDef, stuffDef, pos, map);
         SpawnFleck(pos, map);
     }
 
@@ -364,7 +372,7 @@ public class Soulcast : SurgebindingAbility {
         Verse.Pawn? innerPawn = target.InnerPawn;
         target.Destroy();
         ThingDef sculptureDef = DefDatabase<ThingDef>.GetNamed("SculptureSmall");
-        GenSpawn.Spawn(ThingMaker.MakeThing(sculptureDef, stuffDef), pos, map);
+        SpawnClaimedSculpture(sculptureDef, stuffDef, pos, map);
         SpawnFleck(pos, map);
 
         ThoughtDef? burialThought = DefDatabase<ThoughtDef>.GetNamedSilentFail("Cosmere_Roshar_Thought_SoulcastBurial");

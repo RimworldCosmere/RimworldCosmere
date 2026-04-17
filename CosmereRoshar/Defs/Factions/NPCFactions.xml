@@ -110,6 +110,12 @@
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
       <li>Cosmere_Structure_Vorinism</li>
     </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.75</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.25</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
     <pawnGroupMakers>
       <li>
         <kindDef>Combat</kindDef>
@@ -166,6 +172,12 @@
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
       <li>Cosmere_Structure_Passions</li>
     </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Roshar_Xenotype_Darkeyes>0.7</Cosmere_Roshar_Xenotype_Darkeyes>
+        <Cosmere_Roshar_Xenotype_Lighteyes>0.3</Cosmere_Roshar_Xenotype_Lighteyes>
+      </xenotypeChances>
+    </xenotypeSet>
     <caravanTraderKinds>
       <li>Caravan_Outlander_BulkGoods</li>
       <li>Caravan_Outlander_Exotic</li>

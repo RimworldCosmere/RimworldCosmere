@@ -39,6 +39,10 @@ public static class SurgebindingHediffUtility {
         if (!TryGetHediff(target, hediffDef, out SurgebindingHediff hediff)) return;
 
         hediff.RemoveSource(ability);
+
+        if (hediff.sourceAbilities.Count == 0) {
+            target.health.RemoveHediff(hediff);
+        }
     }
 
     private static bool TryGetHediff(Pawn target, HediffDef def, out SurgebindingHediff hediff) {

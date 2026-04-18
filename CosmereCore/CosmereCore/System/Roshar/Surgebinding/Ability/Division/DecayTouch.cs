@@ -38,7 +38,7 @@ public class DecayTouch : SurgebindingAbility {
 
         if (target is Pawn targetPawn) {
             DamageInfo dinfo = new DamageInfo(
-                DamageDefOf.Deterioration,
+                DamageDefOf.Burn,
                 pawnDamage,
                 instigator: pawn
             );

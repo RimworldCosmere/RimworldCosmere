@@ -106,10 +106,21 @@ public class Quickstarter {
     internal static void DrawDebugToolbarButton(WidgetRow widgets) {
         const string quickstartButtonTooltip = "Click to quick-generate a new map.";
         if (widgets.ButtonIcon(ContentFinder<Texture2D>.Get("UI/Debug/quickstartIcon"), quickstartButtonTooltip)) {
-            Current.ProgramState = ProgramState.Entry;
-            Current.Game = null;
-            Started = false;
-            instance = new Quickstarter();
+            ReloadQuickstart();
         }
+    }
+
+    public static void ReloadQuickstart() {
+        LongEventHandler.QueueLongEvent(
+            () => {
+                Current.ProgramState = ProgramState.Entry;
+                Current.Game = null;
+                Started = false;
+                instance = new Quickstarter();
+            },
+            "CC_Quickstart_Reload",
+            true,
+            GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap
+        );
     }
 }

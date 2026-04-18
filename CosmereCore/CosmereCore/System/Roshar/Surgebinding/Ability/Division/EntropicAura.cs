@@ -37,6 +37,7 @@ public class EntropicAura : SurgebindingAbility {
 
     protected override void OnDisable() {
         base.OnDisable();
+        SurgebindingHediffUtility.RemoveHediff(pawn, this, def.hediff);
         if (auraMote != null && !auraMote.Destroyed) {
             auraMote.Destroy();
         }
@@ -69,7 +70,7 @@ public class EntropicAura : SurgebindingAbility {
                 if (targetPawn.Dead) continue;
 
                 DamageInfo dinfo = new DamageInfo(
-                    DamageDefOf.Deterioration,
+                    DamageDefOf.Burn,
                     currentDamage,
                     instigator: pawn
                 );

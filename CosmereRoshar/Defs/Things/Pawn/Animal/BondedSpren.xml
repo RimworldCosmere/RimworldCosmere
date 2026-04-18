@@ -106,5 +106,6 @@
         <immuneToGameConditionEffects>true</immuneToGameConditionEffects>
         <initialResistanceRange>0~0</initialResistanceRange>
         <initialWillRange>0~0</initialWillRange>
+        <disabledWorkTags>Violent, Hauling, ManualDumb, ManualSkilled, Caring, Firefighting, Cleaning, PlantWork, Mining, Hunting, Constructing, Shooting, Cooking, Crafting, Artistic, Intellectual, Animals, Commoner, AllWork</disabledWorkTags>
     </PawnKindDef>
 </Defs>

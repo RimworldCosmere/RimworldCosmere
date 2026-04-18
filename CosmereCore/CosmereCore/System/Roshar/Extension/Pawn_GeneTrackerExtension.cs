@@ -23,12 +23,18 @@ public static class Pawn_GeneTrackerExtension {
             return null;
         }
 
-        Verse.Pawn spren = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
+        PawnGenerationRequest request = new PawnGenerationRequest(
             sprenKind,
             radiant.Faction,
             PawnGenerationContext.NonPlayer,
             forceGenerateNewPawn: true
-        ));
+        ) {
+            ForceBodyType = BodyTypeDefOf.Thin,
+            ForceNoGear = true,
+            ForbidAnyTitle = true,
+        };
+
+        Verse.Pawn spren = PawnGenerator.GeneratePawn(request);
 
         SanitizeSpren(spren);
 

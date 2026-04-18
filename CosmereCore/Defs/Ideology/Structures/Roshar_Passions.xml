@@ -26,7 +26,14 @@
         </generalRules>
         <descriptionMaker>
             <patterns>
-                <li><def>TheistMyth</def></li>
+                <li>
+                    <def>IdeologicalFounder</def>
+                    <weight>1</weight>
+                </li>
+                <li>
+                    <def>IdeologicalLesson</def>
+                    <weight>3</weight>
+                </li>
             </patterns>
             <constants>
                 <li><key>structure_cosmere_passions</key><value>true</value></li>

@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Core.Ability;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Comp.Game;
@@ -38,7 +39,9 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
                 return;
             }
 
-            // Ensure the burn rate is set properly
+            Status activeStatus = ability.nextStatus ?? BurningStatus.Burning;
+            ability.UpdateStatus(activeStatus);
+
             UpdateBurnRate(ability.GetDesiredBurnRateForStatus());
 
             MoveThing(TargetA.Thing, true);
@@ -90,16 +93,18 @@ public class CastAllomanticAbilityAtTarget : AllomanticJobDriver {
         IntVec3 dir = GetDirectionalOffsetFromTarget(things.Item2, things.Item1);
         float distance = Mathf.Lerp(0, massDifference, .333333f) * forceMultiplier;
         if (polarity == AllomancyPolarity.Pulling) distance = Mathf.Min(distance, distanceBetweenThings);
+        if (distance > 0.05f) distance = Mathf.Max(distance, 1f);
 
-        IntVec3 destination = things.Item1.Position + dir * (int)distance;
+        int distanceTiles = Mathf.RoundToInt(distance);
+        IntVec3 destination = things.Item1.Position + dir * distanceTiles;
         if (Mathf.Approximately(distance, distanceBetweenThings)) destination = things.Item2.Position;
 
         IntVec3 finalPos = destination;
-        for (int i = 1; i <= distance; i++) {
+        for (int i = 1; i <= distanceTiles; i++) {
             IntVec3 cell = things.Item1.Position + dir * i;
             if (cell.InBounds(pawn.Map) && cell.Walkable(pawn.Map)) continue;
 
-            finalPos = things.Item1.Position + dir * (i - 1); // Stop before the obstacle
+            finalPos = things.Item1.Position + dir * (i - 1);
             break;
         }
 

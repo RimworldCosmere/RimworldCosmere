@@ -52,6 +52,20 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
         return statusValue * pawn.GetRawAllomanticPower(metal);
     }
 
+    protected override void OnEnable() {
+        base.OnEnable();
+        if (def.hediff != null && !def.targetRequired) {
+            GetOrAddHediff(pawn);
+        }
+    }
+
+    protected override void OnDisable() {
+        if (def.hediff != null && !def.targetRequired) {
+            RemoveHediff(pawn);
+        }
+        base.OnDisable();
+    }
+
     protected override void OnPowerUp() {
         base.OnPowerUp();
         flareStartTick = Find.TickManager.TicksGame;

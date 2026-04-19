@@ -65,6 +65,10 @@ public static class HediffUtility {
         }
 
         hediff.RemoveSource(ability);
+
+        if (hediff.sourceAbilities.Count == 0) {
+            target.health.RemoveHediff(hediff);
+        }
     }
 
     public static void RemoveHediff(Pawn caster, Pawn target, AllomancyAbility ability, IMultiTypeHediff def) {

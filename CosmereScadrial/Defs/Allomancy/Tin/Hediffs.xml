@@ -6,7 +6,6 @@
         <description>Empowered senses from burning Tin.</description>
         <stages>
             <li>
-                <minSeverity>0.5</minSeverity>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <painFactor>1.25</painFactor>
                 <capMods>
@@ -30,7 +29,7 @@
                 </statFactors>
             </li>
             <li>
-                <minSeverity>1.8</minSeverity>
+                <minSeverity>1.5</minSeverity>
                 <multiplyStatChangesBySeverity>true</multiplyStatChangesBySeverity>
                 <painFactor>2.0</painFactor>
                 <capMods>

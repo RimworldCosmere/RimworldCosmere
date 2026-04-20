@@ -51,6 +51,9 @@
         "items": ["silver"],
         "count": 3
       }
-    ]
+    ],
+    "product": {
+      "count": 10
+    }
   }
 }

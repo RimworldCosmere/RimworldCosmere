@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Clan Leader: single leader, voice of the listeners -->
+    <PreceptDef ParentName="PreceptRoleSingleBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_ListenerClanLeader</defName>
+        <label>clan leader</label>
+        <description>Voice of a listener clan, attuned to the rhythms that guide the people. The clan leader speaks in the rhythm of Command, and the singers answer.</description>
+        <iconPath>UI/Roles/Leader</iconPath>
+        <leaderRole>true</leaderRole>
+        <impact>High</impact>
+        <displayOrderInImpact>900</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <classicExtra>false</classicExtra>
+        <canRemoveInUI>false</canRemoveInUI>
+        <restrictToSupremeGenderChance>0</restrictToSupremeGenderChance>
+        <expectationsOffset>2</expectationsOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.3</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>NegotiationAbility</statDef>
+                <modifier>0.3</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>LeaderSpeech</li>
+            <li>WorkDrive</li>
+            <li>CombatCommand</li>
+        </grantedAbilities>
+        <roleTags>
+            <li>Leader</li>
+        </roleTags>
+    </PreceptDef>
+
+    <!-- Rhythm Keeper: multi moralist role, preserves the songs -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_RhythmKeeper</defName>
+        <label>rhythm keeper</label>
+        <description>A singer who preserves the rhythms of Roshar in their blood and breath. Rhythm keepers teach the young to attune, and pass the songs of the ancients from one generation to the next.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <nameMaker>NamerRoleMoralist</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>800</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>5</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_ParshendriRhythms</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>4</Social>
+                    <Artistic>4</Artistic>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>GlobalLearningFactor</statDef>
+                <modifier>0.2</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.25</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>Convert</li>
+            <li>Counsel</li>
+            <li>Reassure</li>
+            <li>ConversionRitual</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Social</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+</Defs>

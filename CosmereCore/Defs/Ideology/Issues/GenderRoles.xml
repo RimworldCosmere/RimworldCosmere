@@ -21,7 +21,7 @@
         <impact>High</impact>
         <displayOrderInIssue>0</displayOrderInIssue>
         <displayOrderInImpact>100</displayOrderInImpact>
-        <defaultSelectionWeight>0.3</defaultSelectionWeight>
+        <defaultSelectionWeight>5</defaultSelectionWeight>
         <requiredMemes>
             <li>Cosmere_Structure_Vorinism</li>
         </requiredMemes>
@@ -42,7 +42,7 @@
         <impact>Medium</impact>
         <displayOrderInIssue>10</displayOrderInIssue>
         <displayOrderInImpact>100</displayOrderInImpact>
-        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <defaultSelectionWeight>3</defaultSelectionWeight>
         <associatedMemes>
             <li>Cosmere_Structure_Vorinism</li>
         </associatedMemes>
@@ -70,6 +70,9 @@
             <li>Cosmere_Structure_StoneShamanism</li>
             <li>Cosmere_Structure_ParshendriRhythms</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </conflictingMemes>
     </PreceptDef>
 
     <!-- ========== THOUGHTS ========== -->

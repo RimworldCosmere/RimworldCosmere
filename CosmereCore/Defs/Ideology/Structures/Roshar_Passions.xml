@@ -22,6 +22,12 @@
                 <li>memeMoralist->speaker</li>
                 <li>memeMoralist->trader-priest</li>
                 <li>memeMoralist->guide</li>
+                <li>memeConcept->passion</li>
+                <li>memeConcept->feeling</li>
+                <li>memeConcept->emotion</li>
+                <li>memeHyphenPrefix->passion</li>
+                <li>memeHyphenPrefix->fervor</li>
+                <li>memeHyphenPrefix->feel</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

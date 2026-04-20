@@ -22,6 +22,12 @@
                 <li>memeMoralist->keeper</li>
                 <li>memeMoralist->worldbringer</li>
                 <li>memeMoralist->steward</li>
+                <li>memeConcept->knowledge</li>
+                <li>memeConcept->memory</li>
+                <li>memeConcept->wisdom</li>
+                <li>memeHyphenPrefix->memo</li>
+                <li>memeHyphenPrefix->copper</li>
+                <li>memeHyphenPrefix->scribe</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

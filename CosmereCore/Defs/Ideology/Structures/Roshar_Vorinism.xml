@@ -22,6 +22,12 @@
                 <li>memeMoralist->ardent</li>
                 <li>memeMoralist->devotary head</li>
                 <li>memeMoralist->curate</li>
+                <li>memeConcept->honor</li>
+                <li>memeConcept->oath</li>
+                <li>memeConcept->duty</li>
+                <li>memeHyphenPrefix->honor</li>
+                <li>memeHyphenPrefix->oath</li>
+                <li>memeHyphenPrefix->vor</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

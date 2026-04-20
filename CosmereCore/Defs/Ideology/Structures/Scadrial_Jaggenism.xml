@@ -22,6 +22,12 @@
                 <li>memeMoralist->speaker</li>
                 <li>memeMoralist->elder</li>
                 <li>memeMoralist->guide</li>
+                <li>memeConcept->sovereign</li>
+                <li>memeConcept->pilgrimage</li>
+                <li>memeConcept->salvation</li>
+                <li>memeHyphenPrefix->sovr</li>
+                <li>memeHyphenPrefix->south</li>
+                <li>memeHyphenPrefix->band</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

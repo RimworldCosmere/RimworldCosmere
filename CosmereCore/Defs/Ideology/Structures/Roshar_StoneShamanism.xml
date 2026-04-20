@@ -22,6 +22,12 @@
                 <li>memeMoralist->shaman</li>
                 <li>memeMoralist->tender</li>
                 <li>memeMoralist->elder</li>
+                <li>memeConcept->stone</li>
+                <li>memeConcept->soil</li>
+                <li>memeConcept->earth</li>
+                <li>memeHyphenPrefix->stone</li>
+                <li>memeHyphenPrefix->soil</li>
+                <li>memeHyphenPrefix->earth</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

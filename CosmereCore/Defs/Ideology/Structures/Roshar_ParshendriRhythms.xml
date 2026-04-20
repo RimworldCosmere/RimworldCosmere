@@ -22,6 +22,12 @@
                 <li>memeMoralist->rhythm keeper</li>
                 <li>memeMoralist->singer</li>
                 <li>memeMoralist->listener</li>
+                <li>memeConcept->rhythm</li>
+                <li>memeConcept->song</li>
+                <li>memeConcept->tone</li>
+                <li>memeHyphenPrefix->song</li>
+                <li>memeHyphenPrefix->rhythm</li>
+                <li>memeHyphenPrefix->tone</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

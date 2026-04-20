@@ -22,6 +22,12 @@
                 <li>memeMoralist->preacher</li>
                 <li>memeMoralist->elder</li>
                 <li>memeMoralist->keeper of hope</li>
+                <li>memeConcept->survival</li>
+                <li>memeConcept->defiance</li>
+                <li>memeConcept->hope</li>
+                <li>memeHyphenPrefix->surv</li>
+                <li>memeHyphenPrefix->defy</li>
+                <li>memeHyphenPrefix->hope</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

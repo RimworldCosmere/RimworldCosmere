@@ -16,6 +16,7 @@ public class ScadrialModSettings : CosmereModSettings {
     public MistsFrequency mistsFrequency = MistsFrequency.Daily;
     public bool pawnsKeepMetalmindsWhenDowned;
     public bool pawnsKeepVialsWhenDowned;
+    public bool alwaysShowAllomanticAuras;
 
     public override string Name => "Scadrial";
 
@@ -24,6 +25,7 @@ public class ScadrialModSettings : CosmereModSettings {
         Scribe_Values.Look(ref mistsFrequency, "mistsFrequency");
         Scribe_Values.Look(ref pawnsKeepMetalmindsWhenDowned, "pawnsKeepMetalmindsWhenDowned", true);
         Scribe_Values.Look(ref pawnsKeepVialsWhenDowned, "pawnsKeepVialsWhenDowned", true);
+        Scribe_Values.Look(ref alwaysShowAllomanticAuras, "alwaysShowAllomanticAuras");
     }
 
     public override void DoTabContents(Form listing) {
@@ -62,6 +64,17 @@ public class ScadrialModSettings : CosmereModSettings {
                         pawnsKeepMetalmindsWhenDowned,
                         v => pawnsKeepMetalmindsWhenDowned = v
                     )
+                );
+            }
+        );
+
+        listing.Fieldset(
+            "CS_Settings_Category_Allomancy".Translate(),
+            fieldset => {
+                fieldset.Field(
+                    "CS_Settings_AlwaysShowAuras_Label".Translate(),
+                    "CS_Settings_AlwaysShowAuras_Tooltip".Translate(),
+                    sub => sub.Checkbox(ref alwaysShowAllomanticAuras)
                 );
             }
         );

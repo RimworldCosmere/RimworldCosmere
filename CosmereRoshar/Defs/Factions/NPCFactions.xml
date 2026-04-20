@@ -31,6 +31,7 @@
   <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
     <defName>Cosmere_Roshar_Faction_Listeners</defName>
     <label>listener tribe</label>
+    <fixedName>The Listeners</fixedName>
     <description>The listeners are singers who have maintained their free will, unlike the parshmen enslaved by the Alethi. They live in the chasms and plateaus of the Shattered Plains, following the ancient rhythms of Roshar.\n\nThey are wary of outsiders but not inherently hostile - unless provoked.</description>
     <pawnSingular>listener</pawnSingular>
     <pawnsPlural>listeners</pawnsPlural>
@@ -85,6 +86,7 @@
   <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
     <defName>Cosmere_Roshar_Faction_AlethiWarcamp</defName>
     <label>Alethi warcamp</label>
+    <fixedName>Alethi Warcamp</fixedName>
     <description>An Alethi highprince's warcamp on the Shattered Plains. The Alethi live for war and glory, fighting endlessly against the Parshendi for gemhearts.\n\nThey view outsiders as potential rivals or subjects to be conquered. Honor demands they fight.</description>
     <pawnSingular>soldier</pawnSingular>
     <pawnsPlural>soldiers</pawnsPlural>
@@ -151,6 +153,7 @@
   <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
     <defName>Cosmere_Roshar_Faction_ThaylenMerchants</defName>
     <label>Thaylen merchants</label>
+    <fixedName>Thaylen Merchants</fixedName>
     <description>Traders from Thaylenah, a coastal nation of merchants and sailors. The Thaylens are famous for their long eyebrows and their shrewd business sense.\n\nThey follow the Passions, believing that strong emotions drive success. They welcome trade with anyone who has coin.</description>
     <pawnSingular>merchant</pawnSingular>
     <pawnsPlural>merchants</pawnsPlural>
@@ -196,6 +199,7 @@
           <Town_Guard>10</Town_Guard>
           <Mercenary_Gunner>8</Mercenary_Gunner>
           <Mercenary_Elite>5</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
         </options>
       </li>
       <li>
@@ -238,6 +242,7 @@
   <FactionDef ParentName="Cosmere_Roshar_NPCFactionBase">
     <defName>Cosmere_Roshar_Faction_Shin</defName>
     <label>Shin farmers</label>
+    <fixedName>Shin Farmers</fixedName>
     <description>The Shin live in Shinovar, the only land on Roshar with soil and grass. They follow Stone Shamanism, believing stone is sacred and those who walk on it are warriors deserving of contempt.\n\nThey are deeply peaceful farmers and herders, though they train their warriors well for when defense is needed.</description>
     <pawnSingular>Shin</pawnSingular>
     <pawnsPlural>Shin</pawnsPlural>

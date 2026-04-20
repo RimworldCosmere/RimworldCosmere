@@ -27,74 +27,89 @@
     </maxPawnCostPerTotalPointsCurve>
   </FactionDef>
 
-  <!-- Steel Ministry: Hostile theocratic enforcers of the Lord Ruler -->
+  <!-- Terris: Ancient Feruchemists, oppressed but preserved -->
   <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
-    <defName>Cosmere_Scadrial_Faction_SteelMinistry</defName>
-    <label>Steel Ministry</label>
-    <description>The Steel Ministry serves as the religious and enforcement arm of the Final Empire. Obligators oversee contracts and maintain records, while the terrifying Steel Inquisitors hunt down those who defy the Lord Ruler's will.\n\nThey view all outsiders as potential heretics to be brought into compliance - or eliminated.</description>
-    <pawnSingular>obligator</pawnSingular>
-    <pawnsPlural>obligators</pawnsPlural>
-    <listOrderPriority>50</listOrderPriority>
-    <settlementGenerationWeight>0.8</settlementGenerationWeight>
+    <defName>Cosmere_Scadrial_Faction_Terris</defName>
+    <label>Terris people</label>
+    <fixedName>The Terris</fixedName>
+    <description>The Terris are an ancient people, once proud and free. Under the Lord Ruler's reign they became breeding stock and stewards, their Feruchemical bloodlines carefully controlled. Still, in secret places, the Keepers preserve knowledge and the Worldbringers hold faith with the old ways.</description>
+    <pawnSingular>Terrisman</pawnSingular>
+    <pawnsPlural>Terris</pawnsPlural>
+    <listOrderPriority>48</listOrderPriority>
+    <techLevel>Medieval</techLevel>
+    <settlementGenerationWeight>0.6</settlementGenerationWeight>
     <canMakeRandomly>true</canMakeRandomly>
-    <canSiege>true</canSiege>
     <canStageAttacks>true</canStageAttacks>
-    <leaderTitle>High Prelan</leaderTitle>
-    <factionIconPath>World/WorldObjects/Expanding/TownRough</factionIconPath>
-    <naturalEnemy>true</naturalEnemy>
-    <permanentEnemy>false</permanentEnemy>
+    <leaderTitle>Worldbringer</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/Village</factionIconPath>
     <colorSpectrum>
-      <li>(0.3, 0.3, 0.35)</li>
-      <li>(0.5, 0.5, 0.55)</li>
+      <li>(0.35, 0.3, 0.25)</li>
+      <li>(0.55, 0.5, 0.4)</li>
     </colorSpectrum>
     <maxConfigurableAtWorldCreation>3</maxConfigurableAtWorldCreation>
-    <configurationListOrderPriority>50</configurationListOrderPriority>
+    <configurationListOrderPriority>48</configurationListOrderPriority>
     <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
-    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Steel Ministry</ideoName>
-    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The official religion of the Final Empire, enforcing the worship of the Lord Ruler as the Sliver of Infinity.</ideoDescription>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Terris Worldbringer</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">Knowledge is sacred. Memory is duty. The Worldbringers and Keepers preserve the truths of the world for the Hero of Ages.</ideoDescription>
     <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
-      <li>Cosmere_Structure_SteelMinistry</li>
+      <li>Cosmere_Structure_TerrisWorldbringer</li>
     </forcedMemes>
     <xenotypeSet>
       <xenotypeChances>
-        <Cosmere_Scadrial_Xenotype_Scadrian>0.5</Cosmere_Scadrial_Xenotype_Scadrian>
-        <Cosmere_Scadrial_Xenotype_Noble>0.4</Cosmere_Scadrial_Xenotype_Noble>
-        <Cosmere_Scadrial_Xenotype_Terris>0.1</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Terris>0.9</Cosmere_Scadrial_Xenotype_Terris>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.1</Cosmere_Scadrial_Xenotype_Scadrian>
       </xenotypeChances>
     </xenotypeSet>
     <pawnGroupMakers>
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <Town_Guard>10</Town_Guard>
-          <Mercenary_Slasher>8</Mercenary_Slasher>
-          <Mercenary_Gunner>8</Mercenary_Gunner>
-          <Mercenary_Elite>5</Mercenary_Elite>
+          <Tribesperson>10</Tribesperson>
+          <Tribal_Archer>6</Tribal_Archer>
+          <Tribal_ChiefMelee>3</Tribal_ChiefMelee>
         </options>
       </li>
       <li>
         <kindDef>Peaceful</kindDef>
         <options>
-          <Villager>15</Villager>
-          <Town_Guard>10</Town_Guard>
+          <Tribesperson>15</Tribesperson>
+          <Tribal_Archer>5</Tribal_Archer>
         </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <Tribal_Trader>1</Tribal_Trader>
+        </traders>
+        <carriers>
+          <Muffalo>4</Muffalo>
+        </carriers>
+        <guards>
+          <Tribesperson>8</Tribesperson>
+          <Tribal_Archer>6</Tribal_Archer>
+          <Tribal_ChiefMelee>2</Tribal_ChiefMelee>
+        </guards>
       </li>
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <Villager>10</Villager>
-          <Town_Guard>15</Town_Guard>
-          <Mercenary_Elite>5</Mercenary_Elite>
+          <Tribesperson>15</Tribesperson>
+          <Tribal_Archer>8</Tribal_Archer>
+          <Tribal_ChiefMelee>3</Tribal_ChiefMelee>
         </options>
       </li>
     </pawnGroupMakers>
-    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
+    <caravanTraderKinds>
+      <li>Caravan_Neolithic_BulkGoods</li>
+    </caravanTraderKinds>
+    <raidLootMaker>TribeRaidLootMaker</raidLootMaker>
   </FactionDef>
 
   <!-- Noble Houses: Wealthy merchant-nobles, can be friendly or hostile -->
   <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
     <defName>Cosmere_Scadrial_Faction_NobleHouses</defName>
     <label>noble house</label>
+    <fixedName>Noble Houses</fixedName>
     <description>The noble houses of the Final Empire control vast plantations and business enterprises. They scheme against each other in the Great Game of politics while exploiting the skaa beneath them.\n\nThey may trade with outsiders when profitable, but their allegiance is always to their own interests.</description>
     <pawnSingular>nobleman</pawnSingular>
     <pawnsPlural>nobles</pawnsPlural>
@@ -180,6 +195,7 @@
   <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
     <defName>Cosmere_Scadrial_Faction_SkaaRebels</defName>
     <label>skaa rebellion</label>
+    <fixedName>Skaa Rebellion</fixedName>
     <description>Escaped skaa who have fled the plantations and noble keeps to live free in the wilderness. They remember the Survivor's message: that the Lord Ruler can be defied.\n\nThey welcome those who oppose the Final Empire and offer shelter to any who flee oppression.</description>
     <pawnSingular>rebel</pawnSingular>
     <pawnsPlural>rebels</pawnsPlural>
@@ -253,6 +269,85 @@
       </li>
     </pawnGroupMakers>
     <raidLootMaker>TribeRaidLootMaker</raidLootMaker>
+  </FactionDef>
+
+  <!-- The Final Empire (NPC): The Lord Ruler's oppressive regime. Strong imperial garrison forces -->
+  <FactionDef ParentName="Cosmere_Scadrial_NPCFactionBase">
+    <defName>Cosmere_Scadrial_Faction_FinalEmpireNPC</defName>
+    <label>Final Empire</label>
+    <fixedName>The Final Empire</fixedName>
+    <description>The thousand-year empire of the Lord Ruler. Its obligators enforce religious orthodoxy through the Steel Ministry, its Inquisitors hunt all who defy the divine order, and its garrisons crush any who would rise against it. To oppose the Final Empire is to oppose a god.</description>
+    <pawnSingular>imperial</pawnSingular>
+    <pawnsPlural>imperials</pawnsPlural>
+    <listOrderPriority>42</listOrderPriority>
+    <techLevel>Industrial</techLevel>
+    <settlementGenerationWeight>1.2</settlementGenerationWeight>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canSiege>true</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <mustStartOneEnemy>true</mustStartOneEnemy>
+    <leaderTitle>Lord Prelan</leaderTitle>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <colorSpectrum>
+      <li>(0.15, 0.15, 0.15)</li>
+      <li>(0.35, 0.25, 0.2)</li>
+    </colorSpectrum>
+    <maxConfigurableAtWorldCreation>2</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>50</configurationListOrderPriority>
+    <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
+    <ideoName MayRequire="Ludeon.RimWorld.Ideology">Steel Ministry</ideoName>
+    <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The official religion of the Final Empire, enforcing the worship of the Lord Ruler as the Sliver of Infinity.</ideoDescription>
+    <forcedMemes MayRequire="Ludeon.RimWorld.Ideology">
+      <li>Cosmere_Structure_SteelMinistry</li>
+    </forcedMemes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Cosmere_Scadrial_Xenotype_Noble>0.5</Cosmere_Scadrial_Xenotype_Noble>
+        <Cosmere_Scadrial_Xenotype_Scadrian>0.45</Cosmere_Scadrial_Xenotype_Scadrian>
+        <Cosmere_Scadrial_Xenotype_Skaa>0.05</Cosmere_Scadrial_Xenotype_Skaa>
+      </xenotypeChances>
+    </xenotypeSet>
+    <maxPawnCostPerTotalPointsCurve>
+      <points>
+        <li>(0, 70)</li>
+        <li>(70, 120)</li>
+        <li>(700, 250)</li>
+        <li>(1300, 400)</li>
+        <li>(100000, 10000)</li>
+      </points>
+    </maxPawnCostPerTotalPointsCurve>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Town_Guard>8</Town_Guard>
+          <Mercenary_Slasher>10</Mercenary_Slasher>
+          <Mercenary_Gunner>12</Mercenary_Gunner>
+          <Mercenary_Elite>15</Mercenary_Elite>
+          <Mercenary_Heavy>10</Mercenary_Heavy>
+          <Mercenary_Sniper>8</Mercenary_Sniper>
+          <Town_Councilman>5</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Town_Guard>10</Town_Guard>
+          <Mercenary_Elite>5</Mercenary_Elite>
+          <Town_Councilman>3</Town_Councilman>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Town_Guard>12</Town_Guard>
+          <Mercenary_Elite>10</Mercenary_Elite>
+          <Mercenary_Heavy>8</Mercenary_Heavy>
+          <Town_Councilman>4</Town_Councilman>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <raidLootMaker>OutlanderRaidLootMaker</raidLootMaker>
   </FactionDef>
 
 </Defs>

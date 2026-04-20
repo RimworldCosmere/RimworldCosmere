@@ -341,13 +341,8 @@ public class Highstorm : RimWorld.GameCondition {
 
                 break;
             }
-            default: {
-                if (thing.Destroyed) break;
-
-                thing.TakeDamage(damage);
-
+            default:
                 break;
-            }
         }
     }
 }

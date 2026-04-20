@@ -11,6 +11,8 @@ public static class ThingExtension {
 
     public static bool ShouldBeMovedByStorm(this Verse.Thing thing) {
         if (!thing.Spawned || thing.Map == null) return false;
+        if (thing.Position.Fogged(thing.Map)) return false;
+        if (thing is RimWorld.Mineable) return false;
         if (thing is Verse.Pawn pawn && StormlightUtilities.IsHighstormImmune(pawn)) return false;
 
         Room room = thing.GetRoom();

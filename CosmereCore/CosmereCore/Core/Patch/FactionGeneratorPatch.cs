@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Cosmere.Core.Settings;
 using HarmonyLib;
 using RimWorld;
@@ -9,6 +10,19 @@ namespace Cosmere.Core.Patch;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class FactionGeneratorPatch {
+    private static readonly FieldInfo? PlayerFactionFactionDef =
+        AccessTools.Field(typeof(ScenPart_PlayerFaction), "factionDef");
+
+    private static string? GetPlayerFactionDefName(Scenario scenario) {
+        foreach (ScenPart part in scenario.AllParts) {
+            if (part is ScenPart_PlayerFaction playerPart) {
+                FactionDef? def = PlayerFactionFactionDef?.GetValue(playerPart) as FactionDef;
+                return def?.defName;
+            }
+        }
+        return null;
+    }
+
     public static bool IsFactionAllowedForScenario(FactionDef faction) {
         Scenario scenario = Find.Scenario;
         if (scenario == null) {
@@ -38,6 +52,12 @@ public static class FactionGeneratorPatch {
 
         if (settings.disableOdysseyFactionsInCosmereScenarios &&
             (defName == "MechanoidHive" || defName == "InsectGeneline")) {
+            return false;
+        }
+
+        string? playerFactionDefName = GetPlayerFactionDefName(scenario);
+        if (defName == "Cosmere_Scadrial_Faction_FinalEmpireNPC" &&
+            playerFactionDefName == "Cosmere_Scadrial_Faction_FinalEmpire") {
             return false;
         }
 

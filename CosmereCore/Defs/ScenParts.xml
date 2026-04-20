@@ -17,4 +17,13 @@
     <summaryPriority>99</summaryPriority>
     <canBeRandomlyAdded>false</canBeRandomlyAdded>
   </ScenPartDef>
+
+  <ScenPartDef>
+    <defName>Cosmere_ScenPart_FactionRelations</defName>
+    <label>starting faction relations</label>
+    <scenPartClass>Cosmere.Core.ScenarioPart.ScenPart_FactionRelations</scenPartClass>
+    <category>Fixed</category>
+    <summaryPriority>98</summaryPriority>
+    <canBeRandomlyAdded>false</canBeRandomlyAdded>
+  </ScenPartDef>
 </Defs>

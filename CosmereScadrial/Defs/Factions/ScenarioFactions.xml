@@ -30,7 +30,7 @@
     <basicMemberKind>Colonist</basicMemberKind>
     <pawnSingular>subject</pawnSingular>
     <pawnsPlural>subjects</pawnsPlural>
-    <leaderTitle>Lord Ruler</leaderTitle>
+    <leaderTitle>The Lord Ruler</leaderTitle>
     <fixedIdeo MayRequire="Ludeon.RimWorld.Ideology">true</fixedIdeo>
     <ideoName MayRequire="Ludeon.RimWorld.Ideology">Steel Ministry</ideoName>
     <ideoDescription MayRequire="Ludeon.RimWorld.Ideology">The official religion of the Final Empire, enforcing the worship of the Lord Ruler as the Sliver of Infinity.</ideoDescription>

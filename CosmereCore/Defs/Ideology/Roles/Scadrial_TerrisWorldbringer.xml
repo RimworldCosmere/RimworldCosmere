@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Worldbringer: single leader, chief scholar -->
+    <PreceptDef ParentName="PreceptRoleSingleBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_Worldbringer</defName>
+        <label>worldbringer</label>
+        <description>A Terris scholar-missionary whose coppermind holds the knowledge of a thousand years. The worldbringer travels to gather what is true and to share what must not be forgotten.</description>
+        <iconPath>UI/Roles/SpecialistResearch</iconPath>
+        <leaderRole>true</leaderRole>
+        <impact>High</impact>
+        <displayOrderInImpact>900</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <classicExtra>false</classicExtra>
+        <canRemoveInUI>false</canRemoveInUI>
+        <restrictToSupremeGenderChance>0</restrictToSupremeGenderChance>
+        <expectationsOffset>2</expectationsOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Intellectual>7</Intellectual>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ResearchSpeed</statDef>
+                <modifier>0.5</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>GlobalLearningFactor</statDef>
+                <modifier>0.4</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.2</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>LeaderSpeech</li>
+            <li>ResearchCommand</li>
+            <li>Counsel</li>
+        </grantedAbilities>
+        <roleTags>
+            <li>Leader</li>
+            <li>ResearchSpecialist</li>
+        </roleTags>
+    </PreceptDef>
+
+    <!-- Keeper: multi researcher role -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_Keeper</defName>
+        <label>keeper</label>
+        <description>A Terris scholar who commits knowledge to metalmind. What the keeper records will not be lost to fire, to tyrants, or to time.</description>
+        <iconPath>UI/Roles/SpecialistResearch</iconPath>
+        <nameMaker>NamerRoleResearcher</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>800</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>6</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Intellectual>6</Intellectual>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ResearchSpeed</statDef>
+                <modifier>0.5</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>GlobalLearningFactor</statDef>
+                <modifier>0.25</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>ResearchCommand</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Intellectual</li>
+        </roleRequiredWorkTags>
+        <roleTags>
+            <li>ResearchSpecialist</li>
+        </roleTags>
+    </PreceptDef>
+
+    <!-- Synod Elder: multi moralist role -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_SynodElder</defName>
+        <label>synod elder</label>
+        <description>A senior voice of the Terris Synod. Elders counsel the people, steward traditions, and decide when knowledge should be shared and when it should be guarded.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <nameMaker>NamerRoleMoralist</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>700</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>3</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>5</Social>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.2</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.2</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>Convert</li>
+            <li>Counsel</li>
+            <li>Reassure</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Social</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+</Defs>

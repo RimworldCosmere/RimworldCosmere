@@ -73,6 +73,9 @@
             <li>Cosmere_Structure_StoneShamanism</li>
             <li>Cosmere_Structure_ParshendriRhythms</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </conflictingMemes>
         <comps>
             <li Class="PreceptComp_SelfTookMemoryThought">
                 <eventDef>Cosmere_SworeIdeal</eventDef>
@@ -99,6 +102,9 @@
             <li>Cosmere_Structure_Passions</li>
             <li>Cosmere_Structure_Jaggenism</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </conflictingMemes>
     </PreceptDef>
 
     <!-- Meaningless: Trellism - only power matters -->
@@ -114,6 +120,9 @@
         <associatedMemes>
             <li>Cosmere_Structure_Trellism</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </conflictingMemes>
     </PreceptDef>
 
     <!-- ========== THOUGHTS ========== -->

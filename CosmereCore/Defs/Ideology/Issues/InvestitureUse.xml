@@ -57,6 +57,10 @@
             <li>Cosmere_Structure_ParshendriRhythms</li>
             <li>Cosmere_Structure_TerrisWorldbringer</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_Trellism</li>
+        </conflictingMemes>
     </PreceptDef>
 
     <!-- Tool of Power: Pragmatic or dark views -->
@@ -68,7 +72,7 @@
         <impact>Medium</impact>
         <displayOrderInIssue>20</displayOrderInIssue>
         <displayOrderInImpact>100</displayOrderInImpact>
-        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <defaultSelectionWeight>2</defaultSelectionWeight>
         <associatedMemes>
             <li>Cosmere_Structure_SteelMinistry</li>
             <li>Cosmere_Structure_Trellism</li>

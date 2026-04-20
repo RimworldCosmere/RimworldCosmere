@@ -94,6 +94,7 @@
         <conflictingMemes>
             <li>Cosmere_Structure_SteelMinistry</li>
             <li>Cosmere_Structure_Sliverism</li>
+            <li>Cosmere_Structure_Survivorism</li>
         </conflictingMemes>
         <comps>
             <li Class="PreceptComp_SelfTookMemoryThought">
@@ -166,6 +167,7 @@
         <conflictingMemes>
             <li>Cosmere_Structure_SteelMinistry</li>
             <li>Cosmere_Structure_Sliverism</li>
+            <li>Cosmere_Structure_Survivorism</li>
         </conflictingMemes>
     </PreceptDef>
 

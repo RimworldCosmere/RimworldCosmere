@@ -5,24 +5,41 @@
         <label>Steel Ministry</label>
         <description>The Lord Ruler's theocratic apparatus. Worship through obedience. The Steel Ministry maintained order across the Final Empire for a thousand years through its network of Obligators and Inquisitors.</description>
         <iconPath>UI/Ideology/Cosmere/SteelMinistry</iconPath>
-        <deityCount>1</deityCount>
+        <deityCount>2</deityCount>
         <worshipRoomLabel>ministry hall</worshipRoomLabel>
         <generalRules>
             <rulesStrings>
-                <li>r_ideoName(p=99)->[globalAdjective] [packIdeoName]</li>
-                <li>r_ideoName(p=99)->[memeAdjective] [packIdeoName]</li>
-                <li>r_ideoName(p=99)->[packAdjective] [packIdeoName]</li>
-                <li>r_ideoName(p=99)->[packIdeoName]</li>
+                <li>r_ideoName(p=999)->Steel Ministry</li>
+                <li>r_leaderTitle(p=999)->The Lord Ruler</li>
                 <li>memeLeaderNoun->lord prelan</li>
                 <li>memeLeaderNoun->high prelan</li>
                 <li>memeLeaderNoun->canton head</li>
-                <li>memeLeaderNoun->inquisitor</li>
                 <li>memeLeaderAdjective->steel</li>
-                <li>memeLeaderAdjective->lord ruler's</li>
                 <li>memeLeaderAdjective->imperial</li>
+                <li>memeLeaderAdjective->cantonal</li>
+                <li>memeLeaderAdjective->obliging</li>
                 <li>memeMoralist->obligator</li>
                 <li>memeMoralist->prelan</li>
                 <li>memeMoralist->minister</li>
+                <li>memeMoralist->inquisitor</li>
+                <li>cantonName->Canton of Orthodoxy</li>
+                <li>cantonName->Canton of Finance</li>
+                <li>cantonName->Canton of Inquisition</li>
+                <li>cantonName->Canton of Resource</li>
+                <li>cantonShort->Orthodoxy</li>
+                <li>cantonShort->Finance</li>
+                <li>cantonShort->Inquisition</li>
+                <li>cantonShort->Resource</li>
+                <li>ministryTitle->Lord Prelan</li>
+                <li>ministryTitle->High Prelan</li>
+                <li>ministryTitle->Prelan</li>
+                <li>ministryTitle->Obligator</li>
+                <li>ministryTitle->Steel Inquisitor</li>
+                <li>ministryTitle->Minister</li>
+                <li>ministryEpithet->of Steel</li>
+                <li>ministryEpithet->of the Final Empire</li>
+                <li>ministryEpithet->of the Lord Ruler</li>
+                <li>ministryEpithet->of the Sliver of Infinity</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>
@@ -37,20 +54,12 @@
         </descriptionMaker>
         <fixedDeityNameTypes>
             <li>
-                <name>The Lord Ruler</name>
-                <type>Sliver of Infinity</type>
+                <name>Ruin</name>
+                <type>Shard of Adonalsium</type>
             </li>
             <li>
-                <name>Rashek</name>
-                <type>The Ascendant</type>
-            </li>
-            <li>
-                <name>He Who Ascended</name>
-                <type>God-Emperor</type>
-            </li>
-            <li>
-                <name>The Immortal Emperor</name>
-                <type>Holder of the Power</type>
+                <name>Preservation</name>
+                <type>Shard of Adonalsium</type>
             </li>
         </fixedDeityNameTypes>
         <symbolPacks>

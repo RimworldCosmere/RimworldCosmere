@@ -57,6 +57,9 @@
             <li>Cosmere_Structure_Passions</li>
             <li>Cosmere_Structure_ParshendriRhythms</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </conflictingMemes>
         <comps>
             <li Class="PreceptComp_SelfTookMemoryThought">
                 <eventDef>Cosmere_BondedSpren</eventDef>
@@ -78,6 +81,9 @@
         <associatedMemes>
             <li>Cosmere_Structure_StoneShamanism</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </conflictingMemes>
         <comps>
             <li Class="PreceptComp_SelfTookMemoryThought">
                 <eventDef>Cosmere_BondedSpren</eventDef>
@@ -105,6 +111,9 @@
             <li>Cosmere_Structure_Trellism</li>
             <li>Cosmere_Structure_Jaggenism</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_Vorinism</li>
+        </conflictingMemes>
     </PreceptDef>
 
     <!-- ========== THOUGHTS ========== -->

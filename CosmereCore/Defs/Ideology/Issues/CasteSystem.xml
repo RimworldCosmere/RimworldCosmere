@@ -21,7 +21,7 @@
         <impact>High</impact>
         <displayOrderInIssue>0</displayOrderInIssue>
         <displayOrderInImpact>100</displayOrderInImpact>
-        <defaultSelectionWeight>0.5</defaultSelectionWeight>
+        <defaultSelectionWeight>10</defaultSelectionWeight>
         <requiredMemes>
             <li>Cosmere_Structure_SteelMinistry</li>
         </requiredMemes>
@@ -50,6 +50,9 @@
             <li>Cosmere_Structure_StoneShamanism</li>
             <li>Cosmere_Structure_ParshendriRhythms</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </conflictingMemes>
     </PreceptDef>
 
     <!-- Merit-Based: Pathianism, Jaggenism - earned through deeds -->
@@ -67,6 +70,9 @@
             <li>Cosmere_Structure_Jaggenism</li>
             <li>Cosmere_Structure_Passions</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </conflictingMemes>
     </PreceptDef>
 
     <!-- Rejected: Church of Survivor, Survivorism - all castes are equal -->
@@ -83,6 +89,10 @@
             <li>Cosmere_Structure_ChurchOfSurvivor</li>
             <li>Cosmere_Structure_Survivorism</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+            <li>Cosmere_Structure_Vorinism</li>
+        </conflictingMemes>
         <comps>
             <li Class="PreceptComp_SituationalThought">
                 <thought>Cosmere_Caste_Rejected_Equality</thought>
@@ -105,6 +115,9 @@
             <li>Cosmere_Structure_Trellism</li>
             <li>Cosmere_Structure_TerrisWorldbringer</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_SteelMinistry</li>
+        </conflictingMemes>
     </PreceptDef>
 
     <!-- ========== THOUGHTS ========== -->

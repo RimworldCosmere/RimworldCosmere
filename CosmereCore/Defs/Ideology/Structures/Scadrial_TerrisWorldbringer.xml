@@ -2,7 +2,7 @@
 <Defs>
     <MemeDef ParentName="Cosmere_StructureBase" MayRequire="Ludeon.RimWorld.Ideology">
         <defName>Cosmere_Structure_TerrisWorldbringer</defName>
-        <label>Terris Worldbringer Faith</label>
+        <label>Terris Worldbringer</label>
         <description>Knowledge is sacred. Memory is duty. The Worldbringers and Keepers of Terris preserved knowledge through a thousand years of oppression, waiting for the Hero of Ages.</description>
         <iconPath>UI/Ideology/Cosmere/TerrisWorldbringer</iconPath>
         <deityCount>1</deityCount>

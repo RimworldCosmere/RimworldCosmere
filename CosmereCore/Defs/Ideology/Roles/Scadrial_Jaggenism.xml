@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Masked Priest: single leader -->
+    <PreceptDef ParentName="PreceptRoleSingleBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_MaskedPriest</defName>
+        <label>masked priest</label>
+        <description>The first face of the faithful, wearing the most storied of the community's masks. The masked priest speaks for ancestors whose features they now carry.</description>
+        <iconPath>UI/Roles/Moralist</iconPath>
+        <leaderRole>true</leaderRole>
+        <impact>High</impact>
+        <displayOrderInImpact>900</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <classicExtra>false</classicExtra>
+        <canRemoveInUI>false</canRemoveInUI>
+        <restrictToSupremeGenderChance>0</restrictToSupremeGenderChance>
+        <convertPowerFactor>2</convertPowerFactor>
+        <expectationsOffset>2</expectationsOffset>
+        <requiredMemes>
+            <li>Cosmere_Structure_Jaggenism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Social>5</Social>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>SocialImpact</statDef>
+                <modifier>0.3</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>ConversionPower</statDef>
+                <modifier>0.4</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>LeaderSpeech</li>
+            <li>Convert</li>
+            <li>Counsel</li>
+            <li>Reassure</li>
+        </grantedAbilities>
+        <roleTags>
+            <li>Moralist</li>
+            <li>Leader</li>
+        </roleTags>
+    </PreceptDef>
+
+    <!-- Maskmaker: multi crafter role -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_Maskmaker</defName>
+        <label>maskmaker</label>
+        <description>A craftsman who shapes the masks that carry a Southerner's name. To wear a mask made well is to wear a life remembered.</description>
+        <iconPath>UI/Roles/SpecialistProduction</iconPath>
+        <nameMaker>NamerRoleProductionSpecialist</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>800</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>4</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_Jaggenism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Crafting>6</Crafting>
+                    <Artistic>6</Artistic>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>WorkSpeedGlobal</statDef>
+                <modifier>0.15</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>GeneralLaborSpeed</statDef>
+                <modifier>0.25</modifier>
+            </li>
+        </roleEffects>
+        <roleRequiredWorkTags>
+            <li>Crafting</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+    <!-- Masked Warrior: multi combat role -->
+    <PreceptDef ParentName="PreceptRoleMultiBase" MayRequire="Ludeon.RimWorld.Ideology">
+        <defName>Cosmere_IdeoRole_MaskedWarrior</defName>
+        <label>masked warrior</label>
+        <description>A southerner who wears a war-mask into battle, carrying the face of a fallen kin to finish what they started. The masked warrior fights for two.</description>
+        <iconPath>UI/Roles/SpecialistMelee</iconPath>
+        <nameMaker>NamerRoleBrawler</nameMaker>
+        <impact>Medium</impact>
+        <displayOrderInImpact>700</displayOrderInImpact>
+        <defaultSelectionWeight>1</defaultSelectionWeight>
+        <maxCount>3</maxCount>
+        <requiredMemes>
+            <li>Cosmere_Structure_Jaggenism</li>
+        </requiredMemes>
+        <roleRequirements>
+            <li Class="RoleRequirement_SameIdeo">
+                <labelKey>RoleRequirementLabelSameIdeo</labelKey>
+            </li>
+            <li Class="RoleRequirement_MinSkillAny">
+                <skills>
+                    <Melee>6</Melee>
+                </skills>
+            </li>
+        </roleRequirements>
+        <roleEffects>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>MeleeHitChance</statDef>
+                <modifier>4</modifier>
+            </li>
+            <li Class="RoleEffect_PawnStatOffset">
+                <statDef>MeleeDodgeChance</statDef>
+                <modifier>4</modifier>
+            </li>
+        </roleEffects>
+        <grantedAbilities>
+            <li>BerserkTrance</li>
+        </grantedAbilities>
+        <roleRequiredWorkTags>
+            <li>Violent</li>
+        </roleRequiredWorkTags>
+    </PreceptDef>
+
+</Defs>

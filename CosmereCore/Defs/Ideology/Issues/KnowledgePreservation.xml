@@ -67,6 +67,9 @@
             <li>Cosmere_Structure_Sliverism</li>
             <li>Cosmere_Structure_Pathianism</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </conflictingMemes>
         <statFactors>
             <GlobalLearningFactor>1.05</GlobalLearningFactor>
         </statFactors>
@@ -95,6 +98,9 @@
             <li>Cosmere_Structure_ParshendriRhythms</li>
             <li>Cosmere_Structure_StoneShamanism</li>
         </associatedMemes>
+        <conflictingMemes>
+            <li>Cosmere_Structure_TerrisWorldbringer</li>
+        </conflictingMemes>
     </PreceptDef>
 
     <!-- Power Tool: Steel Ministry, Trellism - knowledge is power to control -->

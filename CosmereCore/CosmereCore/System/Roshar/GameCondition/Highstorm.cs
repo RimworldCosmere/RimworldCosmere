@@ -290,27 +290,6 @@ public class Highstorm : RimWorld.GameCondition {
             spawnFilth: false
         );
         switch (thing) {
-            case Plant { Destroyed: false } plant when plant.def.plant is { harvestedThingDef: not null }: {
-                if (!Rand.Chance(1 / 10f)) {
-                    return; // Add ANOTHER gate here. 1/100 chance to destroy, over a BUNCH of ticks, this will still happen, just slower
-                }
-
-                // Harvest yield
-                Verse.Thing yield = ThingMaker.MakeThing(plant.def.plant.harvestedThingDef);
-                yield.stackCount = (int)plant.def.plant.harvestYield;
-
-
-                // Do damage to the plant
-                if (plant.HitPoints - damage.Amount <= 0) {
-                    IntVec3 position = plant.Position;
-                    plant.Kill(damage);
-                    GenPlace.TryPlaceThing(yield, position, map, ThingPlaceMode.Near);
-                } else {
-                    plant.TakeDamage(damage);
-                }
-
-                break;
-            }
             case Building building: {
                 if (map == null) break;
                 if (IsHighstormImmuneBuilding(building)) break;

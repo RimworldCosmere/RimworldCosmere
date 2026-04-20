@@ -44,6 +44,9 @@
         "items": ["copper"],
         "count": 1
       }
-    ]
+    ],
+    "product": {
+      "count": 10
+    }
   }
 }

@@ -57,6 +57,9 @@
         "items": ["zinc"],
         "count": 5
       }
-    ]
+    ],
+    "product": {
+      "count": 10
+    }
   }
 }

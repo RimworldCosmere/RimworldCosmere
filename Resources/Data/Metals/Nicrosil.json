@@ -45,6 +45,9 @@
         "items": ["chromium"],
         "count": 2
       }
-    ]
+    ],
+    "product": {
+      "count": 10
+    }
   }
 }

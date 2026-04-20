@@ -1,6 +1,7 @@
 using System;
 using Cosmere.Core.Listing;
 using Cosmere.Core.Quickstart;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -16,6 +17,7 @@ public class CoreModSettings : CosmereModSettings {
     public bool debugMode;
     public LogLevel logLevel = LogLevel.Verbose;
     public string? quickstartName;
+    public string? testScenarioDefName;
 
     public bool showDormantConnection;
 
@@ -86,21 +88,32 @@ public class CoreModSettings : CosmereModSettings {
                     new FieldOptions { minimumColumnWidth = 400 }
                 );
 
-                TaggedString? description = GetDescription();
-                float descriptionHeight = Text.CalcHeight(description ?? "", listing.ColumnWidth);
+                if (IsScenarioTestQuickstartSelected()) {
+                    fieldset.Field(
+                        "CC_Settings_TestScenario_Label".Translate(),
+                        "CC_Settings_TestScenario_Tooltip".Translate(),
+                        sub => Util.UI.Dropdown(
+                            sub,
+                            GetTestScenarioLabel,
+                            testScenarioDefName,
+                            "CC_Settings_TestScenario_Placeholder".Translate(),
+                            GetScenarioDefItems(),
+                            val => testScenarioDefName = val
+                        ),
+                        new FieldOptions { minimumColumnWidth = 400 }
+                    );
+                }
 
-                fieldset.Field(
-                    sub => {
-                        if (string.IsNullOrEmpty(quickstartName)) return;
-                        if (description == null) {
-                            sub.Label("CC_Settings_Quickstarter_FailedToFind".Translate());
-                            return;
+                if (!string.IsNullOrEmpty(quickstartName)) {
+                    TaggedString? description = GetDescription();
+                    if (description == null) {
+                        fieldset.Label("CC_Settings_Quickstarter_FailedToFind".Translate());
+                    } else {
+                        using (new TextBlock(TextAnchor.UpperLeft)) {
+                            fieldset.Label(description.Value);
                         }
-
-                        using (new TextBlock(TextAnchor.UpperLeft)) sub.Label(description.Value);
-                    },
-                    new FieldOptions { minimumColumnWidth = 400, height = descriptionHeight }
-                );
+                    }
+                }
             },
             SubListingOptions.WithoutTopPadding().WithTextBlock(new TextBlock(TextAnchor.MiddleLeft))
         );
@@ -124,11 +137,35 @@ public class CoreModSettings : CosmereModSettings {
         return type == null ? null : $"{type.Assembly.GetName().Name}: {type.Name}";
     }
 
+    private bool IsScenarioTestQuickstartSelected() {
+        if (string.IsNullOrEmpty(quickstartName)) return false;
+        Type? type = Type.GetType(quickstartName!);
+        return type == typeof(ScenarioTestQuickstart);
+    }
+
+    private string? GetTestScenarioLabel(string? defName) {
+        if (string.IsNullOrEmpty(defName)) return null;
+        ScenarioDef? def = DefDatabase<ScenarioDef>.GetNamedSilentFail(defName);
+        return def == null ? defName : def.LabelCap.ToString();
+    }
+
+    private static Dictionary<string, string> GetScenarioDefItems() {
+        Dictionary<string, string> items = new Dictionary<string, string>();
+        List<ScenarioDef> defs = DefDatabase<ScenarioDef>.AllDefsListForReading;
+        for (int i = 0; i < defs.Count; i++) {
+            ScenarioDef def = defs[i];
+            string label = $"{def.LabelCap} ({def.defName})";
+            items[label] = def.defName;
+        }
+        return items;
+    }
+
     public override void ExposeData() {
         Scribe_Values.Look(ref showDormantConnection, "showDormantConnection");
         Scribe_Values.Look(ref logLevel, "logLevel", LogLevel.Verbose);
         Scribe_Values.Look(ref debugMode, "debugMode");
         Scribe_Values.Look(ref quickstartName, "quickstartName");
+        Scribe_Values.Look(ref testScenarioDefName, "testScenarioDefName");
         Scribe_Values.Look(ref disableEmpireInCosmereScenarios, "disableEmpireInCosmereScenarios", false);
         Scribe_Values.Look(ref disableOdysseyFactionsInCosmereScenarios, "disableOdysseyFactionsInCosmereScenarios", false);
     }

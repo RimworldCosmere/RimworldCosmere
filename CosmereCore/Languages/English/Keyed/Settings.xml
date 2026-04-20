@@ -21,7 +21,12 @@
     <CC_Settings_Quickstarter_Tooltip>When in dev mode, will immediately launch into the given Quickstarter. Very useful for testing.</CC_Settings_Quickstarter_Tooltip>
     <CC_Settings_Quickstarter_Placeholder>Select a Quickstarter </CC_Settings_Quickstarter_Placeholder>
     <CC_Settings_Quickstarter_FailedToFind>Failed to find Quickstarter</CC_Settings_Quickstarter_FailedToFind>
-    
+
+    <CC_Settings_TestScenario_Label>Test Scenario: </CC_Settings_TestScenario_Label>
+    <CC_Settings_TestScenario_Tooltip>Scenario used by the ScenarioTestQuickstart. Lets you boot straight into any scenario with default pawn generation.</CC_Settings_TestScenario_Tooltip>
+    <CC_Settings_TestScenario_Placeholder>Select a Scenario </CC_Settings_TestScenario_Placeholder>
+
+
     <CC_Quickstart_Name>Quickstart: </CC_Quickstart_Name>
     <CC_Quickstart_MapSize>Map Size: </CC_Quickstart_MapSize>
     <CC_Quickstart_Difficulty>Difficulty: </CC_Quickstart_Difficulty>

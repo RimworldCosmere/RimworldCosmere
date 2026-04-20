@@ -28,7 +28,9 @@
         "I killed my father.",
         "I am not who I pretend to be."
       ],
-      "abilities": []
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
+      ]
     },
     {
       "stormlightMax": 700,
@@ -39,7 +41,6 @@
         "I want to be loved, but I don’t think I deserve it."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade",
           "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },

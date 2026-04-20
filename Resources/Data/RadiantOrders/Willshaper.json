@@ -26,6 +26,9 @@
       "quotes": [
         "I will seek freedom for those who have none.",
         "I will not be bound by chains, nor stand by while others are."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
       ]
     },
     {
@@ -37,7 +40,6 @@
         "They deserve to decide who they are, even if I disagree."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade",
           "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },

@@ -26,6 +26,9 @@
       "quotes": [
         "I will be there when I am needed.",
         "I will not break, no matter the pressure."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
       ]
     },
     {
@@ -37,7 +40,6 @@
         "My strength is not for myself alone."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade",
           "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },

@@ -25,6 +25,9 @@
       "description": "The Dustbringer acknowledges the destructive nature of their power and accepts responsibility for controlling it.",
       "quotes": [
         "I will learn to control the power within me."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
       ]
     },
     {
@@ -36,7 +39,6 @@
         "I will master the fire, not be consumed by it."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade",
           "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },

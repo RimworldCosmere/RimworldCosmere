@@ -25,6 +25,9 @@
       "description": "The Truthwatcher begins to accept the burden of knowledge, and the obligation to use it carefully.",
       "quotes": [
         "I will speak the truth I see, even when others will not listen."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
       ]
     },
     {
@@ -36,7 +39,6 @@
         "What I know, I will use to protect."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade",
           "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },

@@ -313,7 +313,7 @@ public class Highstorm : RimWorld.GameCondition {
                 if (StormlightUtilities.IsHighstormImmune(pawn)) break;
                 Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
                 if (surgebinder != null) {
-                    damage.SetAmount(damage.Amount / (surgebinder.currentIdeal + 1));
+                    damage.SetAmount(damage.Amount * 0.5f / (surgebinder.currentIdeal + 1));
                 }
 
                 pawn.TakeDamage(damage);

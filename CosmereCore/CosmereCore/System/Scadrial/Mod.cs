@@ -8,4 +8,6 @@ public class Mod(ModContentPack content) : CosmereMod<ScadrialModSettings>(conte
     public static bool enableMists => Settings.enableMists;
 
     public static MistsFrequency mistsFrequency => Settings.mistsFrequency;
+
+    public static bool alwaysShowAllomanticAuras => Settings.alwaysShowAllomanticAuras;
 }

@@ -49,7 +49,12 @@ public abstract class LineDrawingAura : HediffComp {
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
-        if (!atLeastBurning || !Find.Selector.IsSelected(parent.pawn)) {
+        if (!atLeastBurning) {
+            LineRenderer.TryClear(this);
+            return;
+        }
+
+        if (!Scadrial.Mod.alwaysShowAllomanticAuras && !Find.Selector.IsSelected(parent.pawn)) {
             LineRenderer.TryClear(this);
             return;
         }

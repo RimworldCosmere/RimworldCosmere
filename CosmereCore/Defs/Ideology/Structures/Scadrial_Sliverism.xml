@@ -22,6 +22,12 @@
                 <li>memeMoralist->scholar</li>
                 <li>memeMoralist->adherent</li>
                 <li>memeMoralist->devotee</li>
+                <li>memeConcept->sliver</li>
+                <li>memeConcept->infinity</li>
+                <li>memeConcept->divinity</li>
+                <li>memeHyphenPrefix->sliv</li>
+                <li>memeHyphenPrefix->shard</li>
+                <li>memeHyphenPrefix->infi</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

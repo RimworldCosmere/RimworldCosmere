@@ -22,6 +22,12 @@
                 <li>memeMoralist->priest</li>
                 <li>memeMoralist->preacher</li>
                 <li>memeMoralist->elder</li>
+                <li>memeConcept->survival</li>
+                <li>memeConcept->ascension</li>
+                <li>memeConcept->freedom</li>
+                <li>memeHyphenPrefix->surv</li>
+                <li>memeHyphenPrefix->asc</li>
+                <li>memeHyphenPrefix->scar</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

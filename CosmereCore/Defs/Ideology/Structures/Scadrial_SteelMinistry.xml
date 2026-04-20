@@ -40,6 +40,12 @@
                 <li>ministryEpithet->of the Final Empire</li>
                 <li>ministryEpithet->of the Lord Ruler</li>
                 <li>ministryEpithet->of the Sliver of Infinity</li>
+                <li>memeConcept->obedience</li>
+                <li>memeConcept->dominion</li>
+                <li>memeConcept->orthodoxy</li>
+                <li>memeHyphenPrefix->steel</li>
+                <li>memeHyphenPrefix->iron</li>
+                <li>memeHyphenPrefix->cantoral</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

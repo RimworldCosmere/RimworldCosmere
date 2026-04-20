@@ -22,6 +22,12 @@
                 <li>memeMoralist->pathkeeper</li>
                 <li>memeMoralist->guide</li>
                 <li>memeMoralist->elder</li>
+                <li>memeConcept->balance</li>
+                <li>memeConcept->harmony</li>
+                <li>memeConcept->path</li>
+                <li>memeHyphenPrefix->path</li>
+                <li>memeHyphenPrefix->harm</li>
+                <li>memeHyphenPrefix->dual</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

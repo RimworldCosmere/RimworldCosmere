@@ -22,6 +22,12 @@
                 <li>memeMoralist->acolyte</li>
                 <li>memeMoralist->whisperer</li>
                 <li>memeMoralist->freed one</li>
+                <li>memeConcept->autonomy</li>
+                <li>memeConcept->liberation</li>
+                <li>memeConcept->freedom</li>
+                <li>memeHyphenPrefix->trell</li>
+                <li>memeHyphenPrefix->red</li>
+                <li>memeHyphenPrefix->auto</li>
             </rulesStrings>
         </generalRules>
         <descriptionMaker>

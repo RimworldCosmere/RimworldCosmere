@@ -50,6 +50,7 @@ public class JobDriver_ChargeCorpseSpike : Verse.AI.JobDriver {
             if (isThinNeedle) {
                 strengthMultiplier *= HemalurgicConstants.ThinNeedleStrengthMultiplier;
             }
+            strengthMultiplier *= HemalurgicConstants.GetDonorAttributeMultiplier(donor, stealType);
 
             if (HemalurgicConstants.RequiresSelection(stealType)) {
                 List<GeneDef> candidates = StealTargetSelector.GetStealCandidates(donor, stealType);

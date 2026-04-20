@@ -13,7 +13,7 @@ public class InvestitureShieldHediff : AllomanticHediff {
     private bool messageSent;
     public InvestitureShieldHediff() { }
 
-    public InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, AbstractAbility<Allomancer> ability) : base(
+    public InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, IAbility<Allomancer, IHediff<Allomancer>> ability) : base(
         hediffDef,
         pawn,
         ability

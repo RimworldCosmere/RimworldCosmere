@@ -60,8 +60,9 @@ public class GoldBurn : HediffComp {
 
         // 3. Mental break chance
         if (Rand.Chance(0.0025f) && Pawn.mindState != null && !Pawn.InMentalState) {
-            foreach (IAllomancerAbility sa in parent.sourceAbilities) {
-                sa.UpdateStatus(BurningStatus.Off);
+            IAllomancerAbility[] snapshot = [.. parent.sourceAbilities];
+            for (int i = 0; i < snapshot.Length; i++) {
+                snapshot[i].UpdateStatus(BurningStatus.Off);
             }
             Pawn.mindState.mentalStateHandler.TryStartMentalState(
                 MentalStateDefOf.Wander_OwnRoom,

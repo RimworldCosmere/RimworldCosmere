@@ -133,6 +133,7 @@ public class JobDriver_ChargeLiveSpike : Verse.AI.JobDriver {
             if (isThinNeedle) {
                 strengthMultiplier *= HemalurgicConstants.ThinNeedleStrengthMultiplier;
             }
+            strengthMultiplier *= HemalurgicConstants.GetDonorAttributeMultiplier(donor, stealType);
 
             GeneDef? selectedGene = spikeComp.pendingStealTarget;
             spikeComp.pendingStealTarget = null;

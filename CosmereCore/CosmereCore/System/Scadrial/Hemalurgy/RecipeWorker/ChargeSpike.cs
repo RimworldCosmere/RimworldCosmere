@@ -44,6 +44,7 @@ public class ChargeSpike : Recipe_Surgery {
         HemalurgicStealType stealType = HemalurgicConstants.GetStealType(metal);
         bool isThinNeedle = spikeComp.parent.def == HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle;
         float strengthMultiplier = isThinNeedle ? HemalurgicConstants.ThinNeedleStrengthMultiplier : 1f;
+        strengthMultiplier *= HemalurgicConstants.GetDonorAttributeMultiplier(donor, stealType);
 
         // Remove spike from ingredients to prevent the recipe system from destroying it
         ingredients.Remove(spikeComp.parent);

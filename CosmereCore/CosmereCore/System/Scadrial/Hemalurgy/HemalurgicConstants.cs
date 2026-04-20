@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Cosmere.System.Scadrial.Def;
+using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Hemalurgy;
@@ -109,6 +111,41 @@ public static class HemalurgicConstants {
             or HemalurgicStealType.HumanSenses
             or HemalurgicStealType.EmotionalFortitude
             or HemalurgicStealType.MentalFortitude;
+    }
+
+    public static float GetDonorAttributeMultiplier(Pawn donor, HemalurgicStealType stealType) {
+        if (donor == null) return 1f;
+
+        switch (stealType) {
+            case HemalurgicStealType.HumanStrength: {
+                float melee = donor.GetStatValue(StatDef.Named("MeleeDamageFactor"));
+                float manip = donor.health?.capacities?.GetLevel(PawnCapacityDefOf.Manipulation) ?? 1f;
+                float move = donor.GetStatValue(StatDef.Named("MoveSpeed")) / 4.6f;
+                return Mathf.Clamp((melee + manip + move) / 3f, 0.25f, 2f);
+            }
+            case HemalurgicStealType.HumanSenses: {
+                float sight = donor.health?.capacities?.GetLevel(PawnCapacityDefOf.Sight) ?? 1f;
+                float hearing = donor.health?.capacities?.GetLevel(PawnCapacityDefOf.Hearing) ?? 1f;
+                float shooting = donor.GetStatValue(StatDef.Named("ShootingAccuracyPawn"));
+                return Mathf.Clamp((sight + hearing + shooting) / 3f, 0.25f, 2f);
+            }
+            case HemalurgicStealType.EmotionalFortitude: {
+                float social = donor.GetStatValue(StatDef.Named("SocialImpact"));
+                float mbThreshold = donor.GetStatValue(StatDef.Named("MentalBreakThreshold"));
+                float breakResist = Mathf.Clamp(1f + (0.35f - mbThreshold) * 2f, 0.25f, 2f);
+                float negotiation = donor.GetStatValue(StatDef.Named("NegotiationAbility"));
+                return Mathf.Clamp((social + breakResist + negotiation) / 3f, 0.25f, 2f);
+            }
+            case HemalurgicStealType.MentalFortitude: {
+                float learning = donor.GetStatValue(StatDef.Named("GlobalLearningFactor"));
+                float research = donor.GetStatValue(StatDef.Named("ResearchSpeed"));
+                int intellect = donor.skills?.GetSkill(DefDatabase<SkillDef>.GetNamed("Intellectual"))?.Level ?? 0;
+                float intelFactor = Mathf.Clamp(intellect / 10f, 0.25f, 2f);
+                return Mathf.Clamp((learning + research + intelFactor) / 3f, 0.25f, 2f);
+            }
+            default:
+                return 1f;
+        }
     }
 
     public static bool IsAllomanticSteal(HemalurgicStealType type) {

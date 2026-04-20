@@ -7,6 +7,7 @@
         <metal>Aluminum</metal>
         <canUseWhileAsleep>true</canUseWhileAsleep>
         <hediff>Cosmere_Scadrial_Hediff_InvestitureShield</hediff>
+        <activeMote>Cosmere_Scadrial_Mote_AluminumAura</activeMote>
         <beuPerTick>0.0008</beuPerTick>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>

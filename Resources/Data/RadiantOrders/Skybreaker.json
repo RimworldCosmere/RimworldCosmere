@@ -25,6 +25,9 @@
       "description": "The Skybreaker swears to follow the law, placing it above personal judgment or emotion. Justice is external, not internal.",
       "quotes": [
         "I will seek justice, to be just in all things."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
       ]
     },
     {
@@ -35,7 +38,6 @@
         "I will follow the law."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade",
           "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },

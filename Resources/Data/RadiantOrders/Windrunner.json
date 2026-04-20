@@ -25,6 +25,9 @@
       "description": "The Windrunner accepts their duty as a guardian, vowing to defend the innocent and powerless without hesitation.",
       "quotes": [
         "I will protect those who cannot protect themselves."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
       ]
     },
     {
@@ -37,7 +40,6 @@
         "I've got to protect people, you know? Even from myself."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade",
           "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },

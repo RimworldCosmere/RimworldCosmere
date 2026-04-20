@@ -25,6 +25,9 @@
       "description": "The Elsecaller commits to understanding themselves, not just their strengths, but their limits and flaws.",
       "quotes": [
         "I will know myself, so I may better know the world."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
       ]
     },
     {
@@ -36,7 +39,6 @@
         "To transform the world, I must first transform myself."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade",
           "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },

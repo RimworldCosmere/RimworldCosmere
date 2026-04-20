@@ -25,6 +25,9 @@
       "description": "The Edgedancer swears to care for those overlooked, choosing to notice the ignored and remember the forgotten.",
       "quotes": [
         "I will listen to those who have been ignored."
+      ],
+      "abilities": [
+          "Cosmere_Roshar_Ability_ToggleShardblade"
       ]
     },
     {
@@ -36,7 +39,6 @@
         "I will be swift and gentle, like the wind through grass."
       ],
       "abilities": [
-          "Cosmere_Roshar_Ability_ToggleShardblade",
           "Cosmere_Roshar_Ability_ToggleShardplate"
       ]
     },

@@ -344,4 +344,18 @@
         <researchViewY>3.50</researchViewY>
     </ResearchProjectDef>
 
+    <ResearchProjectDef>
+        <defName>Cosmere_Roshar_HighstormShielding</defName>
+        <label>highstorm shielding</label>
+        <description>Reinforcement techniques refined from Alethi stormbunker construction - pressure-cut stone, braced joinery, and gemstone-threaded anchors that bleed the worst of a highstorm's fury into the ground. Once understood, every exposed building the colony raises stands firmer against the storm.</description>
+        <baseCost>1200</baseCost>
+        <techLevel>Medieval</techLevel>
+        <prerequisites>
+            <li>Cosmere_Roshar_StormlightInfrastructure</li>
+        </prerequisites>
+        <tab>Cosmere</tab>
+        <researchViewX>5.00</researchViewX>
+        <researchViewY>3.50</researchViewY>
+    </ResearchProjectDef>
+
 </Defs>

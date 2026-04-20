@@ -68,6 +68,16 @@ public static class StormShelterManager {
         return Regions[idx].isShelter;
     }
 
+    public static bool IsProtectedByShelter(IntVec3 pos, Map map) {
+        if (IsInsideShelter(pos)) return true;
+        for (int i = 0; i < GenAdj.CardinalDirections.Length; i++) {
+            IntVec3 adj = pos + GenAdj.CardinalDirections[i];
+            if (!adj.InBounds(map)) continue;
+            if (IsInsideShelter(adj)) return true;
+        }
+        return false;
+    }
+
     public static IntVec3 FindNearestShelterCell(IntVec3 from, Map map, TraverseParms traverseParms) {
         if (IsInsideShelter(from)) return from;
 

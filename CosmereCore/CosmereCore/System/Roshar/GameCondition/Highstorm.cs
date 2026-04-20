@@ -1,5 +1,6 @@
 using Cosmere.Core.Comp.Thing;
 using Cosmere.System.Roshar.Comp.Map;
+using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.Utility;
 using RimWorld;
@@ -229,27 +230,49 @@ public class Highstorm : RimWorld.GameCondition {
         return true;
     }
 
+    private static ResearchProjectDef? shieldingResearchCache;
+    private static bool shieldingResearchLookedUp;
+
+    private static float GetShieldingMultiplier() {
+        if (!shieldingResearchLookedUp) {
+            shieldingResearchCache =
+                DefDatabase<ResearchProjectDef>.GetNamedSilentFail("Cosmere_Roshar_HighstormShielding");
+            shieldingResearchLookedUp = true;
+        }
+        if (shieldingResearchCache != null && shieldingResearchCache.IsFinished) return 0.15f;
+        return 1f;
+    }
+
+    private static bool IsHighstormImmuneBuilding(Building building) {
+        if (building.TryGetComp<StormlightReceiver>() != null) return true;
+        if (building.def == RimWorld.ThingDefOf.HiddenConduit) return true;
+        string defName = building.def.defName;
+        if (defName == "Cosmere_Roshar_Thing_StormlightConduitHidden") return true;
+        if (defName == "Cosmere_Roshar_Thing_StormlightConduitWeatherproof") return true;
+        return false;
+    }
+
     private static float GetBuildingDamageMultiplier(Building building) {
         ThingDef? stuff = building.Stuff;
         if (stuff == null) return 0.3f;
-        if (stuff.defName == "Plasteel") return 0f;
+
+        string stuffName = stuff.defName;
+        if (stuffName == "Plasteel") return 0f;
+        if (stuffName.StartsWith("Vac")) return 0f;
+        if (stuffName == "Silver" || stuffName == "Gold") return 0.40f;
+        if (stuffName == "Steel") return 0.08f;
+        if (stuffName == "Uranium") return 0.40f;
 
         List<StuffCategoryDef>? categories = stuff.stuffProps?.categories;
         if (categories == null) return 0.3f;
 
         for (int i = 0; i < categories.Count; i++) {
-            if (categories[i] == StuffCategoryDefOf.Woody) return 1f;
-            if (categories[i] == StuffCategoryDefOf.Stony) return 0.08f;
-            if (categories[i] == StuffCategoryDefOf.Metallic) {
-                StatDef? sharpStat = DefDatabase<StatDef>.GetNamedSilentFail("StuffPower_Armor_Sharp");
-                StatDef? bluntStat = DefDatabase<StatDef>.GetNamedSilentFail("StuffPower_Armor_Blunt");
-                if (sharpStat == null || bluntStat == null) return 0.12f;
-                float sharp = stuff.GetStatValueAbstract(sharpStat);
-                float blunt = stuff.GetStatValueAbstract(bluntStat);
-                float combined = sharp + blunt;
-                if (combined <= 0f) return 0.3f;
-                return Mathf.Clamp(0.08f / combined, 0.05f, 0.8f);
-            }
+            StuffCategoryDef cat = categories[i];
+            if (cat == StuffCategoryDefOf.Woody) return 1f;
+            if (cat == StuffCategoryDefOf.Stony) return 0.04f;
+            if (cat.defName == "Cosmere_Core_StuffCategory_Gems") return 0.20f;
+            if (cat.defName == "Cosmere_Core_StuffCategory_RawGems") return 0.20f;
+            if (cat.defName == "Cosmere_Core_StuffCategory_CutGems") return 0.20f;
         }
 
         return 0.3f;
@@ -258,6 +281,8 @@ public class Highstorm : RimWorld.GameCondition {
     private void DamageItem(Verse.Thing thing) {
 
         Map? map = thing.Map;
+        if (map != null && thing.Position.Fogged(map)) return;
+        if (thing is RimWorld.Mineable) return;
         DamageInfo damage = new DamageInfo(
             DamageDefOf.TornadoScratch,
             Rand.Range(3f, 10f) * scaledCurve,
@@ -287,10 +312,16 @@ public class Highstorm : RimWorld.GameCondition {
                 break;
             }
             case Building building: {
+                if (map == null) break;
+                if (IsHighstormImmuneBuilding(building)) break;
+                if (StormShelterManager.IsProtectedByShelter(building.Position, map)) break;
+                if (building.Position.Roofed(map)) break;
+
                 float materialMultiplier = GetBuildingDamageMultiplier(building);
                 if (materialMultiplier <= 0f) break;
 
-                damage.SetAmount(damage.Amount * materialMultiplier);
+                float totalMultiplier = materialMultiplier * GetShieldingMultiplier();
+                damage.SetAmount(damage.Amount * totalMultiplier);
                 building.TakeDamage(damage);
                 if (building.Destroyed) {
                     StormShelterManager.RebuildShelterCache(map);

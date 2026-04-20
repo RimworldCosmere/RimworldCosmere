@@ -15,7 +15,7 @@ public class SurgeChargeHediff : AllomanticHediff {
 
     public int endInTicks = -1;
     public SurgeChargeHediff() { }
-    public SurgeChargeHediff(HediffDef d, Pawn p, AbstractAbility<Allomancer> a) : base(d, p, a) { }
+    public SurgeChargeHediff(HediffDef d, Pawn p, IAbility<Allomancer, IHediff<Allomancer>> a) : base(d, p, a) { }
 
     public override void Tick() {
         base.Tick();
@@ -58,8 +58,9 @@ public class SurgeChargeHediff : AllomanticHediff {
 
         FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
 
-        foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in sourceAbilities) {
-            if (sa is not AllomancyAbility sourceAbility || !sourceAbility.atLeastBurning) continue;
+        IAbility<Allomancer, IHediff<Allomancer>>[] snapshot = [.. sourceAbilities];
+        for (int i = 0; i < snapshot.Length; i++) {
+            if (snapshot[i] is not AllomancyAbility sourceAbility || !sourceAbility.atLeastBurning) continue;
             if (sourceAbility.pawn.genes == null) continue;
             Allomancer? sourceGene = sourceAbility.pawn.genes.GetAllomanticGeneForMetal(sourceAbility.metal);
             if (sourceGene == null || !sourceGene.Burning) continue;

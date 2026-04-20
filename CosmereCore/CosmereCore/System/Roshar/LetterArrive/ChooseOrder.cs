@@ -10,7 +10,7 @@ public class ChooseOrder : ChoiceLetter {
         get {
             yield return OpenRadiantSelectionDialog();
             if (lookTargets.IsValid()) {
-                yield return Option_JumpToLocation;
+                yield return Option_JumpToLocationAndPostpone;
             }
 
             yield return Option_Close;

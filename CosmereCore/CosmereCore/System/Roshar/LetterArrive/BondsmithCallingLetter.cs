@@ -51,7 +51,7 @@ public class BondsmithCallingLetter : ChoiceLetter {
             };
 
             if (lookTargets.IsValid()) {
-                yield return Option_JumpToLocation;
+                yield return Option_JumpToLocationAndPostpone;
             }
         }
     }

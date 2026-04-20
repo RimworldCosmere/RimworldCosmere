@@ -78,6 +78,8 @@ public class ScenPart_NamedPawns : ScenPart {
         ApplyXenotype(pawn, template);
         ApplyTraits(pawn, template);
         ApplySkills(pawn, template);
+
+        pawn.Drawer?.renderer?.SetAllGraphicsDirty();
     }
 
     private void ApplyPostStartEffects() {
@@ -93,6 +95,8 @@ public class ScenPart_NamedPawns : ScenPart {
             ApplyRadiantOrder(pawn, template);
             ApplyMetalborn(pawn, template);
             ApplyInventory(pawn, template);
+
+            pawn.Drawer?.renderer?.SetAllGraphicsDirty();
         }
     }
 

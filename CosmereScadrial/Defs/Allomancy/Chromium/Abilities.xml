@@ -6,6 +6,7 @@
         <label>shield target against investiture</label>
         <metal>Chromium</metal>
         <hediff>Cosmere_Scadrial_Hediff_InvestitureShield</hediff>
+        <activeMote>Cosmere_Scadrial_Mote_ChromiumAura</activeMote>
         <verbProperties>
             <range>2</range>
             <targetParams>

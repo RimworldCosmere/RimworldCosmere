@@ -6,6 +6,7 @@
         <description>The Allomancer burns electrum, glimpsing their own possible futures.</description>
         <metal>Electrum</metal>
         <hediff>Cosmere_Scadrial_Hediff_ElectrumBuff</hediff>
+        <activeMote>Cosmere_Scadrial_Mote_ElectrumShimmer</activeMote>
         <maxPower>2</maxPower>
     </Cosmere.System.Scadrial.Def.AllomanticAbilityDef>
 </Defs>

@@ -26,16 +26,16 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         float y = rect.y;
 
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(new Rect(rect.x, y, rect.width - 110f, 30f), $"Order: {order.LabelCap}");
+            Widgets.Label(new Rect(rect.x, y, rect.width - 110f, 30f), "CC_Codex_Surgebinding_OrderRow".Translate(order.LabelCap.Named("ORDER")));
 
         Rect infoButton = new Rect(rect.xMax - 100f, y + 3f, 100f, 24f);
-        if (Widgets.ButtonText(infoButton, "Order info")) {
+        if (Widgets.ButtonText(infoButton, "CC_Codex_Surgebinding_OrderInfo".Translate())) {
             Find.WindowStack.Add(new RadiantOrderInfoDialog(pawn, s, RadiantOrderInfoMode.View));
         }
         y += 34f;
 
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f)))
-            Widgets.Label(new Rect(rect.x, y, rect.width, 24f), $"Ideals sworn: {s.currentIdeal} / 5");
+            Widgets.Label(new Rect(rect.x, y, rect.width, 24f), "CC_Codex_Surgebinding_IdealsSworn".Translate(s.currentIdeal.Named("CURRENT")));
         y += 28f;
 
         for (int i = 0; i < 5; i++) {
@@ -60,7 +60,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         if (spren == null) return;
 
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(new Rect(rect.x, rect.y, rect.width, 30f), "Bonded spren");
+            Widgets.Label(new Rect(rect.x, rect.y, rect.width, 30f), "CC_Codex_Surgebinding_BondedHeader".Translate());
 
         Rect sprenRow = new Rect(rect.x, rect.y + 34f, rect.width, 28f);
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.9f, 0.9f, 0.9f)))
@@ -84,6 +84,6 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         if (achieved && order.ideals != null && ideal - 1 < order.ideals.Count) {
             return order.ideals[ideal - 1].label.CapitalizeFirst();
         }
-        return $"Ideal {ideal} (unsworn)";
+        return "CC_Codex_Surgebinding_IdealUnsworn".Translate(ideal.Named("IDEAL")).Resolve();
     }
 }

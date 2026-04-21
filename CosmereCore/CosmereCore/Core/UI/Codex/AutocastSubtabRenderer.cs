@@ -12,7 +12,7 @@ public static class AutocastSubtabRenderer {
     public static void Draw(Rect rect, Pawn pawn) {
         if (pawn.abilities == null) {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.7f)))
-                Widgets.Label(rect, "No abilities on this pawn.");
+                Widgets.Label(rect, "CC_Codex_Autocast_NoAbilities".Translate());
             return;
         }
 
@@ -43,10 +43,10 @@ public static class AutocastSubtabRenderer {
 
             Rect metaRect = new Rect(labelRect.xMax + 4f, row.y, 140f, row.height);
             using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, new Color(0.7f, 0.7f, 0.7f)))
-                Widgets.Label(metaRect, $"{rule.Triggers.Count} triggers, fired {rule.FireCount}x");
+                Widgets.Label(metaRect, "CC_Codex_Autocast_RowMeta".Translate(rule.Triggers.Count.Named("TRIGGERS"), rule.FireCount.Named("COUNT")));
 
             Rect editButton = new Rect(row.xMax - 88f, row.y + 4f, 80f, row.height - 8f);
-            if (Widgets.ButtonText(editButton, "Edit")) {
+            if (Widgets.ButtonText(editButton, "CC_Codex_Autocast_EditButton".Translate())) {
                 Find.WindowStack.Add(new AutocastRuleEditorDialog(rule, ability.def.LabelCap));
             }
 

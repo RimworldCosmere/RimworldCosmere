@@ -20,7 +20,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         if (abilities.Count == 0) return;
 
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(new Rect(rect.x, rect.y, rect.width, 30f), "Allomantic flare mastery");
+            Widgets.Label(new Rect(rect.x, rect.y, rect.width, 30f), "CC_Codex_Allomancy_ProgressionHeader".Translate());
 
         float y = rect.y + 34f;
         for (int i = 0; i < abilities.Count; i++) {
@@ -35,13 +35,13 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
             string statusText;
             Color statusColor;
             if (s.isPoweredUp) {
-                statusText = "Flaring";
+                statusText = "CC_Codex_Allomancy_Status_Flaring".Translate();
                 statusColor = new Color(1f, 0.4f, 0.3f);
             } else if (s.isActive) {
-                statusText = "Burning";
+                statusText = "CC_Codex_Allomancy_Status_Burning".Translate();
                 statusColor = new Color(1f, 0.8f, 0.3f);
             } else {
-                statusText = "Off";
+                statusText = "CC_Codex_Allomancy_Status_Off".Translate();
                 statusColor = new Color(0.6f, 0.6f, 0.6f);
             }
 
@@ -50,7 +50,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
             int flareSeconds = (int)(a.flareDuration / 60f);
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f)))
-                Widgets.Label(new Rect(row.x + 320f, row.y, row.width - 320f, row.height), $"flared {flareSeconds}s this session");
+                Widgets.Label(new Rect(row.x + 320f, row.y, row.width - 320f, row.height), "CC_Codex_Allomancy_FlareDuration".Translate(flareSeconds.Named("SECONDS")));
 
             y += 26f;
         }

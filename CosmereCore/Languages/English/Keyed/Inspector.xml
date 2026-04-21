@@ -13,6 +13,23 @@
   <CC_System_Feruchemy_Header>Feruchemy</CC_System_Feruchemy_Header>
   <CC_System_Awakening_Header>Breath</CC_System_Awakening_Header>
 
+  <CC_Codex_Progression_Empty>No progression data for this system yet.</CC_Codex_Progression_Empty>
+  <CC_Codex_Autocast_NoAbilities>No abilities on this pawn.</CC_Codex_Autocast_NoAbilities>
+  <CC_Codex_Autocast_RowMeta>{TRIGGERS} triggers, fired {COUNT}x</CC_Codex_Autocast_RowMeta>
+  <CC_Codex_Autocast_EditButton>Edit</CC_Codex_Autocast_EditButton>
+
+  <CC_Codex_Surgebinding_OrderRow>Order: {ORDER}</CC_Codex_Surgebinding_OrderRow>
+  <CC_Codex_Surgebinding_OrderInfo>Order info</CC_Codex_Surgebinding_OrderInfo>
+  <CC_Codex_Surgebinding_IdealsSworn>Ideals sworn: {CURRENT} / 5</CC_Codex_Surgebinding_IdealsSworn>
+  <CC_Codex_Surgebinding_BondedHeader>Bonded spren</CC_Codex_Surgebinding_BondedHeader>
+  <CC_Codex_Surgebinding_IdealUnsworn>Ideal {IDEAL} (unsworn)</CC_Codex_Surgebinding_IdealUnsworn>
+
+  <CC_Codex_Allomancy_ProgressionHeader>Allomantic flare mastery</CC_Codex_Allomancy_ProgressionHeader>
+  <CC_Codex_Allomancy_Status_Flaring>Flaring</CC_Codex_Allomancy_Status_Flaring>
+  <CC_Codex_Allomancy_Status_Burning>Burning</CC_Codex_Allomancy_Status_Burning>
+  <CC_Codex_Allomancy_Status_Off>Off</CC_Codex_Allomancy_Status_Off>
+  <CC_Codex_Allomancy_FlareDuration>flared {SECONDS}s this session</CC_Codex_Allomancy_FlareDuration>
+
   <CC_Codex_Feruchemy_Progression_Header>Feruchemic efficiency</CC_Codex_Feruchemy_Progression_Header>
   <CC_Codex_Feruchemy_Target>target {VALUE}</CC_Codex_Feruchemy_Target>
   <CC_Codex_Feruchemy_Copperminds_Header>Copperminds</CC_Codex_Feruchemy_Copperminds_Header>
@@ -25,5 +42,21 @@
 
   <CC_Codex_Bonded_Empty>No bonded entities for this system.</CC_Codex_Bonded_Empty>
   <CC_Codex_Memories_Empty>No stored memories for this system.</CC_Codex_Memories_Empty>
+
+  <CC_Autocast_Editor_Title>Autocast: {ABILITY}</CC_Autocast_Editor_Title>
+  <CC_Autocast_Editor_Enabled>Enabled</CC_Autocast_Editor_Enabled>
+  <CC_Autocast_Editor_MaxReserveSpend>Max reserve spend: {PERCENT}%</CC_Autocast_Editor_MaxReserveSpend>
+  <CC_Autocast_Editor_TriggersHeader>Triggers (all must match):</CC_Autocast_Editor_TriggersHeader>
+  <CC_Autocast_Editor_AddTrigger>Add trigger</CC_Autocast_Editor_AddTrigger>
+  <CC_Autocast_Editor_Close>Close</CC_Autocast_Editor_Close>
+  <CC_Autocast_Editor_FiresWhileDrafted>(fires while drafted)</CC_Autocast_Editor_FiresWhileDrafted>
+  <CC_Autocast_Editor_PercentLabel>{PERCENT}%</CC_Autocast_Editor_PercentLabel>
+  <CC_Autocast_Editor_CellsLabel>{COUNT} c</CC_Autocast_Editor_CellsLabel>
+
+  <CC_Autocast_Trigger_HealthPercent>Health %</CC_Autocast_Trigger_HealthPercent>
+  <CC_Autocast_Trigger_ReservePercent>Reserve %</CC_Autocast_Trigger_ReservePercent>
+  <CC_Autocast_Trigger_Drafted>Drafted</CC_Autocast_Trigger_Drafted>
+  <CC_Autocast_Trigger_EnemyWithinCells>Enemy within cells</CC_Autocast_Trigger_EnemyWithinCells>
+  <CC_Autocast_Trigger_AllyWithinCells>Ally within cells</CC_Autocast_Trigger_AllyWithinCells>
 
 </LanguageData>

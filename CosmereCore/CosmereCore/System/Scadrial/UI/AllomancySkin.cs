@@ -6,7 +6,7 @@ namespace Cosmere.System.Scadrial.UI;
 
 public sealed class AllomancySkin : ISystemSkin {
     public string SystemId => "Allomancy";
-    public string HeaderLabel => "Allomancy";
+    public string HeaderLabel => "CC_System_Allomancy_Header".Translate();
     public Color AccentColor => new Color(0.78f, 0.55f, 0.18f);
     public Color BarFillColor => new Color(0.85f, 0.63f, 0.22f);
     public Color BarBackgroundColor => new Color(0.14f, 0.09f, 0.04f);

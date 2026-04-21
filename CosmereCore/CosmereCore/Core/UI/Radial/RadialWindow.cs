@@ -23,6 +23,7 @@ public sealed class RadialWindow : Verse.Window {
         focusWhenOpened = false;
         forcePause = false;
         state.Kind = RadialStateKind.SystemTier;
+        AutoSkipOneOptionTiers();
     }
 
     protected override float Margin => 0f;
@@ -115,6 +116,7 @@ public sealed class RadialWindow : Verse.Window {
                 state.SelectedSystemIndex = state.HoveredIndex;
                 state.Kind = RadialStateKind.SubsectionTier;
                 state.HoveredIndex = -1;
+                AutoSkipOneOptionTiers();
                 break;
             case RadialStateKind.SubsectionTier:
                 state.SelectedSubsectionIndex = state.HoveredIndex;
@@ -125,6 +127,28 @@ public sealed class RadialWindow : Verse.Window {
                 CommitAndClose(flareShift: false);
                 break;
         }
+    }
+
+    private void AutoSkipOneOptionTiers() {
+        while (true) {
+            if (state.Kind == RadialStateKind.SystemTier && snapshot.Systems.Count == 1) {
+                state.SelectedSystemIndex = 0;
+                state.Kind = RadialStateKind.SubsectionTier;
+                continue;
+            }
+
+            if (state.Kind == RadialStateKind.SubsectionTier) {
+                RadialSystem sys = snapshot.Systems[state.SelectedSystemIndex];
+                if (sys.Subsections.Count == 1) {
+                    state.SelectedSubsectionIndex = 0;
+                    state.Kind = RadialStateKind.AbilityTier;
+                    continue;
+                }
+            }
+
+            break;
+        }
+        state.HoveredIndex = -1;
     }
 
     public void CommitAndClose(bool flareShift) {

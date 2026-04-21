@@ -5,8 +5,8 @@
     <label>Cosmere</label>
     <description>Key bindings added by the Cosmere mod suite.</description>
     <checkForConflicts>
-      <li>Gameplay</li>
-      <li>MapTools</li>
+      <li>Game</li>
+      <li>Architect</li>
     </checkForConflicts>
   </KeyBindingCategoryDef>
 

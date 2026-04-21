@@ -13,6 +13,7 @@ public sealed class FeruchemyDockSection : IDockSection {
     public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
 
     private const float CellHeight = 36f;
+    private const float CompactCellHeight = 22f;
     private const float CellSpacing = 4f;
     private const float HeaderHeight = 28f;
     private const float ButtonWidth = 66f;
@@ -20,11 +21,12 @@ public sealed class FeruchemyDockSection : IDockSection {
     public float GetHeaderHeight() => HeaderHeight;
 
     public float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        float h = ctx.Density == DockDensityMode.Compact ? CompactCellHeight : CellHeight;
         int visible = 0;
         for (int i = 0; i < snapshot.Cells.Count; i++) {
             if (!ctx.TwinbornPairs.ContainsKey(snapshot.Cells[i].SubsystemId)) visible++;
         }
-        return visible * (CellHeight + CellSpacing);
+        return visible * (h + CellSpacing);
     }
 
     public void DrawHeader(Rect rect, bool expanded) {
@@ -34,30 +36,34 @@ public sealed class FeruchemyDockSection : IDockSection {
     }
 
     public void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        float h = ctx.Density == DockDensityMode.Compact ? CompactCellHeight : CellHeight;
         float y = rect.y;
         for (int i = 0; i < snapshot.Cells.Count; i++) {
             InvestitureCell cell = snapshot.Cells[i];
             if (ctx.TwinbornPairs.ContainsKey(cell.SubsystemId)) continue;
 
-            Rect cellRect = new Rect(rect.x + 4f, y, rect.width - 8f, CellHeight);
+            Rect cellRect = new Rect(rect.x + 4f, y, rect.width - 8f, h);
             DrawCell(cellRect, pawn, cell);
-            y += CellHeight + CellSpacing;
+            y += h + CellSpacing;
         }
     }
 
     private void DrawCell(Rect cellRect, Pawn pawn, InvestitureCell cell) {
+        bool compact = cellRect.height <= CompactCellHeight + 0.5f;
+
         Widgets.DrawBoxSolid(cellRect, new Color(0.02f, 0.02f, 0.02f, 0.6f));
         Widgets.DrawBox(cellRect);
 
-        float iconSize = CellHeight - 8f;
+        float iconSize = cellRect.height - 8f;
         Rect iconRect = new Rect(cellRect.x + 4f, cellRect.y + 4f, iconSize, iconSize);
         if (cell.Icon != null) GUI.DrawTexture(iconRect, cell.Icon);
 
+        float barHeight = compact ? 10f : 14f;
         Rect barRect = new Rect(
             iconRect.xMax + 6f,
-            cellRect.y + CellHeight / 2f - 7f,
+            cellRect.y + cellRect.height / 2f - barHeight / 2f,
             cellRect.width - iconSize - ButtonWidth - 20f,
-            14f
+            barHeight
         );
         HorizontalBar.Draw(
             barRect,
@@ -72,9 +78,9 @@ public sealed class FeruchemyDockSection : IDockSection {
 
         Rect btnRect = new Rect(
             cellRect.xMax - ButtonWidth - 4f,
-            cellRect.y + 4f,
+            cellRect.y + 2f,
             ButtonWidth,
-            CellHeight - 8f
+            cellRect.height - 4f
         );
 
         Feruchemist? gene = FindGene(pawn, cell.SubsystemId);

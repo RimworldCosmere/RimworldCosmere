@@ -15,6 +15,7 @@ public sealed class AllomancyDockSection : IDockSection {
     public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
 
     private const float CellHeight = 36f;
+    private const float CompactCellHeight = 22f;
     private const float CellSpacing = 4f;
     private const float HeaderHeight = 28f;
     private const float BurnButtonWidth = 52f;
@@ -22,12 +23,13 @@ public sealed class AllomancyDockSection : IDockSection {
     public float GetHeaderHeight() => HeaderHeight;
 
     public float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        float h = ctx.Density == DockDensityMode.Compact ? CompactCellHeight : CellHeight;
         int soloCells = 0;
         for (int i = 0; i < snapshot.Cells.Count; i++) {
             if (!ctx.TwinbornPairs.ContainsKey(snapshot.Cells[i].SubsystemId)) soloCells++;
         }
         int pairCells = ctx.TwinbornPairs.Count;
-        return soloCells * (CellHeight + CellSpacing)
+        return soloCells * (h + CellSpacing)
                + pairCells * (TwinbornCell.Height + TwinbornCell.Spacing);
     }
 
@@ -38,15 +40,16 @@ public sealed class AllomancyDockSection : IDockSection {
     }
 
     public void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        float h = ctx.Density == DockDensityMode.Compact ? CompactCellHeight : CellHeight;
         float y = rect.y;
 
         for (int i = 0; i < snapshot.Cells.Count; i++) {
             InvestitureCell cell = snapshot.Cells[i];
             if (ctx.TwinbornPairs.ContainsKey(cell.SubsystemId)) continue;
 
-            Rect cellRect = new Rect(rect.x + 4f, y, rect.width - 8f, CellHeight);
+            Rect cellRect = new Rect(rect.x + 4f, y, rect.width - 8f, h);
             DrawCell(cellRect, pawn, cell);
-            y += CellHeight + CellSpacing;
+            y += h + CellSpacing;
         }
 
         ISystemSkin feruchemySkin = SystemSkinRegistry.For("Feruchemy");
@@ -58,25 +61,30 @@ public sealed class AllomancyDockSection : IDockSection {
     }
 
     private void DrawCell(Rect cellRect, Pawn pawn, InvestitureCell cell) {
+        bool compact = cellRect.height <= CompactCellHeight + 0.5f;
+
         Widgets.DrawBoxSolid(cellRect, new Color(0.02f, 0.02f, 0.02f, 0.6f));
         Widgets.DrawBox(cellRect);
 
-        float iconSize = CellHeight - 8f;
+        float iconSize = cellRect.height - 8f;
         Rect iconRect = new Rect(cellRect.x + 4f, cellRect.y + 4f, iconSize, iconSize);
         if (cell.Icon != null) GUI.DrawTexture(iconRect, cell.Icon);
 
         Rect barRect = new Rect(
             iconRect.xMax + 6f,
-            cellRect.y + CellHeight / 2f - 7f,
+            cellRect.y + cellRect.height / 2f - 5f,
             cellRect.width - iconSize - BurnButtonWidth - 20f,
-            14f
+            10f
         );
+        float? targetFraction = (!compact || Mouse.IsOver(cellRect))
+            ? (cell.Bar.TargetValue.HasValue && cell.Bar.Max > 0f
+                ? cell.Bar.TargetValue.Value / cell.Bar.Max
+                : (float?)null)
+            : null;
         HorizontalBar.Draw(
             barRect,
             cell.Bar.Fraction,
-            cell.Bar.TargetValue.HasValue && cell.Bar.Max > 0f
-                ? cell.Bar.TargetValue.Value / cell.Bar.Max
-                : null,
+            targetFraction,
             Skin.BarBackgroundColor,
             Skin.BarFillColor,
             new Color(1f, 1f, 1f, 0.8f)
@@ -84,9 +92,9 @@ public sealed class AllomancyDockSection : IDockSection {
 
         Rect burnRect = new Rect(
             cellRect.xMax - BurnButtonWidth - 4f,
-            cellRect.y + 4f,
+            cellRect.y + 2f,
             BurnButtonWidth,
-            CellHeight - 8f
+            cellRect.height - 4f
         );
         string label = cell.IsActive ? "STOP" : "BURN";
         if (Widgets.ButtonText(burnRect, label)) {

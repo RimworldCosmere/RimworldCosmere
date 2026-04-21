@@ -1,4 +1,5 @@
 using Cosmere.Core.UI.Model;
+using Cosmere.Core.UI.Radial;
 using Cosmere.System.Scadrial.Feruchemy;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
@@ -61,5 +62,9 @@ public sealed class FeruchemyInvestitureProvider : IInvestitureProvider {
             Subsections: [],
             FlatAbilities: []
         );
+    }
+
+    public RadialSystem? SnapshotRadial(Pawn pawn) {
+        return null;
     }
 }

@@ -1,4 +1,5 @@
 using Cosmere.Core.UI.Model;
+using Cosmere.Core.UI.Radial;
 using RimWorld;
 using Verse;
 
@@ -12,6 +13,10 @@ public sealed class AwakeningInvestitureProvider : IInvestitureProvider {
     }
 
     public InvestitureSnapshot? Snapshot(Pawn pawn) {
+        return null;
+    }
+
+    public RadialSystem? SnapshotRadial(Pawn pawn) {
         return null;
     }
 }

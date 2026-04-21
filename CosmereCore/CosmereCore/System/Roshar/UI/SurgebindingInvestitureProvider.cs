@@ -1,4 +1,5 @@
 using Cosmere.Core.UI.Model;
+using Cosmere.Core.UI.Radial;
 using Cosmere.System.Roshar.Gene;
 using RimWorld;
 using Verse;
@@ -32,5 +33,9 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider {
             Subsections: [],
             FlatAbilities: []
         );
+    }
+
+    public RadialSystem? SnapshotRadial(Pawn pawn) {
+        return null;
     }
 }

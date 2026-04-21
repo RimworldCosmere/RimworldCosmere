@@ -1,4 +1,5 @@
 using Cosmere.Core.UI.Model;
+using Cosmere.Core.UI.Radial;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using Verse;
@@ -52,5 +53,9 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider {
             Subsections: [],
             FlatAbilities: []
         );
+    }
+
+    public RadialSystem? SnapshotRadial(Pawn pawn) {
+        return null;
     }
 }

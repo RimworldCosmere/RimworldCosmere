@@ -8,4 +8,11 @@
   <CC_System_Feruchemy_Header>Feruchemy</CC_System_Feruchemy_Header>
   <CC_System_Awakening_Header>Breath</CC_System_Awakening_Header>
 
+  <CC_Codex_Feruchemy_Progression_Header>Feruchemic efficiency</CC_Codex_Feruchemy_Progression_Header>
+  <CC_Codex_Feruchemy_Target>target {VALUE}</CC_Codex_Feruchemy_Target>
+  <CC_Codex_Feruchemy_Copperminds_Header>Copperminds</CC_Codex_Feruchemy_Copperminds_Header>
+  <CC_Codex_Feruchemy_NoCopperminds>No copperminds carried.</CC_Codex_Feruchemy_NoCopperminds>
+  <CC_Codex_Feruchemy_CoppermindRow>Coppermind (memories: {AMOUNT}) - owner: {OWNER}</CC_Codex_Feruchemy_CoppermindRow>
+  <CC_Codex_Feruchemy_UnclaimedOwner>unclaimed</CC_Codex_Feruchemy_UnclaimedOwner>
+
 </LanguageData>

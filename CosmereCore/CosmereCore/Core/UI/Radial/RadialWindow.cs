@@ -103,6 +103,17 @@ public sealed class RadialWindow : Verse.Window {
         Event e = Event.current;
         if (e == null) return;
 
+        if (e.type == EventType.MouseDown && e.button == 1) {
+            if (state.Kind == RadialStateKind.SystemTier) {
+                Close(doCloseSound: false);
+            } else {
+                state.Back();
+            }
+            RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
+            e.Use();
+            return;
+        }
+
         if (e.type == EventType.MouseDown && e.button == 0 && state.HoveredIndex >= 0) {
             Advance();
             RimWorld.SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();

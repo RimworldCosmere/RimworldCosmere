@@ -22,8 +22,14 @@ public static class SystemSwitcherStrip {
             Widgets.DrawBoxSolid(pill, bg);
             Widgets.DrawBox(pill);
 
+            string label = skin.HeaderLabel;
+            if (provider is ICodexContentProvider cp) {
+                string? custom = cp.HeaderLabelFor(pawn);
+                if (!custom.NullOrEmpty()) label = custom!;
+            }
+
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, selected ? Color.black : Color.white))
-                Widgets.Label(pill, skin.HeaderLabel);
+                Widgets.Label(pill, label);
 
             if (Widgets.ButtonInvisible(pill)) {
                 state.SelectedSystemIndex = i;

@@ -12,4 +12,6 @@ public interface ICodexContentProvider {
 
     bool HasMemories(Pawn pawn);
     void DrawMemories(Pawn pawn, Rect rect);
+
+    string? HeaderLabelFor(Pawn pawn);
 }

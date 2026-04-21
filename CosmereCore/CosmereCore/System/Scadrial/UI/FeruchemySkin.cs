@@ -6,7 +6,7 @@ namespace Cosmere.System.Scadrial.UI;
 
 public sealed class FeruchemySkin : ISystemSkin {
     public string SystemId => "Feruchemy";
-    public string HeaderLabel => "Feruchemy";
+    public string HeaderLabel => "CC_System_Feruchemy_Header".Translate();
     public Color AccentColor => new Color(0.65f, 0.38f, 0.24f);
     public Color BarFillColor => new Color(0.80f, 0.45f, 0.28f);
     public Color BarBackgroundColor => new Color(0.12f, 0.07f, 0.04f);

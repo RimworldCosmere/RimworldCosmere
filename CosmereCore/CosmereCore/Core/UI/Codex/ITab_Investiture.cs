@@ -12,7 +12,7 @@ public class ITab_Investiture : ITab {
     private readonly List<IInvestitureProvider> investedProviders = [];
 
     public ITab_Investiture() {
-        labelKey = "Cosmere_Codex_Tab";
+        labelKey = "CC_Codex_Tab";
         size = new Vector2(560f, 520f);
     }
 
@@ -44,7 +44,7 @@ public class ITab_Investiture : ITab {
         ISystemSkin skin = SystemSkinRegistry.For(active.SystemId);
 
         Rect header = new Rect(0f, 0f, size.x, CodexChrome.HeaderHeight);
-        CodexChrome.DrawHeader(header, skin.HeaderLabel, skin.AccentColor);
+        CodexChrome.DrawHeader(header, ResolveHeaderLabel(pawn, active, skin), skin.AccentColor);
 
         float y = CodexChrome.HeaderHeight;
         bool hasSwitcher = investedProviders.Count > 1;
@@ -74,6 +74,14 @@ public class ITab_Investiture : ITab {
                     Widgets.Label(rect, $"[{state.Subtab}] - not yet wired");
                 return;
         }
+    }
+
+    private static string ResolveHeaderLabel(Pawn pawn, IInvestitureProvider provider, ISystemSkin skin) {
+        if (provider is ICodexContentProvider cp) {
+            string? custom = cp.HeaderLabelFor(pawn);
+            if (!custom.NullOrEmpty()) return custom!;
+        }
+        return skin.HeaderLabel;
     }
 
     private void RefreshInvestedProviders(Pawn pawn) {

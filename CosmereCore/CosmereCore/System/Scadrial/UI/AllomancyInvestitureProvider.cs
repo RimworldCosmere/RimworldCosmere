@@ -123,4 +123,5 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexC
     public void DrawBonded(Pawn pawn, UnityEngine.Rect rect) => codex.DrawBonded(pawn, rect);
     public bool HasMemories(Pawn pawn) => codex.HasMemories(pawn);
     public void DrawMemories(Pawn pawn, UnityEngine.Rect rect) => codex.DrawMemories(pawn, rect);
+    public string? HeaderLabelFor(Pawn pawn) => codex.HeaderLabelFor(pawn);
 }

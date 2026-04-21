@@ -13,6 +13,11 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
     public bool HasBonded(Pawn pawn) => GetSurgebinder(pawn)?.bondedSpren != null;
     public bool HasMemories(Pawn pawn) => false;
 
+    public string? HeaderLabelFor(Pawn pawn) {
+        Surgebinder? s = GetSurgebinder(pawn);
+        return s?.radiantOrderDef?.LabelCap;
+    }
+
     public void DrawProgression(Pawn pawn, Rect rect) {
         Surgebinder? s = GetSurgebinder(pawn);
         if (s == null) return;

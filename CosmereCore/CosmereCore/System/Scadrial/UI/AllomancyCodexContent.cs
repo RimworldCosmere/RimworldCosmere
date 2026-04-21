@@ -13,6 +13,8 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
     public bool HasBonded(Pawn pawn) => false;
     public bool HasMemories(Pawn pawn) => false;
 
+    public string? HeaderLabelFor(Pawn pawn) => null;
+
     public void DrawProgression(Pawn pawn, Rect rect) {
         List<AllomancyAbility> abilities = CollectAbilities(pawn);
         if (abilities.Count == 0) return;

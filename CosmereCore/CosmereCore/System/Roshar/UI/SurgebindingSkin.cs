@@ -6,7 +6,7 @@ namespace Cosmere.System.Roshar.UI;
 
 public sealed class SurgebindingSkin : ISystemSkin {
     public string SystemId => "Surgebinding";
-    public string HeaderLabel => "Stormlight";
+    public string HeaderLabel => "CC_System_Surgebinding_Header".Translate();
     public Color AccentColor => new Color(0.55f, 0.78f, 1.00f);
     public Color BarFillColor => new Color(0.70f, 0.88f, 1.00f);
     public Color BarBackgroundColor => new Color(0.03f, 0.06f, 0.12f);

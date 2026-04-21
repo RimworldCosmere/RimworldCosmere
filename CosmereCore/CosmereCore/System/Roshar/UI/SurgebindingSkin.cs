@@ -1,0 +1,15 @@
+using Cosmere.Core.UI.Skin;
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.System.Roshar.UI;
+
+public sealed class SurgebindingSkin : ISystemSkin {
+    public string SystemId => "Surgebinding";
+    public string HeaderLabel => "Stormlight";
+    public Color AccentColor => new Color(0.55f, 0.78f, 1.00f);
+    public Color BarFillColor => new Color(0.70f, 0.88f, 1.00f);
+    public Color BarBackgroundColor => new Color(0.03f, 0.06f, 0.12f);
+    public Color HeaderTextColor => new Color(0.90f, 0.95f, 1.00f);
+    public GameFont HeaderFont => GameFont.Small;
+}

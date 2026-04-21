@@ -9,6 +9,8 @@ using ScadrialThingDefOf = Cosmere.System.Scadrial.ThingDefOf;
 using Verse;
 using RosharGeneDefOf = Cosmere.System.Roshar.GeneDefOf;
 using ScadrialGeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;
+using ScadrialRecordDefOf = Cosmere.System.Scadrial.RecordDefOf;
+using ScadrialGeneDefOf = Cosmere.System.Scadrial.GeneDefOf;
 
 namespace Cosmere.Core.Quickstart;
 
@@ -19,11 +21,11 @@ public class CosmereQuickstart : AbstractQuickstart {
     public override DifficultyDef difficulty => DifficultyDefOf.Easy;
 
     public override void PostApplyConfiguration() {
-        Find.GameInitData.startingPawnCount = 13;
+        Find.GameInitData.startingPawnCount = 16;
         List<ScenPart> parts = Find.Scenario.AllParts.ToList();
         for (int i = 0; i < parts.Count; i++) {
             if (parts[i] is ScenPart_ConfigPage_ConfigureStartingPawns startingPawns) {
-                startingPawns.pawnCount = 13;
+                startingPawns.pawnCount = 16;
             }
         }
     }
@@ -195,6 +197,46 @@ public class CosmereQuickstart : AbstractQuickstart {
                 Verse.Thing metalmind = ThingMaker.MakeThing(ScadrialThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item);
                 pawn.inventory.innerContainer.TryAdd(metalmind);
             }
+            pawn.GetInvestiture().currentInvestitureSelf = 500;
+        }
+
+        if (pawns.TryPopFront(out pawn)) {
+            pawn.Name = new NameSingle("Rashek");
+            pawn.gender = Gender.Male;
+            pawn.story.bodyType = BodyTypeDefOf.Hulk;
+            ScadrialGeneUtility.AddMistborn(pawn, false, true);
+            ScadrialGeneUtility.AddFullFeruchemist(pawn, false, true);
+            pawn.records.Increment(ScadrialRecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
+            pawn.records.Increment(ScadrialRecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
+            foreach (MetallicArtsMetalDef metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading) {
+                if (metal.feruchemy?.userName == null) continue;
+                Verse.Thing metalmind = ThingMaker.MakeThing(ScadrialThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item);
+                pawn.inventory.innerContainer.TryAdd(metalmind);
+            }
+            pawn.GetInvestiture().currentInvestitureSelf = 500;
+        }
+
+        if (pawns.TryPopFront(out pawn)) {
+            pawn.Name = new NameTriple("Waxillium", "Wax", "Ladrian");
+            pawn.gender = Gender.Male;
+            pawn.story.bodyType = BodyTypeDefOf.Male;
+            ScadrialGeneUtility.AddGene(pawn, ScadrialGeneDefOf.GetMistingGeneForMetal(MetalDefOf.Steel), false, true);
+            ScadrialGeneUtility.AddGene(pawn, ScadrialGeneDefOf.GetFerringGeneForMetal(MetalDefOf.Iron), false, true);
+            pawn.inventory.innerContainer.TryAdd(
+                ThingMaker.MakeThing(ScadrialThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, MetalDefOf.Iron.Item)
+            );
+            pawn.GetInvestiture().currentInvestitureSelf = 500;
+        }
+
+        if (pawns.TryPopFront(out pawn)) {
+            pawn.Name = new NameSingle("Wayne");
+            pawn.gender = Gender.Male;
+            pawn.story.bodyType = BodyTypeDefOf.Thin;
+            ScadrialGeneUtility.AddGene(pawn, ScadrialGeneDefOf.GetMistingGeneForMetal(MetalDefOf.Bendalloy), false, true);
+            ScadrialGeneUtility.AddGene(pawn, ScadrialGeneDefOf.GetFerringGeneForMetal(MetalDefOf.Gold), false, true);
+            pawn.inventory.innerContainer.TryAdd(
+                ThingMaker.MakeThing(ScadrialThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, MetalDefOf.Gold.Item)
+            );
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
     }

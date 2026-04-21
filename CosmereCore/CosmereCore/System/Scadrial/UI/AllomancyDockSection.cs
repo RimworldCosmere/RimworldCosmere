@@ -96,7 +96,7 @@ public sealed class AllomancyDockSection : IDockSection {
             BurnButtonWidth,
             cellRect.height - 4f
         );
-        string label = cell.IsActive ? "STOP" : "BURN";
+        string label = (cell.IsActive ? "CC_Dock_Twinborn_Stop" : "CC_Dock_Twinborn_Burn").Translate();
         if (Widgets.ButtonText(burnRect, label)) {
             ToggleBurn(pawn, cell.SubsystemId, Event.current != null && Event.current.shift);
             Event.current?.Use();

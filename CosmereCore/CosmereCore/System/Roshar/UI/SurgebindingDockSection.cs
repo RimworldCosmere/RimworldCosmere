@@ -64,7 +64,7 @@ public sealed class SurgebindingDockSection : IDockSection {
 
         Rect sliderLabel = new Rect(rect.x + 6f, sliderRow.yMax, rect.width - 12f, 14f);
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, new Color(0.75f, 0.85f, 1f)))
-            Widgets.Label(sliderLabel, $"refill below {gene.targetValue:F0}");
+            Widgets.Label(sliderLabel, "CC_Dock_Surgebinding_RefillBelow".Translate(gene.targetValue.ToString("F0").Named("VALUE")));
     }
 
     private void DrawIdealPips(Rect row, Surgebinder gene) {

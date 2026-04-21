@@ -22,6 +22,6 @@ public sealed class AwakeningDockSection : IDockSection {
 
     public void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(0.8f, 0.7f, 0.7f)))
-            Widgets.Label(rect, "No Breaths");
+            Widgets.Label(rect, "CC_Dock_Awakening_NoBreaths".Translate());
     }
 }

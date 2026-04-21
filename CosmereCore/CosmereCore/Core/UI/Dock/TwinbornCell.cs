@@ -69,11 +69,15 @@ public static class TwinbornCell {
         Rect cpdRect = new Rect(tapRect.xMax + 4f, btnY, ButtonWidth, ButtonRowHeight);
 
         bool isBurning = IsAllomancyBurning(pawn, pair.MetalDefName);
-        if (Widgets.ButtonText(burnRect, isBurning ? "STOP" : "BURN")) {
+        if (Widgets.ButtonText(burnRect, (isBurning ? "CC_Dock_Twinborn_Stop" : "CC_Dock_Twinborn_Burn").Translate())) {
             ToggleAllomancyBurn(pawn, pair.MetalDefName);
         }
 
-        string ferLabel = pair.Feruchemist.isTapping ? "TAP" : pair.Feruchemist.isStoring ? "STORE" : "TAP|STORE";
+        string ferLabel = (pair.Feruchemist.isTapping
+            ? "CC_Dock_Twinborn_Tap"
+            : pair.Feruchemist.isStoring
+                ? "CC_Dock_Twinborn_Store"
+                : "CC_Dock_Twinborn_TapOrStore").Translate();
         if (Widgets.ButtonText(tapRect, ferLabel)) {
             ToggleFeruchemyDirection(pair.Feruchemist);
             Event.current?.Use();
@@ -87,7 +91,7 @@ public static class TwinbornCell {
 
         Color orig = GUI.color;
         if (!cpdEnabled) GUI.color = new Color(1f, 1f, 1f, 0.4f);
-        if (Widgets.ButtonText(cpdRect, "CPD", active: cpdEnabled) && cpdEnabled) {
+        if (Widgets.ButtonText(cpdRect, "CC_Dock_Twinborn_Compound".Translate(), active: cpdEnabled) && cpdEnabled) {
             cpdAbility!.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
         }
         GUI.color = orig;

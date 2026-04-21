@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <CC_Dock_Twinborn_Burn>BURN</CC_Dock_Twinborn_Burn>
+  <CC_Dock_Twinborn_Stop>STOP</CC_Dock_Twinborn_Stop>
+  <CC_Dock_Twinborn_Tap>TAP</CC_Dock_Twinborn_Tap>
+  <CC_Dock_Twinborn_Store>STORE</CC_Dock_Twinborn_Store>
+  <CC_Dock_Twinborn_TapOrStore>TAP|STORE</CC_Dock_Twinborn_TapOrStore>
+  <CC_Dock_Twinborn_Compound>CPD</CC_Dock_Twinborn_Compound>
+
+  <CC_Dock_Awakening_NoBreaths>No Breaths</CC_Dock_Awakening_NoBreaths>
+
+  <CC_Dock_Surgebinding_RefillBelow>refill below {VALUE}</CC_Dock_Surgebinding_RefillBelow>
+
+</LanguageData>

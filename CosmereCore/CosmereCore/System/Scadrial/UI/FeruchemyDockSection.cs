@@ -84,7 +84,13 @@ public sealed class FeruchemyDockSection : IDockSection {
         );
 
         Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
-        string label = gene == null ? "-" : gene.isTapping ? "TAP" : gene.isStoring ? "STORE" : "TAP|STORE";
+        string label = gene == null
+            ? "-"
+            : (gene.isTapping
+                ? "CC_Dock_Twinborn_Tap"
+                : gene.isStoring
+                    ? "CC_Dock_Twinborn_Store"
+                    : "CC_Dock_Twinborn_TapOrStore").Translate();
         if (Widgets.ButtonText(btnRect, label) && gene != null) {
             ToggleDirection(gene);
             Event.current?.Use();

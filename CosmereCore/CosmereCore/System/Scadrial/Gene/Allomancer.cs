@@ -236,4 +236,8 @@ public class Allomancer : Metalborn {
     public override bool CanLowerReserve(float breathEquivalentUnits) {
         return Value >= GetMetalNeededForBreathEquivalentUnits(breathEquivalentUnits);
     }
+
+    public override IEnumerable<Verse.Gizmo> GetGizmos() {
+        return [];
+    }
 }

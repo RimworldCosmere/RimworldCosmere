@@ -18,7 +18,7 @@ public static class RadialRingRenderer {
             systems.Count,
             (RadialLayout.SystemRingInner + RadialLayout.SystemRingOuter) / 2f,
             hoveredIndex,
-            i => (systems[i].Label, systems[i].Icon, null, null, false, false, false, false, null)
+            i => (systems[i].Label, systems[i].Icon, null, null, false, false, false, false, null, false)
         );
     }
 
@@ -32,7 +32,7 @@ public static class RadialRingRenderer {
             system.Subsections.Count,
             (RadialLayout.SubsectionRingInner + RadialLayout.SubsectionRingOuter) / 2f,
             hoveredIndex,
-            i => (system.Subsections[i].Label, system.Subsections[i].Icon, (Color?)system.Subsections[i].AccentColor, null, false, false, false, false, null)
+            i => (system.Subsections[i].Label, system.Subsections[i].Icon, (Color?)system.Subsections[i].AccentColor, null, false, false, false, false, null, false)
         );
     }
 
@@ -58,7 +58,8 @@ public static class RadialRingRenderer {
                     leaf.IsFlaring,
                     leaf.IsSustained,
                     leaf.IsLocked,
-                    leaf.LockReason
+                    leaf.LockReason,
+                    leaf.HasInsufficientResources
                 );
             }
         );
@@ -69,7 +70,7 @@ public static class RadialRingRenderer {
         int count,
         float radius,
         int hoveredIndex,
-        global::System.Func<int, (string label, Texture2D? icon, Color? tint, float? reserveFraction, bool isActive, bool isFlaring, bool isSustained, bool isLocked, string? lockReason)> getAt
+        global::System.Func<int, (string label, Texture2D? icon, Color? tint, float? reserveFraction, bool isActive, bool isFlaring, bool isSustained, bool isLocked, string? lockReason, bool hasInsufficientResources)> getAt
     ) {
         if (count <= 0) return;
 
@@ -77,12 +78,13 @@ public static class RadialRingRenderer {
             Vector2 mid = RadialLayout.WedgeMidpoint(i, count, radius, center);
             Rect wedgeRect = new Rect(mid.x - WedgeSize / 2f, mid.y - WedgeSize / 2f, WedgeSize, WedgeSize);
 
-            (string label, Texture2D? icon, Color? tint, float? reserveFraction, bool isActive, bool isFlaring, bool isSustained, bool isLocked, string? lockReason) =
+            (string label, Texture2D? icon, Color? tint, float? reserveFraction, bool isActive, bool isFlaring, bool isSustained, bool isLocked, string? lockReason, bool hasInsufficientResources) =
                 getAt(i);
 
             Color bg = tint ?? new Color(0.1f, 0.1f, 0.14f, 0.75f);
             if (i == hoveredIndex) bg = Color.Lerp(bg, Color.white, 0.25f);
             if (isLocked) bg = new Color(bg.r, bg.g, bg.b, 0.35f);
+            if (hasInsufficientResources && !isLocked) bg = new Color(bg.r, bg.g, bg.b, bg.a * 0.55f);
 
             Widgets.DrawBoxSolid(wedgeRect, bg);
             Widgets.DrawBox(wedgeRect);
@@ -128,6 +130,12 @@ public static class RadialRingRenderer {
                 Widgets.DrawBoxSolid(barRect, new Color(0.2f, 0.2f, 0.2f, 0.8f));
                 Rect fill = new Rect(barRect.x, barRect.y, barRect.width * Mathf.Clamp01(reserveFraction.Value), barRect.height);
                 Widgets.DrawBoxSolid(fill, new Color(1f, 0.9f, 0.4f, 0.9f));
+
+                if (hasInsufficientResources) {
+                    Rect pctRect = new Rect(wedgeRect.x + 2f, wedgeRect.y + 2f, 14f, 10f);
+                    using (new TextBlock(GameFont.Tiny, TextAnchor.UpperLeft, new Color(1f, 0.55f, 0.55f)))
+                        Widgets.Label(pctRect, $"{Mathf.RoundToInt(reserveFraction.Value * 100f)}%");
+                }
             }
         }
     }

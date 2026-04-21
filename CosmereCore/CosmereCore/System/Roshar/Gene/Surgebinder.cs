@@ -851,11 +851,11 @@ public class Surgebinder : Invested {
     private List<Roshar.Gizmo.SurgeGizmo>? cachedSurgeGizmos;
 
     public override IEnumerable<Verse.Gizmo> GetGizmos() {
-        foreach (Verse.Gizmo gizmo in base.GetGizmos()) {
+        if (!pawn.Spawned) yield break;
+
+        foreach (Verse.Gizmo gizmo in GetShardEquipmentGizmos()) {
             yield return gizmo;
         }
-
-        if (!pawn.Spawned) yield break;
 
         if (cachedSurgeGizmos == null) {
             cachedSurgeGizmos = [];
@@ -866,6 +866,23 @@ public class Surgebinder : Invested {
 
         for (int i = 0; i < cachedSurgeGizmos.Count; i++) {
             yield return cachedSurgeGizmos[i];
+        }
+    }
+
+    private IEnumerable<Verse.Gizmo> GetShardEquipmentGizmos() {
+        if (pawn.abilities == null) yield break;
+
+        List<RimWorld.Ability> abilities = pawn.abilities.abilities;
+        for (int i = 0; i < abilities.Count; i++) {
+            RimWorld.Ability ability = abilities[i];
+            if (ability.def.defName is not ("Cosmere_Roshar_Ability_ToggleShardblade"
+                or "Cosmere_Roshar_Ability_ToggleShardplate")) continue;
+
+            if (ability is Surgebinding.Ability.SurgebindingAbility sa && !sa.GizmosVisible()) continue;
+
+            foreach (Verse.Gizmo gizmo in ability.GetGizmos()) {
+                yield return gizmo;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 using Cosmere.Core.UI.Model;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -7,7 +8,7 @@ namespace Cosmere.Core.UI.Dock;
 public sealed class InvestitureDockWindow : Verse.Window {
     private const float CollapsedWidth = 48f;
     private const float MarginTop = 64f;
-    private const float MarginBottom = 160f;
+    private const float BottomTabBarHeight = 35f;
 
     public InvestitureDockWindow() {
         doCloseButton = false;
@@ -24,23 +25,40 @@ public sealed class InvestitureDockWindow : Verse.Window {
 
     protected override float Margin => 0f;
 
-    public override Vector2 InitialSize => new Vector2(
-        CollapsedWidth,
-        (float)Verse.UI.screenHeight - MarginTop - MarginBottom
-    );
+    public override Vector2 InitialSize => new Vector2(CollapsedWidth, ComputeHeight());
 
     protected override void SetInitialSizeAndPosition() {
-        windowRect = new Rect(
-            0f,
-            MarginTop,
-            CollapsedWidth,
-            (float)Verse.UI.screenHeight - MarginTop - MarginBottom
-        );
+        windowRect = ComputeRect();
     }
 
     public override void DoWindowContents(Rect inRect) {
+        Rect desired = ComputeRect();
+        if (windowRect != desired) {
+            windowRect = desired;
+            inRect = new Rect(0f, 0f, desired.width, desired.height);
+        }
         Widgets.DrawBoxSolid(inRect, new Color(0.05f, 0.05f, 0.08f, 0.65f));
         Widgets.DrawBox(inRect);
+    }
+
+    private static Rect ComputeRect() {
+        return new Rect(0f, MarginTop, CollapsedWidth, ComputeHeight());
+    }
+
+    private static float ComputeHeight() {
+        float screenHeight = (float)Verse.UI.screenHeight;
+        float bottomEdge = screenHeight - BottomTabBarHeight;
+        WindowStack? stack = Find.WindowStack;
+        if (stack != null) {
+            MainTabWindow? openTab = stack.WindowOfType<MainTabWindow>();
+            if (openTab != null) {
+                float tabTop = openTab.windowRect.yMin;
+                if (tabTop > MarginTop && tabTop < bottomEdge) {
+                    bottomEdge = tabTop;
+                }
+            }
+        }
+        return Mathf.Max(0f, bottomEdge - MarginTop);
     }
 
     public static bool ShouldShow() {

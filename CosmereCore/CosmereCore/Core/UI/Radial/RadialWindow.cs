@@ -49,6 +49,11 @@ public sealed class RadialWindow : Verse.Window {
         HandleInput();
     }
 
+    public override void OnCancelKeyPressed() {
+        Close(doCloseSound: false);
+        Event.current?.Use();
+    }
+
     private void UpdateHover(Vector2 center, Vector2 mouse) {
         switch (state.Kind) {
             case RadialStateKind.SystemTier:

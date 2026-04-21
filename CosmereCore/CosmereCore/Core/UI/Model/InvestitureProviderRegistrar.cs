@@ -1,3 +1,5 @@
+using Cosmere.Core.UI.Dock;
+using Cosmere.Core.UI.Skin;
 using Cosmere.System.Nalthis.UI;
 using Cosmere.System.Roshar.UI;
 using Cosmere.System.Scadrial.UI;
@@ -12,5 +14,15 @@ public static class InvestitureProviderRegistrar {
         PawnInvestitureProviders.Register(new FeruchemyInvestitureProvider());
         PawnInvestitureProviders.Register(new SurgebindingInvestitureProvider());
         PawnInvestitureProviders.Register(new AwakeningInvestitureProvider());
+
+        SystemSkinRegistry.Register(new AllomancySkin());
+        SystemSkinRegistry.Register(new FeruchemySkin());
+        SystemSkinRegistry.Register(new SurgebindingSkin());
+        SystemSkinRegistry.Register(new AwakeningSkin());
+
+        DockSectionRegistry.Register(new PlaceholderDockSection("Allomancy"));
+        DockSectionRegistry.Register(new PlaceholderDockSection("Feruchemy"));
+        DockSectionRegistry.Register(new PlaceholderDockSection("Surgebinding"));
+        DockSectionRegistry.Register(new PlaceholderDockSection("Awakening"));
     }
 }

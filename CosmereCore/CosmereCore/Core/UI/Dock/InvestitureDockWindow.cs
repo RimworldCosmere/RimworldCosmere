@@ -94,7 +94,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
         string pinLabel = pinned ? "x" : "o";
         if (Widgets.ButtonText(pinRect, pinLabel)) {
             pinned = !pinned;
-            RimWorld.SoundDefOf.Click.PlayOneShot(SoundInfo.OnCamera());
+            RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
         }
 
         Rect bodyRect = new Rect(inRect.x, inRect.y + PinButtonHeight + 8f, inRect.width, inRect.height - PinButtonHeight - 8f);

@@ -6,7 +6,7 @@ using Verse.Sound;
 namespace Cosmere.Core.UI.Radial;
 
 public sealed class RadialWindow : Verse.Window {
-    private readonly RadialSnapshot snapshot;
+    private RadialSnapshot snapshot;
     private readonly RadialState state = new();
 
     public RadialWindow(RadialSnapshot snapshot) {
@@ -38,6 +38,29 @@ public sealed class RadialWindow : Verse.Window {
         if (!snapshot.Pawn.Spawned || snapshot.Pawn.Dead) {
             Close(doCloseSound: false);
             return;
+        }
+
+        RadialSnapshot? rebuilt = RadialSnapshotBuilder.Build(snapshot.Pawn);
+        if (rebuilt == null) {
+            Close(doCloseSound: false);
+            return;
+        }
+        snapshot = rebuilt;
+
+        if (state.Kind != RadialStateKind.SystemTier) {
+            if (state.SelectedSystemIndex < 0 || state.SelectedSystemIndex >= snapshot.Systems.Count) {
+                Close(doCloseSound: false);
+                return;
+            }
+            if (state.Kind != RadialStateKind.SubsectionTier) {
+                if (state.SelectedSubsectionIndex < 0 ||
+                    state.SelectedSubsectionIndex >= snapshot.Systems[state.SelectedSystemIndex].Subsections.Count) {
+                    Close(doCloseSound: false);
+                    return;
+                }
+                int leafCount = snapshot.Systems[state.SelectedSystemIndex].Subsections[state.SelectedSubsectionIndex].Leaves.Count;
+                if (state.HoveredIndex >= leafCount) state.HoveredIndex = -1;
+            }
         }
 
         Vector2 center = RadialAnchor.PawnScreenCenter(snapshot.Pawn);

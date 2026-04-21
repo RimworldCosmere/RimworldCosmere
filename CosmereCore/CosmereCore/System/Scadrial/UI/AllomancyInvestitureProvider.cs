@@ -1,7 +1,10 @@
+using Cosmere.Core.Ability;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Radial;
+using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
@@ -56,6 +59,59 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider {
     }
 
     public RadialSystem? SnapshotRadial(Pawn pawn) {
-        return null;
+        if (pawn.genes == null) return null;
+
+        List<RadialSubsection> subs = [];
+        List<Verse.Gene> all = pawn.genes.GenesListForReading;
+        List<RimWorld.Ability> abilities = pawn.abilities?.AllAbilitiesForReading ?? [];
+
+        for (int i = 0; i < all.Count; i++) {
+            if (all[i] is not Allomancer a || a.Overridden) continue;
+
+            AllomancyAbility? matched = null;
+            for (int j = 0; j < abilities.Count; j++) {
+                if (abilities[j] is AllomancyAbility aa && aa.metal == a.metal) {
+                    matched = aa;
+                    break;
+                }
+            }
+            if (matched == null) continue;
+
+            float reserveFraction = a.Max > 0f ? a.Value / a.Max : 0f;
+
+            RadialLeaf leaf = new RadialLeaf(
+                LeafId: "BURN",
+                Label: "Burn " + a.metal.LabelCap,
+                Icon: a.metal.allomancy?.invertedIcon,
+                Kind: RadialActionKind.StartAllomancyBurn,
+                AbilityDef: matched.def,
+                IsActive: matched.atLeastBurning,
+                IsFlaring: matched.status.power > 1,
+                IsSustained: matched.def.toggleable && matched.status.isActive,
+                IsLocked: false,
+                LockReason: null,
+                ReserveFraction: reserveFraction,
+                HasInsufficientResources: reserveFraction <= 0f,
+                CostHint: $"{matched.GetDesiredBurnRateForStatus(Status.PowerOne) * GenTicks.TicksPerRealSecond:F2}/s",
+                CooldownTicksRemaining: 0
+            );
+
+            subs.Add(new RadialSubsection(
+                SubsectionId: a.metal.defName,
+                Label: a.metal.LabelCap,
+                Icon: a.metal.allomancy?.invertedIcon,
+                AccentColor: new Color(0.75f, 0.65f, 0.45f),
+                Leaves: [leaf]
+            ));
+        }
+
+        if (subs.Count == 0) return null;
+
+        return new RadialSystem(
+            SystemId: "Allomancy",
+            Label: "Allomancy",
+            Icon: null,
+            Subsections: subs
+        );
     }
 }

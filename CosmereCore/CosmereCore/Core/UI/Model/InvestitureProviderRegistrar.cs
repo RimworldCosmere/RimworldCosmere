@@ -23,6 +23,6 @@ public static class InvestitureProviderRegistrar {
         DockSectionRegistry.Register(new AllomancyDockSection());
         DockSectionRegistry.Register(new FeruchemyDockSection());
         DockSectionRegistry.Register(new SurgebindingDockSection());
-        DockSectionRegistry.Register(new PlaceholderDockSection("Awakening"));
+        DockSectionRegistry.Register(new AwakeningDockSection());
     }
 }

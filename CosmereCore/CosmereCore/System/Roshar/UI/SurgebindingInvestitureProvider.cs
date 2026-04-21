@@ -1,3 +1,4 @@
+using Cosmere.Core.UI.Codex;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Radial;
 using Cosmere.System.Roshar.Def;
@@ -8,7 +9,8 @@ using Verse;
 
 namespace Cosmere.System.Roshar.UI;
 
-public sealed class SurgebindingInvestitureProvider : IInvestitureProvider {
+public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICodexContentProvider {
+    private static readonly SurgebindingCodexContent codex = new();
     public string SystemId => "Surgebinding";
 
     public bool IsInvested(Pawn pawn) {
@@ -110,4 +112,11 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider {
         return def.defName == "Cosmere_Roshar_Ability_ToggleShardblade"
             || def.defName == "Cosmere_Roshar_Ability_ToggleShardplate";
     }
+
+    public bool HasProgression(Pawn pawn) => codex.HasProgression(pawn);
+    public void DrawProgression(Pawn pawn, UnityEngine.Rect rect) => codex.DrawProgression(pawn, rect);
+    public bool HasBonded(Pawn pawn) => codex.HasBonded(pawn);
+    public void DrawBonded(Pawn pawn, UnityEngine.Rect rect) => codex.DrawBonded(pawn, rect);
+    public bool HasMemories(Pawn pawn) => codex.HasMemories(pawn);
+    public void DrawMemories(Pawn pawn, UnityEngine.Rect rect) => codex.DrawMemories(pawn, rect);
 }

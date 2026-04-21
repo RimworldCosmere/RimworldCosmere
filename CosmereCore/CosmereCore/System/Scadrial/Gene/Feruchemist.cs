@@ -233,6 +233,10 @@ public class Feruchemist : Metalborn {
         return false;
     }
 
+    public override IEnumerable<Verse.Gizmo> GetGizmos() {
+        return [];
+    }
+
     private void CheckFeruchemicalSavantProgression(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
         if (!SavantUtility.CanBeSavant(metal)) return;

@@ -8,6 +8,7 @@ public static class RadialController {
     private static bool wasHeld;
 
     public static void OnHotkeyPoll() {
+        if (Event.current?.type != EventType.Repaint) return;
         if (Current.ProgramState != ProgramState.Playing) return;
         if (Find.CurrentMap == null) return;
 
@@ -23,6 +24,11 @@ public static class RadialController {
     }
 
     private static void TryOpen() {
+        if (window != null) {
+            window.Close(doCloseSound: false);
+            window = null;
+        }
+
         Pawn? pawn = Dock.InvestitureDockWindow.GetSelectedPawn();
         if (pawn == null) return;
         RadialSnapshot? snap = RadialSnapshotBuilder.Build(pawn);

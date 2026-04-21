@@ -22,11 +22,13 @@ public sealed class AllomancyDockSection : IDockSection {
     public float GetHeaderHeight() => HeaderHeight;
 
     public float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
-        int visible = 0;
+        int soloCells = 0;
         for (int i = 0; i < snapshot.Cells.Count; i++) {
-            if (!ctx.TwinbornPairs.ContainsKey(snapshot.Cells[i].SubsystemId)) visible++;
+            if (!ctx.TwinbornPairs.ContainsKey(snapshot.Cells[i].SubsystemId)) soloCells++;
         }
-        return visible * (CellHeight + CellSpacing);
+        int pairCells = ctx.TwinbornPairs.Count;
+        return soloCells * (CellHeight + CellSpacing)
+               + pairCells * (TwinbornCell.Height + TwinbornCell.Spacing);
     }
 
     public void DrawHeader(Rect rect, bool expanded) {
@@ -37,6 +39,7 @@ public sealed class AllomancyDockSection : IDockSection {
 
     public void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         float y = rect.y;
+
         for (int i = 0; i < snapshot.Cells.Count; i++) {
             InvestitureCell cell = snapshot.Cells[i];
             if (ctx.TwinbornPairs.ContainsKey(cell.SubsystemId)) continue;
@@ -44,6 +47,13 @@ public sealed class AllomancyDockSection : IDockSection {
             Rect cellRect = new Rect(rect.x + 4f, y, rect.width - 8f, CellHeight);
             DrawCell(cellRect, pawn, cell);
             y += CellHeight + CellSpacing;
+        }
+
+        ISystemSkin feruchemySkin = SystemSkinRegistry.For("Feruchemy");
+        foreach (KeyValuePair<string, TwinbornPair> kv in ctx.TwinbornPairs) {
+            Rect pairRect = new Rect(rect.x + 4f, y, rect.width - 8f, TwinbornCell.Height);
+            TwinbornCell.Draw(pairRect, pawn, kv.Value, Skin, feruchemySkin);
+            y += TwinbornCell.Height + TwinbornCell.Spacing;
         }
     }
 

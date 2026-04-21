@@ -10,8 +10,9 @@ namespace Cosmere.Core.UI.Dock;
 public sealed class InvestitureDockWindow : Verse.Window {
     private const float CollapsedWidth = 48f;
     private const float ExpandedWidth = 280f;
-    private const float MarginTop = 64f;
-    private const float BottomTabBarHeight = 35f;
+    private const float MarginTop = 114f;
+    private const float MarginBottom = 185f;
+    private const float TabPadding = 150f;
     private const float PinButtonHeight = 24f;
 
     private readonly DockAccordion accordion = new();
@@ -155,12 +156,12 @@ public sealed class InvestitureDockWindow : Verse.Window {
 
     private static float ComputeHeight() {
         float screenHeight = (float)Verse.UI.screenHeight;
-        float bottomEdge = screenHeight - BottomTabBarHeight;
+        float bottomEdge = screenHeight - MarginBottom;
         WindowStack? stack = Find.WindowStack;
         if (stack != null) {
             MainTabWindow? openTab = stack.WindowOfType<MainTabWindow>();
             if (openTab != null) {
-                float tabTop = openTab.windowRect.yMin;
+                float tabTop = openTab.windowRect.yMin - TabPadding;
                 if (tabTop > MarginTop && tabTop < bottomEdge) {
                     bottomEdge = tabTop;
                 }

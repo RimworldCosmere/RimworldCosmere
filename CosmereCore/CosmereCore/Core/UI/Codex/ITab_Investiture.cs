@@ -72,6 +72,9 @@ public class ITab_Investiture : ITab {
             case CodexSubtab.Bonded:
                 BondedSubtabRenderer.Draw(rect, pawn, active);
                 return;
+            case CodexSubtab.Memories:
+                MemoriesSubtabRenderer.Draw(rect, pawn, active);
+                return;
             default:
                 using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.7f)))
                     Widgets.Label(rect, $"[{state.Subtab}] - not yet wired");

@@ -55,7 +55,10 @@ public class ITab_Investiture : ITab {
         }
 
         Rect subtabBar = new Rect(CodexChrome.Gutter, y, size.x - (CodexChrome.Gutter * 2f), CodexChrome.SubtabBarHeight);
-        SubtabBar.Draw(subtabBar, state);
+        SubtabBar.Draw(subtabBar, state, skin.AccentColor);
+
+        Rect divider = new Rect(CodexChrome.Gutter, subtabBar.yMax, subtabBar.width, 1f);
+        CodexChrome.DrawDivider(divider, skin.AccentColor);
 
         Rect body = CodexChrome.BodyRect(tabRect, hasSwitcher);
         DrawSubtabBody(body, pawn, active);

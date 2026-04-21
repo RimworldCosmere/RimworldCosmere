@@ -3,6 +3,11 @@
 
   <CC_Codex_Tab>Investiture</CC_Codex_Tab>
 
+  <CC_Codex_Subtab_Autocast>Autocast</CC_Codex_Subtab_Autocast>
+  <CC_Codex_Subtab_Progression>Progression</CC_Codex_Subtab_Progression>
+  <CC_Codex_Subtab_Bonded>Bonded</CC_Codex_Subtab_Bonded>
+  <CC_Codex_Subtab_Memories>Memories</CC_Codex_Subtab_Memories>
+
   <CC_System_Surgebinding_Header>Stormlight</CC_System_Surgebinding_Header>
   <CC_System_Allomancy_Header>Allomancy</CC_System_Allomancy_Header>
   <CC_System_Feruchemy_Header>Feruchemy</CC_System_Feruchemy_Header>

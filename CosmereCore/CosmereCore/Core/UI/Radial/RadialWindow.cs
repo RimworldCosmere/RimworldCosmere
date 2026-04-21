@@ -178,4 +178,12 @@ public sealed class RadialWindow : Verse.Window {
         }
         Close(doCloseSound: false);
     }
+
+    public void TryCommitOnRelease(bool flareShift) {
+        if (state.Kind == RadialStateKind.AbilityTier && state.HoveredIndex >= 0) {
+            CommitAndClose(flareShift);
+            return;
+        }
+        Close(doCloseSound: false);
+    }
 }

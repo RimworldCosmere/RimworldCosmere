@@ -1,4 +1,5 @@
 using Cosmere.Core.Ability;
+using Cosmere.Core.UI.Codex;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Radial;
 using Cosmere.System.Scadrial.Allomancy.Ability;
@@ -9,7 +10,8 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-public sealed class AllomancyInvestitureProvider : IInvestitureProvider {
+public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexContentProvider {
+    private static readonly AllomancyCodexContent codex = new();
     public string SystemId => "Allomancy";
 
     public bool IsInvested(Pawn pawn) {
@@ -114,4 +116,11 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider {
             Subsections: subs
         );
     }
+
+    public bool HasProgression(Pawn pawn) => codex.HasProgression(pawn);
+    public void DrawProgression(Pawn pawn, UnityEngine.Rect rect) => codex.DrawProgression(pawn, rect);
+    public bool HasBonded(Pawn pawn) => codex.HasBonded(pawn);
+    public void DrawBonded(Pawn pawn, UnityEngine.Rect rect) => codex.DrawBonded(pawn, rect);
+    public bool HasMemories(Pawn pawn) => codex.HasMemories(pawn);
+    public void DrawMemories(Pawn pawn, UnityEngine.Rect rect) => codex.DrawMemories(pawn, rect);
 }

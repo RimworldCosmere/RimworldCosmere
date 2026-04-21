@@ -102,7 +102,11 @@ public sealed class FeruchemyDockSection : IDockSection {
     }
 
     private static void ToggleDirection(Feruchemist gene) {
-        if (gene.isTapping || gene.isStoring) {
+        if (gene.isTapping) {
+            gene.targetValue = 75f;
+            return;
+        }
+        if (gene.isStoring) {
             gene.Reset();
             return;
         }

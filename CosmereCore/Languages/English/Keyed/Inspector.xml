@@ -15,4 +15,7 @@
   <CC_Codex_Feruchemy_CoppermindRow>Coppermind (memories: {AMOUNT}) - owner: {OWNER}</CC_Codex_Feruchemy_CoppermindRow>
   <CC_Codex_Feruchemy_UnclaimedOwner>unclaimed</CC_Codex_Feruchemy_UnclaimedOwner>
 
+  <CC_Codex_Awakening_Progression_Header>Biochromatic Breath</CC_Codex_Awakening_Progression_Header>
+  <CC_Codex_Awakening_Progression_Placeholder>Heightening tree lands with the Awakening system implementation.</CC_Codex_Awakening_Progression_Placeholder>
+
 </LanguageData>

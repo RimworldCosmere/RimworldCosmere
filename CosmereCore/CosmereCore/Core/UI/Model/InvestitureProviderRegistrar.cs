@@ -21,7 +21,7 @@ public static class InvestitureProviderRegistrar {
         SystemSkinRegistry.Register(new AwakeningSkin());
 
         DockSectionRegistry.Register(new AllomancyDockSection());
-        DockSectionRegistry.Register(new PlaceholderDockSection("Feruchemy"));
+        DockSectionRegistry.Register(new FeruchemyDockSection());
         DockSectionRegistry.Register(new PlaceholderDockSection("Surgebinding"));
         DockSectionRegistry.Register(new PlaceholderDockSection("Awakening"));
     }

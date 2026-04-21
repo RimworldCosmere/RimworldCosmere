@@ -62,8 +62,15 @@ public class ITab_Investiture : ITab {
     }
 
     private void DrawSubtabBody(Rect rect, Pawn pawn, IInvestitureProvider active) {
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.7f)))
-            Widgets.Label(rect, $"[{state.Subtab}] - not yet wired");
+        switch (state.Subtab) {
+            case CodexSubtab.Autocast:
+                AutocastSubtabRenderer.Draw(rect, pawn);
+                return;
+            default:
+                using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.7f)))
+                    Widgets.Label(rect, $"[{state.Subtab}] - not yet wired");
+                return;
+        }
     }
 
     private void RefreshInvestedProviders(Pawn pawn) {

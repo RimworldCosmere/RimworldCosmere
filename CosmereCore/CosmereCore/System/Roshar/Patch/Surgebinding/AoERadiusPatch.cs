@@ -16,7 +16,7 @@ public static class AoERadiusPatch {
         float radius = aoeAbility.AoERadius;
         if (radius <= 0f) return;
 
-        IntVec3 cell = target.IsValid ? target.Cell : UI.MouseCell();
+        IntVec3 cell = target.IsValid ? target.Cell : Verse.UI.MouseCell();
         GenDraw.DrawRadiusRing(cell, radius);
     }
 }

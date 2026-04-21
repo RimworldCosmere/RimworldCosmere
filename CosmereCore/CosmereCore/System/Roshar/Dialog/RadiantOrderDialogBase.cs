@@ -53,7 +53,7 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
 
     protected override Vector2 initialWindowSize => new Vector2(
         Spacing.Get(65),
-        Mathf.Max(Spacing.Get(30), UI.screenHeight - Spacing.Get(10))
+        Mathf.Max(Spacing.Get(30), Verse.UI.screenHeight - Spacing.Get(10))
     );
 
     protected override float headerHeight => Spacing.Get(16);

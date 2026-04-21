@@ -13,7 +13,7 @@ public static class RadialCenterPreview {
 
         if (hoveredLeaf == null) {
             using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.8f)))
-                Widgets.Label(disc, "Hover a wedge");
+                Widgets.Label(disc, "CC_Radial_Hover_Prompt".Translate());
             return;
         }
 
@@ -41,7 +41,7 @@ public static class RadialCenterPreview {
             float seconds = hoveredLeaf.CooldownTicksRemaining / (float)GenTicks.TicksPerRealSecond;
             Rect cdRect = new Rect(disc.x, y, disc.width, 12f);
             using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(1f, 0.5f, 0.5f)))
-                Widgets.Label(cdRect, $"cd {seconds:F1}s");
+                Widgets.Label(cdRect, "CC_Radial_Cooldown".Translate(seconds.ToString("F1").Named("SECONDS")));
             y += 14f;
         }
 

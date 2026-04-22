@@ -150,14 +150,26 @@ public class Metalmind : ThingComp, IMetalmindSource {
         storedAmount = Mathf.Clamp(storedAmount - amount, 0, maxAmount);
     }
 
+    public Pawn? GetHoldingPawn() {
+        IThingHolder? holder = parent.ParentHolder;
+        while (holder != null) {
+            if (holder is Pawn_InventoryTracker inv) return inv.pawn;
+            if (holder is Pawn_EquipmentTracker eq) return eq.pawn;
+            if (holder is Pawn_ApparelTracker app) return app.pawn;
+            if (holder is Pawn p) return p;
+            holder = holder.ParentHolder;
+        }
+        return null;
+    }
+
     private bool ValidateOwner() {
-        IThingHolder? currentOwner = parent.holdingOwner?.Owner;
+        Pawn? currentHolder = GetHoldingPawn();
         if (owner == null) {
-            owner = currentOwner as Pawn;
+            owner = currentHolder;
             return true;
         }
 
-        return currentOwner == null || owner.Equals(currentOwner);
+        return currentHolder == null || owner.Equals(currentHolder);
     }
 
     public override void PostExposeData() {
@@ -172,7 +184,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
             if (parent?.Stuff != null) {
                 cachedMetal = DefDatabase<MetalDef>.GetNamedSilentFail(parent.Stuff.defName);
             }
-            owner = parent?.holdingOwner?.Owner as Pawn;
+            owner = GetHoldingPawn() ?? owner;
             storedMemoriesInt ??= [];
         }
     }

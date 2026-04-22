@@ -14,7 +14,7 @@ public class Thought_Memory_Coppermind : Thought_Memory {
             if (storedMemory == null) return true;
             if (pawn == null) return true;
             if (!sourceCoppermind.storedMemories.Contains(storedMemory)) return true;
-            Pawn? holder = sourceCoppermind.parent.holdingOwner?.Owner as Pawn;
+            Pawn? holder = sourceCoppermind.GetHoldingPawn();
             return holder != pawn;
         }
     }

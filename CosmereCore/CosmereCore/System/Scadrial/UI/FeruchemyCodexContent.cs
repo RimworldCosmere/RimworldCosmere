@@ -4,6 +4,7 @@ using Cosmere.Core.UI.Codex;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Memory;
+using Cosmere.System.Scadrial.Feruchemy.UI;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
@@ -104,11 +105,16 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
     private static readonly Color SecondaryTextColor = new Color(0.7f, 0.7f, 0.7f);
 
     public void DrawMemories(Pawn pawn, Rect rect, CodexState state) {
-        Rect headerRect = new Rect(rect.x, rect.y, rect.width, 30f);
+        Rect headerRow = new Rect(rect.x, rect.y, rect.width, 30f);
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(headerRect, "CC_Codex_Feruchemy_Copperminds_Header".Translate());
+            Widgets.Label(new Rect(headerRow.x, headerRow.y, headerRow.width - 170f, headerRow.height),
+                "CC_Codex_Feruchemy_Copperminds_Header".Translate());
 
         List<Metalmind> copperminds = CollectCopperminds(pawn);
+        List<Thought_Memory> activeMemories = CollectActiveMemories(pawn);
+
+        DrawStoreMemoryButton(new Rect(headerRow.xMax - 160f, headerRow.y + 2f, 160f, 26f), pawn, activeMemories, copperminds);
+
         if (copperminds.Count == 0) {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor))
                 Widgets.Label(new Rect(rect.x, rect.y + 34f, rect.width, 24f), "CC_Codex_Feruchemy_NoCopperminds".Translate());
@@ -128,6 +134,45 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
             y = DrawCoppermindBlock(new Rect(0f, y, viewRect.width, 0f), copperminds[i]);
         }
         Widgets.EndScrollView();
+    }
+
+    private static void DrawStoreMemoryButton(Rect rect, Pawn pawn, List<Thought_Memory> memories, List<Metalmind> copperminds) {
+        bool hasMemories = memories.Count > 0;
+        bool hasCopperminds = copperminds.Count > 0;
+        bool anyFits = false;
+        for (int i = 0; i < memories.Count && !anyFits; i++) {
+            float magnitude = Mathf.Abs(memories[i].MoodOffset());
+            for (int j = 0; j < copperminds.Count; j++) {
+                if (copperminds[j].CanFitMemory(magnitude)) { anyFits = true; break; }
+            }
+        }
+
+        bool enabled = hasMemories && hasCopperminds && anyFits;
+        GUI.enabled = enabled;
+        if (Widgets.ButtonText(rect, "CC_Codex_Feruchemy_StoreMemory_Button".Translate())) {
+            Find.WindowStack.Add(new Dialog_StoreMemory(pawn, memories, copperminds));
+        }
+        GUI.enabled = true;
+
+        if (!enabled && Mouse.IsOver(rect)) {
+            string tooltipKey = !hasCopperminds
+                ? "CC_Codex_Feruchemy_StoreMemory_Disabled_NoCopperminds"
+                : !hasMemories
+                    ? "CC_Codex_Feruchemy_StoreMemory_Disabled_NoMemories"
+                    : "CC_Codex_Feruchemy_StoreMemory_Disabled_NoRoom";
+            TooltipHandler.TipRegion(rect, tooltipKey.Translate());
+        }
+    }
+
+    private static List<Thought_Memory> CollectActiveMemories(Pawn pawn) {
+        List<Thought_Memory> result = [];
+        if (pawn.needs?.mood?.thoughts?.memories == null) return result;
+        List<Thought_Memory> all = pawn.needs.mood.thoughts.memories.Memories;
+        for (int i = 0; i < all.Count; i++) {
+            Thought_Memory memory = all[i];
+            if (Mathf.Abs(memory.MoodOffset()) > 0f) result.Add(memory);
+        }
+        return result;
     }
 
     private static float CoppermindBlockHeight(Metalmind mind) {

@@ -45,6 +45,20 @@
   <CC_Codex_Feruchemy_UnknownStoredBy>unknown</CC_Codex_Feruchemy_UnknownStoredBy>
   <CC_Codex_Feruchemy_UnclaimedOwner>unclaimed</CC_Codex_Feruchemy_UnclaimedOwner>
 
+  <CC_Codex_Feruchemy_StoreMemory_Button>Store memory</CC_Codex_Feruchemy_StoreMemory_Button>
+  <CC_Codex_Feruchemy_StoreMemory_Disabled_NoCopperminds>No copperminds carried.</CC_Codex_Feruchemy_StoreMemory_Disabled_NoCopperminds>
+  <CC_Codex_Feruchemy_StoreMemory_Disabled_NoMemories>No memories to offload.</CC_Codex_Feruchemy_StoreMemory_Disabled_NoMemories>
+  <CC_Codex_Feruchemy_StoreMemory_Disabled_NoRoom>No coppermind has room for the current memories.</CC_Codex_Feruchemy_StoreMemory_Disabled_NoRoom>
+  <CC_Codex_Feruchemy_StoreMemory_Title>Store a memory - {PAWN}</CC_Codex_Feruchemy_StoreMemory_Title>
+  <CC_Codex_Feruchemy_StoreMemory_PawnMemories>Active memories</CC_Codex_Feruchemy_StoreMemory_PawnMemories>
+  <CC_Codex_Feruchemy_StoreMemory_Copperminds>Available copperminds</CC_Codex_Feruchemy_StoreMemory_Copperminds>
+  <CC_Codex_Feruchemy_StoreMemory_Size>{SIZE}</CC_Codex_Feruchemy_StoreMemory_Size>
+  <CC_Codex_Feruchemy_StoreMemory_CoppermindDetail>{COUNT} stored - {USED}/{MAX}</CC_Codex_Feruchemy_StoreMemory_CoppermindDetail>
+  <CC_Codex_Feruchemy_StoreMemory_Hint_SelectMemory>Pick a memory to store.</CC_Codex_Feruchemy_StoreMemory_Hint_SelectMemory>
+  <CC_Codex_Feruchemy_StoreMemory_Hint_SelectCoppermind>Pick a coppermind with room.</CC_Codex_Feruchemy_StoreMemory_Hint_SelectCoppermind>
+  <CC_Codex_Feruchemy_StoreMemory_Cancel>Cancel</CC_Codex_Feruchemy_StoreMemory_Cancel>
+  <CC_Codex_Feruchemy_StoreMemory_Confirm>Store</CC_Codex_Feruchemy_StoreMemory_Confirm>
+
   <CC_Codex_Savant_Stage0>Novice</CC_Codex_Savant_Stage0>
   <CC_Codex_Savant_Stage1>Adept</CC_Codex_Savant_Stage1>
   <CC_Codex_Savant_Stage2>Savant</CC_Codex_Savant_Stage2>

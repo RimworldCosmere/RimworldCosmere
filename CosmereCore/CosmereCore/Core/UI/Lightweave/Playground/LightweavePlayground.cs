@@ -212,6 +212,36 @@ public sealed class LightweavePlayground : LightweaveWindow
 
             col.Add(Surface.Surface.Card(c =>
             {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Controls_Sliders_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<float> sliderVal = Hooks.Hooks.UseState<float>(0.5f);
+                float[] marks = { 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1f };
+                c.Add(Slider.Create(
+                    value: sliderVal.Value,
+                    onChange: v => sliderVal.Set(v),
+                    min: 0f, max: 1f, step: 0.05f,
+                    marks: marks,
+                    format: v => $"{v:P0}"));
+
+                Hooks.Hooks.StateHandle<float> sliderSmooth = Hooks.Hooks.UseState<float>(0.25f);
+                c.Add(Slider.Create(
+                    value: sliderSmooth.Value,
+                    onChange: v => sliderSmooth.Set(v),
+                    min: 0f, max: 1f,
+                    format: v => $"{v:0.00}"));
+
+                Hooks.Hooks.StateHandle<float> sliderDisabled = Hooks.Hooks.UseState<float>(0.7f);
+                c.Add(Slider.Create(
+                    value: sliderDisabled.Value,
+                    onChange: v => sliderDisabled.Set(v),
+                    min: 0f, max: 1f, step: 0.05f,
+                    marks: marks,
+                    format: v => $"{v:P0}",
+                    disabled: true));
+            }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
                 c.Add(Typography.Typography.Heading(2, "500-row virtualized list"));
                 c.Add(Layout.Layout.ScrollArea(contentHeight: 500 * 32f, children: sa =>
                 {

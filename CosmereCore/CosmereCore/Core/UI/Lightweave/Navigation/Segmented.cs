@@ -72,7 +72,15 @@ public static class Segmented
 
                 if (active)
                 {
-                    PaintBox.Draw(segRect, new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent), null, radius);
+                    Rem pill = new Rem(999f);
+                    bool isFirstLogical = logicalIndex == 0;
+                    bool isLastLogical = logicalIndex == count - 1;
+                    RadiusSpec activeRadius = new RadiusSpec(
+                        TopStart: isFirstLogical ? pill : (Rem?)null,
+                        BottomStart: isFirstLogical ? pill : (Rem?)null,
+                        TopEnd: isLastLogical ? pill : (Rem?)null,
+                        BottomEnd: isLastLogical ? pill : (Rem?)null);
+                    PaintBox.Draw(segRect, new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent), null, activeRadius);
                 }
 
                 GUIStyle style = active ? activeStyle : inactiveStyle;

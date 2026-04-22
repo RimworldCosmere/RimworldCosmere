@@ -5,6 +5,7 @@ public readonly record struct Rem(float Value)
     public float ToPixels() => Value * Spacing.BaseUnit;
     public static implicit operator Rem(float v) => new Rem(v);
     public static Rem operator *(Rem r, float m) => new Rem(r.Value * m);
+    public static Rem operator *(float m, Rem r) => new Rem(r.Value * m);
     public static Rem operator +(Rem a, Rem b) => new Rem(a.Value + b.Value);
 }
 

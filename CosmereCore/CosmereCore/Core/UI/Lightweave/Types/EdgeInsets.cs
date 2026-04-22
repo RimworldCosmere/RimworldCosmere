@@ -18,7 +18,7 @@ public readonly record struct EdgeInsets(
     public static EdgeInsets FromStart(Rem v) => new EdgeInsets(Start: v);
     public static EdgeInsets FromEnd(Rem v) => new EdgeInsets(End: v);
 
-    public (float l, float t, float r, float b) Resolve(Direction dir)
+    public (float Left, float Top, float Right, float Bottom) Resolve(Direction dir)
     {
         float startPx = Start?.ToPixels() ?? 0f;
         float endPx = End?.ToPixels() ?? 0f;
@@ -29,7 +29,7 @@ public readonly record struct EdgeInsets(
 
     public Rect Shrink(Rect r, Direction dir)
     {
-        (float l, float t, float rt, float b) = Resolve(dir);
-        return new Rect(r.x + l, r.y + t, r.width - l - rt, r.height - t - b);
+        (float left, float top, float right, float bottom) = Resolve(dir);
+        return new Rect(r.x + left, r.y + top, r.width - left - right, r.height - top - bottom);
     }
 }

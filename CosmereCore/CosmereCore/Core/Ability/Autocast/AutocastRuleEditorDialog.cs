@@ -30,7 +30,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         y += 34f;
 
         Rect enabledRect = new Rect(inRect.x, y, 160f, 24f);
-        Widgets.CheckboxLabeled(enabledRect, "CC_Autocast_Editor_Enabled".Translate(), ref rule.Enabled);
+        Widgets.CheckboxLabeled(enabledRect, "CC_Autocast_Editor_Enabled".Translate(), ref rule.Enabled, placeCheckboxNearText: true);
         y += 28f;
 
         Rect capLabel = new Rect(inRect.x, y, 160f, 24f);

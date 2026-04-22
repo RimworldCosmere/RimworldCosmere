@@ -6,8 +6,10 @@ namespace Cosmere.System.Nalthis.UI;
 
 public sealed class AwakeningCodexContent : ICodexContentProvider {
     public bool HasProgression(Pawn pawn) => true;
-    public bool HasBonded(Pawn pawn) => false;
+    public bool ShowsBondsSubtab => false;
+    public bool HasBonds(Pawn pawn) => false;
     public bool HasMemories(Pawn pawn) => false;
+    public bool OwnsAbility(RimWorld.Ability ability) => false;
     public string? HeaderLabelFor(Pawn pawn) => null;
 
     public void DrawProgression(Pawn pawn, Rect rect) {
@@ -18,6 +20,6 @@ public sealed class AwakeningCodexContent : ICodexContentProvider {
             Widgets.Label(new Rect(rect.x, rect.y + 34f, rect.width, 24f), "CC_Codex_Awakening_Progression_Placeholder".Translate());
     }
 
-    public void DrawBonded(Pawn pawn, Rect rect) { }
+    public void DrawBonds(Pawn pawn, Rect rect) { }
     public void DrawMemories(Pawn pawn, Rect rect) { }
 }

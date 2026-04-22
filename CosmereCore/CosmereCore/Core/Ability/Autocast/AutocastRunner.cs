@@ -25,6 +25,7 @@ public sealed class AutocastRunner : GameComponent {
 
     private static void TickPawn(Pawn pawn, GameComponent_Autocast store) {
         if (pawn.abilities == null) return;
+        SeedDefaults(pawn, store);
         List<AutocastRule> rules = store.RulesFor(pawn);
         if (rules.Count == 0) return;
 
@@ -40,6 +41,15 @@ public sealed class AutocastRunner : GameComponent {
 
             ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
             rule.FireCount++;
+        }
+    }
+
+    private static void SeedDefaults(Pawn pawn, GameComponent_Autocast store) {
+        List<RimWorld.Ability> abilities = pawn.abilities.AllAbilitiesForReading;
+        for (int i = 0; i < abilities.Count; i++) {
+            string defName = abilities[i].def.defName;
+            if (!AutocastDefaults.HasDefaults(defName)) continue;
+            store.GetOrCreateRule(pawn, defName);
         }
     }
 

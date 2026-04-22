@@ -4,13 +4,13 @@ using Verse;
 
 namespace Cosmere.Core.UI.Codex;
 
-public static class BondedSubtabRenderer {
+public static class BondsSubtabRenderer {
     public static void Draw(Rect rect, Pawn pawn, IInvestitureProvider active) {
-        if (active is ICodexContentProvider cp && cp.HasBonded(pawn)) {
-            cp.DrawBonded(pawn, rect);
+        if (active is ICodexContentProvider cp && cp.HasBonds(pawn)) {
+            cp.DrawBonds(pawn, rect);
             return;
         }
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.7f)))
-            Widgets.Label(rect, "CC_Codex_Bonded_Empty".Translate());
+            Widgets.Label(rect, "CC_Codex_Bonds_Empty".Translate());
     }
 }

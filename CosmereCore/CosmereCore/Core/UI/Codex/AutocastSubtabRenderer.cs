@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cosmere.Core.Ability.Autocast;
+using Cosmere.Core.UI.Model;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -8,24 +9,37 @@ namespace Cosmere.Core.UI.Codex;
 
 public static class AutocastSubtabRenderer {
     private static Vector2 scroll;
+    private static readonly List<RimWorld.Ability> filtered = [];
 
-    public static void Draw(Rect rect, Pawn pawn) {
+    public static void Draw(Rect rect, Pawn pawn, IInvestitureProvider active) {
         if (pawn.abilities == null) {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.7f)))
                 Widgets.Label(rect, "CC_Codex_Autocast_NoAbilities".Translate());
             return;
         }
 
-        List<RimWorld.Ability> abilities = pawn.abilities.AllAbilitiesForReading;
+        ICodexContentProvider? owner = active as ICodexContentProvider;
+        List<RimWorld.Ability> all = pawn.abilities.AllAbilitiesForReading;
+        filtered.Clear();
+        for (int i = 0; i < all.Count; i++) {
+            if (owner == null || owner.OwnsAbility(all[i])) filtered.Add(all[i]);
+        }
+
+        if (filtered.Count == 0) {
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.7f)))
+                Widgets.Label(rect, "CC_Codex_Autocast_NoAbilities".Translate());
+            return;
+        }
+
         GameComponent_Autocast store = GameComponent_Autocast.Get();
         float rowHeight = 34f;
 
-        Rect viewRect = new Rect(0f, 0f, rect.width - 16f, (abilities.Count * rowHeight) + 8f);
+        Rect viewRect = new Rect(0f, 0f, rect.width - 16f, (filtered.Count * rowHeight) + 8f);
         Widgets.BeginScrollView(rect, ref scroll, viewRect);
 
         float y = 4f;
-        for (int i = 0; i < abilities.Count; i++) {
-            RimWorld.Ability ability = abilities[i];
+        for (int i = 0; i < filtered.Count; i++) {
+            RimWorld.Ability ability = filtered[i];
             AutocastRule rule = store.GetOrCreateRule(pawn, ability.def.defName);
             Rect row = new Rect(0f, y, viewRect.width, rowHeight - 2f);
 

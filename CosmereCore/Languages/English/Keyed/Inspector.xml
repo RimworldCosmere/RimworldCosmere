@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <CC_Codex_Tab>Investiture</CC_Codex_Tab>
+  <CC_Codex_Tab>Codex</CC_Codex_Tab>
 
   <CC_Codex_Subtab_Autocast>Autocast</CC_Codex_Subtab_Autocast>
   <CC_Codex_Subtab_Progression>Progression</CC_Codex_Subtab_Progression>
-  <CC_Codex_Subtab_Bonded>Bonded</CC_Codex_Subtab_Bonded>
+  <CC_Codex_Subtab_Bonds>Bonds</CC_Codex_Subtab_Bonds>
   <CC_Codex_Subtab_Memories>Memories</CC_Codex_Subtab_Memories>
 
   <CC_System_Surgebinding_Header>Stormlight</CC_System_Surgebinding_Header>
@@ -24,23 +24,28 @@
   <CC_Codex_Surgebinding_BondedHeader>Bonded spren</CC_Codex_Surgebinding_BondedHeader>
   <CC_Codex_Surgebinding_IdealUnsworn>Ideal {IDEAL} (unsworn)</CC_Codex_Surgebinding_IdealUnsworn>
 
-  <CC_Codex_Allomancy_ProgressionHeader>Allomantic flare mastery</CC_Codex_Allomancy_ProgressionHeader>
-  <CC_Codex_Allomancy_Status_Flaring>Flaring</CC_Codex_Allomancy_Status_Flaring>
-  <CC_Codex_Allomancy_Status_Burning>Burning</CC_Codex_Allomancy_Status_Burning>
-  <CC_Codex_Allomancy_Status_Off>Off</CC_Codex_Allomancy_Status_Off>
-  <CC_Codex_Allomancy_FlareDuration>flared {SECONDS}s this session</CC_Codex_Allomancy_FlareDuration>
+  <CC_Codex_Allomancy_ProgressionHeader>Allomancy</CC_Codex_Allomancy_ProgressionHeader>
+  <CC_Codex_Allomancy_OverallSkill>Allomantic Power: level {LEVEL}</CC_Codex_Allomancy_OverallSkill>
+  <CC_Codex_Allomancy_MetalBurned>{AMOUNT} burned</CC_Codex_Allomancy_MetalBurned>
 
-  <CC_Codex_Feruchemy_Progression_Header>Feruchemic efficiency</CC_Codex_Feruchemy_Progression_Header>
-  <CC_Codex_Feruchemy_Target>target {VALUE}</CC_Codex_Feruchemy_Target>
+  <CC_Codex_Feruchemy_Progression_Header>Feruchemy</CC_Codex_Feruchemy_Progression_Header>
+  <CC_Codex_Feruchemy_OverallSkill>Feruchemic Power: level {LEVEL}</CC_Codex_Feruchemy_OverallSkill>
+  <CC_Codex_Feruchemy_StoredTapped>stored {STORED} - tapped {TAPPED}</CC_Codex_Feruchemy_StoredTapped>
+  <CC_Codex_Feruchemy_Never>never</CC_Codex_Feruchemy_Never>
   <CC_Codex_Feruchemy_Copperminds_Header>Copperminds</CC_Codex_Feruchemy_Copperminds_Header>
   <CC_Codex_Feruchemy_NoCopperminds>No copperminds carried.</CC_Codex_Feruchemy_NoCopperminds>
   <CC_Codex_Feruchemy_CoppermindRow>Coppermind (memories: {AMOUNT}) - owner: {OWNER}</CC_Codex_Feruchemy_CoppermindRow>
   <CC_Codex_Feruchemy_UnclaimedOwner>unclaimed</CC_Codex_Feruchemy_UnclaimedOwner>
 
+  <CC_Codex_Savant_Stage0>Novice</CC_Codex_Savant_Stage0>
+  <CC_Codex_Savant_Stage1>Adept</CC_Codex_Savant_Stage1>
+  <CC_Codex_Savant_Stage2>Savant</CC_Codex_Savant_Stage2>
+  <CC_Codex_Savant_Stage3>Transcendent</CC_Codex_Savant_Stage3>
+
   <CC_Codex_Awakening_Progression_Header>Biochromatic Breath</CC_Codex_Awakening_Progression_Header>
   <CC_Codex_Awakening_Progression_Placeholder>Heightening tree lands with the Awakening system implementation.</CC_Codex_Awakening_Progression_Placeholder>
 
-  <CC_Codex_Bonded_Empty>No bonded entities for this system.</CC_Codex_Bonded_Empty>
+  <CC_Codex_Bonds_Empty>No bonds for this system.</CC_Codex_Bonds_Empty>
   <CC_Codex_Memories_Empty>No stored memories for this system.</CC_Codex_Memories_Empty>
 
   <CC_Autocast_Editor_Title>Autocast: {ABILITY}</CC_Autocast_Editor_Title>

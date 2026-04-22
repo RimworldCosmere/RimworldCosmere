@@ -189,9 +189,11 @@ public sealed class FeruchemyInvestitureProvider : IInvestitureProvider, ICodexC
 
     public bool HasProgression(Pawn pawn) => codex.HasProgression(pawn);
     public void DrawProgression(Pawn pawn, UnityEngine.Rect rect) => codex.DrawProgression(pawn, rect);
-    public bool HasBonded(Pawn pawn) => codex.HasBonded(pawn);
-    public void DrawBonded(Pawn pawn, UnityEngine.Rect rect) => codex.DrawBonded(pawn, rect);
+    public bool ShowsBondsSubtab => codex.ShowsBondsSubtab;
+    public bool HasBonds(Pawn pawn) => codex.HasBonds(pawn);
+    public void DrawBonds(Pawn pawn, UnityEngine.Rect rect) => codex.DrawBonds(pawn, rect);
     public bool HasMemories(Pawn pawn) => codex.HasMemories(pawn);
     public void DrawMemories(Pawn pawn, UnityEngine.Rect rect) => codex.DrawMemories(pawn, rect);
+    public bool OwnsAbility(RimWorld.Ability ability) => codex.OwnsAbility(ability);
     public string? HeaderLabelFor(Pawn pawn) => codex.HeaderLabelFor(pawn);
 }

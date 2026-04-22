@@ -51,8 +51,10 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICod
             RadiantOrderDef order = s.radiantOrderDef;
 
             List<RadialLeaf> leaves = [];
+            HashSet<AbilityDef> seen = [];
             foreach (AbilityDef def in order.GetAbilities(s.currentIdeal)) {
                 if (IsExcludedFromRadial(def)) continue;
+                if (!seen.Add(def)) continue;
 
                 int minIdeal = def is SurgebindingAbilityDef sd ? sd.GetMinIdealForOrder(order.defName) : 0;
                 bool locked = s.currentIdeal < minIdeal;
@@ -87,6 +89,34 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICod
                 ));
             }
 
+            for (int j = 0; j < abilities.Count; j++) {
+                if (abilities[j] is not SurgebindingAbility sa) continue;
+                AbilityDef def = sa.def;
+                if (IsExcludedFromRadial(def)) continue;
+                if (!seen.Add(def)) continue;
+
+                bool isActive = sa.status.isActive;
+                bool canCast = sa.CanCast;
+                int cooldown = sa.CooldownTicksRemaining;
+
+                leaves.Add(new RadialLeaf(
+                    LeafId: def.defName,
+                    Label: def.LabelCap,
+                    Icon: def.uiIcon,
+                    Kind: RadialActionKind.CastAbility,
+                    AbilityDef: def,
+                    IsActive: isActive,
+                    IsFlaring: false,
+                    IsSustained: isActive && def.cooldownTicksRange.max == 0,
+                    IsLocked: false,
+                    LockReason: null,
+                    ReserveFraction: s.Max > 0f ? s.Value / s.Max : 0f,
+                    HasInsufficientResources: !canCast,
+                    CostHint: null,
+                    CooldownTicksRemaining: cooldown
+                ));
+            }
+
             if (leaves.Count == 0) continue;
 
             subs.Add(new RadialSubsection(
@@ -115,9 +145,11 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICod
 
     public bool HasProgression(Pawn pawn) => codex.HasProgression(pawn);
     public void DrawProgression(Pawn pawn, UnityEngine.Rect rect) => codex.DrawProgression(pawn, rect);
-    public bool HasBonded(Pawn pawn) => codex.HasBonded(pawn);
-    public void DrawBonded(Pawn pawn, UnityEngine.Rect rect) => codex.DrawBonded(pawn, rect);
+    public bool ShowsBondsSubtab => codex.ShowsBondsSubtab;
+    public bool HasBonds(Pawn pawn) => codex.HasBonds(pawn);
+    public void DrawBonds(Pawn pawn, UnityEngine.Rect rect) => codex.DrawBonds(pawn, rect);
     public bool HasMemories(Pawn pawn) => codex.HasMemories(pawn);
     public void DrawMemories(Pawn pawn, UnityEngine.Rect rect) => codex.DrawMemories(pawn, rect);
+    public bool OwnsAbility(RimWorld.Ability ability) => codex.OwnsAbility(ability);
     public string? HeaderLabelFor(Pawn pawn) => codex.HeaderLabelFor(pawn);
 }

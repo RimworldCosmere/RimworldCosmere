@@ -1,3 +1,4 @@
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -7,11 +8,14 @@ public interface ICodexContentProvider {
     bool HasProgression(Pawn pawn);
     void DrawProgression(Pawn pawn, Rect rect);
 
-    bool HasBonded(Pawn pawn);
-    void DrawBonded(Pawn pawn, Rect rect);
+    bool ShowsBondsSubtab { get; }
+    bool HasBonds(Pawn pawn);
+    void DrawBonds(Pawn pawn, Rect rect);
 
     bool HasMemories(Pawn pawn);
     void DrawMemories(Pawn pawn, Rect rect);
+
+    bool OwnsAbility(RimWorld.Ability ability);
 
     string? HeaderLabelFor(Pawn pawn);
 }

@@ -55,7 +55,7 @@ public class ITab_Investiture : ITab {
         }
 
         Rect subtabBar = new Rect(CodexChrome.Gutter, y, size.x - (CodexChrome.Gutter * 2f), CodexChrome.SubtabBarHeight);
-        SubtabBar.Draw(subtabBar, state, skin.AccentColor);
+        SubtabBar.Draw(subtabBar, state, active, skin.AccentColor);
 
         Rect divider = new Rect(CodexChrome.Gutter, subtabBar.yMax, subtabBar.width, 1f);
         CodexChrome.DrawDivider(divider, skin.AccentColor);
@@ -67,13 +67,13 @@ public class ITab_Investiture : ITab {
     private void DrawSubtabBody(Rect rect, Pawn pawn, IInvestitureProvider active) {
         switch (state.Subtab) {
             case CodexSubtab.Autocast:
-                AutocastSubtabRenderer.Draw(rect, pawn);
+                AutocastSubtabRenderer.Draw(rect, pawn, active);
                 return;
             case CodexSubtab.Progression:
                 ProgressionSubtabRenderer.Draw(rect, pawn, active);
                 return;
-            case CodexSubtab.Bonded:
-                BondedSubtabRenderer.Draw(rect, pawn, active);
+            case CodexSubtab.Bonds:
+                BondsSubtabRenderer.Draw(rect, pawn, active);
                 return;
             case CodexSubtab.Memories:
                 MemoriesSubtabRenderer.Draw(rect, pawn, active);

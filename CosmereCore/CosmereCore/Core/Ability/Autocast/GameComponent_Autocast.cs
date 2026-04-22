@@ -26,6 +26,7 @@ public sealed class GameComponent_Autocast : GameComponent {
             if (list[i].AbilityDefName == abilityDefName) return list[i];
         }
         AutocastRule fresh = new AutocastRule { AbilityDefName = abilityDefName };
+        AutocastDefaults.ApplyTo(fresh);
         list.Add(fresh);
         return fresh;
     }

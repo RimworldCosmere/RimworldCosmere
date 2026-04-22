@@ -29,4 +29,19 @@
     <CC_Playground_Overlay_Popover_Open>Open popover</CC_Playground_Overlay_Popover_Open>
     <CC_Playground_Overlay_Popover_Close>Close</CC_Playground_Overlay_Popover_Close>
     <CC_Playground_Overlay_Popover_Body>This is a popover anchored to the button above.</CC_Playground_Overlay_Popover_Body>
+    <CC_Playground_Navigation_Menu_Title>Menu</CC_Playground_Navigation_Menu_Title>
+    <CC_Playground_Navigation_Menu_OpenLtr>Open menu (LTR)</CC_Playground_Navigation_Menu_OpenLtr>
+    <CC_Playground_Navigation_Menu_OpenRtl>Open menu (RTL)</CC_Playground_Navigation_Menu_OpenRtl>
+    <CC_Playground_Navigation_Menu_Open>Open</CC_Playground_Navigation_Menu_Open>
+    <CC_Playground_Navigation_Menu_Save>Save</CC_Playground_Navigation_Menu_Save>
+    <CC_Playground_Navigation_Menu_SaveAs>Save as...</CC_Playground_Navigation_Menu_SaveAs>
+    <CC_Playground_Navigation_Menu_Export>Export</CC_Playground_Navigation_Menu_Export>
+    <CC_Playground_Navigation_Menu_Reload>Reload</CC_Playground_Navigation_Menu_Reload>
+    <CC_Playground_Navigation_Menu_Close>Close</CC_Playground_Navigation_Menu_Close>
+    <CC_Playground_Navigation_Menu_Txt>.txt</CC_Playground_Navigation_Menu_Txt>
+    <CC_Playground_Navigation_Menu_Json>.json</CC_Playground_Navigation_Menu_Json>
+    <CC_Playground_Navigation_Menu_Xml>.xml</CC_Playground_Navigation_Menu_Xml>
+    <CC_Playground_Navigation_Menu_Pdf>PDF</CC_Playground_Navigation_Menu_Pdf>
+    <CC_Playground_Navigation_Menu_Png>PNG</CC_Playground_Navigation_Menu_Png>
+    <CC_Playground_Navigation_Menu_Svg>SVG</CC_Playground_Navigation_Menu_Svg>
 </LanguageData>

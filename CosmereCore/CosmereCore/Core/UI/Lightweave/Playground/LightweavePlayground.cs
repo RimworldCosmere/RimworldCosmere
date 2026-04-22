@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Cosmere.Core.UI.Lightweave.Hooks;
 using Cosmere.Core.UI.Lightweave.Input;
 using Cosmere.Core.UI.Lightweave.Layout;
+using Cosmere.Core.UI.Lightweave.Navigation;
 using Cosmere.Core.UI.Lightweave.Overlay;
 using Cosmere.Core.UI.Lightweave.Rendering;
 using Cosmere.Core.UI.Lightweave.Runtime;
@@ -302,6 +304,16 @@ public sealed class LightweavePlayground : LightweaveWindow
 
             col.Add(Surface.Surface.Card(c =>
             {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Navigation_Menu_Title".Translate()));
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Md, children: r =>
+                {
+                    r.Add(MenuDemo(Direction.Ltr));
+                    r.Add(MenuDemo(Direction.Rtl));
+                }));
+            }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
                 c.Add(Typography.Typography.Heading(2, "500-row virtualized list"));
                 c.Add(Layout.Layout.ScrollArea(contentHeight: 500 * 32f, children: sa =>
                 {
@@ -324,6 +336,82 @@ public sealed class LightweavePlayground : LightweaveWindow
             BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.TextMuted);
             RadiusSpec radius = RadiusSpec.All(new Rem(0.125f));
             PaintBox.Draw(rect, bg, null, radius);
+        };
+        return node;
+    }
+
+    private static LightweaveNode MenuDemo(
+        Direction direction,
+        [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,
+        [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
+    {
+        Hooks.Hooks.StateHandle<bool> menuOpen = Hooks.Hooks.UseState<bool>(false, line, file);
+        Hooks.Hooks.RefHandle<Rect> anchorRef = Hooks.Hooks.UseRef<Rect>(default(Rect), line + 1, file);
+
+        IReadOnlyList<MenuItem> saveAsChildren = new MenuItem[]
+        {
+            new MenuItem("CC_Playground_Navigation_Menu_Txt".Translate()),
+            new MenuItem("CC_Playground_Navigation_Menu_Json".Translate()),
+            new MenuItem("CC_Playground_Navigation_Menu_Xml".Translate()),
+        };
+        IReadOnlyList<MenuItem> exportChildren = new MenuItem[]
+        {
+            new MenuItem("CC_Playground_Navigation_Menu_Pdf".Translate()),
+            new MenuItem("CC_Playground_Navigation_Menu_Png".Translate()),
+            new MenuItem("CC_Playground_Navigation_Menu_Svg".Translate()),
+        };
+        IReadOnlyList<MenuItem> items = new MenuItem[]
+        {
+            new MenuItem("CC_Playground_Navigation_Menu_Open".Translate()),
+            new MenuItem("CC_Playground_Navigation_Menu_Save".Translate()),
+            new MenuItem("CC_Playground_Navigation_Menu_SaveAs".Translate(), Children: saveAsChildren),
+            new MenuItem("CC_Playground_Navigation_Menu_Export".Translate(), Children: exportChildren),
+            new MenuItem("CC_Playground_Navigation_Menu_Reload".Translate(), Disabled: true),
+            new MenuItem("CC_Playground_Navigation_Menu_Close".Translate(),
+                OnInvoke: () => menuOpen.Set(false)),
+        };
+
+        LightweaveNode anchorButton = Button.Create(
+            label: direction == Direction.Ltr
+                ? "CC_Playground_Navigation_Menu_OpenLtr".Translate()
+                : "CC_Playground_Navigation_Menu_OpenRtl".Translate(),
+            onClick: () => menuOpen.Set(!menuOpen.Value),
+            variant: ButtonVariant.Primary);
+
+        LightweaveNode body = Layout.Layout.Column(gap: SpacingScale.Xs, children: col =>
+        {
+            col.Add(AnchorTracker(anchorButton, anchorRef));
+            col.Add(Menu.Create(
+                isOpen: menuOpen.Value,
+                anchorRect: anchorRef.Current,
+                items: items,
+                onDismiss: () => menuOpen.Set(false)));
+        });
+
+        return DirectionScope(direction, body, line, file);
+    }
+
+    private static LightweaveNode DirectionScope(
+        Direction direction,
+        LightweaveNode inner,
+        [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,
+        [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
+    {
+        LightweaveNode node = NodeBuilder.New($"DirectionScope:{direction}", line, file);
+        node.Children.Add(inner);
+        node.Paint = (rect, _) =>
+        {
+            RenderContext ctx = RenderContext.Current;
+            ctx.DirectionStack.Push(direction);
+            try
+            {
+                inner.MeasuredRect = rect;
+                LightweaveRoot.PaintSubtree(inner, rect);
+            }
+            finally
+            {
+                ctx.DirectionStack.Pop();
+            }
         };
         return node;
     }

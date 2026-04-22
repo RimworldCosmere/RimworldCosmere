@@ -39,7 +39,10 @@
   <CC_Codex_Feruchemy_Never>never</CC_Codex_Feruchemy_Never>
   <CC_Codex_Feruchemy_Copperminds_Header>Copperminds</CC_Codex_Feruchemy_Copperminds_Header>
   <CC_Codex_Feruchemy_NoCopperminds>No copperminds carried.</CC_Codex_Feruchemy_NoCopperminds>
-  <CC_Codex_Feruchemy_CoppermindRow>Coppermind (memories: {AMOUNT}) - owner: {OWNER}</CC_Codex_Feruchemy_CoppermindRow>
+  <CC_Codex_Feruchemy_CoppermindHeader>{NAME} - {OWNER} ({USED}/{MAX})</CC_Codex_Feruchemy_CoppermindHeader>
+  <CC_Codex_Feruchemy_CoppermindEmpty>No stored memories.</CC_Codex_Feruchemy_CoppermindEmpty>
+  <CC_Codex_Feruchemy_MemoryStoredBy>stored by {STOREDBY}</CC_Codex_Feruchemy_MemoryStoredBy>
+  <CC_Codex_Feruchemy_UnknownStoredBy>unknown</CC_Codex_Feruchemy_UnknownStoredBy>
   <CC_Codex_Feruchemy_UnclaimedOwner>unclaimed</CC_Codex_Feruchemy_UnclaimedOwner>
 
   <CC_Codex_Savant_Stage0>Novice</CC_Codex_Savant_Stage0>

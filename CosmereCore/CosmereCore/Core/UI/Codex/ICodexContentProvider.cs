@@ -13,7 +13,7 @@ public interface ICodexContentProvider {
     void DrawBonds(Pawn pawn, Rect rect, CodexState state);
 
     bool HasMemories(Pawn pawn);
-    void DrawMemories(Pawn pawn, Rect rect);
+    void DrawMemories(Pawn pawn, Rect rect, CodexState state);
 
     bool OwnsAbility(RimWorld.Ability ability);
 

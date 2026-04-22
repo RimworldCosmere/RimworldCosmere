@@ -21,5 +21,5 @@ public sealed class AwakeningCodexContent : ICodexContentProvider {
     }
 
     public void DrawBonds(Pawn pawn, Rect rect, CodexState state) { }
-    public void DrawMemories(Pawn pawn, Rect rect) { }
+    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) { }
 }

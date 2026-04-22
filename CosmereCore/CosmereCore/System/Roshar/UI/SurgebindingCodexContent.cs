@@ -337,7 +337,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         }
     }
 
-    public void DrawMemories(Pawn pawn, Rect rect) { }
+    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) { }
 
     private static Surgebinder? GetSurgebinder(Pawn pawn) {
         return pawn.genes?.GetFirstGeneOfType<Surgebinder>();

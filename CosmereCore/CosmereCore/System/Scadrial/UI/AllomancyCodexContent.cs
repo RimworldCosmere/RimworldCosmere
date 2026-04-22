@@ -85,7 +85,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
     }
 
     public void DrawBonds(Pawn pawn, Rect rect, CodexState state) { }
-    public void DrawMemories(Pawn pawn, Rect rect) { }
+    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) { }
 
     private static void DrawVialSettingsButton(Rect rect, Allomancer gene) {
         string thresholdLabel = Allomancer.ThresholdDisplayLabel(gene);

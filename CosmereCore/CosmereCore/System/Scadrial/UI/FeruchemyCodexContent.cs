@@ -3,6 +3,7 @@ using Cosmere.Core.Savant;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
+using Cosmere.System.Scadrial.Feruchemy.Memory;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
@@ -96,38 +97,99 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
 
     public void DrawBonds(Pawn pawn, Rect rect, CodexState state) { }
 
-    public void DrawMemories(Pawn pawn, Rect rect) {
+    private static readonly Color PositiveMoodColor = new Color(0.45f, 0.85f, 0.45f);
+    private static readonly Color NegativeMoodColor = new Color(0.9f, 0.45f, 0.45f);
+    private static readonly Color RowStripeColor = new Color(1f, 1f, 1f, 0.03f);
+    private static readonly Color CoppermindHeaderColor = new Color(0.85f, 0.7f, 0.45f);
+    private static readonly Color SecondaryTextColor = new Color(0.7f, 0.7f, 0.7f);
+
+    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) {
+        Rect headerRect = new Rect(rect.x, rect.y, rect.width, 30f);
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(new Rect(rect.x, rect.y, rect.width, 30f), "CC_Codex_Feruchemy_Copperminds_Header".Translate());
+            Widgets.Label(headerRect, "CC_Codex_Feruchemy_Copperminds_Header".Translate());
 
         List<Metalmind> copperminds = CollectCopperminds(pawn);
         if (copperminds.Count == 0) {
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.7f, 0.7f, 0.7f)))
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor))
                 Widgets.Label(new Rect(rect.x, rect.y + 34f, rect.width, 24f), "CC_Codex_Feruchemy_NoCopperminds".Translate());
             return;
         }
 
-        float y = rect.y + 34f;
+        Rect bodyRect = new Rect(rect.x, rect.y + 34f, rect.width, rect.height - 34f);
+        float totalHeight = 0f;
         for (int i = 0; i < copperminds.Count; i++) {
-            Metalmind mind = copperminds[i];
-            Rect row = new Rect(rect.x, y, rect.width, 24f);
-            if (i % 2 == 0) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
-
-            string ownerName = mind.owner != null
-                ? mind.owner.LabelShortCap
-                : (string)"CC_Codex_Feruchemy_UnclaimedOwner".Translate();
-
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
-                Widgets.Label(
-                    new Rect(row.x + 4f, row.y, row.width - 8f, row.height),
-                    "CC_Codex_Feruchemy_CoppermindRow".Translate(
-                        mind.storedAmount.ToString("F0").Named("AMOUNT"),
-                        ownerName.Named("OWNER")
-                    )
-                );
-
-            y += 26f;
+            totalHeight += CoppermindBlockHeight(copperminds[i]);
         }
+
+        Rect viewRect = new Rect(0f, 0f, bodyRect.width - 16f, totalHeight);
+        Widgets.BeginScrollView(bodyRect, ref state.MemoriesScroll, viewRect);
+        float y = 0f;
+        for (int i = 0; i < copperminds.Count; i++) {
+            y = DrawCoppermindBlock(new Rect(0f, y, viewRect.width, 0f), copperminds[i]);
+        }
+        Widgets.EndScrollView();
+    }
+
+    private static float CoppermindBlockHeight(Metalmind mind) {
+        int entryCount = mind.storedMemories.Count;
+        if (entryCount == 0) entryCount = 1;
+        return 28f + entryCount * 24f + 6f;
+    }
+
+    private static float DrawCoppermindBlock(Rect rect, Metalmind mind) {
+        float y = rect.y;
+
+        Rect header = new Rect(rect.x, y, rect.width, 26f);
+        string ownerName = mind.owner != null
+            ? mind.owner.LabelShortCap
+            : (string)"CC_Codex_Feruchemy_UnclaimedOwner".Translate();
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, CoppermindHeaderColor))
+            Widgets.Label(
+                header,
+                "CC_Codex_Feruchemy_CoppermindHeader".Translate(
+                    mind.parent.LabelCap.Named("NAME"),
+                    ownerName.Named("OWNER"),
+                    mind.usedMemorySpace.ToString("F1").Named("USED"),
+                    mind.maxAmount.ToString("F0").Named("MAX")
+                )
+            );
+        y += 26f;
+
+        Rect divider = new Rect(rect.x, y, rect.width, 1f);
+        Widgets.DrawLineHorizontal(divider.x, divider.y, divider.width, new Color(1f, 1f, 1f, 0.1f));
+        y += 2f;
+
+        IReadOnlyList<StoredMemory> memories = mind.storedMemories;
+        if (memories.Count == 0) {
+            Rect emptyRow = new Rect(rect.x + 12f, y, rect.width - 12f, 22f);
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor))
+                Widgets.Label(emptyRow, "CC_Codex_Feruchemy_CoppermindEmpty".Translate());
+            y += 24f;
+        } else {
+            for (int i = 0; i < memories.Count; i++) {
+                Rect row = new Rect(rect.x, y, rect.width, 22f);
+                if (i % 2 == 0) Widgets.DrawBoxSolid(row, RowStripeColor);
+
+                StoredMemory memory = memories[i];
+                Color moodColor = memory.IsPositive ? PositiveMoodColor : NegativeMoodColor;
+
+                Rect labelRect = new Rect(row.x + 12f, row.y, row.width * 0.55f - 12f, row.height);
+                using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, moodColor))
+                    Widgets.Label(labelRect, memory.LabelCap);
+
+                string storedBy = memory.owner != null
+                    ? memory.owner.LabelShortCap
+                    : (string)"CC_Codex_Feruchemy_UnknownStoredBy".Translate();
+                Rect attributionRect = new Rect(labelRect.xMax, row.y, row.width - labelRect.width - 12f, row.height);
+                using (new TextBlock(GameFont.Small, TextAnchor.MiddleRight, SecondaryTextColor))
+                    Widgets.Label(attributionRect, "CC_Codex_Feruchemy_MemoryStoredBy".Translate(storedBy.Named("STOREDBY")));
+
+                y += 22f;
+            }
+        }
+
+        y += 6f;
+        return y;
     }
 
     private static void DrawSavantStage(Rect rect, int stage, Color accent) {

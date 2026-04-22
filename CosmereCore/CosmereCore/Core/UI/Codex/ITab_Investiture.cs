@@ -76,7 +76,7 @@ public class ITab_Investiture : ITab {
                 BondsSubtabRenderer.Draw(rect, pawn, active, state);
                 return;
             case CodexSubtab.Memories:
-                MemoriesSubtabRenderer.Draw(rect, pawn, active);
+                MemoriesSubtabRenderer.Draw(rect, pawn, active, state);
                 return;
             default:
                 using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.7f)))

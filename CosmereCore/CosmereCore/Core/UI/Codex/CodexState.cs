@@ -8,4 +8,5 @@ public sealed class CodexState {
     public int SelectedSprenIndex = 0;
     public Vector2 ProgressionScroll = Vector2.zero;
     public Vector2 BondDetailScroll = Vector2.zero;
+    public Vector2 MemoriesScroll = Vector2.zero;
 }

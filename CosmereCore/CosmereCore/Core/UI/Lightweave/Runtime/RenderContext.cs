@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cosmere.Core.UI.Skin;
+using Cosmere.Core.UI.Lightweave.Runtime.Internal;
 using Cosmere.Core.UI.Lightweave.Theme;
 using Cosmere.Core.UI.Lightweave.Types;
 
@@ -16,7 +17,8 @@ public sealed class RenderContext
     public Vector2 PointerPos;
     public int? HoveredNodeId;
     public int? FocusedNodeId;
-    public List<global::System.Action> DeferredOverlays = new List<global::System.Action>();
+    internal OverlayQueue PendingOverlays { get; } = new OverlayQueue();
+    public string? FocusedControlName { get; internal set; }
     public HookStore Hooks = null!;
 
     private static readonly global::System.Threading.ThreadLocal<RenderContext?> current = new global::System.Threading.ThreadLocal<RenderContext?>();

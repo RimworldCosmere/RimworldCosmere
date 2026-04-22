@@ -32,9 +32,13 @@ public static class LightweaveRoot
             root.MeasuredRect = inRect;
             root.ContentRect = inRect;
             Paint(root);
-            foreach (Action overlay in ctx.DeferredOverlays)
+            try
             {
-                overlay();
+                ctx.PendingOverlays.Flush();
+            }
+            finally
+            {
+                ctx.PendingOverlays.Clear();
             }
             store.RetireUntouched();
         }

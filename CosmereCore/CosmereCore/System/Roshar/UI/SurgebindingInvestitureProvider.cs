@@ -144,7 +144,7 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICod
     }
 
     public bool HasProgression(Pawn pawn) => codex.HasProgression(pawn);
-    public void DrawProgression(Pawn pawn, UnityEngine.Rect rect) => codex.DrawProgression(pawn, rect);
+    public void DrawProgression(Pawn pawn, UnityEngine.Rect rect, CodexState state) => codex.DrawProgression(pawn, rect, state);
     public bool ShowsBondsSubtab => codex.ShowsBondsSubtab;
     public bool HasBonds(Pawn pawn) => codex.HasBonds(pawn);
     public void DrawBonds(Pawn pawn, UnityEngine.Rect rect, CodexState state) => codex.DrawBonds(pawn, rect, state);

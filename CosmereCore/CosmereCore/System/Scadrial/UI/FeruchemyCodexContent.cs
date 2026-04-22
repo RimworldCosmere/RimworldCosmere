@@ -27,7 +27,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
 
     public string? HeaderLabelFor(Pawn pawn) => null;
 
-    public void DrawProgression(Pawn pawn, Rect rect) {
+    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
         List<Feruchemist> ferus = CollectFeruchemists(pawn);
         if (ferus.Count == 0) return;
 

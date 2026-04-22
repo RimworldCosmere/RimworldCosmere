@@ -70,7 +70,7 @@ public class ITab_Investiture : ITab {
                 AutocastSubtabRenderer.Draw(rect, pawn, active);
                 return;
             case CodexSubtab.Progression:
-                ProgressionSubtabRenderer.Draw(rect, pawn, active);
+                ProgressionSubtabRenderer.Draw(rect, pawn, active, state);
                 return;
             case CodexSubtab.Bonds:
                 BondsSubtabRenderer.Draw(rect, pawn, active, state);

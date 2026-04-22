@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Roshar.Comp.Thing;
@@ -14,15 +15,27 @@ using Verse;
 namespace Cosmere.System.Roshar.UI;
 
 public sealed class SurgebindingCodexContent : ICodexContentProvider {
-    private static Vector2 progressionScroll = Vector2.zero;
-    private static Vector2 bondDetailScroll = Vector2.zero;
+    private static readonly Texture2D BondBarHealthyTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.8f, 0.3f));
+    private static readonly Texture2D BondBarStrainedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.8f, 0.2f));
+    private static readonly Texture2D BondBarFracturedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.5f, 0.1f));
+    private static readonly Texture2D BondBarBreakingTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.2f, 0.1f));
 
     private const float StripWidth = 90f;
     private const float StripEntryHeight = 64f;
 
+    private const float BondDetailHeaderHeight = 35f;
+    private const float BondDetailRowHeight = 28f;
+    private const float BondDetailTraitHeaderHeight = 26f;
+    private const float BondDetailSectionSpacing = 8f;
+
+    private readonly List<Surgebinder> bondedSurgebindersBuffer = [];
+
     public bool HasProgression(Pawn pawn) => GetSurgebinder(pawn) != null;
     public bool ShowsBondsSubtab => true;
-    public bool HasBonds(Pawn pawn) => HasAnyBondedSpren(pawn);
+    public bool HasBonds(Pawn pawn) {
+        CollectBondedSurgebinders(pawn);
+        return bondedSurgebindersBuffer.Count > 0;
+    }
     public bool HasMemories(Pawn pawn) => false;
     public bool OwnsAbility(RimWorld.Ability ability) => ability is SurgebindingAbility;
 
@@ -31,7 +44,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         return s?.radiantOrderDef?.LabelCap;
     }
 
-    public void DrawProgression(Pawn pawn, Rect rect) {
+    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
         Surgebinder? s = GetSurgebinder(pawn);
         if (s == null) return;
 
@@ -40,7 +53,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
 
         float contentHeight = EstimateProgressionHeight(order, s.currentIdealDisplay, rect.width - 36f);
         Rect viewRect = new Rect(0f, 0f, rect.width - 16f, contentHeight);
-        Widgets.BeginScrollView(rect, ref progressionScroll, viewRect);
+        Widgets.BeginScrollView(rect, ref state.ProgressionScroll, viewRect);
         DrawProgressionContent(pawn, viewRect, s, order, accent);
         Widgets.EndScrollView();
     }
@@ -122,7 +135,8 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
     }
 
     public void DrawBonds(Pawn pawn, Rect rect, CodexState state) {
-        List<Surgebinder> bonds = CollectBondedSurgebinders(pawn);
+        CollectBondedSurgebinders(pawn);
+        List<Surgebinder> bonds = bondedSurgebindersBuffer;
         if (bonds.Count == 0) return;
 
         if (state.SelectedSprenIndex >= bonds.Count) state.SelectedSprenIndex = 0;
@@ -131,7 +145,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         Rect detailRect = new Rect(rect.x + StripWidth + 4f, rect.y, rect.width - StripWidth - 4f, rect.height);
 
         DrawSprenStrip(stripRect, bonds, state);
-        DrawBondDetail(detailRect, bonds[state.SelectedSprenIndex]);
+        DrawBondDetail(detailRect, bonds[state.SelectedSprenIndex], state);
     }
 
     private static void DrawSprenStrip(Rect rect, List<Surgebinder> bonds, CodexState state) {
@@ -139,8 +153,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
 
         for (int i = 0; i < bonds.Count; i++) {
             Surgebinder gene = bonds[i];
-            Verse.Pawn? spren = gene.bondedSpren;
-            if (spren == null) continue;
+            Verse.Pawn spren = gene.bondedSpren!;
 
             bool selected = state.SelectedSprenIndex == i;
             Color orderColor = gene.radiantOrderDef?.color ?? Color.white;
@@ -168,7 +181,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         }
     }
 
-    private static void DrawBondDetail(Rect rect, Surgebinder gene) {
+    private static void DrawBondDetail(Rect rect, Surgebinder gene, CodexState state) {
         Verse.Pawn? spren = gene.bondedSpren;
         if (spren == null) return;
 
@@ -179,7 +192,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
 
         float contentHeight = EstimateBondDetailHeight(bond);
         Rect viewRect = new Rect(0f, 0f, rect.width - 16f, contentHeight);
-        Widgets.BeginScrollView(rect, ref bondDetailScroll, viewRect);
+        Widgets.BeginScrollView(rect, ref state.BondDetailScroll, viewRect);
         DrawBondDetailContent(viewRect, spren, radiant, bond);
         Widgets.EndScrollView();
     }
@@ -197,7 +210,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
                 Find.WindowStack.Add(new NameSprenDialog(spren));
             }
             TooltipHandler.TipRegion(renameRect, "CRO_Spren_Rename".Translate());
-            y += 35f;
+            y += BondDetailHeaderHeight;
         }
 
         using (new TextBlock(GameFont.Small)) {
@@ -210,7 +223,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
             if (Mouse.IsOver(bondRect)) {
                 Widgets.DrawHighlight(bondRect);
             }
-            y += 28f;
+            y += BondDetailRowHeight;
 
             float connection = SpiritWeb.Instance?.GetConnectionValue(radiant, spren) ?? 0f;
             int percentage = (int)(connection * 100f);
@@ -225,29 +238,30 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
             Widgets.Label(strengthLabelRect, "CRO_SprenBond_Strength".Translate());
 
             Rect barRect = new Rect(rect.x + 120f, y + 2f, rect.width - 180f, 20f);
-            Widgets.FillableBar(barRect, connection, SolidColorMaterials.NewSolidColorTexture(GetBondColor(connection)));
+            Widgets.FillableBar(barRect, connection, GetBondBarTexture(connection));
 
             Rect percentRect = new Rect(barRect.xMax + 4f, y, 50f, 24f);
             Widgets.Label(percentRect, $"{percentage}%");
 
             Rect strengthTooltipRect = new Rect(rect.x, y, rect.width, 24f);
-            TooltipHandler.TipRegion(strengthTooltipRect, () => BuildStrengthTooltip(radiant, connection), 73948201);
-            y += 28f;
+            // distinct hash from ITab_SprenBond (73948201) to prevent tooltip cache collision
+            TooltipHandler.TipRegion(strengthTooltipRect, () => BuildStrengthTooltip(radiant, connection), 73948202);
+            y += BondDetailRowHeight;
 
             Rect stageRect = new Rect(rect.x, y, rect.width, 24f);
             Widgets.Label(stageRect, "CRO_SprenBond_Status".Translate(stage));
-            y += 28f;
+            y += BondDetailRowHeight;
 
             if (bond.Dismissed) {
                 Rect dismissedRect = new Rect(rect.x, y, rect.width, 24f);
                 Widgets.Label(dismissedRect, "CRO_SprenBond_Dismissed".Translate().Colorize(ColorLibrary.RedReadable));
-                y += 28f;
+                y += BondDetailRowHeight;
             }
 
-            y += 8f;
+            y += BondDetailSectionSpacing;
             Rect traitHeaderRect = new Rect(rect.x, y, rect.width, 24f);
             Widgets.Label(traitHeaderRect, "CRO_SprenBond_Personality".Translate().Colorize(ColoredText.TipSectionTitleColor));
-            y += 26f;
+            y += BondDetailTraitHeaderHeight;
 
             if (bond.PersonalityTraits.Count == 0) {
                 Widgets.Label(new Rect(rect.x + 10f, y, rect.width - 10f, 24f), "CRO_SprenBond_NoTraits".Translate());
@@ -266,8 +280,8 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
     }
 
     private static float EstimateBondDetailHeight(CompSprenBond bond) {
-        float h = 35f + 28f + 28f + 28f + 8f + 26f;
-        if (bond.Dismissed) h += 28f;
+        float h = BondDetailHeaderHeight + BondDetailRowHeight + BondDetailRowHeight + BondDetailRowHeight + BondDetailSectionSpacing + BondDetailTraitHeaderHeight;
+        if (bond.Dismissed) h += BondDetailRowHeight;
         h += bond.PersonalityTraits.Count == 0 ? 24f : bond.PersonalityTraits.Count * 24f;
         return h + 16f;
     }
@@ -277,14 +291,15 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
             return "CRO_SprenBond_StrengthFull".Translate();
         }
 
-        string tip = "CRO_SprenBond_StrengthTooltip".Translate();
+        StringBuilder sb = new StringBuilder();
+        sb.Append("CRO_SprenBond_StrengthTooltip".Translate());
 
         bool hasStrainedBond = false;
         List<Verse.Hediff> hediffs = radiant.health.hediffSet.hediffs;
         for (int i = 0; i < hediffs.Count; i++) {
             if (hediffs[i] is Cosmere.System.Roshar.Hediff.StrainedBond) {
                 hasStrainedBond = true;
-                tip += "\n  - " + "CRO_SprenBond_StrainedBondFactor".Translate();
+                sb.Append("\n  - ").Append("CRO_SprenBond_StrainedBondFactor".Translate());
                 break;
             }
         }
@@ -295,49 +310,37 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
             if (logs[i] is not BondViolationLogEntry violation) continue;
             if (violation.pawn != radiant) continue;
 
-            tip += $"\n  - {violation.reason} ({violation.severityLabel})";
+            sb.Append("\n  - ").Append(violation.reason).Append(" (").Append(violation.severityLabel).Append(')');
             violationsShown++;
         }
 
         if (!hasStrainedBond && violationsShown == 0) {
-            tip += "\n  - " + "CRO_SprenBond_UnknownFactors".Translate();
+            sb.Append("\n  - ").Append("CRO_SprenBond_UnknownFactors".Translate());
         }
 
-        return tip;
+        return sb.ToString();
     }
 
-    private static Color GetBondColor(float connection) {
-        if (connection >= 0.7f) return new Color(0.2f, 0.8f, 0.3f);
-        if (connection >= 0.4f) return new Color(0.9f, 0.8f, 0.2f);
-        if (connection >= 0.15f) return new Color(0.9f, 0.5f, 0.1f);
-        return new Color(0.9f, 0.2f, 0.1f);
+    private static Texture2D GetBondBarTexture(float connection) {
+        if (connection >= 0.7f) return BondBarHealthyTex;
+        if (connection >= 0.4f) return BondBarStrainedTex;
+        if (connection >= 0.15f) return BondBarFracturedTex;
+        return BondBarBreakingTex;
     }
 
-    private static List<Surgebinder> CollectBondedSurgebinders(Pawn pawn) {
-        List<Surgebinder> result = [];
-        if (pawn.genes == null) return result;
+    private void CollectBondedSurgebinders(Pawn pawn) {
+        bondedSurgebindersBuffer.Clear();
+        if (pawn.genes == null) return;
         List<Verse.Gene> genes = pawn.genes.GenesListForReading;
         for (int i = 0; i < genes.Count; i++) {
-            if (genes[i] is Surgebinder s && s.bondedSpren != null) {
-                result.Add(s);
-            }
+            if (genes[i] is Surgebinder s && !s.Overridden && s.bondedSpren != null) bondedSurgebindersBuffer.Add(s);
         }
-        return result;
     }
 
     public void DrawMemories(Pawn pawn, Rect rect) { }
 
     private static Surgebinder? GetSurgebinder(Pawn pawn) {
         return pawn.genes?.GetFirstGeneOfType<Surgebinder>();
-    }
-
-    private static bool HasAnyBondedSpren(Pawn pawn) {
-        if (pawn.genes == null) return false;
-        List<Verse.Gene> genes = pawn.genes.GenesListForReading;
-        for (int i = 0; i < genes.Count; i++) {
-            if (genes[i] is Surgebinder s && s.bondedSpren != null) return true;
-        }
-        return false;
     }
 
     private static string IdealLabel(RadiantOrderDef order, int ideal, bool achieved) {

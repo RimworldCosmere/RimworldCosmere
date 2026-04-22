@@ -6,7 +6,7 @@ namespace Cosmere.Core.UI.Codex;
 
 public interface ICodexContentProvider {
     bool HasProgression(Pawn pawn);
-    void DrawProgression(Pawn pawn, Rect rect);
+    void DrawProgression(Pawn pawn, Rect rect, CodexState state);
 
     bool ShowsBondsSubtab { get; }
     bool HasBonds(Pawn pawn);

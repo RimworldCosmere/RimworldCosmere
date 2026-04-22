@@ -20,7 +20,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
     public string? HeaderLabelFor(Pawn pawn) => null;
 
-    public void DrawProgression(Pawn pawn, Rect rect) {
+    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
         List<Allomancer> genes = CollectAllomancers(pawn);
         if (genes.Count == 0) return;
 

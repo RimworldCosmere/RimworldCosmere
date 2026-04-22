@@ -28,19 +28,19 @@ public static class LightweaveRoot
         RenderContext.Push(ctx);
         try
         {
-            LightweaveNode root = build();
-            root.MeasuredRect = inRect;
-            root.ContentRect = inRect;
-            Paint(root);
             try
             {
+                LightweaveNode root = build();
+                root.MeasuredRect = inRect;
+                root.ContentRect = inRect;
+                Paint(root);
                 ctx.PendingOverlays.Flush();
             }
             finally
             {
                 ctx.PendingOverlays.Clear();
+                store.RetireUntouched();
             }
-            store.RetireUntouched();
         }
         finally
         {

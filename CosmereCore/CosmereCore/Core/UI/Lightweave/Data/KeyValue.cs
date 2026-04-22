@@ -13,14 +13,14 @@ public static class KeyValue
         string label,
         LightweaveNode value,
         Rem? labelWidth = null,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0)
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = "")
     {
         LightweaveNode labelNode = Typography.Typography.Text(
             label,
             font: new FontRef.Role(FontRole.Label));
 
-        LightweaveNode node = NodeBuilder.New("KeyValue", line, caller ?? string.Empty);
+        LightweaveNode node = NodeBuilder.New("KeyValue", line, file);
         node.Children.Add(labelNode);
         node.Children.Add(value);
 

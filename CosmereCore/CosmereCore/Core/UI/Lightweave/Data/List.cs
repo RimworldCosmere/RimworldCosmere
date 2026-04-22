@@ -16,13 +16,13 @@ public static class List
         float? rowHeight = null,
         Func<T, object>? keyFn = null,
         bool virtualize = true,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0)
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = "")
     {
         Hooks.Hooks.RefHandle<ScrollViewStatus> statusRef =
-            Hooks.Hooks.UseRef(new ScrollViewStatus(), line, caller ?? string.Empty);
+            Hooks.Hooks.UseRef(new ScrollViewStatus(), line, file);
 
-        LightweaveNode node = NodeBuilder.New($"List<{typeof(T).Name}>", line, caller ?? string.Empty);
+        LightweaveNode node = NodeBuilder.New($"List<{typeof(T).Name}>", line, file);
 
         node.Paint = (rect, paintChildren) =>
         {
@@ -41,7 +41,7 @@ public static class List
 
                 if (doVirtualize)
                 {
-                    float rh = rowHeight!.Value;
+                    float rh = Mathf.Max(1f, rowHeight!.Value);
                     float scrollY = statusRef.Current.position.y;
 
                     int startIdx = Math.Max(0, (int)Math.Floor(scrollY / rh) - 2);

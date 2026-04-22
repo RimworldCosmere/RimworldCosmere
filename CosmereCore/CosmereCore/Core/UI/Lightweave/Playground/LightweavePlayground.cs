@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
@@ -535,7 +536,7 @@ public sealed class LightweavePlayground : LightweaveWindow
                         buf[i] = new DataRow(i, $"Spren #{i:000}");
                     }
                     return (IReadOnlyList<DataRow>)buf;
-                }, new object[] { });
+                }, Array.Empty<object>());
 
                 LightweaveNode listNode = List.Create<DataRow>(
                     items: rows,
@@ -546,7 +547,7 @@ public sealed class LightweavePlayground : LightweaveWindow
                     keyFn: row => row.Index,
                     virtualize: true);
 
-                LightweaveNode listBounds = NodeBuilder.New("ListBounds");
+                LightweaveNode listBounds = ListBoundsNode();
                 listBounds.Children.Add(listNode);
                 listBounds.Paint = (rect, _) =>
                 {
@@ -586,6 +587,13 @@ public sealed class LightweavePlayground : LightweaveWindow
     }
 
     private readonly record struct DataRow(int Index, string Name);
+
+    private static LightweaveNode ListBoundsNode(
+        [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,
+        [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
+    {
+        return NodeBuilder.New("ListBounds", line, file);
+    }
 
     private static LightweaveNode IconPlaceholder(
         [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,

@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Def;
 using Cosmere.Core.DefModExtension;
+using Cosmere.System.Scadrial.Feruchemy.Memory;
 using UnityEngine;
 using Verse;
 using Logger = Cosmere.Core.Logger;
@@ -27,11 +29,46 @@ public class Metalmind : ThingComp, IMetalmindSource {
     }
 
     private float storedAmountInt;
+    private List<StoredMemory> storedMemoriesInt = [];
     public Pawn? owner { get; private set; }
     private new MetalmindProperties props => (MetalmindProperties)base.props;
     public float maxAmount => props.maxAmount;
-    public bool canStore => equipped && storedAmount < maxAmount;
-    public bool canTap => equipped && storedAmount > 0;
+
+    public bool isCoppermind => metal?.defName == "Copper";
+
+    public IReadOnlyList<StoredMemory> storedMemories => storedMemoriesInt;
+
+    public float usedMemorySpace {
+        get {
+            float total = 0f;
+            for (int i = 0; i < storedMemoriesInt.Count; i++) {
+                total += storedMemoriesInt[i].MoodMagnitude;
+            }
+            return total;
+        }
+    }
+
+    public bool CanFitMemory(float magnitude) => usedMemorySpace + magnitude <= maxAmount;
+
+    public void StoreMemory(StoredMemory memory) {
+        storedMemoriesInt.Add(memory);
+        if (isCoppermind) {
+            storedAmountInt = usedMemorySpace;
+        }
+    }
+
+    public StoredMemory? RemoveStoredMemoryAt(int index) {
+        if (index < 0 || index >= storedMemoriesInt.Count) return null;
+        StoredMemory removed = storedMemoriesInt[index];
+        storedMemoriesInt.RemoveAt(index);
+        if (isCoppermind) {
+            storedAmountInt = usedMemorySpace;
+        }
+        return removed;
+    }
+
+    public bool canStore => isCoppermind ? false : equipped && storedAmount < maxAmount;
+    public bool canTap => isCoppermind ? false : equipped && storedAmount > 0;
     private InvestitureHolder investitureHolder => parent.GetComp<InvestitureHolder>();
 
     public float storedAmount {
@@ -93,14 +130,15 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
         Scribe_Values.Look(ref storedAmountInt, "storedAmount");
         Scribe_Values.Look(ref equippedInt, "equipped");
+        Scribe_Collections.Look(ref storedMemoriesInt, "storedMemories", LookMode.Deep);
 
-        // Optionally restore cachedMetal if needed (but can be recomputed)
         if (Scribe.mode == LoadSaveMode.PostLoadInit) {
             cachedMetal = null;
             if (parent?.Stuff != null) {
                 cachedMetal = DefDatabase<MetalDef>.GetNamedSilentFail(parent.Stuff.defName);
             }
             owner = parent?.holdingOwner?.Owner as Pawn;
+            storedMemoriesInt ??= [];
         }
     }
 

@@ -166,6 +166,52 @@ public sealed class LightweavePlayground : LightweaveWindow
 
             col.Add(Surface.Surface.Card(c =>
             {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Controls_Toggles_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<bool> checkA = Hooks.Hooks.UseState<bool>(false);
+                Hooks.Hooks.StateHandle<bool> checkB = Hooks.Hooks.UseState<bool>(true);
+                Hooks.Hooks.StateHandle<bool> checkC = Hooks.Hooks.UseState<bool>(false);
+
+                c.Add(Checkbox.Create(
+                    label: "CC_Playground_Controls_Checkbox_OptionA".Translate(),
+                    value: checkA.Value,
+                    onChange: next => checkA.Set(next)));
+                c.Add(Checkbox.Create(
+                    label: "CC_Playground_Controls_Checkbox_OptionB".Translate(),
+                    value: checkB.Value,
+                    onChange: next => checkB.Set(next)));
+                c.Add(Checkbox.Create(
+                    label: "CC_Playground_Controls_Checkbox_OptionC".Translate(),
+                    value: checkC.Value,
+                    onChange: next => checkC.Set(next),
+                    disabled: true));
+
+                Hooks.Hooks.StateHandle<string> radioState = Hooks.Hooks.UseState<string>("A");
+                c.Add(Radio.Group<string>(
+                    value: radioState.Value,
+                    onChange: next => radioState.Set(next),
+                    children: g =>
+                    {
+                        g.Add(Radio.Item<string>(
+                            label: "CC_Playground_Controls_Radio_OptionA".Translate(),
+                            value: "A"));
+                        g.Add(Radio.Item<string>(
+                            label: "CC_Playground_Controls_Radio_OptionB".Translate(),
+                            value: "B"));
+                        g.Add(Radio.Item<string>(
+                            label: "CC_Playground_Controls_Radio_OptionC".Translate(),
+                            value: "C"));
+                    }));
+
+                Hooks.Hooks.StateHandle<bool> switchState = Hooks.Hooks.UseState<bool>(false);
+                c.Add(Switch.Create(
+                    label: "CC_Playground_Controls_Switch_Label".Translate(),
+                    value: switchState.Value,
+                    onChange: next => switchState.Set(next)));
+            }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
                 c.Add(Typography.Typography.Heading(2, "500-row virtualized list"));
                 c.Add(Layout.Layout.ScrollArea(contentHeight: 500 * 32f, children: sa =>
                 {

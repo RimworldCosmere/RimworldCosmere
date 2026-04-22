@@ -12,4 +12,12 @@
     <CC_Playground_Controls_IconButtonTooltip>Icon button</CC_Playground_Controls_IconButtonTooltip>
     <CC_Playground_Controls_ToggleOn>Toggle: On</CC_Playground_Controls_ToggleOn>
     <CC_Playground_Controls_ToggleOff>Toggle: Off</CC_Playground_Controls_ToggleOff>
+    <CC_Playground_Controls_Toggles_Title>Toggles</CC_Playground_Controls_Toggles_Title>
+    <CC_Playground_Controls_Checkbox_OptionA>Enable notifications</CC_Playground_Controls_Checkbox_OptionA>
+    <CC_Playground_Controls_Checkbox_OptionB>Autosave after every event</CC_Playground_Controls_Checkbox_OptionB>
+    <CC_Playground_Controls_Checkbox_OptionC>Developer mode (disabled)</CC_Playground_Controls_Checkbox_OptionC>
+    <CC_Playground_Controls_Radio_OptionA>Low contrast</CC_Playground_Controls_Radio_OptionA>
+    <CC_Playground_Controls_Radio_OptionB>Balanced</CC_Playground_Controls_Radio_OptionB>
+    <CC_Playground_Controls_Radio_OptionC>High contrast</CC_Playground_Controls_Radio_OptionC>
+    <CC_Playground_Controls_Switch_Label>Enable storm warnings</CC_Playground_Controls_Switch_Label>
 </LanguageData>

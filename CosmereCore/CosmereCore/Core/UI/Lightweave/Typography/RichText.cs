@@ -16,7 +16,7 @@ public static partial class Typography
         [CallerFilePath] string file = "")
     {
         LightweaveNode node = NodeBuilder.New("RichText", line, file);
-        node.Paint = rect =>
+        node.Paint = (rect, _) =>
         {
             Theme.Theme theme = RenderContext.Current.Theme;
             Font f = theme.GetFont(FontRole.Body);

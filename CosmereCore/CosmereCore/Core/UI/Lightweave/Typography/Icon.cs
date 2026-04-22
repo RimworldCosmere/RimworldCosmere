@@ -17,7 +17,7 @@ public static partial class Typography
         [CallerFilePath] string file = "")
     {
         LightweaveNode node = NodeBuilder.New("Icon", line, file);
-        node.Paint = rect =>
+        node.Paint = (rect, _) =>
         {
             Theme.Theme theme = RenderContext.Current.Theme;
             float px = (size ?? new Rem(1.5f)).ToPixels();

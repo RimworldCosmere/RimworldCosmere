@@ -22,7 +22,7 @@ public static partial class Layout
 
         LightweaveNode node = NodeBuilder.New("ScrollArea", line, file);
         node.Children.AddRange(kids);
-        node.Paint = rect =>
+        node.Paint = (rect, paintChildren) =>
         {
             statusRef.Current.height = contentHeight;
             using (new ScrollView(rect, statusRef.Current))
@@ -36,6 +36,7 @@ public static partial class Layout
                     child.MeasuredRect = childRect;
                     y += 32f;
                 }
+                paintChildren();
             }
         };
         return node;

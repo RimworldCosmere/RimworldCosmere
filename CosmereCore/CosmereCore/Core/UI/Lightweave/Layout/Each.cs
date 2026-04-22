@@ -23,7 +23,14 @@ public static partial class Layout
             n.Children.Add(child);
             i++;
         }
-        n.Paint = _ => { };
+        n.Paint = (rect, paintChildren) =>
+        {
+            foreach (LightweaveNode child in n.Children)
+            {
+                child.MeasuredRect = rect;
+            }
+            paintChildren();
+        };
         return n;
     }
 }

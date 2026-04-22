@@ -17,11 +17,15 @@ public static partial class Layout
         {
             LightweaveNode child = children();
             n.Children.Add(child);
-            n.Paint = rect => child.MeasuredRect = rect;
+            n.Paint = (rect, paintChildren) =>
+            {
+                child.MeasuredRect = rect;
+                paintChildren();
+            };
         }
         else
         {
-            n.Paint = _ => { };
+            n.Paint = (_, _) => { };
         }
         return n;
     }

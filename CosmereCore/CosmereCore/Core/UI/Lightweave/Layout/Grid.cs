@@ -21,7 +21,7 @@ public static partial class Layout
         children?.Invoke(kids);
         LightweaveNode node = NodeBuilder.New("Grid", line, file);
         node.Children.AddRange(kids);
-        node.Paint = rect =>
+        node.Paint = (rect, paintChildren) =>
         {
             Direction dir = RenderContext.Current.Direction;
             float gapPx = gap.ToPixels();
@@ -79,6 +79,7 @@ public static partial class Layout
                 }
                 y += rowHeight + gapPx;
             }
+            paintChildren();
         };
         return node;
     }

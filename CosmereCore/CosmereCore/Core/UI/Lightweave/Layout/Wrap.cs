@@ -20,7 +20,7 @@ public static partial class Layout
         children?.Invoke(kids);
         LightweaveNode node = NodeBuilder.New("Wrap", line, file);
         node.Children.AddRange(kids);
-        node.Paint = rect =>
+        node.Paint = (rect, paintChildren) =>
         {
             float gapPx = gap.ToPixels();
             float minW = Mathf.Max(minChildWidth.ToPixels(), 1f);
@@ -37,6 +37,7 @@ public static partial class Layout
                 child.MeasuredRect = new Rect(x, y, minW, rowH);
                 x += minW + gapPx;
             }
+            paintChildren();
         };
         return node;
     }

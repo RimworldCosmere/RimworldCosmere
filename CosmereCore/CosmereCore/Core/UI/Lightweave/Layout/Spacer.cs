@@ -14,7 +14,7 @@ public static partial class Layout
             [CallerFilePath] string file = "")
         {
             LightweaveNode n = NodeBuilder.New($"Spacer.Flex({weight})", line, file);
-            n.Paint = _ => { };
+            n.Paint = (_, _) => { };
             return n;
         }
 
@@ -24,7 +24,7 @@ public static partial class Layout
             [CallerFilePath] string file = "")
         {
             LightweaveNode n = NodeBuilder.New($"Spacer.Fixed({size.Value})", line, file);
-            n.Paint = _ => { };
+            n.Paint = (_, _) => { };
             return n;
         }
     }

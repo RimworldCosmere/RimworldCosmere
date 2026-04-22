@@ -76,10 +76,20 @@ public static class LightweaveRoot
 
     private static void Paint(LightweaveNode node)
     {
-        node.Paint?.Invoke(node.MeasuredRect);
-        foreach (LightweaveNode child in node.Children)
+        Action paintChildren = () =>
         {
-            Paint(child);
+            foreach (LightweaveNode child in node.Children)
+            {
+                Paint(child);
+            }
+        };
+        if (node.Paint != null)
+        {
+            node.Paint(node.MeasuredRect, paintChildren);
+        }
+        else
+        {
+            paintChildren();
         }
     }
 }

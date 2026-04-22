@@ -17,12 +17,13 @@ public static partial class Layout
         children?.Invoke(kids);
         LightweaveNode node = NodeBuilder.New("Stack", line, file);
         node.Children.AddRange(kids);
-        node.Paint = rect =>
+        node.Paint = (rect, paintChildren) =>
         {
             foreach (LightweaveNode child in kids)
             {
                 child.MeasuredRect = rect;
             }
+            paintChildren();
         };
         return node;
     }

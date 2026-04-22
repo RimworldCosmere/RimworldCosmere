@@ -25,14 +25,24 @@ public static partial class Surface
 
         LightweaveNode node = NodeBuilder.New("Box", line, file);
         node.Children.AddRange(kids);
-        node.Paint = rect =>
+        node.Paint = (rect, paintChildren) =>
         {
             PaintBox.Draw(rect, background, border, radius);
             Rect content = pad.Shrink(rect, RenderContext.Current.Direction);
-            foreach (LightweaveNode child in kids)
+            int count = kids.Count;
+            if (count == 0)
             {
-                child.MeasuredRect = content;
+                return;
             }
+            float y = content.y;
+            float eachH = content.height / count;
+            for (int i = 0; i < count; i++)
+            {
+                LightweaveNode child = kids[i];
+                child.MeasuredRect = new Rect(content.x, y, content.width, eachH);
+                y += eachH;
+            }
+            paintChildren();
         };
         return node;
     }

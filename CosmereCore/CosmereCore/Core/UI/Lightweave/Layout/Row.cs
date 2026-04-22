@@ -21,7 +21,7 @@ public static partial class Layout
         children?.Invoke(kids);
         LightweaveNode node = NodeBuilder.New("Row", line, file);
         node.Children.AddRange(kids);
-        node.Paint = rect =>
+        node.Paint = (rect, paintChildren) =>
         {
             Direction dir = RenderContext.Current.Direction;
             bool reverse = dir == Direction.Rtl;
@@ -52,6 +52,7 @@ public static partial class Layout
                 child.MeasuredRect = childRect;
                 x += eachW + gapPx;
             }
+            paintChildren();
         };
         return node;
     }

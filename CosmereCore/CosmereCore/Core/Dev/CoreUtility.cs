@@ -34,7 +34,7 @@ public static class CoreUtility {
     [DebugAction(
         "Cosmere/Core",
         "Reload Quickstart",
-        allowedGameStates = AllowedGameStates.Entry | AllowedGameStates.PlayingOnMap
+        allowedGameStates = AllowedGameStates.Entry
     )]
     public static void ReloadQuickstart() {
         Quickstarter.ReloadQuickstart();

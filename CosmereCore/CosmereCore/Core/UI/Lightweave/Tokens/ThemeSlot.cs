@@ -15,4 +15,8 @@ public enum ThemeSlot
     StatusWarning,
     StatusDanger,
     StatusSuccess,
+    BorderFocus,
+    BorderHover,
+    SurfaceInput,
+    SurfaceDisabled,
 }

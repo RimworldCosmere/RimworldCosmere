@@ -23,6 +23,10 @@ public static class BaseTheme
             [ThemeSlot.StatusWarning]  = new Color(0.85f, 0.65f, 0.25f),
             [ThemeSlot.StatusDanger]   = new Color(0.80f, 0.30f, 0.30f),
             [ThemeSlot.StatusSuccess]  = new Color(0.35f, 0.70f, 0.40f),
+            [ThemeSlot.BorderFocus]    = new Color(0.45f, 0.75f, 0.95f, 1f),
+            [ThemeSlot.BorderHover]    = new Color(0.35f, 0.35f, 0.38f, 1f),
+            [ThemeSlot.SurfaceInput]   = new Color(0.05f, 0.05f, 0.07f, 0.95f),
+            [ThemeSlot.SurfaceDisabled] = new Color(0.12f, 0.12f, 0.13f, 0.70f),
         };
         Dictionary<FontRole, Font> fonts = new Dictionary<FontRole, Font>
         {

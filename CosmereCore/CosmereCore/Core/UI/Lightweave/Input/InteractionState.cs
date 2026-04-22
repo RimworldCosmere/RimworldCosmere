@@ -1,0 +1,19 @@
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.Core.UI.Lightweave.Input;
+
+internal readonly record struct InteractionState(bool Hovered, bool Pressed, bool Focused, bool Disabled)
+{
+    public static InteractionState Resolve(Rect rect, string? focusName, bool disabled)
+    {
+        if (disabled)
+        {
+            return new InteractionState(false, false, false, true);
+        }
+        bool hovered = Mouse.IsOver(rect);
+        bool pressed = hovered && UnityEngine.Input.GetMouseButton(0);
+        bool focused = focusName != null && GUI.GetNameOfFocusedControl() == focusName;
+        return new InteractionState(hovered, pressed, focused, false);
+    }
+}

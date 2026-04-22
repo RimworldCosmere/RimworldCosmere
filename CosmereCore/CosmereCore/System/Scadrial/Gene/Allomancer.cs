@@ -13,6 +13,7 @@ namespace Cosmere.System.Scadrial.Gene;
 
 public class Allomancer : Metalborn {
     public const float MaxMetalAmount = 1f;
+    public const int MaxRequestedVialStock = 20;
     private const float SleepDecayAmountPerRareInterval = .0025f;
 
     private RecordDef? cachedMetalBurntRecord;
@@ -239,5 +240,10 @@ public class Allomancer : Metalborn {
 
     public override IEnumerable<Verse.Gizmo> GetGizmos() {
         return [];
+    }
+
+    public static string ThresholdDisplayLabel(Allomancer gene) {
+        if (gene.targetValue <= 0f) return (string)"CS_NeverConsumeVial".Translate();
+        return (string)"CS_ConsumeVialBelow".Translate(gene.PostProcessValue(gene.targetValue).Named("PERCENT"));
     }
 }

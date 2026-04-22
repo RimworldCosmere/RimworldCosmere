@@ -35,11 +35,7 @@ public sealed class Dialog_AllomancyRestockSlider : Window {
             gene.targetValue = newThreshold;
         y += 28f;
 
-        string thresholdLabel;
-        if (gene.targetValue <= 0f)
-            thresholdLabel = (string)"CS_NeverConsumeVial".Translate();
-        else
-            thresholdLabel = (string)"CS_ConsumeVialBelow".Translate() + $" {gene.PostProcessValue(gene.targetValue)}%";
+        string thresholdLabel = Allomancer.ThresholdDisplayLabel(gene);
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperRight, new Color(0.8f, 0.8f, 0.8f)))
             Widgets.Label(new Rect(inRect.x, y, inRect.width, 18f), thresholdLabel);
@@ -51,7 +47,7 @@ public sealed class Dialog_AllomancyRestockSlider : Window {
         y += 22f;
 
         Rect stockSliderRect = new Rect(inRect.x, y, inRect.width, 24f);
-        float newStock = Widgets.HorizontalSlider(stockSliderRect, gene.requestedVialStock, 0f, 20f, middleAlignment: true);
+        float newStock = Widgets.HorizontalSlider(stockSliderRect, gene.requestedVialStock, 0f, (float)Allomancer.MaxRequestedVialStock, middleAlignment: true);
         int newStockInt = Mathf.RoundToInt(newStock);
         if (newStockInt != gene.requestedVialStock)
             gene.requestedVialStock = newStockInt;

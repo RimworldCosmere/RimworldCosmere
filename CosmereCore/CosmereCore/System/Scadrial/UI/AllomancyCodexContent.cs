@@ -88,11 +88,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
     public void DrawMemories(Pawn pawn, Rect rect) { }
 
     private static void DrawVialSettingsButton(Rect rect, Allomancer gene) {
-        string thresholdLabel;
-        if (gene.targetValue <= 0f)
-            thresholdLabel = (string)"CS_NeverConsumeVial".Translate();
-        else
-            thresholdLabel = (string)"CS_ConsumeVialBelow".Translate() + $" {gene.PostProcessValue(gene.targetValue)}%";
+        string thresholdLabel = Allomancer.ThresholdDisplayLabel(gene);
 
         string tooltip = (string)"CC_Codex_Allomancy_VialSettings_Tooltip".Translate(
             gene.requestedVialStock.Named("COUNT"),

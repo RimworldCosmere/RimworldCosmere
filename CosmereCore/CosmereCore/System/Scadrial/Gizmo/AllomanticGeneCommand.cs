@@ -53,11 +53,7 @@ public class AllomanticGeneCommand(
 
         if (IsDraggable) {
             tooltip.AppendLine("CS_CurrentVialStock".Translate(coloredCount));
-            if (gene.targetValue <= 0.0) {
-                tooltip.AppendLine("CS_NeverConsumeVial".Translate());
-            } else {
-                tooltip.AppendLine("CS_ConsumeVialBelow".Translate() + $": {gene.PostProcessValue(gene.targetValue)}%");
-            }
+            tooltip.AppendLine(Allomancer.ThresholdDisplayLabel(gene));
         }
 
         return tooltip.ToString();
@@ -100,7 +96,7 @@ public class AllomanticGeneCommand(
                     .Translate(amount.Named("COUNT"), coloredPawn, coloredMetal, pawn.Named("pawn"))
                     .Resolve(),
                 0,
-                20,
+                Allomancer.MaxRequestedVialStock,
                 value => gene.requestedVialStock = value,
                 gene.requestedVialStock
             );

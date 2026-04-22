@@ -78,6 +78,13 @@ public static class LightweaveRoot
         return code is "Arabic" or "Hebrew" or "Persian" or "Urdu" ? Direction.Rtl : Direction.Ltr;
     }
 
+    public static void PaintSubtree(LightweaveNode node, Rect rect)
+    {
+        node.MeasuredRect = rect;
+        node.ContentRect = rect;
+        Paint(node);
+    }
+
     private static void Paint(LightweaveNode node)
     {
         Action paintChildren = () =>

@@ -3,6 +3,7 @@ using Verse;
 using Cosmere.Core.UI.Lightweave.Hooks;
 using Cosmere.Core.UI.Lightweave.Input;
 using Cosmere.Core.UI.Lightweave.Layout;
+using Cosmere.Core.UI.Lightweave.Overlay;
 using Cosmere.Core.UI.Lightweave.Rendering;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Surface;
@@ -271,6 +272,36 @@ public sealed class LightweavePlayground : LightweaveWindow
 
             col.Add(Surface.Surface.Card(c =>
             {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Overlay_Popover_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<bool> popoverOpen = Hooks.Hooks.UseState<bool>(false);
+                Hooks.Hooks.RefHandle<Rect> anchorRef = Hooks.Hooks.UseRef<Rect>(default(Rect));
+
+                LightweaveNode popoverBody = Layout.Layout.Column(gap: SpacingScale.Sm, children: pc =>
+                {
+                    pc.Add(Typography.Typography.Text("CC_Playground_Overlay_Popover_Body".Translate()));
+                    pc.Add(Button.Create(
+                        label: "CC_Playground_Overlay_Popover_Close".Translate(),
+                        onClick: () => popoverOpen.Set(false),
+                        variant: ButtonVariant.Secondary));
+                });
+
+                LightweaveNode anchorButton = Button.Create(
+                    label: "CC_Playground_Overlay_Popover_Open".Translate(),
+                    onClick: () => popoverOpen.Set(!popoverOpen.Value),
+                    variant: ButtonVariant.Primary);
+
+                c.Add(AnchorTracker(anchorButton, anchorRef));
+                c.Add(Popover.Create(
+                    isOpen: popoverOpen.Value,
+                    anchorRect: anchorRef.Current,
+                    placement: PopoverPlacement.Bottom,
+                    content: popoverBody,
+                    onDismiss: () => popoverOpen.Set(false)));
+            }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
                 c.Add(Typography.Typography.Heading(2, "500-row virtualized list"));
                 c.Add(Layout.Layout.ScrollArea(contentHeight: 500 * 32f, children: sa =>
                 {
@@ -293,6 +324,23 @@ public sealed class LightweavePlayground : LightweaveWindow
             BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.TextMuted);
             RadiusSpec radius = RadiusSpec.All(new Rem(0.125f));
             PaintBox.Draw(rect, bg, null, radius);
+        };
+        return node;
+    }
+
+    private static LightweaveNode AnchorTracker(
+        LightweaveNode inner,
+        Hooks.Hooks.RefHandle<Rect> anchorRef,
+        [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,
+        [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
+    {
+        LightweaveNode node = NodeBuilder.New("AnchorTracker", line, file);
+        node.Children.Add(inner);
+        node.Paint = (rect, _) =>
+        {
+            anchorRef.Current = rect;
+            inner.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(inner, rect);
         };
         return node;
     }

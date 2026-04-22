@@ -25,4 +25,8 @@
     <CC_Playground_Controls_TextField_Placeholder>Enter text...</CC_Playground_Controls_TextField_Placeholder>
     <CC_Playground_Controls_TextArea_Placeholder>Multi-line...</CC_Playground_Controls_TextArea_Placeholder>
     <CC_Playground_Controls_NumberField_Label>0 to 100</CC_Playground_Controls_NumberField_Label>
+    <CC_Playground_Overlay_Popover_Title>Popover</CC_Playground_Overlay_Popover_Title>
+    <CC_Playground_Overlay_Popover_Open>Open popover</CC_Playground_Overlay_Popover_Open>
+    <CC_Playground_Overlay_Popover_Close>Close</CC_Playground_Overlay_Popover_Close>
+    <CC_Playground_Overlay_Popover_Body>This is a popover anchored to the button above.</CC_Playground_Overlay_Popover_Body>
 </LanguageData>

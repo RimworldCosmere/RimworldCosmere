@@ -614,8 +614,8 @@ public sealed class LightweavePlayground : LightweaveWindow
         [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,
         [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
     {
-        Hooks.Hooks.StateHandle<bool> menuOpen = Hooks.Hooks.UseState<bool>(false, line, file);
-        Hooks.Hooks.RefHandle<Rect> anchorRef = Hooks.Hooks.UseRef<Rect>(default(Rect), line + 1, file);
+        Hooks.Hooks.StateHandle<bool> menuOpen = Hooks.Hooks.UseState<bool>(false, line, file + "#open");
+        Hooks.Hooks.RefHandle<Rect> anchorRef = Hooks.Hooks.UseRef<Rect>(default(Rect), line, file + "#anchor");
 
         IReadOnlyList<MenuItem> saveAsChildren = new MenuItem[]
         {

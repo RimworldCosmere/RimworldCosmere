@@ -61,4 +61,17 @@
     <CC_Playground_Feedback_Tooltip_Label_Text>Highstorm readout</CC_Playground_Feedback_Tooltip_Label_Text>
     <CC_Playground_Feedback_Tooltip_Label_Para1>The stormwall approaches from the east. Bind down anything unsheltered.</CC_Playground_Feedback_Tooltip_Label_Para1>
     <CC_Playground_Feedback_Tooltip_Label_Para2>Highstorms recur on a roughly weekly cadence in this region.</CC_Playground_Feedback_Tooltip_Label_Para2>
+    <CC_Playground_Navigation_Nav_Title>Navigation</CC_Playground_Navigation_Nav_Title>
+    <CC_Playground_Navigation_Tabs_Label>Tabs</CC_Playground_Navigation_Tabs_Label>
+    <CC_Playground_Navigation_Tabs_General>General</CC_Playground_Navigation_Tabs_General>
+    <CC_Playground_Navigation_Tabs_Combat>Combat</CC_Playground_Navigation_Tabs_Combat>
+    <CC_Playground_Navigation_Tabs_Storage>Storage</CC_Playground_Navigation_Tabs_Storage>
+    <CC_Playground_Navigation_Tabs_Body_General>Tab body for General.</CC_Playground_Navigation_Tabs_Body_General>
+    <CC_Playground_Navigation_Tabs_Body_Combat>Tab body for Combat.</CC_Playground_Navigation_Tabs_Body_Combat>
+    <CC_Playground_Navigation_Tabs_Body_Storage>Tab body for Storage.</CC_Playground_Navigation_Tabs_Body_Storage>
+    <CC_Playground_Navigation_Segmented_Label>Segmented</CC_Playground_Navigation_Segmented_Label>
+    <CC_Playground_Navigation_Segmented_All>All</CC_Playground_Navigation_Segmented_All>
+    <CC_Playground_Navigation_Segmented_Armor>Armor</CC_Playground_Navigation_Segmented_Armor>
+    <CC_Playground_Navigation_Segmented_Weapons>Weapons</CC_Playground_Navigation_Segmented_Weapons>
+    <CC_Playground_Navigation_Segmented_Tools>Tools</CC_Playground_Navigation_Segmented_Tools>
 </LanguageData>

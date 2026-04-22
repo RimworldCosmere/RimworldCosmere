@@ -387,6 +387,62 @@ public sealed class LightweavePlayground : LightweaveWindow
 
             col.Add(Surface.Surface.Card(c =>
             {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Navigation_Nav_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<string> tabValue = Hooks.Hooks.UseState<string>("General");
+                string[] tabItems = new string[]
+                {
+                    "General",
+                    "Combat",
+                    "Storage",
+                };
+
+                c.Add(Typography.Typography.Heading(3, "CC_Playground_Navigation_Tabs_Label".Translate()));
+                c.Add(Tabs.Create<string>(
+                    value: tabValue.Value,
+                    items: tabItems,
+                    labelFn: s => s switch
+                    {
+                        "General" => (string)"CC_Playground_Navigation_Tabs_General".Translate(),
+                        "Combat" => (string)"CC_Playground_Navigation_Tabs_Combat".Translate(),
+                        "Storage" => (string)"CC_Playground_Navigation_Tabs_Storage".Translate(),
+                        _ => s,
+                    },
+                    onChange: v => tabValue.Set(v),
+                    bodyFn: v => Typography.Typography.Text(v switch
+                    {
+                        "General" => (string)"CC_Playground_Navigation_Tabs_Body_General".Translate(),
+                        "Combat" => (string)"CC_Playground_Navigation_Tabs_Body_Combat".Translate(),
+                        "Storage" => (string)"CC_Playground_Navigation_Tabs_Body_Storage".Translate(),
+                        _ => string.Empty,
+                    })));
+
+                Hooks.Hooks.StateHandle<string> segmentedValue = Hooks.Hooks.UseState<string>("All");
+                string[] segmentedItems = new string[]
+                {
+                    "All",
+                    "Armor",
+                    "Weapons",
+                    "Tools",
+                };
+
+                c.Add(Typography.Typography.Heading(3, "CC_Playground_Navigation_Segmented_Label".Translate()));
+                c.Add(Segmented.Create<string>(
+                    value: segmentedValue.Value,
+                    items: segmentedItems,
+                    labelFn: s => s switch
+                    {
+                        "All" => (string)"CC_Playground_Navigation_Segmented_All".Translate(),
+                        "Armor" => (string)"CC_Playground_Navigation_Segmented_Armor".Translate(),
+                        "Weapons" => (string)"CC_Playground_Navigation_Segmented_Weapons".Translate(),
+                        "Tools" => (string)"CC_Playground_Navigation_Segmented_Tools".Translate(),
+                        _ => s,
+                    },
+                    onChange: v => segmentedValue.Set(v)));
+            }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
                 c.Add(Typography.Typography.Heading(2, "CC_Playground_Overlay_Popover_Title".Translate()));
 
                 Hooks.Hooks.StateHandle<bool> popoverOpen = Hooks.Hooks.UseState<bool>(false);

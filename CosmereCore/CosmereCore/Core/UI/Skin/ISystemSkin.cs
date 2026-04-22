@@ -1,3 +1,4 @@
+using Cosmere.Core.UI.Lightweave.Tokens;
 using UnityEngine;
 using Verse;
 
@@ -17,4 +18,8 @@ public interface ISystemSkin {
     Color BorderTintColor { get; }
     Texture2D? Sigil { get; }
     Texture2D? BorderFrame { get; }
+
+    Color? GetColor(ThemeSlot slot);
+    Font? GetFont(FontRole role);
+    Font? DisplayFont { get; }
 }

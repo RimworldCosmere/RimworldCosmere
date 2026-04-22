@@ -1,3 +1,4 @@
+using Cosmere.Core.UI.Lightweave.Tokens;
 using Cosmere.Core.UI.Skin;
 using UnityEngine;
 using Verse;
@@ -17,4 +18,12 @@ public sealed class AwakeningSkin : ISystemSkin {
     public Color BorderTintColor => new Color(0.82f, 0.22f, 0.38f);
     public Texture2D? Sigil => null;
     public Texture2D? BorderFrame => null;
+
+    public Color? GetColor(ThemeSlot slot) => slot switch {
+        ThemeSlot.SurfaceAccent => AccentColor,
+        ThemeSlot.TextOnAccent => HeaderTextColor,
+        _ => null,
+    };
+    public Font? GetFont(FontRole role) => null;
+    public Font? DisplayFont => null;
 }

@@ -1,3 +1,4 @@
+using Cosmere.Core.UI.Lightweave.Tokens;
 using Cosmere.Core.UI.Skin;
 using UnityEngine;
 using Verse;
@@ -17,4 +18,12 @@ public sealed class AllomancySkin : ISystemSkin {
     public Color BorderTintColor => new Color(0.78f, 0.55f, 0.18f);
     public Texture2D? Sigil => null;
     public Texture2D? BorderFrame => null;
+
+    public Color? GetColor(ThemeSlot slot) => slot switch {
+        ThemeSlot.SurfaceAccent => AccentColor,
+        ThemeSlot.TextOnAccent => HeaderTextColor,
+        _ => null,
+    };
+    public Font? GetFont(FontRole role) => null;
+    public Font? DisplayFont => null;
 }

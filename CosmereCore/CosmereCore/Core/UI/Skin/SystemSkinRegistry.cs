@@ -1,4 +1,5 @@
 using Cosmere.Core.Settings;
+using Cosmere.Core.UI.Lightweave.Tokens;
 using UnityEngine;
 using Verse;
 
@@ -22,6 +23,9 @@ public static class SystemSkinRegistry {
         public Color BorderTintColor => new Color(0.35f, 0.35f, 0.4f);
         public Texture2D? Sigil => null;
         public Texture2D? BorderFrame => null;
+        public Color? GetColor(ThemeSlot slot) => null;
+        public Font? GetFont(FontRole role) => null;
+        public Font? DisplayFont => null;
     }
 
     public static void Register(ISystemSkin skin) {

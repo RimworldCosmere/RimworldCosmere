@@ -1,3 +1,4 @@
+using Cosmere.Core.UI.Lightweave.Tokens;
 using UnityEngine;
 using Verse;
 
@@ -25,6 +26,10 @@ public sealed class HighContrastSkinDecorator : ISystemSkin {
 
     public Texture2D? Sigil => inner.Sigil;
     public Texture2D? BorderFrame => null;
+
+    public Color? GetColor(ThemeSlot slot) => inner.GetColor(slot);
+    public Font? GetFont(FontRole role) => inner.GetFont(role);
+    public Font? DisplayFont => inner.DisplayFont;
 
     private static Color Saturate(Color src, float factor) {
         float max = Mathf.Max(src.r, Mathf.Max(src.g, src.b));

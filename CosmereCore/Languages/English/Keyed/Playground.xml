@@ -81,4 +81,13 @@
     <CC_Playground_Overlay_Dialog_Placeholder>Name</CC_Playground_Overlay_Dialog_Placeholder>
     <CC_Playground_Overlay_Dialog_Cancel>Cancel</CC_Playground_Overlay_Dialog_Cancel>
     <CC_Playground_Overlay_Dialog_Confirm>Confirm</CC_Playground_Overlay_Dialog_Confirm>
+    <CC_Playground_Data_Title>Data</CC_Playground_Data_Title>
+    <CC_Playground_Data_List_Title>Virtualized list</CC_Playground_Data_List_Title>
+    <CC_Playground_Data_KV_Title>Key / value pairs</CC_Playground_Data_KV_Title>
+    <CC_Playground_Data_KV_Stormlight>Stormlight</CC_Playground_Data_KV_Stormlight>
+    <CC_Playground_Data_KV_Investiture>Investiture</CC_Playground_Data_KV_Investiture>
+    <CC_Playground_Data_KV_SprenBond>Spren bond</CC_Playground_Data_KV_SprenBond>
+    <CC_Playground_Data_KV_Highstorm>Highstorm in</CC_Playground_Data_KV_Highstorm>
+    <CC_Playground_Data_KV_Shardplate>Shardplate</CC_Playground_Data_KV_Shardplate>
+    <CC_Playground_Data_KV_Honorblade>Honorblade</CC_Playground_Data_KV_Honorblade>
 </LanguageData>

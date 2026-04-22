@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
+using Cosmere.Core.UI.Lightweave.Data;
 using Cosmere.Core.UI.Lightweave.Feedback;
 using Cosmere.Core.UI.Lightweave.Hooks;
 using Cosmere.Core.UI.Lightweave.Input;
@@ -522,17 +523,69 @@ public sealed class LightweavePlayground : LightweaveWindow
 
             col.Add(Surface.Surface.Card(c =>
             {
-                c.Add(Typography.Typography.Heading(2, "500-row virtualized list"));
-                c.Add(Layout.Layout.ScrollArea(contentHeight: 500 * 32f, children: sa =>
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Data_Title".Translate()));
+
+                c.Add(Typography.Typography.Heading(3, "CC_Playground_Data_List_Title".Translate()));
+
+                IReadOnlyList<DataRow> rows = Hooks.Hooks.UseMemo(() =>
                 {
+                    DataRow[] buf = new DataRow[500];
                     for (int i = 0; i < 500; i++)
                     {
-                        sa.Add(Typography.Typography.Text($"Row {i}"));
+                        buf[i] = new DataRow(i, $"Spren #{i:000}");
                     }
-                }));
+                    return (IReadOnlyList<DataRow>)buf;
+                }, new object[] { });
+
+                LightweaveNode listNode = List.Create<DataRow>(
+                    items: rows,
+                    rowBuilder: (row, _) => KeyValue.Create(
+                        label: row.Index.ToString(),
+                        value: Typography.Typography.Text(row.Name)),
+                    rowHeight: 28f,
+                    keyFn: row => row.Index,
+                    virtualize: true);
+
+                LightweaveNode listBounds = NodeBuilder.New("ListBounds");
+                listBounds.Children.Add(listNode);
+                listBounds.Paint = (rect, _) =>
+                {
+                    Rect bounded = new Rect(rect.x, rect.y, rect.width, 320f);
+                    LightweaveRoot.PaintSubtree(listNode, bounded);
+                };
+                c.Add(listBounds);
+
+                c.Add(Typography.Typography.Heading(3, "CC_Playground_Data_KV_Title".Translate()));
+
+                c.Add(KeyValue.Create(
+                    label: "CC_Playground_Data_KV_Stormlight".Translate(),
+                    value: Typography.Typography.Text("94 / 100"),
+                    labelWidth: new Rem(8f)));
+                c.Add(KeyValue.Create(
+                    label: "CC_Playground_Data_KV_Investiture".Translate(),
+                    value: Typography.Typography.Text("High"),
+                    labelWidth: new Rem(8f)));
+                c.Add(KeyValue.Create(
+                    label: "CC_Playground_Data_KV_SprenBond".Translate(),
+                    value: Typography.Typography.Text("Fourth Ideal"),
+                    labelWidth: new Rem(10f)));
+                c.Add(KeyValue.Create(
+                    label: "CC_Playground_Data_KV_Highstorm".Translate(),
+                    value: Typography.Typography.Text("3 days"),
+                    labelWidth: new Rem(10f)));
+                c.Add(KeyValue.Create(
+                    label: "CC_Playground_Data_KV_Shardplate".Translate(),
+                    value: Typography.Typography.Text("Full"),
+                    labelWidth: new Rem(8f)));
+                c.Add(KeyValue.Create(
+                    label: "CC_Playground_Data_KV_Honorblade".Translate(),
+                    value: Typography.Typography.Text("None"),
+                    labelWidth: new Rem(8f)));
             }));
         });
     }
+
+    private readonly record struct DataRow(int Index, string Name);
 
     private static LightweaveNode IconPlaceholder(
         [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,

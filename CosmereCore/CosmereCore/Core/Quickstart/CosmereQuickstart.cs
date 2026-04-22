@@ -39,6 +39,11 @@ public class CosmereQuickstart : AbstractQuickstart {
 
     public override void PostLoaded() {
         Current.Game?.researchManager.DebugSetAllProjectsFinished();
+    }
+
+    public override void PrepareColonists(List<Pawn> pawns) {
+        if (pawns.Count == 0) return;
+
         Shards? shards = Current.Game?.GetComponent<Shards>();
         if (shards != null) {
             shards.EnableShard("Preservation", allowConflicts: true);
@@ -47,10 +52,6 @@ public class CosmereQuickstart : AbstractQuickstart {
             shards.EnableShard("Cultivation", allowConflicts: true);
             shards.EnableShard("Odium", allowConflicts: true);
         }
-    }
-
-    public override void PrepareColonists(List<Pawn> pawns) {
-        if (pawns.Count == 0) return;
 
         BackstoryDef child = DefDatabase<BackstoryDef>.GetNamed("OptimisticChild30");
         BackstoryDef adult = DefDatabase<BackstoryDef>.GetNamed("CivilEngineer2");

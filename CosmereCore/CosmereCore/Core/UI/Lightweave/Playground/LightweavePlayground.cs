@@ -242,6 +242,35 @@ public sealed class LightweavePlayground : LightweaveWindow
 
             col.Add(Surface.Surface.Card(c =>
             {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Controls_TextInputs_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<string> textValue = Hooks.Hooks.UseState<string>(string.Empty);
+                c.Add(TextField.Create(
+                    value: textValue.Value,
+                    onChange: next => textValue.Set(next),
+                    placeholder: "CC_Playground_Controls_TextField_Placeholder".Translate(),
+                    validator: s => !string.IsNullOrWhiteSpace(s)));
+
+                Hooks.Hooks.StateHandle<string> areaValue = Hooks.Hooks.UseState<string>(string.Empty);
+                c.Add(TextArea.Create(
+                    value: areaValue.Value,
+                    onChange: next => areaValue.Set(next),
+                    placeholder: "CC_Playground_Controls_TextArea_Placeholder".Translate(),
+                    minRows: 3,
+                    maxRows: 8));
+
+                Hooks.Hooks.StateHandle<float> numberValue = Hooks.Hooks.UseState<float>(50f);
+                c.Add(Typography.Typography.Caption("CC_Playground_Controls_NumberField_Label".Translate()));
+                c.Add(NumberField.Create(
+                    value: numberValue.Value,
+                    onChange: v => numberValue.Set(v),
+                    min: 0f,
+                    max: 100f,
+                    format: v => v.ToString("0")));
+            }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
                 c.Add(Typography.Typography.Heading(2, "500-row virtualized list"));
                 c.Add(Layout.Layout.ScrollArea(contentHeight: 500 * 32f, children: sa =>
                 {

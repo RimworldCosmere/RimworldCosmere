@@ -21,4 +21,8 @@
     <CC_Playground_Controls_Radio_OptionC>High contrast</CC_Playground_Controls_Radio_OptionC>
     <CC_Playground_Controls_Switch_Label>Enable storm warnings</CC_Playground_Controls_Switch_Label>
     <CC_Playground_Controls_Sliders_Title>Sliders</CC_Playground_Controls_Sliders_Title>
+    <CC_Playground_Controls_TextInputs_Title>Text Inputs</CC_Playground_Controls_TextInputs_Title>
+    <CC_Playground_Controls_TextField_Placeholder>Enter text...</CC_Playground_Controls_TextField_Placeholder>
+    <CC_Playground_Controls_TextArea_Placeholder>Multi-line...</CC_Playground_Controls_TextArea_Placeholder>
+    <CC_Playground_Controls_NumberField_Label>0 to 100</CC_Playground_Controls_NumberField_Label>
 </LanguageData>

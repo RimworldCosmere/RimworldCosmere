@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CC_Playground_Controls_Buttons_Title>Buttons</CC_Playground_Controls_Buttons_Title>
+    <CC_Playground_Controls_ButtonPrimary>Primary</CC_Playground_Controls_ButtonPrimary>
+    <CC_Playground_Controls_ButtonSecondary>Secondary</CC_Playground_Controls_ButtonSecondary>
+    <CC_Playground_Controls_ButtonGhost>Ghost</CC_Playground_Controls_ButtonGhost>
+    <CC_Playground_Controls_ButtonDanger>Danger</CC_Playground_Controls_ButtonDanger>
+    <CC_Playground_Controls_ButtonDisabled>Disabled</CC_Playground_Controls_ButtonDisabled>
+    <CC_Playground_Controls_ButtonLeading>Leading icon</CC_Playground_Controls_ButtonLeading>
+    <CC_Playground_Controls_ButtonTrailing>Trailing icon</CC_Playground_Controls_ButtonTrailing>
+    <CC_Playground_Controls_ButtonBothIcons>Both icons</CC_Playground_Controls_ButtonBothIcons>
+    <CC_Playground_Controls_IconButtonTooltip>Icon button</CC_Playground_Controls_IconButtonTooltip>
+    <CC_Playground_Controls_ToggleOn>Toggle: On</CC_Playground_Controls_ToggleOn>
+    <CC_Playground_Controls_ToggleOff>Toggle: Off</CC_Playground_Controls_ToggleOff>
+</LanguageData>

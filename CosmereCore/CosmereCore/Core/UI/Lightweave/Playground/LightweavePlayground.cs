@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
+using Cosmere.Core.UI.Lightweave.Feedback;
 using Cosmere.Core.UI.Lightweave.Hooks;
 using Cosmere.Core.UI.Lightweave.Input;
 using Cosmere.Core.UI.Lightweave.Layout;
@@ -295,6 +296,50 @@ public sealed class LightweavePlayground : LightweaveWindow
                     options: dropdownOptions,
                     labelFn: s => s,
                     onChange: v => selected.Set(v)));
+            }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Feedback_Title".Translate()));
+
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Sm, children: r =>
+                {
+                    r.Add(ProgressBar.Create(value: 0f, label: "0%", variant: BadgeVariant.Accent));
+                    r.Add(ProgressBar.Create(value: 0.3f, label: "30%", variant: BadgeVariant.Accent));
+                    r.Add(ProgressBar.Create(value: 0.7f, label: "70%", variant: BadgeVariant.Accent));
+                    r.Add(ProgressBar.Create(value: 1f, label: "100%", variant: BadgeVariant.Accent));
+                }));
+
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Sm, children: r =>
+                {
+                    r.Add(Badge.Create(
+                        text: "CC_Playground_Feedback_Badge_Neutral".Translate(),
+                        variant: BadgeVariant.Neutral));
+                    r.Add(Badge.Create(
+                        text: "CC_Playground_Feedback_Badge_Accent".Translate(),
+                        variant: BadgeVariant.Accent));
+                    r.Add(Badge.Create(
+                        text: "CC_Playground_Feedback_Badge_Warning".Translate(),
+                        variant: BadgeVariant.Warning));
+                    r.Add(Badge.Create(
+                        text: "CC_Playground_Feedback_Badge_Danger".Translate(),
+                        variant: BadgeVariant.Danger));
+                    r.Add(Badge.Create(
+                        text: "CC_Playground_Feedback_Badge_Success".Translate(),
+                        variant: BadgeVariant.Success));
+                }));
+
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Sm, children: r =>
+                {
+                    r.Add(Tag.Create(
+                        text: "CC_Playground_Feedback_Tag_Dismissible".Translate(),
+                        onDismiss: () => { },
+                        variant: BadgeVariant.Accent));
+                    r.Add(Tag.Create(
+                        text: "CC_Playground_Feedback_Tag_Static".Translate(),
+                        onDismiss: null,
+                        variant: BadgeVariant.Neutral));
+                }));
             }));
 
             col.Add(Surface.Surface.Card(c =>

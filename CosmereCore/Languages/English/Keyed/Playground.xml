@@ -45,4 +45,12 @@
     <CC_Playground_Navigation_Menu_Png>PNG</CC_Playground_Navigation_Menu_Png>
     <CC_Playground_Navigation_Menu_Svg>SVG</CC_Playground_Navigation_Menu_Svg>
     <CC_Playground_Controls_Dropdown_Title>Dropdown</CC_Playground_Controls_Dropdown_Title>
+    <CC_Playground_Feedback_Title>Feedback</CC_Playground_Feedback_Title>
+    <CC_Playground_Feedback_Badge_Neutral>Neutral</CC_Playground_Feedback_Badge_Neutral>
+    <CC_Playground_Feedback_Badge_Accent>Accent</CC_Playground_Feedback_Badge_Accent>
+    <CC_Playground_Feedback_Badge_Warning>Warning</CC_Playground_Feedback_Badge_Warning>
+    <CC_Playground_Feedback_Badge_Danger>Danger</CC_Playground_Feedback_Badge_Danger>
+    <CC_Playground_Feedback_Badge_Success>Success</CC_Playground_Feedback_Badge_Success>
+    <CC_Playground_Feedback_Tag_Dismissible>Dismissible</CC_Playground_Feedback_Tag_Dismissible>
+    <CC_Playground_Feedback_Tag_Static>Static</CC_Playground_Feedback_Tag_Static>
 </LanguageData>

@@ -654,7 +654,8 @@ public sealed class LightweavePlayground : LightweaveWindow
                 isOpen: menuOpen.Value,
                 anchorRect: anchorRef.Current,
                 items: items,
-                onDismiss: () => menuOpen.Set(false)));
+                onDismiss: () => menuOpen.Set(false),
+                instanceKey: direction));
         });
 
         return DirectionScope(direction, body, line, file);

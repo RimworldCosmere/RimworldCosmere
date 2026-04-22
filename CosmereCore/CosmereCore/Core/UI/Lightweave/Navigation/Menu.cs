@@ -23,20 +23,25 @@ public static class Menu
         Rect anchorRect,
         IReadOnlyList<MenuItem> items,
         Action onDismiss,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0)
+        object? instanceKey = null,
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = "")
     {
+        string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
+        string focusedKey = file + "#focused" + keySuffix;
+        string submenuKey = file + "#submenu" + keySuffix;
+
         if (!isOpen)
         {
-            LightweaveNode empty = NodeBuilder.New("Menu:closed", line, caller ?? string.Empty);
+            LightweaveNode empty = NodeBuilder.New("Menu:closed", line, file);
             empty.Paint = (_, _) => { };
             return empty;
         }
 
-        Hooks.Hooks.StateHandle<int> focusedIndex = Hooks.Hooks.UseState<int>(0, line, caller ?? string.Empty);
-        Hooks.Hooks.StateHandle<int> openSubmenuIndex = Hooks.Hooks.UseState<int>(-1, line + 1, caller ?? string.Empty);
+        Hooks.Hooks.StateHandle<int> focusedIndex = Hooks.Hooks.UseState<int>(0, line, focusedKey);
+        Hooks.Hooks.StateHandle<int> openSubmenuIndex = Hooks.Hooks.UseState<int>(-1, line, submenuKey);
 
-        LightweaveNode content = NodeBuilder.New("Menu:content", line, caller ?? string.Empty);
+        LightweaveNode content = NodeBuilder.New("Menu:content", line, file);
         content.Paint = (rect, _) =>
         {
             HandleKeyboard(items, focusedIndex, openSubmenuIndex, onDismiss);
@@ -60,7 +65,8 @@ public static class Menu
                         isOpen: true,
                         anchorRect: submenuAnchor,
                         items: submenuOwner.Children,
-                        onDismiss: () => openSubmenuIndex.Set(-1));
+                        onDismiss: () => openSubmenuIndex.Set(-1),
+                        instanceKey: instanceKey == null ? (object)submenuIdx : (instanceKey, submenuIdx));
                     submenu.MeasuredRect = submenuAnchor;
                     LightweaveRoot.PaintSubtree(submenu, submenuAnchor);
                 }
@@ -75,7 +81,7 @@ public static class Menu
             content: content,
             onDismiss: onDismiss,
             preferredSize: size,
-            caller: caller,
+            caller: file,
             line: line);
     }
 

@@ -12,4 +12,9 @@ public sealed class FeruchemySkin : ISystemSkin {
     public Color BarBackgroundColor => new Color(0.12f, 0.07f, 0.04f);
     public Color HeaderTextColor => new Color(0.94f, 0.75f, 0.56f);
     public GameFont HeaderFont => GameFont.Small;
+    public SkinTypography Typography => SkinTypography.Empty;
+    public Color PanelBackgroundColor => new Color(0.08f, 0.05f, 0.03f, 0.85f);
+    public Color BorderTintColor => new Color(0.65f, 0.38f, 0.24f);
+    public Texture2D? Sigil => null;
+    public Texture2D? BorderFrame => null;
 }

@@ -1,3 +1,4 @@
+using Cosmere.Core.Settings;
 using UnityEngine;
 using Verse;
 
@@ -16,6 +17,11 @@ public static class SystemSkinRegistry {
         public Color BarBackgroundColor => new Color(0.12f, 0.12f, 0.12f);
         public Color HeaderTextColor => Color.white;
         public GameFont HeaderFont => GameFont.Small;
+        public SkinTypography Typography => SkinTypography.Empty;
+        public Color PanelBackgroundColor => new Color(0.05f, 0.05f, 0.08f, 0.75f);
+        public Color BorderTintColor => new Color(0.35f, 0.35f, 0.4f);
+        public Texture2D? Sigil => null;
+        public Texture2D? BorderFrame => null;
     }
 
     public static void Register(ISystemSkin skin) {
@@ -26,6 +32,17 @@ public static class SystemSkinRegistry {
     }
 
     public static ISystemSkin For(string systemId) {
+        ISystemSkin resolved = ResolveRaw(systemId);
+        CoreModSettings settings = Cosmere.Core.Mod.GetModSettings<CoreModSettings>();
+        if (settings.highContrast) {
+            return new HighContrastSkinDecorator(resolved);
+        }
+        return resolved;
+    }
+
+    public static ISystemSkin Raw(string systemId) => ResolveRaw(systemId);
+
+    private static ISystemSkin ResolveRaw(string systemId) {
         for (int i = 0; i < skins.Count; i++) {
             if (skins[i].SystemId == systemId) return skins[i];
         }

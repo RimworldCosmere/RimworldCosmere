@@ -12,4 +12,9 @@ public sealed class SurgebindingSkin : ISystemSkin {
     public Color BarBackgroundColor => new Color(0.03f, 0.06f, 0.12f);
     public Color HeaderTextColor => new Color(0.90f, 0.95f, 1.00f);
     public GameFont HeaderFont => GameFont.Small;
+    public SkinTypography Typography => SkinTypography.Empty;
+    public Color PanelBackgroundColor => new Color(0.03f, 0.06f, 0.12f, 0.85f);
+    public Color BorderTintColor => new Color(0.55f, 0.78f, 1.00f);
+    public Texture2D? Sigil => null;
+    public Texture2D? BorderFrame => null;
 }

@@ -21,6 +21,9 @@ public class CoreModSettings : CosmereModSettings {
 
     public bool showDormantConnection;
 
+    public bool reduceMotion;
+    public bool highContrast;
+
     // Faction filtering settings
     public bool disableEmpireInCosmereScenarios;
     public bool disableOdysseyFactionsInCosmereScenarios;
@@ -168,5 +171,7 @@ public class CoreModSettings : CosmereModSettings {
         Scribe_Values.Look(ref testScenarioDefName, "testScenarioDefName");
         Scribe_Values.Look(ref disableEmpireInCosmereScenarios, "disableEmpireInCosmereScenarios", false);
         Scribe_Values.Look(ref disableOdysseyFactionsInCosmereScenarios, "disableOdysseyFactionsInCosmereScenarios", false);
+        Scribe_Values.Look(ref reduceMotion, "reduceMotion", false);
+        Scribe_Values.Look(ref highContrast, "highContrast", false);
     }
 }

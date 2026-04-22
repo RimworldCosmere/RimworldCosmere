@@ -28,6 +28,7 @@ public class MemoryLoad : RimWorld.StatPart {
         offset = 0f;
         count = 0;
         if (!req.HasThing || req.Thing is not Pawn pawn) return false;
+        if (pawn.genes == null) return false;
         if (!pawn.IsFerring(MetalDefOf.Copper)) return false;
 
         count = CountActiveMemories(pawn);

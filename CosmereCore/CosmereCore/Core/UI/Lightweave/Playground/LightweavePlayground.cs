@@ -483,6 +483,45 @@ public sealed class LightweavePlayground : LightweaveWindow
 
             col.Add(Surface.Surface.Card(c =>
             {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Overlay_Dialog_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<bool> dialogOpen = Hooks.Hooks.UseState<bool>(false);
+                Hooks.Hooks.StateHandle<string> dialogText = Hooks.Hooks.UseState<string>(string.Empty);
+
+                c.Add(Button.Create(
+                    label: "CC_Playground_Overlay_Dialog_Open".Translate(),
+                    onClick: () => dialogOpen.Set(true),
+                    variant: ButtonVariant.Primary));
+
+                c.Add(Dialog.Create(
+                    isOpen: dialogOpen.Value,
+                    onClose: () => dialogOpen.Set(false),
+                    title: () => Typography.Typography.Heading(2,
+                        "CC_Playground_Overlay_Dialog_Header".Translate()),
+                    body: () => Layout.Layout.Column(gap: SpacingScale.Sm, children: bc =>
+                    {
+                        bc.Add(Typography.Typography.Text(
+                            "CC_Playground_Overlay_Dialog_Body".Translate()));
+                        bc.Add(TextField.Create(
+                            value: dialogText.Value,
+                            onChange: s => dialogText.Set(s),
+                            placeholder: "CC_Playground_Overlay_Dialog_Placeholder".Translate()));
+                    }),
+                    footer: () => Layout.Layout.Row(gap: SpacingScale.Sm, children: fr =>
+                    {
+                        fr.Add(Button.Create(
+                            label: "CC_Playground_Overlay_Dialog_Cancel".Translate(),
+                            onClick: () => dialogOpen.Set(false),
+                            variant: ButtonVariant.Secondary));
+                        fr.Add(Button.Create(
+                            label: "CC_Playground_Overlay_Dialog_Confirm".Translate(),
+                            onClick: () => dialogOpen.Set(false),
+                            variant: ButtonVariant.Primary));
+                    })));
+            }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
                 c.Add(Typography.Typography.Heading(2, "500-row virtualized list"));
                 c.Add(Layout.Layout.ScrollArea(contentHeight: 500 * 32f, children: sa =>
                 {

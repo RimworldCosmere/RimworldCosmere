@@ -74,4 +74,11 @@
     <CC_Playground_Navigation_Segmented_Armor>Armor</CC_Playground_Navigation_Segmented_Armor>
     <CC_Playground_Navigation_Segmented_Weapons>Weapons</CC_Playground_Navigation_Segmented_Weapons>
     <CC_Playground_Navigation_Segmented_Tools>Tools</CC_Playground_Navigation_Segmented_Tools>
+    <CC_Playground_Overlay_Dialog_Title>Dialog</CC_Playground_Overlay_Dialog_Title>
+    <CC_Playground_Overlay_Dialog_Open>Open dialog</CC_Playground_Overlay_Dialog_Open>
+    <CC_Playground_Overlay_Dialog_Header>Confirm action</CC_Playground_Overlay_Dialog_Header>
+    <CC_Playground_Overlay_Dialog_Body>Enter a name before confirming.</CC_Playground_Overlay_Dialog_Body>
+    <CC_Playground_Overlay_Dialog_Placeholder>Name</CC_Playground_Overlay_Dialog_Placeholder>
+    <CC_Playground_Overlay_Dialog_Cancel>Cancel</CC_Playground_Overlay_Dialog_Cancel>
+    <CC_Playground_Overlay_Dialog_Confirm>Confirm</CC_Playground_Overlay_Dialog_Confirm>
 </LanguageData>

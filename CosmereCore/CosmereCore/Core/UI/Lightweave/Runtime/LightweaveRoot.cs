@@ -13,7 +13,7 @@ public static class LightweaveRoot
     private static readonly Dictionary<Guid, HookStore> stores = new Dictionary<Guid, HookStore>();
     private static Theme.Theme? baseTheme;
 
-    public static void Render(Rect inRect, Guid rootId, Func<LightweaveNode> build)
+    public static void Render(Rect inRect, Guid rootId, Func<LightweaveNode> build, Direction? directionOverride = null)
     {
         if (!stores.TryGetValue(rootId, out HookStore store))
         {
@@ -23,7 +23,7 @@ public static class LightweaveRoot
 
         RenderContext ctx = new RenderContext { Hooks = store };
         ctx.ThemeStack.Push(GetBaseTheme());
-        ctx.DirectionStack.Push(DetectDirection());
+        ctx.DirectionStack.Push(directionOverride ?? DetectDirection());
         ctx.PointerPos = Event.current?.mousePosition ?? Vector2.zero;
         RenderContext.Push(ctx);
         try

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Cosmere.System.Roshar.Comp.Thing;
-using Cosmere.System.Roshar.Gene;
-using Cosmere.System.Roshar.Tab;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -41,30 +39,6 @@ public static class BondedSprenHostilityPatch {
         if (pawn?.TryGetComp<CompSprenBond>() != null) {
             __result = false;
         }
-    }
-}
-
-[HarmonyPatch(typeof(Verse.Thing), nameof(Verse.Thing.GetInspectTabs))]
-public static class RadiantSprenTabPatch {
-    private static ITab_SprenBond? cachedTab;
-
-    static IEnumerable<InspectTabBase> Postfix(IEnumerable<InspectTabBase>? values, Verse.Thing __instance) {
-        bool alreadyHasTab = false;
-        if (values != null) {
-            foreach (InspectTabBase tab in values) {
-                if (tab is ITab_SprenBond) alreadyHasTab = true;
-                yield return tab;
-            }
-        }
-
-        if (alreadyHasTab) yield break;
-        if (__instance is not Verse.Pawn pawn) yield break;
-
-        Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
-        if (surgebinder?.bondedSpren == null) yield break;
-
-        cachedTab ??= new ITab_SprenBond();
-        yield return cachedTab;
     }
 }
 

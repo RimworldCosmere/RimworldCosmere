@@ -27,7 +27,7 @@ public sealed class AwakeningInvestitureProvider : IInvestitureProvider, ICodexC
     public void DrawProgression(Pawn pawn, Rect rect) => codex.DrawProgression(pawn, rect);
     public bool ShowsBondsSubtab => codex.ShowsBondsSubtab;
     public bool HasBonds(Pawn pawn) => codex.HasBonds(pawn);
-    public void DrawBonds(Pawn pawn, Rect rect) => codex.DrawBonds(pawn, rect);
+    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) => codex.DrawBonds(pawn, rect, state);
     public bool HasMemories(Pawn pawn) => codex.HasMemories(pawn);
     public void DrawMemories(Pawn pawn, Rect rect) => codex.DrawMemories(pawn, rect);
     public bool OwnsAbility(RimWorld.Ability ability) => codex.OwnsAbility(ability);

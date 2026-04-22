@@ -84,7 +84,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         }
     }
 
-    public void DrawBonds(Pawn pawn, Rect rect) { }
+    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) { }
     public void DrawMemories(Pawn pawn, Rect rect) { }
 
     private static void DrawVialSettingsButton(Rect rect, Allomancer gene) {

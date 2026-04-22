@@ -73,7 +73,7 @@ public class ITab_Investiture : ITab {
                 ProgressionSubtabRenderer.Draw(rect, pawn, active);
                 return;
             case CodexSubtab.Bonds:
-                BondsSubtabRenderer.Draw(rect, pawn, active);
+                BondsSubtabRenderer.Draw(rect, pawn, active, state);
                 return;
             case CodexSubtab.Memories:
                 MemoriesSubtabRenderer.Draw(rect, pawn, active);

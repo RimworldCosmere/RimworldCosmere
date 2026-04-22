@@ -20,6 +20,6 @@ public sealed class AwakeningCodexContent : ICodexContentProvider {
             Widgets.Label(new Rect(rect.x, rect.y + 34f, rect.width, 24f), "CC_Codex_Awakening_Progression_Placeholder".Translate());
     }
 
-    public void DrawBonds(Pawn pawn, Rect rect) { }
+    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) { }
     public void DrawMemories(Pawn pawn, Rect rect) { }
 }

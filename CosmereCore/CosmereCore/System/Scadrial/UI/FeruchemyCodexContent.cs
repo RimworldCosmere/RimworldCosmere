@@ -94,7 +94,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         }
     }
 
-    public void DrawBonds(Pawn pawn, Rect rect) { }
+    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) { }
 
     public void DrawMemories(Pawn pawn, Rect rect) {
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cosmere.Core;
 using Cosmere.Core.Savant;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Scadrial.Allomancy.Ability;
@@ -42,20 +43,22 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         for (int i = 0; i < genes.Count; i++) {
             Allomancer gene = genes[i];
             MetallicArtsMetalDef metal = gene.metal;
+            bool hasVialControls = !metal.IsOneOf(MetalDefOf.Duralumin, MetalDefOf.Nicrosil);
 
-            Rect row = new Rect(rect.x, y, rect.width, 26f);
+            const float rowHeight = 40f;
+            Rect row = new Rect(rect.x, y, rect.width, rowHeight);
             if (i % 2 == 0) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
 
-            Rect swatch = new Rect(row.x + 4f, row.y + 8f, 10f, 10f);
+            Rect swatch = new Rect(row.x + 4f, row.y + 15f, 10f, 10f);
             Widgets.DrawBoxSolid(swatch, metal.color);
 
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
-                Widgets.Label(new Rect(swatch.xMax + 8f, row.y, 130f, row.height), metal.LabelCap);
+                Widgets.Label(new Rect(swatch.xMax + 8f, row.y, 130f, rowHeight), metal.LabelCap);
 
             int stage = SavantUtility.CanBeSavant(metal)
                 ? SavantUtility.GetAllomanticSavantStage(pawn, metal)
                 : 0;
-            Rect stageRect = new Rect(swatch.xMax + 146f, row.y, 140f, row.height);
+            Rect stageRect = new Rect(swatch.xMax + 146f, row.y, 140f, rowHeight);
             DrawSavantStage(stageRect, stage, metal.color);
 
             float burned = 0f;
@@ -64,19 +67,43 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 burned = pawn.records.GetValue(record);
             }
 
-            Rect burnedRect = new Rect(stageRect.xMax + 8f, row.y, row.xMax - stageRect.xMax - 12f, row.height);
+            Rect burnedRect = new Rect(stageRect.xMax + 8f, row.y, 80f, rowHeight);
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f)))
                 Widgets.Label(
                     burnedRect,
                     "CC_Codex_Allomancy_MetalBurned".Translate(burned.ToString("F1").Named("AMOUNT"))
                 );
 
-            y += 28f;
+            if (hasVialControls) {
+                const float buttonSize = 20f;
+                Rect vialButtonRect = new Rect(row.xMax - buttonSize - 4f, row.y + (rowHeight - buttonSize) / 2f, buttonSize, buttonSize);
+                DrawVialSettingsButton(vialButtonRect, gene);
+            }
+
+            y += rowHeight + 2f;
         }
     }
 
     public void DrawBonds(Pawn pawn, Rect rect) { }
     public void DrawMemories(Pawn pawn, Rect rect) { }
+
+    private static void DrawVialSettingsButton(Rect rect, Allomancer gene) {
+        string thresholdLabel;
+        if (gene.targetValue <= 0f)
+            thresholdLabel = (string)"CS_NeverConsumeVial".Translate();
+        else
+            thresholdLabel = (string)"CS_ConsumeVialBelow".Translate() + $" {gene.PostProcessValue(gene.targetValue)}%";
+
+        string tooltip = (string)"CC_Codex_Allomancy_VialSettings_Tooltip".Translate(
+            gene.requestedVialStock.Named("COUNT"),
+            thresholdLabel.Named("THRESHOLD")
+        );
+        TooltipHandler.TipRegion(rect, tooltip);
+
+        if (Widgets.ButtonText(rect, "CC_Codex_Allomancy_VialSettings_Button".Translate(), drawBackground: true)) {
+            Find.WindowStack.Add(new Dialog_AllomancyRestockSlider(gene));
+        }
+    }
 
     private static void DrawSavantStage(Rect rect, int stage, Color accent) {
         string label;

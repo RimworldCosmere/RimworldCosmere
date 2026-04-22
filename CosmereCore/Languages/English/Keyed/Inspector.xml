@@ -27,6 +27,11 @@
   <CC_Codex_Allomancy_ProgressionHeader>Allomancy</CC_Codex_Allomancy_ProgressionHeader>
   <CC_Codex_Allomancy_OverallSkill>Allomantic Power: level {LEVEL}</CC_Codex_Allomancy_OverallSkill>
   <CC_Codex_Allomancy_MetalBurned>{AMOUNT} burned</CC_Codex_Allomancy_MetalBurned>
+  <CC_Codex_Allomancy_VialSettings_Button>Vials</CC_Codex_Allomancy_VialSettings_Button>
+  <CC_Codex_Allomancy_VialSettings_Tooltip>Stock: {COUNT} vials\n{THRESHOLD}</CC_Codex_Allomancy_VialSettings_Tooltip>
+  <CC_Codex_Allomancy_VialSettings_Title>Vial settings - {METAL}</CC_Codex_Allomancy_VialSettings_Title>
+  <CC_Codex_Allomancy_VialSettings_ThresholdLabel>Auto-consume threshold</CC_Codex_Allomancy_VialSettings_ThresholdLabel>
+  <CC_Codex_Allomancy_VialSettings_StockLabel>Requested vial stock</CC_Codex_Allomancy_VialSettings_StockLabel>
 
   <CC_Codex_Feruchemy_Progression_Header>Feruchemy</CC_Codex_Feruchemy_Progression_Header>
   <CC_Codex_Feruchemy_OverallSkill>Feruchemic Power: level {LEVEL}</CC_Codex_Feruchemy_OverallSkill>

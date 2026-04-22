@@ -344,6 +344,49 @@ public sealed class LightweavePlayground : LightweaveWindow
 
             col.Add(Surface.Surface.Card(c =>
             {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Feedback_Tooltip_Title".Translate()));
+
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Sm, children: r =>
+                {
+                    LightweaveNode tooltipButtonBody = Typography.Typography.Text(
+                        "CC_Playground_Feedback_Tooltip_Button_Body".Translate());
+                    r.Add(Tooltip.Wrap(
+                        children: Button.Create(
+                            label: "CC_Playground_Feedback_Tooltip_Button_Label".Translate(),
+                            onClick: () => { },
+                            variant: ButtonVariant.Primary),
+                        content: tooltipButtonBody));
+
+                    LightweaveNode tooltipIconBody = Layout.Layout.Column(gap: SpacingScale.Xxs, children: col2 =>
+                    {
+                        col2.Add(Typography.Typography.Heading(3,
+                            "CC_Playground_Feedback_Tooltip_Icon_Title".Translate()));
+                        col2.Add(Typography.Typography.Text(
+                            "CC_Playground_Feedback_Tooltip_Icon_Body".Translate()));
+                    });
+                    r.Add(Tooltip.Wrap(
+                        children: IconButton.Create(
+                            icon: IconPlaceholder(),
+                            onClick: () => { },
+                            variant: ButtonVariant.Secondary),
+                        content: tooltipIconBody));
+
+                    LightweaveNode tooltipLabelBody = Layout.Layout.Column(gap: SpacingScale.Xs, children: col2 =>
+                    {
+                        col2.Add(Typography.Typography.Text(
+                            "CC_Playground_Feedback_Tooltip_Label_Para1".Translate()));
+                        col2.Add(Typography.Typography.Text(
+                            "CC_Playground_Feedback_Tooltip_Label_Para2".Translate()));
+                    });
+                    r.Add(Tooltip.Wrap(
+                        children: Typography.Typography.Text(
+                            "CC_Playground_Feedback_Tooltip_Label_Text".Translate()),
+                        content: tooltipLabelBody));
+                }));
+            }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
                 c.Add(Typography.Typography.Heading(2, "CC_Playground_Overlay_Popover_Title".Translate()));
 
                 Hooks.Hooks.StateHandle<bool> popoverOpen = Hooks.Hooks.UseState<bool>(false);

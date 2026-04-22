@@ -53,4 +53,12 @@
     <CC_Playground_Feedback_Badge_Success>Success</CC_Playground_Feedback_Badge_Success>
     <CC_Playground_Feedback_Tag_Dismissible>Dismissible</CC_Playground_Feedback_Tag_Dismissible>
     <CC_Playground_Feedback_Tag_Static>Static</CC_Playground_Feedback_Tag_Static>
+    <CC_Playground_Feedback_Tooltip_Title>Tooltips</CC_Playground_Feedback_Tooltip_Title>
+    <CC_Playground_Feedback_Tooltip_Button_Label>Hover me</CC_Playground_Feedback_Tooltip_Button_Label>
+    <CC_Playground_Feedback_Tooltip_Button_Body>A single-line tooltip.</CC_Playground_Feedback_Tooltip_Button_Body>
+    <CC_Playground_Feedback_Tooltip_Icon_Title>Keyboard shortcut</CC_Playground_Feedback_Tooltip_Icon_Title>
+    <CC_Playground_Feedback_Tooltip_Icon_Body>Press Ctrl to focus this button.</CC_Playground_Feedback_Tooltip_Icon_Body>
+    <CC_Playground_Feedback_Tooltip_Label_Text>Highstorm readout</CC_Playground_Feedback_Tooltip_Label_Text>
+    <CC_Playground_Feedback_Tooltip_Label_Para1>The stormwall approaches from the east. Bind down anything unsheltered.</CC_Playground_Feedback_Tooltip_Label_Para1>
+    <CC_Playground_Feedback_Tooltip_Label_Para2>Highstorms recur on a roughly weekly cadence in this region.</CC_Playground_Feedback_Tooltip_Label_Para2>
 </LanguageData>

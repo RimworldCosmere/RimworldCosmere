@@ -5,6 +5,7 @@ using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Def;
 using Cosmere.Core.DefModExtension;
 using Cosmere.System.Scadrial.Feruchemy.Memory;
+using RimWorld;
 using UnityEngine;
 using Verse;
 using Logger = Cosmere.Core.Logger;
@@ -65,6 +66,40 @@ public class Metalmind : ThingComp, IMetalmindSource {
             storedAmountInt = usedMemorySpace;
         }
         return removed;
+    }
+
+    public void SyncInjectedThoughts(Pawn holder) {
+        if (!isCoppermind) return;
+        if (holder == null) return;
+        if (owner == null) owner = holder;
+        if (holder != owner) return;
+
+        MemoryThoughtHandler? handler = holder.needs?.mood?.thoughts?.memories;
+        if (handler == null) return;
+
+        for (int i = 0; i < storedMemoriesInt.Count; i++) {
+            StoredMemory stored = storedMemoriesInt[i];
+            if (stored.def == null) continue;
+            if (InjectedThoughtExistsFor(handler, stored)) continue;
+
+            Thought_Memory_Coppermind thought = new Thought_Memory_Coppermind {
+                def = stored.def,
+                age = stored.age,
+                moodPowerFactor = stored.moodPowerFactor,
+                otherPawn = stored.otherPawn,
+                sourceCoppermind = this,
+                storedMemory = stored,
+            };
+            handler.TryGainMemory(thought);
+        }
+    }
+
+    private static bool InjectedThoughtExistsFor(MemoryThoughtHandler handler, StoredMemory stored) {
+        List<Thought_Memory> all = handler.Memories;
+        for (int i = 0; i < all.Count; i++) {
+            if (all[i] is Thought_Memory_Coppermind injected && injected.storedMemory == stored) return true;
+        }
+        return false;
     }
 
     public bool canStore => isCoppermind ? false : equipped && storedAmount < maxAmount;

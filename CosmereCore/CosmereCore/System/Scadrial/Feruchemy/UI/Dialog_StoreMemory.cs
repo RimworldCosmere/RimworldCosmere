@@ -195,5 +195,6 @@ public sealed class Dialog_StoreMemory : Window {
         StoredMemory stored = new StoredMemory(thought, pawn);
         mind.StoreMemory(stored);
         pawn.needs?.mood?.thoughts?.memories?.RemoveMemory(thought);
+        mind.SyncInjectedThoughts(pawn);
     }
 }

@@ -167,6 +167,13 @@ public class Feruchemist : Metalborn {
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
 
+        if (metal?.defName == "Copper") {
+            List<IMetalmindSource> mms = metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                if (mms[i] is Metalmind mm) mm.SyncInjectedThoughts(pawn);
+            }
+        }
+
         if (!canTap && isTapping && !isCompounding) Reset();
         if (!canStore && isStoring && !isCompounding) Reset();
 

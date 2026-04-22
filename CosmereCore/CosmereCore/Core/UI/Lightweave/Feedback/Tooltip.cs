@@ -38,7 +38,10 @@ public static class Tooltip
                 return;
             }
 
-            hoverTimer.Current += Time.unscaledDeltaTime;
+            if (e.type == EventType.Repaint)
+            {
+                hoverTimer.Current += Time.unscaledDeltaTime;
+            }
             if (hoverTimer.Current < HoverDelaySeconds)
             {
                 return;

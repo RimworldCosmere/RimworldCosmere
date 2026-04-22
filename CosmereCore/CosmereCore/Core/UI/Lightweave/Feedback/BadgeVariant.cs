@@ -46,8 +46,18 @@ internal static class BadgeVariants
         }
     }
 
-    public static ThemeSlot Border(BadgeVariant variant)
+    internal static ThemeSlot? Border(BadgeVariant v)
     {
-        return variant == BadgeVariant.Neutral ? ThemeSlot.BorderDefault : ThemeSlot.BorderSubtle;
+        switch (v)
+        {
+            case BadgeVariant.Neutral:
+                return ThemeSlot.BorderDefault;
+            case BadgeVariant.Accent:
+            case BadgeVariant.Warning:
+            case BadgeVariant.Danger:
+            case BadgeVariant.Success:
+            default:
+                return null;
+        }
     }
 }

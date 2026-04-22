@@ -23,6 +23,9 @@ public static class Badge
             node.Children.Add(leading);
         }
 
+        // NOTE: Small-caps is approximated via uppercasing; fine for Latin, may need revisiting for non-Latin scripts.
+        string display = text.ToUpperInvariant();
+
         node.Paint = (rect, paintChildren) =>
         {
             Theme.Theme theme = RenderContext.Current.Theme;
@@ -30,7 +33,10 @@ public static class Badge
             bool rtl = dir == Direction.Rtl;
 
             BackgroundSpec bg = new BackgroundSpec.Solid(BadgeVariants.Background(variant));
-            BorderSpec border = BorderSpec.All(new Rem(1f / 16f), BadgeVariants.Border(variant));
+            ThemeSlot? borderSlot = BadgeVariants.Border(variant);
+            BorderSpec? border = borderSlot.HasValue
+                ? (BorderSpec?)BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
+                : null;
             RadiusSpec radius = RadiusSpec.All(new Rem(999f));
 
             PaintBox.Draw(rect, bg, border, radius);
@@ -63,9 +69,6 @@ public static class Badge
             int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToPixels());
             GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Bold);
             style.alignment = TextAnchor.MiddleCenter;
-
-            // NOTE: Small-caps is approximated via uppercasing; fine for Latin, may need revisiting for non-Latin scripts.
-            string display = text.ToUpperInvariant();
 
             Color savedColor = GUI.color;
             GUI.color = theme.GetColor(BadgeVariants.Foreground(variant));

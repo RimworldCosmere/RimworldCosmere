@@ -274,6 +274,31 @@ public sealed class LightweavePlayground : LightweaveWindow
 
             col.Add(Surface.Surface.Card(c =>
             {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Controls_Dropdown_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("Option 1");
+                string[] dropdownOptions = new string[]
+                {
+                    "Option 1",
+                    "Option 2",
+                    "Option 3",
+                    "Option 4 - A very long label to demonstrate truncation in the collapsed view",
+                    "Option 5",
+                    "Option 6",
+                    "Option 7",
+                    "Option 8",
+                    "Option 9",
+                    "Option 10",
+                };
+                c.Add(Dropdown.Create<string>(
+                    value: selected.Value,
+                    options: dropdownOptions,
+                    labelFn: s => s,
+                    onChange: v => selected.Set(v)));
+            }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
                 c.Add(Typography.Typography.Heading(2, "CC_Playground_Overlay_Popover_Title".Translate()));
 
                 Hooks.Hooks.StateHandle<bool> popoverOpen = Hooks.Hooks.UseState<bool>(false);

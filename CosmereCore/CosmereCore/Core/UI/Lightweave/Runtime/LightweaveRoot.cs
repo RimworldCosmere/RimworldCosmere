@@ -4,16 +4,14 @@ using UnityEngine;
 using Verse;
 using Cosmere.Core.UI.Lightweave.Theme;
 using Cosmere.Core.UI.Lightweave.Types;
-using Cosmere.Core.UI.Lightweave.Fonts;
 
 namespace Cosmere.Core.UI.Lightweave.Runtime;
 
 public static class LightweaveRoot
 {
     private static readonly Dictionary<Guid, HookStore> stores = new Dictionary<Guid, HookStore>();
-    private static Theme.Theme? baseTheme;
 
-    public static void Render(Rect inRect, Guid rootId, Func<LightweaveNode> build, Direction? directionOverride = null)
+    public static void Render(Rect inRect, Guid rootId, Func<LightweaveNode> build, Direction? directionOverride = null, Theme.Theme? themeOverride = null)
     {
         if (!stores.TryGetValue(rootId, out HookStore store))
         {
@@ -23,7 +21,7 @@ public static class LightweaveRoot
 
         AnimationClock.ClearFrame();
         RenderContext ctx = new RenderContext { Hooks = store, RootId = rootId };
-        ctx.ThemeStack.Push(GetBaseTheme());
+        ctx.ThemeStack.Push(themeOverride ?? GetBaseTheme());
         ctx.DirectionStack.Push(directionOverride ?? DetectDirection());
         ctx.PointerPos = Event.current?.mousePosition ?? Vector2.zero;
         RenderContext.Push(ctx);
@@ -61,17 +59,7 @@ public static class LightweaveRoot
 
     private static Theme.Theme GetBaseTheme()
     {
-        if (baseTheme != null)
-        {
-            return baseTheme;
-        }
-        Font body = LightweaveFonts.ArimoRegular;
-        Font bold = LightweaveFonts.ArimoBold;
-        Font heading = LightweaveFonts.ArimoBold;
-        Font display = LightweaveFonts.CarlitoBold;
-        Font mono = LightweaveFonts.JetBrainsMono;
-        baseTheme = BaseTheme.Build(body, bold, heading, display, mono);
-        return baseTheme;
+        return ThemeRegistry.Default;
     }
 
     private static Direction DetectDirection()

@@ -11,11 +11,13 @@ public abstract class LightweaveWindow : Verse.Window
 
     protected Guid RootId => rootId;
 
+    protected virtual Theme.Theme? ThemeOverride => null;
+
     protected abstract LightweaveNode Build();
 
     public override void DoWindowContents(Rect inRect)
     {
-        LightweaveRoot.Render(inRect, rootId, Build);
+        LightweaveRoot.Render(inRect, rootId, Build, null, ThemeOverride);
     }
 
     public override void PostClose()

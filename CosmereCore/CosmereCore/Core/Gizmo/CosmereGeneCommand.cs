@@ -1,5 +1,8 @@
+using System;
 using System.Text;
 using Cosmere.Core.Gene;
+using Cosmere.Core.UI.Lightweave.Adapter;
+using Cosmere.Core.UI.Lightweave.Runtime;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -288,11 +291,24 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
     }
 
     public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {
+        Rect rect = new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), Height);
+        int entityId = Gen.HashCombineInt(pawn.thingIDNumber, gene.def.shortHash);
+        Guid id = AdapterStoreRegistry.Get(entityId, AdapterKind.Gizmo);
+        bool mouseOver = false;
+        LightweaveRoot.Render(rect, id, () => {
+            LightweaveNode node = new LightweaveNode { DebugName = "CosmereGeneCommand" };
+            node.Paint = (paintRect, _) => mouseOver = PaintGene(paintRect);
+            return node;
+        });
+        return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear);
+    }
+
+    private bool PaintGene(Rect outerRectIn) {
         Initialize();
         bool mouseOver = false;
 
         using TextBlock textBlock = new TextBlock(GameFont.Tiny);
-        outerRect = new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), Height);
+        outerRect = outerRectIn;
         mainRect = outerRect.Value.ContractedBy(Padding.x * 2, Padding.y);
 
         Widgets.DrawWindowBackground(outerRect.Value);
@@ -312,6 +328,6 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
             TooltipHandler.TipRegion(mainRect.Value, GetTooltip, Gen.HashCombineInt(GetHashCode(), 8491284));
         }
 
-        return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear);
+        return mouseOver;
     }
 }

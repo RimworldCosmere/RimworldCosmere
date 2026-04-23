@@ -11,8 +11,9 @@ namespace Cosmere.Core.UI.Lightweave.Adapter;
 /// vanilla <see cref="FloatMenuOption.DoGUI"/> affordances: default row painting (icon, label, and
 /// extraPart composition), <c>mouseoverGuiAction</c> (not called - consumers must handle hover
 /// feedback inside their Build closure), hover highlight and selection sound (vanilla draws these;
-/// this override skips them entirely), and <c>revalidateClickTarget</c> (still honored if the parent
-/// FloatMenu calls back, but disabled state must be handled by the caller). The <c>subKey</c>
+/// this override skips them entirely), <c>Disabled</c> / <c>disabledReason</c> handling (never applied
+/// by this override - consumers must render disabled appearance and gate <c>action</c> themselves),
+/// and <c>revalidateClickTarget</c> (still honored if the parent FloatMenu calls back). The <c>subKey</c>
 /// parameter disambiguates multiple bespoke options on the same entity in a single frame - use a
 /// distinct value per option so each gets a stable, unique Guid from <see cref="AdapterStoreRegistry"/>.
 /// </summary>
@@ -43,8 +44,8 @@ public sealed class AsFloatMenuOption : FloatMenuOption
 
         if (Mouse.IsOver(rect) && evt.type == EventType.MouseUp && evt.button == 0)
         {
-            action?.Invoke();
             evt.Use();
+            action?.Invoke();
             return true;
         }
 

@@ -13,6 +13,8 @@ public abstract class LightweaveWindow : Verse.Window
 
     protected virtual Theme.Theme? ThemeOverride => null;
 
+    protected override float Margin => 0f;
+
     protected abstract LightweaveNode Build();
 
     public override void DoWindowContents(Rect inRect)

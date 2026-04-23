@@ -19,7 +19,7 @@ public sealed record PlaygroundCategory(
 
 public static class PlaygroundRail
 {
-    private const float RowHeight = 34f;
+    private const float RowHeight = 38f;
     private const float HighlightBarWidth = 3f;
     private const float RowPaddingX = 10f;
     private const float CategoryGap = 2f;

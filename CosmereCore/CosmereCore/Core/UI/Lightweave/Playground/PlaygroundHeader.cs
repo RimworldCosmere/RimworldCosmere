@@ -51,12 +51,12 @@ public static class PlaygroundHeader
         LightweaveNode brand = BuildBrand();
         LightweaveNode controls = BuildControls(theme, direction, forceDisabled);
 
-        LightweaveNode row = Layout.Layout.Row(
+        LightweaveNode row = Layout.Layout.HStack(
             gap: SpacingScale.Md,
             children: r =>
             {
-                r.Add(brand);
-                r.Add(controls);
+                r.AddFlex(brand);
+                r.Add(controls, 420f);
             });
 
         LightweaveNode surface = Surface.Surface.ByRole(
@@ -78,7 +78,7 @@ public static class PlaygroundHeader
         LightweaveNode title = Typography.Typography.Heading(
             2,
             (string)"CC_Playground_Header_Brand".Translate(),
-            ThemeSlot.SurfaceAccent);
+            ThemeSlot.BorderFocus);
 
         LightweaveNode subtitle = Typography.Typography.Caption(
             (string)"CC_Playground_Header_Subtitle".Translate());
@@ -114,13 +114,13 @@ public static class PlaygroundHeader
             value: forceDisabled.Value,
             onChange: next => forceDisabled.Set(next));
 
-        return Layout.Layout.Row(
+        return Layout.Layout.HStack(
             gap: SpacingScale.Sm,
             children: r =>
             {
-                r.Add(themeDropdown);
-                r.Add(directionDropdown);
-                r.Add(disabledToggle);
+                r.Add(themeDropdown, 140f);
+                r.Add(directionDropdown, 120f);
+                r.Add(disabledToggle, 140f);
             });
     }
 

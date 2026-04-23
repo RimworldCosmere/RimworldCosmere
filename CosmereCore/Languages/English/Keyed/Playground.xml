@@ -214,4 +214,17 @@
     <CC_Playground_usestate_Title>UseState</CC_Playground_usestate_Title>
     <CC_Playground_usestate_What>Per-render state hook. Returns a handle with a Value getter and Set method.</CC_Playground_usestate_What>
     <CC_Playground_usestate_When>Use whenever a primitive needs to remember something across renders.</CC_Playground_usestate_When>
+
+    <!-- Task D2a: header + panel chrome -->
+    <CC_Playground_Header_Brand>Lightweave Playground</CC_Playground_Header_Brand>
+    <CC_Playground_Header_Subtitle>Every primitive, every theme, every direction.</CC_Playground_Header_Subtitle>
+    <CC_Playground_Header_Theme_Default>Default</CC_Playground_Header_Theme_Default>
+    <CC_Playground_Header_Theme_Cosmere>Cosmere</CC_Playground_Header_Theme_Cosmere>
+    <CC_Playground_Header_Direction_Auto>Auto</CC_Playground_Header_Direction_Auto>
+    <CC_Playground_Header_Direction_Ltr>LTR</CC_Playground_Header_Direction_Ltr>
+    <CC_Playground_Header_Direction_Rtl>RTL</CC_Playground_Header_Direction_Rtl>
+    <CC_Playground_Header_ForceDisabled>Force disabled</CC_Playground_Header_ForceDisabled>
+    <CC_Playground_Panel_SourceLabel>Source:</CC_Playground_Panel_SourceLabel>
+    <CC_Playground_Panel_Variants>Variants</CC_Playground_Panel_Variants>
+    <CC_Playground_Panel_States>States</CC_Playground_Panel_States>
 </LanguageData>

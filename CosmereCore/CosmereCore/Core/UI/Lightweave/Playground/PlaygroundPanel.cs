@@ -62,13 +62,22 @@ public static class PlaygroundPanel
             new Rem(0.75f),
             ThemeSlot.TextMuted);
 
+        LightweaveNode headerBundle = Layout.Layout.Stack(
+            gap: SpacingScale.Xxs,
+            children: s =>
+            {
+                s.Add(title, TitleHeight);
+                s.Add(whatText, BodyLineHeight);
+                s.Add(whenText, BodyLineHeight);
+            });
+
+        float headerBundleHeight = headerBundle.PreferredHeight ?? (TitleHeight + BodyLineHeight * 2f + SpacingScale.Xxs.ToPixels() * 2f);
+
         LightweaveNode body = Layout.Layout.Stack(
-            gap: SpacingScale.Xs,
+            gap: SpacingScale.Sm,
             children: stack =>
             {
-                stack.Add(title, TitleHeight);
-                stack.Add(whatText, BodyLineHeight);
-                stack.Add(whenText, BodyLineHeight);
+                stack.Add(headerBundle, headerBundleHeight);
 
                 if (hasVariants)
                 {

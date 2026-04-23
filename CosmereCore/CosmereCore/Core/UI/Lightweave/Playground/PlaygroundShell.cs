@@ -47,6 +47,25 @@ public static class PlaygroundShell
                 bodyRect = new Rect(rowRect.x + railWidth, rowRect.y, rowRect.width - railWidth, rowRect.height);
             }
 
+            float bodyLeadingPad = SpacingScale.Md.ToPixels();
+            float bodyOtherPad = SpacingScale.Sm.ToPixels();
+            if (rtl)
+            {
+                bodyRect = new Rect(
+                    bodyRect.x + bodyOtherPad,
+                    bodyRect.y + bodyOtherPad,
+                    bodyRect.width - bodyLeadingPad - bodyOtherPad,
+                    bodyRect.height - bodyOtherPad * 2f);
+            }
+            else
+            {
+                bodyRect = new Rect(
+                    bodyRect.x + bodyLeadingPad,
+                    bodyRect.y + bodyOtherPad,
+                    bodyRect.width - bodyLeadingPad - bodyOtherPad,
+                    bodyRect.height - bodyOtherPad * 2f);
+            }
+
             header.MeasuredRect = headerRect;
             rail.MeasuredRect = railRect;
             body.MeasuredRect = bodyRect;

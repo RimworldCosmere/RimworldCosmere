@@ -688,6 +688,27 @@ public sealed class LightweavePlayground : LightweaveWindow
                 }));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Sparkline_Title".Translate()));
+
+                IReadOnlyList<float> sparkSamples = Hooks.Hooks.UseMemo(() =>
+                {
+                    float[] buf = new float[32];
+                    for (int i = 0; i < buf.Length; i++)
+                    {
+                        buf[i] = Mathf.Sin(i * 0.4f) * 0.5f + 0.5f + Mathf.Sin(i * 0.9f) * 0.2f;
+                    }
+                    return (IReadOnlyList<float>)buf;
+                }, Array.Empty<object>());
+
+                c.Add(Layout.Layout.Column(gap: SpacingScale.Md, children: col2 =>
+                {
+                    col2.Add(Sparkline.Create(samples: sparkSamples));
+                    col2.Add(Sparkline.Create(samples: sparkSamples, fillColor: ThemeSlot.SurfaceAccent));
+                }));
+            }));
+
         });
     }
 

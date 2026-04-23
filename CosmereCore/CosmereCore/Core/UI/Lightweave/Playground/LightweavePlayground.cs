@@ -642,6 +642,28 @@ public sealed class LightweavePlayground : LightweaveWindow
                 }));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_UseHotkey_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<string> hotkeyState = Hooks.Hooks.UseState<string>("idle");
+
+                UseHotkey.Use(KeyCode.Escape,
+                    () => hotkeyState.Set(hotkeyState.Value == "escape" ? "idle" : "escape"));
+                UseHotkey.Use(KeyCode.S,
+                    () => hotkeyState.Set(hotkeyState.Value == "saved" ? "idle" : "saved"),
+                    modifiers: KeyModifiers.Control);
+
+                c.Add(Typography.Typography.Text((string)"CC_Playground_UseHotkey_Hint".Translate()));
+                string hotkeyDisplay = hotkeyState.Value switch
+                {
+                    "escape" => (string)"CC_Playground_UseHotkey_Escape".Translate(),
+                    "saved" => (string)"CC_Playground_UseHotkey_Saved".Translate(),
+                    _ => (string)"CC_Playground_UseHotkey_Idle".Translate(),
+                };
+                c.Add(Typography.Typography.Text(hotkeyDisplay));
+            }));
+
         });
     }
 

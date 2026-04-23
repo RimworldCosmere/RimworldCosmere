@@ -95,4 +95,9 @@
     <CC_Playground_UseFocus_Title>UseFocus</CC_Playground_UseFocus_Title>
     <CC_Playground_UseFocus_Focus>Focus field</CC_Playground_UseFocus_Focus>
     <CC_Playground_UseFocus_Placeholder>Type here...</CC_Playground_UseFocus_Placeholder>
+    <CC_Playground_UseHotkey_Title>UseHotkey</CC_Playground_UseHotkey_Title>
+    <CC_Playground_UseHotkey_Hint>Press Escape or Ctrl+S.</CC_Playground_UseHotkey_Hint>
+    <CC_Playground_UseHotkey_Idle>Waiting.</CC_Playground_UseHotkey_Idle>
+    <CC_Playground_UseHotkey_Escape>Escape pressed.</CC_Playground_UseHotkey_Escape>
+    <CC_Playground_UseHotkey_Saved>Saved.</CC_Playground_UseHotkey_Saved>
 </LanguageData>

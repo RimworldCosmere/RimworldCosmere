@@ -103,4 +103,19 @@
     <CC_Playground_Spinner_Title>Spinner</CC_Playground_Spinner_Title>
     <CC_Playground_RingGauge_Title>Ring Gauge</CC_Playground_RingGauge_Title>
     <CC_Playground_Sparkline_Title>Sparkline</CC_Playground_Sparkline_Title>
+    <CC_Playground_Breadcrumbs_Title>Breadcrumbs</CC_Playground_Breadcrumbs_Title>
+    <CC_Playground_Breadcrumbs_Crumb_Home>Home</CC_Playground_Breadcrumbs_Crumb_Home>
+    <CC_Playground_Breadcrumbs_Crumb_Worldbuilding>Worldbuilding</CC_Playground_Breadcrumbs_Crumb_Worldbuilding>
+    <CC_Playground_Breadcrumbs_Crumb_Roshar>Roshar</CC_Playground_Breadcrumbs_Crumb_Roshar>
+    <CC_Playground_Breadcrumbs_Crumb_ShatteredPlains>Shattered Plains</CC_Playground_Breadcrumbs_Crumb_ShatteredPlains>
+    <CC_Playground_Breadcrumbs_Crumb_Worlds>Worlds</CC_Playground_Breadcrumbs_Crumb_Worlds>
+    <CC_Playground_Breadcrumbs_Crumb_Scadrial>Scadrial</CC_Playground_Breadcrumbs_Crumb_Scadrial>
+    <CC_Playground_Breadcrumbs_Crumb_FinalEmpire>Final Empire</CC_Playground_Breadcrumbs_Crumb_FinalEmpire>
+    <CC_Playground_Breadcrumbs_Crumb_Luthadel>Luthadel</CC_Playground_Breadcrumbs_Crumb_Luthadel>
+    <CC_Playground_Breadcrumbs_Crumb_CentralDistrict>Central District</CC_Playground_Breadcrumbs_Crumb_CentralDistrict>
+    <CC_Playground_Breadcrumbs_Crumb_VentureKeep>Venture Keep</CC_Playground_Breadcrumbs_Crumb_VentureKeep>
+    <CC_Playground_Breadcrumbs_Crumb_GreatHall>Great Hall</CC_Playground_Breadcrumbs_Crumb_GreatHall>
+    <CC_Playground_Breadcrumbs_LastClicked>Last clicked: {CRUMB}</CC_Playground_Breadcrumbs_LastClicked>
+    <CC_Playground_Breadcrumbs_NoneClicked>None clicked</CC_Playground_Breadcrumbs_NoneClicked>
+    <CC_Playground_Breadcrumbs_LongDemoTitle>Truncation demo</CC_Playground_Breadcrumbs_LongDemoTitle>
 </LanguageData>

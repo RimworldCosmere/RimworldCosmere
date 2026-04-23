@@ -709,7 +709,84 @@ public sealed class LightweavePlayground : LightweaveWindow
                 }));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Breadcrumbs_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<string> lastClicked = Hooks.Hooks.UseState<string>(string.Empty);
+
+                string homeLabel = (string)"CC_Playground_Breadcrumbs_Crumb_Home".Translate();
+                string worldbuildingLabel = (string)"CC_Playground_Breadcrumbs_Crumb_Worldbuilding".Translate();
+                string rosharLabel = (string)"CC_Playground_Breadcrumbs_Crumb_Roshar".Translate();
+                string shatteredPlainsLabel = (string)"CC_Playground_Breadcrumbs_Crumb_ShatteredPlains".Translate();
+
+                string[] basicCrumbs = new string[]
+                {
+                    homeLabel,
+                    worldbuildingLabel,
+                    rosharLabel,
+                    shatteredPlainsLabel,
+                };
+
+                c.Add(Layout.Layout.Column(gap: SpacingScale.Md, children: col2 =>
+                {
+                    col2.Add(Breadcrumbs.Create(
+                        crumbs: basicCrumbs,
+                        onNavigate: idx => lastClicked.Set(basicCrumbs[idx])));
+
+                    string statusText = string.IsNullOrEmpty(lastClicked.Value)
+                        ? (string)"CC_Playground_Breadcrumbs_NoneClicked".Translate()
+                        : (string)"CC_Playground_Breadcrumbs_LastClicked".Translate(lastClicked.Value.Named("CRUMB"));
+                    col2.Add(Typography.Typography.Caption(statusText));
+
+                    col2.Add(Typography.Typography.Heading(3, "CC_Playground_Breadcrumbs_LongDemoTitle".Translate()));
+
+                    string worldsLabel = (string)"CC_Playground_Breadcrumbs_Crumb_Worlds".Translate();
+                    string scadrialLabel = (string)"CC_Playground_Breadcrumbs_Crumb_Scadrial".Translate();
+                    string finalEmpireLabel = (string)"CC_Playground_Breadcrumbs_Crumb_FinalEmpire".Translate();
+                    string luthadelLabel = (string)"CC_Playground_Breadcrumbs_Crumb_Luthadel".Translate();
+                    string centralDistrictLabel = (string)"CC_Playground_Breadcrumbs_Crumb_CentralDistrict".Translate();
+                    string ventureKeepLabel = (string)"CC_Playground_Breadcrumbs_Crumb_VentureKeep".Translate();
+                    string greatHallLabel = (string)"CC_Playground_Breadcrumbs_Crumb_GreatHall".Translate();
+
+                    string[] longCrumbs = new string[]
+                    {
+                        homeLabel,
+                        worldsLabel,
+                        scadrialLabel,
+                        finalEmpireLabel,
+                        luthadelLabel,
+                        centralDistrictLabel,
+                        ventureKeepLabel,
+                        greatHallLabel,
+                    };
+
+                    col2.Add(BreadcrumbsBounds(
+                        Breadcrumbs.Create(
+                            crumbs: longCrumbs,
+                            onNavigate: idx => lastClicked.Set(longCrumbs[idx]))));
+                }));
+            }));
+
         });
+    }
+
+    private static LightweaveNode BreadcrumbsBounds(
+        LightweaveNode inner,
+        [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,
+        [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
+    {
+        LightweaveNode node = NodeBuilder.New("BreadcrumbsBounds", line, file);
+        node.Children.Add(inner);
+        node.Paint = (rect, _) =>
+        {
+            float width = new Rem(20f).ToPixels();
+            float height = new Rem(1.5f).ToPixels();
+            Rect bounded = new Rect(rect.x, rect.y, Mathf.Min(width, rect.width), height);
+            inner.MeasuredRect = bounded;
+            LightweaveRoot.PaintSubtree(inner, bounded);
+        };
+        return node;
     }
 
     private readonly record struct DataRow(int Index, string Name);

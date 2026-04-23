@@ -940,7 +940,48 @@ public sealed class LightweavePlayground : LightweaveWindow
                 }));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_ColorPicker_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<Color> pickedColor = Hooks.Hooks.UseState<Color>(new Color(0.88f, 0.95f, 0.98f));
+
+                c.Add(Layout.Layout.Column(gap: SpacingScale.Md, children: col2 =>
+                {
+                    col2.Add(ColorPicker.Create(
+                        value: pickedColor.Value,
+                        onChange: next => pickedColor.Set(next)));
+
+                    Color currentColor = pickedColor.Value;
+                    col2.Add(ColorPreview(currentColor));
+
+                    string rgb = (string)"CC_Playground_ColorPicker_Rgb".Translate(
+                        currentColor.r.ToString("F2").Named("R"),
+                        currentColor.g.ToString("F2").Named("G"),
+                        currentColor.b.ToString("F2").Named("B"));
+                    col2.Add(Typography.Typography.Caption(rgb));
+                }));
+            }));
+
         });
+    }
+
+    private static LightweaveNode ColorPreview(
+        Color color,
+        [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,
+        [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
+    {
+        LightweaveNode node = NodeBuilder.New("ColorPreview", line, file);
+        node.Paint = (rect, _) =>
+        {
+            float size = new Rem(2f).ToPixels();
+            Rect swatch = new Rect(rect.x, rect.y, size, size);
+            BackgroundSpec bg = new BackgroundSpec.Solid(color);
+            BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
+            RadiusSpec radius = RadiusSpec.All(new Rem(0.125f));
+            PaintBox.Draw(swatch, bg, border, radius);
+        };
+        return node;
     }
 
     private readonly record struct WorldEntry(string World, string Shard, string Population);

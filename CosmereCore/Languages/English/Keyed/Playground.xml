@@ -137,4 +137,6 @@
     <CC_Playground_SearchField_Title>Search field</CC_Playground_SearchField_Title>
     <CC_Playground_SearchField_Placeholder>Filter worlds</CC_Playground_SearchField_Placeholder>
     <CC_Playground_SearchField_NoMatches>No matches.</CC_Playground_SearchField_NoMatches>
+    <CC_Playground_ColorPicker_Title>Color picker</CC_Playground_ColorPicker_Title>
+    <CC_Playground_ColorPicker_Rgb>R: {R}  G: {G}  B: {B}</CC_Playground_ColorPicker_Rgb>
 </LanguageData>

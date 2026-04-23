@@ -21,7 +21,8 @@ public static class LightweaveRoot
             stores[rootId] = store;
         }
 
-        RenderContext ctx = new RenderContext { Hooks = store };
+        AnimationClock.ClearFrame();
+        RenderContext ctx = new RenderContext { Hooks = store, RootId = rootId };
         ctx.ThemeStack.Push(GetBaseTheme());
         ctx.DirectionStack.Push(directionOverride ?? DetectDirection());
         ctx.PointerPos = Event.current?.mousePosition ?? Vector2.zero;
@@ -34,6 +35,7 @@ public static class LightweaveRoot
                 root.MeasuredRect = inRect;
                 root.ContentRect = inRect;
                 Paint(root);
+                ctx.FlushHotkeys();
                 ctx.PendingOverlays.Flush();
             }
             finally

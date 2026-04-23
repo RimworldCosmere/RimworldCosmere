@@ -583,6 +583,33 @@ public sealed class LightweavePlayground : LightweaveWindow
                     value: Typography.Typography.Text("None"),
                     labelWidth: new Rem(8f)));
             }));
+
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_UseAnim_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<bool> animToggle = Hooks.Hooks.UseState<bool>(true);
+                float alpha = UseAnim.Animate(animToggle.Value ? 1f : 0.3f, 0.3f);
+
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Sm, children: r =>
+                {
+                    r.Add(Button.Create(
+                        label: "CC_Playground_UseAnim_Toggle".Translate(),
+                        onClick: () => animToggle.Set(!animToggle.Value),
+                        variant: ButtonVariant.Primary));
+                    LightweaveNode swatch = NodeBuilder.New("AnimSwatch");
+                    swatch.Paint = (rect, _) =>
+                    {
+                        Rect swatchRect = new Rect(rect.x, rect.y + (rect.height - 32f) * 0.5f, 64f, 32f);
+                        Color saved = GUI.color;
+                        GUI.color = new Color(0.42f, 0.72f, 0.88f, alpha);
+                        GUI.DrawTexture(swatchRect, Texture2D.whiteTexture);
+                        GUI.color = saved;
+                    };
+                    r.Add(swatch);
+                }));
+            }));
+
         });
     }
 

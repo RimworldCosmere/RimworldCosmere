@@ -8,13 +8,15 @@ namespace Cosmere.Core.UI.Lightweave.Adapter;
 public abstract class AsGizmo : Command
 {
     private readonly int entityId;
+    private readonly int subKey;
     private readonly AdapterKind adapterKind;
     protected readonly float width;
     protected readonly float height;
 
-    protected AsGizmo(int entityId, float width = 75f, float height = 75f, AdapterKind adapterKind = AdapterKind.Gizmo)
+    protected AsGizmo(int entityId, int subKey = 0, float width = 75f, float height = 75f, AdapterKind adapterKind = AdapterKind.Gizmo)
     {
         this.entityId = entityId;
+        this.subKey = subKey;
         this.adapterKind = adapterKind;
         this.width = width;
         this.height = height;
@@ -27,7 +29,7 @@ public abstract class AsGizmo : Command
     public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms)
     {
         Rect rect = new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), height);
-        Guid id = AdapterStoreRegistry.Get(entityId, adapterKind);
+        Guid id = AdapterStoreRegistry.Get(entityId, adapterKind, subKey);
         LightweaveRoot.Render(rect, id, Build);
         return new GizmoResult(Mouse.IsOver(rect) ? GizmoState.Mouseover : GizmoState.Clear);
     }

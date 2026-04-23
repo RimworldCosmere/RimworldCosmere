@@ -19,7 +19,7 @@ public class SurgeGizmo : AsGizmo {
     private int cachedIdeal = -1;
 
     public SurgeGizmo(Surgebinder gene, SurgeDef surgeDef)
-        : base(Gen.HashCombineInt(gene.pawn.thingIDNumber, surgeDef.shortHash)) {
+        : base(gene.pawn.thingIDNumber, surgeDef.shortHash) {
         this.gene = gene;
         this.surgeDef = surgeDef;
     }

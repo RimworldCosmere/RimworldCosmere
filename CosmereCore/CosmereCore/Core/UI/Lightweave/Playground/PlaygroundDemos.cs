@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
+using Cosmere.Core.UI.Lightweave.Feedback;
 using Cosmere.Core.UI.Lightweave.Hooks;
 using Cosmere.Core.UI.Lightweave.Input;
 using Cosmere.Core.UI.Lightweave.Layout;
+using Cosmere.Core.UI.Lightweave.Navigation;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Surface;
 using Cosmere.Core.UI.Lightweave.Tokens;
@@ -64,6 +66,20 @@ internal static class PlaygroundDemos
             case "dropdown": return DropdownDemo(forceDisabled);
             case "colorpicker": return ColorPickerDemo(forceDisabled);
             case "keybinding": return KeyBindingDemo(forceDisabled);
+
+            case "spinner": return SpinnerDemo();
+            case "progressbar": return ProgressBarDemo();
+            case "ringgauge": return RingGaugeDemo();
+            case "sparkline": return SparklineDemo();
+            case "badge": return BadgeDemo();
+            case "tag": return TagDemo();
+            case "tooltip": return TooltipDemo();
+
+            case "tabs": return TabsDemo();
+            case "segmented": return SegmentedDemo();
+            case "breadcrumbs": return BreadcrumbsDemo();
+            case "menu": return MenuDemo();
+            case "contextmenu": return ContextMenuDemo();
 
             default:
                 return (EmptyVariants, EmptyStates);
@@ -708,5 +724,236 @@ internal static class PlaygroundDemos
             KeyBindingField.Create(binding.Value, v => binding.Set(v), disabled: forceDisabled));
 
         return (new[] { cast }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) SpinnerDemo()
+    {
+        PlaygroundVariant small = new PlaygroundVariant("CC_Playground_Label_Small",
+            Spinner.Create(new Rem(1f)));
+        PlaygroundVariant medium = new PlaygroundVariant("CC_Playground_Label_Medium",
+            Spinner.Create(new Rem(1.5f)));
+        PlaygroundVariant large = new PlaygroundVariant("CC_Playground_Label_Large",
+            Spinner.Create(new Rem(2f)));
+
+        return (new[] { small, medium, large }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) ProgressBarDemo()
+    {
+        PlaygroundVariant accent = new PlaygroundVariant("CC_Playground_Label_Accent",
+            ProgressBar.Create(0.65f, 0f, 1f, "65%", BadgeVariant.Accent));
+        PlaygroundVariant success = new PlaygroundVariant("CC_Playground_Label_Default",
+            ProgressBar.Create(0.35f, 0f, 1f, "35%", BadgeVariant.Success));
+        PlaygroundVariant danger = new PlaygroundVariant("CC_Playground_Label_Danger",
+            ProgressBar.Create(0.9f, 0f, 1f, "90%", BadgeVariant.Danger));
+
+        return (new[] { accent, success, danger }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) RingGaugeDemo()
+    {
+        PlaygroundVariant low = new PlaygroundVariant("CC_Playground_Label_Small",
+            RingGauge.Create(0.25f));
+        PlaygroundVariant mid = new PlaygroundVariant("CC_Playground_Label_Medium",
+            RingGauge.Create(0.6f));
+        PlaygroundVariant high = new PlaygroundVariant("CC_Playground_Label_Large",
+            RingGauge.Create(0.95f));
+
+        return (new[] { low, mid, high }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) SparklineDemo()
+    {
+        float[] rising = new float[] { 1f, 2f, 3f, 5f, 8f, 13f };
+        float[] wavy = new float[] { 3f, 5f, 2f, 7f, 4f, 6f, 2f };
+        float[] flat = new float[] { 4f, 4f, 4f, 4f, 4f };
+
+        PlaygroundVariant risingSpark = new PlaygroundVariant("CC_Playground_Label_Accent",
+            Sparkline.Create(rising));
+        PlaygroundVariant wavySpark = new PlaygroundVariant("CC_Playground_Label_Default",
+            Sparkline.Create(wavy));
+        PlaygroundVariant flatSpark = new PlaygroundVariant("CC_Playground_Label_Muted",
+            Sparkline.Create(flat, ThemeSlot.TextMuted));
+
+        return (new[] { risingSpark, wavySpark, flatSpark }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) BadgeDemo()
+    {
+        PlaygroundVariant neutral = new PlaygroundVariant("CC_Playground_Feedback_Badge_Neutral",
+            Badge.Create((string)"CC_Playground_Feedback_Badge_Neutral".Translate(), BadgeVariant.Neutral));
+        PlaygroundVariant accent = new PlaygroundVariant("CC_Playground_Feedback_Badge_Accent",
+            Badge.Create((string)"CC_Playground_Feedback_Badge_Accent".Translate(), BadgeVariant.Accent));
+        PlaygroundVariant warning = new PlaygroundVariant("CC_Playground_Feedback_Badge_Warning",
+            Badge.Create((string)"CC_Playground_Feedback_Badge_Warning".Translate(), BadgeVariant.Warning));
+        PlaygroundVariant danger = new PlaygroundVariant("CC_Playground_Feedback_Badge_Danger",
+            Badge.Create((string)"CC_Playground_Feedback_Badge_Danger".Translate(), BadgeVariant.Danger));
+        PlaygroundVariant success = new PlaygroundVariant("CC_Playground_Feedback_Badge_Success",
+            Badge.Create((string)"CC_Playground_Feedback_Badge_Success".Translate(), BadgeVariant.Success));
+
+        return (new[] { neutral, accent, warning, danger, success }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) TagDemo()
+    {
+        PlaygroundVariant staticTag = new PlaygroundVariant("CC_Playground_Feedback_Tag_Static",
+            Tag.Create((string)"CC_Playground_Feedback_Tag_Static".Translate(), onDismiss: null, BadgeVariant.Neutral));
+        PlaygroundVariant dismissTag = new PlaygroundVariant("CC_Playground_Feedback_Tag_Dismissible",
+            Tag.Create((string)"CC_Playground_Feedback_Tag_Dismissible".Translate(), onDismiss: () => { }, BadgeVariant.Accent));
+
+        return (new[] { staticTag, dismissTag }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) TooltipDemo()
+    {
+        LightweaveNode trigger = Button.Create(
+            (string)"CC_Playground_Feedback_Tooltip_Button_Label".Translate(),
+            () => { },
+            ButtonVariant.Secondary);
+        LightweaveNode body = Typography.Typography.Text(
+            (string)"CC_Playground_Feedback_Tooltip_Button_Body".Translate(),
+            FontRole.Body,
+            new Rem(0.8125f),
+            ThemeSlot.TextPrimary);
+
+        PlaygroundVariant wrapped = new PlaygroundVariant("CC_Playground_Label_Default",
+            Tooltip.Wrap(trigger, body));
+
+        return (new[] { wrapped }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) TabsDemo()
+    {
+        Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("general");
+
+        string[] tabs = new[] { "general", "combat", "storage" };
+        LightweaveNode tabsNode = Tabs.Create<string>(
+            value: selected.Value,
+            items: tabs,
+            labelFn: v => v switch
+            {
+                "combat" => (string)"CC_Playground_Navigation_Tabs_Combat".Translate(),
+                "storage" => (string)"CC_Playground_Navigation_Tabs_Storage".Translate(),
+                _ => (string)"CC_Playground_Navigation_Tabs_General".Translate(),
+            },
+            onChange: v => selected.Set(v),
+            bodyFn: v => Typography.Typography.Caption(v switch
+            {
+                "combat" => (string)"CC_Playground_Navigation_Tabs_Body_Combat".Translate(),
+                "storage" => (string)"CC_Playground_Navigation_Tabs_Body_Storage".Translate(),
+                _ => (string)"CC_Playground_Navigation_Tabs_Body_General".Translate(),
+            }));
+
+        PlaygroundVariant threeTabs = new PlaygroundVariant("CC_Playground_Label_Default", tabsNode);
+
+        return (new[] { threeTabs }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) SegmentedDemo()
+    {
+        Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("all");
+
+        string[] segments = new[] { "all", "armor", "weapons", "tools" };
+        LightweaveNode segNode = Segmented.Create<string>(
+            value: selected.Value,
+            items: segments,
+            labelFn: v => v switch
+            {
+                "armor" => (string)"CC_Playground_Navigation_Segmented_Armor".Translate(),
+                "weapons" => (string)"CC_Playground_Navigation_Segmented_Weapons".Translate(),
+                "tools" => (string)"CC_Playground_Navigation_Segmented_Tools".Translate(),
+                _ => (string)"CC_Playground_Navigation_Segmented_All".Translate(),
+            },
+            onChange: v => selected.Set(v));
+
+        PlaygroundVariant four = new PlaygroundVariant("CC_Playground_Label_Default", segNode);
+
+        return (new[] { four }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) BreadcrumbsDemo()
+    {
+        string[] path = new[]
+        {
+            (string)"CC_Playground_Breadcrumbs_Crumb_Worlds".Translate(),
+            (string)"CC_Playground_Breadcrumbs_Crumb_Roshar".Translate(),
+            (string)"CC_Playground_Breadcrumbs_Crumb_ShatteredPlains".Translate(),
+        };
+
+        PlaygroundVariant crumbs = new PlaygroundVariant("CC_Playground_Label_Default",
+            Breadcrumbs.Create(path));
+
+        return (new[] { crumbs }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) MenuDemo()
+    {
+        Hooks.Hooks.StateHandle<bool> open = Hooks.Hooks.UseState<bool>(false);
+        Hooks.Hooks.RefHandle<Rect> anchor = Hooks.Hooks.UseRef<Rect>(default(Rect));
+
+        List<MenuItem> items = new List<MenuItem>
+        {
+            new MenuItem((string)"CC_Playground_Navigation_Menu_Open".Translate(), () => open.Set(false)),
+            new MenuItem((string)"CC_Playground_Navigation_Menu_Save".Translate(), () => open.Set(false)),
+            new MenuItem((string)"CC_Playground_Navigation_Menu_SaveAs".Translate(), () => open.Set(false)),
+            new MenuItem((string)"CC_Playground_Navigation_Menu_Close".Translate(), () => open.Set(false)),
+        };
+
+        LightweaveNode trigger = NodeBuilder.New("MenuTrigger", 0, nameof(PlaygroundDemos));
+        LightweaveNode button = Button.Create(
+            (string)"CC_Playground_Menu_TriggerOpen".Translate(),
+            () => open.Set(!open.Value),
+            ButtonVariant.Secondary);
+        trigger.Children.Add(button);
+        trigger.Paint = (rect, _) =>
+        {
+            anchor.Current = rect;
+            button.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(button, rect);
+        };
+
+        LightweaveNode menu = Menu.Create(
+            isOpen: open.Value,
+            anchorRect: anchor.Current,
+            items: items,
+            onDismiss: () => open.Set(false),
+            instanceKey: "playground-menu");
+
+        LightweaveNode composed = NodeBuilder.New("MenuHost", 0, nameof(PlaygroundDemos));
+        composed.Children.Add(trigger);
+        composed.Children.Add(menu);
+        composed.Paint = (rect, _) =>
+        {
+            trigger.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(trigger, rect);
+            menu.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(menu, rect);
+        };
+
+        return (new[] { new PlaygroundVariant("CC_Playground_Label_Default", composed) }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) ContextMenuDemo()
+    {
+        List<MenuItem> items = new List<MenuItem>
+        {
+            new MenuItem((string)"CC_Playground_ContextMenu_Inspect".Translate(), () => { }),
+            new MenuItem((string)"CC_Playground_ContextMenu_Rename".Translate(), () => { }),
+            new MenuItem((string)"CC_Playground_ContextMenu_Duplicate".Translate(), () => { }),
+            new MenuItem((string)"CC_Playground_ContextMenu_Delete".Translate(), () => { }),
+        };
+
+        LightweaveNode target = Surface.Surface.Box(
+            padding: EdgeInsets.All(SpacingScale.Sm),
+            background: new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised),
+            border: BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
+            radius: RadiusSpec.All(new Rem(0.25f)),
+            children: c => c.Add(Typography.Typography.Caption(
+                (string)"CC_Playground_ContextMenu_RightClick".Translate())));
+
+        PlaygroundVariant wrapped = new PlaygroundVariant("CC_Playground_Label_Default",
+            Cosmere.Core.UI.Lightweave.Navigation.ContextMenu.Create(target, items));
+
+        return (new[] { wrapped }, EmptyStates);
     }
 }

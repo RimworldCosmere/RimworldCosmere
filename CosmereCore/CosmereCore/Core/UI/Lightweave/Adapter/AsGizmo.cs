@@ -5,6 +5,16 @@ using Verse;
 
 namespace Cosmere.Core.UI.Lightweave.Adapter;
 
+/// <summary>
+/// Phase 3 adapter that paints a Lightweave tree inside a vanilla Command's gizmo rect.
+/// The adapter routes layout/paint through <see cref="LightweaveRoot"/> but does NOT reimplement
+/// vanilla Command affordances: disabled + disabledReason handling, hotKey dispatch,
+/// right-click FloatMenu opening, TutorSystem gating, UIHighlighter, and Steam Deck activation
+/// are all bypassed. Consumers that need those behaviours must either handle them inside
+/// their Build() paint, or wait for a later AsGizmo revision that composes with vanilla
+/// Command.GizmoOnGUIInt. Subclasses override GetWidth when they need variable width;
+/// the base width parameter is a default for fixed-size gizmos.
+/// </summary>
 public abstract class AsGizmo : Command
 {
     private readonly int entityId;
@@ -33,9 +43,15 @@ public abstract class AsGizmo : Command
         LightweaveRoot.Render(rect, id, Build);
 
         Event evt = Event.current;
+        if (evt == null || evt.type == EventType.Used)
+        {
+            return new GizmoResult(GizmoState.Clear);
+        }
+
         bool mouseOver = Mouse.IsOver(rect);
         if (mouseOver && evt.type == EventType.MouseUp && evt.button == 0)
         {
+            evt.Use();
             return new GizmoResult(GizmoState.Interacted, evt);
         }
 

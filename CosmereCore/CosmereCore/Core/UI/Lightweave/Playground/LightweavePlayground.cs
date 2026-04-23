@@ -836,6 +836,54 @@ public sealed class LightweavePlayground : LightweaveWindow
                 c.Add(TablePlaygroundBounds(tableNode));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Tree_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<string> lastSelected = Hooks.Hooks.UseState<string>(string.Empty);
+
+                IReadOnlyList<Data.TreeNode> roots = new Data.TreeNode[]
+                {
+                    new Data.TreeNode("Cosmere", new Data.TreeNode[]
+                    {
+                        new Data.TreeNode("Rosharan System", new Data.TreeNode[]
+                        {
+                            new Data.TreeNode("Roshar", new Data.TreeNode[]
+                            {
+                                new Data.TreeNode("Alethkar"),
+                                new Data.TreeNode("Jah Keved"),
+                                new Data.TreeNode("Shin"),
+                            }),
+                            new Data.TreeNode("Ashyn"),
+                            new Data.TreeNode("Braize"),
+                        }),
+                        new Data.TreeNode("Scadrian System", new Data.TreeNode[]
+                        {
+                            new Data.TreeNode("Scadrial", new Data.TreeNode[]
+                            {
+                                new Data.TreeNode("Final Empire Era"),
+                                new Data.TreeNode("Post-Catacendre Era"),
+                            }),
+                        }),
+                        new Data.TreeNode("Selish System", new Data.TreeNode[]
+                        {
+                            new Data.TreeNode("Sel"),
+                        }),
+                    }),
+                };
+
+                LightweaveNode treeNode = Data.Tree.Create(
+                    roots: roots,
+                    onSelect: picked => lastSelected.Set(picked.Label));
+
+                c.Add(TreePlaygroundBounds(treeNode));
+
+                string selectedText = string.IsNullOrEmpty(lastSelected.Value)
+                    ? (string)"CC_Playground_Tree_NothingSelected".Translate()
+                    : (string)"CC_Playground_Tree_Selected".Translate(lastSelected.Value.Named("NODE"));
+                c.Add(Typography.Typography.Caption(selectedText));
+            }));
+
         });
     }
 
@@ -847,6 +895,23 @@ public sealed class LightweavePlayground : LightweaveWindow
         [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
     {
         LightweaveNode node = NodeBuilder.New("TablePlaygroundBounds", line, file);
+        node.Children.Add(inner);
+        node.Paint = (rect, _) =>
+        {
+            float height = new Rem(14f).ToPixels();
+            Rect bounded = new Rect(rect.x, rect.y, rect.width, height);
+            inner.MeasuredRect = bounded;
+            LightweaveRoot.PaintSubtree(inner, bounded);
+        };
+        return node;
+    }
+
+    private static LightweaveNode TreePlaygroundBounds(
+        LightweaveNode inner,
+        [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,
+        [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
+    {
+        LightweaveNode node = NodeBuilder.New("TreePlaygroundBounds", line, file);
         node.Children.Add(inner);
         node.Paint = (rect, _) =>
         {

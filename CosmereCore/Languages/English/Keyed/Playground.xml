@@ -131,4 +131,7 @@
     <CC_Playground_Table_Col_Shards>Shards</CC_Playground_Table_Col_Shards>
     <CC_Playground_Table_Col_Population>Population</CC_Playground_Table_Col_Population>
     <CC_Playground_Table_Empty>No worlds recorded.</CC_Playground_Table_Empty>
+    <CC_Playground_Tree_Title>Tree</CC_Playground_Tree_Title>
+    <CC_Playground_Tree_Selected>Selected: {NODE}</CC_Playground_Tree_Selected>
+    <CC_Playground_Tree_NothingSelected>Nothing selected</CC_Playground_Tree_NothingSelected>
 </LanguageData>

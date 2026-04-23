@@ -14,4 +14,5 @@ public sealed class LightweaveNode
     public List<LightweaveNode> Children = new List<LightweaveNode>();
     public Rect MeasuredRect;
     public Rect ContentRect;
+    public float? PreferredHeight;
 }

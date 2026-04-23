@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using Cosmere.Core.UI;
@@ -11,31 +10,23 @@ namespace Cosmere.Core.UI.Lightweave.Layout;
 public static partial class Layout
 {
     public static LightweaveNode ScrollArea(
-        float contentHeight,
-        Action<List<LightweaveNode>> children,
+        LightweaveNode content,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = "")
     {
-        List<LightweaveNode> kids = new List<LightweaveNode>();
-        children(kids);
         Hooks.Hooks.RefHandle<ScrollViewStatus> statusRef = Hooks.Hooks.UseRef(new ScrollViewStatus(), line, file);
 
         LightweaveNode node = NodeBuilder.New("ScrollArea", line, file);
-        node.Children.AddRange(kids);
+        node.Children.Add(content);
         node.Paint = (rect, paintChildren) =>
         {
+            float contentHeight = content.PreferredHeight ?? rect.height;
             statusRef.Current.height = contentHeight;
             using (new ScrollView(rect, statusRef.Current))
             {
-                float y = 0f;
                 float scrollbarGutter = statusRef.Current.scrollVisibile ? 20f : 0f;
                 float innerWidth = rect.width - scrollbarGutter;
-                foreach (LightweaveNode child in kids)
-                {
-                    Rect childRect = new Rect(0, y, innerWidth, 32f);
-                    child.MeasuredRect = childRect;
-                    y += 32f;
-                }
+                content.MeasuredRect = new Rect(0f, 0f, innerWidth, contentHeight);
                 paintChildren();
             }
         };

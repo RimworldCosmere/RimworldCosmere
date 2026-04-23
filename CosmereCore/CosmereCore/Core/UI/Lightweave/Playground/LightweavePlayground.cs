@@ -676,6 +676,18 @@ public sealed class LightweavePlayground : LightweaveWindow
                 }));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_RingGauge_Title".Translate()));
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Lg, children: r =>
+                {
+                    r.Add(RingGauge.Create(value: 0.25f, centerLabel: "25%"));
+                    r.Add(RingGauge.Create(value: 0.5f, centerLabel: "50%"));
+                    r.Add(RingGauge.Create(value: 0.75f, centerLabel: "75%"));
+                    r.Add(RingGauge.Create(value: 1f, centerLabel: "100%"));
+                }));
+            }));
+
         });
     }
 

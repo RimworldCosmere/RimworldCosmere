@@ -664,6 +664,18 @@ public sealed class LightweavePlayground : LightweaveWindow
                 c.Add(Typography.Typography.Text(hotkeyDisplay));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Spinner_Title".Translate()));
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Lg, children: r =>
+                {
+                    r.Add(Spinner.Create(size: new Rem(1f)));
+                    r.Add(Spinner.Create(size: new Rem(1.5f)));
+                    r.Add(Spinner.Create(size: new Rem(2f)));
+                    r.Add(Spinner.Create(size: new Rem(1.5f), color: ThemeSlot.StatusSuccess));
+                }));
+            }));
+
         });
     }
 

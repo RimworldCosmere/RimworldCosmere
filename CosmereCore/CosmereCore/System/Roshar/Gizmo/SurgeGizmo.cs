@@ -1,4 +1,5 @@
-using Cosmere.Core.Gizmo;
+using Cosmere.Core.UI.Lightweave.Adapter;
+using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.Surgebinding.Ability;
@@ -9,7 +10,7 @@ using Verse;
 namespace Cosmere.System.Roshar.Gizmo;
 
 [StaticConstructorOnStartup]
-public class SurgeGizmo : Verse.Gizmo {
+public class SurgeGizmo : AsGizmo {
     private static readonly Vector2 Padding = new Vector2(2f, 4f);
     private readonly Surgebinder gene;
     private readonly SurgeDef surgeDef;
@@ -17,7 +18,8 @@ public class SurgeGizmo : Verse.Gizmo {
     private bool initialized;
     private int cachedIdeal = -1;
 
-    public SurgeGizmo(Surgebinder gene, SurgeDef surgeDef) {
+    public SurgeGizmo(Surgebinder gene, SurgeDef surgeDef)
+        : base(Gen.HashCombineInt(gene.pawn.thingIDNumber, surgeDef.shortHash)) {
         this.gene = gene;
         this.surgeDef = surgeDef;
     }
@@ -75,12 +77,20 @@ public class SurgeGizmo : Verse.Gizmo {
         }
     }
 
-    public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {
+    public void ClearCache() {
+        initialized = false;
+    }
+
+    protected override LightweaveNode Build() {
         Initialize();
+        LightweaveNode node = new LightweaveNode { DebugName = "SurgeGizmo" };
+        node.Paint = (outerRect, _) => PaintSurge(outerRect);
+        return node;
+    }
+
+    private void PaintSurge(Rect outerRect) {
         bool mouseOver = false;
 
-        float width = GetWidth(maxWidth);
-        Rect outerRect = new Rect(topLeft.x, topLeft.y, width, Height);
         Rect mainRect = outerRect.ContractedBy(Padding.x * 2, Padding.y);
 
         Widgets.DrawWindowBackground(outerRect);
@@ -129,11 +139,5 @@ public class SurgeGizmo : Verse.Gizmo {
         } else if (Mouse.IsOver(mainRect) && !mouseOver) {
             Widgets.DrawHighlight(mainRect);
         }
-
-        return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear);
-    }
-
-    public void ClearCache() {
-        initialized = false;
     }
 }

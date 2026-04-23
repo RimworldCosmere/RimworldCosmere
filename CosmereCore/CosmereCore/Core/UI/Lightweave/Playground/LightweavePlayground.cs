@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
@@ -16,19 +15,29 @@ public sealed class LightweavePlayground : LightweaveWindow
 {
     private static readonly IReadOnlyList<PlaygroundCategory> Categories = new PlaygroundCategory[]
     {
-        new PlaygroundCategory("layout",     "CC_Playground_Category_Layout",     "CC_Playground_Category_Layout_Desc",     new[] { "stack" }),
-        new PlaygroundCategory("surface",    "CC_Playground_Category_Surface",    "CC_Playground_Category_Surface_Desc",    new[] { "card" }),
-        new PlaygroundCategory("typography", "CC_Playground_Category_Typography", "CC_Playground_Category_Typography_Desc", new[] { "heading" }),
-        new PlaygroundCategory("buttons",    "CC_Playground_Category_Buttons",    "CC_Playground_Category_Buttons_Desc",    new[] { "button" }),
-        new PlaygroundCategory("inputs",     "CC_Playground_Category_Inputs",     "CC_Playground_Category_Inputs_Desc",     new[] { "textfield" }),
-        new PlaygroundCategory("feedback",   "CC_Playground_Category_Feedback",   "CC_Playground_Category_Feedback_Desc",   new[] { "spinner" }),
-        new PlaygroundCategory("navigation", "CC_Playground_Category_Navigation", "CC_Playground_Category_Navigation_Desc", new[] { "tabs" }),
-        new PlaygroundCategory("overlay",    "CC_Playground_Category_Overlay",    "CC_Playground_Category_Overlay_Desc",    new[] { "modal" }),
-        new PlaygroundCategory("data",       "CC_Playground_Category_Data",       "CC_Playground_Category_Data_Desc",       new[] { "list" }),
-        new PlaygroundCategory("hooks",      "CC_Playground_Category_Hooks",      "CC_Playground_Category_Hooks_Desc",      new[] { "usestate" }),
+        new PlaygroundCategory("layout",     "CC_Playground_Category_Layout",     "CC_Playground_Category_Layout_Desc",
+            new[] { "stack", "column", "row", "hstack", "grid", "wrap", "scrollarea", "divider", "spacer", "each", "conditional" }),
+        new PlaygroundCategory("surface",    "CC_Playground_Category_Surface",    "CC_Playground_Category_Surface_Desc",
+            new[] { "card", "box", "panel", "surface" }),
+        new PlaygroundCategory("typography", "CC_Playground_Category_Typography", "CC_Playground_Category_Typography_Desc",
+            new[] { "heading", "text", "label", "caption", "richtext", "code", "icon" }),
+        new PlaygroundCategory("buttons",    "CC_Playground_Category_Buttons",    "CC_Playground_Category_Buttons_Desc",
+            new[] { "button", "iconbutton", "togglebutton" }),
+        new PlaygroundCategory("inputs",     "CC_Playground_Category_Inputs",     "CC_Playground_Category_Inputs_Desc",
+            new[] { "textfield", "checkbox", "switch", "radio", "slider", "textarea", "numberfield", "searchfield", "dropdown", "colorpicker", "keybinding" }),
+        new PlaygroundCategory("feedback",   "CC_Playground_Category_Feedback",   "CC_Playground_Category_Feedback_Desc",
+            new[] { "spinner", "progressbar", "ringgauge", "sparkline", "badge", "tag", "tooltip" }),
+        new PlaygroundCategory("navigation", "CC_Playground_Category_Navigation", "CC_Playground_Category_Navigation_Desc",
+            new[] { "tabs", "segmented", "breadcrumbs", "menu", "contextmenu" }),
+        new PlaygroundCategory("overlay",    "CC_Playground_Category_Overlay",    "CC_Playground_Category_Overlay_Desc",
+            new[] { "dialog", "popover", "drawer", "toast" }),
+        new PlaygroundCategory("data",       "CC_Playground_Category_Data",       "CC_Playground_Category_Data_Desc",
+            new[] { "list", "table", "tree", "keyvalue" }),
+        new PlaygroundCategory("hooks",      "CC_Playground_Category_Hooks",      "CC_Playground_Category_Hooks_Desc",
+            new[] { "usestate", "useanim", "usefocus", "usehotkey" }),
     };
 
-    private const float PanelHeight = 180f;
+    private const float PanelHeight = 260f;
     private const float CategoryHeaderHeight = 64f;
     private const float CategoryTitleHeight = 32f;
     private const float CategoryDescriptionHeight = 22f;
@@ -68,12 +77,12 @@ public sealed class LightweavePlayground : LightweaveWindow
 
         LightweaveNode header = PlaygroundHeader.Create(themeHandle, directionHandle, forceDisabledHandle);
         LightweaveNode rail = PlaygroundRail.Create(Categories, selectedCategoryHandle);
-        LightweaveNode body = BuildBody(selectedCategoryHandle.Value);
+        LightweaveNode body = BuildBody(selectedCategoryHandle.Value, forceDisabledHandle.Value);
 
         return PlaygroundShell.Create(header, rail, body);
     }
 
-    private LightweaveNode BuildBody(string selectedCategoryId)
+    private LightweaveNode BuildBody(string selectedCategoryId, bool forceDisabled)
     {
         PlaygroundCategory category = Categories[0];
         for (int i = 0; i < Categories.Count; i++)
@@ -100,12 +109,15 @@ public sealed class LightweavePlayground : LightweaveWindow
                     string whatKey = "CC_Playground_" + id + "_What";
                     string whenKey = "CC_Playground_" + id + "_When";
 
+                    (IReadOnlyList<PlaygroundVariant> variants, IReadOnlyList<PlaygroundState> states) demo =
+                        PlaygroundDemos.Build(id, forceDisabled);
+
                     LightweaveNode panel = PlaygroundPanel.Create(
                         titleKey: titleKey,
                         whatKey: whatKey,
                         whenKey: whenKey,
-                        variants: Array.Empty<PlaygroundVariant>(),
-                        states: Array.Empty<PlaygroundState>(),
+                        variants: demo.variants,
+                        states: demo.states,
                         sourcePath: "Lightweave/" + id + ".cs",
                         height: PanelHeight);
                     s.Add(panel, PanelHeight);

@@ -205,9 +205,6 @@
     <CC_Playground_tabs_Title>Tabs</CC_Playground_tabs_Title>
     <CC_Playground_tabs_What>Horizontal row of tabs selecting which of several panels is visible.</CC_Playground_tabs_What>
     <CC_Playground_tabs_When>Use to split a surface into peer views. Prefer tabs over stacked modal dialogs.</CC_Playground_tabs_When>
-    <CC_Playground_modal_Title>Modal</CC_Playground_modal_Title>
-    <CC_Playground_modal_What>Floating panel that captures focus and dims the background.</CC_Playground_modal_What>
-    <CC_Playground_modal_When>Use for decisions that must be made before proceeding. Avoid stacking modals.</CC_Playground_modal_When>
     <CC_Playground_list_Title>List</CC_Playground_list_Title>
     <CC_Playground_list_What>Virtualized scrollable list of rows rendered by a per-item callback.</CC_Playground_list_What>
     <CC_Playground_list_When>Use for long collections. Reach for Table when rows share a columnar structure.</CC_Playground_list_When>
@@ -227,4 +224,226 @@
     <CC_Playground_Panel_SourceLabel>Source:</CC_Playground_Panel_SourceLabel>
     <CC_Playground_Panel_Variants>Variants</CC_Playground_Panel_Variants>
     <CC_Playground_Panel_States>States</CC_Playground_Panel_States>
+
+    <!-- Task D2b: primitive Title/What/When keys -->
+    <CC_Playground_column_Title>Column</CC_Playground_column_Title>
+    <CC_Playground_column_What>Divides a rect evenly among its children, stacked top to bottom.</CC_Playground_column_What>
+    <CC_Playground_column_When>Reach for it when you want equal-height rows. Use Stack when children have distinct heights.</CC_Playground_column_When>
+    <CC_Playground_row_Title>Row</CC_Playground_row_Title>
+    <CC_Playground_row_What>Divides a rect evenly among its children, laid out left to right. Reverses in RTL.</CC_Playground_row_What>
+    <CC_Playground_row_When>Use for equal-width cells. Use HStack when some children need fixed widths and others flex.</CC_Playground_row_When>
+    <CC_Playground_hstack_Title>HStack</CC_Playground_hstack_Title>
+    <CC_Playground_hstack_What>Horizontal layout with a mix of fixed-width and flex children.</CC_Playground_hstack_What>
+    <CC_Playground_hstack_When>Use when one child should fill the remaining space. Reach for Row when every cell is equal.</CC_Playground_hstack_When>
+    <CC_Playground_grid_Title>Grid</CC_Playground_grid_Title>
+    <CC_Playground_grid_What>Column-defined grid. Tracks can be fixed sizes, fractional weights, or repeated.</CC_Playground_grid_What>
+    <CC_Playground_grid_When>Use for tabular data or fixed column layouts. Use Wrap when items flow naturally without strict columns.</CC_Playground_grid_When>
+    <CC_Playground_wrap_Title>Wrap</CC_Playground_wrap_Title>
+    <CC_Playground_wrap_What>Lays out children in rows, wrapping to the next row when width runs out.</CC_Playground_wrap_What>
+    <CC_Playground_wrap_When>Use for tag clouds, chip lists, or any collection of uniform items that should reflow.</CC_Playground_wrap_When>
+    <CC_Playground_scrollarea_Title>ScrollArea</CC_Playground_scrollarea_Title>
+    <CC_Playground_scrollarea_What>Wraps content taller than its rect in a vertical scroll view.</CC_Playground_scrollarea_What>
+    <CC_Playground_scrollarea_When>Use when content height exceeds the available space. Wrap a Stack to scroll the whole body.</CC_Playground_scrollarea_When>
+    <CC_Playground_divider_Title>Divider</CC_Playground_divider_Title>
+    <CC_Playground_divider_What>A thin horizontal or vertical rule in the theme's subtle border color.</CC_Playground_divider_What>
+    <CC_Playground_divider_When>Use between logical sections that share a surface. Skip it when a gap already separates them.</CC_Playground_divider_When>
+    <CC_Playground_spacer_Title>Spacer</CC_Playground_spacer_Title>
+    <CC_Playground_spacer_What>Invisible element reserving space. Flex spacers push adjacent content to the edges.</CC_Playground_spacer_What>
+    <CC_Playground_spacer_When>Use to align content to the far edge of a container without hardcoded margins.</CC_Playground_spacer_When>
+    <CC_Playground_each_Title>Each</CC_Playground_each_Title>
+    <CC_Playground_each_What>Maps a collection to a list of nodes. Assigns stable keys for diffing across renders.</CC_Playground_each_What>
+    <CC_Playground_each_When>Use to render one node per item in a sequence. Pass a keyFn when items can reorder.</CC_Playground_each_When>
+    <CC_Playground_conditional_Title>Conditional</CC_Playground_conditional_Title>
+    <CC_Playground_conditional_What>Renders its child only when the condition is true. Otherwise paints nothing.</CC_Playground_conditional_What>
+    <CC_Playground_conditional_When>Use when a branch should not even construct its subtree. A plain if-statement works for simple cases.</CC_Playground_conditional_When>
+
+    <CC_Playground_box_Title>Box</CC_Playground_box_Title>
+    <CC_Playground_box_What>Low-level container with padding, background, border, and radius.</CC_Playground_box_What>
+    <CC_Playground_box_When>Use when you need a styled rectangle. Reach for Card when you want the standard raised surface.</CC_Playground_box_When>
+    <CC_Playground_panel_Title>Panel</CC_Playground_panel_Title>
+    <CC_Playground_panel_What>Titled surface with a dividing rule between title, body, and optional footer.</CC_Playground_panel_What>
+    <CC_Playground_panel_When>Use for labeled sections with a clear header. Card is lighter-weight when no title is needed.</CC_Playground_panel_When>
+    <CC_Playground_surface_Title>Surface</CC_Playground_surface_Title>
+    <CC_Playground_surface_What>Themed rectangle tinted to a named surface role: Primary, Raised, Sunken, or Accent.</CC_Playground_surface_What>
+    <CC_Playground_surface_When>Use to layer surfaces for elevation cues. Sunken recesses, Raised lifts.</CC_Playground_surface_When>
+
+    <CC_Playground_text_Title>Text</CC_Playground_text_Title>
+    <CC_Playground_text_What>The typographic atom. Renders a string with the chosen font, size, color, and weight.</CC_Playground_text_What>
+    <CC_Playground_text_When>Use when you need control over font and color. Prefer Heading, Label, or Caption when they fit.</CC_Playground_text_When>
+    <CC_Playground_label_Title>Label</CC_Playground_label_Title>
+    <CC_Playground_label_What>Secondary-colored text at body-small size, in the Label font role.</CC_Playground_label_What>
+    <CC_Playground_label_When>Use for form field labels and inline annotations. Caption is smaller and dimmer.</CC_Playground_label_When>
+    <CC_Playground_caption_Title>Caption</CC_Playground_caption_Title>
+    <CC_Playground_caption_What>Small muted text intended for helper copy and metadata.</CC_Playground_caption_What>
+    <CC_Playground_caption_When>Use for timestamps, counts, and byline text beneath a heading.</CC_Playground_caption_When>
+    <CC_Playground_richtext_Title>RichText</CC_Playground_richtext_Title>
+    <CC_Playground_richtext_What>Body text that honors Unity's rich-text tags for bold, italic, and color runs.</CC_Playground_richtext_What>
+    <CC_Playground_richtext_When>Use when a passage needs inline emphasis. Plain Text is faster for static content.</CC_Playground_richtext_When>
+    <CC_Playground_code_Title>Code</CC_Playground_code_Title>
+    <CC_Playground_code_What>Monospace text at body-small size, rendered in the Mono font role.</CC_Playground_code_What>
+    <CC_Playground_code_When>Use for inline identifiers, file paths, and keyboard shortcuts.</CC_Playground_code_When>
+    <CC_Playground_icon_Title>Icon</CC_Playground_icon_Title>
+    <CC_Playground_icon_What>Tinted texture drawn at a given size. Optionally mirrors in RTL.</CC_Playground_icon_What>
+    <CC_Playground_icon_When>Use wherever you need a glyph. Pair with Text to form an iconographic row.</CC_Playground_icon_When>
+
+    <CC_Playground_iconbutton_Title>IconButton</CC_Playground_iconbutton_Title>
+    <CC_Playground_iconbutton_What>Button rendered as an icon alone, without a text label.</CC_Playground_iconbutton_What>
+    <CC_Playground_iconbutton_When>Use in tight spaces like toolbars. Always provide a tooltip, since the icon is the only cue.</CC_Playground_iconbutton_When>
+    <CC_Playground_togglebutton_Title>ToggleButton</CC_Playground_togglebutton_Title>
+    <CC_Playground_togglebutton_What>Button that remembers an on or off state. Paints as Primary when on, Ghost when off.</CC_Playground_togglebutton_What>
+    <CC_Playground_togglebutton_When>Use when a setting is a single binary. Reach for Switch when the control sits in a form.</CC_Playground_togglebutton_When>
+
+    <CC_Playground_checkbox_Title>Checkbox</CC_Playground_checkbox_Title>
+    <CC_Playground_checkbox_What>Labeled boolean input rendered as a box with a check mark when true.</CC_Playground_checkbox_What>
+    <CC_Playground_checkbox_When>Use for independent on or off settings. Radio is for one-of-many choices.</CC_Playground_checkbox_When>
+    <CC_Playground_switch_Title>Switch</CC_Playground_switch_Title>
+    <CC_Playground_switch_What>Labeled track-and-thumb toggle for a boolean state.</CC_Playground_switch_What>
+    <CC_Playground_switch_When>Use when a setting takes effect immediately. Checkbox suits settings confirmed on save.</CC_Playground_switch_When>
+    <CC_Playground_radio_Title>Radio</CC_Playground_radio_Title>
+    <CC_Playground_radio_What>Mutually exclusive option group. Selecting one clears the rest.</CC_Playground_radio_What>
+    <CC_Playground_radio_When>Use for small sets of peer choices. Reach for Dropdown once the list grows past five or six.</CC_Playground_radio_When>
+    <CC_Playground_slider_Title>Slider</CC_Playground_slider_Title>
+    <CC_Playground_slider_What>Drag a thumb along a track to pick a value. Supports min, max, step, and tick marks.</CC_Playground_slider_What>
+    <CC_Playground_slider_When>Use for approximate numeric selection. NumberField is better when the exact value matters.</CC_Playground_slider_When>
+    <CC_Playground_textarea_Title>TextArea</CC_Playground_textarea_Title>
+    <CC_Playground_textarea_What>Multi-line text entry that grows with its content up to a row limit.</CC_Playground_textarea_What>
+    <CC_Playground_textarea_When>Use for paragraph-length input. TextField is right for single-line strings.</CC_Playground_textarea_When>
+    <CC_Playground_numberfield_Title>NumberField</CC_Playground_numberfield_Title>
+    <CC_Playground_numberfield_What>Single-line numeric entry. Clamps to min and max, shakes on invalid parse.</CC_Playground_numberfield_What>
+    <CC_Playground_numberfield_When>Use when a specific number matters. Slider is better for approximate tuning.</CC_Playground_numberfield_When>
+    <CC_Playground_searchfield_Title>SearchField</CC_Playground_searchfield_Title>
+    <CC_Playground_searchfield_What>TextField with a magnifying glyph and a clear button that appears when filled.</CC_Playground_searchfield_What>
+    <CC_Playground_searchfield_When>Use when typing should immediately filter a list. TextField is for freeform entry.</CC_Playground_searchfield_When>
+    <CC_Playground_dropdown_Title>Dropdown</CC_Playground_dropdown_Title>
+    <CC_Playground_dropdown_What>Picks one value from a list in a popover menu. Supports type-ahead and keyboard navigation.</CC_Playground_dropdown_What>
+    <CC_Playground_dropdown_When>Use when the choice set is too long for Radio but too fixed for free text.</CC_Playground_dropdown_When>
+    <CC_Playground_colorpicker_Title>ColorPicker</CC_Playground_colorpicker_Title>
+    <CC_Playground_colorpicker_What>Grid of swatches for picking a color from a palette.</CC_Playground_colorpicker_What>
+    <CC_Playground_colorpicker_When>Use when color is a curated choice. A free RGB picker belongs in a dialog, not inline.</CC_Playground_colorpicker_When>
+    <CC_Playground_keybinding_Title>KeyBindingField</CC_Playground_keybinding_Title>
+    <CC_Playground_keybinding_What>Captures a key combination on click. Shows the bound chord as text.</CC_Playground_keybinding_What>
+    <CC_Playground_keybinding_When>Use for letting the player rebind a hotkey. Clicking again enters recording mode.</CC_Playground_keybinding_When>
+
+    <CC_Playground_progressbar_Title>ProgressBar</CC_Playground_progressbar_Title>
+    <CC_Playground_progressbar_What>Horizontal bar showing progress from 0 to 1. Optional centered label.</CC_Playground_progressbar_What>
+    <CC_Playground_progressbar_When>Use for determinate tasks. Spinner is right when the duration is unknown.</CC_Playground_progressbar_When>
+    <CC_Playground_ringgauge_Title>RingGauge</CC_Playground_ringgauge_Title>
+    <CC_Playground_ringgauge_What>Circular gauge drawn as an arc fill. Supports a centered label.</CC_Playground_ringgauge_What>
+    <CC_Playground_ringgauge_When>Use for at-a-glance readouts like Stormlight or investiture reserves.</CC_Playground_ringgauge_When>
+    <CC_Playground_sparkline_Title>Sparkline</CC_Playground_sparkline_Title>
+    <CC_Playground_sparkline_What>Compact line chart of a recent history of samples.</CC_Playground_sparkline_What>
+    <CC_Playground_sparkline_When>Use for trend-at-a-glance metrics inline with text. No axes, no labels.</CC_Playground_sparkline_When>
+    <CC_Playground_badge_Title>Badge</CC_Playground_badge_Title>
+    <CC_Playground_badge_What>Small pill-shaped label in a status color. Uppercases text for weight.</CC_Playground_badge_What>
+    <CC_Playground_badge_When>Use to mark state or category. Tag is for user-dismissible chips.</CC_Playground_badge_When>
+    <CC_Playground_tag_Title>Tag</CC_Playground_tag_Title>
+    <CC_Playground_tag_What>Badge with an optional dismiss button at the trailing edge.</CC_Playground_tag_What>
+    <CC_Playground_tag_When>Use for filter chips the player can remove. Badge is for fixed labels.</CC_Playground_tag_When>
+    <CC_Playground_tooltip_Title>Tooltip</CC_Playground_tooltip_Title>
+    <CC_Playground_tooltip_What>Wraps any node. Shows a floating popover after a short hover delay.</CC_Playground_tooltip_What>
+    <CC_Playground_tooltip_When>Use for secondary information. Put the essential label in the trigger itself.</CC_Playground_tooltip_When>
+
+    <CC_Playground_segmented_Title>Segmented</CC_Playground_segmented_Title>
+    <CC_Playground_segmented_What>Pill group of peer choices, one active at a time. Like Radio for a toolbar.</CC_Playground_segmented_What>
+    <CC_Playground_segmented_When>Use for two to five short labels that share a surface. Tabs are for whole views.</CC_Playground_segmented_When>
+    <CC_Playground_breadcrumbs_Title>Breadcrumbs</CC_Playground_breadcrumbs_Title>
+    <CC_Playground_breadcrumbs_What>Path of labels joined by chevrons. Truncates middle segments when space runs out.</CC_Playground_breadcrumbs_What>
+    <CC_Playground_breadcrumbs_When>Use in deep hierarchies where the player needs a jump back to an ancestor.</CC_Playground_breadcrumbs_When>
+    <CC_Playground_menu_Title>Menu</CC_Playground_menu_Title>
+    <CC_Playground_menu_What>Popover list of actions. Supports icons, disabled items, and nested submenus.</CC_Playground_menu_What>
+    <CC_Playground_menu_When>Use for four or more peer actions behind a trigger. Inline buttons win for two or three.</CC_Playground_menu_When>
+    <CC_Playground_contextmenu_Title>ContextMenu</CC_Playground_contextmenu_Title>
+    <CC_Playground_contextmenu_What>Wraps a region so right-click opens a menu at the mouse position.</CC_Playground_contextmenu_What>
+    <CC_Playground_contextmenu_When>Use for per-item actions on a list row. Do not hide the primary action behind right-click.</CC_Playground_contextmenu_When>
+
+    <CC_Playground_dialog_Title>Dialog</CC_Playground_dialog_Title>
+    <CC_Playground_dialog_What>Floating window opened on top of the main view. Dims the background.</CC_Playground_dialog_What>
+    <CC_Playground_dialog_When>Use for choices that must be made before proceeding. Avoid stacking dialogs.</CC_Playground_dialog_When>
+    <CC_Playground_popover_Title>Popover</CC_Playground_popover_Title>
+    <CC_Playground_popover_What>Floating panel anchored to a trigger rect. Dismisses on outside click.</CC_Playground_popover_What>
+    <CC_Playground_popover_When>Use for light-weight menus and short pickers. Dialog is right for heavier interactions.</CC_Playground_popover_When>
+    <CC_Playground_drawer_Title>Drawer</CC_Playground_drawer_Title>
+    <CC_Playground_drawer_What>Panel that slides in from an edge of the screen. Left, right, top, or bottom.</CC_Playground_drawer_What>
+    <CC_Playground_drawer_When>Use for secondary views that should not interrupt the main surface. Dialog blocks, Drawer defers.</CC_Playground_drawer_When>
+    <CC_Playground_toast_Title>Toast</CC_Playground_toast_Title>
+    <CC_Playground_toast_What>Transient notification in a screen corner. Fades on its own after a few seconds.</CC_Playground_toast_What>
+    <CC_Playground_toast_When>Use for background events the player should notice but not act on immediately.</CC_Playground_toast_When>
+
+    <CC_Playground_table_Title>Table</CC_Playground_table_Title>
+    <CC_Playground_table_What>Virtualized grid of rows with a fixed header. Columns take fixed widths or fractional weights.</CC_Playground_table_What>
+    <CC_Playground_table_When>Use when rows share a columnar structure. List suffices for freeform rows.</CC_Playground_table_When>
+    <CC_Playground_tree_Title>Tree</CC_Playground_tree_Title>
+    <CC_Playground_tree_What>Virtualized list of expandable nodes. Children render indented under their parent.</CC_Playground_tree_What>
+    <CC_Playground_tree_When>Use for hierarchical data. Flatten to a List when depth rarely exceeds one.</CC_Playground_tree_When>
+    <CC_Playground_keyvalue_Title>KeyValue</CC_Playground_keyvalue_Title>
+    <CC_Playground_keyvalue_What>Two-column row with a fixed-width label on the start edge and a value node on the end.</CC_Playground_keyvalue_What>
+    <CC_Playground_keyvalue_When>Use for inspector-style readouts. Stack many to form a property sheet.</CC_Playground_keyvalue_When>
+
+    <CC_Playground_useanim_Title>UseAnim</CC_Playground_useanim_Title>
+    <CC_Playground_useanim_What>Interpolates a float toward a target value with a duration and easing function.</CC_Playground_useanim_What>
+    <CC_Playground_useanim_When>Use to smooth transitions in painted values. Per-frame animation registers an active clock tick.</CC_Playground_useanim_When>
+    <CC_Playground_usefocus_Title>UseFocus</CC_Playground_usefocus_Title>
+    <CC_Playground_usefocus_What>Produces a focus handle that can request or clear keyboard focus for its control.</CC_Playground_usefocus_What>
+    <CC_Playground_usefocus_When>Use when a button should move focus to a text field. Chain with TextField to focus on open.</CC_Playground_usefocus_When>
+    <CC_Playground_usehotkey_Title>UseHotkey</CC_Playground_usehotkey_Title>
+    <CC_Playground_usehotkey_What>Registers a keyboard shortcut handler while this subtree is rendered.</CC_Playground_usehotkey_What>
+    <CC_Playground_usehotkey_When>Use to bind Escape, Ctrl+S, and similar chords. The handler runs on each matching key press.</CC_Playground_usehotkey_When>
+
+    <!-- Task D2b: variant and state labels -->
+    <CC_Playground_Label_Default>Default</CC_Playground_Label_Default>
+    <CC_Playground_Label_Disabled>Disabled</CC_Playground_Label_Disabled>
+    <CC_Playground_Label_Hover>Hover</CC_Playground_Label_Hover>
+    <CC_Playground_Label_Normal>Normal</CC_Playground_Label_Normal>
+    <CC_Playground_Label_Accented>Accented</CC_Playground_Label_Accented>
+    <CC_Playground_Label_Muted>Muted</CC_Playground_Label_Muted>
+    <CC_Playground_Label_Small>Small</CC_Playground_Label_Small>
+    <CC_Playground_Label_Medium>Medium</CC_Playground_Label_Medium>
+    <CC_Playground_Label_Large>Large</CC_Playground_Label_Large>
+    <CC_Playground_Label_Raised>Raised</CC_Playground_Label_Raised>
+    <CC_Playground_Label_Sunken>Sunken</CC_Playground_Label_Sunken>
+    <CC_Playground_Label_Primary>Primary</CC_Playground_Label_Primary>
+    <CC_Playground_Label_Accent>Accent</CC_Playground_Label_Accent>
+    <CC_Playground_Label_Secondary>Secondary</CC_Playground_Label_Secondary>
+    <CC_Playground_Label_Ghost>Ghost</CC_Playground_Label_Ghost>
+    <CC_Playground_Label_Danger>Danger</CC_Playground_Label_Danger>
+    <CC_Playground_Label_Tight>Tight</CC_Playground_Label_Tight>
+    <CC_Playground_Label_Loose>Loose</CC_Playground_Label_Loose>
+    <CC_Playground_Label_Horizontal>Horizontal</CC_Playground_Label_Horizontal>
+    <CC_Playground_Label_Vertical>Vertical</CC_Playground_Label_Vertical>
+    <CC_Playground_Label_Empty>Empty</CC_Playground_Label_Empty>
+    <CC_Playground_Label_Filled>Filled</CC_Playground_Label_Filled>
+    <CC_Playground_Label_Open>Open</CC_Playground_Label_Open>
+    <CC_Playground_Label_Closed>Closed</CC_Playground_Label_Closed>
+    <CC_Playground_Label_On>On</CC_Playground_Label_On>
+    <CC_Playground_Label_Off>Off</CC_Playground_Label_Off>
+    <CC_Playground_Label_True>True</CC_Playground_Label_True>
+    <CC_Playground_Label_False>False</CC_Playground_Label_False>
+    <CC_Playground_Label_Left>Left</CC_Playground_Label_Left>
+    <CC_Playground_Label_Right>Right</CC_Playground_Label_Right>
+    <CC_Playground_Label_Top>Top</CC_Playground_Label_Top>
+    <CC_Playground_Label_Bottom>Bottom</CC_Playground_Label_Bottom>
+
+    <CC_Playground_DemoItem_Alpha>Alpha</CC_Playground_DemoItem_Alpha>
+    <CC_Playground_DemoItem_Beta>Beta</CC_Playground_DemoItem_Beta>
+    <CC_Playground_DemoItem_Gamma>Gamma</CC_Playground_DemoItem_Gamma>
+    <CC_Playground_DemoItem_Delta>Delta</CC_Playground_DemoItem_Delta>
+    <CC_Playground_DemoItem_Highstorm>Highstorm</CC_Playground_DemoItem_Highstorm>
+    <CC_Playground_DemoItem_Stormlight>Stormlight</CC_Playground_DemoItem_Stormlight>
+    <CC_Playground_DemoItem_Radiant>Radiant</CC_Playground_DemoItem_Radiant>
+    <CC_Playground_DemoItem_Emotion>Emotion</CC_Playground_DemoItem_Emotion>
+
+    <CC_Playground_RichText_Sample>The &lt;b&gt;stormwall&lt;/b&gt; draws &lt;i&gt;near&lt;/i&gt;.</CC_Playground_RichText_Sample>
+    <CC_Playground_Code_Sample>LightweaveRoot.Render</CC_Playground_Code_Sample>
+    <CC_Playground_Text_Sample>Stormlight holds its own weight.</CC_Playground_Text_Sample>
+    <CC_Playground_Conditional_On>Visible</CC_Playground_Conditional_On>
+    <CC_Playground_Conditional_Off>Hidden</CC_Playground_Conditional_Off>
+    <CC_Playground_UseState_Label>Count</CC_Playground_UseState_Label>
+    <CC_Playground_UseState_Increment>+</CC_Playground_UseState_Increment>
+    <CC_Playground_UseState_Decrement>-</CC_Playground_UseState_Decrement>
+    <CC_Playground_Dialog_TriggerOpen>Open dialog</CC_Playground_Dialog_TriggerOpen>
+    <CC_Playground_Popover_TriggerOpen>Open popover</CC_Playground_Popover_TriggerOpen>
+    <CC_Playground_Drawer_TriggerOpen>Open drawer</CC_Playground_Drawer_TriggerOpen>
+    <CC_Playground_Toast_TriggerAdd>Add toast</CC_Playground_Toast_TriggerAdd>
+    <CC_Playground_Menu_TriggerOpen>Open menu</CC_Playground_Menu_TriggerOpen>
+    <CC_Playground_ContextMenu_RightClick>Right-click</CC_Playground_ContextMenu_RightClick>
 </LanguageData>

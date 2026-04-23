@@ -610,6 +610,38 @@ public sealed class LightweavePlayground : LightweaveWindow
                 }));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_UseFocus_Title".Translate()));
+
+                UseFocus.FocusHandle focusHandle = UseFocus.Use();
+                Hooks.Hooks.StateHandle<string> focusText = Hooks.Hooks.UseState<string>(string.Empty);
+
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Sm, children: r =>
+                {
+                    r.Add(Button.Create(
+                        label: "CC_Playground_UseFocus_Focus".Translate(),
+                        onClick: () => focusHandle.Request(),
+                        variant: ButtonVariant.Secondary));
+
+                    LightweaveNode field = NodeBuilder.New("FocusDemoField");
+                    string capturedName = focusHandle.Name;
+                    Hooks.Hooks.StateHandle<string> capturedText = focusText;
+                    field.Paint = (rect, _) =>
+                    {
+                        float height = new Rem(2f).ToPixels();
+                        Rect fieldRect = new Rect(rect.x, rect.y + (rect.height - height) * 0.5f, 200f, height);
+                        GUI.SetNextControlName(capturedName);
+                        string next = Verse.Widgets.TextField(fieldRect, capturedText.Value ?? string.Empty);
+                        if (next != capturedText.Value)
+                        {
+                            capturedText.Set(next);
+                        }
+                    };
+                    r.Add(field);
+                }));
+            }));
+
         });
     }
 

@@ -31,6 +31,14 @@ public abstract class AsGizmo : Command
         Rect rect = new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), height);
         Guid id = AdapterStoreRegistry.Get(entityId, adapterKind, subKey);
         LightweaveRoot.Render(rect, id, Build);
-        return new GizmoResult(Mouse.IsOver(rect) ? GizmoState.Mouseover : GizmoState.Clear);
+
+        Event evt = Event.current;
+        bool mouseOver = Mouse.IsOver(rect);
+        if (mouseOver && evt.type == EventType.MouseUp && evt.button == 0)
+        {
+            return new GizmoResult(GizmoState.Interacted, evt);
+        }
+
+        return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear);
     }
 }

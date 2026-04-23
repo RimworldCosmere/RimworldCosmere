@@ -884,6 +884,62 @@ public sealed class LightweavePlayground : LightweaveWindow
                 c.Add(Typography.Typography.Caption(selectedText));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_SearchField_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<string> searchQuery = Hooks.Hooks.UseState<string>(string.Empty);
+
+                string[] worlds = new string[]
+                {
+                    "Roshar",
+                    "Scadrial",
+                    "Nalthis",
+                    "Sel",
+                    "Taldain",
+                    "Threnody",
+                    "First of the Sun",
+                };
+
+                c.Add(Layout.Layout.Column(gap: SpacingScale.Md, children: col2 =>
+                {
+                    col2.Add(SearchField.Create(
+                        value: searchQuery.Value,
+                        onChange: next => searchQuery.Set(next),
+                        placeholder: "CC_Playground_SearchField_Placeholder".Translate()));
+
+                    string query = searchQuery.Value ?? string.Empty;
+                    string queryLower = query.ToLowerInvariant();
+                    int matchCount = 0;
+                    for (int i = 0; i < worlds.Length; i++)
+                    {
+                        if (queryLower.Length == 0 || worlds[i].ToLowerInvariant().Contains(queryLower))
+                        {
+                            matchCount++;
+                        }
+                    }
+
+                    if (matchCount == 0)
+                    {
+                        col2.Add(Typography.Typography.Text((string)"CC_Playground_SearchField_NoMatches".Translate()));
+                    }
+                    else
+                    {
+                        col2.Add(Layout.Layout.Column(gap: SpacingScale.Xs, children: list =>
+                        {
+                            for (int i = 0; i < worlds.Length; i++)
+                            {
+                                string world = worlds[i];
+                                if (queryLower.Length == 0 || world.ToLowerInvariant().Contains(queryLower))
+                                {
+                                    list.Add(Typography.Typography.Text(world));
+                                }
+                            }
+                        }));
+                    }
+                }));
+            }));
+
         });
     }
 

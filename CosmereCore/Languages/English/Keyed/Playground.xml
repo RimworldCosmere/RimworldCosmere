@@ -134,4 +134,7 @@
     <CC_Playground_Tree_Title>Tree</CC_Playground_Tree_Title>
     <CC_Playground_Tree_Selected>Selected: {NODE}</CC_Playground_Tree_Selected>
     <CC_Playground_Tree_NothingSelected>Nothing selected</CC_Playground_Tree_NothingSelected>
+    <CC_Playground_SearchField_Title>Search field</CC_Playground_SearchField_Title>
+    <CC_Playground_SearchField_Placeholder>Filter worlds</CC_Playground_SearchField_Placeholder>
+    <CC_Playground_SearchField_NoMatches>No matches.</CC_Playground_SearchField_NoMatches>
 </LanguageData>

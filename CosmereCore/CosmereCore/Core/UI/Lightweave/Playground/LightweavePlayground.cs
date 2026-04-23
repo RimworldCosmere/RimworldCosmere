@@ -768,7 +768,67 @@ public sealed class LightweavePlayground : LightweaveWindow
                 }));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_ContextMenu_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<string> lastAction = Hooks.Hooks.UseState<string>(string.Empty);
+
+                IReadOnlyList<MenuItem> contextItems = new MenuItem[]
+                {
+                    new MenuItem(
+                        "CC_Playground_ContextMenu_Inspect".Translate(),
+                        OnInvoke: () => lastAction.Set((string)"CC_Playground_ContextMenu_Inspect".Translate())),
+                    new MenuItem(
+                        "CC_Playground_ContextMenu_Rename".Translate(),
+                        OnInvoke: () => lastAction.Set((string)"CC_Playground_ContextMenu_Rename".Translate())),
+                    new MenuItem(
+                        "CC_Playground_ContextMenu_Duplicate".Translate(),
+                        OnInvoke: () => lastAction.Set((string)"CC_Playground_ContextMenu_Duplicate".Translate())),
+                    new MenuItem(
+                        "CC_Playground_ContextMenu_Delete".Translate(),
+                        OnInvoke: () => lastAction.Set((string)"CC_Playground_ContextMenu_Delete".Translate())),
+                };
+
+                LightweaveNode hintArea = ContextMenuHintArea();
+                c.Add(Navigation.ContextMenu.Create(child: hintArea, items: contextItems));
+
+                string actionText = string.IsNullOrEmpty(lastAction.Value)
+                    ? (string)"CC_Playground_ContextMenu_Idle".Translate()
+                    : (string)"CC_Playground_ContextMenu_LastAction".Translate(lastAction.Value.Named("ACTION"));
+                c.Add(Typography.Typography.Caption(actionText));
+            }));
+
         });
+    }
+
+    private static LightweaveNode ContextMenuHintArea(
+        [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,
+        [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
+    {
+        LightweaveNode node = NodeBuilder.New("ContextMenuHintArea", line, file);
+        node.Paint = (rect, _) =>
+        {
+            float height = new Rem(6f).ToPixels();
+            Rect boxRect = new Rect(rect.x, rect.y, rect.width, height);
+
+            BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+            BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
+            RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
+            PaintBox.Draw(boxRect, bg, border, radius);
+
+            Theme.Theme theme = RenderContext.Current.Theme;
+            Font font = theme.GetFont(FontRole.Body);
+            int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToPixels());
+            GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Normal);
+            style.alignment = TextAnchor.MiddleCenter;
+
+            Color saved = GUI.color;
+            GUI.color = theme.GetColor(ThemeSlot.TextMuted);
+            GUI.Label(RectSnap.Snap(boxRect), (string)"CC_Playground_ContextMenu_RightClickHint".Translate(), style);
+            GUI.color = saved;
+        };
+        return node;
     }
 
     private static LightweaveNode BreadcrumbsBounds(

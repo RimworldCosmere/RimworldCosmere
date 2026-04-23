@@ -118,4 +118,12 @@
     <CC_Playground_Breadcrumbs_LastClicked>Last clicked: {CRUMB}</CC_Playground_Breadcrumbs_LastClicked>
     <CC_Playground_Breadcrumbs_NoneClicked>None clicked</CC_Playground_Breadcrumbs_NoneClicked>
     <CC_Playground_Breadcrumbs_LongDemoTitle>Truncation demo</CC_Playground_Breadcrumbs_LongDemoTitle>
+    <CC_Playground_ContextMenu_Title>Context menu</CC_Playground_ContextMenu_Title>
+    <CC_Playground_ContextMenu_RightClickHint>Right-click anywhere in this area</CC_Playground_ContextMenu_RightClickHint>
+    <CC_Playground_ContextMenu_Inspect>Inspect</CC_Playground_ContextMenu_Inspect>
+    <CC_Playground_ContextMenu_Rename>Rename</CC_Playground_ContextMenu_Rename>
+    <CC_Playground_ContextMenu_Duplicate>Duplicate</CC_Playground_ContextMenu_Duplicate>
+    <CC_Playground_ContextMenu_Delete>Delete</CC_Playground_ContextMenu_Delete>
+    <CC_Playground_ContextMenu_LastAction>Last action: {ACTION}</CC_Playground_ContextMenu_LastAction>
+    <CC_Playground_ContextMenu_Idle>Idle</CC_Playground_ContextMenu_Idle>
 </LanguageData>

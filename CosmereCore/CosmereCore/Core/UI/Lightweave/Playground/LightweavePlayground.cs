@@ -963,6 +963,36 @@ public sealed class LightweavePlayground : LightweaveWindow
                 }));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_KeyBindingField_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<KeyBinding> castBinding = Hooks.Hooks.UseState<KeyBinding>(
+                    new KeyBinding(KeyCode.Q, KeyModifiers.None));
+                Hooks.Hooks.StateHandle<KeyBinding> hudBinding = Hooks.Hooks.UseState<KeyBinding>(
+                    new KeyBinding(KeyCode.H, KeyModifiers.Control));
+                Hooks.Hooks.StateHandle<KeyBinding> codexBinding = Hooks.Hooks.UseState<KeyBinding>(
+                    new KeyBinding(KeyCode.None, KeyModifiers.None));
+
+                c.Add(Layout.Layout.Column(gap: SpacingScale.Sm, children: col2 =>
+                {
+                    col2.Add(Typography.Typography.Text((string)"CC_Playground_KeyBindingField_CastAbility".Translate()));
+                    col2.Add(KeyBindingField.Create(
+                        value: castBinding.Value,
+                        onChange: next => castBinding.Set(next)));
+
+                    col2.Add(Typography.Typography.Text((string)"CC_Playground_KeyBindingField_ToggleHud".Translate()));
+                    col2.Add(KeyBindingField.Create(
+                        value: hudBinding.Value,
+                        onChange: next => hudBinding.Set(next)));
+
+                    col2.Add(Typography.Typography.Text((string)"CC_Playground_KeyBindingField_OpenCodex".Translate()));
+                    col2.Add(KeyBindingField.Create(
+                        value: codexBinding.Value,
+                        onChange: next => codexBinding.Set(next)));
+                }));
+            }));
+
         });
     }
 

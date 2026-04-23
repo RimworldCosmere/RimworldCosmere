@@ -139,4 +139,8 @@
     <CC_Playground_SearchField_NoMatches>No matches.</CC_Playground_SearchField_NoMatches>
     <CC_Playground_ColorPicker_Title>Color picker</CC_Playground_ColorPicker_Title>
     <CC_Playground_ColorPicker_Rgb>R: {R}  G: {G}  B: {B}</CC_Playground_ColorPicker_Rgb>
+    <CC_Playground_KeyBindingField_Title>Key binding field</CC_Playground_KeyBindingField_Title>
+    <CC_Playground_KeyBindingField_CastAbility>Cast ability</CC_Playground_KeyBindingField_CastAbility>
+    <CC_Playground_KeyBindingField_ToggleHud>Toggle HUD</CC_Playground_KeyBindingField_ToggleHud>
+    <CC_Playground_KeyBindingField_OpenCodex>Open codex</CC_Playground_KeyBindingField_OpenCodex>
 </LanguageData>

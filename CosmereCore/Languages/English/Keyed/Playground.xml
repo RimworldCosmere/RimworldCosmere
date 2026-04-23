@@ -152,4 +152,13 @@
     <CC_Playground_Drawer_Side_Bottom>Bottom</CC_Playground_Drawer_Side_Bottom>
     <CC_Playground_Drawer_ContentTitle>Drawer content</CC_Playground_Drawer_ContentTitle>
     <CC_Playground_Drawer_ContentBody>This drawer slides in from the edge of the screen. Click outside or press Escape to dismiss.</CC_Playground_Drawer_ContentBody>
+    <CC_Playground_Toast_Title>Toast</CC_Playground_Toast_Title>
+    <CC_Playground_Toast_Info>Info toast</CC_Playground_Toast_Info>
+    <CC_Playground_Toast_Success>Success toast</CC_Playground_Toast_Success>
+    <CC_Playground_Toast_Warning>Warning toast</CC_Playground_Toast_Warning>
+    <CC_Playground_Toast_Danger>Danger toast</CC_Playground_Toast_Danger>
+    <CC_Playground_Toast_Msg_Info>Scanning for lost shardplates.</CC_Playground_Toast_Msg_Info>
+    <CC_Playground_Toast_Msg_Success>Oathpact renewed successfully.</CC_Playground_Toast_Msg_Success>
+    <CC_Playground_Toast_Msg_Warning>Stormlight reserves low.</CC_Playground_Toast_Msg_Warning>
+    <CC_Playground_Toast_Msg_Danger>Fabrial fracture detected.</CC_Playground_Toast_Msg_Danger>
 </LanguageData>

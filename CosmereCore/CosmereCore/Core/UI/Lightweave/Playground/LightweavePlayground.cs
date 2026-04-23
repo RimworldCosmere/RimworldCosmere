@@ -1058,6 +1058,72 @@ public sealed class LightweavePlayground : LightweaveWindow
                     onDismiss: () => drawerOpen.Set(false)));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Toast_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<List<ToastMessage>> activeToasts = Hooks.Hooks.UseState<List<ToastMessage>>(
+                    new List<ToastMessage>());
+                Hooks.Hooks.RefHandle<int> idRef = Hooks.Hooks.UseRef<int>(0);
+
+                Action<ToastKind, string> spawnToast = (kind, text) =>
+                {
+                    int nextId = idRef.Current;
+                    idRef.Current = nextId + 1;
+                    string id = "toast-" + nextId;
+                    List<ToastMessage> next = new List<ToastMessage>(activeToasts.Value.Count + 1);
+                    for (int i = 0; i < activeToasts.Value.Count; i++)
+                    {
+                        next.Add(activeToasts.Value[i]);
+                    }
+                    next.Add(new ToastMessage(id, text, kind));
+                    activeToasts.Set(next);
+                };
+
+                Action<string> removeToast = id =>
+                {
+                    List<ToastMessage> current = activeToasts.Value;
+                    List<ToastMessage> next = new List<ToastMessage>(current.Count);
+                    for (int i = 0; i < current.Count; i++)
+                    {
+                        if (current[i].Id != id)
+                        {
+                            next.Add(current[i]);
+                        }
+                    }
+                    activeToasts.Set(next);
+                };
+
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Sm, children: r =>
+                {
+                    r.Add(Button.Create(
+                        label: "CC_Playground_Toast_Info".Translate(),
+                        onClick: () => spawnToast(ToastKind.Info,
+                            (string)"CC_Playground_Toast_Msg_Info".Translate()),
+                        variant: ButtonVariant.Secondary));
+                    r.Add(Button.Create(
+                        label: "CC_Playground_Toast_Success".Translate(),
+                        onClick: () => spawnToast(ToastKind.Success,
+                            (string)"CC_Playground_Toast_Msg_Success".Translate()),
+                        variant: ButtonVariant.Secondary));
+                    r.Add(Button.Create(
+                        label: "CC_Playground_Toast_Warning".Translate(),
+                        onClick: () => spawnToast(ToastKind.Warning,
+                            (string)"CC_Playground_Toast_Msg_Warning".Translate()),
+                        variant: ButtonVariant.Secondary));
+                    r.Add(Button.Create(
+                        label: "CC_Playground_Toast_Danger".Translate(),
+                        onClick: () => spawnToast(ToastKind.Danger,
+                            (string)"CC_Playground_Toast_Msg_Danger".Translate()),
+                        variant: ButtonVariant.Danger));
+                }));
+
+                c.Add(Toast.Create(
+                    toasts: activeToasts.Value,
+                    onDismiss: id => removeToast(id),
+                    corner: ToastCorner.BottomRight));
+            }));
+
         });
     }
 

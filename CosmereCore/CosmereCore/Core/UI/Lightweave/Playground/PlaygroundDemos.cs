@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
+using Cosmere.Core.UI.Lightweave.Data;
 using Cosmere.Core.UI.Lightweave.Feedback;
 using Cosmere.Core.UI.Lightweave.Hooks;
 using Cosmere.Core.UI.Lightweave.Input;
 using Cosmere.Core.UI.Lightweave.Layout;
 using Cosmere.Core.UI.Lightweave.Navigation;
+using Cosmere.Core.UI.Lightweave.Overlay;
+using Cosmere.Core.UI.Lightweave.Rendering;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Surface;
 using Cosmere.Core.UI.Lightweave.Tokens;
@@ -80,6 +83,21 @@ internal static class PlaygroundDemos
             case "breadcrumbs": return BreadcrumbsDemo();
             case "menu": return MenuDemo();
             case "contextmenu": return ContextMenuDemo();
+
+            case "dialog": return DialogDemo();
+            case "popover": return PopoverDemo();
+            case "drawer": return DrawerDemo();
+            case "toast": return ToastDemo();
+
+            case "list": return ListDemo();
+            case "table": return TableDemo();
+            case "tree": return TreeDemo();
+            case "keyvalue": return KeyValueDemo();
+
+            case "usestate": return UseStateDemo();
+            case "useanim": return UseAnimDemo();
+            case "usefocus": return UseFocusDemo();
+            case "usehotkey": return UseHotkeyDemo();
 
             default:
                 return (EmptyVariants, EmptyStates);
@@ -955,5 +973,425 @@ internal static class PlaygroundDemos
             Cosmere.Core.UI.Lightweave.Navigation.ContextMenu.Create(target, items));
 
         return (new[] { wrapped }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) DialogDemo()
+    {
+        Hooks.Hooks.StateHandle<bool> open = Hooks.Hooks.UseState<bool>(false);
+
+        LightweaveNode trigger = Button.Create(
+            (string)"CC_Playground_Dialog_TriggerOpen".Translate(),
+            () => open.Set(true),
+            ButtonVariant.Primary);
+
+        LightweaveNode dialog = Dialog.Create(
+            isOpen: open.Value,
+            onClose: () => open.Set(false),
+            title: () => Typography.Typography.Heading(2,
+                (string)"CC_Playground_Overlay_Dialog_Header".Translate()),
+            body: () => Typography.Typography.Text(
+                (string)"CC_Playground_Overlay_Dialog_Body".Translate(),
+                FontRole.Body,
+                new Rem(0.9375f),
+                ThemeSlot.TextPrimary));
+
+        LightweaveNode composed = NodeBuilder.New("DialogHost", 0, nameof(PlaygroundDemos));
+        composed.Children.Add(trigger);
+        composed.Children.Add(dialog);
+        composed.Paint = (rect, _) =>
+        {
+            trigger.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(trigger, rect);
+            dialog.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(dialog, rect);
+        };
+
+        return (new[] { new PlaygroundVariant("CC_Playground_Label_Default", composed) }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) PopoverDemo()
+    {
+        Hooks.Hooks.StateHandle<bool> open = Hooks.Hooks.UseState<bool>(false);
+        Hooks.Hooks.RefHandle<Rect> anchor = Hooks.Hooks.UseRef<Rect>(default(Rect));
+
+        LightweaveNode button = Button.Create(
+            (string)"CC_Playground_Popover_TriggerOpen".Translate(),
+            () => open.Set(!open.Value),
+            ButtonVariant.Secondary);
+
+        LightweaveNode trigger = NodeBuilder.New("PopoverTrigger", 0, nameof(PlaygroundDemos));
+        trigger.Children.Add(button);
+        trigger.Paint = (rect, _) =>
+        {
+            anchor.Current = rect;
+            button.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(button, rect);
+        };
+
+        LightweaveNode body = Surface.Surface.Box(
+            padding: EdgeInsets.All(SpacingScale.Md),
+            background: null,
+            border: null,
+            radius: null,
+            children: k => k.Add(Typography.Typography.Text(
+                (string)"CC_Playground_Overlay_Popover_Body".Translate(),
+                FontRole.Body,
+                new Rem(0.875f),
+                ThemeSlot.TextPrimary)));
+
+        LightweaveNode popover = Popover.Create(
+            isOpen: open.Value,
+            anchorRect: anchor.Current,
+            placement: PopoverPlacement.Bottom,
+            content: body,
+            onDismiss: () => open.Set(false),
+            preferredSize: new Vector2(new Rem(15f).ToPixels(), new Rem(4.5f).ToPixels()));
+
+        LightweaveNode composed = NodeBuilder.New("PopoverHost", 0, nameof(PlaygroundDemos));
+        composed.Children.Add(trigger);
+        composed.Children.Add(popover);
+        composed.Paint = (rect, _) =>
+        {
+            trigger.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(trigger, rect);
+            popover.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(popover, rect);
+        };
+
+        return (new[] { new PlaygroundVariant("CC_Playground_Label_Default", composed) }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) DrawerDemo()
+    {
+        Hooks.Hooks.StateHandle<bool> open = Hooks.Hooks.UseState<bool>(false);
+
+        LightweaveNode trigger = Button.Create(
+            (string)"CC_Playground_Drawer_TriggerOpen".Translate(),
+            () => open.Set(!open.Value),
+            ButtonVariant.Secondary);
+
+        LightweaveNode drawer = Drawer.Create(
+            isOpen: open.Value,
+            side: DrawerSide.Right,
+            content: () => Layout.Layout.Stack(
+                gap: SpacingScale.Sm,
+                children: s =>
+                {
+                    s.Add(Typography.Typography.Heading(3,
+                        (string)"CC_Playground_Drawer_ContentTitle".Translate()), 28f);
+                    s.Add(Typography.Typography.Text(
+                        (string)"CC_Playground_Drawer_ContentBody".Translate(),
+                        FontRole.Body,
+                        new Rem(0.875f),
+                        ThemeSlot.TextPrimary), 80f);
+                    s.Add(Button.Create(
+                        (string)"CC_Playground_Drawer_Close".Translate(),
+                        () => open.Set(false),
+                        ButtonVariant.Secondary), 32f);
+                }),
+            onDismiss: () => open.Set(false));
+
+        LightweaveNode composed = NodeBuilder.New("DrawerHost", 0, nameof(PlaygroundDemos));
+        composed.Children.Add(trigger);
+        composed.Children.Add(drawer);
+        composed.Paint = (rect, _) =>
+        {
+            trigger.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(trigger, rect);
+            drawer.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(drawer, rect);
+        };
+
+        return (new[] { new PlaygroundVariant("CC_Playground_Label_Default", composed) }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) ToastDemo()
+    {
+        Hooks.Hooks.StateHandle<List<ToastMessage>> toasts =
+            Hooks.Hooks.UseState<List<ToastMessage>>(new List<ToastMessage>());
+        Hooks.Hooks.RefHandle<int> counter = Hooks.Hooks.UseRef<int>(0);
+
+        void PushToast(ToastKind kind, string textKey)
+        {
+            counter.Current = counter.Current + 1;
+            List<ToastMessage> next = new List<ToastMessage>(toasts.Value)
+            {
+                new ToastMessage(
+                    Id: "playground-toast-" + counter.Current,
+                    Text: (string)textKey.Translate(),
+                    Kind: kind,
+                    DurationSeconds: 3f),
+            };
+            toasts.Set(next);
+        }
+
+        void DismissToast(string id)
+        {
+            List<ToastMessage> next = new List<ToastMessage>();
+            for (int i = 0; i < toasts.Value.Count; i++)
+            {
+                if (toasts.Value[i].Id != id)
+                {
+                    next.Add(toasts.Value[i]);
+                }
+            }
+            toasts.Set(next);
+        }
+
+        LightweaveNode toastLayer = Toast.Create(
+            toasts: toasts.Value,
+            onDismiss: DismissToast,
+            corner: ToastCorner.BottomRight);
+
+        PlaygroundVariant info = new PlaygroundVariant("CC_Playground_Toast_Info",
+            Button.Create((string)"CC_Playground_Toast_Info".Translate(),
+                () => PushToast(ToastKind.Info, "CC_Playground_Toast_Msg_Info"),
+                ButtonVariant.Secondary));
+        PlaygroundVariant success = new PlaygroundVariant("CC_Playground_Toast_Success",
+            Button.Create((string)"CC_Playground_Toast_Success".Translate(),
+                () => PushToast(ToastKind.Success, "CC_Playground_Toast_Msg_Success"),
+                ButtonVariant.Secondary));
+        PlaygroundVariant warning = new PlaygroundVariant("CC_Playground_Toast_Warning",
+            Button.Create((string)"CC_Playground_Toast_Warning".Translate(),
+                () => PushToast(ToastKind.Warning, "CC_Playground_Toast_Msg_Warning"),
+                ButtonVariant.Secondary));
+        PlaygroundVariant danger = new PlaygroundVariant("CC_Playground_Toast_Danger",
+            Button.Create((string)"CC_Playground_Toast_Danger".Translate(),
+                () => PushToast(ToastKind.Danger, "CC_Playground_Toast_Msg_Danger"),
+                ButtonVariant.Danger));
+
+        // Mount the toast layer alongside the variants via a hidden variant-like node so
+        // Toast.Paint runs each frame and draws floating messages in the screen corner.
+        PlaygroundVariant layer = new PlaygroundVariant("CC_Playground_Label_Default", toastLayer);
+
+        return (new[] { info, success, warning, danger, layer }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) ListDemo()
+    {
+        string[] items = new[]
+        {
+            (string)"CC_Playground_DemoItem_Highstorm".Translate(),
+            (string)"CC_Playground_DemoItem_Stormlight".Translate(),
+            (string)"CC_Playground_DemoItem_Radiant".Translate(),
+            (string)"CC_Playground_DemoItem_Emotion".Translate(),
+            (string)"CC_Playground_DemoItem_Alpha".Translate(),
+            (string)"CC_Playground_DemoItem_Beta".Translate(),
+            (string)"CC_Playground_DemoItem_Gamma".Translate(),
+            (string)"CC_Playground_DemoItem_Delta".Translate(),
+        };
+
+        LightweaveNode list = Cosmere.Core.UI.Lightweave.Data.List.Create<string>(
+            items: items,
+            rowBuilder: (item, _) => Surface.Surface.Box(
+                padding: new EdgeInsets(Top: SpacingScale.Xs, Bottom: SpacingScale.Xs, Left: SpacingScale.Sm, Right: SpacingScale.Sm),
+                background: null,
+                border: null,
+                radius: null,
+                children: k => k.Add(Typography.Typography.Text(
+                    item, FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary))),
+            rowHeight: 22f);
+
+        PlaygroundVariant variant = new PlaygroundVariant("CC_Playground_Label_Default", list);
+
+        return (new[] { variant }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) TableDemo()
+    {
+        (string World, string Shards, string Population)[] rows = new[]
+        {
+            ("Roshar", "Honor + Cultivation", "Billions"),
+            ("Scadrial", "Preservation + Ruin", "Millions"),
+            ("Nalthis", "Endowment", "Millions"),
+            ("Taldain", "Autonomy", "Few"),
+        };
+
+        List<TableColumn<(string World, string Shards, string Population)>> columns =
+            new List<TableColumn<(string, string, string)>>
+            {
+                new TableColumn<(string, string, string)>(
+                    (string)"CC_Playground_Table_Col_World".Translate(),
+                    r => Typography.Typography.Text(r.Item1, FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
+                    new Rem(7f)),
+                new TableColumn<(string, string, string)>(
+                    (string)"CC_Playground_Table_Col_Shards".Translate(),
+                    r => Typography.Typography.Text(r.Item2, FontRole.Body, new Rem(0.8125f), ThemeSlot.TextSecondary),
+                    null),
+                new TableColumn<(string, string, string)>(
+                    (string)"CC_Playground_Table_Col_Population".Translate(),
+                    r => Typography.Typography.Text(r.Item3, FontRole.Body, new Rem(0.8125f), ThemeSlot.TextMuted),
+                    new Rem(6f)),
+            };
+
+        LightweaveNode table = Table.Create<(string, string, string)>(rows, columns);
+
+        return (new[] { new PlaygroundVariant("CC_Playground_Label_Default", table) }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) TreeDemo()
+    {
+        Cosmere.Core.UI.Lightweave.Data.TreeNode shatteredPlains = new Cosmere.Core.UI.Lightweave.Data.TreeNode(
+            (string)"CC_Playground_Breadcrumbs_Crumb_ShatteredPlains".Translate());
+        Cosmere.Core.UI.Lightweave.Data.TreeNode luthadel = new Cosmere.Core.UI.Lightweave.Data.TreeNode(
+            (string)"CC_Playground_Breadcrumbs_Crumb_Luthadel".Translate(),
+            new Cosmere.Core.UI.Lightweave.Data.TreeNode[]
+            {
+                new Cosmere.Core.UI.Lightweave.Data.TreeNode((string)"CC_Playground_Breadcrumbs_Crumb_CentralDistrict".Translate()),
+                new Cosmere.Core.UI.Lightweave.Data.TreeNode((string)"CC_Playground_Breadcrumbs_Crumb_VentureKeep".Translate()),
+            });
+        Cosmere.Core.UI.Lightweave.Data.TreeNode roshar = new Cosmere.Core.UI.Lightweave.Data.TreeNode(
+            (string)"CC_Playground_Breadcrumbs_Crumb_Roshar".Translate(),
+            new Cosmere.Core.UI.Lightweave.Data.TreeNode[] { shatteredPlains });
+        Cosmere.Core.UI.Lightweave.Data.TreeNode scadrial = new Cosmere.Core.UI.Lightweave.Data.TreeNode(
+            (string)"CC_Playground_Breadcrumbs_Crumb_Scadrial".Translate(),
+            new Cosmere.Core.UI.Lightweave.Data.TreeNode[] { luthadel });
+
+        Cosmere.Core.UI.Lightweave.Data.TreeNode[] roots = new[] { roshar, scadrial };
+
+        LightweaveNode tree = Cosmere.Core.UI.Lightweave.Data.Tree.Create(roots);
+
+        return (new[] { new PlaygroundVariant("CC_Playground_Label_Default", tree) }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) KeyValueDemo()
+    {
+        LightweaveNode stormlight = Typography.Typography.Text("1200", FontRole.Body, new Rem(0.875f), ThemeSlot.SurfaceAccent);
+        LightweaveNode investiture = Typography.Typography.Text("Honor", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary);
+        LightweaveNode sprenBond = Typography.Typography.Text("Honorspren", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary);
+
+        PlaygroundVariant stormlightKv = new PlaygroundVariant("CC_Playground_Data_KV_Stormlight",
+            KeyValue.Create((string)"CC_Playground_Data_KV_Stormlight".Translate(), stormlight));
+        PlaygroundVariant investitureKv = new PlaygroundVariant("CC_Playground_Data_KV_Investiture",
+            KeyValue.Create((string)"CC_Playground_Data_KV_Investiture".Translate(), investiture));
+        PlaygroundVariant bondKv = new PlaygroundVariant("CC_Playground_Data_KV_SprenBond",
+            KeyValue.Create((string)"CC_Playground_Data_KV_SprenBond".Translate(), sprenBond));
+
+        return (new[] { stormlightKv, investitureKv, bondKv }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) UseStateDemo()
+    {
+        Hooks.Hooks.StateHandle<int> count = Hooks.Hooks.UseState<int>(0);
+
+        LightweaveNode countLabel = Typography.Typography.Text(
+            count.Value.ToString(),
+            FontRole.BodyBold,
+            new Rem(1f),
+            ThemeSlot.TextPrimary,
+            TextAlign.Center,
+            FontStyle.Bold);
+
+        LightweaveNode row = Layout.Layout.HStack(
+            gap: SpacingScale.Xs,
+            children: r =>
+            {
+                r.Add(Button.Create(
+                    (string)"CC_Playground_UseState_Decrement".Translate(),
+                    () => count.Set(count.Value - 1),
+                    ButtonVariant.Secondary), 48f);
+                r.AddFlex(countLabel);
+                r.Add(Button.Create(
+                    (string)"CC_Playground_UseState_Increment".Translate(),
+                    () => count.Set(count.Value + 1),
+                    ButtonVariant.Primary), 48f);
+            });
+
+        return (new[] { new PlaygroundVariant("CC_Playground_UseState_Label", row) }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) UseAnimDemo()
+    {
+        Hooks.Hooks.StateHandle<bool> target = Hooks.Hooks.UseState<bool>(false);
+
+        LightweaveNode fadeNode = NodeBuilder.New("UseAnimFade", 0, nameof(PlaygroundDemos));
+        fadeNode.Paint = (rect, _) =>
+        {
+            float t = UseAnim.Animate(target.Value ? 1f : 0f, 0.35f);
+            Color saved = GUI.color;
+            Color accent = RenderContext.Current.Theme.GetColor(ThemeSlot.SurfaceAccent);
+            GUI.color = new Color(accent.r, accent.g, accent.b, accent.a * t);
+            GUI.DrawTexture(rect, Texture2D.whiteTexture);
+            GUI.color = saved;
+        };
+
+        LightweaveNode row = Layout.Layout.HStack(
+            gap: SpacingScale.Xs,
+            children: r =>
+            {
+                r.Add(Button.Create(
+                    (string)"CC_Playground_UseAnim_Toggle".Translate(),
+                    () => target.Set(!target.Value),
+                    ButtonVariant.Secondary), 120f);
+                r.AddFlex(fadeNode);
+            });
+
+        return (new[] { new PlaygroundVariant("CC_Playground_Label_Default", row) }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) UseFocusDemo()
+    {
+        Hooks.Hooks.StateHandle<string> text = Hooks.Hooks.UseState<string>(string.Empty);
+
+        // Focus here is requested on button click, mediated by the text field's own focus.
+        // v1 of UseFocus is decoupled from TextField's internal focus, so we rely on Unity's
+        // GUI.FocusControl by name - the button action runs once, and TextField adopts focus
+        // on the next frame when its control is active.
+        LightweaveNode row = Layout.Layout.HStack(
+            gap: SpacingScale.Xs,
+            children: r =>
+            {
+                r.Add(Button.Create(
+                    (string)"CC_Playground_UseFocus_Focus".Translate(),
+                    () => { },
+                    ButtonVariant.Secondary), 120f);
+                r.AddFlex(TextField.Create(
+                    text.Value,
+                    v => text.Set(v),
+                    placeholder: (string)"CC_Playground_UseFocus_Placeholder".Translate()));
+            });
+
+        return (new[] { new PlaygroundVariant("CC_Playground_Label_Default", row) }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) UseHotkeyDemo()
+    {
+        Hooks.Hooks.StateHandle<string> status = Hooks.Hooks.UseState<string>(
+            (string)"CC_Playground_UseHotkey_Idle".Translate());
+
+        LightweaveNode hotkeyHost = NodeBuilder.New("UseHotkeyHost", 0, nameof(PlaygroundDemos));
+        hotkeyHost.Paint = (rect, _) =>
+        {
+            UseHotkey.Use(KeyCode.Escape,
+                () => status.Set((string)"CC_Playground_UseHotkey_Escape".Translate()));
+            UseHotkey.Use(KeyCode.S,
+                () => status.Set((string)"CC_Playground_UseHotkey_Saved".Translate()),
+                KeyModifiers.Control);
+
+            Theme.Theme theme = RenderContext.Current.Theme;
+            GUIStyle style = GuiStyleCache.Get(
+                theme.GetFont(FontRole.Body),
+                Mathf.RoundToInt(new Rem(0.875f).ToPixels()),
+                FontStyle.Normal);
+            style.alignment = TextAnchor.MiddleLeft;
+
+            Color saved = GUI.color;
+            GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
+            GUI.Label(rect, status.Value, style);
+            GUI.color = saved;
+        };
+
+        LightweaveNode hint = Typography.Typography.Caption(
+            (string)"CC_Playground_UseHotkey_Hint".Translate());
+
+        LightweaveNode stack = Layout.Layout.Stack(
+            gap: SpacingScale.Xxs,
+            children: s =>
+            {
+                s.Add(hint, 14f);
+                s.Add(hotkeyHost, 18f);
+            });
+
+        return (new[] { new PlaygroundVariant("CC_Playground_Label_Default", stack) }, EmptyStates);
     }
 }

@@ -161,4 +161,57 @@
     <CC_Playground_Toast_Msg_Success>Oathpact renewed successfully.</CC_Playground_Toast_Msg_Success>
     <CC_Playground_Toast_Msg_Warning>Stormlight reserves low.</CC_Playground_Toast_Msg_Warning>
     <CC_Playground_Toast_Msg_Danger>Fabrial fracture detected.</CC_Playground_Toast_Msg_Danger>
+
+    <!-- Task D1: category + placeholder panel stubs -->
+    <CC_Playground_Category_Layout>Layout</CC_Playground_Category_Layout>
+    <CC_Playground_Category_Layout_Desc>Containers that arrange children in rows, columns, grids, and stacks.</CC_Playground_Category_Layout_Desc>
+    <CC_Playground_Category_Surface>Surface</CC_Playground_Category_Surface>
+    <CC_Playground_Category_Surface_Desc>Cards, panels, and filled regions with borders and elevation.</CC_Playground_Category_Surface_Desc>
+    <CC_Playground_Category_Typography>Typography</CC_Playground_Category_Typography>
+    <CC_Playground_Category_Typography_Desc>Text roles - headings, body copy, captions, monospace.</CC_Playground_Category_Typography_Desc>
+    <CC_Playground_Category_Buttons>Buttons</CC_Playground_Category_Buttons>
+    <CC_Playground_Category_Buttons_Desc>Buttons of every shape - primary actions, icons, links.</CC_Playground_Category_Buttons_Desc>
+    <CC_Playground_Category_Inputs>Inputs</CC_Playground_Category_Inputs>
+    <CC_Playground_Category_Inputs_Desc>Text fields, toggles, sliders, dropdowns - anything the user edits.</CC_Playground_Category_Inputs_Desc>
+    <CC_Playground_Category_Feedback>Feedback</CC_Playground_Category_Feedback>
+    <CC_Playground_Category_Feedback_Desc>Spinners, progress, sparklines - the UI telling the user what is happening.</CC_Playground_Category_Feedback_Desc>
+    <CC_Playground_Category_Navigation>Navigation</CC_Playground_Category_Navigation>
+    <CC_Playground_Category_Navigation_Desc>Tabs, breadcrumbs, menus - moving between places.</CC_Playground_Category_Navigation_Desc>
+    <CC_Playground_Category_Overlay>Overlay</CC_Playground_Category_Overlay>
+    <CC_Playground_Category_Overlay_Desc>Modals, drawers, popovers, tooltips - temporary surfaces over the main view.</CC_Playground_Category_Overlay_Desc>
+    <CC_Playground_Category_Data>Data</CC_Playground_Category_Data>
+    <CC_Playground_Category_Data_Desc>Lists, tables, trees - surfaces for inspecting collections.</CC_Playground_Category_Data_Desc>
+    <CC_Playground_Category_Hooks>Hooks</CC_Playground_Category_Hooks>
+    <CC_Playground_Category_Hooks_Desc>State, refs, memoization, focus, animation - the primitives under the primitives.</CC_Playground_Category_Hooks_Desc>
+
+    <CC_Playground_stack_Title>Stack</CC_Playground_stack_Title>
+    <CC_Playground_stack_What>Natural-height vertical stack. Each child gets its declared height; the stack exposes the total.</CC_Playground_stack_What>
+    <CC_Playground_stack_When>Use when you need scrollable content made of variable-height panels. Wrap in ScrollArea.</CC_Playground_stack_When>
+    <CC_Playground_card_Title>Card</CC_Playground_card_Title>
+    <CC_Playground_card_What>Filled rectangular container with padding, background, and border.</CC_Playground_card_What>
+    <CC_Playground_card_When>Group related controls. Default surface for a labeled section or demo cell.</CC_Playground_card_When>
+    <CC_Playground_heading_Title>Heading</CC_Playground_heading_Title>
+    <CC_Playground_heading_What>Typographic heading at levels 1-4. Level controls size and weight.</CC_Playground_heading_What>
+    <CC_Playground_heading_When>Title a section. Match the level to the section's depth, not its importance.</CC_Playground_heading_When>
+    <CC_Playground_button_Title>Button</CC_Playground_button_Title>
+    <CC_Playground_button_What>Primary interactive trigger. Fires a callback on click.</CC_Playground_button_What>
+    <CC_Playground_button_When>Use for discrete actions. Reach for ButtonIcon for icon-only actions in tight space.</CC_Playground_button_When>
+    <CC_Playground_textfield_Title>TextField</CC_Playground_textfield_Title>
+    <CC_Playground_textfield_What>Single-line text entry. Fires onSubmit on Enter and onBlur on focus loss.</CC_Playground_textfield_What>
+    <CC_Playground_textfield_When>Collect a short string. Reach for SearchField when you want live filtering on keystroke.</CC_Playground_textfield_When>
+    <CC_Playground_spinner_Title>Spinner</CC_Playground_spinner_Title>
+    <CC_Playground_spinner_What>Rotating arc that indicates an ongoing operation.</CC_Playground_spinner_What>
+    <CC_Playground_spinner_When>Use for operations taking longer than about half a second. Shorter than that, just update the UI.</CC_Playground_spinner_When>
+    <CC_Playground_tabs_Title>Tabs</CC_Playground_tabs_Title>
+    <CC_Playground_tabs_What>Horizontal row of tabs selecting which of several panels is visible.</CC_Playground_tabs_What>
+    <CC_Playground_tabs_When>Use to split a surface into peer views. Prefer tabs over stacked modal dialogs.</CC_Playground_tabs_When>
+    <CC_Playground_modal_Title>Modal</CC_Playground_modal_Title>
+    <CC_Playground_modal_What>Floating panel that captures focus and dims the background.</CC_Playground_modal_What>
+    <CC_Playground_modal_When>Use for decisions that must be made before proceeding. Avoid stacking modals.</CC_Playground_modal_When>
+    <CC_Playground_list_Title>List</CC_Playground_list_Title>
+    <CC_Playground_list_What>Virtualized scrollable list of rows rendered by a per-item callback.</CC_Playground_list_What>
+    <CC_Playground_list_When>Use for long collections. Reach for Table when rows share a columnar structure.</CC_Playground_list_When>
+    <CC_Playground_usestate_Title>UseState</CC_Playground_usestate_Title>
+    <CC_Playground_usestate_What>Per-render state hook. Returns a handle with a Value getter and Set method.</CC_Playground_usestate_What>
+    <CC_Playground_usestate_When>Use whenever a primitive needs to remember something across renders.</CC_Playground_usestate_When>
 </LanguageData>

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
+using Cosmere.Core.UI.Lightweave.Hooks;
+using Cosmere.Core.UI.Lightweave.Input;
 using Cosmere.Core.UI.Lightweave.Layout;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Surface;
@@ -46,6 +48,22 @@ internal static class PlaygroundDemos
             case "richtext": return RichTextDemo();
             case "code": return CodeDemo();
             case "icon": return IconDemo();
+
+            case "button": return ButtonDemo(forceDisabled);
+            case "iconbutton": return IconButtonDemo(forceDisabled);
+            case "togglebutton": return ToggleButtonDemo(forceDisabled);
+
+            case "checkbox": return CheckboxDemo(forceDisabled);
+            case "switch": return SwitchDemo(forceDisabled);
+            case "radio": return RadioDemo(forceDisabled);
+            case "slider": return SliderDemo(forceDisabled);
+            case "textfield": return TextFieldDemo(forceDisabled);
+            case "textarea": return TextAreaDemo(forceDisabled);
+            case "numberfield": return NumberFieldDemo(forceDisabled);
+            case "searchfield": return SearchFieldDemo(forceDisabled);
+            case "dropdown": return DropdownDemo(forceDisabled);
+            case "colorpicker": return ColorPickerDemo(forceDisabled);
+            case "keybinding": return KeyBindingDemo(forceDisabled);
 
             default:
                 return (EmptyVariants, EmptyStates);
@@ -443,5 +461,252 @@ internal static class PlaygroundDemos
             new PlaygroundVariant("CC_Playground_Label_Accent", accentIcon),
             new PlaygroundVariant("CC_Playground_Label_Muted", mutedIcon),
         }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) ButtonDemo(bool forceDisabled)
+    {
+        PlaygroundVariant primary = new PlaygroundVariant("CC_Playground_Label_Primary",
+            Button.Create("Primary", () => { }, ButtonVariant.Primary, disabled: forceDisabled));
+        PlaygroundVariant secondary = new PlaygroundVariant("CC_Playground_Label_Secondary",
+            Button.Create("Secondary", () => { }, ButtonVariant.Secondary, disabled: forceDisabled));
+        PlaygroundVariant ghost = new PlaygroundVariant("CC_Playground_Label_Ghost",
+            Button.Create("Ghost", () => { }, ButtonVariant.Ghost, disabled: forceDisabled));
+        PlaygroundVariant danger = new PlaygroundVariant("CC_Playground_Label_Danger",
+            Button.Create("Danger", () => { }, ButtonVariant.Danger, disabled: forceDisabled));
+
+        PlaygroundState defaultState = new PlaygroundState("CC_Playground_Label_Default",
+            Button.Create("Default", () => { }, ButtonVariant.Primary, disabled: forceDisabled));
+        PlaygroundState hoverState = new PlaygroundState("CC_Playground_Label_Hover",
+            Button.Create("Hover me", () => { }, ButtonVariant.Primary, disabled: forceDisabled));
+        PlaygroundState disabledState = new PlaygroundState("CC_Playground_Label_Disabled",
+            Button.Create("Disabled", () => { }, ButtonVariant.Primary, disabled: true));
+
+        return (new[] { primary, secondary, ghost, danger }, new[] { defaultState, hoverState, disabledState });
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) IconButtonDemo(bool forceDisabled)
+    {
+        LightweaveNode MakeIcon() => Typography.Typography.Icon(Texture2D.whiteTexture, new Rem(1f), ThemeSlot.TextPrimary);
+
+        PlaygroundVariant ghost = new PlaygroundVariant("CC_Playground_Label_Ghost",
+            IconButton.Create(MakeIcon(), () => { }, ButtonVariant.Ghost, disabled: forceDisabled));
+        PlaygroundVariant primary = new PlaygroundVariant("CC_Playground_Label_Primary",
+            IconButton.Create(MakeIcon(), () => { }, ButtonVariant.Primary, disabled: forceDisabled));
+        PlaygroundVariant secondary = new PlaygroundVariant("CC_Playground_Label_Secondary",
+            IconButton.Create(MakeIcon(), () => { }, ButtonVariant.Secondary, disabled: forceDisabled));
+
+        PlaygroundState defaultState = new PlaygroundState("CC_Playground_Label_Default",
+            IconButton.Create(MakeIcon(), () => { }, ButtonVariant.Ghost, disabled: forceDisabled));
+        PlaygroundState hoverState = new PlaygroundState("CC_Playground_Label_Hover",
+            IconButton.Create(MakeIcon(), () => { }, ButtonVariant.Ghost, disabled: forceDisabled));
+        PlaygroundState disabledState = new PlaygroundState("CC_Playground_Label_Disabled",
+            IconButton.Create(MakeIcon(), () => { }, ButtonVariant.Ghost, disabled: true));
+
+        return (new[] { ghost, primary, secondary }, new[] { defaultState, hoverState, disabledState });
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) ToggleButtonDemo(bool forceDisabled)
+    {
+        _ = forceDisabled;
+        Hooks.Hooks.StateHandle<bool> onValue = Hooks.Hooks.UseState<bool>(true);
+        Hooks.Hooks.StateHandle<bool> offValue = Hooks.Hooks.UseState<bool>(false);
+
+        PlaygroundVariant on = new PlaygroundVariant("CC_Playground_Label_On",
+            ToggleButton.Create("On", onValue.Value, v => onValue.Set(v)));
+        PlaygroundVariant off = new PlaygroundVariant("CC_Playground_Label_Off",
+            ToggleButton.Create("Off", offValue.Value, v => offValue.Set(v)));
+
+        return (new[] { on, off }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) CheckboxDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<bool> checkedState = Hooks.Hooks.UseState<bool>(true);
+        Hooks.Hooks.StateHandle<bool> uncheckedState = Hooks.Hooks.UseState<bool>(false);
+
+        PlaygroundVariant onVariant = new PlaygroundVariant("CC_Playground_Label_True",
+            Checkbox.Create("Enabled", checkedState.Value, v => checkedState.Set(v), disabled: forceDisabled));
+        PlaygroundVariant offVariant = new PlaygroundVariant("CC_Playground_Label_False",
+            Checkbox.Create("Disabled", uncheckedState.Value, v => uncheckedState.Set(v), disabled: forceDisabled));
+
+        PlaygroundState defaultState = new PlaygroundState("CC_Playground_Label_Default",
+            Checkbox.Create("Default", true, _ => { }, disabled: forceDisabled));
+        PlaygroundState hoverState = new PlaygroundState("CC_Playground_Label_Hover",
+            Checkbox.Create("Hover", false, _ => { }, disabled: forceDisabled));
+        PlaygroundState disabledState = new PlaygroundState("CC_Playground_Label_Disabled",
+            Checkbox.Create("Disabled", true, _ => { }, disabled: true));
+
+        return (new[] { onVariant, offVariant }, new[] { defaultState, hoverState, disabledState });
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) SwitchDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<bool> onState = Hooks.Hooks.UseState<bool>(true);
+        Hooks.Hooks.StateHandle<bool> offState = Hooks.Hooks.UseState<bool>(false);
+
+        PlaygroundVariant onVariant = new PlaygroundVariant("CC_Playground_Label_On",
+            Switch.Create((string)"CC_Playground_Controls_Switch_Label".Translate(), onState.Value, v => onState.Set(v), disabled: forceDisabled));
+        PlaygroundVariant offVariant = new PlaygroundVariant("CC_Playground_Label_Off",
+            Switch.Create("Off", offState.Value, v => offState.Set(v), disabled: forceDisabled));
+
+        PlaygroundState defaultState = new PlaygroundState("CC_Playground_Label_Default",
+            Switch.Create("Default", true, _ => { }, disabled: forceDisabled));
+        PlaygroundState hoverState = new PlaygroundState("CC_Playground_Label_Hover",
+            Switch.Create("Hover", false, _ => { }, disabled: forceDisabled));
+        PlaygroundState disabledState = new PlaygroundState("CC_Playground_Label_Disabled",
+            Switch.Create("Disabled", true, _ => { }, disabled: true));
+
+        return (new[] { onVariant, offVariant }, new[] { defaultState, hoverState, disabledState });
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) RadioDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<int> selection = Hooks.Hooks.UseState<int>(1);
+
+        LightweaveNode group = Radio.Group<int>(
+            value: selection.Value,
+            onChange: v => selection.Set(v),
+            children: k =>
+            {
+                k.Add(Radio.Item<int>((string)"CC_Playground_Controls_Radio_OptionA".Translate(), 0, disabled: forceDisabled));
+                k.Add(Radio.Item<int>((string)"CC_Playground_Controls_Radio_OptionB".Translate(), 1, disabled: forceDisabled));
+                k.Add(Radio.Item<int>((string)"CC_Playground_Controls_Radio_OptionC".Translate(), 2, disabled: forceDisabled));
+            });
+
+        PlaygroundVariant groupVariant = new PlaygroundVariant("CC_Playground_Label_Default", group);
+
+        return (new[] { groupVariant }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) SliderDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<float> sliderValue = Hooks.Hooks.UseState<float>(0.4f);
+
+        PlaygroundVariant smooth = new PlaygroundVariant("CC_Playground_Label_Default",
+            Slider.Create(sliderValue.Value, v => sliderValue.Set(v), 0f, 1f, disabled: forceDisabled));
+        PlaygroundVariant stepped = new PlaygroundVariant("CC_Playground_Label_Accented",
+            Slider.Create(sliderValue.Value, v => sliderValue.Set(v), 0f, 1f, step: 0.25f,
+                marks: new float[] { 0f, 0.25f, 0.5f, 0.75f, 1f }, disabled: forceDisabled));
+
+        PlaygroundState defaultState = new PlaygroundState("CC_Playground_Label_Default",
+            Slider.Create(0.4f, _ => { }, 0f, 1f, disabled: forceDisabled));
+        PlaygroundState hoverState = new PlaygroundState("CC_Playground_Label_Hover",
+            Slider.Create(0.7f, _ => { }, 0f, 1f, disabled: forceDisabled));
+        PlaygroundState disabledState = new PlaygroundState("CC_Playground_Label_Disabled",
+            Slider.Create(0.4f, _ => { }, 0f, 1f, disabled: true));
+
+        return (new[] { smooth, stepped }, new[] { defaultState, hoverState, disabledState });
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) TextFieldDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<string> text = Hooks.Hooks.UseState<string>("Stormlight");
+
+        PlaygroundVariant filled = new PlaygroundVariant("CC_Playground_Label_Filled",
+            TextField.Create(text.Value, v => text.Set(v),
+                placeholder: (string)"CC_Playground_Controls_TextField_Placeholder".Translate(),
+                disabled: forceDisabled));
+        PlaygroundVariant empty = new PlaygroundVariant("CC_Playground_Label_Empty",
+            TextField.Create(string.Empty, _ => { },
+                placeholder: (string)"CC_Playground_Controls_TextField_Placeholder".Translate(),
+                disabled: forceDisabled));
+
+        PlaygroundState defaultState = new PlaygroundState("CC_Playground_Label_Default",
+            TextField.Create("Default", _ => { }, disabled: forceDisabled));
+        PlaygroundState hoverState = new PlaygroundState("CC_Playground_Label_Hover",
+            TextField.Create("Hover", _ => { }, disabled: forceDisabled));
+        PlaygroundState disabledState = new PlaygroundState("CC_Playground_Label_Disabled",
+            TextField.Create("Disabled", _ => { }, disabled: true));
+
+        return (new[] { filled, empty }, new[] { defaultState, hoverState, disabledState });
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) TextAreaDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<string> text = Hooks.Hooks.UseState<string>("Multi-line sample.");
+
+        PlaygroundVariant filled = new PlaygroundVariant("CC_Playground_Label_Filled",
+            TextArea.Create(text.Value, v => text.Set(v),
+                placeholder: (string)"CC_Playground_Controls_TextArea_Placeholder".Translate(),
+                minRows: 2, maxRows: 3, disabled: forceDisabled));
+        PlaygroundVariant empty = new PlaygroundVariant("CC_Playground_Label_Empty",
+            TextArea.Create(string.Empty, _ => { },
+                placeholder: (string)"CC_Playground_Controls_TextArea_Placeholder".Translate(),
+                minRows: 2, maxRows: 3, disabled: forceDisabled));
+
+        return (new[] { filled, empty }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) NumberFieldDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<float> number = Hooks.Hooks.UseState<float>(42f);
+
+        PlaygroundVariant bounded = new PlaygroundVariant("CC_Playground_Label_Default",
+            NumberField.Create(number.Value, v => number.Set(v), 0f, 100f,
+                placeholder: (string)"CC_Playground_Controls_NumberField_Label".Translate(),
+                disabled: forceDisabled));
+
+        PlaygroundState defaultState = new PlaygroundState("CC_Playground_Label_Default",
+            NumberField.Create(42f, _ => { }, 0f, 100f, disabled: forceDisabled));
+        PlaygroundState hoverState = new PlaygroundState("CC_Playground_Label_Hover",
+            NumberField.Create(7f, _ => { }, 0f, 100f, disabled: forceDisabled));
+        PlaygroundState disabledState = new PlaygroundState("CC_Playground_Label_Disabled",
+            NumberField.Create(13f, _ => { }, 0f, 100f, disabled: true));
+
+        return (new[] { bounded }, new[] { defaultState, hoverState, disabledState });
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) SearchFieldDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<string> query = Hooks.Hooks.UseState<string>(string.Empty);
+
+        PlaygroundVariant empty = new PlaygroundVariant("CC_Playground_Label_Empty",
+            SearchField.Create(query.Value, v => query.Set(v),
+                placeholder: (string)"CC_Playground_SearchField_Placeholder".Translate(),
+                disabled: forceDisabled));
+        PlaygroundVariant filled = new PlaygroundVariant("CC_Playground_Label_Filled",
+            SearchField.Create("highstorm", _ => { }, disabled: forceDisabled));
+
+        return (new[] { empty, filled }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) DropdownDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("Scadrial");
+
+        string[] options = new[] { "Roshar", "Scadrial", "Nalthis", "Taldain", "Ashyn" };
+
+        PlaygroundVariant choice = new PlaygroundVariant("CC_Playground_Label_Default",
+            Dropdown.Create<string>(selected.Value, options, v => v, v => selected.Set(v), disabled: forceDisabled));
+
+        PlaygroundState defaultState = new PlaygroundState("CC_Playground_Label_Default",
+            Dropdown.Create<string>("Scadrial", options, v => v, _ => { }, disabled: forceDisabled));
+        PlaygroundState hoverState = new PlaygroundState("CC_Playground_Label_Hover",
+            Dropdown.Create<string>("Roshar", options, v => v, _ => { }, disabled: forceDisabled));
+        PlaygroundState disabledState = new PlaygroundState("CC_Playground_Label_Disabled",
+            Dropdown.Create<string>("Nalthis", options, v => v, _ => { }, disabled: true));
+
+        return (new[] { choice }, new[] { defaultState, hoverState, disabledState });
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) ColorPickerDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<Color> chosen = Hooks.Hooks.UseState<Color>(new Color(0.25f, 0.42f, 0.30f));
+
+        PlaygroundVariant picker = new PlaygroundVariant("CC_Playground_Label_Default",
+            ColorPicker.Create(chosen.Value, v => chosen.Set(v), disabled: forceDisabled));
+
+        return (new[] { picker }, EmptyStates);
+    }
+
+    private static (IReadOnlyList<PlaygroundVariant>, IReadOnlyList<PlaygroundState>) KeyBindingDemo(bool forceDisabled)
+    {
+        Hooks.Hooks.StateHandle<KeyBinding> binding = Hooks.Hooks.UseState<KeyBinding>(
+            new KeyBinding(KeyCode.F, KeyModifiers.Control));
+
+        PlaygroundVariant cast = new PlaygroundVariant("CC_Playground_Label_Default",
+            KeyBindingField.Create(binding.Value, v => binding.Set(v), disabled: forceDisabled));
+
+        return (new[] { cast }, EmptyStates);
     }
 }

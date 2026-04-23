@@ -126,4 +126,9 @@
     <CC_Playground_ContextMenu_Delete>Delete</CC_Playground_ContextMenu_Delete>
     <CC_Playground_ContextMenu_LastAction>Last action: {ACTION}</CC_Playground_ContextMenu_LastAction>
     <CC_Playground_ContextMenu_Idle>Idle</CC_Playground_ContextMenu_Idle>
+    <CC_Playground_Table_Title>Table</CC_Playground_Table_Title>
+    <CC_Playground_Table_Col_World>World</CC_Playground_Table_Col_World>
+    <CC_Playground_Table_Col_Shards>Shards</CC_Playground_Table_Col_Shards>
+    <CC_Playground_Table_Col_Population>Population</CC_Playground_Table_Col_Population>
+    <CC_Playground_Table_Empty>No worlds recorded.</CC_Playground_Table_Empty>
 </LanguageData>

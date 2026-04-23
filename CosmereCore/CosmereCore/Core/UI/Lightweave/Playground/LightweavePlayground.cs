@@ -799,7 +799,63 @@ public sealed class LightweavePlayground : LightweaveWindow
                 c.Add(Typography.Typography.Caption(actionText));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Table_Title".Translate()));
+
+                IReadOnlyList<WorldEntry> worldRows = new WorldEntry[]
+                {
+                    new WorldEntry("Roshar", "Honor, Cultivation", "Unknown"),
+                    new WorldEntry("Scadrial", "Ruin, Preservation", "~1M"),
+                    new WorldEntry("Nalthis", "Endowment", "~5M"),
+                    new WorldEntry("Sel", "Dominion, Devotion", "~15M"),
+                    new WorldEntry("Taldain", "Autonomy", "~500K"),
+                };
+
+                IReadOnlyList<TableColumn<WorldEntry>> worldColumns = new TableColumn<WorldEntry>[]
+                {
+                    new TableColumn<WorldEntry>(
+                        Header: (string)"CC_Playground_Table_Col_World".Translate(),
+                        CellRenderer: entry => Typography.Typography.Text(entry.World),
+                        Width: new Rem(8f)),
+                    new TableColumn<WorldEntry>(
+                        Header: (string)"CC_Playground_Table_Col_Shards".Translate(),
+                        CellRenderer: entry => Typography.Typography.Text(entry.Shard)),
+                    new TableColumn<WorldEntry>(
+                        Header: (string)"CC_Playground_Table_Col_Population".Translate(),
+                        CellRenderer: entry => Typography.Typography.Text(entry.Population),
+                        Width: new Rem(7f)),
+                };
+
+                LightweaveNode tableNode = Table.Create<WorldEntry>(
+                    rows: worldRows,
+                    columns: worldColumns,
+                    rowHeight: new Rem(2f),
+                    keyFn: entry => entry.World);
+
+                c.Add(TablePlaygroundBounds(tableNode));
+            }));
+
         });
+    }
+
+    private readonly record struct WorldEntry(string World, string Shard, string Population);
+
+    private static LightweaveNode TablePlaygroundBounds(
+        LightweaveNode inner,
+        [global::System.Runtime.CompilerServices.CallerLineNumber] int line = 0,
+        [global::System.Runtime.CompilerServices.CallerFilePath] string file = "")
+    {
+        LightweaveNode node = NodeBuilder.New("TablePlaygroundBounds", line, file);
+        node.Children.Add(inner);
+        node.Paint = (rect, _) =>
+        {
+            float height = new Rem(14f).ToPixels();
+            Rect bounded = new Rect(rect.x, rect.y, rect.width, height);
+            inner.MeasuredRect = bounded;
+            LightweaveRoot.PaintSubtree(inner, bounded);
+        };
+        return node;
     }
 
     private static LightweaveNode ContextMenuHintArea(

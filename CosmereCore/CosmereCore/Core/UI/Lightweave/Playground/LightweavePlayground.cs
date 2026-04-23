@@ -993,6 +993,71 @@ public sealed class LightweavePlayground : LightweaveWindow
                 }));
             }));
 
+            col.Add(Surface.Surface.Card(c =>
+            {
+                c.Add(Typography.Typography.Heading(2, "CC_Playground_Drawer_Title".Translate()));
+
+                Hooks.Hooks.StateHandle<bool> drawerOpen = Hooks.Hooks.UseState<bool>(false);
+                Hooks.Hooks.StateHandle<DrawerSide> drawerSide = Hooks.Hooks.UseState<DrawerSide>(DrawerSide.Right);
+
+                c.Add(Layout.Layout.Row(gap: SpacingScale.Sm, children: r =>
+                {
+                    r.Add(Button.Create(
+                        label: "CC_Playground_Drawer_Side_Left".Translate(),
+                        onClick: () =>
+                        {
+                            drawerSide.Set(DrawerSide.Left);
+                            drawerOpen.Set(true);
+                        },
+                        variant: drawerSide.Value == DrawerSide.Left ? ButtonVariant.Primary : ButtonVariant.Secondary));
+                    r.Add(Button.Create(
+                        label: "CC_Playground_Drawer_Side_Right".Translate(),
+                        onClick: () =>
+                        {
+                            drawerSide.Set(DrawerSide.Right);
+                            drawerOpen.Set(true);
+                        },
+                        variant: drawerSide.Value == DrawerSide.Right ? ButtonVariant.Primary : ButtonVariant.Secondary));
+                    r.Add(Button.Create(
+                        label: "CC_Playground_Drawer_Side_Top".Translate(),
+                        onClick: () =>
+                        {
+                            drawerSide.Set(DrawerSide.Top);
+                            drawerOpen.Set(true);
+                        },
+                        variant: drawerSide.Value == DrawerSide.Top ? ButtonVariant.Primary : ButtonVariant.Secondary));
+                    r.Add(Button.Create(
+                        label: "CC_Playground_Drawer_Side_Bottom".Translate(),
+                        onClick: () =>
+                        {
+                            drawerSide.Set(DrawerSide.Bottom);
+                            drawerOpen.Set(true);
+                        },
+                        variant: drawerSide.Value == DrawerSide.Bottom ? ButtonVariant.Primary : ButtonVariant.Secondary));
+                }));
+
+                c.Add(Button.Create(
+                    label: "CC_Playground_Drawer_Open".Translate(),
+                    onClick: () => drawerOpen.Set(true),
+                    variant: ButtonVariant.Primary));
+
+                c.Add(Drawer.Create(
+                    isOpen: drawerOpen.Value,
+                    side: drawerSide.Value,
+                    content: () => Layout.Layout.Column(gap: SpacingScale.Md, children: dc =>
+                    {
+                        dc.Add(Typography.Typography.Heading(1,
+                            "CC_Playground_Drawer_ContentTitle".Translate()));
+                        dc.Add(Typography.Typography.Text(
+                            "CC_Playground_Drawer_ContentBody".Translate()));
+                        dc.Add(Button.Create(
+                            label: "CC_Playground_Drawer_Close".Translate(),
+                            onClick: () => drawerOpen.Set(false),
+                            variant: ButtonVariant.Secondary));
+                    }),
+                    onDismiss: () => drawerOpen.Set(false)));
+            }));
+
         });
     }
 

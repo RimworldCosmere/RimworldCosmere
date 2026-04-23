@@ -143,4 +143,13 @@
     <CC_Playground_KeyBindingField_CastAbility>Cast ability</CC_Playground_KeyBindingField_CastAbility>
     <CC_Playground_KeyBindingField_ToggleHud>Toggle HUD</CC_Playground_KeyBindingField_ToggleHud>
     <CC_Playground_KeyBindingField_OpenCodex>Open codex</CC_Playground_KeyBindingField_OpenCodex>
+    <CC_Playground_Drawer_Title>Drawer</CC_Playground_Drawer_Title>
+    <CC_Playground_Drawer_Open>Open drawer</CC_Playground_Drawer_Open>
+    <CC_Playground_Drawer_Close>Close drawer</CC_Playground_Drawer_Close>
+    <CC_Playground_Drawer_Side_Left>Left</CC_Playground_Drawer_Side_Left>
+    <CC_Playground_Drawer_Side_Right>Right</CC_Playground_Drawer_Side_Right>
+    <CC_Playground_Drawer_Side_Top>Top</CC_Playground_Drawer_Side_Top>
+    <CC_Playground_Drawer_Side_Bottom>Bottom</CC_Playground_Drawer_Side_Bottom>
+    <CC_Playground_Drawer_ContentTitle>Drawer content</CC_Playground_Drawer_ContentTitle>
+    <CC_Playground_Drawer_ContentBody>This drawer slides in from the edge of the screen. Click outside or press Escape to dismiss.</CC_Playground_Drawer_ContentBody>
 </LanguageData>

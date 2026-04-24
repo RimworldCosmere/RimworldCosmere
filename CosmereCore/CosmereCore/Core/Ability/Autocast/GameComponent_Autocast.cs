@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Verse;
 
 namespace Cosmere.Core.Ability.Autocast;
@@ -17,6 +16,7 @@ public sealed class GameComponent_Autocast : GameComponent {
             list = [];
             rulesByPawnId[pawn.thingIDNumber] = list;
         }
+
         return list;
     }
 
@@ -25,6 +25,7 @@ public sealed class GameComponent_Autocast : GameComponent {
         for (int i = 0; i < list.Count; i++) {
             if (list[i].AbilityDefName == abilityDefName) return list[i];
         }
+
         AutocastRule fresh = new AutocastRule { AbilityDefName = abilityDefName };
         AutocastDefaults.ApplyTo(fresh);
         list.Add(fresh);

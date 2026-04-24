@@ -6,8 +6,8 @@ using Verse.Sound;
 namespace Cosmere.Core.UI.Radial;
 
 public sealed class RadialWindow : Verse.Window {
+    private readonly RadialState state = new RadialState();
     private RadialSnapshot snapshot;
-    private readonly RadialState state = new();
 
     public RadialWindow(RadialSnapshot snapshot) {
         this.snapshot = snapshot;
@@ -36,29 +36,33 @@ public sealed class RadialWindow : Verse.Window {
 
     public override void DoWindowContents(Rect inRect) {
         if (!snapshot.Pawn.Spawned || snapshot.Pawn.Dead) {
-            Close(doCloseSound: false);
+            Close(false);
             return;
         }
 
         RadialSnapshot? rebuilt = RadialSnapshotBuilder.Build(snapshot.Pawn);
         if (rebuilt == null) {
-            Close(doCloseSound: false);
+            Close(false);
             return;
         }
+
         snapshot = rebuilt;
 
         if (state.Kind != RadialStateKind.SystemTier) {
             if (state.SelectedSystemIndex < 0 || state.SelectedSystemIndex >= snapshot.Systems.Count) {
-                Close(doCloseSound: false);
+                Close(false);
                 return;
             }
+
             if (state.Kind != RadialStateKind.SubsectionTier) {
                 if (state.SelectedSubsectionIndex < 0 ||
                     state.SelectedSubsectionIndex >= snapshot.Systems[state.SelectedSystemIndex].Subsections.Count) {
-                    Close(doCloseSound: false);
+                    Close(false);
                     return;
                 }
-                int leafCount = snapshot.Systems[state.SelectedSystemIndex].Subsections[state.SelectedSubsectionIndex].Leaves.Count;
+
+                int leafCount = snapshot.Systems[state.SelectedSystemIndex]
+                    .Subsections[state.SelectedSubsectionIndex].Leaves.Count;
                 if (state.HoveredIndex >= leafCount) state.HoveredIndex = -1;
             }
         }
@@ -73,7 +77,7 @@ public sealed class RadialWindow : Verse.Window {
     }
 
     public override void OnCancelKeyPressed() {
-        Close(doCloseSound: false);
+        Close(false);
         Event.current?.Use();
     }
 
@@ -81,16 +85,20 @@ public sealed class RadialWindow : Verse.Window {
         switch (state.Kind) {
             case RadialStateKind.SystemTier:
                 state.HoveredIndex = RadialLayout.HitTest(
-                    mouse, center,
-                    RadialLayout.SystemRingInner, RadialLayout.SystemRingOuter,
+                    mouse,
+                    center,
+                    RadialLayout.SystemRingInner,
+                    RadialLayout.SystemRingOuter,
                     snapshot.Systems.Count
                 );
                 break;
             case RadialStateKind.SubsectionTier: {
                 RadialSystem sys = snapshot.Systems[state.SelectedSystemIndex];
                 state.HoveredIndex = RadialLayout.HitTest(
-                    mouse, center,
-                    RadialLayout.SubsectionRingInner, RadialLayout.SubsectionRingOuter,
+                    mouse,
+                    center,
+                    RadialLayout.SubsectionRingInner,
+                    RadialLayout.SubsectionRingOuter,
                     sys.Subsections.Count
                 );
                 break;
@@ -100,8 +108,10 @@ public sealed class RadialWindow : Verse.Window {
                     .Systems[state.SelectedSystemIndex]
                     .Subsections[state.SelectedSubsectionIndex];
                 state.HoveredIndex = RadialLayout.HitTest(
-                    mouse, center,
-                    RadialLayout.AbilityRingInner, RadialLayout.AbilityRingOuter,
+                    mouse,
+                    center,
+                    RadialLayout.AbilityRingInner,
+                    RadialLayout.AbilityRingOuter,
                     sub.Leaves.Count
                 );
                 break;
@@ -133,10 +143,11 @@ public sealed class RadialWindow : Verse.Window {
 
         if (e.type == EventType.MouseDown && e.button == 1) {
             if (state.Kind == RadialStateKind.SystemTier) {
-                Close(doCloseSound: false);
+                Close(false);
             } else {
                 state.Back();
             }
+
             RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
             e.Use();
             return;
@@ -163,7 +174,7 @@ public sealed class RadialWindow : Verse.Window {
                 state.HoveredIndex = -1;
                 break;
             case RadialStateKind.AbilityTier:
-                CommitAndClose(flareShift: false);
+                CommitAndClose(false);
                 break;
         }
     }
@@ -187,6 +198,7 @@ public sealed class RadialWindow : Verse.Window {
 
             break;
         }
+
         state.HoveredIndex = -1;
     }
 
@@ -199,7 +211,8 @@ public sealed class RadialWindow : Verse.Window {
                 .SubsectionId;
             RadialDispatcher.Dispatch(snapshot.Pawn, leaf, subId, flareShift);
         }
-        Close(doCloseSound: false);
+
+        Close(false);
     }
 
     public void TryCommitOnRelease(bool flareShift) {
@@ -207,6 +220,7 @@ public sealed class RadialWindow : Verse.Window {
             CommitAndClose(flareShift);
             return;
         }
-        Close(doCloseSound: false);
+
+        Close(false);
     }
 }

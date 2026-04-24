@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Hediff;
 using RimWorld;
@@ -20,11 +19,18 @@ public class RemoveMetalmind : Recipe_Surgery {
         }
     }
 
-    public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer, List<Verse.Thing> ingredients, Bill bill) {
+    public override void ApplyOnPawn(
+        Pawn pawn,
+        BodyPartRecord part,
+        Pawn billDoer,
+        List<Verse.Thing> ingredients,
+        Bill bill
+    ) {
         if (billDoer != null) {
             if (CheckSurgeryFail(billDoer, pawn, ingredients, part, bill)) {
                 return;
             }
+
             TaleRecorder.RecordTale(TaleDefOf.DidSurgery, billDoer, pawn);
         }
 

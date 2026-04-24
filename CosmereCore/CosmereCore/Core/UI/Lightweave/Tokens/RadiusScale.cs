@@ -1,7 +1,6 @@
 namespace Cosmere.Core.UI.Lightweave.Tokens;
 
-public enum RadiusScale
-{
+public enum RadiusScale {
     None,
     Sm,
     Md,

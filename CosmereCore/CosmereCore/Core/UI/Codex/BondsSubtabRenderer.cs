@@ -10,6 +10,7 @@ public static class BondsSubtabRenderer {
             cp.DrawBonds(pawn, rect, state);
             return;
         }
+
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.7f)))
             Widgets.Label(rect, "CC_Codex_Bonds_Empty".Translate());
     }

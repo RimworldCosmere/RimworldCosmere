@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using FloatSubMenus;
@@ -28,14 +27,18 @@ public class ImplantSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         List<Verse.Thing> chargedSpikes = FindAllChargedSpikes(surgeon);
         if (chargedSpikes.Count == 0) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ImplantLiveSpike".Translate(target.LabelShortCap) + ": " + "CS_Hemalurgy_NoChargedSpike".Translate(),
+                "CS_Hemalurgy_ImplantLiveSpike".Translate(target.LabelShortCap) +
+                ": " +
+                "CS_Hemalurgy_NoChargedSpike".Translate(),
                 null
             );
         }
 
         if (!surgeon.CanReach(target, PathEndMode.ClosestTouch, Danger.Deadly)) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ImplantLiveSpike".Translate(target.LabelShortCap) + ": " + "NoPath".Translate().CapitalizeFirst(),
+                "CS_Hemalurgy_ImplantLiveSpike".Translate(target.LabelShortCap) +
+                ": " +
+                "NoPath".Translate().CapitalizeFirst(),
                 null
             );
         }
@@ -57,51 +60,60 @@ public class ImplantSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
             if (comp == null) continue;
 
             if (comp.chargeData!.stealType == HemalurgicStealType.RemoveAllPowers) {
-                options.Add(new FloatMenuOption(
-                    GetSpikeLabel(spike, comp) + ": " + "CS_Hemalurgy_CannotImplantAluminum".Translate(),
-                    null
-                ));
+                options.Add(
+                    new FloatMenuOption(
+                        GetSpikeLabel(spike, comp) + ": " + "CS_Hemalurgy_CannotImplantAluminum".Translate(),
+                        null
+                    )
+                );
                 continue;
             }
 
             string label = GetSpikeLabel(spike, comp);
 
-            options.Add(new FloatMenuOption(
-                label,
-                () => {
-                    if (!surgeon.CanReach(spike, PathEndMode.ClosestTouch, Danger.Deadly)) {
-                        Messages.Message("NoPath".Translate().CapitalizeFirst(), MessageTypeDefOf.RejectInput);
-                        return;
-                    }
+            options.Add(
+                new FloatMenuOption(
+                    label,
+                    () => {
+                        if (!surgeon.CanReach(spike, PathEndMode.ClosestTouch, Danger.Deadly)) {
+                            Messages.Message("NoPath".Translate().CapitalizeFirst(), MessageTypeDefOf.RejectInput);
+                            return;
+                        }
 
-                    Building_Bed? bed = LiveSpikeMenuProvider.FindBedForDonor(target, surgeon);
-                    if (bed == null && !target.InBed()) {
-                        Messages.Message(
-                            "CS_Hemalurgy_NoBedForDonor".Translate(target.Named("DONOR")),
-                            target, MessageTypeDefOf.RejectInput
+                        Building_Bed? bed = LiveSpikeMenuProvider.FindBedForDonor(target, surgeon);
+                        if (bed == null && !target.InBed()) {
+                            Messages.Message(
+                                "CS_Hemalurgy_NoBedForDonor".Translate(target.Named("DONOR")),
+                                target,
+                                MessageTypeDefOf.RejectInput
+                            );
+                            return;
+                        }
+
+                        LocalTargetInfo bedTarget = bed != null ? (LocalTargetInfo)bed : LocalTargetInfo.Invalid;
+
+                        bool isVoluntary = target.Faction == Faction.OfPlayer &&
+                                           !target.IsPrisonerOfColony &&
+                                           !target.IsSlaveOfColony;
+                        if (isVoluntary && !target.InBed() && !target.Downed && bed != null) {
+                            Verse.AI.Job donorJob = JobMaker.MakeJob(
+                                JobDefOf.Cosmere_Scadrial_Job_WaitInBed,
+                                bed
+                            );
+                            target.jobs.TryTakeOrderedJob(donorJob);
+                        }
+
+                        Verse.AI.Job job = JobMaker.MakeJob(
+                            JobDefOf.Cosmere_Scadrial_Job_ImplantSpike,
+                            target,
+                            spike,
+                            bedTarget
                         );
-                        return;
+                        job.count = 1;
+                        surgeon.jobs.TryTakeOrderedJob(job);
                     }
-
-                    LocalTargetInfo bedTarget = bed != null ? (LocalTargetInfo)bed : LocalTargetInfo.Invalid;
-
-                    bool isVoluntary = target.Faction == Faction.OfPlayer
-                        && !target.IsPrisonerOfColony
-                        && !target.IsSlaveOfColony;
-                    if (isVoluntary && !target.InBed() && !target.Downed && bed != null) {
-                        Verse.AI.Job donorJob = JobMaker.MakeJob(
-                            Scadrial.JobDefOf.Cosmere_Scadrial_Job_WaitInBed, bed
-                        );
-                        target.jobs.TryTakeOrderedJob(donorJob);
-                    }
-
-                    Verse.AI.Job job = JobMaker.MakeJob(
-                        Scadrial.JobDefOf.Cosmere_Scadrial_Job_ImplantSpike, target, spike, bedTarget
-                    );
-                    job.count = 1;
-                    surgeon.jobs.TryTakeOrderedJob(job);
-                }
-            ));
+                )
+            );
         }
 
         return options;
@@ -128,7 +140,8 @@ public class ImplantSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
             result.Add(spikes[i]);
         }
 
-        List<Verse.Thing> needles = map.listerThings.ThingsOfDef(HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle);
+        List<Verse.Thing> needles =
+            map.listerThings.ThingsOfDef(HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle);
         for (int i = 0; i < needles.Count; i++) {
             HemalurgicSpike? comp = needles[i].TryGetComp<HemalurgicSpike>();
             if (comp == null || !comp.isCharged) continue;

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Memory;
 using RimWorld;
@@ -14,15 +13,15 @@ public sealed class Dialog_StoreMemory : Window {
     private static readonly Color HoverRowColor = new Color(1f, 1f, 1f, 0.06f);
     private static readonly Color SecondaryTextColor = new Color(0.7f, 0.7f, 0.7f);
     private static readonly Color DisabledTextColor = new Color(0.55f, 0.55f, 0.55f);
+    private readonly List<Metalmind> copperminds;
+    private readonly List<Thought_Memory> memories;
 
     private readonly Pawn pawn;
-    private readonly List<Thought_Memory> memories;
-    private readonly List<Metalmind> copperminds;
+    private Vector2 coppermindsScroll;
+    private Vector2 memoriesScroll;
+    private int selectedCoppermindIndex = -1;
 
     private int selectedMemoryIndex = -1;
-    private int selectedCoppermindIndex = -1;
-    private Vector2 memoriesScroll;
-    private Vector2 coppermindsScroll;
 
     public Dialog_StoreMemory(Pawn pawn, List<Thought_Memory> memories, List<Metalmind> copperminds) {
         this.pawn = pawn;
@@ -39,9 +38,13 @@ public sealed class Dialog_StoreMemory : Window {
     public override void DoWindowContents(Rect inRect) {
         float y = inRect.y;
 
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(new Rect(inRect.x, y, inRect.width, 32f),
-                "CC_Codex_Feruchemy_StoreMemory_Title".Translate(pawn.LabelShortCap.Named("PAWN")));
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
+            Widgets.Label(
+                new Rect(inRect.x, y, inRect.width, 32f),
+                "CC_Codex_Feruchemy_StoreMemory_Title".Translate(pawn.LabelShortCap.Named("PAWN"))
+            );
+        }
+
         y += 36f;
 
         float bottomBarHeight = 40f;
@@ -59,9 +62,12 @@ public sealed class Dialog_StoreMemory : Window {
     }
 
     private void DrawMemoriesColumn(Rect rect) {
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(new Rect(rect.x, rect.y, rect.width, 24f),
-                "CC_Codex_Feruchemy_StoreMemory_PawnMemories".Translate());
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white)) {
+            Widgets.Label(
+                new Rect(rect.x, rect.y, rect.width, 24f),
+                "CC_Codex_Feruchemy_StoreMemory_PawnMemories".Translate()
+            );
+        }
 
         Rect body = new Rect(rect.x, rect.y + 26f, rect.width, rect.height - 26f);
         Widgets.DrawBoxSolid(body, new Color(0f, 0f, 0f, 0.2f));
@@ -74,27 +80,36 @@ public sealed class Dialog_StoreMemory : Window {
         for (int i = 0; i < memories.Count; i++) {
             Thought_Memory memory = memories[i];
             Rect row = new Rect(0f, i * rowHeight, viewRect.width, rowHeight);
-            if (selectedMemoryIndex == i) Widgets.DrawBoxSolid(row, SelectedRowColor);
-            else if (Mouse.IsOver(row)) Widgets.DrawBoxSolid(row, HoverRowColor);
+            if (selectedMemoryIndex == i) {
+                Widgets.DrawBoxSolid(row, SelectedRowColor);
+            } else if (Mouse.IsOver(row)) Widgets.DrawBoxSolid(row, HoverRowColor);
 
             float offset = memory.MoodOffset();
             Color color = offset >= 0f ? PositiveMoodColor : NegativeMoodColor;
 
             Rect label = new Rect(row.x + 6f, row.y, row.width * 0.7f - 6f, row.height);
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, color))
-                Widgets.Label(label, memory.otherPawn != null
-                    ? $"{memory.def.LabelCap} ({memory.otherPawn.LabelShortCap})"
-                    : memory.def.LabelCap.ToString());
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, color)) {
+                Widgets.Label(
+                    label,
+                    memory.otherPawn != null
+                        ? $"{memory.def.LabelCap} ({memory.otherPawn.LabelShortCap})"
+                        : memory.def.LabelCap.ToString()
+                );
+            }
 
             Rect sizeRect = new Rect(label.xMax, row.y, row.width - label.width - 6f, row.height);
-            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, SecondaryTextColor))
-                Widgets.Label(sizeRect,
-                    "CC_Codex_Feruchemy_StoreMemory_Size".Translate(Mathf.Abs(offset).ToString("F1").Named("SIZE")));
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, SecondaryTextColor)) {
+                Widgets.Label(
+                    sizeRect,
+                    "CC_Codex_Feruchemy_StoreMemory_Size".Translate(Mathf.Abs(offset).ToString("F1").Named("SIZE"))
+                );
+            }
 
             if (Widgets.ButtonInvisible(row)) {
                 selectedMemoryIndex = i;
-                if (selectedCoppermindIndex >= 0 && !CanFitSelected(selectedCoppermindIndex))
+                if (selectedCoppermindIndex >= 0 && !CanFitSelected(selectedCoppermindIndex)) {
                     selectedCoppermindIndex = -1;
+                }
             }
         }
 
@@ -102,9 +117,12 @@ public sealed class Dialog_StoreMemory : Window {
     }
 
     private void DrawCoppermindsColumn(Rect rect) {
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(new Rect(rect.x, rect.y, rect.width, 24f),
-                "CC_Codex_Feruchemy_StoreMemory_Copperminds".Translate());
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white)) {
+            Widgets.Label(
+                new Rect(rect.x, rect.y, rect.width, 24f),
+                "CC_Codex_Feruchemy_StoreMemory_Copperminds".Translate()
+            );
+        }
 
         Rect body = new Rect(rect.x, rect.y + 26f, rect.width, rect.height - 26f);
         Widgets.DrawBoxSolid(body, new Color(0f, 0f, 0f, 0.2f));
@@ -121,8 +139,9 @@ public sealed class Dialog_StoreMemory : Window {
             bool fits = CanFitSelected(i);
             bool isSelected = selectedCoppermindIndex == i;
 
-            if (isSelected) Widgets.DrawBoxSolid(row, SelectedRowColor);
-            else if (fits && Mouse.IsOver(row)) Widgets.DrawBoxSolid(row, HoverRowColor);
+            if (isSelected) {
+                Widgets.DrawBoxSolid(row, SelectedRowColor);
+            } else if (fits && Mouse.IsOver(row)) Widgets.DrawBoxSolid(row, HoverRowColor);
 
             Color labelColor = fits ? Color.white : DisabledTextColor;
             Rect label = new Rect(row.x + 6f, row.y + 2f, row.width - 12f, 18f);
@@ -130,13 +149,16 @@ public sealed class Dialog_StoreMemory : Window {
                 Widgets.Label(label, mind.parent.LabelCap);
 
             Rect detail = new Rect(row.x + 6f, row.y + 18f, row.width - 12f, 14f);
-            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, SecondaryTextColor))
-                Widgets.Label(detail,
+            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, SecondaryTextColor)) {
+                Widgets.Label(
+                    detail,
                     "CC_Codex_Feruchemy_StoreMemory_CoppermindDetail".Translate(
                         mind.storedMemories.Count.Named("COUNT"),
                         mind.usedMemorySpace.ToString("F1").Named("USED"),
                         mind.maxAmount.ToString("F0").Named("MAX")
-                    ));
+                    )
+                );
+            }
 
             if (fits && Widgets.ButtonInvisible(row)) {
                 selectedCoppermindIndex = i;
@@ -172,6 +194,7 @@ public sealed class Dialog_StoreMemory : Window {
             PerformStore();
             Close();
         }
+
         GUI.enabled = true;
     }
 

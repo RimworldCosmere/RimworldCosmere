@@ -9,7 +9,7 @@ public static class BronzeDetectionUtility {
         List<ThingDef> rockTypes = Find.World.NaturalRockTypesIn(new PlanetTile(tileId)).ToList();
         if (rockTypes.Count == 0) return null;
 
-        StringBuilder sb = new();
+        StringBuilder sb = new StringBuilder();
         HashSet<string> reportedMinerals = [];
 
         for (int i = 0; i < rockTypes.Count; i++) {
@@ -47,6 +47,7 @@ public static class BronzeDetectionUtility {
                     result.Add(neighborId);
                 }
             }
+
             frontier = nextFrontier;
         }
 

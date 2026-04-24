@@ -1,3 +1,4 @@
+using Cosmere.Core.UI.Dock;
 using UnityEngine;
 using Verse;
 
@@ -25,11 +26,11 @@ public static class RadialController {
 
     private static void TryOpen() {
         if (window != null) {
-            window.Close(doCloseSound: false);
+            window.Close(false);
             window = null;
         }
 
-        Pawn? pawn = Dock.InvestitureDockWindow.GetSelectedPawn();
+        Pawn? pawn = InvestitureDockWindow.GetSelectedPawn();
         if (pawn == null) return;
         RadialSnapshot? snap = RadialSnapshotBuilder.Build(pawn);
         if (snap == null) return;

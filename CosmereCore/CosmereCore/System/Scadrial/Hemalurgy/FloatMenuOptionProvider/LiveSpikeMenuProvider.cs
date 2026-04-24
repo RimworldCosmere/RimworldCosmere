@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Dialog;
@@ -29,14 +28,18 @@ public class LiveSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         List<Verse.Thing> availableSpikes = FindAllUnchargedSpikes(surgeon);
         if (availableSpikes.Count == 0) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ChargeLiveSpike".Translate(target.LabelShortCap) + ": " + "CS_Hemalurgy_NoUnchargedSpike".Translate(),
+                "CS_Hemalurgy_ChargeLiveSpike".Translate(target.LabelShortCap) +
+                ": " +
+                "CS_Hemalurgy_NoUnchargedSpike".Translate(),
                 null
             );
         }
 
         if (!surgeon.CanReach(target, PathEndMode.ClosestTouch, Danger.Deadly)) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ChargeLiveSpike".Translate(target.LabelShortCap) + ": " + "NoPath".Translate().CapitalizeFirst(),
+                "CS_Hemalurgy_ChargeLiveSpike".Translate(target.LabelShortCap) +
+                ": " +
+                "NoPath".Translate().CapitalizeFirst(),
                 null
             );
         }
@@ -67,42 +70,57 @@ public class LiveSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
             if (HemalurgicConstants.RequiresSelection(stealType)) {
                 List<GeneDef> candidates = StealTargetSelector.GetStealCandidates(target, stealType);
                 if (candidates.Count == 0) {
-                    options.Add(new FloatMenuOption(
-                        spikeLabel + ": " + "CS_Hemalurgy_NothingToSteal".Translate(target.Named("DONOR")),
-                        null
-                    ));
+                    options.Add(
+                        new FloatMenuOption(
+                            spikeLabel + ": " + "CS_Hemalurgy_NothingToSteal".Translate(target.Named("DONOR")),
+                            null
+                        )
+                    );
                     continue;
                 }
 
                 if (candidates.Count == 1) {
-                    options.Add(new FloatMenuOption(
-                        spikeLabel + " (" + candidates[0].LabelCap + ")",
-                        () => StartChargeJob(surgeon, target, spike, comp, candidates[0])
-                    ));
+                    options.Add(
+                        new FloatMenuOption(
+                            spikeLabel + " (" + candidates[0].LabelCap + ")",
+                            () => StartChargeJob(surgeon, target, spike, comp, candidates[0])
+                        )
+                    );
                     continue;
                 }
 
                 List<FloatMenuOption> geneOptions = [];
                 for (int j = 0; j < candidates.Count; j++) {
                     GeneDef gene = candidates[j];
-                    geneOptions.Add(new FloatMenuOption(
-                        gene.LabelCap,
-                        () => StartChargeJob(surgeon, target, spike, comp, gene)
-                    ));
+                    geneOptions.Add(
+                        new FloatMenuOption(
+                            gene.LabelCap,
+                            () => StartChargeJob(surgeon, target, spike, comp, gene)
+                        )
+                    );
                 }
+
                 options.Add(FloatSubMenu.CompatMMMCreate(spikeLabel, geneOptions));
             } else {
-                options.Add(new FloatMenuOption(
-                    spikeLabel,
-                    () => StartChargeJob(surgeon, target, spike, comp, null)
-                ));
+                options.Add(
+                    new FloatMenuOption(
+                        spikeLabel,
+                        () => StartChargeJob(surgeon, target, spike, comp, null)
+                    )
+                );
             }
         }
 
         return options;
     }
 
-    private void StartChargeJob(Pawn surgeon, Pawn target, Verse.Thing spike, HemalurgicSpike comp, GeneDef? selectedGene) {
+    private void StartChargeJob(
+        Pawn surgeon,
+        Pawn target,
+        Verse.Thing spike,
+        HemalurgicSpike comp,
+        GeneDef? selectedGene
+    ) {
         if (!surgeon.CanReach(spike, PathEndMode.ClosestTouch, Danger.Deadly)) {
             Messages.Message("NoPath".Translate().CapitalizeFirst(), MessageTypeDefOf.RejectInput);
             return;
@@ -112,7 +130,8 @@ public class LiveSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         if (bed == null && !target.InBed()) {
             Messages.Message(
                 "CS_Hemalurgy_NoBedForDonor".Translate(target.Named("DONOR")),
-                target, MessageTypeDefOf.RejectInput
+                target,
+                MessageTypeDefOf.RejectInput
             );
             return;
         }
@@ -121,18 +140,20 @@ public class LiveSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
 
         comp.pendingStealTarget = selectedGene;
 
-        bool isVoluntary = target.Faction == Faction.OfPlayer
-            && !target.IsPrisonerOfColony
-            && !target.IsSlaveOfColony;
+        bool isVoluntary = target.Faction == Faction.OfPlayer && !target.IsPrisonerOfColony && !target.IsSlaveOfColony;
         if (isVoluntary && !target.InBed() && !target.Downed && bed != null) {
             Verse.AI.Job donorJob = JobMaker.MakeJob(
-                Scadrial.JobDefOf.Cosmere_Scadrial_Job_WaitInBed, bed
+                JobDefOf.Cosmere_Scadrial_Job_WaitInBed,
+                bed
             );
             target.jobs.TryTakeOrderedJob(donorJob);
         }
 
         Verse.AI.Job job = JobMaker.MakeJob(
-            Scadrial.JobDefOf.Cosmere_Scadrial_Job_ChargeLiveSpike, target, spike, bedTarget
+            JobDefOf.Cosmere_Scadrial_Job_ChargeLiveSpike,
+            target,
+            spike,
+            bedTarget
         );
         job.count = 1;
         surgeon.jobs.TryTakeOrderedJob(job);
@@ -163,8 +184,9 @@ public class LiveSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         if (bestMedBed != null) return bestMedBed;
 
         GuestStatus? guestStatus = null;
-        if (donor.IsPrisonerOfColony) guestStatus = GuestStatus.Prisoner;
-        else if (donor.IsSlaveOfColony) guestStatus = GuestStatus.Slave;
+        if (donor.IsPrisonerOfColony) {
+            guestStatus = GuestStatus.Prisoner;
+        } else if (donor.IsSlaveOfColony) guestStatus = GuestStatus.Slave;
 
         return RestUtility.FindBedFor(donor, surgeon, false, false, guestStatus);
     }
@@ -181,7 +203,8 @@ public class LiveSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
             result.Add(spikes[i]);
         }
 
-        List<Verse.Thing> needles = map.listerThings.ThingsOfDef(HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle);
+        List<Verse.Thing> needles =
+            map.listerThings.ThingsOfDef(HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle);
         for (int i = 0; i < needles.Count; i++) {
             HemalurgicSpike? comp = needles[i].TryGetComp<HemalurgicSpike>();
             if (comp == null || comp.isCharged) continue;

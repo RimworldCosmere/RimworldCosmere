@@ -6,10 +6,10 @@ using Verse;
 namespace Cosmere.System.Roshar.Comp.Map;
 
 public class StormlightNetworkGrid {
-    public List<StormlightReceiver> receivers = [];
     public List<StormlightBattery> batteries = [];
     public List<StormlightCharger> chargers = [];
     public HashSet<IntVec3> conduitCells = [];
+    public List<StormlightReceiver> receivers = [];
 
     public float TotalStored {
         get {

@@ -13,10 +13,10 @@ namespace Cosmere.System.Roshar.Gizmo;
 public class SurgeGizmo : AsGizmo {
     private static readonly Vector2 Padding = new Vector2(2f, 4f);
     private readonly Surgebinder gene;
-    private readonly SurgeDef surgeDef;
     private readonly List<SurgebindingAbilitySubGizmo> subgizmos = [];
-    private bool initialized;
+    private readonly SurgeDef surgeDef;
     private int cachedIdeal = -1;
+    private bool initialized;
 
     public SurgeGizmo(Surgebinder gene, SurgeDef surgeDef)
         : base(gene.pawn.thingIDNumber, surgeDef.shortHash) {
@@ -47,13 +47,13 @@ public class SurgeGizmo : AsGizmo {
         }
     }
 
+    public override bool Visible => gene.pawn.Faction.IsPlayer && !gene.gizmoShrunk && visibleAbilityCount > 0;
+
     public override float GetWidth(float maxWidth) {
         int count = visibleAbilityCount;
         if (count == 0) return 0;
         return Height + Padding.x + (iconSize + Padding.x) * count;
     }
-
-    public override bool Visible => gene.pawn.Faction.IsPlayer && !gene.gizmoShrunk && visibleAbilityCount > 0;
 
     private void Initialize() {
         if (initialized && cachedIdeal == gene.currentIdeal) return;
@@ -97,7 +97,7 @@ public class SurgeGizmo : AsGizmo {
 
         Rect surgeIconRect = new Rect(mainRect.x, mainRect.y, mainRect.height, mainRect.height);
         Texture2D icon = surgeDef.icon ?? BaseContent.BadTex;
-        Cosmere.Core.Util.UI.DrawIcon(surgeIconRect, icon, Command.BGTex, TexUI.GrayscaleGUI, doBorder: false);
+        Core.Util.UI.DrawIcon(surgeIconRect, icon, BGTex, TexUI.GrayscaleGUI, doBorder: false);
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter)) {
             float textHeight = Text.CalcHeight(surgeDef.LabelCap, surgeIconRect.width);

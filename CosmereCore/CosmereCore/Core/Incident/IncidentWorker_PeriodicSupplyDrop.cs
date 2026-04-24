@@ -1,3 +1,4 @@
+using Cosmere.Core.DefModExtension;
 using RimWorld;
 using Verse;
 
@@ -8,7 +9,7 @@ public class IncidentWorker_PeriodicSupplyDrop : IncidentWorker {
         Map? map = parms.target as Map ?? Find.AnyPlayerHomeMap;
         if (map == null) return false;
 
-        DefModExtension.SupplyDropConfig? config = def.GetModExtension<DefModExtension.SupplyDropConfig>();
+        SupplyDropConfig? config = def.GetModExtension<SupplyDropConfig>();
         if (config == null || config.items.Count == 0) {
             Logger.Warning($"PeriodicSupplyDrop: No SupplyDropConfig on IncidentDef '{def.defName}'");
             return false;
@@ -16,7 +17,7 @@ public class IncidentWorker_PeriodicSupplyDrop : IncidentWorker {
 
         List<Verse.Thing> things = [];
         for (int i = 0; i < config.items.Count; i++) {
-            DefModExtension.SupplyDropItem entry = config.items[i];
+            SupplyDropItem entry = config.items[i];
             if (entry.thing == null) continue;
 
             ThingDef? thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(entry.thing);

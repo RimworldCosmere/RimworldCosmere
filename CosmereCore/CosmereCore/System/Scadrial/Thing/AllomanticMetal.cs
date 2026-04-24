@@ -39,9 +39,12 @@ public class AllomanticMetal : AllomanticVial {
             if (metal.Equals(MetallicArtsMetalDefOf.LerasiumAlloy)) {
                 MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
                 if (stuffMetal == null) {
-                    Logger.Warning($"AllomanticMetal: could not find MetallicArtsMetalDef for stuff '{Stuff?.defName}'");
+                    Logger.Warning(
+                        $"AllomanticMetal: could not find MetallicArtsMetalDef for stuff '{Stuff?.defName}'"
+                    );
                     return;
                 }
+
                 GeneUtility.AddGene(ingester, stuffMetal.GetMistingGene(), false, true);
                 ingester.FillAllomanticReserves(stuffMetal);
                 ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level += 5;
@@ -52,9 +55,12 @@ public class AllomanticMetal : AllomanticVial {
             if (metal.Equals(MetallicArtsMetalDefOf.LeratiumAlloy)) {
                 MetallicArtsMetalDef? stuffMetal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(Stuff.defName);
                 if (stuffMetal == null) {
-                    Logger.Warning($"AllomanticMetal: could not find MetallicArtsMetalDef for stuff '{Stuff?.defName}'");
+                    Logger.Warning(
+                        $"AllomanticMetal: could not find MetallicArtsMetalDef for stuff '{Stuff?.defName}'"
+                    );
                     return;
                 }
+
                 GeneUtility.AddGene(ingester, stuffMetal.GetFerringGene(), false, true);
                 ingester.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level += 5;
                 ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratiumAlloy);

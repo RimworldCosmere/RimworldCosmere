@@ -1,4 +1,6 @@
+using Cosmere.Core.DefModExtension;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace Cosmere.Core.Incident;
@@ -8,8 +10,8 @@ public class IncidentWorker_NamedPawnDeparture : IncidentWorker {
         Map? map = parms.target as Map ?? Find.AnyPlayerHomeMap;
         if (map == null) return false;
 
-        DefModExtension.NamedPawnIncidentConfig? config =
-            def.GetModExtension<DefModExtension.NamedPawnIncidentConfig>();
+        NamedPawnIncidentConfig? config =
+            def.GetModExtension<NamedPawnIncidentConfig>();
         if (config?.pawn?.firstName == null) {
             Logger.Warning($"NamedPawnDeparture: No pawn name configured on IncidentDef '{def.defName}'");
             return false;
@@ -36,11 +38,11 @@ public class IncidentWorker_NamedPawnDeparture : IncidentWorker {
                 break;
             case "vanish":
                 pawn.DeSpawn();
-                Find.WorldPawns.PassToWorld(pawn, RimWorld.Planet.PawnDiscardDecideMode.Discard);
+                Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
                 break;
             default:
                 pawn.DeSpawn();
-                Find.WorldPawns.PassToWorld(pawn, RimWorld.Planet.PawnDiscardDecideMode.Decide);
+                Find.WorldPawns.PassToWorld(pawn);
                 break;
         }
 
@@ -54,6 +56,7 @@ public class IncidentWorker_NamedPawnDeparture : IncidentWorker {
             if (pawn.Name is NameTriple triple && triple.First == firstName) return pawn;
             if (pawn.Name is NameSingle single && single.Name.StartsWith(firstName)) return pawn;
         }
+
         return null;
     }
 }

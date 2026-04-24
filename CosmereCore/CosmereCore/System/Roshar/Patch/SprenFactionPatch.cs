@@ -1,6 +1,5 @@
 using Cosmere.System.Roshar.Thing.Pawn.Animal;
 using HarmonyLib;
-using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch;

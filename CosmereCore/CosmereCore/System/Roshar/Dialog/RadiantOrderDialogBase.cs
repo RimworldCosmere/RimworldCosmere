@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Cosmere.Core.Extension;
 using Cosmere.Core.Listing;
 using Cosmere.Core.UI;
 using Cosmere.Core.Window;
@@ -28,22 +26,30 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
     private const float TabUnderlineHeight = 3f;
     private const float IdealDotSize = 12f;
 
+    private const float BannerSize = 160f;
+    private const float BannerOverhang = 15f;
+
+    private const float TimelineDotRadius = 9f;
+    private const float TimelineLineWidth = 3f;
+    private const float TimelineLeftMargin = 28f;
+    private const float TimelineContentIndent = 56f;
+
     private static readonly Color AchievedColor = new Color(0.3f, 0.85f, 0.3f);
     private static readonly Color CurrentColor = new Color(0.95f, 0.85f, 0.2f);
     private static readonly Color FutureColor = new Color(0.5f, 0.5f, 0.5f);
     private static readonly Color BlockedColor = new Color(0.85f, 0.2f, 0.2f);
 
     private static readonly Texture2D CircleTex = CreateCircleTexture(32);
-
-    protected RadiantOrderDef order;
-    protected readonly Verse.Pawn? pawn;
-    protected readonly Surgebinder? surgebinder;
     protected readonly Color accentColor;
+    protected readonly Pawn? pawn;
+    protected readonly Surgebinder? surgebinder;
 
     private DialogTab currentTab;
+
+    protected RadiantOrderDef order;
     private float? surgeHeight;
 
-    protected RadiantOrderDialogBase(RadiantOrderDef order, Verse.Pawn? pawn = null, Surgebinder? surgebinder = null) {
+    protected RadiantOrderDialogBase(RadiantOrderDef order, Pawn? pawn = null, Surgebinder? surgebinder = null) {
         this.order = order;
         this.pawn = pawn;
         this.surgebinder = surgebinder;
@@ -57,9 +63,6 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
     );
 
     protected override float headerHeight => Spacing.Get(16);
-
-    private const float BannerSize = 160f;
-    private const float BannerOverhang = 15f;
 
     protected override void DrawHeaderContent(FoundationListing listing, Rect innerRect) {
         listing.Gap(BannerSize - BannerOverhang + Spacing.Get(0.5f));
@@ -237,11 +240,6 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
         return Mathf.Max(leftListing.CurHeight, rightListing.CurHeight);
     }
 
-    private const float TimelineDotRadius = 9f;
-    private const float TimelineLineWidth = 3f;
-    private const float TimelineLeftMargin = 28f;
-    private const float TimelineContentIndent = 56f;
-
     private static Texture2D CreateCircleTexture(int size) {
         Texture2D tex = new Texture2D(size, size, TextureFormat.ARGB32, false);
         float radius = size / 2f;
@@ -252,12 +250,13 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
                 tex.SetPixel(x, y, dist <= radius - 0.5f ? Color.white : Color.clear);
             }
         }
+
         tex.Apply();
         return tex;
     }
 
     protected virtual void DrawIdealsTab(FoundationListing listing) {
-        RosharModSettings settings = Cosmere.Core.Mod.GetModSettings<RosharModSettings>();
+        RosharModSettings settings = Core.Mod.GetModSettings<RosharModSettings>();
         int currentIdealLevel = surgebinder?.currentIdeal ?? -1;
         bool hasPendingOath = surgebinder?.PendingOath ?? false;
 
@@ -299,7 +298,12 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
                 GUI.color = Color.white;
             }
 
-            Rect dotRect = new Rect(dotCenterX - TimelineDotRadius, dotCenterY - TimelineDotRadius, dotDiameter, dotDiameter);
+            Rect dotRect = new Rect(
+                dotCenterX - TimelineDotRadius,
+                dotCenterY - TimelineDotRadius,
+                dotDiameter,
+                dotDiameter
+            );
             GUI.color = statusColor;
             GUI.DrawTexture(dotRect, CircleTex);
             GUI.color = Color.white;
@@ -322,17 +326,26 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
         if (idealIndex <= currentIdeal) return IdealStatus.Achieved;
 
         if (idealIndex == currentIdeal + 1) {
-            if (idealIndex >= 2 && order.idealChecker != null && pawn != null
-                && order.idealChecker.HasIncompatibleTrait(pawn, idealIndex)) {
+            if (idealIndex >= 2 &&
+                order.idealChecker != null &&
+                pawn != null &&
+                order.idealChecker.HasIncompatibleTrait(pawn, idealIndex)) {
                 return IdealStatus.Blocked;
             }
+
             return hasPendingOath ? IdealStatus.Current : IdealStatus.Current;
         }
 
         return IdealStatus.Future;
     }
 
-    private void DrawIdealRow(FoundationListing listing, Ideal ideal, int index, IdealStatus status, bool showRequirements) {
+    private void DrawIdealRow(
+        FoundationListing listing,
+        Ideal ideal,
+        int index,
+        IdealStatus status,
+        bool showRequirements
+    ) {
         Color statusColor = GetStatusColor(status);
 
         listing.Indent(TimelineContentIndent);
@@ -370,10 +383,11 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
         if (index == 0) {
             abilitiesToShow.AddRange(order.abilities);
         }
+
         for (int s = 0; s < order.surges.Count; s++) {
             for (int a = 0; a < order.surges[s].abilities.Count; a++) {
                 AbilityDef abilityDef = order.surges[s].abilities[a];
-                int minIdeal = abilityDef is Def.SurgebindingAbilityDef surgeDef
+                int minIdeal = abilityDef is SurgebindingAbilityDef surgeDef
                     ? surgeDef.GetMinIdealForOrder(order.defName)
                     : 0;
                 if (minIdeal == index) {
@@ -381,6 +395,7 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
                 }
             }
         }
+
         if (ideal.abilities != null) {
             abilitiesToShow.AddRange(ideal.abilities);
         }
@@ -401,6 +416,7 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
             if (i > 0) result += ", ";
             result += abilities[i].LabelCap;
         }
+
         return result;
     }
 
@@ -465,8 +481,11 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
             try {
                 degreeData = trait.def?.DataAtDegree(degree);
             } catch (Exception ex) {
-                Logger.Verbose($"RadiantOrderDialogBase: DataAtDegree({degree}) failed for trait '{trait.def?.defName}': {ex.Message}");
+                Logger.Verbose(
+                    $"RadiantOrderDialogBase: DataAtDegree({degree}) failed for trait '{trait.def?.defName}': {ex.Message}"
+                );
             }
+
             string traitLabel = degreeData?.label ?? trait.def?.label ?? trait.def?.defName ?? "Unknown";
             traitLabel = traitLabel.CapitalizeFirst();
 
@@ -501,16 +520,19 @@ public abstract class RadiantOrderDialogBase : BaseWindow {
             Widgets.DrawBox(pillRect, 1, borderCol.ToSolidColorTexture());
 
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, textColor)) {
-                if (pawnHasTrait)
+                if (pawnHasTrait) {
                     Widgets.Label(pillRect, $"<b>{traitLabel}</b>");
-                else
+                } else {
                     Widgets.Label(pillRect, traitLabel);
+                }
             }
 
             string? tooltipText = null;
             TraitDegreeData? tipData = trait.degree.HasValue
                 ? trait.def?.DataAtDegree(trait.degree.Value)
-                : trait.def?.degreeDatas is { Count: > 0 } ? trait.def.DataAtDegree(0) : null;
+                : trait.def?.degreeDatas is { Count: > 0 }
+                    ? trait.def.DataAtDegree(0)
+                    : null;
 
             if (tipData?.description != null) {
                 tooltipText = tipData.description

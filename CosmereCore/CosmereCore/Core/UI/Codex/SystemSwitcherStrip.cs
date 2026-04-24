@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Skin;
 using UnityEngine;
@@ -10,7 +9,7 @@ public static class SystemSwitcherStrip {
     public static void Draw(Rect rect, Pawn pawn, IReadOnlyList<IInvestitureProvider> providers, CodexState state) {
         if (providers.Count <= 1) return;
 
-        float pillWidth = Mathf.Min(140f, (rect.width - ((providers.Count - 1) * 6f)) / providers.Count);
+        float pillWidth = Mathf.Min(140f, (rect.width - (providers.Count - 1) * 6f) / providers.Count);
         float x = rect.x;
         for (int i = 0; i < providers.Count; i++) {
             IInvestitureProvider provider = providers[i];

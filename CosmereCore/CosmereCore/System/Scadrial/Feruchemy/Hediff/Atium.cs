@@ -18,6 +18,7 @@ public class Atium : HediffWithComps {
     ];
 
     private static List<HediffDef>? cachedAgeConditions;
+
     private static List<HediffDef> AgeConditions {
         get {
             if (cachedAgeConditions != null) return cachedAgeConditions;
@@ -26,6 +27,7 @@ public class Atium : HediffWithComps {
                 HediffDef? def = DefDatabase<HediffDef>.GetNamedSilentFail(AgeConditionNames[i]);
                 if (def != null) cachedAgeConditions.Add(def);
             }
+
             return cachedAgeConditions;
         }
     }

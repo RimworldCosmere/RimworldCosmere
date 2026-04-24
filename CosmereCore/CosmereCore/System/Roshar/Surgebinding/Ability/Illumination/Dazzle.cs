@@ -1,4 +1,3 @@
-using Cosmere.Core.Ability;
 using RimWorld;
 using Verse;
 
@@ -27,7 +26,10 @@ public class Dazzle : SurgebindingAbility {
         FleckMaker.Static(pawn.Position, pawn.Map, FleckDefOf.PsycastAreaEffect);
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
-                     pawn.Position, pawn.Map, currentRadius, true
+                     pawn.Position,
+                     pawn.Map,
+                     currentRadius,
+                     true
                  )) {
             if (thing is not Pawn targetPawn) continue;
             if (targetPawn == pawn) continue;

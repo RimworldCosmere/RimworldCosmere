@@ -1,4 +1,3 @@
-using Cosmere.Core.Ability;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -6,11 +5,10 @@ using Verse;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Progression;
 
 public class Lifesurge : SurgebindingAbility {
-    private static readonly ThingDef? PulseMoteDef = ThingDefOf.Cosmere_Roshar_Thing_LifesurgePulse;
-
     private const float LimbRegenCostMultiplier = 2f;
     private const float WoundHealCostFraction = 0.1f;
     private const float DiseaseCureCostMultiplier = 1.5f;
+    private static readonly ThingDef? PulseMoteDef = ThingDefOf.Cosmere_Roshar_Thing_LifesurgePulse;
 
     private static readonly int[] DurationSeconds = [10, 15, 20, 25, 30];
     private static readonly int[] MaxWoundsToHeal = [1, 3, 5, int.MaxValue, int.MaxValue];
@@ -53,7 +51,7 @@ public class Lifesurge : SurgebindingAbility {
         List<Verse.Hediff> hediffs = targetPawn.health.hediffSet.hediffs;
         for (int i = 0; i < hediffs.Count; i++) {
             if (hediffs[i].Bleeding) {
-                hediffs[i].Tended(1f, 1f, 0);
+                hediffs[i].Tended(1f, 1f);
             }
         }
     }
@@ -81,6 +79,7 @@ public class Lifesurge : SurgebindingAbility {
                 gene.RemoveFromReserve(healCost);
                 injuries[i].Heal(injuries[i].Severity);
             }
+
             return;
         }
 
@@ -93,6 +92,7 @@ public class Lifesurge : SurgebindingAbility {
                 gene.RemoveFromReserve(healCost);
                 injuries[i].Heal(injuries[i].Severity);
             }
+
             return;
         }
 
@@ -136,11 +136,13 @@ public class Lifesurge : SurgebindingAbility {
 
         for (int i = 0; i < hediffs.Count; i++) {
             Verse.Hediff hediff = hediffs[i];
-            if (hediff.def.isBad == false) continue;
+            if (!hediff.def.isBad) continue;
             if (hediff is Hediff_MissingPart) continue;
             if (hediff is Hediff_Injury) continue;
 
-            if (ideal >= 2 && RimWorld.HediffDefOf.WoundInfection != null && hediff.def == RimWorld.HediffDefOf.WoundInfection) {
+            if (ideal >= 2 &&
+                RimWorld.HediffDefOf.WoundInfection != null &&
+                hediff.def == RimWorld.HediffDefOf.WoundInfection) {
                 toRemove.Add(hediff);
                 continue;
             }
@@ -185,7 +187,8 @@ public class Lifesurge : SurgebindingAbility {
             string tagName = tags[i].defName;
             if (tagName is "MovingLimbCore" or "ManipulationLimbCore") return 3;
             if (tagName is "MovingLimbSegment" or "ManipulationLimbSegment" or "SightSource") return 2;
-            if (tagName is "MovingLimbDigit" or "ManipulationLimbDigit" or "HearingSource" or "BreathingSource") return 1;
+            if (tagName is "MovingLimbDigit" or "ManipulationLimbDigit" or "HearingSource" or "BreathingSource")
+                return 1;
         }
 
         if (part.depth == BodyPartDepth.Inside) return 4;

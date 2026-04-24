@@ -1,7 +1,6 @@
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
-using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.Patch;
@@ -21,7 +20,8 @@ public static class SitePartOutpostNullFactionGuard {
             randomValue = Rand.Int,
             threatPoints = __instance.def.wantsThreatPoints ? myThreatPoints : 0f,
         };
-        sitePartParams.lootMarketValue = SitePartWorker_Outpost.ThreatPointsLootMarketValue.Evaluate(sitePartParams.threatPoints);
+        sitePartParams.lootMarketValue =
+            SitePartWorker_Outpost.ThreatPointsLootMarketValue.Evaluate(sitePartParams.threatPoints);
         __result = sitePartParams;
         return false;
     }

@@ -13,9 +13,9 @@ public static class ForcePlayerFixedIdeoPatch {
 
         IdeoGenerationParms parms = new IdeoGenerationParms(
             def,
-            forceNoExpansionIdeo: false,
-            disallowedPrecepts: null,
-            disallowedMemes: null,
+            false,
+            null,
+            null,
             name: def.ideoName,
             styles: def.styles,
             deities: def.deityPresets,
@@ -35,6 +35,8 @@ public static class ForcePlayerFixedIdeoPatch {
 
         AccessTools.Field(typeof(Page_ChooseIdeoPreset), "classicIdeo").SetValue(__instance, forcedIdeo);
         Find.IdeoManager.RemoveUnusedStartingIdeos();
-        Logger.Info($"ForcePlayerFixedIdeoPatch: forced player ideo to '{forcedIdeo.name}' from fixedIdeo on {def.defName}");
+        Logger.Info(
+            $"ForcePlayerFixedIdeoPatch: forced player ideo to '{forcedIdeo.name}' from fixedIdeo on {def.defName}"
+        );
     }
 }

@@ -1,7 +1,7 @@
-using Cosmere.Core;
+using System;
+using Cosmere.Core.UI.Radial;
 using HarmonyLib;
 using RimWorld;
-using Verse;
 
 namespace Cosmere.Core.UI.Harmony;
 
@@ -10,8 +10,8 @@ public static class RadialHotkeyPatch {
     [HarmonyPostfix]
     public static void Postfix() {
         try {
-            Cosmere.Core.UI.Radial.RadialController.OnHotkeyPoll();
-        } catch (global::System.Exception ex) {
+            RadialController.OnHotkeyPoll();
+        } catch (Exception ex) {
             Logger.Error($"radial hotkey poll failed: {ex}");
         }
     }

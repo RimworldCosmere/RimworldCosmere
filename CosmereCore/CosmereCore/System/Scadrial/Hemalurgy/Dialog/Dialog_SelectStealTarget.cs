@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using Cosmere.Core.Def;
-using Cosmere.System.Scadrial.Extension;
 using Cosmere.System.Scadrial.Gene;
 using Verse;
 
@@ -30,6 +28,7 @@ public static class StealTargetSelector {
             GeneDef gene = candidates[i];
             options.Add(new FloatMenuOption(gene.LabelCap, () => onSelected(gene)));
         }
+
         options.Add(new FloatMenuOption("Cancel", onCancel));
 
         Find.WindowStack.Add(new FloatMenu(options));
@@ -63,6 +62,7 @@ public static class StealTargetSelector {
             for (int i = 0; i < allomantic.Count; i++) {
                 candidates.Add(allomantic[i].def);
             }
+
             List<Feruchemist> feruchemic = donor.genes.GetFeruchemicGenes();
             for (int i = 0; i < feruchemic.Count; i++) {
                 candidates.Add(feruchemic[i].def);

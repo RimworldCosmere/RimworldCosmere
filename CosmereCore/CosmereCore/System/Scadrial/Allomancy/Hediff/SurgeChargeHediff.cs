@@ -24,6 +24,7 @@ public class SurgeChargeHediff : AllomanticHediff {
             PostBurn();
             return;
         }
+
         endInTicks--;
     }
 

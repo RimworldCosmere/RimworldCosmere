@@ -1,14 +1,13 @@
 using System.Runtime.CompilerServices;
-using UnityEngine;
 using Cosmere.Core.UI.Lightweave.Rendering;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Tokens;
 using Cosmere.Core.UI.Lightweave.Types;
+using UnityEngine;
 
 namespace Cosmere.Core.UI.Lightweave.Feedback;
 
-public static class ProgressBar
-{
+public static class ProgressBar {
     public static LightweaveNode Create(
         float value,
         float min = 0f,
@@ -16,12 +15,12 @@ public static class ProgressBar
         string? label = null,
         BadgeVariant variant = BadgeVariant.Accent,
         [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = "")
-    {
+        [CallerFilePath] string file = ""
+    ) {
         LightweaveNode node = NodeBuilder.New($"ProgressBar:{variant}", line, file);
+        node.PreferredHeight = new Rem(1f).ToPixels();
 
-        node.Paint = (rect, paintChildren) =>
-        {
+        node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
@@ -36,20 +35,18 @@ public static class ProgressBar
             float fraction = range > 0f ? Mathf.Clamp01((value - min) / range) : 0f;
             float fillWidth = rect.width * fraction;
 
-            Rect fillRect = default(Rect);
+            Rect fillRect = default;
             bool hasFill = fillWidth > 0f;
-            if (hasFill)
-            {
+            if (hasFill) {
                 float fillX = rtl ? rect.xMax - fillWidth : rect.x;
                 fillRect = new Rect(fillX, rect.y, fillWidth, rect.height);
                 BackgroundSpec fillBg = new BackgroundSpec.Solid(BadgeVariants.Background(variant));
                 PaintBox.Draw(fillRect, fillBg, null, radius);
             }
 
-            if (!string.IsNullOrEmpty(label))
-            {
+            if (!string.IsNullOrEmpty(label)) {
                 Font font = theme.GetFont(FontRole.BodyBold);
-                int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToPixels());
+                int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
                 GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Bold);
                 style.alignment = TextAnchor.MiddleCenter;
 

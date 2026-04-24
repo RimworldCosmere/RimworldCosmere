@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Cosmere.Core.Settings;
 using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace Cosmere.Core.Patch;
@@ -20,6 +20,7 @@ public static class FactionGeneratorPatch {
                 return def?.defName;
             }
         }
+
         return null;
     }
 
@@ -31,9 +32,9 @@ public static class FactionGeneratorPatch {
 
         string scenarioName = scenario.name ?? "";
         bool isScadrialScenario = scenarioName.StartsWith("Mistborn:") ||
-                                   scenarioName.Contains("Scadrial");
+                                  scenarioName.Contains("Scadrial");
         bool isRosharScenario = scenarioName.StartsWith("Stormlight:") ||
-                                 scenarioName.StartsWith("Roshar:");
+                                scenarioName.StartsWith("Roshar:");
         bool isCombinedCosmereScenario = scenarioName.StartsWith("Cosmere:");
 
         if (!isScadrialScenario && !isRosharScenario && !isCombinedCosmereScenario) {
@@ -98,7 +99,12 @@ public static class FactionGeneratorConfigurableFactionsPatch {
     }
 }
 
-[HarmonyPatch(typeof(FactionGenerator), nameof(FactionGenerator.CreateFactionAndAddToManager), typeof(RimWorld.Planet.PlanetLayer), typeof(FactionDef))]
+[HarmonyPatch(
+    typeof(FactionGenerator),
+    nameof(FactionGenerator.CreateFactionAndAddToManager),
+    typeof(PlanetLayer),
+    typeof(FactionDef)
+)]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class FactionGeneratorCreateFactionPatch {
     private static bool Prefix(FactionDef facDef) {

@@ -18,7 +18,8 @@ public class GoldAbility : AllomancyAbility {
             return;
         }
 
-        if (pawn.CurJob?.def.Equals(JobDefOf.Cosmere_Scadrial_Job_FollowGoldHallucination) != true && hallucination != null) {
+        if (pawn.CurJob?.def.Equals(JobDefOf.Cosmere_Scadrial_Job_FollowGoldHallucination) != true &&
+            hallucination != null) {
             pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
             job = JobMaker.MakeJob(JobDefOf.Cosmere_Scadrial_Job_FollowGoldHallucination, hallucination);
             job.source = this;

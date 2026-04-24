@@ -1,5 +1,4 @@
 using Cosmere.Core.UI.Model;
-using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -11,7 +10,7 @@ public sealed class DockAccordion {
 
     public void Draw(
         Rect rect,
-        Verse.Pawn pawn,
+        Pawn pawn,
         List<InvestitureSnapshot> snapshots,
         DockRenderContext ctx
     ) {
@@ -36,6 +35,7 @@ public sealed class DockAccordion {
                 ExpandedSystemId = isExpanded ? null : section.SystemId;
                 RimWorld.SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
             }
+
             y += headerHeight;
 
             if (!isExpanded) continue;

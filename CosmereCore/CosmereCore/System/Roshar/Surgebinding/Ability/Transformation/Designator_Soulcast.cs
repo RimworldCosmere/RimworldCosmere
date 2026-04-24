@@ -7,8 +7,8 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
 public class Designator_Soulcast : Designator {
     private static DesignationDef? cachedDesignationDef;
     private readonly Soulcast ability;
-    private readonly SoulcastMode mode;
     private readonly ThingDef? material;
+    private readonly SoulcastMode mode;
     private readonly TerrainDef? terrain;
 
     public Designator_Soulcast(Soulcast ability, SoulcastMode mode, ThingDef? material, TerrainDef? terrain) {
@@ -36,6 +36,7 @@ public class Designator_Soulcast : Designator {
             if (mode == SoulcastMode.Wall && (!cell.Standable(Map) || cell.GetFirstBuilding(Map) != null)) {
                 return false;
             }
+
             return true;
         }
 
@@ -102,6 +103,7 @@ public class Designator_Soulcast : Designator {
         for (int i = 0; i < things.Count; i++) {
             if (IsValidTarget(things[i])) return things[i];
         }
+
         return null;
     }
 
@@ -109,12 +111,11 @@ public class Designator_Soulcast : Designator {
         if (thing.Destroyed) return false;
 
         return mode switch {
-            SoulcastMode.ConvertDrop => thing.def.category == ThingCategory.Item
-                                       || thing.def.plant != null
-                                       || thing.def.mineable,
-            SoulcastMode.ChangeStuff => (thing.def.MadeFromStuff && thing.Stuff != null)
-                                        || thing.def.mineable,
-            SoulcastMode.Sculpture => thing is Verse.Pawn or Corpse,
+            SoulcastMode.ConvertDrop => thing.def.category == ThingCategory.Item ||
+                                        thing.def.plant != null ||
+                                        thing.def.mineable,
+            SoulcastMode.ChangeStuff => thing.def.MadeFromStuff && thing.Stuff != null || thing.def.mineable,
+            SoulcastMode.Sculpture => thing is Pawn or Corpse,
             SoulcastMode.Destroy => true,
             _ => false,
         };

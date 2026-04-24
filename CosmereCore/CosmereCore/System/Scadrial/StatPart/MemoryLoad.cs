@@ -1,5 +1,4 @@
 using Cosmere.Core;
-using Cosmere.System.Scadrial.Extension;
 using Cosmere.System.Scadrial.Feruchemy.Memory;
 using RimWorld;
 using UnityEngine;
@@ -49,6 +48,7 @@ public class MemoryLoad : RimWorld.StatPart {
             if (list[i].MoodOffset() == 0f) continue;
             count++;
         }
+
         return count;
     }
 }

@@ -6,9 +6,9 @@ using Verse;
 
 namespace Cosmere.System.Roshar.Patch;
 
-[HarmonyPatch(typeof(RimWorld.MapInterface), nameof(RimWorld.MapInterface.MapInterfaceUpdate))]
+[HarmonyPatch(typeof(MapInterface), nameof(MapInterface.MapInterfaceUpdate))]
 public static class SoulcastOverlayPatch {
-    static void Postfix() {
+    private static void Postfix() {
         if (Find.CurrentMap != null) {
             SoulcastOverlay.Draw();
             FrictionTrapOverlay.Draw();
@@ -18,7 +18,7 @@ public static class SoulcastOverlayPatch {
 
 [HarmonyPatch(typeof(DesignationManager), nameof(DesignationManager.RemoveDesignation))]
 public static class DesignationRemovedPatch {
-    static void Postfix(Designation des) {
+    private static void Postfix(Designation des) {
         if (des.def == Designator_Soulcast.DesignationDef) {
             SoulcastOverlay.Remove(des.target.Cell);
         }

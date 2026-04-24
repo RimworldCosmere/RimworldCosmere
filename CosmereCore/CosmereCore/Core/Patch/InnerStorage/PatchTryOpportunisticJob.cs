@@ -6,7 +6,6 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Patch.InnerStorage;
 

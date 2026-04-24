@@ -1,16 +1,19 @@
-using UnityEngine;
 using Cosmere.Core.UI.Lightweave.Types;
+using UnityEngine;
 
 namespace Cosmere.Core.UI.Lightweave.Overlay;
 
-internal static class PopoverLayout
-{
-    public static Rect Resolve(Rect anchor, PopoverPlacement placement, Direction dir, Vector2 size, Rect windowBounds)
-    {
+internal static class PopoverLayout {
+    public static Rect Resolve(
+        Rect anchor,
+        PopoverPlacement placement,
+        Direction dir,
+        Vector2 size,
+        Rect windowBounds
+    ) {
         float gap = new Rem(0.25f).ToPixels();
         Rect candidate;
-        switch (placement)
-        {
+        switch (placement) {
             case PopoverPlacement.Top:
                 candidate = new Rect(anchor.x, anchor.y - size.y - gap, size.x, size.y);
                 break;
@@ -34,25 +37,24 @@ internal static class PopoverLayout
 
         float maxX = windowBounds.xMax - size.x;
         float maxY = windowBounds.yMax - size.y;
-        if (maxX < windowBounds.x)
-        {
+        if (maxX < windowBounds.x) {
             maxX = windowBounds.x;
         }
-        if (maxY < windowBounds.y)
-        {
+
+        if (maxY < windowBounds.y) {
             maxY = windowBounds.y;
         }
+
         candidate.x = Mathf.Clamp(candidate.x, windowBounds.x, maxX);
         candidate.y = Mathf.Clamp(candidate.y, windowBounds.y, maxY);
         return candidate;
     }
 
-    private static Rect ResolveAuto(Rect anchor, Vector2 size, Rect windowBounds, float gap)
-    {
-        if (anchor.yMax + size.y + gap <= windowBounds.yMax)
-        {
+    private static Rect ResolveAuto(Rect anchor, Vector2 size, Rect windowBounds, float gap) {
+        if (anchor.yMax + size.y + gap <= windowBounds.yMax) {
             return new Rect(anchor.x, anchor.yMax + gap, size.x, size.y);
         }
+
         return new Rect(anchor.x, anchor.y - size.y - gap, size.x, size.y);
     }
 }

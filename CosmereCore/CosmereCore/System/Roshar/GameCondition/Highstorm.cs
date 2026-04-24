@@ -16,6 +16,8 @@ namespace Cosmere.System.Roshar.GameCondition;
 public class Highstorm : RimWorld.GameCondition {
     private const float totalInvestitureToAbsorbPerItem = 2000f;
 
+    private const float ShelterThreshold = 0.4f;
+
     private static readonly SimpleCurve stormIntensityCurve = [
         new CurvePoint(0f, 0f),
         new CurvePoint(0.2f, 0.15f),
@@ -38,18 +40,19 @@ public class Highstorm : RimWorld.GameCondition {
 
     private static readonly float TotalOffsetWeight = 13f;
 
-    private readonly Verse.Thing highstorm = ThingMaker.MakeThing(ThingDefOf.Cosmere_Roshar_Thing_Highstorm);
-
-    private const float ShelterThreshold = 0.4f;
-
-    private readonly int tickInterval = 30;
-    private float scaledCurve;
+    private static ResearchProjectDef? shieldingResearchCache;
+    private static bool shieldingResearchLookedUp;
     private readonly List<Verse.Thing> exposedThings = [];
 
-    public float CurrentIntensity => scaledCurve;
-    public bool IsDangerousPhase => scaledCurve >= ShelterThreshold;
+    private readonly Verse.Thing highstorm = ThingMaker.MakeThing(ThingDefOf.Cosmere_Roshar_Thing_Highstorm);
 
-    private float investitureToAbsorb => totalInvestitureToAbsorbPerItem / Duration * tickInterval * scaledCurve;
+    private readonly int tickInterval = 30;
+
+    public float CurrentIntensity { get; private set; }
+
+    public bool IsDangerousPhase => CurrentIntensity >= ShelterThreshold;
+
+    private float investitureToAbsorb => totalInvestitureToAbsorbPerItem / Duration * tickInterval * CurrentIntensity;
 
     private static IntVec3 GetRandomStormOffset(bool timesTwo) {
         float choice = Rand.Range(0f, TotalOffsetWeight);
@@ -75,7 +78,7 @@ public class Highstorm : RimWorld.GameCondition {
     }
 
     public override float MinWindSpeed() {
-        return scaledCurve;
+        return CurrentIntensity;
     }
 
     public override void GameConditionTick() {
@@ -103,7 +106,7 @@ public class Highstorm : RimWorld.GameCondition {
             seasonalMultiplier = scheduler.SeasonalIntensity;
         }
 
-        scaledCurve = baseIntensity * seasonalMultiplier;
+        CurrentIntensity = baseIntensity * seasonalMultiplier;
 
         if (SingleMap == null) {
             Logger.Error("SingleMap is null, cannot process storm!");
@@ -126,7 +129,7 @@ public class Highstorm : RimWorld.GameCondition {
 
         for (int i = 0; i < exposedThings.Count; i++) {
             Verse.Thing thing = exposedThings[i];
-            if (!Rand.Chance(scaledCurve)) continue;
+            if (!Rand.Chance(CurrentIntensity)) continue;
             if (thing?.Map == null) continue;
 
             MoveItem(thing);
@@ -230,15 +233,13 @@ public class Highstorm : RimWorld.GameCondition {
         return true;
     }
 
-    private static ResearchProjectDef? shieldingResearchCache;
-    private static bool shieldingResearchLookedUp;
-
     private static float GetShieldingMultiplier() {
         if (!shieldingResearchLookedUp) {
             shieldingResearchCache =
                 DefDatabase<ResearchProjectDef>.GetNamedSilentFail("Cosmere_Roshar_HighstormShielding");
             shieldingResearchLookedUp = true;
         }
+
         if (shieldingResearchCache != null && shieldingResearchCache.IsFinished) return 0.15f;
         return 1f;
     }
@@ -279,13 +280,12 @@ public class Highstorm : RimWorld.GameCondition {
     }
 
     private void DamageItem(Verse.Thing thing) {
-
         Map? map = thing.Map;
         if (map != null && thing.Position.Fogged(map)) return;
-        if (thing is RimWorld.Mineable) return;
+        if (thing is Mineable) return;
         DamageInfo damage = new DamageInfo(
             DamageDefOf.TornadoScratch,
-            Rand.Range(3f, 10f) * scaledCurve,
+            Rand.Range(3f, 10f) * CurrentIntensity,
             instigator: highstorm,
             spawnFilth: false
         );
@@ -320,8 +320,6 @@ public class Highstorm : RimWorld.GameCondition {
 
                 break;
             }
-            default:
-                break;
         }
     }
 }

@@ -1,9 +1,9 @@
 using System;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.System.Roshar.Dialog;
-using Verse;
 using RimWorld;
 using UnityEngine;
+using Verse;
 
 namespace Cosmere.System.Roshar.Comp.Fabrials;
 
@@ -61,6 +61,7 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
             powerOn = investiture.currentInvestiture > 0 && flickeredOn;
             return;
         }
+
         powerOn = false;
     }
 
@@ -74,8 +75,10 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
         if (insertedGemstone == null) return "No gem in fabrial.";
 
         InvestitureHolder? investiture = insertedGemstone.TryGetComp<InvestitureHolder>();
-        return "Stormlight: " + (investiture?.currentInvestiture.ToString("F0") ?? "0") +
-               "\ntime remaining: " + GetTimeRemaining();
+        return "Stormlight: " +
+               (investiture?.currentInvestiture.ToString("F0") ?? "0") +
+               "\ntime remaining: " +
+               GetTimeRemaining();
     }
 
     private string GetTimeRemaining() {

@@ -133,6 +133,7 @@ public static class GeneUtility {
         for (int i = 0; i < allDefs.Count; i++) {
             if (allDefs[i].allomancy != null) candidates.Add(allDefs[i]);
         }
+
         if (candidates.Count == 0) return;
         MetallicArtsMetalDef metal = candidates.RandomElement();
         AddGene(pawn, GeneDefOf.GetMistingGeneForMetal(metal), canSnap, snapped);
@@ -144,6 +145,7 @@ public static class GeneUtility {
         for (int i = 0; i < allDefs.Count; i++) {
             if (allDefs[i].feruchemy != null) candidates.Add(allDefs[i]);
         }
+
         if (candidates.Count == 0) return;
         MetallicArtsMetalDef metal = candidates.RandomElement();
         AddGene(pawn, GeneDefOf.GetFerringGeneForMetal(metal), canSnap, snapped);

@@ -1,16 +1,15 @@
 using Cosmere.Core.Comp.Game;
-using Cosmere.Core.Comp.Thing;
-using Cosmere.Core.Def;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Dev;
 using RimWorld;
-using ScadrialThingDefOf = Cosmere.System.Scadrial.ThingDefOf;
 using Verse;
+using ScadrialThingDefOf = Cosmere.System.Scadrial.ThingDefOf;
 using RosharGeneDefOf = Cosmere.System.Roshar.GeneDefOf;
 using ScadrialGeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;
 using ScadrialRecordDefOf = Cosmere.System.Scadrial.RecordDefOf;
 using ScadrialGeneDefOf = Cosmere.System.Scadrial.GeneDefOf;
+using SkillDefOf = Cosmere.System.Roshar.SkillDefOf;
 
 namespace Cosmere.Core.Quickstart;
 
@@ -46,11 +45,11 @@ public class CosmereQuickstart : AbstractQuickstart {
 
         Shards? shards = Current.Game?.GetComponent<Shards>();
         if (shards != null) {
-            shards.EnableShard("Preservation", allowConflicts: true);
-            shards.EnableShard("Ruin", allowConflicts: true);
-            shards.EnableShard("Honor", allowConflicts: true);
-            shards.EnableShard("Cultivation", allowConflicts: true);
-            shards.EnableShard("Odium", allowConflicts: true);
+            shards.EnableShard("Preservation", true);
+            shards.EnableShard("Ruin", true);
+            shards.EnableShard("Honor", true);
+            shards.EnableShard("Cultivation", true);
+            shards.EnableShard("Odium", true);
         }
 
         BackstoryDef child = DefDatabase<BackstoryDef>.GetNamed("OptimisticChild30");
@@ -69,7 +68,7 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.story.bodyType = BodyTypeDefOf.Thin;
             pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantLightweaver, 5);
             ScadrialGeneUtility.AddMistborn(pawn, false, true);
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.GetInvestiture().currentInvestitureSelf = 500;
             Find.Selector.Select(pawn, false);
         }
@@ -78,12 +77,16 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.Name = new NameSingle("Dalinar");
             pawn.gender = Gender.Male;
             pawn.story.bodyType = BodyTypeDefOf.Male;
-            Surgebinder? bondsmith = pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantBondsmith, 5);
+            Surgebinder? bondsmith = pawn.genes.TryAddRadiantOrder(
+                RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantBondsmith,
+                5
+            );
             if (bondsmith != null) {
                 bondsmith.godsprenName = "Stormfather";
                 bondsmith.UpdateAbilities();
             }
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
+
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.records.AddTo(System.Roshar.RecordDefOf.Cosmere_Roshar_Record_FriendshipsFormed, 25);
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
@@ -93,7 +96,7 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Male;
             pawn.story.bodyType = BodyTypeDefOf.Male;
             pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantWindrunner, 5);
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 20;
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 20;
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
 
@@ -102,7 +105,7 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Male;
             pawn.story.bodyType = BodyTypeDefOf.Male;
             pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantSkybreaker, 5);
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.records.AddTo(System.Roshar.RecordDefOf.Cosmere_Roshar_Record_ArrestsMade, 5);
             pawn.records.AddTo(System.Roshar.RecordDefOf.Cosmere_Roshar_Record_ZoneComplianceDays, 30);
             pawn.GetInvestiture().currentInvestitureSelf = 500;
@@ -121,7 +124,7 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Female;
             pawn.story.bodyType = BodyTypeDefOf.Female;
             pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantDustbringer, 5);
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
 
@@ -130,12 +133,16 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Female;
             pawn.story.bodyType = BodyTypeDefOf.Thin;
             pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantEdgedancer, 5);
-            Surgebinder? liftBondsmith = pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantBondsmith, 3);
+            Surgebinder? liftBondsmith = pawn.genes.TryAddRadiantOrder(
+                RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantBondsmith,
+                3
+            );
             if (liftBondsmith != null) {
                 liftBondsmith.godsprenName = "Nightwatcher";
                 liftBondsmith.UpdateAbilities();
             }
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
+
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
 
@@ -144,7 +151,7 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Male;
             pawn.story.bodyType = BodyTypeDefOf.Thin;
             pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher, 5);
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
 
@@ -153,7 +160,7 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Female;
             pawn.story.bodyType = BodyTypeDefOf.Female;
             pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantElsecaller, 5);
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
 
@@ -162,7 +169,7 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Female;
             pawn.story.bodyType = BodyTypeDefOf.Female;
             pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantWillshaper, 5);
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
 
@@ -171,7 +178,7 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Male;
             pawn.story.bodyType = BodyTypeDefOf.Hulk;
             pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantStoneward, 5);
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
 
@@ -179,12 +186,16 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.Name = new NameSingle("Navani");
             pawn.gender = Gender.Female;
             pawn.story.bodyType = BodyTypeDefOf.Female;
-            Surgebinder? navani = pawn.genes.TryAddRadiantOrder(RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantBondsmith, 3);
+            Surgebinder? navani = pawn.genes.TryAddRadiantOrder(
+                RosharGeneDefOf.Cosmere_Roshar_Gene_RadiantBondsmith,
+                3
+            );
             if (navani != null) {
                 navani.godsprenName = "Sibling";
                 navani.UpdateAbilities();
             }
-            pawn.skills.GetSkill(System.Roshar.SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
+
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
 
@@ -195,9 +206,13 @@ public class CosmereQuickstart : AbstractQuickstart {
             ScadrialGeneUtility.AddFullFeruchemist(pawn, false, true);
             foreach (MetallicArtsMetalDef metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading) {
                 if (metal.feruchemy?.userName == null) continue;
-                Verse.Thing metalmind = ThingMaker.MakeThing(ScadrialThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item);
+                Verse.Thing metalmind = ThingMaker.MakeThing(
+                    ScadrialThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand,
+                    metal.Item
+                );
                 pawn.inventory.innerContainer.TryAdd(metalmind);
             }
+
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
 
@@ -211,9 +226,13 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.records.Increment(ScadrialRecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
             foreach (MetallicArtsMetalDef metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading) {
                 if (metal.feruchemy?.userName == null) continue;
-                Verse.Thing metalmind = ThingMaker.MakeThing(ScadrialThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item);
+                Verse.Thing metalmind = ThingMaker.MakeThing(
+                    ScadrialThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand,
+                    metal.Item
+                );
                 pawn.inventory.innerContainer.TryAdd(metalmind);
             }
+
             pawn.GetInvestiture().currentInvestitureSelf = 500;
         }
 
@@ -233,7 +252,12 @@ public class CosmereQuickstart : AbstractQuickstart {
             pawn.Name = new NameSingle("Wayne");
             pawn.gender = Gender.Male;
             pawn.story.bodyType = BodyTypeDefOf.Thin;
-            ScadrialGeneUtility.AddGene(pawn, ScadrialGeneDefOf.GetMistingGeneForMetal(MetalDefOf.Bendalloy), false, true);
+            ScadrialGeneUtility.AddGene(
+                pawn,
+                ScadrialGeneDefOf.GetMistingGeneForMetal(MetalDefOf.Bendalloy),
+                false,
+                true
+            );
             ScadrialGeneUtility.AddGene(pawn, ScadrialGeneDefOf.GetFerringGeneForMetal(MetalDefOf.Gold), false, true);
             pawn.inventory.innerContainer.TryAdd(
                 ThingMaker.MakeThing(ScadrialThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, MetalDefOf.Gold.Item)

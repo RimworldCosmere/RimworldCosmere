@@ -21,9 +21,9 @@ public class Lightweaver(RadiantOrderDef def) : AbstractIdealChecker(def) {
         }
 
         if (nextLevel == 4) {
-            return surgebinder.TraumaEventCount >= 3
-                   || surgebinder.ArtPiecesLegendary >= 1
-                   || (surgebinder.TraumaEventCount >= 2 && surgebinder.ArtPiecesCreated >= ApplyDifficulty(5));
+            return surgebinder.TraumaEventCount >= 3 ||
+                   surgebinder.ArtPiecesLegendary >= 1 ||
+                   surgebinder.TraumaEventCount >= 2 && surgebinder.ArtPiecesCreated >= ApplyDifficulty(5);
         }
 
         return false;
@@ -39,5 +39,4 @@ public class Lightweaver(RadiantOrderDef def) : AbstractIdealChecker(def) {
             _ => null,
         };
     }
-
 }

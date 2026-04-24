@@ -8,7 +8,11 @@ namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
 [HarmonyPatch(typeof(Pawn), nameof(Pawn.Kill))]
 public static class KillViolationPatch {
-    private static void Prefix(Pawn __instance, DamageInfo? dinfo, out (bool downed, bool friendly, bool colonist, bool fleeing) __state) {
+    private static void Prefix(
+        Pawn __instance,
+        DamageInfo? dinfo,
+        out (bool downed, bool friendly, bool colonist, bool fleeing) __state
+    ) {
         __state = (
             __instance.Downed,
             dinfo.HasValue && dinfo.Value.Instigator is Pawn killer && !__instance.HostileTo(killer),
@@ -17,7 +21,11 @@ public static class KillViolationPatch {
         );
     }
 
-    private static void Postfix(Pawn __instance, DamageInfo? dinfo, (bool downed, bool friendly, bool colonist, bool fleeing) __state) {
+    private static void Postfix(
+        Pawn __instance,
+        DamageInfo? dinfo,
+        (bool downed, bool friendly, bool colonist, bool fleeing) __state
+    ) {
         if (!__instance.RaceProps.Humanlike) return;
         if (!dinfo.HasValue) return;
 
@@ -37,12 +45,14 @@ public static class KillViolationPatch {
                 } else if (__state.downed || __state.fleeing) {
                     ViolationUtility.ApplyViolation(killer, 0.3f, "killing a defenseless enemy");
                 }
+
                 break;
 
             case "Dustbringer":
                 if (__state.colonist && killerInBerserk) {
                     ViolationUtility.ApplyViolation(killer, 0.6f, "killing a colonist in berserk rage");
                 }
+
                 break;
         }
     }
@@ -69,8 +79,10 @@ public static class FriendlyFireViolationPatch {
             ViolationUtility.ApplyViolation(attacker, 0.3f, "attacking a friendly");
         }
 
-        if (orderName == "Bondsmith" && targetPawn.Faction != null && !targetPawn.Faction.IsPlayer
-            && targetPawn.Faction.RelationKindWith(Faction.OfPlayer) == FactionRelationKind.Ally) {
+        if (orderName == "Bondsmith" &&
+            targetPawn.Faction != null &&
+            !targetPawn.Faction.IsPlayer &&
+            targetPawn.Faction.RelationKindWith(Faction.OfPlayer) == FactionRelationKind.Ally) {
             ViolationUtility.ApplyViolation(attacker, 0.6f, "attacking an allied faction member");
         }
     }

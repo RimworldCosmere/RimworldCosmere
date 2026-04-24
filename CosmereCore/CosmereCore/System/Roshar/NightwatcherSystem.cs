@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Comp.Thing;
+using Cosmere.System.Roshar.Comp.Game;
 using Cosmere.System.Roshar.Comp.Hediff;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
@@ -14,8 +14,7 @@ using Logger = Cosmere.Core.Logger;
 namespace Cosmere.System.Roshar;
 
 public static class NightwatcherSystem {
-
-    public static bool IsEligible(Verse.Pawn pawn) {
+    public static bool IsEligible(Pawn pawn) {
         if (!pawn.IsColonist) return false;
         if (pawn.Dead || pawn.Downed) return false;
         CompNightwatcher? comp = pawn.TryGetComp<CompNightwatcher>();
@@ -24,7 +23,7 @@ public static class NightwatcherSystem {
                (Current.Game.GetComponent<Shards>()?.IsEnabled(ShardDefOf.Cultivation) ?? false);
     }
 
-    public static void InitiateSeek(Verse.Pawn pawn) {
+    public static void InitiateSeek(Pawn pawn) {
         Find.WindowStack.Add(new Dialog_NightwatcherEncounter(pawn));
     }
 
@@ -33,7 +32,7 @@ public static class NightwatcherSystem {
         if (def.initialSeverity <= 0f) def.initialSeverity = 1f;
     }
 
-    public static void ApplyBoon(Verse.Pawn pawn, NightwatcherBoonDef boon, Dictionary<string, object>? context = null) {
+    public static void ApplyBoon(Pawn pawn, NightwatcherBoonDef boon, Dictionary<string, object>? context = null) {
         if (boon.hediff != null) {
             EnsureHediffPersistence(boon.hediff);
             pawn.health.AddHediff(HediffMaker.MakeHediff(boon.hediff, pawn));
@@ -53,8 +52,9 @@ public static class NightwatcherSystem {
             record.Level = Math.Min(record.Level + boost.levels, 20);
         }
 
-        if (boon.grantTrait != null && !pawn.story.traits.HasTrait(boon.grantTrait))
+        if (boon.grantTrait != null && !pawn.story.traits.HasTrait(boon.grantTrait)) {
             pawn.story.traits.GainTrait(new Trait(boon.grantTrait, boon.grantTraitDegree));
+        }
 
         if (boon.removeTrait != null) {
             Trait? existing = pawn.story.traits.GetTrait(boon.removeTrait);
@@ -75,9 +75,9 @@ public static class NightwatcherSystem {
             CompNightwatcher? nwComp = pawn.TryGetComp<CompNightwatcher>();
             if (nwComp != null) nwComp.cultivationConnectionBonus += boon.surgebindingConnectionBoost;
 
-            Comp.Game.CultivationEntity? entity = Comp.Game.CultivationEntity.Instance;
+            CultivationEntity? entity = CultivationEntity.Instance;
             if (entity != null) {
-                Core.Comp.Game.SpiritWeb spiritWeb = Current.Game.GetComponent<Core.Comp.Game.SpiritWeb>();
+                SpiritWeb spiritWeb = Current.Game.GetComponent<SpiritWeb>();
                 spiritWeb?.AdjustConnection(entity, pawn, boon.surgebindingConnectionBoost);
             }
         }
@@ -90,21 +90,23 @@ public static class NightwatcherSystem {
                     psylink = HediffMaker.MakeHediff(psylinkDef, pawn) as Hediff_Psylink;
                     if (psylink != null) pawn.health.AddHediff(psylink);
                 }
+
                 psylink?.ChangeLevel(1);
             }
         }
 
         boon.Applicator?.Apply(pawn, boon, context);
 
-        Core.Comp.Game.SpiritWeb? web = Current.Game.GetComponent<Core.Comp.Game.SpiritWeb>();
-        Comp.Game.CultivationEntity? cultivation = Comp.Game.CultivationEntity.Instance;
-        if (web != null && cultivation != null)
+        SpiritWeb? web = Current.Game.GetComponent<SpiritWeb>();
+        CultivationEntity? cultivation = CultivationEntity.Instance;
+        if (web != null && cultivation != null) {
             web.AdjustConnection(cultivation, pawn, 0.1f);
+        }
 
         Logger.Info($"NightwatcherSystem: applied boon '{boon.defName}' to {pawn.NameShortColored}");
     }
 
-    public static void ApplyCurse(Verse.Pawn pawn, NightwatcherCurseDef curse) {
+    public static void ApplyCurse(Pawn pawn, NightwatcherCurseDef curse) {
         if (curse.hediff != null) {
             EnsureHediffPersistence(curse.hediff);
             HediffWithComps cursePassive = (HediffWithComps)HediffMaker.MakeHediff(curse.hediff, pawn);
@@ -118,7 +120,8 @@ public static class NightwatcherSystem {
             HediffDef? curseHediffDef = HediffDefOf.Cosmere_Roshar_Hediff_NightwatcherCurse;
             if (curseHediffDef != null) {
                 EnsureHediffPersistence(curseHediffDef);
-                NightwatcherCurseHediff curseHediff = (NightwatcherCurseHediff)HediffMaker.MakeHediff(curseHediffDef, pawn);
+                NightwatcherCurseHediff curseHediff =
+                    (NightwatcherCurseHediff)HediffMaker.MakeHediff(curseHediffDef, pawn);
                 curseHediff.Initialize(curse);
                 pawn.health.AddHediff(curseHediff);
 
@@ -129,8 +132,9 @@ public static class NightwatcherSystem {
             }
         }
 
-        if (curse.forceTrait != null && !pawn.story.traits.HasTrait(curse.forceTrait))
+        if (curse.forceTrait != null && !pawn.story.traits.HasTrait(curse.forceTrait)) {
             pawn.story.traits.GainTrait(new Trait(curse.forceTrait, curse.forceTraitDegree));
+        }
 
         if (curse.stripTrait != null) {
             Trait? existing = pawn.story.traits.GetTrait(curse.stripTrait);
@@ -161,8 +165,9 @@ public static class NightwatcherSystem {
 
         int tierIndex = boon.powerTier - 1;
         float totalWeight = 0f;
-        for (int i = 0; i < eligible.Count; i++)
+        for (int i = 0; i < eligible.Count; i++) {
             totalWeight += eligible[i].curseWeights[tierIndex];
+        }
 
         float roll = Rand.Value * totalWeight;
         float cumulative = 0f;

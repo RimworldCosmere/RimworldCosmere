@@ -2,8 +2,7 @@ using Cosmere.Core.UI.Lightweave.Types;
 
 namespace Cosmere.Core.UI.Lightweave.Tokens;
 
-public static class SpacingScale
-{
+public static class SpacingScale {
     public static readonly Rem None = new Rem(0f);
     public static readonly Rem Xxs = new Rem(0.25f);
     public static readonly Rem Xs = new Rem(0.5f);

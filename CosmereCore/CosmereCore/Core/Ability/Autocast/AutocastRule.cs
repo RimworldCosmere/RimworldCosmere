@@ -1,12 +1,11 @@
-using System.Collections.Generic;
 using Verse;
 
 namespace Cosmere.Core.Ability.Autocast;
 
 public sealed class AutocastRule : IExposable {
     public string AbilityDefName = "";
-    public bool Enabled = true;
     public float CostCapFraction = 0.5f;
+    public bool Enabled = true;
     public int FireCount;
     public List<AutocastTrigger> Triggers = [];
 

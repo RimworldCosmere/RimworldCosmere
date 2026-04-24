@@ -27,8 +27,14 @@ public sealed class HighContrastSkinDecorator : ISystemSkin {
     public Texture2D? Sigil => inner.Sigil;
     public Texture2D? BorderFrame => null;
 
-    public Color? GetColor(ThemeSlot slot) => inner.GetColor(slot);
-    public Font? GetFont(FontRole role) => inner.GetFont(role);
+    public Color? GetColor(ThemeSlot slot) {
+        return inner.GetColor(slot);
+    }
+
+    public Font? GetFont(FontRole role) {
+        return inner.GetFont(role);
+    }
+
     public Font? DisplayFont => inner.DisplayFont;
 
     private static Color Saturate(Color src, float factor) {

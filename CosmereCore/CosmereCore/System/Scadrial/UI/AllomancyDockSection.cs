@@ -11,16 +11,17 @@ using Verse;
 namespace Cosmere.System.Scadrial.UI;
 
 public sealed class AllomancyDockSection : IDockSection {
-    public string SystemId => "Allomancy";
-    public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
-
     private const float CellHeight = 36f;
     private const float CompactCellHeight = 22f;
     private const float CellSpacing = 4f;
     private const float HeaderHeight = 28f;
     private const float BurnButtonWidth = 52f;
+    public string SystemId => "Allomancy";
+    public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
 
-    public float GetHeaderHeight() => HeaderHeight;
+    public float GetHeaderHeight() {
+        return HeaderHeight;
+    }
 
     public float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         float h = ctx.Density == DockDensityMode.Compact ? CompactCellHeight : CellHeight;
@@ -28,9 +29,9 @@ public sealed class AllomancyDockSection : IDockSection {
         for (int i = 0; i < snapshot.Cells.Count; i++) {
             if (!ctx.TwinbornPairs.ContainsKey(snapshot.Cells[i].SubsystemId)) soloCells++;
         }
+
         int pairCells = ctx.TwinbornPairs.Count;
-        return soloCells * (h + CellSpacing)
-               + pairCells * (TwinbornCell.Height + TwinbornCell.Spacing);
+        return soloCells * (h + CellSpacing) + pairCells * (TwinbornCell.Height + TwinbornCell.Spacing);
     }
 
     public void DrawHeader(Rect rect, bool expanded) {
@@ -76,10 +77,10 @@ public sealed class AllomancyDockSection : IDockSection {
             cellRect.width - iconSize - BurnButtonWidth - 20f,
             10f
         );
-        float? targetFraction = (!compact || Mouse.IsOver(cellRect))
-            ? (cell.Bar.TargetValue.HasValue && cell.Bar.Max > 0f
+        float? targetFraction = !compact || Mouse.IsOver(cellRect)
+            ? cell.Bar.TargetValue.HasValue && cell.Bar.Max > 0f
                 ? cell.Bar.TargetValue.Value / cell.Bar.Max
-                : (float?)null)
+                : null
             : null;
         HorizontalBar.Draw(
             barRect,
@@ -106,11 +107,12 @@ public sealed class AllomancyDockSection : IDockSection {
             Rect dot = new Rect(cellRect.xMax - 10f, cellRect.y + 2f, 6f, 6f);
             Widgets.DrawBoxSolid(dot, new Color(1f, 0.7f, 0.2f));
         }
+
         if (cell.IsFlaring) {
             Widgets.DrawBox(cellRect, 2);
         }
 
-        if (Widgets.ButtonInvisible(cellRect, doMouseoverSound: false) && Event.current != null && Event.current.button == 1) {
+        if (Widgets.ButtonInvisible(cellRect, false) && Event.current != null && Event.current.button == 1) {
             OpenContextMenu(pawn, cell);
             Event.current.Use();
         }
@@ -123,7 +125,9 @@ public sealed class AllomancyDockSection : IDockSection {
             if (all[i] is AllomancyAbility a && a.metal.defName == metalDefName) {
                 Status next = a.atLeastBurning
                     ? BurningStatus.Off
-                    : flare ? BurningStatus.Flaring : BurningStatus.Burning;
+                    : flare
+                        ? BurningStatus.Flaring
+                        : BurningStatus.Burning;
                 a.UpdateStatus(next);
                 return;
             }

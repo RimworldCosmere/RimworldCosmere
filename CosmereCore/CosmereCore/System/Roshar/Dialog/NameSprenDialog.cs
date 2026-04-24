@@ -5,12 +5,10 @@ using Verse;
 namespace Cosmere.System.Roshar.Dialog;
 
 public class NameSprenDialog : Window {
-    private readonly Verse.Pawn spren;
+    private readonly Pawn spren;
     private string curName;
 
-    public override Vector2 InitialSize => new Vector2(400f, 200f);
-
-    public NameSprenDialog(Verse.Pawn spren) {
+    public NameSprenDialog(Pawn spren) {
         this.spren = spren;
         curName = spren.Name is NameSingle single ? single.Name : spren.LabelShort;
         forcePause = true;
@@ -19,9 +17,11 @@ public class NameSprenDialog : Window {
         closeOnAccept = false;
     }
 
+    public override Vector2 InitialSize => new Vector2(400f, 200f);
+
     public override void DoWindowContents(Rect inRect) {
-        bool enterPressed = Event.current.type == EventType.KeyDown
-            && (Event.current.keyCode == KeyCode.Return || Event.current.keyCode == KeyCode.KeypadEnter);
+        bool enterPressed = Event.current.type == EventType.KeyDown &&
+                            (Event.current.keyCode == KeyCode.Return || Event.current.keyCode == KeyCode.KeypadEnter);
 
         if (enterPressed) {
             Event.current.Use();
@@ -45,10 +45,12 @@ public class NameSprenDialog : Window {
             y += 40f;
 
             float btnWidth = (inRect.width - 10f) / 2f;
-            if (Widgets.ButtonText(new Rect(inRect.x, y, btnWidth, 35f), "Cancel".Translate()) ) {
+            if (Widgets.ButtonText(new Rect(inRect.x, y, btnWidth, 35f), "Cancel".Translate())) {
                 Close();
             }
-            if (Widgets.ButtonText(new Rect(inRect.x + btnWidth + 10f, y, btnWidth, 35f), "Accept".Translate()) || enterPressed) {
+
+            if (Widgets.ButtonText(new Rect(inRect.x + btnWidth + 10f, y, btnWidth, 35f), "Accept".Translate()) ||
+                enterPressed) {
                 if (curName.NullOrEmpty()) {
                     Messages.Message("NameInvalid".Translate(), spren, MessageTypeDefOf.NeutralEvent, false);
                 } else {

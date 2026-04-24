@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Text;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Def;
@@ -24,16 +22,11 @@ public class Metalmind : ThingComp, IMetalmindSource {
     private MetalDef? cachedMetal;
 
     private bool equippedInt = true;
-    public bool equipped {
-        get => equippedInt;
-        set => equippedInt = value;
-    }
 
     private float storedAmountInt;
     private List<StoredMemory> storedMemoriesInt = [];
     public Pawn? owner { get; private set; }
     private new MetalmindProperties props => (MetalmindProperties)base.props;
-    public float maxAmount => props.maxAmount;
 
     public bool isCoppermind => metal?.defName == "Copper";
 
@@ -45,11 +38,66 @@ public class Metalmind : ThingComp, IMetalmindSource {
             for (int i = 0; i < storedMemoriesInt.Count; i++) {
                 total += storedMemoriesInt[i].MoodMagnitude;
             }
+
             return total;
         }
     }
 
-    public bool CanFitMemory(float magnitude) => usedMemorySpace + magnitude <= maxAmount;
+    private InvestitureHolder investitureHolder => parent.GetComp<InvestitureHolder>();
+
+    public bool equipped {
+        get => equippedInt;
+        set => equippedInt = value;
+    }
+
+    public float maxAmount => props.maxAmount;
+
+    public bool canStore => isCoppermind ? false : equipped && storedAmount < maxAmount;
+    public bool canTap => isCoppermind ? false : equipped && storedAmount > 0;
+
+    public float storedAmount {
+        get => storedAmountInt;
+        private set {
+            storedAmountInt = value;
+            investitureHolder.currentInvestitureSelf = value * Constants.BreathEquivalentUnitsPerMetalUnit;
+        }
+    }
+
+    public MetalDef? metal {
+        get {
+            if (cachedMetal != null) return cachedMetal;
+            if (parent.def.GetModExtension<MetalsLinked>() is { } metalsLinked) {
+                cachedMetal = metalsLinked.Metals.FirstOrDefault();
+            }
+
+            if (parent.Stuff is { } stuff) {
+                cachedMetal = DefDatabase<MetalDef>.GetNamed(stuff.defName);
+            }
+
+            if (cachedMetal != null) return cachedMetal;
+
+            Logger.Error("Metalmind doesn't have a metal");
+            return null;
+        }
+    }
+
+    public void AddStored(float amount) {
+        if (!canStore) return;
+        if (!ValidateOwner()) return;
+
+        storedAmount = Mathf.Clamp(storedAmount + amount, 0, maxAmount);
+    }
+
+    public void ConsumeStored(float amount) {
+        if (!canTap) return;
+        if (!ValidateOwner()) return;
+
+        storedAmount = Mathf.Clamp(storedAmount - amount, 0, maxAmount);
+    }
+
+    public bool CanFitMemory(float magnitude) {
+        return usedMemorySpace + magnitude <= maxAmount;
+    }
 
     public void StoreMemory(StoredMemory memory) {
         storedMemoriesInt.Add(memory);
@@ -65,6 +113,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         if (isCoppermind) {
             storedAmountInt = usedMemorySpace;
         }
+
         return removed;
     }
 
@@ -99,55 +148,12 @@ public class Metalmind : ThingComp, IMetalmindSource {
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is Thought_Memory_Coppermind injected && injected.storedMemory == stored) return true;
         }
+
         return false;
-    }
-
-    public bool canStore => isCoppermind ? false : equipped && storedAmount < maxAmount;
-    public bool canTap => isCoppermind ? false : equipped && storedAmount > 0;
-    private InvestitureHolder investitureHolder => parent.GetComp<InvestitureHolder>();
-
-    public float storedAmount {
-        get => storedAmountInt;
-        private set {
-            storedAmountInt = value;
-            investitureHolder.currentInvestitureSelf = value * Constants.BreathEquivalentUnitsPerMetalUnit;
-        }
-    }
-
-    public MetalDef? metal {
-        get {
-            if (cachedMetal != null) return cachedMetal;
-            if (parent.def.GetModExtension<MetalsLinked>() is { } metalsLinked) {
-                cachedMetal = metalsLinked.Metals.FirstOrDefault();
-            }
-
-            if (parent.Stuff is { } stuff) {
-                cachedMetal = DefDatabase<MetalDef>.GetNamed(stuff.defName);
-            }
-
-            if (cachedMetal != null) return cachedMetal;
-
-            Logger.Error("Metalmind doesn't have a metal");
-            return null;
-        }
     }
 
     public override void PostPostMake() {
         investitureHolder.maxInvestitureSelf = maxAmount * Constants.BreathEquivalentUnitsPerMetalUnit;
-    }
-
-    public void AddStored(float amount) {
-        if (!canStore) return;
-        if (!ValidateOwner()) return;
-
-        storedAmount = Mathf.Clamp(storedAmount + amount, 0, maxAmount);
-    }
-
-    public void ConsumeStored(float amount) {
-        if (!canTap) return;
-        if (!ValidateOwner()) return;
-
-        storedAmount = Mathf.Clamp(storedAmount - amount, 0, maxAmount);
     }
 
     public Pawn? GetHoldingPawn() {
@@ -159,6 +165,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
             if (holder is Pawn p) return p;
             holder = holder.ParentHolder;
         }
+
         return null;
     }
 
@@ -184,6 +191,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
             if (parent?.Stuff != null) {
                 cachedMetal = DefDatabase<MetalDef>.GetNamedSilentFail(parent.Stuff.defName);
             }
+
             owner = GetHoldingPawn() ?? owner;
             storedMemoriesInt ??= [];
         }

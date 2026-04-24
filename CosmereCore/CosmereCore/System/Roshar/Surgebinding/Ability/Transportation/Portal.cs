@@ -9,21 +9,22 @@ using Verse;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Transportation;
 
 public class Portal : SurgebindingAbility {
-    private SurgePortal? portal;
-    private Map? sourceMap;
-    private List<Pawn>? selectedPawns;
-
     internal static int pendingPortalTile = -1;
     internal static Portal? activePortal;
+    private SurgePortal? portal;
+    private List<Pawn>? selectedPawns;
+    private Map? sourceMap;
+
+    private bool worldTargetingActive;
 
     public Portal(Pawn pawn) : base(pawn) { }
     public Portal(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
+    private ThingDef PortalDef => ThingDefOf.Cosmere_Roshar_Thing_SurgePortal;
+
     public override float GetStrength(Status? desiredStatus = null) {
         return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
     }
-
-    private ThingDef PortalDef => ThingDefOf.Cosmere_Roshar_Thing_SurgePortal;
 
     protected override void OnEnable() {
         base.OnEnable();
@@ -55,8 +56,9 @@ public class Portal : SurgebindingAbility {
     }
 
     public override IEnumerable<Command> GetGizmos() {
-        foreach (Command gizmo in base.GetGizmos())
+        foreach (Command gizmo in base.GetGizmos()) {
             yield return gizmo;
+        }
     }
 
     private void SpawnPortal() {
@@ -67,14 +69,12 @@ public class Portal : SurgebindingAbility {
         FleckMaker.Static(pawn.Position, sourceMap, FleckDefOf.PsycastAreaEffect);
     }
 
-    private bool worldTargetingActive;
-
     private void BeginWorldTargeting() {
         CameraJumper.TryShowWorld();
         worldTargetingActive = true;
 
         Find.WorldTargeter.BeginTargeting(
-            (GlobalTargetInfo t) => {
+            t => {
                 worldTargetingActive = false;
                 return OnWorldTileSelected(t);
             },
@@ -82,7 +82,7 @@ public class Portal : SurgebindingAbility {
             null,
             true,
             null,
-            (GlobalTargetInfo t) => {
+            t => {
                 PlanetTile tile = t.Tile;
                 if (!Find.WorldGrid.InBounds(tile.tileId)) return "Out of bounds";
                 return "Select portal destination";
@@ -145,7 +145,7 @@ public class Portal : SurgebindingAbility {
         activePortal = this;
 
         Find.WorldTargeter.BeginTargeting(
-            (GlobalTargetInfo t) => {
+            t => {
                 PlanetTile tile = t.Tile;
                 if (!Find.WorldGrid.InBounds(tile.tileId)) return false;
 
@@ -168,10 +168,9 @@ public class Portal : SurgebindingAbility {
 
                 if (destinationMap != null) {
                     CaravanEnterMapUtility.Enter(
-                        caravan, destinationMap,
-                        CaravanEnterMode.Center,
-                        CaravanDropInventoryMode.DoNotDrop,
-                        false
+                        caravan,
+                        destinationMap,
+                        CaravanEnterMode.Center
                     );
                 } else {
                     caravan.pather.StopDead();
@@ -192,7 +191,7 @@ public class Portal : SurgebindingAbility {
             null,
             true,
             null,
-            (GlobalTargetInfo t) => {
+            t => {
                 PlanetTile tile = t.Tile;
                 if (!Find.WorldGrid.InBounds(tile.tileId)) return "Out of bounds";
                 return "Open portal to this location";
@@ -242,17 +241,21 @@ public static class PortalCaravanGizmoPatch {
                 if (abilities[j] is not Portal portalAbility) continue;
 
                 Portal captured = portalAbility;
-                extra.Add(new Command_Action {
-                    defaultLabel = "Portal: " + p.LabelShort,
-                    defaultDesc = "Open a portal to teleport this caravan to another location instantly.",
-                    icon = PortalIcon,
-                    action = () => {
-                        if (Portal.activePortal != null && !Find.WorldTargeter.IsTargeting)
-                            Portal.activePortal = null;
-                        if (Portal.activePortal != null) return;
-                        captured.ActivateFromCaravan(__instance);
-                    },
-                });
+                extra.Add(
+                    new Command_Action {
+                        defaultLabel = "Portal: " + p.LabelShort,
+                        defaultDesc = "Open a portal to teleport this caravan to another location instantly.",
+                        icon = PortalIcon,
+                        action = () => {
+                            if (Portal.activePortal != null && !Find.WorldTargeter.IsTargeting) {
+                                Portal.activePortal = null;
+                            }
+
+                            if (Portal.activePortal != null) return;
+                            captured.ActivateFromCaravan(__instance);
+                        },
+                    }
+                );
                 break;
             }
         }

@@ -27,7 +27,9 @@ public class Truthwatcher(RadiantOrderDef def) : AbstractIdealChecker(def) {
         }
 
         if (nextLevel == 4) {
-            return patientsSaved >= ApplyDifficulty(60) && socialHealing >= ApplyDifficulty(20) && livesSaved >= ApplyDifficulty(5);
+            return patientsSaved >= ApplyDifficulty(60) &&
+                   socialHealing >= ApplyDifficulty(20) &&
+                   livesSaved >= ApplyDifficulty(5);
         }
 
         return false;
@@ -38,8 +40,10 @@ public class Truthwatcher(RadiantOrderDef def) : AbstractIdealChecker(def) {
             0 => null,
             1 => $"Save {ApplyDifficulty(5):0}+ patients | Skill 4+",
             2 => $"Save {ApplyDifficulty(20):0}+ patients, {ApplyDifficulty(3):0}+ social healing | Skill 8+",
-            3 => $"Save {ApplyDifficulty(40):0}+ patients, {ApplyDifficulty(10):0}+ social healing, 1+ life saved | Skill 14+",
-            4 => $"Save {ApplyDifficulty(60):0}+ patients, {ApplyDifficulty(20):0}+ social healing, {ApplyDifficulty(5):0}+ lives saved | Skill 18+",
+            3 =>
+                $"Save {ApplyDifficulty(40):0}+ patients, {ApplyDifficulty(10):0}+ social healing, 1+ life saved | Skill 14+",
+            4 =>
+                $"Save {ApplyDifficulty(60):0}+ patients, {ApplyDifficulty(20):0}+ social healing, {ApplyDifficulty(5):0}+ lives saved | Skill 18+",
             _ => null,
         };
     }

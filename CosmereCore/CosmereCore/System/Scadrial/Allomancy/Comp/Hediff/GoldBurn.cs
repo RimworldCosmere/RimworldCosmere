@@ -1,10 +1,10 @@
-using Cosmere.Core.Ability;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
-using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using Verse;
-using IAllomancerAbility = Cosmere.Core.Ability.IAbility<Cosmere.System.Scadrial.Gene.Allomancer, Cosmere.Core.Hediff.IHediff<Cosmere.System.Scadrial.Gene.Allomancer>>;
+using IAllomancerAbility =
+    Cosmere.Core.Ability.IAbility<Cosmere.System.Scadrial.Gene.Allomancer,
+        Cosmere.Core.Hediff.IHediff<Cosmere.System.Scadrial.Gene.Allomancer>>;
 
 namespace Cosmere.System.Scadrial.Allomancy.Comp.Hediff;
 
@@ -29,6 +29,7 @@ public class GoldBurn : HediffComp {
         ThoughtDefOf.Cosmere_Thought_Gold_Jealousy,
         ThoughtDefOf.Cosmere_Thought_Gold_Curiosity,
     ];
+
     private readonly List<ThoughtDef> memoriesAdded = [];
     private float lastSeverity;
     private MemoryThoughtHandler memories => Pawn.needs.mood.thoughts.memories;
@@ -64,6 +65,7 @@ public class GoldBurn : HediffComp {
             for (int i = 0; i < snapshot.Length; i++) {
                 snapshot[i].UpdateStatus(BurningStatus.Off);
             }
+
             Pawn.mindState.mentalStateHandler.TryStartMentalState(
                 MentalStateDefOf.Wander_OwnRoom,
                 "Gold vision triggered a break",

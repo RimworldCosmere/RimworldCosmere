@@ -22,7 +22,13 @@ public static class PrisonerReleaseTrackingPatch {
     }
 }
 
-[HarmonyPatch(typeof(InteractionWorker_RecruitAttempt), nameof(InteractionWorker_RecruitAttempt.DoRecruit), [typeof(Pawn), typeof(Pawn), typeof(bool)])]
+[HarmonyPatch(
+    typeof(InteractionWorker_RecruitAttempt),
+    nameof(InteractionWorker_RecruitAttempt.DoRecruit),
+    typeof(Pawn),
+    typeof(Pawn),
+    typeof(bool)
+)]
 public static class RecruitTrackingPatch {
     private static void Postfix(Pawn recruiter, Pawn recruitee) {
         if (recruiter == null) return;

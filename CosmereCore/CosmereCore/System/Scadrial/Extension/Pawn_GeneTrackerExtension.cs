@@ -32,6 +32,7 @@ public static class Pawn_GeneTrackerExtension {
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is Allomancer a) result.Add(a);
         }
+
         return result;
     }
 
@@ -41,6 +42,7 @@ public static class Pawn_GeneTrackerExtension {
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is Feruchemist f) result.Add(f);
         }
+
         return result;
     }
 }

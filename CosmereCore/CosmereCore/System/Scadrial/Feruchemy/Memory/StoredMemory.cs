@@ -5,12 +5,12 @@ using Verse;
 namespace Cosmere.System.Scadrial.Feruchemy.Memory;
 
 public class StoredMemory : IExposable {
-    public ThoughtDef? def;
     public int age;
+    public ThoughtDef? def;
+    public float moodOffset;
     public float moodPowerFactor = 1f;
     public Pawn? otherPawn;
     public Pawn? owner;
-    public float moodOffset;
 
     public StoredMemory() { }
 

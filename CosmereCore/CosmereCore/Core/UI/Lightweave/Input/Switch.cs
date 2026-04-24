@@ -1,27 +1,37 @@
 using System;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 using Cosmere.Core.UI.Lightweave.Rendering;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Tokens;
 using Cosmere.Core.UI.Lightweave.Types;
+using UnityEngine;
+using Verse;
+using Verse.Sound;
 
 namespace Cosmere.Core.UI.Lightweave.Input;
 
-public static class Switch
-{
+public static class Switch {
+    private const float AnimationDurationSec = 0.12f;
+
     public static LightweaveNode Create(
         string label,
         bool value,
         Action<bool> onChange,
         bool disabled = false,
+        object? instanceKey = null,
         [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = "")
-    {
-        LightweaveNode node = NodeBuilder.New($"Switch:{label}", line, file);
+        [CallerFilePath] string file = ""
+    ) {
+        string callerFile = file ?? string.Empty;
+        int callerLine = line;
+        string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
+        string progressKey = callerFile + "#sw_progress" + keySuffix;
+        string lastTimeKey = callerFile + "#sw_lastTime" + keySuffix;
 
-        node.Paint = (rect, paintChildren) =>
-        {
+        LightweaveNode node = NodeBuilder.New($"Switch:{label}", callerLine, callerFile);
+        node.PreferredHeight = new Rem(1.75f).ToPixels();
+
+        node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
@@ -46,47 +56,72 @@ public static class Switch
             Rect labelRect = new Rect(labelX, rowY, Mathf.Max(0f, labelWidth), rowHeight);
 
             Rect hitRect = new Rect(rect.x, rowY, rect.width, rowHeight);
+            LightweaveHitTracker.Track(hitRect);
 
-            ThemeSlot trackSlot = disabled
+            Hooks.Hooks.RefHandle<float> progress = Hooks.Hooks.UseRef(value ? 1f : 0f, callerLine, progressKey);
+            Hooks.Hooks.RefHandle<float> lastTime = Hooks.Hooks.UseRef(
+                Time.realtimeSinceStartup,
+                callerLine,
+                lastTimeKey
+            );
+
+            float now = Time.realtimeSinceStartup;
+            float dt = Mathf.Max(0f, now - lastTime.Current);
+            lastTime.Current = now;
+
+            float target = value ? 1f : 0f;
+            if (!Mathf.Approximately(progress.Current, target)) {
+                float delta = dt / AnimationDurationSec;
+                if (target > progress.Current) {
+                    progress.Current = Mathf.Min(target, progress.Current + delta);
+                } else {
+                    progress.Current = Mathf.Max(target, progress.Current - delta);
+                }
+            }
+
+            float animFraction = Mathf.Clamp01(progress.Current);
+
+            bool mouseOver = Mouse.IsOver(hitRect);
+            bool hovered = !disabled && mouseOver;
+            if (!disabled) {
+                MouseoverSounds.DoRegion(hitRect);
+            } else if (mouseOver) {
+                CursorOverrides.MarkDisabledHover();
+            }
+
+            InteractionState trackState = new InteractionState(hovered, false, false, disabled);
+            ThemeSlot borderSlot = InputSurface.ResolveToggleBorderSlot(trackState, value);
+
+            ThemeSlot trackFill = disabled
                 ? ThemeSlot.SurfaceDisabled
                 : value
                     ? ThemeSlot.SurfaceAccent
-                    : ThemeSlot.SurfaceRaised;
-            BackgroundSpec trackBg = new BackgroundSpec.Solid(trackSlot);
-            ThemeSlot trackBorderSlot = disabled ? ThemeSlot.BorderSubtle : ThemeSlot.BorderDefault;
-            BorderSpec trackBorder = BorderSpec.All(new Rem(1f / 16f), trackBorderSlot);
+                    : ThemeSlot.SurfaceInput;
+            BackgroundSpec trackBg = new BackgroundSpec.Solid(trackFill);
+            BorderSpec trackBorder = BorderSpec.All(new Rem(1f / 16f), borderSlot);
             RadiusSpec trackRadius = RadiusSpec.All(new Rem(0.625f));
-
             PaintBox.Draw(trackRect, trackBg, trackBorder, trackRadius);
 
-            // Logical start = off, logical end = on. In LTR, end is right; in RTL, end is left.
-            bool thumbAtEnd = value;
-            float thumbX;
-            if (rtl)
-            {
-                thumbX = thumbAtEnd
-                    ? trackRect.x + thumbInset
-                    : trackRect.xMax - thumbInset - thumbSize;
-            }
-            else
-            {
-                thumbX = thumbAtEnd
-                    ? trackRect.xMax - thumbInset - thumbSize
-                    : trackRect.x + thumbInset;
-            }
+            float leftX = trackRect.x + thumbInset;
+            float rightX = trackRect.xMax - thumbInset - thumbSize;
+            float thumbX = rtl
+                ? Mathf.Lerp(rightX, leftX, animFraction)
+                : Mathf.Lerp(leftX, rightX, animFraction);
             float thumbY = trackRect.y + (trackHeight - thumbSize) / 2f;
             Rect thumbRect = new Rect(thumbX, thumbY, thumbSize, thumbSize);
 
-            ThemeSlot thumbSlot = value
-                ? ThemeSlot.TextOnAccent
-                : ThemeSlot.SurfacePrimary;
+            ThemeSlot thumbSlot = disabled
+                ? ThemeSlot.BorderOff
+                : value
+                    ? ThemeSlot.TextOnAccent
+                    : ThemeSlot.BorderOff;
             BackgroundSpec thumbBg = new BackgroundSpec.Solid(thumbSlot);
             RadiusSpec thumbRadius = RadiusSpec.All(new Rem(0.5f));
             PaintBox.Draw(thumbRect, thumbBg, null, thumbRadius);
 
             Font labelFont = theme.GetFont(FontRole.Body);
-            int labelPixelSize = Mathf.RoundToInt(new Rem(1f).ToPixels());
-            GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize, FontStyle.Normal);
+            int labelPixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
+            GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize);
             labelStyle.alignment = rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
             Color labelColor = disabled
                 ? theme.GetColor(ThemeSlot.TextMuted)
@@ -99,8 +134,7 @@ public static class Switch
             paintChildren();
 
             Event e = Event.current;
-            if (!disabled && e.type == EventType.MouseUp && e.button == 0 && hitRect.Contains(e.mousePosition))
-            {
+            if (!disabled && e.type == EventType.MouseUp && e.button == 0 && hitRect.Contains(e.mousePosition)) {
                 onChange?.Invoke(!value);
                 e.Use();
             }

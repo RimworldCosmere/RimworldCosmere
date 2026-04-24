@@ -1,7 +1,6 @@
 namespace Cosmere.Core.UI.Lightweave.Overlay;
 
-public enum PopoverPlacement
-{
+public enum PopoverPlacement {
     Top,
     Bottom,
     Start,

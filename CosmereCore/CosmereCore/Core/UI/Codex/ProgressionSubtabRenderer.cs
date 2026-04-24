@@ -10,6 +10,7 @@ public static class ProgressionSubtabRenderer {
             cp.DrawProgression(pawn, rect, state);
             return;
         }
+
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, new Color(0.7f, 0.7f, 0.7f)))
             Widgets.Label(rect, "CC_Codex_Progression_Empty".Translate());
     }

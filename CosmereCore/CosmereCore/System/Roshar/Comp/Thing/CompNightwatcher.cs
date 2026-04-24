@@ -9,9 +9,9 @@ public class CompNightwatcherProperties : CompProperties {
 }
 
 public class CompNightwatcher : ThingComp {
+    public float cultivationConnectionBonus;
     private bool hasVisited;
     private int visitedTick = -1;
-    public float cultivationConnectionBonus;
 
     public bool HasVisited => hasVisited;
 

@@ -4,7 +4,6 @@ using Cosmere.Core.Def;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using UnityEngine;
 using Verse;
-using JobDefOf = RimWorld.JobDefOf;
 
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 

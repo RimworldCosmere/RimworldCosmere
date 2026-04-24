@@ -40,5 +40,4 @@ public class Windrunner(RadiantOrderDef def) : AbstractIdealChecker(def) {
             _ => null,
         };
     }
-
 }

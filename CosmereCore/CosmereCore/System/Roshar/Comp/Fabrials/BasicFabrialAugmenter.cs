@@ -1,9 +1,6 @@
 using Cosmere.Core.Comp.Thing;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Dialog;
-using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
-using Cosmere.System.Roshar.Thing.Building;
-using RimWorld;
 using UnityEngine;
 using Verse;
 

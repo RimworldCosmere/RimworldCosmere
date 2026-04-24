@@ -3,24 +3,26 @@ using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Skin;
 using Cosmere.System.Roshar.Dialog;
 using Cosmere.System.Roshar.Gene;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.UI;
 
 public sealed class SurgebindingDockSection : IDockSection {
-    public string SystemId => "Surgebinding";
-    public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
-
     private const float HeaderHeight = 28f;
     private const float BodyHeight = 112f;
     private const float PipSize = 10f;
     private const float InfoButtonSize = 20f;
+    public string SystemId => "Surgebinding";
+    public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
 
-    public float GetHeaderHeight() => HeaderHeight;
+    public float GetHeaderHeight() {
+        return HeaderHeight;
+    }
 
-    public float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) => BodyHeight;
+    public float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        return BodyHeight;
+    }
 
     public void DrawHeader(Rect rect, bool expanded) {
         Widgets.DrawBoxSolid(rect, new Color(Skin.AccentColor.r, Skin.AccentColor.g, Skin.AccentColor.b, 0.25f));
@@ -57,14 +59,17 @@ public sealed class SurgebindingDockSection : IDockSection {
             Widgets.Label(orderRow, gene.radiantOrderDef.LabelCap);
 
         Rect sliderRow = new Rect(rect.x + 6f, orderRow.yMax + 4f, rect.width - 12f, 20f);
-        float newTarget = Widgets.HorizontalSlider(sliderRow, gene.targetValue, 0f, gene.Max, middleAlignment: true);
+        float newTarget = Widgets.HorizontalSlider(sliderRow, gene.targetValue, 0f, gene.Max, true);
         if (!Mathf.Approximately(newTarget, gene.targetValue)) {
             gene.targetValue = newTarget;
         }
 
         Rect sliderLabel = new Rect(rect.x + 6f, sliderRow.yMax, rect.width - 12f, 14f);
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleRight, new Color(0.75f, 0.85f, 1f)))
-            Widgets.Label(sliderLabel, "CC_Dock_Surgebinding_RefillBelow".Translate(gene.targetValue.ToString("F0").Named("VALUE")));
+            Widgets.Label(
+                sliderLabel,
+                "CC_Dock_Surgebinding_RefillBelow".Translate(gene.targetValue.ToString("F0").Named("VALUE"))
+            );
     }
 
     private void DrawIdealPips(Rect row, Surgebinder gene) {

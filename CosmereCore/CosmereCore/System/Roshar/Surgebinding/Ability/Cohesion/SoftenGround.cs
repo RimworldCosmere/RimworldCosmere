@@ -1,4 +1,3 @@
-using Cosmere.Core.Ability;
 using RimWorld;
 using Verse;
 
@@ -44,7 +43,10 @@ public class SoftenGround : SurgebindingAbility {
 
         float currentRadius = radius;
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
-                     zoneCenter, pawn.Map, currentRadius, true
+                     zoneCenter,
+                     pawn.Map,
+                     currentRadius,
+                     true
                  )) {
             if (thing is not Pawn targetPawn) continue;
             if (targetPawn.Dead) continue;

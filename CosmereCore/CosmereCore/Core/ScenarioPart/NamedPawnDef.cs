@@ -5,21 +5,21 @@ using Verse;
 namespace Cosmere.Core.ScenarioPart;
 
 public class NamedPawnDef {
-    public string? firstName;
-    public string? nickName;
-    public string? lastName;
     public int age = 20;
     public int chronologicalAge = -1;
-    public Gender gender = Gender.None;
-    public string? xenotype;
-    public List<NamedPawnTraitEntry> traits = [];
-    public List<NamedPawnSkillEntry> skills = [];
-    public List<string> genes = [];
-    public string? radiantOrder;
-    public int idealLevel;
-    public bool mistborn;
+    public string? firstName;
     public bool fullFeruchemist;
+    public Gender gender = Gender.None;
+    public List<string> genes = [];
+    public int idealLevel;
     public List<NamedPawnInventoryEntry> inventory = [];
+    public string? lastName;
+    public bool mistborn;
+    public string? nickName;
+    public string? radiantOrder;
+    public List<NamedPawnSkillEntry> skills = [];
+    public List<NamedPawnTraitEntry> traits = [];
+    public string? xenotype;
 
     public void LoadDataFromXmlCustom(XmlNode xmlRoot) {
         foreach (XmlNode node in xmlRoot.ChildNodes) {
@@ -137,9 +137,9 @@ public class NamedPawnSkillEntry {
 }
 
 public class NamedPawnInventoryEntry {
-    public string? thing;
-    public string? stuff;
     public int count = 1;
+    public string? stuff;
+    public string? thing;
 
     public void LoadDataFromXmlCustom(XmlNode xmlRoot) {
         foreach (XmlNode node in xmlRoot.ChildNodes) {

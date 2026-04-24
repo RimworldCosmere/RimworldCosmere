@@ -53,6 +53,7 @@ public static class TwinbornCell {
             fMax += mms[j].maxAmount;
             fVal += mms[j].storedAmount;
         }
+
         Rect bottomBar = new Rect(iconRect.xMax + 4f, topBar.yMax + 2f, topBar.width, 10f);
         HorizontalBar.Draw(
             bottomBar,
@@ -94,6 +95,7 @@ public static class TwinbornCell {
         if (Widgets.ButtonText(cpdRect, "CC_Dock_Twinborn_Compound".Translate(), active: cpdEnabled) && cpdEnabled) {
             cpdAbility!.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
         }
+
         GUI.color = orig;
     }
 
@@ -103,6 +105,7 @@ public static class TwinbornCell {
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is AllomancyAbility a && a.metal.defName == metalDefName) return a.atLeastBurning;
         }
+
         return false;
     }
 
@@ -124,10 +127,12 @@ public static class TwinbornCell {
             gene.targetValue = 75f;
             return;
         }
+
         if (gene.isStoring) {
             gene.Reset();
             return;
         }
+
         gene.targetValue = 25f;
     }
 }

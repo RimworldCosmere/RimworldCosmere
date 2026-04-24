@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using RimWorld;
+using Cosmere.Core.UI.Model;
 using UnityEngine;
 using Verse;
 
@@ -58,6 +57,7 @@ public sealed class AutocastRunner : GameComponent {
         for (int i = 0; i < list.Count; i++) {
             if (list[i].def.defName == defName) return list[i];
         }
+
         return null;
     }
 
@@ -65,6 +65,7 @@ public sealed class AutocastRunner : GameComponent {
         for (int i = 0; i < rule.Triggers.Count; i++) {
             if (!Evaluate(pawn, rule.Triggers[i])) return false;
         }
+
         return true;
     }
 
@@ -85,14 +86,15 @@ public sealed class AutocastRunner : GameComponent {
     }
 
     private static float ResolvePrimaryReserve(Pawn pawn) {
-        Cosmere.Core.UI.Model.InvestitureSnapshot? snap = null;
-        global::System.Collections.Generic.IReadOnlyList<Cosmere.Core.UI.Model.IInvestitureProvider> all =
-            Cosmere.Core.UI.Model.PawnInvestitureProviders.All;
+        InvestitureSnapshot? snap = null;
+        IReadOnlyList<IInvestitureProvider> all =
+            PawnInvestitureProviders.All;
         for (int i = 0; i < all.Count; i++) {
             if (!all[i].IsInvested(pawn)) continue;
             snap = all[i].Snapshot(pawn);
             if (snap?.PrimaryBar != null) break;
         }
+
         if (snap?.PrimaryBar == null) return 0f;
         if (snap.PrimaryBar.Max <= 0f) return 0f;
         return snap.PrimaryBar.Current / snap.PrimaryBar.Max;

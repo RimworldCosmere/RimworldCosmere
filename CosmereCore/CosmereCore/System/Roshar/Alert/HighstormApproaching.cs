@@ -18,7 +18,7 @@ public class HighstormApproaching : Alert_Critical {
     }
 
     public override AlertReport GetReport() {
-        List<Verse.Map> maps = Find.Maps;
+        List<Map> maps = Find.Maps;
         for (int i = 0; i < maps.Count; i++) {
             HighstormScheduler scheduler = maps[i].GetComponent<HighstormScheduler>();
             if (scheduler == null) continue;
@@ -36,7 +36,7 @@ public class HighstormApproaching : Alert_Critical {
     }
 
     private int GetTicksUntilNextStorm() {
-        List<Verse.Map> maps = Find.Maps;
+        List<Map> maps = Find.Maps;
         for (int i = 0; i < maps.Count; i++) {
             HighstormScheduler scheduler = maps[i].GetComponent<HighstormScheduler>();
             if (scheduler == null) continue;

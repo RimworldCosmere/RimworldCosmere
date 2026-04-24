@@ -1,6 +1,5 @@
 using Cosmere.Core.Comp.Map;
 using Cosmere.Core.Util;
-using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;

@@ -11,10 +11,6 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class ShardDefOf {
-    static ShardDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(ShardDefOf));
-    }
-
     [MayRequire("Cosmere.Roshar")]
     public static ShardDef Honor;
 
@@ -26,4 +22,8 @@ public static class ShardDefOf {
 
     [MayRequire("Cosmere.Roshar")]
     public static ShardDef Retribution;
+
+    static ShardDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(ShardDefOf));
+    }
 }

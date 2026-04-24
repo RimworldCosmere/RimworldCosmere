@@ -1,3 +1,5 @@
+using Cosmere.Core.Def;
+
 namespace Cosmere.System.Scadrial.Feruchemy;
 
 public interface IMetalmindSource {
@@ -6,7 +8,7 @@ public interface IMetalmindSource {
     bool canStore { get; }
     bool canTap { get; }
     bool equipped { get; }
-    Cosmere.Core.Def.MetalDef? metal { get; }
+    MetalDef? metal { get; }
     void AddStored(float amount);
     void ConsumeStored(float amount);
 }

@@ -104,7 +104,10 @@ public class PreCatacendreQuickstarter : AbstractQuickstart {
             GeneUtility.AddFullFeruchemist(pawn, false, true);
             foreach (MetallicArtsMetalDef metal in DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading) {
                 if (metal.feruchemy?.userName == null) continue;
-                Verse.Thing metalmind = ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, metal.Item);
+                Verse.Thing metalmind = ThingMaker.MakeThing(
+                    ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand,
+                    metal.Item
+                );
                 pawn.inventory.innerContainer.TryAdd(metalmind);
             }
 

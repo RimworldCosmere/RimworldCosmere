@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.Core;
 using Cosmere.Core.Savant;
 using Cosmere.Core.UI.Codex;
@@ -12,13 +11,27 @@ using Verse;
 namespace Cosmere.System.Scadrial.UI;
 
 public sealed class AllomancyCodexContent : ICodexContentProvider {
-    public bool HasProgression(Pawn pawn) => CollectAllomancers(pawn).Count > 0;
-    public bool ShowsBondsSubtab => false;
-    public bool HasBonds(Pawn pawn) => false;
-    public bool HasMemories(Pawn pawn) => false;
-    public bool OwnsAbility(RimWorld.Ability ability) => ability is AllomancyAbility;
+    public bool HasProgression(Pawn pawn) {
+        return CollectAllomancers(pawn).Count > 0;
+    }
 
-    public string? HeaderLabelFor(Pawn pawn) => null;
+    public bool ShowsBondsSubtab => false;
+
+    public bool HasBonds(Pawn pawn) {
+        return false;
+    }
+
+    public bool HasMemories(Pawn pawn) {
+        return false;
+    }
+
+    public bool OwnsAbility(Ability ability) {
+        return ability is AllomancyAbility;
+    }
+
+    public string? HeaderLabelFor(Pawn pawn) {
+        return null;
+    }
 
     public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
         List<Allomancer> genes = CollectAllomancers(pawn);
@@ -32,11 +45,13 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
         SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
         if (skill != null) {
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f)))
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f))) {
                 Widgets.Label(
                     new Rect(rect.x, y, rect.width, 24f),
                     "CC_Codex_Allomancy_OverallSkill".Translate(skill.Level.Named("LEVEL"))
                 );
+            }
+
             y += 28f;
         }
 
@@ -68,15 +83,21 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
             }
 
             Rect burnedRect = new Rect(stageRect.xMax + 8f, row.y, 80f, rowHeight);
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f)))
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f))) {
                 Widgets.Label(
                     burnedRect,
                     "CC_Codex_Allomancy_MetalBurned".Translate(burned.ToString("F1").Named("AMOUNT"))
                 );
+            }
 
             if (hasVialControls) {
                 const float buttonSize = 20f;
-                Rect vialButtonRect = new Rect(row.xMax - buttonSize - 4f, row.y + (rowHeight - buttonSize) / 2f, buttonSize, buttonSize);
+                Rect vialButtonRect = new Rect(
+                    row.xMax - buttonSize - 4f,
+                    row.y + (rowHeight - buttonSize) / 2f,
+                    buttonSize,
+                    buttonSize
+                );
                 DrawVialSettingsButton(vialButtonRect, gene);
             }
 
@@ -90,13 +111,13 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
     private static void DrawVialSettingsButton(Rect rect, Allomancer gene) {
         string thresholdLabel = Allomancer.ThresholdDisplayLabel(gene);
 
-        string tooltip = (string)"CC_Codex_Allomancy_VialSettings_Tooltip".Translate(
+        string tooltip = "CC_Codex_Allomancy_VialSettings_Tooltip".Translate(
             gene.requestedVialStock.Named("COUNT"),
             thresholdLabel.Named("THRESHOLD")
         );
         TooltipHandler.TipRegion(rect, tooltip);
 
-        if (Widgets.ButtonText(rect, "CC_Codex_Allomancy_VialSettings_Button".Translate(), drawBackground: true)) {
+        if (Widgets.ButtonText(rect, "CC_Codex_Allomancy_VialSettings_Button".Translate())) {
             Find.WindowStack.Add(new Dialog_AllomancyRestockSlider(gene));
         }
     }
@@ -122,6 +143,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 color = new Color(0.55f, 0.55f, 0.55f);
                 break;
         }
+
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, color))
             Widgets.Label(rect, label);
     }
@@ -133,6 +155,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is Allomancer a && !a.Overridden) result.Add(a);
         }
+
         return result;
     }
 }

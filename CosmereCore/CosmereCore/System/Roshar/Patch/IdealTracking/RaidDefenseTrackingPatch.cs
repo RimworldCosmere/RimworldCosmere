@@ -9,7 +9,7 @@ namespace Cosmere.System.Roshar.Patch.IdealTracking;
 
 [HarmonyPatch]
 public static class RaidDefenseTrackingPatch {
-    static MethodBase TargetMethod() {
+    private static MethodBase TargetMethod() {
         return typeof(Lord).GetMethod("Cleanup", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
     }
 
@@ -41,7 +41,9 @@ public static class RaidDefenseTrackingPatch {
             Surgebinder? surgebinder = colonist.genes?.GetFirstGeneOfType<Surgebinder>();
             if (surgebinder == null) continue;
 
-            if (colonist.Drafted || colonist.CurJobDef == RimWorld.JobDefOf.AttackMelee || colonist.CurJobDef == RimWorld.JobDefOf.AttackStatic) {
+            if (colonist.Drafted ||
+                colonist.CurJobDef == RimWorld.JobDefOf.AttackMelee ||
+                colonist.CurJobDef == RimWorld.JobDefOf.AttackStatic) {
                 colonist.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_RaidsDefended, 1);
             }
 

@@ -44,6 +44,8 @@
     <CC_Playground_Navigation_Menu_Pdf>PDF</CC_Playground_Navigation_Menu_Pdf>
     <CC_Playground_Navigation_Menu_Png>PNG</CC_Playground_Navigation_Menu_Png>
     <CC_Playground_Navigation_Menu_Svg>SVG</CC_Playground_Navigation_Menu_Svg>
+    <CC_Playground_Navigation_Menu_ExportPng>Export as PNG</CC_Playground_Navigation_Menu_ExportPng>
+    <CC_Playground_Navigation_Menu_ExportSvg>Export as SVG</CC_Playground_Navigation_Menu_ExportSvg>
     <CC_Playground_Controls_Dropdown_Title>Dropdown</CC_Playground_Controls_Dropdown_Title>
     <CC_Playground_Feedback_Title>Feedback</CC_Playground_Feedback_Title>
     <CC_Playground_Feedback_Badge_Neutral>Neutral</CC_Playground_Feedback_Badge_Neutral>
@@ -51,8 +53,8 @@
     <CC_Playground_Feedback_Badge_Warning>Warning</CC_Playground_Feedback_Badge_Warning>
     <CC_Playground_Feedback_Badge_Danger>Danger</CC_Playground_Feedback_Badge_Danger>
     <CC_Playground_Feedback_Badge_Success>Success</CC_Playground_Feedback_Badge_Success>
-    <CC_Playground_Feedback_Tag_Dismissible>Dismissible</CC_Playground_Feedback_Tag_Dismissible>
-    <CC_Playground_Feedback_Tag_Static>Static</CC_Playground_Feedback_Tag_Static>
+    <CC_Playground_Feedback_Badge_Clickable>Clickable</CC_Playground_Feedback_Badge_Clickable>
+    <CC_Playground_Feedback_Badge_Dismissible>Dismissible</CC_Playground_Feedback_Badge_Dismissible>
     <CC_Playground_Feedback_Tooltip_Title>Tooltips</CC_Playground_Feedback_Tooltip_Title>
     <CC_Playground_Feedback_Tooltip_Button_Label>Hover me</CC_Playground_Feedback_Tooltip_Button_Label>
     <CC_Playground_Feedback_Tooltip_Button_Body>A single-line tooltip.</CC_Playground_Feedback_Tooltip_Button_Body>
@@ -165,8 +167,6 @@
     <!-- Task D1: category + placeholder panel stubs -->
     <CC_Playground_Category_Layout>Layout</CC_Playground_Category_Layout>
     <CC_Playground_Category_Layout_Desc>Containers that arrange children in rows, columns, grids, and stacks.</CC_Playground_Category_Layout_Desc>
-    <CC_Playground_Category_Surface>Surface</CC_Playground_Category_Surface>
-    <CC_Playground_Category_Surface_Desc>Cards, panels, and filled regions with borders and elevation.</CC_Playground_Category_Surface_Desc>
     <CC_Playground_Category_Typography>Typography</CC_Playground_Category_Typography>
     <CC_Playground_Category_Typography_Desc>Text roles - headings, body copy, captions, monospace.</CC_Playground_Category_Typography_Desc>
     <CC_Playground_Category_Buttons>Buttons</CC_Playground_Category_Buttons>
@@ -217,11 +217,15 @@
     <CC_Playground_Header_Subtitle>Every primitive, every theme, every direction.</CC_Playground_Header_Subtitle>
     <CC_Playground_Header_Theme_Default>Default</CC_Playground_Header_Theme_Default>
     <CC_Playground_Header_Theme_Cosmere>Cosmere</CC_Playground_Header_Theme_Cosmere>
+    <CC_Playground_Header_Theme_Scadrial>Scadrial</CC_Playground_Header_Theme_Scadrial>
+    <CC_Playground_Header_Theme_Roshar>Roshar</CC_Playground_Header_Theme_Roshar>
     <CC_Playground_Header_Direction_Auto>Auto</CC_Playground_Header_Direction_Auto>
     <CC_Playground_Header_Direction_Ltr>LTR</CC_Playground_Header_Direction_Ltr>
     <CC_Playground_Header_Direction_Rtl>RTL</CC_Playground_Header_Direction_Rtl>
     <CC_Playground_Header_ForceDisabled>Force disabled</CC_Playground_Header_ForceDisabled>
     <CC_Playground_Panel_SourceLabel>Source:</CC_Playground_Panel_SourceLabel>
+    <CC_Playground_Panel_SourceTooltip>Open this primitive's source file in VS Code.</CC_Playground_Panel_SourceTooltip>
+    <CC_Playground_Header_ForceDisabled_Tooltip>Renders every interactive primitive in its disabled state. Useful for verifying disabled visuals without wiring per-demo state.</CC_Playground_Header_ForceDisabled_Tooltip>
     <CC_Playground_Panel_Variants>Variants</CC_Playground_Panel_Variants>
     <CC_Playground_Panel_States>States</CC_Playground_Panel_States>
 
@@ -244,6 +248,8 @@
     <CC_Playground_scrollarea_Title>ScrollArea</CC_Playground_scrollarea_Title>
     <CC_Playground_scrollarea_What>Wraps content taller than its rect in a vertical scroll view.</CC_Playground_scrollarea_What>
     <CC_Playground_scrollarea_When>Use when content height exceeds the available space. Wrap a Stack to scroll the whole body.</CC_Playground_scrollarea_When>
+    <CC_Playground_ScrollArea_WithBar>With scrollbar</CC_Playground_ScrollArea_WithBar>
+    <CC_Playground_ScrollArea_NoBar>No scrollbar</CC_Playground_ScrollArea_NoBar>
     <CC_Playground_divider_Title>Divider</CC_Playground_divider_Title>
     <CC_Playground_divider_What>A thin horizontal or vertical rule in the theme's subtle border color.</CC_Playground_divider_What>
     <CC_Playground_divider_When>Use between logical sections that share a surface. Skip it when a gap already separates them.</CC_Playground_divider_When>
@@ -254,18 +260,12 @@
     <CC_Playground_each_What>Maps a collection to a list of nodes. Assigns stable keys for diffing across renders.</CC_Playground_each_What>
     <CC_Playground_each_When>Use to render one node per item in a sequence. Pass a keyFn when items can reorder.</CC_Playground_each_When>
     <CC_Playground_conditional_Title>Conditional</CC_Playground_conditional_Title>
-    <CC_Playground_conditional_What>Renders its child only when the condition is true. Otherwise paints nothing.</CC_Playground_conditional_What>
-    <CC_Playground_conditional_When>Use when a branch should not even construct its subtree. A plain if-statement works for simple cases.</CC_Playground_conditional_When>
+    <CC_Playground_conditional_What>Wraps a child node so it is only built and painted when the predicate is true. When false, the entire subtree is skipped — no measure, no paint, no allocations. Compare with `Visibility`, which keeps the child mounted but hides it.</CC_Playground_conditional_What>
+    <CC_Playground_conditional_When>Use to gate expensive subtrees behind a runtime flag (e.g., advanced settings, debug overlays, feature toggles). For trivial inline branches, a plain if-statement is fine.</CC_Playground_conditional_When>
 
     <CC_Playground_box_Title>Box</CC_Playground_box_Title>
     <CC_Playground_box_What>Low-level container with padding, background, border, and radius.</CC_Playground_box_What>
     <CC_Playground_box_When>Use when you need a styled rectangle. Reach for Card when you want the standard raised surface.</CC_Playground_box_When>
-    <CC_Playground_panel_Title>Panel</CC_Playground_panel_Title>
-    <CC_Playground_panel_What>Titled surface with a dividing rule between title, body, and optional footer.</CC_Playground_panel_What>
-    <CC_Playground_panel_When>Use for labeled sections with a clear header. Card is lighter-weight when no title is needed.</CC_Playground_panel_When>
-    <CC_Playground_surface_Title>Surface</CC_Playground_surface_Title>
-    <CC_Playground_surface_What>Themed rectangle tinted to a named surface role: Primary, Raised, Sunken, or Accent.</CC_Playground_surface_What>
-    <CC_Playground_surface_When>Use to layer surfaces for elevation cues. Sunken recesses, Raised lifts.</CC_Playground_surface_When>
 
     <CC_Playground_text_Title>Text</CC_Playground_text_Title>
     <CC_Playground_text_What>The typographic atom. Renders a string with the chosen font, size, color, and weight.</CC_Playground_text_What>
@@ -334,11 +334,8 @@
     <CC_Playground_sparkline_What>Compact line chart of a recent history of samples.</CC_Playground_sparkline_What>
     <CC_Playground_sparkline_When>Use for trend-at-a-glance metrics inline with text. No axes, no labels.</CC_Playground_sparkline_When>
     <CC_Playground_badge_Title>Badge</CC_Playground_badge_Title>
-    <CC_Playground_badge_What>Small pill-shaped label in a status color. Uppercases text for weight.</CC_Playground_badge_What>
-    <CC_Playground_badge_When>Use to mark state or category. Tag is for user-dismissible chips.</CC_Playground_badge_When>
-    <CC_Playground_tag_Title>Tag</CC_Playground_tag_Title>
-    <CC_Playground_tag_What>Badge with an optional dismiss button at the trailing edge.</CC_Playground_tag_What>
-    <CC_Playground_tag_When>Use for filter chips the player can remove. Badge is for fixed labels.</CC_Playground_tag_When>
+    <CC_Playground_badge_What>Pill-shaped label in a status color. Optional leading and trailing icons. Optionally clickable, with a separate trailing-click for dismiss-style affordances.</CC_Playground_badge_What>
+    <CC_Playground_badge_When>Use to mark state, category, or a filter chip. Pass `onTrailingClick` and `Badge.CloseGlyph` for dismissibles; pass `onClick` to make the whole pill actionable.</CC_Playground_badge_When>
     <CC_Playground_tooltip_Title>Tooltip</CC_Playground_tooltip_Title>
     <CC_Playground_tooltip_What>Wraps any node. Shows a floating popover after a short hover delay.</CC_Playground_tooltip_What>
     <CC_Playground_tooltip_When>Use for secondary information. Put the essential label in the trigger itself.</CC_Playground_tooltip_When>
@@ -368,6 +365,20 @@
     <CC_Playground_toast_Title>Toast</CC_Playground_toast_Title>
     <CC_Playground_toast_What>Transient notification in a screen corner. Fades on its own after a few seconds.</CC_Playground_toast_What>
     <CC_Playground_toast_When>Use for background events the player should notice but not act on immediately.</CC_Playground_toast_When>
+    <CC_Playground_window_Title>Window</CC_Playground_window_Title>
+    <CC_Playground_window_What>Standalone floating frame opened over the map. Border, resize behavior, and minimum size are all configurable.</CC_Playground_window_What>
+    <CC_Playground_window_When>Use for tools and readouts the player leaves open while playing. Reach for Dialog when a choice must be resolved before proceeding.</CC_Playground_window_When>
+    <CC_Playground_Window_Bordered>Bordered</CC_Playground_Window_Bordered>
+    <CC_Playground_Window_Borderless>Borderless</CC_Playground_Window_Borderless>
+    <CC_Playground_Window_FixedSize>Fixed size</CC_Playground_Window_FixedSize>
+    <CC_Playground_Window_Large>Large, constrained</CC_Playground_Window_Large>
+    <CC_Playground_Window_Open>Open window</CC_Playground_Window_Open>
+    <CC_Playground_Window_Close>Close</CC_Playground_Window_Close>
+    <CC_Playground_Window_Sample_Title>Sample window</CC_Playground_Window_Sample_Title>
+    <CC_Playground_Window_Sample_Bordered_Body>Themed border: subtle stroke, surface fill, and rounded corners. Drag the top strip to move; hover any edge or corner to resize.</CC_Playground_Window_Sample_Bordered_Body>
+    <CC_Playground_Window_Sample_Borderless_Body>Border disabled. Surface fill only, no stroke or rounded corners. Drag the top strip to move; hover any edge or corner to resize.</CC_Playground_Window_Sample_Borderless_Body>
+    <CC_Playground_Window_Sample_Fixed_Body>Edge resize disabled. The window opens at a fixed size and cannot be stretched. Useful for dialogs whose layout only reads at one size.</CC_Playground_Window_Sample_Fixed_Body>
+    <CC_Playground_Window_Sample_Large_Body>Large initial size with a higher minimum. Try shrinking past the minimum; the edge clamps so the window never falls below its declared floor.</CC_Playground_Window_Sample_Large_Body>
 
     <CC_Playground_table_Title>Table</CC_Playground_table_Title>
     <CC_Playground_table_What>Virtualized grid of rows with a fixed header. Columns take fixed widths or fractional weights.</CC_Playground_table_What>
@@ -416,12 +427,23 @@
     <CC_Playground_Label_Closed>Closed</CC_Playground_Label_Closed>
     <CC_Playground_Label_On>On</CC_Playground_Label_On>
     <CC_Playground_Label_Off>Off</CC_Playground_Label_Off>
+    <CC_Playground_Label_Confirm>Confirm</CC_Playground_Label_Confirm>
+    <CC_Playground_Label_Cancel>Cancel</CC_Playground_Label_Cancel>
+    <CC_Playground_Label_Input>Input</CC_Playground_Label_Input>
+    <CC_Playground_Label_Button>Button</CC_Playground_Label_Button>
     <CC_Playground_Label_True>True</CC_Playground_Label_True>
     <CC_Playground_Label_False>False</CC_Playground_Label_False>
     <CC_Playground_Label_Left>Left</CC_Playground_Label_Left>
     <CC_Playground_Label_Right>Right</CC_Playground_Label_Right>
     <CC_Playground_Label_Top>Top</CC_Playground_Label_Top>
     <CC_Playground_Label_Bottom>Bottom</CC_Playground_Label_Bottom>
+    <CC_Playground_Label_Bold>Bold</CC_Playground_Label_Bold>
+    <CC_Playground_Label_Italic>Italic</CC_Playground_Label_Italic>
+    <CC_Playground_Label_Mixed>Mixed</CC_Playground_Label_Mixed>
+    <CC_Playground_Label_Inline>Inline</CC_Playground_Label_Inline>
+    <CC_Playground_Label_Xml>XML def</CC_Playground_Label_Xml>
+    <CC_Playground_Label_Path>Path</CC_Playground_Label_Path>
+    <CC_Playground_Label_Block>Block</CC_Playground_Label_Block>
 
     <CC_Playground_DemoItem_Alpha>Alpha</CC_Playground_DemoItem_Alpha>
     <CC_Playground_DemoItem_Beta>Beta</CC_Playground_DemoItem_Beta>
@@ -446,4 +468,48 @@
     <CC_Playground_Toast_TriggerAdd>Add toast</CC_Playground_Toast_TriggerAdd>
     <CC_Playground_Menu_TriggerOpen>Open menu</CC_Playground_Menu_TriggerOpen>
     <CC_Playground_ContextMenu_RightClick>Right-click</CC_Playground_ContextMenu_RightClick>
+
+    <CC_Playground_accordion_Title>Accordion</CC_Playground_accordion_Title>
+    <CC_Playground_accordion_What>Stacked headers that reveal content when expanded. Single mode closes siblings; Multi mode lets any number stay open.</CC_Playground_accordion_What>
+    <CC_Playground_accordion_When>Use for inspector sections, FAQ-style disclosure, or long forms broken into groups. Reach for Tabs when the sections are peer views.</CC_Playground_accordion_When>
+    <CC_Playground_accordion_Mode_Single>Single</CC_Playground_accordion_Mode_Single>
+    <CC_Playground_accordion_Mode_Multi>Multi</CC_Playground_accordion_Mode_Multi>
+    <CC_Playground_accordion_Header_Overview>Overview</CC_Playground_accordion_Header_Overview>
+    <CC_Playground_accordion_Header_Stormlight>Stormlight</CC_Playground_accordion_Header_Stormlight>
+    <CC_Playground_accordion_Header_Spren>Spren</CC_Playground_accordion_Header_Spren>
+    <CC_Playground_accordion_Body_Overview>Roshar endures the highstorms. Every living thing on the world has adapted to weather them, or to draw from the stormlight they leave behind.</CC_Playground_accordion_Body_Overview>
+    <CC_Playground_accordion_Body_Stormlight>Stormlight fills gemstones infused during a highstorm. It holds its own weight and can be drawn on by those bonded to spren to fuel their powers.</CC_Playground_accordion_Body_Stormlight>
+    <CC_Playground_accordion_Body_Spren>Spren are splinters of investiture given form by human thought. Bonded spren grant surges; wild spren gather around the emotions and acts they echo.</CC_Playground_accordion_Body_Spren>
+
+    <CC_Playground_buttongroup_Title>ButtonGroup</CC_Playground_buttongroup_Title>
+    <CC_Playground_buttongroup_What>Row of connected buttons sharing borders and corner rounding. Each button fires an independent action.</CC_Playground_buttongroup_What>
+    <CC_Playground_buttongroup_When>Use for a small cluster of peer actions that belong together. Reach for Segmented when the buttons represent mutually-exclusive choices.</CC_Playground_buttongroup_When>
+    <CC_Playground_buttongroup_Day>Day</CC_Playground_buttongroup_Day>
+    <CC_Playground_buttongroup_Week>Week</CC_Playground_buttongroup_Week>
+    <CC_Playground_buttongroup_Month>Month</CC_Playground_buttongroup_Month>
+    <CC_Playground_buttongroup_Refresh>Refresh</CC_Playground_buttongroup_Refresh>
+    <CC_Playground_buttongroup_Export>Export</CC_Playground_buttongroup_Export>
+    <CC_Playground_buttongroup_Delete>Delete</CC_Playground_buttongroup_Delete>
+    <CC_Playground_buttongroup_More>More</CC_Playground_buttongroup_More>
+    <CC_Playground_buttongroup_None>None</CC_Playground_buttongroup_None>
+
+    <CC_Playground_carousel_Title>Carousel</CC_Playground_carousel_Title>
+    <CC_Playground_carousel_What>Animated horizontal slide view. Arrow zones at the edges advance; dots below jump to a specific index.</CC_Playground_carousel_What>
+    <CC_Playground_carousel_When>Use for onboarding walk-throughs, image galleries, or any ordered sequence the player scrubs through. Skip it when all content should be visible at once.</CC_Playground_carousel_When>
+    <CC_Playground_carousel_Slide_First>Slide one</CC_Playground_carousel_Slide_First>
+    <CC_Playground_carousel_Slide_Second>Slide two</CC_Playground_carousel_Slide_Second>
+    <CC_Playground_carousel_Slide_Third>Slide three</CC_Playground_carousel_Slide_Third>
+    <CC_Playground_carousel_Slide_Fourth>Slide four</CC_Playground_carousel_Slide_Fourth>
+
+    <CC_Playground_container_Title>Container</CC_Playground_container_Title>
+    <CC_Playground_container_What>Width-constrained wrapper that caps its child at a maximum width and centers it horizontally. Optional horizontal padding defines the gutter.</CC_Playground_container_What>
+    <CC_Playground_container_When>Wrap long-form bodies and dashboards in a Container so their content stays readable on wide windows. Skip it for full-bleed surfaces like HUD panes.</CC_Playground_container_When>
+    <CC_Playground_Container_Centered>Center</CC_Playground_Container_Centered>
+    <CC_Playground_Container_Centered_Body>max 8rem</CC_Playground_Container_Centered_Body>
+    <CC_Playground_Container_Start>Start</CC_Playground_Container_Start>
+    <CC_Playground_Container_Start_Body>max 8rem</CC_Playground_Container_Start_Body>
+    <CC_Playground_Container_End>End</CC_Playground_Container_End>
+    <CC_Playground_Container_End_Body>max 8rem</CC_Playground_Container_End_Body>
+    <CC_Playground_Container_Unconstrained>No cap</CC_Playground_Container_Unconstrained>
+    <CC_Playground_Container_Unconstrained_Body>fills viewport</CC_Playground_Container_Unconstrained_Body>
 </LanguageData>

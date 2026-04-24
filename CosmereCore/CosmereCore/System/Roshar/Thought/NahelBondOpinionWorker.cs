@@ -10,7 +10,8 @@ public class NahelBondOpinionWorker : ThoughtWorker {
     }
 
     protected override ThoughtState CurrentSocialStateInternal(Pawn p, Pawn other) {
-        PawnRelationDef? nahelBondDef = DefDatabase<PawnRelationDef>.GetNamedSilentFail("Cosmere_Roshar_Relation_NahelBond");
+        PawnRelationDef? nahelBondDef =
+            DefDatabase<PawnRelationDef>.GetNamedSilentFail("Cosmere_Roshar_Relation_NahelBond");
         if (nahelBondDef == null) return false;
 
         if (!p.relations.DirectRelationExists(nahelBondDef, other)) return false;

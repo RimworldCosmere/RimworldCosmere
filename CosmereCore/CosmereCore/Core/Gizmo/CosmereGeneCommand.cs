@@ -197,8 +197,11 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
     }
 
     protected virtual string GetTooltipFooter() {
-        return cachedTooltipFooter ??= "\n" + "Click icon to toggle visibility".Colorize(ColorLibrary.Grey)
-            + "\n" + "Drag the bar to set your Investiture reserve limit".Colorize(ColorLibrary.Grey);
+        return cachedTooltipFooter ??=
+            "\n" +
+            "Click icon to toggle visibility".Colorize(ColorLibrary.Grey) +
+            "\n" +
+            "Drag the bar to set your Investiture reserve limit".Colorize(ColorLibrary.Grey);
     }
 
     protected virtual string GetTooltipDescription() {
@@ -294,11 +297,15 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
         Rect rect = new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), Height);
         Guid id = AdapterStoreRegistry.Get(pawn.thingIDNumber, AdapterKind.Gizmo, gene.def.shortHash);
         bool mouseOver = false;
-        LightweaveRoot.Render(rect, id, () => {
-            LightweaveNode node = new LightweaveNode { DebugName = "CosmereGeneCommand" };
-            node.Paint = (paintRect, _) => mouseOver = PaintGene(paintRect);
-            return node;
-        });
+        LightweaveRoot.Render(
+            rect,
+            id,
+            () => {
+                LightweaveNode node = new LightweaveNode { DebugName = "CosmereGeneCommand" };
+                node.Paint = (paintRect, _) => mouseOver = PaintGene(paintRect);
+                return node;
+            }
+        );
         return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear);
     }
 

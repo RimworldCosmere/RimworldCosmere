@@ -1,3 +1,4 @@
+using Cosmere.Core.DefModExtension;
 using RimWorld;
 using Verse;
 
@@ -8,8 +9,8 @@ public class IncidentWorker_EscalatingRaids : IncidentWorker {
         Map? map = parms.target as Map ?? Find.AnyPlayerHomeMap;
         if (map == null) return false;
 
-        DefModExtension.EscalatingRaidConfig? config =
-            def.GetModExtension<DefModExtension.EscalatingRaidConfig>();
+        EscalatingRaidConfig? config =
+            def.GetModExtension<EscalatingRaidConfig>();
         float multiplier = config?.pointMultiplier ?? 1.5f;
 
         IncidentDef raidDef = IncidentDefOf.RaidEnemy;

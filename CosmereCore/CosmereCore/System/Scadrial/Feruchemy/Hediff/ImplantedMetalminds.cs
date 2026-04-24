@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Text;
 using Cosmere.Core.Def;
-using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
@@ -14,6 +12,8 @@ public class ImplantedMetalminds : HediffWithComps {
     public override string LabelBase => metalminds.Count <= 1
         ? "implanted metalmind"
         : $"implanted metalminds x{metalminds.Count}";
+
+    public override bool ShouldRemove => metalminds.Count == 0;
 
     public void AddMetalmind(ImplantedMetalmindData data) {
         metalminds.Add(data);
@@ -39,6 +39,7 @@ public class ImplantedMetalminds : HediffWithComps {
             string label = GetMetalmindLabel(data);
             sb.AppendLine($"  - {label}: {data.storedAmount:F1} / {data.maxAmount:F0}");
         }
+
         return sb.ToString().TrimEnd();
     }
 
@@ -48,11 +49,10 @@ public class ImplantedMetalminds : HediffWithComps {
         metalminds ??= [];
     }
 
-    public override bool ShouldRemove => metalminds.Count == 0;
-
     private static string GetMetalmindLabel(ImplantedMetalmindData data) {
         string metalLabel = DefDatabase<MetalDef>.GetNamedSilentFail(data.metalDefName)?.label ?? data.metalDefName;
-        string metalmindLabel = DefDatabase<ThingDef>.GetNamedSilentFail(data.metalmindType)?.label ?? data.metalmindType;
+        string metalmindLabel =
+            DefDatabase<ThingDef>.GetNamedSilentFail(data.metalmindType)?.label ?? data.metalmindType;
         metalmindLabel = metalmindLabel.Replace("metalmind ", "");
         return $"{metalLabel} {metalmindLabel}".ToLower();
     }

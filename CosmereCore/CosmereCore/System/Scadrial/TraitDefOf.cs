@@ -12,10 +12,6 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class TraitDefOf {
-    static TraitDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(TraitDefOf));
-    }
-
     [MayRequire("Cosmere.Scadrial")]
     public static TraitDef Cosmere_Scadrial_Trait_Metalborn;
 
@@ -33,6 +29,10 @@ public static partial class TraitDefOf {
 
     [MayRequire("Cosmere.Scadrial")]
     public static TraitDef Cosmere_Scadrial_Trait_Drab;
+
+    static TraitDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(TraitDefOf));
+    }
 
     public static TraitDef GetMistingTraitForMetal(MetalDef def) {
         return DefDatabase<TraitDef>.GetNamed("Cosmere_Scadrial_Trait_Misting" + def.defName, false);

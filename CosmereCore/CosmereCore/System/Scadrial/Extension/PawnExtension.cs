@@ -129,6 +129,7 @@ public static class PawnExtension {
         for (int i = 0; i < genes.Count; i++) {
             if (genes[i].Burning) result.Add(genes[i].metal);
         }
+
         return result;
     }
 

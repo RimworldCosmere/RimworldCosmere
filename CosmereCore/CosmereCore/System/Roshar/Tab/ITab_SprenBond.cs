@@ -1,6 +1,9 @@
 using Cosmere.Core.Comp.Game;
 using Cosmere.System.Roshar.Comp.Thing;
+using Cosmere.System.Roshar.Dialog;
 using Cosmere.System.Roshar.Gene;
+using Cosmere.System.Roshar.Hediff;
+using Cosmere.System.Roshar.Surgebinding;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -8,6 +11,11 @@ using Verse;
 namespace Cosmere.System.Roshar.Tab;
 
 public class ITab_SprenBond : ITab {
+    public ITab_SprenBond() {
+        labelKey = "CRO_Spren_Tab";
+        size = new Vector2(400f, 320f);
+    }
+
     private CompSprenBond? SprenBond {
         get {
             CompSprenBond? direct = SelPawn?.TryGetComp<CompSprenBond>();
@@ -22,17 +30,12 @@ public class ITab_SprenBond : ITab {
 
     public override bool IsVisible => SprenBond?.BondedRadiant != null;
 
-    public ITab_SprenBond() {
-        labelKey = "CRO_Spren_Tab";
-        size = new Vector2(400f, 320f);
-    }
-
     protected override void FillTab() {
         CompSprenBond? bond = SprenBond;
         if (bond?.BondedRadiant == null) return;
 
-        Verse.Pawn spren = (Verse.Pawn)bond.parent;
-        Verse.Pawn radiant = bond.BondedRadiant;
+        Pawn spren = (Pawn)bond.parent;
+        Pawn radiant = bond.BondedRadiant;
 
         Rect rect = new Rect(0f, 0f, size.x, size.y).ContractedBy(17f);
         float y = rect.y;
@@ -44,14 +47,15 @@ public class ITab_SprenBond : ITab {
 
             Rect renameRect = new Rect(headerRect.xMax + 4f, y + 3f, renameSize, renameSize);
             if (Widgets.ButtonImage(renameRect, TexButton.Rename)) {
-                Find.WindowStack.Add(new Dialog.NameSprenDialog(spren));
+                Find.WindowStack.Add(new NameSprenDialog(spren));
             }
+
             TooltipHandler.TipRegion(renameRect, "CRO_Spren_Rename".Translate());
             y += 35f;
         }
 
         using (new TextBlock(GameFont.Small)) {
-            Verse.Pawn otherPawn = IsSprenSide ? radiant : spren;
+            Pawn otherPawn = IsSprenSide ? radiant : spren;
             string bondLabel = IsSprenSide
                 ? "CRO_SprenBond_BondedTo".Translate(radiant.NameFullColored.Named("PAWN"))
                 : "CRO_Spren_BondedSpren".Translate(spren.NameFullColored.Named("SPREN"));
@@ -60,9 +64,11 @@ public class ITab_SprenBond : ITab {
             if (Widgets.ButtonInvisible(bondRect)) {
                 CameraJumper.TryJumpAndSelect(otherPawn);
             }
+
             if (Mouse.IsOver(bondRect)) {
                 Widgets.DrawHighlight(bondRect);
             }
+
             y += 28f;
 
             float connection = SpiritWeb.Instance?.GetConnectionValue(radiant, spren) ?? 0f;
@@ -78,7 +84,11 @@ public class ITab_SprenBond : ITab {
             Widgets.Label(strengthLabelRect, "CRO_SprenBond_Strength".Translate());
 
             Rect barRect = new Rect(rect.x + 120f, y + 2f, rect.width - 180f, 20f);
-            Widgets.FillableBar(barRect, connection, SolidColorMaterials.NewSolidColorTexture(GetBondColor(connection)));
+            Widgets.FillableBar(
+                barRect,
+                connection,
+                SolidColorMaterials.NewSolidColorTexture(GetBondColor(connection))
+            );
 
             Rect percentRect = new Rect(barRect.xMax + 4f, y, 50f, 24f);
             Widgets.Label(percentRect, $"{percentage}%");
@@ -99,7 +109,10 @@ public class ITab_SprenBond : ITab {
 
             y += 8f;
             Rect traitHeaderRect = new Rect(rect.x, y, rect.width, 24f);
-            Widgets.Label(traitHeaderRect, "CRO_SprenBond_Personality".Translate().Colorize(ColoredText.TipSectionTitleColor));
+            Widgets.Label(
+                traitHeaderRect,
+                "CRO_SprenBond_Personality".Translate().Colorize(ColoredText.TipSectionTitleColor)
+            );
             y += 26f;
 
             if (bond.PersonalityTraits.Count == 0) {
@@ -118,7 +131,7 @@ public class ITab_SprenBond : ITab {
         }
     }
 
-    private static string BuildStrengthTooltip(Verse.Pawn radiant, float connection) {
+    private static string BuildStrengthTooltip(Pawn radiant, float connection) {
         if (connection >= 1f) {
             return "CRO_SprenBond_StrengthFull".Translate();
         }
@@ -128,9 +141,9 @@ public class ITab_SprenBond : ITab {
         bool hasStrainedBond = false;
         List<Verse.Hediff> hediffs = radiant.health.hediffSet.hediffs;
         for (int i = 0; i < hediffs.Count; i++) {
-            if (hediffs[i] is Roshar.Hediff.StrainedBond strained) {
+            if (hediffs[i] is StrainedBond strained) {
                 hasStrainedBond = true;
-                tip += $"\n  - Strained bond (recovering)";
+                tip += "\n  - Strained bond (recovering)";
                 break;
             }
         }
@@ -138,7 +151,7 @@ public class ITab_SprenBond : ITab {
         List<LogEntry> logs = Find.PlayLog.AllEntries;
         int violationsShown = 0;
         for (int i = 0; i < logs.Count && violationsShown < 5; i++) {
-            if (logs[i] is not Surgebinding.BondViolationLogEntry violation) continue;
+            if (logs[i] is not BondViolationLogEntry violation) continue;
             if (violation.pawn != radiant) continue;
 
             tip += $"\n  - {violation.reason} ({violation.severityLabel})";

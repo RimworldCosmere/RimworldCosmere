@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Scadrial.Def;
 using RimWorld;
 using UnityEngine;
@@ -8,29 +7,29 @@ namespace Cosmere.System.Scadrial.Hemalurgy;
 
 public enum HemalurgicStealType {
     // Human attributes (base metals)
-    HumanStrength,        // Iron
-    HumanSenses,          // Tin
-    EmotionalFortitude,   // Zinc
-    MentalFortitude,      // Copper
+    HumanStrength, // Iron
+    HumanSenses, // Tin
+    EmotionalFortitude, // Zinc
+    MentalFortitude, // Copper
 
     // Allomantic powers (alloy metals)
-    PhysicalAllomancy,    // Steel -> Iron/Steel/Tin/Pewter allomancy
-    MentalAllomancy,      // Bronze -> Zinc/Brass/Copper/Bronze allomancy
-    TemporalAllomancy,    // Cadmium -> Cadmium/Bendalloy/Gold/Electrum allomancy
+    PhysicalAllomancy, // Steel -> Iron/Steel/Tin/Pewter allomancy
+    MentalAllomancy, // Bronze -> Zinc/Brass/Copper/Bronze allomancy
+    TemporalAllomancy, // Cadmium -> Cadmium/Bendalloy/Gold/Electrum allomancy
     EnhancementAllomancy, // Electrum -> Chromium/Nicrosil/Aluminum/Duralumin allomancy
 
     // Feruchemical powers (alloy metals)
-    PhysicalFeruchemy,    // Pewter -> Iron/Steel/Tin/Pewter feruchemy
-    CognitiveFeruchemy,   // Brass -> Zinc/Brass/Copper/Bronze feruchemy
-    HybridFeruchemy,      // Gold -> Gold/Electrum/Cadmium/Bendalloy feruchemy
-    SpiritualFeruchemy,   // Bendalloy -> Chromium/Nicrosil/Aluminum/Duralumin feruchemy
+    PhysicalFeruchemy, // Pewter -> Iron/Steel/Tin/Pewter feruchemy
+    CognitiveFeruchemy, // Brass -> Zinc/Brass/Copper/Bronze feruchemy
+    HybridFeruchemy, // Gold -> Gold/Electrum/Cadmium/Bendalloy feruchemy
+    SpiritualFeruchemy, // Bendalloy -> Chromium/Nicrosil/Aluminum/Duralumin feruchemy
 
     // Special
-    Investiture,          // Nicrosil
-    RemoveAllPowers,      // Aluminum
-    ConnectionIdentity,   // Duralumin
-    AnyPower,             // Atium (player selects)
-    AllAbilities,         // Lerasium (takes everything)
+    Investiture, // Nicrosil
+    RemoveAllPowers, // Aluminum
+    ConnectionIdentity, // Duralumin
+    AnyPower, // Atium (player selects)
+    AllAbilities, // Lerasium (takes everything)
 }
 
 public static class HemalurgicConstants {
@@ -43,52 +42,56 @@ public static class HemalurgicConstants {
     public const float InvestitureTheftFraction = 0.25f;
     public const int CorpseFreshnessTickLimit = 2500;
 
-    private static readonly Dictionary<string, HemalurgicStealType> MetalStealMap = new() {
-        // Base metals -> Human attributes
-        ["Iron"] = HemalurgicStealType.HumanStrength,
-        ["Tin"] = HemalurgicStealType.HumanSenses,
-        ["Zinc"] = HemalurgicStealType.EmotionalFortitude,
-        ["Copper"] = HemalurgicStealType.MentalFortitude,
+    private static readonly Dictionary<string, HemalurgicStealType> MetalStealMap =
+        new Dictionary<string, HemalurgicStealType> {
+            // Base metals -> Human attributes
+            ["Iron"] = HemalurgicStealType.HumanStrength,
+            ["Tin"] = HemalurgicStealType.HumanSenses,
+            ["Zinc"] = HemalurgicStealType.EmotionalFortitude,
+            ["Copper"] = HemalurgicStealType.MentalFortitude,
 
-        // Alloy metals -> Metallic arts powers
-        ["Steel"] = HemalurgicStealType.PhysicalAllomancy,
-        ["Pewter"] = HemalurgicStealType.PhysicalFeruchemy,
-        ["Bronze"] = HemalurgicStealType.MentalAllomancy,
-        ["Brass"] = HemalurgicStealType.CognitiveFeruchemy,
-        ["Cadmium"] = HemalurgicStealType.TemporalAllomancy,
-        ["Gold"] = HemalurgicStealType.HybridFeruchemy,
-        ["Bendalloy"] = HemalurgicStealType.SpiritualFeruchemy,
-        ["Electrum"] = HemalurgicStealType.EnhancementAllomancy,
+            // Alloy metals -> Metallic arts powers
+            ["Steel"] = HemalurgicStealType.PhysicalAllomancy,
+            ["Pewter"] = HemalurgicStealType.PhysicalFeruchemy,
+            ["Bronze"] = HemalurgicStealType.MentalAllomancy,
+            ["Brass"] = HemalurgicStealType.CognitiveFeruchemy,
+            ["Cadmium"] = HemalurgicStealType.TemporalAllomancy,
+            ["Gold"] = HemalurgicStealType.HybridFeruchemy,
+            ["Bendalloy"] = HemalurgicStealType.SpiritualFeruchemy,
+            ["Electrum"] = HemalurgicStealType.EnhancementAllomancy,
 
-        // Higher metals -> Special
-        ["Chromium"] = HemalurgicStealType.HumanStrength, // Destiny - not implemented, treat as strength
-        ["Nicrosil"] = HemalurgicStealType.Investiture,
-        ["Aluminum"] = HemalurgicStealType.RemoveAllPowers,
-        ["Duralumin"] = HemalurgicStealType.ConnectionIdentity,
+            // Higher metals -> Special
+            ["Chromium"] = HemalurgicStealType.HumanStrength, // Destiny - not implemented, treat as strength
+            ["Nicrosil"] = HemalurgicStealType.Investiture,
+            ["Aluminum"] = HemalurgicStealType.RemoveAllPowers,
+            ["Duralumin"] = HemalurgicStealType.ConnectionIdentity,
 
-        // God metals
-        ["Atium"] = HemalurgicStealType.AnyPower,
-        ["Lerasium"] = HemalurgicStealType.AllAbilities,
-    };
+            // God metals
+            ["Atium"] = HemalurgicStealType.AnyPower,
+            ["Lerasium"] = HemalurgicStealType.AllAbilities,
+        };
 
-    private static readonly Dictionary<HemalurgicStealType, string[]> AllomanticGroupMetals = new() {
-        [HemalurgicStealType.PhysicalAllomancy] = ["Iron", "Steel", "Tin", "Pewter"],
-        [HemalurgicStealType.MentalAllomancy] = ["Zinc", "Brass", "Copper", "Bronze"],
-        [HemalurgicStealType.TemporalAllomancy] = ["Cadmium", "Bendalloy", "Gold", "Electrum"],
-        [HemalurgicStealType.EnhancementAllomancy] = ["Chromium", "Nicrosil", "Aluminum", "Duralumin"],
-    };
+    private static readonly Dictionary<HemalurgicStealType, string[]> AllomanticGroupMetals =
+        new Dictionary<HemalurgicStealType, string[]> {
+            [HemalurgicStealType.PhysicalAllomancy] = ["Iron", "Steel", "Tin", "Pewter"],
+            [HemalurgicStealType.MentalAllomancy] = ["Zinc", "Brass", "Copper", "Bronze"],
+            [HemalurgicStealType.TemporalAllomancy] = ["Cadmium", "Bendalloy", "Gold", "Electrum"],
+            [HemalurgicStealType.EnhancementAllomancy] = ["Chromium", "Nicrosil", "Aluminum", "Duralumin"],
+        };
 
-    private static readonly Dictionary<HemalurgicStealType, string[]> FeruchemicGroupMetals = new() {
-        [HemalurgicStealType.PhysicalFeruchemy] = ["Iron", "Steel", "Tin", "Pewter"],
-        [HemalurgicStealType.CognitiveFeruchemy] = ["Zinc", "Brass", "Copper", "Bronze"],
-        [HemalurgicStealType.HybridFeruchemy] = ["Gold", "Electrum", "Cadmium", "Bendalloy"],
-        [HemalurgicStealType.SpiritualFeruchemy] = ["Chromium", "Nicrosil", "Aluminum", "Duralumin"],
-    };
+    private static readonly Dictionary<HemalurgicStealType, string[]> FeruchemicGroupMetals =
+        new Dictionary<HemalurgicStealType, string[]> {
+            [HemalurgicStealType.PhysicalFeruchemy] = ["Iron", "Steel", "Tin", "Pewter"],
+            [HemalurgicStealType.CognitiveFeruchemy] = ["Zinc", "Brass", "Copper", "Bronze"],
+            [HemalurgicStealType.HybridFeruchemy] = ["Gold", "Electrum", "Cadmium", "Bendalloy"],
+            [HemalurgicStealType.SpiritualFeruchemy] = ["Chromium", "Nicrosil", "Aluminum", "Duralumin"],
+        };
 
     public static HemalurgicStealType GetStealType(MetallicArtsMetalDef metal) {
         if (MetalStealMap.TryGetValue(metal.defName, out HemalurgicStealType stealType)) {
             return stealType;
         }
+
         return HemalurgicStealType.HumanStrength;
     }
 
@@ -96,6 +99,7 @@ public static class HemalurgicConstants {
         if (AllomanticGroupMetals.TryGetValue(type, out string[]? metals)) {
             return metals;
         }
+
         return [];
     }
 
@@ -103,6 +107,7 @@ public static class HemalurgicConstants {
         if (FeruchemicGroupMetals.TryGetValue(type, out string[]? metals)) {
             return metals;
         }
+
         return [];
     }
 
@@ -163,9 +168,7 @@ public static class HemalurgicConstants {
     }
 
     public static bool RequiresSelection(HemalurgicStealType type) {
-        return IsAllomanticSteal(type)
-            || IsFeruchemicSteal(type)
-            || type == HemalurgicStealType.AnyPower;
+        return IsAllomanticSteal(type) || IsFeruchemicSteal(type) || type == HemalurgicStealType.AnyPower;
     }
 
     public static string GetStealTypeLabel(HemalurgicStealType type) {

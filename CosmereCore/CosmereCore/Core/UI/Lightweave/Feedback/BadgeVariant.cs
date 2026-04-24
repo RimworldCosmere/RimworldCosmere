@@ -2,8 +2,7 @@ using Cosmere.Core.UI.Lightweave.Tokens;
 
 namespace Cosmere.Core.UI.Lightweave.Feedback;
 
-public enum BadgeVariant
-{
+public enum BadgeVariant {
     Neutral,
     Accent,
     Warning,
@@ -11,12 +10,9 @@ public enum BadgeVariant
     Success,
 }
 
-internal static class BadgeVariants
-{
-    public static ThemeSlot Background(BadgeVariant variant)
-    {
-        switch (variant)
-        {
+internal static class BadgeVariants {
+    public static ThemeSlot Background(BadgeVariant variant) {
+        switch (variant) {
             case BadgeVariant.Accent:
                 return ThemeSlot.SurfaceAccent;
             case BadgeVariant.Warning:
@@ -31,10 +27,8 @@ internal static class BadgeVariants
         }
     }
 
-    public static ThemeSlot Foreground(BadgeVariant variant)
-    {
-        switch (variant)
-        {
+    public static ThemeSlot Foreground(BadgeVariant variant) {
+        switch (variant) {
             case BadgeVariant.Accent:
             case BadgeVariant.Warning:
             case BadgeVariant.Danger:
@@ -46,10 +40,8 @@ internal static class BadgeVariants
         }
     }
 
-    internal static ThemeSlot? Border(BadgeVariant v)
-    {
-        switch (v)
-        {
+    internal static ThemeSlot? Border(BadgeVariant v) {
+        switch (v) {
             case BadgeVariant.Neutral:
                 return ThemeSlot.BorderDefault;
             case BadgeVariant.Accent:

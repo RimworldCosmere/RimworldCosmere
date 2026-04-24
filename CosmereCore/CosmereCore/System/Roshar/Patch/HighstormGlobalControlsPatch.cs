@@ -21,16 +21,26 @@ public static class HighstormGlobalControlsPatch {
     [HarmonyPrepare]
     public static bool Prepare() {
         LongEventHandler.ExecuteWhenFinished(() => {
-            if (!patchedReadout) Logger.Warning("GlobalControls.GlobalControlsOnGUI highstorm readout transpiler could not be applied.");
-            if (!patchedToggle) Logger.Warning("PlaySettings.DoPlaySettingsGlobalControls highstorm toggle transpiler could not be applied.");
-        });
+                if (!patchedReadout)
+                    Logger.Warning(
+                        "GlobalControls.GlobalControlsOnGUI highstorm readout transpiler could not be applied."
+                    );
+                if (!patchedToggle)
+                    Logger.Warning(
+                        "PlaySettings.DoPlaySettingsGlobalControls highstorm toggle transpiler could not be applied."
+                    );
+            }
+        );
         return true;
     }
 
     [HarmonyPatch(typeof(GlobalControls), nameof(GlobalControls.GlobalControlsOnGUI))]
     [HarmonyTranspiler]
     public static IEnumerable<CodeInstruction> ReadoutTranspiler(IEnumerable<CodeInstruction> instructions) {
-        MethodInfo doDateMethod = AccessTools.Method(typeof(GlobalControlsUtility), nameof(GlobalControlsUtility.DoDate));
+        MethodInfo doDateMethod = AccessTools.Method(
+            typeof(GlobalControlsUtility),
+            nameof(GlobalControlsUtility.DoDate)
+        );
         MethodInfo drawReadout = AccessTools.Method(typeof(HighstormGlobalControlsPatch), nameof(DrawHighstormReadout));
 
         foreach (CodeInstruction instruction in instructions) {

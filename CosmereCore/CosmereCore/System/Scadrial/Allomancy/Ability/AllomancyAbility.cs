@@ -23,13 +23,15 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
             Allomancer? found = pawn.genes?.GetAllomanticGeneForMetal(metal);
             if (found == null) {
                 throw new InvalidOperationException(
-                    $"AllomancyAbility on {pawn.LabelShort} could not find Allomancer gene for {metal?.defName}");
+                    $"AllomancyAbility on {pawn.LabelShort} could not find Allomancer gene for {metal?.defName}"
+                );
             }
 
             cachedGene = found;
             return cachedGene;
         }
     }
+
     public float flareDuration => flareStartTick < 0 ? 0 : Find.TickManager.TicksGame - flareStartTick;
 
     public new AllomanticAbilityDef def {
@@ -63,6 +65,7 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
         if (def.hediff != null && !def.targetRequired) {
             RemoveHediff(pawn);
         }
+
         base.OnDisable();
     }
 

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Dialog;
@@ -50,6 +49,7 @@ public class JobDriver_ChargeCorpseSpike : Verse.AI.JobDriver {
             if (isThinNeedle) {
                 strengthMultiplier *= HemalurgicConstants.ThinNeedleStrengthMultiplier;
             }
+
             strengthMultiplier *= HemalurgicConstants.GetDonorAttributeMultiplier(donor, stealType);
 
             if (HemalurgicConstants.RequiresSelection(stealType)) {
@@ -57,7 +57,8 @@ public class JobDriver_ChargeCorpseSpike : Verse.AI.JobDriver {
                 if (candidates.Count == 0) {
                     Messages.Message(
                         "CS_Hemalurgy_NothingToSteal".Translate(donor.Named("DONOR")),
-                        corpse, MessageTypeDefOf.RejectInput
+                        corpse,
+                        MessageTypeDefOf.RejectInput
                     );
                     DropSpikeAndEnd(carried);
                     return;
@@ -65,34 +66,54 @@ public class JobDriver_ChargeCorpseSpike : Verse.AI.JobDriver {
 
                 if (candidates.Count == 1) {
                     HemalurgicChargeUtility.PerformCharge(
-                        donor, pawn, spikeComp, stealType, candidates[0],
-                        strengthMultiplier, false, isThinNeedle
+                        donor,
+                        pawn,
+                        spikeComp,
+                        stealType,
+                        candidates[0],
+                        strengthMultiplier,
+                        false,
+                        isThinNeedle
                     );
                     DropSpikeAndEnd(carried);
                     return;
                 }
 
                 StealTargetSelector.ShowSelectionDialog(
-                    donor, stealType,
-                    onSelected: (geneDef) => {
+                    donor,
+                    stealType,
+                    geneDef => {
                         HemalurgicChargeUtility.PerformCharge(
-                            donor, pawn, spikeComp, stealType, geneDef,
-                            strengthMultiplier, false, isThinNeedle
+                            donor,
+                            pawn,
+                            spikeComp,
+                            stealType,
+                            geneDef,
+                            strengthMultiplier,
+                            false,
+                            isThinNeedle
                         );
                         DropSpikeAndEnd(carried);
                     },
-                    onCancel: () => {
+                    () => {
                         Messages.Message(
                             "CS_Hemalurgy_NothingToSteal".Translate(donor.Named("DONOR")),
-                            corpse, MessageTypeDefOf.RejectInput
+                            corpse,
+                            MessageTypeDefOf.RejectInput
                         );
                         DropSpikeAndEnd(carried);
                     }
                 );
             } else {
                 HemalurgicChargeUtility.PerformCharge(
-                    donor, pawn, spikeComp, stealType, null,
-                    strengthMultiplier, false, isThinNeedle
+                    donor,
+                    pawn,
+                    spikeComp,
+                    stealType,
+                    null,
+                    strengthMultiplier,
+                    false,
+                    isThinNeedle
                 );
                 DropSpikeAndEnd(carried);
             }

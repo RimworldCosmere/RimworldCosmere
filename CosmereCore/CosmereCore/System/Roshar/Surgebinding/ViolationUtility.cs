@@ -16,7 +16,7 @@ public static class ViolationUtility {
         if (bondTarget == null) return;
 
         float multiplier = 1f;
-        if (bondTarget is Verse.Pawn sprenPawn) {
+        if (bondTarget is Pawn sprenPawn) {
             CompSprenBond? sprenBond = sprenPawn.TryGetComp<CompSprenBond>();
             if (sprenBond != null) {
                 multiplier = sprenBond.GetViolationSeverityMultiplier();

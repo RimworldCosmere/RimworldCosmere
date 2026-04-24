@@ -21,11 +21,12 @@ public class MaintainSurgebindingTarget : JobDriver {
 
     protected override IEnumerable<Verse.AI.Toil> MakeNewToils() {
         AddFinishAction(condition => {
-            if (condition == JobCondition.Ongoing) return;
-            if (ability.status.isActive) {
-                ability.UpdateStatus(Active.Off);
+                if (condition == JobCondition.Ongoing) return;
+                if (ability.status.isActive) {
+                    ability.UpdateStatus(Active.Off);
+                }
             }
-        });
+        );
 
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 

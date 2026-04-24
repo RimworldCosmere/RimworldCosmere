@@ -30,7 +30,7 @@ public static class Profiler {
     // Aggregation buckets (ticks are long; keep totals big)
     private static readonly ConcurrentDictionary<MethodBase, Agg> Aggs = new ConcurrentDictionary<MethodBase, Agg>();
 
-    private static bool Initialized;
+    private static readonly bool Initialized;
 
     static Profiler() {
         if (!Mod.debugMode) return;
@@ -222,10 +222,10 @@ public static class Profiler {
 
 #pragma warning disable CS9113
     private sealed class ProfilerFlushComponent(Game _) : GameComponent {
-#pragma warning restore CS9113
         public override void GameComponentUpdate() {
             if ((int)Time.time % FlushSeconds == 0) Flush();
         }
+#pragma warning restore CS9113
     }
 
     private readonly struct SampleToken(bool sampled, Stopwatch? sw) {

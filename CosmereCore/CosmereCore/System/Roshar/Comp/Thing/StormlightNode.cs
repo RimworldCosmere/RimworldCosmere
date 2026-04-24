@@ -40,7 +40,7 @@ public class StormlightNode : ThingComp {
     public override string? CompInspectStringExtra() {
         if (this is StormlightConduit) return null;
 
-        StringBuilder sb = new();
+        StringBuilder sb = new StringBuilder();
         if (Network != null) {
             sb.AppendFormat("Network: {0:F0} / {1:F0} Stormlight", Network.TotalStored, Network.TotalCapacity);
         } else {

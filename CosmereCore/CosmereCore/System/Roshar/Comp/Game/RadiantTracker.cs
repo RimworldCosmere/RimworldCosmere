@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Roshar.Gene;
 using RimWorld;
 using Verse;
@@ -7,8 +6,8 @@ namespace Cosmere.System.Roshar.Comp.Game;
 
 public class RadiantTracker : GameComponent {
     private int activeBondsmithCount;
-    private int lastStabilityCheckTick = -1;
     private Dictionary<int, BrokenBondRecord> brokenBonds = new Dictionary<int, BrokenBondRecord>();
+    private int lastStabilityCheckTick = -1;
 
     public RadiantTracker(Verse.Game game) { }
 

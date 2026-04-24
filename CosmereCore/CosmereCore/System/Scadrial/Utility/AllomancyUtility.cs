@@ -14,9 +14,11 @@ public static class AllomancyUtility {
         List<Pawn> colonists = map.mapPawns.FreeColonists;
         for (int i = 0; i < colonists.Count; i++) {
             Pawn pawn = colonists[i];
-            Verse.Hediff? bronzeAura = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_BronzeAura);
+            Hediff? bronzeAura =
+                pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_BronzeAura);
             if (bronzeAura != null) return true;
         }
+
         return false;
     }
 
@@ -25,22 +27,26 @@ public static class AllomancyUtility {
         List<Pawn> colonists = map.mapPawns.FreeColonists;
         for (int i = 0; i < colonists.Count; i++) {
             Pawn pawn = colonists[i];
-            Verse.Hediff? bronzeAura = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_BronzeAura);
+            Hediff? bronzeAura =
+                pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_BronzeAura);
             if (bronzeAura == null) continue;
 
             float allomanticPower = Mathf.Clamp01(pawn.GetStatValue(StatDefOf.Cosmere_Scadrial_Stat_AllomanticPower));
             float strength = bronzeAura.Severity * allomanticPower;
             if (strength > maxStrength) maxStrength = strength;
         }
+
         return maxStrength;
     }
 
     public static bool CaravanHasActiveBronzeSeeker(List<Pawn> pawns) {
         for (int i = 0; i < pawns.Count; i++) {
             Pawn pawn = pawns[i];
-            Verse.Hediff? bronzeAura = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_BronzeAura);
+            Hediff? bronzeAura =
+                pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_BronzeAura);
             if (bronzeAura != null) return true;
         }
+
         return false;
     }
 
@@ -51,7 +57,8 @@ public static class AllomancyUtility {
         List<Pawn> colonists = map.mapPawns.FreeColonists;
         for (int i = 0; i < colonists.Count; i++) {
             Pawn pawn = colonists[i];
-            Verse.Hediff? copperAura = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_CopperAura);
+            Hediff? copperAura =
+                pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_CopperAura);
             if (copperAura == null) continue;
 
             float severity = copperAura.Severity;

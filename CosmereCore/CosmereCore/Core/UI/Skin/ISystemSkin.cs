@@ -18,8 +18,8 @@ public interface ISystemSkin {
     Color BorderTintColor { get; }
     Texture2D? Sigil { get; }
     Texture2D? BorderFrame { get; }
+    Font? DisplayFont { get; }
 
     Color? GetColor(ThemeSlot slot);
     Font? GetFont(FontRole role);
-    Font? DisplayFont { get; }
 }

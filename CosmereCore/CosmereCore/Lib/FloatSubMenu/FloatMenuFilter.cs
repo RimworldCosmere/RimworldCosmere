@@ -1,77 +1,74 @@
-﻿using HarmonyLib;
-using RimWorld;
-using RimWorld.Planet;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using HarmonyLib;
 using UnityEngine;
 using Verse;
 
-namespace FloatSubMenus {
-    internal class FloatMenuFilter {
-        private List<FloatMenuOption> options = null!;
-        private List<FloatMenuOption> filtered = null!;
-        private FloatMenuSizeMode sizeMode = FloatMenuSizeMode.Undefined;
-        private FloatMenu? initialized;
-        private bool updateSize;
-        private (Func<FloatMenuOption, bool>? predicate, bool reset, bool recursive) delayed;
+namespace FloatSubMenus;
 
-        public IEnumerable<FloatMenuOption> Unfiltered => options;
-        public IEnumerable<FloatMenuOption> Filtered => filtered;
-        public int Count => filtered.Count;
+internal class FloatMenuFilter {
+    private (Func<FloatMenuOption, bool>? predicate, bool reset, bool recursive) delayed;
+    private List<FloatMenuOption> filtered = null!;
+    private FloatMenu? initialized;
+    private List<FloatMenuOption> options = null!;
+    private FloatMenuSizeMode sizeMode = FloatMenuSizeMode.Undefined;
+    private bool updateSize;
 
-        public void Filter(Func<FloatMenuOption, bool> predicate,
-                           bool reset = false,
-                           bool recursive = false) {
-            if (initialized == null) {
-                delayed = (predicate, reset, recursive);
-                return;
-            }
+    public IEnumerable<FloatMenuOption> Unfiltered => options;
+    public IEnumerable<FloatMenuOption> Filtered => filtered;
+    public int Count => filtered.Count;
 
-            filtered.Clear();
-            foreach (FloatMenuOption option in options) {
-                FloatSubMenu? sub = recursive ? option as FloatSubMenu : null;
-                bool match = reset || predicate(option);
-                if (match || (sub?.AnyMatches(predicate, recursive) ?? false)) {
-                    filtered.Add(option);
-                    sub?.FilterSubMenu(predicate, match, recursive);
-                }
-            }
-            updateSize = true;
+    public void Filter(
+        Func<FloatMenuOption, bool> predicate,
+        bool reset = false,
+        bool recursive = false
+    ) {
+        if (initialized == null) {
+            delayed = (predicate, reset, recursive);
+            return;
         }
 
-        public void Update(FloatMenu floatMenu, Action? onInit = null, Action? onResize = null) {
-            if (initialized != floatMenu) Init(floatMenu, onInit);
-            if (updateSize) UpdateSize(floatMenu, onResize);
-        }
-
-        protected void Init(FloatMenu floatMenu, Action? action) {
-            Traverse<List<FloatMenuOption>> listField = Traverse.Create(floatMenu).Field<List<FloatMenuOption>>("options");
-            options = listField.Value;
-            listField.Value = filtered = options.ToList();
-            initialized = floatMenu;
-            action?.Invoke();
-            if (delayed.predicate != null) {
-                Filter(delayed.predicate, delayed.reset, delayed.recursive);
-                delayed.predicate = null;
+        filtered.Clear();
+        foreach (FloatMenuOption option in options) {
+            FloatSubMenu? sub = recursive ? option as FloatSubMenu : null;
+            bool match = reset || predicate(option);
+            if (match || (sub?.AnyMatches(predicate, recursive) ?? false)) {
+                filtered.Add(option);
+                sub?.FilterSubMenu(predicate, match, recursive);
             }
         }
 
-        protected void UpdateSize(FloatMenu floatMenu, Action? action) {
-            FloatMenuSizeMode mode = floatMenu.SizeMode;
-            if (sizeMode != mode) {
-                options.ForEach(x => x.SetSizeMode(mode));
-                sizeMode = mode;
-            }
+        updateSize = true;
+    }
 
-            floatMenu.windowRect.size = floatMenu.InitialSize;
-            floatMenu.windowRect.xMax = Mathf.Min(floatMenu.windowRect.xMax, UI.screenWidth);
-            floatMenu.windowRect.yMax = Mathf.Min(floatMenu.windowRect.yMax, UI.screenHeight);
+    public void Update(FloatMenu floatMenu, Action? onInit = null, Action? onResize = null) {
+        if (initialized != floatMenu) Init(floatMenu, onInit);
+        if (updateSize) UpdateSize(floatMenu, onResize);
+    }
 
-            updateSize = false;
-            action?.Invoke();
+    protected void Init(FloatMenu floatMenu, Action? action) {
+        Traverse<List<FloatMenuOption>> listField = Traverse.Create(floatMenu).Field<List<FloatMenuOption>>("options");
+        options = listField.Value;
+        listField.Value = filtered = options.ToList();
+        initialized = floatMenu;
+        action?.Invoke();
+        if (delayed.predicate != null) {
+            Filter(delayed.predicate, delayed.reset, delayed.recursive);
+            delayed.predicate = null;
         }
+    }
+
+    protected void UpdateSize(FloatMenu floatMenu, Action? action) {
+        FloatMenuSizeMode mode = floatMenu.SizeMode;
+        if (sizeMode != mode) {
+            options.ForEach(x => x.SetSizeMode(mode));
+            sizeMode = mode;
+        }
+
+        floatMenu.windowRect.size = floatMenu.InitialSize;
+        floatMenu.windowRect.xMax = Mathf.Min(floatMenu.windowRect.xMax, UI.screenWidth);
+        floatMenu.windowRect.yMax = Mathf.Min(floatMenu.windowRect.yMax, UI.screenHeight);
+
+        updateSize = false;
+        action?.Invoke();
     }
 }

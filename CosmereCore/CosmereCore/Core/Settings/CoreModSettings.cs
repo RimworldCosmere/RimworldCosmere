@@ -15,18 +15,18 @@ public class CoreModSettings : CosmereModSettings {
         );
 
     public bool debugMode;
-    public LogLevel logLevel = LogLevel.Verbose;
-    public string? quickstartName;
-    public string? testScenarioDefName;
-
-    public bool showDormantConnection;
-
-    public bool reduceMotion;
-    public bool highContrast;
 
     // Faction filtering settings
     public bool disableEmpireInCosmereScenarios;
     public bool disableOdysseyFactionsInCosmereScenarios;
+    public bool highContrast;
+    public LogLevel logLevel = LogLevel.Verbose;
+    public string? quickstartName;
+
+    public bool reduceMotion;
+
+    public bool showDormantConnection;
+    public string? testScenarioDefName;
 
     public override string Name => "Core";
 
@@ -160,6 +160,7 @@ public class CoreModSettings : CosmereModSettings {
             string label = $"{def.LabelCap} ({def.defName})";
             items[label] = def.defName;
         }
+
         return items;
     }
 
@@ -169,9 +170,9 @@ public class CoreModSettings : CosmereModSettings {
         Scribe_Values.Look(ref debugMode, "debugMode");
         Scribe_Values.Look(ref quickstartName, "quickstartName");
         Scribe_Values.Look(ref testScenarioDefName, "testScenarioDefName");
-        Scribe_Values.Look(ref disableEmpireInCosmereScenarios, "disableEmpireInCosmereScenarios", false);
-        Scribe_Values.Look(ref disableOdysseyFactionsInCosmereScenarios, "disableOdysseyFactionsInCosmereScenarios", false);
-        Scribe_Values.Look(ref reduceMotion, "reduceMotion", false);
-        Scribe_Values.Look(ref highContrast, "highContrast", false);
+        Scribe_Values.Look(ref disableEmpireInCosmereScenarios, "disableEmpireInCosmereScenarios");
+        Scribe_Values.Look(ref disableOdysseyFactionsInCosmereScenarios, "disableOdysseyFactionsInCosmereScenarios");
+        Scribe_Values.Look(ref reduceMotion, "reduceMotion");
+        Scribe_Values.Look(ref highContrast, "highContrast");
     }
 }

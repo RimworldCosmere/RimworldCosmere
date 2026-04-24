@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Cosmere.Core.Def;
+using Cosmere.System.Roshar.Def;
 using RimWorld;
 using Verse;
 
@@ -14,8 +14,12 @@ public readonly struct SavantProfile {
     public readonly float Stage3Power;
 
     public SavantProfile(
-        int stage1Ticks, int stage2Ticks, int stage3Ticks,
-        float stage1Power, float stage2Power, float stage3Power
+        int stage1Ticks,
+        int stage2Ticks,
+        int stage3Ticks,
+        float stage1Power,
+        float stage2Power,
+        float stage3Power
     ) {
         Stage1Ticks = stage1Ticks;
         Stage2Ticks = stage2Ticks;
@@ -43,21 +47,6 @@ public readonly struct SavantProfile {
 }
 
 public static class SavantUtility {
-    public static readonly SavantProfile AllomancyProfile = new(
-        stage1Ticks: 180000, stage2Ticks: 600000, stage3Ticks: 1800000,
-        stage1Power: 1.20f, stage2Power: 1.40f, stage3Power: 1.75f
-    );
-
-    public static readonly SavantProfile FeruchemyProfile = new(
-        stage1Ticks: 300000, stage2Ticks: 900000, stage3Ticks: 2400000,
-        stage1Power: 1.15f, stage2Power: 1.35f, stage3Power: 1.60f
-    );
-
-    public static readonly SavantProfile SurgebindingProfile = new(
-        stage1Ticks: 420000, stage2Ticks: 1200000, stage3Ticks: 3000000,
-        stage1Power: 1.15f, stage2Power: 1.30f, stage3Power: 1.50f
-    );
-
     public const float Stage1CostSurgebinding = 0.90f;
     public const float Stage2CostSurgebinding = 0.80f;
     public const float Stage3CostSurgebinding = 0.70f;
@@ -70,6 +59,33 @@ public static class SavantUtility {
     public const float WithdrawalSeverityLossPerDay = 1.0f;
 
     public const float Stage1DecayPerDayFraction = 0.10f;
+
+    public static readonly SavantProfile AllomancyProfile = new SavantProfile(
+        180000,
+        600000,
+        1800000,
+        1.20f,
+        1.40f,
+        1.75f
+    );
+
+    public static readonly SavantProfile FeruchemyProfile = new SavantProfile(
+        300000,
+        900000,
+        2400000,
+        1.15f,
+        1.35f,
+        1.60f
+    );
+
+    public static readonly SavantProfile SurgebindingProfile = new SavantProfile(
+        420000,
+        1200000,
+        3000000,
+        1.15f,
+        1.30f,
+        1.50f
+    );
 
     private static readonly HashSet<string> DependencyMetals = [
         "Tin", "Pewter", "Brass", "Zinc", "Copper", "Bronze",
@@ -95,13 +111,29 @@ public static class SavantUtility {
         return CanBeSavant(metal) && !IsDependencyMetal(metal);
     }
 
-    public static int GetAllomanticStage(float ticks) => AllomancyProfile.GetStage(ticks);
-    public static int GetFeruchemicalStage(float ticks) => FeruchemyProfile.GetStage(ticks);
-    public static int GetSurgebindingStage(float ticks) => SurgebindingProfile.GetStage(ticks);
+    public static int GetAllomanticStage(float ticks) {
+        return AllomancyProfile.GetStage(ticks);
+    }
 
-    public static float GetAllomanticPowerMultiplier(int stage) => AllomancyProfile.GetPowerMultiplier(stage);
-    public static float GetFeruchemicalPowerMultiplier(int stage) => FeruchemyProfile.GetPowerMultiplier(stage);
-    public static float GetSurgebindingPowerMultiplier(int stage) => SurgebindingProfile.GetPowerMultiplier(stage);
+    public static int GetFeruchemicalStage(float ticks) {
+        return FeruchemyProfile.GetStage(ticks);
+    }
+
+    public static int GetSurgebindingStage(float ticks) {
+        return SurgebindingProfile.GetStage(ticks);
+    }
+
+    public static float GetAllomanticPowerMultiplier(int stage) {
+        return AllomancyProfile.GetPowerMultiplier(stage);
+    }
+
+    public static float GetFeruchemicalPowerMultiplier(int stage) {
+        return FeruchemyProfile.GetPowerMultiplier(stage);
+    }
+
+    public static float GetSurgebindingPowerMultiplier(int stage) {
+        return SurgebindingProfile.GetPowerMultiplier(stage);
+    }
 
     public static float GetSurgebindingCostMultiplier(int stage) {
         return stage switch {
@@ -134,11 +166,15 @@ public static class SavantUtility {
     }
 
     public static HediffDef? GetAllomanticWithdrawalHediffDef(MetalDef metal) {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_AllomanticWithdrawal_" + metal.defName);
+        return DefDatabase<HediffDef>.GetNamedSilentFail(
+            "Cosmere_Scadrial_Hediff_AllomanticWithdrawal_" + metal.defName
+        );
     }
 
     public static HediffDef? GetAllomanticPermanentHediffDef(MetalDef metal) {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_" + metal.defName);
+        return DefDatabase<HediffDef>.GetNamedSilentFail(
+            "Cosmere_Scadrial_Hediff_AllomanticSavantPermanent_" + metal.defName
+        );
     }
 
     public static HediffDef? GetFeruchemicalSavantHediffDef(MetalDef metal) {
@@ -146,7 +182,9 @@ public static class SavantUtility {
     }
 
     public static HediffDef? GetFeruchemicalPermanentHediffDef(MetalDef metal) {
-        return DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_" + metal.defName);
+        return DefDatabase<HediffDef>.GetNamedSilentFail(
+            "Cosmere_Scadrial_Hediff_FeruchemicalSavantPermanent_" + metal.defName
+        );
     }
 
     public static HediffDef? GetSurgeSavantHediffDef(string surgeName) {
@@ -170,8 +208,9 @@ public static class SavantUtility {
         return GetFeruchemicalStage(ticks);
     }
 
-    public static int GetSurgebindingSavantStage(Pawn pawn, System.Roshar.Def.SurgeDef surge) {
-        RecordDef? recordDef = DefDatabase<RecordDef>.GetNamedSilentFail("Cosmere_Roshar_Record_TimeSpentUsing_" + surge.defName);
+    public static int GetSurgebindingSavantStage(Pawn pawn, SurgeDef surge) {
+        RecordDef? recordDef =
+            DefDatabase<RecordDef>.GetNamedSilentFail("Cosmere_Roshar_Record_TimeSpentUsing_" + surge.defName);
         if (recordDef == null) return 0;
         float ticks = pawn.records.GetValue(recordDef);
         return GetSurgebindingStage(ticks);

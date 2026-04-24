@@ -1,4 +1,6 @@
 using Cosmere.System.Scadrial.Gene;
+using Cosmere.System.Scadrial.Hemalurgy;
+using Cosmere.System.Scadrial.Hemalurgy.Hediff;
 using Cosmere.System.Scadrial.Utility;
 using HarmonyLib;
 using RimWorld;
@@ -43,14 +45,15 @@ public static class PatchStorytellerUtility {
             for (int i = 0; i < allomancerGenes.Count; i++) {
                 bonus += SingleMetalBonus;
             }
+
             List<Feruchemist> feruchemistGenes = pawn.genes.GetFeruchemicGenes();
             for (int i = 0; i < feruchemistGenes.Count; i++) {
                 bonus += SingleMetalBonus;
             }
         }
 
-        Hemalurgy.Hediff.HemalurgicSpikes? spikesHediff = (Hemalurgy.Hediff.HemalurgicSpikes?)pawn.health.hediffSet.GetFirstHediffOfDef(
-            Hemalurgy.HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
+        HemalurgicSpikes? spikesHediff = (HemalurgicSpikes?)pawn.health.hediffSet.GetFirstHediffOfDef(
+            HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes
         );
         if (spikesHediff != null) {
             bonus += spikesHediff.spikeCount * ThreatPerSpike;

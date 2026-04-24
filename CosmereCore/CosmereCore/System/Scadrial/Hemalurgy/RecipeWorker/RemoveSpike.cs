@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
+using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Hediff;
 using RimWorld;
 using Verse;
@@ -20,11 +19,18 @@ public class RemoveSpike : Recipe_Surgery {
         }
     }
 
-    public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer, List<Verse.Thing> ingredients, Bill bill) {
+    public override void ApplyOnPawn(
+        Pawn pawn,
+        BodyPartRecord part,
+        Pawn billDoer,
+        List<Verse.Thing> ingredients,
+        Bill bill
+    ) {
         if (billDoer != null) {
             if (CheckSurgeryFail(billDoer, pawn, ingredients, part, bill)) {
                 return;
             }
+
             TaleRecorder.RecordTale(TaleDefOf.DidSurgery, billDoer, pawn);
         }
 
@@ -44,9 +50,9 @@ public class RemoveSpike : Recipe_Surgery {
     }
 
     private void RemoveGrantedGene(Pawn pawn, ImplantedSpikeData spike) {
-        if (HemalurgicConstants.IsAllomanticSteal(spike.stealType)
-            || HemalurgicConstants.IsFeruchemicSteal(spike.stealType)
-            || spike.stealType == HemalurgicStealType.AnyPower) {
+        if (HemalurgicConstants.IsAllomanticSteal(spike.stealType) ||
+            HemalurgicConstants.IsFeruchemicSteal(spike.stealType) ||
+            spike.stealType == HemalurgicStealType.AnyPower) {
             TryRemoveGene(pawn, spike.stolenDefName);
         } else if (spike.stealType == HemalurgicStealType.AllAbilities) {
             for (int i = 0; i < spike.stolenDefNames.Count; i++) {
@@ -74,17 +80,20 @@ public class RemoveSpike : Recipe_Surgery {
             : HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicSpike;
 
         Verse.Thing spikeItem = ThingMaker.MakeThing(spikeDef, metalStuff);
-        Comp.Thing.HemalurgicSpike? spikeComp = spikeItem.TryGetComp<Comp.Thing.HemalurgicSpike>();
+        HemalurgicSpike? spikeComp = spikeItem.TryGetComp<HemalurgicSpike>();
         if (spikeComp != null) {
-            spikeComp.Charge(new HemalurgicChargeData {
-                stealType = spike.stealType,
-                stolenDefName = spike.stolenDefName,
-                stolenDefNames = [..spike.stolenDefNames],
-                strength = spike.chargeStrength * HemalurgicConstants.ExtractionChargeMultiplier,
-                storedInvestiture = spike.storedInvestiture * HemalurgicConstants.ExtractionChargeMultiplier,
-                chargedTick = Find.TickManager.TicksGame,
-            });
+            spikeComp.Charge(
+                new HemalurgicChargeData {
+                    stealType = spike.stealType,
+                    stolenDefName = spike.stolenDefName,
+                    stolenDefNames = [..spike.stolenDefNames],
+                    strength = spike.chargeStrength * HemalurgicConstants.ExtractionChargeMultiplier,
+                    storedInvestiture = spike.storedInvestiture * HemalurgicConstants.ExtractionChargeMultiplier,
+                    chargedTick = Find.TickManager.TicksGame,
+                }
+            );
         }
+
         GenPlace.TryPlaceThing(spikeItem, pawn.Position, pawn.Map, ThingPlaceMode.Near);
     }
 

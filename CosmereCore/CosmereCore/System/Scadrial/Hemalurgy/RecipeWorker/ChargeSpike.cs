@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
@@ -30,7 +28,13 @@ public class ChargeSpike : Recipe_Surgery {
         }
     }
 
-    public override void ApplyOnPawn(Pawn donor, BodyPartRecord part, Pawn billDoer, List<Verse.Thing> ingredients, Bill bill) {
+    public override void ApplyOnPawn(
+        Pawn donor,
+        BodyPartRecord part,
+        Pawn billDoer,
+        List<Verse.Thing> ingredients,
+        Bill bill
+    ) {
         if (!IsHemalurgyEnabled()) return;
 
         HemalurgicSpike? spikeComp = FindUnchargedSpike(ingredients);
@@ -54,7 +58,8 @@ public class ChargeSpike : Recipe_Surgery {
             if (candidates.Count == 0) {
                 Messages.Message(
                     "CS_Hemalurgy_NothingToSteal".Translate(donor.Named("DONOR")),
-                    donor, MessageTypeDefOf.RejectInput
+                    donor,
+                    MessageTypeDefOf.RejectInput
                 );
                 DropSpike(spikeComp.parent, billDoer);
                 return;
@@ -62,34 +67,54 @@ public class ChargeSpike : Recipe_Surgery {
 
             if (candidates.Count == 1) {
                 HemalurgicChargeUtility.PerformCharge(
-                    donor, billDoer, spikeComp, stealType, candidates[0],
-                    strengthMultiplier, true, isThinNeedle
+                    donor,
+                    billDoer,
+                    spikeComp,
+                    stealType,
+                    candidates[0],
+                    strengthMultiplier,
+                    true,
+                    isThinNeedle
                 );
                 DropSpike(spikeComp.parent, billDoer);
                 return;
             }
 
             StealTargetSelector.ShowSelectionDialog(
-                donor, stealType,
-                onSelected: (geneDef) => {
+                donor,
+                stealType,
+                geneDef => {
                     HemalurgicChargeUtility.PerformCharge(
-                        donor, billDoer, spikeComp, stealType, geneDef,
-                        strengthMultiplier, true, isThinNeedle
+                        donor,
+                        billDoer,
+                        spikeComp,
+                        stealType,
+                        geneDef,
+                        strengthMultiplier,
+                        true,
+                        isThinNeedle
                     );
                     DropSpike(spikeComp.parent, billDoer);
                 },
-                onCancel: () => {
+                () => {
                     Messages.Message(
                         "CS_Hemalurgy_NothingToSteal".Translate(donor.Named("DONOR")),
-                        donor, MessageTypeDefOf.RejectInput
+                        donor,
+                        MessageTypeDefOf.RejectInput
                     );
                     DropSpike(spikeComp.parent, billDoer);
                 }
             );
         } else {
             HemalurgicChargeUtility.PerformCharge(
-                donor, billDoer, spikeComp, stealType, null,
-                strengthMultiplier, true, isThinNeedle
+                donor,
+                billDoer,
+                spikeComp,
+                stealType,
+                null,
+                strengthMultiplier,
+                true,
+                isThinNeedle
             );
             DropSpike(spikeComp.parent, billDoer);
         }
@@ -100,11 +125,12 @@ public class ChargeSpike : Recipe_Surgery {
 
         if (spike.Destroyed) {
             Verse.Thing newSpike = ThingMaker.MakeThing(spike.def, spike.Stuff);
-            Comp.Thing.HemalurgicSpike? oldComp = spike.TryGetComp<Comp.Thing.HemalurgicSpike>();
-            Comp.Thing.HemalurgicSpike? newComp = newSpike.TryGetComp<Comp.Thing.HemalurgicSpike>();
+            HemalurgicSpike? oldComp = spike.TryGetComp<HemalurgicSpike>();
+            HemalurgicSpike? newComp = newSpike.TryGetComp<HemalurgicSpike>();
             if (oldComp?.chargeData != null && newComp != null) {
                 newComp.Charge(oldComp.chargeData);
             }
+
             GenPlace.TryPlaceThing(newSpike, dropper.Position, dropper.MapHeld, ThingPlaceMode.Near);
         } else if (!spike.Spawned) {
             GenPlace.TryPlaceThing(spike, dropper.Position, dropper.MapHeld, ThingPlaceMode.Near);
@@ -116,6 +142,7 @@ public class ChargeSpike : Recipe_Surgery {
             HemalurgicSpike? comp = ingredients[i].TryGetComp<HemalurgicSpike>();
             if (comp != null && !comp.isCharged) return comp;
         }
+
         return null;
     }
 }

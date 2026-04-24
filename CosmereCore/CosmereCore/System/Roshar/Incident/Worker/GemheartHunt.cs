@@ -23,7 +23,8 @@ public class GemheartHunt : IncidentWorker {
         GemheartExpeditionManager? manager = map.GetComponent<GemheartExpeditionManager>();
         if (manager == null || !manager.CanStartHunt) return false;
 
-        ChoiceLetter_GemheartHunt letter = (ChoiceLetter_GemheartHunt)LetterMaker.MakeLetter(def.letterLabel, def.letterText, def.letterDef);
+        ChoiceLetter_GemheartHunt letter =
+            (ChoiceLetter_GemheartHunt)LetterMaker.MakeLetter(def.letterLabel, def.letterText, def.letterDef);
         letter.map = map;
         Find.LetterStack.ReceiveLetter(letter);
 

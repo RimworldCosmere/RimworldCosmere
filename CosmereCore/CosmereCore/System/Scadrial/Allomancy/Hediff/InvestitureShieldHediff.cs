@@ -13,7 +13,11 @@ public class InvestitureShieldHediff : AllomanticHediff {
     private bool messageSent;
     public InvestitureShieldHediff() { }
 
-    public InvestitureShieldHediff(HediffDef hediffDef, Pawn pawn, IAbility<Allomancer, IHediff<Allomancer>> ability) : base(
+    public InvestitureShieldHediff(
+        HediffDef hediffDef,
+        Pawn pawn,
+        IAbility<Allomancer, IHediff<Allomancer>> ability
+    ) : base(
         hediffDef,
         pawn,
         ability
@@ -29,6 +33,7 @@ public class InvestitureShieldHediff : AllomanticHediff {
                 break;
             }
         }
+
         if (metal == null) return;
 
         List<Allomancer> genes = pawn.genes.GetAllomanticGenes();
@@ -94,6 +99,7 @@ public class InvestitureShieldHediff : AllomanticHediff {
         for (int i = 0; i < defs.Count - 1; i++) {
             names.Add(defs[i].LabelCap);
         }
+
         return string.Join(", ", names) + " and " + defs[defs.Count - 1].LabelCap;
     }
 }

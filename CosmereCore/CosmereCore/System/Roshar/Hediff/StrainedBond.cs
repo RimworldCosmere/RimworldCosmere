@@ -3,17 +3,16 @@ using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Gene;
 using RimWorld;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Roshar.Hediff;
 
 public class StrainedBond : HediffWithComps {
     private const float BaseRecoveryPerDay = 0.02f;
+    private bool hasRegressedThisCycle;
+    private bool sentBreakingWarning;
+    private bool sentFracturedWarning;
 
     private bool sentStrainedWarning;
-    private bool sentFracturedWarning;
-    private bool sentBreakingWarning;
-    private bool hasRegressedThisCycle;
 
     public override void Tick() {
         base.Tick();
@@ -41,7 +40,7 @@ public class StrainedBond : HediffWithComps {
 
         float idealMultiplier = 1f + surgebinder.currentIdeal * 0.25f;
         float personalityMultiplier = 1f;
-        if (bondTarget is Verse.Pawn sprenPawn) {
+        if (bondTarget is Pawn sprenPawn) {
             CompSprenBond? sprenBond = sprenPawn.TryGetComp<CompSprenBond>();
             if (sprenBond != null) {
                 personalityMultiplier = sprenBond.GetRecoveryMultiplier();

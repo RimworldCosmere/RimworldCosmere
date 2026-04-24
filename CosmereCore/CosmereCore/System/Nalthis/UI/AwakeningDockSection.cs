@@ -10,9 +10,13 @@ public sealed class AwakeningDockSection : IDockSection {
     public string SystemId => "Awakening";
     public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
 
-    public float GetHeaderHeight() => 28f;
+    public float GetHeaderHeight() {
+        return 28f;
+    }
 
-    public float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) => 28f;
+    public float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        return 28f;
+    }
 
     public void DrawHeader(Rect rect, bool expanded) {
         Widgets.DrawBoxSolid(rect, new Color(Skin.AccentColor.r, Skin.AccentColor.g, Skin.AccentColor.b, 0.25f));

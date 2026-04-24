@@ -1,7 +1,6 @@
 namespace Cosmere.Core.UI.Lightweave.Types;
 
-public enum LogicalSide
-{
+public enum LogicalSide {
     Start,
     End,
 }

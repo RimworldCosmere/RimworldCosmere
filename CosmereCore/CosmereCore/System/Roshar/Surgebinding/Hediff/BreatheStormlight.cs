@@ -26,12 +26,15 @@ public class BreatheStormlight : SurgebindingHediff {
         if (pawn.apparel?.WornApparel != null) {
             amountDrawn += pawn.apparel.WornApparel.Sum(TryAbsorbFromThing);
         }
+
         if (pawn.equipment?.AllEquipmentListForReading != null) {
             amountDrawn += pawn.equipment.AllEquipmentListForReading.Sum(TryAbsorbFromThing);
         }
+
         if (pawn.inventory?.innerContainer != null) {
             amountDrawn += pawn.inventory.innerContainer.Sum(TryAbsorbFromThing);
         }
+
         if (pawn.Spawned && pawn.Map != null) {
             amountDrawn += pawn.GetCellsAround(MaxDrawDistance)
                 .Sum(cell => cell.GetThingList(pawn.Map).Sum(TryAbsorbFromThing));

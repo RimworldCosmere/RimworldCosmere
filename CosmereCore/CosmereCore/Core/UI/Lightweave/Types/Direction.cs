@@ -1,7 +1,6 @@
 namespace Cosmere.Core.UI.Lightweave.Types;
 
-public enum Direction
-{
+public enum Direction {
     Ltr,
     Rtl,
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -28,9 +27,7 @@ public class JobDriver_WaitInBed : Verse.AI.JobDriver {
         Toil waitToil = ToilMaker.MakeToil("WaitForSurgeon");
         waitToil.defaultCompleteMode = ToilCompleteMode.Delay;
         waitToil.defaultDuration = MaxWaitTicks;
-        waitToil.initAction = () => {
-            pawn.jobs.posture = PawnPosture.LayingInBed;
-        };
+        waitToil.initAction = () => { pawn.jobs.posture = PawnPosture.LayingInBed; };
         yield return waitToil;
     }
 }

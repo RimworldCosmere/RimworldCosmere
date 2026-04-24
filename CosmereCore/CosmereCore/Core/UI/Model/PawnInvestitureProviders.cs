@@ -11,6 +11,7 @@ public static class PawnInvestitureProviders {
         for (int i = 0; i < providers.Count; i++) {
             if (providers[i].SystemId == provider.SystemId) return;
         }
+
         providers.Add(provider);
     }
 
@@ -18,6 +19,7 @@ public static class PawnInvestitureProviders {
         for (int i = 0; i < providers.Count; i++) {
             if (providers[i].IsInvested(pawn)) return true;
         }
+
         return false;
     }
 
@@ -28,6 +30,7 @@ public static class PawnInvestitureProviders {
             InvestitureSnapshot? snap = providers[i].Snapshot(pawn);
             if (snap != null) result.Add(snap);
         }
+
         return result;
     }
 }

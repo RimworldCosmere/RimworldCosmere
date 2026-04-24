@@ -1,24 +1,23 @@
 using System;
-using System.Collections.Generic;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Hemalurgy;
 
 public class HemalurgicChargeData : IExposable {
+    public int chargedTick;
     public HemalurgicStealType stealType;
     public string stolenDefName = "";
     public List<string> stolenDefNames = [];
-    public float strength = 1f;
     public float storedInvestiture;
-    public int chargedTick;
+    public float strength = 1f;
 
-    public bool isValid => strength > HemalurgicConstants.MinChargeStrength
-        && (stealType == HemalurgicStealType.RemoveAllPowers
-            || !stolenDefName.NullOrEmpty()
-            || stolenDefNames.Count > 0
-            || HemalurgicConstants.IsHumanAttribute(stealType)
-            || stealType == HemalurgicStealType.Investiture
-            || stealType == HemalurgicStealType.ConnectionIdentity);
+    public bool isValid => strength > HemalurgicConstants.MinChargeStrength &&
+                           (stealType == HemalurgicStealType.RemoveAllPowers ||
+                            !stolenDefName.NullOrEmpty() ||
+                            stolenDefNames.Count > 0 ||
+                            HemalurgicConstants.IsHumanAttribute(stealType) ||
+                            stealType == HemalurgicStealType.Investiture ||
+                            stealType == HemalurgicStealType.ConnectionIdentity);
 
     public void ExposeData() {
         Scribe_Values.Look(ref stealType, "stealType");

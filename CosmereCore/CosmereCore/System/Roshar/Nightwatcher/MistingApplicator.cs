@@ -1,5 +1,6 @@
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Utility;
 using Verse;
 using Logger = Cosmere.Core.Logger;
 
@@ -11,7 +12,7 @@ public class MistingApplicator : IBoonApplicator {
             ? value as MetallicArtsMetalDef
             : null;
         if (metal == null) return;
-        Scadrial.Utility.GeneUtility.AddGene(
+        GeneUtility.AddGene(
             pawn,
             Scadrial.GeneDefOf.GetMistingGeneForMetal(metal),
             false,

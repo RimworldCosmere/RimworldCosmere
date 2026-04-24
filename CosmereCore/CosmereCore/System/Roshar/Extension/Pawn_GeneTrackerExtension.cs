@@ -1,9 +1,12 @@
+using Cosmere.Core;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Def;
 using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Comp.Game;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
+using Cosmere.System.Roshar.DefModExtension;
+using Cosmere.System.Roshar.Dialog;
 using Cosmere.System.Roshar.Gene;
 using RimWorld;
 using Verse;
@@ -11,7 +14,12 @@ using Verse;
 namespace Cosmere.System.Roshar.Extension;
 
 public static class Pawn_GeneTrackerExtension {
-    public static Verse.Pawn? SpawnBondedSpren(this Verse.Pawn radiant, RadiantOrderDef orderDef, string? customName = null, bool showNamingDialog = false) {
+    public static Pawn? SpawnBondedSpren(
+        this Pawn radiant,
+        RadiantOrderDef orderDef,
+        string? customName = null,
+        bool showNamingDialog = false
+    ) {
         if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) return null;
         if (orderDef.defName == "Bondsmith") return null;
         if (orderDef.sprenNamePool.Count == 0) return null;
@@ -19,14 +27,13 @@ public static class Pawn_GeneTrackerExtension {
         string sprenDefName = "Cosmere_Roshar_Race_" + orderDef.sprenLabel.Replace(" ", "");
         PawnKindDef? sprenKind = DefDatabase<PawnKindDef>.GetNamedSilentFail(sprenDefName);
         if (sprenKind == null) {
-            Cosmere.Core.Logger.Error($"Could not find bonded spren PawnKindDef: {sprenDefName}");
+            Logger.Error($"Could not find bonded spren PawnKindDef: {sprenDefName}");
             return null;
         }
 
         PawnGenerationRequest request = new PawnGenerationRequest(
             sprenKind,
             radiant.Faction,
-            PawnGenerationContext.NonPlayer,
             forceGenerateNewPawn: true
         ) {
             ForceBodyType = BodyTypeDefOf.Thin,
@@ -34,7 +41,7 @@ public static class Pawn_GeneTrackerExtension {
             ForbidAnyTitle = true,
         };
 
-        Verse.Pawn spren = PawnGenerator.GeneratePawn(request);
+        Pawn spren = PawnGenerator.GeneratePawn(request);
 
         SanitizeSpren(spren);
 
@@ -53,6 +60,7 @@ public static class Pawn_GeneTrackerExtension {
                 allSkills[i].Level = 0;
                 allSkills[i].passion = Passion.None;
             }
+
             SkillRecord? social = spren.skills.GetSkill(RimWorld.SkillDefOf.Social);
             if (social != null) {
                 social.Level = 10;
@@ -70,10 +78,11 @@ public static class Pawn_GeneTrackerExtension {
         SpiritWeb.Instance?.SetConnection(radiant, spren, 1f);
 
         if (showNamingDialog && Current.ProgramState == ProgramState.Playing) {
-            Find.WindowStack.Add(new Cosmere.System.Roshar.Dialog.NameSprenDialog(spren));
+            Find.WindowStack.Add(new NameSprenDialog(spren));
         }
 
-        PawnRelationDef? nahelBondDef = DefDatabase<PawnRelationDef>.GetNamedSilentFail("Cosmere_Roshar_Relation_NahelBond");
+        PawnRelationDef? nahelBondDef =
+            DefDatabase<PawnRelationDef>.GetNamedSilentFail("Cosmere_Roshar_Relation_NahelBond");
         if (nahelBondDef != null) {
             radiant.relations.AddDirectRelation(nahelBondDef, spren);
             spren.relations.AddDirectRelation(nahelBondDef, radiant);
@@ -82,7 +91,7 @@ public static class Pawn_GeneTrackerExtension {
         return spren;
     }
 
-    private static void SanitizeSpren(Verse.Pawn spren) {
+    private static void SanitizeSpren(Pawn spren) {
         if (spren.inventory != null) {
             spren.inventory.DestroyAll();
         }
@@ -106,12 +115,12 @@ public static class Pawn_GeneTrackerExtension {
     ) {
         if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) return null;
 
-        Verse.Pawn pawn = genes.pawn;
-        RadiantOrderDef? orderDef = geneDef.GetModExtension<DefModExtension.RadiantOrder>()?.order;
+        Pawn pawn = genes.pawn;
+        RadiantOrderDef? orderDef = geneDef.GetModExtension<RadiantOrder>()?.order;
         if (orderDef != null && pawn != null) {
             RadiantTracker? tracker = Current.Game?.GetComponent<RadiantTracker>();
             if (tracker != null && !tracker.CanRebond(pawn, orderDef.defName)) {
-                Cosmere.Core.Logger.Warning(
+                Logger.Warning(
                     $"{pawn.NameShortColored} cannot rebond order {orderDef.defName} due to broken bond restrictions"
                 );
                 return null;
@@ -122,7 +131,7 @@ public static class Pawn_GeneTrackerExtension {
         gene.currentIdeal = ideal;
 
         if (orderDef != null && pawn != null) {
-            Verse.Pawn? spren = pawn.SpawnBondedSpren(orderDef, sprenName, showNamingDialog);
+            Pawn? spren = pawn.SpawnBondedSpren(orderDef, sprenName, showNamingDialog);
             if (spren != null) {
                 gene.bondedSpren = spren;
             }

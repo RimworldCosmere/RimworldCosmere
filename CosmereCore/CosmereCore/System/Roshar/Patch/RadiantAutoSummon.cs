@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.Core.Ability;
 using Cosmere.System.Roshar.Gene;
 using HarmonyLib;
@@ -12,9 +11,9 @@ namespace Cosmere.System.Roshar.Patch;
 
 [HarmonyPatch]
 public static class RadiantAutoSummon {
-    private static readonly HashSet<int> AutoSummonedPawns = [];
-    private static readonly Dictionary<int, int> LastCombatTick = new();
     private const int DismissGraceTicks = 5000;
+    private static readonly HashSet<int> AutoSummonedPawns = [];
+    private static readonly Dictionary<int, int> LastCombatTick = new Dictionary<int, int>();
 
     private static AbilityDef? cachedBladeAbilityDef;
     private static AbilityDef? cachedPlateAbilityDef;
@@ -38,7 +37,7 @@ public static class RadiantAutoSummon {
         bool summoned = false;
 
         if (cachedBladeAbilityDef != null) {
-            RimWorld.Ability? bladeAbility = pawn.abilities?.GetAbility(cachedBladeAbilityDef);
+            Ability? bladeAbility = pawn.abilities?.GetAbility(cachedBladeAbilityDef);
             if (bladeAbility is Shardblade blade && blade.status.active == Active.Off) {
                 blade.UpdateStatus(Active.On);
                 summoned = true;
@@ -47,7 +46,7 @@ public static class RadiantAutoSummon {
         }
 
         if (cachedPlateAbilityDef != null) {
-            RimWorld.Ability? plateAbility = pawn.abilities?.GetAbility(cachedPlateAbilityDef);
+            Ability? plateAbility = pawn.abilities?.GetAbility(cachedPlateAbilityDef);
             if (plateAbility is Shardplate plate && plate.status.active == Active.Off) {
                 plate.UpdateStatus(Active.On);
                 summoned = true;
@@ -92,7 +91,7 @@ public static class RadiantAutoSummon {
         }
 
         if (cachedBladeAbilityDef != null) {
-            RimWorld.Ability? bladeAbility = pawn.abilities?.GetAbility(cachedBladeAbilityDef);
+            Ability? bladeAbility = pawn.abilities?.GetAbility(cachedBladeAbilityDef);
             if (bladeAbility is Shardblade blade && blade.status.active == Active.On) {
                 blade.UpdateStatus(Active.Off);
                 Logger.Verbose($"RadiantAutoSummon: {pawn.LabelShort} auto-dismissed Shardblade");
@@ -100,7 +99,7 @@ public static class RadiantAutoSummon {
         }
 
         if (cachedPlateAbilityDef != null) {
-            RimWorld.Ability? plateAbility = pawn.abilities?.GetAbility(cachedPlateAbilityDef);
+            Ability? plateAbility = pawn.abilities?.GetAbility(cachedPlateAbilityDef);
             if (plateAbility is Shardplate plate && plate.status.active == Active.On) {
                 plate.UpdateStatus(Active.Off);
                 Logger.Verbose($"RadiantAutoSummon: {pawn.LabelShort} auto-dismissed Shardplate");

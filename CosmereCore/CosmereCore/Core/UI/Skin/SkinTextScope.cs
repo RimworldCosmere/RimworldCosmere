@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.UI.Skin;
 
-public readonly struct SkinTextScope : global::System.IDisposable {
+public readonly struct SkinTextScope : IDisposable {
     private readonly Font? previousFont;
     private readonly int previousSize;
     private readonly bool active;

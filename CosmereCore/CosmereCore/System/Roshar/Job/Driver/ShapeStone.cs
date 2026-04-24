@@ -11,8 +11,9 @@ public class ShapeStone : JobDriver {
 
     protected override IEnumerable<Verse.AI.Toil> MakeNewToils() {
         AddFinishAction(_ => {
-            pawn.Map?.designationManager.TryRemoveDesignation(TargetA.Cell, Designator_ShapeStone.DesignationDef);
-        });
+                pawn.Map?.designationManager.TryRemoveDesignation(TargetA.Cell, Designator_ShapeStone.DesignationDef);
+            }
+        );
 
         yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
 

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
@@ -9,7 +8,10 @@ namespace Cosmere.Core.Patch;
 
 [HarmonyPatch(typeof(Page_ChooseIdeoPreset), "DoClassic")]
 public static class DoClassicNextGuardPatch {
-    private static readonly FieldInfo ClassicIdeoField = AccessTools.Field(typeof(Page_ChooseIdeoPreset), "classicIdeo");
+    private static readonly FieldInfo ClassicIdeoField = AccessTools.Field(
+        typeof(Page_ChooseIdeoPreset),
+        "classicIdeo"
+    );
 
     public static bool Prefix(Page_ChooseIdeoPreset __instance) {
         Ideo? classicIdeo = ClassicIdeoField.GetValue(__instance) as Ideo;

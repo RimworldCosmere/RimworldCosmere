@@ -5,13 +5,20 @@ using Verse;
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class ImplantedMetalmindData : IExposable, IMetalmindSource {
-    private float storedAmountInt;
+    private MetalDef? cachedMetal;
     private float maxAmountInt;
     public string metalDefName = "";
     public string metalmindType = "";
     public string ownerName = "";
+    private float storedAmountInt;
 
-    private MetalDef? cachedMetal;
+    public void ExposeData() {
+        Scribe_Values.Look(ref metalDefName, "metalDefName", "");
+        Scribe_Values.Look(ref metalmindType, "metalmindType", "");
+        Scribe_Values.Look(ref storedAmountInt, "storedAmount");
+        Scribe_Values.Look(ref maxAmountInt, "maxAmount");
+        Scribe_Values.Look(ref ownerName, "ownerName", "");
+    }
 
     public float storedAmount {
         get => storedAmountInt;
@@ -43,13 +50,5 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     public void ConsumeStored(float amount) {
         if (!canTap) return;
         storedAmountInt = Mathf.Clamp(storedAmountInt - amount, 0, maxAmountInt);
-    }
-
-    public void ExposeData() {
-        Scribe_Values.Look(ref metalDefName, "metalDefName", "");
-        Scribe_Values.Look(ref metalmindType, "metalmindType", "");
-        Scribe_Values.Look(ref storedAmountInt, "storedAmount");
-        Scribe_Values.Look(ref maxAmountInt, "maxAmount");
-        Scribe_Values.Look(ref ownerName, "ownerName", "");
     }
 }

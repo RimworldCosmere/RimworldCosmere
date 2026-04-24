@@ -1,24 +1,23 @@
 using System;
-using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Def;
 
 public class NightwatcherBoonDef : Verse.Def {
-    public int powerTier = 1;
-    public HediffDef? hediff;
-    public List<BoonSkillBoost> skillBoosts = [];
+    public Type? applicatorClass;
     public TraitDef? grantTrait;
     public int grantTraitDegree = 0;
-    public TraitDef? removeTrait;
-    public HediffDef? removeHediff;
+    public HediffDef? hediff;
     public float investitureBonus = 0f;
-    public float surgebindingConnectionBoost = 0f;
-    public bool psylinkBoost = false;
-    public Type? applicatorClass;
-    public string? requiresMod;
     public string? metalSelectionType;
+    public int powerTier = 1;
+    public bool psylinkBoost = false;
+    public HediffDef? removeHediff;
+    public TraitDef? removeTrait;
+    public string? requiresMod;
+    public List<BoonSkillBoost> skillBoosts = [];
+    public float surgebindingConnectionBoost = 0f;
 
     public IBoonApplicator? Applicator =>
         applicatorClass != null
@@ -27,14 +26,15 @@ public class NightwatcherBoonDef : Verse.Def {
 
     public override IEnumerable<string> ConfigErrors() {
         foreach (string err in base.ConfigErrors()) yield return err;
-        if (applicatorClass != null && !typeof(IBoonApplicator).IsAssignableFrom(applicatorClass))
+        if (applicatorClass != null && !typeof(IBoonApplicator).IsAssignableFrom(applicatorClass)) {
             yield return $"applicatorClass {applicatorClass} does not implement IBoonApplicator";
+        }
     }
 }
 
 public class BoonSkillBoost : IExposable {
+    public int levels;
     public SkillDef skill = null!;
-    public int levels = 0;
 
     public void ExposeData() {
         Scribe_Defs.Look(ref skill, "skill");
@@ -43,5 +43,5 @@ public class BoonSkillBoost : IExposable {
 }
 
 public interface IBoonApplicator {
-    void Apply(Verse.Pawn pawn, NightwatcherBoonDef def, Dictionary<string, object>? context = null);
+    void Apply(Pawn pawn, NightwatcherBoonDef def, Dictionary<string, object>? context = null);
 }

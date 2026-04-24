@@ -1,3 +1,4 @@
+using Cosmere.System.Roshar.Gene;
 using Verse;
 
 namespace Cosmere.Core.ScenarioPart;
@@ -13,8 +14,8 @@ public class AdvanceIdealAction : ProgressionAction {
             return;
         }
 
-        Cosmere.System.Roshar.Gene.Surgebinder? surgebinder =
-            pawn.genes?.GetFirstGeneOfType<Cosmere.System.Roshar.Gene.Surgebinder>();
+        Surgebinder? surgebinder =
+            pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) {
             Logger.Warning($"ScenarioProgression: Pawn '{pawnName}' has no Surgebinder gene");
             return;

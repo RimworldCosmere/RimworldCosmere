@@ -1,32 +1,28 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using UnityEngine;
-using Verse;
 using Cosmere.Core.UI.Lightweave.Rendering;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Tokens;
 using Cosmere.Core.UI.Lightweave.Types;
+using UnityEngine;
 
 namespace Cosmere.Core.UI.Lightweave.Navigation;
 
-public static class Breadcrumbs
-{
+public static class Breadcrumbs {
+    private const string Ellipsis = "...";
     private static readonly Rem RowHeight = new Rem(1.5f);
     private static readonly Rem LabelSize = new Rem(0.875f);
-    private const string Ellipsis = "...";
 
     public static LightweaveNode Create(
         IReadOnlyList<string> crumbs,
         Action<int>? onNavigate = null,
         [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = "")
-    {
+        [CallerFilePath] string file = ""
+    ) {
         LightweaveNode node = NodeBuilder.New("Breadcrumbs", line, file);
-        node.Paint = (rect, _) =>
-        {
-            if (crumbs == null || crumbs.Count == 0)
-            {
+        node.PreferredHeight = RowHeight.ToPixels();
+        node.Paint = (rect, _) => {
+            if (crumbs == null || crumbs.Count == 0) {
                 return;
             }
 
@@ -35,8 +31,8 @@ public static class Breadcrumbs
             bool rtl = dir == Direction.Rtl;
 
             Font font = theme.GetFont(FontRole.Body);
-            int pixelSize = Mathf.RoundToInt(LabelSize.ToPixels());
-            GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Normal);
+            int pixelSize = Mathf.RoundToInt(LabelSize.ToFontPx());
+            GUIStyle style = GuiStyleCache.Get(font, pixelSize);
             style.alignment = TextAnchor.MiddleLeft;
 
             string chevronGlyph = rtl ? "‹" : "›";
@@ -46,8 +42,7 @@ public static class Breadcrumbs
 
             int count = crumbs.Count;
             float[] labelWidths = new float[count];
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 string crumbText = crumbs[i] ?? string.Empty;
                 Vector2 size = style.CalcSize(new GUIContent(crumbText));
                 labelWidths[i] = size.x;
@@ -59,18 +54,16 @@ public static class Breadcrumbs
             float ellipsisWidth = ellipsisSize.x;
 
             bool[] visible = new bool[count];
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 visible[i] = true;
             }
+
             bool showEllipsis = false;
 
-            if (count > 1)
-            {
+            if (count > 1) {
                 float total = TotalWidth(labelWidths, visible, count, chevronWidth, gapPx, showEllipsis, ellipsisWidth);
                 int removeIndex = 1;
-                while (total > rect.width && removeIndex < count - 1)
-                {
+                while (total > rect.width && removeIndex < count - 1) {
                     visible[removeIndex] = false;
                     showEllipsis = true;
                     removeIndex++;
@@ -84,25 +77,32 @@ public static class Breadcrumbs
             bool firstDrawn = true;
             bool ellipsisDrawn = false;
 
-            for (int i = 0; i < count; i++)
-            {
-                if (!visible[i])
-                {
-                    if (!ellipsisDrawn && showEllipsis)
-                    {
-                        if (!firstDrawn)
-                        {
-                            cursor = DrawChevron(cursor, rowY, rowHeight, chevronWidth, chevronGlyph, style, theme, rtl, gapPx);
+            for (int i = 0; i < count; i++) {
+                if (!visible[i]) {
+                    if (!ellipsisDrawn && showEllipsis) {
+                        if (!firstDrawn) {
+                            cursor = DrawChevron(
+                                cursor,
+                                rowY,
+                                rowHeight,
+                                chevronWidth,
+                                chevronGlyph,
+                                style,
+                                theme,
+                                rtl,
+                                gapPx
+                            );
                         }
+
                         cursor = DrawEllipsis(cursor, rowY, rowHeight, ellipsisWidth, style, theme, rtl, gapPx);
                         firstDrawn = false;
                         ellipsisDrawn = true;
                     }
+
                     continue;
                 }
 
-                if (!firstDrawn)
-                {
+                if (!firstDrawn) {
                     cursor = DrawChevron(cursor, rowY, rowHeight, chevronWidth, chevronGlyph, style, theme, rtl, gapPx);
                 }
 
@@ -111,13 +111,10 @@ public static class Breadcrumbs
                 bool isLast = i == lastVisibleIndex;
 
                 Rect labelRect;
-                if (rtl)
-                {
+                if (rtl) {
                     labelRect = new Rect(cursor - labelWidth, rowY, labelWidth, rowHeight);
                     cursor = labelRect.x - gapPx;
-                }
-                else
-                {
+                } else {
                     labelRect = new Rect(cursor, rowY, labelWidth, rowHeight);
                     cursor = labelRect.xMax + gapPx;
                 }
@@ -136,28 +133,27 @@ public static class Breadcrumbs
         float chevronWidth,
         float gapPx,
         bool showEllipsis,
-        float ellipsisWidth)
-    {
+        float ellipsisWidth
+    ) {
         float total = 0f;
         int visibleCount = 0;
-        for (int i = 0; i < count; i++)
-        {
-            if (visible[i])
-            {
+        for (int i = 0; i < count; i++) {
+            if (visible[i]) {
                 total += labelWidths[i];
                 visibleCount++;
             }
         }
-        if (showEllipsis)
-        {
+
+        if (showEllipsis) {
             total += ellipsisWidth;
             visibleCount++;
         }
-        if (visibleCount > 1)
-        {
+
+        if (visibleCount > 1) {
             int separators = visibleCount - 1;
             total += separators * (chevronWidth + gapPx * 2f);
         }
+
         return total;
     }
 
@@ -170,20 +166,18 @@ public static class Breadcrumbs
         GUIStyle style,
         Theme.Theme theme,
         bool rtl,
-        float gapPx)
-    {
+        float gapPx
+    ) {
         Rect chevronRect;
         float next;
-        if (rtl)
-        {
+        if (rtl) {
             chevronRect = new Rect(cursor - chevronWidth, rowY, chevronWidth, rowHeight);
             next = chevronRect.x - gapPx;
-        }
-        else
-        {
+        } else {
             chevronRect = new Rect(cursor, rowY, chevronWidth, rowHeight);
             next = chevronRect.xMax + gapPx;
         }
+
         Color saved = GUI.color;
         GUI.color = theme.GetColor(ThemeSlot.TextMuted);
         GUI.Label(RectSnap.Snap(chevronRect), chevronGlyph, style);
@@ -199,20 +193,18 @@ public static class Breadcrumbs
         GUIStyle style,
         Theme.Theme theme,
         bool rtl,
-        float gapPx)
-    {
+        float gapPx
+    ) {
         Rect ellipsisRect;
         float next;
-        if (rtl)
-        {
+        if (rtl) {
             ellipsisRect = new Rect(cursor - ellipsisWidth, rowY, ellipsisWidth, rowHeight);
             next = ellipsisRect.x - gapPx;
-        }
-        else
-        {
+        } else {
             ellipsisRect = new Rect(cursor, rowY, ellipsisWidth, rowHeight);
             next = ellipsisRect.xMax + gapPx;
         }
+
         Color saved = GUI.color;
         GUI.color = theme.GetColor(ThemeSlot.TextMuted);
         GUI.Label(RectSnap.Snap(ellipsisRect), Ellipsis, style);
@@ -227,28 +219,22 @@ public static class Breadcrumbs
         bool isLast,
         Action<int>? onNavigate,
         GUIStyle style,
-        Theme.Theme theme)
-    {
+        Theme.Theme theme
+    ) {
         Event e = Event.current;
         bool interactive = !isLast;
         bool hovering = interactive && labelRect.Contains(e.mousePosition);
 
-        if (hovering)
-        {
-            Widgets.DrawHighlight(labelRect);
+        if (hovering) {
+            PaintBox.DrawHighlight(labelRect, RadiusSpec.All(new Rem(0.25f)), true);
         }
 
         ThemeSlot slot;
-        if (isLast)
-        {
+        if (isLast) {
             slot = ThemeSlot.TextPrimary;
-        }
-        else if (hovering)
-        {
+        } else if (hovering) {
             slot = ThemeSlot.TextPrimary;
-        }
-        else
-        {
+        } else {
             slot = ThemeSlot.TextMuted;
         }
 
@@ -257,11 +243,7 @@ public static class Breadcrumbs
         GUI.Label(RectSnap.Snap(labelRect), text, style);
         GUI.color = saved;
 
-        if (interactive
-            && e.type == EventType.MouseUp
-            && e.button == 0
-            && labelRect.Contains(e.mousePosition))
-        {
+        if (interactive && e.type == EventType.MouseUp && e.button == 0 && labelRect.Contains(e.mousePosition)) {
             onNavigate?.Invoke(index);
             e.Use();
         }

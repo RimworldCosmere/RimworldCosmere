@@ -30,9 +30,17 @@ public static class FlyingBlocksPawnPatch {
     }
 }
 
-[HarmonyPatch(typeof(ReachabilityUtility), nameof(ReachabilityUtility.CanReach),
-    [typeof(Pawn), typeof(LocalTargetInfo), typeof(PathEndMode), typeof(Danger),
-     typeof(bool), typeof(bool), typeof(TraverseMode)])]
+[HarmonyPatch(
+    typeof(ReachabilityUtility),
+    nameof(ReachabilityUtility.CanReach),
+    typeof(Pawn),
+    typeof(LocalTargetInfo),
+    typeof(PathEndMode),
+    typeof(Danger),
+    typeof(bool),
+    typeof(bool),
+    typeof(TraverseMode)
+)]
 public static class FlyingReachabilityPatch {
     private static bool Prefix(Pawn pawn, ref bool __result) {
         if (pawn == null || !pawn.Spawned) return true;
@@ -43,8 +51,14 @@ public static class FlyingReachabilityPatch {
     }
 }
 
-[HarmonyPatch(typeof(Reachability), nameof(Reachability.CanReach),
-    [typeof(IntVec3), typeof(LocalTargetInfo), typeof(PathEndMode), typeof(TraverseParms)])]
+[HarmonyPatch(
+    typeof(Reachability),
+    nameof(Reachability.CanReach),
+    typeof(IntVec3),
+    typeof(LocalTargetInfo),
+    typeof(PathEndMode),
+    typeof(TraverseParms)
+)]
 public static class FlyingReachabilityDirectPatch {
     [ThreadStatic]
     private static bool patching;

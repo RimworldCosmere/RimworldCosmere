@@ -55,6 +55,7 @@ public class TheWeeping : RimWorld.GameCondition {
         for (int i = 0; i < conditions.Count; i++) {
             if (conditions[i] is TheWeeping) return true;
         }
+
         return false;
     }
 }

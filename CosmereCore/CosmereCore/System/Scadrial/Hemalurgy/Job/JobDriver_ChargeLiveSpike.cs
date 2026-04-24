@@ -1,3 +1,4 @@
+using Cosmere.Core;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using RimWorld;
@@ -24,16 +25,15 @@ public class JobDriver_ChargeLiveSpike : Verse.AI.JobDriver {
         this.FailOnDestroyedOrNull(TargetIndex.A);
         this.FailOnDestroyedOrNull(TargetIndex.B);
         AddFailCondition(() => donor.Dead);
-        AddFinishAction((JobCondition condition) => {
-            if (pawn.carryTracker.CarriedThing != null) {
-                pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Verse.Thing _);
+        AddFinishAction(condition => {
+                if (pawn.carryTracker.CarriedThing != null) {
+                    pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Verse.Thing _);
+                }
             }
-        });
+        );
 
         bool donorInBed = donor.InBed();
-        bool voluntary = donor.Faction == Faction.OfPlayer
-                         && !donor.IsPrisonerOfColony
-                         && !donor.IsSlaveOfColony;
+        bool voluntary = donor.Faction == Faction.OfPlayer && !donor.IsPrisonerOfColony && !donor.IsSlaveOfColony;
 
         if (!donorInBed && !voluntary && !donor.Downed) {
             // Involuntary and conscious: anesthetize, carry to bed
@@ -65,7 +65,7 @@ public class JobDriver_ChargeLiveSpike : Verse.AI.JobDriver {
         }
 
         // Anesthetize (not needed for involuntary - already done above)
-        if (donorInBed || (voluntary && !donor.Downed)) {
+        if (donorInBed || voluntary && !donor.Downed) {
             yield return MakeAnesthetizeToil();
         }
 
@@ -101,6 +101,7 @@ public class JobDriver_ChargeLiveSpike : Verse.AI.JobDriver {
                 ReadyForNextToil();
                 return;
             }
+
             if (waitedTicks > WaitForDonorTimeout) {
                 EndJobWith(JobCondition.Incompletable);
             }
@@ -115,13 +116,13 @@ public class JobDriver_ChargeLiveSpike : Verse.AI.JobDriver {
         toil.initAction = () => {
             Verse.Thing? carried = pawn.carryTracker.CarriedThing;
             if (carried == null) {
-                Core.Logger.Warning("ChargeLiveSpike: carried thing is null at charge time");
+                Logger.Warning("ChargeLiveSpike: carried thing is null at charge time");
                 return;
             }
 
             HemalurgicSpike? spikeComp = carried.TryGetComp<HemalurgicSpike>();
             if (spikeComp == null || spikeComp.isCharged) {
-                Core.Logger.Warning($"ChargeLiveSpike: spike comp null={spikeComp == null}, charged={spikeComp?.isCharged}");
+                Logger.Warning($"ChargeLiveSpike: spike comp null={spikeComp == null}, charged={spikeComp?.isCharged}");
                 return;
             }
 
@@ -133,14 +134,21 @@ public class JobDriver_ChargeLiveSpike : Verse.AI.JobDriver {
             if (isThinNeedle) {
                 strengthMultiplier *= HemalurgicConstants.ThinNeedleStrengthMultiplier;
             }
+
             strengthMultiplier *= HemalurgicConstants.GetDonorAttributeMultiplier(donor, stealType);
 
             GeneDef? selectedGene = spikeComp.pendingStealTarget;
             spikeComp.pendingStealTarget = null;
 
             HemalurgicChargeUtility.PerformCharge(
-                donor, pawn, spikeComp, stealType, selectedGene,
-                strengthMultiplier, true, isThinNeedle
+                donor,
+                pawn,
+                spikeComp,
+                stealType,
+                selectedGene,
+                strengthMultiplier,
+                true,
+                isThinNeedle
             );
             DropSpike(carried);
         };

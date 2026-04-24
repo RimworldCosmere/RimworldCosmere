@@ -131,7 +131,6 @@ public class WindsprenController : StaticSprenController {
                 if (multiplier > maxMultiplier) {
                     maxMultiplier = multiplier;
                 }
-
             }
         }
 

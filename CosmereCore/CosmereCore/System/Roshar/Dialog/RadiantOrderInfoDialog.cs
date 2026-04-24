@@ -22,7 +22,7 @@ public class RadiantOrderInfoDialog : RadiantOrderDialogBase {
 
     private readonly RadiantOrderInfoMode mode;
 
-    public RadiantOrderInfoDialog(Verse.Pawn pawn, Surgebinder surgebinder, RadiantOrderInfoMode mode)
+    public RadiantOrderInfoDialog(Pawn pawn, Surgebinder surgebinder, RadiantOrderInfoMode mode)
         : base(surgebinder.radiantOrderDef, pawn, surgebinder) {
         this.mode = mode;
     }
@@ -126,7 +126,7 @@ public class RadiantOrderInfoDialog : RadiantOrderDialogBase {
 
             Rect lineRect = new Rect(inner.x + Spacing.Get(), yPos, inner.width - Spacing.Get(), lineHeight);
             string displayValue = recordDef.type == RecordType.Time
-                ? GenDate.ToStringTicksToPeriod((int)value)
+                ? ((int)value).ToStringTicksToPeriod()
                 : ((int)value).ToString();
 
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, bodyTextColor))
@@ -192,6 +192,7 @@ public class RadiantOrderInfoDialog : RadiantOrderDialogBase {
             ShowSeverBondDialog();
             return;
         }
+
         GUI.color = origColor;
 
         bool showSpeakWords = mode == RadiantOrderInfoMode.SpeakOath || surgebinder!.PendingOath;
@@ -227,10 +228,12 @@ public class RadiantOrderInfoDialog : RadiantOrderDialogBase {
         };
         root.options.Add(cancelOption);
 
-        Find.WindowStack.Add(new Verse.Dialog_NodeTree(
-            root,
-            title: "CRO_BreakBond_DialogTitle".Translate()
-        ));
+        Find.WindowStack.Add(
+            new Dialog_NodeTree(
+                root,
+                title: "CRO_BreakBond_DialogTitle".Translate()
+            )
+        );
     }
 
     private static string GetOrdinal(int number) {

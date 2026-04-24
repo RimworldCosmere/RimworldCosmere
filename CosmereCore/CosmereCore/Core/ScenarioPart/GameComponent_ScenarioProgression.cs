@@ -1,18 +1,17 @@
 using System;
-using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.ScenarioPart;
 
 public class GameComponent_ScenarioProgression : GameComponent {
+    private const int CheckInterval = 250;
     private ScenarioProgressionDef? activeDef;
     private HashSet<string> firedEvents = [];
-    private Dictionary<string, int> lastFireTicks = new();
     private int lastCheckTick = -1;
-    private const int CheckInterval = 250;
+    private Dictionary<string, int> lastFireTicks = new Dictionary<string, int>();
 
-    public GameComponent_ScenarioProgression(Verse.Game game) { }
+    public GameComponent_ScenarioProgression(Game game) { }
 
     public override void StartedNewGame() {
         base.StartedNewGame();
@@ -95,6 +94,7 @@ public class GameComponent_ScenarioProgression : GameComponent {
                 if (pawn.Name is NameSingle single && single.Name.StartsWith(firstName)) return pawn;
             }
         }
+
         return null;
     }
 

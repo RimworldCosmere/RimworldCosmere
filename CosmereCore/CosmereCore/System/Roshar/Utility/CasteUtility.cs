@@ -1,3 +1,4 @@
+using Cosmere.Core;
 using RimWorld;
 using Verse;
 
@@ -55,7 +56,7 @@ public static class CasteUtility {
             pawn.genes.SetXenotype(lighteyesXenotype);
         }
 
-        Core.Logger.Info($"CasteUtility: {pawn.NameShortColored} transitioned from darkeyes to lighteyes");
+        Logger.Info($"CasteUtility: {pawn.NameShortColored} transitioned from darkeyes to lighteyes");
         return true;
     }
 
@@ -72,7 +73,7 @@ public static class CasteUtility {
     private static void AddGeneByName(Pawn pawn, string defName) {
         GeneDef? geneDef = DefDatabase<GeneDef>.GetNamedSilentFail(defName);
         if (geneDef == null) {
-            Core.Logger.Warning($"CasteUtility: Gene '{defName}' not found");
+            Logger.Warning($"CasteUtility: Gene '{defName}' not found");
             return;
         }
 

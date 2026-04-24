@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Skin;
 using RimWorld;
@@ -8,8 +7,8 @@ using Verse;
 namespace Cosmere.Core.UI.Codex;
 
 public class ITab_Investiture : ITab {
-    private readonly CodexState state = new();
     private readonly List<IInvestitureProvider> investedProviders = [];
+    private readonly CodexState state = new CodexState();
 
     public ITab_Investiture() {
         labelKey = "CC_Codex_Tab";
@@ -24,6 +23,7 @@ public class ITab_Investiture : ITab {
             for (int i = 0; i < all.Count; i++) {
                 if (all[i].IsInvested(pawn)) return true;
             }
+
             return false;
         }
     }
@@ -49,12 +49,17 @@ public class ITab_Investiture : ITab {
         float y = CodexChrome.HeaderHeight;
         bool hasSwitcher = investedProviders.Count > 1;
         if (hasSwitcher) {
-            Rect switcher = new Rect(CodexChrome.Gutter, y, size.x - (CodexChrome.Gutter * 2f), CodexChrome.SwitcherStripHeight);
+            Rect switcher = new Rect(
+                CodexChrome.Gutter,
+                y,
+                size.x - CodexChrome.Gutter * 2f,
+                CodexChrome.SwitcherStripHeight
+            );
             SystemSwitcherStrip.Draw(switcher, pawn, investedProviders, state);
             y += CodexChrome.SwitcherStripHeight;
         }
 
-        Rect subtabBar = new Rect(CodexChrome.Gutter, y, size.x - (CodexChrome.Gutter * 2f), CodexChrome.SubtabBarHeight);
+        Rect subtabBar = new Rect(CodexChrome.Gutter, y, size.x - CodexChrome.Gutter * 2f, CodexChrome.SubtabBarHeight);
         SubtabBar.Draw(subtabBar, state, active, skin.AccentColor);
 
         Rect divider = new Rect(CodexChrome.Gutter, subtabBar.yMax, subtabBar.width, 1f);
@@ -90,6 +95,7 @@ public class ITab_Investiture : ITab {
             string? custom = cp.HeaderLabelFor(pawn);
             if (!custom.NullOrEmpty()) return custom!;
         }
+
         return skin.HeaderLabel;
     }
 

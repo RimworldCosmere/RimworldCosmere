@@ -11,10 +11,6 @@ namespace Cosmere.System.Roshar;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class JobDefOf {
-    static JobDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));
-    }
-
     [MayRequire("Cosmere.Roshar")]
     public static JobDef Cosmere_Roshar_RefuelFabrial;
 
@@ -35,4 +31,8 @@ public static class JobDefOf {
 
     [MayRequire("Cosmere.Roshar")]
     public static JobDef Cosmere_Roshar_Job_ShapeStone;
+
+    static JobDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));
+    }
 }

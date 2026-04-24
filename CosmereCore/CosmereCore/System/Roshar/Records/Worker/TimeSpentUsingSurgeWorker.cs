@@ -16,7 +16,7 @@ public class TimeSpentUsingSurgeWorker : RecordWorker {
 
         List<AbilityDef> surgeAbilities = surge.abilities;
         for (int i = 0; i < surgeAbilities.Count; i++) {
-            RimWorld.Ability? ability = pawn.abilities.GetAbility(surgeAbilities[i]);
+            Ability? ability = pawn.abilities.GetAbility(surgeAbilities[i]);
             if (ability is AbstractAbility abstractAbility && abstractAbility.status.isActive) {
                 return true;
             }

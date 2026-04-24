@@ -1,5 +1,6 @@
 ﻿using System;
 using Cosmere.Core;
+using Cosmere.Core.Comp.Thing;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -82,20 +83,21 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
 
     public void CheckPower(bool flickeredOn) {
         if (insertedGemstone != null) {
-            Cosmere.Core.Comp.Thing.InvestitureHolder? investiture =
-                (insertedGemstone as ThingWithComps)?.TryGetComp<Cosmere.Core.Comp.Thing.InvestitureHolder>();
+            InvestitureHolder? investiture =
+                (insertedGemstone as ThingWithComps)?.TryGetComp<InvestitureHolder>();
             if (investiture != null) {
                 powerOn = investiture.currentInvestiture > 0 && flickeredOn;
                 return;
             }
         }
+
         powerOn = false;
     }
 
     public void UsePower() {
         if (!powerOn || insertedGemstone == null) return;
-        Cosmere.Core.Comp.Thing.InvestitureHolder? investiture =
-            (insertedGemstone as ThingWithComps)?.TryGetComp<Cosmere.Core.Comp.Thing.InvestitureHolder>();
+        InvestitureHolder? investiture =
+            (insertedGemstone as ThingWithComps)?.TryGetComp<InvestitureHolder>();
         if (investiture != null) {
             investiture.drainRate = 1.0f;
         }
@@ -104,8 +106,8 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
     public override string CompInspectStringExtra() {
         if (insertedGemstone == null) return "No gem in fabrial.";
         ThingWithComps? gemstone = insertedGemstone as ThingWithComps;
-        Cosmere.Core.Comp.Thing.InvestitureHolder? investiture =
-            gemstone?.TryGetComp<Cosmere.Core.Comp.Thing.InvestitureHolder>();
+        InvestitureHolder? investiture =
+            gemstone?.TryGetComp<InvestitureHolder>();
         return gemstone?.Label + "(" + (investiture?.currentInvestiture.ToString("F0") ?? "0") + ")";
     }
 

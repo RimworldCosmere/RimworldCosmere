@@ -29,7 +29,9 @@ public struct AllomanticBurnSource : IExposable, IEquatable<AllomanticBurnSource
         return obj is AllomanticBurnSource other && Equals(other);
     }
 
-    public override int GetHashCode() => Def?.GetHashCode() ?? 0;
+    public override int GetHashCode() {
+        return Def?.GetHashCode() ?? 0;
+    }
 
     public static implicit operator (AllomanticAbilityDef def, float rate)(AllomanticBurnSource source) {
         return (source.Def, source.Rate);

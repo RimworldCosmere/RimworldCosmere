@@ -22,6 +22,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
                     result.Add(p);
                 }
             }
+
             return result;
         }
     }
@@ -68,7 +69,7 @@ public class TrueSprenSpawner(Verse.Map map) : MapComponent(map) {
         pawnSprens.RemoveWhere(d => d.pawn.Equals(pawn) && d.spren.Equals(spren));
     }
 
-    public void DestroySprenForPawn(Verse.Pawn pawn) {
+    public void DestroySprenForPawn(Pawn pawn) {
         for (int i = pawnSprens.Count - 1; i >= 0; i--) {
             if (!pawnSprens[i].pawn.Equals(pawn)) continue;
 

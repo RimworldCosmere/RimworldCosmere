@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using Cosmere.Core.Ability.Autocast;
 using Cosmere.Core.UI.Model;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -34,7 +32,7 @@ public static class AutocastSubtabRenderer {
         GameComponent_Autocast store = GameComponent_Autocast.Get();
         float rowHeight = 34f;
 
-        Rect viewRect = new Rect(0f, 0f, rect.width - 16f, (filtered.Count * rowHeight) + 8f);
+        Rect viewRect = new Rect(0f, 0f, rect.width - 16f, filtered.Count * rowHeight + 8f);
         Widgets.BeginScrollView(rect, ref scroll, viewRect);
 
         float y = 4f;
@@ -57,7 +55,13 @@ public static class AutocastSubtabRenderer {
 
             Rect metaRect = new Rect(labelRect.xMax + 4f, row.y, 140f, row.height);
             using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, new Color(0.7f, 0.7f, 0.7f)))
-                Widgets.Label(metaRect, "CC_Codex_Autocast_RowMeta".Translate(rule.Triggers.Count.Named("TRIGGERS"), rule.FireCount.Named("COUNT")));
+                Widgets.Label(
+                    metaRect,
+                    "CC_Codex_Autocast_RowMeta".Translate(
+                        rule.Triggers.Count.Named("TRIGGERS"),
+                        rule.FireCount.Named("COUNT")
+                    )
+                );
 
             Rect editButton = new Rect(row.xMax - 88f, row.y + 4f, 80f, row.height - 8f);
             if (Widgets.ButtonText(editButton, "CC_Codex_Autocast_EditButton".Translate())) {

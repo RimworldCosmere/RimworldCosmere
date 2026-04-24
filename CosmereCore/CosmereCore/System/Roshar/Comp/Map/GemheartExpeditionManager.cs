@@ -11,14 +11,16 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
     private const int MinCooldownTicks = 3 * GenDate.TicksPerDay;
     private const int MinExpeditionPawns = 3;
     private const int MaxExpeditionPawns = 6;
+    private bool expeditionActive;
 
     private List<Pawn> expeditionPawns = [];
     private int expeditionReturnTick = -1;
     private int lastHuntTick = -1;
-    private bool expeditionActive;
 
     public bool ExpeditionActive => expeditionActive;
-    public bool CanStartHunt => !expeditionActive && (lastHuntTick < 0 || Find.TickManager.TicksGame - lastHuntTick >= MinCooldownTicks);
+
+    public bool CanStartHunt => !expeditionActive &&
+                                (lastHuntTick < 0 || Find.TickManager.TicksGame - lastHuntTick >= MinCooldownTicks);
 
     public override void MapComponentTick() {
         if (!expeditionActive) return;
@@ -54,7 +56,9 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
             expeditionPawns[i].jobs?.StopAll();
         }
 
-        Logger.Verbose($"[GemheartHunt] Expedition started with {pawns.Count} pawns, returns tick {expeditionReturnTick}");
+        Logger.Verbose(
+            $"[GemheartHunt] Expedition started with {pawns.Count} pawns, returns tick {expeditionReturnTick}"
+        );
         return true;
     }
 
@@ -110,7 +114,7 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
             }
 
             if (pawn.equipment?.Primary != null) {
-                power += pawn.equipment.Primary.GetStatValue(RimWorld.StatDefOf.MeleeWeapon_AverageDPS) * 2f;
+                power += pawn.equipment.Primary.GetStatValue(StatDefOf.MeleeWeapon_AverageDPS) * 2f;
             }
         }
 

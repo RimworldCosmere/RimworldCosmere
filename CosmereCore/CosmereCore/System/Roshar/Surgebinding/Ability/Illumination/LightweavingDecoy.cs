@@ -1,5 +1,4 @@
 using System;
-using Cosmere.Core.Ability;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -9,7 +8,7 @@ using DecoyHediff = Cosmere.System.Roshar.Surgebinding.Hediff.Illumination.Light
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Illumination;
 
 public class LightweavingDecoy : SurgebindingAbility {
-    private static readonly List<Verse.Pawn> ActiveDecoys = [];
+    private static readonly List<Pawn> ActiveDecoys = [];
 
     public LightweavingDecoy(Pawn pawn) : base(pawn) { }
     public LightweavingDecoy(Pawn pawn, AbilityDef def) : base(pawn, def) { }
@@ -34,7 +33,7 @@ public class LightweavingDecoy : SurgebindingAbility {
             IntVec3 spawnCell = CellFinder.RandomSpawnCellForPawnNear(pawn.Position, pawn.Map, 3);
             if (!spawnCell.IsValid) continue;
 
-            Verse.Pawn decoy = SpawnDecoyPawn(spawnCell, pawn.Map);
+            Pawn decoy = SpawnDecoyPawn(spawnCell, pawn.Map);
             if (decoy != null) {
                 ActiveDecoys.Add(decoy);
                 FleckMaker.Static(spawnCell, pawn.Map, FleckDefOf.PsycastAreaEffect);
@@ -44,13 +43,13 @@ public class LightweavingDecoy : SurgebindingAbility {
 
     private void DestroyAllDecoys() {
         for (int i = ActiveDecoys.Count - 1; i >= 0; i--) {
-            Verse.Pawn decoy = ActiveDecoys[i];
+            Pawn decoy = ActiveDecoys[i];
             DecoyHediff? hediff = decoy.health?.hediffSet?.GetFirstHediffOfDef(DecoyHediff.Def) as DecoyHediff;
             if (hediff?.caster != pawn) continue;
 
             if (decoy.Spawned) {
                 FleckMaker.Static(decoy.Position, decoy.Map, FleckDefOf.PsycastAreaEffect);
-                decoy.DeSpawn(DestroyMode.Vanish);
+                decoy.DeSpawn();
             }
 
             if (!decoy.Destroyed) {
@@ -61,17 +60,18 @@ public class LightweavingDecoy : SurgebindingAbility {
         }
     }
 
-    public static void RemoveDecoy(Verse.Pawn decoy) {
+    public static void RemoveDecoy(Pawn decoy) {
         ActiveDecoys.Remove(decoy);
     }
 
-    private Verse.Pawn SpawnDecoyPawn(IntVec3 cell, Verse.Map map) {
-        Verse.Pawn decoy = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
-            pawn.kindDef,
-            Faction.OfPlayer,
-            PawnGenerationContext.NonPlayer,
-            forceGenerateNewPawn: true
-        ));
+    private Pawn SpawnDecoyPawn(IntVec3 cell, Map map) {
+        Pawn decoy = PawnGenerator.GeneratePawn(
+            new PawnGenerationRequest(
+                pawn.kindDef,
+                Faction.OfPlayer,
+                forceGenerateNewPawn: true
+            )
+        );
 
         SanitizeDecoy(decoy);
         CopyAppearance(pawn, decoy);
@@ -88,7 +88,7 @@ public class LightweavingDecoy : SurgebindingAbility {
         return decoy;
     }
 
-    private static void SanitizeDecoy(Verse.Pawn decoy) {
+    private static void SanitizeDecoy(Pawn decoy) {
         if (decoy.inventory != null) {
             decoy.inventory.DestroyAll();
         }
@@ -134,7 +134,7 @@ public class LightweavingDecoy : SurgebindingAbility {
         decoy.playerSettings = new Pawn_PlayerSettings(decoy);
     }
 
-    private static void CopyAppearance(Verse.Pawn source, Verse.Pawn target) {
+    private static void CopyAppearance(Pawn source, Pawn target) {
         if (source.story == null || target.story == null) return;
 
         target.story.bodyType = source.story.bodyType;
@@ -181,23 +181,24 @@ public class LightweavingDecoy : SurgebindingAbility {
         }
     }
 
-    [HarmonyPatch(typeof(Verse.Pawn), nameof(Verse.Pawn.PreApplyDamage))]
+    [HarmonyPatch(typeof(Pawn), nameof(Pawn.PreApplyDamage))]
     public static class VanishOnDamage {
         [HarmonyPrefix]
-        public static bool Prefix(Verse.Pawn __instance, ref DamageInfo dinfo, out bool absorbed) {
+        public static bool Prefix(Pawn __instance, ref DamageInfo dinfo, out bool absorbed) {
             absorbed = false;
             if (!DecoyHediff.IsDecoy(__instance)) return true;
 
             absorbed = true;
             if (__instance.Spawned) {
                 FleckMaker.Static(__instance.Position, __instance.Map, FleckDefOf.PsycastAreaEffect);
-                __instance.DeSpawn(DestroyMode.Vanish);
+                __instance.DeSpawn();
             }
 
             RemoveDecoy(__instance);
             if (!__instance.Destroyed) {
                 __instance.Discard(true);
             }
+
             return false;
         }
     }

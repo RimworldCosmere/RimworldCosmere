@@ -7,7 +7,7 @@ namespace Cosmere.System.Roshar.Patch;
 
 [HarmonyPatch(typeof(LifeStageWorker_HumanlikeAdult), nameof(LifeStageWorker_HumanlikeAdult.Notify_LifeStageStarted))]
 public static class SprenLifeStagePatch {
-    static bool Prefix(Verse.Pawn pawn) {
+    private static bool Prefix(Pawn pawn) {
         if (pawn.def.HasComp(typeof(CompSprenBond))) return false;
         return true;
     }

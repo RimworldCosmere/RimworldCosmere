@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Hediff;
 using RimWorld;
@@ -23,7 +21,13 @@ public class ImplantMetalmind : Recipe_Surgery {
         }
     }
 
-    public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer, List<Verse.Thing> ingredients, Bill bill) {
+    public override void ApplyOnPawn(
+        Pawn pawn,
+        BodyPartRecord part,
+        Pawn billDoer,
+        List<Verse.Thing> ingredients,
+        Bill bill
+    ) {
         Metalmind? metalmindComp = FindMetalmind(ingredients);
         if (metalmindComp == null) {
             Messages.Message("CS_Feruchemy_NoMetalmind".Translate(), pawn, MessageTypeDefOf.RejectInput);
@@ -34,6 +38,7 @@ public class ImplantMetalmind : Recipe_Surgery {
             if (CheckSurgeryFail(billDoer, pawn, ingredients, part, bill)) {
                 return;
             }
+
             TaleRecorder.RecordTale(TaleDefOf.DidSurgery, billDoer, pawn);
         }
 
@@ -50,22 +55,27 @@ public class ImplantMetalmind : Recipe_Surgery {
         Messages.Message(
             "CS_Feruchemy_ImplantSuccess".Translate(
                 billDoer.Named("SURGEON"),
-                (metalmindComp.metal?.Named("METAL") ?? "unknown".Named("METAL")),
+                metalmindComp.metal?.Named("METAL") ?? "unknown".Named("METAL"),
                 pawn.Named("RECIPIENT")
             ),
-            pawn, MessageTypeDefOf.PositiveEvent
+            pawn,
+            MessageTypeDefOf.PositiveEvent
         );
     }
 
     private void AddToUnifiedHediff(Pawn pawn, ImplantedMetalmindData data, BodyPartRecord part) {
         ImplantedMetalminds? hediff =
-            pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds) as ImplantedMetalminds;
+            pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds) as
+                ImplantedMetalminds;
         if (hediff == null) {
             hediff = (ImplantedMetalminds)HediffMaker.MakeHediff(
-                HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds, pawn, part
+                HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds,
+                pawn,
+                part
             );
             pawn.health.AddHediff(hediff, part);
         }
+
         hediff.AddMetalmind(data);
     }
 
@@ -74,6 +84,7 @@ public class ImplantMetalmind : Recipe_Surgery {
             Metalmind? comp = ingredients[i].TryGetComp<Metalmind>();
             if (comp != null) return comp;
         }
+
         return null;
     }
 }

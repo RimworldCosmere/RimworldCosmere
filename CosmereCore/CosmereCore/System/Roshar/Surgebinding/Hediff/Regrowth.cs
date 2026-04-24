@@ -1,7 +1,6 @@
 using Cosmere.Core.Ability;
 using Cosmere.Core.Hediff;
 using Cosmere.System.Roshar.Gene;
-using RimWorld;
 using UnityEngine;
 using Verse;
 

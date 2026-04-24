@@ -10,6 +10,7 @@ public class BondsmithCallingMoodWorker : ThoughtWorker {
         for (int i = 0; i < hediffs.Count; i++) {
             if (hediffs[i] is BondsmithCalling) return ThoughtState.ActiveAtStage(0);
         }
+
         return ThoughtState.Inactive;
     }
 }

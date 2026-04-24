@@ -1,12 +1,13 @@
 using System;
 using RimWorld;
 using Verse;
+using GeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;
 
 namespace Cosmere.Core.ScenarioPart;
 
 public class ScenPart_NamedPawns : ScenPart {
-    public List<NamedPawnDef> pawns = [];
     private int generationCounter;
+    public List<NamedPawnDef> pawns = [];
 
     public override void PostIdeoChosen() {
         base.PostIdeoChosen();
@@ -208,11 +209,11 @@ public class ScenPart_NamedPawns : ScenPart {
 
         try {
             if (template.mistborn) {
-                Cosmere.System.Scadrial.Utility.GeneUtility.AddMistborn(pawn, false, true);
+                GeneUtility.AddMistborn(pawn, false, true);
             }
 
             if (template.fullFeruchemist) {
-                Cosmere.System.Scadrial.Utility.GeneUtility.AddFullFeruchemist(pawn, false, true);
+                GeneUtility.AddFullFeruchemist(pawn, false, true);
             }
         } catch (Exception ex) {
             Logger.Warning($"ScenPart_NamedPawns: Failed to add metalborn genes: {ex.Message}");

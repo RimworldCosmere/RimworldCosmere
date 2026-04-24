@@ -8,7 +8,7 @@ using Verse.Profile;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Tension;
 
 public class Harden : SurgebindingAbility {
-    public static readonly Dictionary<Building, float> HardenedBuildings = new();
+    public static readonly Dictionary<Building, float> HardenedBuildings = new Dictionary<Building, float>();
 
     private List<Building> hardenedStructures = [];
 

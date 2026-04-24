@@ -19,11 +19,17 @@ public sealed class AwakeningSkin : ISystemSkin {
     public Texture2D? Sigil => null;
     public Texture2D? BorderFrame => null;
 
-    public Color? GetColor(ThemeSlot slot) => slot switch {
-        ThemeSlot.SurfaceAccent => AccentColor,
-        ThemeSlot.TextOnAccent => HeaderTextColor,
-        _ => null,
-    };
-    public Font? GetFont(FontRole role) => null;
+    public Color? GetColor(ThemeSlot slot) {
+        return slot switch {
+            ThemeSlot.SurfaceAccent => AccentColor,
+            ThemeSlot.TextOnAccent => HeaderTextColor,
+            _ => null,
+        };
+    }
+
+    public Font? GetFont(FontRole role) {
+        return null;
+    }
+
     public Font? DisplayFont => null;
 }

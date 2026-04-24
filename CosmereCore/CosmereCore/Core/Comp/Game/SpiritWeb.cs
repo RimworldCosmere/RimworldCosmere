@@ -5,7 +5,6 @@ namespace Cosmere.Core.Comp.Game;
 
 #pragma warning disable CS9113 // Parameter 'game' is unread - required by GameComponent base class
 public class SpiritWeb(Verse.Game game) : GameComponent {
-#pragma warning restore CS9113
     public const string CHANGED_SIGNAL = "Cosmere_Connection_Changed";
     private List<Connection> connectionList = [];
 
@@ -129,4 +128,5 @@ public class SpiritWeb(Verse.Game game) : GameComponent {
             }
         }
     }
+#pragma warning restore CS9113
 }

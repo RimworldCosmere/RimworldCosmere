@@ -1,16 +1,14 @@
 using System;
 using System.Runtime.CompilerServices;
-using UnityEngine;
-using Cosmere.Core.UI.Lightweave.Hooks;
 using Cosmere.Core.UI.Lightweave.Rendering;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Tokens;
 using Cosmere.Core.UI.Lightweave.Types;
+using UnityEngine;
 
 namespace Cosmere.Core.UI.Lightweave.Input;
 
-public static class Slider
-{
+public static class Slider {
     public static LightweaveNode Create(
         float value,
         Action<float> onChange,
@@ -21,17 +19,17 @@ public static class Slider
         Func<float, string>? format = null,
         bool disabled = false,
         [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0)
-    {
+        [CallerLineNumber] int line = 0
+    ) {
         LightweaveNode node = NodeBuilder.New("Slider", line, caller ?? string.Empty);
+        node.PreferredHeight = new Rem(2.25f).ToPixels();
 
-        node.Paint = (rect, paintChildren) =>
-        {
+        node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
 
-            Hooks.Hooks.RefHandle<bool> dragging = Hooks.Hooks.UseRef<bool>(false);
+            Hooks.Hooks.RefHandle<bool> dragging = Hooks.Hooks.UseRef(false, line, caller ?? string.Empty);
 
             float labelBandHeight = new Rem(1f).ToPixels();
             float trackBandHeight = new Rem(1.25f).ToPixels();
@@ -63,28 +61,43 @@ public static class Slider
             ThemeSlot unfilledSlot = disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput;
             RadiusSpec trackRadius = RadiusSpec.All(new Rem(0.25f));
 
-            if (rtl)
-            {
-                Rect rightUnfilled = new Rect(trackRect.x, trackRect.y, Mathf.Max(0f, thumbCenterX - trackRect.x), trackRect.height);
-                Rect leftFilled = new Rect(thumbCenterX, trackRect.y, Mathf.Max(0f, trackRect.xMax - thumbCenterX), trackRect.height);
+            if (rtl) {
+                Rect rightUnfilled = new Rect(
+                    trackRect.x,
+                    trackRect.y,
+                    Mathf.Max(0f, thumbCenterX - trackRect.x),
+                    trackRect.height
+                );
+                Rect leftFilled = new Rect(
+                    thumbCenterX,
+                    trackRect.y,
+                    Mathf.Max(0f, trackRect.xMax - thumbCenterX),
+                    trackRect.height
+                );
                 PaintBox.Draw(rightUnfilled, new BackgroundSpec.Solid(unfilledSlot), null, trackRadius);
                 PaintBox.Draw(leftFilled, new BackgroundSpec.Solid(filledSlot), null, trackRadius);
-            }
-            else
-            {
-                Rect leftFilled = new Rect(trackRect.x, trackRect.y, Mathf.Max(0f, thumbCenterX - trackRect.x), trackRect.height);
-                Rect rightUnfilled = new Rect(thumbCenterX, trackRect.y, Mathf.Max(0f, trackRect.xMax - thumbCenterX), trackRect.height);
+            } else {
+                Rect leftFilled = new Rect(
+                    trackRect.x,
+                    trackRect.y,
+                    Mathf.Max(0f, thumbCenterX - trackRect.x),
+                    trackRect.height
+                );
+                Rect rightUnfilled = new Rect(
+                    thumbCenterX,
+                    trackRect.y,
+                    Mathf.Max(0f, trackRect.xMax - thumbCenterX),
+                    trackRect.height
+                );
                 PaintBox.Draw(leftFilled, new BackgroundSpec.Solid(filledSlot), null, trackRadius);
                 PaintBox.Draw(rightUnfilled, new BackgroundSpec.Solid(unfilledSlot), null, trackRadius);
             }
 
-            if (marks != null && marks.Length > 0 && range > 0f)
-            {
+            if (marks != null && marks.Length > 0 && range > 0f) {
                 ThemeSlot markSlot = disabled ? ThemeSlot.BorderSubtle : ThemeSlot.BorderDefault;
                 BackgroundSpec markBg = new BackgroundSpec.Solid(markSlot);
                 float markY = trackBand.y + (trackBand.height - tickHeight) / 2f;
-                for (int i = 0; i < marks.Length; i++)
-                {
+                for (int i = 0; i < marks.Length; i++) {
                     float markValue = Mathf.Clamp(marks[i], min, max);
                     float markLogical = (markValue - min) / range;
                     float markPhysical = rtl ? 1f - markLogical : markLogical;
@@ -94,30 +107,53 @@ public static class Slider
                 }
             }
 
-            InteractionState thumbState = InteractionState.Resolve(thumbRect, focusName: null, disabled: disabled);
+            InteractionState thumbState = InteractionState.Resolve(thumbRect, null, disabled);
+            RadiusSpec thumbRadius = RadiusSpec.All(new Rem(0.5f));
+
+            if (!disabled && (thumbState.Hovered || dragging.Current)) {
+                float ringGrowPx = new Rem(0.25f).ToPixels();
+                Rect ringRect = new Rect(
+                    thumbRect.x - ringGrowPx,
+                    thumbRect.y - ringGrowPx,
+                    thumbRect.width + ringGrowPx * 2f,
+                    thumbRect.height + ringGrowPx * 2f
+                );
+                Color ringColor = theme.GetColor(ThemeSlot.BorderFocus);
+                ringColor.a = 0.30f;
+                PaintBox.Draw(ringRect, new BackgroundSpec.Solid(ringColor), null, RadiusSpec.All(new Rem(0.625f)));
+            }
+
             ThemeSlot thumbFillSlot = disabled
                 ? ThemeSlot.SurfaceDisabled
-                : ThemeSlot.SurfaceAccent;
+                : ThemeSlot.TextOnAccent;
             ThemeSlot thumbBorderSlot = disabled
-                ? ThemeSlot.BorderSubtle
+                ? ThemeSlot.BorderOff
                 : thumbState.Hovered || dragging.Current
-                    ? ThemeSlot.BorderHover
+                    ? ThemeSlot.BorderFocus
                     : ThemeSlot.BorderDefault;
             BackgroundSpec thumbBg = new BackgroundSpec.Solid(thumbFillSlot);
-            BorderSpec thumbBorder = BorderSpec.All(new Rem(1f / 16f), thumbBorderSlot);
-            RadiusSpec thumbRadius = RadiusSpec.All(new Rem(0.5f));
+            BorderSpec thumbBorder = BorderSpec.All(new Rem(2f / 16f), thumbBorderSlot);
             PaintBox.Draw(thumbRect, thumbBg, thumbBorder, thumbRadius);
 
-            if (!disabled && (thumbState.Hovered || dragging.Current))
-            {
-                Color overlayColor = new Color(1f, 1f, 1f, 0.08f);
-                PaintBox.Draw(thumbRect, new BackgroundSpec.Solid(overlayColor), null, thumbRadius);
+            if (!disabled) {
+                Rect thumbCore = new Rect(
+                    thumbRect.x + thumbRect.width * 0.30f,
+                    thumbRect.y + thumbRect.height * 0.30f,
+                    thumbRect.width * 0.40f,
+                    thumbRect.height * 0.40f
+                );
+                PaintBox.Draw(
+                    thumbCore,
+                    new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent),
+                    null,
+                    RadiusSpec.All(new Rem(0.5f))
+                );
             }
 
             string labelText = format != null ? format(clampedValue) : $"{clampedValue:0.00}";
             Font labelFont = theme.GetFont(FontRole.Caption);
-            int labelPixelSize = Mathf.RoundToInt(new Rem(0.75f).ToPixels());
-            GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize, FontStyle.Normal);
+            int labelPixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
+            GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize);
             labelStyle.alignment = rtl ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight;
             Color labelColor = disabled
                 ? theme.GetColor(ThemeSlot.TextMuted)
@@ -129,28 +165,21 @@ public static class Slider
 
             paintChildren();
 
-            if (disabled)
-            {
+            if (disabled) {
                 return;
             }
 
             Event e = Event.current;
-            if (e.type == EventType.MouseDown && e.button == 0 && trackBand.Contains(e.mousePosition))
-            {
+            if (e.type == EventType.MouseDown && e.button == 0 && trackBand.Contains(e.mousePosition)) {
                 dragging.Current = true;
                 UpdateValue(e.mousePosition.x, trackRect, min, max, step, rtl, value, onChange);
                 e.Use();
-            }
-            else if (e.type == EventType.MouseDrag && dragging.Current)
-            {
+            } else if (e.type == EventType.MouseDrag && dragging.Current) {
                 UpdateValue(e.mousePosition.x, trackRect, min, max, step, rtl, value, onChange);
                 e.Use();
-            }
-            else if ((e.type == EventType.MouseUp || e.rawType == EventType.MouseUp) && dragging.Current)
-            {
+            } else if ((e.type == EventType.MouseUp || e.rawType == EventType.MouseUp) && dragging.Current) {
                 dragging.Current = false;
-                if (e.type == EventType.MouseUp)
-                {
+                if (e.type == EventType.MouseUp) {
                     e.Use();
                 }
             }
@@ -167,26 +196,25 @@ public static class Slider
         float step,
         bool rtl,
         float currentValue,
-        Action<float> onChange)
-    {
-        if (trackRect.width <= 0f)
-        {
+        Action<float> onChange
+    ) {
+        if (trackRect.width <= 0f) {
             return;
         }
+
         float localX = mouseX - trackRect.x;
         float fraction = Mathf.Clamp01(localX / trackRect.width);
-        if (rtl)
-        {
+        if (rtl) {
             fraction = 1f - fraction;
         }
+
         float newValue = Mathf.Lerp(min, max, fraction);
-        if (step > 0f)
-        {
+        if (step > 0f) {
             newValue = min + Mathf.Round((newValue - min) / step) * step;
             newValue = Mathf.Clamp(newValue, min, max);
         }
-        if (!Mathf.Approximately(newValue, currentValue))
-        {
+
+        if (!Mathf.Approximately(newValue, currentValue)) {
             onChange?.Invoke(newValue);
         }
     }

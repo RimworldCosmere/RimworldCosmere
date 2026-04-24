@@ -18,7 +18,7 @@ public class Slick : SurgebindingAbility {
         SurgebindingHediffUtility.GetOrAddHediff(pawn, this, def.hediff);
 
         RimWorld.Ability gripAbility = pawn.abilities.GetAbility(
-            DefDatabase<RimWorld.AbilityDef>.GetNamed("Cosmere_Roshar_Ability_Grip")
+            DefDatabase<AbilityDef>.GetNamed("Cosmere_Roshar_Ability_Grip")
         );
         if (gripAbility is SurgebindingAbility { status.isActive: true } grip) {
             grip.UpdateStatus(Active.Off);

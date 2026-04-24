@@ -1,4 +1,3 @@
-using Cosmere.Core.Ability;
 using RimWorld;
 using Verse;
 
@@ -7,10 +6,10 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Abrasion;
 public class FrictionTrap : SurgebindingAbility {
     private const int BaseRadius = 3;
     private const int HediffRefreshTicks = 120;
+    private bool overlayActive;
 
     private IntVec3 zoneCenter;
     private int zoneExpiryTick = -1;
-    private bool overlayActive;
 
     public FrictionTrap(Pawn pawn) : base(pawn) { }
     public FrictionTrap(Pawn pawn, AbilityDef def) : base(pawn, def) { }
@@ -57,6 +56,7 @@ public class FrictionTrap : SurgebindingAbility {
                 FrictionTrapOverlay.Unregister(pawn.thingIDNumber);
                 overlayActive = false;
             }
+
             return;
         }
 
@@ -67,7 +67,10 @@ public class FrictionTrap : SurgebindingAbility {
 
         float currentRadius = radius;
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
-                     zoneCenter, pawn.Map, currentRadius, true
+                     zoneCenter,
+                     pawn.Map,
+                     currentRadius,
+                     true
                  )) {
             if (thing is not Pawn targetPawn) continue;
             if (targetPawn.Dead) continue;

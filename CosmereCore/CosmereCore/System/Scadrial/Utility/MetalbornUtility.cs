@@ -12,6 +12,7 @@ public static class MetalbornUtility {
         for (int i = 0; i < genes.Count; i++) {
             if (genes[i] is Allomancer or Feruchemist && genes[i].Active) return true;
         }
+
         return false;
     }
 
@@ -21,6 +22,7 @@ public static class MetalbornUtility {
         for (int i = 0; i < genes.Count; i++) {
             if (genes[i] is Allomancer && genes[i].Active) return true;
         }
+
         return false;
     }
 
@@ -30,6 +32,7 @@ public static class MetalbornUtility {
         for (int i = 0; i < genes.Count; i++) {
             if (genes[i] is Feruchemist && genes[i].Active) return true;
         }
+
         return false;
     }
 

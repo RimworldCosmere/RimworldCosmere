@@ -14,6 +14,7 @@ public static class RadialSnapshotBuilder {
             if (sys.Subsections.Count == 0) continue;
             systems.Add(sys);
         }
+
         if (systems.Count == 0) return null;
 
         return new RadialSnapshot(pawn, systems, Find.TickManager.TicksGame);

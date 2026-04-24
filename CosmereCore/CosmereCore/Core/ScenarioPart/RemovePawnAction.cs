@@ -1,13 +1,14 @@
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace Cosmere.Core.ScenarioPart;
 
 public class RemovePawnAction : ProgressionAction {
-    public string pawnName = "";
-    public string method = "vanish";
-    public string? letterTitle;
     public string? letterText;
+    public string? letterTitle;
+    public string method = "vanish";
+    public string pawnName = "";
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);
@@ -27,11 +28,11 @@ public class RemovePawnAction : ProgressionAction {
                 break;
             case "leave":
                 pawn.DeSpawn();
-                Find.WorldPawns.PassToWorld(pawn, RimWorld.Planet.PawnDiscardDecideMode.Decide);
+                Find.WorldPawns.PassToWorld(pawn);
                 break;
             default:
                 pawn.DeSpawn();
-                Find.WorldPawns.PassToWorld(pawn, RimWorld.Planet.PawnDiscardDecideMode.Discard);
+                Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);
                 break;
         }
     }

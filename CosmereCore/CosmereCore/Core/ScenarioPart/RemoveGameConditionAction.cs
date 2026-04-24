@@ -16,7 +16,7 @@ public class RemoveGameConditionAction : ProgressionAction {
         Map? map = Find.CurrentMap;
         if (map == null) return;
 
-        RimWorld.GameCondition? active = map.gameConditionManager.GetActiveCondition(def);
+        GameCondition? active = map.gameConditionManager.GetActiveCondition(def);
         if (active != null) {
             active.End();
         }

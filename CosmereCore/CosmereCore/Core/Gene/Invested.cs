@@ -21,9 +21,7 @@ public abstract class Invested : Gene_Resource {
     public override float MinLevelForAlert => .15f;
     public override float MaxLevelOffset => .1f;
 
-    public override float Max {
-        get => throw new NotImplementedException("Subclass must override Max");
-    }
+    public override float Max => throw new NotImplementedException("Subclass must override Max");
 
     public override float Value {
         get => throw new NotImplementedException("Subclass must override Value");

@@ -4,9 +4,9 @@ using Verse;
 namespace Cosmere.Core.ScenarioPart;
 
 public class SendLetterAction : ProgressionAction {
-    public string title = "";
-    public string text = "";
     public string? letterDef;
+    public string text = "";
+    public string title = "";
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         LetterDef def = LetterDefOf.NeutralEvent;

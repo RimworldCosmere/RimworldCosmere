@@ -13,7 +13,7 @@ public class SeekHighstormShelter : ThinkNode_JobGiver {
         IntVec3 shelterCell = StormShelterManager.FindNearestShelterCell(
             pawn.Position,
             pawn.Map,
-            TraverseParms.For(pawn, Danger.Deadly)
+            TraverseParms.For(pawn)
         );
 
         if (!shelterCell.IsValid) return null;

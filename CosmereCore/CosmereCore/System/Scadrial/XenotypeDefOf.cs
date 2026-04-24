@@ -10,10 +10,6 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class XenotypeDefOf {
-    static XenotypeDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(XenotypeDefOf));
-    }
-
     [MayRequire("Cosmere.Scadrial")]
     public static XenotypeDef Cosmere_Scadrial_Xenotype_Noble;
 
@@ -25,4 +21,8 @@ public static class XenotypeDefOf {
 
     [MayRequire("Cosmere.Scadrial")]
     public static XenotypeDef Cosmere_Scadrial_Xenotype_Terris;
+
+    static XenotypeDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(XenotypeDefOf));
+    }
 }

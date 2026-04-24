@@ -11,9 +11,10 @@ public class Soulcast : JobDriver {
 
     protected override IEnumerable<Verse.AI.Toil> MakeNewToils() {
         AddFinishAction(_ => {
-            SoulcastOverlay.Remove(TargetA.Cell);
-            pawn.Map?.designationManager.TryRemoveDesignation(TargetA.Cell, Designator_Soulcast.DesignationDef);
-        });
+                SoulcastOverlay.Remove(TargetA.Cell);
+                pawn.Map?.designationManager.TryRemoveDesignation(TargetA.Cell, Designator_Soulcast.DesignationDef);
+            }
+        );
 
         if (TargetA.HasThing) {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);

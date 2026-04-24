@@ -3,7 +3,7 @@ using Verse;
 namespace Cosmere.Core.Comp.Map;
 
 public abstract class Renderer<T>(Verse.Map map) : MapComponent(map) {
-    private static Dictionary<object, HashSet<T>> ToRender = [];
+    private static readonly Dictionary<object, HashSet<T>> ToRender = [];
 
     public override void MapComponentUpdate() {
         foreach (T item in ToRender.Keys.SelectMany(key => ToRender[key])) {

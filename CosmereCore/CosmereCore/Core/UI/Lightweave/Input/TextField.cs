@@ -1,19 +1,19 @@
 // NOTE: IME and CJK input rely on RimWorld's Verse.Widgets.TextField, which defers to
 // Unity's underlying TextField. Chinese/Japanese composition behavior is inherited from
 // the engine and has not been verified end-to-end; verification is deferred.
+
 using System;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 using Cosmere.Core.UI.Lightweave.Hooks;
 using Cosmere.Core.UI.Lightweave.Rendering;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Tokens;
 using Cosmere.Core.UI.Lightweave.Types;
+using UnityEngine;
 
 namespace Cosmere.Core.UI.Lightweave.Input;
 
-public static class TextField
-{
+public static class TextField {
     private const int ShakeFrames = 6;
     private const float ShakeAmplitudePx = 2f;
 
@@ -23,49 +23,63 @@ public static class TextField
         string? placeholder = null,
         Func<string, bool>? validator = null,
         bool disabled = false,
+        UseFocus.FocusHandle? focus = null,
+        object? instanceKey = null,
         [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0)
-    {
-        LightweaveNode node = NodeBuilder.New("TextField", line, caller ?? string.Empty);
+        [CallerLineNumber] int line = 0
+    ) {
+        string callerFile = caller ?? string.Empty;
+        int callerLine = line;
+        string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
+        string focusKey = callerFile + "#tf_focus" + keySuffix;
+        string bufferKey = callerFile + "#tf_buffer" + keySuffix;
+        string lastGoodKey = callerFile + "#tf_lastGood" + keySuffix;
+        string wasFocusedKey = callerFile + "#tf_wasFocused" + keySuffix;
+        string shakeKey = callerFile + "#tf_shake" + keySuffix;
 
-        node.Paint = (rect, paintChildren) =>
-        {
+        LightweaveNode node = NodeBuilder.New("TextField", callerLine, callerFile);
+        node.PreferredHeight = new Rem(1.75f).ToPixels();
+
+        node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
 
-            Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("");
-            if (string.IsNullOrEmpty(focusNameRef.Current))
-            {
-                focusNameRef.Current = "lw_tf_" + Guid.NewGuid().ToString("N").Substring(0, 8);
-            }
-            string focusName = focusNameRef.Current;
+            string focusName;
+            if (focus != null) {
+                focusName = focus.Name;
+            } else {
+                Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", callerLine, focusKey);
+                if (string.IsNullOrEmpty(focusNameRef.Current)) {
+                    focusNameRef.Current = "lw_tf_" + Guid.NewGuid().ToString("N").Substring(0, 8);
+                }
 
-            Hooks.Hooks.StateHandle<string> buffer = Hooks.Hooks.UseState<string>(value ?? string.Empty);
-            Hooks.Hooks.RefHandle<string> lastGood = Hooks.Hooks.UseRef<string>(value ?? string.Empty);
-            Hooks.Hooks.RefHandle<bool> wasFocused = Hooks.Hooks.UseRef<bool>(false);
-            Hooks.Hooks.StateHandle<int> shakeFrames = Hooks.Hooks.UseState<int>(0);
+                focusName = focusNameRef.Current;
+            }
+
+            Hooks.Hooks.StateHandle<string> buffer = Hooks.Hooks.UseState(value ?? string.Empty, callerLine, bufferKey);
+            Hooks.Hooks.RefHandle<string> lastGood = Hooks.Hooks.UseRef(value ?? string.Empty, callerLine, lastGoodKey);
+            Hooks.Hooks.RefHandle<bool> wasFocused = Hooks.Hooks.UseRef(false, callerLine, wasFocusedKey);
+            Hooks.Hooks.StateHandle<int> shakeFrames = Hooks.Hooks.UseState(0, callerLine, shakeKey);
 
             InteractionState state = InteractionState.Resolve(rect, focusName, disabled);
             InputSurface.Draw(rect, theme, state);
 
-            float padX = new Rem(0.5f).ToPixels();
-            Rect inner = new Rect(rect.x + padX, rect.y, rect.width - padX * 2f, rect.height);
+            float padX = InputSurface.PaddingX.ToPixels();
+            float padY = InputSurface.PaddingY.ToPixels();
+            Rect inner = new Rect(rect.x + padX, rect.y + padY, rect.width - padX * 2f, rect.height - padY * 2f);
 
-            if (shakeFrames.Value > 0)
-            {
-                float sign = (shakeFrames.Value % 2 == 0) ? 1f : -1f;
+            if (shakeFrames.Value > 0) {
+                float sign = shakeFrames.Value % 2 == 0 ? 1f : -1f;
                 inner = new Rect(inner.x + sign * ShakeAmplitudePx, inner.y, inner.width, inner.height);
                 shakeFrames.Set(shakeFrames.Value - 1);
             }
 
-            bool showPlaceholder = !state.Focused
-                && string.IsNullOrEmpty(buffer.Value)
-                && !string.IsNullOrEmpty(placeholder);
+            bool showPlaceholder =
+                !state.Focused && string.IsNullOrEmpty(buffer.Value) && !string.IsNullOrEmpty(placeholder);
 
-            if (showPlaceholder)
-            {
+            if (showPlaceholder) {
                 Font phFont = theme.GetFont(FontRole.Body);
-                int phSize = Mathf.RoundToInt(new Rem(1f).ToPixels());
-                GUIStyle phStyle = GuiStyleCache.Get(phFont, phSize, FontStyle.Normal);
+                int phSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
+                GUIStyle phStyle = GuiStyleCache.Get(phFont, phSize);
                 phStyle.alignment = TextAnchor.MiddleLeft;
                 Color savedColor = GUI.color;
                 GUI.color = theme.GetColor(ThemeSlot.TextMuted);
@@ -74,28 +88,34 @@ public static class TextField
             }
 
             Event e = Event.current;
-            bool enterPressed = e.type == EventType.KeyDown
-                && (e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter)
-                && state.Focused;
+            bool enterPressed = e.type == EventType.KeyDown &&
+                                (e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter) &&
+                                state.Focused;
 
-            if (disabled)
-            {
+            if (disabled) {
                 Font roFont = theme.GetFont(FontRole.Body);
-                int roSize = Mathf.RoundToInt(new Rem(1f).ToPixels());
-                GUIStyle roStyle = GuiStyleCache.Get(roFont, roSize, FontStyle.Normal);
+                int roSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
+                GUIStyle roStyle = GuiStyleCache.Get(roFont, roSize);
                 roStyle.alignment = TextAnchor.MiddleLeft;
                 Color savedColor = GUI.color;
                 GUI.color = theme.GetColor(ThemeSlot.TextMuted);
                 GUI.Label(RectSnap.Snap(inner), buffer.Value ?? string.Empty, roStyle);
                 GUI.color = savedColor;
-            }
-            else
-            {
+            } else {
+                Font tfFont = theme.GetFont(FontRole.Body);
+                int tfSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
+                Color tfTextColor = theme.GetColor(ThemeSlot.TextPrimary);
+                GUIStyle tfStyle = InputSurface.GetChromelessTextFieldStyle(tfFont, tfSize, tfTextColor);
                 GUI.SetNextControlName(focusName);
-                string next = Verse.Widgets.TextField(inner, buffer.Value ?? string.Empty);
-                if (!ReferenceEquals(next, buffer.Value) && next != buffer.Value)
-                {
+                string next = GUI.TextField(RectSnap.Snap(inner), buffer.Value ?? string.Empty, tfStyle);
+                if (!ReferenceEquals(next, buffer.Value) && next != buffer.Value) {
                     buffer.Set(next);
+                }
+            }
+
+            if (!disabled && e.type == EventType.MouseDown && e.button == 0 && !rect.Contains(e.mousePosition)) {
+                if (GUI.GetNameOfFocusedControl() == focusName) {
+                    GUI.FocusControl(null);
                 }
             }
 
@@ -103,22 +123,18 @@ public static class TextField
             bool focusLost = wasFocused.Current && !isFocusedNow;
             wasFocused.Current = isFocusedNow;
 
-            if (enterPressed || focusLost)
-            {
+            if (enterPressed || focusLost) {
                 string candidate = buffer.Value ?? string.Empty;
                 bool accepted = validator == null || validator(candidate);
-                if (accepted)
-                {
+                if (accepted) {
                     lastGood.Current = candidate;
                     onChange?.Invoke(candidate);
-                }
-                else
-                {
+                } else {
                     buffer.Set(lastGood.Current ?? string.Empty);
                     shakeFrames.Set(ShakeFrames);
                 }
-                if (enterPressed)
-                {
+
+                if (enterPressed) {
                     e.Use();
                 }
             }

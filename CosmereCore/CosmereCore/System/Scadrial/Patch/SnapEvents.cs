@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Scadrial.Utility;
 using HarmonyLib;
 using RimWorld;
@@ -26,14 +25,16 @@ public static class SnapEvents {
         PawnRelationDefOf.Bond,
     ];
 
-    private static readonly Dictionary<int, int> StarvationCooldowns = new();
+    private static readonly Dictionary<int, int> StarvationCooldowns = new Dictionary<int, int>();
 
     private static readonly AccessTools.FieldRef<Pawn_GuestTracker, Pawn> guestPawn =
         AccessTools.FieldRefAccess<Pawn_GuestTracker, Pawn>("pawn");
 
     private static readonly HashSet<int> TemperatureCooldowns = [];
     private static readonly HashSet<int> WithdrawalCooldowns = [];
-    private static readonly Dictionary<int, (int startTick, int count, bool triggered)> ColonyDestructionTracker = new();
+
+    private static readonly Dictionary<int, (int startTick, int count, bool triggered)> ColonyDestructionTracker =
+        new Dictionary<int, (int startTick, int count, bool triggered)>();
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(MentalStateHandler), nameof(MentalStateHandler.TryStartMentalState))]
@@ -120,6 +121,7 @@ public static class SnapEvents {
             if (TemperatureCooldowns.Add(hypo.loadID)) {
                 TrySnap(pawn, 12, "CS_PawnSnapped_Temperature");
             }
+
             return;
         }
 
@@ -147,8 +149,14 @@ public static class SnapEvents {
     }
 
     [HarmonyPostfix]
-    [HarmonyPatch(typeof(Pawn_HealthTracker), "AddHediff",
-        new[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo?), typeof(DamageWorker.DamageResult) })]
+    [HarmonyPatch(
+        typeof(Pawn_HealthTracker),
+        "AddHediff",
+        typeof(Hediff),
+        typeof(BodyPartRecord),
+        typeof(DamageInfo?),
+        typeof(DamageWorker.DamageResult)
+    )]
     public static void SnapFromLimbLoss(Hediff hediff) {
         if (hediff.def != RimWorld.HediffDefOf.MissingBodyPart) return;
         Pawn pawn = hediff.pawn;
@@ -213,6 +221,7 @@ public static class SnapEvents {
                 TrySnap(pawn, 4, "CS_PawnSnapped_Lightning");
             }
         }
+
         foreach (IntVec3 cell in GenAdj.CellsAdjacent8Way(strikeLoc, Rot4.North, IntVec2.One)) {
             if (!cell.InBounds(map)) continue;
             List<Verse.Thing> adjacent = map.thingGrid.ThingsListAt(cell);
@@ -264,6 +273,7 @@ public static class SnapEvents {
         for (int i = 0; i < CloseRelations.Length; i++) {
             if (CloseRelations[i] == def) return true;
         }
+
         return false;
     }
 }

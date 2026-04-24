@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Cosmere.Core.Def;
 using Cosmere.System.Roshar.Surgebinding.IdealChecker;
 using RimWorld;
@@ -21,19 +20,19 @@ public class RadiantOrderDef : Verse.Def {
     public List<AbilityDef> abilities = null!;
     public Texture2D bannerIcon = null!;
     public Color color;
-    public GemDef gemstone = null!;
-    public Texture2D icon = null!;
 
     public List<TraitRequirement> favorableTraits = null!;
+    public GemDef gemstone = null!;
+    public Texture2D icon = null!;
     public AbstractIdealChecker idealChecker = null!;
     public List<Ideal> ideals = null!;
     public List<TraitRequirement> incompatibleTraits = null!;
     public Texture2D invertedIcon = null!;
-    public List<SurgeDef> surges = null!;
-    public string sprenLabel = "";
     public string sprenDescription = "";
-    public string sprenTexturePath = "";
+    public string sprenLabel = "";
     public List<string> sprenNamePool = [];
+    public string sprenTexturePath = "";
+    public List<SurgeDef> surges = null!;
 
     private Type idealCheckerClass =>
         typeof(RadiantOrderDef).Assembly.GetType("Cosmere.System.Roshar.Surgebinding.IdealChecker." + defName);
@@ -129,7 +128,10 @@ public class RadiantOrderDef : Verse.Def {
                 favorableTraits = [Req(tough), Req(nerves, 1), Req(RimWorld.TraitDefOf.Industriousness, 2)];
                 break;
             case "Bondsmith":
-                incompatibleTraits = [Req(RimWorld.TraitDefOf.Psychopath), Req(RimWorld.TraitDefOf.DislikesMen), Req(RimWorld.TraitDefOf.DislikesWomen)];
+                incompatibleTraits = [
+                    Req(RimWorld.TraitDefOf.Psychopath), Req(RimWorld.TraitDefOf.DislikesMen),
+                    Req(RimWorld.TraitDefOf.DislikesWomen),
+                ];
                 favorableTraits = [Req(RimWorld.TraitDefOf.Kind), Req(naturalMood, 2)];
                 break;
         }

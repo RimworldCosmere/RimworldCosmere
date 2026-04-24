@@ -50,9 +50,9 @@ public class InvestitureHolderProperties : CompProperties {
 }
 
 public class InvestitureHolder : ThingComp {
-    private float currentInvestitureSelfInt;
     private List<Verse.Thing>? cachedChildren;
     private int cachedChildrenTick = -1;
+    private float currentInvestitureSelfInt;
 
     public float drainRate;
 
@@ -148,7 +148,7 @@ public class InvestitureHolder : ThingComp {
                     }
 
                     if (pawn.equipment?.AllEquipmentListForReading != null) {
-                        List<Verse.ThingWithComps> equipment = pawn.equipment.AllEquipmentListForReading;
+                        List<ThingWithComps> equipment = pawn.equipment.AllEquipmentListForReading;
                         for (int i = 0; i < equipment.Count; i++) {
                             if (equipment[i] != parent && equipment[i].HasComp<InvestitureHolder>()) {
                                 things.Add(equipment[i]);
@@ -157,7 +157,7 @@ public class InvestitureHolder : ThingComp {
                     }
 
                     if (pawn.apparel?.WornApparel != null) {
-                        List<RimWorld.Apparel> apparel = pawn.apparel.WornApparel;
+                        List<Apparel> apparel = pawn.apparel.WornApparel;
                         for (int i = 0; i < apparel.Count; i++) {
                             if (apparel[i] != parent && apparel[i].HasComp<InvestitureHolder>()) {
                                 things.Add(apparel[i]);
@@ -215,12 +215,12 @@ public class InvestitureHolder : ThingComp {
         }
 
         amountAbsorbed = Mathf.Min(
-                             amountToAbsorb,
-                             Mathf.Min(
-                                 maxInvestitureSelfStack - currentInvestitureSelfStack,
-                                 thingInvestiture.currentInvestitureSelfStack
-                             )
-                         );
+            amountToAbsorb,
+            Mathf.Min(
+                maxInvestitureSelfStack - currentInvestitureSelfStack,
+                thingInvestiture.currentInvestitureSelfStack
+            )
+        );
         if (amountAbsorbed > 0) {
             currentInvestitureSelf += amountAbsorbed / parent.stackCount;
             thingInvestiture.currentInvestitureSelf -= amountAbsorbed / thing.stackCount;
@@ -246,6 +246,7 @@ public class InvestitureHolder : ThingComp {
         if (parent.def.tickerType != TickerType.Normal) {
             parent.def.tickerType = TickerType.Normal;
         }
+
         maxInvestitureSelf = props.maxIsInfinity ? float.PositiveInfinity : props.maxInvestiture!.Value;
     }
 

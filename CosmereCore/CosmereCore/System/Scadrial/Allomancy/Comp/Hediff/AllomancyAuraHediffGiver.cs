@@ -2,12 +2,11 @@ using Cosmere.Core;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Map;
 using Cosmere.Core.Hediff;
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Comp.Hediff;
 using Cosmere.System.Scadrial.Gene;
-using Cosmere.Core.Util;
-using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -56,6 +55,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
             foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in parent.sourceAbilities) {
                 return (IAbility<Allomancer, AllomanticHediff>?)sa;
             }
+
             return null;
         }
     }
@@ -91,6 +91,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
                 nearbyPawns.Add(cellPawn);
             }
         }
+
         foreach (Pawn pawn in nearbyPawns) {
             TryAct(pawn);
         }
@@ -99,11 +100,17 @@ public class AllomancyAuraHediffGiver : HediffComp {
         foreach (Pawn pawn in pawnsWithHediff) {
             if (nearbyPawns.Contains(pawn)) continue;
             if (ability != null) {
-                AllomanticHediff? hediff = (AllomanticHediff?)pawn.GetOrAddHediff((AllomancyAbility)ability!, props, Pawn);
+                AllomanticHediff? hediff = (AllomanticHediff?)pawn.GetOrAddHediff(
+                    (AllomancyAbility)ability!,
+                    props,
+                    Pawn
+                );
                 hediff?.RemoveSource(ability);
             }
+
             toRemove.Add(pawn);
         }
+
         for (int i = 0; i < toRemove.Count; i++) {
             pawnsWithHediff.Remove(toRemove[i]);
         }

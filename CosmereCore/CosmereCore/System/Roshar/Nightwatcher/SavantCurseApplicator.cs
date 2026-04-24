@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using Cosmere.Core.Savant;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Scadrial.Gene;
-using RimWorld;
 using Verse;
 using Logger = Cosmere.Core.Logger;
 
@@ -36,38 +34,52 @@ public class SavantCurseApplicator : ICurseApplicator {
 
         if (pick < allomancerGenes.Count) {
             Allomancer chosen = allomancerGenes[pick];
-            ApplySavantHediffs(pawn,
+            ApplySavantHediffs(
+                pawn,
                 SavantUtility.GetAllomanticSavantHediffDef(chosen.metal),
-                SavantUtility.GetAllomanticPermanentHediffDef(chosen.metal));
-            Logger.Info($"SavantCurseApplicator: forced {pawn.NameShortColored} to allomantic savant for {chosen.metal.defName}");
+                SavantUtility.GetAllomanticPermanentHediffDef(chosen.metal)
+            );
+            Logger.Info(
+                $"SavantCurseApplicator: forced {pawn.NameShortColored} to allomantic savant for {chosen.metal.defName}"
+            );
             return;
         }
+
         pick -= allomancerGenes.Count;
 
         if (pick < feruchemistGenes.Count) {
             Feruchemist chosen = feruchemistGenes[pick];
-            ApplySavantHediffs(pawn,
+            ApplySavantHediffs(
+                pawn,
                 SavantUtility.GetFeruchemicalSavantHediffDef(chosen.metal),
-                SavantUtility.GetFeruchemicalPermanentHediffDef(chosen.metal));
-            Logger.Info($"SavantCurseApplicator: forced {pawn.NameShortColored} to feruchemical savant for {chosen.metal.defName}");
+                SavantUtility.GetFeruchemicalPermanentHediffDef(chosen.metal)
+            );
+            Logger.Info(
+                $"SavantCurseApplicator: forced {pawn.NameShortColored} to feruchemical savant for {chosen.metal.defName}"
+            );
             return;
         }
+
         pick -= feruchemistGenes.Count;
 
         Surgebinder chosenSurgebinder = surgebinderGenes[pick];
         List<SurgeDef> surges = chosenSurgebinder.radiantOrderDef.surges;
         if (surges.Count == 0) return;
         SurgeDef chosenSurge = surges[Rand.Range(0, surges.Count)];
-        ApplySavantHediffs(pawn,
+        ApplySavantHediffs(
+            pawn,
             SavantUtility.GetSurgeSavantHediffDef(chosenSurge.defName),
-            SavantUtility.GetSurgePermanentHediffDef(chosenSurge.defName));
-        Logger.Info($"SavantCurseApplicator: forced {pawn.NameShortColored} to surgebinding savant for {chosenSurge.defName}");
+            SavantUtility.GetSurgePermanentHediffDef(chosenSurge.defName)
+        );
+        Logger.Info(
+            $"SavantCurseApplicator: forced {pawn.NameShortColored} to surgebinding savant for {chosenSurge.defName}"
+        );
     }
 
     private static void ApplySavantHediffs(Pawn pawn, HediffDef? savantDef, HediffDef? permanentDef) {
         if (savantDef != null) {
-            Verse.Hediff savant = pawn.health.hediffSet.GetFirstHediffOfDef(savantDef)
-                ?? HediffMaker.MakeHediff(savantDef, pawn);
+            Verse.Hediff savant = pawn.health.hediffSet.GetFirstHediffOfDef(savantDef) ??
+                                  HediffMaker.MakeHediff(savantDef, pawn);
             savant.Severity = SavantUtility.SeverityForStage(3);
             if (!pawn.health.hediffSet.HasHediff(savantDef)) pawn.health.AddHediff(savant);
         }

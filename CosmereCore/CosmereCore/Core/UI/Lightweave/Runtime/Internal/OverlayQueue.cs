@@ -1,28 +1,23 @@
 using System;
-using System.Collections.Generic;
 
 namespace Cosmere.Core.UI.Lightweave.Runtime.Internal;
 
-internal sealed class OverlayQueue
-{
+internal sealed class OverlayQueue {
     private readonly List<Action> pending = new List<Action>();
 
-    public void Enqueue(Action drawOverlay)
-    {
+    public void Enqueue(Action drawOverlay) {
         pending.Add(drawOverlay);
     }
 
-    public void Flush()
-    {
-        for (int i = 0; i < pending.Count; i++)
-        {
+    public void Flush() {
+        for (int i = 0; i < pending.Count; i++) {
             pending[i]();
         }
+
         pending.Clear();
     }
 
-    public void Clear()
-    {
+    public void Clear() {
         pending.Clear();
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Cosmere.Core;
-using Cosmere.Core.Investiture;
 using Cosmere.Core.Savant;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Thing;
@@ -17,14 +16,14 @@ public class Allomancer : Metalborn {
     private const float SleepDecayAmountPerRareInterval = .0025f;
 
     private RecordDef? cachedMetalBurntRecord;
+    private HediffDef? cachedPermanentHediffDef;
+    private HediffDef? cachedSavantHediffDef;
+    private int cachedSavantStage;
+    private HediffDef? cachedWithdrawalHediffDef;
     private float currentReserve;
     public int requestedVialStock = 3;
-    private float? timeDilationFactor;
-    private int cachedSavantStage;
     private float savantDecayOffset;
-    private HediffDef? cachedSavantHediffDef;
-    private HediffDef? cachedWithdrawalHediffDef;
-    private HediffDef? cachedPermanentHediffDef;
+    private float? timeDilationFactor;
 
     public bool shouldConsumeVialNow {
         get {
@@ -50,6 +49,7 @@ public class Allomancer : Metalborn {
             for (int i = 0; i < sources.Count; i++) {
                 total += sources[i].Rate;
             }
+
             return total;
         }
     }
@@ -60,6 +60,7 @@ public class Allomancer : Metalborn {
             return Mathf.RoundToInt(GenTicks.TickRareInterval / timeDilationFactor.Value);
         }
     }
+
     public override float Max => Mathf.Max(1, MaxMetalAmount * Mathf.Log(skill.Level + 1, 2f));
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
 
@@ -136,6 +137,7 @@ public class Allomancer : Metalborn {
         for (int i = 0; i < sources.Count; i++) {
             pawn.GetAllomanticAbility((AllomanticAbilityDef)sources[i].Def)?.UpdateStatus(Core.Ability.Active.Off);
         }
+
         sources.Clear();
     }
 
@@ -149,7 +151,10 @@ public class Allomancer : Metalborn {
         int newStage = SavantUtility.GetAllomanticStage(ticks);
 
         if (newStage == 1 && !Burning) {
-            float decayAmount = ticks * SavantUtility.Stage1DecayPerDayFraction / GenDate.TicksPerDay * GenTicks.TickLongInterval;
+            float decayAmount = ticks *
+                                SavantUtility.Stage1DecayPerDayFraction /
+                                GenDate.TicksPerDay *
+                                GenTicks.TickLongInterval;
             savantDecayOffset += decayAmount;
             ticks -= decayAmount;
             newStage = SavantUtility.GetAllomanticStage(ticks);
@@ -196,7 +201,9 @@ public class Allomancer : Metalborn {
         if (Burning) {
             Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(withdrawalHediffDef);
             if (existing != null) {
-                existing.Severity -= SavantUtility.WithdrawalSeverityLossPerDay / GenDate.TicksPerDay * GenTicks.TickLongInterval;
+                existing.Severity -= SavantUtility.WithdrawalSeverityLossPerDay /
+                                     GenDate.TicksPerDay *
+                                     GenTicks.TickLongInterval;
                 if (existing.Severity <= 0.01f) pawn.health.RemoveHediff(existing);
             }
         } else {
@@ -206,7 +213,9 @@ public class Allomancer : Metalborn {
                 hediff.Severity = 0.05f;
                 pawn.health.AddHediff(hediff);
             } else {
-                existing.Severity += SavantUtility.WithdrawalSeverityGainPerDay / GenDate.TicksPerDay * GenTicks.TickLongInterval;
+                existing.Severity += SavantUtility.WithdrawalSeverityGainPerDay /
+                                     GenDate.TicksPerDay *
+                                     GenTicks.TickLongInterval;
             }
         }
     }
@@ -243,7 +252,7 @@ public class Allomancer : Metalborn {
     }
 
     public static string ThresholdDisplayLabel(Allomancer gene) {
-        if (gene.targetValue <= 0f) return (string)"CS_NeverConsumeVial".Translate();
-        return (string)"CS_ConsumeVialBelow".Translate(gene.PostProcessValue(gene.targetValue).Named("PERCENT"));
+        if (gene.targetValue <= 0f) return "CS_NeverConsumeVial".Translate();
+        return "CS_ConsumeVialBelow".Translate(gene.PostProcessValue(gene.targetValue).Named("PERCENT"));
     }
 }

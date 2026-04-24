@@ -8,9 +8,8 @@ public interface IDormantConnectionCallback {
 }
 
 public class DormantConnection : Verse.DefModExtension {
-    public Type callbackHandler = null!;
-
     private IDormantConnectionCallback? cachedHandler;
+    public Type callbackHandler = null!;
 
     public IDormantConnectionCallback? Handler =>
         cachedHandler ??= Activator.CreateInstance(callbackHandler) as IDormantConnectionCallback;

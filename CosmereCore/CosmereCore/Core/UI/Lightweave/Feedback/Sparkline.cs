@@ -1,32 +1,29 @@
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using UnityEngine;
-using Cosmere.Core.UI.Lightweave.Rendering;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Tokens;
 using Cosmere.Core.UI.Lightweave.Types;
+using UnityEngine;
+using Verse;
 
 namespace Cosmere.Core.UI.Lightweave.Feedback;
 
-public static class Sparkline
-{
+public static class Sparkline {
     public static LightweaveNode Create(
         IReadOnlyList<float> samples,
         ThemeSlot? lineColor = null,
         ThemeSlot? fillColor = null,
         Rem lineThickness = default,
         [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = "")
-    {
-        Rem resolvedThickness = lineThickness.Equals(default(Rem)) ? new Rem(1f / 16f) : lineThickness;
+        [CallerFilePath] string file = ""
+    ) {
+        Rem resolvedThickness = lineThickness.Equals(default) ? new Rem(1f / 16f) : lineThickness;
         ThemeSlot resolvedLine = lineColor ?? ThemeSlot.SurfaceAccent;
 
         LightweaveNode node = NodeBuilder.New("Sparkline", line, file);
+        node.PreferredHeight = new Rem(2f).ToPixels();
 
-        node.Paint = (rect, paintChildren) =>
-        {
-            if (samples == null || samples.Count == 0)
-            {
+        node.Paint = (rect, paintChildren) => {
+            if (samples == null || samples.Count == 0) {
                 paintChildren();
                 return;
             }
@@ -38,8 +35,7 @@ public static class Sparkline
             // Find min/max
             float min = samples[0];
             float max = samples[0];
-            for (int i = 1; i < samples.Count; i++)
-            {
+            for (int i = 1; i < samples.Count; i++) {
                 if (samples[i] < min) min = samples[i];
                 if (samples[i] > max) max = samples[i];
             }
@@ -49,8 +45,7 @@ public static class Sparkline
 
             Color saved = GUI.color;
 
-            if (samples.Count == 1)
-            {
+            if (samples.Count == 1) {
                 // Single sample - draw a dot
                 float dotX = rect.x + rect.width * 0.5f;
                 float dotY = rect.y + rect.height * 0.5f;
@@ -67,13 +62,11 @@ public static class Sparkline
             float xStep = rect.width / (samples.Count - 1);
 
             // Fill under the line (approximate polygon as vertical bars)
-            if (fillColor.HasValue)
-            {
+            if (fillColor.HasValue) {
                 Color fillCol = theme.GetColor(fillColor.Value);
                 Color fillDraw = new Color(fillCol.r, fillCol.g, fillCol.b, fillCol.a * 0.25f);
 
-                for (int i = 0; i < samples.Count - 1; i++)
-                {
+                for (int i = 0; i < samples.Count - 1; i++) {
                     float x0 = rect.x + i * xStep;
                     float x1 = rect.x + (i + 1) * xStep;
                     float norm0 = flat ? 0.5f : (samples[i] - min) / range;
@@ -85,16 +78,14 @@ public static class Sparkline
                     // Draw vertical bars from bottom up to the interpolated line
                     float colWidth = x1 - x0;
                     int barCount = Mathf.Max(1, Mathf.RoundToInt(colWidth));
-                    for (int b = 0; b < barCount; b++)
-                    {
+                    for (int b = 0; b < barCount; b++) {
                         float t = (float)b / barCount;
                         float bx = x0 + t * colWidth;
                         float lineY = Mathf.Lerp(y0, y1, t);
                         float barHeight = rect.yMax - lineY;
-                        if (barHeight > 0f)
-                        {
+                        if (barHeight > 0f) {
                             Rect bar = new Rect(bx, lineY, 1f, barHeight);
-                            Verse.Widgets.DrawBoxSolid(bar, fillDraw);
+                            Widgets.DrawBoxSolid(bar, fillDraw);
                         }
                     }
                 }
@@ -102,8 +93,7 @@ public static class Sparkline
 
             // Draw the line segments
             GUI.color = lineCol;
-            for (int i = 0; i < samples.Count - 1; i++)
-            {
+            for (int i = 0; i < samples.Count - 1; i++) {
                 float x0 = rect.x + i * xStep;
                 float x1 = rect.x + (i + 1) * xStep;
                 float norm0 = flat ? 0.5f : (samples[i] - min) / range;
@@ -114,7 +104,7 @@ public static class Sparkline
 
                 Vector2 p0 = new Vector2(x0, y0);
                 Vector2 p1 = new Vector2(x1, y1);
-                Verse.Widgets.DrawLine(p0, p1, lineCol, lw);
+                Widgets.DrawLine(p0, p1, lineCol, lw);
             }
 
             GUI.color = saved;

@@ -1,7 +1,6 @@
 namespace Cosmere.Core.UI.Lightweave.Tokens;
 
-public enum FontRole
-{
+public enum FontRole {
     Body,
     BodyBold,
     Heading,

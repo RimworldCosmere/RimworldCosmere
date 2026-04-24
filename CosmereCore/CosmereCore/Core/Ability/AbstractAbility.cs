@@ -32,15 +32,15 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
 
     public GlobalTargetInfo? globalTarget;
     protected Job? job;
+    private bool lastWasAsleep;
+
+    private bool lastWasDowned;
+    private bool lastWasPaused;
     public LocalTargetInfo? localTarget;
     public bool paused;
     public Status status = Active.Off;
     public bool willUseWhileDowned;
     public bool willUseWhileInjured;
-
-    private bool lastWasDowned;
-    private bool lastWasAsleep;
-    private bool lastWasPaused;
 
     public AbstractAbility(Pawn pawn) : base(pawn) { }
 

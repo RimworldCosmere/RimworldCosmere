@@ -13,6 +13,9 @@ namespace Cosmere.Core.Patch;
 public static class CutoutAdvancedPatch {
     private static Material? DrawNowMaterial;
 
+    private static MethodInfo GraphicsRandomRotatedGetRotInRack =>
+        AccessTools.Method(typeof(Graphic_RandomRotated), "GetRotInRack");
+
     private static void ApplyMPBToMaterial(Material mat, MaterialPropertyBlock mpb) {
         Texture tex = mpb.GetTexture(CutoutAdvancedShaderProperties.MainTex);
         if (tex != null) mat.SetTexture(CutoutAdvancedShaderProperties.MainTex, tex);
@@ -20,41 +23,85 @@ public static class CutoutAdvancedPatch {
         tex = mpb.GetTexture(CutoutAdvancedShaderProperties.ColorMaskTex);
         if (tex != null) mat.SetTexture(CutoutAdvancedShaderProperties.ColorMaskTex, tex);
 
-        mat.SetFloat(CutoutAdvancedShaderProperties.BlendStrength, mpb.GetFloat(CutoutAdvancedShaderProperties.BlendStrength));
-        mat.SetFloat(CutoutAdvancedShaderProperties.ColorCount, mpb.GetFloat(CutoutAdvancedShaderProperties.ColorCount));
-        mat.SetFloat(CutoutAdvancedShaderProperties.MaterialIntensity, mpb.GetFloat(CutoutAdvancedShaderProperties.MaterialIntensity));
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.BlendStrength,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.BlendStrength)
+        );
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.ColorCount,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.ColorCount)
+        );
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.MaterialIntensity,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.MaterialIntensity)
+        );
 
         Vector4[] colors = mpb.GetVectorArray(CutoutAdvancedShaderProperties.Colors);
         if (colors is { Length: > 0 }) mat.SetVectorArray(CutoutAdvancedShaderProperties.Colors, colors);
 
         float[] metallicValues = mpb.GetFloatArray(CutoutAdvancedShaderProperties.MetallicValues);
-        if (metallicValues is { Length: > 0 }) mat.SetFloatArray(CutoutAdvancedShaderProperties.MetallicValues, metallicValues);
+        if (metallicValues is { Length: > 0 })
+            mat.SetFloatArray(CutoutAdvancedShaderProperties.MetallicValues, metallicValues);
 
         float[] smoothnessValues = mpb.GetFloatArray(CutoutAdvancedShaderProperties.SmoothnessValues);
-        if (smoothnessValues is { Length: > 0 }) mat.SetFloatArray(CutoutAdvancedShaderProperties.SmoothnessValues, smoothnessValues);
+        if (smoothnessValues is { Length: > 0 })
+            mat.SetFloatArray(CutoutAdvancedShaderProperties.SmoothnessValues, smoothnessValues);
 
-        mat.SetFloat(CutoutAdvancedShaderProperties.UseWearMask, mpb.GetFloat(CutoutAdvancedShaderProperties.UseWearMask));
-        mat.SetFloat(CutoutAdvancedShaderProperties.UseGlowMask, mpb.GetFloat(CutoutAdvancedShaderProperties.UseGlowMask));
-        mat.SetFloat(CutoutAdvancedShaderProperties.UseSpecialMask, mpb.GetFloat(CutoutAdvancedShaderProperties.UseSpecialMask));
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.UseWearMask,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.UseWearMask)
+        );
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.UseGlowMask,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.UseGlowMask)
+        );
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.UseSpecialMask,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.UseSpecialMask)
+        );
 
         tex = mpb.GetTexture(CutoutAdvancedShaderProperties.WearMaskTex);
         if (tex != null) mat.SetTexture(CutoutAdvancedShaderProperties.WearMaskTex, tex);
-        mat.SetFloat(CutoutAdvancedShaderProperties.WearDarkness, mpb.GetFloat(CutoutAdvancedShaderProperties.WearDarkness));
-        mat.SetFloat(CutoutAdvancedShaderProperties.CurrentWearLevel, mpb.GetFloat(CutoutAdvancedShaderProperties.CurrentWearLevel));
-        mat.SetFloat(CutoutAdvancedShaderProperties.WearLevelCount, mpb.GetFloat(CutoutAdvancedShaderProperties.WearLevelCount));
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.WearDarkness,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.WearDarkness)
+        );
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.CurrentWearLevel,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.CurrentWearLevel)
+        );
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.WearLevelCount,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.WearLevelCount)
+        );
 
         tex = mpb.GetTexture(CutoutAdvancedShaderProperties.GlowMaskTex);
         if (tex != null) mat.SetTexture(CutoutAdvancedShaderProperties.GlowMaskTex, tex);
         mat.SetColor(CutoutAdvancedShaderProperties.GlowColor, mpb.GetColor(CutoutAdvancedShaderProperties.GlowColor));
-        mat.SetFloat(CutoutAdvancedShaderProperties.GlowIntensity, mpb.GetFloat(CutoutAdvancedShaderProperties.GlowIntensity));
-        mat.SetFloat(CutoutAdvancedShaderProperties.CurrentGlowLevel, mpb.GetFloat(CutoutAdvancedShaderProperties.CurrentGlowLevel));
-        mat.SetFloat(CutoutAdvancedShaderProperties.GlowLevelCount, mpb.GetFloat(CutoutAdvancedShaderProperties.GlowLevelCount));
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.GlowIntensity,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.GlowIntensity)
+        );
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.CurrentGlowLevel,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.CurrentGlowLevel)
+        );
+        mat.SetFloat(
+            CutoutAdvancedShaderProperties.GlowLevelCount,
+            mpb.GetFloat(CutoutAdvancedShaderProperties.GlowLevelCount)
+        );
 
         tex = mpb.GetTexture(CutoutAdvancedShaderProperties.SpecialMaskTex);
         if (tex != null) mat.SetTexture(CutoutAdvancedShaderProperties.SpecialMaskTex, tex);
 
-        mat.SetVector(CutoutAdvancedShaderProperties.HighlightParams, mpb.GetVector(CutoutAdvancedShaderProperties.HighlightParams));
-        mat.SetVector(CutoutAdvancedShaderProperties.RimLightCenter, mpb.GetVector(CutoutAdvancedShaderProperties.RimLightCenter));
+        mat.SetVector(
+            CutoutAdvancedShaderProperties.HighlightParams,
+            mpb.GetVector(CutoutAdvancedShaderProperties.HighlightParams)
+        );
+        mat.SetVector(
+            CutoutAdvancedShaderProperties.RimLightCenter,
+            mpb.GetVector(CutoutAdvancedShaderProperties.RimLightCenter)
+        );
     }
 
     [HarmonyPatch(
@@ -189,9 +236,6 @@ public static class CutoutAdvancedPatch {
         return false;
     }
 
-    private static MethodInfo GraphicsRandomRotatedGetRotInRack =>
-        AccessTools.Method(typeof(Graphic_RandomRotated), "GetRotInRack");
-
     [HarmonyPatch(typeof(Graphic_RandomRotated), nameof(Verse.Graphic.DrawWorker))]
     [HarmonyPrefix]
     public static bool GraphicRandomRotatedDrawWorkerPrefix(
@@ -224,5 +268,4 @@ public static class CutoutAdvancedPatch {
         Graphics.DrawMesh(mesh, position, rotation, material, 0, null, 0, mpb);
         return false;
     }
-
 }

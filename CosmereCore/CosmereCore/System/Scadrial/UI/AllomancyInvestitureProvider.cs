@@ -11,7 +11,42 @@ using Verse;
 namespace Cosmere.System.Scadrial.UI;
 
 public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexContentProvider {
-    private static readonly AllomancyCodexContent codex = new();
+    private static readonly AllomancyCodexContent codex = new AllomancyCodexContent();
+
+    public bool HasProgression(Pawn pawn) {
+        return codex.HasProgression(pawn);
+    }
+
+    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
+        codex.DrawProgression(pawn, rect, state);
+    }
+
+    public bool ShowsBondsSubtab => codex.ShowsBondsSubtab;
+
+    public bool HasBonds(Pawn pawn) {
+        return codex.HasBonds(pawn);
+    }
+
+    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) {
+        codex.DrawBonds(pawn, rect, state);
+    }
+
+    public bool HasMemories(Pawn pawn) {
+        return codex.HasMemories(pawn);
+    }
+
+    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) {
+        codex.DrawMemories(pawn, rect, state);
+    }
+
+    public bool OwnsAbility(Ability ability) {
+        return codex.OwnsAbility(ability);
+    }
+
+    public string? HeaderLabelFor(Pawn pawn) {
+        return codex.HeaderLabelFor(pawn);
+    }
+
     public string SystemId => "Allomancy";
 
     public bool IsInvested(Pawn pawn) {
@@ -20,6 +55,7 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexC
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is Allomancer a && !a.Overridden) return true;
         }
+
         return false;
     }
 
@@ -32,31 +68,33 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexC
             if (all[i] is not Allomancer a || a.Overridden) continue;
 
             ResourceBar bar = new ResourceBar(
-                Label: a.metal.LabelCap,
-                Current: a.Value,
-                Max: a.Max,
-                TargetValue: a.targetValue
+                a.metal.LabelCap,
+                a.Value,
+                a.Max,
+                a.targetValue
             );
 
-            cells.Add(new InvestitureCell(
-                SubsystemId: a.metal.defName,
-                Label: a.metal.LabelCap,
-                Icon: a.metal.allomancy?.invertedIcon,
-                Bar: bar,
-                IsActive: a.Burning,
-                IsFlaring: false
-            ));
+            cells.Add(
+                new InvestitureCell(
+                    a.metal.defName,
+                    a.metal.LabelCap,
+                    a.metal.allomancy?.invertedIcon,
+                    bar,
+                    a.Burning,
+                    false
+                )
+            );
         }
 
         if (cells.Count == 0) return null;
 
         return new InvestitureSnapshot(
-            SystemId: SystemId,
-            SystemLabel: "Allomancy",
-            PrimaryBar: null,
-            Cells: cells,
-            Subsections: [],
-            FlatAbilities: []
+            SystemId,
+            "Allomancy",
+            null,
+            cells,
+            [],
+            []
         );
     }
 
@@ -65,7 +103,7 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexC
 
         List<RadialSubsection> subs = [];
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
-        List<RimWorld.Ability> abilities = pawn.abilities?.AllAbilitiesForReading ?? [];
+        List<Ability> abilities = pawn.abilities?.AllAbilitiesForReading ?? [];
 
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is not Allomancer a || a.Overridden) continue;
@@ -77,53 +115,46 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexC
                     break;
                 }
             }
+
             if (matched == null) continue;
 
             float reserveFraction = a.Max > 0f ? a.Value / a.Max : 0f;
 
             RadialLeaf leaf = new RadialLeaf(
-                LeafId: "BURN",
-                Label: "Burn " + a.metal.LabelCap,
-                Icon: a.metal.allomancy?.invertedIcon,
-                Kind: RadialActionKind.StartAllomancyBurn,
-                AbilityDef: matched.def,
-                IsActive: matched.atLeastBurning,
-                IsFlaring: matched.status.power > 1,
-                IsSustained: matched.def.toggleable && matched.status.isActive,
-                IsLocked: false,
-                LockReason: null,
-                ReserveFraction: reserveFraction,
-                HasInsufficientResources: reserveFraction <= 0f,
-                CostHint: $"{matched.GetDesiredBurnRateForStatus(Status.PowerOne) * GenTicks.TicksPerRealSecond:F2}/s",
-                CooldownTicksRemaining: 0
+                "BURN",
+                "Burn " + a.metal.LabelCap,
+                a.metal.allomancy?.invertedIcon,
+                RadialActionKind.StartAllomancyBurn,
+                matched.def,
+                matched.atLeastBurning,
+                matched.status.power > 1,
+                matched.def.toggleable && matched.status.isActive,
+                false,
+                null,
+                reserveFraction,
+                reserveFraction <= 0f,
+                $"{matched.GetDesiredBurnRateForStatus(Status.PowerOne) * GenTicks.TicksPerRealSecond:F2}/s",
+                0
             );
 
-            subs.Add(new RadialSubsection(
-                SubsectionId: a.metal.defName,
-                Label: a.metal.LabelCap,
-                Icon: a.metal.allomancy?.invertedIcon,
-                AccentColor: new Color(0.75f, 0.65f, 0.45f),
-                Leaves: [leaf]
-            ));
+            subs.Add(
+                new RadialSubsection(
+                    a.metal.defName,
+                    a.metal.LabelCap,
+                    a.metal.allomancy?.invertedIcon,
+                    new Color(0.75f, 0.65f, 0.45f),
+                    [leaf]
+                )
+            );
         }
 
         if (subs.Count == 0) return null;
 
         return new RadialSystem(
-            SystemId: "Allomancy",
-            Label: "Allomancy",
-            Icon: null,
-            Subsections: subs
+            "Allomancy",
+            "Allomancy",
+            null,
+            subs
         );
     }
-
-    public bool HasProgression(Pawn pawn) => codex.HasProgression(pawn);
-    public void DrawProgression(Pawn pawn, UnityEngine.Rect rect, CodexState state) => codex.DrawProgression(pawn, rect, state);
-    public bool ShowsBondsSubtab => codex.ShowsBondsSubtab;
-    public bool HasBonds(Pawn pawn) => codex.HasBonds(pawn);
-    public void DrawBonds(Pawn pawn, UnityEngine.Rect rect, CodexState state) => codex.DrawBonds(pawn, rect, state);
-    public bool HasMemories(Pawn pawn) => codex.HasMemories(pawn);
-    public void DrawMemories(Pawn pawn, UnityEngine.Rect rect, CodexState state) => codex.DrawMemories(pawn, rect, state);
-    public bool OwnsAbility(RimWorld.Ability ability) => codex.OwnsAbility(ability);
-    public string? HeaderLabelFor(Pawn pawn) => codex.HeaderLabelFor(pawn);
 }

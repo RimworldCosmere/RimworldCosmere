@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Roshar.Comp.Game;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
@@ -29,12 +28,17 @@ public class Bondsmith(RadiantOrderDef def) : AbstractIdealChecker(def) {
         }
 
         if (nextLevel == 3) {
-            return friendships >= ApplyDifficulty(15) && conflicts >= ApplyDifficulty(5) && CountPositiveFactions(20) >= 3;
+            return friendships >= ApplyDifficulty(15) &&
+                   conflicts >= ApplyDifficulty(5) &&
+                   CountPositiveFactions(20) >= 3;
         }
 
         if (nextLevel == 4) {
             float stabilityDays = pawn.records.GetValue(RecordDefOf.Cosmere_Roshar_Record_ColonyStabilityDays);
-            return friendships >= ApplyDifficulty(25) && conflicts >= ApplyDifficulty(10) && stabilityDays >= ApplyDifficulty(30) && CountPositiveFactions(40) >= 5;
+            return friendships >= ApplyDifficulty(25) &&
+                   conflicts >= ApplyDifficulty(10) &&
+                   stabilityDays >= ApplyDifficulty(30) &&
+                   CountPositiveFactions(40) >= 5;
         }
 
         return false;
@@ -48,6 +52,7 @@ public class Bondsmith(RadiantOrderDef def) : AbstractIdealChecker(def) {
             if (faction.IsPlayer) continue;
             if (faction.PlayerGoodwill >= minGoodwill) count++;
         }
+
         return count;
     }
 
@@ -56,8 +61,10 @@ public class Bondsmith(RadiantOrderDef def) : AbstractIdealChecker(def) {
             0 => null,
             1 => $"{ApplyDifficulty(5):0}+ friendships (max 3 Bondsmiths) | Skill 4+",
             2 => $"{ApplyDifficulty(10):0}+ friendships, {ApplyDifficulty(2):0}+ conflicts resolved | Skill 8+",
-            3 => $"{ApplyDifficulty(15):0}+ friendships, {ApplyDifficulty(5):0}+ conflicts, 3+ allied factions | Skill 14+",
-            4 => $"{ApplyDifficulty(25):0}+ friendships, {ApplyDifficulty(10):0}+ conflicts, {ApplyDifficulty(30):0}+ stability days, 5+ allied factions | Skill 18+",
+            3 =>
+                $"{ApplyDifficulty(15):0}+ friendships, {ApplyDifficulty(5):0}+ conflicts, 3+ allied factions | Skill 14+",
+            4 =>
+                $"{ApplyDifficulty(25):0}+ friendships, {ApplyDifficulty(10):0}+ conflicts, {ApplyDifficulty(30):0}+ stability days, 5+ allied factions | Skill 18+",
             _ => null,
         };
     }

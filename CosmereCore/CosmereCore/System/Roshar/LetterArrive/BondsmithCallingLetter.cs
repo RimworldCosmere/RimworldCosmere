@@ -1,3 +1,4 @@
+using Cosmere.System.Roshar.Comp.Game;
 using Cosmere.System.Roshar.Dialog;
 using Cosmere.System.Roshar.Surgebinding.Hediff;
 using Verse;
@@ -8,10 +9,6 @@ public class BondsmithCallingLetter : ChoiceLetter {
     private string sprenName = "";
 
     public override bool ShouldAutomaticallyOpenLetter => true;
-
-    public void Setup(string spren) {
-        sprenName = spren;
-    }
 
     public override IEnumerable<DiaOption> Choices {
         get {
@@ -25,9 +22,7 @@ public class BondsmithCallingLetter : ChoiceLetter {
             };
 
             yield return new DiaOption("CRO_Bondsmith_NotYet".Translate()) {
-                action = () => {
-                    Find.LetterStack.RemoveLetter(this);
-                },
+                action = () => { Find.LetterStack.RemoveLetter(this); },
                 resolveTree = true,
             };
 
@@ -41,8 +36,8 @@ public class BondsmithCallingLetter : ChoiceLetter {
                         pawn.health!.RemoveHediff(hediff);
                     }
 
-                    Comp.Game.BondsmithCallingChecker? checker =
-                        Current.Game?.GetComponent<Comp.Game.BondsmithCallingChecker>();
+                    BondsmithCallingChecker? checker =
+                        Current.Game?.GetComponent<BondsmithCallingChecker>();
                     checker?.RecordRefusal(pawn);
 
                     Find.LetterStack.RemoveLetter(this);
@@ -54,6 +49,10 @@ public class BondsmithCallingLetter : ChoiceLetter {
                 yield return Option_JumpToLocationAndPostpone;
             }
         }
+    }
+
+    public void Setup(string spren) {
+        sprenName = spren;
     }
 
     public override void ExposeData() {

@@ -1,4 +1,3 @@
-using System.Text;
 using Cosmere.System.Scadrial.Utility;
 using HarmonyLib;
 using RimWorld;
@@ -9,7 +8,7 @@ namespace Cosmere.System.Scadrial.Patch;
 
 [HarmonyPatch(typeof(Caravan), "TickInterval")]
 public static class PatchCaravanBronzeDetection {
-    private static Dictionary<int, int> lastKnownTile = [];
+    private static readonly Dictionary<int, int> lastKnownTile = [];
 
     [HarmonyPostfix]
     public static void Postfix(Caravan __instance) {

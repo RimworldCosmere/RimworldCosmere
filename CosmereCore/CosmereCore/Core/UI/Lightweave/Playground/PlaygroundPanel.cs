@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using UnityEngine;
-using Verse;
-using Cosmere.Core.UI.Lightweave.Layout;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Surface;
 using Cosmere.Core.UI.Lightweave.Tokens;
-using Cosmere.Core.UI.Lightweave.Typography;
 using Cosmere.Core.UI.Lightweave.Types;
+using Verse;
 
 namespace Cosmere.Core.UI.Lightweave.Playground;
 
@@ -15,16 +11,7 @@ public sealed record PlaygroundVariant(string LabelKey, LightweaveNode Demo);
 
 public sealed record PlaygroundState(string LabelKey, LightweaveNode Demo);
 
-public static class PlaygroundPanel
-{
-    private const float TitleHeight = 28f;
-    private const float BodyLineHeight = 20f;
-    private const float SectionLabelHeight = 18f;
-    private const float DemoRowHeight = 56f;
-    private const float DividerHeight = 10f;
-    private const float SourceRowHeight = 18f;
-    private const float DemoCellGap = 4f;
-
+public static class PlaygroundPanel {
     public static LightweaveNode Create(
         string titleKey,
         string whatKey,
@@ -32,120 +19,114 @@ public static class PlaygroundPanel
         IReadOnlyList<PlaygroundVariant>? variants,
         IReadOnlyList<PlaygroundState>? states,
         string sourcePath,
-        float height,
+        float? demoRowHeight = null,
         [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = "")
-    {
+        [CallerFilePath] string file = ""
+    ) {
         bool hasVariants = variants != null && variants.Count > 0;
         bool hasStates = states != null && states.Count > 0;
 
         LightweaveNode title = Typography.Typography.Heading(
             3,
             (string)titleKey.Translate(),
-            ThemeSlot.SurfaceAccent);
+            ThemeSlot.SurfaceAccent
+        );
 
         LightweaveNode whatText = Typography.Typography.Text(
             (string)whatKey.Translate(),
             FontRole.Body,
             new Rem(0.875f),
-            ThemeSlot.TextPrimary);
+            ThemeSlot.TextPrimary,
+            wrap: true
+        );
 
         LightweaveNode whenText = Typography.Typography.Text(
             (string)whenKey.Translate(),
             FontRole.Body,
             new Rem(0.875f),
-            ThemeSlot.TextMuted);
+            ThemeSlot.TextMuted,
+            wrap: true
+        );
 
-        LightweaveNode sourceText = Typography.Typography.Text(
-            string.Format("{0} {1}", (string)"CC_Playground_Panel_SourceLabel".Translate(), sourcePath),
-            FontRole.Mono,
-            new Rem(0.75f),
-            ThemeSlot.TextMuted);
+        LightweaveNode sourceText = SourceLink.Create(sourcePath);
 
         LightweaveNode headerBundle = Layout.Layout.Stack(
-            gap: SpacingScale.Xxs,
-            children: s =>
-            {
-                s.Add(title, TitleHeight);
-                s.Add(whatText, BodyLineHeight);
-                s.Add(whenText, BodyLineHeight);
-            });
+            SpacingScale.Xxs,
+            s => {
+                s.Add(title);
+                s.Add(whatText);
+                s.Add(whenText);
+            }
+        );
 
-        float headerBundleHeight = headerBundle.PreferredHeight ?? (TitleHeight + BodyLineHeight * 2f + SpacingScale.Xxs.ToPixels() * 2f);
+        LightweaveNode sourceSpacer = NodeBuilder.New("SourceSpacer", 0, nameof(PlaygroundPanel));
+        sourceSpacer.PreferredHeight = new Rem(0.25f).ToPixels();
 
         LightweaveNode body = Layout.Layout.Stack(
-            gap: SpacingScale.Sm,
-            children: stack =>
-            {
-                stack.Add(headerBundle, headerBundleHeight);
+            SpacingScale.Xs,
+            stack => {
+                stack.Add(headerBundle);
 
-                if (hasVariants)
-                {
-                    stack.Add(BrassRailDivider.Create(), DividerHeight);
-                    stack.Add(BuildSectionLabel("CC_Playground_Panel_Variants"), SectionLabelHeight);
-                    stack.Add(BuildDemoRow(variants!), DemoRowHeight);
+                if (hasVariants) {
+                    stack.Add(BuildSectionLabel("CC_Playground_Panel_Variants"));
+                    stack.Add(BuildDemoRow(variants!, demoRowHeight));
                 }
 
-                if (hasStates)
-                {
-                    stack.Add(BrassRailDivider.Create(), DividerHeight);
-                    stack.Add(BuildSectionLabel("CC_Playground_Panel_States"), SectionLabelHeight);
-                    stack.Add(BuildStateRow(states!), DemoRowHeight);
+                if (hasStates) {
+                    stack.Add(BuildSectionLabel("CC_Playground_Panel_States"));
+                    stack.Add(BuildStateRow(states!, demoRowHeight));
                 }
 
-                stack.Add(BrassRailDivider.Create(), DividerHeight);
-                stack.Add(sourceText, SourceRowHeight);
-            });
+                stack.Add(sourceSpacer);
+                stack.Add(sourceText);
+            }
+        );
 
-        LightweaveNode card = Surface.Surface.Card(c => c.Add(body), line, file);
-        card.PreferredHeight = height;
+        LightweaveNode card = Surface.Surface.Card.Create(body);
         return card;
     }
 
-    private static LightweaveNode BuildSectionLabel(string key)
-    {
-        return Typography.Typography.Caption((string)key.Translate());
+    private static LightweaveNode BuildSectionLabel(string key) {
+        return Typography.Typography.Label((string)key.Translate());
     }
 
-    private static LightweaveNode BuildDemoRow(IReadOnlyList<PlaygroundVariant> variants)
-    {
+    private static LightweaveNode BuildDemoRow(IReadOnlyList<PlaygroundVariant> variants, float? demoRowHeight) {
         return Layout.Layout.Row(
-            gap: SpacingScale.Sm,
-            children: r =>
-            {
-                for (int i = 0; i < variants.Count; i++)
-                {
+            SpacingScale.Sm,
+            children: r => {
+                for (int i = 0; i < variants.Count; i++) {
                     PlaygroundVariant variant = variants[i];
-                    r.Add(BuildDemoCell(variant.LabelKey, variant.Demo));
+                    r.Add(BuildDemoCell(variant.LabelKey, variant.Demo, demoRowHeight));
                 }
-            });
+            }
+        );
     }
 
-    private static LightweaveNode BuildStateRow(IReadOnlyList<PlaygroundState> states)
-    {
+    private static LightweaveNode BuildStateRow(IReadOnlyList<PlaygroundState> states, float? demoRowHeight) {
         return Layout.Layout.Row(
-            gap: SpacingScale.Sm,
-            children: r =>
-            {
-                for (int i = 0; i < states.Count; i++)
-                {
+            SpacingScale.Sm,
+            children: r => {
+                for (int i = 0; i < states.Count; i++) {
                     PlaygroundState state = states[i];
-                    r.Add(BuildDemoCell(state.LabelKey, state.Demo));
+                    r.Add(BuildDemoCell(state.LabelKey, state.Demo, demoRowHeight));
                 }
-            });
+            }
+        );
     }
 
-    private static LightweaveNode BuildDemoCell(string labelKey, LightweaveNode demo)
-    {
-        LightweaveNode cellLabel = Typography.Typography.Caption((string)labelKey.Translate());
-        float labelHeight = 16f;
-        float demoHeight = DemoRowHeight - labelHeight - DemoCellGap;
+    private static LightweaveNode BuildDemoCell(string labelKey, LightweaveNode demo, float? demoRowHeight) {
+        LightweaveNode cellLabel = Typography.Typography.Label((string)labelKey.Translate());
+        bool demoCanMeasure = demo.Measure != null || demo.PreferredHeight.HasValue;
         return Layout.Layout.Stack(
-            gap: new Rem(0.25f),
-            children: s =>
-            {
-                s.Add(cellLabel, labelHeight);
-                s.Add(demo, demoHeight);
-            });
+            new Rem(0.25f),
+            s => {
+                s.Add(cellLabel);
+                if (demoCanMeasure && !demoRowHeight.HasValue) {
+                    s.Add(demo);
+                } else {
+                    s.Add(demo, demoRowHeight ?? new Rem(3f).ToPixels());
+                }
+            }
+        );
     }
 }

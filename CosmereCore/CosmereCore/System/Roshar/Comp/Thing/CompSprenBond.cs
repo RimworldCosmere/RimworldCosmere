@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-using Cosmere.Core.Comp.Game;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 using Verse.AI;
 using Logger = Cosmere.Core.Logger;
@@ -8,30 +7,29 @@ using Logger = Cosmere.Core.Logger;
 namespace Cosmere.System.Roshar.Comp.Thing;
 
 public class CompSprenBond : ThingComp {
-    private static List<TraitDef>? personalityTraitPool;
-
     private const int MinAutonomyDurationTicks = 7200;
     private const float AutonomyToggleChance = 0.10f;
-
-    private Verse.Pawn? bondedRadiant;
-    private bool dismissed;
+    private static List<TraitDef>? personalityTraitPool;
     private bool autoDismissed;
-    private bool sleepDismissed;
     private bool autonomous = true;
-    private int lastDismissSummonTick = -999;
-    private int lastAutonomyToggleTick = -999;
-    private List<TraitDef> personalityTraits = [];
 
-    public Verse.Pawn? BondedRadiant => bondedRadiant;
+    private Pawn? bondedRadiant;
+    private bool dismissed;
+    private int lastAutonomyToggleTick = -999;
+    private int lastDismissSummonTick = -999;
+    private List<TraitDef> personalityTraits = [];
+    private bool sleepDismissed;
+
+    public Pawn? BondedRadiant => bondedRadiant;
     public bool Dismissed => dismissed;
     public bool Autonomous => autonomous;
     public bool CooldownActive => GenTicks.TicksGame - lastDismissSummonTick < 60;
     public IReadOnlyList<TraitDef> PersonalityTraits => personalityTraits;
+    private Pawn Spren => (Pawn)parent;
 
     public void ToggleAutonomy() {
         autonomous = !autonomous;
     }
-    private Verse.Pawn Spren => (Verse.Pawn)parent;
 
     private static List<TraitDef> GetTraitPool() {
         if (personalityTraitPool != null) return personalityTraitPool;
@@ -46,7 +44,7 @@ public class CompSprenBond : ThingComp {
         return personalityTraitPool;
     }
 
-    public void SetupBond(Verse.Pawn radiant, List<TraitDef>? traits = null) {
+    public void SetupBond(Pawn radiant, List<TraitDef>? traits = null) {
         bondedRadiant = radiant;
         dismissed = false;
         personalityTraits = traits ?? RollPersonalityTraits();
@@ -84,9 +82,11 @@ public class CompSprenBond : ThingComp {
         float multiplier = 1f;
         for (int i = 0; i < personalityTraits.Count; i++) {
             string defName = personalityTraits[i].defName;
-            if (defName == "Kind") multiplier *= 0.8f;
-            else if (defName == "Abrasive") multiplier *= 1.2f;
-            else if (defName == "Nerves") multiplier *= 0.85f;
+            if (defName == "Kind") {
+                multiplier *= 0.8f;
+            } else if (defName == "Abrasive") {
+                multiplier *= 1.2f;
+            } else if (defName == "Nerves") multiplier *= 0.85f;
         }
 
         return multiplier;
@@ -96,8 +96,9 @@ public class CompSprenBond : ThingComp {
         float multiplier = 1f;
         for (int i = 0; i < personalityTraits.Count; i++) {
             string defName = personalityTraits[i].defName;
-            if (defName == "NaturalMood") multiplier *= 1.1f;
-            else if (defName == "Industriousness") multiplier *= 1.1f;
+            if (defName == "NaturalMood") {
+                multiplier *= 1.1f;
+            } else if (defName == "Industriousness") multiplier *= 1.1f;
         }
 
         return multiplier;
@@ -113,7 +114,7 @@ public class CompSprenBond : ThingComp {
         }
 
         if (!Find.WorldPawns.Contains(Spren)) {
-            Find.WorldPawns.PassToWorld(Spren, RimWorld.Planet.PawnDiscardDecideMode.KeepForever);
+            Find.WorldPawns.PassToWorld(Spren, PawnDiscardDecideMode.KeepForever);
         }
 
         Logger.Verbose($"Spren {Spren.NameFullColored} dismissed to Cognitive Realm");
@@ -143,12 +144,16 @@ public class CompSprenBond : ThingComp {
             if (autoDismissed && bondedRadiant.Spawned && bondedRadiant.Map != null && !Spren.Spawned) {
                 autoDismissed = false;
                 Summon(bondedRadiant.Map, bondedRadiant.Position);
-            } else if (sleepDismissed && bondedRadiant.Spawned && bondedRadiant.Map != null && !bondedRadiant.IsAsleep()) {
+            } else if (sleepDismissed &&
+                       bondedRadiant.Spawned &&
+                       bondedRadiant.Map != null &&
+                       !bondedRadiant.IsAsleep()) {
                 sleepDismissed = false;
                 Summon(bondedRadiant.Map, bondedRadiant.Position);
             } else if (autonomous && bondedRadiant.Spawned && bondedRadiant.Map != null && !bondedRadiant.IsAsleep()) {
                 TickAutonomous();
             }
+
             return;
         }
 

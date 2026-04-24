@@ -17,7 +17,9 @@ public class ScenarioTestQuickstart : AbstractQuickstart {
 
             ScenarioDef? selected = DefDatabase<ScenarioDef>.GetNamedSilentFail(defName);
             if (selected == null) {
-                Logger.Warning($"ScenarioTestQuickstart: ScenarioDef '{defName}' not found, falling back to Crashlanded");
+                Logger.Warning(
+                    $"ScenarioTestQuickstart: ScenarioDef '{defName}' not found, falling back to Crashlanded"
+                );
                 return ScenarioDefOf.Crashlanded;
             }
 

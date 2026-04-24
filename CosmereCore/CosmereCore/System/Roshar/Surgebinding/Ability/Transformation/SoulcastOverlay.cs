@@ -7,14 +7,20 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
 
 [HarmonyPatch]
 public static class SoulcastOverlay {
+    private static readonly List<OverlayEntry> entries = [];
+
     [HarmonyPatch(typeof(MemoryUtility), nameof(MemoryUtility.ClearAllMapsAndWorld))]
     [HarmonyPostfix]
     public static void OnClearAllMapsAndWorld() {
         Clear();
     }
-    private static readonly List<OverlayEntry> entries = [];
 
-    public static void Add(IntVec3 cell, ThingDef? materialDef, TerrainDef? terrainDef, SoulcastMode mode = SoulcastMode.ConvertDrop) {
+    public static void Add(
+        IntVec3 cell,
+        ThingDef? materialDef,
+        TerrainDef? terrainDef,
+        SoulcastMode mode = SoulcastMode.ConvertDrop
+    ) {
         Texture2D? icon = null;
 
         if (mode == SoulcastMode.Wall) {
@@ -27,16 +33,23 @@ public static class SoulcastOverlay {
             icon = materialDef.uiIcon;
         }
 
-        entries.Add(new OverlayEntry {
-            cell = cell,
-            icon = icon,
-            mode = mode,
-            material = materialDef,
-            terrain = terrainDef,
-        });
+        entries.Add(
+            new OverlayEntry {
+                cell = cell,
+                icon = icon,
+                mode = mode,
+                material = materialDef,
+                terrain = terrainDef,
+            }
+        );
     }
 
-    public static bool TryGetData(IntVec3 cell, out SoulcastMode mode, out ThingDef? material, out TerrainDef? terrain) {
+    public static bool TryGetData(
+        IntVec3 cell,
+        out SoulcastMode mode,
+        out ThingDef? material,
+        out TerrainDef? terrain
+    ) {
         for (int i = 0; i < entries.Count; i++) {
             if (entries[i].cell == cell) {
                 mode = entries[i].mode;
@@ -45,6 +58,7 @@ public static class SoulcastOverlay {
                 return true;
             }
         }
+
         mode = default;
         material = null;
         terrain = null;
@@ -74,7 +88,11 @@ public static class SoulcastOverlay {
             GenDraw.DrawTargetHighlightWithLayer(pos, AltitudeLayer.MetaOverlays);
 
             if (entry.icon != null) {
-                Material iconMat = MaterialPool.MatFrom(entry.icon, Verse.ShaderDatabase.Transparent, new Color(1f, 1f, 1f, 0.35f));
+                Material iconMat = MaterialPool.MatFrom(
+                    entry.icon,
+                    Verse.ShaderDatabase.Transparent,
+                    new Color(1f, 1f, 1f, 0.35f)
+                );
                 Vector3 iconPos = pos + new Vector3(0f, 0.1f, 0f);
                 Graphics.DrawMesh(MeshPool.plane08, iconPos, Quaternion.identity, iconMat, 0);
             }

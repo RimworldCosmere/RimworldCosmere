@@ -8,14 +8,6 @@ using Verse;
 namespace Cosmere.Core.Need;
 
 public class Investiture : RimWorld.Need {
-    public string InvestitureLabel {
-        get {
-            Invested? investedGene = pawn.genes?.GetFirstGeneOfType<Invested>();
-            if (investedGene != null && !string.IsNullOrEmpty(investedGene.investitureLabel))
-                return investedGene.investitureLabel;
-            return LabelCap;
-        }
-    }
     public const float MaxInvestiture = float.PositiveInfinity;
 
     // These thresholds match the canon Heightenings from Warbreaker
@@ -47,11 +39,23 @@ public class Investiture : RimWorld.Need {
         "10th Heightening",
     ];
 
-    private int unlockedHeightening;
     private CompGlower? cachedGlower;
+
+    private int unlockedHeightening;
 
     public Investiture(Pawn pawn) : base(pawn) {
         threshPercents = [0.1f, 0.25f, 0.5f, 0.75f];
+    }
+
+    public string InvestitureLabel {
+        get {
+            Invested? investedGene = pawn.genes?.GetFirstGeneOfType<Invested>();
+            if (investedGene != null && !string.IsNullOrEmpty(investedGene.investitureLabel)) {
+                return investedGene.investitureLabel;
+            }
+
+            return LabelCap;
+        }
     }
 
     public override float MaxLevel {

@@ -12,18 +12,18 @@ namespace Cosmere.System.Scadrial.Gene;
 
 public class Feruchemist : Metalborn {
     public static readonly float AmountPerRareTick = 1 / 18f;
-    private new FeruchemicGeneCommand? gizmo => (FeruchemicGeneCommand)base.gizmo;
+    private HediffDef? cachedCompoundHediffDef;
 
     private List<IMetalmindSource>? cachedMetalminds;
-    private int metalmindsLastCachedTick = -1;
+    private HediffDef? cachedPermanentHediffDef;
+    private HediffDef? cachedSavantHediffDef;
+    private int cachedSavantStage;
+    private HediffDef? cachedStoreHediffDef;
 
     private HediffDef? cachedTapHediffDef;
-    private HediffDef? cachedStoreHediffDef;
-    private HediffDef? cachedCompoundHediffDef;
-    private int cachedSavantStage;
+    private int metalmindsLastCachedTick = -1;
     private float savantDecayOffset;
-    private HediffDef? cachedSavantHediffDef;
-    private HediffDef? cachedPermanentHediffDef;
+    private new FeruchemicGeneCommand? gizmo => (FeruchemicGeneCommand)base.gizmo;
 
     public List<IMetalmindSource> metalminds {
         get {
@@ -38,7 +38,8 @@ public class Feruchemist : Metalborn {
             }
 
             ImplantedMetalminds? implantHediff =
-                pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds) as ImplantedMetalminds;
+                pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds) as
+                    ImplantedMetalminds;
             if (implantHediff != null) {
                 for (int i = 0; i < implantHediff.metalminds.Count; i++) {
                     ImplantedMetalmindData data = implantHediff.metalminds[i];
@@ -58,6 +59,7 @@ public class Feruchemist : Metalborn {
             for (int i = 0; i < mms.Count; i++) {
                 total += mms[i].maxAmount;
             }
+
             return total;
         }
     }
@@ -69,6 +71,7 @@ public class Feruchemist : Metalborn {
             for (int i = 0; i < mms.Count; i++) {
                 total += mms[i].storedAmount;
             }
+
             return total;
         }
     }
@@ -83,12 +86,14 @@ public class Feruchemist : Metalborn {
     private Hediff? tapHediff => pawn.health.hediffSet.GetFirstHediffOfDef(tapHediffDef);
 
     private HediffDef? storeHediffDef =>
-        cachedStoreHediffDef ??= DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Store" + metal.defName);
+        cachedStoreHediffDef ??=
+            DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Store" + metal.defName);
 
     private Hediff? storeHediff => pawn.health.hediffSet.GetFirstHediffOfDef(storeHediffDef);
 
     private HediffDef? compoundHediffDef =>
-        cachedCompoundHediffDef ??= DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Compound" + metal.defName);
+        cachedCompoundHediffDef ??=
+            DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Compound" + metal.defName);
 
     private Hediff? compoundHediff => pawn.health.hediffSet.GetFirstHediffOfDef(compoundHediffDef);
 
@@ -104,6 +109,7 @@ public class Feruchemist : Metalborn {
             for (int i = 0; i < mms.Count; i++) {
                 if (mms[i].canTap) return true;
             }
+
             return false;
         }
     }
@@ -116,6 +122,7 @@ public class Feruchemist : Metalborn {
             for (int i = 0; i < mms.Count; i++) {
                 if (mms[i].canStore) return true;
             }
+
             return false;
         }
     }
@@ -151,6 +158,7 @@ public class Feruchemist : Metalborn {
             Hediff? sh = storeHediff;
             if (sh != null) pawn.health.RemoveHediff(sh);
         }
+
         if (tapHediffDef != null && pawn.health.hediffSet.HasHediff(tapHediffDef)) {
             Hediff? th = tapHediff;
             if (th != null) pawn.health.RemoveHediff(th);
@@ -196,10 +204,10 @@ public class Feruchemist : Metalborn {
         }
 
         if (isStoring) {
-            Verse.Hediff? sh = storeHediff;
+            Hediff? sh = storeHediff;
             if (sh != null) AddToStore(AmountPerRareTick * sh.Severity);
         } else if (isTapping) {
-            Verse.Hediff? th = tapHediff;
+            Hediff? th = tapHediff;
             if (th != null) RemoveFromStore(AmountPerRareTick * th.Severity);
         }
 
@@ -227,6 +235,7 @@ public class Feruchemist : Metalborn {
             mms[i].AddStored(amount);
             return true;
         }
+
         return false;
     }
 
@@ -237,6 +246,7 @@ public class Feruchemist : Metalborn {
             mms[i].ConsumeStored(amount);
             return true;
         }
+
         return false;
     }
 
@@ -255,7 +265,10 @@ public class Feruchemist : Metalborn {
         int newStage = SavantUtility.GetFeruchemicalStage(ticks);
 
         if (newStage == 1 && !isTapping && !isStoring) {
-            float decayAmount = ticks * SavantUtility.Stage1DecayPerDayFraction / GenDate.TicksPerDay * GenTicks.TickLongInterval;
+            float decayAmount = ticks *
+                                SavantUtility.Stage1DecayPerDayFraction /
+                                GenDate.TicksPerDay *
+                                GenTicks.TickLongInterval;
             savantDecayOffset += decayAmount;
             ticks -= decayAmount;
             newStage = SavantUtility.GetFeruchemicalStage(ticks);

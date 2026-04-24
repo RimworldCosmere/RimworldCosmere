@@ -13,8 +13,9 @@ public class SoulDamage : DamageWorker_AddInjury {
         DamageInfo dinfo,
         DamageResult result
     ) {
-        if (dinfo.HitPart == null || pawn.health.hediffSet.PartIsMissing(dinfo.HitPart))
+        if (dinfo.HitPart == null || pawn.health.hediffSet.PartIsMissing(dinfo.HitPart)) {
             return;
+        }
 
         Verse.Hediff hediff = HediffMaker.MakeHediff(RimWorld.HediffDefOf.MissingBodyPart, pawn, dinfo.HitPart);
         hediff.Severity = dinfo.HitPart.def.GetMaxHealth(pawn) + 1;

@@ -13,19 +13,21 @@ public static class NahelBondTooltipPatch {
 
     private static readonly AccessTools.FieldRef<object, List<PawnRelationDef>> RelationsRef =
         AccessTools.FieldRefAccess<List<PawnRelationDef>>(
-            AccessTools.Inner(typeof(SocialCardUtility), "CachedSocialTabEntry"), "relations"
+            AccessTools.Inner(typeof(SocialCardUtility), "CachedSocialTabEntry"),
+            "relations"
         );
 
     private static readonly AccessTools.FieldRef<object, Pawn> OtherPawnRef =
         AccessTools.FieldRefAccess<Pawn>(
-            AccessTools.Inner(typeof(SocialCardUtility), "CachedSocialTabEntry"), "otherPawn"
+            AccessTools.Inner(typeof(SocialCardUtility), "CachedSocialTabEntry"),
+            "otherPawn"
         );
 
-    static MethodBase TargetMethod() {
+    private static MethodBase TargetMethod() {
         return AccessTools.Method(typeof(SocialCardUtility), "GetPawnRowTooltip");
     }
 
-    static void Postfix(ref string __result, object entry, Pawn selPawnForSocialInfo) {
+    private static void Postfix(ref string __result, object entry, Pawn selPawnForSocialInfo) {
         nahelBondDef ??= DefDatabase<PawnRelationDef>.GetNamedSilentFail("Cosmere_Roshar_Relation_NahelBond");
         if (nahelBondDef == null) return;
 
@@ -55,7 +57,10 @@ public static class NahelBondTooltipPatch {
             _ => "CRO_BondStage_Breaking".Translate(),
         };
 
-        string bondInfo = "\n\n" + "CRO_NahelBond_SocialTooltip_Header".Translate().Resolve().Colorize(ColoredText.TipSectionTitleColor);
+        string bondInfo = "\n\n" +
+                          "CRO_NahelBond_SocialTooltip_Header".Translate()
+                              .Resolve()
+                              .Colorize(ColoredText.TipSectionTitleColor);
         bondInfo += "\n" + "CRO_NahelBond_SocialTooltip_Strength".Translate(percentage.ToString());
         bondInfo += "\n" + "CRO_NahelBond_SocialTooltip_Stage".Translate(stage);
 

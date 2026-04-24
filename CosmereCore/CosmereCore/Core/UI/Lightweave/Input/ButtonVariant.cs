@@ -2,46 +2,41 @@ using Cosmere.Core.UI.Lightweave.Tokens;
 
 namespace Cosmere.Core.UI.Lightweave.Input;
 
-public enum ButtonVariant
-{
+public enum ButtonVariant {
     Primary,
     Secondary,
     Ghost,
     Danger,
 }
 
-internal static class ButtonVariants
-{
-    public static ThemeSlot Background(ButtonVariant variant, InteractionState state)
-    {
-        if (state.Disabled)
-        {
+internal static class ButtonVariants {
+    public static ThemeSlot Background(ButtonVariant variant, InteractionState state) {
+        if (state.Disabled) {
             return ThemeSlot.SurfaceDisabled;
         }
 
-        switch (variant)
-        {
+        switch (variant) {
             case ButtonVariant.Primary:
                 return ThemeSlot.SurfaceAccent;
             case ButtonVariant.Secondary:
-                if (state.Pressed)
-                {
+                if (state.Pressed) {
                     return ThemeSlot.SurfaceSunken;
                 }
-                if (state.Hovered)
-                {
+
+                if (state.Hovered) {
                     return ThemeSlot.SurfaceRaised;
                 }
+
                 return ThemeSlot.SurfaceRaised;
             case ButtonVariant.Ghost:
-                if (state.Pressed)
-                {
+                if (state.Pressed) {
                     return ThemeSlot.SurfaceSunken;
                 }
-                if (state.Hovered)
-                {
+
+                if (state.Hovered) {
                     return ThemeSlot.SurfaceRaised;
                 }
+
                 return ThemeSlot.SurfacePrimary;
             case ButtonVariant.Danger:
                 return ThemeSlot.StatusDanger;
@@ -50,18 +45,16 @@ internal static class ButtonVariants
         }
     }
 
-    public static ThemeSlot Foreground(ButtonVariant variant, InteractionState state)
-    {
-        if (state.Disabled)
-        {
+    public static ThemeSlot Foreground(ButtonVariant variant, InteractionState state) {
+        if (state.Disabled) {
             return ThemeSlot.TextMuted;
         }
 
-        switch (variant)
-        {
+        switch (variant) {
             case ButtonVariant.Primary:
-            case ButtonVariant.Danger:
                 return ThemeSlot.TextOnAccent;
+            case ButtonVariant.Danger:
+                return ThemeSlot.TextOnDanger;
             case ButtonVariant.Secondary:
             case ButtonVariant.Ghost:
                 return ThemeSlot.TextPrimary;
@@ -70,15 +63,12 @@ internal static class ButtonVariants
         }
     }
 
-    public static ThemeSlot? Border(ButtonVariant variant, InteractionState state)
-    {
-        if (state.Disabled)
-        {
+    public static ThemeSlot? Border(ButtonVariant variant, InteractionState state) {
+        if (state.Disabled) {
             return ThemeSlot.BorderSubtle;
         }
 
-        switch (variant)
-        {
+        switch (variant) {
             case ButtonVariant.Primary:
             case ButtonVariant.Danger:
                 return ThemeSlot.BorderDefault;
@@ -91,20 +81,19 @@ internal static class ButtonVariants
         }
     }
 
-    public static float OverlayAlpha(InteractionState state)
-    {
-        if (state.Disabled)
-        {
+    public static float OverlayAlpha(InteractionState state) {
+        if (state.Disabled) {
             return 0f;
         }
-        if (state.Pressed)
-        {
+
+        if (state.Pressed) {
             return 0.18f;
         }
-        if (state.Hovered)
-        {
+
+        if (state.Hovered) {
             return 0.08f;
         }
+
         return 0f;
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.Core.Savant;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Scadrial.Def;
@@ -13,21 +12,38 @@ using Verse;
 namespace Cosmere.System.Scadrial.UI;
 
 public sealed class FeruchemyCodexContent : ICodexContentProvider {
-    public bool HasProgression(Pawn pawn) => CollectFeruchemists(pawn).Count > 0;
+    private static readonly Color PositiveMoodColor = new Color(0.45f, 0.85f, 0.45f);
+    private static readonly Color NegativeMoodColor = new Color(0.9f, 0.45f, 0.45f);
+    private static readonly Color RowStripeColor = new Color(1f, 1f, 1f, 0.03f);
+    private static readonly Color CoppermindHeaderColor = new Color(0.85f, 0.7f, 0.45f);
+    private static readonly Color SecondaryTextColor = new Color(0.7f, 0.7f, 0.7f);
+
+    public bool HasProgression(Pawn pawn) {
+        return CollectFeruchemists(pawn).Count > 0;
+    }
 
     public bool ShowsBondsSubtab => false;
-    public bool HasBonds(Pawn pawn) => false;
-    public bool OwnsAbility(RimWorld.Ability ability) => false;
+
+    public bool HasBonds(Pawn pawn) {
+        return false;
+    }
+
+    public bool OwnsAbility(Ability ability) {
+        return false;
+    }
 
     public bool HasMemories(Pawn pawn) {
         List<Feruchemist> fs = CollectFeruchemists(pawn);
         for (int i = 0; i < fs.Count; i++) {
             if (fs[i].metal?.defName == "Copper") return true;
         }
+
         return false;
     }
 
-    public string? HeaderLabelFor(Pawn pawn) => null;
+    public string? HeaderLabelFor(Pawn pawn) {
+        return null;
+    }
 
     public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
         List<Feruchemist> ferus = CollectFeruchemists(pawn);
@@ -41,11 +57,13 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
 
         SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower);
         if (skill != null) {
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f)))
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f))) {
                 Widgets.Label(
                     new Rect(rect.x, y, rect.width, 24f),
                     "CC_Codex_Feruchemy_OverallSkill".Translate(skill.Level.Named("LEVEL"))
                 );
+            }
+
             y += 28f;
         }
 
@@ -83,7 +101,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 : (string)"CC_Codex_Feruchemy_Never".Translate();
 
             Rect usageRect = new Rect(stageRect.xMax + 8f, row.y, row.xMax - stageRect.xMax - 12f, row.height);
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f)))
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f))) {
                 Widgets.Label(
                     usageRect,
                     "CC_Codex_Feruchemy_StoredTapped".Translate(
@@ -91,6 +109,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                         tappedLabel.Named("TAPPED")
                     )
                 );
+            }
 
             y += 28f;
         }
@@ -98,26 +117,31 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
 
     public void DrawBonds(Pawn pawn, Rect rect, CodexState state) { }
 
-    private static readonly Color PositiveMoodColor = new Color(0.45f, 0.85f, 0.45f);
-    private static readonly Color NegativeMoodColor = new Color(0.9f, 0.45f, 0.45f);
-    private static readonly Color RowStripeColor = new Color(1f, 1f, 1f, 0.03f);
-    private static readonly Color CoppermindHeaderColor = new Color(0.85f, 0.7f, 0.45f);
-    private static readonly Color SecondaryTextColor = new Color(0.7f, 0.7f, 0.7f);
-
     public void DrawMemories(Pawn pawn, Rect rect, CodexState state) {
         Rect headerRow = new Rect(rect.x, rect.y, rect.width, 30f);
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(new Rect(headerRow.x, headerRow.y, headerRow.width - 170f, headerRow.height),
-                "CC_Codex_Feruchemy_Copperminds_Header".Translate());
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
+            Widgets.Label(
+                new Rect(headerRow.x, headerRow.y, headerRow.width - 170f, headerRow.height),
+                "CC_Codex_Feruchemy_Copperminds_Header".Translate()
+            );
+        }
 
         List<Metalmind> copperminds = CollectCopperminds(pawn);
         List<Thought_Memory> activeMemories = CollectActiveMemories(pawn);
 
-        DrawStoreMemoryButton(new Rect(headerRow.xMax - 160f, headerRow.y + 2f, 160f, 26f), pawn, activeMemories, copperminds);
+        DrawStoreMemoryButton(
+            new Rect(headerRow.xMax - 160f, headerRow.y + 2f, 160f, 26f),
+            pawn,
+            activeMemories,
+            copperminds
+        );
 
         if (copperminds.Count == 0) {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor))
-                Widgets.Label(new Rect(rect.x, rect.y + 34f, rect.width, 24f), "CC_Codex_Feruchemy_NoCopperminds".Translate());
+                Widgets.Label(
+                    new Rect(rect.x, rect.y + 34f, rect.width, 24f),
+                    "CC_Codex_Feruchemy_NoCopperminds".Translate()
+                );
             return;
         }
 
@@ -133,17 +157,26 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         for (int i = 0; i < copperminds.Count; i++) {
             y = DrawCoppermindBlock(new Rect(0f, y, viewRect.width, 0f), copperminds[i]);
         }
+
         Widgets.EndScrollView();
     }
 
-    private static void DrawStoreMemoryButton(Rect rect, Pawn pawn, List<Thought_Memory> memories, List<Metalmind> copperminds) {
+    private static void DrawStoreMemoryButton(
+        Rect rect,
+        Pawn pawn,
+        List<Thought_Memory> memories,
+        List<Metalmind> copperminds
+    ) {
         bool hasMemories = memories.Count > 0;
         bool hasCopperminds = copperminds.Count > 0;
         bool anyFits = false;
         for (int i = 0; i < memories.Count && !anyFits; i++) {
             float magnitude = Mathf.Abs(memories[i].MoodOffset());
             for (int j = 0; j < copperminds.Count; j++) {
-                if (copperminds[j].CanFitMemory(magnitude)) { anyFits = true; break; }
+                if (copperminds[j].CanFitMemory(magnitude)) {
+                    anyFits = true;
+                    break;
+                }
             }
         }
 
@@ -152,6 +185,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         if (Widgets.ButtonText(rect, "CC_Codex_Feruchemy_StoreMemory_Button".Translate())) {
             Find.WindowStack.Add(new Dialog_StoreMemory(pawn, memories, copperminds));
         }
+
         GUI.enabled = true;
 
         if (!enabled && Mouse.IsOver(rect)) {
@@ -172,6 +206,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
             Thought_Memory memory = all[i];
             if (Mathf.Abs(memory.MoodOffset()) > 0f) result.Add(memory);
         }
+
         return result;
     }
 
@@ -188,7 +223,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         string ownerName = mind.owner != null
             ? mind.owner.LabelShortCap
             : (string)"CC_Codex_Feruchemy_UnclaimedOwner".Translate();
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, CoppermindHeaderColor))
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, CoppermindHeaderColor)) {
             Widgets.Label(
                 header,
                 "CC_Codex_Feruchemy_CoppermindHeader".Translate(
@@ -198,6 +233,8 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                     mind.maxAmount.ToString("F0").Named("MAX")
                 )
             );
+        }
+
         y += 26f;
 
         Rect divider = new Rect(rect.x, y, rect.width, 1f);
@@ -227,7 +264,10 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                     : (string)"CC_Codex_Feruchemy_UnknownStoredBy".Translate();
                 Rect attributionRect = new Rect(labelRect.xMax, row.y, row.width - labelRect.width - 12f, row.height);
                 using (new TextBlock(GameFont.Small, TextAnchor.MiddleRight, SecondaryTextColor))
-                    Widgets.Label(attributionRect, "CC_Codex_Feruchemy_MemoryStoredBy".Translate(storedBy.Named("STOREDBY")));
+                    Widgets.Label(
+                        attributionRect,
+                        "CC_Codex_Feruchemy_MemoryStoredBy".Translate(storedBy.Named("STOREDBY"))
+                    );
 
                 y += 22f;
             }
@@ -258,6 +298,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 color = new Color(0.55f, 0.55f, 0.55f);
                 break;
         }
+
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, color))
             Widgets.Label(rect, label);
     }
@@ -269,6 +310,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is Feruchemist f && !f.Overridden) result.Add(f);
         }
+
         return result;
     }
 
@@ -282,6 +324,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 result.Add(mind);
             }
         }
+
         return result;
     }
 }

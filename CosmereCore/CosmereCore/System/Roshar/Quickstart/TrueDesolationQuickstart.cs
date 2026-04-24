@@ -36,9 +36,9 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
 
         Shards? shards = Current.Game?.GetComponent<Shards>();
         if (shards != null) {
-            shards.EnableShard("Honor", allowConflicts: true);
-            shards.EnableShard("Cultivation", allowConflicts: true);
-            shards.EnableShard("Odium", allowConflicts: true);
+            shards.EnableShard("Honor", true);
+            shards.EnableShard("Cultivation", true);
+            shards.EnableShard("Odium", true);
         }
 
         BackstoryDef child = DefDatabase<BackstoryDef>.GetNamed("OptimisticChild30");
@@ -98,7 +98,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Female;
             pawn.story.bodyType = BodyTypeDefOf.Female;
             pawn.story.traits.GainTrait(new Trait(RimWorld.TraitDefOf.Pyromaniac));
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantDustbringer, 0);
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantDustbringer);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 5;
             pawn.records.AddTo(RimWorld.RecordDefOf.KillsHumanlikes, 10);
             pawn.GetInvestiture().currentInvestitureSelf = 1000;
@@ -108,7 +108,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.Name = new NameTriple("Renarin", "Son of Thorns", "Kholin");
             pawn.gender = Gender.Male;
             pawn.story.bodyType = BodyTypeDefOf.Male;
-            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher, 0);
+            pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 5;
             pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_PatientsSaved, 5);
             pawn.GetInvestiture().currentInvestitureSelf = 1000;

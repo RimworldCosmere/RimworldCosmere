@@ -3,8 +3,8 @@ using Cosmere.Core.Comp.Map;
 using Cosmere.Core.Hediff;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
-using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Gene;
 using UnityEngine;
 using Verse;
 using static Cosmere.Core.Mod;
@@ -30,11 +30,13 @@ public abstract class LineDrawingAura : HediffComp {
     protected new AllomanticHediff parent => (AllomanticHediff)base.parent;
     protected MetallicArtsMetalDef metal => parent.metal;
     protected float radius => props.radius * parent.Severity;
+
     protected bool atLeastBurning {
         get {
             foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in parent.sourceAbilities) {
                 if (sa is AllomancyAbility a && a.atLeastBurning) return true;
             }
+
             return false;
         }
     }
@@ -54,7 +56,7 @@ public abstract class LineDrawingAura : HediffComp {
             return;
         }
 
-        if (!Scadrial.Mod.alwaysShowAllomanticAuras && !Find.Selector.IsSelected(parent.pawn)) {
+        if (!Mod.alwaysShowAllomanticAuras && !Find.Selector.IsSelected(parent.pawn)) {
             LineRenderer.TryClear(this);
             return;
         }

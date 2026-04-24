@@ -12,10 +12,6 @@ namespace Cosmere.System.Scadrial;
 [SuppressMessage("ReSharper", "UnassignedField.Global")]
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static partial class RecordDefOf {
-    static RecordDefOf() {
-        DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
-    }
-
     [MayRequire("Cosmere.Scadrial")]
     public static RecordDef Cosmere_Scadrial_Record_IngestedLerasium;
 
@@ -33,6 +29,10 @@ public static partial class RecordDefOf {
 
     [MayRequire("Cosmere.Scadrial")]
     public static RecordDef Cosmere_Scadrial_Record_IngestedRawMetal;
+
+    static RecordDefOf() {
+        DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
+    }
 
     public static RecordDef GetMetalBurnRecordForMetal(MetalDef metal) {
         return DefDatabase<RecordDef>.GetNamed("Cosmere_Scadrial_Record_MetalBurnt_" + metal.defName);

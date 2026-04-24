@@ -12,7 +12,9 @@ public class SoulcastWorkGiver : WorkGiver_Scanner {
     public override IEnumerable<IntVec3> PotentialWorkCellsGlobal(Pawn pawn) {
         if (FindSoulcastAbility(pawn) == null) yield break;
 
-        foreach (Designation designation in pawn.Map.designationManager.SpawnedDesignationsOfDef(Designator_Soulcast.DesignationDef)) {
+        foreach (Designation designation in pawn.Map.designationManager.SpawnedDesignationsOfDef(
+                     Designator_Soulcast.DesignationDef
+                 )) {
             yield return designation.target.Cell;
         }
     }
@@ -41,6 +43,7 @@ public class SoulcastWorkGiver : WorkGiver_Scanner {
         for (int i = 0; i < abilities.Count; i++) {
             if (abilities[i] is SoulcastAbility soulcast) return soulcast;
         }
+
         return null;
     }
 }

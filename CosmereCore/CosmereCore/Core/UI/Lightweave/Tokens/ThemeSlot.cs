@@ -1,7 +1,6 @@
 namespace Cosmere.Core.UI.Lightweave.Tokens;
 
-public enum ThemeSlot
-{
+public enum ThemeSlot {
     SurfacePrimary,
     SurfaceRaised,
     SurfaceSunken,
@@ -10,6 +9,7 @@ public enum ThemeSlot
     TextSecondary,
     TextMuted,
     TextOnAccent,
+    TextOnDanger,
     BorderDefault,
     BorderSubtle,
     StatusWarning,
@@ -19,4 +19,6 @@ public enum ThemeSlot
     BorderHover,
     SurfaceInput,
     SurfaceDisabled,
+    BorderOff,
+    BorderDanger,
 }

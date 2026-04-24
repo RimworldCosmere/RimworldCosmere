@@ -4,6 +4,7 @@ using Cosmere.System.Roshar.Dev;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using Cosmere.System.Roshar.LesserSpren.SprenController;
 using HarmonyLib;
+using RimWorld.Planet;
 using Verse;
 using Verse.Profile;
 
@@ -57,7 +58,7 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     public override void MapComponentUpdate() {
         base.MapComponentUpdate();
 
-        bool onWorldMap = RimWorld.Planet.WorldRendererUtility.WorldRendered;
+        bool onWorldMap = WorldRendererUtility.WorldRendered;
         foreach (SprenParticleSystem? sprenSystem in SprenSystems.Values) {
             sprenSystem.SetVisible(!onWorldMap);
         }

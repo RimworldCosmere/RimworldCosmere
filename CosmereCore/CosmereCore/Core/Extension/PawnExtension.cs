@@ -8,7 +8,6 @@ using Verse.AI;
 namespace Cosmere.Core.Extension;
 
 public static class PawnExtension {
-
     public static InvestitureHolder GetInvestiture(this Pawn pawn) {
         return pawn.TryGetComp<InvestitureHolder>();
     }
@@ -66,5 +65,4 @@ public static class PawnExtension {
         where T : RimWorld.Ability {
         return pawn.abilities.GetAbility(def) as T;
     }
-
 }

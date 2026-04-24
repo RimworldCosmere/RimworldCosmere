@@ -1,29 +1,27 @@
-using System;
 using System.Runtime.CompilerServices;
-using UnityEngine;
-using Cosmere.Core.UI.Lightweave.Rendering;
 using Cosmere.Core.UI.Lightweave.Runtime;
 using Cosmere.Core.UI.Lightweave.Tokens;
 using Cosmere.Core.UI.Lightweave.Types;
+using UnityEngine;
+using Verse;
 
 namespace Cosmere.Core.UI.Lightweave.Feedback;
 
-public static class Spinner
-{
+public static class Spinner {
     public static LightweaveNode Create(
         Rem size = default,
         ThemeSlot? color = null,
         float rotationPeriodSeconds = 0.8f,
         [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = "")
-    {
-        Rem resolvedSize = size.Equals(default(Rem)) ? new Rem(1.5f) : size;
+        [CallerFilePath] string file = ""
+    ) {
+        Rem resolvedSize = size.Equals(default) ? new Rem(1.5f) : size;
         ThemeSlot resolvedColor = color ?? ThemeSlot.SurfaceAccent;
 
         LightweaveNode node = NodeBuilder.New("Spinner", line, file);
+        node.PreferredHeight = resolvedSize.ToPixels();
 
-        node.Paint = (rect, paintChildren) =>
-        {
+        node.Paint = (rect, paintChildren) => {
             AnimationClock.RegisterActive(RenderContext.Current.RootId);
 
             Theme.Theme theme = RenderContext.Current.Theme;
@@ -36,7 +34,7 @@ public static class Spinner
             float lineWidth = Mathf.Max(2f, sizePx * 0.12f);
 
             float period = rotationPeriodSeconds > 0f ? rotationPeriodSeconds : 0.8f;
-            float angle = (Time.unscaledTime % period) / period * 360f;
+            float angle = Time.unscaledTime % period / period * 360f;
 
             // Draw a 270-degree arc as 54 short line segments
             int segmentCount = 54;
@@ -44,8 +42,7 @@ public static class Spinner
             float segStep = arcSpan / segmentCount;
 
             Color saved = GUI.color;
-            for (int i = 0; i < segmentCount; i++)
-            {
+            for (int i = 0; i < segmentCount; i++) {
                 float a0 = angle + i * segStep;
                 float a1 = angle + (i + 1) * segStep;
                 float t = (float)i / segmentCount;
@@ -58,7 +55,7 @@ public static class Spinner
 
                 float alpha = Mathf.Lerp(0.15f, 1f, t);
                 GUI.color = new Color(arcColor.r, arcColor.g, arcColor.b, arcColor.a * alpha);
-                Verse.Widgets.DrawLine(p0, p1, GUI.color, lineWidth);
+                Widgets.DrawLine(p0, p1, GUI.color, lineWidth);
             }
 
             GUI.color = saved;

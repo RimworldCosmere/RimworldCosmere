@@ -4,8 +4,8 @@ using Verse;
 namespace Cosmere.Core.ScenarioPart;
 
 public class SetGameConditionAction : ProgressionAction {
-    public string gameCondition = "";
     public int durationDays = 1;
+    public string gameCondition = "";
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         GameConditionDef? def = DefDatabase<GameConditionDef>.GetNamedSilentFail(gameCondition);

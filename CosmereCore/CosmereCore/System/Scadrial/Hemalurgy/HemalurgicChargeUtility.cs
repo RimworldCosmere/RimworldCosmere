@@ -1,18 +1,24 @@
-using System.Collections.Generic;
+using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Comp.Thing;
-using Cosmere.System.Scadrial.Extension;
+using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Hemalurgy;
 
 public static class HemalurgicChargeUtility {
     public static void PerformCharge(
-        Pawn donor, Pawn surgeon, HemalurgicSpike spikeComp,
-        HemalurgicStealType stealType, GeneDef? selectedGene,
-        float strengthMultiplier, bool applyInjury, bool isThinNeedle
+        Pawn donor,
+        Pawn surgeon,
+        HemalurgicSpike spikeComp,
+        HemalurgicStealType stealType,
+        GeneDef? selectedGene,
+        float strengthMultiplier,
+        bool applyInjury,
+        bool isThinNeedle
     ) {
         HemalurgicChargeData chargeData = new HemalurgicChargeData {
             stealType = stealType,
@@ -46,6 +52,7 @@ public static class HemalurgicChargeUtility {
                     donor.genes?.RemoveGene(activeGene);
                     genesWereStolen = true;
                 }
+
                 break;
 
             case HemalurgicStealType.Investiture:
@@ -82,10 +89,11 @@ public static class HemalurgicChargeUtility {
         Messages.Message(
             "CS_Hemalurgy_ChargeSuccess".Translate(
                 surgeon.Named("SURGEON"),
-                (spikeComp.metal?.Named("METAL") ?? "unknown".Named("METAL")),
+                spikeComp.metal?.Named("METAL") ?? "unknown".Named("METAL"),
                 donor.Named("DONOR")
             ),
-            donor, MessageTypeDefOf.PositiveEvent
+            donor,
+            MessageTypeDefOf.PositiveEvent
         );
 
         TaleRecorder.RecordTale(TaleDefOf.DidSurgery, surgeon, donor);
@@ -103,18 +111,19 @@ public static class HemalurgicChargeUtility {
     }
 
     public static void ApplyConnectionSteal(Pawn donor) {
-        Roshar.Gene.Surgebinder? surgebinder = donor.genes?.GetFirstGeneOfType<Roshar.Gene.Surgebinder>();
+        Surgebinder? surgebinder = donor.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder != null) {
             surgebinder.currentIdeal = 0;
             ILoadReferenceable? bondTarget = surgebinder.GetBondTarget();
             if (bondTarget != null) {
-                Core.Comp.Game.SpiritWeb.Instance?.SetConnection(donor, bondTarget, 0.1f);
+                SpiritWeb.Instance?.SetConnection(donor, bondTarget, 0.1f);
                 Verse.Hediff? strainedBond = donor.health.hediffSet.GetFirstHediffOfDef(
                     Roshar.HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond
                 );
                 if (strainedBond == null) {
                     strainedBond = HediffMaker.MakeHediff(
-                        Roshar.HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond, donor
+                        Roshar.HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond,
+                        donor
                     );
                     donor.health.AddHediff(strainedBond);
                 }
@@ -180,8 +189,8 @@ public static class HemalurgicChargeUtility {
             donor.health.AddHediff(drab);
         }
 
-        if (donor.story?.traits != null && !donor.story.traits.HasTrait(Scadrial.TraitDefOf.Cosmere_Scadrial_Trait_Drab)) {
-            donor.story.traits.GainTrait(new Trait(Scadrial.TraitDefOf.Cosmere_Scadrial_Trait_Drab));
+        if (donor.story?.traits != null && !donor.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Drab)) {
+            donor.story.traits.GainTrait(new Trait(TraitDefOf.Cosmere_Scadrial_Trait_Drab));
         }
     }
 
@@ -198,7 +207,8 @@ public static class HemalurgicChargeUtility {
             donor.Kill(new DamageInfo(DamageDefOf.SurgicalCut, 9999f, 999f, -1f, surgeon));
             Messages.Message(
                 "CS_Hemalurgy_DonorDied".Translate(donor.Named("DONOR")),
-                donor, MessageTypeDefOf.PawnDeath
+                donor,
+                MessageTypeDefOf.PawnDeath
             );
             return;
         }
@@ -208,20 +218,22 @@ public static class HemalurgicChargeUtility {
         float baseDeathChance = hasMastery ? 0.10f : hasPrecision ? 0.40f : 0.90f;
         int medicalSkill = surgeon?.skills?.GetSkill(RimWorld.SkillDefOf.Medicine)?.Level ?? 0;
         float deathChance = baseDeathChance * (1f - medicalSkill * 0.02f);
-        deathChance = UnityEngine.Mathf.Clamp01(deathChance);
+        deathChance = Mathf.Clamp01(deathChance);
 
         if (Rand.Chance(deathChance)) {
             donor.Kill(new DamageInfo(DamageDefOf.SurgicalCut, 9999f, 999f, -1f, surgeon));
             Messages.Message(
                 "CS_Hemalurgy_DonorDied".Translate(donor.Named("DONOR")),
-                donor, MessageTypeDefOf.PawnDeath
+                donor,
+                MessageTypeDefOf.PawnDeath
             );
             return;
         }
 
         float injurySeverity = 20f;
-        if (medicalSkill >= 10) injurySeverity = 8f;
-        else if (medicalSkill >= 7) injurySeverity = 12f;
+        if (medicalSkill >= 10) {
+            injurySeverity = 8f;
+        } else if (medicalSkill >= 7) injurySeverity = 12f;
 
         BodyPartRecord? torso = donor.health.hediffSet.GetNotMissingParts()
             .FirstOrDefault(p => p.def == BodyPartDefOf.Torso);

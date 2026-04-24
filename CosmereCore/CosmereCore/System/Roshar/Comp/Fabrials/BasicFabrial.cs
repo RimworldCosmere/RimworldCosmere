@@ -22,13 +22,13 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
             ? insertedGemstone.TryGetComp<SprenContainer>()?.CapturedSprenType
             : null;
 
+    protected abstract HediffDef PainHediffDef { get; }
+
     public List<ThingDef> filterList => filterListInt;
 
     public List<ThingDef> allowedSpheres { get; } = [
         Core.ThingDefOf.CutGem,
     ];
-
-    protected abstract HediffDef PainHediffDef { get; }
 
     public abstract void AddGemstone(ThingWithComps gemstone);
     public abstract void RemoveGemstone();
@@ -36,11 +36,11 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
     protected abstract void DoColdSprenPower();
 
     protected void RegisterBuilding() {
-        CultivationSprenPatch.RegisterBuilding((Verse.Building)parent);
+        CultivationSprenPatch.RegisterBuilding((Building)parent);
     }
 
     protected void UnregisterBuilding() {
-        CultivationSprenPatch.UnregisterBuilding((Verse.Building)parent);
+        CultivationSprenPatch.UnregisterBuilding((Building)parent);
     }
 
     public override void PostSpawnSetup(bool respawningAfterLoad) {
@@ -48,6 +48,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
         if (filterListInt.Count == 0 && Core.ThingDefOf.CutGem != null) {
             filterListInt.Add(Core.ThingDefOf.CutGem);
         }
+
         if (insertedGemstone != null) {
             RegisterBuilding();
         }
@@ -69,6 +70,7 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
             powerOn = investiture.currentInvestiture > 0 && flickeredOn;
             return;
         }
+
         powerOn = false;
     }
 
@@ -115,9 +117,12 @@ public abstract class BasicFabrial : ThingComp, IGemstoneHandler, IFilterableCom
         SprenContainer? sprenContainer = insertedGemstone.TryGetComp<SprenContainer>();
         InvestitureHolder? investiture = insertedGemstone.TryGetComp<InvestitureHolder>();
 
-        return "Spren: " + (sprenContainer?.CapturedSprenType?.ToString() ?? "None") +
-               "\nStormlight: " + (investiture?.currentInvestiture.ToString("F0") ?? "0") +
-               "\ntime remaining: " + GetTimeRemaining();
+        return "Spren: " +
+               (sprenContainer?.CapturedSprenType?.ToString() ?? "None") +
+               "\nStormlight: " +
+               (investiture?.currentInvestiture.ToString("F0") ?? "0") +
+               "\ntime remaining: " +
+               GetTimeRemaining();
     }
 
     private string GetTimeRemaining() {

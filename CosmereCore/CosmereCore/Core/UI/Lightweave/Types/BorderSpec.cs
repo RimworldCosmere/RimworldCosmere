@@ -9,13 +9,13 @@ public readonly record struct BorderSpec(
     Rem? Left = null,
     Rem? Start = null,
     Rem? End = null,
-    ColorRef? Color = null)
-{
-    public static BorderSpec All(Rem width, ColorRef color) =>
-        new BorderSpec(width, width, width, width, Color: color);
+    ColorRef? Color = null
+) {
+    public static BorderSpec All(Rem width, ColorRef color) {
+        return new BorderSpec(width, width, width, width, Color: color);
+    }
 
-    public Vector4 ResolveVector(Direction dir)
-    {
+    public Vector4 ResolveVector(Direction dir) {
         float startPx = Start?.ToPixels() ?? 0f;
         float endPx = End?.ToPixels() ?? 0f;
         float leftPx = (Left?.ToPixels() ?? 0f) + (dir == Direction.Ltr ? startPx : endPx);

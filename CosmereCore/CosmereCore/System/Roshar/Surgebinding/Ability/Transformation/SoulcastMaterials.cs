@@ -29,17 +29,18 @@ public static class SoulcastMaterials {
     private static List<ThingDef>? cachedStoneBlocks;
     private static List<ThingDef>? cachedStoneChunks;
 
-    public static SoulcastCategory Categorize(LocalTargetInfo target, Verse.Map map) {
+    public static SoulcastCategory Categorize(LocalTargetInfo target, Map map) {
         if (target.HasThing && target.Thing != null && !target.Thing.Destroyed) {
             Verse.Thing thing = target.Thing;
 
             if (thing is Fire) return SoulcastCategory.Fire;
-            if (thing is Verse.Pawn) return SoulcastCategory.Pawn;
+            if (thing is Pawn) return SoulcastCategory.Pawn;
             if (thing is Corpse) return SoulcastCategory.Corpse;
             if (thing.def == RimWorld.ThingDefOf.SteamGeyser) return SoulcastCategory.SteamGeyser;
             if (thing.def.mineable) return SoulcastCategory.Mineable;
             if (thing.def.plant != null) return SoulcastCategory.Plant;
-            if (thing.def.MadeFromStuff && thing.Stuff != null && !IsDroppedItem(thing)) return SoulcastCategory.StuffedThing;
+            if (thing.def.MadeFromStuff && thing.Stuff != null && !IsDroppedItem(thing))
+                return SoulcastCategory.StuffedThing;
             return SoulcastCategory.DroppedItem;
         }
 
@@ -68,10 +69,12 @@ public static class SoulcastMaterials {
         if (cachedStoneChunks != null) return cachedStoneChunks;
         cachedStoneChunks = [];
         foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading) {
-            if (def.IsWithinCategory(ThingCategoryDefOf.StoneChunks) || def.IsWithinCategory(ThingCategoryDefOf.Chunks)) {
+            if (def.IsWithinCategory(ThingCategoryDefOf.StoneChunks) ||
+                def.IsWithinCategory(ThingCategoryDefOf.Chunks)) {
                 cachedStoneChunks.Add(def);
             }
         }
+
         return cachedStoneChunks;
     }
 
@@ -128,6 +131,7 @@ public static class SoulcastMaterials {
             string stoneName = chunkName.Substring(5);
             return DefDatabase<ThingDef>.GetNamedSilentFail("Blocks" + stoneName);
         }
+
         return null;
     }
 
@@ -153,6 +157,7 @@ public static class SoulcastMaterials {
                 mineables.Add(def);
             }
         }
+
         return mineables;
     }
 

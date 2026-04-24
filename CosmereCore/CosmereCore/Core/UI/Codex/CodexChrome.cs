@@ -14,7 +14,7 @@ public static class CodexChrome {
         Rect accentLine = new Rect(rect.x, rect.yMax - 2f, rect.width, 2f);
         Widgets.DrawBoxSolid(accentLine, accent);
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
-            Rect labelRect = new Rect(rect.x + Gutter, rect.y, rect.width - (Gutter * 2f), rect.height);
+            Rect labelRect = new Rect(rect.x + Gutter, rect.y, rect.width - Gutter * 2f, rect.height);
             Widgets.Label(labelRect, label);
         }
     }
@@ -25,6 +25,11 @@ public static class CodexChrome {
 
     public static Rect BodyRect(Rect tabRect, bool hasSwitcher) {
         float top = HeaderHeight + SubtabBarHeight + (hasSwitcher ? SwitcherStripHeight : 0f);
-        return new Rect(tabRect.x + Gutter, tabRect.y + top + Gutter, tabRect.width - (Gutter * 2f), tabRect.height - top - (Gutter * 2f));
+        return new Rect(
+            tabRect.x + Gutter,
+            tabRect.y + top + Gutter,
+            tabRect.width - Gutter * 2f,
+            tabRect.height - top - Gutter * 2f
+        );
     }
 }

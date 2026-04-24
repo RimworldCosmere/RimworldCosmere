@@ -12,15 +12,17 @@ public class HediffEvolutionCompProperties : HediffCompProperties {
 }
 
 public class HediffEvolutionComp : HediffComp {
+    private NightwatcherCurseDef? curseDef;
     private int evolutionTick = -1;
     private bool evolved;
-    private NightwatcherCurseDef? curseDef;
 
     public void Initialize(NightwatcherCurseDef curse) {
         curseDef = curse;
         if (curse.cultivationEvolutionDays <= 0) return;
         evolutionTick = GenTicks.TicksGame + curse.cultivationEvolutionDays * GenDate.TicksPerDay;
-        Logger.Info($"HediffEvolutionComp: scheduled evolution in {curse.cultivationEvolutionDays} days for {Pawn?.NameShortColored}");
+        Logger.Info(
+            $"HediffEvolutionComp: scheduled evolution in {curse.cultivationEvolutionDays} days for {Pawn?.NameShortColored}"
+        );
     }
 
     public override void CompPostTickInterval(ref float severityAdjustment, int delta) {
@@ -33,18 +35,22 @@ public class HediffEvolutionComp : HediffComp {
     private void Evolve() {
         evolved = true;
         if (curseDef == null) return;
-        Verse.Pawn pawn = parent.pawn;
+        Pawn pawn = parent.pawn;
 
-        if (curseDef.evolutionHediff != null)
+        if (curseDef.evolutionHediff != null) {
             pawn.health.AddHediff(HediffMaker.MakeHediff(curseDef.evolutionHediff, pawn));
+        }
 
-        if (curseDef.evolutionGrantTrait != null && !pawn.story.traits.HasTrait(curseDef.evolutionGrantTrait))
+        if (curseDef.evolutionGrantTrait != null && !pawn.story.traits.HasTrait(curseDef.evolutionGrantTrait)) {
             pawn.story.traits.GainTrait(new Trait(curseDef.evolutionGrantTrait));
+        }
 
         Find.LetterStack.ReceiveLetter(
             "Cosmere_Roshar_Nightwatcher_Evolution_Title".Translate(pawn.Named("PAWN")),
             "Cosmere_Roshar_Nightwatcher_Evolution_Desc".Translate(
-                pawn.Named("PAWN"), curseDef.label.Named("CURSE")),
+                pawn.Named("PAWN"),
+                curseDef.label.Named("CURSE")
+            ),
             RimWorld.LetterDefOf.NeutralEvent,
             pawn
         );

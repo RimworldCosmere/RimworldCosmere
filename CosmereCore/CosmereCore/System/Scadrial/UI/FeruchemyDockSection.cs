@@ -2,23 +2,23 @@ using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Skin;
 using Cosmere.System.Scadrial.Gene;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
 public sealed class FeruchemyDockSection : IDockSection {
-    public string SystemId => "Feruchemy";
-    public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
-
     private const float CellHeight = 36f;
     private const float CompactCellHeight = 22f;
     private const float CellSpacing = 4f;
     private const float HeaderHeight = 28f;
     private const float ButtonWidth = 66f;
+    public string SystemId => "Feruchemy";
+    public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
 
-    public float GetHeaderHeight() => HeaderHeight;
+    public float GetHeaderHeight() {
+        return HeaderHeight;
+    }
 
     public float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
         float h = ctx.Density == DockDensityMode.Compact ? CompactCellHeight : CellHeight;
@@ -26,6 +26,7 @@ public sealed class FeruchemyDockSection : IDockSection {
         for (int i = 0; i < snapshot.Cells.Count; i++) {
             if (!ctx.TwinbornPairs.ContainsKey(snapshot.Cells[i].SubsystemId)) visible++;
         }
+
         return visible * (h + CellSpacing);
     }
 
@@ -110,6 +111,7 @@ public sealed class FeruchemyDockSection : IDockSection {
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is Feruchemist f && f.metal.defName == metalDefName && !f.Overridden) return f;
         }
+
         return null;
     }
 
@@ -118,10 +120,12 @@ public sealed class FeruchemyDockSection : IDockSection {
             gene.targetValue = 75f;
             return;
         }
+
         if (gene.isStoring) {
             gene.Reset();
             return;
         }
+
         gene.targetValue = 25f;
     }
 }

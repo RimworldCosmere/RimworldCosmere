@@ -1,14 +1,12 @@
-using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.UI.Codex;
 
 public interface ICodexContentProvider {
+    bool ShowsBondsSubtab { get; }
     bool HasProgression(Pawn pawn);
     void DrawProgression(Pawn pawn, Rect rect, CodexState state);
-
-    bool ShowsBondsSubtab { get; }
     bool HasBonds(Pawn pawn);
     void DrawBonds(Pawn pawn, Rect rect, CodexState state);
 

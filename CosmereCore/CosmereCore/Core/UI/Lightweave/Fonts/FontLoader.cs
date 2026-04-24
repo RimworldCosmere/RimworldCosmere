@@ -1,67 +1,59 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Verse;
-using Cosmere.Core;
 
 namespace Cosmere.Core.UI.Lightweave.Fonts;
 
 [StaticConstructorOnStartup]
-public static class FontLoader
-{
-    static FontLoader()
-    {
+public static class FontLoader {
+    static FontLoader() {
         Dictionary<string, Font> byName = LoadFontsFromBundles();
-        LightweaveFonts.ArimoRegular   = TryGet(byName, "Arimo-Regular");
-        LightweaveFonts.ArimoBold      = TryGet(byName, "Arimo-Bold");
+        LightweaveFonts.ArimoRegular = TryGet(byName, "Arimo-Regular");
+        LightweaveFonts.ArimoBold = TryGet(byName, "Arimo-Bold");
         LightweaveFonts.CarlitoRegular = TryGet(byName, "Carlito-Regular");
-        LightweaveFonts.CarlitoBold    = TryGet(byName, "Carlito-Bold");
-        LightweaveFonts.JetBrainsMono  = TryGet(byName, "JetBrainsMono-Regular");
+        LightweaveFonts.CarlitoBold = TryGet(byName, "Carlito-Bold");
+        LightweaveFonts.JetBrainsMono = TryGet(byName, "JetBrainsMono-Regular");
         Logger.Info($"Lightweave fonts loaded: {byName.Count} from bundles.");
     }
 
-    private static Dictionary<string, Font> LoadFontsFromBundles()
-    {
+    private static Dictionary<string, Font> LoadFontsFromBundles() {
         Dictionary<string, Font> result = new Dictionary<string, Font>();
         List<ModContentPack> mods = LoadedModManager.RunningModsListForReading;
-        for (int i = 0; i < mods.Count; i++)
-        {
+        for (int i = 0; i < mods.Count; i++) {
             ModContentPack mod = mods[i];
-            if (mod?.assetBundles?.loadedAssetBundles == null)
-            {
+            if (mod?.assetBundles?.loadedAssetBundles == null) {
                 continue;
             }
-            for (int b = 0; b < mod.assetBundles.loadedAssetBundles.Count; b++)
-            {
+
+            for (int b = 0; b < mod.assetBundles.loadedAssetBundles.Count; b++) {
                 AssetBundle bundle = mod.assetBundles.loadedAssetBundles[b];
-                if (bundle == null)
-                {
+                if (bundle == null) {
                     continue;
                 }
+
                 Font[] fonts = bundle.LoadAllAssets<Font>();
-                if (fonts == null)
-                {
+                if (fonts == null) {
                     continue;
                 }
-                for (int f = 0; f < fonts.Length; f++)
-                {
+
+                for (int f = 0; f < fonts.Length; f++) {
                     Font font = fonts[f];
-                    if (font == null || string.IsNullOrEmpty(font.name))
-                    {
+                    if (font == null || string.IsNullOrEmpty(font.name)) {
                         continue;
                     }
+
                     result[font.name] = font;
                 }
             }
         }
+
         return result;
     }
 
-    private static Font TryGet(Dictionary<string, Font> fonts, string name)
-    {
-        if (fonts.TryGetValue(name, out Font f))
-        {
+    private static Font TryGet(Dictionary<string, Font> fonts, string name) {
+        if (fonts.TryGetValue(name, out Font f)) {
             return f;
         }
+
         Logger.Warning($"Lightweave font not found: {name}");
         return null!;
     }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text;
 using RimWorld;
 using Verse;
@@ -6,8 +5,8 @@ using Verse;
 namespace Cosmere.System.Scadrial.Hemalurgy.Hediff;
 
 public class HemalurgicSpikes : HediffWithComps {
-    public List<ImplantedSpikeData> spikes = [];
     private HediffStage? cachedStage;
+    public List<ImplantedSpikeData> spikes = [];
     private bool stageDirty = true;
 
     public int spikeCount => spikes.Count;
@@ -18,9 +17,12 @@ public class HemalurgicSpikes : HediffWithComps {
                 RebuildStage();
                 stageDirty = false;
             }
+
             return cachedStage!;
         }
     }
+
+    public override bool ShouldRemove => spikes.Count == 0;
 
     public void AddSpike(ImplantedSpikeData spike) {
         spikes.Add(spike);
@@ -38,6 +40,7 @@ public class HemalurgicSpikes : HediffWithComps {
             stageDirty = true;
             return spike;
         }
+
         return null;
     }
 
@@ -82,26 +85,45 @@ public class HemalurgicSpikes : HediffWithComps {
         List<PawnCapacityModifier> capMods = [];
 
         if (strengthWeight > 0f) {
-            factors.Add(new StatModifier { stat = StatDef.Named("MeleeDamageFactor"), value = 1f + strengthWeight * 0.15f });
+            factors.Add(
+                new StatModifier { stat = StatDef.Named("MeleeDamageFactor"), value = 1f + strengthWeight * 0.15f }
+            );
             factors.Add(new StatModifier { stat = StatDef.Named("MoveSpeed"), value = 1f + strengthWeight * 0.10f });
-            factors.Add(new StatModifier { stat = StatDef.Named("ArmorRating_Sharp"), value = 1f + strengthWeight * 0.05f });
-            factors.Add(new StatModifier { stat = StatDef.Named("ArmorRating_Blunt"), value = 1f + strengthWeight * 0.05f });
+            factors.Add(
+                new StatModifier { stat = StatDef.Named("ArmorRating_Sharp"), value = 1f + strengthWeight * 0.05f }
+            );
+            factors.Add(
+                new StatModifier { stat = StatDef.Named("ArmorRating_Blunt"), value = 1f + strengthWeight * 0.05f }
+            );
         }
 
         if (sensesWeight > 0f) {
-            capMods.Add(new PawnCapacityModifier { capacity = PawnCapacityDefOf.Sight, postFactor = 1f + sensesWeight * 0.20f });
-            capMods.Add(new PawnCapacityModifier { capacity = PawnCapacityDefOf.Hearing, postFactor = 1f + sensesWeight * 0.20f });
+            capMods.Add(
+                new PawnCapacityModifier { capacity = PawnCapacityDefOf.Sight, postFactor = 1f + sensesWeight * 0.20f }
+            );
+            capMods.Add(
+                new PawnCapacityModifier
+                    { capacity = PawnCapacityDefOf.Hearing, postFactor = 1f + sensesWeight * 0.20f }
+            );
             offsets.Add(new StatModifier { stat = StatDef.Named("ShootingAccuracyPawn"), value = sensesWeight * 3f });
-            factors.Add(new StatModifier { stat = StatDef.Named("AimingDelayFactor"), value = 1f - sensesWeight * 0.05f });
+            factors.Add(
+                new StatModifier { stat = StatDef.Named("AimingDelayFactor"), value = 1f - sensesWeight * 0.05f }
+            );
         }
 
         if (emotionalWeight > 0f) {
-            offsets.Add(new StatModifier { stat = StatDef.Named("MentalBreakThreshold"), value = emotionalWeight * -0.10f });
-            factors.Add(new StatModifier { stat = StatDef.Named("SocialImpact"), value = 1f + emotionalWeight * 0.10f });
+            offsets.Add(
+                new StatModifier { stat = StatDef.Named("MentalBreakThreshold"), value = emotionalWeight * -0.10f }
+            );
+            factors.Add(
+                new StatModifier { stat = StatDef.Named("SocialImpact"), value = 1f + emotionalWeight * 0.10f }
+            );
         }
 
         if (mentalWeight > 0f) {
-            factors.Add(new StatModifier { stat = StatDef.Named("GlobalLearningFactor"), value = 1f + mentalWeight * 0.15f });
+            factors.Add(
+                new StatModifier { stat = StatDef.Named("GlobalLearningFactor"), value = 1f + mentalWeight * 0.15f }
+            );
             factors.Add(new StatModifier { stat = StatDef.Named("ResearchSpeed"), value = 1f + mentalWeight * 0.10f });
         }
 
@@ -128,6 +150,7 @@ public class HemalurgicSpikes : HediffWithComps {
             string needle = spike.isThinNeedle ? " (needle)" : "";
             sb.AppendLine($"  - {spike.metalDefName}{needle}: {typeLabel} ({strengthLabel})");
         }
+
         return sb.ToString().TrimEnd();
     }
 
@@ -139,6 +162,4 @@ public class HemalurgicSpikes : HediffWithComps {
             stageDirty = true;
         }
     }
-
-    public override bool ShouldRemove => spikes.Count == 0;
 }

@@ -11,7 +11,8 @@ public class NightwatcherBoonHediff : NightwatcherPassiveHediff {
 
     public override string Description {
         get {
-            string intro = "The Nightwatcher has granted {PAWN_nameDef} a boon. The gift is permanent, woven into {PAWN_possessive} very Spiritweb.";
+            string intro =
+                "The Nightwatcher has granted {PAWN_nameDef} a boon. The gift is permanent, woven into {PAWN_possessive} very Spiritweb.";
             return (intro + "\n\n" + (boonDef?.description ?? "")).Formatted(pawn.Named("PAWN"));
         }
     }
@@ -21,7 +22,9 @@ public class NightwatcherBoonHediff : NightwatcherPassiveHediff {
         Severity = 1f;
     }
 
-    public override bool TryMergeWith(Verse.Hediff other) => false;
+    public override bool TryMergeWith(Verse.Hediff other) {
+        return false;
+    }
 
     public override void ExposeData() {
         base.ExposeData();

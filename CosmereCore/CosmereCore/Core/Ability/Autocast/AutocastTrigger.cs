@@ -3,8 +3,8 @@ using Verse;
 namespace Cosmere.Core.Ability.Autocast;
 
 public sealed class AutocastTrigger : IExposable {
-    public AutocastTriggerKind Kind;
     public AutocastComparison Comparison;
+    public AutocastTriggerKind Kind;
     public float Threshold;
 
     public AutocastTrigger() { }

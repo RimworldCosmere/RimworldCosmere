@@ -1,4 +1,3 @@
-using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
@@ -11,6 +10,7 @@ public class PausingFloatMenu : FloatMenu {
         if (savedSpeed == null) {
             savedSpeed = Find.TickManager.CurTimeSpeed;
         }
+
         Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
         openCount++;
     }

@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using System.Reflection;
 using Cosmere.System.Roshar.Comp.Thing;
 using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 using DecoyHediff = Cosmere.System.Roshar.Surgebinding.Hediff.Illumination.LightweavingDecoy;
 
@@ -12,7 +12,7 @@ namespace Cosmere.System.Roshar.Patch;
 public static class BondedSprenColonistBarPatch {
     private static FieldInfo? cachedEntriesField;
 
-    static void Postfix(ColonistBar __instance) {
+    private static void Postfix(ColonistBar __instance) {
         cachedEntriesField ??= AccessTools.Field(typeof(ColonistBar), "cachedEntries");
         if (cachedEntriesField == null) return;
 
@@ -20,7 +20,7 @@ public static class BondedSprenColonistBarPatch {
         if (entries == null) return;
 
         for (int i = entries.Count - 1; i >= 0; i--) {
-            Verse.Pawn? pawn = entries[i].pawn;
+            Pawn? pawn = entries[i].pawn;
             if (pawn == null) continue;
             if (pawn.TryGetComp<CompSprenBond>() != null || DecoyHediff.IsDecoy(pawn)) {
                 entries.RemoveAt(i);
@@ -29,22 +29,26 @@ public static class BondedSprenColonistBarPatch {
     }
 }
 
-[HarmonyPatch(typeof(Pawn_PlayerSettings), nameof(Pawn_PlayerSettings.UsesConfigurableHostilityResponse), MethodType.Getter)]
+[HarmonyPatch(
+    typeof(Pawn_PlayerSettings),
+    nameof(Pawn_PlayerSettings.UsesConfigurableHostilityResponse),
+    MethodType.Getter
+)]
 public static class BondedSprenHostilityPatch {
-    private static global::System.Reflection.FieldInfo? pawnField;
+    private static FieldInfo? pawnField;
 
-    static void Postfix(ref bool __result, Pawn_PlayerSettings __instance) {
+    private static void Postfix(ref bool __result, Pawn_PlayerSettings __instance) {
         pawnField ??= AccessTools.Field(typeof(Pawn_PlayerSettings), "pawn");
-        Verse.Pawn? pawn = pawnField?.GetValue(__instance) as Verse.Pawn;
+        Pawn? pawn = pawnField?.GetValue(__instance) as Pawn;
         if (pawn?.TryGetComp<CompSprenBond>() != null) {
             __result = false;
         }
     }
 }
 
-[HarmonyPatch(typeof(RimWorld.Planet.CaravanFormingUtility), nameof(RimWorld.Planet.CaravanFormingUtility.AllSendablePawns))]
+[HarmonyPatch(typeof(CaravanFormingUtility), nameof(CaravanFormingUtility.AllSendablePawns))]
 public static class BondedSprenCaravanPatch {
-    static void Postfix(List<Verse.Pawn> __result) {
+    private static void Postfix(List<Pawn> __result) {
         for (int i = __result.Count - 1; i >= 0; i--) {
             if (__result[i].TryGetComp<CompSprenBond>() != null || DecoyHediff.IsDecoy(__result[i])) {
                 __result.RemoveAt(i);
@@ -53,9 +57,9 @@ public static class BondedSprenCaravanPatch {
     }
 }
 
-[HarmonyPatch(typeof(Verse.Pawn), nameof(Verse.Pawn.GetDisabledWorkTypes))]
+[HarmonyPatch(typeof(Pawn), nameof(Pawn.GetDisabledWorkTypes))]
 public static class BondedSprenDisableWorkPatch {
-    static void Postfix(List<WorkTypeDef> __result, Verse.Pawn __instance) {
+    private static void Postfix(List<WorkTypeDef> __result, Pawn __instance) {
         if (__instance.TryGetComp<CompSprenBond>() == null) return;
 
         List<WorkTypeDef> allTypes = DefDatabase<WorkTypeDef>.AllDefsListForReading;
@@ -71,11 +75,11 @@ public static class BondedSprenDisableWorkPatch {
 public static class BondedSprenWorkTabPatch {
     private static FieldInfo? cachedPawnsField;
 
-    static void Postfix(PawnTable __instance) {
+    private static void Postfix(PawnTable __instance) {
         cachedPawnsField ??= AccessTools.Field(typeof(PawnTable), "cachedPawns");
         if (cachedPawnsField == null) return;
 
-        List<Verse.Pawn> pawns = (List<Verse.Pawn>)cachedPawnsField.GetValue(__instance);
+        List<Pawn> pawns = (List<Pawn>)cachedPawnsField.GetValue(__instance);
         if (pawns == null) return;
 
         for (int i = pawns.Count - 1; i >= 0; i--) {

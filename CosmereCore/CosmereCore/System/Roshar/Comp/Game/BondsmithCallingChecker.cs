@@ -9,11 +9,11 @@ namespace Cosmere.System.Roshar.Comp.Game;
 
 public class BondsmithCallingChecker : GameComponent {
     private static readonly string[] GodsprenNames = ["Stormfather", "Nightwatcher", "Sibling"];
+    private HashSet<string> activeCallings = [];
+    private HashSet<string> bondedGodspren = [];
 
     private int lastCheckTick = -1;
     private Dictionary<int, int> refuseCooldowns = [];
-    private HashSet<string> activeCallings = [];
-    private HashSet<string> bondedGodspren = [];
 
     public BondsmithCallingChecker(Verse.Game game) { }
 
@@ -201,6 +201,7 @@ public class BondsmithCallingChecker : GameComponent {
         for (int i = 0; i < hediffs.Count; i++) {
             if (hediffs[i] is BondsmithCalling calling) return calling;
         }
+
         return null;
     }
 
@@ -211,6 +212,7 @@ public class BondsmithCallingChecker : GameComponent {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -220,6 +222,7 @@ public class BondsmithCallingChecker : GameComponent {
             refuseCooldowns.Remove(pawn.thingIDNumber);
             return false;
         }
+
         return true;
     }
 
@@ -245,6 +248,7 @@ public class BondsmithCallingChecker : GameComponent {
             if (colonists[i] == pawn) continue;
             if ((colonists[i].relations?.OpinionOf(pawn) ?? 0) >= threshold) count++;
         }
+
         return count;
     }
 

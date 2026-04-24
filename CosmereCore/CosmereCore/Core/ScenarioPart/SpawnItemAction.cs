@@ -4,11 +4,11 @@ using Verse;
 namespace Cosmere.Core.ScenarioPart;
 
 public class SpawnItemAction : ProgressionAction {
-    public string thing = "";
-    public string? stuff;
     public int count = 1;
-    public string? letterTitle;
     public string? letterText;
+    public string? letterTitle;
+    public string? stuff;
+    public string thing = "";
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         ThingDef? thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(thing);
@@ -32,8 +32,12 @@ public class SpawnItemAction : ProgressionAction {
         DropPodUtility.DropThingsNear(dropSpot, map, [item], 110, false, true);
 
         if (letterTitle != null && letterText != null) {
-            Find.LetterStack.ReceiveLetter(letterTitle, letterText, LetterDefOf.PositiveEvent,
-                new TargetInfo(dropSpot, map));
+            Find.LetterStack.ReceiveLetter(
+                letterTitle,
+                letterText,
+                LetterDefOf.PositiveEvent,
+                new TargetInfo(dropSpot, map)
+            );
         }
     }
 }

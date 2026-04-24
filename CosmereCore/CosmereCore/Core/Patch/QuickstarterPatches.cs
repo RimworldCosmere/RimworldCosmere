@@ -4,7 +4,6 @@ using System.Reflection.Emit;
 using Cosmere.Core.Quickstart;
 using HarmonyLib;
 using Verse;
-using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.Core.Patch;
 

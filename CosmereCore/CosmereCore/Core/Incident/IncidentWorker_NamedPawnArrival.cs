@@ -1,6 +1,9 @@
 using System;
+using Cosmere.Core.DefModExtension;
+using Cosmere.Core.ScenarioPart;
 using RimWorld;
 using Verse;
+using GeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;
 
 namespace Cosmere.Core.Incident;
 
@@ -9,28 +12,32 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         Map? map = parms.target as Map ?? Find.AnyPlayerHomeMap;
         if (map == null) return false;
 
-        DefModExtension.NamedPawnIncidentConfig? config =
-            def.GetModExtension<DefModExtension.NamedPawnIncidentConfig>();
+        NamedPawnIncidentConfig? config =
+            def.GetModExtension<NamedPawnIncidentConfig>();
         if (config?.pawn == null) {
             Logger.Warning($"NamedPawnArrival: No NamedPawnIncidentConfig on IncidentDef '{def.defName}'");
             return false;
         }
 
-        ScenarioPart.NamedPawnDef template = config.pawn;
+        NamedPawnDef template = config.pawn;
 
         PawnKindDef pawnKind = def.pawnKind ?? PawnKindDefOf.Colonist;
-        Pawn pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
-            pawnKind,
-            Faction.OfPlayer,
-            PawnGenerationContext.NonPlayer,
-            forceGenerateNewPawn: true
-        ));
+        Pawn pawn = PawnGenerator.GeneratePawn(
+            new PawnGenerationRequest(
+                pawnKind,
+                Faction.OfPlayer,
+                forceGenerateNewPawn: true
+            )
+        );
 
         ApplyTemplate(pawn, template);
 
         if (!CellFinder.TryFindRandomEdgeCellWith(
                 c => map.reachability.CanReachColony(c) && !c.Fogged(map),
-                map, CellFinder.EdgeRoadChance_Neutral, out IntVec3 cell)) {
+                map,
+                CellFinder.EdgeRoadChance_Neutral,
+                out IntVec3 cell
+            )) {
             return false;
         }
 
@@ -43,7 +50,7 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         return true;
     }
 
-    private static void ApplyTemplate(Pawn pawn, ScenarioPart.NamedPawnDef template) {
+    private static void ApplyTemplate(Pawn pawn, NamedPawnDef template) {
         Name? name = template.GetName();
         if (name != null) pawn.Name = name;
 
@@ -60,14 +67,14 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         }
 
         for (int i = 0; i < template.traits.Count; i++) {
-            ScenarioPart.NamedPawnTraitEntry entry = template.traits[i];
+            NamedPawnTraitEntry entry = template.traits[i];
             if (entry.def == null) continue;
             TraitDef? traitDef = DefDatabase<TraitDef>.GetNamedSilentFail(entry.def);
             if (traitDef != null) pawn.story?.traits?.GainTrait(new Trait(traitDef, entry.degree));
         }
 
         for (int i = 0; i < template.skills.Count; i++) {
-            ScenarioPart.NamedPawnSkillEntry entry = template.skills[i];
+            NamedPawnSkillEntry entry = template.skills[i];
             if (entry.def == null) continue;
             SkillDef? skillDef = DefDatabase<SkillDef>.GetNamedSilentFail(entry.def);
             if (skillDef == null) continue;
@@ -97,15 +104,15 @@ public class IncidentWorker_NamedPawnArrival : IncidentWorker {
         }
 
         if (template.mistborn) {
-            Cosmere.System.Scadrial.Utility.GeneUtility.AddMistborn(pawn, false, true);
+            GeneUtility.AddMistborn(pawn, false, true);
         }
 
         if (template.fullFeruchemist) {
-            Cosmere.System.Scadrial.Utility.GeneUtility.AddFullFeruchemist(pawn, false, true);
+            GeneUtility.AddFullFeruchemist(pawn, false, true);
         }
 
         for (int i = 0; i < template.inventory.Count; i++) {
-            ScenarioPart.NamedPawnInventoryEntry entry = template.inventory[i];
+            NamedPawnInventoryEntry entry = template.inventory[i];
             if (entry.thing == null) continue;
             ThingDef? thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(entry.thing);
             if (thingDef == null) continue;

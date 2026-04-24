@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
@@ -29,6 +28,7 @@ public static class SkillVisibilityPatch {
                 levelLabelWidth = x;
             }
         }
+
         LevelLabelWidthField.SetValue(null, levelLabelWidth);
 
         int drawIndex = 0;
@@ -69,6 +69,7 @@ public static class SkillVisibilityPatch {
                 hidden++;
             }
         }
+
         return hidden;
     }
 }

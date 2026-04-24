@@ -1,6 +1,6 @@
 using System;
 using Cosmere.Core.Ability;
-using Cosmere.System.Roshar.Surgebinding.Hediff;
+using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Surgebinding.Utility;
 using RimWorld;
 using UnityEngine;
@@ -33,7 +33,7 @@ public class Bloom : SurgebindingAbility {
         }
 
         if (AuraMoteDef != null) {
-            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
+            float moteScale = MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
             auraMote = MoteMaker.MakeAttachedOverlay(pawn, AuraMoteDef, Vector3.zero, moteScale);
         }
     }
@@ -63,7 +63,7 @@ public class Bloom : SurgebindingAbility {
 
         auraMote?.Maintain();
         if (auraMote != null && AuraMoteDef != null) {
-            float moteScale = Cosmere.Core.Util.MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
+            float moteScale = MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
             auraMote.Graphic.drawSize = new Vector2(moteScale, moteScale);
         }
 
@@ -81,7 +81,8 @@ public class Bloom : SurgebindingAbility {
     private void UpdateAllyHediffs(float currentRadius) {
         for (int i = pawnsInArea.Count - 1; i >= 0; i--) {
             Pawn targetPawn = pawnsInArea[i];
-            if (targetPawn == null || targetPawn.Dead ||
+            if (targetPawn == null ||
+                targetPawn.Dead ||
                 !targetPawn.Position.InHorDistOf(pawn.Position, currentRadius)) {
                 if (targetPawn != null && !targetPawn.Dead && hediffToApply != null) {
                     SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
@@ -94,7 +95,10 @@ public class Bloom : SurgebindingAbility {
         if (!pawn.IsHashIntervalTick(30)) return;
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
-                     pawn.Position, pawn.Map, currentRadius, true
+                     pawn.Position,
+                     pawn.Map,
+                     currentRadius,
+                     true
                  )) {
             if (thing is not Pawn targetPawn) continue;
             if (targetPawn.Dead) continue;
@@ -110,7 +114,10 @@ public class Bloom : SurgebindingAbility {
         float growthAmount = 0.15f + gene.currentIdeal * 0.05f;
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
-                     pawn.Position, pawn.Map, currentRadius, true
+                     pawn.Position,
+                     pawn.Map,
+                     currentRadius,
+                     true
                  )) {
             if (thing is not Plant plant) continue;
 

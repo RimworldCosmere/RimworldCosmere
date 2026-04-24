@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using RimWorld;
@@ -24,7 +23,9 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
 
         if (corpse.Age > HemalurgicConstants.CorpseFreshnessTickLimit) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) + ": " + "CS_Hemalurgy_CorpseTooOld".Translate(),
+                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) +
+                ": " +
+                "CS_Hemalurgy_CorpseTooOld".Translate(),
                 null
             );
         }
@@ -32,21 +33,27 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         Verse.Thing? spike = FindNearestUnchargedSpike(pawn);
         if (spike == null) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) + ": " + "CS_Hemalurgy_NoUnchargedSpike".Translate(),
+                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) +
+                ": " +
+                "CS_Hemalurgy_NoUnchargedSpike".Translate(),
                 null
             );
         }
 
         if (!pawn.CanReach(corpse, PathEndMode.ClosestTouch, Danger.Deadly)) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) + ": " + "NoPath".Translate().CapitalizeFirst(),
+                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) +
+                ": " +
+                "NoPath".Translate().CapitalizeFirst(),
                 null
             );
         }
 
         if (!pawn.CanReach(spike, PathEndMode.ClosestTouch, Danger.Deadly)) {
             return new FloatMenuOption(
-                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) + ": " + "NoPath".Translate().CapitalizeFirst(),
+                "CS_Hemalurgy_ChargeCorpseSpike".Translate(corpse.InnerPawn.LabelShortCap) +
+                ": " +
+                "NoPath".Translate().CapitalizeFirst(),
                 null
             );
         }
@@ -57,7 +64,11 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
                 () => {
                     Verse.Thing? spikeNow = FindNearestUnchargedSpike(pawn);
                     if (spikeNow == null) return;
-                    Verse.AI.Job job = JobMaker.MakeJob(Scadrial.JobDefOf.Cosmere_Scadrial_Job_ChargeCorpseSpike, corpse, spikeNow);
+                    Verse.AI.Job job = JobMaker.MakeJob(
+                        JobDefOf.Cosmere_Scadrial_Job_ChargeCorpseSpike,
+                        corpse,
+                        spikeNow
+                    );
                     job.count = 1;
                     pawn.jobs.TryTakeOrderedJob(job);
                 }
@@ -84,7 +95,8 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
             }
         }
 
-        List<Verse.Thing> needles = map.listerThings.ThingsOfDef(HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle);
+        List<Verse.Thing> needles =
+            map.listerThings.ThingsOfDef(HemalurgicDefOf.Cosmere_Scadrial_Thing_HemalurgicNeedle);
         for (int i = 0; i < needles.Count; i++) {
             HemalurgicSpike? comp = needles[i].TryGetComp<HemalurgicSpike>();
             if (comp == null || comp.isCharged) continue;

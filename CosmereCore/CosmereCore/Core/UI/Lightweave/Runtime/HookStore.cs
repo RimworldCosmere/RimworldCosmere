@@ -1,52 +1,41 @@
-using System.Collections.Generic;
-
 namespace Cosmere.Core.UI.Lightweave.Runtime;
 
-public sealed class HookStore
-{
+public sealed class HookStore {
     private readonly Dictionary<HookKey, HookSlot> slots = new Dictionary<HookKey, HookSlot>();
 
-    public HookSlot Acquire(HookKey key)
-    {
-        if (!slots.TryGetValue(key, out HookSlot slot))
-        {
+    public HookSlot Acquire(HookKey key) {
+        if (!slots.TryGetValue(key, out HookSlot slot)) {
             slot = new HookSlot();
             slots[key] = slot;
         }
+
         slot.TouchedThisFrame = true;
         return slot;
     }
 
-    public void RetireUntouched()
-    {
+    public void RetireUntouched() {
         List<HookKey>? toRemove = null;
-        foreach (KeyValuePair<HookKey, HookSlot> kv in slots)
-        {
-            if (!kv.Value.TouchedThisFrame)
-            {
+        foreach (KeyValuePair<HookKey, HookSlot> kv in slots) {
+            if (!kv.Value.TouchedThisFrame) {
                 kv.Value.Cleanup?.Invoke();
                 (toRemove ??= new List<HookKey>()).Add(kv.Key);
-            }
-            else
-            {
+            } else {
                 kv.Value.TouchedThisFrame = false;
             }
         }
-        if (toRemove != null)
-        {
-            foreach (HookKey k in toRemove)
-            {
+
+        if (toRemove != null) {
+            foreach (HookKey k in toRemove) {
                 slots.Remove(k);
             }
         }
     }
 
-    public void ReleaseAll()
-    {
-        foreach (HookSlot s in slots.Values)
-        {
+    public void ReleaseAll() {
+        foreach (HookSlot s in slots.Values) {
             s.Cleanup?.Invoke();
         }
+
         slots.Clear();
     }
 }

@@ -1,4 +1,3 @@
-using Cosmere.Core;
 using Cosmere.Core.Ability;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Gene;
@@ -31,13 +30,12 @@ public static class RadialDispatcher {
         }
     }
 
-    private enum FeruchemyDirection { Tap, Store, Idle }
-
     private static void DispatchAllomancy(Pawn pawn, string metalDefName, bool flareShift) {
         if (pawn.abilities == null) {
             Logger.Verbose($"radial dispatch: allomancy metal {metalDefName} skipped - pawn has no abilities");
             return;
         }
+
         List<RimWorld.Ability> abilities = pawn.abilities.AllAbilitiesForReading;
         for (int i = 0; i < abilities.Count; i++) {
             if (abilities[i] is not AllomancyAbility a || a.metal.defName != metalDefName) continue;
@@ -47,9 +45,11 @@ public static class RadialDispatcher {
             } else {
                 next = a.atLeastBurning ? BurningStatus.Off : BurningStatus.Burning;
             }
+
             a.UpdateStatus(next);
             return;
         }
+
         Logger.Verbose($"radial dispatch: allomancy metal {metalDefName} not on pawn");
     }
 
@@ -58,6 +58,7 @@ public static class RadialDispatcher {
             Logger.Verbose($"radial dispatch: feruchemy metal {metalDefName} skipped - pawn has no genes");
             return;
         }
+
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is not Feruchemist f || f.metal.defName != metalDefName) continue;
@@ -73,6 +74,7 @@ public static class RadialDispatcher {
                     return;
             }
         }
+
         Logger.Verbose($"radial dispatch: feruchemy metal {metalDefName} not on pawn");
     }
 
@@ -81,15 +83,18 @@ public static class RadialDispatcher {
             Logger.Verbose("radial dispatch: ability def is null");
             return;
         }
+
         if (pawn.abilities == null) {
             Logger.Verbose($"radial dispatch: ability {def.defName} skipped - pawn has no abilities");
             return;
         }
+
         RimWorld.Ability? ability = pawn.abilities.GetAbility(def);
         if (ability == null) {
             Logger.Verbose($"radial dispatch: ability {def.defName} not on pawn");
             return;
         }
+
         if (!ability.CanCast) {
             Logger.Verbose($"radial dispatch: ability {def.defName} cannot cast");
             return;
@@ -101,5 +106,11 @@ public static class RadialDispatcher {
         }
 
         ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
+    }
+
+    private enum FeruchemyDirection {
+        Tap,
+        Store,
+        Idle,
     }
 }

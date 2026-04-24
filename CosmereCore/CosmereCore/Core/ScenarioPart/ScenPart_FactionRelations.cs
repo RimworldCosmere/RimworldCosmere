@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Xml;
 using RimWorld;
 using Verse;
@@ -18,6 +17,7 @@ public class ScenPart_FactionRelations : ScenPart {
             Logger.Warning("ScenPart_FactionRelations: Faction.OfPlayer is null");
             return;
         }
+
         Logger.Info($"ScenPart_FactionRelations: player faction = {player.Name} ({player.def.defName})");
 
         for (int i = 0; i < relations.Count; i++) {
@@ -36,26 +36,35 @@ public class ScenPart_FactionRelations : ScenPart {
                 try {
                     FactionGenerator.CreateFactionAndAddToManager(def);
                 } catch (Exception ex) {
-                    Logger.Warning($"ScenPart_FactionRelations: Failed to create faction '{entry.faction}': {ex.Message}");
+                    Logger.Warning(
+                        $"ScenPart_FactionRelations: Failed to create faction '{entry.faction}': {ex.Message}"
+                    );
                     continue;
                 }
+
                 other = Find.FactionManager.FirstFactionOfDef(def);
                 if (other == null) {
-                    Logger.Warning($"ScenPart_FactionRelations: Still no faction instance for '{entry.faction}' after creation attempt");
+                    Logger.Warning(
+                        $"ScenPart_FactionRelations: Still no faction instance for '{entry.faction}' after creation attempt"
+                    );
                     continue;
                 }
             }
 
             int current = player.GoodwillWith(other);
             int delta = entry.goodwill - current;
-            Logger.Info($"ScenPart_FactionRelations: {other.Name} current={current}, target={entry.goodwill}, delta={delta}");
+            Logger.Info(
+                $"ScenPart_FactionRelations: {other.Name} current={current}, target={entry.goodwill}, delta={delta}"
+            );
 
             if (delta != 0) {
                 bool canChange = player.CanChangeGoodwillFor(other, delta);
                 Logger.Info($"ScenPart_FactionRelations: CanChangeGoodwillFor({other.Name}) = {canChange}");
-                bool changed = player.TryAffectGoodwillWith(other, delta, false, false, null, null);
+                bool changed = player.TryAffectGoodwillWith(other, delta, false, false);
                 int after = player.GoodwillWith(other);
-                Logger.Info($"ScenPart_FactionRelations: TryAffectGoodwillWith returned {changed}, goodwill now {after}");
+                Logger.Info(
+                    $"ScenPart_FactionRelations: TryAffectGoodwillWith returned {changed}, goodwill now {after}"
+                );
             }
         }
     }
@@ -67,6 +76,7 @@ public class ScenPart_FactionRelations : ScenPart {
             FactionRelationEntry entry = relations[i];
             parts.Add($"{entry.faction}: {entry.goodwill:+#;-#;0}");
         }
+
         return "Starting relations: " + string.Join(", ", parts);
     }
 
@@ -80,13 +90,13 @@ public class FactionRelationEntry : IExposable {
     public string faction = "";
     public int goodwill;
 
-    public void LoadDataFromXmlCustom(XmlNode xmlNode) {
-        faction = xmlNode.Name;
-        goodwill = ParseHelper.FromString<int>(xmlNode.InnerText);
-    }
-
     public void ExposeData() {
         Scribe_Values.Look(ref faction, "faction", "");
         Scribe_Values.Look(ref goodwill, "goodwill");
+    }
+
+    public void LoadDataFromXmlCustom(XmlNode xmlNode) {
+        faction = xmlNode.Name;
+        goodwill = ParseHelper.FromString<int>(xmlNode.InnerText);
     }
 }

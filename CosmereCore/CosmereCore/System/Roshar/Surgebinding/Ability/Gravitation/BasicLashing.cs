@@ -9,9 +9,8 @@ using Verse.Profile;
 namespace Cosmere.System.Roshar.Surgebinding.Ability.Gravitation;
 
 public class BasicLashing : SurgebindingAbility {
-    public static readonly HashSet<Pawn> FlyingPawns = [];
-
     private const int GroupRadius = 5;
+    public static readonly HashSet<Pawn> FlyingPawns = [];
     private readonly List<Pawn> lashedAllies = [];
 
     public BasicLashing(Pawn pawn) : base(pawn) { }
@@ -68,7 +67,10 @@ public class BasicLashing : SurgebindingAbility {
         if (!pawn.IsHashIntervalTick(30)) return;
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
-                     pawn.Position, pawn.Map, GroupRadius, true
+                     pawn.Position,
+                     pawn.Map,
+                     GroupRadius,
+                     true
                  )) {
             if (thing is not Pawn ally) continue;
             if (ally == pawn || ally.Dead) continue;
@@ -107,7 +109,7 @@ public class BasicLashing : SurgebindingAbility {
             null,
             true,
             null,
-            (GlobalTargetInfo t) => {
+            t => {
                 PlanetTile tile = t.Tile;
                 if (!Find.WorldGrid.InBounds(tile.tileId)) return "Out of bounds";
                 return "Fly to this location";

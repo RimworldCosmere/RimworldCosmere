@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using Cosmere.Core.Listing;
 using Cosmere.Core.UI;
 using Cosmere.System.Roshar.Comp.Game;
+using Cosmere.System.Roshar.Comp.Map;
 using Cosmere.System.Roshar.Def;
-using Cosmere.System.Roshar.Extension;
 using Cosmere.System.Roshar.Gene;
-using RimWorld;
+using Cosmere.System.Roshar.Surgebinding.Hediff;
 using UnityEngine;
 using Verse;
 
@@ -15,13 +14,13 @@ namespace Cosmere.System.Roshar.Dialog;
 public class ChooseRadiantOrder : RadiantOrderDialogBase {
     private static readonly List<RadiantOrderDef> RadiantOrders = DefDatabase<RadiantOrderDef>.AllDefsListForReading;
     private static List<RadiantOrderDef>? normalOrders;
+    private readonly List<RadiantOrderDef> availableOrders;
 
     private readonly string? forcedBondsmithSpren;
-    private readonly List<RadiantOrderDef> availableOrders;
     private string[]? quotes;
     private int radiantOrderIndex;
 
-    public ChooseRadiantOrder(Verse.Pawn pawn, string? bondsmithSpren = null) : base(RadiantOrders[0], pawn) {
+    public ChooseRadiantOrder(Pawn pawn, string? bondsmithSpren = null) : base(RadiantOrders[0], pawn) {
         forcedBondsmithSpren = bondsmithSpren;
 
         if (forcedBondsmithSpren != null) {
@@ -32,6 +31,7 @@ public class ChooseRadiantOrder : RadiantOrderDialogBase {
                     break;
                 }
             }
+
             if (availableOrders.Count == 0) availableOrders = RadiantOrders;
         } else {
             normalOrders ??= BuildNormalOrders();
@@ -44,6 +44,8 @@ public class ChooseRadiantOrder : RadiantOrderDialogBase {
         }
     }
 
+    protected override bool hasFooter => true;
+
     private static List<RadiantOrderDef> BuildNormalOrders() {
         List<RadiantOrderDef> result = [];
         for (int i = 0; i < RadiantOrders.Count; i++) {
@@ -51,10 +53,9 @@ public class ChooseRadiantOrder : RadiantOrderDialogBase {
                 result.Add(RadiantOrders[i]);
             }
         }
+
         return result;
     }
-
-    protected override bool hasFooter => true;
 
     protected override TaggedString GetTitle() {
         if (forcedBondsmithSpren != null) {
@@ -63,6 +64,7 @@ public class ChooseRadiantOrder : RadiantOrderDialogBase {
                 forcedBondsmithSpren.Named("SPREN")
             );
         }
+
         return "CRO_Choose_Radiant_Order_Dialog_Title".Translate(pawn!.LabelShortCap.Named("PAWN"));
     }
 
@@ -70,6 +72,7 @@ public class ChooseRadiantOrder : RadiantOrderDialogBase {
         if (forcedBondsmithSpren != null) {
             return "CRO_Bondsmith_Dialog_Subtitle".Translate(forcedBondsmithSpren.Named("SPREN"));
         }
+
         return "CRO_Choose_Radiant_Order_Dialog_Subtitle".Translate();
     }
 
@@ -145,7 +148,7 @@ public class ChooseRadiantOrder : RadiantOrderDialogBase {
         } else if (CTAButtonText(secondButtonRect, joinString)) {
             pawn!.AllComps.RemoveWhere(x => x is Comp.Thing.ChooseRadiantOrder);
 
-            Comp.Map.TrueSprenSpawner? spawner = pawn!.Map?.GetComponent<Comp.Map.TrueSprenSpawner>();
+            TrueSprenSpawner? spawner = pawn!.Map?.GetComponent<TrueSprenSpawner>();
             spawner?.DestroySprenForPawn(pawn!);
 
             string? sprenName = isBondsmithLocked ? forcedBondsmithSpren : null;
@@ -158,14 +161,15 @@ public class ChooseRadiantOrder : RadiantOrderDialogBase {
             if (isBondsmithLocked && surgebinder != null) {
                 surgebinder.godsprenName = forcedBondsmithSpren!;
 
-                Surgebinding.Hediff.BondsmithCalling? calling = null;
+                BondsmithCalling? calling = null;
                 List<Verse.Hediff> hediffs = pawn!.health?.hediffSet?.hediffs ?? [];
                 for (int i = 0; i < hediffs.Count; i++) {
-                    if (hediffs[i] is Surgebinding.Hediff.BondsmithCalling c) {
+                    if (hediffs[i] is BondsmithCalling c) {
                         calling = c;
                         break;
                     }
                 }
+
                 if (calling != null) {
                     pawn!.health!.RemoveHediff(calling);
                 }

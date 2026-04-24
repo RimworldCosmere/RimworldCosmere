@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using Cosmere.Core.UI.Codex;
 using Cosmere.Core.UI.Model;
 using HarmonyLib;
-using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.UI.Harmony;
@@ -11,7 +9,7 @@ namespace Cosmere.Core.UI.Harmony;
 public static class InvestitureTabPatch {
     private static ITab_Investiture? cachedTab;
 
-    static IEnumerable<InspectTabBase> Postfix(IEnumerable<InspectTabBase>? values, Verse.Thing __instance) {
+    private static IEnumerable<InspectTabBase> Postfix(IEnumerable<InspectTabBase>? values, Verse.Thing __instance) {
         bool alreadyHasTab = false;
         if (values != null) {
             foreach (InspectTabBase tab in values) {
@@ -26,8 +24,12 @@ public static class InvestitureTabPatch {
         IReadOnlyList<IInvestitureProvider> all = PawnInvestitureProviders.All;
         bool invested = false;
         for (int i = 0; i < all.Count; i++) {
-            if (all[i].IsInvested(pawn)) { invested = true; break; }
+            if (all[i].IsInvested(pawn)) {
+                invested = true;
+                break;
+            }
         }
+
         if (!invested) yield break;
 
         cachedTab ??= new ITab_Investiture();

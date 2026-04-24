@@ -15,9 +15,9 @@ public sealed class InvestitureDockWindow : Verse.Window {
     private const float TabPadding = 150f;
     private const float PinButtonHeight = 24f;
 
-    private readonly DockAccordion accordion = new();
-    private bool pinned;
+    private readonly DockAccordion accordion = new DockAccordion();
     private bool hovered;
+    private bool pinned;
 
     public InvestitureDockWindow() {
         doCloseButton = false;
@@ -57,7 +57,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
         List<InvestitureSnapshot> snapshots = PawnInvestitureProviders.SnapshotsFor(pawn);
         if (snapshots.Count == 0) return;
 
-        DockRenderContext ctx = new() {
+        DockRenderContext ctx = new DockRenderContext {
             TwinbornPairs = BuildTwinbornPairs(pawn, snapshots),
             Density = PickDensity(pawn, snapshots, inRect.height),
         };
@@ -69,9 +69,13 @@ public sealed class InvestitureDockWindow : Verse.Window {
         }
     }
 
-    private bool IsExpanded() => pinned || hovered;
+    private bool IsExpanded() {
+        return pinned || hovered;
+    }
 
-    private float CurrentWidth() => IsExpanded() ? ExpandedWidth : CollapsedWidth;
+    private float CurrentWidth() {
+        return IsExpanded() ? ExpandedWidth : CollapsedWidth;
+    }
 
     private void DrawCollapsed(Rect inRect, List<InvestitureSnapshot> snapshots) {
         float iconSize = 32f;
@@ -80,7 +84,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
             IDockSection? section = DockSectionRegistry.For(snapshots[i].SystemId);
             if (section == null) continue;
             Rect headerRect = new Rect(inRect.x + (inRect.width - iconSize) / 2f, y, iconSize, iconSize);
-            section.DrawHeader(headerRect, expanded: false);
+            section.DrawHeader(headerRect, false);
             y += iconSize + 6f;
         }
     }
@@ -98,7 +102,12 @@ public sealed class InvestitureDockWindow : Verse.Window {
             RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
         }
 
-        Rect bodyRect = new Rect(inRect.x, inRect.y + PinButtonHeight + 8f, inRect.width, inRect.height - PinButtonHeight - 8f);
+        Rect bodyRect = new Rect(
+            inRect.x,
+            inRect.y + PinButtonHeight + 8f,
+            inRect.width,
+            inRect.height - PinButtonHeight - 8f
+        );
         accordion.Draw(bodyRect, pawn, snapshots, ctx);
     }
 
@@ -106,24 +115,27 @@ public sealed class InvestitureDockWindow : Verse.Window {
         Pawn pawn,
         List<InvestitureSnapshot> snapshots
     ) {
-        Dictionary<string, TwinbornPair> pairs = new();
+        Dictionary<string, TwinbornPair> pairs = new Dictionary<string, TwinbornPair>();
         if (pawn.genes == null) return pairs;
 
         bool hasAllomancy = false;
         bool hasFeruchemy = false;
         for (int i = 0; i < snapshots.Count; i++) {
-            if (snapshots[i].SystemId == "Allomancy") hasAllomancy = true;
-            else if (snapshots[i].SystemId == "Feruchemy") hasFeruchemy = true;
+            if (snapshots[i].SystemId == "Allomancy") {
+                hasAllomancy = true;
+            } else if (snapshots[i].SystemId == "Feruchemy") hasFeruchemy = true;
         }
+
         if (!hasAllomancy || !hasFeruchemy) return pairs;
 
-        Dictionary<string, Allomancer> allomancers = new();
-        Dictionary<string, Feruchemist> feruchemists = new();
+        Dictionary<string, Allomancer> allomancers = new Dictionary<string, Allomancer>();
+        Dictionary<string, Feruchemist> feruchemists = new Dictionary<string, Feruchemist>();
 
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
-            if (all[i] is Allomancer a && !a.Overridden) allomancers[a.metal.defName] = a;
-            else if (all[i] is Feruchemist f && !f.Overridden) feruchemists[f.metal.defName] = f;
+            if (all[i] is Allomancer a && !a.Overridden) {
+                allomancers[a.metal.defName] = a;
+            } else if (all[i] is Feruchemist f && !f.Overridden) feruchemists[f.metal.defName] = f;
         }
 
         foreach (KeyValuePair<string, Allomancer> kv in allomancers) {
@@ -131,6 +143,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
                 pairs[kv.Key] = new TwinbornPair(kv.Key, kv.Value, f);
             }
         }
+
         return pairs;
     }
 
@@ -140,13 +153,14 @@ public sealed class InvestitureDockWindow : Verse.Window {
         float availableHeight
     ) {
         float needed = 0f;
-        DockRenderContext probeCtx = new() { TwinbornPairs = BuildTwinbornPairs(pawn, snapshots) };
+        DockRenderContext probeCtx = new DockRenderContext { TwinbornPairs = BuildTwinbornPairs(pawn, snapshots) };
         for (int i = 0; i < snapshots.Count; i++) {
             IDockSection? section = DockSectionRegistry.For(snapshots[i].SystemId);
             if (section == null) continue;
             needed += section.GetHeaderHeight();
             needed += section.GetExpandedBodyHeight(pawn, snapshots[i], probeCtx);
         }
+
         return needed > availableHeight ? DockDensityMode.Compact : DockDensityMode.Full;
     }
 
@@ -155,7 +169,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
     }
 
     private static float ComputeHeight() {
-        float screenHeight = (float)Verse.UI.screenHeight;
+        float screenHeight = Verse.UI.screenHeight;
         float bottomEdge = screenHeight - MarginBottom;
         WindowStack? stack = Find.WindowStack;
         if (stack != null) {
@@ -167,6 +181,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
                 }
             }
         }
+
         return Mathf.Max(0f, bottomEdge - MarginTop);
     }
 

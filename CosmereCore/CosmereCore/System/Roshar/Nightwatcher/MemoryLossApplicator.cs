@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cosmere.System.Roshar.Def;
 using RimWorld;
 using Verse;
@@ -15,6 +14,7 @@ public class MemoryLossApplicator : ICurseApplicator {
             skills[i].xpSinceLastLevel = 0f;
             skills[i].xpSinceMidnight = 0f;
         }
+
         Logger.Info($"MemoryLossApplicator: reset all skills to max 4 for {pawn.NameShortColored}");
     }
 }

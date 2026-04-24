@@ -18,22 +18,6 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
     private static Texture2D? border;
     private static List<Texture2D>? autoBurnBorders;
 
-    protected static Texture2D BgTexOff => bgTexOff ??= GenColor.FromHex("000000").ToSolidColorTexture();
-    protected static Texture2D BgTexBurning => bgTexBurning ??= ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
-    protected static Texture2D BgTexFlaring => bgTexFlaring ??= ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
-    protected static Texture2D Border => border ??= ColorLibrary.Grey.ToSolidColorTexture();
-
-    protected static List<Texture2D> AutoBurnBorders => autoBurnBorders ??= [
-        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B1"),
-        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B2"),
-        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B3"),
-        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B4"),
-        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B5"),
-        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B6"),
-        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B7"),
-        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B8"),
-    ];
-
     protected readonly AbstractAbility<TGene, THediff> ability = null!;
     protected readonly TGene gene = null!;
 
@@ -50,6 +34,27 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
         this.gene = gene;
         this.ability = ability;
     }
+
+    protected static Texture2D BgTexOff => bgTexOff ??= GenColor.FromHex("000000").ToSolidColorTexture();
+
+    protected static Texture2D BgTexBurning =>
+        bgTexBurning ??= ContentFinder<Texture2D>.Get("UI/Widgets/AbilityBurning");
+
+    protected static Texture2D BgTexFlaring =>
+        bgTexFlaring ??= ContentFinder<Texture2D>.Get("UI/Widgets/AbilityFlaring");
+
+    protected static Texture2D Border => border ??= ColorLibrary.Grey.ToSolidColorTexture();
+
+    protected static List<Texture2D> AutoBurnBorders => autoBurnBorders ??= [
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B1"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B2"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B3"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B4"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B5"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B6"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B7"),
+        ContentFinder<Texture2D>.Get("UI/Widgets/Borders/B8"),
+    ];
 
     protected bool disabled => !cachedReport.Accepted;
     protected string? disabledReason => cachedReport.Reason;
@@ -68,7 +73,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
     }
 
     private Texture2D GetBorder() {
-        if ((!ability.willUseWhileDowned && !ability.willUseWhileInjured) || AutoBurnBorders.NullOrEmpty()) {
+        if (!ability.willUseWhileDowned && !ability.willUseWhileInjured || AutoBurnBorders.NullOrEmpty()) {
             return Border;
         }
 
@@ -204,7 +209,10 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
                     t => {
                         if (!ability.ValidateGlobalTarget(t)) return false;
 
-                        ability.QueueCastingJob(t, ev.control ? Ability.Status.PowerTwo.power : Ability.Status.PowerOne.power);
+                        ability.QueueCastingJob(
+                            t,
+                            ev.control ? Ability.Status.PowerTwo.power : Ability.Status.PowerOne.power
+                        );
                         return true;
                     },
                     true,

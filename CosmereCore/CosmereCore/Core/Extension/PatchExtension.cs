@@ -28,7 +28,7 @@ public static class PatchExtension {
         }
 
         foreach (XmlNode child in node.ChildNodes) {
-            ReplaceInNode(child, token, value);
+            child.ReplaceInNode(token, value);
         }
     }
 }

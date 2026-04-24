@@ -1,15 +1,16 @@
+using Cosmere.Core.UI.Dock;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace Cosmere.Core.UI.Harmony;
 
-[HarmonyLib.HarmonyPatch(typeof(UIRoot_Play), nameof(UIRoot_Play.UIRootOnGUI))]
+[HarmonyPatch(typeof(UIRoot_Play), nameof(UIRoot_Play.UIRootOnGUI))]
 public static class UIRoot_Play_UIRootOnGUI_Patch {
-    [HarmonyLib.HarmonyPostfix]
+    [HarmonyPostfix]
     public static void Postfix() {
         if (Current.ProgramState != ProgramState.Playing) return;
         if (Find.CurrentMap == null) return;
-        Dock.InvestitureDockController.UpdateVisibility();
+        InvestitureDockController.UpdateVisibility();
     }
 }

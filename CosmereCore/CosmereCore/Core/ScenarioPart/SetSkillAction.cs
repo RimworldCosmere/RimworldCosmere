@@ -4,10 +4,10 @@ using Verse;
 namespace Cosmere.Core.ScenarioPart;
 
 public class SetSkillAction : ProgressionAction {
-    public string pawnName = "";
-    public string skill = "";
     public int level = -1;
     public string? passion;
+    public string pawnName = "";
+    public string skill = "";
 
     public override void Execute(GameComponent_ScenarioProgression comp) {
         Pawn? pawn = comp.FindPawnByName(pawnName);

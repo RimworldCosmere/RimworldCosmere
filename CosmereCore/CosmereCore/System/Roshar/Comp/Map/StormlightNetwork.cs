@@ -1,4 +1,3 @@
-using Cosmere.Core;
 using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Comp.Thing;
 using Verse;
@@ -8,12 +7,12 @@ namespace Cosmere.System.Roshar.Comp.Map;
 public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
     private const int DistributeInterval = 60;
 
-    private List<StormlightNetworkGrid> networks = [];
+    private bool? cachedEnabled;
     private bool dirty = true;
 
-    private bool? cachedEnabled;
-
     private bool enabled => ShardUtility.CachedAreAnyEnabled(ref cachedEnabled, ShardDefOf.Honor);
+
+    public List<StormlightNetworkGrid> Networks { get; } = [];
 
     public void MarkDirty() {
         dirty = true;
@@ -33,20 +32,20 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
             dirty = false;
         }
 
-        for (int i = 0; i < networks.Count; i++) {
-            networks[i].Distribute();
+        for (int i = 0; i < Networks.Count; i++) {
+            Networks[i].Distribute();
         }
     }
 
     private void RebuildNetworks() {
-        for (int i = 0; i < networks.Count; i++) {
-            StormlightNetworkGrid grid = networks[i];
+        for (int i = 0; i < Networks.Count; i++) {
+            StormlightNetworkGrid grid = Networks[i];
             for (int j = 0; j < grid.receivers.Count; j++) grid.receivers[j].Network = null;
             for (int j = 0; j < grid.batteries.Count; j++) grid.batteries[j].Network = null;
             for (int j = 0; j < grid.chargers.Count; j++) grid.chargers[j].Network = null;
         }
 
-        networks.Clear();
+        Networks.Clear();
 
         HashSet<IntVec3> visited = [];
         HashSet<Verse.Thing> assignedBuildings = [];
@@ -64,11 +63,11 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
             IntVec3 pos = networkThings[i].Position;
             if (visited.Contains(pos)) continue;
 
-            StormlightNetworkGrid grid = new();
+            StormlightNetworkGrid grid = new StormlightNetworkGrid();
             FloodFillNetwork(pos, grid, visited, assignedBuildings);
 
             if (grid.receivers.Count > 0 || grid.batteries.Count > 0 || grid.chargers.Count > 0) {
-                networks.Add(grid);
+                Networks.Add(grid);
             }
         }
     }
@@ -78,6 +77,7 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
         for (int i = 0; i < things.Count; i++) {
             if (things[i].TryGetComp<StormlightNode>() != null) return true;
         }
+
         return false;
     }
 
@@ -87,7 +87,7 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
         HashSet<IntVec3> visited,
         HashSet<Verse.Thing> assignedBuildings
     ) {
-        Queue<IntVec3> queue = new();
+        Queue<IntVec3> queue = new Queue<IntVec3>();
         queue.Enqueue(start);
 
         while (queue.Count > 0) {
@@ -133,6 +133,4 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
             }
         }
     }
-
-    public List<StormlightNetworkGrid> Networks => networks;
 }

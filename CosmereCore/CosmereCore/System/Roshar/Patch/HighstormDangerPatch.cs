@@ -1,6 +1,6 @@
+using Cosmere.System.Roshar.GameCondition;
 using Cosmere.System.Roshar.Utility;
 using HarmonyLib;
-using RimWorld;
 using Verse;
 
 namespace Cosmere.System.Roshar.Patch;
@@ -21,7 +21,7 @@ public static class HighstormDangerPatch {
 
         List<RimWorld.GameCondition> conditions = map.gameConditionManager.ActiveConditions;
         for (int i = 0; i < conditions.Count; i++) {
-            if (conditions[i] is GameCondition.Highstorm hs && hs.IsDangerousPhase) {
+            if (conditions[i] is Highstorm hs && hs.IsDangerousPhase) {
                 __result = Danger.Deadly;
                 return;
             }

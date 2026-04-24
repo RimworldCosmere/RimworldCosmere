@@ -1,4 +1,3 @@
-using Cosmere.Core.Ability;
 using RimWorld;
 using Verse;
 
@@ -20,7 +19,7 @@ public class EngulfInStone : SurgebindingAbility {
             if (existingBuilding.def == RimWorld.ThingDefOf.Wall) return false;
 
             ThingDef? stuff = existingBuilding.Stuff;
-            existingBuilding.Destroy(DestroyMode.Vanish);
+            existingBuilding.Destroy();
 
             ThingDef wallStuff = stuff ?? RimWorld.ThingDefOf.BlocksGranite;
             Verse.Thing wall = ThingMaker.MakeThing(RimWorld.ThingDefOf.Wall, wallStuff);

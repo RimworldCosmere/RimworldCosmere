@@ -1,16 +1,25 @@
-using RimWorld;
+using Cosmere.Core.Comp.Thing;
+using Cosmere.System.Roshar.Utility;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.Thing.Weapon;
 
 public class DeadShardblade : ThingWithComps {
+    public override Color DrawColor {
+        get {
+            if (Stuff == null) return base.DrawColor;
+            Color stuffColor = Stuff.stuffProps.color;
+            return Color.Lerp(stuffColor, Color.gray, 0.5f);
+        }
+    }
+
     public override void Notify_Equipped(Verse.Pawn pawn) {
         base.Notify_Equipped(pawn);
 
-        if (!Utility.CasteUtility.IsDarkeyes(pawn)) return;
+        if (!CasteUtility.IsDarkeyes(pawn)) return;
 
-        Utility.CasteUtility.DarkeyesToLighteyes(pawn, "Cosmere_Roshar_Gene_Dahn_Low");
+        CasteUtility.DarkeyesToLighteyes(pawn, "Cosmere_Roshar_Gene_Dahn_Low");
 
         Find.LetterStack.ReceiveLetter(
             "Eyes of the Blade",
@@ -20,27 +29,19 @@ public class DeadShardblade : ThingWithComps {
         );
     }
 
-    public override Color DrawColor {
-        get {
-            if (Stuff == null) return base.DrawColor;
-            Color stuffColor = Stuff.stuffProps.color;
-            return Color.Lerp(stuffColor, Color.gray, 0.5f);
-        }
-    }
-
     protected override void DrawAt(Vector3 drawLoc, bool flip = false) {
-        Cosmere.Core.Comp.Thing.CutoutAdvanced? comp = GetComp<Cosmere.Core.Comp.Thing.CutoutAdvanced>();
+        CutoutAdvanced? comp = GetComp<CutoutAdvanced>();
         if (comp == null) {
             base.DrawAt(drawLoc, flip);
             return;
         }
 
-        Verse.Graphic graphic = Graphic;
+        Graphic graphic = Graphic;
         Material material = graphic.MatAt(Rotation, this);
 
-        comp.UpdateMaterialPropertyBlock(Cosmere.Core.Comp.Thing.CutoutAdvanced.MPB, graphic, material);
+        comp.UpdateMaterialPropertyBlock(CutoutAdvanced.MPB, graphic, material);
 
         Mesh mesh = graphic.MeshAt(Rotation);
-        Graphics.DrawMesh(mesh, drawLoc, Quaternion.identity, material, 0, null, 0, Cosmere.Core.Comp.Thing.CutoutAdvanced.MPB);
+        Graphics.DrawMesh(mesh, drawLoc, Quaternion.identity, material, 0, null, 0, CutoutAdvanced.MPB);
     }
 }

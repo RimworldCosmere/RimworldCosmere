@@ -1,7 +1,8 @@
-using System.Collections.Generic;
+using Cosmere.Core;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Hediff;
+using Cosmere.System.Scadrial.Utility;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -26,16 +27,17 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
         this.FailOnDestroyedOrNull(TargetIndex.A);
         this.FailOnDestroyedOrNull(TargetIndex.B);
         AddFailCondition(() => recipient.Dead);
-        AddFinishAction((JobCondition condition) => {
-            if (pawn.carryTracker.CarriedThing != null) {
-                pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Verse.Thing _);
+        AddFinishAction(condition => {
+                if (pawn.carryTracker.CarriedThing != null) {
+                    pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Verse.Thing _);
+                }
             }
-        });
+        );
 
         bool recipientInBed = recipient.InBed();
-        bool voluntary = recipient.Faction == Faction.OfPlayer
-                         && !recipient.IsPrisonerOfColony
-                         && !recipient.IsSlaveOfColony;
+        bool voluntary = recipient.Faction == Faction.OfPlayer &&
+                         !recipient.IsPrisonerOfColony &&
+                         !recipient.IsSlaveOfColony;
 
         if (!recipientInBed && !voluntary && !recipient.Downed) {
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
@@ -61,7 +63,7 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
         }
 
-        if (recipientInBed || (voluntary && !recipient.Downed)) {
+        if (recipientInBed || voluntary && !recipient.Downed) {
             yield return MakeAnesthetizeToil();
         }
 
@@ -95,6 +97,7 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
                 ReadyForNextToil();
                 return;
             }
+
             if (waitedTicks > WaitForRecipientTimeout) {
                 EndJobWith(JobCondition.Incompletable);
             }
@@ -109,18 +112,22 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
         toil.initAction = () => {
             Verse.Thing? carried = pawn.carryTracker.CarriedThing;
             if (carried == null) {
-                Core.Logger.Warning("ImplantSpike: carried thing is null at implant time");
+                Logger.Warning("ImplantSpike: carried thing is null at implant time");
                 return;
             }
 
             HemalurgicSpike? spikeComp = carried.TryGetComp<HemalurgicSpike>();
             if (spikeComp == null || !spikeComp.isCharged) {
-                Core.Logger.Warning($"ImplantSpike: spike comp null={spikeComp == null}, charged={spikeComp?.isCharged}");
+                Logger.Warning($"ImplantSpike: spike comp null={spikeComp == null}, charged={spikeComp?.isCharged}");
                 return;
             }
 
             if (spikeComp.chargeData!.stealType == HemalurgicStealType.RemoveAllPowers) {
-                Messages.Message("CS_Hemalurgy_CannotImplantAluminum".Translate(), recipient, MessageTypeDefOf.RejectInput);
+                Messages.Message(
+                    "CS_Hemalurgy_CannotImplantAluminum".Translate(),
+                    recipient,
+                    MessageTypeDefOf.RejectInput
+                );
                 DropSpike(carried);
                 return;
             }
@@ -156,10 +163,11 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
             Messages.Message(
                 "CS_Hemalurgy_ImplantSuccess".Translate(
                     pawn.Named("SURGEON"),
-                    (spikeComp.metal?.Named("METAL") ?? "unknown".Named("METAL")),
+                    spikeComp.metal?.Named("METAL") ?? "unknown".Named("METAL"),
                     recipient.Named("RECIPIENT")
                 ),
-                recipient, MessageTypeDefOf.PositiveEvent
+                recipient,
+                MessageTypeDefOf.PositiveEvent
             );
 
             carried.Destroy();
@@ -169,9 +177,9 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
     }
 
     private void ApplyHemalurgicEffect(Pawn target, ImplantedSpikeData spike) {
-        if (HemalurgicConstants.IsAllomanticSteal(spike.stealType)
-            || HemalurgicConstants.IsFeruchemicSteal(spike.stealType)
-            || spike.stealType == HemalurgicStealType.AnyPower) {
+        if (HemalurgicConstants.IsAllomanticSteal(spike.stealType) ||
+            HemalurgicConstants.IsFeruchemicSteal(spike.stealType) ||
+            spike.stealType == HemalurgicStealType.AnyPower) {
             GrantGene(target, spike.stolenDefName);
         } else if (spike.stealType == HemalurgicStealType.AllAbilities) {
             for (int i = 0; i < spike.stolenDefNames.Count; i++) {
@@ -179,7 +187,7 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
             }
         } else if (spike.stealType == HemalurgicStealType.ConnectionIdentity) {
             if (!target.IsSnapped()) {
-                Scadrial.Utility.SnapUtility.TrySnap(target, "CS_Hemalurgy_SnappedByConnection");
+                SnapUtility.TrySnap(target, "CS_Hemalurgy_SnappedByConnection");
             }
         }
     }
@@ -212,10 +220,13 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
         );
         if (hediff == null) {
             hediff = (HemalurgicSpikes)HediffMaker.MakeHediff(
-                HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes, target, part
+                HemalurgicDefOf.Cosmere_Scadrial_Hediff_HemalurgicSpikes,
+                target,
+                part
             );
             target.health.AddHediff(hediff, part);
         }
+
         hediff.AddSpike(spikeData);
     }
 
@@ -229,10 +240,14 @@ public class JobDriver_ImplantSpike : Verse.AI.JobDriver {
             HemalurgicDefOf.Cosmere_Scadrial_Hediff_RuinsInfluence
         );
         if (ruinsInfluence == null && spikeCount > 0) {
-            Verse.Hediff hediff = HediffMaker.MakeHediff(HemalurgicDefOf.Cosmere_Scadrial_Hediff_RuinsInfluence, target);
+            Verse.Hediff hediff = HediffMaker.MakeHediff(
+                HemalurgicDefOf.Cosmere_Scadrial_Hediff_RuinsInfluence,
+                target
+            );
             target.health.AddHediff(hediff);
             ruinsInfluence = (RuinsInfluence)hediff;
         }
+
         ruinsInfluence?.UpdateSpikeCount(spikeCount);
     }
 

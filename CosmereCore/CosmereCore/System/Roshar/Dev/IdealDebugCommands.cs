@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text;
 using Cosmere.System.Roshar.Gene;
+using Cosmere.System.Roshar.Need;
 using Cosmere.System.Roshar.Surgebinding;
 using LudeonTK;
 using RimWorld;
@@ -26,11 +27,21 @@ public static class IdealDebugCommands {
         List<DebugMenuOption> options = [];
         for (int i = 0; i <= 4; i++) {
             int level = i;
-            options.Add(new DebugMenuOption($"Ideal {level + 1} (index {level})", DebugMenuOptionMode.Action, () => {
-                surgebinder.currentIdeal = level;
-                Messages.Message($"Set {pawn.NameShortColored} to Ideal {level + 1}", MessageTypeDefOf.SilentInput);
-            }));
+            options.Add(
+                new DebugMenuOption(
+                    $"Ideal {level + 1} (index {level})",
+                    DebugMenuOptionMode.Action,
+                    () => {
+                        surgebinder.currentIdeal = level;
+                        Messages.Message(
+                            $"Set {pawn.NameShortColored} to Ideal {level + 1}",
+                            MessageTypeDefOf.SilentInput
+                        );
+                    }
+                )
+            );
         }
+
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
     }
 
@@ -47,10 +58,15 @@ public static class IdealDebugCommands {
             RecordDef? recordDef = fields[i].GetValue(null) as RecordDef;
             if (recordDef == null) continue;
             RecordDef capturedDef = recordDef;
-            recordOptions.Add(new DebugMenuOption(recordDef.defName, DebugMenuOptionMode.Action, () => {
-                ShowValuePicker(pawn, capturedDef);
-            }));
+            recordOptions.Add(
+                new DebugMenuOption(
+                    recordDef.defName,
+                    DebugMenuOptionMode.Action,
+                    () => { ShowValuePicker(pawn, capturedDef); }
+                )
+            );
         }
+
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(recordOptions));
     }
 
@@ -59,13 +75,23 @@ public static class IdealDebugCommands {
         List<DebugMenuOption> valueOptions = [];
         for (int i = 0; i < values.Length; i++) {
             int value = values[i];
-            valueOptions.Add(new DebugMenuOption($"{value}", DebugMenuOptionMode.Action, () => {
-                float current = pawn.records.GetValue(recordDef);
-                float delta = value - current;
-                pawn.records.AddTo(recordDef, delta);
-                Messages.Message($"Set {recordDef.defName} to {value} on {pawn.NameShortColored}", MessageTypeDefOf.SilentInput);
-            }));
+            valueOptions.Add(
+                new DebugMenuOption(
+                    $"{value}",
+                    DebugMenuOptionMode.Action,
+                    () => {
+                        float current = pawn.records.GetValue(recordDef);
+                        float delta = value - current;
+                        pawn.records.AddTo(recordDef, delta);
+                        Messages.Message(
+                            $"Set {recordDef.defName} to {value} on {pawn.NameShortColored}",
+                            MessageTypeDefOf.SilentInput
+                        );
+                    }
+                )
+            );
         }
+
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(valueOptions));
     }
 
@@ -81,6 +107,7 @@ public static class IdealDebugCommands {
             Messages.Message("Not a Surgebinder", MessageTypeDefOf.RejectInput);
             return;
         }
+
         surgebinder.DebugTriggerOath();
     }
 
@@ -96,6 +123,7 @@ public static class IdealDebugCommands {
             Messages.Message("Not a Surgebinder", MessageTypeDefOf.RejectInput);
             return;
         }
+
         surgebinder.DebugSpeakOathNow();
     }
 
@@ -113,9 +141,21 @@ public static class IdealDebugCommands {
         }
 
         List<DebugMenuOption> options = [
-            new DebugMenuOption("Minor (+0.1)", DebugMenuOptionMode.Action, () => ViolationUtility.ApplyViolation(pawn, 0.1f, "debug command")),
-            new DebugMenuOption("Major (+0.3)", DebugMenuOptionMode.Action, () => ViolationUtility.ApplyViolation(pawn, 0.3f, "debug command")),
-            new DebugMenuOption("Catastrophic (+0.6)", DebugMenuOptionMode.Action, () => ViolationUtility.ApplyViolation(pawn, 0.6f, "debug command")),
+            new DebugMenuOption(
+                "Minor (+0.1)",
+                DebugMenuOptionMode.Action,
+                () => ViolationUtility.ApplyViolation(pawn, 0.1f, "debug command")
+            ),
+            new DebugMenuOption(
+                "Major (+0.3)",
+                DebugMenuOptionMode.Action,
+                () => ViolationUtility.ApplyViolation(pawn, 0.3f, "debug command")
+            ),
+            new DebugMenuOption(
+                "Catastrophic (+0.6)",
+                DebugMenuOptionMode.Action,
+                () => ViolationUtility.ApplyViolation(pawn, 0.6f, "debug command")
+            ),
         ];
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
     }
@@ -127,7 +167,7 @@ public static class IdealDebugCommands {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void SetFuryLevel(Pawn pawn) {
-        Need.Fury? fury = pawn.needs?.TryGetNeed(NeedDefOf.Cosmere_Roshar_Need_Fury) as Need.Fury;
+        Fury? fury = pawn.needs?.TryGetNeed(NeedDefOf.Cosmere_Roshar_Need_Fury) as Fury;
         if (fury == null) {
             Messages.Message("Not a Dustbringer or no Fury need", MessageTypeDefOf.RejectInput);
             return;
@@ -137,12 +177,22 @@ public static class IdealDebugCommands {
         List<DebugMenuOption> options = [];
         for (int i = 0; i < levels.Length; i++) {
             float level = levels[i];
-            options.Add(new DebugMenuOption($"{level:F2}", DebugMenuOptionMode.Action, () => {
-                fury.CurLevel = level;
-                Messages.Message($"Set Fury to {level:F2} on {pawn.NameShortColored}", MessageTypeDefOf.SilentInput);
-                fury.CheckFuryBreak();
-            }));
+            options.Add(
+                new DebugMenuOption(
+                    $"{level:F2}",
+                    DebugMenuOptionMode.Action,
+                    () => {
+                        fury.CurLevel = level;
+                        Messages.Message(
+                            $"Set Fury to {level:F2} on {pawn.NameShortColored}",
+                            MessageTypeDefOf.SilentInput
+                        );
+                        fury.CheckFuryBreak();
+                    }
+                )
+            );
         }
+
         Find.WindowStack.Add(new Dialog_DebugOptionListLister(options));
     }
 
@@ -159,12 +209,14 @@ public static class IdealDebugCommands {
             return;
         }
 
-        StringBuilder sb = new();
+        StringBuilder sb = new StringBuilder();
         sb.AppendLine($"=== Ideal Info: {pawn.NameShortColored} ===");
         sb.AppendLine($"Order: {surgebinder.radiantOrderDef.LabelCap}");
         sb.AppendLine($"Current Ideal: {surgebinder.currentIdealDisplay} (index {surgebinder.currentIdeal})");
         sb.AppendLine($"Pending Oath: {surgebinder.PendingOath}");
-        sb.AppendLine($"Surgebinding Skill: {pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level}");
+        sb.AppendLine(
+            $"Surgebinding Skill: {pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level}"
+        );
         sb.AppendLine($"Last Ideal Change Tick: {surgebinder.LastIdealChangeTick}");
 
         if (surgebinder.currentIdeal < 4) {
@@ -182,10 +234,11 @@ public static class IdealDebugCommands {
             if (value > 0) sb.AppendLine($"  {recordDef.defName}: {value}");
         }
 
-        Verse.Hediff? stainedBond = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond);
+        Verse.Hediff? stainedBond =
+            pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond);
         if (stainedBond != null) sb.AppendLine($"Bond Strain Severity: {stainedBond.Severity:F2}");
 
-        Need.Fury? fury = pawn.needs?.TryGetNeed(NeedDefOf.Cosmere_Roshar_Need_Fury) as Need.Fury;
+        Fury? fury = pawn.needs?.TryGetNeed(NeedDefOf.Cosmere_Roshar_Need_Fury) as Fury;
         if (fury != null) sb.AppendLine($"Fury Level: {fury.CurLevel:F2}");
 
         Logger.Verbose(sb.ToString());
@@ -203,6 +256,7 @@ public static class IdealDebugCommands {
             Messages.Message("Not a Surgebinder", MessageTypeDefOf.RejectInput);
             return;
         }
+
         surgebinder.DebugResetCooldown();
         Messages.Message($"Reset cooldown for {pawn.NameShortColored}", MessageTypeDefOf.SilentInput);
     }

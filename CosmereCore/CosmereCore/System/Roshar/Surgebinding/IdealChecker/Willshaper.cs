@@ -23,11 +23,15 @@ public class Willshaper(RadiantOrderDef def) : AbstractIdealChecker(def) {
         float structures = pawn.records.GetValue(RecordDefOf.Cosmere_Roshar_Record_StructuresBuilt);
 
         if (nextLevel == 3) {
-            return prisonersFreed >= ApplyDifficulty(10) && caravanTrips >= ApplyDifficulty(3) && structures >= ApplyDifficulty(30);
+            return prisonersFreed >= ApplyDifficulty(10) &&
+                   caravanTrips >= ApplyDifficulty(3) &&
+                   structures >= ApplyDifficulty(30);
         }
 
         if (nextLevel == 4) {
-            return prisonersFreed >= ApplyDifficulty(15) && caravanTrips >= ApplyDifficulty(5) && structures >= ApplyDifficulty(60);
+            return prisonersFreed >= ApplyDifficulty(15) &&
+                   caravanTrips >= ApplyDifficulty(5) &&
+                   structures >= ApplyDifficulty(60);
         }
 
         return false;
@@ -38,8 +42,10 @@ public class Willshaper(RadiantOrderDef def) : AbstractIdealChecker(def) {
             0 => null,
             1 => $"Free {ApplyDifficulty(2):0}+ prisoners | Skill 4+",
             2 => $"Free {ApplyDifficulty(5):0}+ prisoners, 1+ caravan trip | Skill 8+",
-            3 => $"Free {ApplyDifficulty(10):0}+ prisoners, {ApplyDifficulty(3):0}+ caravan trips, {ApplyDifficulty(30):0}+ structures | Skill 14+",
-            4 => $"Free {ApplyDifficulty(15):0}+ prisoners, {ApplyDifficulty(5):0}+ caravan trips, {ApplyDifficulty(60):0}+ structures | Skill 18+",
+            3 =>
+                $"Free {ApplyDifficulty(10):0}+ prisoners, {ApplyDifficulty(3):0}+ caravan trips, {ApplyDifficulty(30):0}+ structures | Skill 14+",
+            4 =>
+                $"Free {ApplyDifficulty(15):0}+ prisoners, {ApplyDifficulty(5):0}+ caravan trips, {ApplyDifficulty(60):0}+ structures | Skill 18+",
             _ => null,
         };
     }

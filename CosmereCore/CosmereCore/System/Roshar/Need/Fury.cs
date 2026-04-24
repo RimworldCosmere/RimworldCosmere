@@ -58,7 +58,7 @@ public class Fury : RimWorld.Need {
             if (jobDef == RimWorld.JobDefOf.Mine || jobDef == RimWorld.JobDefOf.FinishFrame) {
                 decay = MiningDecayPerHour;
             } else if (jobDef == RimWorld.JobDefOf.DoBill) {
-                if (curJob.workGiverDef?.workType == RimWorld.WorkTypeDefOf.Smithing) {
+                if (curJob.workGiverDef?.workType == WorkTypeDefOf.Smithing) {
                     decay = SmithingDecayPerHour;
                 }
             } else if (jobDef == RimWorld.JobDefOf.Meditate) {
@@ -96,7 +96,13 @@ public class Fury : RimWorld.Need {
         if (furyMastered) return;
 
         bool started = pawn.mindState.mentalStateHandler.TryStartMentalState(
-            MentalStateDefOf.Berserk, "Fury Break", true, false, false, null, true
+            MentalStateDefOf.Berserk,
+            "Fury Break",
+            true,
+            false,
+            false,
+            null,
+            true
         );
 
         if (started) {

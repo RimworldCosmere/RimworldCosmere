@@ -9,6 +9,7 @@ public static class DockSectionRegistry {
         for (int i = 0; i < sections.Count; i++) {
             if (sections[i].SystemId == section.SystemId) return;
         }
+
         sections.Add(section);
     }
 
@@ -16,6 +17,7 @@ public static class DockSectionRegistry {
         for (int i = 0; i < sections.Count; i++) {
             if (sections[i].SystemId == systemId) return sections[i];
         }
+
         return null;
     }
 }

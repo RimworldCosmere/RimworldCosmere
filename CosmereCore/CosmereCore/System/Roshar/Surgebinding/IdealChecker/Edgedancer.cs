@@ -21,7 +21,9 @@ public class Edgedancer(RadiantOrderDef def) : AbstractIdealChecker(def) {
 
         if (nextLevel == 3) {
             float graveVisits = pawn.records.GetValue(RecordDefOf.Cosmere_Roshar_Record_GraveVisits);
-            return forgottenTended >= ApplyDifficulty(30) && deadHonored >= ApplyDifficulty(8) && graveVisits >= ApplyDifficulty(5);
+            return forgottenTended >= ApplyDifficulty(30) &&
+                   deadHonored >= ApplyDifficulty(8) &&
+                   graveVisits >= ApplyDifficulty(5);
         }
 
         if (nextLevel == 4) {
@@ -36,7 +38,8 @@ public class Edgedancer(RadiantOrderDef def) : AbstractIdealChecker(def) {
             0 => null,
             1 => $"Tend {ApplyDifficulty(5):0}+ forgotten | Skill 4+",
             2 => $"Tend {ApplyDifficulty(15):0}+ forgotten, honor {ApplyDifficulty(3):0}+ dead | Skill 8+",
-            3 => $"Tend {ApplyDifficulty(30):0}+ forgotten, honor {ApplyDifficulty(8):0}+ dead, {ApplyDifficulty(5):0}+ grave visits | Skill 14+",
+            3 =>
+                $"Tend {ApplyDifficulty(30):0}+ forgotten, honor {ApplyDifficulty(8):0}+ dead, {ApplyDifficulty(5):0}+ grave visits | Skill 14+",
             4 => $"Tend {ApplyDifficulty(50):0}+ forgotten, honor {ApplyDifficulty(15):0}+ dead | Skill 18+",
             _ => null,
         };

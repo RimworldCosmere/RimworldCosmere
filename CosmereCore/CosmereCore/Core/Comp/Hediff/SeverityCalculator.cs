@@ -19,8 +19,8 @@ public class SeverityCalculatorProperties : HediffCompProperties {
 }
 
 public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
-    private float desiredSeverity = -1;
     private float cachedSeverity = -1;
+    private float desiredSeverity = -1;
     private bool severityDirty = true;
 
     private new SeverityCalculatorProperties props => (SeverityCalculatorProperties)base.props;
@@ -41,16 +41,16 @@ public class SeverityCalculator<TGene> : HediffComp where TGene : Invested {
         }
     }
 
-    private void MarkSeverityDirty() {
-        severityDirty = true;
-    }
-
     public override string CompLabelInBracketsExtra =>
         ticksLeft >= 0 ? $"{Mathf.RoundToInt(ticksLeft).ToStringTicksToPeriod()} left" : "";
 
     private float ticksLeft => desiredSeverity < 0
         ? -1
         : Mathf.Abs(parent.Severity - desiredSeverity) / props.decayAmount * props.decayInterval;
+
+    private void MarkSeverityDirty() {
+        severityDirty = true;
+    }
 
     public override void CompPostMake() {
         base.CompPostMake();

@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Cosmere.Core.Gizmo;
 using Cosmere.System.Roshar.Comp.Thing;
@@ -27,7 +28,7 @@ public class RadiantOrderCommand(
     protected override float Width {
         get {
             if (shrunk) return Height + Padding.x / 2;
-            return GetWidthForAbilityCount(global::System.Math.Max(2, orderAbilityCount));
+            return GetWidthForAbilityCount(Math.Max(2, orderAbilityCount));
         }
     }
 
@@ -61,7 +62,7 @@ public class RadiantOrderCommand(
             yield return new SurgebindingAbilitySubGizmo(this, gene, ability);
         }
 
-        for (int i = 0; i <= global::System.Math.Min(gene.currentIdeal, radiantOrderDef.ideals.Count - 1); i++) {
+        for (int i = 0; i <= Math.Min(gene.currentIdeal, radiantOrderDef.ideals.Count - 1); i++) {
             Ideal ideal = radiantOrderDef.ideals[i];
             foreach (AbilityDef idealAbility in ideal.abilities) {
                 if (!pawn.TryGetAbility(idealAbility, out SurgebindingAbility? ability) || ability == null) continue;
@@ -71,11 +72,11 @@ public class RadiantOrderCommand(
             }
         }
 
-        List<RimWorld.Ability> allAbilities = pawn.abilities.abilities;
+        List<Ability> allAbilities = pawn.abilities.abilities;
         for (int i = 0; i < allAbilities.Count; i++) {
             if (allAbilities[i] is not SurgebindingAbility sa) continue;
             if (shown.Contains(sa.def)) continue;
-            if (sa.def is not Def.SurgebindingAbilityDef sad || sad.radiantOrder != radiantOrderDef) continue;
+            if (sa.def is not SurgebindingAbilityDef sad || sad.radiantOrder != radiantOrderDef) continue;
             if (!sa.GizmosVisible()) continue;
             yield return new SurgebindingAbilitySubGizmo(this, gene, sa);
         }
@@ -90,21 +91,25 @@ public class RadiantOrderCommand(
             btnSize
         );
 
-        bool infoClicked = Mouse.IsOver(infoRect)
-            && Event.current.type == EventType.MouseDown
-            && Event.current.button == 0;
+        bool infoClicked = Mouse.IsOver(infoRect) &&
+                           Event.current.type == EventType.MouseDown &&
+                           Event.current.button == 0;
 
         if (infoClicked) {
             Event.current.Use();
             Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
             if (surgebinder != null) {
-                Find.WindowStack.Add(new RadiantOrderInfoDialog(
-                    pawn, surgebinder, RadiantOrderInfoMode.View
-                ));
+                Find.WindowStack.Add(
+                    new RadiantOrderInfoDialog(
+                        pawn,
+                        surgebinder,
+                        RadiantOrderInfoMode.View
+                    )
+                );
             }
         }
 
-        Surgebinder? surgebinderGene = gene as Surgebinder;
+        Surgebinder? surgebinderGene = gene;
         bool sprenClicked = false;
         Rect sprenRect = default;
         if (surgebinderGene?.bondedSpren != null) {
@@ -117,9 +122,9 @@ public class RadiantOrderCommand(
                     btnSize
                 );
 
-                sprenClicked = Mouse.IsOver(sprenRect)
-                    && Event.current.type == EventType.MouseDown
-                    && Event.current.button == 0;
+                sprenClicked = Mouse.IsOver(sprenRect) &&
+                               Event.current.type == EventType.MouseDown &&
+                               Event.current.button == 0;
 
                 if (sprenClicked) {
                     Event.current.Use();
@@ -143,7 +148,10 @@ public class RadiantOrderCommand(
         GUI.DrawTexture(infoRect, TexButton.Info);
         if (Mouse.IsOver(infoRect)) {
             Widgets.DrawHighlight(infoRect);
-            TooltipHandler.TipRegion(infoRect, new TipSignal("CRO_RadiantOrder_InfoButton".Translate(), Gen.HashCombineInt(GetHashCode(), 8491284)));
+            TooltipHandler.TipRegion(
+                infoRect,
+                new TipSignal("CRO_RadiantOrder_InfoButton".Translate(), Gen.HashCombineInt(GetHashCode(), 8491284))
+            );
         }
 
         if (surgebinderGene?.bondedSpren != null) {
@@ -159,16 +167,22 @@ public class RadiantOrderCommand(
                 if (sprenBond.Dismissed && pawn.Map == null) {
                     tooltip += "\n\n" + "CRO_SprenSummon_NoMap".Translate().Colorize(ColorLibrary.RedReadable);
                 }
+
                 if (sprenBond.CooldownActive) {
                     tooltip += "\n\n" + "CRO_SprenCooldown".Translate().Colorize(ColorLibrary.Yellow);
                 }
+
                 if (sprenBond.Autonomous) {
                     tooltip += "\n" + "CRO_SprenAutonomous_On".Translate().Colorize(ColorLibrary.Cyan);
                 }
+
                 tooltip += "\n\n" + "CRO_SprenAutonomous_Hint".Translate().Colorize(ColorLibrary.Grey);
                 if (Mouse.IsOver(sprenRect)) {
                     Widgets.DrawHighlight(sprenRect);
-                    TooltipHandler.TipRegion(sprenRect, new TipSignal(tooltip, Gen.HashCombineInt(GetHashCode(), 8491284)));
+                    TooltipHandler.TipRegion(
+                        sprenRect,
+                        new TipSignal(tooltip, Gen.HashCombineInt(GetHashCode(), 8491284))
+                    );
                 }
             }
         }

@@ -12,11 +12,11 @@ public enum MistsFrequency {
 }
 
 public class ScadrialModSettings : CosmereModSettings {
+    public bool alwaysShowAllomanticAuras;
     public bool enableMists = true;
     public MistsFrequency mistsFrequency = MistsFrequency.Daily;
     public bool pawnsKeepMetalmindsWhenDowned;
     public bool pawnsKeepVialsWhenDowned;
-    public bool alwaysShowAllomanticAuras;
 
     public override string Name => "Scadrial";
 

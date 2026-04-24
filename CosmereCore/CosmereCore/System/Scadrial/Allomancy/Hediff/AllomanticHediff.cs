@@ -31,6 +31,7 @@ public class AllomanticHediff : AbstractHediff<Allomancer> {
                             genes[i].BurnTickInterval();
                         }
                     }
+
                     severityCalculator.RecalculateSeverity();
                 }
             );

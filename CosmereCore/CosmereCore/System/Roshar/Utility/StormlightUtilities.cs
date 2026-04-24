@@ -15,12 +15,13 @@ public static class StormlightUtilities {
         return thing.def.Equals(Core.ThingDefOf.CutGem);
     }
 
-    public static bool IsHighstormImmune(Verse.Pawn pawn) {
+    public static bool IsHighstormImmune(Pawn pawn) {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) return false;
 
         if (surgebinder.radiantOrderDef.defName == "Windrunner" && surgebinder.currentIdeal >= 1) return true;
-        if (surgebinder.radiantOrderDef.defName == "Bondsmith" && surgebinder.godsprenName == "Stormfather") return true;
+        if (surgebinder.radiantOrderDef.defName == "Bondsmith" && surgebinder.godsprenName == "Stormfather")
+            return true;
 
         return false;
     }
@@ -75,6 +76,7 @@ public static class StormShelterManager {
             if (!adj.InBounds(map)) continue;
             if (IsInsideShelter(adj)) return true;
         }
+
         return false;
     }
 

@@ -1,5 +1,4 @@
 using Cosmere.Core.Ability;
-using Cosmere.System.Roshar.Surgebinding.Hediff;
 using Cosmere.System.Roshar.Surgebinding.Utility;
 using RimWorld;
 using Verse;
@@ -42,7 +41,8 @@ public class GravitationalPull : SurgebindingAbility {
 
         for (int i = pawnsInArea.Count - 1; i >= 0; i--) {
             Pawn targetPawn = pawnsInArea[i];
-            if (targetPawn == null || targetPawn.Dead ||
+            if (targetPawn == null ||
+                targetPawn.Dead ||
                 !targetPawn.Position.InHorDistOf(pawn.Position, currentRadius)) {
                 if (targetPawn != null && !targetPawn.Dead) {
                     SurgebindingHediffUtility.RemoveHediff(targetPawn, this, hediffToApply);
@@ -55,7 +55,10 @@ public class GravitationalPull : SurgebindingAbility {
         if (!pawn.IsHashIntervalTick(30)) return;
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
-                     pawn.Position, pawn.Map, currentRadius, true
+                     pawn.Position,
+                     pawn.Map,
+                     currentRadius,
+                     true
                  )) {
             if (thing is not Pawn targetPawn) continue;
             if (targetPawn.Dead) continue;

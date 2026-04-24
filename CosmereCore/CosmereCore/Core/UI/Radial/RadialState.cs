@@ -1,10 +1,10 @@
 namespace Cosmere.Core.UI.Radial;
 
 public sealed class RadialState {
-    public RadialStateKind Kind = RadialStateKind.Closed;
-    public int SelectedSystemIndex = -1;
-    public int SelectedSubsectionIndex = -1;
     public int HoveredIndex = -1;
+    public RadialStateKind Kind = RadialStateKind.Closed;
+    public int SelectedSubsectionIndex = -1;
+    public int SelectedSystemIndex = -1;
 
     public void Reset() {
         Kind = RadialStateKind.Closed;

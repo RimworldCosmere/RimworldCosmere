@@ -1,4 +1,3 @@
-using Cosmere.Core.Ability;
 using RimWorld;
 using Verse;
 
@@ -22,7 +21,7 @@ public class Disintegrate : SurgebindingAbility {
         IntVec3 pos = targetThing.Position;
         Map map = targetThing.Map;
 
-        targetThing.Destroy(DestroyMode.Vanish);
+        targetThing.Destroy();
 
         FleckMaker.Static(pos, map, FleckDefOf.PsycastAreaEffect);
 

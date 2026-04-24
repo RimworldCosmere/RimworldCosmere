@@ -1,3 +1,4 @@
+using Cosmere.System.Scadrial.Utility;
 using HarmonyLib;
 using Verse;
 
@@ -15,6 +16,6 @@ public static class PatchDeepResourceGrid {
         Map map = MapField(__instance);
         if (map == null) return;
 
-        __result = Utility.AllomancyUtility.HasActiveBronzeSeeker(map);
+        __result = AllomancyUtility.HasActiveBronzeSeeker(map);
     }
 }

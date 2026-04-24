@@ -1,7 +1,6 @@
 namespace Cosmere.Core.UI.Lightweave.Types;
 
-public enum TextAlign
-{
+public enum TextAlign {
     Start,
     End,
     Left,

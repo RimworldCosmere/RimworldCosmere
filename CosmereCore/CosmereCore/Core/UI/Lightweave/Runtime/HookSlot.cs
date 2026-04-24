@@ -1,8 +1,9 @@
+using System;
+
 namespace Cosmere.Core.UI.Lightweave.Runtime;
 
-public sealed class HookSlot
-{
-    public object? Value;
+public sealed class HookSlot {
+    public Action? Cleanup;
     public bool TouchedThisFrame;
-    public global::System.Action? Cleanup;
+    public object? Value;
 }

@@ -1,16 +1,15 @@
-using System.Collections.Generic;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Hemalurgy;
 
 public class ImplantedSpikeData : IExposable {
+    public float chargeStrength = 1f;
+    public bool isThinNeedle;
     public string metalDefName = "";
     public HemalurgicStealType stealType;
     public string stolenDefName = "";
     public List<string> stolenDefNames = [];
-    public float chargeStrength = 1f;
     public float storedInvestiture;
-    public bool isThinNeedle;
 
     public void ExposeData() {
         Scribe_Values.Look(ref metalDefName, "metalDefName", "");

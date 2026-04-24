@@ -32,7 +32,7 @@ public class PlaceWorker_StormlightNode : Verse.PlaceWorker {
 
         Vector3 mid = (buildingCenter + conduitCenter) / 2f;
         Vector3 diff = conduitCenter - buildingCenter;
-        Vector3 scale = new(1f, 1f, diff.MagnitudeHorizontal());
+        Vector3 scale = new Vector3(1f, 1f, diff.MagnitudeHorizontal());
         Quaternion rotation = Quaternion.LookRotation(diff);
         Matrix4x4 matrix = default;
         matrix.SetTRS(mid, rotation, scale);

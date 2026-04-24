@@ -15,7 +15,7 @@ public static class InvestitureDockController {
         }
 
         if (!shouldShow && window != null && Find.WindowStack.IsOpen(window)) {
-            window.Close(doCloseSound: false);
+            window.Close(false);
             window = null;
         }
     }

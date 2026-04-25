@@ -14,6 +14,7 @@ using Verse;
 
 namespace Cosmere.System.Roshar.UI;
 
+[StaticConstructorOnStartup]
 public sealed class SurgebindingCodexContent : ICodexContentProvider {
     private const float StripWidth = 90f;
     private const float StripEntryHeight = 64f;

@@ -1,8 +1,8 @@
 using System;
 using System.Text;
 using Cosmere.Core.Gene;
-using Cosmere.Core.UI.Lightweave.Adapter;
-using Cosmere.Core.UI.Lightweave.Runtime;
+using Cosmere.Lightweave.Adapter;
+using Cosmere.Lightweave.Runtime;
 using RimWorld;
 using UnityEngine;
 using Verse;

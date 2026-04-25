@@ -219,15 +219,33 @@
     <CC_Playground_Header_Theme_Cosmere>Cosmere</CC_Playground_Header_Theme_Cosmere>
     <CC_Playground_Header_Theme_Scadrial>Scadrial</CC_Playground_Header_Theme_Scadrial>
     <CC_Playground_Header_Theme_Roshar>Roshar</CC_Playground_Header_Theme_Roshar>
-    <CC_Playground_Header_Direction_Auto>Auto</CC_Playground_Header_Direction_Auto>
-    <CC_Playground_Header_Direction_Ltr>LTR</CC_Playground_Header_Direction_Ltr>
-    <CC_Playground_Header_Direction_Rtl>RTL</CC_Playground_Header_Direction_Rtl>
     <CC_Playground_Header_ForceDisabled>Force disabled</CC_Playground_Header_ForceDisabled>
-    <CC_Playground_Panel_SourceLabel>Source:</CC_Playground_Panel_SourceLabel>
+    <CC_Playground_Panel_SourceFile>File:</CC_Playground_Panel_SourceFile>
+    <CC_Playground_Panel_SourceLabel>Open in VS Code</CC_Playground_Panel_SourceLabel>
+    <CC_Playground_Panel_CopyCode>Copy code</CC_Playground_Panel_CopyCode>
+    <CC_Playground_Panel_CopyCode_Copied>Copied</CC_Playground_Panel_CopyCode_Copied>
+    <CC_Playground_Panel_ViewCode>View Code</CC_Playground_Panel_ViewCode>
     <CC_Playground_Panel_SourceTooltip>Open this primitive's source file in VS Code.</CC_Playground_Panel_SourceTooltip>
     <CC_Playground_Header_ForceDisabled_Tooltip>Renders every interactive primitive in its disabled state. Useful for verifying disabled visuals without wiring per-demo state.</CC_Playground_Header_ForceDisabled_Tooltip>
     <CC_Playground_Panel_Variants>Variants</CC_Playground_Panel_Variants>
     <CC_Playground_Panel_States>States</CC_Playground_Panel_States>
+    <CC_Playground_Panel_Examples>Examples</CC_Playground_Panel_Examples>
+    <CC_Playground_Panel_Preview>Preview</CC_Playground_Panel_Preview>
+    <CC_Playground_Panel_Source>Source</CC_Playground_Panel_Source>
+    <CC_Playground_Panel_OnThisPage>On This Page</CC_Playground_Panel_OnThisPage>
+    <CC_Playground_Panel_Overview>Overview</CC_Playground_Panel_Overview>
+    <CC_Playground_Panel_WhenToUse>When to use</CC_Playground_Panel_WhenToUse>
+    <CC_Playground_Panel_Usage>Usage</CC_Playground_Panel_Usage>
+    <CC_Playground_Panel_Composition>Composition</CC_Playground_Panel_Composition>
+    <CC_Playground_Panel_Rtl>Right to Left</CC_Playground_Panel_Rtl>
+    <CC_Playground_Panel_Api>API Reference</CC_Playground_Panel_Api>
+    <CC_Playground_Panel_ApiName>Name</CC_Playground_Panel_ApiName>
+    <CC_Playground_Panel_ApiType>Type</CC_Playground_Panel_ApiType>
+    <CC_Playground_Panel_ApiDefault>Default</CC_Playground_Panel_ApiDefault>
+    <CC_Playground_Panel_ApiDescription>Description</CC_Playground_Panel_ApiDescription>
+    <CC_Playground_Panel_ApiEmpty>No API surface documented.</CC_Playground_Panel_ApiEmpty>
+    <CC_Playground_Panel_GithubLabel>View on GitHub</CC_Playground_Panel_GithubLabel>
+    <CC_Playground_Panel_GithubTooltip>Open this primitive's source file on GitHub in your browser.</CC_Playground_Panel_GithubTooltip>
 
     <!-- Task D2b: primitive Title/What/When keys -->
     <CC_Playground_column_Title>Column</CC_Playground_column_Title>
@@ -429,6 +447,10 @@
     <CC_Playground_Label_Off>Off</CC_Playground_Label_Off>
     <CC_Playground_Label_Confirm>Confirm</CC_Playground_Label_Confirm>
     <CC_Playground_Label_Cancel>Cancel</CC_Playground_Label_Cancel>
+    <CC_Playground_Label_Sectioned>Sectioned</CC_Playground_Label_Sectioned>
+    <CC_Playground_card_Sectioned_Title>Bond with a spren</CC_Playground_card_Sectioned_Title>
+    <CC_Playground_card_Sectioned_Desc>Confirm the oath. A bond once spoken cannot be unsaid.</CC_Playground_card_Sectioned_Desc>
+    <CC_Playground_card_Sectioned_Body>Speak the Words. The bond settles.</CC_Playground_card_Sectioned_Body>
     <CC_Playground_Label_Input>Input</CC_Playground_Label_Input>
     <CC_Playground_Label_Button>Button</CC_Playground_Label_Button>
     <CC_Playground_Label_True>True</CC_Playground_Label_True>
@@ -480,6 +502,10 @@
     <CC_Playground_accordion_Body_Overview>Roshar endures the highstorms. Every living thing on the world has adapted to weather them, or to draw from the stormlight they leave behind.</CC_Playground_accordion_Body_Overview>
     <CC_Playground_accordion_Body_Stormlight>Stormlight fills gemstones infused during a highstorm. It holds its own weight and can be drawn on by those bonded to spren to fuel their powers.</CC_Playground_accordion_Body_Stormlight>
     <CC_Playground_accordion_Body_Spren>Spren are splinters of investiture given form by human thought. Bonded spren grant surges; wild spren gather around the emotions and acts they echo.</CC_Playground_accordion_Body_Spren>
+
+    <CC_Playground_sidenav_Title>SideNav</CC_Playground_sidenav_Title>
+    <CC_Playground_sidenav_What>Vertical category rail with inline sub-nav that expands on click or after a short hover. Scrolls when content overflows.</CC_Playground_sidenav_What>
+    <CC_Playground_sidenav_When>Use as the primary navigator for surfaces with many peer views. Reach for Tabs when the set is short and horizontal space is free.</CC_Playground_sidenav_When>
 
     <CC_Playground_buttongroup_Title>ButtonGroup</CC_Playground_buttongroup_Title>
     <CC_Playground_buttongroup_What>Row of connected buttons sharing borders and corner rounding. Each button fires an independent action.</CC_Playground_buttongroup_What>

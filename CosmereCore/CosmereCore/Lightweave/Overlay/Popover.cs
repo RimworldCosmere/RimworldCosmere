@@ -1,0 +1,184 @@
+using System;
+using System.Runtime.CompilerServices;
+using Cosmere.Lightweave.Doc;
+using Cosmere.Lightweave.Input;
+using Cosmere.Lightweave.Playground;
+using Cosmere.Lightweave.Rendering;
+using Cosmere.Lightweave.Runtime;
+using Cosmere.Lightweave.Tokens;
+using Cosmere.Lightweave.Types;
+using UnityEngine;
+using Verse;
+using static Cosmere.Lightweave.Hooks.Hooks;
+using static Cosmere.Lightweave.Layout.Layout;
+using Caption = Cosmere.Lightweave.Typography.Typography.Caption;
+using Code = Cosmere.Lightweave.Typography.Typography.Code;
+using Heading = Cosmere.Lightweave.Typography.Typography.Heading;
+using Icon = Cosmere.Lightweave.Typography.Typography.Icon;
+using Label = Cosmere.Lightweave.Typography.Typography.Label;
+using RichText = Cosmere.Lightweave.Typography.Typography.RichText;
+using Text = Cosmere.Lightweave.Typography.Typography.Text;
+
+namespace Cosmere.Lightweave.Overlay;
+
+[Doc(
+    Id = "popover",
+    Summary = "Floating panel anchored to a trigger, dismissed on outside click.",
+    WhenToUse = "Reveal contextual options or details next to the element that opened them.",
+    SourcePath = "CosmereCore/CosmereCore/Lightweave/Overlay/Popover.cs"
+)]
+public static class Popover {
+    public static LightweaveNode Create(
+        [DocParam("Whether the popover is currently visible.")]
+        bool isOpen,
+        [DocParam("Trigger Rect in current GUI space; used to position the popover.")]
+        Rect anchorRect,
+        [DocParam("Side of the anchor on which the popover should appear.")]
+        PopoverPlacement placement,
+        [DocParam("Content node painted inside the popover.")]
+        LightweaveNode content,
+        [DocParam("Invoked when the user clicks outside the popover.")]
+        Action onDismiss,
+        [DocParam("Preferred size in pixels. Height of -1 auto-sizes to content.")]
+        Vector2? preferredSize = null,
+        [CallerFilePath] string? caller = null,
+        [CallerLineNumber] int line = 0
+    ) {
+        if (!isOpen) {
+            LightweaveNode empty = NodeBuilder.New("Popover:closed", line, caller ?? string.Empty);
+            empty.Paint = (_, _) => { };
+            return empty;
+        }
+
+        LightweaveNode node = NodeBuilder.New($"Popover:{placement}", line, caller ?? string.Empty);
+        node.Paint = (rect, paintChildren) => {
+            Vector2 size = preferredSize ?? new Vector2(new Rem(15f).ToPixels(), -1f);
+            if (size.x <= 0f) {
+                size.x = new Rem(15f).ToPixels();
+            }
+
+            if (size.y <= 0f) {
+                float measuredHeight = content.Measure?.Invoke(size.x) ??
+                                       content.PreferredHeight ?? new Rem(10f).ToPixels();
+                size.y = measuredHeight;
+            }
+
+            Rect screen = RenderContext.Current.RootRect;
+            Direction dir = RenderContext.Current.Direction;
+
+            Vector2 anchorTopLeft = GUIUtility.GUIToScreenPoint(new Vector2(anchorRect.x, anchorRect.y));
+            Rect anchorAbsolute = new Rect(anchorTopLeft.x, anchorTopLeft.y, anchorRect.width, anchorRect.height);
+
+            RenderContext.Current.PendingOverlays.Enqueue(() => {
+                    Vector2 anchorLocal = GUIUtility.ScreenToGUIPoint(new Vector2(anchorAbsolute.x, anchorAbsolute.y));
+                    Rect anchorHere = new Rect(
+                        anchorLocal.x,
+                        anchorLocal.y,
+                        anchorAbsolute.width,
+                        anchorAbsolute.height
+                    );
+                    Rect popoverRect = PopoverLayout.Resolve(anchorHere, placement, dir, size, screen);
+
+                    Color savedColor = GUI.color;
+                    GUI.color = Color.white;
+
+                    Rect shadowRect = new Rect(
+                        popoverRect.x + 2f,
+                        popoverRect.y + 3f,
+                        popoverRect.width,
+                        popoverRect.height
+                    );
+                    BackgroundSpec shadowBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, 0.35f));
+                    PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(new Rem(0.5f)));
+
+                    BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+                    BorderSpec border = BorderSpec.All(new Rem(2f / 16f), ThemeSlot.BorderDefault);
+                    RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
+                    PaintBox.Draw(popoverRect, bg, border, radius);
+
+                    LightweaveRoot.PaintSubtree(content, popoverRect);
+
+                    GUI.color = savedColor;
+
+                    Event e = Event.current;
+                    if (e.rawType == EventType.MouseDown &&
+                        !popoverRect.Contains(e.mousePosition) &&
+                        !anchorHere.Contains(e.mousePosition)) {
+                        onDismiss?.Invoke();
+                        if (e.type == EventType.MouseDown) {
+                            e.Use();
+                        }
+                    }
+                }
+            );
+        };
+        return node;
+    }
+
+    private static LightweaveNode BuildHostDemo() {
+        StateHandle<bool> open = UseState(false);
+        RefHandle<Rect> anchor = UseRef(default(Rect));
+
+        LightweaveNode button = Button.Create(
+            (string)"CC_Playground_Popover_TriggerOpen".Translate(),
+            () => open.Set(!open.Value),
+            ButtonVariant.Secondary
+        );
+
+        LightweaveNode trigger = NodeBuilder.New("PopoverTrigger", 0, nameof(Popover));
+        trigger.Children.Add(button);
+        trigger.Paint = (rect, _) => {
+            anchor.Current = rect;
+            button.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(button, rect);
+        };
+
+        LightweaveNode body = Box.Create(
+            EdgeInsets.All(SpacingScale.Md),
+            null,
+            null,
+            null,
+            k => k.Add(
+                Text.Create(
+                    (string)"CC_Playground_Overlay_Popover_Body".Translate(),
+                    FontRole.Body,
+                    new Rem(0.875f),
+                    ThemeSlot.TextPrimary,
+                    wrap: true
+                )
+            )
+        );
+
+        // ReSharper disable once ArrangeStaticMemberQualifier
+        LightweaveNode popover = Popover.Create(
+            open.Value,
+            anchor.Current,
+            PopoverPlacement.Bottom,
+            body,
+            () => open.Set(false),
+            new Vector2(new Rem(15f).ToPixels(), -1f)
+        );
+
+        LightweaveNode composed = NodeBuilder.New("PopoverHost", 0, nameof(Popover));
+        composed.Children.Add(trigger);
+        composed.Children.Add(popover);
+        composed.Measure = w => button.Measure?.Invoke(w) ?? button.PreferredHeight ?? 32f;
+        composed.Paint = (rect, _) => {
+            trigger.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(trigger, rect);
+            popover.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(popover, rect);
+        };
+        return composed;
+    }
+
+    [DocVariant("CC_Playground_Label_Default")]
+    public static DocSample DocsDefault() {
+        return new DocSample(BuildHostDemo(), useFullSource: true);
+    }
+
+    [DocUsage]
+    public static DocSample DocsUsage() {
+        return new DocSample(BuildHostDemo(), useFullSource: true);
+    }
+}

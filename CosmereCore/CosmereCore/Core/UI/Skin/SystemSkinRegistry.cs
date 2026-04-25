@@ -1,5 +1,5 @@
 using Cosmere.Core.Settings;
-using Cosmere.Core.UI.Lightweave.Tokens;
+using Cosmere.Lightweave.Tokens;
 using UnityEngine;
 using Verse;
 
@@ -40,7 +40,7 @@ public static class SystemSkinRegistry {
 
     private sealed class FallbackSkin : ISystemSkin {
         public FallbackSkin(string systemId) {
-            this.SystemId = systemId;
+            SystemId = systemId;
         }
 
         public string SystemId { get; }

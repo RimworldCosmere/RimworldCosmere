@@ -1,10 +1,10 @@
-using Cosmere.Core.UI.Lightweave.Tokens;
+using Cosmere.Lightweave.Theme;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.Core.UI.Skin;
 
-public interface ISystemSkin {
+public interface ISystemSkin : IThemeOverlay {
     string SystemId { get; }
     string HeaderLabel { get; }
     Color AccentColor { get; }
@@ -19,7 +19,4 @@ public interface ISystemSkin {
     Texture2D? Sigil { get; }
     Texture2D? BorderFrame { get; }
     Font? DisplayFont { get; }
-
-    Color? GetColor(ThemeSlot slot);
-    Font? GetFont(FontRole role);
 }

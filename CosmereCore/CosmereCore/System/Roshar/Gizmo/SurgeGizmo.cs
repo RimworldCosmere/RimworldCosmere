@@ -1,5 +1,5 @@
-using Cosmere.Core.UI.Lightweave.Adapter;
-using Cosmere.Core.UI.Lightweave.Runtime;
+using Cosmere.Lightweave.Adapter;
+using Cosmere.Lightweave.Runtime;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.Surgebinding.Ability;

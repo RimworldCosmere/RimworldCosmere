@@ -1,4 +1,4 @@
-using Cosmere.Core.UI.Lightweave.Tokens;
+using Cosmere.Lightweave.Tokens;
 using UnityEngine;
 using Verse;
 

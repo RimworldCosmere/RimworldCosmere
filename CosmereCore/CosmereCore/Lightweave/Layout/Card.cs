@@ -42,7 +42,7 @@ public static partial class Layout {
             [CallerLineNumber] int line = 0,
             [CallerFilePath] string file = ""
         ) {
-            EdgeInsets pad = padding ?? EdgeInsets.All(SpacingScale.Md);
+            EdgeInsets pad = padding ?? EdgeInsets.Zero;
             BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
             BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
             RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
@@ -52,7 +52,7 @@ public static partial class Layout {
                 node.Children.Add(children[i]);
             }
 
-            float gapPxStatic = new Rem(0.5f).ToPixels();
+            float gapPxStatic = 0f;
             int childCount = children.Length;
 
             bool CanMeasureChildren() {
@@ -95,34 +95,60 @@ public static partial class Layout {
                     return;
                 }
 
-                float gapPx = new Rem(0.5f).ToPixels();
-                float totalGap = gapPx * Mathf.Max(0, count - 1);
+                float gapPx = 0f;
+
+                int footerIdx = -1;
+                for (int i = count - 1; i >= 0; i--) {
+                    string name = children[i].DebugName;
+                    if (!string.IsNullOrEmpty(name) && name.StartsWith("Card.Footer")) {
+                        footerIdx = i;
+                        break;
+                    }
+                }
 
                 float[] resolvedHeights = new float[count];
                 bool[] isFlex = new bool[count];
-                float fixedTotal = 0f;
+                int nonFooterCount = footerIdx >= 0 ? count - 1 : count;
+                float fixedTotalNonFooter = 0f;
                 int flexCount = 0;
                 for (int i = 0; i < count; i++) {
                     LightweaveNode child = children[i];
                     float? h = child.Measure?.Invoke(content.width) ?? child.PreferredHeight;
+                    if (i == footerIdx) {
+                        resolvedHeights[i] = h ?? new Rem(2.25f).ToPixels();
+                        continue;
+                    }
+
                     if (h.HasValue) {
                         resolvedHeights[i] = h.Value;
-                        fixedTotal += h.Value;
+                        fixedTotalNonFooter += h.Value;
                     } else {
                         isFlex[i] = true;
                         flexCount++;
                     }
                 }
 
-                float remainingForFlex = Mathf.Max(0f, content.height - fixedTotal - totalGap);
+                float footerH = footerIdx >= 0 ? resolvedHeights[footerIdx] : 0f;
+                float footerGap = footerIdx >= 0 && nonFooterCount > 0 ? gapPx : 0f;
+                float availableForNonFooter = Mathf.Max(0f, content.height - footerH - footerGap);
+                float nonFooterTotalGap = gapPx * Mathf.Max(0, nonFooterCount - 1);
+                float remainingForFlex = Mathf.Max(0f, availableForNonFooter - fixedTotalNonFooter - nonFooterTotalGap);
                 float flexEach = flexCount > 0 ? remainingForFlex / flexCount : 0f;
 
                 float y = content.y;
                 for (int i = 0; i < count; i++) {
+                    if (i == footerIdx) {
+                        continue;
+                    }
+
                     LightweaveNode child = children[i];
                     float h = isFlex[i] ? flexEach : resolvedHeights[i];
                     child.MeasuredRect = new Rect(content.x, y, content.width, h);
                     y += h + gapPx;
+                }
+
+                if (footerIdx >= 0) {
+                    children[footerIdx].MeasuredRect = new Rect(content.x, content.yMax - footerH, content.width, footerH);
                 }
 
                 paintChildren();
@@ -149,27 +175,39 @@ public static partial class Layout {
 
             float gapPx = new Rem(0.25f).ToPixels();
             float fallbackH = new Rem(1.5f).ToPixels();
+            EdgeInsets pad = EdgeInsets.All(SpacingScale.Md);
+            float padTopPx = pad.Top?.ToPixels() ?? 0f;
+            float padBottomPx = pad.Bottom?.ToPixels() ?? 0f;
 
             node.Measure = availableWidth => {
+                Direction renderDir = RenderContext.Current.Direction;
+                Rect dummy = new Rect(0f, 0f, availableWidth, 0f);
+                float innerWidth = pad.Shrink(dummy, renderDir).width;
                 float total = 0f;
                 for (int i = 0; i < children.Length; i++) {
                     LightweaveNode child = children[i];
-                    total += child.Measure?.Invoke(availableWidth) ?? child.PreferredHeight ?? fallbackH;
+                    total += child.Measure?.Invoke(innerWidth) ?? child.PreferredHeight ?? fallbackH;
                 }
 
                 if (children.Length > 1) {
                     total += gapPx * (children.Length - 1);
                 }
 
+                total += padTopPx + padBottomPx;
                 return total;
             };
 
+            BorderSpec divider = new BorderSpec(Bottom: new Rem(1f / 16f), Color: ThemeSlot.BorderDefault);
+
             node.Paint = (rect, paintChildren) => {
-                float y = rect.y;
+                PaintBox.Draw(rect, null, divider, null);
+
+                Rect inner = pad.Shrink(rect, RenderContext.Current.Direction);
+                float y = inner.y;
                 for (int i = 0; i < children.Length; i++) {
                     LightweaveNode child = children[i];
-                    float h = child.Measure?.Invoke(rect.width) ?? child.PreferredHeight ?? fallbackH;
-                    child.MeasuredRect = new Rect(rect.x, y, rect.width, h);
+                    float h = child.Measure?.Invoke(inner.width) ?? child.PreferredHeight ?? fallbackH;
+                    child.MeasuredRect = new Rect(inner.x, y, inner.width, h);
                     y += h + gapPx;
                 }
 
@@ -229,11 +267,19 @@ public static partial class Layout {
         public static LightweaveNode Content(
             params LightweaveNode[] children
         ) {
-            return ContentInternal(children);
+            return ContentInternal(children, null);
+        }
+
+        public static LightweaveNode Content(
+            ThemeSlot background,
+            params LightweaveNode[] children
+        ) {
+            return ContentInternal(children, new BackgroundSpec.Solid(background));
         }
 
         private static LightweaveNode ContentInternal(
             LightweaveNode[] children,
+            BackgroundSpec? background,
             [CallerLineNumber] int line = 0,
             [CallerFilePath] string file = ""
         ) {
@@ -243,6 +289,14 @@ public static partial class Layout {
             }
 
             float contentGapPx = new Rem(0.5f).ToPixels();
+            EdgeInsets innerPad = EdgeInsets.All(SpacingScale.Md);
+            float padTopPx = innerPad.Top?.ToPixels() ?? 0f;
+            float padBottomPx = innerPad.Bottom?.ToPixels() ?? 0f;
+            BorderSpec sideBorder = new BorderSpec(
+                Left: new Rem(1f / 16f),
+                Right: new Rem(1f / 16f),
+                Color: ThemeSlot.BorderDefault
+            );
 
             bool CanMeasureAll() {
                 for (int i = 0; i < children.Length; i++) {
@@ -254,26 +308,39 @@ public static partial class Layout {
                 return children.Length > 0;
             }
 
-            if (CanMeasureAll()) {
+            if (background == null && CanMeasureAll()) {
                 node.Measure = availableWidth => {
+                    Direction renderDir = RenderContext.Current.Direction;
+                    Rect dummy = new Rect(0f, 0f, availableWidth, 0f);
+                    float innerWidth = innerPad.Shrink(dummy, renderDir).width;
                     float total = 0f;
                     for (int i = 0; i < children.Length; i++) {
                         LightweaveNode child = children[i];
-                        total += child.Measure?.Invoke(availableWidth) ?? child.PreferredHeight ?? 0f;
+                        total += child.Measure?.Invoke(innerWidth) ?? child.PreferredHeight ?? 0f;
                     }
 
                     total += contentGapPx * Mathf.Max(0, children.Length - 1);
+                    total += padTopPx + padBottomPx;
                     return total;
                 };
             }
 
             node.Paint = (rect, paintChildren) => {
+                if (background != null) {
+                    PaintBox.Draw(rect, background, null, null);
+                }
+
+                PaintBox.Draw(rect, null, sideBorder, null);
+
+                Direction renderDir = RenderContext.Current.Direction;
+                Rect inner = innerPad.Shrink(rect, renderDir);
+
                 int count = children.Length;
                 if (count == 0) {
                     return;
                 }
 
-                float y = rect.y;
+                float y = inner.y;
                 float totalGap = contentGapPx * Mathf.Max(0, count - 1);
 
                 float[] resolvedHeights = new float[count];
@@ -282,7 +349,7 @@ public static partial class Layout {
                 int flexCount = 0;
                 for (int i = 0; i < count; i++) {
                     LightweaveNode child = children[i];
-                    float? h = child.Measure?.Invoke(rect.width) ?? child.PreferredHeight;
+                    float? h = child.Measure?.Invoke(inner.width) ?? child.PreferredHeight;
                     if (h.HasValue) {
                         resolvedHeights[i] = h.Value;
                         fixedTotal += h.Value;
@@ -292,13 +359,13 @@ public static partial class Layout {
                     }
                 }
 
-                float remainingForFlex = Mathf.Max(0f, rect.height - fixedTotal - totalGap);
+                float remainingForFlex = Mathf.Max(0f, inner.height - fixedTotal - totalGap);
                 float flexEach = flexCount > 0 ? remainingForFlex / flexCount : 0f;
 
                 for (int i = 0; i < count; i++) {
                     LightweaveNode child = children[i];
                     float h = isFlex[i] ? flexEach : resolvedHeights[i];
-                    child.MeasuredRect = new Rect(rect.x, y, rect.width, h);
+                    child.MeasuredRect = new Rect(inner.x, y, inner.width, h);
                     y += h + contentGapPx;
                 }
 
@@ -324,9 +391,17 @@ public static partial class Layout {
                 node.Children.Add(children[i]);
             }
 
-            node.PreferredHeight = new Rem(2.25f).ToPixels();
+            EdgeInsets pad = EdgeInsets.All(SpacingScale.Md);
+            float padTopPx = pad.Top?.ToPixels() ?? 0f;
+            float padBottomPx = pad.Bottom?.ToPixels() ?? 0f;
+            float buttonRowH = new Rem(2.25f).ToPixels();
+            node.PreferredHeight = buttonRowH + padTopPx + padBottomPx;
+
+            BorderSpec divider = new BorderSpec(Top: new Rem(1f / 16f), Color: ThemeSlot.BorderDefault);
 
             node.Paint = (rect, paintChildren) => {
+                PaintBox.Draw(rect, null, divider, null);
+
                 int count = children.Length;
                 if (count == 0) {
                     return;
@@ -334,6 +409,7 @@ public static partial class Layout {
 
                 Direction dir = RenderContext.Current.Direction;
                 bool rtl = dir == Direction.Rtl;
+                Rect inner = pad.Shrink(rect, dir);
                 float gapPx = new Rem(0.5f).ToPixels();
                 float totalGap = gapPx * Mathf.Max(0, count - 1);
 
@@ -347,11 +423,11 @@ public static partial class Layout {
 
                 totalWidth += totalGap;
 
-                float x = rtl ? rect.x : rect.xMax - totalWidth;
+                float x = rtl ? inner.x : inner.xMax - totalWidth;
                 for (int i = 0; i < count; i++) {
                     int idx = rtl ? count - 1 - i : i;
                     LightweaveNode child = children[idx];
-                    child.MeasuredRect = new Rect(x, rect.y, widths[idx], rect.height);
+                    child.MeasuredRect = new Rect(x, inner.y, widths[idx], inner.height);
                     x += widths[idx] + gapPx;
                 }
 
@@ -364,45 +440,59 @@ public static partial class Layout {
         public static DocSample DocsDefault() {
             return new DocSample(
                 Card.Create(
-                    Text.Create("card content", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary))
+                    Card.Header(
+                        Card.Title("Surgebinding"),
+                        Card.Description("Bonded Radiant powers.")
+                    ),
+                    Card.Content(
+                        ThemeSlot.SurfaceSunken,
+                        Text.Create(
+                            "Progression unlocks with oaths.",
+                            FontRole.Body,
+                            new Rem(0.875f),
+                            ThemeSlot.TextPrimary
+                        )
+                    ),
+                    Card.Footer(
+                        Button.Create((string)"CC_Playground_Label_Cancel".Translate(), () => { }),
+                        Button.Create((string)"CC_Playground_Label_Confirm".Translate(), () => { })
+                    )
+                )
             );
         }
 
-        [DocVariant("CC_Playground_Label_Primary", Order = 1)]
-        public static DocSample DocsComposed() {
+        [DocVariant("CC_Playground_Label_Tight", Order = 1)]
+        public static DocSample DocsTight() {
             return new DocSample(
                 Card.Create(
                     Card.Header(
-                        Card.Title("Surgebinding"),
-                        Card.Description("Bonded Radiant powers.")),
+                        Card.Title("Compact")
+                    ),
                     Card.Content(
-                        Text.Create("Progression unlocks with oaths.", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary)),
-                    Card.Footer(
-                        Button.Create((string)"CC_Playground_Label_Confirm".Translate(), () => { })))
+                        Text.Create(
+                            "Minimal layout for a short note.",
+                            FontRole.Body,
+                            new Rem(0.875f),
+                            ThemeSlot.TextMuted
+                        )
+                    )
+                )
             );
         }
 
-        [DocVariant("CC_Playground_Label_Tight", Order = 2)]
-        public static DocSample DocsTight() {
-            return new DocSample(
-                Card.WithPadding(
-                    SpacingScale.Xs,
-                    Card.Title("Compact"),
-                    Text.Create("Minimal padding for dense layouts.", FontRole.Body, new Rem(0.75f), ThemeSlot.TextMuted))
-            );
-        }
-
-        [DocVariant("CC_Playground_Label_Loose", Order = 3)]
+        [DocVariant("CC_Playground_Label_Loose", Order = 2)]
         public static DocSample DocsLoose() {
             return new DocSample(
-                Card.WithPadding(
-                    SpacingScale.Lg,
+                Card.Create(
                     Card.Header(
                         Card.Title("Confirm action"),
-                        Card.Description("Generous padding suits modal content.")),
+                        Card.Description("Generous content suits modal flows.")
+                    ),
                     Card.Footer(
                         Button.Create((string)"CC_Playground_Label_Cancel".Translate(), () => { }),
-                        Button.Create((string)"CC_Playground_Label_Confirm".Translate(), () => { })))
+                        Button.Create((string)"CC_Playground_Label_Confirm".Translate(), () => { })
+                    )
+                )
             );
         }
 
@@ -412,11 +502,15 @@ public static partial class Layout {
                 Card.Create(
                     Card.Header(
                         Card.Title("Surgebinding"),
-                        Card.Description("Bonded Radiant powers.")),
+                        Card.Description("Bonded Radiant powers.")
+                    ),
                     Card.Content(
-                        Text.Create("Progression unlocks with oaths.")),
+                        Text.Create("Progression unlocks with oaths.")
+                    ),
                     Card.Footer(
-                        Button.Create("Confirm", () => { })))
+                        Button.Create("Confirm", () => { })
+                    )
+                )
             );
         }
     }

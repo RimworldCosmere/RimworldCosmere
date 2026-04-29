@@ -59,11 +59,16 @@ public static partial class Doc {
         Rem radius = new Rem(0.375f);
         Rem borderThickness = new Rem(1f / 16f);
 
-        float bodyHeight = padYPx * 2f + visibleLineCount * lineHeightPx;
         float overlayHeight = canCollapse && isCollapsed ? viewBtnHeightPx + viewBtnGapPx : 0f;
-        float totalHeight = bodyHeight + overlayHeight;
 
-        node.Measure = _ => totalHeight;
+        node.Measure = availableWidth => {
+            float[] heights = ComputeLineHeights(highlightedLines, visibleLineCount, availableWidth, fontPx, lineHeightPx, padXPx, gutterGapPx, maxLineNumber);
+            float bodyH = padYPx * 2f;
+            for (int i = 0; i < visibleLineCount; i++) {
+                bodyH += heights[i];
+            }
+            return bodyH + overlayHeight;
+        };
 
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
@@ -87,33 +92,45 @@ public static partial class Doc {
             float codeX = dividerX + gutterGapPx * 0.5f;
             float codeWidth = Mathf.Max(0f, rect.xMax - padXPx - codeX);
 
+            float[] lineHeights = ComputeLineHeights(highlightedLines, visibleLineCount, rect.width, fontPx, lineHeightPx, padXPx, gutterGapPx, maxLineNumber);
+
             Color savedColor = GUI.color;
             Color gutterColor = theme.GetColor(ThemeSlot.TextMuted);
             gutterColor.a *= 0.7f;
             Color dividerColor = theme.GetColor(ThemeSlot.BorderSubtle);
 
             float startY = rect.y + padYPx;
-            float dividerHeight = visibleLineCount * lineHeightPx;
+            float dividerHeight = 0f;
+            for (int i = 0; i < visibleLineCount; i++) {
+                dividerHeight += lineHeights[i];
+            }
 
             Rect dividerRect = new Rect(dividerX, startY, 1f, dividerHeight);
             GUI.color = dividerColor;
             GUI.DrawTexture(dividerRect, Texture2D.whiteTexture);
             GUI.color = savedColor;
 
+            float ly = startY;
             for (int i = 0; i < visibleLineCount; i++) {
-                float ly = startY + i * lineHeightPx;
+                float h = lineHeights[i];
                 Rect numberRect = new Rect(gutterColX, ly, gutterColWidth, lineHeightPx);
-                Rect lineRect = new Rect(codeX, ly, codeWidth, lineHeightPx);
+                Rect lineRect = new Rect(codeX, ly, codeWidth, h);
 
                 GUI.color = gutterColor;
                 sharedStyle.alignment = TextAnchor.MiddleRight;
                 sharedStyle.richText = false;
+                sharedStyle.wordWrap = false;
+                sharedStyle.clipping = TextClipping.Clip;
                 GUI.Label(RectSnap.Snap(numberRect), (i + 1).ToString(), sharedStyle);
 
                 GUI.color = Color.white;
-                sharedStyle.alignment = TextAnchor.MiddleLeft;
+                sharedStyle.alignment = TextAnchor.UpperLeft;
                 sharedStyle.richText = true;
+                sharedStyle.wordWrap = true;
+                sharedStyle.clipping = TextClipping.Clip;
                 GUI.Label(RectSnap.Snap(lineRect), highlightedLines[i], sharedStyle);
+
+                ly += h;
             }
 
             GUI.color = savedColor;
@@ -126,6 +143,47 @@ public static partial class Doc {
         };
 
         return node;
+    }
+
+    private static float[] ComputeLineHeights(
+        string[] highlightedLines,
+        int visibleLineCount,
+        float availableWidth,
+        float fontPx,
+        float minLineHeightPx,
+        float padXPx,
+        float gutterGapPx,
+        string maxLineNumber
+    ) {
+        float[] heights = new float[visibleLineCount];
+
+        Theme.Theme theme = RenderContext.Current.Theme;
+        Font mono = theme.GetFont(FontRole.Mono);
+        int fontSize = Mathf.RoundToInt(fontPx);
+        GUIStyle style = GuiStyleCache.Get(mono, fontSize);
+
+        style.wordWrap = false;
+        style.richText = false;
+        style.alignment = TextAnchor.MiddleRight;
+        float gutterTextWidth = style.CalcSize(new GUIContent(maxLineNumber)).x;
+        float codeWidth = Mathf.Max(1f, availableWidth - padXPx * 2f - gutterTextWidth - gutterGapPx);
+
+        style.wordWrap = true;
+        style.richText = true;
+        style.alignment = TextAnchor.UpperLeft;
+
+        for (int i = 0; i < visibleLineCount; i++) {
+            string content = highlightedLines[i];
+            if (string.IsNullOrEmpty(content)) {
+                heights[i] = minLineHeightPx;
+                continue;
+            }
+
+            float h = style.CalcHeight(new GUIContent(content), codeWidth);
+            heights[i] = Mathf.Max(minLineHeightPx, h);
+        }
+
+        return heights;
     }
 
     private static void DrawCopyButton(

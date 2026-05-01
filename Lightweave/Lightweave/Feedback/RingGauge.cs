@@ -7,7 +7,7 @@ using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
-using static Cosmere.Lightweave.Playground.PlaygroundChips;
+using static Cosmere.Lightweave.Doc.DocChips;
 
 namespace Cosmere.Lightweave.Feedback;
 

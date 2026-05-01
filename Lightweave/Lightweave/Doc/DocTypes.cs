@@ -1,4 +1,4 @@
-namespace Cosmere.Lightweave.Playground;
+namespace Cosmere.Lightweave.Doc;
 
 public sealed record ApiParam(string Name, string Type, string DefaultValue, string Description);
 

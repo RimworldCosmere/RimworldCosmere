@@ -5,7 +5,7 @@ using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
-using static Cosmere.Lightweave.Playground.PlaygroundChips;
+using static Cosmere.Lightweave.Doc.DocChips;
 using Verse;
 
 namespace Cosmere.Lightweave.Layout;

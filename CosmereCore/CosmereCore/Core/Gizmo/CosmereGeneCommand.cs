@@ -295,7 +295,7 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
 
     public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {
         Rect rect = new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), Height);
-        Guid id = AdapterStoreRegistry.Get(pawn.thingIDNumber, AdapterKind.Gizmo, gene.def.shortHash);
+        Guid id = AdapterStoreRegistry.GetOrCreate(pawn.thingIDNumber, AdapterKind.Gizmo, gene.def.shortHash);
         bool mouseOver = false;
         LightweaveRoot.Render(
             rect,

@@ -6,7 +6,7 @@ using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using static Cosmere.Lightweave.Layout.Layout;
-using static Cosmere.Lightweave.Playground.PlaygroundChips;
+using static Cosmere.Lightweave.Doc.DocChips;
 using static Cosmere.Lightweave.Typography.Typography;
 
 namespace Cosmere.Lightweave.Typography;

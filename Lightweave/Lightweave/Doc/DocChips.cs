@@ -7,9 +7,9 @@ using UnityEngine;
 using static Cosmere.Lightweave.Layout.Layout;
 using static Cosmere.Lightweave.Typography.Typography;
 
-namespace Cosmere.Lightweave.Playground;
+namespace Cosmere.Lightweave.Doc;
 
-public static class PlaygroundChips {
+public static class DocChips {
     public static LightweaveNode Chip(string text, ThemeSlot bg, ThemeSlot fg) {
         return Box.Create(
             EdgeInsets.All(SpacingScale.Xs),
@@ -33,7 +33,7 @@ public static class PlaygroundChips {
     }
 
     public static LightweaveNode CenterFixed(LightweaveNode child, float width, float height) {
-        LightweaveNode node = NodeBuilder.New("CenterFixed", 0, nameof(PlaygroundChips));
+        LightweaveNode node = NodeBuilder.New("CenterFixed", 0, nameof(DocChips));
         node.Children.Add(child);
         node.Paint = (rect, _) => {
             float w = Mathf.Min(width, rect.width);

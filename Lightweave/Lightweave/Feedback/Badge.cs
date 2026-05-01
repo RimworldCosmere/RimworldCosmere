@@ -9,7 +9,7 @@ using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
-using static Cosmere.Lightweave.Playground.PlaygroundChips;
+using static Cosmere.Lightweave.Doc.DocChips;
 
 namespace Cosmere.Lightweave.Feedback;
 

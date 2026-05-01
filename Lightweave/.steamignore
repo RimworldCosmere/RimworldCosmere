@@ -1,0 +1,6 @@
+*.pdb
+*.xcf
+Assets
+Lightweave
+.gitignore
+.assetbundler.toml

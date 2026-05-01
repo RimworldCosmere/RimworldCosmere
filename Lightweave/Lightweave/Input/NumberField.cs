@@ -1,0 +1,261 @@
+using System;
+using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Text;
+using Cosmere.Lightweave.Doc;
+using Cosmere.Lightweave.Rendering;
+using Cosmere.Lightweave.Runtime;
+using Cosmere.Lightweave.Tokens;
+using Cosmere.Lightweave.Types;
+using UnityEngine;
+using Verse;
+
+namespace Cosmere.Lightweave.Input;
+
+[Doc(
+    Id = "numberfield",
+    Summary = "Numeric input with bounds, parsing, and formatting.",
+    WhenToUse = "Capture a single numeric value with optional min/max clamping.",
+    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/NumberField.cs"
+)]
+public static class NumberField {
+    private const int ShakeFrames = 6;
+    private const float ShakeAmplitudePx = 2f;
+
+    public static LightweaveNode Create(
+        [DocParam("Current numeric value.")]
+        float value,
+        [DocParam("Invoked with the committed value after parsing and clamping.")]
+        Action<float> onChange,
+        [DocParam("Inclusive minimum bound.")]
+        float min = float.MinValue,
+        [DocParam("Inclusive maximum bound.")]
+        float max = float.MaxValue,
+        [DocParam("Optional parser overriding the default numeric parsing.")]
+        Func<string, float?>? parse = null,
+        [DocParam("Optional formatter overriding the default decimal rendering.")]
+        Func<float, string>? format = null,
+        [DocParam("Optional placeholder rendered when the buffer is empty.")]
+        string? placeholder = null,
+        [DocParam("Disables interaction and applies disabled styling.")]
+        bool disabled = false,
+        [DocParam("When false, only integer characters are accepted.")]
+        bool allowDecimal = true,
+        [DocParam("Maximum decimal places used by the default formatter.")]
+        int decimalPlaces = 2,
+        [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
+        object? instanceKey = null,
+        [CallerFilePath] string? caller = null,
+        [CallerLineNumber] int line = 0
+    ) {
+        string callerFile = caller ?? string.Empty;
+        int callerLine = line;
+        string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
+        string focusKey = callerFile + "#nf_focus" + keySuffix;
+        string bufferKey = callerFile + "#nf_buffer" + keySuffix;
+        string lastGoodKey = callerFile + "#nf_lastGood" + keySuffix;
+        string syncedValueKey = callerFile + "#nf_syncedValue" + keySuffix;
+        string syncedFromKey = callerFile + "#nf_syncedFrom" + keySuffix;
+        string wasFocusedKey = callerFile + "#nf_wasFocused" + keySuffix;
+        string shakeKey = callerFile + "#nf_shake" + keySuffix;
+
+        LightweaveNode node = NodeBuilder.New("NumberField", callerLine, callerFile);
+        node.PreferredHeight = new Rem(1.75f).ToPixels();
+
+        bool localAllowDecimal = allowDecimal;
+        int localDecimalPlaces = Mathf.Max(0, decimalPlaces);
+        Func<string, float?> effectiveParse = parse ?? (text => DefaultParse(text, localAllowDecimal));
+        Func<float, string> effectiveFormat = format ?? (v => DefaultFormat(v, localAllowDecimal, localDecimalPlaces));
+
+        node.Paint = (rect, paintChildren) => {
+            Theme.Theme theme = RenderContext.Current.Theme;
+
+            Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", callerLine, focusKey);
+            if (string.IsNullOrEmpty(focusNameRef.Current)) {
+                focusNameRef.Current = "lw_nf_" + Guid.NewGuid().ToString("N").Substring(0, 8);
+            }
+
+            string focusName = focusNameRef.Current;
+
+            float clampedInitial = Mathf.Clamp(value, min, max);
+            Hooks.Hooks.StateHandle<string> buffer = Hooks.Hooks.UseState(
+                effectiveFormat(clampedInitial),
+                callerLine,
+                bufferKey
+            );
+            Hooks.Hooks.RefHandle<float> lastGood = Hooks.Hooks.UseRef(clampedInitial, callerLine, lastGoodKey);
+            Hooks.Hooks.RefHandle<bool> syncedValue = Hooks.Hooks.UseRef(false, callerLine, syncedValueKey);
+            Hooks.Hooks.RefHandle<float> syncedFrom = Hooks.Hooks.UseRef(clampedInitial, callerLine, syncedFromKey);
+            Hooks.Hooks.RefHandle<bool> wasFocused = Hooks.Hooks.UseRef(false, callerLine, wasFocusedKey);
+            Hooks.Hooks.StateHandle<int> shakeFrames = Hooks.Hooks.UseState(0, callerLine, shakeKey);
+
+            bool isFocusedThisFrame = GUI.GetNameOfFocusedControl() == focusName;
+            if (!isFocusedThisFrame &&
+                (!syncedValue.Current || !Mathf.Approximately(syncedFrom.Current, clampedInitial))) {
+                buffer.Set(effectiveFormat(clampedInitial));
+                lastGood.Current = clampedInitial;
+                syncedFrom.Current = clampedInitial;
+                syncedValue.Current = true;
+            }
+
+            InteractionState state = InteractionState.Resolve(rect, focusName, disabled);
+            InputSurface.Draw(rect, state);
+
+            float padX = InputSurface.PaddingX.ToPixels();
+            float padY = InputSurface.PaddingY.ToPixels();
+            Rect inner = new Rect(rect.x + padX, rect.y + padY, rect.width - padX * 2f, rect.height - padY * 2f);
+
+            if (shakeFrames.Value > 0) {
+                float sign = shakeFrames.Value % 2 == 0 ? 1f : -1f;
+                inner = new Rect(inner.x + sign * ShakeAmplitudePx, inner.y, inner.width, inner.height);
+                shakeFrames.Set(shakeFrames.Value - 1);
+            }
+
+            bool showPlaceholder =
+                !state.Focused && string.IsNullOrEmpty(buffer.Value) && !string.IsNullOrEmpty(placeholder);
+
+            if (showPlaceholder) {
+                InputSurface.DrawPlaceholder(inner, placeholder, theme);
+            }
+
+            Event e = Event.current;
+            bool enterPressed = e.type == EventType.KeyDown &&
+                                (e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter) &&
+                                state.Focused;
+
+            if (disabled) {
+                InputSurface.DrawReadOnlyValue(inner, buffer.Value ?? string.Empty, theme);
+            } else {
+                Font nfFont = theme.GetFont(FontRole.Body);
+                int nfSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
+                Color nfTextColor = theme.GetColor(ThemeSlot.TextPrimary);
+                GUIStyle nfStyle = InputSurface.GetChromelessTextFieldStyle(nfFont, nfSize, nfTextColor);
+                GUI.SetNextControlName(focusName);
+                string next = GUI.TextField(RectSnap.Snap(inner), buffer.Value ?? string.Empty, nfStyle);
+                string sanitized = SanitizeNumeric(next, localAllowDecimal);
+                if (sanitized != buffer.Value) {
+                    buffer.Set(sanitized);
+                }
+            }
+
+            if (!disabled && e.type == EventType.MouseDown && e.button == 0 && !rect.Contains(e.mousePosition)) {
+                if (GUI.GetNameOfFocusedControl() == focusName) {
+                    GUI.FocusControl(null);
+                }
+            }
+
+            bool isFocusedNow = GUI.GetNameOfFocusedControl() == focusName;
+            bool focusLost = wasFocused.Current && !isFocusedNow;
+            wasFocused.Current = isFocusedNow;
+
+            if (enterPressed || focusLost) {
+                string candidate = buffer.Value ?? string.Empty;
+                float? parsed = effectiveParse(candidate);
+                if (parsed.HasValue) {
+                    float clamped = Mathf.Clamp(parsed.Value, min, max);
+                    lastGood.Current = clamped;
+                    syncedFrom.Current = clamped;
+                    syncedValue.Current = true;
+                    buffer.Set(effectiveFormat(clamped));
+                    onChange?.Invoke(clamped);
+                } else {
+                    buffer.Set(effectiveFormat(lastGood.Current));
+                    shakeFrames.Set(ShakeFrames);
+                }
+
+                if (enterPressed) {
+                    e.Use();
+                }
+            }
+
+            paintChildren();
+        };
+
+        return node;
+    }
+
+    private static float? DefaultParse(string text, bool allowDecimal) {
+        if (string.IsNullOrWhiteSpace(text)) {
+            return null;
+        }
+
+        NumberStyles styles = allowDecimal ? NumberStyles.Float : NumberStyles.Integer;
+        if (float.TryParse(text, styles, CultureInfo.InvariantCulture, out float result)) {
+            return allowDecimal ? result : Mathf.Round(result);
+        }
+
+        return null;
+    }
+
+    private static string DefaultFormat(float value, bool allowDecimal, int decimalPlaces) {
+        if (!allowDecimal) {
+            return Mathf.RoundToInt(value).ToString(CultureInfo.InvariantCulture);
+        }
+
+        string spec = "F" + decimalPlaces.ToString(CultureInfo.InvariantCulture);
+        return value.ToString(spec, CultureInfo.InvariantCulture);
+    }
+
+    private static string SanitizeNumeric(string text, bool allowDecimal) {
+        if (string.IsNullOrEmpty(text)) {
+            return string.Empty;
+        }
+
+        StringBuilder sb = new StringBuilder(text.Length);
+        bool seenDot = false;
+        for (int i = 0; i < text.Length; i++) {
+            char c = text[i];
+            if (char.IsDigit(c)) {
+                sb.Append(c);
+                continue;
+            }
+
+            if (c == '-' && sb.Length == 0) {
+                sb.Append(c);
+                continue;
+            }
+
+            if (allowDecimal && c == '.' && !seenDot) {
+                sb.Append(c);
+                seenDot = true;
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    [DocVariant("CC_Playground_Label_Default")]
+    public static DocSample DocsDefault() {
+        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        return new DocSample(Create(
+            42f,
+            _ => { },
+            0f,
+            100f,
+            placeholder: (string)"CC_Playground_Controls_NumberField_Label".Translate(),
+            disabled: forced
+        ));
+    }
+
+    [DocState("CC_Playground_Label_Default")]
+    public static DocSample DocsDefaultState() {
+        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        return new DocSample(Create(42f, _ => { }, 0f, 100f, disabled: forced));
+    }
+
+    [DocState("CC_Playground_Label_Hover")]
+    public static DocSample DocsHover() {
+        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        return new DocSample(Create(7f, _ => { }, 0f, 100f, disabled: forced));
+    }
+
+    [DocState("CC_Playground_Label_Disabled")]
+    public static DocSample DocsDisabled() {
+        return new DocSample(Create(13f, _ => { }, 0f, 100f, disabled: true));
+    }
+
+    [DocUsage]
+    public static DocSample DocsUsage() {
+        return new DocSample(Create(42f, _ => { }, 0f, 100f));
+    }
+}

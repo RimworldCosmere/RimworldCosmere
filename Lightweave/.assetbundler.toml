@@ -1,0 +1,20 @@
+[global]
+extends = "../"
+
+[bundles.lightweave_textures]
+description = "Lightweave Textures"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_path = "lightweave"
+bundle_name = "lightweave_textures"
+filename = "resource_[bundle_name]_textures"
+include_patterns = ["*.png", "*.psd", "*.jpg", "*.jpeg"]
+
+[bundles.lightweave_fonts]
+description = "Lightweave Fonts"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_path = "lightweave"
+bundle_name = "lightweave_fonts"
+filename = "resource_[bundle_name]_fonts"
+include_patterns = ["*.ttf", "*.otf"]

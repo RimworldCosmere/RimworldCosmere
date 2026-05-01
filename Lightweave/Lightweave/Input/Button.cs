@@ -31,10 +31,10 @@ public static class Button {
         ColorRef? foregroundOverride = null,
         [DocParam("Disables interaction and applies disabled styling.")]
         bool disabled = false,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        LightweaveNode node = NodeBuilder.New($"Button:{label}", line, caller ?? string.Empty);
+        LightweaveNode node = NodeBuilder.New($"Button:{label}", line, file);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         if (leading != null) {

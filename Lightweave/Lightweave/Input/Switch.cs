@@ -34,13 +34,11 @@ public static class Switch {
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        string callerFile = file ?? string.Empty;
-        int callerLine = line;
         string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
-        string progressKey = callerFile + "#sw_progress" + keySuffix;
-        string lastTimeKey = callerFile + "#sw_lastTime" + keySuffix;
+        string progressKey = file + "#sw_progress" + keySuffix;
+        string lastTimeKey = file + "#sw_lastTime" + keySuffix;
 
-        LightweaveNode node = NodeBuilder.New($"Switch:{label}", callerLine, callerFile);
+        LightweaveNode node = NodeBuilder.New($"Switch:{label}", line, file);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {
@@ -70,10 +68,10 @@ public static class Switch {
             Rect hitRect = new Rect(rect.x, rowY, rect.width, rowHeight);
             LightweaveHitTracker.Track(hitRect);
 
-            Hooks.Hooks.RefHandle<float> progress = Hooks.Hooks.UseRef(value ? 1f : 0f, callerLine, progressKey);
+            Hooks.Hooks.RefHandle<float> progress = Hooks.Hooks.UseRef(value ? 1f : 0f, line, progressKey);
             Hooks.Hooks.RefHandle<float> lastTime = Hooks.Hooks.UseRef(
                 Time.realtimeSinceStartup,
-                callerLine,
+                line,
                 lastTimeKey
             );
 

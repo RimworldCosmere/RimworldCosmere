@@ -45,21 +45,19 @@ public static class NumberField {
         int decimalPlaces = 2,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        string callerFile = caller ?? string.Empty;
-        int callerLine = line;
         string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
-        string focusKey = callerFile + "#nf_focus" + keySuffix;
-        string bufferKey = callerFile + "#nf_buffer" + keySuffix;
-        string lastGoodKey = callerFile + "#nf_lastGood" + keySuffix;
-        string syncedValueKey = callerFile + "#nf_syncedValue" + keySuffix;
-        string syncedFromKey = callerFile + "#nf_syncedFrom" + keySuffix;
-        string wasFocusedKey = callerFile + "#nf_wasFocused" + keySuffix;
-        string shakeKey = callerFile + "#nf_shake" + keySuffix;
+        string focusKey = file + "#nf_focus" + keySuffix;
+        string bufferKey = file + "#nf_buffer" + keySuffix;
+        string lastGoodKey = file + "#nf_lastGood" + keySuffix;
+        string syncedValueKey = file + "#nf_syncedValue" + keySuffix;
+        string syncedFromKey = file + "#nf_syncedFrom" + keySuffix;
+        string wasFocusedKey = file + "#nf_wasFocused" + keySuffix;
+        string shakeKey = file + "#nf_shake" + keySuffix;
 
-        LightweaveNode node = NodeBuilder.New("NumberField", callerLine, callerFile);
+        LightweaveNode node = NodeBuilder.New("NumberField", line, file);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         bool localAllowDecimal = allowDecimal;
@@ -70,7 +68,7 @@ public static class NumberField {
         node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
 
-            Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", callerLine, focusKey);
+            Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", line, focusKey);
             if (string.IsNullOrEmpty(focusNameRef.Current)) {
                 focusNameRef.Current = "lw_nf_" + Guid.NewGuid().ToString("N").Substring(0, 8);
             }
@@ -80,14 +78,14 @@ public static class NumberField {
             float clampedInitial = Mathf.Clamp(value, min, max);
             Hooks.Hooks.StateHandle<string> buffer = Hooks.Hooks.UseState(
                 effectiveFormat(clampedInitial),
-                callerLine,
+                line,
                 bufferKey
             );
-            Hooks.Hooks.RefHandle<float> lastGood = Hooks.Hooks.UseRef(clampedInitial, callerLine, lastGoodKey);
-            Hooks.Hooks.RefHandle<bool> syncedValue = Hooks.Hooks.UseRef(false, callerLine, syncedValueKey);
-            Hooks.Hooks.RefHandle<float> syncedFrom = Hooks.Hooks.UseRef(clampedInitial, callerLine, syncedFromKey);
-            Hooks.Hooks.RefHandle<bool> wasFocused = Hooks.Hooks.UseRef(false, callerLine, wasFocusedKey);
-            Hooks.Hooks.StateHandle<int> shakeFrames = Hooks.Hooks.UseState(0, callerLine, shakeKey);
+            Hooks.Hooks.RefHandle<float> lastGood = Hooks.Hooks.UseRef(clampedInitial, line, lastGoodKey);
+            Hooks.Hooks.RefHandle<bool> syncedValue = Hooks.Hooks.UseRef(false, line, syncedValueKey);
+            Hooks.Hooks.RefHandle<float> syncedFrom = Hooks.Hooks.UseRef(clampedInitial, line, syncedFromKey);
+            Hooks.Hooks.RefHandle<bool> wasFocused = Hooks.Hooks.UseRef(false, line, wasFocusedKey);
+            Hooks.Hooks.StateHandle<int> shakeFrames = Hooks.Hooks.UseState(0, line, shakeKey);
 
             bool isFocusedThisFrame = GUI.GetNameOfFocusedControl() == focusName;
             if (!isFocusedThisFrame &&

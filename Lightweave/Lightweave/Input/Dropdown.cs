@@ -26,8 +26,6 @@ public static class Dropdown {
     private static readonly Rem RowPadding = new Rem(0.5f);
     private static readonly Rem ChevronWidth = new Rem(1.25f);
 
-    private static string? openDropdownKey;
-
     public static LightweaveNode Create<T>(
         T value,
         IReadOnlyList<T> options,
@@ -37,169 +35,58 @@ public static class Dropdown {
         ButtonVariant buttonStyle = ButtonVariant.Secondary,
         bool disabled = false,
         object? instanceKey = null,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        string callerFile = caller ?? string.Empty;
-        int callerLine = line;
         string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
-        string isOpenKey = callerFile + "#dropdown_isOpen" + keySuffix;
-        string highlightKey = callerFile + "#dropdown_highlight" + keySuffix;
-        string typeAheadKey = callerFile + "#dropdown_typeAhead" + keySuffix;
-        string typeAheadExpiryKey = callerFile + "#dropdown_typeAheadExpiry" + keySuffix;
+        string isOpenKey = file + "#dropdown_isOpen" + keySuffix;
+        string highlightKey = file + "#dropdown_highlight" + keySuffix;
+        string typeAheadKey = file + "#dropdown_typeAhead" + keySuffix;
+        string typeAheadExpiryKey = file + "#dropdown_typeAheadExpiry" + keySuffix;
 
-        LightweaveNode node = NodeBuilder.New("Dropdown", callerLine, callerFile);
+        LightweaveNode node = NodeBuilder.New("Dropdown", line, file);
         node.PreferredHeight = RowHeight.ToPixels();
 
         node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
 
-            Hooks.Hooks.StateHandle<bool> isOpen = Hooks.Hooks.UseState(false, callerLine, isOpenKey);
+            Hooks.Hooks.StateHandle<bool> isOpen = Hooks.Hooks.UseState(false, line, isOpenKey);
             Hooks.Hooks.StateHandle<int> highlightedIndex = Hooks.Hooks.UseState(
                 CurrentIndex(options, value),
-                callerLine,
+                line,
                 highlightKey
             );
             Hooks.Hooks.StateHandle<string> typeAheadBuffer = Hooks.Hooks.UseState(
                 string.Empty,
-                callerLine,
+                line,
                 typeAheadKey
             );
-            Hooks.Hooks.RefHandle<float> typeAheadExpiry = Hooks.Hooks.UseRef(0f, callerLine, typeAheadExpiryKey);
+            Hooks.Hooks.RefHandle<float> typeAheadExpiry = Hooks.Hooks.UseRef(0f, line, typeAheadExpiryKey);
 
-            if (isOpen.Value && openDropdownKey != null && openDropdownKey != isOpenKey) {
+            if (isOpen.Value && SingletonOverlayRegistry.ShouldClose(isOpenKey)) {
                 isOpen.Set(false);
             }
 
             InteractionState state = InteractionState.Resolve(rect, null, disabled);
+            TriggerStyle style = PaintTriggerSurface(rect, variant, buttonStyle, state, disabled);
+            (Rect labelRect, Rect chevronRect) = ComputeTriggerLayout(rect, dir);
+            DrawTriggerContent(labelRect, chevronRect, labelFn(value), variant, style, theme, dir);
 
-            ThemeSlot labelSlot;
-            ThemeSlot chevronSlot;
-            FontRole labelFontRole;
-            FontStyle labelFontStyle;
-            if (variant == DropdownVariant.Button) {
-                ThemeSlot bgSlot = ButtonVariants.Background(buttonStyle, state);
-                ThemeSlot fgSlot = ButtonVariants.Foreground(buttonStyle, state);
-                ThemeSlot? borderSlot = ButtonVariants.Border(buttonStyle, state);
-                BackgroundSpec bgSpec = new BackgroundSpec.Solid(bgSlot);
-                BorderSpec? borderSpec = borderSlot.HasValue
-                    ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
-                    : null;
-                RadiusSpec radiusSpec = RadiusSpec.All(new Rem(0.25f));
-                PaintBox.Draw(rect, bgSpec, borderSpec, radiusSpec);
-                float overlay = ButtonVariants.OverlayAlpha(state);
-                if (overlay > 0f) {
-                    Color overlayColor = state.Pressed
-                        ? new Color(0f, 0f, 0f, overlay)
-                        : new Color(1f, 1f, 1f, overlay);
-                    PaintBox.Draw(rect, new BackgroundSpec.Solid(overlayColor), null, radiusSpec);
-                }
-
-                labelSlot = fgSlot;
-                chevronSlot = fgSlot;
-                labelFontRole = FontRole.BodyBold;
-                labelFontStyle = FontStyle.Bold;
-            } else {
-                InputSurface.Draw(rect, state);
-                labelSlot = disabled ? ThemeSlot.TextMuted : ThemeSlot.TextPrimary;
-                chevronSlot = ThemeSlot.TextMuted;
-                labelFontRole = FontRole.Body;
-                labelFontStyle = FontStyle.Normal;
-            }
-
-            float padPx = RowPadding.ToPixels();
-            float chevronPx = ChevronWidth.ToPixels();
-            bool rtl = dir == Direction.Rtl;
-
-            float chevronX = rtl
-                ? rect.x + padPx
-                : rect.xMax - padPx - chevronPx;
-            Rect chevronRect = new Rect(chevronX, rect.y, chevronPx, rect.height);
-
-            float labelStartX = rtl ? chevronX + chevronPx + padPx : rect.x + padPx;
-            float labelEndX = rtl ? rect.xMax - padPx : chevronX - padPx;
-            Rect labelRect = new Rect(labelStartX, rect.y, labelEndX - labelStartX, rect.height);
-
-            Font labelFont = theme.GetFont(labelFontRole);
-            int labelPixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize, labelFontStyle);
-            labelStyle.alignment = variant == DropdownVariant.Button
-                ? TextAnchor.MiddleCenter
-                : Typography.Typography.ResolveAnchor(TextAlign.Start, dir);
-            string labelText = labelFn(value);
-
-            Color savedColor = GUI.color;
-            GUI.color = theme.GetColor(labelSlot);
-            GUI.Label(RectSnap.Snap(labelRect), labelText, labelStyle);
-            GUI.color = savedColor;
-
-            Font chevronFont = theme.GetFont(FontRole.Body);
-            int chevronPixelSize = Mathf.RoundToInt(new Rem(1.25f).ToFontPx());
-            GUIStyle chevronStyle = GuiStyleCache.Get(chevronFont, chevronPixelSize);
-            chevronStyle.alignment = TextAnchor.MiddleCenter;
-            GUI.color = theme.GetColor(chevronSlot);
-            GUI.Label(RectSnap.Snap(chevronRect), "▾", chevronStyle);
-            GUI.color = savedColor;
-
-            Event e = Event.current;
-
-            if (!disabled && e.type == EventType.MouseDown && e.button == 0 && rect.Contains(e.mousePosition)) {
-                e.Use();
-            }
-
-            if (!disabled && e.type == EventType.MouseUp && e.button == 0 && rect.Contains(e.mousePosition)) {
-                bool willOpen = !isOpen.Value;
-                isOpen.Set(willOpen);
-                if (willOpen) {
-                    openDropdownKey = isOpenKey;
-                    highlightedIndex.Set(CurrentIndex(options, value));
-                } else if (openDropdownKey == isOpenKey) {
-                    openDropdownKey = null;
-                }
-
-                e.Use();
-            }
-
-            if (!disabled &&
-                !isOpen.Value &&
-                e.type == EventType.KeyDown &&
-                (e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter) &&
-                rect.Contains(RenderContext.Current.PointerPos)) {
-                isOpen.Set(true);
-                openDropdownKey = isOpenKey;
-                highlightedIndex.Set(CurrentIndex(options, value));
-                e.Use();
-            }
+            HandleTriggerInteraction(rect, disabled, options, value, isOpenKey, isOpen, highlightedIndex);
 
             if (isOpen.Value && options.Count > 0) {
-                Vector2 anchorTopLeft = GUIUtility.GUIToScreenPoint(new Vector2(rect.x, rect.y));
-                Rect anchorAbsolute = new Rect(anchorTopLeft.x, anchorTopLeft.y, rect.width, rect.height);
-                int capturedHighlight = highlightedIndex.Value;
-                string capturedKey = isOpenKey;
-                RenderContext.Current.PendingOverlays.Enqueue(() => {
-                        Vector2 anchorLocal =
-                            GUIUtility.ScreenToGUIPoint(new Vector2(anchorAbsolute.x, anchorAbsolute.y));
-                        Rect anchorHere = new Rect(
-                            anchorLocal.x,
-                            anchorLocal.y,
-                            anchorAbsolute.width,
-                            anchorAbsolute.height
-                        );
-                        DrawPopover(
-                            anchorHere,
-                            options,
-                            labelFn,
-                            value,
-                            capturedHighlight,
-                            highlightedIndex,
-                            typeAheadBuffer,
-                            typeAheadExpiry,
-                            onChange,
-                            isOpen,
-                            capturedKey
-                        );
-                    }
+                EnqueueOverlay(
+                    rect,
+                    options,
+                    labelFn,
+                    value,
+                    isOpenKey,
+                    isOpen,
+                    highlightedIndex,
+                    typeAheadBuffer,
+                    typeAheadExpiry,
+                    onChange
                 );
             }
 
@@ -209,7 +96,180 @@ public static class Dropdown {
         return node;
     }
 
-    private static void DrawPopover<T>(
+    private struct TriggerStyle {
+        public ThemeSlot LabelSlot;
+        public ThemeSlot ChevronSlot;
+        public FontRole LabelFontRole;
+        public FontStyle LabelFontStyle;
+    }
+
+    private static TriggerStyle PaintTriggerSurface(
+        Rect rect,
+        DropdownVariant variant,
+        ButtonVariant buttonStyle,
+        InteractionState state,
+        bool disabled
+    ) {
+        if (variant == DropdownVariant.Button) {
+            ThemeSlot bgSlot = ButtonVariants.Background(buttonStyle, state);
+            ThemeSlot fgSlot = ButtonVariants.Foreground(buttonStyle, state);
+            ThemeSlot? borderSlot = ButtonVariants.Border(buttonStyle, state);
+            BackgroundSpec bgSpec = new BackgroundSpec.Solid(bgSlot);
+            BorderSpec? borderSpec = borderSlot.HasValue
+                ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
+                : null;
+            RadiusSpec radiusSpec = RadiusSpec.All(new Rem(0.25f));
+            PaintBox.Draw(rect, bgSpec, borderSpec, radiusSpec);
+            float overlay = ButtonVariants.OverlayAlpha(state);
+            if (overlay > 0f) {
+                Color overlayColor = state.Pressed
+                    ? new Color(0f, 0f, 0f, overlay)
+                    : new Color(1f, 1f, 1f, overlay);
+                PaintBox.Draw(rect, new BackgroundSpec.Solid(overlayColor), null, radiusSpec);
+            }
+
+            return new TriggerStyle {
+                LabelSlot = fgSlot,
+                ChevronSlot = fgSlot,
+                LabelFontRole = FontRole.BodyBold,
+                LabelFontStyle = FontStyle.Bold
+            };
+        }
+
+        InputSurface.Draw(rect, state);
+        return new TriggerStyle {
+            LabelSlot = disabled ? ThemeSlot.TextMuted : ThemeSlot.TextPrimary,
+            ChevronSlot = ThemeSlot.TextMuted,
+            LabelFontRole = FontRole.Body,
+            LabelFontStyle = FontStyle.Normal
+        };
+    }
+
+    private static (Rect labelRect, Rect chevronRect) ComputeTriggerLayout(Rect rect, Direction dir) {
+        float padPx = RowPadding.ToPixels();
+        float chevronPx = ChevronWidth.ToPixels();
+        bool rtl = dir == Direction.Rtl;
+
+        float chevronX = rtl ? rect.x + padPx : rect.xMax - padPx - chevronPx;
+        Rect chevronRect = new Rect(chevronX, rect.y, chevronPx, rect.height);
+
+        float labelStartX = rtl ? chevronX + chevronPx + padPx : rect.x + padPx;
+        float labelEndX = rtl ? rect.xMax - padPx : chevronX - padPx;
+        Rect labelRect = new Rect(labelStartX, rect.y, labelEndX - labelStartX, rect.height);
+
+        return (labelRect, chevronRect);
+    }
+
+    private static void DrawTriggerContent(
+        Rect labelRect,
+        Rect chevronRect,
+        string labelText,
+        DropdownVariant variant,
+        TriggerStyle style,
+        Theme.Theme theme,
+        Direction dir
+    ) {
+        Font labelFont = theme.GetFont(style.LabelFontRole);
+        int labelPixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
+        GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize, style.LabelFontStyle);
+        labelStyle.alignment = variant == DropdownVariant.Button
+            ? TextAnchor.MiddleCenter
+            : Typography.Typography.ResolveAnchor(TextAlign.Start, dir);
+
+        Color savedColor = GUI.color;
+        GUI.color = theme.GetColor(style.LabelSlot);
+        GUI.Label(RectSnap.Snap(labelRect), labelText, labelStyle);
+        GUI.color = savedColor;
+
+        Font chevronFont = theme.GetFont(FontRole.Body);
+        int chevronPixelSize = Mathf.RoundToInt(new Rem(1.25f).ToFontPx());
+        GUIStyle chevronStyle = GuiStyleCache.Get(chevronFont, chevronPixelSize);
+        chevronStyle.alignment = TextAnchor.MiddleCenter;
+        GUI.color = theme.GetColor(style.ChevronSlot);
+        GUI.Label(RectSnap.Snap(chevronRect), "▾", chevronStyle);
+        GUI.color = savedColor;
+    }
+
+    private static void HandleTriggerInteraction<T>(
+        Rect rect,
+        bool disabled,
+        IReadOnlyList<T> options,
+        T value,
+        string isOpenKey,
+        Hooks.Hooks.StateHandle<bool> isOpen,
+        Hooks.Hooks.StateHandle<int> highlightedIndex
+    ) {
+        if (disabled) {
+            return;
+        }
+
+        Event e = Event.current;
+
+        if (e.type == EventType.MouseDown && e.button == 0 && rect.Contains(e.mousePosition)) {
+            e.Use();
+            return;
+        }
+
+        if (e.type == EventType.MouseUp && e.button == 0 && rect.Contains(e.mousePosition)) {
+            bool willOpen = !isOpen.Value;
+            isOpen.Set(willOpen);
+            if (willOpen) {
+                SingletonOverlayRegistry.Open(isOpenKey);
+                highlightedIndex.Set(CurrentIndex(options, value));
+            } else {
+                SingletonOverlayRegistry.Close(isOpenKey);
+            }
+
+            e.Use();
+            return;
+        }
+
+        if (!isOpen.Value &&
+            e.type == EventType.KeyDown &&
+            (e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter) &&
+            rect.Contains(RenderContext.Current.PointerPos)) {
+            isOpen.Set(true);
+            SingletonOverlayRegistry.Open(isOpenKey);
+            highlightedIndex.Set(CurrentIndex(options, value));
+            e.Use();
+        }
+    }
+
+    private static void EnqueueOverlay<T>(
+        Rect rect,
+        IReadOnlyList<T> options,
+        Func<T, string> labelFn,
+        T value,
+        string isOpenKey,
+        Hooks.Hooks.StateHandle<bool> isOpen,
+        Hooks.Hooks.StateHandle<int> highlightedIndex,
+        Hooks.Hooks.StateHandle<string> typeAheadBuffer,
+        Hooks.Hooks.RefHandle<float> typeAheadExpiry,
+        Action<T> onChange
+    ) {
+        Rect anchorAbsolute = OverlayAnchor.CaptureAbsolute(rect);
+        int capturedHighlight = highlightedIndex.Value;
+        string capturedKey = isOpenKey;
+        RenderContext.Current.PendingOverlays.Enqueue(() => {
+                Rect anchorHere = OverlayAnchor.ResolveLocal(anchorAbsolute);
+                RenderOpenDropdown(
+                    anchorHere,
+                    options,
+                    labelFn,
+                    value,
+                    capturedHighlight,
+                    highlightedIndex,
+                    typeAheadBuffer,
+                    typeAheadExpiry,
+                    onChange,
+                    isOpen,
+                    capturedKey
+                );
+            }
+        );
+    }
+
+    private static void RenderOpenDropdown<T>(
         Rect anchor,
         IReadOnlyList<T> options,
         Func<T, string> labelFn,
@@ -258,8 +318,7 @@ public static class Dropdown {
             isOpen
         );
 
-        int renderCount = Mathf.Min(options.Count, MaxVisibleRows);
-        for (int i = 0; i < renderCount; i++) {
+        for (int i = 0; i < visibleCount; i++) {
             Rect rowRect = new Rect(popoverRect.x, popoverRect.y + i * rowH, popoverRect.width, rowH);
             PaintRow(
                 rowRect,
@@ -278,9 +337,7 @@ public static class Dropdown {
             !popoverRect.Contains(e.mousePosition) &&
             !anchor.Contains(e.mousePosition)) {
             isOpen.Set(false);
-            if (openDropdownKey == dropdownKey) {
-                openDropdownKey = null;
-            }
+            SingletonOverlayRegistry.Close(dropdownKey);
 
             if (e.type == EventType.MouseDown) {
                 e.Use();
@@ -466,7 +523,7 @@ public static class Dropdown {
 
         int count = options.Count;
         for (int i = 0; i < count; i++) {
-            string label = labelFn(options[i]) ?? string.Empty;
+            string label = labelFn(options[i]);
             if (label.Length >= prefix.Length &&
                 string.Compare(label, 0, prefix, 0, prefix.Length, StringComparison.OrdinalIgnoreCase) == 0) {
                 return i;

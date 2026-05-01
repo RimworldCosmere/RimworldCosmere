@@ -30,34 +30,32 @@ public static class SearchField {
         bool disabled = false,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        string callerFile = caller ?? string.Empty;
-        int callerLine = line;
         string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
-        string focusKey = callerFile + "#sf_focus" + keySuffix;
-        string bufferKey = callerFile + "#sf_buffer" + keySuffix;
-        string syncedFromKey = callerFile + "#sf_syncedFrom" + keySuffix;
+        string focusKey = file + "#sf_focus" + keySuffix;
+        string bufferKey = file + "#sf_buffer" + keySuffix;
+        string syncedFromKey = file + "#sf_syncedFrom" + keySuffix;
 
-        LightweaveNode node = NodeBuilder.New("SearchField", callerLine, callerFile);
+        LightweaveNode node = NodeBuilder.New("SearchField", line, file);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
 
-            Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", callerLine, focusKey);
+            Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", line, focusKey);
             if (string.IsNullOrEmpty(focusNameRef.Current)) {
                 focusNameRef.Current = "lw_sf_" + Guid.NewGuid().ToString("N").Substring(0, 8);
             }
 
             string focusName = focusNameRef.Current;
 
-            Hooks.Hooks.StateHandle<string> buffer = Hooks.Hooks.UseState(value ?? string.Empty, callerLine, bufferKey);
+            Hooks.Hooks.StateHandle<string> buffer = Hooks.Hooks.UseState(value ?? string.Empty, line, bufferKey);
             Hooks.Hooks.RefHandle<string> syncedFrom = Hooks.Hooks.UseRef(
                 value ?? string.Empty,
-                callerLine,
+                line,
                 syncedFromKey
             );
 

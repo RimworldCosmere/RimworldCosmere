@@ -34,17 +34,15 @@ public static class TextArea {
         bool disabled = false,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        string callerFile = caller ?? string.Empty;
-        int callerLine = line;
         string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
-        string focusKey = callerFile + "#ta_focus" + keySuffix;
-        string bufferKey = callerFile + "#ta_buffer" + keySuffix;
-        string wasFocusedKey = callerFile + "#ta_wasFocused" + keySuffix;
+        string focusKey = file + "#ta_focus" + keySuffix;
+        string bufferKey = file + "#ta_buffer" + keySuffix;
+        string wasFocusedKey = file + "#ta_wasFocused" + keySuffix;
 
-        LightweaveNode node = NodeBuilder.New("TextArea", callerLine, callerFile);
+        LightweaveNode node = NodeBuilder.New("TextArea", line, file);
         float lineHeightPx = new Rem(1.5f).ToPixels();
         int initialRows = Mathf.Clamp(
             CountRows(value ?? string.Empty),
@@ -56,15 +54,15 @@ public static class TextArea {
         node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
 
-            Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", callerLine, focusKey);
+            Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", line, focusKey);
             if (string.IsNullOrEmpty(focusNameRef.Current)) {
                 focusNameRef.Current = "lw_ta_" + Guid.NewGuid().ToString("N").Substring(0, 8);
             }
 
             string focusName = focusNameRef.Current;
 
-            Hooks.Hooks.StateHandle<string> buffer = Hooks.Hooks.UseState(value ?? string.Empty, callerLine, bufferKey);
-            Hooks.Hooks.RefHandle<bool> wasFocused = Hooks.Hooks.UseRef(false, callerLine, wasFocusedKey);
+            Hooks.Hooks.StateHandle<string> buffer = Hooks.Hooks.UseState(value ?? string.Empty, line, bufferKey);
+            Hooks.Hooks.RefHandle<bool> wasFocused = Hooks.Hooks.UseRef(false, line, wasFocusedKey);
 
             float lineHeight = new Rem(1.5f).ToPixels();
             int contentRows = CountRows(buffer.Value ?? string.Empty);

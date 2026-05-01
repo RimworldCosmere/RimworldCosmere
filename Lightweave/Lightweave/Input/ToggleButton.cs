@@ -24,10 +24,10 @@ public static class ToggleButton {
         bool value,
         [DocParam("Callback invoked with the new value on click.")]
         Action<bool> onChange,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        LightweaveNode node = NodeBuilder.New($"ToggleButton:{label}", line, caller ?? string.Empty);
+        LightweaveNode node = NodeBuilder.New($"ToggleButton:{label}", line, file);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {

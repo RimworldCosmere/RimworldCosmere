@@ -40,19 +40,17 @@ public static class TextField {
         UseFocus.FocusHandle? focus = null,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        string callerFile = caller ?? string.Empty;
-        int callerLine = line;
         string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
-        string focusKey = callerFile + "#tf_focus" + keySuffix;
-        string bufferKey = callerFile + "#tf_buffer" + keySuffix;
-        string lastGoodKey = callerFile + "#tf_lastGood" + keySuffix;
-        string wasFocusedKey = callerFile + "#tf_wasFocused" + keySuffix;
-        string shakeKey = callerFile + "#tf_shake" + keySuffix;
+        string focusKey = file + "#tf_focus" + keySuffix;
+        string bufferKey = file + "#tf_buffer" + keySuffix;
+        string lastGoodKey = file + "#tf_lastGood" + keySuffix;
+        string wasFocusedKey = file + "#tf_wasFocused" + keySuffix;
+        string shakeKey = file + "#tf_shake" + keySuffix;
 
-        LightweaveNode node = NodeBuilder.New("TextField", callerLine, callerFile);
+        LightweaveNode node = NodeBuilder.New("TextField", line, file);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {
@@ -62,7 +60,7 @@ public static class TextField {
             if (focus != null) {
                 focusName = focus.Name;
             } else {
-                Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", callerLine, focusKey);
+                Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", line, focusKey);
                 if (string.IsNullOrEmpty(focusNameRef.Current)) {
                     focusNameRef.Current = "lw_tf_" + Guid.NewGuid().ToString("N").Substring(0, 8);
                 }
@@ -70,10 +68,10 @@ public static class TextField {
                 focusName = focusNameRef.Current;
             }
 
-            Hooks.Hooks.StateHandle<string> buffer = Hooks.Hooks.UseState(value ?? string.Empty, callerLine, bufferKey);
-            Hooks.Hooks.RefHandle<string> lastGood = Hooks.Hooks.UseRef(value ?? string.Empty, callerLine, lastGoodKey);
-            Hooks.Hooks.RefHandle<bool> wasFocused = Hooks.Hooks.UseRef(false, callerLine, wasFocusedKey);
-            Hooks.Hooks.StateHandle<int> shakeFrames = Hooks.Hooks.UseState(0, callerLine, shakeKey);
+            Hooks.Hooks.StateHandle<string> buffer = Hooks.Hooks.UseState(value ?? string.Empty, line, bufferKey);
+            Hooks.Hooks.RefHandle<string> lastGood = Hooks.Hooks.UseRef(value ?? string.Empty, line, lastGoodKey);
+            Hooks.Hooks.RefHandle<bool> wasFocused = Hooks.Hooks.UseRef(false, line, wasFocusedKey);
+            Hooks.Hooks.StateHandle<int> shakeFrames = Hooks.Hooks.UseState(0, line, shakeKey);
 
             InteractionState state = InteractionState.Resolve(rect, focusName, disabled);
             InputSurface.Draw(rect, state);

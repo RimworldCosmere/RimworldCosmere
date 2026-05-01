@@ -32,22 +32,20 @@ public static class KeyBindingField {
         bool disabled = false,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        string callerFile = caller ?? string.Empty;
-        int callerLine = line;
         string keySuffix = instanceKey == null ? string.Empty : "#" + instanceKey;
-        string recordingKey = callerFile + "#kbf_recording" + keySuffix;
+        string recordingKey = file + "#kbf_recording" + keySuffix;
 
-        LightweaveNode node = NodeBuilder.New("KeyBindingField", callerLine, callerFile);
+        LightweaveNode node = NodeBuilder.New("KeyBindingField", line, file);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
 
-            Hooks.Hooks.StateHandle<bool> recording = Hooks.Hooks.UseState(false, callerLine, recordingKey);
+            Hooks.Hooks.StateHandle<bool> recording = Hooks.Hooks.UseState(false, line, recordingKey);
 
             bool isRecording = recording.Value && !disabled;
             bool mouseOverField = Mouse.IsOver(rect);

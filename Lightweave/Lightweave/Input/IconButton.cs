@@ -30,12 +30,12 @@ public static class IconButton {
         bool disabled = false,
         [DocParam("Translation key for an optional tooltip (reserved).")]
         string? tooltipKey = null,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
         _ = tooltipKey;
 
-        LightweaveNode node = NodeBuilder.New("IconButton", line, caller ?? string.Empty);
+        LightweaveNode node = NodeBuilder.New("IconButton", line, file);
         node.Children.Add(icon);
 
         float iconPx = (iconSize ?? new Rem(1.25f)).ToPixels();

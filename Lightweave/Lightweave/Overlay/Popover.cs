@@ -41,16 +41,16 @@ public static class Popover {
         Action onDismiss,
         [DocParam("Preferred size in pixels. Height of -1 auto-sizes to content.")]
         Vector2? preferredSize = null,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
         if (!isOpen) {
-            LightweaveNode empty = NodeBuilder.New("Popover:closed", line, caller ?? string.Empty);
+            LightweaveNode empty = NodeBuilder.New("Popover:closed", line, file);
             empty.Paint = (_, _) => { };
             return empty;
         }
 
-        LightweaveNode node = NodeBuilder.New($"Popover:{placement}", line, caller ?? string.Empty);
+        LightweaveNode node = NodeBuilder.New($"Popover:{placement}", line, file);
         node.Paint = (rect, paintChildren) => {
             Vector2 size = preferredSize ?? new Vector2(new Rem(15f).ToPixels(), -1f);
             if (size.x <= 0f) {
@@ -66,17 +66,10 @@ public static class Popover {
             Rect screen = RenderContext.Current.RootRect;
             Direction dir = RenderContext.Current.Direction;
 
-            Vector2 anchorTopLeft = GUIUtility.GUIToScreenPoint(new Vector2(anchorRect.x, anchorRect.y));
-            Rect anchorAbsolute = new Rect(anchorTopLeft.x, anchorTopLeft.y, anchorRect.width, anchorRect.height);
+            Rect anchorAbsolute = OverlayAnchor.CaptureAbsolute(anchorRect);
 
             RenderContext.Current.PendingOverlays.Enqueue(() => {
-                    Vector2 anchorLocal = GUIUtility.ScreenToGUIPoint(new Vector2(anchorAbsolute.x, anchorAbsolute.y));
-                    Rect anchorHere = new Rect(
-                        anchorLocal.x,
-                        anchorLocal.y,
-                        anchorAbsolute.width,
-                        anchorAbsolute.height
-                    );
+                    Rect anchorHere = OverlayAnchor.ResolveLocal(anchorAbsolute);
                     Rect popoverRect = PopoverLayout.Resolve(anchorHere, placement, dir, size, screen);
 
                     Color savedColor = GUI.color;

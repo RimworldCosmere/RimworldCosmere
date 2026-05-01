@@ -33,10 +33,10 @@ public static class Slider {
         Func<float, string>? format = null,
         [DocParam("Disables interaction and applies disabled styling.")]
         bool disabled = false,
-        [CallerFilePath] string? caller = null,
-        [CallerLineNumber] int line = 0
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        LightweaveNode node = NodeBuilder.New("Slider", line, caller ?? string.Empty);
+        LightweaveNode node = NodeBuilder.New("Slider", line, file);
         node.PreferredHeight = new Rem(2.25f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {
@@ -44,7 +44,7 @@ public static class Slider {
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
 
-            Hooks.Hooks.RefHandle<bool> dragging = Hooks.Hooks.UseRef(false, line, caller ?? string.Empty);
+            Hooks.Hooks.RefHandle<bool> dragging = Hooks.Hooks.UseRef(false, line, file);
 
             float labelBandHeight = new Rem(1f).ToPixels();
             float trackBandHeight = new Rem(1.25f).ToPixels();

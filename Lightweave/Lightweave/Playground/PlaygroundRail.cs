@@ -146,7 +146,7 @@ public static class PlaygroundRail {
                 bool overRow = rowRect.Contains(mouse);
                 bool activeContainsSelection = cat.Id == activeCategoryId;
 
-                DrawCategoryRow(rowRect, cat, theme, rtl, expanded, pinned, overRow, activeContainsSelection, saved);
+                DrawCategoryRow(rowRect, cat, theme, rtl, expanded, pinned, overRow, activeContainsSelection, baseColor: saved);
 
                 if (overRow && e.type == EventType.MouseUp && e.button == 0) {
                     pinnedCategoryId.Set(pinned ? null : cat.Id);
@@ -172,7 +172,7 @@ public static class PlaygroundRail {
                     bool isSelected = primId == selectedPrimitiveId.Value;
                     bool primHover = primRect.Contains(mouse);
 
-                    DrawPrimitiveRow(primRect, primId, theme, rtl, isSelected, primHover, saved);
+                    DrawPrimitiveRow(primRect, primId, theme, rtl, isSelected, primHover, baseColor: saved);
 
                     if (primHover && e.type == EventType.MouseUp && e.button == 0) {
                         selectedPrimitiveId.Set(primId);
@@ -198,21 +198,21 @@ public static class PlaygroundRail {
         bool pinned,
         bool hovering,
         bool activeContainsSelection,
-        Color saved
+        Color baseColor
     ) {
         if (pinned || activeContainsSelection) {
             Color bg = theme.GetColor(ThemeSlot.SurfaceAccent);
             bg.a = 0.14f;
             GUI.color = bg;
             GUI.DrawTexture(rowRect, Texture2D.whiteTexture);
-            GUI.color = saved;
+            GUI.color = baseColor;
 
             Color focusBar = theme.GetColor(ThemeSlot.BorderFocus);
             float barX = rtl ? rowRect.xMax - HighlightBarWidth : rowRect.x;
             Rect bar = new Rect(barX, rowRect.y, HighlightBarWidth, rowRect.height);
             GUI.color = focusBar;
             GUI.DrawTexture(bar, Texture2D.whiteTexture);
-            GUI.color = saved;
+            GUI.color = baseColor;
         } else if (hovering) {
             PaintBox.DrawHighlight(rowRect, RadiusSpec.All(new Rem(0.25f)), true);
         }
@@ -248,7 +248,7 @@ public static class PlaygroundRail {
         );
         GUI.Label(RectSnap.Snap(chevronRect), chevron, chevronStyle);
 
-        GUI.color = saved;
+        GUI.color = baseColor;
     }
 
     private static void DrawPrimitiveRow(
@@ -258,21 +258,21 @@ public static class PlaygroundRail {
         bool rtl,
         bool isSelected,
         bool hovering,
-        Color saved
+        Color baseColor
     ) {
         if (isSelected) {
             Color bg = theme.GetColor(ThemeSlot.SurfaceAccent);
             bg.a = 0.22f;
             GUI.color = bg;
             GUI.DrawTexture(rowRect, Texture2D.whiteTexture);
-            GUI.color = saved;
+            GUI.color = baseColor;
 
             Color focusBar = theme.GetColor(ThemeSlot.BorderFocus);
             float barX = rtl ? rowRect.xMax - HighlightBarWidth : rowRect.x;
             Rect bar = new Rect(barX, rowRect.y, HighlightBarWidth, rowRect.height);
             GUI.color = focusBar;
             GUI.DrawTexture(bar, Texture2D.whiteTexture);
-            GUI.color = saved;
+            GUI.color = baseColor;
         } else if (hovering) {
             PaintBox.DrawHighlight(rowRect, RadiusSpec.All(new Rem(0.2f)), true);
         }
@@ -297,7 +297,7 @@ public static class PlaygroundRail {
         string labelKey = "CC_Playground_" + primId + "_Title";
         string labelText = (string)labelKey.Translate();
         GUI.Label(RectSnap.Snap(labelRect), labelText, style);
-        GUI.color = saved;
+        GUI.color = baseColor;
 
         TooltipHandler.TipRegion(rowRect, labelText);
     }

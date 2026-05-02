@@ -143,8 +143,8 @@ public static class KeyBindingField {
     private static void DrawLabel(Rect rect, Theme.Theme theme, KeyBinding value, bool recording, bool disabled) {
         Font font = theme.GetFont(FontRole.Body);
         int pixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-        FontStyle weight = recording ? FontStyle.Italic : FontStyle.Normal;
-        GUIStyle style = GuiStyleCache.Get(font, pixelSize, weight);
+        FontStyle fontStyle = recording ? FontStyle.Italic : FontStyle.Normal;
+        GUIStyle style = GuiStyleCache.Get(font, pixelSize, fontStyle);
         style.alignment = TextAnchor.MiddleCenter;
 
         string text;
@@ -226,7 +226,7 @@ public static class KeyBindingField {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(
             new KeyBinding(KeyCode.F, KeyModifiers.Control),
             _ => { },

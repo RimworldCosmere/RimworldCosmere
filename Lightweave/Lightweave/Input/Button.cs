@@ -152,37 +152,37 @@ public static class Button {
 
     [DocVariant("CC_Playground_Label_Primary")]
     public static DocSample DocsPrimary() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Primary", () => { }, disabled: forced));
     }
 
     [DocVariant("CC_Playground_Label_Secondary")]
     public static DocSample DocsSecondary() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Secondary", () => { }, ButtonVariant.Secondary, disabled: forced));
     }
 
     [DocVariant("CC_Playground_Label_Ghost")]
     public static DocSample DocsGhost() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Ghost", () => { }, ButtonVariant.Ghost, disabled: forced));
     }
 
     [DocVariant("CC_Playground_Label_Danger")]
     public static DocSample DocsDanger() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Danger", () => { }, ButtonVariant.Danger, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Default", () => { }, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Hover me", () => { }, disabled: forced));
     }
 

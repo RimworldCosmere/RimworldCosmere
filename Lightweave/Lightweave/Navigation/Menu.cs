@@ -49,12 +49,19 @@ public static class Menu {
     }
 
     public static LightweaveNode Create(
+        [DocParam("Whether the menu is currently visible.")]
         bool isOpen,
+        [DocParam("Screen-space rect the menu attaches to.")]
         Rect anchorRect,
+        [DocParam("Items rendered top-to-bottom; mix MenuItem.Action, MenuItem.Submenu, and MenuItem.Divider.")]
         IReadOnlyList<MenuItem> items,
+        [DocParam("Invoked when the menu requests dismissal (escape, outside-click, item activation).")]
         Action onDismiss,
+        [DocParam("Horizontal alignment relative to the anchor.")]
         MenuAnchor anchor = MenuAnchor.Left,
+        [DocParam("Whether the menu opens above or below the anchor.")]
         MenuDirection direction = MenuDirection.Down,
+        [DocParam("Disambiguator when multiple menus share the same caller line.")]
         object? instanceKey = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""

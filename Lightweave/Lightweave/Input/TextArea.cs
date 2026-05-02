@@ -144,7 +144,7 @@ public static class TextArea {
 
     [DocVariant("CC_Playground_Label_Filled")]
     public static DocSample DocsFilled() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(
             "Multi-line sample.",
             _ => { },
@@ -157,7 +157,7 @@ public static class TextArea {
 
     [DocVariant("CC_Playground_Label_Empty")]
     public static DocSample DocsEmpty() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(
             string.Empty,
             _ => { },

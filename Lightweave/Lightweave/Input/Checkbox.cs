@@ -138,25 +138,25 @@ public static class Checkbox {
 
     [DocVariant("CC_Playground_Label_True")]
     public static DocSample DocsTrue() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Enabled", true, _ => { }, forced));
     }
 
     [DocVariant("CC_Playground_Label_False")]
     public static DocSample DocsFalse() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Disabled", false, _ => { }, forced));
     }
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Default", true, _ => { }, forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Hover", false, _ => { }, forced));
     }
 

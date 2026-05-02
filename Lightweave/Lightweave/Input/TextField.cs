@@ -146,7 +146,7 @@ public static class TextField {
 
     [DocVariant("CC_Playground_Label_Filled")]
     public static DocSample DocsFilled() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(
             "Stormlight",
             _ => { },
@@ -157,7 +157,7 @@ public static class TextField {
 
     [DocVariant("CC_Playground_Label_Empty")]
     public static DocSample DocsEmpty() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(
             string.Empty,
             _ => { },
@@ -168,13 +168,13 @@ public static class TextField {
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Default", _ => { }, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Hover", _ => { }, disabled: forced));
     }
 

@@ -159,7 +159,7 @@ public static class ButtonGroup {
 
     [DocVariant("CC_Playground_Label_Primary")]
     public static DocSample DocsPrimary() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> lastPick = UseState<string>(
             (string)"CC_Playground_buttongroup_None".Translate()
         );
@@ -187,7 +187,7 @@ public static class ButtonGroup {
 
     [DocVariant("CC_Playground_Label_Secondary")]
     public static DocSample DocsSecondary() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> lastPick = UseState<string>(
             (string)"CC_Playground_buttongroup_None".Translate()
         );

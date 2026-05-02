@@ -399,6 +399,7 @@ public static partial class Layout {
             float padTopPx = pad.Top?.ToPixels() ?? 0f;
             float padBottomPx = pad.Bottom?.ToPixels() ?? 0f;
             float buttonRowH = new Rem(2.25f).ToPixels();
+            float gapPx = new Rem(0.5f).ToPixels();
             node.PreferredHeight = buttonRowH + padTopPx + padBottomPx;
 
             BorderSpec divider = new BorderSpec(Top: new Rem(1f / 16f), Color: ThemeSlot.BorderDefault);
@@ -414,7 +415,6 @@ public static partial class Layout {
                 Direction dir = RenderContext.Current.Direction;
                 bool rtl = dir == Direction.Rtl;
                 Rect inner = pad.Shrink(rect, dir);
-                float gapPx = new Rem(0.5f).ToPixels();
                 float totalGap = gapPx * Mathf.Max(0, count - 1);
 
                 float totalWidth = 0f;

@@ -236,13 +236,13 @@ public static class Slider {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(0.4f, _ => { }, disabled: forced));
     }
 
     [DocVariant("CC_Playground_Label_Accented")]
     public static DocSample DocsAccented() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(
             0.4f,
             _ => { },
@@ -256,13 +256,13 @@ public static class Slider {
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefaultState() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(0.4f, _ => { }, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(0.7f, _ => { }, disabled: forced));
     }
 

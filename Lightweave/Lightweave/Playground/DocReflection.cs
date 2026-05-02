@@ -31,8 +31,7 @@ internal static class DocReflection {
             return (EmptyVariants, EmptyStates);
         }
 
-        PlaygroundDemoContext ctx = new PlaygroundDemoContext { ForceDisabled = forceDisabled };
-        return (BuildVariants(primitive, ctx), BuildStates(primitive, ctx));
+        return (BuildVariants(primitive, forceDisabled), BuildStates(primitive, forceDisabled));
     }
 
     internal static PlaygroundDocs? BuildDocsById(string id) {
@@ -111,19 +110,19 @@ internal static class DocReflection {
         );
     }
 
-    internal static IReadOnlyList<PlaygroundVariant> BuildVariants(Type primitive, PlaygroundDemoContext ctx) {
+    internal static IReadOnlyList<PlaygroundVariant> BuildVariants(Type primitive, bool forceDisabled) {
         return BuildSamples<DocVariantAttribute, PlaygroundVariant>(
             primitive,
-            ctx,
+            forceDisabled,
             (attr, sample) => new PlaygroundVariant(attr.LabelKey, sample.Demo, sample.Code),
             attr => attr.Order
         );
     }
 
-    internal static IReadOnlyList<PlaygroundState> BuildStates(Type primitive, PlaygroundDemoContext ctx) {
+    internal static IReadOnlyList<PlaygroundState> BuildStates(Type primitive, bool forceDisabled) {
         return BuildSamples<DocStateAttribute, PlaygroundState>(
             primitive,
-            ctx,
+            forceDisabled,
             (attr, sample) => new PlaygroundState(attr.LabelKey, sample.Demo, sample.Code),
             attr => attr.Order
         );
@@ -131,7 +130,7 @@ internal static class DocReflection {
 
     private static IReadOnlyList<TItem> BuildSamples<TAttr, TItem>(
         Type primitive,
-        PlaygroundDemoContext ctx,
+        bool forceDisabled,
         Func<TAttr, DocSample, TItem> map,
         Func<TAttr, int> orderOf
     ) where TAttr : Attribute {
@@ -173,7 +172,10 @@ internal static class DocReflection {
         sources.Sort((a, b) => orderOf(a.attr).CompareTo(orderOf(b.attr)));
 
         List<TItem> result = new List<TItem>(sources.Count);
-        using (PlaygroundDemoContext.Push(ctx)) {
+        RenderContext ctx = RenderContext.Current;
+        bool previousForceDisabled = ctx.ForceDisabled;
+        ctx.ForceDisabled = forceDisabled;
+        try {
             for (int i = 0; i < sources.Count; i++) {
                 DocSample? sample = InvokeForSample(sources[i].member);
                 if (sample == null) {
@@ -182,6 +184,8 @@ internal static class DocReflection {
 
                 result.Add(map(sources[i].attr, sample));
             }
+        } finally {
+            ctx.ForceDisabled = previousForceDisabled;
         }
 
         return result;

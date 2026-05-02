@@ -73,23 +73,4 @@ public sealed record Theme(
         return new Theme(newColors, newFonts, newRadii, newElev);
     }
 
-    public Theme Overlay(ISkin overlay) {
-        Dictionary<ThemeSlot, Color> colorOverrides = new Dictionary<ThemeSlot, Color>();
-        foreach (ThemeSlot slot in Enum.GetValues(typeof(ThemeSlot))) {
-            Color? c = overlay.GetColor(slot);
-            if (c.HasValue) {
-                colorOverrides[slot] = c.Value;
-            }
-        }
-
-        Dictionary<FontRole, Font> fontOverrides = new Dictionary<FontRole, Font>();
-        foreach (FontRole role in Enum.GetValues(typeof(FontRole))) {
-            Font? f = overlay.GetFont(role);
-            if (f != null) {
-                fontOverrides[role] = f;
-            }
-        }
-
-        return With(colorOverrides, fontOverrides);
-    }
 }

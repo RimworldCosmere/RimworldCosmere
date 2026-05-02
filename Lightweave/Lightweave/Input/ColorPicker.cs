@@ -179,7 +179,7 @@ public static class ColorPicker {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(new Color(0.25f, 0.42f, 0.30f), _ => { }, disabled: forced));
     }
 

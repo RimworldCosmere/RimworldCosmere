@@ -17,7 +17,7 @@ namespace Cosmere.Lightweave.Overlay;
 [Doc(
     Id = "dialog",
     Summary = "Modal overlay window for confirmations, forms, or focused tasks.",
-    WhenToUse = "Block the rest of the UI while the player resolves a single decision.",
+    WhenToUse = "Block the rest of the UI while the player resolves a single decision. The dialog is the overlay-window shell only; compose its body with Card.* primitives.",
     SourcePath = "Lightweave/Lightweave/Overlay/Dialog.cs"
 )]
 public static class Dialog {
@@ -62,38 +62,6 @@ public static class Dialog {
         return node;
     }
 
-    public static LightweaveNode Root(params LightweaveNode[] children) {
-        return Layout.Layout.Card.Create(children);
-    }
-
-    public static LightweaveNode Header(params LightweaveNode[] children) {
-        return Layout.Layout.Card.Header(children);
-    }
-
-    public static LightweaveNode Title(
-        string text,
-        [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = ""
-    ) {
-        return Layout.Layout.Card.Title(text, line, file);
-    }
-
-    public static LightweaveNode Description(
-        string text,
-        [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = ""
-    ) {
-        return Layout.Layout.Card.Description(text, line, file);
-    }
-
-    public static LightweaveNode Content(params LightweaveNode[] children) {
-        return Layout.Layout.Card.Content(children);
-    }
-
-    public static LightweaveNode Footer(params LightweaveNode[] children) {
-        return Layout.Layout.Card.Footer(children);
-    }
-
     private static LightweaveNode BuildHostDemo() {
         StateHandle<bool> open = UseState(false);
 
@@ -105,12 +73,12 @@ public static class Dialog {
         LightweaveNode dialog = Create(
             open.Value,
             () => open.Set(false),
-            () => Root(
-                Header(
-                    Title((string)"CC_Playground_Overlay_Dialog_Header".Translate()),
-                    Description((string)"CC_Playground_Overlay_Dialog_Body".Translate())
+            () => Layout.Layout.Card.Create(
+                Layout.Layout.Card.Header(
+                    Layout.Layout.Card.Title((string)"CC_Playground_Overlay_Dialog_Header".Translate()),
+                    Layout.Layout.Card.Description((string)"CC_Playground_Overlay_Dialog_Body".Translate())
                 ),
-                Content(
+                Layout.Layout.Card.Content(
                     Text.Create(
                         (string)"CC_Playground_Overlay_Dialog_Body".Translate(),
                         FontRole.Body,
@@ -118,7 +86,7 @@ public static class Dialog {
                         ThemeSlot.TextPrimary
                     )
                 ),
-                Footer(
+                Layout.Layout.Card.Footer(
                     Button.Create(
                         (string)"CC_Playground_Label_Confirm".Translate(),
                         () => open.Set(false)

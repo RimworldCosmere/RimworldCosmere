@@ -43,7 +43,6 @@ public static class Sparkline {
             Color lineCol = theme.GetColor(resolvedLine);
             float lw = resolvedThickness.ToPixels();
 
-            // Find min/max
             float min = samples[0];
             float max = samples[0];
             for (int i = 1; i < samples.Count; i++) {
@@ -57,7 +56,6 @@ public static class Sparkline {
             Color saved = GUI.color;
 
             if (samples.Count == 1) {
-                // Single sample - draw a dot
                 float dotX = rect.x + rect.width * 0.5f;
                 float dotY = rect.y + rect.height * 0.5f;
                 float dotSize = lw * 3f;
@@ -69,10 +67,8 @@ public static class Sparkline {
                 return;
             }
 
-            // Map sample index to x, value to y
             float xStep = rect.width / (samples.Count - 1);
 
-            // Fill under the line (approximate polygon as vertical bars)
             if (fillColor.HasValue) {
                 Color fillCol = theme.GetColor(fillColor.Value);
                 Color fillDraw = new Color(fillCol.r, fillCol.g, fillCol.b, fillCol.a * 0.25f);
@@ -86,7 +82,6 @@ public static class Sparkline {
                     float y0 = rect.yMax - norm0 * rect.height;
                     float y1 = rect.yMax - norm1 * rect.height;
 
-                    // Draw vertical bars from bottom up to the interpolated line
                     float colWidth = x1 - x0;
                     int barCount = Mathf.Max(1, Mathf.RoundToInt(colWidth));
                     for (int b = 0; b < barCount; b++) {
@@ -102,7 +97,6 @@ public static class Sparkline {
                 }
             }
 
-            // Draw the line segments
             GUI.color = lineCol;
             for (int i = 0; i < samples.Count - 1; i++) {
                 float x0 = rect.x + i * xStep;

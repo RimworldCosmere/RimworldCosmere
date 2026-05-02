@@ -171,7 +171,7 @@ public static class Radio {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Group<int>(
             1,
             _ => { },

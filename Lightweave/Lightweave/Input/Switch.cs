@@ -155,7 +155,7 @@ public static class Switch {
 
     [DocVariant("CC_Playground_Label_On")]
     public static DocSample DocsOn() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(
             (string)"CC_Playground_Controls_Switch_Label".Translate(),
             true,
@@ -166,19 +166,19 @@ public static class Switch {
 
     [DocVariant("CC_Playground_Label_Off")]
     public static DocSample DocsOff() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Off", false, _ => { }, forced));
     }
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Default", true, _ => { }, forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("Hover", false, _ => { }, forced));
     }
 

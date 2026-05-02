@@ -27,13 +27,21 @@ public static class Dropdown {
     private static readonly Rem ChevronWidth = new Rem(1.25f);
 
     public static LightweaveNode Create<T>(
+        [DocParam("The currently selected value.")]
         T value,
+        [DocParam("All selectable values, in display order.")]
         IReadOnlyList<T> options,
+        [DocParam("Maps an option to its display label.")]
         Func<T, string> labelFn,
+        [DocParam("Invoked when the user picks a different option.")]
         Action<T> onChange,
+        [DocParam("Trigger surface treatment: Input renders an input-style chrome, Inline renders compactly.")]
         DropdownVariant variant = DropdownVariant.Input,
+        [DocParam("Button variant when variant=Button. Ignored for other variants.")]
         ButtonVariant buttonStyle = ButtonVariant.Secondary,
+        [DocParam("Disable interaction and mute the trigger.")]
         bool disabled = false,
+        [DocParam("Disambiguator when multiple dropdowns share the same caller line.")]
         object? instanceKey = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
@@ -548,7 +556,7 @@ public static class Dropdown {
 
     [DocVariant("CC_Playground_Label_Input")]
     public static DocSample DocsInput() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create<string>(
             "Scadrial",
             DocOptions,
@@ -561,7 +569,7 @@ public static class Dropdown {
 
     [DocVariant("CC_Playground_Label_Button")]
     public static DocSample DocsButton() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create<string>(
             "Scadrial",
             DocOptions,
@@ -576,7 +584,7 @@ public static class Dropdown {
 
     [DocVariant("CC_Playground_Label_Primary")]
     public static DocSample DocsPrimary() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create<string>(
             "Scadrial",
             DocOptions,
@@ -591,7 +599,7 @@ public static class Dropdown {
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create<string>(
             "Scadrial",
             DocOptions,
@@ -604,7 +612,7 @@ public static class Dropdown {
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create<string>(
             "Roshar",
             DocOptions,

@@ -16,14 +16,15 @@ using Text = Cosmere.Lightweave.Typography.Typography.Text;
 
 namespace Cosmere.Lightweave.Layout;
 
-[Doc(
-    Id = "carousel",
-    Summary = "Slide-paged carousel with optional arrows and dots.",
-    WhenToUse = "Cycle through a small set of equally-weighted views.",
-    SourcePath = "Lightweave/Lightweave/Layout/Carousel.cs",
-    PreferredVariantHeight = 200f
-)]
-public static class Carousel {
+public static partial class Layout {
+    [Doc(
+        Id = "carousel",
+        Summary = "Slide-paged carousel with optional arrows and dots.",
+        WhenToUse = "Cycle through a small set of equally-weighted views.",
+        SourcePath = "Lightweave/Lightweave/Layout/Carousel.cs",
+        PreferredVariantHeight = 200f
+    )]
+    public static class Carousel {
     private const float SlideDurationSeconds = 0.28f;
     private const float ControlZone = 40f;
     private const float DotRadiusPx = 4f;
@@ -262,5 +263,6 @@ public static class Carousel {
                 i => index.Set(i)
             )
         );
+    }
     }
 }

@@ -10,14 +10,14 @@ public static class GuiStyleCache {
     private static readonly LinkedList<Key> lru = new LinkedList<Key>();
     private static readonly Dictionary<Key, LinkedListNode<Key>> lruNodes = new Dictionary<Key, LinkedListNode<Key>>();
 
-    public static GUIStyle Get(Font font, int pixelSize, FontStyle weight = FontStyle.Normal) {
-        Key key = new Key(font, pixelSize, weight);
+    public static GUIStyle Get(Font font, int pixelSize, FontStyle fontStyle = FontStyle.Normal) {
+        Key key = new Key(font, pixelSize, fontStyle);
         if (cache.TryGetValue(key, out GUIStyle style)) {
             Touch(key);
             return style;
         }
 
-        style = new GUIStyle { font = font, fontSize = pixelSize, fontStyle = weight };
+        style = new GUIStyle { font = font, fontSize = pixelSize, fontStyle = fontStyle };
         style.normal.textColor = Color.white;
         style.hover.textColor = Color.white;
         style.active.textColor = Color.white;
@@ -58,16 +58,16 @@ public static class GuiStyleCache {
     private readonly struct Key : IEquatable<Key> {
         public readonly int FontId;
         public readonly int PixelSize;
-        public readonly FontStyle Weight;
+        public readonly FontStyle FontStyle;
 
-        public Key(Font f, int pixelSize, FontStyle w) {
+        public Key(Font f, int pixelSize, FontStyle fontStyle) {
             FontId = f?.GetInstanceID() ?? 0;
             PixelSize = pixelSize;
-            Weight = w;
+            FontStyle = fontStyle;
         }
 
         public bool Equals(Key o) {
-            return FontId == o.FontId && PixelSize == o.PixelSize && Weight == o.Weight;
+            return FontId == o.FontId && PixelSize == o.PixelSize && FontStyle == o.FontStyle;
         }
 
         public override bool Equals(object? o) {
@@ -75,7 +75,7 @@ public static class GuiStyleCache {
         }
 
         public override int GetHashCode() {
-            return (FontId, PixelSize, Weight).GetHashCode();
+            return (FontId, PixelSize, FontStyle).GetHashCode();
         }
     }
 }

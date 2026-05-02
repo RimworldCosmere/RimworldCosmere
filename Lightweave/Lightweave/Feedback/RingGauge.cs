@@ -52,7 +52,6 @@ public static class RingGauge {
 
             Color saved = GUI.color;
 
-            // Draw track (full circle, 60 segments)
             int totalSegments = 60;
             float segStep = 360f / totalSegments;
 
@@ -67,7 +66,6 @@ public static class RingGauge {
                 Widgets.DrawLine(p0, p1, trackCol, lineWidth);
             }
 
-            // Draw fill arc (clockwise from 12 o'clock)
             if (clamped > 0f) {
                 int fillSegments = Mathf.Max(1, Mathf.RoundToInt(clamped * totalSegments));
                 GUI.color = fillCol;
@@ -84,7 +82,6 @@ public static class RingGauge {
 
             GUI.color = saved;
 
-            // Draw centered label
             if (!string.IsNullOrEmpty(centerLabel)) {
                 Font font = theme.GetFont(FontRole.Body);
                 int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());

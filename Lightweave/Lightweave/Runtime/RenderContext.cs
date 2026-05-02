@@ -21,6 +21,7 @@ public sealed class RenderContext {
     public Vector2 PointerPos;
     public Rect RootRect;
     public Stack<Theme.Theme> ThemeStack = new Stack<Theme.Theme>();
+    public bool ForceDisabled;
     internal OverlayQueue PendingOverlays { get; } = new OverlayQueue();
     public string? FocusedControlName { get; internal set; }
     public Guid RootId { get; internal set; }

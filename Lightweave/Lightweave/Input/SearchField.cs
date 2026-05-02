@@ -82,14 +82,9 @@ public static class SearchField {
                 ? new Rect(rect.xMax - padX - glyphSize, rect.y, glyphSize, rect.height)
                 : new Rect(rect.x + padX, rect.y, glyphSize, rect.height);
 
-            float leftContentX = glyphOnLeft ? glyphRect.xMax + SpacingScale.Xs.ToPixels() : rect.x + padX;
-            float rightContentX = glyphOnLeft
-                ? hasValue && !disabled ? clearRect.x - SpacingScale.Xs.ToPixels() : rect.xMax - padX
-                : glyphRect.x - SpacingScale.Xs.ToPixels();
-
-            if (!glyphOnLeft && hasValue && !disabled) {
-                leftContentX = clearRect.xMax + SpacingScale.Xs.ToPixels();
-            }
+            (float leftContentX, float rightContentX) = ResolveContentEdges(
+                rect, padX, glyphRect, clearRect, glyphOnLeft, hasValue && !disabled
+            );
 
             Rect inner = new Rect(
                 leftContentX,
@@ -203,9 +198,34 @@ public static class SearchField {
         }
     }
 
+    private static (float leftContentX, float rightContentX) ResolveContentEdges(
+        Rect rect,
+        float padX,
+        Rect glyphRect,
+        Rect clearRect,
+        bool glyphOnLeft,
+        bool showClear
+    ) {
+        float xs = SpacingScale.Xs.ToPixels();
+
+        if (glyphOnLeft && showClear) {
+            return (glyphRect.xMax + xs, clearRect.x - xs);
+        }
+
+        if (glyphOnLeft) {
+            return (glyphRect.xMax + xs, rect.xMax - padX);
+        }
+
+        if (showClear) {
+            return (clearRect.xMax + xs, glyphRect.x - xs);
+        }
+
+        return (rect.x + padX, glyphRect.x - xs);
+    }
+
     [DocVariant("CC_Playground_Label_Empty")]
     public static DocSample DocsEmpty() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(
             string.Empty,
             _ => { },
@@ -216,7 +236,7 @@ public static class SearchField {
 
     [DocVariant("CC_Playground_Label_Filled")]
     public static DocSample DocsFilled() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create("highstorm", _ => { }, disabled: forced));
     }
 

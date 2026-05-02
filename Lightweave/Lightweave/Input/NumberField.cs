@@ -224,7 +224,7 @@ public static class NumberField {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(
             42f,
             _ => { },
@@ -237,13 +237,13 @@ public static class NumberField {
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefaultState() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(42f, _ => { }, 0f, 100f, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
-        bool forced = PlaygroundDemoContext.Current.ForceDisabled;
+        bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(Create(7f, _ => { }, 0f, 100f, disabled: forced));
     }
 

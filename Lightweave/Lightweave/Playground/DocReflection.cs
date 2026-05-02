@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Runtime;
+using Verse;
 
 namespace Cosmere.Lightweave.Playground;
 
@@ -187,18 +188,26 @@ internal static class DocReflection {
     }
 
     private static DocSample? InvokeForSample(MemberInfo member) {
-        object? value;
-        if (member is MethodInfo m) {
-            value = m.Invoke(null, null);
-        } else if (member is FieldInfo f) {
-            value = f.GetValue(null);
-        } else if (member is PropertyInfo p) {
-            value = p.GetValue(null);
-        } else {
+        try {
+            object? value;
+            if (member is MethodInfo m) {
+                value = m.Invoke(null, null);
+            } else if (member is FieldInfo f) {
+                value = f.GetValue(null);
+            } else if (member is PropertyInfo p) {
+                value = p.GetValue(null);
+            } else {
+                return null;
+            }
+
+            return value as DocSample;
+        } catch (TargetInvocationException ex) {
+            Log.Error($"[Lightweave] DocSample provider {member.DeclaringType?.Name}.{member.Name} threw: {ex.InnerException ?? ex}");
+            return null;
+        } catch (Exception ex) {
+            Log.Error($"[Lightweave] Failed to read DocSample from {member.DeclaringType?.Name}.{member.Name}: {ex}");
             return null;
         }
-
-        return value as DocSample;
     }
 
     private static IReadOnlyList<CompositionLine> BuildComposition(Type primitive) {
@@ -301,15 +310,25 @@ internal static class DocReflection {
         MethodInfo[] methods = primitive.GetMethods(MemberFlags);
         for (int i = 0; i < methods.Length; i++) {
             if (methods[i].GetCustomAttribute<DocUsageAttribute>() == null) continue;
-            object? result = methods[i].Invoke(null, null);
-            if (result is DocSample sample) return sample.Code;
+            try {
+                object? result = methods[i].Invoke(null, null);
+                if (result is DocSample sample) return sample.Code;
+            } catch (TargetInvocationException ex) {
+                Log.Error($"[Lightweave] DocUsage provider {primitive.Name}.{methods[i].Name} threw: {ex.InnerException ?? ex}");
+            } catch (Exception ex) {
+                Log.Error($"[Lightweave] Failed to read DocUsage from {primitive.Name}.{methods[i].Name}: {ex}");
+            }
         }
 
         FieldInfo[] fields = primitive.GetFields(MemberFlags);
         for (int i = 0; i < fields.Length; i++) {
             if (fields[i].GetCustomAttribute<DocUsageAttribute>() == null) continue;
-            object? value = fields[i].GetValue(null);
-            if (value is DocSample sample) return sample.Code;
+            try {
+                object? value = fields[i].GetValue(null);
+                if (value is DocSample sample) return sample.Code;
+            } catch (Exception ex) {
+                Log.Error($"[Lightweave] Failed to read DocUsage field {primitive.Name}.{fields[i].Name}: {ex}");
+            }
         }
 
         PropertyInfo[] props = primitive.GetProperties(MemberFlags);

@@ -118,7 +118,7 @@ public static class SearchField {
                 Font sfFont = theme.GetFont(FontRole.Body);
                 int sfSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
                 Color sfTextColor = theme.GetColor(ThemeSlot.TextPrimary);
-                GUIStyle sfStyle = InputSurface.GetChromelessTextFieldStyle(sfFont, sfSize, sfTextColor);
+                GUIStyle sfStyle = InputSurface.ConfigureChromelessTextFieldStyle(sfFont, sfSize, sfTextColor);
                 GUI.SetNextControlName(focusName);
                 string next = GUI.TextField(RectSnap.Snap(inner), buffer.Value ?? string.Empty, sfStyle);
                 if (next != buffer.Value) {

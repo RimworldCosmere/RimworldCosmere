@@ -6,6 +6,29 @@ using Cosmere.Lightweave.Types;
 
 namespace Cosmere.Lightweave.Hooks;
 
+/// <summary>
+/// State and effect hooks for Lightweave components.
+/// </summary>
+/// <remarks>
+/// <para>
+/// All <c>Use*</c> hooks must be invoked from inside a component's
+/// <see cref="LightweaveNode.Paint"/> callback - never from Create-scope (the body
+/// of a <c>Component.Create()</c> method that runs once at tree construction time
+/// rather than once per frame).
+/// </para>
+/// <para>
+/// Calling a hook from Create-scope binds the slot to the parent's path hash
+/// instead of the component's own, which produces stale state across re-renders
+/// and silently breaks identity for sibling instances. The contract is not
+/// enforced by the type system today; treat the rule as load-bearing when
+/// authoring components and reviewing changes.
+/// </para>
+/// <para>
+/// If you need state to survive across frames at construction time (e.g. an id),
+/// compute it from <see cref="RenderContext.Current"/> inside <c>Paint</c> and
+/// pass the closed-over value into child nodes.
+/// </para>
+/// </remarks>
 public static class Hooks {
     public static StateHandle<T> UseState<T>(
         T initial,

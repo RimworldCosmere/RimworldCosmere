@@ -19,7 +19,13 @@ public sealed record Theme(
             return f;
         }
 
-        return Fonts.TryGetValue(FontRole.Body, out Font fb) ? fb : null!;
+        if (Fonts.TryGetValue(FontRole.Body, out Font fb)) {
+            return fb;
+        }
+
+        throw new InvalidOperationException(
+            $"Theme has no font for role {role} and no FontRole.Body fallback. Themes must define at least FontRole.Body."
+        );
     }
 
     public float GetRadius(RadiusScale s) {

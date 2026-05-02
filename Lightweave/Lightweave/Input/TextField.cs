@@ -104,7 +104,7 @@ public static class TextField {
                 Font tfFont = theme.GetFont(FontRole.Body);
                 int tfSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
                 Color tfTextColor = theme.GetColor(ThemeSlot.TextPrimary);
-                GUIStyle tfStyle = InputSurface.GetChromelessTextFieldStyle(tfFont, tfSize, tfTextColor);
+                GUIStyle tfStyle = InputSurface.ConfigureChromelessTextFieldStyle(tfFont, tfSize, tfTextColor);
                 GUI.SetNextControlName(focusName);
                 string next = GUI.TextField(RectSnap.Snap(inner), buffer.Value ?? string.Empty, tfStyle);
                 if (!ReferenceEquals(next, buffer.Value) && next != buffer.Value) {

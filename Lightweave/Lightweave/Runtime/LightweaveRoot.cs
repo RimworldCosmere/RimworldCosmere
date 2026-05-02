@@ -24,7 +24,7 @@ public static class LightweaveRoot {
 
         AnimationClock.ClearFrame();
         LightweaveHitTracker.Clear();
-        RenderContext ctx = new RenderContext { Hooks = store, RootId = rootId, RootRect = inRect };
+        RenderContext ctx = new RenderContext(store) { RootId = rootId, RootRect = inRect };
         ctx.ThemeStack.Push(themeOverride ?? GetBaseTheme());
         ctx.DirectionStack.Push(directionOverride ?? DetectDirection());
         ctx.PointerPos = Event.current?.mousePosition ?? Vector2.zero;

@@ -15,7 +15,7 @@ public sealed class RenderContext {
     public Stack<object> ContextValues = new Stack<object>();
     public Stack<Direction> DirectionStack = new Stack<Direction>();
     public int? FocusedNodeId;
-    public HookStore Hooks = null!;
+    public readonly HookStore Hooks;
     public int? HoveredNodeId;
     public int ParentPathHash;
     public Vector2 PointerPos;
@@ -24,6 +24,10 @@ public sealed class RenderContext {
     internal OverlayQueue PendingOverlays { get; } = new OverlayQueue();
     public string? FocusedControlName { get; internal set; }
     public Guid RootId { get; internal set; }
+
+    public RenderContext(HookStore hooks) {
+        Hooks = hooks ?? throw new ArgumentNullException(nameof(hooks));
+    }
 
     public static RenderContext Current =>
         current.Value ?? throw new InvalidOperationException("No RenderContext active");

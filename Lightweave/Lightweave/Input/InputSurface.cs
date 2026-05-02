@@ -13,7 +13,7 @@ internal static class InputSurface {
     private static GUIStyle? chromelessTextFieldStyle;
     private static GUIStyle? chromelessTextAreaStyle;
 
-    public static GUIStyle GetChromelessTextAreaStyle(Font? font, int pixelSize, Color textColor) {
+    public static GUIStyle ConfigureChromelessTextAreaStyle(Font? font, int pixelSize, Color textColor) {
         if (chromelessTextAreaStyle == null) {
             chromelessTextAreaStyle = new GUIStyle(GUI.skin.textArea);
             chromelessTextAreaStyle.normal.background = null;
@@ -42,7 +42,7 @@ internal static class InputSurface {
         return chromelessTextAreaStyle;
     }
 
-    public static GUIStyle GetChromelessTextFieldStyle(Font? font, int pixelSize, Color textColor) {
+    public static GUIStyle ConfigureChromelessTextFieldStyle(Font? font, int pixelSize, Color textColor) {
         if (chromelessTextFieldStyle == null) {
             chromelessTextFieldStyle = new GUIStyle(GUI.skin.textField);
             chromelessTextFieldStyle.normal.background = null;

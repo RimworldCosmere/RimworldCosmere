@@ -13,11 +13,8 @@ public static class UseFocus {
         int parentHash = RenderContext.Current.ParentPathHash;
         string focusName = $"lw_focus_{parentHash:X}_{callSiteId:X}";
 
-        Hooks.RefHandle<FocusState> stateRef = Hooks.UseRef<FocusState>(null!, line, file);
-        if (stateRef.Current == null) {
-            stateRef.Current = new FocusState();
-        }
-
+        Hooks.RefHandle<FocusState?> stateRef = Hooks.UseRef<FocusState?>(null, line, file);
+        stateRef.Current ??= new FocusState();
         FocusState focusState = stateRef.Current;
 
         if (focusState.PendingRequest) {

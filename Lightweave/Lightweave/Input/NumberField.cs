@@ -127,7 +127,7 @@ public static class NumberField {
                 Font nfFont = theme.GetFont(FontRole.Body);
                 int nfSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
                 Color nfTextColor = theme.GetColor(ThemeSlot.TextPrimary);
-                GUIStyle nfStyle = InputSurface.GetChromelessTextFieldStyle(nfFont, nfSize, nfTextColor);
+                GUIStyle nfStyle = InputSurface.ConfigureChromelessTextFieldStyle(nfFont, nfSize, nfTextColor);
                 GUI.SetNextControlName(focusName);
                 string next = GUI.TextField(RectSnap.Snap(inner), buffer.Value ?? string.Empty, nfStyle);
                 string sanitized = SanitizeNumeric(next, localAllowDecimal);

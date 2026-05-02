@@ -95,7 +95,7 @@ public static class TextArea {
                 Font taFont = theme.GetFont(FontRole.Body);
                 int taSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
                 Color taTextColor = theme.GetColor(ThemeSlot.TextPrimary);
-                GUIStyle taStyle = InputSurface.GetChromelessTextAreaStyle(taFont, taSize, taTextColor);
+                GUIStyle taStyle = InputSurface.ConfigureChromelessTextAreaStyle(taFont, taSize, taTextColor);
                 GUI.SetNextControlName(focusName);
                 string next = GUI.TextArea(RectSnap.Snap(inner), buffer.Value ?? string.Empty, taStyle);
                 if (next != buffer.Value) {

@@ -13,7 +13,7 @@ public static partial class Layout {
         Id = "scrollarea",
         Summary = "Scrollable viewport that clips overflow content.",
         WhenToUse = "Wrap content that may exceed the available height.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/ScrollArea.cs",
+        SourcePath = "Lightweave/Lightweave/Layout/ScrollArea.cs",
         PreferredVariantHeight = 160f
     )]
     public static class ScrollArea {

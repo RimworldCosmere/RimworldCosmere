@@ -14,7 +14,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "textarea",
     Summary = "Multi-line editable text input that grows with content.",
     WhenToUse = "Capture longer prose: notes, descriptions, multi-line input.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/TextArea.cs"
+    SourcePath = "Lightweave/Lightweave/Input/TextArea.cs"
 )]
 public static class TextArea {
     public static LightweaveNode Create(

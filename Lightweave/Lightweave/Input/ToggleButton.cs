@@ -14,7 +14,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "togglebutton",
     Summary = "Two-state button driven by a boolean value.",
     WhenToUse = "Toggle a sticky on/off state where the label conveys the action.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/ToggleButton.cs"
+    SourcePath = "Lightweave/Lightweave/Input/ToggleButton.cs"
 )]
 public static class ToggleButton {
     public static LightweaveNode Create(

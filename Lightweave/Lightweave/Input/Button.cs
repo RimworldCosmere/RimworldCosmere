@@ -13,7 +13,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "button",
     Summary = "Clickable text button with variant styling.",
     WhenToUse = "Trigger an action with a label-driven affordance.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/Button.cs"
+    SourcePath = "Lightweave/Lightweave/Input/Button.cs"
 )]
 public static class Button {
     public static LightweaveNode Create(

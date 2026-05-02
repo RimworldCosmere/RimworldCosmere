@@ -19,7 +19,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "textfield",
     Summary = "Single-line editable text input.",
     WhenToUse = "Capture a short string (name, label, search term).",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/TextField.cs"
+    SourcePath = "Lightweave/Lightweave/Input/TextField.cs"
 )]
 public static class TextField {
     private const int ShakeFrames = 6;

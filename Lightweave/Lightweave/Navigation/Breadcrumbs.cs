@@ -14,7 +14,7 @@ namespace Cosmere.Lightweave.Navigation;
     Id = "breadcrumbs",
     Summary = "Inline path with chevrons that collapses on overflow.",
     WhenToUse = "Show ancestry through a hierarchy users can navigate back through.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Navigation/Breadcrumbs.cs"
+    SourcePath = "Lightweave/Lightweave/Navigation/Breadcrumbs.cs"
 )]
 public static class Breadcrumbs {
     private const string Ellipsis = "...";

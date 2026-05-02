@@ -21,7 +21,7 @@ namespace Cosmere.Lightweave.Data;
     Id = "list",
     Summary = "Vertical scrolling list of items rendered through a row builder.",
     WhenToUse = "Show a homogenous, potentially long sequence of rows that benefits from virtualization.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Data/List.cs",
+    SourcePath = "Lightweave/Lightweave/Data/List.cs",
     PreferredVariantHeight = 200f
 )]
 public static class List {

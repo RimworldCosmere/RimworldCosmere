@@ -14,7 +14,7 @@ namespace Cosmere.Lightweave.Feedback;
     Id = "tooltip",
     Summary = "Hover-delayed contextual hint floating above an anchor.",
     WhenToUse = "Reveal short clarifying text on hover without claiming layout space.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Feedback/Tooltip.cs"
+    SourcePath = "Lightweave/Lightweave/Feedback/Tooltip.cs"
 )]
 public static class Tooltip {
     private const float HoverDelaySeconds = 0.5f;

@@ -14,7 +14,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "colorpicker",
     Summary = "Swatch grid for selecting from a fixed palette of colors.",
     WhenToUse = "Pick a color from a curated set rather than a free-form picker.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/ColorPicker.cs"
+    SourcePath = "Lightweave/Lightweave/Input/ColorPicker.cs"
 )]
 public static class ColorPicker {
     private static readonly Color[] DefaultPalette = new[] {

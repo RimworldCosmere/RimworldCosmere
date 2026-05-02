@@ -25,7 +25,7 @@ public sealed record AccordionItem(
     Id = "accordion",
     Summary = "Stacked collapsible panels in single or multi-expand mode.",
     WhenToUse = "Reveal long-form content in sections without leaving the surface.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Navigation/Accordion.cs",
+    SourcePath = "Lightweave/Lightweave/Navigation/Accordion.cs",
     PreferredVariantHeight = 260f
 )]
 public static class Accordion {

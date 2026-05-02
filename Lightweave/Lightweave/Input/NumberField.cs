@@ -16,7 +16,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "numberfield",
     Summary = "Numeric input with bounds, parsing, and formatting.",
     WhenToUse = "Capture a single numeric value with optional min/max clamping.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/NumberField.cs"
+    SourcePath = "Lightweave/Lightweave/Input/NumberField.cs"
 )]
 public static class NumberField {
     private const int ShakeFrames = 6;

@@ -12,7 +12,7 @@ namespace Cosmere.Lightweave.Feedback;
     Id = "sparkline",
     Summary = "Compact inline trend line for a sequence of values.",
     WhenToUse = "Dense readouts where shape matters more than exact numbers.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Feedback/Sparkline.cs"
+    SourcePath = "Lightweave/Lightweave/Feedback/Sparkline.cs"
 )]
 public static class Sparkline {
     public static LightweaveNode Create(

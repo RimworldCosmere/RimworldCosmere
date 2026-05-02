@@ -17,7 +17,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "dropdown",
     Summary = "Single-select menu that opens a popover list of options.",
     WhenToUse = "Pick one value from a small-to-medium static set when an inline radio group would crowd layout.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/Dropdown.cs"
+    SourcePath = "Lightweave/Lightweave/Input/Dropdown.cs"
 )]
 public static class Dropdown {
     private const int MaxVisibleRows = 10;

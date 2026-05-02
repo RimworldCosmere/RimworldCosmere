@@ -15,7 +15,7 @@ namespace Cosmere.Lightweave.Navigation;
     Id = "contextmenu",
     Summary = "Right-click target that opens a Menu at the cursor.",
     WhenToUse = "Expose secondary actions on a region without consuming bar space.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Navigation/ContextMenu.cs"
+    SourcePath = "Lightweave/Lightweave/Navigation/ContextMenu.cs"
 )]
 public static class ContextMenu {
     public static LightweaveNode Create(

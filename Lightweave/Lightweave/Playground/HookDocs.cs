@@ -24,7 +24,7 @@ namespace Cosmere.Lightweave.Playground;
     Id = "usestate",
     Summary = "Hook that preserves a value across renders for the current node.",
     WhenToUse = "Track local UI state - counters, toggles, draft values - inside a render function.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Hooks/Hooks.cs",
+    SourcePath = "Lightweave/Lightweave/Hooks/Hooks.cs",
     ShowRtl = false
 )]
 public static class UseStateDoc {
@@ -80,7 +80,7 @@ public static class UseStateDoc {
     Id = "useanim",
     Summary = "Hook that smoothly animates a float toward a target value each frame.",
     WhenToUse = "Drive transitions for opacity, scale, or color blends without manual tweening.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Hooks/Hooks.cs",
+    SourcePath = "Lightweave/Lightweave/Hooks/Hooks.cs",
     ShowRtl = false
 )]
 public static class UseAnimDoc {
@@ -130,7 +130,7 @@ public static class UseAnimDoc {
     Id = "usefocus",
     Summary = "Hook that exposes a focus handle for routing keyboard focus to an input.",
     WhenToUse = "Programmatically focus a TextField when a button is pressed or a panel opens.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Hooks/Hooks.cs",
+    SourcePath = "Lightweave/Lightweave/Hooks/Hooks.cs",
     ShowRtl = false
 )]
 public static class UseFocusDoc {
@@ -178,7 +178,7 @@ public static class UseFocusDoc {
     Id = "usehotkey",
     Summary = "Hook that binds a key chord to a callback while a node is mounted.",
     WhenToUse = "Add Escape-to-close, Ctrl+S, or other shortcuts scoped to a specific surface.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Hooks/Hooks.cs",
+    SourcePath = "Lightweave/Lightweave/Hooks/Hooks.cs",
     ShowRtl = false
 )]
 public static class UseHotkeyDoc {

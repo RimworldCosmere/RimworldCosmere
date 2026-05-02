@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Input;
 using Cosmere.Lightweave.Layout;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
@@ -19,7 +18,7 @@ namespace Cosmere.Lightweave.Overlay;
     Id = "dialog",
     Summary = "Modal overlay window for confirmations, forms, or focused tasks.",
     WhenToUse = "Block the rest of the UI while the player resolves a single decision.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Overlay/Dialog.cs"
+    SourcePath = "Lightweave/Lightweave/Overlay/Dialog.cs"
 )]
 public static class Dialog {
     public static LightweaveNode Create(

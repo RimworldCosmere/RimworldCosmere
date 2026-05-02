@@ -14,7 +14,7 @@ public static partial class Layout {
         Id = "wrap",
         Summary = "Wrapping flow that re-flows children onto new rows when the line fills.",
         WhenToUse = "Variable count of equally-sized chips that should wrap to width.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Wrap.cs",
+        SourcePath = "Lightweave/Lightweave/Layout/Wrap.cs",
         PreferredVariantHeight = 120f
     )]
     public static class Wrap {

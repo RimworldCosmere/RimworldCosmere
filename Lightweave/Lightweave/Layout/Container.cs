@@ -16,7 +16,7 @@ public static partial class Layout {
         Id = "container",
         Summary = "Constrains a child to a maximum width with optional alignment and inset padding.",
         WhenToUse = "Cap how wide a section grows on a wide viewport while keeping it centered or anchored.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Container.cs",
+        SourcePath = "Lightweave/Lightweave/Layout/Container.cs",
         PreferredVariantHeight = 96f
     )]
     public static class Container {

@@ -27,7 +27,7 @@ public sealed record TableColumn<T>(
     Id = "table",
     Summary = "Tabular renderer with a header row, alternating row backgrounds, and column separators.",
     WhenToUse = "Display structured records that benefit from named columns and row alignment.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Data/Table.cs",
+    SourcePath = "Lightweave/Lightweave/Data/Table.cs",
     PreferredVariantHeight = 220f
 )]
 public static class Table {

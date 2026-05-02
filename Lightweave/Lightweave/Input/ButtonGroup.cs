@@ -22,7 +22,7 @@ public sealed record ButtonGroupItem(
     Id = "buttongroup",
     Summary = "Connected row of buttons sharing a single bordered frame.",
     WhenToUse = "Group a small set of related actions or filter choices together.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/ButtonGroup.cs"
+    SourcePath = "Lightweave/Lightweave/Input/ButtonGroup.cs"
 )]
 public static class ButtonGroup {
     public static LightweaveNode Create(

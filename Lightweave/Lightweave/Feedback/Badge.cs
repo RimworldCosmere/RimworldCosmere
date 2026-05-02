@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
@@ -17,7 +16,7 @@ namespace Cosmere.Lightweave.Feedback;
     Id = "badge",
     Summary = "Small status pill with a label and optional glyphs.",
     WhenToUse = "Tag rows or cards with a state, count, or category.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Feedback/Badge.cs"
+    SourcePath = "Lightweave/Lightweave/Feedback/Badge.cs"
 )]
 public static class Badge {
     public static LightweaveNode Create(

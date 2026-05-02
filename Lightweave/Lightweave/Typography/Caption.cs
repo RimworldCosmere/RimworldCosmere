@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
@@ -15,7 +14,7 @@ public static partial class Typography {
         Id = "caption",
         Summary = "Small muted caption text using the Caption font role and TextMuted color.",
         WhenToUse = "Timestamps, secondary metadata, and other low-emphasis descriptors.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Typography/Caption.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/Caption.cs"
     )]
     public static class Caption {
         public static LightweaveNode Create(

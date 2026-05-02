@@ -19,7 +19,7 @@ namespace Cosmere.Lightweave.Data;
     Id = "keyvalue",
     Summary = "Single-row label/value pair with a fixed-width label gutter.",
     WhenToUse = "Render a labeled metric, stat, or attribute alongside its value.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Data/KeyValue.cs",
+    SourcePath = "Lightweave/Lightweave/Data/KeyValue.cs",
     PreferredVariantHeight = 180f
 )]
 public static class KeyValue {

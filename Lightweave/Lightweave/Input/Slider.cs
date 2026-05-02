@@ -13,7 +13,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "slider",
     Summary = "Continuous or stepped value selector along a horizontal track.",
     WhenToUse = "Pick a numeric value within a known range.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/Slider.cs"
+    SourcePath = "Lightweave/Lightweave/Input/Slider.cs"
 )]
 public static class Slider {
     public static LightweaveNode Create(

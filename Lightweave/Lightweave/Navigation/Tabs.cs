@@ -18,7 +18,7 @@ namespace Cosmere.Lightweave.Navigation;
     Id = "tabs",
     Summary = "Horizontal tab bar that switches the body region.",
     WhenToUse = "Move between sibling views inside one window.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Navigation/Tabs.cs"
+    SourcePath = "Lightweave/Lightweave/Navigation/Tabs.cs"
 )]
 public static class Tabs {
     public static LightweaveNode Create<T>(

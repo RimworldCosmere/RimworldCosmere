@@ -14,7 +14,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "iconbutton",
     Summary = "Compact square button hosting a single icon.",
     WhenToUse = "Trigger an action where space is tight or the icon is unambiguous.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/IconButton.cs"
+    SourcePath = "Lightweave/Lightweave/Input/IconButton.cs"
 )]
 public static class IconButton {
     public static LightweaveNode Create(

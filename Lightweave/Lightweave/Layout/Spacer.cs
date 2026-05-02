@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
@@ -14,7 +13,7 @@ public static partial class Layout {
         Id = "spacer",
         Summary = "Empty layout node that consumes space.",
         WhenToUse = "Push siblings apart in a Row/HStack/Column.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Spacer.cs"
+        SourcePath = "Lightweave/Lightweave/Layout/Spacer.cs"
     )]
     public static class Spacer {
         public static LightweaveNode Flex(

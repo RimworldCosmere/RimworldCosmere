@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
@@ -18,7 +17,7 @@ public static partial class Typography {
         Id = "richtext",
         Summary = "Wrapped text that honors Unity rich-text tags (<b>, <i>, <color=...>).",
         WhenToUse = "Body copy that needs inline emphasis or color without composing multiple Text nodes.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Typography/RichText.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/RichText.cs"
     )]
     public static class RichText {
         public static LightweaveNode Create(

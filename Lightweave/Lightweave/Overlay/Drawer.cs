@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Hooks;
 using Cosmere.Lightweave.Input;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
@@ -33,7 +32,7 @@ public enum DrawerSide {
     Id = "drawer",
     Summary = "Edge-anchored panel that slides in from a window side.",
     WhenToUse = "Reveal secondary navigation, filters, or detail content without leaving the page.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Overlay/Drawer.cs"
+    SourcePath = "Lightweave/Lightweave/Overlay/Drawer.cs"
 )]
 public static class Drawer {
     private static readonly Func<float, float> EaseOutCubic = t => 1f - Mathf.Pow(1f - t, 3f);

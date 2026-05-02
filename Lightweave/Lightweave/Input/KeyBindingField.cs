@@ -18,7 +18,7 @@ public readonly record struct KeyBinding(KeyCode Key, KeyModifiers Modifiers);
     Id = "keybinding",
     Summary = "Captures a single keyboard shortcut with optional modifiers.",
     WhenToUse = "Bind a hotkey: click to record, then press the desired combination.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/KeyBindingField.cs"
+    SourcePath = "Lightweave/Lightweave/Input/KeyBindingField.cs"
 )]
 public static class KeyBindingField {
     private const string ClearGlyph = "×";

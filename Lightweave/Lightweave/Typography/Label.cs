@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
@@ -15,7 +14,7 @@ public static partial class Typography {
         Id = "label",
         Summary = "Compact label text using the Label font role and TextSecondary color.",
         WhenToUse = "Form field labels, toolbar captions, and other compact descriptors.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Typography/Label.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/Label.cs"
     )]
     public static class Label {
         public static LightweaveNode Create(

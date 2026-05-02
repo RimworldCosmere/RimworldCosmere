@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
@@ -16,7 +15,7 @@ public static partial class Typography {
         Id = "heading",
         Summary = "Bold heading text rendered with the theme heading font.",
         WhenToUse = "Section titles, panel headers, and other prominent labels in a hierarchy.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Typography/Heading.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/Heading.cs"
     )]
     public static class Heading {
         public static LightweaveNode Create(

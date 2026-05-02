@@ -12,7 +12,7 @@ namespace Cosmere.Lightweave.Feedback;
     Id = "progressbar",
     Summary = "Determinate horizontal bar showing fractional progress.",
     WhenToUse = "Display known-duration progress with an optional label.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Feedback/ProgressBar.cs"
+    SourcePath = "Lightweave/Lightweave/Feedback/ProgressBar.cs"
 )]
 public static class ProgressBar {
     public static LightweaveNode Create(

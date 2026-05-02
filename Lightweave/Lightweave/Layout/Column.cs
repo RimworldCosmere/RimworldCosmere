@@ -14,7 +14,7 @@ public static partial class Layout {
         Id = "column",
         Summary = "Vertical flow that hugs intrinsic child heights when possible.",
         WhenToUse = "Stack content vertically with consistent spacing and natural heights.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Column.cs",
+        SourcePath = "Lightweave/Lightweave/Layout/Column.cs",
         PreferredVariantHeight = 160f
     )]
     public static class Column {

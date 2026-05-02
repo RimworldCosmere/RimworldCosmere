@@ -14,7 +14,7 @@ public static partial class Layout {
         Id = "row",
         Summary = "Horizontal flow that splits available width evenly across children.",
         WhenToUse = "Lay out a fixed set of peers side by side.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Row.cs"
+        SourcePath = "Lightweave/Lightweave/Layout/Row.cs"
     )]
     public static class Row {
         public static LightweaveNode Create(

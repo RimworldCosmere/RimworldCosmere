@@ -15,7 +15,7 @@ public static partial class Layout {
         Id = "box",
         Summary = "Padded surface with optional background, border, and radius.",
         WhenToUse = "Wrap content in a themed container with consistent inner padding.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Box.cs"
+        SourcePath = "Lightweave/Lightweave/Layout/Box.cs"
     )]
     public static class Box {
         public static LightweaveNode Create(

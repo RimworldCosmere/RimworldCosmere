@@ -37,7 +37,7 @@ public static partial class Layout {
         Id = "stack",
         Summary = "Vertical layout with explicit per-item sizing (fixed, flex, hug).",
         WhenToUse = "Stack rows where some are fixed-height, some hug content, some absorb leftover space.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Stack.cs",
+        SourcePath = "Lightweave/Lightweave/Layout/Stack.cs",
         PreferredVariantHeight = 160f
     )]
     public static class Stack {

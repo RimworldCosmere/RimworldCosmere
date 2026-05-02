@@ -17,7 +17,7 @@ namespace Cosmere.Lightweave.Navigation;
     Id = "menu",
     Summary = "Anchored popover with rows, dividers, and submenus.",
     WhenToUse = "Trigger a list of one-click commands from a button or icon.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Navigation/Menu.cs"
+    SourcePath = "Lightweave/Lightweave/Navigation/Menu.cs"
 )]
 public static class Menu {
     private static readonly Rem RowHeight = new Rem(1.75f);

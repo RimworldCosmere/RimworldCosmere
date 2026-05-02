@@ -20,7 +20,7 @@ namespace Cosmere.Lightweave.Layout;
     Id = "carousel",
     Summary = "Slide-paged carousel with optional arrows and dots.",
     WhenToUse = "Cycle through a small set of equally-weighted views.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Carousel.cs",
+    SourcePath = "Lightweave/Lightweave/Layout/Carousel.cs",
     PreferredVariantHeight = 200f
 )]
 public static class Carousel {

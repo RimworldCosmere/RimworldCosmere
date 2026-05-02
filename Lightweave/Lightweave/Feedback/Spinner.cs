@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
@@ -14,7 +13,7 @@ namespace Cosmere.Lightweave.Feedback;
     Id = "spinner",
     Summary = "Animated indeterminate progress indicator.",
     WhenToUse = "Show that work is in progress when duration is unknown.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Feedback/Spinner.cs"
+    SourcePath = "Lightweave/Lightweave/Feedback/Spinner.cs"
 )]
 public static class Spinner {
     public static LightweaveNode Create(

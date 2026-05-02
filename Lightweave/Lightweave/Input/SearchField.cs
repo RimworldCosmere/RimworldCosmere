@@ -14,7 +14,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "searchfield",
     Summary = "Single-line text input with leading magnifier and trailing clear glyph.",
     WhenToUse = "Filter a list or trigger search-as-you-type.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/SearchField.cs"
+    SourcePath = "Lightweave/Lightweave/Input/SearchField.cs"
 )]
 public static class SearchField {
     private const string ClearGlyph = "×";

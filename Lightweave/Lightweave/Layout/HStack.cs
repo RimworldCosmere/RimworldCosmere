@@ -27,7 +27,7 @@ public static partial class Layout {
         Id = "hstack",
         Summary = "Horizontal layout with explicit per-item width (fixed or flex).",
         WhenToUse = "Lay out a row where some items are fixed-width and others absorb leftover space.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/HStack.cs"
+        SourcePath = "Lightweave/Lightweave/Layout/HStack.cs"
     )]
     public static class HStack {
         public static LightweaveNode Create(

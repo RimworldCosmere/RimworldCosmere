@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
@@ -16,7 +15,7 @@ public static partial class Typography {
         Id = "code",
         Summary = "Monospaced code text using the Mono font role.",
         WhenToUse = "Inline identifiers, file paths, XML snippets, or any literal source text.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Typography/Code.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/Code.cs"
     )]
     public static class Code {
         public static LightweaveNode Create(

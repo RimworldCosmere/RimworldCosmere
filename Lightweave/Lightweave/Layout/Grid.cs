@@ -14,7 +14,7 @@ public static partial class Layout {
         Id = "grid",
         Summary = "Two-dimensional column-driven layout with fixed and fractional tracks.",
         WhenToUse = "Place children on a column grid with explicit track sizes.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Grid.cs"
+        SourcePath = "Lightweave/Lightweave/Layout/Grid.cs"
     )]
     public static class Grid {
         public static LightweaveNode Create(

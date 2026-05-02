@@ -15,7 +15,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "checkbox",
     Summary = "Two-state toggle with adjacent label.",
     WhenToUse = "Capture a single boolean choice in a form or row.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/Checkbox.cs"
+    SourcePath = "Lightweave/Lightweave/Input/Checkbox.cs"
 )]
 public static class Checkbox {
     public static LightweaveNode Create(

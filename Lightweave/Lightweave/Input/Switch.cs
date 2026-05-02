@@ -15,7 +15,7 @@ namespace Cosmere.Lightweave.Input;
     Id = "switch",
     Summary = "Animated on/off toggle with adjacent label.",
     WhenToUse = "Toggle a setting that takes effect immediately.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/Switch.cs"
+    SourcePath = "Lightweave/Lightweave/Input/Switch.cs"
 )]
 public static class Switch {
     private const float AnimationDurationSec = 0.12f;

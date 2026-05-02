@@ -14,7 +14,7 @@ public static partial class Layout {
         Id = "divider",
         Summary = "Thin separator drawn at theme border color.",
         WhenToUse = "Subdivide a Stack/Row visually without adding extra background.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Divider.cs"
+        SourcePath = "Lightweave/Lightweave/Layout/Divider.cs"
     )]
     public static class Divider {
         public static LightweaveNode Horizontal(

@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
@@ -15,7 +14,7 @@ namespace Cosmere.Lightweave.Feedback;
     Id = "ringgauge",
     Summary = "Circular determinate gauge showing fractional progress.",
     WhenToUse = "Compact dial-style readout for a single 0-1 value.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Feedback/RingGauge.cs"
+    SourcePath = "Lightweave/Lightweave/Feedback/RingGauge.cs"
 )]
 public static class RingGauge {
     public static LightweaveNode Create(

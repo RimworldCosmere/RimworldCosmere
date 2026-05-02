@@ -12,7 +12,7 @@ namespace Cosmere.Lightweave.Playground;
     Id = "sidenav",
     Summary = "Vertical category rail with hover-expand and pinned selection.",
     WhenToUse = "Browse a flat list of categorized primitives or sections in a wide window.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Playground/PlaygroundRail.cs",
+    SourcePath = "Lightweave/Lightweave/Playground/PlaygroundRail.cs",
     PreferredVariantHeight = 340f
 )]
 public static class SideNavDoc {

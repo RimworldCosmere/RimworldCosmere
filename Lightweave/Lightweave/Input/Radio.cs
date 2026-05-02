@@ -25,7 +25,7 @@ public sealed class RadioGroupContext<T> {
     Id = "radio",
     Summary = "Mutually-exclusive set of options bound to a shared value.",
     WhenToUse = "Pick one of a small, fixed list of choices.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Input/Radio.cs"
+    SourcePath = "Lightweave/Lightweave/Input/Radio.cs"
 )]
 public static class Radio {
     public static LightweaveNode Group<T>(

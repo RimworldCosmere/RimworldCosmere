@@ -20,7 +20,7 @@ public sealed record TreeNode(
     Id = "tree",
     Summary = "Hierarchical, expandable list of nodes with chevron toggles.",
     WhenToUse = "Browse nested data such as locations, categories, or org structure.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Data/Tree.cs",
+    SourcePath = "Lightweave/Lightweave/Data/Tree.cs",
     PreferredVariantHeight = 200f
 )]
 public static class Tree {

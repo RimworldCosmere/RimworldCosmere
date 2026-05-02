@@ -16,7 +16,7 @@ namespace Cosmere.Lightweave.Navigation;
     Id = "segmented",
     Summary = "Pill-shaped grouped selector for a small set of choices.",
     WhenToUse = "Toggle between 2-5 mutually exclusive filters or modes.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Navigation/Segmented.cs"
+    SourcePath = "Lightweave/Lightweave/Navigation/Segmented.cs"
 )]
 public static class Segmented {
     public static LightweaveNode Create<T>(

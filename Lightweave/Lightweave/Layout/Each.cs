@@ -14,7 +14,7 @@ public static partial class Layout {
         Id = "each",
         Summary = "Render a node per item in a sequence with optional key extractor.",
         WhenToUse = "Iterate a collection into a flat list of nodes for a Row/Column/HStack/Grid.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Each.cs"
+        SourcePath = "Lightweave/Lightweave/Layout/Each.cs"
     )]
     public static class Each {
         public static LightweaveNode Of<T>(

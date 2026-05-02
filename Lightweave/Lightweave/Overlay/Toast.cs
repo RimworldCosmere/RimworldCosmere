@@ -2,7 +2,6 @@ using System;
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Input;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
@@ -49,7 +48,7 @@ public sealed record ToastMessage(
     Id = "toast",
     Summary = "Stacked transient notifications anchored to a window corner.",
     WhenToUse = "Confirm an action, surface a non-blocking warning, or report a result.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Overlay/Toast.cs"
+    SourcePath = "Lightweave/Lightweave/Overlay/Toast.cs"
 )]
 public static class Toast {
     public static LightweaveNode Create(

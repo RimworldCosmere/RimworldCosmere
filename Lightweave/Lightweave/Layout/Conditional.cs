@@ -15,7 +15,7 @@ public static partial class Layout {
         Id = "conditional",
         Summary = "Renders children only when a condition is true.",
         WhenToUse = "Skip a subtree without occupying space when a flag is false.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Conditional.cs"
+        SourcePath = "Lightweave/Lightweave/Layout/Conditional.cs"
     )]
     public static class Conditional {
         public static LightweaveNode When(

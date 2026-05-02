@@ -10,7 +10,7 @@ namespace Cosmere.Lightweave.Playground;
     Id = "window",
     Summary = "Top-level resizable Lightweave window with drag region and close affordance.",
     WhenToUse = "Host a tool, dialog, or panel as its own movable window in the WindowStack.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Runtime/LightweaveWindow.cs"
+    SourcePath = "Lightweave/Lightweave/Runtime/LightweaveWindow.cs"
 )]
 public static class WindowDoc {
     [DocVariant("CC_Playground_Window_Bordered")]

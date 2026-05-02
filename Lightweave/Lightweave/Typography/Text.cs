@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
@@ -18,7 +17,7 @@ public static partial class Typography {
         Id = "text",
         Summary = "Single-line or wrapped text rendered with theme font and color.",
         WhenToUse = "Body copy, inline labels, or any text content. The foundation for Heading, Label, Caption, and Code.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Typography/Text.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/Text.cs"
     )]
     public static class Text {
         public static LightweaveNode Create(

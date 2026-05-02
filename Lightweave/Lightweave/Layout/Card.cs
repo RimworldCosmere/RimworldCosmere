@@ -17,7 +17,7 @@ public static partial class Layout {
         Id = "card",
         Summary = "Filled rectangular container with optional header/footer.",
         WhenToUse = "Group related controls under one frame.",
-        SourcePath = "CosmereCore/CosmereCore/Lightweave/Layout/Card.cs",
+        SourcePath = "Lightweave/Lightweave/Layout/Card.cs",
         PreferredVariantHeight = 280f
     )]
     public static class Card {

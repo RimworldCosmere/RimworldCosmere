@@ -2,7 +2,6 @@ using System;
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Input;
-using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
@@ -25,7 +24,7 @@ namespace Cosmere.Lightweave.Overlay;
     Id = "popover",
     Summary = "Floating panel anchored to a trigger, dismissed on outside click.",
     WhenToUse = "Reveal contextual options or details next to the element that opened them.",
-    SourcePath = "CosmereCore/CosmereCore/Lightweave/Overlay/Popover.cs"
+    SourcePath = "Lightweave/Lightweave/Overlay/Popover.cs"
 )]
 public static class Popover {
     public static LightweaveNode Create(

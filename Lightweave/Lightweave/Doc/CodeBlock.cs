@@ -31,10 +31,9 @@ public static partial class Doc {
         int totalLines = codeLines.Length;
         string copyText = StripUsingHeader(normalized);
 
-        object? expandedKey = key != null ? (object)(key + ":expanded") : null;
-        object? copiedKey = key != null ? (object)(key + ":copied") : null;
-        Hooks.Hooks.StateHandle<bool> expanded = Hooks.Hooks.UseState(false, key: expandedKey);
-        Hooks.Hooks.StateHandle<float> copiedAt = Hooks.Hooks.UseState(-1f, key: copiedKey);
+        string keySuffix = key ?? string.Empty;
+        Hooks.Hooks.StateHandle<bool> expanded = Hooks.Hooks.UseState(false, line, file + "#expanded" + keySuffix);
+        Hooks.Hooks.StateHandle<float> copiedAt = Hooks.Hooks.UseState(-1f, line, file + "#copied" + keySuffix);
 
         bool canCollapse = collapsible && totalLines > CollapsedLineCount;
         bool isCollapsed = canCollapse && !expanded.Value;
@@ -92,7 +91,7 @@ public static partial class Doc {
 
             Font mono = theme.GetFont(FontRole.Mono);
             int fontSize = Mathf.RoundToInt(fontPx);
-            GUIStyle sharedStyle = GuiStyleCache.Get(mono, fontSize);
+            GUIStyle sharedStyle = GuiStyleCache.GetOrCreate(mono, fontSize);
             sharedStyle.wordWrap = false;
             sharedStyle.clipping = TextClipping.Clip;
 
@@ -173,7 +172,7 @@ public static partial class Doc {
         Theme.Theme theme = RenderContext.Current.Theme;
         Font mono = theme.GetFont(FontRole.Mono);
         int fontSize = Mathf.RoundToInt(fontPx);
-        GUIStyle style = GuiStyleCache.Get(mono, fontSize);
+        GUIStyle style = GuiStyleCache.GetOrCreate(mono, fontSize);
 
         style.wordWrap = false;
         style.richText = false;
@@ -248,7 +247,8 @@ public static partial class Doc {
             GUI.color = iconColor;
             GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit, true);
             GUI.color = savedColor;
-        } else {
+        }
+        else {
             DrawProceduralCopyIcon(btnRect, iconColor);
         }
 
@@ -356,7 +356,7 @@ public static partial class Doc {
 
         Font font = theme.GetFont(FontRole.Body);
         int btnFontSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-        GUIStyle btnStyle = GuiStyleCache.Get(font, btnFontSize, FontStyle.Bold);
+        GUIStyle btnStyle = GuiStyleCache.GetOrCreate(font, btnFontSize, FontStyle.Bold);
         btnStyle.alignment = TextAnchor.MiddleCenter;
         btnStyle.wordWrap = false;
         btnStyle.clipping = TextClipping.Clip;
@@ -450,7 +450,8 @@ public static partial class Doc {
                 i++;
                 if (line[i] == '\\' && i + 1 < n) {
                     i += 2;
-                } else {
+                }
+                else {
                     i++;
                 }
 
@@ -486,17 +487,20 @@ public static partial class Doc {
                 string color;
                 if (IsKeyword(ident)) {
                     color = SyntaxColors.Keyword;
-                } else if (ident.Length > 0 && char.IsUpper(ident[0])) {
+                }
+                else if (ident.Length > 0 && char.IsUpper(ident[0])) {
                     bool isMethodCall = i < n && line[i] == '(';
                     color = isMethodCall ? SyntaxColors.Method : SyntaxColors.Type;
-                } else {
+                }
+                else {
                     bool isMethodCall = i < n && line[i] == '(';
                     color = isMethodCall ? SyntaxColors.Method : SyntaxColors.Default;
                 }
 
                 if (color == SyntaxColors.Default) {
                     sb.Append(ident);
-                } else {
+                }
+                else {
                     AppendColored(sb, ident, color);
                 }
 

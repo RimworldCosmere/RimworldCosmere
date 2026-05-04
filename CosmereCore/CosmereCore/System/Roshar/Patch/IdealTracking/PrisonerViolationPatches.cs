@@ -1,3 +1,4 @@
+using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Surgebinding;
 using HarmonyLib;
 using RimWorld;
@@ -10,7 +11,7 @@ public static class ExecutionViolationPatch {
     private static void Postfix(Pawn executioner, Pawn victim) {
         if (executioner == null) return;
 
-        if (ViolationUtility.IsSurgebinderOfOrder(executioner, "Edgedancer")) {
+        if (ViolationUtility.IsSurgebinderOfOrder(executioner, RadiantOrderDefOf.Edgedancer)) {
             ViolationUtility.ApplyViolation(executioner, 0.3f, "executing a prisoner");
         }
     }
@@ -30,7 +31,7 @@ public static class OrganHarvestViolationPatch {
 
         for (int i = 0; i < colonists.Count; i++) {
             Pawn colonist = colonists[i];
-            if (ViolationUtility.IsSurgebinderOfOrder(colonist, "Edgedancer")) {
+            if (ViolationUtility.IsSurgebinderOfOrder(colonist, RadiantOrderDefOf.Edgedancer)) {
                 ViolationUtility.ApplyViolation(colonist, 0.6f, "harvesting a prisoner's organs");
             }
         }
@@ -42,7 +43,7 @@ public static class EnslavementViolationPatch {
     private static void Postfix(Pawn warden, Pawn prisoner) {
         if (warden == null) return;
 
-        if (ViolationUtility.IsSurgebinderOfOrder(warden, "Willshaper")) {
+        if (ViolationUtility.IsSurgebinderOfOrder(warden, RadiantOrderDefOf.Willshaper)) {
             ViolationUtility.ApplyViolation(warden, 0.6f, "enslaving a prisoner");
         }
 
@@ -53,7 +54,7 @@ public static class EnslavementViolationPatch {
             Pawn colonist = colonists[i];
             if (colonist == warden) continue;
 
-            if (ViolationUtility.IsSurgebinderOfOrder(colonist, "Willshaper")) {
+            if (ViolationUtility.IsSurgebinderOfOrder(colonist, RadiantOrderDefOf.Willshaper)) {
                 ViolationUtility.ApplyViolation(colonist, 0.1f, "allowing enslavement of a prisoner");
             }
         }
@@ -66,7 +67,7 @@ public static class ArrestViolationPatch {
         if (byPawn == null) return;
         if (by != Faction.OfPlayer) return;
 
-        if (ViolationUtility.IsSurgebinderOfOrder(byPawn, "Willshaper")) {
+        if (ViolationUtility.IsSurgebinderOfOrder(byPawn, RadiantOrderDefOf.Willshaper)) {
             ViolationUtility.ApplyViolation(byPawn, 0.3f, "arresting someone");
         }
     }

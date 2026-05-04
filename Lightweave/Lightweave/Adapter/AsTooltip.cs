@@ -59,34 +59,34 @@ public static class AsTooltip {
 
         Vector2 anchor = Event.current.mousePosition + new Vector2(16f, 16f);
         ctx.PendingOverlays.Enqueue(() => {
-                Vector2 size = preferredSize ?? new Vector2(new Rem(15f).ToPixels(), new Rem(6f).ToPixels());
-                Rect tooltipRect = new Rect(anchor.x, anchor.y, size.x, size.y);
+            Vector2 size = preferredSize ?? new Vector2(new Rem(15f).ToPixels(), new Rem(6f).ToPixels());
+            Rect tooltipRect = new Rect(anchor.x, anchor.y, size.x, size.y);
 
-                Rect screen = new Rect(0f, 0f, Screen.width, Screen.height);
-                if (tooltipRect.xMax > screen.xMax) {
-                    tooltipRect.x = screen.xMax - tooltipRect.width;
-                }
-
-                if (tooltipRect.yMax > screen.yMax) {
-                    tooltipRect.y = screen.yMax - tooltipRect.height;
-                }
-
-                if (tooltipRect.x < 0f) {
-                    tooltipRect.x = 0f;
-                }
-
-                if (tooltipRect.y < 0f) {
-                    tooltipRect.y = 0f;
-                }
-
-                BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
-                BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
-                RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
-                PaintBox.Draw(tooltipRect, bg, border, radius);
-
-                LightweaveNode node = build();
-                LightweaveRoot.PaintSubtree(node, tooltipRect);
+            Rect screen = new Rect(0f, 0f, Screen.width, Screen.height);
+            if (tooltipRect.xMax > screen.xMax) {
+                tooltipRect.x = screen.xMax - tooltipRect.width;
             }
+
+            if (tooltipRect.yMax > screen.yMax) {
+                tooltipRect.y = screen.yMax - tooltipRect.height;
+            }
+
+            if (tooltipRect.x < 0f) {
+                tooltipRect.x = 0f;
+            }
+
+            if (tooltipRect.y < 0f) {
+                tooltipRect.y = 0f;
+            }
+
+            BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+            BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
+            RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
+            PaintBox.Draw(tooltipRect, bg, border, radius);
+
+            LightweaveNode node = build();
+            LightweaveRoot.PaintSubtree(node, tooltipRect);
+        }
         );
     }
 }

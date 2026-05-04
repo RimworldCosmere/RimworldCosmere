@@ -6,14 +6,14 @@ using Verse;
 namespace Cosmere.Core.UI.Codex;
 
 public static class SystemSwitcherStrip {
-    public static void Draw(Rect rect, Pawn pawn, IReadOnlyList<IInvestitureProvider> providers, CodexState state) {
+    public static void Draw(Rect rect, Pawn pawn, CodexState state, IReadOnlyList<IInvestitureProvider> providers) {
         if (providers.Count <= 1) return;
 
         float pillWidth = Mathf.Min(140f, (rect.width - (providers.Count - 1) * 6f) / providers.Count);
         float x = rect.x;
         for (int i = 0; i < providers.Count; i++) {
             IInvestitureProvider provider = providers[i];
-            ISystemSkin skin = SystemSkinRegistry.For(provider.SystemId);
+            ISystemSkin skin = SystemSkinRegistry.ForOrFallback(provider.SystemId);
             Rect pill = new Rect(x, rect.y + 2f, pillWidth, rect.height - 4f);
 
             bool selected = i == state.SelectedSystemIndex;
@@ -22,10 +22,8 @@ public static class SystemSwitcherStrip {
             Widgets.DrawBox(pill);
 
             string label = skin.HeaderLabel;
-            if (provider is ICodexContentProvider cp) {
-                string? custom = cp.HeaderLabelFor(pawn);
-                if (!custom.NullOrEmpty()) label = custom!;
-            }
+            string? custom = provider.Codex.HeaderLabelFor(pawn);
+            if (!custom.NullOrEmpty()) label = custom!;
 
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleCenter, selected ? Color.black : Color.white))
                 Widgets.Label(pill, label);

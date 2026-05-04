@@ -17,7 +17,8 @@ public static class RadialController {
 
         if (isHeld && !wasHeld) {
             TryOpen();
-        } else if (!isHeld && wasHeld) {
+        }
+        else if (!isHeld && wasHeld) {
             TryRelease();
         }
 
@@ -30,7 +31,7 @@ public static class RadialController {
             window = null;
         }
 
-        Pawn? pawn = InvestitureDockWindow.GetSelectedPawn();
+        Pawn? pawn = GetRadialTargetPawn();
         if (pawn == null) return;
         RadialSnapshot? snap = RadialSnapshotBuilder.Build(pawn);
         if (snap == null) return;
@@ -38,6 +39,8 @@ public static class RadialController {
         window = new RadialWindow(snap);
         Find.WindowStack.Add(window);
     }
+
+    private static Pawn? GetRadialTargetPawn() => InvestitureDockWindow.GetSelectedPawn();
 
     private static void TryRelease() {
         if (window == null) return;

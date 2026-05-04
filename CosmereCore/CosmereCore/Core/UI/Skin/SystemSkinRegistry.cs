@@ -16,8 +16,8 @@ public static class SystemSkinRegistry {
         skins.Add(skin);
     }
 
-    public static ISystemSkin For(string systemId) {
-        ISystemSkin resolved = ResolveRaw(systemId);
+    public static ISystemSkin ForOrFallback(string systemId) {
+        ISystemSkin resolved = Resolve(systemId);
         CoreModSettings settings = Mod.GetModSettings<CoreModSettings>();
         if (settings.highContrast) {
             return new HighContrastSkinDecorator(resolved);
@@ -26,11 +26,7 @@ public static class SystemSkinRegistry {
         return resolved;
     }
 
-    public static ISystemSkin Raw(string systemId) {
-        return ResolveRaw(systemId);
-    }
-
-    private static ISystemSkin ResolveRaw(string systemId) {
+    private static ISystemSkin Resolve(string systemId) {
         for (int i = 0; i < skins.Count; i++) {
             if (skins[i].SystemId == systemId) return skins[i];
         }

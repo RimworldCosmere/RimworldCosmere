@@ -29,7 +29,8 @@ internal static class CursorOverrides {
                 Cursor.SetCursor(texture, DisabledHotspot, CursorMode.ForceSoftware);
                 cursorOverridden = true;
             }
-        } else if (!shouldOverride && cursorOverridden) {
+        }
+        else if (!shouldOverride && cursorOverridden) {
             CustomCursor.Activate();
             cursorOverridden = false;
         }
@@ -54,7 +55,8 @@ internal static class CursorOverrides {
             output.ReadPixels(new Rect(0, 0, DisabledCursorSize, DisabledCursorSize), 0, 0);
             output.Apply();
             cachedDisabledTexture = output;
-        } finally {
+        }
+        finally {
             RenderTexture.active = previousActive;
             RenderTexture.ReleaseTemporary(scratch);
         }

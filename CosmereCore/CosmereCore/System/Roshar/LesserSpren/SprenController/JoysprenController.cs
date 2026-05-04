@@ -28,7 +28,6 @@ public class JoysprenController : DynamicSprenController {
     public override List<SprenSpawnInformation> GetDynamicSpawnInfo(Map? map) {
         if (map == null) return [];
 
-        // Find pawns with high mood
         IEnumerable<Pawn> happyPawns = map.mapPawns.FreeColonistsSpawned
             .Where(pawn => pawn?.needs?.mood?.CurLevel > 0.75f);
 

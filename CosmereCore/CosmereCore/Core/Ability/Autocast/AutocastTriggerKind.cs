@@ -4,6 +4,4 @@ public enum AutocastTriggerKind {
     HealthPercent,
     ReservePercent,
     Drafted,
-    EnemyWithinCells,
-    AllyWithinCells,
 }

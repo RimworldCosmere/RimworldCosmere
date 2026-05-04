@@ -3,6 +3,7 @@ using Cosmere.Core.Savant;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
@@ -33,7 +34,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         return null;
     }
 
-    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
+    public void DrawProgression(Rect rect, Pawn pawn, CodexState state) {
         List<Allomancer> genes = CollectAllomancers(pawn);
         if (genes.Count == 0) return;
 
@@ -71,10 +72,10 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 Widgets.Label(new Rect(swatch.xMax + 8f, row.y, 130f, rowHeight), metal.LabelCap);
 
             int stage = SavantUtility.CanBeSavant(metal)
-                ? SavantUtility.GetAllomanticSavantStage(pawn, metal)
+                ? ScadrialSavantUtility.GetAllomanticSavantStage(pawn, metal)
                 : 0;
             Rect stageRect = new Rect(swatch.xMax + 146f, row.y, 140f, rowHeight);
-            DrawSavantStage(stageRect, stage, metal.color);
+            SavantUI.DrawSavantStage(stageRect, stage, metal.color);
 
             float burned = 0f;
             if (pawn.records != null) {
@@ -105,14 +106,14 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         }
     }
 
-    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) { }
-    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) { }
+    public void DrawBonds(Rect rect, Pawn pawn, CodexState state) { }
+    public void DrawMemories(Rect rect, Pawn pawn, CodexState state) { }
 
     private static void DrawVialSettingsButton(Rect rect, Allomancer gene) {
         string thresholdLabel = Allomancer.ThresholdDisplayLabel(gene);
 
         string tooltip = "CC_Codex_Allomancy_VialSettings_Tooltip".Translate(
-            gene.requestedVialStock.Named("COUNT"),
+            gene.RequestedVialStock.Named("COUNT"),
             thresholdLabel.Named("THRESHOLD")
         );
         TooltipHandler.TipRegion(rect, tooltip);
@@ -120,32 +121,6 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         if (Widgets.ButtonText(rect, "CC_Codex_Allomancy_VialSettings_Button".Translate())) {
             Find.WindowStack.Add(new Dialog_AllomancyRestockSlider(gene));
         }
-    }
-
-    private static void DrawSavantStage(Rect rect, int stage, Color accent) {
-        string label;
-        Color color;
-        switch (stage) {
-            case 1:
-                label = (string)"CC_Codex_Savant_Stage1".Translate();
-                color = Color.Lerp(accent, Color.white, 0.35f);
-                break;
-            case 2:
-                label = (string)"CC_Codex_Savant_Stage2".Translate();
-                color = accent;
-                break;
-            case 3:
-                label = (string)"CC_Codex_Savant_Stage3".Translate();
-                color = Color.Lerp(accent, new Color(1f, 0.9f, 0.4f), 0.5f);
-                break;
-            default:
-                label = (string)"CC_Codex_Savant_Stage0".Translate();
-                color = new Color(0.55f, 0.55f, 0.55f);
-                break;
-        }
-
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, color))
-            Widgets.Label(rect, label);
     }
 
     private static List<Allomancer> CollectAllomancers(Pawn pawn) {

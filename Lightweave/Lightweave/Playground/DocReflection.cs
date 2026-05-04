@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Runtime;
-using Verse;
 
 namespace Cosmere.Lightweave.Playground;
 
@@ -69,7 +68,8 @@ internal static class DocReflection {
                 Type[] types;
                 try {
                     types = asms[a].GetTypes();
-                } catch (ReflectionTypeLoadException ex) {
+                }
+                catch (ReflectionTypeLoadException ex) {
                     types = ex.Types ?? Array.Empty<Type>();
                 }
 
@@ -184,7 +184,8 @@ internal static class DocReflection {
 
                 result.Add(map(sources[i].attr, sample));
             }
-        } finally {
+        }
+        finally {
             ctx.ForceDisabled = previousForceDisabled;
         }
 
@@ -196,20 +197,25 @@ internal static class DocReflection {
             object? value;
             if (member is MethodInfo m) {
                 value = m.Invoke(null, null);
-            } else if (member is FieldInfo f) {
+            }
+            else if (member is FieldInfo f) {
                 value = f.GetValue(null);
-            } else if (member is PropertyInfo p) {
+            }
+            else if (member is PropertyInfo p) {
                 value = p.GetValue(null);
-            } else {
+            }
+            else {
                 return null;
             }
 
             return value as DocSample;
-        } catch (TargetInvocationException ex) {
-            Log.Error($"[Lightweave] DocSample provider {member.DeclaringType?.Name}.{member.Name} threw: {ex.InnerException ?? ex}");
+        }
+        catch (TargetInvocationException ex) {
+            LightweaveLog.Error($"DocSample provider {member.DeclaringType?.Name}.{member.Name} threw: {ex.InnerException ?? ex}");
             return null;
-        } catch (Exception ex) {
-            Log.Error($"[Lightweave] Failed to read DocSample from {member.DeclaringType?.Name}.{member.Name}: {ex}");
+        }
+        catch (Exception ex) {
+            LightweaveLog.Error($"Failed to read DocSample from {member.DeclaringType?.Name}.{member.Name}: {ex}");
             return null;
         }
     }
@@ -280,9 +286,11 @@ internal static class DocReflection {
                 string defaultStr;
                 if (pa.DefaultOverride.Length > 0) {
                     defaultStr = pa.DefaultOverride;
-                } else if (pi.HasDefaultValue) {
+                }
+                else if (pi.HasDefaultValue) {
                     defaultStr = FormatDefault(pi.DefaultValue);
-                } else {
+                }
+                else {
                     defaultStr = "-";
                 }
 
@@ -317,10 +325,12 @@ internal static class DocReflection {
             try {
                 object? result = methods[i].Invoke(null, null);
                 if (result is DocSample sample) return sample.Code;
-            } catch (TargetInvocationException ex) {
-                Log.Error($"[Lightweave] DocUsage provider {primitive.Name}.{methods[i].Name} threw: {ex.InnerException ?? ex}");
-            } catch (Exception ex) {
-                Log.Error($"[Lightweave] Failed to read DocUsage from {primitive.Name}.{methods[i].Name}: {ex}");
+            }
+            catch (TargetInvocationException ex) {
+                LightweaveLog.Error($"DocUsage provider {primitive.Name}.{methods[i].Name} threw: {ex.InnerException ?? ex}");
+            }
+            catch (Exception ex) {
+                LightweaveLog.Error($"Failed to read DocUsage from {primitive.Name}.{methods[i].Name}: {ex}");
             }
         }
 
@@ -330,16 +340,25 @@ internal static class DocReflection {
             try {
                 object? value = fields[i].GetValue(null);
                 if (value is DocSample sample) return sample.Code;
-            } catch (Exception ex) {
-                Log.Error($"[Lightweave] Failed to read DocUsage field {primitive.Name}.{fields[i].Name}: {ex}");
+            }
+            catch (Exception ex) {
+                LightweaveLog.Error($"Failed to read DocUsage field {primitive.Name}.{fields[i].Name}: {ex}");
             }
         }
 
         PropertyInfo[] props = primitive.GetProperties(MemberFlags);
         for (int i = 0; i < props.Length; i++) {
             if (props[i].GetCustomAttribute<DocUsageAttribute>() == null) continue;
-            object? value = props[i].GetValue(null);
-            if (value is DocSample sample) return sample.Code;
+            try {
+                object? value = props[i].GetValue(null);
+                if (value is DocSample sample) return sample.Code;
+            }
+            catch (TargetInvocationException ex) {
+                LightweaveLog.Error($"DocUsage property {primitive.Name}.{props[i].Name} threw: {ex.InnerException ?? ex}");
+            }
+            catch (Exception ex) {
+                LightweaveLog.Error($"Failed to read DocUsage property {primitive.Name}.{props[i].Name}: {ex}");
+            }
         }
 
         return null;

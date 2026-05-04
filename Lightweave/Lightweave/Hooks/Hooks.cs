@@ -28,15 +28,20 @@ namespace Cosmere.Lightweave.Hooks;
 /// compute it from <see cref="RenderContext.Current"/> inside <c>Paint</c> and
 /// pass the closed-over value into child nodes.
 /// </para>
+/// <para>
+/// To disambiguate sibling hook calls in the same Paint method, override the
+/// <c>file</c> caller-attribute argument with a suffixed string (e.g. <c>file: file + "#expanded"</c>).
+/// This is the established convention for any component that calls a Use* hook
+/// in Paint and needs to keep multiple slots distinct.
+/// </para>
 /// </remarks>
 public static class Hooks {
     public static StateHandle<T> UseState<T>(
         T initial,
         [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = "",
-        object? key = null
+        [CallerFilePath] string file = ""
     ) {
-        HookKey hookKey = Key(line, file, key);
+        HookKey hookKey = Key(line, file);
         HookSlot slot = RenderContext.Current.Hooks.Acquire(hookKey);
         slot.Value ??= initial;
         return new StateHandle<T>(slot);
@@ -45,10 +50,9 @@ public static class Hooks {
     public static RefHandle<T> UseRef<T>(
         T initial,
         [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = "",
-        object? key = null
+        [CallerFilePath] string file = ""
     ) {
-        HookKey hookKey = Key(line, file, key);
+        HookKey hookKey = Key(line, file);
         HookSlot slot = RenderContext.Current.Hooks.Acquire(hookKey);
         slot.Value ??= initial;
         return new RefHandle<T>(slot);
@@ -111,10 +115,10 @@ public static class Hooks {
         return RenderContext.Current.Direction;
     }
 
-    private static HookKey Key(int line, string file, object? explicitKey = null) {
+    private static HookKey Key(int line, string file) {
         int callSiteId = unchecked(file.GetHashCode() * 31 + line);
         int parentHash = RenderContext.Current.ParentPathHash;
-        return new HookKey(parentHash, callSiteId, explicitKey);
+        return new HookKey(parentHash, callSiteId, null);
     }
 
     private static bool DepsEqual(object[] a, object[] b) {

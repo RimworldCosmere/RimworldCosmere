@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Verse;
+using ShaderDatabase = Cosmere.Core.Shader.ShaderDatabase;
 
 namespace Cosmere.Core.Gene.PawnRender.SubWorker;
 

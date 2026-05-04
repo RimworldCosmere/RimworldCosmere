@@ -1,6 +1,7 @@
 using System;
 using Cosmere.Core.Listing;
 using Cosmere.Core.Quickstart;
+using Cosmere.Core.UI;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -66,7 +67,7 @@ public class CoreModSettings : CosmereModSettings {
                 fieldset.Field(
                     "CC_Settings_LogLevel_Label".Translate(),
                     "CC_Settings_LogLevel_Tooltip".Translate(),
-                    sub => Util.UI.IntEnumDropdown(sub, logLevel, v => logLevel = v, false)
+                    sub => UIHelpers.IntEnumDropdown(sub, logLevel, v => logLevel = v, false)
                 );
 
                 if (!Prefs.DevMode) return;
@@ -80,7 +81,7 @@ public class CoreModSettings : CosmereModSettings {
                 fieldset.Field(
                     "CC_Settings_Quickstarter_Label".Translate(),
                     "CC_Settings_Quickstarter_Tooltip".Translate(),
-                    sub => Util.UI.Dropdown(
+                    sub => UIHelpers.Dropdown(
                         sub,
                         GetQuickstartScenarioLabel,
                         quickstartName,
@@ -95,7 +96,7 @@ public class CoreModSettings : CosmereModSettings {
                     fieldset.Field(
                         "CC_Settings_TestScenario_Label".Translate(),
                         "CC_Settings_TestScenario_Tooltip".Translate(),
-                        sub => Util.UI.Dropdown(
+                        sub => UIHelpers.Dropdown(
                             sub,
                             GetTestScenarioLabel,
                             testScenarioDefName,
@@ -111,7 +112,8 @@ public class CoreModSettings : CosmereModSettings {
                     TaggedString? description = GetDescription();
                     if (description == null) {
                         fieldset.Label("CC_Settings_Quickstarter_FailedToFind".Translate());
-                    } else {
+                    }
+                    else {
                         using (new TextBlock(TextAnchor.UpperLeft)) {
                             fieldset.Label(description.Value);
                         }

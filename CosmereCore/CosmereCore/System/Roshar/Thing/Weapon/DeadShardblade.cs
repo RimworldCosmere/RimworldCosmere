@@ -1,5 +1,5 @@
 using Cosmere.Core.Comp.Thing;
-using Cosmere.System.Roshar.Utility;
+using Cosmere.System.Roshar.Util;
 using UnityEngine;
 using Verse;
 

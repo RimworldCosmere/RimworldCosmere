@@ -9,46 +9,11 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-public sealed class FeruchemyInvestitureProvider : IInvestitureProvider, ICodexContentProvider {
-    private static readonly FeruchemyCodexContent codex = new FeruchemyCodexContent();
+public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<FeruchemyCodexContent> {
+    public const string Id = "Feruchemy";
+    public override string SystemId => Id;
 
-    public bool HasProgression(Pawn pawn) {
-        return codex.HasProgression(pawn);
-    }
-
-    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
-        codex.DrawProgression(pawn, rect, state);
-    }
-
-    public bool ShowsBondsSubtab => codex.ShowsBondsSubtab;
-
-    public bool HasBonds(Pawn pawn) {
-        return codex.HasBonds(pawn);
-    }
-
-    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) {
-        codex.DrawBonds(pawn, rect, state);
-    }
-
-    public bool HasMemories(Pawn pawn) {
-        return codex.HasMemories(pawn);
-    }
-
-    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) {
-        codex.DrawMemories(pawn, rect, state);
-    }
-
-    public bool OwnsAbility(Ability ability) {
-        return codex.OwnsAbility(ability);
-    }
-
-    public string? HeaderLabelFor(Pawn pawn) {
-        return codex.HeaderLabelFor(pawn);
-    }
-
-    public string SystemId => "Feruchemy";
-
-    public bool IsInvested(Pawn pawn) {
+    public override bool IsInvested(Pawn pawn) {
         if (pawn.genes == null) return false;
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
@@ -58,7 +23,7 @@ public sealed class FeruchemyInvestitureProvider : IInvestitureProvider, ICodexC
         return false;
     }
 
-    public InvestitureSnapshot? Snapshot(Pawn pawn) {
+    public override InvestitureSnapshot? Snapshot(Pawn pawn) {
         if (pawn.genes == null) return null;
 
         List<InvestitureCell> cells = [];
@@ -70,8 +35,8 @@ public sealed class FeruchemyInvestitureProvider : IInvestitureProvider, ICodexC
             float totalMax = 0f;
             float totalValue = 0f;
             for (int j = 0; j < mms.Count; j++) {
-                totalMax += mms[j].maxAmount;
-                totalValue += mms[j].storedAmount;
+                totalMax += mms[j].MaxAmount;
+                totalValue += mms[j].StoredAmount;
             }
 
             ResourceBar bar = new ResourceBar(
@@ -99,13 +64,11 @@ public sealed class FeruchemyInvestitureProvider : IInvestitureProvider, ICodexC
             SystemId,
             "Feruchemy",
             null,
-            cells,
-            [],
-            []
+            cells
         );
     }
 
-    public RadialSystem? SnapshotRadial(Pawn pawn) {
+    public override RadialSystem? SnapshotRadial(Pawn pawn) {
         if (pawn.genes == null) return null;
 
         List<RadialSubsection> subs = [];
@@ -119,66 +82,64 @@ public sealed class FeruchemyInvestitureProvider : IInvestitureProvider, ICodexC
             float totalMax = 0f;
             float totalValue = 0f;
             for (int j = 0; j < mms.Count; j++) {
-                totalMax += mms[j].maxAmount;
-                totalValue += mms[j].storedAmount;
+                totalMax += mms[j].MaxAmount;
+                totalValue += mms[j].StoredAmount;
             }
 
             float reserveFraction = totalMax > 0f ? totalValue / totalMax : 0f;
 
             List<RadialLeaf> leaves = [
                 new RadialLeaf(
-                    "TAP",
-                    "Tap " + f.metal.LabelCap,
-                    f.metal.feruchemy?.icon,
-                    RadialActionKind.ToggleFeruchemyTap,
-                    null,
-                    f.isTapping,
-                    false,
-                    f.isTapping,
-                    totalMax <= 0f,
-                    totalMax <= 0f ? "No metalminds" : null,
-                    reserveFraction,
-                    f.isTapping && reserveFraction <= 0f,
-                    null,
-                    0
+                    LeafId: "TAP",
+                    Label: "Tap " + f.metal.LabelCap,
+                    Icon: f.metal.feruchemy?.icon,
+                    Kind: RadialActionKind.ToggleFeruchemyTap,
+                    AbilityDef: null,
+                    IsActive: f.isTapping,
+                    IsFlaring: false,
+                    IsSustained: f.isTapping,
+                    IsLocked: totalMax <= 0f,
+                    LockReason: totalMax <= 0f ? "No metalminds" : null,
+                    ReserveFraction: reserveFraction,
+                    HasInsufficientResources: f.isTapping && reserveFraction <= 0f,
+                    CostHint: null,
+                    CooldownTicksRemaining: 0
                 ),
                 new RadialLeaf(
-                    "STORE",
-                    "Store " + f.metal.LabelCap,
-                    f.metal.feruchemy?.icon,
-                    RadialActionKind.ToggleFeruchemyStore,
-                    null,
-                    f.isStoring,
-                    false,
-                    f.isStoring,
-                    totalMax <= 0f,
-                    totalMax <= 0f ? "No metalminds" : null,
-                    reserveFraction,
-                    false,
-                    null,
-                    0
+                    LeafId: "STORE",
+                    Label: "Store " + f.metal.LabelCap,
+                    Icon: f.metal.feruchemy?.icon,
+                    Kind: RadialActionKind.ToggleFeruchemyStore,
+                    AbilityDef: null,
+                    IsActive: f.isStoring,
+                    IsFlaring: false,
+                    IsSustained: f.isStoring,
+                    IsLocked: totalMax <= 0f,
+                    LockReason: totalMax <= 0f ? "No metalminds" : null,
+                    ReserveFraction: reserveFraction,
+                    HasInsufficientResources: false,
+                    CostHint: null,
+                    CooldownTicksRemaining: 0
                 ),
                 new RadialLeaf(
-                    "IDLE",
-                    "Idle",
-                    null,
-                    RadialActionKind.ResetFeruchemyIdle,
-                    null,
-                    !f.isTapping && !f.isStoring,
-                    false,
-                    false,
-                    false,
-                    null,
-                    reserveFraction,
-                    false,
-                    null,
-                    0
+                    LeafId: "IDLE",
+                    Label: "Idle",
+                    Icon: null,
+                    Kind: RadialActionKind.ResetFeruchemyIdle,
+                    AbilityDef: null,
+                    IsActive: !f.isTapping && !f.isStoring,
+                    IsFlaring: false,
+                    IsSustained: false,
+                    IsLocked: false,
+                    LockReason: null,
+                    ReserveFraction: reserveFraction,
+                    HasInsufficientResources: false,
+                    CostHint: null,
+                    CooldownTicksRemaining: 0
                 ),
             ];
 
-            AbilityDef? compoundDef = DefDatabase<AbilityDef>.GetNamedSilentFail(
-                "Cosmere_Scadrial_Ability_Compound" + f.metal.defName
-            );
+            AbilityDef? compoundDef = f.metal.GetCompoundAbility();
             if (compoundDef != null && pawn.genes.HasAllomanticGeneForMetal(f.metal)) {
                 Ability? compoundAbility = null;
                 for (int j = 0; j < abilities.Count; j++) {
@@ -191,20 +152,20 @@ public sealed class FeruchemyInvestitureProvider : IInvestitureProvider, ICodexC
                 bool canCast = compoundAbility != null && compoundAbility.CanCast;
                 leaves.Add(
                     new RadialLeaf(
-                        "COMPOUND",
-                        "Compound",
-                        f.metal.feruchemy?.icon,
-                        RadialActionKind.InvokeCompound,
-                        compoundDef,
-                        false,
-                        false,
-                        false,
-                        !canCast,
-                        canCast ? null : "Compound unavailable",
-                        reserveFraction,
-                        false,
-                        null,
-                        compoundAbility != null ? compoundAbility.CooldownTicksRemaining : 0
+                        LeafId: "COMPOUND",
+                        Label: "Compound",
+                        Icon: f.metal.feruchemy?.icon,
+                        Kind: RadialActionKind.InvokeCompound,
+                        AbilityDef: compoundDef,
+                        IsActive: false,
+                        IsFlaring: false,
+                        IsSustained: false,
+                        IsLocked: !canCast,
+                        LockReason: canCast ? null : "Compound unavailable",
+                        ReserveFraction: reserveFraction,
+                        HasInsufficientResources: false,
+                        CostHint: null,
+                        CooldownTicksRemaining: compoundAbility != null ? compoundAbility.CooldownTicksRemaining : 0
                     )
                 );
             }

@@ -2,7 +2,7 @@ using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
 using Cosmere.System.Scadrial.Hemalurgy.Hediff;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using Verse;
 
@@ -12,7 +12,7 @@ public class ImplantSpike : Recipe_Surgery {
     public override bool AvailableOnNow(Verse.Thing thing, BodyPartRecord? part = null) {
         if (!base.AvailableOnNow(thing, part)) return false;
         if (thing is not Pawn) return false;
-        if (!ResearchProjectDef.Named("Cosmere_Scadrial_Hemalurgy").IsFinished) return false;
+        if (!HemalurgicDefOf.Cosmere_Scadrial_Hemalurgy.IsFinished) return false;
         if (!IsHemalurgyEnabled()) return false;
         return true;
     }
@@ -65,7 +65,7 @@ public class ImplantSpike : Recipe_Surgery {
             metalDefName = spikeComp.metal?.defName ?? "Unknown",
             stealType = charge.stealType,
             stolenDefName = charge.stolenDefName,
-            stolenDefNames = [..charge.stolenDefNames],
+            stolenDefNames = [.. charge.stolenDefNames],
             chargeStrength = strength,
             storedInvestiture = charge.storedInvestiture,
             isThinNeedle = isThinNeedle,
@@ -93,11 +93,13 @@ public class ImplantSpike : Recipe_Surgery {
             HemalurgicConstants.IsFeruchemicSteal(spike.stealType) ||
             spike.stealType == HemalurgicStealType.AnyPower) {
             GrantGene(pawn, spike.stolenDefName);
-        } else if (spike.stealType == HemalurgicStealType.AllAbilities) {
+        }
+        else if (spike.stealType == HemalurgicStealType.AllAbilities) {
             for (int i = 0; i < spike.stolenDefNames.Count; i++) {
                 GrantGene(pawn, spike.stolenDefNames[i]);
             }
-        } else if (spike.stealType == HemalurgicStealType.ConnectionIdentity) {
+        }
+        else if (spike.stealType == HemalurgicStealType.ConnectionIdentity) {
             ApplyConnectionImplant(pawn);
         }
     }
@@ -112,7 +114,7 @@ public class ImplantSpike : Recipe_Surgery {
 
     private void ApplyConnectionImplant(Pawn pawn) {
         if (!pawn.IsSnapped()) {
-            SnapUtility.TrySnap(pawn, "CS_Hemalurgy_SnappedByConnection");
+            SnapUtility.Snap(pawn, "CS_Hemalurgy_SnappedByConnection");
         }
     }
 

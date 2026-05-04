@@ -12,60 +12,66 @@ public class GradualMoverManager(Verse.Game game) : GameComponent {
 
     public override void GameComponentTick() {
         for (int i = activeMovements.Count - 1; i >= 0; i--) {
-            MovementData m = activeMovements[i];
-            HashSet<Pawn> haveDamaged = m.haveDamaged;
-            if (m.thing.Destroyed || m.thing.Map == null || game.CurrentMap != m.thing.Map) {
+            MovementData movement = activeMovements[i];
+            if (movement.thing.Destroyed || movement.thing.Map == null || game.CurrentMap != movement.thing.Map) {
                 activeMovements.RemoveAt(i);
                 continue;
             }
 
-            Pawn pawn = (m.source as Pawn ?? m.thing as Pawn)!;
+            Pawn? pawn = movement.source as Pawn ?? movement.thing as Pawn;
+            if (pawn == null) continue;
+            TickMovement(ref movement, pawn);
+            TickRendering(movement);
 
-            m.ticksElapsed++;
-            float t = Mathf.Clamp01((float)m.ticksElapsed / m.ticksTotal);
-            float distanceCoveredFraction = Mathf.Clamp01(1f - t);
-            float easedPosition = EasingFunctions.EaseInOutQuint(distanceCoveredFraction);
-            Vector3 position = Vector3.Lerp(m.end, m.start, easedPosition);
-
-
-            m.thing.Position = position.ToIntVec3(); //Vector3.Lerp(m.start, m.end, t).ToIntVec3();
-            foreach (Pawn pawn1 in m.thing.ThingsSharingPosition<Pawn>()) {
-                if (pawn1.Equals(m.source) || pawn1.Equals(m.thing) || haveDamaged.Contains(pawn1)) continue;
-                if (pawn1.Faction?.IsPlayer == true) continue;
-                ApplyDragDamage(pawn1, pawn);
-                haveDamaged.Add(pawn1);
-            }
-
-            FleckMaker.ThrowDustPuff(m.thing.Position, m.thing.Map, 1f);
-            GenDraw.DrawLineBetween(
-                m.source.DrawPos,
-                m.thing.Position.ToVector3ShiftedWithAltitude(AltitudeLayer.Terrain),
-                m.material
-            );
-            if (m.ticksElapsed >= m.ticksTotal) {
-                m.thing.Position = m.end.ToIntVec3(); // finalize position
+            if (movement.ticksElapsed >= movement.ticksTotal) {
+                movement.thing.Position = movement.end.ToIntVec3();
                 activeMovements.RemoveAt(i);
-                if (m.polarity != AllomancyPolarity.Pulling || !m.thing.Position.Equals(m.source.Position)) {
-                    continue;
-                }
-
-                if (!m.thing.def.EverHaulable || pawn.inventory == null) continue;
-
-                JobDef jobDef = m.thing.CanBeEquippedBy(pawn)
-                    ? RimWorld.JobDefOf.Equip
-                    : RimWorld.JobDefOf.TakeCountToInventory;
-                Job job = JobMaker.MakeJob(jobDef, m.thing);
-                job.count = m.thing.GetMaxAmountToPickupForPawn(pawn, m.thing.stackCount);
-                if (job.count < 1) break;
-
-                pawn.jobs.TryTakeOrderedJob(job);
-            } else {
-                activeMovements[i] = m; // update struct
+                DispatchPickupJob(movement, pawn);
+            }
+            else {
+                activeMovements[i] = movement;
             }
         }
     }
 
-    private void ApplyDragDamage(Verse.Thing thing, Verse.Thing instigator) {
+    private static void TickMovement(ref MovementData m, Pawn pawn) {
+        m.ticksElapsed++;
+        float t = Mathf.Clamp01((float)m.ticksElapsed / m.ticksTotal);
+        float easedPosition = EasingFunctions.EaseInOutQuint(Mathf.Clamp01(1f - t));
+        m.thing.Position = Vector3.Lerp(m.end, m.start, easedPosition).ToIntVec3();
+
+        foreach (Pawn pawn1 in m.thing.ThingsSharingPosition<Pawn>()) {
+            if (pawn1.Equals(m.source) || pawn1.Equals(m.thing) || m.haveDamaged.Contains(pawn1)) continue;
+            if (pawn1.Faction?.IsPlayer == true) continue;
+            ApplyDragDamage(pawn1, pawn);
+            m.haveDamaged.Add(pawn1);
+        }
+    }
+
+    private static void TickRendering(MovementData m) {
+        FleckMaker.ThrowDustPuff(m.thing.Position, m.thing.Map, 1f);
+        GenDraw.DrawLineBetween(
+            m.source.DrawPos,
+            m.thing.Position.ToVector3ShiftedWithAltitude(AltitudeLayer.Terrain),
+            m.material
+        );
+    }
+
+    private static void DispatchPickupJob(MovementData m, Pawn pawn) {
+        if (m.polarity != AllomancyPolarity.Pulling || !m.thing.Position.Equals(m.source.Position)) return;
+        if (!m.thing.def.EverHaulable || pawn.inventory == null) return;
+
+        JobDef jobDef = m.thing.CanBeEquippedBy(pawn)
+            ? RimWorld.JobDefOf.Equip
+            : RimWorld.JobDefOf.TakeCountToInventory;
+        Job job = JobMaker.MakeJob(jobDef, m.thing);
+        job.count = m.thing.GetMaxAmountToPickupForPawn(pawn, m.thing.stackCount);
+        if (job.count < 1) return;
+
+        pawn.jobs.TryTakeOrderedJob(job);
+    }
+
+    private static void ApplyDragDamage(Verse.Thing thing, Verse.Thing instigator) {
         if (thing is not Pawn pawn || thing == instigator) return;
 
         pawn.TakeDamage(

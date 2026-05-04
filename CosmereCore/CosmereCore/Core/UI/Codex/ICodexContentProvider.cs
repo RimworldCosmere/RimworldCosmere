@@ -6,12 +6,12 @@ namespace Cosmere.Core.UI.Codex;
 public interface ICodexContentProvider {
     bool ShowsBondsSubtab { get; }
     bool HasProgression(Pawn pawn);
-    void DrawProgression(Pawn pawn, Rect rect, CodexState state);
+    void DrawProgression(Rect rect, Pawn pawn, CodexState state);
     bool HasBonds(Pawn pawn);
-    void DrawBonds(Pawn pawn, Rect rect, CodexState state);
+    void DrawBonds(Rect rect, Pawn pawn, CodexState state);
 
     bool HasMemories(Pawn pawn);
-    void DrawMemories(Pawn pawn, Rect rect, CodexState state);
+    void DrawMemories(Rect rect, Pawn pawn, CodexState state);
 
     bool OwnsAbility(RimWorld.Ability ability);
 

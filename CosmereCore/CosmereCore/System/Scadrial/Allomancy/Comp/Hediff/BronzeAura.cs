@@ -6,9 +6,8 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.Allomancy.Comp.Hediff;
 
-#nullable disable
 public class BronzeAuraProperties : LineDrawingAuraProperties {
-    public ThingDef moteDef;
+    public ThingDef moteDef = null!;
 
     public BronzeAuraProperties() {
         compClass = typeof(BronzeAura);
@@ -16,7 +15,6 @@ public class BronzeAuraProperties : LineDrawingAuraProperties {
 
     public override Color lineColor => MetallicArtsMetalDefOf.Bronze.color;
 }
-#nullable restore
 
 public class BronzeAura : LineDrawingAura {
     private Mote? mote;

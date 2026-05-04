@@ -104,7 +104,7 @@ switch ($Command.ToLower()) {
         Write-Host "  release-prep  - Prepare for release (full build + test)"
         
         Write-Section "Project Management"
-        Write-Host "  install-deps  - Install Node.js dependencies (legacy .scripts)"
+        Write-Host "  install-deps  - Install Node.js dependencies"
         Write-Host "  check-deps    - Check for outdated dependencies"
         Write-Host "  status        - Show git status and solution info"
         
@@ -199,9 +199,7 @@ switch ($Command.ToLower()) {
         Write-Info "Setting up project..."
         & $PSCommandPath restore
         Write-Info "Installing Node.js dependencies..."
-        Set-Location .scripts
         npm install
-        Set-Location ..
         Write-Success "Project setup complete!"
     }
     
@@ -368,7 +366,6 @@ switch ($Command.ToLower()) {
         Write-Host ""
         Write-ColoredLine "Tools:" $Green
         Write-Host "  Tools CLI            - Code generation and asset building"
-        Write-Host "  Legacy .scripts      - Node.js generators (deprecated)"
         Write-Host ""
         Write-ColoredLine "Common Workflows:" $Green
         Write-Host "  Development:         .\make.ps1 dev"
@@ -386,9 +383,7 @@ switch ($Command.ToLower()) {
     
     "install-deps" {
         Write-Info "Installing Node.js dependencies..."
-        Set-Location .scripts
         npm install
-        Set-Location ..
         Write-Success "Node.js dependencies installed!"
     }
     
@@ -397,9 +392,7 @@ switch ($Command.ToLower()) {
         Invoke-DotNet "list Cosmere.sln package --outdated"
         Invoke-DotNet "list Cosmere.Tools.sln package --outdated"
         Write-Info "Checking Node.js dependencies..."
-        Set-Location .scripts
         try { npm outdated } catch { }
-        Set-Location ..
     }
     
     "watch" {
@@ -445,24 +438,18 @@ switch ($Command.ToLower()) {
     "update-deps" {
         Write-Info "Updating dependencies..."
         Write-Warning "Run manually: dotnet add package <PackageName>"
-        Set-Location .scripts
         npm update
-        Set-Location ..
         Write-Success "Node.js dependencies updated!"
     }
     
     "legacy-generate" {
         Write-Warning "Using legacy Node.js generator..."
-        Set-Location .scripts
         npm start -- -f -v
-        Set-Location ..
     }
     
     "legacy-clean" {
         Write-Warning "Using legacy Node.js clean..."
-        Set-Location .scripts
         npm start -- -d -v
-        Set-Location ..
     }
     
     "versions" {

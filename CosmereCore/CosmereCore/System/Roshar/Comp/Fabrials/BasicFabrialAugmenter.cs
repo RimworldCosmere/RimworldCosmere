@@ -27,7 +27,7 @@ public class BasicFabrialAugmenter : BasicFabrial {
         insertedGemstone = null;
     }
 
-    protected override void DoFlameSprenPower() {
+    protected override void ApplyFlameSprenHeat() {
         if (!powerOn || insertedGemstone == null) return;
 
         InvestitureHolder? investiture = insertedGemstone.TryGetComp<InvestitureHolder>();
@@ -36,18 +36,18 @@ public class BasicFabrialAugmenter : BasicFabrial {
         float maxEnergy = investiture.maxInvestitureSelf * 3f;
         float targetTemp = investiture.maxInvestitureSelf;
         if (targetTemp < 20f) targetTemp *= 1.25f;
-        float num2 = GenTemperature.ControlTemperatureTempChange(
+        float tempChange = GenTemperature.ControlTemperatureTempChange(
             parent.Position,
             parent.Map,
             maxEnergy,
             targetTemp
         );
-        if (!Mathf.Approximately(num2, 0f)) {
-            parent.GetRoom().Temperature += num2;
+        if (!Mathf.Approximately(tempChange, 0f)) {
+            parent.GetRoom().Temperature += tempChange;
         }
     }
 
-    protected override void DoColdSprenPower() {
+    protected override void ApplyColdSprenCooling() {
         if (!powerOn || parent.IsOutside()) return;
 
         InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();

@@ -43,10 +43,9 @@ public class GoldBurn : HediffComp {
             return;
         }
 
-        parent.extraSeverity += 0.01f; // Increase severity slowly over time
+        parent.ExtraSeverity += 0.01f;
         lastSeverity = parent.Severity;
 
-        // 2. Apply random thoughts (positive or negative)
         if (Rand.Chance(0.2f)) // ~1 every 5 ticks
         {
             ThoughtDef random = GoldThoughts.RandomElement();
@@ -54,14 +53,14 @@ public class GoldBurn : HediffComp {
             Thought_Memory? thought = memories.GetFirstMemoryOfDef(random);
             if (thought == null) {
                 memories.TryGainMemoryFast(random);
-            } else if (thought.CurStageIndex < random.stages.Count - 1) {
+            }
+            else if (thought.CurStageIndex < random.stages.Count - 1) {
                 thought.SetForcedStage(thought.CurStageIndex + 1);
             }
         }
 
-        // 3. Mental break chance
         if (Rand.Chance(0.0025f) && Pawn.mindState != null && !Pawn.InMentalState) {
-            IAllomancerAbility[] snapshot = [.. parent.sourceAbilities];
+            IAllomancerAbility[] snapshot = [.. parent.SourceAbilities];
             for (int i = 0; i < snapshot.Length; i++) {
                 snapshot[i].UpdateStatus(BurningStatus.Off);
             }

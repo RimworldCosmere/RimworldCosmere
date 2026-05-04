@@ -20,7 +20,7 @@ public class Regrowth : SurgebindingHediff {
     public override void PostTickInterval(int delta) {
         base.PostTickInterval(delta);
 
-        if (!gene.CanLowerReserve(ability.def.beuPerTick)) {
+        if (!Gene.CanLowerReserve(ability.def.beuPerTick)) {
             pawn.health.RemoveHediff(this);
             return;
         }
@@ -31,10 +31,10 @@ public class Regrowth : SurgebindingHediff {
             .Where(h => h.CanBeHealedByInvestiture())
             .ToList();
 
-        if (CheckIfDone(hediffs)) return;
+        if (DeactivateIfFullyHealed(hediffs)) return;
 
         for (int i = 0; i < hediffs.Count; i++) {
-            if (!hediffs[i].TryHealWithInvestiture(ability.gene.currentIdealDisplay)) {
+            if (!hediffs[i].TryHealWithInvestiture(ability.Gene.CurrentIdealDisplay)) {
                 continue;
             }
 
@@ -43,12 +43,12 @@ public class Regrowth : SurgebindingHediff {
             }
 
             pawn.skills?.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, 5);
-            CheckIfDone(hediffs);
+            DeactivateIfFullyHealed(hediffs);
             return;
         }
     }
 
-    private bool CheckIfDone(List<Verse.Hediff> hediffs) {
+    private bool DeactivateIfFullyHealed(List<Verse.Hediff> hediffs) {
         if (hediffs.Count != 0) return false;
         if (!Mathf.Approximately(pawn.health.summaryHealth.SummaryHealthPercent, 1)) return false;
 

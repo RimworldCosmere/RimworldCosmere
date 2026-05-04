@@ -94,7 +94,8 @@ public static class Menu {
                 Rect rowRect = new Rect(rect.x, cursorY, rect.width, rowH);
                 if (it.IsDivider) {
                     PaintDivider(rowRect);
-                } else {
+                }
+                else {
                     PaintRow(rowRect, it, i, focusedIndex, openSubmenuIndex, onDismiss);
                 }
 
@@ -206,7 +207,8 @@ public static class Menu {
                 if (openSubmenuIndex.Value != index) {
                     openSubmenuIndex.Set(index);
                 }
-            } else {
+            }
+            else {
                 if (openSubmenuIndex.Value != -1) {
                     openSubmenuIndex.Set(-1);
                 }
@@ -253,7 +255,8 @@ public static class Menu {
             LightweaveRoot.PaintSubtree(item.Icon, iconRect);
             if (rtl) {
                 labelEndX = iconX - padPx;
-            } else {
+            }
+            else {
                 labelStartX = iconX + iconPx + padPx;
             }
         }
@@ -266,7 +269,7 @@ public static class Menu {
             Rect chevronRect = new Rect(chevronX, rowRect.y, chevronPx, rowRect.height);
             Font chevronFont = theme.GetFont(FontRole.Body);
             int chevronSize = Mathf.RoundToInt(new Rem(1.25f).ToFontPx());
-            GUIStyle chevronStyle = GuiStyleCache.Get(chevronFont, chevronSize);
+            GUIStyle chevronStyle = GuiStyleCache.GetOrCreate(chevronFont, chevronSize);
             chevronStyle.alignment = rtl ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight;
             Color chevronSaved = GUI.color;
             GUI.color = theme.GetColor(ThemeSlot.TextMuted);
@@ -275,7 +278,8 @@ public static class Menu {
             GUI.color = chevronSaved;
             if (rtl) {
                 labelStartX = chevronX + chevronPx + padPx;
-            } else {
+            }
+            else {
                 labelEndX = chevronX - padPx;
             }
         }
@@ -283,7 +287,7 @@ public static class Menu {
         Rect labelRect = new Rect(labelStartX, rowRect.y, labelEndX - labelStartX, rowRect.height);
         Font labelFont = theme.GetFont(FontRole.Body);
         int labelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-        GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelSize);
+        GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelSize);
         labelStyle.alignment = Typography.Typography.ResolveAnchor(TextAlign.Start, dir);
         ThemeSlot labelSlot = item.Disabled ? ThemeSlot.TextMuted : ThemeSlot.TextPrimary;
         Color savedColor = GUI.color;
@@ -294,7 +298,8 @@ public static class Menu {
         if (!item.Disabled && e.type == EventType.MouseUp && e.button == 0 && rowRect.Contains(e.mousePosition)) {
             if (hasChildren) {
                 openSubmenuIndex.Set(index);
-            } else {
+            }
+            else {
                 item.OnInvoke?.Invoke();
                 onDismiss?.Invoke();
             }
@@ -337,7 +342,8 @@ public static class Menu {
                     MenuItem chosen = items[current];
                     if (chosen.Children != null && chosen.Children.Count > 0) {
                         openSubmenuIndex.Set(current);
-                    } else {
+                    }
+                    else {
                         chosen.OnInvoke?.Invoke();
                         onDismiss?.Invoke();
                     }

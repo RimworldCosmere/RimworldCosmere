@@ -37,7 +37,7 @@ public class ImplantedMetalminds : HediffWithComps {
         for (int i = 0; i < metalminds.Count; i++) {
             ImplantedMetalmindData data = metalminds[i];
             string label = GetMetalmindLabel(data);
-            sb.AppendLine($"  - {label}: {data.storedAmount:F1} / {data.maxAmount:F0}");
+            sb.AppendLine($"  - {label}: {data.StoredAmount:F1} / {data.MaxAmount:F0}");
         }
 
         return sb.ToString().TrimEnd();

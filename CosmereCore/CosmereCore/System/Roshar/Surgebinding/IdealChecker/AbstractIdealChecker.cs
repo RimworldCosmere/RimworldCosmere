@@ -1,6 +1,7 @@
 using Cosmere.Core.Need;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
+using IIdealChecker = Cosmere.System.Roshar.Def.IIdealChecker;
 using Cosmere.System.Roshar.Settings;
 using RimWorld;
 using UnityEngine;
@@ -9,7 +10,7 @@ using TraitRequirement = Verse.TraitRequirement;
 
 namespace Cosmere.System.Roshar.Surgebinding.IdealChecker;
 
-public abstract class AbstractIdealChecker(RadiantOrderDef def) {
+public abstract class AbstractIdealChecker(RadiantOrderDef def) : IIdealChecker {
     protected readonly RadiantOrderDef def = def;
 
     public abstract bool IsSatisfied(Pawn pawn, Surgebinder surgebinder, int nextLevel);
@@ -23,7 +24,7 @@ public abstract class AbstractIdealChecker(RadiantOrderDef def) {
         return threshold * settings.progressionDifficulty;
     }
 
-    public virtual bool Satisfy(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
+    public virtual bool ConsummateOath(Pawn pawn, Surgebinder surgebinder, int nextLevel) {
         Pawn_NeedsTracker needs = pawn.needs;
 
         Thought_Memory oathThought = ThoughtMaker.MakeThought(ThoughtDefOf.Cosmere_Roshar_Thought_OathSpoken, 0);

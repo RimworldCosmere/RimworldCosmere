@@ -1,7 +1,7 @@
 using Cosmere.Core;
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Settings;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using Verse;
 
@@ -61,7 +61,7 @@ public class MistsWatcher(Verse.Map map) : MapComponent(map) {
 
                 if (!Rand.Chance(1f / 16f)) continue;
 
-                SnapUtility.TrySnap(pawn, "the mists");
+                SnapUtility.Snap(pawn, "the mists");
                 pawn.health.AddHediff(HediffDefOf.Cosmere_Scadrial_Hediff_MistComa).Severity = 1.0f;
             }
         }

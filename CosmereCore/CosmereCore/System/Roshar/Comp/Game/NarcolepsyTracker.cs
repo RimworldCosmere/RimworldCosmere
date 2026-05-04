@@ -22,7 +22,7 @@ public class NarcolepsyTracker : GameComponent {
         int nextTick = GenTicks.TicksGame + GenDate.TicksPerDay * 7;
         nextCollapseTicks.Add(nextTick);
         int ticksUntil = nextTick - GenTicks.TicksGame;
-        Logger.Info(
+        Logger.Verbose(
             $"NarcolepsyTracker: registered {pawn.NameShortColored}, next collapse in {ticksUntil} ticks ({ticksUntil / (float)GenDate.TicksPerDay:F1} days)"
         );
     }
@@ -52,28 +52,11 @@ public class NarcolepsyTracker : GameComponent {
             int nextInterval = GenDate.TicksPerDay * 7;
             nextCollapseTicks[i] = currentTick + nextInterval;
 
-            if (!pawn.Spawned) {
-                Logger.Verbose(
-                    $"NarcolepsyTracker: {pawn.NameShortColored} skipped (not spawned), next in {nextInterval / (float)GenDate.TicksPerDay:F1} days"
-                );
-                continue;
-            }
+            if (!pawn.Spawned) continue;
+            if (pawn.Downed || pawn.InBed()) continue;
+            if (pawn.health.hediffSet.HasHediff(collapseDef)) continue;
 
-            if (pawn.Downed || pawn.InBed()) {
-                Logger.Verbose(
-                    $"NarcolepsyTracker: {pawn.NameShortColored} skipped (downed/in bed), next in {nextInterval / (float)GenDate.TicksPerDay:F1} days"
-                );
-                continue;
-            }
-
-            if (pawn.health.hediffSet.HasHediff(collapseDef)) {
-                Logger.Verbose(
-                    $"NarcolepsyTracker: {pawn.NameShortColored} skipped (already collapsed), next in {nextInterval / (float)GenDate.TicksPerDay:F1} days"
-                );
-                continue;
-            }
-
-            Logger.Info(
+            Logger.Verbose(
                 $"NarcolepsyTracker: {pawn.NameShortColored} collapsing! Next in {nextInterval / (float)GenDate.TicksPerDay:F1} days"
             );
             pawn.health.AddHediff(HediffMaker.MakeHediff(collapseDef, pawn));

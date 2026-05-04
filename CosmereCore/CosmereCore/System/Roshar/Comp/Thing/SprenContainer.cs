@@ -6,26 +6,16 @@ using Verse;
 
 namespace Cosmere.System.Roshar.Comp.Thing;
 
-/// <summary>
-///     Component for storing captured lesser spren in gemstones
-///     This is a new system that works with the particle-based spren
-/// </summary>
 public class SprenContainer : ThingComp {
     private SprenType? capturedSprenType;
 
     public bool hasCapturedSpren => capturedSprenType.HasValue;
     public SprenType? CapturedSprenType => capturedSprenType;
 
-    /// <summary>
-    ///     Capture a spren of the specified type
-    /// </summary>
     public void CaptureSpren(SprenType sprenType) {
         capturedSprenType = sprenType;
     }
 
-    /// <summary>
-    ///     Release the captured spren
-    /// </summary>
     public void ReleaseSpren() {
         capturedSprenType = null;
     }
@@ -35,12 +25,12 @@ public class SprenContainer : ThingComp {
         Scribe_Values.Look(ref capturedSprenType, "capturedSprenType");
     }
 
-    public override string CompInspectStringExtra() {
+    public override string? CompInspectStringExtra() {
         if (hasCapturedSpren) {
             return $"Contains: {capturedSprenType} spren";
         }
 
-        return null!;
+        return null;
     }
 
     public override bool AllowStackWith(Verse.Thing other) {

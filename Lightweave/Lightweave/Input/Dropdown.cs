@@ -179,7 +179,7 @@ public static class Dropdown {
     ) {
         Font labelFont = theme.GetFont(style.LabelFontRole);
         int labelPixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-        GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize, style.LabelFontStyle);
+        GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelPixelSize, style.LabelFontStyle);
         labelStyle.alignment = variant == DropdownVariant.Button
             ? TextAnchor.MiddleCenter
             : Typography.Typography.ResolveAnchor(TextAlign.Start, dir);
@@ -191,7 +191,7 @@ public static class Dropdown {
 
         Font chevronFont = theme.GetFont(FontRole.Body);
         int chevronPixelSize = Mathf.RoundToInt(new Rem(1.25f).ToFontPx());
-        GUIStyle chevronStyle = GuiStyleCache.Get(chevronFont, chevronPixelSize);
+        GUIStyle chevronStyle = GuiStyleCache.GetOrCreate(chevronFont, chevronPixelSize);
         chevronStyle.alignment = TextAnchor.MiddleCenter;
         GUI.color = theme.GetColor(style.ChevronSlot);
         GUI.Label(RectSnap.Snap(chevronRect), "▾", chevronStyle);
@@ -224,7 +224,8 @@ public static class Dropdown {
             if (willOpen) {
                 SingletonOverlayRegistry.Open(isOpenKey);
                 highlightedIndex.Set(CurrentIndex(options, value));
-            } else {
+            }
+            else {
                 SingletonOverlayRegistry.Close(isOpenKey);
             }
 
@@ -259,21 +260,21 @@ public static class Dropdown {
         int capturedHighlight = highlightedIndex.Value;
         string capturedKey = isOpenKey;
         RenderContext.Current.PendingOverlays.Enqueue(() => {
-                Rect anchorHere = OverlayAnchor.ResolveLocal(anchorAbsolute);
-                RenderOpenDropdown(
-                    anchorHere,
-                    options,
-                    labelFn,
-                    value,
-                    capturedHighlight,
-                    highlightedIndex,
-                    typeAheadBuffer,
-                    typeAheadExpiry,
-                    onChange,
-                    isOpen,
-                    capturedKey
-                );
-            }
+            Rect anchorHere = OverlayAnchor.ResolveLocal(anchorAbsolute);
+            RenderOpenDropdown(
+                anchorHere,
+                options,
+                labelFn,
+                value,
+                capturedHighlight,
+                highlightedIndex,
+                typeAheadBuffer,
+                typeAheadExpiry,
+                onChange,
+                isOpen,
+                capturedKey
+            );
+        }
         );
     }
 
@@ -410,7 +411,7 @@ public static class Dropdown {
             Rect checkRect = new Rect(checkX, rowRect.y, checkPx, rowRect.height);
             Font checkFont = theme.GetFont(FontRole.Body);
             int checkPixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-            GUIStyle checkStyle = GuiStyleCache.Get(checkFont, checkPixelSize);
+            GUIStyle checkStyle = GuiStyleCache.GetOrCreate(checkFont, checkPixelSize);
             checkStyle.alignment = TextAnchor.MiddleCenter;
             Color savedCheck = GUI.color;
             GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
@@ -418,7 +419,8 @@ public static class Dropdown {
             GUI.color = savedCheck;
             if (rtl) {
                 labelStartX = checkX + checkPx + padPx;
-            } else {
+            }
+            else {
                 labelEndX = checkX - padPx;
             }
         }
@@ -426,7 +428,7 @@ public static class Dropdown {
         Rect labelRect = new Rect(labelStartX, rowRect.y, labelEndX - labelStartX, rowRect.height);
         Font labelFont = theme.GetFont(FontRole.Body);
         int labelPixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-        GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize);
+        GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelPixelSize);
         labelStyle.alignment = Typography.Typography.ResolveAnchor(TextAlign.Start, dir);
 
         Color savedColor = GUI.color;

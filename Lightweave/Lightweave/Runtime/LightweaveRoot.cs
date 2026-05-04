@@ -39,11 +39,13 @@ public static class LightweaveRoot {
                 ctx.FlushHotkeys();
                 ctx.PendingOverlays.Flush();
                 CursorOverrides.ApplyForFrame();
-            } finally {
+            }
+            finally {
                 ctx.PendingOverlays.Clear();
                 store.RetireUntouched();
             }
-        } finally {
+        }
+        finally {
             RenderContext.Clear();
         }
     }
@@ -78,7 +80,8 @@ public static class LightweaveRoot {
         };
         if (node.Paint != null) {
             node.Paint(node.MeasuredRect, paintChildren);
-        } else {
+        }
+        else {
             paintChildren();
         }
     }

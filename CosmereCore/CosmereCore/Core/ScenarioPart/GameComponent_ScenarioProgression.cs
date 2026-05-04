@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Core.ScenarioPart.Parts;
 using RimWorld;
 using Verse;
 
@@ -78,8 +79,9 @@ public class GameComponent_ScenarioProgression : GameComponent {
         for (int i = 0; i < evt.actions.Count; i++) {
             try {
                 evt.actions[i].Execute(this);
-            } catch (Exception ex) {
-                Logger.Warning($"ScenarioProgression: Failed to execute action for event '{evt.key}': {ex.Message}");
+            }
+            catch (Exception ex) {
+                Logger.Warning($"ScenarioProgression: Failed to execute action for event '${evt.key}': {ex}");
             }
         }
     }

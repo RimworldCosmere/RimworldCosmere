@@ -35,9 +35,11 @@ public static class StringExtension {
         // Find which range the ratio falls into
         if (ratio <= sortedBreakpoints[0].Key) {
             color = sortedBreakpoints[0].Value;
-        } else if (ratio >= sortedBreakpoints[^1].Key) {
+        }
+        else if (ratio >= sortedBreakpoints[^1].Key) {
             color = sortedBreakpoints[^1].Value;
-        } else {
+        }
+        else {
             // Interpolate between two breakpoints
             for (int i = 0; i < sortedBreakpoints.Length - 1; i++) {
                 float lowerThreshold = sortedBreakpoints[i].Key;

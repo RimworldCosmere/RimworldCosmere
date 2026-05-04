@@ -6,6 +6,7 @@ using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
+using Verse;
 using static Cosmere.Lightweave.Typography.Typography;
 
 namespace Cosmere.Lightweave.Input;
@@ -33,8 +34,6 @@ public static class IconButton {
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        _ = tooltipKey;
-
         LightweaveNode node = NodeBuilder.New("IconButton", line, file);
         node.Children.Add(icon);
 
@@ -51,6 +50,10 @@ public static class IconButton {
                 size,
                 size
             );
+
+            if (!string.IsNullOrEmpty(tooltipKey)) {
+                TooltipHandler.TipRegion(square, (string)tooltipKey.Translate());
+            }
 
             InteractionState state = InteractionState.Resolve(square, null, disabled);
 

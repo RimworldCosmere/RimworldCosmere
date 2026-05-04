@@ -150,10 +150,10 @@ public class Form : FoundationListing {
                 curX -= options.padding.left;
 
                 currentHeight += options.padding.top + options.padding.bottom;
-            } else {
+            }
+            else {
                 Rect rect = GetRect(height.Value).ContractedBy(options.padding);
-                Form sub = new Form
-                    { verticalSpacing = options.verticalSpacing, parentListing = this };
+                Form sub = new Form { verticalSpacing = options.verticalSpacing, parentListing = this };
 
                 sub.Contain(rect, drawContents);
                 currentHeight += height.Value + options.verticalSpacing;
@@ -202,17 +202,14 @@ public class Form : FoundationListing {
                     TooltipHandler.TipRegion(new Rect(0, 0, sub.listingRect.width, height), tooltip.Value);
                 }
 
-                // Create the label
                 float originalWidth = sub.ColumnWidth;
                 sub.ColumnWidth = fieldOptions.labelWidth;
                 using (subListingOptions.textBlock ?? new TextBlock(TextAnchor.MiddleLeft))
                     sub.Label(label, fieldOptions.height);
 
-                // Split
                 sub.NewColumn();
                 sub.ColumnWidth = originalWidth;
 
-                // Create the field
                 sub.ColumnWidth = Mathf.Max(
                     fieldOptions.minimumColumnWidth,
                     sub.ColumnWidth -

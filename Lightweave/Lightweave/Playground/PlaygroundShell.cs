@@ -38,7 +38,8 @@ public static class PlaygroundShell {
             if (rtl) {
                 railRect = new Rect(rowRect.xMax - railWidth, rowRect.y, railWidth, rowRect.height);
                 bodyRect = new Rect(rowRect.x, rowRect.y, rowRect.width - railWidth, rowRect.height);
-            } else {
+            }
+            else {
                 railRect = new Rect(rowRect.x, rowRect.y, railWidth, rowRect.height);
                 bodyRect = new Rect(rowRect.x + railWidth, rowRect.y, rowRect.width - railWidth, rowRect.height);
             }
@@ -53,7 +54,8 @@ public static class PlaygroundShell {
                     bodyRect.width - bodyLeadingPad - bodyTrailingPad,
                     bodyRect.height - bodyBottomMargin
                 );
-            } else {
+            }
+            else {
                 bodyRect = new Rect(
                     bodyRect.x + bodyLeadingPad,
                     bodyRect.y,

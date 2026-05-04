@@ -93,29 +93,29 @@ public sealed class RadialWindow : Verse.Window {
                 );
                 break;
             case RadialStateKind.SubsectionTier: {
-                RadialSystem sys = snapshot.Systems[state.SelectedSystemIndex];
-                state.HoveredIndex = RadialLayout.HitTest(
-                    mouse,
-                    center,
-                    RadialLayout.SubsectionRingInner,
-                    RadialLayout.SubsectionRingOuter,
-                    sys.Subsections.Count
-                );
-                break;
-            }
+                    RadialSystem sys = snapshot.Systems[state.SelectedSystemIndex];
+                    state.HoveredIndex = RadialLayout.HitTest(
+                        mouse,
+                        center,
+                        RadialLayout.SubsectionRingInner,
+                        RadialLayout.SubsectionRingOuter,
+                        sys.Subsections.Count
+                    );
+                    break;
+                }
             case RadialStateKind.AbilityTier: {
-                RadialSubsection sub = snapshot
-                    .Systems[state.SelectedSystemIndex]
-                    .Subsections[state.SelectedSubsectionIndex];
-                state.HoveredIndex = RadialLayout.HitTest(
-                    mouse,
-                    center,
-                    RadialLayout.AbilityRingInner,
-                    RadialLayout.AbilityRingOuter,
-                    sub.Leaves.Count
-                );
-                break;
-            }
+                    RadialSubsection sub = snapshot
+                        .Systems[state.SelectedSystemIndex]
+                        .Subsections[state.SelectedSubsectionIndex];
+                    state.HoveredIndex = RadialLayout.HitTest(
+                        mouse,
+                        center,
+                        RadialLayout.AbilityRingInner,
+                        RadialLayout.AbilityRingOuter,
+                        sub.Leaves.Count
+                    );
+                    break;
+                }
         }
     }
 
@@ -133,7 +133,7 @@ public sealed class RadialWindow : Verse.Window {
         }
 
         RadialSubsection sub = sys.Subsections[state.SelectedSubsectionIndex];
-        ISystemSkin skin = SystemSkinRegistry.For(sys.SystemId);
+        ISystemSkin skin = SystemSkinRegistry.ForOrFallback(sys.SystemId);
         RadialRingRenderer.DrawAbilityRing(center, sub, skin, state.HoveredIndex);
     }
 
@@ -144,7 +144,8 @@ public sealed class RadialWindow : Verse.Window {
         if (e.type == EventType.MouseDown && e.button == 1) {
             if (state.Kind == RadialStateKind.SystemTier) {
                 Close(false);
-            } else {
+            }
+            else {
                 state.Back();
             }
 

@@ -29,7 +29,7 @@ public static partial class Doc {
 
         GUIStyle HeaderStyle(Theme.Theme theme) {
             Font f = theme.GetFont(FontRole.Body);
-            GUIStyle s = GuiStyleCache.Get(f, Mathf.RoundToInt(headerFontPx), FontStyle.Bold);
+            GUIStyle s = GuiStyleCache.GetOrCreate(f, Mathf.RoundToInt(headerFontPx), FontStyle.Bold);
             s.alignment = TextAnchor.MiddleLeft;
             s.clipping = TextClipping.Clip;
             s.wordWrap = false;
@@ -39,7 +39,7 @@ public static partial class Doc {
         GUIStyle BodyStyle(Theme.Theme theme, bool mono) {
             Font f = theme.GetFont(mono ? FontRole.Mono : FontRole.Body);
             float px = mono ? monoFontPx : bodyFontPx;
-            GUIStyle s = GuiStyleCache.Get(f, Mathf.RoundToInt(px));
+            GUIStyle s = GuiStyleCache.GetOrCreate(f, Mathf.RoundToInt(px));
             s.alignment = TextAnchor.UpperLeft;
             s.wordWrap = true;
             s.clipping = TextClipping.Clip;

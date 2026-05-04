@@ -123,7 +123,8 @@ public static class NumberField {
 
             if (disabled) {
                 InputSurface.DrawReadOnlyValue(inner, buffer.Value ?? string.Empty, theme);
-            } else {
+            }
+            else {
                 Font nfFont = theme.GetFont(FontRole.Body);
                 int nfSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
                 Color nfTextColor = theme.GetColor(ThemeSlot.TextPrimary);
@@ -156,7 +157,8 @@ public static class NumberField {
                     syncedValue.Current = true;
                     buffer.Set(effectiveFormat(clamped));
                     onChange?.Invoke(clamped);
-                } else {
+                }
+                else {
                     buffer.Set(effectiveFormat(lastGood.Current));
                     shakeFrames.Set(ShakeFrames);
                 }

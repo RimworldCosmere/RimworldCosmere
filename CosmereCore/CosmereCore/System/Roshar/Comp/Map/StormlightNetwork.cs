@@ -122,11 +122,13 @@ public class StormlightNetwork(Verse.Map map) : MapComponent(map) {
                 grid.receivers.Add(receiver);
                 receiver.Network = grid;
                 assignedBuildings.Add(thing);
-            } else if (thing.TryGetComp(out StormlightBattery battery)) {
+            }
+            else if (thing.TryGetComp(out StormlightBattery battery)) {
                 grid.batteries.Add(battery);
                 battery.Network = grid;
                 assignedBuildings.Add(thing);
-            } else if (thing.TryGetComp(out StormlightCharger charger)) {
+            }
+            else if (thing.TryGetComp(out StormlightCharger charger)) {
                 grid.chargers.Add(charger);
                 charger.Network = grid;
                 assignedBuildings.Add(thing);

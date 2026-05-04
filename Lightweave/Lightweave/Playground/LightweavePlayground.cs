@@ -198,7 +198,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
         currentTheme = themeHandle.Value;
 
         LightweaveNode header = PlaygroundHeader.Create(themeHandle, forceDisabledHandle);
-        LightweaveNode rail = Layout.Layout.ScrollArea.Create(PlaygroundRail.Create(Categories, selectedPrimitiveHandle));
+        LightweaveNode rail = Layout.ScrollArea.Create(PlaygroundRail.Create(Categories, selectedPrimitiveHandle));
         LightweaveNode body = BuildBody(selectedPrimitiveHandle.Value, forceDisabledHandle.Value, docCtxRef.Current);
 
         return PlaygroundShell.Create(header, rail, body);
@@ -262,25 +262,25 @@ public sealed class LightweavePlayground : LightweaveWindow {
             docs
         );
 
-        LightweaveNode docStack = Layout.Layout.Stack.Create(
+        LightweaveNode docStack = Layout.Stack.Create(
             SpacingScale.None,
             s => {
-                s.Add(Layout.Layout.Spacer.Fixed(SpacingScale.Lg));
+                s.Add(Layout.Spacer.Fixed(SpacingScale.Lg));
                 s.Add(panel.Body);
-                s.Add(Layout.Layout.Spacer.Fixed(SpacingScale.Xxl));
+                s.Add(Layout.Spacer.Fixed(SpacingScale.Xxl));
             }
         );
 
-        LightweaveNode contained = Layout.Layout.Container.Create(
+        LightweaveNode contained = Layout.Container.Create(
             docStack,
             new Rem(56f),
             new EdgeInsets(Top: SpacingScale.None, Right: SpacingScale.Xl, Bottom: SpacingScale.None, Left: SpacingScale.Xl)
         );
-        LightweaveNode mainScroll = Layout.Layout.ScrollArea.External(contained, ctx.Scroll);
+        LightweaveNode mainScroll = Layout.ScrollArea.External(contained, ctx.Scroll);
 
         LightweaveNode tocNode = BuildTocColumn(panel.TocEntries, ctx);
 
-        LightweaveNode bodyHStack = Layout.Layout.HStack.Create(
+        LightweaveNode bodyHStack = Layout.HStack.Create(
             SpacingScale.None,
             r => {
                 r.AddFlex(mainScroll);
@@ -293,7 +293,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
 
     private static LightweaveNode BuildTocColumn(IReadOnlyList<TocEntry> entries, DocContext ctx) {
         if (entries.Count == 0) {
-            return Layout.Layout.Spacer.Fixed(new Rem(0f));
+            return Layout.Spacer.Fixed(new Rem(0f));
         }
 
         LightweaveNode toc = Doc.Doc.TableOfContents(
@@ -302,7 +302,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
             ctx
         );
 
-        return Layout.Layout.Box.Create(
+        return Layout.Box.Create(
             new EdgeInsets(Top: SpacingScale.Xl, Right: SpacingScale.Lg, Bottom: SpacingScale.Xl, Left: SpacingScale.Lg),
             null,
             null,

@@ -97,7 +97,8 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             Rect draftedLabel = new Rect(row.x + 160f, row.y + 8f, row.width - 200f, 24f);
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
                 Widgets.Label(draftedLabel, "CC_Autocast_Editor_FiresWhileDrafted".Translate());
-        } else {
+        }
+        else {
             Rect cmpRect = new Rect(row.x + 160f, row.y + 8f, 80f, 24f);
             if (Widgets.ButtonText(cmpRect, ComparisonLabel(trigger.Comparison))) {
                 List<FloatMenuOption> opts = [];
@@ -137,8 +138,6 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             AutocastTriggerKind.HealthPercent => "CC_Autocast_Trigger_HealthPercent".Translate(),
             AutocastTriggerKind.ReservePercent => "CC_Autocast_Trigger_ReservePercent".Translate(),
             AutocastTriggerKind.Drafted => "CC_Autocast_Trigger_Drafted".Translate(),
-            AutocastTriggerKind.EnemyWithinCells => "CC_Autocast_Trigger_EnemyWithinCells".Translate(),
-            AutocastTriggerKind.AllyWithinCells => "CC_Autocast_Trigger_AllyWithinCells".Translate(),
             _ => kind.ToString(),
         };
     }

@@ -1,3 +1,6 @@
+using Cosmere.Core.ScenarioPart.Action;
+using Cosmere.Core.ScenarioPart.Trigger;
+
 namespace Cosmere.Core.ScenarioPart;
 
 public class ProgressionEvent {

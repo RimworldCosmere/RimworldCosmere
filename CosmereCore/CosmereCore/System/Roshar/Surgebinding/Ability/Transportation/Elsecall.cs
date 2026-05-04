@@ -8,15 +8,15 @@ public class Elsecall : SurgebindingAbility {
     public Elsecall(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return false;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return false;
 
         IntVec3 cell = target.Cell;
         Map map = pawn.Map;
 
         if (!cell.Standable(map)) return false;
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
 
         IntVec3 origin = pawn.Position;
 

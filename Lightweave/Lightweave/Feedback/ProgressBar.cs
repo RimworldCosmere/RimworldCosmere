@@ -59,7 +59,7 @@ public static class ProgressBar {
             if (!string.IsNullOrEmpty(label)) {
                 Font font = theme.GetFont(FontRole.BodyBold);
                 int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
-                GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Bold);
+                GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
                 style.alignment = TextAnchor.MiddleCenter;
 
                 float midX = rect.x + rect.width / 2f;

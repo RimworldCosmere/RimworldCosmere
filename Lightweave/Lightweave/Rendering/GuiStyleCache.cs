@@ -10,7 +10,7 @@ public static class GuiStyleCache {
     private static readonly LinkedList<Key> lru = new LinkedList<Key>();
     private static readonly Dictionary<Key, LinkedListNode<Key>> lruNodes = new Dictionary<Key, LinkedListNode<Key>>();
 
-    public static GUIStyle Get(Font font, int pixelSize, FontStyle fontStyle = FontStyle.Normal) {
+    public static GUIStyle GetOrCreate(Font font, int pixelSize, FontStyle fontStyle = FontStyle.Normal) {
         Key key = new Key(font, pixelSize, fontStyle);
         if (cache.TryGetValue(key, out GUIStyle style)) {
             Touch(key);

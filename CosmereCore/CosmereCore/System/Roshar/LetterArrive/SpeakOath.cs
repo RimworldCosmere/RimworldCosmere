@@ -26,7 +26,7 @@ public class SpeakOath : ChoiceLetter {
             DiaOption openDialog = new DiaOption("CRO_SpeakOath_ViewOath".Translate()) {
                 action = () => {
                     Find.WindowStack.Add(
-                        new RadiantOrderInfoDialog(
+                        new Dialog_RadiantOrderInfoDialog(
                             targetPawn,
                             surgebinder,
                             RadiantOrderInfoMode.SpeakOath

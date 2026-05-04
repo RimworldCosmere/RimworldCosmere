@@ -1,9 +1,12 @@
+using System;
 using Cosmere.Core.Savant;
+using Cosmere.System.Scadrial.Savant;
+using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Feruchemy;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Hediff;
 using Cosmere.System.Scadrial.Gizmo;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -34,7 +37,7 @@ public class Feruchemist : Metalborn {
             List<Verse.Thing> items = pawn.inventory.innerContainer.InnerListForReading;
             for (int i = 0; i < items.Count; i++) {
                 Metalmind? comp = items[i].TryGetComp<Metalmind>();
-                if (comp != null && comp.metal == metal) cachedMetalminds.Add(comp);
+                if (comp != null && comp.Metal == metal) cachedMetalminds.Add(comp);
             }
 
             ImplantedMetalminds? implantHediff =
@@ -43,7 +46,7 @@ public class Feruchemist : Metalborn {
             if (implantHediff != null) {
                 for (int i = 0; i < implantHediff.metalminds.Count; i++) {
                     ImplantedMetalmindData data = implantHediff.metalminds[i];
-                    if (data.metal == metal) cachedMetalminds.Add(data);
+                    if (data.Metal == metal) cachedMetalminds.Add(data);
                 }
             }
 
@@ -57,7 +60,7 @@ public class Feruchemist : Metalborn {
             float total = 0f;
             List<IMetalmindSource> mms = metalminds;
             for (int i = 0; i < mms.Count; i++) {
-                total += mms[i].maxAmount;
+                total += mms[i].MaxAmount;
             }
 
             return total;
@@ -69,7 +72,7 @@ public class Feruchemist : Metalborn {
             float total = 0f;
             List<IMetalmindSource> mms = metalminds;
             for (int i = 0; i < mms.Count; i++) {
-                total += mms[i].storedAmount;
+                total += mms[i].StoredAmount;
             }
 
             return total;
@@ -78,7 +81,31 @@ public class Feruchemist : Metalborn {
 
     public override float InitialResourceMax => 100f;
     public override float Max => 100f;
-    public override float Value => actualMax <= 0f ? 0f : actualValue / actualMax * Max;
+
+    public override float Value {
+        get => actualMax <= 0f ? 0f : actualValue / actualMax * Max;
+        set {
+            if (actualMax <= 0f) return;
+            float targetTotal = value / Max * actualMax;
+            float delta = targetTotal - actualValue;
+            List<IMetalmindSource> mms = metalminds;
+            if (delta > 0f) {
+                for (int i = 0; i < mms.Count && delta > 0f; i++) {
+                    if (!mms[i].CanStore) continue;
+                    float add = Mathf.Min(mms[i].MaxAmount - mms[i].StoredAmount, delta);
+                    if (add > 0f) { mms[i].AddStored(add); delta -= add; }
+                }
+            }
+            else if (delta < 0f) {
+                delta = -delta;
+                for (int i = 0; i < mms.Count && delta > 0f; i++) {
+                    if (!mms[i].CanTap) continue;
+                    float remove = Mathf.Min(mms[i].StoredAmount, delta);
+                    if (remove > 0f) { mms[i].ConsumeStored(remove); delta -= remove; }
+                }
+            }
+        }
+    }
 
     private HediffDef? tapHediffDef =>
         cachedTapHediffDef ??= DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_Tap" + metal.defName);
@@ -98,16 +125,16 @@ public class Feruchemist : Metalborn {
     private Hediff? compoundHediff => pawn.health.hediffSet.GetFirstHediffOfDef(compoundHediffDef);
 
     private HediffDef? savantHediffDef =>
-        cachedSavantHediffDef ??= SavantUtility.GetFeruchemicalSavantHediffDef(metal);
+        cachedSavantHediffDef ??= ScadrialSavantUtility.GetFeruchemicalSavantHediffDef(metal);
 
     private HediffDef? permanentHediffDef =>
-        cachedPermanentHediffDef ??= SavantUtility.GetFeruchemicalPermanentHediffDef(metal);
+        cachedPermanentHediffDef ??= ScadrialSavantUtility.GetFeruchemicalPermanentHediffDef(metal);
 
     public bool canTap {
         get {
             List<IMetalmindSource> mms = metalminds;
             for (int i = 0; i < mms.Count; i++) {
-                if (mms[i].canTap) return true;
+                if (mms[i].CanTap) return true;
             }
 
             return false;
@@ -120,7 +147,7 @@ public class Feruchemist : Metalborn {
         get {
             List<IMetalmindSource> mms = metalminds;
             for (int i = 0; i < mms.Count; i++) {
-                if (mms[i].canStore) return true;
+                if (mms[i].CanStore) return true;
             }
 
             return false;
@@ -151,23 +178,22 @@ public class Feruchemist : Metalborn {
     }
 
 
+    private void TryRemoveHediffByDef(HediffDef? def) {
+        if (def == null) return;
+        Hediff? hediff = pawn.health.hediffSet.GetFirstHediffOfDef(def);
+        if (hediff != null) pawn.health.RemoveHediff(hediff);
+    }
+
     public override void Reset() {
         targetValue = 50f;
         if (gizmo != null) gizmo.targetValuePercent = .5f;
-        if (storeHediffDef != null && pawn.health.hediffSet.HasHediff(storeHediffDef)) {
-            Hediff? sh = storeHediff;
-            if (sh != null) pawn.health.RemoveHediff(sh);
-        }
-
-        if (tapHediffDef != null && pawn.health.hediffSet.HasHediff(tapHediffDef)) {
-            Hediff? th = tapHediff;
-            if (th != null) pawn.health.RemoveHediff(th);
-        }
+        TryRemoveHediffByDef(storeHediffDef);
+        TryRemoveHediffByDef(tapHediffDef);
     }
 
     protected override void PostAddOrRemove() {
-        MetalbornUtility.HandleFullFeruchemistTrait(pawn);
-        MetalbornUtility.HandleFeruchemistTrait(pawn);
+        MetalbornUtility.SyncFullFeruchemistTrait(pawn);
+        MetalbornUtility.SyncFeruchemistTrait(pawn);
     }
 
     public override void TickInterval(int delta) {
@@ -175,63 +201,66 @@ public class Feruchemist : Metalborn {
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
 
-        if (metal?.defName == "Copper") {
-            List<IMetalmindSource> mms = metalminds;
-            for (int i = 0; i < mms.Count; i++) {
-                if (mms[i] is Metalmind mm) mm.SyncInjectedThoughts(pawn);
-            }
-        }
-
+        TickCopper();
         if (!canTap && isTapping && !isCompounding) Reset();
         if (!canStore && isStoring && !isCompounding) Reset();
+        TickSeverityHediffs();
+        TickStoreOrTap();
+        TickXPGain(delta);
+        UpdateFeruchemicalSavantProgression(delta);
+    }
 
-        if (effectiveSeverity > 0f) {
-            if (targetValue < 50 && canTap) {
-                if (storeHediffDef != null && pawn.health.hediffSet.HasHediff(storeHediffDef)) {
-                    Hediff? sh = storeHediff;
-                    if (sh != null) pawn.health.RemoveHediff(sh);
-                }
-
-                pawn.health.GetOrAddHediff(tapHediffDef).Severity = effectiveSeverity;
-            } else if (targetValue > 50 && canStore) {
-                if (tapHediffDef != null && pawn.health.hediffSet.HasHediff(tapHediffDef)) {
-                    Hediff? th = tapHediff;
-                    if (th != null) pawn.health.RemoveHediff(th);
-                }
-
-                pawn.health.GetOrAddHediff(storeHediffDef).Severity = effectiveSeverity;
-            }
+    private void TickCopper() {
+        if (metal != MetallicArtsMetalDefOf.Copper) return;
+        List<IMetalmindSource> mms = metalminds;
+        for (int i = 0; i < mms.Count; i++) {
+            if (mms[i] is Metalmind mm) mm.SyncInjectedThoughts(pawn);
         }
+    }
 
+    private void TickSeverityHediffs() {
+        if (effectiveSeverity <= 0f) return;
+        if (targetValue < 50 && canTap) {
+            TryRemoveHediffByDef(storeHediffDef);
+            pawn.health.GetOrAddHediff(tapHediffDef).Severity = effectiveSeverity;
+        }
+        else if (targetValue > 50 && canStore) {
+            TryRemoveHediffByDef(tapHediffDef);
+            pawn.health.GetOrAddHediff(storeHediffDef).Severity = effectiveSeverity;
+        }
+    }
+
+    private void TickStoreOrTap() {
         if (isStoring) {
             Hediff? sh = storeHediff;
             if (sh != null) AddToStore(AmountPerRareTick * sh.Severity);
-        } else if (isTapping) {
+        }
+        else if (isTapping) {
             Hediff? th = tapHediff;
             if (th != null) RemoveFromStore(AmountPerRareTick * th.Severity);
         }
+    }
 
-        if (pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) {
-            if (isCompounding) {
-                pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
-                    .Learn(10 * Constants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
-                pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower)
-                    .Learn(10 * Constants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
-            } else if (isTapping || isStoring) {
-                pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
-                    .Learn(
-                        Mathf.Lerp(1, 2, effectiveSeverity) * Constants.FeruchemyXPPerTick * GenTicks.TickLongInterval
-                    );
-            }
+    private void TickXPGain(int delta) {
+        if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
+        if (isCompounding) {
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
+                .Learn(10 * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower)
+                .Learn(10 * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval);
         }
-
-        CheckFeruchemicalSavantProgression(delta);
+        else if (isTapping || isStoring) {
+            pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower)
+                .Learn(
+                    Mathf.Lerp(1, 2, effectiveSeverity) * ScadrialMetallurgyConstants.FeruchemyXPPerTick * GenTicks.TickLongInterval
+                );
+        }
     }
 
     public bool AddToStore(float amount) {
         List<IMetalmindSource> mms = metalminds;
         for (int i = 0; i < mms.Count; i++) {
-            if (!mms[i].canStore) continue;
+            if (!mms[i].CanStore) continue;
             mms[i].AddStored(amount);
             return true;
         }
@@ -242,7 +271,7 @@ public class Feruchemist : Metalborn {
     public bool RemoveFromStore(float amount) {
         List<IMetalmindSource> mms = metalminds;
         for (int i = 0; i < mms.Count; i++) {
-            if (!mms[i].canTap) continue;
+            if (!mms[i].CanTap) continue;
             mms[i].ConsumeStored(amount);
             return true;
         }
@@ -254,7 +283,7 @@ public class Feruchemist : Metalborn {
         return [];
     }
 
-    private void CheckFeruchemicalSavantProgression(int delta) {
+    private void UpdateFeruchemicalSavantProgression(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
         if (!SavantUtility.CanBeSavant(metal)) return;
 
@@ -276,25 +305,7 @@ public class Feruchemist : Metalborn {
 
         cachedSavantStage = newStage;
 
-        if (newStage > 0 && savantHediffDef != null) {
-            Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(savantHediffDef);
-            if (existing == null) {
-                Hediff hediff = HediffMaker.MakeHediff(savantHediffDef, pawn);
-                hediff.Severity = SavantUtility.SeverityForStage(newStage);
-                pawn.health.AddHediff(hediff);
-            } else {
-                existing.Severity = SavantUtility.SeverityForStage(newStage);
-            }
-        } else if (newStage == 0 && savantHediffDef != null) {
-            Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(savantHediffDef);
-            if (existing != null) pawn.health.RemoveHediff(existing);
-        }
-
-        if (newStage >= 3 && previousStage < 3 && permanentHediffDef != null) {
-            if (!pawn.health.hediffSet.HasHediff(permanentHediffDef)) {
-                pawn.health.AddHediff(HediffMaker.MakeHediff(permanentHediffDef, pawn));
-            }
-        }
+        SavantUtility.UpdateSavantHediffState(pawn, previousStage, newStage, savantHediffDef, permanentHediffDef);
 
         if (newStage > previousStage && newStage > 0) {
             SavantUtility.SendSavantLetter(pawn, newStage, "Feruchemy", metal.LabelCap);

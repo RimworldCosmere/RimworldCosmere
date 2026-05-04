@@ -83,7 +83,5 @@
   <CC_Autocast_Trigger_HealthPercent>Health %</CC_Autocast_Trigger_HealthPercent>
   <CC_Autocast_Trigger_ReservePercent>Reserve %</CC_Autocast_Trigger_ReservePercent>
   <CC_Autocast_Trigger_Drafted>Drafted</CC_Autocast_Trigger_Drafted>
-  <CC_Autocast_Trigger_EnemyWithinCells>Enemy within cells</CC_Autocast_Trigger_EnemyWithinCells>
-  <CC_Autocast_Trigger_AllyWithinCells>Ally within cells</CC_Autocast_Trigger_AllyWithinCells>
 
 </LanguageData>

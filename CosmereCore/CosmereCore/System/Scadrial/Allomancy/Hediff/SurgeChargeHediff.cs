@@ -59,7 +59,7 @@ public class SurgeChargeHediff : AllomanticHediff {
 
         FleckMaker.ThrowLightningGlow(pawn.DrawPos, pawn.Map, 1.2f);
 
-        IAbility<Allomancer, IHediff<Allomancer>>[] snapshot = [.. sourceAbilities];
+        IAbility<Allomancer, IHediff<Allomancer>>[] snapshot = [.. SourceAbilities];
         for (int i = 0; i < snapshot.Length; i++) {
             if (snapshot[i] is not AllomancyAbility sourceAbility || !sourceAbility.atLeastBurning) continue;
             if (sourceAbility.pawn.genes == null) continue;

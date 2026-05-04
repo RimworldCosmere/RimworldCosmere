@@ -2,7 +2,7 @@ using Cosmere.Core.Ability;
 using Cosmere.Core.Hediff;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using Verse;
 
 namespace Cosmere.System.Scadrial.Allomancy.Hediff;
@@ -16,11 +16,11 @@ public class AllomanticHediff : AbstractHediff<Allomancer> {
         ability
     ) { }
 
-    public MetallicArtsMetalDef metal => gene.metal;
+    public MetallicArtsMetalDef metal => Gene.metal;
 
     public override void TickInterval(int delta) {
-        SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);
-        if (def.defName != surge?.def.defName && surge != null && severityCalculator != null) {
+        SurgeChargeHediff? surge = AllomancyUtility.FindSurgeChargeHediff(pawn);
+        if (surge != null && severityCalculator != null && def.defName != surge.def.defName) {
             surge.Burn(
                 severityCalculator.RecalculateSeverity,
                 GenTicks.TicksPerRealSecond,

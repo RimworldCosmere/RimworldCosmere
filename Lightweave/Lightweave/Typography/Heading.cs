@@ -4,7 +4,7 @@ using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
-using static Cosmere.Lightweave.Layout.Layout;
+using Cosmere.Lightweave.Layout;
 using static Cosmere.Lightweave.Doc.DocChips;
 using static Cosmere.Lightweave.Typography.Typography;
 

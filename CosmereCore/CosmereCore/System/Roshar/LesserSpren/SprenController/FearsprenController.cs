@@ -34,7 +34,7 @@ public class FearsprenController : DynamicSprenController {
         List<SprenSpawnInformation> spawnInfos = [];
 
         foreach (Pawn pawn in map.mapPawns.FreeColonistsSpawned) {
-            if (pawn?.Position == null || pawn.needs?.mood == null) continue;
+            if (!pawn.Spawned || pawn.needs?.mood == null) continue;
 
             bool isFearful = false;
             float fearIntensity = cellSpawnChance; // Base spawn chance
@@ -54,11 +54,13 @@ public class FearsprenController : DynamicSprenController {
                 // Very close to extreme mental break
                 isFearful = true;
                 fearIntensity = Mathf.Max(fearIntensity, 0.8f);
-            } else if (currentMood <= majorBreakThreshold + 0.1f) {
+            }
+            else if (currentMood <= majorBreakThreshold + 0.1f) {
                 // Close to major mental break
                 isFearful = true;
                 fearIntensity = Mathf.Max(fearIntensity, 0.5f);
-            } else if (currentMood < 0.25f) {
+            }
+            else if (currentMood < 0.25f) {
                 // Generally very low mood (likely stressed/fearful)
                 isFearful = true;
                 fearIntensity = Mathf.Max(fearIntensity, 0.3f);
@@ -113,10 +115,12 @@ public class FearsprenController : DynamicSprenController {
         if (currentMood <= extremeThreshold + 0.05f) {
             isFearful = true;
             fearIntensity = Mathf.Max(fearIntensity, 0.8f);
-        } else if (currentMood <= majorThreshold + 0.1f) {
+        }
+        else if (currentMood <= majorThreshold + 0.1f) {
             isFearful = true;
             fearIntensity = Mathf.Max(fearIntensity, 0.5f);
-        } else if (currentMood < 0.25f) {
+        }
+        else if (currentMood < 0.25f) {
             isFearful = true;
             fearIntensity = Mathf.Max(fearIntensity, 0.3f);
         }

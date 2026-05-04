@@ -1,7 +1,7 @@
 using Cosmere.System.Scadrial.Def;
 using RimWorld;
 using Verse;
-using GeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;
+using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
 using Logger = Cosmere.Core.Logger;
 
 namespace Cosmere.System.Scadrial.Thing;
@@ -82,7 +82,7 @@ public class AllomanticMetal : AllomanticVial {
             ingester,
             MessageTypeDefOf.PositiveEvent
         );
-        ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(Constants.RawMetalMetalAmount);
+        ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(ScadrialMetallurgyConstants.RawMetalMetalAmount);
 
         ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedRawMetal);
     }

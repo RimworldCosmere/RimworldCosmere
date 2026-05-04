@@ -38,10 +38,10 @@ public class StrainedBond : HediffWithComps {
             return;
         }
 
-        float idealMultiplier = 1f + surgebinder.currentIdeal * 0.25f;
+        float idealMultiplier = 1f + surgebinder.CurrentIdeal * 0.25f;
         float personalityMultiplier = 1f;
         if (bondTarget is Pawn sprenPawn) {
-            CompSprenBond? sprenBond = sprenPawn.TryGetComp<CompSprenBond>();
+            SprenBond? sprenBond = sprenPawn.TryGetComp<SprenBond>();
             if (sprenBond != null) {
                 personalityMultiplier = sprenBond.GetRecoveryMultiplier();
             }

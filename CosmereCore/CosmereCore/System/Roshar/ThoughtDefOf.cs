@@ -22,6 +22,9 @@ public static class ThoughtDefOf {
     [MayRequire("Cosmere.Roshar")]
     public static ThoughtDef Cosmere_Roshar_Thought_BrokenBond;
 
+    [MayRequire("Cosmere.Roshar")]
+    public static ThoughtDef Cosmere_Roshar_Thought_SoulcastBurial;
+
     static ThoughtDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThoughtDefOf));
     }

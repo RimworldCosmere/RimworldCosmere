@@ -1,10 +1,9 @@
-using System;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.DefModExtension;
 using Cosmere.Core.Investiture;
 using RimWorld;
-using UnityEngine;
 using Verse;
+using UnityEngine;
 
 namespace Cosmere.Core.Gene;
 
@@ -14,26 +13,23 @@ public abstract class Invested : Gene_Resource {
 
     public List<DrainSource> Sources => sources;
 
-    public virtual float minimumAmount => 0;
-    public virtual string investitureLabel => "";
-    public virtual float maxInvestitureLevel => -1f;
+    public virtual float MinimumAmount => 0;
+    public virtual string InvestitureLabel => "";
+    public virtual float MaxInvestitureLevel => -1f;
     public override float InitialResourceMax => 1f;
     public override float MinLevelForAlert => .15f;
     public override float MaxLevelOffset => .1f;
 
-    public override float Max => throw new NotImplementedException("Subclass must override Max");
+    public abstract override float Max { get; }
 
-    public override float Value {
-        get => throw new NotImplementedException("Subclass must override Value");
-        set => throw new NotImplementedException("Subclass must override Value");
-    }
+    public abstract override float Value { get; set; }
 
     public override float ValuePercent => Max > 0 ? Value / Max : 0;
 
     public override int ValueForDisplay => PostProcessValue(Value);
     public override int MaxForDisplay => PostProcessValue(Max);
 
-    public virtual List<AbilityDef> abilities => def.abilities;
+    public virtual List<AbilityDef> Abilities => def.abilities;
 
     protected Need.Investiture investiture => pawn.needs.TryGetNeed<Need.Investiture>();
     protected InvestitureHolder investitureHolder => pawn.TryGetComp<InvestitureHolder>();
@@ -78,7 +74,7 @@ public abstract class Invested : Gene_Resource {
     }
 
     public void RemoveFromReserve(float amount) {
-        Value = Mathf.Max(minimumAmount, Value - amount);
+        Value = Mathf.Max(MinimumAmount, Value - amount);
     }
 
     public void AddToReserve(float amount) {
@@ -86,7 +82,7 @@ public abstract class Invested : Gene_Resource {
     }
 
     public void SetReserve(float amount) {
-        Value = Mathf.Clamp(amount, minimumAmount, Max);
+        Value = Mathf.Clamp(amount, MinimumAmount, Max);
     }
 
     public void WipeReserve() {

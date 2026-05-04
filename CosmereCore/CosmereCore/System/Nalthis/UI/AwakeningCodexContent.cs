@@ -28,7 +28,7 @@ public sealed class AwakeningCodexContent : ICodexContentProvider {
         return null;
     }
 
-    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
+    public void DrawProgression(Rect rect, Pawn pawn, CodexState state) {
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
             Widgets.Label(
                 new Rect(rect.x, rect.y, rect.width, 30f),
@@ -42,6 +42,6 @@ public sealed class AwakeningCodexContent : ICodexContentProvider {
             );
     }
 
-    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) { }
-    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) { }
+    public void DrawBonds(Rect rect, Pawn pawn, CodexState state) { }
+    public void DrawMemories(Rect rect, Pawn pawn, CodexState state) { }
 }

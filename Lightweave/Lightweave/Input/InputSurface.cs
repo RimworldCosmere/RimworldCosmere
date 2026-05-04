@@ -134,7 +134,7 @@ internal static class InputSurface {
 
         Font font = theme.GetFont(FontRole.Body);
         int size = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-        GUIStyle style = GuiStyleCache.Get(font, size);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, size);
         style.alignment = anchor;
         Color savedColor = GUI.color;
         GUI.color = theme.GetColor(ThemeSlot.TextMuted);
@@ -145,7 +145,7 @@ internal static class InputSurface {
     public static void DrawReadOnlyValue(Rect inner, string? value, Theme.Theme theme, TextAnchor anchor = TextAnchor.MiddleLeft) {
         Font font = theme.GetFont(FontRole.Body);
         int size = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-        GUIStyle style = GuiStyleCache.Get(font, size);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, size);
         style.alignment = anchor;
         Color savedColor = GUI.color;
         GUI.color = theme.GetColor(ThemeSlot.TextMuted);

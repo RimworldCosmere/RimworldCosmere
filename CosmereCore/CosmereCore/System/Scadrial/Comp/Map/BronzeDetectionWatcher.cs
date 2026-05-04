@@ -1,5 +1,5 @@
 using System.Text;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;

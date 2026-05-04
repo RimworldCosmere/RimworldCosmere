@@ -61,7 +61,8 @@ public static class KeyValue {
             if (rtl) {
                 labelRect = new Rect(rect.xMax - lw, rect.y, lw, rect.height);
                 valueRect = new Rect(rect.x, rect.y, Mathf.Max(0f, rect.width - lw), rect.height);
-            } else {
+            }
+            else {
                 labelRect = new Rect(rect.x, rect.y, lw, rect.height);
                 valueRect = new Rect(rect.x + lw, rect.y, Mathf.Max(0f, rect.width - lw), rect.height);
             }

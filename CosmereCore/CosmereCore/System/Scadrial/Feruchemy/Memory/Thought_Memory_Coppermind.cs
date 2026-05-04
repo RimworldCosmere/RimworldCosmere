@@ -13,7 +13,7 @@ public class Thought_Memory_Coppermind : Thought_Memory {
             if (sourceCoppermind?.parent == null) return true;
             if (storedMemory == null) return true;
             if (pawn == null) return true;
-            if (!sourceCoppermind.storedMemories.Contains(storedMemory)) return true;
+            if (!sourceCoppermind.StoredMemories.Contains(storedMemory)) return true;
             Pawn? holder = sourceCoppermind.GetHoldingPawn();
             return holder != pawn;
         }

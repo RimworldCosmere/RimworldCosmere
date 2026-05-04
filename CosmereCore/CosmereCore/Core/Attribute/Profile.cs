@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 
 namespace Cosmere.Core.Attribute;
@@ -10,16 +9,16 @@ public enum ProfileMode {
 
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class Profile(
-    string label = null,
+    string? label = null,
     ProfileMode mode = ProfileMode.Instrumentation,
     float sampleProbability = 0.01f,
-    string category = null,
+    string? category = null,
     bool aggregate = true
 )
     : global::System.Attribute {
-    public string label { get; } = label;
-    public ProfileMode mode { get; } = mode;
-    public float sampleProbability { get; } = sampleProbability;
-    public string category { get; } = category;
-    public bool aggregate { get; } = aggregate;
+    public string? Label { get; } = label;
+    public ProfileMode Mode { get; } = mode;
+    public float SampleProbability { get; } = sampleProbability;
+    public string? Category { get; } = category;
+    public bool Aggregate { get; } = aggregate;
 }

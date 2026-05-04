@@ -42,6 +42,9 @@ public static class HemalurgicDefOf {
     public static RecipeDef Cosmere_Scadrial_Recipe_RemoveHemalurgicSpike;
 
     [MayRequire("Cosmere.Scadrial")]
+    public static ResearchProjectDef Cosmere_Scadrial_Hemalurgy;
+
+    [MayRequire("Cosmere.Scadrial")]
     public static ResearchProjectDef Cosmere_Scadrial_HemalurgicPrecision;
 
     [MayRequire("Cosmere.Scadrial")]

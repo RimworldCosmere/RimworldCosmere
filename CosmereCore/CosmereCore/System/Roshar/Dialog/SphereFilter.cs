@@ -1,12 +1,8 @@
+using Cosmere.System.Roshar.Comp.Fabrials;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.Dialog;
-
-public interface IFilterableComp {
-    List<ThingDef> allowedSpheres { get; }
-    List<ThingDef> filterList { get; }
-}
 
 public class SphereFilter<T> : Window where T : ThingComp, IFilterableComp {
     private readonly T thing;
@@ -20,19 +16,20 @@ public class SphereFilter<T> : Window where T : ThingComp, IFilterableComp {
     public override Vector2 InitialSize => new Vector2(400f, 500f);
 
     private void AddCheckboxSpheres(int i, Rect viewRect) {
-        ThingDef sphereDef = thing.allowedSpheres[i];
+        ThingDef sphereDef = thing.AllowedSpheres[i];
         Rect checkboxRect = new Rect(0, i * 30, viewRect.width, 30);
 
-        bool currentlyAllowed = thing.filterList.Contains(sphereDef);
+        bool currentlyAllowed = thing.FilterList.Contains(sphereDef);
         bool flag = currentlyAllowed;
 
         Widgets.CheckboxLabeled(checkboxRect, sphereDef.label, ref flag);
 
         if (flag != currentlyAllowed) {
             if (flag) {
-                thing.filterList.Add(sphereDef);
-            } else {
-                thing.filterList.Remove(sphereDef);
+                thing.FilterList.Add(sphereDef);
+            }
+            else {
+                thing.FilterList.Remove(sphereDef);
             }
         }
     }
@@ -44,7 +41,7 @@ public class SphereFilter<T> : Window where T : ThingComp, IFilterableComp {
         Rect viewRect = new Rect(0, 0, inRect.width - 16, 300);
         Widgets.BeginScrollView(outRect, ref scrollPosition, viewRect);
 
-        for (int i = 0; i < thing.allowedSpheres.Count; i++) {
+        for (int i = 0; i < thing.AllowedSpheres.Count; i++) {
             AddCheckboxSpheres(i, viewRect);
         }
 

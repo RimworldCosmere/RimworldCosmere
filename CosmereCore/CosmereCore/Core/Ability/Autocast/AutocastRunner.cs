@@ -25,7 +25,7 @@ public sealed class AutocastRunner : GameComponent {
     private static void TickPawn(Pawn pawn, GameComponent_Autocast store) {
         if (pawn.abilities == null) return;
         SeedDefaults(pawn, store);
-        List<AutocastRule> rules = store.RulesFor(pawn);
+        List<AutocastRule> rules = store.GetOrCreateRules(pawn);
         if (rules.Count == 0) return;
 
         for (int r = 0; r < rules.Count; r++) {
@@ -77,9 +77,6 @@ public sealed class AutocastRunner : GameComponent {
                 return Compare(ResolvePrimaryReserve(pawn), trigger);
             case AutocastTriggerKind.Drafted:
                 return pawn.Drafted;
-            case AutocastTriggerKind.EnemyWithinCells:
-            case AutocastTriggerKind.AllyWithinCells:
-                return false;
             default:
                 return false;
         }
@@ -88,7 +85,7 @@ public sealed class AutocastRunner : GameComponent {
     private static float ResolvePrimaryReserve(Pawn pawn) {
         InvestitureSnapshot? snap = null;
         IReadOnlyList<IInvestitureProvider> all =
-            PawnInvestitureProviders.All;
+            InvestitureProviderRegistry.All;
         for (int i = 0; i < all.Count; i++) {
             if (!all[i].IsInvested(pawn)) continue;
             snap = all[i].Snapshot(pawn);

@@ -8,7 +8,7 @@ using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
 using static Cosmere.Lightweave.Hooks.Hooks;
-using static Cosmere.Lightweave.Layout.Layout;
+using Cosmere.Lightweave.Layout;
 using static Cosmere.Lightweave.Doc.DocChips;
 using Caption = Cosmere.Lightweave.Typography.Typography.Caption;
 using Code = Cosmere.Lightweave.Typography.Typography.Code;
@@ -210,7 +210,7 @@ public static class UseHotkeyDoc {
             );
 
             Theme.Theme theme = RenderContext.Current.Theme;
-            GUIStyle style = GuiStyleCache.Get(
+            GUIStyle style = GuiStyleCache.GetOrCreate(
                 theme.GetFont(FontRole.Body),
                 Mathf.RoundToInt(new Rem(0.875f).ToFontPx())
             );

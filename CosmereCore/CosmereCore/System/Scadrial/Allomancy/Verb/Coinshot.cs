@@ -1,6 +1,6 @@
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -14,7 +14,7 @@ public class Coinshot : Verb_Shoot {
     public override void WarmupComplete() {
         ability.UpdateStatus(ability.nextStatus!.Value);
 
-        SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(CasterPawn);
+        SurgeChargeHediff? surge = AllomancyUtility.FindSurgeChargeHediff(CasterPawn);
         surge?.Burn();
         base.WarmupComplete();
         surge?.PostBurn();
@@ -38,7 +38,7 @@ public class Coinshot : Verb_Shoot {
             return false;
         }
 
-        if (!ability.gene.TryBurnMetalForInvestiture(ability.def.beuPerTick)) return false;
+        if (!ability.Gene.TryBurnMetalForInvestiture(ability.def.beuPerTick)) return false;
         base.TryCastShot();
 
         // Consume the clip

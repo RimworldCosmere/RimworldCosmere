@@ -78,10 +78,10 @@ public static class PlaygroundPanel {
             wrap: true
         );
 
-        LightweaveNode bodyStack = Layout.Layout.Stack.Create(
+        LightweaveNode bodyStack = Layout.Stack.Create(
             SpacingScale.Xl,
             s => {
-                LightweaveNode intro = Layout.Layout.Stack.Create(
+                LightweaveNode intro = Layout.Stack.Create(
                     SpacingScale.Sm,
                     inner => {
                         if (breadcrumb != null) {
@@ -95,7 +95,7 @@ public static class PlaygroundPanel {
                 );
 
                 s.Add(intro);
-                s.Add(Layout.Layout.Divider.Horizontal());
+                s.Add(Layout.Divider.Horizontal());
 
                 if (hasVariants) {
                     tocEntries.Add(new TocEntry(ExamplesAnchor, (string)"CC_Playground_Panel_Examples".Translate(), 2));
@@ -147,7 +147,7 @@ public static class PlaygroundPanel {
             ThemeSlot.TextPrimary
         );
 
-        LightweaveNode body = Layout.Layout.Stack.Create(
+        LightweaveNode body = Layout.Stack.Create(
             SpacingScale.Lg,
             s => {
                 for (int i = 0; i < variants.Count; i++) {
@@ -175,7 +175,7 @@ public static class PlaygroundPanel {
             ThemeSlot.TextPrimary
         );
 
-        LightweaveNode body = Layout.Layout.Stack.Create(
+        LightweaveNode body = Layout.Stack.Create(
             SpacingScale.Lg,
             s => {
                 for (int i = 0; i < states.Count; i++) {
@@ -310,10 +310,10 @@ public static class PlaygroundPanel {
 
     private static LightweaveNode BuildPreviewFrame(LightweaveNode demo, float? minHeight) {
         LightweaveNode content = minHeight.HasValue
-            ? Layout.Layout.Stack.Create(new Rem(0f), s => s.Add(demo, minHeight.Value))
+            ? Layout.Stack.Create(new Rem(0f), s => s.Add(demo, minHeight.Value))
             : demo;
 
-        return Layout.Layout.Box.Create(
+        return Layout.Box.Create(
             EdgeInsets.All(SpacingScale.Lg),
             new BackgroundSpec.Solid(ThemeSlot.SurfacePrimary),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
@@ -329,10 +329,10 @@ public static class PlaygroundPanel {
         string anchorId
     ) {
         LightweaveNode content = minHeight.HasValue
-            ? Layout.Layout.Stack.Create(new Rem(0f), s => s.Add(demo, minHeight.Value))
+            ? Layout.Stack.Create(new Rem(0f), s => s.Add(demo, minHeight.Value))
             : demo;
 
-        LightweaveNode previewSection = Layout.Layout.Box.Create(
+        LightweaveNode previewSection = Layout.Box.Create(
             EdgeInsets.All(SpacingScale.Lg),
             null,
             null,
@@ -347,14 +347,14 @@ public static class PlaygroundPanel {
             backgroundRadius: RadiusSpec.Bottom(new Rem(0.4375f))
         );
 
-        return Layout.Layout.Box.Create(
+        return Layout.Box.Create(
             EdgeInsets.All(new Rem(1f / 16f)),
             new BackgroundSpec.Solid(ThemeSlot.SurfacePrimary),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
             RadiusSpec.All(new Rem(0.5f)),
             c => {
                 c.Add(previewSection);
-                c.Add(Layout.Layout.Divider.Horizontal());
+                c.Add(Layout.Divider.Horizontal());
                 c.Add(codeSection);
             }
         );
@@ -429,7 +429,7 @@ public static class PlaygroundPanel {
             ThemeSlot.TextMuted
         );
 
-        LightweaveNode body = Layout.Layout.Stack.Create(
+        LightweaveNode body = Layout.Stack.Create(
             SpacingScale.Xs,
             s => {
                 s.Add(fileRow);

@@ -203,7 +203,8 @@ public abstract class LightweaveWindow : Verse.Window {
             if (proposed < MinWindowSize.x) {
                 proposed = MinWindowSize.x;
                 next.x = resizeStartRect.xMax - proposed;
-            } else {
+            }
+            else {
                 next.x = resizeStartRect.x + delta.x;
             }
 
@@ -219,7 +220,8 @@ public abstract class LightweaveWindow : Verse.Window {
             if (proposed < MinWindowSize.y) {
                 proposed = MinWindowSize.y;
                 next.y = resizeStartRect.yMax - proposed;
-            } else {
+            }
+            else {
                 next.y = resizeStartRect.y + delta.y;
             }
 
@@ -406,7 +408,7 @@ public abstract class LightweaveWindow : Verse.Window {
             Left: (basePad.Left ?? zero) + BorderThickness,
             Right: (basePad.Right ?? zero) + BorderThickness
         );
-        return Layout.Layout.Box.Create(
+        return Layout.Box.Create(
             pad,
             new BackgroundSpec.Solid(ThemeSlot.SurfacePrimary),
             BorderSpec.All(BorderThickness, ThemeSlot.BorderSubtle),

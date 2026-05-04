@@ -6,7 +6,7 @@ namespace Cosmere.Core.UI.Radial;
 public static class RadialSnapshotBuilder {
     public static RadialSnapshot? Build(Pawn pawn) {
         List<RadialSystem> systems = [];
-        IReadOnlyList<IInvestitureProvider> providers = PawnInvestitureProviders.All;
+        IReadOnlyList<IInvestitureProvider> providers = InvestitureProviderRegistry.All;
         for (int i = 0; i < providers.Count; i++) {
             if (!providers[i].IsInvested(pawn)) continue;
             RadialSystem? sys = providers[i].SnapshotRadial(pawn);

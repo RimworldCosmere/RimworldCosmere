@@ -17,7 +17,7 @@ public sealed class AllomancyDockSection : IDockSection {
     private const float HeaderHeight = 28f;
     private const float BurnButtonWidth = 52f;
     public string SystemId => "Allomancy";
-    public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
+    public ISystemSkin Skin => SystemSkinRegistry.ForOrFallback(SystemId);
 
     public float GetHeaderHeight() {
         return HeaderHeight;
@@ -27,11 +27,11 @@ public sealed class AllomancyDockSection : IDockSection {
         float h = ctx.Density == DockDensityMode.Compact ? CompactCellHeight : CellHeight;
         int soloCells = 0;
         for (int i = 0; i < snapshot.Cells.Count; i++) {
-            if (!ctx.TwinbornPairs.ContainsKey(snapshot.Cells[i].SubsystemId)) soloCells++;
+            if (!ctx.DualInvestiturePairs.ContainsKey(snapshot.Cells[i].SubsystemId)) soloCells++;
         }
 
-        int pairCells = ctx.TwinbornPairs.Count;
-        return soloCells * (h + CellSpacing) + pairCells * (TwinbornCell.Height + TwinbornCell.Spacing);
+        int pairCells = ctx.DualInvestiturePairs.Count;
+        return soloCells * (h + CellSpacing) + pairCells * (DualInvestitureCell.Height + DualInvestitureCell.Spacing);
     }
 
     public void DrawHeader(Rect rect, bool expanded) {
@@ -46,18 +46,18 @@ public sealed class AllomancyDockSection : IDockSection {
 
         for (int i = 0; i < snapshot.Cells.Count; i++) {
             InvestitureCell cell = snapshot.Cells[i];
-            if (ctx.TwinbornPairs.ContainsKey(cell.SubsystemId)) continue;
+            if (ctx.DualInvestiturePairs.ContainsKey(cell.SubsystemId)) continue;
 
             Rect cellRect = new Rect(rect.x + 4f, y, rect.width - 8f, h);
             DrawCell(cellRect, pawn, cell);
             y += h + CellSpacing;
         }
 
-        ISystemSkin feruchemySkin = SystemSkinRegistry.For("Feruchemy");
-        foreach (KeyValuePair<string, TwinbornPair> kv in ctx.TwinbornPairs) {
-            Rect pairRect = new Rect(rect.x + 4f, y, rect.width - 8f, TwinbornCell.Height);
-            TwinbornCell.Draw(pairRect, pawn, kv.Value, Skin, feruchemySkin);
-            y += TwinbornCell.Height + TwinbornCell.Spacing;
+        ISystemSkin feruchemySkin = SystemSkinRegistry.ForOrFallback("Feruchemy");
+        foreach (KeyValuePair<string, IDualInvestiturePair> kv in ctx.DualInvestiturePairs) {
+            Rect pairRect = new Rect(rect.x + 4f, y, rect.width - 8f, DualInvestitureCell.Height);
+            DualInvestitureCell.Draw(pairRect, pawn, kv.Value, Skin, feruchemySkin);
+            y += DualInvestitureCell.Height + DualInvestitureCell.Spacing;
         }
     }
 

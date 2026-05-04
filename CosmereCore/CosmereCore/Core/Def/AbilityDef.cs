@@ -1,3 +1,5 @@
+using Cosmere.Core.Framework;
+using Cosmere.Core.Hediff;
 using UnityEngine;
 using Verse;
 
@@ -8,7 +10,7 @@ public class AbilityDef : RimWorld.AbilityDef, IMultiTypeHediff {
     public float asleepStrengthFactor = .5f;
     public bool autoUseWhileDowned = false;
     public bool autoUseWhileInjured = false;
-    public float beuPerTick = Constants.DefaultBreathEquivalentUnitsPerTick;
+    public float beuPerTick = CoreBreathConstants.DefaultBreathEquivalentUnitsPerTick;
     public bool canUseWhileAsleep = false;
     public bool canUseWhileDowned = false;
     public Texture2D disabledIcon = BaseContent.BadTex;
@@ -24,7 +26,7 @@ public class AbilityDef : RimWorld.AbilityDef, IMultiTypeHediff {
 
     public override TaggedString LabelCap {
         get {
-            if (label.NullOrEmpty()) return (TaggedString)(string)null!;
+            if (label.NullOrEmpty()) return TaggedString.Empty;
             if (cachedLabelCap.NullOrEmpty()) cachedLabelCap = (TaggedString)GenText.ToTitleCaseSmart(label);
 
             return cachedLabelCap;
@@ -51,13 +53,14 @@ public class AbilityDef : RimWorld.AbilityDef, IMultiTypeHediff {
         if (string.IsNullOrEmpty(iconPath)) {
             string abilityName = this.ParseDefName().ElementAt(3);
             LongEventHandler.ExecuteWhenFinished(() => {
-                    uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
-                             BaseContent.BadTex;
-                    disabledIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
-                    pausedIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Pause"));
-                }
+                uiIcon = ContentFinder<Texture2D>.Get($"UI/Icons/Abilities/{abilityName}", false) ??
+                         BaseContent.BadTex;
+                disabledIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/Widgets/CheckOff"));
+                pausedIcon = uiIcon.Overlay(ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Pause"));
+            }
             );
-        } else {
+        }
+        else {
             base.PostLoad();
         }
     }

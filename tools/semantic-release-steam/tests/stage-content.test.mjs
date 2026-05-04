@@ -21,7 +21,7 @@ test('stages mod content while excluding .steamignore matches', async () => {
 });
 
 test('roshar steamignore keeps CombatExtended compatibility patches publishable', () => {
-  const ignorePath = '/mnt/c/Users/aequa/projects/RimworldCosmere/RimworldCosmere/CosmereRoshar/.steamignore';
+  const ignorePath = new URL('../../../CosmereRoshar/.steamignore', import.meta.url).pathname;
   const ignoreEntries = readFileSync(ignorePath, 'utf8').split(/\r?\n/).filter(Boolean);
 
   assert.equal(ignoreEntries.includes('CombatExtended'), false);

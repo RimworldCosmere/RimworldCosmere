@@ -1,7 +1,7 @@
 using System;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Util;
-using Cosmere.System.Roshar.Surgebinding.Utility;
+using Cosmere.System.Roshar.Surgebinding.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -11,19 +11,20 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Progression;
 public class Bloom : SurgebindingAbility {
     private const int BaseRadius = 4;
     private const int PlantGrowthIntervalTicks = 60;
-    private static readonly ThingDef? AuraMoteDef = ThingDefOf.Cosmere_Roshar_Thing_BloomAura;
+    private static ThingDef? _bloomAuraDef;
+    private static ThingDef? AuraMoteDef => _bloomAuraDef ??= ThingDefOf.Cosmere_Roshar_Thing_BloomAura;
     private readonly List<Pawn> pawnsInArea = [];
     private Mote? auraMote;
 
     public Bloom(Pawn pawn) : base(pawn) { }
     public Bloom(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + gene.currentIdeal;
+    private float radius => BaseRadius + Gene.CurrentIdeal;
 
     private HediffDef? hediffToApply => def.hediff;
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     protected override void OnEnable() {
@@ -59,17 +60,17 @@ public class Bloom : SurgebindingAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!status.isActive) return;
+        if (!status.IsActive) return;
 
         auraMote?.Maintain();
-        if (auraMote != null && AuraMoteDef != null) {
-            float moteScale = MoteUtility.GetMoteSize(AuraMoteDef, BaseRadius, GetStrength());
+        if (auraMote != null) {
+            float moteScale = MoteUtility.GetMoteSize(AuraMoteDef!, BaseRadius, GetStrength());
             auraMote.Graphic.drawSize = new Vector2(moteScale, moteScale);
         }
 
         float currentRadius = radius;
 
-        if (gene.currentIdeal >= 1) {
+        if (Gene.CurrentIdeal >= 1) {
             UpdateAllyHediffs(currentRadius);
         }
 
@@ -111,7 +112,7 @@ public class Bloom : SurgebindingAbility {
     }
 
     private void GrowNearbyPlants(float currentRadius) {
-        float growthAmount = 0.15f + gene.currentIdeal * 0.05f;
+        float growthAmount = 0.15f + Gene.CurrentIdeal * 0.05f;
 
         foreach (Verse.Thing thing in GenRadial.RadialDistinctThingsAround(
                      pawn.Position,
@@ -124,7 +125,7 @@ public class Bloom : SurgebindingAbility {
             plant.Growth = Math.Min(1f, plant.Growth + growthAmount);
         }
 
-        if (gene.currentIdeal >= 4) {
+        if (Gene.CurrentIdeal >= 4) {
             SpawnNewPlants(currentRadius);
         }
     }

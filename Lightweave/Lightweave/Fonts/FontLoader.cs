@@ -1,3 +1,4 @@
+using Cosmere.Lightweave.Runtime;
 using UnityEngine;
 using Verse;
 
@@ -12,7 +13,7 @@ public static class FontLoader {
         LightweaveFonts.CarlitoRegular = TryGet(byName, "Carlito-Regular");
         LightweaveFonts.CarlitoBold = TryGet(byName, "Carlito-Bold");
         LightweaveFonts.JetBrainsMono = TryGet(byName, "JetBrainsMono-Regular");
-        Log.Message($"Lightweave fonts loaded: {byName.Count} from bundles.");
+        LightweaveLog.Message($"fonts loaded: {byName.Count} from bundles.");
         GameFontOverride.Apply();
     }
 
@@ -55,7 +56,7 @@ public static class FontLoader {
             return f;
         }
 
-        Log.Warning($"Lightweave font not found: {name}");
+        LightweaveLog.Warning($"font not found: {name}");
         return null;
     }
 }

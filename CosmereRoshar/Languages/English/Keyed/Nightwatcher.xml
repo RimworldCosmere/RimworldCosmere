@@ -4,6 +4,14 @@
     <Cosmere_Roshar_SeekNightwatcher_Label>Seek the Nightwatcher</Cosmere_Roshar_SeekNightwatcher_Label>
     <Cosmere_Roshar_SeekNightwatcher_Desc>Send {PAWN_nameDef} on a journey to seek the Nightwatcher, daughter of Cultivation, who dwells in the peaks beyond the edge of the world. She will grant a boon, any wish, and in return, will take something of her own choosing.</Cosmere_Roshar_SeekNightwatcher_Desc>
 
+    <!-- Dialog: Boon Tier Headers -->
+    <Cosmere_Roshar_NW_Tier1_Label>Minor Boons</Cosmere_Roshar_NW_Tier1_Label>
+    <Cosmere_Roshar_NW_Tier2_Label>Moderate Boons</Cosmere_Roshar_NW_Tier2_Label>
+    <Cosmere_Roshar_NW_Tier3_Label>Major Boons</Cosmere_Roshar_NW_Tier3_Label>
+    <Cosmere_Roshar_NW_Tier1_Desc>Small gifts - a sharpened skill, a shifted temperament. The Nightwatcher gives these freely.</Cosmere_Roshar_NW_Tier1_Desc>
+    <Cosmere_Roshar_NW_Tier2_Desc>Substantial changes - healed wounds, expanded capacity. These carry a heavier curse.</Cosmere_Roshar_NW_Tier2_Desc>
+    <Cosmere_Roshar_NW_Tier3_Desc>Transformative power - bonds unlocked, minds awakened. The Old Magic exacts its highest price.</Cosmere_Roshar_NW_Tier3_Desc>
+
     <!-- Dialog: Opening Phase -->
     <Cosmere_Roshar_NW_Opening_Title>The Nightwatcher</Cosmere_Roshar_NW_Opening_Title>
     <Cosmere_Roshar_NW_Opening_Text>{PAWN_nameDef} has made the long journey into the mountains and descended into the valley where the Nightwatcher dwells. The air is still. The light is wrong. Something vast and patient turns its attention toward {PAWN_nameDef}.
@@ -34,6 +42,23 @@ Boon granted: {BOON}
 Curse taken: {CURSE}
 
 Both are permanent. Neither can be removed by ordinary means. This is the nature of Old Magic.</Cosmere_Roshar_NW_Letter_Text>
+
+    <!-- Boon/Curse Effect Fragments -->
+    <CRO_NW_Effect_Gains>Gains: {LABEL}</CRO_NW_Effect_Gains>
+    <CRO_NW_Effect_Removes>Removes: {LABEL}</CRO_NW_Effect_Removes>
+    <CRO_NW_Effect_Cures>Cures: {LABEL}</CRO_NW_Effect_Cures>
+    <CRO_NW_Effect_Loses>Loses: {LABEL}</CRO_NW_Effect_Loses>
+    <CRO_NW_Effect_SkillBoost>+{LEVELS} {SKILL}</CRO_NW_Effect_SkillBoost>
+    <CRO_NW_Effect_SkillPenalty>-{LEVELS} {SKILL}</CRO_NW_Effect_SkillPenalty>
+    <CRO_NW_Effect_InvestitureCapacity>+{AMOUNT} Investiture capacity</CRO_NW_Effect_InvestitureCapacity>
+    <CRO_NW_Effect_CultivationConnection>+{AMOUNT} Cultivation connection</CRO_NW_Effect_CultivationConnection>
+    <CRO_NW_Effect_PsylinkLevel>+1 Psylink level</CRO_NW_Effect_PsylinkLevel>
+    <CRO_NW_Effect_BiologicalImmortality>Biological immortality</CRO_NW_Effect_BiologicalImmortality>
+    <CRO_NW_Effect_EvolvesAfterYears>Evolves after {YEARS} years</CRO_NW_Effect_EvolvesAfterYears>
+    <CRO_NW_Effect_StatOffset>{SIGN}{VALUE} {STAT}</CRO_NW_Effect_StatOffset>
+    <CRO_NW_Effect_StatFactor>{SIGN}{VALUE}% {STAT}</CRO_NW_Effect_StatFactor>
+    <CRO_NW_Effect_CapacityOffset>{SIGN}{VALUE}% {CAPACITY}</CRO_NW_Effect_CapacityOffset>
+    <CRO_NW_Effect_PainOffset>{SIGN}{VALUE} Pain</CRO_NW_Effect_PainOffset>
 
     <!-- Cultivation Evolution -->
     <Cosmere_Roshar_Nightwatcher_Evolution_Title>{PAWN_nameDef}: Cultivation's Touch</Cosmere_Roshar_Nightwatcher_Evolution_Title>

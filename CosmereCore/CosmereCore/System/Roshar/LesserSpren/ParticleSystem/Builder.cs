@@ -28,11 +28,6 @@ public static class Builder {
     };
 
 
-    /*
-    public static UnityEngine.ParticleSystem CreateLesserSprenParticleSystem(int mapID) {
-        return CreateLesserSprenParticleSystem(mapID, null, null);
-    }*/
-
     public static UnityEngine.ParticleSystem CreateLesserSprenParticleSystem(
         int mapID,
         BaseSprenController controller,
@@ -60,7 +55,7 @@ public static class Builder {
     private static void ConfigureAlpha(ParticleSystemRenderer renderer) {
         if (!renderer.material.HasProperty("_Color")) return;
         Color currentColor = renderer.material
-            .GetColor(Shader.PropertyToID("_Color"));
+            .GetColor(UnityEngine.Shader.PropertyToID("_Color"));
 
         // Preserve the RGB values, only modify alpha
         Color newColor = new Color(
@@ -70,7 +65,7 @@ public static class Builder {
             currentColor.a * ParticleAlpha
         );
         renderer.material
-            .SetColor(Shader.PropertyToID("_Color"), newColor);
+            .SetColor(UnityEngine.Shader.PropertyToID("_Color"), newColor);
     }
 
 
@@ -176,7 +171,7 @@ public static class Builder {
     private static void ConfigureRenderer(UnityEngine.ParticleSystem particleSys, BaseSprenController controller) {
         ParticleSystemRenderer renderer = particleSys.GetComponent<ParticleSystemRenderer>();
         renderer.material = controller.sprenMaterial;
-        renderer.material.SetColor(Shader.PropertyToID("_MainTex"), controller.sprenColor);
-        renderer.material.SetTexture(Shader.PropertyToID("_MainTex"), controller.sprenTexture);
+        renderer.material.SetColor(UnityEngine.Shader.PropertyToID("_MainTex"), controller.sprenColor);
+        renderer.material.SetTexture(UnityEngine.Shader.PropertyToID("_MainTex"), controller.sprenTexture);
     }
 }

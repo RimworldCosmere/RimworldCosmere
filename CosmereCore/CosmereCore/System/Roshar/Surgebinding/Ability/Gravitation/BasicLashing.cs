@@ -1,5 +1,5 @@
 using Cosmere.Core.Ability;
-using Cosmere.System.Roshar.Surgebinding.Utility;
+using Cosmere.System.Roshar.Surgebinding.Util;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -17,7 +17,7 @@ public class BasicLashing : SurgebindingAbility {
     public BasicLashing(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     protected override void OnEnable() {
@@ -43,10 +43,10 @@ public class BasicLashing : SurgebindingAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!status.isActive) return;
+        if (!status.IsActive) return;
         if (!pawn.Spawned) return;
 
-        if (gene.currentIdeal >= 2) {
+        if (Gene.CurrentIdeal >= 2) {
             UpdateGroupLashing();
         }
     }
@@ -88,8 +88,8 @@ public class BasicLashing : SurgebindingAbility {
             yield return gizmo;
         }
 
-        if (!status.isActive) yield break;
-        if (gene.currentIdeal < 2) yield break;
+        if (!status.IsActive) yield break;
+        if (Gene.CurrentIdeal < 2) yield break;
 
         Command_Action flyToCommand = new Command_Action {
             defaultLabel = "Fly To...",
@@ -121,13 +121,13 @@ public class BasicLashing : SurgebindingAbility {
         PlanetTile tile = target.Tile;
         if (!Find.WorldGrid.InBounds(tile.tileId)) return false;
 
-        float cost = 30f / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) {
+        float cost = 30f / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) {
             Messages.Message("Not enough Stormlight", MessageTypeDefOf.RejectInput);
             return false;
         }
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
 
         List<Pawn> flyingGroup = [pawn];
         flyingGroup.AddRange(lashedAllies.Where(a => a != null && !a.Dead && a.Spawned));

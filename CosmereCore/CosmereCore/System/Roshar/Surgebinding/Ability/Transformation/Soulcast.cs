@@ -1,7 +1,7 @@
 using System;
 using Cosmere.Core.Ability;
 using Cosmere.System.Roshar.Comp.Thing;
-using FloatSubMenus;
+using Cosmere.Core.Lib.FloatSubMenu;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -24,18 +24,18 @@ public class Soulcast : SurgebindingAbility {
     internal ThingDef? storedMaterial { get; set; }
     internal TerrainDef? storedTerrain { get; set; }
 
-    private float BaseCost => def.beuPerTick / (1 << gene.currentIdeal);
+    private float BaseCost => def.beuPerTick / (1 << Gene.CurrentIdeal);
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
         ShowMaterialPicker();
-        if (status.isActive) UpdateStatus(Active.Off);
+        if (status.IsActive) UpdateStatus(Active.Off);
         return true;
     }
 
     public void ExecuteStoredAction(LocalTargetInfo target) {
         if (!storedMode.HasValue) return;
 
-        SoulcastOverlay.Remove(target.Cell);
+        SoulcastOverlay.Remove(target.Cell, pawn.Map);
 
         if (!target.HasThing &&
             storedMode.Value is not (SoulcastMode.Wall or SoulcastMode.Terraform or SoulcastMode.Geyser)) {
@@ -107,13 +107,13 @@ public class Soulcast : SurgebindingAbility {
     }
 
     private static bool IsBondedSpren(Verse.Thing thing) {
-        return thing is Pawn p && p.TryGetComp<CompSprenBond>() != null;
+        return thing is Pawn p && p.TryGetComp<SprenBond>() != null;
     }
 
     private void ShowMaterialPicker() {
         List<FloatMenuOption> options = [];
 
-        List<ThingDef> dropOutputs = SoulcastMaterials.GetAvailableDropOutputs(gene.currentIdeal);
+        List<ThingDef> dropOutputs = SoulcastMaterials.GetAvailableDropOutputs(Gene.CurrentIdeal);
         List<FloatMenuOption> matOpts = [];
         for (int i = 0; i < dropOutputs.Count; i++) {
             ThingDef mat = dropOutputs[i];
@@ -123,12 +123,15 @@ public class Soulcast : SurgebindingAbility {
 
         options.Add(new FloatSubMenu("CRO_Soulcast_Category_Into".Translate(), matOpts));
 
-        List<ThingDef> stuffList = SoulcastMaterials.GetAvailableStuffs(gene.currentIdeal);
+        List<ThingDef> stuffList = SoulcastMaterials.GetAvailableStuffs(Gene.CurrentIdeal);
+        List<ThingDef> stuffOnly = [];
+        for (int i = 0; i < stuffList.Count; i++) {
+            if (stuffList[i].IsStuff) stuffOnly.Add(stuffList[i]);
+        }
 
         List<FloatMenuOption> stuffOpts = [];
-        for (int i = 0; i < stuffList.Count; i++) {
-            ThingDef mat = stuffList[i];
-            if (!mat.IsStuff) continue;
+        for (int i = 0; i < stuffOnly.Count; i++) {
+            ThingDef mat = stuffOnly[i];
             float cost = BaseCost * SoulcastMaterials.GetMaterialCost(mat);
             stuffOpts.Add(PickerOption(mat.LabelCap, cost, () => StartTargeting(SoulcastMode.ChangeStuff, mat, null)));
         }
@@ -136,9 +139,8 @@ public class Soulcast : SurgebindingAbility {
         options.Add(new FloatSubMenu("CRO_Soulcast_Category_Structure".Translate(), stuffOpts));
 
         List<FloatMenuOption> wallOpts = [];
-        for (int i = 0; i < stuffList.Count; i++) {
-            ThingDef mat = stuffList[i];
-            if (!mat.IsStuff) continue;
+        for (int i = 0; i < stuffOnly.Count; i++) {
+            ThingDef mat = stuffOnly[i];
             float cost = BaseCost * SoulcastMaterials.GetMaterialCost(mat) * AirWallMultiplier;
             wallOpts.Add(PickerOption(mat.LabelCap, cost, () => StartTargeting(SoulcastMode.Wall, mat, null)));
         }
@@ -155,7 +157,7 @@ public class Soulcast : SurgebindingAbility {
             );
         }
 
-        if (gene.currentIdeal >= 2) {
+        if (Gene.CurrentIdeal >= 2) {
             terrainOpts.Add(
                 PickerOption(
                     "CRO_Soulcast_CreateGeyser".Translate(),
@@ -168,9 +170,8 @@ public class Soulcast : SurgebindingAbility {
         options.Add(new FloatSubMenu("CRO_Soulcast_Category_Terraform".Translate(), terrainOpts));
 
         List<FloatMenuOption> sculptOpts = [];
-        for (int i = 0; i < stuffList.Count; i++) {
-            ThingDef mat = stuffList[i];
-            if (!mat.IsStuff) continue;
+        for (int i = 0; i < stuffOnly.Count; i++) {
+            ThingDef mat = stuffOnly[i];
             sculptOpts.Add(
                 PickerOption(mat.LabelCap, PawnSoulcastCost, () => StartTargeting(SoulcastMode.Sculpture, mat, null))
             );
@@ -200,7 +201,7 @@ public class Soulcast : SurgebindingAbility {
     }
 
     private FloatMenuOption PickerOption(string label, float cost, Action onPick) {
-        bool canAfford = gene.CanLowerReserve(cost);
+        bool canAfford = Gene.CanLowerReserve(cost);
         string full = $"{label} ({"CRO_Soulcast_Cost".Translate(cost.ToString("F0"))})";
         if (canAfford) return new FloatMenuOption(full, onPick);
         return new FloatMenuOption($"{full} — {"CRO_Soulcast_NotEnoughInvestiture".Translate()}", null);
@@ -307,8 +308,8 @@ public class Soulcast : SurgebindingAbility {
     }
 
     private bool TryPayCost(float cost) {
-        if (!gene.CanLowerReserve(cost)) return false;
-        gene.RemoveFromReserve(cost);
+        if (!Gene.CanLowerReserve(cost)) return false;
+        Gene.RemoveFromReserve(cost);
         return true;
     }
 
@@ -403,7 +404,7 @@ public class Soulcast : SurgebindingAbility {
         target.Kill(null);
         Verse.Thing? corpse = pos.GetThingList(map).Find(t => t is Corpse);
         corpse?.Destroy();
-        ThingDef sculptureDef = DefDatabase<ThingDef>.GetNamed("SculptureLarge");
+        ThingDef sculptureDef = ThingDefOf.SculptureLarge;
         SpawnClaimedSculpture(sculptureDef, stuffDef, pos, map);
         SpawnFleck(pos, map);
     }
@@ -414,11 +415,11 @@ public class Soulcast : SurgebindingAbility {
         Map map = target.Map;
         Pawn? innerPawn = target.InnerPawn;
         target.Destroy();
-        ThingDef sculptureDef = DefDatabase<ThingDef>.GetNamed("SculptureSmall");
+        ThingDef sculptureDef = ThingDefOf.SculptureSmall;
         SpawnClaimedSculpture(sculptureDef, stuffDef, pos, map);
         SpawnFleck(pos, map);
 
-        ThoughtDef? burialThought = DefDatabase<ThoughtDef>.GetNamedSilentFail("Cosmere_Roshar_Thought_SoulcastBurial");
+        ThoughtDef? burialThought = ThoughtDefOf.Cosmere_Roshar_Thought_SoulcastBurial;
         if (burialThought != null && innerPawn != null) {
             foreach (Pawn colonist in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists) {
                 if (colonist.needs?.mood == null || colonist.relations == null) continue;
@@ -431,11 +432,9 @@ public class Soulcast : SurgebindingAbility {
     }
 
     private float GetSoulcastHitChance(Pawn target) {
-        float baseChance = 0.5f + gene.currentIdeal * 0.1f;
-        StatDef? meleeHitChance = DefDatabase<StatDef>.GetNamedSilentFail("MeleeHitChance");
-        if (meleeHitChance != null) baseChance *= pawn.GetStatValue(meleeHitChance);
-        StatDef? dodgeChance = DefDatabase<StatDef>.GetNamedSilentFail("MeleeDodgeChance");
-        if (dodgeChance != null) baseChance *= 1f - target.GetStatValue(dodgeChance);
+        float baseChance = 0.5f + Gene.CurrentIdeal * 0.1f;
+        baseChance *= pawn.GetStatValue(StatDefOf.MeleeHitChance);
+        baseChance *= 1f - target.GetStatValue(StatDefOf.MeleeDodgeChance);
         return Mathf.Clamp(baseChance, 0.05f, 0.95f);
     }
 }

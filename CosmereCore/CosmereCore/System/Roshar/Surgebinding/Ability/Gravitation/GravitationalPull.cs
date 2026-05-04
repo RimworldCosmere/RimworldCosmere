@@ -1,5 +1,5 @@
 using Cosmere.Core.Ability;
-using Cosmere.System.Roshar.Surgebinding.Utility;
+using Cosmere.System.Roshar.Surgebinding.Util;
 using RimWorld;
 using Verse;
 
@@ -12,12 +12,12 @@ public class GravitationalPull : SurgebindingAbility {
     public GravitationalPull(Pawn pawn) : base(pawn) { }
     public GravitationalPull(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + gene.currentIdeal;
+    private float radius => BaseRadius + Gene.CurrentIdeal;
 
     private HediffDef hediffToApply => def.hediff!;
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     protected override void OnDisable() {
@@ -35,7 +35,7 @@ public class GravitationalPull : SurgebindingAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!status.isActive) return;
+        if (!status.IsActive) return;
 
         float currentRadius = radius;
 

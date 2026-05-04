@@ -19,7 +19,8 @@ public sealed class HookStore {
             if (!kv.Value.TouchedThisFrame) {
                 kv.Value.Cleanup?.Invoke();
                 (toRemove ??= new List<HookKey>()).Add(kv.Key);
-            } else {
+            }
+            else {
                 kv.Value.TouchedThisFrame = false;
             }
         }

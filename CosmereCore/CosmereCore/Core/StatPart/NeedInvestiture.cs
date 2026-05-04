@@ -23,7 +23,7 @@ public class NeedInvestiture : RimWorld.StatPart {
         return StatUtility.TryGetPawnStat(
             req,
             parentStat,
-            StatUtility.NeedLevel<Need.Investiture>,
+            (_, p) => StatUtility.NeedLevel<Need.Investiture>(p),
             StatUtility.StatBase,
             out value
         );

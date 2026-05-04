@@ -67,7 +67,7 @@ public class TimeBubble : ThingComp {
 
         for (int i = 0; i < hediffs.Count; i++) {
             if (hediffs[i] is not AllomanticHediff allomanticHediff) continue;
-            foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in allomanticHediff.sourceAbilities) {
+            foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in allomanticHediff.SourceAbilities) {
                 if (sa is AllomancyAbility ability && ability.metal.Equals(metal)) {
                     return allomanticHediff.severityCalculator?.severity ?? 0f;
                 }

@@ -14,7 +14,7 @@ public sealed class FeruchemyDockSection : IDockSection {
     private const float HeaderHeight = 28f;
     private const float ButtonWidth = 66f;
     public string SystemId => "Feruchemy";
-    public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
+    public ISystemSkin Skin => SystemSkinRegistry.ForOrFallback(SystemId);
 
     public float GetHeaderHeight() {
         return HeaderHeight;
@@ -24,7 +24,7 @@ public sealed class FeruchemyDockSection : IDockSection {
         float h = ctx.Density == DockDensityMode.Compact ? CompactCellHeight : CellHeight;
         int visible = 0;
         for (int i = 0; i < snapshot.Cells.Count; i++) {
-            if (!ctx.TwinbornPairs.ContainsKey(snapshot.Cells[i].SubsystemId)) visible++;
+            if (!ctx.DualInvestiturePairs.ContainsKey(snapshot.Cells[i].SubsystemId)) visible++;
         }
 
         return visible * (h + CellSpacing);
@@ -41,7 +41,7 @@ public sealed class FeruchemyDockSection : IDockSection {
         float y = rect.y;
         for (int i = 0; i < snapshot.Cells.Count; i++) {
             InvestitureCell cell = snapshot.Cells[i];
-            if (ctx.TwinbornPairs.ContainsKey(cell.SubsystemId)) continue;
+            if (ctx.DualInvestiturePairs.ContainsKey(cell.SubsystemId)) continue;
 
             Rect cellRect = new Rect(rect.x + 4f, y, rect.width - 8f, h);
             DrawCell(cellRect, pawn, cell);

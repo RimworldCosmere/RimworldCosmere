@@ -13,7 +13,7 @@ public class Invisibility : SurgebindingAbility {
     public Invisibility(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     protected override void OnEnable() {

@@ -68,6 +68,9 @@ public static class ThingDefOf {
     [MayRequire("Cosmere.Roshar")]
     public static ThingDef Cosmere_Roshar_Thing_LifesurgePulse;
 
+    public static ThingDef SculptureLarge;
+    public static ThingDef SculptureSmall;
+
     static ThingDefOf() {
         DefOfHelper.EnsureInitializedInCtor(typeof(ThingDefOf));
     }

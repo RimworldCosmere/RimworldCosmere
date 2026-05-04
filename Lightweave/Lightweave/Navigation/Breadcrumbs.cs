@@ -42,7 +42,7 @@ public static class Breadcrumbs {
 
             Font font = theme.GetFont(FontRole.Body);
             int pixelSize = Mathf.RoundToInt(LabelSize.ToFontPx());
-            GUIStyle style = GuiStyleCache.Get(font, pixelSize);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize);
             style.alignment = TextAnchor.MiddleLeft;
 
             string chevronGlyph = rtl ? "‹" : "›";
@@ -124,7 +124,8 @@ public static class Breadcrumbs {
                 if (rtl) {
                     labelRect = new Rect(cursor - labelWidth, rowY, labelWidth, rowHeight);
                     cursor = labelRect.x - gapPx;
-                } else {
+                }
+                else {
                     labelRect = new Rect(cursor, rowY, labelWidth, rowHeight);
                     cursor = labelRect.xMax + gapPx;
                 }
@@ -183,7 +184,8 @@ public static class Breadcrumbs {
         if (rtl) {
             chevronRect = new Rect(cursor - chevronWidth, rowY, chevronWidth, rowHeight);
             next = chevronRect.x - gapPx;
-        } else {
+        }
+        else {
             chevronRect = new Rect(cursor, rowY, chevronWidth, rowHeight);
             next = chevronRect.xMax + gapPx;
         }
@@ -210,7 +212,8 @@ public static class Breadcrumbs {
         if (rtl) {
             ellipsisRect = new Rect(cursor - ellipsisWidth, rowY, ellipsisWidth, rowHeight);
             next = ellipsisRect.x - gapPx;
-        } else {
+        }
+        else {
             ellipsisRect = new Rect(cursor, rowY, ellipsisWidth, rowHeight);
             next = ellipsisRect.xMax + gapPx;
         }
@@ -242,9 +245,11 @@ public static class Breadcrumbs {
         ThemeSlot slot;
         if (isLast) {
             slot = ThemeSlot.TextPrimary;
-        } else if (hovering) {
+        }
+        else if (hovering) {
             slot = ThemeSlot.TextPrimary;
-        } else {
+        }
+        else {
             slot = ThemeSlot.TextMuted;
         }
 

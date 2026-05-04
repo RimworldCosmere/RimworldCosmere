@@ -6,9 +6,9 @@
         <value>
             <li Class="ThinkNode_Priority">
                 <subNodes>
-                    <li Class="Cosmere.System.Roshar.Job.ThinkNode.ConditionalHighstormActive">
+                    <li Class="Cosmere.System.Roshar.ThinkNode.ConditionalHighstormActive">
                         <subNodes>
-                            <li Class="Cosmere.System.Roshar.Job.JobGiver.SeekHighstormShelter" />
+                            <li Class="Cosmere.System.Roshar.JobGiver.SeekHighstormShelter" />
                         </subNodes>
                     </li>
                 </subNodes>
@@ -22,11 +22,11 @@
         <value>
             <li Class="ThinkNode_Priority">
                 <subNodes>
-                    <li Class="Cosmere.System.Roshar.Job.ThinkNode.ConditionalHighstormActive">
+                    <li Class="Cosmere.System.Roshar.ThinkNode.ConditionalHighstormActive">
                         <subNodes>
                             <li Class="ThinkNode_ConditionalOfPlayerFaction">
                                 <subNodes>
-                                    <li Class="Cosmere.System.Roshar.Job.JobGiver.SeekHighstormShelter" />
+                                    <li Class="Cosmere.System.Roshar.JobGiver.SeekHighstormShelter" />
                                 </subNodes>
                             </li>
                         </subNodes>

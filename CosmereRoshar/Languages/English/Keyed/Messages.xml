@@ -10,6 +10,9 @@
     <CR_Weeping_End_Title>The Weeping Ends</CR_Weeping_End_Title>
     <CR_Weeping_End_Message>The constant rain has lifted. The Weeping has passed, and with it, the reprieve. The highstorms will return.</CR_Weeping_End_Message>
 
+    <CRO_EyesOfLight_Title>Eyes of Light</CRO_EyesOfLight_Title>
+    <CRO_EyesOfLight_Text>As Stormlight courses through {PAWN}'s veins, their eyes lighten. {PAWN_pronoun} is darkeyes no longer.</CRO_EyesOfLight_Text>
+
     <CS_Savant_Surgebinding_Stage1_Title>{PAWN} is becoming attuned to {POWER}</CS_Savant_Surgebinding_Stage1_Title>
     <CS_Savant_Surgebinding_Stage1_Message>{PAWN} has used the Surge of {POWER} so frequently that Stormlight flows through that surge more naturally. The connection to {POWER} deepens.</CS_Savant_Surgebinding_Stage1_Message>
 

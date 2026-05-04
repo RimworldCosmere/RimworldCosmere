@@ -40,13 +40,46 @@ public static class SourceLink {
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        LightweaveNode node = NodeBuilder.New("SourceLink:" + sourcePath, line, file);
+        return LabelLink(
+            "SourceLink:" + sourcePath,
+            "CC_Playground_Panel_SourceLabel",
+            "CC_Playground_Panel_SourceTooltip",
+            () => TryOpenInEditor(sourcePath),
+            line,
+            file
+        );
+    }
+
+    public static LightweaveNode GithubLink(
+        string sourcePath,
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
+    ) {
+        return LabelLink(
+            "SourceLink.Github:" + sourcePath,
+            "CC_Playground_Panel_GithubLabel",
+            "CC_Playground_Panel_GithubTooltip",
+            () => TryOpenInBrowser(sourcePath),
+            line,
+            file
+        );
+    }
+
+    private static LightweaveNode LabelLink(
+        string nodeId,
+        string labelKey,
+        string tooltipKey,
+        Action onClick,
+        int line,
+        string file
+    ) {
+        LightweaveNode node = NodeBuilder.New(nodeId, line, file);
         node.PreferredHeight = new Rem(1.25f).ToPixels();
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Font mono = theme.GetFont(FontRole.Mono);
             int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
-            GUIStyle style = GuiStyleCache.Get(mono, pixelSize);
+            GUIStyle style = GuiStyleCache.GetOrCreate(mono, pixelSize);
             style.alignment = TextAnchor.MiddleLeft;
 
             Event e = Event.current;
@@ -54,7 +87,7 @@ public static class SourceLink {
             ThemeSlot slot = hovering ? ThemeSlot.BorderFocus : ThemeSlot.SurfaceAccent;
             Color c = theme.GetColor(slot);
 
-            string text = (string)"CC_Playground_Panel_SourceLabel".Translate();
+            string text = (string)labelKey.Translate();
 
             Color saved = GUI.color;
             GUI.color = c;
@@ -70,11 +103,11 @@ public static class SourceLink {
                 GUI.DrawTexture(underline, Texture2D.whiteTexture);
                 GUI.color = saved;
 
-                TooltipHandler.TipRegion(rect, (string)"CC_Playground_Panel_SourceTooltip".Translate());
+                TooltipHandler.TipRegion(rect, (string)tooltipKey.Translate());
             }
 
             if (e.type == EventType.MouseUp && e.button == 0 && rect.Contains(e.mousePosition)) {
-                TryOpenInEditor(sourcePath);
+                onClick();
                 e.Use();
             }
         };
@@ -90,8 +123,9 @@ public static class SourceLink {
             }
 
             Application.OpenURL("vscode://file" + unix);
-        } catch (Exception ex) {
-            Log.Warning("SourceLink open failed: " + ex.Message);
+        }
+        catch (Exception ex) {
+            LightweaveLog.Warning("SourceLink open failed: " + ex);
         }
     }
 
@@ -100,57 +134,12 @@ public static class SourceLink {
         return "https://github.com/RimworldCosmere/RimworldCosmere/blob/main/" + normalized;
     }
 
-    public static LightweaveNode GithubLink(
-        string sourcePath,
-        [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = ""
-    ) {
-        LightweaveNode node = NodeBuilder.New("SourceLink.Github:" + sourcePath, line, file);
-        node.PreferredHeight = new Rem(1.25f).ToPixels();
-        node.Paint = (rect, _) => {
-            Theme.Theme theme = RenderContext.Current.Theme;
-            Font mono = theme.GetFont(FontRole.Mono);
-            int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
-            GUIStyle style = GuiStyleCache.Get(mono, pixelSize);
-            style.alignment = TextAnchor.MiddleLeft;
-
-            Event e = Event.current;
-            bool hovering = rect.Contains(e.mousePosition);
-            ThemeSlot slot = hovering ? ThemeSlot.BorderFocus : ThemeSlot.SurfaceAccent;
-            Color c = theme.GetColor(slot);
-
-            string text = (string)"CC_Playground_Panel_GithubLabel".Translate();
-
-            Color saved = GUI.color;
-            GUI.color = c;
-            GUI.Label(RectSnap.Snap(rect), text, style);
-            GUI.color = saved;
-
-            if (hovering) {
-                Vector2 size = style.CalcSize(new GUIContent(text));
-                float underlineY = rect.y + rect.height / 2f + size.y / 2f - 1f;
-                float underlineWidth = Mathf.Min(size.x, rect.width);
-                Rect underline = new Rect(rect.x, underlineY, underlineWidth, 1f);
-                GUI.color = c;
-                GUI.DrawTexture(underline, Texture2D.whiteTexture);
-                GUI.color = saved;
-
-                TooltipHandler.TipRegion(rect, (string)"CC_Playground_Panel_GithubTooltip".Translate());
-            }
-
-            if (e.type == EventType.MouseUp && e.button == 0 && rect.Contains(e.mousePosition)) {
-                TryOpenInBrowser(sourcePath);
-                e.Use();
-            }
-        };
-        return node;
-    }
-
     private static void TryOpenInBrowser(string sourcePath) {
         try {
             Application.OpenURL(BuildGithubUrl(sourcePath));
-        } catch (Exception ex) {
-            Log.Warning("SourceLink browser open failed: " + ex.Message);
+        }
+        catch (Exception ex) {
+            LightweaveLog.Warning("SourceLink browser open failed: " + ex);
         }
     }
 }

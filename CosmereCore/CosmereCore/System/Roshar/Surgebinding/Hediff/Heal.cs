@@ -20,17 +20,17 @@ public class Heal : SurgebindingHediff {
     public override void PostTickInterval(int delta) {
         base.PostTickInterval(delta);
 
-        if (!gene.CanLowerReserve(ability.def.beuPerTick)) ability.UpdateStatus(Active.Off);
+        if (!Gene.CanLowerReserve(ability.def.beuPerTick)) ability.UpdateStatus(Active.Off);
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond / 2, delta)) return;
 
         List<Verse.Hediff> hediffs = pawn.health.hediffSet.hediffs
             .Where(h => h.CanBeHealedByInvestiture())
             .ToList();
 
-        CheckIfDone(hediffs);
+        DeactivateIfFullyHealed(hediffs);
 
         foreach (Verse.Hediff hediff in hediffs) {
-            if (!hediff.TryHealWithInvestiture(ability.gene.currentIdealDisplay)) {
+            if (!hediff.TryHealWithInvestiture(ability.Gene.CurrentIdealDisplay)) {
                 continue;
             }
 
@@ -39,12 +39,12 @@ public class Heal : SurgebindingHediff {
             }
 
             pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, 5);
-            CheckIfDone(hediffs);
+            DeactivateIfFullyHealed(hediffs);
             return;
         }
     }
 
-    private void CheckIfDone(List<Verse.Hediff> hediffs) {
+    private void DeactivateIfFullyHealed(List<Verse.Hediff> hediffs) {
         if (hediffs.Count != 0) return;
         if (!Mathf.Approximately(pawn.health.summaryHealth.SummaryHealthPercent, 1)) return;
 

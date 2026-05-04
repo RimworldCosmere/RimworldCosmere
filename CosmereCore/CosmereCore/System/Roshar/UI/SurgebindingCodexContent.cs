@@ -19,23 +19,6 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
     private const float StripWidth = 90f;
     private const float StripEntryHeight = 64f;
 
-    private const float BondDetailHeaderHeight = 35f;
-    private const float BondDetailRowHeight = 28f;
-    private const float BondDetailTraitHeaderHeight = 26f;
-    private const float BondDetailSectionSpacing = 8f;
-
-    private static readonly Texture2D BondBarHealthyTex =
-        SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.8f, 0.3f));
-
-    private static readonly Texture2D BondBarStrainedTex =
-        SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.8f, 0.2f));
-
-    private static readonly Texture2D BondBarFracturedTex =
-        SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.5f, 0.1f));
-
-    private static readonly Texture2D BondBarBreakingTex =
-        SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.2f, 0.1f));
-
     private readonly List<Surgebinder> bondedSurgebindersBuffer = [];
 
     public bool HasProgression(Pawn pawn) {
@@ -45,8 +28,12 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
     public bool ShowsBondsSubtab => true;
 
     public bool HasBonds(Pawn pawn) {
-        CollectBondedSurgebinders(pawn);
-        return bondedSurgebindersBuffer.Count > 0;
+        if (pawn.genes == null) return false;
+        List<Verse.Gene> genes = pawn.genes.GenesListForReading;
+        for (int i = 0; i < genes.Count; i++) {
+            if (genes[i] is Surgebinder s && !s.Overridden && s.bondedSpren != null) return true;
+        }
+        return false;
     }
 
     public bool HasMemories(Pawn pawn) {
@@ -62,21 +49,21 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         return s?.radiantOrderDef?.LabelCap;
     }
 
-    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
+    public void DrawProgression(Rect rect, Pawn pawn, CodexState state) {
         Surgebinder? s = GetSurgebinder(pawn);
         if (s == null) return;
 
         RadiantOrderDef order = s.radiantOrderDef;
         Color accent = order.color;
 
-        float contentHeight = EstimateProgressionHeight(order, s.currentIdealDisplay, rect.width - 36f);
+        float contentHeight = EstimateProgressionHeight(order, s.CurrentIdealDisplay, rect.width - 36f);
         Rect viewRect = new Rect(0f, 0f, rect.width - 16f, contentHeight);
         Widgets.BeginScrollView(rect, ref state.ProgressionScroll, viewRect);
         DrawProgressionContent(pawn, viewRect, s, order, accent);
         Widgets.EndScrollView();
     }
 
-    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) {
+    public void DrawBonds(Rect rect, Pawn pawn, CodexState state) {
         CollectBondedSurgebinders(pawn);
         List<Surgebinder> bonds = bondedSurgebindersBuffer;
         if (bonds.Count == 0) return;
@@ -90,7 +77,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         DrawBondDetail(detailRect, bonds[state.SelectedSprenIndex], state);
     }
 
-    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) { }
+    public void DrawMemories(Rect rect, Pawn pawn, CodexState state) { }
 
     private static void DrawProgressionContent(
         Pawn pawn,
@@ -110,7 +97,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
 
         Rect infoButton = new Rect(rect.xMax - 100f, y + 3f, 100f, 24f);
         if (Widgets.ButtonText(infoButton, "CC_Codex_Surgebinding_OrderInfo".Translate())) {
-            Find.WindowStack.Add(new RadiantOrderInfoDialog(pawn, s, RadiantOrderInfoMode.View));
+            Find.WindowStack.Add(new Dialog_RadiantOrderInfoDialog(pawn, s, RadiantOrderInfoMode.View));
         }
 
         y += 34f;
@@ -118,7 +105,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f))) {
             Widgets.Label(
                 new Rect(rect.x, y, rect.width, 24f),
-                "CC_Codex_Surgebinding_IdealsSworn".Translate(s.currentIdealDisplay.Named("CURRENT"))
+                "CC_Codex_Surgebinding_IdealsSworn".Translate(s.CurrentIdealDisplay.Named("CURRENT"))
             );
         }
 
@@ -126,7 +113,7 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
 
         for (int i = 0; i < 5; i++) {
             int idealNumber = i + 1;
-            bool achieved = idealNumber <= s.currentIdealDisplay;
+            bool achieved = idealNumber <= s.CurrentIdealDisplay;
             Color dotColor = achieved
                 ? Color.Lerp(accent, new Color(0.95f, 0.85f, 0.35f), 0.3f)
                 : new Color(0.35f, 0.35f, 0.4f);
@@ -207,7 +194,8 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
                 );
                 Rect accent = new Rect(entryRect.x, entryRect.y, 3f, entryRect.height);
                 Widgets.DrawBoxSolid(accent, orderColor);
-            } else if (Mouse.IsOver(entryRect)) {
+            }
+            else if (Mouse.IsOver(entryRect)) {
                 Widgets.DrawHighlight(entryRect);
             }
 
@@ -237,158 +225,16 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         Pawn? spren = gene.bondedSpren;
         if (spren == null) return;
 
-        CompSprenBond? bond = spren.TryGetComp<CompSprenBond>();
+        SprenBond? bond = spren.TryGetComp<SprenBond>();
         if (bond?.BondedRadiant == null) return;
 
         Pawn radiant = bond.BondedRadiant;
 
-        float contentHeight = EstimateBondDetailHeight(bond);
+        float contentHeight = SprenBondDetailRenderer.EstimateHeight(bond) + 16f;
         Rect viewRect = new Rect(0f, 0f, rect.width - 16f, contentHeight);
         Widgets.BeginScrollView(rect, ref state.BondDetailScroll, viewRect);
-        DrawBondDetailContent(viewRect, spren, radiant, bond);
+        SprenBondDetailRenderer.Render(viewRect, spren, radiant, bond, false, 73948202);
         Widgets.EndScrollView();
-    }
-
-    private static void DrawBondDetailContent(Rect rect, Pawn spren, Pawn radiant, CompSprenBond bond) {
-        float y = rect.y;
-
-        using (new TextBlock(GameFont.Medium)) {
-            float renameSize = 24f;
-            Rect headerRect = new Rect(rect.x, y, rect.width - renameSize - 4f, 30f);
-            Widgets.Label(headerRect, spren.NameFullColored);
-
-            Rect renameRect = new Rect(headerRect.xMax + 4f, y + 3f, renameSize, renameSize);
-            if (Widgets.ButtonImage(renameRect, TexButton.Rename)) {
-                Find.WindowStack.Add(new NameSprenDialog(spren));
-            }
-
-            TooltipHandler.TipRegion(renameRect, "CRO_Spren_Rename".Translate());
-            y += BondDetailHeaderHeight;
-        }
-
-        using (new TextBlock(GameFont.Small)) {
-            string bondLabel = "CRO_Spren_BondedSpren".Translate(spren.NameFullColored.Named("SPREN"));
-            Rect bondRect = new Rect(rect.x, y, rect.width, 24f);
-            Widgets.Label(bondRect, bondLabel);
-            if (Widgets.ButtonInvisible(bondRect)) {
-                CameraJumper.TryJumpAndSelect(spren);
-            }
-
-            if (Mouse.IsOver(bondRect)) {
-                Widgets.DrawHighlight(bondRect);
-            }
-
-            y += BondDetailRowHeight;
-
-            float connection = SpiritWeb.Instance?.GetConnectionValue(radiant, spren) ?? 0f;
-            int percentage = (int)(connection * 100f);
-            string stage = connection switch {
-                >= 0.7f => "CRO_BondStage_Healthy".Translate(),
-                >= 0.4f => "CRO_BondStage_Strained".Translate(),
-                >= 0.15f => "CRO_BondStage_Fractured".Translate(),
-                _ => "CRO_BondStage_Breaking".Translate(),
-            };
-
-            Rect strengthLabelRect = new Rect(rect.x, y, 120f, 24f);
-            Widgets.Label(strengthLabelRect, "CRO_SprenBond_Strength".Translate());
-
-            Rect barRect = new Rect(rect.x + 120f, y + 2f, rect.width - 180f, 20f);
-            Widgets.FillableBar(barRect, connection, GetBondBarTexture(connection));
-
-            Rect percentRect = new Rect(barRect.xMax + 4f, y, 50f, 24f);
-            Widgets.Label(percentRect, $"{percentage}%");
-
-            Rect strengthTooltipRect = new Rect(rect.x, y, rect.width, 24f);
-            // distinct hash from ITab_SprenBond (73948201) to prevent tooltip cache collision
-            TooltipHandler.TipRegion(strengthTooltipRect, () => BuildStrengthTooltip(radiant, connection), 73948202);
-            y += BondDetailRowHeight;
-
-            Rect stageRect = new Rect(rect.x, y, rect.width, 24f);
-            Widgets.Label(stageRect, "CRO_SprenBond_Status".Translate(stage));
-            y += BondDetailRowHeight;
-
-            if (bond.Dismissed) {
-                Rect dismissedRect = new Rect(rect.x, y, rect.width, 24f);
-                Widgets.Label(dismissedRect, "CRO_SprenBond_Dismissed".Translate().Colorize(ColorLibrary.RedReadable));
-                y += BondDetailRowHeight;
-            }
-
-            y += BondDetailSectionSpacing;
-            Rect traitHeaderRect = new Rect(rect.x, y, rect.width, 24f);
-            Widgets.Label(
-                traitHeaderRect,
-                "CRO_SprenBond_Personality".Translate().Colorize(ColoredText.TipSectionTitleColor)
-            );
-            y += BondDetailTraitHeaderHeight;
-
-            if (bond.PersonalityTraits.Count == 0) {
-                Widgets.Label(new Rect(rect.x + 10f, y, rect.width - 10f, 24f), "CRO_SprenBond_NoTraits".Translate());
-            } else {
-                for (int i = 0; i < bond.PersonalityTraits.Count; i++) {
-                    Rect traitRect = new Rect(rect.x + 10f, y, rect.width - 10f, 24f);
-                    TraitDef traitDef = bond.PersonalityTraits[i];
-                    string traitLabel = traitDef.degreeDatas.Count > 0
-                        ? traitDef.degreeDatas[0].LabelCap
-                        : traitDef.LabelCap;
-                    Widgets.Label(traitRect, "- " + traitLabel);
-                    y += 24f;
-                }
-            }
-        }
-    }
-
-    private static float EstimateBondDetailHeight(CompSprenBond bond) {
-        float h = BondDetailHeaderHeight +
-                  BondDetailRowHeight +
-                  BondDetailRowHeight +
-                  BondDetailRowHeight +
-                  BondDetailSectionSpacing +
-                  BondDetailTraitHeaderHeight;
-        if (bond.Dismissed) h += BondDetailRowHeight;
-        h += bond.PersonalityTraits.Count == 0 ? 24f : bond.PersonalityTraits.Count * 24f;
-        return h + 16f;
-    }
-
-    private static string BuildStrengthTooltip(Pawn radiant, float connection) {
-        if (connection >= 1f) {
-            return "CRO_SprenBond_StrengthFull".Translate();
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.Append("CRO_SprenBond_StrengthTooltip".Translate());
-
-        bool hasStrainedBond = false;
-        List<Verse.Hediff> hediffs = radiant.health.hediffSet.hediffs;
-        for (int i = 0; i < hediffs.Count; i++) {
-            if (hediffs[i] is StrainedBond) {
-                hasStrainedBond = true;
-                sb.Append("\n  - ").Append("CRO_SprenBond_StrainedBondFactor".Translate());
-                break;
-            }
-        }
-
-        List<LogEntry> logs = Find.PlayLog.AllEntries;
-        int violationsShown = 0;
-        for (int i = 0; i < logs.Count && violationsShown < 5; i++) {
-            if (logs[i] is not BondViolationLogEntry violation) continue;
-            if (violation.pawn != radiant) continue;
-
-            sb.Append("\n  - ").Append(violation.reason).Append(" (").Append(violation.severityLabel).Append(')');
-            violationsShown++;
-        }
-
-        if (!hasStrainedBond && violationsShown == 0) {
-            sb.Append("\n  - ").Append("CRO_SprenBond_UnknownFactors".Translate());
-        }
-
-        return sb.ToString();
-    }
-
-    private static Texture2D GetBondBarTexture(float connection) {
-        if (connection >= 0.7f) return BondBarHealthyTex;
-        if (connection >= 0.4f) return BondBarStrainedTex;
-        if (connection >= 0.15f) return BondBarFracturedTex;
-        return BondBarBreakingTex;
     }
 
     private void CollectBondedSurgebinders(Pawn pawn) {
@@ -412,14 +258,14 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         return (string)"CC_Codex_Surgebinding_IdealUnsworn".Translate(ideal.Named("IDEAL")).Resolve();
     }
 
-    private static float EstimateProgressionHeight(RadiantOrderDef order, int currentIdealDisplay, float contentWidth) {
+    private static float EstimateProgressionHeight(RadiantOrderDef order, int CurrentIdealDisplay, float contentWidth) {
         float h = 34f + 30f;
         GameFont prevFont = Text.Font;
         Text.Font = GameFont.Tiny;
         for (int i = 0; i < 5; i++) {
             h += 26f;
             int idealNumber = i + 1;
-            bool achieved = idealNumber <= currentIdealDisplay;
+            bool achieved = idealNumber <= CurrentIdealDisplay;
             if (achieved && i < order.ideals.Count) {
                 string? desc = order.ideals[i].description;
                 if (!desc.NullOrEmpty()) {

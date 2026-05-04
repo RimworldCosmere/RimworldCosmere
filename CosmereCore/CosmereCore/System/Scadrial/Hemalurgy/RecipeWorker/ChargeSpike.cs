@@ -1,7 +1,7 @@
 using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Hemalurgy.Comp.Thing;
-using Cosmere.System.Scadrial.Hemalurgy.Dialog;
+using Cosmere.System.Scadrial.Hemalurgy;
 using RimWorld;
 using Verse;
 
@@ -11,7 +11,7 @@ public class ChargeSpike : Recipe_Surgery {
     public override bool AvailableOnNow(Verse.Thing thing, BodyPartRecord? part = null) {
         if (!base.AvailableOnNow(thing, part)) return false;
         if (thing is not Pawn) return false;
-        if (!ResearchProjectDef.Named("Cosmere_Scadrial_Hemalurgy").IsFinished) return false;
+        if (!HemalurgicDefOf.Cosmere_Scadrial_Hemalurgy.IsFinished) return false;
         if (!IsHemalurgyEnabled()) return false;
         return true;
     }
@@ -66,7 +66,7 @@ public class ChargeSpike : Recipe_Surgery {
             }
 
             if (candidates.Count == 1) {
-                HemalurgicChargeUtility.PerformCharge(
+                HemalurgicChargeUtility.DriveHemalurgicCharge(
                     donor,
                     billDoer,
                     spikeComp,
@@ -84,7 +84,7 @@ public class ChargeSpike : Recipe_Surgery {
                 donor,
                 stealType,
                 geneDef => {
-                    HemalurgicChargeUtility.PerformCharge(
+                    HemalurgicChargeUtility.DriveHemalurgicCharge(
                         donor,
                         billDoer,
                         spikeComp,
@@ -105,8 +105,9 @@ public class ChargeSpike : Recipe_Surgery {
                     DropSpike(spikeComp.parent, billDoer);
                 }
             );
-        } else {
-            HemalurgicChargeUtility.PerformCharge(
+        }
+        else {
+            HemalurgicChargeUtility.DriveHemalurgicCharge(
                 donor,
                 billDoer,
                 spikeComp,
@@ -132,7 +133,8 @@ public class ChargeSpike : Recipe_Surgery {
             }
 
             GenPlace.TryPlaceThing(newSpike, dropper.Position, dropper.MapHeld, ThingPlaceMode.Near);
-        } else if (!spike.Spawned) {
+        }
+        else if (!spike.Spawned) {
             GenPlace.TryPlaceThing(spike, dropper.Position, dropper.MapHeld, ThingPlaceMode.Near);
         }
     }

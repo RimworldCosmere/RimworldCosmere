@@ -16,11 +16,11 @@ public static class AutocastSubtabRenderer {
             return;
         }
 
-        ICodexContentProvider? owner = active as ICodexContentProvider;
+        ICodexContentProvider owner = active.Codex;
         List<RimWorld.Ability> all = pawn.abilities.AllAbilitiesForReading;
         filtered.Clear();
         for (int i = 0; i < all.Count; i++) {
-            if (owner == null || owner.OwnsAbility(all[i])) filtered.Add(all[i]);
+            if (owner.OwnsAbility(all[i])) filtered.Add(all[i]);
         }
 
         if (filtered.Count == 0) {

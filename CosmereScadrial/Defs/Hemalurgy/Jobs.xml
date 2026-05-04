@@ -2,28 +2,28 @@
 <Defs>
     <JobDef>
         <defName>Cosmere_Scadrial_Job_ChargeCorpseSpike</defName>
-        <driverClass>Cosmere.System.Scadrial.Hemalurgy.Job.JobDriver_ChargeCorpseSpike</driverClass>
+        <driverClass>Cosmere.System.Scadrial.JobDriver.ChargeCorpseSpike</driverClass>
         <reportString>charging hemalurgic spike from TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>
 
     <JobDef>
         <defName>Cosmere_Scadrial_Job_ChargeLiveSpike</defName>
-        <driverClass>Cosmere.System.Scadrial.Hemalurgy.Job.JobDriver_ChargeLiveSpike</driverClass>
+        <driverClass>Cosmere.System.Scadrial.JobDriver.ChargeLiveSpike</driverClass>
         <reportString>charging hemalurgic spike from TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>
 
     <JobDef>
         <defName>Cosmere_Scadrial_Job_WaitInBed</defName>
-        <driverClass>Cosmere.System.Scadrial.Hemalurgy.Job.JobDriver_WaitInBed</driverClass>
+        <driverClass>Cosmere.System.Scadrial.JobDriver.WaitInBed</driverClass>
         <reportString>waiting for hemalurgic procedure.</reportString>
         <playerInterruptible>false</playerInterruptible>
     </JobDef>
 
     <JobDef>
         <defName>Cosmere_Scadrial_Job_ImplantSpike</defName>
-        <driverClass>Cosmere.System.Scadrial.Hemalurgy.Job.JobDriver_ImplantSpike</driverClass>
+        <driverClass>Cosmere.System.Scadrial.JobDriver.ImplantSpike</driverClass>
         <reportString>implanting hemalurgic spike into TargetA.</reportString>
         <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
     </JobDef>

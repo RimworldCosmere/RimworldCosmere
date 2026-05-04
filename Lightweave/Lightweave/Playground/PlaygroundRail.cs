@@ -130,10 +130,12 @@ public static class PlaygroundRail {
                 if (hovering) {
                     if (!hoverStarts.TryGetValue(cat.Id, out float t) || t <= 0f) {
                         hoverStarts[cat.Id] = now;
-                    } else if (now - t >= HoverThresholdSeconds) {
+                    }
+                    else if (now - t >= HoverThresholdSeconds) {
                         hoverQualifiedId = cat.Id;
                     }
-                } else if (hoverStarts.ContainsKey(cat.Id)) {
+                }
+                else if (hoverStarts.ContainsKey(cat.Id)) {
                     hoverStarts[cat.Id] = 0f;
                 }
             }
@@ -213,7 +215,8 @@ public static class PlaygroundRail {
             GUI.color = focusBar;
             GUI.DrawTexture(bar, Texture2D.whiteTexture);
             GUI.color = baseColor;
-        } else if (hovering) {
+        }
+        else if (hovering) {
             PaintBox.DrawHighlight(rowRect, RadiusSpec.All(new Rem(0.25f)), true);
         }
 
@@ -229,7 +232,7 @@ public static class PlaygroundRail {
 
         Font font = theme.GetFont(expanded || activeContainsSelection ? FontRole.BodyBold : FontRole.Body);
         int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-        GUIStyle style = GuiStyleCache.Get(font, pixelSize, expanded || activeContainsSelection ? FontStyle.Bold : FontStyle.Normal);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, expanded || activeContainsSelection ? FontStyle.Bold : FontStyle.Normal);
         style.alignment = rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
 
         ThemeSlot textSlot = activeContainsSelection ? ThemeSlot.TextPrimary : ThemeSlot.TextSecondary;
@@ -238,7 +241,7 @@ public static class PlaygroundRail {
         string labelText = (string)cat.LabelKey.Translate();
         GUI.Label(RectSnap.Snap(labelRect), labelText, style);
 
-        GUIStyle chevronStyle = GuiStyleCache.Get(font, pixelSize, FontStyle.Normal);
+        GUIStyle chevronStyle = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Normal);
         chevronStyle.alignment = rtl ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight;
         Rect chevronRect = new Rect(
             rtl ? rowRect.x + RowPaddingX : rowRect.xMax - RowPaddingX - 12f,
@@ -273,7 +276,8 @@ public static class PlaygroundRail {
             GUI.color = focusBar;
             GUI.DrawTexture(bar, Texture2D.whiteTexture);
             GUI.color = baseColor;
-        } else if (hovering) {
+        }
+        else if (hovering) {
             PaintBox.DrawHighlight(rowRect, RadiusSpec.All(new Rem(0.2f)), true);
         }
 
@@ -288,7 +292,7 @@ public static class PlaygroundRail {
 
         Font font = theme.GetFont(isSelected ? FontRole.BodyBold : FontRole.Body);
         int pixelSize = Mathf.RoundToInt(new Rem(0.8125f).ToFontPx());
-        GUIStyle style = GuiStyleCache.Get(font, pixelSize, isSelected ? FontStyle.Bold : FontStyle.Normal);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, isSelected ? FontStyle.Bold : FontStyle.Normal);
         style.alignment = rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
 
         ThemeSlot textSlot = isSelected ? ThemeSlot.TextPrimary : ThemeSlot.TextSecondary;

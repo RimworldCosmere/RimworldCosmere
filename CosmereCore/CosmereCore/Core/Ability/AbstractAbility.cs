@@ -12,10 +12,10 @@ namespace Cosmere.Core.Ability;
 
 public interface IAbility<out TGene, out THediff> : ILoadReferenceable
     where TGene : Invested where THediff : IHediff<TGene> {
-    public TGene gene { get; }
-    public Def_AbilityDef def { get; set; }
-    public void UpdateStatus(Status? nextStatus = null);
-    public float GetStrength(Status? nextStatus = null);
+    public TGene Gene { get; }
+    public Def_AbilityDef def { get; }
+    public void UpdateStatus(Status? newStatus = null);
+    public float GetStrength(Status? desiredStatus = null);
     public event Action<IAbility<TGene, THediff>, Status, Status>? OnStatusChangedEvent;
 }
 
@@ -48,11 +48,9 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         Initialize();
     }
 
-    protected virtual bool toggleable => true;
-
     public Status? nextStatus { get; protected set; }
 
-    public override AcceptanceReport CanCast => gene.CanLowerReserve(def.beuPerTick);
+    public override AcceptanceReport CanCast => Gene.CanLowerReserve(def.beuPerTick);
 
     public override string Tooltip {
         get {
@@ -62,7 +60,8 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
                 if (def.toggleable) {
                     float drainPerSecond = GetDesiredBurnRateForStatus(Active.On) * GenTicks.TicksPerRealSecond;
                     tooltipByLine.Insert(1, $"Investiture: {drainPerSecond:F2}/s".Colorize(ColorLibrary.Cyan));
-                } else {
+                }
+                else {
                     float cost = GetDesiredBurnRateForStatus(Active.On);
                     tooltipByLine.Insert(1, $"Investiture: {cost:F2} per use".Colorize(ColorLibrary.Cyan));
                 }
@@ -85,7 +84,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         set => base.def = value;
     }
 
-    public virtual TGene gene { get; } = default!;
+    public abstract TGene Gene { get; }
 
     public event Action<IAbility<TGene, THediff>, Status, Status>? OnStatusChangedEvent;
 
@@ -120,9 +119,11 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         Status? oldStatus = status;
         status = newStatus.Value;
 
-        if (!oldStatus.Value.isActive && def.activeMote != null) {
-            activeMote ??= MoteMaker.MakeAttachedOverlay(pawn, def.activeMote, Vector3.zero, GetMoteScale());
-        } else if (!newStatus.Value.isActive) {
+        if (!oldStatus.Value.IsActive && def.activeMote != null) {
+            if (activeMote == null || activeMote.Destroyed)
+                activeMote = MoteMaker.MakeAttachedOverlay(pawn, def.activeMote, Vector3.zero, GetMoteScale());
+        }
+        else if (!newStatus.Value.IsActive) {
             activeMote?.Destroy();
             activeMote = null;
         }
@@ -137,6 +138,8 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         nextStatus = null;
     }
 
+    public new virtual bool GizmosVisible() => base.GizmosVisible();
+
     public new virtual void Initialize() {
         if (def.comps.Any<AbilityCompProperties>()) {
             comps = [];
@@ -147,7 +150,8 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
                     abilityComp.parent = this;
                     comps.Add(abilityComp);
                     abilityComp.Initialize(def.comps[index]);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     Logger.Error("Could not instantiate or initialize an AbilityComp: " + ex);
                     comps.Remove(abilityComp);
                 }
@@ -186,13 +190,53 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         bool isDowned = pawn.Downed;
         bool isAsleep = pawn.IsAsleep();
 
-        if (willUseWhileDowned && isDowned && !pawn.Dead && status.isActive) {
-            if (gene.CanLowerReserve(def.beuPerTick)) {
+        ApplyAutoTriggers(isDowned);
+
+        if (!status.IsActive) {
+            CommitStateSnapshot(isDowned, isAsleep, paused);
+            return;
+        }
+
+        if (isAsleep) {
+            if (!def.canUseWhileAsleep) {
+                UpdateStatus(Active.Off);
+            }
+            else if (status.IsPoweredUp) {
+                UpdateStatus(Active.On);
+            }
+        }
+        else if (paused) {
+            paused = false;
+            if (lastWasPaused) {
+                Gene.UpdateDrainSource((def, GetDesiredBurnRateForStatus(status)));
+            }
+
+            OnEnable();
+            if (status.IsPoweredUp) OnPowerUp();
+            CommitStateSnapshot(isDowned, isAsleep, paused: false);
+            return;
+        }
+
+        if (isDowned) {
+            if (status.IsPoweredUp && (!def.canUseWhileDowned || !willUseWhileDowned)) {
+                UpdateStatus(Active.Off);
+            }
+            else if (status == Active.Off && willUseWhileDowned) {
                 UpdateStatus(Active.On);
             }
         }
 
-        if (willUseWhileInjured && gene.CanLowerReserve(def.beuPerTick)) {
+        CommitStateSnapshot(isDowned, isAsleep, paused);
+    }
+
+    private void ApplyAutoTriggers(bool isDowned) {
+        if (willUseWhileDowned && isDowned && !pawn.Dead && status.IsActive) {
+            if (Gene.CanLowerReserve(def.beuPerTick)) {
+                UpdateStatus(Active.On);
+            }
+        }
+
+        if (willUseWhileInjured && Gene.CanLowerReserve(def.beuPerTick)) {
             if (pawn.health.summaryHealth.SummaryHealthPercent < 1) UpdateStatus(Active.On);
             List<Verse.Hediff> hediffs = pawn.health.hediffSet.hediffs;
             for (int i = 0; i < hediffs.Count; i++) {
@@ -202,53 +246,9 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
                 }
             }
         }
+    }
 
-        if (!status.isActive) {
-            lastWasDowned = isDowned;
-            lastWasAsleep = isAsleep;
-            lastWasPaused = paused;
-            return;
-        }
-
-        if (isAsleep) {
-            if (!def.canUseWhileAsleep) {
-                UpdateStatus(Active.Off);
-            } else if (status.isPoweredUp) {
-                UpdateStatus(Active.On);
-            }
-        } else {
-            if (paused) {
-                paused = false;
-                if (lastWasPaused) {
-                    gene.UpdateDrainSource((def, GetDesiredBurnRateForStatus(status)));
-                }
-
-                OnEnable();
-                if (status.isPoweredUp) OnPowerUp();
-                lastWasDowned = isDowned;
-                lastWasAsleep = isAsleep;
-                lastWasPaused = false;
-                return;
-            }
-        }
-
-        if (isDowned) {
-            if (status.isPoweredUp && (!def.canUseWhileDowned || !willUseWhileDowned)) {
-                UpdateStatus(Active.Off);
-            } else if (status == Active.Off && willUseWhileDowned) {
-                UpdateStatus(Active.On);
-            }
-        }
-
-        if (!paused && isAsleep && status.isActive && !def.canUseWhileAsleep) {
-            paused = true;
-            if (!lastWasPaused) {
-                gene.UpdateDrainSource((def, GetDesiredBurnRateForStatus(Active.Off)));
-            }
-
-            OnDisable();
-        }
-
+    private void CommitStateSnapshot(bool isDowned, bool isAsleep, bool paused) {
         lastWasDowned = isDowned;
         lastWasAsleep = isAsleep;
         lastWasPaused = paused;
@@ -275,7 +275,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     }
 
     protected virtual void OnStatusChanged(Status oldStatus, Status newStatus) {
-        gene.UpdateDrainSource((def, GetDesiredBurnRateForStatus(newStatus)));
+        Gene.UpdateDrainSource((def, GetDesiredBurnRateForStatus(newStatus)));
         // OnStatusChanged needs to be called in these orders so that the SeverityCalculator can be updated properly
 
         // When Disabling (and possibly deflaring)
@@ -303,7 +303,7 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     }
 
     public override bool GizmoDisabled(out string reason) {
-        if (!status.isActive) return base.GizmoDisabled(out reason);
+        if (!status.IsActive) return base.GizmoDisabled(out reason);
 
         reason = "";
         return false;
@@ -312,7 +312,6 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
     /// <summary>
     ///     We hide all gizmos for this ability because they are added by the gene
     /// </summary>
-    /// <returns></returns>
     public override IEnumerable<Command> GetGizmos() {
         yield break;
     }
@@ -346,36 +345,36 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         Scribe_Deep.Look(ref status, "status");
 
         switch (Scribe.mode) {
-            // Save/load logic
             case LoadSaveMode.Saving: {
-                bool localTargetPresent = localTarget.HasValue;
-                Scribe_Values.Look(ref localTargetPresent, "targetPresent");
-                if (localTargetPresent) {
-                    LocalTargetInfo temp = localTarget!.Value;
-                    Scribe_TargetInfo.Look(ref temp, "target");
-                }
+                    bool localTargetPresent = localTarget.HasValue;
+                    Scribe_Values.Look(ref localTargetPresent, "targetPresent");
+                    if (localTargetPresent) {
+                        LocalTargetInfo temp = localTarget!.Value;
+                        Scribe_TargetInfo.Look(ref temp, "target");
+                    }
 
-                break;
-            }
+                    break;
+                }
             case LoadSaveMode.LoadingVars: {
-                bool localTargetPresent = false;
-                Scribe_Values.Look(ref localTargetPresent, "targetPresent");
-                if (localTargetPresent) {
-                    LocalTargetInfo temp = LocalTargetInfo.Invalid;
-                    Scribe_TargetInfo.Look(ref temp, "target");
-                    localTarget = temp;
-                } else {
-                    localTarget = null;
-                }
+                    bool localTargetPresent = false;
+                    Scribe_Values.Look(ref localTargetPresent, "targetPresent");
+                    if (localTargetPresent) {
+                        LocalTargetInfo temp = LocalTargetInfo.Invalid;
+                        Scribe_TargetInfo.Look(ref temp, "target");
+                        localTarget = temp;
+                    }
+                    else {
+                        localTarget = null;
+                    }
 
-                break;
-            }
+                    break;
+                }
         }
     }
 
 
-    public override void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo dest) {
-        QueueCastingJob(targetInfo, dest, 1);
+    public override void QueueCastingJob(LocalTargetInfo targetInfo, LocalTargetInfo destination) {
+        QueueCastingJob(targetInfo, destination, 1);
     }
 
     public override void QueueCastingJob(GlobalTargetInfo targetInfo) {
@@ -420,8 +419,8 @@ public abstract class AbstractAbility<TGene, THediff> : RimWorld.Ability, IAbili
         base.PreActivate(target);
     }
 
-    public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        bool result = base.Activate(target, dest);
+    public override bool Activate(LocalTargetInfo target, LocalTargetInfo destination) {
+        bool result = base.Activate(target, destination);
         nextStatus = null;
 
         if (!def.toggleable) {

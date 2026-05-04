@@ -89,7 +89,8 @@ public static class Button {
                         labelRect.width - (iconSize + padPx),
                         labelRect.height
                     );
-                } else {
+                }
+                else {
                     labelRect = new Rect(
                         leadingX + iconSize + padPx,
                         labelRect.y,
@@ -112,14 +113,15 @@ public static class Button {
                         labelRect.xMax - (trailingX + iconSize + padPx),
                         labelRect.height
                     );
-                } else {
+                }
+                else {
                     labelRect = new Rect(labelRect.x, labelRect.y, trailingX - padPx - labelRect.x, labelRect.height);
                 }
             }
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
             style.alignment = TextAnchor.MiddleCenter;
 
             Color fg = foregroundOverride switch {

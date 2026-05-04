@@ -56,7 +56,7 @@ Use `CosmereScadrial` as a reference for setting up a new shardworld.
 1. Add C# code in `CosmereCore/CosmereCore/System/{WorldName}/` following the namespace pattern `Cosmere.System.{WorldName}.*`
 2. Create a `Mod.cs` in your world directory inheriting from `CosmereMod`
 3. For settings, see `Cosmere.System.Scadrial.Settings.ScadrialModSettings`
-4. For quickstarting, see `Cosmere.System.Scadrial.Quickstart.PreCatacendreQuickstarter`
+4. For quickstarting, see `Cosmere.System.Scadrial.Quickstart.PreCatacendreQuickstart`
 5. Create your world mod directory `Cosmere{WorldName}/` with:
     - `About/About.xml` - Mod metadata
     - `Defs/` - XML definitions
@@ -64,7 +64,7 @@ Use `CosmereScadrial` as a reference for setting up a new shardworld.
     - `loadFolders.xml` - Load order configuration
     - `.steamignore` - Files to exclude from Steam
 
-6. Add global using statement to `CosmereCore/CosmereCore/Cosmere.Core.csproj`:
+6. Add global using statement to `CosmereCore/CosmereCore/Cosmere.csproj`:
     ```xml
     <Using Include="Cosmere.System.{WorldName}.Extension"/>
     ```

@@ -1,4 +1,6 @@
+using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Gene;
+using Cosmere.System.Roshar.Surgebinding.Ability.Transportation;
 using RimWorld;
 using Verse;
 
@@ -35,8 +37,8 @@ public class RadiantTracker : GameComponent {
                 List<Verse.Gene> genes = colonists[i].genes?.GenesListForReading ?? [];
                 for (int g = 0; g < genes.Count; g++) {
                     if (genes[g] is not Surgebinder surgebinder) continue;
-                    if (surgebinder.radiantOrderDef.defName != "Bondsmith") continue;
-                    if (surgebinder.currentIdeal >= 1) activeBondsmithCount++;
+                    if (surgebinder.radiantOrderDef != RadiantOrderDefOf.Bondsmith) continue;
+                    if (surgebinder.CurrentIdeal >= 1) activeBondsmithCount++;
                 }
             }
         }
@@ -77,7 +79,7 @@ public class RadiantTracker : GameComponent {
             for (int i = 0; i < colonists.Count; i++) {
                 Surgebinder? surgebinder = colonists[i].genes?.GetFirstGeneOfType<Surgebinder>();
                 if (surgebinder == null) continue;
-                if (surgebinder.radiantOrderDef.defName != "Bondsmith") continue;
+                if (surgebinder.radiantOrderDef != RadiantOrderDefOf.Bondsmith) continue;
 
                 colonists[i].records.AddTo(RecordDefOf.Cosmere_Roshar_Record_ColonyStabilityDays, 1);
             }
@@ -117,6 +119,7 @@ public class RadiantTracker : GameComponent {
 
     public override void FinalizeInit() {
         base.FinalizeInit();
+        Portal.activePortals.Clear();
         RecalculateBondsmithCount();
     }
 }

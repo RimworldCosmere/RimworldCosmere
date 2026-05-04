@@ -32,7 +32,7 @@ public static class IdealDebugCommands {
                     $"Ideal {level + 1} (index {level})",
                     DebugMenuOptionMode.Action,
                     () => {
-                        surgebinder.currentIdeal = level;
+                        surgebinder.CurrentIdeal = level;
                         Messages.Message(
                             $"Set {pawn.NameShortColored} to Ideal {level + 1}",
                             MessageTypeDefOf.SilentInput
@@ -187,7 +187,7 @@ public static class IdealDebugCommands {
                             $"Set Fury to {level:F2} on {pawn.NameShortColored}",
                             MessageTypeDefOf.SilentInput
                         );
-                        fury.CheckFuryBreak();
+                        fury.TriggerFuryBreakIfReady();
                     }
                 )
             );
@@ -212,15 +212,15 @@ public static class IdealDebugCommands {
         StringBuilder sb = new StringBuilder();
         sb.AppendLine($"=== Ideal Info: {pawn.NameShortColored} ===");
         sb.AppendLine($"Order: {surgebinder.radiantOrderDef.LabelCap}");
-        sb.AppendLine($"Current Ideal: {surgebinder.currentIdealDisplay} (index {surgebinder.currentIdeal})");
+        sb.AppendLine($"Current Ideal: {surgebinder.CurrentIdealDisplay} (index {surgebinder.CurrentIdeal})");
         sb.AppendLine($"Pending Oath: {surgebinder.PendingOath}");
         sb.AppendLine(
             $"Surgebinding Skill: {pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level}"
         );
         sb.AppendLine($"Last Ideal Change Tick: {surgebinder.LastIdealChangeTick}");
 
-        if (surgebinder.currentIdeal < 4) {
-            int nextLevel = surgebinder.currentIdeal + 1;
+        if (surgebinder.CurrentIdeal < 4) {
+            int nextLevel = surgebinder.CurrentIdeal + 1;
             bool satisfied = surgebinder.radiantOrderDef.idealChecker.IsSatisfied(pawn, surgebinder, nextLevel);
             sb.AppendLine($"IsSatisfied for level {nextLevel}: {satisfied}");
         }

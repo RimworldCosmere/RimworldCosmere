@@ -59,7 +59,8 @@ public static class TextField {
             string focusName;
             if (focus != null) {
                 focusName = focus.Name;
-            } else {
+            }
+            else {
                 Hooks.Hooks.RefHandle<string> focusNameRef = Hooks.Hooks.UseRef<string>("", line, focusKey);
                 if (string.IsNullOrEmpty(focusNameRef.Current)) {
                     focusNameRef.Current = "lw_tf_" + Guid.NewGuid().ToString("N").Substring(0, 8);
@@ -100,7 +101,8 @@ public static class TextField {
 
             if (disabled) {
                 InputSurface.DrawReadOnlyValue(inner, buffer.Value ?? string.Empty, theme);
-            } else {
+            }
+            else {
                 Font tfFont = theme.GetFont(FontRole.Body);
                 int tfSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
                 Color tfTextColor = theme.GetColor(ThemeSlot.TextPrimary);
@@ -128,7 +130,8 @@ public static class TextField {
                 if (accepted) {
                     lastGood.Current = candidate;
                     onChange?.Invoke(candidate);
-                } else {
+                }
+                else {
                     buffer.Set(lastGood.Current ?? string.Empty);
                     shakeFrames.Set(ShakeFrames);
                 }

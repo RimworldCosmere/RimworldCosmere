@@ -1,7 +1,9 @@
 using Cosmere.Core;
 using Cosmere.Core.Comp.Game;
 using Cosmere.Core.Def;
+using Cosmere.Core.Extension;
 using Cosmere.Core.Util;
+using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Comp.Game;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
@@ -21,7 +23,7 @@ public static class Pawn_GeneTrackerExtension {
         bool showNamingDialog = false
     ) {
         if (!ShardUtility.AreAnyEnabled(ShardDefOf.Honor)) return null;
-        if (orderDef.defName == "Bondsmith") return null;
+        if (orderDef == RadiantOrderDefOf.Bondsmith) return null;
         if (orderDef.sprenNamePool.Count == 0) return null;
 
         string sprenDefName = "Cosmere_Roshar_Race_" + orderDef.sprenLabel.Replace(" ", "");
@@ -72,13 +74,13 @@ public static class Pawn_GeneTrackerExtension {
             GenSpawn.Spawn(spren, cell, radiant.Map);
         }
 
-        CompSprenBond? bond = spren.TryGetComp<CompSprenBond>();
+        SprenBond? bond = spren.TryGetComp<SprenBond>();
         bond?.SetupBond(radiant);
 
         SpiritWeb.Instance?.SetConnection(radiant, spren, 1f);
 
         if (showNamingDialog && Current.ProgramState == ProgramState.Playing) {
-            Find.WindowStack.Add(new NameSprenDialog(spren));
+            Find.WindowStack.Add(new Dialog_NameSprenDialog(spren));
         }
 
         PawnRelationDef? nahelBondDef =
@@ -127,8 +129,8 @@ public static class Pawn_GeneTrackerExtension {
             }
         }
 
-        Surgebinder gene = (Surgebinder)genes.TryAddGene(geneDef, xenogene);
-        gene.currentIdeal = ideal;
+        Surgebinder gene = (Surgebinder)genes.EnsureGene(geneDef, xenogene);
+        gene.CurrentIdeal = ideal;
 
         if (orderDef != null && pawn != null) {
             Pawn? spren = pawn.SpawnBondedSpren(orderDef, sprenName, showNamingDialog);
@@ -153,7 +155,7 @@ public static class Pawn_GeneTrackerExtension {
     public static Surgebinder? GetSurgebindingGeneForOrder(this Pawn_GeneTracker genes, RadiantOrderDef def) {
         GeneDef geneDef = def.GetSurgebindingGene();
 
-        return (Surgebinder)genes.GetGene(geneDef);
+        return genes.GetGene(geneDef) as Surgebinder;
     }
 
     public static bool HasSurgebindingGeneForOrder(this Pawn_GeneTracker genes, RadiantOrderDef def) {

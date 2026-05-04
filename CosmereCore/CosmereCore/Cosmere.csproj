@@ -51,6 +51,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Lightweave\Lightweave\Lightweave.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Lib.Harmony" Version="2.4.2"/>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

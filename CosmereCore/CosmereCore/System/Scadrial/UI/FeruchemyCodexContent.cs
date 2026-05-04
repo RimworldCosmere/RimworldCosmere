@@ -1,6 +1,7 @@
 using Cosmere.Core.Savant;
 using Cosmere.Core.UI.Codex;
 using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Memory;
 using Cosmere.System.Scadrial.Feruchemy.UI;
@@ -45,7 +46,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         return null;
     }
 
-    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
+    public void DrawProgression(Rect rect, Pawn pawn, CodexState state) {
         List<Feruchemist> ferus = CollectFeruchemists(pawn);
         if (ferus.Count == 0) return;
 
@@ -81,10 +82,10 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 Widgets.Label(new Rect(swatch.xMax + 8f, row.y, 130f, row.height), metal.LabelCap);
 
             int stage = SavantUtility.CanBeSavant(metal)
-                ? SavantUtility.GetFeruchemicalSavantStage(pawn, metal)
+                ? ScadrialSavantUtility.GetFeruchemicalSavantStage(pawn, metal)
                 : 0;
             Rect stageRect = new Rect(swatch.xMax + 146f, row.y, 140f, row.height);
-            DrawSavantStage(stageRect, stage, metal.color);
+            SavantUI.DrawSavantStage(stageRect, stage, metal.color);
 
             int storingTicks = 0;
             int tappingTicks = 0;
@@ -115,9 +116,9 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         }
     }
 
-    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) { }
+    public void DrawBonds(Rect rect, Pawn pawn, CodexState state) { }
 
-    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) {
+    public void DrawMemories(Rect rect, Pawn pawn, CodexState state) {
         Rect headerRow = new Rect(rect.x, rect.y, rect.width, 30f);
         using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
             Widgets.Label(
@@ -211,7 +212,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
     }
 
     private static float CoppermindBlockHeight(Metalmind mind) {
-        int entryCount = mind.storedMemories.Count;
+        int entryCount = mind.StoredMemories.Count;
         if (entryCount == 0) entryCount = 1;
         return 28f + entryCount * 24f + 6f;
     }
@@ -229,8 +230,8 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 "CC_Codex_Feruchemy_CoppermindHeader".Translate(
                     mind.parent.LabelCap.Named("NAME"),
                     ownerName.Named("OWNER"),
-                    mind.usedMemorySpace.ToString("F1").Named("USED"),
-                    mind.maxAmount.ToString("F0").Named("MAX")
+                    mind.UsedMemorySpace.ToString("F1").Named("USED"),
+                    mind.MaxAmount.ToString("F0").Named("MAX")
                 )
             );
         }
@@ -241,23 +242,24 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         Widgets.DrawLineHorizontal(divider.x, divider.y, divider.width, new Color(1f, 1f, 1f, 0.1f));
         y += 2f;
 
-        IReadOnlyList<StoredMemory> memories = mind.storedMemories;
+        IReadOnlyList<StoredMemory> memories = mind.StoredMemories;
         if (memories.Count == 0) {
             Rect emptyRow = new Rect(rect.x + 12f, y, rect.width - 12f, 22f);
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, SecondaryTextColor))
                 Widgets.Label(emptyRow, "CC_Codex_Feruchemy_CoppermindEmpty".Translate());
             y += 24f;
-        } else {
+        }
+        else {
             for (int i = 0; i < memories.Count; i++) {
                 Rect row = new Rect(rect.x, y, rect.width, 22f);
                 if (i % 2 == 0) Widgets.DrawBoxSolid(row, RowStripeColor);
 
                 StoredMemory memory = memories[i];
-                Color moodColor = memory.IsPositive ? PositiveMoodColor : NegativeMoodColor;
+                Color moodColor = memory.isPositive ? PositiveMoodColor : NegativeMoodColor;
 
                 Rect labelRect = new Rect(row.x + 12f, row.y, row.width * 0.55f - 12f, row.height);
                 using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, moodColor))
-                    Widgets.Label(labelRect, memory.LabelCap);
+                    Widgets.Label(labelRect, memory.labelCap);
 
                 string storedBy = memory.owner != null
                     ? memory.owner.LabelShortCap
@@ -277,32 +279,6 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         return y;
     }
 
-    private static void DrawSavantStage(Rect rect, int stage, Color accent) {
-        string label;
-        Color color;
-        switch (stage) {
-            case 1:
-                label = (string)"CC_Codex_Savant_Stage1".Translate();
-                color = Color.Lerp(accent, Color.white, 0.35f);
-                break;
-            case 2:
-                label = (string)"CC_Codex_Savant_Stage2".Translate();
-                color = accent;
-                break;
-            case 3:
-                label = (string)"CC_Codex_Savant_Stage3".Translate();
-                color = Color.Lerp(accent, new Color(1f, 0.9f, 0.4f), 0.5f);
-                break;
-            default:
-                label = (string)"CC_Codex_Savant_Stage0".Translate();
-                color = new Color(0.55f, 0.55f, 0.55f);
-                break;
-        }
-
-        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, color))
-            Widgets.Label(rect, label);
-    }
-
     private static List<Feruchemist> CollectFeruchemists(Pawn pawn) {
         List<Feruchemist> result = [];
         if (pawn.genes == null) return result;
@@ -320,7 +296,7 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         List<Verse.Thing> items = pawn.inventory.innerContainer.InnerListForReading;
         for (int i = 0; i < items.Count; i++) {
             Metalmind? mind = (items[i] as ThingWithComps)?.TryGetComp<Metalmind>();
-            if (mind != null && mind.metal?.defName == "Copper") {
+            if (mind != null && mind.Metal?.defName == "Copper") {
                 result.Add(mind);
             }
         }

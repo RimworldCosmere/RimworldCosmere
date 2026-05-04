@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using Verse;
+﻿using Verse;
 
 namespace Cosmere.Core.Util;
 
@@ -13,19 +12,6 @@ public static class InvestitureDetector {
         }
 
         return false;
-    }
-
-    public static float GetInvestiture(Verse.Thing thing) {
-        if (thing is Pawn pawn) {
-            RimWorld.Need? investNeed = pawn.needs?.TryGetNeed(NeedDefOf.Cosmere_Investiture);
-            float investiture = investNeed?.CurLevel ?? 0f;
-            float scaled = investiture / (investiture + 50000f);
-            float normalized = Mathf.Lerp(0.3f, 1f, scaled);
-
-            return normalized;
-        }
-
-        return 0f;
     }
 
     public static bool IsInsideCoppercloud(Verse.Thing? thing) {
@@ -63,7 +49,7 @@ public static class InvestitureDetector {
                 Building? edifice = cell.GetEdifice(thing.Map);
                 if (edifice == null) continue;
 
-                if (!edifice.Stuff?.Equals(ThingDefOf.Aluminum) ?? true) return false;
+                if (edifice.Stuff == null || !edifice.Stuff.Equals(ThingDefOf.Aluminum)) return false;
             }
         }
 

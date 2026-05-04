@@ -66,13 +66,13 @@ public static class Accordion {
 
             Font headerFont = theme.GetFont(FontRole.BodyBold);
             int headerFontSize = Mathf.RoundToInt(new Rem(0.9375f).ToFontPx());
-            GUIStyle headerStyle = GuiStyleCache.Get(headerFont, headerFontSize, FontStyle.Bold);
+            GUIStyle headerStyle = GuiStyleCache.GetOrCreate(headerFont, headerFontSize, FontStyle.Bold);
             headerStyle.alignment = rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
             headerStyle.wordWrap = false;
 
             Font chevronFont = theme.GetFont(FontRole.Body);
             int chevronFontSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
-            GUIStyle chevronStyle = GuiStyleCache.Get(chevronFont, chevronFontSize);
+            GUIStyle chevronStyle = GuiStyleCache.GetOrCreate(chevronFont, chevronFontSize);
             chevronStyle.alignment = TextAnchor.MiddleCenter;
             chevronStyle.wordWrap = false;
 
@@ -136,7 +136,8 @@ public static class Accordion {
                         headerRect.xMax - headerPadX - labelX,
                         headerRect.height
                     );
-                } else {
+                }
+                else {
                     labelRect = new Rect(
                         headerRect.x + headerPadX,
                         headerRect.y,
@@ -193,7 +194,8 @@ public static class Accordion {
                         if (!wasExpanded) {
                             expandedIds.Add(item.Id);
                         }
-                    } else {
+                    }
+                    else {
                         if (!expandedIds.Remove(item.Id)) {
                             expandedIds.Add(item.Id);
                         }

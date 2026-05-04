@@ -32,7 +32,7 @@ public static class PlaygroundHeader {
         LightweaveNode brand = BuildBrand();
         LightweaveNode controls = BuildControls(theme, forceDisabled);
 
-        LightweaveNode row = Layout.Layout.HStack.Create(
+        LightweaveNode row = Layout.HStack.Create(
             SpacingScale.Md,
             r => {
                 r.AddFlex(brand);
@@ -40,7 +40,7 @@ public static class PlaygroundHeader {
             }
         );
 
-        LightweaveNode surface = Layout.Layout.Box.Create(
+        LightweaveNode surface = Layout.Box.Create(
             new EdgeInsets(
                 SpacingScale.Xs,
                 Bottom: SpacingScale.Xs,
@@ -69,7 +69,7 @@ public static class PlaygroundHeader {
             (string)"CC_Playground_Header_Subtitle".Translate()
         );
 
-        return Layout.Layout.Stack.Create(
+        return Layout.Stack.Create(
             SpacingScale.Xxs,
             s => {
                 s.Add(title);
@@ -96,7 +96,7 @@ public static class PlaygroundHeader {
             tooltipKey: "CC_Playground_Header_ForceDisabled_Tooltip"
         );
 
-        return Layout.Layout.HStack.Create(
+        return Layout.HStack.Create(
             SpacingScale.Sm,
             r => {
                 r.Add(themeSegmented, 280f);

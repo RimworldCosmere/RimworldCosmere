@@ -17,11 +17,11 @@ public class PainDiminisher : HediffComp {
                 return $"Stormlight: {investiture.currentInvestiture:F0}";
             }
 
-            return null!;
+            return "";
         }
     }
 
-    public bool GetActive() {
+    public bool IsActive() {
         Pawn pawn = Pawn;
         if (pawn?.apparel?.WornApparel == null) {
             return false;
@@ -30,7 +30,7 @@ public class PainDiminisher : HediffComp {
         foreach (Apparel? apparel in pawn.apparel.WornApparel) {
             ApparelFabrialDiminisher? comp = apparel.GetComp<ApparelFabrialDiminisher>();
             if (comp == null) continue;
-            return comp.CheckPower();
+            return comp.IsActive;
         }
 
         return false;
@@ -46,7 +46,7 @@ public class PainDiminisher : HediffComp {
             ApparelFabrialDiminisher? comp = apparel.GetComp<ApparelFabrialDiminisher>();
             if (comp == null) continue;
 
-            if (!comp.CheckPower()) {
+            if (!comp.IsActive) {
                 Verse.Hediff? hediff = pawn.health.hediffSet.GetFirstHediffOfDef(
                     HediffDefOf.Cosmere_Roshar_Apparel_Painrial_Diminisher_Hediff
                 );

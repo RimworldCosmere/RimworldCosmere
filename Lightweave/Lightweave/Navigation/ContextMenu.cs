@@ -5,7 +5,7 @@ using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
-using static Cosmere.Lightweave.Layout.Layout;
+using Cosmere.Lightweave.Layout;
 using static Cosmere.Lightweave.Typography.Typography;
 using Text = Cosmere.Lightweave.Typography.Typography.Text;
 
@@ -33,7 +33,8 @@ public static class ContextMenu {
         node.Children.Add(child);
         if (child.Measure != null) {
             node.Measure = child.Measure;
-        } else if (child.PreferredHeight.HasValue) {
+        }
+        else if (child.PreferredHeight.HasValue) {
             node.PreferredHeight = child.PreferredHeight.Value;
         }
 

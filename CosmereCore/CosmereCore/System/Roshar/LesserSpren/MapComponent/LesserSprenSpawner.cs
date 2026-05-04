@@ -31,10 +31,8 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     public override void MapComponentDraw() {
         SprenDebugOverlay.DrawOverlay();
 
-        // Always process pending initializations, even before fully initialized
-        // This allows the background task to queue systems for main thread init
-
-        // Initialize any pending spren systems on main thread
+        // Process pending initializations on main thread before checking initialized -
+        // background scanners queue work here while the map is still loading.
         if (PendingInitialization.Count > 0) {
             foreach (SprenType sprenType in PendingInitialization.ToList()) {
                 if (!SprenSystems.TryGetValue(sprenType, out SprenParticleSystem? sprenSystem)) continue;
@@ -47,9 +45,9 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
             PendingInitialization.Clear();
         }
 
-        // Handle particle re-emission during draw so it works even when paused
         if (!initialized) return;
 
+        // Re-emission runs during Draw so particles continue while paused.
         foreach (SprenParticleSystem? sprenSystem in SprenSystems.Values.Where(s => s.ShouldReEmitParticles())) {
             sprenSystem.EmitParticlesForActiveCells();
         }
@@ -67,38 +65,34 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     public override void MapComponentTick() {
         base.MapComponentTick();
 
-        // Don't do anything else until initialized
         if (!initialized) return;
 
         UpdateAllSprenControllers();
     }
 
     private void UpdateAllSprenControllers() {
-        // Update ALL controllers (both static and dynamic need periodic refreshes)
         foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
             SprenType sprenType = controller.sprenType;
 
-            // Update controller's cells (handles timing internally)
             if (!controller.UpdateInfo(map)) {
                 continue;
             }
 
             SprenParticleSystem? sprenSystem;
             if (controller.activeSpawnInfo.Count > 0) {
-                // Create or update the spren system
                 if (!SprenSystems.ContainsKey(sprenType)) {
                     CreateSprenSystem(sprenType);
                 }
 
                 sprenSystem = SprenSystems[sprenType];
 
-                // Only update if particle system is initialized
                 if (sprenSystem?.particleSystem == null) continue;
 
                 sprenSystem.UpdateParticles();
                 sprenSystem.particleSystem.gameObject.SetActive(true);
                 sprenSystem.particleSystem.Play();
-            } else if (SprenSystems.TryGetValue(sprenType, out sprenSystem)) {
+            }
+            else if (SprenSystems.TryGetValue(sprenType, out sprenSystem)) {
                 if (sprenSystem.particleSystem == null) continue;
                 sprenSystem.particleSystem.gameObject.SetActive(false);
                 sprenSystem.particleSystem.Stop();
@@ -110,7 +104,6 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
         SprenParticleSystem system = new SprenParticleSystem(sprenType, mapID);
         SprenSystems[sprenType] = system;
 
-        // Mark for initialization on main thread
         PendingInitialization.Add(sprenType);
     }
 
@@ -125,12 +118,10 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     }
 
     private static void CleanupAllSystems() {
-        // Clean up all spren systems
         foreach (SprenParticleSystem? system in SprenSystems.Values) {
             system.Destroy();
         }
 
-        // Reset all controllers for new map
         foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
             controller.ResetForNewMap();
         }
@@ -142,12 +133,9 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
     private void InitializeMapSystems() {
         if (initialized) return;
 
-        // Get all enabled controllers
-        // Initialize cells for all controllers
         foreach (BaseSprenController controller in SprenControllerRegistry.enabledControllers) {
             controller.InitializeInfo(map);
 
-            // Create spren system if controller has valid cells
             if (controller.validSpawnInfo.Count > 0) {
                 CreateSprenSystem(controller.sprenType);
             }
@@ -161,10 +149,9 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
         Scribe_Values.Look(ref initialized, "initialized");
         Scribe_Values.Look(ref lastDynamicUpdateTick, "lastDynamicUpdateTick");
 
-        // We'll recreate particle systems on load rather than trying to save them
+        // Particle systems are recreated post-load rather than serialized.
         if (Scribe.mode != LoadSaveMode.PostLoadInit) return;
 
-        // Reset initialization on load to wait for map to fully load again
         if (initialized) {
             initialized = false;
         }
@@ -190,7 +177,8 @@ public class LesserSprenSpawner(Map map) : Verse.MapComponent(map) {
             if (controller is StaticSprenController) {
                 // For nature spren, also check if it would be valid even if not currently active
                 shouldShow = isValidAtPosition || isInValidCells;
-            } else {
+            }
+            else {
                 // For dynamic spren, check dynamic cells
                 List<SprenSpawnInformation> dynamicCells = controller.GetDynamicSpawnInfo(map);
                 bool isInDynamicCells = dynamicCells.Any(i => i.position == position);

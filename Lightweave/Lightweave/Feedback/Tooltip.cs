@@ -27,7 +27,7 @@ public static class Tooltip {
             ButtonVariant.Secondary
         );
         string body = "CC_Playground_Feedback_Tooltip_Button_Body".Translate();
-        return new DocSample(Tooltip.Wrap(trigger, body));
+        return new DocSample(Tooltip.Create(trigger, body));
     }
 
     [DocUsage]
@@ -37,10 +37,10 @@ public static class Tooltip {
             () => { },
             ButtonVariant.Secondary
         );
-        return new DocSample(Tooltip.Wrap(trigger, "Hint shown after a brief hover."));
+        return new DocSample(Tooltip.Create(trigger, "Hint shown after a brief hover."));
     }
 
-    public static LightweaveNode Wrap(
+    public static LightweaveNode Create(
         LightweaveNode children,
         string text,
         Rem? maxWidth = null,
@@ -55,7 +55,7 @@ public static class Tooltip {
             wrap: true
         );
         Vector2? autoSize = MeasureText(text, maxWidth);
-        return Wrap(children, content, autoSize, line, file);
+        return Create(children, content, autoSize, line, file);
     }
 
     private static Vector2? MeasureText(string text, Rem? maxWidth) {
@@ -75,7 +75,7 @@ public static class Tooltip {
         return new Vector2(width, height);
     }
 
-    public static LightweaveNode Wrap(
+    public static LightweaveNode Create(
         LightweaveNode children,
         LightweaveNode content,
         Vector2? preferredSize = null,
@@ -133,33 +133,33 @@ public static class Tooltip {
             Rect tooltipScreenRect = new Rect(x, y, size.x, size.y);
 
             RenderContext.Current.PendingOverlays.Enqueue(() => {
-                    Vector2 local = GUIUtility.ScreenToGUIPoint(new Vector2(tooltipScreenRect.x, tooltipScreenRect.y));
-                    Rect tooltipRect = new Rect(local.x, local.y, tooltipScreenRect.width, tooltipScreenRect.height);
+                Vector2 local = GUIUtility.ScreenToGUIPoint(new Vector2(tooltipScreenRect.x, tooltipScreenRect.y));
+                Rect tooltipRect = new Rect(local.x, local.y, tooltipScreenRect.width, tooltipScreenRect.height);
 
-                    Rect shadowRect = new Rect(
-                        tooltipRect.x + 2f,
-                        tooltipRect.y + 3f,
-                        tooltipRect.width,
-                        tooltipRect.height
-                    );
-                    BackgroundSpec shadowBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, 0.35f));
-                    PaintBox.Draw(shadowRect, shadowBg, null, null);
+                Rect shadowRect = new Rect(
+                    tooltipRect.x + 2f,
+                    tooltipRect.y + 3f,
+                    tooltipRect.width,
+                    tooltipRect.height
+                );
+                BackgroundSpec shadowBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, 0.35f));
+                PaintBox.Draw(shadowRect, shadowBg, null, null);
 
-                    BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
-                    BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
-                    RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
-                    PaintBox.Draw(tooltipRect, bg, border, radius);
+                BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+                BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
+                RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
+                PaintBox.Draw(tooltipRect, bg, border, radius);
 
-                    float pad = new Rem(0.5f).ToPixels();
-                    Rect innerRect = new Rect(
-                        tooltipRect.x + pad,
-                        tooltipRect.y + pad,
-                        tooltipRect.width - pad * 2f,
-                        tooltipRect.height - pad * 2f
-                    );
+                float pad = new Rem(0.5f).ToPixels();
+                Rect innerRect = new Rect(
+                    tooltipRect.x + pad,
+                    tooltipRect.y + pad,
+                    tooltipRect.width - pad * 2f,
+                    tooltipRect.height - pad * 2f
+                );
 
-                    LightweaveRoot.PaintSubtree(content, innerRect);
-                }
+                LightweaveRoot.PaintSubtree(content, innerRect);
+            }
             );
         };
 

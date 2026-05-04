@@ -91,7 +91,8 @@ public static class TextArea {
 
             if (disabled) {
                 InputSurface.DrawReadOnlyValue(inner, buffer.Value ?? string.Empty, theme, TextAnchor.UpperLeft);
-            } else {
+            }
+            else {
                 Font taFont = theme.GetFont(FontRole.Body);
                 int taSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
                 Color taTextColor = theme.GetColor(ThemeSlot.TextPrimary);

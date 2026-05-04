@@ -10,46 +10,11 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexContentProvider {
-    private static readonly AllomancyCodexContent codex = new AllomancyCodexContent();
+public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<AllomancyCodexContent> {
+    public const string Id = "Allomancy";
+    public override string SystemId => Id;
 
-    public bool HasProgression(Pawn pawn) {
-        return codex.HasProgression(pawn);
-    }
-
-    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
-        codex.DrawProgression(pawn, rect, state);
-    }
-
-    public bool ShowsBondsSubtab => codex.ShowsBondsSubtab;
-
-    public bool HasBonds(Pawn pawn) {
-        return codex.HasBonds(pawn);
-    }
-
-    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) {
-        codex.DrawBonds(pawn, rect, state);
-    }
-
-    public bool HasMemories(Pawn pawn) {
-        return codex.HasMemories(pawn);
-    }
-
-    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) {
-        codex.DrawMemories(pawn, rect, state);
-    }
-
-    public bool OwnsAbility(Ability ability) {
-        return codex.OwnsAbility(ability);
-    }
-
-    public string? HeaderLabelFor(Pawn pawn) {
-        return codex.HeaderLabelFor(pawn);
-    }
-
-    public string SystemId => "Allomancy";
-
-    public bool IsInvested(Pawn pawn) {
+    public override bool IsInvested(Pawn pawn) {
         if (pawn.genes == null) return false;
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
         for (int i = 0; i < all.Count; i++) {
@@ -59,7 +24,7 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexC
         return false;
     }
 
-    public InvestitureSnapshot? Snapshot(Pawn pawn) {
+    public override InvestitureSnapshot? Snapshot(Pawn pawn) {
         if (pawn.genes == null) return null;
 
         List<InvestitureCell> cells = [];
@@ -92,13 +57,11 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexC
             SystemId,
             "Allomancy",
             null,
-            cells,
-            [],
-            []
+            cells
         );
     }
 
-    public RadialSystem? SnapshotRadial(Pawn pawn) {
+    public override RadialSystem? SnapshotRadial(Pawn pawn) {
         if (pawn.genes == null) return null;
 
         List<RadialSubsection> subs = [];
@@ -121,20 +84,20 @@ public sealed class AllomancyInvestitureProvider : IInvestitureProvider, ICodexC
             float reserveFraction = a.Max > 0f ? a.Value / a.Max : 0f;
 
             RadialLeaf leaf = new RadialLeaf(
-                "BURN",
-                "Burn " + a.metal.LabelCap,
-                a.metal.allomancy?.invertedIcon,
-                RadialActionKind.StartAllomancyBurn,
-                matched.def,
-                matched.atLeastBurning,
-                matched.status.power > 1,
-                matched.def.toggleable && matched.status.isActive,
-                false,
-                null,
-                reserveFraction,
-                reserveFraction <= 0f,
-                $"{matched.GetDesiredBurnRateForStatus(Status.PowerOne) * GenTicks.TicksPerRealSecond:F2}/s",
-                0
+                LeafId: "BURN",
+                Label: "Burn " + a.metal.LabelCap,
+                Icon: a.metal.allomancy?.invertedIcon,
+                Kind: RadialActionKind.StartAllomancyBurn,
+                AbilityDef: matched.def,
+                IsActive: matched.atLeastBurning,
+                IsFlaring: matched.status.power > 1,
+                IsSustained: matched.def.toggleable && matched.status.IsActive,
+                IsLocked: false,
+                LockReason: null,
+                ReserveFraction: reserveFraction,
+                HasInsufficientResources: reserveFraction <= 0f,
+                CostHint: $"{matched.GetDesiredBurnRateForStatus(Status.PowerOne) * GenTicks.TicksPerRealSecond:F2}/s",
+                CooldownTicksRemaining: 0
             );
 
             subs.Add(

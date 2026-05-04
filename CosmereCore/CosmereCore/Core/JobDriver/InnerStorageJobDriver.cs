@@ -24,21 +24,21 @@ public abstract class InnerStorageJobDriver : JobDriver_HaulToContainer {
 
     private void UpdateEnrouteTrackers() {
         int count = job.count;
-        TryReserveEnroute(TargetThingC, ref count);
+        ReserveEnroute(TargetThingC, ref count);
         if (TargetB != TargetC) {
-            TryReserveEnroute(TargetThingB, ref count);
+            ReserveEnroute(TargetThingB, ref count);
         }
 
         if (job.targetQueueB == null) return;
 
         foreach (LocalTargetInfo localTargetInfo in job.targetQueueB) {
             if (!TargetC.HasThing || !(localTargetInfo == (LocalTargetInfo)TargetThingC)) {
-                TryReserveEnroute(localTargetInfo.Thing, ref count);
+                ReserveEnroute(localTargetInfo.Thing, ref count);
             }
         }
     }
 
-    private void TryReserveEnroute(Verse.Thing thing, ref int count) {
+    private void ReserveEnroute(Verse.Thing thing, ref int count) {
         if (thing.DestroyedOrNull()) return;
 
         UpdateTracker(thing.TryGetComp<InnerStorage>(), ref count);
@@ -70,31 +70,31 @@ public abstract class InnerStorageJobDriver : JobDriver_HaulToContainer {
         this.FailOnDestroyedOrNull(TargetIndex.A);
         this.FailOn(() => storage is null);
         this.FailOn(() => {
-                Verse.Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.B).Thing;
-                if (thing == null || storage == null) {
-                    return true;
-                }
-
-                if (!storage.parent.Destroyed) return !storage.Accepts(ThingToCarry);
-
-                if (job.targetQueueB.NullOrEmpty()) return true;
-
-                if (!Toils_Haul.TryGetNextDestinationFromQueue(
-                        TargetIndex.C,
-                        TargetIndex.B,
-                        ThingDef,
-                        job,
-                        pawn,
-                        out Verse.Thing? nextTarget
-                    )) {
-                    return true;
-                }
-
-                job.targetQueueB.RemoveAll(target => target.Thing == nextTarget);
-                job.targetB = nextTarget;
-
-                return !storage.Accepts(ThingToCarry);
+            Verse.Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.B).Thing;
+            if (thing == null || storage == null) {
+                return true;
             }
+
+            if (!storage.parent.Destroyed) return !storage.Accepts(ThingToCarry);
+
+            if (job.targetQueueB.NullOrEmpty()) return true;
+
+            if (!Toils_Haul.TryGetNextDestinationFromQueue(
+                    TargetIndex.C,
+                    TargetIndex.B,
+                    ThingDef,
+                    job,
+                    pawn,
+                    out Verse.Thing? nextTarget
+                )) {
+                return true;
+            }
+
+            job.targetQueueB.RemoveAll(target => target.Thing == nextTarget);
+            job.targetB = nextTarget;
+
+            return !storage.Accepts(ThingToCarry);
+        }
         );
         this.FailOnForbidden(TargetIndex.B);
 

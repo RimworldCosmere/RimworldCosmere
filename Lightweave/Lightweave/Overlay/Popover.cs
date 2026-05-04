@@ -9,7 +9,7 @@ using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
 using static Cosmere.Lightweave.Hooks.Hooks;
-using static Cosmere.Lightweave.Layout.Layout;
+using Cosmere.Lightweave.Layout;
 using Caption = Cosmere.Lightweave.Typography.Typography.Caption;
 using Code = Cosmere.Lightweave.Typography.Typography.Code;
 using Heading = Cosmere.Lightweave.Typography.Typography.Heading;
@@ -68,40 +68,40 @@ public static class Popover {
             Rect anchorAbsolute = OverlayAnchor.CaptureAbsolute(anchorRect);
 
             RenderContext.Current.PendingOverlays.Enqueue(() => {
-                    Rect anchorHere = OverlayAnchor.ResolveLocal(anchorAbsolute);
-                    Rect popoverRect = PopoverLayout.Resolve(anchorHere, placement, dir, size, screen);
+                Rect anchorHere = OverlayAnchor.ResolveLocal(anchorAbsolute);
+                Rect popoverRect = PopoverLayout.Resolve(anchorHere, placement, dir, size, screen);
 
-                    Color savedColor = GUI.color;
-                    GUI.color = Color.white;
+                Color savedColor = GUI.color;
+                GUI.color = Color.white;
 
-                    Rect shadowRect = new Rect(
-                        popoverRect.x + 2f,
-                        popoverRect.y + 3f,
-                        popoverRect.width,
-                        popoverRect.height
-                    );
-                    BackgroundSpec shadowBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, 0.35f));
-                    PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(new Rem(0.5f)));
+                Rect shadowRect = new Rect(
+                    popoverRect.x + 2f,
+                    popoverRect.y + 3f,
+                    popoverRect.width,
+                    popoverRect.height
+                );
+                BackgroundSpec shadowBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, 0.35f));
+                PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(new Rem(0.5f)));
 
-                    BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
-                    BorderSpec border = BorderSpec.All(new Rem(2f / 16f), ThemeSlot.BorderDefault);
-                    RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
-                    PaintBox.Draw(popoverRect, bg, border, radius);
+                BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+                BorderSpec border = BorderSpec.All(new Rem(2f / 16f), ThemeSlot.BorderDefault);
+                RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
+                PaintBox.Draw(popoverRect, bg, border, radius);
 
-                    LightweaveRoot.PaintSubtree(content, popoverRect);
+                LightweaveRoot.PaintSubtree(content, popoverRect);
 
-                    GUI.color = savedColor;
+                GUI.color = savedColor;
 
-                    Event e = Event.current;
-                    if (e.rawType == EventType.MouseDown &&
-                        !popoverRect.Contains(e.mousePosition) &&
-                        !anchorHere.Contains(e.mousePosition)) {
-                        onDismiss?.Invoke();
-                        if (e.type == EventType.MouseDown) {
-                            e.Use();
-                        }
+                Event e = Event.current;
+                if (e.rawType == EventType.MouseDown &&
+                    !popoverRect.Contains(e.mousePosition) &&
+                    !anchorHere.Contains(e.mousePosition)) {
+                    onDismiss?.Invoke();
+                    if (e.type == EventType.MouseDown) {
+                        e.Use();
                     }
                 }
+            }
             );
         };
         return node;

@@ -50,8 +50,8 @@ public class Investiture : RimWorld.Need {
     public string InvestitureLabel {
         get {
             Invested? investedGene = pawn.genes?.GetFirstGeneOfType<Invested>();
-            if (investedGene != null && !string.IsNullOrEmpty(investedGene.investitureLabel)) {
-                return investedGene.investitureLabel;
+            if (investedGene != null && !string.IsNullOrEmpty(investedGene.InvestitureLabel)) {
+                return investedGene.InvestitureLabel;
             }
 
             return LabelCap;
@@ -61,8 +61,8 @@ public class Investiture : RimWorld.Need {
     public override float MaxLevel {
         get {
             Invested? investedGene = pawn.genes?.GetFirstGeneOfType<Invested>();
-            if (investedGene != null && investedGene.maxInvestitureLevel > 0) {
-                return investedGene.maxInvestitureLevel;
+            if (investedGene != null && investedGene.MaxInvestitureLevel > 0) {
+                return investedGene.MaxInvestitureLevel;
             }
 
             for (int i = unlockedHeightening + 1; i < BreathEquivalentUnitThresholds.Length; i++) {
@@ -111,7 +111,7 @@ public class Investiture : RimWorld.Need {
     public override void SetInitialLevel() { }
 
     public override void NeedInterval() {
-        pawn.story?.TryAddTrait(TraitDefOf.Cosmere_Invested, GetDegreeFromBreathEquivalentUnits((int)CurLevel));
+        pawn.story?.EnsureTrait(TraitDefOf.Cosmere_Invested, GetDegreeFromBreathEquivalentUnits((int)CurLevel));
 
         if (cachedGlower == null) {
             if (!pawn.TryGetComp(out cachedGlower)) {
@@ -230,7 +230,6 @@ public class Investiture : RimWorld.Need {
         int degree = GetDegreeFromBreathEquivalentUnits(beu);
         string text = beu.ToStringBreathEquivalentUnits();
 
-        // Optional: assign a color gradient based on Heightening
         Color color = Color.Lerp(Color.gray, new Color(0.4f, 0.9f, 1.0f), degree / 10f);
         string colored = text.Colorize(color);
 

@@ -28,15 +28,15 @@ public class Metalmind : ThingComp, IMetalmindSource {
     public Pawn? owner { get; private set; }
     private new MetalmindProperties props => (MetalmindProperties)base.props;
 
-    public bool isCoppermind => metal?.defName == "Copper";
+    public bool IsCoppermind => Metal?.defName == "Copper";
 
-    public IReadOnlyList<StoredMemory> storedMemories => storedMemoriesInt;
+    public IReadOnlyList<StoredMemory> StoredMemories => storedMemoriesInt;
 
-    public float usedMemorySpace {
+    public float UsedMemorySpace {
         get {
             float total = 0f;
             for (int i = 0; i < storedMemoriesInt.Count; i++) {
-                total += storedMemoriesInt[i].MoodMagnitude;
+                total += storedMemoriesInt[i].moodMagnitude;
             }
 
             return total;
@@ -45,25 +45,25 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     private InvestitureHolder investitureHolder => parent.GetComp<InvestitureHolder>();
 
-    public bool equipped {
+    public bool Equipped {
         get => equippedInt;
         set => equippedInt = value;
     }
 
-    public float maxAmount => props.maxAmount;
+    public float MaxAmount => props.maxAmount;
 
-    public bool canStore => isCoppermind ? false : equipped && storedAmount < maxAmount;
-    public bool canTap => isCoppermind ? false : equipped && storedAmount > 0;
+    public bool CanStore => IsCoppermind ? false : Equipped && StoredAmount < MaxAmount;
+    public bool CanTap => IsCoppermind ? false : Equipped && StoredAmount > 0;
 
-    public float storedAmount {
+    public float StoredAmount {
         get => storedAmountInt;
         private set {
             storedAmountInt = value;
-            investitureHolder.currentInvestitureSelf = value * Constants.BreathEquivalentUnitsPerMetalUnit;
+            investitureHolder.currentInvestitureSelf = value * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
         }
     }
 
-    public MetalDef? metal {
+    public MetalDef? Metal {
         get {
             if (cachedMetal != null) return cachedMetal;
             if (parent.def.GetModExtension<MetalsLinked>() is { } metalsLinked) {
@@ -82,27 +82,27 @@ public class Metalmind : ThingComp, IMetalmindSource {
     }
 
     public void AddStored(float amount) {
-        if (!canStore) return;
+        if (!CanStore) return;
         if (!ValidateOwner()) return;
 
-        storedAmount = Mathf.Clamp(storedAmount + amount, 0, maxAmount);
+        StoredAmount = Mathf.Clamp(StoredAmount + amount, 0, MaxAmount);
     }
 
     public void ConsumeStored(float amount) {
-        if (!canTap) return;
+        if (!CanTap) return;
         if (!ValidateOwner()) return;
 
-        storedAmount = Mathf.Clamp(storedAmount - amount, 0, maxAmount);
+        StoredAmount = Mathf.Clamp(StoredAmount - amount, 0, MaxAmount);
     }
 
     public bool CanFitMemory(float magnitude) {
-        return usedMemorySpace + magnitude <= maxAmount;
+        return UsedMemorySpace + magnitude <= MaxAmount;
     }
 
     public void StoreMemory(StoredMemory memory) {
         storedMemoriesInt.Add(memory);
-        if (isCoppermind) {
-            storedAmountInt = usedMemorySpace;
+        if (IsCoppermind) {
+            storedAmountInt = UsedMemorySpace;
         }
     }
 
@@ -110,15 +110,15 @@ public class Metalmind : ThingComp, IMetalmindSource {
         if (index < 0 || index >= storedMemoriesInt.Count) return null;
         StoredMemory removed = storedMemoriesInt[index];
         storedMemoriesInt.RemoveAt(index);
-        if (isCoppermind) {
-            storedAmountInt = usedMemorySpace;
+        if (IsCoppermind) {
+            storedAmountInt = UsedMemorySpace;
         }
 
         return removed;
     }
 
     public void SyncInjectedThoughts(Pawn holder) {
-        if (!isCoppermind) return;
+        if (!IsCoppermind) return;
         if (holder == null) return;
         if (owner == null) owner = holder;
         if (holder != owner) return;
@@ -153,7 +153,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
     }
 
     public override void PostPostMake() {
-        investitureHolder.maxInvestitureSelf = maxAmount * Constants.BreathEquivalentUnitsPerMetalUnit;
+        investitureHolder.maxInvestitureSelf = MaxAmount * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
     }
 
     public Pawn? GetHoldingPawn() {
@@ -184,7 +184,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
         Scribe_Values.Look(ref storedAmountInt, "storedAmount");
         Scribe_Values.Look(ref equippedInt, "equipped");
-        Scribe_Collections.Look(ref storedMemoriesInt, "storedMemories", LookMode.Deep);
+        Scribe_Collections.Look(ref storedMemoriesInt, "StoredMemories", LookMode.Deep);
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit) {
             cachedMetal = null;
@@ -201,8 +201,8 @@ public class Metalmind : ThingComp, IMetalmindSource {
         StringBuilder sb = new StringBuilder();
         TaggedString coloredOwner = owner?.NameFullColored ?? "None".Colorize(ColoredText.DateTimeColor);
         sb.AppendLine("CS_MetalmindOwner".Translate() + ": " + coloredOwner);
-        NamedArgument coloredMetal = metal?.coloredLabel.Named("METAL") ?? "unknown".Named("METAL");
-        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {storedAmountInt:F1} / {maxAmount}");
+        NamedArgument coloredMetal = Metal?.coloredLabel.Named("METAL") ?? "unknown".Named("METAL");
+        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {storedAmountInt:F1} / {MaxAmount}");
 
         return sb.ToString();
     }

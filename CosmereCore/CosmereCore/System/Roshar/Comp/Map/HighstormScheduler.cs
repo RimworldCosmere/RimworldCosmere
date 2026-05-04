@@ -92,7 +92,8 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
                     RimWorld.LetterDefOf.NeutralEvent,
                     TargetInfo.Invalid
                 );
-            } else if (!currentlyWeeping && weepingActive) {
+            }
+            else if (!currentlyWeeping && weepingActive) {
                 weepingActive = false;
                 Find.LetterStack.ReceiveLetter(
                     "CR_Weeping_End_Title".Translate(),
@@ -161,7 +162,8 @@ public class HighstormScheduler(Verse.Map map) : MapComponent(map) {
 
         if (success) {
             stormActive = true;
-        } else {
+        }
+        else {
             Logger.Warning("Incident failed to execute, will retry next schedule.");
         }
 

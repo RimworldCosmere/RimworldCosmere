@@ -11,13 +11,12 @@ public sealed class DockAccordion {
     public void Draw(
         Rect rect,
         Pawn pawn,
-        List<InvestitureSnapshot> snapshots,
+        IReadOnlyList<InvestitureSnapshot> snapshots,
         DockRenderContext ctx
     ) {
         if (snapshots.Count == 0) return;
 
-        string defaultExpanded = ExpandedSystemId ?? snapshots[0].SystemId;
-        if (ExpandedSystemId == null) ExpandedSystemId = defaultExpanded;
+        ExpandedSystemId ??= snapshots[0].SystemId;
 
         float y = rect.y;
         for (int i = 0; i < snapshots.Count; i++) {

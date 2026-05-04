@@ -14,9 +14,9 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
 
     public CompGlower? glowerComp => parent.TryGetComp<CompGlower>();
     public bool hasGemstone => insertedGemstone != null;
-    public List<ThingDef> filterList => filterListInt;
+    public List<ThingDef> FilterList => filterListInt;
 
-    public List<ThingDef> allowedSpheres { get; } = [
+    public List<ThingDef> AllowedSpheres { get; } = [
         Core.ThingDefOf.CutGem,
         ThingDefOf.Cosmere_Roshar_Thing_Chip,
         ThingDefOf.Cosmere_Roshar_Thing_Mark,
@@ -42,8 +42,8 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
     public override void PostSpawnSetup(bool respawningAfterLoad) {
         base.PostSpawnSetup(respawningAfterLoad);
         if (filterListInt.Count == 0) {
-            foreach (ThingDef def in allowedSpheres) {
-                if (def != null) filterListInt.Add(def);
+            foreach (ThingDef def in AllowedSpheres) {
+                if (def != null) FilterList.Add(def);
             }
         }
     }
@@ -52,10 +52,10 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
         base.PostExposeData();
         Scribe_Deep.Look(ref insertedGemstone, "insertedGemstone");
         Scribe_Values.Look(ref powerOn, "PowerOn");
-        Scribe_Collections.Look(ref filterListInt, "filterList", LookMode.Def);
+        Scribe_Collections.Look(ref filterListInt, "FilterList", LookMode.Def);
     }
 
-    public void CheckPower(bool flickeredOn) {
+    public void UpdatePowerState(bool flickeredOn) {
         InvestitureHolder? investiture = insertedGemstone?.TryGetComp<InvestitureHolder>();
         if (investiture != null) {
             powerOn = investiture.currentInvestiture > 0 && flickeredOn;
@@ -101,7 +101,7 @@ public class FabrialPowerGenerator : ThingComp, IGemstoneHandler, IFilterableCom
             selPawn.Map.listerThings.AllThings.Where(thing =>
                 thing.HasComp<InvestitureHolder>() &&
                 thing.TryGetComp<InvestitureHolder>().currentInvestiture > 0 &&
-                filterList.Contains(thing.def)
+                FilterList.Contains(thing.def)
             ),
             500f
         );

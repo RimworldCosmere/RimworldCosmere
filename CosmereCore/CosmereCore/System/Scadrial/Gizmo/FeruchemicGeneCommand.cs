@@ -74,7 +74,7 @@ public class FeruchemicGeneCommand(
         AllomancyAbility allomancyAbility = (AllomancyAbility)AbilityUtility.MakeAbility(def, pawn);
         yield return new AllomanticAbilitySubGizmo(
             this,
-            allomancyAbility.gene,
+            allomancyAbility.Gene,
             allomancyAbility
         );
     }

@@ -13,17 +13,17 @@ public class SoftenGround : SurgebindingAbility {
     public SoftenGround(Pawn pawn) : base(pawn) { }
     public SoftenGround(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + gene.currentIdeal;
+    private float radius => BaseRadius + Gene.CurrentIdeal;
 
-    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (10f + gene.currentIdeal * 5f));
+    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (10f + Gene.CurrentIdeal * 5f));
 
     private bool zoneActive => zoneExpiryTick > 0 && Find.TickManager.TicksGame < zoneExpiryTick;
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return false;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return false;
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
 
         zoneCenter = target.Cell;
         zoneExpiryTick = Find.TickManager.TicksGame + durationTicks;

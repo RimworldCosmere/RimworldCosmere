@@ -8,7 +8,7 @@ namespace Cosmere.System.Nalthis.UI;
 
 public sealed class AwakeningDockSection : IDockSection {
     public string SystemId => "Awakening";
-    public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
+    public ISystemSkin Skin => SystemSkinRegistry.ForOrFallback(SystemId);
 
     public float GetHeaderHeight() {
         return 28f;

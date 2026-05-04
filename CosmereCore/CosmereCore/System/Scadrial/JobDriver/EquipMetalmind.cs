@@ -14,7 +14,7 @@ public class EquipMetalmind : Verse.AI.JobDriver {
             return false;
         }
 
-        if (metalmindComp?.equipped != false) {
+        if (metalmindComp == null || metalmindComp.Equipped) {
             return false;
         }
 
@@ -32,6 +32,6 @@ public class EquipMetalmind : Verse.AI.JobDriver {
             .FailOnSomeonePhysicallyInteracting(TargetIndex.A);
         yield return Toils_General.Wait(50).WithProgressBarToilDelay(TargetIndex.A);
         yield return Toils_Haul.TakeToInventory(TargetIndex.A, job.count);
-        yield return Toils_General.Do(() => { metalmindComp!.equipped = true; });
+        yield return Toils_General.Do(() => { metalmindComp!.Equipped = true; });
     }
 }

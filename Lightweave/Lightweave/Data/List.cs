@@ -6,7 +6,7 @@ using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
-using static Cosmere.Lightweave.Layout.Layout;
+using Cosmere.Lightweave.Layout;
 using Caption = Cosmere.Lightweave.Typography.Typography.Caption;
 using Code = Cosmere.Lightweave.Typography.Typography.Code;
 using Heading = Cosmere.Lightweave.Typography.Typography.Heading;
@@ -78,7 +78,8 @@ public static class List {
                         row.MeasuredRect = new Rect(0f, i * rh, innerWidth, rh);
                         node.Children.Add(row);
                     }
-                } else {
+                }
+                else {
                     float rh = rowHeight ?? 36f;
                     for (int i = 0; i < items.Count; i++) {
                         LightweaveNode row = rowBuilder(items[i], i);

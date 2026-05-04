@@ -1,7 +1,7 @@
 using Cosmere.Core.Listing;
 using Cosmere.Core.Settings;
 using Verse;
-using CoreUI = Cosmere.Core.Util.UI;
+using CoreUI = Cosmere.Core.UI.UIHelpers;
 
 namespace Cosmere.System.Scadrial.Settings;
 

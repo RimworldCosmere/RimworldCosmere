@@ -10,22 +10,27 @@ public sealed record Theme(
     IReadOnlyDictionary<RadiusScale, float> Radii,
     IReadOnlyDictionary<ElevationScale, float> Elevations
 ) {
+    private readonly bool _validated = ValidateConstruction(Fonts);
+
+    private static bool ValidateConstruction(IReadOnlyDictionary<FontRole, Font> fonts) {
+        if (fonts == null) {
+            throw new ArgumentNullException(nameof(fonts));
+        }
+        if (!fonts.ContainsKey(FontRole.Body)) {
+            throw new ArgumentException(
+                "Theme must define FontRole.Body. Themes must define at least FontRole.Body as the fallback font.",
+                nameof(fonts)
+            );
+        }
+        return true;
+    }
+
     public Color GetColor(ThemeSlot slot) {
         return Colors.TryGetValue(slot, out Color c) ? c : Color.magenta;
     }
 
     public Font GetFont(FontRole role) {
-        if (Fonts.TryGetValue(role, out Font f)) {
-            return f;
-        }
-
-        if (Fonts.TryGetValue(FontRole.Body, out Font fb)) {
-            return fb;
-        }
-
-        throw new InvalidOperationException(
-            $"Theme has no font for role {role} and no FontRole.Body fallback. Themes must define at least FontRole.Body."
-        );
+        return Fonts.TryGetValue(role, out Font f) ? f : Fonts[FontRole.Body];
     }
 
     public float GetRadius(RadiusScale s) {

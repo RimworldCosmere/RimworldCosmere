@@ -95,7 +95,8 @@ public static class SearchField {
 
             if (!hasValue) {
                 DrawMagnifier(glyphRect, theme, ThemeSlot.TextMuted);
-            } else {
+            }
+            else {
                 DrawMagnifier(glyphRect, theme, ThemeSlot.TextSecondary);
             }
 
@@ -109,7 +110,8 @@ public static class SearchField {
 
             if (disabled) {
                 InputSurface.DrawReadOnlyValue(inner, buffer.Value ?? string.Empty, theme, textAnchor);
-            } else {
+            }
+            else {
                 Font sfFont = theme.GetFont(FontRole.Body);
                 int sfSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
                 Color sfTextColor = theme.GetColor(ThemeSlot.TextPrimary);
@@ -143,7 +145,7 @@ public static class SearchField {
     private static void DrawGlyph(Rect rect, string glyph, Theme.Theme theme, ThemeSlot slot) {
         Font font = theme.GetFont(FontRole.Body);
         int pixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-        GUIStyle style = GuiStyleCache.Get(font, pixelSize);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize);
         style.alignment = TextAnchor.MiddleCenter;
 
         Color saved = GUI.color;

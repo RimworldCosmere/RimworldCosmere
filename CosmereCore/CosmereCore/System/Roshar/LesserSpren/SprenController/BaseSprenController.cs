@@ -45,7 +45,6 @@ public abstract class BaseSprenController {
     protected virtual float movementSpeed => 5f;
     protected virtual float randomDirectionAmount => 0.3f;
 
-    // Default spawn information that uses the virtual properties
     protected internal SprenSpawnInformation defaultSpawnInformation => new SprenSpawnInformation(
         null,
         null,

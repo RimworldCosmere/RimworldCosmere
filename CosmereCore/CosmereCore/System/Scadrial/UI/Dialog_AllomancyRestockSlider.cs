@@ -63,14 +63,14 @@ public sealed class Dialog_AllomancyRestockSlider : Window {
         Rect stockSliderRect = new Rect(inRect.x, y, inRect.width, 24f);
         float newStock = Widgets.HorizontalSlider(
             stockSliderRect,
-            gene.requestedVialStock,
+            gene.RequestedVialStock,
             0f,
             Allomancer.MaxRequestedVialStock,
             true
         );
         int newStockInt = Mathf.RoundToInt(newStock);
-        if (newStockInt != gene.requestedVialStock) {
-            gene.requestedVialStock = newStockInt;
+        if (newStockInt != gene.RequestedVialStock) {
+            gene.RequestedVialStock = newStockInt;
         }
 
         y += 28f;
@@ -78,7 +78,7 @@ public sealed class Dialog_AllomancyRestockSlider : Window {
         using (new TextBlock(GameFont.Tiny, TextAnchor.UpperRight, new Color(0.8f, 0.8f, 0.8f))) {
             Widgets.Label(
                 new Rect(inRect.x, y, inRect.width, 18f),
-                "CS_CurrentVialStock".Translate(gene.requestedVialStock.Named("COUNT"))
+                "CS_CurrentVialStock".Translate(gene.RequestedVialStock.Named("COUNT"))
             );
         }
     }

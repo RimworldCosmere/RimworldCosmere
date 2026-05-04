@@ -49,7 +49,8 @@ public static class PaintBox {
             );
             DrawFill(innerRect, bg, innerRad);
             DrawRoundedBorderEdges(r, bw, rad, bc);
-        } else {
+        }
+        else {
             DrawFill(r, bg, rad);
             if (hasBorder) {
                 Color bc = ResolveColor(border!.Value.Color!);
@@ -62,10 +63,12 @@ public static class PaintBox {
         if (bg is BackgroundSpec.Solid solid) {
             Color c = ResolveColor(solid.Color);
             GUI.DrawTexture(r, Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0, c, Vector4.zero, rad);
-        } else if (bg is BackgroundSpec.Textured tex) {
+        }
+        else if (bg is BackgroundSpec.Textured tex) {
             Color c = tex.Tint != null ? ResolveColor(tex.Tint) : Color.white;
             GUI.DrawTexture(r, tex.Texture, tex.Mode, true, 0, c, Vector4.zero, rad);
-        } else if (bg is BackgroundSpec.Gradient grad) {
+        }
+        else if (bg is BackgroundSpec.Gradient grad) {
             Color c = grad.Tint != null ? ResolveColor(grad.Tint) : Color.white;
             GUI.DrawTexture(r, grad.GradientTex, ScaleMode.StretchToFill, true, 0, c, Vector4.zero, rad);
         }

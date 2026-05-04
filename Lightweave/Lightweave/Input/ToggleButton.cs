@@ -24,6 +24,8 @@ public static class ToggleButton {
         bool value,
         [DocParam("Callback invoked with the new value on click.")]
         Action<bool> onChange,
+        [DocParam("Disables interaction and applies disabled styling.")]
+        bool disabled = false,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -32,7 +34,7 @@ public static class ToggleButton {
 
         node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
-            InteractionState state = InteractionState.Resolve(rect, null, false);
+            InteractionState state = InteractionState.Resolve(rect, null, disabled);
             ButtonVariant variant = value ? ButtonVariant.Primary : ButtonVariant.Ghost;
 
             ThemeSlot bgSlot = ButtonVariants.Background(variant, state);
@@ -57,7 +59,7 @@ public static class ToggleButton {
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
             style.alignment = TextAnchor.MiddleCenter;
 
             Color fg = theme.GetColor(fgSlot);

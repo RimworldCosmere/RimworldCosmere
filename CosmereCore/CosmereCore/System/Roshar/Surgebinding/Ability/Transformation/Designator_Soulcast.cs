@@ -78,7 +78,7 @@ public class Designator_Soulcast : Designator {
         foreach (Designation designation in Map.designationManager.SpawnedDesignationsOfDef(DesignationDef)) {
             IntVec3 cell = designation.target.Cell;
             if (!ability.pawn.CanReach(new LocalTargetInfo(cell), PathEndMode.Touch, Danger.Deadly)) continue;
-            if (!SoulcastOverlay.TryGetData(cell, out _, out _, out _)) continue;
+            if (!SoulcastOverlay.TryGetData(cell, Map, out _, out _, out _)) continue;
 
             JobDef soulcastJobDef = JobDefOf.Cosmere_Roshar_Job_Soulcast;
             Verse.AI.Job job = JobMaker.MakeJob(soulcastJobDef, cell);
@@ -91,7 +91,7 @@ public class Designator_Soulcast : Designator {
 
     private void QueueJobAt(LocalTargetInfo target) {
         IntVec3 cell = target.Cell;
-        SoulcastOverlay.Add(cell, material, terrain, mode);
+        SoulcastOverlay.Add(cell, material, terrain, Map, mode);
 
         if (Map.designationManager.DesignationAt(cell, DesignationDef) == null) {
             Map.designationManager.AddDesignation(new Designation(cell, DesignationDef));
@@ -108,16 +108,6 @@ public class Designator_Soulcast : Designator {
     }
 
     private bool IsValidTarget(Verse.Thing thing) {
-        if (thing.Destroyed) return false;
-
-        return mode switch {
-            SoulcastMode.ConvertDrop => thing.def.category == ThingCategory.Item ||
-                                        thing.def.plant != null ||
-                                        thing.def.mineable,
-            SoulcastMode.ChangeStuff => thing.def.MadeFromStuff && thing.Stuff != null || thing.def.mineable,
-            SoulcastMode.Sculpture => thing is Pawn or Corpse,
-            SoulcastMode.Destroy => true,
-            _ => false,
-        };
+        return SoulcastTargetRules.IsValidTargetFor(thing, mode);
     }
 }

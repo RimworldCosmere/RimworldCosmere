@@ -7,17 +7,17 @@
       <li>
         <key>dalinars_visions</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>10</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SetSkillAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SetSkillAction">
             <pawnName>Dalinar</pawnName>
             <skill>Intellectual</skill>
             <level>12</level>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Dalinar's Visions</title>
             <text>The visions come again. Dalinar stands in a world that has not existed for millennia, watching Knights Radiant fight a war that ended ages ago. The Almighty speaks to him - or rather, the Almighty's recording does. Honor is dead. But the words remain, and they carry weight that presses against Dalinar's mind like stone.</text>
             <letterDef>NeutralEvent</letterDef>
@@ -27,16 +27,16 @@
       <li>
         <key>shallans_truth</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>15</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
+          <li Class="Cosmere.System.Roshar.ScenarioPart.AdvanceIdealAction">
             <pawnName>Shallan</pawnName>
             <targetIdeal>1</targetIdeal>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Shallan's Truth</title>
             <text>Shallan speaks a truth she has buried for years. Pattern hums with approval. The Lightweaving sharpens, becomes real. She can shape light into images indistinguishable from life itself. The cost is memory - and Shallan has memories she would rather not face.</text>
             <letterDef>PositiveEvent</letterDef>
@@ -46,12 +46,12 @@
       <li>
         <key>kaladins_conflict</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>25</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Kaladin's Conflict</title>
             <text>Kaladin watches the lighteyes drill with their fine weapons and polished armor. He has sworn to protect. But these are the people who branded his forehead, who threw him into the bridge crews. Syl dims when the hatred rises. The oath demands more than Kaladin wants to give.</text>
             <letterDef>NegativeEvent</letterDef>
@@ -61,16 +61,16 @@
       <li>
         <key>renarins_bond</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>30</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
+          <li Class="Cosmere.System.Roshar.ScenarioPart.AdvanceIdealAction">
             <pawnName>Renarin</pawnName>
             <targetIdeal>1</targetIdeal>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Glys</title>
             <text>Renarin has been hiding something. A spren - not like the others. Glys is different, corrupted perhaps, but bonded all the same. Renarin sees things that have not happened yet. The visions terrify him, but he does not look away.</text>
             <letterDef>NeutralEvent</letterDef>
@@ -80,20 +80,20 @@
       <li>
         <key>lopens_bond</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>35</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.AddGeneAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.AddGeneAction">
             <pawnName>Lopen</pawnName>
             <gene>Cosmere_Roshar_Gene_RadiantWindrunner</gene>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
+          <li Class="Cosmere.System.Roshar.ScenarioPart.AdvanceIdealAction">
             <pawnName>Lopen</pawnName>
             <targetIdeal>0</targetIdeal>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Lopen</title>
             <text>Lopen looks down at his hand. His new hand. "I knew it!" he shouts. "I always knew the Lopen would get his arm back!" Stormlight swirls around him, and a windspren settles on his shoulder. Bridge Four has another Radiant.</text>
             <letterDef>PositiveEvent</letterDef>
@@ -103,19 +103,19 @@
       <li>
         <key>dalinars_bond</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>40</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.EventOccurredTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.EventOccurredTrigger">
             <eventKey>dalinars_visions</eventKey>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
+          <li Class="Cosmere.System.Roshar.ScenarioPart.AdvanceIdealAction">
             <pawnName>Dalinar</pawnName>
             <targetIdeal>1</targetIdeal>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Second Ideal</title>
             <text>"I will unite instead of divide." The Stormfather thunders overhead, shaking the sky itself. Dalinar Kholin has spoken the words. He is a Bondsmith - the first in generations. The storm answers to him now, and with it comes a weight that would crush lesser men.</text>
             <letterDef>PositiveEvent</letterDef>
@@ -125,19 +125,19 @@
       <li>
         <key>kaladins_third_ideal_wor</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>50</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.ThreatsSurvivedTrigger">
             <minThreats>3</minThreats>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.AdvanceIdealAction">
+          <li Class="Cosmere.System.Roshar.ScenarioPart.AdvanceIdealAction">
             <pawnName>Kaladin</pawnName>
             <targetIdeal>2</targetIdeal>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Third Ideal</title>
             <text>"I will protect even those I hate, so long as it is right." The words tear from Kaladin's throat like a confession. Syl erupts into a Shardblade - living, radiant, singing with purpose. The hatred does not vanish. But the oath is stronger.</text>
             <letterDef>PositiveEvent</letterDef>
@@ -147,15 +147,15 @@
       <li>
         <key>the_everstorm</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>55</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.ThreatsSurvivedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.ThreatsSurvivedTrigger">
             <minThreats>3</minThreats>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Everstorm</title>
             <text>The Everstorm. It comes from the west - wrong, impossible, against everything Roshar knows. The second storm tears across the Plains. Red lightning splits a sky that should not hold two storms. The world will never be the same.</text>
             <letterDef>ThreatBig</letterDef>

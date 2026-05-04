@@ -5,56 +5,19 @@ using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
 using Cosmere.System.Roshar.Surgebinding.Ability;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Roshar.UI;
 
-public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICodexContentProvider {
-    private static readonly SurgebindingCodexContent codex = new SurgebindingCodexContent();
+public sealed class SurgebindingInvestitureProvider : CodexInvestitureProviderBase<SurgebindingCodexContent> {
+    public override string SystemId => "Surgebinding";
 
-    public bool HasProgression(Pawn pawn) {
-        return codex.HasProgression(pawn);
-    }
-
-    public void DrawProgression(Pawn pawn, Rect rect, CodexState state) {
-        codex.DrawProgression(pawn, rect, state);
-    }
-
-    public bool ShowsBondsSubtab => codex.ShowsBondsSubtab;
-
-    public bool HasBonds(Pawn pawn) {
-        return codex.HasBonds(pawn);
-    }
-
-    public void DrawBonds(Pawn pawn, Rect rect, CodexState state) {
-        codex.DrawBonds(pawn, rect, state);
-    }
-
-    public bool HasMemories(Pawn pawn) {
-        return codex.HasMemories(pawn);
-    }
-
-    public void DrawMemories(Pawn pawn, Rect rect, CodexState state) {
-        codex.DrawMemories(pawn, rect, state);
-    }
-
-    public bool OwnsAbility(Ability ability) {
-        return codex.OwnsAbility(ability);
-    }
-
-    public string? HeaderLabelFor(Pawn pawn) {
-        return codex.HeaderLabelFor(pawn);
-    }
-
-    public string SystemId => "Surgebinding";
-
-    public bool IsInvested(Pawn pawn) {
+    public override bool IsInvested(Pawn pawn) {
         if (pawn.genes == null) return false;
         return pawn.genes.GetFirstGeneOfType<Surgebinder>() != null;
     }
 
-    public InvestitureSnapshot? Snapshot(Pawn pawn) {
+    public override InvestitureSnapshot? Snapshot(Pawn pawn) {
         Surgebinder? s = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (s == null) return null;
 
@@ -69,13 +32,11 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICod
             SystemId,
             "Surgebinding",
             bar,
-            [],
-            [],
             []
         );
     }
 
-    public RadialSystem? SnapshotRadial(Pawn pawn) {
+    public override RadialSystem? SnapshotRadial(Pawn pawn) {
         if (pawn.genes == null || pawn.abilities == null) return null;
 
         List<RadialSubsection> subs = [];
@@ -88,12 +49,12 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICod
 
             List<RadialLeaf> leaves = [];
             HashSet<AbilityDef> seen = [];
-            foreach (AbilityDef def in order.GetAbilities(s.currentIdeal)) {
+            foreach (AbilityDef def in order.GetAbilities(s.CurrentIdeal)) {
                 if (IsExcludedFromRadial(def)) continue;
                 if (!seen.Add(def)) continue;
 
                 int minIdeal = def is SurgebindingAbilityDef sd ? sd.GetMinIdealForOrder(order.defName) : 0;
-                bool locked = s.currentIdeal < minIdeal;
+                bool locked = s.CurrentIdeal < minIdeal;
 
                 Ability? ability = null;
                 for (int j = 0; j < abilities.Count; j++) {
@@ -103,28 +64,7 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICod
                     }
                 }
 
-                bool isActive = ability is SurgebindingAbility sa && sa.status.isActive;
-                bool canCast = !locked && ability != null && ability.CanCast;
-                int cooldown = ability?.CooldownTicksRemaining ?? 0;
-
-                leaves.Add(
-                    new RadialLeaf(
-                        def.defName,
-                        def.LabelCap,
-                        def.uiIcon,
-                        RadialActionKind.CastAbility,
-                        def,
-                        isActive,
-                        false,
-                        isActive && def.cooldownTicksRange.max == 0,
-                        locked,
-                        locked ? $"Requires Ideal {minIdeal}" : null,
-                        s.Max > 0f ? s.Value / s.Max : 0f,
-                        !canCast && !locked,
-                        null,
-                        cooldown
-                    )
-                );
+                leaves.Add(BuildRadialLeaf(def, ability, locked, minIdeal, s));
             }
 
             for (int j = 0; j < abilities.Count; j++) {
@@ -133,28 +73,7 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICod
                 if (IsExcludedFromRadial(def)) continue;
                 if (!seen.Add(def)) continue;
 
-                bool isActive = sa.status.isActive;
-                bool canCast = sa.CanCast;
-                int cooldown = sa.CooldownTicksRemaining;
-
-                leaves.Add(
-                    new RadialLeaf(
-                        def.defName,
-                        def.LabelCap,
-                        def.uiIcon,
-                        RadialActionKind.CastAbility,
-                        def,
-                        isActive,
-                        false,
-                        isActive && def.cooldownTicksRange.max == 0,
-                        false,
-                        null,
-                        s.Max > 0f ? s.Value / s.Max : 0f,
-                        !canCast,
-                        null,
-                        cooldown
-                    )
-                );
+                leaves.Add(BuildRadialLeaf(def, sa, false, 0, s));
             }
 
             if (leaves.Count == 0) continue;
@@ -181,7 +100,29 @@ public sealed class SurgebindingInvestitureProvider : IInvestitureProvider, ICod
     }
 
     private static bool IsExcludedFromRadial(AbilityDef def) {
-        return def.defName == "Cosmere_Roshar_Ability_ToggleShardblade" ||
-               def.defName == "Cosmere_Roshar_Ability_ToggleShardplate";
+        return def is SurgebindingAbilityDef sd && !sd.showInRadial;
+    }
+
+    private static RadialLeaf BuildRadialLeaf(AbilityDef def, Ability? ability, bool locked, int minIdeal, Surgebinder s) {
+        bool isActive = ability is SurgebindingAbility sa && sa.status.IsActive;
+        bool canCast = !locked && ability != null && ability.CanCast;
+        int cooldown = ability?.CooldownTicksRemaining ?? 0;
+
+        return new RadialLeaf(
+            LeafId: def.defName,
+            Label: def.LabelCap,
+            Icon: def.uiIcon,
+            Kind: RadialActionKind.CastAbility,
+            AbilityDef: def,
+            IsActive: isActive,
+            IsFlaring: false,
+            IsSustained: isActive && def.cooldownTicksRange.max == 0,
+            IsLocked: locked,
+            LockReason: locked ? $"Requires Ideal {minIdeal}" : null,
+            ReserveFraction: s.Max > 0f ? s.Value / s.Max : 0f,
+            HasInsufficientResources: !canCast && !locked,
+            CostHint: null,
+            CooldownTicksRemaining: cooldown
+        );
     }
 }

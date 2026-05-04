@@ -27,7 +27,7 @@ public class AllomanticVial : ThingWithComps {
 
         if (metal == null) return;
 
-        ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(Constants.VialMetalAmount);
+        ingester.genes.GetAllomanticGeneForMetal(metal)?.AddToReserve(ScadrialMetallurgyConstants.VialMetalAmount);
 
         ingester.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedVial);
 

@@ -49,7 +49,7 @@ public static class ButtonGroup {
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
             style.alignment = TextAnchor.MiddleCenter;
             style.wordWrap = false;
 
@@ -75,7 +75,8 @@ public static class ButtonGroup {
                     Mathf.Max(0f, rect.height - borderPx * 2f)
                 );
                 innerCornerRem = new Rem(Mathf.Max(0f, outerCornerRem.Value - 1f / 16f));
-            } else {
+            }
+            else {
                 contentRect = rect;
                 innerCornerRem = outerCornerRem;
             }

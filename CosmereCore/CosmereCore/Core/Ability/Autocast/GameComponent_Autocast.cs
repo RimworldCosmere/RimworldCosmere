@@ -11,7 +11,7 @@ public sealed class GameComponent_Autocast : GameComponent {
         return Current.Game.GetComponent<GameComponent_Autocast>();
     }
 
-    public List<AutocastRule> RulesFor(Pawn pawn) {
+    public List<AutocastRule> GetOrCreateRules(Pawn pawn) {
         if (!rulesByPawnId.TryGetValue(pawn.thingIDNumber, out List<AutocastRule>? list)) {
             list = [];
             rulesByPawnId[pawn.thingIDNumber] = list;
@@ -21,7 +21,7 @@ public sealed class GameComponent_Autocast : GameComponent {
     }
 
     public AutocastRule GetOrCreateRule(Pawn pawn, string abilityDefName) {
-        List<AutocastRule> list = RulesFor(pawn);
+        List<AutocastRule> list = GetOrCreateRules(pawn);
         for (int i = 0; i < list.Count; i++) {
             if (list[i].AbilityDefName == abilityDefName) return list[i];
         }

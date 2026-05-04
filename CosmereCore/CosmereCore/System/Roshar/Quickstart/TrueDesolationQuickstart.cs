@@ -55,7 +55,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             GenPlace.TryPlaceThing(gem, pawns[0].Position, pawns[0].Map, ThingPlaceMode.Near);
         }
 
-        if (pawns.TryPopFront(out Pawn pawn)) {
+        if (pawns.TryPopFront(out Pawn? pawn)) {
             pawn.Name = new NameTriple("Kaladin", "Kal", "Stormblessed");
             pawn.gender = Gender.Male;
             pawn.story.bodyType = BodyTypeDefOf.Male;
@@ -76,7 +76,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
 
             pouch.TryGetComp<InnerStorage>().innerContainer!.TryAdd(broam);
             pawn.apparel.Wear(pouch);
-            pawn.GetInvestiture().currentInvestitureSelf = 1000;
+            pawn.GetInvestiture()!.currentInvestitureSelf = 1000;
 
             Find.Selector.Select(pawn, false);
         }
@@ -90,7 +90,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 10;
             pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_ArrestsMade, 5);
             pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_ZoneComplianceDays, 30);
-            pawn.GetInvestiture().currentInvestitureSelf = 1000;
+            pawn.GetInvestiture()!.currentInvestitureSelf = 1000;
         }
 
         if (pawns.TryPopFront(out pawn)) {
@@ -101,7 +101,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantDustbringer);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 5;
             pawn.records.AddTo(RimWorld.RecordDefOf.KillsHumanlikes, 10);
-            pawn.GetInvestiture().currentInvestitureSelf = 1000;
+            pawn.GetInvestiture()!.currentInvestitureSelf = 1000;
         }
 
         if (pawns.TryPopFront(out pawn)) {
@@ -111,7 +111,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantTruthwatcher);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 5;
             pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_PatientsSaved, 5);
-            pawn.GetInvestiture().currentInvestitureSelf = 1000;
+            pawn.GetInvestiture()!.currentInvestitureSelf = 1000;
         }
 
         if (pawns.TryPopFront(out pawn)) {
@@ -121,7 +121,7 @@ public class TrueDesolationQuickstart : AbstractQuickstart {
             pawn.genes.TryAddRadiantOrder(GeneDefOf.Cosmere_Roshar_Gene_RadiantBondsmith, 3);
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower).Level = 15;
             pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_FriendshipsFormed, 5);
-            pawn.GetInvestiture().currentInvestitureSelf = 1000;
+            pawn.GetInvestiture()!.currentInvestitureSelf = 1000;
         }
     }
 }

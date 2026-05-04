@@ -51,11 +51,9 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
     private IAbility<Allomancer, AllomanticHediff>? ability {
         get {
-            if (parent.sourceAbilities.Count == 0) return null;
-            foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in parent.sourceAbilities) {
+            foreach (IAbility<Allomancer, IHediff<Allomancer>> sa in parent.SourceAbilities) {
                 return (IAbility<Allomancer, AllomanticHediff>?)sa;
             }
-
             return null;
         }
     }
@@ -77,7 +75,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
         float radius = props.radius * base.parent.Severity;
 
         if (debugMode && Find.Selector.IsSelected(parent.pawn)) {
-            CircleRenderer.TryAdd(this, new CircleToRender(parent.pawn, radius, parent.metal.transparentLineColor));
+            CircleRenderer.Add(this, new CircleToRender(parent.pawn, radius, parent.metal.transparentLineColor));
         }
 
         if (!base.parent.pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) {
@@ -93,7 +91,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
         }
 
         foreach (Pawn pawn in nearbyPawns) {
-            TryAct(pawn);
+            Act(pawn);
         }
 
         List<Pawn> toRemove = [];
@@ -118,7 +116,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
 
     public override void CompPostPostRemoved() {
         base.CompPostPostRemoved();
-        CircleRenderer.TryRemove(this);
+        CircleRenderer.Remove(this);
     }
 
     public override void CompPostTick(ref float severityAdjustment) {
@@ -145,7 +143,7 @@ public class AllomancyAuraHediffGiver : HediffComp {
         );
     }
 
-    private void TryAct(Pawn? target) {
+    private void Act(Pawn? target) {
         if (target?.mindState == null || target.Dead || ability == null) {
             return;
         }

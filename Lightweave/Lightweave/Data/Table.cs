@@ -119,7 +119,8 @@ public static class Table {
             if (w.HasValue) {
                 widths[i] = w.Value.ToPixels();
                 fixedTotal += widths[i];
-            } else {
+            }
+            else {
                 flexCount++;
             }
         }
@@ -132,7 +133,8 @@ public static class Table {
                     widths[i] = flexWidth;
                 }
             }
-        } else if (fixedTotal > 0f && fixedTotal != totalWidth) {
+        }
+        else if (fixedTotal > 0f && fixedTotal != totalWidth) {
             float scale = totalWidth / fixedTotal;
             for (int i = 0; i < colCount; i++) {
                 widths[i] *= scale;
@@ -164,7 +166,7 @@ public static class Table {
         float padPx = SpacingScale.Sm.ToPixels();
         Font font = theme.GetFont(FontRole.BodyBold);
         int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-        GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Bold);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
         style.alignment = TextAnchor.MiddleLeft;
 
         float cursor = headerRect.x;

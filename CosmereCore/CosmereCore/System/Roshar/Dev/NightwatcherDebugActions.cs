@@ -1,3 +1,4 @@
+using Cosmere.System.Roshar.Nightwatcher;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
 using LudeonTK;
@@ -14,7 +15,7 @@ public static class NightwatcherDebugActions {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     private static void OpenNightwatcherDialog(Pawn pawn) {
-        CompNightwatcher? comp = pawn.TryGetComp<CompNightwatcher>();
+        NightwatcherVisit? comp = pawn.TryGetComp<NightwatcherVisit>();
         if (comp != null && comp.HasVisited) {
             Messages.Message($"{pawn.LabelShort} has already visited the Nightwatcher", MessageTypeDefOf.RejectInput);
             return;
@@ -30,9 +31,9 @@ public static class NightwatcherDebugActions {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     private static void ResetNightwatcherVisit(Pawn pawn) {
-        CompNightwatcher? comp = pawn.TryGetComp<CompNightwatcher>();
+        NightwatcherVisit? comp = pawn.TryGetComp<NightwatcherVisit>();
         if (comp == null) {
-            Messages.Message($"{pawn.LabelShort} has no CompNightwatcher", MessageTypeDefOf.RejectInput);
+            Messages.Message($"{pawn.LabelShort} has no Nightwatcher", MessageTypeDefOf.RejectInput);
             return;
         }
 

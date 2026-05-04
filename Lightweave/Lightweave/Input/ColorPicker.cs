@@ -81,7 +81,8 @@ public static class ColorPicker {
                 if (dir == Direction.Rtl) {
                     int rtlCol = columnsPerRow - 1 - col;
                     xOffset = rtlCol * (swatchSize + gap);
-                } else {
+                }
+                else {
                     xOffset = col * (swatchSize + gap);
                 }
 
@@ -131,10 +132,12 @@ public static class ColorPicker {
         if (selected) {
             borderSlot = ThemeSlot.BorderFocus;
             borderWidth = new Rem(2f / 16f);
-        } else if (hovered) {
+        }
+        else if (hovered) {
             borderSlot = ThemeSlot.BorderHover;
             borderWidth = new Rem(2f / 16f);
-        } else {
+        }
+        else {
             borderSlot = ThemeSlot.BorderSubtle;
             borderWidth = new Rem(1f / 16f);
         }
@@ -161,7 +164,7 @@ public static class ColorPicker {
     private static void DrawEmptyLabel(Rect rect, Theme.Theme theme) {
         Font font = theme.GetFont(FontRole.Body);
         int pixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-        GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Italic);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Italic);
         style.alignment = TextAnchor.MiddleCenter;
 
         Color saved = GUI.color;

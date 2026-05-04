@@ -2,6 +2,7 @@ using System.Text;
 using Cosmere.Core.Ability;
 using Cosmere.Core.Gene;
 using Cosmere.Core.Hediff;
+using Cosmere.Core.UI;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -120,6 +121,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
     }
 
     public override GizmoResult OnGUI(Rect rect) {
+        if (ability == null) return new GizmoResult(GizmoState.Clear, null);
         cachedReport = GizmoEnabled();
 
         GizmoRenderParms parms = new GizmoRenderParms { shrunk = true, lowLight = false, highLight = false };
@@ -130,7 +132,7 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
         MouseoverSounds.DoRegion(rect, RimWorld.SoundDefOf.Mouseover_Command);
         if (parms.highLight && !disabled) Widgets.DrawStrongHighlight(rect.ExpandedBy(4f));
 
-        Util.UI.DrawIcon(
+        UIHelpers.DrawIcon(
             rect,
             icon,
             background,
@@ -164,27 +166,30 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
     }
 
     public override void ProcessInput(Event ev) {
+        if (ability == null) return;
         cachedReport = GizmoEnabled();
         RimWorld.SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
 
         if (ev.shift || ability.def.isAutocast) {
             if (ability.def.canUseWhileDowned) ability.willUseWhileDowned = !ability.willUseWhileDowned;
             if (ability.def.autoUseWhileInjured) ability.willUseWhileInjured = !ability.willUseWhileInjured;
-            if (ability.def.isAutocast && ability.status.isActive) {
+            if (ability.def.isAutocast && ability.status.IsActive) {
                 ability.UpdateStatus(Active.Off);
             }
 
             return;
         }
 
-        if (ability.status.isActive) {
+        if (ability.status.IsActive) {
             if (ev.control) {
                 if (ability.status.power == 1) {
                     ability.SetNextStatus(Ability.Status.PowerTwo);
-                } else if (ability.status.isPoweredUp) {
+                }
+                else if (ability.status.IsPoweredUp) {
                     ability.SetNextStatus(Ability.Status.PowerOne);
                 }
-            } else {
+            }
+            else {
                 ability.SetNextStatus(Active.Off);
             }
 
@@ -203,7 +208,8 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
                     ability.verb,
                     actionWhenFinished: () => ability.verb.verbProps.range = originalRange
                 );
-            } else {
+            }
+            else {
                 CameraJumper.TryJump(CameraJumper.GetWorldTarget(ability.pawn));
                 Find.WorldTargeter.BeginTargeting(
                     t => {
@@ -222,7 +228,8 @@ public class AbilitySubGizmo<TGene, THediff> : SubGizmo where TGene : Invested w
                     canSelectTarget: ability.ValidateGlobalTarget
                 );
             }
-        } else {
+        }
+        else {
             ability.QueueCastingJob(
                 ability.pawn,
                 LocalTargetInfo.Invalid,

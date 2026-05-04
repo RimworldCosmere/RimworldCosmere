@@ -14,7 +14,8 @@ public abstract record GridTrack {
                 for (int i = 0; i < rep.Count; i++) {
                     outList.Add(rep.Track);
                 }
-            } else {
+            }
+            else {
                 outList.Add(t);
             }
         }

@@ -1,5 +1,5 @@
+using Cosmere.System.Roshar.Surgebinding.Ability.Illumination;
 using Verse;
-using DecoyAbility = Cosmere.System.Roshar.Surgebinding.Ability.Illumination.LightweavingDecoy;
 
 namespace Cosmere.System.Roshar.Surgebinding.Hediff.Illumination;
 
@@ -25,7 +25,7 @@ public class LightweavingDecoy : Verse.Hediff {
 
     public override void PostRemoved() {
         base.PostRemoved();
-        DecoyAbility.RemoveDecoy(pawn);
+        LightweavingDecoyRegistry.Remove(pawn);
     }
 
     public override void ExposeData() {

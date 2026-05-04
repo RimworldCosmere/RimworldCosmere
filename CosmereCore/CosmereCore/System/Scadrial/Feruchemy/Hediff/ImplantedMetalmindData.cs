@@ -20,21 +20,21 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
         Scribe_Values.Look(ref ownerName, "ownerName", "");
     }
 
-    public float storedAmount {
+    public float StoredAmount {
         get => storedAmountInt;
         set => storedAmountInt = value;
     }
 
-    public float maxAmount {
+    public float MaxAmount {
         get => maxAmountInt;
         set => maxAmountInt = value;
     }
 
-    public bool canStore => equipped && storedAmount < maxAmount;
-    public bool canTap => equipped && storedAmount > 0;
-    public bool equipped => true;
+    public bool CanStore => Equipped && StoredAmount < MaxAmount;
+    public bool CanTap => Equipped && StoredAmount > 0;
+    public bool Equipped => true;
 
-    public MetalDef metal {
+    public MetalDef Metal {
         get {
             if (cachedMetal != null) return cachedMetal;
             cachedMetal = DefDatabase<MetalDef>.GetNamedSilentFail(metalDefName);
@@ -43,12 +43,12 @@ public class ImplantedMetalmindData : IExposable, IMetalmindSource {
     }
 
     public void AddStored(float amount) {
-        if (!canStore) return;
+        if (!CanStore) return;
         storedAmountInt = Mathf.Clamp(storedAmountInt + amount, 0, maxAmountInt);
     }
 
     public void ConsumeStored(float amount) {
-        if (!canTap) return;
+        if (!CanTap) return;
         storedAmountInt = Mathf.Clamp(storedAmountInt - amount, 0, maxAmountInt);
     }
 }

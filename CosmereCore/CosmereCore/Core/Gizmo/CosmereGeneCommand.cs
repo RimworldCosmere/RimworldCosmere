@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Cosmere.Core.Gene;
+using Cosmere.Core.UI;
 using Cosmere.Lightweave.Adapter;
 using Cosmere.Lightweave.Runtime;
 using RimWorld;
@@ -33,16 +34,12 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
     protected static readonly Texture2D DragBarTex = new Color(0.74f, 0.97f, 0.8f).ToSolidColorTexture();
 
     protected static readonly Texture2D StatusGreen = ContentFinder<Texture2D>.Get("UI/Widgets/StatusGreen");
-    protected static readonly Texture2D StatusRed = ContentFinder<Texture2D>.Get("UI/Widgets/StatusGreen");
-
-    private static readonly Texture2D PlusIcon = ContentFinder<Texture2D>.Get("UI/Buttons/Plus");
-    private static readonly Texture2D MinusIcon = ContentFinder<Texture2D>.Get("UI/Buttons/Minus");
+    protected static readonly Texture2D StatusRed = ContentFinder<Texture2D>.Get("UI/Widgets/StatusRed");
 
     protected Texture2D? barDragTex;
     protected Texture2D? barHighlightTex;
     protected Texture2D? barTex;
 
-    // Things that get initialized
     protected Rect? bottomBarRect;
 
     protected Texture2D? cachedIcon;
@@ -62,6 +59,7 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
     protected List<TSubGizmo> subgizmos = [];
     public float targetValuePercent;
     protected Rect? topBarRect;
+    private bool lastMouseOver;
 
     protected virtual bool useResourceLabelForTooltip => true;
     protected virtual bool useResourceLabelForTitle => true;
@@ -70,7 +68,7 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
         get {
             string title = (useResourceLabelForTitle ? gene.ResourceLabel : gene.Label).CapitalizeFirst();
             if (Find.Selector.SelectedPawns.Count != 1) {
-                title = $"{title} ({gene.pawn.LabelShort})";
+                title = $"{title} ({pawn.LabelShort})";
             }
 
             return title;
@@ -107,7 +105,7 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
                 return Height + Padding.x / 2;
             }
 
-            return Mathf.Max(baseWidth, GetWidthForAbilityCount(gene.abilities?.Count ?? 0));
+            return Mathf.Max(baseWidth, GetWidthForAbilityCount(gene.Abilities?.Count ?? 0));
         }
     }
 
@@ -160,7 +158,8 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
                     ValuePercent < (double)barThreshold ? BaseContent.GreyTex : BaseContent.BlackTex
                 );
             }
-        } else {
+        }
+        else {
             Widgets.DraggableBar(
                 bottomBarRect!.Value,
                 barTex,
@@ -231,7 +230,7 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
 
     protected virtual Rect DrawIconBox(ref bool mouseOverElement) {
         Rect rect = new Rect(mainRect!.Value.x, mainRect.Value.y, mainRect.Value.height, mainRect.Value.height);
-        Util.UI.DrawIcon(
+        UIHelpers.DrawIcon(
             rect,
             cachedIcon ??= GetIcon(),
             Command.BGTex,
@@ -261,6 +260,12 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
     }
 
     protected abstract IEnumerable<TSubGizmo> GetSubGizmos();
+
+    protected virtual LightweaveNode Build() {
+        LightweaveNode node = new LightweaveNode { DebugName = "CosmereGeneCommand" };
+        node.Paint = (paintRect, _) => lastMouseOver = PaintGene(paintRect);
+        return node;
+    }
 
     protected virtual void Initialize() {
         if (initialized) return;
@@ -296,17 +301,9 @@ public abstract class CosmereGeneCommand<TSubGizmo, TGene>(
     public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms) {
         Rect rect = new Rect(topLeft.x, topLeft.y, GetWidth(maxWidth), Height);
         Guid id = AdapterStoreRegistry.GetOrCreate(pawn.thingIDNumber, AdapterKind.Gizmo, gene.def.shortHash);
-        bool mouseOver = false;
-        LightweaveRoot.Render(
-            rect,
-            id,
-            () => {
-                LightweaveNode node = new LightweaveNode { DebugName = "CosmereGeneCommand" };
-                node.Paint = (paintRect, _) => mouseOver = PaintGene(paintRect);
-                return node;
-            }
-        );
-        return new GizmoResult(mouseOver ? GizmoState.Mouseover : GizmoState.Clear);
+        lastMouseOver = false;
+        LightweaveRoot.Render(rect, id, Build);
+        return new GizmoResult(lastMouseOver ? GizmoState.Mouseover : GizmoState.Clear);
     }
 
     private bool PaintGene(Rect outerRectIn) {

@@ -7,16 +7,16 @@ public class Bind : SurgebindingAbility {
     public Bind(Pawn pawn) : base(pawn) { }
     public Bind(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (5f + gene.currentIdeal * 2.5f));
+    private int durationTicks => (int)(GenTicks.TicksPerRealSecond * (5f + Gene.CurrentIdeal * 2.5f));
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return false;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return false;
 
         Pawn? targetPawn = target.Pawn;
         if (targetPawn == null || targetPawn.Dead) return false;
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
 
         HediffDef? hediffDef = def.hediff;
         if (hediffDef == null) return false;

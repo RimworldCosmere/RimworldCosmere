@@ -1,5 +1,4 @@
 using Cosmere.Core.UI.Model;
-using Cosmere.System.Scadrial.Gene;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -54,17 +53,18 @@ public sealed class InvestitureDockWindow : Verse.Window {
         Pawn? pawn = GetSelectedPawn();
         if (pawn == null) return;
 
-        List<InvestitureSnapshot> snapshots = PawnInvestitureProviders.SnapshotsFor(pawn);
+        IReadOnlyList<InvestitureSnapshot> snapshots = InvestitureProviderRegistry.SnapshotsFor(pawn);
         if (snapshots.Count == 0) return;
 
         DockRenderContext ctx = new DockRenderContext {
-            TwinbornPairs = BuildTwinbornPairs(pawn, snapshots),
+            DualInvestiturePairs = BuildDualInvestiturePairs(pawn, snapshots),
             Density = PickDensity(pawn, snapshots, inRect.height),
         };
 
         if (IsExpanded()) {
             DrawExpanded(inRect, pawn, snapshots, ctx);
-        } else {
+        }
+        else {
             DrawCollapsed(inRect, snapshots);
         }
     }
@@ -77,7 +77,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
         return IsExpanded() ? ExpandedWidth : CollapsedWidth;
     }
 
-    private void DrawCollapsed(Rect inRect, List<InvestitureSnapshot> snapshots) {
+    private void DrawCollapsed(Rect inRect, IReadOnlyList<InvestitureSnapshot> snapshots) {
         float iconSize = 32f;
         float y = inRect.y + 8f;
         for (int i = 0; i < snapshots.Count; i++) {
@@ -92,7 +92,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
     private void DrawExpanded(
         Rect inRect,
         Pawn pawn,
-        List<InvestitureSnapshot> snapshots,
+        IReadOnlyList<InvestitureSnapshot> snapshots,
         DockRenderContext ctx
     ) {
         Rect pinRect = new Rect(inRect.xMax - PinButtonHeight - 4f, inRect.y + 4f, PinButtonHeight, PinButtonHeight);
@@ -111,49 +111,25 @@ public sealed class InvestitureDockWindow : Verse.Window {
         accordion.Draw(bodyRect, pawn, snapshots, ctx);
     }
 
-    private static Dictionary<string, TwinbornPair> BuildTwinbornPairs(
+    private static Dictionary<string, IDualInvestiturePair> BuildDualInvestiturePairs(
         Pawn pawn,
-        List<InvestitureSnapshot> snapshots
+        IReadOnlyList<InvestitureSnapshot> snapshots
     ) {
-        Dictionary<string, TwinbornPair> pairs = new Dictionary<string, TwinbornPair>();
-        if (pawn.genes == null) return pairs;
-
-        bool hasAllomancy = false;
-        bool hasFeruchemy = false;
+        List<string> activeIds = new List<string>(snapshots.Count);
         for (int i = 0; i < snapshots.Count; i++) {
-            if (snapshots[i].SystemId == "Allomancy") {
-                hasAllomancy = true;
-            } else if (snapshots[i].SystemId == "Feruchemy") hasFeruchemy = true;
+            activeIds.Add(snapshots[i].SystemId);
         }
 
-        if (!hasAllomancy || !hasFeruchemy) return pairs;
-
-        Dictionary<string, Allomancer> allomancers = new Dictionary<string, Allomancer>();
-        Dictionary<string, Feruchemist> feruchemists = new Dictionary<string, Feruchemist>();
-
-        List<Verse.Gene> all = pawn.genes.GenesListForReading;
-        for (int i = 0; i < all.Count; i++) {
-            if (all[i] is Allomancer a && !a.Overridden) {
-                allomancers[a.metal.defName] = a;
-            } else if (all[i] is Feruchemist f && !f.Overridden) feruchemists[f.metal.defName] = f;
-        }
-
-        foreach (KeyValuePair<string, Allomancer> kv in allomancers) {
-            if (feruchemists.TryGetValue(kv.Key, out Feruchemist? f)) {
-                pairs[kv.Key] = new TwinbornPair(kv.Key, kv.Value, f);
-            }
-        }
-
-        return pairs;
+        return DualInvestiturePairRegistry.Build(pawn, activeIds);
     }
 
     private DockDensityMode PickDensity(
         Pawn pawn,
-        List<InvestitureSnapshot> snapshots,
+        IReadOnlyList<InvestitureSnapshot> snapshots,
         float availableHeight
     ) {
         float needed = 0f;
-        DockRenderContext probeCtx = new DockRenderContext { TwinbornPairs = BuildTwinbornPairs(pawn, snapshots) };
+        DockRenderContext probeCtx = new DockRenderContext { DualInvestiturePairs = BuildDualInvestiturePairs(pawn, snapshots) };
         for (int i = 0; i < snapshots.Count; i++) {
             IDockSection? section = DockSectionRegistry.For(snapshots[i].SystemId);
             if (section == null) continue;
@@ -188,7 +164,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
     public static bool ShouldShow() {
         Pawn? pawn = GetSelectedPawn();
         if (pawn == null) return false;
-        return PawnInvestitureProviders.HasAnyInvestment(pawn);
+        return InvestitureProviderRegistry.HasAnyInvestment(pawn);
     }
 
     public static Pawn? GetSelectedPawn() {

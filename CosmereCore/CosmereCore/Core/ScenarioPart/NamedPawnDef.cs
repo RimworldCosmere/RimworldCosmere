@@ -36,10 +36,12 @@ public class NamedPawnDef {
                     lastName = node.InnerText;
                     break;
                 case "age":
-                    age = int.Parse(node.InnerText);
+                    if (!int.TryParse(node.InnerText, out age))
+                        Logger.Warning($"NamedPawnDef: invalid age value '{node.InnerText}'");
                     break;
                 case "chronologicalAge":
-                    chronologicalAge = int.Parse(node.InnerText);
+                    if (!int.TryParse(node.InnerText, out chronologicalAge))
+                        Logger.Warning($"NamedPawnDef: invalid chronologicalAge value '{node.InnerText}'");
                     break;
                 case "gender":
                     gender = (Gender)ParseHelper.FromString(node.InnerText, typeof(Gender));
@@ -60,13 +62,16 @@ public class NamedPawnDef {
                     radiantOrder = node.InnerText;
                     break;
                 case "idealLevel":
-                    idealLevel = int.Parse(node.InnerText);
+                    if (!int.TryParse(node.InnerText, out idealLevel))
+                        Logger.Warning($"NamedPawnDef: invalid idealLevel value '{node.InnerText}'");
                     break;
                 case "mistborn":
-                    mistborn = bool.Parse(node.InnerText);
+                    if (!bool.TryParse(node.InnerText, out mistborn))
+                        Logger.Warning($"NamedPawnDef: invalid mistborn value '{node.InnerText}'");
                     break;
                 case "fullFeruchemist":
-                    fullFeruchemist = bool.Parse(node.InnerText);
+                    if (!bool.TryParse(node.InnerText, out fullFeruchemist))
+                        Logger.Warning($"NamedPawnDef: invalid fullFeruchemist value '{node.InnerText}'");
                     break;
                 case "inventory":
                     inventory = DirectXmlToObject.ObjectFromXml<List<NamedPawnInventoryEntry>>(node, false);
@@ -105,7 +110,8 @@ public class NamedPawnTraitEntry {
                     def = node.InnerText;
                     break;
                 case "degree":
-                    degree = int.Parse(node.InnerText);
+                    if (!int.TryParse(node.InnerText, out degree))
+                        Logger.Warning($"NamedPawnTraitEntry: invalid degree value '{node.InnerText}'");
                     break;
             }
         }
@@ -126,7 +132,8 @@ public class NamedPawnSkillEntry {
                     def = node.InnerText;
                     break;
                 case "level":
-                    level = int.Parse(node.InnerText);
+                    if (!int.TryParse(node.InnerText, out level))
+                        Logger.Warning($"NamedPawnSkillEntry: invalid level value '{node.InnerText}'");
                     break;
                 case "passion":
                     passion = (Passion)ParseHelper.FromString(node.InnerText, typeof(Passion));
@@ -153,7 +160,8 @@ public class NamedPawnInventoryEntry {
                     stuff = node.InnerText;
                     break;
                 case "count":
-                    count = int.Parse(node.InnerText);
+                    if (!int.TryParse(node.InnerText, out count))
+                        Logger.Warning($"NamedPawnInventoryEntry: invalid count value '{node.InnerText}'");
                     break;
             }
         }

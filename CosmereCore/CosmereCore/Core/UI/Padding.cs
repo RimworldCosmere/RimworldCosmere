@@ -44,36 +44,16 @@ public record struct Padding {
     public float bottom { get; set; }
     public float left { get; set; }
 
-    public float x {
-        get {
-            if (!Mathf.Approximately(right, left)) {
-                throw new Exception("Padding must have equal values for right and left to get x");
-            }
-
-            return right;
-        }
-    }
-
-    public float y {
-        get {
-            if (!Mathf.Approximately(top, bottom)) {
-                throw new Exception("Padding must have equal values for top and bottom to get y");
-            }
-
-            return top;
-        }
-    }
-
-    public static implicit operator Vector2(Padding padding) {
-        if (!Mathf.Approximately(padding.right, padding.left)) {
-            throw new Exception("Padding must have equal values for right and left to convert to a Vector2");
+    public Vector2 ToSymmetricVector2() {
+        if (!Mathf.Approximately(right, left)) {
+            throw new InvalidOperationException("Padding must have equal right and left to convert to a Vector2");
         }
 
-        if (!Mathf.Approximately(padding.top, padding.bottom)) {
-            throw new Exception("Padding must have equal values for top and bottom to convert to a Vector2");
+        if (!Mathf.Approximately(top, bottom)) {
+            throw new InvalidOperationException("Padding must have equal top and bottom to convert to a Vector2");
         }
 
-        return new Vector2(padding.right, padding.top);
+        return new Vector2(right, top);
     }
 
     public static implicit operator Vector4(Padding padding) {

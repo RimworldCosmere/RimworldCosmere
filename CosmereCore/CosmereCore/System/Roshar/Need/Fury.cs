@@ -1,3 +1,4 @@
+using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Gene;
 using RimWorld;
 using Verse;
@@ -48,7 +49,7 @@ public class Fury : RimWorld.Need {
             return;
         }
 
-        float idealMultiplier = 1f + surgebinder.currentIdeal * 0.25f;
+        float idealMultiplier = 1f + surgebinder.CurrentIdeal * 0.25f;
         float hoursPerInterval = NeedIntervalTicks / 2500f;
         float decay = BaseDecayPerHour;
 
@@ -57,11 +58,13 @@ public class Fury : RimWorld.Need {
             JobDef jobDef = curJob.def;
             if (jobDef == RimWorld.JobDefOf.Mine || jobDef == RimWorld.JobDefOf.FinishFrame) {
                 decay = MiningDecayPerHour;
-            } else if (jobDef == RimWorld.JobDefOf.DoBill) {
+            }
+            else if (jobDef == RimWorld.JobDefOf.DoBill) {
                 if (curJob.workGiverDef?.workType == WorkTypeDefOf.Smithing) {
                     decay = SmithingDecayPerHour;
                 }
-            } else if (jobDef == RimWorld.JobDefOf.Meditate) {
+            }
+            else if (jobDef == RimWorld.JobDefOf.Meditate) {
                 decay = MeditatingDecayPerHour;
             }
         }
@@ -69,7 +72,7 @@ public class Fury : RimWorld.Need {
         CurLevel -= decay * idealMultiplier * hoursPerInterval;
     }
 
-    public void CheckFuryBreak() {
+    public void TriggerFuryBreakIfReady() {
         if (CurLevel >= 1.0f) {
             TriggerFuryBreak();
         }
@@ -78,13 +81,13 @@ public class Fury : RimWorld.Need {
     public void OnEnemyKilled() {
         float multiplier = IsPyromaniac() ? PyromaniacMultiplier : 1f;
         CurLevel += BuildupPerKill * multiplier;
-        CheckFuryBreak();
+        TriggerFuryBreakIfReady();
     }
 
     public void OnHeavyDamageTaken() {
         float multiplier = IsPyromaniac() ? PyromaniacMultiplier : 1f;
         CurLevel += BuildupPerHeavyDamage * multiplier;
-        CheckFuryBreak();
+        TriggerFuryBreakIfReady();
     }
 
     public void OnFuryMastered() {
@@ -112,7 +115,8 @@ public class Fury : RimWorld.Need {
                 pawn,
                 MessageTypeDefOf.ThreatSmall
             );
-        } else {
+        }
+        else {
             Logger.Verbose($"Fury break failed for {pawn.NameShortColored} - TryStartMentalState returned false");
         }
     }
@@ -120,7 +124,7 @@ public class Fury : RimWorld.Need {
     private bool IsDustbringer() {
         Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
         if (surgebinder == null) return false;
-        return surgebinder.radiantOrderDef.defName == "Dustbringer";
+        return surgebinder.radiantOrderDef == RadiantOrderDefOf.Dustbringer;
     }
 
     private bool IsPyromaniac() {

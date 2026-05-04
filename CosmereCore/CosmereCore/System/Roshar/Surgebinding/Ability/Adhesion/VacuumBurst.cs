@@ -11,21 +11,21 @@ public class VacuumBurst : SurgebindingAbility {
     public VacuumBurst(Pawn pawn) : base(pawn) { }
     public VacuumBurst(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + gene.currentIdeal;
+    private float radius => BaseRadius + Gene.CurrentIdeal;
 
-    private float damage => BaseDamage + gene.currentIdeal * 3f;
+    private float damage => BaseDamage + Gene.CurrentIdeal * 3f;
 
-    private int stunTicks => (int)(GenTicks.TicksPerRealSecond * (1f + gene.currentIdeal * 0.5f));
+    private int stunTicks => (int)(GenTicks.TicksPerRealSecond * (1f + Gene.CurrentIdeal * 0.5f));
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return false;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return false;
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
 
         float currentRadius = radius;
         float currentDamage = damage;

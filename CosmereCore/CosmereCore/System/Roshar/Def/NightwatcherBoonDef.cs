@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Core.Nightwatcher;
 using RimWorld;
 using Verse;
 
@@ -19,10 +20,13 @@ public class NightwatcherBoonDef : Verse.Def {
     public List<BoonSkillBoost> skillBoosts = [];
     public float surgebindingConnectionBoost = 0f;
 
-    public IBoonApplicator? Applicator =>
-        applicatorClass != null
-            ? (IBoonApplicator)Activator.CreateInstance(applicatorClass)
-            : null;
+    private IBoonApplicator? applicatorCache;
+    public IBoonApplicator? Applicator {
+        get {
+            if (applicatorClass == null) return null;
+            return applicatorCache ??= (IBoonApplicator)Activator.CreateInstance(applicatorClass);
+        }
+    }
 
     public override IEnumerable<string> ConfigErrors() {
         foreach (string err in base.ConfigErrors()) yield return err;
@@ -40,8 +44,4 @@ public class BoonSkillBoost : IExposable {
         Scribe_Defs.Look(ref skill, "skill");
         Scribe_Values.Look(ref levels, "levels");
     }
-}
-
-public interface IBoonApplicator {
-    void Apply(Pawn pawn, NightwatcherBoonDef def, Dictionary<string, object>? context = null);
 }

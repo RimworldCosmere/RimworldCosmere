@@ -8,11 +8,11 @@ public static class SubtabBar {
     private static readonly List<(CodexSubtab tab, string labelKey)> buffer =
         new List<(CodexSubtab tab, string labelKey)>();
 
-    public static void Draw(Rect rect, CodexState state, IInvestitureProvider active, Color accent) {
+    public static void Draw(Rect rect, Pawn pawn, CodexState state, IInvestitureProvider active, Color accent) {
         buffer.Clear();
         buffer.Add((CodexSubtab.Autocast, "CC_Codex_Subtab_Autocast"));
         buffer.Add((CodexSubtab.Progression, "CC_Codex_Subtab_Progression"));
-        if (active is ICodexContentProvider cp && cp.ShowsBondsSubtab) {
+        if (active.Codex.ShowsBondsSubtab) {
             buffer.Add((CodexSubtab.Bonds, "CC_Codex_Subtab_Bonds"));
         }
 

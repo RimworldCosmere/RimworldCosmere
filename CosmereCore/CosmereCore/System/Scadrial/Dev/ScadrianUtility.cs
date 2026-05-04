@@ -1,10 +1,10 @@
 ﻿using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using LudeonTK;
 using RimWorld;
 using Verse;
-using GeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;
+using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
 
 namespace Cosmere.System.Scadrial.Dev;
 
@@ -145,7 +145,7 @@ public static class ScadrianUtility {
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
     public static void SnapPawn(Pawn pawn) {
-        SnapUtility.TrySnap(pawn);
+        SnapUtility.Snap(pawn);
     }
 
     [DebugAction(
@@ -154,11 +154,12 @@ public static class ScadrianUtility {
         actionType = DebugActionType.ToolMapForPawns,
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
-    public static void TryGiveRandomAllomanticAbility(Pawn pawn) {
+    public static void GiveRandomAllomanticAbility(Pawn pawn) {
         if (Rand.Chance(1f / 16f)) {
             GeneUtility.AddMistborn(pawn);
-        } else {
-            GeneUtility.TryAddRandomAllomanticGene(pawn);
+        }
+        else {
+            GeneUtility.AddRandomAllomanticGene(pawn);
         }
     }
 
@@ -168,11 +169,12 @@ public static class ScadrianUtility {
         actionType = DebugActionType.ToolMapForPawns,
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
-    public static void TryGiveRandomFeruchemicalAbility(Pawn pawn) {
+    public static void GiveRandomFeruchemicalAbility(Pawn pawn) {
         if (Rand.Chance(1f / 16f)) {
             GeneUtility.AddFullFeruchemist(pawn);
-        } else {
-            GeneUtility.TryAddRandomFeruchemicalGene(pawn);
+        }
+        else {
+            GeneUtility.AddRandomFeruchemicalGene(pawn);
         }
     }
 }

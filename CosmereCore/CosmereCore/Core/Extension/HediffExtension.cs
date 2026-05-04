@@ -1,3 +1,4 @@
+using Cosmere.Core.Framework;
 using Verse;
 
 namespace Cosmere.Core.Extension;
@@ -9,9 +10,10 @@ public static class HediffExtension {
     }
 
     public static bool CanBeHealedByInvestiture(this Verse.Hediff hediff) {
+        if (hediff is Hediff_MissingPart) return false;
         if (hediff is Hediff_Injury) return true;
         if (hediff.def.chronic) return false;
-        if (hediff.def.defName.StartsWith("Cosmere_Roshar_Hediff_NW_")) return false;
+        if (InvestitureHealExclusionRegistry.IsExcluded(hediff)) return false;
         if (hediff.def.makesSickThought) return true;
         if (hediff.CurStage?.capMods?.Count > 0) return true;
 
@@ -24,10 +26,6 @@ public static class HediffExtension {
         if (hediff is Hediff_Injury injury) {
             injury.Heal(amount);
             return true;
-        }
-
-        if (hediff is Hediff_MissingPart) {
-            return false;
         }
 
         hediff.Severity -= amount;

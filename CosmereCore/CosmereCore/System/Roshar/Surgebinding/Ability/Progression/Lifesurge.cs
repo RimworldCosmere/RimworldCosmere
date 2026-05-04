@@ -8,7 +8,8 @@ public class Lifesurge : SurgebindingAbility {
     private const float LimbRegenCostMultiplier = 2f;
     private const float WoundHealCostFraction = 0.1f;
     private const float DiseaseCureCostMultiplier = 1.5f;
-    private static readonly ThingDef? PulseMoteDef = ThingDefOf.Cosmere_Roshar_Thing_LifesurgePulse;
+    private static ThingDef? _pulseDef;
+    private static ThingDef? PulseMoteDef => _pulseDef ??= ThingDefOf.Cosmere_Roshar_Thing_LifesurgePulse;
 
     private static readonly int[] DurationSeconds = [10, 15, 20, 25, 30];
     private static readonly int[] MaxWoundsToHeal = [1, 3, 5, int.MaxValue, int.MaxValue];
@@ -18,14 +19,14 @@ public class Lifesurge : SurgebindingAbility {
     public Lifesurge(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return false;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return false;
 
         Pawn? targetPawn = target.Pawn;
         if (targetPawn == null || targetPawn.Dead) return false;
 
-        gene.RemoveFromReserve(cost);
-        int ideal = gene.currentIdeal;
+        Gene.RemoveFromReserve(cost);
+        int ideal = Gene.CurrentIdeal;
 
         CureBleeding(targetPawn);
         HealWounds(targetPawn, ideal);
@@ -75,8 +76,8 @@ public class Lifesurge : SurgebindingAbility {
         if (ideal >= 4) {
             for (int i = 0; i < injuries.Count; i++) {
                 float healCost = def.beuPerTick * WoundHealCostFraction;
-                if (!gene.CanLowerReserve(healCost)) break;
-                gene.RemoveFromReserve(healCost);
+                if (!Gene.CanLowerReserve(healCost)) break;
+                Gene.RemoveFromReserve(healCost);
                 injuries[i].Heal(injuries[i].Severity);
             }
 
@@ -88,8 +89,8 @@ public class Lifesurge : SurgebindingAbility {
                 float partMaxHp = injuries[i].Part?.def.hitPoints ?? 30f;
                 if (injuries[i].Severity > partMaxHp * 0.5f) continue;
                 float healCost = def.beuPerTick * WoundHealCostFraction;
-                if (!gene.CanLowerReserve(healCost)) break;
-                gene.RemoveFromReserve(healCost);
+                if (!Gene.CanLowerReserve(healCost)) break;
+                Gene.RemoveFromReserve(healCost);
                 injuries[i].Heal(injuries[i].Severity);
             }
 
@@ -99,8 +100,8 @@ public class Lifesurge : SurgebindingAbility {
         int healed = 0;
         for (int i = 0; i < injuries.Count && healed < maxWounds; i++) {
             float healCost = def.beuPerTick * WoundHealCostFraction;
-            if (!gene.CanLowerReserve(healCost)) break;
-            gene.RemoveFromReserve(healCost);
+            if (!Gene.CanLowerReserve(healCost)) break;
+            Gene.RemoveFromReserve(healCost);
             injuries[i].Heal(injuries[i].Severity);
             healed++;
         }
@@ -122,9 +123,9 @@ public class Lifesurge : SurgebindingAbility {
             if (ideal < tier) continue;
 
             float regenCost = def.beuPerTick * LimbRegenCostMultiplier;
-            if (!gene.CanLowerReserve(regenCost)) break;
+            if (!Gene.CanLowerReserve(regenCost)) break;
 
-            gene.RemoveFromReserve(regenCost);
+            Gene.RemoveFromReserve(regenCost);
             targetPawn.health.RestorePart(missingParts[i].Part);
             FleckMaker.Static(targetPawn.DrawPos, targetPawn.Map, FleckDefOf.PsycastAreaEffect);
         }
@@ -159,8 +160,8 @@ public class Lifesurge : SurgebindingAbility {
 
         for (int i = 0; i < toRemove.Count; i++) {
             float cureCost = def.beuPerTick * DiseaseCureCostMultiplier * Mathf.Max(toRemove[i].Severity, 0.1f);
-            if (!gene.CanLowerReserve(cureCost)) break;
-            gene.RemoveFromReserve(cureCost);
+            if (!Gene.CanLowerReserve(cureCost)) break;
+            Gene.RemoveFromReserve(cureCost);
             targetPawn.health.RemoveHediff(toRemove[i]);
         }
     }

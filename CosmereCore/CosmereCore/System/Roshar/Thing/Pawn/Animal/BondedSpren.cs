@@ -5,7 +5,7 @@ using Verse;
 namespace Cosmere.System.Roshar.Thing.Pawn.Animal;
 
 public class BondedSpren : Spren {
-    public CompSprenBond? SprenBond => this.TryGetComp<CompSprenBond>();
+    public SprenBond? SprenBond => this.TryGetComp<SprenBond>();
 
     public override void SpawnSetup(Map map, bool respawningAfterLoad) {
         base.SpawnSetup(map, respawningAfterLoad);
@@ -14,7 +14,7 @@ public class BondedSpren : Spren {
     }
 
     public override string GetInspectString() {
-        CompSprenBond? bond = SprenBond;
+        SprenBond? bond = SprenBond;
         if (bond?.BondedRadiant == null) return base.GetInspectString();
 
         string result = "CRO_NahelBond_Inspect".Translate(bond.BondedRadiant.NameShortColored.Named("PAWN"));

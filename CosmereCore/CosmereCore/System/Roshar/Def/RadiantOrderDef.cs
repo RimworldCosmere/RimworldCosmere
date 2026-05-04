@@ -1,6 +1,5 @@
 using System;
 using Cosmere.Core.Def;
-using Cosmere.System.Roshar.Surgebinding.IdealChecker;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -24,7 +23,7 @@ public class RadiantOrderDef : Verse.Def {
     public List<TraitRequirement> favorableTraits = null!;
     public GemDef gemstone = null!;
     public Texture2D icon = null!;
-    public AbstractIdealChecker idealChecker = null!;
+    public IIdealChecker idealChecker = null!;
     public List<Ideal> ideals = null!;
     public List<TraitRequirement> incompatibleTraits = null!;
     public Texture2D invertedIcon = null!;
@@ -66,16 +65,16 @@ public class RadiantOrderDef : Verse.Def {
     public override void PostLoad() {
         base.PostLoad();
 
-        idealChecker = (AbstractIdealChecker)Activator.CreateInstance(idealCheckerClass, this);
+        idealChecker = (IIdealChecker)Activator.CreateInstance(idealCheckerClass, this);
         LongEventHandler.ExecuteWhenFinished(() => {
-                icon = ContentFinder<Texture2D>.Get($"UI/Surgebinding/Order/{defName}");
-                bannerIcon = ContentFinder<Texture2D>.Get($"UI/Surgebinding/Order/Banner{defName}");
-                if (icon != null) {
-                    invertedIcon = icon.CloneTexture().InvertColors();
-                }
-
-                AssignTraitCompatibility();
+            icon = ContentFinder<Texture2D>.Get($"UI/Surgebinding/Order/{defName}");
+            bannerIcon = ContentFinder<Texture2D>.Get($"UI/Surgebinding/Order/Banner{defName}");
+            if (icon != null) {
+                invertedIcon = icon.CloneTexture().InvertColors();
             }
+
+            AssignTraitCompatibility();
+        }
         );
     }
 

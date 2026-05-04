@@ -1,4 +1,5 @@
-using Cosmere.Core.Comp.Game;
+using Cosmere.Core.Util;
+using Cosmere.System.Roshar.Nightwatcher;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
@@ -31,8 +32,7 @@ public class NightwatcherValley : RimWorld.Planet.WorldObject {
     }
 
     private void TriggerEncounterForCaravan(Caravan caravan) {
-        Shards? shards = Current.Game.GetComponent<Shards>();
-        if (shards == null || !shards.IsEnabled("Cultivation")) return;
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation)) return;
 
         List<Pawn> pawns = caravan.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {
@@ -50,8 +50,7 @@ public class NightwatcherValley : RimWorld.Planet.WorldObject {
             yield return g;
         }
 
-        Shards? shards = Current.Game.GetComponent<Shards>();
-        if (shards == null || !shards.IsEnabled("Cultivation")) yield break;
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Cultivation)) yield break;
 
         List<Pawn> pawns = caravan.PawnsListForReading;
         for (int i = 0; i < pawns.Count; i++) {

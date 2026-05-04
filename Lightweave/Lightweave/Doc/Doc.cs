@@ -16,7 +16,7 @@ public static partial class Doc {
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        LightweaveNode inner = Layout.Layout.Stack.Create(
+        LightweaveNode inner = Layout.Stack.Create(
             SpacingScale.Md,
             s => {
                 s.Add(heading);
@@ -64,7 +64,7 @@ public static partial class Doc {
             Font font = theme.GetFont(FontRole.Body);
             Event e = Event.current;
 
-            GUIStyle titleStyle = GuiStyleCache.Get(font, Mathf.RoundToInt(titleSizePx), FontStyle.Bold);
+            GUIStyle titleStyle = GuiStyleCache.GetOrCreate(font, Mathf.RoundToInt(titleSizePx), FontStyle.Bold);
             titleStyle.alignment = TextAnchor.MiddleLeft;
             Color saved = GUI.color;
 
@@ -89,7 +89,7 @@ public static partial class Doc {
             }
 
             float y = rect.y + titleHeightPx + titleToList;
-            GUIStyle entryStyle = GuiStyleCache.Get(font, Mathf.RoundToInt(entryFontPx), FontStyle.Normal);
+            GUIStyle entryStyle = GuiStyleCache.GetOrCreate(font, Mathf.RoundToInt(entryFontPx), FontStyle.Normal);
             entryStyle.alignment = TextAnchor.MiddleLeft;
             entryStyle.clipping = TextClipping.Clip;
 

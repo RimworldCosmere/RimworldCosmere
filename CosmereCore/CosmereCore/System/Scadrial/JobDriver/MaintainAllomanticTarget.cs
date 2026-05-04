@@ -1,7 +1,7 @@
 using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Comp.Hediff;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using Verse;
 using Verse.AI;
 
@@ -49,7 +49,7 @@ public class MaintainAllomanticTarget : AllomanticJobDriver {
                     return;
                 }
 
-                SurgeChargeHediff? surge = AllomancyUtility.GetSurgeBurn(pawn);
+                SurgeChargeHediff? surge = AllomancyUtility.FindSurgeChargeHediff(pawn);
                 surge?.Burn();
 
                 // Ensure the burn rate is set properly

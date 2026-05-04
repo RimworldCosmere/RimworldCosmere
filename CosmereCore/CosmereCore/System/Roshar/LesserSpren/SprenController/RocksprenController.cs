@@ -3,6 +3,7 @@ using Cosmere.Core.Def;
 using Cosmere.System.Roshar.LesserSpren.ParticleSystem;
 using UnityEngine;
 using Verse;
+using ShaderDatabase = Cosmere.System.Roshar.Shader.ShaderDatabase;
 
 namespace Cosmere.System.Roshar.LesserSpren.SprenController;
 

@@ -1,3 +1,4 @@
+using Cosmere.System.Roshar;
 using Cosmere.System.Roshar.Surgebinding;
 using HarmonyLib;
 using RimWorld;
@@ -20,7 +21,7 @@ public static class SkillViolationPatch {
         Pawn pawn = __instance.Pawn;
         if (pawn == null) return;
 
-        if (ViolationUtility.IsSurgebinderOfOrder(pawn, "Elsecaller")) {
+        if (ViolationUtility.IsSurgebinderOfOrder(pawn, RadiantOrderDefOf.Elsecaller)) {
             ViolationUtility.ApplyViolation(pawn, 0.3f, "losing a skill level");
         }
     }

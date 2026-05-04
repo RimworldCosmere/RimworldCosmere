@@ -11,6 +11,7 @@ public class SurgebindingAbilityDef : AbilityDef {
     public int minIdeal;
     public List<OrderMinIdeal>? orderMinIdeal;
     public RadiantOrderDef? radiantOrder;
+    public bool showInRadial = true;
 
     public int GetMinIdealForOrder(string orderDefName) {
         if (orderMinIdeal == null) return minIdeal;

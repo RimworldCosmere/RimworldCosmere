@@ -160,7 +160,8 @@ public static class Tree {
             chevronRect = new Rect(chevronX, rowRect.y, chevronPx, rowRect.height);
             float labelEndX = chevronX - padPx;
             labelRect = new Rect(rowRect.x, rowRect.y, Mathf.Max(0f, labelEndX - rowRect.x), rowRect.height);
-        } else {
+        }
+        else {
             float chevronX = rowRect.x + indentPx;
             chevronRect = new Rect(chevronX, rowRect.y, chevronPx, rowRect.height);
             float labelStartX = chevronX + chevronPx + padPx;
@@ -170,7 +171,7 @@ public static class Tree {
         if (hasChildren) {
             Font chevronFont = theme.GetFont(FontRole.Body);
             int chevronPixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-            GUIStyle chevronStyle = GuiStyleCache.Get(chevronFont, chevronPixelSize);
+            GUIStyle chevronStyle = GuiStyleCache.GetOrCreate(chevronFont, chevronPixelSize);
             chevronStyle.alignment = TextAnchor.MiddleCenter;
 
             string glyph = isExpanded
@@ -187,7 +188,7 @@ public static class Tree {
 
         Font labelFont = theme.GetFont(FontRole.Body);
         int labelPixelSize = Mathf.RoundToInt(LabelSize.ToFontPx());
-        GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize);
+        GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelPixelSize);
         labelStyle.alignment = rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
 
         Color savedLabel = GUI.color;
@@ -204,7 +205,8 @@ public static class Tree {
 
                 expandedState.Set(next);
                 e.Use();
-            } else if (labelRect.Contains(e.mousePosition)) {
+            }
+            else if (labelRect.Contains(e.mousePosition)) {
                 onSelect?.Invoke(treeNode);
                 e.Use();
             }

@@ -31,7 +31,6 @@ public class ShardbladeSummoning : Verse.Hediff {
             ticksSinceLastHeartbeat = 0;
             heartbeatCount++;
 
-            // Optional: Play heartbeat sound
             if (heartbeatCount <= 10) {
                 RimWorld.SoundDefOf.Interact_Sow.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
             }

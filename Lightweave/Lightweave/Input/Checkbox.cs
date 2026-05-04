@@ -62,7 +62,8 @@ public static class Checkbox {
             bool hovered = !disabled && mouseOver;
             if (!disabled) {
                 MouseoverSounds.DoRegion(hitRect);
-            } else if (mouseOver) {
+            }
+            else if (mouseOver) {
                 CursorOverrides.MarkDisabledHover();
             }
 
@@ -90,7 +91,7 @@ public static class Checkbox {
 
             Font labelFont = theme.GetFont(FontRole.Body);
             int labelPixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-            GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize);
+            GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelPixelSize);
             labelStyle.alignment = rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
             Color labelColor = disabled
                 ? theme.GetColor(ThemeSlot.TextMuted)

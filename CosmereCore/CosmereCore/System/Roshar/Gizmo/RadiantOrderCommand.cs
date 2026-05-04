@@ -19,7 +19,9 @@ public class RadiantOrderCommand(
     Color barColor,
     Color barHighlightColor
 ) : CosmereGeneCommand<SurgebindingAbilitySubGizmo, Surgebinder>(gene, drainGenes, barColor, barHighlightColor) {
-    private RadiantOrder radiantOrder => gene.def.GetModExtension<RadiantOrder>();
+    private RadiantOrder radiantOrder =>
+        gene.def.GetModExtension<RadiantOrder>() ??
+        throw new InvalidOperationException($"GeneDef '{gene.def.defName}' is missing RadiantOrder mod extension");
     private RadiantOrderDef radiantOrderDef => radiantOrder.order;
     protected override bool useResourceLabelForTitle => false;
 
@@ -39,7 +41,7 @@ public class RadiantOrderCommand(
     protected override string GetTooltipHeader() {
         StringBuilder sb = new StringBuilder(base.GetTooltipHeader() + "\n");
 
-        TaggedString ideal = $"CC_Ordinal_{gene.currentIdealDisplay}_Long".Translate() +
+        TaggedString ideal = $"CC_Ordinal_{gene.CurrentIdealDisplay}_Long".Translate() +
                              ' ' +
                              "CRO_RadiantOrder_Ideal".Translate();
 
@@ -62,7 +64,7 @@ public class RadiantOrderCommand(
             yield return new SurgebindingAbilitySubGizmo(this, gene, ability);
         }
 
-        for (int i = 0; i <= Math.Min(gene.currentIdeal, radiantOrderDef.ideals.Count - 1); i++) {
+        for (int i = 0; i <= Math.Min(gene.CurrentIdeal, radiantOrderDef.ideals.Count - 1); i++) {
             Ideal ideal = radiantOrderDef.ideals[i];
             foreach (AbilityDef idealAbility in ideal.abilities) {
                 if (!pawn.TryGetAbility(idealAbility, out SurgebindingAbility? ability) || ability == null) continue;
@@ -100,7 +102,7 @@ public class RadiantOrderCommand(
             Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
             if (surgebinder != null) {
                 Find.WindowStack.Add(
-                    new RadiantOrderInfoDialog(
+                    new Dialog_RadiantOrderInfoDialog(
                         pawn,
                         surgebinder,
                         RadiantOrderInfoMode.View
@@ -113,7 +115,7 @@ public class RadiantOrderCommand(
         bool sprenClicked = false;
         Rect sprenRect = default;
         if (surgebinderGene?.bondedSpren != null) {
-            CompSprenBond? sprenBond = surgebinderGene.bondedSpren.TryGetComp<CompSprenBond>();
+            SprenBond? sprenBond = surgebinderGene.bondedSpren.TryGetComp<SprenBond>();
             if (sprenBond != null) {
                 sprenRect = new Rect(
                     infoRect.xMax + 2f,
@@ -130,12 +132,14 @@ public class RadiantOrderCommand(
                     Event.current.Use();
                     if (Event.current.shift) {
                         sprenBond.ToggleAutonomy();
-                    } else if (!sprenBond.CooldownActive) {
+                    }
+                    else if (!sprenBond.CooldownActive) {
                         if (sprenBond.Dismissed) {
                             if (pawn.Map != null) {
                                 sprenBond.Summon(pawn.Map, pawn.Position);
                             }
-                        } else {
+                        }
+                        else {
                             sprenBond.Dismiss();
                         }
                     }
@@ -155,7 +159,7 @@ public class RadiantOrderCommand(
         }
 
         if (surgebinderGene?.bondedSpren != null) {
-            CompSprenBond? sprenBond = surgebinderGene.bondedSpren.TryGetComp<CompSprenBond>();
+            SprenBond? sprenBond = surgebinderGene.bondedSpren.TryGetComp<SprenBond>();
             if (sprenBond != null) {
                 string texPath = surgebinderGene.bondedSpren.kindDef.lifeStages.Last().bodyGraphicData.texPath;
                 Texture2D sprenIcon = ContentFinder<Texture2D>.Get(texPath, false) ?? BaseContent.BadTex;

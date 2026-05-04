@@ -7,11 +7,6 @@ using Verse;
 
 namespace Cosmere.System.Roshar.Comp.Fabrials;
 
-public interface IGemstoneHandler {
-    void RemoveGemstone();
-    void AddGemstone(ThingWithComps gemstone);
-}
-
 public class BuildingHeatrialAdvanced : Building {
     public CompFlickable compFlickerable = null!;
     public CompGlower compGlower = null!;
@@ -25,15 +20,14 @@ public class BuildingHeatrialAdvanced : Building {
     }
 
     public override void TickRare() {
-        compHeatrial.CheckPower(compFlickerable.SwitchIsOn);
+        compHeatrial.UpdatePowerState(compFlickerable.SwitchIsOn);
         if (compHeatrial.powerOn) {
             float ambientTemperature = AmbientTemperature;
-            float num = ambientTemperature < 20f ? 1f :
+            float efficiency = ambientTemperature < 20f ? 1f :
                 !(ambientTemperature > 120f) ? Mathf.InverseLerp(120f, 20f, ambientTemperature) : 0f;
-            float num2 = GenTemperature.ControlTemperatureTempChange(Position, Map, 15f, 18f);
-            bool flag = !Mathf.Approximately(num2, 0f);
-            if (flag) {
-                this.GetRoom().Temperature += num2;
+            float tempChange = GenTemperature.ControlTemperatureTempChange(Position, Map, 15f, 18f);
+            if (!Mathf.Approximately(tempChange, 0f)) {
+                this.GetRoom().Temperature += tempChange;
             }
         }
 
@@ -45,7 +39,8 @@ public class BuildingHeatrialAdvanced : Building {
         if (Map != null) {
             if (on) {
                 Map.glowGrid.RegisterGlower(compGlower);
-            } else {
+            }
+            else {
                 Map.glowGrid.DeRegisterGlower(compGlower);
             }
         }
@@ -81,7 +76,7 @@ public class CompHeatrial : ThingComp, IGemstoneHandler {
         base.PostExposeData();
     }
 
-    public void CheckPower(bool flickeredOn) {
+    public void UpdatePowerState(bool flickeredOn) {
         if (insertedGemstone != null) {
             InvestitureHolder? investiture =
                 (insertedGemstone as ThingWithComps)?.TryGetComp<InvestitureHolder>();

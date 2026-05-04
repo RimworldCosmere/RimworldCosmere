@@ -1,5 +1,6 @@
 using System;
 using Cosmere.Core.Comp.Game;
+using Cosmere.Core.Extension;
 using Cosmere.Core.Gene;
 using Cosmere.Core.Investiture;
 using Cosmere.Core.Savant;
@@ -8,11 +9,13 @@ using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gizmo;
 using Cosmere.System.Roshar.LetterArrive;
+using Cosmere.System.Roshar.Savant;
 using Cosmere.System.Roshar.Surgebinding;
 using Cosmere.System.Roshar.Surgebinding.Ability;
 using Cosmere.System.Roshar.Surgebinding.Ability.Transformation;
-using Cosmere.System.Roshar.Utility;
+using Cosmere.System.Roshar.Util;
 using RimWorld;
+using static Cosmere.System.Roshar.RadiantOrderDefOf;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
@@ -25,6 +28,7 @@ namespace Cosmere.System.Roshar.Gene;
 public class Surgebinder : Invested {
     private static readonly List<int> SkillRequirements = [0, 4, 8, 14, 18];
     private static readonly List<int> IdealCooldownDays = [0, 0, 3, 7, 15];
+    private static readonly HediffDef LifelightDef = HediffDefOf.Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight;
 
     private int artPiecesCreated;
     private int artPiecesExcellent;
@@ -37,7 +41,7 @@ public class Surgebinder : Invested {
 
     private List<SurgeGizmo>? cachedSurgeGizmos;
 
-    private int currentIdealInt;
+    private int CurrentIdealInt;
     public string godsprenName = "";
 
     private int griefRecoveryCount;
@@ -57,28 +61,29 @@ public class Surgebinder : Invested {
     private bool wasImprisoned;
     private bool zoneViolatedToday;
 
-    public int currentIdeal {
-        get => currentIdealInt;
+    public int CurrentIdeal {
+        get => CurrentIdealInt;
         set {
-            currentIdealInt = Math.Clamp(value, 0, 4);
+            CurrentIdealInt = Math.Clamp(value, 0, 4);
             OnIdealChange();
         }
     }
 
-    public int currentIdealDisplay => currentIdeal + 1;
+    public int CurrentIdealDisplay => CurrentIdeal + 1;
 
-    public RadiantOrder radiantOrder => def.GetModExtension<RadiantOrder>();
+    public RadiantOrder radiantOrder =>
+        def.GetModExtension<RadiantOrder>() ??
+        throw new InvalidOperationException($"Surgebinder def '{def.defName}' is missing RadiantOrder mod extension");
     public RadiantOrderDef radiantOrderDef => radiantOrder.order;
     protected override Color BarColor => radiantOrderDef.color.SaturationChanged(1f);
     protected override Color BarHighlightColor => radiantOrderDef.color.SaturationChanged(2f);
     private SkillRecord skill => pawn.skills.GetSkill(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower);
     private PawnTracker tracker => pawn.TryGetComp<PawnTracker>();
-    public override List<AbilityDef> abilities => radiantOrderDef.GetAbilities(currentIdeal).ToList();
+    public override List<AbilityDef> Abilities => radiantOrderDef.GetAbilities(CurrentIdeal).ToList();
 
     public override string ResourceLabel {
         get {
-            HediffDef lifelightDef = HediffDefOf.Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight;
-            if (lifelightDef != null && pawn.health?.hediffSet?.HasHediff(lifelightDef) == true) {
+            if (LifelightDef != null && pawn.health?.hediffSet?.HasHediff(LifelightDef) == true) {
                 return "lifelight";
             }
 
@@ -86,10 +91,9 @@ public class Surgebinder : Invested {
         }
     }
 
-    public override string investitureLabel {
+    public override string InvestitureLabel {
         get {
-            HediffDef lifelightDef = HediffDefOf.Cosmere_Roshar_Hediff_NW_BoonPassive_Lifelight;
-            if (lifelightDef != null && pawn.health?.hediffSet?.HasHediff(lifelightDef) == true) {
+            if (LifelightDef != null && pawn.health?.hediffSet?.HasHediff(LifelightDef) == true) {
                 return "Lifelight";
             }
 
@@ -97,10 +101,10 @@ public class Surgebinder : Invested {
         }
     }
 
-    public override float maxInvestitureLevel {
+    public override float MaxInvestitureLevel {
         get {
-            if (currentIdeal >= 0 && currentIdeal < radiantOrderDef.ideals.Count) {
-                int stormlightMax = radiantOrderDef.ideals[currentIdeal].stormlightMax;
+            if (CurrentIdeal < radiantOrderDef.ideals.Count) {
+                int stormlightMax = radiantOrderDef.ideals[CurrentIdeal].stormlightMax;
                 if (stormlightMax > 0) return stormlightMax;
             }
 
@@ -148,10 +152,10 @@ public class Surgebinder : Invested {
     }
 
     public void RegressIdeal() {
-        if (currentIdealInt <= 0) return;
+        if (CurrentIdealInt <= 0) return;
 
-        int previousIdeal = currentIdealInt;
-        currentIdealInt = Math.Max(0, currentIdealInt - 1);
+        int previousIdeal = CurrentIdealInt;
+        CurrentIdealInt = Math.Max(0, CurrentIdealInt - 1);
 
         ILoadReferenceable? bondTarget = GetBondTarget();
         if (bondTarget != null) {
@@ -167,92 +171,94 @@ public class Surgebinder : Invested {
                 pawn.NameFullColored.Named("PAWN"),
                 orderLabel.Named("ORDER"),
                 (previousIdeal + 1).Named("OLDIDEAL"),
-                (currentIdealInt + 1).Named("NEWIDEAL")
+                (CurrentIdealInt + 1).Named("NEWIDEAL")
             ),
             RimWorld.LetterDefOf.NegativeEvent,
             pawn
         );
 
         Logger.Important(
-            $"RegressIdeal: {pawn.NameShortColored} regressed from ideal {previousIdeal + 1} to {currentIdealInt + 1}"
+            $"RegressIdeal: {pawn.NameShortColored} regressed from ideal {previousIdeal + 1} to {CurrentIdealInt + 1}"
         );
     }
 
     public void CatastrophicBondDeath() {
-        int idealBeforeDeath = currentIdeal;
+        int idealBeforeDeath = CurrentIdeal;
         bool isBondsmith = radiantOrderDef == RadiantOrderDefOf.Bondsmith;
         Logger.Important(
             $"CatastrophicBondDeath: {pawn.NameShortColored}, ideal={idealBeforeDeath}, bondsmith={isBondsmith}"
         );
+        DeregisterFromTrackers(isBondsmith);
+        ApplyBondDeathEffects();
+        bool droppedBlade = DropDeadBladeAndKillSpren(isBondsmith, idealBeforeDeath);
+        SendBondDeathLetter(isBondsmith, droppedBlade);
+        godsprenName = "";
+        pawn.genes?.RemoveGene(this);
+    }
 
+    private void DeregisterFromTrackers(bool isBondsmith) {
         RadiantTracker tracker = Current.Game.GetComponent<RadiantTracker>();
         tracker?.RecordBrokenBond(pawn, radiantOrderDef.defName);
-
-        if (isBondsmith) {
-            tracker?.UnregisterBondsmith();
-            BondsmithCallingChecker? checker = Current.Game.GetComponent<BondsmithCallingChecker>();
-            if (!string.IsNullOrEmpty(godsprenName)) {
-                checker?.UnregisterGodspren(godsprenName);
-            }
+        if (!isBondsmith) return;
+        tracker?.UnregisterBondsmith();
+        BondsmithCallingChecker? checker = Current.Game.GetComponent<BondsmithCallingChecker>();
+        if (!string.IsNullOrEmpty(godsprenName)) {
+            checker?.UnregisterGodspren(godsprenName);
         }
+    }
 
+    private void ApplyBondDeathEffects() {
         Verse.Hediff? strainedBond =
             pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond);
         if (strainedBond != null) {
             pawn.health!.RemoveHediff(strainedBond);
         }
-
         Thought_Memory brokenBondThought = ThoughtMaker.MakeThought(ThoughtDefOf.Cosmere_Roshar_Thought_BrokenBond, 0);
         brokenBondThought.permanent = true;
         pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(brokenBondThought);
+    }
 
+    private bool DropDeadBladeAndKillSpren(bool isBondsmith, int idealBeforeDeath) {
+        if (bondedSpren == null || isBondsmith) return false;
         bool droppedBlade = false;
-        string? sprenName = bondedSpren?.Name?.ToStringShort;
-
-        if (bondedSpren != null && !isBondsmith) {
-            if (idealBeforeDeath >= 2 && pawn.Map != null) {
-                ThingDef bladeDef = ThingDefOf.Cosmere_Roshar_MeleeWeapon_DeadShardblade;
-                if (bladeDef != null) {
-                    Verse.Thing deadBlade = ThingMaker.MakeThing(bladeDef, radiantOrderDef.gemstone?.Item);
-                    if (sprenName != null) {
-                        deadBlade.TryGetComp<CompQuality>()
-                            ?.SetQuality(QualityCategory.Normal, ArtGenerationContext.Colony);
-                    }
-
-                    bool placed = GenPlace.TryPlaceThing(deadBlade, pawn.Position, pawn.Map, ThingPlaceMode.Near);
-                    droppedBlade = placed;
+        if (idealBeforeDeath >= 2 && pawn.Map != null) {
+            ThingDef bladeDef = ThingDefOf.Cosmere_Roshar_MeleeWeapon_DeadShardblade;
+            if (bladeDef != null) {
+                Verse.Thing deadBlade = ThingMaker.MakeThing(bladeDef, radiantOrderDef.gemstone?.Item);
+                string? sprenName = bondedSpren.Name?.ToStringShort;
+                if (sprenName != null) {
+                    deadBlade.TryGetComp<CompQuality>()
+                        ?.SetQuality(QualityCategory.Normal, ArtGenerationContext.Colony);
                 }
+                droppedBlade = GenPlace.TryPlaceThing(deadBlade, pawn.Position, pawn.Map, ThingPlaceMode.Near);
             }
-
-            if (!bondedSpren.Dead && !bondedSpren.Destroyed) {
-                IntVec3 deathPos = bondedSpren.PositionHeld;
-                Map? deathMap = bondedSpren.MapHeld;
-                bondedSpren.Kill(null);
-                if (deathMap != null) {
-                    List<Verse.Thing> atCell = deathPos.GetThingList(deathMap);
-                    for (int i = atCell.Count - 1; i >= 0; i--) {
-                        if (atCell[i] is Corpse corpse && corpse.InnerPawn == bondedSpren) {
-                            corpse.Destroy();
-                            break;
-                        }
-                    }
-                }
-
-                if (!bondedSpren.Destroyed) {
-                    bondedSpren.Destroy();
-                }
-            }
-
-            bondedSpren = null;
         }
+        if (!bondedSpren.Dead && !bondedSpren.Destroyed) {
+            IntVec3 deathPos = bondedSpren.PositionHeld;
+            Map? deathMap = bondedSpren.MapHeld;
+            bondedSpren.Kill(null);
+            if (deathMap != null) {
+                List<Verse.Thing> atCell = deathPos.GetThingList(deathMap);
+                for (int i = atCell.Count - 1; i >= 0; i--) {
+                    if (atCell[i] is Corpse corpse && corpse.InnerPawn == bondedSpren) {
+                        corpse.Destroy();
+                        break;
+                    }
+                }
+            }
+            if (!bondedSpren.Destroyed) bondedSpren.Destroy();
+        }
+        bondedSpren = null;
+        return droppedBlade;
+    }
 
+    private void SendBondDeathLetter(bool isBondsmith, bool droppedBlade) {
         string bodyKey = isBondsmith ? "CRO_BondDeath_Bondsmith_Text" : "CRO_BondDeath_Text";
         string bodyText = bodyKey.Translate(
             pawn.NameFullColored.Named("PAWN"),
             radiantOrderDef.LabelCap.Named("ORDER"),
             godsprenName.Named("SPREN")
         );
-
         if (droppedBlade) {
             bodyText += "\n\n" +
                         "CRO_DeadBlade_Text".Translate(
@@ -260,16 +266,12 @@ public class Surgebinder : Invested {
                             radiantOrderDef.LabelCap.Named("ORDER")
                         );
         }
-
         Find.LetterStack.ReceiveLetter(
             "CRO_BondDeath_Title".Translate(pawn.NameShortColored.Named("PAWN")),
             bodyText,
             RimWorld.LetterDefOf.Death,
             pawn
         );
-
-        godsprenName = "";
-        pawn.genes?.RemoveGene(this);
     }
 
     public void OnWitnessedDeath(Pawn deceased) { }
@@ -307,11 +309,11 @@ public class Surgebinder : Invested {
 
     private void OnIdealChange() {
         lastIdealChangeTick = Find.TickManager.TicksGame;
-        pawn.story.TryAddTrait(radiantOrder.trait, currentIdealInt);
+        pawn.story.EnsureTrait(radiantOrder.trait, CurrentIdealInt);
         UpdateAbilities();
         EnableSoulcastWorkType();
 
-        int idealIndex = currentIdealInt - 1;
+        int idealIndex = CurrentIdealInt - 1;
         if (idealIndex >= 0 && idealIndex < radiantOrderDef.ideals.Count) {
             int newMax = radiantOrderDef.ideals[idealIndex].stormlightMax;
             if (newMax > 0) {
@@ -330,14 +332,14 @@ public class Surgebinder : Invested {
     }
 
     private void TryTransitionEyeColor() {
-        if (currentIdealInt < 1) return;
+        if (CurrentIdealInt < 1) return;
         if (!CasteUtility.IsDarkeyes(pawn)) return;
 
         CasteUtility.DarkeyesToLighteyes(pawn);
 
         Find.LetterStack.ReceiveLetter(
-            "Eyes of Light",
-            $"As Stormlight courses through {pawn.NameShortColored}'s veins, their eyes lighten. {pawn.gender.GetPronoun().CapitalizeFirst()} is darkeyes no longer.",
+            "CRO_EyesOfLight_Title".Translate(),
+            "CRO_EyesOfLight_Text".Translate(pawn.Named("PAWN")),
             RimWorld.LetterDefOf.PositiveEvent,
             pawn
         );
@@ -351,17 +353,17 @@ public class Surgebinder : Invested {
             pawn.health.AddHediff(existing);
         }
 
-        existing.Severity = currentIdealInt / 5f;
+        existing.Severity = CurrentIdealInt / 5f;
     }
 
     private float GetDrainRate() {
-        if (currentIdeal >= 4) return 0f;
+        if (CurrentIdeal >= 4) return 0f;
 
         float totalDrainTimeInSeconds = (10 * 60).TicksToSeconds();
 
         float baseRate = 1f / totalDrainTimeInSeconds;
 
-        float idealMultiplier = 1f - currentIdeal / 4f;
+        float idealMultiplier = 1f - CurrentIdeal / 4f;
 
         return baseRate * idealMultiplier;
     }
@@ -381,12 +383,12 @@ public class Surgebinder : Invested {
         TrySkillUp(delta);
         TrackZoneCompliance(delta);
         TrackGraveProximity(delta);
-        CheckOathViolations(delta);
-        ManageBondHediff(delta);
-        CheckSurgebindingSavantProgression(delta);
+        EnforceOathViolations(delta);
+        SyncStrainedBondHediff(delta);
+        UpdateSurgebindingSavantProgression(delta);
     }
 
-    private void ManageBondHediff(int delta) {
+    private void SyncStrainedBondHediff(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
 
         ILoadReferenceable? bondTarget = GetBondTarget();
@@ -401,7 +403,8 @@ public class Surgebinder : Invested {
             Verse.Hediff hediff = HediffMaker.MakeHediff(HediffDefOf.Cosmere_Roshar_Hediff_StrainedBond, pawn);
             hediff.Severity = 1f - connection;
             pawn.health?.AddHediff(hediff);
-        } else if (connection >= 1.0f && existing != null) {
+        }
+        else if (connection >= 1.0f && existing != null) {
             pawn.health?.RemoveHediff(existing);
         }
     }
@@ -435,20 +438,19 @@ public class Surgebinder : Invested {
     ///     spren. 5 xp every 2000 ticks is pretty slow, but will eventually get pawns
     ///     leveled up, and on their way to higher ideals
     /// </summary>
-    /// <param name="delta"></param>
     private void TrySkillUp(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
-        if (currentIdeal >= 2) return;
+        if (CurrentIdeal >= 2) return;
 
         skill.Learn(5, true, true);
     }
 
     private void TryLevelUp(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
-        if (currentIdeal >= 4) return;
+        if (CurrentIdeal >= 4) return;
         if (pendingOath) return;
 
-        int nextIdeal = currentIdeal + 1;
+        int nextIdeal = CurrentIdeal + 1;
         if (skill.Level < SkillRequirements[nextIdeal]) return;
         if (!IsCooldownElapsed(nextIdeal)) return;
         if (!radiantOrderDef.idealChecker.IsSatisfied(pawn, this, nextIdeal)) return;
@@ -458,15 +460,15 @@ public class Surgebinder : Invested {
     }
 
     public void SpeakOath() {
-        if (currentIdeal >= 4) return;
+        if (CurrentIdeal >= 4) return;
 
-        int nextIdeal = currentIdeal + 1;
+        int nextIdeal = CurrentIdeal + 1;
         if (!radiantOrderDef.idealChecker.IsSatisfied(pawn, this, nextIdeal)) return;
 
         pendingOath = false;
-        currentIdeal = nextIdeal;
+        CurrentIdeal = nextIdeal;
 
-        radiantOrderDef.idealChecker.Satisfy(pawn, this, currentIdeal);
+        radiantOrderDef.idealChecker.ConsummateOath(pawn, this, CurrentIdeal);
     }
 
     private bool IsCooldownElapsed(int nextIdeal) {
@@ -506,7 +508,7 @@ public class Surgebinder : Invested {
     }
 
     private void TrackZoneCompliance(int delta) {
-        if (radiantOrderDef.defName != "Skybreaker") return;
+        if (radiantOrderDef != Skybreaker) return;
 
         if (!zoneViolatedToday &&
             pawn.Map != null &&
@@ -521,7 +523,8 @@ public class Surgebinder : Invested {
 
         if (!zoneViolatedToday) {
             pawn.records.AddTo(RecordDefOf.Cosmere_Roshar_Record_ZoneComplianceDays, 1);
-        } else {
+        }
+        else {
             ViolationUtility.ApplyViolation(pawn, 0.1f, "leaving assigned zone");
         }
 
@@ -531,7 +534,7 @@ public class Surgebinder : Invested {
 
     private void TrackGraveProximity(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
-        if (radiantOrderDef.defName != "Edgedancer") return;
+        if (radiantOrderDef != Edgedancer) return;
         if (pawn.Map == null) return;
 
         List<Building> buildings = pawn.Map.listerBuildings.allBuildingsColonist;
@@ -544,41 +547,27 @@ public class Surgebinder : Invested {
         }
     }
 
-    private void CheckOathViolations(int delta) {
+    private void EnforceOathViolations(int delta) {
         if (!pawn.IsHashIntervalTick(GenDate.TicksPerDay, delta)) return;
 
-        string orderName = radiantOrderDef.defName;
         int currentTick = Find.TickManager.TicksGame;
 
-        if (orderName == "Stoneward") {
-            CheckStonewardCaravanDuringSiege();
+        if (radiantOrderDef == Stoneward) {
+            EnforceStonewardCaravanDuringSiege();
+            if (pawn.Map != null) EnforceStonewardDraftedDuringRaid();
+            return;
         }
 
         if (pawn.Map == null) return;
 
-        switch (orderName) {
-            case "Windrunner":
-                CheckWindrunnerIdleWhileDownedAllies();
-                break;
-            case "Edgedancer":
-                CheckEdgedancerPrisonerNeglect();
-                break;
-            case "Truthwatcher":
-                CheckTruthwatcherMedicalDisabled();
-                break;
-            case "Lightweaver":
-                CheckLightweaverStagnation(currentTick);
-                break;
-            case "Elsecaller":
-                CheckElsecallerStagnation(currentTick);
-                break;
-            case "Stoneward":
-                CheckStonewardUndraftedDuringRaid();
-                break;
-        }
+        if (radiantOrderDef == Windrunner) EnforceWindrunnerIdleWhileDownedAllies();
+        else if (radiantOrderDef == Edgedancer) EnforceEdgedancerPrisonerNeglect();
+        else if (radiantOrderDef == Truthwatcher) EnforceTruthwatcherMedical();
+        else if (radiantOrderDef == Lightweaver) EnforceLightweaverStagnation(currentTick);
+        else if (radiantOrderDef == Elsecaller) EnforceElsecallerStagnation(currentTick);
     }
 
-    private void CheckWindrunnerIdleWhileDownedAllies() {
+    private void EnforceWindrunnerIdleWhileDownedAllies() {
         if (pawn.Drafted) return;
         if (pawn.CurJobDef == RimWorld.JobDefOf.Rescue || pawn.CurJobDef == RimWorld.JobDefOf.TendPatient) return;
 
@@ -602,7 +591,7 @@ public class Surgebinder : Invested {
         ViolationUtility.ApplyViolation(pawn, 0.1f, "idling while allies are downed");
     }
 
-    private void CheckEdgedancerPrisonerNeglect() {
+    private void EnforceEdgedancerPrisonerNeglect() {
         List<Pawn> prisoners = pawn.Map.mapPawns.PrisonersOfColonySpawned;
         for (int i = 0; i < prisoners.Count; i++) {
             Pawn prisoner = prisoners[i];
@@ -618,7 +607,7 @@ public class Surgebinder : Invested {
         }
     }
 
-    private void CheckTruthwatcherMedicalDisabled() {
+    private void EnforceTruthwatcherMedical() {
         if (pawn.workSettings == null) return;
 
         bool doctorDisabled = pawn.workSettings.GetPriority(WorkTypeDefOf.Doctor) == 0;
@@ -627,35 +616,25 @@ public class Surgebinder : Invested {
         }
     }
 
-    private void CheckLightweaverStagnation(int currentTick) {
-        int stagnationThresholdTicks = 30 * GenDate.TicksPerDay;
+    private void EnforceLightweaverStagnation(int currentTick) =>
+        EnforceStagnation(ref lastCreativeOutputTick, currentTick, 0.3f, "creative stagnation");
 
-        if (lastCreativeOutputTick < 0) {
-            lastCreativeOutputTick = currentTick;
+    private void EnforceElsecallerStagnation(int currentTick) =>
+        EnforceStagnation(ref lastSkillGainTick, currentTick, 0.1f, "intellectual stagnation");
+
+    private void EnforceStagnation(ref int lastTick, int currentTick, float violationWeight, string reason) {
+        int stagnationThresholdTicks = 30 * GenDate.TicksPerDay;
+        if (lastTick < 0) {
+            lastTick = currentTick;
             return;
         }
-
-        if (currentTick - lastCreativeOutputTick >= stagnationThresholdTicks) {
-            ViolationUtility.ApplyViolation(pawn, 0.3f, "creative stagnation");
-            lastCreativeOutputTick = currentTick;
+        if (currentTick - lastTick >= stagnationThresholdTicks) {
+            ViolationUtility.ApplyViolation(pawn, violationWeight, reason);
+            lastTick = currentTick;
         }
     }
 
-    private void CheckElsecallerStagnation(int currentTick) {
-        int stagnationThresholdTicks = 30 * GenDate.TicksPerDay;
-
-        if (lastSkillGainTick < 0) {
-            lastSkillGainTick = currentTick;
-            return;
-        }
-
-        if (currentTick - lastSkillGainTick >= stagnationThresholdTicks) {
-            ViolationUtility.ApplyViolation(pawn, 0.1f, "intellectual stagnation");
-            lastSkillGainTick = currentTick;
-        }
-    }
-
-    private void CheckStonewardUndraftedDuringRaid() {
+    private void EnforceStonewardDraftedDuringRaid() {
         if (pawn.Drafted) return;
 
         if (!IsRaidActiveOnMap(pawn.Map)) return;
@@ -663,7 +642,7 @@ public class Surgebinder : Invested {
         ViolationUtility.ApplyViolation(pawn, 0.1f, "refusing to fight during a raid");
     }
 
-    private void CheckStonewardCaravanDuringSiege() {
+    private void EnforceStonewardCaravanDuringSiege() {
         if (pawn.GetCaravan() == null) return;
 
         List<Map> maps = Find.Maps;
@@ -714,7 +693,7 @@ public class Surgebinder : Invested {
 
         pawn.Notify_DisabledWorkTypesChanged();
 
-        WorkTypeDef? soulcastWork = DefDatabase<WorkTypeDef>.GetNamedSilentFail("Cosmere_Roshar_WorkType_Soulcasting");
+        WorkTypeDef? soulcastWork = RosharWorkTypeDefOf.Cosmere_Roshar_WorkType_Soulcasting;
         if (soulcastWork == null) return;
         if (pawn.WorkTypeIsDisabled(soulcastWork)) return;
         if (pawn.workSettings.GetPriority(soulcastWork) > 0) return;
@@ -723,23 +702,23 @@ public class Surgebinder : Invested {
 
     public override void PostRemove() {
         skill.Level = 0;
-        foreach (AbilityDef unlockedAbilityDef in radiantOrderDef.GetAbilities(currentIdealInt)) {
+        foreach (AbilityDef unlockedAbilityDef in radiantOrderDef.GetAbilities(CurrentIdealInt)) {
             pawn.abilities.RemoveAbility(unlockedAbilityDef);
         }
 
-        pawn.story.TryRemoveTrait(radiantOrder.trait);
+        pawn.story.RemoveTrait(radiantOrder.trait);
     }
 
     internal void DebugTriggerOath() {
-        if (currentIdeal >= 4) return;
+        if (CurrentIdeal >= 4) return;
         pendingOath = true;
-        SendOathNotification(currentIdeal + 1);
+        SendOathNotification(CurrentIdeal + 1);
     }
 
     internal void DebugSpeakOathNow() {
-        if (currentIdeal >= 4) return;
+        if (CurrentIdeal >= 4) return;
 
-        int nextIdeal = currentIdeal + 1;
+        int nextIdeal = CurrentIdeal + 1;
         if (radiantOrderDef.idealChecker.HasIncompatibleTrait(pawn, nextIdeal)) {
             string traitName = radiantOrderDef.idealChecker.GetIncompatibleTraitName(pawn) ?? "unknown";
             Messages.Message(
@@ -751,8 +730,8 @@ public class Surgebinder : Invested {
         }
 
         pendingOath = false;
-        currentIdeal = nextIdeal;
-        radiantOrderDef.idealChecker.Satisfy(pawn, this, currentIdeal);
+        CurrentIdeal = nextIdeal;
+        radiantOrderDef.idealChecker.ConsummateOath(pawn, this, CurrentIdeal);
     }
 
     internal void DebugResetCooldown() {
@@ -760,57 +739,51 @@ public class Surgebinder : Invested {
     }
 
     internal void UpdateAbilities() {
-        foreach (AbilityDef unlockedAbilityDef in radiantOrderDef.GetAbilities(currentIdealInt)) {
+        foreach (AbilityDef unlockedAbilityDef in radiantOrderDef.GetAbilities(CurrentIdealInt)) {
             pawn.abilities.GainAbility(unlockedAbilityDef);
         }
 
         if (radiantOrderDef == RadiantOrderDefOf.Bondsmith &&
             !string.IsNullOrEmpty(godsprenName) &&
-            currentIdealInt >= 2) {
+            CurrentIdealInt >= 2) {
             AddBondsmithSprenAbility();
         }
     }
 
     private void AddBondsmithSprenAbility() {
         AbilityDef? abilityDef = godsprenName switch {
-            "Stormfather" =>
-                DefDatabase<AbilityDef>.GetNamedSilentFail("Cosmere_Roshar_Ability_HonorsPerpendicularity"),
-            "Nightwatcher" => DefDatabase<AbilityDef>.GetNamedSilentFail(
-                "Cosmere_Roshar_Ability_CultivationsPerpendicularity"
-            ),
-            "Sibling" => DefDatabase<AbilityDef>.GetNamedSilentFail("Cosmere_Roshar_Ability_SiblingBlessing"),
+            "Stormfather" => AbilityDefOf.Cosmere_Roshar_Ability_HonorsPerpendicularity,
+            "Nightwatcher" => AbilityDefOf.Cosmere_Roshar_Ability_CultivationsPerpendicularity,
+            "Sibling" => AbilityDefOf.Cosmere_Roshar_Ability_SiblingBlessing,
             _ => null,
         };
         if (abilityDef != null) pawn.abilities.GainAbility(abilityDef);
 
-        if (godsprenName == "Sibling") {
-            AbilityDef? reinforceDef =
-                DefDatabase<AbilityDef>.GetNamedSilentFail("Cosmere_Roshar_Ability_ReinforceStructure");
-            if (reinforceDef != null) pawn.abilities.GainAbility(reinforceDef);
+        if (godsprenName == "Sibling" && AbilityDefOf.Cosmere_Roshar_Ability_ReinforceStructure != null) {
+            pawn.abilities.GainAbility(AbilityDefOf.Cosmere_Roshar_Ability_ReinforceStructure);
         }
     }
 
-    private void CheckSurgebindingSavantProgression(int delta) {
+    private void UpdateSurgebindingSavantProgression(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
 
         List<SurgeDef> surges = radiantOrderDef.surges;
         for (int i = 0; i < surges.Count; i++) {
             SurgeDef surge = surges[i];
-            CheckSurgeSavant(surge);
+            UpdateSurgeSavant(surge);
         }
     }
 
-    private void CheckSurgeSavant(SurgeDef surge) {
+    private void UpdateSurgeSavant(SurgeDef surge) {
         string surgeName = surge.defName;
         cachedSavantStages.TryGetValue(surgeName, out int previousStage);
         savantDecayOffsets.TryGetValue(surgeName, out float decayOffset);
 
-        RecordDef? recordDef =
-            DefDatabase<RecordDef>.GetNamedSilentFail("Cosmere_Roshar_Record_TimeSpentUsing_" + surgeName);
+        RecordDef? recordDef = surge.timeSpentRecord;
         if (recordDef == null) return;
 
         float ticks = pawn.records.GetValue(recordDef) - decayOffset;
-        int newStage = SavantUtility.GetSurgebindingStage(ticks);
+        int newStage = SurgebindingSavantUtility.GetStage(ticks);
 
         if (newStage == 1) {
             bool surgeActive = false;
@@ -833,33 +806,15 @@ public class Surgebinder : Invested {
                                     GenTicks.TickLongInterval;
                 savantDecayOffsets[surgeName] = decayOffset + decayAmount;
                 ticks -= decayAmount;
-                newStage = SavantUtility.GetSurgebindingStage(ticks);
+                newStage = SurgebindingSavantUtility.GetStage(ticks);
             }
         }
 
         cachedSavantStages[surgeName] = newStage;
 
-        HediffDef? savantHediffDef = SavantUtility.GetSurgeSavantHediffDef(surgeName);
-        if (newStage > 0 && savantHediffDef != null) {
-            Verse.Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(savantHediffDef);
-            if (existing == null) {
-                Verse.Hediff hediff = HediffMaker.MakeHediff(savantHediffDef, pawn);
-                hediff.Severity = SavantUtility.SeverityForStage(newStage);
-                pawn.health.AddHediff(hediff);
-            } else {
-                existing.Severity = SavantUtility.SeverityForStage(newStage);
-            }
-        } else if (newStage == 0 && savantHediffDef != null) {
-            Verse.Hediff? existing = pawn.health.hediffSet.GetFirstHediffOfDef(savantHediffDef);
-            if (existing != null) pawn.health.RemoveHediff(existing);
-        }
-
-        HediffDef? permanentHediffDef = SavantUtility.GetSurgePermanentHediffDef(surgeName);
-        if (newStage >= 3 && previousStage < 3 && permanentHediffDef != null) {
-            if (!pawn.health.hediffSet.HasHediff(permanentHediffDef)) {
-                pawn.health.AddHediff(HediffMaker.MakeHediff(permanentHediffDef, pawn));
-            }
-        }
+        HediffDef? savantHediffDef = SurgebindingSavantUtility.GetSavantHediffDef(surgeName);
+        HediffDef? permanentHediffDef = SurgebindingSavantUtility.GetPermanentHediffDef(surgeName);
+        SavantUtility.UpdateSavantHediffState(pawn, previousStage, newStage, savantHediffDef, permanentHediffDef);
 
         if (newStage > previousStage && newStage > 0) {
             SavantUtility.SendSavantLetter(pawn, newStage, "Surgebinding", surge.LabelCap);
@@ -868,7 +823,7 @@ public class Surgebinder : Invested {
 
     public override void ExposeData() {
         base.ExposeData();
-        Scribe_Values.Look(ref currentIdealInt, "currentIdeal");
+        Scribe_Values.Look(ref CurrentIdealInt, "CurrentIdeal");
         Scribe_Values.Look(ref lastIdealChangeTick, "lastIdealChangeTick", -1);
         Scribe_Values.Look(ref pendingOath, "pendingOath");
         Scribe_References.Look(ref bondedSpren, "bondedSpren");
@@ -919,8 +874,8 @@ public class Surgebinder : Invested {
         List<Ability> abilities = pawn.abilities.abilities;
         for (int i = 0; i < abilities.Count; i++) {
             Ability ability = abilities[i];
-            if (ability.def.defName is not ("Cosmere_Roshar_Ability_ToggleShardblade"
-                or "Cosmere_Roshar_Ability_ToggleShardplate")) {
+            if (ability.def != AbilityDefOf.Cosmere_Roshar_Ability_ToggleShardblade
+                && ability.def != AbilityDefOf.Cosmere_Roshar_Ability_ToggleShardplate) {
                 continue;
             }
 

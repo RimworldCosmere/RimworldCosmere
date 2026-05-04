@@ -28,12 +28,17 @@ internal static class LightweaveCursors {
                 continue;
             }
 
-            byte[] bytes = File.ReadAllBytes(candidate);
-            Texture2D tex = new Texture2D(32, 32, TextureFormat.RGBA32, false, false);
-            tex.LoadImage(bytes, false);
-            tex.filterMode = FilterMode.Bilinear;
-            tex.Apply(false, false);
-            return tex;
+            try {
+                byte[] bytes = File.ReadAllBytes(candidate);
+                Texture2D tex = new Texture2D(32, 32, TextureFormat.RGBA32, false, false);
+                tex.LoadImage(bytes, false);
+                tex.filterMode = FilterMode.Bilinear;
+                tex.Apply(false, false);
+                return tex;
+            }
+            catch (IOException ex) {
+                LightweaveLog.Warning($"Failed to load cursor texture '{candidate}': {ex}");
+            }
         }
 
         return null;

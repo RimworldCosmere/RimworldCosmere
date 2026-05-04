@@ -53,13 +53,13 @@ public sealed class PlaygroundSampleWindow : LightweaveWindow {
             ? null
             : new BackgroundSpec.Solid(ThemeSlot.SurfacePrimary);
 
-        return Layout.Layout.Box.Create(
+        return Layout.Box.Create(
             EdgeInsets.All(SpacingScale.Md),
             bg,
             null,
             null,
             c => c.Add(
-                Layout.Layout.Stack.Create(
+                Layout.Stack.Create(
                     SpacingScale.Sm,
                     stack => {
                         stack.Add(
@@ -77,12 +77,12 @@ public sealed class PlaygroundSampleWindow : LightweaveWindow {
                                 wrap: true
                             )
                         );
-                        stack.AddFlex(Layout.Layout.Spacer.Flex());
+                        stack.AddFlex(Layout.Spacer.Flex());
                         stack.Add(
-                            Layout.Layout.HStack.Create(
+                            Layout.HStack.Create(
                                 SpacingScale.Sm,
                                 r => {
-                                    r.AddFlex(Layout.Layout.Spacer.Flex());
+                                    r.AddFlex(Layout.Spacer.Flex());
                                     r.Add(
                                         Button.Create(
                                             (string)"CC_Playground_Window_Close".Translate(),

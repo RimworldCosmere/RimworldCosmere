@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Core.Nightwatcher;
 using RimWorld;
 using Verse;
 
@@ -18,10 +19,13 @@ public class NightwatcherCurseDef : Verse.Def {
     public int penaltySkillLevels = 0;
     public TraitDef? stripTrait;
 
-    public ICurseApplicator? Applicator =>
-        applicatorClass != null
-            ? (ICurseApplicator)Activator.CreateInstance(applicatorClass)
-            : null;
+    private ICurseApplicator? applicatorCache;
+    public ICurseApplicator? Applicator {
+        get {
+            if (applicatorClass == null) return null;
+            return applicatorCache ??= (ICurseApplicator)Activator.CreateInstance(applicatorClass);
+        }
+    }
 
     public override IEnumerable<string> ConfigErrors() {
         foreach (string err in base.ConfigErrors()) yield return err;
@@ -33,8 +37,4 @@ public class NightwatcherCurseDef : Verse.Def {
             yield return $"curseWeights must have exactly 3 entries (one per power tier), has {curseWeights.Count}";
         }
     }
-}
-
-public interface ICurseApplicator {
-    void Apply(Pawn pawn, NightwatcherCurseDef def);
 }

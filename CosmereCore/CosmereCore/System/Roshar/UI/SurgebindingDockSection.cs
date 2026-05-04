@@ -14,7 +14,7 @@ public sealed class SurgebindingDockSection : IDockSection {
     private const float PipSize = 10f;
     private const float InfoButtonSize = 20f;
     public string SystemId => "Surgebinding";
-    public ISystemSkin Skin => SystemSkinRegistry.For(SystemId);
+    public ISystemSkin Skin => SystemSkinRegistry.ForOrFallback(SystemId);
 
     public float GetHeaderHeight() {
         return HeaderHeight;
@@ -36,7 +36,7 @@ public sealed class SurgebindingDockSection : IDockSection {
 
         Rect infoRect = new Rect(rect.xMax - InfoButtonSize - 4f, rect.y + 4f, InfoButtonSize, InfoButtonSize);
         if (Widgets.ButtonText(infoRect, "i")) {
-            Find.WindowStack.Add(new RadiantOrderInfoDialog(pawn, gene, RadiantOrderInfoMode.View));
+            Find.WindowStack.Add(new Dialog_RadiantOrderInfoDialog(pawn, gene, RadiantOrderInfoMode.View));
         }
 
         Rect barRect = new Rect(rect.x + 6f, rect.y + 8f, rect.width - InfoButtonSize - 20f, 14f);
@@ -74,7 +74,7 @@ public sealed class SurgebindingDockSection : IDockSection {
 
     private void DrawIdealPips(Rect row, Surgebinder gene) {
         int total = gene.radiantOrderDef.ideals.Count;
-        int current = Mathf.Clamp(gene.currentIdealDisplay, 0, total);
+        int current = Mathf.Clamp(gene.CurrentIdealDisplay, 0, total);
         float x = row.x;
         for (int i = 0; i < total; i++) {
             Rect pip = new Rect(x, row.y + (row.height - PipSize) / 2f, PipSize, PipSize);

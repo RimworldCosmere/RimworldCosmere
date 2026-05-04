@@ -1,7 +1,9 @@
 using Cosmere.Core;
 using Cosmere.Core.Def;
+using Cosmere.Core.Hediff;
 using Cosmere.Core.Savant;
 using Cosmere.System.Scadrial.Allomancy.Ability;
+using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Allomancy.Hediff;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
@@ -11,8 +13,8 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using AbilityDef = RimWorld.AbilityDef;
-using GeneUtility = Cosmere.System.Scadrial.Utility.GeneUtility;
-using HediffUtility = Cosmere.System.Scadrial.Utility.HediffUtility;
+using GeneUtility = Cosmere.System.Scadrial.Util.GeneUtility;
+using HediffUtility = Cosmere.System.Scadrial.Util.HediffUtility;
 
 namespace Cosmere.System.Scadrial.Extension;
 
@@ -71,7 +73,7 @@ public static class PawnExtension {
 
     public static void TryConsumeVialIfNeeded(this Pawn pawn, MetalDef metal) {
         Allomancer? gene = pawn.genes.GetAllomanticGeneForMetal(metal);
-        if (gene == null || !pawn.HasVial(metal) || !gene.shouldConsumeVialNow) return;
+        if (gene == null || !pawn.HasVial(metal) || !gene.ShouldConsumeVialNow) return;
 
         AllomanticVial? vial = pawn.GetVial(gene);
         if (vial == null || vial.stackCount == 0) return;
@@ -116,11 +118,12 @@ public static class PawnExtension {
     }
 
     public static AllomancyAbility? GetAllomanticAbility(this Pawn pawn, AbilityDef def) {
-        return (AllomancyAbility)pawn.abilities.GetAbility((AllomanticAbilityDef)def);
+        if (def is not AllomanticAbilityDef allomanticDef) return null;
+        return pawn.GetAllomanticAbility(allomanticDef);
     }
 
     public static AllomancyAbility? GetAllomanticAbility(this Pawn pawn, AllomanticAbilityDef def) {
-        return (AllomancyAbility)pawn.abilities.GetAbility(def);
+        return pawn.abilities.GetAbility(def) as AllomancyAbility;
     }
 
     public static List<MetallicArtsMetalDef> GetAllBurningMetals(this Pawn pawn) {
@@ -154,7 +157,7 @@ public static class PawnExtension {
         float result = Mathf.Clamp(scaled, 0.1f, 5f);
 
         if (metal != null) {
-            int savantStage = SavantUtility.GetAllomanticSavantStage(pawn, metal);
+            int savantStage = ScadrialSavantUtility.GetAllomanticSavantStage(pawn, metal);
             result *= SavantUtility.GetAllomanticPowerMultiplier(savantStage);
         }
 
@@ -187,7 +190,6 @@ public static class PawnExtension {
         this Pawn pawn,
         bool canSnap = false,
         bool snapped = true,
-        bool fillReserves = true,
         string? cause = null
     ) {
         GeneUtility.AddMistborn(pawn, canSnap, snapped, cause);

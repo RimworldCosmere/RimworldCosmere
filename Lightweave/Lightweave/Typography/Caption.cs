@@ -3,7 +3,7 @@ using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
-using static Cosmere.Lightweave.Layout.Layout;
+using Cosmere.Lightweave.Layout;
 using static Cosmere.Lightweave.Doc.DocChips;
 using static Cosmere.Lightweave.Typography.Typography;
 

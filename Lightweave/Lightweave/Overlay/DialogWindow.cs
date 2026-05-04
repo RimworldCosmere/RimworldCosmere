@@ -6,16 +6,16 @@ namespace Cosmere.Lightweave.Overlay;
 
 internal sealed class DialogWindow : LightweaveWindow {
     private readonly Func<LightweaveNode> contentBuilder;
-    private readonly Action onClose;
+    private readonly Action onDismiss;
     private readonly Vector2 size;
 
     public DialogWindow(
         Func<LightweaveNode> content,
-        Action onClose,
+        Action onDismiss,
         Vector2 size
     ) {
         contentBuilder = content;
-        this.onClose = onClose;
+        this.onDismiss = onDismiss;
         this.size = size;
 
         doCloseX = true;
@@ -50,7 +50,7 @@ internal sealed class DialogWindow : LightweaveWindow {
     }
 
     public override void PostClose() {
-        onClose?.Invoke();
+        onDismiss?.Invoke();
         base.PostClose();
     }
 }

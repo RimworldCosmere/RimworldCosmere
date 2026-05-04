@@ -2,7 +2,6 @@ using System.CommandLine;
 using System.CommandLine.Parsing;
 using System.IO.Abstractions;
 using Cosmere.Tools.Generation;
-using Spectre.Console;
 
 namespace Cosmere.Tools.Cli.Commands;
 

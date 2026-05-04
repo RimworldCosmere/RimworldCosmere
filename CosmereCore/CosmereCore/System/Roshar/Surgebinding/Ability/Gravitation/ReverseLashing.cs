@@ -9,18 +9,18 @@ public class ReverseLashing : SurgebindingAbility {
     public ReverseLashing(Pawn pawn) : base(pawn) { }
     public ReverseLashing(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float damage => BaseDamage + gene.currentIdeal * 10f;
+    private float damage => BaseDamage + Gene.CurrentIdeal * 10f;
 
-    private int stunTicks => (int)(GenTicks.TicksPerRealSecond * (1.5f + gene.currentIdeal * 0.5f));
+    private int stunTicks => (int)(GenTicks.TicksPerRealSecond * (1.5f + Gene.CurrentIdeal * 0.5f));
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return false;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return false;
 
         Pawn? targetPawn = target.Pawn;
         if (targetPawn == null || targetPawn.Dead) return false;
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
 
         Map map = targetPawn.Map;
         IntVec3 landingCell = targetPawn.Position;

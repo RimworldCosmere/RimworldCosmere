@@ -1,3 +1,4 @@
+using Cosmere.Core.Util;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Hediff;
 using RimWorld;
@@ -9,6 +10,7 @@ public class ImplantMetalmind : Recipe_Surgery {
     public override bool AvailableOnNow(Verse.Thing thing, BodyPartRecord? part = null) {
         if (!base.AvailableOnNow(thing, part)) return false;
         if (thing is not Pawn) return false;
+        if (!ShardUtility.AreAnyEnabled(ShardDefOf.Preservation, ShardDefOf.Ruin, ShardDefOf.Harmony)) return false;
         if (!ResearchProjectDef.Named("Cosmere_Scadrial_Feruchemy").IsFinished) return false;
         return true;
     }
@@ -43,10 +45,10 @@ public class ImplantMetalmind : Recipe_Surgery {
         }
 
         ImplantedMetalmindData data = new ImplantedMetalmindData {
-            metalDefName = metalmindComp.metal?.defName ?? "Unknown",
+            metalDefName = metalmindComp.Metal?.defName ?? "Unknown",
             metalmindType = metalmindComp.parent.def.defName,
-            storedAmount = metalmindComp.storedAmount,
-            maxAmount = metalmindComp.maxAmount,
+            StoredAmount = metalmindComp.StoredAmount,
+            MaxAmount = metalmindComp.MaxAmount,
             ownerName = metalmindComp.owner?.Name?.ToStringFull ?? "",
         };
 
@@ -55,7 +57,7 @@ public class ImplantMetalmind : Recipe_Surgery {
         Messages.Message(
             "CS_Feruchemy_ImplantSuccess".Translate(
                 billDoer.Named("SURGEON"),
-                metalmindComp.metal?.Named("METAL") ?? "unknown".Named("METAL"),
+                metalmindComp.Metal?.Named("METAL") ?? "unknown".Named("METAL"),
                 pawn.Named("RECIPIENT")
             ),
             pawn,

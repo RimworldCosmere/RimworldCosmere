@@ -1,6 +1,6 @@
 using Cosmere.Core.Ability;
 using Cosmere.Core.Util;
-using Cosmere.System.Roshar.Surgebinding.Utility;
+using Cosmere.System.Roshar.Surgebinding.Util;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -12,7 +12,8 @@ namespace Cosmere.System.Roshar.Surgebinding.Ability.Adhesion;
 public class WindsprenShield : SurgebindingAbility {
     private const int BaseRadius = 3;
     public static readonly HashSet<Pawn> ShieldedPawns = [];
-    private static readonly ThingDef? AuraMoteDef = ThingDefOf.Cosmere_Roshar_Thing_WindsprenShieldAura;
+    private static ThingDef? _auraMoteDef;
+    private static ThingDef? AuraMoteDef => _auraMoteDef ??= ThingDefOf.Cosmere_Roshar_Thing_WindsprenShieldAura;
 
     private readonly List<Pawn> pawnsInArea = [];
     private Mote? auraMote;
@@ -20,12 +21,12 @@ public class WindsprenShield : SurgebindingAbility {
     public WindsprenShield(Pawn pawn) : base(pawn) { }
     public WindsprenShield(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
-    private float radius => BaseRadius + gene.currentIdeal;
+    private float radius => BaseRadius + Gene.CurrentIdeal;
 
     private HediffDef hediffToApply => def.hediff!;
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     protected override void OnEnable() {
@@ -65,12 +66,12 @@ public class WindsprenShield : SurgebindingAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!status.isActive) return;
+        if (!status.IsActive) return;
 
         auraMote?.Maintain();
-        if (auraMote != null && AuraMoteDef != null) {
+        if (auraMote != null) {
             float moteScale = MoteUtility.GetMoteSize(
-                AuraMoteDef,
+                AuraMoteDef!,
                 BaseRadius,
                 GetStrength()
             );

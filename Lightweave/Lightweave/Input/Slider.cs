@@ -91,7 +91,8 @@ public static class Slider {
                 );
                 PaintBox.Draw(rightUnfilled, new BackgroundSpec.Solid(unfilledSlot), null, trackRadius);
                 PaintBox.Draw(leftFilled, new BackgroundSpec.Solid(filledSlot), null, trackRadius);
-            } else {
+            }
+            else {
                 Rect leftFilled = new Rect(
                     trackRect.x,
                     trackRect.y,
@@ -168,7 +169,7 @@ public static class Slider {
             string labelText = format != null ? format(clampedValue) : $"{clampedValue:0.00}";
             Font labelFont = theme.GetFont(FontRole.Caption);
             int labelPixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
-            GUIStyle labelStyle = GuiStyleCache.Get(labelFont, labelPixelSize);
+            GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelPixelSize);
             labelStyle.alignment = rtl ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight;
             Color labelColor = disabled
                 ? theme.GetColor(ThemeSlot.TextMuted)
@@ -189,10 +190,12 @@ public static class Slider {
                 dragging.Current = true;
                 UpdateValue(e.mousePosition.x, trackRect, min, max, step, rtl, value, onChange);
                 e.Use();
-            } else if (e.type == EventType.MouseDrag && dragging.Current) {
+            }
+            else if (e.type == EventType.MouseDrag && dragging.Current) {
                 UpdateValue(e.mousePosition.x, trackRect, min, max, step, rtl, value, onChange);
                 e.Use();
-            } else if ((e.type == EventType.MouseUp || e.rawType == EventType.MouseUp) && dragging.Current) {
+            }
+            else if ((e.type == EventType.MouseUp || e.rawType == EventType.MouseUp) && dragging.Current) {
                 dragging.Current = false;
                 if (e.type == EventType.MouseUp) {
                     e.Use();

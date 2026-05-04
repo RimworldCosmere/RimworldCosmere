@@ -126,17 +126,17 @@ public class InvestitureHolder : ThingComp {
 
             switch (parent) {
                 case ISlotGroupParent storageGroupParent: {
-                    SlotGroup? slotGroup = storageGroupParent.GetSlotGroup();
-                    if (slotGroup != null) {
-                        foreach (Verse.Thing thing in slotGroup.HeldThings) {
-                            if (thing != parent && thing.HasComp<InvestitureHolder>()) {
-                                things.Add(thing);
+                        SlotGroup? slotGroup = storageGroupParent.GetSlotGroup();
+                        if (slotGroup != null) {
+                            foreach (Verse.Thing thing in slotGroup.HeldThings) {
+                                if (thing != parent && thing.HasComp<InvestitureHolder>()) {
+                                    things.Add(thing);
+                                }
                             }
                         }
-                    }
 
-                    break;
-                }
+                        break;
+                    }
                 case Pawn pawn:
                     if (pawn.inventory?.innerContainer != null) {
                         ThingOwner invContainer = pawn.inventory.innerContainer;
@@ -256,8 +256,8 @@ public class InvestitureHolder : ThingComp {
         }
 
         Invested? investedGene = pawn.genes.GetFirstGeneOfType<Invested>();
-        if (investedGene != null && !string.IsNullOrEmpty(investedGene.investitureLabel)) {
-            return investedGene.investitureLabel;
+        if (investedGene != null && !string.IsNullOrEmpty(investedGene.InvestitureLabel)) {
+            return investedGene.InvestitureLabel;
         }
 
         return "CC_Stored_Investiture".Translate();
@@ -314,14 +314,14 @@ public class InvestitureHolder : ThingComp {
 
     public void FillInvestiture() {
         currentInvestitureSelf = maxInvestitureSelf;
-        foreach (Verse.Thing child in children ?? []) {
+        foreach (Verse.Thing child in children) {
             child.TryGetComp<InvestitureHolder>()?.FillInvestiture();
         }
     }
 
     public void WipeInvestiture() {
         currentInvestitureSelf = 0;
-        foreach (Verse.Thing child in children ?? []) {
+        foreach (Verse.Thing child in children) {
             child.TryGetComp<InvestitureHolder>()?.WipeInvestiture();
         }
     }

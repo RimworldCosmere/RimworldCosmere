@@ -46,7 +46,7 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
         if (expeditionActive) return false;
         if (pawns.Count < MinExpeditionPawns || pawns.Count > MaxExpeditionPawns) return false;
 
-        expeditionPawns = [..pawns];
+        expeditionPawns = [.. pawns];
         expeditionActive = true;
         lastHuntTick = Find.TickManager.TicksGame;
         expeditionReturnTick = Find.TickManager.TicksGame + Rand.Range(1, 3) * GenDate.TicksPerDay;
@@ -85,13 +85,17 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
 
         if (ratio >= 1.5f) {
             ResolveVictory(survivors);
-        } else if (ratio >= 1.0f) {
+        }
+        else if (ratio >= 1.0f) {
             ResolveHardWon(survivors);
-        } else if (ratio >= 0.6f) {
+        }
+        else if (ratio >= 0.6f) {
             ResolvePyrrhic(survivors);
-        } else if (ratio >= 0.3f) {
+        }
+        else if (ratio >= 0.3f) {
             ResolveFailure(survivors);
-        } else {
+        }
+        else {
             ResolveDisaster(survivors);
         }
 
@@ -109,7 +113,7 @@ public class GemheartExpeditionManager(Verse.Map map) : MapComponent(map) {
             if (pawn.genes != null) {
                 Surgebinder? surgebinder = pawn.genes.GetFirstGeneOfType<Surgebinder>();
                 if (surgebinder is { Active: true }) {
-                    power += surgebinder.currentIdealDisplay * 25f;
+                    power += surgebinder.CurrentIdealDisplay * 25f;
                 }
             }
 

@@ -6,7 +6,7 @@ using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
-using static Cosmere.Lightweave.Layout.Layout;
+using Cosmere.Lightweave.Layout;
 using static Cosmere.Lightweave.Doc.DocChips;
 using static Cosmere.Lightweave.Typography.Typography;
 
@@ -31,7 +31,7 @@ public static partial class Typography {
             GUIStyle ResolveStyle() {
                 Theme.Theme theme = RenderContext.Current.Theme;
                 Font f = theme.GetFont(FontRole.Body);
-                GUIStyle style = GuiStyleCache.Get(f, 16);
+                GUIStyle style = GuiStyleCache.GetOrCreate(f, 16);
                 style.richText = true;
                 style.wordWrap = true;
                 return style;

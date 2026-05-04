@@ -114,7 +114,8 @@ public static class KeyBindingField {
                 if (e.keyCode == KeyCode.Escape && !e.control && !e.shift && !e.alt) {
                     recording.Set(false);
                     e.Use();
-                } else if (!IsModifierOnly(e.keyCode)) {
+                }
+                else if (!IsModifierOnly(e.keyCode)) {
                     KeyModifiers mods = KeyModifiers.None;
                     if (e.control || e.command) {
                         mods |= KeyModifiers.Control;
@@ -144,7 +145,7 @@ public static class KeyBindingField {
         Font font = theme.GetFont(FontRole.Body);
         int pixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
         FontStyle fontStyle = recording ? FontStyle.Italic : FontStyle.Normal;
-        GUIStyle style = GuiStyleCache.Get(font, pixelSize, fontStyle);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, fontStyle);
         style.alignment = TextAnchor.MiddleCenter;
 
         string text;
@@ -152,10 +153,12 @@ public static class KeyBindingField {
         if (recording) {
             text = "CC_Lightweave_KeyBindingField_Recording".Translate();
             colorSlot = ThemeSlot.TextMuted;
-        } else if (value.Key == KeyCode.None) {
+        }
+        else if (value.Key == KeyCode.None) {
             text = (string)"CC_Lightweave_KeyBindingField_Unbound".Translate();
             colorSlot = ThemeSlot.TextMuted;
-        } else {
+        }
+        else {
             text = FormatBinding(value);
             colorSlot = disabled ? ThemeSlot.TextMuted : ThemeSlot.TextPrimary;
         }
@@ -177,7 +180,7 @@ public static class KeyBindingField {
 
         Font font = theme.GetFont(FontRole.Body);
         int pixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-        GUIStyle style = GuiStyleCache.Get(font, pixelSize);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize);
         style.alignment = TextAnchor.MiddleCenter;
 
         Color savedColor = GUI.color;

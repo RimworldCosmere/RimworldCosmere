@@ -2,7 +2,7 @@ using Cosmere.Core.Comp.Thing;
 using Cosmere.System.Roshar.Comp.Map;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Gene;
-using Cosmere.System.Roshar.Utility;
+using Cosmere.System.Roshar.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -113,10 +113,10 @@ public class Highstorm : RimWorld.GameCondition {
             return;
         }
 
-        ProcessItemsInHighstorm();
+        ScatterAndDamageExposedItems();
     }
 
-    private void ProcessItemsInHighstorm() {
+    private void ScatterAndDamageExposedItems() {
         List<Verse.Thing> allThings = SingleMap.listerThings.AllThings;
         exposedThings.Clear();
 
@@ -209,7 +209,8 @@ public class Highstorm : RimWorld.GameCondition {
                     return false;
                 }
             }
-        } else {
+        }
+        else {
             Pawn pushed = (Pawn)thing;
             pushed.Position = newPos;
             pushed.Notify_Teleported(false);
@@ -271,9 +272,9 @@ public class Highstorm : RimWorld.GameCondition {
             StuffCategoryDef cat = categories[i];
             if (cat == StuffCategoryDefOf.Woody) return 1f;
             if (cat == StuffCategoryDefOf.Stony) return 0.04f;
-            if (cat.defName == "Cosmere_Core_StuffCategory_Gems") return 0.20f;
-            if (cat.defName == "Cosmere_Core_StuffCategory_RawGems") return 0.20f;
-            if (cat.defName == "Cosmere_Core_StuffCategory_CutGems") return 0.20f;
+            if (cat == Cosmere.Core.StuffCategoryDefOf.Cosmere_Core_StuffCategory_Gems) return 0.20f;
+            if (cat == Cosmere.Core.StuffCategoryDefOf.Cosmere_Core_StuffCategory_RawGems) return 0.20f;
+            if (cat == Cosmere.Core.StuffCategoryDefOf.Cosmere_Core_StuffCategory_CutGems) return 0.20f;
         }
 
         return 0.3f;
@@ -291,35 +292,35 @@ public class Highstorm : RimWorld.GameCondition {
         );
         switch (thing) {
             case Building building: {
-                if (map == null) break;
-                if (IsHighstormImmuneBuilding(building)) break;
-                if (StormShelterManager.IsProtectedByShelter(building.Position, map)) break;
-                if (building.Position.Roofed(map)) break;
+                    if (map == null) break;
+                    if (IsHighstormImmuneBuilding(building)) break;
+                    if (StormShelterManager.IsProtectedByShelter(building.Position, map)) break;
+                    if (building.Position.Roofed(map)) break;
 
-                float materialMultiplier = GetBuildingDamageMultiplier(building);
-                if (materialMultiplier <= 0f) break;
+                    float materialMultiplier = GetBuildingDamageMultiplier(building);
+                    if (materialMultiplier <= 0f) break;
 
-                float totalMultiplier = materialMultiplier * GetShieldingMultiplier();
-                damage.SetAmount(damage.Amount * totalMultiplier);
-                building.TakeDamage(damage);
-                if (building.Destroyed) {
-                    StormShelterManager.RebuildShelterCache(map);
+                    float totalMultiplier = materialMultiplier * GetShieldingMultiplier();
+                    damage.SetAmount(damage.Amount * totalMultiplier);
+                    building.TakeDamage(damage);
+                    if (building.Destroyed) {
+                        StormShelterManager.RebuildShelterCache(map);
+                    }
+
+                    break;
                 }
-
-                break;
-            }
             case Pawn pawn: {
-                if (pawn.Dead) break;
-                if (StormlightUtilities.IsHighstormImmune(pawn)) break;
-                Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
-                if (surgebinder != null) {
-                    damage.SetAmount(damage.Amount * 0.5f / (surgebinder.currentIdeal + 1));
+                    if (pawn.Dead) break;
+                    if (StormlightUtility.IsHighstormImmune(pawn)) break;
+                    Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
+                    if (surgebinder != null) {
+                        damage.SetAmount(damage.Amount * 0.5f / (surgebinder.CurrentIdeal + 1));
+                    }
+
+                    pawn.TakeDamage(damage);
+
+                    break;
                 }
-
-                pawn.TakeDamage(damage);
-
-                break;
-            }
         }
     }
 }

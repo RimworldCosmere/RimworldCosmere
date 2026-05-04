@@ -17,7 +17,8 @@ public static partial class Doc {
             RenderContext.Current.DirectionStack.Push(direction);
             try {
                 return child.Measure?.Invoke(availableWidth) ?? child.PreferredHeight ?? 0f;
-            } finally {
+            }
+            finally {
                 RenderContext.Current.DirectionStack.Pop();
             }
         };
@@ -26,7 +27,8 @@ public static partial class Doc {
             try {
                 child.MeasuredRect = rect;
                 LightweaveRoot.PaintSubtree(child, rect);
-            } finally {
+            }
+            finally {
                 RenderContext.Current.DirectionStack.Pop();
             }
         };

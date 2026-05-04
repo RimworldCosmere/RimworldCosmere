@@ -25,7 +25,7 @@ public class BondToThing : Verse.AI.JobDriver {
         this.FailOn(() => Target is not { Spawned: true });
 
         Connection? conn = pawn.GetConnection(Target);
-        this.FailOn(() => conn == null || conn.value >= 1);
+        this.FailOn(() => conn == null || conn.Value >= 1);
 
         //yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
 
@@ -51,7 +51,7 @@ public class BondToThing : Verse.AI.JobDriver {
                 pawn.AdjustConnection(Target, ConnectionPerInterval);
                 pawn.rotationTracker.FaceTarget(Target);
 
-                if (conn != null && conn.value >= 1f) {
+                if (conn != null && conn.Value >= 1f) {
                     EndJobWith(JobCondition.Succeeded);
                 }
             },
@@ -69,7 +69,7 @@ public class BondToThing : Verse.AI.JobDriver {
             }
         );
 
-        bondToil.WithProgressBar(TargetIndex.B, () => Mathf.Clamp01((connection?.value ?? 0f) / 1f));
+        bondToil.WithProgressBar(TargetIndex.B, () => Mathf.Clamp01((connection?.Value ?? 0f) / 1f));
 
         yield return bondToil;
     }

@@ -20,7 +20,8 @@ public static class UseFocus {
         if (focusState.PendingRequest) {
             RenderContext.Current.PendingOverlays.Enqueue(() => { GUI.FocusControl(focusName); });
             focusState.PendingRequest = false;
-        } else if (focusState.PendingClear) {
+        }
+        else if (focusState.PendingClear) {
             RenderContext.Current.PendingOverlays.Enqueue(() => { GUI.FocusControl(null); });
             focusState.PendingClear = false;
         }

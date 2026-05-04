@@ -6,6 +6,6 @@ public enum DockDensityMode {
 }
 
 public sealed class DockRenderContext {
-    public Dictionary<string, TwinbornPair> TwinbornPairs { get; init; } = new Dictionary<string, TwinbornPair>();
+    public Dictionary<string, IDualInvestiturePair> DualInvestiturePairs { get; init; } = new Dictionary<string, IDualInvestiturePair>();
     public DockDensityMode Density { get; init; } = DockDensityMode.Full;
 }

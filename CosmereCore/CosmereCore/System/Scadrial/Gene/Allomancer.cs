@@ -1,8 +1,9 @@
 ﻿using Cosmere.Core;
 using Cosmere.Core.Savant;
+using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Thing;
-using Cosmere.System.Scadrial.Utility;
+using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -21,11 +22,11 @@ public class Allomancer : Metalborn {
     private int cachedSavantStage;
     private HediffDef? cachedWithdrawalHediffDef;
     private float currentReserve;
-    public int requestedVialStock = 3;
+    public int RequestedVialStock = 3;
     private float savantDecayOffset;
     private float? timeDilationFactor;
 
-    public bool shouldConsumeVialNow {
+    public bool ShouldConsumeVialNow {
         get {
             if (metal.IsOneOf(MetalDefOf.Duralumin, MetalDefOf.Nicrosil)) return false;
             if (pawn.IsAsleep()) return false;
@@ -67,13 +68,13 @@ public class Allomancer : Metalborn {
     private RecordDef metalBurntRecord => cachedMetalBurntRecord ??= RecordDefOf.GetMetalBurnRecordForMetal(metal);
 
     private HediffDef? savantHediffDef =>
-        cachedSavantHediffDef ??= SavantUtility.GetAllomanticSavantHediffDef(metal);
+        cachedSavantHediffDef ??= ScadrialSavantUtility.GetAllomanticSavantHediffDef(metal);
 
     private HediffDef? withdrawalHediffDef =>
-        cachedWithdrawalHediffDef ??= SavantUtility.GetAllomanticWithdrawalHediffDef(metal);
+        cachedWithdrawalHediffDef ??= ScadrialSavantUtility.GetAllomanticWithdrawalHediffDef(metal);
 
     private HediffDef? permanentHediffDef =>
-        cachedPermanentHediffDef ??= SavantUtility.GetAllomanticPermanentHediffDef(metal);
+        cachedPermanentHediffDef ??= ScadrialSavantUtility.GetAllomanticPermanentHediffDef(metal);
 
     public override float Value {
         get => currentReserve;
@@ -81,7 +82,7 @@ public class Allomancer : Metalborn {
     }
 
     public float GetMetalNeededForBreathEquivalentUnits(float requiredBreathEquivalentUnits) {
-        return requiredBreathEquivalentUnits / Constants.BreathEquivalentUnitsPerMetalUnit;
+        return requiredBreathEquivalentUnits / ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
     }
 
     public bool TryBurnMetalForInvestiture(float requiredBreathEquivalentUnits) {
@@ -116,10 +117,10 @@ public class Allomancer : Metalborn {
 
         if (sources.Count > 0 && pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) {
             pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower)
-                .Learn(sources.Count * Constants.AllomancyXPPerTick * GenTicks.TickLongInterval);
+                .Learn(sources.Count * ScadrialMetallurgyConstants.AllomancyXPPerTick * GenTicks.TickLongInterval);
         }
 
-        CheckSavantProgression(delta);
+        UpdateSavantProgression(delta);
     }
 
     public void BurnTickInterval() {
@@ -141,7 +142,7 @@ public class Allomancer : Metalborn {
         sources.Clear();
     }
 
-    private void CheckSavantProgression(int delta) {
+    private void UpdateSavantProgression(int delta) {
         if (!pawn.IsHashIntervalTick(GenTicks.TickLongInterval, delta)) return;
         if (!SavantUtility.CanBeSavant(metal)) return;
 
@@ -162,25 +163,7 @@ public class Allomancer : Metalborn {
 
         cachedSavantStage = newStage;
 
-        if (newStage > 0 && savantHediffDef != null) {
-            Hediff existing = pawn.health.hediffSet.GetFirstHediffOfDef(savantHediffDef);
-            if (existing == null) {
-                Hediff hediff = HediffMaker.MakeHediff(savantHediffDef, pawn);
-                hediff.Severity = SavantUtility.SeverityForStage(newStage);
-                pawn.health.AddHediff(hediff);
-            } else {
-                existing.Severity = SavantUtility.SeverityForStage(newStage);
-            }
-        } else if (newStage == 0 && savantHediffDef != null) {
-            Hediff existing = pawn.health.hediffSet.GetFirstHediffOfDef(savantHediffDef);
-            if (existing != null) pawn.health.RemoveHediff(existing);
-        }
-
-        if (newStage >= 3 && previousStage < 3 && permanentHediffDef != null) {
-            if (!pawn.health.hediffSet.HasHediff(permanentHediffDef)) {
-                pawn.health.AddHediff(HediffMaker.MakeHediff(permanentHediffDef, pawn));
-            }
-        }
+        SavantUtility.UpdateSavantHediffState(pawn, previousStage, newStage, savantHediffDef, permanentHediffDef);
 
         if (newStage > previousStage && newStage > 0) {
             SavantUtility.SendSavantLetter(pawn, newStage, "Allomancy", metal.LabelCap);
@@ -206,13 +189,15 @@ public class Allomancer : Metalborn {
                                      GenTicks.TickLongInterval;
                 if (existing.Severity <= 0.01f) pawn.health.RemoveHediff(existing);
             }
-        } else {
+        }
+        else {
             Hediff existing = pawn.health.hediffSet.GetFirstHediffOfDef(withdrawalHediffDef);
             if (existing == null) {
                 Hediff hediff = HediffMaker.MakeHediff(withdrawalHediffDef, pawn);
                 hediff.Severity = 0.05f;
                 pawn.health.AddHediff(hediff);
-            } else {
+            }
+            else {
                 existing.Severity += SavantUtility.WithdrawalSeverityGainPerDay /
                                      GenDate.TicksPerDay *
                                      GenTicks.TickLongInterval;
@@ -221,14 +206,14 @@ public class Allomancer : Metalborn {
     }
 
     protected override void PostAddOrRemove() {
-        MetalbornUtility.HandleMistbornTrait(pawn);
-        MetalbornUtility.HandleAllomancerTrait(pawn);
+        MetalbornUtility.SyncMistbornTrait(pawn);
+        MetalbornUtility.SyncAllomancerTrait(pawn);
     }
 
     public override void ExposeData() {
         base.ExposeData();
 
-        Scribe_Values.Look(ref requestedVialStock, "RequestedVialStock", 3);
+        Scribe_Values.Look(ref RequestedVialStock, "RequestedVialStock", 3);
         Scribe_Values.Look(ref currentReserve, "currentReserve");
         Scribe_Values.Look(ref savantDecayOffset, "savantDecayOffset");
         Scribe_Collections.Look(ref sources, "sources", LookMode.Deep);

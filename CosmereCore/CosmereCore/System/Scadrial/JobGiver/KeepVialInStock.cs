@@ -17,9 +17,9 @@ public class KeepVialInStock : ThinkNode_JobGiver {
                     ThingDefOf.Cosmere_Scadrial_Thing_AllomanticVial,
                     gene.metal.Item
                 );
-            if (inStock >= gene.requestedVialStock) continue;
+            if (inStock >= gene.RequestedVialStock) continue;
 
-            int amountToTake = gene.requestedVialStock - inStock;
+            int amountToTake = gene.RequestedVialStock - inStock;
 
             Verse.Thing? thing = FindVialFor(pawn, gene, amountToTake);
             if (thing == null) continue;

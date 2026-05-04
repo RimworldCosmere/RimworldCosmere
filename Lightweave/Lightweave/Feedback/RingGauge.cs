@@ -85,7 +85,7 @@ public static class RingGauge {
             if (!string.IsNullOrEmpty(centerLabel)) {
                 Font font = theme.GetFont(FontRole.Body);
                 int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
-                GUIStyle style = GuiStyleCache.Get(font, pixelSize);
+                GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize);
                 style.alignment = TextAnchor.MiddleCenter;
 
                 Color labelColor = theme.GetColor(ThemeSlot.TextPrimary);

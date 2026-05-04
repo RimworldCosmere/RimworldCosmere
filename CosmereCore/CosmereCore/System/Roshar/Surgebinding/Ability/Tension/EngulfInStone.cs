@@ -8,8 +8,8 @@ public class EngulfInStone : SurgebindingAbility {
     public EngulfInStone(Pawn pawn, AbilityDef def) : base(pawn, def) { }
 
     public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return false;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return false;
 
         IntVec3 cell = target.Cell;
         Map map = pawn.Map;
@@ -24,17 +24,19 @@ public class EngulfInStone : SurgebindingAbility {
             ThingDef wallStuff = stuff ?? RimWorld.ThingDefOf.BlocksGranite;
             Verse.Thing wall = ThingMaker.MakeThing(RimWorld.ThingDefOf.Wall, wallStuff);
             GenSpawn.Spawn(wall, cell, map);
-        } else if (cell.Standable(map)) {
+        }
+        else if (cell.Standable(map)) {
             Verse.Thing wall = ThingMaker.MakeThing(
                 RimWorld.ThingDefOf.Wall,
                 RimWorld.ThingDefOf.BlocksGranite
             );
             GenSpawn.Spawn(wall, cell, map);
-        } else {
+        }
+        else {
             return false;
         }
 
-        gene.RemoveFromReserve(cost);
+        Gene.RemoveFromReserve(cost);
         FleckMaker.Static(cell, map, FleckDefOf.PsycastAreaEffect);
 
         return true;

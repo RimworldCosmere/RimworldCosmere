@@ -4,7 +4,5 @@ public sealed record InvestitureSnapshot(
     string SystemId,
     string SystemLabel,
     ResourceBar? PrimaryBar,
-    List<InvestitureCell> Cells,
-    List<SubsectionGroup> Subsections,
-    List<AbilityEntry> FlatAbilities
+    List<InvestitureCell> Cells
 );

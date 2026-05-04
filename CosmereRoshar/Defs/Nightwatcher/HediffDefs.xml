@@ -33,7 +33,7 @@
         <description>The Nightwatcher laid a curse on {PAWN_nameDef}. It settled into {PAWN_possessive} Spiritweb like a splinter beneath the skin. No ordinary means will remove it.</description>
         <hediffClass>Cosmere.System.Roshar.Hediff.NightwatcherCurseHediff</hediffClass>
         <comps>
-            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionCompProperties"/>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionProperties"/>
         </comps>
     </HediffDef>
 
@@ -129,7 +129,7 @@
             </li>
         </stages>
         <comps>
-            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffCompProperties_AgelessBody"/>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.AgelessBodyProperties"/>
         </comps>
     </HediffDef>
 
@@ -151,7 +151,7 @@
             </li>
         </stages>
         <comps>
-            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffCompProperties_Lifelight">
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.LifelightProperties">
                 <investiturePerDay>250</investiturePerDay>
             </li>
         </comps>
@@ -181,7 +181,7 @@
             </li>
         </stages>
         <comps>
-            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionCompProperties"/>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionProperties"/>
         </comps>
     </HediffDef>
 
@@ -236,7 +236,7 @@
             </li>
         </stages>
         <comps>
-            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionCompProperties"/>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionProperties"/>
         </comps>
     </HediffDef>
 
@@ -261,7 +261,7 @@
         <label>Nightwatcher: silenced</label>
         <description>{PAWN_nameDef}'s voice still works. The sounds come out. But the meaning does not carry. Words fall flat, stripped of weight and intent. People hear {PAWN_nameDef} speak and somehow do not listen.</description>
         <comps>
-            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionCompProperties"/>
+            <li Class="Cosmere.System.Roshar.Comp.Hediff.HediffEvolutionProperties"/>
         </comps>
         <stages>
             <li>

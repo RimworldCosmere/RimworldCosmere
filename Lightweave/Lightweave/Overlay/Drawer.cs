@@ -10,7 +10,7 @@ using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
 using static Cosmere.Lightweave.Hooks.Hooks;
-using static Cosmere.Lightweave.Layout.Layout;
+using Cosmere.Lightweave.Layout;
 using Caption = Cosmere.Lightweave.Typography.Typography.Caption;
 using Code = Cosmere.Lightweave.Typography.Typography.Code;
 using Heading = Cosmere.Lightweave.Typography.Typography.Heading;
@@ -67,7 +67,8 @@ public static class Drawer {
             if (side == DrawerSide.Left || side == DrawerSide.Right) {
                 widthPx = (size ?? new Rem(20f)).ToPixels();
                 heightPx = host.height;
-            } else {
+            }
+            else {
                 widthPx = host.width;
                 heightPx = (size ?? new Rem(12f)).ToPixels();
             }
@@ -109,50 +110,51 @@ public static class Drawer {
             float scrimAlpha = progress * 0.35f;
 
             RenderContext.Current.PendingOverlays.Enqueue(() => {
-                    Color savedColor = GUI.color;
-                    GUI.color = Color.white;
+                Color savedColor = GUI.color;
+                GUI.color = Color.white;
 
-                    Rect screenRect = host;
-                    BackgroundSpec scrimBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, scrimAlpha));
-                    PaintBox.Draw(screenRect, scrimBg, null, null);
+                Rect screenRect = host;
+                BackgroundSpec scrimBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, scrimAlpha));
+                PaintBox.Draw(screenRect, scrimBg, null, null);
 
-                    Rect shadowRect = new Rect(
-                        drawerRect.x + 3f,
-                        drawerRect.y + 3f,
-                        drawerRect.width,
-                        drawerRect.height
-                    );
-                    BackgroundSpec shadowBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, 0.35f));
-                    PaintBox.Draw(shadowRect, shadowBg, null, null);
+                Rect shadowRect = new Rect(
+                    drawerRect.x + 3f,
+                    drawerRect.y + 3f,
+                    drawerRect.width,
+                    drawerRect.height
+                );
+                BackgroundSpec shadowBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, 0.35f));
+                PaintBox.Draw(shadowRect, shadowBg, null, null);
 
-                    BackgroundSpec drawerBg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
-                    BorderSpec? drawerBorder = ResolveBorder(side);
-                    PaintBox.Draw(drawerRect, drawerBg, drawerBorder, null);
+                BackgroundSpec drawerBg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+                BorderSpec? drawerBorder = ResolveBorder(side);
+                PaintBox.Draw(drawerRect, drawerBg, drawerBorder, null);
 
-                    float padPx = SpacingScale.Md.ToPixels();
-                    Rect innerRect = new Rect(
-                        drawerRect.x + padPx,
-                        drawerRect.y + padPx,
-                        Mathf.Max(0f, drawerRect.width - padPx * 2f),
-                        Mathf.Max(0f, drawerRect.height - padPx * 2f)
-                    );
+                float padPx = SpacingScale.Md.ToPixels();
+                Rect innerRect = new Rect(
+                    drawerRect.x + padPx,
+                    drawerRect.y + padPx,
+                    Mathf.Max(0f, drawerRect.width - padPx * 2f),
+                    Mathf.Max(0f, drawerRect.height - padPx * 2f)
+                );
 
-                    LightweaveNode inner = content();
-                    LightweaveRoot.PaintSubtree(inner, innerRect);
+                LightweaveNode inner = content();
+                LightweaveRoot.PaintSubtree(inner, innerRect);
 
-                    GUI.color = savedColor;
+                GUI.color = savedColor;
 
-                    Event e = Event.current;
-                    if (e.type == EventType.MouseDown &&
-                        !drawerRect.Contains(e.mousePosition) &&
-                        screenRect.Contains(e.mousePosition)) {
-                        onDismiss?.Invoke();
-                        e.Use();
-                    } else if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Escape) {
-                        onDismiss?.Invoke();
-                        e.Use();
-                    }
+                Event e = Event.current;
+                if (e.type == EventType.MouseDown &&
+                    !drawerRect.Contains(e.mousePosition) &&
+                    screenRect.Contains(e.mousePosition)) {
+                    onDismiss?.Invoke();
+                    e.Use();
                 }
+                else if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Escape) {
+                    onDismiss?.Invoke();
+                    e.Use();
+                }
+            }
             );
         };
         return node;

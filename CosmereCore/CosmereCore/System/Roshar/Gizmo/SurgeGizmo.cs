@@ -1,3 +1,4 @@
+using Cosmere.Core.UI;
 using Cosmere.Lightweave.Adapter;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.System.Roshar.Def;
@@ -35,7 +36,7 @@ public class SurgeGizmo : AsGizmo {
                 AbilityDef abilityDef = surgeDef.abilities[i];
                 if (abilityDef is SurgebindingAbilityDef surgeAbilityDef) {
                     int minIdeal = surgeAbilityDef.GetMinIdealForOrder(gene.radiantOrderDef.defName);
-                    if (gene.currentIdeal < minIdeal) continue;
+                    if (gene.CurrentIdeal < minIdeal) continue;
                 }
 
                 if (!gene.pawn.TryGetAbility(abilityDef, out SurgebindingAbility? ability) || ability == null) continue;
@@ -56,9 +57,9 @@ public class SurgeGizmo : AsGizmo {
     }
 
     private void Initialize() {
-        if (initialized && cachedIdeal == gene.currentIdeal) return;
+        if (initialized && cachedIdeal == gene.CurrentIdeal) return;
         initialized = true;
-        cachedIdeal = gene.currentIdeal;
+        cachedIdeal = gene.CurrentIdeal;
 
         subgizmos.Clear();
         Pawn pawn = gene.pawn;
@@ -67,7 +68,7 @@ public class SurgeGizmo : AsGizmo {
             AbilityDef abilityDef = surgeDef.abilities[i];
             if (abilityDef is SurgebindingAbilityDef surgeAbilityDef) {
                 int minIdeal = surgeAbilityDef.GetMinIdealForOrder(gene.radiantOrderDef.defName);
-                if (gene.currentIdeal < minIdeal) continue;
+                if (gene.CurrentIdeal < minIdeal) continue;
             }
 
             if (!pawn.TryGetAbility(abilityDef, out SurgebindingAbility? ability) || ability == null) continue;
@@ -97,7 +98,7 @@ public class SurgeGizmo : AsGizmo {
 
         Rect surgeIconRect = new Rect(mainRect.x, mainRect.y, mainRect.height, mainRect.height);
         Texture2D icon = surgeDef.icon ?? BaseContent.BadTex;
-        Core.Util.UI.DrawIcon(surgeIconRect, icon, BGTex, TexUI.GrayscaleGUI, doBorder: false);
+        UIHelpers.DrawIcon(surgeIconRect, icon, BGTex, TexUI.GrayscaleGUI, doBorder: false);
 
         using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter)) {
             float textHeight = Text.CalcHeight(surgeDef.LabelCap, surgeIconRect.width);
@@ -136,7 +137,8 @@ public class SurgeGizmo : AsGizmo {
         if (Mouse.IsOver(surgeIconRect)) {
             Widgets.DrawHighlight(surgeIconRect);
             TooltipHandler.TipRegion(surgeIconRect, surgeDef.description);
-        } else if (Mouse.IsOver(mainRect) && !mouseOver) {
+        }
+        else if (Mouse.IsOver(mainRect) && !mouseOver) {
             Widgets.DrawHighlight(mainRect);
         }
     }

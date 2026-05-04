@@ -45,7 +45,8 @@ public static class Tabs {
 
         if (bodyNode.Measure != null) {
             node.Measure = width => chromeHeight + bodyNode.Measure(width);
-        } else if (bodyNode.PreferredHeight.HasValue) {
+        }
+        else if (bodyNode.PreferredHeight.HasValue) {
             node.PreferredHeight = chromeHeight + bodyNode.PreferredHeight.Value;
         }
 
@@ -69,7 +70,7 @@ public static class Tabs {
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
             style.alignment = TextAnchor.MiddleCenter;
 
             int count = items.Count;
@@ -93,7 +94,8 @@ public static class Tabs {
                 if (rtl) {
                     tabRect = new Rect(cursor - tabWidth, barRect.y, tabWidth, barRect.height);
                     cursor -= tabWidth + tabGap;
-                } else {
+                }
+                else {
                     tabRect = new Rect(cursor, barRect.y, tabWidth, barRect.height);
                     cursor += tabWidth + tabGap;
                 }

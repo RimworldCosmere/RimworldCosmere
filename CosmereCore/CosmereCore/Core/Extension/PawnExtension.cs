@@ -8,7 +8,7 @@ using Verse.AI;
 namespace Cosmere.Core.Extension;
 
 public static class PawnExtension {
-    public static InvestitureHolder GetInvestiture(this Pawn pawn) {
+    public static InvestitureHolder? GetInvestiture(this Pawn pawn) {
         return pawn.TryGetComp<InvestitureHolder>();
     }
 
@@ -26,7 +26,8 @@ public static class PawnExtension {
 
         if (distance > maxDistance && !pawn.pather.MovingNow) {
             pawn.pather.StartPath(target, endMode);
-        } else if (distance <= maxDistance && pawn.pather.MovingNow) {
+        }
+        else if (distance <= maxDistance && pawn.pather.MovingNow) {
             pawn.pather.StopDead();
             pawn.jobs.curDriver.Notify_PatherArrived();
         }

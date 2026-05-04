@@ -29,7 +29,8 @@ public static class RaidDefenseTrackingPatch {
             Pawn colonist = colonists[i];
             if (colonist.Downed) {
                 downedCount++;
-            } else if (!colonist.Dead) {
+            }
+            else if (!colonist.Dead) {
                 standingCount++;
             }
         }

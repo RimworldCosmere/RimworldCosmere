@@ -7,12 +7,12 @@
       <li>
         <key>bandit_activity</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>10</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Bandit Activity</title>
             <text>Reports trickle in from the outermost settlements. Caravans robbed. Supply wagons overturned and stripped clean. The bandits are organized - not the usual Roughs rabble scraping for survival, but coordinated teams hitting specific targets. Wax studies the pattern on a map and frowns. The robberies form a ring, tightening around your position. Someone is probing your defenses.</text>
             <letterDef>NegativeEvent</letterDef>
@@ -22,12 +22,12 @@
       <li>
         <key>letter_from_elendel</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>25</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>Letter from Elendel</title>
             <text>The letter bears the seal of House Ladrian. Wax's uncle writes with thinly veiled urgency: the house finances are in disarray, social obligations pile up, and several lords are circling like vultures waiting for the noble house to collapse. Between the lines, another message: come home. But the Roughs have their own demands, and Wax has never been good at choosing the easy path. He folds the letter and tucks it into his coat. Wayne eyes him. "Bad news?" "Family," Wax says, which amounts to the same thing.</text>
             <letterDef>NeutralEvent</letterDef>
@@ -37,20 +37,20 @@
       <li>
         <key>wax_and_steris</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>30</days>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.PawnAliveTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnAliveTrigger">
             <pawnName>Waxillium</pawnName>
             <alive>true</alive>
           </li>
-          <li Class="Cosmere.Core.ScenarioPart.PawnAliveTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.PawnAliveTrigger">
             <pawnName>Steris</pawnName>
             <alive>true</alive>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>An Arrangement of Practical Benefit</title>
             <text>Steris presents the document over breakfast, organized into fourteen subsections with two appendices. "A formal alliance," she explains, adjusting her spectacles, "delineating mutual obligations, resource-sharing protocols, and contingency procedures for no fewer than thirty-one categories of emergency." Wax reads it. It is, he has to admit, remarkably thorough. "You included a provision for koloss attack." "Subsection 7.3. I also included one for earthquake, flooding, and spontaneous Allomantic manifestation in livestock." For the first time in a long while, Wax genuinely smiles.</text>
             <letterDef>PositiveEvent</letterDef>
@@ -60,12 +60,12 @@
       <li>
         <key>the_vanishers</key>
         <triggers>
-          <li Class="Cosmere.Core.ScenarioPart.DaysPassedTrigger">
+          <li Class="Cosmere.Core.ScenarioPart.Trigger.DaysPassedTrigger">
             <days>40</days>
           </li>
         </triggers>
         <actions>
-          <li Class="Cosmere.Core.ScenarioPart.SendLetterAction">
+          <li Class="Cosmere.Core.ScenarioPart.Action.SendLetterAction">
             <title>The Vanishers</title>
             <text>They call themselves the Vanishers, and the name is earned. An entire rail shipment - cargo, passengers, and all - gone without a trace. No wreckage. No bodies. The constables are baffled. Marasi's research suggests Allomantic involvement: speed bubbles to isolate targets, Pushes and Pulls to redirect rolling stock. These are not common criminals. They are Metalborn, well-funded and well-trained. Wax checks his ammunition. Wayne starts looking for a good hat to wear to a fight. The hunt begins.</text>
             <letterDef>ThreatBig</letterDef>

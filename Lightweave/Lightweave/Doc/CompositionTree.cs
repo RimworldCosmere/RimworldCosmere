@@ -38,7 +38,7 @@ public static partial class Doc {
             }
 
             Font mono = theme.GetFont(FontRole.Mono);
-            GUIStyle style = GuiStyleCache.Get(mono, Mathf.RoundToInt(fontPx));
+            GUIStyle style = GuiStyleCache.GetOrCreate(mono, Mathf.RoundToInt(fontPx));
             style.alignment = TextAnchor.MiddleLeft;
             style.clipping = TextClipping.Clip;
             style.wordWrap = false;

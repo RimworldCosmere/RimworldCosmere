@@ -54,8 +54,8 @@ public class RemoveMetalmind : Recipe_Surgery {
 
         Verse.Thing metalmindItem = ThingMaker.MakeThing(metalmindDef, stuffDef);
         Metalmind? metalmindComp = metalmindItem.TryGetComp<Metalmind>();
-        if (metalmindComp != null && removed.storedAmount > 0f) {
-            metalmindComp.AddStored(removed.storedAmount);
+        if (metalmindComp != null && removed.StoredAmount > 0f) {
+            metalmindComp.AddStored(removed.StoredAmount);
         }
 
         GenPlace.TryPlaceThing(metalmindItem, pawn.Position, pawn.Map, ThingPlaceMode.Near);

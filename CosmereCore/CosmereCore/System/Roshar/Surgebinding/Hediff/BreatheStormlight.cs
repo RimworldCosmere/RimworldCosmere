@@ -20,7 +20,7 @@ public class BreatheStormlight : SurgebindingHediff {
         base.PostTickInterval(delta);
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
-        if (investiture.isFull) return;
+        if (investiture == null || investiture.isFull) return;
 
         float amountDrawn = 0f;
         if (pawn.apparel?.WornApparel != null) {
@@ -40,16 +40,16 @@ public class BreatheStormlight : SurgebindingHediff {
                 .Sum(cell => cell.GetThingList(pawn.Map).Sum(TryAbsorbFromThing));
         }
 
-        Logger.Verbose($"{pawn.NameFullColored} as absorbed {amountDrawn:F2} stormlight.");
     }
 
     private float TryAbsorbFromThing(Verse.Thing thing) {
+        if (investiture == null) return 0f;
         if (!thing.TryGetComp(out InvestitureHolder investitureHolder)) return 0f;
         if (!investitureHolder.sharingInvestiture) return 0f;
         if (Mathf.Approximately(investitureHolder.currentInvestiture, 0f)) return 0f;
         if (investiture.AbsorbInvestitureFrom(
                 thing,
-                BaseAbsorbAmount * (gene.currentIdeal + 1),
+                BaseAbsorbAmount * (Gene.CurrentIdeal + 1),
                 out float amountDrawn
             )) {
             pawn.skills.Learn(SkillDefOf.Cosmere_Roshar_Skill_SurgebindingPower, .1f);

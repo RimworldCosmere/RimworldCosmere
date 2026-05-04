@@ -18,7 +18,7 @@ public class GiveGene : ThingComp {
         base.PrePostIngested(ingester);
         if (ingester?.genes == null || props.geneDef == null) return;
 
-        ingester.genes.TryAddGene(props.geneDef);
+        ingester.genes.EnsureGene(props.geneDef);
         Messages.Message(
             "CC_GiveGene".Translate(
                     ingester.NameFullColored.Named("PAWN"),

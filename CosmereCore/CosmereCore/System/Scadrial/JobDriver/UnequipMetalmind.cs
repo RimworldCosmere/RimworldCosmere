@@ -17,7 +17,7 @@ public class UnequipMetalmind : Verse.AI.JobDriver {
             return false;
         }
 
-        if (metalmindComp?.equipped != true) {
+        if (metalmindComp == null || !metalmindComp.Equipped) {
             return false;
         }
 
@@ -30,6 +30,6 @@ public class UnequipMetalmind : Verse.AI.JobDriver {
         this.FailOnDespawnedNullOrForbidden(TargetIndex.B);
 
         yield return Toils_General.Wait(25).WithProgressBarToilDelay(TargetIndex.A);
-        yield return Toils_General.Do(() => { metalmindComp!.equipped = false; });
+        yield return Toils_General.Do(() => { metalmindComp!.Equipped = false; });
     }
 }

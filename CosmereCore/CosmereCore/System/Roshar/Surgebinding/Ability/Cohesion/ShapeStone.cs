@@ -12,22 +12,23 @@ public class ShapeStone : SurgebindingAbility {
         Designator_ShapeStone designator = new Designator_ShapeStone(this);
         Find.DesignatorManager.Select(designator);
 
-        if (status.isActive) UpdateStatus(Active.Off);
+        if (status.IsActive) UpdateStatus(Active.Off);
         return true;
     }
 
     public void ExecuteAt(IntVec3 cell, Map map) {
-        float cost = def.beuPerTick / (1 << gene.currentIdeal);
-        if (!gene.CanLowerReserve(cost)) return;
+        float cost = def.beuPerTick / (1 << Gene.CurrentIdeal);
+        if (!Gene.CanLowerReserve(cost)) return;
 
         Building? building = cell.GetFirstBuilding(map);
 
         if (building != null && IsMineable(building)) {
-            gene.RemoveFromReserve(cost);
+            Gene.RemoveFromReserve(cost);
             building.Destroy(DestroyMode.KillFinalize);
             FleckMaker.Static(cell, map, FleckDefOf.PsycastAreaEffect);
-        } else if (building == null && cell.Standable(map)) {
-            gene.RemoveFromReserve(cost);
+        }
+        else if (building == null && cell.Standable(map)) {
+            Gene.RemoveFromReserve(cost);
             ThingDef wallDef = RimWorld.ThingDefOf.Wall;
             ThingDef stuffDef = GetLocalStoneStuff(cell, map);
             Verse.Thing wall = ThingMaker.MakeThing(wallDef, stuffDef);

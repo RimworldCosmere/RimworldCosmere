@@ -2,7 +2,7 @@ using Cosmere.Core.Ability;
 using Cosmere.Core.Comp.Thing;
 using Cosmere.Core.Util;
 using Cosmere.System.Roshar.Gene;
-using Cosmere.System.Roshar.Surgebinding.Utility;
+using Cosmere.System.Roshar.Surgebinding.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -25,10 +25,10 @@ public class OpenPerpendicularity : SurgebindingAbility {
     protected virtual string AuraMoteDefName => "Cosmere_Roshar_Thing_PerpendicularityAura";
     private ThingDef? AuraMoteDef => auraMoteDef ??= DefDatabase<ThingDef>.GetNamedSilentFail(AuraMoteDefName);
 
-    private float radius => BaseRadius + gene.currentIdeal * 2;
+    private float radius => BaseRadius + Gene.CurrentIdeal * 2;
 
     public override float GetStrength(Status? desiredStatus = null) {
-        return base.GetStrength(desiredStatus) * (0.5f + gene.currentIdeal * 0.5f);
+        return base.GetStrength(desiredStatus) * (0.5f + Gene.CurrentIdeal * 0.5f);
     }
 
     protected override void OnEnable() {
@@ -68,12 +68,12 @@ public class OpenPerpendicularity : SurgebindingAbility {
 
     public override void AbilityTick() {
         base.AbilityTick();
-        if (!status.isActive) return;
+        if (!status.IsActive) return;
 
         auraMote?.Maintain();
-        if (auraMote != null && AuraMoteDef != null) {
+        if (auraMote != null) {
             float moteScale = MoteUtility.GetMoteSize(
-                AuraMoteDef,
+                AuraMoteDef!,
                 BaseRadius,
                 GetStrength()
             );
@@ -125,7 +125,7 @@ public class OpenPerpendicularity : SurgebindingAbility {
         for (int i = hediffs.Count - 1; i >= 0; i--) {
             Verse.Hediff hediff = hediffs[i];
             if (hediff is Hediff_Injury injury) {
-                injury.Heal(HealAmount * (1 + gene.currentIdeal * 0.5f));
+                injury.Heal(HealAmount * (1 + Gene.CurrentIdeal * 0.5f));
                 return;
             }
         }

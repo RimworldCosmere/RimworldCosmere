@@ -77,7 +77,8 @@ public class Dialog_GemheartExpedition : Window {
             if (isSelected != wasSelected) {
                 if (isSelected) {
                     selected.Add(pawn);
-                } else {
+                }
+                else {
                     selected.Remove(pawn);
                 }
             }
@@ -99,7 +100,7 @@ public class Dialog_GemheartExpedition : Window {
             if (pawn.genes != null) {
                 Surgebinder? surgebinder = pawn.genes.GetFirstGeneOfType<Surgebinder>();
                 if (surgebinder is { Active: true }) {
-                    stats += $"  Radiant (Ideal {surgebinder.currentIdealDisplay})";
+                    stats += $"  Radiant (Ideal {surgebinder.CurrentIdealDisplay})";
                 }
             }
 
@@ -132,7 +133,8 @@ public class Dialog_GemheartExpedition : Window {
 
                 Close();
             }
-        } else {
+        }
+        else {
             GUI.color = Color.gray;
             Widgets.ButtonText(sendRect, "March");
             GUI.color = Color.white;

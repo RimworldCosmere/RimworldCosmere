@@ -10,21 +10,19 @@ using UnityEngine;
 using Verse;
 using Verse.Sound;
 using static Cosmere.Lightweave.Hooks.Hooks;
-using static Cosmere.Lightweave.Layout.Layout;
 using static Cosmere.Lightweave.Typography.Typography;
 using Text = Cosmere.Lightweave.Typography.Typography.Text;
 
 namespace Cosmere.Lightweave.Layout;
 
-public static partial class Layout {
-    [Doc(
-        Id = "carousel",
-        Summary = "Slide-paged carousel with optional arrows and dots.",
-        WhenToUse = "Cycle through a small set of equally-weighted views.",
-        SourcePath = "Lightweave/Lightweave/Layout/Carousel.cs",
-        PreferredVariantHeight = 200f
-    )]
-    public static class Carousel {
+[Doc(
+    Id = "carousel",
+    Summary = "Slide-paged carousel with optional arrows and dots.",
+    WhenToUse = "Cycle through a small set of equally-weighted views.",
+    SourcePath = "Lightweave/Lightweave/Layout/Carousel.cs",
+    PreferredVariantHeight = 200f
+)]
+public static class Carousel {
     private const float SlideDurationSeconds = 0.28f;
     private const float ControlZone = 40f;
     private const float DotRadiusPx = 4f;
@@ -34,15 +32,15 @@ public static partial class Layout {
 
     public static LightweaveNode Create(
         [DocParam("Slide nodes shown one at a time.")]
-        IReadOnlyList<LightweaveNode> slides,
+    IReadOnlyList<LightweaveNode> slides,
         [DocParam("Index of the visible slide.")]
-        int currentIndex,
+    int currentIndex,
         [DocParam("Callback invoked when the user changes slides.")]
-        Action<int> onIndexChange,
+    Action<int> onIndexChange,
         [DocParam("Show left/right arrow controls.")]
-        bool showArrows = true,
+    bool showArrows = true,
         [DocParam("Show pagination dot strip.")]
-        bool showDots = true,
+    bool showDots = true,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -93,7 +91,8 @@ public static partial class Layout {
             if (showDots) {
                 frameRect = new Rect(rect.x, rect.y, rect.width, Mathf.Max(0f, rect.height - DotStripHeight));
                 dotRect = new Rect(rect.x, frameRect.yMax, rect.width, DotStripHeight);
-            } else {
+            }
+            else {
                 frameRect = rect;
                 dotRect = default;
             }
@@ -140,7 +139,8 @@ public static partial class Layout {
                             onIndexChange?.Invoke(next);
                             e.Use();
                         }
-                    } else if (rightZone.Contains(e.mousePosition)) {
+                    }
+                    else if (rightZone.Contains(e.mousePosition)) {
                         int next = rtl ? Mathf.Max(0, clamped - 1) : Mathf.Min(clamped + 1, count - 1);
                         if (next != clamped) {
                             onIndexChange?.Invoke(next);
@@ -239,10 +239,10 @@ public static partial class Layout {
         return new DocSample(
             Carousel.Create(
                 new List<LightweaveNode> {
-                    DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
-                    DocsSlide(ThemeSlot.SurfaceAccent, "CC_Playground_carousel_Slide_Second"),
-                    DocsSlide(ThemeSlot.SurfacePrimary, "CC_Playground_carousel_Slide_Third"),
-                    DocsSlide(ThemeSlot.SurfaceSunken, "CC_Playground_carousel_Slide_Fourth"),
+                DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
+                DocsSlide(ThemeSlot.SurfaceAccent, "CC_Playground_carousel_Slide_Second"),
+                DocsSlide(ThemeSlot.SurfacePrimary, "CC_Playground_carousel_Slide_Third"),
+                DocsSlide(ThemeSlot.SurfaceSunken, "CC_Playground_carousel_Slide_Fourth"),
                 },
                 index.Value,
                 i => index.Set(i)
@@ -256,13 +256,12 @@ public static partial class Layout {
         return new DocSample(
             Carousel.Create(
                 new List<LightweaveNode> {
-                    DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
-                    DocsSlide(ThemeSlot.SurfaceAccent, "CC_Playground_carousel_Slide_Second"),
+                DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
+                DocsSlide(ThemeSlot.SurfaceAccent, "CC_Playground_carousel_Slide_Second"),
                 },
                 index.Value,
                 i => index.Set(i)
             )
         );
-    }
     }
 }

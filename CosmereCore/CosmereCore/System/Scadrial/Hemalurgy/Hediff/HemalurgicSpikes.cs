@@ -102,8 +102,7 @@ public class HemalurgicSpikes : HediffWithComps {
                 new PawnCapacityModifier { capacity = PawnCapacityDefOf.Sight, postFactor = 1f + sensesWeight * 0.20f }
             );
             capMods.Add(
-                new PawnCapacityModifier
-                    { capacity = PawnCapacityDefOf.Hearing, postFactor = 1f + sensesWeight * 0.20f }
+                new PawnCapacityModifier { capacity = PawnCapacityDefOf.Hearing, postFactor = 1f + sensesWeight * 0.20f }
             );
             offsets.Add(new StatModifier { stat = StatDef.Named("ShootingAccuracyPawn"), value = sensesWeight * 3f });
             factors.Add(

@@ -5,8 +5,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="dotenv.net" Version="4.0.0" />
-    <PackageReference Include="Spectre.Console" Version="0.50.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta6.25358.103" />
   </ItemGroup>
 

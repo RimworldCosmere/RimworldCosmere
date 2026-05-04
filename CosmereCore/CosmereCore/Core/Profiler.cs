@@ -40,7 +40,7 @@ public static class Profiler {
 
             foreach (MethodInfo method in profiledMethods) {
                 Profile attr = method.GetCustomAttribute<Profile>()!;
-                string label = string.IsNullOrEmpty(attr.label) ? method.Name : attr.label;
+                string label = string.IsNullOrEmpty(attr.Label) ? method.Name : attr.Label!;
                 Labels[method] = label;
                 Attrs[method] = attr;
 
@@ -53,7 +53,8 @@ public static class Profiler {
             }
 
             Initialized = true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Logger.Error($"Profiler initialization failed: {ex}");
         }
     }
@@ -74,7 +75,8 @@ public static class Profiler {
     private static IEnumerable<Type> SafeGetTypes(Assembly a) {
         try {
             return a.GetTypes();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Logger.Verbose($"Failed to get types from assembly {a.FullName}: {ex.Message}");
             return [];
         }
@@ -85,7 +87,8 @@ public static class Profiler {
             return t.GetMethods(
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
             );
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Logger.Verbose($"Failed to get methods from type {t.FullName}: {ex.Message}");
             return [];
         }
@@ -94,7 +97,7 @@ public static class Profiler {
     public static void StartProfiling(MethodBase __originalMethod) {
         if (!Attrs.TryGetValue(__originalMethod, out Profile? attr)) return;
 
-        if (attr.mode == ProfileMode.Instrumentation) {
+        if (attr.Mode == ProfileMode.Instrumentation) {
             (int CurrentManagedThreadId, MethodBase __originalMethod) key = (Environment.CurrentManagedThreadId,
                 __originalMethod);
             ConcurrentStack<Stopwatch>? stack = InstStacks.GetOrAdd(key, _ => new ConcurrentStack<Stopwatch>());
@@ -104,8 +107,8 @@ public static class Profiler {
         }
 
         // Sampling
-        if (attr.mode == ProfileMode.Sampling) {
-            bool sampled = Rand.Value < Mathf.Clamp01(attr.sampleProbability <= 0f ? 0.01f : attr.sampleProbability);
+        if (attr.Mode == ProfileMode.Sampling) {
+            bool sampled = Rand.Value < Mathf.Clamp01(attr.SampleProbability <= 0f ? 0.01f : attr.SampleProbability);
             Stopwatch? sw = null;
             if (sampled) {
                 sw = Stopwatch.StartNew();
@@ -119,7 +122,7 @@ public static class Profiler {
         if (!Attrs.TryGetValue(__originalMethod, out Profile? attr)) return;
         string label = Labels.TryGetValue(__originalMethod, out string? l) ? l : __originalMethod.Name;
 
-        if (attr.mode == ProfileMode.Instrumentation) {
+        if (attr.Mode == ProfileMode.Instrumentation) {
             (int CurrentManagedThreadId, MethodBase __originalMethod) key = (Environment.CurrentManagedThreadId,
                 __originalMethod);
             if (!InstStacks.TryGetValue(key, out ConcurrentStack<Stopwatch>? stack) || stack.Count == 0) return;
@@ -127,10 +130,11 @@ public static class Profiler {
             if (!stack.TryPop(out Stopwatch sw)) return;
             sw.Stop();
 
-            if (attr.aggregate) {
-                Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.category, attr.mode));
+            if (attr.Aggregate) {
+                Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.Category, attr.Mode));
                 agg.Add(sw.ElapsedTicks, 1, 1.0f);
-            } else {
+            }
+            else {
                 Logger.Profile(label, sw.ElapsedTicks);
             }
 
@@ -138,7 +142,7 @@ public static class Profiler {
         }
 
         // Sampling
-        if (attr.mode == ProfileMode.Sampling) {
+        if (attr.Mode == ProfileMode.Sampling) {
             Stack<SampleToken>? stack = SampleStack.Value!;
             if (stack.Count == 0) return;
             SampleToken token = stack.Pop();
@@ -146,13 +150,14 @@ public static class Profiler {
             if (token.sampled && token.sw != null) {
                 token.sw.Stop();
                 // Scale by 1/p to get unbiased estimate
-                float p = Mathf.Clamp(attr.sampleProbability <= 0f ? 0.01f : attr.sampleProbability, 0.000001f, 1f);
+                float p = Mathf.Clamp(attr.SampleProbability <= 0f ? 0.01f : attr.SampleProbability, 0.000001f, 1f);
                 double weight = 1.0 / p;
 
-                if (attr.aggregate) {
-                    Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.category, attr.mode));
+                if (attr.Aggregate) {
+                    Agg? agg = Aggs.GetOrAdd(__originalMethod, _ => new Agg(label, attr.Category, attr.Mode));
                     agg.Add(token.sw.ElapsedTicks, 1, weight);
-                } else {
+                }
+                else {
                     long estTicks = (long)(token.sw.ElapsedTicks * weight);
                     Logger.Profile($"[SAMP] {label}", estTicks);
                 }
@@ -320,7 +325,8 @@ public static class Profiler {
             if (mode == ProfileMode.Instrumentation) {
                 sampled = true; // always measure in instrumentation mode
                 sw = Stopwatch.StartNew();
-            } else {
+            }
+            else {
                 sampled = Rand.Value < this.p; // Bernoulli
                 sw = sampled ? Stopwatch.StartNew() : null;
             }
@@ -340,7 +346,8 @@ public static class Profiler {
 
                 Agg? agg = ScopeAggs.GetOrAdd(label, _ => new Agg(localLabel, localCategory, localMode));
                 agg.Add(scaledTicks, 1, 1.0); // already scaled above
-            } else {
+            }
+            else {
                 double ms = sw.ElapsedTicks * (1000.0 / Stopwatch.Frequency) * weight;
                 string modeString = mode == ProfileMode.Sampling ? "SAMP" : "INST";
                 string cat = string.IsNullOrEmpty(category) ? "" : $" [{category}]";

@@ -89,7 +89,8 @@ public static class Badge {
                 trailing.MeasuredRect = iconRect;
                 if (rtl) {
                     leftEdge = trailingHitRect.Value.xMax + gapPx;
-                } else {
+                }
+                else {
                     rightEdge = trailingHitRect.Value.x - gapPx;
                 }
             }
@@ -105,7 +106,8 @@ public static class Badge {
                 leading.MeasuredRect = iconRect;
                 if (rtl) {
                     rightEdge = leadingX - gapPx;
-                } else {
+                }
+                else {
                     leftEdge = leadingX + iconSize + gapPx;
                 }
             }
@@ -114,7 +116,7 @@ public static class Badge {
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
-            GUIStyle style = GuiStyleCache.Get(font, pixelSize, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
             style.alignment = TextAnchor.MiddleCenter;
 
             Color savedColor = GUI.color;

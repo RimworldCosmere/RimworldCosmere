@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
-using Verse;
+using Cosmere.Lightweave.Runtime;
 
 namespace Cosmere.Lightweave.Doc;
 
@@ -39,11 +39,13 @@ internal static class DocSourceResolver {
 
             string source = File.ReadAllText(file);
             return ExtractMethod(source, methodName);
-        } catch (IOException ex) {
-            Log.Warning($"Lightweave DocSourceResolver IO failure for {file}: {ex.Message}");
+        }
+        catch (IOException ex) {
+            LightweaveLog.Warning($"DocSourceResolver IO failure for {file}: {ex}");
             return null;
-        } catch (UnauthorizedAccessException ex) {
-            Log.Warning($"Lightweave DocSourceResolver access denied for {file}: {ex.Message}");
+        }
+        catch (UnauthorizedAccessException ex) {
+            LightweaveLog.Warning($"DocSourceResolver access denied for {file}: {ex}");
             return null;
         }
     }
@@ -97,7 +99,8 @@ internal static class DocSourceResolver {
                 char c = source[idx];
                 if (c == '(') {
                     parenDepth++;
-                } else if (c == ')') {
+                }
+                else if (c == ')') {
                     parenDepth--;
                 }
 
@@ -118,7 +121,8 @@ internal static class DocSourceResolver {
                 char c = source[end];
                 if (c == '{') {
                     depth++;
-                } else if (c == '}') {
+                }
+                else if (c == '}') {
                     depth--;
                     if (depth == 0) {
                         end++;
@@ -200,7 +204,8 @@ internal static class DocSourceResolver {
                 }
 
                 sb.Append(allWs ? ln.Substring(minIndent) : ln);
-            } else {
+            }
+            else {
                 sb.Append(ln);
             }
 

@@ -1,5 +1,6 @@
 using Cosmere.Core.Comp.Game;
 using Cosmere.System.Roshar.Comp.Thing;
+using Cosmere.System.Roshar.Def;
 using Cosmere.System.Roshar.Gene;
 using Verse;
 
@@ -17,7 +18,7 @@ public static class ViolationUtility {
 
         float multiplier = 1f;
         if (bondTarget is Pawn sprenPawn) {
-            CompSprenBond? sprenBond = sprenPawn.TryGetComp<CompSprenBond>();
+            SprenBond? sprenBond = sprenPawn.TryGetComp<SprenBond>();
             if (sprenBond != null) {
                 multiplier = sprenBond.GetViolationSeverityMultiplier();
             }
@@ -34,6 +35,15 @@ public static class ViolationUtility {
         string orderLabel = surgebinder.radiantOrderDef.LabelCap;
 
         Find.PlayLog.Add(new BondViolationLogEntry(pawn, orderLabel, violationReason, severityLabel));
+    }
+
+    public static bool IsSurgebinderOfOrder(Pawn pawn, RadiantOrderDef orderDef) {
+        if (pawn == null || pawn.Dead) return false;
+
+        Surgebinder? surgebinder = pawn.genes?.GetFirstGeneOfType<Surgebinder>();
+        if (surgebinder == null) return false;
+
+        return surgebinder.radiantOrderDef == orderDef;
     }
 
     public static bool IsSurgebinderOfOrder(Pawn pawn, string orderDefName) {

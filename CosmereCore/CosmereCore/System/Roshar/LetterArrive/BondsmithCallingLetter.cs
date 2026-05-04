@@ -15,7 +15,7 @@ public class BondsmithCallingLetter : ChoiceLetter {
             yield return new DiaOption("CRO_Bondsmith_Accept".Translate()) {
                 action = () => {
                     Pawn pawn = lookTargets.PrimaryTarget.Pawn;
-                    Find.WindowStack.Add(new ChooseRadiantOrder(pawn, sprenName));
+                    Find.WindowStack.Add(new Dialog_ChooseRadiantOrder(pawn, sprenName));
                     Find.LetterStack.RemoveLetter(this);
                 },
                 resolveTree = true,

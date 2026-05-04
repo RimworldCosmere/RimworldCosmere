@@ -1,7 +1,8 @@
+using Cosmere.System.Roshar.Nightwatcher;
+using Cosmere.Core.Nightwatcher;
 using Cosmere.System.Roshar.Comp.Hediff;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
-using Cosmere.System.Scadrial.Def;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -14,13 +15,17 @@ public class Dialog_NightwatcherEncounter : Window {
     private static readonly Color EffectColor = new Color(0.9f, 0.75f, 0.4f);
     private static readonly Color MetalColor = new Color(0.6f, 0.75f, 0.9f);
 
-    private static readonly string[] TierLabels = ["Minor Boons", "Moderate Boons", "Major Boons"];
+    private static string GetTierLabel(int tier) => tier switch {
+        1 => "Cosmere_Roshar_NW_Tier1_Label".Translate(),
+        2 => "Cosmere_Roshar_NW_Tier2_Label".Translate(),
+        _ => "Cosmere_Roshar_NW_Tier3_Label".Translate(),
+    };
 
-    private static readonly string[] TierDescs = [
-        "Small gifts — a sharpened skill, a shifted temperament. The Nightwatcher gives these freely.",
-        "Substantial changes — healed wounds, expanded capacity. These carry a heavier curse.",
-        "Transformative power — bonds unlocked, minds awakened. The Old Magic exacts its highest price.",
-    ];
+    private static string GetTierDesc(int tier) => tier switch {
+        1 => "Cosmere_Roshar_NW_Tier1_Desc".Translate(),
+        2 => "Cosmere_Roshar_NW_Tier2_Desc".Translate(),
+        _ => "Cosmere_Roshar_NW_Tier3_Desc".Translate(),
+    };
 
     private readonly Pawn pawn;
     private Vector2 boonScrollPos;
@@ -29,7 +34,7 @@ public class Dialog_NightwatcherEncounter : Window {
     private List<NightwatcherBoonDef>? filteredBoons;
     private Phase phase = Phase.Opening;
     private NightwatcherBoonDef? selectedBoon;
-    private MetallicArtsMetalDef? selectedMetal;
+    private string? selectedChoiceKey;
 
     public Dialog_NightwatcherEncounter(Pawn pawn) {
         this.pawn = pawn;
@@ -101,6 +106,19 @@ public class Dialog_NightwatcherEncounter : Window {
         }
     }
 
+    private struct BoonRowLayout {
+        public bool isNewTier;
+        public int tier;
+        public float tierDescHeight;
+        public string descText;
+        public float descHeight;
+        public string effectsText;
+        public float effectsHeight;
+        public float rowHeight;
+    }
+
+    private readonly List<BoonRowLayout> rowLayouts = [];
+
     private void DrawBoonSelection(Rect inRect) {
         float y = inRect.y + 12f;
 
@@ -119,61 +137,70 @@ public class Dialog_NightwatcherEncounter : Window {
 
         List<NightwatcherBoonDef> boons = FilteredBoons;
         Text.Font = GameFont.Tiny;
+
+        rowLayouts.Clear();
         float totalHeight = 0f;
         int lastTier = 0;
         for (int i = 0; i < boons.Count; i++) {
-            if (boons[i].powerTier != lastTier) {
-                lastTier = boons[i].powerTier;
-                float tierDescH = Text.CalcHeight(TierDescs[lastTier - 1], contentWidth - 32f);
-                totalHeight += 28f + tierDescH + 8f;
+            NightwatcherBoonDef boon = boons[i];
+            BoonRowLayout layout = default;
+            if (boon.powerTier != lastTier) {
+                lastTier = boon.powerTier;
+                layout.isNewTier = true;
+                layout.tier = lastTier;
+                layout.tierDescHeight = Text.CalcHeight(GetTierDesc(lastTier), contentWidth - 32f);
+                totalHeight += 28f + layout.tierDescHeight + 8f;
             }
 
-            string resolvedDesc = boons[i].description.Formatted(pawn.Named("PAWN"));
-            float descHeight = Text.CalcHeight(resolvedDesc, contentWidth - 24f);
-            string effects = GetBoonEffects(boons[i], selectedBoon == boons[i] ? selectedMetal : null);
-            float effectsHeight = effects.Length > 0 ? Text.CalcHeight(effects, contentWidth - 24f) + 4f : 0f;
-            totalHeight += 32f + descHeight + effectsHeight + 12f;
+            layout.descText = boon.description.Formatted(pawn.Named("PAWN"));
+            layout.descHeight = Text.CalcHeight(layout.descText, contentWidth - 24f);
+            layout.effectsText = GetBoonEffects(boon, selectedBoon == boon ? selectedChoiceKey : null);
+            layout.effectsHeight = layout.effectsText.Length > 0
+                ? Text.CalcHeight(layout.effectsText, contentWidth - 24f) + 4f
+                : 0f;
+            layout.rowHeight = 32f + layout.descHeight + layout.effectsHeight + 12f;
+            totalHeight += layout.rowHeight;
+            rowLayouts.Add(layout);
         }
 
         Rect viewRect = new Rect(0f, 0f, contentWidth, totalHeight);
         Widgets.BeginScrollView(listRect, ref boonScrollPos, viewRect);
 
         float rowY = 0f;
-        lastTier = 0;
         for (int i = 0; i < boons.Count; i++) {
             NightwatcherBoonDef boon = boons[i];
+            BoonRowLayout layout = rowLayouts[i];
 
-            if (boon.powerTier != lastTier) {
-                lastTier = boon.powerTier;
+            if (layout.isNewTier) {
                 Text.Font = GameFont.Small;
                 GUI.color = new Color(0.7f, 0.7f, 0.7f);
                 Widgets.Label(
                     new Rect(8f, rowY + 8f, viewRect.width - 16f, 22f),
-                    TierLabels[lastTier - 1]
+                    GetTierLabel(layout.tier)
                 );
                 Text.Font = GameFont.Tiny;
                 GUI.color = new Color(0.5f, 0.5f, 0.5f);
-                float tierDescH = Text.CalcHeight(TierDescs[lastTier - 1], viewRect.width - 32f);
                 Widgets.Label(
-                    new Rect(16f, rowY + 26f, viewRect.width - 32f, tierDescH),
-                    TierDescs[lastTier - 1]
+                    new Rect(16f, rowY + 26f, viewRect.width - 32f, layout.tierDescHeight),
+                    GetTierDesc(layout.tier)
                 );
                 GUI.color = Color.white;
-                rowY += 28f + tierDescH + 8f;
+                rowY += 28f + layout.tierDescHeight + 8f;
             }
 
             Text.Font = GameFont.Tiny;
-            string boonDesc = boon.description.Formatted(pawn.Named("PAWN"));
-            float descHeight = Text.CalcHeight(boonDesc, viewRect.width - 24f);
-            string effectsText = GetBoonEffects(boon, selectedBoon == boon ? selectedMetal : null);
-            float effectsHeight = effectsText.Length > 0 ? Text.CalcHeight(effectsText, viewRect.width - 24f) + 4f : 0f;
-            float rowHeight = 32f + descHeight + effectsHeight + 12f;
+            string boonDesc = layout.descText;
+            float descHeight = layout.descHeight;
+            string effectsText = layout.effectsText;
+            float effectsHeight = layout.effectsHeight;
+            float rowHeight = layout.rowHeight;
             Rect rowRect = new Rect(0f, rowY, viewRect.width, rowHeight);
 
             bool isSelected = selectedBoon == boon;
             if (isSelected) {
                 Widgets.DrawBoxSolid(rowRect, new Color(0.2f, 0.45f, 0.3f, 0.4f));
-            } else if (Mouse.IsOver(rowRect)) {
+            }
+            else if (Mouse.IsOver(rowRect)) {
                 Widgets.DrawBoxSolid(rowRect, new Color(0.3f, 0.3f, 0.3f, 0.3f));
             }
 
@@ -203,11 +230,12 @@ public class Dialog_NightwatcherEncounter : Window {
             Text.Font = GameFont.Small;
 
             if (Widgets.ButtonInvisible(rowRect)) {
-                if (boon.metalSelectionType != null) {
-                    ShowMetalSelectionMenu(boon);
-                } else {
+                if (boon.Applicator is INightwatcherChoiceProvider) {
+                    ShowChoiceMenu(boon);
+                }
+                else {
                     selectedBoon = boon;
-                    selectedMetal = null;
+                    selectedChoiceKey = null;
                 }
             }
 
@@ -219,7 +247,8 @@ public class Dialog_NightwatcherEncounter : Window {
 
         y = listRect.yMax + 8f;
 
-        bool canConfirm = selectedBoon != null && (selectedBoon.metalSelectionType == null || selectedMetal != null);
+        bool needsChoice = selectedBoon?.Applicator is INightwatcherChoiceProvider;
+        bool canConfirm = selectedBoon != null && (!needsChoice || selectedChoiceKey != null);
         if (canConfirm) {
             float btnW = 180f;
             float btnX = inRect.x + (inRect.width - btnW) / 2f;
@@ -227,11 +256,9 @@ public class Dialog_NightwatcherEncounter : Window {
                     new Rect(btnX, y, btnW, 36f),
                     "Cosmere_Roshar_NW_Boon_Confirm".Translate()
                 )) {
-                Dictionary<string, object>? context = null;
-                if (selectedMetal != null) {
-                    context = new Dictionary<string, object> { ["SelectedMetal"] = selectedMetal };
-                }
-
+                NightwatcherApplicationContext? context = selectedChoiceKey != null
+                    ? new NightwatcherApplicationContext(selectedChoiceKey)
+                    : null;
                 NightwatcherSystem.ApplyBoon(pawn, selectedBoon!, context);
                 drawnCurse = NightwatcherSystem.DrawCurse(selectedBoon!);
                 phase = Phase.CurseReveal;
@@ -308,7 +335,7 @@ public class Dialog_NightwatcherEncounter : Window {
                 NightwatcherSystem.ApplyCurse(pawn, drawnCurse);
             }
 
-            CompNightwatcher? comp = pawn.TryGetComp<CompNightwatcher>();
+            NightwatcherVisit? comp = pawn.TryGetComp<NightwatcherVisit>();
             comp?.MarkVisited();
 
             SendResultLetter();
@@ -316,24 +343,17 @@ public class Dialog_NightwatcherEncounter : Window {
         }
     }
 
-    private void ShowMetalSelectionMenu(NightwatcherBoonDef boon) {
-        List<MetallicArtsMetalDef> allMetals = DefDatabase<MetallicArtsMetalDef>.AllDefsListForReading;
+    private void ShowChoiceMenu(NightwatcherBoonDef boon) {
+        if (boon.Applicator is not INightwatcherChoiceProvider provider) return;
         List<FloatMenuOption> options = [];
-        for (int i = 0; i < allMetals.Count; i++) {
-            MetallicArtsMetalDef metal = allMetals[i];
-            if (boon.metalSelectionType == "allomancy" && metal.allomancy?.userName == null) continue;
-            if (boon.metalSelectionType == "feruchemy" && metal.feruchemy == null) continue;
-
-            string userName = boon.metalSelectionType == "allomancy"
-                ? metal.allomancy!.userName!
-                : metal.feruchemy!.userName ?? metal.LabelCap;
-            string label = $"{userName} ({metal.LabelCap})";
+        foreach (NightwatcherChoice choice in provider.GetChoices(boon)) {
+            NightwatcherChoice captured = choice;
             options.Add(
                 new FloatMenuOption(
-                    label,
+                    captured.Label,
                     () => {
                         selectedBoon = boon;
-                        selectedMetal = metal;
+                        selectedChoiceKey = captured.Key;
                     }
                 )
             );
@@ -342,65 +362,60 @@ public class Dialog_NightwatcherEncounter : Window {
         Find.WindowStack.Add(new FloatMenu(options));
     }
 
-    private static string GetBoonEffects(NightwatcherBoonDef boon, MetallicArtsMetalDef? metal = null) {
+    private static string GetBoonEffects(NightwatcherBoonDef boon, string? choiceKey = null) {
         List<string> effects = [];
 
         for (int i = 0; i < boon.skillBoosts.Count; i++) {
             BoonSkillBoost boost = boon.skillBoosts[i];
-            effects.Add($"+{boost.levels} {boost.skill.LabelCap}");
+            effects.Add("CRO_NW_Effect_SkillBoost".Translate(
+                boost.levels.Named("LEVELS"),
+                boost.skill.LabelCap.Named("SKILL")
+            ));
         }
 
         if (boon.grantTrait != null) {
-            effects.Add($"Gains: {boon.grantTrait.DataAtDegree(boon.grantTraitDegree).label.CapitalizeFirst()}");
+            string label = boon.grantTrait.DataAtDegree(boon.grantTraitDegree).label.CapitalizeFirst();
+            effects.Add("CRO_NW_Effect_Gains".Translate(label.Named("LABEL")));
         }
 
         if (boon.removeTrait != null) {
-            effects.Add($"Removes: {boon.removeTrait.degreeDatas[0].label.CapitalizeFirst()}");
+            string label = boon.removeTrait.degreeDatas[0].label.CapitalizeFirst();
+            effects.Add("CRO_NW_Effect_Removes".Translate(label.Named("LABEL")));
         }
 
         if (boon.removeHediff != null) {
-            effects.Add($"Cures: {boon.removeHediff.LabelCap}");
+            effects.Add("CRO_NW_Effect_Cures".Translate(boon.removeHediff.LabelCap.Named("LABEL")));
         }
 
         if (boon.investitureBonus > 0f) {
-            effects.Add($"+{boon.investitureBonus:0} Investiture capacity");
+            effects.Add("CRO_NW_Effect_InvestitureCapacity".Translate(
+                ((int)boon.investitureBonus).Named("AMOUNT")
+            ));
         }
 
         if (boon.surgebindingConnectionBoost > 0f) {
-            effects.Add($"+{boon.surgebindingConnectionBoost:0.#} Cultivation connection");
+            effects.Add("CRO_NW_Effect_CultivationConnection".Translate(
+                boon.surgebindingConnectionBoost.Named("AMOUNT")
+            ));
         }
 
         if (boon.psylinkBoost) {
-            effects.Add("+1 Psylink level");
+            effects.Add("CRO_NW_Effect_PsylinkLevel".Translate());
         }
 
         if (boon.hediff != null) {
             AppendHediffEffects(boon.hediff, effects);
-            if (boon.hediff.HasComp(typeof(HediffComp_AgelessBody))) {
-                effects.Add("Biological immortality");
+            if (boon.hediff.HasComp(typeof(AgelessBody))) {
+                effects.Add("CRO_NW_Effect_BiologicalImmortality".Translate());
             }
         }
 
-        if (boon.applicatorClass?.Name == "HealChronicApplicator") {
-            effects.Add("Heals one chronic condition");
-        } else if (boon.applicatorClass?.Name == "GriefReliefApplicator") {
-            effects.Add("Clears all negative memories");
-        } else if (boon.applicatorClass?.Name == "MistbornApplicator") {
-            effects.Add("Grants all Allomantic powers");
-        } else if (boon.applicatorClass?.Name == "MistingApplicator") {
-            effects.Add(
-                metal != null
-                    ? $"Grants Allomancy: {metal.allomancy?.userName} ({metal.LabelCap})"
-                    : "Grants one Allomantic power (choose metal)"
-            );
-        } else if (boon.applicatorClass?.Name == "FullFeruchemistApplicator") {
-            effects.Add("Grants all Feruchemical powers");
-        } else if (boon.applicatorClass?.Name == "FerringApplicator") {
-            effects.Add(
-                metal != null
-                    ? $"Grants Feruchemy: {metal.feruchemy?.userName ?? metal.LabelCap} ({metal.LabelCap})"
-                    : "Grants one Feruchemical power (choose metal)"
-            );
+        if (boon.Applicator is INightwatcherEffectDescriber describer) {
+            NightwatcherApplicationContext? ctx = choiceKey != null
+                ? new NightwatcherApplicationContext(choiceKey)
+                : null;
+            string? extra = describer.DescribeEffects(ctx);
+            if (!string.IsNullOrEmpty(extra)) effects.Add(extra!);
         }
 
         return effects.Count > 0 ? string.Join("  |  ", effects) : "";
@@ -414,31 +429,34 @@ public class Dialog_NightwatcherEncounter : Window {
                                               .FirstOrDefault(d => d.degree == curse.forceTraitDegree) ??
                                           curse.forceTrait.degreeDatas.FirstOrDefault();
             if (degreeData != null) {
-                effects.Add($"Gains: {degreeData.label.CapitalizeFirst()}");
+                effects.Add("CRO_NW_Effect_Gains".Translate(degreeData.label.CapitalizeFirst().Named("LABEL")));
             }
         }
 
         if (curse.stripTrait != null && curse.stripTrait.degreeDatas.Count > 0) {
-            effects.Add($"Loses: {curse.stripTrait.degreeDatas[0].label.CapitalizeFirst()}");
+            string label = curse.stripTrait.degreeDatas[0].label.CapitalizeFirst();
+            effects.Add("CRO_NW_Effect_Loses".Translate(label.Named("LABEL")));
         }
 
         if (curse.penaltySkill != null) {
-            effects.Add($"-{curse.penaltySkillLevels} {curse.penaltySkill.LabelCap}");
+            effects.Add("CRO_NW_Effect_SkillPenalty".Translate(
+                curse.penaltySkillLevels.Named("LEVELS"),
+                curse.penaltySkill.LabelCap.Named("SKILL")
+            ));
         }
 
         if (curse.hediff != null && !AppendHediffEffects(curse.hediff, effects)) {
             effects.Add(curse.hediff.LabelCap);
         }
 
-        if (curse.applicatorClass?.Name == "MemoryLossApplicator") {
-            effects.Add("All skills reset to 4");
-        } else if (curse.applicatorClass?.Name == "NarcolepsyApplicator") {
-            effects.Add("Random narcoleptic episodes");
+        if (curse.Applicator is INightwatcherEffectDescriber describer) {
+            string? extra = describer.DescribeEffects();
+            if (!string.IsNullOrEmpty(extra)) effects.Add(extra!);
         }
 
         if (curse.cultivationEvolutionDays > 0) {
             float years = curse.cultivationEvolutionDays / 365f;
-            effects.Add($"Evolves after {years:0.#} years");
+            effects.Add("CRO_NW_Effect_EvolvesAfterYears".Translate(years.Named("YEARS")));
         }
 
         return effects.Count > 0 ? string.Join("  |  ", effects) : "";
@@ -461,7 +479,11 @@ public class Dialog_NightwatcherEncounter : Window {
             for (int i = 0; i < stage.statOffsets.Count; i++) {
                 StatModifier mod = stage.statOffsets[i];
                 string sign = mod.value >= 0 ? "+" : "";
-                effects.Add($"{sign}{mod.value:0.##} {mod.stat.LabelCap}");
+                effects.Add("CRO_NW_Effect_StatOffset".Translate(
+                    sign.Named("SIGN"),
+                    mod.value.Named("VALUE"),
+                    mod.stat.LabelCap.Named("STAT")
+                ));
             }
         }
 
@@ -470,7 +492,11 @@ public class Dialog_NightwatcherEncounter : Window {
                 StatModifier mod = stage.statFactors[i];
                 float pct = (mod.value - 1f) * 100f;
                 string sign = pct >= 0 ? "+" : "";
-                effects.Add($"{sign}{pct:0.#}% {mod.stat.LabelCap}");
+                effects.Add("CRO_NW_Effect_StatFactor".Translate(
+                    sign.Named("SIGN"),
+                    pct.Named("VALUE"),
+                    mod.stat.LabelCap.Named("STAT")
+                ));
             }
         }
 
@@ -479,14 +505,21 @@ public class Dialog_NightwatcherEncounter : Window {
                 PawnCapacityModifier cap = stage.capMods[i];
                 if (cap.offset != 0f) {
                     string sign = cap.offset >= 0 ? "+" : "";
-                    effects.Add($"{sign}{cap.offset * 100f:0.#}% {cap.capacity.LabelCap}");
+                    effects.Add("CRO_NW_Effect_CapacityOffset".Translate(
+                        sign.Named("SIGN"),
+                        (cap.offset * 100f).Named("VALUE"),
+                        cap.capacity.LabelCap.Named("CAPACITY")
+                    ));
                 }
             }
         }
 
         if (stage.painOffset != 0f) {
             string sign = stage.painOffset >= 0 ? "+" : "";
-            effects.Add($"{sign}{stage.painOffset:0.##} Pain");
+            effects.Add("CRO_NW_Effect_PainOffset".Translate(
+                sign.Named("SIGN"),
+                stage.painOffset.Named("VALUE")
+            ));
         }
 
         return effects.Count > startCount;

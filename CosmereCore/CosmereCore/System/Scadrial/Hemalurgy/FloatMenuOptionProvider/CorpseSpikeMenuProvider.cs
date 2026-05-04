@@ -18,7 +18,7 @@ public class CorpseSpikeMenuProvider : RimWorld.FloatMenuOptionProvider {
         Pawn? pawn = context.FirstSelectedPawn;
         if (pawn == null) return null;
 
-        if (!ResearchProjectDef.Named("Cosmere_Scadrial_Hemalurgy").IsFinished) return null;
+        if (!HemalurgicDefOf.Cosmere_Scadrial_Hemalurgy.IsFinished) return null;
         if (!ShardUtility.AreAnyEnabled(ShardDefOf.Ruin, ShardDefOf.Harmony)) return null;
 
         if (corpse.Age > HemalurgicConstants.CorpseFreshnessTickLimit) {

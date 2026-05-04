@@ -25,7 +25,7 @@ public static class Dialog {
         [DocParam("Whether the dialog is currently visible.")]
         bool isOpen,
         [DocParam("Invoked when the dialog requests dismissal.")]
-        Action onClose,
+        Action onDismiss,
         [DocParam("Builds the dialog content node.")]
         Func<LightweaveNode> content,
         [DocParam("Initial window size in pixels. Height of -1 auto-sizes to content.")]
@@ -43,7 +43,7 @@ public static class Dialog {
 
             if (isOpen) {
                 if (current == null || !inStack) {
-                    DialogWindow fresh = new DialogWindow(content, onClose, resolvedSize);
+                    DialogWindow fresh = new DialogWindow(content, onDismiss, resolvedSize);
                     Find.WindowStack.Add(fresh);
                     windowRef.Current = fresh;
                 }
@@ -73,12 +73,12 @@ public static class Dialog {
         LightweaveNode dialog = Create(
             open.Value,
             () => open.Set(false),
-            () => Layout.Layout.Card.Create(
-                Layout.Layout.Card.Header(
-                    Layout.Layout.Card.Title((string)"CC_Playground_Overlay_Dialog_Header".Translate()),
-                    Layout.Layout.Card.Description((string)"CC_Playground_Overlay_Dialog_Body".Translate())
+            () => Layout.Card.Create(
+                Layout.Card.Header(
+                    Layout.Card.Title((string)"CC_Playground_Overlay_Dialog_Header".Translate()),
+                    Layout.Card.Description((string)"CC_Playground_Overlay_Dialog_Body".Translate())
                 ),
-                Layout.Layout.Card.Content(
+                Layout.Card.Content(
                     Text.Create(
                         (string)"CC_Playground_Overlay_Dialog_Body".Translate(),
                         FontRole.Body,
@@ -86,7 +86,7 @@ public static class Dialog {
                         ThemeSlot.TextPrimary
                     )
                 ),
-                Layout.Layout.Card.Footer(
+                Layout.Card.Footer(
                     Button.Create(
                         (string)"CC_Playground_Label_Confirm".Translate(),
                         () => open.Set(false)

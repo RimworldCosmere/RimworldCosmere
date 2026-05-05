@@ -635,9 +635,16 @@ public class Surgebinder : Invested {
     }
 
     private void EnforceStonewardDraftedDuringRaid() {
-        if (pawn.Drafted) return;
+        if (CurrentIdeal < 2) return;
 
         if (!IsRaidActiveOnMap(pawn.Map)) return;
+
+        bool isEngagedInCombat = pawn.Drafted ||
+                                pawn.mindState?.meleeThreat != null ||
+                                (pawn.CurJob?.def?.defName.Contains("Attack") ?? false) ||
+                                pawn.stances.curStance is Stance_Busy;
+
+        if (isEngagedInCombat) return;
 
         ViolationUtility.ApplyViolation(pawn, 0.1f, "refusing to fight during a raid");
     }

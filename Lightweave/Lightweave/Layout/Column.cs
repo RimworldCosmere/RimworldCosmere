@@ -18,8 +18,8 @@ namespace Cosmere.Lightweave.Layout;
 )]
 public static class Column {
     public static LightweaveNode Create(
-        [DocParam("Gap between rows.", TypeOverride = "Rem", DefaultOverride = "0")]
-        Rem gap = default,
+        [DocParam("Gap between rows. Accepts a Responsive<Rem> for breakpoint-driven gaps.", TypeOverride = "Responsive<Rem>", DefaultOverride = "0")]
+        Responsive<Rem> gap = default,
         [DocParam("Cross-axis alignment of children.")]
         FlexAlign align = FlexAlign.Start,
         [DocParam("Main-axis distribution.")]
@@ -33,6 +33,10 @@ public static class Column {
         children?.Invoke(kids);
         LightweaveNode node = NodeBuilder.New("Column", line, file);
         node.Children.AddRange(kids);
+
+        float ResolveGapPx() {
+            return gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
+        }
 
         bool AllKidsKnown() {
             for (int i = 0; i < kids.Count; i++) {
@@ -60,13 +64,13 @@ public static class Column {
                     total += ChildHeight(kids[i], width);
                 }
 
-                total += gap.ToPixels() * (count - 1);
+                total += ResolveGapPx() * (count - 1);
                 return total;
             };
         }
 
         node.Paint = (rect, paintChildren) => {
-            float gapPx = gap.ToPixels();
+            float gapPx = ResolveGapPx();
             int count = kids.Count;
             if (count == 0) {
                 return;

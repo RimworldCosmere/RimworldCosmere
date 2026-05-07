@@ -13,6 +13,7 @@ namespace Cosmere.Lightweave.Playground;
 public sealed record PlaygroundVariant(
     string LabelKey,
     LightweaveNode Demo,
+    Func<LightweaveNode>? DemoFactory = null,
     [CallerArgumentExpression("Demo")] string Code = ""
 );
 
@@ -30,6 +31,7 @@ public static class PlaygroundPanel {
     private const string UsageAnchor = "usage";
     private const string CompositionAnchor = "composition";
     private const string RtlAnchor = "rtl";
+    private const int RtlPreviewSalt = unchecked((int)0x52544C50);
     private const string ApiAnchor = "api-reference";
     private const string SourceAnchor = "source";
 
@@ -395,7 +397,17 @@ public static class PlaygroundPanel {
         );
 
         PlaygroundVariant first = variants[0];
-        LightweaveNode mirrored = Doc.Doc.DirectionScope(Direction.Rtl, first.Demo);
+        RenderContext rc = RenderContext.Current;
+        rc.PushPathSalt(RtlPreviewSalt);
+        LightweaveNode rebuiltDemo;
+        try {
+            rebuiltDemo = first.DemoFactory?.Invoke() ?? first.Demo;
+        }
+        finally {
+            rc.PopPathSalt();
+        }
+
+        LightweaveNode mirrored = Doc.Doc.DirectionScope(Direction.Rtl, rebuiltDemo);
         LightweaveNode body = BuildPreviewFrame(mirrored, variantMinHeight);
 
         return Doc.Doc.Section(RtlAnchor, heading, body, ctx);
@@ -433,7 +445,9 @@ public static class PlaygroundPanel {
             SpacingScale.Xs,
             s => {
                 s.Add(fileRow);
-                s.Add(SourceLink.Create(sourcePath));
+                if (SourceLink.SourceFileExists(sourcePath)) {
+                    s.Add(SourceLink.Create(sourcePath));
+                }
                 s.Add(SourceLink.GithubLink(sourcePath));
             }
         );

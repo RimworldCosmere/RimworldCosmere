@@ -30,8 +30,8 @@ public sealed class HStackBuilder {
 )]
 public static class HStack {
     public static LightweaveNode Create(
-        [DocParam("Gap between columns.", TypeOverride = "Rem", DefaultOverride = "0")]
-        Rem gap = default,
+        [DocParam("Gap between columns.", TypeOverride = "Responsive<Rem>", DefaultOverride = "0")]
+        Responsive<Rem> gap = default,
         [DocParam("Builder callback to populate items via Add(width) / AddFlex().")]
         Action<HStackBuilder>? children = null,
         [CallerLineNumber] int line = 0,
@@ -46,7 +46,9 @@ public static class HStack {
             node.Children.Add(builder.Items[i].node);
         }
 
-        float gapPx = gap.ToPixels();
+        float ResolveGapPx() {
+            return gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
+        }
 
         float? maxChildHeight = null;
         for (int i = 0; i < count; i++) {
@@ -58,7 +60,7 @@ public static class HStack {
 
         node.PreferredHeight = maxChildHeight;
 
-        float[] AllocateWidths(float availableWidth) {
+        float[] AllocateWidths(float availableWidth, float gapPx) {
             float[] widths = new float[count];
             float fixedTotal = 0f;
             int flexCount = 0;
@@ -94,7 +96,7 @@ public static class HStack {
                 return 0f;
             }
 
-            float[] widths = AllocateWidths(availableWidth);
+            float[] widths = AllocateWidths(availableWidth, ResolveGapPx());
             float max = 0f;
             for (int i = 0; i < count; i++) {
                 float h = MeasureChildHeight(builder.Items[i].node, widths[i]);
@@ -114,7 +116,8 @@ public static class HStack {
             Direction dir = RenderContext.Current.Direction;
             bool reverse = dir == Direction.Rtl;
 
-            float[] widths = AllocateWidths(rect.width);
+            float gapPx = ResolveGapPx();
+            float[] widths = AllocateWidths(rect.width, gapPx);
 
             float x = rect.x;
             for (int i = 0; i < count; i++) {

@@ -22,10 +22,10 @@ public static class Container {
     public static LightweaveNode Create(
         [DocParam("Child constrained by max width and padding.")]
         LightweaveNode child,
-        [DocParam("Maximum content width. Zero means unconstrained.", TypeOverride = "Rem", DefaultOverride = "0")]
-        Rem maxWidth = default,
-        [DocParam("Inset padding around the child.", TypeOverride = "EdgeInsets?", DefaultOverride = "null")]
-        EdgeInsets? padding = null,
+        [DocParam("Maximum content width. Zero means unconstrained. Accepts a Responsive<Rem> for breakpoint-driven caps.", TypeOverride = "Responsive<Rem>", DefaultOverride = "0")]
+        Responsive<Rem> maxWidth = default,
+        [DocParam("Inset padding around the child. Accepts a Responsive<EdgeInsets> for breakpoint-driven padding.", TypeOverride = "Responsive<EdgeInsets>", DefaultOverride = "Zero")]
+        Responsive<EdgeInsets> padding = default,
         [DocParam("Horizontal alignment within the available width.")]
         ContainerAlign align = ContainerAlign.Center,
         [CallerLineNumber] int line = 0,
@@ -34,16 +34,18 @@ public static class Container {
         LightweaveNode node = NodeBuilder.New("Container", line, file);
         node.Children.Add(child);
 
-        float maxWidthPx = maxWidth.ToPixels();
-        EdgeInsets pad = padding ?? EdgeInsets.Zero;
-
         float ResolveInnerWidth(float availableWidth) {
+            Breakpoint bp = RenderContext.Current.Breakpoint;
+            float maxWidthPx = maxWidth.Resolve(bp).ToPixels();
+            EdgeInsets pad = padding.Resolve(bp);
             float outer = maxWidthPx > 0f ? Mathf.Min(availableWidth, maxWidthPx) : availableWidth;
             (float leftPx, float topPx, float rightPx, float bottomPx) = pad.Resolve(RenderContext.Current.Direction);
             return Mathf.Max(0f, outer - leftPx - rightPx);
         }
 
         node.Measure = availableWidth => {
+            Breakpoint bp = RenderContext.Current.Breakpoint;
+            EdgeInsets pad = padding.Resolve(bp);
             float innerWidth = ResolveInnerWidth(availableWidth);
             (float leftPx, float topPx, float rightPx, float bottomPx) = pad.Resolve(RenderContext.Current.Direction);
             float childHeight = child.Measure?.Invoke(innerWidth) ?? child.PreferredHeight ?? 0f;
@@ -51,6 +53,9 @@ public static class Container {
         };
 
         node.Paint = (rect, paintChildren) => {
+            Breakpoint bp = RenderContext.Current.Breakpoint;
+            float maxWidthPx = maxWidth.Resolve(bp).ToPixels();
+            EdgeInsets pad = padding.Resolve(bp);
             Direction dir = RenderContext.Current.Direction;
             float outer = maxWidthPx > 0f ? Mathf.Min(rect.width, maxWidthPx) : rect.width;
             float offsetX = align switch {
@@ -65,6 +70,27 @@ public static class Container {
         };
 
         return node;
+    }
+
+
+    public static LightweaveNode Responsive(
+        LightweaveNode child,
+        Responsive<EdgeInsets> padding = default,
+        ContainerAlign align = ContainerAlign.Center,
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
+    ) {
+        Responsive<Rem> ladder = new Responsive<Rem>(
+            new Rem(0f),
+            new (Breakpoint, Rem)[] {
+                (Breakpoint.Sm, new Rem(40f)),
+                (Breakpoint.Md, new Rem(48f)),
+                (Breakpoint.Lg, new Rem(64f)),
+                (Breakpoint.Xl, new Rem(80f)),
+                (Breakpoint.Xxl, new Rem(96f)),
+            }
+        );
+        return Create(child, ladder, padding, align, line, file);
     }
 
     private static LightweaveNode DocsViewport(string labelKey, Rem maxWidth, ContainerAlign align) {
@@ -123,6 +149,40 @@ public static class Container {
     public static DocSample DocsUnconstrained() {
         return new DocSample(
             DocsViewport("CC_Playground_Container_Unconstrained_Body", default, ContainerAlign.Center)
+        );
+    }
+
+
+    [DocVariant("CC_Playground_Container_Responsive")]
+    public static DocSample DocsResponsive() {
+        LightweaveNode block = Box.Create(
+            EdgeInsets.Vertical(SpacingScale.Sm),
+            new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent),
+            null,
+            RadiusSpec.All(new Rem(0.25f)),
+            c => c.Add(
+                Text.Create(
+                    (string)"CC_Playground_Container_Responsive_Body".Translate(),
+                    FontRole.BodyBold,
+                    new Rem(0.8125f),
+                    ThemeSlot.TextOnAccent,
+                    TextAlign.Center
+                )
+            )
+        );
+        LightweaveNode contained = Container.Responsive(
+            block,
+            EdgeInsets.Horizontal(SpacingScale.Xs),
+            ContainerAlign.Center
+        );
+        return new DocSample(
+            Box.Create(
+                EdgeInsets.All(new Rem(0.25f)),
+                new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken),
+                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                RadiusSpec.All(new Rem(0.25f)),
+                c => c.Add(contained)
+            )
         );
     }
 

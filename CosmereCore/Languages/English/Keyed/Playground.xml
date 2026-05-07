@@ -183,6 +183,8 @@
     <CC_Playground_Category_Data_Desc>Lists, tables, trees - surfaces for inspecting collections.</CC_Playground_Category_Data_Desc>
     <CC_Playground_Category_Hooks>Hooks</CC_Playground_Category_Hooks>
     <CC_Playground_Category_Hooks_Desc>State, refs, memoization, focus, animation - the primitives under the primitives.</CC_Playground_Category_Hooks_Desc>
+    <CC_Playground_Category_Tokens>Tokens</CC_Playground_Category_Tokens>
+    <CC_Playground_Category_Tokens_Desc>Design tokens - breakpoints, spacing scale, theme slots. The vocabulary other primitives compose from.</CC_Playground_Category_Tokens_Desc>
 
     <CC_Playground_stack_Title>Stack</CC_Playground_stack_Title>
     <CC_Playground_stack_What>Natural-height vertical stack. Each child gets its declared height; the stack exposes the total.</CC_Playground_stack_What>
@@ -538,4 +540,21 @@
     <CC_Playground_Container_End_Body>max 8rem</CC_Playground_Container_End_Body>
     <CC_Playground_Container_Unconstrained>No cap</CC_Playground_Container_Unconstrained>
     <CC_Playground_Container_Unconstrained_Body>fills viewport</CC_Playground_Container_Unconstrained_Body>
+    <CC_Playground_Container_Responsive>Responsive</CC_Playground_Container_Responsive>
+    <CC_Playground_Container_Responsive_Body>tailwind ladder</CC_Playground_Container_Responsive_Body>
+
+    <CC_Playground_Grid_Responsive>Responsive columns</CC_Playground_Grid_Responsive>
+    <CC_Playground_Grid_Responsive_Body>1 base, 2 at md, 4 at lg</CC_Playground_Grid_Responsive_Body>
+
+    <CC_Playground_breakpoints_Title>Breakpoints</CC_Playground_breakpoints_Title>
+    <CC_Playground_breakpoints_What>Tailwind-style viewport tokens (Xs, Sm, Md, Lg, Xl, Xxl) resolved from the painted root width. Read RenderContext.Current.Breakpoint or wrap a value in Responsive&lt;T&gt; so layout adapts when the window crosses a threshold.</CC_Playground_breakpoints_What>
+    <CC_Playground_breakpoints_When>Reach for breakpoints when a single layout cannot serve narrow and wide windows well. Skip them for fixed surfaces like HUD overlays whose footprint never changes.</CC_Playground_breakpoints_When>
+    <CC_Playground_breakpoints_Readout>Current breakpoint</CC_Playground_breakpoints_Readout>
+    <CC_Playground_breakpoints_Ladder>Threshold ladder</CC_Playground_breakpoints_Ladder>
+    <CC_Playground_Breakpoint_Xs>Xs</CC_Playground_Breakpoint_Xs>
+    <CC_Playground_Breakpoint_Sm>Sm</CC_Playground_Breakpoint_Sm>
+    <CC_Playground_Breakpoint_Md>Md</CC_Playground_Breakpoint_Md>
+    <CC_Playground_Breakpoint_Lg>Lg</CC_Playground_Breakpoint_Lg>
+    <CC_Playground_Breakpoint_Xl>Xl</CC_Playground_Breakpoint_Xl>
+    <CC_Playground_Breakpoint_Xxl>Xxl</CC_Playground_Breakpoint_Xxl>
 </LanguageData>

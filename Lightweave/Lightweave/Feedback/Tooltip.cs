@@ -87,6 +87,8 @@ public static class Tooltip {
 
         Hooks.Hooks.RefHandle<float> hoverTimer = Hooks.Hooks.UseRef(0f, line, file);
 
+        node.Measure = availableWidth => children.Measure?.Invoke(availableWidth) ?? children.PreferredHeight ?? 0f;
+
         node.Paint = (rect, _) => {
             children.MeasuredRect = rect;
             LightweaveRoot.PaintSubtree(children, rect);
@@ -108,29 +110,33 @@ public static class Tooltip {
             }
 
             Vector2 size = preferredSize ?? new Vector2(new Rem(12f).ToPixels(), new Rem(1.75f).ToPixels());
-            Vector2 mouseScreen = GUIUtility.GUIToScreenPoint(e.mousePosition);
-            float offsetX = 12f;
-            float offsetY = 18f;
-            float x = mouseScreen.x + offsetX;
-            float y = mouseScreen.y + offsetY;
+            float gap = new Rem(0.375f).ToPixels();
 
-            if (x + size.x > Screen.width) {
-                x = mouseScreen.x - offsetX - size.x;
+            Vector2 anchorTopLeftScreen = GUIUtility.GUIToScreenPoint(new Vector2(rect.x, rect.y));
+            Vector2 anchorBottomLeftScreen = GUIUtility.GUIToScreenPoint(new Vector2(rect.x, rect.yMax));
+
+            float screenX = anchorTopLeftScreen.x;
+            float screenY = anchorBottomLeftScreen.y + gap;
+
+            if (screenX + size.x > Screen.width) {
+                screenX = Screen.width - size.x;
             }
 
-            if (y + size.y > Screen.height) {
-                y = mouseScreen.y - offsetY - size.y;
+            if (screenX < 0f) {
+                screenX = 0f;
             }
 
-            if (x < 0f) {
-                x = 0f;
+            if (screenY + size.y > Screen.height) {
+                float aboveScreenY = anchorTopLeftScreen.y - gap - size.y;
+                if (aboveScreenY >= 0f) {
+                    screenY = aboveScreenY;
+                }
+                else {
+                    screenY = Screen.height - size.y;
+                }
             }
 
-            if (y < 0f) {
-                y = 0f;
-            }
-
-            Rect tooltipScreenRect = new Rect(x, y, size.x, size.y);
+            Rect tooltipScreenRect = new Rect(screenX, screenY, size.x, size.y);
 
             RenderContext.Current.PendingOverlays.Enqueue(() => {
                 Vector2 local = GUIUtility.ScreenToGUIPoint(new Vector2(tooltipScreenRect.x, tooltipScreenRect.y));

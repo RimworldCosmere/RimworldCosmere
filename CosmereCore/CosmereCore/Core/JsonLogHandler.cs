@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -30,6 +31,10 @@ public class JsonLogHandler : ILogHandler {
         RegexOptions.Compiled
     );
 
+    private static readonly object FileLock = new object();
+    private static StreamWriter? jsonWriter;
+    private static bool initAttempted;
+
     public readonly ILogHandler Inner;
 
     public JsonLogHandler(ILogHandler inner) {
@@ -37,10 +42,9 @@ public class JsonLogHandler : ILogHandler {
     }
 
     public void LogFormat(LogType logType, UnityEngine.Object context, string format, params object[] args) {
-        if (!debugMode) {
-            Inner.LogFormat(logType, context, format, args);
-            return;
-        }
+        Inner.LogFormat(logType, context, format, args);
+
+        if (!debugMode) return;
 
         string raw;
         try {
@@ -50,18 +54,56 @@ public class JsonLogHandler : ILogHandler {
             raw = format;
         }
 
-        string json = BuildJson(logType, raw, null, context);
-        Inner.LogFormat(logType, context, "{0}", json);
+        WriteJson(BuildJson(logType, raw, null, context));
     }
 
     public void LogException(Exception exception, UnityEngine.Object context) {
-        if (!debugMode) {
-            Inner.LogException(exception, context);
-            return;
-        }
+        Inner.LogException(exception, context);
 
-        string json = BuildJson(LogType.Exception, exception.Message ?? "<no message>", exception, context);
-        Inner.LogFormat(LogType.Exception, context, "{0}", json);
+        if (!debugMode) return;
+
+        WriteJson(BuildJson(LogType.Exception, exception.Message ?? "<no message>", exception, context));
+    }
+
+    private static void WriteJson(string json) {
+        try {
+            lock (FileLock) {
+                StreamWriter? writer = GetWriter();
+                if (writer == null) return;
+                writer.WriteLine(json);
+                writer.Flush();
+            }
+        }
+        catch {
+        }
+    }
+
+    private static StreamWriter? GetWriter() {
+        if (jsonWriter != null) return jsonWriter;
+        if (initAttempted) return null;
+        initAttempted = true;
+
+        try {
+            string consolePath = Application.consoleLogPath;
+            string dir = string.IsNullOrEmpty(consolePath)
+                ? Application.persistentDataPath
+                : Path.GetDirectoryName(consolePath) ?? Application.persistentDataPath;
+            string path = Path.Combine(dir, "Player.json.log");
+
+            FileStream fs = new FileStream(
+                path,
+                FileMode.Create,
+                FileAccess.Write,
+                FileShare.Read
+            );
+            jsonWriter = new StreamWriter(fs, new UTF8Encoding(false)) {
+                AutoFlush = false,
+            };
+            return jsonWriter;
+        }
+        catch {
+            return null;
+        }
     }
 
     private static string BuildJson(

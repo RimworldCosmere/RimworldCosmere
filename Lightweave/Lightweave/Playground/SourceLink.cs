@@ -16,23 +16,48 @@ public static class SourceLink {
     private static string RepoRoot {
         get {
             if (repoRoot != null) return repoRoot;
-            string guess = Path.GetFullPath(Path.Combine(GenFilePaths.ModsFolderPath, "..", ".."));
-            string[] candidates = {
-                "/mnt/c/Users/aequa/projects/RimworldCosmere/RimworldCosmere",
-                @"C:\Users\aequa\projects\RimworldCosmere\RimworldCosmere",
-                guess,
-            };
-            for (int i = 0; i < candidates.Length; i++) {
-                if (!string.IsNullOrEmpty(candidates[i]) &&
-                    Directory.Exists(Path.Combine(candidates[i], "CosmereCore"))) {
-                    repoRoot = candidates[i];
-                    return repoRoot;
-                }
-            }
-
-            repoRoot = candidates[1];
+            repoRoot = DetectRepoRoot() ?? "";
             return repoRoot;
         }
+    }
+
+
+    public static bool SourceFileExists(string sourcePath) {
+        try {
+            string root = RepoRoot;
+            if (string.IsNullOrEmpty(root)) return false;
+            string abs = Path.Combine(root, sourcePath);
+            return File.Exists(abs);
+        }
+        catch (Exception) {
+            return false;
+        }
+    }
+
+    private static string? DetectRepoRoot() {
+        try {
+            string asmPath = typeof(SourceLink).Assembly.Location;
+            if (!string.IsNullOrEmpty(asmPath)) {
+                string asmDir = Path.GetDirectoryName(asmPath) ?? "";
+                string up2 = Path.GetFullPath(Path.Combine(asmDir, "..", ".."));
+                if (Directory.Exists(Path.Combine(up2, "CosmereCore"))) {
+                    return up2;
+                }
+            }
+        }
+        catch (Exception) {
+        }
+
+        try {
+            string modsParent = Path.GetFullPath(Path.Combine(GenFilePaths.ModsFolderPath, "..", ".."));
+            if (Directory.Exists(Path.Combine(modsParent, "CosmereCore"))) {
+                return modsParent;
+            }
+        }
+        catch (Exception) {
+        }
+
+        return null;
     }
 
     public static LightweaveNode Create(
@@ -116,10 +141,19 @@ public static class SourceLink {
 
     private static void TryOpenInEditor(string sourcePath) {
         try {
-            string abs = Path.Combine(RepoRoot, sourcePath);
+            string root = RepoRoot;
+            if (string.IsNullOrEmpty(root)) {
+                LightweaveLog.Warning("SourceLink open failed: repo root could not be detected, falling back to GitHub");
+                Application.OpenURL(BuildGithubUrl(sourcePath));
+                return;
+            }
+
+            string abs = Path.Combine(root, sourcePath);
             string unix = abs.Replace('\\', '/');
-            if (!unix.StartsWith("/")) {
-                unix = "/" + unix;
+            if (Application.platform != RuntimePlatform.WindowsPlayer && Application.platform != RuntimePlatform.WindowsEditor) {
+                if (!unix.StartsWith("/")) {
+                    unix = "/" + unix;
+                }
             }
 
             Application.OpenURL("vscode://file" + unix);

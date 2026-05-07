@@ -3,6 +3,7 @@ using System.Threading;
 using Cosmere.Lightweave.Hooks;
 using Cosmere.Lightweave.Runtime.Internal;
 using Cosmere.Lightweave.Theme;
+using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 
@@ -12,8 +13,10 @@ public sealed class RenderContext {
     private static readonly ThreadLocal<RenderContext?> current = new ThreadLocal<RenderContext?>();
 
     private readonly List<HotkeyBinding> pendingHotkeys = new List<HotkeyBinding>();
+    private readonly Stack<int> pathHashStack = new Stack<int>();
     public Stack<object> ContextValues = new Stack<object>();
     public Stack<Direction> DirectionStack = new Stack<Direction>();
+    public Breakpoint Breakpoint = Breakpoint.Xs;
     public int? FocusedNodeId;
     public readonly HookStore Hooks;
     public int? HoveredNodeId;
@@ -47,6 +50,19 @@ public sealed class RenderContext {
 
     public static void Clear() {
         current.Value = null;
+    }
+
+    public void PushPathSalt(int salt) {
+        pathHashStack.Push(ParentPathHash);
+        ParentPathHash = unchecked(ParentPathHash * 31 + salt);
+    }
+
+    public void PopPathSalt() {
+        if (pathHashStack.Count == 0) {
+            throw new InvalidOperationException("PopPathSalt without matching PushPathSalt");
+        }
+
+        ParentPathHash = pathHashStack.Pop();
     }
 
     public void RegisterHotkey(HotkeyBinding binding) {

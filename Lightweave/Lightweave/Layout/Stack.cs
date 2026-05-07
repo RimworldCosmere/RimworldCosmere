@@ -41,8 +41,8 @@ public sealed class StackBuilder {
 )]
 public static class Stack {
     public static LightweaveNode Create(
-        [DocParam("Gap between stacked items.", TypeOverride = "Rem", DefaultOverride = "0")]
-        Rem gap = default,
+        [DocParam("Gap between stacked items. Accepts a Responsive<Rem> for breakpoint-driven gaps.", TypeOverride = "Responsive<Rem>", DefaultOverride = "0")]
+        Responsive<Rem> gap = default,
         [DocParam("Builder callback to populate items via Add / AddFlex.")]
         Action<StackBuilder>? children = null,
         [CallerLineNumber] int line = 0,
@@ -57,7 +57,9 @@ public static class Stack {
             node.Children.Add(builder.Items[i].node);
         }
 
-        float gapPx = gap.ToPixels();
+        float ResolveGapPx() {
+            return gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
+        }
 
         float ResolveItemHeight(int index, float availableWidth) {
             (LightweaveNode child, float h, StackItemMode mode) = builder.Items[index];
@@ -91,7 +93,7 @@ public static class Stack {
                 }
 
                 if (count > 1) {
-                    total += gapPx * (count - 1);
+                    total += ResolveGapPx() * (count - 1);
                 }
 
                 return total;
@@ -103,6 +105,7 @@ public static class Stack {
                 return;
             }
 
+            float gapPx = ResolveGapPx();
             float nonFlexTotal = 0f;
             int flexCount = 0;
             float[] resolvedHeights = new float[count];

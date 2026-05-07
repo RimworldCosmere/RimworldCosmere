@@ -1,4 +1,4 @@
-﻿![Introduction](../.github/assets/fallback/intro.png)
+![Introduction](../.github/assets/fallback/intro.png)
 
 ### Part of the RimWorld: Cosmere Project
 
@@ -11,6 +11,7 @@
 
 *The foundational systems and definitions for all Cosmere-based RimWorld mods.*
 
+​
 ​
 
 ![About](../.github/assets/fallback/about.png)
@@ -58,6 +59,8 @@ Mods can register new Shards via the provided game component and hook into the I
 
 ​
 
+​
+
 ![Recommendations](../.github/assets/fallback/recommendations.png)
 
 Here are a couple recommended mods that work really well with the Cosmere mods:
@@ -66,6 +69,10 @@ Here are a couple recommended mods that work really well with the Cosmere mods:
     * Rusts! This is one of the most gorgeous UI mods this game has. Drastically improves the Bills UI
 * [Nice Health Tab](https://steamcommunity.com/sharedfiles/filedetails/?id=3328729902)
     * Storms! This is another awesome mod by Andromeda that makes the Health tab gorgeous
+* [Gotta Go Fast](https://steamcommunity.com/sharedfiles/filedetails/?id=3712112476)
+    * Drastically improves the phatfinding speed of pawns that are faster than normal, and/or pawns that can fly.
+* [BetterWeight](https://steamcommunity.com/sharedfiles/filedetails/?id=2221387317)
+    * Gives buildings realistic weights based on their material costs. Makes Steel Pushing and Iron Pulling on Scadrial feel right - heavy steel walls resist a Coinshot's Push, light wooden furniture flies across the room.
 
 ​
 
@@ -93,10 +100,10 @@ Contribute and donate so we can get more art and other commissions:
 
 ![Attributions](../.github/assets/fallback/attributions.png)
 
-* Big thanks to Sir Van (`sir_vann` On Discord) for in-game art
-* Another big thanks to Immortalus (`_immortalus` on Discord) for the Mod Previews and a bunch more art
-* Thanks to everyone in the main RimWorld discord #mod-development channel (Especially `aelanna`) for helping with
+* Big thanks to Sir Van ('sir_vann' On Discord) for in-game art
+* Another big thanks to Immortalus ('_immortalus' on Discord) for the Mod Previews and a bunch more art
+* Thanks to everyone in the main RimWorld discord #mod-development channel (Especially 'aelanna') for helping with
   random questions
 
-**_This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
-Entertainment, LLC or Ludeon Studios._**
+***This is unofficial fan content, created and shared for non-commercial use. It has not been reviewed by Dragonsteel
+Entertainment, LLC or Ludeon Studios.***

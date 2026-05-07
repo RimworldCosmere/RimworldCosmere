@@ -71,6 +71,12 @@ public sealed class LightweavePlayground : LightweaveWindow {
             "CC_Playground_Category_Hooks_Desc",
             new[] { "usestate", "useanim", "usefocus", "usehotkey" }
         ),
+        new PlaygroundCategory(
+            "tokens",
+            "CC_Playground_Category_Tokens",
+            "CC_Playground_Category_Tokens_Desc",
+            new[] { "breakpoints" }
+        ),
     };
 
     private static readonly Dictionary<string, string> SourcePaths = new Dictionary<string, string> {
@@ -137,6 +143,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
         { "useanim", "Lightweave/Lightweave/Hooks/Hooks.cs" },
         { "usefocus", "Lightweave/Lightweave/Hooks/Hooks.cs" },
         { "usehotkey", "Lightweave/Lightweave/Hooks/Hooks.cs" },
+        { "breakpoints", "Lightweave/Lightweave/Tokens/Breakpoint.cs" },
     };
 
     private static readonly Dictionary<string, float> DemoRowHeights = new Dictionary<string, float> {
@@ -271,9 +278,8 @@ public sealed class LightweavePlayground : LightweaveWindow {
             }
         );
 
-        LightweaveNode contained = Layout.Container.Create(
+        LightweaveNode contained = Layout.Container.Responsive(
             docStack,
-            new Rem(56f),
             new EdgeInsets(Top: SpacingScale.None, Right: SpacingScale.Xl, Bottom: SpacingScale.None, Left: SpacingScale.Xl)
         );
         LightweaveNode mainScroll = Layout.ScrollArea.External(contained, ctx.Scroll);
@@ -284,7 +290,9 @@ public sealed class LightweavePlayground : LightweaveWindow {
             SpacingScale.None,
             r => {
                 r.AddFlex(mainScroll);
-                r.Add(tocNode, new Rem(15f).ToPixels());
+                if (RenderContext.Current.Breakpoint >= Breakpoint.Lg) {
+                    r.Add(tocNode, new Rem(15f).ToPixels());
+                }
             }
         );
 

@@ -114,7 +114,7 @@ internal static class DocReflection {
         return BuildSamples<DocVariantAttribute, PlaygroundVariant>(
             primitive,
             forceDisabled,
-            (attr, sample) => new PlaygroundVariant(attr.LabelKey, sample.Demo, sample.Code),
+            (attr, sample, factory) => new PlaygroundVariant(attr.LabelKey, sample.Demo, () => factory()?.Demo ?? sample.Demo, sample.Code),
             attr => attr.Order
         );
     }
@@ -123,7 +123,7 @@ internal static class DocReflection {
         return BuildSamples<DocStateAttribute, PlaygroundState>(
             primitive,
             forceDisabled,
-            (attr, sample) => new PlaygroundState(attr.LabelKey, sample.Demo, sample.Code),
+            (attr, sample, _) => new PlaygroundState(attr.LabelKey, sample.Demo, sample.Code),
             attr => attr.Order
         );
     }
@@ -131,7 +131,7 @@ internal static class DocReflection {
     private static IReadOnlyList<TItem> BuildSamples<TAttr, TItem>(
         Type primitive,
         bool forceDisabled,
-        Func<TAttr, DocSample, TItem> map,
+        Func<TAttr, DocSample, Func<DocSample?>, TItem> map,
         Func<TAttr, int> orderOf
     ) where TAttr : Attribute {
         List<(TAttr attr, MemberInfo member)> sources = new List<(TAttr, MemberInfo)>();
@@ -177,12 +177,13 @@ internal static class DocReflection {
         ctx.ForceDisabled = forceDisabled;
         try {
             for (int i = 0; i < sources.Count; i++) {
-                DocSample? sample = InvokeForSample(sources[i].member);
+                MemberInfo member = sources[i].member;
+                DocSample? sample = InvokeForSample(member);
                 if (sample == null) {
                     continue;
                 }
 
-                result.Add(map(sources[i].attr, sample));
+                result.Add(map(sources[i].attr, sample, () => InvokeForSample(member)));
             }
         }
         finally {

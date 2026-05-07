@@ -17,8 +17,8 @@ namespace Cosmere.Lightweave.Layout;
 )]
 public static class Row {
     public static LightweaveNode Create(
-        [DocParam("Gap between columns.", TypeOverride = "Rem", DefaultOverride = "0")]
-        Rem gap = default,
+        [DocParam("Gap between columns. Accepts a Responsive<Rem> for breakpoint-driven gaps.", TypeOverride = "Responsive<Rem>", DefaultOverride = "0")]
+        Responsive<Rem> gap = default,
         [DocParam("Cross-axis alignment of children.")]
         FlexAlign align = FlexAlign.Start,
         [DocParam("Builder callback to populate children.")]
@@ -37,7 +37,7 @@ public static class Row {
                 return 0f;
             }
 
-            float gapPx = gap.ToPixels();
+            float gapPx = gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
             float eachW = (availableWidth - gapPx * Math.Max(0, count - 1)) / count;
             float maxH = 0f;
             for (int i = 0; i < count; i++) {
@@ -53,7 +53,7 @@ public static class Row {
         node.Paint = (rect, paintChildren) => {
             Direction dir = RenderContext.Current.Direction;
             bool reverse = dir == Direction.Rtl;
-            float gapPx = gap.ToPixels();
+            float gapPx = gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
             List<LightweaveNode> seq = reverse ? ReversedList(kids) : kids;
             int count = seq.Count;
             if (count == 0) {

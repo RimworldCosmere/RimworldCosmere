@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Theme;
+using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 
 namespace Cosmere.Lightweave.Hooks;
@@ -113,6 +114,11 @@ public static class Hooks {
 
     public static Direction UseDirection() {
         return RenderContext.Current.Direction;
+    }
+
+
+    public static Breakpoint UseBreakpoint() {
+        return RenderContext.Current.Breakpoint;
     }
 
     private static HookKey Key(int line, string file) {

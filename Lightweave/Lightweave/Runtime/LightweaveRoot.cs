@@ -1,5 +1,6 @@
 using System;
 using Cosmere.Lightweave.Theme;
+using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
@@ -27,6 +28,7 @@ public static class LightweaveRoot {
         RenderContext ctx = new RenderContext(store) { RootId = rootId, RootRect = inRect };
         ctx.ThemeStack.Push(themeOverride ?? GetBaseTheme());
         ctx.DirectionStack.Push(directionOverride ?? DetectDirection());
+        ctx.Breakpoint = Breakpoints.For(inRect.width);
         ctx.PointerPos = Event.current?.mousePosition ?? Vector2.zero;
         RenderContext.Push(ctx);
         try {

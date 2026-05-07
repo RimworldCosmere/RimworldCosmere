@@ -72,8 +72,7 @@ public static class SideNavDoc {
         LightweaveNode constrained = Container.Create(
             framed,
             new Rem(14f),
-            null,
-            ContainerAlign.Start
+            align: ContainerAlign.Start
         );
 
         return new DocSample(constrained);
@@ -93,8 +92,7 @@ public static class SideNavDoc {
                     c => c.Add(ScrollArea.Create(rail))
                 ),
                 new Rem(14f),
-                null,
-                ContainerAlign.Start
+                align: ContainerAlign.Start
             )
         );
     }

@@ -12,7 +12,7 @@ public static class DocChips {
     public static LightweaveNode Chip(string text, ThemeSlot bg, ThemeSlot fg) {
         return Box.Create(
             EdgeInsets.All(SpacingScale.Xs),
-            new BackgroundSpec.Solid(bg),
+            BackgroundSpec.Of(bg),
             null,
             RadiusSpec.All(new Rem(0.25f)),
             c => c.Add(Text.Create(text, FontRole.Body, new Rem(0.8125f), fg, TextAlign.Center))
@@ -34,6 +34,7 @@ public static class DocChips {
     public static LightweaveNode CenterFixed(LightweaveNode child, float width, float height) {
         LightweaveNode node = NodeBuilder.New("CenterFixed", 0, nameof(DocChips));
         node.Children.Add(child);
+        node.Measure = _ => height;
         node.Paint = (rect, _) => {
             float w = Mathf.Min(width, rect.width);
             float h = Mathf.Min(height, rect.height);

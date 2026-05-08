@@ -103,7 +103,7 @@ public static class Column {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(
+        return new DocSample(() => 
             Column.Create(
                 SpacingScale.Xxs,
                 children: k => {
@@ -117,7 +117,7 @@ public static class Column {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             Column.Create(
                 SpacingScale.Xxs,
                 children: k => {

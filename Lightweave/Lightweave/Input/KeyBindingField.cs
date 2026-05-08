@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Hooks;
+using static Cosmere.Lightweave.Hooks.Hooks;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
@@ -230,18 +231,20 @@ public static class KeyBindingField {
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(
-            new KeyBinding(KeyCode.F, KeyModifiers.Control),
-            _ => { },
+        StateHandle<KeyBinding> s = UseState(new KeyBinding(KeyCode.F, KeyModifiers.Control));
+        return new DocSample(() => Create(
+            s.Value,
+            v => s.Set(v),
             forced
         ));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create(
-            new KeyBinding(KeyCode.F, KeyModifiers.Control),
-            _ => { }
+        StateHandle<KeyBinding> s = UseState(new KeyBinding(KeyCode.F, KeyModifiers.Control));
+        return new DocSample(() => Create(
+            s.Value,
+            v => s.Set(v)
         ));
     }
 }

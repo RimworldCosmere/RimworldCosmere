@@ -14,7 +14,8 @@ public static partial class Typography {
         Id = "caption",
         Summary = "Small muted caption text using the Caption font role and TextMuted color.",
         WhenToUse = "Timestamps, secondary metadata, and other low-emphasis descriptors.",
-        SourcePath = "Lightweave/Lightweave/Typography/Caption.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/Caption.cs",
+        ShowRtl = true
     )]
     public static class Caption {
         public static LightweaveNode Create(
@@ -35,12 +36,12 @@ public static partial class Typography {
 
         [DocVariant("CC_Playground_Label_Default")]
         public static DocSample DocsDefault() {
-            return new DocSample(Caption.Create("Updated moments ago"));
+            return new DocSample(() => Caption.Create("Updated moments ago"));
         }
 
         [DocUsage]
         public static DocSample DocsUsage() {
-            return new DocSample(Caption.Create("Updated moments ago"));
+            return new DocSample(() => Caption.Create("Updated moments ago"));
         }
     }
 }

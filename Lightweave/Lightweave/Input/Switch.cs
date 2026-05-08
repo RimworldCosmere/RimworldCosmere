@@ -8,6 +8,7 @@ using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
+using static Cosmere.Lightweave.Hooks.Hooks;
 
 namespace Cosmere.Lightweave.Input;
 
@@ -109,7 +110,7 @@ public static class Switch {
                 : value
                     ? ThemeSlot.SurfaceAccent
                     : ThemeSlot.SurfaceInput;
-            BackgroundSpec trackBg = new BackgroundSpec.Solid(trackFill);
+            BackgroundSpec trackBg = BackgroundSpec.Of(trackFill);
             BorderSpec trackBorder = BorderSpec.All(new Rem(1f / 16f), borderSlot);
             RadiusSpec trackRadius = RadiusSpec.All(new Rem(0.625f));
             PaintBox.Draw(trackRect, trackBg, trackBorder, trackRadius);
@@ -127,7 +128,7 @@ public static class Switch {
                 : value
                     ? ThemeSlot.TextOnAccent
                     : ThemeSlot.BorderOff;
-            BackgroundSpec thumbBg = new BackgroundSpec.Solid(thumbSlot);
+            BackgroundSpec thumbBg = BackgroundSpec.Of(thumbSlot);
             RadiusSpec thumbRadius = RadiusSpec.All(new Rem(0.5f));
             PaintBox.Draw(thumbRect, thumbBg, null, thumbRadius);
 
@@ -158,10 +159,11 @@ public static class Switch {
     [DocVariant("CC_Playground_Label_On")]
     public static DocSample DocsOn() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(
+        StateHandle<bool> s = UseState(true);
+        return new DocSample(() => Create(
             (string)"CC_Playground_Controls_Switch_Label".Translate(),
-            true,
-            _ => { },
+            s.Value,
+            v => s.Set(v),
             forced
         ));
     }
@@ -169,28 +171,33 @@ public static class Switch {
     [DocVariant("CC_Playground_Label_Off")]
     public static DocSample DocsOff() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Off", false, _ => { }, forced));
+        StateHandle<bool> s = UseState(false);
+        return new DocSample(() => Create("Off", s.Value, v => s.Set(v), forced));
     }
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Default", true, _ => { }, forced));
+        StateHandle<bool> s = UseState(true);
+        return new DocSample(() => Create("Default", s.Value, v => s.Set(v), forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Hover", false, _ => { }, forced));
+        StateHandle<bool> s = UseState(false);
+        return new DocSample(() => Create("Hover", s.Value, v => s.Set(v), forced));
     }
 
     [DocState("CC_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
-        return new DocSample(Create("Disabled", true, _ => { }, true));
+        StateHandle<bool> s = UseState(true);
+        return new DocSample(() => Create("Disabled", s.Value, v => s.Set(v), true));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create("Enabled", true, _ => { }));
+        StateHandle<bool> s = UseState(true);
+        return new DocSample(() => Create("Enabled", s.Value, v => s.Set(v)));
     }
 }

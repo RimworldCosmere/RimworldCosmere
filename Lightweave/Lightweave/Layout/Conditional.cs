@@ -51,7 +51,7 @@ public static class Conditional {
 
     [DocVariant("CC_Playground_Label_True")]
     public static DocSample DocsTrue() {
-        return new DocSample(
+        return new DocSample(() => 
             Conditional.When(
                 true,
                 () => AccentChip((string)"CC_Playground_Conditional_On".Translate())
@@ -61,10 +61,10 @@ public static class Conditional {
 
     [DocVariant("CC_Playground_Label_False")]
     public static DocSample DocsFalse() {
-        return new DocSample(
+        return new DocSample(() => 
             Box.Create(
                 EdgeInsets.All(SpacingScale.Xs),
-                new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken),
+                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 null,
                 RadiusSpec.All(new Rem(0.25f)),
                 k => {
@@ -82,7 +82,7 @@ public static class Conditional {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             Conditional.When(
                 true,
                 () => AccentChip((string)"CC_Playground_Conditional_On".Translate())

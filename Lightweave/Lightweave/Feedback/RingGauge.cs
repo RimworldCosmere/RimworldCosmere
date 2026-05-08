@@ -14,7 +14,8 @@ namespace Cosmere.Lightweave.Feedback;
     Id = "ringgauge",
     Summary = "Circular determinate gauge showing fractional progress.",
     WhenToUse = "Compact dial-style readout for a single 0-1 value.",
-    SourcePath = "Lightweave/Lightweave/Feedback/RingGauge.cs"
+    SourcePath = "Lightweave/Lightweave/Feedback/RingGauge.cs",
+    ShowRtl = false
 )]
 public static class RingGauge {
     public static LightweaveNode Create(
@@ -102,21 +103,21 @@ public static class RingGauge {
 
     [DocVariant("CC_Playground_Label_Small")]
     public static DocSample DocsLow() {
-        return new DocSample(CenterFixed(RingGauge.Create(0.25f), 72f, 72f));
+        return new DocSample(() => CenterFixed(RingGauge.Create(0.25f), 72f, 72f));
     }
 
     [DocVariant("CC_Playground_Label_Medium")]
     public static DocSample DocsMid() {
-        return new DocSample(CenterFixed(RingGauge.Create(0.6f), 72f, 72f));
+        return new DocSample(() => CenterFixed(RingGauge.Create(0.6f), 72f, 72f));
     }
 
     [DocVariant("CC_Playground_Label_Large")]
     public static DocSample DocsHigh() {
-        return new DocSample(CenterFixed(RingGauge.Create(0.95f), 72f, 72f));
+        return new DocSample(() => CenterFixed(RingGauge.Create(0.95f), 72f, 72f));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(CenterFixed(RingGauge.Create(0.6f), 72f, 72f));
+        return new DocSample(() => CenterFixed(RingGauge.Create(0.6f), 72f, 72f));
     }
 }

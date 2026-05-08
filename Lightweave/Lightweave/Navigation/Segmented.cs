@@ -16,7 +16,8 @@ namespace Cosmere.Lightweave.Navigation;
     Id = "segmented",
     Summary = "Pill-shaped grouped selector for a small set of choices.",
     WhenToUse = "Toggle between 2-5 mutually exclusive filters or modes.",
-    SourcePath = "Lightweave/Lightweave/Navigation/Segmented.cs"
+    SourcePath = "Lightweave/Lightweave/Navigation/Segmented.cs",
+    ShowRtl = true
 )]
 public static class Segmented {
     public static LightweaveNode Create<T>(
@@ -39,7 +40,7 @@ public static class Segmented {
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
 
-            BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+            BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
             BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
             RadiusSpec radius = RadiusSpec.All(new Rem(999f));
             PaintBox.Draw(rect, bg, border, radius);
@@ -89,7 +90,7 @@ public static class Segmented {
                         TopEnd: isLastLogical ? pill : null,
                         BottomEnd: isLastLogical ? pill : null
                     );
-                    PaintBox.Draw(segRect, new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent), null, activeRadius);
+                    PaintBox.Draw(segRect, BackgroundSpec.Of(ThemeSlot.SurfaceAccent), null, activeRadius);
                 }
 
                 if (!active) {
@@ -122,7 +123,7 @@ public static class Segmented {
                             dividerThickness,
                             segRect.height * 0.5f
                         );
-                        PaintBox.Draw(dividerRect, new BackgroundSpec.Solid(ThemeSlot.BorderSubtle), null, null);
+                        PaintBox.Draw(dividerRect, BackgroundSpec.Of(ThemeSlot.BorderSubtle), null, null);
                     }
                 }
 
@@ -141,7 +142,7 @@ public static class Segmented {
         Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("all");
 
         string[] segments = new[] { "all", "armor", "weapons", "tools" };
-        return new DocSample(
+        return new DocSample(() => 
             Segmented.Create(
                 selected.Value,
                 segments,
@@ -158,15 +159,15 @@ public static class Segmented {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("all");
-        string[] segments = new[] { "all", "armor", "weapons" };
-        return new DocSample(
-            Segmented.Create(
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("all");
+            string[] segments = new[] { "all", "armor", "weapons" };
+            return Segmented.Create(
                 selected.Value,
                 segments,
                 v => v,
                 v => selected.Set(v)
-            )
-        );
+            );
+        });
     }
 }

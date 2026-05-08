@@ -94,7 +94,7 @@ public static class Card {
         [CallerFilePath] string file = ""
     ) {
         EdgeInsets pad = padding ?? EdgeInsets.Zero;
-        BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+        BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
         BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
         RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
 
@@ -181,6 +181,7 @@ public static class Card {
 
     [Doc(Slot = true, Summary = "Title row of a Card.")]
     public static LightweaveNode Header(
+        [DocParam("Heading region nodes (typically Card.Title and Card.Description).")]
         params LightweaveNode[] children
     ) {
         return HeaderInternal(children);
@@ -241,6 +242,7 @@ public static class Card {
 
     [Doc(Slot = true, Summary = "Heading text inside a Header.", ParentSlot = nameof(Header))]
     public static LightweaveNode Title(
+        [DocParam("Heading text to render in the bold body font.")]
         string text,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
@@ -264,6 +266,7 @@ public static class Card {
 
     [Doc(Slot = true, Summary = "Subtitle text inside a Header.", ParentSlot = nameof(Header))]
     public static LightweaveNode Description(
+        [DocParam("Subtitle text rendered below the Title in the muted body font.")]
         string text,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
@@ -288,16 +291,19 @@ public static class Card {
 
     [Doc(Slot = true, Summary = "Body region of a Card.")]
     public static LightweaveNode Content(
+        [DocParam("Body nodes stacked inside the Card's content region.")]
         params LightweaveNode[] children
     ) {
         return ContentInternal(children, null);
     }
 
     public static LightweaveNode Content(
+        [DocParam("Theme slot used to fill the content region behind the children.")]
         ThemeSlot background,
+        [DocParam("Body nodes stacked inside the Card's content region.")]
         params LightweaveNode[] children
     ) {
-        return ContentInternal(children, new BackgroundSpec.Solid(background));
+        return ContentInternal(children, BackgroundSpec.Of(background));
     }
 
     private static LightweaveNode ContentInternal(
@@ -379,6 +385,7 @@ public static class Card {
 
     [Doc(Slot = true, Summary = "Action row at the bottom of a Card.")]
     public static LightweaveNode Footer(
+        [DocParam("Footer nodes (typically buttons or status text) laid out horizontally.")]
         params LightweaveNode[] children
     ) {
         return FooterInternal(children);
@@ -442,7 +449,7 @@ public static class Card {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(
+        return new DocSample(() => 
             Card.Create(
                 Card.Header(
                     Card.Title("Surgebinding"),
@@ -467,7 +474,7 @@ public static class Card {
 
     [DocVariant("CC_Playground_Label_Tight", Order = 1)]
     public static DocSample DocsTight() {
-        return new DocSample(
+        return new DocSample(() => 
             Card.Create(
                 Card.Header(
                     Card.Title("Compact")
@@ -486,7 +493,7 @@ public static class Card {
 
     [DocVariant("CC_Playground_Label_Loose", Order = 2)]
     public static DocSample DocsLoose() {
-        return new DocSample(
+        return new DocSample(() => 
             Card.Create(
                 Card.Header(
                     Card.Title("Confirm action"),
@@ -502,7 +509,7 @@ public static class Card {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             Card.Create(
                 Card.Header(
                     Card.Title("Surgebinding"),

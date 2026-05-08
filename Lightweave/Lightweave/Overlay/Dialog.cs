@@ -110,11 +110,11 @@ public static class Dialog {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(BuildHostDemo(), useFullSource: true);
+        return new DocSample(() => BuildHostDemo(), useFullSource: true);
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(BuildHostDemo(), useFullSource: true);
+        return new DocSample(() => BuildHostDemo(), useFullSource: true);
     }
 }

@@ -5,6 +5,7 @@ namespace Cosmere.Lightweave.Runtime;
 
 public sealed class LightweaveNode {
     public int CallSiteId;
+    public int BuildParentPathHash;
     public List<LightweaveNode> Children = new List<LightweaveNode>();
     public Rect ContentRect;
     public string DebugName = string.Empty;

@@ -27,7 +27,7 @@ public static class Divider {
         n.PreferredHeight = t;
         n.Paint = (rect, _) => {
             Rect bar = new Rect(rect.x, rect.y + (rect.height - t) / 2f, rect.width, t);
-            PaintBox.Draw(bar, new BackgroundSpec.Solid(ThemeSlot.BorderSubtle), null, null);
+            PaintBox.Draw(bar, BackgroundSpec.Of(ThemeSlot.BorderSubtle), null, null);
         };
         return n;
     }
@@ -42,14 +42,14 @@ public static class Divider {
         LightweaveNode n = NodeBuilder.New("Divider.Vertical", line, file);
         n.Paint = (rect, _) => {
             Rect bar = new Rect(rect.x + (rect.width - t) / 2f, rect.y, t, rect.height);
-            PaintBox.Draw(bar, new BackgroundSpec.Solid(ThemeSlot.BorderSubtle), null, null);
+            PaintBox.Draw(bar, BackgroundSpec.Of(ThemeSlot.BorderSubtle), null, null);
         };
         return n;
     }
 
     [DocVariant("CC_Playground_Label_Horizontal")]
     public static DocSample DocsHorizontal() {
-        return new DocSample(
+        return new DocSample(() => 
             Stack.Create(
                 SpacingScale.Xxs,
                 s => {
@@ -63,7 +63,7 @@ public static class Divider {
 
     [DocVariant("CC_Playground_Label_Vertical")]
     public static DocSample DocsVertical() {
-        return new DocSample(
+        return new DocSample(() => 
             Row.Create(
                 SpacingScale.Xs,
                 children: r => {
@@ -77,7 +77,7 @@ public static class Divider {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             Stack.Create(
                 SpacingScale.Xxs,
                 s => {

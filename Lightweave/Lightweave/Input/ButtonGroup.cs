@@ -22,7 +22,8 @@ public sealed record ButtonGroupItem(
     Id = "buttongroup",
     Summary = "Connected row of buttons sharing a single bordered frame.",
     WhenToUse = "Group a small set of related actions or filter choices together.",
-    SourcePath = "Lightweave/Lightweave/Input/ButtonGroup.cs"
+    SourcePath = "Lightweave/Lightweave/Input/ButtonGroup.cs",
+    ShowRtl = true
 )]
 public static class ButtonGroup {
     public static LightweaveNode Create(
@@ -30,6 +31,8 @@ public static class ButtonGroup {
         IReadOnlyList<ButtonGroupItem> items,
         [DocParam("Visual variant shared by every segment.")]
         ButtonVariant variant = ButtonVariant.Secondary,
+        [DocParam("Override hover sound. Null = component default (true).")]
+        bool? playHoverSound = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -44,6 +47,11 @@ public static class ButtonGroup {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
+            bool soundEnabled = playHoverSound ?? true;
+
+            if (variant == ButtonVariant.Secondary) {
+                rect = new Rect(rect.x + 1f, rect.y, Mathf.Max(0f, rect.width - 1f), rect.height);
+            }
 
             int count = items.Count;
 
@@ -64,7 +72,7 @@ public static class ButtonGroup {
             if (outerBorderSlot.HasValue) {
                 PaintBox.Draw(
                     rect,
-                    new BackgroundSpec.Solid(outerBorderSlot.Value),
+                    BackgroundSpec.Of(outerBorderSlot.Value),
                     null,
                     RadiusSpec.All(outerCornerRem)
                 );
@@ -119,31 +127,22 @@ public static class ButtonGroup {
                         BottomEnd: trailingCorner
                     );
 
-                PaintBox.Draw(segRect, new BackgroundSpec.Solid(bgSlot), null, segRadius);
+                PaintBox.Draw(segRect, BackgroundSpec.Of(bgSlot), null, segRadius);
 
                 float overlay = ButtonVariants.OverlayAlpha(state);
                 if (overlay > 0f) {
                     Color overlayColor = state.Pressed
                         ? new Color(0f, 0f, 0f, overlay)
                         : new Color(1f, 1f, 1f, overlay);
-                    PaintBox.Draw(segRect, new BackgroundSpec.Solid(overlayColor), null, segRadius);
+                    PaintBox.Draw(segRect, BackgroundSpec.Of(overlayColor), null, segRadius);
                 }
 
-                if (!item.Disabled) {
-                    MouseoverSounds.DoRegion(segRect);
-                }
+                InteractionFeedback.Apply(segRect, !item.Disabled, soundEnabled);
 
                 ThemeSlot fgSlot = ButtonVariants.Foreground(variant, state);
                 GUI.color = theme.GetColor(fgSlot);
                 GUI.Label(RectSnap.Snap(segRect), item.Label, style);
                 GUI.color = savedColor;
-
-                if (i < count - 1) {
-                    float sepX = segRect.xMax - borderPx * 0.5f;
-                    Rect sepRect = new Rect(sepX, segRect.y, borderPx, segRect.height);
-                    ThemeSlot sepSlot = outerBorderSlot ?? ThemeSlot.BorderDefault;
-                    PaintBox.Draw(sepRect, new BackgroundSpec.Solid(sepSlot), null, null);
-                }
 
                 if (!item.Disabled &&
                     e.type == EventType.MouseUp &&
@@ -152,6 +151,15 @@ public static class ButtonGroup {
                     item.OnClick?.Invoke();
                     e.Use();
                 }
+            }
+
+            const float dividerPx = 2f;
+            ThemeSlot dividerSlot = outerBorderSlot ?? ThemeSlot.BorderDefault;
+            Color dividerColor = theme.GetColor(dividerSlot);
+            for (int i = 1; i < count; i++) {
+                float sepX = Mathf.Round(contentRect.x + i * segmentWidth - dividerPx * 0.5f);
+                Rect sepRect = new Rect(sepX, contentRect.y, dividerPx, contentRect.height);
+                PaintBox.Draw(sepRect, BackgroundSpec.Of(dividerColor), null, null);
             }
         };
 
@@ -165,25 +173,26 @@ public static class ButtonGroup {
             (string)"CC_Playground_buttongroup_None".Translate()
         );
 
-        List<ButtonGroupItem> items = new List<ButtonGroupItem> {
-            new ButtonGroupItem(
-                (string)"CC_Playground_buttongroup_Day".Translate(),
-                () => lastPick.Set("Day"),
-                forced
-            ),
-            new ButtonGroupItem(
-                (string)"CC_Playground_buttongroup_Week".Translate(),
-                () => lastPick.Set("Week"),
-                forced
-            ),
-            new ButtonGroupItem(
-                (string)"CC_Playground_buttongroup_Month".Translate(),
-                () => lastPick.Set("Month"),
-                forced
-            ),
-        };
-
-        return new DocSample(Create(items, ButtonVariant.Primary));
+        return new DocSample(() => Create(
+            new List<ButtonGroupItem> {
+                new ButtonGroupItem(
+                    (string)"CC_Playground_buttongroup_Day".Translate(),
+                    () => lastPick.Set("Day"),
+                    forced
+                ),
+                new ButtonGroupItem(
+                    (string)"CC_Playground_buttongroup_Week".Translate(),
+                    () => lastPick.Set("Week"),
+                    forced
+                ),
+                new ButtonGroupItem(
+                    (string)"CC_Playground_buttongroup_Month".Translate(),
+                    () => lastPick.Set("Month"),
+                    forced
+                ),
+            },
+            ButtonVariant.Primary
+        ));
     }
 
     [DocVariant("CC_Playground_Label_Secondary")]
@@ -193,30 +202,30 @@ public static class ButtonGroup {
             (string)"CC_Playground_buttongroup_None".Translate()
         );
 
-        List<ButtonGroupItem> items = new List<ButtonGroupItem> {
-            new ButtonGroupItem(
-                (string)"CC_Playground_buttongroup_Refresh".Translate(),
-                () => lastPick.Set("Refresh"),
-                forced
-            ),
-            new ButtonGroupItem(
-                (string)"CC_Playground_buttongroup_Export".Translate(),
-                () => lastPick.Set("Export"),
-                forced
-            ),
-            new ButtonGroupItem(
-                (string)"CC_Playground_buttongroup_Delete".Translate(),
-                () => lastPick.Set("Delete"),
-                forced
-            ),
-            new ButtonGroupItem(
-                (string)"CC_Playground_buttongroup_More".Translate(),
-                () => lastPick.Set("More"),
-                true
-            ),
-        };
-
-        return new DocSample(Create(items));
+        return new DocSample(() => Create(
+            new List<ButtonGroupItem> {
+                new ButtonGroupItem(
+                    (string)"CC_Playground_buttongroup_Refresh".Translate(),
+                    () => lastPick.Set("Refresh"),
+                    forced
+                ),
+                new ButtonGroupItem(
+                    (string)"CC_Playground_buttongroup_Export".Translate(),
+                    () => lastPick.Set("Export"),
+                    forced
+                ),
+                new ButtonGroupItem(
+                    (string)"CC_Playground_buttongroup_Delete".Translate(),
+                    () => lastPick.Set("Delete"),
+                    forced
+                ),
+                new ButtonGroupItem(
+                    (string)"CC_Playground_buttongroup_More".Translate(),
+                    () => lastPick.Set("More"),
+                    true
+                ),
+            }
+        ));
     }
 
     [DocUsage]
@@ -225,18 +234,18 @@ public static class ButtonGroup {
             (string)"CC_Playground_buttongroup_None".Translate()
         );
 
-        List<ButtonGroupItem> items = new List<ButtonGroupItem> {
-            new ButtonGroupItem(
-                (string)"CC_Playground_buttongroup_Day".Translate(),
-                () => lastPick.Set("Day")),
-            new ButtonGroupItem(
-                (string)"CC_Playground_buttongroup_Week".Translate(),
-                () => lastPick.Set("Week")),
-            new ButtonGroupItem(
-                (string)"CC_Playground_buttongroup_Month".Translate(),
-                () => lastPick.Set("Month")),
-        };
-
-        return new DocSample(Create(items));
+        return new DocSample(() => Create(
+            new List<ButtonGroupItem> {
+                new ButtonGroupItem(
+                    (string)"CC_Playground_buttongroup_Day".Translate(),
+                    () => lastPick.Set("Day")),
+                new ButtonGroupItem(
+                    (string)"CC_Playground_buttongroup_Week".Translate(),
+                    () => lastPick.Set("Week")),
+                new ButtonGroupItem(
+                    (string)"CC_Playground_buttongroup_Month".Translate(),
+                    () => lastPick.Set("Month")),
+            }
+        ));
     }
 }

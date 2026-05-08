@@ -20,6 +20,7 @@ public sealed record PlaygroundVariant(
 public sealed record PlaygroundState(
     string LabelKey,
     LightweaveNode Demo,
+    Func<LightweaveNode>? DemoFactory = null,
     [CallerArgumentExpression("Demo")] string Code = ""
 );
 
@@ -157,7 +158,8 @@ public static class PlaygroundPanel {
                     string anchor = ExamplesAnchor + "-" + SlugifyLabel(v.LabelKey);
                     string label = (string)v.LabelKey.Translate();
                     tocEntries.Add(new TocEntry(anchor, label, 3));
-                    s.Add(BuildExampleItem(anchor, label, v.Demo, ctx, variantMinHeight, NormalizeCode(v.Code)));
+                    LightweaveNode demo = BuildSaltedDemo(anchor, v.DemoFactory, v.Demo);
+                    s.Add(BuildExampleItem(anchor, label, demo, ctx, variantMinHeight, NormalizeCode(v.Code)));
                 }
             }
         );
@@ -185,7 +187,8 @@ public static class PlaygroundPanel {
                     string anchor = StatesAnchor + "-" + SlugifyLabel(st.LabelKey);
                     string label = (string)st.LabelKey.Translate();
                     tocEntries.Add(new TocEntry(anchor, label, 3));
-                    s.Add(BuildExampleItem(anchor, label, st.Demo, ctx, variantMinHeight, NormalizeCode(st.Code)));
+                    LightweaveNode demo = BuildSaltedDemo(anchor, st.DemoFactory, st.Demo);
+                    s.Add(BuildExampleItem(anchor, label, demo, ctx, variantMinHeight, NormalizeCode(st.Code)));
                 }
             }
         );
@@ -193,9 +196,15 @@ public static class PlaygroundPanel {
         return Doc.Doc.Section(StatesAnchor, heading, body, ctx);
     }
 
+    private static readonly Dictionary<string, string?> NormalizeCache = new Dictionary<string, string?>();
+
     private static string? NormalizeCode(string? raw) {
         if (string.IsNullOrWhiteSpace(raw)) {
             return null;
+        }
+
+        if (NormalizeCache.TryGetValue(raw!, out string? cached)) {
+            return cached;
         }
 
         string[] lines = raw!.Replace("\r\n", "\n").Split('\n');
@@ -230,7 +239,9 @@ public static class PlaygroundPanel {
         }
 
         string dedented = string.Join("\n", lines).Trim('\n');
-        return StripQualifiedNames(dedented);
+        string result = StripQualifiedNames(dedented);
+        NormalizeCache[raw!] = result;
+        return result;
     }
 
     private static string StripQualifiedNames(string code) {
@@ -238,7 +249,6 @@ public static class PlaygroundPanel {
             return code;
         }
 
-        SortedSet<string> usedModules = new SortedSet<string>(StringComparer.Ordinal);
         StringBuilder body = new StringBuilder(code.Length);
 
         int i = 0;
@@ -257,7 +267,6 @@ public static class PlaygroundPanel {
                     && string.CompareOrdinal(code, i + 1, ident, 0, ident.Length) == 0
                     && i + 1 + ident.Length < n
                     && code[i + 1 + ident.Length] == '.') {
-                    usedModules.Add(ident);
                     i += 1 + ident.Length + 1;
                     continue;
                 }
@@ -268,10 +277,6 @@ public static class PlaygroundPanel {
 
             body.Append(code[i]);
             i++;
-        }
-
-        if (usedModules.Count == 0) {
-            return body.ToString();
         }
 
         StringBuilder header = new StringBuilder();
@@ -287,6 +292,21 @@ public static class PlaygroundPanel {
         }
 
         return n;
+    }
+
+    private static LightweaveNode BuildSaltedDemo(string anchor, Func<LightweaveNode>? factory, LightweaveNode fallback) {
+        if (factory == null) {
+            return fallback;
+        }
+
+        RenderContext rc = RenderContext.Current;
+        rc.PushPathSalt(anchor.GetHashCode());
+        try {
+            return factory();
+        }
+        finally {
+            rc.PopPathSalt();
+        }
     }
 
     private static LightweaveNode BuildExampleItem(
@@ -317,7 +337,7 @@ public static class PlaygroundPanel {
 
         return Layout.Box.Create(
             EdgeInsets.All(SpacingScale.Lg),
-            new BackgroundSpec.Solid(ThemeSlot.SurfacePrimary),
+            BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
             RadiusSpec.All(new Rem(0.5f)),
             c => c.Add(content)
@@ -351,7 +371,7 @@ public static class PlaygroundPanel {
 
         return Layout.Box.Create(
             EdgeInsets.All(new Rem(1f / 16f)),
-            new BackgroundSpec.Solid(ThemeSlot.SurfacePrimary),
+            BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
             RadiusSpec.All(new Rem(0.5f)),
             c => {
@@ -414,7 +434,7 @@ public static class PlaygroundPanel {
     }
 
     private static LightweaveNode BuildApiSection(
-        IReadOnlyList<ApiParam> parameters,
+        IReadOnlyList<ApiGroup> groups,
         DocContext ctx
     ) {
         LightweaveNode heading = Typography.Typography.Heading.Create(
@@ -423,7 +443,25 @@ public static class PlaygroundPanel {
             ThemeSlot.TextPrimary
         );
 
-        return Doc.Doc.Section(ApiAnchor, heading, Doc.Doc.ApiTable(parameters), ctx);
+        LightweaveNode content = Layout.Stack.Create(
+            SpacingScale.Lg,
+            s => {
+                for (int i = 0; i < groups.Count; i++) {
+                    ApiGroup group = groups[i];
+                    if (!string.IsNullOrEmpty(group.MethodName)) {
+                        s.Add(Typography.Typography.Heading.Create(
+                            3,
+                            group.MethodName,
+                            ThemeSlot.TextPrimary
+                        ));
+                    }
+
+                    s.Add(Doc.Doc.ApiTable(group.Parameters));
+                }
+            }
+        );
+
+        return Doc.Doc.Section(ApiAnchor, heading, content, ctx);
     }
 
     private static LightweaveNode BuildSourceSection(string sourcePath, DocContext ctx) {

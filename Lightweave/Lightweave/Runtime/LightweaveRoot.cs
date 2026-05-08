@@ -74,17 +74,45 @@ public static class LightweaveRoot {
         Paint(node);
     }
 
-    private static void Paint(LightweaveNode node) {
-        Action paintChildren = () => {
-            foreach (LightweaveNode child in node.Children) {
-                Paint(child);
-            }
-        };
-        if (node.Paint != null) {
-            node.Paint(node.MeasuredRect, paintChildren);
+
+    private static LightweaveNode? currentPaintNode;
+
+    private static readonly Action SharedPaintChildren = () => {
+        LightweaveNode? node = currentPaintNode;
+        if (node == null) {
+            return;
         }
-        else {
-            paintChildren();
+
+        for (int i = 0; i < node.Children.Count; i++) {
+            Paint(node.Children[i]);
+        }
+    };
+
+    private static void Paint(LightweaveNode node) {
+        RenderContext? rc = RenderContext.CurrentOrNull;
+        int previousParentHash = rc?.ParentPathHash ?? 0;
+        if (rc != null) {
+            rc.ParentPathHash = node.BuildParentPathHash;
+        }
+
+        LightweaveNode? prevPaintNode = currentPaintNode;
+        currentPaintNode = node;
+
+        try {
+            if (node.Paint != null) {
+                node.Paint(node.MeasuredRect, SharedPaintChildren);
+            }
+            else {
+                for (int i = 0; i < node.Children.Count; i++) {
+                    Paint(node.Children[i]);
+                }
+            }
+        }
+        finally {
+            currentPaintNode = prevPaintNode;
+            if (rc != null) {
+                rc.ParentPathHash = previousParentHash;
+            }
         }
     }
 }

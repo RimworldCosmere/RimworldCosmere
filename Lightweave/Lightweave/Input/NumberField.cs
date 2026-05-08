@@ -9,6 +9,7 @@ using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
+using static Cosmere.Lightweave.Hooks.Hooks;
 
 namespace Cosmere.Lightweave.Input;
 
@@ -16,7 +17,8 @@ namespace Cosmere.Lightweave.Input;
     Id = "numberfield",
     Summary = "Numeric input with bounds, parsing, and formatting.",
     WhenToUse = "Capture a single numeric value with optional min/max clamping.",
-    SourcePath = "Lightweave/Lightweave/Input/NumberField.cs"
+    SourcePath = "Lightweave/Lightweave/Input/NumberField.cs",
+    ShowRtl = true
 )]
 public static class NumberField {
     private const int ShakeFrames = 6;
@@ -52,8 +54,7 @@ public static class NumberField {
         string focusKey = file + "#nf_focus" + keySuffix;
         string bufferKey = file + "#nf_buffer" + keySuffix;
         string lastGoodKey = file + "#nf_lastGood" + keySuffix;
-        string syncedValueKey = file + "#nf_syncedValue" + keySuffix;
-        string syncedFromKey = file + "#nf_syncedFrom" + keySuffix;
+        string lastSeenKey = file + "#nf_lastSeen" + keySuffix;
         string wasFocusedKey = file + "#nf_wasFocused" + keySuffix;
         string shakeKey = file + "#nf_shake" + keySuffix;
 
@@ -82,18 +83,15 @@ public static class NumberField {
                 bufferKey
             );
             Hooks.Hooks.RefHandle<float> lastGood = Hooks.Hooks.UseRef(clampedInitial, line, lastGoodKey);
-            Hooks.Hooks.RefHandle<bool> syncedValue = Hooks.Hooks.UseRef(false, line, syncedValueKey);
-            Hooks.Hooks.RefHandle<float> syncedFrom = Hooks.Hooks.UseRef(clampedInitial, line, syncedFromKey);
+            Hooks.Hooks.RefHandle<float> lastSeen = Hooks.Hooks.UseRef(clampedInitial, line, lastSeenKey);
             Hooks.Hooks.RefHandle<bool> wasFocused = Hooks.Hooks.UseRef(false, line, wasFocusedKey);
             Hooks.Hooks.StateHandle<int> shakeFrames = Hooks.Hooks.UseState(0, line, shakeKey);
 
             bool isFocusedThisFrame = GUI.GetNameOfFocusedControl() == focusName;
-            if (!isFocusedThisFrame &&
-                (!syncedValue.Current || !Mathf.Approximately(syncedFrom.Current, clampedInitial))) {
+            if (!isFocusedThisFrame && !Mathf.Approximately(lastSeen.Current, clampedInitial)) {
                 buffer.Set(effectiveFormat(clampedInitial));
                 lastGood.Current = clampedInitial;
-                syncedFrom.Current = clampedInitial;
-                syncedValue.Current = true;
+                lastSeen.Current = clampedInitial;
             }
 
             InteractionState state = InteractionState.Resolve(rect, focusName, disabled);
@@ -103,7 +101,7 @@ public static class NumberField {
             float padY = InputSurface.PaddingY.ToPixels();
             Rect inner = new Rect(rect.x + padX, rect.y + padY, rect.width - padX * 2f, rect.height - padY * 2f);
 
-            if (shakeFrames.Value > 0) {
+            if (shakeFrames.Value > 0 && Event.current.type == EventType.Repaint) {
                 float sign = shakeFrames.Value % 2 == 0 ? 1f : -1f;
                 inner = new Rect(inner.x + sign * ShakeAmplitudePx, inner.y, inner.width, inner.height);
                 shakeFrames.Set(shakeFrames.Value - 1);
@@ -131,8 +129,8 @@ public static class NumberField {
                 GUIStyle nfStyle = InputSurface.ConfigureChromelessTextFieldStyle(nfFont, nfSize, nfTextColor);
                 GUI.SetNextControlName(focusName);
                 string next = GUI.TextField(RectSnap.Snap(inner), buffer.Value ?? string.Empty, nfStyle);
-                string sanitized = SanitizeNumeric(next, localAllowDecimal);
-                if (sanitized != buffer.Value) {
+                if (!ReferenceEquals(next, buffer.Value) && next != buffer.Value) {
+                    string sanitized = SanitizeNumeric(next, localAllowDecimal);
                     buffer.Set(sanitized);
                 }
             }
@@ -153,8 +151,7 @@ public static class NumberField {
                 if (parsed.HasValue) {
                     float clamped = Mathf.Clamp(parsed.Value, min, max);
                     lastGood.Current = clamped;
-                    syncedFrom.Current = clamped;
-                    syncedValue.Current = true;
+                    lastSeen.Current = clamped;
                     buffer.Set(effectiveFormat(clamped));
                     onChange?.Invoke(clamped);
                 }
@@ -227,9 +224,10 @@ public static class NumberField {
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(
-            42f,
-            _ => { },
+        StateHandle<float> s = UseState(42f);
+        return new DocSample(() => Create(
+            s.Value,
+            v => s.Set(v),
             0f,
             100f,
             placeholder: (string)"CC_Playground_Controls_NumberField_Label".Translate(),
@@ -240,22 +238,26 @@ public static class NumberField {
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefaultState() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(42f, _ => { }, 0f, 100f, disabled: forced));
+        StateHandle<float> s = UseState(42f);
+        return new DocSample(() => Create(s.Value, v => s.Set(v), 0f, 100f, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(7f, _ => { }, 0f, 100f, disabled: forced));
+        StateHandle<float> s = UseState(7f);
+        return new DocSample(() => Create(s.Value, v => s.Set(v), 0f, 100f, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
-        return new DocSample(Create(13f, _ => { }, 0f, 100f, disabled: true));
+        StateHandle<float> s = UseState(13f);
+        return new DocSample(() => Create(s.Value, v => s.Set(v), 0f, 100f, disabled: true));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create(42f, _ => { }, 0f, 100f));
+        StateHandle<float> s = UseState(42f);
+        return new DocSample(() => Create(s.Value, v => s.Set(v), 0f, 100f));
     }
 }

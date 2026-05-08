@@ -27,7 +27,7 @@ internal static class ButtonVariants {
                     return ThemeSlot.SurfaceRaised;
                 }
 
-                return ThemeSlot.SurfaceRaised;
+                return ThemeSlot.SurfacePrimary;
             case ButtonVariant.Ghost:
                 if (state.Pressed) {
                     return ThemeSlot.SurfaceSunken;
@@ -87,11 +87,11 @@ internal static class ButtonVariants {
         }
 
         if (state.Pressed) {
-            return 0.18f;
+            return 0.22f;
         }
 
         if (state.Hovered) {
-            return 0.08f;
+            return 0.14f;
         }
 
         return 0f;

@@ -54,7 +54,7 @@ public static class Badge {
             bool rtl = dir == Direction.Rtl;
             Event e = Event.current;
 
-            BackgroundSpec bg = new BackgroundSpec.Solid(BadgeVariants.Background(variant));
+            BackgroundSpec bg = BackgroundSpec.Of(BadgeVariants.Background(variant));
             ThemeSlot? borderSlot = BadgeVariants.Border(variant);
             BorderSpec? border = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
@@ -134,7 +134,7 @@ public static class Badge {
                         : new Color(1f, 1f, 1f, 0.22f);
                     PaintBox.Draw(
                         hit,
-                        new BackgroundSpec.Solid(overlay),
+                        BackgroundSpec.Of(overlay),
                         null,
                         RadiusSpec.All(new Rem(999f))
                     );
@@ -167,32 +167,32 @@ public static class Badge {
 
     [DocVariant("CC_Playground_Feedback_Badge_Neutral")]
     public static DocSample DocsNeutral() {
-        return new DocSample(Badge.Create((string)"CC_Playground_Feedback_Badge_Neutral".Translate(), BadgeVariant.Neutral));
+        return new DocSample(() => Badge.Create((string)"CC_Playground_Feedback_Badge_Neutral".Translate(), BadgeVariant.Neutral));
     }
 
     [DocVariant("CC_Playground_Feedback_Badge_Accent", Order = 1)]
     public static DocSample DocsAccent() {
-        return new DocSample(Badge.Create((string)"CC_Playground_Feedback_Badge_Accent".Translate(), BadgeVariant.Accent));
+        return new DocSample(() => Badge.Create((string)"CC_Playground_Feedback_Badge_Accent".Translate(), BadgeVariant.Accent));
     }
 
     [DocVariant("CC_Playground_Feedback_Badge_Warning", Order = 2)]
     public static DocSample DocsWarning() {
-        return new DocSample(Badge.Create((string)"CC_Playground_Feedback_Badge_Warning".Translate(), BadgeVariant.Warning));
+        return new DocSample(() => Badge.Create((string)"CC_Playground_Feedback_Badge_Warning".Translate(), BadgeVariant.Warning));
     }
 
     [DocVariant("CC_Playground_Feedback_Badge_Danger", Order = 3)]
     public static DocSample DocsDanger() {
-        return new DocSample(Badge.Create((string)"CC_Playground_Feedback_Badge_Danger".Translate(), BadgeVariant.Danger));
+        return new DocSample(() => Badge.Create((string)"CC_Playground_Feedback_Badge_Danger".Translate(), BadgeVariant.Danger));
     }
 
     [DocVariant("CC_Playground_Feedback_Badge_Success", Order = 4)]
     public static DocSample DocsSuccess() {
-        return new DocSample(Badge.Create((string)"CC_Playground_Feedback_Badge_Success".Translate(), BadgeVariant.Success));
+        return new DocSample(() => Badge.Create((string)"CC_Playground_Feedback_Badge_Success".Translate(), BadgeVariant.Success));
     }
 
     [DocVariant("CC_Playground_Feedback_Badge_Clickable", Order = 5)]
     public static DocSample DocsClickable() {
-        return new DocSample(
+        return new DocSample(() => 
             CenterFixed(
                 Badge.Create(
                     (string)"CC_Playground_Feedback_Badge_Clickable".Translate(),
@@ -205,7 +205,7 @@ public static class Badge {
 
     [DocVariant("CC_Playground_Feedback_Badge_Dismissible", Order = 6)]
     public static DocSample DocsDismissible() {
-        return new DocSample(
+        return new DocSample(() => 
             CenterFixed(
                 Badge.Create(
                     (string)"CC_Playground_Feedback_Badge_Dismissible".Translate(),
@@ -219,7 +219,7 @@ public static class Badge {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Badge.Create("Storms", BadgeVariant.Accent));
+        return new DocSample(() => Badge.Create("Storms", BadgeVariant.Accent));
     }
 
     public static LightweaveNode CloseGlyph(

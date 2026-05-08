@@ -1,10 +1,12 @@
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
+using Cosmere.Lightweave.Hooks;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
+using static Cosmere.Lightweave.Hooks.Hooks;
 
 namespace Cosmere.Lightweave.Feedback;
 
@@ -12,7 +14,8 @@ namespace Cosmere.Lightweave.Feedback;
     Id = "progressbar",
     Summary = "Determinate horizontal bar showing fractional progress.",
     WhenToUse = "Display known-duration progress with an optional label.",
-    SourcePath = "Lightweave/Lightweave/Feedback/ProgressBar.cs"
+    SourcePath = "Lightweave/Lightweave/Feedback/ProgressBar.cs",
+    ShowRtl = true
 )]
 public static class ProgressBar {
     public static LightweaveNode Create(
@@ -39,7 +42,7 @@ public static class ProgressBar {
 
             RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
 
-            BackgroundSpec trackBg = new BackgroundSpec.Solid(ThemeSlot.SurfaceInput);
+            BackgroundSpec trackBg = BackgroundSpec.Of(ThemeSlot.SurfaceInput);
             BorderSpec trackBorder = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
             PaintBox.Draw(rect, trackBg, trackBorder, radius);
 
@@ -52,7 +55,7 @@ public static class ProgressBar {
             if (hasFill) {
                 float fillX = rtl ? rect.xMax - fillWidth : rect.x;
                 fillRect = new Rect(fillX, rect.y, fillWidth, rect.height);
-                BackgroundSpec fillBg = new BackgroundSpec.Solid(BadgeVariants.Background(variant));
+                BackgroundSpec fillBg = BackgroundSpec.Of(BadgeVariants.Background(variant));
                 PaintBox.Draw(fillRect, fillBg, null, radius);
             }
 
@@ -82,21 +85,55 @@ public static class ProgressBar {
 
     [DocVariant("CC_Playground_Label_Accent")]
     public static DocSample DocsAccent() {
-        return new DocSample(ProgressBar.Create(0.65f, 0f, 1f, "65%"));
+        return new DocSample(() => ProgressBar.Create(0.65f, 0f, 1f, "65%"));
     }
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsSuccess() {
-        return new DocSample(ProgressBar.Create(0.35f, 0f, 1f, "35%", BadgeVariant.Success));
+        return new DocSample(() => ProgressBar.Create(0.35f, 0f, 1f, "35%", BadgeVariant.Success));
     }
 
     [DocVariant("CC_Playground_Label_Danger")]
     public static DocSample DocsDanger() {
-        return new DocSample(ProgressBar.Create(0.9f, 0f, 1f, "90%", BadgeVariant.Danger));
+        return new DocSample(() => ProgressBar.Create(0.9f, 0f, 1f, "90%", BadgeVariant.Danger));
+    }
+
+    [DocVariant("CC_Playground_Feedback_ProgressBar_Animated", Order = 4)]
+    public static DocSample DocsAnimated() {
+        return new DocSample(() => {
+            RefHandle<float> startRef = UseRef(-1f);
+            if (startRef.Current < 0f) {
+                startRef.Current = Time.unscaledTime;
+            }
+
+            const float rise = 5f;
+            const float hold = 2f;
+            const float fall = 0.3f;
+            const float cycle = rise + hold + fall;
+
+            float t = (Time.unscaledTime - startRef.Current) % cycle;
+            float value;
+            if (t < rise) {
+                float u = 1f - (t / rise);
+                value = 1f - (u * u * u);
+            }
+            else if (t < rise + hold) {
+                value = 1f;
+            }
+            else {
+                float k = (t - rise - hold) / fall;
+                value = Mathf.Lerp(1f, 0f, k);
+            }
+
+            AnimationClock.RegisterActive(RenderContext.Current.RootId);
+
+            int pct = Mathf.RoundToInt(value * 100f);
+            return ProgressBar.Create(value, 0f, 1f, $"{pct}%");
+        });
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(ProgressBar.Create(0.65f, 0f, 1f, "65%"));
+        return new DocSample(() => ProgressBar.Create(0.65f, 0f, 1f, "65%"));
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Hooks;
+using static Cosmere.Lightweave.Hooks.Hooks;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
@@ -19,7 +20,8 @@ namespace Cosmere.Lightweave.Input;
     Id = "textfield",
     Summary = "Single-line editable text input.",
     WhenToUse = "Capture a short string (name, label, search term).",
-    SourcePath = "Lightweave/Lightweave/Input/TextField.cs"
+    SourcePath = "Lightweave/Lightweave/Input/TextField.cs",
+    ShowRtl = true
 )]
 public static class TextField {
     private const int ShakeFrames = 6;
@@ -150,9 +152,10 @@ public static class TextField {
     [DocVariant("CC_Playground_Label_Filled")]
     public static DocSample DocsFilled() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(
-            "Stormlight",
-            _ => { },
+        StateHandle<string> s = UseState("Stormlight");
+        return new DocSample(() => Create(
+            s.Value,
+            v => s.Set(v),
             (string)"CC_Playground_Controls_TextField_Placeholder".Translate(),
             disabled: forced
         ));
@@ -161,9 +164,10 @@ public static class TextField {
     [DocVariant("CC_Playground_Label_Empty")]
     public static DocSample DocsEmpty() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(
-            string.Empty,
-            _ => { },
+        StateHandle<string> s = UseState(string.Empty);
+        return new DocSample(() => Create(
+            s.Value,
+            v => s.Set(v),
             (string)"CC_Playground_Controls_TextField_Placeholder".Translate(),
             disabled: forced
         ));
@@ -172,22 +176,26 @@ public static class TextField {
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Default", _ => { }, disabled: forced));
+        StateHandle<string> s = UseState("Default");
+        return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Hover", _ => { }, disabled: forced));
+        StateHandle<string> s = UseState("Hover");
+        return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
-        return new DocSample(Create("Disabled", _ => { }, disabled: true));
+        StateHandle<string> s = UseState("Disabled");
+        return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: true));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create("Stormlight", _ => { }));
+        StateHandle<string> s = UseState("Stormlight");
+        return new DocSample(() => Create(s.Value, v => s.Set(v)));
     }
 }

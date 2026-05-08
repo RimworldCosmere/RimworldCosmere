@@ -58,42 +58,44 @@ public static class SideNavDoc {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        Hooks.Hooks.StateHandle<string> selectedHandle = Hooks.Hooks.UseState<string>("stack");
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<string> selectedHandle = Hooks.Hooks.UseState<string>("stack");
 
-        LightweaveNode rail = PlaygroundRail.Create(BuildDemoCategories(), selectedHandle);
-        LightweaveNode scroller = ScrollArea.Create(rail);
-        LightweaveNode framed = Box.Create(
-            null,
-            new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised),
-            BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
-            RadiusSpec.All(new Rem(0.375f)),
-            c => c.Add(scroller)
-        );
-        LightweaveNode constrained = Container.Create(
-            framed,
-            new Rem(14f),
-            align: ContainerAlign.Start
-        );
+            LightweaveNode rail = PlaygroundRail.Create(BuildDemoCategories(), selectedHandle);
+            LightweaveNode scroller = ScrollArea.Create(rail);
+            LightweaveNode framed = Box.Create(
+                null,
+                BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
+                BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
+                RadiusSpec.All(new Rem(0.375f)),
+                c => c.Add(scroller)
+            );
+            LightweaveNode constrained = Container.Create(
+                framed,
+                new Rem(14f),
+                align: ContainerAlign.Start
+            );
 
-        return new DocSample(constrained);
+            return constrained;
+        });
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("stack");
-        LightweaveNode rail = PlaygroundRail.Create(BuildDemoCategories(), selected);
-        return new DocSample(
-            Container.Create(
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("stack");
+            LightweaveNode rail = PlaygroundRail.Create(BuildDemoCategories(), selected);
+            return Container.Create(
                 Box.Create(
                     null,
-                    new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised),
+                    BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
                     BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
                     RadiusSpec.All(new Rem(0.375f)),
                     c => c.Add(ScrollArea.Create(rail))
                 ),
                 new Rem(14f),
                 align: ContainerAlign.Start
-            )
-        );
+            );
+        });
     }
 }

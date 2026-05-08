@@ -45,7 +45,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
             "feedback",
             "CC_Playground_Category_Feedback",
             "CC_Playground_Category_Feedback_Desc",
-            new[] { "spinner", "progressbar", "ringgauge", "sparkline", "badge", "tooltip" }
+            new[] { "spinner", "progressbar", "ringgauge", "badge", "tooltip" }
         ),
         new PlaygroundCategory(
             "navigation",
@@ -63,7 +63,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
             "data",
             "CC_Playground_Category_Data",
             "CC_Playground_Category_Data_Desc",
-            new[] { "list", "table", "tree", "keyvalue" }
+            new[] { "list", "table", "tree", "keyvalue", "chart" }
         ),
         new PlaygroundCategory(
             "hooks",
@@ -120,7 +120,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
         { "spinner", "Lightweave/Lightweave/Feedback/Spinner.cs" },
         { "progressbar", "Lightweave/Lightweave/Feedback/ProgressBar.cs" },
         { "ringgauge", "Lightweave/Lightweave/Feedback/RingGauge.cs" },
-        { "sparkline", "Lightweave/Lightweave/Feedback/Sparkline.cs" },
+        { "chart", "Lightweave/Lightweave/Feedback/Chart.cs" },
         { "badge", "Lightweave/Lightweave/Feedback/Badge.cs" },
         { "tooltip", "Lightweave/Lightweave/Feedback/Tooltip.cs" },
         { "tabs", "Lightweave/Lightweave/Navigation/Tabs.cs" },
@@ -190,7 +190,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
         return new Rect(inRect.x, inRect.y, inRect.width, headerHeight);
     }
 
-    protected override LightweaveNode Build() {
+    protected override LightweaveNode Body() {
         Hooks.Hooks.StateHandle<PlaygroundTheme> themeHandle = Hooks.Hooks.UseState(currentTheme);
         Hooks.Hooks.StateHandle<bool> forceDisabledHandle = Hooks.Hooks.UseState(false);
         Hooks.Hooks.StateHandle<string> selectedPrimitiveHandle = Hooks.Hooks.UseState(DefaultPrimitiveId());
@@ -241,8 +241,8 @@ public sealed class LightweavePlayground : LightweaveWindow {
         (IReadOnlyList<PlaygroundVariant> variants, IReadOnlyList<PlaygroundState> states) demo =
             DocReflection.BuildSamplesById(selectedPrimitiveId, forceDisabled);
 
-        float? rowOverride = null;
-        if (DemoRowHeights.TryGetValue(selectedPrimitiveId, out float rh)) {
+        float? rowOverride = DocReflection.GetPreferredVariantHeight(selectedPrimitiveId);
+        if (!rowOverride.HasValue && DemoRowHeights.TryGetValue(selectedPrimitiveId, out float rh)) {
             rowOverride = rh;
         }
 

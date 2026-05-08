@@ -8,6 +8,7 @@ using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
+using static Cosmere.Lightweave.Hooks.Hooks;
 
 namespace Cosmere.Lightweave.Input;
 
@@ -75,8 +76,8 @@ public static class Checkbox {
             ThemeSlot borderSlot = InputSurface.ResolveToggleBorderSlot(boxState, value);
 
             BackgroundSpec boxBg = value
-                ? new BackgroundSpec.Solid(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceAccent)
-                : new BackgroundSpec.Solid(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput);
+                ? BackgroundSpec.Of(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceAccent)
+                : BackgroundSpec.Of(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput);
             BorderSpec boxBorder = BorderSpec.All(new Rem(2f / 16f), borderSlot);
             RadiusSpec boxRadius = RadiusSpec.All(new Rem(0.125f));
 
@@ -140,34 +141,40 @@ public static class Checkbox {
     [DocVariant("CC_Playground_Label_True")]
     public static DocSample DocsTrue() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Enabled", true, _ => { }, forced));
+        StateHandle<bool> s = UseState(true);
+        return new DocSample(() => Create("Enabled", s.Value, v => s.Set(v), forced));
     }
 
     [DocVariant("CC_Playground_Label_False")]
     public static DocSample DocsFalse() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Disabled", false, _ => { }, forced));
+        StateHandle<bool> s = UseState(false);
+        return new DocSample(() => Create("Disabled", s.Value, v => s.Set(v), forced));
     }
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Default", true, _ => { }, forced));
+        StateHandle<bool> s = UseState(true);
+        return new DocSample(() => Create("Default", s.Value, v => s.Set(v), forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Hover", false, _ => { }, forced));
+        StateHandle<bool> s = UseState(false);
+        return new DocSample(() => Create("Hover", s.Value, v => s.Set(v), forced));
     }
 
     [DocState("CC_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
-        return new DocSample(Create("Disabled", true, _ => { }, true));
+        StateHandle<bool> s = UseState(true);
+        return new DocSample(() => Create("Disabled", s.Value, v => s.Set(v), true));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create("Enabled", true, _ => { }));
+        StateHandle<bool> s = UseState(true);
+        return new DocSample(() => Create("Enabled", s.Value, v => s.Set(v)));
     }
 }

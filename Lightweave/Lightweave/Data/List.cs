@@ -22,7 +22,8 @@ namespace Cosmere.Lightweave.Data;
     Summary = "Vertical scrolling list of items rendered through a row builder.",
     WhenToUse = "Show a homogenous, potentially long sequence of rows that benefits from virtualization.",
     SourcePath = "Lightweave/Lightweave/Data/List.cs",
-    PreferredVariantHeight = 200f
+    PreferredVariantHeight = 200f,
+    ShowRtl = true
 )]
 public static class List {
     public static LightweaveNode Create<T>(
@@ -133,11 +134,11 @@ public static class List {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(BuildSampleList());
+        return new DocSample(() => BuildSampleList());
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(BuildSampleList());
+        return new DocSample(() => BuildSampleList());
     }
 }

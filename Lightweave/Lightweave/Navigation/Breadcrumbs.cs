@@ -14,7 +14,8 @@ namespace Cosmere.Lightweave.Navigation;
     Id = "breadcrumbs",
     Summary = "Inline path with chevrons that collapses on overflow.",
     WhenToUse = "Show ancestry through a hierarchy users can navigate back through.",
-    SourcePath = "Lightweave/Lightweave/Navigation/Breadcrumbs.cs"
+    SourcePath = "Lightweave/Lightweave/Navigation/Breadcrumbs.cs",
+    ShowRtl = true
 )]
 public static class Breadcrumbs {
     private const string Ellipsis = "...";
@@ -26,6 +27,8 @@ public static class Breadcrumbs {
         IReadOnlyList<string> crumbs,
         [DocParam("Invoked when an earlier crumb is clicked.")]
         Action<int>? onNavigate = null,
+        [DocParam("Override hover sound on non-current crumbs. Null = component default (false).")]
+        bool? playHoverSound = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -130,7 +133,7 @@ public static class Breadcrumbs {
                     cursor = labelRect.xMax + gapPx;
                 }
 
-                DrawCrumb(labelRect, crumbText, i, isLast, onNavigate, style, theme);
+                DrawCrumb(labelRect, crumbText, i, isLast, onNavigate, style, theme, playHoverSound ?? false);
                 firstDrawn = false;
             }
         };
@@ -232,7 +235,8 @@ public static class Breadcrumbs {
         bool isLast,
         Action<int>? onNavigate,
         GUIStyle style,
-        Theme.Theme theme
+        Theme.Theme theme,
+        bool soundEnabled
     ) {
         Event e = Event.current;
         bool interactive = !isLast;
@@ -240,6 +244,10 @@ public static class Breadcrumbs {
 
         if (hovering) {
             PaintBox.DrawHighlight(labelRect, RadiusSpec.All(new Rem(0.25f)), true);
+        }
+
+        if (interactive) {
+            Cosmere.Lightweave.Input.InteractionFeedback.Apply(labelRect, true, soundEnabled);
         }
 
         ThemeSlot slot;
@@ -271,12 +279,12 @@ public static class Breadcrumbs {
             (string)"CC_Playground_Breadcrumbs_Crumb_Roshar".Translate(),
             (string)"CC_Playground_Breadcrumbs_Crumb_ShatteredPlains".Translate(),
         };
-        return new DocSample(Breadcrumbs.Create(path));
+        return new DocSample(() => Breadcrumbs.Create(path));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
         string[] path = new[] { "Worlds", "Roshar", "Shattered Plains" };
-        return new DocSample(Breadcrumbs.Create(path));
+        return new DocSample(() => Breadcrumbs.Create(path));
     }
 }

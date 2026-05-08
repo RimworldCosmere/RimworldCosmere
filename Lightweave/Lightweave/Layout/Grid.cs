@@ -134,7 +134,7 @@ public static class Grid {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(
+        return new DocSample(() => 
             Grid.Create(
                 new List<GridTrack> {
                     new GridTrack.Fr(1f),
@@ -172,7 +172,7 @@ public static class Grid {
             (Breakpoint.Md, twoCol),
             (Breakpoint.Lg, fourCol)
         );
-        return new DocSample(
+        return new DocSample(() => 
             Grid.Create(
                 columns,
                 SpacingScale.Xs,
@@ -188,7 +188,7 @@ public static class Grid {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             Grid.Create(
                 new List<GridTrack> {
                     new GridTrack.Fr(1f),

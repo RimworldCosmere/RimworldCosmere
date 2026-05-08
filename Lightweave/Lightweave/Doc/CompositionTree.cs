@@ -28,7 +28,7 @@ public static partial class Doc {
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
 
-            BackgroundSpec.Solid bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken);
+            BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceSunken);
             BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle);
             RadiusSpec rad = RadiusSpec.All(new Rem(0.375f));
             PaintBox.Draw(rect, bg, border, rad);

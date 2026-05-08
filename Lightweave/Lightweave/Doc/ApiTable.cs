@@ -23,7 +23,8 @@ public static partial class Doc {
         float headerFontPx = new Rem(0.75f).ToFontPx();
         float monoFontPx = new Rem(0.8125f).ToFontPx();
         float borderPx = Mathf.Max(1f, new Rem(1f / 16f).ToPixels());
-        float nameWidthRem = 9f;
+        float nameMinRem = 6f;
+        float nameMaxRem = 16f;
         float typeWidthRem = 10f;
         float defaultWidthRem = 7f;
 
@@ -46,14 +47,56 @@ public static partial class Doc {
             return s;
         }
 
-        float RowHeight(ApiParam p, float descWidth) {
-            GUIStyle descStyle = BodyStyle(RenderContext.Current.Theme, false);
-            float descHeight = descStyle.CalcHeight(new GUIContent(p.Description ?? string.Empty), descWidth);
-            return Mathf.Max(descHeight, new Rem(1.5f).ToPixels()) + rowPaddingY * 2f;
+        float CellHeight(GUIStyle style, string? text, float innerWidth) {
+            if (string.IsNullOrEmpty(text) || innerWidth <= 0f) {
+                return 0f;
+            }
+
+            return style.CalcHeight(new GUIContent(text), innerWidth);
         }
 
-        float[] ResolveWidths(float totalWidth) {
-            float nameW = new Rem(nameWidthRem).ToPixels();
+        float NameColumnWidth(Theme.Theme theme) {
+            if (parameters == null || parameters.Count == 0) {
+                return new Rem(nameMinRem).ToPixels();
+            }
+
+            GUIStyle nameStyle = BodyStyle(theme, true);
+            float maxText = 0f;
+            for (int i = 0; i < parameters.Count; i++) {
+                string? n = parameters[i].Name;
+                if (string.IsNullOrEmpty(n)) {
+                    continue;
+                }
+
+                float w = nameStyle.CalcSize(new GUIContent(n)).x;
+                if (w > maxText) {
+                    maxText = w;
+                }
+            }
+
+            float content = maxText + cellPaddingX * 2f;
+            float minPx = new Rem(nameMinRem).ToPixels();
+            float maxPx = new Rem(nameMaxRem).ToPixels();
+            return Mathf.Clamp(content, minPx, maxPx);
+        }
+
+        float RowHeight(ApiParam p, float[] widths, Theme.Theme theme) {
+            GUIStyle nameStyle = BodyStyle(theme, true);
+            GUIStyle typeStyle = BodyStyle(theme, true);
+            GUIStyle defaultStyle = BodyStyle(theme, true);
+            GUIStyle descStyle = BodyStyle(theme, false);
+
+            float nameH = CellHeight(nameStyle, p.Name, widths[0] - cellPaddingX * 2f);
+            float typeH = CellHeight(typeStyle, p.Type, widths[1] - cellPaddingX * 2f);
+            float defaultH = CellHeight(defaultStyle, p.DefaultValue, widths[2] - cellPaddingX * 2f);
+            float descH = CellHeight(descStyle, p.Description, widths[3] - cellPaddingX * 2f);
+
+            float maxContent = Mathf.Max(Mathf.Max(nameH, typeH), Mathf.Max(defaultH, descH));
+            return Mathf.Max(maxContent, new Rem(1.5f).ToPixels()) + rowPaddingY * 2f;
+        }
+
+        float[] ResolveWidths(float totalWidth, Theme.Theme theme) {
+            float nameW = NameColumnWidth(theme);
             float typeW = new Rem(typeWidthRem).ToPixels();
             float defaultW = new Rem(defaultWidthRem).ToPixels();
             float consumed = nameW + typeW + defaultW;
@@ -66,11 +109,11 @@ public static partial class Doc {
                 return headerHeightPx + borderPx * 2f;
             }
 
-            float[] widths = ResolveWidths(availableWidth);
-            float descInner = widths[3] - cellPaddingX * 2f;
+            Theme.Theme theme = RenderContext.Current.Theme;
+            float[] widths = ResolveWidths(availableWidth, theme);
             float total = headerHeightPx + borderPx;
             for (int i = 0; i < parameters.Count; i++) {
-                total += RowHeight(parameters[i], descInner) + borderPx;
+                total += RowHeight(parameters[i], widths, theme) + borderPx;
             }
 
             return total;
@@ -81,7 +124,7 @@ public static partial class Doc {
 
             BorderSpec borderSpec = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle);
             RadiusSpec rad = RadiusSpec.All(new Rem(0.375f));
-            PaintBox.Draw(rect, new BackgroundSpec.Solid(ThemeSlot.SurfacePrimary), borderSpec, rad);
+            PaintBox.Draw(rect, BackgroundSpec.Of(ThemeSlot.SurfacePrimary), borderSpec, rad);
 
             if (parameters == null || parameters.Count == 0) {
                 GUIStyle empty = BodyStyle(theme, false);
@@ -105,7 +148,7 @@ public static partial class Doc {
                 Mathf.Max(0f, rect.height - borderPx * 2f)
             );
 
-            float[] widths = ResolveWidths(inner.width);
+            float[] widths = ResolveWidths(inner.width, theme);
             string[] headers = {
                 (string)"CC_Playground_Panel_ApiName".Translate(),
                 (string)"CC_Playground_Panel_ApiType".Translate(),
@@ -143,8 +186,7 @@ public static partial class Doc {
 
             for (int i = 0; i < parameters.Count; i++) {
                 ApiParam p = parameters[i];
-                float descInner = widths[3] - cellPaddingX * 2f;
-                float rowH = RowHeight(p, descInner);
+                float rowH = RowHeight(p, widths, theme);
 
                 if (i % 2 == 1) {
                     Rect striped = new Rect(inner.x, cursorY, inner.width, rowH);

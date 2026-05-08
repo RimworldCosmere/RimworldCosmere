@@ -21,7 +21,8 @@ public sealed record TreeNode(
     Summary = "Hierarchical, expandable list of nodes with chevron toggles.",
     WhenToUse = "Browse nested data such as locations, categories, or org structure.",
     SourcePath = "Lightweave/Lightweave/Data/Tree.cs",
-    PreferredVariantHeight = 200f
+    PreferredVariantHeight = 200f,
+    ShowRtl = true
 )]
 public static class Tree {
     private const string ChevronCollapsedLtr = "▸";
@@ -37,6 +38,8 @@ public static class Tree {
         IReadOnlyList<TreeNode> roots,
         [DocParam("Invoked when a leaf or label is clicked.")]
         Action<TreeNode>? onSelect = null,
+        [DocParam("Override hover sound on rows/chevrons. Null = component default (false).")]
+        bool? playHoverSound = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -83,9 +86,10 @@ public static class Tree {
                 float scrollbarGutter = LightweaveScrollView.GutterPixels(statusRef.Current.VerticalVisible);
                 float innerWidth = rect.width - scrollbarGutter;
 
+                bool soundEnabled = playHoverSound ?? false;
                 for (int i = 0; i < visible.Count; i++) {
                     Rect rowRect = new Rect(0f, i * rh, innerWidth, rh);
-                    PaintRow(rowRect, visible[i].Node, visible[i].Depth, expanded, expandedState, onSelect);
+                    PaintRow(rowRect, visible[i].Node, visible[i].Depth, expanded, expandedState, onSelect, soundEnabled);
                 }
             }
         };
@@ -136,7 +140,8 @@ public static class Tree {
         int depth,
         HashSet<TreeNode> expanded,
         Hooks.Hooks.StateHandle<HashSet<TreeNode>> expandedState,
-        Action<TreeNode>? onSelect
+        Action<TreeNode>? onSelect,
+        bool soundEnabled
     ) {
         Theme.Theme theme = RenderContext.Current.Theme;
         Direction dir = RenderContext.Current.Direction;
@@ -195,6 +200,10 @@ public static class Tree {
         GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
         GUI.Label(RectSnap.Snap(labelRect), treeNode.Label ?? string.Empty, labelStyle);
         GUI.color = savedLabel;
+
+        if (hasChildren) {
+            Cosmere.Lightweave.Input.InteractionFeedback.Apply(chevronRect, true, soundEnabled);
+        }
 
         if (e.type == EventType.MouseUp && e.button == 0) {
             if (hasChildren && chevronRect.Contains(e.mousePosition)) {
@@ -256,11 +265,11 @@ public static class Tree {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(BuildSampleTree());
+        return new DocSample(() => BuildSampleTree(), useFullSource: true);
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(BuildSampleTree());
+        return new DocSample(() => BuildSampleTree(), useFullSource: true);
     }
 }

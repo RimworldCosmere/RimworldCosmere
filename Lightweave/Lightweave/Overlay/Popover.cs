@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
+using Cosmere.Lightweave.Feedback;
 using Cosmere.Lightweave.Input;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
@@ -80,10 +81,10 @@ public static class Popover {
                     popoverRect.width,
                     popoverRect.height
                 );
-                BackgroundSpec shadowBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, 0.35f));
+                BackgroundSpec shadowBg = BackgroundSpec.Of(new Color(0f, 0f, 0f, 0.35f));
                 PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(new Rem(0.5f)));
 
-                BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+                BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
                 BorderSpec border = BorderSpec.All(new Rem(2f / 16f), ThemeSlot.BorderDefault);
                 RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
                 PaintBox.Draw(popoverRect, bg, border, radius);
@@ -166,11 +167,151 @@ public static class Popover {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(BuildHostDemo(), useFullSource: true);
+        return new DocSample(() => BuildHostDemo(), useFullSource: true);
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(BuildHostDemo(), useFullSource: true);
+        return new DocSample(() => BuildHostDemo(), useFullSource: true);
+    }
+
+    private static LightweaveNode BuildPawnCardDemo() {
+        StateHandle<bool> open = UseState(false);
+        RefHandle<Rect> anchor = UseRef(default(Rect));
+
+        LightweaveNode button = Button.Create(
+            (string)"CC_Playground_Overlay_Popover_PawnCard_Trigger".Translate(),
+            () => open.Set(!open.Value),
+            ButtonVariant.Secondary
+        );
+
+        LightweaveNode trigger = NodeBuilder.New("PopoverTrigger:PawnCard", 0, nameof(Popover));
+        trigger.Children.Add(button);
+        trigger.Paint = (rect, _) => {
+            anchor.Current = rect;
+            button.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(button, rect);
+        };
+
+        LightweaveNode avatar = Box.Create(
+            EdgeInsets.Zero,
+            BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+            BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
+            RadiusSpec.All(new Rem(999f))
+        );
+        avatar.PreferredHeight = new Rem(2.75f).ToPixels();
+
+        LightweaveNode identity = Stack.Create(
+            SpacingScale.Xxs,
+            s => {
+                s.Add(Heading.Create(3, (string)"CC_Playground_Overlay_Popover_PawnCard_Name".Translate()));
+                s.Add(
+                    Badge.Create(
+                        (string)"CC_Playground_Overlay_Popover_PawnCard_Order".Translate(),
+                        BadgeVariant.Accent
+                    )
+                );
+            }
+        );
+
+        LightweaveNode header = HStack.Create(
+            SpacingScale.Md,
+            h => {
+                h.Add(avatar, new Rem(2.75f).ToPixels());
+                h.AddFlex(identity);
+            }
+        );
+
+        LightweaveNode stormlight = Stack.Create(
+            SpacingScale.Xs,
+            s => {
+                s.Add(
+                    HStack.Create(
+                        SpacingScale.Sm,
+                        h => {
+                            h.AddFlex(Label.Create((string)"CC_Playground_Overlay_Popover_PawnCard_Stormlight".Translate()));
+                            h.Add(
+                                Text.Create(
+                                    (string)"CC_Playground_Overlay_Popover_PawnCard_StormlightValue".Translate(),
+                                    FontRole.BodyBold,
+                                    new Rem(0.875f),
+                                    ThemeSlot.TextPrimary,
+                                    TextAlign.End,
+                                    FontStyle.Bold
+                                ),
+                                new Rem(5f).ToPixels()
+                            );
+                        }
+                    )
+                );
+                s.Add(ProgressBar.Create(412f, 0f, 1000f, variant: BadgeVariant.Accent));
+            }
+        );
+
+        LightweaveNode actions = HStack.Create(
+            SpacingScale.Sm,
+            h => {
+                h.AddFlex(
+                    Button.Create(
+                        (string)"CC_Playground_Overlay_Popover_PawnCard_AbilityLashing".Translate(),
+                        () => { },
+                        ButtonVariant.Primary,
+                        fullWidth: true
+                    )
+                );
+                h.AddFlex(
+                    Button.Create(
+                        (string)"CC_Playground_Overlay_Popover_PawnCard_AbilityAdhesion".Translate(),
+                        () => { },
+                        ButtonVariant.Secondary,
+                        fullWidth: true
+                    )
+                );
+            }
+        );
+
+        LightweaveNode body = Stack.Create(
+            SpacingScale.Md,
+            s => {
+                s.Add(header);
+                s.Add(stormlight);
+                s.Add(actions);
+            }
+        );
+
+        LightweaveNode card = Box.Create(
+            EdgeInsets.All(SpacingScale.Md),
+            null,
+            null,
+            null,
+            k => k.Add(body)
+        );
+
+        // ReSharper disable once ArrangeStaticMemberQualifier
+        LightweaveNode popover = Popover.Create(
+            open.Value,
+            anchor.Current,
+            PopoverPlacement.Bottom,
+            card,
+            () => open.Set(false),
+            new Vector2(new Rem(18f).ToPixels(), -1f)
+        );
+
+        LightweaveNode composed = NodeBuilder.New("PopoverHost:PawnCard", 0, nameof(Popover));
+        composed.Children.Add(trigger);
+        composed.Children.Add(popover);
+        composed.Measure = w => button.Measure?.Invoke(w) ?? button.PreferredHeight ?? 32f;
+        composed.Paint = (rect, _) => {
+            trigger.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(trigger, rect);
+            popover.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(popover, rect);
+        };
+        return composed;
+    }
+
+    [DocVariant("CC_Playground_Overlay_Popover_PawnCard", Order = 1)]
+    public static DocSample DocsPawnCard() {
+        return new DocSample(() => BuildPawnCardDemo(), useFullSource: true);
     }
 }

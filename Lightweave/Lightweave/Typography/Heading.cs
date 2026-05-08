@@ -15,7 +15,8 @@ public static partial class Typography {
         Id = "heading",
         Summary = "Bold heading text rendered with the theme heading font.",
         WhenToUse = "Section titles, panel headers, and other prominent labels in a hierarchy.",
-        SourcePath = "Lightweave/Lightweave/Typography/Heading.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/Heading.cs",
+        ShowRtl = true
     )]
     public static class Heading {
         public static LightweaveNode Create(
@@ -39,22 +40,22 @@ public static partial class Typography {
 
         [DocVariant("CC_Playground_Label_Large")]
         public static DocSample DocsH1() {
-            return new DocSample(Heading.Create(1, "Heading 1"));
+            return new DocSample(() => Heading.Create(1, "Heading 1"));
         }
 
         [DocVariant("CC_Playground_Label_Medium")]
         public static DocSample DocsH2() {
-            return new DocSample(Heading.Create(2, "Heading 2"));
+            return new DocSample(() => Heading.Create(2, "Heading 2"));
         }
 
         [DocVariant("CC_Playground_Label_Small")]
         public static DocSample DocsH3() {
-            return new DocSample(Heading.Create(3, "Heading 3"));
+            return new DocSample(() => Heading.Create(3, "Heading 3"));
         }
 
         [DocUsage]
         public static DocSample DocsUsage() {
-            return new DocSample(Heading.Create(2, "Surgebinding"));
+            return new DocSample(() => Heading.Create(2, "Surgebinding"));
         }
     }
 }

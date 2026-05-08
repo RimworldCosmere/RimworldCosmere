@@ -14,7 +14,8 @@ public static partial class Typography {
         Id = "label",
         Summary = "Compact label text using the Label font role and TextSecondary color.",
         WhenToUse = "Form field labels, toolbar captions, and other compact descriptors.",
-        SourcePath = "Lightweave/Lightweave/Typography/Label.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/Label.cs",
+        ShowRtl = true
     )]
     public static class Label {
         public static LightweaveNode Create(
@@ -35,12 +36,12 @@ public static partial class Typography {
 
         [DocVariant("CC_Playground_Label_Default")]
         public static DocSample DocsDefault() {
-            return new DocSample(Label.Create("Storm warnings"));
+            return new DocSample(() => Label.Create("Storm warnings"));
         }
 
         [DocUsage]
         public static DocSample DocsUsage() {
-            return new DocSample(Label.Create("Storm warnings"));
+            return new DocSample(() => Label.Create("Storm warnings"));
         }
     }
 }

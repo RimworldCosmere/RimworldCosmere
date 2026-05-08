@@ -140,7 +140,7 @@ public static class Stack {
 
     [DocVariant("CC_Playground_Label_Tight")]
     public static DocSample DocsTight() {
-        return new DocSample(
+        return new DocSample(() => 
             Stack.Create(
                 SpacingScale.Xxs,
                 s => {
@@ -154,7 +154,7 @@ public static class Stack {
 
     [DocVariant("CC_Playground_Label_Loose")]
     public static DocSample DocsLoose() {
-        return new DocSample(
+        return new DocSample(() => 
             Stack.Create(
                 SpacingScale.Sm,
                 s => {
@@ -168,7 +168,7 @@ public static class Stack {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             Stack.Create(
                 SpacingScale.Xs,
                 s => {

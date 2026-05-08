@@ -7,6 +7,7 @@ using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
+using static Cosmere.Lightweave.Hooks.Hooks;
 
 namespace Cosmere.Lightweave.Input;
 
@@ -146,9 +147,10 @@ public static class TextArea {
     [DocVariant("CC_Playground_Label_Filled")]
     public static DocSample DocsFilled() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(
-            "Multi-line sample.",
-            _ => { },
+        StateHandle<string> s = UseState("Multi-line sample.");
+        return new DocSample(() => Create(
+            s.Value,
+            v => s.Set(v),
             (string)"CC_Playground_Controls_TextArea_Placeholder".Translate(),
             2,
             3,
@@ -159,9 +161,10 @@ public static class TextArea {
     [DocVariant("CC_Playground_Label_Empty")]
     public static DocSample DocsEmpty() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(
-            string.Empty,
-            _ => { },
+        StateHandle<string> s = UseState(string.Empty);
+        return new DocSample(() => Create(
+            s.Value,
+            v => s.Set(v),
             (string)"CC_Playground_Controls_TextArea_Placeholder".Translate(),
             2,
             3,
@@ -171,6 +174,7 @@ public static class TextArea {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create("Notes about the bond.", _ => { }));
+        StateHandle<string> s = UseState("Notes about the bond.");
+        return new DocSample(() => Create(s.Value, v => s.Set(v)));
     }
 }

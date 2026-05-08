@@ -11,7 +11,7 @@ public static class PaintBox {
 
     public static void DrawHighlight(Rect rect, RadiusSpec? radius = null, bool mouseover = false) {
         Color tint = mouseover ? HighlightTintMouseover : HighlightTint;
-        Draw(rect, new BackgroundSpec.Solid(tint), null, radius);
+        Draw(rect, BackgroundSpec.Of(tint), null, radius);
     }
 
     public static void DrawHighlightIfMouseover(Rect rect, RadiusSpec? radius = null) {

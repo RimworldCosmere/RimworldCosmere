@@ -8,6 +8,7 @@ using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
+using static Cosmere.Lightweave.Hooks.Hooks;
 
 namespace Cosmere.Lightweave.Input;
 
@@ -127,7 +128,7 @@ public static class Radio {
             ThemeSlot borderSlot = InputSurface.ResolveToggleBorderSlot(circleState, selected);
 
             BackgroundSpec circleBg =
-                new BackgroundSpec.Solid(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput);
+                BackgroundSpec.Of(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput);
             BorderSpec circleBorder = BorderSpec.All(new Rem(2f / 16f), borderSlot);
             RadiusSpec circleRadius = RadiusSpec.All(new Rem(0.625f));
 
@@ -142,7 +143,7 @@ public static class Radio {
                     dotSize
                 );
                 ThemeSlot dotSlot = disabled ? ThemeSlot.BorderOff : ThemeSlot.SurfaceAccent;
-                BackgroundSpec dotBg = new BackgroundSpec.Solid(dotSlot);
+                BackgroundSpec dotBg = BackgroundSpec.Of(dotSlot);
                 RadiusSpec dotRadius = RadiusSpec.All(new Rem(0.25f));
                 PaintBox.Draw(dotRect, dotBg, null, dotRadius);
             }
@@ -174,9 +175,10 @@ public static class Radio {
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Group<int>(
-            1,
-            _ => { },
+        StateHandle<int> s = UseState(1);
+        return new DocSample(() => Group<int>(
+            s.Value,
+            v => s.Set(v),
             k => {
                 k.Add(Item((string)"CC_Playground_Controls_Radio_OptionA".Translate(), 0, forced));
                 k.Add(Item((string)"CC_Playground_Controls_Radio_OptionB".Translate(), 1, forced));
@@ -187,9 +189,10 @@ public static class Radio {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Group<int>(
-            0,
-            _ => { },
+        StateHandle<int> s = UseState(0);
+        return new DocSample(() => Group<int>(
+            s.Value,
+            v => s.Set(v),
             k => {
                 k.Add(Item("Option A", 0));
                 k.Add(Item("Option B", 1));

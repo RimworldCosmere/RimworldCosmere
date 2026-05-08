@@ -23,6 +23,87 @@ internal static class DocSourceResolver {
         return Cache.GetOrAdd(key, _ => LoadAndExtract(file, methodName));
     }
 
+
+    public static string? ResolveTypeSource(string file, string typeName) {
+        if (string.IsNullOrEmpty(file) || string.IsNullOrEmpty(typeName)) {
+            return null;
+        }
+
+        string key = file + "::type::" + typeName;
+        return Cache.GetOrAdd(key, _ => LoadAndExtractType(file, typeName));
+    }
+
+    private static string? LoadAndExtractType(string file, string typeName) {
+        try {
+            if (!File.Exists(file)) {
+                return null;
+            }
+
+            string source = File.ReadAllText(file);
+            return ExtractType(source, typeName);
+        }
+        catch (IOException ex) {
+            LightweaveLog.Warning($"DocSourceResolver IO failure for {file}: {ex}");
+            return null;
+        }
+        catch (UnauthorizedAccessException ex) {
+            LightweaveLog.Warning($"DocSourceResolver access denied for {file}: {ex}");
+            return null;
+        }
+    }
+
+    private static string? ExtractType(string source, string typeName) {
+        int searchFrom = 0;
+        while (true) {
+            int idx = source.IndexOf(typeName, searchFrom, StringComparison.Ordinal);
+            if (idx < 0) {
+                return null;
+            }
+
+            int before = idx - 1;
+            int after = idx + typeName.Length;
+            bool boundaryBefore = before < 0 || !IsIdentifierChar(source[before]);
+            bool boundaryAfter = after >= source.Length || !IsIdentifierChar(source[after]);
+            if (boundaryBefore && boundaryAfter) {
+                int lineStart = idx;
+                while (lineStart > 0 && source[lineStart - 1] != '\n') {
+                    lineStart--;
+                }
+
+                int lineEnd = idx;
+                while (lineEnd < source.Length && source[lineEnd] != '\n') {
+                    lineEnd++;
+                }
+
+                string declLine = source.Substring(lineStart, lineEnd - lineStart);
+                if (declLine.Contains("class ") || declLine.Contains("struct ") || declLine.Contains("record ")) {
+                    int braceIdx = source.IndexOf('{', after);
+                    if (braceIdx < 0) {
+                        return null;
+                    }
+
+                    int depth = 1;
+                    int end = braceIdx + 1;
+                    while (end < source.Length && depth > 0) {
+                        char c = source[end];
+                        if (c == '{') depth++;
+                        else if (c == '}') depth--;
+                        end++;
+                    }
+
+                    if (depth != 0) {
+                        return null;
+                    }
+
+                    string body = source.Substring(lineStart, end - lineStart);
+                    return Dedent(body);
+                }
+            }
+
+            searchFrom = idx + 1;
+        }
+    }
+
     private static string ExtractMethodName(string expr) {
         int paren = expr.IndexOf('(');
         string head = paren < 0 ? expr : expr.Substring(0, paren);

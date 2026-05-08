@@ -12,8 +12,10 @@ public static class NodeBuilder {
             int hash = 17;
             hash = hash * 31 + (file?.GetHashCode() ?? 0);
             hash = hash * 31 + line;
+            int parentHash = RenderContext.CurrentOrNull?.ParentPathHash ?? 0;
             return new LightweaveNode {
                 CallSiteId = hash,
+                BuildParentPathHash = parentHash,
                 DebugName = debugName,
             };
         }

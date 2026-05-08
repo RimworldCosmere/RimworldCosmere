@@ -83,21 +83,21 @@ public static class ScrollArea {
 
     [DocVariant("CC_Playground_ScrollArea_WithBar")]
     public static DocSample DocsWithBar() {
-        return new DocSample(
+        return new DocSample(() => 
             ScrollArea.Create(DocsRows(20))
         );
     }
 
     [DocVariant("CC_Playground_ScrollArea_NoBar")]
     public static DocSample DocsNoBar() {
-        return new DocSample(
+        return new DocSample(() => 
             ScrollArea.Create(DocsRows(20), showScrollbar: false)
         );
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             ScrollArea.Create(DocsRows(8))
         );
     }

@@ -80,7 +80,7 @@ public static class ContextMenu {
 
         LightweaveNode target = Box.Create(
             EdgeInsets.All(SpacingScale.Sm),
-            new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised),
+            BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
             RadiusSpec.All(new Rem(0.25f)),
             c => c.Add(
@@ -90,7 +90,7 @@ public static class ContextMenu {
             )
         );
 
-        return new DocSample(ContextMenu.Create(target, items));
+        return new DocSample(() => ContextMenu.Create(target, items));
     }
 
     [DocUsage]
@@ -104,12 +104,12 @@ public static class ContextMenu {
 
         LightweaveNode target = Box.Create(
             EdgeInsets.All(SpacingScale.Sm),
-            new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised),
+            BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
             RadiusSpec.All(new Rem(0.25f)),
             c => c.Add(Caption.Create("Right-click here"))
         );
 
-        return new DocSample(ContextMenu.Create(target, items));
+        return new DocSample(() => ContextMenu.Create(target, items));
     }
 }

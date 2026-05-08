@@ -37,7 +37,7 @@ public abstract class AsChoiceLetter : ChoiceLetter {
 
         public override Vector2 InitialSize => owner.LetterSize;
 
-        protected override LightweaveNode Build() {
+        protected override LightweaveNode Body() {
             return owner.Build();
         }
     }

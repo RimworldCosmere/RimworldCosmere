@@ -117,7 +117,7 @@ public static class Each {
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         string[] items = new[] { "A", "B", "C" };
-        return new DocSample(
+        return new DocSample(() => 
             Row.Create(
                 SpacingScale.Xs,
                 children: r => {
@@ -136,7 +136,7 @@ public static class Each {
     [DocUsage]
     public static DocSample DocsUsage() {
         string[] items = new[] { "alpha", "beta", "gamma" };
-        return new DocSample(
+        return new DocSample(() => 
             Each.Of(items, (item, _) => SampleChip(item))
         );
     }

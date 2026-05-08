@@ -45,7 +45,7 @@ internal sealed class DialogWindow : LightweaveWindow {
         }
     }
 
-    protected override LightweaveNode Build() {
+    protected override LightweaveNode Body() {
         return contentBuilder();
     }
 

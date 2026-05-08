@@ -31,6 +31,8 @@ public static class IconButton {
         bool disabled = false,
         [DocParam("Translation key for an optional tooltip (reserved).")]
         string? tooltipKey = null,
+        [DocParam("Override hover sound. Null = component default (true).")]
+        bool? playHoverSound = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -60,7 +62,7 @@ public static class IconButton {
             ThemeSlot bgSlot = ButtonVariants.Background(variant, state);
             ThemeSlot? borderSlot = ButtonVariants.Border(variant, state);
 
-            BackgroundSpec bg = new BackgroundSpec.Solid(bgSlot);
+            BackgroundSpec bg = BackgroundSpec.Of(bgSlot);
             BorderSpec? border = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
@@ -73,7 +75,7 @@ public static class IconButton {
                 Color overlayColor = state.Pressed
                     ? new Color(0f, 0f, 0f, overlay)
                     : new Color(1f, 1f, 1f, overlay);
-                PaintBox.Draw(square, new BackgroundSpec.Solid(overlayColor), null, radius);
+                PaintBox.Draw(square, BackgroundSpec.Of(overlayColor), null, radius);
             }
 
             float innerPad = Mathf.Min(padPx, (size - iconPx) / 2f);
@@ -86,6 +88,8 @@ public static class IconButton {
             icon.MeasuredRect = padRect;
 
             paintChildren();
+
+            InteractionFeedback.Apply(square, !disabled, playHoverSound ?? true);
 
             Event e = Event.current;
             if (!disabled &&
@@ -101,47 +105,45 @@ public static class IconButton {
         return node;
     }
 
-    private static LightweaveNode MakeDocIcon() {
-        return Icon.Create(Texture2D.whiteTexture, new Rem(1f), ThemeSlot.TextPrimary);
-    }
+    
 
     [DocVariant("CC_Playground_Label_Ghost")]
     public static DocSample DocsGhost() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(MakeDocIcon(), () => { }, disabled: forced));
+        return new DocSample(() => Create(Icon.Create(TexButton.Reveal, new Rem(1f), ThemeSlot.TextPrimary), () => { }, disabled: forced));
     }
 
     [DocVariant("CC_Playground_Label_Primary")]
     public static DocSample DocsPrimary() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(MakeDocIcon(), () => { }, ButtonVariant.Primary, disabled: forced));
+        return new DocSample(() => Create(Icon.Create(TexButton.NewItem, new Rem(1f), ThemeSlot.TextPrimary), () => { }, ButtonVariant.Primary, disabled: forced));
     }
 
     [DocVariant("CC_Playground_Label_Secondary")]
     public static DocSample DocsSecondary() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(MakeDocIcon(), () => { }, ButtonVariant.Secondary, disabled: forced));
+        return new DocSample(() => Create(Icon.Create(TexButton.Search, new Rem(1f), ThemeSlot.TextPrimary), () => { }, ButtonVariant.Secondary, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(MakeDocIcon(), () => { }, disabled: forced));
+        return new DocSample(() => Create(Icon.Create(TexButton.Info, new Rem(1f), ThemeSlot.TextPrimary), () => { }, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(MakeDocIcon(), () => { }, disabled: forced));
+        return new DocSample(() => Create(Icon.Create(TexButton.Rename, new Rem(1f), ThemeSlot.TextPrimary), () => { }, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
-        return new DocSample(Create(MakeDocIcon(), () => { }, disabled: true));
+        return new DocSample(() => Create(Icon.Create(TexButton.CloseXSmall, new Rem(1f), ThemeSlot.TextPrimary), () => { }, disabled: true));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create(MakeDocIcon(), () => { }));
+        return new DocSample(() => Create(Icon.Create(TexButton.Plus, new Rem(1f), ThemeSlot.TextPrimary), () => { }));
     }
 }

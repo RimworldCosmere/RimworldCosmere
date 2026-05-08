@@ -15,6 +15,38 @@ namespace Cosmere.Lightweave.Doc;
 public static partial class Doc {
     private const int CollapsedLineCount = 3;
 
+    private sealed class ParsedCode {
+        public string Normalized = string.Empty;
+        public string[] CodeLines = Array.Empty<string>();
+        public string[] HighlightedLines = Array.Empty<string>();
+        public string CopyText = string.Empty;
+        public string MaxLineNumber = "0";
+        public Dictionary<long, float[]> HeightsByKey = new Dictionary<long, float[]>();
+    }
+
+    private static readonly Dictionary<string, ParsedCode> ParsedCodeCache = new Dictionary<string, ParsedCode>();
+
+    private static ParsedCode GetParsed(string? code) {
+        string raw = code ?? string.Empty;
+        if (ParsedCodeCache.TryGetValue(raw, out ParsedCode? cached)) {
+            return cached;
+        }
+
+        ParsedCode entry = new ParsedCode();
+        entry.Normalized = raw.Replace("\r\n", "\n").TrimEnd('\n');
+        entry.CodeLines = entry.Normalized.Length == 0 ? new[] { string.Empty } : entry.Normalized.Split('\n');
+        entry.CopyText = StripUsingHeader(entry.Normalized);
+        int total = entry.CodeLines.Length;
+        entry.HighlightedLines = new string[total];
+        for (int i = 0; i < total; i++) {
+            entry.HighlightedLines[i] = SyntaxHighlight(entry.CodeLines[i].Replace("<", "<​"));
+        }
+
+        entry.MaxLineNumber = total.ToString();
+        ParsedCodeCache[raw] = entry;
+        return entry;
+    }
+
     public static LightweaveNode CodeBlock(
         string code,
         bool flat = false,
@@ -26,10 +58,11 @@ public static partial class Doc {
     ) {
         LightweaveNode node = NodeBuilder.New("Doc.CodeBlock", line, file);
 
-        string normalized = (code ?? string.Empty).Replace("\r\n", "\n").TrimEnd('\n');
-        string[] codeLines = normalized.Length == 0 ? new[] { string.Empty } : normalized.Split('\n');
-        int totalLines = codeLines.Length;
-        string copyText = StripUsingHeader(normalized);
+        ParsedCode parsed = GetParsed(code);
+        string[] highlightedLines = parsed.HighlightedLines;
+        string copyText = parsed.CopyText;
+        int totalLines = highlightedLines.Length;
+        string maxLineNumber = parsed.MaxLineNumber;
 
         string keySuffix = key ?? string.Empty;
         Hooks.Hooks.StateHandle<bool> expanded = Hooks.Hooks.UseState(false, line, file + "#expanded" + keySuffix);
@@ -38,13 +71,6 @@ public static partial class Doc {
         bool canCollapse = collapsible && totalLines > CollapsedLineCount;
         bool isCollapsed = canCollapse && !expanded.Value;
         int visibleLineCount = isCollapsed ? CollapsedLineCount : totalLines;
-
-        string[] highlightedLines = new string[totalLines];
-        for (int i = 0; i < totalLines; i++) {
-            highlightedLines[i] = SyntaxHighlight(codeLines[i]);
-        }
-
-        string maxLineNumber = totalLines.ToString();
 
         float fontPx = new Rem(0.8125f).ToFontPx();
         float lineHeightPx = new Rem(1.4f).ToPixels();
@@ -60,17 +86,16 @@ public static partial class Doc {
 
         float overlayHeight = canCollapse && isCollapsed ? viewBtnHeightPx + viewBtnGapPx : 0f;
 
-        float[]? cachedHeights = null;
-        float cachedWidth = float.NaN;
-
         float[] GetLineHeights(float availableWidth) {
-            if (cachedHeights != null && Mathf.Approximately(cachedWidth, availableWidth)) {
-                return cachedHeights;
+            int widthBucket = Mathf.RoundToInt(availableWidth);
+            long key = ((long)visibleLineCount << 32) | (uint)widthBucket;
+            if (parsed.HeightsByKey.TryGetValue(key, out float[]? cached)) {
+                return cached;
             }
 
-            cachedHeights = ComputeLineHeights(highlightedLines, visibleLineCount, availableWidth, fontPx, lineHeightPx, padXPx, gutterGapPx, maxLineNumber);
-            cachedWidth = availableWidth;
-            return cachedHeights;
+            float[] heights = ComputeLineHeights(highlightedLines, visibleLineCount, availableWidth, fontPx, lineHeightPx, padXPx, gutterGapPx, maxLineNumber);
+            parsed.HeightsByKey[key] = heights;
+            return heights;
         }
 
         node.Measure = availableWidth => {
@@ -84,7 +109,7 @@ public static partial class Doc {
 
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
-            BackgroundSpec.Solid bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken);
+            BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceSunken);
             BorderSpec? border = flat ? null : BorderSpec.All(borderThickness, ThemeSlot.BorderSubtle);
             RadiusSpec? rad = backgroundRadius ?? (flat ? null : RadiusSpec.All(radius));
             PaintBox.Draw(rect, bg, border, rad);
@@ -507,7 +532,16 @@ public static partial class Doc {
                 continue;
             }
 
-            sb.Append(c);
+            if (c == '<') {
+                sb.Append('⟨');
+            }
+            else if (c == '>') {
+                sb.Append('⟩');
+            }
+            else {
+                sb.Append(c);
+            }
+
             i++;
         }
 
@@ -517,9 +551,24 @@ public static partial class Doc {
     private static void AppendColored(StringBuilder sb, string text, string hex) {
         sb.Append("<color=#");
         sb.Append(hex);
-        sb.Append(">");
-        sb.Append(text);
+        sb.Append('>');
+        AppendEscaped(sb, text);
         sb.Append("</color>");
+    }
+
+    private static void AppendEscaped(StringBuilder sb, string text) {
+        for (int j = 0; j < text.Length; j++) {
+            char ch = text[j];
+            if (ch == '<') {
+                sb.Append('⟨');
+            }
+            else if (ch == '>') {
+                sb.Append('⟩');
+            }
+            else {
+                sb.Append(ch);
+            }
+        }
     }
 
     private static bool IsKeyword(string s) {

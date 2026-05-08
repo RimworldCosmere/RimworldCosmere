@@ -136,10 +136,10 @@ public static class Box {
 
     [DocVariant("CC_Playground_Label_Raised")]
     public static DocSample DocsRaised() {
-        return new DocSample(
+        return new DocSample(() => 
             Box.Create(
                 EdgeInsets.All(SpacingScale.Sm),
-                new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised),
+                BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
                 RadiusSpec.All(new Rem(0.25f)),
                 c => c.Add(Caption.Create("raised"))
@@ -149,10 +149,10 @@ public static class Box {
 
     [DocVariant("CC_Playground_Label_Sunken")]
     public static DocSample DocsSunken() {
-        return new DocSample(
+        return new DocSample(() => 
             Box.Create(
                 EdgeInsets.All(SpacingScale.Sm),
-                new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken),
+                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 null,
                 RadiusSpec.All(new Rem(0.25f)),
                 c => c.Add(Caption.Create("sunken"))
@@ -162,10 +162,10 @@ public static class Box {
 
     [DocVariant("CC_Playground_Label_Accent")]
     public static DocSample DocsAccent() {
-        return new DocSample(
+        return new DocSample(() => 
             Box.Create(
                 EdgeInsets.All(SpacingScale.Sm),
-                new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent),
+                BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
                 null,
                 RadiusSpec.All(new Rem(0.25f)),
                 c => c.Add(Text.Create("accent", FontRole.Body, new Rem(0.8125f), ThemeSlot.TextOnAccent))
@@ -175,10 +175,10 @@ public static class Box {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             Box.Create(
                 EdgeInsets.All(SpacingScale.Sm),
-                new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised),
+                BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
                 RadiusSpec.All(new Rem(0.25f)),
                 c => c.Add(Caption.Create("content"))

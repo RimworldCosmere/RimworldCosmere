@@ -21,6 +21,16 @@ internal static class DocReflection {
         return primitiveIndex!.TryGetValue(id, out Type? t) ? t : null;
     }
 
+
+    internal static float? GetPreferredVariantHeight(string id) {
+        Type? primitive = GetPrimitiveType(id);
+        DocAttribute? doc = primitive?.GetCustomAttribute<DocAttribute>();
+        if (doc == null) {
+            return null;
+        }
+        return doc.PreferredVariantHeight > 0f ? doc.PreferredVariantHeight : null;
+    }
+
     internal static (IReadOnlyList<PlaygroundVariant> variants, IReadOnlyList<PlaygroundState> states) BuildSamplesById(
         string id,
         bool forceDisabled
@@ -99,13 +109,13 @@ internal static class DocReflection {
         }
 
         IReadOnlyList<CompositionLine> composition = BuildComposition(primitive);
-        IReadOnlyList<ApiParam> api = BuildApi(primitive);
+        IReadOnlyList<ApiGroup> apiGroups = BuildApiGroups(primitive);
         string? usage = BuildUsageCode(primitive);
 
         return new PlaygroundDocs(
             UsageCode: usage,
             Composition: composition.Count > 0 ? composition : null,
-            ApiReference: api.Count > 0 ? api : null,
+            ApiReference: apiGroups.Count > 0 ? apiGroups : null,
             ShowRtl: root.ShowRtl
         );
     }
@@ -114,7 +124,7 @@ internal static class DocReflection {
         return BuildSamples<DocVariantAttribute, PlaygroundVariant>(
             primitive,
             forceDisabled,
-            (attr, sample, factory) => new PlaygroundVariant(attr.LabelKey, sample.Demo, () => factory()?.Demo ?? sample.Demo, sample.Code),
+            (attr, sample, factory) => new PlaygroundVariant(attr.LabelKey, sample.Demo, () => (factory() ?? sample).Build(), sample.Code),
             attr => attr.Order
         );
     }
@@ -123,7 +133,7 @@ internal static class DocReflection {
         return BuildSamples<DocStateAttribute, PlaygroundState>(
             primitive,
             forceDisabled,
-            (attr, sample, _) => new PlaygroundState(attr.LabelKey, sample.Demo, sample.Code),
+            (attr, sample, factory) => new PlaygroundState(attr.LabelKey, sample.Demo, () => (factory() ?? sample).Build(), sample.Code),
             attr => attr.Order
         );
     }
@@ -134,7 +144,42 @@ internal static class DocReflection {
         Func<TAttr, DocSample, Func<DocSample?>, TItem> map,
         Func<TAttr, int> orderOf
     ) where TAttr : Attribute {
-        List<(TAttr attr, MemberInfo member)> sources = new List<(TAttr, MemberInfo)>();
+        List<(TAttr attr, MemberInfo member)> sources = GetCachedSources<TAttr>(primitive, orderOf);
+        if (sources.Count == 0) {
+            return Array.Empty<TItem>();
+        }
+
+        List<TItem> result = new List<TItem>(sources.Count);
+        RenderContext ctx = RenderContext.Current;
+        bool previousForceDisabled = ctx.ForceDisabled;
+        ctx.ForceDisabled = forceDisabled;
+        try {
+            for (int i = 0; i < sources.Count; i++) {
+                TAttr attr = sources[i].attr;
+                MemberInfo member = sources[i].member;
+                DocSample fallback = GetCachedFallback(member);
+                Func<DocSample?> factory = () => InvokeForSample(member);
+                result.Add(map(attr, fallback, factory));
+            }
+        }
+        finally {
+            ctx.ForceDisabled = previousForceDisabled;
+        }
+
+        return result;
+    }
+
+    private static readonly Dictionary<(Type, Type), object> CachedSources = new Dictionary<(Type, Type), object>();
+    private static readonly Dictionary<MemberInfo, DocSample> CachedFallbacks = new Dictionary<MemberInfo, DocSample>();
+    private static readonly LightweaveNode PlaceholderNode = NodeBuilder.New("DocSamplePlaceholder", 0, string.Empty);
+
+    private static List<(TAttr attr, MemberInfo member)> GetCachedSources<TAttr>(Type primitive, Func<TAttr, int> orderOf) where TAttr : Attribute {
+        (Type, Type) key = (primitive, typeof(TAttr));
+        if (CachedSources.TryGetValue(key, out object? cached)) {
+            return (List<(TAttr, MemberInfo)>)cached;
+        }
+
+        List<(TAttr attr, MemberInfo member)> sources = new List<(TAttr attr, MemberInfo member)>();
         MethodInfo[] methods = primitive.GetMethods(MemberFlags);
         for (int i = 0; i < methods.Length; i++) {
             TAttr? attr = methods[i].GetCustomAttribute<TAttr>();
@@ -165,32 +210,20 @@ internal static class DocReflection {
             sources.Add((attr, props[i]));
         }
 
-        if (sources.Count == 0) {
-            return Array.Empty<TItem>();
-        }
-
         sources.Sort((a, b) => orderOf(a.attr).CompareTo(orderOf(b.attr)));
+        CachedSources[key] = sources;
+        return sources;
+    }
 
-        List<TItem> result = new List<TItem>(sources.Count);
-        RenderContext ctx = RenderContext.Current;
-        bool previousForceDisabled = ctx.ForceDisabled;
-        ctx.ForceDisabled = forceDisabled;
-        try {
-            for (int i = 0; i < sources.Count; i++) {
-                MemberInfo member = sources[i].member;
-                DocSample? sample = InvokeForSample(member);
-                if (sample == null) {
-                    continue;
-                }
-
-                result.Add(map(sources[i].attr, sample, () => InvokeForSample(member)));
-            }
-        }
-        finally {
-            ctx.ForceDisabled = previousForceDisabled;
+    private static DocSample GetCachedFallback(MemberInfo member) {
+        if (CachedFallbacks.TryGetValue(member, out DocSample? cached)) {
+            return cached;
         }
 
-        return result;
+        DocSample? sample = InvokeForSample(member);
+        DocSample fallback = sample ?? new DocSample(() => PlaceholderNode);
+        CachedFallbacks[member] = fallback;
+        return fallback;
     }
 
     private static DocSample? InvokeForSample(MemberInfo member) {
@@ -265,21 +298,27 @@ internal static class DocReflection {
         }
     }
 
-    private static IReadOnlyList<ApiParam> BuildApi(Type primitive) {
-        List<ApiParam> api = new List<ApiParam>();
-        HashSet<string> seen = new HashSet<string>(StringComparer.Ordinal);
+    private static IReadOnlyList<ApiGroup> BuildApiGroups(Type primitive) {
+        List<ApiParam> mainParams = new List<ApiParam>();
+        List<ApiGroup> slotGroups = new List<ApiGroup>();
+        HashSet<string> mainSeen = new HashSet<string>(StringComparer.Ordinal);
         MethodInfo[] methods = primitive.GetMethods(MemberFlags);
         for (int m = 0; m < methods.Length; m++) {
             MethodInfo method = methods[m];
             DocAttribute? d = method.GetCustomAttribute<DocAttribute>();
-            if (d != null && d.Slot) continue;
+            bool isSlot = d != null && d.Slot;
 
             ParameterInfo[] parms = method.GetParameters();
+            List<ApiParam> slotParams = isSlot ? new List<ApiParam>() : null!;
+            HashSet<string> slotSeen = isSlot ? new HashSet<string>(StringComparer.Ordinal) : null!;
+
             for (int p = 0; p < parms.Length; p++) {
                 ParameterInfo pi = parms[p];
                 DocParamAttribute? pa = pi.GetCustomAttribute<DocParamAttribute>();
                 if (pa == null) continue;
                 string paramName = pi.Name ?? "";
+
+                HashSet<string> seen = isSlot ? slotSeen : mainSeen;
                 if (seen.Contains(paramName)) continue;
                 seen.Add(paramName);
 
@@ -295,11 +334,97 @@ internal static class DocReflection {
                     defaultStr = "-";
                 }
 
-                api.Add(new ApiParam(paramName, typeStr, defaultStr, pa.Description));
+                ApiParam entry = new ApiParam(paramName, typeStr, defaultStr, pa.Description);
+                if (isSlot) {
+                    slotParams.Add(entry);
+                }
+                else {
+                    mainParams.Add(entry);
+                }
+            }
+
+            if (isSlot && slotParams.Count > 0) {
+                slotGroups.Add(new ApiGroup($"{primitive.Name}.{method.Name}()", slotParams));
             }
         }
 
-        return api;
+        DocAttribute? root = primitive.GetCustomAttribute<DocAttribute>();
+        Type? target = root?.Target;
+        if (target != null) {
+            BindingFlags vflags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
+            string targetMember = root!.TargetMember;
+            Type? cursor = target;
+            while (cursor != null && cursor != typeof(object)) {
+                PropertyInfo[] props = cursor.GetProperties(vflags);
+                for (int i = 0; i < props.Length; i++) {
+                    PropertyInfo prop = props[i];
+                    DocOverrideAttribute? doa = prop.GetCustomAttribute<DocOverrideAttribute>();
+                    if (doa == null) continue;
+                    if (mainSeen.Contains(prop.Name)) continue;
+                    mainSeen.Add(prop.Name);
+
+                    string typeStr = doa.TypeOverride.Length > 0 ? doa.TypeOverride : FormatTypeName(prop.PropertyType);
+                    string defaultStr = doa.DefaultOverride.Length > 0 ? doa.DefaultOverride : "-";
+                    mainParams.Add(new ApiParam(prop.Name, typeStr, defaultStr, doa.Description));
+                }
+
+                MethodInfo[] tmethods = cursor.GetMethods(vflags);
+                for (int i = 0; i < tmethods.Length; i++) {
+                    MethodInfo mi = tmethods[i];
+                    if (mi.IsSpecialName) continue;
+                    DocOverrideAttribute? doa = mi.GetCustomAttribute<DocOverrideAttribute>();
+                    if (doa == null) continue;
+                    if (mainSeen.Contains(mi.Name)) continue;
+                    mainSeen.Add(mi.Name);
+
+                    string typeStr = doa.TypeOverride.Length > 0 ? doa.TypeOverride : FormatTypeName(mi.ReturnType) + "()";
+                    string defaultStr = doa.DefaultOverride.Length > 0 ? doa.DefaultOverride : "-";
+                    mainParams.Add(new ApiParam(mi.Name, typeStr, defaultStr, doa.Description));
+                }
+
+                if (targetMember.Length > 0) {
+                    for (int i = 0; i < tmethods.Length; i++) {
+                        MethodInfo mi = tmethods[i];
+                        if (mi.IsSpecialName) continue;
+                        if (!string.Equals(mi.Name, targetMember, StringComparison.Ordinal)) continue;
+
+                        ParameterInfo[] tparms = mi.GetParameters();
+                        for (int p = 0; p < tparms.Length; p++) {
+                            ParameterInfo pi = tparms[p];
+                            DocParamAttribute? pa = pi.GetCustomAttribute<DocParamAttribute>();
+                            if (pa == null) continue;
+                            string paramName = pi.Name ?? "";
+                            if (mainSeen.Contains(paramName)) continue;
+                            mainSeen.Add(paramName);
+
+                            string typeStr = pa.TypeOverride.Length > 0 ? pa.TypeOverride : FormatType(pi);
+                            string defaultStr;
+                            if (pa.DefaultOverride.Length > 0) {
+                                defaultStr = pa.DefaultOverride;
+                            }
+                            else if (pi.HasDefaultValue) {
+                                defaultStr = FormatDefault(pi.DefaultValue);
+                            }
+                            else {
+                                defaultStr = "-";
+                            }
+
+                            mainParams.Add(new ApiParam(paramName, typeStr, defaultStr, pa.Description));
+                        }
+                    }
+                }
+
+                cursor = cursor.BaseType;
+            }
+        }
+
+        List<ApiGroup> groups = new List<ApiGroup>();
+        if (mainParams.Count > 0) {
+            groups.Add(new ApiGroup(string.Empty, mainParams));
+        }
+
+        groups.AddRange(slotGroups);
+        return groups;
     }
 
     private static string FormatType(ParameterInfo pi) {
@@ -307,6 +432,20 @@ internal static class DocReflection {
         if (t.IsArray) {
             string inner = t.GetElementType()?.Name ?? "object";
             return $"{inner}[]";
+        }
+
+        return t.Name;
+    }
+
+
+    private static string FormatTypeName(Type t) {
+        if (t.IsArray) {
+            string inner = t.GetElementType()?.Name ?? "object";
+            return $"{inner}[]";
+        }
+
+        if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+            return FormatTypeName(t.GetGenericArguments()[0]) + "?";
         }
 
         return t.Name;

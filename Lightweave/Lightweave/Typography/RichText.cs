@@ -17,7 +17,8 @@ public static partial class Typography {
         Id = "richtext",
         Summary = "Wrapped text that honors Unity rich-text tags (<b>, <i>, <color=...>).",
         WhenToUse = "Body copy that needs inline emphasis or color without composing multiple Text nodes.",
-        SourcePath = "Lightweave/Lightweave/Typography/RichText.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/RichText.cs",
+        ShowRtl = true
     )]
     public static class RichText {
         public static LightweaveNode Create(
@@ -62,12 +63,12 @@ public static partial class Typography {
 
         [DocVariant("CC_Playground_Label_Default")]
         public static DocSample DocsDefault() {
-            return new DocSample(RichText.Create(new TaggedString((string)"CC_Playground_RichText_Sample".Translate())));
+            return new DocSample(() => RichText.Create(new TaggedString((string)"CC_Playground_RichText_Sample".Translate())));
         }
 
         [DocVariant("CC_Playground_Label_Bold")]
         public static DocSample DocsBold() {
-            return new DocSample(
+            return new DocSample(() => 
                 RichText.Create(
                     new TaggedString("Honor lies in <b>keeping</b> your word, even when it costs you everything.")
                 )
@@ -76,7 +77,7 @@ public static partial class Typography {
 
         [DocVariant("CC_Playground_Label_Italic")]
         public static DocSample DocsItalic() {
-            return new DocSample(
+            return new DocSample(() => 
                 RichText.Create(
                     new TaggedString("<i>Life before death. Strength before weakness. Journey before destination.</i>")
                 )
@@ -85,7 +86,7 @@ public static partial class Typography {
 
         [DocVariant("CC_Playground_Label_Accent")]
         public static DocSample DocsAccent() {
-            return new DocSample(
+            return new DocSample(() => 
                 RichText.Create(
                     new TaggedString("Stormlight burns <color=#bba36a>brilliant</color> in his veins.")
                 )
@@ -94,7 +95,7 @@ public static partial class Typography {
 
         [DocVariant("CC_Playground_Label_Mixed")]
         public static DocSample DocsMixed() {
-            return new DocSample(
+            return new DocSample(() => 
                 RichText.Create(
                     new TaggedString(
                         "<b><color=#bba36a>Adolin</color></b> raised <i>Mayalaran</i>, the dead Blade he had sworn to honor."
@@ -105,7 +106,7 @@ public static partial class Typography {
 
         [DocUsage]
         public static DocSample DocsUsage() {
-            return new DocSample(
+            return new DocSample(() => 
                 RichText.Create(
                     new TaggedString("Honor lies in <b>keeping</b> your word.")
                 )

@@ -7,6 +7,7 @@ using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
+using static Cosmere.Lightweave.Hooks.Hooks;
 
 namespace Cosmere.Lightweave.Input;
 
@@ -142,7 +143,7 @@ public static class ColorPicker {
             borderWidth = new Rem(1f / 16f);
         }
 
-        BackgroundSpec bg = new BackgroundSpec.Solid(drawColor);
+        BackgroundSpec bg = BackgroundSpec.Of(drawColor);
         BorderSpec border = BorderSpec.All(borderWidth, borderSlot);
         RadiusSpec radius = RadiusSpec.All(new Rem(0.125f));
         PaintBox.Draw(rect, bg, border, radius);
@@ -183,11 +184,13 @@ public static class ColorPicker {
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(new Color(0.25f, 0.42f, 0.30f), _ => { }, disabled: forced));
+        StateHandle<Color> s = UseState(new Color(0.25f, 0.42f, 0.30f));
+        return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: forced));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create(new Color(0.25f, 0.42f, 0.30f), _ => { }));
+        StateHandle<Color> s = UseState(new Color(0.25f, 0.42f, 0.30f));
+        return new DocSample(() => Create(s.Value, v => s.Set(v)));
     }
 }

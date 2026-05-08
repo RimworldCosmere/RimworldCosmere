@@ -220,7 +220,7 @@ public static class Toast {
                     Color savedInner = GUI.color;
                     GUI.color = new Color(1f, 1f, 1f, alpha);
 
-                    BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+                    BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
                     BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
                     RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
                     PaintBox.Draw(toastRect, bg, border, radius);
@@ -238,7 +238,7 @@ public static class Toast {
                         : toastRect.xMax - stripWidth;
                     Rect stripRect = new Rect(stripX, toastRect.y, stripWidth, toastRect.height);
                     GUI.color = new Color(1f, 1f, 1f, 1f);
-                    PaintBox.Draw(stripRect, new BackgroundSpec.Solid(stripWithAlpha), null, null);
+                    PaintBox.Draw(stripRect, BackgroundSpec.Of(stripWithAlpha), null, null);
                     GUI.color = new Color(1f, 1f, 1f, alpha);
 
                     float textLeft;
@@ -405,7 +405,7 @@ public static class Toast {
 
     [DocVariant("CC_Playground_Toast_Info")]
     public static DocSample DocsInfo() {
-        return new DocSample(BuildVariantDemo(
+        return new DocSample(() => BuildVariantDemo(
             "CC_Playground_Toast_Info",
             "CC_Playground_Toast_Msg_Info",
             ToastKind.Info,
@@ -415,7 +415,7 @@ public static class Toast {
 
     [DocVariant("CC_Playground_Toast_Success")]
     public static DocSample DocsSuccess() {
-        return new DocSample(BuildVariantDemo(
+        return new DocSample(() => BuildVariantDemo(
             "CC_Playground_Toast_Success",
             "CC_Playground_Toast_Msg_Success",
             ToastKind.Success,
@@ -425,7 +425,7 @@ public static class Toast {
 
     [DocVariant("CC_Playground_Toast_Warning")]
     public static DocSample DocsWarning() {
-        return new DocSample(BuildVariantDemo(
+        return new DocSample(() => BuildVariantDemo(
             "CC_Playground_Toast_Warning",
             "CC_Playground_Toast_Msg_Warning",
             ToastKind.Warning,
@@ -435,7 +435,7 @@ public static class Toast {
 
     [DocVariant("CC_Playground_Toast_Danger")]
     public static DocSample DocsDanger() {
-        return new DocSample(BuildVariantDemo(
+        return new DocSample(() => BuildVariantDemo(
             "CC_Playground_Toast_Danger",
             "CC_Playground_Toast_Msg_Danger",
             ToastKind.Danger,
@@ -445,7 +445,7 @@ public static class Toast {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(BuildVariantDemo(
+        return new DocSample(() => BuildVariantDemo(
             "CC_Playground_Toast_Info",
             "CC_Playground_Toast_Msg_Info",
             ToastKind.Info,

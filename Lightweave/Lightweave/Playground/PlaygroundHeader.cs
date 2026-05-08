@@ -47,7 +47,7 @@ public static class PlaygroundHeader {
                 Left: SpacingScale.Md,
                 Right: SpacingScale.Xl
             ),
-            new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised),
+            BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
             null,
             RadiusSpec.Top(new Rem(0.75f)),
             children: s => s.Add(row),

@@ -26,7 +26,8 @@ public sealed class HStackBuilder {
     Id = "hstack",
     Summary = "Horizontal layout with explicit per-item width (fixed or flex).",
     WhenToUse = "Lay out a row where some items are fixed-width and others absorb leftover space.",
-    SourcePath = "Lightweave/Lightweave/Layout/HStack.cs"
+    SourcePath = "Lightweave/Lightweave/Layout/HStack.cs",
+    ShowRtl = true
 )]
 public static class HStack {
     public static LightweaveNode Create(
@@ -136,7 +137,7 @@ public static class HStack {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(
+        return new DocSample(() => 
             HStack.Create(
                 SpacingScale.Xs,
                 r => {
@@ -150,7 +151,7 @@ public static class HStack {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             HStack.Create(
                 SpacingScale.Xs,
                 r => {

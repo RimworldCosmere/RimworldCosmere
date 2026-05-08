@@ -17,7 +17,8 @@ namespace Cosmere.Lightweave.Navigation;
     Id = "menu",
     Summary = "Anchored popover with rows, dividers, and submenus.",
     WhenToUse = "Trigger a list of one-click commands from a button or icon.",
-    SourcePath = "Lightweave/Lightweave/Navigation/Menu.cs"
+    SourcePath = "Lightweave/Lightweave/Navigation/Menu.cs",
+    ShowRtl = true
 )]
 public static class Menu {
     private static readonly Rem RowHeight = new Rem(1.75f);
@@ -229,12 +230,12 @@ public static class Menu {
         RadiusSpec highlightRadius = RadiusSpec.All(new Rem(0.5f));
 
         if (!item.Disabled && hovering) {
-            BackgroundSpec hoverBg = new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent);
+            BackgroundSpec hoverBg = BackgroundSpec.Of(ThemeSlot.SurfaceAccent);
             PaintBox.Draw(highlightRect, hoverBg, null, highlightRadius);
         }
 
         if (focused && !hovering && !item.Disabled) {
-            BackgroundSpec focusFill = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+            BackgroundSpec focusFill = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
             BorderSpec focusBorder = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderFocus);
             PaintBox.Draw(highlightRect, focusFill, focusBorder, highlightRadius);
         }
@@ -414,79 +415,83 @@ public static class Menu {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        Hooks.Hooks.StateHandle<bool> open = Hooks.Hooks.UseState(false);
-        Hooks.Hooks.RefHandle<Rect> anchor = Hooks.Hooks.UseRef(default(Rect));
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<bool> open = Hooks.Hooks.UseState(false);
+            Hooks.Hooks.RefHandle<Rect> anchor = Hooks.Hooks.UseRef(default(Rect));
 
-        List<MenuItem> exportChildren = new List<MenuItem> {
-            Menu.Item((string)"CC_Playground_Navigation_Menu_ExportPng".Translate(), () => open.Set(false)),
-            Menu.Item((string)"CC_Playground_Navigation_Menu_ExportSvg".Translate(), () => open.Set(false)),
-        };
+            List<MenuItem> exportChildren = new List<MenuItem> {
+                Menu.Item((string)"CC_Playground_Navigation_Menu_ExportPng".Translate(), () => open.Set(false)),
+                Menu.Item((string)"CC_Playground_Navigation_Menu_ExportSvg".Translate(), () => open.Set(false)),
+            };
 
-        List<MenuItem> items = new List<MenuItem> {
-            Menu.Item((string)"CC_Playground_Navigation_Menu_Open".Translate(), () => open.Set(false)),
-            Menu.Item((string)"CC_Playground_Navigation_Menu_Save".Translate(), () => open.Set(false)),
-            Menu.Item((string)"CC_Playground_Navigation_Menu_SaveAs".Translate(), () => open.Set(false)),
-            Menu.Divider(),
-            Menu.Submenu((string)"CC_Playground_Navigation_Menu_Export".Translate(), exportChildren),
-            Menu.Divider(),
-            Menu.Item((string)"CC_Playground_Navigation_Menu_Close".Translate(), () => open.Set(false)),
-        };
+            List<MenuItem> items = new List<MenuItem> {
+                Menu.Item((string)"CC_Playground_Navigation_Menu_Open".Translate(), () => open.Set(false)),
+                Menu.Item((string)"CC_Playground_Navigation_Menu_Save".Translate(), () => open.Set(false)),
+                Menu.Item((string)"CC_Playground_Navigation_Menu_SaveAs".Translate(), () => open.Set(false)),
+                Menu.Divider(),
+                Menu.Submenu((string)"CC_Playground_Navigation_Menu_Export".Translate(), exportChildren),
+                Menu.Divider(),
+                Menu.Item((string)"CC_Playground_Navigation_Menu_Close".Translate(), () => open.Set(false)),
+            };
 
-        LightweaveNode trigger = NodeBuilder.New("MenuTrigger", 0, nameof(Menu));
-        LightweaveNode button = Button.Create(
-            (string)"CC_Playground_Menu_TriggerOpen".Translate(),
-            () => open.Set(!open.Value),
-            ButtonVariant.Secondary
-        );
-        trigger.Children.Add(button);
-        trigger.Paint = (rect, _) => {
-            anchor.Current = rect;
-            button.MeasuredRect = rect;
-            LightweaveRoot.PaintSubtree(button, rect);
-        };
+            LightweaveNode trigger = NodeBuilder.New("MenuTrigger", 0, nameof(Menu));
+            LightweaveNode button = Button.Create(
+                (string)"CC_Playground_Menu_TriggerOpen".Translate(),
+                () => open.Set(!open.Value),
+                ButtonVariant.Secondary
+            );
+            trigger.Children.Add(button);
+            trigger.Measure = w => button.Measure?.Invoke(w) ?? button.PreferredHeight ?? 0f;
+            trigger.Paint = (rect, _) => {
+                anchor.Current = rect;
+                button.MeasuredRect = rect;
+                LightweaveRoot.PaintSubtree(button, rect);
+            };
 
-        LightweaveNode menu = Menu.Create(
-            open.Value,
-            anchor.Current,
-            items,
-            () => open.Set(false),
-            MenuAnchor.Left,
-            MenuDirection.Down,
-            "playground-menu"
-        );
+            LightweaveNode menu = Menu.Create(
+                open.Value,
+                anchor.Current,
+                items,
+                () => open.Set(false),
+                MenuAnchor.Left,
+                MenuDirection.Down,
+                "playground-menu"
+            );
 
-        LightweaveNode composed = NodeBuilder.New("MenuHost", 0, nameof(Menu));
-        composed.Children.Add(trigger);
-        composed.Children.Add(menu);
-        composed.Paint = (rect, _) => {
-            trigger.MeasuredRect = rect;
-            LightweaveRoot.PaintSubtree(trigger, rect);
-            menu.MeasuredRect = rect;
-            LightweaveRoot.PaintSubtree(menu, rect);
-        };
+            LightweaveNode composed = NodeBuilder.New("MenuHost", 0, nameof(Menu));
+            composed.Children.Add(trigger);
+            composed.Children.Add(menu);
+            composed.Measure = w => trigger.Measure?.Invoke(w) ?? trigger.PreferredHeight ?? 0f;
+            composed.Paint = (rect, _) => {
+                trigger.MeasuredRect = rect;
+                LightweaveRoot.PaintSubtree(trigger, rect);
+                menu.MeasuredRect = rect;
+                LightweaveRoot.PaintSubtree(menu, rect);
+            };
 
-        return new DocSample(composed);
+            return composed;
+        });
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        Hooks.Hooks.StateHandle<bool> open = Hooks.Hooks.UseState(false);
-        Hooks.Hooks.RefHandle<Rect> anchor = Hooks.Hooks.UseRef(default(Rect));
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<bool> open = Hooks.Hooks.UseState(false);
+            Hooks.Hooks.RefHandle<Rect> anchor = Hooks.Hooks.UseRef(default(Rect));
 
-        List<MenuItem> items = new List<MenuItem> {
-            Menu.Item("Open", () => open.Set(false)),
-            Menu.Item("Save", () => open.Set(false)),
-            Menu.Divider(),
-            Menu.Item("Close", () => open.Set(false)),
-        };
+            List<MenuItem> items = new List<MenuItem> {
+                Menu.Item("Open", () => open.Set(false)),
+                Menu.Item("Save", () => open.Set(false)),
+                Menu.Divider(),
+                Menu.Item("Close", () => open.Set(false)),
+            };
 
-        LightweaveNode menu = Menu.Create(
-            open.Value,
-            anchor.Current,
-            items,
-            () => open.Set(false)
-        );
-
-        return new DocSample(menu);
+            return Menu.Create(
+                open.Value,
+                anchor.Current,
+                items,
+                () => open.Set(false)
+            );
+        });
     }
 }

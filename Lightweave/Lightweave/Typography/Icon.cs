@@ -8,6 +8,7 @@ using UnityEngine;
 using Cosmere.Lightweave.Layout;
 using static Cosmere.Lightweave.Doc.DocChips;
 using static Cosmere.Lightweave.Typography.Typography;
+using Verse;
 
 namespace Cosmere.Lightweave.Typography;
 
@@ -68,22 +69,22 @@ public static partial class Typography {
 
         [DocVariant("CC_Playground_Label_Default")]
         public static DocSample DocsDefault() {
-            return new DocSample(Icon.Create(Texture2D.whiteTexture, new Rem(1.5f), ThemeSlot.TextPrimary));
+            return new DocSample(() => Icon.Create(TexButton.Info, new Rem(1.5f), ThemeSlot.TextPrimary));
         }
 
         [DocVariant("CC_Playground_Label_Accent")]
         public static DocSample DocsAccent() {
-            return new DocSample(Icon.Create(Texture2D.whiteTexture, new Rem(1.5f), ThemeSlot.SurfaceAccent));
+            return new DocSample(() => Icon.Create(TexButton.Search, new Rem(1.5f), ThemeSlot.SurfaceAccent));
         }
 
         [DocVariant("CC_Playground_Label_Muted")]
         public static DocSample DocsMuted() {
-            return new DocSample(Icon.Create(Texture2D.whiteTexture, new Rem(1.5f), ThemeSlot.TextMuted));
+            return new DocSample(() => Icon.Create(TexButton.CloseXSmall, new Rem(1.5f), ThemeSlot.TextMuted));
         }
 
         [DocUsage]
         public static DocSample DocsUsage() {
-            return new DocSample(Icon.Create(Texture2D.whiteTexture, new Rem(1.5f), ThemeSlot.TextPrimary));
+            return new DocSample(() => Icon.Create(TexButton.Plus, new Rem(1.5f), ThemeSlot.TextPrimary));
         }
     }
 }

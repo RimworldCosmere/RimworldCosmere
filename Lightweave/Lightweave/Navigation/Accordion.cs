@@ -36,7 +36,7 @@ public static class Accordion {
     public static LightweaveNode Create(
         [DocParam("Section definitions in display order.")]
         IReadOnlyList<AccordionItem> items,
-        [DocParam("Set of section ids currently expanded. Mutated in place when sections toggle.")]
+        [DocParam("Set of section ids currently expanded.")]
         HashSet<string> expandedIds,
         [DocParam("Invoked with the section id when toggled.")]
         Action<string> onToggle,
@@ -98,7 +98,7 @@ public static class Accordion {
 
                 Rect headerRect = new Rect(rect.x, cursorY, rect.width, HeaderHeight);
 
-                BackgroundSpec headerBg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+                BackgroundSpec headerBg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
                 ThemeSlot headerBorderSlot = ThemeSlot.BorderDefault;
                 BorderSpec headerBorder = new BorderSpec(
                     isFirst ? new Rem(1f / 16f) : null,
@@ -157,7 +157,7 @@ public static class Accordion {
                 if (revealHeight > 0.5f) {
                     Rect panelRect = new Rect(rect.x, cursorY, rect.width, revealHeight);
 
-                    BackgroundSpec panelBg = new BackgroundSpec.Solid(ThemeSlot.SurfacePrimary);
+                    BackgroundSpec panelBg = BackgroundSpec.Of(ThemeSlot.SurfacePrimary);
                     BorderSpec panelBorder = new BorderSpec(
                         Left: new Rem(1f / 16f),
                         Right: new Rem(1f / 16f),
@@ -188,19 +188,6 @@ public static class Accordion {
                 }
 
                 if (e.type == EventType.MouseUp && e.button == 0 && headerRect.Contains(e.mousePosition)) {
-                    if (mode == AccordionMode.Single) {
-                        bool wasExpanded = expandedIds.Contains(item.Id);
-                        expandedIds.Clear();
-                        if (!wasExpanded) {
-                            expandedIds.Add(item.Id);
-                        }
-                    }
-                    else {
-                        if (!expandedIds.Remove(item.Id)) {
-                            expandedIds.Add(item.Id);
-                        }
-                    }
-
                     onToggle?.Invoke(item.Id);
                     e.Use();
                 }
@@ -283,41 +270,53 @@ public static class Accordion {
 
     [DocVariant("CC_Playground_accordion_Mode_Single")]
     public static DocSample DocsSingle() {
-        Hooks.Hooks.RefHandle<HashSet<string>> singleSet =
-            Hooks.Hooks.UseRef(new HashSet<string> { "overview" });
-        return new DocSample(
-            Accordion.Create(
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<HashSet<string>> open =
+                Hooks.Hooks.UseState<HashSet<string>>(new HashSet<string> { "overview" });
+            return Accordion.Create(
                 BuildSampleItems(),
-                singleSet.Current,
-                _ => { }
-            )
-        );
+                open.Value,
+                id => {
+                    HashSet<string> next = open.Value.Contains(id)
+                        ? new HashSet<string>()
+                        : new HashSet<string> { id };
+                    open.Set(next);
+                }
+            );
+        });
     }
 
     [DocVariant("CC_Playground_accordion_Mode_Multi")]
     public static DocSample DocsMulti() {
-        Hooks.Hooks.RefHandle<HashSet<string>> multiSet =
-            Hooks.Hooks.UseRef(new HashSet<string> { "stormlight", "spren" });
-        return new DocSample(
-            Accordion.Create(
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<HashSet<string>> open =
+                Hooks.Hooks.UseState<HashSet<string>>(new HashSet<string> { "stormlight", "spren" });
+            return Accordion.Create(
                 BuildSampleItems(),
-                multiSet.Current,
-                _ => { },
+                open.Value,
+                id => {
+                    HashSet<string> next = new HashSet<string>(open.Value);
+                    if (!next.Add(id)) {
+                        next.Remove(id);
+                    }
+
+                    open.Set(next);
+                },
                 AccordionMode.Multi
-            )
-        );
+            );
+        });
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        Hooks.Hooks.RefHandle<HashSet<string>> expanded =
-            Hooks.Hooks.UseRef(new HashSet<string> { "overview" });
-        return new DocSample(
-            Accordion.Create(
+        return new DocSample(() => {
+            Hooks.Hooks.RefHandle<HashSet<string>> expanded =
+                Hooks.Hooks.UseRef(new HashSet<string> { "overview" });
+            return Accordion.Create(
                 BuildSampleItems(),
                 expanded.Current,
                 _ => { }
-            )
-        );
+            );
+        });
     }
 }

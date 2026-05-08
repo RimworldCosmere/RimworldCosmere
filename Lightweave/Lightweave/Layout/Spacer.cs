@@ -39,7 +39,7 @@ public static class Spacer {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsFlex() {
-        return new DocSample(
+        return new DocSample(() => 
             HStack.Create(
                 SpacingScale.Xs,
                 r => {
@@ -53,7 +53,7 @@ public static class Spacer {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             HStack.Create(
                 SpacingScale.Xs,
                 r => {

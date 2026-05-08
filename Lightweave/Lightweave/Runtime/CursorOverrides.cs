@@ -16,6 +16,15 @@ internal static class CursorOverrides {
         markFrame = Time.frameCount;
     }
 
+    public static void RestoreDefault() {
+        if (Prefs.CustomCursorEnabled) {
+            CustomCursor.Activate();
+        }
+        else {
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        }
+    }
+
     public static void ApplyForFrame() {
         if (Event.current == null || Event.current.type != EventType.Repaint) {
             return;
@@ -31,7 +40,7 @@ internal static class CursorOverrides {
             }
         }
         else if (!shouldOverride && cursorOverridden) {
-            CustomCursor.Activate();
+            RestoreDefault();
             cursorOverridden = false;
         }
     }

@@ -31,16 +31,16 @@ public static class BreakpointsDoc {
 
     [DocVariant("CC_Playground_breakpoints_Readout")]
     public static DocSample DocsReadout() {
-        return new DocSample(
+        return new DocSample(() => 
             Box.Create(
                 EdgeInsets.All(new Rem(0.25f)),
-                new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken),
+                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
                 RadiusSpec.All(new Rem(0.25f)),
                 outer => outer.Add(
                     Box.Create(
                         EdgeInsets.Vertical(SpacingScale.Sm),
-                        new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent),
+                        BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
                         null,
                         RadiusSpec.All(new Rem(0.25f)),
                         inner => inner.Add(BreakpointReadoutNode())
@@ -52,10 +52,10 @@ public static class BreakpointsDoc {
 
     [DocVariant("CC_Playground_breakpoints_Ladder")]
     public static DocSample DocsLadder() {
-        return new DocSample(
+        return new DocSample(() => 
             Box.Create(
                 EdgeInsets.All(new Rem(0.25f)),
-                new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken),
+                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
                 RadiusSpec.All(new Rem(0.25f)),
                 outer => outer.Add(BreakpointLadderNode())
@@ -65,16 +65,16 @@ public static class BreakpointsDoc {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             Box.Create(
                 EdgeInsets.All(new Rem(0.25f)),
-                new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken),
+                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
                 RadiusSpec.All(new Rem(0.25f)),
                 outer => outer.Add(
                     Box.Create(
                         EdgeInsets.Vertical(SpacingScale.Sm),
-                        new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent),
+                        BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
                         null,
                         RadiusSpec.All(new Rem(0.25f)),
                         inner => inner.Add(BreakpointReadoutNode())
@@ -125,7 +125,7 @@ public static class BreakpointsDoc {
                 ThemeSlot bgSlot = isActive ? ThemeSlot.SurfaceAccent : ThemeSlot.SurfaceRaised;
                 ThemeSlot fgSlot = isActive ? ThemeSlot.TextOnAccent : ThemeSlot.TextMuted;
                 Rect cell = new Rect(rect.x + i * (cellWidth + gap), rect.y, cellWidth, rect.height);
-                PaintBox.Draw(cell, new BackgroundSpec.Solid(bgSlot), null, radius);
+                PaintBox.Draw(cell, BackgroundSpec.Of(bgSlot), null, radius);
                 Color saved = GUI.color;
                 GUI.color = theme.GetColor(fgSlot);
                 GUI.Label(RectSnap.Snap(cell), bp.ToString(), style);

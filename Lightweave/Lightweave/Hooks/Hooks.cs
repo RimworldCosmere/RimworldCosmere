@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Theme;
 using Cosmere.Lightweave.Tokens;
@@ -38,6 +39,7 @@ namespace Cosmere.Lightweave.Hooks;
 /// </remarks>
 public static class Hooks {
     public static StateHandle<T> UseState<T>(
+        [DocParam("Initial value used the first time this hook slot is acquired.")]
         T initial,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
@@ -49,6 +51,7 @@ public static class Hooks {
     }
 
     public static RefHandle<T> UseRef<T>(
+        [DocParam("Initial reference value seeded the first render.")]
         T initial,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
@@ -60,7 +63,9 @@ public static class Hooks {
     }
 
     public static T UseMemo<T>(
+        [DocParam("Factory invoked when deps change. Result is cached between renders.")]
         Func<T> compute,
+        [DocParam("Dependency array. Recomputes when any element fails Equals().")]
         object[] deps,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
@@ -141,7 +146,7 @@ public static class Hooks {
         return true;
     }
 
-    public sealed class StateHandle<T> {
+    public readonly struct StateHandle<T> {
         private readonly HookSlot slot;
 
         public StateHandle(HookSlot slot) {
@@ -158,7 +163,7 @@ public static class Hooks {
         }
     }
 
-    public sealed class RefHandle<T> {
+    public readonly struct RefHandle<T> {
         private readonly HookSlot slot;
 
         public RefHandle(HookSlot slot) {

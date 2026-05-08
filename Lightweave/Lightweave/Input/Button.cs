@@ -31,6 +31,10 @@ public static class Button {
         ColorRef? foregroundOverride = null,
         [DocParam("Disables interaction and applies disabled styling.")]
         bool disabled = false,
+        [DocParam("When true, button stretches to fill the allocated width. Default sizes to label + padding.")]
+        bool fullWidth = false,
+        [DocParam("Override hover sound. Null = component default (true).")]
+        bool? playHoverSound = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -45,16 +49,48 @@ public static class Button {
             node.Children.Add(trailing);
         }
 
-        node.Paint = (rect, paintChildren) => {
+        node.Paint = (allocatedRect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
+
+            float desiredHeight = new Rem(1.75f).ToPixels();
+            float h = Mathf.Min(desiredHeight, allocatedRect.height);
+            float yOffset = (allocatedRect.height - h) * 0.5f;
+
+            float padPx = SpacingScale.Sm.ToPixels();
+            float iconSize = Mathf.Min(h - padPx, new Rem(1.25f).ToPixels());
+
+            Font font = theme.GetFont(FontRole.BodyBold);
+            int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+            style.alignment = TextAnchor.MiddleCenter;
+
+            float labelWidth = string.IsNullOrEmpty(label)
+                ? 0f
+                : style.CalcSize(new GUIContent(label)).x;
+            float iconAllowance = (leading != null ? iconSize + padPx : 0f)
+                                + (trailing != null ? iconSize + padPx : 0f);
+            float naturalWidth = labelWidth + iconAllowance + padPx * 2f;
+
+            Rect rect;
+            if (fullWidth) {
+                rect = new Rect(allocatedRect.x, allocatedRect.y + yOffset, allocatedRect.width, h);
+            }
+            else {
+                float w = Mathf.Min(naturalWidth, allocatedRect.width);
+                float x = dir == Direction.Rtl ? allocatedRect.xMax - w : allocatedRect.x;
+                rect = new Rect(x, allocatedRect.y + yOffset, w, h);
+            }
+
+            node.MeasuredRect = rect;
+
             InteractionState state = InteractionState.Resolve(rect, null, disabled);
 
             ThemeSlot bgSlot = ButtonVariants.Background(variant, state);
             ThemeSlot fgSlot = ButtonVariants.Foreground(variant, state);
             ThemeSlot? borderSlot = ButtonVariants.Border(variant, state);
 
-            BackgroundSpec bg = new BackgroundSpec.Solid(bgSlot);
+            BackgroundSpec bg = BackgroundSpec.Of(bgSlot);
             BorderSpec? border = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
@@ -67,13 +103,10 @@ public static class Button {
                 Color overlayColor = state.Pressed
                     ? new Color(0f, 0f, 0f, overlay)
                     : new Color(1f, 1f, 1f, overlay);
-                PaintBox.Draw(rect, new BackgroundSpec.Solid(overlayColor), null, radius);
+                PaintBox.Draw(rect, BackgroundSpec.Of(overlayColor), null, radius);
             }
 
-            float padPx = SpacingScale.Sm.ToPixels();
-            float iconSize = Mathf.Min(rect.height - padPx, new Rem(1.25f).ToPixels());
             bool rtl = dir == Direction.Rtl;
-
             Rect labelRect = new Rect(rect.x + padPx, rect.y, rect.width - padPx * 2f, rect.height);
 
             if (leading != null) {
@@ -119,11 +152,6 @@ public static class Button {
                 }
             }
 
-            Font font = theme.GetFont(FontRole.BodyBold);
-            int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
-            style.alignment = TextAnchor.MiddleCenter;
-
             Color fg = foregroundOverride switch {
                 ColorRef.Literal lit => lit.Value,
                 ColorRef.Token tok => theme.GetColor(tok.Slot),
@@ -137,6 +165,7 @@ public static class Button {
 
             paintChildren();
 
+            InteractionFeedback.Apply(rect, !disabled, playHoverSound ?? true);
 
             Event e = Event.current;
             if (!disabled &&
@@ -155,46 +184,46 @@ public static class Button {
     [DocVariant("CC_Playground_Label_Primary")]
     public static DocSample DocsPrimary() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Primary", () => { }, disabled: forced));
+        return new DocSample(() => Create("Primary", () => { }, disabled: forced));
     }
 
     [DocVariant("CC_Playground_Label_Secondary")]
     public static DocSample DocsSecondary() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Secondary", () => { }, ButtonVariant.Secondary, disabled: forced));
+        return new DocSample(() => Create("Secondary", () => { }, ButtonVariant.Secondary, disabled: forced));
     }
 
     [DocVariant("CC_Playground_Label_Ghost")]
     public static DocSample DocsGhost() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Ghost", () => { }, ButtonVariant.Ghost, disabled: forced));
+        return new DocSample(() => Create("Ghost", () => { }, ButtonVariant.Ghost, disabled: forced));
     }
 
     [DocVariant("CC_Playground_Label_Danger")]
     public static DocSample DocsDanger() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Danger", () => { }, ButtonVariant.Danger, disabled: forced));
+        return new DocSample(() => Create("Danger", () => { }, ButtonVariant.Danger, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Default", () => { }, disabled: forced));
+        return new DocSample(() => Create("Default", () => { }, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("Hover me", () => { }, disabled: forced));
+        return new DocSample(() => Create("Hover me", () => { }, disabled: forced));
     }
 
     [DocState("CC_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
-        return new DocSample(Create("Disabled", () => { }, disabled: true));
+        return new DocSample(() => Create("Disabled", () => { }, disabled: true));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create("Confirm", () => { }));
+        return new DocSample(() => Create("Confirm", () => { }));
     }
 }

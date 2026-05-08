@@ -17,7 +17,8 @@ public static partial class Typography {
         Id = "text",
         Summary = "Single-line or wrapped text rendered with theme font and color.",
         WhenToUse = "Body copy, inline labels, or any text content. The foundation for Heading, Label, Caption, and Code.",
-        SourcePath = "Lightweave/Lightweave/Typography/Text.cs"
+        SourcePath = "Lightweave/Lightweave/Typography/Text.cs",
+        ShowRtl = true
     )]
     public static class Text {
         public static LightweaveNode Create(
@@ -98,13 +99,13 @@ public static partial class Typography {
         [DocVariant("CC_Playground_Label_Normal")]
         public static DocSample DocsNormal() {
             string sample = (string)"CC_Playground_Text_Sample".Translate();
-            return new DocSample(Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary));
+            return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary));
         }
 
         [DocVariant("CC_Playground_Label_Accented")]
         public static DocSample DocsAccented() {
             string sample = (string)"CC_Playground_Text_Sample".Translate();
-            return new DocSample(
+            return new DocSample(() => 
                 Text.Create(
                     sample,
                     FontRole.Body,
@@ -119,24 +120,24 @@ public static partial class Typography {
         [DocVariant("CC_Playground_Label_Muted")]
         public static DocSample DocsMuted() {
             string sample = (string)"CC_Playground_Text_Sample".Translate();
-            return new DocSample(Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextMuted));
+            return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextMuted));
         }
 
         [DocState("CC_Playground_Label_Default")]
         public static DocSample DocsDefaultState() {
             string sample = (string)"CC_Playground_Text_Sample".Translate();
-            return new DocSample(Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary));
+            return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary));
         }
 
         [DocState("CC_Playground_Label_Muted")]
         public static DocSample DocsMutedState() {
             string sample = (string)"CC_Playground_Text_Sample".Translate();
-            return new DocSample(Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextMuted));
+            return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextMuted));
         }
 
         [DocUsage]
         public static DocSample DocsUsage() {
-            return new DocSample(
+            return new DocSample(() => 
                 Text.Create("Stormlight burns within him.", FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary)
             );
         }

@@ -28,7 +28,8 @@ public sealed record TableColumn<T>(
     Summary = "Tabular renderer with a header row, alternating row backgrounds, and column separators.",
     WhenToUse = "Display structured records that benefit from named columns and row alignment.",
     SourcePath = "Lightweave/Lightweave/Data/Table.cs",
-    PreferredVariantHeight = 220f
+    PreferredVariantHeight = 220f,
+    ShowRtl = true
 )]
 public static class Table {
     private static readonly Rem DefaultRowHeight = new Rem(2.25f);
@@ -252,8 +253,8 @@ public static class Table {
 
     private static LightweaveNode BuildSampleTable() {
         (string World, string Shards, string Population)[] rows = new[] {
-            ("Roshar", "Honor + Cultivation", "Billions"),
-            ("Scadrial", "Preservation + Ruin", "Millions"),
+            ("Roshar", "Honor + Cultivation + Odium", "Millions"),
+            ("Scadrial", "Harmony + Others", "Billions"),
             ("Nalthis", "Endowment", "Millions"),
             ("Taldain", "Autonomy", "Few"),
         };
@@ -281,11 +282,11 @@ public static class Table {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(BuildSampleTable());
+        return new DocSample(() => BuildSampleTable());
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(BuildSampleTable());
+        return new DocSample(() => BuildSampleTable());
     }
 }

@@ -107,7 +107,7 @@ internal static class InputSurface {
         ThemeSlot borderSlot = ResolveBorderSlot(state);
         ThemeSlot surfaceSlot = ResolveSurfaceSlot(state);
 
-        BackgroundSpec bg = new BackgroundSpec.Solid(surfaceSlot);
+        BackgroundSpec bg = BackgroundSpec.Of(surfaceSlot);
         BorderSpec border = BorderSpec.All(new Rem(1f / 16f), borderSlot);
         RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
         PaintBox.Draw(rect, bg, border, radius);
@@ -115,7 +115,7 @@ internal static class InputSurface {
 
     public static void DrawBackground(Rect rect, InteractionState state) {
         ThemeSlot surfaceSlot = ResolveSurfaceSlot(state);
-        BackgroundSpec bg = new BackgroundSpec.Solid(surfaceSlot);
+        BackgroundSpec bg = BackgroundSpec.Of(surfaceSlot);
         RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
         PaintBox.Draw(rect, bg, null, radius);
     }

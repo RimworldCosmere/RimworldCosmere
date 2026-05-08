@@ -10,6 +10,7 @@ using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
+using static Cosmere.Lightweave.Hooks.Hooks;
 
 namespace Cosmere.Lightweave.Input;
 
@@ -122,7 +123,7 @@ public static class Dropdown {
             ThemeSlot bgSlot = ButtonVariants.Background(buttonStyle, state);
             ThemeSlot fgSlot = ButtonVariants.Foreground(buttonStyle, state);
             ThemeSlot? borderSlot = ButtonVariants.Border(buttonStyle, state);
-            BackgroundSpec bgSpec = new BackgroundSpec.Solid(bgSlot);
+            BackgroundSpec bgSpec = BackgroundSpec.Of(bgSlot);
             BorderSpec? borderSpec = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
@@ -133,7 +134,7 @@ public static class Dropdown {
                 Color overlayColor = state.Pressed
                     ? new Color(0f, 0f, 0f, overlay)
                     : new Color(1f, 1f, 1f, overlay);
-                PaintBox.Draw(rect, new BackgroundSpec.Solid(overlayColor), null, radiusSpec);
+                PaintBox.Draw(rect, BackgroundSpec.Of(overlayColor), null, radiusSpec);
             }
 
             return new TriggerStyle {
@@ -306,10 +307,10 @@ public static class Dropdown {
         GUI.color = Color.white;
 
         Rect shadowRect = new Rect(popoverRect.x + 2f, popoverRect.y + 3f, popoverRect.width, popoverRect.height);
-        BackgroundSpec shadowBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, 0.35f));
+        BackgroundSpec shadowBg = BackgroundSpec.Of(new Color(0f, 0f, 0f, 0.35f));
         PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(new Rem(0.5f)));
 
-        BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+        BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
         BorderSpec border = BorderSpec.All(new Rem(2f / 16f), ThemeSlot.BorderDefault);
         RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
         PaintBox.Draw(popoverRect, bg, border, radius);
@@ -387,12 +388,12 @@ public static class Dropdown {
         RadiusSpec highlightRadius = RadiusSpec.All(new Rem(0.5f));
 
         if (hovering) {
-            BackgroundSpec hoverBg = new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent);
+            BackgroundSpec hoverBg = BackgroundSpec.Of(ThemeSlot.SurfaceAccent);
             PaintBox.Draw(highlightRect, hoverBg, null, highlightRadius);
         }
 
         if (highlighted && !hovering) {
-            BackgroundSpec focusFill = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+            BackgroundSpec focusFill = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
             BorderSpec focusBorder = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderFocus);
             PaintBox.Draw(highlightRect, focusFill, focusBorder, highlightRadius);
         }
@@ -559,11 +560,12 @@ public static class Dropdown {
     [DocVariant("CC_Playground_Label_Input")]
     public static DocSample DocsInput() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create<string>(
-            "Scadrial",
+        StateHandle<string> s = UseState("Scadrial");
+        return new DocSample(() => Create<string>(
+            s.Value,
             DocOptions,
             v => v,
-            _ => { },
+            v => s.Set(v),
             disabled: forced,
             instanceKey: "doc-input"
         ));
@@ -572,11 +574,12 @@ public static class Dropdown {
     [DocVariant("CC_Playground_Label_Button")]
     public static DocSample DocsButton() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create<string>(
-            "Scadrial",
+        StateHandle<string> s = UseState("Scadrial");
+        return new DocSample(() => Create<string>(
+            s.Value,
             DocOptions,
             v => v,
-            _ => { },
+            v => s.Set(v),
             DropdownVariant.Button,
             ButtonVariant.Secondary,
             forced,
@@ -587,11 +590,12 @@ public static class Dropdown {
     [DocVariant("CC_Playground_Label_Primary")]
     public static DocSample DocsPrimary() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create<string>(
-            "Scadrial",
+        StateHandle<string> s = UseState("Scadrial");
+        return new DocSample(() => Create<string>(
+            s.Value,
             DocOptions,
             v => v,
-            _ => { },
+            v => s.Set(v),
             DropdownVariant.Button,
             ButtonVariant.Primary,
             forced,
@@ -602,11 +606,12 @@ public static class Dropdown {
     [DocState("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create<string>(
-            "Scadrial",
+        StateHandle<string> s = UseState("Scadrial");
+        return new DocSample(() => Create<string>(
+            s.Value,
             DocOptions,
             v => v,
-            _ => { },
+            v => s.Set(v),
             disabled: forced,
             instanceKey: "doc-st-default"
         ));
@@ -615,11 +620,12 @@ public static class Dropdown {
     [DocState("CC_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create<string>(
-            "Roshar",
+        StateHandle<string> s = UseState("Roshar");
+        return new DocSample(() => Create<string>(
+            s.Value,
             DocOptions,
             v => v,
-            _ => { },
+            v => s.Set(v),
             disabled: forced,
             instanceKey: "doc-st-hover"
         ));
@@ -627,11 +633,12 @@ public static class Dropdown {
 
     [DocState("CC_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
-        return new DocSample(Create<string>(
-            "Nalthis",
+        StateHandle<string> s = UseState("Nalthis");
+        return new DocSample(() => Create<string>(
+            s.Value,
             DocOptions,
             v => v,
-            _ => { },
+            v => s.Set(v),
             disabled: true,
             instanceKey: "doc-st-disabled"
         ));
@@ -639,11 +646,12 @@ public static class Dropdown {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create<string>(
-            "Scadrial",
+        StateHandle<string> s = UseState("Scadrial");
+        return new DocSample(() => Create<string>(
+            s.Value,
             DocOptions,
             v => v,
-            _ => { }
+            v => s.Set(v)
         ));
     }
 }

@@ -79,7 +79,7 @@ public static class AsTooltip {
                 tooltipRect.y = 0f;
             }
 
-            BackgroundSpec bg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+            BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
             BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
             RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
             PaintBox.Draw(tooltipRect, bg, border, radius);

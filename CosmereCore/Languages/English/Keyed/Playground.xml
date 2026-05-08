@@ -29,6 +29,14 @@
     <CC_Playground_Overlay_Popover_Open>Open popover</CC_Playground_Overlay_Popover_Open>
     <CC_Playground_Overlay_Popover_Close>Close</CC_Playground_Overlay_Popover_Close>
     <CC_Playground_Overlay_Popover_Body>This is a popover anchored to the button above.</CC_Playground_Overlay_Popover_Body>
+    <CC_Playground_Overlay_Popover_PawnCard>Pawn detail card</CC_Playground_Overlay_Popover_PawnCard>
+    <CC_Playground_Overlay_Popover_PawnCard_Trigger>Inspect bondsmith</CC_Playground_Overlay_Popover_PawnCard_Trigger>
+    <CC_Playground_Overlay_Popover_PawnCard_Name>Kaladin</CC_Playground_Overlay_Popover_PawnCard_Name>
+    <CC_Playground_Overlay_Popover_PawnCard_Order>Windrunner</CC_Playground_Overlay_Popover_PawnCard_Order>
+    <CC_Playground_Overlay_Popover_PawnCard_Stormlight>Stormlight</CC_Playground_Overlay_Popover_PawnCard_Stormlight>
+    <CC_Playground_Overlay_Popover_PawnCard_StormlightValue>412 / 1000</CC_Playground_Overlay_Popover_PawnCard_StormlightValue>
+    <CC_Playground_Overlay_Popover_PawnCard_AbilityLashing>Lashing</CC_Playground_Overlay_Popover_PawnCard_AbilityLashing>
+    <CC_Playground_Overlay_Popover_PawnCard_AbilityAdhesion>Adhesion</CC_Playground_Overlay_Popover_PawnCard_AbilityAdhesion>
     <CC_Playground_Navigation_Menu_Title>Menu</CC_Playground_Navigation_Menu_Title>
     <CC_Playground_Navigation_Menu_OpenLtr>Open menu (LTR)</CC_Playground_Navigation_Menu_OpenLtr>
     <CC_Playground_Navigation_Menu_OpenRtl>Open menu (RTL)</CC_Playground_Navigation_Menu_OpenRtl>
@@ -71,6 +79,13 @@
     <CC_Playground_Navigation_Tabs_Body_General>Tab body for General.</CC_Playground_Navigation_Tabs_Body_General>
     <CC_Playground_Navigation_Tabs_Body_Combat>Tab body for Combat.</CC_Playground_Navigation_Tabs_Body_Combat>
     <CC_Playground_Navigation_Tabs_Body_Storage>Tab body for Storage.</CC_Playground_Navigation_Tabs_Body_Storage>
+<CC_Playground_Tabs_Variant_FullBleed>Full-bleed opt-out</CC_Playground_Tabs_Variant_FullBleed>
+<CC_Playground_Tabs_Variant_LargePadding>Large body padding</CC_Playground_Tabs_Variant_LargePadding>
+<CC_Playground_Tabs_Tab_Padded>Padded</CC_Playground_Tabs_Tab_Padded>
+<CC_Playground_Tabs_Tab_FullBleed>Full-bleed</CC_Playground_Tabs_Tab_FullBleed>
+<CC_Playground_Tabs_Body_Padded>Default 1rem of inner padding lifts the body off the divider.</CC_Playground_Tabs_Body_Padded>
+<CC_Playground_Tabs_Body_FullBleed>This tab opted out of padding via noPaddingFor and sits flush with the divider.</CC_Playground_Tabs_Body_FullBleed>
+<CC_Playground_Tabs_Body_LargePadding>Larger 2rem padding gives the body more room to breathe.</CC_Playground_Tabs_Body_LargePadding>
     <CC_Playground_Navigation_Segmented_Label>Segmented</CC_Playground_Navigation_Segmented_Label>
     <CC_Playground_Navigation_Segmented_All>All</CC_Playground_Navigation_Segmented_All>
     <CC_Playground_Navigation_Segmented_Armor>Armor</CC_Playground_Navigation_Segmented_Armor>
@@ -86,14 +101,38 @@
     <CC_Playground_Data_Title>Data</CC_Playground_Data_Title>
     <CC_Playground_Data_List_Title>Virtualized list</CC_Playground_Data_List_Title>
     <CC_Playground_Data_KV_Title>Key / value pairs</CC_Playground_Data_KV_Title>
-    <CC_Playground_Data_KV_Stormlight>Stormlight</CC_Playground_Data_KV_Stormlight>
-    <CC_Playground_Data_KV_Investiture>Investiture</CC_Playground_Data_KV_Investiture>
-    <CC_Playground_Data_KV_SprenBond>Spren bond</CC_Playground_Data_KV_SprenBond>
-    <CC_Playground_Data_KV_Highstorm>Highstorm in</CC_Playground_Data_KV_Highstorm>
-    <CC_Playground_Data_KV_Shardplate>Shardplate</CC_Playground_Data_KV_Shardplate>
-    <CC_Playground_Data_KV_Honorblade>Honorblade</CC_Playground_Data_KV_Honorblade>
+    <CC_Playground_Data_KV_Name>Name</CC_Playground_Data_KV_Name>
+    <CC_Playground_Data_KV_Shardworld>Shardworld</CC_Playground_Data_KV_Shardworld>
+    <CC_Playground_Data_KV_ShardConnection>Shard Connection</CC_Playground_Data_KV_ShardConnection>
+    <CC_Playground_Data_KV_ActiveInvestiture>Active Investiture</CC_Playground_Data_KV_ActiveInvestiture>
+    <CC_Playground_Data_KV_Mood>Mood</CC_Playground_Data_KV_Mood>
+    <CC_Playground_Data_KV_Health>Health</CC_Playground_Data_KV_Health>
     <CC_Playground_UseAnim_Title>UseAnim</CC_Playground_UseAnim_Title>
     <CC_Playground_UseAnim_Toggle>Toggle fade</CC_Playground_UseAnim_Toggle>
+    <CC_Playground_Hook_UseAnim_Scale>Scale</CC_Playground_Hook_UseAnim_Scale>
+    <CC_Playground_Hook_UseAnim_Slide>Slide</CC_Playground_Hook_UseAnim_Slide>
+    <CC_Playground_Hook_UseAnim_Color>Color lerp</CC_Playground_Hook_UseAnim_Color>
+    <CC_Playground_Hook_UseAnim_Stagger>Staggered reveal</CC_Playground_Hook_UseAnim_Stagger>
+    <CC_Playground_Hook_UseAnim_Blur>Blur</CC_Playground_Hook_UseAnim_Blur>
+    <CC_Playground_Hook_UseAnim_Expand>Expand</CC_Playground_Hook_UseAnim_Expand>
+    <CC_Playground_Hook_UseAnim_Shrink>Shrink</CC_Playground_Hook_UseAnim_Shrink>
+    <CC_Playground_Hook_UseAnim_Shake>Shake</CC_Playground_Hook_UseAnim_Shake>
+    <CC_Playground_Hook_UseAnim_Bounce>Bounce</CC_Playground_Hook_UseAnim_Bounce>
+    <CC_Playground_Hook_UseAnim_Pulse>Pulse</CC_Playground_Hook_UseAnim_Pulse>
+    <CC_Playground_Hook_UseAnim_Wobble>Wobble</CC_Playground_Hook_UseAnim_Wobble>
+    <CC_Playground_Hook_UseAnim_Seesaw>Seesaw</CC_Playground_Hook_UseAnim_Seesaw>
+    <CC_Playground_Hook_UseAnim_Spin>Spin</CC_Playground_Hook_UseAnim_Spin>
+    <CC_Playground_Hook_UseAnim_Blink>Blink</CC_Playground_Hook_UseAnim_Blink>
+    <CC_Playground_UseAnim_Toggle_Scale>Toggle scale</CC_Playground_UseAnim_Toggle_Scale>
+    <CC_Playground_UseAnim_Toggle_Slide>Toggle slide</CC_Playground_UseAnim_Toggle_Slide>
+    <CC_Playground_UseAnim_Toggle_Color>Toggle color</CC_Playground_UseAnim_Toggle_Color>
+    <CC_Playground_UseAnim_Toggle_Stagger>Reveal list</CC_Playground_UseAnim_Toggle_Stagger>
+    <CC_Playground_UseAnim_Toggle_Blur>Toggle blur</CC_Playground_UseAnim_Toggle_Blur>
+    <CC_Playground_UseAnim_Toggle_Expand>Toggle width</CC_Playground_UseAnim_Toggle_Expand>
+    <CC_Playground_UseAnim_Toggle_Shrink>Toggle width</CC_Playground_UseAnim_Toggle_Shrink>
+    <CC_Playground_UseAnim_Toggle_Shake>Shake</CC_Playground_UseAnim_Toggle_Shake>
+    <CC_Playground_UseAnim_Toggle_Bounce>Toggle bounce</CC_Playground_UseAnim_Toggle_Bounce>
+    <CC_Playground_UseAnim_Toggle_Wobble>Wobble</CC_Playground_UseAnim_Toggle_Wobble>
     <CC_Playground_UseFocus_Title>UseFocus</CC_Playground_UseFocus_Title>
     <CC_Playground_UseFocus_Focus>Focus field</CC_Playground_UseFocus_Focus>
     <CC_Playground_UseFocus_Placeholder>Type here...</CC_Playground_UseFocus_Placeholder>
@@ -104,7 +143,7 @@
     <CC_Playground_UseHotkey_Saved>Saved.</CC_Playground_UseHotkey_Saved>
     <CC_Playground_Spinner_Title>Spinner</CC_Playground_Spinner_Title>
     <CC_Playground_RingGauge_Title>Ring Gauge</CC_Playground_RingGauge_Title>
-    <CC_Playground_Sparkline_Title>Sparkline</CC_Playground_Sparkline_Title>
+    <CC_Playground_Chart_Title>Chart</CC_Playground_Chart_Title>
     <CC_Playground_Breadcrumbs_Title>Breadcrumbs</CC_Playground_Breadcrumbs_Title>
     <CC_Playground_Breadcrumbs_Crumb_Home>Home</CC_Playground_Breadcrumbs_Crumb_Home>
     <CC_Playground_Breadcrumbs_Crumb_Worldbuilding>Worldbuilding</CC_Playground_Breadcrumbs_Crumb_Worldbuilding>
@@ -350,9 +389,18 @@
     <CC_Playground_ringgauge_Title>RingGauge</CC_Playground_ringgauge_Title>
     <CC_Playground_ringgauge_What>Circular gauge drawn as an arc fill. Supports a centered label.</CC_Playground_ringgauge_What>
     <CC_Playground_ringgauge_When>Use for at-a-glance readouts like Stormlight or investiture reserves.</CC_Playground_ringgauge_When>
-    <CC_Playground_sparkline_Title>Sparkline</CC_Playground_sparkline_Title>
-    <CC_Playground_sparkline_What>Compact line chart of a recent history of samples.</CC_Playground_sparkline_What>
-    <CC_Playground_sparkline_When>Use for trend-at-a-glance metrics inline with text. No axes, no labels.</CC_Playground_sparkline_When>
+    <CC_Playground_chart_Title>Chart</CC_Playground_chart_Title>
+    <CC_Playground_chart_What>Line chart with optional axes, gridlines, hover tooltip, and per-point highlight.</CC_Playground_chart_What>
+    <CC_Playground_chart_When>Use anywhere a metric over time matters. Inline as a sparkline, or full-size with axes for dashboards.</CC_Playground_chart_When>
+    <CC_Playground_Chart_Axes>Axes</CC_Playground_Chart_Axes>
+    <CC_Playground_Chart_Hover>Hover</CC_Playground_Chart_Hover>
+    <CC_Playground_Chart_Complex>Complex</CC_Playground_Chart_Complex>
+    <CC_Playground_Chart_Axis_Day>Day</CC_Playground_Chart_Axis_Day>
+    <CC_Playground_Chart_Axis_Stormlight>Stormlight</CC_Playground_Chart_Axis_Stormlight>
+    <CC_Playground_Chart_Axis_Hour>Hour</CC_Playground_Chart_Axis_Hour>
+    <CC_Playground_Chart_Axis_Reserve>Reserve</CC_Playground_Chart_Axis_Reserve>
+    <CC_Playground_Chart_Hover_Tooltip>Day {DAY}: {VALUE} sph</CC_Playground_Chart_Hover_Tooltip>
+    <CC_Playground_Chart_Complex_Tooltip>Hour {HOUR}: {VALUE} / 1000</CC_Playground_Chart_Complex_Tooltip>
     <CC_Playground_badge_Title>Badge</CC_Playground_badge_Title>
     <CC_Playground_badge_What>Pill-shaped label in a status color. Optional leading and trailing icons. Optionally clickable, with a separate trailing-click for dismiss-style affordances.</CC_Playground_badge_What>
     <CC_Playground_badge_When>Use to mark state, category, or a filter chip. Pass `onTrailingClick` and `Badge.CloseGlyph` for dismissibles; pass `onClick` to make the whole pill actionable.</CC_Playground_badge_When>
@@ -399,6 +447,15 @@
     <CC_Playground_Window_Sample_Borderless_Body>Border disabled. Surface fill only, no stroke or rounded corners. Drag the top strip to move; hover any edge or corner to resize.</CC_Playground_Window_Sample_Borderless_Body>
     <CC_Playground_Window_Sample_Fixed_Body>Edge resize disabled. The window opens at a fixed size and cannot be stretched. Useful for dialogs whose layout only reads at one size.</CC_Playground_Window_Sample_Fixed_Body>
     <CC_Playground_Window_Sample_Large_Body>Large initial size with a higher minimum. Try shrinking past the minimum; the edge clamps so the window never falls below its declared floor.</CC_Playground_Window_Sample_Large_Body>
+    <CC_Playground_Window_WithFooter>Dialog footer</CC_Playground_Window_WithFooter>
+    <CC_Playground_Window_StatusBar>Status bar footer</CC_Playground_Window_StatusBar>
+    <CC_Playground_Window_Confirm>Confirm</CC_Playground_Window_Confirm>
+    <CC_Playground_Window_Cancel>Cancel</CC_Playground_Window_Cancel>
+    <CC_Playground_Window_Sample_Dialog_Title>Confirm action</CC_Playground_Window_Sample_Dialog_Title>
+    <CC_Playground_Window_Sample_Dialog_Body>WindowFooter pinned to the bottom hosts a leading-flex spacer plus Cancel and Confirm buttons. The body region naturally absorbs the remaining height.</CC_Playground_Window_Sample_Dialog_Body>
+    <CC_Playground_Window_Sample_Status_Title>Operation log</CC_Playground_Window_Sample_Status_Title>
+    <CC_Playground_Window_Sample_Status_Body>Footer hosts a status caption and a corner resize grip. Drag the grip to test edge-resize against the bottom-trailing corner.</CC_Playground_Window_Sample_Status_Body>
+    <CC_Playground_Window_Sample_Status_Indicator>Idle - 0 jobs queued</CC_Playground_Window_Sample_Status_Indicator>
 
     <CC_Playground_table_Title>Table</CC_Playground_table_Title>
     <CC_Playground_table_What>Virtualized grid of rows with a fixed header. Columns take fixed widths or fractional weights.</CC_Playground_table_What>
@@ -421,6 +478,7 @@
     <CC_Playground_usehotkey_When>Use to bind Escape, Ctrl+S, and similar chords. The handler runs on each matching key press.</CC_Playground_usehotkey_When>
 
     <!-- Task D2b: variant and state labels -->
+    <CC_Playground_Layout_Wrap_Badges>Badges</CC_Playground_Layout_Wrap_Badges>
     <CC_Playground_Label_Default>Default</CC_Playground_Label_Default>
     <CC_Playground_Label_Disabled>Disabled</CC_Playground_Label_Disabled>
     <CC_Playground_Label_Hover>Hover</CC_Playground_Label_Hover>
@@ -437,12 +495,15 @@
     <CC_Playground_Label_Secondary>Secondary</CC_Playground_Label_Secondary>
     <CC_Playground_Label_Ghost>Ghost</CC_Playground_Label_Ghost>
     <CC_Playground_Label_Danger>Danger</CC_Playground_Label_Danger>
+    <CC_Playground_Feedback_ProgressBar_Animated>Animated</CC_Playground_Feedback_ProgressBar_Animated>
     <CC_Playground_Label_Tight>Tight</CC_Playground_Label_Tight>
     <CC_Playground_Label_Loose>Loose</CC_Playground_Label_Loose>
     <CC_Playground_Label_Horizontal>Horizontal</CC_Playground_Label_Horizontal>
     <CC_Playground_Label_Vertical>Vertical</CC_Playground_Label_Vertical>
     <CC_Playground_Label_Empty>Empty</CC_Playground_Label_Empty>
     <CC_Playground_Label_Filled>Filled</CC_Playground_Label_Filled>
+    <CC_Playground_Label_Autoplay>Autoplay</CC_Playground_Label_Autoplay>
+    <CC_Playground_Label_Keyboard>Keyboard</CC_Playground_Label_Keyboard>
     <CC_Playground_Label_Open>Open</CC_Playground_Label_Open>
     <CC_Playground_Label_Closed>Closed</CC_Playground_Label_Closed>
     <CC_Playground_Label_On>On</CC_Playground_Label_On>
@@ -468,6 +529,7 @@
     <CC_Playground_Label_Xml>XML def</CC_Playground_Label_Xml>
     <CC_Playground_Label_Path>Path</CC_Playground_Label_Path>
     <CC_Playground_Label_Block>Block</CC_Playground_Label_Block>
+    <CC_Playground_Typography_Code_Complex>Complex</CC_Playground_Typography_Code_Complex>
 
     <CC_Playground_DemoItem_Alpha>Alpha</CC_Playground_DemoItem_Alpha>
     <CC_Playground_DemoItem_Beta>Beta</CC_Playground_DemoItem_Beta>
@@ -557,4 +619,97 @@
     <CC_Playground_Breakpoint_Lg>Lg</CC_Playground_Breakpoint_Lg>
     <CC_Playground_Breakpoint_Xl>Xl</CC_Playground_Breakpoint_Xl>
     <CC_Playground_Breakpoint_Xxl>Xxl</CC_Playground_Breakpoint_Xxl>
+
+    <CC_Playground_Tooltip_Variant_AllSides>All sides</CC_Playground_Tooltip_Variant_AllSides>
+    <CC_Playground_Tooltip_Variant_LongDelay>Long delay</CC_Playground_Tooltip_Variant_LongDelay>
+    <CC_Playground_Tooltip_Variant_NoDelay>No delay</CC_Playground_Tooltip_Variant_NoDelay>
+    <CC_Playground_Tooltip_Variant_LargeOffset>Large offset</CC_Playground_Tooltip_Variant_LargeOffset>
+    <CC_Playground_Tooltip_Variant_Wrapping>Wrapping body</CC_Playground_Tooltip_Variant_Wrapping>
+    <CC_Playground_Tooltip_Variant_Disabled>On disabled trigger</CC_Playground_Tooltip_Variant_Disabled>
+    <CC_Playground_Tooltip_Variant_Live>Live content</CC_Playground_Tooltip_Variant_Live>
+    <CC_Playground_Tooltip_Variant_RichContent>Rich content</CC_Playground_Tooltip_Variant_RichContent>
+
+    <CC_Playground_Hook_UseState_Stormlight>Stormlight charge</CC_Playground_Hook_UseState_Stormlight>
+    <CC_Playground_Hook_UseState_Toggle>Blade summoned</CC_Playground_Hook_UseState_Toggle>
+    <CC_Playground_Hook_UseState_Draft>Oath draft</CC_Playground_Hook_UseState_Draft>
+    <CC_Playground_Hook_UseState_StormlightLabel>Charge: {COUNT} spheres</CC_Playground_Hook_UseState_StormlightLabel>
+    <CC_Playground_Hook_UseState_Drain>Drain</CC_Playground_Hook_UseState_Drain>
+    <CC_Playground_Hook_UseState_Infuse>Infuse</CC_Playground_Hook_UseState_Infuse>
+    <CC_Playground_Hook_UseState_BladeDrawn>Honorblade in hand</CC_Playground_Hook_UseState_BladeDrawn>
+    <CC_Playground_Hook_UseState_BladeDismissed>No blade summoned</CC_Playground_Hook_UseState_BladeDismissed>
+    <CC_Playground_Hook_UseState_Summon>Summon</CC_Playground_Hook_UseState_Summon>
+    <CC_Playground_Hook_UseState_Dismiss>Dismiss</CC_Playground_Hook_UseState_Dismiss>
+    <CC_Playground_Hook_UseState_OathHint>Speak the words.</CC_Playground_Hook_UseState_OathHint>
+    <CC_Playground_Hook_UseState_OathPlaceholder>Life before death...</CC_Playground_Hook_UseState_OathPlaceholder>
+
+    <CC_Playground_Hook_UseFocus_OnDemand>Focus on demand</CC_Playground_Hook_UseFocus_OnDemand>
+    <CC_Playground_Hook_UseFocus_ClearAndRefocus>Clear and refocus</CC_Playground_Hook_UseFocus_ClearAndRefocus>
+    <CC_Playground_Hook_UseFocus_Status>Track focus state</CC_Playground_Hook_UseFocus_Status>
+    <CC_Playground_Hook_UseFocus_FocusSphere>Focus sphere code</CC_Playground_Hook_UseFocus_FocusSphere>
+    <CC_Playground_Hook_UseFocus_SpherePlaceholder>Sphere serial...</CC_Playground_Hook_UseFocus_SpherePlaceholder>
+    <CC_Playground_Hook_UseFocus_GlyphPlaceholder>Glyph entry...</CC_Playground_Hook_UseFocus_GlyphPlaceholder>
+    <CC_Playground_Hook_UseFocus_Erase>Erase</CC_Playground_Hook_UseFocus_Erase>
+    <CC_Playground_Hook_UseFocus_StatusListening>Listening for input.</CC_Playground_Hook_UseFocus_StatusListening>
+    <CC_Playground_Hook_UseFocus_StatusIdle>Idle. Click the field to focus.</CC_Playground_Hook_UseFocus_StatusIdle>
+    <CC_Playground_Hook_UseFocus_NotePlaceholder>Note...</CC_Playground_Hook_UseFocus_NotePlaceholder>
+
+    <CC_Playground_Hook_UseHotkey_Single>Single key</CC_Playground_Hook_UseHotkey_Single>
+    <CC_Playground_Hook_UseHotkey_Modifiers>With modifiers</CC_Playground_Hook_UseHotkey_Modifiers>
+    <CC_Playground_Hook_UseHotkey_Bond>Bond invocation</CC_Playground_Hook_UseHotkey_Bond>
+    <CC_Playground_Hook_UseHotkey_SingleIdle>Press Escape to dismiss.</CC_Playground_Hook_UseHotkey_SingleIdle>
+    <CC_Playground_Hook_UseHotkey_SingleEscape>Dismissed.</CC_Playground_Hook_UseHotkey_SingleEscape>
+    <CC_Playground_Hook_UseHotkey_SingleHint>Click here, then press Escape.</CC_Playground_Hook_UseHotkey_SingleHint>
+    <CC_Playground_Hook_UseHotkey_ModifiersIdle>Ctrl+S saves. Ctrl+Z undoes.</CC_Playground_Hook_UseHotkey_ModifiersIdle>
+    <CC_Playground_Hook_UseHotkey_ModifiersSaved>Saved.</CC_Playground_Hook_UseHotkey_ModifiersSaved>
+    <CC_Playground_Hook_UseHotkey_ModifiersUndone>Undone.</CC_Playground_Hook_UseHotkey_ModifiersUndone>
+    <CC_Playground_Hook_UseHotkey_ModifiersHint>Click here, then Ctrl+S or Ctrl+Z.</CC_Playground_Hook_UseHotkey_ModifiersHint>
+    <CC_Playground_Hook_UseHotkey_BondIdle>Speak the bond. Ctrl+Shift+B.</CC_Playground_Hook_UseHotkey_BondIdle>
+    <CC_Playground_Hook_UseHotkey_BondInvoked>Bond invoked.</CC_Playground_Hook_UseHotkey_BondInvoked>
+    <CC_Playground_Hook_UseHotkey_BondHint>Click here, then Ctrl+Shift+B to invoke the bond.</CC_Playground_Hook_UseHotkey_BondHint>
+
+    <CC_Playground_Hook_UseRef_LastTick>Persisted timestamp</CC_Playground_Hook_UseRef_LastTick>
+    <CC_Playground_Hook_UseRef_PressCount>Silent press counter</CC_Playground_Hook_UseRef_PressCount>
+    <CC_Playground_Hook_UseRef_LastTickLabel>Elapsed since reset: {SECONDS}s</CC_Playground_Hook_UseRef_LastTickLabel>
+    <CC_Playground_Hook_UseRef_Reset>Reset</CC_Playground_Hook_UseRef_Reset>
+    <CC_Playground_Hook_UseRef_Press>Press silently</CC_Playground_Hook_UseRef_Press>
+    <CC_Playground_Hook_UseRef_PressCountLabel>Last sync: {COUNT}</CC_Playground_Hook_UseRef_PressCountLabel>
+    <CC_Playground_Hook_UseRef_Sync>Sync</CC_Playground_Hook_UseRef_Sync>
+
+    <CC_Playground_Hook_UseMemo_SortedRoster>Sorted radiant roster</CC_Playground_Hook_UseMemo_SortedRoster>
+    <CC_Playground_Hook_UseMemo_Filter>Filtered list</CC_Playground_Hook_UseMemo_Filter>
+    <CC_Playground_Hook_UseMemo_Ascend>Sort ascending</CC_Playground_Hook_UseMemo_Ascend>
+    <CC_Playground_Hook_UseMemo_Descend>Sort descending</CC_Playground_Hook_UseMemo_Descend>
+    <CC_Playground_Hook_UseMemo_FilterPlaceholder>Filter by name...</CC_Playground_Hook_UseMemo_FilterPlaceholder>
+    <CC_Playground_Hook_UseMemo_NoMatches>No radiants match.</CC_Playground_Hook_UseMemo_NoMatches>
+
+    <CC_Playground_Hook_UseEffect_StormwallTick>Highstorm tick listener</CC_Playground_Hook_UseEffect_StormwallTick>
+    <CC_Playground_Hook_UseEffect_DepChange>React to dep change</CC_Playground_Hook_UseEffect_DepChange>
+    <CC_Playground_Hook_UseEffect_StormwallActive>Stormwall watching. Ticks heard: {TICKS}</CC_Playground_Hook_UseEffect_StormwallActive>
+    <CC_Playground_Hook_UseEffect_StormwallIdle>Stormwall silent.</CC_Playground_Hook_UseEffect_StormwallIdle>
+    <CC_Playground_Hook_UseEffect_StartWatch>Start watch</CC_Playground_Hook_UseEffect_StartWatch>
+    <CC_Playground_Hook_UseEffect_StopWatch>Stop watch</CC_Playground_Hook_UseEffect_StopWatch>
+    <CC_Playground_Hook_UseEffect_Bump>Bump seed</CC_Playground_Hook_UseEffect_Bump>
+    <CC_Playground_Hook_UseEffect_DepChangeLabel>Seed: {SEED}, reactions: {COUNT}</CC_Playground_Hook_UseEffect_DepChangeLabel>
+
+    <CC_Playground_Hook_UseContext_AmbientTheme>Read ambient theme</CC_Playground_Hook_UseContext_AmbientTheme>
+    <CC_Playground_Hook_UseContext_AmbientDirection>Read ambient direction</CC_Playground_Hook_UseContext_AmbientDirection>
+    <CC_Playground_Hook_UseContext_ThemeLabel>Active theme: {NAME}</CC_Playground_Hook_UseContext_ThemeLabel>
+    <CC_Playground_Hook_UseContext_DirectionLabel>Active direction: {DIR}</CC_Playground_Hook_UseContext_DirectionLabel>
+
+    <CC_Playground_Hook_UseTheme_Surface>Surface swatch</CC_Playground_Hook_UseTheme_Surface>
+    <CC_Playground_Hook_UseTheme_Accent>Accent swatch</CC_Playground_Hook_UseTheme_Accent>
+    <CC_Playground_Hook_UseTheme_SurfaceLabel>SurfaceRaised</CC_Playground_Hook_UseTheme_SurfaceLabel>
+    <CC_Playground_Hook_UseTheme_AccentLabel>SurfaceAccent</CC_Playground_Hook_UseTheme_AccentLabel>
+
+    <CC_Playground_Hook_UseDirection_Arrow>Arrow mirrors direction</CC_Playground_Hook_UseDirection_Arrow>
+    <CC_Playground_Hook_UseDirection_Label>Direction-aware label</CC_Playground_Hook_UseDirection_Label>
+    <CC_Playground_Hook_UseDirection_LabelLtr>Layout flows left to right.</CC_Playground_Hook_UseDirection_LabelLtr>
+    <CC_Playground_Hook_UseDirection_LabelRtl>Layout flows right to left.</CC_Playground_Hook_UseDirection_LabelRtl>
+
+    <CC_Playground_Hook_UseBreakpoint_Current>Current breakpoint</CC_Playground_Hook_UseBreakpoint_Current>
+    <CC_Playground_Hook_UseBreakpoint_Adaptive>Adaptive copy</CC_Playground_Hook_UseBreakpoint_Adaptive>
+    <CC_Playground_Hook_UseBreakpoint_CurrentLabel>Active breakpoint: {BP}</CC_Playground_Hook_UseBreakpoint_CurrentLabel>
+    <CC_Playground_Hook_UseBreakpoint_AdaptiveLarge>Wide window. Show two columns of detail.</CC_Playground_Hook_UseBreakpoint_AdaptiveLarge>
+    <CC_Playground_Hook_UseBreakpoint_AdaptiveMedium>Medium window. Single column with secondary actions.</CC_Playground_Hook_UseBreakpoint_AdaptiveMedium>
+    <CC_Playground_Hook_UseBreakpoint_AdaptiveCompact>Compact window. Hide secondary actions.</CC_Playground_Hook_UseBreakpoint_AdaptiveCompact>
 </LanguageData>

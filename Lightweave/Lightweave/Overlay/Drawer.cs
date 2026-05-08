@@ -114,7 +114,7 @@ public static class Drawer {
                 GUI.color = Color.white;
 
                 Rect screenRect = host;
-                BackgroundSpec scrimBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, scrimAlpha));
+                BackgroundSpec scrimBg = BackgroundSpec.Of(new Color(0f, 0f, 0f, scrimAlpha));
                 PaintBox.Draw(screenRect, scrimBg, null, null);
 
                 Rect shadowRect = new Rect(
@@ -123,10 +123,10 @@ public static class Drawer {
                     drawerRect.width,
                     drawerRect.height
                 );
-                BackgroundSpec shadowBg = new BackgroundSpec.Solid(new Color(0f, 0f, 0f, 0.35f));
+                BackgroundSpec shadowBg = BackgroundSpec.Of(new Color(0f, 0f, 0f, 0.35f));
                 PaintBox.Draw(shadowRect, shadowBg, null, null);
 
-                BackgroundSpec drawerBg = new BackgroundSpec.Solid(ThemeSlot.SurfaceRaised);
+                BackgroundSpec drawerBg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
                 BorderSpec? drawerBorder = ResolveBorder(side);
                 PaintBox.Draw(drawerRect, drawerBg, drawerBorder, null);
 
@@ -224,12 +224,12 @@ public static class Drawer {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(BuildHostDemo(), useFullSource: true);
+        return new DocSample(() => BuildHostDemo(), useFullSource: true);
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(BuildHostDemo(), useFullSource: true);
+        return new DocSample(() => BuildHostDemo(), useFullSource: true);
     }
 
     private static BorderSpec ResolveBorder(DrawerSide side) {

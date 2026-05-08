@@ -7,6 +7,7 @@ using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
+using static Cosmere.Lightweave.Hooks.Hooks;
 
 namespace Cosmere.Lightweave.Input;
 
@@ -14,7 +15,8 @@ namespace Cosmere.Lightweave.Input;
     Id = "searchfield",
     Summary = "Single-line text input with leading magnifier and trailing clear glyph.",
     WhenToUse = "Filter a list or trigger search-as-you-type.",
-    SourcePath = "Lightweave/Lightweave/Input/SearchField.cs"
+    SourcePath = "Lightweave/Lightweave/Input/SearchField.cs",
+    ShowRtl = true
 )]
 public static class SearchField {
     private const string ClearGlyph = "×";
@@ -182,9 +184,16 @@ public static class SearchField {
     ) {
         bool hovered = Mouse.IsOver(rect);
         if (hovered) {
+            float borderInset = new Rem(1f / 16f).ToPixels();
+            Rect overlayRect = new Rect(
+                rect.x,
+                rect.y + borderInset,
+                rect.width,
+                Mathf.Max(0f, rect.height - borderInset * 2f)
+            );
             Color saved = GUI.color;
             GUI.color = theme.GetColor(ThemeSlot.SurfaceRaised);
-            GUI.DrawTexture(RectSnap.Snap(rect), Texture2D.whiteTexture);
+            GUI.DrawTexture(RectSnap.Snap(overlayRect), Texture2D.whiteTexture);
             GUI.color = saved;
         }
 
@@ -228,9 +237,10 @@ public static class SearchField {
     [DocVariant("CC_Playground_Label_Empty")]
     public static DocSample DocsEmpty() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create(
-            string.Empty,
-            _ => { },
+        StateHandle<string> s = UseState(string.Empty);
+        return new DocSample(() => Create(
+            s.Value,
+            v => s.Set(v),
             (string)"CC_Playground_SearchField_Placeholder".Translate(),
             forced
         ));
@@ -239,11 +249,13 @@ public static class SearchField {
     [DocVariant("CC_Playground_Label_Filled")]
     public static DocSample DocsFilled() {
         bool forced = RenderContext.Current.ForceDisabled;
-        return new DocSample(Create("highstorm", _ => { }, disabled: forced));
+        StateHandle<string> s = UseState("highstorm");
+        return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: forced));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(Create("highstorm", _ => { }));
+        StateHandle<string> s = UseState("highstorm");
+        return new DocSample(() => Create(s.Value, v => s.Set(v)));
     }
 }

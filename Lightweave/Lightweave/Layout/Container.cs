@@ -96,7 +96,7 @@ public static class Container {
     private static LightweaveNode DocsViewport(string labelKey, Rem maxWidth, ContainerAlign align) {
         LightweaveNode block = Box.Create(
             EdgeInsets.Vertical(SpacingScale.Sm),
-            new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent),
+            BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
             null,
             RadiusSpec.All(new Rem(0.25f)),
             c => c.Add(
@@ -117,7 +117,7 @@ public static class Container {
         );
         return Box.Create(
             EdgeInsets.All(new Rem(0.25f)),
-            new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken),
+            BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
             RadiusSpec.All(new Rem(0.25f)),
             c => c.Add(contained)
@@ -126,29 +126,33 @@ public static class Container {
 
     [DocVariant("CC_Playground_Container_Centered")]
     public static DocSample DocsCentered() {
-        return new DocSample(
-            DocsViewport("CC_Playground_Container_Centered_Body", new Rem(8f), ContainerAlign.Center)
+        return new DocSample(() => 
+            DocsViewport("CC_Playground_Container_Centered_Body", new Rem(8f), ContainerAlign.Center),
+            useFullSource: true
         );
     }
 
     [DocVariant("CC_Playground_Container_Start")]
     public static DocSample DocsStart() {
-        return new DocSample(
-            DocsViewport("CC_Playground_Container_Start_Body", new Rem(8f), ContainerAlign.Start)
+        return new DocSample(() => 
+            DocsViewport("CC_Playground_Container_Start_Body", new Rem(8f), ContainerAlign.Start),
+            useFullSource: true
         );
     }
 
     [DocVariant("CC_Playground_Container_End")]
     public static DocSample DocsEnd() {
-        return new DocSample(
-            DocsViewport("CC_Playground_Container_End_Body", new Rem(8f), ContainerAlign.End)
+        return new DocSample(() => 
+            DocsViewport("CC_Playground_Container_End_Body", new Rem(8f), ContainerAlign.End),
+            useFullSource: true
         );
     }
 
     [DocVariant("CC_Playground_Container_Unconstrained")]
     public static DocSample DocsUnconstrained() {
-        return new DocSample(
-            DocsViewport("CC_Playground_Container_Unconstrained_Body", default, ContainerAlign.Center)
+        return new DocSample(() => 
+            DocsViewport("CC_Playground_Container_Unconstrained_Body", default, ContainerAlign.Center),
+            useFullSource: true
         );
     }
 
@@ -157,7 +161,7 @@ public static class Container {
     public static DocSample DocsResponsive() {
         LightweaveNode block = Box.Create(
             EdgeInsets.Vertical(SpacingScale.Sm),
-            new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent),
+            BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
             null,
             RadiusSpec.All(new Rem(0.25f)),
             c => c.Add(
@@ -175,10 +179,10 @@ public static class Container {
             EdgeInsets.Horizontal(SpacingScale.Xs),
             ContainerAlign.Center
         );
-        return new DocSample(
+        return new DocSample(() => 
             Box.Create(
                 EdgeInsets.All(new Rem(0.25f)),
-                new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken),
+                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
                 RadiusSpec.All(new Rem(0.25f)),
                 c => c.Add(contained)
@@ -188,8 +192,9 @@ public static class Container {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
-            DocsViewport("CC_Playground_Container_Centered_Body", new Rem(8f), ContainerAlign.Center)
+        return new DocSample(() => 
+            DocsViewport("CC_Playground_Container_Centered_Body", new Rem(8f), ContainerAlign.Center),
+            useFullSource: true
         );
     }
 }

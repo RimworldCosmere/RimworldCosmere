@@ -13,7 +13,8 @@ namespace Cosmere.Lightweave.Layout;
     Id = "row",
     Summary = "Horizontal flow that splits available width evenly across children.",
     WhenToUse = "Lay out a fixed set of peers side by side.",
-    SourcePath = "Lightweave/Lightweave/Layout/Row.cs"
+    SourcePath = "Lightweave/Lightweave/Layout/Row.cs",
+    ShowRtl = true
 )]
 public static class Row {
     public static LightweaveNode Create(
@@ -86,7 +87,7 @@ public static class Row {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        return new DocSample(
+        return new DocSample(() => 
             Row.Create(
                 SpacingScale.Xs,
                 children: k => {
@@ -100,7 +101,7 @@ public static class Row {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(
+        return new DocSample(() => 
             Row.Create(
                 SpacingScale.Xs,
                 children: k => {

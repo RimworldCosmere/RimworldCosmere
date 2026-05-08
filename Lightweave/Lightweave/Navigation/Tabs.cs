@@ -18,7 +18,8 @@ namespace Cosmere.Lightweave.Navigation;
     Id = "tabs",
     Summary = "Horizontal tab bar that switches the body region.",
     WhenToUse = "Move between sibling views inside one window.",
-    SourcePath = "Lightweave/Lightweave/Navigation/Tabs.cs"
+    SourcePath = "Lightweave/Lightweave/Navigation/Tabs.cs",
+    ShowRtl = true
 )]
 public static class Tabs {
     public static LightweaveNode Create<T>(
@@ -32,6 +33,10 @@ public static class Tabs {
         Action<T> onChange,
         [DocParam("Builds the body node for the active tab.")]
         Func<T, LightweaveNode> bodyFn,
+        [DocParam("Body padding (default: 1rem / ~16px). Pass Rem(0) for full-bleed.")]
+        Rem? bodyPadding = null,
+        [DocParam("Optional predicate; tabs returning true skip the body padding.")]
+        Func<T, bool>? noPaddingFor = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -43,11 +48,15 @@ public static class Tabs {
         float dividerThickness = new Rem(1f / 16f).ToPixels();
         float chromeHeight = barHeight + dividerThickness;
 
+        Rem effectivePadding = bodyPadding ?? new Rem(1f);
+        bool skipPadding = noPaddingFor?.Invoke(value) ?? false;
+        float padPx = skipPadding ? 0f : effectivePadding.ToPixels();
+
         if (bodyNode.Measure != null) {
-            node.Measure = width => chromeHeight + bodyNode.Measure(width);
+            node.Measure = width => chromeHeight + padPx * 2f + bodyNode.Measure(Mathf.Max(0f, width - padPx * 2f));
         }
         else if (bodyNode.PreferredHeight.HasValue) {
-            node.PreferredHeight = chromeHeight + bodyNode.PreferredHeight.Value;
+            node.PreferredHeight = chromeHeight + padPx * 2f + bodyNode.PreferredHeight.Value;
         }
 
         node.Paint = (rect, _) => {
@@ -61,11 +70,17 @@ public static class Tabs {
 
             Rect barRect = new Rect(rect.x, rect.y, rect.width, barHeight);
             Rect dividerRect = new Rect(rect.x, barRect.yMax, rect.width, dividerThickness);
-            Rect bodyRect = new Rect(
+            Rect bodyOuter = new Rect(
                 rect.x,
                 dividerRect.yMax,
                 rect.width,
                 Mathf.Max(0f, rect.yMax - dividerRect.yMax)
+            );
+            Rect bodyRect = new Rect(
+                bodyOuter.x + padPx,
+                bodyOuter.y + padPx,
+                Mathf.Max(0f, bodyOuter.width - padPx * 2f),
+                Mathf.Max(0f, bodyOuter.height - padPx * 2f)
             );
 
             Font font = theme.GetFont(FontRole.BodyBold);
@@ -119,7 +134,7 @@ public static class Tabs {
                         tabRect.width,
                         underlineThickness
                     );
-                    PaintBox.Draw(underlineRect, new BackgroundSpec.Solid(ThemeSlot.SurfaceAccent), null, null);
+                    PaintBox.Draw(underlineRect, BackgroundSpec.Of(ThemeSlot.SurfaceAccent), null, null);
                 }
 
                 if (e.type == EventType.MouseUp && e.button == 0 && tabRect.Contains(e.mousePosition)) {
@@ -128,7 +143,7 @@ public static class Tabs {
                 }
             }
 
-            PaintBox.Draw(dividerRect, new BackgroundSpec.Solid(ThemeSlot.BorderSubtle), null, null);
+            PaintBox.Draw(dividerRect, BackgroundSpec.Of(ThemeSlot.BorderSubtle), null, null);
 
             bodyNode.MeasuredRect = bodyRect;
             LightweaveRoot.PaintSubtree(bodyNode, bodyRect);
@@ -139,11 +154,10 @@ public static class Tabs {
 
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("general");
-
-        string[] tabs = new[] { "general", "combat", "storage" };
-        return new DocSample(
-            Tabs.Create(
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("general");
+            string[] tabs = new[] { "general", "combat", "storage" };
+            return Tabs.Create(
                 selected.Value,
                 tabs,
                 v => v switch {
@@ -159,22 +173,62 @@ public static class Tabs {
                         _ => (string)"CC_Playground_Navigation_Tabs_Body_General".Translate(),
                     }
                 )
-            )
-        );
+            );
+        });
+    }
+
+    [DocVariant("CC_Playground_Tabs_Variant_FullBleed")]
+    public static DocSample DocsFullBleed() {
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("padded");
+            string[] tabs = new[] { "padded", "fullbleed" };
+            return Tabs.Create(
+                selected.Value,
+                tabs,
+                v => v == "padded"
+                    ? (string)"CC_Playground_Tabs_Tab_Padded".Translate()
+                    : (string)"CC_Playground_Tabs_Tab_FullBleed".Translate(),
+                v => selected.Set(v),
+                v => Caption.Create(
+                    v == "padded"
+                        ? (string)"CC_Playground_Tabs_Body_Padded".Translate()
+                        : (string)"CC_Playground_Tabs_Body_FullBleed".Translate()
+                ),
+                noPaddingFor: v => v == "fullbleed"
+            );
+        });
+    }
+
+    [DocVariant("CC_Playground_Tabs_Variant_LargePadding")]
+    public static DocSample DocsLargePadding() {
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("alpha");
+            string[] tabs = new[] { "alpha", "beta" };
+            return Tabs.Create(
+                selected.Value,
+                tabs,
+                v => v,
+                v => selected.Set(v),
+                v => Caption.Create(
+                    (string)"CC_Playground_Tabs_Body_LargePadding".Translate()
+                ),
+                bodyPadding: new Rem(2f)
+            );
+        });
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("general");
-        string[] tabs = new[] { "general", "combat", "storage" };
-        return new DocSample(
-            Tabs.Create(
+        return new DocSample(() => {
+            Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("general");
+            string[] tabs = new[] { "general", "combat", "storage" };
+            return Tabs.Create(
                 selected.Value,
                 tabs,
                 v => v,
                 v => selected.Set(v),
                 v => Caption.Create(v)
-            )
-        );
+            );
+        });
     }
 }

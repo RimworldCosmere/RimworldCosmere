@@ -41,6 +41,10 @@ public static class Carousel {
     bool showArrows = true,
         [DocParam("Show pagination dot strip.")]
     bool showDots = true,
+        [DocParam("Enable arrow-key navigation while the carousel is hovered.")]
+    bool keyboardEnabled = true,
+        [DocParam("Override hover sound on arrows/dots. Null = component default (false).")]
+    bool? playHoverSound = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -97,7 +101,7 @@ public static class Carousel {
                 dotRect = default;
             }
 
-            BackgroundSpec frameBg = new BackgroundSpec.Solid(ThemeSlot.SurfaceSunken);
+            BackgroundSpec frameBg = BackgroundSpec.Of(ThemeSlot.SurfaceSunken);
             BorderSpec frameBorder = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
             RadiusSpec frameRadius = RadiusSpec.All(new Rem(0.25f));
             PaintBox.Draw(frameRect, frameBg, frameBorder, frameRadius);
@@ -125,11 +129,16 @@ public static class Carousel {
 
             GUI.EndClip();
 
+            bool soundEnabled = playHoverSound ?? false;
+
             if (showArrows && count > 1) {
                 Rect leftZone = new Rect(frameRect.x, frameRect.y, ControlZone, frameRect.height);
                 Rect rightZone = new Rect(frameRect.xMax - ControlZone, frameRect.y, ControlZone, frameRect.height);
                 DrawArrow(leftZone, theme, true, clamped == 0);
                 DrawArrow(rightZone, theme, false, clamped == count - 1);
+
+                Cosmere.Lightweave.Input.InteractionFeedback.Apply(leftZone, clamped > 0, soundEnabled);
+                Cosmere.Lightweave.Input.InteractionFeedback.Apply(rightZone, clamped < count - 1, soundEnabled);
 
                 Event e = Event.current;
                 if (e.type == EventType.MouseUp && e.button == 0) {
@@ -171,11 +180,31 @@ public static class Carousel {
                     GUI.DrawTexture(RectSnap.Snap(dot), Texture2D.whiteTexture);
                     GUI.color = savedColor;
 
-                    MouseoverSounds.DoRegion(hitRect);
+                    Cosmere.Lightweave.Input.InteractionFeedback.Apply(hitRect, !active, soundEnabled);
                     if (e.type == EventType.MouseUp && e.button == 0 && hitRect.Contains(e.mousePosition)) {
                         if (logical != clamped) {
                             onIndexChange?.Invoke(logical);
                             e.Use();
+                        }
+                    }
+                }
+            }
+
+            if (keyboardEnabled && count > 1 && rect.Contains(Event.current.mousePosition)) {
+                Event ke = Event.current;
+                if (ke.type == EventType.KeyDown) {
+                    if (ke.keyCode == KeyCode.LeftArrow) {
+                        int next = rtl ? Mathf.Min(clamped + 1, count - 1) : Mathf.Max(0, clamped - 1);
+                        if (next != clamped) {
+                            onIndexChange?.Invoke(next);
+                            ke.Use();
+                        }
+                    }
+                    else if (ke.keyCode == KeyCode.RightArrow) {
+                        int next = rtl ? Mathf.Max(0, clamped - 1) : Mathf.Min(clamped + 1, count - 1);
+                        if (next != clamped) {
+                            onIndexChange?.Invoke(next);
+                            ke.Use();
                         }
                     }
                 }
@@ -218,7 +247,7 @@ public static class Carousel {
     private static LightweaveNode DocsSlide(ThemeSlot bg, string labelKey) {
         return Box.Create(
             EdgeInsets.All(SpacingScale.Md),
-            new BackgroundSpec.Solid(bg),
+            BackgroundSpec.Of(bg),
             null,
             null,
             c => c.Add(
@@ -236,7 +265,7 @@ public static class Carousel {
     [DocVariant("CC_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         StateHandle<int> index = UseState(0);
-        return new DocSample(
+        return new DocSample(() => 
             Carousel.Create(
                 new List<LightweaveNode> {
                 DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
@@ -250,10 +279,79 @@ public static class Carousel {
         );
     }
 
+
+    [DocVariant("CC_Playground_Label_Autoplay")]
+    public static DocSample DocsAutoplay() {
+        const float autoplaySeconds = 3f;
+        StateHandle<int> index = UseState(0);
+        RefHandle<float> lastTick = UseRef(Time.realtimeSinceStartup);
+
+        List<LightweaveNode> slides = new List<LightweaveNode> {
+            DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
+            DocsSlide(ThemeSlot.SurfaceAccent, "CC_Playground_carousel_Slide_Second"),
+            DocsSlide(ThemeSlot.SurfacePrimary, "CC_Playground_carousel_Slide_Third"),
+        };
+
+        LightweaveNode carousel = Carousel.Create(slides, index.Value, i => index.Set(i));
+
+        LightweaveNode wrapper = NodeBuilder.New("CarouselAutoplay");
+        wrapper.Children.Add(carousel);
+        wrapper.Measure = carousel.Measure;
+        wrapper.PreferredHeight = carousel.PreferredHeight;
+        wrapper.Paint = (rect, _) => {
+            float now = Time.realtimeSinceStartup;
+            if (Mouse.IsOver(rect)) {
+                lastTick.Current = now;
+            }
+            else if (now - lastTick.Current >= autoplaySeconds) {
+                int next = (index.Value + 1) % slides.Count;
+                index.Set(next);
+                lastTick.Current = now;
+            }
+
+            carousel.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(carousel, rect);
+        };
+
+        return new DocSample(() => wrapper, useFullSource: true);
+    }
+
+    [DocVariant("CC_Playground_Label_Keyboard")]
+    public static DocSample DocsKeyboard() {
+        StateHandle<int> index = UseState(0);
+
+        List<LightweaveNode> slides = new List<LightweaveNode> {
+            DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
+            DocsSlide(ThemeSlot.SurfaceAccent, "CC_Playground_carousel_Slide_Second"),
+            DocsSlide(ThemeSlot.SurfacePrimary, "CC_Playground_carousel_Slide_Third"),
+        };
+
+        LightweaveNode carousel = Carousel.Create(
+            slides,
+            index.Value,
+            i => index.Set(i),
+            keyboardEnabled: false
+        );
+
+        LightweaveNode wrapper = NodeBuilder.New("CarouselKeyboard");
+        wrapper.Children.Add(carousel);
+        wrapper.Measure = carousel.Measure;
+        wrapper.PreferredHeight = carousel.PreferredHeight;
+        wrapper.Paint = (rect, _) => {
+            UseHotkey.Use(KeyCode.LeftArrow, () => index.Set(Mathf.Max(0, index.Value - 1)));
+            UseHotkey.Use(KeyCode.RightArrow, () => index.Set(Mathf.Min(slides.Count - 1, index.Value + 1)));
+
+            carousel.MeasuredRect = rect;
+            LightweaveRoot.PaintSubtree(carousel, rect);
+        };
+
+        return new DocSample(() => wrapper, useFullSource: true);
+    }
+
     [DocUsage]
     public static DocSample DocsUsage() {
         StateHandle<int> index = UseState(0);
-        return new DocSample(
+        return new DocSample(() => 
             Carousel.Create(
                 new List<LightweaveNode> {
                 DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),

@@ -41,7 +41,7 @@ public static class ToggleButton {
             ThemeSlot fgSlot = ButtonVariants.Foreground(variant, state);
             ThemeSlot? borderSlot = ButtonVariants.Border(variant, state);
 
-            BackgroundSpec bg = new BackgroundSpec.Solid(bgSlot);
+            BackgroundSpec bg = BackgroundSpec.Of(bgSlot);
             BorderSpec? border = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
@@ -54,7 +54,7 @@ public static class ToggleButton {
                 Color overlayColor = state.Pressed
                     ? new Color(0f, 0f, 0f, overlay)
                     : new Color(1f, 1f, 1f, overlay);
-                PaintBox.Draw(rect, new BackgroundSpec.Solid(overlayColor), null, radius);
+                PaintBox.Draw(rect, BackgroundSpec.Of(overlayColor), null, radius);
             }
 
             Font font = theme.GetFont(FontRole.BodyBold);
@@ -83,18 +83,18 @@ public static class ToggleButton {
     [DocVariant("CC_Playground_Label_On")]
     public static DocSample DocsOn() {
         StateHandle<bool> onValue = UseState(true);
-        return new DocSample(Create("On", onValue.Value, v => onValue.Set(v)));
+        return new DocSample(() => Create("On", onValue.Value, v => onValue.Set(v)));
     }
 
     [DocVariant("CC_Playground_Label_Off")]
     public static DocSample DocsOff() {
         StateHandle<bool> offValue = UseState(false);
-        return new DocSample(Create("Off", offValue.Value, v => offValue.Set(v)));
+        return new DocSample(() => Create("Off", offValue.Value, v => offValue.Set(v)));
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
         StateHandle<bool> value = UseState(false);
-        return new DocSample(Create("Toggle", value.Value, v => value.Set(v)));
+        return new DocSample(() => Create("Toggle", value.Value, v => value.Set(v)));
     }
 }

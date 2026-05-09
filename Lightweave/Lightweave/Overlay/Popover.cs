@@ -81,7 +81,7 @@ public static class Popover {
                     popoverRect.width,
                     popoverRect.height
                 );
-                BackgroundSpec shadowBg = BackgroundSpec.Of(new Color(0f, 0f, 0f, 0.35f));
+                BackgroundSpec shadowBg = BackgroundSpec.Of(ThemeSlot.SurfaceShadow);
                 PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(new Rem(0.5f)));
 
                 BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
@@ -113,7 +113,7 @@ public static class Popover {
         RefHandle<Rect> anchor = UseRef(default(Rect));
 
         LightweaveNode button = Button.Create(
-            (string)"CC_Playground_Popover_TriggerOpen".Translate(),
+            (string)"CL_Playground_Popover_TriggerOpen".Translate(),
             () => open.Set(!open.Value),
             ButtonVariant.Secondary
         );
@@ -133,7 +133,7 @@ public static class Popover {
             null,
             k => k.Add(
                 Text.Create(
-                    (string)"CC_Playground_Overlay_Popover_Body".Translate(),
+                    (string)"CL_Playground_Overlay_Popover_Body".Translate(),
                     FontRole.Body,
                     new Rem(0.875f),
                     ThemeSlot.TextPrimary,
@@ -165,7 +165,7 @@ public static class Popover {
         return composed;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => BuildHostDemo(), useFullSource: true);
     }
@@ -180,7 +180,7 @@ public static class Popover {
         RefHandle<Rect> anchor = UseRef(default(Rect));
 
         LightweaveNode button = Button.Create(
-            (string)"CC_Playground_Overlay_Popover_PawnCard_Trigger".Translate(),
+            (string)"CL_Playground_Overlay_Popover_PawnCard_Trigger".Translate(),
             () => open.Set(!open.Value),
             ButtonVariant.Secondary
         );
@@ -204,10 +204,10 @@ public static class Popover {
         LightweaveNode identity = Stack.Create(
             SpacingScale.Xxs,
             s => {
-                s.Add(Heading.Create(3, (string)"CC_Playground_Overlay_Popover_PawnCard_Name".Translate()));
+                s.Add(Heading.Create(3, (string)"CL_Playground_Overlay_Popover_PawnCard_Name".Translate()));
                 s.Add(
                     Badge.Create(
-                        (string)"CC_Playground_Overlay_Popover_PawnCard_Order".Translate(),
+                        (string)"CL_Playground_Overlay_Popover_PawnCard_Order".Translate(),
                         BadgeVariant.Accent
                     )
                 );
@@ -229,10 +229,10 @@ public static class Popover {
                     HStack.Create(
                         SpacingScale.Sm,
                         h => {
-                            h.AddFlex(Label.Create((string)"CC_Playground_Overlay_Popover_PawnCard_Stormlight".Translate()));
+                            h.AddFlex(Label.Create((string)"CL_Playground_Overlay_Popover_PawnCard_Stormlight".Translate()));
                             h.Add(
                                 Text.Create(
-                                    (string)"CC_Playground_Overlay_Popover_PawnCard_StormlightValue".Translate(),
+                                    (string)"CL_Playground_Overlay_Popover_PawnCard_StormlightValue".Translate(),
                                     FontRole.BodyBold,
                                     new Rem(0.875f),
                                     ThemeSlot.TextPrimary,
@@ -253,7 +253,7 @@ public static class Popover {
             h => {
                 h.AddFlex(
                     Button.Create(
-                        (string)"CC_Playground_Overlay_Popover_PawnCard_AbilityLashing".Translate(),
+                        (string)"CL_Playground_Overlay_Popover_PawnCard_AbilityLashing".Translate(),
                         () => { },
                         ButtonVariant.Primary,
                         fullWidth: true
@@ -261,7 +261,7 @@ public static class Popover {
                 );
                 h.AddFlex(
                     Button.Create(
-                        (string)"CC_Playground_Overlay_Popover_PawnCard_AbilityAdhesion".Translate(),
+                        (string)"CL_Playground_Overlay_Popover_PawnCard_AbilityAdhesion".Translate(),
                         () => { },
                         ButtonVariant.Secondary,
                         fullWidth: true
@@ -310,7 +310,7 @@ public static class Popover {
         return composed;
     }
 
-    [DocVariant("CC_Playground_Overlay_Popover_PawnCard", Order = 1)]
+    [DocVariant("CL_Playground_Overlay_Popover_PawnCard", Order = 1)]
     public static DocSample DocsPawnCard() {
         return new DocSample(() => BuildPawnCardDemo(), useFullSource: true);
     }

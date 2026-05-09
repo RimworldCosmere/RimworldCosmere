@@ -282,14 +282,14 @@ public static class Slider {
         return newValue;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<float> s = UseState(0.4f);
         return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: forced));
     }
 
-    [DocVariant("CC_Playground_Label_Accented")]
+    [DocVariant("CL_Playground_Label_Accented")]
     public static DocSample DocsAccented() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<float> s = UseState(0.4f);
@@ -304,21 +304,21 @@ public static class Slider {
         ));
     }
 
-    [DocState("CC_Playground_Label_Default")]
+    [DocState("CL_Playground_Label_Default")]
     public static DocSample DocsDefaultState() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<float> s = UseState(0.4f);
         return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Hover")]
+    [DocState("CL_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<float> s = UseState(0.7f);
         return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Disabled")]
+    [DocState("CL_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
         StateHandle<float> s = UseState(0.4f);
         return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: true));

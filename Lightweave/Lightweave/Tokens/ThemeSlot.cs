@@ -5,6 +5,7 @@ public enum ThemeSlot {
     SurfaceRaised,
     SurfaceSunken,
     SurfaceAccent,
+    SurfaceShadow,
     TextPrimary,
     TextSecondary,
     TextMuted,
@@ -21,4 +22,6 @@ public enum ThemeSlot {
     SurfaceDisabled,
     BorderOff,
     BorderDanger,
+    InteractionHover,
+    InteractionPress,
 }

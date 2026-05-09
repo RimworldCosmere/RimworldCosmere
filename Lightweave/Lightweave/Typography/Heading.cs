@@ -38,17 +38,17 @@ public static partial class Typography {
             return Text.Create(text, FontRole.Heading, size, color, TextAlign.Start, FontStyle.Bold, line: line, file: file);
         }
 
-        [DocVariant("CC_Playground_Label_Large")]
+        [DocVariant("CL_Playground_Label_Large")]
         public static DocSample DocsH1() {
             return new DocSample(() => Heading.Create(1, "Heading 1"));
         }
 
-        [DocVariant("CC_Playground_Label_Medium")]
+        [DocVariant("CL_Playground_Label_Medium")]
         public static DocSample DocsH2() {
             return new DocSample(() => Heading.Create(2, "Heading 2"));
         }
 
-        [DocVariant("CC_Playground_Label_Small")]
+        [DocVariant("CL_Playground_Label_Small")]
         public static DocSample DocsH3() {
             return new DocSample(() => Heading.Create(3, "Heading 3"));
         }

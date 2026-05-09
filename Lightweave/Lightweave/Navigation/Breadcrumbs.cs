@@ -272,12 +272,12 @@ public static class Breadcrumbs {
         }
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         string[] path = new[] {
-            (string)"CC_Playground_Breadcrumbs_Crumb_Worlds".Translate(),
-            (string)"CC_Playground_Breadcrumbs_Crumb_Roshar".Translate(),
-            (string)"CC_Playground_Breadcrumbs_Crumb_ShatteredPlains".Translate(),
+            (string)"CL_Playground_Breadcrumbs_Crumb_Worlds".Translate(),
+            (string)"CL_Playground_Breadcrumbs_Crumb_Roshar".Translate(),
+            (string)"CL_Playground_Breadcrumbs_Crumb_ShatteredPlains".Translate(),
         };
         return new DocSample(() => Breadcrumbs.Create(path));
     }

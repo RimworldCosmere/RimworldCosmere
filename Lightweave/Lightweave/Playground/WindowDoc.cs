@@ -18,11 +18,11 @@ namespace Cosmere.Lightweave.Playground;
     Target = typeof(LightweaveWindow)
 )]
 public static class WindowDoc {
-    [DocVariant("CC_Playground_Window_Bordered")]
+    [DocVariant("CL_Playground_Window_Bordered")]
     public static DocSample DocsBordered() {
         return new DocSample(() => 
             Button.Create(
-                (string)"CC_Playground_Window_Open".Translate(),
+                (string)"CL_Playground_Window_Open".Translate(),
                 () => Find.WindowStack.Add(new BorderedSampleWindow()),
                 ButtonVariant.Secondary
             ),
@@ -30,11 +30,11 @@ public static class WindowDoc {
         );
     }
 
-    [DocVariant("CC_Playground_Window_Borderless")]
+    [DocVariant("CL_Playground_Window_Borderless")]
     public static DocSample DocsBorderless() {
         return new DocSample(() => 
             Button.Create(
-                (string)"CC_Playground_Window_Open".Translate(),
+                (string)"CL_Playground_Window_Open".Translate(),
                 () => Find.WindowStack.Add(new BorderlessSampleWindow()),
                 ButtonVariant.Secondary
             ),
@@ -42,11 +42,11 @@ public static class WindowDoc {
         );
     }
 
-    [DocVariant("CC_Playground_Window_FixedSize")]
+    [DocVariant("CL_Playground_Window_FixedSize")]
     public static DocSample DocsFixedSize() {
         return new DocSample(() => 
             Button.Create(
-                (string)"CC_Playground_Window_Open".Translate(),
+                (string)"CL_Playground_Window_Open".Translate(),
                 () => Find.WindowStack.Add(new FixedSizeSampleWindow()),
                 ButtonVariant.Secondary
             ),
@@ -54,11 +54,11 @@ public static class WindowDoc {
         );
     }
 
-    [DocVariant("CC_Playground_Window_Large")]
+    [DocVariant("CL_Playground_Window_Large")]
     public static DocSample DocsLarge() {
         return new DocSample(() => 
             Button.Create(
-                (string)"CC_Playground_Window_Open".Translate(),
+                (string)"CL_Playground_Window_Open".Translate(),
                 () => Find.WindowStack.Add(new LargeSampleWindow()),
                 ButtonVariant.Secondary
             ),
@@ -66,11 +66,11 @@ public static class WindowDoc {
         );
     }
 
-    [DocVariant("CC_Playground_Window_WithFooter")]
+    [DocVariant("CL_Playground_Window_WithFooter")]
     public static DocSample DocsWithFooter() {
         return new DocSample(() => 
             Button.Create(
-                (string)"CC_Playground_Window_Open".Translate(),
+                (string)"CL_Playground_Window_Open".Translate(),
                 () => Find.WindowStack.Add(new DialogSampleWindow()),
                 ButtonVariant.Secondary
             ),
@@ -78,11 +78,11 @@ public static class WindowDoc {
         );
     }
 
-    [DocVariant("CC_Playground_Window_StatusBar")]
+    [DocVariant("CL_Playground_Window_StatusBar")]
     public static DocSample DocsStatusBar() {
         return new DocSample(() => 
             Button.Create(
-                (string)"CC_Playground_Window_Open".Translate(),
+                (string)"CL_Playground_Window_Open".Translate(),
                 () => Find.WindowStack.Add(new StatusBarSampleWindow()),
                 ButtonVariant.Secondary
             ),
@@ -94,7 +94,7 @@ public static class WindowDoc {
     public static DocSample DocsUsage() {
         return new DocSample(() => 
             Button.Create(
-                (string)"CC_Playground_Window_Open".Translate(),
+                (string)"CL_Playground_Window_Open".Translate(),
                 () => Find.WindowStack.Add(new BorderedSampleWindow()),
                 ButtonVariant.Secondary
             ),
@@ -114,7 +114,7 @@ public static class WindowDoc {
 
         protected override LightweaveNode Header() {
             return WindowHeader.Create(
-                title: (string)"CC_Playground_Window_Sample_Title".Translate(),
+                title: (string)"CL_Playground_Window_Sample_Title".Translate(),
                 onClose: () => Close()
             );
         }
@@ -123,7 +123,7 @@ public static class WindowDoc {
             return WindowBody.Create(
                 padding: EdgeInsets.All(SpacingScale.Md),
                 children: c => c.Add(Typography.Typography.Text.Create(
-                    (string)"CC_Playground_Window_Sample_Bordered_Body".Translate(),
+                    (string)"CL_Playground_Window_Sample_Bordered_Body".Translate(),
                     FontRole.Body,
                     new Rem(0.9375f),
                     ThemeSlot.TextSecondary,
@@ -146,7 +146,7 @@ public static class WindowDoc {
 
         protected override LightweaveNode Header() {
             return WindowHeader.Create(
-                title: (string)"CC_Playground_Window_Sample_Title".Translate(),
+                title: (string)"CL_Playground_Window_Sample_Title".Translate(),
                 onClose: () => Close()
             );
         }
@@ -156,7 +156,7 @@ public static class WindowDoc {
                 padding: EdgeInsets.All(SpacingScale.Md),
                 backgroundSlot: ThemeSlot.SurfacePrimary,
                 children: c => c.Add(Typography.Typography.Text.Create(
-                    (string)"CC_Playground_Window_Sample_Borderless_Body".Translate(),
+                    (string)"CL_Playground_Window_Sample_Borderless_Body".Translate(),
                     FontRole.Body,
                     new Rem(0.9375f),
                     ThemeSlot.TextSecondary,
@@ -179,7 +179,7 @@ public static class WindowDoc {
 
         protected override LightweaveNode Header() {
             return WindowHeader.Create(
-                title: (string)"CC_Playground_Window_Sample_Title".Translate(),
+                title: (string)"CL_Playground_Window_Sample_Title".Translate(),
                 onClose: () => Close()
             );
         }
@@ -188,7 +188,7 @@ public static class WindowDoc {
             return WindowBody.Create(
                 padding: EdgeInsets.All(SpacingScale.Md),
                 children: c => c.Add(Typography.Typography.Text.Create(
-                    (string)"CC_Playground_Window_Sample_Fixed_Body".Translate(),
+                    (string)"CL_Playground_Window_Sample_Fixed_Body".Translate(),
                     FontRole.Body,
                     new Rem(0.9375f),
                     ThemeSlot.TextSecondary,
@@ -210,7 +210,7 @@ public static class WindowDoc {
 
         protected override LightweaveNode Header() {
             return WindowHeader.Create(
-                title: (string)"CC_Playground_Window_Sample_Title".Translate(),
+                title: (string)"CL_Playground_Window_Sample_Title".Translate(),
                 onClose: () => Close()
             );
         }
@@ -219,7 +219,7 @@ public static class WindowDoc {
             return WindowBody.Create(
                 padding: EdgeInsets.All(SpacingScale.Md),
                 children: c => c.Add(Typography.Typography.Text.Create(
-                    (string)"CC_Playground_Window_Sample_Large_Body".Translate(),
+                    (string)"CL_Playground_Window_Sample_Large_Body".Translate(),
                     FontRole.Body,
                     new Rem(0.9375f),
                     ThemeSlot.TextSecondary,
@@ -241,7 +241,7 @@ public static class WindowDoc {
 
         protected override LightweaveNode Header() {
             return WindowHeader.Create(
-                title: (string)"CC_Playground_Window_Sample_Dialog_Title".Translate(),
+                title: (string)"CL_Playground_Window_Sample_Dialog_Title".Translate(),
                 onClose: () => Close()
             );
         }
@@ -250,7 +250,7 @@ public static class WindowDoc {
             return WindowBody.Create(
                 padding: EdgeInsets.All(SpacingScale.Md),
                 children: c => c.Add(Typography.Typography.Text.Create(
-                    (string)"CC_Playground_Window_Sample_Dialog_Body".Translate(),
+                    (string)"CL_Playground_Window_Sample_Dialog_Body".Translate(),
                     FontRole.Body,
                     new Rem(0.9375f),
                     ThemeSlot.TextSecondary,
@@ -267,7 +267,7 @@ public static class WindowDoc {
                         r.AddFlex(Spacer.Flex());
                         r.Add(
                             Button.Create(
-                                (string)"CC_Playground_Window_Cancel".Translate(),
+                                (string)"CL_Playground_Window_Cancel".Translate(),
                                 () => Close(),
                                 ButtonVariant.Secondary,
                                 fullWidth: true
@@ -276,7 +276,7 @@ public static class WindowDoc {
                         );
                         r.Add(
                             Button.Create(
-                                (string)"CC_Playground_Window_Confirm".Translate(),
+                                (string)"CL_Playground_Window_Confirm".Translate(),
                                 () => Close(),
                                 ButtonVariant.Primary,
                                 fullWidth: true
@@ -301,7 +301,7 @@ public static class WindowDoc {
 
         protected override LightweaveNode Header() {
             return WindowHeader.Create(
-                title: (string)"CC_Playground_Window_Sample_Status_Title".Translate(),
+                title: (string)"CL_Playground_Window_Sample_Status_Title".Translate(),
                 onClose: () => Close()
             );
         }
@@ -310,7 +310,7 @@ public static class WindowDoc {
             return WindowBody.Create(
                 padding: EdgeInsets.All(SpacingScale.Md),
                 children: c => c.Add(Typography.Typography.Text.Create(
-                    (string)"CC_Playground_Window_Sample_Status_Body".Translate(),
+                    (string)"CL_Playground_Window_Sample_Status_Body".Translate(),
                     FontRole.Body,
                     new Rem(0.9375f),
                     ThemeSlot.TextSecondary,
@@ -326,7 +326,7 @@ public static class WindowDoc {
                     SpacingScale.Sm,
                     r => {
                         r.AddFlex(Typography.Typography.Caption.Create(
-                            (string)"CC_Playground_Window_Sample_Status_Indicator".Translate()
+                            (string)"CL_Playground_Window_Sample_Status_Indicator".Translate()
                         ));
                     }
                 ))

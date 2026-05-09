@@ -76,17 +76,17 @@ public static class Spinner {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Small")]
+    [DocVariant("CL_Playground_Label_Small")]
     public static DocSample DocsSmall() {
         return new DocSample(() => CenterFixed(Spinner.Create(new Rem(1f)), 24f, 24f));
     }
 
-    [DocVariant("CC_Playground_Label_Medium")]
+    [DocVariant("CL_Playground_Label_Medium")]
     public static DocSample DocsMedium() {
         return new DocSample(() => CenterFixed(Spinner.Create(new Rem(1.5f)), 32f, 32f));
     }
 
-    [DocVariant("CC_Playground_Label_Large")]
+    [DocVariant("CL_Playground_Label_Large")]
     public static DocSample DocsLarge() {
         return new DocSample(() => CenterFixed(Spinner.Create(new Rem(2f)), 44f, 44f));
     }

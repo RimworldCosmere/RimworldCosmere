@@ -170,7 +170,7 @@ public static class ColorPicker {
 
         Color saved = GUI.color;
         GUI.color = theme.GetColor(ThemeSlot.TextMuted);
-        GUI.Label(RectSnap.Snap(rect), (string)"CC_Lightweave_ColorPicker_NoColors".Translate(), style);
+        GUI.Label(RectSnap.Snap(rect), (string)"CL_ColorPicker_NoColors".Translate(), style);
         GUI.color = saved;
     }
 
@@ -181,7 +181,7 @@ public static class ColorPicker {
                Mathf.Abs(a.a - b.a) < 0.01f;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<Color> s = UseState(new Color(0.25f, 0.42f, 0.30f));

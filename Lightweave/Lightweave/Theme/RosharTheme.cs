@@ -10,6 +10,7 @@ public static class RosharTheme {
             [ThemeSlot.SurfaceRaised] = new Color(0.980f, 0.975f, 0.945f, 1.00f),
             [ThemeSlot.SurfaceSunken] = new Color(0.880f, 0.870f, 0.840f, 0.97f),
             [ThemeSlot.SurfaceAccent] = new Color(0.175f, 0.470f, 0.515f, 1.00f),
+            [ThemeSlot.SurfaceShadow] = new Color(0.090f, 0.105f, 0.130f, 0.20f),
             [ThemeSlot.SurfaceInput] = new Color(1.000f, 0.995f, 0.965f, 1.00f),
             [ThemeSlot.SurfaceDisabled] = new Color(0.860f, 0.855f, 0.825f, 1.00f),
             [ThemeSlot.TextPrimary] = new Color(0.140f, 0.155f, 0.180f),
@@ -26,6 +27,8 @@ public static class RosharTheme {
             [ThemeSlot.StatusWarning] = new Color(0.720f, 0.540f, 0.180f),
             [ThemeSlot.StatusDanger] = new Color(0.680f, 0.220f, 0.200f),
             [ThemeSlot.StatusSuccess] = new Color(0.300f, 0.560f, 0.340f),
+            [ThemeSlot.InteractionHover] = new Color(0.090f, 0.105f, 0.130f, 1.00f),
+            [ThemeSlot.InteractionPress] = new Color(0.060f, 0.070f, 0.090f, 1.00f),
         };
         return BaseTheme.Compose(colors, body, bodyBold, heading, display, mono);
     }

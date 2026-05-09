@@ -447,7 +447,7 @@ public static class Card {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => 
             Card.Create(
@@ -465,14 +465,14 @@ public static class Card {
                     )
                 ),
                 Card.Footer(
-                    Button.Create((string)"CC_Playground_Label_Cancel".Translate(), () => { }),
-                    Button.Create((string)"CC_Playground_Label_Confirm".Translate(), () => { })
+                    Button.Create((string)"CL_Playground_Label_Cancel".Translate(), () => { }),
+                    Button.Create((string)"CL_Playground_Label_Confirm".Translate(), () => { })
                 )
             )
         );
     }
 
-    [DocVariant("CC_Playground_Label_Tight", Order = 1)]
+    [DocVariant("CL_Playground_Label_Tight", Order = 1)]
     public static DocSample DocsTight() {
         return new DocSample(() => 
             Card.Create(
@@ -491,7 +491,7 @@ public static class Card {
         );
     }
 
-    [DocVariant("CC_Playground_Label_Loose", Order = 2)]
+    [DocVariant("CL_Playground_Label_Loose", Order = 2)]
     public static DocSample DocsLoose() {
         return new DocSample(() => 
             Card.Create(
@@ -500,8 +500,8 @@ public static class Card {
                     Card.Description("Generous content suits modal flows.")
                 ),
                 Card.Footer(
-                    Button.Create((string)"CC_Playground_Label_Cancel".Translate(), () => { }),
-                    Button.Create((string)"CC_Playground_Label_Confirm".Translate(), () => { })
+                    Button.Create((string)"CL_Playground_Label_Cancel".Translate(), () => { }),
+                    Button.Create((string)"CL_Playground_Label_Confirm".Translate(), () => { })
                 )
             )
         );

@@ -83,7 +83,7 @@ public static class KeyValue {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsCharacterSheet() {
         Rem labelGutter = new Rem(11f);
         Rem columnGap = new Rem(2f);
@@ -91,37 +91,37 @@ public static class KeyValue {
             SpacingScale.Xxs,
             s => {
                 s.Add(KeyValue.Create(
-                    (string)"CC_Playground_Data_KV_Name".Translate(),
+                    (string)"CL_Playground_Data_KV_Name".Translate(),
                     Text.Create("Kaladin", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
                 s.Add(KeyValue.Create(
-                    (string)"CC_Playground_Data_KV_Shardworld".Translate(),
+                    (string)"CL_Playground_Data_KV_Shardworld".Translate(),
                     Text.Create("Roshar", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
                 s.Add(KeyValue.Create(
-                    (string)"CC_Playground_Data_KV_ShardConnection".Translate(),
+                    (string)"CL_Playground_Data_KV_ShardConnection".Translate(),
                     Text.Create("Honor", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
                 s.Add(KeyValue.Create(
-                    (string)"CC_Playground_Data_KV_ActiveInvestiture".Translate(),
+                    (string)"CL_Playground_Data_KV_ActiveInvestiture".Translate(),
                     Text.Create("Stormlight: 412 / 1000", FontRole.Body, new Rem(0.875f), ThemeSlot.SurfaceAccent),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
                 s.Add(KeyValue.Create(
-                    (string)"CC_Playground_Data_KV_Mood".Translate(),
+                    (string)"CL_Playground_Data_KV_Mood".Translate(),
                     Text.Create("Resolute", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
                 s.Add(KeyValue.Create(
-                    (string)"CC_Playground_Data_KV_Health".Translate(),
+                    (string)"CL_Playground_Data_KV_Health".Translate(),
                     Text.Create("Wounded", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
                     labelWidth: labelGutter,
                     gap: columnGap
@@ -143,7 +143,7 @@ public static class KeyValue {
             ThemeSlot.SurfaceAccent
         );
         return new DocSample(() =>
-            KeyValue.Create((string)"CC_Playground_Data_KV_ActiveInvestiture".Translate(), value)
+            KeyValue.Create((string)"CL_Playground_Data_KV_ActiveInvestiture".Translate(), value)
         );
     }
 }

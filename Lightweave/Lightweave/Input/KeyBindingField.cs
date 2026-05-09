@@ -152,11 +152,11 @@ public static class KeyBindingField {
         string text;
         ThemeSlot colorSlot;
         if (recording) {
-            text = "CC_Lightweave_KeyBindingField_Recording".Translate();
+            text = "CL_KeyBindingField_Recording".Translate();
             colorSlot = ThemeSlot.TextMuted;
         }
         else if (value.Key == KeyCode.None) {
-            text = (string)"CC_Lightweave_KeyBindingField_Unbound".Translate();
+            text = (string)"CL_KeyBindingField_Unbound".Translate();
             colorSlot = ThemeSlot.TextMuted;
         }
         else {
@@ -228,7 +228,7 @@ public static class KeyBindingField {
         return sb.ToString();
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<KeyBinding> s = UseState(new KeyBinding(KeyCode.F, KeyModifiers.Control));

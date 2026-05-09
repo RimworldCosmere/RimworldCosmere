@@ -61,12 +61,12 @@ public static partial class Typography {
             return node;
         }
 
-        [DocVariant("CC_Playground_Label_Default")]
+        [DocVariant("CL_Playground_Label_Default")]
         public static DocSample DocsDefault() {
-            return new DocSample(() => RichText.Create(new TaggedString((string)"CC_Playground_RichText_Sample".Translate())));
+            return new DocSample(() => RichText.Create(new TaggedString((string)"CL_Playground_RichText_Sample".Translate())));
         }
 
-        [DocVariant("CC_Playground_Label_Bold")]
+        [DocVariant("CL_Playground_Label_Bold")]
         public static DocSample DocsBold() {
             return new DocSample(() => 
                 RichText.Create(
@@ -75,7 +75,7 @@ public static partial class Typography {
             );
         }
 
-        [DocVariant("CC_Playground_Label_Italic")]
+        [DocVariant("CL_Playground_Label_Italic")]
         public static DocSample DocsItalic() {
             return new DocSample(() => 
                 RichText.Create(
@@ -84,7 +84,7 @@ public static partial class Typography {
             );
         }
 
-        [DocVariant("CC_Playground_Label_Accent")]
+        [DocVariant("CL_Playground_Label_Accent")]
         public static DocSample DocsAccent() {
             return new DocSample(() => 
                 RichText.Create(
@@ -93,7 +93,7 @@ public static partial class Typography {
             );
         }
 
-        [DocVariant("CC_Playground_Label_Mixed")]
+        [DocVariant("CL_Playground_Label_Mixed")]
         public static DocSample DocsMixed() {
             return new DocSample(() => 
                 RichText.Create(

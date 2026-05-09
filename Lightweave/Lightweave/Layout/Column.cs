@@ -101,7 +101,7 @@ public static class Column {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => 
             Column.Create(

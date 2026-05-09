@@ -43,7 +43,7 @@ public static class Tooltip {
     private const float DefaultDelaySeconds = 0.5f;
     private const float DefaultSideOffsetPx = 4f;
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => Tooltip.Create(
             Button.Create("Hover me", () => { }, ButtonVariant.Secondary),
@@ -51,7 +51,7 @@ public static class Tooltip {
         ));
     }
 
-    [DocVariant("CC_Playground_Tooltip_Variant_AllSides")]
+    [DocVariant("CL_Playground_Tooltip_Variant_AllSides")]
     public static DocSample DocsAllSides() {
         return new DocSample(() => Stack.Create(
             gap: SpacingScale.Xxl,
@@ -116,7 +116,7 @@ public static class Tooltip {
         ));
     }
 
-    [DocVariant("CC_Playground_Tooltip_Variant_LongDelay")]
+    [DocVariant("CL_Playground_Tooltip_Variant_LongDelay")]
     public static DocSample DocsLongDelay() {
         return new DocSample(() => Tooltip.Create(
             Button.Create("Patient", () => { }, ButtonVariant.Secondary),
@@ -125,7 +125,7 @@ public static class Tooltip {
         ));
     }
 
-    [DocVariant("CC_Playground_Tooltip_Variant_NoDelay")]
+    [DocVariant("CL_Playground_Tooltip_Variant_NoDelay")]
     public static DocSample DocsNoDelay() {
         return new DocSample(() => Tooltip.Create(
             Button.Create("Instant", () => { }, ButtonVariant.Secondary),
@@ -134,7 +134,7 @@ public static class Tooltip {
         ));
     }
 
-    [DocVariant("CC_Playground_Tooltip_Variant_LargeOffset")]
+    [DocVariant("CL_Playground_Tooltip_Variant_LargeOffset")]
     public static DocSample DocsLargeOffset() {
         return new DocSample(() => Tooltip.Create(
             Button.Create("Far", () => { }, ButtonVariant.Secondary),
@@ -143,7 +143,7 @@ public static class Tooltip {
         ));
     }
 
-    [DocVariant("CC_Playground_Tooltip_Variant_Wrapping")]
+    [DocVariant("CL_Playground_Tooltip_Variant_Wrapping")]
     public static DocSample DocsWrapping() {
         return new DocSample(() => Tooltip.Create(
             Button.Create("Long body", () => { }, ButtonVariant.Secondary),
@@ -152,7 +152,7 @@ public static class Tooltip {
         ));
     }
 
-    [DocVariant("CC_Playground_Tooltip_Variant_Disabled")]
+    [DocVariant("CL_Playground_Tooltip_Variant_Disabled")]
     public static DocSample DocsOnDisabled() {
         return new DocSample(() => Tooltip.Create(
             Button.Create("Disabled", () => { }, ButtonVariant.Secondary, disabled: true),
@@ -160,7 +160,7 @@ public static class Tooltip {
         ));
     }
 
-    [DocVariant("CC_Playground_Tooltip_Variant_Live")]
+    [DocVariant("CL_Playground_Tooltip_Variant_Live")]
     public static DocSample DocsLive() {
         return new DocSample(() => {
             Hooks.Hooks.StateHandle<int> ticks = Hooks.Hooks.UseState(0);
@@ -172,7 +172,7 @@ public static class Tooltip {
         });
     }
 
-    [DocVariant("CC_Playground_Tooltip_Variant_RichContent")]
+    [DocVariant("CL_Playground_Tooltip_Variant_RichContent")]
     public static DocSample DocsRichContent() {
         return new DocSample(() => Tooltip.Create(
             Button.Create("Rich", () => { }, ButtonVariant.Secondary),
@@ -385,7 +385,7 @@ public static class Tooltip {
                     tooltipRect.width,
                     tooltipRect.height
                 );
-                PaintBox.Draw(shadowRect, BackgroundSpec.Of(new Color(0f, 0f, 0f, 0.35f)), null, null);
+                PaintBox.Draw(shadowRect, BackgroundSpec.Of(ThemeSlot.SurfaceShadow), null, null);
 
                 PaintBox.Draw(
                     tooltipRect,

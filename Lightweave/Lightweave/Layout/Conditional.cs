@@ -49,17 +49,17 @@ public static class Conditional {
         return n;
     }
 
-    [DocVariant("CC_Playground_Label_True")]
+    [DocVariant("CL_Playground_Label_True")]
     public static DocSample DocsTrue() {
         return new DocSample(() => 
             Conditional.When(
                 true,
-                () => AccentChip((string)"CC_Playground_Conditional_On".Translate())
+                () => AccentChip((string)"CL_Playground_Conditional_On".Translate())
             )
         );
     }
 
-    [DocVariant("CC_Playground_Label_False")]
+    [DocVariant("CL_Playground_Label_False")]
     public static DocSample DocsFalse() {
         return new DocSample(() => 
             Box.Create(
@@ -85,7 +85,7 @@ public static class Conditional {
         return new DocSample(() => 
             Conditional.When(
                 true,
-                () => AccentChip((string)"CC_Playground_Conditional_On".Translate())
+                () => AccentChip((string)"CL_Playground_Conditional_On".Translate())
             )
         );
     }

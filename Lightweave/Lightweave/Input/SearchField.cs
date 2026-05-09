@@ -234,19 +234,19 @@ public static class SearchField {
         return (rect.x + padX, glyphRect.x - xs);
     }
 
-    [DocVariant("CC_Playground_Label_Empty")]
+    [DocVariant("CL_Playground_Label_Empty")]
     public static DocSample DocsEmpty() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState(string.Empty);
         return new DocSample(() => Create(
             s.Value,
             v => s.Set(v),
-            (string)"CC_Playground_SearchField_Placeholder".Translate(),
+            (string)"CL_Playground_SearchField_Placeholder".Translate(),
             forced
         ));
     }
 
-    [DocVariant("CC_Playground_Label_Filled")]
+    [DocVariant("CL_Playground_Label_Filled")]
     public static DocSample DocsFilled() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("highstorm");

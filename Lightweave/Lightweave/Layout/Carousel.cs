@@ -24,10 +24,10 @@ namespace Cosmere.Lightweave.Layout;
 )]
 public static class Carousel {
     private const float SlideDurationSeconds = 0.28f;
-    private const float ControlZone = 40f;
-    private const float DotRadiusPx = 4f;
-    private const float DotGapPx = 8f;
-    private const float DotStripHeight = 18f;
+    private static readonly float ControlZone = new Rem(2.5f).ToPixels();
+    private static readonly float DotRadiusPx = new Rem(0.25f).ToPixels();
+    private static readonly float DotGapPx = new Rem(0.5f).ToPixels();
+    private static readonly float DotStripHeight = new Rem(1.125f).ToPixels();
     private static readonly Func<float, float> EaseOutCubic = t => 1f - Mathf.Pow(1f - t, 3f);
 
     public static LightweaveNode Create(
@@ -262,16 +262,16 @@ public static class Carousel {
         );
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         StateHandle<int> index = UseState(0);
         return new DocSample(() => 
             Carousel.Create(
                 new List<LightweaveNode> {
-                DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
-                DocsSlide(ThemeSlot.SurfaceAccent, "CC_Playground_carousel_Slide_Second"),
-                DocsSlide(ThemeSlot.SurfacePrimary, "CC_Playground_carousel_Slide_Third"),
-                DocsSlide(ThemeSlot.SurfaceSunken, "CC_Playground_carousel_Slide_Fourth"),
+                DocsSlide(ThemeSlot.SurfaceRaised, "CL_Playground_carousel_Slide_First"),
+                DocsSlide(ThemeSlot.SurfaceAccent, "CL_Playground_carousel_Slide_Second"),
+                DocsSlide(ThemeSlot.SurfacePrimary, "CL_Playground_carousel_Slide_Third"),
+                DocsSlide(ThemeSlot.SurfaceSunken, "CL_Playground_carousel_Slide_Fourth"),
                 },
                 index.Value,
                 i => index.Set(i)
@@ -280,16 +280,16 @@ public static class Carousel {
     }
 
 
-    [DocVariant("CC_Playground_Label_Autoplay")]
+    [DocVariant("CL_Playground_Label_Autoplay")]
     public static DocSample DocsAutoplay() {
         const float autoplaySeconds = 3f;
         StateHandle<int> index = UseState(0);
         RefHandle<float> lastTick = UseRef(Time.realtimeSinceStartup);
 
         List<LightweaveNode> slides = new List<LightweaveNode> {
-            DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
-            DocsSlide(ThemeSlot.SurfaceAccent, "CC_Playground_carousel_Slide_Second"),
-            DocsSlide(ThemeSlot.SurfacePrimary, "CC_Playground_carousel_Slide_Third"),
+            DocsSlide(ThemeSlot.SurfaceRaised, "CL_Playground_carousel_Slide_First"),
+            DocsSlide(ThemeSlot.SurfaceAccent, "CL_Playground_carousel_Slide_Second"),
+            DocsSlide(ThemeSlot.SurfacePrimary, "CL_Playground_carousel_Slide_Third"),
         };
 
         LightweaveNode carousel = Carousel.Create(slides, index.Value, i => index.Set(i));
@@ -316,14 +316,14 @@ public static class Carousel {
         return new DocSample(() => wrapper, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Label_Keyboard")]
+    [DocVariant("CL_Playground_Label_Keyboard")]
     public static DocSample DocsKeyboard() {
         StateHandle<int> index = UseState(0);
 
         List<LightweaveNode> slides = new List<LightweaveNode> {
-            DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
-            DocsSlide(ThemeSlot.SurfaceAccent, "CC_Playground_carousel_Slide_Second"),
-            DocsSlide(ThemeSlot.SurfacePrimary, "CC_Playground_carousel_Slide_Third"),
+            DocsSlide(ThemeSlot.SurfaceRaised, "CL_Playground_carousel_Slide_First"),
+            DocsSlide(ThemeSlot.SurfaceAccent, "CL_Playground_carousel_Slide_Second"),
+            DocsSlide(ThemeSlot.SurfacePrimary, "CL_Playground_carousel_Slide_Third"),
         };
 
         LightweaveNode carousel = Carousel.Create(
@@ -354,8 +354,8 @@ public static class Carousel {
         return new DocSample(() => 
             Carousel.Create(
                 new List<LightweaveNode> {
-                DocsSlide(ThemeSlot.SurfaceRaised, "CC_Playground_carousel_Slide_First"),
-                DocsSlide(ThemeSlot.SurfaceAccent, "CC_Playground_carousel_Slide_Second"),
+                DocsSlide(ThemeSlot.SurfaceRaised, "CL_Playground_carousel_Slide_First"),
+                DocsSlide(ThemeSlot.SurfaceAccent, "CL_Playground_carousel_Slide_Second"),
                 },
                 index.Value,
                 i => index.Set(i)

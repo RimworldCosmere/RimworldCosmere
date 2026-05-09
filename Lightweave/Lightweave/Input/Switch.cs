@@ -156,40 +156,40 @@ public static class Switch {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_On")]
+    [DocVariant("CL_Playground_Label_On")]
     public static DocSample DocsOn() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<bool> s = UseState(true);
         return new DocSample(() => Create(
-            (string)"CC_Playground_Controls_Switch_Label".Translate(),
+            (string)"CL_Playground_Controls_Switch_Label".Translate(),
             s.Value,
             v => s.Set(v),
             forced
         ));
     }
 
-    [DocVariant("CC_Playground_Label_Off")]
+    [DocVariant("CL_Playground_Label_Off")]
     public static DocSample DocsOff() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<bool> s = UseState(false);
         return new DocSample(() => Create("Off", s.Value, v => s.Set(v), forced));
     }
 
-    [DocState("CC_Playground_Label_Default")]
+    [DocState("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<bool> s = UseState(true);
         return new DocSample(() => Create("Default", s.Value, v => s.Set(v), forced));
     }
 
-    [DocState("CC_Playground_Label_Hover")]
+    [DocState("CL_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<bool> s = UseState(false);
         return new DocSample(() => Create("Hover", s.Value, v => s.Set(v), forced));
     }
 
-    [DocState("CC_Playground_Label_Disabled")]
+    [DocState("CL_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
         StateHandle<bool> s = UseState(true);
         return new DocSample(() => Create("Disabled", s.Value, v => s.Set(v), true));

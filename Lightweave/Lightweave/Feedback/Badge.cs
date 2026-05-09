@@ -48,11 +48,35 @@ public static class Badge {
         // NOTE: Small-caps is approximated via uppercasing; fine for Latin, may need revisiting for non-Latin scripts.
         string display = text.ToUpperInvariant();
 
-        node.Paint = (rect, paintChildren) => {
+        node.Paint = (outerRect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
             Event e = Event.current;
+
+            float padPx = new Rem(0.5f).ToPixels();
+            float gapPx = new Rem(0.25f).ToPixels();
+            float iconSize = new Rem(0.875f).ToPixels();
+            float trailingHitSize = new Rem(1f).ToPixels();
+
+            Font font = theme.GetFont(FontRole.BodyBold);
+            int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+            style.alignment = TextAnchor.MiddleCenter;
+
+            Vector2 textSize = style.CalcSize(new GUIContent(display));
+            float naturalWidth = padPx + textSize.x + padPx;
+            if (leading != null) {
+                naturalWidth += iconSize + gapPx;
+            }
+            if (trailing != null) {
+                naturalWidth += trailingHitSize + gapPx;
+            }
+
+            float width = Mathf.Min(outerRect.width, naturalWidth);
+            Rect rect = rtl
+                ? new Rect(outerRect.xMax - width, outerRect.y, width, outerRect.height)
+                : new Rect(outerRect.x, outerRect.y, width, outerRect.height);
 
             BackgroundSpec bg = BackgroundSpec.Of(BadgeVariants.Background(variant));
             ThemeSlot? borderSlot = BadgeVariants.Border(variant);
@@ -62,11 +86,6 @@ public static class Badge {
             RadiusSpec radius = RadiusSpec.All(new Rem(999f));
 
             PaintBox.Draw(rect, bg, border, radius);
-
-            float padPx = new Rem(0.5f).ToPixels();
-            float gapPx = new Rem(0.25f).ToPixels();
-            float iconSize = new Rem(0.875f).ToPixels();
-            float trailingHitSize = new Rem(1f).ToPixels();
 
             float leftEdge = rect.x + padPx;
             float rightEdge = rect.xMax - padPx;
@@ -114,11 +133,6 @@ public static class Badge {
 
             Rect textRect = new Rect(leftEdge, rect.y, Mathf.Max(0f, rightEdge - leftEdge), rect.height);
 
-            Font font = theme.GetFont(FontRole.BodyBold);
-            int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
-            style.alignment = TextAnchor.MiddleCenter;
-
             Color savedColor = GUI.color;
             GUI.color = theme.GetColor(BadgeVariants.Foreground(variant));
             GUI.Label(RectSnap.Snap(textRect), display, style);
@@ -129,9 +143,7 @@ public static class Badge {
                 bool hovering = hit.Contains(e.mousePosition);
                 bool pressed = hovering && UnityEngine.Input.GetMouseButton(0);
                 if (hovering) {
-                    Color overlay = pressed
-                        ? new Color(0f, 0f, 0f, 0.35f)
-                        : new Color(1f, 1f, 1f, 0.22f);
+                    Color overlay = Cosmere.Lightweave.Input.InteractionFeedback.OverlayColor(theme, pressed, pressed ? 0.35f : 0.22f);
                     PaintBox.Draw(
                         hit,
                         BackgroundSpec.Of(overlay),
@@ -165,37 +177,37 @@ public static class Badge {
         return node;
     }
 
-    [DocVariant("CC_Playground_Feedback_Badge_Neutral")]
+    [DocVariant("CL_Playground_Feedback_Badge_Neutral")]
     public static DocSample DocsNeutral() {
-        return new DocSample(() => Badge.Create((string)"CC_Playground_Feedback_Badge_Neutral".Translate(), BadgeVariant.Neutral));
+        return new DocSample(() => Badge.Create((string)"CL_Playground_Feedback_Badge_Neutral".Translate(), BadgeVariant.Neutral));
     }
 
-    [DocVariant("CC_Playground_Feedback_Badge_Accent", Order = 1)]
+    [DocVariant("CL_Playground_Feedback_Badge_Accent", Order = 1)]
     public static DocSample DocsAccent() {
-        return new DocSample(() => Badge.Create((string)"CC_Playground_Feedback_Badge_Accent".Translate(), BadgeVariant.Accent));
+        return new DocSample(() => Badge.Create((string)"CL_Playground_Feedback_Badge_Accent".Translate(), BadgeVariant.Accent));
     }
 
-    [DocVariant("CC_Playground_Feedback_Badge_Warning", Order = 2)]
+    [DocVariant("CL_Playground_Feedback_Badge_Warning", Order = 2)]
     public static DocSample DocsWarning() {
-        return new DocSample(() => Badge.Create((string)"CC_Playground_Feedback_Badge_Warning".Translate(), BadgeVariant.Warning));
+        return new DocSample(() => Badge.Create((string)"CL_Playground_Feedback_Badge_Warning".Translate(), BadgeVariant.Warning));
     }
 
-    [DocVariant("CC_Playground_Feedback_Badge_Danger", Order = 3)]
+    [DocVariant("CL_Playground_Feedback_Badge_Danger", Order = 3)]
     public static DocSample DocsDanger() {
-        return new DocSample(() => Badge.Create((string)"CC_Playground_Feedback_Badge_Danger".Translate(), BadgeVariant.Danger));
+        return new DocSample(() => Badge.Create((string)"CL_Playground_Feedback_Badge_Danger".Translate(), BadgeVariant.Danger));
     }
 
-    [DocVariant("CC_Playground_Feedback_Badge_Success", Order = 4)]
+    [DocVariant("CL_Playground_Feedback_Badge_Success", Order = 4)]
     public static DocSample DocsSuccess() {
-        return new DocSample(() => Badge.Create((string)"CC_Playground_Feedback_Badge_Success".Translate(), BadgeVariant.Success));
+        return new DocSample(() => Badge.Create((string)"CL_Playground_Feedback_Badge_Success".Translate(), BadgeVariant.Success));
     }
 
-    [DocVariant("CC_Playground_Feedback_Badge_Clickable", Order = 5)]
+    [DocVariant("CL_Playground_Feedback_Badge_Clickable", Order = 5)]
     public static DocSample DocsClickable() {
         return new DocSample(() => 
             CenterFixed(
                 Badge.Create(
-                    (string)"CC_Playground_Feedback_Badge_Clickable".Translate(),
+                    (string)"CL_Playground_Feedback_Badge_Clickable".Translate(),
                     BadgeVariant.Accent,
                     onClick: () => { }),
                 120f,
@@ -203,12 +215,12 @@ public static class Badge {
         );
     }
 
-    [DocVariant("CC_Playground_Feedback_Badge_Dismissible", Order = 6)]
+    [DocVariant("CL_Playground_Feedback_Badge_Dismissible", Order = 6)]
     public static DocSample DocsDismissible() {
         return new DocSample(() => 
             CenterFixed(
                 Badge.Create(
-                    (string)"CC_Playground_Feedback_Badge_Dismissible".Translate(),
+                    (string)"CL_Playground_Feedback_Badge_Dismissible".Translate(),
                     BadgeVariant.Neutral,
                     trailing: Badge.CloseGlyph(BadgeVariant.Neutral),
                     onTrailingClick: () => { }),

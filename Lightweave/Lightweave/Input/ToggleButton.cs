@@ -51,9 +51,7 @@ public static class ToggleButton {
 
             float overlay = ButtonVariants.OverlayAlpha(state);
             if (overlay > 0f) {
-                Color overlayColor = state.Pressed
-                    ? new Color(0f, 0f, 0f, overlay)
-                    : new Color(1f, 1f, 1f, overlay);
+                Color overlayColor = InteractionFeedback.OverlayColor(theme, state, overlay);
                 PaintBox.Draw(rect, BackgroundSpec.Of(overlayColor), null, radius);
             }
 
@@ -80,13 +78,13 @@ public static class ToggleButton {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_On")]
+    [DocVariant("CL_Playground_Label_On")]
     public static DocSample DocsOn() {
         StateHandle<bool> onValue = UseState(true);
         return new DocSample(() => Create("On", onValue.Value, v => onValue.Set(v)));
     }
 
-    [DocVariant("CC_Playground_Label_Off")]
+    [DocVariant("CL_Playground_Label_Off")]
     public static DocSample DocsOff() {
         StateHandle<bool> offValue = UseState(false);
         return new DocSample(() => Create("Off", offValue.Value, v => offValue.Set(v)));

@@ -66,7 +66,7 @@ public static class Dialog {
         StateHandle<bool> open = UseState(false);
 
         LightweaveNode trigger = Button.Create(
-            (string)"CC_Playground_Dialog_TriggerOpen".Translate(),
+            (string)"CL_Playground_Dialog_TriggerOpen".Translate(),
             () => open.Set(true)
         );
 
@@ -75,12 +75,12 @@ public static class Dialog {
             () => open.Set(false),
             () => Layout.Card.Create(
                 Layout.Card.Header(
-                    Layout.Card.Title((string)"CC_Playground_Overlay_Dialog_Header".Translate()),
-                    Layout.Card.Description((string)"CC_Playground_Overlay_Dialog_Body".Translate())
+                    Layout.Card.Title((string)"CL_Playground_Overlay_Dialog_Header".Translate()),
+                    Layout.Card.Description((string)"CL_Playground_Overlay_Dialog_Body".Translate())
                 ),
                 Layout.Card.Content(
                     Text.Create(
-                        (string)"CC_Playground_Overlay_Dialog_Body".Translate(),
+                        (string)"CL_Playground_Overlay_Dialog_Body".Translate(),
                         FontRole.Body,
                         new Rem(0.9375f),
                         ThemeSlot.TextPrimary
@@ -88,7 +88,7 @@ public static class Dialog {
                 ),
                 Layout.Card.Footer(
                     Button.Create(
-                        (string)"CC_Playground_Label_Confirm".Translate(),
+                        (string)"CL_Playground_Label_Confirm".Translate(),
                         () => open.Set(false)
                     )
                 )
@@ -108,7 +108,7 @@ public static class Dialog {
         return composed;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => BuildHostDemo(), useFullSource: true);
     }

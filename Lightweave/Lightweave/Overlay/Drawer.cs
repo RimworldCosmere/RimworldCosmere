@@ -123,7 +123,7 @@ public static class Drawer {
                     drawerRect.width,
                     drawerRect.height
                 );
-                BackgroundSpec shadowBg = BackgroundSpec.Of(new Color(0f, 0f, 0f, 0.35f));
+                BackgroundSpec shadowBg = BackgroundSpec.Of(ThemeSlot.SurfaceShadow);
                 PaintBox.Draw(shadowRect, shadowBg, null, null);
 
                 BackgroundSpec drawerBg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
@@ -164,7 +164,7 @@ public static class Drawer {
         StateHandle<bool> open = UseState(false);
 
         LightweaveNode trigger = Button.Create(
-            (string)"CC_Playground_Drawer_TriggerOpen".Translate(),
+            (string)"CL_Playground_Drawer_TriggerOpen".Translate(),
             () => open.Set(!open.Value),
             ButtonVariant.Secondary
         );
@@ -178,13 +178,13 @@ public static class Drawer {
                     s.Add(
                         Heading.Create(
                             3,
-                            (string)"CC_Playground_Drawer_ContentTitle".Translate()
+                            (string)"CL_Playground_Drawer_ContentTitle".Translate()
                         ),
                         28f
                     );
                     s.Add(
                         Text.Create(
-                            (string)"CC_Playground_Drawer_ContentBody".Translate(),
+                            (string)"CL_Playground_Drawer_ContentBody".Translate(),
                             FontRole.Body,
                             new Rem(0.875f),
                             ThemeSlot.TextPrimary
@@ -192,7 +192,7 @@ public static class Drawer {
                         80f
                     );
                     LightweaveNode closeBtn = Button.Create(
-                        (string)"CC_Playground_Drawer_Close".Translate(),
+                        (string)"CL_Playground_Drawer_Close".Translate(),
                         () => open.Set(false),
                         ButtonVariant.Secondary
                     );
@@ -222,7 +222,7 @@ public static class Drawer {
         return composed;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => BuildHostDemo(), useFullSource: true);
     }

@@ -138,7 +138,7 @@ public static class Stack {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Tight")]
+    [DocVariant("CL_Playground_Label_Tight")]
     public static DocSample DocsTight() {
         return new DocSample(() => 
             Stack.Create(
@@ -152,7 +152,7 @@ public static class Stack {
         );
     }
 
-    [DocVariant("CC_Playground_Label_Loose")]
+    [DocVariant("CL_Playground_Label_Loose")]
     public static DocSample DocsLoose() {
         return new DocSample(() => 
             Stack.Create(

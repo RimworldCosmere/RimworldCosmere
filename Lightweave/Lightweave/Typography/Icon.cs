@@ -67,17 +67,17 @@ public static partial class Typography {
             return node;
         }
 
-        [DocVariant("CC_Playground_Label_Default")]
+        [DocVariant("CL_Playground_Label_Default")]
         public static DocSample DocsDefault() {
             return new DocSample(() => Icon.Create(TexButton.Info, new Rem(1.5f), ThemeSlot.TextPrimary));
         }
 
-        [DocVariant("CC_Playground_Label_Accent")]
+        [DocVariant("CL_Playground_Label_Accent")]
         public static DocSample DocsAccent() {
             return new DocSample(() => Icon.Create(TexButton.Search, new Rem(1.5f), ThemeSlot.SurfaceAccent));
         }
 
-        [DocVariant("CC_Playground_Label_Muted")]
+        [DocVariant("CL_Playground_Label_Muted")]
         public static DocSample DocsMuted() {
             return new DocSample(() => Icon.Create(TexButton.CloseXSmall, new Rem(1.5f), ThemeSlot.TextMuted));
         }

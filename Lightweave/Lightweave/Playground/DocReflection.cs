@@ -124,7 +124,7 @@ internal static class DocReflection {
         return BuildSamples<DocVariantAttribute, PlaygroundVariant>(
             primitive,
             forceDisabled,
-            (attr, sample, factory) => new PlaygroundVariant(attr.LabelKey, sample.Demo, () => (factory() ?? sample).Build(), sample.Code),
+            (attr, sample, factory) => new PlaygroundVariant(attr.LabelKey, () => (factory() ?? sample).Build(), sample.Code),
             attr => attr.Order
         );
     }
@@ -133,7 +133,7 @@ internal static class DocReflection {
         return BuildSamples<DocStateAttribute, PlaygroundState>(
             primitive,
             forceDisabled,
-            (attr, sample, factory) => new PlaygroundState(attr.LabelKey, sample.Demo, () => (factory() ?? sample).Build(), sample.Code),
+            (attr, sample, factory) => new PlaygroundState(attr.LabelKey, () => (factory() ?? sample).Build(), sample.Code),
             attr => attr.Order
         );
     }

@@ -12,15 +12,13 @@ namespace Cosmere.Lightweave.Playground;
 
 public sealed record PlaygroundVariant(
     string LabelKey,
-    LightweaveNode Demo,
-    Func<LightweaveNode>? DemoFactory = null,
+    Func<LightweaveNode> Demo,
     [CallerArgumentExpression("Demo")] string Code = ""
 );
 
 public sealed record PlaygroundState(
     string LabelKey,
-    LightweaveNode Demo,
-    Func<LightweaveNode>? DemoFactory = null,
+    Func<LightweaveNode> Demo,
     [CallerArgumentExpression("Demo")] string Code = ""
 );
 
@@ -101,36 +99,36 @@ public static class PlaygroundPanel {
                 s.Add(Layout.Divider.Horizontal());
 
                 if (hasVariants) {
-                    tocEntries.Add(new TocEntry(ExamplesAnchor, (string)"CC_Playground_Panel_Examples".Translate(), 2));
+                    tocEntries.Add(new TocEntry(ExamplesAnchor, (string)"CL_Playground_Panel_Examples".Translate(), 2));
                     s.Add(BuildExamplesSection(variants!, ctx, tocEntries, variantMinHeight));
                 }
 
                 if (hasStates) {
-                    tocEntries.Add(new TocEntry(StatesAnchor, (string)"CC_Playground_Panel_States".Translate(), 2));
+                    tocEntries.Add(new TocEntry(StatesAnchor, (string)"CL_Playground_Panel_States".Translate(), 2));
                     s.Add(BuildStatesSection(states!, ctx, tocEntries, variantMinHeight));
                 }
 
                 if (hasUsage) {
-                    tocEntries.Add(new TocEntry(UsageAnchor, (string)"CC_Playground_Panel_Usage".Translate(), 2));
+                    tocEntries.Add(new TocEntry(UsageAnchor, (string)"CL_Playground_Panel_Usage".Translate(), 2));
                     s.Add(BuildUsageSection(NormalizeCode(docs!.UsageCode) ?? docs.UsageCode!, ctx));
                 }
 
                 if (hasComposition) {
-                    tocEntries.Add(new TocEntry(CompositionAnchor, (string)"CC_Playground_Panel_Composition".Translate(), 2));
+                    tocEntries.Add(new TocEntry(CompositionAnchor, (string)"CL_Playground_Panel_Composition".Translate(), 2));
                     s.Add(BuildCompositionSection(docs!.Composition!, ctx));
                 }
 
                 if (hasRtl) {
-                    tocEntries.Add(new TocEntry(RtlAnchor, (string)"CC_Playground_Panel_Rtl".Translate(), 2));
+                    tocEntries.Add(new TocEntry(RtlAnchor, (string)"CL_Playground_Panel_Rtl".Translate(), 2));
                     s.Add(BuildRtlSection(variants!, ctx, variantMinHeight));
                 }
 
                 if (hasApi) {
-                    tocEntries.Add(new TocEntry(ApiAnchor, (string)"CC_Playground_Panel_Api".Translate(), 2));
+                    tocEntries.Add(new TocEntry(ApiAnchor, (string)"CL_Playground_Panel_Api".Translate(), 2));
                     s.Add(BuildApiSection(docs!.ApiReference!, ctx));
                 }
 
-                tocEntries.Add(new TocEntry(SourceAnchor, (string)"CC_Playground_Panel_Source".Translate(), 2));
+                tocEntries.Add(new TocEntry(SourceAnchor, (string)"CL_Playground_Panel_Source".Translate(), 2));
                 s.Add(BuildSourceSection(sourcePath, ctx));
             }
         );
@@ -146,7 +144,7 @@ public static class PlaygroundPanel {
     ) {
         LightweaveNode heading = Typography.Typography.Heading.Create(
             2,
-            (string)"CC_Playground_Panel_Examples".Translate(),
+            (string)"CL_Playground_Panel_Examples".Translate(),
             ThemeSlot.TextPrimary
         );
 
@@ -158,7 +156,7 @@ public static class PlaygroundPanel {
                     string anchor = ExamplesAnchor + "-" + SlugifyLabel(v.LabelKey);
                     string label = (string)v.LabelKey.Translate();
                     tocEntries.Add(new TocEntry(anchor, label, 3));
-                    LightweaveNode demo = BuildSaltedDemo(anchor, v.DemoFactory, v.Demo);
+                    LightweaveNode demo = BuildSaltedDemo(anchor, v.Demo);
                     s.Add(BuildExampleItem(anchor, label, demo, ctx, variantMinHeight, NormalizeCode(v.Code)));
                 }
             }
@@ -175,7 +173,7 @@ public static class PlaygroundPanel {
     ) {
         LightweaveNode heading = Typography.Typography.Heading.Create(
             2,
-            (string)"CC_Playground_Panel_States".Translate(),
+            (string)"CL_Playground_Panel_States".Translate(),
             ThemeSlot.TextPrimary
         );
 
@@ -187,7 +185,7 @@ public static class PlaygroundPanel {
                     string anchor = StatesAnchor + "-" + SlugifyLabel(st.LabelKey);
                     string label = (string)st.LabelKey.Translate();
                     tocEntries.Add(new TocEntry(anchor, label, 3));
-                    LightweaveNode demo = BuildSaltedDemo(anchor, st.DemoFactory, st.Demo);
+                    LightweaveNode demo = BuildSaltedDemo(anchor, st.Demo);
                     s.Add(BuildExampleItem(anchor, label, demo, ctx, variantMinHeight, NormalizeCode(st.Code)));
                 }
             }
@@ -294,11 +292,7 @@ public static class PlaygroundPanel {
         return n;
     }
 
-    private static LightweaveNode BuildSaltedDemo(string anchor, Func<LightweaveNode>? factory, LightweaveNode fallback) {
-        if (factory == null) {
-            return fallback;
-        }
-
+    private static LightweaveNode BuildSaltedDemo(string anchor, Func<LightweaveNode> factory) {
         RenderContext rc = RenderContext.Current;
         rc.PushPathSalt(anchor.GetHashCode());
         try {
@@ -385,7 +379,7 @@ public static class PlaygroundPanel {
     private static LightweaveNode BuildUsageSection(string usageCode, DocContext ctx) {
         LightweaveNode heading = Typography.Typography.Heading.Create(
             2,
-            (string)"CC_Playground_Panel_Usage".Translate(),
+            (string)"CL_Playground_Panel_Usage".Translate(),
             ThemeSlot.TextPrimary
         );
 
@@ -398,7 +392,7 @@ public static class PlaygroundPanel {
     ) {
         LightweaveNode heading = Typography.Typography.Heading.Create(
             2,
-            (string)"CC_Playground_Panel_Composition".Translate(),
+            (string)"CL_Playground_Panel_Composition".Translate(),
             ThemeSlot.TextPrimary
         );
 
@@ -412,7 +406,7 @@ public static class PlaygroundPanel {
     ) {
         LightweaveNode heading = Typography.Typography.Heading.Create(
             2,
-            (string)"CC_Playground_Panel_Rtl".Translate(),
+            (string)"CL_Playground_Panel_Rtl".Translate(),
             ThemeSlot.TextPrimary
         );
 
@@ -421,7 +415,7 @@ public static class PlaygroundPanel {
         rc.PushPathSalt(RtlPreviewSalt);
         LightweaveNode rebuiltDemo;
         try {
-            rebuiltDemo = first.DemoFactory?.Invoke() ?? first.Demo;
+            rebuiltDemo = first.Demo();
         }
         finally {
             rc.PopPathSalt();
@@ -439,7 +433,7 @@ public static class PlaygroundPanel {
     ) {
         LightweaveNode heading = Typography.Typography.Heading.Create(
             2,
-            (string)"CC_Playground_Panel_Api".Translate(),
+            (string)"CL_Playground_Panel_Api".Translate(),
             ThemeSlot.TextPrimary
         );
 
@@ -467,11 +461,11 @@ public static class PlaygroundPanel {
     private static LightweaveNode BuildSourceSection(string sourcePath, DocContext ctx) {
         LightweaveNode heading = Typography.Typography.Heading.Create(
             2,
-            (string)"CC_Playground_Panel_Source".Translate(),
+            (string)"CL_Playground_Panel_Source".Translate(),
             ThemeSlot.TextPrimary
         );
 
-        string fileLabel = (string)"CC_Playground_Panel_SourceFile".Translate();
+        string fileLabel = (string)"CL_Playground_Panel_SourceFile".Translate();
         LightweaveNode fileRow = Typography.Typography.Text.Create(
             fileLabel + " " + sourcePath,
             FontRole.Mono,
@@ -493,7 +487,7 @@ public static class PlaygroundPanel {
     }
 
     private static string SlugifyLabel(string labelKey) {
-        string result = labelKey.Replace("CC_Playground_Label_", "").ToLowerInvariant();
+        string result = labelKey.Replace("CL_Playground_Label_", "").ToLowerInvariant();
         char[] chars = new char[result.Length];
         for (int i = 0; i < result.Length; i++) {
             char c = result[i];

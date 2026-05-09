@@ -47,7 +47,7 @@ public static class Divider {
         return n;
     }
 
-    [DocVariant("CC_Playground_Label_Horizontal")]
+    [DocVariant("CL_Playground_Label_Horizontal")]
     public static DocSample DocsHorizontal() {
         return new DocSample(() => 
             Stack.Create(
@@ -61,7 +61,7 @@ public static class Divider {
         );
     }
 
-    [DocVariant("CC_Playground_Label_Vertical")]
+    [DocVariant("CL_Playground_Label_Vertical")]
     public static DocSample DocsVertical() {
         return new DocSample(() => 
             Row.Create(

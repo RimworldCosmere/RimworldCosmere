@@ -137,7 +137,7 @@ public static class Segmented {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("all");
 
@@ -147,10 +147,10 @@ public static class Segmented {
                 selected.Value,
                 segments,
                 v => v switch {
-                    "armor" => (string)"CC_Playground_Navigation_Segmented_Armor".Translate(),
-                    "weapons" => (string)"CC_Playground_Navigation_Segmented_Weapons".Translate(),
-                    "tools" => (string)"CC_Playground_Navigation_Segmented_Tools".Translate(),
-                    _ => (string)"CC_Playground_Navigation_Segmented_All".Translate(),
+                    "armor" => (string)"CL_Playground_Navigation_Segmented_Armor".Translate(),
+                    "weapons" => (string)"CL_Playground_Navigation_Segmented_Weapons".Translate(),
+                    "tools" => (string)"CL_Playground_Navigation_Segmented_Tools".Translate(),
+                    _ => (string)"CL_Playground_Navigation_Segmented_All".Translate(),
                 },
                 v => selected.Set(v)
             )

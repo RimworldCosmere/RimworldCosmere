@@ -72,9 +72,7 @@ public static class IconButton {
 
             float overlay = ButtonVariants.OverlayAlpha(state);
             if (overlay > 0f) {
-                Color overlayColor = state.Pressed
-                    ? new Color(0f, 0f, 0f, overlay)
-                    : new Color(1f, 1f, 1f, overlay);
+                Color overlayColor = InteractionFeedback.OverlayColor(RenderContext.Current.Theme, state, overlay);
                 PaintBox.Draw(square, BackgroundSpec.Of(overlayColor), null, radius);
             }
 
@@ -107,37 +105,37 @@ public static class IconButton {
 
     
 
-    [DocVariant("CC_Playground_Label_Ghost")]
+    [DocVariant("CL_Playground_Label_Ghost")]
     public static DocSample DocsGhost() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create(Icon.Create(TexButton.Reveal, new Rem(1f), ThemeSlot.TextPrimary), () => { }, disabled: forced));
     }
 
-    [DocVariant("CC_Playground_Label_Primary")]
+    [DocVariant("CL_Playground_Label_Primary")]
     public static DocSample DocsPrimary() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create(Icon.Create(TexButton.NewItem, new Rem(1f), ThemeSlot.TextPrimary), () => { }, ButtonVariant.Primary, disabled: forced));
     }
 
-    [DocVariant("CC_Playground_Label_Secondary")]
+    [DocVariant("CL_Playground_Label_Secondary")]
     public static DocSample DocsSecondary() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create(Icon.Create(TexButton.Search, new Rem(1f), ThemeSlot.TextPrimary), () => { }, ButtonVariant.Secondary, disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Default")]
+    [DocState("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create(Icon.Create(TexButton.Info, new Rem(1f), ThemeSlot.TextPrimary), () => { }, disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Hover")]
+    [DocState("CL_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create(Icon.Create(TexButton.Rename, new Rem(1f), ThemeSlot.TextPrimary), () => { }, disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Disabled")]
+    [DocState("CL_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
         return new DocSample(() => Create(Icon.Create(TexButton.CloseXSmall, new Rem(1f), ThemeSlot.TextPrimary), () => { }, disabled: true));
     }

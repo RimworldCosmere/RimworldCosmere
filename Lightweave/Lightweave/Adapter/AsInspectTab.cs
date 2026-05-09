@@ -1,5 +1,6 @@
 using System;
 using Cosmere.Lightweave.Runtime;
+using Cosmere.Lightweave.Tokens;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -22,7 +23,11 @@ public abstract class AsInspectTab : ITab {
     protected override void FillTab() {
         int entityId = SelThing?.thingIDNumber ?? 0;
         Guid id = AdapterStoreRegistry.GetOrCreate(entityId, AdapterKind.InspectTab);
-        Rect rect = new Rect(0f, 20f, size.x, size.y - 20f).ContractedBy(8f);
+        float titleBarPx = TitleBarHeight;
+        float insetPx = SpacingScale.Xs.ToPixels();
+        Rect rect = new Rect(0f, titleBarPx, size.x, size.y - titleBarPx).ContractedBy(insetPx);
         LightweaveRoot.Render(rect, id, Build);
     }
+
+    private const float TitleBarHeight = 20f;
 }

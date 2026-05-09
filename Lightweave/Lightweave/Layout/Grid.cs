@@ -132,7 +132,7 @@ public static class Grid {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => 
             Grid.Create(
@@ -152,7 +152,7 @@ public static class Grid {
     }
 
 
-    [DocVariant("CC_Playground_Grid_Responsive")]
+    [DocVariant("CL_Playground_Grid_Responsive")]
     public static DocSample DocsResponsive() {
         IReadOnlyList<GridTrack> oneCol = new List<GridTrack> {
             new GridTrack.Fr(1f),
@@ -172,7 +172,7 @@ public static class Grid {
             (Breakpoint.Md, twoCol),
             (Breakpoint.Lg, fourCol)
         );
-        return new DocSample(() => 
+        return new DocSample(() =>
             Grid.Create(
                 columns,
                 SpacingScale.Xs,
@@ -182,7 +182,8 @@ public static class Grid {
                     k.Add(SampleChip("3"));
                     k.Add(SampleChip("4"));
                 }
-            )
+            ),
+            useFullSource: true
         );
     }
 

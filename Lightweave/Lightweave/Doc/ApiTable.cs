@@ -136,7 +136,7 @@ public static partial class Doc {
                     rect.width - cellPaddingX * 2f,
                     rect.height - rowPaddingY * 2f
                 );
-                GUI.Label(RectSnap.Snap(emptyRect), (string)"CC_Playground_Panel_ApiEmpty".Translate(), empty);
+                GUI.Label(RectSnap.Snap(emptyRect), (string)"CL_Playground_Panel_ApiEmpty".Translate(), empty);
                 GUI.color = savedEmpty;
                 return;
             }
@@ -150,10 +150,10 @@ public static partial class Doc {
 
             float[] widths = ResolveWidths(inner.width, theme);
             string[] headers = {
-                (string)"CC_Playground_Panel_ApiName".Translate(),
-                (string)"CC_Playground_Panel_ApiType".Translate(),
-                (string)"CC_Playground_Panel_ApiDefault".Translate(),
-                (string)"CC_Playground_Panel_ApiDescription".Translate(),
+                (string)"CL_Playground_Panel_ApiName".Translate(),
+                (string)"CL_Playground_Panel_ApiType".Translate(),
+                (string)"CL_Playground_Panel_ApiDefault".Translate(),
+                (string)"CL_Playground_Panel_ApiDescription".Translate(),
             };
 
             Rect headerRect = new Rect(inner.x, inner.y, inner.width, headerHeightPx);
@@ -166,7 +166,7 @@ public static partial class Doc {
             GUIStyle headStyle = HeaderStyle(theme);
             for (int i = 0; i < 4; i++) {
                 Rect cell = new Rect(hx + cellPaddingX, headerRect.y, widths[i] - cellPaddingX * 2f, headerHeightPx);
-                GUI.color = theme.GetColor(ThemeSlot.TextMuted);
+                GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
                 GUI.Label(RectSnap.Snap(cell), headers[i], headStyle);
                 GUI.color = savedColor;
                 hx += widths[i];

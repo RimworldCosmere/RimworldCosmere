@@ -238,21 +238,21 @@ public static class Tree {
         TreeNode[] roots = Hooks.Hooks.UseMemo(
             () => {
                 TreeNode shatteredPlains = new TreeNode(
-                    (string)"CC_Playground_Breadcrumbs_Crumb_ShatteredPlains".Translate()
+                    (string)"CL_Playground_Breadcrumbs_Crumb_ShatteredPlains".Translate()
                 );
                 TreeNode luthadel = new TreeNode(
-                    (string)"CC_Playground_Breadcrumbs_Crumb_Luthadel".Translate(),
+                    (string)"CL_Playground_Breadcrumbs_Crumb_Luthadel".Translate(),
                     new[] {
-                        new TreeNode((string)"CC_Playground_Breadcrumbs_Crumb_CentralDistrict".Translate()),
-                        new TreeNode((string)"CC_Playground_Breadcrumbs_Crumb_VentureKeep".Translate()),
+                        new TreeNode((string)"CL_Playground_Breadcrumbs_Crumb_CentralDistrict".Translate()),
+                        new TreeNode((string)"CL_Playground_Breadcrumbs_Crumb_VentureKeep".Translate()),
                     }
                 );
                 TreeNode roshar = new TreeNode(
-                    (string)"CC_Playground_Breadcrumbs_Crumb_Roshar".Translate(),
+                    (string)"CL_Playground_Breadcrumbs_Crumb_Roshar".Translate(),
                     new[] { shatteredPlains }
                 );
                 TreeNode scadrial = new TreeNode(
-                    (string)"CC_Playground_Breadcrumbs_Crumb_Scadrial".Translate(),
+                    (string)"CL_Playground_Breadcrumbs_Crumb_Scadrial".Translate(),
                     new[] { luthadel }
                 );
                 return new[] { roshar, scadrial };
@@ -263,7 +263,7 @@ public static class Tree {
         return Tree.Create(roots);
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => BuildSampleTree(), useFullSource: true);
     }

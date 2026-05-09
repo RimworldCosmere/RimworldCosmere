@@ -37,7 +37,7 @@ public static class Spacer {
         return n;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsFlex() {
         return new DocSample(() => 
             HStack.Create(

@@ -114,7 +114,7 @@ public static class Each {
         return n;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         string[] items = new[] { "A", "B", "C" };
         return new DocSample(() => 

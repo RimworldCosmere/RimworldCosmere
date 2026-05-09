@@ -99,14 +99,14 @@ public static class List {
 
     private static string[] BuildSampleItems() {
         return new[] {
-            (string)"CC_Playground_DemoItem_Highstorm".Translate(),
-            (string)"CC_Playground_DemoItem_Stormlight".Translate(),
-            (string)"CC_Playground_DemoItem_Radiant".Translate(),
-            (string)"CC_Playground_DemoItem_Emotion".Translate(),
-            (string)"CC_Playground_DemoItem_Alpha".Translate(),
-            (string)"CC_Playground_DemoItem_Beta".Translate(),
-            (string)"CC_Playground_DemoItem_Gamma".Translate(),
-            (string)"CC_Playground_DemoItem_Delta".Translate(),
+            (string)"CL_Playground_DemoItem_Highstorm".Translate(),
+            (string)"CL_Playground_DemoItem_Stormlight".Translate(),
+            (string)"CL_Playground_DemoItem_Radiant".Translate(),
+            (string)"CL_Playground_DemoItem_Emotion".Translate(),
+            (string)"CL_Playground_DemoItem_Alpha".Translate(),
+            (string)"CL_Playground_DemoItem_Beta".Translate(),
+            (string)"CL_Playground_DemoItem_Gamma".Translate(),
+            (string)"CL_Playground_DemoItem_Delta".Translate(),
         };
     }
 
@@ -132,7 +132,7 @@ public static class List {
         );
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => BuildSampleList());
     }

@@ -149,45 +149,45 @@ public static class TextField {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Filled")]
+    [DocVariant("CL_Playground_Label_Filled")]
     public static DocSample DocsFilled() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("Stormlight");
         return new DocSample(() => Create(
             s.Value,
             v => s.Set(v),
-            (string)"CC_Playground_Controls_TextField_Placeholder".Translate(),
+            (string)"CL_Playground_Controls_TextField_Placeholder".Translate(),
             disabled: forced
         ));
     }
 
-    [DocVariant("CC_Playground_Label_Empty")]
+    [DocVariant("CL_Playground_Label_Empty")]
     public static DocSample DocsEmpty() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState(string.Empty);
         return new DocSample(() => Create(
             s.Value,
             v => s.Set(v),
-            (string)"CC_Playground_Controls_TextField_Placeholder".Translate(),
+            (string)"CL_Playground_Controls_TextField_Placeholder".Translate(),
             disabled: forced
         ));
     }
 
-    [DocState("CC_Playground_Label_Default")]
+    [DocState("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("Default");
         return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Hover")]
+    [DocState("CL_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("Hover");
         return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Disabled")]
+    [DocState("CL_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
         StateHandle<string> s = UseState("Disabled");
         return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: true));

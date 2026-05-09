@@ -100,9 +100,7 @@ public static class Button {
 
             float overlay = ButtonVariants.OverlayAlpha(state);
             if (overlay > 0f) {
-                Color overlayColor = state.Pressed
-                    ? new Color(0f, 0f, 0f, overlay)
-                    : new Color(1f, 1f, 1f, overlay);
+                Color overlayColor = InteractionFeedback.OverlayColor(theme, state, overlay);
                 PaintBox.Draw(rect, BackgroundSpec.Of(overlayColor), null, radius);
             }
 
@@ -181,43 +179,43 @@ public static class Button {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Primary")]
+    [DocVariant("CL_Playground_Label_Primary")]
     public static DocSample DocsPrimary() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create("Primary", () => { }, disabled: forced));
     }
 
-    [DocVariant("CC_Playground_Label_Secondary")]
+    [DocVariant("CL_Playground_Label_Secondary")]
     public static DocSample DocsSecondary() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create("Secondary", () => { }, ButtonVariant.Secondary, disabled: forced));
     }
 
-    [DocVariant("CC_Playground_Label_Ghost")]
+    [DocVariant("CL_Playground_Label_Ghost")]
     public static DocSample DocsGhost() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create("Ghost", () => { }, ButtonVariant.Ghost, disabled: forced));
     }
 
-    [DocVariant("CC_Playground_Label_Danger")]
+    [DocVariant("CL_Playground_Label_Danger")]
     public static DocSample DocsDanger() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create("Danger", () => { }, ButtonVariant.Danger, disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Default")]
+    [DocState("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create("Default", () => { }, disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Hover")]
+    [DocState("CL_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create("Hover me", () => { }, disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Disabled")]
+    [DocState("CL_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
         return new DocSample(() => Create("Disabled", () => { }, disabled: true));
     }

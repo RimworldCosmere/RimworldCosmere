@@ -10,6 +10,7 @@ public static class DefaultTheme {
             [ThemeSlot.SurfaceRaised] = new Color(0.175f, 0.168f, 0.155f, 1.00f),
             [ThemeSlot.SurfaceSunken] = new Color(0.083f, 0.080f, 0.074f, 0.95f),
             [ThemeSlot.SurfaceAccent] = new Color(0.800f, 0.660f, 0.350f, 0.92f),
+            [ThemeSlot.SurfaceShadow] = new Color(0.000f, 0.000f, 0.000f, 0.35f),
             [ThemeSlot.SurfaceInput] = new Color(0.165f, 0.160f, 0.148f, 1.00f),
             [ThemeSlot.SurfaceDisabled] = new Color(0.220f, 0.215f, 0.200f, 1.00f),
             [ThemeSlot.TextPrimary] = new Color(0.940f, 0.930f, 0.880f),
@@ -26,6 +27,8 @@ public static class DefaultTheme {
             [ThemeSlot.StatusWarning] = new Color(0.940f, 0.720f, 0.280f),
             [ThemeSlot.StatusDanger] = new Color(0.780f, 0.280f, 0.260f),
             [ThemeSlot.StatusSuccess] = new Color(0.550f, 0.720f, 0.360f),
+            [ThemeSlot.InteractionHover] = new Color(1.000f, 1.000f, 1.000f, 1.00f),
+            [ThemeSlot.InteractionPress] = new Color(0.000f, 0.000f, 0.000f, 1.00f),
         };
         return BaseTheme.Compose(colors, body, bodyBold, heading, display, mono);
     }

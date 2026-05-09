@@ -14,6 +14,8 @@ public sealed class LightweaveScrollStatus {
     public float DragAnchor;
     public int ArrowHeld;
     public float NextArrowRepeatAt;
+    public float LastContentHeight;
+    public float LastViewportHeight;
 }
 
 public readonly record struct LightweaveScrollView : IDisposable {
@@ -62,6 +64,8 @@ public readonly record struct LightweaveScrollView : IDisposable {
         viewHeight = outRect.height;
         rect = new Rect(0f, 0f, outRect.width - gutter, declared);
 
+        status.LastContentHeight = declared;
+        status.LastViewportHeight = outRect.height;
         status.Height = 0f;
         Widgets.BeginScrollView(outRect, ref status.Position, rect, false);
     }
@@ -346,6 +350,7 @@ public readonly record struct LightweaveScrollView : IDisposable {
     }
 }
 
+[StaticConstructorOnStartup]
 internal static class LightweaveScrollArrows {
     internal static Texture2D? UpArrowTex;
     internal static Texture2D? DownArrowTex;

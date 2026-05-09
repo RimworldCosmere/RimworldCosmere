@@ -262,16 +262,16 @@ public static class Table {
         List<TableColumn<(string World, string Shards, string Population)>> columns =
             new List<TableColumn<(string, string, string)>> {
                 new TableColumn<(string, string, string)>(
-                    (string)"CC_Playground_Table_Col_World".Translate(),
+                    (string)"CL_Playground_Table_Col_World".Translate(),
                     r => Text.Create(r.Item1, FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
                     new Rem(7f)
                 ),
                 new TableColumn<(string, string, string)>(
-                    (string)"CC_Playground_Table_Col_Shards".Translate(),
+                    (string)"CL_Playground_Table_Col_Shards".Translate(),
                     r => Text.Create(r.Item2, FontRole.Body, new Rem(0.8125f), ThemeSlot.TextSecondary)
                 ),
                 new TableColumn<(string, string, string)>(
-                    (string)"CC_Playground_Table_Col_Population".Translate(),
+                    (string)"CL_Playground_Table_Col_Population".Translate(),
                     r => Text.Create(r.Item3, FontRole.Body, new Rem(0.8125f), ThemeSlot.TextMuted),
                     new Rem(6f)
                 ),
@@ -280,7 +280,7 @@ public static class Table {
         return Table.Create<(string, string, string)>(rows, columns);
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => BuildSampleTable());
     }

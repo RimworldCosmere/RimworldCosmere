@@ -134,7 +134,7 @@ public static class Box {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Raised")]
+    [DocVariant("CL_Playground_Label_Raised")]
     public static DocSample DocsRaised() {
         return new DocSample(() => 
             Box.Create(
@@ -147,7 +147,7 @@ public static class Box {
         );
     }
 
-    [DocVariant("CC_Playground_Label_Sunken")]
+    [DocVariant("CL_Playground_Label_Sunken")]
     public static DocSample DocsSunken() {
         return new DocSample(() => 
             Box.Create(
@@ -160,7 +160,7 @@ public static class Box {
         );
     }
 
-    [DocVariant("CC_Playground_Label_Accent")]
+    [DocVariant("CL_Playground_Label_Accent")]
     public static DocSample DocsAccent() {
         return new DocSample(() => 
             Box.Create(

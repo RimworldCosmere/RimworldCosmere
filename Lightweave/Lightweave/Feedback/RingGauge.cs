@@ -101,17 +101,17 @@ public static class RingGauge {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Small")]
+    [DocVariant("CL_Playground_Label_Small")]
     public static DocSample DocsLow() {
         return new DocSample(() => CenterFixed(RingGauge.Create(0.25f), 72f, 72f));
     }
 
-    [DocVariant("CC_Playground_Label_Medium")]
+    [DocVariant("CL_Playground_Label_Medium")]
     public static DocSample DocsMid() {
         return new DocSample(() => CenterFixed(RingGauge.Create(0.6f), 72f, 72f));
     }
 
-    [DocVariant("CC_Playground_Label_Large")]
+    [DocVariant("CL_Playground_Label_Large")]
     public static DocSample DocsHigh() {
         return new DocSample(() => CenterFixed(RingGauge.Create(0.95f), 72f, 72f));
     }

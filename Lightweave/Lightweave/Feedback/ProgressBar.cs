@@ -83,22 +83,22 @@ public static class ProgressBar {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Accent")]
+    [DocVariant("CL_Playground_Label_Accent")]
     public static DocSample DocsAccent() {
         return new DocSample(() => ProgressBar.Create(0.65f, 0f, 1f, "65%"));
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsSuccess() {
         return new DocSample(() => ProgressBar.Create(0.35f, 0f, 1f, "35%", BadgeVariant.Success));
     }
 
-    [DocVariant("CC_Playground_Label_Danger")]
+    [DocVariant("CL_Playground_Label_Danger")]
     public static DocSample DocsDanger() {
         return new DocSample(() => ProgressBar.Create(0.9f, 0f, 1f, "90%", BadgeVariant.Danger));
     }
 
-    [DocVariant("CC_Playground_Feedback_ProgressBar_Animated", Order = 4)]
+    [DocVariant("CL_Playground_Feedback_ProgressBar_Animated", Order = 4)]
     public static DocSample DocsAnimated() {
         return new DocSample(() => {
             RefHandle<float> startRef = UseRef(-1f);

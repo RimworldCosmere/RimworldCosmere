@@ -131,9 +131,7 @@ public static class Dropdown {
             PaintBox.Draw(rect, bgSpec, borderSpec, radiusSpec);
             float overlay = ButtonVariants.OverlayAlpha(state);
             if (overlay > 0f) {
-                Color overlayColor = state.Pressed
-                    ? new Color(0f, 0f, 0f, overlay)
-                    : new Color(1f, 1f, 1f, overlay);
+                Color overlayColor = InteractionFeedback.OverlayColor(RenderContext.Current.Theme, state, overlay);
                 PaintBox.Draw(rect, BackgroundSpec.Of(overlayColor), null, radiusSpec);
             }
 
@@ -307,7 +305,7 @@ public static class Dropdown {
         GUI.color = Color.white;
 
         Rect shadowRect = new Rect(popoverRect.x + 2f, popoverRect.y + 3f, popoverRect.width, popoverRect.height);
-        BackgroundSpec shadowBg = BackgroundSpec.Of(new Color(0f, 0f, 0f, 0.35f));
+        BackgroundSpec shadowBg = BackgroundSpec.Of(ThemeSlot.SurfaceShadow);
         PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(new Rem(0.5f)));
 
         BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
@@ -557,7 +555,7 @@ public static class Dropdown {
 
     private static readonly string[] DocOptions = { "Roshar", "Scadrial", "Nalthis", "Taldain", "Ashyn" };
 
-    [DocVariant("CC_Playground_Label_Input")]
+    [DocVariant("CL_Playground_Label_Input")]
     public static DocSample DocsInput() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("Scadrial");
@@ -571,7 +569,7 @@ public static class Dropdown {
         ));
     }
 
-    [DocVariant("CC_Playground_Label_Button")]
+    [DocVariant("CL_Playground_Label_Button")]
     public static DocSample DocsButton() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("Scadrial");
@@ -587,7 +585,7 @@ public static class Dropdown {
         ));
     }
 
-    [DocVariant("CC_Playground_Label_Primary")]
+    [DocVariant("CL_Playground_Label_Primary")]
     public static DocSample DocsPrimary() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("Scadrial");
@@ -603,7 +601,7 @@ public static class Dropdown {
         ));
     }
 
-    [DocState("CC_Playground_Label_Default")]
+    [DocState("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("Scadrial");
@@ -617,7 +615,7 @@ public static class Dropdown {
         ));
     }
 
-    [DocState("CC_Playground_Label_Hover")]
+    [DocState("CL_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("Roshar");
@@ -631,7 +629,7 @@ public static class Dropdown {
         ));
     }
 
-    [DocState("CC_Playground_Label_Disabled")]
+    [DocState("CL_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
         StateHandle<string> s = UseState("Nalthis");
         return new DocSample(() => Create<string>(

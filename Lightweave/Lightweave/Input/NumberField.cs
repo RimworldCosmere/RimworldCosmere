@@ -221,7 +221,7 @@ public static class NumberField {
         return sb.ToString();
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<float> s = UseState(42f);
@@ -230,26 +230,26 @@ public static class NumberField {
             v => s.Set(v),
             0f,
             100f,
-            placeholder: (string)"CC_Playground_Controls_NumberField_Label".Translate(),
+            placeholder: (string)"CL_Playground_Controls_NumberField_Label".Translate(),
             disabled: forced
         ));
     }
 
-    [DocState("CC_Playground_Label_Default")]
+    [DocState("CL_Playground_Label_Default")]
     public static DocSample DocsDefaultState() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<float> s = UseState(42f);
         return new DocSample(() => Create(s.Value, v => s.Set(v), 0f, 100f, disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Hover")]
+    [DocState("CL_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<float> s = UseState(7f);
         return new DocSample(() => Create(s.Value, v => s.Set(v), 0f, 100f, disabled: forced));
     }
 
-    [DocState("CC_Playground_Label_Disabled")]
+    [DocState("CL_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
         StateHandle<float> s = UseState(13f);
         return new DocSample(() => Create(s.Value, v => s.Set(v), 0f, 100f, disabled: true));

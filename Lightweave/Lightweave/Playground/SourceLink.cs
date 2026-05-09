@@ -67,8 +67,8 @@ public static class SourceLink {
     ) {
         return LabelLink(
             "SourceLink:" + sourcePath,
-            "CC_Playground_Panel_SourceLabel",
-            "CC_Playground_Panel_SourceTooltip",
+            "CL_Playground_Panel_SourceLabel",
+            "CL_Playground_Panel_SourceTooltip",
             () => TryOpenInEditor(sourcePath),
             line,
             file
@@ -82,8 +82,8 @@ public static class SourceLink {
     ) {
         return LabelLink(
             "SourceLink.Github:" + sourcePath,
-            "CC_Playground_Panel_GithubLabel",
-            "CC_Playground_Panel_GithubTooltip",
+            "CL_Playground_Panel_GithubLabel",
+            "CL_Playground_Panel_GithubTooltip",
             () => TryOpenInBrowser(sourcePath),
             line,
             file

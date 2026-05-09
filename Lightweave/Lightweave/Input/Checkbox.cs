@@ -138,35 +138,35 @@ public static class Checkbox {
         GUI.matrix = saved;
     }
 
-    [DocVariant("CC_Playground_Label_True")]
+    [DocVariant("CL_Playground_Label_True")]
     public static DocSample DocsTrue() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<bool> s = UseState(true);
         return new DocSample(() => Create("Enabled", s.Value, v => s.Set(v), forced));
     }
 
-    [DocVariant("CC_Playground_Label_False")]
+    [DocVariant("CL_Playground_Label_False")]
     public static DocSample DocsFalse() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<bool> s = UseState(false);
         return new DocSample(() => Create("Disabled", s.Value, v => s.Set(v), forced));
     }
 
-    [DocState("CC_Playground_Label_Default")]
+    [DocState("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<bool> s = UseState(true);
         return new DocSample(() => Create("Default", s.Value, v => s.Set(v), forced));
     }
 
-    [DocState("CC_Playground_Label_Hover")]
+    [DocState("CL_Playground_Label_Hover")]
     public static DocSample DocsHover() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<bool> s = UseState(false);
         return new DocSample(() => Create("Hover", s.Value, v => s.Set(v), forced));
     }
 
-    [DocState("CC_Playground_Label_Disabled")]
+    [DocState("CL_Playground_Label_Disabled")]
     public static DocSample DocsDisabled() {
         StateHandle<bool> s = UseState(true);
         return new DocSample(() => Create("Disabled", s.Value, v => s.Set(v), true));

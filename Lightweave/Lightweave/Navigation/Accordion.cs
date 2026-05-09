@@ -225,21 +225,21 @@ public static class Accordion {
 
     private static List<AccordionItem> BuildSampleItems() {
         LightweaveNode overviewBody = Text.Create(
-            (string)"CC_Playground_accordion_Body_Overview".Translate(),
+            (string)"CL_Playground_accordion_Body_Overview".Translate(),
             FontRole.Body,
             new Rem(0.875f),
             ThemeSlot.TextPrimary,
             wrap: true
         );
         LightweaveNode stormlightBody = Text.Create(
-            (string)"CC_Playground_accordion_Body_Stormlight".Translate(),
+            (string)"CL_Playground_accordion_Body_Stormlight".Translate(),
             FontRole.Body,
             new Rem(0.875f),
             ThemeSlot.TextPrimary,
             wrap: true
         );
         LightweaveNode sprenBody = Text.Create(
-            (string)"CC_Playground_accordion_Body_Spren".Translate(),
+            (string)"CL_Playground_accordion_Body_Spren".Translate(),
             FontRole.Body,
             new Rem(0.875f),
             ThemeSlot.TextPrimary,
@@ -249,26 +249,26 @@ public static class Accordion {
         return new List<AccordionItem> {
             new AccordionItem(
                 "overview",
-                (string)"CC_Playground_accordion_Header_Overview".Translate(),
+                (string)"CL_Playground_accordion_Header_Overview".Translate(),
                 overviewBody,
                 56f
             ),
             new AccordionItem(
                 "stormlight",
-                (string)"CC_Playground_accordion_Header_Stormlight".Translate(),
+                (string)"CL_Playground_accordion_Header_Stormlight".Translate(),
                 stormlightBody,
                 64f
             ),
             new AccordionItem(
                 "spren",
-                (string)"CC_Playground_accordion_Header_Spren".Translate(),
+                (string)"CL_Playground_accordion_Header_Spren".Translate(),
                 sprenBody,
                 64f
             ),
         };
     }
 
-    [DocVariant("CC_Playground_accordion_Mode_Single")]
+    [DocVariant("CL_Playground_accordion_Mode_Single")]
     public static DocSample DocsSingle() {
         return new DocSample(() => {
             Hooks.Hooks.StateHandle<HashSet<string>> open =
@@ -286,7 +286,7 @@ public static class Accordion {
         });
     }
 
-    [DocVariant("CC_Playground_accordion_Mode_Multi")]
+    [DocVariant("CL_Playground_accordion_Mode_Multi")]
     public static DocSample DocsMulti() {
         return new DocSample(() => {
             Hooks.Hooks.StateHandle<HashSet<string>> open =

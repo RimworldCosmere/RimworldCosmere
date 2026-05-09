@@ -124,40 +124,40 @@ public static class Container {
         );
     }
 
-    [DocVariant("CC_Playground_Container_Centered")]
+    [DocVariant("CL_Playground_Container_Centered")]
     public static DocSample DocsCentered() {
         return new DocSample(() => 
-            DocsViewport("CC_Playground_Container_Centered_Body", new Rem(8f), ContainerAlign.Center),
+            DocsViewport("CL_Playground_Container_Centered_Body", new Rem(8f), ContainerAlign.Center),
             useFullSource: true
         );
     }
 
-    [DocVariant("CC_Playground_Container_Start")]
+    [DocVariant("CL_Playground_Container_Start")]
     public static DocSample DocsStart() {
         return new DocSample(() => 
-            DocsViewport("CC_Playground_Container_Start_Body", new Rem(8f), ContainerAlign.Start),
+            DocsViewport("CL_Playground_Container_Start_Body", new Rem(8f), ContainerAlign.Start),
             useFullSource: true
         );
     }
 
-    [DocVariant("CC_Playground_Container_End")]
+    [DocVariant("CL_Playground_Container_End")]
     public static DocSample DocsEnd() {
         return new DocSample(() => 
-            DocsViewport("CC_Playground_Container_End_Body", new Rem(8f), ContainerAlign.End),
+            DocsViewport("CL_Playground_Container_End_Body", new Rem(8f), ContainerAlign.End),
             useFullSource: true
         );
     }
 
-    [DocVariant("CC_Playground_Container_Unconstrained")]
+    [DocVariant("CL_Playground_Container_Unconstrained")]
     public static DocSample DocsUnconstrained() {
         return new DocSample(() => 
-            DocsViewport("CC_Playground_Container_Unconstrained_Body", default, ContainerAlign.Center),
+            DocsViewport("CL_Playground_Container_Unconstrained_Body", default, ContainerAlign.Center),
             useFullSource: true
         );
     }
 
 
-    [DocVariant("CC_Playground_Container_Responsive")]
+    [DocVariant("CL_Playground_Container_Responsive")]
     public static DocSample DocsResponsive() {
         LightweaveNode block = Box.Create(
             EdgeInsets.Vertical(SpacingScale.Sm),
@@ -166,7 +166,7 @@ public static class Container {
             RadiusSpec.All(new Rem(0.25f)),
             c => c.Add(
                 Text.Create(
-                    (string)"CC_Playground_Container_Responsive_Body".Translate(),
+                    (string)"CL_Playground_Container_Responsive_Body".Translate(),
                     FontRole.BodyBold,
                     new Rem(0.8125f),
                     ThemeSlot.TextOnAccent,
@@ -193,7 +193,7 @@ public static class Container {
     [DocUsage]
     public static DocSample DocsUsage() {
         return new DocSample(() => 
-            DocsViewport("CC_Playground_Container_Centered_Body", new Rem(8f), ContainerAlign.Center),
+            DocsViewport("CL_Playground_Container_Centered_Body", new Rem(8f), ContainerAlign.Center),
             useFullSource: true
         );
     }

@@ -19,44 +19,44 @@ public static class SideNavDoc {
         return new List<PlaygroundCategory> {
             new PlaygroundCategory(
                 "layout",
-                "CC_Playground_Category_Layout",
-                "CC_Playground_Category_Layout_Desc",
+                "CL_Playground_Category_Layout",
+                "CL_Playground_Category_Layout_Desc",
                 new[] { "stack", "column", "row", "grid" }
             ),
             new PlaygroundCategory(
                 "typography",
-                "CC_Playground_Category_Typography",
-                "CC_Playground_Category_Typography_Desc",
+                "CL_Playground_Category_Typography",
+                "CL_Playground_Category_Typography_Desc",
                 new[] { "heading", "text", "caption" }
             ),
             new PlaygroundCategory(
                 "buttons",
-                "CC_Playground_Category_Buttons",
-                "CC_Playground_Category_Buttons_Desc",
+                "CL_Playground_Category_Buttons",
+                "CL_Playground_Category_Buttons_Desc",
                 new[] { "button", "iconbutton", "togglebutton" }
             ),
             new PlaygroundCategory(
                 "inputs",
-                "CC_Playground_Category_Inputs",
-                "CC_Playground_Category_Inputs_Desc",
+                "CL_Playground_Category_Inputs",
+                "CL_Playground_Category_Inputs_Desc",
                 new[] { "textfield", "checkbox", "slider", "switch" }
             ),
             new PlaygroundCategory(
                 "feedback",
-                "CC_Playground_Category_Feedback",
-                "CC_Playground_Category_Feedback_Desc",
+                "CL_Playground_Category_Feedback",
+                "CL_Playground_Category_Feedback_Desc",
                 new[] { "spinner", "progressbar", "badge" }
             ),
             new PlaygroundCategory(
                 "overlay",
-                "CC_Playground_Category_Overlay",
-                "CC_Playground_Category_Overlay_Desc",
+                "CL_Playground_Category_Overlay",
+                "CL_Playground_Category_Overlay_Desc",
                 new[] { "dialog", "popover", "drawer" }
             ),
         };
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => {
             Hooks.Hooks.StateHandle<string> selectedHandle = Hooks.Hooks.UseState<string>("stack");

@@ -10,6 +10,7 @@ public static class CosmereTheme {
             [ThemeSlot.SurfaceRaised] = new Color(0.140f, 0.118f, 0.098f, 1.00f),
             [ThemeSlot.SurfaceSunken] = new Color(0.048f, 0.040f, 0.032f, 0.96f),
             [ThemeSlot.SurfaceAccent] = new Color(0.780f, 0.540f, 0.240f, 0.95f),
+            [ThemeSlot.SurfaceShadow] = new Color(0.000f, 0.000f, 0.000f, 0.40f),
             [ThemeSlot.SurfaceInput] = new Color(0.155f, 0.132f, 0.110f, 1.00f),
             [ThemeSlot.SurfaceDisabled] = new Color(0.195f, 0.170f, 0.140f, 1.00f),
             [ThemeSlot.TextPrimary] = new Color(0.940f, 0.910f, 0.840f),
@@ -26,6 +27,8 @@ public static class CosmereTheme {
             [ThemeSlot.StatusWarning] = new Color(0.940f, 0.700f, 0.280f),
             [ThemeSlot.StatusDanger] = new Color(0.800f, 0.280f, 0.220f),
             [ThemeSlot.StatusSuccess] = new Color(0.500f, 0.680f, 0.420f),
+            [ThemeSlot.InteractionHover] = new Color(0.940f, 0.910f, 0.840f, 1.00f),
+            [ThemeSlot.InteractionPress] = new Color(0.000f, 0.000f, 0.000f, 1.00f),
         };
         return BaseTheme.Compose(colors, body, bodyBold, heading, display, mono);
     }

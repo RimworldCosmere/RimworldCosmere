@@ -32,17 +32,17 @@ namespace Cosmere.Lightweave.Playground;
     ShowRtl = false
 )]
 public static class UseStateDoc {
-    [DocVariant("CC_Playground_Hook_UseState_Stormlight")]
+    [DocVariant("CL_Playground_Hook_UseState_Stormlight")]
     public static DocSample DocsStormlight() {
         return new DocSample(BuildStormlightDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseState_Toggle")]
+    [DocVariant("CL_Playground_Hook_UseState_Toggle")]
     public static DocSample DocsToggle() {
         return new DocSample(BuildToggleDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseState_Draft")]
+    [DocVariant("CL_Playground_Hook_UseState_Draft")]
     public static DocSample DocsDraft() {
         return new DocSample(BuildDraftDoc, useFullSource: true);
     }
@@ -56,7 +56,7 @@ public static class UseStateDoc {
         StateHandle<int> charge = UseState(3);
 
         LightweaveNode label = Text.Create(
-            ((string)"CC_Playground_Hook_UseState_StormlightLabel".Translate())
+            ((string)"CL_Playground_Hook_UseState_StormlightLabel".Translate())
                 .Replace("{COUNT}", charge.Value.ToString()),
             FontRole.BodyBold,
             new Rem(1f),
@@ -70,7 +70,7 @@ public static class UseStateDoc {
             r => {
                 r.Add(
                     Button.Create(
-                        (string)"CC_Playground_Hook_UseState_Drain".Translate(),
+                        (string)"CL_Playground_Hook_UseState_Drain".Translate(),
                         () => charge.Set(Mathf.Max(0, charge.Value - 1)),
                         ButtonVariant.Secondary
                     ),
@@ -79,7 +79,7 @@ public static class UseStateDoc {
                 r.AddFlex(label);
                 r.Add(
                     Button.Create(
-                        (string)"CC_Playground_Hook_UseState_Infuse".Translate(),
+                        (string)"CL_Playground_Hook_UseState_Infuse".Translate(),
                         () => charge.Set(charge.Value + 1)
                     ),
                     72f
@@ -96,8 +96,8 @@ public static class UseStateDoc {
             r => {
                 r.AddFlex(Text.Create(
                     drawn.Value
-                        ? (string)"CC_Playground_Hook_UseState_BladeDrawn".Translate()
-                        : (string)"CC_Playground_Hook_UseState_BladeDismissed".Translate(),
+                        ? (string)"CL_Playground_Hook_UseState_BladeDrawn".Translate()
+                        : (string)"CL_Playground_Hook_UseState_BladeDismissed".Translate(),
                     FontRole.Body,
                     new Rem(1f),
                     drawn.Value ? ThemeSlot.SurfaceAccent : ThemeSlot.TextSecondary,
@@ -106,8 +106,8 @@ public static class UseStateDoc {
                 r.Add(
                     Button.Create(
                         drawn.Value
-                            ? (string)"CC_Playground_Hook_UseState_Dismiss".Translate()
-                            : (string)"CC_Playground_Hook_UseState_Summon".Translate(),
+                            ? (string)"CL_Playground_Hook_UseState_Dismiss".Translate()
+                            : (string)"CL_Playground_Hook_UseState_Summon".Translate(),
                         () => drawn.Set(!drawn.Value)
                     ),
                     96f
@@ -123,12 +123,12 @@ public static class UseStateDoc {
             SpacingScale.Xxs,
             s => {
                 s.Add(Caption.Create(
-                    (string)"CC_Playground_Hook_UseState_OathHint".Translate()
+                    (string)"CL_Playground_Hook_UseState_OathHint".Translate()
                 ), 14f);
                 s.Add(TextField.Create(
                     oath.Value,
                     v => oath.Set(v),
-                    (string)"CC_Playground_Hook_UseState_OathPlaceholder".Translate()
+                    (string)"CL_Playground_Hook_UseState_OathPlaceholder".Translate()
                 ), 28f);
             }
         );
@@ -148,7 +148,7 @@ public static class UseAnimDoc {
         return new DocSample(BuildFadeDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Scale", Order = 1)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Scale", Order = 1)]
     public static DocSample DocsScale() {
         return new DocSample(() => {
             StateHandle<bool> big = UseState(false);
@@ -175,7 +175,7 @@ public static class UseAnimDoc {
                 r => {
                     r.Add(
                         Button.Create(
-                            (string)"CC_Playground_UseAnim_Toggle_Scale".Translate(),
+                            (string)"CL_Playground_UseAnim_Toggle_Scale".Translate(),
                             () => big.Set(!big.Value),
                             ButtonVariant.Secondary
                         ),
@@ -187,7 +187,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Slide", Order = 2)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Slide", Order = 2)]
     public static DocSample DocsSlide() {
         return new DocSample(() => {
             StateHandle<bool> right = UseState(false);
@@ -215,7 +215,7 @@ public static class UseAnimDoc {
                 r => {
                     r.Add(
                         Button.Create(
-                            (string)"CC_Playground_UseAnim_Toggle_Slide".Translate(),
+                            (string)"CL_Playground_UseAnim_Toggle_Slide".Translate(),
                             () => right.Set(!right.Value),
                             ButtonVariant.Secondary
                         ),
@@ -227,7 +227,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Color", Order = 3)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Color", Order = 3)]
     public static DocSample DocsColor() {
         return new DocSample(() => {
             StateHandle<bool> alt = UseState(false);
@@ -250,7 +250,7 @@ public static class UseAnimDoc {
                 row => {
                     row.Add(
                         Button.Create(
-                            (string)"CC_Playground_UseAnim_Toggle_Color".Translate(),
+                            (string)"CL_Playground_UseAnim_Toggle_Color".Translate(),
                             () => alt.Set(!alt.Value),
                             ButtonVariant.Secondary
                         ),
@@ -262,7 +262,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Stagger", Order = 4)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Stagger", Order = 4)]
     public static DocSample DocsStagger() {
         return new DocSample(() => {
             StateHandle<bool> visible = UseState(false);
@@ -291,7 +291,7 @@ public static class UseAnimDoc {
                 row => {
                     row.Add(
                         Button.Create(
-                            (string)"CC_Playground_UseAnim_Toggle_Stagger".Translate(),
+                            (string)"CL_Playground_UseAnim_Toggle_Stagger".Translate(),
                             () => visible.Set(!visible.Value),
                             ButtonVariant.Secondary
                         ),
@@ -303,7 +303,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Blur", Order = 5)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Blur", Order = 5)]
     public static DocSample DocsBlur() {
         return new DocSample(() => {
             StateHandle<bool> blurred = UseState(false);
@@ -339,7 +339,7 @@ public static class UseAnimDoc {
                 row => {
                     row.Add(
                         Button.Create(
-                            (string)"CC_Playground_UseAnim_Toggle_Blur".Translate(),
+                            (string)"CL_Playground_UseAnim_Toggle_Blur".Translate(),
                             () => blurred.Set(!blurred.Value),
                             ButtonVariant.Secondary
                         ),
@@ -351,7 +351,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Expand", Order = 6)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Expand", Order = 6)]
     public static DocSample DocsExpand() {
         return new DocSample(() => {
             StateHandle<bool> wide = UseState(false);
@@ -373,7 +373,7 @@ public static class UseAnimDoc {
                 row => {
                     row.Add(
                         Button.Create(
-                            (string)"CC_Playground_UseAnim_Toggle_Expand".Translate(),
+                            (string)"CL_Playground_UseAnim_Toggle_Expand".Translate(),
                             () => wide.Set(!wide.Value),
                             ButtonVariant.Secondary
                         ),
@@ -385,7 +385,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Shrink", Order = 7)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Shrink", Order = 7)]
     public static DocSample DocsShrink() {
         return new DocSample(() => {
             StateHandle<bool> small = UseState(false);
@@ -407,7 +407,7 @@ public static class UseAnimDoc {
                 row => {
                     row.Add(
                         Button.Create(
-                            (string)"CC_Playground_UseAnim_Toggle_Shrink".Translate(),
+                            (string)"CL_Playground_UseAnim_Toggle_Shrink".Translate(),
                             () => small.Set(!small.Value),
                             ButtonVariant.Secondary
                         ),
@@ -419,7 +419,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Shake", Order = 8)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Shake", Order = 8)]
     public static DocSample DocsShake() {
         return new DocSample(() => {
             RefHandle<float> shakeStart = UseRef(-1f);
@@ -453,7 +453,7 @@ public static class UseAnimDoc {
                 row => {
                     row.Add(
                         Button.Create(
-                            (string)"CC_Playground_UseAnim_Toggle_Shake".Translate(),
+                            (string)"CL_Playground_UseAnim_Toggle_Shake".Translate(),
                             () => shakeStart.Current = Time.unscaledTime,
                             ButtonVariant.Secondary
                         ),
@@ -465,7 +465,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Bounce", Order = 9)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Bounce", Order = 9)]
     public static DocSample DocsBounce() {
         return new DocSample(() => {
             StateHandle<bool> up = UseState(false);
@@ -507,7 +507,7 @@ public static class UseAnimDoc {
                 row => {
                     row.Add(
                         Button.Create(
-                            (string)"CC_Playground_UseAnim_Toggle_Bounce".Translate(),
+                            (string)"CL_Playground_UseAnim_Toggle_Bounce".Translate(),
                             () => up.Set(!up.Value),
                             ButtonVariant.Secondary
                         ),
@@ -519,7 +519,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Pulse", Order = 10)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Pulse", Order = 10)]
     public static DocSample DocsPulse() {
         return new DocSample(() => {
             float wave = UseAnim.Wave(period: 1.6f, easing: t => t * t * (3f - 2f * t));
@@ -546,7 +546,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Wobble", Order = 11)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Wobble", Order = 11)]
     public static DocSample DocsWobble() {
         return new DocSample(() => {
             StateHandle<bool> active = UseState(false);
@@ -589,7 +589,7 @@ public static class UseAnimDoc {
                 row => {
                     row.Add(
                         Button.Create(
-                            (string)"CC_Playground_UseAnim_Toggle_Wobble".Translate(),
+                            (string)"CL_Playground_UseAnim_Toggle_Wobble".Translate(),
                             () => {
                                 active.Set(true);
                                 startTime.Current = Time.unscaledTime;
@@ -604,7 +604,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Seesaw", Order = 12)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Seesaw", Order = 12)]
     public static DocSample DocsSeesaw() {
         return new DocSample(() => {
             LightweaveNode demo = NodeBuilder.New("UseAnimSeesaw", 0, nameof(UseAnimDoc));
@@ -632,7 +632,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Spin", Order = 13)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Spin", Order = 13)]
     public static DocSample DocsSpin() {
         return new DocSample(() => {
             LightweaveNode demo = NodeBuilder.New("UseAnimSpin", 0, nameof(UseAnimDoc));
@@ -660,7 +660,7 @@ public static class UseAnimDoc {
         });
     }
 
-    [DocVariant("CC_Playground_Hook_UseAnim_Blink", Order = 14)]
+    [DocVariant("CL_Playground_Hook_UseAnim_Blink", Order = 14)]
     public static DocSample DocsBlink() {
         return new DocSample(() => {
             LightweaveNode demo = NodeBuilder.New("UseAnimBlink", 0, nameof(UseAnimDoc));
@@ -707,7 +707,7 @@ public static class UseAnimDoc {
             r => {
                 r.Add(
                     Button.Create(
-                        (string)"CC_Playground_UseAnim_Toggle".Translate(),
+                        (string)"CL_Playground_UseAnim_Toggle".Translate(),
                         () => target.Set(!target.Value),
                         ButtonVariant.Secondary
                     ),
@@ -729,17 +729,17 @@ public static class UseAnimDoc {
     ShowRtl = false
 )]
 public static class UseFocusDoc {
-    [DocVariant("CC_Playground_Hook_UseFocus_OnDemand")]
+    [DocVariant("CL_Playground_Hook_UseFocus_OnDemand")]
     public static DocSample DocsOnDemand() {
         return new DocSample(BuildOnDemandDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseFocus_ClearAndRefocus")]
+    [DocVariant("CL_Playground_Hook_UseFocus_ClearAndRefocus")]
     public static DocSample DocsClearAndRefocus() {
         return new DocSample(BuildClearAndRefocusDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseFocus_Status")]
+    [DocVariant("CL_Playground_Hook_UseFocus_Status")]
     public static DocSample DocsStatus() {
         return new DocSample(BuildStatusDoc, useFullSource: true);
     }
@@ -758,7 +758,7 @@ public static class UseFocusDoc {
             r => {
                 r.Add(
                     Button.Create(
-                        (string)"CC_Playground_Hook_UseFocus_FocusSphere".Translate(),
+                        (string)"CL_Playground_Hook_UseFocus_FocusSphere".Translate(),
                         focus.Request,
                         ButtonVariant.Secondary
                     ),
@@ -767,7 +767,7 @@ public static class UseFocusDoc {
                 r.AddFlex(TextField.Create(
                     code.Value,
                     v => code.Set(v),
-                    (string)"CC_Playground_Hook_UseFocus_SpherePlaceholder".Translate(),
+                    (string)"CL_Playground_Hook_UseFocus_SpherePlaceholder".Translate(),
                     focus: focus
                 ));
             }
@@ -784,12 +784,12 @@ public static class UseFocusDoc {
                 r.AddFlex(TextField.Create(
                     entry.Value,
                     v => entry.Set(v),
-                    (string)"CC_Playground_Hook_UseFocus_GlyphPlaceholder".Translate(),
+                    (string)"CL_Playground_Hook_UseFocus_GlyphPlaceholder".Translate(),
                     focus: focus
                 ));
                 r.Add(
                     Button.Create(
-                        (string)"CC_Playground_Hook_UseFocus_Erase".Translate(),
+                        (string)"CL_Playground_Hook_UseFocus_Erase".Translate(),
                         () => {
                             entry.Set(string.Empty);
                             focus.Request();
@@ -811,13 +811,13 @@ public static class UseFocusDoc {
             s => {
                 s.Add(Caption.Create(
                     focus.IsFocused
-                        ? (string)"CC_Playground_Hook_UseFocus_StatusListening".Translate()
-                        : (string)"CC_Playground_Hook_UseFocus_StatusIdle".Translate()
+                        ? (string)"CL_Playground_Hook_UseFocus_StatusListening".Translate()
+                        : (string)"CL_Playground_Hook_UseFocus_StatusIdle".Translate()
                 ), 14f);
                 s.Add(TextField.Create(
                     note.Value,
                     v => note.Set(v),
-                    (string)"CC_Playground_Hook_UseFocus_NotePlaceholder".Translate(),
+                    (string)"CL_Playground_Hook_UseFocus_NotePlaceholder".Translate(),
                     focus: focus
                 ), 28f);
             }
@@ -835,19 +835,14 @@ public static class UseFocusDoc {
     ShowRtl = false
 )]
 public static class UseHotkeyDoc {
-    [DocVariant("CC_Playground_Hook_UseHotkey_Single")]
+    [DocVariant("CL_Playground_Hook_UseHotkey_Single")]
     public static DocSample DocsSingle() {
         return new DocSample(BuildSingleDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseHotkey_Modifiers")]
+    [DocVariant("CL_Playground_Hook_UseHotkey_Modifiers")]
     public static DocSample DocsModifiers() {
         return new DocSample(BuildModifiersDoc, useFullSource: true);
-    }
-
-    [DocVariant("CC_Playground_Hook_UseHotkey_Bond")]
-    public static DocSample DocsBond() {
-        return new DocSample(BuildBondDoc, useFullSource: true);
     }
 
     [DocUsage]
@@ -857,14 +852,14 @@ public static class UseHotkeyDoc {
 
     private static LightweaveNode BuildSingleDoc() {
         StateHandle<string> status = UseState<string>(
-            (string)"CC_Playground_Hook_UseHotkey_SingleIdle".Translate()
+            (string)"CL_Playground_Hook_UseHotkey_SingleIdle".Translate()
         );
 
         LightweaveNode host = NodeBuilder.New("UseHotkeySingle", 0, nameof(UseHotkeyDoc));
         host.Paint = (rect, _) => {
             UseHotkey.Use(
-                KeyCode.Escape,
-                () => status.Set((string)"CC_Playground_Hook_UseHotkey_SingleEscape".Translate())
+                KeyCode.Space,
+                () => status.Set((string)"CL_Playground_Hook_UseHotkey_SinglePressed".Translate())
             );
             DrawHotkeyLabel(rect, status.Value);
         };
@@ -873,7 +868,7 @@ public static class UseHotkeyDoc {
             SpacingScale.Xxs,
             s => {
                 s.Add(Caption.Create(
-                    (string)"CC_Playground_Hook_UseHotkey_SingleHint".Translate()
+                    (string)"CL_Playground_Hook_UseHotkey_SingleHint".Translate()
                 ), 14f);
                 s.Add(host, 18f);
             }
@@ -882,19 +877,19 @@ public static class UseHotkeyDoc {
 
     private static LightweaveNode BuildModifiersDoc() {
         StateHandle<string> status = UseState<string>(
-            (string)"CC_Playground_Hook_UseHotkey_ModifiersIdle".Translate()
+            (string)"CL_Playground_Hook_UseHotkey_ModifiersIdle".Translate()
         );
 
         LightweaveNode host = NodeBuilder.New("UseHotkeyMods", 0, nameof(UseHotkeyDoc));
         host.Paint = (rect, _) => {
             UseHotkey.Use(
                 KeyCode.S,
-                () => status.Set((string)"CC_Playground_Hook_UseHotkey_ModifiersSaved".Translate()),
+                () => status.Set((string)"CL_Playground_Hook_UseHotkey_ModifiersSaved".Translate()),
                 KeyModifiers.Control
             );
             UseHotkey.Use(
                 KeyCode.Z,
-                () => status.Set((string)"CC_Playground_Hook_UseHotkey_ModifiersUndone".Translate()),
+                () => status.Set((string)"CL_Playground_Hook_UseHotkey_ModifiersUndone".Translate()),
                 KeyModifiers.Control
             );
             DrawHotkeyLabel(rect, status.Value);
@@ -904,33 +899,7 @@ public static class UseHotkeyDoc {
             SpacingScale.Xxs,
             s => {
                 s.Add(Caption.Create(
-                    (string)"CC_Playground_Hook_UseHotkey_ModifiersHint".Translate()
-                ), 14f);
-                s.Add(host, 18f);
-            }
-        );
-    }
-
-    private static LightweaveNode BuildBondDoc() {
-        StateHandle<string> status = UseState<string>(
-            (string)"CC_Playground_Hook_UseHotkey_BondIdle".Translate()
-        );
-
-        LightweaveNode host = NodeBuilder.New("UseHotkeyBond", 0, nameof(UseHotkeyDoc));
-        host.Paint = (rect, _) => {
-            UseHotkey.Use(
-                KeyCode.B,
-                () => status.Set((string)"CC_Playground_Hook_UseHotkey_BondInvoked".Translate()),
-                KeyModifiers.Control | KeyModifiers.Shift
-            );
-            DrawHotkeyLabel(rect, status.Value);
-        };
-
-        return Stack.Create(
-            SpacingScale.Xxs,
-            s => {
-                s.Add(Caption.Create(
-                    (string)"CC_Playground_Hook_UseHotkey_BondHint".Translate()
+                    (string)"CL_Playground_Hook_UseHotkey_ModifiersHint".Translate()
                 ), 14f);
                 s.Add(host, 18f);
             }
@@ -963,12 +932,12 @@ public static class UseHotkeyDoc {
     ShowRtl = false
 )]
 public static class UseRefDoc {
-    [DocVariant("CC_Playground_Hook_UseRef_LastTick")]
+    [DocVariant("CL_Playground_Hook_UseRef_LastTick")]
     public static DocSample DocsLastTick() {
         return new DocSample(BuildLastTickDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseRef_PressCount")]
+    [DocVariant("CL_Playground_Hook_UseRef_PressCount")]
     public static DocSample DocsPressCount() {
         return new DocSample(BuildPressCountDoc, useFullSource: true);
     }
@@ -983,7 +952,7 @@ public static class UseRefDoc {
         StateHandle<int> renderTick = UseState(0);
 
         string elapsed = (Time.unscaledTime - startTime.Current).ToString("0.0");
-        string label = ((string)"CC_Playground_Hook_UseRef_LastTickLabel".Translate())
+        string label = ((string)"CL_Playground_Hook_UseRef_LastTickLabel".Translate())
             .Replace("{SECONDS}", elapsed);
 
         return HStack.Create(
@@ -998,7 +967,7 @@ public static class UseRefDoc {
                 ));
                 r.Add(
                     Button.Create(
-                        (string)"CC_Playground_Hook_UseRef_Reset".Translate(),
+                        (string)"CL_Playground_Hook_UseRef_Reset".Translate(),
                         () => {
                             startTime.Current = Time.unscaledTime;
                             renderTick.Set(renderTick.Value + 1);
@@ -1020,14 +989,14 @@ public static class UseRefDoc {
             r => {
                 r.Add(
                     Button.Create(
-                        (string)"CC_Playground_Hook_UseRef_Press".Translate(),
+                        (string)"CL_Playground_Hook_UseRef_Press".Translate(),
                         () => presses.Current = presses.Current + 1,
                         ButtonVariant.Secondary
                     ),
                     120f
                 );
                 r.AddFlex(Text.Create(
-                    ((string)"CC_Playground_Hook_UseRef_PressCountLabel".Translate())
+                    ((string)"CL_Playground_Hook_UseRef_PressCountLabel".Translate())
                         .Replace("{COUNT}", shown.Value.ToString()),
                     FontRole.Body,
                     new Rem(0.9375f),
@@ -1036,7 +1005,7 @@ public static class UseRefDoc {
                 ));
                 r.Add(
                     Button.Create(
-                        (string)"CC_Playground_Hook_UseRef_Sync".Translate(),
+                        (string)"CL_Playground_Hook_UseRef_Sync".Translate(),
                         () => shown.Set(presses.Current)
                     ),
                     96f
@@ -1056,12 +1025,12 @@ public static class UseRefDoc {
     ShowRtl = false
 )]
 public static class UseMemoDoc {
-    [DocVariant("CC_Playground_Hook_UseMemo_SortedRoster")]
+    [DocVariant("CL_Playground_Hook_UseMemo_SortedRoster")]
     public static DocSample DocsSortedRoster() {
         return new DocSample(BuildSortedRosterDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseMemo_Filter")]
+    [DocVariant("CL_Playground_Hook_UseMemo_Filter")]
     public static DocSample DocsFilter() {
         return new DocSample(BuildFilterDoc, useFullSource: true);
     }
@@ -1098,8 +1067,8 @@ public static class UseMemoDoc {
                 r.Add(
                     Button.Create(
                         ascending.Value
-                            ? (string)"CC_Playground_Hook_UseMemo_Descend".Translate()
-                            : (string)"CC_Playground_Hook_UseMemo_Ascend".Translate(),
+                            ? (string)"CL_Playground_Hook_UseMemo_Descend".Translate()
+                            : (string)"CL_Playground_Hook_UseMemo_Ascend".Translate(),
                         () => ascending.Set(!ascending.Value),
                         ButtonVariant.Secondary
                     ),
@@ -1136,7 +1105,7 @@ public static class UseMemoDoc {
         );
 
         string label = filtered.Length == 0
-            ? (string)"CC_Playground_Hook_UseMemo_NoMatches".Translate()
+            ? (string)"CL_Playground_Hook_UseMemo_NoMatches".Translate()
             : string.Join(", ", filtered);
 
         return Stack.Create(
@@ -1145,7 +1114,7 @@ public static class UseMemoDoc {
                 s.Add(TextField.Create(
                     query.Value,
                     v => query.Set(v),
-                    (string)"CC_Playground_Hook_UseMemo_FilterPlaceholder".Translate()
+                    (string)"CL_Playground_Hook_UseMemo_FilterPlaceholder".Translate()
                 ), 28f);
                 s.Add(Caption.Create(label), 14f);
             }
@@ -1163,12 +1132,12 @@ public static class UseMemoDoc {
     ShowRtl = false
 )]
 public static class UseEffectDoc {
-    [DocVariant("CC_Playground_Hook_UseEffect_StormwallTick")]
+    [DocVariant("CL_Playground_Hook_UseEffect_StormwallTick")]
     public static DocSample DocsStormwallTick() {
         return new DocSample(BuildStormwallTickDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseEffect_DepChange")]
+    [DocVariant("CL_Playground_Hook_UseEffect_DepChange")]
     public static DocSample DocsDepChange() {
         return new DocSample(BuildDepChangeDoc, useFullSource: true);
     }
@@ -1197,9 +1166,9 @@ public static class UseEffectDoc {
         }
 
         string label = watching.Value
-            ? ((string)"CC_Playground_Hook_UseEffect_StormwallActive".Translate())
+            ? ((string)"CL_Playground_Hook_UseEffect_StormwallActive".Translate())
                 .Replace("{TICKS}", ticks.Value.ToString())
-            : (string)"CC_Playground_Hook_UseEffect_StormwallIdle".Translate();
+            : (string)"CL_Playground_Hook_UseEffect_StormwallIdle".Translate();
 
         return HStack.Create(
             SpacingScale.Xs,
@@ -1207,8 +1176,8 @@ public static class UseEffectDoc {
                 r.Add(
                     Button.Create(
                         watching.Value
-                            ? (string)"CC_Playground_Hook_UseEffect_StopWatch".Translate()
-                            : (string)"CC_Playground_Hook_UseEffect_StartWatch".Translate(),
+                            ? (string)"CL_Playground_Hook_UseEffect_StopWatch".Translate()
+                            : (string)"CL_Playground_Hook_UseEffect_StartWatch".Translate(),
                         () => watching.Set(!watching.Value)
                     ),
                     140f
@@ -1241,14 +1210,14 @@ public static class UseEffectDoc {
             r => {
                 r.Add(
                     Button.Create(
-                        (string)"CC_Playground_Hook_UseEffect_Bump".Translate(),
+                        (string)"CL_Playground_Hook_UseEffect_Bump".Translate(),
                         () => seed.Set(seed.Value + 1),
                         ButtonVariant.Secondary
                     ),
                     96f
                 );
                 r.AddFlex(Text.Create(
-                    ((string)"CC_Playground_Hook_UseEffect_DepChangeLabel".Translate())
+                    ((string)"CL_Playground_Hook_UseEffect_DepChangeLabel".Translate())
                         .Replace("{SEED}", seed.Value.ToString())
                         .Replace("{COUNT}", reactions.Value.ToString()),
                     FontRole.Body,
@@ -1271,12 +1240,12 @@ public static class UseEffectDoc {
     ShowRtl = false
 )]
 public static class UseContextDoc {
-    [DocVariant("CC_Playground_Hook_UseContext_AmbientTheme")]
+    [DocVariant("CL_Playground_Hook_UseContext_AmbientTheme")]
     public static DocSample DocsAmbientTheme() {
         return new DocSample(BuildAmbientThemeDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseContext_AmbientDirection")]
+    [DocVariant("CL_Playground_Hook_UseContext_AmbientDirection")]
     public static DocSample DocsAmbientDirection() {
         return new DocSample(BuildAmbientDirectionDoc, useFullSource: true);
     }
@@ -1289,7 +1258,7 @@ public static class UseContextDoc {
     private static LightweaveNode BuildAmbientThemeDoc() {
         Theme.Theme theme = UseTheme();
 
-        string label = ((string)"CC_Playground_Hook_UseContext_ThemeLabel".Translate())
+        string label = ((string)"CL_Playground_Hook_UseContext_ThemeLabel".Translate())
             .Replace("{NAME}", theme.GetType().Name);
 
         return Text.Create(
@@ -1303,7 +1272,7 @@ public static class UseContextDoc {
 
     private static LightweaveNode BuildAmbientDirectionDoc() {
         Direction direction = UseDirection();
-        string label = ((string)"CC_Playground_Hook_UseContext_DirectionLabel".Translate())
+        string label = ((string)"CL_Playground_Hook_UseContext_DirectionLabel".Translate())
             .Replace("{DIR}", direction.ToString());
 
         return Text.Create(
@@ -1326,12 +1295,12 @@ public static class UseContextDoc {
     ShowRtl = false
 )]
 public static class UseThemeDoc {
-    [DocVariant("CC_Playground_Hook_UseTheme_Surface")]
+    [DocVariant("CL_Playground_Hook_UseTheme_Surface")]
     public static DocSample DocsSurface() {
         return new DocSample(BuildSurfaceDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseTheme_Accent")]
+    [DocVariant("CL_Playground_Hook_UseTheme_Accent")]
     public static DocSample DocsAccent() {
         return new DocSample(BuildAccentDoc, useFullSource: true);
     }
@@ -1357,7 +1326,7 @@ public static class UseThemeDoc {
             r => {
                 r.Add(swatch, 32f);
                 r.AddFlex(Text.Create(
-                    (string)"CC_Playground_Hook_UseTheme_SurfaceLabel".Translate(),
+                    (string)"CL_Playground_Hook_UseTheme_SurfaceLabel".Translate(),
                     FontRole.Body,
                     new Rem(0.9375f),
                     ThemeSlot.TextSecondary,
@@ -1383,7 +1352,7 @@ public static class UseThemeDoc {
             r => {
                 r.Add(swatch, 32f);
                 r.AddFlex(Text.Create(
-                    (string)"CC_Playground_Hook_UseTheme_AccentLabel".Translate(),
+                    (string)"CL_Playground_Hook_UseTheme_AccentLabel".Translate(),
                     FontRole.Body,
                     new Rem(0.9375f),
                     ThemeSlot.TextSecondary,
@@ -1404,12 +1373,12 @@ public static class UseThemeDoc {
     ShowRtl = true
 )]
 public static class UseDirectionDoc {
-    [DocVariant("CC_Playground_Hook_UseDirection_Arrow")]
+    [DocVariant("CL_Playground_Hook_UseDirection_Arrow")]
     public static DocSample DocsArrow() {
         return new DocSample(BuildArrowDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseDirection_Label")]
+    [DocVariant("CL_Playground_Hook_UseDirection_Label")]
     public static DocSample DocsLabel() {
         return new DocSample(BuildLabelDoc, useFullSource: true);
     }
@@ -1436,8 +1405,8 @@ public static class UseDirectionDoc {
     private static LightweaveNode BuildLabelDoc() {
         Direction direction = UseDirection();
         string key = direction == Direction.Rtl
-            ? "CC_Playground_Hook_UseDirection_LabelRtl"
-            : "CC_Playground_Hook_UseDirection_LabelLtr";
+            ? "CL_Playground_Hook_UseDirection_LabelRtl"
+            : "CL_Playground_Hook_UseDirection_LabelLtr";
 
         return Text.Create(
             (string)key.Translate(),
@@ -1459,12 +1428,12 @@ public static class UseDirectionDoc {
     ShowRtl = false
 )]
 public static class UseBreakpointDoc {
-    [DocVariant("CC_Playground_Hook_UseBreakpoint_Current")]
+    [DocVariant("CL_Playground_Hook_UseBreakpoint_Current")]
     public static DocSample DocsCurrent() {
         return new DocSample(BuildCurrentDoc, useFullSource: true);
     }
 
-    [DocVariant("CC_Playground_Hook_UseBreakpoint_Adaptive")]
+    [DocVariant("CL_Playground_Hook_UseBreakpoint_Adaptive")]
     public static DocSample DocsAdaptive() {
         return new DocSample(BuildAdaptiveDoc, useFullSource: true);
     }
@@ -1478,7 +1447,7 @@ public static class UseBreakpointDoc {
         Breakpoint bp = UseBreakpoint();
 
         return Text.Create(
-            ((string)"CC_Playground_Hook_UseBreakpoint_CurrentLabel".Translate())
+            ((string)"CL_Playground_Hook_UseBreakpoint_CurrentLabel".Translate())
                 .Replace("{BP}", bp.ToString()),
             FontRole.BodyBold,
             new Rem(1f),
@@ -1493,13 +1462,13 @@ public static class UseBreakpointDoc {
 
         string copy;
         if (bp >= Breakpoint.Lg) {
-            copy = (string)"CC_Playground_Hook_UseBreakpoint_AdaptiveLarge".Translate();
+            copy = (string)"CL_Playground_Hook_UseBreakpoint_AdaptiveLarge".Translate();
         }
         else if (bp >= Breakpoint.Md) {
-            copy = (string)"CC_Playground_Hook_UseBreakpoint_AdaptiveMedium".Translate();
+            copy = (string)"CL_Playground_Hook_UseBreakpoint_AdaptiveMedium".Translate();
         }
         else {
-            copy = (string)"CC_Playground_Hook_UseBreakpoint_AdaptiveCompact".Translate();
+            copy = (string)"CL_Playground_Hook_UseBreakpoint_AdaptiveCompact".Translate();
         }
 
         return Text.Create(

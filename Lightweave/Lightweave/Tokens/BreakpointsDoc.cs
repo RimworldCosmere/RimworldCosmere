@@ -29,7 +29,7 @@ public static class BreakpointsDoc {
         Breakpoint.Xxl,
     };
 
-    [DocVariant("CC_Playground_breakpoints_Readout")]
+    [DocVariant("CL_Playground_breakpoints_Readout")]
     public static DocSample DocsReadout() {
         return new DocSample(() => 
             Box.Create(
@@ -50,7 +50,7 @@ public static class BreakpointsDoc {
         );
     }
 
-    [DocVariant("CC_Playground_breakpoints_Ladder")]
+    [DocVariant("CL_Playground_breakpoints_Ladder")]
     public static DocSample DocsLadder() {
         return new DocSample(() => 
             Box.Create(
@@ -148,12 +148,12 @@ public static class BreakpointsDoc {
 
     private static string BreakpointLabelKey(Breakpoint bp) {
         return bp switch {
-            Breakpoint.Sm => "CC_Playground_Breakpoint_Sm",
-            Breakpoint.Md => "CC_Playground_Breakpoint_Md",
-            Breakpoint.Lg => "CC_Playground_Breakpoint_Lg",
-            Breakpoint.Xl => "CC_Playground_Breakpoint_Xl",
-            Breakpoint.Xxl => "CC_Playground_Breakpoint_Xxl",
-            _ => "CC_Playground_Breakpoint_Xs",
+            Breakpoint.Sm => "CL_Playground_Breakpoint_Sm",
+            Breakpoint.Md => "CL_Playground_Breakpoint_Md",
+            Breakpoint.Lg => "CL_Playground_Breakpoint_Lg",
+            Breakpoint.Xl => "CL_Playground_Breakpoint_Xl",
+            Breakpoint.Xxl => "CL_Playground_Breakpoint_Xxl",
+            _ => "CL_Playground_Breakpoint_Xs",
         };
     }
 }

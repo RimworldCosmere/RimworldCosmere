@@ -36,7 +36,7 @@ public static class PlaygroundHeader {
             SpacingScale.Md,
             r => {
                 r.AddFlex(brand);
-                r.Add(controls, 480f);
+                r.Add(controls, 610f);
             }
         );
 
@@ -61,12 +61,12 @@ public static class PlaygroundHeader {
     private static LightweaveNode BuildBrand() {
         LightweaveNode title = Typography.Typography.Heading.Create(
             2,
-            (string)"CC_Playground_Header_Brand".Translate(),
+            (string)"CL_Playground_Header_Brand".Translate(),
             ThemeSlot.BorderFocus
         );
 
         LightweaveNode subtitle = Typography.Typography.Caption.Create(
-            (string)"CC_Playground_Header_Subtitle".Translate()
+            (string)"CL_Playground_Header_Subtitle".Translate()
         );
 
         return Layout.Stack.Create(
@@ -90,10 +90,25 @@ public static class PlaygroundHeader {
         );
 
         LightweaveNode disabledToggle = Checkbox.Create(
-            (string)"CC_Playground_Header_ForceDisabled".Translate(),
+            (string)"CL_Playground_Header_ForceDisabled".Translate(),
             forceDisabled.Value,
             next => forceDisabled.Set(next),
-            tooltipKey: "CC_Playground_Header_ForceDisabled_Tooltip"
+            tooltipKey: "CL_Playground_Header_ForceDisabled_Tooltip"
+        );
+
+        bool tourActive = PlaygroundTour.IsActive;
+        LightweaveNode tourButton = Button.Create(
+            tourActive
+                ? (string)"CL_Playground_Header_Tour_Stop".Translate()
+                : (string)"CL_Playground_Header_Tour_Start".Translate(),
+            () => {
+                if (PlaygroundTour.IsActive) {
+                    PlaygroundTour.Stop();
+                } else {
+                    PlaygroundTour.Start();
+                }
+            },
+            tourActive ? ButtonVariant.Danger : ButtonVariant.Secondary
         );
 
         return Layout.HStack.Create(
@@ -101,16 +116,17 @@ public static class PlaygroundHeader {
             r => {
                 r.Add(themeSegmented, 280f);
                 r.Add(disabledToggle, 180f);
+                r.Add(tourButton, 110f);
             }
         );
     }
 
     private static string ThemeLabel(PlaygroundTheme value) {
         return value switch {
-            PlaygroundTheme.Cosmere => (string)"CC_Playground_Header_Theme_Cosmere".Translate(),
-            PlaygroundTheme.Scadrial => (string)"CC_Playground_Header_Theme_Scadrial".Translate(),
-            PlaygroundTheme.Roshar => (string)"CC_Playground_Header_Theme_Roshar".Translate(),
-            _ => (string)"CC_Playground_Header_Theme_Default".Translate(),
+            PlaygroundTheme.Cosmere => (string)"CL_Playground_Header_Theme_Cosmere".Translate(),
+            PlaygroundTheme.Scadrial => (string)"CL_Playground_Header_Theme_Scadrial".Translate(),
+            PlaygroundTheme.Roshar => (string)"CL_Playground_Header_Theme_Roshar".Translate(),
+            _ => (string)"CL_Playground_Header_Theme_Default".Translate(),
         };
     }
 }

@@ -41,6 +41,7 @@ public abstract class LightweaveWindow : Verse.Window {
         drawShadow = true;
         resizeable = false;
         closeOnCancel = true;
+        draggable = true;
     }
 
     protected Guid RootId { get; } = Guid.NewGuid();
@@ -531,7 +532,7 @@ public abstract class LightweaveWindow : Verse.Window {
         Theme.Theme theme = ThemeOverride ?? ThemeRegistry.Default;
         Color accent = theme.GetColor(ThemeSlot.SurfaceAccent);
         accent.a = 1f;
-        Color baseColor = IsLightSurface(theme) ? Color.black : Color.white;
+        Color baseColor = theme.GetColor(ThemeSlot.TextPrimary);
         Color hoverColor = accent;
 
         if (Widgets.ButtonImage(closeRect, TexButton.CloseXSmall, baseColor, hoverColor, true, null)) {
@@ -541,11 +542,6 @@ public abstract class LightweaveWindow : Verse.Window {
         MouseoverSounds.DoRegion(closeRect);
     }
 
-    private static bool IsLightSurface(Theme.Theme theme) {
-        Color surface = theme.GetColor(ThemeSlot.SurfacePrimary);
-        float luma = 0.299f * surface.r + 0.587f * surface.g + 0.114f * surface.b;
-        return luma > 0.5f;
-    }
 
     public override void PostClose() {
         if (currentCursor != null) {

@@ -68,14 +68,14 @@ public static class ContextMenu {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         List<MenuItem> items = new List<MenuItem> {
-            Menu.Item((string)"CC_Playground_ContextMenu_Inspect".Translate(), () => { }),
-            Menu.Item((string)"CC_Playground_ContextMenu_Rename".Translate(), () => { }),
-            Menu.Item((string)"CC_Playground_ContextMenu_Duplicate".Translate(), () => { }),
+            Menu.Item((string)"CL_Playground_ContextMenu_Inspect".Translate(), () => { }),
+            Menu.Item((string)"CL_Playground_ContextMenu_Rename".Translate(), () => { }),
+            Menu.Item((string)"CL_Playground_ContextMenu_Duplicate".Translate(), () => { }),
             Menu.Divider(),
-            Menu.Item((string)"CC_Playground_ContextMenu_Delete".Translate(), () => { }),
+            Menu.Item((string)"CL_Playground_ContextMenu_Delete".Translate(), () => { }),
         };
 
         LightweaveNode target = Box.Create(
@@ -85,7 +85,7 @@ public static class ContextMenu {
             RadiusSpec.All(new Rem(0.25f)),
             c => c.Add(
                 Caption.Create(
-                    (string)"CC_Playground_ContextMenu_RightClick".Translate()
+                    (string)"CL_Playground_ContextMenu_RightClick".Translate()
                 )
             )
         );

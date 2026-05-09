@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CL_ColorPicker_NoColors>No colors available.</CL_ColorPicker_NoColors>
+    <CL_KeyBindingField_Unbound>Unbound</CL_KeyBindingField_Unbound>
+    <CL_KeyBindingField_Recording>Press a key...</CL_KeyBindingField_Recording>
+    <CL_FontSize>Font size</CL_FontSize>
+    <CL_DevButton_Playground>Lightweave Playground</CL_DevButton_Playground>
+</LanguageData>

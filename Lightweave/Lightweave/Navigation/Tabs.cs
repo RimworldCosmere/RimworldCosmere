@@ -8,7 +8,6 @@ using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
 using Verse;
-using Verse.Sound;
 using static Cosmere.Lightweave.Typography.Typography;
 using Text = Cosmere.Lightweave.Typography.Typography.Text;
 
@@ -118,7 +117,7 @@ public static class Tabs {
                 bool hovering = tabRect.Contains(e.mousePosition);
                 if (!active) {
                     PaintBox.DrawHighlightIfMouseover(tabRect, RadiusSpec.Top(new Rem(0.25f)));
-                    MouseoverSounds.DoRegion(tabRect);
+                    Cosmere.Lightweave.Input.InteractionFeedback.Apply(tabRect, enabled: true, playSound: true);
                 }
 
                 ThemeSlot textSlot = active || hovering ? ThemeSlot.TextPrimary : ThemeSlot.TextSecondary;
@@ -152,7 +151,7 @@ public static class Tabs {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => {
             Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("general");
@@ -161,23 +160,23 @@ public static class Tabs {
                 selected.Value,
                 tabs,
                 v => v switch {
-                    "combat" => (string)"CC_Playground_Navigation_Tabs_Combat".Translate(),
-                    "storage" => (string)"CC_Playground_Navigation_Tabs_Storage".Translate(),
-                    _ => (string)"CC_Playground_Navigation_Tabs_General".Translate(),
+                    "combat" => (string)"CL_Playground_Navigation_Tabs_Combat".Translate(),
+                    "storage" => (string)"CL_Playground_Navigation_Tabs_Storage".Translate(),
+                    _ => (string)"CL_Playground_Navigation_Tabs_General".Translate(),
                 },
                 v => selected.Set(v),
                 v => Caption.Create(
                     v switch {
-                        "combat" => (string)"CC_Playground_Navigation_Tabs_Body_Combat".Translate(),
-                        "storage" => (string)"CC_Playground_Navigation_Tabs_Body_Storage".Translate(),
-                        _ => (string)"CC_Playground_Navigation_Tabs_Body_General".Translate(),
+                        "combat" => (string)"CL_Playground_Navigation_Tabs_Body_Combat".Translate(),
+                        "storage" => (string)"CL_Playground_Navigation_Tabs_Body_Storage".Translate(),
+                        _ => (string)"CL_Playground_Navigation_Tabs_Body_General".Translate(),
                     }
                 )
             );
         });
     }
 
-    [DocVariant("CC_Playground_Tabs_Variant_FullBleed")]
+    [DocVariant("CL_Playground_Tabs_Variant_FullBleed")]
     public static DocSample DocsFullBleed() {
         return new DocSample(() => {
             Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("padded");
@@ -186,20 +185,20 @@ public static class Tabs {
                 selected.Value,
                 tabs,
                 v => v == "padded"
-                    ? (string)"CC_Playground_Tabs_Tab_Padded".Translate()
-                    : (string)"CC_Playground_Tabs_Tab_FullBleed".Translate(),
+                    ? (string)"CL_Playground_Tabs_Tab_Padded".Translate()
+                    : (string)"CL_Playground_Tabs_Tab_FullBleed".Translate(),
                 v => selected.Set(v),
                 v => Caption.Create(
                     v == "padded"
-                        ? (string)"CC_Playground_Tabs_Body_Padded".Translate()
-                        : (string)"CC_Playground_Tabs_Body_FullBleed".Translate()
+                        ? (string)"CL_Playground_Tabs_Body_Padded".Translate()
+                        : (string)"CL_Playground_Tabs_Body_FullBleed".Translate()
                 ),
                 noPaddingFor: v => v == "fullbleed"
             );
         });
     }
 
-    [DocVariant("CC_Playground_Tabs_Variant_LargePadding")]
+    [DocVariant("CL_Playground_Tabs_Variant_LargePadding")]
     public static DocSample DocsLargePadding() {
         return new DocSample(() => {
             Hooks.Hooks.StateHandle<string> selected = Hooks.Hooks.UseState<string>("alpha");
@@ -210,7 +209,7 @@ public static class Tabs {
                 v => v,
                 v => selected.Set(v),
                 v => Caption.Create(
-                    (string)"CC_Playground_Tabs_Body_LargePadding".Translate()
+                    (string)"CL_Playground_Tabs_Body_LargePadding".Translate()
                 ),
                 bodyPadding: new Rem(2f)
             );

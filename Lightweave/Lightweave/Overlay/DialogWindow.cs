@@ -21,7 +21,7 @@ internal sealed class DialogWindow : LightweaveWindow {
         doCloseX = true;
         doCloseButton = false;
         closeOnClickedOutside = false;
-        draggable = true;
+        draggable = false;
         resizeable = false;
         forcePause = true;
         absorbInputAroundWindow = true;
@@ -31,6 +31,8 @@ internal sealed class DialogWindow : LightweaveWindow {
     }
 
     protected override bool DrawBorder => false;
+
+    protected override bool EdgeResizable => false;
 
     public override Vector2 InitialSize {
         get {

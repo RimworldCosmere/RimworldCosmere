@@ -413,30 +413,30 @@ public static class Menu {
         return from;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => {
             Hooks.Hooks.StateHandle<bool> open = Hooks.Hooks.UseState(false);
             Hooks.Hooks.RefHandle<Rect> anchor = Hooks.Hooks.UseRef(default(Rect));
 
             List<MenuItem> exportChildren = new List<MenuItem> {
-                Menu.Item((string)"CC_Playground_Navigation_Menu_ExportPng".Translate(), () => open.Set(false)),
-                Menu.Item((string)"CC_Playground_Navigation_Menu_ExportSvg".Translate(), () => open.Set(false)),
+                Menu.Item((string)"CL_Playground_Navigation_Menu_ExportPng".Translate(), () => open.Set(false)),
+                Menu.Item((string)"CL_Playground_Navigation_Menu_ExportSvg".Translate(), () => open.Set(false)),
             };
 
             List<MenuItem> items = new List<MenuItem> {
-                Menu.Item((string)"CC_Playground_Navigation_Menu_Open".Translate(), () => open.Set(false)),
-                Menu.Item((string)"CC_Playground_Navigation_Menu_Save".Translate(), () => open.Set(false)),
-                Menu.Item((string)"CC_Playground_Navigation_Menu_SaveAs".Translate(), () => open.Set(false)),
+                Menu.Item((string)"CL_Playground_Navigation_Menu_Open".Translate(), () => open.Set(false)),
+                Menu.Item((string)"CL_Playground_Navigation_Menu_Save".Translate(), () => open.Set(false)),
+                Menu.Item((string)"CL_Playground_Navigation_Menu_SaveAs".Translate(), () => open.Set(false)),
                 Menu.Divider(),
-                Menu.Submenu((string)"CC_Playground_Navigation_Menu_Export".Translate(), exportChildren),
+                Menu.Submenu((string)"CL_Playground_Navigation_Menu_Export".Translate(), exportChildren),
                 Menu.Divider(),
-                Menu.Item((string)"CC_Playground_Navigation_Menu_Close".Translate(), () => open.Set(false)),
+                Menu.Item((string)"CL_Playground_Navigation_Menu_Close".Translate(), () => open.Set(false)),
             };
 
             LightweaveNode trigger = NodeBuilder.New("MenuTrigger", 0, nameof(Menu));
             LightweaveNode button = Button.Create(
-                (string)"CC_Playground_Menu_TriggerOpen".Translate(),
+                (string)"CL_Playground_Menu_TriggerOpen".Translate(),
                 () => open.Set(!open.Value),
                 ButtonVariant.Secondary
             );

@@ -298,7 +298,7 @@ public static class PlaygroundRail {
         ThemeSlot textSlot = isSelected ? ThemeSlot.TextPrimary : ThemeSlot.TextSecondary;
         GUI.color = theme.GetColor(textSlot);
 
-        string labelKey = "CC_Playground_" + primId + "_Title";
+        string labelKey = "CL_Playground_" + primId + "_Title";
         string labelText = (string)labelKey.Translate();
         GUI.Label(RectSnap.Snap(labelRect), labelText, style);
         GUI.color = baseColor;

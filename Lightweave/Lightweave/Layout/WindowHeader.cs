@@ -105,7 +105,7 @@ public static class WindowHeader {
                         hoverColor = accent;
                         break;
                     default:
-                        baseColor = IsLightSurface(theme) ? Color.black : Color.white;
+                        baseColor = theme.GetColor(ThemeSlot.TextPrimary);
                         hoverColor = accent;
                         break;
                 }
@@ -137,9 +137,4 @@ public static class WindowHeader {
         return new Rect(x, headerRect.y + padding, size, size);
     }
 
-    private static bool IsLightSurface(Theme.Theme theme) {
-        Color surface = theme.GetColor(ThemeSlot.SurfacePrimary);
-        float luma = 0.299f * surface.r + 0.587f * surface.g + 0.114f * surface.b;
-        return luma > 0.5f;
-    }
 }

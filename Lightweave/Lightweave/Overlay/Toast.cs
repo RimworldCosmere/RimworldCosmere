@@ -403,41 +403,41 @@ public static class Toast {
         );
     }
 
-    [DocVariant("CC_Playground_Toast_Info")]
+    [DocVariant("CL_Playground_Toast_Info")]
     public static DocSample DocsInfo() {
         return new DocSample(() => BuildVariantDemo(
-            "CC_Playground_Toast_Info",
-            "CC_Playground_Toast_Msg_Info",
+            "CL_Playground_Toast_Info",
+            "CL_Playground_Toast_Msg_Info",
             ToastKind.Info,
             ButtonVariant.Secondary
         ));
     }
 
-    [DocVariant("CC_Playground_Toast_Success")]
+    [DocVariant("CL_Playground_Toast_Success")]
     public static DocSample DocsSuccess() {
         return new DocSample(() => BuildVariantDemo(
-            "CC_Playground_Toast_Success",
-            "CC_Playground_Toast_Msg_Success",
+            "CL_Playground_Toast_Success",
+            "CL_Playground_Toast_Msg_Success",
             ToastKind.Success,
             ButtonVariant.Secondary
         ));
     }
 
-    [DocVariant("CC_Playground_Toast_Warning")]
+    [DocVariant("CL_Playground_Toast_Warning")]
     public static DocSample DocsWarning() {
         return new DocSample(() => BuildVariantDemo(
-            "CC_Playground_Toast_Warning",
-            "CC_Playground_Toast_Msg_Warning",
+            "CL_Playground_Toast_Warning",
+            "CL_Playground_Toast_Msg_Warning",
             ToastKind.Warning,
             ButtonVariant.Secondary
         ));
     }
 
-    [DocVariant("CC_Playground_Toast_Danger")]
+    [DocVariant("CL_Playground_Toast_Danger")]
     public static DocSample DocsDanger() {
         return new DocSample(() => BuildVariantDemo(
-            "CC_Playground_Toast_Danger",
-            "CC_Playground_Toast_Msg_Danger",
+            "CL_Playground_Toast_Danger",
+            "CL_Playground_Toast_Msg_Danger",
             ToastKind.Danger,
             ButtonVariant.Danger
         ));
@@ -446,8 +446,8 @@ public static class Toast {
     [DocUsage]
     public static DocSample DocsUsage() {
         return new DocSample(() => BuildVariantDemo(
-            "CC_Playground_Toast_Info",
-            "CC_Playground_Toast_Msg_Info",
+            "CL_Playground_Toast_Info",
+            "CL_Playground_Toast_Msg_Info",
             ToastKind.Info,
             ButtonVariant.Secondary
         ));

@@ -144,28 +144,28 @@ public static class TextArea {
         return rows;
     }
 
-    [DocVariant("CC_Playground_Label_Filled")]
+    [DocVariant("CL_Playground_Label_Filled")]
     public static DocSample DocsFilled() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("Multi-line sample.");
         return new DocSample(() => Create(
             s.Value,
             v => s.Set(v),
-            (string)"CC_Playground_Controls_TextArea_Placeholder".Translate(),
+            (string)"CL_Playground_Controls_TextArea_Placeholder".Translate(),
             2,
             3,
             disabled: forced
         ));
     }
 
-    [DocVariant("CC_Playground_Label_Empty")]
+    [DocVariant("CL_Playground_Label_Empty")]
     public static DocSample DocsEmpty() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState(string.Empty);
         return new DocSample(() => Create(
             s.Value,
             v => s.Set(v),
-            (string)"CC_Playground_Controls_TextArea_Placeholder".Translate(),
+            (string)"CL_Playground_Controls_TextArea_Placeholder".Translate(),
             2,
             3,
             disabled: forced

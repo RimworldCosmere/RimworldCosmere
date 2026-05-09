@@ -161,6 +161,7 @@ public static partial class Doc {
                 GUI.Label(RectSnap.Snap(numberRect), (i + 1).ToString(), sharedStyle);
 
                 GUI.color = Color.white;
+                sharedStyle.normal.textColor = theme.GetColor(ThemeSlot.TextPrimary);
                 sharedStyle.alignment = TextAnchor.UpperLeft;
                 sharedStyle.richText = true;
                 sharedStyle.wordWrap = true;
@@ -279,8 +280,8 @@ public static partial class Doc {
 
         if (hover) {
             string tipKey = justCopied
-                ? "CC_Playground_Panel_CopyCode_Copied"
-                : "CC_Playground_Panel_CopyCode";
+                ? "CL_Playground_Panel_CopyCode_Copied"
+                : "CL_Playground_Panel_CopyCode";
             TooltipHandler.TipRegion(btnRect, (string)tipKey.Translate());
             MouseoverSounds.DoRegion(btnRect, SoundDefOf.Mouseover_Standard);
         }
@@ -388,7 +389,7 @@ public static partial class Doc {
         btnStyle.richText = false;
 
         GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
-        GUI.Label(RectSnap.Snap(btnRect), (string)"CC_Playground_Panel_ViewCode".Translate(), btnStyle);
+        GUI.Label(RectSnap.Snap(btnRect), (string)"CL_Playground_Panel_ViewCode".Translate(), btnStyle);
         GUI.color = savedColor;
 
         if (hover) {

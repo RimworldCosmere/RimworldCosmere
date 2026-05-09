@@ -172,7 +172,7 @@ public static class Radio {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<int> s = UseState(1);
@@ -180,9 +180,9 @@ public static class Radio {
             s.Value,
             v => s.Set(v),
             k => {
-                k.Add(Item((string)"CC_Playground_Controls_Radio_OptionA".Translate(), 0, forced));
-                k.Add(Item((string)"CC_Playground_Controls_Radio_OptionB".Translate(), 1, forced));
-                k.Add(Item((string)"CC_Playground_Controls_Radio_OptionC".Translate(), 2, forced));
+                k.Add(Item((string)"CL_Playground_Controls_Radio_OptionA".Translate(), 0, forced));
+                k.Add(Item((string)"CL_Playground_Controls_Radio_OptionB".Translate(), 1, forced));
+                k.Add(Item((string)"CL_Playground_Controls_Radio_OptionC".Translate(), 2, forced));
             }
         ));
     }

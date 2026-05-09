@@ -61,11 +61,12 @@ public static partial class Typography {
 
                 GUIStyle style = ResolveStyle();
                 GUIContent guiContent = new GUIContent(content);
-                if (wrap) {
-                    return style.CalcHeight(guiContent, availableWidth);
-                }
-
-                return style.CalcSize(guiContent).y;
+                float h = wrap
+                    ? style.CalcHeight(guiContent, availableWidth)
+                    : style.CalcHeight(guiContent, float.MaxValue);
+                int pixelSize = Mathf.RoundToInt((size ?? new Rem(1f)).ToFontPx());
+                float descenderPad = Mathf.Max(2f, pixelSize * 0.25f);
+                return Mathf.Ceil(h + descenderPad);
             };
 
             node.Paint = (rect, _) => {
@@ -96,15 +97,15 @@ public static partial class Typography {
             return node;
         }
 
-        [DocVariant("CC_Playground_Label_Normal")]
+        [DocVariant("CL_Playground_Label_Normal")]
         public static DocSample DocsNormal() {
-            string sample = (string)"CC_Playground_Text_Sample".Translate();
+            string sample = (string)"CL_Playground_Text_Sample".Translate();
             return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary));
         }
 
-        [DocVariant("CC_Playground_Label_Accented")]
+        [DocVariant("CL_Playground_Label_Accented")]
         public static DocSample DocsAccented() {
-            string sample = (string)"CC_Playground_Text_Sample".Translate();
+            string sample = (string)"CL_Playground_Text_Sample".Translate();
             return new DocSample(() => 
                 Text.Create(
                     sample,
@@ -117,21 +118,21 @@ public static partial class Typography {
             );
         }
 
-        [DocVariant("CC_Playground_Label_Muted")]
+        [DocVariant("CL_Playground_Label_Muted")]
         public static DocSample DocsMuted() {
-            string sample = (string)"CC_Playground_Text_Sample".Translate();
+            string sample = (string)"CL_Playground_Text_Sample".Translate();
             return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextMuted));
         }
 
-        [DocState("CC_Playground_Label_Default")]
+        [DocState("CL_Playground_Label_Default")]
         public static DocSample DocsDefaultState() {
-            string sample = (string)"CC_Playground_Text_Sample".Translate();
+            string sample = (string)"CL_Playground_Text_Sample".Translate();
             return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary));
         }
 
-        [DocState("CC_Playground_Label_Muted")]
+        [DocState("CL_Playground_Label_Muted")]
         public static DocSample DocsMutedState() {
-            string sample = (string)"CC_Playground_Text_Sample".Translate();
+            string sample = (string)"CL_Playground_Text_Sample".Translate();
             return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextMuted));
         }
 

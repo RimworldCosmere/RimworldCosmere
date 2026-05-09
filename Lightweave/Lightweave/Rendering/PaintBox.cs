@@ -1,3 +1,4 @@
+using System;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
@@ -172,7 +173,7 @@ public static class PaintBox {
         return cref switch {
             ColorRef.Literal l => l.Value,
             ColorRef.Token t => RenderContext.Current.Theme.GetColor(t.Slot),
-            _ => Color.magenta,
+            _ => throw new InvalidOperationException($"Unknown ColorRef subtype: {cref?.GetType().Name ?? "null"}"),
         };
     }
 }

@@ -24,22 +24,8 @@ public sealed record DocSample {
         Code = AppendCompanion(qualified, companion, file);
     }
 
-    public DocSample(
-        LightweaveNode demo,
-        bool useFullSource = false,
-        Type? companion = null,
-        [CallerArgumentExpression("demo")] string demoExpr = "",
-        [CallerFilePath] string file = ""
-    ) {
-        Build = () => demo;
-        string raw = useFullSource
-            ? DocSourceResolver.ResolveMethodSource(demoExpr, file) ?? demoExpr
-            : demoExpr;
-        string qualified = QualifyLeadingMethodCall(raw, file);
-        Code = AppendCompanion(qualified, companion, file);
-    }
+    
 
-    public LightweaveNode Demo => Build();
 
     private static string StripLambdaWrapper(string expr) {
         if (string.IsNullOrEmpty(expr)) {

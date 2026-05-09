@@ -10,11 +10,11 @@ using Verse;
 namespace Cosmere.Lightweave.Playground;
 
 public sealed class LightweavePlayground : LightweaveWindow {
-    private static readonly IReadOnlyList<PlaygroundCategory> Categories = new[] {
+    internal static readonly IReadOnlyList<PlaygroundCategory> Categories = new[] {
         new PlaygroundCategory(
             "layout",
-            "CC_Playground_Category_Layout",
-            "CC_Playground_Category_Layout_Desc",
+            "CL_Playground_Category_Layout",
+            "CL_Playground_Category_Layout_Desc",
             new[] {
                 "stack", "column", "row", "hstack", "grid", "wrap", "scrollarea", "divider", "spacer", "each",
                 "conditional", "carousel", "container", "card", "box",
@@ -22,20 +22,20 @@ public sealed class LightweavePlayground : LightweaveWindow {
         ),
         new PlaygroundCategory(
             "typography",
-            "CC_Playground_Category_Typography",
-            "CC_Playground_Category_Typography_Desc",
+            "CL_Playground_Category_Typography",
+            "CL_Playground_Category_Typography_Desc",
             new[] { "heading", "text", "label", "caption", "richtext", "code", "icon" }
         ),
         new PlaygroundCategory(
             "buttons",
-            "CC_Playground_Category_Buttons",
-            "CC_Playground_Category_Buttons_Desc",
+            "CL_Playground_Category_Buttons",
+            "CL_Playground_Category_Buttons_Desc",
             new[] { "button", "iconbutton", "togglebutton", "buttongroup" }
         ),
         new PlaygroundCategory(
             "inputs",
-            "CC_Playground_Category_Inputs",
-            "CC_Playground_Category_Inputs_Desc",
+            "CL_Playground_Category_Inputs",
+            "CL_Playground_Category_Inputs_Desc",
             new[] {
                 "textfield", "checkbox", "switch", "radio", "slider", "textarea", "numberfield", "searchfield",
                 "dropdown", "colorpicker", "keybinding",
@@ -43,39 +43,39 @@ public sealed class LightweavePlayground : LightweaveWindow {
         ),
         new PlaygroundCategory(
             "feedback",
-            "CC_Playground_Category_Feedback",
-            "CC_Playground_Category_Feedback_Desc",
+            "CL_Playground_Category_Feedback",
+            "CL_Playground_Category_Feedback_Desc",
             new[] { "spinner", "progressbar", "ringgauge", "badge", "tooltip" }
         ),
         new PlaygroundCategory(
             "navigation",
-            "CC_Playground_Category_Navigation",
-            "CC_Playground_Category_Navigation_Desc",
+            "CL_Playground_Category_Navigation",
+            "CL_Playground_Category_Navigation_Desc",
             new[] { "tabs", "segmented", "breadcrumbs", "menu", "contextmenu", "accordion", "sidenav" }
         ),
         new PlaygroundCategory(
             "overlay",
-            "CC_Playground_Category_Overlay",
-            "CC_Playground_Category_Overlay_Desc",
+            "CL_Playground_Category_Overlay",
+            "CL_Playground_Category_Overlay_Desc",
             new[] { "window", "dialog", "popover", "drawer", "toast" }
         ),
         new PlaygroundCategory(
             "data",
-            "CC_Playground_Category_Data",
-            "CC_Playground_Category_Data_Desc",
+            "CL_Playground_Category_Data",
+            "CL_Playground_Category_Data_Desc",
             new[] { "list", "table", "tree", "keyvalue", "chart" }
         ),
         new PlaygroundCategory(
             "hooks",
-            "CC_Playground_Category_Hooks",
-            "CC_Playground_Category_Hooks_Desc",
+            "CL_Playground_Category_Hooks",
+            "CL_Playground_Category_Hooks_Desc",
             new[] { "usestate", "useanim", "usefocus", "usehotkey" }
         ),
         new PlaygroundCategory(
             "tokens",
-            "CC_Playground_Category_Tokens",
-            "CC_Playground_Category_Tokens_Desc",
-            new[] { "breakpoints" }
+            "CL_Playground_Category_Tokens",
+            "CL_Playground_Category_Tokens_Desc",
+            new[] { "rem", "breakpoints" }
         ),
     };
 
@@ -164,6 +164,8 @@ public sealed class LightweavePlayground : LightweaveWindow {
 
     private PlaygroundTheme currentTheme = PlaygroundTheme.Default;
 
+    public static string? OverrideSelectedPrimitive;
+
     public LightweavePlayground() {
         doCloseX = true;
         draggable = false;
@@ -195,11 +197,34 @@ public sealed class LightweavePlayground : LightweaveWindow {
         Hooks.Hooks.StateHandle<bool> forceDisabledHandle = Hooks.Hooks.UseState(false);
         Hooks.Hooks.StateHandle<string> selectedPrimitiveHandle = Hooks.Hooks.UseState(DefaultPrimitiveId());
 
+        if (OverrideSelectedPrimitive != null && selectedPrimitiveHandle.Value != OverrideSelectedPrimitive) {
+            selectedPrimitiveHandle.Set(OverrideSelectedPrimitive);
+        }
+
+        if (PlaygroundTour.IsActive) {
+            PlaygroundTour.TryAdvance();
+            string? tourPrim = PlaygroundTour.CurrentPrimitiveId();
+            if (tourPrim != null && selectedPrimitiveHandle.Value != tourPrim) {
+                selectedPrimitiveHandle.Set(tourPrim);
+            }
+        }
+
         Hooks.Hooks.RefHandle<DocContext> docCtxRef = Hooks.Hooks.UseRef(new DocContext());
         Hooks.Hooks.RefHandle<string?> lastPrimitiveRef = Hooks.Hooks.UseRef<string?>(null);
         if (lastPrimitiveRef.Current != selectedPrimitiveHandle.Value) {
             docCtxRef.Current.Reset();
             lastPrimitiveRef.Current = selectedPrimitiveHandle.Value;
+            if (PlaygroundTour.IsActive) {
+                PlaygroundTour.NotifyPrimitiveSwitched();
+            }
+        }
+
+        if (PlaygroundTour.IsActive) {
+            LightweaveScrollStatus scroll = docCtxRef.Current.Scroll;
+            PlaygroundTour.NotifyMetrics(scroll.LastContentHeight, scroll.LastViewportHeight);
+            float t = PlaygroundTour.ScrollProgress();
+            float maxScroll = Mathf.Max(0f, scroll.LastContentHeight - scroll.LastViewportHeight);
+            scroll.Position = new Vector2(0f, t * maxScroll);
         }
 
         currentTheme = themeHandle.Value;
@@ -234,9 +259,9 @@ public sealed class LightweavePlayground : LightweaveWindow {
             }
         }
 
-        string titleKey = "CC_Playground_" + selectedPrimitiveId + "_Title";
-        string whatKey = "CC_Playground_" + selectedPrimitiveId + "_What";
-        string whenKey = "CC_Playground_" + selectedPrimitiveId + "_When";
+        string titleKey = "CL_Playground_" + selectedPrimitiveId + "_Title";
+        string whatKey = "CL_Playground_" + selectedPrimitiveId + "_What";
+        string whenKey = "CL_Playground_" + selectedPrimitiveId + "_When";
 
         (IReadOnlyList<PlaygroundVariant> variants, IReadOnlyList<PlaygroundState> states) demo =
             DocReflection.BuildSamplesById(selectedPrimitiveId, forceDisabled);
@@ -305,7 +330,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
         }
 
         LightweaveNode toc = Doc.Doc.TableOfContents(
-            (string)"CC_Playground_Panel_OnThisPage".Translate(),
+            (string)"CL_Playground_Panel_OnThisPage".Translate(),
             entries,
             ctx
         );
@@ -321,7 +346,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
 
     private static LightweaveNode CategoryBreadcrumbNode(PlaygroundCategory category, string primitiveId) {
         string categoryLabel = (string)category.LabelKey.Translate();
-        string primitiveLabel = (string)("CC_Playground_" + primitiveId + "_Title").Translate();
+        string primitiveLabel = (string)("CL_Playground_" + primitiveId + "_Title").Translate();
         return Typography.Typography.Caption.Create(categoryLabel + " / " + primitiveLabel);
     }
 }

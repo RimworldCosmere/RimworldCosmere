@@ -70,7 +70,7 @@ public static class Wrap {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Default")]
+    [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => 
             Wrap.Create(
@@ -86,7 +86,7 @@ public static class Wrap {
         );
     }
 
-[DocVariant("CC_Playground_Layout_Wrap_Badges", Order = 1)]
+[DocVariant("CL_Playground_Layout_Wrap_Badges", Order = 1)]
     public static DocSample DocsBadges() {
         return new DocSample(() =>
             Wrap.Create(

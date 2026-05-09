@@ -302,49 +302,49 @@ public static class Chart {
     }
 
 
-    [DocVariant("CC_Playground_Label_Accent")]
+    [DocVariant("CL_Playground_Label_Accent")]
     public static DocSample DocsRising() {
         return new DocSample(() => Chart.Create(new[] { 1f, 2f, 3f, 5f, 8f, 13f }));
     }
 
-    [DocVariant("CC_Playground_Label_Default", Order = 1)]
+    [DocVariant("CL_Playground_Label_Default", Order = 1)]
     public static DocSample DocsWavy() {
         return new DocSample(() => Chart.Create(new[] { 3f, 5f, 2f, 7f, 4f, 6f, 2f }));
     }
 
-    [DocVariant("CC_Playground_Label_Muted", Order = 2)]
+    [DocVariant("CL_Playground_Label_Muted", Order = 2)]
     public static DocSample DocsFlat() {
         return new DocSample(() => Chart.Create(new[] { 4f, 4f, 4f, 4f, 4f }, ThemeSlot.TextMuted));
     }
 
-    [DocVariant("CC_Playground_Chart_Axes", Order = 3)]
+    [DocVariant("CL_Playground_Chart_Axes", Order = 3)]
     public static DocSample DocsAxes() {
         return new DocSample(() => Chart.Create(
             new[] { 32f, 41f, 38f, 55f, 62f, 70f, 65f, 78f, 84f },
             fillColor: ThemeSlot.SurfaceAccent,
             showXAxis: true,
             showYAxis: true,
-            xAxisLabel: (string)"CC_Playground_Chart_Axis_Day".Translate(),
-            yAxisLabel: (string)"CC_Playground_Chart_Axis_Stormlight".Translate(),
+            xAxisLabel: (string)"CL_Playground_Chart_Axis_Day".Translate(),
+            yAxisLabel: (string)"CL_Playground_Chart_Axis_Stormlight".Translate(),
             yTickFormatter: v => v.ToString("0"),
             xTickFormatter: i => $"D{i + 1}"
         ));
     }
 
-    [DocVariant("CC_Playground_Chart_Hover", Order = 4)]
+    [DocVariant("CL_Playground_Chart_Hover", Order = 4)]
     public static DocSample DocsHover() {
         return new DocSample(() => Chart.Create(
             new[] { 12f, 18f, 15f, 22f, 28f, 24f, 30f, 26f, 35f, 32f },
             fillColor: ThemeSlot.SurfaceAccent,
             showTooltip: true,
             pointHighlight: true,
-            tooltipFormatter: (i, v) => "CC_Playground_Chart_Hover_Tooltip"
+            tooltipFormatter: (i, v) => "CL_Playground_Chart_Hover_Tooltip"
                 .Translate((i + 1).Named("DAY"), v.ToString("0.0").Named("VALUE"))
                 .Resolve()
         ));
     }
 
-    [DocVariant("CC_Playground_Chart_Complex", Order = 5)]
+    [DocVariant("CL_Playground_Chart_Complex", Order = 5)]
     public static DocSample DocsComplex() {
         return new DocSample(() => Chart.Create(
             new[] { 412f, 388f, 455f, 502f, 478f, 540f, 612f, 588f, 645f, 702f, 678f, 720f },
@@ -352,15 +352,15 @@ public static class Chart {
             fillColor: ThemeSlot.SurfaceAccent,
             showXAxis: true,
             showYAxis: true,
-            xAxisLabel: (string)"CC_Playground_Chart_Axis_Hour".Translate(),
-            yAxisLabel: (string)"CC_Playground_Chart_Axis_Reserve".Translate(),
+            xAxisLabel: (string)"CL_Playground_Chart_Axis_Hour".Translate(),
+            yAxisLabel: (string)"CL_Playground_Chart_Axis_Reserve".Translate(),
             yTickFormatter: v => v.ToString("0"),
             xTickFormatter: i => $"{i:D2}h",
             tickCountX: 6,
             tickCountY: 5,
             showTooltip: true,
             pointHighlight: true,
-            tooltipFormatter: (i, v) => "CC_Playground_Chart_Complex_Tooltip"
+            tooltipFormatter: (i, v) => "CL_Playground_Chart_Complex_Tooltip"
                 .Translate(i.Named("HOUR"), v.ToString("0").Named("VALUE"))
                 .Resolve()
         ));

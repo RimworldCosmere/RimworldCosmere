@@ -131,9 +131,7 @@ public static class ButtonGroup {
 
                 float overlay = ButtonVariants.OverlayAlpha(state);
                 if (overlay > 0f) {
-                    Color overlayColor = state.Pressed
-                        ? new Color(0f, 0f, 0f, overlay)
-                        : new Color(1f, 1f, 1f, overlay);
+                    Color overlayColor = InteractionFeedback.OverlayColor(theme, state, overlay);
                     PaintBox.Draw(segRect, BackgroundSpec.Of(overlayColor), null, segRadius);
                 }
 
@@ -166,27 +164,27 @@ public static class ButtonGroup {
         return node;
     }
 
-    [DocVariant("CC_Playground_Label_Primary")]
+    [DocVariant("CL_Playground_Label_Primary")]
     public static DocSample DocsPrimary() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> lastPick = UseState<string>(
-            (string)"CC_Playground_buttongroup_None".Translate()
+            (string)"CL_Playground_buttongroup_None".Translate()
         );
 
         return new DocSample(() => Create(
             new List<ButtonGroupItem> {
                 new ButtonGroupItem(
-                    (string)"CC_Playground_buttongroup_Day".Translate(),
+                    (string)"CL_Playground_buttongroup_Day".Translate(),
                     () => lastPick.Set("Day"),
                     forced
                 ),
                 new ButtonGroupItem(
-                    (string)"CC_Playground_buttongroup_Week".Translate(),
+                    (string)"CL_Playground_buttongroup_Week".Translate(),
                     () => lastPick.Set("Week"),
                     forced
                 ),
                 new ButtonGroupItem(
-                    (string)"CC_Playground_buttongroup_Month".Translate(),
+                    (string)"CL_Playground_buttongroup_Month".Translate(),
                     () => lastPick.Set("Month"),
                     forced
                 ),
@@ -195,32 +193,32 @@ public static class ButtonGroup {
         ));
     }
 
-    [DocVariant("CC_Playground_Label_Secondary")]
+    [DocVariant("CL_Playground_Label_Secondary")]
     public static DocSample DocsSecondary() {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> lastPick = UseState<string>(
-            (string)"CC_Playground_buttongroup_None".Translate()
+            (string)"CL_Playground_buttongroup_None".Translate()
         );
 
         return new DocSample(() => Create(
             new List<ButtonGroupItem> {
                 new ButtonGroupItem(
-                    (string)"CC_Playground_buttongroup_Refresh".Translate(),
+                    (string)"CL_Playground_buttongroup_Refresh".Translate(),
                     () => lastPick.Set("Refresh"),
                     forced
                 ),
                 new ButtonGroupItem(
-                    (string)"CC_Playground_buttongroup_Export".Translate(),
+                    (string)"CL_Playground_buttongroup_Export".Translate(),
                     () => lastPick.Set("Export"),
                     forced
                 ),
                 new ButtonGroupItem(
-                    (string)"CC_Playground_buttongroup_Delete".Translate(),
+                    (string)"CL_Playground_buttongroup_Delete".Translate(),
                     () => lastPick.Set("Delete"),
                     forced
                 ),
                 new ButtonGroupItem(
-                    (string)"CC_Playground_buttongroup_More".Translate(),
+                    (string)"CL_Playground_buttongroup_More".Translate(),
                     () => lastPick.Set("More"),
                     true
                 ),
@@ -231,19 +229,19 @@ public static class ButtonGroup {
     [DocUsage]
     public static DocSample DocsUsage() {
         StateHandle<string> lastPick = UseState<string>(
-            (string)"CC_Playground_buttongroup_None".Translate()
+            (string)"CL_Playground_buttongroup_None".Translate()
         );
 
         return new DocSample(() => Create(
             new List<ButtonGroupItem> {
                 new ButtonGroupItem(
-                    (string)"CC_Playground_buttongroup_Day".Translate(),
+                    (string)"CL_Playground_buttongroup_Day".Translate(),
                     () => lastPick.Set("Day")),
                 new ButtonGroupItem(
-                    (string)"CC_Playground_buttongroup_Week".Translate(),
+                    (string)"CL_Playground_buttongroup_Week".Translate(),
                     () => lastPick.Set("Week")),
                 new ButtonGroupItem(
-                    (string)"CC_Playground_buttongroup_Month".Translate(),
+                    (string)"CL_Playground_buttongroup_Month".Translate(),
                     () => lastPick.Set("Month")),
             }
         ));

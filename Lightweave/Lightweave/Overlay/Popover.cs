@@ -82,11 +82,11 @@ public static class Popover {
                     popoverRect.height
                 );
                 BackgroundSpec shadowBg = BackgroundSpec.Of(ThemeSlot.SurfaceShadow);
-                PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(new Rem(0.5f)));
+                PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(RadiusScale.Lg));
 
                 BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
                 BorderSpec border = BorderSpec.All(new Rem(2f / 16f), ThemeSlot.BorderDefault);
-                RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
+                RadiusSpec radius = RadiusSpec.All(RadiusScale.Lg);
                 PaintBox.Draw(popoverRect, bg, border, radius);
 
                 LightweaveRoot.PaintSubtree(content, popoverRect);
@@ -197,7 +197,7 @@ public static class Popover {
             EdgeInsets.Zero,
             BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-            RadiusSpec.All(new Rem(999f))
+            RadiusSpec.All(RadiusScale.Full)
         );
         avatar.PreferredHeight = new Rem(2.75f).ToPixels();
 

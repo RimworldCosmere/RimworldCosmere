@@ -96,7 +96,7 @@ public static class Card {
         EdgeInsets pad = padding ?? EdgeInsets.Zero;
         BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
         BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
-        RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
+        RadiusSpec radius = RadiusSpec.All(RadiusScale.Lg);
 
         LightweaveNode node = NodeBuilder.New("Card", line, file);
         for (int i = 0; i < children.Length; i++) {

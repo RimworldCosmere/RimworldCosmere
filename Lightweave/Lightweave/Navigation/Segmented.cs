@@ -42,7 +42,7 @@ public static class Segmented {
 
             BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
             BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
-            RadiusSpec radius = RadiusSpec.All(new Rem(999f));
+            RadiusSpec radius = RadiusSpec.All(RadiusScale.Full);
             PaintBox.Draw(rect, bg, border, radius);
 
             int count = items.Count;
@@ -81,7 +81,7 @@ public static class Segmented {
                 LightweaveHitTracker.Track(segRect);
 
                 if (active) {
-                    Rem pill = new Rem(999f);
+                    Rem pill = RadiusSpec.ResolveRem(RadiusScale.Full);
                     bool isFirstLogical = logicalIndex == 0;
                     bool isLastLogical = logicalIndex == count - 1;
                     RadiusSpec activeRadius = new RadiusSpec(
@@ -94,7 +94,7 @@ public static class Segmented {
                 }
 
                 if (!active) {
-                    Rem pill = new Rem(999f);
+                    Rem pill = RadiusSpec.ResolveRem(RadiusScale.Full);
                     bool isFirstHover = logicalIndex == 0;
                     bool isLastHover = logicalIndex == count - 1;
                     RadiusSpec hoverRadius = new RadiusSpec(

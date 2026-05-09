@@ -62,7 +62,7 @@ public static class ButtonGroup {
             style.wordWrap = false;
 
             float borderPx = new Rem(1f / 16f).ToPixels();
-            Rem outerCornerRem = new Rem(0.25f);
+            Rem outerCornerRem = RadiusSpec.ResolveRem(RadiusScale.Sm);
 
             InteractionState groupState = new InteractionState(false, false, false, false);
             ThemeSlot? outerBorderSlot = ButtonVariants.Border(variant, groupState);

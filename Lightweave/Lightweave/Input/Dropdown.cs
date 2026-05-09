@@ -127,7 +127,7 @@ public static class Dropdown {
             BorderSpec? borderSpec = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
-            RadiusSpec radiusSpec = RadiusSpec.All(new Rem(0.25f));
+            RadiusSpec radiusSpec = RadiusSpec.All(RadiusScale.Sm);
             PaintBox.Draw(rect, bgSpec, borderSpec, radiusSpec);
             float overlay = ButtonVariants.OverlayAlpha(state);
             if (overlay > 0f) {
@@ -306,11 +306,11 @@ public static class Dropdown {
 
         Rect shadowRect = new Rect(popoverRect.x + 2f, popoverRect.y + 3f, popoverRect.width, popoverRect.height);
         BackgroundSpec shadowBg = BackgroundSpec.Of(ThemeSlot.SurfaceShadow);
-        PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(new Rem(0.5f)));
+        PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(RadiusScale.Lg));
 
         BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
         BorderSpec border = BorderSpec.All(new Rem(2f / 16f), ThemeSlot.BorderDefault);
-        RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
+        RadiusSpec radius = RadiusSpec.All(RadiusScale.Lg);
         PaintBox.Draw(popoverRect, bg, border, radius);
 
         GUI.color = savedOverlayColor;
@@ -383,7 +383,7 @@ public static class Dropdown {
             Mathf.Max(0f, rowRect.width - highlightInset * 2f),
             Mathf.Max(0f, rowRect.height - highlightInset * 2f)
         );
-        RadiusSpec highlightRadius = RadiusSpec.All(new Rem(0.5f));
+        RadiusSpec highlightRadius = RadiusSpec.All(RadiusScale.Lg);
 
         if (hovering) {
             BackgroundSpec hoverBg = BackgroundSpec.Of(ThemeSlot.SurfaceAccent);

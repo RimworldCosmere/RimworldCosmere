@@ -36,13 +36,13 @@ public static class BreakpointsDoc {
                 EdgeInsets.All(new Rem(0.25f)),
                 BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 outer => outer.Add(
                     Box.Create(
                         EdgeInsets.Vertical(SpacingScale.Sm),
                         BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
                         null,
-                        RadiusSpec.All(new Rem(0.25f)),
+                        RadiusSpec.All(RadiusScale.Sm),
                         inner => inner.Add(BreakpointReadoutNode())
                     )
                 )
@@ -57,7 +57,7 @@ public static class BreakpointsDoc {
                 EdgeInsets.All(new Rem(0.25f)),
                 BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 outer => outer.Add(BreakpointLadderNode())
             )
         );
@@ -70,13 +70,13 @@ public static class BreakpointsDoc {
                 EdgeInsets.All(new Rem(0.25f)),
                 BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 outer => outer.Add(
                     Box.Create(
                         EdgeInsets.Vertical(SpacingScale.Sm),
                         BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
                         null,
-                        RadiusSpec.All(new Rem(0.25f)),
+                        RadiusSpec.All(RadiusScale.Sm),
                         inner => inner.Add(BreakpointReadoutNode())
                     )
                 )
@@ -118,7 +118,7 @@ public static class BreakpointsDoc {
             int pixelSize = Mathf.RoundToInt(new Rem(0.8125f).ToFontPx());
             GUIStyle style = GuiStyleCache.GetOrCreate(theme.GetFont(FontRole.BodyBold), pixelSize, FontStyle.Bold);
             style.alignment = TextAnchor.MiddleCenter;
-            RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
+            RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
             for (int i = 0; i < count; i++) {
                 Breakpoint bp = AllBreakpoints[i];
                 bool isActive = bp == current;

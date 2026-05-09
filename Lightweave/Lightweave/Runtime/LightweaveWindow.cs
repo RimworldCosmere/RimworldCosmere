@@ -21,7 +21,7 @@ public abstract class LightweaveWindow : Verse.Window {
         Right = 8,
     }
 
-    private bool drawOwnCloseX;
+    protected bool drawOwnCloseX;
     private ResizeEdge activeResize;
     private Vector2 resizeAnchorScreen;
     private Rect resizeStartRect;
@@ -53,8 +53,8 @@ public abstract class LightweaveWindow : Verse.Window {
     [DocOverride("Draw the rounded border + surface fill around the window content.", TypeOverride = "bool", DefaultOverride = "true")]
     protected virtual bool DrawBorder => true;
 
-    [DocOverride("Corner radius applied to the outer frame.", TypeOverride = "Rem", DefaultOverride = "0.75rem")]
-    protected virtual Rem BorderRadius => new Rem(0.75f);
+    [DocOverride("Corner radius applied to the outer frame. Resolved from the active theme's RadiusScale.Xl token.", TypeOverride = "Rem", DefaultOverride = "RadiusScale.Xl")]
+    protected virtual Rem BorderRadius => Cosmere.Lightweave.Types.RadiusSpec.ResolveRem(Cosmere.Lightweave.Tokens.RadiusScale.Xl);
 
     [DocOverride("Stroke width for the outer border.", TypeOverride = "Rem", DefaultOverride = "0.0625rem")]
     protected virtual Rem BorderThickness => new Rem(1f / 16f);
@@ -109,7 +109,7 @@ public abstract class LightweaveWindow : Verse.Window {
 
     public override void PreOpen() {
         base.PreOpen();
-        drawOwnCloseX = doCloseX;
+        drawOwnCloseX |= doCloseX;
         doCloseX = false;
         TryRestorePersistedPosition();
     }

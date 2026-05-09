@@ -243,7 +243,7 @@ public static class Breadcrumbs {
         bool hovering = interactive && labelRect.Contains(e.mousePosition);
 
         if (hovering) {
-            PaintBox.DrawHighlight(labelRect, RadiusSpec.All(new Rem(0.25f)), true);
+            PaintBox.DrawHighlight(labelRect, RadiusSpec.All(RadiusScale.Sm), true);
         }
 
         if (interactive) {

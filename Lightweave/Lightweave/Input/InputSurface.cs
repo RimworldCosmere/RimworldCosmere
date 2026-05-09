@@ -109,21 +109,21 @@ internal static class InputSurface {
 
         BackgroundSpec bg = BackgroundSpec.Of(surfaceSlot);
         BorderSpec border = BorderSpec.All(new Rem(1f / 16f), borderSlot);
-        RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
+        RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
         PaintBox.Draw(rect, bg, border, radius);
     }
 
     public static void DrawBackground(Rect rect, InteractionState state) {
         ThemeSlot surfaceSlot = ResolveSurfaceSlot(state);
         BackgroundSpec bg = BackgroundSpec.Of(surfaceSlot);
-        RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
+        RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
         PaintBox.Draw(rect, bg, null, radius);
     }
 
     public static void DrawBorder(Rect rect, InteractionState state) {
         ThemeSlot borderSlot = ResolveBorderSlot(state);
         BorderSpec border = BorderSpec.All(new Rem(1f / 16f), borderSlot);
-        RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
+        RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
         PaintBox.Draw(rect, null, border, radius);
     }
 

@@ -149,7 +149,7 @@ public static class Tree {
         Event e = Event.current;
 
         if (rowRect.Contains(e.mousePosition)) {
-            PaintBox.DrawHighlight(rowRect, RadiusSpec.All(new Rem(0.25f)), true);
+            PaintBox.DrawHighlight(rowRect, RadiusSpec.All(RadiusScale.Sm), true);
         }
 
         float indentPx = depth * IndentPerLevel.ToPixels();

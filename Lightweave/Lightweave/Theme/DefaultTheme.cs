@@ -29,7 +29,11 @@ public static class DefaultTheme {
             [ThemeSlot.StatusSuccess] = new Color(0.550f, 0.720f, 0.360f),
             [ThemeSlot.InteractionHover] = new Color(1.000f, 1.000f, 1.000f, 1.00f),
             [ThemeSlot.InteractionPress] = new Color(0.000f, 0.000f, 0.000f, 1.00f),
+            [ThemeSlot.AccentMuted] = new Color(0.580f, 0.480f, 0.300f, 0.85f),
+            [ThemeSlot.OverlayDim] = new Color(0.030f, 0.030f, 0.025f, 0.62f),
+            [ThemeSlot.MapPreviewTint] = new Color(0.205f, 0.198f, 0.180f, 1.00f),
+            [ThemeSlot.MetadataLabel] = new Color(0.420f, 0.410f, 0.375f),
         };
-        return BaseTheme.Compose(colors, body, bodyBold, heading, display, mono);
+        return BaseTheme.Compose(colors, body, bodyBold, heading, display, mono, BaseTheme.BuildFlatRadii());
     }
 }

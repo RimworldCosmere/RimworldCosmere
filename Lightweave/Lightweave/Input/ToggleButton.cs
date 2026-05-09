@@ -45,7 +45,7 @@ public static class ToggleButton {
             BorderSpec? border = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
-            RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
+            RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
 
             PaintBox.Draw(rect, bg, border, radius);
 

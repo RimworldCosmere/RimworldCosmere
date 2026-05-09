@@ -67,7 +67,7 @@ public static class SideNavDoc {
                 null,
                 BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
                 BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(new Rem(0.375f)),
+                RadiusSpec.All(RadiusScale.Md),
                 c => c.Add(scroller)
             );
             LightweaveNode constrained = Container.Create(
@@ -90,7 +90,7 @@ public static class SideNavDoc {
                     null,
                     BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
                     BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
-                    RadiusSpec.All(new Rem(0.375f)),
+                    RadiusSpec.All(RadiusScale.Md),
                     c => c.Add(ScrollArea.Create(rail))
                 ),
                 new Rem(14f),

@@ -141,7 +141,7 @@ public static class Box {
                 EdgeInsets.All(SpacingScale.Sm),
                 BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 c => c.Add(Caption.Create("raised"))
             )
         );
@@ -154,7 +154,7 @@ public static class Box {
                 EdgeInsets.All(SpacingScale.Sm),
                 BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 null,
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 c => c.Add(Caption.Create("sunken"))
             )
         );
@@ -167,7 +167,7 @@ public static class Box {
                 EdgeInsets.All(SpacingScale.Sm),
                 BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
                 null,
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 c => c.Add(Text.Create("accent", FontRole.Body, new Rem(0.8125f), ThemeSlot.TextOnAccent))
             )
         );
@@ -180,7 +180,7 @@ public static class Box {
                 EdgeInsets.All(SpacingScale.Sm),
                 BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 c => c.Add(Caption.Create("content"))
             )
         );

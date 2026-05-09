@@ -98,7 +98,7 @@ public static class Container {
             EdgeInsets.Vertical(SpacingScale.Sm),
             BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
             null,
-            RadiusSpec.All(new Rem(0.25f)),
+            RadiusSpec.All(RadiusScale.Sm),
             c => c.Add(
                 Text.Create(
                     (string)labelKey.Translate(),
@@ -119,7 +119,7 @@ public static class Container {
             EdgeInsets.All(new Rem(0.25f)),
             BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-            RadiusSpec.All(new Rem(0.25f)),
+            RadiusSpec.All(RadiusScale.Sm),
             c => c.Add(contained)
         );
     }
@@ -163,7 +163,7 @@ public static class Container {
             EdgeInsets.Vertical(SpacingScale.Sm),
             BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
             null,
-            RadiusSpec.All(new Rem(0.25f)),
+            RadiusSpec.All(RadiusScale.Sm),
             c => c.Add(
                 Text.Create(
                     (string)"CL_Playground_Container_Responsive_Body".Translate(),
@@ -184,7 +184,7 @@ public static class Container {
                 EdgeInsets.All(new Rem(0.25f)),
                 BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 c => c.Add(contained)
             )
         );

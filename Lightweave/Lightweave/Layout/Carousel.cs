@@ -103,7 +103,7 @@ public static class Carousel {
 
             BackgroundSpec frameBg = BackgroundSpec.Of(ThemeSlot.SurfaceSunken);
             BorderSpec frameBorder = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
-            RadiusSpec frameRadius = RadiusSpec.All(new Rem(0.25f));
+            RadiusSpec frameRadius = RadiusSpec.All(RadiusScale.Sm);
             PaintBox.Draw(frameRect, frameBg, frameBorder, frameRadius);
 
             GUI.BeginClip(frameRect);

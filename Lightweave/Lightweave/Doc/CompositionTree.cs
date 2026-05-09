@@ -30,7 +30,7 @@ public static partial class Doc {
 
             BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceSunken);
             BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle);
-            RadiusSpec rad = RadiusSpec.All(new Rem(0.375f));
+            RadiusSpec rad = RadiusSpec.All(RadiusScale.Md);
             PaintBox.Draw(rect, bg, border, rad);
 
             if (lines == null || lines.Count == 0) {

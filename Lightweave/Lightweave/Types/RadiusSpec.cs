@@ -30,6 +30,31 @@ public readonly record struct RadiusSpec(
         return new RadiusSpec(TopStart: v, BottomStart: v);
     }
 
+    public static RadiusSpec All(Cosmere.Lightweave.Tokens.RadiusScale scale) {
+        return All(ResolveRem(scale));
+    }
+
+    public static RadiusSpec Top(Cosmere.Lightweave.Tokens.RadiusScale scale) {
+        return Top(ResolveRem(scale));
+    }
+
+    public static RadiusSpec Bottom(Cosmere.Lightweave.Tokens.RadiusScale scale) {
+        return Bottom(ResolveRem(scale));
+    }
+
+    public static RadiusSpec StartSide(Cosmere.Lightweave.Tokens.RadiusScale scale) {
+        return StartSide(ResolveRem(scale));
+    }
+
+    public static Rem ResolveRem(Cosmere.Lightweave.Tokens.RadiusScale scale) {
+        Cosmere.Lightweave.Runtime.RenderContext? ctx = Cosmere.Lightweave.Runtime.RenderContext.CurrentOrNull;
+        if (ctx == null || ctx.ThemeStack.Count == 0) {
+            return new Rem(0f);
+        }
+        float px = ctx.Theme.GetRadius(scale);
+        return new Rem(px / Cosmere.Lightweave.Tokens.Spacing.BaseUnit);
+    }
+
     public Vector4 ResolveVector(Direction dir) {
         float tl = TopLeft?.ToPixels() ?? (dir == Direction.Ltr ? TopStart?.ToPixels() : TopEnd?.ToPixels()) ?? 0f;
         float tr = TopRight?.ToPixels() ?? (dir == Direction.Ltr ? TopEnd?.ToPixels() : TopStart?.ToPixels()) ?? 0f;

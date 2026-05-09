@@ -29,6 +29,10 @@ public static class CosmereTheme {
             [ThemeSlot.StatusSuccess] = new Color(0.500f, 0.680f, 0.420f),
             [ThemeSlot.InteractionHover] = new Color(0.940f, 0.910f, 0.840f, 1.00f),
             [ThemeSlot.InteractionPress] = new Color(0.000f, 0.000f, 0.000f, 1.00f),
+            [ThemeSlot.AccentMuted] = new Color(0.560f, 0.405f, 0.220f, 0.85f),
+            [ThemeSlot.OverlayDim] = new Color(0.020f, 0.015f, 0.010f, 0.62f),
+            [ThemeSlot.MapPreviewTint] = new Color(0.180f, 0.150f, 0.125f, 1.00f),
+            [ThemeSlot.MetadataLabel] = new Color(0.420f, 0.385f, 0.340f),
         };
         return BaseTheme.Compose(colors, body, bodyBold, heading, display, mono);
     }

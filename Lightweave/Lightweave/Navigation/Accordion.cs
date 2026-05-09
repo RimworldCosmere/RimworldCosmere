@@ -112,7 +112,7 @@ public static class Accordion {
 
                 bool hovered = headerRect.Contains(e.mousePosition);
                 if (hovered) {
-                    PaintBox.DrawHighlight(headerRect, RadiusSpec.All(new Rem(0.25f)), true);
+                    PaintBox.DrawHighlight(headerRect, RadiusSpec.All(RadiusScale.Sm), true);
                 }
 
                 MouseoverSounds.DoRegion(headerRect);

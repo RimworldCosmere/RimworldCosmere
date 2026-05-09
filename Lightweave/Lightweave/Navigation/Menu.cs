@@ -227,7 +227,7 @@ public static class Menu {
             Mathf.Max(0f, rowRect.width - highlightInset * 2f),
             Mathf.Max(0f, rowRect.height - highlightInset * 2f)
         );
-        RadiusSpec highlightRadius = RadiusSpec.All(new Rem(0.5f));
+        RadiusSpec highlightRadius = RadiusSpec.All(RadiusScale.Lg);
 
         if (!item.Disabled && hovering) {
             BackgroundSpec hoverBg = BackgroundSpec.Of(ThemeSlot.SurfaceAccent);

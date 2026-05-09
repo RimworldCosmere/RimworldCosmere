@@ -40,7 +40,7 @@ public static class ProgressBar {
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
 
-            RadiusSpec radius = RadiusSpec.All(new Rem(0.5f));
+            RadiusSpec radius = RadiusSpec.All(RadiusScale.Lg);
 
             BackgroundSpec trackBg = BackgroundSpec.Of(ThemeSlot.SurfaceInput);
             BorderSpec trackBorder = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);

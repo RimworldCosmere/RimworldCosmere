@@ -167,8 +167,9 @@ public sealed class LightweavePlayground : LightweaveWindow {
     public static string? OverrideSelectedPrimitive;
 
     public LightweavePlayground() {
-        doCloseX = true;
-        draggable = false;
+        doCloseX = false;
+        drawOwnCloseX = true;
+        draggable = true;
         closeOnClickedOutside = false;
         closeOnAccept = false;
         closeOnCancel = true;
@@ -188,8 +189,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
     };
 
     protected override Rect? DragRegion(Rect inRect) {
-        float headerHeight = 72f;
-        return new Rect(inRect.x, inRect.y, inRect.width, headerHeight);
+        return base.DragRegion(inRect);
     }
 
     protected override LightweaveNode Body() {

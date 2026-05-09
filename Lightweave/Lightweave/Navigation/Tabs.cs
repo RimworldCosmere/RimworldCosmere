@@ -116,7 +116,7 @@ public static class Tabs {
 
                 bool hovering = tabRect.Contains(e.mousePosition);
                 if (!active) {
-                    PaintBox.DrawHighlightIfMouseover(tabRect, RadiusSpec.Top(new Rem(0.25f)));
+                    PaintBox.DrawHighlightIfMouseover(tabRect, RadiusSpec.Top(RadiusScale.Sm));
                     Cosmere.Lightweave.Input.InteractionFeedback.Apply(tabRect, enabled: true, playSound: true);
                 }
 

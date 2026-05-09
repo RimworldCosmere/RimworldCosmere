@@ -66,7 +66,7 @@ public static class Conditional {
                 EdgeInsets.All(SpacingScale.Xs),
                 BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 null,
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 k => {
                     k.Add(MutedChip("subtree skipped — no draw"));
                     k.Add(

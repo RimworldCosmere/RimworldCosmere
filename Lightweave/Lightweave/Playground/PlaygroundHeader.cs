@@ -1,4 +1,6 @@
+using System;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 using Cosmere.Lightweave.Input;
 using Cosmere.Lightweave.Navigation;
 using Cosmere.Lightweave.Runtime;
@@ -49,11 +51,17 @@ public static class PlaygroundHeader {
             ),
             BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
             null,
-            RadiusSpec.Top(new Rem(0.75f)),
+            RadiusSpec.Top(RadiusScale.Xl),
             children: s => s.Add(row),
             line: line,
             file: file
         );
+
+        Action<Rect, Action>? innerPaint = surface.Paint;
+        surface.Paint = (rect, paintChildren) => {
+            Runtime.LightweaveWindowContext.PublishHeader(rect, draggable: true, ownsClose: false);
+            innerPaint?.Invoke(rect, paintChildren);
+        };
 
         return surface;
     }

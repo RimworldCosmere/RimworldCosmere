@@ -83,7 +83,7 @@ public static class Badge {
             BorderSpec? border = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
-            RadiusSpec radius = RadiusSpec.All(new Rem(999f));
+            RadiusSpec radius = RadiusSpec.All(RadiusScale.Full);
 
             PaintBox.Draw(rect, bg, border, radius);
 
@@ -148,7 +148,7 @@ public static class Badge {
                         hit,
                         BackgroundSpec.Of(overlay),
                         null,
-                        RadiusSpec.All(new Rem(999f))
+                        RadiusSpec.All(RadiusScale.Full)
                     );
                     MouseoverSounds.DoRegion(hit);
                 }

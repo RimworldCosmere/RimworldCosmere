@@ -82,7 +82,7 @@ public static class ContextMenu {
             EdgeInsets.All(SpacingScale.Sm),
             BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-            RadiusSpec.All(new Rem(0.25f)),
+            RadiusSpec.All(RadiusScale.Sm),
             c => c.Add(
                 Caption.Create(
                     (string)"CL_Playground_ContextMenu_RightClick".Translate()
@@ -106,7 +106,7 @@ public static class ContextMenu {
             EdgeInsets.All(SpacingScale.Sm),
             BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-            RadiusSpec.All(new Rem(0.25f)),
+            RadiusSpec.All(RadiusScale.Sm),
             c => c.Add(Caption.Create("Right-click here"))
         );
 

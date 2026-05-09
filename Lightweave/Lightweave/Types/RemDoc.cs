@@ -46,7 +46,7 @@ public static class RemDoc {
                 EdgeInsets.All(new Rem(0.5f)),
                 BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 outer => outer.Add(ConversionReadoutNode())
             )
         );
@@ -59,7 +59,7 @@ public static class RemDoc {
                 EdgeInsets.All(new Rem(0.5f)),
                 BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 outer => outer.Add(SpacingLadderNode())
             )
         );
@@ -72,7 +72,7 @@ public static class RemDoc {
                 EdgeInsets.All(new Rem(0.5f)),
                 BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 outer => outer.Add(FontLadderNode())
             )
         );
@@ -85,7 +85,7 @@ public static class RemDoc {
                 EdgeInsets.All(new Rem(0.5f)),
                 BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
                 BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(new Rem(0.25f)),
+                RadiusSpec.All(RadiusScale.Sm),
                 outer => outer.Add(ConversionReadoutNode())
             )
         );
@@ -130,7 +130,7 @@ public static class RemDoc {
             labelStyle.alignment = TextAnchor.MiddleLeft;
             float labelWidth = new Rem(7f).ToPixels();
             float gap = new Rem(0.5f).ToPixels();
-            RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
+            RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
 
             for (int i = 0; i < LadderSteps.Length; i++) {
                 (string label, Rem step) = LadderSteps[i];

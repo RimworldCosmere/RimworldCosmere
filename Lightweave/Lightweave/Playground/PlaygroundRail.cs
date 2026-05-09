@@ -217,7 +217,7 @@ public static class PlaygroundRail {
             GUI.color = baseColor;
         }
         else if (hovering) {
-            PaintBox.DrawHighlight(rowRect, RadiusSpec.All(new Rem(0.25f)), true);
+            PaintBox.DrawHighlight(rowRect, RadiusSpec.All(RadiusScale.Sm), true);
         }
 
         string chevron = expanded ? "-" : "+";
@@ -278,7 +278,7 @@ public static class PlaygroundRail {
             GUI.color = baseColor;
         }
         else if (hovering) {
-            PaintBox.DrawHighlight(rowRect, RadiusSpec.All(new Rem(0.2f)), true);
+            PaintBox.DrawHighlight(rowRect, RadiusSpec.All(RadiusScale.Sm), true);
         }
 
         float labelInsetStart = rtl ? RowPaddingX : HighlightBarWidth + RowPaddingX;

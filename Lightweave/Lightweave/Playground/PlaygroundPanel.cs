@@ -333,7 +333,7 @@ public static class PlaygroundPanel {
             EdgeInsets.All(SpacingScale.Lg),
             BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-            RadiusSpec.All(new Rem(0.5f)),
+            RadiusSpec.All(RadiusScale.Lg),
             c => c.Add(content)
         );
     }
@@ -360,14 +360,14 @@ public static class PlaygroundPanel {
             code,
             flat: true,
             key: anchorId,
-            backgroundRadius: RadiusSpec.Bottom(new Rem(0.4375f))
+            backgroundRadius: RadiusSpec.Bottom(RadiusScale.Md)
         );
 
         return Layout.Box.Create(
             EdgeInsets.All(new Rem(1f / 16f)),
             BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
             BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-            RadiusSpec.All(new Rem(0.5f)),
+            RadiusSpec.All(RadiusScale.Lg),
             c => {
                 c.Add(previewSection);
                 c.Add(Layout.Divider.Horizontal());

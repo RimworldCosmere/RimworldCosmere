@@ -81,7 +81,7 @@ public static class AsTooltip {
 
             BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
             BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
-            RadiusSpec radius = RadiusSpec.All(new Rem(0.25f));
+            RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
             PaintBox.Draw(tooltipRect, bg, border, radius);
 
             LightweaveNode node = build();

@@ -24,4 +24,8 @@ public enum ThemeSlot {
     BorderDanger,
     InteractionHover,
     InteractionPress,
+    AccentMuted,
+    OverlayDim,
+    MapPreviewTint,
+    MetadataLabel,
 }

@@ -123,7 +123,7 @@ public static partial class Doc {
             Theme.Theme theme = RenderContext.Current.Theme;
 
             BorderSpec borderSpec = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle);
-            RadiusSpec rad = RadiusSpec.All(new Rem(0.375f));
+            RadiusSpec rad = RadiusSpec.All(RadiusScale.Md);
             PaintBox.Draw(rect, BackgroundSpec.Of(ThemeSlot.SurfacePrimary), borderSpec, rad);
 
             if (parameters == null || parameters.Count == 0) {

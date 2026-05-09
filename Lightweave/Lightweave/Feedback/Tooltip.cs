@@ -391,7 +391,7 @@ public static class Tooltip {
                     tooltipRect,
                     BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
                     BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-                    RadiusSpec.All(new Rem(0.25f))
+                    RadiusSpec.All(RadiusScale.Sm)
                 );
 
                 float pad = new Rem(0.5f).ToPixels();

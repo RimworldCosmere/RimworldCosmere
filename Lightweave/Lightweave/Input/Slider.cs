@@ -94,7 +94,7 @@ public static class Slider {
 
             ThemeSlot filledSlot = disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceAccent;
             ThemeSlot unfilledSlot = disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput;
-            RadiusSpec trackRadius = RadiusSpec.All(new Rem(0.25f));
+            RadiusSpec trackRadius = RadiusSpec.All(RadiusScale.Sm);
 
             if (rtl) {
                 Rect rightUnfilled = new Rect(
@@ -144,7 +144,7 @@ public static class Slider {
             }
 
             InteractionState thumbState = InteractionState.Resolve(thumbRect, null, disabled);
-            RadiusSpec thumbRadius = RadiusSpec.All(new Rem(0.5f));
+            RadiusSpec thumbRadius = RadiusSpec.All(RadiusScale.Lg);
 
             if (!disabled && (thumbState.Hovered || dragging.Current)) {
                 float ringGrowPx = new Rem(0.25f).ToPixels();
@@ -156,7 +156,7 @@ public static class Slider {
                 );
                 Color ringColor = theme.GetColor(ThemeSlot.BorderFocus);
                 ringColor.a = 0.30f;
-                PaintBox.Draw(ringRect, BackgroundSpec.Of(ringColor), null, RadiusSpec.All(new Rem(0.625f)));
+                PaintBox.Draw(ringRect, BackgroundSpec.Of(ringColor), null, RadiusSpec.All(RadiusScale.Xl));
             }
 
             ThemeSlot thumbFillSlot = disabled
@@ -182,7 +182,7 @@ public static class Slider {
                     thumbCore,
                     BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
                     null,
-                    RadiusSpec.All(new Rem(0.5f))
+                    RadiusSpec.All(RadiusScale.Lg)
                 );
             }
 

@@ -79,7 +79,7 @@ public static class Checkbox {
                 ? BackgroundSpec.Of(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceAccent)
                 : BackgroundSpec.Of(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput);
             BorderSpec boxBorder = BorderSpec.All(new Rem(2f / 16f), borderSlot);
-            RadiusSpec boxRadius = RadiusSpec.All(new Rem(0.125f));
+            RadiusSpec boxRadius = RadiusSpec.All(RadiusScale.Xs);
 
             PaintBox.Draw(boxRect, boxBg, boxBorder, boxRadius);
 

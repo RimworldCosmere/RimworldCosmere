@@ -145,7 +145,7 @@ public static class ColorPicker {
 
         BackgroundSpec bg = BackgroundSpec.Of(drawColor);
         BorderSpec border = BorderSpec.All(borderWidth, borderSlot);
-        RadiusSpec radius = RadiusSpec.All(new Rem(0.125f));
+        RadiusSpec radius = RadiusSpec.All(RadiusScale.Xs);
         PaintBox.Draw(rect, bg, border, radius);
 
         if (selected) {
@@ -157,7 +157,7 @@ public static class ColorPicker {
                 rect.height - insetPx * 2f
             );
             BorderSpec insetBorder = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.TextOnAccent);
-            RadiusSpec insetRadius = RadiusSpec.All(new Rem(0.0625f));
+            RadiusSpec insetRadius = RadiusSpec.All(RadiusScale.Xs);
             PaintBox.Draw(inset, null, insetBorder, insetRadius);
         }
     }

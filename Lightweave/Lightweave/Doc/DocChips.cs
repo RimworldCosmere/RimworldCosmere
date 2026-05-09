@@ -14,7 +14,7 @@ public static class DocChips {
             EdgeInsets.All(SpacingScale.Xs),
             BackgroundSpec.Of(bg),
             null,
-            RadiusSpec.All(new Rem(0.25f)),
+            RadiusSpec.All(RadiusScale.Sm),
             c => c.Add(Text.Create(text, FontRole.Body, new Rem(0.8125f), fg, TextAlign.Center))
         );
     }

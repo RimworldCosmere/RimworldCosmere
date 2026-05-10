@@ -73,6 +73,14 @@ public static class PaintBox {
             Color c = grad.Tint != null ? ResolveColor(grad.Tint) : Color.white;
             GUI.DrawTexture(r, grad.GradientTex, ScaleMode.StretchToFill, true, 0, c, Vector4.zero, rad);
         }
+        else if (bg is BackgroundSpec.Blurred blurred) {
+            BackdropBlur.Draw(r, blurred.BlurSizePx);
+            if (blurred.Tint != null) {
+                Color c = ResolveColor(blurred.Tint);
+                c.a *= 0.55f;
+                GUI.DrawTexture(r, Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0, c, Vector4.zero, rad);
+            }
+        }
     }
 
     private static void DrawSolidRounded(Rect r, Color color, Vector4 rad) {

@@ -29,6 +29,10 @@ public static class ScadrialTheme {
             [ThemeSlot.StatusSuccess] = new Color(0.500f, 0.720f, 0.460f),
             [ThemeSlot.InteractionHover] = new Color(0.920f, 0.940f, 0.960f, 1.00f),
             [ThemeSlot.InteractionPress] = new Color(0.000f, 0.000f, 0.000f, 1.00f),
+            [ThemeSlot.AccentMuted] = new Color(0.320f, 0.450f, 0.600f, 0.85f),
+            [ThemeSlot.OverlayDim] = new Color(0.020f, 0.025f, 0.035f, 0.62f),
+            [ThemeSlot.MapPreviewTint] = new Color(0.165f, 0.185f, 0.220f, 1.00f),
+            [ThemeSlot.MetadataLabel] = new Color(0.420f, 0.450f, 0.495f),
         };
         return BaseTheme.Compose(colors, body, bodyBold, heading, display, mono);
     }

@@ -1,4 +1,4 @@
-using System.IO;
+using System;
 using Cosmere.Lightweave.Runtime;
 using UnityEngine;
 using Verse;
@@ -8,34 +8,104 @@ namespace Cosmere.Lightweave.Fonts;
 [StaticConstructorOnStartup]
 public static class FontLoader {
     private const string LightweavePackageId = "cryptiklemur.lightweave";
-    private const string FontsFolderName = "Fonts";
 
     static FontLoader() {
-        string? fontsDir = ResolveFontsDirectory();
-        if (fontsDir == null) {
-            LightweaveLog.Warning("Lightweave mod content path not resolved; fonts will not load.");
-            GameFontOverride.Apply();
-            return;
-        }
+        (string assetName, Action<Font?> setter)[] fonts = [
+            ("Arimo-Regular", f => LightweaveFonts.ArimoRegular = f),
+            ("Arimo-Bold", f => LightweaveFonts.ArimoBold = f),
+            ("Arimo-Italic", f => LightweaveFonts.ArimoItalic = f),
+            ("Carlito-Regular", f => LightweaveFonts.CarlitoRegular = f),
+            ("Carlito-Bold", f => LightweaveFonts.CarlitoBold = f),
+            ("Carlito-Italic", f => LightweaveFonts.CarlitoItalic = f),
+            ("Cinzel", f => LightweaveFonts.Cinzel = f),
+            ("IMFellEnglish-Regular", f => LightweaveFonts.IMFellEnglishRegular = f),
+            ("IMFellEnglish-Italic", f => LightweaveFonts.IMFellEnglishItalic = f),
+            ("IMFellEnglishSC", f => LightweaveFonts.IMFellEnglishSC = f),
+            ("JetBrainsMono", f => LightweaveFonts.JetBrainsMono = f),
+        ];
 
-        LightweaveFonts.ArimoRegular = LoadTtf(fontsDir, "Arimo-Regular.ttf");
-        LightweaveFonts.ArimoBold = LoadTtf(fontsDir, "Arimo-Bold.ttf");
-        LightweaveFonts.CarlitoRegular = LoadTtf(fontsDir, "Carlito-Regular.ttf");
-        LightweaveFonts.CarlitoBold = LoadTtf(fontsDir, "Carlito-Bold.ttf");
-        LightweaveFonts.JetBrainsMono = LoadTtf(fontsDir, "JetBrainsMono-Regular.ttf");
+        Dictionary<string, Font> bundleFonts = LoadFromBundles();
 
         int loaded = 0;
-        if (LightweaveFonts.ArimoRegular != null) loaded++;
-        if (LightweaveFonts.ArimoBold != null) loaded++;
-        if (LightweaveFonts.CarlitoRegular != null) loaded++;
-        if (LightweaveFonts.CarlitoBold != null) loaded++;
-        if (LightweaveFonts.JetBrainsMono != null) loaded++;
-        LightweaveLog.Message($"fonts loaded: {loaded}/5 from {fontsDir}.");
+        int fromBundle = 0;
+        int fromOs = 0;
+        foreach ((string assetName, Action<Font?> setter) entry in fonts) {
+            Font? font = null;
+            if (bundleFonts.TryGetValue(entry.assetName, out Font bundled)) {
+                font = bundled;
+                fromBundle++;
+            }
+            else {
+                font = TryLoadFromOs(entry.assetName);
+                if (font != null) {
+                    fromOs++;
+                }
+            }
+
+            entry.setter(font);
+            if (font != null) {
+                loaded++;
+            }
+            else {
+                LightweaveLog.Warning($"font {entry.assetName}: not in asset bundle and no dynamic OS match.");
+            }
+        }
+
+        LightweaveLog.Message(
+            $"fonts loaded: {loaded}/{fonts.Length} ({fromBundle} from bundle, {fromOs} from OS fallback)."
+        );
 
         GameFontOverride.Apply();
     }
 
-    private static string? ResolveFontsDirectory() {
+    private static Dictionary<string, Font> LoadFromBundles() {
+        Dictionary<string, Font> result = new Dictionary<string, Font>(StringComparer.OrdinalIgnoreCase);
+        ModContentPack? mod = FindLightweaveMod();
+        if (mod == null) {
+            LightweaveLog.Warning("Lightweave mod content pack not found; cannot load font asset bundle.");
+            return result;
+        }
+
+        ModAssetBundlesHandler? handler = mod.assetBundles;
+        List<AssetBundle>? bundles = handler?.loadedAssetBundles;
+        if (bundles == null || bundles.Count == 0) {
+            LightweaveLog.Warning(
+                "Lightweave has no loaded asset bundles; run `./make.ps1 generatables` to build them."
+            );
+            return result;
+        }
+
+        foreach (AssetBundle bundle in bundles) {
+            if (bundle == null) {
+                continue;
+            }
+
+            Font[]? fonts;
+            try {
+                fonts = bundle.LoadAllAssets<Font>();
+            }
+            catch (Exception ex) {
+                LightweaveLog.Warning($"failed to enumerate fonts in bundle '{bundle.name}': {ex.Message}");
+                continue;
+            }
+
+            if (fonts == null) {
+                continue;
+            }
+
+            foreach (Font font in fonts) {
+                if (font == null || string.IsNullOrEmpty(font.name)) {
+                    continue;
+                }
+
+                result[font.name] = font;
+            }
+        }
+
+        return result;
+    }
+
+    private static ModContentPack? FindLightweaveMod() {
         List<ModContentPack> mods = LoadedModManager.RunningModsListForReading;
         for (int i = 0; i < mods.Count; i++) {
             ModContentPack mod = mods[i];
@@ -43,49 +113,22 @@ public static class FontLoader {
                 continue;
             }
 
-            if (string.Equals(mod.PackageIdPlayerFacing, LightweavePackageId, System.StringComparison.OrdinalIgnoreCase)
-                || string.Equals(mod.PackageId, LightweavePackageId, System.StringComparison.OrdinalIgnoreCase)) {
-                return Path.Combine(mod.RootDir, FontsFolderName);
+            if (string.Equals(mod.PackageIdPlayerFacing, LightweavePackageId, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(mod.PackageId, LightweavePackageId, StringComparison.OrdinalIgnoreCase)) {
+                return mod;
             }
         }
 
         return null;
     }
 
-    private static Font? LoadTtf(string fontsDir, string filename) {
-        string path = Path.Combine(fontsDir, filename);
-        if (!File.Exists(path)) {
-            LightweaveLog.Warning($"font file missing: {path}");
-            return null;
-        }
-
-        Font? font = TryLoadFromPath(path);
-        if (font == null) {
-            LightweaveLog.Warning($"font load failed for {filename}; tried path constructor and OS fallback.");
-            return null;
-        }
-
-        return font;
-    }
-
-    private static Font? TryLoadFromPath(string path) {
-        string filename = Path.GetFileNameWithoutExtension(path);
-        string[] osNames = BuildOsNameCandidates(filename);
-
+    private static Font? TryLoadFromOs(string assetName) {
+        string[] osNames = BuildOsNameCandidates(assetName);
         Font? osFont = Font.CreateDynamicFontFromOSFont(osNames, 16);
         if (osFont != null && osFont.dynamic) {
             return osFont;
         }
 
-        // Path-based loads (Internal_CreateFontFromPath / Font(path) ctor) produce NON-dynamic
-        // Font objects. Unity floods "Font size and style overrides are only supported for dynamic
-        // fonts" on every Verse.Text call when those are wired into GUIStyle.font. So we only ship
-        // a font here if the OS already has it registered. Bundled TTFs that arent on the host OS
-        // get skipped, and consumers fall back to RimWorlds default fonts.
-        LightweaveLog.Warning(
-            $"font {filename}: no dynamic match on host OS (tried: {string.Join(", ", osNames)}). " +
-            "Bundled TTFs require OS-side font registration to load as dynamic; skipping."
-        );
         return null;
     }
 
@@ -96,6 +139,7 @@ public static class FontLoader {
 
         int dashIdx = filename.IndexOf('-');
         string family = dashIdx > 0 ? filename.Substring(0, dashIdx) : filename;
+        string suffix = dashIdx > 0 ? filename.Substring(dashIdx + 1) : string.Empty;
         if (family != filename) {
             names.Add(family);
         }
@@ -103,15 +147,27 @@ public static class FontLoader {
         string camelSpaced = SplitCamelCase(family);
         if (camelSpaced != family) {
             if (dashIdx > 0) {
-                names.Add(camelSpaced + " " + filename.Substring(dashIdx + 1));
+                names.Add(camelSpaced + " " + suffix);
             }
+
             names.Add(camelSpaced);
         }
 
-        if (family.Equals("JetBrainsMono", System.StringComparison.OrdinalIgnoreCase)) {
+        if (family.Equals("JetBrainsMono", StringComparison.OrdinalIgnoreCase)) {
             names.Add("JetBrainsMono Nerd Font");
             names.Add("JetBrains Mono Nerd Font");
             names.Add("JetBrainsMono NF");
+        }
+
+        if (family.StartsWith("IMFellEnglish", StringComparison.OrdinalIgnoreCase)) {
+            bool smallCaps = family.EndsWith("SC", StringComparison.OrdinalIgnoreCase);
+            string display = smallCaps ? "IM Fell English SC" : "IM Fell English";
+            string suffixPart = string.IsNullOrEmpty(suffix) ? string.Empty : " " + suffix;
+            names.Add(display + suffixPart);
+            names.Add(display);
+            if (smallCaps) {
+                names.Add("IM FELL DW Pica SC");
+            }
         }
 
         return names.ToArray();

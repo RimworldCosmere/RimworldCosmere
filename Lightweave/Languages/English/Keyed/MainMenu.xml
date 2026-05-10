@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CL_MainMenu_Toggle_CustomMenu>Custom menu</CL_MainMenu_Toggle_CustomMenu>
+    <CL_MainMenu_Wordmark>RIMW•RLD</CL_MainMenu_Wordmark>
+    <CL_MainMenu_WordmarkSub>A story generator by Tynan Sylvester</CL_MainMenu_WordmarkSub>
+
+    <CL_MainMenu_NewColony>New Colony</CL_MainMenu_NewColony>
+    <CL_MainMenu_LoadGame>Load</CL_MainMenu_LoadGame>
+    <CL_MainMenu_Tutorial>Tutorial</CL_MainMenu_Tutorial>
+    <CL_MainMenu_Mods>Mods</CL_MainMenu_Mods>
+    <CL_MainMenu_Options>Options</CL_MainMenu_Options>
+    <CL_MainMenu_More>More</CL_MainMenu_More>
+
+    <CL_MainMenu_Continue>CONTINUE</CL_MainMenu_Continue>
+    <CL_MainMenu_Continue_Action>▶  RESUME</CL_MainMenu_Continue_Action>
+    <CL_MainMenu_Day>Day {COUNT}</CL_MainMenu_Day>
+    <CL_MainMenu_YearAD>{YEAR} A.D.</CL_MainMenu_YearAD>
+
+    <CL_MainMenu_Stat_Colonists>colonists</CL_MainMenu_Stat_Colonists>
+    <CL_MainMenu_Stat_Animals>animals</CL_MainMenu_Stat_Animals>
+    <CL_MainMenu_Stat_Wealth>wealth</CL_MainMenu_Stat_Wealth>
+    <CL_MainMenu_Stat_Mood>mood</CL_MainMenu_Stat_Mood>
+    <CL_MainMenu_Stat_Threat>difficulty</CL_MainMenu_Stat_Threat>
+    <CL_MainMenu_Stat_Days>alive</CL_MainMenu_Stat_Days>
+
+    <CL_MainMenu_Stat_ColonistsLine>{COUNT} colonists</CL_MainMenu_Stat_ColonistsLine>
+    <CL_MainMenu_Stat_AnimalsLine>{COUNT} animals</CL_MainMenu_Stat_AnimalsLine>
+    <CL_MainMenu_Stat_WealthLine>{COUNT} wealth</CL_MainMenu_Stat_WealthLine>
+    <CL_MainMenu_Stat_MoodLine>mood {COUNT}</CL_MainMenu_Stat_MoodLine>
+    <CL_MainMenu_Stat_ThreatLine>▲ {THREAT}</CL_MainMenu_Stat_ThreatLine>
+    <CL_MainMenu_Stat_DaysAliveLine>{COUNT} days alive</CL_MainMenu_Stat_DaysAliveLine>
+    <CL_MainMenu_Stat_DifficultyLine>{COUNT}% difficulty</CL_MainMenu_Stat_DifficultyLine>
+    <CL_MainMenu_Stat_SavedLine>saved {WHEN}</CL_MainMenu_Stat_SavedLine>
+    <CL_MainMenu_Stat_Permadeath>permadeath</CL_MainMenu_Stat_Permadeath>
+
+    <CL_MainMenu_Welcome>Welcome to the Rim</CL_MainMenu_Welcome>
+    <CL_MainMenu_Welcome_Eyebrow>NEW HERE</CL_MainMenu_Welcome_Eyebrow>
+    <CL_MainMenu_Welcome_Hint>Start a new colony to begin. Saved games will appear here once you make some.</CL_MainMenu_Welcome_Hint>
+
+    <CL_MainMenu_Meta_Version>Version</CL_MainMenu_Meta_Version>
+    <CL_MainMenu_Meta_Build>Build</CL_MainMenu_Meta_Build>
+    <CL_MainMenu_Meta_BuildStamp>Compiled {DATE}</CL_MainMenu_Meta_BuildStamp>
+    <CL_MainMenu_Meta_Channel>Channel</CL_MainMenu_Meta_Channel>
+    <CL_MainMenu_Meta_ChannelDev>latest · dev</CL_MainMenu_Meta_ChannelDev>
+    <CL_MainMenu_Meta_ChannelStable>latest · stable</CL_MainMenu_Meta_ChannelStable>
+    <CL_MainMenu_Meta_Harmony>Harmony</CL_MainMenu_Meta_Harmony>
+    <CL_MainMenu_Meta_Layout>Scale</CL_MainMenu_Meta_Layout>
+    <CL_MainMenu_Meta_Mods>Mods</CL_MainMenu_Meta_Mods>
+    <CL_MainMenu_Meta_ModsLine>{TOTAL} active · {EXTRA} non-vanilla</CL_MainMenu_Meta_ModsLine>
+    <CL_MainMenu_Meta_Latest>Latest</CL_MainMenu_Meta_Latest>
+
+    <CL_MainMenu_Time_JustNow>just now</CL_MainMenu_Time_JustNow>
+    <CL_MainMenu_Time_MinutesAgo>{COUNT} min ago</CL_MainMenu_Time_MinutesAgo>
+    <CL_MainMenu_Time_HoursAgo>{COUNT} hr ago</CL_MainMenu_Time_HoursAgo>
+    <CL_MainMenu_Time_DaysAgo>{COUNT} d ago</CL_MainMenu_Time_DaysAgo>
+
+    <CL_MainMenu_Credits>Credits</CL_MainMenu_Credits>
+
+    <CL_MainMenu_Lang_HeaderTitle>LANGUAGE</CL_MainMenu_Lang_HeaderTitle>
+    <CL_MainMenu_Lang_HeaderCount>{COUNT} available</CL_MainMenu_Lang_HeaderCount>
+    <CL_MainMenu_Lang_SearchPlaceholder>Search languages</CL_MainMenu_Lang_SearchPlaceholder>
+    <CL_MainMenu_Lang_NoMatches>No languages match.</CL_MainMenu_Lang_NoMatches>
+    <CL_MainMenu_SteamWorkshop>Steam Workshop</CL_MainMenu_SteamWorkshop>
+    <CL_MainMenu_OfficialDiscord>Official Discord</CL_MainMenu_OfficialDiscord>
+    <CL_MainMenu_WikiTutorials>Wiki &amp; Tutorials</CL_MainMenu_WikiTutorials>
+    <CL_MainMenu_BugReport>Bug Report</CL_MainMenu_BugReport>
+    <CL_MainMenu_EulaLicenses>EULA &amp; Licenses</CL_MainMenu_EulaLicenses>
+    <CL_MainMenu_PrivacyPolicy>Privacy Policy</CL_MainMenu_PrivacyPolicy>
+    <CL_MainMenu_Playground>Lightweave Playground</CL_MainMenu_Playground>
+    <CL_MainMenu_DevQuickTest>Dev Quick Test</CL_MainMenu_DevQuickTest>
+    <CL_MainMenu_TranslationReport>Save Translation Report</CL_MainMenu_TranslationReport>
+    <CL_MainMenu_QuitToOS>Quit to Desktop</CL_MainMenu_QuitToOS>
+
+    <CL_MainMenu_More_Header>MORE</CL_MainMenu_More_Header>
+    <CL_MainMenu_More_Sub_Playground>Concept demo - not affiliated with Ludeon</CL_MainMenu_More_Sub_Playground>
+    <CL_MainMenu_More_Sub_Credits>Cast and dev team</CL_MainMenu_More_Sub_Credits>
+    <CL_MainMenu_More_Sub_SteamWorkshop>Browse mods</CL_MainMenu_More_Sub_SteamWorkshop>
+    <CL_MainMenu_More_Sub_OfficialDiscord>Community</CL_MainMenu_More_Sub_OfficialDiscord>
+    <CL_MainMenu_More_Sub_WikiTutorials>rimworldwiki.com</CL_MainMenu_More_Sub_WikiTutorials>
+    <CL_MainMenu_More_Sub_BugReport>Forums and GitHub issues</CL_MainMenu_More_Sub_BugReport>
+    <CL_MainMenu_More_Sub_QuitToOS>Saves not auto-saved will be lost</CL_MainMenu_More_Sub_QuitToOS>
+
+    <CL_MainMenu_Links>LINKS</CL_MainMenu_Links>
+    <CL_MainMenu_Link_LudeonBlog>Ludeon blog</CL_MainMenu_Link_LudeonBlog>
+    <CL_MainMenu_Link_TynanX>Tynan on X</CL_MainMenu_Link_TynanX>
+    <CL_MainMenu_Link_Subreddit>r/RimWorld</CL_MainMenu_Link_Subreddit>
+    <CL_MainMenu_Link_Wiki>RimWorld Wiki</CL_MainMenu_Link_Wiki>
+    <CL_MainMenu_Link_DesignBook>Designer's Book</CL_MainMenu_Link_DesignBook>
+    <CL_MainMenu_Link_FictionPrimer>Fiction Primer</CL_MainMenu_Link_FictionPrimer>
+    <CL_MainMenu_Link_HelpTranslate>Help translate</CL_MainMenu_Link_HelpTranslate>
+    <CL_MainMenu_PoweredBy>powered by</CL_MainMenu_PoweredBy>
+    <CL_MainMenu_ExpansionsActive>Expansions Active</CL_MainMenu_ExpansionsActive>
+</LanguageData>

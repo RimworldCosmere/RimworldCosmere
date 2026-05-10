@@ -10,15 +10,19 @@ using static Cosmere.Lightweave.Doc.DocChips;
 namespace Cosmere.Lightweave.Layout;
 
 public sealed class HStackBuilder {
-    internal readonly List<(LightweaveNode node, float width, bool flex)> Items =
-        new List<(LightweaveNode, float, bool)>();
+    internal readonly List<(LightweaveNode node, float width, bool flex, bool hug)> Items =
+        new List<(LightweaveNode, float, bool, bool)>();
 
     public void Add(LightweaveNode node, float width) {
-        Items.Add((node, width, false));
+        Items.Add((node, width, false, false));
     }
 
     public void AddFlex(LightweaveNode node) {
-        Items.Add((node, 0f, true));
+        Items.Add((node, 0f, true, false));
+    }
+
+    public void AddHug(LightweaveNode node) {
+        Items.Add((node, 0f, false, true));
     }
 }
 
@@ -66,11 +70,18 @@ public static class HStack {
             float fixedTotal = 0f;
             int flexCount = 0;
             for (int i = 0; i < count; i++) {
-                if (builder.Items[i].flex) {
+                var item = builder.Items[i];
+                if (item.flex) {
                     flexCount++;
                 }
+                else if (item.hug) {
+                    float w = item.node.MeasureWidth?.Invoke() ?? 0f;
+                    widths[i] = w;
+                    fixedTotal += w;
+                }
                 else {
-                    fixedTotal += builder.Items[i].width;
+                    widths[i] = item.width;
+                    fixedTotal += item.width;
                 }
             }
 
@@ -78,7 +89,9 @@ public static class HStack {
             float remainingForFlex = Mathf.Max(0f, availableWidth - fixedTotal - totalGap);
             float flexEach = flexCount > 0 ? remainingForFlex / flexCount : 0f;
             for (int i = 0; i < count; i++) {
-                widths[i] = builder.Items[i].flex ? flexEach : builder.Items[i].width;
+                if (builder.Items[i].flex) {
+                    widths[i] = flexEach;
+                }
             }
 
             return widths;
@@ -91,6 +104,30 @@ public static class HStack {
 
             return child.PreferredHeight ?? 0f;
         }
+
+        node.MeasureWidth = () => {
+            if (count == 0) {
+                return 0f;
+            }
+            float gapPx = ResolveGapPx();
+            float total = 0f;
+            int counted = 0;
+            for (int i = 0; i < count; i++) {
+                var item = builder.Items[i];
+                if (item.flex) {
+                    continue;
+                }
+                if (item.hug) {
+                    total += item.node.MeasureWidth?.Invoke() ?? 0f;
+                }
+                else {
+                    total += item.width;
+                }
+                counted++;
+            }
+            float totalGap = gapPx * Math.Max(0, counted - 1);
+            return total + totalGap;
+        };
 
         node.Measure = availableWidth => {
             if (count == 0) {

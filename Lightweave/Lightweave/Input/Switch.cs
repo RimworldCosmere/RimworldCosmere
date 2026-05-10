@@ -41,6 +41,16 @@ public static class Switch {
 
         LightweaveNode node = NodeBuilder.New($"Switch:{label}", line, file);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
+        node.MeasureWidth = () => {
+            Theme.Theme theme = RenderContext.Current.Theme;
+            Font labelFont = theme.GetFont(FontRole.Body);
+            int labelPixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
+            GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelPixelSize);
+            float labelWidth = labelStyle.CalcSize(new GUIContent(label)).x;
+            float trackWidth = new Rem(2.5f).ToPixels();
+            float gapPx = new Rem(0.5f).ToPixels();
+            return trackWidth + gapPx + labelWidth;
+        };
 
         node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;

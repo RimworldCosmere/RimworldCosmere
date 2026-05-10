@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CL_ModsConfig_Title>Mods</CL_ModsConfig_Title>
+    <CL_ModsConfig_Save>Save</CL_ModsConfig_Save>
+    <CL_ModsConfig_Empty_Eyebrow>NOTHING TO SHOW</CL_ModsConfig_Empty_Eyebrow>
+    <CL_ModsConfig_Empty_Body>Select a mod from the list to inspect.</CL_ModsConfig_Empty_Body>
+
+    <CL_ModsConfig_Section_Active>Active</CL_ModsConfig_Section_Active>
+    <CL_ModsConfig_Section_Inactive>Inactive</CL_ModsConfig_Section_Inactive>
+
+    <CL_ModsConfig_Source_Core>Core</CL_ModsConfig_Source_Core>
+    <CL_ModsConfig_Source_Expansion>Expansion</CL_ModsConfig_Source_Expansion>
+    <CL_ModsConfig_Source_Workshop>Workshop</CL_ModsConfig_Source_Workshop>
+    <CL_ModsConfig_Source_Local>Local</CL_ModsConfig_Source_Local>
+
+    <CL_ModsConfig_AuthorByline>by {AUTHOR}</CL_ModsConfig_AuthorByline>
+    <CL_ModsConfig_Dependencies>Dependencies</CL_ModsConfig_Dependencies>
+
+    <CL_ModsConfig_Stat_Status>Status</CL_ModsConfig_Stat_Status>
+    <CL_ModsConfig_Stat_Version>Version</CL_ModsConfig_Stat_Version>
+    <CL_ModsConfig_Stat_PackageId>Package ID</CL_ModsConfig_Stat_PackageId>
+    <CL_ModsConfig_Stat_Source>Source</CL_ModsConfig_Stat_Source>
+
+    <CL_ModsConfig_Status_Active>Active</CL_ModsConfig_Status_Active>
+    <CL_ModsConfig_Status_Inactive>Inactive</CL_ModsConfig_Status_Inactive>
+
+    <CL_ModsConfig_Actions>Actions</CL_ModsConfig_Actions>
+    <CL_ModsConfig_Action_Activate>Activate</CL_ModsConfig_Action_Activate>
+    <CL_ModsConfig_Action_Deactivate>Deactivate</CL_ModsConfig_Action_Deactivate>
+    <CL_ModsConfig_Action_Enable>Enable Mod</CL_ModsConfig_Action_Enable>
+    <CL_ModsConfig_Action_Disable>Disable Mod</CL_ModsConfig_Action_Disable>
+    <CL_ModsConfig_Action_MoveUp>Move Up in Load Order</CL_ModsConfig_Action_MoveUp>
+    <CL_ModsConfig_Action_MoveDown>Move Down in Load Order</CL_ModsConfig_Action_MoveDown>
+    <CL_ModsConfig_Action_Workshop>Open in Workshop</CL_ModsConfig_Action_Workshop>
+    <CL_ModsConfig_Action_Url>Open Page</CL_ModsConfig_Action_Url>
+    <CL_ModsConfig_Action_Close>Close</CL_ModsConfig_Action_Close>
+</LanguageData>

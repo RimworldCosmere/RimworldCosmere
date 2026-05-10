@@ -12,6 +12,7 @@ public sealed class LightweaveNode {
     public object? ExplicitKey;
     public bool IsFooter;
     public Func<float, float>? Measure;
+    public Func<float>? MeasureWidth;
     public Func<Rect, List<Rect>>? MeasureChildren;
     public Rect MeasuredRect;
     public Action<Rect, Action>? Paint;

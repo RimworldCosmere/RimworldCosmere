@@ -95,7 +95,7 @@ var root = Path.GetFullPath(Path.Combine(scriptDir, ".."));
 Console.WriteLine($"Force rebuild: {forceRebuild}");
 
 // ---------- Install/Update AssetBundleBuilder if needed ----------
-const string RequiredToolVersion = "4.0.0";
+const string RequiredToolVersion = "4.1.0";
 Console.WriteLine($"Checking for AssetBundleBuilder tool (version {RequiredToolVersion})...");
 
 var checkProc = Process.Start(new ProcessStartInfo

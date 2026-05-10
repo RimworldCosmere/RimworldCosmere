@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CL_Options_Title>Options</CL_Options_Title>
+    <CL_Options_ResetCategory>Reset category</CL_Options_ResetCategory>
+    <CL_Dialog_Crumb_Main>Main</CL_Dialog_Crumb_Main>
+
+    <CL_Options_Tab_General>General</CL_Options_Tab_General>
+    <CL_Options_Tab_Gameplay>Gameplay</CL_Options_Tab_Gameplay>
+    <CL_Options_Tab_Graphics>Graphics</CL_Options_Tab_Graphics>
+    <CL_Options_Tab_Audio>Audio</CL_Options_Tab_Audio>
+    <CL_Options_Tab_Controls>Controls</CL_Options_Tab_Controls>
+    <CL_Options_Tab_Interface>Interface</CL_Options_Tab_Interface>
+    <CL_Options_Tab_ModSettings>Mod options</CL_Options_Tab_ModSettings>
+    <CL_Options_Tab_Developer>Developer</CL_Options_Tab_Developer>
+
+    <CL_Options_Section_General>General</CL_Options_Section_General>
+    <CL_Options_PreferredNames>Preferred names</CL_Options_PreferredNames>
+    <CL_Options_PreferredNames_Action>Add name...</CL_Options_PreferredNames_Action>
+    <CL_Options_HatsOnlyOnMap>Hide hats on UI</CL_Options_HatsOnlyOnMap>
+
+    <CL_Options_Section_Saves>Saves</CL_Options_Section_Saves>
+    <CL_Options_Section_Combat>Combat &amp; difficulty</CL_Options_Section_Combat>
+    <CL_Options_Section_Storyteller>Storyteller</CL_Options_Section_Storyteller>
+    <CL_Options_Section_Names>Preferred names</CL_Options_Section_Names>
+    <CL_Options_Section_Display>Display</CL_Options_Section_Display>
+    <CL_Options_Section_Visual>Visual</CL_Options_Section_Visual>
+    <CL_Options_Section_Mix>Mix</CL_Options_Section_Mix>
+    <CL_Options_Section_Mouse>Mouse</CL_Options_Section_Mouse>
+    <CL_Options_Section_Bindings>Key bindings</CL_Options_Section_Bindings>
+    <CL_Options_Section_Lightweave>Lightweave</CL_Options_Section_Lightweave>
+    <CL_Options_Section_Interface>Interface</CL_Options_Section_Interface>
+    <CL_Options_Section_Language>Language</CL_Options_Section_Language>
+    <CL_Options_Section_Display_Modes>Display modes</CL_Options_Section_Display_Modes>
+    <CL_Options_Section_Background>Background</CL_Options_Section_Background>
+    <CL_Options_Section_ModSettings>Installed mods</CL_Options_Section_ModSettings>
+    <CL_Options_Section_Developer>Developer</CL_Options_Section_Developer>
+    <CL_Options_Section_Files>Files</CL_Options_Section_Files>
+    <CL_Options_Section_Reset>Reset</CL_Options_Section_Reset>
+
+    <CL_Options_Autosave_Interval>Autosave interval</CL_Options_Autosave_Interval>
+    <CL_Options_Autosave_Slots>Autosave slots</CL_Options_Autosave_Slots>
+    <CL_Options_PauseOnLoad>Pause on load</CL_Options_PauseOnLoad>
+    <CL_Options_AutoPauseMode>Auto-pause mode</CL_Options_AutoPauseMode>
+    <CL_Options_MaxSettlements>Max player settlements</CL_Options_MaxSettlements>
+    <CL_Options_AdaptiveTraining>Adaptive training</CL_Options_AdaptiveTraining>
+    <CL_Options_ResetTutor>Reset learning helper</CL_Options_ResetTutor>
+    <CL_Options_ResetTutor_Action>Reset</CL_Options_ResetTutor_Action>
+    <CL_Options_DisableQuickStart>Disable quickstart cryptosickness</CL_Options_DisableQuickStart>
+    <CL_Options_ChangeStoryteller>Change storyteller</CL_Options_ChangeStoryteller>
+    <CL_Options_ChangeStoryteller_Action>Modify</CL_Options_ChangeStoryteller_Action>
+
+    <CL_Options_Resolution>Resolution</CL_Options_Resolution>
+    <CL_Options_Fullscreen>Fullscreen</CL_Options_Fullscreen>
+    <CL_Options_UIScale>UI scale</CL_Options_UIScale>
+    <CL_Options_PlantWindSway>Plant wind sway</CL_Options_PlantWindSway>
+    <CL_Options_HatsOnlyOnMap>Hats only on map</CL_Options_HatsOnlyOnMap>
+    <CL_Options_TextureCompression>Texture compression</CL_Options_TextureCompression>
+    <CL_Options_ScreenShake>Screen shake</CL_Options_ScreenShake>
+    <CL_Options_SmoothCamera>Smooth camera jumps</CL_Options_SmoothCamera>
+    <CL_Options_GravshipCutscenes>Gravship cutscenes</CL_Options_GravshipCutscenes>
+
+    <CL_Options_Volume_Master>Master</CL_Options_Volume_Master>
+    <CL_Options_Volume_Music>Music</CL_Options_Volume_Music>
+    <CL_Options_Volume_SoundEffects>Sound effects</CL_Options_Volume_SoundEffects>
+    <CL_Options_Volume_Ambient>Ambient</CL_Options_Volume_Ambient>
+    <CL_Options_Volume_UI>UI</CL_Options_Volume_UI>
+
+    <CL_Options_EdgeScroll>Edge scroll</CL_Options_EdgeScroll>
+    <CL_Options_ZoomToMouse>Zoom to mouse</CL_Options_ZoomToMouse>
+    <CL_Options_ZoomSwitchLayer>Zoom switches world layer</CL_Options_ZoomSwitchLayer>
+    <CL_Options_RememberDrawStyle>Remember draw style</CL_Options_RememberDrawStyle>
+    <CL_Options_MapDragSensitivity>Map drag sensitivity</CL_Options_MapDragSensitivity>
+    <CL_Options_KeyBindings>Configure key bindings</CL_Options_KeyBindings>
+    <CL_Options_KeyBindings_Action>Configure</CL_Options_KeyBindings_Action>
+    <CL_Options_Bindings_Hint>Per-action key bindings remain in the vanilla key configuration screen for now.</CL_Options_Bindings_Hint>
+
+    <CL_Options_Language>Language</CL_Options_Language>
+    <CL_Options_FontScale>Font scale</CL_Options_FontScale>
+    <CL_Options_ReduceMotion>Reduce motion</CL_Options_ReduceMotion>
+    <CL_Options_VisibleMood>Visible mood</CL_Options_VisibleMood>
+    <CL_Options_RealtimeClock>Show realtime clock</CL_Options_RealtimeClock>
+    <CL_Options_TwelveHourClock>12-hour clock</CL_Options_TwelveHourClock>
+    <CL_Options_RunInBackground>Run in background</CL_Options_RunInBackground>
+    <CL_Options_TemperatureMode>Temperature units</CL_Options_TemperatureMode>
+    <CL_Options_WeaponsUnderPortrait>Weapons under portrait</CL_Options_WeaponsUnderPortrait>
+    <CL_Options_AnimalNames>Animal names</CL_Options_AnimalNames>
+    <CL_Options_MechNames>Mech names</CL_Options_MechNames>
+    <CL_Options_DotHighlight>Dot highlight</CL_Options_DotHighlight>
+    <CL_Options_HighlightStyle>Highlight style</CL_Options_HighlightStyle>
+    <CL_Options_BackgroundImage>Menu background</CL_Options_BackgroundImage>
+    <CL_Options_BackgroundRandom>Random</CL_Options_BackgroundRandom>
+    <CL_Options_DisableTinyText>Disable tiny text</CL_Options_DisableTinyText>
+    <CL_Options_CustomCursor>Custom cursor</CL_Options_CustomCursor>
+
+    <CL_Options_DevMode>Development mode</CL_Options_DevMode>
+    <CL_Options_LogVerbose>Verbose logging</CL_Options_LogVerbose>
+    <CL_Options_OpenLogOnWarnings>Open log on warnings</CL_Options_OpenLogOnWarnings>
+    <CL_Options_ResetModsConfigOnCrash>Reset mods config on crash</CL_Options_ResetModsConfigOnCrash>
+    <CL_Options_TestMapSizes>Enable test map sizes</CL_Options_TestMapSizes>
+    <CL_Options_StartDevPalette>Start dev palette open</CL_Options_StartDevPalette>
+    <CL_Options_CloseLogOnEsc>Close log window on escape</CL_Options_CloseLogOnEsc>
+    <CL_Options_DisableDevMode>Permanently disable dev mode</CL_Options_DisableDevMode>
+    <CL_Options_DisableDevMode_Action>Disable</CL_Options_DisableDevMode_Action>
+    <CL_Options_SaveFolder>Save game folder</CL_Options_SaveFolder>
+    <CL_Options_SaveFolder_Action>Open</CL_Options_SaveFolder_Action>
+    <CL_Options_LogFolder>Log file folder</CL_Options_LogFolder>
+    <CL_Options_LogFolder_Action>Open</CL_Options_LogFolder_Action>
+    <CL_Options_RestoreDefaults>Restore default settings</CL_Options_RestoreDefaults>
+    <CL_Options_RestoreDefaults_Action>Restore</CL_Options_RestoreDefaults_Action>
+</LanguageData>

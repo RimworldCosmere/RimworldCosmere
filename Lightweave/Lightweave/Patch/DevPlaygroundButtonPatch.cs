@@ -4,6 +4,7 @@ using System.Reflection;
 using Cosmere.Lightweave.Input;
 using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Runtime;
+using Cosmere.Lightweave.Settings;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -33,6 +34,12 @@ public static class DevPlaygroundButtonPatch {
             return;
         }
 
+        if (Current.ProgramState == ProgramState.Entry
+            && LightweaveMod.Settings != null
+            && LightweaveMod.Settings.RedesignMainMenu) {
+            return;
+        }
+
         Rect rect = new Rect(
             UI.screenWidth - ButtonWidth - Margin,
             UI.screenHeight - ButtonHeight - Margin,
@@ -43,6 +50,8 @@ public static class DevPlaygroundButtonPatch {
         LightweaveRoot.Render(rect, RootId, BuildButton);
     }
 
+    
+
     private static LightweaveNode BuildButton() {
         return Button.Create(
             label: "CL_DevButton_Playground".Translate(),
@@ -52,7 +61,7 @@ public static class DevPlaygroundButtonPatch {
         );
     }
 
-    private static void OpenPlayground() {
+    public static void OpenPlayground() {
         if (Find.WindowStack.IsOpen<LightweavePlayground>()) {
             return;
         }

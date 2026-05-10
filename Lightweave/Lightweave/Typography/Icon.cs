@@ -33,11 +33,12 @@ public static partial class Typography {
             [CallerFilePath] string file = ""
         ) {
             LightweaveNode node = NodeBuilder.New("Icon", line, file);
-            node.PreferredHeight = (size ?? new Rem(1.5f)).ToPixels();
+            float pxSize = (size ?? new Rem(1.5f)).ToPixels();
+            node.PreferredHeight = pxSize;
+            node.MeasureWidth = () => pxSize;
             node.Paint = (rect, _) => {
                 Theme.Theme theme = RenderContext.Current.Theme;
-                float px = (size ?? new Rem(1.5f)).ToPixels();
-                float drawPx = Mathf.Min(px, Mathf.Min(rect.width, rect.height));
+                float drawPx = Mathf.Min(pxSize, Mathf.Min(rect.width, rect.height));
                 Rect r = new Rect(
                     rect.x + (rect.width - drawPx) / 2f,
                     rect.y + (rect.height - drawPx) / 2f,

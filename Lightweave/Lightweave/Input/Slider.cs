@@ -40,11 +40,13 @@ public static class Slider {
         int liveThrottleFrames = 10,
         [DocParam("Minimum frames between label string re-formats during drag. Default 3 (~20Hz at 60fps).")]
         int labelThrottleFrames = 3,
+        [DocParam("When false, the slider does not render its own readout label band (use this when the readout is rendered externally, e.g. by SliderWithReadout).")]
+        bool showReadout = true,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("Slider", line, file);
-        node.PreferredHeight = new Rem(2.25f).ToPixels();
+        node.PreferredHeight = (showReadout ? new Rem(2.25f) : new Rem(1.25f)).ToPixels();
 
         node.Paint = (rect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
@@ -58,7 +60,7 @@ public static class Slider {
             Hooks.Hooks.RefHandle<int> lastLabelFrame = Hooks.Hooks.UseRef(int.MinValue, line, file + "#labelFrame");
             Hooks.Hooks.RefHandle<float> lastLabelValue = Hooks.Hooks.UseRef(float.NaN, line, file + "#labelValue");
 
-            float labelBandHeight = new Rem(1f).ToPixels();
+            float labelBandHeight = showReadout ? new Rem(1f).ToPixels() : 0f;
             float trackBandHeight = new Rem(1.25f).ToPixels();
             float trackThickness = new Rem(0.5f).ToPixels();
             float thumbSize = new Rem(1f).ToPixels();
@@ -186,7 +188,7 @@ public static class Slider {
                 );
             }
 
-            if (Event.current.type == EventType.Repaint) {
+            if (showReadout && Event.current.type == EventType.Repaint) {
                 int currentFrame = Time.frameCount;
                 int labelThrottle = Mathf.Max(0, labelThrottleFrames);
                 bool valueChanged = !Mathf.Approximately(lastLabelValue.Current, clampedValue);

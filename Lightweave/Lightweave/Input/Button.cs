@@ -17,11 +17,11 @@ namespace Cosmere.Lightweave.Input;
 )]
 public static class Button {
     public static LightweaveNode Create(
-        [DocParam("Text rendered inside the button.")]
+        [DocParam("Text rendered inside the button. Ignored when body is provided.")]
         string label,
         [DocParam("Action invoked on left mouse up while hovering.")]
         Action? onClick,
-        [DocParam("Visual variant: Primary, Secondary, Ghost, or Danger.")]
+        [DocParam("Visual variant: Primary, Secondary, Ghost, Danger, or Dock.")]
         ButtonVariant variant = ButtonVariant.Primary,
         [DocParam("Optional node painted on the leading edge.")]
         LightweaveNode? leading = null,
@@ -33,13 +33,20 @@ public static class Button {
         bool disabled = false,
         [DocParam("When true, button stretches to fill the allocated width. Default sizes to label + padding.")]
         bool fullWidth = false,
+        [DocParam("When true, button stretches to fill the allocated height. Default uses an intrinsic 1.75rem (or `height` if set).")]
+        bool fillHeight = false,
         [DocParam("Override hover sound. Null = component default (true).")]
         bool? playHoverSound = null,
+        [DocParam("Optional content node painted inside the button instead of the label. Used for non-text bodies (e.g. dock tiles with stacked label + hotkey).")]
+        LightweaveNode? body = null,
+        [DocParam("Override intrinsic height. Null = 1.75rem.")]
+        Rem? height = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Button:{label}", line, file);
-        node.PreferredHeight = new Rem(1.75f).ToPixels();
+        float intrinsicHeightPx = (height ?? new Rem(1.75f)).ToPixels();
+        node.PreferredHeight = intrinsicHeightPx;
 
         if (leading != null) {
             node.Children.Add(leading);
@@ -49,13 +56,17 @@ public static class Button {
             node.Children.Add(trailing);
         }
 
+        if (body != null) {
+            node.Children.Add(body);
+        }
+
         node.Paint = (allocatedRect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
 
-            float desiredHeight = new Rem(1.75f).ToPixels();
-            float h = Mathf.Min(desiredHeight, allocatedRect.height);
-            float yOffset = (allocatedRect.height - h) * 0.5f;
+            float desiredHeight = intrinsicHeightPx;
+            float h = fillHeight ? allocatedRect.height : Mathf.Min(desiredHeight, allocatedRect.height);
+            float yOffset = fillHeight ? 0f : (allocatedRect.height - h) * 0.5f;
 
             float padPx = SpacingScale.Sm.ToPixels();
             float iconSize = Mathf.Min(h - padPx, new Rem(1.25f).ToPixels());
@@ -65,7 +76,7 @@ public static class Button {
             GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
             style.alignment = TextAnchor.MiddleCenter;
 
-            float labelWidth = string.IsNullOrEmpty(label)
+            float labelWidth = string.IsNullOrEmpty(label) || body != null
                 ? 0f
                 : style.CalcSize(new GUIContent(label)).x;
             float iconAllowance = (leading != null ? iconSize + padPx : 0f)
@@ -73,7 +84,7 @@ public static class Button {
             float naturalWidth = labelWidth + iconAllowance + padPx * 2f;
 
             Rect rect;
-            if (fullWidth) {
+            if (fullWidth || body != null) {
                 rect = new Rect(allocatedRect.x, allocatedRect.y + yOffset, allocatedRect.width, h);
             }
             else {
@@ -86,17 +97,35 @@ public static class Button {
 
             InteractionState state = InteractionState.Resolve(rect, null, disabled);
 
-            ThemeSlot bgSlot = ButtonVariants.Background(variant, state);
             ThemeSlot fgSlot = ButtonVariants.Foreground(variant, state);
             ThemeSlot? borderSlot = ButtonVariants.Border(variant, state);
-
-            BackgroundSpec bg = BackgroundSpec.Of(bgSlot);
+            RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
             BorderSpec? border = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
-            RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
 
-            PaintBox.Draw(rect, bg, border, radius);
+            if (variant == ButtonVariant.Dock) {
+                bool active = state.Hovered || state.Pressed;
+                BackdropBlur.Draw(rect, active ? 8f : 6f);
+                Color translucent = new Color(20f / 255f, 16f / 255f, 11f / 255f, active ? 0.88f : 0.78f);
+                PaintBox.Draw(rect, BackgroundSpec.Of(translucent), border, radius);
+            }
+            else {
+                ThemeSlot bgSlot = ButtonVariants.Background(variant, state);
+                BackgroundSpec bg;
+                if (variant == ButtonVariant.Primary && !state.Pressed && !disabled) {
+                    Color top = theme.GetColor(bgSlot);
+                    Color.RGBToHSV(top, out float hue, out float sat, out float val);
+                    Color bottom = Color.HSVToRGB(hue, sat, val * 0.78f);
+                    bottom.a = top.a;
+                    bg = new BackgroundSpec.Gradient(GradientTextureCache.Vertical(top, bottom));
+                }
+                else {
+                    bg = BackgroundSpec.Of(bgSlot);
+                }
+
+                PaintBox.Draw(rect, bg, border, radius);
+            }
 
             float overlay = ButtonVariants.OverlayAlpha(state);
             if (overlay > 0f) {
@@ -150,16 +179,22 @@ public static class Button {
                 }
             }
 
-            Color fg = foregroundOverride switch {
-                ColorRef.Literal lit => lit.Value,
-                ColorRef.Token tok => theme.GetColor(tok.Slot),
-                _ => theme.GetColor(fgSlot),
-            };
+            if (body != null) {
+                body.MeasuredRect = rect;
+                LightweaveRoot.PaintSubtree(body, rect);
+            }
+            else {
+                Color fg = foregroundOverride switch {
+                    ColorRef.Literal lit => lit.Value,
+                    ColorRef.Token tok => theme.GetColor(tok.Slot),
+                    _ => theme.GetColor(fgSlot),
+                };
 
-            Color savedColor = GUI.color;
-            GUI.color = fg;
-            GUI.Label(RectSnap.Snap(labelRect), label, style);
-            GUI.color = savedColor;
+                Color savedColor = GUI.color;
+                GUI.color = fg;
+                GUI.Label(RectSnap.Snap(labelRect), label, style);
+                GUI.color = savedColor;
+            }
 
             paintChildren();
 

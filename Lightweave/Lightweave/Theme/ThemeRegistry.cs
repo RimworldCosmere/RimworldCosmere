@@ -62,7 +62,7 @@ public static class ThemeRegistry {
         Font? body = LightweaveFonts.ArimoRegular;
         Font? bodyBold = LightweaveFonts.ArimoBold;
         Font? heading = LightweaveFonts.ArimoBold;
-        Font? display = LightweaveFonts.CarlitoBold;
+        Font? display = LightweaveFonts.Cinzel ?? LightweaveFonts.CarlitoBold;
         Font? mono = LightweaveFonts.JetBrainsMono;
         if (body == null || bodyBold == null || heading == null || display == null || mono == null) {
             throw new InvalidOperationException(

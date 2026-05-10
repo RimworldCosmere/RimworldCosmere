@@ -37,7 +37,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
             "CL_Playground_Category_Inputs",
             "CL_Playground_Category_Inputs_Desc",
             new[] {
-                "textfield", "checkbox", "switch", "radio", "slider", "textarea", "numberfield", "searchfield",
+                "textfield", "checkbox", "switch", "radio", "slider", "slider-readout", "textarea", "numberfield", "searchfield",
                 "dropdown", "colorpicker", "keybinding",
             }
         ),
@@ -45,19 +45,19 @@ public sealed class LightweavePlayground : LightweaveWindow {
             "feedback",
             "CL_Playground_Category_Feedback",
             "CL_Playground_Category_Feedback_Desc",
-            new[] { "spinner", "progressbar", "ringgauge", "badge", "tooltip" }
+            new[] { "spinner", "progressbar", "ringgauge", "badge", "pill", "tooltip" }
         ),
         new PlaygroundCategory(
             "navigation",
             "CL_Playground_Category_Navigation",
             "CL_Playground_Category_Navigation_Desc",
-            new[] { "tabs", "segmented", "breadcrumbs", "menu", "contextmenu", "accordion", "sidenav" }
+            new[] { "tabs", "segmented", "breadcrumbs", "menu", "menu-row", "contextmenu", "accordion", "sidenav" }
         ),
         new PlaygroundCategory(
             "overlay",
             "CL_Playground_Category_Overlay",
             "CL_Playground_Category_Overlay_Desc",
-            new[] { "window", "dialog", "popover", "drawer", "toast" }
+            new[] { "window", "dialog", "dialog-header", "popover", "drawer", "toast" }
         ),
         new PlaygroundCategory(
             "data",
@@ -76,6 +76,16 @@ public sealed class LightweavePlayground : LightweaveWindow {
             "CL_Playground_Category_Tokens",
             "CL_Playground_Category_Tokens_Desc",
             new[] { "rem", "breakpoints" }
+        ),
+        new PlaygroundCategory(
+            "blocks",
+            "CL_Playground_Category_Blocks",
+            "CL_Playground_Category_Blocks_Desc",
+            new[] {
+                "block-main-menu-root", "block-title-hero", "block-continue-card", "block-expansion-row",
+                "block-metadata-table", "block-menu-buttons", "block-dock-tile", "block-more-button",
+                "block-more-popover", "block-accent-stripe", "block-lightweave-wordmark",
+            }
         ),
     };
 
@@ -111,6 +121,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
         { "switch", "Lightweave/Lightweave/Input/Switch.cs" },
         { "radio", "Lightweave/Lightweave/Input/Radio.cs" },
         { "slider", "Lightweave/Lightweave/Input/Slider.cs" },
+        { "slider-readout", "Lightweave/Lightweave/Input/SliderWithReadout.cs" },
         { "textarea", "Lightweave/Lightweave/Input/TextArea.cs" },
         { "numberfield", "Lightweave/Lightweave/Input/NumberField.cs" },
         { "searchfield", "Lightweave/Lightweave/Input/SearchField.cs" },
@@ -122,16 +133,19 @@ public sealed class LightweavePlayground : LightweaveWindow {
         { "ringgauge", "Lightweave/Lightweave/Feedback/RingGauge.cs" },
         { "chart", "Lightweave/Lightweave/Feedback/Chart.cs" },
         { "badge", "Lightweave/Lightweave/Feedback/Badge.cs" },
+        { "pill", "Lightweave/Lightweave/Feedback/Pill.cs" },
         { "tooltip", "Lightweave/Lightweave/Feedback/Tooltip.cs" },
         { "tabs", "Lightweave/Lightweave/Navigation/Tabs.cs" },
         { "segmented", "Lightweave/Lightweave/Navigation/Segmented.cs" },
         { "breadcrumbs", "Lightweave/Lightweave/Navigation/Breadcrumbs.cs" },
         { "menu", "Lightweave/Lightweave/Navigation/Menu.cs" },
+        { "menu-row", "Lightweave/Lightweave/Navigation/MenuRow.cs" },
         { "contextmenu", "Lightweave/Lightweave/Navigation/ContextMenu.cs" },
         { "accordion", "Lightweave/Lightweave/Navigation/Accordion.cs" },
         { "sidenav", "Lightweave/Lightweave/Playground/PlaygroundRail.cs" },
         { "window", "Lightweave/Lightweave/Runtime/LightweaveWindow.cs" },
         { "dialog", "Lightweave/Lightweave/Overlay/Dialog.cs" },
+        { "dialog-header", "Lightweave/Lightweave/Layout/DialogHeader.cs" },
         { "popover", "Lightweave/Lightweave/Overlay/Popover.cs" },
         { "drawer", "Lightweave/Lightweave/Overlay/Drawer.cs" },
         { "toast", "Lightweave/Lightweave/Overlay/Toast.cs" },
@@ -144,6 +158,16 @@ public sealed class LightweavePlayground : LightweaveWindow {
         { "usefocus", "Lightweave/Lightweave/Hooks/Hooks.cs" },
         { "usehotkey", "Lightweave/Lightweave/Hooks/Hooks.cs" },
         { "breakpoints", "Lightweave/Lightweave/Tokens/Breakpoint.cs" },
+        { "block-main-menu-root", "Lightweave/Lightweave/MainMenu/MainMenuRoot.cs" },
+        { "block-title-hero", "Lightweave/Lightweave/MainMenu/TitleHero.cs" },
+        { "block-continue-card", "Lightweave/Lightweave/MainMenu/ContinueCard.cs" },
+        { "block-expansion-row", "Lightweave/Lightweave/MainMenu/ExpansionRow.cs" },
+        { "block-metadata-table", "Lightweave/Lightweave/MainMenu/MetadataTable.cs" },
+        { "block-menu-buttons", "Lightweave/Lightweave/MainMenu/MenuButtons.cs" },
+        { "block-dock-tile", "Lightweave/Lightweave/MainMenu/DockTile.cs" },
+        { "block-more-button", "Lightweave/Lightweave/MainMenu/MoreButton.cs" },
+        { "block-accent-stripe", "Lightweave/Lightweave/MainMenu/LightweaveBranding.cs" },
+        { "block-lightweave-wordmark", "Lightweave/Lightweave/MainMenu/LightweaveBranding.cs" },
     };
 
     private static readonly Dictionary<string, float> DemoRowHeights = new Dictionary<string, float> {

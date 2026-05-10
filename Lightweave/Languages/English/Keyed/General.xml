@@ -5,4 +5,5 @@
     <CL_KeyBindingField_Recording>Press a key...</CL_KeyBindingField_Recording>
     <CL_FontSize>Font size</CL_FontSize>
     <CL_DevButton_Playground>Lightweave Playground</CL_DevButton_Playground>
+    <CL_Menu_NoMatches>No matches.</CL_Menu_NoMatches>
 </LanguageData>

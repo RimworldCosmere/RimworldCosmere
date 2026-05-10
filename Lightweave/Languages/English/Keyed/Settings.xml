@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CL_Settings_Title>Lightweave</CL_Settings_Title>
+    <CL_Settings_Subtitle>UI library and main-menu redesign.</CL_Settings_Subtitle>
+
+    <CL_Settings_FontSize_Heading>Font size</CL_Settings_FontSize_Heading>
+    <CL_Settings_FontSize_Help>Scales every Lightweave-rendered surface. Vanilla UI is unaffected.</CL_Settings_FontSize_Help>
+
+    <CL_Settings_MainMenu_Heading>Main menu</CL_Settings_MainMenu_Heading>
+    <CL_Settings_MainMenu_Redesign>Use Lightweave main menu</CL_Settings_MainMenu_Redesign>
+    <CL_Settings_MainMenu_Redesign_Tip>Replace the vanilla title screen with the Lightweave layout. Disable to fall back to RimWorld's stock menu.</CL_Settings_MainMenu_Redesign_Tip>
+    <CL_Settings_MainMenu_ParseSaves>Show last save details</CL_Settings_MainMenu_ParseSaves>
+    <CL_Settings_MainMenu_ParseSaves_Tip>Read the most recent .rws header to surface colony name and tick count on the Continue card. Adds a small one-time disk read.</CL_Settings_MainMenu_ParseSaves_Tip>
+
+    <CL_Settings_Accessibility_Heading>Accessibility</CL_Settings_Accessibility_Heading>
+    <CL_Settings_ReduceMotion>Reduce motion</CL_Settings_ReduceMotion>
+    <CL_Settings_ReduceMotion_Tip>Disable the staggered fade-in and hover-lift animations on the Lightweave main menu.</CL_Settings_ReduceMotion_Tip>
+
+    <CL_MainMenu_Continue>Continue</CL_MainMenu_Continue>
+    <CL_MainMenu_Continue_LastPlayed>Last played {WHEN}</CL_MainMenu_Continue_LastPlayed>
+    <CL_MainMenu_Continue_NoSaves>No saves yet</CL_MainMenu_Continue_NoSaves>
+    <CL_MainMenu_Continue_NoSavesHint>Start a new colony to begin.</CL_MainMenu_Continue_NoSavesHint>
+    <CL_MainMenu_Continue_Permadeath>Permadeath</CL_MainMenu_Continue_Permadeath>
+    <CL_MainMenu_Welcome>Welcome to RimWorld</CL_MainMenu_Welcome>
+    <CL_MainMenu_Welcome_Hint>The tutorial covers the basics. New Colony jumps straight in.</CL_MainMenu_Welcome_Hint>
+
+    <CL_MainMenu_NewColony>New colony</CL_MainMenu_NewColony>
+    <CL_MainMenu_LoadGame>Load</CL_MainMenu_LoadGame>
+    <CL_MainMenu_Tutorial>Tutorial</CL_MainMenu_Tutorial>
+    <CL_MainMenu_Save>Save</CL_MainMenu_Save>
+    <CL_MainMenu_ReviewScenario>Review scenario</CL_MainMenu_ReviewScenario>
+    <CL_MainMenu_Options>Options</CL_MainMenu_Options>
+    <CL_MainMenu_Mods>Mods</CL_MainMenu_Mods>
+    <CL_MainMenu_Credits>Credits</CL_MainMenu_Credits>
+    <CL_MainMenu_QuitToMainMenu>Quit to main menu</CL_MainMenu_QuitToMainMenu>
+    <CL_MainMenu_QuitToOS>Quit to desktop</CL_MainMenu_QuitToOS>
+    <CL_MainMenu_SaveAndQuitToMainMenu>Save and quit to main menu</CL_MainMenu_SaveAndQuitToMainMenu>
+    <CL_MainMenu_SaveAndQuitToOS>Save and quit to desktop</CL_MainMenu_SaveAndQuitToOS>
+    <CL_MainMenu_DevQuickTest>Dev: quick test</CL_MainMenu_DevQuickTest>
+    <CL_MainMenu_TranslationReport>Save translation report</CL_MainMenu_TranslationReport>
+    <CL_MainMenu_Playground>Lightweave playground</CL_MainMenu_Playground>
+    <CL_MainMenu_PoweredBy>powered by</CL_MainMenu_PoweredBy>
+
+    <CL_MainMenu_More>More</CL_MainMenu_More>
+    <CL_MainMenu_Links>Links</CL_MainMenu_Links>
+    <CL_MainMenu_Content>Content</CL_MainMenu_Content>
+    <CL_MainMenu_Language>Language</CL_MainMenu_Language>
+
+    <CL_MainMenu_Link_FictionPrimer>Backstory</CL_MainMenu_Link_FictionPrimer>
+    <CL_MainMenu_Link_LudeonBlog>Ludeon blog</CL_MainMenu_Link_LudeonBlog>
+    <CL_MainMenu_Link_Subreddit>Subreddit</CL_MainMenu_Link_Subreddit>
+    <CL_MainMenu_Link_Wiki>Wiki</CL_MainMenu_Link_Wiki>
+    <CL_MainMenu_Link_TynanX>Tynan on X</CL_MainMenu_Link_TynanX>
+    <CL_MainMenu_Link_DesignBook>Design book</CL_MainMenu_Link_DesignBook>
+    <CL_MainMenu_Link_HelpTranslate>Help translate</CL_MainMenu_Link_HelpTranslate>
+    <CL_MainMenu_Link_Soundtrack>Soundtrack</CL_MainMenu_Link_Soundtrack>
+
+    <CL_MainMenu_Toast_Translation>Translation needs review. View report?</CL_MainMenu_Toast_Translation>
+    <CL_MainMenu_Toast_DevBuild>Developer mode is on.</CL_MainMenu_Toast_DevBuild>
+
+    <CL_MainMenu_Time_JustNow>just now</CL_MainMenu_Time_JustNow>
+    <CL_MainMenu_Time_MinutesAgo>{COUNT}m ago</CL_MainMenu_Time_MinutesAgo>
+    <CL_MainMenu_Time_HoursAgo>{COUNT}h ago</CL_MainMenu_Time_HoursAgo>
+    <CL_MainMenu_Time_DaysAgo>{COUNT}d ago</CL_MainMenu_Time_DaysAgo>
+</LanguageData>

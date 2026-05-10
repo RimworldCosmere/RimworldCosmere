@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <CL_LoadColony_Title>Load Colony</CL_LoadColony_Title>
+    <CL_LoadColony_Empty_Eyebrow>NOTHING SAVED</CL_LoadColony_Empty_Eyebrow>
+    <CL_LoadColony_Empty_Body>No colonies have been recorded. Start a new game to leave your mark.</CL_LoadColony_Empty_Body>
+
+    <CL_LoadColony_DayShort>Day {DAY}</CL_LoadColony_DayShort>
+
+    <CL_LoadColony_Status_Ready>READY</CL_LoadColony_Status_Ready>
+    <CL_LoadColony_Status_Differs>BUILD DIFFERS</CL_LoadColony_Status_Differs>
+    <CL_LoadColony_Status_Incompatible>INCOMPATIBLE</CL_LoadColony_Status_Incompatible>
+    <CL_LoadColony_Status_ModsChanged>MOD LIST CHANGED</CL_LoadColony_Status_ModsChanged>
+    <CL_LoadColony_Status_ModsMissing>{COUNT} mods missing</CL_LoadColony_Status_ModsMissing>
+
+    <CL_LoadColony_Pill_VersionMatch>Version match</CL_LoadColony_Pill_VersionMatch>
+    <CL_LoadColony_Pill_VersionShort>Saved on {VER}</CL_LoadColony_Pill_VersionShort>
+    <CL_LoadColony_Pill_VersionUnknown>Unknown version</CL_LoadColony_Pill_VersionUnknown>
+    <CL_LoadColony_Pill_ModsReady>Mod list matches</CL_LoadColony_Pill_ModsReady>
+    <CL_LoadColony_Pill_ModsChanged>{COUNT} mods missing</CL_LoadColony_Pill_ModsChanged>
+
+    <CL_LoadColony_Stat_Biome>Biome</CL_LoadColony_Stat_Biome>
+    <CL_LoadColony_Stat_Climate>Climate</CL_LoadColony_Stat_Climate>
+    <CL_LoadColony_Stat_Colonists>Colonists</CL_LoadColony_Stat_Colonists>
+    <CL_LoadColony_Stat_Wealth>Wealth</CL_LoadColony_Stat_Wealth>
+
+    <CL_LoadColony_Load>Load Colony</CL_LoadColony_Load>
+    <CL_LoadColony_Rename>Rename</CL_LoadColony_Rename>
+    <CL_LoadColony_Duplicate>Duplicate</CL_LoadColony_Duplicate>
+    <CL_LoadColony_Delete>Delete</CL_LoadColony_Delete>
+    <CL_LoadColony_Cancel>Cancel</CL_LoadColony_Cancel>
+    <CL_LoadColony_Filter_All>All</CL_LoadColony_Filter_All>
+    <CL_LoadColony_Filter_Manual>Manual</CL_LoadColony_Filter_Manual>
+    <CL_LoadColony_Filter_Auto>Autosaves</CL_LoadColony_Filter_Auto>
+    <CL_LoadColony_PreviewLabel>MAP_PREVIEW.PNG</CL_LoadColony_PreviewLabel>
+    <CL_LoadColony_Conditions>Active Conditions</CL_LoadColony_Conditions>
+    <CL_LoadColony_Conditions_None>No active threats</CL_LoadColony_Conditions_None>
+</LanguageData>

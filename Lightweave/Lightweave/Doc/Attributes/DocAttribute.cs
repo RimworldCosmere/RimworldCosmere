@@ -7,6 +7,7 @@ public sealed class DocAttribute : Attribute {
     public string Summary { get; init; } = "";
     public string WhenToUse { get; init; } = "";
     public string Category { get; init; } = "";
+    public DocKind Kind { get; init; } = DocKind.Primitive;
     public string SourcePath { get; init; } = "";
     public float PreferredVariantHeight { get; init; }
     public bool ShowRtl { get; init; } = false;

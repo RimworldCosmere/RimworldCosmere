@@ -9,5 +9,9 @@ public sealed record MenuItem(
     LightweaveNode? Icon = null,
     bool Disabled = false,
     IReadOnlyList<MenuItem>? Children = null,
-    bool IsDivider = false
+    bool IsDivider = false,
+    bool Danger = false,
+    string? Subtitle = null,
+    bool Active = false,
+    string? Hotkey = null
 );

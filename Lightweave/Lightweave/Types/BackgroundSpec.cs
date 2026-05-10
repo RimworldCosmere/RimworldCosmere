@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Cosmere.Lightweave.Types;
 
 public abstract record BackgroundSpec {
-    private static readonly Solid[] SolidByThemeSlot = BuildSolidCache();
+    private static readonly BackgroundSpec[] ByThemeSlot = BuildSlotCache();
 
-    private static Solid[] BuildSolidCache() {
+    private static BackgroundSpec[] BuildSlotCache() {
         Array values = Enum.GetValues(typeof(ThemeSlot));
         int max = 0;
         foreach (object v in values) {
@@ -17,10 +17,13 @@ public abstract record BackgroundSpec {
             }
         }
 
-        Solid[] cache = new Solid[max + 1];
+        BackgroundSpec[] cache = new BackgroundSpec[max + 1];
         foreach (object v in values) {
-            int idx = (int)v;
-            cache[idx] = new Solid((ThemeSlot)v);
+            ThemeSlot slot = (ThemeSlot)v;
+            int idx = (int)slot;
+            cache[idx] = slot == ThemeSlot.SurfaceSunken
+                ? (BackgroundSpec)new Blurred(slot)
+                : new Solid(slot);
         }
 
         return cache;
@@ -31,7 +34,11 @@ public abstract record BackgroundSpec {
     }
 
     public static BackgroundSpec Of(ThemeSlot slot) {
-        return SolidByThemeSlot[(int)slot];
+        return ByThemeSlot[(int)slot];
+    }
+
+    public static BackgroundSpec Blur(ColorRef? tint = null, float blurSizePx = 4f) {
+        return new Blurred(tint, blurSizePx);
     }
 
     public static implicit operator BackgroundSpec(Color c) {
@@ -39,7 +46,7 @@ public abstract record BackgroundSpec {
     }
 
     public static implicit operator BackgroundSpec(ThemeSlot s) {
-        return SolidByThemeSlot[(int)s];
+        return ByThemeSlot[(int)s];
     }
 
     public sealed record Solid(ColorRef Color) : BackgroundSpec;
@@ -48,4 +55,6 @@ public abstract record BackgroundSpec {
         : BackgroundSpec;
 
     public sealed record Gradient(Texture2D GradientTex, ColorRef? Tint = null) : BackgroundSpec;
+
+    public sealed record Blurred(ColorRef? Tint = null, float BlurSizePx = 4f) : BackgroundSpec;
 }

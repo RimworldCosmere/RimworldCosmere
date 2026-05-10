@@ -9,7 +9,7 @@ public static class CosmereTheme {
             [ThemeSlot.SurfacePrimary] = new Color(0.085f, 0.072f, 0.058f, 0.96f),
             [ThemeSlot.SurfaceRaised] = new Color(0.140f, 0.118f, 0.098f, 1.00f),
             [ThemeSlot.SurfaceSunken] = new Color(0.048f, 0.040f, 0.032f, 0.96f),
-            [ThemeSlot.SurfaceAccent] = new Color(0.780f, 0.540f, 0.240f, 0.95f),
+            [ThemeSlot.SurfaceAccent] = new Color(0.831f, 0.659f, 0.341f, 1.00f),
             [ThemeSlot.SurfaceShadow] = new Color(0.000f, 0.000f, 0.000f, 0.40f),
             [ThemeSlot.SurfaceInput] = new Color(0.155f, 0.132f, 0.110f, 1.00f),
             [ThemeSlot.SurfaceDisabled] = new Color(0.195f, 0.170f, 0.140f, 1.00f),

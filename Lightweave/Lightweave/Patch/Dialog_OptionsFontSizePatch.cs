@@ -13,6 +13,10 @@ public static class Dialog_OptionsFontSizePatch {
     private static readonly int[] Presets = { 85, 100, 115, 125 };
 
     public static void Prefix(Listing_Standard listing) {
+        LightweaveSettings? settings = LightweaveMod.Settings;
+        if (settings != null && settings.RedesignMainMenu) {
+            return;
+        }
         DrawFontSizeRow(listing);
     }
 

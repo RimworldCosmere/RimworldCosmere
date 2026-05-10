@@ -77,6 +77,22 @@ public static class Box {
             };
         }
 
+        node.MeasureWidth = () => {
+            Direction dir = RenderContext.Current.Direction;
+            (float left, float top, float right, float bottom) = pad.Resolve(dir);
+            float maxW = 0f;
+            int n = kids.Count;
+            for (int i = 0; i < n; i++) {
+                LightweaveNode k = kids[i];
+                float w = k.MeasureWidth?.Invoke() ?? 0f;
+                if (w > maxW) {
+                    maxW = w;
+                }
+            }
+
+            return maxW + left + right;
+        };
+
         node.Paint = (rect, paintChildren) => {
             PaintBox.Draw(rect, background, border, radius);
             Rect content = pad.Shrink(rect, RenderContext.Current.Direction);

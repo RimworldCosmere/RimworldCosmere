@@ -69,6 +69,15 @@ public static partial class Typography {
                 return Mathf.Ceil(h + descenderPad);
             };
 
+            node.MeasureWidth = () => {
+                if (string.IsNullOrEmpty(content)) {
+                    return 0f;
+                }
+
+                GUIStyle style = ResolveStyle();
+                return Mathf.Ceil(style.CalcSize(new GUIContent(content)).x);
+            };
+
             node.Paint = (rect, _) => {
                 Theme.Theme theme = RenderContext.Current.Theme;
                 GUIStyle style = ResolveStyle();

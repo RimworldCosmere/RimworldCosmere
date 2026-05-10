@@ -54,6 +54,10 @@
     <CL_Playground_Navigation_Menu_Svg>SVG</CL_Playground_Navigation_Menu_Svg>
     <CL_Playground_Navigation_Menu_ExportPng>Export as PNG</CL_Playground_Navigation_Menu_ExportPng>
     <CL_Playground_Navigation_Menu_ExportSvg>Export as SVG</CL_Playground_Navigation_Menu_ExportSvg>
+    <CL_Playground_Navigation_MenuRow_Title>Menu row</CL_Playground_Navigation_MenuRow_Title>
+    <CL_Playground_Navigation_MenuRow_Default>Open settings</CL_Playground_Navigation_MenuRow_Default>
+    <CL_Playground_Navigation_MenuRow_Danger>Quit to desktop</CL_Playground_Navigation_MenuRow_Danger>
+    <CL_Playground_Navigation_MenuRow_Disabled>Coming soon</CL_Playground_Navigation_MenuRow_Disabled>
     <CL_Playground_Controls_Dropdown_Title>Dropdown</CL_Playground_Controls_Dropdown_Title>
     <CL_Playground_Feedback_Title>Feedback</CL_Playground_Feedback_Title>
     <CL_Playground_Feedback_Badge_Neutral>Neutral</CL_Playground_Feedback_Badge_Neutral>
@@ -63,6 +67,10 @@
     <CL_Playground_Feedback_Badge_Success>Success</CL_Playground_Feedback_Badge_Success>
     <CL_Playground_Feedback_Badge_Clickable>Clickable</CL_Playground_Feedback_Badge_Clickable>
     <CL_Playground_Feedback_Badge_Dismissible>Dismissible</CL_Playground_Feedback_Badge_Dismissible>
+    <CL_Playground_Feedback_Pill_Title>Pill</CL_Playground_Feedback_Pill_Title>
+    <CL_Playground_Feedback_Pill_Default>Active expansion</CL_Playground_Feedback_Pill_Default>
+    <CL_Playground_Feedback_Pill_Selected>Selected filter</CL_Playground_Feedback_Pill_Selected>
+    <CL_Playground_Feedback_Pill_Muted>Not installed</CL_Playground_Feedback_Pill_Muted>
     <CL_Playground_Feedback_Tooltip_Title>Tooltips</CL_Playground_Feedback_Tooltip_Title>
     <CL_Playground_Feedback_Tooltip_Button_Label>Hover me</CL_Playground_Feedback_Tooltip_Button_Label>
     <CL_Playground_Feedback_Tooltip_Button_Body>A single-line tooltip.</CL_Playground_Feedback_Tooltip_Button_Body>
@@ -222,6 +230,57 @@
     <CL_Playground_Category_Data_Desc>Lists, tables, trees - surfaces for inspecting collections.</CL_Playground_Category_Data_Desc>
     <CL_Playground_Category_Hooks>Hooks</CL_Playground_Category_Hooks>
     <CL_Playground_Category_Hooks_Desc>State, refs, memoization, focus, animation - the primitives under the primitives.</CL_Playground_Category_Hooks_Desc>
+    <CL_Playground_Category_Blocks>Blocks</CL_Playground_Category_Blocks>
+    <CL_Playground_Category_Blocks_Desc>Feature-scoped compositions of primitives - the main menu, dialog suites, and other named surfaces. Read these to see primitives in real use.</CL_Playground_Category_Blocks_Desc>
+    <CL_Playground_Block_TitleHero_Default>RimWorld title hero</CL_Playground_Block_TitleHero_Default>
+    <CL_Playground_Block_MainMenuRoot_Default>Default - has saves</CL_Playground_Block_MainMenuRoot_Default>
+    <CL_Playground_Block_MainMenuRoot_NoSaves>Fresh install - no saves</CL_Playground_Block_MainMenuRoot_NoSaves>
+    <CL_Playground_Block_ContinueCard_Welcome>Welcome - no save present</CL_Playground_Block_ContinueCard_Welcome>
+    <CL_Playground_Block_ContinueCard_Resume>Resume - sample save</CL_Playground_Block_ContinueCard_Resume>
+    <CL_Playground_Block_ExpansionRow_Default>Installed expansions</CL_Playground_Block_ExpansionRow_Default>
+    <CL_Playground_Block_MetadataTable_Default>Metadata strip</CL_Playground_Block_MetadataTable_Default>
+    <CL_Playground_Block_MenuButtons_HasSaves>Dock row - has saves</CL_Playground_Block_MenuButtons_HasSaves>
+    <CL_Playground_Block_MenuButtons_NoSaves>Dock row - no saves</CL_Playground_Block_MenuButtons_NoSaves>
+    <CL_Playground_Block_DockTile_Default>Default tile</CL_Playground_Block_DockTile_Default>
+    <CL_Playground_Block_DockTile_NoHotkey>No hotkey badge</CL_Playground_Block_DockTile_NoHotkey>
+    <CL_Playground_Block_DockTile_Disabled>Disabled</CL_Playground_Block_DockTile_Disabled>
+    <CL_Playground_Block_MoreButton_Default>More dock tile</CL_Playground_Block_MoreButton_Default>
+    <CL_Playground_Block_MorePopover_Default>Default popover</CL_Playground_Block_MorePopover_Default>
+    <CL_Playground_Block_AccentStripe_Default>Accent stripe</CL_Playground_Block_AccentStripe_Default>
+    <CL_Playground_Block_LightweaveWordmark_Default>Lightweave wordmark</CL_Playground_Block_LightweaveWordmark_Default>
+    <CL_Playground_block-main-menu-root_Title>MainMenuRoot</CL_Playground_block-main-menu-root_Title>
+    <CL_Playground_block-main-menu-root_What>Top-level layered composition for the redesigned main menu. Stacks blurred background, metadata strip, hero, dock row, and branding into a single LightweaveNode tree.</CL_Playground_block-main-menu-root_What>
+    <CL_Playground_block-main-menu-root_When>Use as the single entry point invoked by MainMenuRedesignPatch when the RedesignMainMenu setting flag is on. Do not call directly from other surfaces.</CL_Playground_block-main-menu-root_When>
+    <CL_Playground_block-title-hero_Title>TitleHero</CL_Playground_block-title-hero_Title>
+    <CL_Playground_block-title-hero_What>RimWorld GameTitle texture rendered above a Caption-styled credit line.</CL_Playground_block-title-hero_What>
+    <CL_Playground_block-title-hero_When>Use at the top of the redesigned main menu hero column.</CL_Playground_block-title-hero_When>
+    <CL_Playground_block-continue-card_Title>ContinueCard</CL_Playground_block-continue-card_Title>
+    <CL_Playground_block-continue-card_What>Wide hero card for the most recent save: map preview thumbnail, colony stats grid, amber Resume button.</CL_Playground_block-continue-card_What>
+    <CL_Playground_block-continue-card_When>Use in the center column of the redesigned main menu when a recent save is present. Composes HeroCard + Eyebrow + KeyValueTable + Button.</CL_Playground_block-continue-card_When>
+    <CL_Playground_block-expansion-row_Title>ExpansionRow</CL_Playground_block-expansion-row_Title>
+    <CL_Playground_block-expansion-row_What>Horizontal row of installed-expansion pills - Selected for active, Default for installed-but-disabled, Muted for not-installed.</CL_Playground_block-expansion-row_What>
+    <CL_Playground_block-expansion-row_When>Use beneath TitleHero on the main menu. Returns null when no expansions are installed.</CL_Playground_block-expansion-row_When>
+    <CL_Playground_block-metadata-table_Title>MetadataTable</CL_Playground_block-metadata-table_Title>
+    <CL_Playground_block-metadata-table_What>Top-left metadata strip: build version, mods loaded, expansions, last save timestamp.</CL_Playground_block-metadata-table_What>
+    <CL_Playground_block-metadata-table_When>Use in the corner of the main menu hero. Composes Eyebrow + KeyValueTable rows pulled live from VersionControl, ModsConfig, and the most recent save file.</CL_Playground_block-metadata-table_When>
+    <CL_Playground_block-menu-buttons_Title>MenuButtons</CL_Playground_block-menu-buttons_Title>
+    <CL_Playground_block-menu-buttons_What>Full main-menu dock row: New / Load / Mods / Tutorial / Options DockTiles plus the trailing MoreButton.</CL_Playground_block-menu-buttons_What>
+    <CL_Playground_block-menu-buttons_When>Use at the bottom of the redesigned main menu. Wraps DockTile + MoreButton in an HStack with proper spacing.</CL_Playground_block-menu-buttons_When>
+    <CL_Playground_block-dock-tile_Title>DockTile</CL_Playground_block-dock-tile_Title>
+    <CL_Playground_block-dock-tile_What>Single dock entry: stacked icon + label with a hotkey badge in the corner. Custom paint - tile-shaped surface, hover lift.</CL_Playground_block-dock-tile_What>
+    <CL_Playground_block-dock-tile_When>Use as one entry in the dock row. Reach for Button when you want a generic primary/secondary action instead.</CL_Playground_block-dock-tile_When>
+    <CL_Playground_block-more-button_Title>MoreButton</CL_Playground_block-more-button_Title>
+    <CL_Playground_block-more-button_What>Sixth dock tile that opens the MorePopover. Tracks its rect via Hooks state to anchor the popover.</CL_Playground_block-more-button_What>
+    <CL_Playground_block-more-button_When>Use at the right end of the dock row alongside MenuButtons.</CL_Playground_block-more-button_When>
+    <CL_Playground_block-more-popover_Title>MorePopover</CL_Playground_block-more-popover_Title>
+    <CL_Playground_block-more-popover_What>Right-anchored popover panel of secondary main-menu actions: Credits, Translation report, Quit. Composes MenuRow primitives - Quit uses Danger styling.</CL_Playground_block-more-popover_What>
+    <CL_Playground_block-more-popover_When>Use as the popover content for MoreButton.</CL_Playground_block-more-popover_When>
+    <CL_Playground_block-accent-stripe_Title>AccentStripe</CL_Playground_block-accent-stripe_Title>
+    <CL_Playground_block-accent-stripe_What>Slim accent-colored stripe used as a vertical or horizontal divider with shard branding. Pulls accent color from the active theme.</CL_Playground_block-accent-stripe_What>
+    <CL_Playground_block-accent-stripe_When>Use for edge accents on the main menu and other Cosmere-branded surfaces.</CL_Playground_block-accent-stripe_When>
+    <CL_Playground_block-lightweave-wordmark_Title>LightweaveWordmark</CL_Playground_block-lightweave-wordmark_Title>
+    <CL_Playground_block-lightweave-wordmark_What>The 'POWERED BY LIGHTWEAVE' wordmark with accent dot. Pure typography composition - Eyebrow + dot.</CL_Playground_block-lightweave-wordmark_What>
+    <CL_Playground_block-lightweave-wordmark_When>Use in the footer of any Lightweave-driven surface that wants to attribute the toolkit.</CL_Playground_block-lightweave-wordmark_When>
     <CL_Playground_Category_Tokens>Tokens</CL_Playground_Category_Tokens>
     <CL_Playground_Category_Tokens_Desc>Design tokens - breakpoints, spacing scale, theme slots. The vocabulary other primitives compose from.</CL_Playground_Category_Tokens_Desc>
 
@@ -366,6 +425,12 @@
     <CL_Playground_slider_Title>Slider</CL_Playground_slider_Title>
     <CL_Playground_slider_What>Drag a thumb along a track to pick a value. Supports min, max, step, and tick marks.</CL_Playground_slider_What>
     <CL_Playground_slider_When>Use for approximate numeric selection. NumberField is better when the exact value matters.</CL_Playground_slider_When>
+    <CL_Playground_slider-readout_Title>SliderWithReadout</CL_Playground_slider-readout_Title>
+    <CL_Playground_slider-readout_What>Slider paired with a right-aligned mono-font numeric readout. The track gets the full available width; the readout sits in its own column.</CL_Playground_slider-readout_What>
+    <CL_Playground_slider-readout_When>Use in settings rows where the player needs to see the exact current value (volume, UI scale, framerate cap). Pair with a label column for the setting name.</CL_Playground_slider-readout_When>
+    <CL_Playground_Input_SliderWithReadout_Default>Two-decimal readout</CL_Playground_Input_SliderWithReadout_Default>
+    <CL_Playground_Input_SliderWithReadout_Percent>Percentage readout</CL_Playground_Input_SliderWithReadout_Percent>
+    <CL_Playground_Input_SliderWithReadout_Disabled>Disabled</CL_Playground_Input_SliderWithReadout_Disabled>
     <CL_Playground_textarea_Title>TextArea</CL_Playground_textarea_Title>
     <CL_Playground_textarea_What>Multi-line text entry that grows with its content up to a row limit.</CL_Playground_textarea_What>
     <CL_Playground_textarea_When>Use for paragraph-length input. TextField is right for single-line strings.</CL_Playground_textarea_When>
@@ -406,6 +471,9 @@
     <CL_Playground_badge_Title>Badge</CL_Playground_badge_Title>
     <CL_Playground_badge_What>Pill-shaped label in a status color. Optional leading and trailing icons. Optionally clickable, with a separate trailing-click for dismiss-style affordances.</CL_Playground_badge_What>
     <CL_Playground_badge_When>Use to mark state, category, or a filter chip. Pass `onTrailingClick` and `Badge.CloseGlyph` for dismissibles; pass `onClick` to make the whole pill actionable.</CL_Playground_badge_When>
+    <CL_Playground_pill_Title>Pill</CL_Playground_pill_Title>
+    <CL_Playground_pill_What>Tag-style chip with optional leading icon, label, and full-pill click. Three visual variants: default, selected, and muted.</CL_Playground_pill_What>
+    <CL_Playground_pill_When>Use for filter chips, expansion / faction / trait tags, mode toggles. Reach for `Badge` instead when you want a compact non-interactive status pip.</CL_Playground_pill_When>
     <CL_Playground_tooltip_Title>Tooltip</CL_Playground_tooltip_Title>
     <CL_Playground_tooltip_What>Wraps any node. Shows a floating popover after a short hover delay.</CL_Playground_tooltip_What>
     <CL_Playground_tooltip_When>Use for secondary information. Put the essential label in the trigger itself.</CL_Playground_tooltip_When>
@@ -419,6 +487,9 @@
     <CL_Playground_menu_Title>Menu</CL_Playground_menu_Title>
     <CL_Playground_menu_What>Popover list of actions. Supports icons, disabled items, and nested submenus.</CL_Playground_menu_What>
     <CL_Playground_menu_When>Use for four or more peer actions behind a trigger. Inline buttons win for two or three.</CL_Playground_menu_When>
+    <CL_Playground_menu-row_Title>MenuRow</CL_Playground_menu-row_Title>
+    <CL_Playground_menu-row_What>Standalone clickable menu-style row. Hover background, optional leading icon, optional danger styling for destructive actions.</CL_Playground_menu-row_What>
+    <CL_Playground_menu-row_When>Use when composing a custom popover, drawer panel, or sidebar that needs menu-row visuals without the full Menu widget. Reach for `Menu.Create` when you want keyboard nav and submenus.</CL_Playground_menu-row_When>
     <CL_Playground_contextmenu_Title>ContextMenu</CL_Playground_contextmenu_Title>
     <CL_Playground_contextmenu_What>Wraps a region so right-click opens a menu at the mouse position.</CL_Playground_contextmenu_What>
     <CL_Playground_contextmenu_When>Use for per-item actions on a list row. Do not hide the primary action behind right-click.</CL_Playground_contextmenu_When>
@@ -426,6 +497,12 @@
     <CL_Playground_dialog_Title>Dialog</CL_Playground_dialog_Title>
     <CL_Playground_dialog_What>Floating window opened on top of the main view. Dims the background.</CL_Playground_dialog_What>
     <CL_Playground_dialog_When>Use for choices that must be made before proceeding. Avoid stacking dialogs.</CL_Playground_dialog_When>
+    <CL_Playground_dialog-header_Title>DialogHeader</CL_Playground_dialog-header_Title>
+    <CL_Playground_dialog-header_What>Top bar for redesigned dialogs. Composes optional eyebrow breadcrumb, display title, optional trailing text action, and optional close button.</CL_Playground_dialog-header_What>
+    <CL_Playground_dialog-header_When>Use at the top of every Lightweave-styled dialog (Load Colony, Mods Config, Options) so titles, breadcrumbs, and chrome stay aligned across the suite.</CL_Playground_dialog-header_When>
+    <CL_Playground_Layout_DialogHeader_TitleOnly>Title only</CL_Playground_Layout_DialogHeader_TitleOnly>
+    <CL_Playground_Layout_DialogHeader_WithBreadcrumb>With breadcrumb + close</CL_Playground_Layout_DialogHeader_WithBreadcrumb>
+    <CL_Playground_Layout_DialogHeader_FullChrome>Full chrome</CL_Playground_Layout_DialogHeader_FullChrome>
     <CL_Playground_popover_Title>Popover</CL_Playground_popover_Title>
     <CL_Playground_popover_What>Floating panel anchored to a trigger rect. Dismisses on outside click.</CL_Playground_popover_What>
     <CL_Playground_popover_When>Use for light-weight menus and short pickers. Dialog is right for heavier interactions.</CL_Playground_popover_When>
@@ -510,6 +587,7 @@
     <CL_Playground_Label_Closed>Closed</CL_Playground_Label_Closed>
     <CL_Playground_Label_On>On</CL_Playground_Label_On>
     <CL_Playground_Label_Off>Off</CL_Playground_Label_Off>
+    <CL_Playground_Label_WithHeaderAndSearch>With header and search</CL_Playground_Label_WithHeaderAndSearch>
     <CL_Playground_Label_Confirm>Confirm</CL_Playground_Label_Confirm>
     <CL_Playground_Label_Cancel>Cancel</CL_Playground_Label_Cancel>
     <CL_Playground_Label_Sectioned>Sectioned</CL_Playground_Label_Sectioned>

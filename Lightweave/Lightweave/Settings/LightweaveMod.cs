@@ -21,9 +21,10 @@ public class LightweaveMod : Verse.Mod {
     }
 
     public override string SettingsCategory() {
-        return string.Empty;
+        return "Lightweave";
     }
 
     public override void DoSettingsWindowContents(Rect inRect) {
+        LightweaveSettingsForm.Render(inRect);
     }
 }

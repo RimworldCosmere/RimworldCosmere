@@ -188,11 +188,12 @@ public abstract class LightweaveWindow : Verse.Window {
         }
 
         LightweaveNode bodyBacked = Layout.Box.Create(
-            padding: BorderPadding,
-            background: BackgroundSpec.Of(BodyFillSlot),
-            border: null,
-            radius: bodyRadius,
-            children: c => c.Add(body)
+            children: c => c.Add(body),
+            style: new Style {
+                Padding = BorderPadding,
+                Background = BackgroundSpec.Of(BodyFillSlot),
+                Radius = bodyRadius,
+            }
         );
 
         LightweaveNode stack = Layout.Stack.Create(
@@ -214,11 +215,13 @@ public abstract class LightweaveWindow : Verse.Window {
         }
 
         return Layout.Box.Create(
-            padding: EdgeInsets.All(BorderThickness),
-            background: BackgroundSpec.Of(OuterFillSlot),
-            border: BorderSpec.All(BorderThickness, ThemeSlot.BorderSubtle),
-            radius: RadiusSpec.All(BorderRadius),
-            children: c => c.Add(stack)
+            children: c => c.Add(stack),
+            style: new Style {
+                Padding = EdgeInsets.All(BorderThickness),
+                Background = BackgroundSpec.Of(OuterFillSlot),
+                Border = BorderSpec.All(BorderThickness, ThemeSlot.BorderSubtle),
+                Radius = RadiusSpec.All(BorderRadius),
+            }
         );
     }
 

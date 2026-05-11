@@ -246,10 +246,6 @@ public static class Carousel {
 
     private static LightweaveNode DocsSlide(ThemeSlot bg, string labelKey) {
         return Box.Create(
-            EdgeInsets.All(SpacingScale.Md),
-            BackgroundSpec.Of(bg),
-            null,
-            null,
             c => c.Add(
                 Text.Create(
                     (string)labelKey.Translate(),
@@ -258,7 +254,11 @@ public static class Carousel {
                     ThemeSlot.TextPrimary,
                     TextAlign.Center
                 )
-            )
+            ),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Md),
+                Background = BackgroundSpec.Of(bg),
+            }
         );
     }
 

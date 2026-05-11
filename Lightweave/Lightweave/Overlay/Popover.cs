@@ -127,10 +127,6 @@ public static class Popover {
         };
 
         LightweaveNode body = Box.Create(
-            EdgeInsets.All(SpacingScale.Md),
-            null,
-            null,
-            null,
             k => k.Add(
                 Text.Create(
                     (string)"CL_Playground_Overlay_Popover_Body".Translate(),
@@ -139,7 +135,10 @@ public static class Popover {
                     ThemeSlot.TextPrimary,
                     wrap: true
                 )
-            )
+            ),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Md),
+            }
         );
 
         // ReSharper disable once ArrangeStaticMemberQualifier
@@ -194,10 +193,11 @@ public static class Popover {
         };
 
         LightweaveNode avatar = Box.Create(
-            EdgeInsets.Zero,
-            BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-            BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-            RadiusSpec.All(RadiusScale.Full)
+            style: new Style {
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
+                Radius = RadiusSpec.All(RadiusScale.Full),
+            }
         );
         avatar.PreferredHeight = new Rem(2.75f).ToPixels();
 
@@ -280,11 +280,10 @@ public static class Popover {
         );
 
         LightweaveNode card = Box.Create(
-            EdgeInsets.All(SpacingScale.Md),
-            null,
-            null,
-            null,
-            k => k.Add(body)
+            k => k.Add(body),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Md),
+            }
         );
 
         // ReSharper disable once ArrangeStaticMemberQualifier

@@ -63,10 +63,6 @@ public static class Conditional {
     public static DocSample DocsFalse() {
         return new DocSample(() => 
             Box.Create(
-                EdgeInsets.All(SpacingScale.Xs),
-                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-                null,
-                RadiusSpec.All(RadiusScale.Sm),
                 k => {
                     k.Add(MutedChip("subtree skipped — no draw"));
                     k.Add(
@@ -75,6 +71,11 @@ public static class Conditional {
                             () => AccentChip("hidden")
                         )
                     );
+                },
+                style: new Style {
+                    Padding = EdgeInsets.All(SpacingScale.Xs),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
                 }
             )
         );

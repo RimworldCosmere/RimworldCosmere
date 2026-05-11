@@ -27,17 +27,19 @@ public static class ExpansionRow {
         }
 
         LightweaveNode rowBox = Box.Create(
-            padding: new EdgeInsets(SpacingScale.Xs, SpacingScale.Md, SpacingScale.Xs, SpacingScale.Md),
-            background: BackgroundSpec.Blur(new Color(15f / 255f, 12f / 255f, 8f / 255f, 0.78f)),
-            border: BorderSpec.All(new Rem(0.0625f), ThemeSlot.AccentMuted),
-            radius: RadiusSpec.All(RadiusScale.None),
             children: c => c.Add(HStack.Create(SpacingScale.Sm, h => {
                 h.AddHug(Eyebrow.Create("CL_MainMenu_ExpansionsActive".Translate(), letterSpacing: 2.5f, color: ThemeSlot.SurfaceAccent, align: TextAlign.Left));
                 h.AddHug(Divider.Vertical());
                 for (int i = 0; i < visible.Count; i++) {
                     h.AddHug(BuildItem(visible[i]));
                 }
-            }))
+            })),
+            style: new Style {
+                Padding = new EdgeInsets(SpacingScale.Xs, SpacingScale.Md, SpacingScale.Xs, SpacingScale.Md),
+                Background = BackgroundSpec.Blur(new Color(15f / 255f, 12f / 255f, 8f / 255f, 0.78f)),
+                Border = BorderSpec.All(new Rem(0.0625f), ThemeSlot.AccentMuted),
+                Radius = RadiusSpec.All(RadiusScale.None),
+            }
         );
 
         return HStack.Create(
@@ -59,16 +61,18 @@ public static class ExpansionRow {
         string label = expansion.LabelCap.ToString().ToUpperInvariant();
 
         return Box.Create(
-            padding: new EdgeInsets(Top: SpacingScale.Xs, Right: SpacingScale.Sm, Bottom: SpacingScale.Xs, Left: SpacingScale.Sm),
-            background: BackgroundSpec.Of(new Color(28f / 255f, 22f / 255f, 14f / 255f, 0.85f)),
-            border: BorderSpec.All(new Rem(0.0625f), ThemeSlot.AccentMuted),
-            radius: RadiusSpec.All(RadiusScale.None),
             children: c => c.Add(HStack.Create(SpacingScale.Xs, h => {
                 if (icon != null) {
                     h.AddHug(Icon.Create(icon, size: new Rem(1.25f)));
                 }
                 h.AddHug(Eyebrow.Create(label, letterSpacing: 1.4f, color: textSlot, align: TextAlign.Left));
-            }))
+            })),
+            style: new Style {
+                Padding = new EdgeInsets(Top: SpacingScale.Xs, Right: SpacingScale.Sm, Bottom: SpacingScale.Xs, Left: SpacingScale.Sm),
+                Background = BackgroundSpec.Of(new Color(28f / 255f, 22f / 255f, 14f / 255f, 0.85f)),
+                Border = BorderSpec.All(new Rem(0.0625f), ThemeSlot.AccentMuted),
+                Radius = RadiusSpec.All(RadiusScale.None),
+            }
         );
     }
 

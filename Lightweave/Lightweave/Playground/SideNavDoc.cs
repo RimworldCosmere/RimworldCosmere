@@ -64,11 +64,12 @@ public static class SideNavDoc {
             LightweaveNode rail = PlaygroundRail.Create(BuildDemoCategories(), selectedHandle);
             LightweaveNode scroller = ScrollArea.Create(rail);
             LightweaveNode framed = Box.Create(
-                null,
-                BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
-                BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(RadiusScale.Md),
-                c => c.Add(scroller)
+                c => c.Add(scroller),
+                style: new Style {
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
+                    Border = BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
+                    Radius = RadiusSpec.All(RadiusScale.Md),
+                }
             );
             LightweaveNode constrained = Container.Create(
                 framed,
@@ -87,11 +88,12 @@ public static class SideNavDoc {
             LightweaveNode rail = PlaygroundRail.Create(BuildDemoCategories(), selected);
             return Container.Create(
                 Box.Create(
-                    null,
-                    BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
-                    BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
-                    RadiusSpec.All(RadiusScale.Md),
-                    c => c.Add(ScrollArea.Create(rail))
+                    c => c.Add(ScrollArea.Create(rail)),
+                    style: new Style {
+                        Background = BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
+                        Border = BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
+                        Radius = RadiusSpec.All(RadiusScale.Md),
+                    }
                 ),
                 new Rem(14f),
                 align: ContainerAlign.Start

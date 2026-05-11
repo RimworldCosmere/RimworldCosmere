@@ -32,15 +32,17 @@ public static class SaveDetailPane {
         }
 
         return Box.Create(
-            padding: EdgeInsets.All(SpacingScale.Lg),
-            background: BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
             children: c => c.Add(Stack.Create(SpacingScale.Md, s => {
                 s.AddFlex(ScrollArea.Create(
                     content: BuildBody(status),
                     showScrollbar: true
                 ));
                 s.Add(BuildActionBar(file, onClose, onAfterDelete));
-            }))
+            })),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Lg),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
+            }
         );
     }
 

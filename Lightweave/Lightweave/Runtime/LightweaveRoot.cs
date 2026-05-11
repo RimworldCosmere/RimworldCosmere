@@ -242,8 +242,13 @@ public static class LightweaveRoot {
                 PaintBox.Draw(node.MeasuredRect, style.Background, style.Border, style.Radius);
             }
 
+            Rect innerRect = node.MeasuredRect;
+            if (style.Padding.HasValue) {
+                innerRect = style.Padding.Value.Shrink(innerRect, rc?.Direction ?? Direction.Ltr);
+            }
+
             if (node.Paint != null) {
-                node.Paint(node.MeasuredRect, SharedPaintChildren);
+                node.Paint(innerRect, SharedPaintChildren);
             }
             else {
                 for (int i = 0; i < node.Children.Count; i++) {

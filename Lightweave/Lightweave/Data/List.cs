@@ -115,10 +115,6 @@ public static class List {
         return List.Create(
             items,
             (item, _) => Box.Create(
-                new EdgeInsets(SpacingScale.Sm, Bottom: SpacingScale.Sm, Left: SpacingScale.Md, Right: SpacingScale.Md),
-                null,
-                null,
-                null,
                 k => k.Add(
                     Text.Create(
                         item,
@@ -126,7 +122,10 @@ public static class List {
                         new Rem(0.9375f),
                         ThemeSlot.TextPrimary
                     )
-                )
+                ),
+                style: new Style {
+                    Padding = new EdgeInsets(SpacingScale.Sm, Bottom: SpacingScale.Sm, Left: SpacingScale.Md, Right: SpacingScale.Md),
+                }
             ),
             new Rem(2.25f).ToPixels()
         );

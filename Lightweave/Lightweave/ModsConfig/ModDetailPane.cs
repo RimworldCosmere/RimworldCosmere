@@ -25,15 +25,17 @@ public static class ModDetailPane {
         }
 
         return Box.Create(
-            padding: EdgeInsets.All(SpacingScale.Lg),
-            background: BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
             children: c => c.Add(HStack.Create(SpacingScale.Lg, h => {
                 h.AddFlex(ScrollArea.Create(
                     content: BuildBody(mod),
                     showScrollbar: true
                 ));
                 h.Add(BuildActionsColumn(mod, page, onClose), new Rem(14f).ToPixels());
-            }))
+            })),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Lg),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
+            }
         );
     }
 

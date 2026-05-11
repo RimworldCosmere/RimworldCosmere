@@ -21,8 +21,6 @@ public static class OptionsRoot {
         Hooks.Hooks.StateHandle<OptionsTab> tab = Hooks.Hooks.UseState(OptionsTab.General);
 
         return Box.Create(
-            background: BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
-            border: BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
             children: c => c.Add(Stack.Create(SpacingScale.None, root => {
                 root.Add(DialogHeader.Create(
                     title: "CL_Options_Title".Translate(),
@@ -39,14 +37,16 @@ public static class OptionsRoot {
                     h.Add(BuildSidebar(tab), new Rem(14f).ToPixels());
                     h.AddFlex(BuildContent(tab.Value, dialog));
                 }));
-            }))
+            })),
+            style: new Style {
+                Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
+                Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+            }
         );
     }
 
     private static LightweaveNode BuildSidebar(Hooks.Hooks.StateHandle<OptionsTab> tab) {
         return Box.Create(
-            padding: EdgeInsets.All(SpacingScale.Sm),
-            background: BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
             children: c => c.Add(Stack.Create(SpacingScale.Xxs, s => {
                 AppendTab(s, tab, OptionsTab.General, "CL_Options_Tab_General");
                 AppendTab(s, tab, OptionsTab.Graphics, "CL_Options_Tab_Graphics");
@@ -56,7 +56,11 @@ public static class OptionsRoot {
                 AppendTab(s, tab, OptionsTab.Controls, "CL_Options_Tab_Controls");
                 AppendTab(s, tab, OptionsTab.Developer, "CL_Options_Tab_Developer");
                 AppendTab(s, tab, OptionsTab.ModSettings, "CL_Options_Tab_ModSettings");
-            }))
+            })),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Sm),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+            }
         );
     }
 
@@ -122,9 +126,11 @@ public static class OptionsRoot {
         };
 
         return Box.Create(
-            padding: EdgeInsets.All(SpacingScale.Lg),
-            background: BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
-            children: c => c.Add(ScrollArea.Create(content: body, showScrollbar: true))
+            children: c => c.Add(ScrollArea.Create(content: body, showScrollbar: true)),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Lg),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
+            }
         );
     }
 }

@@ -36,13 +36,13 @@ public static class WindowBody {
 
         if (!scrollable) {
             return Box.Create(
-                padding,
-                bg,
-                null,
-                null,
                 c => c.AddRange(kids),
-                line,
-                file
+                style: new Style {
+                    Padding = padding,
+                    Background = bg,
+                },
+                line: line,
+                file: file
             );
         }
 
@@ -59,13 +59,13 @@ public static class WindowBody {
             );
 
         return Box.Create(
-            padding,
-            bg,
-            null,
-            null,
             c => c.Add(ScrollArea.Create(inner, line: line, file: file)),
-            line,
-            file
+            style: new Style {
+                Padding = padding,
+                Background = bg,
+            },
+            line: line,
+            file: file
         );
     }
 }

@@ -30,8 +30,6 @@ public static class LoadColonyRoot {
         };
 
         return Box.Create(
-            background: BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
-            border: BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
             children: c => c.Add(Stack.Create(SpacingScale.None, root => {
                 root.Add(DialogHeader.Create(
                     title: "CL_LoadColony_Title".Translate(),
@@ -53,7 +51,11 @@ public static class LoadColonyRoot {
                         () => SaveStatusInspector.Invalidate(activeFile?.FileInfo.FullName ?? string.Empty)
                     ));
                 }));
-            }))
+            })),
+            style: new Style {
+                Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
+                Border = BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
+            }
         );
     }
 

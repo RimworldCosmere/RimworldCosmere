@@ -27,13 +27,13 @@ public static class SaveListPane {
         Action<string> onSelect
     ) {
         return Box.Create(
-            padding: EdgeInsets.Zero,
-            background: BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-            border: null,
-            radius: null,
             children: c => c.Add(ScrollArea.Create(
                 content: BuildList(files, selected, onSelect)
-            ))
+            )),
+            style: new Style {
+                Padding = EdgeInsets.Zero,
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+            }
         );
     }
 

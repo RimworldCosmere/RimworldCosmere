@@ -33,19 +33,22 @@ public static class BreakpointsDoc {
     public static DocSample DocsReadout() {
         return new DocSample(() => 
             Box.Create(
-                EdgeInsets.All(new Rem(0.25f)),
-                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(RadiusScale.Sm),
                 outer => outer.Add(
                     Box.Create(
-                        EdgeInsets.Vertical(SpacingScale.Sm),
-                        BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
-                        null,
-                        RadiusSpec.All(RadiusScale.Sm),
-                        inner => inner.Add(BreakpointReadoutNode())
+                        inner => inner.Add(BreakpointReadoutNode()),
+                        style: new Style {
+                            Padding = EdgeInsets.Vertical(SpacingScale.Sm),
+                            Background = BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
+                            Radius = RadiusSpec.All(RadiusScale.Sm),
+                        }
                     )
-                )
+                ),
+                style: new Style {
+                    Padding = EdgeInsets.All(new Rem(0.25f)),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }
@@ -54,11 +57,13 @@ public static class BreakpointsDoc {
     public static DocSample DocsLadder() {
         return new DocSample(() => 
             Box.Create(
-                EdgeInsets.All(new Rem(0.25f)),
-                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(RadiusScale.Sm),
-                outer => outer.Add(BreakpointLadderNode())
+                outer => outer.Add(BreakpointLadderNode()),
+                style: new Style {
+                    Padding = EdgeInsets.All(new Rem(0.25f)),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }
@@ -67,19 +72,22 @@ public static class BreakpointsDoc {
     public static DocSample DocsUsage() {
         return new DocSample(() => 
             Box.Create(
-                EdgeInsets.All(new Rem(0.25f)),
-                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(RadiusScale.Sm),
                 outer => outer.Add(
                     Box.Create(
-                        EdgeInsets.Vertical(SpacingScale.Sm),
-                        BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
-                        null,
-                        RadiusSpec.All(RadiusScale.Sm),
-                        inner => inner.Add(BreakpointReadoutNode())
+                        inner => inner.Add(BreakpointReadoutNode()),
+                        style: new Style {
+                            Padding = EdgeInsets.Vertical(SpacingScale.Sm),
+                            Background = BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
+                            Radius = RadiusSpec.All(RadiusScale.Sm),
+                        }
                     )
-                )
+                ),
+                style: new Style {
+                    Padding = EdgeInsets.All(new Rem(0.25f)),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }

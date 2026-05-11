@@ -4,17 +4,25 @@ using Cosmere.Lightweave.Theme;
 namespace Cosmere.Lightweave.Runtime;
 
 public static class StyleExtensions {
+    public static Style GetResolvedStyle(this LightweaveNode node) {
+        if (!node.Style.HasValue && (node.Classes == null || node.Classes.Length == 0)) {
+            return default;
+        }
+
+        Theme.Theme? theme = RenderContext.CurrentOrNull?.Theme;
+        if (theme == null) {
+            return node.Style ?? default;
+        }
+
+        return theme.ResolveStyle(node);
+    }
+
     public static bool IsInFlow(this LightweaveNode node) {
         if (!node.Style.HasValue && (node.Classes == null || node.Classes.Length == 0)) {
             return true;
         }
 
-        Theme.Theme? theme = RenderContext.CurrentOrNull?.Theme;
-        if (theme == null) {
-            return true;
-        }
-
-        Style resolved = theme.ResolveStyle(node);
+        Style resolved = node.GetResolvedStyle();
         if (resolved.Display == Display.None) {
             return false;
         }

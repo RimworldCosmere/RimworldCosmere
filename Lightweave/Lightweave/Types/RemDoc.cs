@@ -43,11 +43,13 @@ public static class RemDoc {
     public static DocSample DocsConversion() {
         return new DocSample(() =>
             Box.Create(
-                EdgeInsets.All(new Rem(0.5f)),
-                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(RadiusScale.Sm),
-                outer => outer.Add(ConversionReadoutNode())
+                outer => outer.Add(ConversionReadoutNode()),
+                style: new Style {
+                    Padding = EdgeInsets.All(new Rem(0.5f)),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }
@@ -56,11 +58,13 @@ public static class RemDoc {
     public static DocSample DocsSpacingLadder() {
         return new DocSample(() =>
             Box.Create(
-                EdgeInsets.All(new Rem(0.5f)),
-                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(RadiusScale.Sm),
-                outer => outer.Add(SpacingLadderNode())
+                outer => outer.Add(SpacingLadderNode()),
+                style: new Style {
+                    Padding = EdgeInsets.All(new Rem(0.5f)),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }
@@ -69,11 +73,13 @@ public static class RemDoc {
     public static DocSample DocsFontLadder() {
         return new DocSample(() =>
             Box.Create(
-                EdgeInsets.All(new Rem(0.5f)),
-                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(RadiusScale.Sm),
-                outer => outer.Add(FontLadderNode())
+                outer => outer.Add(FontLadderNode()),
+                style: new Style {
+                    Padding = EdgeInsets.All(new Rem(0.5f)),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }
@@ -82,11 +88,13 @@ public static class RemDoc {
     public static DocSample DocsUsage() {
         return new DocSample(() =>
             Box.Create(
-                EdgeInsets.All(new Rem(0.5f)),
-                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(RadiusScale.Sm),
-                outer => outer.Add(ConversionReadoutNode())
+                outer => outer.Add(ConversionReadoutNode()),
+                style: new Style {
+                    Padding = EdgeInsets.All(new Rem(0.5f)),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }

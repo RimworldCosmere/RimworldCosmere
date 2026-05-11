@@ -9,12 +9,6 @@ namespace Cosmere.Lightweave.MainMenu;
 public static class FootStrip {
     public static LightweaveNode Create() {
         return Box.Create(
-            padding: new EdgeInsets(
-                Left: SpacingScale.Lg,
-                Right: SpacingScale.Lg,
-                Top: SpacingScale.Sm,
-                Bottom: SpacingScale.Sm
-            ),
             children: c => c.Add(HStack.Create(SpacingScale.Md, h => {
                 h.AddFlex(Spacer.Flex());
                 h.AddHug(LangButton.Create());
@@ -23,7 +17,15 @@ public static class FootStrip {
                     onClick: MainMenuActions.OpenCredits
                 ));
                 h.AddHug(FootMoreButton.Create());
-            }))
+            })),
+            style: new Style {
+                Padding = new EdgeInsets(
+                    Left: SpacingScale.Lg,
+                    Right: SpacingScale.Lg,
+                    Top: SpacingScale.Sm,
+                    Bottom: SpacingScale.Sm
+                ),
+            }
         );
     }
 }

@@ -117,10 +117,6 @@ public static class Container {
 
     private static LightweaveNode DocsViewport(string labelKey, Rem maxWidth, ContainerAlign align) {
         LightweaveNode block = Box.Create(
-            EdgeInsets.Vertical(SpacingScale.Sm),
-            BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
-            null,
-            RadiusSpec.All(RadiusScale.Sm),
             c => c.Add(
                 Text.Create(
                     (string)labelKey.Translate(),
@@ -129,7 +125,12 @@ public static class Container {
                     ThemeSlot.TextOnAccent,
                     TextAlign.Center
                 )
-            )
+            ),
+            style: new Style {
+                Padding = EdgeInsets.Vertical(SpacingScale.Sm),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
+                Radius = RadiusSpec.All(RadiusScale.Sm),
+            }
         );
         LightweaveNode contained = Container.Create(
             block,
@@ -138,11 +139,13 @@ public static class Container {
             align
         );
         return Box.Create(
-            EdgeInsets.All(new Rem(0.25f)),
-            BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-            BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-            RadiusSpec.All(RadiusScale.Sm),
-            c => c.Add(contained)
+            c => c.Add(contained),
+            style: new Style {
+                Padding = EdgeInsets.All(new Rem(0.25f)),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                Radius = RadiusSpec.All(RadiusScale.Sm),
+            }
         );
     }
 
@@ -182,10 +185,6 @@ public static class Container {
     [DocVariant("CL_Playground_Container_Responsive")]
     public static DocSample DocsResponsive() {
         LightweaveNode block = Box.Create(
-            EdgeInsets.Vertical(SpacingScale.Sm),
-            BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
-            null,
-            RadiusSpec.All(RadiusScale.Sm),
             c => c.Add(
                 Text.Create(
                     (string)"CL_Playground_Container_Responsive_Body".Translate(),
@@ -194,7 +193,12 @@ public static class Container {
                     ThemeSlot.TextOnAccent,
                     TextAlign.Center
                 )
-            )
+            ),
+            style: new Style {
+                Padding = EdgeInsets.Vertical(SpacingScale.Sm),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
+                Radius = RadiusSpec.All(RadiusScale.Sm),
+            }
         );
         LightweaveNode contained = Container.Responsive(
             block,
@@ -203,11 +207,13 @@ public static class Container {
         );
         return new DocSample(() => 
             Box.Create(
-                EdgeInsets.All(new Rem(0.25f)),
-                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-                RadiusSpec.All(RadiusScale.Sm),
-                c => c.Add(contained)
+                c => c.Add(contained),
+                style: new Style {
+                    Padding = EdgeInsets.All(new Rem(0.25f)),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }

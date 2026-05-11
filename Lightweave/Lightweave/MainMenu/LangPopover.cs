@@ -24,7 +24,6 @@ public static class LangPopover {
         List<LoadedLanguage> filtered = Filter(all, query);
 
         return Box.Create(
-            padding: new EdgeInsets(Top: SpacingScale.Md, Bottom: SpacingScale.Md, Left: SpacingScale.Md, Right: SpacingScale.Md),
             children: c => c.Add(Stack.Create(SpacingScale.None, s => {
                 s.Add(BuildHeader(all.Count));
                 s.Add(BuildSpacer(SpacingScale.Sm));
@@ -42,7 +41,10 @@ public static class LangPopover {
                 } else {
                     s.Add(BuildList(filtered, onDismiss));
                 }
-            }))
+            })),
+            style: new Style {
+                Padding = new EdgeInsets(Top: SpacingScale.Md, Bottom: SpacingScale.Md, Left: SpacingScale.Md, Right: SpacingScale.Md),
+            }
         );
     }
 
@@ -70,12 +72,14 @@ public static class LangPopover {
 
     private static LightweaveNode BuildEmpty() {
         return Box.Create(
-            padding: new EdgeInsets(Top: SpacingScale.Md, Bottom: SpacingScale.Md, Left: SpacingScale.Md, Right: SpacingScale.Md),
             children: c => c.Add(TypoText.Create(
                 "CL_MainMenu_Lang_NoMatches".Translate(),
                 color: ThemeSlot.TextMuted,
                 align: TextAlign.Center
-            ))
+            )),
+            style: new Style {
+                Padding = new EdgeInsets(Top: SpacingScale.Md, Bottom: SpacingScale.Md, Left: SpacingScale.Md, Right: SpacingScale.Md),
+            }
         );
     }
 

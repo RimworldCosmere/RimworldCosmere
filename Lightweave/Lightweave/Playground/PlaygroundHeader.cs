@@ -43,16 +43,17 @@ public static class PlaygroundHeader {
         );
 
         LightweaveNode surface = Layout.Box.Create(
-            new EdgeInsets(
-                SpacingScale.Xs,
-                Bottom: SpacingScale.Xs,
-                Left: SpacingScale.Md,
-                Right: SpacingScale.Xl
-            ),
-            BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
-            null,
-            RadiusSpec.Top(RadiusScale.Xl),
             children: s => s.Add(row),
+            style: new Style {
+                Padding = new EdgeInsets(
+                    SpacingScale.Xs,
+                    Bottom: SpacingScale.Xs,
+                    Left: SpacingScale.Md,
+                    Right: SpacingScale.Xl
+                ),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
+                Radius = RadiusSpec.Top(RadiusScale.Xl),
+            },
             line: line,
             file: file
         );

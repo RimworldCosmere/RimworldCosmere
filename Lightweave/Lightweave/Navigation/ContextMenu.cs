@@ -79,15 +79,17 @@ public static class ContextMenu {
         };
 
         LightweaveNode target = Box.Create(
-            EdgeInsets.All(SpacingScale.Sm),
-            BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
-            BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-            RadiusSpec.All(RadiusScale.Sm),
             c => c.Add(
                 Caption.Create(
                     (string)"CL_Playground_ContextMenu_RightClick".Translate()
                 )
-            )
+            ),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Sm),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
+                Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
+                Radius = RadiusSpec.All(RadiusScale.Sm),
+            }
         );
 
         return new DocSample(() => ContextMenu.Create(target, items));
@@ -103,11 +105,13 @@ public static class ContextMenu {
         };
 
         LightweaveNode target = Box.Create(
-            EdgeInsets.All(SpacingScale.Sm),
-            BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
-            BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-            RadiusSpec.All(RadiusScale.Sm),
-            c => c.Add(Caption.Create("Right-click here"))
+            c => c.Add(Caption.Create("Right-click here")),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Sm),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
+                Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
+                Radius = RadiusSpec.All(RadiusScale.Sm),
+            }
         );
 
         return new DocSample(() => ContextMenu.Create(target, items));

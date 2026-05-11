@@ -360,11 +360,10 @@ public sealed class LightweavePlayground : LightweaveWindow {
         );
 
         return Layout.Box.Create(
-            new EdgeInsets(Top: SpacingScale.Xl, Right: SpacingScale.Lg, Bottom: SpacingScale.Xl, Left: SpacingScale.Lg),
-            null,
-            null,
-            null,
-            c => c.Add(toc)
+            c => c.Add(toc),
+            style: new Style {
+                Padding = new EdgeInsets(Top: SpacingScale.Xl, Right: SpacingScale.Lg, Bottom: SpacingScale.Xl, Left: SpacingScale.Lg),
+            }
         );
     }
 

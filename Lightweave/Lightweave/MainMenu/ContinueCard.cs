@@ -27,23 +27,27 @@ public static class ContinueCard {
 
     private static LightweaveNode BuildContinue(SaveMetadata.LatestSave save) {
         return Box.Create(
-            background: BackgroundSpec.Blur(new Color(15f / 255f, 12f / 255f, 8f / 255f, 0.92f)),
-            border: BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
-            radius: RadiusSpec.All(RadiusScale.None),
             children: c => c.Add(HStack.Create(SpacingScale.None, h => {
                 h.AddFlex(BuildContinueContent(save));
                 h.Add(BuildContinueButton(save), new Rem(11f).ToPixels());
-            }))
+            })),
+            style: new Style {
+                Background = BackgroundSpec.Blur(new Color(15f / 255f, 12f / 255f, 8f / 255f, 0.92f)),
+                Border = BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
+                Radius = RadiusSpec.All(RadiusScale.None),
+            }
         );
     }
 
     private static LightweaveNode BuildContinueContent(SaveMetadata.LatestSave save) {
         return Box.Create(
-            padding: new EdgeInsets(Top: new Rem(1.25f), Bottom: new Rem(1.25f), Left: new Rem(1.5f), Right: new Rem(1.5f)),
             children: c => c.Add(HStack.Create(SpacingScale.Md, h => {
                 h.Add(BuildThumbnail(save), new Rem(6f).ToPixels());
                 h.AddFlex(BuildBody(save));
-            }))
+            })),
+            style: new Style {
+                Padding = new EdgeInsets(Top: new Rem(1.25f), Bottom: new Rem(1.25f), Left: new Rem(1.5f), Right: new Rem(1.5f)),
+            }
         );
     }
 
@@ -342,15 +346,17 @@ public static class ContinueCard {
 
     private static LightweaveNode BuildWelcome() {
         return Box.Create(
-            padding: EdgeInsets.All(SpacingScale.Md),
-            background: BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
-            border: BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
-            radius: RadiusSpec.All(RadiusScale.Md),
             children: c => c.Add(Stack.Create(SpacingScale.Xs, s => {
                 s.Add(Eyebrow.Create("CL_MainMenu_Welcome_Eyebrow".Translate()));
                 s.Add(Display.Create("CL_MainMenu_Welcome".Translate(), level: 3, align: TextAlign.Start));
                 s.Add(Text.Create("CL_MainMenu_Welcome_Hint".Translate(), color: ThemeSlot.TextSecondary, wrap: true));
-            }))
+            })),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Md),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
+                Border = BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
+                Radius = RadiusSpec.All(RadiusScale.Md),
+            }
         );
     }
 

@@ -18,25 +18,21 @@ namespace Cosmere.Lightweave.Layout;
 )]
 public static class Box {
     public static LightweaveNode Create(
-        [DocParam("Inner padding around the children.", TypeOverride = "EdgeInsets?", DefaultOverride = "null")]
-        EdgeInsets? padding = null,
-        [DocParam("Background fill spec.", TypeOverride = "BackgroundSpec?", DefaultOverride = "null")]
-        BackgroundSpec? background = null,
-        [DocParam("Border spec for outline.", TypeOverride = "BorderSpec?", DefaultOverride = "null")]
-        BorderSpec? border = null,
-        [DocParam("Corner radius spec.", TypeOverride = "RadiusSpec?", DefaultOverride = "null")]
-        RadiusSpec? radius = null,
         [DocParam("Children appended to the box.")]
         Action<List<LightweaveNode>>? children = null,
+        [DocParam("Style applied to the box (padding/background/border/radius/etc).", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         List<LightweaveNode> kids = new List<LightweaveNode>();
         children?.Invoke(kids);
-        EdgeInsets pad = padding ?? EdgeInsets.Zero;
 
         LightweaveNode node = NodeBuilder.New("Box", line, file);
         node.Children.AddRange(kids);
+        if (style.HasValue) {
+            node.Style = style.Value;
+        }
 
         float ChildMeasure(LightweaveNode child, float width) {
             if (child.Measure != null) {
@@ -44,6 +40,12 @@ public static class Box {
             }
 
             return child.PreferredHeight ?? 0f;
+        }
+
+        (float left, float top, float right, float bottom) ResolvePaddingPixels() {
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? EdgeInsets.Zero;
+            return pad.Resolve(RenderContext.Current.Direction);
         }
 
         bool CanMeasure() {
@@ -67,8 +69,7 @@ public static class Box {
 
         if (CanMeasure()) {
             node.Measure = availableWidth => {
-                Direction dir = RenderContext.Current.Direction;
-                (float left, float top, float right, float bottom) = pad.Resolve(dir);
+                (float left, float top, float right, float bottom) = ResolvePaddingPixels();
                 float innerWidth = Mathf.Max(0f, availableWidth - left - right);
                 int n = kids.Count;
                 float total = 0f;
@@ -84,8 +85,7 @@ public static class Box {
         }
 
         node.MeasureWidth = () => {
-            Direction dir = RenderContext.Current.Direction;
-            (float left, float top, float right, float bottom) = pad.Resolve(dir);
+            (float left, float top, float right, float bottom) = ResolvePaddingPixels();
             float maxW = 0f;
             int n = kids.Count;
             for (int i = 0; i < n; i++) {
@@ -103,8 +103,6 @@ public static class Box {
         };
 
         node.Paint = (rect, paintChildren) => {
-            PaintBox.Draw(rect, background, border, radius);
-            Rect content = pad.Shrink(rect, RenderContext.Current.Direction);
             int count = kids.Count;
             if (count == 0) {
                 return;
@@ -133,7 +131,7 @@ public static class Box {
                 }
                 LightweaveNode k = kids[i];
                 if (k.Measure != null || k.PreferredHeight.HasValue) {
-                    intrinsic[i] = ChildMeasure(k, content.width);
+                    intrinsic[i] = ChildMeasure(k, rect.width);
                     anyIntrinsic = true;
                 }
                 else {
@@ -141,7 +139,7 @@ public static class Box {
                 }
             }
 
-            float y = content.y;
+            float y = rect.y;
             if (anyIntrinsic) {
                 float knownTotal = 0f;
                 int unknownCount = 0;
@@ -157,7 +155,7 @@ public static class Box {
                     }
                 }
 
-                float remaining = Mathf.Max(0f, content.height - knownTotal);
+                float remaining = Mathf.Max(0f, rect.height - knownTotal);
                 float unknownEach = unknownCount > 0 ? remaining / unknownCount : 0f;
                 for (int i = 0; i < count; i++) {
                     if (!inFlow[i]) {
@@ -165,18 +163,18 @@ public static class Box {
                     }
                     LightweaveNode child = kids[i];
                     float h = intrinsic[i] >= 0f ? intrinsic[i] : unknownEach;
-                    child.MeasuredRect = new Rect(content.x, y, content.width, h);
+                    child.MeasuredRect = new Rect(rect.x, y, rect.width, h);
                     y += h;
                 }
             }
             else {
-                float eachH = content.height / flowCount;
+                float eachH = rect.height / flowCount;
                 for (int i = 0; i < count; i++) {
                     if (!inFlow[i]) {
                         continue;
                     }
                     LightweaveNode child = kids[i];
-                    child.MeasuredRect = new Rect(content.x, y, content.width, eachH);
+                    child.MeasuredRect = new Rect(rect.x, y, rect.width, eachH);
                     y += eachH;
                 }
             }
@@ -190,11 +188,13 @@ public static class Box {
     public static DocSample DocsRaised() {
         return new DocSample(() => 
             Box.Create(
-                EdgeInsets.All(SpacingScale.Sm),
-                BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
-                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-                RadiusSpec.All(RadiusScale.Sm),
-                c => c.Add(Caption.Create("raised"))
+                c => c.Add(Caption.Create("raised")),
+                style: new Style {
+                    Padding = EdgeInsets.All(SpacingScale.Sm),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }
@@ -203,11 +203,12 @@ public static class Box {
     public static DocSample DocsSunken() {
         return new DocSample(() => 
             Box.Create(
-                EdgeInsets.All(SpacingScale.Sm),
-                BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-                null,
-                RadiusSpec.All(RadiusScale.Sm),
-                c => c.Add(Caption.Create("sunken"))
+                c => c.Add(Caption.Create("sunken")),
+                style: new Style {
+                    Padding = EdgeInsets.All(SpacingScale.Sm),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }
@@ -216,11 +217,12 @@ public static class Box {
     public static DocSample DocsAccent() {
         return new DocSample(() => 
             Box.Create(
-                EdgeInsets.All(SpacingScale.Sm),
-                BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
-                null,
-                RadiusSpec.All(RadiusScale.Sm),
-                c => c.Add(Text.Create("accent", FontRole.Body, new Rem(0.8125f), ThemeSlot.TextOnAccent))
+                c => c.Add(Text.Create("accent", FontRole.Body, new Rem(0.8125f), ThemeSlot.TextOnAccent)),
+                style: new Style {
+                    Padding = EdgeInsets.All(SpacingScale.Sm),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }
@@ -229,11 +231,13 @@ public static class Box {
     public static DocSample DocsUsage() {
         return new DocSample(() => 
             Box.Create(
-                EdgeInsets.All(SpacingScale.Sm),
-                BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
-                BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-                RadiusSpec.All(RadiusScale.Sm),
-                c => c.Add(Caption.Create("content"))
+                c => c.Add(Caption.Create("content")),
+                style: new Style {
+                    Padding = EdgeInsets.All(SpacingScale.Sm),
+                    Background = BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
             )
         );
     }

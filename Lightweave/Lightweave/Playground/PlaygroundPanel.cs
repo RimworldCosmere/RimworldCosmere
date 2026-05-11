@@ -330,11 +330,13 @@ public static class PlaygroundPanel {
             : demo;
 
         return Layout.Box.Create(
-            EdgeInsets.All(SpacingScale.Lg),
-            BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
-            BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-            RadiusSpec.All(RadiusScale.Lg),
-            c => c.Add(content)
+            c => c.Add(content),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Lg),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
+                Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
+                Radius = RadiusSpec.All(RadiusScale.Lg),
+            }
         );
     }
 
@@ -349,11 +351,10 @@ public static class PlaygroundPanel {
             : demo;
 
         LightweaveNode previewSection = Layout.Box.Create(
-            EdgeInsets.All(SpacingScale.Lg),
-            null,
-            null,
-            null,
-            c => c.Add(content)
+            c => c.Add(content),
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Lg),
+            }
         );
 
         LightweaveNode codeSection = Doc.Doc.CodeBlock(
@@ -364,14 +365,16 @@ public static class PlaygroundPanel {
         );
 
         return Layout.Box.Create(
-            EdgeInsets.All(new Rem(1f / 16f)),
-            BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
-            BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
-            RadiusSpec.All(RadiusScale.Lg),
             c => {
                 c.Add(previewSection);
                 c.Add(Layout.Divider.Horizontal());
                 c.Add(codeSection);
+            },
+            style: new Style {
+                Padding = EdgeInsets.All(new Rem(1f / 16f)),
+                Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
+                Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault),
+                Radius = RadiusSpec.All(RadiusScale.Lg),
             }
         );
     }

@@ -26,13 +26,13 @@ public static class ModListPane {
         RimWorld.Page_ModsConfig page
     ) {
         return Box.Create(
-            padding: EdgeInsets.Zero,
-            background: BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
-            border: null,
-            radius: null,
             children: c => c.Add(ScrollArea.Create(
                 content: BuildList(mods, selected, onSelect)
-            ))
+            )),
+            style: new Style {
+                Padding = EdgeInsets.Zero,
+                Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+            }
         );
     }
 

@@ -12,7 +12,7 @@ using Verse;
 namespace Cosmere.Lightweave.MainMenu;
 
 public static class DockTile {
-    private static readonly Rem TileHeight = new Rem(4.0f);
+    private static readonly Rem TileHeight = new Rem(4.75f);
 
     public static LightweaveNode Create(
         string label,

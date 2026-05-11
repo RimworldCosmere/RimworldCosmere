@@ -216,7 +216,7 @@ public static class ContinueCard {
                 h.AddHug(column);
             }
             void AddSep() {
-                h.AddHug(Text.Create("·", FontRole.Mono, new Rem(0.75f), ThemeSlot.TextMuted));
+                h.AddHug(BuildStatSeparator());
             }
 
             if (save.Sidecar == null) {
@@ -248,6 +248,25 @@ public static class ContinueCard {
             }
         });
     }
+    private static LightweaveNode BuildStatSeparator() {
+        LightweaveNode node = NodeBuilder.New("ContinueCard:StatSep");
+        node.PreferredHeight = new Rem(1.625f).ToPixels();
+        node.MeasureWidth = () => new Rem(0.5f).ToPixels();
+        node.Paint = (rect, _) => {
+            Theme.Theme theme = RenderContext.Current.Theme;
+            Font font = theme.GetFont(FontRole.Mono);
+            int px = Mathf.RoundToInt(new Rem(1.25f).ToFontPx());
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, px, FontStyle.Normal);
+            style.alignment = TextAnchor.MiddleCenter;
+            float valueH = new Rem(1.625f).ToPixels();
+            Color saved = GUI.color;
+            GUI.color = theme.GetColor(ThemeSlot.TextMuted);
+            GUI.Label(RectSnap.Snap(new Rect(rect.x, rect.y, rect.width, valueH)), "·", style);
+            GUI.color = saved;
+        };
+        return node;
+    }
+
 
     private static LightweaveNode BuildStatColumn(string value, string label, ThemeSlot valueColor) {
         LightweaveNode node = NodeBuilder.New($"StatColumn:{value}");

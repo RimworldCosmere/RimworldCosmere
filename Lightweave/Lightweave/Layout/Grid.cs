@@ -60,26 +60,37 @@ public static class Grid {
             return widths;
         }
 
+        List<LightweaveNode> CollectInFlow() {
+            List<LightweaveNode> flow = new List<LightweaveNode>(kids.Count);
+            for (int i = 0; i < kids.Count; i++) {
+                if (kids[i].IsInFlow()) {
+                    flow.Add(kids[i]);
+                }
+            }
+            return flow;
+        }
+
         node.Measure = availableWidth => {
             List<GridTrack> cols = ResolveCols();
             int n = cols.Count;
-            if (n == 0 || kids.Count == 0) {
+            List<LightweaveNode> flow = CollectInFlow();
+            if (n == 0 || flow.Count == 0) {
                 return 0f;
             }
 
             float gapPx = gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
             float[] widths = ResolveColumnWidths(availableWidth, cols, gapPx);
-            int rows = (kids.Count + n - 1) / n;
+            int rows = (flow.Count + n - 1) / n;
             float totalHeight = 0f;
             for (int r = 0; r < rows; r++) {
                 float rowMax = 0f;
                 for (int c = 0; c < n; c++) {
                     int idx = r * n + c;
-                    if (idx >= kids.Count) {
+                    if (idx >= flow.Count) {
                         break;
                     }
 
-                    LightweaveNode child = kids[idx];
+                    LightweaveNode child = flow[idx];
                     float h = child.Measure?.Invoke(widths[c]) ?? child.PreferredHeight ?? 0f;
                     if (h > rowMax) {
                         rowMax = h;
@@ -100,6 +111,7 @@ public static class Grid {
                 return;
             }
 
+            List<LightweaveNode> flow = CollectInFlow();
             float gapPx = gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
             Direction dir = RenderContext.Current.Direction;
             float[] widths = ResolveColumnWidths(rect.width, cols, gapPx);
@@ -107,10 +119,10 @@ public static class Grid {
             int childIdx = 0;
             float y = rect.y;
             float rowHeight = rect.height;
-            while (childIdx < kids.Count) {
+            while (childIdx < flow.Count) {
                 float x = dir == Direction.Rtl ? rect.xMax : rect.x;
-                for (int i = 0; i < n && childIdx < kids.Count; i++) {
-                    LightweaveNode child = kids[childIdx++];
+                for (int i = 0; i < n && childIdx < flow.Count; i++) {
+                    LightweaveNode child = flow[childIdx++];
                     float w = widths[i];
                     Rect childRect = dir == Direction.Ltr
                         ? new Rect(x, y, w, rowHeight)

@@ -25,13 +25,21 @@ public static class MainMenuRoot {
             padding: new EdgeInsets(Left: SpacingScale.Lg, Right: SpacingScale.Lg, Top: new Rem(0.625f))
         );
 
-        LightweaveNode topBar = HStack.Create(
+        LightweaveNode topBar = Stack.Create(
             SpacingScale.None,
-            h => {
-                h.AddHug(StaggerIn.Wrap(MetadataTable.Create(save), 0f));
-                h.AddFlex(titleBlock);
+            s => {
+                s.Add(titleBlock);
+                s.Add(
+                    StaggerIn.Wrap(MetadataTable.Create(save), 0f).WithStyle(
+                        new Style {
+                            Position = Position.Absolute,
+                            Top = new Rem(0f),
+                            Left = new Rem(0f),
+                        }
+                    )
+                );
             }
-        );
+        ).WithStyle(new Style { Position = Position.Relative });
 
         LightweaveNode bottomBlock = Container.Create(
             Stack.Create(
@@ -52,7 +60,7 @@ public static class MainMenuRoot {
                 root.Add(topBar);
                 root.AddFlex(Spacer.Flex());
                 root.Add(bottomBlock);
-                root.Add(Spacer.Fixed(new Rem(6.6875f)));
+                root.Add(Spacer.Fixed(new Rem(5.4375f)));
                 root.Add(FootStrip.Create());
             }
         );

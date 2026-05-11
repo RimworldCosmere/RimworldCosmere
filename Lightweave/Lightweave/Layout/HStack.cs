@@ -65,11 +65,17 @@ public static class HStack {
 
         node.PreferredHeight = maxChildHeight;
 
-        float[] AllocateWidths(float availableWidth, float gapPx) {
+        float[] AllocateWidths(float availableWidth, float gapPx, bool[] inFlow) {
             float[] widths = new float[count];
             float fixedTotal = 0f;
             int flexCount = 0;
+            int flowCount = 0;
             for (int i = 0; i < count; i++) {
+                if (!inFlow[i]) {
+                    widths[i] = 0f;
+                    continue;
+                }
+                flowCount++;
                 var item = builder.Items[i];
                 if (item.flex) {
                     flexCount++;
@@ -85,11 +91,11 @@ public static class HStack {
                 }
             }
 
-            float totalGap = gapPx * Math.Max(0, count - 1);
+            float totalGap = gapPx * Math.Max(0, flowCount - 1);
             float remainingForFlex = Mathf.Max(0f, availableWidth - fixedTotal - totalGap);
             float flexEach = flexCount > 0 ? remainingForFlex / flexCount : 0f;
             for (int i = 0; i < count; i++) {
-                if (builder.Items[i].flex) {
+                if (inFlow[i] && builder.Items[i].flex) {
                     widths[i] = flexEach;
                 }
             }
@@ -113,6 +119,9 @@ public static class HStack {
             float total = 0f;
             int counted = 0;
             for (int i = 0; i < count; i++) {
+                if (!builder.Items[i].node.IsInFlow()) {
+                    continue;
+                }
                 var item = builder.Items[i];
                 if (item.flex) {
                     continue;
@@ -134,9 +143,17 @@ public static class HStack {
                 return 0f;
             }
 
-            float[] widths = AllocateWidths(availableWidth, ResolveGapPx());
+            bool[] inFlow = new bool[count];
+            for (int i = 0; i < count; i++) {
+                inFlow[i] = builder.Items[i].node.IsInFlow();
+            }
+
+            float[] widths = AllocateWidths(availableWidth, ResolveGapPx(), inFlow);
             float max = 0f;
             for (int i = 0; i < count; i++) {
+                if (!inFlow[i]) {
+                    continue;
+                }
                 float h = MeasureChildHeight(builder.Items[i].node, widths[i]);
                 if (h > max) {
                     max = h;
@@ -155,11 +172,18 @@ public static class HStack {
             bool reverse = dir == Direction.Rtl;
 
             float gapPx = ResolveGapPx();
-            float[] widths = AllocateWidths(rect.width, gapPx);
+            bool[] inFlow = new bool[count];
+            for (int i = 0; i < count; i++) {
+                inFlow[i] = builder.Items[i].node.IsInFlow();
+            }
+            float[] widths = AllocateWidths(rect.width, gapPx, inFlow);
 
             float x = rect.x;
             for (int i = 0; i < count; i++) {
                 int idx = reverse ? count - 1 - i : i;
+                if (!inFlow[idx]) {
+                    continue;
+                }
                 LightweaveNode child = builder.Items[idx].node;
                 float w = widths[idx];
                 child.MeasuredRect = new Rect(x, rect.y, w, rect.height);

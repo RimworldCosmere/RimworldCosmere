@@ -54,6 +54,9 @@ public static class Box {
 
             for (int i = 0; i < n; i++) {
                 LightweaveNode k = kids[i];
+                if (!k.IsInFlow()) {
+                    continue;
+                }
                 if (k.Measure == null && !k.PreferredHeight.HasValue) {
                     return false;
                 }
@@ -70,6 +73,9 @@ public static class Box {
                 int n = kids.Count;
                 float total = 0f;
                 for (int i = 0; i < n; i++) {
+                    if (!kids[i].IsInFlow()) {
+                        continue;
+                    }
                     total += ChildMeasure(kids[i], innerWidth);
                 }
 
@@ -84,6 +90,9 @@ public static class Box {
             int n = kids.Count;
             for (int i = 0; i < n; i++) {
                 LightweaveNode k = kids[i];
+                if (!k.IsInFlow()) {
+                    continue;
+                }
                 float w = k.MeasureWidth?.Invoke() ?? 0f;
                 if (w > maxW) {
                     maxW = w;
@@ -101,9 +110,27 @@ public static class Box {
                 return;
             }
 
+            bool[] inFlow = new bool[count];
+            int flowCount = 0;
+            for (int i = 0; i < count; i++) {
+                inFlow[i] = kids[i].IsInFlow();
+                if (inFlow[i]) {
+                    flowCount++;
+                }
+            }
+
+            if (flowCount == 0) {
+                paintChildren();
+                return;
+            }
+
             bool anyIntrinsic = false;
             float[] intrinsic = new float[count];
             for (int i = 0; i < count; i++) {
+                if (!inFlow[i]) {
+                    intrinsic[i] = 0f;
+                    continue;
+                }
                 LightweaveNode k = kids[i];
                 if (k.Measure != null || k.PreferredHeight.HasValue) {
                     intrinsic[i] = ChildMeasure(k, content.width);
@@ -119,6 +146,9 @@ public static class Box {
                 float knownTotal = 0f;
                 int unknownCount = 0;
                 for (int i = 0; i < count; i++) {
+                    if (!inFlow[i]) {
+                        continue;
+                    }
                     if (intrinsic[i] >= 0f) {
                         knownTotal += intrinsic[i];
                     }
@@ -130,6 +160,9 @@ public static class Box {
                 float remaining = Mathf.Max(0f, content.height - knownTotal);
                 float unknownEach = unknownCount > 0 ? remaining / unknownCount : 0f;
                 for (int i = 0; i < count; i++) {
+                    if (!inFlow[i]) {
+                        continue;
+                    }
                     LightweaveNode child = kids[i];
                     float h = intrinsic[i] >= 0f ? intrinsic[i] : unknownEach;
                     child.MeasuredRect = new Rect(content.x, y, content.width, h);
@@ -137,8 +170,11 @@ public static class Box {
                 }
             }
             else {
-                float eachH = content.height / count;
+                float eachH = content.height / flowCount;
                 for (int i = 0; i < count; i++) {
+                    if (!inFlow[i]) {
+                        continue;
+                    }
                     LightweaveNode child = kids[i];
                     child.MeasuredRect = new Rect(content.x, y, content.width, eachH);
                     y += eachH;

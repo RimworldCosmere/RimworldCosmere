@@ -52,6 +52,10 @@ public static class Container {
                 return maxWidthPx;
             }
 
+            if (!child.IsInFlow()) {
+                return leftPx + rightPx;
+            }
+
             float childW = child.MeasureWidth?.Invoke() ?? 0f;
             return childW + leftPx + rightPx;
         };
@@ -61,6 +65,9 @@ public static class Container {
             EdgeInsets pad = padding.Resolve(bp);
             float innerWidth = ResolveInnerWidth(availableWidth);
             (float leftPx, float topPx, float rightPx, float bottomPx) = pad.Resolve(RenderContext.Current.Direction);
+            if (!child.IsInFlow()) {
+                return topPx + bottomPx;
+            }
             float childHeight = child.Measure?.Invoke(innerWidth) ?? child.PreferredHeight ?? 0f;
             return childHeight + topPx + bottomPx;
         };
@@ -78,7 +85,9 @@ public static class Container {
             };
             Rect outerRect = new Rect(rect.x + offsetX, rect.y, outer, rect.height);
             Rect inner = pad.Shrink(outerRect, dir);
-            child.MeasuredRect = inner;
+            if (child.IsInFlow()) {
+                child.MeasuredRect = inner;
+            }
             paintChildren();
         };
 

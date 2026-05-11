@@ -17,4 +17,7 @@ public sealed class LightweaveNode {
     public Rect MeasuredRect;
     public Action<Rect, Action>? Paint;
     public float? PreferredHeight;
+    public Style? Style;
+    public string? Id;
+    public string[]? Classes;
 }

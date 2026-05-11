@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using UnityEngine;
 
@@ -8,9 +10,11 @@ public sealed record Theme(
     IReadOnlyDictionary<ThemeSlot, Color> Colors,
     IReadOnlyDictionary<FontRole, Font> Fonts,
     IReadOnlyDictionary<RadiusScale, float> Radii,
-    IReadOnlyDictionary<ElevationScale, float> Elevations
+    IReadOnlyDictionary<ElevationScale, float> Elevations,
+    IReadOnlyDictionary<string, Style>? Classes = null
 ) {
     private readonly bool _validated = ValidateConstruction(Fonts);
+    private readonly Dictionary<string, Style> _classMergeCache = new Dictionary<string, Style>();
 
     private static bool ValidateConstruction(IReadOnlyDictionary<FontRole, Font> fonts) {
         if (fonts == null) {
@@ -41,11 +45,40 @@ public sealed record Theme(
         return Elevations.TryGetValue(s, out float e) ? e : 0f;
     }
 
+    public Style ResolveStyle(LightweaveNode node) {
+        Style merged = ResolveClasses(node.Classes);
+        if (node.Style.HasValue) {
+            merged = Style.Merge(merged, node.Style.Value);
+        }
+        return merged;
+    }
+
+    public Style ResolveClasses(string[]? classes) {
+        if (classes == null || classes.Length == 0 || Classes == null) {
+            return default;
+        }
+
+        string cacheKey = string.Join("|", classes);
+        if (_classMergeCache.TryGetValue(cacheKey, out Style cached)) {
+            return cached;
+        }
+
+        Style merged = default;
+        for (int i = 0; i < classes.Length; i++) {
+            if (Classes.TryGetValue(classes[i], out Style s)) {
+                merged = Style.Merge(merged, s);
+            }
+        }
+        _classMergeCache[cacheKey] = merged;
+        return merged;
+    }
+
     public Theme With(
         IReadOnlyDictionary<ThemeSlot, Color>? colors = null,
         IReadOnlyDictionary<FontRole, Font>? fonts = null,
         IReadOnlyDictionary<RadiusScale, float>? radii = null,
-        IReadOnlyDictionary<ElevationScale, float>? elevations = null
+        IReadOnlyDictionary<ElevationScale, float>? elevations = null,
+        IReadOnlyDictionary<string, Style>? classes = null
     ) {
         Dictionary<ThemeSlot, Color> newColors = new Dictionary<ThemeSlot, Color>(Colors);
         if (colors != null) {
@@ -75,7 +108,16 @@ public sealed record Theme(
             }
         }
 
-        return new Theme(newColors, newFonts, newRadii, newElev);
+        Dictionary<string, Style> newClasses = Classes != null
+            ? new Dictionary<string, Style>(Classes)
+            : new Dictionary<string, Style>();
+        if (classes != null) {
+            foreach (KeyValuePair<string, Style> kv in classes) {
+                newClasses[kv.Key] = kv.Value;
+            }
+        }
+
+        return new Theme(newColors, newFonts, newRadii, newElev, newClasses);
     }
 
 }

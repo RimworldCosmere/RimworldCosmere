@@ -60,10 +60,14 @@ public static class ScrollArea {
         node.Paint = (rect, paintChildren) => {
             float scrollbarGutter = LightweaveScrollView.GutterPixels(status.VerticalVisible);
             float innerWidth = rect.width - scrollbarGutter;
-            float contentHeight = content.Measure?.Invoke(innerWidth) ?? content.PreferredHeight ?? rect.height;
+            float contentHeight = content.IsInFlow()
+                ? content.Measure?.Invoke(innerWidth) ?? content.PreferredHeight ?? rect.height
+                : rect.height;
             status.Height = contentHeight;
             using (new LightweaveScrollView(rect, status, showScrollbar)) {
-                content.MeasuredRect = new Rect(0f, 0f, innerWidth, contentHeight);
+                if (content.IsInFlow()) {
+                    content.MeasuredRect = new Rect(0f, 0f, innerWidth, contentHeight);
+                }
                 paintChildren();
             }
         };

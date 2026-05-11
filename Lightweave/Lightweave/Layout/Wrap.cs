@@ -36,8 +36,19 @@ public static class Wrap {
         LightweaveNode node = NodeBuilder.New("Wrap", line, file);
         node.Children.AddRange(kids);
 
+        int FlowCount() {
+            int c = 0;
+            for (int i = 0; i < kids.Count; i++) {
+                if (kids[i].IsInFlow()) {
+                    c++;
+                }
+            }
+            return c;
+        }
+
         node.Measure = availableWidth => {
-            if (kids.Count == 0) {
+            int flowCount = FlowCount();
+            if (flowCount == 0) {
                 return 0f;
             }
 
@@ -45,7 +56,7 @@ public static class Wrap {
             float minW = Mathf.Max(minChildWidth.ToPixels(), 1f);
             float rowH = lineHeight.HasValue ? lineHeight.Value.ToPixels() : minW * 0.6f;
             int perRow = Mathf.Max(1, Mathf.FloorToInt((availableWidth + gapPx) / (minW + gapPx)));
-            int rows = (kids.Count + perRow - 1) / perRow;
+            int rows = (flowCount + perRow - 1) / perRow;
             return rows * rowH + Mathf.Max(0, rows - 1) * gapPx;
         };
 
@@ -56,6 +67,9 @@ public static class Wrap {
             float x = rect.x;
             float y = rect.y;
             foreach (LightweaveNode child in kids) {
+                if (!child.IsInFlow()) {
+                    continue;
+                }
                 if (x + minW > rect.xMax) {
                     x = rect.x;
                     y += rowH + gapPx;

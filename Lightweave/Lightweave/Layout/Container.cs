@@ -22,60 +22,55 @@ public static class Container {
     public static LightweaveNode Create(
         [DocParam("Child constrained by max width and padding.")]
         LightweaveNode child,
-        [DocParam("Maximum content width. Zero means unconstrained. Accepts a Responsive<Rem> for breakpoint-driven caps.", TypeOverride = "Responsive<Rem>", DefaultOverride = "0")]
-        Responsive<Rem> maxWidth = default,
-        [DocParam("Inset padding around the child. Accepts a Responsive<EdgeInsets> for breakpoint-driven padding.", TypeOverride = "Responsive<EdgeInsets>", DefaultOverride = "Zero")]
-        Responsive<EdgeInsets> padding = default,
         [DocParam("Horizontal alignment within the available width.")]
         ContainerAlign align = ContainerAlign.Center,
+        [DocParam("Inline style override (use MaxWidth/Padding/etc).", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'container' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("Container", line, file);
+        node.ApplyStyling("container", style, classes, id);
         node.Children.Add(child);
 
-        float ResolveInnerWidth(float availableWidth) {
-            Breakpoint bp = RenderContext.Current.Breakpoint;
-            float maxWidthPx = maxWidth.Resolve(bp).ToPixels();
-            EdgeInsets pad = padding.Resolve(bp);
-            float outer = maxWidthPx > 0f ? Mathf.Min(availableWidth, maxWidthPx) : availableWidth;
-            (float leftPx, float topPx, float rightPx, float bottomPx) = pad.Resolve(RenderContext.Current.Direction);
-            return Mathf.Max(0f, outer - leftPx - rightPx);
+        float MaxWidthPx(float availableWidth) {
+            Style s = node.GetResolvedStyle();
+            Length? mw = s.MaxWidth;
+            if (!mw.HasValue) {
+                return 0f;
+            }
+            return mw.Value.ToPixels(availableWidth, availableWidth);
         }
 
         node.MeasureWidth = () => {
-            Breakpoint bp = RenderContext.Current.Breakpoint;
-            float maxWidthPx = maxWidth.Resolve(bp).ToPixels();
-            EdgeInsets pad = padding.Resolve(bp);
-            (float leftPx, float topPx, float rightPx, float bottomPx) = pad.Resolve(RenderContext.Current.Direction);
-            if (maxWidthPx > 0f) {
-                return maxWidthPx;
+            Style s = node.GetResolvedStyle();
+            Length? mw = s.MaxWidth;
+            if (mw.HasValue && mw.Value.Mode == Length.Kind.Rem) {
+                return mw.Value.ToPixels(0f, 0f);
             }
 
             if (!child.IsInFlow()) {
-                return leftPx + rightPx;
+                return 0f;
             }
 
-            float childW = child.MeasureWidth?.Invoke() ?? 0f;
-            return childW + leftPx + rightPx;
+            return child.MeasureWidth?.Invoke() ?? 0f;
         };
 
         node.Measure = availableWidth => {
-            Breakpoint bp = RenderContext.Current.Breakpoint;
-            EdgeInsets pad = padding.Resolve(bp);
-            float innerWidth = ResolveInnerWidth(availableWidth);
-            (float leftPx, float topPx, float rightPx, float bottomPx) = pad.Resolve(RenderContext.Current.Direction);
+            float maxWidthPx = MaxWidthPx(availableWidth);
+            float innerWidth = maxWidthPx > 0f ? Mathf.Min(availableWidth, maxWidthPx) : availableWidth;
             if (!child.IsInFlow()) {
-                return topPx + bottomPx;
+                return 0f;
             }
-            float childHeight = child.Measure?.Invoke(innerWidth) ?? child.PreferredHeight ?? 0f;
-            return childHeight + topPx + bottomPx;
+            return child.Measure?.Invoke(innerWidth) ?? child.PreferredHeight ?? 0f;
         };
 
         node.Paint = (rect, paintChildren) => {
-            Breakpoint bp = RenderContext.Current.Breakpoint;
-            float maxWidthPx = maxWidth.Resolve(bp).ToPixels();
-            EdgeInsets pad = padding.Resolve(bp);
+            float maxWidthPx = MaxWidthPx(rect.width);
             Direction dir = RenderContext.Current.Direction;
             float outer = maxWidthPx > 0f ? Mathf.Min(rect.width, maxWidthPx) : rect.width;
             float offsetX = align switch {
@@ -83,10 +78,8 @@ public static class Container {
                 ContainerAlign.End => dir == Direction.Rtl ? 0f : rect.width - outer,
                 _ => (rect.width - outer) * 0.5f,
             };
-            Rect outerRect = new Rect(rect.x + offsetX, rect.y, outer, rect.height);
-            Rect inner = pad.Shrink(outerRect, dir);
             if (child.IsInFlow()) {
-                child.MeasuredRect = inner;
+                child.MeasuredRect = new Rect(rect.x + offsetX, rect.y, outer, rect.height);
             }
             paintChildren();
         };
@@ -95,35 +88,14 @@ public static class Container {
     }
 
 
-    public static LightweaveNode Responsive(
-        LightweaveNode child,
-        Responsive<EdgeInsets> padding = default,
-        ContainerAlign align = ContainerAlign.Center,
-        [CallerLineNumber] int line = 0,
-        [CallerFilePath] string file = ""
-    ) {
-        Responsive<Rem> ladder = new Responsive<Rem>(
-            new Rem(0f),
-            new (Breakpoint, Rem)[] {
-                (Breakpoint.Sm, new Rem(40f)),
-                (Breakpoint.Md, new Rem(48f)),
-                (Breakpoint.Lg, new Rem(64f)),
-                (Breakpoint.Xl, new Rem(80f)),
-                (Breakpoint.Xxl, new Rem(96f)),
-            }
-        );
-        return Create(child, ladder, padding, align, line, file);
-    }
+    
 
     private static LightweaveNode DocsViewport(string labelKey, Rem maxWidth, ContainerAlign align) {
         LightweaveNode block = Box.Create(
             c => c.Add(
                 Text.Create(
                     (string)labelKey.Translate(),
-                    FontRole.BodyBold,
-                    new Rem(0.8125f),
-                    ThemeSlot.TextOnAccent,
-                    TextAlign.Center
+                    style: new Style { FontFamily = FontRole.BodyBold, FontSize = new Rem(0.8125f), TextColor = ThemeSlot.TextOnAccent, TextAlign = TextAlign.Center }
                 )
             ),
             style: new Style {
@@ -134,9 +106,11 @@ public static class Container {
         );
         LightweaveNode contained = Container.Create(
             block,
-            maxWidth,
-            EdgeInsets.Horizontal(SpacingScale.Xs),
-            align
+            align: align,
+            style: new Style {
+                MaxWidth = maxWidth,
+                Padding = EdgeInsets.Horizontal(SpacingScale.Xs),
+            }
         );
         return Box.Create(
             c => c.Add(contained),
@@ -188,10 +162,7 @@ public static class Container {
             c => c.Add(
                 Text.Create(
                     (string)"CL_Playground_Container_Responsive_Body".Translate(),
-                    FontRole.BodyBold,
-                    new Rem(0.8125f),
-                    ThemeSlot.TextOnAccent,
-                    TextAlign.Center
+                    style: new Style { FontFamily = FontRole.BodyBold, FontSize = new Rem(0.8125f), TextColor = ThemeSlot.TextOnAccent, TextAlign = TextAlign.Center }
                 )
             ),
             style: new Style {
@@ -200,12 +171,15 @@ public static class Container {
                 Radius = RadiusSpec.All(RadiusScale.Sm),
             }
         );
-        LightweaveNode contained = Container.Responsive(
+        LightweaveNode contained = Container.Create(
             block,
-            EdgeInsets.Horizontal(SpacingScale.Xs),
-            ContainerAlign.Center
+            align: ContainerAlign.Center,
+            style: new Style {
+                MaxWidth = new Rem(40f),
+                Padding = EdgeInsets.Horizontal(SpacingScale.Xs),
+            }
         );
-        return new DocSample(() => 
+        return new DocSample(() =>
             Box.Create(
                 c => c.Add(contained),
                 style: new Style {

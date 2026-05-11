@@ -12,12 +12,12 @@ public readonly record struct Style {
     public Rem? Left { get; init; }
     public int? ZIndex { get; init; }
 
-    public Rem? Width { get; init; }
-    public Rem? Height { get; init; }
-    public Rem? MinWidth { get; init; }
-    public Rem? MinHeight { get; init; }
-    public Rem? MaxWidth { get; init; }
-    public Rem? MaxHeight { get; init; }
+    public Length? Width { get; init; }
+    public Length? Height { get; init; }
+    public Length? MinWidth { get; init; }
+    public Length? MinHeight { get; init; }
+    public Length? MaxWidth { get; init; }
+    public Length? MaxHeight { get; init; }
 
     public EdgeInsets? Margin { get; init; }
     public EdgeInsets? Padding { get; init; }
@@ -27,13 +27,17 @@ public readonly record struct Style {
     public RadiusSpec? Radius { get; init; }
     public float? Opacity { get; init; }
     public bool? Visible { get; init; }
-    public Display? Display { get; init; }
 
-    public ColorRef? Color { get; init; }
-    public FontRole? FontFamily { get; init; }
+    public ColorRef? TextColor { get; init; }
+    public FontRef? FontFamily { get; init; }
     public Rem? FontSize { get; init; }
     public FontStyle? FontWeight { get; init; }
     public TextAlign? TextAlign { get; init; }
+
+    public StateStyle? Hover { get; init; }
+    public StateStyle? Active { get; init; }
+    public StateStyle? Focus { get; init; }
+    public StateStyle? Disabled { get; init; }
 
     public static Style Merge(Style baseStyle, Style overrides) {
         return new Style {
@@ -56,12 +60,31 @@ public readonly record struct Style {
             Radius = overrides.Radius ?? baseStyle.Radius,
             Opacity = overrides.Opacity ?? baseStyle.Opacity,
             Visible = overrides.Visible ?? baseStyle.Visible,
-            Display = overrides.Display ?? baseStyle.Display,
-            Color = overrides.Color ?? baseStyle.Color,
+            TextColor = overrides.TextColor ?? baseStyle.TextColor,
             FontFamily = overrides.FontFamily ?? baseStyle.FontFamily,
             FontSize = overrides.FontSize ?? baseStyle.FontSize,
             FontWeight = overrides.FontWeight ?? baseStyle.FontWeight,
-            TextAlign = overrides.TextAlign ?? baseStyle.TextAlign
+            TextAlign = overrides.TextAlign ?? baseStyle.TextAlign,
+            Hover = overrides.Hover ?? baseStyle.Hover,
+            Active = overrides.Active ?? baseStyle.Active,
+            Focus = overrides.Focus ?? baseStyle.Focus,
+            Disabled = overrides.Disabled ?? baseStyle.Disabled,
         };
+    }
+}
+
+public sealed class StateStyle {
+    public Style Value { get; }
+
+    public StateStyle(Style value) {
+        Value = value;
+    }
+
+    public static implicit operator StateStyle(Style s) {
+        return new StateStyle(s);
+    }
+
+    public static implicit operator Style(StateStyle s) {
+        return s.Value;
     }
 }

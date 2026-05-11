@@ -29,6 +29,9 @@ public static class RingGauge {
         ThemeSlot? fillColor = null,
         [DocParam("Color of the unfilled track. Defaults to BorderDefault.")]
         ThemeSlot? trackColor = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -37,6 +40,7 @@ public static class RingGauge {
         ThemeSlot resolvedTrack = trackColor ?? ThemeSlot.BorderDefault;
 
         LightweaveNode node = NodeBuilder.New("RingGauge", line, file);
+        node.ApplyStyling("ring-gauge", style, classes, id);
         node.PreferredHeight = new Rem(4f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {

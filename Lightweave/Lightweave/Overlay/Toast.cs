@@ -60,6 +60,9 @@ public static class Toast {
         ToastPosition position = ToastPosition.BottomRight,
         [DocParam("Whether the stack is positioned in the host window or the full screen.")]
         ToastTarget target = ToastTarget.CurrentWindow,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -70,6 +73,7 @@ public static class Toast {
         );
 
         LightweaveNode node = NodeBuilder.New($"Toast:{position}", line, file);
+        node.ApplyStyling("toast", style, classes, id);
         node.Paint = (_, _) => {
             Dictionary<string, float> spawns = spawnsRef.Current;
             float now = Time.unscaledTime;

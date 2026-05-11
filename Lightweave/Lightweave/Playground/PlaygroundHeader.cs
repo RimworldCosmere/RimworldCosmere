@@ -68,15 +68,9 @@ public static class PlaygroundHeader {
     }
 
     private static LightweaveNode BuildBrand() {
-        LightweaveNode title = Typography.Typography.Heading.Create(
-            2,
-            (string)"CL_Playground_Header_Brand".Translate(),
-            ThemeSlot.BorderFocus
-        );
+        LightweaveNode title = Typography.Typography.Heading.Create(2, (string)"CL_Playground_Header_Brand".Translate(), style: new Style { TextColor = ThemeSlot.BorderFocus });
 
-        LightweaveNode subtitle = Typography.Typography.Caption.Create(
-            (string)"CL_Playground_Header_Subtitle".Translate()
-        );
+        LightweaveNode subtitle = Typography.Typography.Caption.Create((string)"CL_Playground_Header_Subtitle".Translate());
 
         return Layout.Stack.Create(
             SpacingScale.Xxs,

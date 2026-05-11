@@ -32,6 +32,9 @@ public static class Switch {
         bool disabled = false,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -40,6 +43,7 @@ public static class Switch {
         string lastTimeKey = file + "#sw_lastTime" + keySuffix;
 
         LightweaveNode node = NodeBuilder.New($"Switch:{label}", line, file);
+        node.ApplyStyling("switch", style, classes, id);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
         node.MeasureWidth = () => {
             Theme.Theme theme = RenderContext.Current.Theme;

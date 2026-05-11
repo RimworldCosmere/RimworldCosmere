@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Input;
@@ -73,32 +75,33 @@ public static class Card {
     }
 
     public static LightweaveNode Create(
-        [DocParam("Section nodes composed into the card (Header, Content, Footer, or arbitrary nodes).")]
-        params LightweaveNode[] children
-    ) {
-        return CreateInternal(null, children);
-    }
-
-    public static LightweaveNode WithPadding(
-        [DocParam("Inner padding applied uniformly. Overrides the default SpacingScale.Md.", TypeOverride = "Rem", DefaultOverride = "SpacingScale.Md")]
-        Rem padding,
-        params LightweaveNode[] children
-    ) {
-        return CreateInternal(EdgeInsets.All(padding), children);
-    }
-
-    private static LightweaveNode CreateInternal(
-        EdgeInsets? padding,
-        LightweaveNode[] children,
+        Action<List<LightweaveNode>>? children = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        EdgeInsets pad = padding ?? EdgeInsets.Zero;
-        BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
-        BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
-        RadiusSpec radius = RadiusSpec.All(RadiusScale.Lg);
+        List<LightweaveNode> kids = new List<LightweaveNode>();
+        children?.Invoke(kids);
+        return CreateInternal(kids.ToArray(), style, classes, id, line, file);
+    }
+
+    private static LightweaveNode CreateInternal(
+        LightweaveNode[] children,
+        Style? style,
+        string[]? classes,
+        string? id,
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
+    ) {
+        BackgroundSpec defaultBg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
+        BorderSpec defaultBorder = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderDefault);
+        RadiusSpec defaultRadius = RadiusSpec.All(RadiusScale.Lg);
 
         LightweaveNode node = NodeBuilder.New("Card", line, file);
+        node.ApplyStyling("card", style, classes, id);
+
         for (int i = 0; i < children.Length; i++) {
             node.Children.Add(children[i]);
         }
@@ -117,13 +120,14 @@ public static class Card {
         }
 
         if (CanMeasureChildren()) {
-            float padTopPx = pad.Top?.ToPixels() ?? 0f;
-            float padBottomPx = pad.Bottom?.ToPixels() ?? 0f;
-            EdgeInsets capturedPad = pad;
             node.Measure = availableWidth => {
+                Style s = node.GetResolvedStyle();
+                EdgeInsets pad = s.Padding ?? EdgeInsets.Zero;
+                float padTopPx = pad.Top?.ToPixels() ?? 0f;
+                float padBottomPx = pad.Bottom?.ToPixels() ?? 0f;
                 Direction renderDir = RenderContext.Current.Direction;
                 Rect dummy = new Rect(0f, 0f, availableWidth, 0f);
-                Rect content = capturedPad.Shrink(dummy, renderDir);
+                Rect content = pad.Shrink(dummy, renderDir);
                 float innerWidth = content.width;
                 float total = 0f;
                 for (int i = 0; i < childCount; i++) {
@@ -138,6 +142,12 @@ public static class Card {
         }
 
         node.Paint = (rect, paintChildren) => {
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? EdgeInsets.Zero;
+            BackgroundSpec bg = s.Background ?? defaultBg;
+            BorderSpec border = s.Border ?? defaultBorder;
+            RadiusSpec radius = s.Radius ?? defaultRadius;
+
             PaintBox.Draw(rect, bg, border, radius);
             Rect content = pad.Shrink(rect, RenderContext.Current.Direction);
 
@@ -179,31 +189,42 @@ public static class Card {
         return node;
     }
 
-    [Doc(Slot = true, Summary = "Title row of a Card.")]
     public static LightweaveNode Header(
-        [DocParam("Heading region nodes (typically Card.Title and Card.Description).")]
-        params LightweaveNode[] children
+        Action<List<LightweaveNode>>? children = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        return HeaderInternal(children);
+        List<LightweaveNode> kids = new List<LightweaveNode>();
+        children?.Invoke(kids);
+        return HeaderInternal(kids.ToArray(), style, classes, id, line, file);
     }
 
     private static LightweaveNode HeaderInternal(
         LightweaveNode[] children,
+        Style? style,
+        string[]? classes,
+        string? id,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("Card.Header", line, file);
+        node.ApplyStyling("card-header", style, classes, id);
         for (int i = 0; i < children.Length; i++) {
             node.Children.Add(children[i]);
         }
 
         float gapPx = new Rem(0.25f).ToPixels();
         float fallbackH = new Rem(1.5f).ToPixels();
-        EdgeInsets pad = EdgeInsets.All(SpacingScale.Md);
-        float padTopPx = pad.Top?.ToPixels() ?? 0f;
-        float padBottomPx = pad.Bottom?.ToPixels() ?? 0f;
+        EdgeInsets defaultPad = EdgeInsets.All(SpacingScale.Md);
 
         node.Measure = availableWidth => {
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? defaultPad;
+            float padTopPx = pad.Top?.ToPixels() ?? 0f;
+            float padBottomPx = pad.Bottom?.ToPixels() ?? 0f;
             Direction renderDir = RenderContext.Current.Direction;
             Rect dummy = new Rect(0f, 0f, availableWidth, 0f);
             float innerWidth = pad.Shrink(dummy, renderDir).width;
@@ -224,7 +245,11 @@ public static class Card {
         BorderSpec divider = new BorderSpec(Bottom: new Rem(1f / 16f), Color: ThemeSlot.BorderDefault);
 
         node.Paint = (rect, paintChildren) => {
-            PaintBox.Draw(rect, null, divider, null);
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? defaultPad;
+            BorderSpec border = s.Border ?? divider;
+
+            PaintBox.Draw(rect, s.Background, border, null);
 
             Rect inner = pad.Shrink(rect, RenderContext.Current.Direction);
             float y = inner.y;
@@ -240,87 +265,88 @@ public static class Card {
         return node;
     }
 
-    [Doc(Slot = true, Summary = "Heading text inside a Header.", ParentSlot = nameof(Header))]
     public static LightweaveNode Title(
-        [DocParam("Heading text to render in the bold body font.")]
         string text,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Card.Title:{text}", line, file);
+        node.ApplyStyling("card-title", style, classes, id);
         node.PreferredHeight = new Rem(1.5f).ToPixels();
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
             Font font = theme.GetFont(FontRole.BodyBold);
             int size = Mathf.RoundToInt(new Rem(1.125f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, size, FontStyle.Bold);
-            style.alignment = dir == Direction.Rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
+            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, size, FontStyle.Bold);
+            gstyle.alignment = dir == Direction.Rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
             Color saved = GUI.color;
             GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
-            GUI.Label(RectSnap.Snap(rect), text, style);
+            GUI.Label(RectSnap.Snap(rect), text, gstyle);
             GUI.color = saved;
         };
         return node;
     }
 
-    [Doc(Slot = true, Summary = "Subtitle text inside a Header.", ParentSlot = nameof(Header))]
     public static LightweaveNode Description(
-        [DocParam("Subtitle text rendered below the Title in the muted body font.")]
         string text,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Card.Description:{text}", line, file);
+        node.ApplyStyling("card-description", style, classes, id);
         node.PreferredHeight = new Rem(1.25f).ToPixels();
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
             Font font = theme.GetFont(FontRole.Body);
             int size = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, size);
-            style.alignment = dir == Direction.Rtl ? TextAnchor.UpperRight : TextAnchor.UpperLeft;
-            style.wordWrap = true;
+            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, size);
+            gstyle.alignment = dir == Direction.Rtl ? TextAnchor.UpperRight : TextAnchor.UpperLeft;
+            gstyle.wordWrap = true;
             Color saved = GUI.color;
             GUI.color = theme.GetColor(ThemeSlot.TextMuted);
-            GUI.Label(RectSnap.Snap(rect), text, style);
+            GUI.Label(RectSnap.Snap(rect), text, gstyle);
             GUI.color = saved;
         };
         return node;
     }
 
-    [Doc(Slot = true, Summary = "Body region of a Card.")]
     public static LightweaveNode Content(
-        [DocParam("Body nodes stacked inside the Card's content region.")]
-        params LightweaveNode[] children
+        Action<List<LightweaveNode>>? children = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        return ContentInternal(children, null);
+        List<LightweaveNode> kids = new List<LightweaveNode>();
+        children?.Invoke(kids);
+        return ContentInternal(kids.ToArray(), style, classes, id, line, file);
     }
 
-    public static LightweaveNode Content(
-        [DocParam("Theme slot used to fill the content region behind the children.")]
-        ThemeSlot background,
-        [DocParam("Body nodes stacked inside the Card's content region.")]
-        params LightweaveNode[] children
-    ) {
-        return ContentInternal(children, BackgroundSpec.Of(background));
-    }
-
-    private static LightweaveNode ContentInternal(
+private static LightweaveNode ContentInternal(
         LightweaveNode[] children,
-        BackgroundSpec? background,
+        Style? style,
+        string[]? classes,
+        string? id,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("Card.Content", line, file);
+        node.ApplyStyling("card-content", style, classes, id);
         for (int i = 0; i < children.Length; i++) {
             node.Children.Add(children[i]);
         }
 
         float contentGapPx = new Rem(0.5f).ToPixels();
-        EdgeInsets innerPad = EdgeInsets.All(SpacingScale.Md);
-        float padTopPx = innerPad.Top?.ToPixels() ?? 0f;
-        float padBottomPx = innerPad.Bottom?.ToPixels() ?? 0f;
+        EdgeInsets defaultPad = EdgeInsets.All(SpacingScale.Md);
         BorderSpec sideBorder = new BorderSpec(
             Left: new Rem(1f / 16f),
             Right: new Rem(1f / 16f),
@@ -337,11 +363,15 @@ public static class Card {
             return children.Length > 0;
         }
 
-        if (background == null && CanMeasureAll()) {
+        if (CanMeasureAll()) {
             node.Measure = availableWidth => {
+                Style s = node.GetResolvedStyle();
+                EdgeInsets pad = s.Padding ?? defaultPad;
+                float padTopPx = pad.Top?.ToPixels() ?? 0f;
+                float padBottomPx = pad.Bottom?.ToPixels() ?? 0f;
                 Direction renderDir = RenderContext.Current.Direction;
                 Rect dummy = new Rect(0f, 0f, availableWidth, 0f);
-                float innerWidth = innerPad.Shrink(dummy, renderDir).width;
+                float innerWidth = pad.Shrink(dummy, renderDir).width;
                 float total = 0f;
                 for (int i = 0; i < children.Length; i++) {
                     LightweaveNode child = children[i];
@@ -355,14 +385,17 @@ public static class Card {
         }
 
         node.Paint = (rect, paintChildren) => {
-            if (background != null) {
-                PaintBox.Draw(rect, background, null, null);
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? defaultPad;
+            BorderSpec border = s.Border ?? sideBorder;
+            if (s.Background != null) {
+                PaintBox.Draw(rect, s.Background, null, null);
             }
 
-            PaintBox.Draw(rect, null, sideBorder, null);
+            PaintBox.Draw(rect, null, border, null);
 
             Direction renderDir = RenderContext.Current.Direction;
-            Rect inner = innerPad.Shrink(rect, renderDir);
+            Rect inner = pad.Shrink(rect, renderDir);
 
             int count = children.Length;
             if (count == 0) {
@@ -383,36 +416,52 @@ public static class Card {
         return node;
     }
 
-    [Doc(Slot = true, Summary = "Action row at the bottom of a Card.")]
     public static LightweaveNode Footer(
-        [DocParam("Footer nodes (typically buttons or status text) laid out horizontally.")]
-        params LightweaveNode[] children
+        Action<List<LightweaveNode>>? children = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
+        [CallerLineNumber] int line = 0,
+        [CallerFilePath] string file = ""
     ) {
-        return FooterInternal(children);
+        List<LightweaveNode> kids = new List<LightweaveNode>();
+        children?.Invoke(kids);
+        return FooterInternal(kids.ToArray(), style, classes, id, line, file);
     }
 
     private static LightweaveNode FooterInternal(
         LightweaveNode[] children,
+        Style? style,
+        string[]? classes,
+        string? id,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("Card.Footer", line, file);
+        node.ApplyStyling("card-footer", style, classes, id);
         node.IsFooter = true;
         for (int i = 0; i < children.Length; i++) {
             node.Children.Add(children[i]);
         }
 
-        EdgeInsets pad = EdgeInsets.All(SpacingScale.Md);
-        float padTopPx = pad.Top?.ToPixels() ?? 0f;
-        float padBottomPx = pad.Bottom?.ToPixels() ?? 0f;
+        EdgeInsets defaultPad = EdgeInsets.All(SpacingScale.Md);
         float buttonRowH = new Rem(2.25f).ToPixels();
         float gapPx = new Rem(0.5f).ToPixels();
-        node.PreferredHeight = buttonRowH + padTopPx + padBottomPx;
+
+        Style s0 = node.GetResolvedStyle();
+        EdgeInsets pad0 = s0.Padding ?? defaultPad;
+        float padTopPx0 = pad0.Top?.ToPixels() ?? 0f;
+        float padBottomPx0 = pad0.Bottom?.ToPixels() ?? 0f;
+        node.PreferredHeight = buttonRowH + padTopPx0 + padBottomPx0;
 
         BorderSpec divider = new BorderSpec(Top: new Rem(1f / 16f), Color: ThemeSlot.BorderDefault);
 
         node.Paint = (rect, paintChildren) => {
-            PaintBox.Draw(rect, null, divider, null);
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? defaultPad;
+            BorderSpec border = s.Border ?? divider;
+
+            PaintBox.Draw(rect, s.Background, border, null);
 
             int count = children.Length;
             if (count == 0) {
@@ -450,78 +499,67 @@ public static class Card {
     [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
         return new DocSample(() => 
-            Card.Create(
-                Card.Header(
-                    Card.Title("Surgebinding"),
-                    Card.Description("Bonded Radiant powers.")
-                ),
-                Card.Content(
-                    ThemeSlot.SurfaceSunken,
-                    Text.Create(
+            Card.Create(c => {
+                c.Add(Card.Header(h => {
+                    h.Add(Card.Title("Surgebinding"));
+                    h.Add(Card.Description("Bonded Radiant powers."));
+                }));
+                c.Add(Card.Content(ct => {
+                    ct.Add(Text.Create(
                         "Progression unlocks with oaths.",
-                        FontRole.Body,
-                        new Rem(0.875f),
-                        ThemeSlot.TextPrimary
-                    )
-                ),
-                Card.Footer(
-                    Button.Create((string)"CL_Playground_Label_Cancel".Translate(), () => { }),
-                    Button.Create((string)"CL_Playground_Label_Confirm".Translate(), () => { })
-                )
-            )
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
+                    ));
+                }, style: new Style { Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken) }));
+                c.Add(Card.Footer(f => {
+                    f.Add(Button.Create((string)"CL_Playground_Label_Cancel".Translate(), () => { }));
+                    f.Add(Button.Create((string)"CL_Playground_Label_Confirm".Translate(), () => { }));
+                }));
+            })
         );
     }
 
     [DocVariant("CL_Playground_Label_Tight", Order = 1)]
     public static DocSample DocsTight() {
         return new DocSample(() => 
-            Card.Create(
-                Card.Header(
-                    Card.Title("Compact")
-                ),
-                Card.Content(
-                    Text.Create(
+            Card.Create(c => {
+                c.Add(Card.Header(h => h.Add(Card.Title("Compact"))));
+                c.Add(Card.Content(ct => {
+                    ct.Add(Text.Create(
                         "Minimal layout for a short note.",
-                        FontRole.Body,
-                        new Rem(0.875f),
-                        ThemeSlot.TextMuted
-                    )
-                )
-            )
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextMuted }
+                    ));
+                }));
+            })
         );
     }
 
     [DocVariant("CL_Playground_Label_Loose", Order = 2)]
     public static DocSample DocsLoose() {
         return new DocSample(() => 
-            Card.Create(
-                Card.Header(
-                    Card.Title("Confirm action"),
-                    Card.Description("Generous content suits modal flows.")
-                ),
-                Card.Footer(
-                    Button.Create((string)"CL_Playground_Label_Cancel".Translate(), () => { }),
-                    Button.Create((string)"CL_Playground_Label_Confirm".Translate(), () => { })
-                )
-            )
+            Card.Create(c => {
+                c.Add(Card.Header(h => {
+                    h.Add(Card.Title("Confirm action"));
+                    h.Add(Card.Description("Generous content suits modal flows."));
+                }));
+                c.Add(Card.Footer(f => {
+                    f.Add(Button.Create((string)"CL_Playground_Label_Cancel".Translate(), () => { }));
+                    f.Add(Button.Create((string)"CL_Playground_Label_Confirm".Translate(), () => { }));
+                }));
+            })
         );
     }
 
     [DocUsage]
     public static DocSample DocsUsage() {
         return new DocSample(() => 
-            Card.Create(
-                Card.Header(
-                    Card.Title("Surgebinding"),
-                    Card.Description("Bonded Radiant powers.")
-                ),
-                Card.Content(
-                    Text.Create("Progression unlocks with oaths.")
-                ),
-                Card.Footer(
-                    Button.Create("Confirm", () => { })
-                )
-            )
+            Card.Create(c => {
+                c.Add(Card.Header(h => {
+                    h.Add(Card.Title("Surgebinding"));
+                    h.Add(Card.Description("Bonded Radiant powers."));
+                }));
+                c.Add(Card.Content(ct => ct.Add(Text.Create("Progression unlocks with oaths."))));
+                c.Add(Card.Footer(f => f.Add(Button.Create("Confirm", () => { }))));
+            })
         );
     }
 }

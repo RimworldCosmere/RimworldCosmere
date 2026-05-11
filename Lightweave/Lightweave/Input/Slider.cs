@@ -42,10 +42,14 @@ public static class Slider {
         int labelThrottleFrames = 3,
         [DocParam("When false, the slider does not render its own readout label band (use this when the readout is rendered externally, e.g. by SliderWithReadout).")]
         bool showReadout = true,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("Slider", line, file);
+        node.ApplyStyling("slider", style, classes, id);
         node.PreferredHeight = (showReadout ? new Rem(2.25f) : new Rem(1.25f)).ToPixels();
 
         node.Paint = (rect, paintChildren) => {

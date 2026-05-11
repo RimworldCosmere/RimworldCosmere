@@ -58,11 +58,7 @@ public static class UseStateDoc {
         LightweaveNode label = Text.Create(
             ((string)"CL_Playground_Hook_UseState_StormlightLabel".Translate())
                 .Replace("{COUNT}", charge.Value.ToString()),
-            FontRole.BodyBold,
-            new Rem(1f),
-            ThemeSlot.TextPrimary,
-            TextAlign.Center,
-            FontStyle.Bold
+            style: new Style { FontFamily = FontRole.BodyBold, FontSize = new Rem(1f), TextColor = ThemeSlot.TextPrimary, TextAlign = TextAlign.Center, FontWeight = FontStyle.Bold }
         );
 
         return HStack.Create(
@@ -98,10 +94,7 @@ public static class UseStateDoc {
                     drawn.Value
                         ? (string)"CL_Playground_Hook_UseState_BladeDrawn".Translate()
                         : (string)"CL_Playground_Hook_UseState_BladeDismissed".Translate(),
-                    FontRole.Body,
-                    new Rem(1f),
-                    drawn.Value ? ThemeSlot.SurfaceAccent : ThemeSlot.TextSecondary,
-                    TextAlign.Left
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(1f), TextAlign = TextAlign.Left, TextColor = drawn.Value ? ThemeSlot.SurfaceAccent : ThemeSlot.TextSecondary }
                 ));
                 r.Add(
                     Button.Create(
@@ -122,9 +115,7 @@ public static class UseStateDoc {
         return Stack.Create(
             SpacingScale.Xxs,
             s => {
-                s.Add(Caption.Create(
-                    (string)"CL_Playground_Hook_UseState_OathHint".Translate()
-                ), 14f);
+                s.Add(Caption.Create((string)"CL_Playground_Hook_UseState_OathHint".Translate()), 14f);
                 s.Add(TextField.Create(
                     oath.Value,
                     v => oath.Set(v),
@@ -867,9 +858,7 @@ public static class UseHotkeyDoc {
         return Stack.Create(
             SpacingScale.Xxs,
             s => {
-                s.Add(Caption.Create(
-                    (string)"CL_Playground_Hook_UseHotkey_SingleHint".Translate()
-                ), 14f);
+                s.Add(Caption.Create((string)"CL_Playground_Hook_UseHotkey_SingleHint".Translate()), 14f);
                 s.Add(host, 18f);
             }
         );
@@ -898,9 +887,7 @@ public static class UseHotkeyDoc {
         return Stack.Create(
             SpacingScale.Xxs,
             s => {
-                s.Add(Caption.Create(
-                    (string)"CL_Playground_Hook_UseHotkey_ModifiersHint".Translate()
-                ), 14f);
+                s.Add(Caption.Create((string)"CL_Playground_Hook_UseHotkey_ModifiersHint".Translate()), 14f);
                 s.Add(host, 18f);
             }
         );
@@ -960,10 +947,7 @@ public static class UseRefDoc {
             r => {
                 r.AddFlex(Text.Create(
                     label,
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    TextAlign.Left
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
                 ));
                 r.Add(
                     Button.Create(
@@ -998,10 +982,7 @@ public static class UseRefDoc {
                 r.AddFlex(Text.Create(
                     ((string)"CL_Playground_Hook_UseRef_PressCountLabel".Translate())
                         .Replace("{COUNT}", shown.Value.ToString()),
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    TextAlign.Left
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
                 ));
                 r.Add(
                     Button.Create(
@@ -1076,10 +1057,7 @@ public static class UseMemoDoc {
                 );
                 r.AddFlex(Text.Create(
                     joined,
-                    FontRole.Body,
-                    new Rem(0.875f),
-                    ThemeSlot.TextSecondary,
-                    TextAlign.Left
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
                 ));
             }
         );
@@ -1184,10 +1162,7 @@ public static class UseEffectDoc {
                 );
                 r.AddFlex(Text.Create(
                     label,
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    TextAlign.Left
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
                 ));
             }
         );
@@ -1220,10 +1195,7 @@ public static class UseEffectDoc {
                     ((string)"CL_Playground_Hook_UseEffect_DepChangeLabel".Translate())
                         .Replace("{SEED}", seed.Value.ToString())
                         .Replace("{COUNT}", reactions.Value.ToString()),
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    TextAlign.Left
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
                 ));
             }
         );
@@ -1263,10 +1235,7 @@ public static class UseContextDoc {
 
         return Text.Create(
             label,
-            FontRole.Body,
-            new Rem(0.9375f),
-            ThemeSlot.TextSecondary,
-            TextAlign.Left
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
         );
     }
 
@@ -1277,10 +1246,7 @@ public static class UseContextDoc {
 
         return Text.Create(
             label,
-            FontRole.Body,
-            new Rem(0.9375f),
-            ThemeSlot.TextSecondary,
-            TextAlign.Left
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
         );
     }
 }
@@ -1327,10 +1293,7 @@ public static class UseThemeDoc {
                 r.Add(swatch, 32f);
                 r.AddFlex(Text.Create(
                     (string)"CL_Playground_Hook_UseTheme_SurfaceLabel".Translate(),
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    TextAlign.Left
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
                 ));
             }
         );
@@ -1353,10 +1316,7 @@ public static class UseThemeDoc {
                 r.Add(swatch, 32f);
                 r.AddFlex(Text.Create(
                     (string)"CL_Playground_Hook_UseTheme_AccentLabel".Translate(),
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    TextAlign.Left
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
                 ));
             }
         );
@@ -1394,11 +1354,7 @@ public static class UseDirectionDoc {
 
         return Text.Create(
             arrow,
-            FontRole.BodyBold,
-            new Rem(1.25f),
-            ThemeSlot.TextPrimary,
-            TextAlign.Center,
-            FontStyle.Bold
+            style: new Style { FontFamily = FontRole.BodyBold, FontSize = new Rem(1.25f), TextColor = ThemeSlot.TextPrimary, TextAlign = TextAlign.Center, FontWeight = FontStyle.Bold }
         );
     }
 
@@ -1410,10 +1366,7 @@ public static class UseDirectionDoc {
 
         return Text.Create(
             (string)key.Translate(),
-            FontRole.Body,
-            new Rem(0.9375f),
-            ThemeSlot.TextSecondary,
-            TextAlign.Left
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
         );
     }
 }
@@ -1449,11 +1402,7 @@ public static class UseBreakpointDoc {
         return Text.Create(
             ((string)"CL_Playground_Hook_UseBreakpoint_CurrentLabel".Translate())
                 .Replace("{BP}", bp.ToString()),
-            FontRole.BodyBold,
-            new Rem(1f),
-            ThemeSlot.TextPrimary,
-            TextAlign.Left,
-            FontStyle.Bold
+            style: new Style { FontFamily = FontRole.BodyBold, FontSize = new Rem(1f), TextColor = ThemeSlot.TextPrimary, TextAlign = TextAlign.Left, FontWeight = FontStyle.Bold }
         );
     }
 
@@ -1473,10 +1422,7 @@ public static class UseBreakpointDoc {
 
         return Text.Create(
             copy,
-            FontRole.Body,
-            new Rem(0.9375f),
-            ThemeSlot.TextSecondary,
-            TextAlign.Left
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary, TextAlign = TextAlign.Left }
         );
     }
 }

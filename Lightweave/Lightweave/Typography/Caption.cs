@@ -21,14 +21,20 @@ public static partial class Typography {
         public static LightweaveNode Create(
             [DocParam("Caption text content.")]
             string text,
+            [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+            Style? style = null,
+            [DocParam("Additional class names merged after the base 'caption' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+            string[]? classes = null,
+            [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+            string? id = null,
             [CallerLineNumber] int line = 0,
             [CallerFilePath] string file = ""
         ) {
             return Text.Create(
                 text,
-                FontRole.Caption,
-                new Rem(0.75f),
-                ThemeSlot.TextMuted,
+                style: style,
+                classes: StyleExtensions.PrependClass("caption", classes),
+                id: id,
                 line: line,
                 file: file
             );

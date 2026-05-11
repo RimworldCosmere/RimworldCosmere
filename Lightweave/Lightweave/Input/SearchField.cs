@@ -32,6 +32,9 @@ public static class SearchField {
         bool disabled = false,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -41,6 +44,7 @@ public static class SearchField {
         string syncedFromKey = file + "#sf_syncedFrom" + keySuffix;
 
         LightweaveNode node = NodeBuilder.New("SearchField", line, file);
+        node.ApplyStyling("search-field", style, classes, id);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {

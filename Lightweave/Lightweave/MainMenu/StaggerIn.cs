@@ -14,6 +14,9 @@ public static class StaggerIn {
         LightweaveNode child,
         float delaySeconds,
         float duration = DefaultDuration,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -22,6 +25,7 @@ public static class StaggerIn {
         }
 
         LightweaveNode node = NodeBuilder.New("StaggerIn", line, file);
+        node.ApplyStyling("stagger-in", style, classes, id);
         node.Children.Add(child);
         node.Measure = available => child.Measure?.Invoke(available) ?? child.PreferredHeight ?? 0f;
         node.MeasureWidth = () => child.MeasureWidth?.Invoke() ?? 0f;

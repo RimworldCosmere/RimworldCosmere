@@ -22,10 +22,17 @@ public static class Conditional {
         bool when,
         [DocParam("Factory invoked only when condition is true.")]
         Func<LightweaveNode> children,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'conditional' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode n = NodeBuilder.New($"Conditional({when})", line, file);
+        n.ApplyStyling("conditional", style, classes, id);
         if (when) {
             LightweaveNode child = children();
             n.Children.Add(child);

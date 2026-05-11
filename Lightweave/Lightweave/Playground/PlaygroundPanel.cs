@@ -57,26 +57,18 @@ public static class PlaygroundPanel {
 
         List<TocEntry> tocEntries = new List<TocEntry>();
 
-        LightweaveNode title = Typography.Typography.Heading.Create(
-            1,
-            (string)titleKey.Translate(),
-            ThemeSlot.TextPrimary
-        );
+        LightweaveNode title = Typography.Typography.Heading.Create(1, (string)titleKey.Translate(), style: new Style { TextColor = ThemeSlot.TextPrimary });
 
         LightweaveNode whatText = Typography.Typography.Text.Create(
             (string)whatKey.Translate(),
-            FontRole.Body,
-            new Rem(1f),
-            ThemeSlot.TextMuted,
-            wrap: true
+            wrap: true,
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(1f), TextColor = ThemeSlot.TextMuted }
         );
 
         LightweaveNode whenText = Typography.Typography.Text.Create(
             (string)whenKey.Translate(),
-            FontRole.Body,
-            new Rem(0.875f),
-            ThemeSlot.TextMuted,
-            wrap: true
+            wrap: true,
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextMuted }
         );
 
         LightweaveNode bodyStack = Layout.Stack.Create(
@@ -142,11 +134,7 @@ public static class PlaygroundPanel {
         List<TocEntry> tocEntries,
         float? variantMinHeight
     ) {
-        LightweaveNode heading = Typography.Typography.Heading.Create(
-            2,
-            (string)"CL_Playground_Panel_Examples".Translate(),
-            ThemeSlot.TextPrimary
-        );
+        LightweaveNode heading = Typography.Typography.Heading.Create(2, (string)"CL_Playground_Panel_Examples".Translate(), style: new Style { TextColor = ThemeSlot.TextPrimary });
 
         LightweaveNode body = Layout.Stack.Create(
             SpacingScale.Lg,
@@ -171,11 +159,7 @@ public static class PlaygroundPanel {
         List<TocEntry> tocEntries,
         float? variantMinHeight
     ) {
-        LightweaveNode heading = Typography.Typography.Heading.Create(
-            2,
-            (string)"CL_Playground_Panel_States".Translate(),
-            ThemeSlot.TextPrimary
-        );
+        LightweaveNode heading = Typography.Typography.Heading.Create(2, (string)"CL_Playground_Panel_States".Translate(), style: new Style { TextColor = ThemeSlot.TextPrimary });
 
         LightweaveNode body = Layout.Stack.Create(
             SpacingScale.Lg,
@@ -311,11 +295,7 @@ public static class PlaygroundPanel {
         float? variantMinHeight,
         string? code
     ) {
-        LightweaveNode heading = Typography.Typography.Heading.Create(
-            3,
-            label,
-            ThemeSlot.TextPrimary
-        );
+        LightweaveNode heading = Typography.Typography.Heading.Create(3, label, style: new Style { TextColor = ThemeSlot.TextPrimary });
 
         LightweaveNode body = code != null
             ? BuildPreviewWithCodeFrame(demo, variantMinHeight, code, anchorId)
@@ -380,11 +360,7 @@ public static class PlaygroundPanel {
     }
 
     private static LightweaveNode BuildUsageSection(string usageCode, DocContext ctx) {
-        LightweaveNode heading = Typography.Typography.Heading.Create(
-            2,
-            (string)"CL_Playground_Panel_Usage".Translate(),
-            ThemeSlot.TextPrimary
-        );
+        LightweaveNode heading = Typography.Typography.Heading.Create(2, (string)"CL_Playground_Panel_Usage".Translate(), style: new Style { TextColor = ThemeSlot.TextPrimary });
 
         return Doc.Doc.Section(UsageAnchor, heading, Doc.Doc.CodeBlock(usageCode), ctx);
     }
@@ -393,11 +369,7 @@ public static class PlaygroundPanel {
         IReadOnlyList<CompositionLine> lines,
         DocContext ctx
     ) {
-        LightweaveNode heading = Typography.Typography.Heading.Create(
-            2,
-            (string)"CL_Playground_Panel_Composition".Translate(),
-            ThemeSlot.TextPrimary
-        );
+        LightweaveNode heading = Typography.Typography.Heading.Create(2, (string)"CL_Playground_Panel_Composition".Translate(), style: new Style { TextColor = ThemeSlot.TextPrimary });
 
         return Doc.Doc.Section(CompositionAnchor, heading, Doc.Doc.CompositionTree(lines), ctx);
     }
@@ -407,11 +379,7 @@ public static class PlaygroundPanel {
         DocContext ctx,
         float? variantMinHeight
     ) {
-        LightweaveNode heading = Typography.Typography.Heading.Create(
-            2,
-            (string)"CL_Playground_Panel_Rtl".Translate(),
-            ThemeSlot.TextPrimary
-        );
+        LightweaveNode heading = Typography.Typography.Heading.Create(2, (string)"CL_Playground_Panel_Rtl".Translate(), style: new Style { TextColor = ThemeSlot.TextPrimary });
 
         PlaygroundVariant first = variants[0];
         RenderContext rc = RenderContext.Current;
@@ -434,11 +402,7 @@ public static class PlaygroundPanel {
         IReadOnlyList<ApiGroup> groups,
         DocContext ctx
     ) {
-        LightweaveNode heading = Typography.Typography.Heading.Create(
-            2,
-            (string)"CL_Playground_Panel_Api".Translate(),
-            ThemeSlot.TextPrimary
-        );
+        LightweaveNode heading = Typography.Typography.Heading.Create(2, (string)"CL_Playground_Panel_Api".Translate(), style: new Style { TextColor = ThemeSlot.TextPrimary });
 
         LightweaveNode content = Layout.Stack.Create(
             SpacingScale.Lg,
@@ -446,11 +410,7 @@ public static class PlaygroundPanel {
                 for (int i = 0; i < groups.Count; i++) {
                     ApiGroup group = groups[i];
                     if (!string.IsNullOrEmpty(group.MethodName)) {
-                        s.Add(Typography.Typography.Heading.Create(
-                            3,
-                            group.MethodName,
-                            ThemeSlot.TextPrimary
-                        ));
+                        s.Add(Typography.Typography.Heading.Create(3, group.MethodName, style: new Style { TextColor = ThemeSlot.TextPrimary }));
                     }
 
                     s.Add(Doc.Doc.ApiTable(group.Parameters));
@@ -462,18 +422,12 @@ public static class PlaygroundPanel {
     }
 
     private static LightweaveNode BuildSourceSection(string sourcePath, DocContext ctx) {
-        LightweaveNode heading = Typography.Typography.Heading.Create(
-            2,
-            (string)"CL_Playground_Panel_Source".Translate(),
-            ThemeSlot.TextPrimary
-        );
+        LightweaveNode heading = Typography.Typography.Heading.Create(2, (string)"CL_Playground_Panel_Source".Translate(), style: new Style { TextColor = ThemeSlot.TextPrimary });
 
         string fileLabel = (string)"CL_Playground_Panel_SourceFile".Translate();
         LightweaveNode fileRow = Typography.Typography.Text.Create(
             fileLabel + " " + sourcePath,
-            FontRole.Mono,
-            new Rem(0.75f),
-            ThemeSlot.TextMuted
+            style: new Style { FontFamily = FontRole.Mono, FontSize = new Rem(0.75f), TextColor = ThemeSlot.TextMuted }
         );
 
         LightweaveNode body = Layout.Stack.Create(

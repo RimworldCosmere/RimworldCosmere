@@ -47,6 +47,9 @@ public static class NumberField {
         int decimalPlaces = 2,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -59,6 +62,7 @@ public static class NumberField {
         string shakeKey = file + "#nf_shake" + keySuffix;
 
         LightweaveNode node = NodeBuilder.New("NumberField", line, file);
+        node.ApplyStyling("number-field", style, classes, id);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         bool localAllowDecimal = allowDecimal;

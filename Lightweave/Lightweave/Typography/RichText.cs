@@ -24,18 +24,33 @@ public static partial class Typography {
         public static LightweaveNode Create(
             [DocParam("Tagged text. Resolved at paint time. Supports rich-text markup.")]
             TaggedString content,
+            [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+            Style? style = null,
+            [DocParam("Additional class names merged after the base 'rich-text' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+            string[]? classes = null,
+            [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+            string? id = null,
             [CallerLineNumber] int line = 0,
             [CallerFilePath] string file = ""
         ) {
             LightweaveNode node = NodeBuilder.New("RichText", line, file);
+            node.ApplyStyling("rich-text", style, classes, id);
 
             GUIStyle ResolveStyle() {
                 Theme.Theme theme = RenderContext.Current.Theme;
-                Font f = theme.GetFont(FontRole.Body);
-                GUIStyle style = GuiStyleCache.GetOrCreate(f, 16);
-                style.richText = true;
-                style.wordWrap = true;
-                return style;
+                Style s = node.GetResolvedStyle();
+                FontRef? fr = s.FontFamily;
+                Font font = fr switch {
+                    FontRef.Literal lit => lit.Value,
+                    FontRef.Role role => theme.GetFont(role.RoleValue),
+                    _ => theme.GetFont(FontRole.Body),
+                };
+                Rem fontSize = s.FontSize ?? new Rem(1f);
+                int pixelSize = Mathf.RoundToInt(fontSize.ToFontPx());
+                GUIStyle gs = GuiStyleCache.GetOrCreate(font, pixelSize);
+                gs.richText = true;
+                gs.wordWrap = true;
+                return gs;
             }
 
             node.Measure = availableWidth => {
@@ -44,18 +59,26 @@ public static partial class Typography {
                     return 0f;
                 }
 
-                GUIStyle style = ResolveStyle();
-                return style.CalcHeight(new GUIContent(resolved), availableWidth);
+                GUIStyle gs = ResolveStyle();
+                return gs.CalcHeight(new GUIContent(resolved), availableWidth);
             };
 
             node.Paint = (rect, _) => {
                 Theme.Theme theme = RenderContext.Current.Theme;
-                GUIStyle style = ResolveStyle();
-                style.clipping = TextClipping.Clip;
-                style.alignment = ResolveAnchor(TextAlign.Start, RenderContext.Current.Direction);
+                Style s = node.GetResolvedStyle();
+                GUIStyle gs = ResolveStyle();
+                gs.clipping = TextClipping.Clip;
+                TextAlign align = s.TextAlign ?? TextAlign.Start;
+                gs.alignment = ResolveAnchor(align, RenderContext.Current.Direction);
+                ColorRef? cr = s.TextColor;
+                Color c = cr switch {
+                    ColorRef.Literal lit => lit.Value,
+                    ColorRef.Token tok => theme.GetColor(tok.Slot),
+                    _ => theme.GetColor(ThemeSlot.TextPrimary),
+                };
                 Color saved = GUI.color;
-                GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
-                GUI.Label(RectSnap.Snap(rect), content.Resolve(), style);
+                GUI.color = c;
+                GUI.Label(RectSnap.Snap(rect), content.Resolve(), gs);
                 GUI.color = saved;
             };
             return node;
@@ -107,9 +130,7 @@ public static partial class Typography {
         [DocUsage]
         public static DocSample DocsUsage() {
             return new DocSample(() => 
-                RichText.Create(
-                    new TaggedString("Honor lies in <b>keeping</b> your word.")
-                )
+                RichText.Create(new TaggedString("Honor lies in <b>keeping</b> your word."))
             );
         }
     }

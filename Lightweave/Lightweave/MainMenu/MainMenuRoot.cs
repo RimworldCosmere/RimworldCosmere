@@ -22,7 +22,9 @@ public static class MainMenuRoot {
                     }
                 }
             ),
-            padding: new EdgeInsets(Left: SpacingScale.Lg, Right: SpacingScale.Lg, Top: new Rem(0.625f))
+            style: new Style {
+                Padding = new EdgeInsets(Left: SpacingScale.Lg, Right: SpacingScale.Lg, Top: new Rem(0.625f)),
+            }
         );
 
         LightweaveNode topBar = Stack.Create(
@@ -49,8 +51,10 @@ public static class MainMenuRoot {
                     s.Add(StaggerIn.Wrap(MenuButtons.Create(anyMapFiles), 0.24f));
                 }
             ),
-            new Rem(80f),
-            new EdgeInsets(Left: SpacingScale.Lg, Right: SpacingScale.Lg)
+            style: new Style {
+                MaxWidth = new Rem(80f),
+                Padding = new EdgeInsets(Left: SpacingScale.Lg, Right: SpacingScale.Lg),
+            }
         );
 
         return Stack.Create(

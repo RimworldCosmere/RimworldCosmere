@@ -52,9 +52,9 @@ public static class SaveDetailPane {
                 h.Add(BuildPreview(status), new Rem(13.75f).ToPixels());
                 h.AddFlex(Stack.Create(SpacingScale.Xs, t => {
                     t.Add(BuildStatusEyebrow(status));
-                    t.Add(Display.Create(status.DisplayName, level: 2, align: TextAlign.Start));
-                    t.Add(Text.Create(BuildSubtitle(status), color: ThemeSlot.TextMuted));
-                    t.Add(Text.Create(BuildStory(status), color: ThemeSlot.TextSecondary));
+                    t.Add(Display.Create(status.DisplayName, style: new Style { TextAlign = TextAlign.Start }, level: 2));
+                    t.Add(Text.Create(BuildSubtitle(status), style: new Style { TextColor = ThemeSlot.TextMuted }));
+                    t.Add(Text.Create(BuildStory(status), style: new Style { TextColor = ThemeSlot.TextSecondary }));
                 }));
             }));
             s.Add(KeyValueTable.Create(BuildStatRows(status), KeyValueOrientation.Horizontal));
@@ -88,7 +88,11 @@ public static class SaveDetailPane {
 
     private static LightweaveNode BuildConditionsSection(SaveStatusInspector.SaveStatus status) {
         return Stack.Create(SpacingScale.Sm, s => {
-            s.Add(Eyebrow.Create("CL_LoadColony_Conditions".Translate(), letterSpacing: 2.5f, color: ThemeSlot.TextMuted, align: TextAlign.Start));
+            s.Add(Eyebrow.Create(
+                "CL_LoadColony_Conditions".Translate(),
+                style: new Style { TextColor = ThemeSlot.TextMuted, TextAlign = TextAlign.Start },
+                letterSpacing: 2.5f
+            ));
             s.Add(HStack.Create(SpacingScale.Sm, h => {
                 if (status.Sidecar == null) {
                     h.Add(BuildPill("CL_LoadColony_Conditions_None".Translate(), ThemeSlot.TextMuted), new Rem(11f).ToPixels());
@@ -219,7 +223,7 @@ public static class SaveDetailPane {
             label = "CL_LoadColony_Status_Differs".Translate();
             tone = ThemeSlot.StatusWarning;
         }
-        return Eyebrow.Create(label, color: tone);
+        return Eyebrow.Create(label, style: new Style { TextColor = tone });
     }
 
     private static string BuildSubtitle(SaveStatusInspector.SaveStatus status) {
@@ -374,7 +378,7 @@ public static class SaveDetailPane {
                     GameDataSaveLoader.CheckVersionAndLoadGame(fileName);
                 },
                 variant: ButtonVariant.Primary,
-                fullWidth: true
+                style: new Style { Width = Length.Stretch }
             ));
             h.Add(Button.Create(
                 label: "CL_LoadColony_Rename".Translate(),
@@ -487,9 +491,15 @@ public static class SaveDetailPane {
         return Container.Create(
             child: Stack.Create(SpacingScale.Sm, s => {
                 s.Add(Eyebrow.Create("CL_LoadColony_Empty_Eyebrow".Translate()));
-                s.Add(Text.Create("CL_LoadColony_Empty_Body".Translate(), color: ThemeSlot.TextSecondary, wrap: true));
+                s.Add(Text.Create(
+                    "CL_LoadColony_Empty_Body".Translate(),
+                    wrap: true,
+                    style: new Style { TextColor = ThemeSlot.TextSecondary }
+                ));
             }),
-            padding: EdgeInsets.All(SpacingScale.Lg)
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Lg),
+            }
         );
     }
 }

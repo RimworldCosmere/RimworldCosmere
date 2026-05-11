@@ -23,6 +23,9 @@ public static class ContextMenu {
         LightweaveNode child,
         [DocParam("Menu rows to display when triggered.")]
         IReadOnlyList<MenuItem> items,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -30,6 +33,7 @@ public static class ContextMenu {
         Hooks.Hooks.StateHandle<Vector2> anchorPos = Hooks.Hooks.UseState(Vector2.zero, line, file + "#pos");
 
         LightweaveNode node = NodeBuilder.New("ContextMenu", line, file);
+        node.ApplyStyling("context-menu", style, classes, id);
         node.Children.Add(child);
         if (child.Measure != null) {
             node.Measure = child.Measure;
@@ -80,9 +84,7 @@ public static class ContextMenu {
 
         LightweaveNode target = Box.Create(
             c => c.Add(
-                Caption.Create(
-                    (string)"CL_Playground_ContextMenu_RightClick".Translate()
-                )
+                Caption.Create((string)"CL_Playground_ContextMenu_RightClick".Translate())
             ),
             style: new Style {
                 Padding = EdgeInsets.All(SpacingScale.Sm),

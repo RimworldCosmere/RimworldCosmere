@@ -34,10 +34,14 @@ public static class MenuRow {
         bool disabled = false,
         [DocParam("Row height in rems.")]
         float heightRem = 1.65f,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("MenuRow:" + label, line, file);
+        node.ApplyStyling("menu-row", style, classes, id);
         node.PreferredHeight = new Rem(heightRem).ToPixels();
         if (icon != null) {
             node.Children.Add(icon);

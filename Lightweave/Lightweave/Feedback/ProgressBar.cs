@@ -29,10 +29,14 @@ public static class ProgressBar {
         string? label = null,
         [DocParam("Color variant for the fill.")]
         BadgeVariant variant = BadgeVariant.Accent,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"ProgressBar:{variant}", line, file);
+        node.ApplyStyling("progress-bar", style, classes, id);
         node.PreferredHeight = new Rem(1f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {

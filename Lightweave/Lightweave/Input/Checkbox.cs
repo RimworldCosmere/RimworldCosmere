@@ -30,10 +30,14 @@ public static class Checkbox {
         bool disabled = false,
         [DocParam("Optional translation key shown as a tooltip on hover.")]
         string? tooltipKey = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Checkbox:{label}", line, file);
+        node.ApplyStyling("checkbox", style, classes, id);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {

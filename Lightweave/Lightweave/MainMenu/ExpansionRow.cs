@@ -28,7 +28,11 @@ public static class ExpansionRow {
 
         LightweaveNode rowBox = Box.Create(
             children: c => c.Add(HStack.Create(SpacingScale.Sm, h => {
-                h.AddHug(Eyebrow.Create("CL_MainMenu_ExpansionsActive".Translate(), letterSpacing: 2.5f, color: ThemeSlot.SurfaceAccent, align: TextAlign.Left));
+                h.AddHug(Eyebrow.Create(
+                    "CL_MainMenu_ExpansionsActive".Translate(),
+                    style: new Style { TextColor = ThemeSlot.SurfaceAccent, TextAlign = TextAlign.Left },
+                    letterSpacing: 2.5f
+                ));
                 h.AddHug(Divider.Vertical());
                 for (int i = 0; i < visible.Count; i++) {
                     h.AddHug(BuildItem(visible[i]));
@@ -65,7 +69,7 @@ public static class ExpansionRow {
                 if (icon != null) {
                     h.AddHug(Icon.Create(icon, size: new Rem(1.25f)));
                 }
-                h.AddHug(Eyebrow.Create(label, letterSpacing: 1.4f, color: textSlot, align: TextAlign.Left));
+                h.AddHug(Eyebrow.Create(label, style: new Style { TextColor = textSlot, TextAlign = TextAlign.Left }, letterSpacing: 1.4f));
             })),
             style: new Style {
                 Padding = new EdgeInsets(Top: SpacingScale.Xs, Right: SpacingScale.Sm, Bottom: SpacingScale.Xs, Left: SpacingScale.Sm),

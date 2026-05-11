@@ -339,8 +339,7 @@ public static class ContinueCard {
             label: "CL_MainMenu_Continue_Action".Translate(),
             onClick: () => MainMenuActions.ContinueLatestSave(save.FileName),
             variant: ButtonVariant.Primary,
-            fullWidth: true,
-            fillHeight: true
+            style: new Style { Width = Length.Stretch, Height = Length.Stretch }
         );
     }
 
@@ -348,8 +347,12 @@ public static class ContinueCard {
         return Box.Create(
             children: c => c.Add(Stack.Create(SpacingScale.Xs, s => {
                 s.Add(Eyebrow.Create("CL_MainMenu_Welcome_Eyebrow".Translate()));
-                s.Add(Display.Create("CL_MainMenu_Welcome".Translate(), level: 3, align: TextAlign.Start));
-                s.Add(Text.Create("CL_MainMenu_Welcome_Hint".Translate(), color: ThemeSlot.TextSecondary, wrap: true));
+                s.Add(Display.Create("CL_MainMenu_Welcome".Translate(), style: new Style { TextAlign = TextAlign.Start }, level: 3));
+                s.Add(Text.Create(
+                    "CL_MainMenu_Welcome_Hint".Translate(),
+                    wrap: true,
+                    style: new Style { TextColor = ThemeSlot.TextSecondary }
+                ));
             })),
             style: new Style {
                 Padding = EdgeInsets.All(SpacingScale.Md),

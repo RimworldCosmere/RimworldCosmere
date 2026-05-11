@@ -22,6 +22,10 @@ public static class Box {
         Action<List<LightweaveNode>>? children = null,
         [DocParam("Style applied to the box (padding/background/border/radius/etc).", TypeOverride = "Style?", DefaultOverride = "null")]
         Style? style = null,
+        [DocParam("Additional class names merged after the base 'box' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -29,10 +33,8 @@ public static class Box {
         children?.Invoke(kids);
 
         LightweaveNode node = NodeBuilder.New("Box", line, file);
+        node.ApplyStyling("box", style, classes, id);
         node.Children.AddRange(kids);
-        if (style.HasValue) {
-            node.Style = style.Value;
-        }
 
         float ChildMeasure(LightweaveNode child, float width) {
             if (child.Measure != null) {
@@ -217,7 +219,10 @@ public static class Box {
     public static DocSample DocsAccent() {
         return new DocSample(() => 
             Box.Create(
-                c => c.Add(Text.Create("accent", FontRole.Body, new Rem(0.8125f), ThemeSlot.TextOnAccent)),
+                c => c.Add(Text.Create(
+                    "accent",
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.8125f), TextColor = ThemeSlot.TextOnAccent }
+                )),
                 style: new Style {
                     Padding = EdgeInsets.All(SpacingScale.Sm),
                     Background = BackgroundSpec.Of(ThemeSlot.SurfaceAccent),

@@ -38,10 +38,14 @@ public static class Radio {
         Action<List<LightweaveNode>> children,
         [DocParam("Vertical gap between items.", TypeOverride = "Rem", DefaultOverride = "0")]
         Rem? gap = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"RadioGroup<{typeof(T).Name}>", line, file);
+        node.ApplyStyling("radio-group", style, classes, id);
         RadioGroupContext<T> ctx = new RadioGroupContext<T>(value, onChange);
         List<LightweaveNode> kids = new List<LightweaveNode>();
 
@@ -82,6 +86,9 @@ public static class Radio {
         T value,
         [DocParam("Disables interaction and applies disabled styling.")]
         bool disabled = false,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -89,6 +96,7 @@ public static class Radio {
         // children() invocation; during Paint the stack no longer has the context.
         RadioGroupContext<T> group = Hooks.Hooks.UseContext<RadioGroupContext<T>>();
         LightweaveNode node = NodeBuilder.New($"Radio:{label}", line, file);
+        node.ApplyStyling("radio", style, classes, id);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {

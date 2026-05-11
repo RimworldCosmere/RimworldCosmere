@@ -27,10 +27,17 @@ public static class Each {
         Rem? gap = null,
         [DocParam("Layout axis: Horizontal or Vertical.")]
         EachOrientation orientation = EachOrientation.Horizontal,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'each' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode n = NodeBuilder.New("Each", line, file);
+        n.ApplyStyling("each", style, classes, id);
         int i = 0;
         foreach (T item in items) {
             LightweaveNode child = render(item, i);

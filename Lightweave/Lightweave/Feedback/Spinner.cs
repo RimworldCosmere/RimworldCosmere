@@ -23,6 +23,9 @@ public static class Spinner {
         ThemeSlot? color = null,
         [DocParam("Time in seconds for one full rotation.")]
         float rotationPeriodSeconds = 0.8f,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -30,6 +33,7 @@ public static class Spinner {
         ThemeSlot resolvedColor = color ?? ThemeSlot.SurfaceAccent;
 
         LightweaveNode node = NodeBuilder.New("Spinner", line, file);
+        node.ApplyStyling("spinner", style, classes, id);
         node.PreferredHeight = resolvedSize.ToPixels();
 
         node.Paint = (rect, paintChildren) => {

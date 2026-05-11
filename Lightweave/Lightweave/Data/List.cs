@@ -37,6 +37,9 @@ public static class List {
         Func<T, object>? keyFn = null,
         [DocParam("When true, only rows in view are built. Requires rowHeight.")]
         bool virtualize = true,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -44,6 +47,7 @@ public static class List {
             Hooks.Hooks.UseRef(new LightweaveScrollStatus(), line, file);
 
         LightweaveNode node = NodeBuilder.New($"List<{typeof(T).Name}>", line, file);
+        node.ApplyStyling("list", style, classes, id);
 
         if (rowHeight.HasValue && items != null) {
             node.PreferredHeight = items.Count * rowHeight.Value;
@@ -118,9 +122,7 @@ public static class List {
                 k => k.Add(
                     Text.Create(
                         item,
-                        FontRole.Body,
-                        new Rem(0.9375f),
-                        ThemeSlot.TextPrimary
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextPrimary }
                     )
                 ),
                 style: new Style {

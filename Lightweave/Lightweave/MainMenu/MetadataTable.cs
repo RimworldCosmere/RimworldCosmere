@@ -17,9 +17,11 @@ public static class MetadataTable {
     ) {
         return Container.Create(
             KeyValueTable.Create(GetList(), labelColumnRem: 5.5f),
-            new Rem(28f),
-            new EdgeInsets(Left: SpacingScale.Md, Right: SpacingScale.Md, Bottom: SpacingScale.Md),
-            ContainerAlign.Start
+            align: ContainerAlign.Start,
+            style: new Style {
+                MaxWidth = new Rem(28f),
+                Padding = new EdgeInsets(Left: SpacingScale.Md, Right: SpacingScale.Md, Bottom: SpacingScale.Md),
+            }
         );
     }
 

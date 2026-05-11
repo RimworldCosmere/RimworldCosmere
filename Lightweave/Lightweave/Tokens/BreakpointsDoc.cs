@@ -14,7 +14,7 @@ namespace Cosmere.Lightweave.Tokens;
 [Doc(
     Id = "breakpoints",
     Summary = "Tailwind-style viewport breakpoints (Xs through Xxl) resolved from the root paint width.",
-    WhenToUse = "Read RenderContext.Current.Breakpoint or compose Responsive<T> values when layout should adapt across window widths.",
+    WhenToUse = "Read RenderContext.Current.Breakpoint or use Breakpoints.Pick<T> when layout should adapt across window widths.",
     SourcePath = "Lightweave/Lightweave/Tokens/Breakpoint.cs",
     Category = "Tokens",
     PreferredVariantHeight = 96f

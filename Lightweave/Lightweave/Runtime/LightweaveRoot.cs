@@ -100,12 +100,12 @@ public static class LightweaveRoot {
         currentPaintNode = node;
 
         Style style = default;
-        bool hasStyle = node.Style.HasValue || (node.Classes != null && node.Classes.Length > 0);
+        bool hasStyle = node.Style.HasValue || (node.Classes != null && node.Classes.Length > 0) || node.Id != null;
         if (hasStyle && rc != null) {
             style = rc.Theme.ResolveStyle(node);
         }
 
-        if (style.Visible == false || style.Display == Display.None) {
+        if (style.Visible == false) {
             currentPaintNode = prevPaintNode;
             if (rc != null) {
                 rc.ParentPathHash = previousParentHash;
@@ -113,24 +113,28 @@ public static class LightweaveRoot {
             return;
         }
 
-        static float ClampMin(float v, Rem? min) {
-            if (min.HasValue) {
-                float minPx = min.Value.ToPixels();
-                if (v < minPx) {
-                    return minPx;
-                }
+        static float ClampMin(float v, Length? min, float parentSize) {
+            if (!min.HasValue) {
+                return v;
             }
-            return v;
+            Length lm = min.Value;
+            if (lm.IsGrower) {
+                return v;
+            }
+            float minPx = lm.ToPixels(parentSize, 0f);
+            return v < minPx ? minPx : v;
         }
 
-        static float ClampMax(float v, Rem? max) {
-            if (max.HasValue) {
-                float maxPx = max.Value.ToPixels();
-                if (v > maxPx) {
-                    return maxPx;
-                }
+        static float ClampMax(float v, Length? max, float parentSize) {
+            if (!max.HasValue) {
+                return v;
             }
-            return v;
+            Length lm = max.Value;
+            if (lm.IsGrower) {
+                return v;
+            }
+            float maxPx = lm.ToPixels(parentSize, float.MaxValue);
+            return v > maxPx ? maxPx : v;
         }
 
         Position pos = style.Position ?? Position.Static;
@@ -146,18 +150,29 @@ public static class LightweaveRoot {
                 ancestor = rc?.RootRect ?? node.MeasuredRect;
             }
 
-            float w = style.Width?.ToPixels()
-                      ?? node.MeasureWidth?.Invoke()
-                      ?? ancestor.width;
-            w = ClampMin(w, style.MinWidth);
-            w = ClampMax(w, style.MaxWidth);
+            float intrinsicW = node.MeasureWidth?.Invoke() ?? ancestor.width;
+            float w;
+            if (style.Width.HasValue) {
+                Length lw = style.Width.Value;
+                w = lw.IsGrower ? ancestor.width : lw.ToPixels(ancestor.width, intrinsicW);
+            }
+            else {
+                w = intrinsicW;
+            }
+            w = ClampMin(w, style.MinWidth, ancestor.width);
+            w = ClampMax(w, style.MaxWidth, ancestor.width);
 
-            float h = style.Height?.ToPixels()
-                      ?? node.Measure?.Invoke(w)
-                      ?? node.PreferredHeight
-                      ?? 0f;
-            h = ClampMin(h, style.MinHeight);
-            h = ClampMax(h, style.MaxHeight);
+            float intrinsicH = node.Measure?.Invoke(w) ?? node.PreferredHeight ?? 0f;
+            float h;
+            if (style.Height.HasValue) {
+                Length lh = style.Height.Value;
+                h = lh.IsGrower ? ancestor.height : lh.ToPixels(ancestor.height, intrinsicH);
+            }
+            else {
+                h = intrinsicH;
+            }
+            h = ClampMin(h, style.MinHeight, ancestor.height);
+            h = ClampMax(h, style.MaxHeight, ancestor.height);
 
             float x;
             if (style.Left.HasValue) {
@@ -194,15 +209,23 @@ public static class LightweaveRoot {
             }
 
             if (style.Width.HasValue) {
-                r.width = style.Width.Value.ToPixels();
+                Length lw = style.Width.Value;
+                if (!lw.IsGrower) {
+                    float intrinsicW = node.MeasureWidth?.Invoke() ?? r.width;
+                    r.width = lw.ToPixels(r.width, intrinsicW);
+                }
             }
             if (style.Height.HasValue) {
-                r.height = style.Height.Value.ToPixels();
+                Length lh = style.Height.Value;
+                if (!lh.IsGrower) {
+                    float intrinsicH = node.Measure?.Invoke(r.width) ?? node.PreferredHeight ?? r.height;
+                    r.height = lh.ToPixels(r.height, intrinsicH);
+                }
             }
-            float cw = ClampMin(r.width, style.MinWidth);
-            cw = ClampMax(cw, style.MaxWidth);
-            float ch = ClampMin(r.height, style.MinHeight);
-            ch = ClampMax(ch, style.MaxHeight);
+            float cw = ClampMin(r.width, style.MinWidth, r.width);
+            cw = ClampMax(cw, style.MaxWidth, r.width);
+            float ch = ClampMin(r.height, style.MinHeight, r.height);
+            ch = ClampMax(ch, style.MaxHeight, r.height);
             r.width = cw;
             r.height = ch;
 

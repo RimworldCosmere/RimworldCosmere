@@ -18,18 +18,18 @@ namespace Cosmere.Lightweave.Input;
 )]
 public static class ToggleButton {
     public static LightweaveNode Create(
-        [DocParam("Text rendered inside the button.")]
         string label,
-        [DocParam("Current toggle value; Primary when true, Ghost when false.")]
         bool value,
-        [DocParam("Callback invoked with the new value on click.")]
         Action<bool> onChange,
-        [DocParam("Disables interaction and applies disabled styling.")]
         bool disabled = false,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"ToggleButton:{label}", line, file);
+        node.ApplyStyling("toggle-button", style, classes, id);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {
@@ -57,13 +57,13 @@ public static class ToggleButton {
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
-            style.alignment = TextAnchor.MiddleCenter;
+            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+            gstyle.alignment = TextAnchor.MiddleCenter;
 
             Color fg = theme.GetColor(fgSlot);
             Color savedColor = GUI.color;
             GUI.color = fg;
-            GUI.Label(RectSnap.Snap(rect), label, style);
+            GUI.Label(RectSnap.Snap(rect), label, gstyle);
             GUI.color = savedColor;
 
             paintChildren();

@@ -26,6 +26,12 @@ public static partial class Typography {
             bool flat = false,
             [DocParam("If true and the block exceeds the collapsed line count, shows a 'view code' expander.")]
             bool collapsible = true,
+            [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+            Style? style = null,
+            [DocParam("Additional class names merged after the base 'code-inline' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+            string[]? classes = null,
+            [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+            string? id = null,
             [CallerLineNumber] int line = 0,
             [CallerFilePath] string file = ""
         ) {
@@ -36,9 +42,9 @@ public static partial class Typography {
 
             return Text.Create(
                 text,
-                FontRole.Mono,
-                new Rem(0.875f),
-                ThemeSlot.TextPrimary,
+                style: style,
+                classes: StyleExtensions.PrependClass("code-inline", classes),
+                id: id,
                 line: line,
                 file: file
             );

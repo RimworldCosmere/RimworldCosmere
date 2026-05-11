@@ -44,6 +44,9 @@ public static class Dropdown {
         bool disabled = false,
         [DocParam("Disambiguator when multiple dropdowns share the same caller line.")]
         object? instanceKey = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -54,6 +57,7 @@ public static class Dropdown {
         string typeAheadExpiryKey = file + "#dropdown_typeAheadExpiry" + keySuffix;
 
         LightweaveNode node = NodeBuilder.New("Dropdown", line, file);
+        node.ApplyStyling("dropdown", style, classes, id);
         node.PreferredHeight = RowHeight.ToPixels();
 
         node.Paint = (rect, paintChildren) => {

@@ -42,6 +42,9 @@ public static class TextField {
         UseFocus.FocusHandle? focus = null,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -53,6 +56,7 @@ public static class TextField {
         string shakeKey = file + "#tf_shake" + keySuffix;
 
         LightweaveNode node = NodeBuilder.New("TextField", line, file);
+        node.ApplyStyling("text-field", style, classes, id);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {

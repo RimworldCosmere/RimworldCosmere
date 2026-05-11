@@ -29,10 +29,14 @@ public static class Segmented {
         Func<T, string> labelFn,
         [DocParam("Invoked when the user picks a different segment.")]
         Action<T> onChange,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Segmented<{typeof(T).Name}>", line, file);
+        node.ApplyStyling("segmented", style, classes, id);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, _) => {

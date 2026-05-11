@@ -36,10 +36,14 @@ public static class Tabs {
         Rem? bodyPadding = null,
         [DocParam("Optional predicate; tabs returning true skip the body padding.")]
         Func<T, bool>? noPaddingFor = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Tabs<{typeof(T).Name}>", line, file);
+        node.ApplyStyling("tabs", style, classes, id);
         LightweaveNode bodyNode = bodyFn(value);
         node.Children.Add(bodyNode);
 
@@ -168,7 +172,7 @@ public static class Tabs {
                 v => Caption.Create(
                     v switch {
                         "combat" => (string)"CL_Playground_Navigation_Tabs_Body_Combat".Translate(),
-                        "storage" => (string)"CL_Playground_Navigation_Tabs_Body_Storage".Translate(),
+                    "storage" => (string)"CL_Playground_Navigation_Tabs_Body_Storage".Translate(),
                         _ => (string)"CL_Playground_Navigation_Tabs_Body_General".Translate(),
                     }
                 )
@@ -208,9 +212,7 @@ public static class Tabs {
                 tabs,
                 v => v,
                 v => selected.Set(v),
-                v => Caption.Create(
-                    (string)"CL_Playground_Tabs_Body_LargePadding".Translate()
-                ),
+                v => Caption.Create((string)"CL_Playground_Tabs_Body_LargePadding".Translate()),
                 bodyPadding: new Rem(2f)
             );
         });

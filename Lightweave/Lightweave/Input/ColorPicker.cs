@@ -40,10 +40,14 @@ public static class ColorPicker {
         IReadOnlyList<Color>? palette = null,
         [DocParam("Disables interaction and applies disabled styling.")]
         bool disabled = false,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("ColorPicker", line, file);
+        node.ApplyStyling("color-picker", style, classes, id);
 
         IReadOnlyList<Color> effectivePalette = palette ?? DefaultPalette;
 

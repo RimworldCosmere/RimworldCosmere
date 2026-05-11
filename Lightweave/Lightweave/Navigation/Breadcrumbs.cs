@@ -29,10 +29,14 @@ public static class Breadcrumbs {
         Action<int>? onNavigate = null,
         [DocParam("Override hover sound on non-current crumbs. Null = component default (false).")]
         bool? playHoverSound = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("Breadcrumbs", line, file);
+        node.ApplyStyling("breadcrumbs", style, classes, id);
         node.PreferredHeight = RowHeight.ToPixels();
         node.Paint = (rect, _) => {
             if (crumbs == null || crumbs.Count == 0) {

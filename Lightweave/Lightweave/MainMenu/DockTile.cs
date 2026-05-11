@@ -39,10 +39,8 @@ public static class DockTile {
             onClick: onClick,
             variant: ButtonVariant.Dock,
             disabled: disabled,
-            fullWidth: true,
-            fillHeight: true,
+            style: new Style { Width = Length.Stretch, Height = TileHeight },
             body: body,
-            height: TileHeight,
             line: line,
             file: file
         );

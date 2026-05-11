@@ -40,6 +40,9 @@ public static class Tree {
         Action<TreeNode>? onSelect = null,
         [DocParam("Override hover sound on rows/chevrons. Null = component default (false).")]
         bool? playHoverSound = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -53,6 +56,7 @@ public static class Tree {
             Hooks.Hooks.UseRef(new LightweaveScrollStatus(), line, file + "#scroll");
 
         LightweaveNode node = NodeBuilder.New("Tree", line, file);
+        node.ApplyStyling("tree", style, classes, id);
 
         node.Measure = _ => {
             if (roots == null || roots.Count == 0) {

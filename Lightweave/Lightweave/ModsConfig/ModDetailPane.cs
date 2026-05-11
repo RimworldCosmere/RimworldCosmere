@@ -45,7 +45,7 @@ public static class ModDetailPane {
             s.Add(KeyValueTable.Create(BuildStatRows(mod), KeyValueOrientation.Horizontal));
             string description = mod.Description ?? string.Empty;
             if (!string.IsNullOrWhiteSpace(description)) {
-                s.Add(Text.Create(description, color: ThemeSlot.TextSecondary, wrap: true));
+                s.Add(Text.Create(description, wrap: true, style: new Style { TextColor = ThemeSlot.TextSecondary }));
             }
             if (mod.Dependencies != null && mod.Dependencies.Count > 0) {
                 s.Add(BuildDependencies(mod));
@@ -55,12 +55,14 @@ public static class ModDetailPane {
 
     private static LightweaveNode BuildHeader(ModMetaData mod) {
         return Stack.Create(SpacingScale.Xs, s => {
-            s.Add(Eyebrow.Create(BuildSourceLabel(mod), color: SourceTone(mod)));
-            s.Add(Display.Create(mod.Name ?? mod.PackageId, level: 2, align: TextAlign.Start));
+            s.Add(Eyebrow.Create(BuildSourceLabel(mod), style: new Style { TextColor = SourceTone(mod) }));
+            s.Add(Display.Create(mod.Name ?? mod.PackageId, style: new Style { TextAlign = TextAlign.Start }, level: 2));
             string author = mod.AuthorsString ?? string.Empty;
             if (!string.IsNullOrEmpty(author)) {
-                s.Add(Text.Create("CL_ModsConfig_AuthorByline".Translate(author.Named("AUTHOR")).Resolve(),
-                    color: ThemeSlot.TextMuted));
+                s.Add(Text.Create(
+                    "CL_ModsConfig_AuthorByline".Translate(author.Named("AUTHOR")).Resolve(),
+                    style: new Style { TextColor = ThemeSlot.TextMuted }
+                ));
             }
         });
     }
@@ -95,7 +97,7 @@ public static class ModDetailPane {
                 bool met = req.IsSatisfied;
                 s.Add(Text.Create(
                     "  •  " + (req.displayName ?? req.packageId ?? string.Empty),
-                    color: met ? ThemeSlot.TextSecondary : ThemeSlot.StatusWarning
+                    style: new Style { TextColor = met ? ThemeSlot.TextSecondary : ThemeSlot.StatusWarning }
                 ));
             }
         });
@@ -112,23 +114,23 @@ public static class ModDetailPane {
                     : "CL_ModsConfig_Action_Enable".Translate(),
                 onClick: () => Verse.ModsConfig.SetActive(mod, !active),
                 variant: active ? ButtonVariant.Secondary : ButtonVariant.Primary,
-                fullWidth: true,
-                disabled: locked
+                disabled: locked,
+                style: new Style { Width = Length.Stretch }
             ));
             if (active) {
                 s.Add(Button.Create(
                     label: "CL_ModsConfig_Action_MoveUp".Translate(),
                     onClick: () => MoveMod(mod, -1),
                     variant: ButtonVariant.Ghost,
-                    fullWidth: true,
-                    disabled: locked
+                    disabled: locked,
+                    style: new Style { Width = Length.Stretch }
                 ));
                 s.Add(Button.Create(
                     label: "CL_ModsConfig_Action_MoveDown".Translate(),
                     onClick: () => MoveMod(mod, 1),
                     variant: ButtonVariant.Ghost,
-                    fullWidth: true,
-                    disabled: locked
+                    disabled: locked,
+                    style: new Style { Width = Length.Stretch }
                 ));
             }
             if (mod.OnSteamWorkshop && SteamManager.Initialized) {
@@ -136,7 +138,7 @@ public static class ModDetailPane {
                     label: "CL_ModsConfig_Action_Workshop".Translate(),
                     onClick: () => SteamUtility.OpenWorkshopPage(new Steamworks.PublishedFileId_t(mod.GetPublishedFileId().m_PublishedFileId)),
                     variant: ButtonVariant.Ghost,
-                    fullWidth: true
+                    style: new Style { Width = Length.Stretch }
                 ));
             }
             else if (!string.IsNullOrEmpty(mod.Url)) {
@@ -144,14 +146,14 @@ public static class ModDetailPane {
                     label: "CL_ModsConfig_Action_Url".Translate(),
                     onClick: () => Application.OpenURL(mod.Url),
                     variant: ButtonVariant.Ghost,
-                    fullWidth: true
+                    style: new Style { Width = Length.Stretch }
                 ));
             }
             s.Add(Button.Create(
                 label: "CL_ModsConfig_Action_Close".Translate(),
                 onClick: () => onClose?.Invoke(),
                 variant: ButtonVariant.Ghost,
-                fullWidth: true
+                style: new Style { Width = Length.Stretch }
             ));
         });
     }
@@ -193,9 +195,15 @@ public static class ModDetailPane {
         return Container.Create(
             child: Stack.Create(SpacingScale.Sm, s => {
                 s.Add(Eyebrow.Create("CL_ModsConfig_Empty_Eyebrow".Translate()));
-                s.Add(Text.Create("CL_ModsConfig_Empty_Body".Translate(), color: ThemeSlot.TextSecondary, wrap: true));
+                s.Add(Text.Create(
+                    "CL_ModsConfig_Empty_Body".Translate(),
+                    wrap: true,
+                    style: new Style { TextColor = ThemeSlot.TextSecondary }
+                ));
             }),
-            padding: EdgeInsets.All(SpacingScale.Lg)
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Lg),
+            }
         );
     }
 }

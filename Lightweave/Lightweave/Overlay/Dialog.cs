@@ -30,6 +30,9 @@ public static class Dialog {
         Func<LightweaveNode> content,
         [DocParam("Initial window size in pixels. Height of -1 auto-sizes to content.")]
         Vector2? size = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -37,6 +40,7 @@ public static class Dialog {
         Hooks.Hooks.RefHandle<DialogWindow?> windowRef = Hooks.Hooks.UseRef<DialogWindow?>(null, line, file);
 
         LightweaveNode node = NodeBuilder.New("Dialog", line, file);
+        node.ApplyStyling("dialog", style, classes, id);
         node.Paint = (_, _) => {
             DialogWindow? current = windowRef.Current;
             bool inStack = current != null && Find.WindowStack.IsOpen(current);
@@ -74,24 +78,24 @@ public static class Dialog {
             open.Value,
             () => open.Set(false),
             () => Layout.Card.Create(
-                Layout.Card.Header(
-                    Layout.Card.Title((string)"CL_Playground_Overlay_Dialog_Header".Translate()),
-                    Layout.Card.Description((string)"CL_Playground_Overlay_Dialog_Body".Translate())
-                ),
-                Layout.Card.Content(
-                    Text.Create(
-                        (string)"CL_Playground_Overlay_Dialog_Body".Translate(),
-                        FontRole.Body,
-                        new Rem(0.9375f),
-                        ThemeSlot.TextPrimary
-                    )
-                ),
-                Layout.Card.Footer(
-                    Button.Create(
-                        (string)"CL_Playground_Label_Confirm".Translate(),
-                        () => open.Set(false)
-                    )
-                )
+                c => {
+                    c.Add(Layout.Card.Header(h => {
+                        h.Add(Layout.Card.Title((string)"CL_Playground_Overlay_Dialog_Header".Translate()));
+                        h.Add(Layout.Card.Description((string)"CL_Playground_Overlay_Dialog_Body".Translate()));
+                    }));
+                    c.Add(Layout.Card.Content(ct => {
+                        ct.Add(Text.Create(
+                            (string)"CL_Playground_Overlay_Dialog_Body".Translate(),
+                            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextPrimary }
+                        ));
+                    }));
+                    c.Add(Layout.Card.Footer(f => {
+                        f.Add(Button.Create(
+                            (string)"CL_Playground_Label_Confirm".Translate(),
+                            () => open.Set(false)
+                        ));
+                    }));
+                }
             )
         );
 

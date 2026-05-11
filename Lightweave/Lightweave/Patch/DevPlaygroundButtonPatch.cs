@@ -4,6 +4,7 @@ using System.Reflection;
 using Cosmere.Lightweave.Input;
 using Cosmere.Lightweave.Playground;
 using Cosmere.Lightweave.Runtime;
+using Cosmere.Lightweave.Types;
 using Cosmere.Lightweave.Settings;
 using HarmonyLib;
 using RimWorld;
@@ -57,7 +58,7 @@ public static class DevPlaygroundButtonPatch {
             label: "CL_DevButton_Playground".Translate(),
             onClick: OpenPlayground,
             variant: ButtonVariant.Primary,
-            fullWidth: true
+            style: new Style { Width = Length.Stretch }
         );
     }
 

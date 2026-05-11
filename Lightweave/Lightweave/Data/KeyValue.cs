@@ -34,15 +34,16 @@ public static class KeyValue {
         Rem? labelWidth = null,
         [DocParam("Gap between the label gutter and the value column. Defaults to 1rem.")]
         Rem? gap = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        LightweaveNode labelNode = Text.Create(
-            label,
-            new FontRef.Role(FontRole.Label)
-        );
+        LightweaveNode labelNode = Text.Create(label, style: new Style { FontFamily = FontRole.Label });
 
         LightweaveNode node = NodeBuilder.New("KeyValue", line, file);
+        node.ApplyStyling("key-value", style, classes, id);
         node.Children.Add(labelNode);
         node.Children.Add(value);
 
@@ -92,37 +93,55 @@ public static class KeyValue {
             s => {
                 s.Add(KeyValue.Create(
                     (string)"CL_Playground_Data_KV_Name".Translate(),
-                    Text.Create("Kaladin", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
+                    Text.Create(
+                        "Kaladin",
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
+                    ),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
                 s.Add(KeyValue.Create(
                     (string)"CL_Playground_Data_KV_Shardworld".Translate(),
-                    Text.Create("Roshar", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
+                    Text.Create(
+                        "Roshar",
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
+                    ),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
                 s.Add(KeyValue.Create(
                     (string)"CL_Playground_Data_KV_ShardConnection".Translate(),
-                    Text.Create("Honor", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
+                    Text.Create(
+                        "Honor",
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
+                    ),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
                 s.Add(KeyValue.Create(
                     (string)"CL_Playground_Data_KV_ActiveInvestiture".Translate(),
-                    Text.Create("Stormlight: 412 / 1000", FontRole.Body, new Rem(0.875f), ThemeSlot.SurfaceAccent),
+                    Text.Create(
+                        "Stormlight: 412 / 1000",
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.SurfaceAccent }
+                    ),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
                 s.Add(KeyValue.Create(
                     (string)"CL_Playground_Data_KV_Mood".Translate(),
-                    Text.Create("Resolute", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
+                    Text.Create(
+                        "Resolute",
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
+                    ),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
                 s.Add(KeyValue.Create(
                     (string)"CL_Playground_Data_KV_Health".Translate(),
-                    Text.Create("Wounded", FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
+                    Text.Create(
+                        "Wounded",
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
+                    ),
                     labelWidth: labelGutter,
                     gap: columnGap
                 ));
@@ -138,9 +157,7 @@ public static class KeyValue {
     public static DocSample DocsUsage() {
         LightweaveNode value = Text.Create(
             "Stormlight: 412 / 1000",
-            FontRole.Body,
-            new Rem(0.875f),
-            ThemeSlot.SurfaceAccent
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.SurfaceAccent }
         );
         return new DocSample(() =>
             KeyValue.Create((string)"CL_Playground_Data_KV_ActiveInvestiture".Translate(), value)

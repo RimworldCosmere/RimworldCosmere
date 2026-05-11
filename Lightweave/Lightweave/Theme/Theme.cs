@@ -54,7 +54,7 @@ public sealed record Theme(
     }
 
     public Style ResolveClasses(string[]? classes) {
-        if (classes == null || classes.Length == 0 || Classes == null) {
+        if (classes == null || classes.Length == 0) {
             return default;
         }
 
@@ -65,8 +65,12 @@ public sealed record Theme(
 
         Style merged = default;
         for (int i = 0; i < classes.Length; i++) {
-            if (Classes.TryGetValue(classes[i], out Style s)) {
-                merged = Style.Merge(merged, s);
+            Style? def = ThemeClassRegistry.Get(classes[i]);
+            if (def.HasValue) {
+                merged = Style.Merge(merged, def.Value);
+            }
+            if (Classes != null && Classes.TryGetValue(classes[i], out Style themeStyle)) {
+                merged = Style.Merge(merged, themeStyle);
             }
         }
         _classMergeCache[cacheKey] = merged;

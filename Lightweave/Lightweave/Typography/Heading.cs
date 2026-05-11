@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Runtime;
@@ -24,18 +25,32 @@ public static partial class Typography {
             int level,
             [DocParam("Heading text content.")]
             string text,
-            [DocParam("Override the heading color. Defaults to TextPrimary via Text().")]
-            ColorRef? color = null,
+            [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+            Style? style = null,
+            [DocParam("Additional class names merged after the base 'heading'/'h{level}' classes.", TypeOverride = "string[]?", DefaultOverride = "null")]
+            string[]? classes = null,
+            [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+            string? id = null,
             [CallerLineNumber] int line = 0,
             [CallerFilePath] string file = ""
         ) {
-            Rem size = level switch {
-                1 => new Rem(2f),
-                2 => new Rem(1.5f),
-                3 => new Rem(1.25f),
-                _ => new Rem(1.125f),
+            string sizeClass = level switch {
+                1 => "h1",
+                2 => "h2",
+                3 => "h3",
+                _ => "h4",
             };
-            return Text.Create(text, FontRole.Heading, size, color, TextAlign.Start, FontStyle.Bold, line: line, file: file);
+            string[] basedClasses = classes == null
+                ? new[] { "heading", sizeClass }
+                : ConcatClasses(new[] { "heading", sizeClass }, classes);
+            return Text.Create(text, style: style, classes: basedClasses, id: id, line: line, file: file);
+        }
+
+        private static string[] ConcatClasses(string[] head, string[] tail) {
+            string[] result = new string[head.Length + tail.Length];
+            Array.Copy(head, 0, result, 0, head.Length);
+            Array.Copy(tail, 0, result, head.Length, tail.Length);
+            return result;
         }
 
         [DocVariant("CL_Playground_Label_Large")]

@@ -20,41 +20,34 @@ namespace Cosmere.Lightweave.Layout;
 )]
 public static class WindowHeader {
     public static LightweaveNode Create(
-        [DocParam("Title text shown left-aligned (right-aligned in RTL).")]
         string? title = null,
-        [DocParam("Render an X close button on the trailing edge.")]
         bool showClose = true,
-        [DocParam("Action invoked when the close button is clicked.")]
         Action? onClose = null,
-        [DocParam("Mark the header rect as the host window's drag region.")]
         bool draggable = true,
-        [DocParam("Header band height.", TypeOverride = "Rem", DefaultOverride = "3rem")]
-        Rem? height = null,
-        [DocParam("Theme slot used for the header background fill.")]
-        ThemeSlot backgroundSlot = ThemeSlot.SurfaceRaised,
-        [DocParam("Theme slot for the title text color.")]
-        ThemeSlot textSlot = ThemeSlot.TextPrimary,
-        [DocParam("Draw a 1px divider beneath the header band.")]
         bool drawDivider = true,
-        [DocParam("Theme slot for the divider color.")]
-        ThemeSlot dividerSlot = ThemeSlot.BorderDefault,
-        [DocParam("Close button color treatment.")]
         CloseButtonVariant closeStyle = CloseButtonVariant.Default,
-        [DocParam("Override corner radius for the header background. When null, falls back to the host window's requested top-rounding (so headers tuck under bordered windows automatically).")]
-        RadiusSpec? cornerRadius = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        Rem h = height ?? new Rem(3f);
-        float headerH = h.ToPixels();
-
         LightweaveNode node = NodeBuilder.New("WindowHeader", line, file);
+        node.ApplyStyling("window-header", style, classes, id);
+
+        Style s0 = node.GetResolvedStyle();
+        float headerH = s0.Height is { Mode: Length.Kind.Rem } hh
+            ? hh.ToPixels(0f, 0f)
+            : new Rem(3f).ToPixels();
         node.PreferredHeight = headerH;
+
         node.Paint = (rect, paintChildren) => {
+            Style s = node.GetResolvedStyle();
             LightweaveWindowContext.PublishHeader(rect, draggable, ownsClose: showClose);
 
-            RadiusSpec? effectiveRadius = cornerRadius ?? Runtime.LightweaveWindowContext.RequestedHeaderRadius;
-            PaintBox.Draw(rect, BackgroundSpec.Of(backgroundSlot), null, effectiveRadius);
+            BackgroundSpec bg = s.Background ?? BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
+            RadiusSpec? effectiveRadius = s.Radius ?? Runtime.LightweaveWindowContext.RequestedHeaderRadius;
+            PaintBox.Draw(rect, bg, null, effectiveRadius);
 
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
@@ -68,25 +61,29 @@ public static class WindowHeader {
             }
 
             if (!string.IsNullOrEmpty(title)) {
-                Color textColor = theme.GetColor(textSlot);
+                Color textColor = s.TextColor switch {
+                    ColorRef.Literal lit => lit.Value,
+                    ColorRef.Token tok => theme.GetColor(tok.Slot),
+                    _ => theme.GetColor(ThemeSlot.TextPrimary),
+                };
                 Color prev = GUI.color;
                 GUI.color = textColor;
                 Font font = theme.GetFont(FontRole.Heading);
                 int pixelSize = Mathf.RoundToInt(new Rem(1.125f).ToFontPx());
-                GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
-                style.clipping = TextClipping.Clip;
+                GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+                gstyle.clipping = TextClipping.Clip;
                 float closeReserve = showClose ? new Rem(2.5f).ToPixels() : 0f;
                 Rect titleRect;
                 if (rtl) {
-                    style.alignment = TextAnchor.MiddleRight;
+                    gstyle.alignment = TextAnchor.MiddleRight;
                     titleRect = new Rect(rect.x + closeReserve, rect.y, rect.width - pad - closeReserve, rect.height);
                 }
                 else {
-                    style.alignment = TextAnchor.MiddleLeft;
+                    gstyle.alignment = TextAnchor.MiddleLeft;
                     titleRect = new Rect(rect.x + pad, rect.y, rect.width - pad - closeReserve, rect.height);
                 }
 
-                GUI.Label(RectSnap.Snap(titleRect), title!, style);
+                GUI.Label(RectSnap.Snap(titleRect), title!, gstyle);
                 GUI.color = prev;
             }
 
@@ -119,11 +116,22 @@ public static class WindowHeader {
 
             if (drawDivider) {
                 float t = 1f;
-                Rect line = new Rect(rect.x, rect.yMax - t, rect.width, t);
-                Color borderColor = theme.GetColor(dividerSlot);
+                Rect lineRect = new Rect(rect.x, rect.yMax - t, rect.width, t);
+                Color borderColor;
+                BorderSpec? sb = s.Border;
+                if (sb.HasValue && sb.Value.Color != null) {
+                    borderColor = sb.Value.Color switch {
+                        ColorRef.Literal lit => lit.Value,
+                        ColorRef.Token tok => theme.GetColor(tok.Slot),
+                        _ => theme.GetColor(ThemeSlot.BorderDefault),
+                    };
+                }
+                else {
+                    borderColor = theme.GetColor(ThemeSlot.BorderDefault);
+                }
                 Color savedDiv = GUI.color;
                 GUI.color = borderColor;
-                GUI.DrawTexture(RectSnap.Snap(line), BaseContent.WhiteTex);
+                GUI.DrawTexture(RectSnap.Snap(lineRect), BaseContent.WhiteTex);
                 GUI.color = savedDiv;
             }
         };

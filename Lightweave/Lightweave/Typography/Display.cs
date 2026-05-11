@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
 using Cosmere.Lightweave.Rendering;
@@ -24,50 +25,58 @@ public static class Display {
         int level = 1,
         [DocParam("Letter spacing in pixels. Positive tracks wider, negative tighter. Zero (default) uses native rendering.")]
         float letterSpacing = 0f,
-        [DocParam("Override color. Defaults to TextPrimary.")]
-        ColorRef? color = null,
-        [DocParam("Horizontal alignment within the rect.")]
-        TextAlign align = TextAlign.Start,
-        [DocParam("Font style. Defaults to Bold.")]
-        FontStyle weight = FontStyle.Bold,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'display'/'display-{level}' classes.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        Rem size = level switch {
-            1 => new Rem(4.0f),
-            2 => new Rem(3.0f),
-            3 => new Rem(2.25f),
-            _ => new Rem(1.75f),
+        string sizeClass = level switch {
+            1 => "display-1",
+            2 => "display-2",
+            3 => "display-3",
+            _ => "display-4",
         };
+        string[] basedClasses = classes == null
+            ? new[] { "display", sizeClass }
+            : ConcatClasses(new[] { "display", sizeClass }, classes);
 
         if (Mathf.Approximately(letterSpacing, 0f)) {
-            return Text.Create(
-                content,
-                FontRole.Display,
-                size,
-                color,
-                align,
-                weight,
-                line: line,
-                file: file
-            );
+            return Text.Create(content, style: style, classes: basedClasses, id: id, line: line, file: file);
         }
 
         LightweaveNode node = NodeBuilder.New($"Display:{content}", line, file);
-        int pixelSize = Mathf.RoundToInt(size.ToFontPx());
-        float descenderPad = Mathf.Max(2f, pixelSize * 0.25f);
+        node.Classes = basedClasses;
+        if (style.HasValue) {
+            node.Style = style.Value;
+        }
+        if (id != null) {
+            node.Id = id;
+        }
 
-        GUIStyle ResolveStyle() {
+        GUIStyle ResolveGuiStyle() {
             Theme.Theme theme = RenderContext.Current.Theme;
-            Font font = theme.GetFont(FontRole.Display);
+            Style s = node.GetResolvedStyle();
+            FontRef? fr = s.FontFamily;
+            Font font = fr switch {
+                FontRef.Literal lit => lit.Value,
+                FontRef.Role role => theme.GetFont(role.RoleValue),
+                _ => theme.GetFont(FontRole.Display),
+            };
+            Rem fontSize = s.FontSize ?? new Rem(2f);
+            FontStyle weight = s.FontWeight ?? FontStyle.Bold;
+            int pixelSize = Mathf.RoundToInt(fontSize.ToFontPx());
             return GuiStyleCache.GetOrCreate(font, pixelSize, weight);
         }
 
-        float MeasureTotalWidth(GUIStyle style) {
+        float MeasureTotalWidth(GUIStyle gs) {
             float total = 0f;
             for (int i = 0; i < content.Length; i++) {
                 GUIContent gc = new GUIContent(content[i].ToString());
-                total += style.CalcSize(gc).x;
+                total += gs.CalcSize(gc).x;
                 if (i < content.Length - 1) {
                     total += letterSpacing;
                 }
@@ -79,9 +88,13 @@ public static class Display {
             if (string.IsNullOrEmpty(content)) {
                 return 0f;
             }
-            GUIStyle style = ResolveStyle();
+            GUIStyle gs = ResolveGuiStyle();
+            Style s = node.GetResolvedStyle();
+            Rem fontSize = s.FontSize ?? new Rem(2f);
+            int pixelSize = Mathf.RoundToInt(fontSize.ToFontPx());
+            float descenderPad = Mathf.Max(2f, pixelSize * 0.25f);
             GUIContent gc = new GUIContent(content);
-            return Mathf.Ceil(style.CalcHeight(gc, float.MaxValue) + descenderPad);
+            return Mathf.Ceil(gs.CalcHeight(gc, float.MaxValue) + descenderPad);
         };
 
         node.Paint = (rect, _) => {
@@ -89,8 +102,10 @@ public static class Display {
                 return;
             }
             Theme.Theme theme = RenderContext.Current.Theme;
-            GUIStyle style = ResolveStyle();
-            float totalW = MeasureTotalWidth(style);
+            Style s = node.GetResolvedStyle();
+            GUIStyle gs = ResolveGuiStyle();
+            float totalW = MeasureTotalWidth(gs);
+            TextAlign align = s.TextAlign ?? TextAlign.Start;
             TextAnchor anchor = ResolveAnchor(align, RenderContext.Current.Direction);
             float startX = anchor switch {
                 TextAnchor.MiddleCenter or TextAnchor.UpperCenter or TextAnchor.LowerCenter
@@ -99,28 +114,36 @@ public static class Display {
                     => rect.xMax - totalW,
                 _ => rect.x,
             };
-            Color c = color switch {
+            ColorRef? cr = s.TextColor;
+            Color c = cr switch {
                 ColorRef.Literal lit => lit.Value,
                 ColorRef.Token tok => theme.GetColor(tok.Slot),
                 _ => theme.GetColor(ThemeSlot.TextPrimary),
             };
             Color saved = GUI.color;
             GUI.color = c;
-            style.alignment = TextAnchor.MiddleLeft;
-            style.clipping = TextClipping.Clip;
+            gs.alignment = TextAnchor.MiddleLeft;
+            gs.clipping = TextClipping.Clip;
 
             float cursor = startX;
             for (int i = 0; i < content.Length; i++) {
                 string ch = content[i].ToString();
                 GUIContent gc = new GUIContent(ch);
-                float charW = style.CalcSize(gc).x;
+                float charW = gs.CalcSize(gc).x;
                 Rect charRect = new Rect(cursor, rect.y, charW, rect.height);
-                GUI.Label(RectSnap.Snap(charRect), ch, style);
+                GUI.Label(RectSnap.Snap(charRect), ch, gs);
                 cursor += charW + letterSpacing;
             }
             GUI.color = saved;
         };
         return node;
+    }
+
+    private static string[] ConcatClasses(string[] head, string[] tail) {
+        string[] result = new string[head.Length + tail.Length];
+        Array.Copy(head, 0, result, 0, head.Length);
+        Array.Copy(tail, 0, result, head.Length, tail.Length);
+        return result;
     }
 
     [DocVariant("CL_Playground_Label_Default")]
@@ -130,7 +153,7 @@ public static class Display {
 
     [DocVariant("CL_Playground_Label_Tracked")]
     public static DocSample DocsTracked() {
-        return new DocSample(() => Display.Create("RIMW•RLD", level: 1, letterSpacing: 12f, align: TextAlign.Center));
+        return new DocSample(() => Display.Create("RIMW•RLD", style: new Style { TextAlign = TextAlign.Center }, level: 1, letterSpacing: 12f));
     }
 
     [DocVariant("CL_Playground_Label_Small")]
@@ -140,6 +163,6 @@ public static class Display {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(() => Display.Create("RIMW•RLD", letterSpacing: 12f, align: TextAlign.Center));
+        return new DocSample(() => Display.Create("RIMW•RLD", style: new Style { TextAlign = TextAlign.Center }, letterSpacing: 12f));
     }
 }

@@ -18,18 +18,25 @@ namespace Cosmere.Lightweave.Layout;
 )]
 public static class Row {
     public static LightweaveNode Create(
-        [DocParam("Gap between columns. Accepts a Responsive<Rem> for breakpoint-driven gaps.", TypeOverride = "Responsive<Rem>", DefaultOverride = "0")]
-        Responsive<Rem> gap = default,
+        [DocParam("Gap between columns.")]
+        Rem gap = default,
         [DocParam("Cross-axis alignment of children.")]
         FlexAlign align = FlexAlign.Start,
         [DocParam("Builder callback to populate children.")]
         Action<List<LightweaveNode>>? children = null,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'row' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         List<LightweaveNode> kids = new List<LightweaveNode>();
         children?.Invoke(kids);
         LightweaveNode node = NodeBuilder.New("Row", line, file);
+        node.ApplyStyling("row", style, classes, id);
         node.Children.AddRange(kids);
 
         node.Measure = availableWidth => {
@@ -38,7 +45,7 @@ public static class Row {
                 return 0f;
             }
 
-            float gapPx = gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
+            float gapPx = gap.ToPixels();
             float eachW = (availableWidth - gapPx * Math.Max(0, count - 1)) / count;
             float maxH = 0f;
             for (int i = 0; i < count; i++) {
@@ -54,7 +61,7 @@ public static class Row {
         node.Paint = (rect, paintChildren) => {
             Direction dir = RenderContext.Current.Direction;
             bool reverse = dir == Direction.Rtl;
-            float gapPx = gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
+            float gapPx = gap.ToPixels();
             List<LightweaveNode> seq = reverse ? ReversedList(kids) : kids;
             int count = seq.Count;
             if (count == 0) {

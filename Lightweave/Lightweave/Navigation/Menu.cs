@@ -90,6 +90,9 @@ public static class Menu {
         string? searchPlaceholder = null,
         [DocParam("Explicit popover size in pixels; pass null for default width and content-based height.")]
         Vector2? size = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -207,6 +210,9 @@ public static class Menu {
             content,
             onDismiss,
             popoverSize,
+            style,
+            classes,
+            id,
             line,
             file
         );

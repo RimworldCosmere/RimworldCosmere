@@ -33,10 +33,14 @@ public static class ButtonGroup {
         ButtonVariant variant = ButtonVariant.Secondary,
         [DocParam("Override hover sound. Null = component default (true).")]
         bool? playHoverSound = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"ButtonGroup:{variant}", line, file);
+        node.ApplyStyling("button-group", style, classes, id);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, _) => {

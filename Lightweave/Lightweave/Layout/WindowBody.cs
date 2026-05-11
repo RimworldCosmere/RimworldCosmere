@@ -16,31 +16,29 @@ namespace Cosmere.Lightweave.Layout;
 )]
 public static class WindowBody {
     public static LightweaveNode Create(
-        [DocParam("Body children appended inside the padded surface.")]
         Action<List<LightweaveNode>>? children = null,
-        [DocParam("Inner padding around the body content.", TypeOverride = "EdgeInsets?", DefaultOverride = "null")]
-        EdgeInsets? padding = null,
-        [DocParam("Theme slot used for the body background. Pass null for transparent.", TypeOverride = "ThemeSlot?", DefaultOverride = "SurfacePrimary")]
-        ThemeSlot? backgroundSlot = ThemeSlot.SurfacePrimary,
-        [DocParam("Wrap children in a ScrollArea so the body becomes scrollable when content overflows.")]
         bool scrollable = false,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         List<LightweaveNode> kids = new List<LightweaveNode>();
         children?.Invoke(kids);
 
-        BackgroundSpec? bg = backgroundSlot.HasValue
-            ? BackgroundSpec.Of(backgroundSlot.Value)
-            : null;
+        Style baseStyle = new Style {
+            Padding = EdgeInsets.All(SpacingScale.Md),
+            Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
+        };
+        Style merged = style.HasValue ? Style.Merge(baseStyle, style.Value) : baseStyle;
 
         if (!scrollable) {
             return Box.Create(
                 c => c.AddRange(kids),
-                style: new Style {
-                    Padding = padding,
-                    Background = bg,
-                },
+                style: merged,
+                classes: StyleExtensions.PrependClass("window-body", classes),
+                id: id,
                 line: line,
                 file: file
             );
@@ -60,12 +58,13 @@ public static class WindowBody {
 
         return Box.Create(
             c => c.Add(ScrollArea.Create(inner, line: line, file: file)),
-            style: new Style {
-                Padding = padding,
-                Background = bg,
-            },
+            style: merged,
+            classes: StyleExtensions.PrependClass("window-body", classes),
+            id: id,
             line: line,
             file: file
         );
     }
+
+    
 }

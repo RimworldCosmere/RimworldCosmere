@@ -17,35 +17,27 @@ namespace Cosmere.Lightweave.Input;
 )]
 public static class Button {
     public static LightweaveNode Create(
-        [DocParam("Text rendered inside the button. Ignored when body is provided.")]
         string label,
-        [DocParam("Action invoked on left mouse up while hovering.")]
         Action? onClick,
-        [DocParam("Visual variant: Primary, Secondary, Ghost, Danger, or Dock.")]
         ButtonVariant variant = ButtonVariant.Primary,
-        [DocParam("Optional node painted on the leading edge.")]
         LightweaveNode? leading = null,
-        [DocParam("Optional node painted on the trailing edge.")]
         LightweaveNode? trailing = null,
-        [DocParam("Override foreground color for the label.")]
-        ColorRef? foregroundOverride = null,
-        [DocParam("Disables interaction and applies disabled styling.")]
         bool disabled = false,
-        [DocParam("When true, button stretches to fill the allocated width. Default sizes to label + padding.")]
-        bool fullWidth = false,
-        [DocParam("When true, button stretches to fill the allocated height. Default uses an intrinsic 1.75rem (or `height` if set).")]
-        bool fillHeight = false,
-        [DocParam("Override hover sound. Null = component default (true).")]
         bool? playHoverSound = null,
-        [DocParam("Optional content node painted inside the button instead of the label. Used for non-text bodies (e.g. dock tiles with stacked label + hotkey).")]
         LightweaveNode? body = null,
-        [DocParam("Override intrinsic height. Null = 1.75rem.")]
-        Rem? height = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Button:{label}", line, file);
-        float intrinsicHeightPx = (height ?? new Rem(1.75f)).ToPixels();
+        node.ApplyStyling("button", style, classes, id);
+
+        Style resolved0 = node.GetResolvedStyle();
+        float intrinsicHeightPx = resolved0.Height is { Mode: Length.Kind.Rem } h0
+            ? h0.ToPixels(0f, 0f)
+            : new Rem(1.75f).ToPixels();
         node.PreferredHeight = intrinsicHeightPx;
 
         if (leading != null) {
@@ -63,6 +55,10 @@ public static class Button {
         node.Paint = (allocatedRect, paintChildren) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
+            Style s = node.GetResolvedStyle();
+
+            bool fullWidth = s.Width is { IsGrower: true };
+            bool fillHeight = s.Height is { IsGrower: true };
 
             float desiredHeight = intrinsicHeightPx;
             float h = fillHeight ? allocatedRect.height : Mathf.Min(desiredHeight, allocatedRect.height);
@@ -73,12 +69,12 @@ public static class Button {
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
-            style.alignment = TextAnchor.MiddleCenter;
+            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+            gstyle.alignment = TextAnchor.MiddleCenter;
 
             float labelWidth = string.IsNullOrEmpty(label) || body != null
                 ? 0f
-                : style.CalcSize(new GUIContent(label)).x;
+                : gstyle.CalcSize(new GUIContent(label)).x;
             float iconAllowance = (leading != null ? iconSize + padPx : 0f)
                                 + (trailing != null ? iconSize + padPx : 0f);
             float naturalWidth = labelWidth + iconAllowance + padPx * 2f;
@@ -184,7 +180,7 @@ public static class Button {
                 LightweaveRoot.PaintSubtree(body, rect);
             }
             else {
-                Color fg = foregroundOverride switch {
+                Color fg = s.TextColor switch {
                     ColorRef.Literal lit => lit.Value,
                     ColorRef.Token tok => theme.GetColor(tok.Slot),
                     _ => theme.GetColor(fgSlot),
@@ -192,7 +188,7 @@ public static class Button {
 
                 Color savedColor = GUI.color;
                 GUI.color = fg;
-                GUI.Label(RectSnap.Snap(labelRect), label, style);
+                GUI.Label(RectSnap.Snap(labelRect), label, gstyle);
                 GUI.color = savedColor;
             }
 

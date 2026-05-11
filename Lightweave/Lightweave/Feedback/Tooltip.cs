@@ -186,7 +186,10 @@ public static class Tooltip {
             gap: SpacingScale.Xs,
             children: b => {
                 b.Add(Typography.Typography.Heading.Create(4, "Stormlight"));
-                b.Add(Typography.Typography.Text.Create("412 / 1000", FontRole.Body, new Rem(0.875f), ThemeSlot.TextSecondary));
+                b.Add(Typography.Typography.Text.Create(
+                    "412 / 1000",
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextSecondary }
+                ));
             }
         );
     }
@@ -214,6 +217,9 @@ public static class Tooltip {
         float sideOffset = DefaultSideOffsetPx,
         [DocParam("Maximum content width before wrapping. Default 20rem.")]
         Rem? maxWidth = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -226,6 +232,9 @@ public static class Tooltip {
             align,
             delayDuration,
             sideOffset,
+            style,
+            classes,
+            id,
             line,
             file
         );
@@ -248,6 +257,9 @@ public static class Tooltip {
         Rem? maxWidth = null,
         [DocParam("Optional dynamic anchor rect for positioning. When set, hover still uses the children rect, but the tooltip is placed relative to this rect (e.g. a hovered point on a chart).")]
         Func<Rect>? anchor = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -261,6 +273,9 @@ public static class Tooltip {
             align,
             delayDuration,
             sideOffset,
+            style,
+            classes,
+            id,
             line,
             file,
             anchor
@@ -282,6 +297,9 @@ public static class Tooltip {
         float delayDuration = DefaultDelaySeconds,
         [DocParam("Pixel gap between trigger and tooltip.")]
         float sideOffset = DefaultSideOffsetPx,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -293,6 +311,9 @@ public static class Tooltip {
             align,
             delayDuration,
             sideOffset,
+            style,
+            classes,
+            id,
             line,
             file
         );
@@ -313,6 +334,9 @@ public static class Tooltip {
         float delayDuration = DefaultDelaySeconds,
         [DocParam("Pixel gap between trigger and tooltip.")]
         float sideOffset = DefaultSideOffsetPx,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -324,6 +348,9 @@ public static class Tooltip {
             align,
             delayDuration,
             sideOffset,
+            style,
+            classes,
+            id,
             line,
             file
         );
@@ -337,11 +364,15 @@ public static class Tooltip {
         TooltipAlign align,
         float delayDuration,
         float sideOffset,
+        Style? style,
+        string[]? classes,
+        string? id,
         int line,
         string file,
         Func<Rect>? anchorOverride = null
     ) {
         LightweaveNode node = NodeBuilder.New("Tooltip", line, file);
+        node.ApplyStyling("tooltip", style, classes, id);
         node.Children.Add(children);
 
         node.Measure = availableWidth => children.Measure?.Invoke(availableWidth) ?? children.PreferredHeight ?? 0f;
@@ -412,10 +443,8 @@ public static class Tooltip {
     private static LightweaveNode BuildTextNode(string text) {
         return Typography.Typography.Text.Create(
             text,
-            FontRole.Body,
-            new Rem(0.875f),
-            ThemeSlot.TextPrimary,
-            wrap: true
+            wrap: true,
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
         );
     }
 

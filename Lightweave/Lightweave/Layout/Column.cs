@@ -18,24 +18,31 @@ namespace Cosmere.Lightweave.Layout;
 )]
 public static class Column {
     public static LightweaveNode Create(
-        [DocParam("Gap between rows. Accepts a Responsive<Rem> for breakpoint-driven gaps.", TypeOverride = "Responsive<Rem>", DefaultOverride = "0")]
-        Responsive<Rem> gap = default,
+        [DocParam("Gap between rows.")]
+        Rem gap = default,
         [DocParam("Cross-axis alignment of children.")]
         FlexAlign align = FlexAlign.Start,
         [DocParam("Main-axis distribution.")]
         FlexJustify justify = FlexJustify.Start,
         [DocParam("Builder callback to populate children.")]
         Action<List<LightweaveNode>>? children = null,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'column' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         List<LightweaveNode> kids = new List<LightweaveNode>();
         children?.Invoke(kids);
         LightweaveNode node = NodeBuilder.New("Column", line, file);
+        node.ApplyStyling("column", style, classes, id);
         node.Children.AddRange(kids);
 
         float ResolveGapPx() {
-            return gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
+            return gap.ToPixels();
         }
 
         bool AllKidsKnown() {

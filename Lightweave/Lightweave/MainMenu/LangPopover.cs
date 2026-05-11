@@ -74,8 +74,7 @@ public static class LangPopover {
         return Box.Create(
             children: c => c.Add(TypoText.Create(
                 "CL_MainMenu_Lang_NoMatches".Translate(),
-                color: ThemeSlot.TextMuted,
-                align: TextAlign.Center
+                style: new Style { TextColor = ThemeSlot.TextMuted, TextAlign = TextAlign.Center }
             )),
             style: new Style {
                 Padding = new EdgeInsets(Top: SpacingScale.Md, Bottom: SpacingScale.Md, Left: SpacingScale.Md, Right: SpacingScale.Md),

@@ -28,12 +28,19 @@ public static class Wrap {
         Action<List<LightweaveNode>>? children = null,
         [DocParam("Optional explicit row height. Falls back to minChildWidth * 0.6 when unset.", TypeOverride = "Rem?", DefaultOverride = "null")]
         Rem? lineHeight = null,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'wrap' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         List<LightweaveNode> kids = new List<LightweaveNode>();
         children?.Invoke(kids);
         LightweaveNode node = NodeBuilder.New("Wrap", line, file);
+        node.ApplyStyling("wrap", style, classes, id);
         node.Children.AddRange(kids);
 
         int FlowCount() {

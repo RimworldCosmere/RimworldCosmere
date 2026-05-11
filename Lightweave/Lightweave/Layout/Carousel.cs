@@ -45,10 +45,14 @@ public static class Carousel {
     bool keyboardEnabled = true,
         [DocParam("Override hover sound on arrows/dots. Null = component default (false).")]
     bool? playHoverSound = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("Carousel", line, file);
+        node.ApplyStyling("carousel", style, classes, id);
 
         for (int i = 0; i < slides.Count; i++) {
             node.Children.Add(slides[i]);
@@ -249,10 +253,7 @@ public static class Carousel {
             c => c.Add(
                 Text.Create(
                     (string)labelKey.Translate(),
-                    FontRole.BodyBold,
-                    new Rem(1f),
-                    ThemeSlot.TextPrimary,
-                    TextAlign.Center
+                    style: new Style { FontFamily = FontRole.BodyBold, FontSize = new Rem(1f), TextColor = ThemeSlot.TextPrimary, TextAlign = TextAlign.Center }
                 )
             ),
             style: new Style {

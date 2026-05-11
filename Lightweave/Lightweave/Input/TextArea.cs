@@ -35,6 +35,9 @@ public static class TextArea {
         bool disabled = false,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -44,6 +47,7 @@ public static class TextArea {
         string wasFocusedKey = file + "#ta_wasFocused" + keySuffix;
 
         LightweaveNode node = NodeBuilder.New("TextArea", line, file);
+        node.ApplyStyling("text-area", style, classes, id);
         float lineHeightPx = new Rem(1.5f).ToPixels();
         int initialRows = Mathf.Clamp(
             CountRows(value ?? string.Empty),

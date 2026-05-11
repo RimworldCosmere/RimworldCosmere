@@ -19,53 +19,62 @@ namespace Cosmere.Lightweave.Layout;
 )]
 public static class WindowFooter {
     public static LightweaveNode Create(
-        [DocParam("Footer children appended inside the band. Compose with HStack for multi-column layouts.")]
         Action<List<LightweaveNode>>? children = null,
-        [DocParam("Footer band height.", TypeOverride = "Rem", DefaultOverride = "4rem")]
-        Rem? height = null,
-        [DocParam("Theme slot used for the footer background fill.")]
-        ThemeSlot backgroundSlot = ThemeSlot.SurfaceRaised,
-        [DocParam("Inner padding around footer children.", TypeOverride = "EdgeInsets?", DefaultOverride = "1rem")]
-        EdgeInsets? padding = null,
-        [DocParam("Draw a 1px divider above the footer band.")]
         bool drawDivider = true,
-        [DocParam("Theme slot for the divider color.")]
-        ThemeSlot dividerSlot = ThemeSlot.BorderDefault,
-        [DocParam("Render a diagonal resize grip in the trailing-bottom corner.")]
         bool showResizeGrip = false,
-        [DocParam("Override corner radius for the footer background. When null, falls back to the host window's requested bottom-rounding.")]
-        RadiusSpec? cornerRadius = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        Rem h = height ?? new Rem(4f);
-        float footerH = h.ToPixels();
-        EdgeInsets pad = padding ?? new EdgeInsets(
+        List<LightweaveNode> kids = new List<LightweaveNode>();
+        children?.Invoke(kids);
+
+        LightweaveNode node = NodeBuilder.New("WindowFooter", line, file);
+        node.ApplyStyling("window-footer", style, classes, id);
+
+        Style s0 = node.GetResolvedStyle();
+        float footerH = s0.Height is { Mode: Length.Kind.Rem } hh
+            ? hh.ToPixels(0f, 0f)
+            : new Rem(4f).ToPixels();
+        node.PreferredHeight = footerH;
+        node.Children.AddRange(kids);
+
+        EdgeInsets defaultPad = new EdgeInsets(
             Top: SpacingScale.Md,
             Bottom: SpacingScale.Md,
             Left: SpacingScale.Md,
             Right: SpacingScale.Xs
         );
 
-        List<LightweaveNode> kids = new List<LightweaveNode>();
-        children?.Invoke(kids);
-
-        LightweaveNode node = NodeBuilder.New("WindowFooter", line, file);
-        node.PreferredHeight = footerH;
-        node.Children.AddRange(kids);
-
         node.Paint = (rect, paintChildren) => {
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? defaultPad;
+            BackgroundSpec bg = s.Background ?? BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
+
             LightweaveWindowContext.PublishFooter(rect, showResizeGrip);
 
-            RadiusSpec? effectiveRadius = cornerRadius ?? LightweaveWindowContext.RequestedFooterRadius;
-            PaintBox.Draw(rect, BackgroundSpec.Of(backgroundSlot), null, effectiveRadius);
+            RadiusSpec? effectiveRadius = s.Radius ?? LightweaveWindowContext.RequestedFooterRadius;
+            PaintBox.Draw(rect, bg, null, effectiveRadius);
 
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
 
             if (drawDivider) {
-                Color borderColor = theme.GetColor(dividerSlot);
+                Color borderColor;
+                BorderSpec? sb = s.Border;
+                if (sb.HasValue && sb.Value.Color != null) {
+                    borderColor = sb.Value.Color switch {
+                        ColorRef.Literal lit => lit.Value,
+                        ColorRef.Token tok => theme.GetColor(tok.Slot),
+                        _ => theme.GetColor(ThemeSlot.BorderDefault),
+                    };
+                }
+                else {
+                    borderColor = theme.GetColor(ThemeSlot.BorderDefault);
+                }
                 Rect divider = new Rect(rect.x, rect.y, rect.width, 1f);
                 Color saved = GUI.color;
                 GUI.color = borderColor;

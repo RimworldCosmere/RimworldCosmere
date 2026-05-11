@@ -37,28 +37,40 @@ public static class SliderWithReadout {
         bool disabled = false,
         [DocParam("When true, onChange fires every frame during drag instead of only on release.")]
         bool live = false,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         Rem rw = readoutWidth ?? new Rem(4f);
         Func<float, string> fmt = format ?? (v => v.ToString("0.00", CultureInfo.InvariantCulture));
+        string[]? mergedClasses = StyleExtensions.PrependClass("slider-with-readout", classes);
 
-        return HStack.Create(SpacingScale.Md, h => {
-            h.AddFlex(Slider.Create(
-                value: value,
-                onChange: onChange,
-                min: min,
-                max: max,
-                step: step,
-                format: fmt,
-                disabled: disabled,
-                live: live,
-                showReadout: false,
-                line: line,
-                file: file
-            ));
-            h.Add(BuildReadout(value, fmt, disabled, line, file), rw.ToPixels());
-        });
+        return HStack.Create(
+            gap: SpacingScale.Md,
+            children: h => {
+                h.AddFlex(Slider.Create(
+                    value: value,
+                    onChange: onChange,
+                    min: min,
+                    max: max,
+                    step: step,
+                    format: fmt,
+                    disabled: disabled,
+                    live: live,
+                    showReadout: false,
+                    line: line,
+                    file: file
+                ));
+                h.Add(BuildReadout(value, fmt, disabled, line, file), rw.ToPixels());
+            },
+            style: style,
+            classes: mergedClasses,
+            id: id,
+            line: line,
+            file: file
+        );
     }
 
     private static LightweaveNode BuildReadout(float value, Func<float, string> fmt, bool disabled, int line, string file) {

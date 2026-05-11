@@ -43,6 +43,9 @@ public static class Table {
         Rem? rowHeight = null,
         [DocParam("Stable key extractor used to preserve cell identity across renders.")]
         Func<T, object>? keyFn = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -50,6 +53,7 @@ public static class Table {
             Hooks.Hooks.UseRef(new LightweaveScrollStatus(), line, file);
 
         LightweaveNode node = NodeBuilder.New($"Table<{typeof(T).Name}>", line, file);
+        node.ApplyStyling("table", style, classes, id);
 
         float resolvedRowHeight = (rowHeight ?? DefaultRowHeight).ToPixels();
         int rowCountForHeight = rows?.Count ?? 0;
@@ -263,16 +267,25 @@ public static class Table {
             new List<TableColumn<(string, string, string)>> {
                 new TableColumn<(string, string, string)>(
                     (string)"CL_Playground_Table_Col_World".Translate(),
-                    r => Text.Create(r.Item1, FontRole.Body, new Rem(0.875f), ThemeSlot.TextPrimary),
+                    r => Text.Create(
+                        r.Item1,
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
+                    ),
                     new Rem(7f)
                 ),
                 new TableColumn<(string, string, string)>(
                     (string)"CL_Playground_Table_Col_Shards".Translate(),
-                    r => Text.Create(r.Item2, FontRole.Body, new Rem(0.8125f), ThemeSlot.TextSecondary)
+                    r => Text.Create(
+                        r.Item2,
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.8125f), TextColor = ThemeSlot.TextSecondary }
+                    )
                 ),
                 new TableColumn<(string, string, string)>(
                     (string)"CL_Playground_Table_Col_Population".Translate(),
-                    r => Text.Create(r.Item3, FontRole.Body, new Rem(0.8125f), ThemeSlot.TextMuted),
+                    r => Text.Create(
+                        r.Item3,
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.8125f), TextColor = ThemeSlot.TextMuted }
+                    ),
                     new Rem(6f)
                 ),
             };

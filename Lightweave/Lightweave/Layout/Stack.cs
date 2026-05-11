@@ -41,10 +41,16 @@ public sealed class StackBuilder {
 )]
 public static class Stack {
     public static LightweaveNode Create(
-        [DocParam("Gap between stacked items. Accepts a Responsive<Rem> for breakpoint-driven gaps.", TypeOverride = "Responsive<Rem>", DefaultOverride = "0")]
-        Responsive<Rem> gap = default,
+        [DocParam("Gap between stacked items.")]
+        Rem gap = default,
         [DocParam("Builder callback to populate items via Add / AddFlex.")]
         Action<StackBuilder>? children = null,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'stack' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -52,13 +58,14 @@ public static class Stack {
         children?.Invoke(builder);
 
         LightweaveNode node = NodeBuilder.New("Stack", line, file);
+        node.ApplyStyling("stack", style, classes, id);
         int count = builder.Items.Count;
         for (int i = 0; i < count; i++) {
             node.Children.Add(builder.Items[i].node);
         }
 
         float ResolveGapPx() {
-            return gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
+            return gap.ToPixels();
         }
 
         float ResolveItemHeight(int index, float availableWidth) {

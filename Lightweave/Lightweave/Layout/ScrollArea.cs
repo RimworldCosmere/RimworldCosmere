@@ -23,6 +23,12 @@ public static class ScrollArea {
         object? resetKey = null,
         [DocParam("Show the vertical scrollbar gutter.")]
         bool showScrollbar = true,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'scroll-area' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -35,17 +41,24 @@ public static class ScrollArea {
             lastResetKey.Current = resetKey;
         }
 
-        return BuildScrollArea(content, statusRef.Current, showScrollbar, line, file);
+        LightweaveNode node = BuildScrollArea(content, statusRef.Current, showScrollbar, line, file);
+        node.ApplyStyling("scroll-area", style, classes, id);
+        return node;
     }
 
     public static LightweaveNode External(
         LightweaveNode content,
         LightweaveScrollStatus status,
         bool showScrollbar = true,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        return BuildScrollArea(content, status, showScrollbar, line, file);
+        LightweaveNode node = BuildScrollArea(content, status, showScrollbar, line, file);
+        node.ApplyStyling("scroll-area", style, classes, id);
+        return node;
     }
 
     private static LightweaveNode BuildScrollArea(

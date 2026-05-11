@@ -121,13 +121,11 @@ public static class WindowDoc {
 
         protected override LightweaveNode Body() {
             return WindowBody.Create(
-                padding: EdgeInsets.All(SpacingScale.Md),
+                style: new Style { Padding = EdgeInsets.All(SpacingScale.Md) },
                 children: c => c.Add(Typography.Typography.Text.Create(
                     (string)"CL_Playground_Window_Sample_Bordered_Body".Translate(),
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    wrap: true
+                    wrap: true,
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary }
                 ))
             );
         }
@@ -153,14 +151,11 @@ public static class WindowDoc {
 
         protected override LightweaveNode Body() {
             return WindowBody.Create(
-                padding: EdgeInsets.All(SpacingScale.Md),
-                backgroundSlot: ThemeSlot.SurfacePrimary,
+                style: new Style { Padding = EdgeInsets.All(SpacingScale.Md), Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary) },
                 children: c => c.Add(Typography.Typography.Text.Create(
                     (string)"CL_Playground_Window_Sample_Borderless_Body".Translate(),
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    wrap: true
+                    wrap: true,
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary }
                 ))
             );
         }
@@ -186,13 +181,11 @@ public static class WindowDoc {
 
         protected override LightweaveNode Body() {
             return WindowBody.Create(
-                padding: EdgeInsets.All(SpacingScale.Md),
+                style: new Style { Padding = EdgeInsets.All(SpacingScale.Md) },
                 children: c => c.Add(Typography.Typography.Text.Create(
                     (string)"CL_Playground_Window_Sample_Fixed_Body".Translate(),
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    wrap: true
+                    wrap: true,
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary }
                 ))
             );
         }
@@ -217,13 +210,11 @@ public static class WindowDoc {
 
         protected override LightweaveNode Body() {
             return WindowBody.Create(
-                padding: EdgeInsets.All(SpacingScale.Md),
+                style: new Style { Padding = EdgeInsets.All(SpacingScale.Md) },
                 children: c => c.Add(Typography.Typography.Text.Create(
                     (string)"CL_Playground_Window_Sample_Large_Body".Translate(),
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    wrap: true
+                    wrap: true,
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary }
                 ))
             );
         }
@@ -248,13 +239,11 @@ public static class WindowDoc {
 
         protected override LightweaveNode Body() {
             return WindowBody.Create(
-                padding: EdgeInsets.All(SpacingScale.Md),
+                style: new Style { Padding = EdgeInsets.All(SpacingScale.Md) },
                 children: c => c.Add(Typography.Typography.Text.Create(
                     (string)"CL_Playground_Window_Sample_Dialog_Body".Translate(),
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    wrap: true
+                    wrap: true,
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary }
                 ))
             );
         }
@@ -270,7 +259,7 @@ public static class WindowDoc {
                                 (string)"CL_Playground_Window_Cancel".Translate(),
                                 () => Close(),
                                 ButtonVariant.Secondary,
-                                fullWidth: true
+                                style: new Style { Width = Length.Stretch }
                             ),
                             96f
                         );
@@ -279,7 +268,7 @@ public static class WindowDoc {
                                 (string)"CL_Playground_Window_Confirm".Translate(),
                                 () => Close(),
                                 ButtonVariant.Primary,
-                                fullWidth: true
+                                style: new Style { Width = Length.Stretch }
                             ),
                             96f
                         );
@@ -308,13 +297,11 @@ public static class WindowDoc {
 
         protected override LightweaveNode Body() {
             return WindowBody.Create(
-                padding: EdgeInsets.All(SpacingScale.Md),
+                style: new Style { Padding = EdgeInsets.All(SpacingScale.Md) },
                 children: c => c.Add(Typography.Typography.Text.Create(
                     (string)"CL_Playground_Window_Sample_Status_Body".Translate(),
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.TextSecondary,
-                    wrap: true
+                    wrap: true,
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextSecondary }
                 ))
             );
         }
@@ -325,9 +312,7 @@ public static class WindowDoc {
                 children: c => c.Add(HStack.Create(
                     SpacingScale.Sm,
                     r => {
-                        r.AddFlex(Typography.Typography.Caption.Create(
-                            (string)"CL_Playground_Window_Sample_Status_Indicator".Translate()
-                        ));
+                        r.AddFlex(Typography.Typography.Caption.Create((string)"CL_Playground_Window_Sample_Status_Indicator".Translate()));
                     }
                 ))
             );

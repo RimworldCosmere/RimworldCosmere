@@ -22,45 +22,51 @@ public static class Eyebrow {
         string content,
         [DocParam("Tracking (letter spacing) in pixels.")]
         float letterSpacing = 2f,
-        [DocParam("Override color. Defaults to TextMuted.")]
-        ColorRef? color = null,
-        [DocParam("Horizontal alignment within the rect.")]
-        TextAlign align = TextAlign.Start,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'eyebrow' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         string upper = content?.ToUpperInvariant() ?? string.Empty;
-        ColorRef resolvedColor = color ?? (ColorRef)ThemeSlot.TextMuted;
-        Rem size = new Rem(0.75f);
 
         if (Mathf.Approximately(letterSpacing, 0f)) {
             return Text.Create(
                 upper,
-                FontRole.Body,
-                size,
-                resolvedColor,
-                align,
-                FontStyle.Bold,
+                style: style,
+                classes: StyleExtensions.PrependClass("eyebrow", classes),
+                id: id,
                 line: line,
                 file: file
             );
         }
 
         LightweaveNode node = NodeBuilder.New($"Eyebrow:{upper}", line, file);
-        int pixelSize = Mathf.RoundToInt(size.ToFontPx());
-        float descenderPad = Mathf.Max(2f, pixelSize * 0.25f);
+        node.ApplyStyling("eyebrow", style, classes, id);
 
-        GUIStyle ResolveStyle() {
+        GUIStyle ResolveGuiStyle() {
             Theme.Theme theme = RenderContext.Current.Theme;
-            Font font = theme.GetFont(FontRole.Body);
-            return GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+            Style s = node.GetResolvedStyle();
+            FontRef? fr = s.FontFamily;
+            Font font = fr switch {
+                FontRef.Literal lit => lit.Value,
+                FontRef.Role role => theme.GetFont(role.RoleValue),
+                _ => theme.GetFont(FontRole.Body),
+            };
+            Rem fontSize = s.FontSize ?? new Rem(0.75f);
+            FontStyle weight = s.FontWeight ?? FontStyle.Bold;
+            int pixelSize = Mathf.RoundToInt(fontSize.ToFontPx());
+            return GuiStyleCache.GetOrCreate(font, pixelSize, weight);
         }
 
-        float MeasureTotalWidth(GUIStyle style) {
+        float MeasureTotalWidth(GUIStyle gs) {
             float total = 0f;
             for (int i = 0; i < upper.Length; i++) {
                 GUIContent gc = new GUIContent(upper[i].ToString());
-                total += style.CalcSize(gc).x;
+                total += gs.CalcSize(gc).x;
                 if (i < upper.Length - 1) {
                     total += letterSpacing;
                 }
@@ -72,17 +78,21 @@ public static class Eyebrow {
             if (string.IsNullOrEmpty(upper)) {
                 return 0f;
             }
-            GUIStyle style = ResolveStyle();
+            GUIStyle gs = ResolveGuiStyle();
+            Style s = node.GetResolvedStyle();
+            Rem fontSize = s.FontSize ?? new Rem(0.75f);
+            int pixelSize = Mathf.RoundToInt(fontSize.ToFontPx());
+            float descenderPad = Mathf.Max(2f, pixelSize * 0.25f);
             GUIContent gc = new GUIContent(upper);
-            return Mathf.Ceil(style.CalcHeight(gc, float.MaxValue) + descenderPad);
+            return Mathf.Ceil(gs.CalcHeight(gc, float.MaxValue) + descenderPad);
         };
 
         node.MeasureWidth = () => {
             if (string.IsNullOrEmpty(upper)) {
                 return 0f;
             }
-            GUIStyle style = ResolveStyle();
-            return Mathf.Ceil(MeasureTotalWidth(style));
+            GUIStyle gs = ResolveGuiStyle();
+            return Mathf.Ceil(MeasureTotalWidth(gs));
         };
 
         node.Paint = (rect, _) => {
@@ -90,8 +100,10 @@ public static class Eyebrow {
                 return;
             }
             Theme.Theme theme = RenderContext.Current.Theme;
-            GUIStyle style = ResolveStyle();
-            float totalW = MeasureTotalWidth(style);
+            Style s = node.GetResolvedStyle();
+            GUIStyle gs = ResolveGuiStyle();
+            float totalW = MeasureTotalWidth(gs);
+            TextAlign align = s.TextAlign ?? TextAlign.Start;
             TextAnchor anchor = ResolveAnchor(align, RenderContext.Current.Direction);
             float startX = anchor switch {
                 TextAnchor.MiddleCenter or TextAnchor.UpperCenter or TextAnchor.LowerCenter
@@ -100,23 +112,24 @@ public static class Eyebrow {
                     => rect.xMax - totalW,
                 _ => rect.x,
             };
-            Color c = resolvedColor switch {
+            ColorRef? cr = s.TextColor;
+            Color c = cr switch {
                 ColorRef.Literal lit => lit.Value,
                 ColorRef.Token tok => theme.GetColor(tok.Slot),
                 _ => theme.GetColor(ThemeSlot.TextMuted),
             };
             Color saved = GUI.color;
             GUI.color = c;
-            style.alignment = TextAnchor.MiddleLeft;
-            style.clipping = TextClipping.Clip;
+            gs.alignment = TextAnchor.MiddleLeft;
+            gs.clipping = TextClipping.Clip;
 
             float cursor = startX;
             for (int i = 0; i < upper.Length; i++) {
                 string ch = upper[i].ToString();
                 GUIContent gc = new GUIContent(ch);
-                float charW = style.CalcSize(gc).x;
+                float charW = gs.CalcSize(gc).x;
                 Rect charRect = new Rect(cursor, rect.y, charW, rect.height);
-                GUI.Label(RectSnap.Snap(charRect), ch, style);
+                GUI.Label(RectSnap.Snap(charRect), ch, gs);
                 cursor += charW + letterSpacing;
             }
             GUI.color = saved;
@@ -131,7 +144,7 @@ public static class Eyebrow {
 
     [DocVariant("CL_Playground_Label_Accented")]
     public static DocSample DocsAccented() {
-        return new DocSample(() => Eyebrow.Create("framerate", color: (ColorRef)ThemeSlot.SurfaceAccent));
+        return new DocSample(() => Eyebrow.Create("framerate", style: new Style { TextColor = (ColorRef)ThemeSlot.SurfaceAccent }));
     }
 
     [DocUsage]

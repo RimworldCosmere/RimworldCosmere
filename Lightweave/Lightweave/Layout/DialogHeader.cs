@@ -36,10 +36,14 @@ public static class DialogHeader {
         bool drawDivider = true,
         [DocParam("Optional tab/filter pills rendered between title and close button. Each tab is (label, isActive, onClick).")]
         IReadOnlyList<DialogHeaderTab>? tabs = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("DialogHeader", line, file);
+        node.ApplyStyling("dialog-header", style, classes, id);
         node.PreferredHeight = new Rem(4.5f).ToPixels();
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;

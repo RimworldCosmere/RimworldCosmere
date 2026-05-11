@@ -19,15 +19,24 @@ public static class Divider {
     public static LightweaveNode Horizontal(
         [DocParam("Optional thickness. Defaults to 1/16 rem.", TypeOverride = "Rem?", DefaultOverride = "1/16 rem")]
         Rem? thickness = null,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'divider' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         float t = (thickness ?? new Rem(1f / 16f)).ToPixels();
         LightweaveNode n = NodeBuilder.New("Divider.Horizontal", line, file);
+        n.ApplyStyling("divider", style, classes, id);
         n.PreferredHeight = t;
         n.Paint = (rect, _) => {
+            Style s = n.GetResolvedStyle();
+            BackgroundSpec bg = s.Background ?? BackgroundSpec.Of(ThemeSlot.BorderSubtle);
             Rect bar = new Rect(rect.x, rect.y + (rect.height - t) / 2f, rect.width, t);
-            PaintBox.Draw(bar, BackgroundSpec.Of(ThemeSlot.BorderSubtle), null, null);
+            PaintBox.Draw(bar, bg, null, null);
         };
         return n;
     }
@@ -35,14 +44,23 @@ public static class Divider {
     public static LightweaveNode Vertical(
         [DocParam("Optional thickness. Defaults to 1/16 rem.", TypeOverride = "Rem?", DefaultOverride = "1/16 rem")]
         Rem? thickness = null,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'divider' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         float t = (thickness ?? new Rem(1f / 16f)).ToPixels();
         LightweaveNode n = NodeBuilder.New("Divider.Vertical", line, file);
+        n.ApplyStyling("divider", style, classes, id);
         n.Paint = (rect, _) => {
+            Style s = n.GetResolvedStyle();
+            BackgroundSpec bg = s.Background ?? BackgroundSpec.Of(ThemeSlot.BorderSubtle);
             Rect bar = new Rect(rect.x + (rect.width - t) / 2f, rect.y, t, rect.height);
-            PaintBox.Draw(bar, BackgroundSpec.Of(ThemeSlot.BorderSubtle), null, null);
+            PaintBox.Draw(bar, bg, null, null);
         };
         return n;
     }

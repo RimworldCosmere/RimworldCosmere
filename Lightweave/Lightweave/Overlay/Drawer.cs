@@ -48,10 +48,14 @@ public static class Drawer {
         Action onDismiss,
         [DocParam("Drawer thickness in Rem; width for Left/Right, height for Top/Bottom.")]
         Rem? size = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Drawer:{side}", line, file);
+        node.ApplyStyling("drawer", style, classes, id);
         node.Paint = (_, _) => {
             float target = isOpen ? 1f : 0f;
             float progress = UseAnim.Animate(target, 0.22f, EaseOutCubic, line, file);
@@ -176,18 +180,13 @@ public static class Drawer {
                 SpacingScale.Sm,
                 s => {
                     s.Add(
-                        Heading.Create(
-                            3,
-                            (string)"CL_Playground_Drawer_ContentTitle".Translate()
-                        ),
+                        Heading.Create(3, (string)"CL_Playground_Drawer_ContentTitle".Translate()),
                         28f
                     );
                     s.Add(
                         Text.Create(
                             (string)"CL_Playground_Drawer_ContentBody".Translate(),
-                            FontRole.Body,
-                            new Rem(0.875f),
-                            ThemeSlot.TextPrimary
+                            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
                         ),
                         80f
                     );

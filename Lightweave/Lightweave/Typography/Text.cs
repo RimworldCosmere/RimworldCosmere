@@ -24,34 +24,35 @@ public static partial class Typography {
         public static LightweaveNode Create(
             [DocParam("Text content to display.")]
             string content,
-            [DocParam("Font role or literal font reference. Defaults to Body.")]
-            FontRef? font = null,
-            [DocParam("Font size in Rem units. Defaults to 1rem.")]
-            Rem? size = null,
-            [DocParam("Color reference. Defaults to TextPrimary.")]
-            ColorRef? color = null,
-            [DocParam("Horizontal alignment within the rect.")]
-            TextAlign align = TextAlign.Start,
-            [DocParam("Font style: Normal, Bold, Italic, BoldAndItalic.")]
-            FontStyle weight = FontStyle.Normal,
             [DocParam("Wrap to multiple lines when content exceeds available width.")]
             bool wrap = false,
+            [DocParam("Style applied to the text (FontFamily/FontSize/TextColor/TextAlign/FontWeight/etc).", TypeOverride = "Style?", DefaultOverride = "null")]
+            Style? style = null,
+            [DocParam("Additional class names merged after the base 'text' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+            string[]? classes = null,
+            [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+            string? id = null,
             [CallerLineNumber] int line = 0,
             [CallerFilePath] string file = ""
         ) {
             LightweaveNode node = NodeBuilder.New($"Text:{content}", line, file);
+            node.ApplyStyling("text", style, classes, id);
 
-            GUIStyle ResolveStyle() {
+            GUIStyle ResolveGuiStyle() {
+                Style s = node.GetResolvedStyle();
                 Theme.Theme theme = RenderContext.Current.Theme;
-                Font f = font switch {
+                FontRef? fr = s.FontFamily;
+                Font f = fr switch {
                     FontRef.Literal lit => lit.Value,
                     FontRef.Role role => theme.GetFont(role.RoleValue),
                     _ => theme.GetFont(FontRole.Body),
                 };
-                int pixelSize = Mathf.RoundToInt((size ?? new Rem(1f)).ToFontPx());
-                GUIStyle style = GuiStyleCache.GetOrCreate(f, pixelSize, weight);
-                style.wordWrap = wrap;
-                return style;
+                Rem fontSize = s.FontSize ?? new Rem(1f);
+                FontStyle weight = s.FontWeight ?? FontStyle.Normal;
+                int pixelSize = Mathf.RoundToInt(fontSize.ToFontPx());
+                GUIStyle guiStyle = GuiStyleCache.GetOrCreate(f, pixelSize, weight);
+                guiStyle.wordWrap = wrap;
+                return guiStyle;
             }
 
             node.Measure = availableWidth => {
@@ -59,12 +60,14 @@ public static partial class Typography {
                     return 0f;
                 }
 
-                GUIStyle style = ResolveStyle();
+                GUIStyle gs = ResolveGuiStyle();
                 GUIContent guiContent = new GUIContent(content);
                 float h = wrap
-                    ? style.CalcHeight(guiContent, availableWidth)
-                    : style.CalcHeight(guiContent, float.MaxValue);
-                int pixelSize = Mathf.RoundToInt((size ?? new Rem(1f)).ToFontPx());
+                    ? gs.CalcHeight(guiContent, availableWidth)
+                    : gs.CalcHeight(guiContent, float.MaxValue);
+                Style s = node.GetResolvedStyle();
+                Rem fontSize = s.FontSize ?? new Rem(1f);
+                int pixelSize = Mathf.RoundToInt(fontSize.ToFontPx());
                 float descenderPad = Mathf.Max(2f, pixelSize * 0.25f);
                 return Mathf.Ceil(h + descenderPad);
             };
@@ -74,13 +77,15 @@ public static partial class Typography {
                     return 0f;
                 }
 
-                GUIStyle style = ResolveStyle();
-                return Mathf.Ceil(style.CalcSize(new GUIContent(content)).x);
+                GUIStyle gs = ResolveGuiStyle();
+                return Mathf.Ceil(gs.CalcSize(new GUIContent(content)).x);
             };
 
             node.Paint = (rect, _) => {
                 Theme.Theme theme = RenderContext.Current.Theme;
-                GUIStyle style = ResolveStyle();
+                Style s = node.GetResolvedStyle();
+                GUIStyle gs = ResolveGuiStyle();
+                TextAlign align = s.TextAlign ?? TextAlign.Start;
                 TextAnchor anchor = ResolveAnchor(align, RenderContext.Current.Direction);
                 if (wrap) {
                     anchor = anchor switch {
@@ -91,16 +96,17 @@ public static partial class Typography {
                     };
                 }
 
-                style.alignment = anchor;
-                style.clipping = TextClipping.Clip;
-                Color c = color switch {
+                gs.alignment = anchor;
+                gs.clipping = TextClipping.Clip;
+                ColorRef? cr = s.TextColor;
+                Color c = cr switch {
                     ColorRef.Literal lit => lit.Value,
                     ColorRef.Token tok => theme.GetColor(tok.Slot),
                     _ => theme.GetColor(ThemeSlot.TextPrimary),
                 };
                 Color saved = GUI.color;
                 GUI.color = c;
-                GUI.Label(RectSnap.Snap(rect), content, style);
+                GUI.Label(RectSnap.Snap(rect), content, gs);
                 GUI.color = saved;
             };
             return node;
@@ -109,20 +115,20 @@ public static partial class Typography {
         [DocVariant("CL_Playground_Label_Normal")]
         public static DocSample DocsNormal() {
             string sample = (string)"CL_Playground_Text_Sample".Translate();
-            return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary));
+            return new DocSample(() => Text.Create(sample, style: new Style { FontSize = new Rem(0.9375f) }));
         }
 
         [DocVariant("CL_Playground_Label_Accented")]
         public static DocSample DocsAccented() {
             string sample = (string)"CL_Playground_Text_Sample".Translate();
-            return new DocSample(() => 
+            return new DocSample(() =>
                 Text.Create(
                     sample,
-                    FontRole.Body,
-                    new Rem(0.9375f),
-                    ThemeSlot.SurfaceAccent,
-                    TextAlign.Start,
-                    FontStyle.Bold
+                    style: new Style {
+                        FontSize = new Rem(0.9375f),
+                        TextColor = ThemeSlot.SurfaceAccent,
+                        FontWeight = FontStyle.Bold,
+                    }
                 )
             );
         }
@@ -130,25 +136,31 @@ public static partial class Typography {
         [DocVariant("CL_Playground_Label_Muted")]
         public static DocSample DocsMuted() {
             string sample = (string)"CL_Playground_Text_Sample".Translate();
-            return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextMuted));
+            return new DocSample(() => Text.Create(
+                sample,
+                style: new Style { FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextMuted }
+            ));
         }
 
         [DocState("CL_Playground_Label_Default")]
         public static DocSample DocsDefaultState() {
             string sample = (string)"CL_Playground_Text_Sample".Translate();
-            return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary));
+            return new DocSample(() => Text.Create(sample, style: new Style { FontSize = new Rem(0.9375f) }));
         }
 
         [DocState("CL_Playground_Label_Muted")]
         public static DocSample DocsMutedState() {
             string sample = (string)"CL_Playground_Text_Sample".Translate();
-            return new DocSample(() => Text.Create(sample, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextMuted));
+            return new DocSample(() => Text.Create(
+                sample,
+                style: new Style { FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextMuted }
+            ));
         }
 
         [DocUsage]
         public static DocSample DocsUsage() {
-            return new DocSample(() => 
-                Text.Create("Stormlight burns within him.", FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary)
+            return new DocSample(() =>
+                Text.Create("Stormlight burns within him.", style: new Style { FontSize = new Rem(0.9375f) })
             );
         }
     }

@@ -327,9 +327,12 @@ public sealed class LightweavePlayground : LightweaveWindow {
             }
         );
 
-        LightweaveNode contained = Layout.Container.Responsive(
+        LightweaveNode contained = Layout.Container.Create(
             docStack,
-            new EdgeInsets(Top: SpacingScale.None, Right: SpacingScale.Xl, Bottom: SpacingScale.None, Left: SpacingScale.Xl)
+            style: new Style {
+                MaxWidth = new Rem(64f),
+                Padding = new EdgeInsets(Top: SpacingScale.None, Right: SpacingScale.Xl, Bottom: SpacingScale.None, Left: SpacingScale.Xl),
+            }
         );
         LightweaveNode mainScroll = Layout.ScrollArea.External(contained, ctx.Scroll);
 

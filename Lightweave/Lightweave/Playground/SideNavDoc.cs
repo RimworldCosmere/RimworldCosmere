@@ -73,8 +73,8 @@ public static class SideNavDoc {
             );
             LightweaveNode constrained = Container.Create(
                 framed,
-                new Rem(14f),
-                align: ContainerAlign.Start
+                align: ContainerAlign.Start,
+                style: new Style { MaxWidth = new Rem(14f) }
             );
 
             return constrained;
@@ -95,8 +95,8 @@ public static class SideNavDoc {
                         Radius = RadiusSpec.All(RadiusScale.Md),
                     }
                 ),
-                new Rem(14f),
-                align: ContainerAlign.Start
+                align: ContainerAlign.Start,
+                style: new Style { MaxWidth = new Rem(14f) }
             );
         });
     }

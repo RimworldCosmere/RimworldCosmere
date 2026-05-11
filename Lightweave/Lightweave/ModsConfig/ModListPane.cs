@@ -161,9 +161,15 @@ public static class ModListPane {
         return Container.Create(
             child: Stack.Create(SpacingScale.Xs, s => {
                 s.Add(Eyebrow.Create("CL_ModsConfig_Empty_Eyebrow".Translate()));
-                s.Add(Text.Create("CL_ModsConfig_Empty_Body".Translate(), color: ThemeSlot.TextSecondary, wrap: true));
+                s.Add(Text.Create(
+                    "CL_ModsConfig_Empty_Body".Translate(),
+                    wrap: true,
+                    style: new Style { TextColor = ThemeSlot.TextSecondary }
+                ));
             }),
-            padding: EdgeInsets.All(SpacingScale.Lg)
+            style: new Style {
+                Padding = EdgeInsets.All(SpacingScale.Lg),
+            }
         );
     }
 

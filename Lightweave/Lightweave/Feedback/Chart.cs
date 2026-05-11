@@ -56,6 +56,9 @@ public static class Chart {
         float tooltipDelay = 0.05f,
         [DocParam("Highlight the nearest sample with a marker dot on hover.")]
         bool pointHighlight = false,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -63,6 +66,7 @@ public static class Chart {
         ThemeSlot resolvedLine = lineColor ?? ThemeSlot.SurfaceAccent;
 
         LightweaveNode node = NodeBuilder.New("Chart", line, file);
+        node.ApplyStyling("chart", style, classes, id);
         node.PreferredHeight = new Rem(2f).ToPixels();
 
         ChartHoverState[] stateRef = { default };

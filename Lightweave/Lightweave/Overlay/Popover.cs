@@ -41,6 +41,9 @@ public static class Popover {
         Action onDismiss,
         [DocParam("Preferred size in pixels. Height of -1 auto-sizes to content.")]
         Vector2? preferredSize = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -51,6 +54,7 @@ public static class Popover {
         }
 
         LightweaveNode node = NodeBuilder.New($"Popover:{placement}", line, file);
+        node.ApplyStyling("popover", style, classes, id);
         node.Paint = (rect, paintChildren) => {
             Vector2 size = preferredSize ?? new Vector2(new Rem(15f).ToPixels(), -1f);
             if (size.x <= 0f) {
@@ -130,10 +134,8 @@ public static class Popover {
             k => k.Add(
                 Text.Create(
                     (string)"CL_Playground_Overlay_Popover_Body".Translate(),
-                    FontRole.Body,
-                    new Rem(0.875f),
-                    ThemeSlot.TextPrimary,
-                    wrap: true
+                    wrap: true,
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
                 )
             ),
             style: new Style {
@@ -233,11 +235,7 @@ public static class Popover {
                             h.Add(
                                 Text.Create(
                                     (string)"CL_Playground_Overlay_Popover_PawnCard_StormlightValue".Translate(),
-                                    FontRole.BodyBold,
-                                    new Rem(0.875f),
-                                    ThemeSlot.TextPrimary,
-                                    TextAlign.End,
-                                    FontStyle.Bold
+                                    style: new Style { FontFamily = FontRole.BodyBold, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary, TextAlign = TextAlign.End, FontWeight = FontStyle.Bold }
                                 ),
                                 new Rem(5f).ToPixels()
                             );
@@ -256,7 +254,7 @@ public static class Popover {
                         (string)"CL_Playground_Overlay_Popover_PawnCard_AbilityLashing".Translate(),
                         () => { },
                         ButtonVariant.Primary,
-                        fullWidth: true
+                        style: new Style { Width = Length.Stretch }
                     )
                 );
                 h.AddFlex(
@@ -264,7 +262,7 @@ public static class Popover {
                         (string)"CL_Playground_Overlay_Popover_PawnCard_AbilityAdhesion".Translate(),
                         () => { },
                         ButtonVariant.Secondary,
-                        fullWidth: true
+                        style: new Style { Width = Length.Stretch }
                     )
                 );
             }

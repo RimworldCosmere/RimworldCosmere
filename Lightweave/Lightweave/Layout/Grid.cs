@@ -17,22 +17,29 @@ namespace Cosmere.Lightweave.Layout;
 )]
 public static class Grid {
     public static LightweaveNode Create(
-        [DocParam("Column track specs (Fixed or Fr). Accepts a Responsive<IReadOnlyList<GridTrack>> for breakpoint-driven column counts.", TypeOverride = "Responsive<IReadOnlyList<GridTrack>>")]
-        Responsive<IReadOnlyList<GridTrack>> columns,
-        [DocParam("Gap between rows and columns. Accepts a Responsive<Rem> for breakpoint-driven gaps.", TypeOverride = "Responsive<Rem>", DefaultOverride = "0")]
-        Responsive<Rem> gap = default,
+        [DocParam("Column track specs (Fixed or Fr).")]
+        IReadOnlyList<GridTrack> columns,
+        [DocParam("Gap between rows and columns.")]
+        Rem gap = default,
         [DocParam("Builder callback to populate cells in row-major order.")]
         Action<List<LightweaveNode>>? children = null,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'grid' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         List<LightweaveNode> kids = new List<LightweaveNode>();
         children?.Invoke(kids);
         LightweaveNode node = NodeBuilder.New("Grid", line, file);
+        node.ApplyStyling("grid", style, classes, id);
         node.Children.AddRange(kids);
 
         List<GridTrack> ResolveCols() {
-            return new List<GridTrack>(GridTrack.Expand(columns.Resolve(RenderContext.Current.Breakpoint)));
+            return new List<GridTrack>(GridTrack.Expand(columns));
         }
 
         float[] ResolveColumnWidths(float availableWidth, List<GridTrack> cols, float gapPx) {
@@ -78,7 +85,7 @@ public static class Grid {
                 return 0f;
             }
 
-            float gapPx = gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
+            float gapPx = gap.ToPixels();
             float[] widths = ResolveColumnWidths(availableWidth, cols, gapPx);
             int rows = (flow.Count + n - 1) / n;
             float totalHeight = 0f;
@@ -112,7 +119,7 @@ public static class Grid {
             }
 
             List<LightweaveNode> flow = CollectInFlow();
-            float gapPx = gap.Resolve(RenderContext.Current.Breakpoint).ToPixels();
+            float gapPx = gap.ToPixels();
             Direction dir = RenderContext.Current.Direction;
             float[] widths = ResolveColumnWidths(rect.width, cols, gapPx);
 
@@ -179,14 +186,9 @@ public static class Grid {
             new GridTrack.Fr(1f),
             new GridTrack.Fr(1f),
         };
-        Responsive<IReadOnlyList<GridTrack>> columns = Responsive.From(
-            oneCol,
-            (Breakpoint.Md, twoCol),
-            (Breakpoint.Lg, fourCol)
-        );
         return new DocSample(() =>
             Grid.Create(
-                columns,
+                Breakpoints.PickRef(oneCol, md: twoCol, lg: fourCol),
                 SpacingScale.Xs,
                 k => {
                     k.Add(SampleChip("1"));

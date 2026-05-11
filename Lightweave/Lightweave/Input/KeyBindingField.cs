@@ -33,6 +33,9 @@ public static class KeyBindingField {
         bool disabled = false,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -40,6 +43,7 @@ public static class KeyBindingField {
         string recordingKey = file + "#kbf_recording" + keySuffix;
 
         LightweaveNode node = NodeBuilder.New("KeyBindingField", line, file);
+        node.ApplyStyling("key-binding-field", style, classes, id);
         node.PreferredHeight = new Rem(1.75f).ToPixels();
 
         node.Paint = (rect, paintChildren) => {

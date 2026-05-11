@@ -26,6 +26,12 @@ public static class HotkeyBadge {
         string key,
         [DocParam("Badge size. Small (~1.25rem) for inline hints, Medium (~1.6rem) for prominent rows.")]
         HotkeyBadgeSize size = HotkeyBadgeSize.Small,
+        [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
+        Style? style = null,
+        [DocParam("Additional class names merged after the base 'hotkey-badge' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
+        string[]? classes = null,
+        [DocParam("Stable id for state-style lookup.", TypeOverride = "string?", DefaultOverride = "null")]
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -36,6 +42,7 @@ public static class HotkeyBadge {
         float horizontalPadPx = new Rem(0.35f).ToPixels();
 
         LightweaveNode node = NodeBuilder.New($"HotkeyBadge:{label}", line, file);
+        node.ApplyStyling("hotkey-badge", style, classes, id);
         node.PreferredHeight = heightRem.ToPixels();
 
         node.Measure = _ => heightRem.ToPixels();
@@ -46,11 +53,18 @@ public static class HotkeyBadge {
             }
 
             Theme.Theme theme = RenderContext.Current.Theme;
-            int pixelSize = Mathf.RoundToInt(fontRem.ToFontPx());
-            Font font = theme.GetFont(FontRole.Mono);
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Normal);
-            style.alignment = TextAnchor.MiddleCenter;
-            float labelWidth = string.IsNullOrEmpty(label) ? 0f : style.CalcSize(new GUIContent(label)).x;
+            Style s = node.GetResolvedStyle();
+            FontRef? fr = s.FontFamily;
+            Font font = fr switch {
+                FontRef.Literal lit => lit.Value,
+                FontRef.Role role => theme.GetFont(role.RoleValue),
+                _ => theme.GetFont(FontRole.Mono),
+            };
+            Rem resolvedFontSize = s.FontSize ?? fontRem;
+            int pixelSize = Mathf.RoundToInt(resolvedFontSize.ToFontPx());
+            GUIStyle gs = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Normal);
+            gs.alignment = TextAnchor.MiddleCenter;
+            float labelWidth = string.IsNullOrEmpty(label) ? 0f : gs.CalcSize(new GUIContent(label)).x;
             float capWidth = Mathf.Max(minWidthPx, labelWidth + horizontalPadPx * 2f);
             float capHeight = heightRem.ToPixels();
 
@@ -69,9 +83,15 @@ public static class HotkeyBadge {
                 return;
             }
 
+            ColorRef? cr = s.TextColor;
+            Color textColor = cr switch {
+                ColorRef.Literal lit => lit.Value,
+                ColorRef.Token tok => theme.GetColor(tok.Slot),
+                _ => theme.GetColor(ThemeSlot.TextSecondary),
+            };
             Color saved = GUI.color;
-            GUI.color = theme.GetColor(ThemeSlot.TextSecondary);
-            GUI.Label(capRect, label, style);
+            GUI.color = textColor;
+            GUI.Label(capRect, label, gs);
             GUI.color = saved;
         };
 

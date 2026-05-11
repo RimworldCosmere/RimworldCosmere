@@ -42,10 +42,14 @@ public static class Accordion {
         Action<string> onToggle,
         [DocParam("Single-open or multi-open behavior.")]
         AccordionMode mode = AccordionMode.Single,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Accordion:{mode}", line, file);
+        node.ApplyStyling("accordion", style, classes, id);
 
         for (int i = 0; i < items.Count; i++) {
             node.Children.Add(items[i].Content);
@@ -226,24 +230,18 @@ public static class Accordion {
     private static List<AccordionItem> BuildSampleItems() {
         LightweaveNode overviewBody = Text.Create(
             (string)"CL_Playground_accordion_Body_Overview".Translate(),
-            FontRole.Body,
-            new Rem(0.875f),
-            ThemeSlot.TextPrimary,
-            wrap: true
+            wrap: true,
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
         );
         LightweaveNode stormlightBody = Text.Create(
             (string)"CL_Playground_accordion_Body_Stormlight".Translate(),
-            FontRole.Body,
-            new Rem(0.875f),
-            ThemeSlot.TextPrimary,
-            wrap: true
+            wrap: true,
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
         );
         LightweaveNode sprenBody = Text.Create(
             (string)"CL_Playground_accordion_Body_Spren".Translate(),
-            FontRole.Body,
-            new Rem(0.875f),
-            ThemeSlot.TextPrimary,
-            wrap: true
+            wrap: true,
+            style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
         );
 
         return new List<AccordionItem> {

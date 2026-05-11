@@ -39,10 +39,14 @@ public static class Pill {
         float paddingRem = 0.7f,
         [DocParam("Icon size in rems (when leading is provided).")]
         float iconRem = 1.1f,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Pill:{variant}", line, file);
+        node.ApplyStyling("pill", style, classes, id);
         node.PreferredHeight = new Rem(heightRem).ToPixels();
         if (leading != null) {
             node.Children.Add(leading);

@@ -32,10 +32,14 @@ public static class Badge {
         Action? onClick = null,
         [DocParam("Click handler scoped to the trailing glyph hit area.")]
         Action? onTrailingClick = null,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"Badge:{variant}", line, file);
+        node.ApplyStyling("badge", style, classes, id);
         node.PreferredHeight = new Rem(1.25f).ToPixels();
 
         if (leading != null) {

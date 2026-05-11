@@ -33,33 +33,56 @@ public static class KeyValueTable {
         ColorRef? labelColor = null,
         [DocParam("Vertical mode only: fixed width of the label column in rems.")]
         float labelColumnRem = 6f,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         ColorRef resolvedLabel = labelColor ?? (ColorRef)ThemeSlot.MetadataLabel;
+        string[]? mergedClasses = StyleExtensions.PrependClass("key-value-table", classes);
 
         if (orientation == KeyValueOrientation.Horizontal) {
-            return HStack.Create(SpacingScale.Lg, h => {
-                for (int i = 0; i < rows.Count; i++) {
-                    KeyValueRow row = rows[i];
-                    h.AddFlex(BuildHorizontalCell(row.Label, row.Value, resolvedLabel));
-                }
-            }, line, file);
+            return HStack.Create(
+                gap: SpacingScale.Lg,
+                children: h => {
+                    for (int i = 0; i < rows.Count; i++) {
+                        KeyValueRow row = rows[i];
+                        h.AddFlex(BuildHorizontalCell(row.Label, row.Value, resolvedLabel));
+                    }
+                },
+                style: style,
+                classes: mergedClasses,
+                id: id,
+                line: line,
+                file: file
+            );
         }
 
-        return Stack.Create(SpacingScale.Xxs, s => {
-            for (int i = 0; i < rows.Count; i++) {
-                KeyValueRow row = rows[i];
-                s.Add(BuildVerticalRow(row.Label, row.Value, resolvedLabel, labelColumnRem));
-            }
-        }, line, file);
+        return Stack.Create(
+            gap: SpacingScale.Xxs,
+            children: s => {
+                for (int i = 0; i < rows.Count; i++) {
+                    KeyValueRow row = rows[i];
+                    s.Add(BuildVerticalRow(row.Label, row.Value, resolvedLabel, labelColumnRem));
+                }
+            },
+            style: style,
+            classes: mergedClasses,
+            id: id,
+            line: line,
+            file: file
+        );
     }
 
     private static LightweaveNode BuildHorizontalCell(string label, string value, ColorRef labelColor) {
         return Stack.Create(SpacingScale.Xxs, s => {
-            s.Add(Eyebrow.Create(label, color: labelColor));
+            s.Add(Eyebrow.Create(label, style: new Style { TextColor = labelColor }));
             if (!string.IsNullOrEmpty(value)) {
-                s.Add(Text.Create(value, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary));
+                s.Add(Text.Create(
+                    value,
+                    style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextPrimary }
+                ));
             }
         });
     }
@@ -67,8 +90,11 @@ public static class KeyValueTable {
     private static LightweaveNode BuildVerticalRow(string label, string value, ColorRef labelColor, float labelColumnRem) {
         float labelPx = new Rem(labelColumnRem).ToPixels();
         return HStack.Create(SpacingScale.Md, h => {
-            h.Add(Eyebrow.Create(label, color: labelColor), labelPx);
-            h.AddFlex(Text.Create(value ?? string.Empty, FontRole.Body, new Rem(0.9375f), ThemeSlot.TextPrimary));
+            h.Add(Eyebrow.Create(label, style: new Style { TextColor = labelColor }), labelPx);
+            h.AddFlex(Text.Create(
+                value ?? string.Empty,
+                style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextPrimary }
+            ));
         });
     }
 

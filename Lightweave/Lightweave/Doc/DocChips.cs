@@ -11,7 +11,10 @@ namespace Cosmere.Lightweave.Doc;
 public static class DocChips {
     public static LightweaveNode Chip(string text, ThemeSlot bg, ThemeSlot fg) {
         return Box.Create(
-            c => c.Add(Text.Create(text, FontRole.Body, new Rem(0.8125f), fg, TextAlign.Center)),
+            c => c.Add(Text.Create(
+                text,
+                style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.8125f), TextColor = fg, TextAlign = TextAlign.Center }
+            )),
             style: new Style {
                 Padding = EdgeInsets.All(SpacingScale.Xs),
                 Background = BackgroundSpec.Of(bg),

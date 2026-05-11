@@ -35,7 +35,7 @@ public static class MainMenuRoot {
 
         LightweaveNode bottomBlock = Container.Create(
             Stack.Create(
-                SpacingScale.Md,
+                SpacingScale.Lg,
                 s => {
                     s.Add(StaggerIn.Wrap(ContinueCard.Create(save), 0.18f));
                     s.Add(StaggerIn.Wrap(MenuButtons.Create(anyMapFiles), 0.24f));

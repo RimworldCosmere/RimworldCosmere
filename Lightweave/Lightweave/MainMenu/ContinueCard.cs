@@ -179,11 +179,11 @@ public static class ContinueCard {
 
     private static LightweaveNode BuildTitleLine(SaveMetadata.LatestSave save) {
         LightweaveNode node = NodeBuilder.New("ContinueCard:Title");
-        node.PreferredHeight = new Rem(2.5f).ToPixels();
+        node.PreferredHeight = new Rem(3.25f).ToPixels();
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Font font = theme.GetFont(FontRole.Display);
-            int px = Mathf.RoundToInt(new Rem(2.25f).ToFontPx());
+            int px = Mathf.RoundToInt(new Rem(2.875f).ToFontPx());
             GUIStyle style = GuiStyleCache.GetOrCreate(font, px, FontStyle.Italic);
             style.alignment = TextAnchor.MiddleLeft;
             style.clipping = TextClipping.Clip;
@@ -255,7 +255,7 @@ public static class ContinueCard {
             Theme.Theme theme = RenderContext.Current.Theme;
 
             Font valueFont = theme.GetFont(FontRole.Mono);
-            int valuePx = Mathf.RoundToInt(new Rem(1.125f).ToFontPx());
+            int valuePx = Mathf.RoundToInt(new Rem(1.5f).ToFontPx());
             GUIStyle valueStyle = GuiStyleCache.GetOrCreate(valueFont, valuePx, FontStyle.Bold);
             valueStyle.alignment = TextAnchor.UpperLeft;
 
@@ -264,7 +264,7 @@ public static class ContinueCard {
             GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelPx, FontStyle.Normal);
             labelStyle.alignment = TextAnchor.UpperLeft;
 
-            float valueH = new Rem(1.25f).ToPixels();
+            float valueH = new Rem(1.625f).ToPixels();
             float gap = new Rem(0.125f).ToPixels();
 
             Color saved = GUI.color;
@@ -281,7 +281,7 @@ public static class ContinueCard {
         node.MeasureWidth = () => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Font valueFont = theme.GetFont(FontRole.Mono);
-            int valuePx = Mathf.RoundToInt(new Rem(1.125f).ToFontPx());
+            int valuePx = Mathf.RoundToInt(new Rem(1.5f).ToFontPx());
             GUIStyle valueStyle = GuiStyleCache.GetOrCreate(valueFont, valuePx, FontStyle.Bold);
             float valueW = valueStyle.CalcSize(new GUIContent(value)).x;
 

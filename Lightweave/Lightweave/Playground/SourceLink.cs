@@ -62,10 +62,13 @@ public static class SourceLink {
 
     public static LightweaveNode Create(
         string sourcePath,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        return LabelLink(
+        LightweaveNode node = LabelLink(
             "SourceLink:" + sourcePath,
             "CL_Playground_Panel_SourceLabel",
             "CL_Playground_Panel_SourceTooltip",
@@ -73,6 +76,8 @@ public static class SourceLink {
             line,
             file
         );
+        node.ApplyStyling("source-link", style, classes, id);
+        return node;
     }
 
     public static LightweaveNode GithubLink(

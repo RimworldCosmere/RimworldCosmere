@@ -20,6 +20,9 @@ public static class DockTile {
         Action onClick,
         bool disabled = false,
         bool chevron = false,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -34,12 +37,17 @@ public static class DockTile {
             }
         };
 
+        Style baseStyle = new Style { Width = Length.Stretch, Height = TileHeight };
+        Style merged = style.HasValue ? Style.Merge(baseStyle, style.Value) : baseStyle;
+
         return Button.Create(
             label: string.Empty,
             onClick: onClick,
             variant: ButtonVariant.Dock,
             disabled: disabled,
-            style: new Style { Width = Length.Stretch, Height = TileHeight },
+            style: merged,
+            classes: StyleExtensions.PrependClass("dock-tile", classes),
+            id: id,
             body: body,
             line: line,
             file: file

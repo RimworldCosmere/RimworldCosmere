@@ -16,6 +16,9 @@ public static class MoreButton {
     private static readonly Rem MenuWidth = new Rem(18f);
 
     public static LightweaveNode Create(
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -23,6 +26,7 @@ public static class MoreButton {
         StateHandle<Rect> anchor = UseState(Rect.zero, line + 1, file);
 
         LightweaveNode node = NodeBuilder.New("MoreButton", line, file);
+        node.ApplyStyling("more-button", style, classes, id);
         node.PreferredHeight = TileHeight.ToPixels();
 
         Action toggle = () => open.Set(!open.Value);

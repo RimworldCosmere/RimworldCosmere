@@ -28,6 +28,9 @@ public static class PlaygroundHeader {
     public static LightweaveNode Create(
         Hooks.Hooks.StateHandle<PlaygroundTheme> theme,
         Hooks.Hooks.StateHandle<bool> forceDisabled,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -42,18 +45,23 @@ public static class PlaygroundHeader {
             }
         );
 
+        Style baseStyle = new Style {
+            Padding = new EdgeInsets(
+                SpacingScale.Xs,
+                Bottom: SpacingScale.Xs,
+                Left: SpacingScale.Md,
+                Right: SpacingScale.Xl
+            ),
+            Background = BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
+            Radius = RadiusSpec.Top(RadiusScale.Xl),
+        };
+        Style merged = style.HasValue ? Style.Merge(baseStyle, style.Value) : baseStyle;
+
         LightweaveNode surface = Layout.Box.Create(
             children: s => s.Add(row),
-            style: new Style {
-                Padding = new EdgeInsets(
-                    SpacingScale.Xs,
-                    Bottom: SpacingScale.Xs,
-                    Left: SpacingScale.Md,
-                    Right: SpacingScale.Xl
-                ),
-                Background = BackgroundSpec.Of(ThemeSlot.SurfaceRaised),
-                Radius = RadiusSpec.Top(RadiusScale.Xl),
-            },
+            style: merged,
+            classes: StyleExtensions.PrependClass("playground-header", classes),
+            id: id,
             line: line,
             file: file
         );

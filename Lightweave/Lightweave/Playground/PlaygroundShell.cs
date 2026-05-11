@@ -13,10 +13,14 @@ public static class PlaygroundShell {
         LightweaveNode body,
         float headerHeight = 56f,
         float railWidth = 200f,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("PlaygroundShell", line, file);
+        node.ApplyStyling("playground-shell", style, classes, id);
         node.Children.Add(header);
         node.Children.Add(rail);
         node.Children.Add(body);

@@ -29,6 +29,9 @@ public static class PlaygroundRail {
     public static LightweaveNode Create(
         IReadOnlyList<PlaygroundCategory> categories,
         Hooks.Hooks.StateHandle<string> selectedPrimitiveId,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -41,6 +44,7 @@ public static class PlaygroundRail {
         Hooks.Hooks.RefHandle<string?> lastHoverQualifiedRef = Hooks.Hooks.UseRef<string?>(null, line + 2, scopeFile);
 
         LightweaveNode node = NodeBuilder.New("PlaygroundRail", line, file);
+        node.ApplyStyling("playground-rail", style, classes, id);
 
         node.Measure = _ => {
             float padY = SpacingScale.Sm.ToPixels();

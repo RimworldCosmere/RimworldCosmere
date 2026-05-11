@@ -143,12 +143,11 @@ public static class Tooltip {
         ));
     }
 
-    [DocVariant("CL_Playground_Tooltip_Variant_Wrapping")]
     public static DocSample DocsWrapping() {
         return new DocSample(() => Tooltip.Create(
             Button.Create("Long body", () => { }, ButtonVariant.Secondary),
-            "This tooltip body wraps onto multiple lines because it exceeds the maximum width that the maxWidth parameter constrains it to.",
-            maxWidth: new Rem(12f)
+            "This tooltip body wraps onto multiple lines because it exceeds the maximum width that the Style.MaxWidth constrains it to.",
+            style: new Style { MaxWidth = new Rem(12f) }
         ));
     }
 
@@ -205,7 +204,7 @@ public static class Tooltip {
     public static LightweaveNode Create(
         [DocParam("Element the tooltip is anchored to. Receives all layout space; tooltip overlays separately.")]
         LightweaveNode children,
-        [DocParam("Static hint text. Wrapped automatically up to maxWidth.")]
+        [DocParam("Static hint text. Wrapped automatically up to Style.MaxWidth (defaults to 20rem).")]
         string text,
         [DocParam("Anchor side and optional Start/End suffix. Suffix overrides align.")]
         TooltipSide side = TooltipSide.Bottom,
@@ -215,15 +214,13 @@ public static class Tooltip {
         float delayDuration = DefaultDelaySeconds,
         [DocParam("Pixel gap between trigger and tooltip on the anchor axis.")]
         float sideOffset = DefaultSideOffsetPx,
-        [DocParam("Maximum content width before wrapping. Default 20rem.")]
-        Rem? maxWidth = null,
         Style? style = null,
         string[]? classes = null,
         string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        Vector2 size = MeasureText(text, maxWidth);
+        Vector2 size = MeasureText(text, style?.MaxWidth);
         return CreateInternal(
             children,
             () => BuildTextNode(text),
@@ -253,8 +250,6 @@ public static class Tooltip {
         float delayDuration = DefaultDelaySeconds,
         [DocParam("Pixel gap between trigger and tooltip.")]
         float sideOffset = DefaultSideOffsetPx,
-        [DocParam("Maximum content width before wrapping.")]
-        Rem? maxWidth = null,
         [DocParam("Optional dynamic anchor rect for positioning. When set, hover still uses the children rect, but the tooltip is placed relative to this rect (e.g. a hovered point on a chart).")]
         Func<Rect>? anchor = null,
         Style? style = null,
@@ -264,7 +259,7 @@ public static class Tooltip {
         [CallerFilePath] string file = ""
     ) {
         Func<string> resolver = text;
-        Rem? widthCap = maxWidth;
+        Length? widthCap = style?.MaxWidth;
         return CreateInternal(
             children,
             () => BuildTextNode(resolver()),
@@ -448,13 +443,16 @@ public static class Tooltip {
         );
     }
 
-    private static Vector2 MeasureText(string text, Rem? maxWidth) {
+    private static Vector2 MeasureText(string text, Length? maxWidth) {
         if (string.IsNullOrEmpty(text)) {
             return new Vector2(new Rem(12f).ToPixels(), new Rem(1.75f).ToPixels());
         }
 
         float pad = new Rem(0.5f).ToPixels() * 2f;
-        float maxInner = (maxWidth?.ToPixels() ?? new Rem(20f).ToPixels()) - pad;
+        float maxOuter = maxWidth.HasValue && maxWidth.Value.Mode == Length.Kind.Rem
+            ? maxWidth.Value.Value * Spacing.BaseUnit
+            : new Rem(20f).ToPixels();
+        float maxInner = maxOuter - pad;
         GameFont saved = Text.Font;
         Text.Font = GameFont.Small;
         float h = Text.CalcHeight(text, maxInner);

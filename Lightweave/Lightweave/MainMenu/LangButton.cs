@@ -12,6 +12,9 @@ namespace Cosmere.Lightweave.MainMenu;
 
 public static class LangButton {
     public static LightweaveNode Create(
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -23,6 +26,7 @@ public static class LangButton {
         string label = active != null ? (active.FriendlyNameNative ?? active.folderName) : "English";
 
         LightweaveNode node = NodeBuilder.New("LangButton", line, file);
+        node.ApplyStyling("lang-button", style, classes, id);
         node.PreferredHeight = new Rem(2f).ToPixels();
 
         LightweaveNode trigger = FootLink.Create(

@@ -15,10 +15,14 @@ public static class FootLink {
         string label,
         Action onClick,
         bool indicateMenu = false,
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New($"FootLink:{label}", line, file);
+        node.ApplyStyling("foot-link", style, classes, id);
         node.PreferredHeight = new Rem(2f).ToPixels();
         node.MeasureWidth = () => MeasureWidth(label, indicateMenu);
 

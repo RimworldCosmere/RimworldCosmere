@@ -13,6 +13,9 @@ public static class FootMoreButton {
     private static readonly Rem MenuWidth = new Rem(18f);
 
     public static LightweaveNode Create(
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
@@ -20,6 +23,7 @@ public static class FootMoreButton {
         StateHandle<Rect> anchor = UseState(Rect.zero, line + 1, file);
 
         LightweaveNode node = NodeBuilder.New("FootMoreButton", line, file);
+        node.ApplyStyling("foot-more-button", style, classes, id);
         node.PreferredHeight = new Rem(2f).ToPixels();
 
         LightweaveNode trigger = FootLink.Create(

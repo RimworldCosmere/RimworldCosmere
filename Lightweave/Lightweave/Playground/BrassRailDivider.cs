@@ -12,10 +12,14 @@ public static class BrassRailDivider {
     private const float AccentAlpha = 0.6f;
 
     public static LightweaveNode Create(
+        Style? style = null,
+        string[]? classes = null,
+        string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
         LightweaveNode node = NodeBuilder.New("BrassRailDivider", line, file);
+        node.ApplyStyling("brass-rail-divider", style, classes, id);
         node.PreferredHeight = 8f;
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;

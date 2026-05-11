@@ -270,6 +270,7 @@ public static class ContinueCard {
 
     private static LightweaveNode BuildStatColumn(string value, string label, ThemeSlot valueColor) {
         LightweaveNode node = NodeBuilder.New($"StatColumn:{value}");
+        node.PreferredHeight = (new Rem(1.625f).ToPixels()) + (new Rem(0.125f).ToPixels()) + (new Rem(1.0f).ToPixels());
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
 
@@ -279,7 +280,7 @@ public static class ContinueCard {
             valueStyle.alignment = TextAnchor.UpperLeft;
 
             Font labelFont = theme.GetFont(FontRole.Mono);
-            int labelPx = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
+            int labelPx = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
             GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelPx, FontStyle.Normal);
             labelStyle.alignment = TextAnchor.UpperLeft;
 
@@ -307,7 +308,7 @@ public static class ContinueCard {
             float labelW = 0f;
             if (!string.IsNullOrEmpty(label)) {
                 Font labelFont = theme.GetFont(FontRole.Mono);
-                int labelPx = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
+                int labelPx = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
                 GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelPx, FontStyle.Normal);
                 labelW = labelStyle.CalcSize(new GUIContent(label)).x;
             }

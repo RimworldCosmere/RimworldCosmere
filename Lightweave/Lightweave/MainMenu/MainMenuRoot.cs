@@ -18,20 +18,18 @@ public static class MainMenuRoot {
                 s => {
                     s.Add(StaggerIn.Wrap(TitleHero.Create(), 0.06f));
                     if (expansions != null) {
-                        s.Add(StaggerIn.Wrap(BuildExpansionsBlock(expansions), 0.10f));
+                        s.Add(StaggerIn.Wrap(expansions, 0.10f));
                     }
                 }
             ),
-            new Rem(60f),
-            new EdgeInsets(Left: SpacingScale.Lg, Right: SpacingScale.Lg, Top: new Rem(0.625f))
+            padding: new EdgeInsets(Left: SpacingScale.Lg, Right: SpacingScale.Lg, Top: new Rem(0.625f))
         );
 
         LightweaveNode topBar = HStack.Create(
             SpacingScale.None,
             h => {
-                h.Add(StaggerIn.Wrap(MetadataTable.Create(save), 0f), new Rem(22f).ToPixels());
+                h.AddHug(StaggerIn.Wrap(MetadataTable.Create(save), 0f));
                 h.AddFlex(titleBlock);
-                h.Add(Spacer.Fixed(new Rem(16f)), new Rem(16f).ToPixels());
             }
         );
 
@@ -58,9 +56,5 @@ public static class MainMenuRoot {
                 root.Add(FootStrip.Create());
             }
         );
-    }
-
-    private static LightweaveNode BuildExpansionsBlock(LightweaveNode row) {
-        return row;
     }
 }

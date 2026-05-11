@@ -26,7 +26,7 @@ public static class ExpansionRow {
             return null;
         }
 
-        return Box.Create(
+        LightweaveNode rowBox = Box.Create(
             padding: new EdgeInsets(SpacingScale.Xs, SpacingScale.Md, SpacingScale.Xs, SpacingScale.Md),
             background: BackgroundSpec.Blur(new Color(15f / 255f, 12f / 255f, 8f / 255f, 0.78f)),
             border: BorderSpec.All(new Rem(0.0625f), ThemeSlot.AccentMuted),
@@ -38,6 +38,15 @@ public static class ExpansionRow {
                     h.AddHug(BuildItem(visible[i]));
                 }
             }))
+        );
+
+        return HStack.Create(
+            SpacingScale.None,
+            h => {
+                h.AddFlex(Spacer.Flex());
+                h.AddHug(rowBox);
+                h.AddFlex(Spacer.Flex());
+            }
         );
     }
 

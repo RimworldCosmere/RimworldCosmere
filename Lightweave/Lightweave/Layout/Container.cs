@@ -43,6 +43,19 @@ public static class Container {
             return Mathf.Max(0f, outer - leftPx - rightPx);
         }
 
+        node.MeasureWidth = () => {
+            Breakpoint bp = RenderContext.Current.Breakpoint;
+            float maxWidthPx = maxWidth.Resolve(bp).ToPixels();
+            EdgeInsets pad = padding.Resolve(bp);
+            (float leftPx, float topPx, float rightPx, float bottomPx) = pad.Resolve(RenderContext.Current.Direction);
+            if (maxWidthPx > 0f) {
+                return maxWidthPx;
+            }
+
+            float childW = child.MeasureWidth?.Invoke() ?? 0f;
+            return childW + leftPx + rightPx;
+        };
+
         node.Measure = availableWidth => {
             Breakpoint bp = RenderContext.Current.Breakpoint;
             EdgeInsets pad = padding.Resolve(bp);

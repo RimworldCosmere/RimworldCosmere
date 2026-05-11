@@ -24,6 +24,7 @@ public static class StaggerIn {
         LightweaveNode node = NodeBuilder.New("StaggerIn", line, file);
         node.Children.Add(child);
         node.Measure = available => child.Measure?.Invoke(available) ?? child.PreferredHeight ?? 0f;
+        node.MeasureWidth = () => child.MeasureWidth?.Invoke() ?? 0f;
 
         node.Paint = (rect, paintChildren) => {
             Hooks.Hooks.RefHandle<float> startTime = Hooks.Hooks.UseRef(-1f, line, file);

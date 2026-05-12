@@ -1,3 +1,4 @@
+using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
@@ -17,7 +18,7 @@ public static class AccentStripe {
             Color accent = RenderContext.Current.Theme.GetColor(ThemeSlot.SurfaceAccent);
             Color prev = GUI.color;
             GUI.color = new Color(accent.r, accent.g, accent.b, 0.85f);
-            GUI.DrawTexture(rect, BaseContent.WhiteTex);
+            GUI.DrawTexture(RectSnap.Snap(rect), BaseContent.WhiteTex);
             GUI.color = prev;
         };
         return node;
@@ -57,9 +58,9 @@ public static class LightweaveWordmark {
             Rect markRect = new Rect(startX + poweredSize.x + gap, y, markSize.x, rect.height);
 
             GUI.color = new Color(muted.r, muted.g, muted.b, muted.a * 0.85f);
-            Widgets.Label(poweredRect, powered);
+            Widgets.Label(RectSnap.SnapText(poweredRect), powered);
             GUI.color = new Color(accent.r, accent.g, accent.b, 0.85f);
-            Widgets.Label(markRect, mark);
+            Widgets.Label(RectSnap.SnapText(markRect), mark);
 
             Text.Font = prevFont;
             Text.Anchor = prevAnchor;

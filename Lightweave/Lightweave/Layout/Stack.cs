@@ -84,6 +84,28 @@ public static class Stack {
             }
         }
 
+        (float left, float top, float right, float bottom) ResolvePaddingPixels() {
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? EdgeInsets.Zero;
+            return pad.Resolve(RenderContext.Current.Direction);
+        }
+
+        node.MeasureWidth = () => {
+            (float left, _, float right, _) = ResolvePaddingPixels();
+            float max = 0f;
+            for (int i = 0; i < count; i++) {
+                LightweaveNode child = builder.Items[i].node;
+                if (!child.IsInFlow()) {
+                    continue;
+                }
+                float w = child.MeasureWidth?.Invoke() ?? 0f;
+                if (w > max) {
+                    max = w;
+                }
+            }
+            return max + left + right;
+        };
+
         bool anyFlex = false;
         for (int i = 0; i < count; i++) {
             if (builder.Items[i].mode == StackItemMode.Flex) {

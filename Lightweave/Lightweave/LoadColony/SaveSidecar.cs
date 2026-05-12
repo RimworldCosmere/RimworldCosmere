@@ -81,7 +81,6 @@ public static class SaveSidecar {
         float threatScale = Find.Storyteller?.difficulty?.threatScale ?? 1f;
         string colonyName = Find.World?.info?.name ?? game?.World?.info?.name ?? string.Empty;
         bool permadeath = game?.Info?.permadeathMode ?? false;
-        string screenshot = CaptureColonyScreenshotBase64(map);
 
         return new SaveSidecarData {
             Version = 1,
@@ -99,73 +98,18 @@ public static class SaveSidecar {
             ActiveThreat = string.Empty,
             Permadeath = permadeath,
             CapturedAtUtc = DateTime.UtcNow,
-            ScreenshotBase64 = screenshot,
+            ScreenshotBase64 = string.Empty,
         };
     }
 
 
-    private static string CaptureColonyScreenshotBase64(Map? map) {
-        if (map == null) {
-            return string.Empty;
+    public static void UpdateScreenshot(string saveFilePath, string base64) {
+        SaveSidecarData? existing = Read(saveFilePath);
+        if (existing == null) {
+            return;
         }
-        Camera? src = Find.Camera;
-        if (src == null) {
-            return string.Empty;
-        }
-
-        int outW = 480;
-        int outH = 270;
-        int mapW = map.Size.x;
-        int mapZ = map.Size.z;
-
-        GameObject? tempGo = null;
-        RenderTexture? rt = null;
-        Texture2D? tex = null;
-        RenderTexture? prevActive = null;
-        try {
-            rt = RenderTexture.GetTemporary(outW, outH, 16);
-            tex = new Texture2D(outW, outH, TextureFormat.RGB24, false);
-            tempGo = new GameObject("LightweaveSidecarCam");
-            Camera tempCam = tempGo.AddComponent<Camera>();
-            tempCam.CopyFrom(src);
-            tempCam.targetTexture = rt;
-            tempCam.orthographic = true;
-            float halfMax = Mathf.Max(mapW, mapZ) * 0.5f;
-            float aspect = (float)outW / outH;
-            float mapAspect = (float)mapW / mapZ;
-            tempCam.orthographicSize = mapAspect >= aspect ? halfMax / aspect : halfMax;
-            Vector3 srcPos = src.transform.position;
-            tempCam.transform.position = new Vector3(mapW * 0.5f, srcPos.y, mapZ * 0.5f);
-            tempCam.transform.rotation = src.transform.rotation;
-            tempCam.clearFlags = CameraClearFlags.SolidColor;
-            tempCam.Render();
-
-            prevActive = RenderTexture.active;
-            RenderTexture.active = rt;
-            tex.ReadPixels(new Rect(0, 0, outW, outH), 0, 0);
-            tex.Apply();
-
-            byte[] png = tex.EncodeToPNG();
-            return System.Convert.ToBase64String(png);
-        }
-        catch (Exception ex) {
-            LightweaveLog.Warning("Failed to capture colony screenshot: " + ex.Message);
-            return string.Empty;
-        }
-        finally {
-            if (prevActive != null) {
-                RenderTexture.active = prevActive;
-            }
-            if (tempGo != null) {
-                UnityEngine.Object.Destroy(tempGo);
-            }
-            if (rt != null) {
-                RenderTexture.ReleaseTemporary(rt);
-            }
-            if (tex != null) {
-                UnityEngine.Object.Destroy(tex);
-            }
-        }
+        existing.ScreenshotBase64 = base64;
+        Write(saveFilePath, existing);
     }
 
     private static int CountColonyAnimals(Map map) {

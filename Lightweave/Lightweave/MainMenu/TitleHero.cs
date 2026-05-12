@@ -46,7 +46,7 @@ public static class TitleHero {
             );
             Color saved = GUI.color;
             GUI.color = Color.white;
-            GUI.DrawTexture(target, TitleTex, ScaleMode.ScaleToFit);
+            GUI.DrawTexture(RectSnap.Snap(target), TitleTex, ScaleMode.ScaleToFit);
             GUI.color = saved;
         };
         return logo;

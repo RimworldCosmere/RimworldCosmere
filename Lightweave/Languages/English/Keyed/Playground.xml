@@ -54,10 +54,12 @@
     <CL_Playground_Navigation_Menu_Svg>SVG</CL_Playground_Navigation_Menu_Svg>
     <CL_Playground_Navigation_Menu_ExportPng>Export as PNG</CL_Playground_Navigation_Menu_ExportPng>
     <CL_Playground_Navigation_Menu_ExportSvg>Export as SVG</CL_Playground_Navigation_Menu_ExportSvg>
-    <CL_Playground_Navigation_MenuRow_Title>Menu row</CL_Playground_Navigation_MenuRow_Title>
-    <CL_Playground_Navigation_MenuRow_Default>Open settings</CL_Playground_Navigation_MenuRow_Default>
-    <CL_Playground_Navigation_MenuRow_Danger>Quit to desktop</CL_Playground_Navigation_MenuRow_Danger>
-    <CL_Playground_Navigation_MenuRow_Disabled>Coming soon</CL_Playground_Navigation_MenuRow_Disabled>
+    <CL_Playground_Navigation_MenuItem_Title>Menu item</CL_Playground_Navigation_MenuItem_Title>
+    <CL_Playground_Navigation_MenuItem_Default>Open settings</CL_Playground_Navigation_MenuItem_Default>
+    <CL_Playground_Navigation_MenuItem_Danger>Quit to desktop</CL_Playground_Navigation_MenuItem_Danger>
+    <CL_Playground_Navigation_MenuItem_Disabled>Coming soon</CL_Playground_Navigation_MenuItem_Disabled>
+    <CL_Playground_Navigation_MenuDivider_Title>Menu divider</CL_Playground_Navigation_MenuDivider_Title>
+    <CL_Playground_Navigation_MenuDivider_Default>Divider between groups</CL_Playground_Navigation_MenuDivider_Default>
     <CL_Playground_Controls_Dropdown_Title>Dropdown</CL_Playground_Controls_Dropdown_Title>
     <CL_Playground_Feedback_Title>Feedback</CL_Playground_Feedback_Title>
     <CL_Playground_Feedback_Badge_Neutral>Neutral</CL_Playground_Feedback_Badge_Neutral>
@@ -273,7 +275,7 @@
     <CL_Playground_block-more-button_What>Sixth dock tile that opens the MorePopover. Tracks its rect via Hooks state to anchor the popover.</CL_Playground_block-more-button_What>
     <CL_Playground_block-more-button_When>Use at the right end of the dock row alongside MenuButtons.</CL_Playground_block-more-button_When>
     <CL_Playground_block-more-popover_Title>MorePopover</CL_Playground_block-more-popover_Title>
-    <CL_Playground_block-more-popover_What>Right-anchored popover panel of secondary main-menu actions: Credits, Translation report, Quit. Composes MenuRow primitives - Quit uses Danger styling.</CL_Playground_block-more-popover_What>
+    <CL_Playground_block-more-popover_What>Right-anchored popover panel of secondary main-menu actions: Credits, Translation report, Quit. Composes MenuItem primitives - Quit uses Danger styling.</CL_Playground_block-more-popover_What>
     <CL_Playground_block-more-popover_When>Use as the popover content for MoreButton.</CL_Playground_block-more-popover_When>
     <CL_Playground_block-accent-stripe_Title>AccentStripe</CL_Playground_block-accent-stripe_Title>
     <CL_Playground_block-accent-stripe_What>Slim accent-colored stripe used as a vertical or horizontal divider with shard branding. Pulls accent color from the active theme.</CL_Playground_block-accent-stripe_What>
@@ -387,6 +389,14 @@
     <CL_Playground_box_What>Low-level container with padding, background, border, and radius.</CL_Playground_box_What>
     <CL_Playground_box_When>Use when you need a styled rectangle. Reach for Card when you want the standard raised surface.</CL_Playground_box_When>
 
+    <CL_Playground_vignette_Title>Vignette</CL_Playground_vignette_Title>
+    <CL_Playground_vignette_What>Decorative overlay that darkens corners or edges to focus the eye.</CL_Playground_vignette_What>
+    <CL_Playground_vignette_When>Frame a hero panel, dim the edges of a card, or fade content along one edge.</CL_Playground_vignette_When>
+    <CL_Playground_Vignette_Radial>Radial</CL_Playground_Vignette_Radial>
+    <CL_Playground_Vignette_Frame>Frame</CL_Playground_Vignette_Frame>
+    <CL_Playground_Vignette_LinearBottom>Linear (bottom)</CL_Playground_Vignette_LinearBottom>
+    <CL_Playground_Vignette_LinearTop>Linear (top)</CL_Playground_Vignette_LinearTop>
+
     <CL_Playground_text_Title>Text</CL_Playground_text_Title>
     <CL_Playground_text_What>The typographic atom. Renders a string with the chosen font, size, color, and weight.</CL_Playground_text_What>
     <CL_Playground_text_When>Use when you need control over font and color. Prefer Heading, Label, or Caption when they fit.</CL_Playground_text_When>
@@ -487,9 +497,12 @@
     <CL_Playground_menu_Title>Menu</CL_Playground_menu_Title>
     <CL_Playground_menu_What>Popover list of actions. Supports icons, disabled items, and nested submenus.</CL_Playground_menu_What>
     <CL_Playground_menu_When>Use for four or more peer actions behind a trigger. Inline buttons win for two or three.</CL_Playground_menu_When>
-    <CL_Playground_menu-row_Title>MenuRow</CL_Playground_menu-row_Title>
-    <CL_Playground_menu-row_What>Standalone clickable menu-style row. Hover background, optional leading icon, optional danger styling for destructive actions.</CL_Playground_menu-row_What>
-    <CL_Playground_menu-row_When>Use when composing a custom popover, drawer panel, or sidebar that needs menu-row visuals without the full Menu widget. Reach for `Menu.Create` when you want keyboard nav and submenus.</CL_Playground_menu-row_When>
+    <CL_Playground_menu-item_Title>MenuItem</CL_Playground_menu-item_Title>
+    <CL_Playground_menu-item_What>Standalone clickable menu-style row. Hover background, optional leading icon, optional danger styling for destructive actions.</CL_Playground_menu-item_What>
+    <CL_Playground_menu-item_When>Use when composing a custom popover, drawer panel, or sidebar that needs menu-item visuals without the full Menu widget. Reach for `Menu.Create` when you want keyboard nav and submenus.</CL_Playground_menu-item_When>
+    <CL_Playground_menu-divider_Title>MenuDivider</CL_Playground_menu-divider_Title>
+    <CL_Playground_menu-divider_What>Standalone horizontal divider for use inside custom menu-style stacks. Pairs with MenuItem.</CL_Playground_menu-divider_What>
+    <CL_Playground_menu-divider_When>Use between groups of related MenuItems when composing a custom popover, drawer, or sidebar.</CL_Playground_menu-divider_When>
     <CL_Playground_contextmenu_Title>ContextMenu</CL_Playground_contextmenu_Title>
     <CL_Playground_contextmenu_What>Wraps a region so right-click opens a menu at the mouse position.</CL_Playground_contextmenu_What>
     <CL_Playground_contextmenu_When>Use for per-item actions on a list row. Do not hide the primary action behind right-click.</CL_Playground_contextmenu_When>
@@ -569,14 +582,19 @@
     <CL_Playground_Label_Large>Large</CL_Playground_Label_Large>
     <CL_Playground_Label_Raised>Raised</CL_Playground_Label_Raised>
     <CL_Playground_Label_Sunken>Sunken</CL_Playground_Label_Sunken>
+    <CL_Playground_Label_Transparent>Transparent</CL_Playground_Label_Transparent>
     <CL_Playground_Label_Primary>Primary</CL_Playground_Label_Primary>
     <CL_Playground_Label_Accent>Accent</CL_Playground_Label_Accent>
     <CL_Playground_Label_Secondary>Secondary</CL_Playground_Label_Secondary>
     <CL_Playground_Label_Ghost>Ghost</CL_Playground_Label_Ghost>
     <CL_Playground_Label_Danger>Danger</CL_Playground_Label_Danger>
+    <CL_Playground_Label_Frosted>Frosted</CL_Playground_Label_Frosted>
     <CL_Playground_Feedback_ProgressBar_Animated>Animated</CL_Playground_Feedback_ProgressBar_Animated>
     <CL_Playground_Label_Tight>Tight</CL_Playground_Label_Tight>
     <CL_Playground_Label_Loose>Loose</CL_Playground_Label_Loose>
+    <CL_Playground_Label_Gap>Gap</CL_Playground_Label_Gap>
+    <CL_Playground_Label_Align>Align</CL_Playground_Label_Align>
+    <CL_Playground_Label_Justify>Justify</CL_Playground_Label_Justify>
     <CL_Playground_Label_Horizontal>Horizontal</CL_Playground_Label_Horizontal>
     <CL_Playground_Label_Vertical>Vertical</CL_Playground_Label_Vertical>
     <CL_Playground_Label_Empty>Empty</CL_Playground_Label_Empty>
@@ -594,6 +612,25 @@
     <CL_Playground_card_Sectioned_Title>Bond with a spren</CL_Playground_card_Sectioned_Title>
     <CL_Playground_card_Sectioned_Desc>Confirm the oath. A bond once spoken cannot be unsaid.</CL_Playground_card_Sectioned_Desc>
     <CL_Playground_card_Sectioned_Body>Speak the Words. The bond settles.</CL_Playground_card_Sectioned_Body>
+    <CL_Playground_card_Pawn_Name>Kaladin</CL_Playground_card_Pawn_Name>
+    <CL_Playground_card_Pawn_Role>Windrunner · Third Ideal</CL_Playground_card_Pawn_Role>
+    <CL_Playground_card_Pawn_StatHealth>Health</CL_Playground_card_Pawn_StatHealth>
+    <CL_Playground_card_Pawn_StatHealthValue>58 / 60</CL_Playground_card_Pawn_StatHealthValue>
+    <CL_Playground_card_Pawn_StatMood>Mood</CL_Playground_card_Pawn_StatMood>
+    <CL_Playground_card_Pawn_StatMoodValue>Driven</CL_Playground_card_Pawn_StatMoodValue>
+    <CL_Playground_card_Pawn_StatLight>Stormlight</CL_Playground_card_Pawn_StatLight>
+    <CL_Playground_card_Pawn_StatLightValue>124 spheres</CL_Playground_card_Pawn_StatLightValue>
+    <CL_Playground_card_Pawn_Note>Honor before all. Strength before weakness. Journey before destination.</CL_Playground_card_Pawn_Note>
+    <CL_Playground_card_Pawn_Action_Dismiss>Stand down</CL_Playground_card_Pawn_Action_Dismiss>
+    <CL_Playground_card_Pawn_Action_Promote>Speak the oath</CL_Playground_card_Pawn_Action_Promote>
+    <CL_Playground_card_Pawn_BondedSpren>Sylphrena</CL_Playground_card_Pawn_BondedSpren>
+    <CL_Playground_card_Tight_Title>Mistborn</CL_Playground_card_Tight_Title>
+    <CL_Playground_card_Tight_Pill>Active</CL_Playground_card_Tight_Pill>
+    <CL_Playground_card_Tight_Note>Sixteen Allomantic metals. All accessible.</CL_Playground_card_Tight_Note>
+    <CL_Playground_card_Loose_Title>Speak a new oath?</CL_Playground_card_Loose_Title>
+    <CL_Playground_card_Loose_Desc>Bonds tighten with each Ideal. There is no return from the next.</CL_Playground_card_Loose_Desc>
+    <CL_Playground_card_Loose_Confirm>Speak it</CL_Playground_card_Loose_Confirm>
+    <CL_Playground_card_Loose_Cancel>Hold the silence</CL_Playground_card_Loose_Cancel>
     <CL_Playground_Label_Input>Input</CL_Playground_Label_Input>
     <CL_Playground_Label_Button>Button</CL_Playground_Label_Button>
     <CL_Playground_Label_True>True</CL_Playground_Label_True>
@@ -788,6 +825,12 @@
     <CL_Playground_Hook_UseBreakpoint_AdaptiveLarge>Wide window. Show two columns of detail.</CL_Playground_Hook_UseBreakpoint_AdaptiveLarge>
     <CL_Playground_Hook_UseBreakpoint_AdaptiveMedium>Medium window. Single column with secondary actions.</CL_Playground_Hook_UseBreakpoint_AdaptiveMedium>
     <CL_Playground_Hook_UseBreakpoint_AdaptiveCompact>Compact window. Hide secondary actions.</CL_Playground_Hook_UseBreakpoint_AdaptiveCompact>
+    <CL_Playground_Hook_UseBreakpoint_Pick>Pick (struct)</CL_Playground_Hook_UseBreakpoint_Pick>
+    <CL_Playground_Hook_UseBreakpoint_PickLabel>Type scales with viewport width.</CL_Playground_Hook_UseBreakpoint_PickLabel>
+    <CL_Playground_Hook_UseBreakpoint_PickRef>PickRef (class)</CL_Playground_Hook_UseBreakpoint_PickRef>
+    <CL_Playground_Hook_UseBreakpoint_PickRefCompact>One column. Stack everything.</CL_Playground_Hook_UseBreakpoint_PickRefCompact>
+    <CL_Playground_Hook_UseBreakpoint_PickRefMedium>Two columns. Primary content beside the rail.</CL_Playground_Hook_UseBreakpoint_PickRefMedium>
+    <CL_Playground_Hook_UseBreakpoint_PickRefLarge>Three columns. Rail, primary, and a detail pane.</CL_Playground_Hook_UseBreakpoint_PickRefLarge>
 
     <CL_Playground_rem_Title>Rem</CL_Playground_rem_Title>
     <CL_Playground_rem_What>Sizing primitive used everywhere a length is needed. 1 Rem resolves to Spacing.BaseUnit pixels for layout (padding, gaps, borders) and Spacing.FontBaseUnit pixels for type. Adjusting either constant rescales the whole system uniformly.</CL_Playground_rem_What>

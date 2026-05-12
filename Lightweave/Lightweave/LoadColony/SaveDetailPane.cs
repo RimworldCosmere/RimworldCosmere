@@ -90,8 +90,7 @@ public static class SaveDetailPane {
         return Stack.Create(SpacingScale.Sm, s => {
             s.Add(Eyebrow.Create(
                 "CL_LoadColony_Conditions".Translate(),
-                style: new Style { TextColor = ThemeSlot.TextMuted, TextAlign = TextAlign.Start },
-                letterSpacing: 2.5f
+                style: new Style { TextColor = ThemeSlot.TextMuted, TextAlign = TextAlign.Start, LetterSpacing = Tracking.Widest }
             ));
             s.Add(HStack.Create(SpacingScale.Sm, h => {
                 if (status.Sidecar == null) {
@@ -443,7 +442,7 @@ public static class SaveDetailPane {
 
         public override void DoWindowContents(Rect inRect) {
             Verse.Text.Font = GameFont.Small;
-            Widgets.Label(new Rect(inRect.x, inRect.y, inRect.width, 24f), "CL_LoadColony_Rename".Translate());
+            Widgets.Label(RectSnap.SnapText(new Rect(inRect.x, inRect.y, inRect.width, 24f)), "CL_LoadColony_Rename".Translate());
             newName = Widgets.TextField(new Rect(inRect.x, inRect.y + 32f, inRect.width, 28f), newName ?? string.Empty);
             if (Widgets.ButtonText(new Rect(inRect.xMax - 120f, inRect.yMax - 32f, 120f, 28f), "OK")) {
                 Apply();

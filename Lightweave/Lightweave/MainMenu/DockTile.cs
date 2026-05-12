@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using Cosmere.Lightweave.Hooks;
 using Cosmere.Lightweave.Input;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
@@ -12,7 +13,7 @@ using Verse;
 namespace Cosmere.Lightweave.MainMenu;
 
 public static class DockTile {
-    private static readonly Rem TileHeight = new Rem(4.75f);
+    private static readonly Rem TileHeight = new Rem(5.6875f);
 
     public static LightweaveNode Create(
         string label,
@@ -20,17 +21,29 @@ public static class DockTile {
         Action onClick,
         bool disabled = false,
         bool chevron = false,
+        bool expanded = false,
         Style? style = null,
         string[]? classes = null,
         string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
+        if (!disabled && !string.IsNullOrEmpty(hotkey) && TryParseHotkey(hotkey, out KeyCode code)) {
+            UseHotkey.Use(code, onClick);
+        }
+
+        Hooks.Hooks.RefHandle<float> flipRatio = Hooks.Hooks.UseRef<float>(expanded ? 1f : 0f, line, file + "#dock-flip");
+
         LightweaveNode body = NodeBuilder.New($"DockTile:body:{label}", line, file);
         body.Paint = (rect, _) => {
+            if (chevron) {
+                float target = expanded ? 1f : 0f;
+                float dt = Time.unscaledDeltaTime;
+                flipRatio.Current = Mathf.MoveTowards(flipRatio.Current, target, dt / 0.16f);
+            }
             DrawLabel(rect, label, disabled);
             if (chevron) {
-                DrawChevron(rect, disabled);
+                DrawChevron(rect, disabled, flipRatio.Current);
             }
             else {
                 DrawHotkeyHint(rect, hotkey, disabled);
@@ -43,7 +56,7 @@ public static class DockTile {
         return Button.Create(
             label: string.Empty,
             onClick: onClick,
-            variant: ButtonVariant.Dock,
+            variant: ButtonVariant.Frosted,
             disabled: disabled,
             style: merged,
             classes: StyleExtensions.PrependClass("dock-tile", classes),
@@ -52,6 +65,22 @@ public static class DockTile {
             line: line,
             file: file
         );
+    }
+
+    private static bool TryParseHotkey(string hotkey, out KeyCode code) {
+        if (hotkey.Length == 1) {
+            char c = char.ToUpperInvariant(hotkey[0]);
+            if (c >= 'A' && c <= 'Z') {
+                code = (KeyCode)((int)KeyCode.A + (c - 'A'));
+                return true;
+            }
+            if (c >= '0' && c <= '9') {
+                code = (KeyCode)((int)KeyCode.Alpha0 + (c - '0'));
+                return true;
+            }
+        }
+        code = KeyCode.None;
+        return false;
     }
 
     private static void DrawLabel(Rect tile, string label, bool disabled) {
@@ -63,7 +92,8 @@ public static class DockTile {
         Font font = theme.GetFont(FontRole.Body);
         int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
         GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Normal);
-        style.alignment = TextAnchor.MiddleCenter;
+        style.alignment = TextAnchor.MiddleLeft;
+        style.clipping = TextClipping.Overflow;
 
         string upper = (label ?? string.Empty).ToUpperInvariant();
         float labelH = new Rem(1.3f).ToPixels();
@@ -83,22 +113,26 @@ public static class DockTile {
                 : ThemeSlot.TextPrimary;
         GUI.color = theme.GetColor(fgSlot);
 
-        float trackedAdvance = pixelSize * 0.04f;
-        float totalW = 0f;
+        int trackedAdvance = Mathf.Max(1, Mathf.RoundToInt(pixelSize * 0.04f));
+        int[] charWidths = new int[upper.Length];
+        int totalW = 0;
         for (int i = 0; i < upper.Length; i++) {
             GUIContent ch = new GUIContent(upper[i].ToString());
-            totalW += style.CalcSize(ch).x;
-            if (i < upper.Length - 1) totalW += trackedAdvance;
+            charWidths[i] = Mathf.CeilToInt(style.CalcSize(ch).x);
+            totalW += charWidths[i];
+            if (i < upper.Length - 1) {
+                totalW += trackedAdvance;
+            }
         }
 
-        float startX = labelRect.x + (labelRect.width - totalW) * 0.5f;
-        float cursor = startX;
+        int startX = Mathf.FloorToInt(labelRect.x + (labelRect.width - totalW) * 0.5f);
+        int y = Mathf.FloorToInt(labelRect.y);
+        int h = Mathf.CeilToInt(labelRect.height);
+        int cursor = startX;
         for (int i = 0; i < upper.Length; i++) {
             string ch = upper[i].ToString();
-            GUIContent gcc = new GUIContent(ch);
-            float w = style.CalcSize(gcc).x;
-            GUI.Label(RectSnap.Snap(new Rect(cursor, labelRect.y, w, labelRect.height)), ch, style);
-            cursor += w + trackedAdvance;
+            GUI.Label(new Rect(cursor, y, charWidths[i], h), ch, style);
+            cursor += charWidths[i] + trackedAdvance;
         }
 
         GUI.color = saved;
@@ -115,20 +149,19 @@ public static class DockTile {
 
         Theme.Theme theme = RenderContext.Current.Theme;
         Font font = theme.GetFont(FontRole.Mono);
-        int pixelSize = Mathf.RoundToInt(new Rem(0.7f).ToFontPx());
+        int pixelSize = Mathf.RoundToInt(new Rem(0.9f).ToFontPx());
         GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Normal);
-        style.alignment = TextAnchor.MiddleCenter;
+        style.alignment = TextAnchor.MiddleLeft;
+        style.clipping = TextClipping.Overflow;
 
         string label = "[" + key.ToUpperInvariant() + "]";
         GUIContent gc = new GUIContent(label);
         float w = style.CalcSize(gc).x;
-        float h = new Rem(1.0f).ToPixels();
-        Rect hint = RectSnap.Snap(new Rect(
-            tile.x + (tile.width - w) * 0.5f,
-            tile.yMax - h - new Rem(0.4f).ToPixels(),
-            w,
-            h
-        ));
+        float h = new Rem(1.25f).ToPixels();
+
+        float x = tile.x + (tile.width - w) * 0.5f;
+        float y = tile.yMax - h - new Rem(0.4f).ToPixels();
+        Rect hint = RectSnap.SnapText(new Rect(x, y, w, h));
 
         Color saved = GUI.color;
         bool hovered = !disabled && tile.Contains(Event.current.mousePosition);
@@ -142,7 +175,9 @@ public static class DockTile {
         GUI.color = saved;
     }
 
-    private static void DrawChevron(Rect tile, bool disabled) {
+    
+
+    private static void DrawChevron(Rect tile, bool disabled, float flipRatio) {
         if (Event.current.type != EventType.Repaint) {
             return;
         }
@@ -156,13 +191,21 @@ public static class DockTile {
                 : ThemeSlot.TextSecondary;
         Color tint = theme.GetColor(fgSlot);
 
-        float armLen = new Rem(0.42f).ToPixels();
-        float gap = new Rem(0.32f).ToPixels();
-        float thickness = Mathf.Max(1f, new Rem(0.0875f).ToPixels());
+        float chevronSize = new Rem(1.0f).ToPixels();
         float cx = tile.x + tile.width * 0.5f;
-        float cy = tile.yMax - new Rem(0.85f).ToPixels();
-        DrawDiagonal(cx - gap, cy - thickness * 0.5f, cx, cy + armLen - thickness * 0.5f, thickness, tint);
-        DrawDiagonal(cx + gap, cy - thickness * 0.5f, cx, cy + armLen - thickness * 0.5f, thickness, tint);
+        float yTop = tile.yMax - chevronSize - new Rem(0.525f).ToPixels();
+        Rect chevronRect = RectSnap.Snap(new Rect(cx - chevronSize * 0.5f, yTop, chevronSize, chevronSize));
+
+        float scaleY = 1f - 2f * flipRatio;
+        Matrix4x4 savedMatrix = GUI.matrix;
+        GUIUtility.ScaleAroundPivot(new Vector2(1f, scaleY), chevronRect.center);
+
+        Color saved = GUI.color;
+        GUI.color = tint;
+        Texture2D tex = ChevronTextureCache.Down(strokePx: 38f, armSpan: 0.7f, armHeight: 0.42f);
+        GUI.DrawTexture(chevronRect, tex);
+        GUI.color = saved;
+        GUI.matrix = savedMatrix;
     }
 
     private static void DrawDiagonal(float x0, float y0, float x1, float y1, float thickness, Color color) {

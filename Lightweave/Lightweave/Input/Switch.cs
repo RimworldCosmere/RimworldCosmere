@@ -126,7 +126,7 @@ public static class Switch {
                     : ThemeSlot.SurfaceInput;
             BackgroundSpec trackBg = BackgroundSpec.Of(trackFill);
             BorderSpec trackBorder = BorderSpec.All(new Rem(1f / 16f), borderSlot);
-            RadiusSpec trackRadius = RadiusSpec.All(RadiusScale.Xl);
+            RadiusSpec trackRadius = RadiusSpec.All(RadiusScale.Full);
             PaintBox.Draw(trackRect, trackBg, trackBorder, trackRadius);
 
             float leftX = trackRect.x + thumbInset;
@@ -143,7 +143,7 @@ public static class Switch {
                     ? ThemeSlot.TextOnAccent
                     : ThemeSlot.BorderOff;
             BackgroundSpec thumbBg = BackgroundSpec.Of(thumbSlot);
-            RadiusSpec thumbRadius = RadiusSpec.All(RadiusScale.Lg);
+            RadiusSpec thumbRadius = RadiusSpec.All(RadiusScale.Full);
             PaintBox.Draw(thumbRect, thumbBg, null, thumbRadius);
 
             Font labelFont = theme.GetFont(FontRole.Body);

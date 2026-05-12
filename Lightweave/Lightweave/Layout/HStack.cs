@@ -118,10 +118,17 @@ public static class HStack {
             return child.PreferredHeight ?? 0f;
         }
 
+        (float left, float top, float right, float bottom) ResolvePaddingPixels() {
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? EdgeInsets.Zero;
+            return pad.Resolve(RenderContext.Current.Direction);
+        }
+
         node.MeasureWidth = () => {
             if (count == 0) {
                 return 0f;
             }
+            (float left, _, float right, _) = ResolvePaddingPixels();
             float gapPx = ResolveGapPx();
             float total = 0f;
             int counted = 0;
@@ -130,10 +137,7 @@ public static class HStack {
                     continue;
                 }
                 var item = builder.Items[i];
-                if (item.flex) {
-                    continue;
-                }
-                if (item.hug) {
+                if (item.flex || item.hug) {
                     total += item.node.MeasureWidth?.Invoke() ?? 0f;
                 }
                 else {
@@ -142,7 +146,7 @@ public static class HStack {
                 counted++;
             }
             float totalGap = gapPx * Math.Max(0, counted - 1);
-            return total + totalGap;
+            return total + totalGap + left + right;
         };
 
         node.Measure = availableWidth => {

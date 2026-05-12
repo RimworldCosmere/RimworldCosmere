@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Doc;
+using Cosmere.Lightweave.Feedback;
 using Cosmere.Lightweave.Input;
 using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
@@ -31,10 +32,14 @@ public static class Card {
     ) {
         int count = children.Length;
         float[] heights = new float[count];
-        bool[] isFlex = new bool[count];
+        float[] fillMinHeights = new float[count];
+        bool[] isFill = new bool[count];
+        bool[] isLegacyFlex = new bool[count];
         int nonPinnedCount = pinnedLastIndex >= 0 ? count - 1 : count;
         float fixedTotalNonPinned = 0f;
-        int flexCount = 0;
+        float fillMinTotal = 0f;
+        int fillCount = 0;
+        int legacyFlexCount = 0;
 
         for (int i = 0; i < count; i++) {
             LightweaveNode child = children[i];
@@ -44,13 +49,19 @@ public static class Card {
                 continue;
             }
 
-            if (h.HasValue) {
+            if (child.IsCardContent) {
+                isFill[i] = true;
+                fillMinHeights[i] = h ?? 0f;
+                fillMinTotal += fillMinHeights[i];
+                fillCount++;
+            }
+            else if (h.HasValue) {
                 heights[i] = h.Value;
                 fixedTotalNonPinned += h.Value;
             }
             else {
-                isFlex[i] = true;
-                flexCount++;
+                isLegacyFlex[i] = true;
+                legacyFlexCount++;
             }
         }
 
@@ -58,16 +69,23 @@ public static class Card {
         float pinnedGap = pinnedLastIndex >= 0 && nonPinnedCount > 0 ? gapPx : 0f;
         float availableForNonPinned = Mathf.Max(0f, availableHeight - pinnedH - pinnedGap);
         float nonPinnedTotalGap = gapPx * Mathf.Max(0, nonPinnedCount - 1);
-        float remainingForFlex = Mathf.Max(0f, availableForNonPinned - fixedTotalNonPinned - nonPinnedTotalGap);
-        float flexEach = flexCount > 0 ? remainingForFlex / flexCount : 0f;
+        float remainingAfterFixed = Mathf.Max(0f, availableForNonPinned - fixedTotalNonPinned - nonPinnedTotalGap);
 
-        for (int i = 0; i < count; i++) {
-            if (i == pinnedLastIndex) {
-                continue;
+        if (fillCount > 0) {
+            float extra = Mathf.Max(0f, remainingAfterFixed - fillMinTotal);
+            float fillExtraEach = extra / fillCount;
+            for (int i = 0; i < count; i++) {
+                if (isFill[i]) {
+                    heights[i] = fillMinHeights[i] + fillExtraEach;
+                }
             }
-
-            if (isFlex[i]) {
-                heights[i] = flexEach;
+        }
+        else if (legacyFlexCount > 0) {
+            float flexEach = remainingAfterFixed / legacyFlexCount;
+            for (int i = 0; i < count; i++) {
+                if (isLegacyFlex[i]) {
+                    heights[i] = flexEach;
+                }
             }
         }
 
@@ -341,6 +359,7 @@ private static LightweaveNode ContentInternal(
     ) {
         LightweaveNode node = NodeBuilder.New("Card.Content", line, file);
         node.ApplyStyling("card-content", style, classes, id);
+        node.IsCardContent = true;
         for (int i = 0; i < children.Length; i++) {
             node.Children.Add(children[i]);
         }
@@ -498,21 +517,39 @@ private static LightweaveNode ContentInternal(
 
     [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
+        LightweaveNode StatRow(string label, string value) {
+            return HStack.Create(
+                SpacingScale.Sm,
+                children: r => {
+                    r.AddFlex(Caption.Create(label));
+                    r.AddHug(Text.Create(
+                        value,
+                        style: new Style { FontFamily = FontRole.BodyBold, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
+                    ));
+                }
+            );
+        }
+
         return new DocSample(() => 
             Card.Create(c => {
                 c.Add(Card.Header(h => {
-                    h.Add(Card.Title("Surgebinding"));
-                    h.Add(Card.Description("Bonded Radiant powers."));
+                    h.Add(Card.Title((string)"CL_Playground_card_Pawn_Name".Translate()));
+                    h.Add(Card.Description((string)"CL_Playground_card_Pawn_Role".Translate()));
                 }));
                 c.Add(Card.Content(ct => {
+                    ct.Add(StatRow((string)"CL_Playground_card_Pawn_StatHealth".Translate(), (string)"CL_Playground_card_Pawn_StatHealthValue".Translate()));
+                    ct.Add(StatRow((string)"CL_Playground_card_Pawn_StatMood".Translate(), (string)"CL_Playground_card_Pawn_StatMoodValue".Translate()));
+                    ct.Add(StatRow((string)"CL_Playground_card_Pawn_StatLight".Translate(), (string)"CL_Playground_card_Pawn_StatLightValue".Translate()));
+                    ct.Add(Divider.Horizontal());
                     ct.Add(Text.Create(
-                        "Progression unlocks with oaths.",
-                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextPrimary }
+                        (string)"CL_Playground_card_Pawn_Note".Translate(),
+                        wrap: true,
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.8125f), TextColor = ThemeSlot.TextMuted }
                     ));
-                }, style: new Style { Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken) }));
+                }));
                 c.Add(Card.Footer(f => {
-                    f.Add(Button.Create((string)"CL_Playground_Label_Cancel".Translate(), () => { }));
-                    f.Add(Button.Create((string)"CL_Playground_Label_Confirm".Translate(), () => { }));
+                    f.Add(Button.Create((string)"CL_Playground_card_Pawn_Action_Dismiss".Translate(), () => { }, ButtonVariant.Secondary));
+                    f.Add(Button.Create((string)"CL_Playground_card_Pawn_Action_Promote".Translate(), () => { }, ButtonVariant.Primary));
                 }));
             })
         );
@@ -522,11 +559,23 @@ private static LightweaveNode ContentInternal(
     public static DocSample DocsTight() {
         return new DocSample(() => 
             Card.Create(c => {
-                c.Add(Card.Header(h => h.Add(Card.Title("Compact"))));
+                c.Add(Card.Header(h => {
+                    h.Add(HStack.Create(
+                        SpacingScale.Xs,
+                        children: r => {
+                            r.AddFlex(Card.Title((string)"CL_Playground_card_Tight_Title".Translate()));
+                            r.AddHug(Pill.Create(
+                                (string)"CL_Playground_card_Tight_Pill".Translate(),
+                                variant: PillVariant.Selected
+                            ));
+                        }
+                    ));
+                }));
                 c.Add(Card.Content(ct => {
                     ct.Add(Text.Create(
-                        "Minimal layout for a short note.",
-                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.875f), TextColor = ThemeSlot.TextMuted }
+                        (string)"CL_Playground_card_Tight_Note".Translate(),
+                        wrap: true,
+                        style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.8125f), TextColor = ThemeSlot.TextMuted }
                     ));
                 }));
             })
@@ -538,12 +587,12 @@ private static LightweaveNode ContentInternal(
         return new DocSample(() => 
             Card.Create(c => {
                 c.Add(Card.Header(h => {
-                    h.Add(Card.Title("Confirm action"));
-                    h.Add(Card.Description("Generous content suits modal flows."));
+                    h.Add(Card.Title((string)"CL_Playground_card_Loose_Title".Translate()));
+                    h.Add(Card.Description((string)"CL_Playground_card_Loose_Desc".Translate()));
                 }));
                 c.Add(Card.Footer(f => {
-                    f.Add(Button.Create((string)"CL_Playground_Label_Cancel".Translate(), () => { }));
-                    f.Add(Button.Create((string)"CL_Playground_Label_Confirm".Translate(), () => { }));
+                    f.Add(Button.Create((string)"CL_Playground_card_Loose_Cancel".Translate(), () => { }, ButtonVariant.Ghost));
+                    f.Add(Button.Create((string)"CL_Playground_card_Loose_Confirm".Translate(), () => { }, ButtonVariant.Primary));
                 }));
             })
         );

@@ -100,7 +100,7 @@ public static class Button {
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
 
-            if (variant == ButtonVariant.Dock) {
+            if (variant == ButtonVariant.Frosted) {
                 bool active = state.Hovered || state.Pressed;
                 BackdropBlur.Draw(rect, active ? 8f : 6f);
                 Color translucent = new Color(20f / 255f, 16f / 255f, 11f / 255f, active ? 0.88f : 0.78f);
@@ -232,6 +232,13 @@ public static class Button {
     public static DocSample DocsDanger() {
         bool forced = RenderContext.Current.ForceDisabled;
         return new DocSample(() => Create("Danger", () => { }, ButtonVariant.Danger, disabled: forced));
+    }
+
+
+    [DocVariant("CL_Playground_Label_Frosted")]
+    public static DocSample DocsFrosted() {
+        bool forced = RenderContext.Current.ForceDisabled;
+        return new DocSample(() => Create("Frosted", () => { }, ButtonVariant.Frosted, disabled: forced));
     }
 
     [DocState("CL_Playground_Label_Default")]

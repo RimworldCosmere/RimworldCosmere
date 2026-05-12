@@ -35,7 +35,7 @@ internal static class SettingRow {
     public static LightweaveNode Section(string headerKey, params LightweaveNode[] rows) {
         return Stack.Create(SpacingScale.None, s => {
             s.Add(Box.Create(
-                children: c => c.Add(Eyebrow.Create(headerKey.Translate(), letterSpacing: 2.5f)),
+                children: c => c.Add(Eyebrow.Create(headerKey.Translate(), style: new Style { LetterSpacing = Tracking.Widest })),
                 style: new Style {
                     Padding = new EdgeInsets(Top: SpacingScale.None, Bottom: SpacingScale.Sm, Left: SpacingScale.None, Right: SpacingScale.None),
                 }

@@ -11,6 +11,7 @@ public sealed class LightweaveNode {
     public string DebugName = string.Empty;
     public object? ExplicitKey;
     public bool IsFooter;
+    public bool IsCardContent;
     public Func<float, float>? Measure;
     public Func<float>? MeasureWidth;
     public Func<Rect, List<Rect>>? MeasureChildren;

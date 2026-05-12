@@ -1,3 +1,4 @@
+using Cosmere.Lightweave.Fonts;
 using Cosmere.Lightweave.Input;
 using Cosmere.Lightweave.Layout;
 using Cosmere.Lightweave.LoadColony;
@@ -29,10 +30,10 @@ public static class ContinueCard {
         return Box.Create(
             children: c => c.Add(HStack.Create(SpacingScale.None, h => {
                 h.AddFlex(BuildContinueContent(save));
-                h.Add(BuildContinueButton(save), new Rem(11f).ToPixels());
+                h.Add(BuildContinueButton(save), new Rem(15.5f).ToPixels());
             })),
             style: new Style {
-                Background = BackgroundSpec.Blur(new Color(15f / 255f, 12f / 255f, 8f / 255f, 0.92f)),
+                Background = BackgroundSpec.Blur(new Color(0f, 0f, 0f, 0.72f)),
                 Border = BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
                 Radius = RadiusSpec.All(RadiusScale.None),
             }
@@ -42,7 +43,7 @@ public static class ContinueCard {
     private static LightweaveNode BuildContinueContent(SaveMetadata.LatestSave save) {
         return Box.Create(
             children: c => c.Add(HStack.Create(SpacingScale.Md, h => {
-                h.Add(BuildThumbnail(save), new Rem(6f).ToPixels());
+                h.Add(BuildThumbnail(save), new Rem(14.7f).ToPixels());
                 h.AddFlex(BuildBody(save));
             })),
             style: new Style {
@@ -53,7 +54,7 @@ public static class ContinueCard {
 
     private static LightweaveNode BuildThumbnail(SaveMetadata.LatestSave save) {
         LightweaveNode node = NodeBuilder.New("ContinueCard:Thumbnail");
-        node.PreferredHeight = new Rem(6f).ToPixels();
+        node.PreferredHeight = new Rem(9.1875f).ToPixels();
         node.Paint = (rect, _) => {
             Color saved = GUI.color;
             GUI.color = new Color(0.122f, 0.086f, 0.067f, 1f);
@@ -64,32 +65,12 @@ public static class ContinueCard {
             if (shot != null) {
                 Color saved2 = GUI.color;
                 GUI.color = Color.white;
-                GUI.DrawTexture(rect, shot, ScaleMode.ScaleAndCrop);
+                GUI.DrawTexture(RectSnap.Snap(rect), shot, ScaleMode.ScaleAndCrop);
                 GUI.color = saved2;
             }
             else {
                 DrawScanlines(rect);
             }
-
-            Color savedLine = GUI.color;
-            Color line = new Color(1f, 0.784f, 0.549f, 0.06f);
-            GUI.color = line;
-            float step = new Rem(0.25f).ToPixels();
-            for (float y = rect.y + step; y < rect.yMax; y += step) {
-                Rect r = new Rect(rect.x + 2f, y, rect.width - 4f, 1f);
-                GUI.DrawTexture(RectSnap.Snap(r), BaseContent.WhiteTex);
-            }
-            GUI.color = savedLine;
-
-            float borderThick = Mathf.Max(1f, new Rem(0.0875f).ToPixels());
-            Color savedBorder = GUI.color;
-            Color borderCol = new Color(0.55f, 0.42f, 0.25f, 0.85f);
-            GUI.color = borderCol;
-            GUI.DrawTexture(RectSnap.Snap(new Rect(rect.x, rect.y, rect.width, borderThick)), BaseContent.WhiteTex);
-            GUI.DrawTexture(RectSnap.Snap(new Rect(rect.x, rect.yMax - borderThick, rect.width, borderThick)), BaseContent.WhiteTex);
-            GUI.DrawTexture(RectSnap.Snap(new Rect(rect.x, rect.y, borderThick, rect.height)), BaseContent.WhiteTex);
-            GUI.DrawTexture(RectSnap.Snap(new Rect(rect.xMax - borderThick, rect.y, borderThick, rect.height)), BaseContent.WhiteTex);
-            GUI.color = savedBorder;
         };
         return node;
     }
@@ -137,11 +118,11 @@ public static class ContinueCard {
 
     private static LightweaveNode BuildEyebrowLine(SaveMetadata.LatestSave save) {
         LightweaveNode node = NodeBuilder.New("ContinueCard:Eyebrow");
-        node.PreferredHeight = new Rem(1.0f).ToPixels();
+        node.PreferredHeight = new Rem(1.5f).ToPixels();
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Font font = theme.GetFont(FontRole.Mono);
-            int px = Mathf.RoundToInt(new Rem(0.6875f).ToFontPx());
+            int px = Mathf.RoundToInt(new Rem(1.0667f).ToFontPx());
             GUIStyle style = GuiStyleCache.GetOrCreate(font, px, FontStyle.Normal);
             style.alignment = TextAnchor.MiddleLeft;
 
@@ -183,30 +164,37 @@ public static class ContinueCard {
 
     private static LightweaveNode BuildTitleLine(SaveMetadata.LatestSave save) {
         LightweaveNode node = NodeBuilder.New("ContinueCard:Title");
-        node.PreferredHeight = new Rem(3.25f).ToPixels();
+        int px = Mathf.RoundToInt(new Rem(2.875f).ToFontPx());
+        node.PreferredHeight = Mathf.Ceil(px * 1.35f);
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
-            Font font = theme.GetFont(FontRole.Display);
-            int px = Mathf.RoundToInt(new Rem(2.875f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, px, FontStyle.Italic);
+            Font font = LightweaveFonts.IMFellEnglishSC ?? theme.GetFont(FontRole.Display);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, px, FontStyle.Normal);
             style.alignment = TextAnchor.MiddleLeft;
-            style.clipping = TextClipping.Clip;
+            style.clipping = TextClipping.Overflow;
 
             string title = save.DisplayName ?? string.Empty;
-            float tracking = px * 0.04f;
+            if (title.Length == 0) {
+                return;
+            }
+            int tracking = Mathf.Max(0, Mathf.RoundToInt(px * 0.02f));
+
+            int[] widths = new int[title.Length];
+            for (int i = 0; i < title.Length; i++) {
+                GUIContent gc = new GUIContent(title[i].ToString());
+                widths[i] = Mathf.CeilToInt(style.CalcSize(gc).x);
+            }
 
             Color saved = GUI.color;
             GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
 
-            float cursor = rect.x;
-            float midY = rect.y;
-            float lineH = rect.height;
+            int cursor = Mathf.FloorToInt(rect.x);
+            int y = Mathf.FloorToInt(rect.y);
+            int h = Mathf.CeilToInt(rect.height);
             for (int i = 0; i < title.Length; i++) {
                 string ch = title[i].ToString();
-                GUIContent gc = new GUIContent(ch);
-                float w = style.CalcSize(gc).x;
-                GUI.Label(RectSnap.Snap(new Rect(cursor, midY, w, lineH)), ch, style);
-                cursor += w + (i < title.Length - 1 ? tracking : 0f);
+                GUI.Label(new Rect(cursor, y, widths[i], h), ch, style);
+                cursor += widths[i] + (i < title.Length - 1 ? tracking : 0);
             }
             GUI.color = saved;
         };
@@ -217,7 +205,7 @@ public static class ContinueCard {
         return HStack.Create(new Rem(1.375f), h => {
             void AddStat(string value, string label, ThemeSlot valueColor) {
                 LightweaveNode column = BuildStatColumn(value, label, valueColor);
-                h.AddHug(column);
+                h.AddFlex(column);
             }
             void AddSep() {
                 h.AddHug(BuildStatSeparator());
@@ -335,12 +323,88 @@ public static class ContinueCard {
     }
 
     private static LightweaveNode BuildContinueButton(SaveMetadata.LatestSave save) {
-        return Button.Create(
-            label: "CL_MainMenu_Continue_Action".Translate(),
-            onClick: () => MainMenuActions.ContinueLatestSave(save.FileName),
-            variant: ButtonVariant.Primary,
-            style: new Style { Width = Length.Stretch, Height = Length.Stretch }
-        );
+        LightweaveNode node = NodeBuilder.New("ContinueCard:ResumeButton");
+        node.Style = new Style {
+            Width = Length.Stretch,
+            Height = Length.Stretch,
+            LetterSpacing = Tracking.Widest,
+        };
+        node.Paint = (rect, _) => {
+            InteractionState state = InteractionState.Resolve(rect, null, false);
+
+            Color topColor = new Color(212f / 255f, 168f / 255f, 87f / 255f, 1f);
+            Color bottomColor = new Color(184f / 255f, 136f / 255f, 56f / 255f, 1f);
+            if (state.Pressed) {
+                topColor = new Color(160f / 255f, 120f / 255f, 50f / 255f, 1f);
+                bottomColor = new Color(120f / 255f, 84f / 255f, 28f / 255f, 1f);
+            }
+            else if (state.Hovered) {
+                topColor = new Color(224f / 255f, 185f / 255f, 106f / 255f, 1f);
+                bottomColor = new Color(199f / 255f, 151f / 255f, 65f / 255f, 1f);
+            }
+            BackgroundSpec.Gradient bg = new BackgroundSpec.Gradient(GradientTextureCache.Vertical(topColor, bottomColor));
+            PaintBox.Draw(rect, bg, null, RadiusSpec.All(RadiusScale.None));
+
+            Color leftBorder = new Color(0f, 0f, 0f, 0.4f);
+            Rect leftStroke = new Rect(rect.x, rect.y, 1f, rect.height);
+            Color savedColor = GUI.color;
+            GUI.color = leftBorder;
+            GUI.DrawTexture(RectSnap.Snap(leftStroke), BaseContent.WhiteTex);
+            GUI.color = savedColor;
+
+            if (Event.current.type == EventType.Repaint) {
+                Font? font = LightweaveFonts.CarlitoBold ?? LightweaveFonts.CarlitoRegular;
+                if (font == null) {
+                    font = RenderContext.Current.Theme.GetFont(FontRole.BodyBold);
+                }
+                Rem fontSizeRem = new Rem(1.25f);
+                int pixelSize = Mathf.RoundToInt(fontSizeRem.ToFontPx());
+                GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+                gstyle.alignment = TextAnchor.MiddleLeft;
+                gstyle.clipping = TextClipping.Overflow;
+
+                Style resolved = node.GetResolvedStyle();
+                int letterSpacing = resolved.LetterSpacing.HasValue
+                    ? Mathf.Max(0, Mathf.RoundToInt(resolved.LetterSpacing.Value.ToPixels(fontSizeRem.ToFontPx())))
+                    : 0;
+
+                Color inkColor = new Color(26f / 255f, 19f / 255f, 10f / 255f, 1f);
+                string text = "▶  " + ((string)"CL_MainMenu_Continue_Action".Translate()).ToUpperInvariant();
+
+                int[] widths = new int[text.Length];
+                int totalW = 0;
+                for (int i = 0; i < text.Length; i++) {
+                    GUIContent gc = new GUIContent(text[i].ToString());
+                    widths[i] = Mathf.CeilToInt(gstyle.CalcSize(gc).x);
+                    totalW += widths[i];
+                    if (i < text.Length - 1) {
+                        totalW += letterSpacing;
+                    }
+                }
+                int startX = Mathf.FloorToInt(rect.x + (rect.width - totalW) * 0.5f);
+                int y = Mathf.FloorToInt(rect.y);
+                int h = Mathf.CeilToInt(rect.height);
+
+                Color saved = GUI.color;
+                GUI.color = inkColor;
+                int cursor = startX;
+                for (int i = 0; i < text.Length; i++) {
+                    string ch = text[i].ToString();
+                    GUI.Label(new Rect(cursor, y, widths[i], h), ch, gstyle);
+                    cursor += widths[i] + letterSpacing;
+                }
+                GUI.color = saved;
+            }
+
+            InteractionFeedback.Apply(rect, true, true);
+
+            Event e = Event.current;
+            if (e.type == EventType.MouseUp && e.button == 0 && rect.Contains(e.mousePosition)) {
+                MainMenuActions.ContinueLatestSave(save.FileName);
+                e.Use();
+            }
+        };
+        return node;
     }
 
     private static LightweaveNode BuildWelcome() {

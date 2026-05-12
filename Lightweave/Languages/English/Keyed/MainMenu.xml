@@ -12,7 +12,7 @@
     <CL_MainMenu_More>More</CL_MainMenu_More>
 
     <CL_MainMenu_Continue>CONTINUE</CL_MainMenu_Continue>
-    <CL_MainMenu_Continue_Action>▶  RESUME</CL_MainMenu_Continue_Action>
+    <CL_MainMenu_Continue_Action>Resume</CL_MainMenu_Continue_Action>
     <CL_MainMenu_Day>Day {COUNT}</CL_MainMenu_Day>
     <CL_MainMenu_YearAD>{YEAR} A.D.</CL_MainMenu_YearAD>
 
@@ -90,4 +90,6 @@
     <CL_MainMenu_Link_HelpTranslate>Help translate</CL_MainMenu_Link_HelpTranslate>
     <CL_MainMenu_PoweredBy>powered by</CL_MainMenu_PoweredBy>
     <CL_MainMenu_ExpansionsActive>Expansions Active</CL_MainMenu_ExpansionsActive>
+    <CL_MainMenu_Expansion_VisitStore_Active>Visit {LABEL} store page</CL_MainMenu_Expansion_VisitStore_Active>
+    <CL_MainMenu_Expansion_VisitStore_Buy>Buy {LABEL}</CL_MainMenu_Expansion_VisitStore_Buy>
 </LanguageData>

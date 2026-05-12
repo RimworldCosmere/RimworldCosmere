@@ -7,7 +7,7 @@ public enum ButtonVariant {
     Secondary,
     Ghost,
     Danger,
-    Dock,
+    Frosted,
 }
 
 internal static class ButtonVariants {
@@ -41,7 +41,7 @@ internal static class ButtonVariants {
                 return ThemeSlot.SurfacePrimary;
             case ButtonVariant.Danger:
                 return ThemeSlot.StatusDanger;
-            case ButtonVariant.Dock:
+            case ButtonVariant.Frosted:
                 return ThemeSlot.SurfacePrimary;
             default:
                 return ThemeSlot.SurfacePrimary;
@@ -61,7 +61,7 @@ internal static class ButtonVariants {
             case ButtonVariant.Secondary:
             case ButtonVariant.Ghost:
                 return ThemeSlot.TextPrimary;
-            case ButtonVariant.Dock:
+            case ButtonVariant.Frosted:
                 return state.Hovered || state.Pressed
                     ? ThemeSlot.TextOnAccent
                     : ThemeSlot.TextPrimary;
@@ -83,7 +83,7 @@ internal static class ButtonVariants {
                 return state.Hovered ? ThemeSlot.BorderHover : ThemeSlot.BorderDefault;
             case ButtonVariant.Ghost:
                 return state.Hovered ? ThemeSlot.BorderSubtle : null;
-            case ButtonVariant.Dock:
+            case ButtonVariant.Frosted:
                 return state.Hovered || state.Pressed ? ThemeSlot.BorderHover : ThemeSlot.BorderSubtle;
             default:
                 return ThemeSlot.BorderDefault;

@@ -21,7 +21,7 @@ public static class Column {
         [DocParam("Gap between rows.")]
         Rem gap = default,
         [DocParam("Cross-axis alignment of children.")]
-        FlexAlign align = FlexAlign.Start,
+        FlexAlign align = FlexAlign.Stretch,
         [DocParam("Main-axis distribution.")]
         FlexJustify justify = FlexJustify.Start,
         [DocParam("Builder callback to populate children.")]
@@ -84,23 +84,72 @@ public static class Column {
             }
 
             bool useIntrinsic = AllKidsKnown();
-            float y = rect.y;
-
+            float[] heights = new float[count];
+            float totalH = 0f;
             if (useIntrinsic) {
                 for (int i = 0; i < count; i++) {
-                    LightweaveNode child = kids[i];
-                    float h = ChildHeight(child, rect.width);
-                    child.MeasuredRect = new Rect(rect.x, y, rect.width, h);
-                    y += h + gapPx;
+                    heights[i] = ChildHeight(kids[i], rect.width);
+                    totalH += heights[i];
                 }
             }
             else {
-                float eachH = (rect.height - gapPx * (count - 1)) / count;
+                float eachH = (rect.height - gapPx * Mathf.Max(0, count - 1)) / count;
                 for (int i = 0; i < count; i++) {
-                    LightweaveNode child = kids[i];
-                    child.MeasuredRect = new Rect(rect.x, y, rect.width, eachH);
-                    y += eachH + gapPx;
+                    heights[i] = eachH;
+                    totalH += eachH;
                 }
+            }
+
+            float used = totalH + gapPx * Mathf.Max(0, count - 1);
+            float startY = rect.y;
+            float spacing = gapPx;
+            switch (justify) {
+                case FlexJustify.End:
+                    startY = rect.y + rect.height - used;
+                    break;
+                case FlexJustify.Center:
+                    startY = rect.y + (rect.height - used) * 0.5f;
+                    break;
+                case FlexJustify.SpaceBetween:
+                    spacing = count > 1 ? (rect.height - totalH) / (count - 1) : 0f;
+                    break;
+                case FlexJustify.SpaceAround:
+                    spacing = (rect.height - totalH) / count;
+                    startY = rect.y + spacing * 0.5f;
+                    break;
+                case FlexJustify.SpaceEvenly:
+                    spacing = (rect.height - totalH) / (count + 1);
+                    startY = rect.y + spacing;
+                    break;
+            }
+
+            float y = startY;
+            for (int i = 0; i < count; i++) {
+                LightweaveNode child = kids[i];
+                float cw;
+                float cx;
+                if (align == FlexAlign.Stretch) {
+                    cw = rect.width;
+                    cx = rect.x;
+                }
+                else {
+                    float intrinsicW = child.MeasureWidth?.Invoke() ?? rect.width;
+                    cw = Mathf.Min(intrinsicW, rect.width);
+                    switch (align) {
+                        case FlexAlign.Center:
+                            cx = rect.x + (rect.width - cw) * 0.5f;
+                            break;
+                        case FlexAlign.End:
+                            cx = rect.x + rect.width - cw;
+                            break;
+                        default:
+                            cx = rect.x;
+                            break;
+                    }
+                }
+
+                child.MeasuredRect = new Rect(cx, y, cw, heights[i]);
+                y += heights[i] + spacing;
             }
 
             paintChildren();
@@ -117,6 +166,51 @@ public static class Column {
                     k.Add(SampleChip("1"));
                     k.Add(SampleChip("2"));
                     k.Add(SampleChip("3"));
+                }
+            )
+        );
+    }
+
+
+    [DocVariant("CL_Playground_Label_Gap")]
+    public static DocSample DocsGap() {
+        return new DocSample(() => 
+            Column.Create(
+                SpacingScale.Md,
+                children: k => {
+                    k.Add(SampleChip("first"));
+                    k.Add(SampleChip("second"));
+                    k.Add(SampleChip("third"));
+                }
+            )
+        );
+    }
+
+    [DocVariant("CL_Playground_Label_Align")]
+    public static DocSample DocsAlign() {
+        return new DocSample(() => 
+            Column.Create(
+                SpacingScale.Xs,
+                align: FlexAlign.Center,
+                children: k => {
+                    k.Add(SampleChip("centered"));
+                    k.Add(SampleChip("on"));
+                    k.Add(SampleChip("the X axis"));
+                }
+            )
+        );
+    }
+
+    [DocVariant("CL_Playground_Label_Justify")]
+    public static DocSample DocsJustify() {
+        return new DocSample(() => 
+            Column.Create(
+                SpacingScale.Xs,
+                justify: FlexJustify.SpaceBetween,
+                children: k => {
+                    k.Add(SampleChip("top"));
+                    k.Add(SampleChip("middle"));
+                    k.Add(SampleChip("bottom"));
                 }
             )
         );

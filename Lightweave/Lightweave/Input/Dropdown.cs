@@ -124,15 +124,25 @@ public static class Dropdown {
         bool disabled
     ) {
         if (variant == DropdownVariant.Button) {
-            ThemeSlot bgSlot = ButtonVariants.Background(buttonStyle, state);
             ThemeSlot fgSlot = ButtonVariants.Foreground(buttonStyle, state);
             ThemeSlot? borderSlot = ButtonVariants.Border(buttonStyle, state);
-            BackgroundSpec bgSpec = BackgroundSpec.Of(bgSlot);
             BorderSpec? borderSpec = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
             RadiusSpec radiusSpec = RadiusSpec.All(RadiusScale.Sm);
-            PaintBox.Draw(rect, bgSpec, borderSpec, radiusSpec);
+
+            if (buttonStyle == ButtonVariant.Frosted) {
+                bool active = state.Hovered || state.Pressed;
+                BackdropBlur.Draw(rect, active ? 8f : 6f);
+                Color translucent = new Color(20f / 255f, 16f / 255f, 11f / 255f, active ? 0.88f : 0.78f);
+                PaintBox.Draw(rect, BackgroundSpec.Of(translucent), borderSpec, radiusSpec);
+            }
+            else {
+                ThemeSlot bgSlot = ButtonVariants.Background(buttonStyle, state);
+                BackgroundSpec bgSpec = BackgroundSpec.Of(bgSlot);
+                PaintBox.Draw(rect, bgSpec, borderSpec, radiusSpec);
+            }
+
             float overlay = ButtonVariants.OverlayAlpha(state);
             if (overlay > 0f) {
                 Color overlayColor = InteractionFeedback.OverlayColor(RenderContext.Current.Theme, state, overlay);
@@ -602,6 +612,23 @@ public static class Dropdown {
             ButtonVariant.Primary,
             forced,
             "doc-btn-primary"
+        ));
+    }
+
+
+    [DocVariant("CL_Playground_Label_Frosted")]
+    public static DocSample DocsFrosted() {
+        bool forced = RenderContext.Current.ForceDisabled;
+        StateHandle<string> s = UseState("Scadrial");
+        return new DocSample(() => Create<string>(
+            s.Value,
+            DocOptions,
+            v => v,
+            v => s.Set(v),
+            DropdownVariant.Button,
+            ButtonVariant.Frosted,
+            forced,
+            "doc-btn-frosted"
         ));
     }
 

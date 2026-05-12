@@ -93,7 +93,7 @@ public static class KeyValueTable {
             h.Add(Eyebrow.Create(label, style: new Style { TextColor = labelColor }), labelPx);
             h.AddFlex(Text.Create(
                 value ?? string.Empty,
-                style: new Style { FontFamily = FontRole.Body, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextPrimary }
+                style: new Style { FontFamily = FontRole.Mono, FontSize = new Rem(0.9375f), TextColor = ThemeSlot.TextPrimary }
             ));
         });
     }

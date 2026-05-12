@@ -138,7 +138,7 @@ public static class Radio {
             BackgroundSpec circleBg =
                 BackgroundSpec.Of(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput);
             BorderSpec circleBorder = BorderSpec.All(new Rem(2f / 16f), borderSlot);
-            RadiusSpec circleRadius = RadiusSpec.All(RadiusScale.Xl);
+            RadiusSpec circleRadius = RadiusSpec.All(RadiusScale.Full);
 
             PaintBox.Draw(circleRect, circleBg, circleBorder, circleRadius);
 
@@ -152,7 +152,7 @@ public static class Radio {
                 );
                 ThemeSlot dotSlot = disabled ? ThemeSlot.BorderOff : ThemeSlot.SurfaceAccent;
                 BackgroundSpec dotBg = BackgroundSpec.Of(dotSlot);
-                RadiusSpec dotRadius = RadiusSpec.All(RadiusScale.Sm);
+                RadiusSpec dotRadius = RadiusSpec.All(RadiusScale.Full);
                 PaintBox.Draw(dotRect, dotBg, null, dotRadius);
             }
 

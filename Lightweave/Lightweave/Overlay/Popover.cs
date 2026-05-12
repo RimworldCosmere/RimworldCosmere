@@ -89,11 +89,14 @@ public static class Popover {
                 PaintBox.Draw(shadowRect, shadowBg, null, RadiusSpec.All(RadiusScale.Lg));
 
                 BackgroundSpec bg = BackgroundSpec.Of(ThemeSlot.SurfaceRaised);
-                BorderSpec border = BorderSpec.All(new Rem(2f / 16f), ThemeSlot.BorderDefault);
                 RadiusSpec radius = RadiusSpec.All(RadiusScale.Lg);
-                PaintBox.Draw(popoverRect, bg, border, radius);
+                PaintBox.Draw(popoverRect, bg, null, radius);
 
                 LightweaveRoot.PaintSubtree(content, popoverRect);
+
+                BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle);
+                BackgroundSpec clearBg = BackgroundSpec.Of(Color.clear);
+                PaintBox.Draw(popoverRect, clearBg, border, radius);
 
                 GUI.color = savedColor;
 

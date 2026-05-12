@@ -232,6 +232,21 @@ public static class Box {
         );
     }
 
+
+    [DocVariant("CL_Playground_Label_Transparent")]
+    public static DocSample DocsTransparent() {
+        return new DocSample(() => 
+            Box.Create(
+                c => c.Add(Caption.Create("transparent")),
+                style: new Style {
+                    Padding = EdgeInsets.All(SpacingScale.Sm),
+                    Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
+                    Radius = RadiusSpec.All(RadiusScale.Sm),
+                }
+            )
+        );
+    }
+
     [DocUsage]
     public static DocSample DocsUsage() {
         return new DocSample(() => 

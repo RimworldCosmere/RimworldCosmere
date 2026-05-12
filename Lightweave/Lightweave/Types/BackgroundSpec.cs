@@ -56,5 +56,5 @@ public abstract record BackgroundSpec {
 
     public sealed record Gradient(Texture2D GradientTex, ColorRef? Tint = null) : BackgroundSpec;
 
-    public sealed record Blurred(ColorRef? Tint = null, float BlurSizePx = 4f) : BackgroundSpec;
+    public sealed record Blurred(ColorRef? Tint = null, float BlurSizePx = 12f) : BackgroundSpec;
 }

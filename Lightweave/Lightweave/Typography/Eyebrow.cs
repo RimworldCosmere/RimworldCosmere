@@ -20,8 +20,6 @@ public static class Eyebrow {
     public static LightweaveNode Create(
         [DocParam("Eyebrow text. Will be rendered upper-cased.")]
         string content,
-        [DocParam("Tracking (letter spacing) in pixels.")]
-        float letterSpacing = 2f,
         [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
         Style? style = null,
         [DocParam("Additional class names merged after the base 'eyebrow' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
@@ -33,7 +31,8 @@ public static class Eyebrow {
     ) {
         string upper = content?.ToUpperInvariant() ?? string.Empty;
 
-        if (Mathf.Approximately(letterSpacing, 0f)) {
+        Tracking? styleTracking = style?.LetterSpacing;
+        if (!styleTracking.HasValue || Mathf.Approximately(styleTracking.Value.Em, 0f)) {
             return Text.Create(
                 upper,
                 style: style,
@@ -47,6 +46,16 @@ public static class Eyebrow {
         LightweaveNode node = NodeBuilder.New($"Eyebrow:{upper}", line, file);
         node.ApplyStyling("eyebrow", style, classes, id);
 
+        int ResolveLetterSpacing() {
+            Style s = node.GetResolvedStyle();
+            Tracking? t = s.LetterSpacing;
+            if (!t.HasValue) {
+                return 0;
+            }
+            Rem fontSize = s.FontSize ?? new Rem(0.75f);
+            return Mathf.Max(0, Mathf.RoundToInt(t.Value.ToPixels(fontSize.ToFontPx())));
+        }
+
         GUIStyle ResolveGuiStyle() {
             Theme.Theme theme = RenderContext.Current.Theme;
             Style s = node.GetResolvedStyle();
@@ -57,17 +66,25 @@ public static class Eyebrow {
                 _ => theme.GetFont(FontRole.Body),
             };
             Rem fontSize = s.FontSize ?? new Rem(0.75f);
-            FontStyle weight = s.FontWeight ?? FontStyle.Bold;
+            FontStyle weight = s.FontWeight ?? FontStyle.Normal;
             int pixelSize = Mathf.RoundToInt(fontSize.ToFontPx());
             return GuiStyleCache.GetOrCreate(font, pixelSize, weight);
         }
 
-        float MeasureTotalWidth(GUIStyle gs) {
-            float total = 0f;
+        int[] MeasureCharWidths(GUIStyle gs) {
+            int[] widths = new int[upper.Length];
             for (int i = 0; i < upper.Length; i++) {
                 GUIContent gc = new GUIContent(upper[i].ToString());
-                total += gs.CalcSize(gc).x;
-                if (i < upper.Length - 1) {
+                widths[i] = Mathf.CeilToInt(gs.CalcSize(gc).x);
+            }
+            return widths;
+        }
+
+        int MeasureTotalWidth(int[] widths, int letterSpacing) {
+            int total = 0;
+            for (int i = 0; i < widths.Length; i++) {
+                total += widths[i];
+                if (i < widths.Length - 1) {
                     total += letterSpacing;
                 }
             }
@@ -92,7 +109,9 @@ public static class Eyebrow {
                 return 0f;
             }
             GUIStyle gs = ResolveGuiStyle();
-            return Mathf.Ceil(MeasureTotalWidth(gs));
+            int letterSpacing = ResolveLetterSpacing();
+            int[] widths = MeasureCharWidths(gs);
+            return MeasureTotalWidth(widths, letterSpacing);
         };
 
         node.Paint = (rect, _) => {
@@ -102,16 +121,20 @@ public static class Eyebrow {
             Theme.Theme theme = RenderContext.Current.Theme;
             Style s = node.GetResolvedStyle();
             GUIStyle gs = ResolveGuiStyle();
-            float totalW = MeasureTotalWidth(gs);
+            int letterSpacing = ResolveLetterSpacing();
+            int[] widths = MeasureCharWidths(gs);
+            int totalW = MeasureTotalWidth(widths, letterSpacing);
             TextAlign align = s.TextAlign ?? TextAlign.Start;
             TextAnchor anchor = ResolveAnchor(align, RenderContext.Current.Direction);
-            float startX = anchor switch {
+            int startX = anchor switch {
                 TextAnchor.MiddleCenter or TextAnchor.UpperCenter or TextAnchor.LowerCenter
-                    => rect.x + (rect.width - totalW) * 0.5f,
+                    => Mathf.FloorToInt(rect.x + (rect.width - totalW) * 0.5f),
                 TextAnchor.MiddleRight or TextAnchor.UpperRight or TextAnchor.LowerRight
-                    => rect.xMax - totalW,
-                _ => rect.x,
+                    => Mathf.FloorToInt(rect.xMax - totalW),
+                _ => Mathf.FloorToInt(rect.x),
             };
+            int y = Mathf.FloorToInt(rect.y);
+            int h = Mathf.CeilToInt(rect.height);
             ColorRef? cr = s.TextColor;
             Color c = cr switch {
                 ColorRef.Literal lit => lit.Value,
@@ -121,16 +144,13 @@ public static class Eyebrow {
             Color saved = GUI.color;
             GUI.color = c;
             gs.alignment = TextAnchor.MiddleLeft;
-            gs.clipping = TextClipping.Clip;
+            gs.clipping = TextClipping.Overflow;
 
-            float cursor = startX;
+            int cursor = startX;
             for (int i = 0; i < upper.Length; i++) {
                 string ch = upper[i].ToString();
-                GUIContent gc = new GUIContent(ch);
-                float charW = gs.CalcSize(gc).x;
-                Rect charRect = new Rect(cursor, rect.y, charW, rect.height);
-                GUI.Label(RectSnap.Snap(charRect), ch, gs);
-                cursor += charW + letterSpacing;
+                GUI.Label(new Rect(cursor, y, widths[i], h), ch, gs);
+                cursor += widths[i] + letterSpacing;
             }
             GUI.color = saved;
         };

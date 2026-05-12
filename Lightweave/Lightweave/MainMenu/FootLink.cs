@@ -15,12 +15,15 @@ public static class FootLink {
         string label,
         Action onClick,
         bool indicateMenu = false,
+        bool expanded = false,
         Style? style = null,
         string[]? classes = null,
         string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
+        Hooks.Hooks.RefHandle<float> flipRatio = Hooks.Hooks.UseRef<float>(expanded ? 1f : 0f, line, file + "#foot-flip");
+
         LightweaveNode node = NodeBuilder.New($"FootLink:{label}", line, file);
         node.ApplyStyling("foot-link", style, classes, id);
         node.PreferredHeight = new Rem(2f).ToPixels();
@@ -68,9 +71,13 @@ public static class FootLink {
             }
 
             if (indicateMenu) {
+                float target = expanded ? 1f : 0f;
+                float dt = Time.unscaledDeltaTime;
+                flipRatio.Current = Mathf.MoveTowards(flipRatio.Current, target, dt / 0.16f);
+
                 float cx = startX + labelW + chevronGap + chevronW * 0.5f;
                 float cy = rect.y + rect.height * 0.5f;
-                DrawChevron(cx, cy, chevronW, color);
+                DrawChevron(cx, cy, chevronW, color, flipRatio.Current);
             }
             GUI.color = saved;
 
@@ -107,14 +114,24 @@ public static class FootLink {
     }
 
 
-    private static void DrawChevron(float cx, float cy, float size, Color color) {
+    private static void DrawChevron(float cx, float cy, float size, Color color, float flipRatio) {
         if (Event.current.type != EventType.Repaint) {
             return;
         }
-        float armLen = size * 0.55f;
-        float thickness = Mathf.Max(1f, size * 0.12f);
-        DrawDiagonal(cx - armLen * 0.7f, cy - armLen * 0.35f, cx, cy + armLen * 0.35f, thickness, color);
-        DrawDiagonal(cx + armLen * 0.7f, cy - armLen * 0.35f, cx, cy + armLen * 0.35f, thickness, color);
+
+        float boxSize = size * 1.4f;
+        Rect chevronRect = RectSnap.Snap(new Rect(cx - boxSize * 0.5f, cy - boxSize * 0.5f, boxSize, boxSize));
+
+        float scaleY = 1f - 2f * flipRatio;
+        Matrix4x4 savedMatrix = GUI.matrix;
+        GUIUtility.ScaleAroundPivot(new Vector2(1f, scaleY), chevronRect.center);
+
+        Color saved = GUI.color;
+        GUI.color = color;
+        Texture2D tex = ChevronTextureCache.Down(strokePx: 38f, armSpan: 0.7f, armHeight: 0.42f);
+        GUI.DrawTexture(chevronRect, tex);
+        GUI.color = saved;
+        GUI.matrix = savedMatrix;
     }
 
     private static void DrawDiagonal(float x0, float y0, float x1, float y1, float thickness, Color color) {

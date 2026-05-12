@@ -23,8 +23,6 @@ public static class Display {
         string content,
         [DocParam("Display level. 1 is largest; higher levels step down.")]
         int level = 1,
-        [DocParam("Letter spacing in pixels. Positive tracks wider, negative tighter. Zero (default) uses native rendering.")]
-        float letterSpacing = 0f,
         [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
         Style? style = null,
         [DocParam("Additional class names merged after the base 'display'/'display-{level}' classes.", TypeOverride = "string[]?", DefaultOverride = "null")]
@@ -44,7 +42,8 @@ public static class Display {
             ? new[] { "display", sizeClass }
             : ConcatClasses(new[] { "display", sizeClass }, classes);
 
-        if (Mathf.Approximately(letterSpacing, 0f)) {
+        Tracking? styleTracking = style?.LetterSpacing;
+        if (!styleTracking.HasValue || Mathf.Approximately(styleTracking.Value.Em, 0f)) {
             return Text.Create(content, style: style, classes: basedClasses, id: id, line: line, file: file);
         }
 
@@ -55,6 +54,16 @@ public static class Display {
         }
         if (id != null) {
             node.Id = id;
+        }
+
+        int ResolveLetterSpacing() {
+            Style s = node.GetResolvedStyle();
+            Tracking? t = s.LetterSpacing;
+            if (!t.HasValue) {
+                return 0;
+            }
+            Rem fontSize = s.FontSize ?? new Rem(2f);
+            return Mathf.Max(0, Mathf.RoundToInt(t.Value.ToPixels(fontSize.ToFontPx())));
         }
 
         GUIStyle ResolveGuiStyle() {
@@ -72,12 +81,20 @@ public static class Display {
             return GuiStyleCache.GetOrCreate(font, pixelSize, weight);
         }
 
-        float MeasureTotalWidth(GUIStyle gs) {
-            float total = 0f;
+        int[] MeasureCharWidths(GUIStyle gs) {
+            int[] widths = new int[content.Length];
             for (int i = 0; i < content.Length; i++) {
                 GUIContent gc = new GUIContent(content[i].ToString());
-                total += gs.CalcSize(gc).x;
-                if (i < content.Length - 1) {
+                widths[i] = Mathf.CeilToInt(gs.CalcSize(gc).x);
+            }
+            return widths;
+        }
+
+        int MeasureTotalWidth(int[] widths, int letterSpacing) {
+            int total = 0;
+            for (int i = 0; i < widths.Length; i++) {
+                total += widths[i];
+                if (i < widths.Length - 1) {
                     total += letterSpacing;
                 }
             }
@@ -104,16 +121,20 @@ public static class Display {
             Theme.Theme theme = RenderContext.Current.Theme;
             Style s = node.GetResolvedStyle();
             GUIStyle gs = ResolveGuiStyle();
-            float totalW = MeasureTotalWidth(gs);
+            int letterSpacing = ResolveLetterSpacing();
+            int[] widths = MeasureCharWidths(gs);
+            int totalW = MeasureTotalWidth(widths, letterSpacing);
             TextAlign align = s.TextAlign ?? TextAlign.Start;
             TextAnchor anchor = ResolveAnchor(align, RenderContext.Current.Direction);
-            float startX = anchor switch {
+            int startX = anchor switch {
                 TextAnchor.MiddleCenter or TextAnchor.UpperCenter or TextAnchor.LowerCenter
-                    => rect.x + (rect.width - totalW) * 0.5f,
+                    => Mathf.FloorToInt(rect.x + (rect.width - totalW) * 0.5f),
                 TextAnchor.MiddleRight or TextAnchor.UpperRight or TextAnchor.LowerRight
-                    => rect.xMax - totalW,
-                _ => rect.x,
+                    => Mathf.FloorToInt(rect.xMax - totalW),
+                _ => Mathf.FloorToInt(rect.x),
             };
+            int y = Mathf.FloorToInt(rect.y);
+            int h = Mathf.CeilToInt(rect.height);
             ColorRef? cr = s.TextColor;
             Color c = cr switch {
                 ColorRef.Literal lit => lit.Value,
@@ -123,16 +144,13 @@ public static class Display {
             Color saved = GUI.color;
             GUI.color = c;
             gs.alignment = TextAnchor.MiddleLeft;
-            gs.clipping = TextClipping.Clip;
+            gs.clipping = TextClipping.Overflow;
 
-            float cursor = startX;
+            int cursor = startX;
             for (int i = 0; i < content.Length; i++) {
                 string ch = content[i].ToString();
-                GUIContent gc = new GUIContent(ch);
-                float charW = gs.CalcSize(gc).x;
-                Rect charRect = new Rect(cursor, rect.y, charW, rect.height);
-                GUI.Label(RectSnap.Snap(charRect), ch, gs);
-                cursor += charW + letterSpacing;
+                GUI.Label(new Rect(cursor, y, widths[i], h), ch, gs);
+                cursor += widths[i] + letterSpacing;
             }
             GUI.color = saved;
         };
@@ -153,7 +171,7 @@ public static class Display {
 
     [DocVariant("CL_Playground_Label_Tracked")]
     public static DocSample DocsTracked() {
-        return new DocSample(() => Display.Create("RIMW•RLD", style: new Style { TextAlign = TextAlign.Center }, level: 1, letterSpacing: 12f));
+        return new DocSample(() => Display.Create("RIMW•RLD", style: new Style { TextAlign = TextAlign.Center, LetterSpacing = Tracking.Of(0.2f) }, level: 1));
     }
 
     [DocVariant("CL_Playground_Label_Small")]
@@ -163,6 +181,6 @@ public static class Display {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        return new DocSample(() => Display.Create("RIMW•RLD", style: new Style { TextAlign = TextAlign.Center }, letterSpacing: 12f));
+        return new DocSample(() => Display.Create("RIMW•RLD", style: new Style { TextAlign = TextAlign.Center, LetterSpacing = Tracking.Of(0.2f) }));
     }
 }

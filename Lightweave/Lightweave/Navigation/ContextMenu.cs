@@ -22,7 +22,7 @@ public static class ContextMenu {
         [DocParam("Region that captures the right-click.")]
         LightweaveNode child,
         [DocParam("Menu rows to display when triggered.")]
-        IReadOnlyList<MenuItem> items,
+        IReadOnlyList<MenuEntry> items,
         Style? style = null,
         string[]? classes = null,
         string? id = null,
@@ -74,12 +74,12 @@ public static class ContextMenu {
 
     [DocVariant("CL_Playground_Label_Default")]
     public static DocSample DocsDefault() {
-        List<MenuItem> items = new List<MenuItem> {
-            Menu.Item((string)"CL_Playground_ContextMenu_Inspect".Translate(), () => { }),
-            Menu.Item((string)"CL_Playground_ContextMenu_Rename".Translate(), () => { }),
-            Menu.Item((string)"CL_Playground_ContextMenu_Duplicate".Translate(), () => { }),
+        List<MenuEntry> items = new List<MenuEntry> {
+            Menu.Entry((string)"CL_Playground_ContextMenu_Inspect".Translate(), () => { }),
+            Menu.Entry((string)"CL_Playground_ContextMenu_Rename".Translate(), () => { }),
+            Menu.Entry((string)"CL_Playground_ContextMenu_Duplicate".Translate(), () => { }),
             Menu.Divider(),
-            Menu.Item((string)"CL_Playground_ContextMenu_Delete".Translate(), () => { }),
+            Menu.Entry((string)"CL_Playground_ContextMenu_Delete".Translate(), () => { }),
         };
 
         LightweaveNode target = Box.Create(
@@ -99,11 +99,11 @@ public static class ContextMenu {
 
     [DocUsage]
     public static DocSample DocsUsage() {
-        List<MenuItem> items = new List<MenuItem> {
-            Menu.Item("Inspect", () => { }),
-            Menu.Item("Rename", () => { }),
+        List<MenuEntry> items = new List<MenuEntry> {
+            Menu.Entry("Inspect", () => { }),
+            Menu.Entry("Rename", () => { }),
             Menu.Divider(),
-            Menu.Item("Delete", () => { }),
+            Menu.Entry("Delete", () => { }),
         };
 
         LightweaveNode target = Box.Create(

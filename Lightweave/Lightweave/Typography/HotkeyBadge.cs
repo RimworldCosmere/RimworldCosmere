@@ -91,7 +91,7 @@ public static class HotkeyBadge {
             };
             Color saved = GUI.color;
             GUI.color = textColor;
-            GUI.Label(capRect, label, gs);
+            GUI.Label(RectSnap.SnapText(capRect), label, gs);
             GUI.color = saved;
         };
 

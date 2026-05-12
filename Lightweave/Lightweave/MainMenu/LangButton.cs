@@ -32,7 +32,8 @@ public static class LangButton {
         LightweaveNode trigger = FootLink.Create(
             label: label,
             onClick: () => open.Set(!open.Value),
-            indicateMenu: true
+            indicateMenu: true,
+            expanded: open.Value
         );
 
         LightweaveNode popover = Popover.Create(

@@ -17,7 +17,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
             "CL_Playground_Category_Layout_Desc",
             new[] {
                 "stack", "column", "row", "hstack", "grid", "wrap", "scrollarea", "divider", "spacer", "each",
-                "conditional", "carousel", "container", "card", "box",
+                "conditional", "carousel", "container", "card", "box", "vignette",
             }
         ),
         new PlaygroundCategory(
@@ -51,7 +51,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
             "navigation",
             "CL_Playground_Category_Navigation",
             "CL_Playground_Category_Navigation_Desc",
-            new[] { "tabs", "segmented", "breadcrumbs", "menu", "menu-row", "contextmenu", "accordion", "sidenav" }
+            new[] { "tabs", "segmented", "breadcrumbs", "menu", "menu-item", "menu-divider", "contextmenu", "accordion", "sidenav" }
         ),
         new PlaygroundCategory(
             "overlay",
@@ -105,6 +105,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
         { "container", "Lightweave/Lightweave/Layout/Container.cs" },
         { "card", "Lightweave/Lightweave/Layout/Card.cs" },
         { "box", "Lightweave/Lightweave/Layout/Box.cs" },
+        { "vignette", "Lightweave/Lightweave/Layout/Vignette.cs" },
         { "heading", "Lightweave/Lightweave/Typography/Heading.cs" },
         { "text", "Lightweave/Lightweave/Typography/Text.cs" },
         { "label", "Lightweave/Lightweave/Typography/Label.cs" },
@@ -139,7 +140,8 @@ public sealed class LightweavePlayground : LightweaveWindow {
         { "segmented", "Lightweave/Lightweave/Navigation/Segmented.cs" },
         { "breadcrumbs", "Lightweave/Lightweave/Navigation/Breadcrumbs.cs" },
         { "menu", "Lightweave/Lightweave/Navigation/Menu.cs" },
-        { "menu-row", "Lightweave/Lightweave/Navigation/MenuRow.cs" },
+        { "menu-item", "Lightweave/Lightweave/Navigation/MenuItem.cs" },
+        { "menu-divider", "Lightweave/Lightweave/Navigation/MenuDivider.cs" },
         { "contextmenu", "Lightweave/Lightweave/Navigation/ContextMenu.cs" },
         { "accordion", "Lightweave/Lightweave/Navigation/Accordion.cs" },
         { "sidenav", "Lightweave/Lightweave/Playground/PlaygroundRail.cs" },
@@ -180,6 +182,7 @@ public sealed class LightweavePlayground : LightweaveWindow {
         { "carousel", 200f },
         { "container", 96f },
         { "card", 280f },
+        { "vignette", 160f },
         { "stack", 160f },
         { "column", 160f },
         { "wrap", 120f },

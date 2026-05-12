@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using Cosmere.Lightweave.Hooks;
 using static Cosmere.Lightweave.Hooks.Hooks;
 using Cosmere.Lightweave.Navigation;
-using Cosmere.Lightweave.Patch;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Types;
 using UnityEngine;
@@ -36,7 +35,8 @@ public static class MoreButton {
             hotkey: string.Empty,
             toggle,
             disabled: false,
-            chevron: true
+            chevron: true,
+            expanded: open.Value
         );
 
         LightweaveNode menu = Menu.Create(
@@ -67,74 +67,96 @@ public static class MoreButton {
         return node;
     }
 
-    public static IReadOnlyList<MenuItem> BuildItems(Action onDismiss) {
-        List<MenuItem> items = new List<MenuItem> {
-            Menu.Item(
+    public static IReadOnlyList<MenuEntry> BuildItems(Action onDismiss) {
+        List<MenuEntry> items = new List<MenuEntry> {
+            Menu.Entry(
                 (string)"CL_MainMenu_Playground".Translate(),
-                () => Run(DevPlaygroundButtonPatch.OpenPlayground, onDismiss),
+                () => Run(OpenPlayground, onDismiss),
+                icon: BuildIcon("✦"),
                 subtitle: (string)"CL_MainMenu_More_Sub_Playground".Translate()
             ),
             Menu.Divider(),
-            Menu.Item(
+            Menu.Entry(
                 (string)"CL_MainMenu_Credits".Translate(),
                 () => Run(MainMenuActions.OpenCredits, onDismiss),
+                icon: BuildIcon("★"),
                 subtitle: (string)"CL_MainMenu_More_Sub_Credits".Translate()
             ),
-            Menu.Item(
+            Menu.Entry(
                 (string)"CL_MainMenu_SteamWorkshop".Translate(),
                 () => Run(OpenSteamWorkshop, onDismiss),
+                icon: BuildIcon("⛁"),
                 subtitle: (string)"CL_MainMenu_More_Sub_SteamWorkshop".Translate()
             ),
-            Menu.Item(
+            Menu.Entry(
                 (string)"CL_MainMenu_OfficialDiscord".Translate(),
                 () => Run(OpenOfficialDiscord, onDismiss),
+                icon: BuildIcon("◈"),
                 subtitle: (string)"CL_MainMenu_More_Sub_OfficialDiscord".Translate()
             ),
-            Menu.Item(
+            Menu.Entry(
                 (string)"CL_MainMenu_WikiTutorials".Translate(),
                 () => Run(OpenWiki, onDismiss),
+                icon: BuildIcon("?"),
                 subtitle: (string)"CL_MainMenu_More_Sub_WikiTutorials".Translate()
             ),
-            Menu.Item(
+            Menu.Entry(
                 (string)"CL_MainMenu_BugReport".Translate(),
                 () => Run(OpenBugReport, onDismiss),
+                icon: BuildIcon("▲"),
                 subtitle: (string)"CL_MainMenu_More_Sub_BugReport".Translate()
             ),
             Menu.Divider(),
-            Menu.Item(
+            Menu.Entry(
                 (string)"CL_MainMenu_EulaLicenses".Translate(),
-                () => Run(OpenEula, onDismiss)
+                () => Run(OpenEula, onDismiss),
+                icon: BuildIcon("§")
             ),
-            Menu.Item(
+            Menu.Entry(
                 (string)"CL_MainMenu_PrivacyPolicy".Translate(),
-                () => Run(OpenPrivacy, onDismiss)
+                () => Run(OpenPrivacy, onDismiss),
+                icon: BuildIcon("§")
             ),
         };
 
         if (Prefs.DevMode) {
             items.Add(Menu.Divider());
-            items.Add(Menu.Item(
+            items.Add(Menu.Entry(
                 (string)"CL_MainMenu_DevQuickTest".Translate(),
-                () => Run(MainMenuActions.DevQuickTest, onDismiss)
+                () => Run(MainMenuActions.DevQuickTest, onDismiss),
+                icon: BuildIcon("⚙")
             ));
             if (LanguageDatabase.activeLanguage == LanguageDatabase.defaultLanguage &&
                 LanguageDatabase.activeLanguage.anyError) {
-                items.Add(Menu.Item(
+                items.Add(Menu.Entry(
                     (string)"CL_MainMenu_TranslationReport".Translate(),
-                    () => Run(MainMenuActions.SaveTranslationReport, onDismiss)
+                    () => Run(MainMenuActions.SaveTranslationReport, onDismiss),
+                    icon: BuildIcon("⚙")
                 ));
             }
         }
 
         items.Add(Menu.Divider());
-        items.Add(Menu.Item(
+        items.Add(Menu.Entry(
             (string)"CL_MainMenu_QuitToOS".Translate(),
             () => Run(MainMenuActions.QuitToOS, onDismiss),
+            icon: BuildIcon("×"),
             danger: true,
             subtitle: (string)"CL_MainMenu_More_Sub_QuitToOS".Translate()
         ));
 
         return items;
+    }
+
+    private static LightweaveNode BuildIcon(string glyph) {
+        return GlyphIcon.Create(glyph);
+    }
+
+    private static void OpenPlayground() {
+        if (Find.WindowStack.IsOpen<Playground.LightweavePlayground>()) {
+            return;
+        }
+        Find.WindowStack.Add(new Playground.LightweavePlayground());
     }
 
     private static void Run(Action action, Action onDismiss) {

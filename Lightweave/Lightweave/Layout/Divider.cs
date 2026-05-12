@@ -56,6 +56,7 @@ public static class Divider {
         float t = (thickness ?? new Rem(1f / 16f)).ToPixels();
         LightweaveNode n = NodeBuilder.New("Divider.Vertical", line, file);
         n.ApplyStyling("divider", style, classes, id);
+        n.MeasureWidth = () => t;
         n.Paint = (rect, _) => {
             Style s = n.GetResolvedStyle();
             BackgroundSpec bg = s.Background ?? BackgroundSpec.Of(ThemeSlot.BorderSubtle);
@@ -82,12 +83,12 @@ public static class Divider {
     [DocVariant("CL_Playground_Label_Vertical")]
     public static DocSample DocsVertical() {
         return new DocSample(() => 
-            Row.Create(
-                SpacingScale.Xs,
+            HStack.Create(
+                SpacingScale.Sm,
                 children: r => {
-                    r.Add(Caption.Create("left"));
-                    r.Add(Divider.Vertical());
-                    r.Add(Caption.Create("right"));
+                    r.AddHug(Caption.Create("left"));
+                    r.AddHug(Divider.Vertical());
+                    r.AddHug(Caption.Create("right"));
                 }
             )
         );

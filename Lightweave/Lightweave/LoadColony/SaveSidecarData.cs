@@ -18,5 +18,5 @@ public sealed class SaveSidecarData {
     public string ActiveThreat { get; init; } = string.Empty;
     public bool Permadeath { get; init; }
     public DateTime CapturedAtUtc { get; init; }
-    public string ScreenshotBase64 { get; init; } = string.Empty;
+    public string ScreenshotBase64 { get; set; } = string.Empty;
 }

@@ -283,6 +283,10 @@ public static class Carousel {
 
     [DocVariant("CL_Playground_Label_Autoplay")]
     public static DocSample DocsAutoplay() {
+        return new DocSample(() => BuildAutoplayDemo(), useFullSource: true);
+    }
+
+    private static LightweaveNode BuildAutoplayDemo() {
         const float autoplaySeconds = 3f;
         StateHandle<int> index = UseState(0);
         RefHandle<float> lastTick = UseRef(Time.realtimeSinceStartup);
@@ -314,11 +318,15 @@ public static class Carousel {
             LightweaveRoot.PaintSubtree(carousel, rect);
         };
 
-        return new DocSample(() => wrapper, useFullSource: true);
+        return wrapper;
     }
 
     [DocVariant("CL_Playground_Label_Keyboard")]
     public static DocSample DocsKeyboard() {
+        return new DocSample(() => BuildKeyboardDemo(), useFullSource: true);
+    }
+
+    private static LightweaveNode BuildKeyboardDemo() {
         StateHandle<int> index = UseState(0);
 
         List<LightweaveNode> slides = new List<LightweaveNode> {
@@ -346,7 +354,7 @@ public static class Carousel {
             LightweaveRoot.PaintSubtree(carousel, rect);
         };
 
-        return new DocSample(() => wrapper, useFullSource: true);
+        return wrapper;
     }
 
     [DocUsage]

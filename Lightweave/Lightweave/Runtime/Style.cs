@@ -33,6 +33,7 @@ public readonly record struct Style {
     public Rem? FontSize { get; init; }
     public FontStyle? FontWeight { get; init; }
     public TextAlign? TextAlign { get; init; }
+    public Tracking? LetterSpacing { get; init; }
 
     public StateStyle? Hover { get; init; }
     public StateStyle? Active { get; init; }
@@ -65,6 +66,7 @@ public readonly record struct Style {
             FontSize = overrides.FontSize ?? baseStyle.FontSize,
             FontWeight = overrides.FontWeight ?? baseStyle.FontWeight,
             TextAlign = overrides.TextAlign ?? baseStyle.TextAlign,
+            LetterSpacing = overrides.LetterSpacing ?? baseStyle.LetterSpacing,
             Hover = overrides.Hover ?? baseStyle.Hover,
             Active = overrides.Active ?? baseStyle.Active,
             Focus = overrides.Focus ?? baseStyle.Focus,

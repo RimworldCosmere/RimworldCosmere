@@ -77,7 +77,6 @@ public static class PaintBox {
             BackdropBlur.Draw(r, blurred.BlurSizePx);
             if (blurred.Tint != null) {
                 Color c = ResolveColor(blurred.Tint);
-                c.a *= 0.55f;
                 GUI.DrawTexture(r, Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0, c, Vector4.zero, rad);
             }
         }

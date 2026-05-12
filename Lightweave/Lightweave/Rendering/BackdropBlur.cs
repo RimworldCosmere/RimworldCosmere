@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Cosmere.Lightweave.Rendering;
 
 public static class BackdropBlur {
-    public static void Draw(Rect rect, float blurSizePx = 6f, Color? tint = null) {
+    public static void Draw(Rect rect, float blurSizePx = 12f, Color? tint = null) {
         Material? mat = LightweaveShaderDatabase.BlurMaterial;
         if (mat == null) {
             return;

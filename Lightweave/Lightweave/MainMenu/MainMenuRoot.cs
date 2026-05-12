@@ -1,4 +1,5 @@
 using Cosmere.Lightweave.Layout;
+using Cosmere.Lightweave.Rendering;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
@@ -45,10 +46,24 @@ public static class MainMenuRoot {
 
         LightweaveNode bottomBlock = Container.Create(
             Stack.Create(
-                SpacingScale.Lg,
+                new Rem(3f),
                 s => {
-                    s.Add(StaggerIn.Wrap(ContinueCard.Create(save), 0.18f));
-                    s.Add(StaggerIn.Wrap(MenuButtons.Create(anyMapFiles), 0.24f));
+                    s.Add(
+                        StaggerIn.Wrap(ContinueCard.Create(save), 0.18f).WithStyle(
+                            new Style {
+                                Position = Position.Relative,
+                                Top = new Rem(0.625f),
+                            }
+                        )
+                    );
+                    s.Add(
+                        StaggerIn.Wrap(MenuButtons.Create(anyMapFiles), 0.24f).WithStyle(
+                            new Style {
+                                Position = Position.Relative,
+                                Top = new Rem(-0.625f),
+                            }
+                        )
+                    );
                 }
             ),
             style: new Style {
@@ -57,16 +72,24 @@ public static class MainMenuRoot {
             }
         );
 
-        return Stack.Create(
+        LightweaveNode content = Stack.Create(
             SpacingScale.None,
             root => {
                 root.Add(Spacer.Fixed(new Rem(1.375f)));
                 root.Add(topBar);
                 root.AddFlex(Spacer.Flex());
                 root.Add(bottomBlock);
-                root.Add(Spacer.Fixed(new Rem(5.4375f)));
+                root.Add(Spacer.Fixed(new Rem(2.9375f)));
                 root.Add(FootStrip.Create());
             }
+        );
+
+        return Vignette.Create(
+            content,
+            shape: VignetteShape.Radial,
+            intensity: 0.75f,
+            scale: 1.5f,
+            color: ThemeSlot.OverlayDim
         );
     }
 }

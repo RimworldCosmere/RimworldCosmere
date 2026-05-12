@@ -14,6 +14,7 @@ public static class SaveGameMetadataPatch {
             string saveFilePath = GenFilePaths.FilePathForSavedGame(fileName);
             SaveSidecarData data = SaveSidecar.CaptureFromCurrentGame();
             SaveSidecar.Write(saveFilePath, data);
+            ColonyScreenshotCapture.ScheduleForSave(saveFilePath);
         }
         catch (Exception ex) {
             LightweaveLog.Warning("SaveGameMetadataPatch failed: " + ex);

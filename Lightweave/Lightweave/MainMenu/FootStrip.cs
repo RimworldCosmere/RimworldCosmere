@@ -16,7 +16,6 @@ public static class FootStrip {
                     label: "CL_MainMenu_Credits".Translate(),
                     onClick: MainMenuActions.OpenCredits
                 ));
-                h.AddHug(FootMoreButton.Create());
             })),
             style: new Style {
                 Padding = new EdgeInsets(

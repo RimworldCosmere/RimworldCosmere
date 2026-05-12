@@ -33,31 +33,33 @@ public static class Container {
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
+        Length? maxWidth = style?.MaxWidth;
+        Style? appliedStyle = style.HasValue ? style.Value with { MaxWidth = null } : style;
+
         LightweaveNode node = NodeBuilder.New("Container", line, file);
-        node.ApplyStyling("container", style, classes, id);
+        node.ApplyStyling("container", appliedStyle, classes, id);
         node.Children.Add(child);
 
         float MaxWidthPx(float availableWidth) {
-            Style s = node.GetResolvedStyle();
-            Length? mw = s.MaxWidth;
-            if (!mw.HasValue) {
+            if (!maxWidth.HasValue) {
                 return 0f;
             }
-            return mw.Value.ToPixels(availableWidth, availableWidth);
+            return maxWidth.Value.ToPixels(availableWidth, availableWidth);
+        }
+
+        (float left, float top, float right, float bottom) ResolvePaddingPixels() {
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? EdgeInsets.Zero;
+            return pad.Resolve(RenderContext.Current.Direction);
         }
 
         node.MeasureWidth = () => {
-            Style s = node.GetResolvedStyle();
-            Length? mw = s.MaxWidth;
-            if (mw.HasValue && mw.Value.Mode == Length.Kind.Rem) {
-                return mw.Value.ToPixels(0f, 0f);
-            }
-
             if (!child.IsInFlow()) {
                 return 0f;
             }
-
-            return child.MeasureWidth?.Invoke() ?? 0f;
+            (float left, _, float right, _) = ResolvePaddingPixels();
+            float inner = child.MeasureWidth?.Invoke() ?? 0f;
+            return inner + left + right;
         };
 
         node.Measure = availableWidth => {

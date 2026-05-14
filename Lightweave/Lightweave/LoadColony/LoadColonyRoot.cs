@@ -1,19 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 using Cosmere.Lightweave.Hooks;
 using Cosmere.Lightweave.Layout;
+using Cosmere.Lightweave.Overlay;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace Cosmere.Lightweave.LoadColony;
 
 public static class LoadColonyRoot {
-    public static LightweaveNode Build(List<SaveFileInfo> files, Action onClose) {
+    public static LightweaveNode Build(List<SaveFileInfo> files, Action onClose, Action onReloadFiles) {
         Hooks.Hooks.StateHandle<string> filter = Hooks.Hooks.UseState<string>("all");
         Hooks.Hooks.StateHandle<string?> selected = Hooks.Hooks.UseState<string?>(InitialSelection(files));
 
@@ -29,33 +30,39 @@ public static class LoadColonyRoot {
             new DialogHeaderTab("CL_LoadColony_Filter_Auto".Translate(), filter.Value == "auto", () => filter.Set("auto")),
         };
 
-        return Box.Create(
-            children: c => c.Add(Stack.Create(SpacingScale.None, root => {
-                root.Add(DialogHeader.Create(
-                    title: "CL_LoadColony_Title".Translate(),
-                    breadcrumb: "CL_Dialog_Crumb_Main".Translate() + " / " + "CL_LoadColony_Title".Translate(),
-                    onClose: onClose,
-                    drawDivider: true,
-                    tabs: tabs
-                ));
-                root.AddFlex(HStack.Create(SpacingScale.None, h => {
-                    h.Add(SaveListPane.Create(
-                        filteredFiles,
-                        selected.Value,
-                        name => selected.Set(name)
-                    ), new Rem(18f).ToPixels());
-                    h.AddFlex(SaveDetailPane.Create(
-                        activeFile,
-                        activeStatus,
-                        onClose,
-                        () => SaveStatusInspector.Invalidate(activeFile?.FileInfo.FullName ?? string.Empty)
-                    ));
-                }));
-            })),
-            style: new Style {
-                Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
-                Border = BorderSpec.All(new Rem(0.0625f), ThemeSlot.BorderSubtle),
+        Action onAfterMutate = () => {
+            string? activePath = activeFile?.FileInfo.FullName;
+            if (activePath is { Length: > 0 }) {
+                SaveStatusInspector.Invalidate(activePath);
             }
+            onReloadFiles?.Invoke();
+        };
+
+        LightweaveNode modalContent = Stack.Create(SpacingScale.None, root => {
+            root.Add(DialogHeader.Create(
+                title: "CL_LoadColony_Title".Translate(),
+                onClose: onClose,
+                drawDivider: true,
+                tabs: tabs
+            ));
+            root.AddFlex(HStack.Create(SpacingScale.None, h => {
+                h.Add(SaveListPane.Create(
+                    filteredFiles,
+                    selected.Value,
+                    name => selected.Set(name)
+                ), new Rem(30f).ToPixels());
+                h.AddFlex(SaveDetailPane.Create(
+                    activeFile,
+                    activeStatus,
+                    onClose,
+                    onAfterMutate
+                ));
+            }));
+        });
+
+        return Dialog.Create(
+            content: () => modalContent,
+            cardBackground: BackgroundSpec.Blur(new Color(0f, 0f, 0f, 0.95f), 10f)
         );
     }
 

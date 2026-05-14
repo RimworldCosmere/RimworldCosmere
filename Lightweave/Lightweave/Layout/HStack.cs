@@ -62,6 +62,12 @@ public static class HStack {
             return gap.ToPixels();
         }
 
+        (float left, float top, float right, float bottom) ResolvePaddingPixels() {
+            Style s = node.GetResolvedStyle();
+            EdgeInsets pad = s.Padding ?? EdgeInsets.Zero;
+            return pad.Resolve(RenderContext.Current.Direction);
+        }
+
         float? maxChildHeight = null;
         for (int i = 0; i < count; i++) {
             float? ph = builder.Items[i].node.PreferredHeight;
@@ -118,15 +124,10 @@ public static class HStack {
             return child.PreferredHeight ?? 0f;
         }
 
-        (float left, float top, float right, float bottom) ResolvePaddingPixels() {
-            Style s = node.GetResolvedStyle();
-            EdgeInsets pad = s.Padding ?? EdgeInsets.Zero;
-            return pad.Resolve(RenderContext.Current.Direction);
-        }
-
         node.MeasureWidth = () => {
             if (count == 0) {
-                return 0f;
+                (float pl, _, float pr, _) = ResolvePaddingPixels();
+                return pl + pr;
             }
             (float left, _, float right, _) = ResolvePaddingPixels();
             float gapPx = ResolveGapPx();
@@ -150,28 +151,28 @@ public static class HStack {
         };
 
         node.Measure = availableWidth => {
-            if (count == 0) {
-                return 0f;
-            }
-
-            bool[] inFlow = new bool[count];
-            for (int i = 0; i < count; i++) {
-                inFlow[i] = builder.Items[i].node.IsInFlow();
-            }
-
-            float[] widths = AllocateWidths(availableWidth, ResolveGapPx(), inFlow);
-            float max = 0f;
-            for (int i = 0; i < count; i++) {
-                if (!inFlow[i]) {
-                    continue;
+            (float left, float top, float right, float bottom) = ResolvePaddingPixels();
+            float innerWidth = Mathf.Max(0f, availableWidth - left - right);
+            float contentH = 0f;
+            if (count > 0) {
+                bool[] inFlow = new bool[count];
+                for (int i = 0; i < count; i++) {
+                    inFlow[i] = builder.Items[i].node.IsInFlow();
                 }
-                float h = MeasureChildHeight(builder.Items[i].node, widths[i]);
-                if (h > max) {
-                    max = h;
+
+                float[] widths = AllocateWidths(innerWidth, ResolveGapPx(), inFlow);
+                for (int i = 0; i < count; i++) {
+                    if (!inFlow[i]) {
+                        continue;
+                    }
+                    float h = MeasureChildHeight(builder.Items[i].node, widths[i]);
+                    if (h > contentH) {
+                        contentH = h;
+                    }
                 }
             }
 
-            return max;
+            return contentH + top + bottom;
         };
 
         node.Paint = (rect, paintChildren) => {

@@ -7,48 +7,41 @@ namespace Cosmere.Lightweave.Overlay;
 internal sealed class DialogWindow : LightweaveWindow {
     private readonly Func<LightweaveNode> contentBuilder;
     private readonly Action onDismiss;
-    private readonly Vector2 size;
+    private readonly DialogShellOptions options;
 
     public DialogWindow(
         Func<LightweaveNode> content,
         Action onDismiss,
-        Vector2 size
+        DialogShellOptions options
     ) {
         contentBuilder = content;
         this.onDismiss = onDismiss;
-        this.size = size;
+        this.options = options;
 
-        doCloseX = true;
+        doCloseX = false;
         doCloseButton = false;
         closeOnClickedOutside = false;
         draggable = false;
         resizeable = false;
         forcePause = true;
-        absorbInputAroundWindow = true;
+        absorbInputAroundWindow = options.IsModal;
         closeOnAccept = false;
         closeOnCancel = true;
-        drawShadow = true;
+        drawShadow = false;
+        doWindowBackground = false;
+        layer = Verse.WindowLayer.Super;
     }
 
     protected override bool DrawBorder => false;
 
     protected override bool EdgeResizable => false;
 
-    public override Vector2 InitialSize {
-        get {
-            if (size.y > 0f) {
-                return size;
-            }
+    public override Vector2 InitialSize => new Vector2(Verse.UI.screenWidth, Verse.UI.screenHeight);
 
-            LightweaveNode probe = contentBuilder();
-            float width = size.x > 0f ? size.x : 480f;
-            float height = probe.Measure?.Invoke(width) ?? probe.PreferredHeight ?? 240f;
-            return new Vector2(width, height + 8f);
-        }
-    }
+    protected override float Margin => 0f;
 
     protected override LightweaveNode Body() {
-        return contentBuilder();
+        return Dialog.BuildShell(contentBuilder(), options);
     }
 
     public override void PostClose() {

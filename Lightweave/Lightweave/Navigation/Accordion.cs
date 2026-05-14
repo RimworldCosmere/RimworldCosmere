@@ -70,7 +70,7 @@ public static class Accordion {
 
             Font headerFont = theme.GetFont(FontRole.BodyBold);
             int headerFontSize = Mathf.RoundToInt(new Rem(0.9375f).ToFontPx());
-            GUIStyle headerStyle = GuiStyleCache.GetOrCreate(headerFont, headerFontSize, FontStyle.Bold);
+            GUIStyle headerStyle = GuiStyleCache.GetOrCreate(headerFont, headerFontSize);
             headerStyle.alignment = rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
             headerStyle.wordWrap = false;
 

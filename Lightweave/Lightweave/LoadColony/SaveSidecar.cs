@@ -68,6 +68,7 @@ public static class SaveSidecar {
         float wealth = 0f;
         string biome = string.Empty;
         string climate = string.Empty;
+        string activeThreat = string.Empty;
         if (map != null) {
             colonists = map.mapPawns?.FreeColonistsCount ?? 0;
             wealth = map.wealthWatcher?.WealthTotal ?? 0f;
@@ -75,6 +76,7 @@ public static class SaveSidecar {
             climate = ResolveClimate(map);
             animals = CountColonyAnimals(map);
             moodAvg = AverageColonyMoodPercent(map);
+            activeThreat = CollectActiveConditions(map);
         }
 
         int daysSurvived = (int)((game?.tickManager?.TicksGame ?? 0) / 60000);
@@ -95,11 +97,34 @@ public static class SaveSidecar {
             Biome = biome,
             Climate = climate,
             ThreatScale = threatScale,
-            ActiveThreat = string.Empty,
+            ActiveThreat = activeThreat,
             Permadeath = permadeath,
             CapturedAtUtc = DateTime.UtcNow,
             ScreenshotBase64 = string.Empty,
         };
+    }
+
+    private static string CollectActiveConditions(Map map) {
+        GameConditionManager? mgr = map?.GameConditionManager;
+        if (mgr == null) {
+            return string.Empty;
+        }
+
+        List<GameCondition> all = new List<GameCondition>();
+        mgr.GetAllGameConditionsAffectingMap(map, all);
+        if (all.Count == 0) {
+            return string.Empty;
+        }
+
+        List<string> labels = new List<string>(all.Count);
+        for (int i = 0; i < all.Count; i++) {
+            string? label = all[i]?.LabelCap;
+            if (!string.IsNullOrEmpty(label) && !labels.Contains(label!)) {
+                labels.Add(label!);
+            }
+        }
+
+        return string.Join("|", labels);
     }
 
 

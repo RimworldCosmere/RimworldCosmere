@@ -69,10 +69,9 @@ public static class MenuItem {
                 labelStartX = iconRect.xMax + gapPx;
             }
 
-            Font font = theme.GetFont(FontRole.Body);
             int px = Mathf.RoundToInt(new Rem(0.78f).ToFontPx());
             FontStyle weight = danger ? FontStyle.Bold : FontStyle.Normal;
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, px, weight);
+            GUIStyle style = GuiStyleCache.GetOrCreate(theme, FontRole.Body, px, weight);
             style.alignment = TextAnchor.MiddleLeft;
             style.clipping = TextClipping.Clip;
 

@@ -1,4 +1,5 @@
 using System;
+using Cosmere.Lightweave.Tokens;
 using UnityEngine;
 
 namespace Cosmere.Lightweave.Rendering;
@@ -27,6 +28,20 @@ public static class GuiStyleCache {
         lruNodes[key] = node;
         Evict();
         return style;
+    }
+
+    // Role-aware overload: when Bold is requested, swap to the bold variant of the
+    // role (Body -> BodyBold) and use FontStyle.Normal on the GUIStyle so we never
+    // fall back to Unity's faux-bold (which draws shifted/jagged text).
+    public static GUIStyle GetOrCreate(Theme.Theme theme, FontRole role, int pixelSize, FontStyle fontStyle = FontStyle.Normal) {
+        if (fontStyle == FontStyle.Bold) {
+            FontRole boldRole = role switch {
+                FontRole.Body => FontRole.BodyBold,
+                _ => role,
+            };
+            return GetOrCreate(theme.GetFont(boldRole), pixelSize, FontStyle.Normal);
+        }
+        return GetOrCreate(theme.GetFont(role), pixelSize, fontStyle);
     }
 
     private static void Touch(Key key) {

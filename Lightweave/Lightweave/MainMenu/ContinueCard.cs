@@ -125,20 +125,29 @@ public static class ContinueCard {
             int px = Mathf.RoundToInt(new Rem(1.0667f).ToFontPx());
             GUIStyle style = GuiStyleCache.GetOrCreate(font, px, FontStyle.Normal);
             style.alignment = TextAnchor.MiddleLeft;
+            style.clipping = TextClipping.Overflow;
 
             string parts = BuildEyebrowText(save);
             string upper = parts.ToUpperInvariant();
-            float tracking = px * 0.18f;
-            float cursor = rect.x;
+            int tracking = Mathf.Max(0, Mathf.RoundToInt(px * 0.18f));
+            int safetyPad = Mathf.Max(2, Mathf.CeilToInt(px * 0.25f));
+
+            int[] widths = new int[upper.Length];
+            for (int i = 0; i < upper.Length; i++) {
+                GUIContent gc = new GUIContent(upper[i].ToString());
+                widths[i] = Mathf.CeilToInt(style.CalcSize(gc).x);
+            }
+
+            int cursor = Mathf.FloorToInt(rect.x);
+            int y = Mathf.FloorToInt(rect.y);
+            int h = Mathf.CeilToInt(rect.height);
+
             Color saved = GUI.color;
             GUI.color = theme.GetColor(ThemeSlot.SurfaceAccent);
             for (int i = 0; i < upper.Length; i++) {
-                char c = upper[i];
-                string ch = c.ToString();
-                GUIContent gcc = new GUIContent(ch);
-                float w = style.CalcSize(gcc).x;
-                GUI.Label(RectSnap.Snap(new Rect(cursor, rect.y, w, rect.height)), ch, style);
-                cursor += w + tracking;
+                string ch = upper[i].ToString();
+                GUI.Label(new Rect(cursor, y, widths[i] + safetyPad, h), ch, style);
+                cursor += widths[i] + (i < upper.Length - 1 ? tracking : 0);
             }
             GUI.color = saved;
         };
@@ -267,8 +276,8 @@ public static class ContinueCard {
             Theme.Theme theme = RenderContext.Current.Theme;
 
             Font valueFont = theme.GetFont(FontRole.Mono);
-            int valuePx = Mathf.RoundToInt(new Rem(1.5f).ToFontPx());
-            GUIStyle valueStyle = GuiStyleCache.GetOrCreate(valueFont, valuePx, FontStyle.Bold);
+            int valuePx = Mathf.RoundToInt(new Rem(1.3333f).ToFontPx());
+            GUIStyle valueStyle = GuiStyleCache.GetOrCreate(valueFont, valuePx, FontStyle.Normal);
             valueStyle.alignment = TextAnchor.UpperLeft;
 
             Font labelFont = theme.GetFont(FontRole.Mono);
@@ -293,8 +302,8 @@ public static class ContinueCard {
         node.MeasureWidth = () => {
             Theme.Theme theme = RenderContext.Current.Theme;
             Font valueFont = theme.GetFont(FontRole.Mono);
-            int valuePx = Mathf.RoundToInt(new Rem(1.5f).ToFontPx());
-            GUIStyle valueStyle = GuiStyleCache.GetOrCreate(valueFont, valuePx, FontStyle.Bold);
+            int valuePx = Mathf.RoundToInt(new Rem(1.3333f).ToFontPx());
+            GUIStyle valueStyle = GuiStyleCache.GetOrCreate(valueFont, valuePx, FontStyle.Normal);
             float valueW = valueStyle.CalcSize(new GUIContent(value)).x;
 
             float labelW = 0f;
@@ -359,7 +368,7 @@ public static class ContinueCard {
                 }
                 Rem fontSizeRem = new Rem(1.25f);
                 int pixelSize = Mathf.RoundToInt(fontSizeRem.ToFontPx());
-                GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+                GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize);
                 gstyle.alignment = TextAnchor.MiddleLeft;
                 gstyle.clipping = TextClipping.Overflow;
 

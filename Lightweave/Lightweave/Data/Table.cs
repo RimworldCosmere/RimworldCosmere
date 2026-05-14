@@ -171,7 +171,7 @@ public static class Table {
         float padPx = SpacingScale.Sm.ToPixels();
         Font font = theme.GetFont(FontRole.BodyBold);
         int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize);
         style.alignment = TextAnchor.MiddleLeft;
 
         float cursor = headerRect.x;

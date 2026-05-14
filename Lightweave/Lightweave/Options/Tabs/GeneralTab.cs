@@ -42,7 +42,9 @@ public static class GeneralTab {
                         variant: ButtonVariant.Secondary,
                         disabled: inGame
                     ),
-                    caption: inGame ? (string)"ChangeLanguageFromMainMenu".Translate() : null
+                    caption: inGame
+                        ? (string)"ChangeLanguageFromMainMenu".Translate()
+                        : (string)"CL_Options_Language_Hint".Translate()
                 ),
                 SettingRow.Create(
                     "CL_Options_Autosave_Interval".Translate(),
@@ -51,7 +53,8 @@ public static class GeneralTab {
                         options: AutosaveIntervalPresets,
                         labelFn: FormatAutosaveInterval,
                         onChange: v => Prefs.AutosaveIntervalDays = v
-                    )
+                    ),
+                    caption: (string)"CL_Options_Autosave_Interval_Hint".Translate()
                 ),
                 SettingRow.Create(
                     "CL_Options_Autosave_Slots".Translate(),
@@ -62,11 +65,13 @@ public static class GeneralTab {
                         max: 25f,
                         step: 1f,
                         format: v => Mathf.RoundToInt(v).ToString(CultureInfo.InvariantCulture)
-                    )
+                    ),
+                    caption: (string)"CL_Options_Autosave_Slots_Hint".Translate()
                 ),
                 SettingRow.Create(
                     "CL_Options_RunInBackground".Translate(),
-                    Switch.Create("", Prefs.RunInBackground, v => Prefs.RunInBackground = v)
+                    Switch.Create("", Prefs.RunInBackground, v => Prefs.RunInBackground = v),
+                    caption: (string)"CL_Options_RunInBackground_Hint".Translate()
                 )
             ));
 
@@ -74,7 +79,8 @@ public static class GeneralTab {
                 s.Add(SettingRow.Section("CL_Options_Section_General",
                     SettingRow.Create(
                         "CL_Options_DevMode".Translate(),
-                        Switch.Create("", Prefs.DevMode, v => Prefs.DevMode = v)
+                        Switch.Create("", Prefs.DevMode, v => Prefs.DevMode = v),
+                        caption: (string)"CL_Options_DevMode_Hint".Translate()
                     )
                 ));
             }
@@ -112,7 +118,8 @@ public static class GeneralTab {
                             buttonBText: "No".Translate()
                         )),
                         variant: ButtonVariant.Danger
-                    )
+                    ),
+                    caption: (string)"CL_Options_RestoreDefaults_Hint".Translate()
                 )
             ));
         });

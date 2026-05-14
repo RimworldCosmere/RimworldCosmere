@@ -380,9 +380,8 @@ public static partial class Doc {
         DrawRectOutline(btnRect, 1f);
         GUI.color = savedColor;
 
-        Font font = theme.GetFont(FontRole.Body);
         int btnFontSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-        GUIStyle btnStyle = GuiStyleCache.GetOrCreate(font, btnFontSize, FontStyle.Bold);
+        GUIStyle btnStyle = GuiStyleCache.GetOrCreate(theme, FontRole.Body, btnFontSize, FontStyle.Bold);
         btnStyle.alignment = TextAnchor.MiddleCenter;
         btnStyle.wordWrap = false;
         btnStyle.clipping = TextClipping.Clip;

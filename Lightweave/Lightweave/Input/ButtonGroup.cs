@@ -61,7 +61,7 @@ public static class ButtonGroup {
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize);
             style.alignment = TextAnchor.MiddleCenter;
             style.wordWrap = false;
 
@@ -113,7 +113,7 @@ public static class ButtonGroup {
                 bool isLast = logicalIndex == count - 1;
 
                 InteractionState state = InteractionState.Resolve(segRect, null, item.Disabled);
-                ThemeSlot bgSlot = ButtonVariants.Background(variant, state);
+                ThemeSlot? bgSlot = ButtonVariants.Background(variant, state);
 
                 Rem leadingCorner = isFirst ? innerCornerRem : new Rem(0f);
                 Rem trailingCorner = isLast ? innerCornerRem : new Rem(0f);
@@ -131,7 +131,9 @@ public static class ButtonGroup {
                         BottomEnd: trailingCorner
                     );
 
-                PaintBox.Draw(segRect, BackgroundSpec.Of(bgSlot), null, segRadius);
+                if (bgSlot.HasValue) {
+                    PaintBox.Draw(segRect, BackgroundSpec.Of(bgSlot.Value), null, segRadius);
+                }
 
                 float overlay = ButtonVariants.OverlayAlpha(state);
                 if (overlay > 0f) {

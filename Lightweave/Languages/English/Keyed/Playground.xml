@@ -212,6 +212,14 @@
     <CL_Playground_Toast_Msg_Success>Oathpact renewed successfully.</CL_Playground_Toast_Msg_Success>
     <CL_Playground_Toast_Msg_Warning>Stormlight reserves low.</CL_Playground_Toast_Msg_Warning>
     <CL_Playground_Toast_Msg_Danger>Fabrial fracture detected.</CL_Playground_Toast_Msg_Danger>
+    <CL_Playground_Dialog_Eyebrow>OATHPACT</CL_Playground_Dialog_Eyebrow>
+    <CL_Playground_Dialog_Heading>Speak the words</CL_Playground_Dialog_Heading>
+    <CL_Playground_Dialog_Body>The Ideal binds you, Radiant. Once sworn, the bond cannot be unspoken without consequence.</CL_Playground_Dialog_Body>
+    <CL_Playground_Dialog_Cancel>Reflect</CL_Playground_Dialog_Cancel>
+    <CL_Playground_Dialog_Confirm>Speak</CL_Playground_Dialog_Confirm>
+    <CL_Playground_Dialog_Variant_NonModal>Non-modal</CL_Playground_Dialog_Variant_NonModal>
+    <CL_Playground_Dialog_Variant_NoVignette>No vignette</CL_Playground_Dialog_Variant_NoVignette>
+    <CL_Playground_Dialog_Variant_NoGradient>No gradient</CL_Playground_Dialog_Variant_NoGradient>
 
     <!-- Task D1: category + placeholder panel stubs -->
     <CL_Playground_Category_Layout>Layout</CL_Playground_Category_Layout>
@@ -370,7 +378,10 @@
     <CL_Playground_scrollarea_Title>ScrollArea</CL_Playground_scrollarea_Title>
     <CL_Playground_scrollarea_What>Wraps content taller than its rect in a vertical scroll view.</CL_Playground_scrollarea_What>
     <CL_Playground_scrollarea_When>Use when content height exceeds the available space. Wrap a Stack to scroll the whole body.</CL_Playground_scrollarea_When>
-    <CL_Playground_ScrollArea_WithBar>With scrollbar</CL_Playground_ScrollArea_WithBar>
+    <CL_Playground_ScrollArea_AutoSlim>Auto + slim (default)</CL_Playground_ScrollArea_AutoSlim>
+    <CL_Playground_ScrollArea_AutoMinimal>Auto + minimal</CL_Playground_ScrollArea_AutoMinimal>
+    <CL_Playground_ScrollArea_AlwaysSlim>Always + slim</CL_Playground_ScrollArea_AlwaysSlim>
+    <CL_Playground_ScrollArea_AlwaysStandard>Always + standard</CL_Playground_ScrollArea_AlwaysStandard>
     <CL_Playground_ScrollArea_NoBar>No scrollbar</CL_Playground_ScrollArea_NoBar>
     <CL_Playground_divider_Title>Divider</CL_Playground_divider_Title>
     <CL_Playground_divider_What>A thin horizontal or vertical rule in the theme's subtle border color.</CL_Playground_divider_What>
@@ -508,8 +519,8 @@
     <CL_Playground_contextmenu_When>Use for per-item actions on a list row. Do not hide the primary action behind right-click.</CL_Playground_contextmenu_When>
 
     <CL_Playground_dialog_Title>Dialog</CL_Playground_dialog_Title>
-    <CL_Playground_dialog_What>Floating window opened on top of the main view. Dims the background.</CL_Playground_dialog_What>
-    <CL_Playground_dialog_When>Use for choices that must be made before proceeding. Avoid stacking dialogs.</CL_Playground_dialog_When>
+    <CL_Playground_dialog_What>Overlay surface with scrim, vignette, and centered blurred card. Modal by default (blocks input); pass isModal=false for a non-blocking floating variant. Embed inline inside a LightweaveWindow or pass isOpen to spawn its own window.</CL_Playground_dialog_What>
+    <CL_Playground_dialog_When>Use for any focus-stealing surface (Load Colony, Mods, Options, Rename, Delete) where the player must resolve a single task. Avoid stacking modal dialogs.</CL_Playground_dialog_When>
     <CL_Playground_dialog-header_Title>DialogHeader</CL_Playground_dialog-header_Title>
     <CL_Playground_dialog-header_What>Top bar for redesigned dialogs. Composes optional eyebrow breadcrumb, display title, optional trailing text action, and optional close button.</CL_Playground_dialog-header_What>
     <CL_Playground_dialog-header_When>Use at the top of every Lightweave-styled dialog (Load Colony, Mods Config, Options) so titles, breadcrumbs, and chrome stay aligned across the suite.</CL_Playground_dialog-header_When>

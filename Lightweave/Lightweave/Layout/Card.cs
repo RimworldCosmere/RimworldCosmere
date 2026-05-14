@@ -299,7 +299,7 @@ public static class Card {
             Direction dir = RenderContext.Current.Direction;
             Font font = theme.GetFont(FontRole.BodyBold);
             int size = Mathf.RoundToInt(new Rem(1.125f).ToFontPx());
-            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, size, FontStyle.Bold);
+            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, size);
             gstyle.alignment = dir == Direction.Rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
             Color saved = GUI.color;
             GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
@@ -495,7 +495,8 @@ private static LightweaveNode ContentInternal(
             float totalWidth = 0f;
             float[] widths = new float[count];
             for (int i = 0; i < count; i++) {
-                float w = children[i].MeasuredRect.width > 0f ? children[i].MeasuredRect.width : new Rem(5f).ToPixels();
+                float w = children[i].MeasureWidth?.Invoke()
+                    ?? (children[i].MeasuredRect.width > 0f ? children[i].MeasuredRect.width : new Rem(5f).ToPixels());
                 widths[i] = w;
                 totalWidth += w;
             }

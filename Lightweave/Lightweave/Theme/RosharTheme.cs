@@ -9,6 +9,7 @@ public static class RosharTheme {
             [ThemeSlot.SurfacePrimary] = new Color(0.940f, 0.935f, 0.905f, 0.97f),
             [ThemeSlot.SurfaceRaised] = new Color(0.980f, 0.975f, 0.945f, 1.00f),
             [ThemeSlot.SurfaceSunken] = new Color(0.880f, 0.870f, 0.840f, 0.97f),
+            [ThemeSlot.SurfaceTranslucent] = new Color(0.940f, 0.930f, 0.900f, 0.35f),
             [ThemeSlot.SurfaceAccent] = new Color(0.175f, 0.470f, 0.515f, 1.00f),
             [ThemeSlot.SurfaceShadow] = new Color(0.090f, 0.105f, 0.130f, 0.20f),
             [ThemeSlot.SurfaceInput] = new Color(1.000f, 0.995f, 0.965f, 1.00f),

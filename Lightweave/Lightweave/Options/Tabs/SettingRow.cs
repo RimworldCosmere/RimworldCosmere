@@ -16,7 +16,7 @@ internal static class SettingRow {
         return Box.Create(
             children: c => c.Add(HStack.Create(SpacingScale.Lg, h => {
                 h.AddFlex(Stack.Create(SpacingScale.Xxs, s => {
-                    s.Add(Text.Create(label, style: new Style { FontWeight = FontStyle.Bold, FontSize = new Rem(0.95f) }));
+                    s.Add(Text.Create(label, style: new Style { FontFamily = FontRole.BodyBold, FontSize = new Rem(0.95f) }));
                     if (!string.IsNullOrEmpty(caption)) {
                         s.Add(Text.Create(
                             caption!,

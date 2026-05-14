@@ -14,13 +14,25 @@ internal static class ColonyScreenshotCache {
         }
 
         string key = save.FileName + "|" + save.LastWriteTime.Ticks.ToString();
+        return GetOrDecode(key, save.Sidecar.ScreenshotBase64);
+    }
+
+    public static Texture2D? GetOrLoad(string cacheKey, LoadColony.SaveSidecarData? sidecar) {
+        if (sidecar == null || string.IsNullOrEmpty(sidecar.ScreenshotBase64)) {
+            return null;
+        }
+
+        return GetOrDecode(cacheKey, sidecar.ScreenshotBase64);
+    }
+
+    private static Texture2D? GetOrDecode(string key, string base64) {
         if (Cache.TryGetValue(key, out Texture2D? cached)) {
             return cached;
         }
 
         Texture2D? tex = null;
         try {
-            byte[] bytes = Convert.FromBase64String(save.Sidecar.ScreenshotBase64);
+            byte[] bytes = Convert.FromBase64String(base64);
             tex = new Texture2D(2, 2, TextureFormat.RGB24, false);
             if (!tex.LoadImage(bytes)) {
                 UnityEngine.Object.Destroy(tex);
@@ -31,7 +43,7 @@ internal static class ColonyScreenshotCache {
             }
         }
         catch (Exception ex) {
-            LightweaveLog.Warning("Failed to decode colony screenshot for " + save.FileName + ": " + ex.Message);
+            LightweaveLog.Warning("Failed to decode colony screenshot for key " + key + ": " + ex.Message);
             tex = null;
         }
 

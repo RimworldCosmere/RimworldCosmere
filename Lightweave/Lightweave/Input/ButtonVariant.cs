@@ -11,9 +11,13 @@ public enum ButtonVariant {
 }
 
 internal static class ButtonVariants {
-    public static ThemeSlot Background(ButtonVariant variant, InteractionState state) {
+    public static ThemeSlot? Background(ButtonVariant variant, InteractionState state, bool ghost = false) {
         if (state.Disabled) {
-            return ThemeSlot.SurfaceDisabled;
+            return ghost ? (ThemeSlot?)null : ThemeSlot.SurfaceDisabled;
+        }
+
+        if (ghost) {
+            return null;
         }
 
         switch (variant) {
@@ -28,17 +32,9 @@ internal static class ButtonVariants {
                     return ThemeSlot.SurfaceRaised;
                 }
 
-                return ThemeSlot.SurfacePrimary;
+                return ThemeSlot.SurfaceTranslucent;
             case ButtonVariant.Ghost:
-                if (state.Pressed) {
-                    return ThemeSlot.SurfaceSunken;
-                }
-
-                if (state.Hovered) {
-                    return ThemeSlot.SurfaceRaised;
-                }
-
-                return ThemeSlot.SurfacePrimary;
+                return null;
             case ButtonVariant.Danger:
                 return ThemeSlot.StatusDanger;
             case ButtonVariant.Frosted:
@@ -48,9 +44,20 @@ internal static class ButtonVariants {
         }
     }
 
-    public static ThemeSlot Foreground(ButtonVariant variant, InteractionState state) {
+    public static ThemeSlot Foreground(ButtonVariant variant, InteractionState state, bool ghost = false) {
         if (state.Disabled) {
             return ThemeSlot.TextMuted;
+        }
+
+        if (ghost) {
+            switch (variant) {
+                case ButtonVariant.Primary:
+                    return ThemeSlot.SurfaceAccent;
+                case ButtonVariant.Danger:
+                    return ThemeSlot.StatusDanger;
+                default:
+                    return ThemeSlot.TextPrimary;
+            }
         }
 
         switch (variant) {
@@ -70,9 +77,20 @@ internal static class ButtonVariants {
         }
     }
 
-    public static ThemeSlot? Border(ButtonVariant variant, InteractionState state) {
+    public static ThemeSlot? Border(ButtonVariant variant, InteractionState state, bool ghost = false) {
         if (state.Disabled) {
-            return ThemeSlot.BorderSubtle;
+            return ghost ? null : ThemeSlot.BorderSubtle;
+        }
+
+        if (ghost) {
+            switch (variant) {
+                case ButtonVariant.Primary:
+                    return ThemeSlot.SurfaceAccent;
+                case ButtonVariant.Danger:
+                    return ThemeSlot.StatusDanger;
+                default:
+                    return null;
+            }
         }
 
         switch (variant) {
@@ -82,7 +100,7 @@ internal static class ButtonVariants {
             case ButtonVariant.Secondary:
                 return state.Hovered ? ThemeSlot.BorderHover : ThemeSlot.BorderDefault;
             case ButtonVariant.Ghost:
-                return state.Hovered ? ThemeSlot.BorderSubtle : null;
+                return state.Hovered ? ThemeSlot.BorderHover : (ThemeSlot?)null;
             case ButtonVariant.Frosted:
                 return state.Hovered || state.Pressed ? ThemeSlot.BorderHover : ThemeSlot.BorderSubtle;
             default:

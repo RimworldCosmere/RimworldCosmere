@@ -65,7 +65,7 @@ public static class Badge {
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.75f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize);
             style.alignment = TextAnchor.MiddleCenter;
 
             Vector2 textSize = style.CalcSize(new GUIContent(display));

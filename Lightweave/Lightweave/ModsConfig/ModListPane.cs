@@ -72,7 +72,7 @@ public static class ModListPane {
             PaintBox.Draw(rect, BackgroundSpec.Of(ThemeSlot.SurfacePrimary), null, null);
             Font font = theme.GetFont(FontRole.BodyBold);
             int px = Mathf.RoundToInt(new Rem(0.65f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, px, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, px);
             style.alignment = TextAnchor.MiddleLeft;
             Color saved = GUI.color;
             GUI.color = theme.GetColor(ThemeSlot.TextMuted);
@@ -107,7 +107,7 @@ public static class ModListPane {
 
             Font bodyFont = theme.GetFont(FontRole.BodyBold);
             int titlePx = Mathf.RoundToInt(new Rem(0.9f).ToFontPx());
-            GUIStyle titleStyle = GuiStyleCache.GetOrCreate(bodyFont, titlePx, FontStyle.Bold);
+            GUIStyle titleStyle = GuiStyleCache.GetOrCreate(bodyFont, titlePx);
             titleStyle.alignment = TextAnchor.UpperLeft;
 
             Font tinyFont = theme.GetFont(FontRole.Body);

@@ -16,10 +16,17 @@ public sealed class LightweaveScrollStatus {
     public float NextArrowRepeatAt;
     public float LastContentHeight;
     public float LastViewportHeight;
+    public float LastScrollAtRealtime;
+    public float LastMouseEnterAtRealtime;
+    public bool MouseInsideViewport;
+    public float LastObservedPositionY;
 }
 
 public readonly record struct LightweaveScrollView : IDisposable {
-    private const float ScrollbarWidth = 10f;
+    private const float StandardWidth = 10f;
+    private const float SlimWidth = 6f;
+    private const float MinimalWidth = 4f;
+
     private const float ScrollbarRightGap = 0f;
     private const float MinThumbHeight = 24f;
     private const float ArrowSize = 18f;
@@ -29,37 +36,73 @@ public readonly record struct LightweaveScrollView : IDisposable {
     private const float ArrowRepeatInitialDelay = 0.35f;
     private const float ArrowRepeatInterval = 0.04f;
 
+    private const float RevealAfterScrollDuration = 0.5f;
+    private const float RevealAfterMouseEnterDuration = 0.8f;
+    private const float RevealFadeOutDuration = 0.2f;
+
     private static float ScrollbarLeftGap => new Rem(1f).ToPixels();
     private static float ArrowOuterPadding => new Rem(0.5f).ToPixels();
     private static float ArrowInnerPadding => new Rem(0.25f).ToPixels();
     private const float ArrowSidePadding = 1f;
 
+    public static float WidthFor(ScrollbarStyle style) {
+        switch (style) {
+            case ScrollbarStyle.Slim:
+                return SlimWidth;
+            case ScrollbarStyle.Minimal:
+                return MinimalWidth;
+            case ScrollbarStyle.Standard:
+            default:
+                return StandardWidth;
+        }
+    }
+
+
+    private static float ScrollbarRightInsetFor(ScrollbarMode mode) {
+        return mode == ScrollbarMode.Auto ? new Rem(0.375f).ToPixels() : ScrollbarRightGap;
+    }
+
+    public static float GutterPixels(bool verticalVisible, ScrollbarMode mode, ScrollbarStyle style) {
+        if (!verticalVisible || mode == ScrollbarMode.Never) {
+            return 0f;
+        }
+
+        if (mode == ScrollbarMode.Auto) {
+            return 0f;
+        }
+
+        return ScrollbarLeftGap + WidthFor(style) + ScrollbarRightGap;
+    }
+
     public static float GutterPixels(bool verticalVisible) {
-        return verticalVisible ? ScrollbarLeftGap + ScrollbarWidth + ScrollbarRightGap : 0f;
+        return GutterPixels(verticalVisible, ScrollbarMode.Always, ScrollbarStyle.Standard);
     }
 
     private readonly Rect outRect;
     private readonly float viewHeight;
     private readonly float contentHeight;
     private readonly LightweaveScrollStatus status;
-    private readonly bool showScrollbar;
+    private readonly ScrollbarMode mode;
+    private readonly ScrollbarStyle style;
 
     public readonly Rect rect;
 
     public LightweaveScrollView(
         Rect outRect,
         LightweaveScrollStatus status,
-        bool showScrollbar = true
+        ScrollbarMode mode = ScrollbarMode.Auto,
+        ScrollbarStyle style = ScrollbarStyle.Slim
     ) {
         this.outRect = outRect;
         this.status = status;
-        this.showScrollbar = showScrollbar;
+        this.mode = mode;
+        this.style = style;
 
         float declared = Math.Max(status.Height, outRect.height);
         bool overflows = declared - 0.1f >= outRect.height;
-        status.VerticalVisible = overflows && showScrollbar;
+        status.VerticalVisible = overflows && mode != ScrollbarMode.Never;
 
-        float gutter = GutterPixels(status.VerticalVisible);
+        float gutter = GutterPixels(status.VerticalVisible, mode, style);
         contentHeight = declared;
         viewHeight = outRect.height;
         rect = new Rect(0f, 0f, outRect.width - gutter, declared);
@@ -67,7 +110,16 @@ public readonly record struct LightweaveScrollView : IDisposable {
         status.LastContentHeight = declared;
         status.LastViewportHeight = outRect.height;
         status.Height = 0f;
+
+        float prevY = status.Position.y;
         Widgets.BeginScrollView(outRect, ref status.Position, rect, false);
+        if (Math.Abs(status.Position.y - prevY) > 0.01f) {
+            status.LastScrollAtRealtime = Time.realtimeSinceStartup;
+        }
+    }
+
+    public LightweaveScrollView(Rect outRect, LightweaveScrollStatus status, bool showScrollbar)
+        : this(outRect, status, showScrollbar ? ScrollbarMode.Auto : ScrollbarMode.Never, ScrollbarStyle.Slim) {
     }
 
     public ref float Height => ref status.Height;
@@ -80,24 +132,101 @@ public readonly record struct LightweaveScrollView : IDisposable {
     public void Dispose() {
         Widgets.EndScrollView();
 
-        if (!status.VerticalVisible) {
+        if (!status.VerticalVisible || mode == ScrollbarMode.Never) {
             return;
         }
 
-        PaintScrollbar();
+        UpdateMouseHoverState();
+        float alpha = ComputeRevealAlpha();
+        if (alpha <= 0.001f) {
+            return;
+        }
+
+        PaintScrollbar(alpha);
     }
 
-    private void PaintScrollbar() {
+    private void UpdateMouseHoverState() {
+        if (Event.current.type != EventType.Repaint) {
+            return;
+        }
+
+        bool inside = outRect.Contains(Event.current.mousePosition);
+        if (inside && !status.MouseInsideViewport) {
+            status.LastMouseEnterAtRealtime = Time.realtimeSinceStartup;
+        }
+
+        status.MouseInsideViewport = inside;
+    }
+
+    private float ComputeRevealAlpha() {
+        if (mode == ScrollbarMode.Always) {
+            return 1f;
+        }
+
+        if (mode == ScrollbarMode.Never) {
+            return 0f;
+        }
+
+        if (status.Dragging || status.ArrowHeld != 0) {
+            return 1f;
+        }
+
+        float width = WidthFor(style);
+        float rightInset = ScrollbarRightInsetFor(mode);
+        Rect scrollbarZone = new Rect(
+            outRect.xMax - width - rightInset,
+            outRect.y,
+            width,
+            outRect.height
+        );
+        if (scrollbarZone.Contains(Event.current.mousePosition)) {
+            return 1f;
+        }
+
+        float now = Time.realtimeSinceStartup;
+        float scrollAge = now - status.LastScrollAtRealtime;
+        float hoverAge = now - status.LastMouseEnterAtRealtime;
+
+        float scrollAlpha = AlphaFromAge(scrollAge, RevealAfterScrollDuration);
+        float hoverAlpha = AlphaFromAge(hoverAge, RevealAfterMouseEnterDuration);
+        return Mathf.Max(scrollAlpha, hoverAlpha);
+    }
+
+    private static float AlphaFromAge(float age, float visibleFor) {
+        if (age < 0f) {
+            return 0f;
+        }
+
+        if (age < visibleFor) {
+            return 1f;
+        }
+
+        if (age < visibleFor + RevealFadeOutDuration) {
+            return 1f - (age - visibleFor) / RevealFadeOutDuration;
+        }
+
+        return 0f;
+    }
+
+    private void PaintScrollbar(float alpha) {
         Theme.Theme theme = RenderContext.Current.Theme;
         Event e = Event.current;
 
-        float trackX = outRect.xMax - ScrollbarWidth - ScrollbarRightGap;
-        Rect upArrow = new Rect(trackX, outRect.y, ScrollbarWidth, ArrowSize);
-        Rect downArrow = new Rect(trackX, outRect.yMax - ArrowSize, ScrollbarWidth, ArrowSize);
+        float width = WidthFor(style);
+        bool showArrows = style == ScrollbarStyle.Standard;
+        bool showTrackBg = style != ScrollbarStyle.Minimal;
 
-        float trackY = upArrow.yMax + BarGapFromArrow;
-        float trackHeight = Mathf.Max(0f, downArrow.y - BarGapFromArrow - trackY);
-        Rect trackRect = new Rect(trackX, trackY, ScrollbarWidth, trackHeight);
+        float rightInset = ScrollbarRightInsetFor(mode);
+        float trackX = outRect.xMax - width - rightInset;
+
+        Rect upArrow = new Rect(trackX, outRect.y, width, ArrowSize);
+        Rect downArrow = new Rect(trackX, outRect.yMax - ArrowSize, width, ArrowSize);
+
+        float overlayMargin = mode == ScrollbarMode.Auto ? new Rem(0.125f).ToPixels() : 0f;
+        float trackY = showArrows ? upArrow.yMax + BarGapFromArrow : outRect.y + overlayMargin;
+        float trackBottom = showArrows ? downArrow.y - BarGapFromArrow : outRect.yMax - overlayMargin;
+        float trackHeight = Mathf.Max(0f, trackBottom - trackY);
+        Rect trackRect = new Rect(trackX, trackY, width, trackHeight);
 
         float scrollRange = Mathf.Max(0f, contentHeight - viewHeight);
         float thumbHeight = trackRect.height > 0f
@@ -106,10 +235,11 @@ public readonly record struct LightweaveScrollView : IDisposable {
         thumbHeight = Mathf.Min(thumbHeight, trackRect.height);
         float trackRange = Mathf.Max(0f, trackRect.height - thumbHeight);
         float scrollNorm = scrollRange > 0f ? Mathf.Clamp01(status.Position.y / scrollRange) : 0f;
+        float thumbInset = style == ScrollbarStyle.Standard ? ThumbHorizontalPadding : 0f;
         Rect thumbRect = new Rect(
-            trackRect.x + ThumbHorizontalPadding,
+            trackRect.x + thumbInset,
             trackRect.y + trackRange * scrollNorm,
-            trackRect.width - ThumbHorizontalPadding * 2f,
+            trackRect.width - thumbInset * 2f,
             thumbHeight
         );
 
@@ -117,22 +247,25 @@ public readonly record struct LightweaveScrollView : IDisposable {
         bool active = status.Dragging;
 
         Color saved = GUI.color;
-        float pillRadius = ScrollbarWidth * 0.5f;
+        float pillRadius = width * 0.5f;
 
-        // Unified pill column behind arrows + track so everything reads as one surface.
-        Rect columnRect = new Rect(trackX, outRect.y, ScrollbarWidth, outRect.height);
-        Color bgColor = theme.GetColor(ThemeSlot.SurfaceSunken);
-        bgColor.a = 0.35f;
-        GUI.DrawTexture(
-            columnRect,
-            Texture2D.whiteTexture,
-            ScaleMode.StretchToFill,
-            true,
-            0f,
-            bgColor,
-            Vector4.zero,
-            new Vector4(pillRadius, pillRadius, pillRadius, pillRadius)
-        );
+        if (showTrackBg) {
+            Rect columnRect = showArrows
+                ? new Rect(trackX, outRect.y, width, outRect.height)
+                : trackRect;
+            Color bgColor = theme.GetColor(ThemeSlot.SurfaceSunken);
+            bgColor.a *= 0.35f * alpha;
+            GUI.DrawTexture(
+                columnRect,
+                Texture2D.whiteTexture,
+                ScaleMode.StretchToFill,
+                true,
+                0f,
+                bgColor,
+                Vector4.zero,
+                new Vector4(pillRadius, pillRadius, pillRadius, pillRadius)
+            );
+        }
 
         ThemeSlot thumbSlot = active
             ? ThemeSlot.BorderFocus
@@ -143,6 +276,8 @@ public readonly record struct LightweaveScrollView : IDisposable {
         if (!active && !hovering) {
             thumbColor.a *= 0.85f;
         }
+
+        thumbColor.a *= alpha;
 
         GUI.DrawTexture(
             thumbRect,
@@ -155,16 +290,20 @@ public readonly record struct LightweaveScrollView : IDisposable {
             new Vector4(pillRadius, pillRadius, pillRadius, pillRadius)
         );
 
-        PaintArrow(upArrow, true, theme, e);
-        PaintArrow(downArrow, false, theme, e);
+        if (showArrows) {
+            PaintArrow(upArrow, true, theme, e, alpha);
+            PaintArrow(downArrow, false, theme, e, alpha);
+        }
 
         GUI.color = saved;
 
-        HandleScrollbarEvents(e, trackRect, thumbRect, upArrow, downArrow, scrollRange, trackRange);
-        HandleArrowHold(scrollRange, upArrow, downArrow);
+        HandleScrollbarEvents(e, trackRect, thumbRect, upArrow, downArrow, scrollRange, trackRange, showArrows);
+        if (showArrows) {
+            HandleArrowHold(scrollRange, upArrow, downArrow);
+        }
     }
 
-    private void PaintArrow(Rect rect, bool up, Theme.Theme theme, Event e) {
+    private void PaintArrow(Rect rect, bool up, Theme.Theme theme, Event e, float alpha) {
         bool hovering = rect.Contains(e.mousePosition);
         bool held = status.ArrowHeld == (up ? 1 : 2);
 
@@ -178,9 +317,8 @@ public readonly record struct LightweaveScrollView : IDisposable {
             fill.a *= 0.85f;
         }
 
-        // Outer padding pushes the triangle AWAY from the scrollbar's outer edge
-        // (top for the up arrow, bottom for the down arrow). Inner padding keeps
-        // the base from touching the track. Triangle ends up wider than tall.
+        fill.a *= alpha;
+
         float outerPad = ArrowOuterPadding;
         float innerPad = ArrowInnerPadding;
         Rect triRect = up
@@ -258,21 +396,24 @@ public readonly record struct LightweaveScrollView : IDisposable {
         Rect upArrow,
         Rect downArrow,
         float scrollRange,
-        float trackRange
+        float trackRange,
+        bool showArrows
     ) {
         if (e.type == EventType.MouseDown && e.button == 0) {
-            if (upArrow.Contains(e.mousePosition)) {
+            if (showArrows && upArrow.Contains(e.mousePosition)) {
                 ScrollBy(-ArrowStepPixels, scrollRange);
                 status.ArrowHeld = 1;
                 status.NextArrowRepeatAt = Time.realtimeSinceStartup + ArrowRepeatInitialDelay;
+                status.LastScrollAtRealtime = Time.realtimeSinceStartup;
                 e.Use();
                 return;
             }
 
-            if (downArrow.Contains(e.mousePosition)) {
+            if (showArrows && downArrow.Contains(e.mousePosition)) {
                 ScrollBy(ArrowStepPixels, scrollRange);
                 status.ArrowHeld = 2;
                 status.NextArrowRepeatAt = Time.realtimeSinceStartup + ArrowRepeatInitialDelay;
+                status.LastScrollAtRealtime = Time.realtimeSinceStartup;
                 e.Use();
                 return;
             }
@@ -280,6 +421,7 @@ public readonly record struct LightweaveScrollView : IDisposable {
             if (thumbRect.Contains(e.mousePosition)) {
                 status.Dragging = true;
                 status.DragAnchor = e.mousePosition.y - thumbRect.y;
+                status.LastScrollAtRealtime = Time.realtimeSinceStartup;
                 e.Use();
                 return;
             }
@@ -288,6 +430,7 @@ public readonly record struct LightweaveScrollView : IDisposable {
                 bool above = e.mousePosition.y < thumbRect.y;
                 float delta = viewHeight * 0.9f * (above ? -1f : 1f);
                 ScrollBy(delta, scrollRange);
+                status.LastScrollAtRealtime = Time.realtimeSinceStartup;
                 e.Use();
                 return;
             }
@@ -299,6 +442,7 @@ public readonly record struct LightweaveScrollView : IDisposable {
                 float clampedY = Mathf.Clamp(desiredThumbY, trackRect.y, trackRect.y + trackRange);
                 float norm = trackRange > 0f ? (clampedY - trackRect.y) / trackRange : 0f;
                 status.Position = new Vector2(status.Position.x, norm * scrollRange);
+                status.LastScrollAtRealtime = Time.realtimeSinceStartup;
                 e.Use();
                 return;
             }
@@ -342,6 +486,7 @@ public readonly record struct LightweaveScrollView : IDisposable {
         float delta = status.ArrowHeld == 1 ? -ArrowStepPixels : ArrowStepPixels;
         ScrollBy(delta, scrollRange);
         status.NextArrowRepeatAt = now + ArrowRepeatInterval;
+        status.LastScrollAtRealtime = now;
     }
 
     private void ScrollBy(float delta, float scrollRange) {

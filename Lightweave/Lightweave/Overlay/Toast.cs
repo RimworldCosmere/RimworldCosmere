@@ -281,7 +281,7 @@ public static class Toast {
 
                     Font closeFont = theme.GetFont(FontRole.BodyBold);
                     int closePixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-                    GUIStyle closeStyle = GuiStyleCache.GetOrCreate(closeFont, closePixelSize, FontStyle.Bold);
+                    GUIStyle closeStyle = GuiStyleCache.GetOrCreate(closeFont, closePixelSize);
                     closeStyle.alignment = TextAnchor.MiddleCenter;
 
                     Color savedCloseColor = GUI.color;

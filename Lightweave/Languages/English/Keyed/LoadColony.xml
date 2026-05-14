@@ -5,6 +5,8 @@
     <CL_LoadColony_Empty_Body>No colonies have been recorded. Start a new game to leave your mark.</CL_LoadColony_Empty_Body>
 
     <CL_LoadColony_DayShort>Day {DAY}</CL_LoadColony_DayShort>
+    <CL_LoadColony_ColonistsShort>{COUNT} colonists</CL_LoadColony_ColonistsShort>
+    <CL_LoadColony_AutoChip>AUTO</CL_LoadColony_AutoChip>
 
     <CL_LoadColony_Status_Ready>READY</CL_LoadColony_Status_Ready>
     <CL_LoadColony_Status_Differs>BUILD DIFFERS</CL_LoadColony_Status_Differs>
@@ -34,4 +36,7 @@
     <CL_LoadColony_PreviewLabel>MAP_PREVIEW.PNG</CL_LoadColony_PreviewLabel>
     <CL_LoadColony_Conditions>Active Conditions</CL_LoadColony_Conditions>
     <CL_LoadColony_Conditions_None>No active threats</CL_LoadColony_Conditions_None>
+
+    <CL_LoadColony_Rename_Description>Choose a new name for this save. The existing file will be moved.</CL_LoadColony_Rename_Description>
+    <CL_LoadColony_Delete_Confirm>This save will be permanently removed. This action cannot be undone.</CL_LoadColony_Delete_Confirm>
 </LanguageData>

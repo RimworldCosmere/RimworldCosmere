@@ -44,11 +44,13 @@ public static class GameplayTab {
                         max: 5f,
                         step: 1f,
                         format: v => Mathf.RoundToInt(v).ToString(CultureInfo.InvariantCulture)
-                    )
+                    ),
+                    caption: (string)"CL_Options_MaxSettlements_Hint".Translate()
                 ),
                 SettingRow.Create(
                     "CL_Options_PauseOnLoad".Translate(),
-                    Switch.Create("", Prefs.PauseOnLoad, v => Prefs.PauseOnLoad = v)
+                    Switch.Create("", Prefs.PauseOnLoad, v => Prefs.PauseOnLoad = v),
+                    caption: (string)"CL_Options_PauseOnLoad_Hint".Translate()
                 ),
                 SettingRow.Create(
                     "CL_Options_AutoPauseMode".Translate(),
@@ -57,11 +59,13 @@ public static class GameplayTab {
                         options: PauseModes,
                         labelFn: m => m.ToStringHuman(),
                         onChange: m => Prefs.AutomaticPauseMode = m
-                    )
+                    ),
+                    caption: (string)"CL_Options_AutoPauseMode_Hint".Translate()
                 ),
                 SettingRow.Create(
                     "CL_Options_AdaptiveTraining".Translate(),
-                    Switch.Create("", Prefs.AdaptiveTrainingEnabled, v => Prefs.AdaptiveTrainingEnabled = v)
+                    Switch.Create("", Prefs.AdaptiveTrainingEnabled, v => Prefs.AdaptiveTrainingEnabled = v),
+                    caption: (string)"CL_Options_AdaptiveTraining_Hint".Translate()
                 ),
                 SettingRow.Create(
                     "CL_Options_ResetTutor".Translate(),

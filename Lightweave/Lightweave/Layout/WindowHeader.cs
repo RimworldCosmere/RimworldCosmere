@@ -70,7 +70,7 @@ public static class WindowHeader {
                 GUI.color = textColor;
                 Font font = theme.GetFont(FontRole.Heading);
                 int pixelSize = Mathf.RoundToInt(new Rem(1.125f).ToFontPx());
-                GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+                GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize);
                 gstyle.clipping = TextClipping.Clip;
                 float closeReserve = showClose ? new Rem(2.5f).ToPixels() : 0f;
                 Rect titleRect;

@@ -234,9 +234,10 @@ public static class PlaygroundRail {
             rowRect.height
         );
 
-        Font font = theme.GetFont(expanded || activeContainsSelection ? FontRole.BodyBold : FontRole.Body);
         int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, expanded || activeContainsSelection ? FontStyle.Bold : FontStyle.Normal);
+        FontRole role = expanded || activeContainsSelection ? FontRole.BodyBold : FontRole.Body;
+        Font font = theme.GetFont(role);
+        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize);
         style.alignment = rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
 
         ThemeSlot textSlot = activeContainsSelection ? ThemeSlot.TextPrimary : ThemeSlot.TextSecondary;
@@ -294,9 +295,9 @@ public static class PlaygroundRail {
             rowRect.height
         );
 
-        Font font = theme.GetFont(isSelected ? FontRole.BodyBold : FontRole.Body);
         int pixelSize = Mathf.RoundToInt(new Rem(0.8125f).ToFontPx());
-        GUIStyle style = GuiStyleCache.GetOrCreate(font, pixelSize, isSelected ? FontStyle.Bold : FontStyle.Normal);
+        FontRole role = isSelected ? FontRole.BodyBold : FontRole.Body;
+        GUIStyle style = GuiStyleCache.GetOrCreate(theme, role, pixelSize);
         style.alignment = rtl ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
 
         ThemeSlot textSlot = isSelected ? ThemeSlot.TextPrimary : ThemeSlot.TextSecondary;

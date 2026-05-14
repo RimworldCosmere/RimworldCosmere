@@ -4,6 +4,7 @@ public enum ThemeSlot {
     SurfacePrimary,
     SurfaceRaised,
     SurfaceSunken,
+    SurfaceTranslucent,
     SurfaceAccent,
     SurfaceShadow,
     TextPrimary,

@@ -116,13 +116,15 @@ public static class Stack {
 
         if (!anyFlex) {
             node.Measure = availableWidth => {
+                (float left, float top, float right, float bottom) = ResolvePaddingPixels();
+                float innerWidth = Mathf.Max(0f, availableWidth - left - right);
                 float total = 0f;
                 int flowCount = 0;
                 for (int i = 0; i < count; i++) {
                     if (!builder.Items[i].node.IsInFlow()) {
                         continue;
                     }
-                    total += ResolveItemHeight(i, availableWidth);
+                    total += ResolveItemHeight(i, innerWidth);
                     flowCount++;
                 }
 
@@ -130,7 +132,7 @@ public static class Stack {
                     total += ResolveGapPx() * (flowCount - 1);
                 }
 
-                return total;
+                return total + top + bottom;
             };
         }
 

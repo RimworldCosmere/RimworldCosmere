@@ -23,13 +23,6 @@ public static class Dialog_OptionsPreOpenPatch {
         options.forcePause = true;
         options.doWindowBackground = false;
         options.drawShadow = false;
-        float w = Mathf.Min(UnityEngine.Screen.width * 0.77f, 2200f);
-        float h = Mathf.Min(UnityEngine.Screen.height * 0.81f, 1280f);
-        options.windowRect = new Rect(
-            (UnityEngine.Screen.width - w) / 2f,
-            (UnityEngine.Screen.height - h) / 2f,
-            w,
-            h
-        );
+        options.windowRect = new Rect(0f, 0f, UnityEngine.Screen.width, UnityEngine.Screen.height);
     }
 }

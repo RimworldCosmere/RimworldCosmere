@@ -56,9 +56,8 @@ public static class Pill {
 
         node.MeasureWidth = () => {
             Theme.Theme theme = RenderContext.Current.Theme;
-            Font font = theme.GetFont(FontRole.Body);
             int px = Mathf.RoundToInt(new Rem(0.65f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, px, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(theme, FontRole.Body, px, FontStyle.Bold);
             float labelW = style.CalcSize(new GUIContent(display)).x;
             float padPx = new Rem(paddingRem).ToPixels();
             float gapPx = new Rem(0.4f).ToPixels();
@@ -119,9 +118,8 @@ public static class Pill {
                 }
             }
 
-            Font font = theme.GetFont(FontRole.Body);
             int px = Mathf.RoundToInt(new Rem(0.65f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, px, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(theme, FontRole.Body, px, FontStyle.Bold);
             style.alignment = TextAnchor.MiddleLeft;
             style.clipping = TextClipping.Clip;
 

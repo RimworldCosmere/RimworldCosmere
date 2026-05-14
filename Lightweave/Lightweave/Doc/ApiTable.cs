@@ -29,8 +29,7 @@ public static partial class Doc {
         float defaultWidthRem = 7f;
 
         GUIStyle HeaderStyle(Theme.Theme theme) {
-            Font f = theme.GetFont(FontRole.Body);
-            GUIStyle s = GuiStyleCache.GetOrCreate(f, Mathf.RoundToInt(headerFontPx), FontStyle.Bold);
+            GUIStyle s = GuiStyleCache.GetOrCreate(theme, FontRole.Body, Mathf.RoundToInt(headerFontPx), FontStyle.Bold);
             s.alignment = TextAnchor.MiddleLeft;
             s.clipping = TextClipping.Clip;
             s.wordWrap = false;

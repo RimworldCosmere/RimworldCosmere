@@ -20,6 +20,7 @@ public static class Button {
         string label,
         Action? onClick,
         ButtonVariant variant = ButtonVariant.Primary,
+        bool ghost = false,
         LightweaveNode? leading = null,
         LightweaveNode? trailing = null,
         bool disabled = false,
@@ -39,6 +40,21 @@ public static class Button {
             ? h0.ToPixels(0f, 0f)
             : new Rem(1.75f).ToPixels();
         node.PreferredHeight = intrinsicHeightPx;
+
+        node.MeasureWidth = () => {
+            Theme.Theme theme = RenderContext.Current.Theme;
+            Font font = theme.GetFont(FontRole.BodyBold);
+            int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
+            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize);
+            float labelWidth = string.IsNullOrEmpty(label) || body != null
+                ? 0f
+                : gstyle.CalcSize(new GUIContent(label)).x;
+            float padPx = SpacingScale.Sm.ToPixels();
+            float iconSize = Mathf.Min(intrinsicHeightPx - padPx, new Rem(1.25f).ToPixels());
+            float iconAllowance = (leading != null ? iconSize + padPx : 0f)
+                                + (trailing != null ? iconSize + padPx : 0f);
+            return labelWidth + iconAllowance + padPx * 2f;
+        };
 
         if (leading != null) {
             node.Children.Add(leading);
@@ -69,7 +85,7 @@ public static class Button {
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize);
             gstyle.alignment = TextAnchor.MiddleCenter;
 
             float labelWidth = string.IsNullOrEmpty(label) || body != null
@@ -93,31 +109,45 @@ public static class Button {
 
             InteractionState state = InteractionState.Resolve(rect, null, disabled);
 
-            ThemeSlot fgSlot = ButtonVariants.Foreground(variant, state);
-            ThemeSlot? borderSlot = ButtonVariants.Border(variant, state);
+            ThemeSlot fgSlot = ButtonVariants.Foreground(variant, state, ghost);
+            ThemeSlot? borderSlot = ButtonVariants.Border(variant, state, ghost);
             RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
             BorderSpec? border = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
 
-            if (variant == ButtonVariant.Frosted) {
+            if (variant == ButtonVariant.Frosted && !ghost) {
                 bool active = state.Hovered || state.Pressed;
                 BackdropBlur.Draw(rect, active ? 8f : 6f);
                 Color translucent = new Color(20f / 255f, 16f / 255f, 11f / 255f, active ? 0.88f : 0.78f);
                 PaintBox.Draw(rect, BackgroundSpec.Of(translucent), border, radius);
             }
             else {
-                ThemeSlot bgSlot = ButtonVariants.Background(variant, state);
-                BackgroundSpec bg;
-                if (variant == ButtonVariant.Primary && !state.Pressed && !disabled) {
-                    Color top = theme.GetColor(bgSlot);
+                ThemeSlot? bgSlot = ButtonVariants.Background(variant, state, ghost);
+                BackgroundSpec? bg;
+                if (!bgSlot.HasValue) {
+                    if (variant == ButtonVariant.Ghost && state.Hovered && !disabled) {
+                        bg = BackgroundSpec.Of(new Color(0.157f, 0.125f, 0.086f, 0.4f));
+                    }
+                    else {
+                        bg = null;
+                    }
+                }
+                else if (variant == ButtonVariant.Primary && !ghost && !state.Pressed && !disabled) {
+                    Color top = theme.GetColor(bgSlot.Value);
                     Color.RGBToHSV(top, out float hue, out float sat, out float val);
                     Color bottom = Color.HSVToRGB(hue, sat, val * 0.78f);
                     bottom.a = top.a;
                     bg = new BackgroundSpec.Gradient(GradientTextureCache.Vertical(top, bottom));
                 }
+                else if (variant == ButtonVariant.Secondary && state.Hovered && !state.Pressed && !disabled) {
+                    Color accent = theme.GetColor(ThemeSlot.SurfaceAccent);
+                    Color top = new Color(accent.r, accent.g, accent.b, 0.42f);
+                    Color bottom = new Color(accent.r * 0.62f, accent.g * 0.62f, accent.b * 0.62f, 0.28f);
+                    bg = new BackgroundSpec.Gradient(GradientTextureCache.Vertical(top, bottom));
+                }
                 else {
-                    bg = BackgroundSpec.Of(bgSlot);
+                    bg = BackgroundSpec.Of(bgSlot.Value);
                 }
 
                 PaintBox.Draw(rect, bg, border, radius);

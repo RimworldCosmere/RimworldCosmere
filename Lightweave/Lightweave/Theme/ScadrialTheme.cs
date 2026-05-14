@@ -9,6 +9,7 @@ public static class ScadrialTheme {
             [ThemeSlot.SurfacePrimary] = new Color(0.088f, 0.106f, 0.130f, 0.96f),
             [ThemeSlot.SurfaceRaised] = new Color(0.138f, 0.158f, 0.188f, 1.00f),
             [ThemeSlot.SurfaceSunken] = new Color(0.052f, 0.062f, 0.078f, 0.96f),
+            [ThemeSlot.SurfaceTranslucent] = new Color(0.020f, 0.025f, 0.035f, 0.35f),
             [ThemeSlot.SurfaceAccent] = new Color(0.420f, 0.580f, 0.760f, 0.95f),
             [ThemeSlot.SurfaceShadow] = new Color(0.000f, 0.000f, 0.000f, 0.40f),
             [ThemeSlot.SurfaceInput] = new Color(0.170f, 0.195f, 0.230f, 1.00f),

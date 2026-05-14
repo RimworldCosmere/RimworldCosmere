@@ -56,10 +56,10 @@ public static class IconButton {
 
             InteractionState state = InteractionState.Resolve(square, null, disabled);
 
-            ThemeSlot bgSlot = ButtonVariants.Background(variant, state);
+            ThemeSlot? bgSlot = ButtonVariants.Background(variant, state);
             ThemeSlot? borderSlot = ButtonVariants.Border(variant, state);
 
-            BackgroundSpec bg = BackgroundSpec.Of(bgSlot);
+            BackgroundSpec? bg = bgSlot.HasValue ? BackgroundSpec.Of(bgSlot.Value) : null;
             BorderSpec? border = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;

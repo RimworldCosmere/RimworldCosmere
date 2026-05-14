@@ -64,7 +64,7 @@ public static partial class Doc {
             Font font = theme.GetFont(FontRole.Body);
             Event e = Event.current;
 
-            GUIStyle titleStyle = GuiStyleCache.GetOrCreate(font, Mathf.RoundToInt(titleSizePx), FontStyle.Bold);
+            GUIStyle titleStyle = GuiStyleCache.GetOrCreate(theme, FontRole.Body, Mathf.RoundToInt(titleSizePx), FontStyle.Bold);
             titleStyle.alignment = TextAnchor.MiddleLeft;
             Color saved = GUI.color;
 

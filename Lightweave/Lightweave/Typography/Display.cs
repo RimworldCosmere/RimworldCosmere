@@ -70,15 +70,14 @@ public static class Display {
             Theme.Theme theme = RenderContext.Current.Theme;
             Style s = node.GetResolvedStyle();
             FontRef? fr = s.FontFamily;
-            Font font = fr switch {
-                FontRef.Literal lit => lit.Value,
-                FontRef.Role role => theme.GetFont(role.RoleValue),
-                _ => theme.GetFont(FontRole.Display),
-            };
             Rem fontSize = s.FontSize ?? new Rem(2f);
-            FontStyle weight = s.FontWeight ?? FontStyle.Bold;
+            FontStyle weight = s.FontWeight ?? FontStyle.Normal;
             int pixelSize = Mathf.RoundToInt(fontSize.ToFontPx());
-            return GuiStyleCache.GetOrCreate(font, pixelSize, weight);
+            return fr switch {
+                FontRef.Literal lit => GuiStyleCache.GetOrCreate(lit.Value, pixelSize, weight),
+                FontRef.Role role => GuiStyleCache.GetOrCreate(theme, role.RoleValue, pixelSize, weight),
+                _ => GuiStyleCache.GetOrCreate(theme, FontRole.Display, pixelSize, weight),
+            };
         }
 
         int[] MeasureCharWidths(GUIStyle gs) {

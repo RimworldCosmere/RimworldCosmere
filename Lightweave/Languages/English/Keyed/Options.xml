@@ -107,4 +107,16 @@
     <CL_Options_LogFolder_Action>Open</CL_Options_LogFolder_Action>
     <CL_Options_RestoreDefaults>Restore default settings</CL_Options_RestoreDefaults>
     <CL_Options_RestoreDefaults_Action>Restore</CL_Options_RestoreDefaults_Action>
+
+    <CL_Options_Language_Hint>Localizes all in-game text. Restart required for some changes to take effect.</CL_Options_Language_Hint>
+    <CL_Options_Autosave_Interval_Hint>How often the colony auto-saves while the game is running.</CL_Options_Autosave_Interval_Hint>
+    <CL_Options_Autosave_Slots_Hint>Number of rotating autosave files kept on disk.</CL_Options_Autosave_Slots_Hint>
+    <CL_Options_RunInBackground_Hint>Keep simulating when the window is not focused.</CL_Options_RunInBackground_Hint>
+    <CL_Options_DevMode_Hint>Enables debug tools, inspector menus, and the dev console.</CL_Options_DevMode_Hint>
+    <CL_Options_RestoreDefaults_Hint>Resets every preference to its initial value and restarts the game.</CL_Options_RestoreDefaults_Hint>
+
+    <CL_Options_AutoPauseMode_Hint>Auto-pause the game when threats are detected on the map.</CL_Options_AutoPauseMode_Hint>
+    <CL_Options_PauseOnLoad_Hint>Pause the game immediately after loading a save.</CL_Options_PauseOnLoad_Hint>
+    <CL_Options_AdaptiveTraining_Hint>Surfaces tutorial popups based on what you have done in the game so far.</CL_Options_AdaptiveTraining_Hint>
+    <CL_Options_MaxSettlements_Hint>Maximum number of player-controlled settlements on the world map.</CL_Options_MaxSettlements_Hint>
 </LanguageData>

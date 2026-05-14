@@ -22,6 +22,8 @@ public static class FontLoader {
             ("IMFellEnglish-Italic", f => LightweaveFonts.IMFellEnglishItalic = f),
             ("IMFellEnglishSC", f => LightweaveFonts.IMFellEnglishSC = f),
             ("JetBrainsMono", f => LightweaveFonts.JetBrainsMono = f),
+            ("Phosphor-Bold", f => LightweaveFonts.PhosphorBold = f),
+            ("rpg-awesome", f => LightweaveFonts.RpgAwesome = f),
         ];
 
         Dictionary<string, Font> bundleFonts = LoadFromBundles();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Cosmere.Lightweave.Feedback;
 using Cosmere.Lightweave.Input;
 using Cosmere.Lightweave.Layout;
 using Cosmere.Lightweave.MainMenu;
@@ -18,7 +19,7 @@ using Text = Cosmere.Lightweave.Typography.Typography.Text;
 namespace Cosmere.Lightweave.LoadColony;
 
 public static class SaveListPane {
-    private static readonly Rem RowHeight = new Rem(4.25f);
+    private static readonly Rem RowHeight = new Rem(5.0f);
     private static readonly Rem StripeWidth = new Rem(0.1875f);
 
     public static LightweaveNode Create(
@@ -32,7 +33,7 @@ public static class SaveListPane {
             )),
             style: new Style {
                 Padding = EdgeInsets.Zero,
-                Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                Border = new BorderSpec(Right: new Rem(0.0625f), Color: ThemeSlot.BorderSubtle),
             }
         );
     }
@@ -60,16 +61,19 @@ public static class SaveListPane {
     }
 
     private static LightweaveNode BuildRow(SaveFileInfo file, string fileName, bool isSelected, Action onClick) {
+        bool isAuto = IsAutosave(fileName);
         LightweaveNode node = NodeBuilder.New("SaveListRow:" + fileName);
         node.PreferredHeight = RowHeight.ToPixels();
         node.Paint = (rect, _) => {
             Theme.Theme theme = RenderContext.Current.Theme;
             InteractionState state = InteractionState.Resolve(rect, null, false);
 
-            ThemeSlot bgSlot = isSelected
-                ? ThemeSlot.SurfaceRaised
-                : (state.Hovered ? ThemeSlot.SurfaceRaised : ThemeSlot.SurfaceSunken);
-            PaintBox.Draw(rect, BackgroundSpec.Of(bgSlot), null, null);
+            if (isSelected) {
+                PaintBox.Draw(rect, BackgroundSpec.Of(new Color(1f, 1f, 1f, 0.06f)), null, null);
+            }
+            else if (state.Hovered) {
+                PaintBox.Draw(rect, BackgroundSpec.Of(new Color(1f, 1f, 1f, 0.03f)), null, null);
+            }
 
             if (isSelected) {
                 Rect stripe = new Rect(rect.x, rect.y, StripeWidth.ToPixels(), rect.height);
@@ -84,22 +88,54 @@ public static class SaveListPane {
             string display = status.DisplayName;
             string detail = ResolveDetail(status);
 
-            Font bodyFont = theme.GetFont(FontRole.BodyBold);
-            int titlePx = Mathf.RoundToInt(new Rem(0.95f).ToFontPx());
-            GUIStyle titleStyle = GuiStyleCache.GetOrCreate(bodyFont, titlePx, FontStyle.Bold);
+            float chipReserve = 0f;
+            if (isAuto) {
+                LightweaveNode autoChip = Tag.Create(
+                    "CL_LoadColony_AutoChip".Translate(),
+                    textColor: ThemeSlot.TextMuted,
+                    borderColor: ThemeSlot.BorderSubtle
+                );
+                float chipW = autoChip.MeasureWidth?.Invoke() ?? new Rem(3f).ToPixels();
+                float chipH = autoChip.PreferredHeight ?? new Rem(1.25f).ToPixels();
+                Rect chipRect = new Rect(
+                    content.xMax - chipW,
+                    content.y + (content.height - chipH) * 0.5f,
+                    chipW,
+                    chipH
+                );
+                autoChip.Paint?.Invoke(chipRect, () => { });
+                chipReserve = chipW + SpacingScale.Sm.ToPixels();
+            }
+
+            float labelWidth = Mathf.Max(0f, content.width - chipReserve);
+
+            Font titleFont = theme.GetFont(FontRole.Display);
+            int titlePx = Mathf.RoundToInt(new Rem(1.05f).ToFontPx());
+            GUIStyle titleStyle = GuiStyleCache.GetOrCreate(titleFont, titlePx, FontStyle.Normal);
             titleStyle.alignment = TextAnchor.UpperLeft;
+            titleStyle.clipping = TextClipping.Clip;
 
             Color saved = GUI.color;
-            GUI.color = theme.GetColor(isSelected ? ThemeSlot.TextPrimary : ThemeSlot.TextPrimary);
-            Rect titleRect = new Rect(content.x, content.y, content.width, titlePx + 4f);
+            float titleCursor = content.x;
+            if (isSelected) {
+                GUIContent starGc = new GUIContent("★");
+                float starW = titleStyle.CalcSize(starGc).x;
+                GUI.color = theme.GetColor(ThemeSlot.SurfaceAccent);
+                Rect starRect = new Rect(titleCursor, content.y, starW + 2f, titlePx + 6f);
+                GUI.Label(RectSnap.Snap(starRect), "★", titleStyle);
+                titleCursor += starW + new Rem(0.4f).ToPixels();
+            }
+            GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
+            Rect titleRect = new Rect(titleCursor, content.y, Mathf.Max(0f, content.xMax - chipReserve - titleCursor), titlePx + 6f);
             GUI.Label(RectSnap.Snap(titleRect), display, titleStyle);
 
-            Font tinyFont = theme.GetFont(FontRole.Body);
+            Font metaFont = theme.GetFont(FontRole.Body);
             int detailPx = Mathf.RoundToInt(new Rem(0.7f).ToFontPx());
-            GUIStyle detailStyle = GuiStyleCache.GetOrCreate(tinyFont, detailPx, FontStyle.Normal);
+            GUIStyle detailStyle = GuiStyleCache.GetOrCreate(metaFont, detailPx, FontStyle.Normal);
             detailStyle.alignment = TextAnchor.UpperLeft;
+            detailStyle.clipping = TextClipping.Clip;
             GUI.color = theme.GetColor(ThemeSlot.TextMuted);
-            Rect detailRect = new Rect(content.x, titleRect.yMax + 2f, content.width, detailPx + 4f);
+            Rect detailRect = new Rect(content.x, titleRect.yMax + 2f, labelWidth, detailPx + 4f);
             GUI.Label(RectSnap.Snap(detailRect), detail, detailStyle);
 
             if (status.ModMatch == SaveStatusInspector.ModMatchKind.Mismatch) {
@@ -107,7 +143,7 @@ public static class SaveListPane {
                 if (count > 0) {
                     string warn = "CL_LoadColony_Status_ModsMissing".Translate(count.Named("COUNT"));
                     GUI.color = theme.GetColor(ThemeSlot.StatusWarning);
-                    Rect warnRect = new Rect(content.x, detailRect.yMax + 2f, content.width, detailPx + 4f);
+                    Rect warnRect = new Rect(content.x, detailRect.yMax + 2f, labelWidth, detailPx + 4f);
                     GUI.Label(RectSnap.Snap(warnRect), warn, detailStyle);
                 }
             }
@@ -122,6 +158,11 @@ public static class SaveListPane {
             }
         };
         return node;
+    }
+
+    private static bool IsAutosave(string fileName) {
+        return !string.IsNullOrEmpty(fileName)
+            && fileName.StartsWith("Autosave", StringComparison.OrdinalIgnoreCase);
     }
 
     private static LightweaveNode BuildEmptyState() {
@@ -141,10 +182,20 @@ public static class SaveListPane {
     }
 
     private static string ResolveDetail(SaveStatusInspector.SaveStatus status) {
-        string left = status.Sidecar != null && status.Sidecar.DaysSurvived > 0
-            ? "CL_LoadColony_DayShort".Translate(status.Sidecar.DaysSurvived.Named("DAY"))
-            : "—";
-        string right = SaveMetadata.FormatRelative(status.LastWriteTime);
-        return left + "  ·  " + right;
+        SaveSidecarData? sc = status.Sidecar;
+        List<string> parts = new List<string>(3);
+        if (sc != null) {
+            if (sc.DaysSurvived > 0) {
+                parts.Add("CL_LoadColony_DayShort".Translate(sc.DaysSurvived.Named("DAY")).Resolve());
+            }
+            else if (!string.IsNullOrEmpty(sc.Quadrum) && sc.InGameYear > 0) {
+                parts.Add(sc.Quadrum + " " + sc.InGameYear);
+            }
+            if (sc.ColonistCount > 0) {
+                parts.Add("CL_LoadColony_ColonistsShort".Translate(sc.ColonistCount.Named("COUNT")).Resolve());
+            }
+        }
+        parts.Add(SaveMetadata.FormatRelative(status.LastWriteTime));
+        return string.Join("  ·  ", parts);
     }
 }

@@ -37,11 +37,11 @@ public static class ToggleButton {
             InteractionState state = InteractionState.Resolve(rect, null, disabled);
             ButtonVariant variant = value ? ButtonVariant.Primary : ButtonVariant.Ghost;
 
-            ThemeSlot bgSlot = ButtonVariants.Background(variant, state);
+            ThemeSlot? bgSlot = ButtonVariants.Background(variant, state);
             ThemeSlot fgSlot = ButtonVariants.Foreground(variant, state);
             ThemeSlot? borderSlot = ButtonVariants.Border(variant, state);
 
-            BackgroundSpec bg = BackgroundSpec.Of(bgSlot);
+            BackgroundSpec? bg = bgSlot.HasValue ? BackgroundSpec.Of(bgSlot.Value) : null;
             BorderSpec? border = borderSlot.HasValue
                 ? BorderSpec.All(new Rem(1f / 16f), borderSlot.Value)
                 : null;
@@ -57,7 +57,7 @@ public static class ToggleButton {
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
-            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize, FontStyle.Bold);
+            GUIStyle gstyle = GuiStyleCache.GetOrCreate(font, pixelSize);
             gstyle.alignment = TextAnchor.MiddleCenter;
 
             Color fg = theme.GetColor(fgSlot);

@@ -62,7 +62,7 @@ public static class Segmented {
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
             GUIStyle inactiveStyle = GuiStyleCache.GetOrCreate(inactiveFont, pixelSize);
             inactiveStyle.alignment = TextAnchor.MiddleCenter;
-            GUIStyle activeStyle = GuiStyleCache.GetOrCreate(activeFont, pixelSize, FontStyle.Bold);
+            GUIStyle activeStyle = GuiStyleCache.GetOrCreate(activeFont, pixelSize);
             activeStyle.alignment = TextAnchor.MiddleCenter;
 
             int activeIndex = -1;

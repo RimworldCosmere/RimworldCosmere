@@ -42,15 +42,14 @@ public static partial class Typography {
                 Style s = node.GetResolvedStyle();
                 Theme.Theme theme = RenderContext.Current.Theme;
                 FontRef? fr = s.FontFamily;
-                Font f = fr switch {
-                    FontRef.Literal lit => lit.Value,
-                    FontRef.Role role => theme.GetFont(role.RoleValue),
-                    _ => theme.GetFont(FontRole.Body),
-                };
                 Rem fontSize = s.FontSize ?? new Rem(1f);
                 FontStyle weight = s.FontWeight ?? FontStyle.Normal;
                 int pixelSize = Mathf.RoundToInt(fontSize.ToFontPx());
-                GUIStyle guiStyle = GuiStyleCache.GetOrCreate(f, pixelSize, weight);
+                GUIStyle guiStyle = fr switch {
+                    FontRef.Literal lit => GuiStyleCache.GetOrCreate(lit.Value, pixelSize, weight),
+                    FontRef.Role role => GuiStyleCache.GetOrCreate(theme, role.RoleValue, pixelSize, weight),
+                    _ => GuiStyleCache.GetOrCreate(theme, FontRole.Body, pixelSize, weight),
+                };
                 guiStyle.wordWrap = wrap;
                 return guiStyle;
             }

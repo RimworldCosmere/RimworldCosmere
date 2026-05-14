@@ -103,7 +103,7 @@ public static class BreakpointsDoc {
             string label = $"{(string)key.Translate()} ({Mathf.RoundToInt(minPx)}px+)";
             Theme.Theme theme = RenderContext.Current.Theme;
             int pixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(theme.GetFont(FontRole.BodyBold), pixelSize, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(theme.GetFont(FontRole.BodyBold), pixelSize);
             style.alignment = TextAnchor.MiddleCenter;
             Color saved = GUI.color;
             GUI.color = theme.GetColor(ThemeSlot.TextPrimary);
@@ -124,7 +124,7 @@ public static class BreakpointsDoc {
             float gap = new Rem(0.25f).ToPixels();
             float cellWidth = (rect.width - gap * (count - 1)) / count;
             int pixelSize = Mathf.RoundToInt(new Rem(0.8125f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(theme.GetFont(FontRole.BodyBold), pixelSize, FontStyle.Bold);
+            GUIStyle style = GuiStyleCache.GetOrCreate(theme.GetFont(FontRole.BodyBold), pixelSize);
             style.alignment = TextAnchor.MiddleCenter;
             RadiusSpec radius = RadiusSpec.All(RadiusScale.Sm);
             for (int i = 0; i < count; i++) {

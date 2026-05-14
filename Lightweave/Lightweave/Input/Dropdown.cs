@@ -138,8 +138,8 @@ public static class Dropdown {
                 PaintBox.Draw(rect, BackgroundSpec.Of(translucent), borderSpec, radiusSpec);
             }
             else {
-                ThemeSlot bgSlot = ButtonVariants.Background(buttonStyle, state);
-                BackgroundSpec bgSpec = BackgroundSpec.Of(bgSlot);
+                ThemeSlot? bgSlot = ButtonVariants.Background(buttonStyle, state);
+                BackgroundSpec? bgSpec = bgSlot.HasValue ? BackgroundSpec.Of(bgSlot.Value) : null;
                 PaintBox.Draw(rect, bgSpec, borderSpec, radiusSpec);
             }
 
@@ -153,7 +153,7 @@ public static class Dropdown {
                 LabelSlot = fgSlot,
                 ChevronSlot = fgSlot,
                 LabelFontRole = FontRole.BodyBold,
-                LabelFontStyle = FontStyle.Bold
+                LabelFontStyle = FontStyle.Normal
             };
         }
 

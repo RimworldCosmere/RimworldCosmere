@@ -23,6 +23,10 @@ public static class ScrollArea {
         object? resetKey = null,
         [DocParam("Show the vertical scrollbar gutter.")]
         bool showScrollbar = true,
+        [DocParam("Scrollbar visibility mode. Auto: hidden until scroll/hover; Always: visible; Never: hidden.")]
+        ScrollbarMode scrollbarMode = ScrollbarMode.Auto,
+        [DocParam("Scrollbar visual style. Slim: thin overlay; Standard: full-width with arrows; Minimal: thinnest, no track.")]
+        ScrollbarStyle scrollbarStyle = ScrollbarStyle.Slim,
         [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
         Style? style = null,
         [DocParam("Additional class names merged after the base 'scroll-area' class.", TypeOverride = "string[]?", DefaultOverride = "null")]
@@ -41,7 +45,8 @@ public static class ScrollArea {
             lastResetKey.Current = resetKey;
         }
 
-        LightweaveNode node = BuildScrollArea(content, statusRef.Current, showScrollbar, line, file);
+        ScrollbarMode effectiveMode = showScrollbar ? scrollbarMode : ScrollbarMode.Never;
+        LightweaveNode node = BuildScrollArea(content, statusRef.Current, effectiveMode, scrollbarStyle, line, file);
         node.ApplyStyling("scroll-area", style, classes, id);
         return node;
     }
@@ -50,13 +55,16 @@ public static class ScrollArea {
         LightweaveNode content,
         LightweaveScrollStatus status,
         bool showScrollbar = true,
+        ScrollbarMode scrollbarMode = ScrollbarMode.Auto,
+        ScrollbarStyle scrollbarStyle = ScrollbarStyle.Slim,
         Style? style = null,
         string[]? classes = null,
         string? id = null,
         [CallerLineNumber] int line = 0,
         [CallerFilePath] string file = ""
     ) {
-        LightweaveNode node = BuildScrollArea(content, status, showScrollbar, line, file);
+        ScrollbarMode effectiveMode = showScrollbar ? scrollbarMode : ScrollbarMode.Never;
+        LightweaveNode node = BuildScrollArea(content, status, effectiveMode, scrollbarStyle, line, file);
         node.ApplyStyling("scroll-area", style, classes, id);
         return node;
     }
@@ -64,20 +72,21 @@ public static class ScrollArea {
     private static LightweaveNode BuildScrollArea(
         LightweaveNode content,
         LightweaveScrollStatus status,
-        bool showScrollbar,
+        ScrollbarMode mode,
+        ScrollbarStyle style,
         int line,
         string file
     ) {
         LightweaveNode node = NodeBuilder.New("ScrollArea", line, file);
         node.Children.Add(content);
         node.Paint = (rect, paintChildren) => {
-            float scrollbarGutter = LightweaveScrollView.GutterPixels(status.VerticalVisible);
+            float scrollbarGutter = LightweaveScrollView.GutterPixels(status.VerticalVisible, mode, style);
             float innerWidth = rect.width - scrollbarGutter;
             float contentHeight = content.IsInFlow()
                 ? content.Measure?.Invoke(innerWidth) ?? content.PreferredHeight ?? rect.height
                 : rect.height;
             status.Height = contentHeight;
-            using (new LightweaveScrollView(rect, status, showScrollbar)) {
+            using (new LightweaveScrollView(rect, status, mode, style)) {
                 if (content.IsInFlow()) {
                     content.MeasuredRect = new Rect(0f, 0f, innerWidth, contentHeight);
                 }
@@ -98,16 +107,41 @@ public static class ScrollArea {
         );
     }
 
-    [DocVariant("CL_Playground_ScrollArea_WithBar")]
-    public static DocSample DocsWithBar() {
-        return new DocSample(() => 
+    [DocVariant("CL_Playground_ScrollArea_AutoSlim")]
+    public static DocSample DocsAutoSlim() {
+        return new DocSample(() =>
             ScrollArea.Create(DocsRows(20))
+        );
+    }
+
+    [DocVariant("CL_Playground_ScrollArea_AutoMinimal")]
+    public static DocSample DocsAutoMinimal() {
+        return new DocSample(() =>
+            ScrollArea.Create(DocsRows(20), scrollbarStyle: ScrollbarStyle.Minimal)
+        );
+    }
+
+    [DocVariant("CL_Playground_ScrollArea_AlwaysSlim")]
+    public static DocSample DocsAlwaysSlim() {
+        return new DocSample(() =>
+            ScrollArea.Create(DocsRows(20), scrollbarMode: ScrollbarMode.Always)
+        );
+    }
+
+    [DocVariant("CL_Playground_ScrollArea_AlwaysStandard")]
+    public static DocSample DocsAlwaysStandard() {
+        return new DocSample(() =>
+            ScrollArea.Create(
+                DocsRows(20),
+                scrollbarMode: ScrollbarMode.Always,
+                scrollbarStyle: ScrollbarStyle.Standard
+            )
         );
     }
 
     [DocVariant("CL_Playground_ScrollArea_NoBar")]
     public static DocSample DocsNoBar() {
-        return new DocSample(() => 
+        return new DocSample(() =>
             ScrollArea.Create(DocsRows(20), showScrollbar: false)
         );
     }

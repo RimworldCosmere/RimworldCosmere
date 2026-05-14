@@ -15,6 +15,7 @@ namespace Cosmere.Lightweave.Patch;
 public static class Dialog_SaveFileListLoadRedesignPatch {
     private static readonly Guid RootId = Guid.NewGuid();
     private static readonly FieldInfo? FilesField = AccessTools.Field(typeof(Dialog_FileList), "files");
+    private static readonly MethodInfo? ReloadFilesMethod = AccessTools.Method(typeof(Dialog_FileList), "ReloadFiles");
 
     public static bool Prefix(Dialog_FileList __instance, Rect inRect) {
         if (__instance is not Dialog_SaveFileList_Load loadDialog) {
@@ -30,7 +31,8 @@ public static class Dialog_SaveFileListLoadRedesignPatch {
                                        ?? new List<SaveFileInfo>();
             LightweaveRoot.Render(inRect, RootId, () => LoadColonyRoot.Build(
                 files,
-                () => loadDialog.Close()
+                () => loadDialog.Close(),
+                () => ReloadFilesMethod?.Invoke(loadDialog, null)
             ));
         }
         catch (Exception ex) {

@@ -20,11 +20,10 @@ public static class OptionsRoot {
     public static LightweaveNode Build(Dialog_Options dialog, Action onClose) {
         Hooks.Hooks.StateHandle<OptionsTab> tab = Hooks.Hooks.UseState(OptionsTab.General);
 
-        return Box.Create(
+        LightweaveNode card = Box.Create(
             children: c => c.Add(Stack.Create(SpacingScale.None, root => {
                 root.Add(DialogHeader.Create(
                     title: "CL_Options_Title".Translate(),
-                    breadcrumb: "CL_Dialog_Crumb_Main".Translate() + " / " + "CL_Options_Title".Translate(),
                     trailingActionLabel: "CL_Options_ResetCategory".Translate(),
                     onTrailingAction: null,
                     onClose: () => {
@@ -37,29 +36,30 @@ public static class OptionsRoot {
                     h.Add(BuildSidebar(tab), new Rem(14f).ToPixels());
                     h.AddFlex(BuildContent(tab.Value, dialog));
                 }));
-            })),
-            style: new Style {
-                Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
-                Border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle),
-            }
+            }))
+        );
+
+        return Dialog.Create(
+            content: () => card,
+            cardBackground: BackgroundSpec.Blur(new Color(0f, 0f, 0f, 0.95f), 10f)
         );
     }
 
     private static LightweaveNode BuildSidebar(Hooks.Hooks.StateHandle<OptionsTab> tab) {
         return Box.Create(
-            children: c => c.Add(Stack.Create(SpacingScale.Xxs, s => {
+            children: c => c.Add(Stack.Create(SpacingScale.None, s => {
                 AppendTab(s, tab, OptionsTab.General, "CL_Options_Tab_General");
+                AppendTab(s, tab, OptionsTab.Gameplay, "CL_Options_Tab_Gameplay");
                 AppendTab(s, tab, OptionsTab.Graphics, "CL_Options_Tab_Graphics");
                 AppendTab(s, tab, OptionsTab.Audio, "CL_Options_Tab_Audio");
-                AppendTab(s, tab, OptionsTab.Gameplay, "CL_Options_Tab_Gameplay");
-                AppendTab(s, tab, OptionsTab.Interface, "CL_Options_Tab_Interface");
                 AppendTab(s, tab, OptionsTab.Controls, "CL_Options_Tab_Controls");
+                AppendTab(s, tab, OptionsTab.Interface, "CL_Options_Tab_Interface");
                 AppendTab(s, tab, OptionsTab.Developer, "CL_Options_Tab_Developer");
                 AppendTab(s, tab, OptionsTab.ModSettings, "CL_Options_Tab_ModSettings");
             })),
             style: new Style {
-                Padding = EdgeInsets.All(SpacingScale.Sm),
-                Background = BackgroundSpec.Of(ThemeSlot.SurfaceSunken),
+                Padding = new EdgeInsets(Top: SpacingScale.None, Bottom: SpacingScale.Md, Left: SpacingScale.None, Right: SpacingScale.None),
+                Border = new BorderSpec(Right: new Rem(1f / 16f), Color: ThemeSlot.BorderSubtle),
             }
         );
     }
@@ -78,10 +78,14 @@ public static class OptionsRoot {
             Theme.Theme theme = RenderContext.Current.Theme;
             InteractionState state = InteractionState.Resolve(rect, null, false);
 
-            ThemeSlot bgSlot = isActive
-                ? ThemeSlot.SurfaceRaised
-                : (state.Hovered ? ThemeSlot.SurfaceRaised : ThemeSlot.SurfaceSunken);
-            PaintBox.Draw(rect, BackgroundSpec.Of(bgSlot), null, RadiusSpec.All(RadiusScale.Xs));
+            if (isActive) {
+                Color warmBg = new Color(0.157f, 0.125f, 0.086f, 0.4f);
+                PaintBox.Draw(rect, BackgroundSpec.Of(warmBg), null, null);
+            }
+            else if (state.Hovered) {
+                Color hoverBg = new Color(0.157f, 0.125f, 0.086f, 0.2f);
+                PaintBox.Draw(rect, BackgroundSpec.Of(hoverBg), null, null);
+            }
 
             if (isActive) {
                 float stripeW = new Rem(0.1875f).ToPixels();
@@ -89,9 +93,9 @@ public static class OptionsRoot {
                 PaintBox.Draw(stripe, BackgroundSpec.Of(ThemeSlot.SurfaceAccent), null, null);
             }
 
-            Font font = theme.GetFont(FontRole.Body);
+            Font font = theme.GetFont(isActive ? FontRole.BodyBold : FontRole.Body);
             int px = Mathf.RoundToInt(new Rem(0.95f).ToFontPx());
-            GUIStyle style = GuiStyleCache.GetOrCreate(font, px, isActive ? FontStyle.Bold : FontStyle.Normal);
+            GUIStyle style = GuiStyleCache.GetOrCreate(font, px, FontStyle.Normal);
             style.alignment = TextAnchor.MiddleLeft;
 
             Color saved = GUI.color;
@@ -125,11 +129,17 @@ public static class OptionsRoot {
             _ => GeneralTab.Build(),
         };
 
+        LightweaveNode paddedBody = Box.Create(
+            children: c => c.Add(body),
+            style: new Style {
+                Padding = new EdgeInsets(Right: new Rem(0.75f)),
+            }
+        );
+
         return Box.Create(
-            children: c => c.Add(ScrollArea.Create(content: body, showScrollbar: true)),
+            children: c => c.Add(ScrollArea.Create(content: paddedBody, showScrollbar: true)),
             style: new Style {
                 Padding = EdgeInsets.All(SpacingScale.Lg),
-                Background = BackgroundSpec.Of(ThemeSlot.SurfacePrimary),
             }
         );
     }

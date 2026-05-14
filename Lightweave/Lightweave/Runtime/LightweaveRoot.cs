@@ -150,11 +150,23 @@ public static class LightweaveRoot {
                 ancestor = rc?.RootRect ?? node.MeasuredRect;
             }
 
+            bool hasLeft = style.Left.HasValue;
+            bool hasRight = style.Right.HasValue;
+            bool hasTop = style.Top.HasValue;
+            bool hasBottom = style.Bottom.HasValue;
+            float leftPx = hasLeft ? style.Left!.Value.ToPixels() : 0f;
+            float rightPx = hasRight ? style.Right!.Value.ToPixels() : 0f;
+            float topPx = hasTop ? style.Top!.Value.ToPixels() : 0f;
+            float bottomPx = hasBottom ? style.Bottom!.Value.ToPixels() : 0f;
+
             float intrinsicW = node.MeasureWidth?.Invoke() ?? ancestor.width;
             float w;
             if (style.Width.HasValue) {
                 Length lw = style.Width.Value;
                 w = lw.IsGrower ? ancestor.width : lw.ToPixels(ancestor.width, intrinsicW);
+            }
+            else if (hasLeft && hasRight) {
+                w = Mathf.Max(0f, ancestor.width - leftPx - rightPx);
             }
             else {
                 w = intrinsicW;
@@ -168,6 +180,9 @@ public static class LightweaveRoot {
                 Length lh = style.Height.Value;
                 h = lh.IsGrower ? ancestor.height : lh.ToPixels(ancestor.height, intrinsicH);
             }
+            else if (hasTop && hasBottom) {
+                h = Mathf.Max(0f, ancestor.height - topPx - bottomPx);
+            }
             else {
                 h = intrinsicH;
             }
@@ -175,22 +190,22 @@ public static class LightweaveRoot {
             h = ClampMax(h, style.MaxHeight, ancestor.height);
 
             float x;
-            if (style.Left.HasValue) {
-                x = ancestor.x + style.Left.Value.ToPixels();
+            if (hasLeft) {
+                x = ancestor.x + leftPx;
             }
-            else if (style.Right.HasValue) {
-                x = ancestor.x + ancestor.width - style.Right.Value.ToPixels() - w;
+            else if (hasRight) {
+                x = ancestor.x + ancestor.width - rightPx - w;
             }
             else {
                 x = ancestor.x;
             }
 
             float y;
-            if (style.Top.HasValue) {
-                y = ancestor.y + style.Top.Value.ToPixels();
+            if (hasTop) {
+                y = ancestor.y + topPx;
             }
-            else if (style.Bottom.HasValue) {
-                y = ancestor.y + ancestor.height - style.Bottom.Value.ToPixels() - h;
+            else if (hasBottom) {
+                y = ancestor.y + ancestor.height - bottomPx - h;
             }
             else {
                 y = ancestor.y;

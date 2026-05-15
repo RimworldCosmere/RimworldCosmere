@@ -16,13 +16,13 @@
             <displayName>Biotech</displayName>
         </li>
         <li>
-            <packageId>CryptikLemur.Lightweave</packageId>
+            <packageId>Cosmere.Lightweave</packageId>
             <displayName>Lightweave</displayName>
-            <downloadUrl>https://github.com/RimworldCosmere/RimworldCosmere/releases/latest</downloadUrl>
+            <downloadUrl>https://github.com/RimworldCosmere/Lightweave/releases/latest</downloadUrl>
         </li>
     </modDependencies>
     <forceLoadAfter>
         <li>Ludeon.RimWorld.Biotech</li>
-        <li>CryptikLemur.Lightweave</li>
+        <li>Cosmere.Lightweave</li>
     </forceLoadAfter>
 </ModMetaData>

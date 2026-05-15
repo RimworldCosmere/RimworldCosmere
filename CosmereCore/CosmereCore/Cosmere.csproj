@@ -51,10 +51,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Lightweave\Lightweave\Lightweave.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
+        <PackageReference Include="Cosmere.Lightweave" Version="1.0.0" />
         <PackageReference Include="Lib.Harmony" Version="2.4.2"/>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all">
             <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -72,6 +69,12 @@
             <Private>False</Private>
         </Reference>
         <Reference Include="D:\RimWorld\RimWorldWin64_Data\Managed\*.dll" Condition="Exists('D:\RimWorld\RimWorldWin64_Data\Managed')">
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="/mnt/games/SteamLibrary/steamapps/common/RimWorld/RimWorldLinux_Data/Managed/*.dll" Condition="Exists('/mnt/games/SteamLibrary/steamapps/common/RimWorld/RimWorldLinux_Data/Managed')">
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="/mnt/games/RimWorld/RimWorldLinux_Data/Managed/*.dll" Condition="Exists('/mnt/games/RimWorld/RimWorldLinux_Data/Managed')">
             <Private>False</Private>
         </Reference>
     </ItemGroup>

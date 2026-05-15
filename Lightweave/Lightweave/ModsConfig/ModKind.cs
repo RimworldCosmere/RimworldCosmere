@@ -1,4 +1,4 @@
-using Cosmere.Lightweave.Theme;
+using Cosmere.Lightweave.Tokens;
 using Verse;
 
 namespace Cosmere.Lightweave.ModsConfig;
@@ -37,13 +37,13 @@ internal static class ModKindResolver {
         return kind switch {
             ModKind.Core => ThemeSlot.SurfaceAccent,
             ModKind.Expansion => ThemeSlot.SurfaceAccent,
-            ModKind.Library => ThemeSlot.StatusInfo,
-            _ => ThemeSlot.TextMuted,
+            ModKind.Library => ThemeSlot.AccentMuted,
+            _ => ThemeSlot.SurfaceAccent,
         };
     }
 
     public static bool IsLocked(ModMetaData mod) {
-        return mod.IsCoreMod || mod.Official;
+        return mod.IsCoreMod;
     }
 
     private static bool IsLibrary(ModMetaData mod) {
@@ -51,11 +51,12 @@ internal static class ModKindResolver {
         if (string.IsNullOrEmpty(packageId)) {
             return false;
         }
-        return packageId == "brrainz.harmony"
-            || packageId == "unlimitedhugs.hugslib"
-            || packageId == "krkr.rocketman"
-            || packageId == "owlchemist.performanceoptimizer"
-            || packageId.EndsWith(".harmony")
-            || packageId.EndsWith(".hugslib");
+        string pid = packageId!;
+        return pid == "brrainz.harmony"
+            || pid == "unlimitedhugs.hugslib"
+            || pid == "krkr.rocketman"
+            || pid == "owlchemist.performanceoptimizer"
+            || pid.EndsWith(".harmony")
+            || pid.EndsWith(".hugslib");
     }
 }

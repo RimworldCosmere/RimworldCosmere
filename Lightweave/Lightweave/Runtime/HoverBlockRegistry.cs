@@ -4,28 +4,26 @@ using UnityEngine;
 namespace Cosmere.Lightweave.Runtime;
 
 internal static class HoverBlockRegistry {
-    private static List<Rect> current = new List<Rect>();
-    private static List<Rect> previous = new List<Rect>();
+    private static int currentFrame = -1;
+    private static readonly List<Rect> rects = new List<Rect>();
 
-    public static void BeginFrame() {
-        List<Rect> temp = previous;
-        previous = current;
-        current = temp;
-        current.Clear();
+    private static void EnsureFrame() {
+        int frame = Time.frameCount;
+        if (frame != currentFrame) {
+            currentFrame = frame;
+            rects.Clear();
+        }
     }
 
     public static void Register(Rect screenRect) {
-        current.Add(screenRect);
+        EnsureFrame();
+        rects.Add(screenRect);
     }
 
     public static bool IsBlocked(Vector2 screenPos) {
-        for (int i = 0; i < current.Count; i++) {
-            if (current[i].Contains(screenPos)) {
-                return true;
-            }
-        }
-        for (int i = 0; i < previous.Count; i++) {
-            if (previous[i].Contains(screenPos)) {
+        EnsureFrame();
+        for (int i = 0; i < rects.Count; i++) {
+            if (rects[i].Contains(screenPos)) {
                 return true;
             }
         }

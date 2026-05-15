@@ -13,9 +13,7 @@ using static Cosmere.Lightweave.Hooks.Hooks;
 namespace Cosmere.Lightweave.MainMenu;
 
 public static class LangSelectField {
-    private static readonly Rem RowHeight = new Rem(1.75f);
-    private static readonly Rem TriggerPadding = new Rem(1f);
-    private static readonly Rem ChevronWidth = new Rem(1.25f);
+
 
     public static LightweaveNode Create(
         bool disabled = false,
@@ -31,9 +29,10 @@ public static class LangSelectField {
 
         LightweaveNode node = NodeBuilder.New("LangSelectField", line, file);
         node.ApplyStyling("lang-select-field", style, classes, id);
-        node.PreferredHeight = RowHeight.ToPixels();
+        node.PreferredHeight = SelectorTrigger.Height.ToPixels();
 
-        node.Paint = (rect, paintChildren) => {
+        node.Paint = (allocatedRect, paintChildren) => {
+            Rect rect = SelectorTrigger.ComputeTriggerRect(allocatedRect);
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
@@ -43,6 +42,11 @@ public static class LangSelectField {
             StateHandle<string> query = UseState(string.Empty, line, queryKey);
 
             anchor.Set(rect);
+
+            if (open.Value && SingletonOverlayRegistry.ShouldClose(openKey)) {
+                open.Set(false);
+                query.Set(string.Empty);
+            }
 
             InteractionState state = InteractionState.Resolve(rect, null, disabled);
             bool active = state.Hovered || state.Pressed || open.Value;
@@ -62,13 +66,9 @@ public static class LangSelectField {
                 PaintBox.Draw(rect, BackgroundSpec.Of(overlayColor), null, radiusSpec);
             }
 
-            float padPx = TriggerPadding.ToPixels();
-            float chevronPx = ChevronWidth.ToPixels();
-            float chevronX = rtl ? rect.x + padPx : rect.xMax - padPx - chevronPx;
-            Rect chevronRect = new Rect(chevronX, rect.y, chevronPx, rect.height);
-            float labelStartX = rtl ? chevronX + chevronPx + padPx : rect.x + padPx;
-            float labelEndX = rtl ? rect.xMax - padPx : chevronX - padPx;
-            Rect labelRect = new Rect(labelStartX, rect.y, labelEndX - labelStartX, rect.height);
+            SelectorTrigger.Layout layout = SelectorTrigger.ComputeLayout(rect, dir);
+            Rect labelRect = layout.LabelRect;
+            Rect chevronRect = layout.ChevronRect;
 
             LoadedLanguage activeLang = LanguageDatabase.activeLanguage;
             string labelText = activeLang != null
@@ -85,12 +85,7 @@ public static class LangSelectField {
             GUI.color = theme.GetColor(fgSlot);
             GUI.Label(RectSnap.Snap(labelRect), labelText, labelStyle);
 
-            Font chevronFont = theme.GetFont(FontRole.Body);
-            int chevronPixelSize = Mathf.RoundToInt(new Rem(1.25f).ToFontPx());
-            GUIStyle chevronStyle = GuiStyleCache.GetOrCreate(chevronFont, chevronPixelSize);
-            chevronStyle.alignment = TextAnchor.MiddleCenter;
-            GUI.color = theme.GetColor(fgSlot);
-            GUI.Label(RectSnap.Snap(chevronRect), "▾", chevronStyle);
+            SelectorTrigger.DrawChevron(chevronRect, fgSlot, theme);
             GUI.color = savedColor;
 
             if (!disabled) {
@@ -99,8 +94,13 @@ public static class LangSelectField {
                     e.Use();
                 }
                 else if (e.type == EventType.MouseUp && e.button == 0 && rect.Contains(e.mousePosition)) {
-                    open.Set(!open.Value);
-                    if (!open.Value) {
+                    bool willOpen = !open.Value;
+                    open.Set(willOpen);
+                    if (willOpen) {
+                        SingletonOverlayRegistry.Open(openKey);
+                    }
+                    else {
+                        SingletonOverlayRegistry.Close(openKey);
                         query.Set(string.Empty);
                     }
                     e.Use();
@@ -116,11 +116,13 @@ public static class LangSelectField {
                     q => query.Set(q),
                     () => {
                         open.Set(false);
+                        SingletonOverlayRegistry.Close(openKey);
                         query.Set(string.Empty);
                     }
                 ),
                 onDismiss: () => {
                     open.Set(false);
+                    SingletonOverlayRegistry.Close(openKey);
                     query.Set(string.Empty);
                 },
                 preferredSize: new Vector2(new Rem(21f).ToPixels(), -1f),

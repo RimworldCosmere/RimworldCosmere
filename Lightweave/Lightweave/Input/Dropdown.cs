@@ -25,7 +25,6 @@ public static class Dropdown {
     private const float TypeAheadTimeoutSeconds = 1f;
     private static readonly Rem RowHeight = new Rem(1.75f);
     private static readonly Rem RowPadding = new Rem(0.5f);
-    private static readonly Rem ChevronWidth = new Rem(1.25f);
 
     public static LightweaveNode Create<T>(
         [DocParam("The currently selected value.")]
@@ -58,9 +57,10 @@ public static class Dropdown {
 
         LightweaveNode node = NodeBuilder.New("Dropdown", line, file);
         node.ApplyStyling("dropdown", style, classes, id);
-        node.PreferredHeight = RowHeight.ToPixels();
+        node.PreferredHeight = SelectorTrigger.Height.ToPixels();
 
-        node.Paint = (rect, paintChildren) => {
+        node.Paint = (allocatedRect, paintChildren) => {
+            Rect rect = SelectorTrigger.ComputeTriggerRect(allocatedRect);
             Theme.Theme theme = RenderContext.Current.Theme;
             Direction dir = RenderContext.Current.Direction;
 
@@ -167,18 +167,8 @@ public static class Dropdown {
     }
 
     private static (Rect labelRect, Rect chevronRect) ComputeTriggerLayout(Rect rect, Direction dir) {
-        float padPx = RowPadding.ToPixels();
-        float chevronPx = ChevronWidth.ToPixels();
-        bool rtl = dir == Direction.Rtl;
-
-        float chevronX = rtl ? rect.x + padPx : rect.xMax - padPx - chevronPx;
-        Rect chevronRect = new Rect(chevronX, rect.y, chevronPx, rect.height);
-
-        float labelStartX = rtl ? chevronX + chevronPx + padPx : rect.x + padPx;
-        float labelEndX = rtl ? rect.xMax - padPx : chevronX - padPx;
-        Rect labelRect = new Rect(labelStartX, rect.y, labelEndX - labelStartX, rect.height);
-
-        return (labelRect, chevronRect);
+        SelectorTrigger.Layout layout = SelectorTrigger.ComputeLayout(rect, dir);
+        return (layout.LabelRect, layout.ChevronRect);
     }
 
     private static void DrawTriggerContent(
@@ -193,22 +183,14 @@ public static class Dropdown {
         Font labelFont = theme.GetFont(style.LabelFontRole);
         int labelPixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
         GUIStyle labelStyle = GuiStyleCache.GetOrCreate(labelFont, labelPixelSize, style.LabelFontStyle);
-        labelStyle.alignment = variant == DropdownVariant.Button
-            ? TextAnchor.MiddleCenter
-            : Typography.Typography.ResolveAnchor(TextAlign.Start, dir);
+        labelStyle.alignment = Typography.Typography.ResolveAnchor(TextAlign.Start, dir);
 
         Color savedColor = GUI.color;
         GUI.color = theme.GetColor(style.LabelSlot);
         GUI.Label(RectSnap.Snap(labelRect), labelText, labelStyle);
         GUI.color = savedColor;
 
-        Font chevronFont = theme.GetFont(FontRole.Body);
-        int chevronPixelSize = Mathf.RoundToInt(new Rem(1.25f).ToFontPx());
-        GUIStyle chevronStyle = GuiStyleCache.GetOrCreate(chevronFont, chevronPixelSize);
-        chevronStyle.alignment = TextAnchor.MiddleCenter;
-        GUI.color = theme.GetColor(style.ChevronSlot);
-        GUI.Label(RectSnap.Snap(chevronRect), "▾", chevronStyle);
-        GUI.color = savedColor;
+        SelectorTrigger.DrawChevron(chevronRect, style.ChevronSlot, theme);
     }
 
     private static void HandleTriggerInteraction<T>(
@@ -272,7 +254,18 @@ public static class Dropdown {
         Rect anchorAbsolute = OverlayAnchor.CaptureAbsolute(rect);
         int capturedHighlight = highlightedIndex.Value;
         string capturedKey = isOpenKey;
-        RenderContext.Current.PendingOverlays.Enqueue(() => {
+
+        Direction dir = RenderContext.Current.Direction;
+        float rowH = RowHeight.ToPixels();
+        int visibleCount = Mathf.Min(options.Count, MaxVisibleRows);
+        float popoverHeight = visibleCount * rowH;
+        Vector2 size = new Vector2(rect.width, popoverHeight);
+        Rect screen = new Rect(0f, 0f, Screen.width, Screen.height);
+        Rect popoverLocal = PopoverLayout.Resolve(rect, PopoverPlacement.Bottom, dir, size, screen);
+        Rect popoverScreen = OverlayAnchor.CaptureAbsolute(popoverLocal);
+        HoverBlockRegistry.Register(popoverScreen);
+
+        Action drawOverlay = () => {
             Rect anchorHere = OverlayAnchor.ResolveLocal(anchorAbsolute);
             RenderOpenDropdown(
                 anchorHere,
@@ -287,8 +280,15 @@ public static class Dropdown {
                 isOpen,
                 capturedKey
             );
+        };
+
+        EventType evtType = Event.current?.rawType ?? EventType.Ignore;
+        if (evtType == EventType.ScrollWheel || evtType == EventType.MouseDown) {
+            drawOverlay();
+            return;
         }
-        );
+
+        RenderContext.Current.PendingOverlays.Enqueue(drawOverlay);
     }
 
     private static void RenderOpenDropdown<T>(
@@ -340,18 +340,24 @@ public static class Dropdown {
             isOpen
         );
 
-        for (int i = 0; i < visibleCount; i++) {
-            Rect rowRect = new Rect(popoverRect.x, popoverRect.y + i * rowH, popoverRect.width, rowH);
-            PaintRow(
-                rowRect,
-                options,
-                labelFn,
-                currentValue,
-                i,
-                highlightedIndex,
-                onChange,
-                isOpen
-            );
+        RenderContext.Current.OverlayContentDepth++;
+        try {
+            for (int i = 0; i < visibleCount; i++) {
+                Rect rowRect = new Rect(popoverRect.x, popoverRect.y + i * rowH, popoverRect.width, rowH);
+                PaintRow(
+                    rowRect,
+                    options,
+                    labelFn,
+                    currentValue,
+                    i,
+                    highlightedIndex,
+                    onChange,
+                    isOpen
+                );
+            }
+        }
+        finally {
+            RenderContext.Current.OverlayContentDepth--;
         }
 
         Event e = Event.current;

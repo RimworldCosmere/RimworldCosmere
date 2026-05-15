@@ -30,7 +30,9 @@ public static class GraphicsTab {
                                 return;
                             }
                             ResolutionUtility.SafeSetResolution(r);
-                        }
+                        },
+                        variant: DropdownVariant.Button,
+                        buttonStyle: ButtonVariant.Frosted
                     )
                 ),
                 SettingRow.Create(

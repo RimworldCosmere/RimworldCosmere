@@ -610,6 +610,7 @@
     <CL_Playground_Label_Vertical>Vertical</CL_Playground_Label_Vertical>
     <CL_Playground_Label_Empty>Empty</CL_Playground_Label_Empty>
     <CL_Playground_Label_Filled>Filled</CL_Playground_Label_Filled>
+    <CL_Playground_Label_Borderless>Borderless</CL_Playground_Label_Borderless>
     <CL_Playground_Label_Autoplay>Autoplay</CL_Playground_Label_Autoplay>
     <CL_Playground_Label_Keyboard>Keyboard</CL_Playground_Label_Keyboard>
     <CL_Playground_Label_Open>Open</CL_Playground_Label_Open>

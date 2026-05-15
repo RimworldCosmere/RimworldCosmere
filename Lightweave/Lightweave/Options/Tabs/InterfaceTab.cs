@@ -118,7 +118,9 @@ public static class InterfaceTab {
                         value: Prefs.TemperatureMode,
                         options: TempModes,
                         labelFn: m => m.ToStringHuman(),
-                        onChange: m => Prefs.TemperatureMode = m
+                        onChange: m => Prefs.TemperatureMode = m,
+                        variant: DropdownVariant.Button,
+                        buttonStyle: ButtonVariant.Frosted
                     )
                 ),
                 SettingRow.Create(
@@ -127,7 +129,9 @@ public static class InterfaceTab {
                         value: Prefs.ShowWeaponsUnderPortraitMode,
                         options: WeaponsUnderPortraitModes,
                         labelFn: m => m.ToStringHuman(),
-                        onChange: m => Prefs.ShowWeaponsUnderPortraitMode = m
+                        onChange: m => Prefs.ShowWeaponsUnderPortraitMode = m,
+                        variant: DropdownVariant.Button,
+                        buttonStyle: ButtonVariant.Frosted
                     )
                 ),
                 SettingRow.Create(
@@ -136,7 +140,9 @@ public static class InterfaceTab {
                         value: Prefs.AnimalNameMode,
                         options: AnimalNameModes,
                         labelFn: m => m.ToStringHuman(),
-                        onChange: m => Prefs.AnimalNameMode = m
+                        onChange: m => Prefs.AnimalNameMode = m,
+                        variant: DropdownVariant.Button,
+                        buttonStyle: ButtonVariant.Frosted
                     )
                 )
             ));
@@ -149,7 +155,9 @@ public static class InterfaceTab {
                             value: Prefs.MechNameMode,
                             options: MechNameModes,
                             labelFn: m => m.ToStringHuman(),
-                            onChange: m => Prefs.MechNameMode = m
+                            onChange: m => Prefs.MechNameMode = m,
+                            variant: DropdownVariant.Button,
+                            buttonStyle: ButtonVariant.Frosted
                         )
                     )
                 ));
@@ -162,7 +170,9 @@ public static class InterfaceTab {
                         value: Prefs.DotHighlightDisplayMode,
                         options: DotHighlightModes,
                         labelFn: m => m.ToStringHuman(),
-                        onChange: m => Prefs.DotHighlightDisplayMode = m
+                        onChange: m => Prefs.DotHighlightDisplayMode = m,
+                        variant: DropdownVariant.Button,
+                        buttonStyle: ButtonVariant.Frosted
                     )
                 ),
                 SettingRow.Create(
@@ -172,7 +182,9 @@ public static class InterfaceTab {
                         options: HighlightStyleModes,
                         labelFn: m => m.ToStringHuman(),
                         onChange: m => Prefs.HighlightStyleMode = m,
-                        disabled: !dotHighlightOn
+                        disabled: !dotHighlightOn,
+                        variant: DropdownVariant.Button,
+                        buttonStyle: ButtonVariant.Frosted
                     )
                 )
             ));
@@ -187,7 +199,9 @@ public static class InterfaceTab {
                                 : Prefs.BackgroundImageExpansion?.defName ?? RandomBackgroundSentinel,
                             options: BackgroundOptionList(installedExpansions),
                             labelFn: id => BackgroundLabelForId(id, installedExpansions),
-                            onChange: id => ApplyBackgroundChoice(id, installedExpansions)
+                            onChange: id => ApplyBackgroundChoice(id, installedExpansions),
+                            variant: DropdownVariant.Button,
+                            buttonStyle: ButtonVariant.Frosted
                         )
                     )
                 ));

@@ -23,13 +23,16 @@ public static class Page_ModsConfigPreOpenPatch {
         page.forcePause = true;
         page.doWindowBackground = false;
         page.drawShadow = false;
-        float w = Mathf.Min(UnityEngine.Screen.width * 0.77f, 2200f);
-        float h = Mathf.Min(UnityEngine.Screen.height * 0.81f, 1280f);
+        // Page overrides Margin to 25 and InnerWindowOnGUI passes
+        // rect.ContractedBy(Margin) to DoWindowContents. To make the
+        // vignette/scrim cover the full game window, inflate windowRect
+        // by Margin*2 so the contraction lands back on the screen rect.
+        const float margin = 25f;
         page.windowRect = new Rect(
-            (UnityEngine.Screen.width - w) / 2f,
-            (UnityEngine.Screen.height - h) / 2f,
-            w,
-            h
+            -margin,
+            -margin,
+            UnityEngine.Screen.width + margin * 2f,
+            UnityEngine.Screen.height + margin * 2f
         );
     }
 }

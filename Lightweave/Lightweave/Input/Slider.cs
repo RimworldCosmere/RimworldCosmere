@@ -18,14 +18,11 @@ namespace Cosmere.Lightweave.Input;
 )]
 public static class Slider {
     public static LightweaveNode Create(
-        [DocParam("Current slider value.")]
-        float value,
+        [DocParam("Current slider value.")] float value,
         [DocParam("Invoked with the new value. Fires on release by default; see `live`.")]
         Action<float> onChange,
-        [DocParam("Minimum value.")]
-        float min = 0f,
-        [DocParam("Maximum value.")]
-        float max = 1f,
+        [DocParam("Minimum value.")] float min = 0f,
+        [DocParam("Maximum value.")] float max = 1f,
         [DocParam("Snap interval. 0 disables stepping.")]
         float step = 0f,
         [DocParam("Optional list of tick marks rendered along the track.")]
@@ -40,7 +37,9 @@ public static class Slider {
         int liveThrottleFrames = 10,
         [DocParam("Minimum frames between label string re-formats during drag. Default 3 (~20Hz at 60fps).")]
         int labelThrottleFrames = 3,
-        [DocParam("When false, the slider does not render its own readout label band (use this when the readout is rendered externally, e.g. by SliderWithReadout).")]
+        [DocParam(
+            "When false, the slider does not render its own readout label band (use this when the readout is rendered externally, e.g. by SliderWithReadout)."
+        )]
         bool showReadout = true,
         Style? style = null,
         string[]? classes = null,
@@ -57,23 +56,25 @@ public static class Slider {
             Direction dir = RenderContext.Current.Direction;
             bool rtl = dir == Direction.Rtl;
 
-            Hooks.Hooks.RefHandle<bool> dragging = Hooks.Hooks.UseRef(false, line, file);
-            Hooks.Hooks.RefHandle<float> draftValue = Hooks.Hooks.UseRef(value, line, file + "#draft");
-            Hooks.Hooks.RefHandle<int> lastFireFrame = Hooks.Hooks.UseRef(int.MinValue, line, file + "#lastFire");
-            Hooks.Hooks.RefHandle<string> cachedLabel = Hooks.Hooks.UseRef(string.Empty, line, file + "#labelCache");
-            Hooks.Hooks.RefHandle<int> lastLabelFrame = Hooks.Hooks.UseRef(int.MinValue, line, file + "#labelFrame");
-            Hooks.Hooks.RefHandle<float> lastLabelValue = Hooks.Hooks.UseRef(float.NaN, line, file + "#labelValue");
+            RefHandle<bool> dragging = UseRef(false, line, file);
+            RefHandle<float> draftValue = UseRef(value, line, file + "#draft");
+            RefHandle<int> lastFireFrame = UseRef(int.MinValue, line, file + "#lastFire");
+            RefHandle<string> cachedLabel = UseRef(string.Empty, line, file + "#labelCache");
+            RefHandle<int> lastLabelFrame = UseRef(int.MinValue, line, file + "#labelFrame");
+            RefHandle<float> lastLabelValue = UseRef(float.NaN, line, file + "#labelValue");
 
             float labelBandHeight = showReadout ? new Rem(1f).ToPixels() : 0f;
             float trackBandHeight = new Rem(1.25f).ToPixels();
             float trackThickness = new Rem(0.5f).ToPixels();
-            float thumbSize = new Rem(1f).ToPixels();
+            float thumbSize = new Rem(0.875f).ToPixels();
             float tickWidth = new Rem(1f / 16f).ToPixels();
             float tickHeight = new Rem(0.75f).ToPixels();
             float edgePadding = thumbSize / 2f;
 
-            Rect labelBand = new Rect(rect.x, rect.y, rect.width, labelBandHeight);
-            Rect trackBand = new Rect(rect.x, rect.y + labelBandHeight, rect.width, trackBandHeight);
+            float contentHeight = labelBandHeight + trackBandHeight;
+            float contentY = rect.y + Mathf.Max(0f, (rect.height - contentHeight) / 2f);
+            Rect labelBand = new Rect(rect.x, contentY, rect.width, labelBandHeight);
+            Rect trackBand = new Rect(rect.x, contentY + labelBandHeight, rect.width, trackBandHeight);
 
             float trackLeft = trackBand.x + edgePadding;
             float trackRight = trackBand.xMax - edgePadding;
@@ -95,12 +96,13 @@ public static class Slider {
             float physicalFraction = rtl ? 1f - logicalFraction : logicalFraction;
             float thumbCenterX = trackRect.x + physicalFraction * trackRect.width;
             float thumbX = thumbCenterX - thumbSize / 2f;
-            float thumbY = trackBand.y + (trackBand.height - thumbSize) / 2f;
+            float thumbY = trackBand.y + (trackBand.height - thumbSize) / 2f - .5f;
             Rect thumbRect = new Rect(thumbX, thumbY, thumbSize, thumbSize);
 
             ThemeSlot filledSlot = disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceAccent;
             ThemeSlot unfilledSlot = disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput;
-            RadiusSpec trackRadius = RadiusSpec.All(RadiusScale.Sm);
+            RadiusSpec trackRadius = RadiusSpec.All(new Rem(0.5f / 2f));
+            BorderSpec trackBorder = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle);
 
             if (rtl) {
                 Rect rightUnfilled = new Rect(
@@ -115,10 +117,9 @@ public static class Slider {
                     Mathf.Max(0f, trackRect.xMax - thumbCenterX),
                     trackRect.height
                 );
-                PaintBox.Draw(rightUnfilled, BackgroundSpec.Of(unfilledSlot), null, trackRadius);
-                PaintBox.Draw(leftFilled, BackgroundSpec.Of(filledSlot), null, trackRadius);
-            }
-            else {
+                PaintBox.Draw(rightUnfilled, BackgroundSpec.Of(unfilledSlot), trackBorder, trackRadius);
+                PaintBox.Draw(leftFilled, BackgroundSpec.Of(filledSlot), trackBorder, trackRadius);
+            } else {
                 Rect leftFilled = new Rect(
                     trackRect.x,
                     trackRect.y,
@@ -131,8 +132,8 @@ public static class Slider {
                     Mathf.Max(0f, trackRect.xMax - thumbCenterX),
                     trackRect.height
                 );
-                PaintBox.Draw(leftFilled, BackgroundSpec.Of(filledSlot), null, trackRadius);
-                PaintBox.Draw(rightUnfilled, BackgroundSpec.Of(unfilledSlot), null, trackRadius);
+                PaintBox.Draw(leftFilled, BackgroundSpec.Of(filledSlot), trackBorder, trackRadius);
+                PaintBox.Draw(rightUnfilled, BackgroundSpec.Of(unfilledSlot), trackBorder, trackRadius);
             }
 
             if (marks != null && marks.Length > 0 && range > 0f) {
@@ -149,48 +150,13 @@ public static class Slider {
                 }
             }
 
-            InteractionState thumbState = InteractionState.Resolve(thumbRect, null, disabled);
-            RadiusSpec thumbRadius = RadiusSpec.All(RadiusScale.Full);
-
-            if (!disabled && (thumbState.Hovered || dragging.Current)) {
-                float ringGrowPx = new Rem(0.25f).ToPixels();
-                Rect ringRect = new Rect(
-                    thumbRect.x - ringGrowPx,
-                    thumbRect.y - ringGrowPx,
-                    thumbRect.width + ringGrowPx * 2f,
-                    thumbRect.height + ringGrowPx * 2f
-                );
-                Color ringColor = theme.GetColor(ThemeSlot.BorderFocus);
-                ringColor.a = 0.30f;
-                PaintBox.Draw(ringRect, BackgroundSpec.Of(ringColor), null, RadiusSpec.All(RadiusScale.Full));
-            }
+            RadiusSpec thumbRadius = RadiusSpec.All(new Rem(0.875f / 2f));
 
             ThemeSlot thumbFillSlot = disabled
                 ? ThemeSlot.SurfaceDisabled
-                : ThemeSlot.TextOnAccent;
-            ThemeSlot thumbBorderSlot = disabled
-                ? ThemeSlot.BorderOff
-                : thumbState.Hovered || dragging.Current
-                    ? ThemeSlot.BorderFocus
-                    : ThemeSlot.BorderDefault;
+                : ThemeSlot.SurfaceAccent;
             BackgroundSpec thumbBg = BackgroundSpec.Of(thumbFillSlot);
-            BorderSpec thumbBorder = BorderSpec.All(new Rem(2f / 16f), thumbBorderSlot);
-            PaintBox.Draw(thumbRect, thumbBg, thumbBorder, thumbRadius);
-
-            if (!disabled) {
-                Rect thumbCore = new Rect(
-                    thumbRect.x + thumbRect.width * 0.30f,
-                    thumbRect.y + thumbRect.height * 0.30f,
-                    thumbRect.width * 0.40f,
-                    thumbRect.height * 0.40f
-                );
-                PaintBox.Draw(
-                    thumbCore,
-                    BackgroundSpec.Of(ThemeSlot.SurfaceAccent),
-                    null,
-                    RadiusSpec.All(RadiusScale.Full)
-                );
-            }
+            PaintBox.Draw(thumbRect, thumbBg, null, thumbRadius);
 
             if (showReadout && Event.current.type == EventType.Repaint) {
                 int currentFrame = Time.frameCount;
@@ -198,7 +164,7 @@ public static class Slider {
                 bool valueChanged = !Mathf.Approximately(lastLabelValue.Current, clampedValue);
                 bool throttleElapsed = currentFrame - lastLabelFrame.Current >= labelThrottle;
                 bool stale = string.IsNullOrEmpty(cachedLabel.Current);
-                if (stale || (valueChanged && (!dragging.Current || throttleElapsed))) {
+                if (stale || valueChanged && (!dragging.Current || throttleElapsed)) {
                     cachedLabel.Current = format != null ? format(clampedValue) : $"{clampedValue:0.00}";
                     lastLabelValue.Current = clampedValue;
                     lastLabelFrame.Current = currentFrame;
@@ -232,20 +198,20 @@ public static class Slider {
                     onChange?.Invoke(computed);
                     lastFireFrame.Current = Time.frameCount;
                 }
+
                 e.Use();
-            }
-            else if ((e.type == EventType.MouseUp || e.rawType == EventType.MouseUp) && dragging.Current) {
+            } else if ((e.type == EventType.MouseUp || e.rawType == EventType.MouseUp) && dragging.Current) {
                 dragging.Current = false;
                 float final = draftValue.Current;
                 if (!Mathf.Approximately(final, value)) {
                     onChange?.Invoke(final);
                     lastFireFrame.Current = Time.frameCount;
                 }
+
                 if (e.type == EventType.MouseUp) {
                     e.Use();
                 }
-            }
-            else if (e.type == EventType.MouseDrag && dragging.Current) {
+            } else if (e.type == EventType.MouseDrag && dragging.Current) {
                 if (live && !Mathf.Approximately(draftValue.Current, value)) {
                     int frame = Time.frameCount;
                     int throttle = Mathf.Max(0, liveThrottleFrames);
@@ -254,6 +220,7 @@ public static class Slider {
                         lastFireFrame.Current = frame;
                     }
                 }
+
                 e.Use();
             }
         };
@@ -300,14 +267,15 @@ public static class Slider {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<float> s = UseState(0.4f);
         return new DocSample(() => Create(
-            s.Value,
-            v => s.Set(v),
-            0f,
-            1f,
-            0.25f,
-            new[] { 0f, 0.25f, 0.5f, 0.75f, 1f },
-            disabled: forced
-        ));
+                s.Value,
+                v => s.Set(v),
+                0f,
+                1f,
+                0.25f,
+                new[] { 0f, 0.25f, 0.5f, 0.75f, 1f },
+                disabled: forced
+            )
+        );
     }
 
     [DocState("CL_Playground_Label_Default")]

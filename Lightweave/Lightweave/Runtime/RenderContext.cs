@@ -27,6 +27,7 @@ public sealed class RenderContext {
     public Stack<Rect> PositioningAncestorStack = new Stack<Rect>();
     public bool ForceDisabled;
     internal OverlayQueue PendingOverlays { get; } = new OverlayQueue();
+    public int OverlayContentDepth;
     public string? FocusedControlName { get; internal set; }
     public Guid RootId { get; internal set; }
 

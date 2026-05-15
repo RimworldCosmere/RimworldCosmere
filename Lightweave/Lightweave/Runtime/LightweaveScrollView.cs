@@ -112,6 +112,21 @@ public readonly record struct LightweaveScrollView : IDisposable {
         status.Height = 0f;
 
         float prevY = status.Position.y;
+
+        Event scrollEvt = Event.current;
+        if (scrollEvt != null
+            && scrollEvt.rawType == EventType.ScrollWheel
+            && outRect.Contains(scrollEvt.mousePosition)
+            && status.VerticalVisible) {
+            float scrollRange = Math.Max(0f, contentHeight - outRect.height);
+            float delta = scrollEvt.delta.y * 20f;
+            float next = Mathf.Clamp(status.Position.y + delta, 0f, scrollRange);
+            status.Position = new Vector2(status.Position.x, next);
+            if (scrollEvt.type == EventType.ScrollWheel) {
+                scrollEvt.Use();
+            }
+        }
+
         Widgets.BeginScrollView(outRect, ref status.Position, rect, false);
         if (Math.Abs(status.Position.y - prevY) > 0.01f) {
             status.LastScrollAtRealtime = Time.realtimeSinceStartup;

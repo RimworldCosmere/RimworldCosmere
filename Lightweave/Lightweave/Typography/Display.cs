@@ -23,6 +23,8 @@ public static class Display {
         string content,
         [DocParam("Display level. 1 is largest; higher levels step down.")]
         int level = 1,
+        [DocParam("Wrap to multiple lines when content exceeds available width. Disables letter-spacing tracking for the wrapped render.")]
+        bool wrap = false,
         [DocParam("Inline style override.", TypeOverride = "Style?", DefaultOverride = "null")]
         Style? style = null,
         [DocParam("Additional class names merged after the base 'display'/'display-{level}' classes.", TypeOverride = "string[]?", DefaultOverride = "null")]
@@ -43,8 +45,8 @@ public static class Display {
             : ConcatClasses(new[] { "display", sizeClass }, classes);
 
         Tracking? styleTracking = style?.LetterSpacing;
-        if (!styleTracking.HasValue || Mathf.Approximately(styleTracking.Value.Em, 0f)) {
-            return Text.Create(content, style: style, classes: basedClasses, id: id, line: line, file: file);
+        if (wrap || !styleTracking.HasValue || Mathf.Approximately(styleTracking.Value.Em, 0f)) {
+            return Text.Create(content, wrap: wrap, style: style, classes: basedClasses, id: id, line: line, file: file);
         }
 
         LightweaveNode node = NodeBuilder.New($"Display:{content}", line, file);
@@ -99,6 +101,16 @@ public static class Display {
             }
             return total;
         }
+
+        node.MeasureWidth = () => {
+            if (string.IsNullOrEmpty(content)) {
+                return 0f;
+            }
+            GUIStyle gs = ResolveGuiStyle();
+            int letterSpacing = ResolveLetterSpacing();
+            int[] widths = MeasureCharWidths(gs);
+            return MeasureTotalWidth(widths, letterSpacing);
+        };
 
         node.Measure = _ => {
             if (string.IsNullOrEmpty(content)) {

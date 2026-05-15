@@ -44,6 +44,10 @@ public static class DialogHeader {
         bool drawDivider = true,
         [DocParam("Optional tab/filter pills rendered between title and close button. Each tab is (label, isActive, onClick).")]
         IReadOnlyList<DialogHeaderTab>? tabs = null,
+        [DocParam("Optional mono status line rendered to the right of the title (e.g. '12 active · 14 installed').")]
+        string? statusLine = null,
+        [DocParam("Optional warning segment appended to the status line in warn color (e.g. ' · 1 conflict').")]
+        string? statusWarn = null,
         Style? style = null,
         string[]? classes = null,
         string? id = null,
@@ -52,7 +56,7 @@ public static class DialogHeader {
     ) {
         LightweaveNode root = Stack.Create(default, s => {
             s.Add(HStack.Create(SpacingScale.Md, row => {
-                row.AddHug(BuildLeftZone(breadcrumb, title));
+                row.AddHug(BuildLeftZone(breadcrumb, title, statusLine, statusWarn));
                 row.AddFlex(Spacer.Flex());
                 row.AddHug(BuildRightZone(tabs, trailingActionLabel, onTrailingAction, onClose));
             }, style: new Style {
@@ -70,7 +74,7 @@ public static class DialogHeader {
         return root;
     }
 
-    private static LightweaveNode BuildLeftZone(string? breadcrumb, string title) {
+    private static LightweaveNode BuildLeftZone(string? breadcrumb, string title, string? statusLine, string? statusWarn) {
         return HStack.Create(SpacingScale.Lg, h => {
             if (!string.IsNullOrEmpty(breadcrumb)) {
                 h.AddHug(Eyebrow.Create(breadcrumb!, style: new Style {
@@ -86,6 +90,22 @@ public static class DialogHeader {
                 LetterSpacing = Tracking.Of(0.12f),
                 TextColor = ThemeSlot.TextPrimary,
             }));
+            if (!string.IsNullOrEmpty(statusLine)) {
+                h.AddHug(HStack.Create(SpacingScale.None, sl => {
+                    sl.AddHug(Text.Create(statusLine!, style: new Style {
+                        FontFamily = FontRole.Mono,
+                        FontSize = new Rem(0.85f),
+                        TextColor = ThemeSlot.TextMuted,
+                    }));
+                    if (!string.IsNullOrEmpty(statusWarn)) {
+                        sl.AddHug(Text.Create(statusWarn!, style: new Style {
+                            FontFamily = FontRole.Mono,
+                            FontSize = new Rem(0.85f),
+                            TextColor = ThemeSlot.StatusWarning,
+                        }));
+                    }
+                }));
+            }
         });
     }
 

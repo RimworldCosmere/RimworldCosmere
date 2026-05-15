@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using Cosmere.Lightweave.Input;
 using Cosmere.Lightweave.Layout;
+using Cosmere.Lightweave.MainMenu;
 using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using RimWorld;
@@ -25,23 +26,7 @@ public static class GeneralTab {
             s.Add(SettingRow.Section("CL_Options_Section_General",
                 SettingRow.Create(
                     "CL_Options_Language".Translate(),
-                    Button.Create(
-                        label: LanguageDatabase.activeLanguage.DisplayName,
-                        onClick: () => {
-                            if (inGame) {
-                                Messages.Message("ChangeLanguageFromMainMenu".Translate(), MessageTypeDefOf.RejectInput, historical: false);
-                                return;
-                            }
-                            List<FloatMenuOption> options = new List<FloatMenuOption>();
-                            foreach (LoadedLanguage lang in LanguageDatabase.AllLoadedLanguages) {
-                                LoadedLanguage local = lang;
-                                options.Add(new FloatMenuOption(local.DisplayName, () => LanguageDatabase.SelectLanguage(local)));
-                            }
-                            Find.WindowStack.Add(new FloatMenu(options));
-                        },
-                        variant: ButtonVariant.Secondary,
-                        disabled: inGame
-                    ),
+                    LangSelectField.Create(disabled: inGame),
                     caption: inGame
                         ? (string)"ChangeLanguageFromMainMenu".Translate()
                         : (string)"CL_Options_Language_Hint".Translate()
@@ -52,7 +37,9 @@ public static class GeneralTab {
                         value: ClosestAutosaveInterval(Prefs.AutosaveIntervalDays),
                         options: AutosaveIntervalPresets,
                         labelFn: FormatAutosaveInterval,
-                        onChange: v => Prefs.AutosaveIntervalDays = v
+                        onChange: v => Prefs.AutosaveIntervalDays = v,
+                        variant: DropdownVariant.Button,
+                        buttonStyle: ButtonVariant.Frosted
                     ),
                     caption: (string)"CL_Options_Autosave_Interval_Hint".Translate()
                 ),

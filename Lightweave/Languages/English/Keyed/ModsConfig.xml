@@ -5,33 +5,73 @@
     <CL_ModsConfig_Empty_Eyebrow>NOTHING TO SHOW</CL_ModsConfig_Empty_Eyebrow>
     <CL_ModsConfig_Empty_Body>Select a mod from the list to inspect.</CL_ModsConfig_Empty_Body>
 
-    <CL_ModsConfig_Section_Active>Active</CL_ModsConfig_Section_Active>
-    <CL_ModsConfig_Section_Inactive>Inactive</CL_ModsConfig_Section_Inactive>
+    <CL_ModsConfig_Tab_LoadOrder>Enabled</CL_ModsConfig_Tab_LoadOrder>
+    <CL_ModsConfig_Tab_Installed>Installed</CL_ModsConfig_Tab_Installed>
+    <CL_ModsConfig_Workshop_Button>Browse Workshop</CL_ModsConfig_Workshop_Button>
+
+    <CL_ModsConfig_Stat_ActiveCount>{COUNT} active</CL_ModsConfig_Stat_ActiveCount>
+    <CL_ModsConfig_Stat_InstalledCount> · {COUNT} installed</CL_ModsConfig_Stat_InstalledCount>
+    <CL_ModsConfig_Stat_ConflictCount> · {COUNT} conflict</CL_ModsConfig_Stat_ConflictCount>
+    <CL_ModsConfig_Stat_ConflictCountPlural> · {COUNT} conflicts</CL_ModsConfig_Stat_ConflictCountPlural>
+
+    <CL_ModsConfig_Col_Order>#</CL_ModsConfig_Col_Order>
+    <CL_ModsConfig_Col_Name>Name</CL_ModsConfig_Col_Name>
+    <CL_ModsConfig_Col_Author>Author</CL_ModsConfig_Col_Author>
+    <CL_ModsConfig_Col_Version>Version</CL_ModsConfig_Col_Version>
+    <CL_ModsConfig_Col_Status>Status</CL_ModsConfig_Col_Status>
+
+    <CL_ModsConfig_Row_Status_Ok>● ok</CL_ModsConfig_Row_Status_Ok>
+    <CL_ModsConfig_Row_Status_Conflict>▲ {COUNT}</CL_ModsConfig_Row_Status_Conflict>
+    <CL_ModsConfig_Row_Status_Disabled>○ off</CL_ModsConfig_Row_Status_Disabled>
+
+    <CL_ModsConfig_Tag_Dlc>DLC</CL_ModsConfig_Tag_Dlc>
+    <CL_ModsConfig_Tag_Lib>LIB</CL_ModsConfig_Tag_Lib>
 
     <CL_ModsConfig_Source_Core>Core</CL_ModsConfig_Source_Core>
     <CL_ModsConfig_Source_Expansion>Expansion</CL_ModsConfig_Source_Expansion>
     <CL_ModsConfig_Source_Workshop>Workshop</CL_ModsConfig_Source_Workshop>
-    <CL_ModsConfig_Source_Local>Local</CL_ModsConfig_Source_Local>
+    <CL_ModsConfig_Source_Local>Community Mod</CL_ModsConfig_Source_Local>
+    <CL_ModsConfig_Source_Library>Library</CL_ModsConfig_Source_Library>
 
-    <CL_ModsConfig_AuthorByline>by {AUTHOR}</CL_ModsConfig_AuthorByline>
+    <CL_ModsConfig_AuthorByline>by {AUTHOR} · v{VERSION}</CL_ModsConfig_AuthorByline>
+    <CL_ModsConfig_AuthorByline_NoVersion>by {AUTHOR}</CL_ModsConfig_AuthorByline_NoVersion>
+    <CL_ModsConfig_Description>Description</CL_ModsConfig_Description>
+    <CL_ModsConfig_Description_None>No description provided.</CL_ModsConfig_Description_None>
+    <CL_ModsConfig_Search_Placeholder>Search mods by name or author…</CL_ModsConfig_Search_Placeholder>
+    <CL_ModsConfig_Search_NoMatch>No mods match "{QUERY}"</CL_ModsConfig_Search_NoMatch>
+    <CL_ModsConfig_Search_MatchCount>{COUNT} match</CL_ModsConfig_Search_MatchCount>
+    <CL_ModsConfig_Search_MatchCountPlural>{COUNT} matches</CL_ModsConfig_Search_MatchCountPlural>
+    <CL_ModsConfig_Search_EmptyEyebrow>NO MATCHES</CL_ModsConfig_Search_EmptyEyebrow>
     <CL_ModsConfig_Dependencies>Dependencies</CL_ModsConfig_Dependencies>
+    <CL_ModsConfig_Dep_Installed>installed</CL_ModsConfig_Dep_Installed>
+    <CL_ModsConfig_Dep_Missing>missing</CL_ModsConfig_Dep_Missing>
+    <CL_ModsConfig_Dep_None>No dependencies.</CL_ModsConfig_Dep_None>
 
-    <CL_ModsConfig_Stat_Status>Status</CL_ModsConfig_Stat_Status>
-    <CL_ModsConfig_Stat_Version>Version</CL_ModsConfig_Stat_Version>
-    <CL_ModsConfig_Stat_PackageId>Package ID</CL_ModsConfig_Stat_PackageId>
-    <CL_ModsConfig_Stat_Source>Source</CL_ModsConfig_Stat_Source>
-
-    <CL_ModsConfig_Status_Active>Active</CL_ModsConfig_Status_Active>
-    <CL_ModsConfig_Status_Inactive>Inactive</CL_ModsConfig_Status_Inactive>
+    <CL_ModsConfig_Conflict_Eyebrow>▲ Load order conflict</CL_ModsConfig_Conflict_Eyebrow>
+    <CL_ModsConfig_Conflict_Body>This mod has unsatisfied dependencies or load order issues. Verify required mods are installed and ordered correctly.</CL_ModsConfig_Conflict_Body>
+    <CL_ModsConfig_Conflict_AutoResolve>Auto-resolve</CL_ModsConfig_Conflict_AutoResolve>
 
     <CL_ModsConfig_Actions>Actions</CL_ModsConfig_Actions>
-    <CL_ModsConfig_Action_Activate>Activate</CL_ModsConfig_Action_Activate>
-    <CL_ModsConfig_Action_Deactivate>Deactivate</CL_ModsConfig_Action_Deactivate>
-    <CL_ModsConfig_Action_Enable>Enable Mod</CL_ModsConfig_Action_Enable>
-    <CL_ModsConfig_Action_Disable>Disable Mod</CL_ModsConfig_Action_Disable>
-    <CL_ModsConfig_Action_MoveUp>Move Up in Load Order</CL_ModsConfig_Action_MoveUp>
-    <CL_ModsConfig_Action_MoveDown>Move Down in Load Order</CL_ModsConfig_Action_MoveDown>
+    <CL_ModsConfig_Action_Enable>Enable mod</CL_ModsConfig_Action_Enable>
+    <CL_ModsConfig_Action_Disable>Disable mod</CL_ModsConfig_Action_Disable>
     <CL_ModsConfig_Action_Workshop>Open in Workshop</CL_ModsConfig_Action_Workshop>
-    <CL_ModsConfig_Action_Url>Open Page</CL_ModsConfig_Action_Url>
+    <CL_ModsConfig_Action_Url>Open page</CL_ModsConfig_Action_Url>
+    <CL_ModsConfig_Action_Uninstall>Uninstall</CL_ModsConfig_Action_Uninstall>
+    <CL_ModsConfig_Action_Unsubscribe>Unsubscribe</CL_ModsConfig_Action_Unsubscribe>
+    <CL_ModsConfig_Confirm_Uninstall>This will delete "{MOD}" from your Mods directory.</CL_ModsConfig_Confirm_Uninstall>
+    <CL_ModsConfig_Confirm_Unsubscribe>This will unsubscribe you from "{MOD}" in the workshop.</CL_ModsConfig_Confirm_Unsubscribe>
     <CL_ModsConfig_Action_Close>Close</CL_ModsConfig_Action_Close>
+
+    <CL_ModsConfig_Confirm_Eyebrow>UNSAVED CHANGES</CL_ModsConfig_Confirm_Eyebrow>
+    <CL_ModsConfig_Confirm_Heading>Save mod changes?</CL_ModsConfig_Confirm_Heading>
+    <CL_ModsConfig_Confirm_Body>You have unsaved load order or enable/disable changes. Save now, discard them, or cancel and keep editing.</CL_ModsConfig_Confirm_Body>
+    <CL_ModsConfig_Confirm_Save>Save</CL_ModsConfig_Confirm_Save>
+    <CL_ModsConfig_Confirm_Discard>Discard</CL_ModsConfig_Confirm_Discard>
+    <CL_ModsConfig_Confirm_Cancel>Cancel</CL_ModsConfig_Confirm_Cancel>
+
+    <CL_ModsConfig_Restart_Eyebrow>RESTART REQUIRED</CL_ModsConfig_Restart_Eyebrow>
+    <CL_ModsConfig_Restart_Heading>Restart to apply mod changes</CL_ModsConfig_Restart_Heading>
+    <CL_ModsConfig_Restart_Body>Your mod list has changed. RimWorld must restart for the new load order to take effect.</CL_ModsConfig_Restart_Body>
+    <CL_ModsConfig_Restart_Now>Restart now</CL_ModsConfig_Restart_Now>
+    <CL_ModsConfig_Restart_Later>Later</CL_ModsConfig_Restart_Later>
 </LanguageData>

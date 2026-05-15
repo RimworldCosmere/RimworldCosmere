@@ -38,7 +38,7 @@ public static class Button {
         Style resolved0 = node.GetResolvedStyle();
         float intrinsicHeightPx = resolved0.Height is { Mode: Length.Kind.Rem } h0
             ? h0.ToPixels(0f, 0f)
-            : new Rem(1.75f).ToPixels();
+            : new Rem(2.875f).ToPixels();
         node.PreferredHeight = intrinsicHeightPx;
 
         node.MeasureWidth = () => {
@@ -49,11 +49,13 @@ public static class Button {
             float labelWidth = string.IsNullOrEmpty(label) || body != null
                 ? 0f
                 : gstyle.CalcSize(new GUIContent(label)).x;
-            float padPx = SpacingScale.Sm.ToPixels();
-            float iconSize = Mathf.Min(intrinsicHeightPx - padPx, new Rem(1.25f).ToPixels());
-            float iconAllowance = (leading != null ? iconSize + padPx : 0f)
-                                + (trailing != null ? iconSize + padPx : 0f);
-            return labelWidth + iconAllowance + padPx * 2f;
+            float padXPx = new Rem(2f).ToPixels();
+            float padYPx = new Rem(1f).ToPixels();
+            float iconGapPx = SpacingScale.Sm.ToPixels();
+            float iconSize = Mathf.Min(intrinsicHeightPx - padYPx, new Rem(1.25f).ToPixels());
+            float iconAllowance = (leading != null ? iconSize + iconGapPx : 0f)
+                                + (trailing != null ? iconSize + iconGapPx : 0f);
+            return labelWidth + iconAllowance + padXPx * 2f;
         };
 
         if (leading != null) {
@@ -80,8 +82,10 @@ public static class Button {
             float h = fillHeight ? allocatedRect.height : Mathf.Min(desiredHeight, allocatedRect.height);
             float yOffset = fillHeight ? 0f : (allocatedRect.height - h) * 0.5f;
 
-            float padPx = SpacingScale.Sm.ToPixels();
-            float iconSize = Mathf.Min(h - padPx, new Rem(1.25f).ToPixels());
+            float padXPx = new Rem(2f).ToPixels();
+            float padYPx = new Rem(1f).ToPixels();
+            float iconGapPx = SpacingScale.Sm.ToPixels();
+            float iconSize = Mathf.Min(h - padYPx, new Rem(1.25f).ToPixels());
 
             Font font = theme.GetFont(FontRole.BodyBold);
             int pixelSize = Mathf.RoundToInt(new Rem(0.875f).ToFontPx());
@@ -91,9 +95,9 @@ public static class Button {
             float labelWidth = string.IsNullOrEmpty(label) || body != null
                 ? 0f
                 : gstyle.CalcSize(new GUIContent(label)).x;
-            float iconAllowance = (leading != null ? iconSize + padPx : 0f)
-                                + (trailing != null ? iconSize + padPx : 0f);
-            float naturalWidth = labelWidth + iconAllowance + padPx * 2f;
+            float iconAllowance = (leading != null ? iconSize + iconGapPx : 0f)
+                                + (trailing != null ? iconSize + iconGapPx : 0f);
+            float naturalWidth = labelWidth + iconAllowance + padXPx * 2f;
 
             Rect rect;
             if (fullWidth || body != null) {
@@ -160,27 +164,27 @@ public static class Button {
             }
 
             bool rtl = dir == Direction.Rtl;
-            Rect labelRect = new Rect(rect.x + padPx, rect.y, rect.width - padPx * 2f, rect.height);
+            Rect labelRect = new Rect(rect.x + padXPx, rect.y, rect.width - padXPx * 2f, rect.height);
 
             if (leading != null) {
                 float leadingX = rtl
-                    ? rect.xMax - padPx - iconSize
-                    : rect.x + padPx;
+                    ? rect.xMax - padXPx - iconSize
+                    : rect.x + padXPx;
                 Rect leadingRect = new Rect(leadingX, rect.y + (rect.height - iconSize) / 2f, iconSize, iconSize);
                 leading.MeasuredRect = leadingRect;
                 if (rtl) {
                     labelRect = new Rect(
                         labelRect.x,
                         labelRect.y,
-                        labelRect.width - (iconSize + padPx),
+                        labelRect.width - (iconSize + iconGapPx),
                         labelRect.height
                     );
                 }
                 else {
                     labelRect = new Rect(
-                        leadingX + iconSize + padPx,
+                        leadingX + iconSize + iconGapPx,
                         labelRect.y,
-                        rect.xMax - padPx - (leadingX + iconSize + padPx),
+                        rect.xMax - padXPx - (leadingX + iconSize + iconGapPx),
                         labelRect.height
                     );
                 }
@@ -188,20 +192,20 @@ public static class Button {
 
             if (trailing != null) {
                 float trailingX = rtl
-                    ? rect.x + padPx
-                    : rect.xMax - padPx - iconSize;
+                    ? rect.x + padXPx
+                    : rect.xMax - padXPx - iconSize;
                 Rect trailingRect = new Rect(trailingX, rect.y + (rect.height - iconSize) / 2f, iconSize, iconSize);
                 trailing.MeasuredRect = trailingRect;
                 if (rtl) {
                     labelRect = new Rect(
-                        trailingX + iconSize + padPx,
+                        trailingX + iconSize + iconGapPx,
                         labelRect.y,
-                        labelRect.xMax - (trailingX + iconSize + padPx),
+                        labelRect.xMax - (trailingX + iconSize + iconGapPx),
                         labelRect.height
                     );
                 }
                 else {
-                    labelRect = new Rect(labelRect.x, labelRect.y, trailingX - padPx - labelRect.x, labelRect.height);
+                    labelRect = new Rect(labelRect.x, labelRect.y, trailingX - padXPx - labelRect.x, labelRect.height);
                 }
             }
 

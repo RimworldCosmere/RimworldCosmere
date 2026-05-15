@@ -16,6 +16,15 @@ internal readonly record struct InteractionState(bool Hovered, bool Pressed, boo
         }
 
         bool hovered = Mouse.IsOver(rect);
+        if (hovered && RenderContext.Current.OverlayContentDepth == 0) {
+            UnityEngine.Event evt = UnityEngine.Event.current;
+            if (evt != null) {
+                Vector2 screenPos = GUIUtility.GUIToScreenPoint(evt.mousePosition);
+                if (HoverBlockRegistry.IsBlocked(screenPos)) {
+                    hovered = false;
+                }
+            }
+        }
         bool pressed = hovered && UnityEngine.Input.GetMouseButton(0);
         bool focused = focusName != null && GUI.GetNameOfFocusedControl() == focusName;
         return new InteractionState(hovered, pressed, focused, false);

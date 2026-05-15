@@ -9,9 +9,12 @@ public class LightweaveMod : Verse.Mod {
 
     public static LightweaveSettings Settings { get; private set; } = null!;
 
+    public static bool BootRedesignMainMenu { get; private set; }
+
     public LightweaveMod(ModContentPack content) : base(content) {
         instance = this;
         Settings = GetSettings<LightweaveSettings>();
+        BootRedesignMainMenu = Settings.RedesignMainMenu;
         Harmony harmony = new Harmony("cryptiklemur.lightweave");
         harmony.PatchAll(typeof(LightweaveMod).Assembly);
     }

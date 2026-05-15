@@ -76,23 +76,7 @@ public static class Checkbox {
                 TooltipHandler.TipRegion(hitRect, (string)tooltipKey.Translate());
             }
 
-            InteractionState boxState = new InteractionState(hovered, false, false, disabled);
-            ThemeSlot borderSlot = InputSurface.ResolveToggleBorderSlot(boxState, value);
-
-            BackgroundSpec boxBg = value
-                ? BackgroundSpec.Of(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceAccent)
-                : BackgroundSpec.Of(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput);
-            BorderSpec boxBorder = BorderSpec.All(new Rem(2f / 16f), borderSlot);
-            RadiusSpec boxRadius = RadiusSpec.All(RadiusScale.Xs);
-
-            PaintBox.Draw(boxRect, boxBg, boxBorder, boxRadius);
-
-            if (value) {
-                Color savedCheck = GUI.color;
-                GUI.color = theme.GetColor(ThemeSlot.TextOnAccent);
-                DrawCheckmark(boxRect);
-                GUI.color = savedCheck;
-            }
+            DrawBox(boxRect, value, disabled, hovered);
 
             Font labelFont = theme.GetFont(FontRole.Body);
             int labelPixelSize = Mathf.RoundToInt(new Rem(1f).ToFontPx());
@@ -126,6 +110,25 @@ public static class Checkbox {
         Vector2 p3 = new Vector2(rect.xMax - pad, rect.y + pad);
         DrawLine(p1, p2, stroke);
         DrawLine(p2, p3, stroke);
+    }
+
+
+    public static void DrawBox(Rect rect, bool value, bool disabled, bool hovered) {
+        Theme.Theme theme = RenderContext.Current.Theme;
+        InteractionState boxState = new InteractionState(hovered && !disabled, false, false, disabled);
+        ThemeSlot borderSlot = InputSurface.ResolveToggleBorderSlot(boxState, value);
+        BackgroundSpec boxBg = value
+            ? BackgroundSpec.Of(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceAccent)
+            : BackgroundSpec.Of(disabled ? ThemeSlot.SurfaceDisabled : ThemeSlot.SurfaceInput);
+        BorderSpec boxBorder = BorderSpec.All(new Rem(2f / 16f), borderSlot);
+        RadiusSpec boxRadius = RadiusSpec.All(RadiusScale.Xs);
+        PaintBox.Draw(rect, boxBg, boxBorder, boxRadius);
+        if (value) {
+            Color saved = GUI.color;
+            GUI.color = theme.GetColor(ThemeSlot.TextOnAccent);
+            DrawCheckmark(rect);
+            GUI.color = saved;
+        }
     }
 
     private static void DrawLine(Vector2 a, Vector2 b, float thickness) {

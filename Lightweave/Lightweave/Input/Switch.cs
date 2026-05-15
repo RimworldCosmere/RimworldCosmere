@@ -116,8 +116,19 @@ public static class Switch {
                 CursorOverrides.MarkDisabledHover();
             }
 
-            InteractionState trackState = new InteractionState(hovered, false, false, disabled);
-            ThemeSlot borderSlot = InputSurface.ResolveToggleBorderSlot(trackState, value);
+            ThemeSlot? trackBorderSlot;
+            if (disabled) {
+                trackBorderSlot = ThemeSlot.BorderOff;
+            }
+            else if (value) {
+                trackBorderSlot = null;
+            }
+            else if (hovered) {
+                trackBorderSlot = ThemeSlot.BorderHover;
+            }
+            else {
+                trackBorderSlot = ThemeSlot.BorderSubtle;
+            }
 
             ThemeSlot trackFill = disabled
                 ? ThemeSlot.SurfaceDisabled
@@ -125,23 +136,26 @@ public static class Switch {
                     ? ThemeSlot.SurfaceAccent
                     : ThemeSlot.SurfaceInput;
             BackgroundSpec trackBg = BackgroundSpec.Of(trackFill);
-            BorderSpec trackBorder = BorderSpec.All(new Rem(1f / 16f), borderSlot);
+            BorderSpec? trackBorder = trackBorderSlot.HasValue
+                ? BorderSpec.All(new Rem(1f / 16f), trackBorderSlot.Value)
+                : null;
             RadiusSpec trackRadius = RadiusSpec.All(RadiusScale.Full);
             PaintBox.Draw(trackRect, trackBg, trackBorder, trackRadius);
 
+            float effectiveThumbSize = thumbSize - animFraction;
             float leftX = trackRect.x + thumbInset;
-            float rightX = trackRect.xMax - thumbInset - thumbSize;
+            float rightX = trackRect.xMax - thumbInset - effectiveThumbSize;
             float thumbX = rtl
                 ? Mathf.Lerp(rightX, leftX, animFraction)
                 : Mathf.Lerp(leftX, rightX, animFraction);
-            float thumbY = trackRect.y + (trackHeight - thumbSize) / 2f;
-            Rect thumbRect = new Rect(thumbX, thumbY, thumbSize, thumbSize);
+            float thumbY = trackRect.y + (trackHeight - effectiveThumbSize) / 2f;
+            Rect thumbRect = new Rect(thumbX, thumbY, effectiveThumbSize, effectiveThumbSize);
 
             ThemeSlot thumbSlot = disabled
                 ? ThemeSlot.BorderOff
                 : value
                     ? ThemeSlot.TextOnAccent
-                    : ThemeSlot.BorderOff;
+                    : ThemeSlot.TextMuted;
             BackgroundSpec thumbBg = BackgroundSpec.Of(thumbSlot);
             RadiusSpec thumbRadius = RadiusSpec.All(RadiusScale.Full);
             PaintBox.Draw(thumbRect, thumbBg, null, thumbRadius);

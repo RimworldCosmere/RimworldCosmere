@@ -69,9 +69,7 @@ internal static class ButtonVariants {
             case ButtonVariant.Ghost:
                 return ThemeSlot.TextPrimary;
             case ButtonVariant.Frosted:
-                return state.Hovered || state.Pressed
-                    ? ThemeSlot.TextOnAccent
-                    : ThemeSlot.TextPrimary;
+                return ThemeSlot.TextPrimary;
             default:
                 return ThemeSlot.TextPrimary;
         }

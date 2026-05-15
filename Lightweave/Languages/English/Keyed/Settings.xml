@@ -12,6 +12,11 @@
     <CL_Settings_MainMenu_ParseSaves>Show last save details</CL_Settings_MainMenu_ParseSaves>
     <CL_Settings_MainMenu_ParseSaves_Tip>Read the most recent .rws header to surface colony name and tick count on the Continue card. Adds a small one-time disk read.</CL_Settings_MainMenu_ParseSaves_Tip>
 
+    <CL_Settings_Restart_Title>Restart required</CL_Settings_Restart_Title>
+    <CL_Settings_Restart_Body>Switching the Lightweave main menu requires restarting RimWorld for the patches to take effect.</CL_Settings_Restart_Body>
+    <CL_Settings_Restart_Confirm>Restart now</CL_Settings_Restart_Confirm>
+    <CL_Settings_Restart_Later>Later</CL_Settings_Restart_Later>
+
     <CL_Settings_Accessibility_Heading>Accessibility</CL_Settings_Accessibility_Heading>
     <CL_Settings_ReduceMotion>Reduce motion</CL_Settings_ReduceMotion>
     <CL_Settings_ReduceMotion_Tip>Disable the staggered fade-in and hover-lift animations on the Lightweave main menu.</CL_Settings_ReduceMotion_Tip>

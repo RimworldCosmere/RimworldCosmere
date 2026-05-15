@@ -4,6 +4,8 @@ using Cosmere.Lightweave.Runtime;
 using Cosmere.Lightweave.Tokens;
 using Cosmere.Lightweave.Types;
 using Cosmere.Lightweave.Layout;
+using RimWorld;
+using Verse.AI;
 using static Cosmere.Lightweave.Doc.DocChips;
 using static Cosmere.Lightweave.Typography.Typography;
 

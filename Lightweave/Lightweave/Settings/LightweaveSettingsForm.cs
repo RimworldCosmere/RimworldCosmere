@@ -76,6 +76,7 @@ public static class LightweaveSettingsForm {
                     onChange: v => {
                         settings.RedesignMainMenu = v;
                         LightweaveMod.Save();
+                        PromptRestartIfBootDiff(settings);
                     },
                     tooltipKey: "CL_Settings_MainMenu_Redesign_Tip"
                 ));
@@ -91,6 +92,20 @@ public static class LightweaveSettingsForm {
                 ));
             }
         );
+    }
+
+    private static void PromptRestartIfBootDiff(LightweaveSettings settings) {
+        if (settings.RedesignMainMenu == LightweaveMod.BootRedesignMainMenu) {
+            return;
+        }
+        Find.WindowStack.Add(new Dialog_MessageBox(
+            "CL_Settings_Restart_Body".Translate(),
+            "CL_Settings_Restart_Confirm".Translate(),
+            () => GenCommandLine.Restart(),
+            "CL_Settings_Restart_Later".Translate(),
+            null,
+            "CL_Settings_Restart_Title".Translate()
+        ));
     }
 
     private static LightweaveNode BuildAccessibilitySection(LightweaveSettings settings) {

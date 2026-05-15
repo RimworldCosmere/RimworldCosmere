@@ -30,6 +30,8 @@ public static class SearchField {
         string? placeholder = null,
         [DocParam("Disables interaction and applies disabled styling.")]
         bool disabled = false,
+        [DocParam("Surface treatment. Input uses the default input chrome; Frosted uses a translucent backdrop blur; Borderless skips all chrome so the caller can host the field inside an existing surface.")]
+        SearchFieldVariant variant = SearchFieldVariant.Input,
         [DocParam("Optional key disambiguating multiple instances declared on the same line.")]
         object? instanceKey = null,
         Style? style = null,
@@ -73,9 +75,24 @@ public static class SearchField {
             }
 
             InteractionState state = InteractionState.Resolve(rect, focusName, disabled);
-            InputSurface.Draw(rect, state);
+            if (variant == SearchFieldVariant.Frosted) {
+                bool sfActive = state.Hovered || state.Focused || state.Pressed;
+                BackdropBlur.Draw(rect, sfActive ? 8f : 6f);
+                Color sfTranslucent = new Color(20f / 255f, 16f / 255f, 11f / 255f, sfActive ? 0.88f : 0.78f);
+                ThemeSlot sfBorderSlot = disabled
+                    ? ThemeSlot.BorderOff
+                    : (sfActive ? ThemeSlot.BorderHover : ThemeSlot.BorderSubtle);
+                BorderSpec sfBorder = BorderSpec.All(new Rem(1f / 16f), sfBorderSlot);
+                RadiusSpec sfRadius = RadiusSpec.All(RadiusScale.Sm);
+                PaintBox.Draw(rect, BackgroundSpec.Of(sfTranslucent), sfBorder, sfRadius);
+            }
+            else if (variant == SearchFieldVariant.Borderless) {
+            }
+            else {
+                InputSurface.Draw(rect, state);
+            }
 
-            float padX = InputSurface.PaddingX.ToPixels();
+            float padX = variant == SearchFieldVariant.Borderless ? 0f : InputSurface.PaddingX.ToPixels();
             float glyphSize = new Rem(1f).ToPixels();
             bool hasValue = !string.IsNullOrEmpty(buffer.Value);
 
@@ -255,6 +272,20 @@ public static class SearchField {
         bool forced = RenderContext.Current.ForceDisabled;
         StateHandle<string> s = UseState("highstorm");
         return new DocSample(() => Create(s.Value, v => s.Set(v), disabled: forced));
+    }
+
+
+    [DocVariant("CL_Playground_Label_Borderless")]
+    public static DocSample DocsBorderless() {
+        bool forced = RenderContext.Current.ForceDisabled;
+        StateHandle<string> s = UseState(string.Empty);
+        return new DocSample(() => Create(
+            s.Value,
+            v => s.Set(v),
+            (string)"CL_Playground_SearchField_Placeholder".Translate(),
+            forced,
+            SearchFieldVariant.Borderless
+        ));
     }
 
     [DocUsage]

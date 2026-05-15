@@ -72,7 +72,11 @@ public static class Popover {
 
             Rect anchorAbsolute = OverlayAnchor.CaptureAbsolute(anchorRect);
 
-            RenderContext.Current.PendingOverlays.Enqueue(() => {
+            Rect popoverHere = PopoverLayout.Resolve(anchorRect, placement, dir, size, screen);
+            Rect popoverScreen = OverlayAnchor.CaptureAbsolute(popoverHere);
+            HoverBlockRegistry.Register(popoverScreen);
+
+            Action drawOverlay = () => {
                 Rect anchorHere = OverlayAnchor.ResolveLocal(anchorAbsolute);
                 Rect popoverRect = PopoverLayout.Resolve(anchorHere, placement, dir, size, screen);
 
@@ -92,7 +96,13 @@ public static class Popover {
                 RadiusSpec radius = RadiusSpec.All(RadiusScale.Lg);
                 PaintBox.Draw(popoverRect, bg, null, radius);
 
-                LightweaveRoot.PaintSubtree(content, popoverRect);
+                RenderContext.Current.OverlayContentDepth++;
+                try {
+                    LightweaveRoot.PaintSubtree(content, popoverRect);
+                }
+                finally {
+                    RenderContext.Current.OverlayContentDepth--;
+                }
 
                 BorderSpec border = BorderSpec.All(new Rem(1f / 16f), ThemeSlot.BorderSubtle);
                 BackgroundSpec clearBg = BackgroundSpec.Of(Color.clear);
@@ -109,8 +119,15 @@ public static class Popover {
                         e.Use();
                     }
                 }
+            };
+
+            EventType evtType = Event.current?.rawType ?? EventType.Ignore;
+            if (evtType == EventType.ScrollWheel || evtType == EventType.MouseDown) {
+                drawOverlay();
+                return;
             }
-            );
+
+            RenderContext.Current.PendingOverlays.Enqueue(drawOverlay);
         };
         return node;
     }

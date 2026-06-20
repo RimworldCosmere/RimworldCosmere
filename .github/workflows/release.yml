@@ -15,6 +15,7 @@ permissions:
   issues: write # to be able to comment on released issues
   pull-requests: write # to be able to comment on released pull requests
   id-token: write # to enable use of OIDC for npm provenance
+  packages: read # to pull the private RimWorld game image
 
 jobs:
   # Determine which Cosmere mods need to be built.
@@ -167,6 +168,22 @@ jobs:
         uses: actions/checkout@v5
         with:
           path: 'RimworldCosmere'
+
+      - name: Provide RimWorld assemblies from the game image
+        env:
+          GAME_IMAGE: ghcr.io/${{ github.repository_owner }}/rimworld-game:latest
+        run: |
+          set -euo pipefail
+          img="$(printf '%s' "$GAME_IMAGE" | tr '[:upper:]' '[:lower:]')"
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker pull -q "$img"
+          cid="$(docker create "$img")"
+          sudo mkdir -p /mnt/games/RimWorld
+          sudo chown "$(id -u):$(id -g)" /mnt/games/RimWorld
+          docker cp "$cid:/game/RimWorldLinux_Data" /mnt/games/RimWorld/RimWorldLinux_Data
+          docker rm -f "$cid" >/dev/null
+          test -f /mnt/games/RimWorld/RimWorldLinux_Data/Managed/Assembly-CSharp.dll
+          echo "Staged real RimWorld assemblies at /mnt/games/RimWorld (Cosmere.csproj condition picks these up; Krafs.Rimworld.Ref is then excluded)."
 
       - uses: actions/cache@v5
         with:

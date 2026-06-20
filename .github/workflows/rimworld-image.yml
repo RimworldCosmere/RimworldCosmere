@@ -1,21 +1,26 @@
 # Build a PRIVATE RimWorld game image for the org, for building/testing against the
 # real shipped assemblies. Uses cryptiklemur/steam-game-image-action.
 #
-# The scheduled run is the watcher: the action's build-id gate downloads nothing and
-# pushes nothing when Steam has no new build, so cron runs are cheap and only a real
-# new RimWorld build triggers a rebuild.
+# Triggered on push to ui-remaster (NOT schedule/workflow_dispatch, which only fire from
+# the default branch - and we intentionally keep this off the default branch). The
+# action's build-id gate downloads nothing and pushes nothing when Steam has no new
+# build, so most pushes are cheap no-ops and only a genuinely new RimWorld build triggers
+# a rebuild. The concurrency guard keeps rapid pushes from racing on the same image tag.
 #
 # Reuses the existing STEAM_CONFIG_VDF_B64 secret (the same one semantic-release-steam
 # already uses for workshop publishing). The resulting image is PRIVATE on GHCR - keep
 # it that way (it contains Ludeon's game files). This is the same image the Lightweave
-# repo builds (same org owner), so both repos keep it fresh; the build-id gate makes the
-# redundant runs no-ops.
+# repo builds (same org owner); the build-id gate makes the redundant runs no-ops.
 name: rimworld-image
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "41 6 * * *"   # daily ~06:41 UTC; off the hour and offset from Lightweave's
+  push:
+    branches:
+      - 'ui-remaster'
+
+concurrency:
+  group: rimworld-image
+  cancel-in-progress: true
 
 jobs:
   build:

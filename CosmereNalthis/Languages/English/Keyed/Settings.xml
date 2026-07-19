@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+    <CN_Settings_Category_Awakening>Awakening</CN_Settings_Category_Awakening>
+    <CN_Settings_AwakeningEnabled_Label>Enable Awakening</CN_Settings_AwakeningEnabled_Label>
+    <CN_Settings_AwakeningEnabled_Tooltip>Allow pawns to gather BioChromatic Breath and use Awakening. Turning this off disables the system entirely.</CN_Settings_AwakeningEnabled_Tooltip>
 </LanguageData>

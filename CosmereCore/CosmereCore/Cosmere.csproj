@@ -48,6 +48,7 @@
         <Using Include="Cosmere.Core.Extension"/>
         <Using Include="Cosmere.System.Scadrial.Extension"/>
         <Using Include="Cosmere.System.Roshar.Extension"/>
+        <Using Include="Cosmere.System.Nalthis.Extension"/>
     </ItemGroup>
 
     <ItemGroup>

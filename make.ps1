@@ -360,9 +360,10 @@ switch ($Command.ToLower()) {
         Write-Host ""
         Write-ColoredLine "Project Structure:" $Green
         Write-Host "  CosmereCore          - Single consolidated C# assembly (Cosmere.Core.dll)"
-        Write-Host "                         Contains all systems: framework, core mechanics, Scadrial, Roshar"
+        Write-Host "                         Contains all systems: framework, core mechanics, Scadrial, Roshar, Nalthis"
         Write-Host "  CosmereScadrial      - XML defs and assets for Allomancy, Feruchemy, Hemalurgy"
         Write-Host "  CosmereRoshar        - XML defs and assets for Surgebinding and Radiant Orders"
+        Write-Host "  CosmereNalthis       - XML defs and assets for Awakening and BioChromatic Breath"
         Write-Host ""
         Write-ColoredLine "Tools:" $Green
         Write-Host "  Tools CLI            - Code generation and asset building"

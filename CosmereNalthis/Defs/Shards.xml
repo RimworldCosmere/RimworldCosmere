@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <Cosmere.Core.Def.ShardDef>
+        <defName>Endowment</defName>
+        <label>endowment</label>
+        <planet>Nalthis</planet>
+        <description>Endowment gives of herself freely. Her Investiture, BioChromatic Breath, passes from person to person as a gift, and those who gather enough of it rise through the Heightenings.</description>
+    </Cosmere.Core.Def.ShardDef>
+</Defs>

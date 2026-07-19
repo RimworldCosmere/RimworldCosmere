@@ -1,0 +1,11 @@
+[global]
+extends = "../"
+
+# Cosmere.Nalthis
+[bundles.nalthis]
+description = "Cosmere.Nalthis"
+asset_directory = "./Assets"
+output_directory = "./AssetBundles"
+bundle_name = "cosmere.nalthis"
+filename = "resource_[bundle_name]"
+include_patterns = ["*.png", "*.psd", "*.jpg", "*.jpeg"]

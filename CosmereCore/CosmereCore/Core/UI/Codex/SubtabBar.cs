@@ -1,6 +1,8 @@
+using Cosmere.Core.UI;
 using Cosmere.Core.UI.Model;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace Cosmere.Core.UI.Codex;
 
@@ -26,21 +28,23 @@ public static class SubtabBar {
         for (int i = 0; i < buffer.Count; i++) {
             Rect tab = new Rect(rect.x + i * tabWidth, rect.y, tabWidth, rect.height);
             bool selected = state.Subtab == buffer[i].tab;
-            Color bg = selected ? new Color(0.18f, 0.18f, 0.22f, 0.95f) : new Color(0.1f, 0.1f, 0.12f, 0.65f);
-            Widgets.DrawBoxSolid(tab, bg);
-            Widgets.DrawBox(tab);
 
-            if (selected) {
-                Widgets.DrawBoxSolid(new Rect(tab.x, tab.yMax - 2f, tab.width, 2f), accent);
+            if (!selected && Mouse.IsOver(tab)) {
+                Widgets.DrawBoxSolid(tab, new Color(1f, 1f, 1f, 0.04f));
             }
 
-            using (new TextBlock(
-                       GameFont.Small,
-                       TextAnchor.MiddleCenter,
-                       selected ? Color.white : new Color(0.75f, 0.75f, 0.75f)
-                   ))
-                Widgets.Label(tab, buffer[i].labelKey.Translate());
+            string label = ((string)buffer[i].labelKey.Translate()).ToUpperInvariant();
+            Color textColor = selected ? new Color(0.88f, 0.73f, 0.42f) : new Color(0.55f, 0.50f, 0.41f);
+            UIText.EllipsisLabel(tab.ContractedBy(4f, 0f), label, GameFont.Small, TextAnchor.MiddleCenter, textColor);
 
+            if (selected) {
+                Rect glow = new Rect(tab.x + 6f, tab.yMax - 4f, tab.width - 12f, 4f);
+                Widgets.DrawBoxSolid(glow, new Color(accent.r, accent.g, accent.b, 0.18f));
+                Rect underline = new Rect(tab.x + 6f, tab.yMax - 2f, tab.width - 12f, 2f);
+                Widgets.DrawBoxSolid(underline, accent);
+            }
+
+            MouseoverSounds.DoRegion(tab);
             if (Widgets.ButtonInvisible(tab)) {
                 state.Subtab = buffer[i].tab;
             }

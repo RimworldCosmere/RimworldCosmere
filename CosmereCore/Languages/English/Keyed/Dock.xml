@@ -12,4 +12,19 @@
 
   <CC_Dock_Surgebinding_RefillBelow>refill below {VALUE}</CC_Dock_Surgebinding_RefillBelow>
 
+  <CC_Dock_Group_Burning>Burning</CC_Dock_Group_Burning>
+  <CC_Dock_Group_Tapping>Tapping</CC_Dock_Group_Tapping>
+  <CC_Dock_Group_Storing>Storing</CC_Dock_Group_Storing>
+  <CC_Dock_Group_Physical>Physical</CC_Dock_Group_Physical>
+  <CC_Dock_Group_Mental>Mental</CC_Dock_Group_Mental>
+  <CC_Dock_Group_Enhancement>Enhancement</CC_Dock_Group_Enhancement>
+  <CC_Dock_Group_Temporal>Temporal</CC_Dock_Group_Temporal>
+  <CC_Dock_Group_Godmetal>Godmetal</CC_Dock_Group_Godmetal>
+  <CC_Dock_Group_Cognitive>Cognitive</CC_Dock_Group_Cognitive>
+  <CC_Dock_Group_Spiritual>Spiritual</CC_Dock_Group_Spiritual>
+  <CC_Dock_Group_Hybrid>Hybrid</CC_Dock_Group_Hybrid>
+  <CC_Dock_State_Burning>BURNING</CC_Dock_State_Burning>
+  <CC_Dock_State_Flaring>FLARING</CC_Dock_State_Flaring>
+  <CC_Dock_Btn_Threshold>SET</CC_Dock_Btn_Threshold>
+
 </LanguageData>

@@ -6,6 +6,7 @@ using Verse.Sound;
 namespace Cosmere.Core.UI.Dock;
 
 public sealed class DockAccordion {
+    private Vector2 scrollPos;
     public string? ExpandedSystemId { get; set; }
 
     public void Draw(
@@ -32,6 +33,7 @@ public sealed class DockAccordion {
 
             if (Widgets.ButtonInvisible(headerRect)) {
                 ExpandedSystemId = isExpanded ? null : section.SystemId;
+                scrollPos = Vector2.zero;
                 RimWorld.SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
             }
 
@@ -41,10 +43,18 @@ public sealed class DockAccordion {
 
             float bodyHeight = section.GetExpandedBodyHeight(pawn, snap, ctx);
             float availableHeight = rect.yMax - y;
-            float drawnHeight = Mathf.Min(bodyHeight, availableHeight);
-            Rect bodyRect = new Rect(rect.x, y, rect.width, drawnHeight);
-            section.DrawBody(bodyRect, pawn, snap, ctx);
-            y += drawnHeight;
+            Rect bodyRect = new Rect(rect.x, y, rect.width, Mathf.Min(bodyHeight, availableHeight));
+            if (bodyHeight > availableHeight) {
+                Rect viewRect = new Rect(0f, 0f, rect.width - 16f, bodyHeight);
+                Widgets.BeginScrollView(bodyRect, ref scrollPos, viewRect);
+                section.DrawBody(new Rect(0f, 0f, viewRect.width, bodyHeight), pawn, snap, ctx);
+                Widgets.EndScrollView();
+            }
+            else {
+                section.DrawBody(bodyRect, pawn, snap, ctx);
+            }
+
+            y += bodyRect.height;
         }
     }
 }

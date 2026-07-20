@@ -78,14 +78,41 @@ public sealed class InvestitureDockWindow : Verse.Window {
     }
 
     private void DrawCollapsed(Rect inRect, IReadOnlyList<InvestitureSnapshot> snapshots) {
-        float iconSize = 32f;
+        const float orbSize = 28f;
+        const float railBarWidth = 3f;
         float y = inRect.y + 8f;
         for (int i = 0; i < snapshots.Count; i++) {
-            IDockSection? section = DockSectionRegistry.For(snapshots[i].SystemId);
+            InvestitureSnapshot snap = snapshots[i];
+            IDockSection? section = DockSectionRegistry.For(snap.SystemId);
             if (section == null) continue;
-            Rect headerRect = new Rect(inRect.x + (inRect.width - iconSize) / 2f, y, iconSize, iconSize);
-            section.DrawHeader(headerRect, false);
-            y += iconSize + 6f;
+
+            float aggregate = 0f;
+            bool anyActive = false;
+            bool anyFlaring = false;
+            for (int c = 0; c < snap.Cells.Count; c++) {
+                aggregate += snap.Cells[c].Bar.Fraction;
+                anyActive |= snap.Cells[c].IsActive;
+                anyFlaring |= snap.Cells[c].IsFlaring;
+            }
+
+            if (snap.Cells.Count > 0) aggregate /= snap.Cells.Count;
+
+            Rect orbRect = new Rect(inRect.x + 6f, y, orbSize, orbSize);
+            Color accent = section.Skin.AccentColor;
+            if (anyFlaring) Widgets.DrawBoxSolid(orbRect.ExpandedBy(2f), new Color(DockPalette.Flare.r, DockPalette.Flare.g, DockPalette.Flare.b, 0.35f));
+            else if (anyActive) Widgets.DrawBoxSolid(orbRect.ExpandedBy(2f), new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.3f));
+            Widgets.DrawBoxSolid(orbRect, DockPalette.PanelRaised);
+            Widgets.DrawBoxSolidWithOutline(orbRect, Color.clear, accent);
+            Texture2D? sigil = section.Skin.Sigil;
+            if (sigil != null) GUI.DrawTexture(orbRect.ContractedBy(4f), sigil);
+
+            Rect railBar = new Rect(orbRect.xMax + 4f, y, railBarWidth, orbSize);
+            Widgets.DrawBoxSolid(railBar, DockPalette.Panel);
+            Rect railFill = new Rect(railBar.x, railBar.yMax - railBar.height * Mathf.Clamp01(aggregate), railBarWidth, railBar.height * Mathf.Clamp01(aggregate));
+            Widgets.DrawBoxSolid(railFill, accent);
+
+            TooltipHandler.TipRegion(orbRect, section.Skin.HeaderLabel);
+            y += orbSize + 10f;
         }
     }
 

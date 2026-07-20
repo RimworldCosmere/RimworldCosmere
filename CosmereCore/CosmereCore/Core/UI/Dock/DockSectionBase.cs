@@ -1,3 +1,4 @@
+using Cosmere.Core.UI;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Skin;
 using UnityEngine;
@@ -14,10 +15,15 @@ public abstract class DockSectionBase : IDockSection {
     public abstract float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx);
 
     public virtual void DrawHeader(Rect rect, bool expanded) {
-        Widgets.DrawBoxSolid(rect, new Color(Skin.AccentColor.r, Skin.AccentColor.g, Skin.AccentColor.b, 0.25f));
-        using (new TextBlock(Skin.HeaderFont, TextAnchor.MiddleLeft, Skin.HeaderTextColor)) {
-            Widgets.Label(rect.ContractedBy(6f, 0f), Skin.HeaderLabel + (expanded ? " -" : " +"));
-        }
+        Widgets.DrawBoxSolid(rect, new Color(Skin.AccentColor.r, Skin.AccentColor.g, Skin.AccentColor.b, 0.16f));
+        Widgets.DrawBoxSolid(new Rect(rect.x, rect.yMax - 1f, rect.width, 1f), new Color(Skin.AccentColor.r, Skin.AccentColor.g, Skin.AccentColor.b, 0.55f));
+
+        Rect chevronRect = new Rect(rect.xMax - 18f, rect.y, 14f, rect.height);
+        UIText.EllipsisLabel(chevronRect, expanded ? "-" : "+", Skin.HeaderFont, TextAnchor.MiddleCenter, Skin.HeaderTextColor);
+
+        Rect labelRect = new Rect(rect.x + 10f, rect.y, chevronRect.x - rect.x - 14f, rect.height);
+        UIText.EllipsisLabel(labelRect, Skin.HeaderLabel.ToUpperInvariant(), Skin.HeaderFont, TextAnchor.MiddleLeft, Skin.HeaderTextColor);
+        Widgets.DrawHighlightIfMouseover(rect);
     }
 
     public abstract void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx);

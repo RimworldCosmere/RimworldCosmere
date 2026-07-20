@@ -1,90 +1,197 @@
 using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Skin;
+using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Gene;
 using UnityEngine;
 using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
-public sealed class FeruchemyDockSection : IDockSection {
-    private const float CellHeight = 36f;
-    private const float CompactCellHeight = 22f;
-    private const float CellSpacing = 4f;
-    private const float HeaderHeight = 28f;
-    private const float ButtonWidth = 66f;
-    public string SystemId => "Feruchemy";
-    public ISystemSkin Skin => SystemSkinRegistry.ForOrFallback(SystemId);
+public sealed class FeruchemyDockSection : DockSectionBase {
+    private const float CellGap = 4f;
+    private const float ButtonRowHeight = 20f;
+    private readonly HashSet<string> expandedRows = [];
+    private readonly Dictionary<string, string> labelCache = new();
+    private IReadOnlyList<MetalGroup>? cachedGroups;
+    private int cachedPawnId = -1;
+    private int cachedCellCount = -1;
 
-    public float GetHeaderHeight() {
-        return HeaderHeight;
+    public override string SystemId => "Feruchemy";
+
+    public override float GetHeaderHeight() {
+        return 28f;
     }
 
-    public float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
-        float h = ctx.Density == DockDensityMode.Compact ? CompactCellHeight : CellHeight;
-        int visible = 0;
-        for (int i = 0; i < snapshot.Cells.Count; i++) {
-            if (!ctx.DualInvestiturePairs.ContainsKey(snapshot.Cells[i].SubsystemId)) visible++;
+    public override float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        IReadOnlyList<MetalGroup> groups = GroupsFor(pawn, snapshot);
+        float height = 0f;
+
+        int tapping = CountByDirection(pawn, snapshot, ctx, true);
+        if (tapping > 0) {
+            height += DockRows.GroupLabelHeight + tapping * (DockRows.RichCellHeight + CellGap);
         }
 
-        return visible * (h + CellSpacing);
+        int storing = CountByDirection(pawn, snapshot, ctx, false);
+        if (storing > 0) {
+            height += DockRows.GroupLabelHeight + storing * (DockRows.RichCellHeight + CellGap);
+        }
+
+        for (int g = 0; g < groups.Count; g++) {
+            MetalGroup group = groups[g];
+            height += DockRows.GroupLabelHeight;
+            for (int r = 0; r < group.Rows.Count; r++) {
+                MetalRow row = group.Rows[r];
+                if (ctx.DualInvestiturePairs.ContainsKey(row.Cell.SubsystemId)) continue;
+
+                Feruchemist? gene = FindGene(pawn, row.Cell.SubsystemId);
+                if (gene != null && (gene.isTapping || gene.isStoring)) {
+                    height += DockRows.SlimRowHeight;
+                    continue;
+                }
+
+                height += expandedRows.Contains(row.Cell.SubsystemId)
+                    ? DockRows.RichCellHeight + CellGap
+                    : DockRows.SlimRowHeight;
+            }
+        }
+
+        return height;
     }
 
-    public void DrawHeader(Rect rect, bool expanded) {
-        Widgets.DrawBoxSolid(rect, new Color(Skin.AccentColor.r, Skin.AccentColor.g, Skin.AccentColor.b, 0.25f));
-        using (new TextBlock(Skin.HeaderFont, TextAnchor.MiddleLeft, Skin.HeaderTextColor))
-            Widgets.Label(rect.ContractedBy(6f, 0f), Skin.HeaderLabel + (expanded ? " -" : " +"));
-    }
-
-    public void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
-        float h = ctx.Density == DockDensityMode.Compact ? CompactCellHeight : CellHeight;
+    public override void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
+        IReadOnlyList<MetalGroup> groups = GroupsFor(pawn, snapshot);
         float y = rect.y;
+
+        int tapping = CountByDirection(pawn, snapshot, ctx, true);
+        if (tapping > 0) {
+            DockRows.DrawGroupLabel(new Rect(rect.x, y, rect.width, DockRows.GroupLabelHeight), "CC_Dock_Group_Tapping".Translate(), true);
+            y += DockRows.GroupLabelHeight;
+            y = DrawPinnedGroup(rect, pawn, snapshot, ctx, y, true);
+        }
+
+        int storing = CountByDirection(pawn, snapshot, ctx, false);
+        if (storing > 0) {
+            DockRows.DrawGroupLabel(new Rect(rect.x, y, rect.width, DockRows.GroupLabelHeight), "CC_Dock_Group_Storing".Translate(), true);
+            y += DockRows.GroupLabelHeight;
+            y = DrawPinnedGroup(rect, pawn, snapshot, ctx, y, false);
+        }
+
+        for (int g = 0; g < groups.Count; g++) {
+            MetalGroup group = groups[g];
+            DockRows.DrawGroupLabel(new Rect(rect.x, y, rect.width, DockRows.GroupLabelHeight), group.LabelKey.Translate(), false);
+            y += DockRows.GroupLabelHeight;
+            for (int r = 0; r < group.Rows.Count; r++) {
+                MetalRow row = group.Rows[r];
+                if (ctx.DualInvestiturePairs.ContainsKey(row.Cell.SubsystemId)) continue;
+
+                Feruchemist? gene = FindGene(pawn, row.Cell.SubsystemId);
+                if (gene != null && (gene.isTapping || gene.isStoring)) {
+                    Rect ghostRect = new Rect(rect.x, y, rect.width, DockRows.SlimRowHeight);
+                    DockRows.DrawSlimRow(ghostRect, row.Cell.Icon, MetalLabel(row.Cell), row.AxisGlyph, row.Cell.Bar.Fraction, Skin, true);
+                    y += DockRows.SlimRowHeight;
+                    continue;
+                }
+
+                if (expandedRows.Contains(row.Cell.SubsystemId)) {
+                    Rect cellRect = new Rect(rect.x + 6f, y, rect.width - 12f, DockRows.RichCellHeight);
+                    DrawRichCell(cellRect, pawn, row.Cell, false);
+                    y += DockRows.RichCellHeight + CellGap;
+                    continue;
+                }
+
+                Rect rowRect = new Rect(rect.x, y, rect.width, DockRows.SlimRowHeight);
+                if (DockRows.DrawSlimRow(rowRect, row.Cell.Icon, MetalLabel(row.Cell), row.AxisGlyph, row.Cell.Bar.Fraction, Skin, false)) {
+                    expandedRows.Add(row.Cell.SubsystemId);
+                }
+
+                y += DockRows.SlimRowHeight;
+            }
+        }
+    }
+
+    private float DrawPinnedGroup(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx, float y, bool tapping) {
         for (int i = 0; i < snapshot.Cells.Count; i++) {
             InvestitureCell cell = snapshot.Cells[i];
             if (ctx.DualInvestiturePairs.ContainsKey(cell.SubsystemId)) continue;
 
-            Rect cellRect = new Rect(rect.x + 4f, y, rect.width - 8f, h);
-            DrawCell(cellRect, pawn, cell);
-            y += h + CellSpacing;
+            Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
+            if (gene == null) continue;
+            if (tapping && !gene.isTapping) continue;
+            if (!tapping && !gene.isStoring) continue;
+
+            Rect cellRect = new Rect(rect.x + 6f, y, rect.width - 12f, DockRows.RichCellHeight);
+            DrawRichCell(cellRect, pawn, cell, true);
+            y += DockRows.RichCellHeight + CellGap;
         }
+
+        return y;
     }
 
-    private void DrawCell(Rect cellRect, Pawn pawn, InvestitureCell cell) {
-        bool compact = cellRect.height <= CompactCellHeight + 0.5f;
+    private IReadOnlyList<MetalGroup> GroupsFor(Pawn pawn, InvestitureSnapshot snapshot) {
+        if (cachedGroups == null || cachedPawnId != pawn.thingIDNumber || cachedCellCount != snapshot.Cells.Count) {
+            cachedGroups = MetalGroupTable.FeruchemyGroups(snapshot.Cells);
+            cachedPawnId = pawn.thingIDNumber;
+            cachedCellCount = snapshot.Cells.Count;
+        }
 
-        Widgets.DrawBoxSolid(cellRect, new Color(0.02f, 0.02f, 0.02f, 0.6f));
-        Widgets.DrawBox(cellRect);
+        return cachedGroups;
+    }
 
-        float iconSize = cellRect.height - 8f;
-        Rect iconRect = new Rect(cellRect.x + 4f, cellRect.y + 4f, iconSize, iconSize);
-        if (cell.Icon != null) GUI.DrawTexture(iconRect, cell.Icon);
+    private string MetalLabel(InvestitureCell cell) {
+        if (labelCache.TryGetValue(cell.SubsystemId, out string? cached)) return cached;
+        string label = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId)?.LabelCap ?? cell.SubsystemId;
+        labelCache[cell.SubsystemId] = label;
+        return label;
+    }
 
-        float barHeight = compact ? 10f : 14f;
-        Rect barRect = new Rect(
-            iconRect.xMax + 6f,
-            cellRect.y + cellRect.height / 2f - barHeight / 2f,
-            cellRect.width - iconSize - ButtonWidth - 20f,
-            barHeight
-        );
-        HorizontalBar.Draw(
-            barRect,
-            cell.Bar.Fraction,
-            cell.Bar.TargetValue.HasValue && cell.Bar.Max > 0f
-                ? cell.Bar.TargetValue.Value / cell.Bar.Max
-                : null,
-            Skin.BarBackgroundColor,
-            Skin.BarFillColor,
-            new Color(1f, 1f, 1f, 0.8f)
-        );
+    private static int CountByDirection(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx, bool tapping) {
+        int count = 0;
+        for (int i = 0; i < snapshot.Cells.Count; i++) {
+            InvestitureCell cell = snapshot.Cells[i];
+            if (ctx.DualInvestiturePairs.ContainsKey(cell.SubsystemId)) continue;
 
-        Rect btnRect = new Rect(
-            cellRect.xMax - ButtonWidth - 4f,
-            cellRect.y + 2f,
-            ButtonWidth,
-            cellRect.height - 4f
-        );
+            Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
+            if (gene == null) continue;
+            if (tapping ? gene.isTapping : gene.isStoring) count++;
+        }
 
+        return count;
+    }
+
+    private void DrawRichCell(Rect cellRect, Pawn pawn, InvestitureCell cell, bool pinned) {
         Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
+        string stateLabel = pinned && gene != null
+            ? (gene.isTapping ? "^ " + "CC_Dock_Twinborn_Tap".Translate() : "v " + "CC_Dock_Twinborn_Store".Translate())
+            : "";
+        Color stateColor = DockPalette.HotLabel;
+        float? targetFraction = cell.Bar.TargetValue.HasValue && cell.Bar.Max > 0f
+            ? cell.Bar.TargetValue.Value / cell.Bar.Max
+            : null;
+
+        Rect buttonRow = DockRows.BeginRichCell(
+            cellRect,
+            cell.Icon,
+            MetalLabel(cell),
+            stateLabel,
+            stateColor,
+            cell.Bar.Fraction,
+            targetFraction,
+            Skin,
+            false
+        );
+
+        if (!pinned) {
+            Rect nameStrip = new Rect(cellRect.x, cellRect.y, cellRect.width, ButtonRowHeight);
+            if (Widgets.ButtonInvisible(nameStrip) && Event.current != null && Event.current.button == 0) {
+                expandedRows.Remove(cell.SubsystemId);
+                Event.current.Use();
+            }
+        }
+
+        float buttonWidth = buttonRow.width / 2f;
+        Rect toggleRect = new Rect(buttonRow.x, buttonRow.y, buttonWidth, ButtonRowHeight);
+
         string label = gene == null
             ? "-"
             : (gene.isTapping
@@ -92,16 +199,9 @@ public sealed class FeruchemyDockSection : IDockSection {
                 : gene.isStoring
                     ? "CC_Dock_Twinborn_Store"
                     : "CC_Dock_Twinborn_TapOrStore").Translate();
-        if (Widgets.ButtonText(btnRect, label) && gene != null) {
+        if (Widgets.ButtonText(toggleRect, label) && gene != null) {
             ToggleDirection(gene);
             Event.current?.Use();
-        }
-
-        if (gene != null) {
-            string arrow = gene.isTapping ? "^" : gene.isStoring ? "v" : "-";
-            Rect arrowRect = new Rect(cellRect.xMax - 14f, cellRect.y + 2f, 10f, 10f);
-            using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(1f, 0.7f, 0.2f)))
-                Widgets.Label(arrowRect, arrow);
         }
     }
 

@@ -76,6 +76,14 @@ public sealed class RadialWindow : Verse.Window {
         Vector2 mouse = Event.current.mousePosition;
 
         UpdateHover(center, mouse);
+        float vignetteSize = RadialLayout.AbilityRingOuter * 2.7f;
+        Color prevGuiColor = GUI.color;
+        GUI.color = new Color(0f, 0f, 0f, 0.38f);
+        GUI.DrawTexture(
+            new Rect(center.x - vignetteSize / 2f, center.y - vignetteSize / 2f, vignetteSize, vignetteSize),
+            RadialWedgeTex.Vignette()
+        );
+        GUI.color = prevGuiColor;
         DrawRings(center);
         string breadcrumb = BuildBreadcrumb();
         RadialCenterPreview.Draw(

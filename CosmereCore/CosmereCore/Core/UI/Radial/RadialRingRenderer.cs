@@ -85,9 +85,9 @@ public static class RadialRingRenderer {
                     bool isSustained, bool isLocked, string? lockReason, bool hasInsufficientResources) = getAt(i);
 
             Color bg = tint.HasValue
-                ? Color.Lerp(DockPalette.Panel, tint.Value, 0.22f)
-                : new Color(0.114f, 0.125f, 0.153f, 0.92f);
-            bg.a = 0.92f;
+                ? Color.Lerp(DockPalette.Panel, tint.Value, 0.18f)
+                : new Color(0.09f, 0.10f, 0.122f);
+            bg.a = 0.97f;
             if (i == hoveredIndex) bg = Color.Lerp(bg, Color.white, 0.18f);
             if (isLocked) bg = new Color(bg.r, bg.g, bg.b, 0.4f);
             else if (hasInsufficientResources) bg = new Color(bg.r, bg.g, bg.b, 0.6f);
@@ -114,15 +114,26 @@ public static class RadialRingRenderer {
             Rect iconRect = new Rect(mid.x - 16f, drawLabels ? mid.y - 24f : mid.y - 16f, 32f, 32f);
             if (icon != null) {
                 Color originalGui = GUI.color;
+                GUI.color = new Color(0f, 0f, 0f, 0.45f);
+                GUI.DrawTexture(iconRect.ExpandedBy(5f), RadialWedgeTex.Disc());
                 GUI.color = isLocked ? new Color(1f, 1f, 1f, 0.4f) : Color.white;
                 GUI.DrawTexture(iconRect, icon);
                 GUI.color = originalGui;
             }
 
             float belowY = iconRect.yMax + 2f;
-            if (drawLabels) {
+            if (drawLabels || i == hoveredIndex) {
+                float tinyH = Text.LineHeightOf(GameFont.Tiny);
                 float chordWidth = 2f * radius * Mathf.Sin(arcDeg * 0.5f * Mathf.Deg2Rad) - 10f;
-                Rect labelRect = new Rect(mid.x - chordWidth / 2f, iconRect.yMax + 2f, chordWidth, 14f);
+                float labelWidth = drawLabels ? chordWidth : Mathf.Max(chordWidth, 84f);
+                Rect labelRect = new Rect(mid.x - labelWidth / 2f, iconRect.yMax + 2f, labelWidth, tinyH);
+                if (!drawLabels) {
+                    Color plate = GUI.color;
+                    GUI.color = new Color(0f, 0f, 0f, 0.55f);
+                    GUI.DrawTexture(labelRect.ExpandedBy(2f), Verse.BaseContent.WhiteTex);
+                    GUI.color = plate;
+                }
+
                 Color labelColor = isLocked ? new Color(0.36f, 0.42f, 0.46f) : new Color(0.81f, 0.85f, 0.87f);
                 UIText.EllipsisLabel(labelRect, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
                 belowY = labelRect.yMax + 1f;

@@ -7,6 +7,29 @@ public static class RadialWedgeTex {
     private const int TexSize = 256;
     private static readonly Dictionary<int, Texture2D> cache = new Dictionary<int, Texture2D>();
     private static Texture2D? discCache;
+    private static Texture2D? vignetteCache;
+
+    public static Texture2D Vignette() {
+        if (vignetteCache != null) return vignetteCache;
+
+        Texture2D tex = new Texture2D(TexSize, TexSize, TextureFormat.ARGB32, false);
+        Color32[] pixels = new Color32[TexSize * TexSize];
+        for (int py = 0; py < TexSize; py++) {
+            for (int px = 0; px < TexSize; px++) {
+                float x = (px + 0.5f) / TexSize - 0.5f;
+                float y = (py + 0.5f) / TexSize - 0.5f;
+                float dist = Mathf.Sqrt(x * x + y * y);
+                float t = Mathf.Clamp01(Mathf.InverseLerp(0.5f, 0.32f, dist));
+                float smooth = t * t * (3f - 2f * t);
+                pixels[py * TexSize + px] = new Color32(255, 255, 255, (byte)(255f * smooth));
+            }
+        }
+
+        tex.SetPixels32(pixels);
+        tex.Apply(false, true);
+        vignetteCache = tex;
+        return tex;
+    }
 
     public static Texture2D Disc() {
         if (discCache != null) return discCache;

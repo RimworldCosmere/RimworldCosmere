@@ -3,12 +3,13 @@ using UnityEngine;
 namespace Cosmere.Core.UI.Radial;
 
 public static class RadialLayout {
-    public const float SystemRingInner = 44f;
-    public const float SystemRingOuter = 78f;
-    public const float SubsectionRingInner = 82f;
-    public const float SubsectionRingOuter = 130f;
-    public const float AbilityRingInner = 134f;
-    public const float AbilityRingOuter = 192f;
+    public const float SystemRingInner = 100f;
+    public const float SystemRingOuter = 190f;
+    public const float SubsectionRingInner = 100f;
+    public const float SubsectionRingOuter = 190f;
+    public const float AbilityRingInner = 100f;
+    public const float AbilityRingOuter = 190f;
+    public const float CenterRadius = 88f;
 
     public static int HitTest(
         Vector2 mouse,

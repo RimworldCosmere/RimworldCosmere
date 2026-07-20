@@ -22,6 +22,7 @@ public sealed class RadialWindow : Verse.Window {
         preventCameraMotion = false;
         draggable = false;
         drawShadow = false;
+        doWindowBackground = false;
         layer = WindowLayer.Super;
         focusWhenOpened = false;
         forcePause = false;

@@ -110,7 +110,8 @@ public static class RadialRingRenderer {
             GUI.matrix = prevMatrix;
 
             Vector2 mid = RadialLayout.WedgeMidpoint(i, count, radius, center);
-            Rect iconRect = new Rect(mid.x - 16f, mid.y - 24f, 32f, 32f);
+            bool drawLabels = count <= 12;
+            Rect iconRect = new Rect(mid.x - 16f, drawLabels ? mid.y - 24f : mid.y - 16f, 32f, 32f);
             if (icon != null) {
                 Color originalGui = GUI.color;
                 GUI.color = isLocked ? new Color(1f, 1f, 1f, 0.4f) : Color.white;
@@ -118,24 +119,28 @@ public static class RadialRingRenderer {
                 GUI.color = originalGui;
             }
 
-            float chordWidth = 2f * radius * Mathf.Sin(arcDeg * 0.5f * Mathf.Deg2Rad) - 10f;
-            Rect labelRect = new Rect(mid.x - chordWidth / 2f, iconRect.yMax + 2f, chordWidth, 14f);
-            Color labelColor = isLocked ? new Color(0.36f, 0.42f, 0.46f) : new Color(0.81f, 0.85f, 0.87f);
-            UIText.EllipsisLabel(labelRect, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
+            float belowY = iconRect.yMax + 2f;
+            if (drawLabels) {
+                float chordWidth = 2f * radius * Mathf.Sin(arcDeg * 0.5f * Mathf.Deg2Rad) - 10f;
+                Rect labelRect = new Rect(mid.x - chordWidth / 2f, iconRect.yMax + 2f, chordWidth, 14f);
+                Color labelColor = isLocked ? new Color(0.36f, 0.42f, 0.46f) : new Color(0.81f, 0.85f, 0.87f);
+                UIText.EllipsisLabel(labelRect, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
+                belowY = labelRect.yMax + 1f;
+            }
 
             if (isSustained) {
-                Rect dot = new Rect(mid.x + 20f, mid.y - 24f, 5f, 5f);
+                Rect dot = new Rect(mid.x + 20f, iconRect.y + 2f, 5f, 5f);
                 Widgets.DrawBoxSolid(dot, DockPalette.HotLabel);
             }
 
             if (isLocked) {
-                Rect lockRect = new Rect(mid.x - 5f, labelRect.yMax + 1f, 10f, 10f);
+                Rect lockRect = new Rect(mid.x - 5f, belowY, 10f, 10f);
                 using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare))
                     Widgets.Label(lockRect, "x");
             }
 
             if (reserveFraction.HasValue && !isLocked) {
-                Rect barRect = new Rect(mid.x - 18f, labelRect.yMax + 2f, 36f, 2f);
+                Rect barRect = new Rect(mid.x - 18f, belowY + 1f, 36f, 2f);
                 Widgets.DrawBoxSolid(barRect, new Color(0f, 0f, 0f, 0.6f));
                 Widgets.DrawBoxSolid(new Rect(barRect.x, barRect.y, barRect.width * Mathf.Clamp01(reserveFraction.Value), 2f), DockPalette.HotLabel);
                 if (hasInsufficientResources) {

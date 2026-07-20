@@ -7,7 +7,7 @@ using Cosmere.Core.UI.Dock;
 namespace Cosmere.Core.UI.Radial;
 
 public static class RadialCenterPreview {
-    public static void Draw(Vector2 center, RadialLeaf? hoveredLeaf, string breadcrumb, bool browseMode, Action back, Action close) {
+    public static void Draw(Vector2 center, RadialLeaf? hoveredLeaf, string? hoveredTitle, string breadcrumb, bool browseMode, Action back, Action close) {
         float r = RadialLayout.CenterRadius;
         Rect disc = new Rect(center.x - r, center.y - r, r * 2f, r * 2f);
         Texture2D discTex = RadialWedgeTex.Disc();
@@ -21,13 +21,31 @@ public static class RadialCenterPreview {
         UIText.EllipsisLabel(ChordRow(center, -62f, 12f), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
 
         if (hoveredLeaf == null) {
-            UIText.EllipsisLabel(
-                ChordRow(center, -20f, 28f),
-                "CC_Radial_Hover_Prompt".Translate(),
-                GameFont.Tiny,
-                TextAnchor.MiddleCenter,
-                DockPalette.MutedText
-            );
+            if (hoveredTitle != null) {
+                UIText.EllipsisLabel(
+                    ChordRow(center, -18f, 20f),
+                    hoveredTitle,
+                    GameFont.Small,
+                    TextAnchor.MiddleCenter,
+                    new Color(0.75f, 0.89f, 0.95f)
+                );
+                UIText.EllipsisLabel(
+                    ChordRow(center, 4f, 12f),
+                    "CC_Radial_Open_Prompt".Translate(),
+                    GameFont.Tiny,
+                    TextAnchor.MiddleCenter,
+                    DockPalette.MutedText
+                );
+            }
+            else {
+                UIText.EllipsisLabel(
+                    ChordRow(center, -20f, 28f),
+                    "CC_Radial_Hover_Prompt".Translate(),
+                    GameFont.Tiny,
+                    TextAnchor.MiddleCenter,
+                    DockPalette.MutedText
+                );
+            }
         }
         else {
             UIText.EllipsisLabel(

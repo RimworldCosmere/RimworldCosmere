@@ -81,6 +81,7 @@ public sealed class RadialWindow : Verse.Window {
         RadialCenterPreview.Draw(
             center,
             state.ResolveHoveredLeaf(snapshot),
+            HoveredWedgeTitle(),
             breadcrumb,
             BrowseMode,
             () => { if (state.Kind == RadialStateKind.SystemTier) Close(false); else state.Back(); },
@@ -92,6 +93,24 @@ public sealed class RadialWindow : Verse.Window {
     public override void OnCancelKeyPressed() {
         Close(false);
         Event.current?.Use();
+    }
+
+    private string? HoveredWedgeTitle() {
+        if (state.HoveredIndex < 0) return null;
+        switch (state.Kind) {
+            case RadialStateKind.SystemTier:
+                return state.HoveredIndex < snapshot.Systems.Count
+                    ? snapshot.Systems[state.HoveredIndex].Label
+                    : null;
+            case RadialStateKind.SubsectionTier: {
+                RadialSystem sys = snapshot.Systems[state.SelectedSystemIndex];
+                return state.HoveredIndex < sys.Subsections.Count
+                    ? sys.Subsections[state.HoveredIndex].Label
+                    : null;
+            }
+            default:
+                return null;
+        }
     }
 
     private string BuildBreadcrumb() {

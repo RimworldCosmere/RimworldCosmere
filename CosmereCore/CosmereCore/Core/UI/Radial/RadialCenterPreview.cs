@@ -18,19 +18,22 @@ public static class RadialCenterPreview {
         GUI.DrawTexture(disc, discTex);
         GUI.color = prev;
 
-        UIText.EllipsisLabel(ChordRow(center, -62f, 12f), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
+        float tinyH = Text.LineHeightOf(GameFont.Tiny);
+        float smallH = Text.LineHeightOf(GameFont.Small);
+
+        UIText.EllipsisLabel(ChordRow(center, -66f, tinyH), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
 
         if (hoveredLeaf == null) {
             if (hoveredTitle != null) {
                 UIText.EllipsisLabel(
-                    ChordRow(center, -18f, 20f),
+                    ChordRow(center, -24f, smallH),
                     hoveredTitle,
                     GameFont.Small,
                     TextAnchor.MiddleCenter,
                     new Color(0.75f, 0.89f, 0.95f)
                 );
                 UIText.EllipsisLabel(
-                    ChordRow(center, 4f, 12f),
+                    ChordRow(center, 2f, tinyH),
                     "CC_Radial_Open_Prompt".Translate(),
                     GameFont.Tiny,
                     TextAnchor.MiddleCenter,
@@ -39,7 +42,7 @@ public static class RadialCenterPreview {
             }
             else {
                 UIText.EllipsisLabel(
-                    ChordRow(center, -20f, 28f),
+                    ChordRow(center, -9f, tinyH),
                     "CC_Radial_Hover_Prompt".Translate(),
                     GameFont.Tiny,
                     TextAnchor.MiddleCenter,
@@ -49,7 +52,7 @@ public static class RadialCenterPreview {
         }
         else {
             UIText.EllipsisLabel(
-                ChordRow(center, -48f, 18f),
+                ChordRow(center, -46f, smallH),
                 hoveredLeaf.Label,
                 GameFont.Small,
                 TextAnchor.MiddleCenter,
@@ -57,7 +60,7 @@ public static class RadialCenterPreview {
             );
 
             if (!hoveredLeaf.Description.NullOrEmpty()) {
-                Rect descRect = ChordRow(center, -28f, 26f);
+                Rect descRect = ChordRow(center, -22f, tinyH * 2f);
                 string desc = hoveredLeaf.Description!.Truncate(descRect.width * 2f);
                 using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, DockPalette.MutedText)) {
                     Widgets.Label(descRect, desc);
@@ -66,35 +69,37 @@ public static class RadialCenterPreview {
                 TooltipHandler.TipRegion(descRect, hoveredLeaf.Description);
             }
 
-            string meta = BuildMetaLine(hoveredLeaf);
-            if (meta.Length > 0) {
-                UIText.EllipsisLabel(ChordRow(center, 0f, 12f), meta, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.HotLabel);
+            if (hoveredLeaf.IsLocked && hoveredLeaf.LockReason != null) {
+                UIText.EllipsisLabel(ChordRow(center, 16f, tinyH), hoveredLeaf.LockReason, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare);
+            }
+            else {
+                string meta = BuildMetaLine(hoveredLeaf);
+                if (meta.Length > 0) {
+                    UIText.EllipsisLabel(ChordRow(center, 16f, tinyH), meta, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.HotLabel);
+                }
             }
 
             if (hoveredLeaf.ReserveFraction.HasValue) {
-                Rect barRect = new Rect(center.x - 50f, center.y + 16f, 100f, 6f);
+                Rect barRect = new Rect(center.x - 50f, center.y + 36f, 100f, 6f);
                 Widgets.DrawBoxSolid(barRect, new Color(0f, 0f, 0f, 0.6f));
                 Widgets.DrawBoxSolid(
                     new Rect(barRect.x + 1f, barRect.y + 1f, (barRect.width - 2f) * Mathf.Clamp01(hoveredLeaf.ReserveFraction.Value), 4f),
                     new Color(0.478f, 0.784f, 0.902f)
                 );
             }
-
-            if (hoveredLeaf.IsLocked && hoveredLeaf.LockReason != null) {
-                UIText.EllipsisLabel(ChordRow(center, 26f, 12f), hoveredLeaf.LockReason, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare);
-            }
         }
 
         if (browseMode) {
-            const float btnW = 52f;
-            Rect backRect = new Rect(center.x - btnW - 4f, center.y + 38f, btnW, 20f);
-            Rect closeRect = new Rect(center.x + 4f, center.y + 38f, btnW, 20f);
-            if (Widgets.ButtonText(backRect, "CC_Radial_Back".Translate())) back();
-            if (Widgets.ButtonText(closeRect, "CC_Radial_Close".Translate())) close();
+            const float btnW = 44f;
+            Rect backRect = new Rect(center.x - btnW - 3f, center.y + 46f, btnW, 20f);
+            Rect closeRect = new Rect(center.x + 3f, center.y + 46f, btnW, 20f);
+            using (new TextBlock(GameFont.Tiny)) {
+                if (Widgets.ButtonText(backRect, "CC_Radial_Back".Translate())) back();
+                if (Widgets.ButtonText(closeRect, "CC_Radial_Close".Translate())) close();
+            }
         }
         else {
-            UIText.EllipsisLabel(ChordRow(center, 40f, 11f), "CC_Radial_Hint_Release".Translate(), GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
-            UIText.EllipsisLabel(ChordRow(center, 52f, 11f), "CC_Radial_Hint_Back".Translate(), GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
+            UIText.EllipsisLabel(ChordRow(center, 46f, tinyH), "CC_Radial_Hint_Release".Translate(), GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
         }
     }
 

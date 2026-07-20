@@ -103,6 +103,7 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
                     ReserveFraction: reserveFraction,
                     HasInsufficientResources: f.isTapping && reserveFraction <= 0f,
                     CostHint: null,
+                    Description: null,
                     CooldownTicksRemaining: 0
                 ),
                 new RadialLeaf(
@@ -119,6 +120,7 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
                     ReserveFraction: reserveFraction,
                     HasInsufficientResources: false,
                     CostHint: null,
+                    Description: null,
                     CooldownTicksRemaining: 0
                 ),
                 new RadialLeaf(
@@ -135,6 +137,7 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
                     ReserveFraction: reserveFraction,
                     HasInsufficientResources: false,
                     CostHint: null,
+                    Description: null,
                     CooldownTicksRemaining: 0
                 ),
             ];
@@ -165,6 +168,7 @@ public sealed class FeruchemyInvestitureProvider : CodexInvestitureProviderBase<
                         ReserveFraction: reserveFraction,
                         HasInsufficientResources: false,
                         CostHint: null,
+                        Description: compoundDef.description,
                         CooldownTicksRemaining: compoundAbility != null ? compoundAbility.CooldownTicksRemaining : 0
                     )
                 );

@@ -17,5 +17,6 @@ public sealed record RadialLeaf(
     float? ReserveFraction,
     bool HasInsufficientResources,
     string? CostHint,
+    string? Description,
     int CooldownTicksRemaining
 );

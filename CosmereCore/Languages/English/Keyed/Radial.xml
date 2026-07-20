@@ -3,5 +3,8 @@
 
   <CC_Radial_Hover_Prompt>Hover a wedge</CC_Radial_Hover_Prompt>
   <CC_Radial_Cooldown>cd {SECONDS}s</CC_Radial_Cooldown>
+  <CC_Radial_Back>Back</CC_Radial_Back>
+  <CC_Radial_Close>Close</CC_Radial_Close>
+  <CC_Radial_Hint_Release>release to cast - right-click to go back</CC_Radial_Hint_Release>
 
 </LanguageData>

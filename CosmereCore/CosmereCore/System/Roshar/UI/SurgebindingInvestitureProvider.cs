@@ -122,6 +122,7 @@ public sealed class SurgebindingInvestitureProvider : CodexInvestitureProviderBa
             ReserveFraction: s.Max > 0f ? s.Value / s.Max : 0f,
             HasInsufficientResources: !canCast && !locked,
             CostHint: null,
+            Description: def.description,
             CooldownTicksRemaining: cooldown
         );
     }

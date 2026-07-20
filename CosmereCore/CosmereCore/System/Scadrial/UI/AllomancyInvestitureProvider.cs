@@ -97,6 +97,7 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
                 ReserveFraction: reserveFraction,
                 HasInsufficientResources: reserveFraction <= 0f,
                 CostHint: $"{matched.GetDesiredBurnRateForStatus(Status.PowerOne) * GenTicks.TicksPerRealSecond:F2}/s",
+                Description: matched.def.description,
                 CooldownTicksRemaining: 0
             );
 

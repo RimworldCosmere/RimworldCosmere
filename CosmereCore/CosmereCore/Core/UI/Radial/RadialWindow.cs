@@ -76,13 +76,32 @@ public sealed class RadialWindow : Verse.Window {
 
         UpdateHover(center, mouse);
         DrawRings(center);
-        RadialCenterPreview.Draw(center, state.ResolveHoveredLeaf(snapshot));
+        string breadcrumb = BuildBreadcrumb();
+        RadialCenterPreview.Draw(
+            center,
+            state.ResolveHoveredLeaf(snapshot),
+            breadcrumb,
+            BrowseMode,
+            () => { if (state.Kind == RadialStateKind.SystemTier) Close(false); else state.Back(); },
+            () => Close(false)
+        );
         HandleInput();
     }
 
     public override void OnCancelKeyPressed() {
         Close(false);
         Event.current?.Use();
+    }
+
+    private string BuildBreadcrumb() {
+        if (state.Kind == RadialStateKind.SystemTier) return "";
+        if (state.Kind == RadialStateKind.SubsectionTier) {
+            return snapshot.Systems[state.SelectedSystemIndex].Label.ToUpperInvariant();
+        }
+
+        RadialSystem sys = snapshot.Systems[state.SelectedSystemIndex];
+        RadialSubsection sub = sys.Subsections[state.SelectedSubsectionIndex];
+        return $"{sys.Label} - {sub.Label}".ToUpperInvariant();
     }
 
     private void UpdateHover(Vector2 center, Vector2 mouse) {

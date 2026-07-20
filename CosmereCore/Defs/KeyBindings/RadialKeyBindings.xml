@@ -12,8 +12,8 @@
   <KeyBindingDef>
     <defName>Cosmere_Keybind_RadialOpen</defName>
     <label>Open ability radial</label>
-    <description>Hold to open the ability radial at the selected pawn. Release over a wedge to cast.</description>
-    <defaultKeyCodeA>X</defaultKeyCodeA>
+    <description>Tap to open the ability radial for browsing. Hold and release over an ability to quick-cast.</description>
+    <defaultKeyCodeA>Q</defaultKeyCodeA>
     <category>Cosmere_KeyBindings</category>
   </KeyBindingDef>
 </Defs>

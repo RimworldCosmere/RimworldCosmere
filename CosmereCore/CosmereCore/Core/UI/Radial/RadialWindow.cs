@@ -9,6 +9,9 @@ public sealed class RadialWindow : Verse.Window {
     private readonly RadialState state = new RadialState();
     private RadialSnapshot snapshot;
 
+    public bool BrowseMode;
+    public Vector2 Anchor;
+
     public RadialWindow(RadialSnapshot snapshot) {
         this.snapshot = snapshot;
         doCloseButton = false;
@@ -24,6 +27,7 @@ public sealed class RadialWindow : Verse.Window {
         forcePause = false;
         state.Kind = RadialStateKind.SystemTier;
         AutoSkipOneOptionTiers();
+        Anchor = RadialAnchor.Resolve(snapshot.Pawn);
     }
 
     protected override float Margin => 0f;
@@ -67,7 +71,7 @@ public sealed class RadialWindow : Verse.Window {
             }
         }
 
-        Vector2 center = RadialAnchor.PawnScreenCenter(snapshot.Pawn);
+        Vector2 center = Anchor;
         Vector2 mouse = Event.current.mousePosition;
 
         UpdateHover(center, mouse);
@@ -223,5 +227,10 @@ public sealed class RadialWindow : Verse.Window {
         }
 
         Close(false);
+    }
+
+    public override void PostClose() {
+        base.PostClose();
+        RadialController.NotifyClosed(this);
     }
 }

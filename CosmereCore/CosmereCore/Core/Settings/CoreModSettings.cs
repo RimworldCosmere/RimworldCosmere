@@ -24,6 +24,7 @@ public class CoreModSettings : CosmereModSettings {
     public LogLevel logLevel = LogLevel.Verbose;
     public string? quickstartName;
 
+    public bool radialAnchorMouse = true;
     public bool reduceMotion;
 
     public bool showDormantConnection;
@@ -56,6 +57,18 @@ public class CoreModSettings : CosmereModSettings {
                     "CC_Settings_DisableOdyssey_Label".Translate(),
                     "CC_Settings_DisableOdyssey_Tooltip".Translate(),
                     sub => sub.Checkbox(ref disableOdysseyFactionsInCosmereScenarios)
+                );
+            },
+            SubListingOptions.WithoutTopPadding()
+        );
+
+        listing.Fieldset(
+            "CC_Settings_Category_Radial".Translate(),
+            fieldset => {
+                fieldset.Field(
+                    "CC_Settings_RadialAnchorMouse_Label".Translate(),
+                    "CC_Settings_RadialAnchorMouse_Tooltip".Translate(),
+                    sub => sub.Checkbox(ref radialAnchorMouse)
                 );
             },
             SubListingOptions.WithoutTopPadding()
@@ -176,5 +189,6 @@ public class CoreModSettings : CosmereModSettings {
         Scribe_Values.Look(ref disableOdysseyFactionsInCosmereScenarios, "disableOdysseyFactionsInCosmereScenarios");
         Scribe_Values.Look(ref reduceMotion, "reduceMotion");
         Scribe_Values.Look(ref highContrast, "highContrast");
+        Scribe_Values.Look(ref radialAnchorMouse, "radialAnchorMouse", true);
     }
 }

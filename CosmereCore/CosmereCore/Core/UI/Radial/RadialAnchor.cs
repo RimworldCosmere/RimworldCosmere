@@ -9,4 +9,14 @@ public static class RadialAnchor {
         Vector3 screen = Find.Camera.WorldToScreenPoint(world);
         return new Vector2(screen.x, Verse.UI.screenHeight - screen.y);
     }
+
+    public static Vector2 Resolve(Pawn pawn) {
+        Vector2 anchor = Mod.GetModSettings<Cosmere.Core.Settings.CoreModSettings>().radialAnchorMouse
+            ? Verse.UI.MousePositionOnUIInverted
+            : PawnScreenCenter(pawn);
+        const float half = 240f;
+        anchor.x = Mathf.Clamp(anchor.x, half, Verse.UI.screenWidth - half);
+        anchor.y = Mathf.Clamp(anchor.y, half, Verse.UI.screenHeight - half);
+        return anchor;
+    }
 }

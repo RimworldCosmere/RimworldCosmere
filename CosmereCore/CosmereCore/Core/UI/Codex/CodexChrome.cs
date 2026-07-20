@@ -5,7 +5,7 @@ namespace Cosmere.Core.UI.Codex;
 
 public static class CodexChrome {
     public const float HeaderHeight = 36f;
-    public const float SwitcherStripHeight = 28f;
+    public const float RailWidth = 40f;
     public const float SubtabBarHeight = 28f;
     public const float Gutter = 8f;
 
@@ -24,11 +24,12 @@ public static class CodexChrome {
     }
 
     public static Rect BodyRect(Rect tabRect, bool hasSwitcher) {
-        float top = HeaderHeight + SubtabBarHeight + (hasSwitcher ? SwitcherStripHeight : 0f);
+        float top = HeaderHeight + SubtabBarHeight;
+        float left = hasSwitcher ? RailWidth : 0f;
         return new Rect(
-            tabRect.x + Gutter,
+            tabRect.x + left + Gutter,
             tabRect.y + top + Gutter,
-            tabRect.width - Gutter * 2f,
+            tabRect.width - left - Gutter * 2f,
             tabRect.height - top - Gutter * 2f
         );
     }

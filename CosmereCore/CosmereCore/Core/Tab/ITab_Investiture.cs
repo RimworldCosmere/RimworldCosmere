@@ -47,23 +47,23 @@ public class ITab_Investiture : ITab {
         Rect header = new Rect(0f, 0f, size.x, CodexChrome.HeaderHeight);
         CodexChrome.DrawHeader(header, ResolveHeaderLabel(pawn, active, skin), skin.AccentColor);
 
-        float y = CodexChrome.HeaderHeight;
         bool hasSwitcher = investedProviders.Count > 1;
+        float contentX = hasSwitcher ? CodexChrome.RailWidth : 0f;
+
         if (hasSwitcher) {
-            Rect switcher = new Rect(
-                CodexChrome.Gutter,
-                y,
-                size.x - CodexChrome.Gutter * 2f,
-                CodexChrome.SwitcherStripHeight
-            );
-            SystemSwitcherStrip.Draw(switcher, pawn, state, investedProviders);
-            y += CodexChrome.SwitcherStripHeight;
+            Rect rail = new Rect(0f, CodexChrome.HeaderHeight, CodexChrome.RailWidth, size.y - CodexChrome.HeaderHeight);
+            SystemSwitcherStrip.Draw(rail, pawn, state, investedProviders);
         }
 
-        Rect subtabBar = new Rect(CodexChrome.Gutter, y, size.x - CodexChrome.Gutter * 2f, CodexChrome.SubtabBarHeight);
+        Rect subtabBar = new Rect(
+            contentX + CodexChrome.Gutter,
+            CodexChrome.HeaderHeight,
+            size.x - contentX - CodexChrome.Gutter * 2f,
+            CodexChrome.SubtabBarHeight
+        );
         SubtabBar.Draw(subtabBar, pawn, state, active, skin.AccentColor);
 
-        Rect divider = new Rect(CodexChrome.Gutter, subtabBar.yMax, subtabBar.width, 1f);
+        Rect divider = new Rect(subtabBar.x, subtabBar.yMax, subtabBar.width, 1f);
         CodexChrome.DrawDivider(divider, skin.AccentColor);
 
         Rect body = CodexChrome.BodyRect(tabRect, hasSwitcher);

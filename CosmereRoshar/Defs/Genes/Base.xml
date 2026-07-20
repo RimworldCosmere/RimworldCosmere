@@ -7,13 +7,9 @@
         <biostatCpx>500</biostatCpx>
         <biostatMet>500</biostatMet>
         <biostatArc>500</biostatArc>
-        <modExtensions>
-            <li Class="Cosmere.Core.DefModExtension.CollapsibleGizmo" />
-        </modExtensions>
     </GeneDef>
     <GeneDef Name="Cosmere_Roshar_Gene_BaseRadiantOrder" ParentName="Cosmere_Roshar_Gene_BaseSurgeGroup" Abstract="True">
         <geneClass>Cosmere.System.Roshar.Gene.Surgebinder</geneClass>
-        <resourceGizmoType>Cosmere.System.Roshar.Gizmo.RadiantOrderCommand</resourceGizmoType>
         <resourceLabel>stormlight</resourceLabel>
         <resourceGizmoThresholds>
             <li>0.2</li>

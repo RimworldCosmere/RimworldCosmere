@@ -1,5 +1,4 @@
 using Cosmere.Core.Comp.Thing;
-using Cosmere.Core.DefModExtension;
 using Cosmere.Core.Investiture;
 using RimWorld;
 using Verse;
@@ -8,7 +7,6 @@ using UnityEngine;
 namespace Cosmere.Core.Gene;
 
 public abstract class Invested : Gene_Resource {
-    internal bool gizmoShrunk;
     protected List<DrainSource> sources = [];
 
     public List<DrainSource> Sources => sources;
@@ -33,15 +31,6 @@ public abstract class Invested : Gene_Resource {
 
     protected Need.Investiture investiture => pawn.needs.TryGetNeed<Need.Investiture>();
     protected InvestitureHolder investitureHolder => pawn.TryGetComp<InvestitureHolder>();
-
-    public override void PostMake() {
-        gizmoShrunk = def.GetModExtension<CollapsibleGizmo>()?.defaultCollapsed ?? false;
-    }
-
-    public override void ExposeData() {
-        base.ExposeData();
-        Scribe_Values.Look(ref gizmoShrunk, "gizmoShrunk");
-    }
 
     public override void Reset() {
         targetValue = 0.5f;

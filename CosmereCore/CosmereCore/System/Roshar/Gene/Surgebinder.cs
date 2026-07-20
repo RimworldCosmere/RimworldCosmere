@@ -7,7 +7,6 @@ using Cosmere.Core.Savant;
 using Cosmere.System.Roshar.Comp.Game;
 using Cosmere.System.Roshar.Comp.Thing;
 using Cosmere.System.Roshar.Def;
-using Cosmere.System.Roshar.Gizmo;
 using Cosmere.System.Roshar.LetterArrive;
 using Cosmere.System.Roshar.Savant;
 using Cosmere.System.Roshar.Surgebinding;
@@ -38,8 +37,6 @@ public class Surgebinder : Invested {
     public Pawn? bondedSpren;
 
     private Dictionary<string, int> cachedSavantStages = new Dictionary<string, int>();
-
-    private List<SurgeGizmo>? cachedSurgeGizmos;
 
     private int CurrentIdealInt;
     public string godsprenName = "";
@@ -861,17 +858,6 @@ public class Surgebinder : Invested {
 
         foreach (Verse.Gizmo gizmo in GetShardEquipmentGizmos()) {
             yield return gizmo;
-        }
-
-        if (cachedSurgeGizmos == null) {
-            cachedSurgeGizmos = [];
-            foreach (SurgeDef surge in radiantOrderDef.surges) {
-                cachedSurgeGizmos.Add(new SurgeGizmo(this, surge));
-            }
-        }
-
-        for (int i = 0; i < cachedSurgeGizmos.Count; i++) {
-            yield return cachedSurgeGizmos[i];
         }
     }
 

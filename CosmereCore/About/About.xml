@@ -15,14 +15,8 @@
             <packageId>Ludeon.RimWorld.Biotech</packageId>
             <displayName>Biotech</displayName>
         </li>
-        <li>
-            <packageId>Cosmere.Lightweave</packageId>
-            <displayName>Lightweave</displayName>
-            <downloadUrl>https://github.com/RimworldCosmere/Lightweave/releases/latest</downloadUrl>
-        </li>
     </modDependencies>
     <forceLoadAfter>
         <li>Ludeon.RimWorld.Biotech</li>
-        <li>Cosmere.Lightweave</li>
     </forceLoadAfter>
 </ModMetaData>

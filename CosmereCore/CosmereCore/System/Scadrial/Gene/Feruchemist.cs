@@ -5,7 +5,6 @@ using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Feruchemy;
 using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
 using Cosmere.System.Scadrial.Feruchemy.Hediff;
-using Cosmere.System.Scadrial.Gizmo;
 using Cosmere.System.Scadrial.Util;
 using RimWorld;
 using UnityEngine;
@@ -26,7 +25,6 @@ public class Feruchemist : Metalborn {
     private HediffDef? cachedTapHediffDef;
     private int metalmindsLastCachedTick = -1;
     private float savantDecayOffset;
-    private new FeruchemicGeneCommand? gizmo => (FeruchemicGeneCommand)base.gizmo;
 
     public List<IMetalmindSource> metalminds {
         get {
@@ -186,7 +184,6 @@ public class Feruchemist : Metalborn {
 
     public override void Reset() {
         targetValue = 50f;
-        if (gizmo != null) gizmo.targetValuePercent = .5f;
         TryRemoveHediffByDef(storeHediffDef);
         TryRemoveHediffByDef(tapHediffDef);
     }

@@ -164,6 +164,14 @@ public sealed class AllomancyDockSection : DockSectionBase {
             cell.IsFlaring
         );
 
+        if (!pinned) {
+            Rect nameStrip = new Rect(cellRect.x, cellRect.y, cellRect.width, ButtonRowHeight);
+            if (Widgets.ButtonInvisible(nameStrip) && Event.current != null && Event.current.button == 0) {
+                expandedRows.Remove(cell.SubsystemId);
+                Event.current.Use();
+            }
+        }
+
         if (Widgets.ButtonInvisible(cellRect, false) && Event.current != null && Event.current.button == 1) {
             OpenContextMenu(pawn, cell);
             Event.current.Use();

@@ -155,6 +155,21 @@ public class Feruchemist : Metalborn {
     public bool isStoring => storeHediffDef != null && pawn.health.hediffSet.HasHediff(storeHediffDef);
     public bool isCompounding => compoundHediffDef != null && pawn.health.hediffSet.HasHediff(compoundHediffDef);
 
+    /// Charge moved per real second at the current dial setting, negative while
+    /// tapping. Zero when the dial sits in its dead band or the direction is shut.
+    public float TransferRatePerSecond {
+        get {
+            float severity = effectiveSeverity;
+            if (severity <= 0f) return 0f;
+
+            float perSecond = AmountPerRareTick * severity
+                * GenTicks.TicksPerRealSecond / GenTicks.TickRareInterval;
+
+            if (targetValue < 50f) return canTap ? -perSecond : 0f;
+            return canStore ? perSecond : 0f;
+        }
+    }
+
     private float effectiveSeverity {
         get {
             float delta = targetValue - 50f;

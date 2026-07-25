@@ -24,6 +24,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private static readonly Color QuadHeader = new Color(0.475f, 0.588f, 0.655f);
     private static readonly Color StoreFill = new Color(0.373f, 0.549f, 0.627f);
     private static readonly Color TapFill = new Color(0.659f, 0.435f, 0.290f);
+    private static readonly Color CompoundTint = new Color(0.851f, 0.667f, 0.286f);
 
     private readonly Dictionary<string, string> labelCache = new Dictionary<string, string>();
     private IReadOnlyList<MetalGroup>? cachedGroups;
@@ -59,11 +60,22 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
         Capacity capacity = CapacityOf(gene);
 
+        bool compounding = gene?.isCompounding ?? false;
         MetalTileState state = !capacity.HasMetalmind
             ? MetalTileState.Inert
-            : gene != null && (gene.isTapping || gene.isStoring)
-                ? MetalTileState.Active
-                : MetalTileState.Idle;
+            : compounding
+                ? MetalTileState.Flaring
+                : gene != null && (gene.isTapping || gene.isStoring)
+                    ? MetalTileState.Active
+                    : MetalTileState.Idle;
+
+        Color tint = compounding
+            ? CompoundTint
+            : gene is { isStoring: true }
+                ? StoreFill
+                : gene is { isTapping: true }
+                    ? TapFill
+                    : ActiveTint;
 
         MetalTile.Draw(
             rect,
@@ -73,17 +85,29 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             capacity.Fraction,
             MetalPalette.For(cell.SubsystemId),
             state,
-            ActiveTint
+            tint
         );
 
-        TooltipHandler.TipRegion(rect, () => Tooltip(cell, capacity), cell.SubsystemId.GetHashCode());
+        bool hasCompound = CompoundFor(pawn, cell.SubsystemId) != null;
+        TooltipHandler.TipRegion(
+            rect,
+            () => Tooltip(cell, capacity, hasCompound),
+            cell.SubsystemId.GetHashCode()
+        );
 
         if (!capacity.HasMetalmind) return;
         if (!Widgets.ButtonInvisible(rect)) return;
 
+        Event? ev = Event.current;
+        if (ev is { shift: true }) {
+            TryCompound(pawn, cell.SubsystemId);
+            ev.Use();
+            return;
+        }
+
         expandedMetal = expandedMetal == cell.SubsystemId ? null : cell.SubsystemId;
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
-        Event.current?.Use();
+        ev?.Use();
     }
 
     private void DrawStrip(Rect rect, Pawn pawn, MetalRow row) {
@@ -98,11 +122,13 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         Rect inner = rect.ContractedBy(StripPadding);
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
 
-        string direction = gene.isTapping
-            ? "CC_Dock_Feruchemy_Tapping".Translate()
-            : gene.isStoring
-                ? "CC_Dock_Feruchemy_Storing".Translate()
-                : "CC_Dock_Feruchemy_Idle".Translate();
+        string direction = gene.isCompounding
+            ? "CC_Dock_Feruchemy_Compounding".Translate()
+            : gene.isTapping
+                ? "CC_Dock_Feruchemy_Tapping".Translate()
+                : gene.isStoring
+                    ? "CC_Dock_Feruchemy_Storing".Translate()
+                    : "CC_Dock_Feruchemy_Idle".Translate();
         UIText.EllipsisLabel(
             new Rect(inner.x, inner.y, inner.width * 0.6f, tinyH),
             MetalLabel(cell) + " - " + direction,
@@ -139,6 +165,17 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             capacity.CanStore ? new Color(0.498f, 0.541f, 0.565f) : new Color(0.310f, 0.286f, 0.255f)
         );
 
+        float rate = gene.TransferRatePerSecond;
+        UIText.EllipsisLabel(
+            endsRect,
+            "CC_Dock_Feruchemy_Rate".Translate($"{rate:+0.00;-0.00;0.00}".Named("RATE")),
+            GameFont.Tiny,
+            TextAnchor.MiddleCenter,
+            Mathf.Approximately(rate, 0f)
+                ? new Color(0.376f, 0.353f, 0.318f)
+                : rate < 0f ? TapFill : StoreFill
+        );
+
         float buttonY = endsRect.yMax + 8f;
         AllomanticAbilityDef? compound = CompoundFor(pawn, cell.SubsystemId);
         float buttonWidth = compound != null ? (inner.width - 5f) / 2f : inner.width;
@@ -151,8 +188,19 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         if (compound == null) return;
 
         Ability? ability = pawn.abilities?.GetAbility(compound);
-        bool canCompound = ability != null && ability.CanCast;
+        AcceptanceReport report = ability?.CanCast ?? false;
+        bool canCompound = ability != null && report.Accepted;
         Rect compoundRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, StripButtonHeight);
+        if (!canCompound) {
+            TooltipHandler.TipRegion(
+                compoundRect,
+                "CC_Dock_Feruchemy_CompoundBlocked".Translate(
+                    (report.Reason.NullOrEmpty()
+                        ? "CC_Dock_Feruchemy_CompoundUnavailable".Translate().Resolve()
+                        : report.Reason).Named("REASON")
+                )
+            );
+        }
         if (ChromeButton(compoundRect, "CC_Dock_Twinborn_Compound".Translate(), canCompound)) {
             ability!.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
             Event.current?.Use();
@@ -176,18 +224,21 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         Event? e = Event.current;
         if (e == null) return;
 
-        if (e.type == EventType.MouseDown && Mouse.IsOver(rect)) draggingDial = metalId;
+        if (e.type == EventType.MouseDown && Mouse.IsOver(rect)) {
+            draggingDial = metalId;
+            e.Use();
+        }
+
         if (draggingDial != metalId) return;
 
-        if (e.type == EventType.MouseUp) {
+        // MouseDrag only reaches a control that claimed the hot control, which a
+        // hand-drawn dial never does, so follow the button state directly.
+        if (!Input.GetMouseButton(0)) {
             draggingDial = null;
             return;
         }
 
-        if (e.type != EventType.MouseDown && e.type != EventType.MouseDrag) return;
-
         gene.targetValue = Mathf.Clamp((e.mousePosition.x - rect.x) / rect.width * 100f, min, max);
-        e.Use();
     }
 
     private static bool ChromeButton(Rect rect, string label, bool enabled) {
@@ -244,9 +295,27 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
     }
 
-    private string Tooltip(InvestitureCell cell, Capacity capacity) {
+    private static void TryCompound(Pawn pawn, string metalDefName) {
+        AllomanticAbilityDef? def = CompoundFor(pawn, metalDefName);
+        if (def == null) return;
+
+        Ability? ability = pawn.abilities?.GetAbility(def);
+        if (ability == null || !ability.CanCast) return;
+
+        ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
+    }
+
+    private string Tooltip(InvestitureCell cell, Capacity capacity, bool hasCompound) {
         if (!capacity.HasMetalmind) {
             return "CC_Dock_Feruchemy_NoMetalmind".Translate(MetalLabel(cell).Named("METAL"));
+        }
+
+        if (hasCompound) {
+            return "CC_Dock_Feruchemy_TipCompound".Translate(
+                MetalLabel(cell).Named("METAL"),
+                capacity.Stored.ToString("0").Named("STORED"),
+                capacity.Max.ToString("0").Named("MAX")
+            );
         }
 
         return "CC_Dock_Feruchemy_Tip".Translate(

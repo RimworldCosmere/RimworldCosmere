@@ -54,7 +54,7 @@ public class Feruchemist : Metalborn {
             List<Verse.Thing> items = pawn.inventory.innerContainer.InnerListForReading;
             for (int i = 0; i < items.Count; i++) {
                 Metalmind? comp = items[i].TryGetComp<Metalmind>();
-                if (comp != null && comp.Metal == metal) cachedMetalminds.Add(comp);
+                if (comp != null && SameMetal(comp.Metal)) cachedMetalminds.Add(comp);
             }
 
             ImplantedMetalminds? implantHediff =
@@ -63,13 +63,21 @@ public class Feruchemist : Metalborn {
             if (implantHediff != null) {
                 for (int i = 0; i < implantHediff.metalminds.Count; i++) {
                     ImplantedMetalmindData data = implantHediff.metalminds[i];
-                    if (data.Metal == metal) cachedMetalminds.Add(data);
+                    if (SameMetal(data.Metal)) cachedMetalminds.Add(data);
                 }
             }
 
             metalmindsLastCachedTick = now;
             return cachedMetalminds;
         }
+    }
+
+    /// A metal is declared twice - once as MetalDef and again as the richer
+    /// MetallicArtsMetalDef - so the two live in separate databases and are never
+    /// the same object. Metalminds resolve the plain one while the gene holds the
+    /// arts one, which made every implant invisible to its own gene.
+    private bool SameMetal(Core.Def.MetalDef? candidate) {
+        return candidate != null && candidate.defName == metal.defName;
     }
 
     private float actualMax {

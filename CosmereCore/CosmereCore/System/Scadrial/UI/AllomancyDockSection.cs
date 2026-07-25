@@ -139,7 +139,9 @@ public sealed class AllomancyDockSection : DockSectionBase {
         string burnLabel = cell.IsActive
             ? "CC_Dock_Allomancy_StopBurn".Translate()
             : "CC_Dock_Allomancy_Burn".Translate();
-        if (DockChrome.Button(new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight), burnLabel, true, Accent)) {
+        Rect burnRect = new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight);
+        TooltipHandler.TipRegion(burnRect, "CC_Dock_Allomancy_BurnTip".Translate(MetalLabel(cell).Named("METAL")));
+        if (DockChrome.Button(burnRect, burnLabel, true, Accent)) {
             ToggleBurn(pawn, cell.SubsystemId, false);
             Event.current?.Use();
         }
@@ -148,6 +150,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         string flareLabel = cell.IsFlaring
             ? "CC_Dock_Allomancy_StopFlare".Translate()
             : "CC_Dock_Allomancy_Flare".Translate();
+        TooltipHandler.TipRegion(flareRect, "CC_Dock_Allomancy_FlareTip".Translate(MetalLabel(cell).Named("METAL")));
         if (DockChrome.Button(flareRect, flareLabel, true, Accent)) {
             ToggleBurn(pawn, cell.SubsystemId, true);
             Event.current?.Use();
@@ -160,16 +163,16 @@ public sealed class AllomancyDockSection : DockSectionBase {
         bool canCompound = report.Accepted || compounding;
 
         Rect compoundRect = new Rect(inner.x + (buttonWidth + 5f) * 2f, buttonY, buttonWidth, StripButtonHeight);
-        if (!canCompound) {
-            TooltipHandler.TipRegion(
-                compoundRect,
-                "CC_Dock_Feruchemy_CompoundBlocked".Translate(
+        TooltipHandler.TipRegion(
+            compoundRect,
+            canCompound
+                ? "CC_Dock_Allomancy_CompoundTip".Translate(MetalLabel(cell).Named("METAL"))
+                : "CC_Dock_Feruchemy_CompoundBlocked".Translate(
                     (report.Reason.NullOrEmpty()
                         ? "CC_Dock_Feruchemy_CompoundUnavailable".Translate().Resolve()
                         : report.Reason).Named("REASON")
                 )
-            );
-        }
+        );
 
         string compoundLabel = compounding
             ? "CC_Dock_Feruchemy_StopStoreCompounded".Translate()

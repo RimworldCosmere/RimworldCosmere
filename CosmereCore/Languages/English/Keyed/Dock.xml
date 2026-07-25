@@ -55,4 +55,7 @@
   <CC_Dock_Allomancy_StopBurn>Stop</CC_Dock_Allomancy_StopBurn>
   <CC_Dock_Allomancy_Flare>Flare</CC_Dock_Allomancy_Flare>
   <CC_Dock_Allomancy_StopFlare>Ease</CC_Dock_Allomancy_StopFlare>
+  <CC_Dock_Allomancy_BurnTip>Burn {METAL} steadily, drawing on the reserve.</CC_Dock_Allomancy_BurnTip>
+  <CC_Dock_Allomancy_FlareTip>Flare {METAL}, burning harder and faster for a stronger effect.</CC_Dock_Allomancy_FlareTip>
+  <CC_Dock_Allomancy_CompoundTip>Burn the {METAL} reserve to charge an implanted {METAL} metalmind.\n\nCompounded charge pays out ten times as hard when tapped, and only a metalmind inside the body can be filled this way.</CC_Dock_Allomancy_CompoundTip>
 </LanguageData>

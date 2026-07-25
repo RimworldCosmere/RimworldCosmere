@@ -1,4 +1,3 @@
-using Cosmere.Core.UI.Dock;
 using UnityEngine;
 using Verse;
 
@@ -10,7 +9,6 @@ public static class RadialController {
     private static RadialWindow? window;
     private static bool wasHeld;
     private static float pressedAt;
-    private static bool suppressReopen;
 
     public static void OnHotkeyPoll() {
         if (Event.current?.type != EventType.Repaint) return;
@@ -19,39 +17,17 @@ public static class RadialController {
 
         if (window != null && !Find.WindowStack.IsOpen(window)) window = null;
 
+        // The gizmo's hotkey opens the wheel, so this only has to time the press
+        // and decide on release whether it was a tap or a hold.
         bool isHeld = RadialKeyBindingDefOf.Cosmere_Keybind_RadialOpen.IsDown;
 
-        if (isHeld && !wasHeld) OnKeyDown();
+        if (isHeld && !wasHeld) pressedAt = Time.realtimeSinceStartup;
         else if (!isHeld && wasHeld) OnKeyUp();
 
         wasHeld = isHeld;
     }
 
-    private static void OnKeyDown() {
-        if (window != null) {
-            window.Close(false);
-            window = null;
-            suppressReopen = true;
-            return;
-        }
-
-        suppressReopen = false;
-        Pawn? pawn = InvestitureDockWindow.GetSelectedPawn();
-        if (pawn == null) return;
-        RadialSnapshot? snap = RadialSnapshotBuilder.Build(pawn);
-        if (snap == null) return;
-
-        pressedAt = Time.realtimeSinceStartup;
-        window = new RadialWindow(snap);
-        Find.WindowStack.Add(window);
-    }
-
     private static void OnKeyUp() {
-        if (suppressReopen) {
-            suppressReopen = false;
-            return;
-        }
-
         if (window == null) return;
 
         float heldFor = Time.realtimeSinceStartup - pressedAt;
@@ -65,18 +41,21 @@ public static class RadialController {
         window = null;
     }
 
-    /// Opens the wheel for a pawn without the hotkey, so it starts in browse
-    /// mode: a gizmo click has no release to cast on.
-    public static void OpenForPawn(Pawn pawn) {
+    /// Opens the wheel, or closes it when it is already up. A mouse click has no
+    /// release to cast on so it lands straight in browse mode, while a keypress
+    /// starts in quick mode and the release decides whether it stays open.
+    public static void ToggleForPawn(Pawn pawn) {
         if (window != null) {
             window.Close(false);
             window = null;
+            return;
         }
 
         RadialSnapshot? snap = RadialSnapshotBuilder.Build(pawn);
         if (snap == null) return;
 
-        window = new RadialWindow(snap) { BrowseMode = true };
+        bool viaHotkey = RadialKeyBindingDefOf.Cosmere_Keybind_RadialOpen.IsDown;
+        window = new RadialWindow(snap) { BrowseMode = !viaHotkey };
         Find.WindowStack.Add(window);
     }
 

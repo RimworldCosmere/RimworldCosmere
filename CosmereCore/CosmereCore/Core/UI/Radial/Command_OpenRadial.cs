@@ -10,6 +10,7 @@ public class Command_OpenRadial : Command_Action {
             RadialKeyBindingDefOf.Cosmere_Keybind_RadialOpen.MainKeyLabel.Named("KEY")
         );
         icon = RadialWedgeTex.GizmoIcon();
-        action = () => RadialController.OpenForPawn(pawn);
+        hotKey = RadialKeyBindingDefOf.Cosmere_Keybind_RadialOpen;
+        action = () => RadialController.ToggleForPawn(pawn);
     }
 }

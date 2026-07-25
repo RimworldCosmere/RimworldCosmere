@@ -86,8 +86,12 @@ public class Allomancer : Metalborn {
     }
 
     public bool TryBurnMetalForInvestiture(float requiredBreathEquivalentUnits) {
+        // CanLowerReserve takes breath equivalent units and converts them itself.
+        // Handing it the already-converted metal made every burn demand more than
+        // three times the reserve it actually spends.
+        if (!CanLowerReserve(requiredBreathEquivalentUnits)) return false;
+
         float metalNeeded = GetMetalNeededForBreathEquivalentUnits(requiredBreathEquivalentUnits);
-        if (!CanLowerReserve(metalNeeded)) return false;
         RemoveFromReserve(metalNeeded);
 
         pawn.records.AddTo(metalBurntRecord, metalNeeded);
@@ -220,8 +224,7 @@ public class Allomancer : Metalborn {
     }
 
     public AcceptanceReport CanBurn(float requiredBreathEquivalentUnits) {
-        float amountToBurn = GetMetalNeededForBreathEquivalentUnits(requiredBreathEquivalentUnits);
-        if (!CanLowerReserve(amountToBurn) && !pawn.HasVial(metal)) {
+        if (!CanLowerReserve(requiredBreathEquivalentUnits) && !pawn.HasVial(metal)) {
             return "CS_CannotBurn".Translate(pawn.Named("PAWN"), metal.Named("METAL"));
         }
 

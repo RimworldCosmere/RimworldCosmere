@@ -10,10 +10,6 @@ using Verse;
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class Compound : AllomanticHediff {
-    /// Reserve burned per real second. Compounding is paid for in swallowed metal,
-    /// which is what makes it a supply problem rather than a free tap.
-    protected const float MetalPerSecond = 0.10f;
-
     private const float ChargeAtSkillFloor = 15f;
     private const float ChargeAtSkillCeiling = 25f;
     private const float SkillFloor = 10f;
@@ -29,9 +25,16 @@ public class Compound : AllomanticHediff {
 
     /// What compounding pours into the metalmind per real second, for the dock
     /// readout. Shares its arithmetic with the tick so the two cannot drift.
-    public virtual float StorePerSecond => MetalBurnedPerSecond * ChargePerMetalUnit;
+    public virtual float StorePerSecond =>
+        MetalPerRareTick * ChargePerMetalUnit * GenTicks.TicksPerRealSecond / GenTicks.TickRareInterval;
 
-    private float MetalBurnedPerSecond => MetalPerSecond * ability.GetStrength(BurningStatus.Burning);
+    /// Holding the ability active already drains the reserve at the burning rate
+    /// through the usual pipeline, so compounding contributes the difference and
+    /// the reserve empties at exactly the rate flaring would empty it.
+    private float MetalPerRareTick =>
+        ability.def.beuPerTick
+        * (BurningStatus.Flaring.power - BurningStatus.Burning.power)
+        / ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
 
     /// A Compounder practised in both arts wrings more out of the same swallowed
     /// metal, so yield rises with the average of the two skills.
@@ -54,27 +57,43 @@ public class Compound : AllomanticHediff {
         Feruchemist? feruchemist = pawn.genes?.GetFeruchemicGeneForMetal(metal);
 
         if (allomancer == null || feruchemist == null || pawn.DeadOrDowned) {
+            Core.Logger.Verbose(
+                $"Compound end: allomancer={allomancer != null} feruchemist={feruchemist != null} deadOrDowned={pawn.DeadOrDowned} metal={metal?.defName}"
+            );
             End();
             return;
         }
 
         if (!pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) return;
 
-        float seconds = GenTicks.TickRareInterval / (float)GenTicks.TicksPerRealSecond;
-        if (!TickLogic(allomancer, feruchemist, seconds)) End();
+        if (!TickLogic(allomancer, feruchemist)) End();
     }
 
-    protected virtual bool TickLogic(Allomancer allomancer, Feruchemist feruchemist, float seconds) {
+    protected virtual bool TickLogic(Allomancer allomancer, Feruchemist feruchemist) {
         // Clamped to the room available before anything is burned, so reserve is
         // never spent on charge that has nowhere to go.
-        float charge = Mathf.Min(StorePerSecond * seconds, feruchemist.CompoundedFreeSpace);
-        if (charge <= 0f) return false;
+        float free = feruchemist.CompoundedFreeSpace;
+        float charge = Mathf.Min(MetalPerRareTick * ChargePerMetalUnit, free);
+        Core.Logger.Verbose(
+            $"Compound tick {metal?.defName}: perSec={StorePerSecond:F4} free={free:F2} charge={charge:F4} reserve={allomancer.Value:F4}/{allomancer.Max:F3}"
+        );
 
+        if (charge <= 0f) {
+            Core.Logger.Verbose("Compound stop: nothing to store");
+            return false;
+        }
+
+        // Re-derived from the clamped charge so a partial fill only costs what it stored.
         float metalUnits = charge / ChargePerMetalUnit;
         float beu = metalUnits * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
-        if (!allomancer.TryBurnMetalForInvestiture(beu)) return false;
+        if (!allomancer.TryBurnMetalForInvestiture(beu)) {
+            Core.Logger.Verbose($"Compound stop: reserve cannot pay {metalUnits:F3} units");
+            return false;
+        }
 
-        return feruchemist.AddCompoundedToStore(charge);
+        bool stored = feruchemist.AddCompoundedToStore(charge);
+        Core.Logger.Verbose($"Compound stored={stored} amount={charge:F2}");
+        return stored;
     }
 
     private void End() {

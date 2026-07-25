@@ -111,8 +111,25 @@ public static class RadialRingRenderer {
 
             GUI.color = bg;
             GUI.DrawTexture(texRect, wedgeTex);
+
             GUI.color = prevColor;
             GUI.matrix = prevMatrix;
+
+            Matrix4x4 sepMatrix = GUI.matrix;
+            Verse.UI.RotateAroundPivot(i * arcDeg - arcDeg / 2f, center);
+            Color sepColor = GUI.color;
+            GUI.color = new Color(DockPalette.Border.r, DockPalette.Border.g, DockPalette.Border.b, 0.5f);
+            GUI.DrawTexture(
+                new Rect(
+                    center.x - 0.5f,
+                    center.y - RadialLayout.AbilityRingOuter,
+                    1f,
+                    RadialLayout.AbilityRingOuter - RadialLayout.AbilityRingInner
+                ),
+                Verse.BaseContent.WhiteTex
+            );
+            GUI.color = sepColor;
+            GUI.matrix = sepMatrix;
 
             Vector2 iconMid = RadialLayout.WedgeMidpoint(i, count, RadialLayout.IconBandRadius, center);
             Rect iconRect = new Rect(iconMid.x - 16f, iconMid.y - 16f, 32f, 32f);

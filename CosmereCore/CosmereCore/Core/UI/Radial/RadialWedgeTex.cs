@@ -87,7 +87,7 @@ public static class RadialWedgeTex {
         const float outer = 0.5f;
         const float inner = 0.5f * (RadialLayout.AbilityRingInner / RadialLayout.AbilityRingOuter);
         const float aa = 1.5f / TexSize;
-        const float gapRad = 0.004f;
+        const float gapRad = 0f;
 
         Texture2D tex = new Texture2D(TexSize, TexSize, TextureFormat.ARGB32, false);
         Color32[] pixels = new Color32[TexSize * TexSize];

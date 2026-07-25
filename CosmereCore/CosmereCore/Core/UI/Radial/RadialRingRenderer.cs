@@ -110,8 +110,7 @@ public static class RadialRingRenderer {
             GUI.matrix = prevMatrix;
 
             Vector2 mid = RadialLayout.WedgeMidpoint(i, count, radius, center);
-            bool drawLabels = count <= 12;
-            Rect iconRect = new Rect(mid.x - 16f, drawLabels ? mid.y - 24f : mid.y - 16f, 32f, 32f);
+            Rect iconRect = new Rect(mid.x - 16f, mid.y - 16f, 32f, 32f);
             if (icon != null) {
                 Color originalGui = GUI.color;
                 GUI.color = new Color(0f, 0f, 0f, 0.45f);
@@ -121,37 +120,13 @@ public static class RadialRingRenderer {
                 GUI.color = originalGui;
             }
 
-            float belowY = iconRect.yMax + 2f;
-            if (drawLabels || i == hoveredIndex) {
-                float tinyH = Text.LineHeightOf(GameFont.Tiny);
-                float chordWidth = 2f * radius * Mathf.Sin(arcDeg * 0.5f * Mathf.Deg2Rad) - 10f;
-                float labelWidth = drawLabels ? chordWidth : Mathf.Max(chordWidth, 84f);
-                Rect labelRect = new Rect(mid.x - labelWidth / 2f, iconRect.yMax + 2f, labelWidth, tinyH);
-                if (!drawLabels) {
-                    Color plate = GUI.color;
-                    GUI.color = new Color(0f, 0f, 0f, 0.55f);
-                    GUI.DrawTexture(labelRect.ExpandedBy(2f), Verse.BaseContent.WhiteTex);
-                    GUI.color = plate;
-                }
-
-                Color labelColor = isLocked ? new Color(0.36f, 0.42f, 0.46f) : new Color(0.81f, 0.85f, 0.87f);
-                UIText.EllipsisLabel(labelRect, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
-                belowY = labelRect.yMax + 1f;
-            }
-
             if (isSustained) {
-                Rect dot = new Rect(mid.x + 20f, iconRect.y + 2f, 5f, 5f);
+                Rect dot = new Rect(iconRect.xMax + 2f, iconRect.y + 2f, 5f, 5f);
                 Widgets.DrawBoxSolid(dot, DockPalette.HotLabel);
             }
 
-            if (isLocked) {
-                Rect lockRect = new Rect(mid.x - 5f, belowY, 10f, 10f);
-                using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare))
-                    Widgets.Label(lockRect, "x");
-            }
-
             if (reserveFraction.HasValue && !isLocked) {
-                Rect barRect = new Rect(mid.x - 18f, belowY + 1f, 36f, 2f);
+                Rect barRect = new Rect(mid.x - 18f, iconRect.yMax + 2f, 36f, 2f);
                 Widgets.DrawBoxSolid(barRect, new Color(0f, 0f, 0f, 0.6f));
                 Widgets.DrawBoxSolid(new Rect(barRect.x, barRect.y, barRect.width * Mathf.Clamp01(reserveFraction.Value), 2f), DockPalette.HotLabel);
                 if (hasInsufficientResources) {
@@ -160,6 +135,26 @@ public static class RadialRingRenderer {
                         Widgets.Label(pctRect, $"{Mathf.RoundToInt(reserveFraction.Value * 100f)}%");
                 }
             }
+
+            if (isLocked) {
+                Rect lockRect = new Rect(mid.x - 5f, iconRect.yMax + 2f, 10f, 10f);
+                using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare))
+                    Widgets.Label(lockRect, "x");
+            }
+
+            float tinyH = Text.LineHeightOf(GameFont.Tiny);
+            float labelStagger = count > 12 && i % 2 == 1 ? 16f : 0f;
+            Vector2 labelMid = RadialLayout.WedgeMidpoint(i, count, radius + 36f + labelStagger, center);
+            Vector2 labelSize;
+            using (new TextBlock(GameFont.Tiny)) labelSize = Text.CalcSize(label);
+            float labelWidth = Mathf.Min(labelSize.x + 8f, 96f);
+            Rect labelRect = new Rect(labelMid.x - labelWidth / 2f, labelMid.y - tinyH / 2f, labelWidth, tinyH);
+            Color plateBackup = GUI.color;
+            GUI.color = new Color(0f, 0f, 0f, i == hoveredIndex ? 0.7f : 0.55f);
+            GUI.DrawTexture(labelRect.ExpandedBy(2f), Verse.BaseContent.WhiteTex);
+            GUI.color = plateBackup;
+            Color labelColor = isLocked ? new Color(0.36f, 0.42f, 0.46f) : new Color(0.81f, 0.85f, 0.87f);
+            UIText.EllipsisLabel(labelRect, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
         }
     }
 }

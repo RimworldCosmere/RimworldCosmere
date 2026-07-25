@@ -59,7 +59,7 @@ public static class RadialWedgeTex {
         float arcDeg = 360f / count;
         float halfArcRad = arcDeg * 0.5f * Mathf.Deg2Rad;
         const float outer = 0.5f;
-        const float inner = 0.5f * (100f / 190f);
+        const float inner = 0.5f * (RadialLayout.AbilityRingInner / RadialLayout.AbilityRingOuter);
         const float aa = 1.5f / TexSize;
         const float gapRad = 0.012f;
 

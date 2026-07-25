@@ -52,7 +52,14 @@ public static class MetalTile {
             GUI.color = prev;
         }
 
-        Rect noteRect = new Rect(rect.xMax - 46f, rect.y + 2f, 42f, tinyH);
+        // Measured rather than reserved: the axis mark is two characters where a
+        // capacity reading is five, and a flat reservation starves the name.
+        float noteWidth;
+        using (new TextBlock(GameFont.Tiny)) {
+            noteWidth = note.NullOrEmpty() ? 0f : Text.CalcSize(note).x + 4f;
+        }
+
+        Rect noteRect = new Rect(rect.xMax - 5f - noteWidth, rect.y + 2f, noteWidth, tinyH);
         UIText.EllipsisLabel(noteRect, note, GameFont.Tiny, TextAnchor.MiddleRight, new Color(0.365f, 0.337f, 0.290f));
 
         Rect nameRect = new Rect(iconRect.xMax + 5f, rect.y + 2f, noteRect.x - iconRect.xMax - 7f, tinyH);

@@ -8,7 +8,7 @@ namespace Cosmere.Core.UI.Dock;
 
 public sealed class InvestitureDockWindow : Verse.Window {
     private const float CollapsedWidth = 48f;
-    private const float ExpandedWidth = 280f;
+    private const float ExpandedWidth = 320f;
     private const float MarginTop = 114f;
     private const float MarginBottom = 185f;
     private const float TabPadding = 150f;

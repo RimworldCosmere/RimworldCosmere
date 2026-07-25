@@ -7,6 +7,16 @@ using Cosmere.Core.UI.Dock;
 namespace Cosmere.Core.UI.Radial;
 
 public static class RadialCenterPreview {
+    // The header hangs from the top of the hub and the bar and buttons are
+    // pinned to the bottom, so the description keeps whatever is left between
+    // them rather than every row flowing from a single stack.
+    private const float BreadcrumbY = -108f;
+    private const float TitleGap = 26f;
+    private const float ButtonRowY = 92f;
+    private const float ButtonSize = 30f;
+    private const float BarGap = 12f;
+    private const float DescriptionGap = 10f;
+
     public static void Draw(Vector2 center, RadialLeaf? hoveredLeaf, string? hoveredTitle, string breadcrumb, bool browseMode, Action back, Action close) {
         float r = RadialLayout.CenterRadius;
         Rect disc = new Rect(center.x - r, center.y - r, r * 2f, r * 2f);
@@ -20,8 +30,11 @@ public static class RadialCenterPreview {
 
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
         float smallH = Text.LineHeightOf(GameFont.Small);
+        bool canFlare = hoveredLeaf != null
+            && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn
+            && !hoveredLeaf.IsLocked;
 
-        UIText.EllipsisLabel(ChordRow(center, -98f, tinyH), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
+        UIText.EllipsisLabel(ChordRow(center, BreadcrumbY, tinyH), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
 
         if (hoveredLeaf == null) {
             if (hoveredTitle != null) {
@@ -64,7 +77,7 @@ public static class RadialCenterPreview {
 
             bool flareArmed = ShiftHeld() && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn && !hoveredLeaf.IsLocked;
             UIText.EllipsisLabel(
-                ChordRow(center, hasParent ? -58f : -60f, smallH),
+                ChordRow(center, BreadcrumbY + TitleGap, smallH),
                 flareArmed
                     ? "CC_Radial_Action_Flare".Translate((hoveredTitle ?? hoveredLeaf.Label).Named("METAL"))
                     : hoveredLeaf.Label,
@@ -73,29 +86,35 @@ public static class RadialCenterPreview {
                 flareArmed ? DockPalette.Flare : new Color(0.75f, 0.89f, 0.95f)
             );
 
+            float bodyTop = BreadcrumbY + TitleGap + smallH + (canFlare ? tinyH : 0f) + DescriptionGap;
+            float bodyBottom = ButtonRowY - BarGap - (tinyH + 6f) - DescriptionGap;
+
             if (!hoveredLeaf.Description.NullOrEmpty()) {
-                Rect descRect = ChordRow(center, -32f, tinyH * 3f);
+                float extraRow = hoveredLeaf.IsLocked || BuildMetaLine(hoveredLeaf).Length > 0 ? tinyH : 0f;
+                float descHeight = Mathf.Max(tinyH, bodyBottom - extraRow - bodyTop);
+                Rect descRect = ChordRow(center, bodyTop, descHeight);
+                int maxLines = Mathf.Max(1, Mathf.FloorToInt(descHeight / tinyH));
                 using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, DockPalette.MutedText)) {
-                    Widgets.Label(descRect, FitToLines(hoveredLeaf.Description!, descRect.width, 3));
+                    Widgets.Label(descRect, FitToLines(hoveredLeaf.Description!, descRect.width, maxLines));
                 }
 
                 TooltipHandler.TipRegion(descRect, hoveredLeaf.Description);
             }
 
             if (hoveredLeaf.IsLocked && hoveredLeaf.LockReason != null) {
-                UIText.EllipsisLabel(ChordRow(center, 8f, tinyH), hoveredLeaf.LockReason, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare);
+                UIText.EllipsisLabel(ChordRow(center, bodyBottom - tinyH, tinyH), hoveredLeaf.LockReason, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare);
             }
             else {
                 string meta = BuildMetaLine(hoveredLeaf);
                 if (meta.Length > 0) {
-                    UIText.EllipsisLabel(ChordRow(center, 8f, tinyH), meta, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.HotLabel);
+                    UIText.EllipsisLabel(ChordRow(center, bodyBottom - tinyH, tinyH), meta, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.HotLabel);
                 }
             }
 
             if (hoveredLeaf.ReserveFraction.HasValue) {
                 float fraction = Mathf.Clamp01(hoveredLeaf.ReserveFraction.Value);
                 float barHeight = tinyH + 6f;
-                Rect barRow = ChordRow(center, 22f, barHeight);
+                Rect barRow = ChordRow(center, ButtonRowY - BarGap - barHeight, barHeight);
 
                 Widgets.DrawBoxSolid(barRow, new Color(0f, 0f, 0f, 0.55f));
                 Widgets.DrawBoxSolid(
@@ -120,16 +139,13 @@ public static class RadialCenterPreview {
             }
         }
 
-        bool canFlare = hoveredLeaf != null
-            && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn
-            && !hoveredLeaf.IsLocked;
         if (canFlare) {
             // The wheel stays open on a tap but casts on release when held, so
             // the verb has to match however this pawn's wheel was opened.
             string verb = browseMode ? "CC_Radial_Verb_Click".Translate() : "CC_Radial_Verb_Release".Translate();
             bool shiftHeld = ShiftHeld();
             UIText.EllipsisLabel(
-                ChordRow(center, 50f, tinyH),
+                ChordRow(center, BreadcrumbY + TitleGap + smallH, tinyH),
                 shiftHeld
                     ? "CC_Radial_Hint_FlareOnly".Translate(verb.Named("VERB"))
                     : "CC_Radial_Hint_BurnFlare".Translate(verb.Named("VERB")),
@@ -140,9 +156,9 @@ public static class RadialCenterPreview {
         }
 
         if (browseMode) {
-            const float buttonSize = 30f;
+            const float buttonSize = ButtonSize;
             const float buttonGap = 8f;
-            float buttonY = center.y + (canFlare ? 76f : 58f);
+            float buttonY = center.y + ButtonRowY;
             RimWorld.AbilityDef? infoDef = hoveredLeaf?.AbilityDef;
             int buttonCount = infoDef != null ? 3 : 2;
             float rowWidth = buttonCount * buttonSize + (buttonCount - 1) * buttonGap;
@@ -166,8 +182,9 @@ public static class RadialCenterPreview {
             DrawIconButton(new Rect(x, buttonY, buttonSize, buttonSize), TexButton.CloseXSmall, "CC_Radial_Close".Translate(), 0.55f, false, close);
         }
         else if (!canFlare) {
+            // Quick mode draws no buttons, so this hint takes the button row.
             UIText.EllipsisLabel(
-                ChordRow(center, 56f, tinyH),
+                ChordRow(center, ButtonRowY, tinyH),
                 "CC_Radial_Hint_Release".Translate(),
                 GameFont.Tiny,
                 TextAnchor.MiddleCenter,

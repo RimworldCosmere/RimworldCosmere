@@ -23,7 +23,6 @@ public sealed class HighContrastSkinDecorator : ISystemSkin {
     public GameFont HeaderFont => GameFont.Medium;
 
     public Texture2D? Sigil => inner.Sigil;
-    public Texture2D? BorderFrame => null;
 
     public Color? GetColor(ThemeSlot slot) {
         return inner.GetColor(slot);

@@ -32,7 +32,7 @@ public static class ScadrialUIRegistration {
             headerTextColor: new Color(0.95f, 0.82f, 0.52f),
             panelBackgroundColor: new Color(0.09f, 0.05f, 0.02f, 0.85f),
             borderTintColor: new Color(0.78f, 0.55f, 0.18f),
-            sigil: () => SteelIcon()?.allomancy?.icon
+            sigil: () => SteelIcon()?.allomancy?.invertedIcon
         ));
         SystemSkinRegistry.Register(new DataSystemSkin(
             systemId: "Feruchemy",
@@ -43,7 +43,7 @@ public static class ScadrialUIRegistration {
             headerTextColor: new Color(0.56f, 0.69f, 0.75f),
             panelBackgroundColor: new Color(0.06f, 0.07f, 0.09f, 0.85f),
             borderTintColor: new Color(0.25f, 0.33f, 0.38f),
-            sigil: () => SteelIcon()?.feruchemy?.icon
+            sigil: () => SteelIcon()?.feruchemy?.invertedIcon
         ));
         DockSectionRegistry.Register(new AllomancyDockSection());
         DockSectionRegistry.Register(new FeruchemyDockSection());

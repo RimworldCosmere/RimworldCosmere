@@ -14,7 +14,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
     private const float TabPadding = 150f;
     private const float PinButtonHeight = 24f;
     private const float RibbonGap = 6f;
-    private const float RibbonIcon = 20f;
+    private const float RibbonIcon = 28f;
     private const float RibbonBar = 6f;
     private const float RibbonPad = 7f;
     private const float RibbonBleed = 6f;
@@ -147,7 +147,12 @@ public sealed class InvestitureDockWindow : Verse.Window {
             Rect icon = new Rect(inRect.x + RibbonPad, ribbon.y + 5f, RibbonIcon, RibbonIcon);
             Texture2D? sigil = section.Skin.Sigil;
             if (sigil != null) {
+                // Tinted to the lettering so the mark reads as part of the same
+                // inscription rather than as a pasted-on picture.
+                Color prevIcon = GUI.color;
+                GUI.color = RibbonInk;
                 GUI.DrawTexture(icon, sigil);
+                GUI.color = prevIcon;
             }
             else {
                 UIText.EllipsisLabel(

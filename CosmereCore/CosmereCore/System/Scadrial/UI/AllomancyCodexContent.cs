@@ -118,8 +118,29 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         );
         TooltipHandler.TipRegion(rect, tooltip);
 
-        if (Widgets.ButtonText(rect, "CC_Codex_Allomancy_VialSettings_Button".Translate())) {
+        // A word never fit this button and was clipped by the panel edge. The vial
+        // the setting is about says it in the space available.
+        bool clicked = VialIcon != null
+            ? Widgets.ButtonImage(rect, VialIcon, true)
+            : Widgets.ButtonText(rect, "CC_Codex_Allomancy_VialSettings_Button".Translate());
+
+        if (clicked) {
             Find.WindowStack.Add(new Dialog_AllomancyRestockSlider(gene));
+        }
+    }
+
+    private static Texture2D? cachedVialIcon;
+    private static bool vialIconResolved;
+
+    private static Texture2D? VialIcon {
+        get {
+            if (vialIconResolved) return cachedVialIcon;
+
+            vialIconResolved = true;
+            cachedVialIcon = DefDatabase<ThingDef>
+                .GetNamedSilentFail("Cosmere_Scadrial_Thing_AllomanticVial")?.uiIcon;
+
+            return cachedVialIcon;
         }
     }
 

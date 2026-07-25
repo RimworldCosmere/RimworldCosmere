@@ -8,13 +8,14 @@ using Verse.Sound;
 namespace Cosmere.Core.UI.Codex;
 
 public static class SystemSwitcherStrip {
-    private const float OrbSize = 28f;
+    private const float OrbSize = 36f;
     private const float OrbGap = 8f;
 
     public static void Draw(Rect railRect, Pawn pawn, CodexState state, IReadOnlyList<IInvestitureProvider> providers) {
         if (providers.Count <= 1) return;
 
-        Widgets.DrawBoxSolid(railRect, DockPalette.Panel);
+        // No ground of its own: the rail is part of the window, and painting it a
+        // different shade made it look like a separate panel bolted on the side.
         Widgets.DrawBoxSolid(new Rect(railRect.xMax - 1f, railRect.y, 1f, railRect.height), DockPalette.BorderSubtle);
 
         float y = railRect.y + OrbGap;
@@ -34,7 +35,7 @@ public static class SystemSwitcherStrip {
 
             Texture2D? sigil = skin.Sigil;
             if (sigil != null) {
-                GUI.DrawTexture(orb.ContractedBy(4f), sigil);
+                GUI.DrawTexture(orb.ContractedBy(3f), sigil);
             }
             else {
                 Rect dot = new Rect(orb.center.x - 4f, orb.center.y - 4f, 8f, 8f);

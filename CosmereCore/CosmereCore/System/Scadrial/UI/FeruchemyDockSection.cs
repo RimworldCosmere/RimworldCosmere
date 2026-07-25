@@ -84,7 +84,11 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             rect,
             cell.Icon,
             MetalLabel(cell),
-            capacity.HasMetalmind ? $"{capacity.Stored:0}/{capacity.Max:0}" : "—",
+            !capacity.HasMetalmind
+                ? "—"
+                : capacity.Compounded > 0f
+                    ? $"{capacity.Stored:0}+{capacity.Compounded:0}/{capacity.Max:0}"
+                    : $"{capacity.Stored:0}/{capacity.Max:0}",
             capacity.Fraction,
             MetalPalette.For(cell.SubsystemId),
             state,
@@ -128,7 +132,9 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         string direction = gene.isCompounding
             ? "CC_Dock_Feruchemy_Compounding".Translate()
             : gene.isTapping
-                ? "CC_Dock_Feruchemy_Tapping".Translate()
+                ? gene.channel == FeruchemyChannel.Compounded
+                    ? "CC_Dock_Feruchemy_TappingCompounded".Translate()
+                    : "CC_Dock_Feruchemy_Tapping".Translate()
                 : gene.isStoring
                     ? "CC_Dock_Feruchemy_Storing".Translate()
                     : "CC_Dock_Feruchemy_Idle".Translate();
@@ -141,7 +147,9 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
         UIText.EllipsisLabel(
             new Rect(inner.x + inner.width * 0.6f, inner.y, inner.width * 0.4f, tinyH),
-            $"{capacity.Stored:0} / {capacity.Max:0}",
+            capacity.Compounded > 0f
+                ? $"{capacity.Stored:0}+{capacity.Compounded:0} / {capacity.Max:0}"
+                : $"{capacity.Stored:0} / {capacity.Max:0}",
             GameFont.Tiny,
             TextAnchor.MiddleRight,
             new Color(0.435f, 0.404f, 0.361f)
@@ -185,21 +193,37 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         float buttonY = endsRect.yMax + 8f;
         AllomancyAbility? compound = CompoundAbility(pawn, cell.SubsystemId);
-        float buttonWidth = compound != null ? (inner.width - 5f) / 2f : inner.width;
+        int buttonCount = compound != null ? 3 : 2;
+        float buttonWidth = (inner.width - 5f * (buttonCount - 1)) / buttonCount;
 
         if (ChromeButton(new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight), "CC_Dock_Feruchemy_Idle".Translate(), true)) {
             gene.Reset();
             Event.current?.Use();
         }
 
+        bool onCompounded = gene.channel == FeruchemyChannel.Compounded;
+        Rect channelRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, StripButtonHeight);
+        bool canSwitch = capacity.CanTapCompounded || onCompounded;
+        if (!canSwitch) {
+            TooltipHandler.TipRegion(channelRect, "CC_Dock_Feruchemy_NoCompoundedCharge".Translate());
+        }
+
+        string channelLabel = onCompounded
+            ? "CC_Dock_Feruchemy_TapOrdinary".Translate()
+            : "CC_Dock_Feruchemy_TapCompounded".Translate();
+        if (ChromeButton(channelRect, channelLabel, canSwitch)) {
+            gene.channel = onCompounded ? FeruchemyChannel.Ordinary : FeruchemyChannel.Compounded;
+            Event.current?.Use();
+        }
+
         if (compound == null) return;
 
-        AcceptanceReport report = compound.CanCast;
+        AcceptanceReport report = CompoundGate(pawn, gene, compound);
         bool compounding = gene.isCompounding;
         // Stays live while compounding even if it could not be started again,
         // otherwise there is no way to switch it back off.
         bool canCompound = report.Accepted || compounding;
-        Rect compoundRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, StripButtonHeight);
+        Rect compoundRect = new Rect(inner.x + (buttonWidth + 5f) * 2f, buttonY, buttonWidth, StripButtonHeight);
         if (!canCompound && !compounding) {
             TooltipHandler.TipRegion(
                 compoundRect,
@@ -211,8 +235,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             );
         }
         string compoundLabel = compounding
-            ? "CC_Dock_Twinborn_StopCompound".Translate()
-            : "CC_Dock_Twinborn_Compound".Translate();
+            ? "CC_Dock_Feruchemy_StopStoreCompounded".Translate()
+            : "CC_Dock_Feruchemy_StoreCompounded".Translate();
         if (ChromeButton(compoundRect, compoundLabel, canCompound)) {
             if (compounding) compound.UpdateStatus(BurningStatus.Off);
             else compound.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
@@ -225,7 +249,10 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private void DrawDial(Rect rect, string metalId, Feruchemist gene, Capacity capacity) {
         DrawDialBacking(rect, gene, capacity);
 
-        float min = capacity.CanTap ? 0f : IdleTarget;
+        bool tapAvailable = gene.channel == FeruchemyChannel.Compounded
+            ? capacity.CanTapCompounded
+            : capacity.CanTap;
+        float min = tapAvailable ? 0f : IdleTarget;
         float max = capacity.CanStore ? 100f : IdleTarget;
 
         float handleX = rect.x + rect.width * (Mathf.Clamp(gene.targetValue, 0f, 100f) / 100f);
@@ -251,7 +278,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             return;
         }
 
-        gene.targetValue = Mathf.Clamp((e.mousePosition.x - rect.x) / rect.width * 100f, min, max);
+        gene.targetValue = gene.SnapTarget(Mathf.Clamp((e.mousePosition.x - rect.x) / rect.width * 100f, min, max));
     }
 
     private static bool ChromeButton(Rect rect, string label, bool enabled) {
@@ -308,16 +335,40 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
     }
 
+    private const int CompoundSkillFloor = 10;
+
+    /// Compounding needs the research, both arts practised, and a metalmind inside
+    /// the body. Returned as a report so the button can say which one is missing.
+    private static AcceptanceReport CompoundGate(Pawn pawn, Feruchemist gene, AllomancyAbility ability) {
+        ResearchProjectDef? research = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("Cosmere_Scadrial_Compounding");
+        if (research is { IsFinished: false }) {
+            return "CC_Dock_Feruchemy_CompoundNoResearch".Translate(research.LabelCap.Named("RESEARCH"));
+        }
+
+        if (pawn.skills != null) {
+            int allomancy = pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level;
+            int feruchemy = pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level;
+            if (allomancy < CompoundSkillFloor || feruchemy < CompoundSkillFloor) {
+                return "CC_Dock_Feruchemy_CompoundLowSkill".Translate(CompoundSkillFloor.Named("LEVEL"));
+            }
+        }
+
+        if (!gene.canStoreCompounded) return "CC_Dock_Feruchemy_CompoundNoImplant".Translate();
+
+        return ability.CanCast;
+    }
+
     private void TryCompound(Pawn pawn, string metalDefName) {
         AllomancyAbility? ability = CompoundAbility(pawn, metalDefName);
         if (ability == null) return;
 
-        if (FindGene(pawn, metalDefName) is { isCompounding: true }) {
+        Feruchemist? gene = FindGene(pawn, metalDefName);
+        if (gene is { isCompounding: true }) {
             ability.UpdateStatus(BurningStatus.Off);
             return;
         }
 
-        if (!ability.CanCast) return;
+        if (gene == null || !CompoundGate(pawn, gene, ability).Accepted) return;
 
         ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
     }
@@ -387,13 +438,23 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         List<IMetalmindSource> sources = gene.metalminds;
         float stored = 0f;
+        float compounded = 0f;
         float max = 0f;
         for (int i = 0; i < sources.Count; i++) {
             stored += sources[i].StoredAmount;
+            compounded += sources[i].CompoundedAmount;
             max += sources[i].MaxAmount;
         }
 
-        return new Capacity(stored, max, sources.Count > 0, gene.canTap, gene.canStore);
+        return new Capacity(
+            stored,
+            compounded,
+            max,
+            sources.Count > 0,
+            gene.canTap,
+            gene.canStore,
+            gene.canTapCompounded
+        );
     }
 
 
@@ -408,19 +469,31 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     }
 
     private readonly struct Capacity {
-        public Capacity(float stored, float max, bool hasMetalmind, bool canTap, bool canStore) {
+        public Capacity(
+            float stored,
+            float compounded,
+            float max,
+            bool hasMetalmind,
+            bool canTap,
+            bool canStore,
+            bool canTapCompounded
+        ) {
             Stored = stored;
+            Compounded = compounded;
             Max = max;
             HasMetalmind = hasMetalmind;
             CanTap = canTap;
             CanStore = canStore;
+            CanTapCompounded = canTapCompounded;
         }
 
         public float Stored { get; }
+        public float Compounded { get; }
         public float Max { get; }
         public bool HasMetalmind { get; }
         public bool CanTap { get; }
         public bool CanStore { get; }
-        public float Fraction => Max > 0f ? Stored / Max : 0f;
+        public bool CanTapCompounded { get; }
+        public float Fraction => Max > 0f ? (Stored + Compounded) / Max : 0f;
     }
 }

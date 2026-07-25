@@ -266,24 +266,57 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    private float effectiveSeverity {
-        get {
-            float delta = targetValue - IdleTarget;
-            if (Mathf.Abs(delta) < 2f) return 0f;
+    private const float DeadBand = 2f;
+    private const float CurveExponent = 2.5f;
 
-            float exponent = 2.5f;
-            float maxSeverity = MaxSeverity - 1f;
+    /// The dial reads in whole units per second, so it steps in twentieths of a
+    /// severity point rather than anywhere along the curve.
+    public const float RateQuantum = 0.05f;
 
-            float normalized = Mathf.Abs(delta) / 50f;
-            float baseSeverity = 1f + Mathf.Pow(normalized, exponent) * maxSeverity;
+    private static float SeverityQuantum => RateQuantum / AmountPerSecond;
 
-            if (delta > 0f) {
-                float penalty = SavantUtility.GetFeruchemyStorePenaltyMultiplier(cachedSavantStage);
-                baseSeverity *= penalty;
-            }
+    private float effectiveSeverity => SeverityForTarget(targetValue);
 
-            return baseSeverity;
+    private float SeverityForTarget(float target) {
+        float delta = target - IdleTarget;
+        if (Mathf.Abs(delta) < DeadBand) return 0f;
+
+        float normalized = Mathf.Abs(delta) / 50f;
+        float baseSeverity = 1f + Mathf.Pow(normalized, CurveExponent) * (MaxSeverity - 1f);
+
+        if (delta > 0f) {
+            baseSeverity *= SavantUtility.GetFeruchemyStorePenaltyMultiplier(cachedSavantStage);
         }
+
+        return baseSeverity;
+    }
+
+    /// Inverse of the curve above. Lives here because the storing side carries a
+    /// savant penalty, so the mapping depends on pawn state and cannot be a
+    /// second copy of the arithmetic somewhere in the UI.
+    private float TargetForSeverity(float severity, bool storing) {
+        float unpenalised = storing
+            ? severity / SavantUtility.GetFeruchemyStorePenaltyMultiplier(cachedSavantStage)
+            : severity;
+
+        float normalized = Mathf.Clamp01((unpenalised - 1f) / (MaxSeverity - 1f));
+        float delta = 50f * Mathf.Pow(normalized, 1f / CurveExponent);
+
+        return IdleTarget + (storing ? delta : -delta);
+    }
+
+    /// Nudges a raw dial position onto the nearest rate step.
+    public float SnapTarget(float rawTarget) {
+        if (Mathf.Abs(rawTarget - IdleTarget) < DeadBand) return IdleTarget;
+
+        bool storing = rawTarget > IdleTarget;
+        float snapped = Mathf.Round(SeverityForTarget(rawTarget) / SeverityQuantum) * SeverityQuantum;
+
+        float floor = SeverityForTarget(IdleTarget + (storing ? DeadBand : -DeadBand));
+        float ceiling = SeverityForTarget(storing ? 100f : 0f);
+        snapped = Mathf.Clamp(snapped, Mathf.Ceil(floor / SeverityQuantum) * SeverityQuantum, ceiling);
+
+        return Mathf.Clamp(TargetForSeverity(snapped, storing), 0f, 100f);
     }
 
 

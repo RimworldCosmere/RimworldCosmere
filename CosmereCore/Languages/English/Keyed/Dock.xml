@@ -43,4 +43,13 @@
   <CC_Dock_Feruchemy_CompoundBlocked>Cannot compound: {REASON}</CC_Dock_Feruchemy_CompoundBlocked>
   <CC_Dock_Feruchemy_CompoundUnavailable>This metal cannot be compounded by this pawn.</CC_Dock_Feruchemy_CompoundUnavailable>
   <CC_Dock_Twinborn_StopCompound>Stop</CC_Dock_Twinborn_StopCompound>
+  <CC_Dock_Feruchemy_TapCompounded>Tap Compounded</CC_Dock_Feruchemy_TapCompounded>
+  <CC_Dock_Feruchemy_TapOrdinary>Tap Stored</CC_Dock_Feruchemy_TapOrdinary>
+  <CC_Dock_Feruchemy_TappingCompounded>Tapping compounded</CC_Dock_Feruchemy_TappingCompounded>
+  <CC_Dock_Feruchemy_StoreCompounded>Compound</CC_Dock_Feruchemy_StoreCompounded>
+  <CC_Dock_Feruchemy_StopStoreCompounded>Stop</CC_Dock_Feruchemy_StopStoreCompounded>
+  <CC_Dock_Feruchemy_NoCompoundedCharge>No compounded charge to draw on.</CC_Dock_Feruchemy_NoCompoundedCharge>
+  <CC_Dock_Feruchemy_CompoundNoResearch>{RESEARCH} has not been researched.</CC_Dock_Feruchemy_CompoundNoResearch>
+  <CC_Dock_Feruchemy_CompoundLowSkill>Compounding demands level {LEVEL} in both Allomancy and Feruchemy.</CC_Dock_Feruchemy_CompoundLowSkill>
+  <CC_Dock_Feruchemy_CompoundNoImplant>Compounding needs a metalmind implanted in the body.</CC_Dock_Feruchemy_CompoundNoImplant>
 </LanguageData>

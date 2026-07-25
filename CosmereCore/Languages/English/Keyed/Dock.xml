@@ -42,7 +42,6 @@
   <CC_Dock_Feruchemy_CompoundBlocked>Cannot compound: {REASON}</CC_Dock_Feruchemy_CompoundBlocked>
   <CC_Dock_Feruchemy_CompoundUnavailable>This metal cannot be compounded by this pawn.</CC_Dock_Feruchemy_CompoundUnavailable>
   <CC_Dock_Twinborn_StopCompound>Stop</CC_Dock_Twinborn_StopCompound>
-  <CC_Dock_Feruchemy_TappingCompounded>Tapping compounded</CC_Dock_Feruchemy_TappingCompounded>
   <CC_Dock_Feruchemy_StoreCompounded>Compound</CC_Dock_Feruchemy_StoreCompounded>
   <CC_Dock_Feruchemy_StopStoreCompounded>Stop</CC_Dock_Feruchemy_StopStoreCompounded>
   <CC_Dock_Feruchemy_CompoundNoResearch>{RESEARCH} has not been researched.</CC_Dock_Feruchemy_CompoundNoResearch>
@@ -58,4 +57,5 @@
   <CC_Dock_Allomancy_BusyCompounding>Compounding is drawing on this metal.</CC_Dock_Allomancy_BusyCompounding>
   <CC_Dock_Allomancy_CompoundRate>+{RATE}/s</CC_Dock_Allomancy_CompoundRate>
   <CC_Dock_Allomancy_CompoundEta>current {ONE}, all {ALL}</CC_Dock_Allomancy_CompoundEta>
+  <CC_Dock_Feruchemy_Compounded>compounded</CC_Dock_Feruchemy_Compounded>
 </LanguageData>

@@ -19,7 +19,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private const float StripButtonHeight = 22f;
 
     private static float StripHeight =>
-        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 2f + DialHeight + StripButtonHeight + 17f;
+        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 3f + DialHeight * 2f + StripButtonHeight + 26f;
     private const float IdleTarget = 50f;
     private static readonly Color ActiveTint = new Color(0.490f, 0.604f, 0.659f);
     private static readonly Color QuadHeader = new Color(0.475f, 0.588f, 0.655f);
@@ -118,9 +118,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         string direction = gene.isCompounding
             ? "CC_Dock_Feruchemy_Compounding".Translate()
             : gene.isTapping
-                ? gene.TapChannel == FeruchemyChannel.Compounded
-                    ? "CC_Dock_Feruchemy_TappingCompounded".Translate()
-                    : "CC_Dock_Feruchemy_Tapping".Translate()
+                ? "CC_Dock_Feruchemy_Tapping".Translate()
                 : gene.isStoring
                     ? "CC_Dock_Feruchemy_Storing".Translate()
                     : "CC_Dock_Feruchemy_Idle".Translate();
@@ -176,9 +174,10 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
 
         float buttonY = endsRect.yMax + 8f;
+        if (capacity.CanStoreCompounded || capacity.Compounded > 0f) {
+            buttonY = DrawCompoundedDial(inner, endsRect.yMax + 6f, cell, gene, capacity) + 8f;
+        }
 
-        // Tapping spends ordinary charge before compounded on its own, so there is
-        // nothing here for the player to choose between.
         if (DockChrome.Button(
                 new Rect(inner.x, buttonY, inner.width, StripButtonHeight),
                 "CC_Dock_Feruchemy_Idle".Translate(),
@@ -188,6 +187,76 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             gene.Reset();
             Event.current?.Use();
         }
+    }
+
+    /// The compounded pool gets its own dial. Only compounding fills it, so the
+    /// store half is unreachable and says so rather than being hidden.
+    private float DrawCompoundedDial(Rect inner, float y, InvestitureCell cell, Feruchemist gene, Capacity capacity) {
+        float tinyH = Text.LineHeightOf(GameFont.Tiny);
+
+        Rect dial = new Rect(inner.x, y, inner.width, DialHeight);
+        DrawCompoundedDialBacking(dial, gene, capacity);
+
+        float handleX = dial.x + dial.width * (Mathf.Clamp(gene.compoundedTargetValue, 0f, 100f) / 100f);
+        Widgets.DrawBoxSolid(
+            new Rect(handleX - 1.5f, dial.y - 2f, 3f, dial.height + 4f),
+            new Color(0.898f, 0.812f, 0.588f)
+        );
+
+        Rect ends = new Rect(inner.x, dial.yMax + 3f, inner.width, tinyH);
+        UIText.EllipsisLabel(
+            ends,
+            "CC_Dock_Feruchemy_Tap".Translate(),
+            GameFont.Tiny,
+            TextAnchor.MiddleLeft,
+            capacity.CanTapCompounded ? CompoundTint : new Color(0.310f, 0.286f, 0.255f)
+        );
+        UIText.EllipsisLabel(
+            ends,
+            "CC_Dock_Feruchemy_Compounded".Translate(),
+            GameFont.Tiny,
+            TextAnchor.MiddleRight,
+            new Color(0.475f, 0.404f, 0.286f)
+        );
+
+        float rate = gene.CompoundedTapRatePerSecond;
+        UIText.EllipsisLabel(
+            ends,
+            "CC_Dock_Feruchemy_Rate".Translate($"{rate:+0.00;-0.00;0.00}".Named("RATE")),
+            GameFont.Tiny,
+            TextAnchor.MiddleCenter,
+            Mathf.Approximately(rate, 0f) ? new Color(0.376f, 0.353f, 0.318f) : CompoundTint
+        );
+
+        HandleDialDrag(dial, cell.SubsystemId + ":compounded", gene, capacity, true);
+        return ends.yMax;
+    }
+
+    private static void DrawCompoundedDialBacking(Rect rect, Feruchemist gene, Capacity capacity) {
+        Widgets.DrawBoxSolid(rect, new Color(0.047f, 0.043f, 0.035f));
+
+        // Nothing can store into this pool, so the whole upper half stays shut.
+        Widgets.DrawBoxSolid(
+            new Rect(rect.center.x, rect.y, rect.width / 2f, rect.height),
+            new Color(0.098f, 0.090f, 0.075f)
+        );
+        if (!capacity.CanTapCompounded) {
+            Widgets.DrawBoxSolid(
+                new Rect(rect.x, rect.y, rect.width / 2f, rect.height),
+                new Color(0.098f, 0.090f, 0.075f)
+            );
+        }
+
+        float delta = gene.compoundedTargetValue - IdleTarget;
+        if (delta < 0f) {
+            float width = rect.width / 2f * Mathf.Clamp01(-delta / IdleTarget);
+            Widgets.DrawBoxSolid(new Rect(rect.center.x - width, rect.y, width, rect.height), CompoundTint);
+        }
+
+        Widgets.DrawBoxSolid(
+            new Rect(rect.center.x, rect.y - 1f, 1f, rect.height + 2f),
+            new Color(0.353f, 0.322f, 0.271f)
+        );
     }
 
     /// Hand-drawn so the dial keeps the section's chrome. The vanilla slider
@@ -204,15 +273,26 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             new Color(0.816f, 0.851f, 0.871f)
         );
 
+        HandleDialDrag(rect, metalId, gene, capacity, false);
+    }
+
+    /// Shared by both dials. Compounded runs tap-only, so its reachable span stops
+    /// at the idle point rather than continuing into the store half.
+    private void HandleDialDrag(Rect rect, string dialId, Feruchemist gene, Capacity capacity, bool compounded) {
+        float min = (compounded ? capacity.CanTapCompounded : capacity.CanTap || capacity.CanTapCompounded)
+            ? 0f
+            : IdleTarget;
+        float max = !compounded && capacity.CanStore ? 100f : IdleTarget;
+
         Event? e = Event.current;
         if (e == null) return;
 
         if (e.type == EventType.MouseDown && Mouse.IsOver(rect)) {
-            draggingDial = metalId;
+            draggingDial = dialId;
             e.Use();
         }
 
-        if (draggingDial != metalId) return;
+        if (draggingDial != dialId) return;
 
         // MouseDrag only reaches a control that claimed the hot control, which a
         // hand-drawn dial never does, so follow the button state directly.
@@ -221,7 +301,9 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             return;
         }
 
-        gene.targetValue = gene.SnapTarget(Mathf.Clamp((e.mousePosition.x - rect.x) / rect.width * 100f, min, max));
+        float snapped = gene.SnapTarget(Mathf.Clamp((e.mousePosition.x - rect.x) / rect.width * 100f, min, max));
+        if (compounded) gene.compoundedTargetValue = snapped;
+        else gene.targetValue = snapped;
     }
 
 

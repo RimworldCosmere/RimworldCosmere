@@ -41,10 +41,9 @@ public class Feruchemist : Metalborn {
     private HediffDef? cachedTapCompoundedHediffDef;
     private float savantDecayOffset;
 
-    /// Which pool tapping is drawing from. Ordinary charge goes first and the
-    /// compounded reserve is held back until nothing else is left, so this follows
-    /// what is actually available rather than being chosen.
-    public FeruchemyChannel TapChannel => canTap ? FeruchemyChannel.Ordinary : FeruchemyChannel.Compounded;
+    /// The compounded pool has its own dial. Nothing can store into it - only
+    /// compounding fills it - so this only ever travels below the idle point.
+    public float compoundedTargetValue = IdleTarget;
 
     public bool canTapAny => canTap || canTapCompounded;
 
@@ -275,6 +274,15 @@ public class Feruchemist : Metalborn {
 
     /// Charge moved per real second at the current dial setting, negative while
     /// tapping. Zero when the dial sits in its dead band or the direction is shut.
+    /// What the compounded dial is drawing, for its own readout.
+    public float CompoundedTapRatePerSecond {
+        get {
+            if (compoundedTargetValue >= IdleTarget || !canTapCompounded) return 0f;
+
+            return -AmountPerSecond * SeverityForTarget(compoundedTargetValue);
+        }
+    }
+
     public float TransferRatePerSecond {
         get {
             float rate = dialRatePerSecond;
@@ -362,6 +370,7 @@ public class Feruchemist : Metalborn {
 
     public override void Reset() {
         TryRemoveHediffByDef(tapCompoundedHediffDef);
+        compoundedTargetValue = IdleTarget;
         targetValue = IdleTarget;
         TryRemoveHediffByDef(storeHediffDef);
         TryRemoveHediffByDef(tapHediffDef);
@@ -376,6 +385,7 @@ public class Feruchemist : Metalborn {
         base.ExposeData();
 
         Scribe_Values.Look(ref targetValue, "targetValue", IdleTarget);
+        Scribe_Values.Look(ref compoundedTargetValue, "compoundedTargetValue", IdleTarget);
         Scribe_Values.Look(ref savantDecayOffset, "savantDecayOffset");
     }
 
@@ -403,17 +413,30 @@ public class Feruchemist : Metalborn {
 
     private void TickSeverityHediffs() {
         if (effectiveSeverity <= 0f) return;
-        if (targetValue < IdleTarget && canTapAny) {
+        float ordinary = SeverityForTarget(targetValue);
+        if (targetValue < IdleTarget && canTap && ordinary > 0f) {
             TryRemoveHediffByDef(storeHediffDef);
-
-            bool compounded = TapChannel == FeruchemyChannel.Compounded;
-            HediffDef? active = compounded ? tapCompoundedHediffDef : tapHediffDef;
-            TryRemoveHediffByDef(compounded ? tapHediffDef : tapCompoundedHediffDef);
-            if (active != null) pawn.health.GetOrAddHediff(active).Severity = effectiveSeverity;
+            if (tapHediffDef != null) pawn.health.GetOrAddHediff(tapHediffDef).Severity = ordinary;
         }
-        else if (targetValue > IdleTarget && canStore) {
+        else if (targetValue > IdleTarget && canStore && ordinary > 0f) {
             TryRemoveHediffByDef(tapHediffDef);
-            pawn.health.GetOrAddHediff(storeHediffDef).Severity = effectiveSeverity;
+            pawn.health.GetOrAddHediff(storeHediffDef).Severity = ordinary;
+        }
+        else {
+            TryRemoveHediffByDef(tapHediffDef);
+            TryRemoveHediffByDef(storeHediffDef);
+        }
+
+        // The compounded pool runs alongside rather than instead, so both ladders
+        // can be lit at once and each pays out on its own terms.
+        float compounded = SeverityForTarget(compoundedTargetValue);
+        if (compoundedTargetValue < IdleTarget && canTapCompounded && compounded > 0f) {
+            if (tapCompoundedHediffDef != null) {
+                pawn.health.GetOrAddHediff(tapCompoundedHediffDef).Severity = compounded;
+            }
+        }
+        else {
+            TryRemoveHediffByDef(tapCompoundedHediffDef);
         }
     }
 
@@ -421,17 +444,16 @@ public class Feruchemist : Metalborn {
         // Reads the curve rather than the hediff's severity. Compounded tapping
         // amplifies through its own stage ladder, so if the drain read severity
         // back it would move ten times the charge as well.
-        float severity = effectiveSeverity;
-        if (severity <= 0f) return;
+        float ordinary = SeverityForTarget(targetValue);
+        if (ordinary > 0f) {
+            if (targetValue > IdleTarget && canStore) AddToStore(AmountPerSecond * ordinary);
+            else if (targetValue < IdleTarget && canTap) RemoveFromStore(AmountPerSecond * ordinary);
+        }
 
-        float amount = AmountPerSecond * severity;
-        if (isStoring) {
-            AddToStore(amount);
-        }
-        else if (isTapping) {
-            if (TapChannel == FeruchemyChannel.Compounded) RemoveCompoundedFromStore(amount);
-            else RemoveFromStore(amount);
-        }
+        float compounded = SeverityForTarget(compoundedTargetValue);
+        if (compounded <= 0f || compoundedTargetValue >= IdleTarget || !canTapCompounded) return;
+
+        RemoveCompoundedFromStore(AmountPerSecond * compounded);
     }
 
     private void TickXPGain(int delta) {

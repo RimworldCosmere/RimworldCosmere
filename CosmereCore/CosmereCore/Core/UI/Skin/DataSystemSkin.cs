@@ -40,12 +40,9 @@ public sealed class DataSystemSkin : ISystemSkin {
     public Color BarBackgroundColor { get; }
     public Color HeaderTextColor { get; }
     public GameFont HeaderFont { get; }
-    public SkinTypography Typography => SkinTypography.Empty;
     public Color PanelBackgroundColor { get; }
     public Color BorderTintColor { get; }
     public Texture2D? Sigil => cachedSigil ??= sigilSource?.Invoke();
-    public Texture2D? BorderFrame => null;
-    public Font? DisplayFont => null;
 
     public Color? GetColor(ThemeSlot slot) {
         return slot switch {

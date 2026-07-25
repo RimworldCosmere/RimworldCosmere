@@ -46,11 +46,9 @@ public static class SystemSkinRegistry {
         public Color BarBackgroundColor => new Color(0.12f, 0.12f, 0.12f);
         public Color HeaderTextColor => Color.white;
         public GameFont HeaderFont => GameFont.Small;
-        public SkinTypography Typography => SkinTypography.Empty;
         public Color PanelBackgroundColor => new Color(0.05f, 0.05f, 0.08f, 0.75f);
         public Color BorderTintColor => new Color(0.35f, 0.35f, 0.4f);
         public Texture2D? Sigil => null;
-        public Texture2D? BorderFrame => null;
 
         public Color? GetColor(ThemeSlot slot) {
             return null;
@@ -60,6 +58,5 @@ public static class SystemSkinRegistry {
             return null;
         }
 
-        public Font? DisplayFont => null;
     }
 }

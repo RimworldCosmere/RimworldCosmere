@@ -21,7 +21,6 @@ public sealed class HighContrastSkinDecorator : ISystemSkin {
     public Color BorderTintColor => Color.white;
 
     public GameFont HeaderFont => GameFont.Medium;
-    public SkinTypography Typography => SkinTypography.Empty;
 
     public Texture2D? Sigil => inner.Sigil;
     public Texture2D? BorderFrame => null;
@@ -34,7 +33,6 @@ public sealed class HighContrastSkinDecorator : ISystemSkin {
         return inner.GetFont(role);
     }
 
-    public Font? DisplayFont => inner.DisplayFont;
 
     private static Color Saturate(Color src, float factor) {
         float max = Mathf.Max(src.r, Mathf.Max(src.g, src.b));

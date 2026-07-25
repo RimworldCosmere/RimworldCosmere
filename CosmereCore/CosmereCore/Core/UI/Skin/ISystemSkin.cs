@@ -12,12 +12,9 @@ public interface ISystemSkin {
     Color HeaderTextColor { get; }
     GameFont HeaderFont { get; }
 
-    SkinTypography Typography { get; }
     Color PanelBackgroundColor { get; }
     Color BorderTintColor { get; }
     Texture2D? Sigil { get; }
-    Texture2D? BorderFrame { get; }
-    Font? DisplayFont { get; }
 
     Color? GetColor(ThemeSlot slot);
     Font? GetFont(FontRole role);

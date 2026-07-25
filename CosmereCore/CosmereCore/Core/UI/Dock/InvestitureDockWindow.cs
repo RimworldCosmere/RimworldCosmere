@@ -17,6 +17,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
     private const float RibbonIcon = 20f;
     private const float RibbonBar = 6f;
     private const float RibbonPad = 7f;
+    private const float RibbonBleed = 6f;
 
     private static readonly Color RibbonInk = new Color(0.878f, 0.831f, 0.729f);
     private static readonly Color RibbonInkFaded = new Color(0.678f, 0.620f, 0.514f);
@@ -116,7 +117,16 @@ public sealed class InvestitureDockWindow : Verse.Window {
             if (snap.Cells.Count > 0) aggregate /= snap.Cells.Count;
 
             Color accent = section.Skin.AccentColor;
-            Rect ribbon = new Rect(inRect.x + RibbonGap, y, inRect.width - RibbonGap * 2f, RibbonHeight);
+
+            // Runs past the left edge so the banner reads as coming out of the side
+            // of the screen rather than floating clear of it. The overhang is
+            // clipped away with its border, leaving no seam.
+            Rect ribbon = new Rect(
+                inRect.x - RibbonBleed,
+                y,
+                inRect.width - RibbonGap + RibbonBleed,
+                RibbonHeight
+            );
 
             // Each art tints its own sheet, faintly enough that both still read as
             // parchment rather than as coloured panels.
@@ -134,7 +144,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
 
             Widgets.DrawBoxSolidWithOutline(ribbon, Color.clear, RibbonEdge);
 
-            Rect icon = new Rect(ribbon.x + RibbonPad, ribbon.y + 5f, RibbonIcon, RibbonIcon);
+            Rect icon = new Rect(inRect.x + RibbonPad, ribbon.y + 5f, RibbonIcon, RibbonIcon);
             Texture2D? sigil = section.Skin.Sigil;
             if (sigil != null) {
                 GUI.DrawTexture(icon, sigil);
@@ -158,7 +168,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
             );
 
             float readingWidth = 34f;
-            Rect readingRow = new Rect(ribbon.x + RibbonPad, icon.yMax + 3f, ribbon.width - RibbonPad * 2f, tinyH);
+            Rect readingRow = new Rect(inRect.x + RibbonPad, icon.yMax + 3f, ribbon.xMax - inRect.x - RibbonPad * 2f, tinyH);
             Rect bar = new Rect(
                 readingRow.x,
                 readingRow.y + (tinyH - RibbonBar) / 2f,

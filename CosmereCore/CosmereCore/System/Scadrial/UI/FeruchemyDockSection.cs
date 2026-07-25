@@ -174,9 +174,13 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             "CC_Dock_Feruchemy_Rate".Translate($"{rate:+0.00;-0.00;0.00}".Named("RATE")),
             GameFont.Tiny,
             TextAnchor.MiddleCenter,
-            Mathf.Approximately(rate, 0f)
-                ? new Color(0.376f, 0.353f, 0.318f)
-                : rate < 0f ? TapFill : StoreFill
+            gene.isCompounding
+                ? CompoundTint
+                : Mathf.Approximately(rate, 0f)
+                    ? new Color(0.376f, 0.353f, 0.318f)
+                    : rate < 0f
+                        ? TapFill
+                        : StoreFill
         );
 
         float buttonY = endsRect.yMax + 8f;
@@ -191,9 +195,12 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         if (compound == null) return;
 
         AcceptanceReport report = compound.CanCast;
-        bool canCompound = report.Accepted;
+        bool compounding = gene.isCompounding;
+        // Stays live while compounding even if it could not be started again,
+        // otherwise there is no way to switch it back off.
+        bool canCompound = report.Accepted || compounding;
         Rect compoundRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, StripButtonHeight);
-        if (!canCompound) {
+        if (!canCompound && !compounding) {
             TooltipHandler.TipRegion(
                 compoundRect,
                 "CC_Dock_Feruchemy_CompoundBlocked".Translate(
@@ -203,8 +210,12 @@ public sealed class FeruchemyDockSection : DockSectionBase {
                 )
             );
         }
-        if (ChromeButton(compoundRect, "CC_Dock_Twinborn_Compound".Translate(), canCompound)) {
-            compound.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
+        string compoundLabel = compounding
+            ? "CC_Dock_Twinborn_StopCompound".Translate()
+            : "CC_Dock_Twinborn_Compound".Translate();
+        if (ChromeButton(compoundRect, compoundLabel, canCompound)) {
+            if (compounding) compound.UpdateStatus(BurningStatus.Off);
+            else compound.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
             Event.current?.Use();
         }
     }
@@ -299,7 +310,14 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
     private void TryCompound(Pawn pawn, string metalDefName) {
         AllomancyAbility? ability = CompoundAbility(pawn, metalDefName);
-        if (ability == null || !ability.CanCast) return;
+        if (ability == null) return;
+
+        if (FindGene(pawn, metalDefName) is { isCompounding: true }) {
+            ability.UpdateStatus(BurningStatus.Off);
+            return;
+        }
+
+        if (!ability.CanCast) return;
 
         ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
     }

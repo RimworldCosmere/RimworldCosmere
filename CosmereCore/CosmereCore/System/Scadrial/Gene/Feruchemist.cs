@@ -159,6 +159,19 @@ public class Feruchemist : Metalborn {
     /// tapping. Zero when the dial sits in its dead band or the direction is shut.
     public float TransferRatePerSecond {
         get {
+            float rate = dialRatePerSecond;
+            // Compounding runs alongside the dial rather than replacing it, so the
+            // readout has to carry both or it understates what is happening.
+            if (compoundHediff is Scadrial.Feruchemy.Hediff.Compound compound) {
+                rate += compound.StorePerSecond;
+            }
+
+            return rate;
+        }
+    }
+
+    private float dialRatePerSecond {
+        get {
             float severity = effectiveSeverity;
             if (severity <= 0f) return 0f;
 

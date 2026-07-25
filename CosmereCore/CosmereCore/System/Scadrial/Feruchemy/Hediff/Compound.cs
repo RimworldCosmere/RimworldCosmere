@@ -36,6 +36,11 @@ public class Compound : AllomanticHediff {
         }
     }
 
+    /// What compounding pours into the metalmind per real second, so the dock can
+    /// report it alongside the dial's own contribution.
+    public virtual float StorePerSecond =>
+        ability.def.beuPerTick * ability.GetStrength(BurningStatus.Burning) * 10f * GenTicks.TicksPerRealSecond;
+
     protected virtual bool TickLogic(Feruchemist feruchemist, int delta, float metalToBurn) {
         return feruchemist.AddToStore(metalToBurn * 10f);
     }

@@ -85,13 +85,7 @@ public static class RadialRingRenderer {
         GUI.DrawTexture(texRect, RadialWedgeTex.Backing());
         GUI.color = backingPrev;
 
-        for (int order = 0; order < count; order++) {
-            int i = order;
-            if (hoveredIndex >= 0 && hoveredIndex < count) {
-                if (order == count - 1) i = hoveredIndex;
-                else if (order >= hoveredIndex) i = order + 1;
-            }
-
+        for (int i = 0; i < count; i++) {
             (string label, Texture2D? icon, Color? tint, float? reserveFraction, bool isActive, bool isFlaring,
                     bool isSustained, bool isLocked, string? lockReason, bool hasInsufficientResources) = getAt(i);
 

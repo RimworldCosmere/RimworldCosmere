@@ -226,7 +226,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
             }
         }
 
-        return height + 8f;
+        return height;
     }
 
     private static float ComputeHeight() {

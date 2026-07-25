@@ -6,7 +6,9 @@ using Verse.Sound;
 namespace Cosmere.Core.UI.Dock;
 
 public sealed class DockAccordion {
+    private const float BodyPadX = 4f;
     private Vector2 scrollPos;
+    private bool defaulted;
     public string? ExpandedSystemId { get; set; }
 
     public void Draw(
@@ -17,7 +19,12 @@ public sealed class DockAccordion {
     ) {
         if (snapshots.Count == 0) return;
 
-        ExpandedSystemId ??= snapshots[0].SystemId;
+        // Only pick a section the first time. Re-running this every frame turned
+        // closing the open one into reopening it.
+        if (!defaulted) {
+            defaulted = true;
+            ExpandedSystemId ??= snapshots[0].SystemId;
+        }
 
         float y = rect.y;
         for (int i = 0; i < snapshots.Count; i++) {
@@ -43,9 +50,9 @@ public sealed class DockAccordion {
 
             float bodyHeight = section.GetExpandedBodyHeight(pawn, snap, ctx);
             float availableHeight = rect.yMax - y;
-            Rect bodyRect = new Rect(rect.x, y, rect.width, Mathf.Min(bodyHeight, availableHeight));
+            Rect bodyRect = new Rect(rect.x + BodyPadX, y, rect.width - BodyPadX * 2f, Mathf.Min(bodyHeight, availableHeight));
             if (bodyHeight > availableHeight) {
-                Rect viewRect = new Rect(0f, 0f, rect.width - 16f, bodyHeight);
+                Rect viewRect = new Rect(0f, 0f, bodyRect.width - 16f, bodyHeight);
                 Widgets.BeginScrollView(bodyRect, ref scrollPos, viewRect);
                 section.DrawBody(new Rect(0f, 0f, viewRect.width, bodyHeight), pawn, snap, ctx);
                 Widgets.EndScrollView();

@@ -96,7 +96,7 @@ public static class RadialCenterPreview {
             if (hoveredLeaf.ReserveFraction.HasValue) {
                 float fraction = Mathf.Clamp01(hoveredLeaf.ReserveFraction.Value);
                 float barHeight = tinyH + 6f;
-                Rect barRow = ChordRow(center, 26f, barHeight);
+                Rect barRow = ChordRow(center, 22f, barHeight);
 
                 Widgets.DrawBoxSolid(barRow, new Color(0f, 0f, 0f, 0.55f));
                 Widgets.DrawBoxSolid(
@@ -124,13 +124,19 @@ public static class RadialCenterPreview {
         bool canFlare = hoveredLeaf != null
             && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn
             && !hoveredLeaf.IsLocked;
-        if (browseMode && canFlare) {
+        if (canFlare) {
+            // The wheel stays open on a tap but casts on release when held, so
+            // the verb has to match however this pawn's wheel was opened.
+            string verb = browseMode ? "CC_Radial_Verb_Click".Translate() : "CC_Radial_Verb_Release".Translate();
+            bool shiftHeld = ShiftHeld();
             UIText.EllipsisLabel(
-                ChordRow(center, 54f, tinyH),
-                ShiftHeld() ? "CC_Radial_Hint_FlareArmed".Translate() : "CC_Radial_Hint_FlareTip".Translate(),
+                ChordRow(center, 50f, tinyH),
+                shiftHeld
+                    ? "CC_Radial_Hint_FlareOnly".Translate(verb.Named("VERB"))
+                    : "CC_Radial_Hint_BurnFlare".Translate(verb.Named("VERB")),
                 GameFont.Tiny,
                 TextAnchor.MiddleCenter,
-                ShiftHeld() ? DockPalette.Flare : DockPalette.GroupLabel
+                shiftHeld ? DockPalette.Flare : DockPalette.GroupLabel
             );
         }
 
@@ -160,22 +166,14 @@ public static class RadialCenterPreview {
 
             DrawIconButton(new Rect(x, buttonY, buttonSize, buttonSize), TexButton.CloseXSmall, "CC_Radial_Close".Translate(), 0.55f, false, close);
         }
-        else {
-            bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-            float hintY = 56f;
+        else if (!canFlare) {
             UIText.EllipsisLabel(
-                ChordRow(center, hintY, tinyH),
-                shiftHeld
-                    ? "CC_Radial_Hint_FlareArmed".Translate()
-                    : hoveredLeaf != null
-                        ? "CC_Radial_Hint_ReleaseFlare".Translate()
-                        : "CC_Radial_Hint_Release".Translate(),
+                ChordRow(center, 56f, tinyH),
+                "CC_Radial_Hint_Release".Translate(),
                 GameFont.Tiny,
                 TextAnchor.MiddleCenter,
-                shiftHeld ? DockPalette.Flare : DockPalette.GroupLabel
+                DockPalette.GroupLabel
             );
-
-
         }
     }
 

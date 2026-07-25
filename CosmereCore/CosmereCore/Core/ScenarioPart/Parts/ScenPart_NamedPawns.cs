@@ -74,6 +74,7 @@ public class ScenPart_NamedPawns : ScenPart {
             pawn.ageTracker.AgeChronologicalTicks = template.GetChronologicalAge() * 3600000L;
         }
 
+        ApplyBackstories(pawn, template);
         ApplyXenotype(pawn, template);
         ApplyTraits(pawn, template);
         ApplySkills(pawn, template);
@@ -115,6 +116,36 @@ public class ScenPart_NamedPawns : ScenPart {
         return null;
     }
 
+    /// A named pawn is written to be someone in particular, so the story they are
+    /// given has to stick. Left to pawn generation they take a random pair, which
+    /// is both off-character and how they end up incapable of work the scenario
+    /// never meant to bar them from.
+    private static void ApplyBackstories(Pawn pawn, NamedPawnDef template) {
+        if (pawn.story == null) return;
+
+        if (template.childhood != null) {
+            BackstoryDef? story = DefDatabase<BackstoryDef>.GetNamedSilentFail(template.childhood);
+            if (story == null) {
+                Logger.Warning($"ScenPart_NamedPawns: Childhood '{template.childhood}' not found, skipping");
+            }
+            else {
+                pawn.story.Childhood = story;
+            }
+        }
+
+        if (template.adulthood != null) {
+            BackstoryDef? story = DefDatabase<BackstoryDef>.GetNamedSilentFail(template.adulthood);
+            if (story == null) {
+                Logger.Warning($"ScenPart_NamedPawns: Adulthood '{template.adulthood}' not found, skipping");
+            }
+            else {
+                pawn.story.Adulthood = story;
+            }
+        }
+
+        pawn.Notify_DisabledWorkTypesChanged();
+    }
+
     private static void ApplyXenotype(Pawn pawn, NamedPawnDef template) {
         if (template.xenotype == null) return;
 
@@ -128,7 +159,7 @@ public class ScenPart_NamedPawns : ScenPart {
     }
 
     private static void ApplyTraits(Pawn pawn, NamedPawnDef template) {
-        if (template.traits.Count == 0) return;
+        if (template.traits.Count == 0 && !template.noRandomTraits) return;
 
         List<Trait>? existingTraits = pawn.story?.traits?.allTraits;
         if (existingTraits != null) {

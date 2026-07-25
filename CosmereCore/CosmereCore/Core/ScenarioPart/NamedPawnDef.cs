@@ -5,8 +5,10 @@ using Verse;
 namespace Cosmere.Core.ScenarioPart;
 
 public class NamedPawnDef {
+    public string? adulthood;
     public int age = 20;
     public int chronologicalAge = -1;
+    public string? childhood;
     public string? firstName;
     public bool fullFeruchemist;
     public Gender gender = Gender.None;
@@ -16,6 +18,7 @@ public class NamedPawnDef {
     public string? lastName;
     public bool mistborn;
     public string? nickName;
+    public bool noRandomTraits;
     public string? radiantOrder;
     public List<NamedPawnSkillEntry> skills = [];
     public List<NamedPawnTraitEntry> traits = [];
@@ -48,6 +51,16 @@ public class NamedPawnDef {
                     break;
                 case "xenotype":
                     xenotype = node.InnerText;
+                    break;
+                case "childhood":
+                    childhood = node.InnerText;
+                    break;
+                case "adulthood":
+                    adulthood = node.InnerText;
+                    break;
+                case "noRandomTraits":
+                    if (!bool.TryParse(node.InnerText, out noRandomTraits))
+                        Logger.Warning($"NamedPawnDef: invalid noRandomTraits value '{node.InnerText}'");
                     break;
                 case "traits":
                     traits = DirectXmlToObject.ObjectFromXml<List<NamedPawnTraitEntry>>(node, false);

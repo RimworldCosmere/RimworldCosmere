@@ -31,8 +31,30 @@ public static class RadialRingRenderer {
             system.Subsections.Count,
             (RadialLayout.SubsectionRingInner + RadialLayout.SubsectionRingOuter) / 2f,
             hoveredIndex,
-            i => (system.Subsections[i].Label, system.Subsections[i].Icon, system.Subsections[i].AccentColor, null,
-                false, false, false, false, null, false)
+            i => {
+                RadialSubsection subsection = system.Subsections[i];
+                // A collapsed metal never reaches the ability ring, so its lit
+                // state has to come from the leaves it stands in for.
+                bool anyActive = false;
+                bool anyFlaring = false;
+                for (int leafIndex = 0; leafIndex < subsection.Leaves.Count; leafIndex++) {
+                    anyActive |= subsection.Leaves[leafIndex].IsActive;
+                    anyFlaring |= subsection.Leaves[leafIndex].IsFlaring;
+                }
+
+                return (
+                    subsection.Label,
+                    subsection.Icon,
+                    subsection.AccentColor,
+                    (float?)null,
+                    anyActive,
+                    anyFlaring,
+                    false,
+                    false,
+                    (string?)null,
+                    false
+                );
+            }
         );
     }
 
@@ -95,7 +117,7 @@ public static class RadialRingRenderer {
             bg.a = 0.97f;
             // A lit metal keeps a warm fill of its own so it reads as burning
             // even when the cursor is elsewhere; hovering still wins over it.
-            if (isActive) bg = new Color(0.30f, 0.20f, 0.09f, 0.97f);
+            if (isActive) bg = new Color(0.34f, 0.24f, 0.10f, 0.97f);
             if (i == hoveredIndex) bg = new Color(0.42f, 0.31f, 0.14f, 0.97f);
             if (isLocked) bg = new Color(bg.r, bg.g, bg.b, 0.4f);
             else if (hasInsufficientResources) bg = new Color(bg.r, bg.g, bg.b, 0.6f);

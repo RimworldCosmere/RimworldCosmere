@@ -10,14 +10,14 @@ public static class RadialCenterPreview {
     // The header hangs from the top of the hub and the bar and buttons are
     // pinned to the bottom, so the description keeps whatever is left between
     // them rather than every row flowing from a single stack.
-    private const float BreadcrumbY = -108f;
-    private const float TitleGap = 26f;
+    private const float BreadcrumbY = -116f;
+    private const float TitleGap = 22f;
     private const float ButtonRowY = 80f;
     private const float ButtonSize = 30f;
     private const float BarGap = 12f;
     private const float DescriptionGap = 10f;
-    private const float TitleHintGap = 8f;
-    private const float BarWidth = 236f;
+    private const float TitleHintGap = 4f;
+    private const float BarWidth = 201f;
 
     public static void Draw(Vector2 center, RadialLeaf? hoveredLeaf, string? hoveredTitle, string breadcrumb, bool browseMode, Action back, Action close) {
         float r = RadialLayout.CenterRadius;

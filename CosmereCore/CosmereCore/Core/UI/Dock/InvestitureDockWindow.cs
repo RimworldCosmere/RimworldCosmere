@@ -7,13 +7,13 @@ using Verse.Sound;
 namespace Cosmere.Core.UI.Dock;
 
 public sealed class InvestitureDockWindow : Verse.Window {
-    private const float CollapsedWidth = 48f;
+    private const float CollapsedWidth = 78f;
     private const float ExpandedWidth = 320f;
     private const float MarginTop = 114f;
     private const float MarginBottom = 185f;
     private const float TabPadding = 150f;
     private const float PinButtonHeight = 24f;
-    private const float CollapsedOrbSize = 28f;
+    private const float CollapsedOrbSize = 56f;
     private const float CollapsedOrbGap = 10f;
 
     private readonly DockAccordion accordion = new DockAccordion();
@@ -80,7 +80,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
     }
 
     private void DrawCollapsed(Rect inRect, IReadOnlyList<InvestitureSnapshot> snapshots) {
-        const float railBarWidth = 3f;
+        const float railBarWidth = 6f;
         const float orbSize = CollapsedOrbSize;
         float y = inRect.y + CollapsedOrbGap;
         for (int i = 0; i < snapshots.Count; i++) {
@@ -107,7 +107,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
             Widgets.DrawBoxSolidWithOutline(orbRect, Color.clear, accent);
             Texture2D? sigil = section.Skin.Sigil;
             if (sigil != null) {
-                GUI.DrawTexture(orbRect.ContractedBy(4f), sigil);
+                GUI.DrawTexture(orbRect.ContractedBy(8f), sigil);
             }
             else {
                 // No skin ships a sigil yet, and an empty outlined box tells the
@@ -115,7 +115,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
                 UIText.EllipsisLabel(
                     orbRect,
                     section.Skin.HeaderLabel.Substring(0, 1),
-                    GameFont.Small,
+                    GameFont.Medium,
                     TextAnchor.MiddleCenter,
                     accent
                 );

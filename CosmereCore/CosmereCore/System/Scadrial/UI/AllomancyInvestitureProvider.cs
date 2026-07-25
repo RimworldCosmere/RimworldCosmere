@@ -29,8 +29,17 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
 
         List<InvestitureCell> cells = [];
         List<Verse.Gene> all = pawn.genes.GenesListForReading;
+        List<Ability> dockAbilities = pawn.abilities?.AllAbilitiesForReading ?? [];
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is not Allomancer a || a.Overridden) continue;
+
+            AllomancyAbility? burn = null;
+            for (int j = 0; j < dockAbilities.Count; j++) {
+                if (dockAbilities[j] is AllomancyAbility aa && aa.metal == a.metal) {
+                    burn = aa;
+                    break;
+                }
+            }
 
             ResourceBar bar = new ResourceBar(
                 a.metal.LabelCap,
@@ -45,8 +54,8 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
                     a.metal.LabelCap,
                     a.metal.allomancy?.invertedIcon,
                     bar,
-                    a.Burning,
-                    false
+                    burn?.atLeastBurning ?? a.Burning,
+                    burn != null && burn.status.power > 1
                 )
             );
         }

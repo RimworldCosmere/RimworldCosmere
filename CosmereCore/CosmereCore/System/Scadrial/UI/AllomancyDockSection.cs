@@ -44,7 +44,11 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     private void DrawTile(Rect rect, Pawn pawn, MetalRow row) {
         InvestitureCell cell = row.Cell;
-        MetalTileState state = cell.IsActive ? MetalTileState.Active : MetalTileState.Idle;
+        MetalTileState state = cell.IsFlaring
+            ? MetalTileState.Flaring
+            : cell.IsActive
+                ? MetalTileState.Active
+                : MetalTileState.Idle;
 
         MetalTile.Draw(
             rect,

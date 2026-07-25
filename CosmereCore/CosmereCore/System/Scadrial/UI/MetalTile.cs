@@ -10,6 +10,7 @@ namespace Cosmere.System.Scadrial.UI;
 public enum MetalTileState {
     Idle,
     Active,
+    Flaring,
     Inert,
 }
 
@@ -31,24 +32,34 @@ public static class MetalTile {
         Color activeTint
     ) {
         bool inert = state == MetalTileState.Inert;
+        bool hot = state == MetalTileState.Active || state == MetalTileState.Flaring;
 
         Widgets.DrawBoxSolid(rect, inert ? new Color(0.078f, 0.071f, 0.063f) : new Color(0.098f, 0.090f, 0.075f));
         Widgets.DrawBoxSolidWithOutline(
             rect,
             Color.clear,
-            state == MetalTileState.Active ? activeTint : new Color(0.204f, 0.180f, 0.149f)
+            hot ? activeTint : new Color(0.204f, 0.180f, 0.149f)
         );
 
-        if (state == MetalTileState.Active) {
-            Widgets.DrawBoxSolid(rect, new Color(activeTint.r, activeTint.g, activeTint.b, 0.10f));
+        if (hot) {
+            // Flaring pulses because it is a burst the player chose and will want
+            // to notice ending; a steady burn just stays lit.
+            float wash = state == MetalTileState.Flaring
+                ? 0.26f + Mathf.Sin(Time.realtimeSinceStartup * 6f) * 0.08f
+                : 0.18f;
+            Widgets.DrawBoxSolid(rect, new Color(activeTint.r, activeTint.g, activeTint.b, wash));
+            Widgets.DrawBoxSolid(
+                new Rect(rect.x, rect.y, state == MetalTileState.Flaring ? 4f : 3f, rect.height),
+                activeTint
+            );
         }
 
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
         // Empty sits between inert and stocked: there is something to work with
         // here, just nothing in it yet, so it dims without going dead.
-        bool empty = !inert && fraction <= 0f && state != MetalTileState.Active;
+        bool empty = !inert && fraction <= 0f && !hot;
 
-        Rect iconRect = new Rect(rect.x + 5f, rect.y + 3f, GlyphSize, GlyphSize);
+        Rect iconRect = new Rect(rect.x + (hot ? 8f : 5f), rect.y + 3f, GlyphSize, GlyphSize);
         if (icon != null) {
             Color prev = GUI.color;
             GUI.color = inert
@@ -73,8 +84,8 @@ public static class MetalTile {
         Rect nameRect = new Rect(iconRect.xMax + 5f, rect.y + 2f, noteRect.x - iconRect.xMax - 7f, tinyH);
         Color nameColor = inert
             ? new Color(0.435f, 0.412f, 0.373f)
-            : state == MetalTileState.Active
-                ? new Color(0.886f, 0.933f, 0.961f)
+            : hot
+                ? new Color(0.949f, 0.965f, 0.980f)
                 : empty
                     ? new Color(0.678f, 0.651f, 0.600f)
                     : new Color(0.769f, 0.737f, 0.675f);

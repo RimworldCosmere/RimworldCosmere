@@ -81,7 +81,7 @@ public static class RadialRingRenderer {
         Rect texRect = new Rect(center.x - texDrawSize / 2f, center.y - texDrawSize / 2f, texDrawSize, texDrawSize);
 
         Color backingPrev = GUI.color;
-        GUI.color = new Color(0.09f, 0.10f, 0.122f, 0.97f);
+        GUI.color = new Color(0.16f, 0.175f, 0.205f, 0.97f);
         GUI.DrawTexture(texRect, RadialWedgeTex.Backing());
         GUI.color = backingPrev;
 
@@ -91,9 +91,9 @@ public static class RadialRingRenderer {
 
             Color bg = tint.HasValue
                 ? Color.Lerp(DockPalette.Panel, tint.Value, 0.18f)
-                : new Color(0.09f, 0.10f, 0.122f);
+                : new Color(0.16f, 0.175f, 0.205f);
             bg.a = 0.97f;
-            if (i == hoveredIndex) bg = Color.Lerp(bg, Color.white, 0.18f);
+            if (i == hoveredIndex) bg = new Color(0.42f, 0.31f, 0.14f, 0.97f);
             if (isLocked) bg = new Color(bg.r, bg.g, bg.b, 0.4f);
             else if (hasInsufficientResources) bg = new Color(bg.r, bg.g, bg.b, 0.6f);
 
@@ -111,6 +111,11 @@ public static class RadialRingRenderer {
 
             GUI.color = bg;
             GUI.DrawTexture(texRect, wedgeTex);
+
+            if (i == hoveredIndex && !isLocked) {
+                GUI.color = new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.85f);
+                GUI.DrawTexture(texRect, RadialWedgeTex.InnerEdge(count));
+            }
 
             GUI.color = prevColor;
             GUI.matrix = prevMatrix;

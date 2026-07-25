@@ -9,6 +9,7 @@ public static class RadialWedgeTex {
     private static Texture2D? discCache;
     private static Texture2D? vignetteCache;
     private static Texture2D? backingCache;
+    private static readonly Dictionary<int, Texture2D> edgeCache = new Dictionary<int, Texture2D>();
 
     public static Texture2D Backing() {
         if (backingCache != null) return backingCache;
@@ -25,7 +26,8 @@ public static class RadialWedgeTex {
                 float y = (py + 0.5f) / TexSize - 0.5f;
                 float r = Mathf.Sqrt(x * x + y * y);
                 float alpha = Mathf.Clamp01((outer - r) / aa) * Mathf.Clamp01((r - inner) / aa);
-                pixels[py * TexSize + px] = new Color32(255, 255, 255, (byte)(255f * alpha));
+                byte shade = DepthShade(r, inner, outer);
+                pixels[py * TexSize + px] = new Color32(shade, shade, shade, (byte)(255f * alpha));
             }
         }
 
@@ -54,6 +56,39 @@ public static class RadialWedgeTex {
         tex.SetPixels32(pixels);
         tex.Apply(false, true);
         vignetteCache = tex;
+        return tex;
+    }
+
+    private static byte DepthShade(float radius, float inner, float outer) {
+        float t = Mathf.Clamp01(Mathf.InverseLerp(inner, outer, radius));
+        return (byte)(255f * Mathf.Lerp(1f, 0.52f, t));
+    }
+
+    public static Texture2D InnerEdge(int count) {
+        if (edgeCache.TryGetValue(count, out Texture2D cached)) return cached;
+
+        float halfArcRad = 180f / count * Mathf.Deg2Rad;
+        const float inner = 0.5f * (RadialLayout.AbilityRingInner / RadialLayout.AbilityRingOuter);
+        const float aa = 1.5f / TexSize;
+        float band = 3.5f / RadialLayout.AbilityRingOuter * 0.5f;
+
+        Texture2D tex = new Texture2D(TexSize, TexSize, TextureFormat.ARGB32, false);
+        Color32[] pixels = new Color32[TexSize * TexSize];
+        for (int py = 0; py < TexSize; py++) {
+            for (int px = 0; px < TexSize; px++) {
+                float x = (px + 0.5f) / TexSize - 0.5f;
+                float y = (py + 0.5f) / TexSize - 0.5f;
+                float r = Mathf.Sqrt(x * x + y * y);
+                float theta = Mathf.Abs(Mathf.Atan2(x, y));
+                float radialA = Mathf.Clamp01((r - inner) / aa) * Mathf.Clamp01((inner + band - r) / aa);
+                float angularA = Mathf.Clamp01((halfArcRad - theta) / (aa * 2f));
+                pixels[py * TexSize + px] = new Color32(255, 255, 255, (byte)(255f * radialA * angularA));
+            }
+        }
+
+        tex.SetPixels32(pixels);
+        tex.Apply(false, true);
+        edgeCache[count] = tex;
         return tex;
     }
 
@@ -100,7 +135,8 @@ public static class RadialWedgeTex {
                 float radialA = Mathf.Clamp01((outer - r) / aa) * Mathf.Clamp01((r - inner) / aa);
                 float angularA = Mathf.Clamp01((halfArcRad - gapRad - theta) / (aa * 2f));
                 byte a = (byte)(255f * radialA * angularA);
-                pixels[py * TexSize + px] = new Color32(255, 255, 255, a);
+                byte shade = DepthShade(r, inner, outer);
+                pixels[py * TexSize + px] = new Color32(shade, shade, shade, a);
             }
         }
 

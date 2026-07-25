@@ -133,6 +133,11 @@ public sealed class RadialWindow : Verse.Window {
     }
 
     private void UpdateHover(Vector2 center, Vector2 mouse) {
+        if ((mouse - center).sqrMagnitude <= RadialLayout.CenterRadius * RadialLayout.CenterRadius) {
+            state.HoveredIndex = -1;
+            return;
+        }
+
         switch (state.Kind) {
             case RadialStateKind.SystemTier:
                 state.HoveredIndex = RadialLayout.HitTest(

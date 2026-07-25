@@ -80,6 +80,11 @@ public static class RadialRingRenderer {
         float texDrawSize = RadialLayout.AbilityRingOuter * 2f;
         Rect texRect = new Rect(center.x - texDrawSize / 2f, center.y - texDrawSize / 2f, texDrawSize, texDrawSize);
 
+        Color backingPrev = GUI.color;
+        GUI.color = new Color(0.09f, 0.10f, 0.122f, 0.97f);
+        GUI.DrawTexture(texRect, RadialWedgeTex.Backing());
+        GUI.color = backingPrev;
+
         for (int i = 0; i < count; i++) {
             (string label, Texture2D? icon, Color? tint, float? reserveFraction, bool isActive, bool isFlaring,
                     bool isSustained, bool isLocked, string? lockReason, bool hasInsufficientResources) = getAt(i);

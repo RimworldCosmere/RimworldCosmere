@@ -8,6 +8,32 @@ public static class RadialWedgeTex {
     private static readonly Dictionary<int, Texture2D> cache = new Dictionary<int, Texture2D>();
     private static Texture2D? discCache;
     private static Texture2D? vignetteCache;
+    private static Texture2D? backingCache;
+
+    public static Texture2D Backing() {
+        if (backingCache != null) return backingCache;
+
+        const float outer = 0.5f;
+        const float inner = 0.5f * (RadialLayout.AbilityRingInner / RadialLayout.AbilityRingOuter);
+        const float aa = 1.5f / TexSize;
+
+        Texture2D tex = new Texture2D(TexSize, TexSize, TextureFormat.ARGB32, false);
+        Color32[] pixels = new Color32[TexSize * TexSize];
+        for (int py = 0; py < TexSize; py++) {
+            for (int px = 0; px < TexSize; px++) {
+                float x = (px + 0.5f) / TexSize - 0.5f;
+                float y = (py + 0.5f) / TexSize - 0.5f;
+                float r = Mathf.Sqrt(x * x + y * y);
+                float alpha = Mathf.Clamp01((outer - r) / aa) * Mathf.Clamp01((r - inner) / aa);
+                pixels[py * TexSize + px] = new Color32(255, 255, 255, (byte)(255f * alpha));
+            }
+        }
+
+        tex.SetPixels32(pixels);
+        tex.Apply(false, true);
+        backingCache = tex;
+        return tex;
+    }
 
     public static Texture2D Vignette() {
         if (vignetteCache != null) return vignetteCache;
@@ -61,7 +87,7 @@ public static class RadialWedgeTex {
         const float outer = 0.5f;
         const float inner = 0.5f * (RadialLayout.AbilityRingInner / RadialLayout.AbilityRingOuter);
         const float aa = 1.5f / TexSize;
-        const float gapRad = 0.012f;
+        const float gapRad = 0.004f;
 
         Texture2D tex = new Texture2D(TexSize, TexSize, TextureFormat.ARGB32, false);
         Color32[] pixels = new Color32[TexSize * TexSize];

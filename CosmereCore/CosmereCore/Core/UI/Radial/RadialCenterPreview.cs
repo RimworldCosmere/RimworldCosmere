@@ -33,6 +33,7 @@ public static class RadialCenterPreview {
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
         float smallH = Text.LineHeightOf(GameFont.Small);
         float mediumH = Text.LineHeightOf(GameFont.Medium);
+        int titleLines = 1;
         bool canFlare = hoveredLeaf != null
             && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn
             && !hoveredLeaf.IsLocked;
@@ -68,17 +69,18 @@ public static class RadialCenterPreview {
         }
         else {
             bool flareArmed = ShiftHeld() && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn && !hoveredLeaf.IsLocked;
-            UIText.EllipsisLabel(
-                ChordRow(center, BreadcrumbY + TitleGap, mediumH),
-                flareArmed
-                    ? "CC_Radial_Action_Flare".Translate((hoveredTitle ?? hoveredLeaf.Label).Named("METAL"))
-                    : hoveredLeaf.Label,
-                GameFont.Medium,
-                TextAnchor.MiddleCenter,
+            string title = flareArmed
+                ? "CC_Radial_Action_Flare".Translate((hoveredTitle ?? hoveredLeaf.Label).Named("METAL"))
+                : hoveredLeaf.Label;
+            titleLines = DrawWrappedTitle(
+                center,
+                BreadcrumbY + TitleGap,
+                mediumH,
+                title,
                 flareArmed ? DockPalette.Flare : new Color(0.75f, 0.89f, 0.95f)
             );
 
-            float bodyTop = BreadcrumbY + TitleGap + mediumH + (canFlare ? TitleHintGap + tinyH : 0f) + DescriptionGap;
+            float bodyTop = BreadcrumbY + TitleGap + mediumH * titleLines + (canFlare ? TitleHintGap + tinyH : 0f) + DescriptionGap;
             float bodyBottom = ButtonRowY - BarGap - (tinyH + 6f) - DescriptionGap;
 
             if (!hoveredLeaf.Description.NullOrEmpty()) {
@@ -144,7 +146,7 @@ public static class RadialCenterPreview {
             string verb = browseMode ? "CC_Radial_Verb_Click".Translate() : "CC_Radial_Verb_Release".Translate();
             bool shiftHeld = ShiftHeld();
             UIText.EllipsisLabel(
-                ChordRow(center, BreadcrumbY + TitleGap + mediumH + TitleHintGap, tinyH),
+                ChordRow(center, BreadcrumbY + TitleGap + mediumH * titleLines + TitleHintGap, tinyH),
                 shiftHeld
                     ? "CC_Radial_Hint_FlareOnly".Translate(verb.Named("VERB"))
                     : "CC_Radial_Hint_BurnFlare".Translate(verb.Named("VERB")),
@@ -209,6 +211,28 @@ public static class RadialCenterPreview {
         }
 
         return low <= 0 ? "" : text.Substring(0, low).TrimEnd() + "...";
+    }
+
+    /// Draws the action title, wrapping to a second line when it will not fit,
+    /// and returns how many lines it used so the rows below can shift down.
+    private static int DrawWrappedTitle(Vector2 center, float y, float lineHeight, string title, Color color) {
+        Rect oneLine = ChordRow(center, y, lineHeight);
+        float needed;
+        using (new TextBlock(GameFont.Medium)) {
+            needed = Text.CalcSize(title).x;
+        }
+
+        if (needed <= oneLine.width) {
+            UIText.EllipsisLabel(oneLine, title, GameFont.Medium, TextAnchor.MiddleCenter, color);
+            return 1;
+        }
+
+        Rect twoLines = ChordRow(center, y, lineHeight * 2f);
+        using (new TextBlock(GameFont.Medium, TextAnchor.UpperCenter, color)) {
+            Widgets.Label(twoLines, title);
+        }
+
+        return 2;
     }
 
     private static bool ShiftHeld() {

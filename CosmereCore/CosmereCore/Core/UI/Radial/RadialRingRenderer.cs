@@ -93,6 +93,9 @@ public static class RadialRingRenderer {
                 ? Color.Lerp(DockPalette.Panel, tint.Value, 0.18f)
                 : new Color(0.16f, 0.175f, 0.205f);
             bg.a = 0.97f;
+            // A lit metal keeps a warm fill of its own so it reads as burning
+            // even when the cursor is elsewhere; hovering still wins over it.
+            if (isActive) bg = new Color(0.30f, 0.20f, 0.09f, 0.97f);
             if (i == hoveredIndex) bg = new Color(0.42f, 0.31f, 0.14f, 0.97f);
             if (isLocked) bg = new Color(bg.r, bg.g, bg.b, 0.4f);
             else if (hasInsufficientResources) bg = new Color(bg.r, bg.g, bg.b, 0.6f);

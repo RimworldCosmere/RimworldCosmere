@@ -3,16 +3,16 @@ using UnityEngine;
 namespace Cosmere.Core.UI.Radial;
 
 public static class RadialLayout {
-    public const float SystemRingInner = 124f;
-    public const float SystemRingOuter = 300f;
-    public const float SubsectionRingInner = 124f;
-    public const float SubsectionRingOuter = 300f;
-    public const float AbilityRingInner = 124f;
-    public const float AbilityRingOuter = 300f;
-    public const float CenterRadius = 124f;
+    public const float SystemRingInner = 140f;
+    public const float SystemRingOuter = 340f;
+    public const float SubsectionRingInner = 140f;
+    public const float SubsectionRingOuter = 340f;
+    public const float AbilityRingInner = 140f;
+    public const float AbilityRingOuter = 340f;
+    public const float CenterRadius = 140f;
 
-    public const float IconBandRadius = 180f;
-    public const float LabelBandRadius = 266f;
+    public const float IconBandRadius = 202f;
+    public const float LabelBandRadius = 300f;
 
     public static float ChordWidthAt(float radius, int wedgeCount) {
         if (wedgeCount <= 0) return 0f;

@@ -144,8 +144,10 @@ public sealed class RadialWindow : Verse.Window {
     }
 
     private void UpdateHover(Vector2 center, Vector2 mouse) {
+        // Inside the centre disc the last hovered wedge stays selected, so its
+        // detail and the info button remain reachable while the cursor travels
+        // in to press them.
         if ((mouse - center).sqrMagnitude <= RadialLayout.CenterRadius * RadialLayout.CenterRadius) {
-            state.HoveredIndex = -1;
             return;
         }
 
@@ -221,7 +223,7 @@ public sealed class RadialWindow : Verse.Window {
             return;
         }
 
-        if (e.type == EventType.MouseDown && e.button == 0 && state.HoveredIndex >= 0) {
+        if (e.type == EventType.MouseDown && e.button == 0 && state.HoveredIndex >= 0 && !CursorInCentre()) {
             Advance();
             RimWorld.SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
             e.Use();
@@ -294,11 +296,21 @@ public sealed class RadialWindow : Verse.Window {
         Close(false);
     }
 
+    private bool CursorInCentre() {
+        Vector2 mouse = Event.current != null ? Event.current.mousePosition : Verse.UI.MousePositionOnUIInverted;
+        return (mouse - Anchor).sqrMagnitude <= RadialLayout.CenterRadius * RadialLayout.CenterRadius;
+    }
+
     private static bool ShiftHeld() {
         return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
     }
 
     public void TryCommitOnRelease(bool flareShift) {
+        if (CursorInCentre()) {
+            Close(false);
+            return;
+        }
+
         if (state.Kind == RadialStateKind.AbilityTier && state.HoveredIndex >= 0) {
             CommitAndClose(flareShift);
             return;

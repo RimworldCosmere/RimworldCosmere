@@ -23,6 +23,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     private bool equippedInt = true;
 
+    private float compoundedAmountInt;
     private float storedAmountInt;
     private List<StoredMemory> storedMemoriesInt = [];
     public Pawn? owner { get; private set; }
@@ -52,15 +53,37 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
     public float MaxAmount => props.maxAmount;
 
-    public bool CanStore => IsCoppermind ? false : Equipped && StoredAmount < MaxAmount;
-    public bool CanTap => IsCoppermind ? false : Equipped && StoredAmount > 0;
+    public float TotalStored => storedAmountInt + compoundedAmountInt;
+    public float FreeSpace => Mathf.Max(0f, MaxAmount - TotalStored);
+
+    // Both pools draw on the same space, so filling either is bounded by the total.
+    public bool CanStore => !IsCoppermind && Equipped && FreeSpace > 0f;
+    public bool CanTap => !IsCoppermind && Equipped && StoredAmount > 0f;
+    public bool CanTapCompounded => !IsCoppermind && Equipped && CompoundedAmount > 0f;
+
+    // Worn metalminds can hold compounded charge but cannot be compounded into.
+    public bool CanStoreCompounded => false;
+    public bool IsImplanted => false;
 
     public float StoredAmount {
         get => storedAmountInt;
         private set {
             storedAmountInt = value;
-            investitureHolder.currentInvestitureSelf = value * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
+            SyncInvestitureMirror();
         }
+    }
+
+    public float CompoundedAmount {
+        get => compoundedAmountInt;
+        private set {
+            compoundedAmountInt = value;
+            SyncInvestitureMirror();
+        }
+    }
+
+    private void SyncInvestitureMirror() {
+        investitureHolder.currentInvestitureSelf =
+            TotalStored * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
     }
 
     public MetalDef? Metal {
@@ -85,7 +108,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         if (!CanStore) return;
         if (!ValidateOwner()) return;
 
-        StoredAmount = Mathf.Clamp(StoredAmount + amount, 0, MaxAmount);
+        StoredAmount = Mathf.Clamp(StoredAmount + amount, 0, MaxAmount - CompoundedAmount);
     }
 
     public void ConsumeStored(float amount) {
@@ -93,6 +116,20 @@ public class Metalmind : ThingComp, IMetalmindSource {
         if (!ValidateOwner()) return;
 
         StoredAmount = Mathf.Clamp(StoredAmount - amount, 0, MaxAmount);
+    }
+
+    public void AddCompounded(float amount) {
+        if (!CanStore) return;
+        if (!ValidateOwner()) return;
+
+        CompoundedAmount = Mathf.Clamp(CompoundedAmount + amount, 0, MaxAmount - StoredAmount);
+    }
+
+    public void ConsumeCompounded(float amount) {
+        if (!CanTapCompounded) return;
+        if (!ValidateOwner()) return;
+
+        CompoundedAmount = Mathf.Clamp(CompoundedAmount - amount, 0, MaxAmount);
     }
 
     public bool CanFitMemory(float magnitude) {
@@ -183,6 +220,7 @@ public class Metalmind : ThingComp, IMetalmindSource {
         base.PostExposeData();
 
         Scribe_Values.Look(ref storedAmountInt, "storedAmount");
+        Scribe_Values.Look(ref compoundedAmountInt, "compoundedAmount", 0f);
         Scribe_Values.Look(ref equippedInt, "equipped");
         Scribe_Collections.Look(ref storedMemoriesInt, "StoredMemories", LookMode.Deep);
 
@@ -194,6 +232,14 @@ public class Metalmind : ThingComp, IMetalmindSource {
 
             owner = GetHoldingPawn() ?? owner;
             storedMemoriesInt ??= [];
+
+            // A save written when this metalmind held more capacity would load
+            // over-full once both pools are counted.
+            if (storedAmountInt + compoundedAmountInt > MaxAmount) {
+                compoundedAmountInt = Mathf.Max(0f, MaxAmount - storedAmountInt);
+            }
+
+            SyncInvestitureMirror();
         }
     }
 

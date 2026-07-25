@@ -48,6 +48,7 @@ public class ImplantMetalmind : Recipe_Surgery {
             metalDefName = metalmindComp.Metal?.defName ?? "Unknown",
             metalmindType = metalmindComp.parent.def.defName,
             StoredAmount = metalmindComp.StoredAmount,
+            CompoundedAmount = metalmindComp.CompoundedAmount,
             MaxAmount = metalmindComp.MaxAmount,
             ownerName = metalmindComp.owner?.Name?.ToStringFull ?? "",
         };

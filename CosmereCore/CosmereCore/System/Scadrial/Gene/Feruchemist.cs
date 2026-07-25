@@ -12,7 +12,15 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.Gene;
 
+/// Which stored pool the tap controls act on.
+public enum FeruchemyChannel {
+    Ordinary,
+    Compounded,
+}
+
 public class Feruchemist : Metalborn {
+    /// The dial's neutral point. Below it the pawn taps, above it they store.
+    public const float IdleTarget = 50f;
     public const float MaxSeverity = 20f;
     public const float MaxTransferPerSecond = 10f;
 
@@ -30,7 +38,12 @@ public class Feruchemist : Metalborn {
 
     private HediffDef? cachedTapHediffDef;
     private int metalmindsLastCachedTick = -1;
+    private HediffDef? cachedTapCompoundedHediffDef;
     private float savantDecayOffset;
+
+    /// Which pool the tap controls draw from. Compounded charge pays out through
+    /// its own hediff ladder rather than a bigger severity number.
+    public FeruchemyChannel channel = FeruchemyChannel.Ordinary;
 
     public List<IMetalmindSource> metalminds {
         get {
@@ -83,20 +96,45 @@ public class Feruchemist : Metalborn {
         }
     }
 
+    private float actualCompounded {
+        get {
+            float total = 0f;
+            List<IMetalmindSource> mms = metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                total += mms[i].CompoundedAmount;
+            }
+
+            return total;
+        }
+    }
+
+    /// Room left across every metalmind this pawn can actually compound into.
+    public float CompoundedFreeSpace {
+        get {
+            float total = 0f;
+            List<IMetalmindSource> mms = metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                if (mms[i].CanStoreCompounded) total += mms[i].FreeSpace;
+            }
+
+            return total;
+        }
+    }
+
     public override float InitialResourceMax => 100f;
     public override float Max => 100f;
 
     public override float Value {
-        get => actualMax <= 0f ? 0f : actualValue / actualMax * Max;
+        get => actualMax <= 0f ? 0f : (actualValue + actualCompounded) / actualMax * Max;
         set {
             if (actualMax <= 0f) return;
             float targetTotal = value / Max * actualMax;
-            float delta = targetTotal - actualValue;
+            float delta = targetTotal - (actualValue + actualCompounded);
             List<IMetalmindSource> mms = metalminds;
             if (delta > 0f) {
                 for (int i = 0; i < mms.Count && delta > 0f; i++) {
                     if (!mms[i].CanStore) continue;
-                    float add = Mathf.Min(mms[i].MaxAmount - mms[i].StoredAmount, delta);
+                    float add = Mathf.Min(mms[i].FreeSpace, delta);
                     if (add > 0f) { mms[i].AddStored(add); delta -= add; }
                 }
             }
@@ -106,6 +144,15 @@ public class Feruchemist : Metalborn {
                     if (!mms[i].CanTap) continue;
                     float remove = Mathf.Min(mms[i].StoredAmount, delta);
                     if (remove > 0f) { mms[i].ConsumeStored(remove); delta -= remove; }
+                }
+
+                // Setting the resource directly has to be able to reach zero, so it
+                // falls through to compounded charge once ordinary runs out. The
+                // gameplay tap path deliberately does not - that stays explicit.
+                for (int i = 0; i < mms.Count && delta > 0f; i++) {
+                    if (!mms[i].CanTapCompounded) continue;
+                    float remove = Mathf.Min(mms[i].CompoundedAmount, delta);
+                    if (remove > 0f) { mms[i].ConsumeCompounded(remove); delta -= remove; }
                 }
             }
         }
@@ -128,6 +175,13 @@ public class Feruchemist : Metalborn {
 
     private Hediff? compoundHediff => pawn.health.hediffSet.GetFirstHediffOfDef(compoundHediffDef);
 
+    private HediffDef? tapCompoundedHediffDef =>
+        cachedTapCompoundedHediffDef ??=
+            DefDatabase<HediffDef>.GetNamedSilentFail("Cosmere_Scadrial_Hediff_TapCompounded" + metal.defName);
+
+    private Verse.Hediff? tapCompoundedHediff =>
+        tapCompoundedHediffDef == null ? null : pawn.health.hediffSet.GetFirstHediffOfDef(tapCompoundedHediffDef);
+
     private HediffDef? savantHediffDef =>
         cachedSavantHediffDef ??= ScadrialSavantUtility.GetFeruchemicalSavantHediffDef(metal);
 
@@ -145,7 +199,31 @@ public class Feruchemist : Metalborn {
         }
     }
 
-    public bool isTapping => tapHediffDef != null && pawn.health.hediffSet.HasHediff(tapHediffDef);
+    public bool canTapCompounded {
+        get {
+            List<IMetalmindSource> mms = metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                if (mms[i].CanTapCompounded) return true;
+            }
+
+            return false;
+        }
+    }
+
+    public bool canStoreCompounded {
+        get {
+            List<IMetalmindSource> mms = metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                if (mms[i].CanStoreCompounded) return true;
+            }
+
+            return false;
+        }
+    }
+
+    public bool isTapping =>
+        (tapHediffDef != null && pawn.health.hediffSet.HasHediff(tapHediffDef)) ||
+        (tapCompoundedHediffDef != null && pawn.health.hediffSet.HasHediff(tapCompoundedHediffDef));
 
     public bool canStore {
         get {
@@ -183,14 +261,14 @@ public class Feruchemist : Metalborn {
 
             float perSecond = AmountPerSecond * severity;
 
-            if (targetValue < 50f) return canTap ? -perSecond : 0f;
+            if (targetValue < IdleTarget) return canTap ? -perSecond : 0f;
             return canStore ? perSecond : 0f;
         }
     }
 
     private float effectiveSeverity {
         get {
-            float delta = targetValue - 50f;
+            float delta = targetValue - IdleTarget;
             if (Mathf.Abs(delta) < 2f) return 0f;
 
             float exponent = 2.5f;
@@ -216,7 +294,9 @@ public class Feruchemist : Metalborn {
     }
 
     public override void Reset() {
-        targetValue = 50f;
+        channel = FeruchemyChannel.Ordinary;
+        TryRemoveHediffByDef(tapCompoundedHediffDef);
+        targetValue = IdleTarget;
         TryRemoveHediffByDef(storeHediffDef);
         TryRemoveHediffByDef(tapHediffDef);
     }
@@ -226,13 +306,22 @@ public class Feruchemist : Metalborn {
         MetalbornUtility.SyncFeruchemistTrait(pawn);
     }
 
+    public override void ExposeData() {
+        base.ExposeData();
+
+        Scribe_Values.Look(ref targetValue, "targetValue", IdleTarget);
+        Scribe_Values.Look(ref savantDecayOffset, "savantDecayOffset");
+        Scribe_Values.Look(ref channel, "channel");
+    }
+
     public override void TickInterval(int delta) {
         base.TickInterval(delta);
 
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
 
         TickCopper();
-        if (!canTap && isTapping && !isCompounding) Reset();
+        bool tapAvailable = channel == FeruchemyChannel.Compounded ? canTapCompounded : canTap;
+        if (!tapAvailable && isTapping && !isCompounding) Reset();
         if (!canStore && isStoring && !isCompounding) Reset();
         TickSeverityHediffs();
         TickStoreOrTap();
@@ -250,24 +339,34 @@ public class Feruchemist : Metalborn {
 
     private void TickSeverityHediffs() {
         if (effectiveSeverity <= 0f) return;
-        if (targetValue < 50 && canTap) {
+        if (targetValue < IdleTarget && (channel == FeruchemyChannel.Compounded ? canTapCompounded : canTap)) {
             TryRemoveHediffByDef(storeHediffDef);
-            pawn.health.GetOrAddHediff(tapHediffDef).Severity = effectiveSeverity;
+
+            bool compounded = channel == FeruchemyChannel.Compounded;
+            HediffDef? active = compounded ? tapCompoundedHediffDef : tapHediffDef;
+            TryRemoveHediffByDef(compounded ? tapHediffDef : tapCompoundedHediffDef);
+            if (active != null) pawn.health.GetOrAddHediff(active).Severity = effectiveSeverity;
         }
-        else if (targetValue > 50 && canStore) {
+        else if (targetValue > IdleTarget && canStore) {
             TryRemoveHediffByDef(tapHediffDef);
             pawn.health.GetOrAddHediff(storeHediffDef).Severity = effectiveSeverity;
         }
     }
 
     private void TickStoreOrTap() {
+        // Reads the curve rather than the hediff's severity. Compounded tapping
+        // amplifies through its own stage ladder, so if the drain read severity
+        // back it would move ten times the charge as well.
+        float severity = effectiveSeverity;
+        if (severity <= 0f) return;
+
+        float amount = AmountPerSecond * severity;
         if (isStoring) {
-            Hediff? sh = storeHediff;
-            if (sh != null) AddToStore(AmountPerSecond * sh.Severity);
+            AddToStore(amount);
         }
         else if (isTapping) {
-            Hediff? th = tapHediff;
-            if (th != null) RemoveFromStore(AmountPerSecond * th.Severity);
+            if (channel == FeruchemyChannel.Compounded) RemoveCompoundedFromStore(amount);
+            else RemoveFromStore(amount);
         }
     }
 
@@ -288,25 +387,56 @@ public class Feruchemist : Metalborn {
     }
 
     public bool AddToStore(float amount) {
+        return Distribute(amount, static m => m.CanStore, static (m, a) => m.AddStored(a), static m => m.FreeSpace);
+    }
+
+    public bool AddCompoundedToStore(float amount) {
+        return Distribute(
+            amount,
+            static m => m.CanStoreCompounded,
+            static (m, a) => m.AddCompounded(a),
+            static m => m.FreeSpace
+        );
+    }
+
+    public bool RemoveCompoundedFromStore(float amount) {
+        return Distribute(
+            amount,
+            static m => m.CanTapCompounded,
+            static (m, a) => m.ConsumeCompounded(a),
+            static m => m.CompoundedAmount
+        );
+    }
+
+    /// Carries the remainder across sources. Dumping the full amount into the first
+    /// eligible metalmind let its clamp discard the overflow silently.
+    private bool Distribute(
+        float amount,
+        Func<IMetalmindSource, bool> eligible,
+        Action<IMetalmindSource, float> apply,
+        Func<IMetalmindSource, float> room
+    ) {
+        if (amount <= 0f) return false;
+
+        bool moved = false;
+        float remaining = amount;
         List<IMetalmindSource> mms = metalminds;
-        for (int i = 0; i < mms.Count; i++) {
-            if (!mms[i].CanStore) continue;
-            mms[i].AddStored(amount);
-            return true;
+        for (int i = 0; i < mms.Count && remaining > 0f; i++) {
+            if (!eligible(mms[i])) continue;
+
+            float take = Mathf.Min(room(mms[i]), remaining);
+            if (take <= 0f) continue;
+
+            apply(mms[i], take);
+            remaining -= take;
+            moved = true;
         }
 
-        return false;
+        return moved;
     }
 
     public bool RemoveFromStore(float amount) {
-        List<IMetalmindSource> mms = metalminds;
-        for (int i = 0; i < mms.Count; i++) {
-            if (!mms[i].CanTap) continue;
-            mms[i].ConsumeStored(amount);
-            return true;
-        }
-
-        return false;
+        return Distribute(amount, static m => m.CanTap, static (m, a) => m.ConsumeStored(a), static m => m.StoredAmount);
     }
 
     public override IEnumerable<Verse.Gizmo> GetGizmos() {

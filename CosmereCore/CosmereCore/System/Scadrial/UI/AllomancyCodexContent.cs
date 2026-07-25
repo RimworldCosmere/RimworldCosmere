@@ -57,17 +57,36 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
             y += 28f;
         }
 
+        // Seventeen metals never fitted the panel, and without a scroll view the
+        // ones past the fold were simply cut off rather than reachable.
+        const float rowHeight = 40f;
+        const float rowGap = 2f;
+        Rect listRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
+        Rect viewRect = new Rect(0f, 0f, listRect.width - 20f, genes.Count * (rowHeight + rowGap));
+        Widgets.BeginScrollView(listRect, ref progressionScroll, viewRect);
+
+        y = 0f;
         for (int i = 0; i < genes.Count; i++) {
             Allomancer gene = genes[i];
             MetallicArtsMetalDef metal = gene.metal;
             bool hasVialControls = !metal.IsOneOf(MetalDefOf.Duralumin, MetalDefOf.Nicrosil);
 
-            const float rowHeight = 40f;
-            Rect row = new Rect(rect.x, y, rect.width, rowHeight);
+            Rect row = new Rect(0f, y, viewRect.width, rowHeight);
             if (i % 2 == 0) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
 
-            Rect swatch = new Rect(row.x + 4f, row.y + 15f, 10f, 10f);
-            Widgets.DrawBoxSolid(swatch, metal.color);
+            // The metal's own mark in the metal's own colour, rather than an
+            // anonymous chip that only the colour distinguished.
+            Rect swatch = new Rect(row.x + 6f, row.y + (rowHeight - 22f) / 2f, 22f, 22f);
+            Texture2D? mark = metal.allomancy?.invertedIcon;
+            if (mark != null) {
+                Color prevMark = GUI.color;
+                GUI.color = metal.color;
+                GUI.DrawTexture(swatch, mark);
+                GUI.color = prevMark;
+            }
+            else {
+                Widgets.DrawBoxSolid(swatch.ContractedBy(6f), metal.color);
+            }
 
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
                 Widgets.Label(new Rect(swatch.xMax + 8f, row.y, 130f, rowHeight), metal.LabelCap);
@@ -103,9 +122,13 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 DrawVialSettingsButton(vialButtonRect, gene);
             }
 
-            y += rowHeight + 2f;
+            y += rowHeight + rowGap;
         }
+
+        Widgets.EndScrollView();
     }
+
+    private Vector2 progressionScroll;
 
     public void DrawBonds(Rect rect, Pawn pawn, CodexState state) { }
     public void DrawMemories(Rect rect, Pawn pawn, CodexState state) { }

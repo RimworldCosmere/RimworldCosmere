@@ -26,10 +26,12 @@ public static class CodexChrome {
     public static Rect BodyRect(Rect tabRect, bool hasSwitcher) {
         float top = HeaderHeight + SubtabBarHeight;
         float left = hasSwitcher ? RailWidth : 0f;
+        // No horizontal gutter: the body runs to the frame, and content sets its
+        // own inset where it wants one.
         return new Rect(
-            tabRect.x + left + Gutter,
+            tabRect.x + left,
             tabRect.y + top + Gutter,
-            tabRect.width - left - Gutter * 2f,
+            tabRect.width - left,
             tabRect.height - top - Gutter * 2f
         );
     }

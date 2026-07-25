@@ -24,22 +24,21 @@ public static class SystemSwitcherStrip {
             ISystemSkin skin = SystemSkinRegistry.ForOrFallback(provider.SystemId);
             Rect orb = new Rect(railRect.x + (railRect.width - OrbSize) / 2f, y, OrbSize, OrbSize);
 
+            // No box and no ring: the mark alone carries it, lit in the system's
+            // own colour when chosen and muted otherwise.
             bool selected = i == state.SelectedSystemIndex;
-            if (selected) {
-                Widgets.DrawBoxSolid(orb.ExpandedBy(3f), new Color(skin.AccentColor.r, skin.AccentColor.g, skin.AccentColor.b, 0.25f));
-            }
-
-            Widgets.DrawBoxSolid(orb, DockPalette.PanelRaised);
-            Color ring = selected ? skin.AccentColor : DockPalette.BorderSubtle;
-            Widgets.DrawBoxSolidWithOutline(orb, Color.clear, ring);
+            Color mark = selected ? skin.AccentColor : DockPalette.MutedText;
 
             Texture2D? sigil = skin.Sigil;
             if (sigil != null) {
+                Color prev = GUI.color;
+                GUI.color = mark;
                 GUI.DrawTexture(orb.ContractedBy(3f), sigil);
+                GUI.color = prev;
             }
             else {
                 Rect dot = new Rect(orb.center.x - 4f, orb.center.y - 4f, 8f, 8f);
-                Widgets.DrawBoxSolid(dot, selected ? skin.AccentColor : DockPalette.MutedText);
+                Widgets.DrawBoxSolid(dot, mark);
             }
 
             string label = skin.HeaderLabel;

@@ -11,6 +11,7 @@ using Verse;
 
 namespace Cosmere.System.Scadrial.UI;
 
+[StaticConstructorOnStartup]
 public sealed class AllomancyCodexContent : ICodexContentProvider {
     public bool HasProgression(Pawn pawn) {
         return CollectAllomancers(pawn).Count > 0;

@@ -57,5 +57,5 @@
   <CC_Dock_Allomancy_BusyCompounding>Compounding is drawing on this metal.</CC_Dock_Allomancy_BusyCompounding>
   <CC_Dock_Allomancy_CompoundRate>+{RATE}/s</CC_Dock_Allomancy_CompoundRate>
   <CC_Dock_Allomancy_CompoundEta>current {ONE}, all {ALL}</CC_Dock_Allomancy_CompoundEta>
-  <CC_Dock_Feruchemy_Compounded>compounded</CC_Dock_Feruchemy_Compounded>
+  <CC_Dock_Feruchemy_Compound>compound</CC_Dock_Feruchemy_Compound>
 </LanguageData>

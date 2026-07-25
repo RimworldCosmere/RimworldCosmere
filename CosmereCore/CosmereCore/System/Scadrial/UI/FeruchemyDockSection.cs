@@ -175,7 +175,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         float buttonY = endsRect.yMax + 8f;
         if (capacity.CanStoreCompounded || capacity.Compounded > 0f) {
-            buttonY = DrawCompoundedDial(inner, endsRect.yMax + 6f, cell, gene, capacity) + 8f;
+            buttonY = DrawCompoundedDial(inner, endsRect.yMax + 6f, pawn, cell, gene, capacity) + 8f;
         }
 
         if (DockChrome.Button(
@@ -189,9 +189,16 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         }
     }
 
-    /// The compounded pool gets its own dial. Only compounding fills it, so the
-    /// store half is unreachable and says so rather than being hidden.
-    private float DrawCompoundedDial(Rect inner, float y, InvestitureCell cell, Feruchemist gene, Capacity capacity) {
+    /// The compounded pool gets its own dial: drag left to tap it, right to
+    /// compound into it, burning allomantic reserve to do so.
+    private float DrawCompoundedDial(
+        Rect inner,
+        float y,
+        Pawn pawn,
+        InvestitureCell cell,
+        Feruchemist gene,
+        Capacity capacity
+    ) {
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
 
         Rect dial = new Rect(inner.x, y, inner.width, DialHeight);
@@ -213,13 +220,13 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
         UIText.EllipsisLabel(
             ends,
-            "CC_Dock_Feruchemy_Compounded".Translate(),
+            "CC_Dock_Feruchemy_Compound".Translate(),
             GameFont.Tiny,
             TextAnchor.MiddleRight,
-            new Color(0.475f, 0.404f, 0.286f)
+            capacity.CanStoreCompounded ? CompoundTint : new Color(0.310f, 0.286f, 0.255f)
         );
 
-        float rate = gene.CompoundedTapRatePerSecond;
+        float rate = gene.CompoundedRatePerSecond;
         UIText.EllipsisLabel(
             ends,
             "CC_Dock_Feruchemy_Rate".Translate($"{rate:+0.00;-0.00;0.00}".Named("RATE")),
@@ -229,28 +236,53 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
 
         HandleDialDrag(dial, cell.SubsystemId + ":compounded", gene, capacity, true);
+        SyncCompounding(pawn, cell, gene);
         return ends.yMax;
+    }
+
+    /// The dial is the control, so the ability follows it. A dial pushed into the
+    /// compound half that cannot start falls back to idle rather than sitting on a
+    /// setting the pawn is not honouring.
+    private void SyncCompounding(Pawn pawn, InvestitureCell cell, Feruchemist gene) {
+        AllomancyAbility? ability = CompoundingAccess.AbilityFor(pawn, cell.SubsystemId);
+        if (ability == null) return;
+
+        bool wants = gene.compoundedTargetValue > IdleTarget;
+        if (wants == gene.isCompounding) return;
+
+        if (!wants) {
+            ability.UpdateStatus(BurningStatus.Off);
+            return;
+        }
+
+        if (!CompoundingAccess.Gate(pawn, gene, ability).Accepted) {
+            gene.compoundedTargetValue = IdleTarget;
+            return;
+        }
+
+        ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
     }
 
     private static void DrawCompoundedDialBacking(Rect rect, Feruchemist gene, Capacity capacity) {
         Widgets.DrawBoxSolid(rect, new Color(0.047f, 0.043f, 0.035f));
 
-        // Nothing can store into this pool, so the whole upper half stays shut.
-        Widgets.DrawBoxSolid(
-            new Rect(rect.center.x, rect.y, rect.width / 2f, rect.height),
-            new Color(0.098f, 0.090f, 0.075f)
-        );
+        Color blocked = new Color(0.098f, 0.090f, 0.075f);
         if (!capacity.CanTapCompounded) {
-            Widgets.DrawBoxSolid(
-                new Rect(rect.x, rect.y, rect.width / 2f, rect.height),
-                new Color(0.098f, 0.090f, 0.075f)
-            );
+            Widgets.DrawBoxSolid(new Rect(rect.x, rect.y, rect.width / 2f, rect.height), blocked);
+        }
+
+        if (!capacity.CanStoreCompounded) {
+            Widgets.DrawBoxSolid(new Rect(rect.center.x, rect.y, rect.width / 2f, rect.height), blocked);
         }
 
         float delta = gene.compoundedTargetValue - IdleTarget;
         if (delta < 0f) {
             float width = rect.width / 2f * Mathf.Clamp01(-delta / IdleTarget);
-            Widgets.DrawBoxSolid(new Rect(rect.center.x - width, rect.y, width, rect.height), CompoundTint);
+            Widgets.DrawBoxSolid(new Rect(rect.center.x - width, rect.y, width, rect.height), TapFill);
+        }
+        else if (delta > 0f) {
+            float width = rect.width / 2f * Mathf.Clamp01(delta / IdleTarget);
+            Widgets.DrawBoxSolid(new Rect(rect.center.x, rect.y, width, rect.height), CompoundTint);
         }
 
         Widgets.DrawBoxSolid(
@@ -282,7 +314,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         float min = (compounded ? capacity.CanTapCompounded : capacity.CanTap || capacity.CanTapCompounded)
             ? 0f
             : IdleTarget;
-        float max = !compounded && capacity.CanStore ? 100f : IdleTarget;
+        float max = (compounded ? capacity.CanStoreCompounded : capacity.CanStore) ? 100f : IdleTarget;
 
         Event? e = Event.current;
         if (e == null) return;

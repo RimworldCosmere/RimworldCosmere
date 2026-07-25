@@ -41,9 +41,13 @@ public class Feruchemist : Metalborn {
     private HediffDef? cachedTapCompoundedHediffDef;
     private float savantDecayOffset;
 
-    /// The compounded pool has its own dial. Nothing can store into it - only
-    /// compounding fills it - so this only ever travels below the idle point.
+    /// The compounded pool has its own dial: below idle it taps, above idle it
+    /// compounds, burning allomantic reserve to fill itself.
     public float compoundedTargetValue = IdleTarget;
+
+    /// How hard the dial is calling for compounding, nought to one.
+    public float CompoundFraction =>
+        Mathf.Clamp01((compoundedTargetValue - IdleTarget) / (100f - IdleTarget));
 
     public bool canTapAny => canTap || canTapCompounded;
 
@@ -274,9 +278,11 @@ public class Feruchemist : Metalborn {
 
     /// Charge moved per real second at the current dial setting, negative while
     /// tapping. Zero when the dial sits in its dead band or the direction is shut.
-    /// What the compounded dial is drawing, for its own readout.
-    public float CompoundedTapRatePerSecond {
+    /// What the compounded dial is moving, negative while tapping it and positive
+    /// while compounding into it.
+    public float CompoundedRatePerSecond {
         get {
+            if (compoundedTargetValue > IdleTarget) return CompoundStorePerSecond;
             if (compoundedTargetValue >= IdleTarget || !canTapCompounded) return 0f;
 
             return -AmountPerSecond * SeverityForTarget(compoundedTargetValue);

@@ -28,9 +28,14 @@ public class Compound : AllomanticHediff {
     /// yield rather than the burn, so practice fills faster off the same metal.
     protected const float MetalPerSecond = 0.12f;
 
-    public float MetalDrainPerSecond => MetalPerSecond;
+    public float MetalDrainPerSecond => MetalPerSecond * DialFraction;
 
-    public virtual float StorePerSecond => MetalPerSecond * ChargePerMetalUnit;
+    /// Scaled by how far the dial is pushed, so the player sets the pace rather
+    /// than compounding being one speed you either take or leave.
+    public virtual float StorePerSecond => MetalPerSecond * DialFraction * ChargePerMetalUnit;
+
+    private float DialFraction =>
+        pawn.genes?.GetFeruchemicGeneForMetal(metal) is { } gene ? gene.CompoundFraction : 1f;
 
     /// A Compounder practised in both arts wrings more out of the same swallowed
     /// metal, so yield rises with the average of the two skills.

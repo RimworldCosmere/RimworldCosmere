@@ -91,8 +91,8 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
     private void DrawStrip(Rect rect, Pawn pawn, MetalRow row) {
         InvestitureCell cell = row.Cell;
-        Allomancer? gene = FindGene(pawn, cell.SubsystemId);
-        if (gene == null) return;
+        // Nothing to draw for a metal this pawn cannot burn.
+        if (FindGene(pawn, cell.SubsystemId) == null) return;
 
         Widgets.DrawBoxSolid(rect, new Color(0.098f, 0.086f, 0.063f));
         Widgets.DrawBoxSolidWithOutline(rect, Color.clear, new Color(0.259f, 0.227f, 0.169f));
@@ -115,7 +115,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         );
         UIText.EllipsisLabel(
             new Rect(inner.x + inner.width * 0.6f, inner.y, inner.width * 0.4f, tinyH),
-            $"{gene.Value:0.00} / {gene.Max:0.00}",
+            $"{cell.Bar.Fraction * 100f:0}%",
             GameFont.Tiny,
             TextAnchor.MiddleRight,
             new Color(0.478f, 0.443f, 0.376f)

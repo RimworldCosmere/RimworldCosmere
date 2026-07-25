@@ -13,9 +13,10 @@ public sealed class InvestitureDockWindow : Verse.Window {
     private const float MarginBottom = 185f;
     private const float TabPadding = 150f;
     private const float PinButtonHeight = 24f;
+    private const float CollapsedOrbSize = 28f;
+    private const float CollapsedOrbGap = 10f;
 
     private readonly DockAccordion accordion = new DockAccordion();
-    private bool hovered;
     private bool pinned;
 
     public InvestitureDockWindow() {
@@ -36,12 +37,18 @@ public sealed class InvestitureDockWindow : Verse.Window {
     public override Vector2 InitialSize => new Vector2(CurrentWidth(), ComputeHeight());
 
     protected override void SetInitialSizeAndPosition() {
-        windowRect = ComputeRect();
+        windowRect = ComputeRect(null, []);
     }
 
     public override void DoWindowContents(Rect inRect) {
-        hovered = Mouse.IsOver(inRect);
-        Rect desired = ComputeRect();
+        Pawn? pawn = GetSelectedPawn();
+        IReadOnlyList<InvestitureSnapshot> snapshots = pawn != null
+            ? InvestitureProviderRegistry.SnapshotsFor(pawn)
+            : [];
+
+        // Sized to what it actually draws. Holding the full screen height left a
+        // tall dark slab over the map with a couple of orbs stranded at the top.
+        Rect desired = ComputeRect(pawn, snapshots);
         if (windowRect != desired) {
             windowRect = desired;
             inRect = new Rect(0f, 0f, desired.width, desired.height);
@@ -50,11 +57,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
         Widgets.DrawBoxSolid(inRect, new Color(0.05f, 0.05f, 0.08f, 0.75f));
         Widgets.DrawBox(inRect);
 
-        Pawn? pawn = GetSelectedPawn();
-        if (pawn == null) return;
-
-        IReadOnlyList<InvestitureSnapshot> snapshots = InvestitureProviderRegistry.SnapshotsFor(pawn);
-        if (snapshots.Count == 0) return;
+        if (pawn == null || snapshots.Count == 0) return;
 
         DockRenderContext ctx = new DockRenderContext {
             Density = PickDensity(pawn, snapshots, inRect.height),
@@ -69,7 +72,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
     }
 
     private bool IsExpanded() {
-        return pinned || hovered;
+        return pinned;
     }
 
     private float CurrentWidth() {
@@ -77,9 +80,9 @@ public sealed class InvestitureDockWindow : Verse.Window {
     }
 
     private void DrawCollapsed(Rect inRect, IReadOnlyList<InvestitureSnapshot> snapshots) {
-        const float orbSize = 28f;
         const float railBarWidth = 3f;
-        float y = inRect.y + 8f;
+        const float orbSize = CollapsedOrbSize;
+        float y = inRect.y + CollapsedOrbGap;
         for (int i = 0; i < snapshots.Count; i++) {
             InvestitureSnapshot snap = snapshots[i];
             IDockSection? section = DockSectionRegistry.For(snap.SystemId);
@@ -111,8 +114,13 @@ public sealed class InvestitureDockWindow : Verse.Window {
             Widgets.DrawBoxSolid(railFill, accent);
 
             TooltipHandler.TipRegion(orbRect, section.Skin.HeaderLabel);
-            y += orbSize + 10f;
+            y += orbSize + CollapsedOrbGap;
         }
+
+        Widgets.DrawHighlightIfMouseover(inRect);
+        if (!Widgets.ButtonInvisible(inRect)) return;
+        pinned = true;
+        RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
     }
 
     private void DrawExpanded(
@@ -122,9 +130,9 @@ public sealed class InvestitureDockWindow : Verse.Window {
         DockRenderContext ctx
     ) {
         Rect pinRect = new Rect(inRect.xMax - PinButtonHeight - 4f, inRect.y + 4f, PinButtonHeight, PinButtonHeight);
-        string pinLabel = pinned ? "x" : "o";
-        if (Widgets.ButtonText(pinRect, pinLabel)) {
-            pinned = !pinned;
+        TooltipHandler.TipRegion(pinRect, "CC_Dock_Collapse".Translate());
+        if (Widgets.ButtonImage(pinRect.ContractedBy(5f), TexButton.CloseXSmall, true)) {
+            pinned = false;
             RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
         }
 
@@ -154,8 +162,31 @@ public sealed class InvestitureDockWindow : Verse.Window {
         return needed > availableHeight ? DockDensityMode.Compact : DockDensityMode.Full;
     }
 
-    private Rect ComputeRect() {
-        return new Rect(0f, MarginTop, CurrentWidth(), ComputeHeight());
+    private Rect ComputeRect(Pawn? pawn, IReadOnlyList<InvestitureSnapshot> snapshots) {
+        float available = ComputeHeight();
+        return new Rect(0f, MarginTop, CurrentWidth(), Mathf.Min(ContentHeight(pawn, snapshots), available));
+    }
+
+    private float ContentHeight(Pawn? pawn, IReadOnlyList<InvestitureSnapshot> snapshots) {
+        if (snapshots.Count == 0 || pawn == null) return CollapsedOrbSize + CollapsedOrbGap * 2f;
+
+        if (!IsExpanded()) {
+            return snapshots.Count * (CollapsedOrbSize + CollapsedOrbGap) + CollapsedOrbGap;
+        }
+
+        float height = PinButtonHeight + 8f;
+        DockRenderContext probeCtx = new DockRenderContext();
+        for (int i = 0; i < snapshots.Count; i++) {
+            IDockSection? section = DockSectionRegistry.For(snapshots[i].SystemId);
+            if (section == null) continue;
+
+            height += section.GetHeaderHeight();
+            if (accordion.ExpandedSystemId == section.SystemId) {
+                height += section.GetExpandedBodyHeight(pawn, snapshots[i], probeCtx);
+            }
+        }
+
+        return height + 8f;
     }
 
     private static float ComputeHeight() {

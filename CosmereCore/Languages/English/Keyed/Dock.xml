@@ -6,7 +6,7 @@
   <CC_Dock_Twinborn_Tap>TAP</CC_Dock_Twinborn_Tap>
   <CC_Dock_Twinborn_Store>STORE</CC_Dock_Twinborn_Store>
   <CC_Dock_Twinborn_TapOrStore>TAP|STORE</CC_Dock_Twinborn_TapOrStore>
-  <CC_Dock_Twinborn_Compound>CPD</CC_Dock_Twinborn_Compound>
+  <CC_Dock_Twinborn_Compound>Compound</CC_Dock_Twinborn_Compound>
 
   <CC_Dock_Awakening_NoBreaths>No Breaths</CC_Dock_Awakening_NoBreaths>
 
@@ -35,4 +35,5 @@
   <CC_Dock_Feruchemy_Idle>Idle</CC_Dock_Feruchemy_Idle>
   <CC_Dock_Feruchemy_Tap>tap</CC_Dock_Feruchemy_Tap>
   <CC_Dock_Feruchemy_Store>store</CC_Dock_Feruchemy_Store>
+  <CC_Dock_Collapse>Collapse</CC_Dock_Collapse>
 </LanguageData>

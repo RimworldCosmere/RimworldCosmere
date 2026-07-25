@@ -10,7 +10,7 @@ namespace Cosmere.System.Scadrial.UI;
 /// Both arts follow this table, so Allomancy and Feruchemy share the layout and
 /// supply their own tile drawing and interaction.
 public static class MetallicArtsTable {
-    private const float QuadHeaderHeight = 14f;
+    private static float QuadHeaderHeight => Text.LineHeightOf(GameFont.Tiny) + 3f;
     private const float QuadGap = 6f;
     private const float TileGap = 3f;
     private const int Columns = 2;

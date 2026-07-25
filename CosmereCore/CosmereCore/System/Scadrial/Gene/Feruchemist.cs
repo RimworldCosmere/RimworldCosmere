@@ -273,6 +273,10 @@ public class Feruchemist : Metalborn {
     public float CompoundStorePerSecond =>
         compoundHediff is Scadrial.Feruchemy.Hediff.Compound store ? store.StorePerSecond : 0f;
 
+    /// Still set to compound, but waiting on metal to burn.
+    public bool isCompoundPaused =>
+        compoundHediff is Scadrial.Feruchemy.Hediff.Compound held && held.Paused;
+
     public float CompoundMetalDrainPerSecond =>
         compoundHediff is Scadrial.Feruchemy.Hediff.Compound drain ? drain.MetalDrainPerSecond : 0f;
 
@@ -282,7 +286,7 @@ public class Feruchemist : Metalborn {
     /// while compounding into it.
     public float CompoundedRatePerSecond {
         get {
-            if (compoundedTargetValue > IdleTarget) return CompoundStorePerSecond;
+            if (compoundedTargetValue > IdleTarget) return isCompoundPaused ? 0f : CompoundStorePerSecond;
             if (compoundedTargetValue >= IdleTarget || !canTapCompounded) return 0f;
 
             return -AmountPerSecond * SeverityForTarget(compoundedTargetValue);

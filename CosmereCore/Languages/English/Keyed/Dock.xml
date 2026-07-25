@@ -58,4 +58,5 @@
   <CC_Dock_Allomancy_CompoundRate>+{RATE}/s</CC_Dock_Allomancy_CompoundRate>
   <CC_Dock_Allomancy_CompoundEta>current {ONE}, all {ALL}</CC_Dock_Allomancy_CompoundEta>
   <CC_Dock_Feruchemy_Compound>compound</CC_Dock_Feruchemy_Compound>
+  <CC_Dock_Feruchemy_CompoundPaused>Compounding - out of metal</CC_Dock_Feruchemy_CompoundPaused>
 </LanguageData>

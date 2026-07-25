@@ -115,13 +115,15 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         Rect inner = rect.ContractedBy(StripPadding);
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
 
-        string direction = gene.isCompounding
-            ? "CC_Dock_Feruchemy_Compounding".Translate()
-            : gene.isTapping
-                ? "CC_Dock_Feruchemy_Tapping".Translate()
-                : gene.isStoring
-                    ? "CC_Dock_Feruchemy_Storing".Translate()
-                    : "CC_Dock_Feruchemy_Idle".Translate();
+        string direction = gene.isCompoundPaused
+            ? "CC_Dock_Feruchemy_CompoundPaused".Translate()
+            : gene.isCompounding
+                ? "CC_Dock_Feruchemy_Compounding".Translate()
+                : gene.isTapping
+                    ? "CC_Dock_Feruchemy_Tapping".Translate()
+                    : gene.isStoring
+                        ? "CC_Dock_Feruchemy_Storing".Translate()
+                        : "CC_Dock_Feruchemy_Idle".Translate();
         UIText.EllipsisLabel(
             new Rect(inner.x, inner.y, inner.width * 0.6f, tinyH),
             MetalLabel(cell) + " - " + direction,

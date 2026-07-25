@@ -64,10 +64,11 @@ public static class MetallicArtsTable {
 
             for (int r = 0; r < group.Rows.Count; r++) {
                 int column = r % Columns;
+                bool aloneInRow = column == 0 && r == group.Rows.Count - 1;
                 Rect tileRect = new Rect(
                     rect.x + column * (tileWidth + TileGap),
                     y,
-                    tileWidth,
+                    aloneInRow ? rect.width : tileWidth,
                     MetalTile.Height
                 );
                 drawTile(tileRect, group.Rows[r]);

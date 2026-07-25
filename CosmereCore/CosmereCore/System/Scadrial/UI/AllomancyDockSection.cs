@@ -50,7 +50,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
             rect,
             cell.Icon,
             MetalLabel(cell),
-            row.AxisGlyph,
+            $"{cell.Bar.Fraction * 100f:0}%",
             cell.Bar.Fraction,
             MetalPalette.For(cell.SubsystemId),
             state,

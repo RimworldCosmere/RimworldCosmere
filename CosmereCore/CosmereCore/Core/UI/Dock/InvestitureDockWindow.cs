@@ -55,7 +55,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
         }
 
         Widgets.DrawBoxSolid(inRect, new Color(0.05f, 0.05f, 0.08f, 0.75f));
-        Widgets.DrawBox(inRect);
+        Widgets.DrawBoxSolidWithOutline(inRect, Color.clear, new Color(0.271f, 0.251f, 0.212f));
 
         if (pawn == null || snapshots.Count == 0) return;
 
@@ -106,7 +106,20 @@ public sealed class InvestitureDockWindow : Verse.Window {
             Widgets.DrawBoxSolid(orbRect, DockPalette.PanelRaised);
             Widgets.DrawBoxSolidWithOutline(orbRect, Color.clear, accent);
             Texture2D? sigil = section.Skin.Sigil;
-            if (sigil != null) GUI.DrawTexture(orbRect.ContractedBy(4f), sigil);
+            if (sigil != null) {
+                GUI.DrawTexture(orbRect.ContractedBy(4f), sigil);
+            }
+            else {
+                // No skin ships a sigil yet, and an empty outlined box tells the
+                // player nothing about which system it stands for.
+                UIText.EllipsisLabel(
+                    orbRect,
+                    section.Skin.HeaderLabel.Substring(0, 1),
+                    GameFont.Small,
+                    TextAnchor.MiddleCenter,
+                    accent
+                );
+            }
 
             Rect railBar = new Rect(orbRect.xMax + 4f, y, railBarWidth, orbSize);
             Widgets.DrawBoxSolid(railBar, DockPalette.Panel);

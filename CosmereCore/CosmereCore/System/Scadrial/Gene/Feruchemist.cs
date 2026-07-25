@@ -118,6 +118,19 @@ public class Feruchemist : Metalborn {
         }
     }
 
+    /// Room in the one metalmind compounding is filling right now. Deposits go in
+    /// order, so this is the first that will accept charge.
+    public float CurrentCompoundedFreeSpace {
+        get {
+            List<IMetalmindSource> mms = metalminds;
+            for (int i = 0; i < mms.Count; i++) {
+                if (mms[i].CanStoreCompounded) return mms[i].FreeSpace;
+            }
+
+            return 0f;
+        }
+    }
+
     /// Room left across every metalmind this pawn can actually compound into.
     public float CompoundedFreeSpace {
         get {

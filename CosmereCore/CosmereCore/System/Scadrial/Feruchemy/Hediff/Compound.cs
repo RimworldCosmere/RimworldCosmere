@@ -23,23 +23,14 @@ public class Compound : AllomanticHediff {
         ability
     ) { }
 
-    /// What compounding pours into the metalmind per real second, for the dock
-    /// readout. Shares its arithmetic with the tick so the two cannot drift.
-    public virtual float StorePerSecond =>
-        MetalPerRareTick * ChargePerMetalUnit * GenTicks.TicksPerRealSecond / GenTicks.TickRareInterval;
+    /// Charge poured into the metalmind per real second.
+    protected const float ChargePerSecond = 0.1f;
 
-    /// Holding the ability active already drains the reserve at the burning rate
-    /// through the usual pipeline, so compounding contributes the difference and
-    /// the reserve empties at exactly the rate flaring would empty it.
-    /// Reserve spent per real second, for the panel's estimate of how long the
-    /// pawn can keep this up.
-    public float MetalDrainPerSecond =>
-        MetalPerRareTick * GenTicks.TicksPerRealSecond / GenTicks.TickRareInterval;
+    public virtual float StorePerSecond => ChargePerSecond;
 
-    private float MetalPerRareTick =>
-        ability.def.beuPerTick
-        * (BurningStatus.Flaring.power - BurningStatus.Burning.power)
-        / ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
+    /// Reserve spent per real second. Skill does not make compounding faster, it
+    /// makes it cheaper - the same charge costs less swallowed metal.
+    public float MetalDrainPerSecond => ChargePerSecond / ChargePerMetalUnit;
 
     /// A Compounder practised in both arts wrings more out of the same swallowed
     /// metal, so yield rises with the average of the two skills.
@@ -74,7 +65,8 @@ public class Compound : AllomanticHediff {
     protected virtual bool TickLogic(Allomancer allomancer, Feruchemist feruchemist) {
         // Clamped to the room available before anything is burned, so reserve is
         // never spent on charge that has nowhere to go.
-        float charge = Mathf.Min(MetalPerRareTick * ChargePerMetalUnit, feruchemist.CompoundedFreeSpace);
+        float seconds = GenTicks.TickRareInterval / (float)GenTicks.TicksPerRealSecond;
+        float charge = Mathf.Min(ChargePerSecond * seconds, feruchemist.CompoundedFreeSpace);
 
         if (charge <= 0f) return false;
 

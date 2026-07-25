@@ -217,9 +217,8 @@ public sealed class AllomancyDockSection : DockSectionBase {
     /// Progress toward a full metalmind, with what it is costing and how long the
     /// reserve or the remaining room will let it run - whichever runs out first.
     private float DrawCompoundProgress(Rect inner, float y, Feruchemist feruchemist, InvestitureCell cell) {
-        float free = feruchemist.CompoundedFreeSpace;
         float compounded = feruchemist.CompoundedAmount;
-        float capacity = compounded + free;
+        float capacity = compounded + feruchemist.CompoundedFreeSpace;
 
         Rect progress = new Rect(inner.x, y + 3f, inner.width, ProgressBarHeight);
         Widgets.DrawBoxSolid(progress, new Color(0.047f, 0.043f, 0.035f));
@@ -244,7 +243,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
 
         UIText.EllipsisLabel(
             line,
-            RemainingLabel(feruchemist, cell, free, rate),
+            RemainingLabel(feruchemist, rate),
             GameFont.Tiny,
             TextAnchor.MiddleRight,
             new Color(0.545f, 0.502f, 0.427f)
@@ -253,22 +252,20 @@ public sealed class AllomancyDockSection : DockSectionBase {
         return line.yMax;
     }
 
-    /// Compounding ends when the metalmind fills or the reserve runs dry, so the
-    /// estimate reports whichever arrives first rather than assuming it fills.
-    private static string RemainingLabel(Feruchemist feruchemist, InvestitureCell cell, float free, float rate) {
-        float drain = feruchemist.CompoundMetalDrainPerSecond;
-        if (rate <= 0f || drain <= 0f) return "";
+    /// How long until the metalmind being filled is full, and until every
+    /// fillable metalmind is - the second is what actually matters when a pawn
+    /// carries a dozen of them.
+    private static string RemainingLabel(Feruchemist feruchemist, float rate) {
+        if (rate <= 0f) return "";
 
-        float secondsToFull = free / rate;
-        float reserve = cell.Bar.Fraction * cell.Bar.Max;
-        float secondsToDry = drain > 0f ? reserve / drain : float.MaxValue;
+        return "CC_Dock_Allomancy_CompoundEta".Translate(
+            Period(feruchemist.CurrentCompoundedFreeSpace / rate).Named("ONE"),
+            Period(feruchemist.CompoundedFreeSpace / rate).Named("ALL")
+        );
+    }
 
-        bool fills = secondsToFull <= secondsToDry;
-        float seconds = Mathf.Min(secondsToFull, secondsToDry);
-        string period = ((int)(seconds * GenTicks.TicksPerRealSecond)).ToStringTicksToPeriod();
-
-        return (fills ? "CC_Dock_Allomancy_CompoundFull" : "CC_Dock_Allomancy_CompoundDry")
-            .Translate(period.Named("TIME"));
+    private static string Period(float seconds) {
+        return ((int)(seconds * GenTicks.TicksPerRealSecond)).ToStringTicksToPeriod();
     }
 
     private static Allomancer? FindGene(Pawn pawn, string metalDefName) {

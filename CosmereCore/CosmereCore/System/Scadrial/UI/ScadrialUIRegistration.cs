@@ -8,6 +8,7 @@ using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
 using Cosmere.Core.UI.Radial;
 using Cosmere.Core.UI.Skin;
+using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Hemalurgy;
 using Cosmere.System.Scadrial.ScenarioPart;
 using Cosmere.System.Scadrial.Savant;
@@ -31,7 +32,7 @@ public static class ScadrialUIRegistration {
             headerTextColor: new Color(0.95f, 0.82f, 0.52f),
             panelBackgroundColor: new Color(0.09f, 0.05f, 0.02f, 0.85f),
             borderTintColor: new Color(0.78f, 0.55f, 0.18f),
-            sigil: ScadrialSigilTex.Allomancy
+            sigil: () => SteelIcon()?.allomancy?.invertedIcon
         ));
         SystemSkinRegistry.Register(new DataSystemSkin(
             systemId: "Feruchemy",
@@ -42,7 +43,7 @@ public static class ScadrialUIRegistration {
             headerTextColor: new Color(0.56f, 0.69f, 0.75f),
             panelBackgroundColor: new Color(0.06f, 0.07f, 0.09f, 0.85f),
             borderTintColor: new Color(0.25f, 0.33f, 0.38f),
-            sigil: ScadrialSigilTex.Feruchemy
+            sigil: () => SteelIcon()?.feruchemy?.invertedIcon
         ));
         DockSectionRegistry.Register(new AllomancyDockSection());
         DockSectionRegistry.Register(new FeruchemyDockSection());
@@ -58,5 +59,9 @@ public static class ScadrialUIRegistration {
         AutocastDefaults.Register("Cosmere_Scadrial_Ability_CompoundGold", [
             new AutocastTrigger(AutocastTriggerKind.HealthPercent, AutocastComparison.LessThan, 0.4f),
         ]);
+    }
+
+    private static MetallicArtsMetalDef? SteelIcon() {
+        return DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail("Steel");
     }
 }

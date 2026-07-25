@@ -3,24 +3,28 @@ using Verse;
 
 namespace Cosmere.Core.UI.Dock;
 
-/// A sheet of dark parchment, built rather than shipped so it can be stretched to
-/// any ribbon without a nine-slice. Mottled by layered value noise, streaked
+/// Dark parchment, built rather than shipped so it can be stretched or tiled to
+/// any surface without a nine-slice. Mottled by layered value noise, streaked
 /// along the grain, and darkened towards the edges the way a handled sheet ages.
 [StaticConstructorOnStartup]
 public static class ParchmentTex {
-    private const int Width = 192;
-    private const int Height = 96;
-
-    // Declared before Sheet on purpose: static fields initialise in order, and
-    // building the sheet against a default Color painted it black.
+    // Declared before the sheets on purpose: static fields initialise in order,
+    // and building against a default Color painted them black.
     private static readonly Color Base = new Color(0.180f, 0.149f, 0.114f);
 
-    /// A single sheet, aged at its edges. For anything drawn one-to-one.
-    public static readonly Texture2D Sheet = Build(true);
+    private const int SheetWidth = 192;
+    private const int SheetHeight = 96;
+
+    /// Large enough that a panel rarely shows the same patch twice. Tiling a small
+    /// sheet across a tall window repeated often enough to read as a pattern.
+    private const int FieldSize = 512;
+
+    /// A single sheet, aged at its edges. For surfaces drawn one to one.
+    public static readonly Texture2D Sheet = Build(SheetWidth, SheetHeight, true);
 
     /// The same stock without the aged rim, so it tiles across a large panel
-    /// without the darkened edges showing up as a grid of seams.
-    public static readonly Texture2D Field = Build(false);
+    /// without the darkened edges repeating as a grid of seams.
+    public static readonly Texture2D Field = Build(FieldSize, FieldSize, false);
 
     /// Tiles the field across a rect at its natural scale, so the grain does not
     /// stretch with the panel.
@@ -28,43 +32,47 @@ public static class ParchmentTex {
         GUI.DrawTextureWithTexCoords(
             rect,
             Field,
-            new Rect(0f, 0f, rect.width / Width, rect.height / Height)
+            new Rect(0f, 0f, rect.width / FieldSize, rect.height / FieldSize)
         );
     }
 
-    private static Texture2D Build(bool aged) {
-        Texture2D tex = new Texture2D(Width, Height, TextureFormat.ARGB32, false) {
+    private static Texture2D Build(int width, int height, bool aged) {
+        Texture2D tex = new Texture2D(width, height, TextureFormat.ARGB32, false) {
             wrapMode = aged ? TextureWrapMode.Clamp : TextureWrapMode.Repeat,
             filterMode = FilterMode.Bilinear,
         };
 
-        for (int y = 0; y < Height; y++) {
-            for (int x = 0; x < Width; x++) {
-                float u = (x + 0.5f) / Width;
-                float v = (y + 0.5f) / Height;
+        // Written in one go: SetPixel per pixel is far slower, and the field is
+        // large enough for that to show at startup.
+        Color[] pixels = new Color[width * height];
 
-                // Frequencies are whole cycles across the sheet so the lattice
-                // wraps, which is what lets the field tile without seams.
-                float mottle = Tiled(u, v, 6) * 0.6f
-                               + Tiled(u, v, 14) * 0.3f
-                               + Tiled(u, v, 32) * 0.1f;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                float u = (x + 0.5f) / width;
+                float v = (y + 0.5f) / height;
+
+                // Few cycles across the sheet, so the blotching reads as broad
+                // variation in the stock rather than as busy speckle.
+                float mottle = Tiled(u, v, 2) * 0.55f
+                               + Tiled(u, v, 5) * 0.3f
+                               + Tiled(u, v, 11) * 0.15f;
 
                 // Fibres run the long way, so the grain is stretched across x.
-                float fibre = Tiled(u, v, 8, 48);
+                float fibre = Tiled(u, v, 3, 26);
 
-                // Dark stock takes a heavier hand: the same variation reads as
-                // almost nothing once the ground is this deep.
                 float shade = 1f
-                              - (mottle - 0.5f) * 0.42f
-                              - (fibre - 0.5f) * 0.14f
+                              - (mottle - 0.5f) * 0.30f
+                              - (fibre - 0.5f) * 0.09f
                               - (aged ? EdgeFalloff(u, v) * 0.30f : 0f);
 
                 Color c = Base * shade;
-                tex.SetPixel(x, y, new Color(c.r, c.g, c.b, 1f));
+                pixels[y * width + x] = new Color(c.r, c.g, c.b, 1f);
             }
         }
 
+        tex.SetPixels(pixels);
         tex.Apply();
+
         return tex;
     }
 

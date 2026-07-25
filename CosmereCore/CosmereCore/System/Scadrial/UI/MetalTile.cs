@@ -44,10 +44,18 @@ public static class MetalTile {
         }
 
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
+        // Empty sits between inert and stocked: there is something to work with
+        // here, just nothing in it yet, so it dims without going dead.
+        bool empty = !inert && fraction <= 0f && state != MetalTileState.Active;
+
         Rect iconRect = new Rect(rect.x + 5f, rect.y + 3f, GlyphSize, GlyphSize);
         if (icon != null) {
             Color prev = GUI.color;
-            GUI.color = inert ? new Color(metalColor.r, metalColor.g, metalColor.b, 0.35f) : metalColor;
+            GUI.color = inert
+                ? new Color(metalColor.r, metalColor.g, metalColor.b, 0.35f)
+                : empty
+                    ? new Color(metalColor.r, metalColor.g, metalColor.b, 0.55f)
+                    : metalColor;
             GUI.DrawTexture(iconRect, icon);
             GUI.color = prev;
         }
@@ -67,7 +75,9 @@ public static class MetalTile {
             ? new Color(0.329f, 0.306f, 0.271f)
             : state == MetalTileState.Active
                 ? new Color(0.886f, 0.933f, 0.961f)
-                : new Color(0.769f, 0.737f, 0.675f);
+                : empty
+                    ? new Color(0.420f, 0.392f, 0.349f)
+                    : new Color(0.769f, 0.737f, 0.675f);
         UIText.EllipsisLabel(nameRect, label, GameFont.Tiny, TextAnchor.MiddleLeft, nameColor);
 
         Rect band = new Rect(rect.x, rect.yMax - BandHeight, rect.width, BandHeight);

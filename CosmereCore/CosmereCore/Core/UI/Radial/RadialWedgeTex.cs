@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Verse;
 
 namespace Cosmere.Core.UI.Radial;
 
+// Holds textures, which the engine wants resolved on the main thread at startup.
+[StaticConstructorOnStartup]
 public static class RadialWedgeTex {
     private const int TexSize = 256;
     private static readonly Dictionary<int, Texture2D> cache = new Dictionary<int, Texture2D>();

@@ -3,9 +3,9 @@ using Verse;
 
 namespace Cosmere.Core.UI.Dock;
 
-/// A sheet of parchment, built rather than shipped so it can be stretched to any
-/// ribbon without a nine-slice. Mottled by layered value noise, streaked along
-/// the grain, and darkened towards the edges the way a handled sheet ages.
+/// A sheet of dark parchment, built rather than shipped so it can be stretched to
+/// any ribbon without a nine-slice. Mottled by layered value noise, streaked
+/// along the grain, and darkened towards the edges the way a handled sheet ages.
 [StaticConstructorOnStartup]
 public static class ParchmentTex {
     private const int Width = 192;
@@ -13,7 +13,7 @@ public static class ParchmentTex {
 
     // Declared before Sheet on purpose: static fields initialise in order, and
     // building the sheet against a default Color painted it black.
-    private static readonly Color Base = new Color(0.847f, 0.784f, 0.635f);
+    private static readonly Color Base = new Color(0.180f, 0.149f, 0.114f);
 
     public static readonly Texture2D Sheet = Build();
 
@@ -36,10 +36,12 @@ public static class ParchmentTex {
                 // Fibres run the long way, so the grain is stretched across x.
                 float fibre = ValueNoise(x * 0.5f, y * 4f);
 
+                // Dark stock takes a heavier hand: the same variation reads as
+                // almost nothing once the ground is this deep.
                 float shade = 1f
-                              - (mottle - 0.5f) * 0.16f
-                              - (fibre - 0.5f) * 0.05f
-                              - EdgeFalloff(u, v) * 0.22f;
+                              - (mottle - 0.5f) * 0.42f
+                              - (fibre - 0.5f) * 0.14f
+                              - EdgeFalloff(u, v) * 0.30f;
 
                 Color c = Base * shade;
                 tex.SetPixel(x, y, new Color(c.r, c.g, c.b, 1f));

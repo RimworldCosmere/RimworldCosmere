@@ -18,10 +18,10 @@ public sealed class InvestitureDockWindow : Verse.Window {
     private const float RibbonBar = 6f;
     private const float RibbonPad = 7f;
 
-    private static readonly Color RibbonInk = new Color(0.196f, 0.153f, 0.098f);
-    private static readonly Color RibbonInkFaded = new Color(0.361f, 0.294f, 0.208f);
-    private static readonly Color RibbonEdge = new Color(0.404f, 0.325f, 0.208f);
-    private static readonly Color RibbonTrack = new Color(0.596f, 0.522f, 0.396f);
+    private static readonly Color RibbonInk = new Color(0.878f, 0.831f, 0.729f);
+    private static readonly Color RibbonInkFaded = new Color(0.678f, 0.620f, 0.514f);
+    private static readonly Color RibbonEdge = new Color(0.361f, 0.294f, 0.196f);
+    private static readonly Color RibbonTrack = new Color(0.094f, 0.078f, 0.059f);
 
     /// Icon and name on one line, reserve and reading on the next.
     private static float RibbonHeight => 13f + RibbonIcon + Text.LineHeightOf(GameFont.Tiny);
@@ -64,21 +64,23 @@ public sealed class InvestitureDockWindow : Verse.Window {
             inRect = new Rect(0f, 0f, desired.width, desired.height);
         }
 
+        if (pawn == null || snapshots.Count == 0) return;
+
+        if (!IsExpanded()) {
+            // Each ribbon carries its own ground, so a panel behind them would only
+            // be a box around loose strips of parchment.
+            DrawCollapsed(inRect, snapshots);
+            return;
+        }
+
         Widgets.DrawBoxSolid(inRect, new Color(0.05f, 0.05f, 0.08f, 0.75f));
         Widgets.DrawBoxSolidWithOutline(inRect, Color.clear, new Color(0.271f, 0.251f, 0.212f));
-
-        if (pawn == null || snapshots.Count == 0) return;
 
         DockRenderContext ctx = new DockRenderContext {
             Density = PickDensity(pawn, snapshots, inRect.height),
         };
 
-        if (IsExpanded()) {
-            DrawExpanded(inRect, pawn, snapshots, ctx);
-        }
-        else {
-            DrawCollapsed(inRect, snapshots);
-        }
+        DrawExpanded(inRect, pawn, snapshots, ctx);
     }
 
     private bool IsExpanded() {

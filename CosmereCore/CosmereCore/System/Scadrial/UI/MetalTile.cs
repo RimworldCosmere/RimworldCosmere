@@ -20,7 +20,7 @@ public static class MetalTile {
     public const float Height = 31f;
     private const float GlyphSize = 14f;
     private const float BandHeight = 4f;
-    private const float CompoundedBandHeight = 2f;
+    private const float CompoundedBandHeight = 3f;
     private const float BandGap = 2f;
 
     public static void Draw(
@@ -92,11 +92,10 @@ public static class MetalTile {
                     : new Color(0.769f, 0.737f, 0.675f);
         UIText.EllipsisLabel(nameRect, label, GameFont.Tiny, TextAnchor.MiddleLeft, nameColor);
 
-        // Two pools mean two gauges. Stacking them keeps each readable as its own
-        // quantity, where one bar split by colour reads as a single total.
         // Two pools mean two gauges. The stored one stays the primary bar; the
         // compounded one sits below as a thinner stripe on a warmer track, so which
-        // is which reads without a legend.
+        // is which reads without a legend, and an empty one still shows the pool
+        // exists.
         bool twoPools = compoundedTint.HasValue;
         float bottom = rect.yMax - 1f;
         float stack = twoPools ? BandHeight + BandGap + CompoundedBandHeight : BandHeight;
@@ -111,7 +110,7 @@ public static class MetalTile {
             compoundedBand,
             inert ? 0f : compoundedFraction,
             compoundedTint!.Value,
-            new Color(0.208f, 0.161f, 0.078f)
+            new Color(0.286f, 0.216f, 0.098f)
         );
 
         if (!inert) Widgets.DrawHighlightIfMouseover(rect);

@@ -422,7 +422,9 @@ public class Feruchemist : Metalborn {
     }
 
     private void TickSeverityHediffs() {
-        if (effectiveSeverity <= 0f) return;
+        // No early out on the stored dial: each pool decides for itself below, and
+        // gating both on the stored one let compounded charge drain with no hediff
+        // to show for it.
         float ordinary = SeverityForTarget(targetValue);
         if (targetValue < IdleTarget && canTap && ordinary > 0f) {
             TryRemoveHediffByDef(storeHediffDef);

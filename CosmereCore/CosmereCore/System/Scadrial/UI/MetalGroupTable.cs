@@ -24,6 +24,22 @@ public sealed class MetalGroup {
 }
 
 public static class MetalGroupTable {
+    /// Rows hold a copy of the cell, so a cached grouping goes stale the moment a
+    /// metal starts burning. Refresh the values in place and keep the ordering.
+    public static void RefreshCells(IReadOnlyList<MetalGroup> groups, IReadOnlyList<InvestitureCell> cells) {
+        for (int g = 0; g < groups.Count; g++) {
+            List<MetalRow> rows = groups[g].Rows;
+            for (int r = 0; r < rows.Count; r++) {
+                string id = rows[r].Cell.SubsystemId;
+                for (int c = 0; c < cells.Count; c++) {
+                    if (cells[c].SubsystemId != id) continue;
+                    rows[r] = new MetalRow(cells[c], rows[r].AxisGlyph);
+                    break;
+                }
+            }
+        }
+    }
+
     public static IReadOnlyList<MetalGroup> AllomancyGroups(IReadOnlyList<InvestitureCell> cells) {
         List<(InvestitureCell cell, AllomancyGroup group, AllomancyPolarity polarity, AllomancyAxis axis)> resolved = new(cells.Count);
         for (int i = 0; i < cells.Count; i++) {

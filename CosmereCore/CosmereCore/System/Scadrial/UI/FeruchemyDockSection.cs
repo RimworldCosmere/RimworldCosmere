@@ -263,6 +263,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             cachedCellCount = snapshot.Cells.Count;
         }
 
+        MetalGroupTable.RefreshCells(cachedGroups, snapshot.Cells);
         return cachedGroups;
     }
 

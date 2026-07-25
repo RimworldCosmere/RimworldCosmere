@@ -96,6 +96,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
             cachedCellCount = snapshot.Cells.Count;
         }
 
+        MetalGroupTable.RefreshCells(cachedGroups, snapshot.Cells);
         return cachedGroups;
     }
 
@@ -112,10 +113,10 @@ public sealed class AllomancyDockSection : DockSectionBase {
         for (int i = 0; i < all.Count; i++) {
             if (all[i] is not AllomancyAbility a || a.metal.defName != metalDefName) continue;
 
-            Status next = a.atLeastBurning
-                ? BurningStatus.Off
-                : flare
-                    ? BurningStatus.Flaring
+            Status next = flare
+                ? a.status.power > 1 ? BurningStatus.Burning : BurningStatus.Flaring
+                : a.atLeastBurning
+                    ? BurningStatus.Off
                     : BurningStatus.Burning;
             a.UpdateStatus(next);
             return;

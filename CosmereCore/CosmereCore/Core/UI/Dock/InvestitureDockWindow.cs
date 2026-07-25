@@ -121,19 +121,32 @@ public sealed class InvestitureDockWindow : Verse.Window {
                 );
             }
 
-            Rect railBar = new Rect(orbRect.xMax + 4f, y, railBarWidth, orbSize);
-            Widgets.DrawBoxSolid(railBar, DockPalette.Panel);
-            Rect railFill = new Rect(railBar.x, railBar.yMax - railBar.height * Mathf.Clamp01(aggregate), railBarWidth, railBar.height * Mathf.Clamp01(aggregate));
-            Widgets.DrawBoxSolid(railFill, accent);
+            Rect band = new Rect(orbRect.x + 4f, orbRect.yMax - railBarWidth - 3f, orbRect.width - 8f, railBarWidth);
+            Widgets.DrawBoxSolid(band, DockPalette.Panel);
+            Widgets.DrawBoxSolid(
+                new Rect(band.x, band.y, band.width * Mathf.Clamp01(aggregate), band.height),
+                accent
+            );
 
-            TooltipHandler.TipRegion(orbRect, section.Skin.HeaderLabel);
+            TooltipHandler.TipRegion(
+                orbRect,
+                "CC_Dock_Rail_Tip".Translate(
+                    section.Skin.HeaderLabel.Named("SYSTEM"),
+                    Mathf.RoundToInt(aggregate * 100f).Named("PERCENT")
+                )
+            );
+            Widgets.DrawHighlightIfMouseover(orbRect);
+
+            // Open onto the system that was actually clicked, not whichever
+            // section happened to be expanded last.
+            if (Widgets.ButtonInvisible(orbRect)) {
+                pinned = true;
+                accordion.ExpandedSystemId = section.SystemId;
+                RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
+            }
+
             y += orbSize + CollapsedOrbGap;
         }
-
-        Widgets.DrawHighlightIfMouseover(inRect);
-        if (!Widgets.ButtonInvisible(inRect)) return;
-        pinned = true;
-        RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
     }
 
     private void DrawExpanded(

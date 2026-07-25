@@ -16,10 +16,10 @@ public class Feruchemist : Metalborn {
     public const float MaxSeverity = 20f;
     public const float MaxTransferPerSecond = 5f;
 
-    /// Derived so a dial pinned to either end moves MaxTransferPerSecond, rather
-    /// than being a loose constant the readout has to be reconciled against.
-    public static readonly float AmountPerRareTick =
-        MaxTransferPerSecond * GenTicks.TickRareInterval / (MaxSeverity * GenTicks.TicksPerRealSecond);
+    /// TickStoreOrTap runs once per real second, so this is per second - the old
+    /// name said rare tick and the readout converted as if it were, which is how
+    /// the reading came out four times under what the metalmind actually moved.
+    public static readonly float AmountPerSecond = MaxTransferPerSecond / MaxSeverity;
     private HediffDef? cachedCompoundHediffDef;
 
     private List<IMetalmindSource>? cachedMetalminds;
@@ -181,8 +181,7 @@ public class Feruchemist : Metalborn {
             float severity = effectiveSeverity;
             if (severity <= 0f) return 0f;
 
-            float perSecond = AmountPerRareTick * severity
-                * GenTicks.TicksPerRealSecond / GenTicks.TickRareInterval;
+            float perSecond = AmountPerSecond * severity;
 
             if (targetValue < 50f) return canTap ? -perSecond : 0f;
             return canStore ? perSecond : 0f;
@@ -264,11 +263,11 @@ public class Feruchemist : Metalborn {
     private void TickStoreOrTap() {
         if (isStoring) {
             Hediff? sh = storeHediff;
-            if (sh != null) AddToStore(AmountPerRareTick * sh.Severity);
+            if (sh != null) AddToStore(AmountPerSecond * sh.Severity);
         }
         else if (isTapping) {
             Hediff? th = tapHediff;
-            if (th != null) RemoveFromStore(AmountPerRareTick * th.Severity);
+            if (th != null) RemoveFromStore(AmountPerSecond * th.Severity);
         }
     }
 

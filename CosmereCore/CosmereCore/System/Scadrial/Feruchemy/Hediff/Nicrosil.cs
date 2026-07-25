@@ -13,7 +13,11 @@ public class Nicrosil : HediffWithComps {
     private Investiture? investiture => pawn?.needs?.TryGetNeed<Investiture>();
     private Feruchemist? nicrosil => pawn.genes?.GetFeruchemicGeneForMetal(MetalDefOf.Nicrosil);
 
-    private float changePerTick => Feruchemist.AmountPerRareTick * Severity * (isTapping ? -1 : 1);
+    // Applied per rare tick here, unlike the gene's per-second store and tap, so
+    // it keeps its own figure rather than sharing one across two cadences.
+    private const float ChangePerRareTick = 1f / 18f;
+
+    private float changePerTick => ChangePerRareTick * Severity * (isTapping ? -1 : 1);
 
     // There's a little bit of a race condition here that i'm not 100% sure how to fix.
     // Continuing to store/tap nicrosil will slowly increase how much investiture you have 

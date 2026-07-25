@@ -12,7 +12,7 @@ public static class RadialCenterPreview {
     // them rather than every row flowing from a single stack.
     private const float BreadcrumbY = -108f;
     private const float TitleGap = 26f;
-    private const float ButtonRowY = 92f;
+    private const float ButtonRowY = 87f;
     private const float ButtonSize = 30f;
     private const float BarGap = 12f;
     private const float DescriptionGap = 10f;
@@ -30,6 +30,7 @@ public static class RadialCenterPreview {
 
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
         float smallH = Text.LineHeightOf(GameFont.Small);
+        float mediumH = Text.LineHeightOf(GameFont.Medium);
         bool canFlare = hoveredLeaf != null
             && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn
             && !hoveredLeaf.IsLocked;
@@ -64,29 +65,18 @@ public static class RadialCenterPreview {
             }
         }
         else {
-            bool hasParent = !hoveredTitle.NullOrEmpty() && hoveredTitle != hoveredLeaf.Label;
-            if (hasParent) {
-                UIText.EllipsisLabel(
-                    ChordRow(center, -78f, tinyH),
-                    hoveredTitle!,
-                    GameFont.Tiny,
-                    TextAnchor.MiddleCenter,
-                    DockPalette.MutedText
-                );
-            }
-
             bool flareArmed = ShiftHeld() && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn && !hoveredLeaf.IsLocked;
             UIText.EllipsisLabel(
-                ChordRow(center, BreadcrumbY + TitleGap, smallH),
+                ChordRow(center, BreadcrumbY + TitleGap, mediumH),
                 flareArmed
                     ? "CC_Radial_Action_Flare".Translate((hoveredTitle ?? hoveredLeaf.Label).Named("METAL"))
                     : hoveredLeaf.Label,
-                GameFont.Small,
+                GameFont.Medium,
                 TextAnchor.MiddleCenter,
                 flareArmed ? DockPalette.Flare : new Color(0.75f, 0.89f, 0.95f)
             );
 
-            float bodyTop = BreadcrumbY + TitleGap + smallH + (canFlare ? tinyH : 0f) + DescriptionGap;
+            float bodyTop = BreadcrumbY + TitleGap + mediumH + (canFlare ? tinyH : 0f) + DescriptionGap;
             float bodyBottom = ButtonRowY - BarGap - (tinyH + 6f) - DescriptionGap;
 
             if (!hoveredLeaf.Description.NullOrEmpty()) {
@@ -164,7 +154,7 @@ public static class RadialCenterPreview {
             float rowWidth = buttonCount * buttonSize + (buttonCount - 1) * buttonGap;
             float x = center.x - rowWidth / 2f;
 
-            DrawIconButton(new Rect(x, buttonY, buttonSize, buttonSize), TexButton.Reveal, "CC_Radial_Back".Translate(), 1.1f, true, back);
+            DrawIconButton(new Rect(x, buttonY, buttonSize, buttonSize), TexButton.Reveal, "CC_Radial_Back".Translate(), 0.99f, true, back);
             x += buttonSize + buttonGap;
 
             if (infoDef != null) {

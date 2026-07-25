@@ -21,19 +21,19 @@ public static class RadialCenterPreview {
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
         float smallH = Text.LineHeightOf(GameFont.Small);
 
-        UIText.EllipsisLabel(ChordRow(center, -96f, tinyH), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
+        UIText.EllipsisLabel(ChordRow(center, -88f, tinyH), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
 
         if (hoveredLeaf == null) {
             if (hoveredTitle != null) {
                 UIText.EllipsisLabel(
-                    ChordRow(center, -34f, smallH),
+                    ChordRow(center, -28f, smallH),
                     hoveredTitle,
                     GameFont.Small,
                     TextAnchor.MiddleCenter,
                     new Color(0.75f, 0.89f, 0.95f)
                 );
                 UIText.EllipsisLabel(
-                    ChordRow(center, -4f, tinyH),
+                    ChordRow(center, 0f, tinyH),
                     "CC_Radial_Open_Prompt".Translate(),
                     GameFont.Tiny,
                     TextAnchor.MiddleCenter,
@@ -42,7 +42,7 @@ public static class RadialCenterPreview {
             }
             else {
                 UIText.EllipsisLabel(
-                    ChordRow(center, -12f, tinyH),
+                    ChordRow(center, -9f, tinyH),
                     "CC_Radial_Hover_Prompt".Translate(),
                     GameFont.Tiny,
                     TextAnchor.MiddleCenter,
@@ -111,24 +111,18 @@ public static class RadialCenterPreview {
         }
 
         if (browseMode) {
-            const float iconSize = 26f;
-            Rect backRect = new Rect(center.x - iconSize - 6f, center.y + 60f, iconSize, iconSize);
-            Rect closeRect = new Rect(center.x + 6f, center.y + 60f, iconSize, iconSize);
+            const float buttonSize = 30f;
+            const float buttonGap = 10f;
+            float buttonY = center.y + 50f;
+            Rect backRect = new Rect(center.x - buttonSize - buttonGap / 2f, buttonY, buttonSize, buttonSize);
+            Rect closeRect = new Rect(center.x + buttonGap / 2f, buttonY, buttonSize, buttonSize);
 
-            TooltipHandler.TipRegion(backRect, "CC_Radial_Back".Translate());
-            TooltipHandler.TipRegion(closeRect, "CC_Radial_Close".Translate());
-
-            Matrix4x4 backMatrix = GUI.matrix;
-            GUIUtility.ScaleAroundPivot(new Vector2(-1f, 1f), backRect.center);
-            GUI.DrawTexture(backRect, TexButton.Reveal);
-            GUI.matrix = backMatrix;
-            if (Widgets.ButtonInvisible(backRect)) back();
-            Widgets.DrawHighlightIfMouseover(backRect);
-            if (Widgets.ButtonImage(closeRect, TexButton.CloseXSmall, true)) close();
+            DrawIconButton(backRect, TexButton.Reveal, "CC_Radial_Back".Translate(), 0.55f, true, back);
+            DrawIconButton(closeRect, TexButton.CloseXSmall, "CC_Radial_Close".Translate(), 0.55f, false, close);
         }
         else {
             bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-            float hintY = 60f;
+            float hintY = 56f;
             UIText.EllipsisLabel(
                 ChordRow(center, hintY, tinyH),
                 shiftHeld
@@ -143,6 +137,45 @@ public static class RadialCenterPreview {
 
 
         }
+    }
+
+    private static void DrawIconButton(Rect rect, Texture2D icon, string tooltip, float iconScale, bool mirrored, Action onClick) {
+        bool hovered = Mouse.IsOver(rect);
+        Widgets.DrawBoxSolid(rect, new Color(1f, 1f, 1f, hovered ? 0.12f : 0.05f));
+
+        float targetHeight = rect.height * iconScale;
+        float aspect = icon.height > 0 ? icon.width / (float)icon.height : 1f;
+        float drawHeight = targetHeight;
+        float drawWidth = targetHeight * aspect;
+        if (drawWidth > rect.width) {
+            drawWidth = rect.width;
+            drawHeight = drawWidth / aspect;
+        }
+
+        Rect iconRect = new Rect(
+            rect.center.x - drawWidth / 2f,
+            rect.center.y - drawHeight / 2f,
+            drawWidth,
+            drawHeight
+        );
+
+        Color prev = GUI.color;
+        GUI.color = hovered ? Color.white : new Color(0.78f, 0.80f, 0.82f);
+        if (mirrored) {
+            Matrix4x4 prevMatrix = GUI.matrix;
+            GUIUtility.ScaleAroundPivot(new Vector2(-1f, 1f), iconRect.center);
+            GUI.DrawTexture(iconRect, icon);
+            GUI.matrix = prevMatrix;
+        }
+        else {
+            GUI.DrawTexture(iconRect, icon);
+        }
+
+        GUI.color = prev;
+
+        TooltipHandler.TipRegion(rect, tooltip);
+        Verse.Sound.MouseoverSounds.DoRegion(rect);
+        if (Widgets.ButtonInvisible(rect)) onClick();
     }
 
     private static Rect ChordRow(Vector2 center, float dyTop, float height) {

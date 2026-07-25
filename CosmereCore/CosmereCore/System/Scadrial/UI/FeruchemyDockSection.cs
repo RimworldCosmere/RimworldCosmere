@@ -176,7 +176,10 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
 
         float buttonY = endsRect.yMax + 8f;
-        if (capacity.CanStoreCompounded || capacity.Compounded > 0f) {
+        // Shown from the moment compounding is earned, whether or not this metal
+        // can take it right now. A control that vanishes teaches nothing; one that
+        // sits there greyed says the pawn is missing something.
+        if (CompoundingAccess.Discovered(pawn)) {
             buttonY = DrawCompoundedDial(inner, endsRect.yMax + 6f, pawn, cell, gene, capacity) + 8f;
         }
 

@@ -61,10 +61,6 @@ public sealed class DockAccordion {
                 section.DrawBody(bodyRect, pawn, snap, ctx);
             }
 
-            // Each art's block carries its own edge, so two open sections read as
-            // two things rather than one run of tiles.
-            Widgets.DrawBoxSolidWithOutline(bodyRect, Color.clear, section.Skin.BorderTintColor);
-
             y += bodyRect.height;
         }
     }

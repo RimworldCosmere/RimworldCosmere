@@ -22,7 +22,7 @@ public abstract class DockSectionBase : IDockSection {
         UIText.EllipsisLabel(chevronRect, expanded ? "-" : "+", Skin.HeaderFont, TextAnchor.MiddleCenter, Skin.HeaderTextColor);
 
         Rect labelRect = new Rect(rect.x + 10f, rect.y, chevronRect.x - rect.x - 14f, rect.height);
-        UIText.EllipsisLabel(labelRect, Skin.HeaderLabel.ToUpperInvariant(), Skin.HeaderFont, TextAnchor.MiddleLeft, Skin.HeaderTextColor);
+        UIText.EllipsisLabel(labelRect, Skin.HeaderLabel, Skin.HeaderFont, TextAnchor.MiddleLeft, Skin.HeaderTextColor);
         Widgets.DrawHighlightIfMouseover(rect);
     }
 

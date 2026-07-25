@@ -167,12 +167,12 @@ public sealed class RadialWindow : Verse.Window {
     private string BuildBreadcrumb() {
         if (state.Kind == RadialStateKind.SystemTier) return "";
         if (state.Kind == RadialStateKind.SubsectionTier) {
-            return snapshot.Systems[state.SelectedSystemIndex].Label.ToUpperInvariant();
+            return snapshot.Systems[state.SelectedSystemIndex].Label;
         }
 
         RadialSystem sys = snapshot.Systems[state.SelectedSystemIndex];
         RadialSubsection sub = sys.Subsections[state.SelectedSubsectionIndex];
-        return $"{sys.Label} - {sub.Label}".ToUpperInvariant();
+        return $"{sys.Label} - {sub.Label}";
     }
 
     private void UpdateHover(Vector2 center, Vector2 mouse) {

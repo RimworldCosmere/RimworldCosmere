@@ -11,9 +11,11 @@ public static class ParchmentTex {
     private const int Width = 192;
     private const int Height = 96;
 
-    public static readonly Texture2D Sheet = Build();
+    // Declared before Sheet on purpose: static fields initialise in order, and
+    // building the sheet against a default Color painted it black.
+    private static readonly Color Base = new Color(0.847f, 0.784f, 0.635f);
 
-    private static readonly Color Base = new Color(0.839f, 0.769f, 0.612f);
+    public static readonly Texture2D Sheet = Build();
 
     private static Texture2D Build() {
         Texture2D tex = new Texture2D(Width, Height, TextureFormat.ARGB32, false) {

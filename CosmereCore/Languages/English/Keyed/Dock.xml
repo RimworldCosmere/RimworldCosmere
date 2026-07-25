@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <CC_Dock_Twinborn_Burn>BURN</CC_Dock_Twinborn_Burn>
-  <CC_Dock_Twinborn_Stop>STOP</CC_Dock_Twinborn_Stop>
-  <CC_Dock_Twinborn_Tap>TAP</CC_Dock_Twinborn_Tap>
-  <CC_Dock_Twinborn_Store>STORE</CC_Dock_Twinborn_Store>
-  <CC_Dock_Twinborn_TapOrStore>TAP|STORE</CC_Dock_Twinborn_TapOrStore>
+  <CC_Dock_Twinborn_Burn>Burn</CC_Dock_Twinborn_Burn>
+  <CC_Dock_Twinborn_Stop>Stop</CC_Dock_Twinborn_Stop>
+  <CC_Dock_Twinborn_Tap>Tap</CC_Dock_Twinborn_Tap>
+  <CC_Dock_Twinborn_Store>Store</CC_Dock_Twinborn_Store>
+  <CC_Dock_Twinborn_TapOrStore>Tap | Store</CC_Dock_Twinborn_TapOrStore>
   <CC_Dock_Twinborn_Compound>Compound</CC_Dock_Twinborn_Compound>
 
   <CC_Dock_Awakening_NoBreaths>No Breaths</CC_Dock_Awakening_NoBreaths>
@@ -23,9 +23,9 @@
   <CC_Dock_Group_Cognitive>Cognitive</CC_Dock_Group_Cognitive>
   <CC_Dock_Group_Spiritual>Spiritual</CC_Dock_Group_Spiritual>
   <CC_Dock_Group_Hybrid>Hybrid</CC_Dock_Group_Hybrid>
-  <CC_Dock_State_Burning>BURNING</CC_Dock_State_Burning>
-  <CC_Dock_State_Flaring>FLARING</CC_Dock_State_Flaring>
-  <CC_Dock_Btn_Threshold>SET</CC_Dock_Btn_Threshold>
+  <CC_Dock_State_Burning>Burning</CC_Dock_State_Burning>
+  <CC_Dock_State_Flaring>Flaring</CC_Dock_State_Flaring>
+  <CC_Dock_Btn_Threshold>Set</CC_Dock_Btn_Threshold>
 
   <CC_Dock_Allomancy_Tip>{METAL}\nReserve {PERCENT}%{STATE}\n\nClick to open the burn controls.\nRight-click to set the restock threshold.</CC_Dock_Allomancy_Tip>
   <CC_Dock_Feruchemy_Tip>{METAL}\n{STORED} of {MAX} stored\n\nClick to open the tap and store dial.</CC_Dock_Feruchemy_Tip>

@@ -33,7 +33,7 @@ public static class SubtabBar {
                 Widgets.DrawBoxSolid(tab, new Color(1f, 1f, 1f, 0.04f));
             }
 
-            string label = ((string)buffer[i].labelKey.Translate()).ToUpperInvariant();
+            string label = (string)buffer[i].labelKey.Translate();
             Color textColor = selected ? new Color(0.88f, 0.73f, 0.42f) : new Color(0.55f, 0.50f, 0.41f);
             UIText.EllipsisLabel(tab.ContractedBy(4f, 0f), label, GameFont.Small, TextAnchor.MiddleCenter, textColor);
 

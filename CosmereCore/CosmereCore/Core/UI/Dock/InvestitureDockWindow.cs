@@ -145,7 +145,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
 
             UIText.EllipsisLabel(
                 new Rect(icon.xMax + RibbonPad, icon.y, ribbon.xMax - icon.xMax - RibbonPad * 2f, RibbonIcon),
-                section.Skin.HeaderLabel.ToUpperInvariant(),
+                section.Skin.HeaderLabel,
                 GameFont.Tiny,
                 TextAnchor.MiddleLeft,
                 RibbonInk

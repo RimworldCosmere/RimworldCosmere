@@ -36,7 +36,7 @@ public static class MetalTile {
 
         Widgets.DrawBoxSolid(rect, inert ? new Color(0.078f, 0.071f, 0.063f) : new Color(0.098f, 0.090f, 0.075f));
         Widgets.DrawBoxSolidWithOutline(
-            rect,
+            rect.ContractedBy(1f),
             Color.clear,
             hot ? activeTint : new Color(0.204f, 0.180f, 0.149f)
         );
@@ -48,10 +48,7 @@ public static class MetalTile {
                 ? 0.26f + Mathf.Sin(Time.realtimeSinceStartup * 6f) * 0.08f
                 : 0.18f;
             Widgets.DrawBoxSolid(rect, new Color(activeTint.r, activeTint.g, activeTint.b, wash));
-            Widgets.DrawBoxSolid(
-                new Rect(rect.x, rect.y, state == MetalTileState.Flaring ? 4f : 3f, rect.height),
-                activeTint
-            );
+            Widgets.DrawBoxSolid(new Rect(rect.x + 1f, rect.y + 2f, 3f, rect.height - 4f), activeTint);
         }
 
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
@@ -59,7 +56,7 @@ public static class MetalTile {
         // here, just nothing in it yet, so it dims without going dead.
         bool empty = !inert && fraction <= 0f && !hot;
 
-        Rect iconRect = new Rect(rect.x + (hot ? 8f : 5f), rect.y + 3f, GlyphSize, GlyphSize);
+        Rect iconRect = new Rect(rect.x + 6f, rect.y + 3f, GlyphSize, GlyphSize);
         if (icon != null) {
             Color prev = GUI.color;
             GUI.color = inert

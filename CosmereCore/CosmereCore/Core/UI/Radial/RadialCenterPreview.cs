@@ -21,7 +21,7 @@ public static class RadialCenterPreview {
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
         float smallH = Text.LineHeightOf(GameFont.Small);
 
-        UIText.EllipsisLabel(ChordRow(center, -88f, tinyH), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
+        UIText.EllipsisLabel(ChordRow(center, -98f, tinyH), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
 
         if (hoveredLeaf == null) {
             if (hoveredTitle != null) {
@@ -54,7 +54,7 @@ public static class RadialCenterPreview {
             bool hasParent = !hoveredTitle.NullOrEmpty() && hoveredTitle != hoveredLeaf.Label;
             if (hasParent) {
                 UIText.EllipsisLabel(
-                    ChordRow(center, -76f, tinyH),
+                    ChordRow(center, -78f, tinyH),
                     hoveredTitle!,
                     GameFont.Tiny,
                     TextAnchor.MiddleCenter,
@@ -63,7 +63,7 @@ public static class RadialCenterPreview {
             }
 
             UIText.EllipsisLabel(
-                ChordRow(center, hasParent ? -56f : -60f, smallH),
+                ChordRow(center, hasParent ? -58f : -60f, smallH),
                 hoveredLeaf.Label,
                 GameFont.Small,
                 TextAnchor.MiddleCenter,
@@ -71,8 +71,8 @@ public static class RadialCenterPreview {
             );
 
             if (!hoveredLeaf.Description.NullOrEmpty()) {
-                Rect descRect = ChordRow(center, -30f, tinyH * 2f);
-                string desc = hoveredLeaf.Description!.Truncate(descRect.width * 2f);
+                Rect descRect = ChordRow(center, -32f, tinyH * 3f);
+                string desc = hoveredLeaf.Description!.Truncate(descRect.width * 3f);
                 using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, DockPalette.MutedText)) {
                     Widgets.Label(descRect, desc);
                 }
@@ -92,33 +92,57 @@ public static class RadialCenterPreview {
 
             if (hoveredLeaf.ReserveFraction.HasValue) {
                 float fraction = Mathf.Clamp01(hoveredLeaf.ReserveFraction.Value);
-                Rect labelRow = ChordRow(center, 28f, tinyH);
+                float barHeight = tinyH + 6f;
+                Rect barRow = ChordRow(center, 26f, barHeight);
+
+                Widgets.DrawBoxSolid(barRow, new Color(0f, 0f, 0f, 0.55f));
+                Widgets.DrawBoxSolid(
+                    new Rect(barRow.x + 1f, barRow.y + 1f, (barRow.width - 2f) * fraction, barHeight - 2f),
+                    new Color(0.24f, 0.42f, 0.50f)
+                );
+                Widgets.DrawBox(barRow, 1, BaseContent.WhiteTex);
+
+                Rect barInner = barRow.ContractedBy(6f, 0f);
                 UIText.EllipsisLabel(
-                    labelRow,
+                    barInner,
                     "CC_Radial_Reserve".Translate(Mathf.RoundToInt(fraction * 100f).Named("PERCENT")),
                     GameFont.Tiny,
-                    TextAnchor.MiddleCenter,
-                    DockPalette.MutedText
+                    TextAnchor.MiddleLeft,
+                    new Color(0.92f, 0.95f, 0.97f)
                 );
 
-                Rect barRow = ChordRow(center, 48f, 6f);
-                Widgets.DrawBoxSolid(barRow, new Color(0f, 0f, 0f, 0.6f));
-                Widgets.DrawBoxSolid(
-                    new Rect(barRow.x + 1f, barRow.y + 1f, (barRow.width - 2f) * fraction, 4f),
-                    new Color(0.478f, 0.784f, 0.902f)
-                );
+                string rate = BuildRateLine(hoveredLeaf);
+                if (rate.Length > 0) {
+                    UIText.EllipsisLabel(barInner, rate, GameFont.Tiny, TextAnchor.MiddleRight, DockPalette.HotLabel);
+                }
             }
         }
 
         if (browseMode) {
             const float buttonSize = 30f;
-            const float buttonGap = 10f;
-            float buttonY = center.y + 50f;
-            Rect backRect = new Rect(center.x - buttonSize - buttonGap / 2f, buttonY, buttonSize, buttonSize);
-            Rect closeRect = new Rect(center.x + buttonGap / 2f, buttonY, buttonSize, buttonSize);
+            const float buttonGap = 8f;
+            float buttonY = center.y + 58f;
+            RimWorld.AbilityDef? infoDef = hoveredLeaf?.AbilityDef;
+            int buttonCount = infoDef != null ? 3 : 2;
+            float rowWidth = buttonCount * buttonSize + (buttonCount - 1) * buttonGap;
+            float x = center.x - rowWidth / 2f;
 
-            DrawIconButton(backRect, TexButton.Reveal, "CC_Radial_Back".Translate(), 0.55f, true, back);
-            DrawIconButton(closeRect, TexButton.CloseXSmall, "CC_Radial_Close".Translate(), 0.55f, false, close);
+            DrawIconButton(new Rect(x, buttonY, buttonSize, buttonSize), TexButton.Reveal, "CC_Radial_Back".Translate(), 0.55f, true, back);
+            x += buttonSize + buttonGap;
+
+            if (infoDef != null) {
+                DrawIconButton(
+                    new Rect(x, buttonY, buttonSize, buttonSize),
+                    TexButton.Info,
+                    "CC_Radial_Info".Translate(),
+                    0.7f,
+                    false,
+                    () => Find.WindowStack.Add(new Dialog_InfoCard(infoDef))
+                );
+                x += buttonSize + buttonGap;
+            }
+
+            DrawIconButton(new Rect(x, buttonY, buttonSize, buttonSize), TexButton.CloseXSmall, "CC_Radial_Close".Translate(), 0.55f, false, close);
         }
         else {
             bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -186,8 +210,9 @@ public static class RadialCenterPreview {
     }
 
     private static string BuildMetaLine(RadialLeaf leaf) {
-        string meta = "";
-        if (leaf.CostHint != null) meta = leaf.CostHint;
+        // The cost hint doubles as the burn rate, which is shown inside the
+        // reserve bar; only surface it here when there is no bar to carry it.
+        string meta = leaf.ReserveFraction.HasValue || leaf.CostHint == null ? "" : leaf.CostHint;
         if (leaf.CooldownTicksRemaining > 0) {
             float seconds = leaf.CooldownTicksRemaining / (float)GenTicks.TicksPerRealSecond;
             string cd = "CC_Radial_Cooldown".Translate(seconds.ToString("F1").Named("SECONDS"));
@@ -195,5 +220,9 @@ public static class RadialCenterPreview {
         }
 
         return meta;
+    }
+
+    private static string BuildRateLine(RadialLeaf leaf) {
+        return leaf.CostHint ?? "";
     }
 }

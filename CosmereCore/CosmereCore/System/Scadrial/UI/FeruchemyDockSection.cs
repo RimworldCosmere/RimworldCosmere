@@ -1,21 +1,30 @@
+using Cosmere.Core.UI;
 using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
-using Cosmere.Core.UI.Skin;
 using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Extension;
+using Cosmere.System.Scadrial.Feruchemy;
 using Cosmere.System.Scadrial.Gene;
+using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace Cosmere.System.Scadrial.UI;
 
 public sealed class FeruchemyDockSection : DockSectionBase {
-    private const float CellGap = 4f;
-    private const float ButtonRowHeight = 20f;
-    private readonly HashSet<string> expandedRows = [];
-    private readonly Dictionary<string, string> labelCache = new();
+    private const float StripHeight = 78f;
+    private const float IdleTarget = 50f;
+    private static readonly Color ActiveTint = new Color(0.490f, 0.604f, 0.659f);
+    private static readonly Color QuadHeader = new Color(0.365f, 0.463f, 0.525f);
+    private static readonly Color StoreFill = new Color(0.373f, 0.549f, 0.627f);
+    private static readonly Color TapFill = new Color(0.659f, 0.435f, 0.290f);
+
+    private readonly Dictionary<string, string> labelCache = new Dictionary<string, string>();
     private IReadOnlyList<MetalGroup>? cachedGroups;
     private int cachedPawnId = -1;
     private int cachedCellCount = -1;
+    private string? expandedMetal;
 
     public override string SystemId => "Feruchemy";
 
@@ -24,108 +33,170 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     }
 
     public override float GetExpandedBodyHeight(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
-        IReadOnlyList<MetalGroup> groups = GroupsFor(pawn, snapshot);
-        float height = 0f;
-
-        int tapping = CountByDirection(pawn, snapshot, ctx, true);
-        if (tapping > 0) {
-            height += DockRows.GroupLabelHeight + tapping * (DockRows.RichCellHeight + CellGap);
-        }
-
-        int storing = CountByDirection(pawn, snapshot, ctx, false);
-        if (storing > 0) {
-            height += DockRows.GroupLabelHeight + storing * (DockRows.RichCellHeight + CellGap);
-        }
-
-        for (int g = 0; g < groups.Count; g++) {
-            MetalGroup group = groups[g];
-            height += DockRows.GroupLabelHeight;
-            for (int r = 0; r < group.Rows.Count; r++) {
-                MetalRow row = group.Rows[r];
-                if (ctx.DualInvestiturePairs.ContainsKey(row.Cell.SubsystemId)) continue;
-
-                Feruchemist? gene = FindGene(pawn, row.Cell.SubsystemId);
-                if (gene != null && (gene.isTapping || gene.isStoring)) {
-                    height += DockRows.SlimRowHeight;
-                    continue;
-                }
-
-                height += expandedRows.Contains(row.Cell.SubsystemId)
-                    ? DockRows.RichCellHeight + CellGap
-                    : DockRows.SlimRowHeight;
-            }
-        }
-
-        return height;
+        return MetallicArtsTable.HeightFor(GroupsFor(pawn, snapshot), expandedMetal, StripHeight);
     }
 
     public override void DrawBody(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx) {
-        IReadOnlyList<MetalGroup> groups = GroupsFor(pawn, snapshot);
-        float y = rect.y;
+        MetallicArtsTable.Draw(
+            rect,
+            GroupsFor(pawn, snapshot),
+            QuadHeader,
+            expandedMetal,
+            StripHeight,
+            (tileRect, row) => DrawTile(tileRect, pawn, row),
+            (stripRect, row) => DrawStrip(stripRect, pawn, row)
+        );
+    }
 
-        int tapping = CountByDirection(pawn, snapshot, ctx, true);
-        if (tapping > 0) {
-            DockRows.DrawGroupLabel(new Rect(rect.x, y, rect.width, DockRows.GroupLabelHeight), "CC_Dock_Group_Tapping".Translate(), true);
-            y += DockRows.GroupLabelHeight;
-            y = DrawPinnedGroup(rect, pawn, snapshot, ctx, y, true);
+    private void DrawTile(Rect rect, Pawn pawn, MetalRow row) {
+        InvestitureCell cell = row.Cell;
+        Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
+        Capacity capacity = CapacityOf(gene);
+
+        MetalTileState state = !capacity.HasMetalmind
+            ? MetalTileState.Inert
+            : gene != null && (gene.isTapping || gene.isStoring)
+                ? MetalTileState.Active
+                : MetalTileState.Idle;
+
+        MetalTile.Draw(
+            rect,
+            cell.Icon,
+            MetalLabel(cell),
+            capacity.HasMetalmind ? $"{capacity.Stored:0}/{capacity.Max:0}" : "—",
+            capacity.Fraction,
+            MetalPalette.For(cell.SubsystemId),
+            state,
+            ActiveTint
+        );
+
+        TooltipHandler.TipRegion(rect, () => Tooltip(cell, capacity), cell.SubsystemId.GetHashCode());
+
+        if (!capacity.HasMetalmind) return;
+        if (!Widgets.ButtonInvisible(rect)) return;
+
+        expandedMetal = expandedMetal == cell.SubsystemId ? null : cell.SubsystemId;
+        SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
+        Event.current?.Use();
+    }
+
+    private void DrawStrip(Rect rect, Pawn pawn, MetalRow row) {
+        InvestitureCell cell = row.Cell;
+        Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
+        if (gene == null) return;
+
+        Capacity capacity = CapacityOf(gene);
+        Widgets.DrawBoxSolid(rect, new Color(0.082f, 0.075f, 0.059f));
+        Widgets.DrawBoxSolidWithOutline(rect, Color.clear, new Color(0.239f, 0.216f, 0.188f));
+
+        Rect inner = rect.ContractedBy(7f, 6f);
+        float tinyH = Text.LineHeightOf(GameFont.Tiny);
+
+        string direction = gene.isTapping
+            ? "CC_Dock_Feruchemy_Tapping".Translate()
+            : gene.isStoring
+                ? "CC_Dock_Feruchemy_Storing".Translate()
+                : "CC_Dock_Feruchemy_Idle".Translate();
+        UIText.EllipsisLabel(
+            new Rect(inner.x, inner.y, inner.width * 0.6f, tinyH),
+            MetalLabel(cell) + " - " + direction,
+            GameFont.Tiny,
+            TextAnchor.MiddleLeft,
+            new Color(0.604f, 0.659f, 0.678f)
+        );
+        UIText.EllipsisLabel(
+            new Rect(inner.x + inner.width * 0.6f, inner.y, inner.width * 0.4f, tinyH),
+            $"{capacity.Stored:0} / {capacity.Max:0}",
+            GameFont.Tiny,
+            TextAnchor.MiddleRight,
+            new Color(0.435f, 0.404f, 0.361f)
+        );
+
+        // Below fifty taps, above stores. The reachable span is bounded by what
+        // the metalminds can actually give or accept right now.
+        Rect sliderRect = new Rect(inner.x, inner.y + tinyH + 4f, inner.width, 12f);
+        DrawDialBacking(sliderRect, gene, capacity);
+
+        float min = capacity.CanTap ? 0f : IdleTarget;
+        float max = capacity.CanStore ? 100f : IdleTarget;
+        float current = Mathf.Clamp(gene.targetValue, min, max);
+        float next = Widgets.HorizontalSlider(sliderRect, current, min, max);
+        if (!Mathf.Approximately(next, gene.targetValue)) gene.targetValue = next;
+
+        Rect endsRect = new Rect(inner.x, sliderRect.yMax + 1f, inner.width, tinyH);
+        UIText.EllipsisLabel(
+            endsRect,
+            "CC_Dock_Feruchemy_Tap".Translate(),
+            GameFont.Tiny,
+            TextAnchor.MiddleLeft,
+            capacity.CanTap ? new Color(0.498f, 0.541f, 0.565f) : new Color(0.310f, 0.286f, 0.255f)
+        );
+        UIText.EllipsisLabel(
+            endsRect,
+            "CC_Dock_Feruchemy_Store".Translate(),
+            GameFont.Tiny,
+            TextAnchor.MiddleRight,
+            capacity.CanStore ? new Color(0.498f, 0.541f, 0.565f) : new Color(0.310f, 0.286f, 0.255f)
+        );
+
+        float buttonY = endsRect.yMax + 3f;
+        AllomanticAbilityDef? compound = CompoundFor(pawn, cell.SubsystemId);
+        float buttonWidth = compound != null ? (inner.width - 5f) / 2f : inner.width;
+
+        if (Widgets.ButtonText(new Rect(inner.x, buttonY, buttonWidth, 20f), "CC_Dock_Feruchemy_Idle".Translate())) {
+            gene.Reset();
+            Event.current?.Use();
         }
 
-        int storing = CountByDirection(pawn, snapshot, ctx, false);
-        if (storing > 0) {
-            DockRows.DrawGroupLabel(new Rect(rect.x, y, rect.width, DockRows.GroupLabelHeight), "CC_Dock_Group_Storing".Translate(), true);
-            y += DockRows.GroupLabelHeight;
-            y = DrawPinnedGroup(rect, pawn, snapshot, ctx, y, false);
-        }
+        if (compound == null) return;
 
-        for (int g = 0; g < groups.Count; g++) {
-            MetalGroup group = groups[g];
-            DockRows.DrawGroupLabel(new Rect(rect.x, y, rect.width, DockRows.GroupLabelHeight), group.LabelKey.Translate(), false);
-            y += DockRows.GroupLabelHeight;
-            for (int r = 0; r < group.Rows.Count; r++) {
-                MetalRow row = group.Rows[r];
-                if (ctx.DualInvestiturePairs.ContainsKey(row.Cell.SubsystemId)) continue;
-
-                Feruchemist? gene = FindGene(pawn, row.Cell.SubsystemId);
-                if (gene != null && (gene.isTapping || gene.isStoring)) {
-                    Rect ghostRect = new Rect(rect.x, y, rect.width, DockRows.SlimRowHeight);
-                    DockRows.DrawSlimRow(ghostRect, row.Cell.Icon, MetalLabel(row.Cell), row.AxisGlyph, row.Cell.Bar.Fraction, Skin, true);
-                    y += DockRows.SlimRowHeight;
-                    continue;
-                }
-
-                if (expandedRows.Contains(row.Cell.SubsystemId)) {
-                    Rect cellRect = new Rect(rect.x + 6f, y, rect.width - 12f, DockRows.RichCellHeight);
-                    DrawRichCell(cellRect, pawn, row.Cell, false);
-                    y += DockRows.RichCellHeight + CellGap;
-                    continue;
-                }
-
-                Rect rowRect = new Rect(rect.x, y, rect.width, DockRows.SlimRowHeight);
-                if (DockRows.DrawSlimRow(rowRect, row.Cell.Icon, MetalLabel(row.Cell), row.AxisGlyph, row.Cell.Bar.Fraction, Skin, false)) {
-                    expandedRows.Add(row.Cell.SubsystemId);
-                }
-
-                y += DockRows.SlimRowHeight;
-            }
+        Ability? ability = pawn.abilities?.GetAbility(compound);
+        bool canCompound = ability != null && ability.CanCast;
+        Rect compoundRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, 20f);
+        if (Widgets.ButtonText(compoundRect, "CC_Dock_Twinborn_Compound".Translate(), active: canCompound) && canCompound) {
+            ability!.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
+            Event.current?.Use();
         }
     }
 
-    private float DrawPinnedGroup(Rect rect, Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx, float y, bool tapping) {
-        for (int i = 0; i < snapshot.Cells.Count; i++) {
-            InvestitureCell cell = snapshot.Cells[i];
-            if (ctx.DualInvestiturePairs.ContainsKey(cell.SubsystemId)) continue;
+    private static void DrawDialBacking(Rect rect, Feruchemist gene, Capacity capacity) {
+        Widgets.DrawBoxSolid(rect, new Color(0.047f, 0.043f, 0.035f));
 
-            Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
-            if (gene == null) continue;
-            if (tapping && !gene.isTapping) continue;
-            if (!tapping && !gene.isStoring) continue;
-
-            Rect cellRect = new Rect(rect.x + 6f, y, rect.width - 12f, DockRows.RichCellHeight);
-            DrawRichCell(cellRect, pawn, cell, true);
-            y += DockRows.RichCellHeight + CellGap;
+        Color blocked = new Color(0.098f, 0.090f, 0.075f);
+        if (!capacity.CanTap) {
+            Widgets.DrawBoxSolid(new Rect(rect.x, rect.y, rect.width / 2f, rect.height), blocked);
         }
 
-        return y;
+        if (!capacity.CanStore) {
+            Widgets.DrawBoxSolid(new Rect(rect.center.x, rect.y, rect.width / 2f, rect.height), blocked);
+        }
+
+        float delta = gene.targetValue - IdleTarget;
+        if (delta < 0f) {
+            float width = rect.width / 2f * Mathf.Clamp01(-delta / IdleTarget);
+            Widgets.DrawBoxSolid(new Rect(rect.center.x - width, rect.y, width, rect.height), TapFill);
+        }
+        else if (delta > 0f) {
+            float width = rect.width / 2f * Mathf.Clamp01(delta / IdleTarget);
+            Widgets.DrawBoxSolid(new Rect(rect.center.x, rect.y, width, rect.height), StoreFill);
+        }
+
+        Widgets.DrawBoxSolid(
+            new Rect(rect.center.x, rect.y - 1f, 1f, rect.height + 2f),
+            new Color(0.353f, 0.322f, 0.271f)
+        );
+    }
+
+    private string Tooltip(InvestitureCell cell, Capacity capacity) {
+        if (!capacity.HasMetalmind) {
+            return "CC_Dock_Feruchemy_NoMetalmind".Translate(MetalLabel(cell).Named("METAL"));
+        }
+
+        return "CC_Dock_Feruchemy_Tip".Translate(
+            MetalLabel(cell).Named("METAL"),
+            capacity.Stored.ToString("0").Named("STORED"),
+            capacity.Max.ToString("0").Named("MAX")
+        );
     }
 
     private IReadOnlyList<MetalGroup> GroupsFor(Pawn pawn, InvestitureSnapshot snapshot) {
@@ -145,64 +216,30 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         return label;
     }
 
-    private static int CountByDirection(Pawn pawn, InvestitureSnapshot snapshot, DockRenderContext ctx, bool tapping) {
-        int count = 0;
-        for (int i = 0; i < snapshot.Cells.Count; i++) {
-            InvestitureCell cell = snapshot.Cells[i];
-            if (ctx.DualInvestiturePairs.ContainsKey(cell.SubsystemId)) continue;
+    private static Capacity CapacityOf(Feruchemist? gene) {
+        if (gene == null) return default;
 
-            Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
-            if (gene == null) continue;
-            if (tapping ? gene.isTapping : gene.isStoring) count++;
+        List<IMetalmindSource> sources = gene.metalminds;
+        float stored = 0f;
+        float max = 0f;
+        for (int i = 0; i < sources.Count; i++) {
+            stored += sources[i].StoredAmount;
+            max += sources[i].MaxAmount;
         }
 
-        return count;
+        return new Capacity(stored, max, sources.Count > 0, gene.canTap, gene.canStore);
     }
 
-    private void DrawRichCell(Rect cellRect, Pawn pawn, InvestitureCell cell, bool pinned) {
-        Feruchemist? gene = FindGene(pawn, cell.SubsystemId);
-        string stateLabel = pinned && gene != null
-            ? (gene.isTapping ? "^ " + "CC_Dock_Twinborn_Tap".Translate() : "v " + "CC_Dock_Twinborn_Store".Translate())
-            : "";
-        Color stateColor = DockPalette.HotLabel;
-        float? targetFraction = cell.Bar.TargetValue.HasValue && cell.Bar.Max > 0f
-            ? cell.Bar.TargetValue.Value / cell.Bar.Max
-            : null;
-
-        Rect buttonRow = DockRows.BeginRichCell(
-            cellRect,
-            cell.Icon,
-            MetalLabel(cell),
-            stateLabel,
-            stateColor,
-            cell.Bar.Fraction,
-            targetFraction,
-            Skin,
-            false
-        );
-
-        if (!pinned) {
-            Rect nameStrip = new Rect(cellRect.x, cellRect.y, cellRect.width, ButtonRowHeight);
-            if (Widgets.ButtonInvisible(nameStrip) && Event.current != null && Event.current.button == 0) {
-                expandedRows.Remove(cell.SubsystemId);
-                Event.current.Use();
+    private static AllomanticAbilityDef? CompoundFor(Pawn pawn, string metalDefName) {
+        if (pawn.genes == null) return null;
+        List<Verse.Gene> all = pawn.genes.GenesListForReading;
+        for (int i = 0; i < all.Count; i++) {
+            if (all[i] is Allomancer a && a.metal.defName == metalDefName && !a.Overridden) {
+                return a.metal.GetCompoundAbility();
             }
         }
 
-        float buttonWidth = buttonRow.width / 2f;
-        Rect toggleRect = new Rect(buttonRow.x, buttonRow.y, buttonWidth, ButtonRowHeight);
-
-        string label = gene == null
-            ? "-"
-            : (gene.isTapping
-                ? "CC_Dock_Twinborn_Tap"
-                : gene.isStoring
-                    ? "CC_Dock_Twinborn_Store"
-                    : "CC_Dock_Twinborn_TapOrStore").Translate();
-        if (Widgets.ButtonText(toggleRect, label) && gene != null) {
-            ToggleDirection(gene);
-            Event.current?.Use();
-        }
+        return null;
     }
 
     private static Feruchemist? FindGene(Pawn pawn, string metalDefName) {
@@ -215,17 +252,20 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         return null;
     }
 
-    private static void ToggleDirection(Feruchemist gene) {
-        if (gene.isTapping) {
-            gene.targetValue = 75f;
-            return;
+    private readonly struct Capacity {
+        public Capacity(float stored, float max, bool hasMetalmind, bool canTap, bool canStore) {
+            Stored = stored;
+            Max = max;
+            HasMetalmind = hasMetalmind;
+            CanTap = canTap;
+            CanStore = canStore;
         }
 
-        if (gene.isStoring) {
-            gene.Reset();
-            return;
-        }
-
-        gene.targetValue = 25f;
+        public float Stored { get; }
+        public float Max { get; }
+        public bool HasMetalmind { get; }
+        public bool CanTap { get; }
+        public bool CanStore { get; }
+        public float Fraction => Max > 0f ? Stored / Max : 0f;
     }
 }

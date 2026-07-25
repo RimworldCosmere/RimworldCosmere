@@ -47,13 +47,13 @@ public static class PawnExtension {
     }
 
     public static List<IntVec3> GetCellsAround(this Pawn pawn, float radius, bool useCenter = false) {
-        return GenRadial.RadialCellsAround(
-                pawn.Position,
-                Mathf.Round(Mathf.Min(GenRadial.MaxRadialPatternRadius - .01f, radius)),
-                useCenter
-            )
-            .Where(c => c.InBounds(pawn.Map))
-            .ToList();
+        float clampedRadius = Mathf.Round(Mathf.Min(GenRadial.MaxRadialPatternRadius - .01f, radius));
+        List<IntVec3> cells = new List<IntVec3>(GenRadial.NumCellsInRadius(clampedRadius));
+        foreach (IntVec3 cell in GenRadial.RadialCellsAround(pawn.Position, clampedRadius, useCenter)) {
+            if (cell.InBounds(pawn.Map)) cells.Add(cell);
+        }
+
+        return cells;
     }
 
     public static bool TryGetAbility<T>(this Pawn pawn, AbilityDef def, out T? ability)

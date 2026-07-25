@@ -28,4 +28,21 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(RiderSharedRunConfigurations) = postSolution
+		File = .run\Build Generatables.run.xml
+		File = .run\MacOS.run.xml
+		File = .run\RimWorld.run.xml
+		File = .run\RimWorld (Mac).run.xml
+		File = .run\RimWorld (PC).run.xml
+		File = obj\Cosmere-stage\.run\Build Generatables.run.xml
+		File = obj\Cosmere-stage\.run\MacOS.run.xml
+		File = obj\Cosmere-stage\.run\RimWorld (Mac).run.xml
+		File = obj\Cosmere-stage\.run\RimWorld (PC).run.xml
+		File = obj\Cosmere-stage\.run\RimWorld.run.xml
+		File = .claude\worktrees\agent-ac8065a0\.run\Build Asset Bundles (Mac).run.xml
+		File = .claude\worktrees\agent-ac8065a0\.run\Build Asset Bundles (PC).run.xml
+		File = .claude\worktrees\agent-ac8065a0\.run\MacOS.run.xml
+		File = .claude\worktrees\agent-ac8065a0\.run\RimWorld (PC).run.xml
+		File = .claude\worktrees\agent-ac8065a0\.run\start -- -d -f.run.xml
+	EndGlobalSection
 EndGlobal

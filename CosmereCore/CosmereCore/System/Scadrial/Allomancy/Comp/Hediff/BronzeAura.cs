@@ -23,7 +23,10 @@ public class BronzeAura : LineDrawingAura {
     private new BronzeAuraProperties props => (BronzeAuraProperties)base.props;
 
     protected override IEnumerable<Verse.Thing> GetThingsToDrawInCell(IntVec3 cell, Map map) {
-        return cell.GetThingList(map).Where(t => t.GetInvestiture()?.currentInvestiture > 0);
+        List<Verse.Thing> things = cell.GetThingList(map);
+        for (int i = 0; i < things.Count; i++) {
+            if (things[i].GetInvestiture()?.currentInvestiture > 0) yield return things[i];
+        }
     }
 
     protected override LineToRender GetLineToRender(Verse.Thing thing) {

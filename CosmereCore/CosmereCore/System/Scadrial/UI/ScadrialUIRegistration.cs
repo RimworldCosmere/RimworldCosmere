@@ -44,7 +44,6 @@ public static class ScadrialUIRegistration {
         ));
         DockSectionRegistry.Register(new AllomancyDockSection());
         DockSectionRegistry.Register(new FeruchemyDockSection());
-        DualInvestiturePairRegistry.Register(new ScadrialTwinbornPairProvider());
         NamedPawnApplierRegistry.Register(new ScadrialNamedPawnApplier());
         RadialActionRegistry.Register(new AllomancyRadialHandler());
         RadialActionRegistry.Register(new FeruchemyRadialHandler());

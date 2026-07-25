@@ -57,7 +57,6 @@ public sealed class InvestitureDockWindow : Verse.Window {
         if (snapshots.Count == 0) return;
 
         DockRenderContext ctx = new DockRenderContext {
-            DualInvestiturePairs = BuildDualInvestiturePairs(pawn, snapshots),
             Density = PickDensity(pawn, snapshots, inRect.height),
         };
 
@@ -138,25 +137,13 @@ public sealed class InvestitureDockWindow : Verse.Window {
         accordion.Draw(bodyRect, pawn, snapshots, ctx);
     }
 
-    private static Dictionary<string, IDualInvestiturePair> BuildDualInvestiturePairs(
-        Pawn pawn,
-        IReadOnlyList<InvestitureSnapshot> snapshots
-    ) {
-        List<string> activeIds = new List<string>(snapshots.Count);
-        for (int i = 0; i < snapshots.Count; i++) {
-            activeIds.Add(snapshots[i].SystemId);
-        }
-
-        return DualInvestiturePairRegistry.Build(pawn, activeIds);
-    }
-
     private DockDensityMode PickDensity(
         Pawn pawn,
         IReadOnlyList<InvestitureSnapshot> snapshots,
         float availableHeight
     ) {
         float needed = 0f;
-        DockRenderContext probeCtx = new DockRenderContext { DualInvestiturePairs = BuildDualInvestiturePairs(pawn, snapshots) };
+        DockRenderContext probeCtx = new DockRenderContext();
         for (int i = 0; i < snapshots.Count; i++) {
             IDockSection? section = DockSectionRegistry.For(snapshots[i].SystemId);
             if (section == null) continue;

@@ -2,6 +2,8 @@ using System;
 using Cosmere.Core.Settings;
 using Cosmere.Core.UI;
 using Cosmere.Core.Window;
+using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 

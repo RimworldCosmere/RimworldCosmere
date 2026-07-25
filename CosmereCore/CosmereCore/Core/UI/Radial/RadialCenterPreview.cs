@@ -51,8 +51,19 @@ public static class RadialCenterPreview {
             }
         }
         else {
+            bool hasParent = !hoveredTitle.NullOrEmpty() && hoveredTitle != hoveredLeaf.Label;
+            if (hasParent) {
+                UIText.EllipsisLabel(
+                    ChordRow(center, -54f, tinyH),
+                    hoveredTitle!,
+                    GameFont.Tiny,
+                    TextAnchor.MiddleCenter,
+                    DockPalette.MutedText
+                );
+            }
+
             UIText.EllipsisLabel(
-                ChordRow(center, -46f, smallH),
+                ChordRow(center, hasParent ? -38f : -46f, smallH),
                 hoveredLeaf.Label,
                 GameFont.Small,
                 TextAnchor.MiddleCenter,
@@ -80,12 +91,21 @@ public static class RadialCenterPreview {
             }
 
             if (hoveredLeaf.ReserveFraction.HasValue) {
+                float fraction = Mathf.Clamp01(hoveredLeaf.ReserveFraction.Value);
+                Rect labelRow = ChordRow(center, 30f, tinyH);
                 UIText.EllipsisLabel(
-                    ChordRow(center, 34f, tinyH),
-                    "CC_Radial_Reserve".Translate(Mathf.RoundToInt(hoveredLeaf.ReserveFraction.Value * 100f).Named("PERCENT")),
+                    labelRow,
+                    "CC_Radial_Reserve".Translate(Mathf.RoundToInt(fraction * 100f).Named("PERCENT")),
                     GameFont.Tiny,
                     TextAnchor.MiddleCenter,
                     DockPalette.MutedText
+                );
+
+                Rect barRow = ChordRow(center, 30f + tinyH, 6f);
+                Widgets.DrawBoxSolid(barRow, new Color(0f, 0f, 0f, 0.6f));
+                Widgets.DrawBoxSolid(
+                    new Rect(barRow.x + 1f, barRow.y + 1f, (barRow.width - 2f) * fraction, 4f),
+                    new Color(0.478f, 0.784f, 0.902f)
                 );
             }
         }
@@ -101,17 +121,20 @@ public static class RadialCenterPreview {
         }
         else {
             bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            float hintY = hoveredLeaf?.ReserveFraction != null ? 58f : 46f;
             UIText.EllipsisLabel(
-                ChordRow(center, 46f, tinyH),
-                shiftHeld ? "CC_Radial_Hint_FlareArmed".Translate() : "CC_Radial_Hint_Release".Translate(),
+                ChordRow(center, hintY, tinyH),
+                shiftHeld
+                    ? "CC_Radial_Hint_FlareArmed".Translate()
+                    : hoveredLeaf != null
+                        ? "CC_Radial_Hint_ReleaseFlare".Translate()
+                        : "CC_Radial_Hint_Release".Translate(),
                 GameFont.Tiny,
                 TextAnchor.MiddleCenter,
                 shiftHeld ? DockPalette.Flare : DockPalette.GroupLabel
             );
 
-            if (hoveredLeaf != null && !shiftHeld) {
-                UIText.EllipsisLabel(ChordRow(center, 58f, tinyH), "CC_Radial_Hint_Flare".Translate(), GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
-            }
+
         }
     }
 

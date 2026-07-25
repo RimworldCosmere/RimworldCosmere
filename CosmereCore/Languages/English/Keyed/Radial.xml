@@ -6,10 +6,10 @@
   <CC_Radial_Back>Back</CC_Radial_Back>
   <CC_Radial_Close>Close</CC_Radial_Close>
   <CC_Radial_Hint_Release>Release to cast</CC_Radial_Hint_Release>
+  <CC_Radial_Hint_ReleaseFlare>Release to cast - Shift to flare</CC_Radial_Hint_ReleaseFlare>
   <CC_Radial_Hint_Back>Right-click: back</CC_Radial_Hint_Back>
   <CC_Radial_Open_Prompt>Click or release to open</CC_Radial_Open_Prompt>
   <CC_Radial_Reserve>Reserve {PERCENT}%</CC_Radial_Reserve>
-  <CC_Radial_Hint_Flare>Hold Shift to flare</CC_Radial_Hint_Flare>
   <CC_Radial_Hint_FlareArmed>Release to FLARE</CC_Radial_Hint_FlareArmed>
 
 </LanguageData>

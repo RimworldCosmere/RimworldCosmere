@@ -1,6 +1,7 @@
 using Cosmere.Core.UI;
 using Cosmere.Core.UI.Dock;
 using Cosmere.Core.UI.Model;
+using Cosmere.System.Scadrial.Allomancy.Ability;
 using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Extension;
 using Cosmere.System.Scadrial.Feruchemy;
@@ -32,6 +33,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private int cachedCellCount = -1;
     private string? expandedMetal;
     private string? draggingDial;
+    private readonly Dictionary<string, AllomancyAbility?> compoundCache = new Dictionary<string, AllomancyAbility?>();
+    private int compoundPawnId = -1;
 
     public override string SystemId => "Feruchemy";
 
@@ -88,7 +91,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             tint
         );
 
-        bool hasCompound = CompoundFor(pawn, cell.SubsystemId) != null;
+        bool hasCompound = CompoundAbility(pawn, cell.SubsystemId) != null;
         TooltipHandler.TipRegion(
             rect,
             () => Tooltip(cell, capacity, hasCompound),
@@ -177,7 +180,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
 
         float buttonY = endsRect.yMax + 8f;
-        AllomanticAbilityDef? compound = CompoundFor(pawn, cell.SubsystemId);
+        AllomancyAbility? compound = CompoundAbility(pawn, cell.SubsystemId);
         float buttonWidth = compound != null ? (inner.width - 5f) / 2f : inner.width;
 
         if (ChromeButton(new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight), "CC_Dock_Feruchemy_Idle".Translate(), true)) {
@@ -187,9 +190,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         if (compound == null) return;
 
-        Ability? ability = pawn.abilities?.GetAbility(compound);
-        AcceptanceReport report = ability?.CanCast ?? false;
-        bool canCompound = ability != null && report.Accepted;
+        AcceptanceReport report = compound.CanCast;
+        bool canCompound = report.Accepted;
         Rect compoundRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, StripButtonHeight);
         if (!canCompound) {
             TooltipHandler.TipRegion(
@@ -202,7 +204,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             );
         }
         if (ChromeButton(compoundRect, "CC_Dock_Twinborn_Compound".Translate(), canCompound)) {
-            ability!.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
+            compound.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
             Event.current?.Use();
         }
     }
@@ -295,14 +297,33 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
     }
 
-    private static void TryCompound(Pawn pawn, string metalDefName) {
-        AllomanticAbilityDef? def = CompoundFor(pawn, metalDefName);
-        if (def == null) return;
-
-        Ability? ability = pawn.abilities?.GetAbility(def);
+    private void TryCompound(Pawn pawn, string metalDefName) {
+        AllomancyAbility? ability = CompoundAbility(pawn, metalDefName);
         if (ability == null || !ability.CanCast) return;
 
         ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
+    }
+
+    /// Compounding is never granted to the pawn - it is built on demand for a
+    /// twinborn who holds both genes for the metal, the way the old gene gizmo
+    /// did it. Cached because building one per frame would churn.
+    private AllomancyAbility? CompoundAbility(Pawn pawn, string metalDefName) {
+        if (compoundPawnId != pawn.thingIDNumber) {
+            compoundCache.Clear();
+            compoundPawnId = pawn.thingIDNumber;
+        }
+
+        if (compoundCache.TryGetValue(metalDefName, out AllomancyAbility? cached)) return cached;
+
+        AllomancyAbility? made = null;
+        MetallicArtsMetalDef? metal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(metalDefName);
+        if (metal != null && pawn.IsMisting(metal)) {
+            AllomanticAbilityDef? def = metal.GetCompoundAbility();
+            if (def != null) made = AbilityUtility.MakeAbility(def, pawn) as AllomancyAbility;
+        }
+
+        compoundCache[metalDefName] = made;
+        return made;
     }
 
     private string Tooltip(InvestitureCell cell, Capacity capacity, bool hasCompound) {
@@ -357,17 +378,6 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         return new Capacity(stored, max, sources.Count > 0, gene.canTap, gene.canStore);
     }
 
-    private static AllomanticAbilityDef? CompoundFor(Pawn pawn, string metalDefName) {
-        if (pawn.genes == null) return null;
-        List<Verse.Gene> all = pawn.genes.GenesListForReading;
-        for (int i = 0; i < all.Count; i++) {
-            if (all[i] is Allomancer a && a.metal.defName == metalDefName && !a.Overridden) {
-                return a.metal.GetCompoundAbility();
-            }
-        }
-
-        return null;
-    }
 
     private static Feruchemist? FindGene(Pawn pawn, string metalDefName) {
         if (pawn.genes == null) return null;

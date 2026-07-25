@@ -11,7 +11,7 @@ public class Compound : AllomanticHediff {
     /// Compounding is meant to dwarf what the dial can move by hand, so the yield
     /// sits well above MaxTransferPerSecond. Scales with each ability's own cost
     /// and strength, so the per-second figure differs by metal.
-    protected const float CompoundYield = 60f;
+    protected const float CompoundYield = 120f;
 
     public Compound() { }
 

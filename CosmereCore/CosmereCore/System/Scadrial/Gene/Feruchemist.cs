@@ -14,7 +14,7 @@ namespace Cosmere.System.Scadrial.Gene;
 
 public class Feruchemist : Metalborn {
     public const float MaxSeverity = 20f;
-    public const float MaxTransferPerSecond = 5f;
+    public const float MaxTransferPerSecond = 10f;
 
     /// TickStoreOrTap runs once per real second, so this is per second - the old
     /// name said rare tick and the readout converted as if it were, which is how

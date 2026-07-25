@@ -55,10 +55,12 @@ public class ITab_Investiture : ITab {
             SystemSwitcherStrip.Draw(rail, pawn, state, investedProviders);
         }
 
+        // Runs to both frame edges: a gap before the first tab and after the last
+        // made the bar look inset from the window it belongs to.
         Rect subtabBar = new Rect(
-            contentX + CodexChrome.Gutter,
+            contentX,
             CodexChrome.HeaderHeight,
-            size.x - contentX - CodexChrome.Gutter * 2f,
+            size.x - contentX,
             CodexChrome.SubtabBarHeight
         );
         SubtabBar.Draw(subtabBar, pawn, state, active, skin.AccentColor);

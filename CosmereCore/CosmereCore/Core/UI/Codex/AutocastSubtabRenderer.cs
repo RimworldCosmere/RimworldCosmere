@@ -49,7 +49,7 @@ public static class AutocastSubtabRenderer {
             Rect iconRect = new Rect(row.x + 26f, row.y + 4f, 24f, 24f);
             if (ability.def.uiIcon != null) GUI.DrawTexture(iconRect, ability.def.uiIcon);
 
-            Rect labelRect = new Rect(row.x + 56f, row.y, 220f, row.height);
+            Rect labelRect = new Rect(row.x + 66f, row.y, 220f, row.height);
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
                 Widgets.Label(labelRect, ability.def.LabelCap);
 

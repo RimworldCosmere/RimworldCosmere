@@ -39,17 +39,23 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         List<Allomancer> genes = CollectAllomancers(pawn);
         if (genes.Count == 0) return;
 
+        // The body runs to the frame now, so content sets its own inset.
+        const float contentPad = 4f;
         float y = rect.y;
 
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(new Rect(rect.x, y, rect.width, 30f), "CC_Codex_Allomancy_ProgressionHeader".Translate());
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
+            Widgets.Label(
+                new Rect(rect.x + contentPad, y, rect.width - contentPad, 30f),
+                "CC_Codex_Allomancy_ProgressionHeader".Translate()
+            );
+        }
         y += 34f;
 
         SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower);
         if (skill != null) {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f))) {
                 Widgets.Label(
-                    new Rect(rect.x, y, rect.width, 24f),
+                    new Rect(rect.x + contentPad, y, rect.width - contentPad, 24f),
                     "CC_Codex_Allomancy_OverallSkill".Translate(skill.Level.Named("LEVEL"))
                 );
             }
@@ -59,7 +65,10 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
         // Seventeen metals never fitted the panel, and without a scroll view the
         // ones past the fold were simply cut off rather than reachable.
-        const float rowHeight = 40f;
+        // The mark is the row's anchor, so it gets the room to be recognised and
+        // the row grows to hold it.
+        const float markSize = 44f;
+        const float rowHeight = 52f;
         const float rowGap = 2f;
         Rect listRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
         Rect viewRect = new Rect(0f, 0f, listRect.width - 20f, genes.Count * (rowHeight + rowGap));
@@ -76,7 +85,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
 
             // The metal's own mark in the metal's own colour, rather than an
             // anonymous chip that only the colour distinguished.
-            Rect swatch = new Rect(row.x + 6f, row.y + (rowHeight - 22f) / 2f, 22f, 22f);
+            Rect swatch = new Rect(row.x + contentPad, row.y + (rowHeight - markSize) / 2f, markSize, markSize);
             Texture2D? mark = metal.allomancy?.invertedIcon;
             if (mark != null) {
                 Color prevMark = GUI.color;
@@ -85,7 +94,7 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 GUI.color = prevMark;
             }
             else {
-                Widgets.DrawBoxSolid(swatch.ContractedBy(6f), metal.color);
+                Widgets.DrawBoxSolid(swatch.ContractedBy(markSize / 4f), metal.color);
             }
 
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))

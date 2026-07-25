@@ -33,10 +33,19 @@ public sealed class RadialWindow : Verse.Window {
 
     protected override float Margin => 0f;
 
-    public override Vector2 InitialSize => new Vector2(Verse.UI.screenWidth, Verse.UI.screenHeight);
+    // Sized to the wheel rather than the screen: a fullscreen window swallows
+    // every click outside the wheel for as long as it is open.
+    private static float WindowExtent => RadialLayout.AbilityRingOuter + 24f;
+
+    public override Vector2 InitialSize => new Vector2(WindowExtent * 2f, WindowExtent * 2f);
 
     protected override void SetInitialSizeAndPosition() {
-        windowRect = new Rect(0f, 0f, Verse.UI.screenWidth, Verse.UI.screenHeight);
+        windowRect = new Rect(
+            Anchor.x - WindowExtent,
+            Anchor.y - WindowExtent,
+            WindowExtent * 2f,
+            WindowExtent * 2f
+        );
     }
 
     public override void DoWindowContents(Rect inRect) {
@@ -72,11 +81,14 @@ public sealed class RadialWindow : Verse.Window {
             }
         }
 
-        Vector2 center = Anchor;
+        // Drawing happens in window-local space, so the wheel sits at the
+        // window's own centre rather than at the screen-space anchor.
+        Vector2 center = new Vector2(WindowExtent, WindowExtent);
         Vector2 mouse = Event.current.mousePosition;
 
         UpdateHover(center, mouse);
-        float vignetteSize = RadialLayout.AbilityRingOuter * 2.7f;
+        // Fills the window exactly; anything larger would clip to a hard edge.
+        float vignetteSize = WindowExtent * 2f;
         Color prevGuiColor = GUI.color;
         GUI.color = new Color(0f, 0f, 0f, 0.38f);
         GUI.DrawTexture(
@@ -297,8 +309,10 @@ public sealed class RadialWindow : Verse.Window {
     }
 
     private bool CursorInCentre() {
-        Vector2 mouse = Event.current != null ? Event.current.mousePosition : Verse.UI.MousePositionOnUIInverted;
-        return (mouse - Anchor).sqrMagnitude <= RadialLayout.CenterRadius * RadialLayout.CenterRadius;
+        // Called both from inside the window, where the event is window-local,
+        // and from the hotkey poll outside it, so always measure in screen space.
+        Vector2 mouse = Verse.UI.MousePositionOnUIInverted;
+        return (mouse - windowRect.center).sqrMagnitude <= RadialLayout.CenterRadius * RadialLayout.CenterRadius;
     }
 
     private static bool ShiftHeld() {

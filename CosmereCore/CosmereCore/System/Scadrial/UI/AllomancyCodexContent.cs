@@ -120,15 +120,19 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 );
             }
 
+            const float buttonSize = 28f;
+            Rect vialButtonRect = new Rect(
+                row.xMax - buttonSize - contentPad,
+                row.y + (rowHeight - buttonSize) / 2f,
+                buttonSize,
+                buttonSize
+            );
+
             if (hasVialControls) {
-                const float buttonSize = 20f;
-                Rect vialButtonRect = new Rect(
-                    row.xMax - buttonSize - 4f,
-                    row.y + (rowHeight - buttonSize) / 2f,
-                    buttonSize,
-                    buttonSize
-                );
                 DrawVialSettingsButton(vialButtonRect, gene);
+            }
+            else {
+                DrawVialSettingsUnavailable(vialButtonRect, metal);
             }
 
             y += rowHeight + rowGap;
@@ -160,6 +164,23 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         if (clicked) {
             Find.WindowStack.Add(new Dialog_AllomancyRestockSlider(gene));
         }
+    }
+
+    /// Nothing at all in this column read as an oversight rather than as a metal
+    /// that has no reserve to keep. A dimmed vial says the setting exists and does
+    /// not apply here.
+    private static void DrawVialSettingsUnavailable(Rect rect, MetallicArtsMetalDef metal) {
+        TooltipHandler.TipRegion(
+            rect,
+            "CC_Codex_Allomancy_NoVialSettings".Translate(metal.LabelCap.Named("METAL"))
+        );
+
+        if (VialIcon == null) return;
+
+        Color prev = GUI.color;
+        GUI.color = new Color(1f, 1f, 1f, 0.22f);
+        GUI.DrawTexture(rect, VialIcon);
+        GUI.color = prev;
     }
 
     private static Texture2D? cachedVialIcon;

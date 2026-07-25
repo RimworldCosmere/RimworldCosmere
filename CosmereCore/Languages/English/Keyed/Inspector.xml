@@ -28,6 +28,7 @@
   <CC_Codex_Allomancy_OverallSkill>Allomantic Power: level {LEVEL}</CC_Codex_Allomancy_OverallSkill>
   <CC_Codex_Allomancy_MetalBurned>{AMOUNT} burned</CC_Codex_Allomancy_MetalBurned>
   <CC_Codex_Allomancy_VialSettings_Button>Vials</CC_Codex_Allomancy_VialSettings_Button>
+  <CC_Codex_Allomancy_NoVialSettings>{METAL} is spent entirely the moment it burns, so there is no reserve to hold at a threshold.</CC_Codex_Allomancy_NoVialSettings>
   <CC_Codex_Allomancy_VialSettings_Tooltip>Stock: {COUNT} vials\n{THRESHOLD}</CC_Codex_Allomancy_VialSettings_Tooltip>
   <CC_Codex_Allomancy_VialSettings_Title>Vial settings - {METAL}</CC_Codex_Allomancy_VialSettings_Title>
   <CC_Codex_Allomancy_VialSettings_ThresholdLabel>Auto-consume threshold</CC_Codex_Allomancy_VialSettings_ThresholdLabel>

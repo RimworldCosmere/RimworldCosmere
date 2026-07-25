@@ -12,10 +12,12 @@ public static class RadialCenterPreview {
     // them rather than every row flowing from a single stack.
     private const float BreadcrumbY = -108f;
     private const float TitleGap = 26f;
-    private const float ButtonRowY = 87f;
+    private const float ButtonRowY = 80f;
     private const float ButtonSize = 30f;
     private const float BarGap = 12f;
     private const float DescriptionGap = 10f;
+    private const float TitleHintGap = 8f;
+    private const float BarWidth = 236f;
 
     public static void Draw(Vector2 center, RadialLeaf? hoveredLeaf, string? hoveredTitle, string breadcrumb, bool browseMode, Action back, Action close) {
         float r = RadialLayout.CenterRadius;
@@ -76,7 +78,7 @@ public static class RadialCenterPreview {
                 flareArmed ? DockPalette.Flare : new Color(0.75f, 0.89f, 0.95f)
             );
 
-            float bodyTop = BreadcrumbY + TitleGap + mediumH + (canFlare ? tinyH : 0f) + DescriptionGap;
+            float bodyTop = BreadcrumbY + TitleGap + mediumH + (canFlare ? TitleHintGap + tinyH : 0f) + DescriptionGap;
             float bodyBottom = ButtonRowY - BarGap - (tinyH + 6f) - DescriptionGap;
 
             if (!hoveredLeaf.Description.NullOrEmpty()) {
@@ -104,7 +106,14 @@ public static class RadialCenterPreview {
             if (hoveredLeaf.ReserveFraction.HasValue) {
                 float fraction = Mathf.Clamp01(hoveredLeaf.ReserveFraction.Value);
                 float barHeight = tinyH + 6f;
-                Rect barRow = ChordRow(center, ButtonRowY - BarGap - barHeight, barHeight);
+                // Pinned width: deriving it from the chord at the bar's own y
+                // would resize the bar whenever the footer moves.
+                Rect barRow = new Rect(
+                    center.x - BarWidth / 2f,
+                    center.y + ButtonRowY - BarGap - barHeight,
+                    BarWidth,
+                    barHeight
+                );
 
                 Widgets.DrawBoxSolid(barRow, new Color(0f, 0f, 0f, 0.55f));
                 Widgets.DrawBoxSolid(
@@ -135,7 +144,7 @@ public static class RadialCenterPreview {
             string verb = browseMode ? "CC_Radial_Verb_Click".Translate() : "CC_Radial_Verb_Release".Translate();
             bool shiftHeld = ShiftHeld();
             UIText.EllipsisLabel(
-                ChordRow(center, BreadcrumbY + TitleGap + smallH, tinyH),
+                ChordRow(center, BreadcrumbY + TitleGap + mediumH + TitleHintGap, tinyH),
                 shiftHeld
                     ? "CC_Radial_Hint_FlareOnly".Translate(verb.Named("VERB"))
                     : "CC_Radial_Hint_BurnFlare".Translate(verb.Named("VERB")),

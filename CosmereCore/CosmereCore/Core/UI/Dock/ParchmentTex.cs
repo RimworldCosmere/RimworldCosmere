@@ -51,18 +51,26 @@ public static class ParchmentTex {
                 float u = (x + 0.5f) / width;
                 float v = (y + 0.5f) / height;
 
-                // Few cycles across the sheet, so the blotching reads as broad
-                // variation in the stock rather than as busy speckle.
-                float mottle = Tiled(u, v, 2) * 0.55f
-                               + Tiled(u, v, 5) * 0.3f
-                               + Tiled(u, v, 11) * 0.15f;
+                // Broad shape first, then successively finer tooth. The field
+                // covers a panel about once over, so the fine octaves read as
+                // surface rather than as a repeating pattern.
+                float mottle = Tiled(u, v, 2, 2, 1) * 0.38f
+                               + Tiled(u, v, 5, 5, 2) * 0.24f
+                               + Tiled(u, v, 11, 11, 3) * 0.18f
+                               + Tiled(u, v, 23, 23, 4) * 0.12f
+                               + Tiled(u, v, 47, 47, 5) * 0.08f;
 
                 // Fibres run the long way, so the grain is stretched across x.
-                float fibre = Tiled(u, v, 3, 26);
+                float fibre = Tiled(u, v, 4, 64, 6);
+
+                // Occasional darker patches, as though the sheet has been handled
+                // or spotted. Thresholded so most of it stays clean.
+                float stain = Mathf.InverseLerp(0.56f, 0.88f, Tiled(u, v, 3, 3, 7));
 
                 float shade = 1f
-                              - (mottle - 0.5f) * 0.30f
-                              - (fibre - 0.5f) * 0.09f
+                              - (mottle - 0.5f) * 0.46f
+                              - (fibre - 0.5f) * 0.17f
+                              - stain * 0.20f
                               - (aged ? EdgeFalloff(u, v) * 0.30f : 0f);
 
                 Color c = Base * shade;
@@ -84,13 +92,10 @@ public static class ParchmentTex {
         return Mathf.Clamp01(Mathf.Max(horizontal, vertical));
     }
 
-    private static float Tiled(float u, float v, int cycles) {
-        return Tiled(u, v, cycles, cycles);
-    }
-
     /// Value noise whose lattice wraps at the given cycle counts, so sampling the
-    /// full sheet joins back to itself on both axes.
-    private static float Tiled(float u, float v, int cyclesX, int cyclesY) {
+    /// full sheet joins back to itself on both axes. The seed decorrelates layers
+    /// that share a frequency.
+    private static float Tiled(float u, float v, int cyclesX, int cyclesY, int seed) {
         float x = u * cyclesX;
         float y = v * cyclesY;
         int xi = Mathf.FloorToInt(x);
@@ -107,8 +112,8 @@ public static class ParchmentTex {
         int y0 = Wrap(yi, cyclesY);
         int y1 = Wrap(yi + 1, cyclesY);
 
-        float top = Mathf.Lerp(Hash(x0, y0), Hash(x1, y0), sx);
-        float bottom = Mathf.Lerp(Hash(x0, y1), Hash(x1, y1), sx);
+        float top = Mathf.Lerp(Hash(x0, y0, seed), Hash(x1, y0, seed), sx);
+        float bottom = Mathf.Lerp(Hash(x0, y1, seed), Hash(x1, y1, seed), sx);
 
         return Mathf.Lerp(top, bottom, sy);
     }
@@ -117,8 +122,8 @@ public static class ParchmentTex {
         return (value % period + period) % period;
     }
 
-    private static float Hash(int x, int y) {
-        int n = x * 374761393 + y * 668265263;
+    private static float Hash(int x, int y, int seed) {
+        int n = x * 374761393 + y * 668265263 + seed * 1442695041;
         n = (n ^ (n >> 13)) * 1274126177;
 
         return ((n ^ (n >> 16)) & 0x7FFFFFF) / (float)0x7FFFFFF;

@@ -1,4 +1,5 @@
 using Cosmere.Core.UI.Model;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -77,9 +78,35 @@ public sealed class AutocastRunner : GameComponent {
                 return Compare(ResolvePrimaryReserve(pawn), trigger);
             case AutocastTriggerKind.Drafted:
                 return pawn.Drafted;
+            case AutocastTriggerKind.EnemyProximity:
+                return Compare(NearestDistance(pawn, true), trigger);
+            case AutocastTriggerKind.AllyProximity:
+                return Compare(NearestDistance(pawn, false), trigger);
             default:
                 return false;
         }
+    }
+
+    /// Cells to the closest pawn of the given allegiance. Returns a distance
+    /// nothing can be within when there is none, so "an enemy within ten" simply
+    /// fails on an empty map rather than firing.
+    private static float NearestDistance(Pawn pawn, bool hostile) {
+        Map? map = pawn.Map;
+        if (map == null) return float.MaxValue;
+
+        IReadOnlyList<Pawn> all = map.mapPawns.AllPawnsSpawned;
+        int best = int.MaxValue;
+        for (int i = 0; i < all.Count; i++) {
+            Pawn other = all[i];
+            if (other == pawn || other.Dead) continue;
+            if (other.HostileTo(pawn) != hostile) continue;
+            if (!hostile && other.Faction != pawn.Faction) continue;
+
+            int sq = (other.Position - pawn.Position).LengthHorizontalSquared;
+            if (sq < best) best = sq;
+        }
+
+        return best == int.MaxValue ? float.MaxValue : Mathf.Sqrt(best);
     }
 
     private static float ResolvePrimaryReserve(Pawn pawn) {

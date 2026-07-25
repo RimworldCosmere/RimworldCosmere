@@ -138,6 +138,8 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
             AutocastTriggerKind.HealthPercent => "CC_Autocast_Trigger_HealthPercent".Translate(),
             AutocastTriggerKind.ReservePercent => "CC_Autocast_Trigger_ReservePercent".Translate(),
             AutocastTriggerKind.Drafted => "CC_Autocast_Trigger_Drafted".Translate(),
+            AutocastTriggerKind.EnemyProximity => "CC_Autocast_Trigger_EnemyProximity".Translate(),
+            AutocastTriggerKind.AllyProximity => "CC_Autocast_Trigger_AllyProximity".Translate(),
             _ => kind.ToString(),
         };
     }

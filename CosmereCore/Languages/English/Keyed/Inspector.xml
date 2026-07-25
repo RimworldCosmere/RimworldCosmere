@@ -81,6 +81,8 @@
   <CC_Autocast_Editor_CellsLabel>{COUNT} c</CC_Autocast_Editor_CellsLabel>
 
   <CC_Autocast_Trigger_HealthPercent>Health %</CC_Autocast_Trigger_HealthPercent>
+  <CC_Autocast_Trigger_EnemyProximity>Nearest enemy</CC_Autocast_Trigger_EnemyProximity>
+  <CC_Autocast_Trigger_AllyProximity>Nearest ally</CC_Autocast_Trigger_AllyProximity>
   <CC_Autocast_Trigger_ReservePercent>Reserve %</CC_Autocast_Trigger_ReservePercent>
   <CC_Autocast_Trigger_Drafted>Drafted</CC_Autocast_Trigger_Drafted>
 

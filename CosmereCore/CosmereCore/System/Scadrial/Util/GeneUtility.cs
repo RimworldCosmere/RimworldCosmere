@@ -14,6 +14,13 @@ public static class GeneUtility {
 
     private static bool isPreservation => ShardUtility.AreAnyEnabled(ShardDefOf.Preservation);
 
+    /// Genes are assigned before the pawn is named, so reading a name here throws
+    /// on anything freshly generated. Only pawns being redressed already have one,
+    /// which is why this failed on some generations and not others.
+    private static string GenerationLabel(Pawn pawn) {
+        return pawn.Name?.ToStringShort ?? pawn.kindDef?.defName ?? "unnamed";
+    }
+
     public static void AssignScadrialGenes(Pawn pawn) {
         if (pawn.genes == null || !pawn.RaceProps.Humanlike) {
             return;
@@ -45,7 +52,7 @@ public static class GeneUtility {
             if (isNoble) {
                 success = RollChance(128, out roll);
                 Logger.Verbose(
-                    $"Trying for Mistborn. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+                    $"Trying for Mistborn. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
                 );
                 if (success) {
                     AddMistborn(pawn);
@@ -53,7 +60,7 @@ public static class GeneUtility {
                 else {
                     success = RollChance(16, out roll);
                     Logger.Verbose(
-                        $"Trying for Misting. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+                        $"Trying for Misting. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
                     );
                     if (success) AddRandomAllomanticGene(pawn);
                 }
@@ -67,7 +74,7 @@ public static class GeneUtility {
             // Most Terris were Full, or nothing. There was a small chance for Ferrings, but it was rare.
             success = RollChance(16, out roll);
             Logger.Verbose(
-                $"Trying for full feruchemist. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+                $"Trying for full feruchemist. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
             );
             if (success) {
                 AddFullFeruchemist(pawn);
@@ -75,7 +82,7 @@ public static class GeneUtility {
             else {
                 success = RollChance(64, out roll);
                 Logger.Verbose(
-                    $"Trying for Ferring. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+                    $"Trying for Ferring. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
                 );
                 if (success) AddRandomFeruchemicalGene(pawn);
             }
@@ -88,7 +95,7 @@ public static class GeneUtility {
 
         success = RollChance(16, out roll);
         Logger.Verbose(
-            $"Trying for random misting. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+            $"Trying for random misting. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
         );
         if (success) {
             AddRandomAllomanticGene(pawn);
@@ -98,7 +105,7 @@ public static class GeneUtility {
 
         success = RollChance(16, out roll);
         Logger.Verbose(
-            $"Trying for random ferring. Pawn={pawn.NameFullColored} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
+            $"Trying for random ferring. Pawn={GenerationLabel(pawn)} Success={Logger.ColoredBoolean(success ? Color.green : Color.red, success)} Roll={roll}"
         );
         if (success) AddRandomFeruchemicalGene(pawn);
     }

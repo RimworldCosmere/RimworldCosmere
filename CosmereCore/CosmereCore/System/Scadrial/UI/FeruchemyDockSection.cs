@@ -33,8 +33,6 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private int cachedCellCount = -1;
     private string? expandedMetal;
     private string? draggingDial;
-    private readonly Dictionary<string, AllomancyAbility?> compoundCache = new Dictionary<string, AllomancyAbility?>();
-    private int compoundPawnId = -1;
 
     public override string SystemId => "Feruchemy";
 
@@ -95,22 +93,12 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             tint
         );
 
-        bool hasCompound = CompoundAbility(pawn, cell.SubsystemId) != null;
-        TooltipHandler.TipRegion(
-            rect,
-            () => Tooltip(cell, capacity, hasCompound),
-            cell.SubsystemId.GetHashCode()
-        );
+        TooltipHandler.TipRegion(rect, () => Tooltip(cell, capacity), cell.SubsystemId.GetHashCode());
 
         if (!capacity.HasMetalmind) return;
         if (!Widgets.ButtonInvisible(rect)) return;
 
         Event? ev = Event.current;
-        if (ev is { shift: true }) {
-            TryCompound(pawn, cell.SubsystemId);
-            ev.Use();
-            return;
-        }
 
         expandedMetal = expandedMetal == cell.SubsystemId ? null : cell.SubsystemId;
         SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
@@ -192,14 +180,24 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
 
         float buttonY = endsRect.yMax + 8f;
-        AllomancyAbility? compound = CompoundAbility(pawn, cell.SubsystemId);
-        int buttonCount = compound != null ? 3 : 2;
+
+        // Compounding is an Allomantic act and its button lives on that side. This
+        // strip only decides which pool the tap draws from.
+        bool showChannel = CompoundingAccess.Discovered(pawn);
+        int buttonCount = showChannel ? 2 : 1;
         float buttonWidth = (inner.width - 5f * (buttonCount - 1)) / buttonCount;
 
-        if (ChromeButton(new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight), "CC_Dock_Feruchemy_Idle".Translate(), true)) {
+        if (DockChrome.Button(
+                new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight),
+                "CC_Dock_Feruchemy_Idle".Translate(),
+                true,
+                ActiveTint
+            )) {
             gene.Reset();
             Event.current?.Use();
         }
+
+        if (!showChannel) return;
 
         bool onCompounded = gene.channel == FeruchemyChannel.Compounded;
         Rect channelRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, StripButtonHeight);
@@ -211,37 +209,10 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         string channelLabel = onCompounded
             ? "CC_Dock_Feruchemy_TapOrdinary".Translate()
             : "CC_Dock_Feruchemy_TapCompounded".Translate();
-        if (ChromeButton(channelRect, channelLabel, canSwitch)) {
-            gene.channel = onCompounded ? FeruchemyChannel.Ordinary : FeruchemyChannel.Compounded;
-            Event.current?.Use();
-        }
+        if (!DockChrome.Button(channelRect, channelLabel, canSwitch, ActiveTint)) return;
 
-        if (compound == null) return;
-
-        AcceptanceReport report = CompoundGate(pawn, gene, compound);
-        bool compounding = gene.isCompounding;
-        // Stays live while compounding even if it could not be started again,
-        // otherwise there is no way to switch it back off.
-        bool canCompound = report.Accepted || compounding;
-        Rect compoundRect = new Rect(inner.x + (buttonWidth + 5f) * 2f, buttonY, buttonWidth, StripButtonHeight);
-        if (!canCompound && !compounding) {
-            TooltipHandler.TipRegion(
-                compoundRect,
-                "CC_Dock_Feruchemy_CompoundBlocked".Translate(
-                    (report.Reason.NullOrEmpty()
-                        ? "CC_Dock_Feruchemy_CompoundUnavailable".Translate().Resolve()
-                        : report.Reason).Named("REASON")
-                )
-            );
-        }
-        string compoundLabel = compounding
-            ? "CC_Dock_Feruchemy_StopStoreCompounded".Translate()
-            : "CC_Dock_Feruchemy_StoreCompounded".Translate();
-        if (ChromeButton(compoundRect, compoundLabel, canCompound)) {
-            if (compounding) compound.UpdateStatus(BurningStatus.Off);
-            else compound.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
-            Event.current?.Use();
-        }
+        gene.channel = onCompounded ? FeruchemyChannel.Ordinary : FeruchemyChannel.Compounded;
+        Event.current?.Use();
     }
 
     /// Hand-drawn so the dial keeps the section's chrome. The vanilla slider
@@ -281,31 +252,6 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         gene.targetValue = gene.SnapTarget(Mathf.Clamp((e.mousePosition.x - rect.x) / rect.width * 100f, min, max));
     }
 
-    private static bool ChromeButton(Rect rect, string label, bool enabled) {
-        bool over = enabled && Mouse.IsOver(rect);
-        Widgets.DrawBoxSolid(
-            rect,
-            !enabled
-                ? new Color(0.075f, 0.082f, 0.090f)
-                : over
-                    ? new Color(0.145f, 0.161f, 0.176f)
-                    : new Color(0.106f, 0.118f, 0.129f)
-        );
-        Widgets.DrawBoxSolidWithOutline(
-            rect,
-            Color.clear,
-            enabled ? new Color(0.239f, 0.278f, 0.306f) : new Color(0.145f, 0.157f, 0.169f)
-        );
-        UIText.EllipsisLabel(
-            rect,
-            label,
-            GameFont.Tiny,
-            TextAnchor.MiddleCenter,
-            enabled ? new Color(0.604f, 0.659f, 0.678f) : new Color(0.310f, 0.325f, 0.337f)
-        );
-
-        return enabled && Widgets.ButtonInvisible(rect);
-    }
 
     private static void DrawDialBacking(Rect rect, Feruchemist gene, Capacity capacity) {
         Widgets.DrawBoxSolid(rect, new Color(0.047f, 0.043f, 0.035f));
@@ -335,78 +281,14 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
     }
 
-    private const int CompoundSkillFloor = 10;
 
-    /// Compounding needs the research, both arts practised, and a metalmind inside
-    /// the body. Returned as a report so the button can say which one is missing.
-    private static AcceptanceReport CompoundGate(Pawn pawn, Feruchemist gene, AllomancyAbility ability) {
-        ResearchProjectDef? research = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("Cosmere_Scadrial_Compounding");
-        if (research is { IsFinished: false }) {
-            return "CC_Dock_Feruchemy_CompoundNoResearch".Translate(research.LabelCap.Named("RESEARCH"));
-        }
 
-        if (pawn.skills != null) {
-            int allomancy = pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level;
-            int feruchemy = pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level;
-            if (allomancy < CompoundSkillFloor || feruchemy < CompoundSkillFloor) {
-                return "CC_Dock_Feruchemy_CompoundLowSkill".Translate(CompoundSkillFloor.Named("LEVEL"));
-            }
-        }
 
-        if (!gene.canStoreCompounded) return "CC_Dock_Feruchemy_CompoundNoImplant".Translate();
-
-        return ability.CanCast;
-    }
-
-    private void TryCompound(Pawn pawn, string metalDefName) {
-        AllomancyAbility? ability = CompoundAbility(pawn, metalDefName);
-        if (ability == null) return;
-
-        Feruchemist? gene = FindGene(pawn, metalDefName);
-        if (gene is { isCompounding: true }) {
-            ability.UpdateStatus(BurningStatus.Off);
-            return;
-        }
-
-        if (gene == null || !CompoundGate(pawn, gene, ability).Accepted) return;
-
-        ability.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
-    }
-
-    /// Compounding is never granted to the pawn - it is built on demand for a
-    /// twinborn who holds both genes for the metal, the way the old gene gizmo
-    /// did it. Cached because building one per frame would churn.
-    private AllomancyAbility? CompoundAbility(Pawn pawn, string metalDefName) {
-        if (compoundPawnId != pawn.thingIDNumber) {
-            compoundCache.Clear();
-            compoundPawnId = pawn.thingIDNumber;
-        }
-
-        if (compoundCache.TryGetValue(metalDefName, out AllomancyAbility? cached)) return cached;
-
-        AllomancyAbility? made = null;
-        MetallicArtsMetalDef? metal = DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(metalDefName);
-        if (metal != null && pawn.IsMisting(metal)) {
-            AllomanticAbilityDef? def = metal.GetCompoundAbility();
-            if (def != null) made = AbilityUtility.MakeAbility(def, pawn) as AllomancyAbility;
-        }
-
-        compoundCache[metalDefName] = made;
-        return made;
-    }
-
-    private string Tooltip(InvestitureCell cell, Capacity capacity, bool hasCompound) {
+    private string Tooltip(InvestitureCell cell, Capacity capacity) {
         if (!capacity.HasMetalmind) {
             return "CC_Dock_Feruchemy_NoMetalmind".Translate(MetalLabel(cell).Named("METAL"));
         }
 
-        if (hasCompound) {
-            return "CC_Dock_Feruchemy_TipCompound".Translate(
-                MetalLabel(cell).Named("METAL"),
-                capacity.Stored.ToString("0").Named("STORED"),
-                capacity.Max.ToString("0").Named("MAX")
-            );
-        }
 
         return "CC_Dock_Feruchemy_Tip".Translate(
             MetalLabel(cell).Named("METAL"),

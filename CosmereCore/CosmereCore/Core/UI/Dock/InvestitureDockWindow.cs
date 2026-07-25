@@ -7,14 +7,19 @@ using Verse.Sound;
 namespace Cosmere.Core.UI.Dock;
 
 public sealed class InvestitureDockWindow : Verse.Window {
-    private const float CollapsedWidth = 78f;
+    private const float CollapsedWidth = 156f;
     private const float ExpandedWidth = 320f;
     private const float MarginTop = 114f;
     private const float MarginBottom = 185f;
     private const float TabPadding = 150f;
     private const float PinButtonHeight = 24f;
-    private const float CollapsedOrbSize = 56f;
-    private const float CollapsedOrbGap = 10f;
+    private const float RibbonGap = 6f;
+    private const float RibbonIcon = 20f;
+    private const float RibbonBar = 6f;
+    private const float RibbonPad = 7f;
+
+    /// Icon and name on one line, reserve and reading on the next.
+    private static float RibbonHeight => 13f + RibbonIcon + Text.LineHeightOf(GameFont.Tiny);
 
     private readonly DockAccordion accordion = new DockAccordion();
     private bool pinned;
@@ -80,9 +85,9 @@ public sealed class InvestitureDockWindow : Verse.Window {
     }
 
     private void DrawCollapsed(Rect inRect, IReadOnlyList<InvestitureSnapshot> snapshots) {
-        const float railBarWidth = 6f;
-        const float orbSize = CollapsedOrbSize;
-        float y = inRect.y + CollapsedOrbGap;
+        float tinyH = Text.LineHeightOf(GameFont.Tiny);
+        float y = inRect.y + RibbonGap;
+
         for (int i = 0; i < snapshots.Count; i++) {
             InvestitureSnapshot snap = snapshots[i];
             IDockSection? section = DockSectionRegistry.For(snap.SystemId);
@@ -99,53 +104,82 @@ public sealed class InvestitureDockWindow : Verse.Window {
 
             if (snap.Cells.Count > 0) aggregate /= snap.Cells.Count;
 
-            Rect orbRect = new Rect(inRect.x + 6f, y, orbSize, orbSize);
             Color accent = section.Skin.AccentColor;
-            if (anyFlaring) Widgets.DrawBoxSolid(orbRect.ExpandedBy(2f), new Color(DockPalette.Flare.r, DockPalette.Flare.g, DockPalette.Flare.b, 0.35f));
-            else if (anyActive) Widgets.DrawBoxSolid(orbRect.ExpandedBy(2f), new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.3f));
-            Widgets.DrawBoxSolid(orbRect, DockPalette.PanelRaised);
-            Widgets.DrawBoxSolidWithOutline(orbRect, Color.clear, accent);
+            Rect ribbon = new Rect(inRect.x + RibbonGap, y, inRect.width - RibbonGap * 2f, RibbonHeight);
+            Widgets.DrawBoxSolid(ribbon, DockPalette.PanelRaised);
+
+            if (anyFlaring) {
+                Widgets.DrawBoxSolid(ribbon, new Color(DockPalette.Flare.r, DockPalette.Flare.g, DockPalette.Flare.b, 0.22f));
+            }
+            else if (anyActive) {
+                Widgets.DrawBoxSolid(ribbon, new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.18f));
+            }
+
+            Widgets.DrawBoxSolidWithOutline(ribbon, Color.clear, accent);
+
+            Rect icon = new Rect(ribbon.x + RibbonPad, ribbon.y + 5f, RibbonIcon, RibbonIcon);
             Texture2D? sigil = section.Skin.Sigil;
             if (sigil != null) {
-                GUI.DrawTexture(orbRect.ContractedBy(8f), sigil);
+                GUI.DrawTexture(icon, sigil);
             }
             else {
-                // No skin ships a sigil yet, and an empty outlined box tells the
-                // player nothing about which system it stands for.
                 UIText.EllipsisLabel(
-                    orbRect,
+                    icon,
                     section.Skin.HeaderLabel.Substring(0, 1),
-                    GameFont.Medium,
+                    GameFont.Small,
                     TextAnchor.MiddleCenter,
                     accent
                 );
             }
 
-            Rect band = new Rect(orbRect.x + 4f, orbRect.yMax - railBarWidth - 3f, orbRect.width - 8f, railBarWidth);
-            Widgets.DrawBoxSolid(band, DockPalette.Panel);
+            UIText.EllipsisLabel(
+                new Rect(icon.xMax + RibbonPad, icon.y, ribbon.xMax - icon.xMax - RibbonPad * 2f, RibbonIcon),
+                section.Skin.HeaderLabel.ToUpperInvariant(),
+                GameFont.Tiny,
+                TextAnchor.MiddleLeft,
+                section.Skin.HeaderTextColor
+            );
+
+            float readingWidth = 34f;
+            Rect readingRow = new Rect(ribbon.x + RibbonPad, icon.yMax + 3f, ribbon.width - RibbonPad * 2f, tinyH);
+            Rect bar = new Rect(
+                readingRow.x,
+                readingRow.y + (tinyH - RibbonBar) / 2f,
+                readingRow.width - readingWidth - 4f,
+                RibbonBar
+            );
+            Widgets.DrawBoxSolid(bar, DockPalette.Panel);
             Widgets.DrawBoxSolid(
-                new Rect(band.x, band.y, band.width * Mathf.Clamp01(aggregate), band.height),
+                new Rect(bar.x, bar.y, bar.width * Mathf.Clamp01(aggregate), bar.height),
                 accent
             );
 
+            UIText.EllipsisLabel(
+                new Rect(bar.xMax + 4f, readingRow.y, readingWidth, tinyH),
+                Mathf.RoundToInt(aggregate * 100f) + "%",
+                GameFont.Tiny,
+                TextAnchor.MiddleRight,
+                DockPalette.MutedText
+            );
+
             TooltipHandler.TipRegion(
-                orbRect,
+                ribbon,
                 "CC_Dock_Rail_Tip".Translate(
                     section.Skin.HeaderLabel.Named("SYSTEM"),
                     Mathf.RoundToInt(aggregate * 100f).Named("PERCENT")
                 )
             );
-            Widgets.DrawHighlightIfMouseover(orbRect);
+            Widgets.DrawHighlightIfMouseover(ribbon);
 
             // Open onto the system that was actually clicked, not whichever
             // section happened to be expanded last.
-            if (Widgets.ButtonInvisible(orbRect)) {
+            if (Widgets.ButtonInvisible(ribbon)) {
                 pinned = true;
                 accordion.ExpandedSystemId = section.SystemId;
                 RimWorld.SoundDefOf.Click.PlayOneShotOnCamera();
             }
 
-            y += orbSize + CollapsedOrbGap;
+            y += RibbonHeight + RibbonGap;
         }
     }
 
@@ -208,10 +242,10 @@ public sealed class InvestitureDockWindow : Verse.Window {
     }
 
     private float ContentHeight(Pawn? pawn, IReadOnlyList<InvestitureSnapshot> snapshots) {
-        if (snapshots.Count == 0 || pawn == null) return CollapsedOrbSize + CollapsedOrbGap * 2f;
+        if (snapshots.Count == 0 || pawn == null) return RibbonHeight + RibbonGap * 2f;
 
         if (!IsExpanded()) {
-            return snapshots.Count * (CollapsedOrbSize + CollapsedOrbGap) + CollapsedOrbGap;
+            return snapshots.Count * (RibbonHeight + RibbonGap) + RibbonGap;
         }
 
         float height = PinButtonHeight + 8f;

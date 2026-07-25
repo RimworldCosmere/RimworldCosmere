@@ -15,6 +15,23 @@ public class ImplantedMetalminds : HediffWithComps {
 
     public override bool ShouldRemove => metalminds.Count == 0;
 
+    /// Finds or creates the pawn's implant hediff and files the metalmind under it.
+    public static void Attach(Pawn pawn, ImplantedMetalmindData data, BodyPartRecord part) {
+        ImplantedMetalminds? hediff =
+            pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds) as
+                ImplantedMetalminds;
+        if (hediff == null) {
+            hediff = (ImplantedMetalminds)HediffMaker.MakeHediff(
+                HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds,
+                pawn,
+                part
+            );
+            pawn.health.AddHediff(hediff, part);
+        }
+
+        hediff.AddMetalmind(data);
+    }
+
     public void AddMetalmind(ImplantedMetalmindData data) {
         metalminds.Add(data);
         Severity = metalminds.Count;

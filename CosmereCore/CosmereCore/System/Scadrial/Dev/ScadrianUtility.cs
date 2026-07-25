@@ -1,4 +1,7 @@
-﻿using Cosmere.System.Scadrial.Def;
+﻿using Cosmere.Core.Def;
+using Cosmere.System.Scadrial.Def;
+using Cosmere.System.Scadrial.Feruchemy.Comp.Thing;
+using Cosmere.System.Scadrial.Feruchemy.Hediff;
 using Cosmere.System.Scadrial.Gene;
 using Cosmere.System.Scadrial.Util;
 using LudeonTK;
@@ -23,6 +26,40 @@ public static class ScadrianUtility {
 
         pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level = level;
         pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level = level;
+    }
+
+    /// Compounding only reaches a metalmind inside the body, so a pawn meant to
+    /// demonstrate it needs implants rather than the bands everyone else carries.
+    public static void AddImplantedMetalminds(Pawn pawn, MetalDef metal, int count) {
+        ThingDef? implantDef = DefDatabase<ThingDef>.GetNamedSilentFail("Cosmere_Scadrial_Thing_MetalmindImplant");
+        if (implantDef == null || pawn.health == null) return;
+
+        float capacity = implantDef.GetCompProperties<MetalmindProperties>()?.maxAmount ?? 0f;
+        if (capacity <= 0f) return;
+
+        BodyPartRecord? torso = null;
+        List<BodyPartRecord> parts = pawn.RaceProps.body.AllParts;
+        for (int i = 0; i < parts.Count; i++) {
+            if (parts[i].def != BodyPartDefOf.Torso) continue;
+            torso = parts[i];
+            break;
+        }
+
+        torso ??= pawn.RaceProps.body.corePart;
+        if (torso == null) return;
+
+        for (int i = 0; i < count; i++) {
+            ImplantedMetalminds.Attach(
+                pawn,
+                new ImplantedMetalmindData {
+                    metalDefName = metal.defName,
+                    metalmindType = implantDef.defName,
+                    MaxAmount = capacity,
+                    ownerName = pawn.Name?.ToStringFull ?? "",
+                },
+                torso
+            );
+        }
     }
 
     public static void PrepareDevPawn(Pawn pawn) {

@@ -88,6 +88,9 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
             pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
             pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
             ScadrianUtility.SetMetallicArtsSkills(pawn, 20);
+            ScadrianUtility.AddImplantedMetalminds(pawn, MetalDefOf.Steel, 5);
+            ScadrianUtility.AddImplantedMetalminds(pawn, MetalDefOf.Iron, 5);
+            ScadrianUtility.AddImplantedMetalminds(pawn, MetalDefOf.Atium, 5);
         }
 
         if (pawns.TryPopFront(out pawn)) {

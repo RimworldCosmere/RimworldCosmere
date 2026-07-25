@@ -53,7 +53,7 @@ public class ImplantMetalmind : Recipe_Surgery {
             ownerName = metalmindComp.owner?.Name?.ToStringFull ?? "",
         };
 
-        AddToUnifiedHediff(pawn, data, part);
+        ImplantedMetalminds.Attach(pawn, data, part);
 
         Messages.Message(
             "CS_Feruchemy_ImplantSuccess".Translate(
@@ -66,21 +66,6 @@ public class ImplantMetalmind : Recipe_Surgery {
         );
     }
 
-    private void AddToUnifiedHediff(Pawn pawn, ImplantedMetalmindData data, BodyPartRecord part) {
-        ImplantedMetalminds? hediff =
-            pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds) as
-                ImplantedMetalminds;
-        if (hediff == null) {
-            hediff = (ImplantedMetalminds)HediffMaker.MakeHediff(
-                HediffDefOf.Cosmere_Scadrial_Hediff_ImplantedMetalminds,
-                pawn,
-                part
-            );
-            pawn.health.AddHediff(hediff, part);
-        }
-
-        hediff.AddMetalmind(data);
-    }
 
     private Metalmind? FindMetalmind(List<Verse.Thing> ingredients) {
         for (int i = 0; i < ingredients.Count; i++) {

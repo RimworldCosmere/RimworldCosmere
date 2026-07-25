@@ -9,6 +9,11 @@ public static class SpiritWebExtension {
 
     public static Connection? GetOrCreateConnection<T>(this T self, ILoadReferenceable target)
         where T : ILoadReferenceable {
+        // A pawn generated for a book's author byline is never placed, so its tile
+        // and layer come back null. Keying a connection off that dereferences null
+        // deep inside the web, which surfaced as a pawn generation failure.
+        if (target == null) return null;
+
         return SpiritWeb.Instance?.GetOrCreateConnection(target, self);
     }
 

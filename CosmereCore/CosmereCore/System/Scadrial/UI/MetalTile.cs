@@ -72,11 +72,11 @@ public static class MetalTile {
 
         Rect nameRect = new Rect(iconRect.xMax + 5f, rect.y + 2f, noteRect.x - iconRect.xMax - 7f, tinyH);
         Color nameColor = inert
-            ? new Color(0.329f, 0.306f, 0.271f)
+            ? new Color(0.435f, 0.412f, 0.373f)
             : state == MetalTileState.Active
                 ? new Color(0.886f, 0.933f, 0.961f)
                 : empty
-                    ? new Color(0.420f, 0.392f, 0.349f)
+                    ? new Color(0.678f, 0.651f, 0.600f)
                     : new Color(0.769f, 0.737f, 0.675f);
         UIText.EllipsisLabel(nameRect, label, GameFont.Tiny, TextAnchor.MiddleLeft, nameColor);
 

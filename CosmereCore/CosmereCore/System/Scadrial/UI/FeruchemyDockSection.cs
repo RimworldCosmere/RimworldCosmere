@@ -13,10 +13,15 @@ using Verse.Sound;
 namespace Cosmere.System.Scadrial.UI;
 
 public sealed class FeruchemyDockSection : DockSectionBase {
-    private const float StripHeight = 78f;
+    private const float StripPadding = 7f;
+    private const float DialHeight = 12f;
+    private const float StripButtonHeight = 22f;
+
+    private static float StripHeight =>
+        StripPadding * 2f + Text.LineHeightOf(GameFont.Tiny) * 2f + DialHeight + StripButtonHeight + 17f;
     private const float IdleTarget = 50f;
     private static readonly Color ActiveTint = new Color(0.490f, 0.604f, 0.659f);
-    private static readonly Color QuadHeader = new Color(0.365f, 0.463f, 0.525f);
+    private static readonly Color QuadHeader = new Color(0.475f, 0.588f, 0.655f);
     private static readonly Color StoreFill = new Color(0.373f, 0.549f, 0.627f);
     private static readonly Color TapFill = new Color(0.659f, 0.435f, 0.290f);
 
@@ -90,7 +95,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         Widgets.DrawBoxSolid(rect, new Color(0.082f, 0.075f, 0.059f));
         Widgets.DrawBoxSolidWithOutline(rect, Color.clear, new Color(0.239f, 0.216f, 0.188f));
 
-        Rect inner = rect.ContractedBy(7f, 6f);
+        Rect inner = rect.ContractedBy(StripPadding);
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
 
         string direction = gene.isTapping
@@ -115,10 +120,10 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         // Below fifty taps, above stores. The reachable span is bounded by what
         // the metalminds can actually give or accept right now.
-        Rect sliderRect = new Rect(inner.x, inner.y + tinyH + 4f, inner.width, 12f);
+        Rect sliderRect = new Rect(inner.x, inner.y + tinyH + 6f, inner.width, DialHeight);
         DrawDial(sliderRect, cell.SubsystemId, gene, capacity);
 
-        Rect endsRect = new Rect(inner.x, sliderRect.yMax + 1f, inner.width, tinyH);
+        Rect endsRect = new Rect(inner.x, sliderRect.yMax + 3f, inner.width, tinyH);
         UIText.EllipsisLabel(
             endsRect,
             "CC_Dock_Feruchemy_Tap".Translate(),
@@ -134,11 +139,11 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             capacity.CanStore ? new Color(0.498f, 0.541f, 0.565f) : new Color(0.310f, 0.286f, 0.255f)
         );
 
-        float buttonY = endsRect.yMax + 3f;
+        float buttonY = endsRect.yMax + 8f;
         AllomanticAbilityDef? compound = CompoundFor(pawn, cell.SubsystemId);
         float buttonWidth = compound != null ? (inner.width - 5f) / 2f : inner.width;
 
-        if (ChromeButton(new Rect(inner.x, buttonY, buttonWidth, 20f), "CC_Dock_Feruchemy_Idle".Translate(), true)) {
+        if (ChromeButton(new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight), "CC_Dock_Feruchemy_Idle".Translate(), true)) {
             gene.Reset();
             Event.current?.Use();
         }
@@ -147,7 +152,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         Ability? ability = pawn.abilities?.GetAbility(compound);
         bool canCompound = ability != null && ability.CanCast;
-        Rect compoundRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, 20f);
+        Rect compoundRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, StripButtonHeight);
         if (ChromeButton(compoundRect, "CC_Dock_Twinborn_Compound".Translate(), canCompound)) {
             ability!.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
             Event.current?.Use();

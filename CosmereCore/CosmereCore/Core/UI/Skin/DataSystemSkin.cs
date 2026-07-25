@@ -15,7 +15,8 @@ public sealed class DataSystemSkin : ISystemSkin {
         Color headerTextColor,
         Color panelBackgroundColor,
         Color borderTintColor,
-        GameFont headerFont = GameFont.Small
+        GameFont headerFont = GameFont.Small,
+        Texture2D? sigil = null
     ) {
         SystemId = systemId;
         this.headerLabelKey = headerLabelKey;
@@ -26,6 +27,7 @@ public sealed class DataSystemSkin : ISystemSkin {
         PanelBackgroundColor = panelBackgroundColor;
         BorderTintColor = borderTintColor;
         HeaderFont = headerFont;
+        Sigil = sigil;
     }
 
     public string SystemId { get; }
@@ -38,7 +40,7 @@ public sealed class DataSystemSkin : ISystemSkin {
     public SkinTypography Typography => SkinTypography.Empty;
     public Color PanelBackgroundColor { get; }
     public Color BorderTintColor { get; }
-    public Texture2D? Sigil => null;
+    public Texture2D? Sigil { get; }
     public Texture2D? BorderFrame => null;
     public Font? DisplayFont => null;
 

@@ -142,7 +142,21 @@ public sealed class InvestitureDockWindow : Verse.Window {
         IReadOnlyList<InvestitureSnapshot> snapshots,
         DockRenderContext ctx
     ) {
+        Rect headerBand = new Rect(inRect.x, inRect.y, inRect.width, PinButtonHeight + 8f);
+        Widgets.DrawBoxSolid(headerBand, new Color(0.086f, 0.082f, 0.094f));
+        Widgets.DrawBoxSolid(
+            new Rect(headerBand.x, headerBand.yMax - 1f, headerBand.width, 1f),
+            new Color(0.271f, 0.251f, 0.212f)
+        );
+
         Rect pinRect = new Rect(inRect.xMax - PinButtonHeight - 4f, inRect.y + 4f, PinButtonHeight, PinButtonHeight);
+        UIText.EllipsisLabel(
+            new Rect(headerBand.x + 10f, headerBand.y, headerBand.width - PinButtonHeight - 22f, headerBand.height),
+            pawn.LabelShortCap,
+            GameFont.Small,
+            TextAnchor.MiddleLeft,
+            new Color(0.788f, 0.757f, 0.694f)
+        );
         TooltipHandler.TipRegion(pinRect, "CC_Dock_Collapse".Translate());
         if (Widgets.ButtonImage(pinRect.ContractedBy(5f), TexButton.CloseXSmall, true)) {
             pinned = false;

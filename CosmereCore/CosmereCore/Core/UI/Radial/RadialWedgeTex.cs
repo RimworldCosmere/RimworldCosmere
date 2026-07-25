@@ -10,6 +10,47 @@ public static class RadialWedgeTex {
     private static Texture2D? vignetteCache;
     private static Texture2D? backingCache;
     private static readonly Dictionary<int, Texture2D> edgeCache = new Dictionary<int, Texture2D>();
+    private static Texture2D? gizmoIconCache;
+
+    /// A small spoked ring standing in for the wheel, drawn rather than shipped
+    /// as art so it matches whatever the ring geometry becomes.
+    public static Texture2D GizmoIcon() {
+        if (gizmoIconCache != null) return gizmoIconCache;
+
+        const int size = 64;
+        const int spokes = 8;
+        const float outer = 0.46f;
+        const float inner = 0.20f;
+        const float aa = 1.6f / size;
+        float halfSpoke = 0.055f;
+
+        Texture2D tex = new Texture2D(size, size, TextureFormat.ARGB32, false);
+        Color32[] pixels = new Color32[size * size];
+        for (int py = 0; py < size; py++) {
+            for (int px = 0; px < size; px++) {
+                float x = (px + 0.5f) / size - 0.5f;
+                float y = (py + 0.5f) / size - 0.5f;
+                float r = Mathf.Sqrt(x * x + y * y);
+
+                float ring = Mathf.Clamp01((outer - r) / aa) * Mathf.Clamp01((r - inner) / aa);
+
+                // Carve evenly spaced spokes out of the ring.
+                float theta = Mathf.Atan2(x, y);
+                float step = Mathf.PI * 2f / spokes;
+                float offset = Mathf.Abs(Mathf.Repeat(theta + step * 0.5f, step) - step * 0.5f);
+                float gap = Mathf.Clamp01((offset - halfSpoke) / (aa * 2f));
+
+                float hub = Mathf.Clamp01((inner * 0.55f - r) / aa);
+                float alpha = Mathf.Max(ring * gap, hub);
+                pixels[py * size + px] = new Color32(255, 255, 255, (byte)(255f * alpha));
+            }
+        }
+
+        tex.SetPixels32(pixels);
+        tex.Apply(false, true);
+        gizmoIconCache = tex;
+        return tex;
+    }
 
     public static Texture2D Backing() {
         if (backingCache != null) return backingCache;

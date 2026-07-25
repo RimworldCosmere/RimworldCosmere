@@ -6,6 +6,8 @@
   <CC_Radial_Back>Back</CC_Radial_Back>
   <CC_Radial_Close>Close</CC_Radial_Close>
   <CC_Radial_Info>View ability info</CC_Radial_Info>
+  <CC_Radial_Gizmo_Label>Abilities</CC_Radial_Gizmo_Label>
+  <CC_Radial_Gizmo_Desc>Open the ability wheel. Hold {KEY} over the map to open it without leaving the keyboard, releasing over an ability to cast it.</CC_Radial_Gizmo_Desc>
   <CC_Radial_Verb_Click>Click</CC_Radial_Verb_Click>
   <CC_Radial_Verb_Release>Release</CC_Radial_Verb_Release>
   <CC_Radial_Hint_BurnFlare>{VERB}: Burn, Shift: Flare</CC_Radial_Hint_BurnFlare>

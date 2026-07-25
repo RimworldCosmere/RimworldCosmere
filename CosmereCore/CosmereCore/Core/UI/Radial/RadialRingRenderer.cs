@@ -152,15 +152,10 @@ public static class RadialRingRenderer {
                 Widgets.DrawBoxSolid(dot, DockPalette.HotLabel);
             }
 
-            if (reserveFraction.HasValue && !isLocked) {
-                Rect barRect = new Rect(iconMid.x - 18f, iconRect.yMax + 3f, 36f, 2f);
-                Widgets.DrawBoxSolid(barRect, new Color(0f, 0f, 0f, 0.6f));
-                Widgets.DrawBoxSolid(new Rect(barRect.x, barRect.y, barRect.width * Mathf.Clamp01(reserveFraction.Value), 2f), DockPalette.HotLabel);
-                if (hasInsufficientResources) {
-                    Rect pctRect = new Rect(iconMid.x - 18f, barRect.yMax + 1f, 36f, Text.LineHeightOf(GameFont.Tiny));
-                    using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(1f, 0.55f, 0.55f)))
-                        Widgets.Label(pctRect, $"{Mathf.RoundToInt(reserveFraction.Value * 100f)}%");
-                }
+            if (reserveFraction.HasValue && !isLocked && hasInsufficientResources) {
+                Rect pctRect = new Rect(iconMid.x - 18f, iconRect.yMax + 3f, 36f, Text.LineHeightOf(GameFont.Tiny));
+                using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleCenter, new Color(1f, 0.55f, 0.55f)))
+                    Widgets.Label(pctRect, $"{Mathf.RoundToInt(reserveFraction.Value * 100f)}%");
             }
 
             if (isLocked) {

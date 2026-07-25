@@ -225,11 +225,21 @@ public sealed class RadialWindow : Verse.Window {
                 state.HoveredIndex = -1;
                 AutoSkipOneOptionTiers();
                 break;
-            case RadialStateKind.SubsectionTier:
+            case RadialStateKind.SubsectionTier: {
                 state.SelectedSubsectionIndex = state.HoveredIndex;
                 state.Kind = RadialStateKind.AbilityTier;
+                RadialSubsection chosen = snapshot
+                    .Systems[state.SelectedSystemIndex]
+                    .Subsections[state.SelectedSubsectionIndex];
+                if (chosen.Leaves.Count == 1) {
+                    state.HoveredIndex = 0;
+                    CommitAndClose(ShiftHeld());
+                    return;
+                }
+
                 state.HoveredIndex = -1;
                 break;
+            }
             case RadialStateKind.AbilityTier:
                 CommitAndClose(false);
                 break;
@@ -251,6 +261,7 @@ public sealed class RadialWindow : Verse.Window {
                     state.Kind = RadialStateKind.AbilityTier;
                     continue;
                 }
+
             }
 
             break;
@@ -272,10 +283,27 @@ public sealed class RadialWindow : Verse.Window {
         Close(false);
     }
 
+    private static bool ShiftHeld() {
+        return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+    }
+
     public void TryCommitOnRelease(bool flareShift) {
         if (state.Kind == RadialStateKind.AbilityTier && state.HoveredIndex >= 0) {
             CommitAndClose(flareShift);
             return;
+        }
+
+        if (state.Kind == RadialStateKind.SubsectionTier && state.HoveredIndex >= 0) {
+            RadialSubsection hovered = snapshot
+                .Systems[state.SelectedSystemIndex]
+                .Subsections[state.HoveredIndex];
+            if (hovered.Leaves.Count == 1) {
+                state.SelectedSubsectionIndex = state.HoveredIndex;
+                state.Kind = RadialStateKind.AbilityTier;
+                state.HoveredIndex = 0;
+                CommitAndClose(flareShift);
+                return;
+            }
         }
 
         Close(false);

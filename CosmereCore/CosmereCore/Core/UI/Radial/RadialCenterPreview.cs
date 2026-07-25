@@ -80,11 +80,12 @@ public static class RadialCenterPreview {
             }
 
             if (hoveredLeaf.ReserveFraction.HasValue) {
-                Rect barRect = new Rect(center.x - 50f, center.y + 36f, 100f, 6f);
-                Widgets.DrawBoxSolid(barRect, new Color(0f, 0f, 0f, 0.6f));
-                Widgets.DrawBoxSolid(
-                    new Rect(barRect.x + 1f, barRect.y + 1f, (barRect.width - 2f) * Mathf.Clamp01(hoveredLeaf.ReserveFraction.Value), 4f),
-                    new Color(0.478f, 0.784f, 0.902f)
+                UIText.EllipsisLabel(
+                    ChordRow(center, 34f, tinyH),
+                    "CC_Radial_Reserve".Translate(Mathf.RoundToInt(hoveredLeaf.ReserveFraction.Value * 100f).Named("PERCENT")),
+                    GameFont.Tiny,
+                    TextAnchor.MiddleCenter,
+                    DockPalette.MutedText
                 );
             }
         }
@@ -99,7 +100,18 @@ public static class RadialCenterPreview {
             }
         }
         else {
-            UIText.EllipsisLabel(ChordRow(center, 46f, tinyH), "CC_Radial_Hint_Release".Translate(), GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
+            bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            UIText.EllipsisLabel(
+                ChordRow(center, 46f, tinyH),
+                shiftHeld ? "CC_Radial_Hint_FlareArmed".Translate() : "CC_Radial_Hint_Release".Translate(),
+                GameFont.Tiny,
+                TextAnchor.MiddleCenter,
+                shiftHeld ? DockPalette.Flare : DockPalette.GroupLabel
+            );
+
+            if (hoveredLeaf != null && !shiftHeld) {
+                UIText.EllipsisLabel(ChordRow(center, 58f, tinyH), "CC_Radial_Hint_Flare".Translate(), GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
+            }
         }
     }
 

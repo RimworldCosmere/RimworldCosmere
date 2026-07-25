@@ -80,7 +80,9 @@ public static class MetalTile {
                     : new Color(0.769f, 0.737f, 0.675f);
         UIText.EllipsisLabel(nameRect, label, GameFont.Tiny, TextAnchor.MiddleLeft, nameColor);
 
-        Rect band = new Rect(rect.x, rect.yMax - BandHeight, rect.width, BandHeight);
+        // Inset so a full reserve still reads as a gauge. Edge-to-edge, it just
+        // looks like the tile grew a coloured border.
+        Rect band = new Rect(rect.x + 4f, rect.yMax - BandHeight - 1f, rect.width - 8f, BandHeight - 1f);
         Widgets.DrawBoxSolid(band, new Color(0.047f, 0.043f, 0.035f));
         if (!inert && fraction > 0f) {
             Widgets.DrawBoxSolid(

@@ -25,6 +25,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private int cachedPawnId = -1;
     private int cachedCellCount = -1;
     private string? expandedMetal;
+    private string? draggingDial;
 
     public override string SystemId => "Feruchemy";
 
@@ -115,13 +116,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         // Below fifty taps, above stores. The reachable span is bounded by what
         // the metalminds can actually give or accept right now.
         Rect sliderRect = new Rect(inner.x, inner.y + tinyH + 4f, inner.width, 12f);
-        DrawDialBacking(sliderRect, gene, capacity);
-
-        float min = capacity.CanTap ? 0f : IdleTarget;
-        float max = capacity.CanStore ? 100f : IdleTarget;
-        float current = Mathf.Clamp(gene.targetValue, min, max);
-        float next = Widgets.HorizontalSlider(sliderRect, current, min, max);
-        if (!Mathf.Approximately(next, gene.targetValue)) gene.targetValue = next;
+        DrawDial(sliderRect, cell.SubsystemId, gene, capacity);
 
         Rect endsRect = new Rect(inner.x, sliderRect.yMax + 1f, inner.width, tinyH);
         UIText.EllipsisLabel(
@@ -143,7 +138,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         AllomanticAbilityDef? compound = CompoundFor(pawn, cell.SubsystemId);
         float buttonWidth = compound != null ? (inner.width - 5f) / 2f : inner.width;
 
-        if (Widgets.ButtonText(new Rect(inner.x, buttonY, buttonWidth, 20f), "CC_Dock_Feruchemy_Idle".Translate())) {
+        if (ChromeButton(new Rect(inner.x, buttonY, buttonWidth, 20f), "CC_Dock_Feruchemy_Idle".Translate(), true)) {
             gene.Reset();
             Event.current?.Use();
         }
@@ -153,10 +148,67 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         Ability? ability = pawn.abilities?.GetAbility(compound);
         bool canCompound = ability != null && ability.CanCast;
         Rect compoundRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, 20f);
-        if (Widgets.ButtonText(compoundRect, "CC_Dock_Twinborn_Compound".Translate(), active: canCompound) && canCompound) {
+        if (ChromeButton(compoundRect, "CC_Dock_Twinborn_Compound".Translate(), canCompound)) {
             ability!.QueueCastingJob(pawn, LocalTargetInfo.Invalid);
             Event.current?.Use();
         }
+    }
+
+    /// Hand-drawn so the dial keeps the section's chrome. The vanilla slider
+    /// brings its own tan gradient, which fights everything around it.
+    private void DrawDial(Rect rect, string metalId, Feruchemist gene, Capacity capacity) {
+        DrawDialBacking(rect, gene, capacity);
+
+        float min = capacity.CanTap ? 0f : IdleTarget;
+        float max = capacity.CanStore ? 100f : IdleTarget;
+
+        float handleX = rect.x + rect.width * (Mathf.Clamp(gene.targetValue, 0f, 100f) / 100f);
+        Widgets.DrawBoxSolid(
+            new Rect(handleX - 1.5f, rect.y - 2f, 3f, rect.height + 4f),
+            new Color(0.816f, 0.851f, 0.871f)
+        );
+
+        Event? e = Event.current;
+        if (e == null) return;
+
+        if (e.type == EventType.MouseDown && Mouse.IsOver(rect)) draggingDial = metalId;
+        if (draggingDial != metalId) return;
+
+        if (e.type == EventType.MouseUp) {
+            draggingDial = null;
+            return;
+        }
+
+        if (e.type != EventType.MouseDown && e.type != EventType.MouseDrag) return;
+
+        gene.targetValue = Mathf.Clamp((e.mousePosition.x - rect.x) / rect.width * 100f, min, max);
+        e.Use();
+    }
+
+    private static bool ChromeButton(Rect rect, string label, bool enabled) {
+        bool over = enabled && Mouse.IsOver(rect);
+        Widgets.DrawBoxSolid(
+            rect,
+            !enabled
+                ? new Color(0.075f, 0.082f, 0.090f)
+                : over
+                    ? new Color(0.145f, 0.161f, 0.176f)
+                    : new Color(0.106f, 0.118f, 0.129f)
+        );
+        Widgets.DrawBoxSolidWithOutline(
+            rect,
+            Color.clear,
+            enabled ? new Color(0.239f, 0.278f, 0.306f) : new Color(0.145f, 0.157f, 0.169f)
+        );
+        UIText.EllipsisLabel(
+            rect,
+            label,
+            GameFont.Tiny,
+            TextAnchor.MiddleCenter,
+            enabled ? new Color(0.604f, 0.659f, 0.678f) : new Color(0.310f, 0.325f, 0.337f)
+        );
+
+        return enabled && Widgets.ButtonInvisible(rect);
     }
 
     private static void DrawDialBacking(Rect rect, Feruchemist gene, Capacity capacity) {

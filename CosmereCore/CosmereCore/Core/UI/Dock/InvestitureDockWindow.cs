@@ -38,6 +38,10 @@ public sealed class InvestitureDockWindow : Verse.Window {
         preventCameraMotion = false;
         draggable = false;
         drawShadow = false;
+
+        // The dock paints its own ground when open, and when closed the ribbons
+        // carry theirs, so vanilla's window backing is only ever a box in the way.
+        doWindowBackground = false;
         layer = WindowLayer.GameUI;
         focusWhenOpened = false;
     }

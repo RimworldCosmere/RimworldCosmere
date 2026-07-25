@@ -88,7 +88,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             state,
             tint,
             capacity.CompoundedFraction,
-            CompoundTint
+            capacity.CanStoreCompounded || capacity.Compounded > 0f ? CompoundTint : null
         );
 
         TooltipHandler.TipRegion(rect, () => Tooltip(cell, capacity), cell.SubsystemId.GetHashCode());
@@ -118,7 +118,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         string direction = gene.isCompounding
             ? "CC_Dock_Feruchemy_Compounding".Translate()
             : gene.isTapping
-                ? gene.channel == FeruchemyChannel.Compounded
+                ? gene.TapChannel == FeruchemyChannel.Compounded
                     ? "CC_Dock_Feruchemy_TappingCompounded".Translate()
                     : "CC_Dock_Feruchemy_Tapping".Translate()
                 : gene.isStoring
@@ -177,14 +177,10 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
         float buttonY = endsRect.yMax + 8f;
 
-        // Compounding is an Allomantic act and its button lives on that side. This
-        // strip only decides which pool the tap draws from.
-        bool showChannel = CompoundingAccess.Discovered(pawn);
-        int buttonCount = showChannel ? 2 : 1;
-        float buttonWidth = (inner.width - 5f * (buttonCount - 1)) / buttonCount;
-
+        // Tapping spends ordinary charge before compounded on its own, so there is
+        // nothing here for the player to choose between.
         if (DockChrome.Button(
-                new Rect(inner.x, buttonY, buttonWidth, StripButtonHeight),
+                new Rect(inner.x, buttonY, inner.width, StripButtonHeight),
                 "CC_Dock_Feruchemy_Idle".Translate(),
                 true,
                 ActiveTint
@@ -192,23 +188,6 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             gene.Reset();
             Event.current?.Use();
         }
-
-        if (!showChannel) return;
-
-        bool onCompounded = gene.channel == FeruchemyChannel.Compounded;
-        Rect channelRect = new Rect(inner.x + buttonWidth + 5f, buttonY, buttonWidth, StripButtonHeight);
-        bool canSwitch = capacity.CanTapCompounded || onCompounded;
-        if (!canSwitch) {
-            TooltipHandler.TipRegion(channelRect, "CC_Dock_Feruchemy_NoCompoundedCharge".Translate());
-        }
-
-        string channelLabel = onCompounded
-            ? "CC_Dock_Feruchemy_TapOrdinary".Translate()
-            : "CC_Dock_Feruchemy_TapCompounded".Translate();
-        if (!DockChrome.Button(channelRect, channelLabel, canSwitch, ActiveTint)) return;
-
-        gene.channel = onCompounded ? FeruchemyChannel.Ordinary : FeruchemyChannel.Compounded;
-        Event.current?.Use();
     }
 
     /// Hand-drawn so the dial keeps the section's chrome. The vanilla slider
@@ -216,10 +195,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
     private void DrawDial(Rect rect, string metalId, Feruchemist gene, Capacity capacity) {
         DrawDialBacking(rect, gene, capacity);
 
-        bool tapAvailable = gene.channel == FeruchemyChannel.Compounded
-            ? capacity.CanTapCompounded
-            : capacity.CanTap;
-        float min = tapAvailable ? 0f : IdleTarget;
+        float min = capacity.CanTap || capacity.CanTapCompounded ? 0f : IdleTarget;
         float max = capacity.CanStore ? 100f : IdleTarget;
 
         float handleX = rect.x + rect.width * (Mathf.Clamp(gene.targetValue, 0f, 100f) / 100f);
@@ -331,7 +307,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             sources.Count > 0,
             gene.canTap,
             gene.canStore,
-            gene.canTapCompounded
+            gene.canTapCompounded,
+            gene.canStoreCompounded
         );
     }
 
@@ -354,7 +331,8 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             bool hasMetalmind,
             bool canTap,
             bool canStore,
-            bool canTapCompounded
+            bool canTapCompounded,
+            bool canStoreCompounded
         ) {
             Stored = stored;
             Compounded = compounded;
@@ -363,6 +341,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             CanTap = canTap;
             CanStore = canStore;
             CanTapCompounded = canTapCompounded;
+            CanStoreCompounded = canStoreCompounded;
         }
 
         public float Stored { get; }
@@ -372,6 +351,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         public bool CanTap { get; }
         public bool CanStore { get; }
         public bool CanTapCompounded { get; }
+        public bool CanStoreCompounded { get; }
         public float Fraction => Max > 0f ? (Stored + Compounded) / Max : 0f;
         public float StoredFraction => Max > 0f ? Stored / Max : 0f;
         public float CompoundedFraction => Max > 0f ? Compounded / Max : 0f;

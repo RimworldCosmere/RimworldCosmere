@@ -111,7 +111,7 @@ public static class MetalTile {
             compoundedBand,
             inert ? 0f : compoundedFraction,
             compoundedTint!.Value,
-            new Color(0.129f, 0.106f, 0.063f)
+            new Color(0.208f, 0.161f, 0.078f)
         );
 
         if (!inert) Widgets.DrawHighlightIfMouseover(rect);

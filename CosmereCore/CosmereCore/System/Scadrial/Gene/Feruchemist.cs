@@ -41,9 +41,12 @@ public class Feruchemist : Metalborn {
     private HediffDef? cachedTapCompoundedHediffDef;
     private float savantDecayOffset;
 
-    /// Which pool the tap controls draw from. Compounded charge pays out through
-    /// its own hediff ladder rather than a bigger severity number.
-    public FeruchemyChannel channel = FeruchemyChannel.Ordinary;
+    /// Which pool tapping is drawing from. Ordinary charge goes first and the
+    /// compounded reserve is held back until nothing else is left, so this follows
+    /// what is actually available rather than being chosen.
+    public FeruchemyChannel TapChannel => canTap ? FeruchemyChannel.Ordinary : FeruchemyChannel.Compounded;
+
+    public bool canTapAny => canTap || canTapCompounded;
 
     public List<IMetalmindSource> metalminds {
         get {
@@ -358,7 +361,6 @@ public class Feruchemist : Metalborn {
     }
 
     public override void Reset() {
-        channel = FeruchemyChannel.Ordinary;
         TryRemoveHediffByDef(tapCompoundedHediffDef);
         targetValue = IdleTarget;
         TryRemoveHediffByDef(storeHediffDef);
@@ -375,7 +377,6 @@ public class Feruchemist : Metalborn {
 
         Scribe_Values.Look(ref targetValue, "targetValue", IdleTarget);
         Scribe_Values.Look(ref savantDecayOffset, "savantDecayOffset");
-        Scribe_Values.Look(ref channel, "channel");
     }
 
     public override void TickInterval(int delta) {
@@ -384,8 +385,7 @@ public class Feruchemist : Metalborn {
         if (!pawn.IsHashIntervalTick(GenTicks.TicksPerRealSecond, delta)) return;
 
         TickCopper();
-        bool tapAvailable = channel == FeruchemyChannel.Compounded ? canTapCompounded : canTap;
-        if (!tapAvailable && isTapping && !isCompounding) Reset();
+        if (!canTapAny && isTapping && !isCompounding) Reset();
         if (!canStore && isStoring && !isCompounding) Reset();
         TickSeverityHediffs();
         TickStoreOrTap();
@@ -403,10 +403,10 @@ public class Feruchemist : Metalborn {
 
     private void TickSeverityHediffs() {
         if (effectiveSeverity <= 0f) return;
-        if (targetValue < IdleTarget && (channel == FeruchemyChannel.Compounded ? canTapCompounded : canTap)) {
+        if (targetValue < IdleTarget && canTapAny) {
             TryRemoveHediffByDef(storeHediffDef);
 
-            bool compounded = channel == FeruchemyChannel.Compounded;
+            bool compounded = TapChannel == FeruchemyChannel.Compounded;
             HediffDef? active = compounded ? tapCompoundedHediffDef : tapHediffDef;
             TryRemoveHediffByDef(compounded ? tapHediffDef : tapCompoundedHediffDef);
             if (active != null) pawn.health.GetOrAddHediff(active).Severity = effectiveSeverity;
@@ -429,7 +429,7 @@ public class Feruchemist : Metalborn {
             AddToStore(amount);
         }
         else if (isTapping) {
-            if (channel == FeruchemyChannel.Compounded) RemoveCompoundedFromStore(amount);
+            if (TapChannel == FeruchemyChannel.Compounded) RemoveCompoundedFromStore(amount);
             else RemoveFromStore(amount);
         }
     }

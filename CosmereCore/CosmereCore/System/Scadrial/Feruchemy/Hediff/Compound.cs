@@ -59,23 +59,45 @@ public class Compound : AllomanticHediff {
 
         if (!pawn.IsHashIntervalTick(GenTicks.TickRareInterval, delta)) return;
 
-        if (!TickLogic(allomancer, feruchemist)) End();
+        CompoundResult result = TickLogic(allomancer, feruchemist);
+        if (result == CompoundResult.Continue) return;
+
+        // Stopping without a word looked like the feature was broken, when the
+        // pawn had simply run out of metal or room.
+        Messages.Message(
+            (result == CompoundResult.NoRoom
+                ? "CS_Feruchemy_CompoundNoRoom"
+                : "CS_Feruchemy_CompoundOutOfMetal").Translate(
+                pawn.Named("PAWN"),
+                metal.Named("METAL")
+            ),
+            pawn,
+            MessageTypeDefOf.NeutralEvent,
+            false
+        );
+        End();
     }
 
-    protected virtual bool TickLogic(Allomancer allomancer, Feruchemist feruchemist) {
+    protected enum CompoundResult {
+        Continue,
+        NoRoom,
+        NoReserve,
+    }
+
+    protected virtual CompoundResult TickLogic(Allomancer allomancer, Feruchemist feruchemist) {
         // Clamped to the room available before anything is burned, so reserve is
         // never spent on charge that has nowhere to go.
         float seconds = GenTicks.TickRareInterval / (float)GenTicks.TicksPerRealSecond;
         float charge = Mathf.Min(StorePerSecond * seconds, feruchemist.CompoundedFreeSpace);
 
-        if (charge <= 0f) return false;
+        if (charge <= 0f) return CompoundResult.NoRoom;
 
         // Re-derived from the clamped charge so a partial fill only costs what it stored.
         float metalUnits = charge / ChargePerMetalUnit;
         float beu = metalUnits * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
-        if (!allomancer.TryBurnMetalForInvestiture(beu)) return false;
+        if (!allomancer.TryBurnMetalForInvestiture(beu)) return CompoundResult.NoReserve;
 
-        return feruchemist.AddCompoundedToStore(charge);
+        return feruchemist.AddCompoundedToStore(charge) ? CompoundResult.Continue : CompoundResult.NoRoom;
     }
 
     private void End() {

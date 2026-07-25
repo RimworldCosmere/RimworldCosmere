@@ -248,7 +248,10 @@ public class Metalmind : ThingComp, IMetalmindSource {
         TaggedString coloredOwner = owner?.NameFullColored ?? "None".Colorize(ColoredText.DateTimeColor);
         sb.AppendLine("CS_MetalmindOwner".Translate() + ": " + coloredOwner);
         NamedArgument coloredMetal = Metal?.coloredLabel.Named("METAL") ?? "unknown".Named("METAL");
-        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {storedAmountInt:F1} / {MaxAmount}");
+        sb.Append("CS_MetalmindStored".Translate(coloredMetal) + $": {TotalStored:F1} / {MaxAmount}");
+        if (compoundedAmountInt > 0f) {
+            sb.Append(" " + "CS_MetalmindCompounded".Translate(compoundedAmountInt.ToString("F1").Named("COMPOUNDED")));
+        }
 
         return sb.ToString();
     }

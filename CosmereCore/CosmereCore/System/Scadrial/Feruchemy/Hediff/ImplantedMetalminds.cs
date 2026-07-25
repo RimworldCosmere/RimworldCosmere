@@ -54,7 +54,19 @@ public class ImplantedMetalminds : HediffWithComps {
         for (int i = 0; i < metalminds.Count; i++) {
             ImplantedMetalmindData data = metalminds[i];
             string label = GetMetalmindLabel(data);
-            sb.AppendLine($"  - {label}: {data.StoredAmount:F1} / {data.MaxAmount:F0}");
+            string line = data.CompoundedAmount > 0f
+                ? "CS_Feruchemy_ImplantLineCompounded".Translate(
+                    label.Named("LABEL"),
+                    data.TotalStored.ToString("F1").Named("AMOUNT"),
+                    data.MaxAmount.ToString("F0").Named("MAX"),
+                    data.CompoundedAmount.ToString("F1").Named("COMPOUNDED")
+                )
+                : "CS_Feruchemy_ImplantLine".Translate(
+                    label.Named("LABEL"),
+                    data.TotalStored.ToString("F1").Named("AMOUNT"),
+                    data.MaxAmount.ToString("F0").Named("MAX")
+                );
+            sb.AppendLine("  - " + line);
         }
 
         return sb.ToString().TrimEnd();

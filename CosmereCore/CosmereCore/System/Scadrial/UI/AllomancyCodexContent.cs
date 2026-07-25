@@ -17,6 +17,8 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         return CollectAllomancers(pawn).Count > 0;
     }
 
+    public bool ShowsMemoriesSubtab => false;
+
     public bool ShowsBondsSubtab => false;
 
     public bool HasBonds(Pawn pawn) {

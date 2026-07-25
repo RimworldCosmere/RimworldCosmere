@@ -25,6 +25,8 @@ public sealed class SurgebindingCodexContent : ICodexContentProvider {
         return GetSurgebinder(pawn) != null;
     }
 
+    public bool ShowsMemoriesSubtab => false;
+
     public bool ShowsBondsSubtab => true;
 
     public bool HasBonds(Pawn pawn) {

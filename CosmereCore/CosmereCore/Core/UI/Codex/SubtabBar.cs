@@ -18,7 +18,9 @@ public static class SubtabBar {
             buffer.Add((CodexSubtab.Bonds, "CC_Codex_Subtab_Bonds"));
         }
 
-        buffer.Add((CodexSubtab.Memories, "CC_Codex_Subtab_Memories"));
+        if (active.Codex.ShowsMemoriesSubtab) {
+            buffer.Add((CodexSubtab.Memories, "CC_Codex_Subtab_Memories"));
+        }
 
         if (!buffer.Exists(e => e.tab == state.Subtab)) {
             state.Subtab = buffer[0].tab;

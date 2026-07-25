@@ -10,6 +10,8 @@ public sealed class AwakeningCodexContent : ICodexContentProvider {
         return true;
     }
 
+    public bool ShowsMemoriesSubtab => false;
+
     public bool ShowsBondsSubtab => false;
 
     public bool HasBonds(Pawn pawn) {

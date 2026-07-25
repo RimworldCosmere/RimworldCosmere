@@ -85,13 +85,7 @@ public static class RadialRingRenderer {
         GUI.DrawTexture(texRect, RadialWedgeTex.Backing());
         GUI.color = backingPrev;
 
-        for (int order = 0; order < count; order++) {
-            int i = order;
-            if (hoveredIndex >= 0 && hoveredIndex < count) {
-                if (order == count - 1) i = hoveredIndex;
-                else if (order >= hoveredIndex) i = order + 1;
-            }
-
+        for (int i = 0; i < count; i++) {
             (string label, Texture2D? icon, Color? tint, float? reserveFraction, bool isActive, bool isFlaring,
                     bool isSustained, bool isLocked, string? lockReason, bool hasInsufficientResources) = getAt(i);
 
@@ -104,7 +98,7 @@ public static class RadialRingRenderer {
             else if (hasInsufficientResources) bg = new Color(bg.r, bg.g, bg.b, 0.6f);
 
             Matrix4x4 prevMatrix = GUI.matrix;
-            Verse.UI.RotateAroundPivot(i * arcDeg, center);
+            GUIUtility.RotateAroundPivot(i * arcDeg, center);
             Color prevColor = GUI.color;
             if (isFlaring) {
                 GUI.color = new Color(DockPalette.Flare.r, DockPalette.Flare.g, DockPalette.Flare.b, 0.35f);
@@ -127,7 +121,7 @@ public static class RadialRingRenderer {
             GUI.matrix = prevMatrix;
 
             Matrix4x4 sepMatrix = GUI.matrix;
-            Verse.UI.RotateAroundPivot(i * arcDeg - arcDeg / 2f, center);
+            GUIUtility.RotateAroundPivot(i * arcDeg - arcDeg / 2f, center);
             Color sepColor = GUI.color;
             GUI.color = new Color(DockPalette.Border.r, DockPalette.Border.g, DockPalette.Border.b, 0.5f);
             GUI.DrawTexture(

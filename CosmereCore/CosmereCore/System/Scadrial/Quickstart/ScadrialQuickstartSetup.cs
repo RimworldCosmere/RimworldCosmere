@@ -33,6 +33,7 @@ internal static class ScadrialQuickstartSetup {
             pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
             pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
             AddAllMetalminds(pawn);
+            SetMetallicArtsSkills(pawn, 20);
         });
 
         // 14: Waxillium — Steel misting + Iron ferring + iron metalmind
@@ -52,6 +53,13 @@ internal static class ScadrialQuickstartSetup {
                 ThingMaker.MakeThing(ThingDefOf.Cosmere_Scadrial_Thing_MetalmindBand, MetalDefOf.Gold.Item)
             );
         });
+    }
+
+    private static void SetMetallicArtsSkills(Pawn pawn, int level) {
+        if (pawn.skills == null) return;
+
+        pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level = level;
+        pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level = level;
     }
 
     private static void AddAllMetalminds(Pawn pawn) {

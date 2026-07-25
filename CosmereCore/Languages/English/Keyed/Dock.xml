@@ -27,7 +27,7 @@
   <CC_Dock_State_Flaring>FLARING</CC_Dock_State_Flaring>
   <CC_Dock_Btn_Threshold>SET</CC_Dock_Btn_Threshold>
 
-  <CC_Dock_Allomancy_Tip>{METAL}\nReserve {PERCENT}%\n{STATE}\n\nClick to burn, shift-click to flare.\nRight-click to set the restock threshold.</CC_Dock_Allomancy_Tip>
+  <CC_Dock_Allomancy_Tip>{METAL}\nReserve {PERCENT}%{STATE}\n\nClick to open the burn controls.\nRight-click to set the restock threshold.</CC_Dock_Allomancy_Tip>
   <CC_Dock_Feruchemy_Tip>{METAL}\n{STORED} of {MAX} stored\n\nClick to open the tap and store dial.</CC_Dock_Feruchemy_Tip>
   <CC_Dock_Feruchemy_NoMetalmind>{METAL}\n\nNo metalmind carried, so there is nothing to fill or draw from.</CC_Dock_Feruchemy_NoMetalmind>
   <CC_Dock_Feruchemy_Tapping>tapping</CC_Dock_Feruchemy_Tapping>
@@ -39,7 +39,6 @@
   <CC_Dock_Rail_Tip>{SYSTEM}\nReserve {PERCENT}%</CC_Dock_Rail_Tip>
   <CC_Dock_Feruchemy_Compounding>Compounding</CC_Dock_Feruchemy_Compounding>
   <CC_Dock_Feruchemy_Rate>{RATE}/s</CC_Dock_Feruchemy_Rate>
-  <CC_Dock_Feruchemy_TipCompound>{METAL}\nStored {STORED} of {MAX}\nShift-click to compound.</CC_Dock_Feruchemy_TipCompound>
   <CC_Dock_Feruchemy_CompoundBlocked>Cannot compound: {REASON}</CC_Dock_Feruchemy_CompoundBlocked>
   <CC_Dock_Feruchemy_CompoundUnavailable>This metal cannot be compounded by this pawn.</CC_Dock_Feruchemy_CompoundUnavailable>
   <CC_Dock_Twinborn_StopCompound>Stop</CC_Dock_Twinborn_StopCompound>

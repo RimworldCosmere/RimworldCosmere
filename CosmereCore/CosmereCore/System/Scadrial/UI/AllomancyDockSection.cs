@@ -193,10 +193,11 @@ public sealed class AllomancyDockSection : DockSectionBase {
     }
 
     private string Tooltip(InvestitureCell cell) {
+        // Carries its own newline so an idle metal does not leave a blank line.
         string state = cell.IsFlaring
-            ? "CC_Dock_State_Flaring".Translate()
+            ? "\n" + "CC_Dock_State_Flaring".Translate()
             : cell.IsActive
-                ? "CC_Dock_State_Burning".Translate()
+                ? "\n" + "CC_Dock_State_Burning".Translate()
                 : "";
         return "CC_Dock_Allomancy_Tip".Translate(
             MetalLabel(cell).Named("METAL"),

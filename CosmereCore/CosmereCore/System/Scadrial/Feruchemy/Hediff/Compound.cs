@@ -8,6 +8,11 @@ using Verse;
 namespace Cosmere.System.Scadrial.Feruchemy.Hediff;
 
 public class Compound : AllomanticHediff {
+    /// Compounding is meant to dwarf what the dial can move by hand, so the yield
+    /// sits well above MaxTransferPerSecond. Scales with each ability's own cost
+    /// and strength, so the per-second figure differs by metal.
+    protected const float CompoundYield = 60f;
+
     public Compound() { }
 
     public Compound(HediffDef hediffDef, Pawn pawn, IAbility<Allomancer, IHediff<Allomancer>> ability) : base(
@@ -39,10 +44,10 @@ public class Compound : AllomanticHediff {
     /// What compounding pours into the metalmind per real second, so the dock can
     /// report it alongside the dial's own contribution.
     public virtual float StorePerSecond =>
-        ability.def.beuPerTick * ability.GetStrength(BurningStatus.Burning) * 10f * GenTicks.TicksPerRealSecond;
+        ability.def.beuPerTick * ability.GetStrength(BurningStatus.Burning) * CompoundYield * GenTicks.TicksPerRealSecond;
 
     protected virtual bool TickLogic(Feruchemist feruchemist, int delta, float metalToBurn) {
-        return feruchemist.AddToStore(metalToBurn * 10f);
+        return feruchemist.AddToStore(metalToBurn * CompoundYield);
     }
 
     private void End() {

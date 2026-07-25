@@ -13,7 +13,13 @@ using Verse;
 namespace Cosmere.System.Scadrial.Gene;
 
 public class Feruchemist : Metalborn {
-    public static readonly float AmountPerRareTick = 1 / 18f;
+    public const float MaxSeverity = 20f;
+    public const float MaxTransferPerSecond = 5f;
+
+    /// Derived so a dial pinned to either end moves MaxTransferPerSecond, rather
+    /// than being a loose constant the readout has to be reconciled against.
+    public static readonly float AmountPerRareTick =
+        MaxTransferPerSecond * GenTicks.TickRareInterval / (MaxSeverity * GenTicks.TicksPerRealSecond);
     private HediffDef? cachedCompoundHediffDef;
 
     private List<IMetalmindSource>? cachedMetalminds;
@@ -189,7 +195,7 @@ public class Feruchemist : Metalborn {
             if (Mathf.Abs(delta) < 2f) return 0f;
 
             float exponent = 2.5f;
-            float maxSeverity = 19f;
+            float maxSeverity = MaxSeverity - 1f;
 
             float normalized = Mathf.Abs(delta) / 50f;
             float baseSeverity = 1f + Mathf.Pow(normalized, exponent) * maxSeverity;

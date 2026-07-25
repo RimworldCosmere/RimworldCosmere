@@ -55,7 +55,7 @@ public static class RadialController {
         if (snap == null) return;
 
         bool viaHotkey = RadialKeyBindingDefOf.Cosmere_Keybind_RadialOpen.IsDown;
-        window = new RadialWindow(snap) { BrowseMode = !viaHotkey };
+        window = new RadialWindow(snap, anchorOnPawn: !viaHotkey) { BrowseMode = !viaHotkey };
         Find.WindowStack.Add(window);
     }
 

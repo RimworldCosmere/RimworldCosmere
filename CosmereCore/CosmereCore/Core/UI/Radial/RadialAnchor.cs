@@ -10,8 +10,10 @@ public static class RadialAnchor {
         return new Vector2(screen.x, Verse.UI.screenHeight - screen.y);
     }
 
-    public static Vector2 Resolve(Pawn pawn) {
-        Vector2 anchor = Mod.GetModSettings<Cosmere.Core.Settings.CoreModSettings>().radialAnchorMouse
+    public static Vector2 Resolve(Pawn pawn, bool preferPawn = false) {
+        // A gizmo click leaves the cursor on the command bar, so following the
+        // mouse there would open the wheel off in the corner.
+        Vector2 anchor = !preferPawn && Mod.GetModSettings<Cosmere.Core.Settings.CoreModSettings>().radialAnchorMouse
             ? Verse.UI.MousePositionOnUIInverted
             : PawnScreenCenter(pawn);
         const float half = RadialLayout.AbilityRingOuter + 20f;

@@ -11,8 +11,9 @@ public sealed class RadialWindow : Verse.Window {
 
     public bool BrowseMode;
     public Vector2 Anchor;
+    private TimeSpeed? restoreSpeed;
 
-    public RadialWindow(RadialSnapshot snapshot) {
+    public RadialWindow(RadialSnapshot snapshot, bool anchorOnPawn = false) {
         this.snapshot = snapshot;
         doCloseButton = false;
         doCloseX = false;
@@ -28,7 +29,7 @@ public sealed class RadialWindow : Verse.Window {
         forcePause = false;
         state.Kind = RadialStateKind.SystemTier;
         AutoSkipOneOptionTiers();
-        Anchor = RadialAnchor.Resolve(snapshot.Pawn);
+        Anchor = RadialAnchor.Resolve(snapshot.Pawn, anchorOnPawn);
     }
 
     protected override float Margin => 0f;
@@ -48,8 +49,27 @@ public sealed class RadialWindow : Verse.Window {
         );
     }
 
+    public override void PostOpen() {
+        base.PostOpen();
+        if (!Mod.GetModSettings<Cosmere.Core.Settings.CoreModSettings>().radialPausesGame) return;
+
+        TickManager ticks = Find.TickManager;
+        if (ticks.CurTimeSpeed == TimeSpeed.Paused) return;
+
+        // Only restore what we interrupted - a game already paused stays paused.
+        restoreSpeed = ticks.CurTimeSpeed;
+        ticks.CurTimeSpeed = TimeSpeed.Paused;
+    }
+
     public override void DoWindowContents(Rect inRect) {
         if (!snapshot.Pawn.Spawned || snapshot.Pawn.Dead) {
+            Close(false);
+            return;
+        }
+
+        // The wheel acts on the selected pawn, so it has nothing to act on once
+        // the selection moves elsewhere.
+        if (Find.Selector.SingleSelectedThing != snapshot.Pawn) {
             Close(false);
             return;
         }
@@ -349,5 +369,10 @@ public sealed class RadialWindow : Verse.Window {
     public override void PostClose() {
         base.PostClose();
         RadialController.NotifyClosed(this);
+
+        if (restoreSpeed == null) return;
+
+        Find.TickManager.CurTimeSpeed = restoreSpeed.Value;
+        restoreSpeed = null;
     }
 }

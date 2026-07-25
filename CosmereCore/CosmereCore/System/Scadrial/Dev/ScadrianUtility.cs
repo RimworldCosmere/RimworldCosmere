@@ -16,6 +16,15 @@ public static class ScadrianUtility {
         actionType = DebugActionType.ToolMapForPawns,
         allowedGameStates = AllowedGameStates.PlayingOnMap
     )]
+    /// Compounding demands level ten in both arts, so a pawn meant to demonstrate
+    /// it cannot be left on whatever pawn generation rolled.
+    public static void SetMetallicArtsSkills(Pawn pawn, int level) {
+        if (pawn.skills == null) return;
+
+        pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_AllomanticPower).Level = level;
+        pawn.skills.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower).Level = level;
+    }
+
     public static void PrepareDevPawn(Pawn pawn) {
         if (pawn.genes == null) return;
         if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn)) {

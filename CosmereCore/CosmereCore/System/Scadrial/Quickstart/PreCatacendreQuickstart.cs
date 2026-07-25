@@ -87,6 +87,7 @@ public class PreCatacendreQuickstart : AbstractQuickstart {
             pawn.gender = Gender.Male;
             pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLerasium);
             pawn.records.Increment(RecordDefOf.Cosmere_Scadrial_Record_IngestedLeratium);
+            ScadrianUtility.SetMetallicArtsSkills(pawn, 20);
         }
 
         if (pawns.TryPopFront(out pawn)) {

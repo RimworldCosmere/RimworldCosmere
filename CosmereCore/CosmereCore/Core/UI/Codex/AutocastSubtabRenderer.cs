@@ -46,10 +46,12 @@ public static class AutocastSubtabRenderer {
             Rect enabled = new Rect(row.x + 4f, row.y + 8f, 16f, 16f);
             Widgets.Checkbox(enabled.x, enabled.y, ref rule.Enabled);
 
-            Rect iconRect = new Rect(row.x + 26f, row.y + 4f, 24f, 24f);
+            // Measured off its neighbour rather than the row, so the icon stays
+            // clear of the tick and tight to the name it belongs to.
+            Rect iconRect = new Rect(enabled.xMax + 8f, row.y + 4f, 24f, 24f);
             if (ability.def.uiIcon != null) GUI.DrawTexture(iconRect, ability.def.uiIcon);
 
-            Rect labelRect = new Rect(row.x + 66f, row.y, 220f, row.height);
+            Rect labelRect = new Rect(iconRect.xMax + 2f, row.y, 220f, row.height);
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
                 Widgets.Label(labelRect, ability.def.LabelCap);
 

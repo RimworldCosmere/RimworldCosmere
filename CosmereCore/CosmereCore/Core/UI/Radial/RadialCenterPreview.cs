@@ -21,19 +21,19 @@ public static class RadialCenterPreview {
         float tinyH = Text.LineHeightOf(GameFont.Tiny);
         float smallH = Text.LineHeightOf(GameFont.Small);
 
-        UIText.EllipsisLabel(ChordRow(center, -66f, tinyH), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
+        UIText.EllipsisLabel(ChordRow(center, -96f, tinyH), breadcrumb, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.GroupLabel);
 
         if (hoveredLeaf == null) {
             if (hoveredTitle != null) {
                 UIText.EllipsisLabel(
-                    ChordRow(center, -24f, smallH),
+                    ChordRow(center, -34f, smallH),
                     hoveredTitle,
                     GameFont.Small,
                     TextAnchor.MiddleCenter,
                     new Color(0.75f, 0.89f, 0.95f)
                 );
                 UIText.EllipsisLabel(
-                    ChordRow(center, 2f, tinyH),
+                    ChordRow(center, -4f, tinyH),
                     "CC_Radial_Open_Prompt".Translate(),
                     GameFont.Tiny,
                     TextAnchor.MiddleCenter,
@@ -42,7 +42,7 @@ public static class RadialCenterPreview {
             }
             else {
                 UIText.EllipsisLabel(
-                    ChordRow(center, -9f, tinyH),
+                    ChordRow(center, -12f, tinyH),
                     "CC_Radial_Hover_Prompt".Translate(),
                     GameFont.Tiny,
                     TextAnchor.MiddleCenter,
@@ -54,7 +54,7 @@ public static class RadialCenterPreview {
             bool hasParent = !hoveredTitle.NullOrEmpty() && hoveredTitle != hoveredLeaf.Label;
             if (hasParent) {
                 UIText.EllipsisLabel(
-                    ChordRow(center, -54f, tinyH),
+                    ChordRow(center, -76f, tinyH),
                     hoveredTitle!,
                     GameFont.Tiny,
                     TextAnchor.MiddleCenter,
@@ -63,7 +63,7 @@ public static class RadialCenterPreview {
             }
 
             UIText.EllipsisLabel(
-                ChordRow(center, hasParent ? -38f : -46f, smallH),
+                ChordRow(center, hasParent ? -56f : -60f, smallH),
                 hoveredLeaf.Label,
                 GameFont.Small,
                 TextAnchor.MiddleCenter,
@@ -71,7 +71,7 @@ public static class RadialCenterPreview {
             );
 
             if (!hoveredLeaf.Description.NullOrEmpty()) {
-                Rect descRect = ChordRow(center, -22f, tinyH * 2f);
+                Rect descRect = ChordRow(center, -30f, tinyH * 2f);
                 string desc = hoveredLeaf.Description!.Truncate(descRect.width * 2f);
                 using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, DockPalette.MutedText)) {
                     Widgets.Label(descRect, desc);
@@ -81,18 +81,18 @@ public static class RadialCenterPreview {
             }
 
             if (hoveredLeaf.IsLocked && hoveredLeaf.LockReason != null) {
-                UIText.EllipsisLabel(ChordRow(center, 16f, tinyH), hoveredLeaf.LockReason, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare);
+                UIText.EllipsisLabel(ChordRow(center, 8f, tinyH), hoveredLeaf.LockReason, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.Flare);
             }
             else {
                 string meta = BuildMetaLine(hoveredLeaf);
                 if (meta.Length > 0) {
-                    UIText.EllipsisLabel(ChordRow(center, 16f, tinyH), meta, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.HotLabel);
+                    UIText.EllipsisLabel(ChordRow(center, 8f, tinyH), meta, GameFont.Tiny, TextAnchor.MiddleCenter, DockPalette.HotLabel);
                 }
             }
 
             if (hoveredLeaf.ReserveFraction.HasValue) {
                 float fraction = Mathf.Clamp01(hoveredLeaf.ReserveFraction.Value);
-                Rect labelRow = ChordRow(center, 30f, tinyH);
+                Rect labelRow = ChordRow(center, 28f, tinyH);
                 UIText.EllipsisLabel(
                     labelRow,
                     "CC_Radial_Reserve".Translate(Mathf.RoundToInt(fraction * 100f).Named("PERCENT")),
@@ -101,7 +101,7 @@ public static class RadialCenterPreview {
                     DockPalette.MutedText
                 );
 
-                Rect barRow = ChordRow(center, 30f + tinyH, 6f);
+                Rect barRow = ChordRow(center, 48f, 6f);
                 Widgets.DrawBoxSolid(barRow, new Color(0f, 0f, 0f, 0.6f));
                 Widgets.DrawBoxSolid(
                     new Rect(barRow.x + 1f, barRow.y + 1f, (barRow.width - 2f) * fraction, 4f),
@@ -111,17 +111,24 @@ public static class RadialCenterPreview {
         }
 
         if (browseMode) {
-            const float btnW = 44f;
-            Rect backRect = new Rect(center.x - btnW - 3f, center.y + 46f, btnW, 20f);
-            Rect closeRect = new Rect(center.x + 3f, center.y + 46f, btnW, 20f);
-            using (new TextBlock(GameFont.Tiny)) {
-                if (Widgets.ButtonText(backRect, "CC_Radial_Back".Translate())) back();
-                if (Widgets.ButtonText(closeRect, "CC_Radial_Close".Translate())) close();
-            }
+            const float iconSize = 26f;
+            Rect backRect = new Rect(center.x - iconSize - 6f, center.y + 60f, iconSize, iconSize);
+            Rect closeRect = new Rect(center.x + 6f, center.y + 60f, iconSize, iconSize);
+
+            TooltipHandler.TipRegion(backRect, "CC_Radial_Back".Translate());
+            TooltipHandler.TipRegion(closeRect, "CC_Radial_Close".Translate());
+
+            Matrix4x4 backMatrix = GUI.matrix;
+            GUIUtility.ScaleAroundPivot(new Vector2(-1f, 1f), backRect.center);
+            GUI.DrawTexture(backRect, TexButton.Reveal);
+            GUI.matrix = backMatrix;
+            if (Widgets.ButtonInvisible(backRect)) back();
+            Widgets.DrawHighlightIfMouseover(backRect);
+            if (Widgets.ButtonImage(closeRect, TexButton.CloseXSmall, true)) close();
         }
         else {
             bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-            float hintY = hoveredLeaf?.ReserveFraction != null ? 58f : 46f;
+            float hintY = 60f;
             UIText.EllipsisLabel(
                 ChordRow(center, hintY, tinyH),
                 shiftHeld

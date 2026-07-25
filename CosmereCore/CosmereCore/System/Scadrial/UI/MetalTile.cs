@@ -29,7 +29,9 @@ public static class MetalTile {
         float fraction,
         Color metalColor,
         MetalTileState state,
-        Color activeTint
+        Color activeTint,
+        float compoundedFraction = 0f,
+        Color compoundedTint = default
     ) {
         bool inert = state == MetalTileState.Inert;
         bool hot = state == MetalTileState.Active || state == MetalTileState.Flaring;
@@ -98,6 +100,17 @@ public static class MetalTile {
                 metalColor
             );
         }
+
+        // Compounded charge rides at the end of the fill in its own colour, so the
+        // split reads off the bar and the number stays a plain total.
+        if (inert || compoundedFraction <= 0f) return;
+
+        float compounded = Mathf.Clamp01(compoundedFraction);
+        float start = Mathf.Clamp01(fraction - compounded);
+        Widgets.DrawBoxSolid(
+            new Rect(band.x + band.width * start, band.y, band.width * compounded, band.height),
+            compoundedTint == default ? metalColor : compoundedTint
+        );
 
         if (!inert) Widgets.DrawHighlightIfMouseover(rect);
     }

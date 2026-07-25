@@ -82,15 +82,13 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             rect,
             cell.Icon,
             MetalLabel(cell),
-            !capacity.HasMetalmind
-                ? "—"
-                : capacity.Compounded > 0f
-                    ? $"{capacity.Stored:0}+{capacity.Compounded:0}/{capacity.Max:0}"
-                    : $"{capacity.Stored:0}/{capacity.Max:0}",
+            capacity.HasMetalmind ? $"{capacity.Stored + capacity.Compounded:0}/{capacity.Max:0}" : "—",
             capacity.Fraction,
             MetalPalette.For(cell.SubsystemId),
             state,
-            tint
+            tint,
+            capacity.Max > 0f ? capacity.Compounded / capacity.Max : 0f,
+            CompoundTint
         );
 
         TooltipHandler.TipRegion(rect, () => Tooltip(cell, capacity), cell.SubsystemId.GetHashCode());
@@ -135,9 +133,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
         UIText.EllipsisLabel(
             new Rect(inner.x + inner.width * 0.6f, inner.y, inner.width * 0.4f, tinyH),
-            capacity.Compounded > 0f
-                ? $"{capacity.Stored:0}+{capacity.Compounded:0} / {capacity.Max:0}"
-                : $"{capacity.Stored:0} / {capacity.Max:0}",
+            $"{capacity.Stored + capacity.Compounded:0} / {capacity.Max:0}",
             GameFont.Tiny,
             TextAnchor.MiddleRight,
             new Color(0.435f, 0.404f, 0.361f)

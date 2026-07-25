@@ -104,6 +104,8 @@ public class Feruchemist : Metalborn {
         }
     }
 
+    public float CompoundedAmount => actualCompounded;
+
     private float actualCompounded {
         get {
             float total = 0f;
@@ -246,6 +248,14 @@ public class Feruchemist : Metalborn {
 
     public bool isStoring => storeHediffDef != null && pawn.health.hediffSet.HasHediff(storeHediffDef);
     public bool isCompounding => compoundHediffDef != null && pawn.health.hediffSet.HasHediff(compoundHediffDef);
+
+    /// What compounding is currently pouring in, and what it costs, so the
+    /// allomancy panel can report both without reaching for the hediff itself.
+    public float CompoundStorePerSecond =>
+        compoundHediff is Scadrial.Feruchemy.Hediff.Compound store ? store.StorePerSecond : 0f;
+
+    public float CompoundMetalDrainPerSecond =>
+        compoundHediff is Scadrial.Feruchemy.Hediff.Compound drain ? drain.MetalDrainPerSecond : 0f;
 
     /// Charge moved per real second at the current dial setting, negative while
     /// tapping. Zero when the dial sits in its dead band or the direction is shut.

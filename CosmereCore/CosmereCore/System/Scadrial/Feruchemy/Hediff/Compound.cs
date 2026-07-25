@@ -31,6 +31,11 @@ public class Compound : AllomanticHediff {
     /// Holding the ability active already drains the reserve at the burning rate
     /// through the usual pipeline, so compounding contributes the difference and
     /// the reserve empties at exactly the rate flaring would empty it.
+    /// Reserve spent per real second, for the panel's estimate of how long the
+    /// pawn can keep this up.
+    public float MetalDrainPerSecond =>
+        MetalPerRareTick * GenTicks.TicksPerRealSecond / GenTicks.TickRareInterval;
+
     private float MetalPerRareTick =>
         ability.def.beuPerTick
         * (BurningStatus.Flaring.power - BurningStatus.Burning.power)
@@ -57,9 +62,6 @@ public class Compound : AllomanticHediff {
         Feruchemist? feruchemist = pawn.genes?.GetFeruchemicGeneForMetal(metal);
 
         if (allomancer == null || feruchemist == null || pawn.DeadOrDowned) {
-            Core.Logger.Verbose(
-                $"Compound end: allomancer={allomancer != null} feruchemist={feruchemist != null} deadOrDowned={pawn.DeadOrDowned} metal={metal?.defName}"
-            );
             End();
             return;
         }
@@ -72,28 +74,16 @@ public class Compound : AllomanticHediff {
     protected virtual bool TickLogic(Allomancer allomancer, Feruchemist feruchemist) {
         // Clamped to the room available before anything is burned, so reserve is
         // never spent on charge that has nowhere to go.
-        float free = feruchemist.CompoundedFreeSpace;
-        float charge = Mathf.Min(MetalPerRareTick * ChargePerMetalUnit, free);
-        Core.Logger.Verbose(
-            $"Compound tick {metal?.defName}: perSec={StorePerSecond:F4} free={free:F2} charge={charge:F4} reserve={allomancer.Value:F4}/{allomancer.Max:F3}"
-        );
+        float charge = Mathf.Min(MetalPerRareTick * ChargePerMetalUnit, feruchemist.CompoundedFreeSpace);
 
-        if (charge <= 0f) {
-            Core.Logger.Verbose("Compound stop: nothing to store");
-            return false;
-        }
+        if (charge <= 0f) return false;
 
         // Re-derived from the clamped charge so a partial fill only costs what it stored.
         float metalUnits = charge / ChargePerMetalUnit;
         float beu = metalUnits * ScadrialMetallurgyConstants.BreathEquivalentUnitsPerMetalUnit;
-        if (!allomancer.TryBurnMetalForInvestiture(beu)) {
-            Core.Logger.Verbose($"Compound stop: reserve cannot pay {metalUnits:F3} units");
-            return false;
-        }
+        if (!allomancer.TryBurnMetalForInvestiture(beu)) return false;
 
-        bool stored = feruchemist.AddCompoundedToStore(charge);
-        Core.Logger.Verbose($"Compound stored={stored} amount={charge:F2}");
-        return stored;
+        return feruchemist.AddCompoundedToStore(charge);
     }
 
     private void End() {

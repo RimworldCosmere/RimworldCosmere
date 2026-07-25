@@ -75,9 +75,8 @@ public static class RadialCenterPreview {
 
             if (!hoveredLeaf.Description.NullOrEmpty()) {
                 Rect descRect = ChordRow(center, -32f, tinyH * 3f);
-                string desc = hoveredLeaf.Description!.Truncate(descRect.width * 3f);
                 using (new TextBlock(GameFont.Tiny, TextAnchor.UpperCenter, DockPalette.MutedText)) {
-                    Widgets.Label(descRect, desc);
+                    Widgets.Label(descRect, FitToLines(hoveredLeaf.Description!, descRect.width, 3));
                 }
 
                 TooltipHandler.TipRegion(descRect, hoveredLeaf.Description);
@@ -149,7 +148,7 @@ public static class RadialCenterPreview {
             float rowWidth = buttonCount * buttonSize + (buttonCount - 1) * buttonGap;
             float x = center.x - rowWidth / 2f;
 
-            DrawIconButton(new Rect(x, buttonY, buttonSize, buttonSize), TexButton.Reveal, "CC_Radial_Back".Translate(), 0.55f, true, back);
+            DrawIconButton(new Rect(x, buttonY, buttonSize, buttonSize), TexButton.Reveal, "CC_Radial_Back".Translate(), 1.1f, true, back);
             x += buttonSize + buttonGap;
 
             if (infoDef != null) {
@@ -177,6 +176,25 @@ public static class RadialCenterPreview {
         }
     }
 
+    /// Trims text until its wrapped height fits maxLines, appending an ellipsis.
+    /// Truncate measures a single line, which does not predict how many lines the
+    /// text wraps to, so long descriptions would otherwise spill past their rect.
+    private static string FitToLines(string text, float width, int maxLines) {
+        float lineHeight = Text.LineHeightOf(GameFont.Tiny);
+        float maxHeight = lineHeight * maxLines + 1f;
+        if (Text.CalcHeight(text, width) <= maxHeight) return text;
+
+        int low = 0;
+        int high = text.Length;
+        while (low < high) {
+            int mid = (low + high + 1) / 2;
+            if (Text.CalcHeight(text.Substring(0, mid) + "...", width) <= maxHeight) low = mid;
+            else high = mid - 1;
+        }
+
+        return low <= 0 ? "" : text.Substring(0, low).TrimEnd() + "...";
+    }
+
     private static bool ShiftHeld() {
         return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
     }
@@ -189,10 +207,6 @@ public static class RadialCenterPreview {
         float aspect = icon.height > 0 ? icon.width / (float)icon.height : 1f;
         float drawHeight = targetHeight;
         float drawWidth = targetHeight * aspect;
-        if (drawWidth > rect.width) {
-            drawWidth = rect.width;
-            drawHeight = drawWidth / aspect;
-        }
 
         Rect iconRect = new Rect(
             rect.center.x - drawWidth / 2f,

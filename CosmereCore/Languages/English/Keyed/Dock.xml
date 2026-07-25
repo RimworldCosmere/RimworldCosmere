@@ -60,5 +60,5 @@
   <CC_Dock_Allomancy_CompoundTip>Burn the {METAL} reserve to charge an implanted {METAL} metalmind.\n\nCompounded charge pays out ten times as hard when tapped, and only a metalmind inside the body can be filled this way.</CC_Dock_Allomancy_CompoundTip>
   <CC_Dock_Allomancy_BusyCompounding>Compounding is drawing on this metal.</CC_Dock_Allomancy_BusyCompounding>
   <CC_Dock_Allomancy_CompoundRate>+{RATE}/s</CC_Dock_Allomancy_CompoundRate>
-  <CC_Dock_Allomancy_CompoundEta>this {ONE}, all {ALL}</CC_Dock_Allomancy_CompoundEta>
+  <CC_Dock_Allomancy_CompoundEta>current {ONE}, all {ALL}</CC_Dock_Allomancy_CompoundEta>
 </LanguageData>

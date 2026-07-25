@@ -23,14 +23,14 @@ public class Compound : AllomanticHediff {
         ability
     ) { }
 
-    /// Charge poured into the metalmind per real second.
-    protected const float ChargePerSecond = 0.1f;
+    /// Reserve burned per real second. Chosen so an unpractised Compounder fills
+    /// a seventy-five unit metalmind in about an in-game hour; skill raises the
+    /// yield rather than the burn, so practice fills faster off the same metal.
+    protected const float MetalPerSecond = 0.12f;
 
-    public virtual float StorePerSecond => ChargePerSecond;
+    public float MetalDrainPerSecond => MetalPerSecond;
 
-    /// Reserve spent per real second. Skill does not make compounding faster, it
-    /// makes it cheaper - the same charge costs less swallowed metal.
-    public float MetalDrainPerSecond => ChargePerSecond / ChargePerMetalUnit;
+    public virtual float StorePerSecond => MetalPerSecond * ChargePerMetalUnit;
 
     /// A Compounder practised in both arts wrings more out of the same swallowed
     /// metal, so yield rises with the average of the two skills.
@@ -66,7 +66,7 @@ public class Compound : AllomanticHediff {
         // Clamped to the room available before anything is burned, so reserve is
         // never spent on charge that has nowhere to go.
         float seconds = GenTicks.TickRareInterval / (float)GenTicks.TicksPerRealSecond;
-        float charge = Mathf.Min(ChargePerSecond * seconds, feruchemist.CompoundedFreeSpace);
+        float charge = Mathf.Min(StorePerSecond * seconds, feruchemist.CompoundedFreeSpace);
 
         if (charge <= 0f) return false;
 

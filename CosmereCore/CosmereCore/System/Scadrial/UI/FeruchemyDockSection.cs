@@ -82,12 +82,12 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             rect,
             cell.Icon,
             MetalLabel(cell),
-            capacity.HasMetalmind ? $"{capacity.Stored + capacity.Compounded:0}/{capacity.Max:0}" : "—",
-            capacity.Fraction,
+            capacity.HasMetalmind ? $"{capacity.Stored:0}+{capacity.Compounded:0}/{capacity.Max:0}" : "—",
+            capacity.StoredFraction,
             MetalPalette.For(cell.SubsystemId),
             state,
             tint,
-            capacity.Max > 0f ? capacity.Compounded / capacity.Max : 0f,
+            capacity.CompoundedFraction,
             CompoundTint
         );
 
@@ -133,7 +133,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         );
         UIText.EllipsisLabel(
             new Rect(inner.x + inner.width * 0.6f, inner.y, inner.width * 0.4f, tinyH),
-            $"{capacity.Stored + capacity.Compounded:0} / {capacity.Max:0}",
+            $"{capacity.Stored:0} + {capacity.Compounded:0} / {capacity.Max:0}",
             GameFont.Tiny,
             TextAnchor.MiddleRight,
             new Color(0.435f, 0.404f, 0.361f)
@@ -373,5 +373,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         public bool CanStore { get; }
         public bool CanTapCompounded { get; }
         public float Fraction => Max > 0f ? (Stored + Compounded) / Max : 0f;
+        public float StoredFraction => Max > 0f ? Stored / Max : 0f;
+        public float CompoundedFraction => Max > 0f ? Compounded / Max : 0f;
     }
 }

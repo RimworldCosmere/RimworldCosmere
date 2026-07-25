@@ -19,7 +19,9 @@ public enum MetalTileState {
 public static class MetalTile {
     public const float Height = 31f;
     private const float GlyphSize = 14f;
-    private const float BandHeight = 5f;
+    private const float BandHeight = 4f;
+    private const float CompoundedBandHeight = 2f;
+    private const float BandGap = 2f;
 
     public static void Draw(
         Rect rect,
@@ -31,7 +33,7 @@ public static class MetalTile {
         MetalTileState state,
         Color activeTint,
         float compoundedFraction = 0f,
-        Color compoundedTint = default
+        Color? compoundedTint = null
     ) {
         bool inert = state == MetalTileState.Inert;
         bool hot = state == MetalTileState.Active || state == MetalTileState.Flaring;
@@ -90,28 +92,38 @@ public static class MetalTile {
                     : new Color(0.769f, 0.737f, 0.675f);
         UIText.EllipsisLabel(nameRect, label, GameFont.Tiny, TextAnchor.MiddleLeft, nameColor);
 
-        // Inset so a full reserve still reads as a gauge. Edge-to-edge, it just
-        // looks like the tile grew a coloured border.
-        Rect band = new Rect(rect.x + 4f, rect.yMax - BandHeight - 1f, rect.width - 8f, BandHeight - 1f);
-        Widgets.DrawBoxSolid(band, new Color(0.047f, 0.043f, 0.035f));
-        if (!inert && fraction > 0f) {
-            Widgets.DrawBoxSolid(
-                new Rect(band.x, band.y, band.width * Mathf.Clamp01(fraction), band.height),
-                metalColor
-            );
-        }
+        // Two pools mean two gauges. Stacking them keeps each readable as its own
+        // quantity, where one bar split by colour reads as a single total.
+        // Two pools mean two gauges. The stored one stays the primary bar; the
+        // compounded one sits below as a thinner stripe on a warmer track, so which
+        // is which reads without a legend.
+        bool twoPools = compoundedTint.HasValue;
+        float bottom = rect.yMax - 1f;
+        float stack = twoPools ? BandHeight + BandGap + CompoundedBandHeight : BandHeight;
 
-        // Compounded charge rides at the end of the fill in its own colour, so the
-        // split reads off the bar and the number stays a plain total.
-        if (inert || compoundedFraction <= 0f) return;
+        Rect band = new Rect(rect.x + 4f, bottom - stack, rect.width - 8f, BandHeight);
+        DrawGauge(band, inert ? 0f : fraction, metalColor, new Color(0.047f, 0.043f, 0.035f));
 
-        float compounded = Mathf.Clamp01(compoundedFraction);
-        float start = Mathf.Clamp01(fraction - compounded);
-        Widgets.DrawBoxSolid(
-            new Rect(band.x + band.width * start, band.y, band.width * compounded, band.height),
-            compoundedTint == default ? metalColor : compoundedTint
+        if (!twoPools) return;
+
+        Rect compoundedBand = new Rect(band.x, band.yMax + BandGap, band.width, CompoundedBandHeight);
+        DrawGauge(
+            compoundedBand,
+            inert ? 0f : compoundedFraction,
+            compoundedTint!.Value,
+            new Color(0.129f, 0.106f, 0.063f)
         );
 
         if (!inert) Widgets.DrawHighlightIfMouseover(rect);
+    }
+
+    private static void DrawGauge(Rect rect, float fraction, Color fill, Color track) {
+        Widgets.DrawBoxSolid(rect, track);
+        if (fraction <= 0f) return;
+
+        Widgets.DrawBoxSolid(
+            new Rect(rect.x, rect.y, rect.width * Mathf.Clamp01(fraction), rect.height),
+            fill
+        );
     }
 }

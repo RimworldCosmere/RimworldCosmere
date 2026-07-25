@@ -109,7 +109,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
         if (gene == null) return;
 
         Capacity capacity = CapacityOf(gene);
-        Widgets.DrawBoxSolid(rect, new Color(0.082f, 0.075f, 0.059f));
+        Widgets.DrawBoxSolid(rect, new Color(0.055f, 0.043f, 0.031f, 0.45f));
         Widgets.DrawBoxSolidWithOutline(rect, Color.clear, new Color(0.239f, 0.216f, 0.188f));
 
         Rect inner = rect.ContractedBy(StripPadding);

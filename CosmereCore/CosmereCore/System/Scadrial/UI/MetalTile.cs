@@ -38,11 +38,15 @@ public static class MetalTile {
         bool inert = state == MetalTileState.Inert;
         bool hot = state == MetalTileState.Active || state == MetalTileState.Flaring;
 
-        Widgets.DrawBoxSolid(rect, inert ? new Color(0.078f, 0.071f, 0.063f) : new Color(0.098f, 0.090f, 0.075f));
+        // Translucent so the parchment behind still shows its grain through the
+        // tile, rather than every cell reading as a flat chip laid on top.
+        Widgets.DrawBoxSolid(rect, inert
+            ? new Color(0.043f, 0.035f, 0.027f, 0.55f)
+            : new Color(0.063f, 0.051f, 0.039f, 0.38f));
         Widgets.DrawBoxSolidWithOutline(
             rect.ContractedBy(1f),
             Color.clear,
-            hot ? activeTint : new Color(0.204f, 0.180f, 0.149f)
+            hot ? activeTint : new Color(0.298f, 0.243f, 0.169f)
         );
 
         if (hot) {

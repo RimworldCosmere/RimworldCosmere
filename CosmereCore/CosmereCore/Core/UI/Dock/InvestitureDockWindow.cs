@@ -78,8 +78,8 @@ public sealed class InvestitureDockWindow : Verse.Window {
             return;
         }
 
-        Widgets.DrawBoxSolid(inRect, new Color(0.05f, 0.05f, 0.08f, 0.75f));
-        Widgets.DrawBoxSolidWithOutline(inRect, Color.clear, new Color(0.271f, 0.251f, 0.212f));
+        ParchmentTex.DrawField(inRect);
+        Widgets.DrawBoxSolidWithOutline(inRect, Color.clear, new Color(0.361f, 0.294f, 0.196f));
 
         DockRenderContext ctx = new DockRenderContext {
             Density = PickDensity(pawn, snapshots, inRect.height),
@@ -217,10 +217,10 @@ public sealed class InvestitureDockWindow : Verse.Window {
         DockRenderContext ctx
     ) {
         Rect headerBand = new Rect(inRect.x, inRect.y, inRect.width, PinButtonHeight + 8f);
-        Widgets.DrawBoxSolid(headerBand, new Color(0.086f, 0.082f, 0.094f));
+        Widgets.DrawBoxSolid(headerBand, new Color(0.078f, 0.063f, 0.043f, 0.45f));
         Widgets.DrawBoxSolid(
             new Rect(headerBand.x, headerBand.yMax - 1f, headerBand.width, 1f),
-            new Color(0.271f, 0.251f, 0.212f)
+            new Color(0.361f, 0.294f, 0.196f)
         );
 
         Rect pinRect = new Rect(inRect.xMax - PinButtonHeight - 4f, inRect.y + 4f, PinButtonHeight, PinButtonHeight);
@@ -229,7 +229,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
             pawn.LabelShortCap,
             GameFont.Small,
             TextAnchor.MiddleLeft,
-            new Color(0.788f, 0.757f, 0.694f)
+            RibbonInk
         );
         TooltipHandler.TipRegion(pinRect, "CC_Dock_Collapse".Translate());
         if (Widgets.ButtonImage(pinRect.ContractedBy(5f), TexButton.CloseXSmall, true)) {

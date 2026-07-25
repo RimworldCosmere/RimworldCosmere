@@ -108,7 +108,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
         // Nothing to draw for a metal this pawn cannot burn.
         if (FindGene(pawn, cell.SubsystemId) == null) return;
 
-        Widgets.DrawBoxSolid(rect, new Color(0.098f, 0.086f, 0.063f));
+        Widgets.DrawBoxSolid(rect, new Color(0.055f, 0.043f, 0.031f, 0.45f));
         Widgets.DrawBoxSolidWithOutline(rect, Color.clear, new Color(0.259f, 0.227f, 0.169f));
 
         Rect inner = rect.ContractedBy(StripPadding);

@@ -18,6 +18,11 @@ public sealed class InvestitureDockWindow : Verse.Window {
     private const float RibbonBar = 6f;
     private const float RibbonPad = 7f;
 
+    private static readonly Color RibbonInk = new Color(0.196f, 0.153f, 0.098f);
+    private static readonly Color RibbonInkFaded = new Color(0.361f, 0.294f, 0.208f);
+    private static readonly Color RibbonEdge = new Color(0.404f, 0.325f, 0.208f);
+    private static readonly Color RibbonTrack = new Color(0.596f, 0.522f, 0.396f);
+
     /// Icon and name on one line, reserve and reading on the next.
     private static float RibbonHeight => 13f + RibbonIcon + Text.LineHeightOf(GameFont.Tiny);
 
@@ -106,16 +111,22 @@ public sealed class InvestitureDockWindow : Verse.Window {
 
             Color accent = section.Skin.AccentColor;
             Rect ribbon = new Rect(inRect.x + RibbonGap, y, inRect.width - RibbonGap * 2f, RibbonHeight);
-            Widgets.DrawBoxSolid(ribbon, DockPalette.PanelRaised);
+
+            // Each art tints its own sheet, faintly enough that both still read as
+            // parchment rather than as coloured panels.
+            Color prev = GUI.color;
+            GUI.color = Color.Lerp(Color.white, accent, 0.16f);
+            GUI.DrawTexture(ribbon, ParchmentTex.Sheet);
+            GUI.color = prev;
 
             if (anyFlaring) {
-                Widgets.DrawBoxSolid(ribbon, new Color(DockPalette.Flare.r, DockPalette.Flare.g, DockPalette.Flare.b, 0.22f));
+                Widgets.DrawBoxSolid(ribbon, new Color(DockPalette.Flare.r, DockPalette.Flare.g, DockPalette.Flare.b, 0.20f));
             }
             else if (anyActive) {
-                Widgets.DrawBoxSolid(ribbon, new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.18f));
+                Widgets.DrawBoxSolid(ribbon, new Color(DockPalette.HotLabel.r, DockPalette.HotLabel.g, DockPalette.HotLabel.b, 0.16f));
             }
 
-            Widgets.DrawBoxSolidWithOutline(ribbon, Color.clear, accent);
+            Widgets.DrawBoxSolidWithOutline(ribbon, Color.clear, RibbonEdge);
 
             Rect icon = new Rect(ribbon.x + RibbonPad, ribbon.y + 5f, RibbonIcon, RibbonIcon);
             Texture2D? sigil = section.Skin.Sigil;
@@ -128,7 +139,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
                     section.Skin.HeaderLabel.Substring(0, 1),
                     GameFont.Small,
                     TextAnchor.MiddleCenter,
-                    accent
+                    RibbonInk
                 );
             }
 
@@ -137,7 +148,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
                 section.Skin.HeaderLabel.ToUpperInvariant(),
                 GameFont.Tiny,
                 TextAnchor.MiddleLeft,
-                section.Skin.HeaderTextColor
+                RibbonInk
             );
 
             float readingWidth = 34f;
@@ -148,7 +159,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
                 readingRow.width - readingWidth - 4f,
                 RibbonBar
             );
-            Widgets.DrawBoxSolid(bar, DockPalette.Panel);
+            Widgets.DrawBoxSolid(bar, RibbonTrack);
             Widgets.DrawBoxSolid(
                 new Rect(bar.x, bar.y, bar.width * Mathf.Clamp01(aggregate), bar.height),
                 accent
@@ -159,7 +170,7 @@ public sealed class InvestitureDockWindow : Verse.Window {
                 Mathf.RoundToInt(aggregate * 100f) + "%",
                 GameFont.Tiny,
                 TextAnchor.MiddleRight,
-                DockPalette.MutedText
+                RibbonInkFaded
             );
 
             TooltipHandler.TipRegion(

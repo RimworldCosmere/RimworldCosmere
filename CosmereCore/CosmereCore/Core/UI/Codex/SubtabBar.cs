@@ -38,9 +38,17 @@ public static class SubtabBar {
             UIText.EllipsisLabel(tab.ContractedBy(4f, 0f), label, GameFont.Small, TextAnchor.MiddleCenter, textColor);
 
             if (selected) {
-                Rect glow = new Rect(tab.x + 6f, tab.yMax - 4f, tab.width - 12f, 4f);
+                // Inset between tabs, but flush at the ends: the bar reaches the
+                // frame, so an underline stopping short of it left a notch.
+                const float inset = 6f;
+                float left = i == 0 ? 0f : inset;
+                float right = i == buffer.Count - 1 ? 0f : inset;
+                float width = tab.width - left - right;
+
+                Rect glow = new Rect(tab.x + left, tab.yMax - 4f, width, 4f);
                 Widgets.DrawBoxSolid(glow, new Color(accent.r, accent.g, accent.b, 0.18f));
-                Rect underline = new Rect(tab.x + 6f, tab.yMax - 2f, tab.width - 12f, 2f);
+
+                Rect underline = new Rect(tab.x + left, tab.yMax - 2f, width, 2f);
                 Widgets.DrawBoxSolid(underline, accent);
             }
 

@@ -50,17 +50,25 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         List<Feruchemist> ferus = CollectFeruchemists(pawn);
         if (ferus.Count == 0) return;
 
+        const float contentPad = 4f;
+        const float markSize = 44f;
+        const float rowHeight = 52f;
+        const float rowGap = 2f;
         float y = rect.y;
 
-        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white))
-            Widgets.Label(new Rect(rect.x, y, rect.width, 30f), "CC_Codex_Feruchemy_Progression_Header".Translate());
+        using (new TextBlock(GameFont.Medium, TextAnchor.MiddleLeft, Color.white)) {
+            Widgets.Label(
+                new Rect(rect.x + contentPad, y, rect.width - contentPad, 30f),
+                "CC_Codex_Feruchemy_Progression_Header".Translate()
+            );
+        }
         y += 34f;
 
         SkillRecord? skill = pawn.skills?.GetSkill(SkillDefOf.Cosmere_Scadrial_Skill_FeruchemicPower);
         if (skill != null) {
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f))) {
                 Widgets.Label(
-                    new Rect(rect.x, y, rect.width, 24f),
+                    new Rect(rect.x + contentPad, y, rect.width - contentPad, 24f),
                     "CC_Codex_Feruchemy_OverallSkill".Translate(skill.Level.Named("LEVEL"))
                 );
             }
@@ -68,15 +76,31 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
             y += 28f;
         }
 
+        // Seventeen metals never fitted, and without a scroll view the ones past
+        // the fold were cut off rather than reachable.
+        Rect listRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
+        Rect viewRect = new Rect(0f, 0f, listRect.width - 20f, ferus.Count * (rowHeight + rowGap));
+        Widgets.BeginScrollView(listRect, ref progressionScroll, viewRect);
+
+        y = 0f;
         for (int i = 0; i < ferus.Count; i++) {
             Feruchemist f = ferus[i];
             MetallicArtsMetalDef metal = f.metal;
 
-            Rect row = new Rect(rect.x, y, rect.width, 26f);
+            Rect row = new Rect(0f, y, viewRect.width, rowHeight);
             if (i % 2 == 0) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
 
-            Rect swatch = new Rect(row.x + 4f, row.y + 8f, 10f, 10f);
-            Widgets.DrawBoxSolid(swatch, metal.color);
+            Rect swatch = new Rect(row.x + contentPad, row.y + (rowHeight - markSize) / 2f, markSize, markSize);
+            Texture2D? mark = metal.feruchemy?.invertedIcon;
+            if (mark != null) {
+                Color prevMark = GUI.color;
+                GUI.color = metal.color;
+                GUI.DrawTexture(swatch, mark);
+                GUI.color = prevMark;
+            }
+            else {
+                Widgets.DrawBoxSolid(swatch.ContractedBy(markSize / 4f), metal.color);
+            }
 
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
                 Widgets.Label(new Rect(swatch.xMax + 8f, row.y, 130f, row.height), metal.LabelCap);
@@ -112,9 +136,13 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 );
             }
 
-            y += 28f;
+            y += rowHeight + rowGap;
         }
+
+        Widgets.EndScrollView();
     }
+
+    private Vector2 progressionScroll;
 
     public void DrawBonds(Rect rect, Pawn pawn, CodexState state) { }
 

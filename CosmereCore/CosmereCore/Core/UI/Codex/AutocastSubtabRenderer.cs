@@ -43,8 +43,16 @@ public static class AutocastSubtabRenderer {
 
             if (i % 2 == 0) Widgets.DrawBoxSolid(row, new Color(1f, 1f, 1f, 0.03f));
 
-            Rect enabled = new Rect(row.x + 4f, row.y + 8f, 16f, 16f);
-            Widgets.Checkbox(enabled.x, enabled.y, ref rule.Enabled);
+            // Widgets.Checkbox draws at twenty-four whatever rect you hand it, so a
+            // sixteen wide rect put everything measured off it eight pixels out.
+            const float checkSize = 24f;
+            Rect enabled = new Rect(
+                row.x + 4f,
+                row.y + (row.height - checkSize) / 2f,
+                checkSize,
+                checkSize
+            );
+            Widgets.Checkbox(enabled.x, enabled.y, ref rule.Enabled, checkSize);
 
             // Measured off its neighbour rather than the row, so the icon stays
             // clear of the tick and tight to the name it belongs to.

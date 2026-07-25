@@ -168,11 +168,16 @@ public static class RadialRingRenderer {
             Vector2 labelMid = RadialLayout.WedgeMidpoint(i, count, RadialLayout.LabelBandRadius, center);
             float labelWidth = RadialLayout.ChordWidthAt(RadialLayout.LabelBandRadius, count) - 8f;
             Rect labelRect = new Rect(labelMid.x - labelWidth / 2f, labelMid.y - tinyH / 2f, labelWidth, tinyH);
+            bool flareArmed = i == hoveredIndex
+                && !isLocked
+                && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             Color labelColor = isLocked
                 ? new Color(0.36f, 0.42f, 0.46f)
-                : i == hoveredIndex
-                    ? Color.white
-                    : new Color(0.81f, 0.85f, 0.87f);
+                : flareArmed
+                    ? DockPalette.Flare
+                    : i == hoveredIndex
+                        ? Color.white
+                        : new Color(0.81f, 0.85f, 0.87f);
             UIText.EllipsisLabel(labelRect, label, GameFont.Tiny, TextAnchor.MiddleCenter, labelColor);
         }
     }

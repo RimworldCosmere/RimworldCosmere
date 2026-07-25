@@ -85,7 +85,9 @@ public sealed class AllomancyInvestitureProvider : CodexInvestitureProviderBase<
 
             RadialLeaf leaf = new RadialLeaf(
                 LeafId: "BURN",
-                Label: "Burn " + a.metal.LabelCap,
+                Label: matched.atLeastBurning
+                    ? "CC_Radial_Action_StopBurning".Translate(a.metal.LabelCap.Named("METAL"))
+                    : "CC_Radial_Action_Burn".Translate(a.metal.LabelCap.Named("METAL")),
                 Icon: a.metal.allomancy?.invertedIcon,
                 Kind: RadialActionKind.StartAllomancyBurn,
                 AbilityDef: matched.def,

@@ -62,12 +62,15 @@ public static class RadialCenterPreview {
                 );
             }
 
+            bool flareArmed = ShiftHeld() && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn && !hoveredLeaf.IsLocked;
             UIText.EllipsisLabel(
                 ChordRow(center, hasParent ? -58f : -60f, smallH),
-                hoveredLeaf.Label,
+                flareArmed
+                    ? "CC_Radial_Action_Flare".Translate((hoveredTitle ?? hoveredLeaf.Label).Named("METAL"))
+                    : hoveredLeaf.Label,
                 GameFont.Small,
                 TextAnchor.MiddleCenter,
-                new Color(0.75f, 0.89f, 0.95f)
+                flareArmed ? DockPalette.Flare : new Color(0.75f, 0.89f, 0.95f)
             );
 
             if (!hoveredLeaf.Description.NullOrEmpty()) {
@@ -118,10 +121,23 @@ public static class RadialCenterPreview {
             }
         }
 
+        bool canFlare = hoveredLeaf != null
+            && hoveredLeaf.Kind == RadialActionKind.StartAllomancyBurn
+            && !hoveredLeaf.IsLocked;
+        if (browseMode && canFlare) {
+            UIText.EllipsisLabel(
+                ChordRow(center, 54f, tinyH),
+                ShiftHeld() ? "CC_Radial_Hint_FlareArmed".Translate() : "CC_Radial_Hint_FlareTip".Translate(),
+                GameFont.Tiny,
+                TextAnchor.MiddleCenter,
+                ShiftHeld() ? DockPalette.Flare : DockPalette.GroupLabel
+            );
+        }
+
         if (browseMode) {
             const float buttonSize = 30f;
             const float buttonGap = 8f;
-            float buttonY = center.y + 58f;
+            float buttonY = center.y + (canFlare ? 76f : 58f);
             RimWorld.AbilityDef? infoDef = hoveredLeaf?.AbilityDef;
             int buttonCount = infoDef != null ? 3 : 2;
             float rowWidth = buttonCount * buttonSize + (buttonCount - 1) * buttonGap;
@@ -161,6 +177,10 @@ public static class RadialCenterPreview {
 
 
         }
+    }
+
+    private static bool ShiftHeld() {
+        return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
     }
 
     private static void DrawIconButton(Rect rect, Texture2D icon, string tooltip, float iconScale, bool mirrored, Action onClick) {

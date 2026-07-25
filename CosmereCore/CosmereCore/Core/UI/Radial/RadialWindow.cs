@@ -23,7 +23,7 @@ public sealed class RadialWindow : Verse.Window {
         draggable = false;
         drawShadow = false;
         doWindowBackground = false;
-        layer = WindowLayer.Super;
+        layer = WindowLayer.GameUI;
         focusWhenOpened = false;
         forcePause = false;
         state.Kind = RadialStateKind.SystemTier;

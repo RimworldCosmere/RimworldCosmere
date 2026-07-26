@@ -16,3 +16,6 @@ Cosmere.sln.DotSettings.user
 Assembly-CSharp.dll
 *.stackdump
 old
+
+# SonarScanner working directory
+.sonarqube/

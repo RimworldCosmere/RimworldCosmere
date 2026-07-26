@@ -7,6 +7,7 @@ using Cosmere.System.Scadrial.Feruchemy.Memory;
 using Cosmere.System.Scadrial.Feruchemy.UI;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
+using Cosmere.Core.Ability.Autocast;
 using UnityEngine;
 using Verse;
 
@@ -121,12 +122,18 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
                 tappingTicks = (int)pawn.records.GetValue(RecordDefOf.GetTimeSpentTappingForMetal(metal));
             }
 
+            // Each half is a whole phrase, so a metal never worked reads
+            // "never stored" rather than "stored never".
             string storedLabel = storingTicks > 0
-                ? storingTicks.ToStringTicksToPeriod(false, true, false)
-                : (string)"CC_Codex_Feruchemy_Never".Translate();
+                ? "CC_Codex_Feruchemy_Stored".Translate(
+                    storingTicks.ToStringTicksToPeriod(false, true, false).Named("DURATION")
+                ).Resolve()
+                : (string)"CC_Codex_Feruchemy_NeverStored".Translate();
             string tappedLabel = tappingTicks > 0
-                ? tappingTicks.ToStringTicksToPeriod(false, true, false)
-                : (string)"CC_Codex_Feruchemy_Never".Translate();
+                ? "CC_Codex_Feruchemy_Tapped".Translate(
+                    tappingTicks.ToStringTicksToPeriod(false, true, false).Named("DURATION")
+                ).Resolve()
+                : (string)"CC_Codex_Feruchemy_NeverTapped".Translate();
 
             Rect usageRect = new Rect(stageRect.xMax + 8f, row.y, row.xMax - stageRect.xMax - 12f, row.height);
             using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f))) {
@@ -337,5 +344,25 @@ public sealed class FeruchemyCodexContent : ICodexContentProvider {
         }
 
         return result;
+    }
+
+    /// Feruchemy casts nothing. Each metal the pawn can work is a dial that rules
+    /// hold, so the metals are the targets rather than any ability.
+    public IReadOnlyList<AutocastTarget> AutocastTargets(Pawn pawn) {
+        List<AutocastTarget> targets = [];
+        List<Feruchemist> ferus = CollectFeruchemists(pawn);
+        for (int i = 0; i < ferus.Count; i++) {
+            MetallicArtsMetalDef metal = ferus[i].metal;
+            targets.Add(
+                new AutocastTarget(
+                    AutocastRuleKind.FeruchemyDial,
+                    metal.defName,
+                    metal.LabelCap,
+                    metal.feruchemy?.invertedIcon
+                )
+            );
+        }
+
+        return targets;
     }
 }

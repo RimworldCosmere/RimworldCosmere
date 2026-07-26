@@ -27,9 +27,9 @@
   <CC_Dock_State_Flaring>Flaring</CC_Dock_State_Flaring>
   <CC_Dock_Btn_Threshold>Set</CC_Dock_Btn_Threshold>
 
-  <CC_Dock_Allomancy_Tip>{METAL}\nReserve {PERCENT}%{STATE}\n\nClick to open the burn controls.\nRight-click to set the restock threshold.</CC_Dock_Allomancy_Tip>
-  <CC_Dock_Feruchemy_Tip>{METAL}\n{STORED} of {MAX} stored\n\nClick to open the tap and store dial.</CC_Dock_Feruchemy_Tip>
-  <CC_Dock_Feruchemy_NoMetalmind>{METAL}\n\nNo metalmind carried, so there is nothing to fill or draw from.</CC_Dock_Feruchemy_NoMetalmind>
+  <CC_Dock_Allomancy_Tip>{METAL}\nReserve {PERCENT}%{STATE}\n\n{EFFECT}\n\nClick to open the burn controls.\nRight-click to set the restock threshold.</CC_Dock_Allomancy_Tip>
+  <CC_Dock_Feruchemy_Tip>{METAL}\n{STORED} of {MAX} stored\n\n{EFFECT}\n\nClick to open the tap and store dial.</CC_Dock_Feruchemy_Tip>
+  <CC_Dock_Feruchemy_NoMetalmind>{METAL}\n\n{EFFECT}\n\nNo metalmind carried, so there is nothing to fill or draw from.</CC_Dock_Feruchemy_NoMetalmind>
   <CC_Dock_Feruchemy_Tapping>tapping</CC_Dock_Feruchemy_Tapping>
   <CC_Dock_Feruchemy_Storing>storing</CC_Dock_Feruchemy_Storing>
   <CC_Dock_Feruchemy_Idle>Idle</CC_Dock_Feruchemy_Idle>

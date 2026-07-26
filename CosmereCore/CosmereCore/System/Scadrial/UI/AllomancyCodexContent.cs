@@ -6,6 +6,7 @@ using Cosmere.System.Scadrial.Def;
 using Cosmere.System.Scadrial.Savant;
 using Cosmere.System.Scadrial.Gene;
 using RimWorld;
+using Cosmere.Core.Ability.Autocast;
 using UnityEngine;
 using Verse;
 
@@ -108,19 +109,19 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
             Rect stageRect = new Rect(swatch.xMax + 146f, row.y, 140f, rowHeight);
             SavantUI.DrawSavantStage(stageRect, stage, metal.color);
 
-            float burned = 0f;
+            int burningTicks = 0;
             if (pawn.records != null) {
-                RecordDef record = RecordDefOf.GetMetalBurnRecordForMetal(metal);
-                burned = pawn.records.GetValue(record);
+                burningTicks = (int)pawn.records.GetValue(RecordDefOf.GetTimeSpentBurningForMetal(metal));
             }
 
-            Rect burnedRect = new Rect(stageRect.xMax + 8f, row.y, 80f, rowHeight);
-            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f))) {
-                Widgets.Label(
-                    burnedRect,
-                    "CC_Codex_Allomancy_MetalBurned".Translate(burned.ToString("F1").Named("AMOUNT"))
-                );
-            }
+            // The same reading Feruchemy gives, and the same number the savant
+            // stage beside it is derived from. Never-burned reads as its own
+            // sentence rather than substituting "never" into a past-tense one.
+            string burnedLabel = burningTicks > 0
+                ? "CC_Codex_Allomancy_MetalBurned".Translate(
+                    burningTicks.ToStringTicksToPeriod(false, true, false).Named("DURATION")
+                ).Resolve()
+                : (string)"CC_Codex_Allomancy_NeverBurned".Translate();
 
             const float buttonSize = 28f;
             Rect vialButtonRect = new Rect(
@@ -129,6 +130,18 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
                 buttonSize,
                 buttonSize
             );
+
+            // Runs to the vial button rather than a fixed width, so a colonist who
+            // has burned four figures of pewter does not push into it.
+            Rect burnedRect = new Rect(
+                stageRect.xMax + 8f,
+                row.y,
+                vialButtonRect.x - stageRect.xMax - 16f,
+                rowHeight
+            );
+            using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.75f, 0.75f, 0.75f))) {
+                Widgets.Label(burnedRect, burnedLabel);
+            }
 
             if (hasVialControls) {
                 DrawVialSettingsButton(vialButtonRect, gene);
@@ -209,5 +222,24 @@ public sealed class AllomancyCodexContent : ICodexContentProvider {
         }
 
         return result;
+    }
+
+    public IReadOnlyList<AutocastTarget> AutocastTargets(Pawn pawn) {
+        List<AutocastTarget> targets = [];
+        List<RimWorld.Ability> all = pawn.abilities?.AllAbilitiesForReading ?? [];
+        for (int i = 0; i < all.Count; i++) {
+            if (!OwnsAbility(all[i])) continue;
+
+            targets.Add(
+                new AutocastTarget(
+                    AutocastRuleKind.Ability,
+                    all[i].def.defName,
+                    all[i].def.LabelCap,
+                    all[i].def.uiIcon
+                )
+            );
+        }
+
+        return targets;
     }
 }

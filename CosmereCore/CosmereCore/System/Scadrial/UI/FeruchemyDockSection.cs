@@ -91,7 +91,7 @@ public sealed class FeruchemyDockSection : DockSectionBase {
             capacity.CanStoreCompounded || capacity.Compounded > 0f ? CompoundTint : null
         );
 
-        TooltipHandler.TipRegion(rect, () => Tooltip(cell, capacity), cell.SubsystemId.GetHashCode());
+        TooltipHandler.TipRegion(rect, () => Tooltip(pawn, cell, capacity), cell.SubsystemId.GetHashCode());
 
         if (!capacity.HasMetalmind) return;
         if (!Widgets.ButtonInvisible(rect)) return;
@@ -375,17 +375,34 @@ public sealed class FeruchemyDockSection : DockSectionBase {
 
 
 
-    private string Tooltip(InvestitureCell cell, Capacity capacity) {
-        if (!capacity.HasMetalmind) {
-            return "CC_Dock_Feruchemy_NoMetalmind".Translate(MetalLabel(cell).Named("METAL"));
-        }
+    private string Tooltip(Pawn pawn, InvestitureCell cell, Capacity capacity) {
+        string effect = MetalEffect(pawn, cell);
 
+        if (!capacity.HasMetalmind) {
+            return "CC_Dock_Feruchemy_NoMetalmind".Translate(
+                MetalLabel(cell).Named("METAL"),
+                effect.Named("EFFECT")
+            );
+        }
 
         return "CC_Dock_Feruchemy_Tip".Translate(
             MetalLabel(cell).Named("METAL"),
             capacity.Stored.ToString("0").Named("STORED"),
-            capacity.Max.ToString("0").Named("MAX")
+            capacity.Max.ToString("0").Named("MAX"),
+            effect.Named("EFFECT")
         );
+    }
+
+    /// What this metal stores and taps, in the metal def's own words. The tooltip
+    /// described the click rather than the power before this.
+    private static string MetalEffect(Pawn pawn, InvestitureCell cell) {
+        MetallicArtsMetalDef? metal =
+            DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId);
+        string? description = metal?.feruchemy?.description;
+
+        return string.IsNullOrEmpty(description)
+            ? ""
+            : description!.Formatted(pawn.LabelShort.Named("PAWN")).Resolve();
     }
 
     private IReadOnlyList<MetalGroup> GroupsFor(Pawn pawn, InvestitureSnapshot snapshot) {

@@ -268,6 +268,13 @@ public class Feruchemist : Metalborn {
     public bool isStoring => storeHediffDef != null && pawn.health.hediffSet.HasHediff(storeHediffDef);
     public bool isCompounding => compoundHediffDef != null && pawn.health.hediffSet.HasHediff(compoundHediffDef);
 
+    /// Compounding pours charge into a metalmind exactly as storing does, so it
+    /// counts as storing - mirroring isTapping, which already covers both the
+    /// ordinary and the compounded channel. Paused compounding is excluded because
+    /// nothing is flowing while it waits on metal to burn.
+    public bool isStoringAny =>
+        isStoring || (isCompounding && !isCompoundPaused && compoundedTargetValue > IdleTarget);
+
     /// What compounding is currently pouring in, and what it costs, so the
     /// allomancy panel can report both without reaching for the hediff itself.
     public float CompoundStorePerSecond =>
@@ -551,7 +558,7 @@ public class Feruchemist : Metalborn {
         float ticks = pawn.records.GetValue(storingRecord) + pawn.records.GetValue(tappingRecord) - savantDecayOffset;
         int newStage = SavantUtility.GetFeruchemicalStage(ticks);
 
-        if (newStage == 1 && !isTapping && !isStoring) {
+        if (newStage == 1 && !isTapping && !isStoringAny) {
             float decayAmount = ticks *
                                 SavantUtility.Stage1DecayPerDayFraction /
                                 GenDate.TicksPerDay *

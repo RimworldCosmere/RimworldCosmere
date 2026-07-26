@@ -87,7 +87,7 @@ public sealed class AllomancyDockSection : DockSectionBase {
             cell.IsFlaring ? FlaringTint : BurningTint
         );
 
-        TooltipHandler.TipRegion(rect, () => Tooltip(cell), cell.SubsystemId.GetHashCode());
+        TooltipHandler.TipRegion(rect, () => Tooltip(pawn, cell), cell.SubsystemId.GetHashCode());
 
         if (!Widgets.ButtonInvisible(rect)) return;
 
@@ -279,18 +279,32 @@ public sealed class AllomancyDockSection : DockSectionBase {
         return null;
     }
 
-    private string Tooltip(InvestitureCell cell) {
+    private string Tooltip(Pawn pawn, InvestitureCell cell) {
         // Carries its own newline so an idle metal does not leave a blank line.
         string state = cell.IsFlaring
             ? "\n" + "CC_Dock_State_Flaring".Translate()
             : cell.IsActive
                 ? "\n" + "CC_Dock_State_Burning".Translate()
                 : "";
+
         return "CC_Dock_Allomancy_Tip".Translate(
             MetalLabel(cell).Named("METAL"),
             Mathf.RoundToInt(cell.Bar.Fraction * 100f).Named("PERCENT"),
-            state.Named("STATE")
+            state.Named("STATE"),
+            MetalEffect(pawn, cell).Named("EFFECT")
         );
+    }
+
+    /// What burning this metal actually does, in the metal def's own words. The
+    /// tooltip described the click rather than the power before this.
+    private static string MetalEffect(Pawn pawn, InvestitureCell cell) {
+        MetallicArtsMetalDef? metal =
+            DefDatabase<MetallicArtsMetalDef>.GetNamedSilentFail(cell.SubsystemId);
+        string? description = metal?.allomancy?.description;
+
+        return string.IsNullOrEmpty(description)
+            ? ""
+            : description!.Formatted(pawn.LabelShort.Named("PAWN")).Resolve();
     }
 
     private IReadOnlyList<MetalGroup> GroupsFor(Pawn pawn, InvestitureSnapshot snapshot) {

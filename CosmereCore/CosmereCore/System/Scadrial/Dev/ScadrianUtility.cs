@@ -13,12 +13,6 @@ namespace Cosmere.System.Scadrial.Dev;
 
 [StaticConstructorOnStartup]
 public static class ScadrianUtility {
-    [DebugAction(
-        "Cosmere/Scadrial",
-        "Prepare Dev Pawn",
-        actionType = DebugActionType.ToolMapForPawns,
-        allowedGameStates = AllowedGameStates.PlayingOnMap
-    )]
     /// Compounding demands level ten in both arts, so a pawn meant to demonstrate
     /// it cannot be left on whatever pawn generation rolled.
     public static void SetMetallicArtsSkills(Pawn pawn, int level) {
@@ -62,6 +56,12 @@ public static class ScadrianUtility {
         }
     }
 
+    [DebugAction(
+        "Cosmere/Scadrial",
+        "Prepare Dev Pawn",
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void PrepareDevPawn(Pawn pawn) {
         if (pawn.genes == null) return;
         if (!pawn.story.traits.HasTrait(TraitDefOf.Cosmere_Scadrial_Trait_Mistborn)) {

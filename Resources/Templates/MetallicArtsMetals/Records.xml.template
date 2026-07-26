@@ -3,9 +3,11 @@
     {{#each metals as | metal |}}
     <RecordDef>
         <defName>Cosmere_Scadrial_Record_MetalBurnt_{{ defName metal.name }}</defName>
-        <label>time spent burning {{ title metal.name }}</label>
+        <label>{{ title metal.name }} burnt</label>
         <description>Amount of {{title metal.name}} I have burnt</description>
-        <type>Int</type>
+        <!-- Float, not Int: a burn tick spends a fraction of a unit, and Int
+             records round every single addition, so this never left zero. -->
+        <type>Float</type>
         <displayOrder>{{add 1120 @index }}</displayOrder>
     </RecordDef>
     <RecordDef>

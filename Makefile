@@ -6,7 +6,7 @@
 #   make all      - Full build (clean, generate, build both solutions, build assets)
 #   make quick    - Quick development cycle (generate + build main solution)
 
-.PHONY: help all quick clean generate build-main build-tools build-assets test restore format lint watch dev setup install-deps check-deps status
+.PHONY: help all quick clean generate build-main build-tools build-assets test restore format lint watch dev setup install-deps check-deps status sonar sonar-up sonar-down
 
 # Use bash with xpg_echo so `echo` interprets \033 escape sequences
 # (default /bin/sh on many distros is dash, which prints them literally)
@@ -206,6 +206,48 @@ precommit: generate format lint test ## Pre-commit checks (generate, format, lin
 
 release-prep: all test ## Prepare for release (full build + test)
 	@echo "$(GREEN)✓ Release preparation complete!$(NC)"
+
+##@ Code Quality (SonarQube)
+
+# The scanner is a .NET client, so it cannot connect to 0.0.0.0 even though the
+# container binds there. Override SONAR_HOST on another machine.
+SONAR_HOST ?= http://10.10.30.233:9000
+SONAR_KEY ?= rimworld-cosmere
+SONAR_EXCLUSIONS := **/*.generated.*,**/Assemblies/**,**/AssetBundles/**,**/Assets/**,**/obj/**,**/bin/**
+
+sonar-up: ## Start the local SonarQube container
+	@echo "$(BLUE)Starting SonarQube...$(NC)"
+	@docker start sonarqube 2>/dev/null || docker run -d --name sonarqube \
+		-p 0.0.0.0:9000:9000 \
+		-v sonarqube_data:/opt/sonarqube/data \
+		-v sonarqube_logs:/opt/sonarqube/logs \
+		-v sonarqube_extensions:/opt/sonarqube/extensions \
+		--restart unless-stopped sonarqube:community
+	@echo "$(YELLOW)Waiting for SonarQube to come up...$(NC)"
+	@until curl -s $(SONAR_HOST)/api/system/status 2>/dev/null | grep -q '"status":"UP"'; do sleep 5; done
+	@echo "$(GREEN)✓ SonarQube up at $(SONAR_HOST)$(NC)"
+
+sonar-down: ## Stop the local SonarQube container
+	@docker stop sonarqube >/dev/null 2>&1 || true
+	@echo "$(GREEN)✓ SonarQube stopped$(NC)"
+
+sonar: ## Analyse the solution and upload to SonarQube (needs SONAR_TOKEN)
+	@if [ -z "$$SONAR_TOKEN" ]; then \
+		echo "$(RED)SONAR_TOKEN is not set.$(NC)"; \
+		echo "Generate one at $(SONAR_HOST)/account/security then:"; \
+		echo "  export SONAR_TOKEN=squ_..."; \
+		exit 1; \
+	fi
+	@$(MAKE) sonar-up
+	@echo "$(BLUE)Analysing $(SONAR_KEY)...$(NC)"
+	@dotnet sonarscanner begin \
+		/k:"$(SONAR_KEY)" \
+		/d:sonar.host.url="$(SONAR_HOST)" \
+		/d:sonar.token="$$SONAR_TOKEN" \
+		/d:sonar.exclusions="$(SONAR_EXCLUSIONS)"
+	@dotnet build Cosmere.sln
+	@dotnet sonarscanner end /d:sonar.token="$$SONAR_TOKEN"
+	@echo "$(GREEN)✓ $(SONAR_HOST)/dashboard?id=$(SONAR_KEY)$(NC)"
 
 ##@ Debugging & Analysis
 

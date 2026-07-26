@@ -8,6 +8,12 @@ namespace Cosmere.Core.Ability.Autocast;
 public sealed class AutocastRunner : GameComponent {
     private const int TickInterval = 60;
 
+    /// Targets a rule has already claimed this tick. Two rules on one metal would
+    /// otherwise both write the dial every tick and the last one would silently
+    /// win; instead the first rule in the list holds it, so the order the player
+    /// sees in the panel is the order of priority.
+    private static readonly HashSet<string> claimed = [];
+
     public AutocastRunner(Game game) { }
 
     public override void GameComponentTick() {
@@ -24,14 +30,26 @@ public sealed class AutocastRunner : GameComponent {
     }
 
     private static void TickPawn(Pawn pawn, GameComponent_Autocast store) {
-        if (pawn.abilities == null) return;
-        SeedDefaults(pawn, store);
+        if (pawn.abilities != null) SeedDefaults(pawn, store);
         List<AutocastRule> rules = store.GetOrCreateRules(pawn);
         if (rules.Count == 0) return;
 
+        claimed.Clear();
+
         for (int r = 0; r < rules.Count; r++) {
             AutocastRule rule = rules[r];
-            if (!rule.Enabled || rule.Triggers.Count == 0) continue;
+
+            // A rule switched off mid-hold still has to put the dial back, so
+            // being dormant is passed along rather than skipped over.
+            bool dormant = !rule.Enabled || rule.Triggers.Count == 0;
+
+            if (rule.Kind == AutocastRuleKind.FeruchemyDial) {
+                string key = (int)rule.Kind + ":" + rule.MetalDefName;
+                if (TickDialRule(pawn, rule, dormant || claimed.Contains(key))) claimed.Add(key);
+                continue;
+            }
+
+            if (dormant || pawn.abilities == null) continue;
 
             RimWorld.Ability? ability = FindAbility(pawn, rule.AbilityDefName);
             if (ability == null || !ability.CanCast) continue;
@@ -43,6 +61,36 @@ public sealed class AutocastRunner : GameComponent {
             rule.FireCount++;
         }
     }
+
+    /// A dial is held rather than cast, so the rule keeps setting it while its
+    /// triggers pass and puts it back when they stop. It only lets go of a dial it
+    /// is actually holding, so a setting the player moved by hand is left alone.
+    /// Returns whether the rule is holding the dial.
+    private static bool TickDialRule(Pawn pawn, AutocastRule rule, bool dormant) {
+        IAutocastDial? dial = AutocastDialRegistry.For(rule.Kind);
+        if (dial == null) return false;
+
+        if (!dormant && AllTriggersPass(pawn, rule)) {
+            if (!dial.TrySetTarget(pawn, rule.MetalDefName, rule.ActiveTarget)) return false;
+
+            if (rule.Holding) return true;
+
+            rule.Holding = true;
+            rule.FireCount++;
+            return true;
+        }
+
+        if (!rule.Holding) return false;
+
+        rule.Holding = false;
+        if (rule.Release == AutocastRelease.Leave) return false;
+
+        float release = rule.Release == AutocastRelease.ToRest ? rule.RestTarget : dial.IdleTarget;
+        dial.TrySetTarget(pawn, rule.MetalDefName, release);
+
+        return false;
+    }
+
 
     private static void SeedDefaults(Pawn pawn, GameComponent_Autocast store) {
         List<RimWorld.Ability> abilities = pawn.abilities.AllAbilitiesForReading;

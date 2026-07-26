@@ -1,5 +1,6 @@
 using Cosmere.Core.UI.Codex;
 using RimWorld;
+using Cosmere.Core.Ability.Autocast;
 using UnityEngine;
 using Verse;
 
@@ -46,4 +47,23 @@ public sealed class AwakeningCodexContent : ICodexContentProvider {
 
     public void DrawBonds(Rect rect, Pawn pawn, CodexState state) { }
     public void DrawMemories(Rect rect, Pawn pawn, CodexState state) { }
+
+    public IReadOnlyList<AutocastTarget> AutocastTargets(Pawn pawn) {
+        List<AutocastTarget> targets = [];
+        List<RimWorld.Ability> all = pawn.abilities?.AllAbilitiesForReading ?? [];
+        for (int i = 0; i < all.Count; i++) {
+            if (!OwnsAbility(all[i])) continue;
+
+            targets.Add(
+                new AutocastTarget(
+                    AutocastRuleKind.Ability,
+                    all[i].def.defName,
+                    all[i].def.LabelCap,
+                    all[i].def.uiIcon
+                )
+            );
+        }
+
+        return targets;
+    }
 }

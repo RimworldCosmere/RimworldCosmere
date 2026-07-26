@@ -19,7 +19,7 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         draggable = false;
     }
 
-    public override Vector2 InitialSize => new Vector2(520f, 460f);
+    public override Vector2 InitialSize => new Vector2(520f, rule.Kind == AutocastRuleKind.FeruchemyDial ? 520f : 460f);
 
     public override void DoWindowContents(Rect inRect) {
         float y = inRect.y;
@@ -40,14 +40,9 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
         );
         y += 28f;
 
-        Rect capLabel = new Rect(inRect.x, y, 160f, 24f);
-        Widgets.Label(
-            capLabel,
-            "CC_Autocast_Editor_MaxReserveSpend".Translate(((int)(rule.CostCapFraction * 100f)).Named("PERCENT"))
-        );
-        Rect capSlider = new Rect(inRect.x + 170f, y + 4f, inRect.width - 180f, 18f);
-        rule.CostCapFraction = Widgets.HorizontalSlider(capSlider, rule.CostCapFraction, 0f, 1f);
-        y += 28f;
+        y = rule.Kind == AutocastRuleKind.FeruchemyDial
+            ? DrawDialSettings(inRect, y)
+            : DrawCastSettings(inRect, y);
 
         Rect triggerHeader = new Rect(inRect.x, y, inRect.width, 24f);
         using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.85f)))
@@ -79,6 +74,127 @@ public sealed class AutocastRuleEditorDialog : Verse.Window {
 
         Rect closeButton = new Rect(inRect.xMax - 120f, inRect.yMax - 32f, 120f, 28f);
         if (Widgets.ButtonText(closeButton, "CC_Autocast_Editor_Close".Translate())) Close();
+    }
+
+    private float DrawCastSettings(Rect inRect, float y) {
+        Widgets.Label(
+            new Rect(inRect.x, y, 160f, 24f),
+            "CC_Autocast_Editor_MaxReserveSpend".Translate(((int)(rule.CostCapFraction * 100f)).Named("PERCENT"))
+        );
+
+        Rect capSlider = new Rect(inRect.x + 170f, y + 4f, inRect.width - 180f, 18f);
+        rule.CostCapFraction = Widgets.HorizontalSlider(capSlider, rule.CostCapFraction, 0f, 1f);
+
+        return y + 28f;
+    }
+
+    /// A dial is held rather than cast, so it needs a direction to hold it in, how
+    /// hard, and where to leave it once the triggers stop passing.
+    private float DrawDialSettings(Rect inRect, float y) {
+        bool tapping = AutocastDialRange.IsTapping(rule.Kind, rule.ActiveTarget);
+        float intensity = AutocastDialRange.Intensity(rule.Kind, rule.ActiveTarget);
+
+        Rect directionRect = new Rect(inRect.x, y, 150f, 24f);
+        if (Widgets.ButtonText(directionRect, DirectionLabel(tapping))) {
+            List<FloatMenuOption> opts = [
+                new FloatMenuOption(
+                    DirectionLabel(true),
+                    () => rule.ActiveTarget = AutocastDialRange.TargetFor(rule.Kind, true, intensity)
+                ),
+                new FloatMenuOption(
+                    DirectionLabel(false),
+                    () => rule.ActiveTarget = AutocastDialRange.TargetFor(rule.Kind, false, intensity)
+                ),
+            ];
+
+            Find.WindowStack.Add(new FloatMenu(opts));
+        }
+
+        Rect rateSlider = new Rect(directionRect.xMax + 10f, y + 4f, inRect.width - directionRect.width - 70f, 18f);
+        float moved = Widgets.HorizontalSlider(rateSlider, intensity, 0f, 1f);
+
+        // Only write back when the player moved it, so the stored target keeps the
+        // exact value the dock set rather than drifting through the round trip.
+        if (!Mathf.Approximately(moved, intensity)) {
+            rule.ActiveTarget = AutocastDialRange.TargetFor(rule.Kind, tapping, moved);
+        }
+
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
+            Widgets.Label(
+                new Rect(rateSlider.xMax + 6f, y, 50f, 24f),
+                "CC_Autocast_Editor_PercentLabel".Translate(Mathf.RoundToInt(moved * 100f).Named("PERCENT"))
+            );
+
+        y += 30f;
+
+        Rect releaseRect = new Rect(inRect.x, y, 220f, 24f);
+        if (Widgets.ButtonText(releaseRect, ReleaseLabel(rule.Release))) {
+            List<FloatMenuOption> opts = [];
+            foreach (AutocastRelease release in Enum.GetValues(typeof(AutocastRelease))) {
+                AutocastRelease captured = release;
+                opts.Add(new FloatMenuOption(ReleaseLabel(release), () => rule.Release = captured));
+            }
+
+            Find.WindowStack.Add(new FloatMenu(opts));
+        }
+
+        using (new TextBlock(GameFont.Tiny, TextAnchor.MiddleLeft, new Color(0.7f, 0.7f, 0.7f)))
+            Widgets.Label(
+                new Rect(releaseRect.xMax + 10f, y, inRect.width - releaseRect.width - 10f, 24f),
+                "CC_Autocast_Editor_ReleaseDesc".Translate()
+            );
+
+        y += 28f;
+
+        if (rule.Release != AutocastRelease.ToRest) return y;
+
+        bool restTapping = AutocastDialRange.IsTapping(rule.Kind, rule.RestTarget);
+        float restIntensity = AutocastDialRange.Intensity(rule.Kind, rule.RestTarget);
+
+        Rect restDirection = new Rect(inRect.x, y, 150f, 24f);
+        if (Widgets.ButtonText(restDirection, DirectionLabel(restTapping))) {
+            List<FloatMenuOption> opts = [
+                new FloatMenuOption(
+                    DirectionLabel(true),
+                    () => rule.RestTarget = AutocastDialRange.TargetFor(rule.Kind, true, restIntensity)
+                ),
+                new FloatMenuOption(
+                    DirectionLabel(false),
+                    () => rule.RestTarget = AutocastDialRange.TargetFor(rule.Kind, false, restIntensity)
+                ),
+            ];
+
+            Find.WindowStack.Add(new FloatMenu(opts));
+        }
+
+        Rect restSlider = new Rect(restDirection.xMax + 10f, y + 4f, inRect.width - restDirection.width - 70f, 18f);
+        float restMoved = Widgets.HorizontalSlider(restSlider, restIntensity, 0f, 1f);
+        if (!Mathf.Approximately(restMoved, restIntensity)) {
+            rule.RestTarget = AutocastDialRange.TargetFor(rule.Kind, restTapping, restMoved);
+        }
+
+        using (new TextBlock(GameFont.Small, TextAnchor.MiddleLeft, Color.white))
+            Widgets.Label(
+                new Rect(restSlider.xMax + 6f, y, 50f, 24f),
+                "CC_Autocast_Editor_PercentLabel".Translate(Mathf.RoundToInt(restMoved * 100f).Named("PERCENT"))
+            );
+
+        return y + 30f;
+    }
+
+    private static string DirectionLabel(bool tapping) {
+        return tapping
+            ? "CC_Autocast_Editor_DirectionTap".Translate()
+            : "CC_Autocast_Editor_DirectionStore".Translate();
+    }
+
+    private static string ReleaseLabel(AutocastRelease release) {
+        return release switch {
+            AutocastRelease.ToIdle => "CC_Autocast_Release_ToIdle".Translate(),
+            AutocastRelease.Leave => "CC_Autocast_Release_Leave".Translate(),
+            AutocastRelease.ToRest => "CC_Autocast_Release_ToRest".Translate(),
+            _ => release.ToString(),
+        };
     }
 
     private static bool DrawTriggerRow(Rect row, AutocastTrigger trigger) {

@@ -45,6 +45,7 @@ public static class ScadrialUIRegistration {
             borderTintColor: new Color(0.25f, 0.33f, 0.38f),
             sigil: () => SteelIcon()?.feruchemy?.invertedIcon
         ));
+        AutocastDialRegistry.Register(new FeruchemyDial());
         DockSectionRegistry.Register(new AllomancyDockSection());
         DockSectionRegistry.Register(new FeruchemyDockSection());
         NamedPawnApplierRegistry.Register(new ScadrialNamedPawnApplier());

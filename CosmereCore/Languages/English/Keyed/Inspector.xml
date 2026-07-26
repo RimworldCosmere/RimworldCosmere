@@ -15,7 +15,8 @@
 
   <CC_Codex_Progression_Empty>No progression data for this system yet.</CC_Codex_Progression_Empty>
   <CC_Codex_Autocast_NoAbilities>No abilities on this pawn.</CC_Codex_Autocast_NoAbilities>
-  <CC_Codex_Autocast_RowMeta>{TRIGGERS} triggers, fired {COUNT}x</CC_Codex_Autocast_RowMeta>
+  <CC_Codex_Autocast_AddRule>Add a rule.</CC_Codex_Autocast_AddRule>
+  <CC_Codex_Autocast_RemoveRule>Remove this rule.</CC_Codex_Autocast_RemoveRule>
   <CC_Codex_Autocast_EditButton>Edit</CC_Codex_Autocast_EditButton>
 
   <CC_Codex_Surgebinding_OrderRow>Order: {ORDER}</CC_Codex_Surgebinding_OrderRow>
@@ -26,7 +27,8 @@
 
   <CC_Codex_Allomancy_ProgressionHeader>Allomancy</CC_Codex_Allomancy_ProgressionHeader>
   <CC_Codex_Allomancy_OverallSkill>Allomantic Power: level {LEVEL}</CC_Codex_Allomancy_OverallSkill>
-  <CC_Codex_Allomancy_MetalBurned>{AMOUNT} burned</CC_Codex_Allomancy_MetalBurned>
+  <CC_Codex_Allomancy_MetalBurned>burned {DURATION}</CC_Codex_Allomancy_MetalBurned>
+  <CC_Codex_Allomancy_NeverBurned>never burned</CC_Codex_Allomancy_NeverBurned>
   <CC_Codex_Allomancy_VialSettings_Button>Vials</CC_Codex_Allomancy_VialSettings_Button>
   <CC_Codex_Allomancy_NoVialSettings>{METAL} is spent entirely the moment it burns, so there is no reserve to hold at a threshold.</CC_Codex_Allomancy_NoVialSettings>
   <CC_Codex_Allomancy_VialSettings_Tooltip>Stock: {COUNT} vials\n{THRESHOLD}</CC_Codex_Allomancy_VialSettings_Tooltip>
@@ -36,8 +38,11 @@
 
   <CC_Codex_Feruchemy_Progression_Header>Feruchemy</CC_Codex_Feruchemy_Progression_Header>
   <CC_Codex_Feruchemy_OverallSkill>Feruchemic Power: level {LEVEL}</CC_Codex_Feruchemy_OverallSkill>
-  <CC_Codex_Feruchemy_StoredTapped>stored {STORED} - tapped {TAPPED}</CC_Codex_Feruchemy_StoredTapped>
-  <CC_Codex_Feruchemy_Never>never</CC_Codex_Feruchemy_Never>
+  <CC_Codex_Feruchemy_StoredTapped>{STORED} - {TAPPED}</CC_Codex_Feruchemy_StoredTapped>
+  <CC_Codex_Feruchemy_Stored>stored {DURATION}</CC_Codex_Feruchemy_Stored>
+  <CC_Codex_Feruchemy_NeverStored>never stored</CC_Codex_Feruchemy_NeverStored>
+  <CC_Codex_Feruchemy_Tapped>tapped {DURATION}</CC_Codex_Feruchemy_Tapped>
+  <CC_Codex_Feruchemy_NeverTapped>never tapped</CC_Codex_Feruchemy_NeverTapped>
   <CC_Codex_Feruchemy_Copperminds_Header>Copperminds</CC_Codex_Feruchemy_Copperminds_Header>
   <CC_Codex_Feruchemy_NoCopperminds>No copperminds carried.</CC_Codex_Feruchemy_NoCopperminds>
   <CC_Codex_Feruchemy_CoppermindHeader>{NAME} - {OWNER} ({USED}/{MAX})</CC_Codex_Feruchemy_CoppermindHeader>
@@ -80,6 +85,29 @@
   <CC_Autocast_Editor_FiresWhileDrafted>(fires while drafted)</CC_Autocast_Editor_FiresWhileDrafted>
   <CC_Autocast_Editor_PercentLabel>{PERCENT}%</CC_Autocast_Editor_PercentLabel>
   <CC_Autocast_Editor_CellsLabel>{COUNT} c</CC_Autocast_Editor_CellsLabel>
+
+  <CC_Autocast_Editor_DirectionTap>Tap</CC_Autocast_Editor_DirectionTap>
+  <CC_Autocast_Editor_DirectionStore>Store</CC_Autocast_Editor_DirectionStore>
+  <CC_Autocast_Editor_ReleaseDesc>Once the triggers stop matching</CC_Autocast_Editor_ReleaseDesc>
+
+  <CC_Autocast_Release_ToIdle>Return the dial to rest</CC_Autocast_Release_ToIdle>
+  <CC_Autocast_Release_Leave>Leave the dial where it is</CC_Autocast_Release_Leave>
+  <CC_Autocast_Release_ToRest>Move the dial elsewhere</CC_Autocast_Release_ToRest>
+
+  <CC_Autocast_Summary_Cast>Cast {CONDITIONS}</CC_Autocast_Summary_Cast>
+  <CC_Autocast_Summary_Dial>{ACTION} {CONDITIONS}</CC_Autocast_Summary_Dial>
+  <CC_Autocast_Summary_Tap>Tap at {PERCENT}%</CC_Autocast_Summary_Tap>
+  <CC_Autocast_Summary_Store>Store at {PERCENT}%</CC_Autocast_Summary_Store>
+  <CC_Autocast_Summary_NoTriggers>No triggers set</CC_Autocast_Summary_NoTriggers>
+  <CC_Autocast_Summary_DialIdle>{ACTION} - no triggers set</CC_Autocast_Summary_DialIdle>
+  <CC_Autocast_Summary_And> and </CC_Autocast_Summary_And>
+  <CC_Autocast_Summary_Drafted>while drafted</CC_Autocast_Summary_Drafted>
+  <CC_Autocast_Summary_Enemy>an enemy</CC_Autocast_Summary_Enemy>
+  <CC_Autocast_Summary_Ally>an ally</CC_Autocast_Summary_Ally>
+  <CC_Autocast_Summary_Proximity>while {WHO} is {OP} {COUNT} cells away</CC_Autocast_Summary_Proximity>
+  <CC_Autocast_Summary_Health>health</CC_Autocast_Summary_Health>
+  <CC_Autocast_Summary_Reserve>reserve</CC_Autocast_Summary_Reserve>
+  <CC_Autocast_Summary_Percent>while {WHAT} {OP} {PERCENT}%</CC_Autocast_Summary_Percent>
 
   <CC_Autocast_Trigger_HealthPercent>Health %</CC_Autocast_Trigger_HealthPercent>
   <CC_Autocast_Trigger_EnemyProximity>Nearest enemy</CC_Autocast_Trigger_EnemyProximity>

@@ -1,3 +1,4 @@
+using Cosmere.Core.Ability.Autocast;
 using UnityEngine;
 using Verse;
 
@@ -18,6 +19,9 @@ public interface ICodexContentProvider {
     void DrawMemories(Rect rect, Pawn pawn, CodexState state);
 
     bool OwnsAbility(RimWorld.Ability ability);
+
+    /// Everything of this art the pawn can hold autocast rules against.
+    IReadOnlyList<AutocastTarget> AutocastTargets(Pawn pawn);
 
     string? HeaderLabelFor(Pawn pawn);
 }

@@ -61,11 +61,6 @@ public static class PawnExtension {
         return gene?.Burning ?? false;
     }
 
-    public static bool IsCompounding(this Pawn pawn, MetalDef metal) {
-        return pawn.health.hediffSet.HasHediff(
-            DefDatabase<HediffDef>.GetNamed("Cosmere_Scadrial_Hediff_Compound" + metal.defName)
-        );
-    }
 
     public static bool IsSnapped(this Pawn pawn) {
         return pawn.needs?.mood?.thoughts?.memories?.GetFirstMemoryOfDef(ThoughtDefOf.Cosmere_Scadrial_Snapped) != null;

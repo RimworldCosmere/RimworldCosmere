@@ -28,6 +28,17 @@ public interface IMetalmindSource {
     float TotalStored { get; }
     float FreeSpace { get; }
 
+    /// Compounded charge consumes the metalmind carrying it, so capacity falls as
+    /// it is drawn. True once nothing is left to hold and the metalmind is spent.
+    bool IsBurnedOut { get; }
+
+    /// Stable across saves and across other metalminds being destroyed, so the
+    /// player's chosen target survives a burn-out somewhere else in the list.
+    string SourceId { get; }
+
+    /// What the target picker calls this one.
+    string SourceLabel { get; }
+
     void AddStored(float amount);
     void ConsumeStored(float amount);
     void AddCompounded(float amount);

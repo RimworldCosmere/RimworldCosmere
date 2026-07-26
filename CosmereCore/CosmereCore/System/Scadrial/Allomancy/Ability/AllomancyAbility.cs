@@ -104,9 +104,7 @@ public class AllomancyAbility : AbstractAbility<Allomancer, AllomanticHediff> {
         if (!base.GizmosVisible()) return false;
         if (!ShardUtility.AreAnyEnabled(ShardDefOf.Preservation, ShardDefOf.Ruin, ShardDefOf.Harmony)) return false;
 
-        if (!def.isCompound) return true;
-
-        return pawn.genes.HasAllomanticGeneForMetal(metal) && pawn.genes.HasFeruchemicGeneForMetal(metal);
+        return true;
     }
 
     protected void ApplyDrag(Pawn? targetPawn, float severity) {

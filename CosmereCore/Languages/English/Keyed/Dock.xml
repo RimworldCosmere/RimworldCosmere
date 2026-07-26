@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
   <CC_Dock_Twinborn_Burn>Burn</CC_Dock_Twinborn_Burn>
@@ -6,7 +6,6 @@
   <CC_Dock_Twinborn_Tap>Tap</CC_Dock_Twinborn_Tap>
   <CC_Dock_Twinborn_Store>Store</CC_Dock_Twinborn_Store>
   <CC_Dock_Twinborn_TapOrStore>Tap | Store</CC_Dock_Twinborn_TapOrStore>
-  <CC_Dock_Twinborn_Compound>Compound</CC_Dock_Twinborn_Compound>
 
   <CC_Dock_Awakening_NoBreaths>No Breaths</CC_Dock_Awakening_NoBreaths>
 
@@ -28,7 +27,7 @@
   <CC_Dock_Btn_Threshold>Set</CC_Dock_Btn_Threshold>
 
   <CC_Dock_Allomancy_Tip>{METAL}\nReserve {PERCENT}%{STATE}\n\n{EFFECT}\n\nClick to open the burn controls.\nRight-click to set the restock threshold.</CC_Dock_Allomancy_Tip>
-  <CC_Dock_Feruchemy_Tip>{METAL}\n{STORED} of {MAX} stored\n\n{EFFECT}\n\nClick to open the tap and store dial.</CC_Dock_Feruchemy_Tip>
+  <CC_Dock_Feruchemy_Tip>{METAL}\nHolding {STORED}\n\n{EFFECT}\n\nClick to open the tap and store dial.</CC_Dock_Feruchemy_Tip>
   <CC_Dock_Feruchemy_NoMetalmind>{METAL}\n\n{EFFECT}\n\nNo metalmind carried, so there is nothing to fill or draw from.</CC_Dock_Feruchemy_NoMetalmind>
   <CC_Dock_Feruchemy_Tapping>tapping</CC_Dock_Feruchemy_Tapping>
   <CC_Dock_Feruchemy_Storing>storing</CC_Dock_Feruchemy_Storing>
@@ -41,22 +40,25 @@
   <CC_Dock_Feruchemy_Rate>{RATE}/s</CC_Dock_Feruchemy_Rate>
   <CC_Dock_Feruchemy_CompoundBlocked>Cannot compound: {REASON}</CC_Dock_Feruchemy_CompoundBlocked>
   <CC_Dock_Feruchemy_CompoundUnavailable>This metal cannot be compounded by this pawn.</CC_Dock_Feruchemy_CompoundUnavailable>
-  <CC_Dock_Twinborn_StopCompound>Stop</CC_Dock_Twinborn_StopCompound>
-  <CC_Dock_Feruchemy_StoreCompounded>Compound</CC_Dock_Feruchemy_StoreCompounded>
-  <CC_Dock_Feruchemy_StopStoreCompounded>Stop</CC_Dock_Feruchemy_StopStoreCompounded>
   <CC_Dock_Feruchemy_CompoundNoResearch>{RESEARCH} has not been researched.</CC_Dock_Feruchemy_CompoundNoResearch>
   <CC_Dock_Feruchemy_CompoundLowSkill>Compounding demands level {LEVEL} in both Allomancy and Feruchemy.</CC_Dock_Feruchemy_CompoundLowSkill>
-  <CC_Dock_Feruchemy_CompoundNoImplant>Compounding needs a metalmind implanted in the body.</CC_Dock_Feruchemy_CompoundNoImplant>
   <CC_Dock_Allomancy_Burn>Burn</CC_Dock_Allomancy_Burn>
   <CC_Dock_Allomancy_StopBurn>Stop</CC_Dock_Allomancy_StopBurn>
   <CC_Dock_Allomancy_Flare>Flare</CC_Dock_Allomancy_Flare>
   <CC_Dock_Allomancy_StopFlare>Ease</CC_Dock_Allomancy_StopFlare>
   <CC_Dock_Allomancy_BurnTip>Burn {METAL} steadily, drawing on the reserve.</CC_Dock_Allomancy_BurnTip>
   <CC_Dock_Allomancy_FlareTip>Flare {METAL}, burning harder and faster for a stronger effect.</CC_Dock_Allomancy_FlareTip>
-  <CC_Dock_Allomancy_CompoundTip>Burn the {METAL} reserve to charge an implanted {METAL} metalmind.\n\nCompounded charge pays out ten times as hard when tapped, and only a metalmind inside the body can be filled this way.</CC_Dock_Allomancy_CompoundTip>
-  <CC_Dock_Allomancy_BusyCompounding>Compounding is drawing on this metal.</CC_Dock_Allomancy_BusyCompounding>
-  <CC_Dock_Allomancy_CompoundRate>+{RATE}/s</CC_Dock_Allomancy_CompoundRate>
-  <CC_Dock_Allomancy_CompoundEta>current {ONE}, all {ALL}</CC_Dock_Allomancy_CompoundEta>
   <CC_Dock_Feruchemy_Compound>compound</CC_Dock_Feruchemy_Compound>
-  <CC_Dock_Feruchemy_CompoundPaused>Compounding - out of metal</CC_Dock_Feruchemy_CompoundPaused>
+    <CC_Dock_Feruchemy_TargetLabel>{TARGET}</CC_Dock_Feruchemy_TargetLabel>
+    <CC_Dock_Feruchemy_TargetAll>every metalmind ({COUNT})</CC_Dock_Feruchemy_TargetAll>
+    <CC_Dock_Feruchemy_TargetInternal>every implanted metalmind ({COUNT})</CC_Dock_Feruchemy_TargetInternal>
+    <CC_Dock_Feruchemy_TargetExternal>every worn metalmind ({COUNT})</CC_Dock_Feruchemy_TargetExternal>
+    <CC_Dock_Feruchemy_TargetImplant>implanted {METAL}mind</CC_Dock_Feruchemy_TargetImplant>
+    <CC_Dock_Feruchemy_TargetTip>Holding {UNITS}.\n\nChoose what this dial fills or draws from: every metalmind, only those implanted, only those worn, or a single one. Compounding reaches implanted metalminds alone.</CC_Dock_Feruchemy_TargetTip>
+    <CC_Dock_Feruchemy_Compound>Compound</CC_Dock_Feruchemy_Compound>
+    <CC_Dock_Feruchemy_StopCompound>Stop compounding</CC_Dock_Feruchemy_StopCompound>
+    <CC_Dock_Feruchemy_CompoundTip>Point the dial at this implant's compounded charge. Filling it costs what storing always costs. Drawing on it burns the metalmind itself, returning tenfold and consuming the metal as it goes.</CC_Dock_Feruchemy_CompoundTip>
+    <CC_Dock_Feruchemy_CompoundNoAllomancy>This pawn cannot burn {METAL}.</CC_Dock_Feruchemy_CompoundNoAllomancy>
+    <CC_Dock_Feruchemy_BurningMetalmind>Burning metalmind</CC_Dock_Feruchemy_BurningMetalmind>
+    <CC_Dock_Feruchemy_CompoundNoRoom>That metalmind is full, and holds no compounded charge to burn. Draw it down first.</CC_Dock_Feruchemy_CompoundNoRoom>
 </LanguageData>

@@ -20,7 +20,7 @@
   },
   "feruchemy": {
     "userName": "chronist",
-    "description": "Stores age, granting youth or aging when tapped.",
+    "description": "Stores youth, aging the body now to reclaim those years when tapped.",
     "attribute": "youth",
     "customHediffClass": true,
     "store": {

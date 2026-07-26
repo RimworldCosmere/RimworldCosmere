@@ -1,4 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
     <CC_GiveGene>{PAWN} gained {GENE}</CC_GiveGene>
+    <CS_Feruchemy_MetalmindConsumed>{PAWN} has burned away the {METAL}mind. Nothing survives being compounded.</CS_Feruchemy_MetalmindConsumed>
+    <CS_Feruchemy_AtiumFloorReached>{PAWN} can shed no more years. The atium draw has stopped.</CS_Feruchemy_AtiumFloorReached>
 </LanguageData>
